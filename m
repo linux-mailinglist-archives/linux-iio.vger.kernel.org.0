@@ -2,394 +2,238 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B517A2E86
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Sep 2023 10:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D805A7A2FAC
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Sep 2023 13:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjIPIIz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Sep 2023 04:08:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36940 "EHLO
+        id S231226AbjIPLVI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Sep 2023 07:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229617AbjIPIIw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Sep 2023 04:08:52 -0400
-X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 16 Sep 2023 01:08:46 PDT
-Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9E78A19A8
-        for <linux-iio@vger.kernel.org>; Sat, 16 Sep 2023 01:08:46 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id hQEkqqje4Bh1whQElqxQEC; Sat, 16 Sep 2023 10:01:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1694851269;
-        bh=3LMNoCG9d7rslxiT14uY/FJc0uqkR5qNPqeL0aUnp9U=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=EgNisnKVhWsOp9CG2oBYANzkH8IOAZzGIfDrKxdE/4zBi1sCez16Z1S4YBkdESGpk
-         XDFjOU1tNrxqhTnfN3Cx1yMElJaK6sLCLzmzBYO5JBVqf15SzVTLXWAf3JUyeo2E1h
-         k5xCa5P5vKiTLmq082RFRjjLCqkKhtyBv/rpUqw1TwvcWMz7Hv0kaq7k9D65Y4VzZR
-         O+uPr9XSVSlI48I4dQmBvxXNGKNTX/oo1TFGCSFjN3ez4+AEnRA/5iuDztuJca2IA0
-         tJjBOQhrI8oOPzCqqyVEJTjSe8mvbnQsDDjC27lOZqH5lsD2ZjG7624UwitBLB+8ei
-         2wghuHwvHjt3A==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 16 Sep 2023 10:01:09 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <cdc9a8f8-fbd5-1eb3-7bac-1e6e5893bc9b@wanadoo.fr>
-Date:   Sat, 16 Sep 2023 10:01:06 +0200
+        with ESMTP id S236015AbjIPLUt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Sep 2023 07:20:49 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A941A6
+        for <linux-iio@vger.kernel.org>; Sat, 16 Sep 2023 04:20:43 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id a1e0cc1a2514c-78f1210e27fso1181312241.1
+        for <linux-iio@vger.kernel.org>; Sat, 16 Sep 2023 04:20:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694863243; x=1695468043; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wx1mJktLlGi9doqDMud3XUtJkccHnYdBYJ5bUZM5krg=;
+        b=hIekEfDRyXwiFgmVWmdC7uSfwFVVWQFOL4Pd7AuOgRzfYU60Srwu4r7zcJTbP5Wd26
+         ebkX1QWYMc4XQNymRFWKtywynvhmwKcTDxBZBOkcxgJQAiWLzaXUoIS+Rk28rqlupMwZ
+         2PIMEBN2VVSV3kOvKsqQMPd9MUz0e4/VBccYh4cmF6GBpwb/tz69RO6OMdwiQdFw6hk3
+         hCILJay8ATk2PxuTNRxzyr6cgqQZJClY5ETJqaQZ4piCiYh44ho6fk/n2xJBYcevHSo4
+         kPcymvwzb7TnKHXEIRi88JpJQhBTDe9Cvm9M4QUoK6s7QRIAKLxlv/DPF54e3qMXns8d
+         8zwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694863243; x=1695468043;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wx1mJktLlGi9doqDMud3XUtJkccHnYdBYJ5bUZM5krg=;
+        b=KT5MDo3dzZtdBAUEIcHDUH0Pb2t3Cs+KquhRwqjxPyf1rlC5Ns0XWAWp3K2mDfrSbt
+         mtodAGYtcuXP7cnnpDdRav0fGzdF45pJZYVhkD1zUNgKyVH1+utFMDJEQosgjBwLASCd
+         rp0LEM82PLAlcQKO6bibbezSyX1dcIt5bp3i3l9AA8htoV6dKp8kVdbD8FiwMOrXUXOW
+         ld2eKKUAUTYoNfaQc88U20ydQTEGsu+wQ4DXE5ToQ5MQmg3kr1TYohVacrZwDUP8vEVv
+         d55brs58PG9Jw+4WMQeMCxWNz4Tn0dnol0OcMhT7Su8bJKvYK7mvOZjHQEeKeHdJMizt
+         7szA==
+X-Gm-Message-State: AOJu0Yzsr3E7hv4SxUogD40l6H5JTO/prE5xyGHEgyjghbtwikj+rCmH
+        U8x9ZuitDy0lWZsX03T7pl7JoQ==
+X-Google-Smtp-Source: AGHT+IEgoVmh83TRBPeUNUgrx0amBFL2ejoRJfyxpKwAxPrVjxedOqhzlp3kd0dU9f0mWfGWK+zf4Q==
+X-Received: by 2002:a05:6102:34d8:b0:450:c5e4:4869 with SMTP id a24-20020a05610234d800b00450c5e44869mr3639165vst.25.1694863242801;
+        Sat, 16 Sep 2023 04:20:42 -0700 (PDT)
+Received: from fedora.. (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id f30-20020ab0101e000000b004089cee1d28sm788352uab.1.2023.09.16.04.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Sep 2023 04:20:42 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [RESEND PATCH] iio: addac: stx104: Add 8254 Counter/Timer support
+Date:   Sat, 16 Sep 2023 07:20:31 -0400
+Message-ID: <20230916112031.3634-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 2/3] iio: pressure: Support ROHM BU1390
-To:     mazziesaccount@gmail.com
-Cc:     ak@it-klinger.de, andriy.shevchenko@linux.intel.com,
-        ang.iglesiasg@gmail.com, bbara93@gmail.com, conor+dt@kernel.org,
-        devicetree@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        matti.vaittinen@fi.rohmeurope.com, robh+dt@kernel.org
-References: <cover.1694760170.git.mazziesaccount@gmail.com>
- <f378a401cec4fb0b9287b52ab159f00dd77569a6.1694760170.git.mazziesaccount@gmail.com>
-Content-Language: fr, en-US
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <f378a401cec4fb0b9287b52ab159f00dd77569a6.1694760170.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 15/09/2023 à 08:56, Matti Vaittinen a écrit :
-> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
-> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
-> averaging and internal FIFO. The sensor does also provide temperature
-> measurements.
-> 
-> Sensor does also contain IIR filter implemented in HW. The data-sheet
-> says the IIR filter can be configured to be "weak", "middle" or
-> "strong". Some RMS noise figures are provided in data sheet but no
-> accurate maths for the filter configurations is provided. Hence, the IIR
-> filter configuration is not supported by this driver and the filter is
-> configured to the "middle" setting (at least not for now).
-> 
-> The FIFO measurement mode is only measuring the pressure and not the
-> temperature. The driver measures temperature when FIFO is flushed and
-> simply uses the same measured temperature value to all reported
-> temperatures. This should not be a problem when temperature is not
-> changing very rapidly (several degrees C / second) but allows users to
-> get the temperature measurements from sensor without any additional logic.
-> 
-> This driver allows the sensor to be used in two muitually exclusive ways,
-> 
-> 1. With trigger (data-ready IRQ).
-> In this case the FIFO is not used as we get data ready for each collected
-> sample. Instead, for each data-ready IRQ we read the sample from sensor
-> and push it to the IIO buffer.
-> 
-> 2. With hardware FIFO and watermark IRQ.
-> In this case the data-ready is not used but we enable watermark IRQ. At
-> each watermark IRQ we go and read all samples in FIFO and push them to the
-> IIO buffer.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
+The STX104 features an 8254 Counter/Timer chip providing three
+counter/timers which can be used for frequency measurement, frequency
+output, pulse width modulation, pulse width measurement, event count,
+etc. The STX104 provides a register bank selection to bank select
+between the 8254 Bank and the Indexed Register Array Bank; the Indexed
+Register Array is not utilized by this driver, so the 8254 Bank is
+selected unconditionally.
 
-...
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+Looks like this was missed in the last merge cycle, so I'm resending it
+now as requested. [^1]
 
-> +struct bm1390_data_buf {
-> +	u32 pressure;
-> +	__be16 temp;
+[^1]: https://lore.kernel.org/all/ZJoO++gEMiDsZioz@fedora/
 
-I've not looked in details so I'm not sure if related, but 
-bm1390_read_temp() seems to use int.
+ drivers/iio/addac/Kconfig  |  1 +
+ drivers/iio/addac/stx104.c | 61 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 60 insertions(+), 2 deletions(-)
 
-> +	s64 ts __aligned(8);
-> +};
-> +
-> +/* Pressure data is in 3 8-bit registers */
-> +#define BM1390_PRESSURE_SIZE	3
+diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
+index 877f9124803c..b2623881f0ec 100644
+--- a/drivers/iio/addac/Kconfig
++++ b/drivers/iio/addac/Kconfig
+@@ -38,6 +38,7 @@ config STX104
+ 	select REGMAP_MMIO
+ 	select GPIOLIB
+ 	select GPIO_REGMAP
++	select I8254
+ 	help
+ 	  Say yes here to build support for the Apex Embedded Systems STX104
+ 	  integrated analog PC/104 card.
+diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
+index d1f7ce033b46..6946a65512ca 100644
+--- a/drivers/iio/addac/stx104.c
++++ b/drivers/iio/addac/stx104.c
+@@ -8,6 +8,7 @@
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/gpio/regmap.h>
++#include <linux/i8254.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
+ #include <linux/isa.h>
+@@ -55,6 +56,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
+ #define STX104_ADC_STATUS (STX104_AIO_BASE + 0x8)
+ #define STX104_ADC_CONTROL (STX104_AIO_BASE + 0x9)
+ #define STX104_ADC_CONFIGURATION (STX104_AIO_BASE + 0x11)
++#define STX104_I8254_BASE (STX104_AIO_BASE + 0x12)
+ 
+ #define STX104_AIO_DATA_STRIDE 2
+ #define STX104_DAC_OFFSET(_channel) (STX104_DAC_BASE + STX104_AIO_DATA_STRIDE * (_channel))
+@@ -77,6 +79,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
+ /* ADC Configuration */
+ #define STX104_GAIN GENMASK(1, 0)
+ #define STX104_ADBU BIT(2)
++#define STX104_RBK GENMASK(7, 4)
+ #define STX104_BIPOLAR 0
+ #define STX104_GAIN_X1 0
+ #define STX104_GAIN_X2 1
+@@ -168,6 +171,32 @@ static const struct regmap_config dio_regmap_config = {
+ 	.io_port = true,
+ };
+ 
++static const struct regmap_range pit_wr_ranges[] = {
++	regmap_reg_range(0x0, 0x3),
++};
++static const struct regmap_range pit_rd_ranges[] = {
++	regmap_reg_range(0x0, 0x2),
++};
++static const struct regmap_access_table pit_wr_table = {
++	.yes_ranges = pit_wr_ranges,
++	.n_yes_ranges = ARRAY_SIZE(pit_wr_ranges),
++};
++static const struct regmap_access_table pit_rd_table = {
++	.yes_ranges = pit_rd_ranges,
++	.n_yes_ranges = ARRAY_SIZE(pit_rd_ranges),
++};
++
++static const struct regmap_config pit_regmap_config = {
++	.name = "i8254",
++	.reg_bits = 8,
++	.reg_stride = 1,
++	.reg_base = STX104_I8254_BASE,
++	.val_bits = 8,
++	.io_port = true,
++	.wr_table = &pit_wr_table,
++	.rd_table = &pit_rd_table,
++};
++
+ static int stx104_read_raw(struct iio_dev *indio_dev,
+ 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
+ {
+@@ -339,6 +368,21 @@ static const char *stx104_names[STX104_NGPIO] = {
+ 	"DIN0", "DIN1", "DIN2", "DIN3", "DOUT0", "DOUT1", "DOUT2", "DOUT3"
+ };
+ 
++static int bank_select_i8254(struct regmap *map)
++{
++	const u8 select_i8254[] = { 0x3, 0xB, 0xA };
++	size_t i;
++	int err;
++
++	for (i = 0; i < ARRAY_SIZE(select_i8254); i++) {
++		err = regmap_write_bits(map, STX104_ADC_CONFIGURATION, STX104_RBK, select_i8254[i]);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ static int stx104_init_hw(struct stx104_iio *const priv)
+ {
+ 	int err;
+@@ -361,7 +405,7 @@ static int stx104_init_hw(struct stx104_iio *const priv)
+ 	if (err)
+ 		return err;
+ 
+-	return 0;
++	return bank_select_i8254(priv->aio_ctl_map);
+ }
+ 
+ static int stx104_probe(struct device *dev, unsigned int id)
+@@ -369,6 +413,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 	struct iio_dev *indio_dev;
+ 	struct stx104_iio *priv;
+ 	struct gpio_regmap_config gpio_config;
++	struct i8254_regmap_config pit_config;
+ 	void __iomem *stx104_base;
+ 	struct regmap *aio_ctl_map;
+ 	struct regmap *aio_data_map;
+@@ -406,6 +451,11 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 		return dev_err_probe(dev, PTR_ERR(dio_map),
+ 				     "Unable to initialize dio register map\n");
+ 
++	pit_config.map = devm_regmap_init_mmio(dev, stx104_base, &pit_regmap_config);
++	if (IS_ERR(pit_config.map))
++		return dev_err_probe(dev, PTR_ERR(pit_config.map),
++				     "Unable to initialize i8254 register map\n");
++
+ 	priv = iio_priv(indio_dev);
+ 	priv->aio_ctl_map = aio_ctl_map;
+ 	priv->aio_data_map = aio_data_map;
+@@ -449,7 +499,13 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 		.drvdata = dio_map,
+ 	};
+ 
+-	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
++	err = PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
++	if (err)
++		return err;
++
++	pit_config.parent = dev;
++
++	return devm_i8254_regmap_register(dev, &pit_config);
+ }
+ 
+ static struct isa_driver stx104_driver = {
+@@ -464,3 +520,4 @@ module_isa_driver(stx104_driver, num_stx104);
+ MODULE_AUTHOR("William Breathitt Gray <vilhelm.gray@gmail.com>");
+ MODULE_DESCRIPTION("Apex Embedded Systems STX104 IIO driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(I8254);
 
-Unused? (see other comment below)
-
-> +
-> +/* BM1390 has FIFO for 4 pressure samples */
-> +#define BM1390_FIFO_LENGTH	4
-> +
-> +/* Temperature data is in 2 8-bit registers */
-> +#define BM1390_TEMP_SIZE	2
-
-Unused? (see other comment below)
-
-...
-
-> +static int bm1390_read_temp(struct bm1390_data *data, int *temp)
-> +{
-> +	__be16 temp_raw;
-
-Something to do with BM1390_TEMP_SIZE?
-
-> +	int ret;
-> +
-> +	ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp_raw,
-> +			       sizeof(temp_raw));
-> +	if (ret)
-> +		return ret;
-> +
-> +	*temp = be16_to_cpu(temp_raw);
-
-See potential link with the comment above related to 
-bm1390_data_buf.temp being a __be16 an temp being a int.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int bm1390_pressure_read(struct bm1390_data *data, u32 *pressure)
-> +{
-> +	int ret;
-> +	u8 raw[3];
-
-BM1390_PRESSURE_SIZE?
-
-(not sure if it make sense because we still have [0..2] below, so having 
-3 here looks useful)
-
-> +
-> +	ret = regmap_bulk_read(data->regmap, BM1390_REG_PRESSURE_BASE,
-> +			       raw, sizeof(raw));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*pressure = (u32)(raw[2] >> 2 | raw[1] << 6 | raw[0] << 14);
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int bm1390_read_data(struct bm1390_data *data,
-> +			struct iio_chan_spec const *chan, int *val, int *val2)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&data->mutex);
-> +	/*
-> +	 * We use 'continuous mode' even for raw read because according to the
-> +	 * data-sheet an one-shot mode can't be used with IIR filter.
-> +	 */
-> +	ret = bm1390_meas_set(data, BM1390_MEAS_MODE_CONTINUOUS);
-> +	if (ret)
-> +		goto unlock_out;
-> +
-> +	switch (chan->type) {
-> +	case IIO_PRESSURE:
-> +		msleep(BM1390_MAX_MEAS_TIME_MS);
-> +		ret = bm1390_pressure_read(data, val);
-> +		break;
-> +	case IIO_TEMP:
-> +		msleep(BM1390_MAX_MEAS_TIME_MS);
-> +		ret = bm1390_read_temp(data, val);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +	}
-> +	bm1390_meas_set(data, BM1390_MEAS_MODE_STOP);
-
-"ret =" missing, or done on purpose?
-
-> +unlock_out:
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int bm1390_read_raw(struct iio_dev *idev,
-> +			   struct iio_chan_spec const *chan,
-> +			   int *val, int *val2, long mask)
-> +{
-> +	struct bm1390_data *data = iio_priv(idev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (chan->type == IIO_TEMP) {
-> +			*val = 31;
-> +			*val2 = 250000;
-> +
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		} else if (chan->type == IIO_PRESSURE) {
-> +			*val = 0;
-> +			/*
-> +			 * pressure in hPa is register value divided by 2048.
-> +			 * This means kPa is 1/20480 times the register value,
-> +			 * which equals to 48828.125 * 10 ^ -9
-> +			 * This is 48828.125 nano kPa.
-> +			 *
-> +			 * When we scale this using IIO_VAL_INT_PLUS_NANO we
-> +			 * get 48828 - which means we lose some accuracy. Well,
-> +			 * let's try to live with that.
-> +			 */
-> +			*val2 = 48828;
-> +
-> +			return IIO_VAL_INT_PLUS_NANO;
-> +		}
-> +
-> +		return -EINVAL;
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = iio_device_claim_direct_mode(idev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = bm1390_read_data(data, chan, val, val2);
-> +		iio_device_release_direct_mode(idev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-
-Certainly useless, but should we break and return -EINVAL after the 
-switch, so that it is more explicit that bm1390_read_raw() always 
-returns a value?
-
-> +	}
-> +}
-> +
-> +static int __bm1390_fifo_flush(struct iio_dev *idev, unsigned int samples,
-> +			       bool irq)
-> +{
-> +	struct bm1390_data *data = iio_priv(idev);
-> +	struct bm1390_data_buf buffer;
-> +	int smp_lvl, ret, i, warn;
-> +	u64 sample_period;
-> +	__be16 temp = 0;
-> +
-> +	/*
-> +	 * If the IC is accessed during FIFO read samples can be dropped.
-> +	 * Prevent access until FIFO_LVL is read
-> +	 */
-> +	if (test_bit(BM1390_CHAN_TEMP, idev->active_scan_mask)) {
-> +		ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp,
-> +				       sizeof(temp));
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	ret = regmap_read(data->regmap, BM1390_REG_FIFO_LVL, &smp_lvl);
-> +	if (ret)
-> +		return ret;
-> +
-> +	smp_lvl = FIELD_GET(BM1390_MASK_FIFO_LVL, smp_lvl);
-> +	if (!smp_lvl)
-> +		return 0;
-> +
-> +	if (smp_lvl > 4) {
-> +		/*
-> +		 * The fifo holds maximum of 4 samples so valid values
-> +		 * should be 0, 1, 2, 3, 4 - rest are probably bit errors
-> +		 * in I2C line. Don't overflow if this happens.
-> +		 */
-> +		dev_err(data->dev, "bad FIFO level %d\n", smp_lvl);
-> +		smp_lvl = 4;
-> +	}
-> +
-> +	sample_period = data->timestamp - data->old_timestamp;
-> +	do_div(sample_period, smp_lvl);
-> +
-> +	if (samples && smp_lvl > samples)
-> +		smp_lvl = samples;
-> +
-> +	for (i = 0; i < smp_lvl; i++) {
-> +		ret = bm1390_pressure_read(data, &buffer.pressure);
-> +		if (ret)
-> +			break;
-> +
-> +		buffer.temp = temp;
-> +		/*
-> +		 * Old timestamp is either the previous sample IRQ time,
-> +		 * previous flush-time or, if this was first sample, the enable
-> +		 * time. When we add a sample period to that we should get the
-> +		 * best approximation of the time-stamp we are handling.
-> +		 *
-> +		 * Idea is to always keep the "old_timestamp" matching the
-> +		 * timestamp which we are currently handling.
-> +		 */
-> +		data->old_timestamp += sample_period;
-> +
-> +		iio_push_to_buffers_with_timestamp(idev, &buffer,
-> +						   data->old_timestamp);
-> +	}
-> +	/* Reading the FIFO_LVL closes the FIFO access sequence */
-> +	warn = regmap_read(data->regmap, BM1390_REG_FIFO_LVL, &smp_lvl);
-> +	if (warn)
-> +		dev_warn(data->dev, "Closing FIFO sequence failed\n");
-> +
-> +	if (!ret)
-
-if (ret)?
-If done on purpose "return 0;" would be more explicit.
-
-> +		return ret;
-> +
-> +	return smp_lvl;
-> +}
-
-...
-
-> +static int bm1390_setup_trigger(struct bm1390_data *data, struct iio_dev *idev,
-> +				int irq)
-> +{
-> +	struct iio_trigger *itrig;
-> +	char *name;
-> +	int ret;
-> +
-> +	/* Nothing to do if we don't have IRQ for data-ready and WMI */
-> +	if (irq < 0)
-> +		return 0;
-> +
-> +	ret = devm_iio_triggered_buffer_setup(data->dev, idev,
-> +					      &iio_pollfunc_store_time,
-> +					      &bm1390_trigger_handler,
-> +					      &bm1390_buffer_ops);
-> +
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "iio_triggered_buffer_setup FAIL\n");
-> +
-> +	itrig = devm_iio_trigger_alloc(data->dev, "%sdata-rdy-dev%d", idev->name,
-> +					    iio_device_id(idev));
-> +	if (!itrig)
-> +		return -ENOMEM;
-> +
-> +	data->trig = itrig;
-> +	idev->available_scan_masks = bm1390_scan_masks;
-> +
-> +	itrig->ops = &bm1390_trigger_ops;
-> +	iio_trigger_set_drvdata(itrig, data);
-> +
-> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-bm1390",
-> +			      dev_name(data->dev));
-
-Missing NULL check?
-
-> +
-> +	ret = devm_request_threaded_irq(data->dev, irq, bm1390_irq_handler,
-> +					&bm1390_irq_thread_handler,
-> +					IRQF_ONESHOT, name, idev);
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret, "Could not request IRQ\n");
-> +
-> +
-> +	ret = devm_iio_trigger_register(data->dev, itrig);
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Trigger registration failed\n");
-> +
-> +	return 0;
-
-...
+base-commit: 9dc03309fe9ba9f9b26a37b2dd4fa2d5111a1ccf
+-- 
+2.41.0
 

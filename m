@@ -2,475 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A273A7A3DC5
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Sep 2023 23:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4FEA7A3EDC
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Sep 2023 01:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237676AbjIQVMM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Sep 2023 17:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32980 "EHLO
+        id S231166AbjIQXwr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Sep 2023 19:52:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239056AbjIQVMC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Sep 2023 17:12:02 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 085A112A;
-        Sun, 17 Sep 2023 14:11:56 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2bceb02fd2bso61552461fa.1;
-        Sun, 17 Sep 2023 14:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694985114; x=1695589914; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HR0dF66Xzv3ASXk+JgLCo3Ex4ZJDHC7199qzFfOVypU=;
-        b=VWo2BSUm1SW62OjDVWiKTDE5D8ZssUOD3Ov+Lq19Ykl+WW6mnZJyY1arlqr+JueMMy
-         mhuTbgiGMcu1eh+DZsG1h/vD8HGh8KZdnmb+k/fBP6J+kNjHQallRmGVcciygeXPfg9d
-         sFQ+lYndUxOlrpB2dUILAcXUGjOl8DG5NObp/DekQ9fu6hpTToVcjJv+U2iNfu+yLPEJ
-         hb/mbcJoyPxVj+vRLZB5TcJfj92iAydWgXjHDEq/fUU9kHWP5rCU4oFoTPdjAp0PD/7j
-         mcumSu0uGWZlDA9/M4O7pPc2Iv6aRuNqmemgLXPVD/BVpP3J9COSShf5UL6h1LA8Yzrz
-         HlRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694985114; x=1695589914;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HR0dF66Xzv3ASXk+JgLCo3Ex4ZJDHC7199qzFfOVypU=;
-        b=FrIX1DarhVEMvBQF7iLMIY2ToquG8V+NVXKXZ8auCj2Hy8JIkeuoBxpxJJbKSjysrj
-         Q/CR4BbMzIEkhd9ojFypn/1clVBoHARXDBq2NNAp6cfOqLlWtFHjjREAsoXS/Af8oRtT
-         3wZ7HZJuovSXdd1DPXVOkEU4VmFZZ363hJnJbdS0EbOVRAYktsrXls77UeCLm9bWm76C
-         HlozhAn6p+bsN4QkH1GX7yGgxY/zundLjbtgb3eYY1zyJCfd2lzCOlIHn7+0BtBtF5o/
-         H2TkvhlndXraK48S/K1TuYQQEp2oGZIFx3taMXhcU12UL+eQLSwo8loRT1FhQrOJk+UM
-         1Y0A==
-X-Gm-Message-State: AOJu0Yw0bkSxESQeSNrGkes7Lsnio/iFr/E/ts7J2OARO5nGEYKXI1Xg
-        qyAjRn23S2CyhlBaB+kbTPg=
-X-Google-Smtp-Source: AGHT+IH41jA9YQfRuUnwluAyEtt1XT3Bwt9XAtb/xoQQJF4CsLjunp7UudVlEyQeNBifIKoVj+TzoQ==
-X-Received: by 2002:a2e:9d98:0:b0:2bd:e3e:1a23 with SMTP id c24-20020a2e9d98000000b002bd0e3e1a23mr6334883ljj.45.1694985114198;
-        Sun, 17 Sep 2023 14:11:54 -0700 (PDT)
-Received: from fr.lan ([46.31.31.48])
-        by smtp.googlemail.com with ESMTPSA id p15-20020a2e740f000000b002bce3123639sm1766309ljc.98.2023.09.17.14.11.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Sep 2023 14:11:53 -0700 (PDT)
-From:   Ivan Mikhaylov <fr0st61te@gmail.com>
+        with ESMTP id S232351AbjIQXwf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Sep 2023 19:52:35 -0400
+Received: from AUS01-SY4-obe.outbound.protection.outlook.com (mail-sy4aus01on2122.outbound.protection.outlook.com [40.107.107.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D90126
+        for <linux-iio@vger.kernel.org>; Sun, 17 Sep 2023 16:52:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Cy35X9ITFAFL7/O90ZgFOJQtTn9VzzTEITyNcvNCe4OETQpNQ1juWnVoq0y019Lp/WUIZ693Jk7qfwZVGr5YIj3/PWGkQHi7We60q9uY1Twh8wCto6NkRMCjVcYPT6xcawgQ1LTa1Z/Gdvw6AVnwqvPbBhvADrFLUDlDRfVq0oJVwhqPEfHydI0CIvS/070FGsxgk6LpmqwMG1diYM8vT4tnSiuc573jTjU1qTetvaFquSkX1ftAyu//EqF0YOO4J99PgtPe3310Mk9tQhccgRqXKSMs9tQrEdzHkwrZ2ycGiVHACV2ybPv9NRUqo012zISSS0aHvHBuJabM0XxVKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PpmA8+7s1uvPIwfTpLV7VHBEpyDpgpjmuMWMgNi/j+M=;
+ b=KTMLbnnAWaHnQixg3Uouhjq1SoBIN93ley83jGW+nMc6LKRmvH6Kh0a5Fm6hlXD+LRIJun65rzSTyeee2UOGAe8aCarj2YFgF2XPSkkYHFLiNmN7y1ChD8nP197GmW57YJz08ax+0QB5JaxlB7qZ3QFvXAOPLXP1HsRY0l4JUuJY/l0YsT1SP5WTpKMcQfg7gEpFhTNgzEqf9fukk8I59wqlFpoxvBVS35TOUBRiVmTg48kY0+il1C6UU2ZWBIGPfsFRbHvLQwAz0h9rnKDp/03UtzX+F+7PF6zLwtRq/JoYAmNKGYDyN6nnUlHOcBiS6bgPsHF/2AY+NU0DFIAGxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=breathe-safe.com; dmarc=pass action=none
+ header.from=breathe-safe.com; dkim=pass header.d=breathe-safe.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=breathe-safe.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PpmA8+7s1uvPIwfTpLV7VHBEpyDpgpjmuMWMgNi/j+M=;
+ b=LPXxKdVcu04UZVnq/1LWrtTA5Svoi3IQ0G6qjBtEoxbp+FrmdI4thXu8DMDA1KUrj4+6aX8vD66uecByM/oRLwwUrcH1r0Cf4wv3ppbIPndcNojLYluLsc0iKQacnZexqv1xmsrd8HOjsvpU2JzOnmq97QcW7qHatR+ikPfCBnOcgAI6DFV/CP5fzyyBv3Qm4I2BmuW0EzN5Yr37g+zZEPuCHyeNcrD1mXZkhcTaG6uTXIfBkCoL3S9GORGgS+FBkTCKXAM7zc+3p4lA62S/zm28VsTrvmtGpoM9yyyY+xKBVVCwg7iHA1eb/ynJVGGawjP3mKDZXqLaiyjkwZ+NwQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=breathe-safe.com;
+Received: from ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:8::7) by
+ MEYP282MB2407.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:112::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.21; Sun, 17 Sep 2023 23:52:21 +0000
+Received: from ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::cf3b:e4f2:4933:19a4]) by ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::cf3b:e4f2:4933:19a4%7]) with mapi id 15.20.6792.021; Sun, 17 Sep 2023
+ 23:52:21 +0000
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Ivan Mikhaylov <fr0st61te@gmail.com>
-Subject: [PATCH 2/2] iio: adc: Add driver support for MAX34408/9
-Date:   Mon, 18 Sep 2023 00:11:43 +0300
-Message-ID: <20230917211143.7094-3-fr0st61te@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917211143.7094-1-fr0st61te@gmail.com>
-References: <20230917211143.7094-1-fr0st61te@gmail.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: iio: pressure: ms5611: ms5611_prom_is_valid false negative bug [PATCH]
+From:   Alexander Zangerl <az@breathe-safe.com>
+cc:     linux-iio@vger.kernel.org, Tomasz Duszynski <tduszyns@gmail.com>
+Content-Type: multipart/mixed; boundary="=-=-="
+Date:   Mon, 18 Sep 2023 09:52:20 +1000
+Message-ID: <922-1694994740.375607@iEuc.VJY0.oC_q>
+X-ClientProxiedBy: SY5P300CA0028.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1ff::19) To ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:8::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ME3P282MB0996:EE_|MEYP282MB2407:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f63e49c-1e6a-445d-36e0-08dbb7d92222
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +brL9czRDSx0eCWhmDujQEyFewi/2LkPBwCFD98HSqeBTmbyenAL2XAeS6Gcr+IeP5MWNog1+Y3qRyX0ZS2O3hBsH5lRxeCzH/X3wqHL10Js1Q94TL2Xy/Izfkp4NqJRIwcYGV28C+w3AF8xprp5BBZUQba87v7SjKvcqYvB+7dDpf12RyNTCssU3tdn9qKccKzzOQAiAQpv5bC9mD+YjQst0K41tmoLnl40SatYf+YYF9VQoC7Hy3WYvTNU/Syxr5N7+tcOmHnFBpDoPiJWKWTjvDomdWrfFSg75jw6WwfyicBpDch7p4+TPrF605xO2ixXHXJA+LEecZm/Dht5pX/dZmb+QegcmeT2Ll3xwIVKFN5NHMsX3g0GHYM6tadoVAcdcpg+QWdBfbgfZk5KLl2YwWiNM3xL1Wd3URcO/O7gwAIuGswwsqcF4wgScdcw7rxvqJhegnPqmhNYThtuzcFn32URiMnyxRazj9wljMpWejbx5EKuTyZMoXJqsJlg75yl7IxEDjURoCcizBv303No2IeHHFqtC8LKq+vutReE7SSfsNN/7PSaYF+wcrIm3iteNN5w+IAm3HjdE0EoK42nkv1y0B+mG0p2eC8+ljM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(39840400004)(346002)(136003)(396003)(376002)(186009)(1800799009)(451199024)(53546011)(66899024)(6512007)(44144004)(6486002)(6506007)(52116002)(8676002)(26005)(9686003)(4326008)(8936002)(5660300002)(2906002)(66946007)(66556008)(110136005)(66476007)(316002)(86362001)(41300700001)(38350700002)(38100700002)(478600001)(966005)(83380400001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?91IZ9BP0Kcxy8RJrPJvWowNOOqaDAPhuf0jPMOo0oPSQHFKt72JRKRT4SgxW?=
+ =?us-ascii?Q?hRbiqmaBmGdfpJ3f3JmkrhTQiv+uxXDagjynwEP2fhDEi1bL2yisjCMJRptT?=
+ =?us-ascii?Q?wNtULE+jlnXWrtjqNtCg5MhbKJdkVndPbxE+I6x9hQgyw1LEOaNo/wqv6U6r?=
+ =?us-ascii?Q?B/tIxbUWReQxK0LLHjb9S765A8LtiqfpQghSvu/f55vmDI4BmFY+zQ2nDnGn?=
+ =?us-ascii?Q?6FV0x+Z6GUmKKzQPo3dG2UAUlikRbgwmMCYBmvHASQX84MyW7ZhmMp7AgLvJ?=
+ =?us-ascii?Q?ZUk1yXK9xZ4Foqk62zI+qGa0KhyijC+V70E7P7srymQbEaDPMyD4SXQ7za8V?=
+ =?us-ascii?Q?NgdN1vZlbLzSMVgm8A3DBItRXQ/CgnyA7IEfMFoOtWx1K+zEPJ6ASXVf7Ny2?=
+ =?us-ascii?Q?r7zvfw6ahFDUsRugqvd9jnCE1rFkm+Mx8JenTGaAXYjHf9ZPU3+5s5Djc5Aq?=
+ =?us-ascii?Q?ZkC7juPeQ1ondX3bOI67A+I4BbzksQ/fpM2HXoh3OuCckpGi8M55YQ7z25EY?=
+ =?us-ascii?Q?eT2jCe+kuPTBrO9YFg3T/CXQ4aJ6funPaSYzGXKOS9nJJiUuyeFyPdll+dPL?=
+ =?us-ascii?Q?JN1OKtw5V20+Xn0euZ89pa+eTS2upZGLSI/H5tw+dNjSdL92jhMQYxMZbk9k?=
+ =?us-ascii?Q?dXjQw1eblJcNCV0QfhU6mrzABWx0JkYT8HUoajGeGxv1/WCGGfC1be3lqqrr?=
+ =?us-ascii?Q?lSa4NnmMlQlwBKIQjAzigepghC+y7mYeYuE7qfDhXNQgrhNVN8WH0J9hPShU?=
+ =?us-ascii?Q?+kz39R1o/Y2pTpnRWMedVE/HHnFjWmvMSJ/TgYMNXiKks56eLc8UDpEKN8/4?=
+ =?us-ascii?Q?hOLlMbE53E9NjRS3/wAcFPGYruhJ8HYajEBHGfke2xlbS+HhvTfzIX8NCjTj?=
+ =?us-ascii?Q?jf6u9N7dUmqNWrf4WdlMI2rjmpAaZ593OnClh9uKg7wD5FODXscB12O5JKvt?=
+ =?us-ascii?Q?deNYNsh6nsbW5eCavciSvsLzlgflGjlQ10kuWHUJVnXiAJ1M/84VugDoAVLZ?=
+ =?us-ascii?Q?xgXaMN1sVwfAS5P6mC+rVW7cp/gZ1P0SKd6J6pMCmoMQBlryatN8AWEuE0s6?=
+ =?us-ascii?Q?1aH2uciFLSwZuE5zaPqC1FK5zP+y1rW7EAxh4DYyRdp3bJB5xaG9SCgG1mIz?=
+ =?us-ascii?Q?BR1tlRSbMkO9wOiinuueK42YJco5en4oQRac2+fHXkuh7vOKnESzOLip3SSp?=
+ =?us-ascii?Q?+Z+9KsUE2LT7ulcODnu51BMefYTmKXBFenP41X2t4Ezw9yLf/4TVEV+AH8lm?=
+ =?us-ascii?Q?rqEIlPT2Douq7OkzyqzcdY94u9MnkO1pUx3cJ8qJ/mHEQb+9hdfejSm8MDNe?=
+ =?us-ascii?Q?lGbA4j9VzUQ4i0Fd/TcXw1RxvpyBtzG9nNuCG3du+UHjGongVpmgqfQ6cM/b?=
+ =?us-ascii?Q?ZRgjqcc/hlSoseWr1vPmWs6CBgG+D2g4fytoiSutLTfmj5vFd1CBqgv/b2ZY?=
+ =?us-ascii?Q?3yIehttWXWgClA4LXBQDqG+PC/lD+e6eOrMwZPOyu3V+7UPKBFzpRHd1gR5E?=
+ =?us-ascii?Q?2AE8xOJGR1UVQQBcZ+sLVg9peJHkNqkbd5PXfOfCScmmxyQXWa8rCne+0iRJ?=
+ =?us-ascii?Q?1xSmqESWWtlhEuvtbc2NKtVp5aAzfwZNKSKfurmm?=
+X-OriginatorOrg: breathe-safe.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f63e49c-1e6a-445d-36e0-08dbb7d92222
+X-MS-Exchange-CrossTenant-AuthSource: ME3P282MB0996.AUSP282.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2023 23:52:21.2654
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a6631c47-0922-4559-8cf6-3bd141897089
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z0kiOspoGSyvU/c6cus1c3GIfH5n6C9yk3leJCBaml3IHpt6tIHBWtGWo9nAQEyfR9mHd2KmzUo3CvabRl5Wag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MEYP282MB2407
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The MAX34408/MAX34409 are two- and four-channel current monitors that are
-configured and monitored with a standard I2C/SMBus serial interface. Each
-unidirectional current sensor offers precision high-side operation with a
-low full-scale sense voltage. The devices automatically sequence through
-two or four channels and collect the current-sense samples and average them
-to reduce the effect of impulse noise. The raw ADC samples are compared to
-user-programmable digital thresholds to indicate overcurrent conditions.
-Overcurrent conditions trigger a hardware output to provide an immediate
-indication to shut down any necessary external circuitry.
+--=-=-=
+Content-Type: text/plain
 
-Add as ADC driver which only supports current monitoring for now.
+the ms5611 driver falsely rejects lots of MS5607-02BA03-50 chips
+with "PROM integrity check failed" because it doesn't accept a prom crc
+value of zero as legitimate.
 
-Link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+according to the datasheet for this chip (and the manufacturer's
+application note about the prom crc), none of the possible
+values for the crc are excluded - but the current code
+in ms5611_prom_is_valid() ends with
 
-Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+return crc_orig != 0x0000 && crc == crc_orig
+
+datasheet: https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=MS5607-02BA03&DocType=Data+Sheet&DocLang=English
+application note: https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=AN520_C-code_example_for_MS56xx&DocType=SS&DocLang=EN
+
+i've discussed this whith the original author of the driver (tomasz
+duszynski) and he indicated that at that time (2015) he was dealing with
+some faulty chip samples which returned blank data under some
+circumstances and/or followed example code which indicated crc zero
+being bad (i can't find any traces of any such online, however).
+
+as far as i can tell this exception should not be applied anymore; we've
+got a few hundred custom boards here with this chip where large numbers
+of the prom have a legitimate crc value 0, and do work fine, but which the
+current driver code wrongly rejects.
+
+(i can provide some example prom dumps if required.)
+
+the attached tiny patch is against 4.19. but that
+section of the code is unchanged up to and including 6.6. 
+
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0001-ms5611-crc-zero-is-valid-and-should-not-be-rejected.patch
+
+From 653b5cf063e07d126e67386b152e4e76d4f8c1dc Mon Sep 17 00:00:00 2001
+From: Alexander Zangerl <az@breathe-safe.com>
+Date: Mon, 18 Sep 2023 09:44:00 +1000
+Subject: [PATCH] ms5611: crc zero is valid and should not be rejected
+
 ---
- drivers/iio/adc/Kconfig    |  11 ++
- drivers/iio/adc/Makefile   |   1 +
- drivers/iio/adc/max34408.c | 334 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 346 insertions(+)
- create mode 100644 drivers/iio/adc/max34408.c
+ drivers/iio/pressure/ms5611_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 517b3db114b8..538b086ed593 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -756,6 +756,17 @@ config MAX9611
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called max9611.
+diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
+index 5c7a734ede54..9980c6f3335e 100644
+--- a/drivers/iio/pressure/ms5611_core.c
++++ b/drivers/iio/pressure/ms5611_core.c
+@@ -79,7 +79,7 @@ static bool ms5611_prom_is_valid(u16 *prom, size_t len)
  
-+config MAX34408
-+	tristate "Maxim max34408/max344089 ADC driver"
-+	depends on I2C
-+	help
-+	  Say yes here to build support for Maxim max34408/max34409 current sense
-+	  monitor with 8-bits ADC interface with overcurrent delay/threshold and
-+	  shutdown delay.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called max34408.
-+
- config MCP320X
- 	tristate "Microchip Technology MCP3x01/02/04/08 and MCP3550/1/3"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 2facf979327d..8fee08546bcc 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -69,6 +69,7 @@ obj-$(CONFIG_MAX1241) += max1241.o
- obj-$(CONFIG_MAX1363) += max1363.o
- obj-$(CONFIG_MAX77541_ADC) += max77541-adc.o
- obj-$(CONFIG_MAX9611) += max9611.o
-+obj-$(CONFIG_MAX34408) += max34408.o
- obj-$(CONFIG_MCP320X) += mcp320x.o
- obj-$(CONFIG_MCP3422) += mcp3422.o
- obj-$(CONFIG_MCP3911) += mcp3911.o
-diff --git a/drivers/iio/adc/max34408.c b/drivers/iio/adc/max34408.c
-new file mode 100644
-index 000000000000..96c1de59edb5
---- /dev/null
-+++ b/drivers/iio/adc/max34408.c
-@@ -0,0 +1,334 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * IIO driver for Maxim MAX34409/34408 ADC, 4-Channels/2-Channels, 8bits, I2C
-+ *
-+ * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
-+ *
-+ * TODO: ALERT interrupt, Overcurrent delay, Shutdown delay
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/init.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
-+
-+#define MAX34408_STATUS		0x0
-+#define MAX34408_CONTROL	0x1
-+#define MAX34408_OCDELAY	0x2
-+#define MAX34408_SDDELAY	0x3
-+
-+#define MAX34408_ADC1		0x4
-+#define MAX34408_ADC2		0x5
-+/* ADC3 & ADC4 always returns 0x0 on 34408 */
-+#define MAX34408_ADC3		0x6
-+#define MAX34408_ADC4		0x7
-+
-+#define MAX34408_OCT1		0x8
-+#define MAX34408_OCT2		0x9
-+#define MAX34408_OCT3		0xA
-+#define MAX34408_OCT4		0xB
-+
-+#define MAX34408_DID		0xC
-+#define MAX34408_DCYY		0xD
-+#define MAX34408_DCWW		0xE
-+
-+#define MAX34408_CHANNELS	2
-+#define MAX34409_CHANNELS	4
-+
-+/* Bit masks for status register */
-+#define STATUS_OC1		BIT(0)
-+#define STATUS_OC2		BIT(1)
-+/* OC3 & OC4 only for max34409 */
-+#define STATUS_OC3		BIT(2)
-+#define STATUS_OC4		BIT(3)
-+#define STATUS_SHTDN		BIT(4)
-+#define STATUS_ENA		BIT(5)
-+
-+/* Bit masks for control register */
-+#define CONTROL_AVG0		BIT(0)
-+#define CONTROL_AVG1		BIT(1)
-+#define CONTROL_AVG2		BIT(2)
-+#define CONTROL_ALERT		BIT(3)
-+
-+/* Bit masks for over current delay */
-+#define OCDELAY_OCD0		BIT(0)
-+#define OCDELAY_OCD1		BIT(1)
-+#define OCDELAY_OCD2		BIT(2)
-+#define OCDELAY_OCD3		BIT(3)
-+#define OCDELAY_OCD4		BIT(4)
-+#define OCDELAY_OCD5		BIT(5)
-+#define OCDELAY_OCD6		BIT(6)
-+#define OCDELAY_RESET		BIT(7)
-+
-+/* Bit masks for shutdown delay */
-+#define SDDELAY_SHD0		BIT(0)
-+#define SDDELAY_SHD1		BIT(1)
-+#define SDDELAY_SHD2		BIT(2)
-+#define SDDELAY_SHD3		BIT(3)
-+#define SDDELAY_SHD4		BIT(4)
-+#define SDDELAY_SHD5		BIT(5)
-+#define SDDELAY_SHD6		BIT(6)
-+#define SDDELAY_RESET		BIT(7)
-+
-+/**
-+ * struct max34408_data - max34408/max34409 specific data.
-+ * @regmap:	device register map.
-+ * @dev:	max34408 device.
-+ * @lock:	lock for protecting access to device hardware registers.
-+ * @rsense:	Rsense value in uOhm.
-+ */
-+struct max34408_data {
-+	struct regmap *regmap;
-+	struct device *dev;
-+	struct mutex lock;
-+	u32 rsense;
-+};
-+
-+static const struct regmap_config max34408_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+	.max_register	= MAX34408_DCWW,
-+};
-+
-+static const struct iio_chan_spec max34408_channels[] = {
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 0,
-+		.indexed = 1,
-+	},
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 1,
-+		.indexed = 1,
-+	},
-+};
-+
-+static const struct iio_chan_spec max34409_channels[] = {
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 0,
-+		.indexed = 1,
-+	},
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 1,
-+		.indexed = 1,
-+	},
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 2,
-+		.indexed = 1,
-+	},
-+	{
-+		.type			= IIO_CURRENT,
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
-+					  BIT(IIO_CHAN_INFO_PROCESSED) |
-+					  BIT(IIO_CHAN_INFO_AVERAGE_RAW),
-+		.channel		= 3,
-+		.indexed = 1,
-+	},
-+};
-+
-+static int max34408_read_adc(struct max34408_data *max34408, int channel,
-+			     int *val)
-+{
-+	int rc;
-+	u32 adc_reg;
-+
-+	switch (channel) {
-+	case 0:
-+		adc_reg = MAX34408_ADC1;
-+		break;
-+	case 1:
-+		adc_reg = MAX34408_ADC2;
-+		break;
-+	case 2:
-+		adc_reg = MAX34408_ADC3;
-+		break;
-+	case 3:
-+		adc_reg = MAX34408_ADC4;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	rc = regmap_read(max34408->regmap, adc_reg, val);
-+	if (rc)
-+		return rc;
-+
-+	return 0;
-+}
-+
-+static int max34408_read_adc_avg(struct max34408_data *max34408, int channel, int *val)
-+{
-+	unsigned long ctrl;
-+	int rc;
-+	u8 tmp;
-+
-+	mutex_lock(&max34408->lock);
-+	rc = regmap_read(max34408->regmap, MAX34408_CONTROL, (u32 *)&ctrl);
-+	if (rc)
-+		goto err_unlock;
-+
-+	/* set averaging (0b100) default values*/
-+	tmp = ctrl;
-+	set_bit(CONTROL_AVG2, &ctrl);
-+	clear_bit(CONTROL_AVG1, &ctrl);
-+	clear_bit(CONTROL_AVG0, &ctrl);
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, ctrl);
-+	if (rc) {
-+		dev_err(max34408->dev,
-+			"Error (%d) writing control register\n", rc);
-+		goto err_unlock;
-+	}
-+
-+	rc = max34408_read_adc(max34408, channel, val);
-+	if (rc)
-+		goto err_unlock;
-+
-+	/* back to old values */
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, tmp);
-+	if (rc)
-+		dev_err(max34408->dev,
-+			"Error (%d) writing control register\n", rc);
-+
-+err_unlock:
-+	mutex_unlock(&max34408->lock);
-+
-+	return rc;
-+}
-+
-+static int max34408_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
-+{
-+	struct max34408_data *max34408 = iio_priv(indio_dev);
-+	int rc;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+	case IIO_CHAN_INFO_AVERAGE_RAW:
-+		rc = max34408_read_adc_avg(max34408, chan->channel,
-+					   val);
-+		if (rc)
-+			return rc;
-+
-+		if (mask == IIO_CHAN_INFO_PROCESSED) {
-+			/*
-+			 * calcluate current for 8bit ADC with Rsense
-+			 * value.
-+			 * 10 mV * 1000 / Rsense uOhm = max current
-+			 * (max current * adc val * 1000) / (2^8 - 1) mA
-+			 */
-+			*val = DIV_ROUND_CLOSEST((10000 / max34408->rsense) *
-+						 *val * 1000, 256);
-+		}
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_RAW:
-+		rc = max34408_read_adc(max34408, chan->channel, val);
-+		if (rc)
-+			return rc;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info max34408_info = {
-+	.read_raw	= max34408_read_raw,
-+};
-+
-+static int max34408_probe(struct i2c_client *client)
-+{
-+	struct device_node *np = client->dev.of_node;
-+	struct max34408_data *max34408;
-+	struct iio_dev *indio_dev;
-+	struct regmap *regmap;
-+	int rc;
-+
-+	regmap = devm_regmap_init_i2c(client, &max34408_regmap_config);
-+	if (IS_ERR(regmap)) {
-+		dev_err(&client->dev, "regmap_init failed\n");
-+		return PTR_ERR(regmap);
-+	}
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*max34408));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	max34408 = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	max34408->regmap = regmap;
-+	max34408->dev = &client->dev;
-+	mutex_init(&max34408->lock);
-+	rc = device_property_read_u32(&client->dev,
-+				      "maxim,rsense-val-micro-ohms",
-+				      &max34408->rsense);
-+	if (rc)
-+		return -EINVAL;
-+
-+	/* disable ALERT and averaging */
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, 0x0);
-+	if (rc)
-+		return rc;
-+
-+	if (of_device_is_compatible(np, "maxim,max34408")) {
-+		indio_dev->channels = max34408_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(max34408_channels);
-+		indio_dev->name = "max34408";
-+	} else if (of_device_is_compatible(np, "maxim,max34409")) {
-+		indio_dev->channels = max34409_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(max34409_channels);
-+		indio_dev->name = "max34409";
-+	}
-+	indio_dev->info = &max34408_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->dev.of_node = np;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct of_device_id max34408_of_match[] = {
-+	{
-+		.compatible = "maxim,max34408",
-+	},
-+	{
-+		.compatible = "maxim,max34409",
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, max34408_of_match);
-+
-+static struct i2c_driver max34408_driver = {
-+	.driver = {
-+		.name   = "max34408",
-+		.of_match_table = max34408_of_match,
-+	},
-+	.probe = max34408_probe,
-+};
-+module_i2c_driver(max34408_driver);
-+
-+MODULE_AUTHOR("Ivan Mikhaylov <fr0st61te@gmail.com>");
-+MODULE_DESCRIPTION("Maxim MAX34408/34409 ADC driver");
-+MODULE_LICENSE("GPL");
+ 	crc = (crc >> 12) & 0x000F;
+ 
+-	return crc_orig != 0x0000 && crc == crc_orig;
++	return crc == crc_orig;
+ }
+ 
+ static int ms5611_read_prom(struct iio_dev *indio_dev)
 -- 
-2.42.0
+2.30.2
 
+
+--=-=-=
+Content-Type: text/plain
+Content-Disposition: inline
+Content-Description: Signature
+
+Best Regards,
+Alexander Zangerl
+IT Engineer
+
+-- 
+P +61 7 3276 7833 | M +61 415 482 341
+E az@breathe-safe.com | W breathe-safe.com.au
+A 62 Mica Street, Carole Park, 4300, QLD
+
+
+--=-=-=--

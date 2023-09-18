@@ -2,125 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C77357A451E
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Sep 2023 10:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722A07A4541
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Sep 2023 10:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjIRIsw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Sep 2023 04:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43420 "EHLO
+        id S240878AbjIRI6B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Sep 2023 04:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240873AbjIRIsu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Sep 2023 04:48:50 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3E39B;
-        Mon, 18 Sep 2023 01:48:44 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 38I8mDKZ128933;
-        Mon, 18 Sep 2023 03:48:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1695026893;
-        bh=Pp6OIAY161J8G1DoDoYZo5L+G9eGynrg2fM+xFg0Tj4=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=Hx+jOvDUVF5rbYDyVSO3+iUE+6iYT1nB3jiwgDfDswknEZfztx75/tNHWd0BpL5UU
-         BM5GG12frQZst+ddFkiTq2UJxtWnDLzAMR29B4ooDGIkWKNQq3mo6cencpt+4giXzW
-         cfWNESiyL55jWx0vL9giIws1eCH75eiMDif3vLdM=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 38I8mDx2001792
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 18 Sep 2023 03:48:13 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 18
- Sep 2023 03:48:13 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 18 Sep 2023 03:48:13 -0500
-Received: from [10.249.139.100] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 38I8m8v8120184;
-        Mon, 18 Sep 2023 03:48:09 -0500
-Message-ID: <6eb4608b-10e1-7fcc-b73f-4445150216e0@ti.com>
-Date:   Mon, 18 Sep 2023 14:18:07 +0530
+        with ESMTP id S240837AbjIRI5p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Sep 2023 04:57:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B754BC5;
+        Mon, 18 Sep 2023 01:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695027459; x=1726563459;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=HeFp7tILd3nxt9A1X2feyEpN3APhXPS4vq/kQkpBxPg=;
+  b=lLA1bQcYf729vRNzqMhNkZCWVNOF/2AAKfesF8/L7IxBZnTkdFEXzm8c
+   Rf4Et2j+t7oCVoJ0EwpYg9KkxfV9rPB+Qk0xMccSi5IaBF/IGEDonBbsC
+   J+XqXQ6q8Agy0yfTpiLm3mQc+zVpXGQTM0KNxmmsUEpBtJzpYHiqebbev
+   mNQlGsIZIMhwZ7qh7AXxq/2KH58wmGqqlBePAWDRPIBb2QBK8ODGxyNIr
+   dz16rcjLyESuRSPNCzdJ5my6YhI6EPUq4JE2nfo4syv9as/grA+mbyNMm
+   oUGpDPYtx/X13JYsPbqk9b8Zhicd67h8gDEYGkuzwpDHKjAIUtV8byngO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="376916427"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
+   d="scan'208";a="376916427"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 01:55:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="811280109"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
+   d="scan'208";a="811280109"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 01:55:42 -0700
+Date:   Mon, 18 Sep 2023 11:55:38 +0300
+From:   Raag Jadav <raag.jadav@intel.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     rafael@kernel.org, len.brown@intel.com, pavel@ucw.cz,
+        Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
+        lars@metafoo.de, rmfrfs@gmail.com, jean-baptiste.maneyrol@tdk.com,
+        lee@kernel.org, laurentiu.palcu@oss.nxp.com,
+        l.stach@pengutronix.de, james.schulman@cirrus.com,
+        david.rhodes@cirrus.com, rf@opensource.cirrus.com,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        patches@opensource.cirrus.com,
+        mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH for-next v2 02/10] PM: Update EXPORT_*_DEV_PM_OPS() to
+ EXPORT_*_RUNTIME_PM_OPS()
+Message-ID: <ZQgQilY20yEUPtt3@black.fi.intel.com>
+References: <20230918080951.3615-1-raag.jadav@intel.com>
+ <20230918080951.3615-3-raag.jadav@intel.com>
+ <a31817a460f8ee66c9d460e97aeea62b2bcfbc51.camel@crapouillou.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] iio: adc: ti_am335x_adc: Make DMAs optional
-Content-Language: en-US
-To:     Wadim Egorov <w.egorov@phytec.de>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <robh@kernel.org>, <heiko@sntech.de>,
-        <mugunthanvnm@ti.com>, <peter.ujfalusi@ti.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <upstream@lists.phytec.de>, <nm@ti.com>
-References: <20230914121300.845493-1-w.egorov@phytec.de>
-From:   Bhavya Kapoor <b-kapoor@ti.com>
-In-Reply-To: <20230914121300.845493-1-w.egorov@phytec.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a31817a460f8ee66c9d460e97aeea62b2bcfbc51.camel@crapouillou.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Sep 18, 2023 at 10:20:29AM +0200, Paul Cercueil wrote:
+> Le lundi 18 septembre 2023 à 13:39 +0530, Raag Jadav a écrit :
+> > Rename EXPORT_*_DEV_PM_OPS() macros to EXPORT_*_RUNTIME_PM_OPS()
+> > and while at it, move them to pm_runtime.h.
+> > This is done in conjunction with the introduction of
+> > EXPORT_*_SIMPLE_PM_OPS() set of macros, to make things less
+> > confusing.
+> > This makes both _RUNTIME_ and _SIMPLE_ variants of export macros more
+> > distinguishable and self explanatory.
+> 
+> Well I don't really agree with this one. The EXPORT_*_DEV_PM_OPS() can
+> be used with any callback you need, not just the typical runtime-PM
+> callbacks. They are generic PM macros.
 
-On 14/09/23 17:43, Wadim Egorov wrote:
-> DMAs are optional. Even if the DMA request is unsuccessfully,
-> the ADC can still work properly.
-> Make tiadc_request_dma() not fail if we do not provide dmas &
-> dma-names properties.
->
-> This actually fixes the wrong error handling of the tiadc_request_dma()
-> result where the probing only failed if -EPROPE_DEFER was returned.
->
-> Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
->
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> ---
->  drivers/iio/adc/ti_am335x_adc.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> index 8db7a01cb5fb..e14aa9254ab1 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -543,8 +543,11 @@ static int tiadc_request_dma(struct platform_device *pdev,
->  	if (IS_ERR(dma->chan)) {
->  		int ret = PTR_ERR(dma->chan);
->
-> +		if (ret != -ENODEV)
+I agree on the usage part. But with the introduction of export macros for
+_SIMPLE_ variants, current naming scheme would make things unnecessarily
+confusing to the users in my opinion.
 
-Hi Wadim, Thanks for adding this fix but now there is no deferred probe
+Perhaps we can have it simplified some other way?
 
-mechanism available here for the driver. We need to include that as well.
-
-Regards
-
-~B-Kapoor
-
-> +			return dev_err_probe(&pdev->dev, ret,
-> +					     "RX DMA channel request failed\n");
->  		dma->chan = NULL;
-> -		return ret;
-> +		return 0;
->  	}
->
->  	/* RX buffer */
-> @@ -670,7 +673,7 @@ static int tiadc_probe(struct platform_device *pdev)
->  	platform_set_drvdata(pdev, indio_dev);
->
->  	err = tiadc_request_dma(pdev, adc_dev);
-> -	if (err && err == -EPROBE_DEFER)
-> +	if (err)
->  		goto err_dma;
->
->  	return 0;
-> --
-> 2.25.1
->
->
->
+Raag

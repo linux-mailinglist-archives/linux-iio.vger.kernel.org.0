@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE35B7A69E2
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 19:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC677A69EA
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 19:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjISRuA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Sep 2023 13:50:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60504 "EHLO
+        id S232574AbjISRuG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Sep 2023 13:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232526AbjISRt7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 13:49:59 -0400
+        with ESMTP id S232594AbjISRuE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 13:50:04 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC3A8F
-        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:49:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19170BD
+        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:49:57 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qier6-0006KU-TV; Tue, 19 Sep 2023 19:49:48 +0200
+        id 1qier7-0006Kb-7N; Tue, 19 Sep 2023 19:49:49 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qier6-007VVt-H0; Tue, 19 Sep 2023 19:49:48 +0200
+        id 1qier6-007VVx-Nl; Tue, 19 Sep 2023 19:49:48 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qier6-0034Wx-7e; Tue, 19 Sep 2023 19:49:48 +0200
+        id 1qier6-0034X1-E4; Tue, 19 Sep 2023 19:49:48 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+Cc:     Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         kernel@pengutronix.de
-Subject: [PATCH 07/49] iio: adc: dln2: Convert to platform remove callback returning void
-Date:   Tue, 19 Sep 2023 19:48:49 +0200
-Message-Id: <20230919174931.1417681-8-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 08/49] iio: adc: ep93xx: Convert to platform remove callback returning void
+Date:   Tue, 19 Sep 2023 19:48:50 +0200
+Message-Id: <20230919174931.1417681-9-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230919174931.1417681-1-u.kleine-koenig@pengutronix.de>
 References: <20230919174931.1417681-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1670; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=oWDpssMuP6XBt56XuGAlj6vtaAGStLMERv7UhQ1Tnj8=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlTOe9/37Ar0ZLcxz0/kCNsS/tws/JPfa95Avo0vjjkrc PxyDzPtZDRmYWDkYpAVU2Sxb1yTaVUlF9m59t9lmEGsTCBTGLg4BWAiv/ey/1O7/NpFv9RoY5Z2 DovYf6lXmUtydvKZW7fsby3ZvXWrP4uwiTKLaE7bsx4nuR3b5Vqvxpr4csVJ59rJ8M8+fqn27By 9OZw13RFtvy6mvF3de3f6I+HD1zs6ihgmhtr6d1UrHnHhLMlgm5JlvD3p3defvGYqP3/uzs2QtQ /qUWecUfOt2n+5aNaBDa+vb1w13+70hqdC22RYLP95cDYv9uHKXrZeuPIbwzLZAImLAaclUxq05 X9kTIp7ZTtjWmLcxiKtw75d4dfjP+ZVehVLGi7W6Tjhwl62bh3Taem4VWamUxa6GnCqc134/Nw3 4TSz0YvJknOW+p3+F/Xg7/ZTs9juML2vmGBck+L9+6kmAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1807; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=XKIy+ICWzna8L+cSganw9EvqBPBW1EZCKmut/BLDRFE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCd746snvDh7PPEjPC4mMaCZyzFl/1U11JzUvL mybOM1Z1H+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQne+AAKCRCPgPtYfRL+ Tr1fB/9TxY066IOKCo42q0x0+vMFrjyIqWRDkOFuDesA4a4DHEWbI/my16it4pS5UyuaFqCuyAW QlBKE/zgtr9nm+MWmHD7z2p+kPlaK9RDlsYrYOYDiFEyW3KVBHYnt4OcooDT56ub5pJ+c1+VZkr d9sxnT6dOXxd0rpY9QF7WncGvHbYhaXauGLIDV395ZrcVd6eTe0qoCKftkPWXX6G6Z++lCnIWZ5 qnSD6K2KmwXgHHmeq4Ct4xX1aTZyexZ2npZBlSzAtFgI7J+7Vfu8OUqGdTJZ1WN1sdPTo+OIwoa NO/4W58jP2DLRTFH3Uc0aO2oOfPlaf02nTeBm/DawhU2Yvpo
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,35 +73,39 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/iio/adc/dln2-adc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ep93xx_adc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 97d162a3cba4..06cfbbabaf8d 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -691,19 +691,18 @@ static int dln2_adc_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/ep93xx_adc.c b/drivers/iio/adc/ep93xx_adc.c
+index a35e6cead67d..971942ce4c66 100644
+--- a/drivers/iio/adc/ep93xx_adc.c
++++ b/drivers/iio/adc/ep93xx_adc.c
+@@ -217,15 +217,13 @@ static int ep93xx_adc_probe(struct platform_device *pdev)
  	return ret;
  }
  
--static int dln2_adc_remove(struct platform_device *pdev)
-+static void dln2_adc_remove(struct platform_device *pdev)
+-static int ep93xx_adc_remove(struct platform_device *pdev)
++static void ep93xx_adc_remove(struct platform_device *pdev)
  {
- 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+ 	struct iio_dev *iiodev = platform_get_drvdata(pdev);
+ 	struct ep93xx_adc_priv *priv = iio_priv(iiodev);
  
- 	iio_device_unregister(indio_dev);
- 	dln2_unregister_event_cb(pdev, DLN2_ADC_CONDITION_MET_EV);
+ 	iio_device_unregister(iiodev);
+ 	clk_disable_unprepare(priv->clk);
+-
 -	return 0;
  }
  
- static struct platform_driver dln2_adc_driver = {
- 	.driver.name	= DLN2_ADC_MOD_NAME,
- 	.probe		= dln2_adc_probe,
--	.remove		= dln2_adc_remove,
-+	.remove_new	= dln2_adc_remove,
+ static const struct of_device_id ep93xx_adc_of_ids[] = {
+@@ -240,7 +238,7 @@ static struct platform_driver ep93xx_adc_driver = {
+ 		.of_match_table = ep93xx_adc_of_ids,
+ 	},
+ 	.probe = ep93xx_adc_probe,
+-	.remove = ep93xx_adc_remove,
++	.remove_new = ep93xx_adc_remove,
  };
+ module_platform_driver(ep93xx_adc_driver);
  
- module_platform_driver(dln2_adc_driver);
 -- 
 2.40.1
 

@@ -2,141 +2,344 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB0F7A5F5E
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 12:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E62877A612B
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 13:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbjISKVm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Sep 2023 06:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59064 "EHLO
+        id S230504AbjISL2m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Sep 2023 07:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231641AbjISKVk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 06:21:40 -0400
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48CEEA
-        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 03:21:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-        q=dns/txt; i=@phytec.de; t=1695118888; x=1697710888;
-        h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gmhGDThIUommb+ftKTpel+Q35NvofcFtKWO4tgXHq+Q=;
-        b=hQ/eGrWcWCpD931stGVaddLW4CW52ZsZdL8XfEIGNnbxqm8Lv3jYR8ztlVnqPW9T
-        ytJ8PvaFcowcn3PADmT4+/ti1YjdsyVzuwzPJwiFRflQYJuOzSODqD1hGCRUOwsi
-        WOwsNPpH7ol3hl0duJuCf+vCVK7cnIH4S1OK06r2QIM=;
-X-AuditID: ac14000a-6d65670000001e37-37-650976282e18
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client did not present a certificate)
-        by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 09.B9.07735.82679056; Tue, 19 Sep 2023 12:21:28 +0200 (CEST)
-Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 19 Sep
- 2023 12:21:28 +0200
-Received: from Berlix.phytec.de ([fe80::61cc:ebf0:7375:8768]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2375.018;
- Tue, 19 Sep 2023 12:21:28 +0200
-From:   Wadim Egorov <W.Egorov@phytec.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "lars@metafoo.de" <lars@metafoo.de>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "heiko@sntech.de" <heiko@sntech.de>,
-        "mugunthanvnm@ti.com" <mugunthanvnm@ti.com>,
-        "peter.ujfalusi@ti.com" <peter.ujfalusi@ti.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "upstream@lists.phytec.de" <upstream@lists.phytec.de>,
-        "nm@ti.com" <nm@ti.com>
-Subject: Re: [PATCH] iio: adc: ti_am335x_adc: Make DMAs optional
-Thread-Topic: [PATCH] iio: adc: ti_am335x_adc: Make DMAs optional
-Thread-Index: AQHZ5wTVP3tOGrcOcEWxWAi45YA9XLAeuLAAgAMd14A=
-Date:   Tue, 19 Sep 2023 10:21:28 +0000
-Message-ID: <f2b18c8b-97f9-49c5-a4a1-a3d5c1ae13eb@phytec.de>
-References: <20230914121300.845493-1-w.egorov@phytec.de>
- <20230917114552.3f5cd081@jic23-huawei>
-In-Reply-To: <20230917114552.3f5cd081@jic23-huawei>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.25.0.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C60DC7DB7F506E448CDA2B66EBA4C60F@phytec.de>
-Content-Transfer-Encoding: base64
+        with ESMTP id S230351AbjISL2k (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 07:28:40 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343C6F0;
+        Tue, 19 Sep 2023 04:28:34 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bfb12b24e5so88564201fa.0;
+        Tue, 19 Sep 2023 04:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695122912; x=1695727712; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SJtfDjSHeM3hcCE9c1o3c3xw6rFELBnXCLJY5rSxmWs=;
+        b=YgdcTGjUzCp6s/zU6F0ed2gSEUVfUoUo4Dl+mZSzh/lXBHhze5dFLTqLCb/3uoiUu5
+         K08titw8EHRwmApUxXSj5AoGKlU9lGoOXOssK1f7QvK0JzJcjPIyYbqH0sDREEQbaGFD
+         N+50x4+kBx1AqUblPNhj91yq0grluJGS9lHeHaaESkLboEme0yZtLcesRk9/NwoL6EGC
+         idBCgGrUPv3c85xK23y8PtnymDplODF72BO39Hg+LM/y2LJuds3NEwdhnsx4/CGgm2Ch
+         vcm5RU3aUJ7hOHIVCUnnyMK6ftuiCiT/rq4LC62ECztoHyqqzCp/2VmhVAfHY/RtdnJ1
+         2Dtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695122912; x=1695727712;
+        h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SJtfDjSHeM3hcCE9c1o3c3xw6rFELBnXCLJY5rSxmWs=;
+        b=Y/b5h4HvD6+tQ4YAZ/A56nm+ygevSitVgmgBOHYEUikDKJkTnp+5oy7GUoo/RHo4au
+         RMhnhkJXZRZAM72vk6SZTeFRjIm0P850bRG9eqVd/jO/W19T54+iDNrPaY/poeBUq++B
+         OXDfJp6cDeRJh+S035tyoc3o/eKdzZOSEYtrvco9U617YF5XcHGZyCw/sBaDIeC/EgYW
+         PlqALDi+d5fTqIIqcColrqilnWwG1wWCHmRXtpNCfGQ73C7PMm4zEMf/uswbiUrF4E2Q
+         2vTPUC8CUS8RQWRNkWhs55h43qMK8IwGlYEPg/IBoDhW9ccnBptgnIhifIZPSt7cbBhz
+         gaPA==
+X-Gm-Message-State: AOJu0YyKigx63gIrj4OGH3k0AWOjyq4DKS/63BInvkdlEoIraoxm2eKa
+        /zbGKsu4iHq83o2uc0Kn6yU=
+X-Google-Smtp-Source: AGHT+IGZJ2X24wIhJ/gkDcgzvoKlSt5mlJadrEE5wlsGUVXr4z6cU8uAWZ80S9Q6n1QogDI7bLYF6Q==
+X-Received: by 2002:a05:6512:74d:b0:502:9fce:b6db with SMTP id c13-20020a056512074d00b005029fceb6dbmr10532201lfs.1.1695122911676;
+        Tue, 19 Sep 2023 04:28:31 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
+        by smtp.gmail.com with ESMTPSA id y21-20020ac255b5000000b004fe2e94f8fdsm428752lfg.236.2023.09.19.04.28.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Sep 2023 04:28:31 -0700 (PDT)
+Message-ID: <c987f401-81c4-00e5-51a7-88a6a38a2ca2@gmail.com>
+Date:   Tue, 19 Sep 2023 14:28:29 +0300
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCIsWRmVeSWpSXmKPExsWyRpKBR1ejjDPVYO0CBYv/j16zWjxoWsVk
-        sWTyfFaLeUfesVhc3jWHzeLqg3KLNz/OMlnM+viD1eL/nh3sFt3v1B24PDat6mTz6O9uYfVY
-        8uYQq8f2a/OYPY7f2M7k8XmTXABbFJdNSmpOZllqkb5dAlfG2fc/2Ap+yVdc2DCHqYFxgnwX
-        IyeHhICJxMlni5lBbCGBJUwSh7pCIOwHjBK7l2d3MXIB2RsZJV7sfcsGkmATUJeY+PcEK4gt
-        AmRPm3GFCaSIWWAxs8TLpW9ZQBLCAg4S1xZ9BbI5gIocJVq7FCHqrSQa76xjBQmzCKhKHF9u
-        AGLyCthIrHzrC7E2UaLryiJGEJtTwFji3crnYAMZBWQlNmw4D3Yms4C4xKZn31khzheQWLIH
-        Ii4hICrx8vE/qLi8xIlb05hAxjMLaEqs36UP0WohceXbISYIW1FiSvdDdhCbV0BQ4uTMJywT
-        GMVnIdkwC6F7FpLuWUi6ZyHpXsDIuopRKDczOTu1KDNbryCjsiQ1WS8ldRMjKKZFGLh2MPbN
-        8TjEyMTBeIhRgoNZSYR3piFbqhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHe+z1MiUIC6Yklqdmp
-        qQWpRTBZJg5OqQbGVdt/9XIo9H1euDu8QKS7QCegPHqGTziPot7ixqRFC9+5NzHcZL6g1vz7
-        RknWhEmTJn1fMUEx8c+0Gcl68nwNGi+K2zkW1iSe4Fx6Z5fROm2TC70lk8Q2MNZUn2Z+F7P2
-        cZ78gnn7X0c8695Vpz9D953K/yfH9qTa7FtZl2DvOmvfe50A7RBWJZbijERDLeai4kQAHWsg
-        pNcCAAA=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1694760170.git.mazziesaccount@gmail.com>
+ <f378a401cec4fb0b9287b52ab159f00dd77569a6.1694760170.git.mazziesaccount@gmail.com>
+ <20230917113518.7c4bb1a0@jic23-huawei>
+ <a5c19874-32ba-60bf-6e72-9139a2873c7e@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: Support ROHM BU1390
+In-Reply-To: <a5c19874-32ba-60bf-6e72-9139a2873c7e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sDQoNCkFtIDE3LjA5LjIzIHVtIDEyOjQ1IHNjaHJpZWIgSm9uYXRoYW4gQ2Ft
-ZXJvbjoNCj4gT24gVGh1LCAxNCBTZXAgMjAyMyAxNDoxMzowMCArMDIwMA0KPiBXYWRpbSBFZ29y
-b3YgPHcuZWdvcm92QHBoeXRlYy5kZT4gd3JvdGU6DQo+DQo+PiBETUFzIGFyZSBvcHRpb25hbC4g
-RXZlbiBpZiB0aGUgRE1BIHJlcXVlc3QgaXMgdW5zdWNjZXNzZnVsbHksDQo+PiB0aGUgQURDIGNh
-biBzdGlsbCB3b3JrIHByb3Blcmx5Lg0KPj4gTWFrZSB0aWFkY19yZXF1ZXN0X2RtYSgpIG5vdCBm
-YWlsIGlmIHdlIGRvIG5vdCBwcm92aWRlIGRtYXMgJg0KPj4gZG1hLW5hbWVzIHByb3BlcnRpZXMu
-DQo+Pg0KPj4gVGhpcyBhY3R1YWxseSBmaXhlcyB0aGUgd3JvbmcgZXJyb3IgaGFuZGxpbmcgb2Yg
-dGhlIHRpYWRjX3JlcXVlc3RfZG1hKCkNCj4+IHJlc3VsdCB3aGVyZSB0aGUgcHJvYmluZyBvbmx5
-IGZhaWxlZCBpZiAtRVBST1BFX0RFRkVSIHdhcyByZXR1cm5lZC4NCj4+DQo+PiBGaXhlczogZjQz
-OGI5ZGE3NWViICgiZHJpdmVyczogaWlvOiB0aV9hbTMzNXhfYWRjOiBhZGQgZG1hIHN1cHBvcnQi
-KQ0KPj4NCj4gTm8gbGluZSBicmVhayBoZXJlLiAgRml4ZXMgdGFnIGlzIHBhcnQgb2YgdGhlIG1h
-aW4gdGFnIGJsb2NrLg0KPj4gU2lnbmVkLW9mZi1ieTogV2FkaW0gRWdvcm92IDx3LmVnb3JvdkBw
-aHl0ZWMuZGU+DQo+DQo+PiAtLS0NCj4+ICAgZHJpdmVycy9paW8vYWRjL3RpX2FtMzM1eF9hZGMu
-YyB8IDcgKysrKystLQ0KPj4gICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9hZGMvdGlfYW0zMzV4
-X2FkYy5jIGIvZHJpdmVycy9paW8vYWRjL3RpX2FtMzM1eF9hZGMuYw0KPj4gaW5kZXggOGRiN2Ew
-MWNiNWZiLi5lMTRhYTkyNTRhYjEgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvdGlf
-YW0zMzV4X2FkYy5jDQo+PiArKysgYi9kcml2ZXJzL2lpby9hZGMvdGlfYW0zMzV4X2FkYy5jDQo+
-PiBAQCAtNTQzLDggKzU0MywxMSBAQCBzdGF0aWMgaW50IHRpYWRjX3JlcXVlc3RfZG1hKHN0cnVj
-dCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsDQo+PiAgIAlpZiAoSVNfRVJSKGRtYS0+Y2hhbikpIHsN
-Cj4+ICAgCQlpbnQgcmV0ID0gUFRSX0VSUihkbWEtPmNoYW4pOw0KPj4gICANCj4+ICsJCWlmIChy
-ZXQgIT0gLUVOT0RFVikNCj4+ICsJCQlyZXR1cm4gZGV2X2Vycl9wcm9iZSgmcGRldi0+ZGV2LCBy
-ZXQsDQo+PiArCQkJCQkgICAgICJSWCBETUEgY2hhbm5lbCByZXF1ZXN0IGZhaWxlZFxuIik7DQo+
-PiAgIAkJZG1hLT5jaGFuID0gTlVMTDsNCj4+IC0JCXJldHVybiByZXQ7DQo+PiArCQlyZXR1cm4g
-MDsNCj4+ICAgCX0NCj4+ICAgDQo+PiAgIAkvKiBSWCBidWZmZXIgKi8NCj4+IEBAIC02NzAsNyAr
-NjczLDcgQEAgc3RhdGljIGludCB0aWFkY19wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpw
-ZGV2KQ0KPj4gICAJcGxhdGZvcm1fc2V0X2RydmRhdGEocGRldiwgaW5kaW9fZGV2KTsNCj4+ICAg
-DQo+PiAgIAllcnIgPSB0aWFkY19yZXF1ZXN0X2RtYShwZGV2LCBhZGNfZGV2KTsNCj4+IC0JaWYg
-KGVyciAmJiBlcnIgPT0gLUVQUk9CRV9ERUZFUikNCj4+ICsJaWYgKGVycikNCj4gU28gdGhpcyBs
-b29rcyBsaWtlIGEgbW9yZSBzdWJ0bGUgY2hhbmdlIHRoYW4geW91IGFyZSBkZXNjcmliaW5nLg0K
-PiBJbiB0aGUgb3JpZ2luYWwgY29kZSwgd2UgYmFja2VkIG9mZiBvbmx5IGlmIHRoZSByZXR1cm4g
-d2FzIGEgUFJPQkVfREVGRVIsIG90aGVyd2lzZQ0KPiB3ZSBjYXJyaWVkIG9uLg0KPg0KPiBZb3Vy
-IGNoYW5nZSBzZWVtcyB0byBtYWtlIHRoYXQgaGFwcGVuIGZvciBhbnkgbm9uIC1FTk9ERVYgZXJy
-b3IsIGluY2x1ZGluZyBQUk9CRV9ERUZFUi4NCj4gVGhhdCdzIGZpbmUsIGJ1dCBpdCdzIG5vdCB3
-aGF0IHRoZSBkZXNjcmlwdGlvbiBpbXBsaWVzLg0KPg0KPiBXaGlsc3QgdGlhZGNfcmVxdWVzdF9k
-bWEgd2lsbCBmYWlsIHRvZGF5IGlmIHRoZSBkbWFzIGV0YyBpcyBub3QgcHJvdmlkZWQsIHRoYXQg
-c2VlbXMNCj4gbGlrZSBjb3JyZWN0IGJlaGF2aW9yIHRvIG1lLiAgQSBmdW5jdGlvbiByZXF1ZXN0
-aW5nIGRtYSBmYWlscyBpZiBpdCBpc24ndCBhdmFpbGFibGUuDQo+IFRoZSBoYW5kbGluZyBvZiB3
-aGV0aGVyIHRvIGNhcnJ5IG9uIHRoZSBqb2IgZm9yIHRoZSBjYWxsZXIuDQoNClRoYXQgbWFrZXMg
-c2Vuc2UsIHllcy4gQnV0IHN0bTMyLWFkYyBpcyBkb2luZyB0aGUgc2FtZSBpbiBpdHMgZG1hIA0K
-cmVxdWVzdCBmdW5jdGlvbi4NClNvIEkgYXNzdW1lZCB3ZSBjYW4gZG8gaXQgbGlrZSB0aGF0Lg0K
-DQo+DQo+IFNvIEkgdGhpbmsgaXQgc2hvdWxkIGp1c3QgYmUNCj4gCWlmIChlcnIgJiYgZXJyICE9
-IC1FSU5WQUwpDQo+IAkJZ290byBlcnJfZG1hOw0KDQpXZSB3aWxsIGVuZCB1cCBmYWlsaW5nIGlm
-IG5vIGRtYXMgYXJlIGNvbmZpZ3VyZWQgYmVjYXVzZSB0aGUgcmVxdWVzdCANCnJldHVybnMgLUVO
-T0RFVi4NClNvIEkgdGhpbmsgaXQgbmVlZHMgdG8gYmUgYSBjaGVjayBmb3Igbm9uIC1FTk9ERVYu
-DQoNCj4NCj4gYW5kIG5vIGNoYW5nZSBpbiB0aWFkY19yZXF1ZXN0X2RtYSgpDQo+DQo+IEhvd2V2
-ZXIsIHRoZSBjYXNlIHlvdSBkZXNjcmliZSBzaG91bGQgaGF2ZSB3b3JrZWQgZmluZCB3aXRoIGV4
-aXN0aW5nIGNvZGUNCj4gYXMgaXQgd2Fzbid0IC1FUFJPQkVfREVGRVIsIHNvIEkgZG9uJ3QgdW5k
-ZXJzdGFuZCB3aHkgeW91IHdlcmUgbG9va2luZyBhdCB0aGlzDQo+IGNvZGUgYmxvY2sgaW4gdGhl
-IGZpcnN0IHBsYWNlPw0KDQpQcm92aWRpbmcgd3JvbmcgZG1hcyBpbiB0aGUgZGV2aWNlIHRyZWUg
-c2hvdWxkJ3ZlIG1hZGUgdGhlIGRyaXZlciBmYWlsIA0KdG8gcHJvYmUuDQoNClJlZ2FyZHMsDQpX
-YWRpbQ0KDQo+DQo+IEpvbmF0aGFuDQo+DQo+DQo+PiAgIAkJZ290byBlcnJfZG1hOw0KPj4gICAN
-Cj4+ICAgCXJldHVybiAwOw0KDQoNCg==
+On 9/18/23 15:56, Matti Vaittinen wrote:
+> On 9/17/23 13:35, Jonathan Cameron wrote:
+>> On Fri, 15 Sep 2023 09:56:19 +0300
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>>> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
+>>> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
+>>> averaging and internal FIFO. The sensor does also provide temperature
+>>> measurements.
+>>>
+>>> Sensor does also contain IIR filter implemented in HW. The data-sheet
+>>> says the IIR filter can be configured to be "weak", "middle" or
+>>> "strong". Some RMS noise figures are provided in data sheet but no
+>>> accurate maths for the filter configurations is provided. Hence, the IIR
+>>> filter configuration is not supported by this driver and the filter is
+>>> configured to the "middle" setting (at least not for now).
+>>>
+>>> The FIFO measurement mode is only measuring the pressure and not the
+>>> temperature. The driver measures temperature when FIFO is flushed and
+>>> simply uses the same measured temperature value to all reported
+>>> temperatures. This should not be a problem when temperature is not
+>>> changing very rapidly (several degrees C / second) but allows users to
+>>> get the temperature measurements from sensor without any additional 
+>>> logic.
+>>>
+>>> This driver allows the sensor to be used in two muitually exclusive 
+>>> ways,
+>>>
+>>> 1. With trigger (data-ready IRQ).
+>>> In this case the FIFO is not used as we get data ready for each 
+>>> collected
+>>> sample. Instead, for each data-ready IRQ we read the sample from sensor
+>>> and push it to the IIO buffer.
+>>>
+>>> 2. With hardware FIFO and watermark IRQ.
+>>> In this case the data-ready is not used but we enable watermark IRQ. At
+>>> each watermark IRQ we go and read all samples in FIFO and push them 
+>>> to the
+>>> IIO buffer.
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+...
+
+>>> +
+>>> +static const unsigned long bm1390_scan_masks[] = {
+>>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+>> Why?  Doesn't look hard to support just one or the other?
+>> Normally we only do this sort of limitation when there is a heavily
+>> optimized read routine for a set of channels and it is better
+>> to grab them all and throw away the ones we don't care about.
+>> That doesn't seem to be true here. So if the fifo grabbed both
+>> temp and pressure it would makes sense here, but doesn't seem
+>> like it does.
+> 
+> I have a feeling I have misunderstood how this mask works. I have 
+> assumed all the channels with corresponding mask bit _can_ be enabled 
+> simultaneously, but I have not understood they _must_ all be enabled. I 
+> think I must go back studying this, but if all channels really _must_ be 
+> enabled, then you are correct. It actually makes a lot of sense to 
+> support the pressure values alone, as, according to the data-sheet, the 
+> HW is doing a "MEMS temperature compensation" to the pressure values. 
+> So, my assuimption is the temperature data may not be required to be 
+> captured.
+> 
+> This also means I should revise the scan masks for the BU27008, BU27010 
+> and BU27034 light sensors as I don't think all the users want all the 
+> channels enabled. I wonder how I have not noticed any problems when I 
+> tested those things - did I really always enable all the channels...? @_@
+> 
+> Anyways, Thanks.
+
+Hi Jonathan,
+
+There's something in IIO scan_masks / buffer demuxing that I don't quite 
+understand. I noticed following things:
+
+1) Strict available scan mask check seems to be in use only for 
+INDIO_BUFFER_HARDWARE stuff.
+
+https://elixir.bootlin.com/linux/v6.6-rc2/source/drivers/iio/industrialio-buffer.c#L881
+
+So, the:
+
+ >>> +static const unsigned long bm1390_scan_masks[] = {
+ >>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+
+is not exclusive for BM1390 as long as it is not setting the 
+INDIO_BUFFER_HARDWARE.
+
+My test seems to agree with the code:
+
+// Only enable the temperature:
+root@arm:/sys/bus/iio/devices/iio:device0# echo 1 > 
+scan_elements/in_temp_en
+
+// Run the geneeric buffer without -a:
+root@arm:/sys/bus/iio/devices/iio:device0# /iio_generic_buffer -c 20 -N 
+0 -t bm1390data-rdy-dev0
+iio device number being used is 0
+iio trigger number being used is 0
+/sys/bus/iio/devices/iio:device0 bm1390data-rdy-dev0
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+22968.750000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23000.000000
+23031.250000
+23000.000000
+23000.000000
+root@arm:/sys/bus/iio/devices/iio:device0#
+
+In above case the temperature values and only the temperature values 
+were shown. I must admit I did not spend enough time with the 
+iio_generic_buffer.c or IIO demuxing code to really understand all the 
+details (I got headache very quickly ;) ). I still believe the 
+iio_generic_buffer expects to see only the enabled channel data in the 
+buffer - so, it seems to me the kernel is also only adding the enabled 
+channel data to the buffer. Also, judging the values, the demuxing is 
+correctly extracting the temperature data from data the driver pushes here:
+
+iio_push_to_buffers_with_timestamp(idev, &data->buf, data->timestamp);
+
+The bm1390 driver as sent in v2 does not do demuxing but always pushes 
+whole chunk of data and trusts IIO to do demuxing.
+
+2) I noticed the 'available_scan_masks' was marked as an optional field. 
+So, I think that if there is no restrictions to which of the channels 
+can be enabled, then we can omit setting it. This is what I tried.
+
+It appears that when we do not populate the 'available_scan_masks' with the:
+ >>> +static const unsigned long bm1390_scan_masks[] = {
+ >>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+
+things change. When I tested enabling only temperature and ran the 
+iio_generic_buffer -c 20 -N 0 -t bm1390data-rdy-dev0 - the reported 
+values seemed completely random.
+
+When I initialized the pressure data in driver:
+data->buf.pressure = 1;
+before doing the:
+iio_push_to_buffers_with_timestamp(idev, &data->buf, data->timestamp);
+
+I saw following:
+
+root@arm:/# cd /sys/bus/iio/devices/iio\:device0
+root@arm:/sys/bus/iio/devices/iio:device0# echo 1 > 
+scan_elements/in_temp_en
+root@arm:/sys/bus/iio/devices/iio:device0# /iio_generic_buffer -c 20 -N 
+0 -t bm1390data-rdy-dev0
+iio device number being used is 0
+iio trigger number being used is 0
+/sys/bus/iio/devices/iio:device0 bm1390data-rdy-dev0
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+8000.000000
+root@arm:/sys/bus/iio/devices/iio:device0# cat in_temp_scale
+31.250000
+
+If we calculate 8000/31.250000 we will get value 256. This looks like 
+value '1' in BE16 format.
+
+Based on this experimenting (and headache obtained from reading the 
+demuxing code) - the IIO framework does not do channel demuxing if the 
+'available_scan_masks' is not given? To me this was somewhat unexpected.
+
+Finally, when the watermark IRQ is used, we can't omit reading the 
+pressure data because clearing the WMI is done based on the pressure 
+data in FIFO.
+
+So, I would propose we do:
+
+static const unsigned long bm1390_scan_masks[] = {
+	BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP),
+	BIT(BM1390_CHAN_PRESSURE), 0
+
+which better reflects what the hardware is capable of - and, unless I am 
+missing something, also allows us to offload the buffer demuxing to the IIO.
+
+Still, as mentioned in 1), the
+
+ >>> +static const unsigned long bm1390_scan_masks[] = {
+ >>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+
+does not seem to prevent enabling only the temperature channel - so in 
+the driver buffer handler we still must unconditionally read the 
+pressure data regardles the active_scan_mask.
+
+>>
+>>> +     * called as a result of a read operation from userspace and hence
+>>> +     * before the watermark interrupt was triggered, take a timestamp
+>>> +     * now. We can fall anywhere in between two samples so the error 
+>>> in this
+>>> +     * case is at most one sample period.
+>>> +     * We need to have the IRQ disabled or we risk of messing-up
+>>> +     * the timestamps. If we are ran from IRQ, then the
+>>> +     * IRQF_ONESHOT has us covered - but if we are ran by the
+>>> +     * user-space read we need to disable the IRQ to be on a safe
+>>> +     * side. We do this usng synchronous disable so that if the
+>>> +     * IRQ thread is being ran on other CPU we wait for it to be
+>>> +     * finished.
+>>
+>> That irq disable is potentially expensive.
+>> Why not just pass the current timestamp into the __bm1390_fifo_flush >
+>> The locks should prevent other races I think..
+> 
+> Gah. I hate you Jonathan ;) (Not really!)
+> 
+> Actually, thank you (as always) for pointing this out. I don't instantly 
+> see why it wouldn't work, but going throught the IRQ races is never 
+> trivial (for me). It's work I've learned not to do at afternoon as my 
+> brains work better at the morning :) So, I will still go through this as 
+> a first thing tomorrow when I start my work day...
+
+After staring this for a while, I see no reason why we couldn't do as 
+you suggested. Thanks! It really improves this :)
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

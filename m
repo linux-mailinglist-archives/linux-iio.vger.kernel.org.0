@@ -2,72 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 120C57A6A41
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 19:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7E07A6A53
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Sep 2023 19:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232662AbjISRyY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Sep 2023 13:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42338 "EHLO
+        id S232827AbjISR67 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Sep 2023 13:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232679AbjISRyX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 13:54:23 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3911E92
-        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:54:17 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c00df105f8so38299911fa.2
-        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:54:17 -0700 (PDT)
+        with ESMTP id S232830AbjISR6z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Sep 2023 13:58:55 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C2795
+        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:58:48 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-530fa34ab80so177535a12.0
+        for <linux-iio@vger.kernel.org>; Tue, 19 Sep 2023 10:58:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695146055; x=1695750855; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2GDtHiVCjwEBvzvKdSGm+xBFC4ysVV478MpVEvPHcFI=;
-        b=TzUE58Yz+JL8dei0hZ2O9qtf+KICk4ma5aN4S9iKCT/MW4iSFTtXHETaU1h2fhcS7d
-         pLGU05f7wz3aoHYOnNBcZ3fVAtsa8K9LPzIfYwnJMWfL9LzeAupvTCk02QvLD5k8oEaN
-         MIp4lwoWcwtIDKgQd12WBq+Q7mAY9pO6Q+aQVvK4HsCspz57nACUZyJHA/+IQRj5n/tb
-         ZAsncVZekkRKp2XtwzxOR7XV4mHMF7xW0J1x7tOtSQrHI0KMMghiHl7T3DIE3tA9gA81
-         L5xVt8kIfTlPi+stskw6LOJ0WYGzihK1j2o559dy/zU8lcgw31mjXgyMsXSo52OX7cZ1
-         4tVg==
+        d=gmail.com; s=20230601; t=1695146327; x=1695751127; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u1NRUeCHZVcU7vFnB9mFf3Vt372PLclrw8mQfXYBE3E=;
+        b=Wc6oQ3mYZMPocdqE1ZMtXSZ8ugWGsxKvY1wTHRSHANjsdbpi3H+GMdIxFXWgYp3wqc
+         jACn3gIVxan9cTJ1u0EeQ+R7pDy+60TTXsV3hyDJ5KJyBCnwBdzd0EfehG/kvlzaSb8w
+         UVFL0oY1E6LrxZCQ/NN35muJUHyp1wyLNDwATnYPIVgVopBnuZInDKmJZ9VC2Zr8XorH
+         17T/TWnxuOO+rxt7KnxtyS9XKd9Ba/nB7eBUbQnTcmgtSogpRL8w+qad4TxEMxXWVXWn
+         wUP99Otcr3hpdftz/YAZ+0dDxnBRkU19R14vJsKhz2T1cvCexlaJ7DkP642EaP2qbszm
+         Qj3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695146055; x=1695750855;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2GDtHiVCjwEBvzvKdSGm+xBFC4ysVV478MpVEvPHcFI=;
-        b=cm7pFI8TNOj1w/v+VMb2Nxlm7ob/FBcr9TZeYqtq69o5ZtaVCibx4SEGt0DQWS6p1a
-         1Fz8uFeWoi7VbkgVnNo/bsBtrt4CwLYWHTG4GT4F8LPfVyrJTEv7R5ucDUbmvu+DNXvG
-         zpWDCWHkYcNE5rdNwhK7kgJG4oRQ9jlomWQBYfgRBIV7QwZArtX2VZZDIdtU56JfWK2T
-         DBUPE47XV2r1OXsSo7lGs8GLkN5qI+Zva23vgOOCsbKRglzzM9AsLyu0wIG6xXgHF1wu
-         cGFZeY+gLYTWHRav3T1iaTiJd5TZXK8wQcPNS3zso+SLC68bcrCBW+8dcDzhEJ+Ir/b2
-         APJQ==
-X-Gm-Message-State: AOJu0YwTTAOcz85FpSAr3L2ENGwZl1J8b03i/1bEcLO9/e5itHx9t5N9
-        t5sMckh/zAwp1a/nyYk1IE4=
-X-Google-Smtp-Source: AGHT+IG9oqUUiKb8aWLMroZ7KGcpd7TZn247SdtnN+t8hvksAwji0iv/4NYecqci3tnTxtfHqv8IEQ==
-X-Received: by 2002:a2e:90c2:0:b0:2bb:c22a:f28c with SMTP id o2-20020a2e90c2000000b002bbc22af28cmr120829ljg.32.1695146055051;
-        Tue, 19 Sep 2023 10:54:15 -0700 (PDT)
-Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with ESMTPSA id m21-20020a1709060d9500b00992b71d8f19sm8023709eji.133.2023.09.19.10.54.14
+        d=1e100.net; s=20230601; t=1695146327; x=1695751127;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u1NRUeCHZVcU7vFnB9mFf3Vt372PLclrw8mQfXYBE3E=;
+        b=lZt6P+GmjjkfHLWXwH5G0p2lEc1QdESkd3sR/bnBXrdI5jz8xPBAGS0/UecXMfcvQz
+         OojHb0eCbfl/JAIAZ1rt+mC3aQ43IyEi+/iO0BBbUOQQyoM7BZVeMHbjX8T4mUfO1RCl
+         wzKtykM6b5zw58BAiUMnmPocFGnoc5fRRGEI3EuBpPLXV/mxeZEUOxUrfdvjvZr9vSMm
+         snCNEqZYymZjcmxMTmjbisHEv7l1OF7yout8FXpXAc3USg2PBeb1R1LvMfpNWzWR/8uV
+         7FhenU1YCFKkvO6JPqkTJCtov0Nzk5i56SfzXsedbYN9NnCQ7iJNeF/L4ySHzvuBp+Dy
+         C/uQ==
+X-Gm-Message-State: AOJu0YypBbPAqMmIxrR/Yw7tA9+kja/Tygm2aMvaZFYxGiRrGoZOPDM6
+        xR/UkxVIfeDVbgC6DKPPljk=
+X-Google-Smtp-Source: AGHT+IEiBbBQwup9WppiUmb+sqxSKYGgUrzhNxvYEKeXarSza67dv9jMX7VWYr8RD6NZ6k7/WFS3xA==
+X-Received: by 2002:a17:907:25cd:b0:9ad:e62c:4517 with SMTP id ae13-20020a17090725cd00b009ade62c4517mr4196555ejc.34.1695146326452;
+        Tue, 19 Sep 2023 10:58:46 -0700 (PDT)
+Received: from jernej-laptop.localnet (82-149-12-148.dynamic.telemach.net. [82.149.12.148])
+        by smtp.gmail.com with ESMTPSA id d25-20020aa7d5d9000000b005288f0e547esm7697627eds.55.2023.09.19.10.58.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 10:54:14 -0700 (PDT)
-Message-ID: <e45396906300c06ca8f9200843811ad47144dc55.camel@gmail.com>
-Subject: Re: [PATCH 08/49] iio: adc: ep93xx: Convert to platform remove
- callback returning void
-From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To:     Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartley Sweeten <hsweeten@visionengravers.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        Tue, 19 Sep 2023 10:58:46 -0700 (PDT)
+From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, Chen-Yu Tsai <wens@csie.org>,
+        Samuel Holland <samuel@sholland.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
         kernel@pengutronix.de
-Date:   Tue, 19 Sep 2023 19:54:14 +0200
-In-Reply-To: <20230919174931.1417681-9-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 24/49] iio: adc: sun4i-gpadc-iio: Convert to platform remove
+ callback returning void
+Date:   Tue, 19 Sep 2023 19:58:44 +0200
+Message-ID: <2243607.iZASKD2KPV@jernej-laptop>
+In-Reply-To: <20230919174931.1417681-25-u.kleine-koenig@pengutronix.de>
 References: <20230919174931.1417681-1-u.kleine-koenig@pengutronix.de>
-         <20230919174931.1417681-9-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+ <20230919174931.1417681-25-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -78,9 +84,8 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Uwe,
-
-On Tue, 2023-09-19 at 19:48 +0200, Uwe Kleine-K=C3=B6nig wrote:
+Dne torek, 19. september 2023 ob 19:49:06 CEST je Uwe Kleine-K=F6nig napisa=
+l(a):
 > The .remove() callback for a platform driver returns an int which makes
 > many driver authors wrongly assume it's possible to do error handling by
 > returning an error code. However the value returned is ignored (apart
@@ -93,13 +98,54 @@ On Tue, 2023-09-19 at 19:48 +0200, Uwe Kleine-K=C3=B6nig wrote:
 > Trivially convert this driver from always returning zero in the remove
 > callback to the void returning variant.
 >=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+
+Best regards,
+Jernej
+
 > ---
-> =C2=A0drivers/iio/adc/ep93xx_adc.c | 6 ++----
-> =C2=A01 file changed, 2 insertions(+), 4 deletions(-)
+>  drivers/iio/adc/sun4i-gpadc-iio.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c
+> b/drivers/iio/adc/sun4i-gpadc-iio.c index 25bba96367a8..100ecced5fc1 1006=
+44
+> --- a/drivers/iio/adc/sun4i-gpadc-iio.c
+> +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+> @@ -669,7 +669,7 @@ static int sun4i_gpadc_probe(struct platform_device
+> *pdev) return ret;
+>  }
+>=20
+> -static int sun4i_gpadc_remove(struct platform_device *pdev)
+> +static void sun4i_gpadc_remove(struct platform_device *pdev)
+>  {
+>  	struct iio_dev *indio_dev =3D platform_get_drvdata(pdev);
+>  	struct sun4i_gpadc_iio *info =3D iio_priv(indio_dev);
+> @@ -678,12 +678,10 @@ static int sun4i_gpadc_remove(struct platform_device
+> *pdev) pm_runtime_disable(&pdev->dev);
+>=20
+>  	if (!IS_ENABLED(CONFIG_THERMAL_OF))
+> -		return 0;
+> +		return;
+>=20
+>  	if (!info->no_irq)
+>  		iio_map_array_unregister(indio_dev);
+> -
+> -	return 0;
+>  }
+>=20
+>  static const struct platform_device_id sun4i_gpadc_id[] =3D {
+> @@ -702,7 +700,7 @@ static struct platform_driver sun4i_gpadc_driver =3D {
+>  	},
+>  	.id_table =3D sun4i_gpadc_id,
+>  	.probe =3D sun4i_gpadc_probe,
+> -	.remove =3D sun4i_gpadc_remove,
+> +	.remove_new =3D sun4i_gpadc_remove,
+>  };
+>  MODULE_DEVICE_TABLE(of, sun4i_gpadc_of_id);
 
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
---=20
-Alexander Sverdlin.
+
 

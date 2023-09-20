@@ -2,1222 +2,208 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 193EA7A89FE
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 19:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 656A77A8A5A
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 19:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235181AbjITRDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Sep 2023 13:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
+        id S234609AbjITRMo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Sep 2023 13:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235105AbjITRDe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 13:03:34 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE19DC
-        for <linux-iio@vger.kernel.org>; Wed, 20 Sep 2023 10:03:25 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-40476ce8b2fso267245e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 20 Sep 2023 10:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695229403; x=1695834203; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZinPJ5PYB2eid5QoM+L4lgEz+bW8cvHUuVjkVPgA4pk=;
-        b=j8UUajMdGwVtd3l/SeAm2L6p/J1g9XQXmUeYFIppqIZ4FRz05OWah4K7Ec9DU7YaYV
-         fWKVjx5LBU6kzJ3M0kumbwQUou/mfWz2RlhTe7hYgm4bX5xuiHePnjAu0rhqunpEyAcB
-         gzaH0X+5J/48OyR53vJOkW31k0g3hC7sz/MLPfi4h3giA5t352SANaS8nKEILQzf3jBn
-         NTWKjPhrT50lJrmE13VgQ2NN/rorl74vOtDs1aBwUoLLqqRjrfz0xzdcPuha/gw+OmTM
-         vMSsZfVfTUugFEl1FujCYXAeJ0Q/MQ5yvh4LFOWtmKyj1DF21wWGw3A4stn9C2KBeblP
-         ozlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695229403; x=1695834203;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZinPJ5PYB2eid5QoM+L4lgEz+bW8cvHUuVjkVPgA4pk=;
-        b=TWuStAZ/RliAc30k+/Dt6yXJffK/Kk4NsjS+1jJ399d+yQ+bheyktTWayJazwC7buz
-         lk/+uu9eqIkVLiTbTin2FlQUpPX74m/YZW/GUtO1corhk5u3dELsEs20hb0ZKR0XGBI/
-         NaKKgjKnK8aEvyldLxPA5nbj65urH/M4J/uE77GoQfgkDZtxkx52TMNnSol8kUSCtXh4
-         RhLTuoFez2mQenS9u3zWgtqzZtJtGkj1W2DgM/JgaoaBr3oGs2OQ8d9X6gIO0uW6exFN
-         ZxGD5/5265lI10NHCIZhUy3wKiztFA9O8bGmjmGgjl44l6VAprsvgvUTgApSLihlowNr
-         x6GA==
-X-Gm-Message-State: AOJu0YyroeOt0OuPRf3Ohkqfze8olv9j+3YGVOHGRBYq3bpYcbJd0y6S
-        9m/gC2M/D5cyoZso33nxagxz/YFUheAG6jabThyNIX/n
-X-Google-Smtp-Source: AGHT+IHkKZGhqZcw0k0xvwEozSAZi6uSahTQ7XYP5azIWJt3sy24MLTbjVNR1j+0gncdx74Uc44lNA==
-X-Received: by 2002:a5d:6b88:0:b0:317:5168:c21f with SMTP id n8-20020a5d6b88000000b003175168c21fmr2838659wrx.31.1695229403189;
-        Wed, 20 Sep 2023 10:03:23 -0700 (PDT)
-Received: from localhost.localdomain (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
-        by smtp.gmail.com with ESMTPSA id g10-20020adff3ca000000b003200c918c81sm11221089wrp.112.2023.09.20.10.03.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 10:03:22 -0700 (PDT)
-From:   David Lechner <dlechner@baylibre.com>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev
-Cc:     David Lechner <dlechner@baylibre.com>,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>
-Subject: [PATCH 4/4] iio: resolver: add new driver for AD2S1210
-Date:   Wed, 20 Sep 2023 12:02:53 -0500
-Message-Id: <20230920170253.203395-5-dlechner@baylibre.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230920170253.203395-1-dlechner@baylibre.com>
-References: <20230920170253.203395-1-dlechner@baylibre.com>
+        with ESMTP id S235659AbjITRMd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 13:12:33 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B611A1;
+        Wed, 20 Sep 2023 10:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695229927; x=1726765927;
+  h=message-id:subject:from:to:date:in-reply-to:references:
+   content-transfer-encoding:mime-version;
+  bh=yJLKex7CFGPlGXRJYX8tqcOeyjbPV+pLuNqCcRVCqpQ=;
+  b=DgMPrXmnswcAtJzZaZ6tDLzxP8EYSicUEFSGLJnd1xePFEqk7JdSAohv
+   5aEE7Y5Ofx6okBvXiWvf71Mew9mhT12/HeVgYyYMzmiOGosx2or+toZQe
+   O7qIxlkvz3n9C8PBme1ZUMhlCBLAeXKbdUyUQedQxglBGHG/av1jrInhl
+   4MY3LaV60tShtz+IgUl40QB38PcsghzYAfBx9VCT7zKpK9EM9HPkm9JGd
+   ZIPIJFch2D1FCJxQq1ssFGECpk3DJyJySARmaLHE0CZ8xrYe+vZQqdF+g
+   v2rmc6Fr0KxVXO0XJQfYaOZ4njpj5VUmuHXaugR1EnlhSWue9lYmwS6Tx
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="411231908"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="411231908"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 10:11:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="1077533497"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="1077533497"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.212.142.24])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 10:10:35 -0700
+Message-ID: <4c30d15ddce151e72944535f5f23a1bf1ce329e5.camel@linux.intel.com>
+Subject: Re: [PATCH v2 7/9] iio: hid-sensor-als: Add light chromaticity
+ support
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Basavaraj Natikar <Basavaraj.Natikar@amd.com>, jikos@kernel.org,
+        benjamin.tissoires@redhat.com, jic23@kernel.org, lars@metafoo.de,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Date:   Wed, 20 Sep 2023 10:10:35 -0700
+In-Reply-To: <20230919081054.2050714-8-Basavaraj.Natikar@amd.com>
+References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
+         <20230919081054.2050714-8-Basavaraj.Natikar@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds a new driver for Analog Devices, Inc. AD2S1210 resolver to
-digital converter. The driver is based on the staging driver with the
-following improvements:
-
-Fixes:
-- Fix use before initialization bug in probe.
-- Fix not checking error returns in probe.
-- Remove spi_setup() and spi_set_drvdata() from probe.
-- Fix ordering of devm_iio_device_register()
-- Remove incorrect hysteresis logic
-
-Changes:
-- Use BIT/GENMASK macros.
-- Use devicetree to get CLKIN frequency (was sysfs attribute).
-- No longer bit-shift the raw value for IIO_CHAN_INFO_RAW.
-- Use regmap for register access.
-- Remove config sysfs attribute.
-- Use gpio array for mode and resolution gpios.
-- Invert sample gpio logic and use GPIO_ACTIVE_LOW in devicetree.
-- Change hysteresis to use IIO_CHAN_INFO_HYSTERESIS instead of custom
-  device attribute.
-- Rename fexcit attribute to excitation_frequency.
-- Use devicetree to specify resolution instead of sysfs attribute.
-
-Additions:
-- Implement IIO_CHAN_INFO_SCALE.
-- Implement debugfs register access.
-- Add phase_lock_range attribute.
-- Add triggered buffer support.
-
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- .../testing/sysfs-bus-iio-resolver-ad2s1210   | 109 ++
- drivers/iio/resolver/Kconfig                  |  13 +
- drivers/iio/resolver/Makefile                 |   1 +
- drivers/iio/resolver/ad2s1210.c               | 948 ++++++++++++++++++
- 4 files changed, 1071 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
- create mode 100644 drivers/iio/resolver/ad2s1210.c
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210 b/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
-new file mode 100644
-index 000000000000..32890c85168e
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
-@@ -0,0 +1,109 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/dos_mis_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Degradation of Signal Mismatch
-+		Threshold value. Writing sets the value. Valid values are 0 (0V)
-+		to 127 (4.826V). To convert the value to volts, multiply by
-+		0.038.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/dos_ovr_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Degradation of Signal Overrange
-+		Threshold value. Writing sets the value. Valid values are 0 (0V)
-+		to 127 (4.826V). To convert the value to volts, multiply by
-+		0.038.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_max_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Degradation of Signal Reset Maximum
-+		Threshold value. Writing sets the value. Valid values are 0 (0V)
-+		to 127 (4.826V). To convert the value to volts, multiply by
-+		0.038.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_min_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Degradation of Signal Reset Minimum
-+		Threshold value. Writing sets the value. Valid values are 0 (0V)
-+		to 127 (4.826V). To convert the value to volts, multiply by
-+		0.038.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/fault
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns a hex value containing the fault bit flags.
-+
-+		Bit	Description
-+		---	-----------
-+		D7	Sine/cosine inputs clipped
-+		D6	Sine/cosine inputs below LOS threshold
-+		D5	Sine/cosine inputs exceed DOS overrange threshold
-+		D4	Sine/cosine inputs exceed DOS mismatch threshold
-+		D3	Tracking error exceeds LOT threshold
-+		D2	Velocity exceeds maximum tracking rate
-+		D1	Phase error exceeds phase lock range
-+		D0	Configuration parity error
-+
-+		Writing any value will clear any fault conditions.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/excitation_frequency
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Excitation Frequency in Hz. Writing
-+		sets the Excitation Frequency and performs a software reset on
-+		the device to apply the change. Valid values are 2000 (2kHz) to
-+		20000 (20kHz).
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/los_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Loss of Signal Reset Threshold
-+		value. Writing sets the value. Valid values are 0 (0V) to
-+		127 (4.826V). To convert the value to volts, multiply by 0.038.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/lot_high_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Loss of Position Tracking Detection
-+		High Threshold value. Writing sets the value. Valid values are
-+		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
-+		depends on the selected resolution. To convert the value to
-+		degrees, multiply by 0.35 for 10-bit resolution, multiply by
-+		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
-+		resolution.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/lot_low_thrd
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Loss of Position Tracking Detection
-+		Low Threshold value. Writing sets the value. Valid values are
-+		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
-+		depends on the selected resolution. To convert the value to
-+		degrees, multiply by 0.35 for 10-bit resolution, multiply by
-+		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
-+		resolution.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the current Phase lock range in degrees. Writing
-+		sets the value in the configuration register.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range_available
-+KernelVersion:  6.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns the possible values for the phase_lock_range
-+		attribute, namely 44 and 360.
-diff --git a/drivers/iio/resolver/Kconfig b/drivers/iio/resolver/Kconfig
-index 47dbfead9b31..424529d36080 100644
---- a/drivers/iio/resolver/Kconfig
-+++ b/drivers/iio/resolver/Kconfig
-@@ -25,4 +25,17 @@ config AD2S1200
- 
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ad2s1200.
-+
-+config AD2S1210
-+	tristate "Analog Devices ad2s1210 driver"
-+	depends on SPI
-+	depends on COMMON_CLK
-+	depends on GPIOLIB || COMPILE_TEST
-+	help
-+	  Say yes here to build support for Analog Devices spi resolver
-+	  to digital converters, ad2s1210, provides direct access via sysfs.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called ad2s1210.
-+
- endmenu
-diff --git a/drivers/iio/resolver/Makefile b/drivers/iio/resolver/Makefile
-index fa558138ce45..7f6c876c35ae 100644
---- a/drivers/iio/resolver/Makefile
-+++ b/drivers/iio/resolver/Makefile
-@@ -5,3 +5,4 @@
- 
- obj-$(CONFIG_AD2S90) += ad2s90.o
- obj-$(CONFIG_AD2S1200) += ad2s1200.o
-+obj-$(CONFIG_AD2S1210) += ad2s1210.o
-diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-new file mode 100644
-index 000000000000..97833fbcbf7a
---- /dev/null
-+++ b/drivers/iio/resolver/ad2s1210.c
-@@ -0,0 +1,948 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ad2s1210.c support for the ADI Resolver to Digital Converters: AD2S1210
-+ *
-+ * Copyright (c) 2010-2010 Analog Devices Inc.
-+ * Copyright (C) 2023 BayLibre, SAS
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/spi/spi.h>
-+#include <linux/sysfs.h>
-+#include <linux/types.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+
-+#define DRV_NAME "ad2s1210"
-+
-+/* default value of control register on powerup */
-+#define AD2S1210_DEF_CONTROL		0x7E
-+
-+/* control register flags */
-+#define AD2S1210_ADDRESS_DATA		BIT(7)
-+#define AD2S1210_PHASE_LOCK_RANGE_44	BIT(5)
-+#define AD2S1210_ENABLE_HYSTERESIS	BIT(4)
-+#define AD2S1210_SET_ENRES		GENMASK(3, 2)
-+#define AD2S1210_SET_RES		GENMASK(1, 0)
-+
-+#define AD2S1210_REG_POSITION_MSB	0x80
-+#define AD2S1210_REG_POSITION_LSB	0x81
-+#define AD2S1210_REG_VELOCITY_MSB	0x82
-+#define AD2S1210_REG_VELOCITY_LSB	0x83
-+#define AD2S1210_REG_LOS_THRD		0x88
-+#define AD2S1210_REG_DOS_OVR_THRD	0x89
-+#define AD2S1210_REG_DOS_MIS_THRD	0x8A
-+#define AD2S1210_REG_DOS_RST_MAX_THRD	0x8B
-+#define AD2S1210_REG_DOS_RST_MIN_THRD	0x8C
-+#define AD2S1210_REG_LOT_HIGH_THRD	0x8D
-+#define AD2S1210_REG_LOT_LOW_THRD	0x8E
-+#define AD2S1210_REG_EXCIT_FREQ		0x91
-+#define AD2S1210_REG_CONTROL		0x92
-+#define AD2S1210_REG_SOFT_RESET		0xF0
-+#define AD2S1210_REG_FAULT		0xFF
-+
-+#define AD2S1210_MIN_CLKIN	6144000
-+#define AD2S1210_MAX_CLKIN	10240000
-+#define AD2S1210_MIN_EXCIT	2000
-+#define AD2S1210_DEF_EXCIT	10000
-+#define AD2S1210_MAX_EXCIT	20000
-+#define AD2S1210_MIN_FCW	0x4
-+#define AD2S1210_MAX_FCW	0x50
-+
-+enum ad2s1210_mode {
-+	AD2S1210_MODE_POS = 0b00,
-+	AD2S1210_MODE_VEL = 0b01,
-+	AD2S1210_MODE_CONFIG = 0b11,
-+};
-+
-+enum ad2s1210_resolution {
-+	AD2S1210_RES_10 = 0b00,
-+	AD2S1210_RES_12 = 0b01,
-+	AD2S1210_RES_14 = 0b10,
-+	AD2S1210_RES_16 = 0b11,
-+};
-+
-+struct ad2s1210_state {
-+	struct mutex lock;
-+	struct spi_device *sdev;
-+	/** GPIO pin connected to SAMPLE line. */
-+	struct gpio_desc *sample_gpio;
-+	/** GPIO pins connected to A0 and A1 lines. */
-+	struct gpio_descs *mode_gpios;
-+	/** Used to access config registers. */
-+	struct regmap *regmap;
-+	/** The external oscillator frequency in Hz. */
-+	unsigned long fclkin;
-+	/** The selected resolution */
-+	enum ad2s1210_resolution resolution;
-+	/* Scan buffer */
-+	struct {
-+		__be16 chan[2];
-+		/* Ensure timestamp is naturally aligned. */
-+		s64 timestamp __aligned(8);
-+	} scan;
-+	u8 rx[2] __aligned(IIO_DMA_MINALIGN);
-+	u8 tx[2];
-+};
-+
-+static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
-+{
-+	struct gpio_descs *gpios = st->mode_gpios;
-+	DECLARE_BITMAP(bitmap, 2);
-+
-+	bitmap[0] = mode;
-+
-+	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
-+				     bitmap);
-+}
-+
-+/**
-+ * Writes the given data to the given register address.
-+ *
-+ * If the mode is configurable, the device will first be placed in
-+ * configuration mode.
-+ */
-+static int ad2s1210_regmap_reg_write(void *context, unsigned int reg,
-+				     unsigned int val)
-+{
-+	struct ad2s1210_state *st = context;
-+	struct spi_transfer xfers[] = {
-+		{
-+			.len = 1,
-+			.rx_buf = &st->rx[0],
-+			.tx_buf = &st->tx[0],
-+			.cs_change = 1,
-+		}, {
-+			.len = 1,
-+			.rx_buf = &st->rx[1],
-+			.tx_buf = &st->tx[1],
-+		},
-+	};
-+	int ret;
-+
-+	/* values can only be 7 bits, the MSB indicates an address */
-+	if (val & ~0x7F)
-+		return -EINVAL;
-+
-+	st->tx[0] = reg;
-+	st->tx[1] = val;
-+
-+	ret = ad2s1210_set_mode(st, AD2S1210_MODE_CONFIG);
-+	if (ret < 0)
-+		return ret;
-+
-+	return spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
-+}
-+
-+/**
-+ * Reads value from one of the registers.
-+ *
-+ * If the mode is configurable, the device will first be placed in
-+ * configuration mode.
-+ */
-+static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
-+				    unsigned int *val)
-+{
-+	struct ad2s1210_state *st = context;
-+	struct spi_transfer xfers[] = {
-+		{
-+			.len = 1,
-+			.rx_buf = &st->rx[0],
-+			.tx_buf = &st->tx[0],
-+			.cs_change = 1,
-+		}, {
-+			.len = 1,
-+			.rx_buf = &st->rx[1],
-+			.tx_buf = &st->tx[1],
-+		},
-+	};
-+	int ret;
-+
-+	ret = ad2s1210_set_mode(st, AD2S1210_MODE_CONFIG);
-+	if (ret < 0)
-+		return ret;
-+
-+	st->tx[0] = reg;
-+	/* Must be valid register address here otherwise this could write data.
-+	 * It doesn't matter which one.
-+	 */
-+	st->tx[1] = AD2S1210_REG_FAULT;
-+
-+	ret = spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
-+	if (ret < 0)
-+		return ret;
-+
-+	/* If the D7 bit is set on any read/write register, it indicates a
-+	 * parity error. The fault register is read-only and the D7 bit means
-+	 * something else there.
-+	 */
-+	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
-+		return -EBADMSG;
-+
-+	*val = st->rx[1];
-+
-+	return 0;
-+}
-+
-+/**
-+ * Sets the excitation frequency and performs software reset.
-+ *
-+ * Must be called with lock held.
-+ */
-+static int ad2s1210_set_excitation_frequency(struct ad2s1210_state *st,
-+					     u16 fexcit)
-+{
-+	int ret;
-+	u8 fcw;
-+
-+	fcw = fexcit * (1 << 15) / st->fclkin;
-+	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW)
-+		return -ERANGE;
-+
-+	ret = regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* software reset reinitializes the excitation frequency output */
-+	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
-+}
-+
-+static ssize_t excitation_frequency_show(struct device *dev,
-+						  struct device_attribute *attr,
-+						  char *buf)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int value;
-+	u16 fexcit;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = regmap_read(st->regmap, AD2S1210_REG_EXCIT_FREQ, &value);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	fexcit = value * st->fclkin / (1 << 15);
-+
-+	ret = sysfs_emit(buf, "%u\n", fexcit);
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+	return ret;
-+}
-+
-+static ssize_t excitation_frequency_store(struct device *dev,
-+						   struct device_attribute *attr,
-+						   const char *buf, size_t len)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	u16 fexcit;
-+	int ret;
-+
-+	ret = kstrtou16(buf, 10, &fexcit);
-+	if (ret < 0 || fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT)
-+		return -EINVAL;
-+
-+	mutex_lock(&st->lock);
-+	ret = ad2s1210_set_excitation_frequency(st, fexcit);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	ret = len;
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+
-+	return ret;
-+}
-+
-+static ssize_t phase_lock_range_show(struct device *dev,
-+				     struct device_attribute *attr,
-+				     char *buf)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
-+			       AD2S1210_PHASE_LOCK_RANGE_44);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	ret = sysfs_emit(buf, "%d\n", ret ? 44 : 360);
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+	return ret;
-+}
-+
-+static ssize_t phase_lock_range_store(struct device *dev,
-+				      struct device_attribute *attr,
-+				      const char *buf, size_t len)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	u16 udata;
-+	int ret;
-+
-+	ret = kstrtou16(buf, 10, &udata);
-+	if (ret < 0 || (udata != 44 && udata != 360))
-+		return -EINVAL;
-+
-+	mutex_lock(&st->lock);
-+
-+	ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-+				 AD2S1210_PHASE_LOCK_RANGE_44,
-+				 udata == 44 ? AD2S1210_PHASE_LOCK_RANGE_44 : 0);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	ret = len;
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+	return ret;
-+}
-+
-+static ssize_t phase_lock_range_available_show(struct device *dev,
-+					       struct device_attribute *attr,
-+					       char *buf)
-+{
-+	return sysfs_emit(buf, "44 360\n");
-+}
-+
-+/* read the fault register since last sample */
-+static ssize_t fault_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int value;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &value);
-+	mutex_unlock(&st->lock);
-+
-+	return ret < 0 ? ret : sysfs_emit(buf, "0x%02x\n", value);
-+}
-+
-+static ssize_t fault_store(struct device *dev,
-+			   struct device_attribute *attr,
-+			   const char *buf,
-+			   size_t len)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int value;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+
-+	gpiod_set_value(st->sample_gpio, 1);
-+	/* delay (2 * tck + 20) nano seconds */
-+	udelay(1);
-+	gpiod_set_value(st->sample_gpio, 0);
-+
-+	ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &value);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	gpiod_set_value(st->sample_gpio, 1);
-+	gpiod_set_value(st->sample_gpio, 0);
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+
-+	return ret < 0 ? ret : len;
-+}
-+
-+static ssize_t reg_show(struct device *dev,
-+				 struct device_attribute *attr,
-+				 char *buf)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-+	unsigned int value;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = regmap_read(st->regmap, iattr->address, &value);
-+	mutex_unlock(&st->lock);
-+
-+	return ret < 0 ? ret : sysfs_emit(buf, "%d\n", value);
-+}
-+
-+static ssize_t reg_store(struct device *dev,
-+				  struct device_attribute *attr,
-+				  const char *buf, size_t len)
-+{
-+	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned char data;
-+	int ret;
-+	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-+
-+	ret = kstrtou8(buf, 10, &data);
-+	if (ret < 0)
-+		return -EINVAL;
-+
-+	mutex_lock(&st->lock);
-+	ret = regmap_write(st->regmap, iattr->address, data);
-+	mutex_unlock(&st->lock);
-+	return ret < 0 ? ret : len;
-+}
-+
-+static const int ad2s1210_velocity_scale[] = {
-+	17089132, /* 8.192MHz / (2*pi * 2500 / 2^15) */
-+	42722830, /* 8.192MHz / (2*pi * 1000 / 2^15) */
-+	85445659, /* 8.192MHz / (2*pi * 500 / 2^15) */
-+	341782638, /* 8.192MHz / (2*pi * 125 / 2^15) */
-+};
-+
-+static int ad2s1210_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val,
-+			     int *val2,
-+			     long mask)
-+{
-+	struct ad2s1210_state *st = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&st->lock);
-+		gpiod_set_value(st->sample_gpio, 1);
-+		/* delay (6 * tck + 20) nano seconds */
-+		udelay(1);
-+
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			ret = ad2s1210_set_mode(st, AD2S1210_MODE_POS);
-+			break;
-+		case IIO_ANGL_VEL:
-+			ret = ad2s1210_set_mode(st, AD2S1210_MODE_VEL);
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			break;
-+		}
-+		if (ret < 0)
-+			goto error_info_raw;
-+		ret = spi_read(st->sdev, st->rx, 2);
-+		if (ret < 0)
-+			goto error_info_raw;
-+
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			*val = be16_to_cpup((__be16 *)st->rx);
-+			ret = IIO_VAL_INT;
-+			break;
-+		case IIO_ANGL_VEL:
-+			*val = (s16)be16_to_cpup((__be16 *)st->rx);
-+			ret = IIO_VAL_INT;
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+error_info_raw:
-+		gpiod_set_value(st->sample_gpio, 0);
-+		/* delay (2 * tck + 20) nano seconds */
-+		udelay(1);
-+		mutex_unlock(&st->lock);
-+		break;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			/* approx 0.3 arc min converted to radians */
-+			*val = 0;
-+			*val2 = 95874;
-+			ret = IIO_VAL_INT_PLUS_NANO;
-+			break;
-+		case IIO_ANGL_VEL:
-+			*val = st->fclkin;
-+			*val2 = ad2s1210_velocity_scale[st->resolution];
-+			ret = IIO_VAL_FRACTIONAL;
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			break;
-+		}
-+		break;
-+
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			mutex_lock(&st->lock);
-+			ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
-+					       AD2S1210_ENABLE_HYSTERESIS);
-+			if (ret < 0)
-+				goto error_info_hysteresis;
-+
-+			*val = !!ret;
-+			ret = IIO_VAL_INT;
-+
-+error_info_hysteresis:
-+			mutex_unlock(&st->lock);
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			break;
-+		}
-+		break;
-+
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ad2s1210_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type,
-+			       int *length, long mask)
-+{
-+	static const int available[] = { 0, 1 };
-+	int ret = -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			*vals = available;
-+			*type = IIO_VAL_INT;
-+			*length = ARRAY_SIZE(available);
-+			ret = IIO_AVAIL_LIST;
-+			break;
-+		default:
-+			break;
-+		}
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ad2s1210_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
-+{
-+	struct ad2s1210_state *st = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			mutex_lock(&st->lock);
-+			ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-+						 AD2S1210_ENABLE_HYSTERESIS,
-+						 val ? AD2S1210_ENABLE_HYSTERESIS
-+						     : 0);
-+			mutex_unlock(&st->lock);
-+			break;
-+
-+		default:
-+			break;
-+		}
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static IIO_DEVICE_ATTR_RW(excitation_frequency, 0);
-+static IIO_DEVICE_ATTR_RW(phase_lock_range, 0);
-+static IIO_DEVICE_ATTR_RO(phase_lock_range_available, 0);
-+static IIO_DEVICE_ATTR_RW(fault, 0);
-+static IIO_DEVICE_ATTR_NAMED_RW(los_thrd, reg, AD2S1210_REG_LOS_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(dos_ovr_thrd, reg, AD2S1210_REG_DOS_OVR_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(dos_mis_thrd, reg, AD2S1210_REG_DOS_MIS_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(dos_rst_max_thrd, reg,
-+				AD2S1210_REG_DOS_RST_MAX_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(dos_rst_min_thrd, reg,
-+				AD2S1210_REG_DOS_RST_MIN_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(lot_high_thrd, reg, AD2S1210_REG_LOT_HIGH_THRD);
-+static IIO_DEVICE_ATTR_NAMED_RW(lot_low_thrd, reg, AD2S1210_REG_LOT_LOW_THRD);
-+
-+static const struct iio_chan_spec ad2s1210_channels[] = {
-+	{
-+		.type = IIO_ANGL,
-+		.indexed = 1,
-+		.channel = 0,
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_HYSTERESIS),
-+		.info_mask_separate_available =
-+					BIT(IIO_CHAN_INFO_HYSTERESIS),
-+		.datasheet_name = "position",
-+	}, {
-+		.type = IIO_ANGL_VEL,
-+		.indexed = 1,
-+		.channel = 0,
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.datasheet_name = "velocity",
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
-+};
-+
-+static struct attribute *ad2s1210_attributes[] = {
-+	&iio_dev_attr_excitation_frequency.dev_attr.attr,
-+	&iio_dev_attr_phase_lock_range.dev_attr.attr,
-+	&iio_dev_attr_phase_lock_range_available.dev_attr.attr,
-+	&iio_dev_attr_fault.dev_attr.attr,
-+	&iio_dev_attr_los_thrd.dev_attr.attr,
-+	&iio_dev_attr_dos_ovr_thrd.dev_attr.attr,
-+	&iio_dev_attr_dos_mis_thrd.dev_attr.attr,
-+	&iio_dev_attr_dos_rst_max_thrd.dev_attr.attr,
-+	&iio_dev_attr_dos_rst_min_thrd.dev_attr.attr,
-+	&iio_dev_attr_lot_high_thrd.dev_attr.attr,
-+	&iio_dev_attr_lot_low_thrd.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group ad2s1210_attribute_group = {
-+	.attrs = ad2s1210_attributes,
-+};
-+
-+static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
-+				       unsigned int reg, unsigned int writeval,
-+				       unsigned int *readval)
-+{
-+	struct ad2s1210_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+
-+	if (readval)
-+		ret = regmap_read(st->regmap, reg, readval);
-+	else
-+		ret = regmap_write(st->regmap, reg, writeval);
-+
-+	mutex_unlock(&st->lock);
-+
-+	return ret;
-+}
-+
-+static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct ad2s1210_state *st = iio_priv(indio_dev);
-+	size_t chan = 0;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+
-+	memset(&st->scan, 0, sizeof(st->scan));
-+	gpiod_set_value(st->sample_gpio, 1);
-+
-+	if (test_bit(0, indio_dev->active_scan_mask)) {
-+		ret = ad2s1210_set_mode(st, AD2S1210_MODE_POS);
-+		if (ret < 0)
-+			goto error_ret;
-+
-+		/* REVIST: we can read 3 bytes here and also get fault flags */
-+		ret = spi_read(st->sdev, st->rx, 2);
-+		if (ret < 0)
-+			goto error_ret;
-+
-+		memcpy(&st->scan.chan[chan++], st->rx, 2);
-+	}
-+
-+	if (test_bit(1, indio_dev->active_scan_mask)) {
-+		ret = ad2s1210_set_mode(st, AD2S1210_MODE_VEL);
-+		if (ret < 0)
-+			goto error_ret;
-+
-+		/* REVIST: we can read 3 bytes here and also get fault flags */
-+		ret = spi_read(st->sdev, st->rx, 2);
-+		if (ret < 0)
-+			goto error_ret;
-+
-+		memcpy(&st->scan.chan[chan++], st->rx, 2);
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan, pf->timestamp);
-+
-+error_ret:
-+	gpiod_set_value(st->sample_gpio, 0);
-+	mutex_unlock(&st->lock);
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static const struct iio_info ad2s1210_info = {
-+	.read_raw = ad2s1210_read_raw,
-+	.read_avail = ad2s1210_read_avail,
-+	.write_raw = ad2s1210_write_raw,
-+	.attrs = &ad2s1210_attribute_group,
-+	.debugfs_reg_access = &ad2s1210_debugfs_reg_access,
-+};
-+
-+static int ad2s1210_setup_properties(struct ad2s1210_state *st)
-+{
-+	struct device *dev = &st->sdev->dev;
-+	u32 val;
-+	int ret;
-+
-+	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+			"failed to read assigned-resolution-bits property\n");
-+
-+	if (val < 10 || val > 16)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "resolution out of range: %u\n", val);
-+
-+	st->resolution = (val - 10) >> 1;
-+
-+	return 0;
-+}
-+
-+static int ad2s1210_setup_clocks(struct ad2s1210_state *st)
-+{
-+	struct device *dev = &st->sdev->dev;
-+	struct clk *clk;
-+
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
-+
-+	st->fclkin = clk_get_rate(clk);
-+	if (st->fclkin < AD2S1210_MIN_CLKIN || st->fclkin > AD2S1210_MAX_CLKIN)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "clock frequency out of range: %lu\n",
-+				     st->fclkin);
-+
-+	return 0;
-+}
-+
-+static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
-+{
-+	struct device *dev = &st->sdev->dev;
-+	struct gpio_descs *resolution_gpios;
-+	DECLARE_BITMAP(bitmap, 2);
-+	int ret;
-+
-+	/* should not be sampling on startup */
-+	st->sample_gpio = devm_gpiod_get(dev, "sample", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->sample_gpio))
-+		return dev_err_probe(dev, PTR_ERR(st->sample_gpio),
-+				     "failed to request sample GPIO\n");
-+
-+	/* both pins high means that we start in config mode */
-+	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
-+	if (IS_ERR(st->mode_gpios))
-+		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
-+				     "failed to request mode GPIOs\n");
-+
-+	if (st->mode_gpios->ndescs != 2)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "requires exactly 2 mode-gpios\n");
-+
-+	/* If resolution gpios are provided, they get set to the required
-+	 * resolution, otherwise it is assumed the RES0 and RES1 pins are
-+	 * hard-wired to match the resolution indicated in the devicetree.
-+	 */
-+	resolution_gpios = devm_gpiod_get_array_optional(dev, "resolution",
-+							 GPIOD_ASIS);
-+	if (IS_ERR(resolution_gpios))
-+		return dev_err_probe(dev, PTR_ERR(resolution_gpios),
-+				     "failed to request resolution GPIOs\n");
-+
-+	if (resolution_gpios) {
-+		if (resolution_gpios->ndescs != 2)
-+			return dev_err_probe(dev, -EINVAL,
-+				      "requires exactly 2 resolution-gpios\n");
-+
-+		bitmap[0] = st->resolution;
-+
-+		ret = gpiod_set_array_value(resolution_gpios->ndescs,
-+					    resolution_gpios->desc,
-+					    resolution_gpios->info,
-+					    bitmap);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret,
-+					     "failed to set resolution gpios\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct regmap_range ad2s1210_regmap_readable_ranges[] = {
-+	regmap_reg_range(AD2S1210_REG_POSITION_MSB, AD2S1210_REG_VELOCITY_LSB),
-+	regmap_reg_range(AD2S1210_REG_LOS_THRD, AD2S1210_REG_LOT_LOW_THRD),
-+	regmap_reg_range(AD2S1210_REG_EXCIT_FREQ, AD2S1210_REG_CONTROL),
-+	regmap_reg_range(AD2S1210_REG_FAULT, AD2S1210_REG_FAULT),
-+};
-+
-+static const struct regmap_access_table ad2s1210_regmap_rd_table = {
-+	.yes_ranges = ad2s1210_regmap_readable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(ad2s1210_regmap_readable_ranges),
-+};
-+
-+static const struct regmap_range ad2s1210_regmap_writeable_ranges[] = {
-+	regmap_reg_range(AD2S1210_REG_LOS_THRD, AD2S1210_REG_LOT_LOW_THRD),
-+	regmap_reg_range(AD2S1210_REG_EXCIT_FREQ, AD2S1210_REG_CONTROL),
-+	regmap_reg_range(AD2S1210_REG_SOFT_RESET, AD2S1210_REG_SOFT_RESET),
-+	regmap_reg_range(AD2S1210_REG_FAULT, AD2S1210_REG_FAULT),
-+};
-+
-+static const struct regmap_access_table ad2s1210_regmap_wr_table = {
-+	.yes_ranges = ad2s1210_regmap_writeable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(ad2s1210_regmap_writeable_ranges),
-+};
-+
-+static int ad2s1210_setup_regmap(struct ad2s1210_state *st)
-+{
-+	struct device *dev = &st->sdev->dev;
-+	const struct regmap_config config = {
-+		.reg_bits = 8,
-+		.val_bits = 8,
-+		.disable_locking = true,
-+		.reg_read = ad2s1210_regmap_reg_read,
-+		.reg_write = ad2s1210_regmap_reg_write,
-+		.rd_table = &ad2s1210_regmap_rd_table,
-+		.wr_table = &ad2s1210_regmap_wr_table,
-+		.can_sleep = true,
-+	};
-+
-+	st->regmap = devm_regmap_init(dev, NULL, st, &config);
-+	if (IS_ERR(st->regmap))
-+		return dev_err_probe(dev, PTR_ERR(st->regmap),
-+				     "failed to allocate register map\n");
-+
-+	return 0;
-+}
-+
-+static int ad2s1210_init(struct ad2s1210_state *st)
-+{
-+	unsigned char data;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+
-+	data = AD2S1210_DEF_CONTROL & ~AD2S1210_SET_RES;
-+	data |= st->resolution;
-+
-+	ret = regmap_write(st->regmap, AD2S1210_REG_CONTROL, data);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	ret = ad2s1210_set_excitation_frequency(st, AD2S1210_DEF_EXCIT);
-+
-+error_ret:
-+	mutex_unlock(&st->lock);
-+	return ret;
-+}
-+
-+static int ad2s1210_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct ad2s1210_state *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+
-+	mutex_init(&st->lock);
-+	st->sdev = spi;
-+
-+	ret = ad2s1210_setup_properties(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_setup_clocks(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_setup_gpios(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_setup_regmap(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_init(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	indio_dev->info = &ad2s1210_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = ad2s1210_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
-+	indio_dev->name = spi_get_device_id(spi)->name;
-+
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-+					      &iio_pollfunc_store_time,
-+					      &ad2s1210_trigger_handler, NULL);
-+	if (ret < 0)
-+		return dev_err_probe(&spi->dev, ret,
-+				     "iio triggered buffer setup failed\n");
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct of_device_id ad2s1210_of_match[] = {
-+	{ .compatible = "adi,ad2s1210", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ad2s1210_of_match);
-+
-+static const struct spi_device_id ad2s1210_id[] = {
-+	{ "ad2s1210" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ad2s1210_id);
-+
-+static struct spi_driver ad2s1210_driver = {
-+	.driver = {
-+		.name = DRV_NAME,
-+		.of_match_table = ad2s1210_of_match,
-+	},
-+	.probe = ad2s1210_probe,
-+	.id_table = ad2s1210_id,
-+};
-+module_spi_driver(ad2s1210_driver);
-+
-+MODULE_AUTHOR("Graff Yang <graff.yang@gmail.com>");
-+MODULE_DESCRIPTION("Analog Devices AD2S1210 Resolver to Digital SPI driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.34.1
+T24gVHVlLCAyMDIzLTA5LTE5IGF0IDEzOjQwICswNTMwLCBCYXNhdmFyYWogTmF0aWthciB3cm90
+ZToKPiBJbiBtb3N0IGNhc2VzLCBhbWJpZW50IGNvbG9yIHNlbnNvcnMgYWxzbyBzdXBwb3J0IHRo
+ZSB4IGFuZCB5IGxpZ2h0Cj4gY29sb3JzLCB3aGljaCByZXByZXNlbnQgdGhlIGNvb3JkaW5hdGVz
+IG9uIHRoZSBDSUUgMTkzMSBjaHJvbWF0aWNpdHkKPiBkaWFncmFtLiBUaHVzLCBhZGQgbGlnaHQg
+Y2hyb21hdGljaXR5IHggYW5kIHkuCj4gCj4gU2lnbmVkLW9mZi1ieTogQmFzYXZhcmFqIE5hdGlr
+YXIgPEJhc2F2YXJhai5OYXRpa2FyQGFtZC5jb20+CkFja2VkLWJ5OiBTcmluaXZhcyBQYW5kcnV2
+YWRhPHNyaW5pdmFzLnBhbmRydXZhZGFAbGludXguaW50ZWwuY29tPgoKPiAtLS0KPiDCoGRyaXZl
+cnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3ItYWxzLmMgfCA2Mwo+ICsrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKwo+IMKgaW5jbHVkZS9saW51eC9oaWQtc2Vuc29yLWlkcy5owqDCoMKgwqAgfMKg
+IDMgKysKPiDCoDIgZmlsZXMgY2hhbmdlZCwgNjYgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1n
+aXQgYS9kcml2ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gYi9kcml2ZXJzL2lpby9s
+aWdodC9oaWQtc2Vuc29yLWFscy5jCj4gaW5kZXggMTZhM2YxOTQxYzI3Li5jOWQxMTRmZjA4MGEg
+MTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMuYwo+ICsrKyBi
+L2RyaXZlcnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3ItYWxzLmMKPiBAQCAtMTcsNiArMTcsOCBAQCBl
+bnVtIHsKPiDCoMKgwqDCoMKgwqDCoMKgQ0hBTk5FTF9TQ0FOX0lOREVYX0lOVEVOU0lUWSwKPiDC
+oMKgwqDCoMKgwqDCoMKgQ0hBTk5FTF9TQ0FOX0lOREVYX0lMTFVNLAo+IMKgwqDCoMKgwqDCoMKg
+wqBDSEFOTkVMX1NDQU5fSU5ERVhfQ09MT1JfVEVNUCwKPiArwqDCoMKgwqDCoMKgwqBDSEFOTkVM
+X1NDQU5fSU5ERVhfQ0hST01BVElDSVRZX1gsCj4gK8KgwqDCoMKgwqDCoMKgQ0hBTk5FTF9TQ0FO
+X0lOREVYX0NIUk9NQVRJQ0lUWV9ZLAo+IMKgwqDCoMKgwqDCoMKgwqBDSEFOTkVMX1NDQU5fSU5E
+RVhfTUFYCj4gwqB9Owo+IMKgCj4gQEAgLTc2LDYgKzc4LDMwIEBAIHN0YXRpYyBjb25zdCBzdHJ1
+Y3QgaWlvX2NoYW5fc3BlYyBhbHNfY2hhbm5lbHNbXSA9Cj4gewo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgQklUKElJT19DSEFOX0lORk9fSFlTVEVSRVNJU19SRUxBVElWRSksCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuc2Nhbl9pbmRleCA9IENIQU5ORUxfU0NB
+Tl9JTkRFWF9DT0xPUl9URU1QLAo+IMKgwqDCoMKgwqDCoMKgwqB9LAo+ICvCoMKgwqDCoMKgwqDC
+oHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLnR5cGUgPSBJSU9fQ0hST01BVElD
+SVRZLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubW9kaWZpZWQgPSAxLAo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbDIgPSBJSU9fTU9EX1gsCj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5pbmZvX21hc2tfc2VwYXJhdGUgPSBCSVQoSUlP
+X0NIQU5fSU5GT19SQVcpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuaW5mb19t
+YXNrX3NoYXJlZF9ieV90eXBlID0gQklUKElJT19DSEFOX0lORk9fT0ZGU0VUKQo+IHwKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgQklUKElJT19DSEFOX0lORk9fU0NBTEUpIHwKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgQklUKElJT19DSEFOX0lORk9fU0FNUF9GUkVR
+KSB8Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoEJJVChJSU9fQ0hBTl9JTkZPX0hZ
+U1RFUkVTSVMpIHwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgQklUKElJT19DSEFO
+X0lORk9fSFlTVEVSRVNJU19SRUxBVElWRSksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoC5zY2FuX2luZGV4ID0gQ0hBTk5FTF9TQ0FOX0lOREVYX0NIUk9NQVRJQ0lUWV9YLAo+ICvC
+oMKgwqDCoMKgwqDCoH0sCj4gK8KgwqDCoMKgwqDCoMKgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAudHlwZSA9IElJT19DSFJPTUFUSUNJVFksCj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoC5tb2RpZmllZCA9IDEsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoC5jaGFubmVsMiA9IElJT19NT0RfWSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgLmluZm9fbWFza19zZXBhcmF0ZSA9IEJJVChJSU9fQ0hBTl9JTkZPX1JBVyksCj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5pbmZvX21hc2tfc2hhcmVkX2J5X3R5cGUgPSBCSVQo
+SUlPX0NIQU5fSU5GT19PRkZTRVQpCj4gfAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBCSVQoSUlPX0NIQU5fSU5GT19TQ0FMRSkgfAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBCSVQoSUlPX0NIQU5fSU5GT19TQU1QX0ZSRVEpIHwKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgQklUKElJT19DSEFOX0lORk9fSFlTVEVSRVNJUykgfAo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBCSVQoSUlPX0NIQU5fSU5GT19IWVNURVJFU0lTX1JFTEFUSVZF
+KSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLnNjYW5faW5kZXggPSBDSEFOTkVM
+X1NDQU5fSU5ERVhfQ0hST01BVElDSVRZX1ksCj4gK8KgwqDCoMKgwqDCoMKgfSwKPiDCoMKgwqDC
+oMKgwqDCoMKgSUlPX0NIQU5fU09GVF9USU1FU1RBTVAoQ0hBTk5FTF9TQ0FOX0lOREVYX1RJTUVT
+VEFNUCkKPiDCoH07Cj4gwqAKPiBAQCAtMTE5LDYgKzE0NSwxNiBAQCBzdGF0aWMgaW50IGFsc19y
+ZWFkX3JhdyhzdHJ1Y3QgaWlvX2Rldgo+ICppbmRpb19kZXYsCj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbWluID0gYWxzX3N0YXRlLT5hbHNbY2hhbi0K
+PiA+c2Nhbl9pbmRleF0ubG9naWNhbF9taW5pbXVtOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFkZHJlc3MgPQo+IEhJRF9VU0FHRV9TRU5TT1JfTElH
+SFRfQ09MT1JfVEVNUEVSQVRVUkU7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNh
+c2XCoCBDSEFOTkVMX1NDQU5fSU5ERVhfQ0hST01BVElDSVRZX1g6Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXBvcnRfaWQgPSBhbHNfc3RhdGUtPmFs
+c1tjaGFuLQo+ID5zY2FuX2luZGV4XS5yZXBvcnRfaWQ7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBtaW4gPSBhbHNfc3RhdGUtPmFsc1tjaGFuLQo+ID5z
+Y2FuX2luZGV4XS5sb2dpY2FsX21pbmltdW07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBhZGRyZXNzID0KPiBISURfVVNBR0VfU0VOU09SX0xJR0hUX0NI
+Uk9NQVRJQ0lUWV9YOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgYnJlYWs7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhc2XCoCBDSEFO
+TkVMX1NDQU5fSU5ERVhfQ0hST01BVElDSVRZX1k6Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXBvcnRfaWQgPSBhbHNfc3RhdGUtPmFsc1tjaGFuLQo+
+ID5zY2FuX2luZGV4XS5yZXBvcnRfaWQ7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBtaW4gPSBhbHNfc3RhdGUtPmFsc1tjaGFuLQo+ID5zY2FuX2luZGV4
+XS5sb2dpY2FsX21pbmltdW07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBhZGRyZXNzID0KPiBISURfVVNBR0VfU0VOU09SX0xJR0hUX0NIUk9NQVRJQ0lU
+WV9ZOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJl
+YWs7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkZWZhdWx0Ogo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlcG9ydF9pZCA9IC0xOwo+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGJyZWFrOwo+
+IEBAIC0yNDMsNiArMjc5LDE0IEBAIHN0YXRpYyBpbnQgYWxzX2NhcHR1cmVfc2FtcGxlKHN0cnVj
+dAo+IGhpZF9zZW5zb3JfaHViX2RldmljZSAqaHNkZXYsCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBhbHNfc3RhdGUtPnNjYW4uaWxsdW1bQ0hBTk5FTF9TQ0FOX0lOREVYX0NPTE9S
+X1RFTVBdCj4gPSBzYW1wbGVfZGF0YTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHJldCA9IDA7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiArwqDC
+oMKgwqDCoMKgwqBjYXNlIEhJRF9VU0FHRV9TRU5TT1JfTElHSFRfQ0hST01BVElDSVRZX1g6Cj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsc19zdGF0ZS0KPiA+c2Nhbi5pbGx1bVtD
+SEFOTkVMX1NDQU5fSU5ERVhfQ0hST01BVElDSVRZX1hdID0gc2FtcGxlX2RhdGE7Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldCA9IDA7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoGNhc2UgSElEX1VTQUdFX1NFTlNPUl9M
+SUdIVF9DSFJPTUFUSUNJVFlfWToKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWxz
+X3N0YXRlLQo+ID5zY2FuLmlsbHVtW0NIQU5ORUxfU0NBTl9JTkRFWF9DSFJPTUFUSUNJVFlfWV0g
+PSBzYW1wbGVfZGF0YTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gMDsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gwqDCoMKgwqDCoMKgwqDC
+oGNhc2UgSElEX1VTQUdFX1NFTlNPUl9USU1FX1RJTUVTVEFNUDoKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGFsc19zdGF0ZS0+dGltZXN0YW1wID0KPiBoaWRfc2Vuc29yX2NvbnZl
+cnRfdGltZXN0YW1wKCZhbHNfc3RhdGUtPmNvbW1vbl9hdHRyaWJ1dGVzLAo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgCj4gKihzNjQgKilyYXdfZGF0YSk7Cj4gQEAgLTI5MSw2ICszMzUsMjUgQEAgc3Rh
+dGljIGludCBhbHNfcGFyc2VfcmVwb3J0KHN0cnVjdAo+IHBsYXRmb3JtX2RldmljZSAqcGRldiwK
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0LT5hbHNbQ0hBTk5FTF9TQ0FOX0lO
+REVYX0NPTE9SX1RFTVBdLmluZGV4LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+c3QtPmFsc1tDSEFOTkVMX1NDQU5fSU5ERVhfQ09MT1JfVEVNUF0ucmVwb3J0X2lkKTsKPiDCoAo+
+ICvCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCAyOyBpKyspIHsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaW50IG5leHRfc2Nhbl9pbmRleCA9Cj4gQ0hBTk5FTF9TQ0FOX0lO
+REVYX0NIUk9NQVRJQ0lUWV9YICsgaTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoHJldCA9IHNlbnNvcl9odWJfaW5wdXRfZ2V0X2F0dHJpYnV0ZV9pbmZvKGhzZGV2LAo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoEhJRF9JTlBVVF9SRVBPUlQsIHVzYWdlX2lkLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoEhJRF9VU0FHRV9TRU5TT1Jf
+TElHSFRfQ0hST01BVElDSVRZX1gKPiArIGksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0LT5hbHNbbmV4dF9zY2FuX2lu
+ZGV4XSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChyZXQgPCAwKQo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsK
+PiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5lbF9i
+aXRfbWFzayhjaGFubmVscywKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgQ0hBTk5FTF9TQ0FOX0lO
+REVYX0NIUk9NQVRJQ0kKPiBUWV9YICsgaSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3QtCj4g
+PmFsc1tuZXh0X3NjYW5faW5kZXhdLnNpemUpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZGV2X2RiZygmcGRldi0+ZGV2LCAiYWxzICV4OiV4XG4iLAo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3QtPmFsc1tuZXh0X3NjYW5faW5k
+ZXhdLmluZGV4LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgc3QtPmFsc1tuZXh0X3NjYW5faW5kZXhdLnJlcG9ydF9pZCk7Cj4gK8KgwqDCoMKgwqDCoMKg
+fQo+ICsKPiDCoMKgwqDCoMKgwqDCoMKgc3QtPnNjYWxlX3ByZWNpc2lvbiA9IGhpZF9zZW5zb3Jf
+Zm9ybWF0X3NjYWxlKHVzYWdlX2lkLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAmc3QtCj4gPmFsc1tDSEFOTkVMX1NDQU5f
+SU5ERVhfSU5URU5TSVRZXSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0LT5zY2FsZV9wcmVfZGVjbWwsICZzdC0KPiA+
+c2NhbGVfcG9zdF9kZWNtbCk7Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaGlkLXNlbnNv
+ci1pZHMuaCBiL2luY2x1ZGUvbGludXgvaGlkLQo+IHNlbnNvci1pZHMuaAo+IGluZGV4IDhhZjRm
+YjNlMDI1NC4uNjczMGVlOTAwZWUxIDEwMDY0NAo+IC0tLSBhL2luY2x1ZGUvbGludXgvaGlkLXNl
+bnNvci1pZHMuaAo+ICsrKyBiL2luY2x1ZGUvbGludXgvaGlkLXNlbnNvci1pZHMuaAo+IEBAIC0y
+Miw2ICsyMiw5IEBACj4gwqAjZGVmaW5lCj4gSElEX1VTQUdFX1NFTlNPUl9EQVRBX0xJR0hUwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDIw
+MDRkMAo+IMKgI2RlZmluZQo+IEhJRF9VU0FHRV9TRU5TT1JfTElHSFRfSUxMVU3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDIwMDRkMQo+IMKg
+I2RlZmluZQo+IEhJRF9VU0FHRV9TRU5TT1JfTElHSFRfQ09MT1JfVEVNUEVSQVRVUkXCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDIwMDRkMgo+ICsjZGVmaW5lCj4gSElEX1VTQUdFX1NF
+TlNPUl9MSUdIVF9DSFJPTUFUSUNJVFnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgMHgyMDA0ZDMKPiArI2RlZmluZQo+IEhJRF9VU0FHRV9TRU5TT1JfTElHSFRfQ0hST01B
+VElDSVRZX1jCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDIwMDRkNAo+ICsj
+ZGVmaW5lCj4gSElEX1VTQUdFX1NFTlNPUl9MSUdIVF9DSFJPTUFUSUNJVFlfWcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoDB4MjAwNGQ1Cj4gwqAKPiDCoC8qIFBST1ggKDIwMDAx
+MSkgKi8KPiDCoCNkZWZpbmUgSElEX1VTQUdFX1NFTlNPUl9QUk9YwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiAweDIw
+MDAxMQoK
 

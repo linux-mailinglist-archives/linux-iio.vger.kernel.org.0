@@ -2,103 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC257A8842
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 17:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7432E7A89E8
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 18:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236627AbjITP0Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Sep 2023 11:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
+        id S234609AbjITQ7f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Sep 2023 12:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236617AbjITP0P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 11:26:15 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A046DD9;
-        Wed, 20 Sep 2023 08:26:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA075C433C7;
-        Wed, 20 Sep 2023 15:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695223568;
-        bh=3mJZRpck2nfPDRNMhjucawo9RrC/rE2rPsidgMyEFgQ=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=kpbCS1JyscU02boVDdqYsm+ZS+NGXx8/r0OcZ5+/c0M8+YuFtRlUjbW1FSc7C+bKq
-         0svN7H1x824mts+7z6j0ZuZNfPvI26qUz3hlv3sLwHCvG9sEoUab9LCpNPKcUFMEi1
-         KZVbynAd9dlEKwzaZP0yS3GWBBrZwhJjHZG0N711uaG7oExmEo72dDrWqmSUaHymIR
-         kYcVvm9s01OCCX2z6/adGilnsuOTDybPwMPE3lImqwzMhw961W83Sb4i5E7WFgdQlr
-         lDCBI1uE3HfmYKlp3rBivcbg+Q+dyTHl3Pxy4yJsxvCyn2oeOTCzjvt8f2Gkn2FLnD
-         mAskRs26bTqDg==
-Date:   Wed, 20 Sep 2023 17:26:04 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-cc:     benjamin.tissoires@redhat.com, jic23@kernel.org, lars@metafoo.de,
-        srinivas.pandruvada@linux.intel.com, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] HID: amd_sfh: Add light chromaticity for SFH1.1
-In-Reply-To: <20230919081054.2050714-10-Basavaraj.Natikar@amd.com>
-Message-ID: <nycvar.YFH.7.76.2309201725530.14216@cbobk.fhfr.pm>
-References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com> <20230919081054.2050714-10-Basavaraj.Natikar@amd.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        with ESMTP id S234563AbjITQ7e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 12:59:34 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26D69F;
+        Wed, 20 Sep 2023 09:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695229168; x=1726765168;
+  h=message-id:subject:from:to:date:in-reply-to:references:
+   content-transfer-encoding:mime-version;
+  bh=hli6SE0dpo939bh6eiEJ9cPM5JvxNcu4yz0JzpuMDtU=;
+  b=VctKSCXm/jesE1e5D7jlyGCwlSmFUWr3eOMG58+oBW0LxyHf3krt7EYo
+   5msGn7GOumNEU8BCxE+nxD6AMjl8o1NwnmcO90nlIqXR37a5OxmumGaqH
+   l7K4ytyKwhAnPT8SXKmcaJJhsvSA1X0HT6vUc8H1Pq8iJnWuaQEqb9Rrb
+   DWB23//njJDBPc0vMWxdg3Wbj/7tAugfgvQGDaa1IR6yrQ1v6t40TQkkL
+   Va4Mlt9DrO6cKYyXRXKdLOr/hTm1fQREzi266k2NRTO9anTQJ33cAkQDo
+   rMml2nJAtwUaYFgp7/K9sTxQ1GygScy0NxTUKz3eim5cq2YmicjXBrx5c
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="359667836"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="359667836"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 09:59:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="696383961"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="696383961"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.212.142.24])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 09:59:22 -0700
+Message-ID: <0cbd0b164462c0b857c45117fdf267710566e055.camel@linux.intel.com>
+Subject: Re: [PATCH v2 1/9] iio: hid-sensor-als: Use channel index to
+ support more hub attributes
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Basavaraj Natikar <Basavaraj.Natikar@amd.com>, jikos@kernel.org,
+        benjamin.tissoires@redhat.com, jic23@kernel.org, lars@metafoo.de,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Date:   Wed, 20 Sep 2023 09:59:21 -0700
+In-Reply-To: <20230919081054.2050714-2-Basavaraj.Natikar@amd.com>
+References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
+         <20230919081054.2050714-2-Basavaraj.Natikar@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 Sep 2023, Basavaraj Natikar wrote:
-
-> In most cases, ambient color sensors also support the x and y light
-> colors, which represent the coordinates on the CIE 1931 chromaticity
-> diagram. Thus, add light chromaticity x and y for SFH1.1.
-> 
-> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-
-Acked-by: Jiri Kosina <jkosina@suse.cz>
-
-> ---
->  drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c      | 5 ++++-
->  drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 2 ++
->  2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-> index f100aaafa167..8a037de08e92 100644
-> --- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-> +++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-> @@ -238,8 +238,11 @@ static u8 get_input_rep(u8 current_index, int sensor_idx, int report_id,
->  		als_input.illuminance_value = float_to_int(als_data.lux);
->  
->  		memcpy_fromio(&binfo, mp2->vsbase, sizeof(struct sfh_base_info));
-> -		if (binfo.sbase.s_prop[ALS_IDX].sf.feat & 0x2)
-> +		if (binfo.sbase.s_prop[ALS_IDX].sf.feat & 0x2) {
->  			als_input.light_color_temp = als_data.light_color_temp;
-> +			als_input.chromaticity_x_value = float_to_int(als_data.chromaticity_x);
-> +			als_input.chromaticity_y_value = float_to_int(als_data.chromaticity_y);
-> +		}
->  
->  		report_size = sizeof(als_input);
->  		memcpy(input_report, &als_input, sizeof(als_input));
-> diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-> index 6f6f5db150c3..656c3e95ef8c 100644
-> --- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-> +++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-> @@ -147,6 +147,8 @@ struct sfh_als_data {
->  	struct sfh_common_data commondata;
->  	u32 lux;
->  	u32 light_color_temp;
-> +	u32 chromaticity_x;
-> +	u32 chromaticity_y;
->  };
->  
->  struct hpd_status {
-> -- 
-> 2.25.1
-> 
-
--- 
-Jiri Kosina
-SUSE Labs
+T24gVHVlLCAyMDIzLTA5LTE5IGF0IDEzOjQwICswNTMwLCBCYXNhdmFyYWogTmF0aWthciB3cm90
+ZToKPiBTZW5zb3IgaHViIGF0dHJpYnV0ZXMgY2FuIGJlIGV4dGVuZGVkIHRvIHN1cHBvcnQgbW9y
+ZSBjaGFubmVscy4KPiBSZXBlYXQKPiB0aGUgcmVhZGluZyBmb3IgdGhlIHR3byBleGlzdGluZyBj
+aGFubmVscyBhbmQgc3RvcmUgdGhlbSBzZXBhcmF0ZWx5Lgo+IEl0Cj4gc3RpbGwgb3BlcmF0ZXMg
+aW4gdGhlIHNhbWUgbWFubmVyIGFzIGJlZm9yZSB3aGVyZSB0aGVyZSB3YXMganVzdCBvbmUKPiBl
+bnRyeS4gU28gaW4gb3JkZXIgdG8gc3VwcG9ydCBtb3JlIHNlbnNvciBodWIgYXR0cmlidXRlcyBm
+b3IgQUxTIHVzZQo+IGNoYW5uZWwgaW5kZXggdG8gZ2V0IHNwZWNpZmljIHNlbnNvciBodWIgYXR0
+cmlidXRlcy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBCYXNhdmFyYWogTmF0aWthciA8QmFzYXZhcmFq
+Lk5hdGlrYXJAYW1kLmNvbT4KQWNrZWQtYnk6IFNyaW5pdmFzIFBhbmRydXZhZGE8c3Jpbml2YXMu
+cGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5jb20+Cgo+IC0tLQo+IMKgZHJpdmVycy9paW8vbGlnaHQv
+aGlkLXNlbnNvci1hbHMuYyB8IDM4ICsrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0KPiAtLQo+
+IMKgMSBmaWxlIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQo+IAo+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gYi9kcml2
+ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gaW5kZXggZWIxYWVkYWQ3ZWRjLi5lZmIx
+Zjg4NjJiMjggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMu
+Ywo+ICsrKyBiL2RyaXZlcnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3ItYWxzLmMKPiBAQCAtMjQsNyAr
+MjQsNyBAQCBlbnVtIHsKPiDCoHN0cnVjdCBhbHNfc3RhdGUgewo+IMKgwqDCoMKgwqDCoMKgwqBz
+dHJ1Y3QgaGlkX3NlbnNvcl9odWJfY2FsbGJhY2tzIGNhbGxiYWNrczsKPiDCoMKgwqDCoMKgwqDC
+oMKgc3RydWN0IGhpZF9zZW5zb3JfY29tbW9uIGNvbW1vbl9hdHRyaWJ1dGVzOwo+IC3CoMKgwqDC
+oMKgwqDCoHN0cnVjdCBoaWRfc2Vuc29yX2h1Yl9hdHRyaWJ1dGVfaW5mbyBhbHNfaWxsdW07Cj4g
+K8KgwqDCoMKgwqDCoMKgc3RydWN0IGhpZF9zZW5zb3JfaHViX2F0dHJpYnV0ZV9pbmZvCj4gYWxz
+W0NIQU5ORUxfU0NBTl9JTkRFWF9NQVhdOwo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3Qgewo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdTMyIGlsbHVtW0NIQU5ORUxfU0NBTl9JTkRF
+WF9NQVhdOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdTY0IHRpbWVzdGFtcCBf
+X2FsaWduZWQoOCk7Cj4gQEAgLTk5LDggKzk5LDggQEAgc3RhdGljIGludCBhbHNfcmVhZF9yYXco
+c3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoHN3aXRjaCAoY2hhbi0+c2Nhbl9pbmRleCkgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgY2FzZcKgIENIQU5ORUxfU0NBTl9JTkRFWF9JTlRFTlNJVFk6Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNlwqAgQ0hBTk5FTF9TQ0FOX0lOREVYX0lMTFVNOgo+
+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVwb3J0X2lk
+ID0gYWxzX3N0YXRlLT5hbHNfaWxsdW0ucmVwb3J0X2lkOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbWluID0gYWxzX3N0YXRlLT5hbHNfaWxsdW0ubG9n
+aWNhbF9taW5pbXVtOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgcmVwb3J0X2lkID0gYWxzX3N0YXRlLT5hbHNbY2hhbi0KPiA+c2Nhbl9pbmRleF0ucmVw
+b3J0X2lkOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+bWluID0gYWxzX3N0YXRlLT5hbHNbY2hhbi0KPiA+c2Nhbl9pbmRleF0ubG9naWNhbF9taW5pbXVt
+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFkZHJl
+c3MgPSBISURfVVNBR0VfU0VOU09SX0xJR0hUX0lMTFVNOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGJyZWFrOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZGVmYXVsdDoKPiBAQCAtMjQyLDIyICsyNDIsMjQgQEAgc3RhdGljIGludCBh
+bHNfcGFyc2VfcmVwb3J0KHN0cnVjdAo+IHBsYXRmb3JtX2RldmljZSAqcGRldiwKPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+c3RydWN0IGFsc19zdGF0ZSAqc3QpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4g
+K8KgwqDCoMKgwqDCoMKgaW50IGk7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkg
+PD0gQ0hBTk5FTF9TQ0FOX0lOREVYX0lMTFVNOyArK2kpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcmV0ID0gc2Vuc29yX2h1Yl9pbnB1dF9nZXRfYXR0cmlidXRlX2luZm8oaHNk
+ZXYsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBISURfSU5QVVRfUkVQ
+T1JULAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2VfaWQsCj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBISURfVVNBR0VfU0VOU09SX0xJ
+R0gKPiBUX0lMTFVNLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0
+LT5hbHNbaV0pOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBy
+ZXQ7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5lbF9i
+aXRfbWFzayhjaGFubmVscywgaSwgc3QtCj4gPmFsc1tpXS5zaXplKTsKPiArCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRldl9kYmcoJnBkZXYtPmRldiwgImFscyAleDoleFxuIiwg
+c3QtPmFsc1tpXS5pbmRleCwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoHN0LT5hbHNbaV0ucmVwb3J0X2lkKTsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gwqAK
+PiAtwqDCoMKgwqDCoMKgwqByZXQgPSBzZW5zb3JfaHViX2lucHV0X2dldF9hdHRyaWJ1dGVfaW5m
+byhoc2RldiwKPiBISURfSU5QVVRfUkVQT1JULAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2VfaWQsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBISURfVVNBR0VfU0VOU09SX0xJR0hUX0lMTFVNLAo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0LT5hbHNfaWxs
+dW0pOwo+IC3CoMKgwqDCoMKgwqDCoGlmIChyZXQgPCAwKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+IC3CoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5l
+bF9iaXRfbWFzayhjaGFubmVscywKPiBDSEFOTkVMX1NDQU5fSU5ERVhfSU5URU5TSVRZLAo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBzdC0+YWxzX2lsbHVtLnNpemUpOwo+IC3CoMKgwqDCoMKgwqDCoGFsc19hZGp1
+c3RfY2hhbm5lbF9iaXRfbWFzayhjaGFubmVscywKPiBDSEFOTkVMX1NDQU5fSU5ERVhfSUxMVU0s
+Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0LT5hbHNfaWxsdW0uc2l6ZSk7Cj4gLQo+IC3CoMKg
+wqDCoMKgwqDCoGRldl9kYmcoJnBkZXYtPmRldiwgImFscyAleDoleFxuIiwgc3QtPmFsc19pbGx1
+bS5pbmRleCwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHN0LT5hbHNfaWxsdW0ucmVwb3J0X2lkKTsKPiAtCj4gLcKgwqDCoMKgwqDCoMKgc3QtPnNjYWxl
+X3ByZWNpc2lvbiA9IGhpZF9zZW5zb3JfZm9ybWF0X3NjYWxlKHVzYWdlX2lkLCAmc3QtCj4gPmFs
+c19pbGx1bSwKPiArwqDCoMKgwqDCoMKgwqBzdC0+c2NhbGVfcHJlY2lzaW9uID0gaGlkX3NlbnNv
+cl9mb3JtYXRfc2NhbGUodXNhZ2VfaWQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0LQo+ID5hbHNbQ0hBTk5FTF9TQ0FO
+X0lOREVYX0lOVEVOU0lUWV0sCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCZzdC0+c2NhbGVfcHJlX2RlY21sLCAmc3QtCj4g
+PnNjYWxlX3Bvc3RfZGVjbWwpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cgo=
 

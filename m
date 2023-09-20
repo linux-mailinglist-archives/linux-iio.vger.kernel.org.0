@@ -2,92 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D516A7A7456
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 09:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4181F7A74A3
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Sep 2023 09:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233863AbjITHiO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Sep 2023 03:38:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45856 "EHLO
+        id S234063AbjITHqY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Sep 2023 03:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbjITHhx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 03:37:53 -0400
-X-Greylist: delayed 375 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Sep 2023 00:37:42 PDT
-Received: from mail.venturelinkage.com (mail.venturelinkage.com [80.211.143.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA79A100
-        for <linux-iio@vger.kernel.org>; Wed, 20 Sep 2023 00:37:42 -0700 (PDT)
-Received: by mail.venturelinkage.com (Postfix, from userid 1002)
-        id 83BDD82652; Wed, 20 Sep 2023 09:31:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkage.com;
-        s=mail; t=1695195086;
-        bh=7iowqdzve/IIiUUjcEwx8j3uMrVqqiE7R9zbOCKRV9Q=;
-        h=Date:From:To:Subject:From;
-        b=Bl5H8JQ0ri0h3qLtp6ENyPUJcBFviUaoa+tqlTi37OCY80kDPwi/crikwSHTF9YyX
-         /KZQgDmbfAgOYIgo3dSox21NCZ1fbJE9WuWze4xHuDiuJeCfiSgezvbyMVIu8FV+ag
-         m53u+OppHsgeBDLs32Y8vQ3jYlEv21oSzObwo4aFJ9zHJ0aE4MzFcbAwKBzyZ3Q92j
-         OWt5y9gED5S8hZalyWGiyiSQPeqeOfPnaY9KJKr13tiPXYsGU69RdhPlYc5KScR0qa
-         FUAWyE+0QGLZTgZZgHhWuysGTiLPl5zFojuwINRwTnOvNGKxalNELM6YBkq/cvtyno
-         sk8uxyAtAJoTg==
-Received: by mail.venturelinkage.com for <linux-iio@vger.kernel.org>; Wed, 20 Sep 2023 07:31:20 GMT
-Message-ID: <20230920084500-0.1.l.113b.0.mer7p6a2lu@venturelinkage.com>
-Date:   Wed, 20 Sep 2023 07:31:20 GMT
-From:   "Lukas Varga" <lukas.varga@venturelinkage.com>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?Popt=C3=A1vka?=
-X-Mailer: mail.venturelinkage.com
+        with ESMTP id S233935AbjITHqE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Sep 2023 03:46:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E223710D9
+        for <linux-iio@vger.kernel.org>; Wed, 20 Sep 2023 00:45:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E69C433C9;
+        Wed, 20 Sep 2023 07:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695195928;
+        bh=vyU8wQPi6oh/NjWmtzvVpS8tL4Q//A1RZnrGiTgWwE8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=j+tpIOP9B9Kw6nLCMGc/BdMZVi9Y8skhvp2CX1mePe4qQFSCe4m3f7n7WkU3X8JI5
+         lsMU338oKFGg81pTihTKNfqOIuSJ2PQgvOzIA+0tvRndpPspxcKnQuA/g4cj9x7Fn8
+         P4UNbY9ctJsrIqtrwKfLmWr8QhjTYWwfykRh9JiNEjRgY30BtYvxxkAouHVQ6nijhl
+         s+AoKczkyld3fKOfwxICbXS6qJXEnEjypt4vDWTppT9pf7uE38n8tmx01wUchwo0gg
+         PH0xeQadAa6f4q1d65VoDOUXrROHlm8cre1mBWWEMPgroXrVAoyAjFqPxOSu89xPcr
+         cuoBlFdIHUURQ==
+Date:   Wed, 20 Sep 2023 15:45:25 +0800
+From:   Tzung-Bi Shih <tzungbi@kernel.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev, kernel@pengutronix.de
+Subject: Re: [PATCH 45/49] iio: proximity: cros_ec_mkbp: Convert to platform
+ remove callback returning void
+Message-ID: <ZQqjFWBPti2c734w@google.com>
+References: <20230919174931.1417681-1-u.kleine-koenig@pengutronix.de>
+ <20230919174931.1417681-46-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM28,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [80.211.143.151 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [80.211.143.151 listed in list.dnswl.org]
-        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
-        *      [score: 0.0357]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.8 FROM_FMBLA_NEWDOM28 From domain was registered in last 14-28
-        *      days
-X-Spam-Level: ******
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230919174931.1417681-46-u.kleine-koenig@pengutronix.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+On Tue, Sep 19, 2023 at 07:49:27PM +0200, Uwe Kleine-König wrote:
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new() which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
+> 
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Dovolil jsem si V=C3=A1s kontaktovat, proto=C5=BEe m=C3=A1m z=C3=A1jem ov=
-=C4=9B=C5=99it mo=C5=BEnost nav=C3=A1z=C3=A1n=C3=AD spolupr=C3=A1ce.
-
-Podporujeme firmy p=C5=99i z=C3=ADsk=C3=A1v=C3=A1n=C3=AD nov=C3=BDch obch=
-odn=C3=ADch z=C3=A1kazn=C3=ADk=C5=AF.
-
-M=C5=AF=C5=BEeme si promluvit a poskytnout podrobnosti?
-
-V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
- anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
-
-
-Pozdravy
-Lukas Varga
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>

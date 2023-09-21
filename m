@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74D597A97B2
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 19:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0429B7A96A0
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 19:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbjIUR1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Sep 2023 13:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
+        id S230097AbjIURJL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Sep 2023 13:09:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbjIUR0s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 13:26:48 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D55CF0
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:01:14 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-32172f8a5dbso1144851f8f.3
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:01:14 -0700 (PDT)
+        with ESMTP id S229934AbjIURIw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 13:08:52 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E305FC7
+        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:05:18 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-503065c4b25so2018330e87.1
+        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695315621; x=1695920421; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695315866; x=1695920666; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FFHoFBATjyYAR3S3Kihiw7DM+oB505Wu13vuO5lq7BQ=;
-        b=1LQEIWrWPgYVvFOfMJ/DdBamYItOVN+hx687qgsPSYuQ67lTbBPCtyIOqZt2261h/y
-         eNCWL8c21gGATxZ4Q6NTAr7sjhzCC4E36M+ytA0z1fg+xX8bQZkmrhtCWthBFjGVC8L5
-         f5hE6dzFWVVtg1Xb+/jdSCGgPkG2EX+tc6o2aMEwGHl+67ygqpWQcL2kU6GBgW7mrKm5
-         AV7NQkeriEcFCI/hg+N1JPCtXoFzxEl+//v6x92RL21L/KOk1cgokfEDSWXKaZsSeFS5
-         kyt2uN2JOP6a7+EwW+ECooNKVfL1ZYCPAhRkXFyJHMLepZzm+Dnkae7Zigc6WqOtdit9
-         UWEQ==
+        bh=BurSNjw3LRUUcMvXtonPsGB5QUx7CZPo8/XQKc8tXvQ=;
+        b=FTKhmdRKziNVonAqV1tS+yANcIBLFlvcT8TzgRhZaoz4OEW49UpItsU6gTm2Gdikfe
+         v4vwWjU3nu+v5avjWqrQlN0cJOJmxO5WPH1CTfHP4pvjWQfu4FDI7qWvINIRymkA1NFZ
+         5aUk8gh0Ru5fNHzrVdYvNHsTMlN+0D2l35Db0t20YVyBsUVe8RPm0Sh+0yIB4rG1M9xy
+         D0OLf1cLcjrX+Eu5uJ2k4aNNBX4fg3cTUmSOYnPF6MsgOzLHyuJ/rlNik9zi5K72Ccrq
+         mu58FnPMkjo7T9tjthbluhSd3qEbpWBrm6Z/iZfn74Vv3N3Er46GlLdw4VaTLBE77iws
+         obZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695315621; x=1695920421;
+        d=1e100.net; s=20230601; t=1695315866; x=1695920666;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FFHoFBATjyYAR3S3Kihiw7DM+oB505Wu13vuO5lq7BQ=;
-        b=KPg19uYEBdceUjF44tIKrYu6fQs7VATzhACTQNKhu+I4lCdAjVpyYdAD3+zKJ5xu2L
-         SbrYq2hEOppQSwTDWkyTdpyX6vSgkQ+UxuEVVgKURPaSCPphuwLsgvHxh6iLHvc0bXUv
-         pWOE+IK4hdKiOVLP0JV8QHY9H77wlvqfvMHuCov30vPaV9oiMISgL1tQP3YQNySHI33s
-         CV1hgflUg3W3Zt/Dyvy+8846ZQPtx1qYe2RFBYNrsAk4wZA341oZoVgZwI+hQCOl540k
-         WE0kIlOGL2wklZajPM1vz+e4W8n89bplv9K+JkRyok/QPp29urEh2D9ITkCisFp4Y75Y
-         2XHA==
-X-Gm-Message-State: AOJu0Yxkhm55Uspj1g74T8uZPWGupvqqB4dJRFiY//Q3JaHNW6jzxJdk
-        //eLQ5xSRFXq6bKshejQr/7owT50Rp7mNjsvBtAhUpzu
-X-Google-Smtp-Source: AGHT+IEuEQ+yHcKXMmNkfUgwvUgJV0TYHVRrMSBE2WgINBdiZLHbPgjRXkTk6HjPHk2lj+d6o1Or/w==
-X-Received: by 2002:adf:fb47:0:b0:316:fc63:dfed with SMTP id c7-20020adffb47000000b00316fc63dfedmr3915975wrs.39.1695306165716;
-        Thu, 21 Sep 2023 07:22:45 -0700 (PDT)
+        bh=BurSNjw3LRUUcMvXtonPsGB5QUx7CZPo8/XQKc8tXvQ=;
+        b=toKFXh5nKuA1Vv74zwQB3yds9PSpiY0pfUOwDeHv1oIspbTTyZbPdRARNuBduA2umq
+         nSlisuUQl2hD7Vx0kVJpQL5bt5Hwf9l4zZtcvpD7F+g0LfuXJWAV6Dhn97udltEUWKn1
+         c7LLlaJUgk9ehLCHE6w2jrfm3DPwCHv+zHIkpgTyHwNWn3x7ZwwfPqlPLdBM/3GuIkSu
+         flit9bwU2OZBzPUcHFsIAp+//eYIR9Gkxoe4PNc/4uWP6DpJe28GztSRM5V3RlYpv8KQ
+         wrapFzaryqkU8avYKcM5t1kfRSEq1lcD6oWk1n70MMG4oDQpin7pVvAux3bGRHtIC7WW
+         w/qg==
+X-Gm-Message-State: AOJu0Yz9TGJgIrgIKZJUCD93yizAKgoor7eg7nSgn/3500fl19+38vOX
+        c3an6U9tAZyV9CbRZxVHJ3/rHwe56P5Y/8x4MOI8flep
+X-Google-Smtp-Source: AGHT+IE3B+SaoX0g3CMJ9V5Y/q70jyzL1xViK2W3Iiv0NWLiHVmRrng5O6gT7YrWiM082uoyEj3L0A==
+X-Received: by 2002:a05:600c:152:b0:404:2dbb:8943 with SMTP id w18-20020a05600c015200b004042dbb8943mr5663278wmm.2.1695306169283;
+        Thu, 21 Sep 2023 07:22:49 -0700 (PDT)
 Received: from localhost.localdomain (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
-        by smtp.gmail.com with ESMTPSA id n11-20020a5d4c4b000000b0031fbbe347ebsm1901426wrt.22.2023.09.21.07.22.44
+        by smtp.gmail.com with ESMTPSA id n11-20020a5d4c4b000000b0031fbbe347ebsm1901426wrt.22.2023.09.21.07.22.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 07:22:45 -0700 (PDT)
+        Thu, 21 Sep 2023 07:22:49 -0700 (PDT)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-staging@lists.linux.dev
@@ -61,77 +61,161 @@ Cc:     linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         David Lechner <dlechner@baylibre.com>
-Subject: [v2 15/19] staging: iio: resolver: ad2s1210: read excitation frequency from control register
-Date:   Thu, 21 Sep 2023 09:19:43 -0500
-Message-Id: <20230921141947.57784-18-dlechner@baylibre.com>
+Subject: [v2 19/19] staging: iio: resolver: ad2s1210: add triggered buffer support
+Date:   Thu, 21 Sep 2023 09:19:47 -0500
+Message-Id: <20230921141947.57784-22-dlechner@baylibre.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921141947.57784-1-dlechner@baylibre.com>
 References: <20230921141947.57784-1-dlechner@baylibre.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This modifies the ad2s1210_show_fexcit() function to read the excitation
-frequency from the control register. This way we don't have to keep
-track of the value and don't risk returning a stale value.
+This adds support for triggered buffers to the AD2S1210 resolver driver.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/staging/iio/resolver/ad2s1210.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/staging/iio/resolver/ad2s1210.c | 84 ++++++++++++++++++++++++-
+ 1 file changed, 83 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index f1ffee34ebbc..27294eff99ef 100644
+index f5b8b290e860..44a2ecaeeeff 100644
 --- a/drivers/staging/iio/resolver/ad2s1210.c
 +++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -78,7 +78,6 @@ struct ad2s1210_state {
- 	struct regmap *regmap;
- 	/** The external oscillator frequency in Hz. */
+@@ -19,8 +19,11 @@
+ #include <linux/sysfs.h>
+ #include <linux/types.h>
+ 
++#include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
+ 
+ #define DRV_NAME "ad2s1210"
+ 
+@@ -85,6 +88,12 @@ struct ad2s1210_state {
  	unsigned long fclkin;
--	unsigned int fexcit;
- 	u8 resolution;
+ 	/** The selected resolution */
+ 	enum ad2s1210_resolution resolution;
++	/** Scan buffer */
++	struct {
++		__be16 chan[2];
++		/* Ensure timestamp is naturally aligned. */
++		s64 timestamp __aligned(8);
++	} scan;
  	u8 rx[2] __aligned(IIO_DMA_MINALIGN);
  	u8 tx[2];
-@@ -202,8 +201,6 @@ static int ad2s1210_set_excitation_frequency(struct ad2s1210_state *st,
- 	if (ret < 0)
- 		return ret;
+ };
+@@ -592,18 +601,35 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
+ 		.type = IIO_ANGL,
+ 		.indexed = 1,
+ 		.channel = 0,
++		.scan_index = 0,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 16,
++			.storagebits = 16,
++			.endianness = IIO_BE,
++		},
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_HYSTERESIS),
+ 		.info_mask_separate_available =
+ 					BIT(IIO_CHAN_INFO_HYSTERESIS),
++		.datasheet_name = "position",
+ 	}, {
+ 		.type = IIO_ANGL_VEL,
+ 		.indexed = 1,
+ 		.channel = 0,
++		.scan_index = 1,
++		.scan_type = {
++			.sign = 's',
++			.realbits = 16,
++			.storagebits = 16,
++			.endianness = IIO_BE,
++		},
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
+-	}
++		.datasheet_name = "velocity",
++	},
++	IIO_CHAN_SOFT_TIMESTAMP(2),
+ };
  
--	st->fexcit = fexcit;
--
- 	/* software reset reinitializes the excitation frequency output */
- 	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
+ static struct attribute *ad2s1210_attributes[] = {
+@@ -665,6 +691,55 @@ static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
+ 	return ret;
  }
-@@ -225,8 +222,22 @@ static ssize_t ad2s1210_show_fexcit(struct device *dev,
- 				    char *buf)
- {
- 	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-+	unsigned int value;
-+	u16 fexcit;
-+	int ret;
  
--	return sprintf(buf, "%u\n", st->fexcit);
++static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct ad2s1210_state *st = iio_priv(indio_dev);
++	size_t chan = 0;
++	int ret;
++
 +	mutex_lock(&st->lock);
-+	ret = regmap_read(st->regmap, AD2S1210_REG_EXCIT_FREQ, &value);
-+	if (ret < 0)
-+		goto error_ret;
 +
-+	fexcit = value * st->fclkin / (1 << 15);
++	memset(&st->scan, 0, sizeof(st->scan));
++	gpiod_set_value(st->sample_gpio, 1);
 +
-+	ret = sprintf(buf, "%u\n", fexcit);
++	if (test_bit(0, indio_dev->active_scan_mask)) {
++		ret = ad2s1210_set_mode(st, MOD_POS);
++		if (ret < 0)
++			goto error_ret;
++
++		/* REVIST: we can read 3 bytes here and also get fault flags */
++		ret = spi_read(st->sdev, st->rx, 2);
++		if (ret < 0)
++			goto error_ret;
++
++		memcpy(&st->scan.chan[chan++], st->rx, 2);
++	}
++
++	if (test_bit(1, indio_dev->active_scan_mask)) {
++		ret = ad2s1210_set_mode(st, MOD_VEL);
++		if (ret < 0)
++			goto error_ret;
++
++		/* REVIST: we can read 3 bytes here and also get fault flags */
++		ret = spi_read(st->sdev, st->rx, 2);
++		if (ret < 0)
++			goto error_ret;
++
++		memcpy(&st->scan.chan[chan++], st->rx, 2);
++	}
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan, pf->timestamp);
 +
 +error_ret:
++	gpiod_set_value(st->sample_gpio, 0);
 +	mutex_unlock(&st->lock);
-+	return ret;
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
+ static const struct iio_info ad2s1210_info = {
+ 	.read_raw = ad2s1210_read_raw,
+ 	.read_avail = ad2s1210_read_avail,
+@@ -850,6 +925,13 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
+ 	indio_dev->name = spi_get_device_id(spi)->name;
+ 
++	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
++					      &iio_pollfunc_store_time,
++					      &ad2s1210_trigger_handler, NULL);
++	if (ret < 0)
++		return dev_err_probe(&spi->dev, ret,
++				     "iio triggered buffer setup failed\n");
++
+ 	return devm_iio_device_register(&spi->dev, indio_dev);
  }
  
- static ssize_t ad2s1210_store_fexcit(struct device *dev,
 -- 
 2.34.1
 

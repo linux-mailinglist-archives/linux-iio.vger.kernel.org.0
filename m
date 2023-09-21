@@ -2,1222 +2,556 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23BF97AA0E6
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 22:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E677A9F45
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 22:20:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232511AbjIUUuq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Sep 2023 16:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
+        id S230227AbjIUUUU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Sep 2023 16:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232512AbjIUUuc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 16:50:32 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3DEBEE5BA;
-        Thu, 21 Sep 2023 11:46:01 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rrw0N4sL9z6J8vf;
-        Thu, 21 Sep 2023 20:37:40 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 21 Sep
- 2023 13:42:30 +0100
-Date:   Thu, 21 Sep 2023 13:42:29 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     David Lechner <dlechner@baylibre.com>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-staging@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>
-Subject: Re: [PATCH 4/4] iio: resolver: add new driver for AD2S1210
-Message-ID: <20230921134229.00002d5b@Huawei.com>
-In-Reply-To: <20230920170253.203395-5-dlechner@baylibre.com>
-References: <20230920170253.203395-1-dlechner@baylibre.com>
-        <20230920170253.203395-5-dlechner@baylibre.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S231695AbjIUUTr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 16:19:47 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0347E6D;
+        Thu, 21 Sep 2023 10:27:17 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38LAbQXB000605;
+        Thu, 21 Sep 2023 15:05:04 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:subject:from:to:cc:references
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=6AqLoXGPw7uz+MC875pyy/CFwU0aSTYkKoYlw6xBWX4=; b=mB
+        25njK8Gur3NgJGNDx+kSRRxV5OS5Gco3JgR8uUL8irSAI6edIf1xgh4xuRJ7lg8Q
+        u+xOeXasTpuG3NvrD7zXkkKu2erHG7XyTo2M5pFfM8CBoNTAeuqkRsKh8qkHedx9
+        d10c2omsz7hckGVKZG5bb2yVN7q6JNkA2ctvB00TVwUEZovz9/fqawGiSjueXHlP
+        BJnq7jRbecupE231QgbIXpjCCToDihe2gJX9m0fxNNJcd2ZKSPjIaV5RqqhVnKDj
+        uuaTGSndM7arlgozzb4APdAeojyoCzHmW4WczJ01AiJcF+Cu/oARtZSpdtVT8mDn
+        Ef3zxDF5suSKG1KoyrJA==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3t51sfmkjg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 21 Sep 2023 15:05:03 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7E7BD100057;
+        Thu, 21 Sep 2023 15:05:02 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 63366233C62;
+        Thu, 21 Sep 2023 15:05:02 +0200 (CEST)
+Received: from [10.201.20.59] (10.201.20.59) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 21 Sep
+ 2023 15:05:01 +0200
+Message-ID: <36253b17-0892-83f7-2f17-367298246d8b@foss.st.com>
+Date:   Thu, 21 Sep 2023 15:05:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 3/8] tools/counter: add a flexible watch events tool
+Content-Language: en-US
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+CC:     <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
+ <20230829134029.2402868-4-fabrice.gasnier@foss.st.com>
+ <ZQdOcDQR6qONmmnR@fedora> <7aa66ac8-eceb-2f6e-960b-2c4dac9f595e@foss.st.com>
+In-Reply-To: <7aa66ac8-eceb-2f6e-960b-2c4dac9f595e@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.201.20.59]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-21_11,2023-09-21_01,2023-05-22_02
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 Sep 2023 12:02:53 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> This adds a new driver for Analog Devices, Inc. AD2S1210 resolver to
-> digital converter. The driver is based on the staging driver with the
-> following improvements:
+On 9/19/23 17:37, Fabrice Gasnier wrote:
+> On 9/17/23 21:07, William Breathitt Gray wrote:
+>> On Tue, Aug 29, 2023 at 03:40:24PM +0200, Fabrice Gasnier wrote:
+>>> This adds a new counter tool to be able to test various watch events.
+>>> A flexible watch array can be populated from command line, each field
+>>> may be tuned with a dedicated command line argument.
+>>> Each argument can be repeated several times: each time it gets repeated,
+>>> a corresponding new watch element is allocated.
+>>>
+>>> It also comes with a simple default watch (to monitor overflows), used
+>>> when no watch parameters are provided.
+>>>
+>>> The print_usage() routine proposes another example, from the command line,
+>>> which generates a 2 elements watch array, to monitor:
+>>> - overflow events
+>>> - capture events, on channel 3, that reads read captured data by
+>>>   specifying the component id (capture3_component_id being 7 here).
+>>>
+>>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+>>
+>> Hi Fabrice,
+>>
+>> This is great idea, it'll make it so much easier to test out drivers
+>> so I'm excited! :-)
 > 
-> Fixes:
-> - Fix use before initialization bug in probe.
-> - Fix not checking error returns in probe.
-> - Remove spi_setup() and spi_set_drvdata() from probe.
-> - Fix ordering of devm_iio_device_register()
-> - Remove incorrect hysteresis logic
+> Hi William,
 > 
-> Changes:
-> - Use BIT/GENMASK macros.
-> - Use devicetree to get CLKIN frequency (was sysfs attribute).
-> - No longer bit-shift the raw value for IIO_CHAN_INFO_RAW.
-> - Use regmap for register access.
-> - Remove config sysfs attribute.
-> - Use gpio array for mode and resolution gpios.
-> - Invert sample gpio logic and use GPIO_ACTIVE_LOW in devicetree.
-> - Change hysteresis to use IIO_CHAN_INFO_HYSTERESIS instead of custom
->   device attribute.
-> - Rename fexcit attribute to excitation_frequency.
-> - Use devicetree to specify resolution instead of sysfs attribute.
+> Thanks
 > 
-> Additions:
-> - Implement IIO_CHAN_INFO_SCALE.
-> - Implement debugfs register access.
-> - Add phase_lock_range attribute.
-> - Add triggered buffer support.
+>>
+>> This is a new tool, so would you add a MAINTAINERS entry for the
+>> counter_watch_events.c file?
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Hi David,
-
-Great to see you are looking at this one.
-
-The way I'd prefer to see a staging graduation is not to delete the old driver
-and replace it with a more fully featured driver.
-
-Fix it up in staging then propose a move as a git mv
-but format the patch with move detection disabled so that we can see
-the whole code in that graduation patch.
-
-Move the minimum first that complies with the IIO ABI and is fairly clean
-then add features, possibly as a follow up patch set.
-
-There may be existing users of this driver and they want to see the
-gradual steps and chose whether to backport them all or not.
-
-Jonathan
-
-
-> ---
->  .../testing/sysfs-bus-iio-resolver-ad2s1210   | 109 ++
->  drivers/iio/resolver/Kconfig                  |  13 +
->  drivers/iio/resolver/Makefile                 |   1 +
->  drivers/iio/resolver/ad2s1210.c               | 948 ++++++++++++++++++
->  4 files changed, 1071 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
->  create mode 100644 drivers/iio/resolver/ad2s1210.c
+> I haven't thought about it.
+> I can add a MAINTAINERS entry, yes!
+> Who would you suggest ?
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210 b/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
-> new file mode 100644
-> index 000000000000..32890c85168e
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-resolver-ad2s1210
-> @@ -0,0 +1,109 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/dos_mis_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Mismatch
-> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
-> +		to 127 (4.826V). To convert the value to volts, multiply by
-> +		0.038.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/dos_ovr_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Overrange
-> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
-> +		to 127 (4.826V). To convert the value to volts, multiply by
-> +		0.038.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_max_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Reset Maximum
-> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
-> +		to 127 (4.826V). To convert the value to volts, multiply by
-> +		0.038.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_min_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Reset Minimum
-> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
-> +		to 127 (4.826V). To convert the value to volts, multiply by
-> +		0.038.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/fault
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns a hex value containing the fault bit flags.
-> +
-> +		Bit	Description
-> +		---	-----------
-> +		D7	Sine/cosine inputs clipped
-> +		D6	Sine/cosine inputs below LOS threshold
-> +		D5	Sine/cosine inputs exceed DOS overrange threshold
-> +		D4	Sine/cosine inputs exceed DOS mismatch threshold
-> +		D3	Tracking error exceeds LOT threshold
-> +		D2	Velocity exceeds maximum tracking rate
-> +		D1	Phase error exceeds phase lock range
-> +		D0	Configuration parity error
-> +
-> +		Writing any value will clear any fault conditions.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/excitation_frequency
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Excitation Frequency in Hz. Writing
-> +		sets the Excitation Frequency and performs a software reset on
-> +		the device to apply the change. Valid values are 2000 (2kHz) to
-> +		20000 (20kHz).
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/los_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Loss of Signal Reset Threshold
-> +		value. Writing sets the value. Valid values are 0 (0V) to
-> +		127 (4.826V). To convert the value to volts, multiply by 0.038.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/lot_high_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Loss of Position Tracking Detection
-> +		High Threshold value. Writing sets the value. Valid values are
-> +		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
-> +		depends on the selected resolution. To convert the value to
-> +		degrees, multiply by 0.35 for 10-bit resolution, multiply by
-> +		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
-> +		resolution.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/lot_low_thrd
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Loss of Position Tracking Detection
-> +		Low Threshold value. Writing sets the value. Valid values are
-> +		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
-> +		depends on the selected resolution. To convert the value to
-> +		degrees, multiply by 0.35 for 10-bit resolution, multiply by
-> +		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
-> +		resolution.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Phase lock range in degrees. Writing
-> +		sets the value in the configuration register.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range_available
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the possible values for the phase_lock_range
-> +		attribute, namely 44 and 360.
-> diff --git a/drivers/iio/resolver/Kconfig b/drivers/iio/resolver/Kconfig
-> index 47dbfead9b31..424529d36080 100644
-> --- a/drivers/iio/resolver/Kconfig
-> +++ b/drivers/iio/resolver/Kconfig
-> @@ -25,4 +25,17 @@ config AD2S1200
->  
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called ad2s1200.
-> +
-> +config AD2S1210
-> +	tristate "Analog Devices ad2s1210 driver"
-> +	depends on SPI
-> +	depends on COMMON_CLK
-> +	depends on GPIOLIB || COMPILE_TEST
-> +	help
-> +	  Say yes here to build support for Analog Devices spi resolver
-> +	  to digital converters, ad2s1210, provides direct access via sysfs.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called ad2s1210.
-> +
->  endmenu
-> diff --git a/drivers/iio/resolver/Makefile b/drivers/iio/resolver/Makefile
-> index fa558138ce45..7f6c876c35ae 100644
-> --- a/drivers/iio/resolver/Makefile
-> +++ b/drivers/iio/resolver/Makefile
-> @@ -5,3 +5,4 @@
->  
->  obj-$(CONFIG_AD2S90) += ad2s90.o
->  obj-$(CONFIG_AD2S1200) += ad2s1200.o
-> +obj-$(CONFIG_AD2S1210) += ad2s1210.o
-> diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-> new file mode 100644
-> index 000000000000..97833fbcbf7a
-> --- /dev/null
-> +++ b/drivers/iio/resolver/ad2s1210.c
-> @@ -0,0 +1,948 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * ad2s1210.c support for the ADI Resolver to Digital Converters: AD2S1210
-> + *
-> + * Copyright (c) 2010-2010 Analog Devices Inc.
-> + * Copyright (C) 2023 BayLibre, SAS
-> + */
-> +
-> +#include <linux/bits.h>
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-> +#include <linux/regmap.h>
-> +#include <linux/slab.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/types.h>
-> +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +
-> +#define DRV_NAME "ad2s1210"
-> +
-> +/* default value of control register on powerup */
-> +#define AD2S1210_DEF_CONTROL		0x7E
-> +
-> +/* control register flags */
-> +#define AD2S1210_ADDRESS_DATA		BIT(7)
-> +#define AD2S1210_PHASE_LOCK_RANGE_44	BIT(5)
-> +#define AD2S1210_ENABLE_HYSTERESIS	BIT(4)
-> +#define AD2S1210_SET_ENRES		GENMASK(3, 2)
-> +#define AD2S1210_SET_RES		GENMASK(1, 0)
-> +
-> +#define AD2S1210_REG_POSITION_MSB	0x80
-> +#define AD2S1210_REG_POSITION_LSB	0x81
-> +#define AD2S1210_REG_VELOCITY_MSB	0x82
-> +#define AD2S1210_REG_VELOCITY_LSB	0x83
-> +#define AD2S1210_REG_LOS_THRD		0x88
-> +#define AD2S1210_REG_DOS_OVR_THRD	0x89
-> +#define AD2S1210_REG_DOS_MIS_THRD	0x8A
-> +#define AD2S1210_REG_DOS_RST_MAX_THRD	0x8B
-> +#define AD2S1210_REG_DOS_RST_MIN_THRD	0x8C
-> +#define AD2S1210_REG_LOT_HIGH_THRD	0x8D
-> +#define AD2S1210_REG_LOT_LOW_THRD	0x8E
-> +#define AD2S1210_REG_EXCIT_FREQ		0x91
-> +#define AD2S1210_REG_CONTROL		0x92
-> +#define AD2S1210_REG_SOFT_RESET		0xF0
-> +#define AD2S1210_REG_FAULT		0xFF
-> +
-> +#define AD2S1210_MIN_CLKIN	6144000
-> +#define AD2S1210_MAX_CLKIN	10240000
-> +#define AD2S1210_MIN_EXCIT	2000
-> +#define AD2S1210_DEF_EXCIT	10000
-> +#define AD2S1210_MAX_EXCIT	20000
-> +#define AD2S1210_MIN_FCW	0x4
-> +#define AD2S1210_MAX_FCW	0x50
-> +
-> +enum ad2s1210_mode {
-> +	AD2S1210_MODE_POS = 0b00,
-> +	AD2S1210_MODE_VEL = 0b01,
-> +	AD2S1210_MODE_CONFIG = 0b11,
-> +};
-> +
-> +enum ad2s1210_resolution {
-> +	AD2S1210_RES_10 = 0b00,
-> +	AD2S1210_RES_12 = 0b01,
-> +	AD2S1210_RES_14 = 0b10,
-> +	AD2S1210_RES_16 = 0b11,
-> +};
-> +
-> +struct ad2s1210_state {
-> +	struct mutex lock;
-> +	struct spi_device *sdev;
-> +	/** GPIO pin connected to SAMPLE line. */
-> +	struct gpio_desc *sample_gpio;
-> +	/** GPIO pins connected to A0 and A1 lines. */
-> +	struct gpio_descs *mode_gpios;
-> +	/** Used to access config registers. */
-> +	struct regmap *regmap;
-> +	/** The external oscillator frequency in Hz. */
-> +	unsigned long fclkin;
-> +	/** The selected resolution */
-> +	enum ad2s1210_resolution resolution;
-> +	/* Scan buffer */
-> +	struct {
-> +		__be16 chan[2];
-> +		/* Ensure timestamp is naturally aligned. */
-> +		s64 timestamp __aligned(8);
-> +	} scan;
-> +	u8 rx[2] __aligned(IIO_DMA_MINALIGN);
-> +	u8 tx[2];
-> +};
-> +
-> +static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
-> +{
-> +	struct gpio_descs *gpios = st->mode_gpios;
-> +	DECLARE_BITMAP(bitmap, 2);
-> +
-> +	bitmap[0] = mode;
-> +
-> +	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
-> +				     bitmap);
-> +}
-> +
-> +/**
-> + * Writes the given data to the given register address.
-> + *
-> + * If the mode is configurable, the device will first be placed in
-> + * configuration mode.
-> + */
-> +static int ad2s1210_regmap_reg_write(void *context, unsigned int reg,
-> +				     unsigned int val)
-> +{
-> +	struct ad2s1210_state *st = context;
-> +	struct spi_transfer xfers[] = {
-> +		{
-> +			.len = 1,
-> +			.rx_buf = &st->rx[0],
-> +			.tx_buf = &st->tx[0],
-> +			.cs_change = 1,
-> +		}, {
-> +			.len = 1,
-> +			.rx_buf = &st->rx[1],
-> +			.tx_buf = &st->tx[1],
-> +		},
-> +	};
-> +	int ret;
-> +
-> +	/* values can only be 7 bits, the MSB indicates an address */
-> +	if (val & ~0x7F)
-> +		return -EINVAL;
-> +
-> +	st->tx[0] = reg;
-> +	st->tx[1] = val;
-> +
-> +	ret = ad2s1210_set_mode(st, AD2S1210_MODE_CONFIG);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
-> +}
-> +
-> +/**
-> + * Reads value from one of the registers.
-> + *
-> + * If the mode is configurable, the device will first be placed in
-> + * configuration mode.
-> + */
-> +static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
-> +				    unsigned int *val)
-> +{
-> +	struct ad2s1210_state *st = context;
-> +	struct spi_transfer xfers[] = {
-> +		{
-> +			.len = 1,
-> +			.rx_buf = &st->rx[0],
-> +			.tx_buf = &st->tx[0],
-> +			.cs_change = 1,
-> +		}, {
-> +			.len = 1,
-> +			.rx_buf = &st->rx[1],
-> +			.tx_buf = &st->tx[1],
-> +		},
-> +	};
-> +	int ret;
-> +
-> +	ret = ad2s1210_set_mode(st, AD2S1210_MODE_CONFIG);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	st->tx[0] = reg;
-> +	/* Must be valid register address here otherwise this could write data.
-> +	 * It doesn't matter which one.
-> +	 */
-> +	st->tx[1] = AD2S1210_REG_FAULT;
-> +
-> +	ret = spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* If the D7 bit is set on any read/write register, it indicates a
-> +	 * parity error. The fault register is read-only and the D7 bit means
-> +	 * something else there.
-> +	 */
-> +	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
-> +		return -EBADMSG;
-> +
-> +	*val = st->rx[1];
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * Sets the excitation frequency and performs software reset.
-> + *
-> + * Must be called with lock held.
-> + */
-> +static int ad2s1210_set_excitation_frequency(struct ad2s1210_state *st,
-> +					     u16 fexcit)
-> +{
-> +	int ret;
-> +	u8 fcw;
-> +
-> +	fcw = fexcit * (1 << 15) / st->fclkin;
-> +	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW)
-> +		return -ERANGE;
-> +
-> +	ret = regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* software reset reinitializes the excitation frequency output */
-> +	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
-> +}
-> +
-> +static ssize_t excitation_frequency_show(struct device *dev,
-> +						  struct device_attribute *attr,
-> +						  char *buf)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	unsigned int value;
-> +	u16 fexcit;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_read(st->regmap, AD2S1210_REG_EXCIT_FREQ, &value);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	fexcit = value * st->fclkin / (1 << 15);
-> +
-> +	ret = sysfs_emit(buf, "%u\n", fexcit);
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static ssize_t excitation_frequency_store(struct device *dev,
-> +						   struct device_attribute *attr,
-> +						   const char *buf, size_t len)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	u16 fexcit;
-> +	int ret;
-> +
-> +	ret = kstrtou16(buf, 10, &fexcit);
-> +	if (ret < 0 || fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = ad2s1210_set_excitation_frequency(st, fexcit);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	ret = len;
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static ssize_t phase_lock_range_show(struct device *dev,
-> +				     struct device_attribute *attr,
-> +				     char *buf)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +			       AD2S1210_PHASE_LOCK_RANGE_44);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	ret = sysfs_emit(buf, "%d\n", ret ? 44 : 360);
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static ssize_t phase_lock_range_store(struct device *dev,
-> +				      struct device_attribute *attr,
-> +				      const char *buf, size_t len)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	u16 udata;
-> +	int ret;
-> +
-> +	ret = kstrtou16(buf, 10, &udata);
-> +	if (ret < 0 || (udata != 44 && udata != 360))
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +				 AD2S1210_PHASE_LOCK_RANGE_44,
-> +				 udata == 44 ? AD2S1210_PHASE_LOCK_RANGE_44 : 0);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	ret = len;
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static ssize_t phase_lock_range_available_show(struct device *dev,
-> +					       struct device_attribute *attr,
-> +					       char *buf)
-> +{
-> +	return sysfs_emit(buf, "44 360\n");
-> +}
-> +
-> +/* read the fault register since last sample */
-> +static ssize_t fault_show(struct device *dev,
-> +				   struct device_attribute *attr, char *buf)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	unsigned int value;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &value);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret < 0 ? ret : sysfs_emit(buf, "0x%02x\n", value);
-> +}
-> +
-> +static ssize_t fault_store(struct device *dev,
-> +			   struct device_attribute *attr,
-> +			   const char *buf,
-> +			   size_t len)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	unsigned int value;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	gpiod_set_value(st->sample_gpio, 1);
-> +	/* delay (2 * tck + 20) nano seconds */
-> +	udelay(1);
-> +	gpiod_set_value(st->sample_gpio, 0);
-> +
-> +	ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &value);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	gpiod_set_value(st->sample_gpio, 1);
-> +	gpiod_set_value(st->sample_gpio, 0);
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret < 0 ? ret : len;
-> +}
-> +
-> +static ssize_t reg_show(struct device *dev,
-> +				 struct device_attribute *attr,
-> +				 char *buf)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> +	unsigned int value;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_read(st->regmap, iattr->address, &value);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret < 0 ? ret : sysfs_emit(buf, "%d\n", value);
-> +}
-> +
-> +static ssize_t reg_store(struct device *dev,
-> +				  struct device_attribute *attr,
-> +				  const char *buf, size_t len)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	unsigned char data;
-> +	int ret;
-> +	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> +
-> +	ret = kstrtou8(buf, 10, &data);
-> +	if (ret < 0)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_write(st->regmap, iattr->address, data);
-> +	mutex_unlock(&st->lock);
-> +	return ret < 0 ? ret : len;
-> +}
-> +
-> +static const int ad2s1210_velocity_scale[] = {
-> +	17089132, /* 8.192MHz / (2*pi * 2500 / 2^15) */
-> +	42722830, /* 8.192MHz / (2*pi * 1000 / 2^15) */
-> +	85445659, /* 8.192MHz / (2*pi * 500 / 2^15) */
-> +	341782638, /* 8.192MHz / (2*pi * 125 / 2^15) */
-> +};
-> +
-> +static int ad2s1210_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int *val,
-> +			     int *val2,
-> +			     long mask)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +	int ret = 0;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		mutex_lock(&st->lock);
-> +		gpiod_set_value(st->sample_gpio, 1);
-> +		/* delay (6 * tck + 20) nano seconds */
-> +		udelay(1);
-> +
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			ret = ad2s1210_set_mode(st, AD2S1210_MODE_POS);
-> +			break;
-> +		case IIO_ANGL_VEL:
-> +			ret = ad2s1210_set_mode(st, AD2S1210_MODE_VEL);
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +		if (ret < 0)
-> +			goto error_info_raw;
-> +		ret = spi_read(st->sdev, st->rx, 2);
-> +		if (ret < 0)
-> +			goto error_info_raw;
-> +
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			*val = be16_to_cpup((__be16 *)st->rx);
-> +			ret = IIO_VAL_INT;
-> +			break;
-> +		case IIO_ANGL_VEL:
-> +			*val = (s16)be16_to_cpup((__be16 *)st->rx);
-> +			ret = IIO_VAL_INT;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +error_info_raw:
-> +		gpiod_set_value(st->sample_gpio, 0);
-> +		/* delay (2 * tck + 20) nano seconds */
-> +		udelay(1);
-> +		mutex_unlock(&st->lock);
-> +		break;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			/* approx 0.3 arc min converted to radians */
-> +			*val = 0;
-> +			*val2 = 95874;
-> +			ret = IIO_VAL_INT_PLUS_NANO;
-> +			break;
-> +		case IIO_ANGL_VEL:
-> +			*val = st->fclkin;
-> +			*val2 = ad2s1210_velocity_scale[st->resolution];
-> +			ret = IIO_VAL_FRACTIONAL;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +		break;
-> +
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			mutex_lock(&st->lock);
-> +			ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +					       AD2S1210_ENABLE_HYSTERESIS);
-> +			if (ret < 0)
-> +				goto error_info_hysteresis;
-> +
-> +			*val = !!ret;
-> +			ret = IIO_VAL_INT;
-> +
-> +error_info_hysteresis:
-> +			mutex_unlock(&st->lock);
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +		break;
-> +
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int ad2s1210_read_avail(struct iio_dev *indio_dev,
-> +			       struct iio_chan_spec const *chan,
-> +			       const int **vals, int *type,
-> +			       int *length, long mask)
-> +{
-> +	static const int available[] = { 0, 1 };
-> +	int ret = -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			*vals = available;
-> +			*type = IIO_VAL_INT;
-> +			*length = ARRAY_SIZE(available);
-> +			ret = IIO_AVAIL_LIST;
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int ad2s1210_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int val, int val2, long mask)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +	int ret = -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			mutex_lock(&st->lock);
-> +			ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +						 AD2S1210_ENABLE_HYSTERESIS,
-> +						 val ? AD2S1210_ENABLE_HYSTERESIS
-> +						     : 0);
-> +			mutex_unlock(&st->lock);
-> +			break;
-> +
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static IIO_DEVICE_ATTR_RW(excitation_frequency, 0);
-> +static IIO_DEVICE_ATTR_RW(phase_lock_range, 0);
-> +static IIO_DEVICE_ATTR_RO(phase_lock_range_available, 0);
-> +static IIO_DEVICE_ATTR_RW(fault, 0);
-> +static IIO_DEVICE_ATTR_NAMED_RW(los_thrd, reg, AD2S1210_REG_LOS_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(dos_ovr_thrd, reg, AD2S1210_REG_DOS_OVR_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(dos_mis_thrd, reg, AD2S1210_REG_DOS_MIS_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(dos_rst_max_thrd, reg,
-> +				AD2S1210_REG_DOS_RST_MAX_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(dos_rst_min_thrd, reg,
-> +				AD2S1210_REG_DOS_RST_MIN_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(lot_high_thrd, reg, AD2S1210_REG_LOT_HIGH_THRD);
-> +static IIO_DEVICE_ATTR_NAMED_RW(lot_low_thrd, reg, AD2S1210_REG_LOT_LOW_THRD);
-> +
-> +static const struct iio_chan_spec ad2s1210_channels[] = {
-> +	{
-> +		.type = IIO_ANGL,
-> +		.indexed = 1,
-> +		.channel = 0,
-> +		.scan_index = 0,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 16,
-> +			.storagebits = 16,
-> +			.endianness = IIO_BE,
-> +		},
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_HYSTERESIS),
-> +		.info_mask_separate_available =
-> +					BIT(IIO_CHAN_INFO_HYSTERESIS),
-> +		.datasheet_name = "position",
-> +	}, {
-> +		.type = IIO_ANGL_VEL,
-> +		.indexed = 1,
-> +		.channel = 0,
-> +		.scan_index = 1,
-> +		.scan_type = {
-> +			.sign = 's',
-> +			.realbits = 16,
-> +			.storagebits = 16,
-> +			.endianness = IIO_BE,
-> +		},
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
-> +		.datasheet_name = "velocity",
-> +	},
-> +	IIO_CHAN_SOFT_TIMESTAMP(2),
-> +};
-> +
-> +static struct attribute *ad2s1210_attributes[] = {
-> +	&iio_dev_attr_excitation_frequency.dev_attr.attr,
-> +	&iio_dev_attr_phase_lock_range.dev_attr.attr,
-> +	&iio_dev_attr_phase_lock_range_available.dev_attr.attr,
-> +	&iio_dev_attr_fault.dev_attr.attr,
-> +	&iio_dev_attr_los_thrd.dev_attr.attr,
-> +	&iio_dev_attr_dos_ovr_thrd.dev_attr.attr,
-> +	&iio_dev_attr_dos_mis_thrd.dev_attr.attr,
-> +	&iio_dev_attr_dos_rst_max_thrd.dev_attr.attr,
-> +	&iio_dev_attr_dos_rst_min_thrd.dev_attr.attr,
-> +	&iio_dev_attr_lot_high_thrd.dev_attr.attr,
-> +	&iio_dev_attr_lot_low_thrd.dev_attr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group ad2s1210_attribute_group = {
-> +	.attrs = ad2s1210_attributes,
-> +};
-> +
-> +static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
-> +				       unsigned int reg, unsigned int writeval,
-> +				       unsigned int *readval)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	if (readval)
-> +		ret = regmap_read(st->regmap, reg, readval);
-> +	else
-> +		ret = regmap_write(st->regmap, reg, writeval);
-> +
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +	size_t chan = 0;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	memset(&st->scan, 0, sizeof(st->scan));
-> +	gpiod_set_value(st->sample_gpio, 1);
-> +
-> +	if (test_bit(0, indio_dev->active_scan_mask)) {
-> +		ret = ad2s1210_set_mode(st, AD2S1210_MODE_POS);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		/* REVIST: we can read 3 bytes here and also get fault flags */
-> +		ret = spi_read(st->sdev, st->rx, 2);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		memcpy(&st->scan.chan[chan++], st->rx, 2);
-> +	}
-> +
-> +	if (test_bit(1, indio_dev->active_scan_mask)) {
-> +		ret = ad2s1210_set_mode(st, AD2S1210_MODE_VEL);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		/* REVIST: we can read 3 bytes here and also get fault flags */
-> +		ret = spi_read(st->sdev, st->rx, 2);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		memcpy(&st->scan.chan[chan++], st->rx, 2);
-> +	}
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan, pf->timestamp);
-> +
-> +error_ret:
-> +	gpiod_set_value(st->sample_gpio, 0);
-> +	mutex_unlock(&st->lock);
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static const struct iio_info ad2s1210_info = {
-> +	.read_raw = ad2s1210_read_raw,
-> +	.read_avail = ad2s1210_read_avail,
-> +	.write_raw = ad2s1210_write_raw,
-> +	.attrs = &ad2s1210_attribute_group,
-> +	.debugfs_reg_access = &ad2s1210_debugfs_reg_access,
-> +};
-> +
-> +static int ad2s1210_setup_properties(struct ad2s1210_state *st)
-> +{
-> +	struct device *dev = &st->sdev->dev;
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret,
-> +			"failed to read assigned-resolution-bits property\n");
-> +
-> +	if (val < 10 || val > 16)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "resolution out of range: %u\n", val);
-> +
-> +	st->resolution = (val - 10) >> 1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad2s1210_setup_clocks(struct ad2s1210_state *st)
-> +{
-> +	struct device *dev = &st->sdev->dev;
-> +	struct clk *clk;
-> +
-> +	clk = devm_clk_get_enabled(dev, NULL);
-> +	if (IS_ERR(clk))
-> +		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
-> +
-> +	st->fclkin = clk_get_rate(clk);
-> +	if (st->fclkin < AD2S1210_MIN_CLKIN || st->fclkin > AD2S1210_MAX_CLKIN)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "clock frequency out of range: %lu\n",
-> +				     st->fclkin);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
-> +{
-> +	struct device *dev = &st->sdev->dev;
-> +	struct gpio_descs *resolution_gpios;
-> +	DECLARE_BITMAP(bitmap, 2);
-> +	int ret;
-> +
-> +	/* should not be sampling on startup */
-> +	st->sample_gpio = devm_gpiod_get(dev, "sample", GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->sample_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(st->sample_gpio),
-> +				     "failed to request sample GPIO\n");
-> +
-> +	/* both pins high means that we start in config mode */
-> +	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(st->mode_gpios))
-> +		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
-> +				     "failed to request mode GPIOs\n");
-> +
-> +	if (st->mode_gpios->ndescs != 2)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "requires exactly 2 mode-gpios\n");
-> +
-> +	/* If resolution gpios are provided, they get set to the required
-> +	 * resolution, otherwise it is assumed the RES0 and RES1 pins are
-> +	 * hard-wired to match the resolution indicated in the devicetree.
-> +	 */
-> +	resolution_gpios = devm_gpiod_get_array_optional(dev, "resolution",
-> +							 GPIOD_ASIS);
-> +	if (IS_ERR(resolution_gpios))
-> +		return dev_err_probe(dev, PTR_ERR(resolution_gpios),
-> +				     "failed to request resolution GPIOs\n");
-> +
-> +	if (resolution_gpios) {
-> +		if (resolution_gpios->ndescs != 2)
-> +			return dev_err_probe(dev, -EINVAL,
-> +				      "requires exactly 2 resolution-gpios\n");
-> +
-> +		bitmap[0] = st->resolution;
-> +
-> +		ret = gpiod_set_array_value(resolution_gpios->ndescs,
-> +					    resolution_gpios->desc,
-> +					    resolution_gpios->info,
-> +					    bitmap);
-> +		if (ret < 0)
-> +			return dev_err_probe(dev, ret,
-> +					     "failed to set resolution gpios\n");
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct regmap_range ad2s1210_regmap_readable_ranges[] = {
-> +	regmap_reg_range(AD2S1210_REG_POSITION_MSB, AD2S1210_REG_VELOCITY_LSB),
-> +	regmap_reg_range(AD2S1210_REG_LOS_THRD, AD2S1210_REG_LOT_LOW_THRD),
-> +	regmap_reg_range(AD2S1210_REG_EXCIT_FREQ, AD2S1210_REG_CONTROL),
-> +	regmap_reg_range(AD2S1210_REG_FAULT, AD2S1210_REG_FAULT),
-> +};
-> +
-> +static const struct regmap_access_table ad2s1210_regmap_rd_table = {
-> +	.yes_ranges = ad2s1210_regmap_readable_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad2s1210_regmap_readable_ranges),
-> +};
-> +
-> +static const struct regmap_range ad2s1210_regmap_writeable_ranges[] = {
-> +	regmap_reg_range(AD2S1210_REG_LOS_THRD, AD2S1210_REG_LOT_LOW_THRD),
-> +	regmap_reg_range(AD2S1210_REG_EXCIT_FREQ, AD2S1210_REG_CONTROL),
-> +	regmap_reg_range(AD2S1210_REG_SOFT_RESET, AD2S1210_REG_SOFT_RESET),
-> +	regmap_reg_range(AD2S1210_REG_FAULT, AD2S1210_REG_FAULT),
-> +};
-> +
-> +static const struct regmap_access_table ad2s1210_regmap_wr_table = {
-> +	.yes_ranges = ad2s1210_regmap_writeable_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad2s1210_regmap_writeable_ranges),
-> +};
-> +
-> +static int ad2s1210_setup_regmap(struct ad2s1210_state *st)
-> +{
-> +	struct device *dev = &st->sdev->dev;
-> +	const struct regmap_config config = {
-> +		.reg_bits = 8,
-> +		.val_bits = 8,
-> +		.disable_locking = true,
-> +		.reg_read = ad2s1210_regmap_reg_read,
-> +		.reg_write = ad2s1210_regmap_reg_write,
-> +		.rd_table = &ad2s1210_regmap_rd_table,
-> +		.wr_table = &ad2s1210_regmap_wr_table,
-> +		.can_sleep = true,
-> +	};
-> +
-> +	st->regmap = devm_regmap_init(dev, NULL, st, &config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap),
-> +				     "failed to allocate register map\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad2s1210_init(struct ad2s1210_state *st)
-> +{
-> +	unsigned char data;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	data = AD2S1210_DEF_CONTROL & ~AD2S1210_SET_RES;
-> +	data |= st->resolution;
-> +
-> +	ret = regmap_write(st->regmap, AD2S1210_REG_CONTROL, data);
-> +	if (ret < 0)
-> +		goto error_ret;
-> +
-> +	ret = ad2s1210_set_excitation_frequency(st, AD2S1210_DEF_EXCIT);
-> +
-> +error_ret:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static int ad2s1210_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ad2s1210_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st = iio_priv(indio_dev);
-> +
-> +	mutex_init(&st->lock);
-> +	st->sdev = spi;
-> +
-> +	ret = ad2s1210_setup_properties(st);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ad2s1210_setup_clocks(st);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ad2s1210_setup_gpios(st);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ad2s1210_setup_regmap(st);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ad2s1210_init(st);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	indio_dev->info = &ad2s1210_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = ad2s1210_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
-> +	indio_dev->name = spi_get_device_id(spi)->name;
-> +
-> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &ad2s1210_trigger_handler, NULL);
-> +	if (ret < 0)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				     "iio triggered buffer setup failed\n");
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct of_device_id ad2s1210_of_match[] = {
-> +	{ .compatible = "adi,ad2s1210", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, ad2s1210_of_match);
-> +
-> +static const struct spi_device_id ad2s1210_id[] = {
-> +	{ "ad2s1210" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, ad2s1210_id);
-> +
-> +static struct spi_driver ad2s1210_driver = {
-> +	.driver = {
-> +		.name = DRV_NAME,
-> +		.of_match_table = ad2s1210_of_match,
-> +	},
-> +	.probe = ad2s1210_probe,
-> +	.id_table = ad2s1210_id,
-> +};
-> +module_spi_driver(ad2s1210_driver);
-> +
-> +MODULE_AUTHOR("Graff Yang <graff.yang@gmail.com>");
-> +MODULE_DESCRIPTION("Analog Devices AD2S1210 Resolver to Digital SPI driver");
-> +MODULE_LICENSE("GPL v2");
+>>
+>> More comments inline below.
+>>
+>>> ---
+>>>  tools/counter/Build                  |   1 +
+>>>  tools/counter/Makefile               |   8 +-
+>>>  tools/counter/counter_watch_events.c | 348 +++++++++++++++++++++++++++
+>>>  3 files changed, 356 insertions(+), 1 deletion(-)
+>>>  create mode 100644 tools/counter/counter_watch_events.c
+>>>
+>>> diff --git a/tools/counter/Build b/tools/counter/Build
+>>> index 33f4a51d715e..4bbadb7ec93a 100644
+>>> --- a/tools/counter/Build
+>>> +++ b/tools/counter/Build
+>>> @@ -1 +1,2 @@
+>>>  counter_example-y += counter_example.o
+>>> +counter_watch_events-y += counter_watch_events.o
+>>> diff --git a/tools/counter/Makefile b/tools/counter/Makefile
+>>> index b2c2946f44c9..00e211edd768 100644
+>>> --- a/tools/counter/Makefile
+>>> +++ b/tools/counter/Makefile
+>>> @@ -14,7 +14,7 @@ MAKEFLAGS += -r
+>>>  
+>>>  override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
+>>>  
+>>> -ALL_TARGETS := counter_example
+>>> +ALL_TARGETS := counter_example counter_watch_events
+>>>  ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+>>>  
+>>>  all: $(ALL_PROGRAMS)
+>>> @@ -31,6 +31,12 @@ $(OUTPUT)include/linux/counter.h: ../../include/uapi/linux/counter.h
+>>>  
+>>>  prepare: $(OUTPUT)include/linux/counter.h
+>>>  
+>>> +COUNTER_WATCH_EVENTS := $(OUTPUT)counter_watch_events.o
+>>> +$(COUNTER_WATCH_EVENTS): prepare FORCE
+>>> +	$(Q)$(MAKE) $(build)=counter_watch_events
+>>> +$(OUTPUT)counter_watch_events: $(COUNTER_WATCH_EVENTS)
+>>> +	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+>>> +
+>>
+>> Move this below the COUNTER_EXAMPLE block just so we can keep the
+>> recipes in alphabetical order.
+> 
+> Ack, will update it.
+> 
+>>
+>>>  COUNTER_EXAMPLE := $(OUTPUT)counter_example.o
+>>>  $(COUNTER_EXAMPLE): prepare FORCE
+>>>  	$(Q)$(MAKE) $(build)=counter_example
+>>> diff --git a/tools/counter/counter_watch_events.c b/tools/counter/counter_watch_events.c
+>>> new file mode 100644
+>>> index 000000000000..7f73a1519d8e
+>>> --- /dev/null
+>>> +++ b/tools/counter/counter_watch_events.c
+>>> @@ -0,0 +1,348 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +/* Counter - Test various watch events in a userspace application
+>>
+>> "Counter" should be "Counter Watch Events" (or "counter_watch_events").
+>>
+>>> + * inspired by counter_example.c
+>>
+>> No need to mention counter_example.c, this utility does far more than
+>> and bares little resemblance at this point to counter_example.c which is
+>> really just a bare minimal example of watching Counter events.
+> 
+> Ack
+> 
+>>
+>>> + */
+>>> +
+>>> +#include <errno.h>
+>>> +#include <fcntl.h>
+>>> +#include <getopt.h>
+>>> +#include <linux/counter.h>
+>>> +#include <stdlib.h>
+>>> +#include <stdio.h>
+>>> +#include <string.h>
+>>> +#include <sys/ioctl.h>
+>>> +#include <unistd.h>
+>>> +
+>>> +#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+>>
+>> My initial reaction was that this macro is already exposed in some
+>> header for us, but my local /usr/include/linux/kernel.h file doesn't
+>> appear to bare it so I guess not. Perhaps it'll be fine for our needs --
+>> I think the only difference between this ARRAY_SIZE and the Linux kernel
+>> one is the addition of __must_be_array(x).
+> 
+> I had the same reaction when trying to use it. Then, I figured out
+> several tools redefine this macro.
+> Digging further, I just found out some tools have in their Makefile CFLAGS:
+> -I$(srctree)/tools/include
+> and include from there: <linux/kernel.h>
+> 
+> I'll update the Makefile in v2, and remove this definition from here.
+> 
+>>
+>>> +
+>>> +static struct counter_watch simple_watch[] = {
+>>> +	{
+>>> +		/* Component data: Count 0 count */
+>>> +		.component.type = COUNTER_COMPONENT_COUNT,
+>>> +		.component.scope = COUNTER_SCOPE_COUNT,
+>>> +		.component.parent = 0,
+>>> +		/* Event type: Index */
+>>> +		.event = COUNTER_EVENT_OVERFLOW_UNDERFLOW,
+>>
+>> There's a bit of confusion here. The comment says the event type is
+>> INDEX, but the structure event type is set for OVERFLOW_UNDERFLOW; also,
+>> the commit description states that we're monitoring "overflows" which
+>> implies to me the OVERFLOW event type. So which of the three is it?
+> 
+> Ah yes, It's a mix of bad copy paste and updates. I'll fix it.
+> 
+>>
+>>> +		/* Device event channel 0 */
+>>> +		.channel = 0,
+>>> +	},
+>>> +};
+>>> +
+>>> +static int find_match_or_number_from_array(char *arg, const char * const str[], int sz, __u8 *val)
+>>> +{
+>>> +	unsigned int i;
+>>> +	char *dummy;
+>>> +	unsigned long idx;
+>>> +	int ret;
+>>> +
+>>> +	for (i = 0; i < sz; i++) {
+>>> +		ret = strncmp(arg, str[i], strlen(str[i]));
+>>> +		if (!ret && strlen(str[i]) == strlen(arg)) {
+>>> +			*val = i;
+>>> +			return 0;
+>>> +		}
+>>
+>> This has several strlen calls so I wonder if it's more wasteful than it
+>> needs to me. I suppose the compiler would optimize this away, but I
+>> think there is an alternative solution.
+>>
+>> We're checking for an exact match, so you don't need the string length.
+>> Instead, you can compare each character, break when characters differ,
+>> or return 0 when you reached the null byte for both. So something like
+>> this:
+>>
+>>     for (j = 0; arg[j] == str[i][j]; j++) {
+>>             /* If we reached the end of the strings */
+>>             if (arg[j] == '\0') {
+>>                     *val = i;
+>>                     return 0;
+>>             }
+>>     }
+>>     /* Strings do not match; continue to the next string */
+>>
+>> We end up with the same number of lines, so I'll leave it up to you
+>> whether you want to use this solution, or if you consider the existing
+>> code clearer read.
+> 
+> I'll look forward in the direction you propose. First, we need to
+> confirm in which form the arguments can be expected. It depends on your
+> proposal to use a --watch string formatted arguments.
+> 
+>>
+>>> +	}
+>>> +
+>>> +	/* fallback to number */
+>>
+>> I'm not sure it makes sense to support numbers. Although it's true that
+>> the component type, component scope, and event type are passed as __u8
+>> values, users are expected to treat those values are opaque and pass
+>> them via the respective enum constants. Since we don't guarantee that
+>> the specific enum constant values will remain consistent between kernel
+>> versions, I don't think it's a good idea to give to users that sort of
+>> implication by allowing them to use raw numbers for configuration
+>> selection.
+> 
+> Ack, I can remove this.
+> 
+> I'm a bit surprised by this statement. I may be wrong... I'd expect a
+> userland binary to be compatible when updating to a newer kernel: e.g.
+> user API (ABI?) definitions to be stable (including enum constants) ?
+> 
+>>
+>>> +	idx = strtoul(optarg, &dummy, 10);
+>>> +	if (!errno) {
+>>> +		if (idx >= sz)
+>>> +			return -EINVAL;
+>>> +		*val = idx;
+>>> +		return 0;
+>>> +	}
+>>> +
+>>> +	return -errno;
+>>> +}
+>>> +
+>>> +static const char * const counter_event_type_name[] = {
+>>> +	"COUNTER_EVENT_OVERFLOW",
+>>> +	"COUNTER_EVENT_UNDERFLOW",
+>>> +	"COUNTER_EVENT_OVERFLOW_UNDERFLOW",
+>>> +	"COUNTER_EVENT_THRESHOLD",
+>>> +	"COUNTER_EVENT_INDEX",
+>>> +	"COUNTER_EVENT_CHANGE_OF_STATE",
+>>> +	"COUNTER_EVENT_CAPTURE",
+>>> +};
+>>> +
+>>> +static int counter_arg_to_event_type(char *arg, __u8 *event)
+>>> +{
+>>> +	return find_match_or_number_from_array(arg, counter_event_type_name,
+>>> +					       ARRAY_SIZE(counter_event_type_name), event);
+>>> +}
+>>> +
+>>> +static const char * const counter_component_type_name[] = {
+>>> +	"COUNTER_COMPONENT_NONE",
+>>> +	"COUNTER_COMPONENT_SIGNAL",
+>>> +	"COUNTER_COMPONENT_COUNT",
+>>> +	"COUNTER_COMPONENT_FUNCTION",
+>>> +	"COUNTER_COMPONENT_SYNAPSE_ACTION",
+>>> +	"COUNTER_COMPONENT_EXTENSION",
+>>> +};
+>>> +
+>>> +static int counter_arg_to_component_type(char *arg, __u8 *type)
+>>> +{
+>>> +	return find_match_or_number_from_array(arg, counter_component_type_name,
+>>> +					       ARRAY_SIZE(counter_component_type_name), type);
+>>> +}
+>>> +
+>>> +static const char * const counter_scope_name[] = {
+>>> +	"COUNTER_SCOPE_DEVICE",
+>>> +	"COUNTER_SCOPE_SIGNAL",
+>>> +	"COUNTER_SCOPE_COUNT",
+>>> +};
+>>> +
+>>> +static int counter_arg_to_scope(char *arg, __u8 *type)
+>>> +{
+>>> +	return find_match_or_number_from_array(arg, counter_scope_name,
+>>> +					       ARRAY_SIZE(counter_scope_name), type);
+>>> +}
+>>> +
+>>> +static void print_usage(void)
+>>> +{
+>>> +	fprintf(stderr, "Usage: counter_watch_events [options]...\n"
+>>> +		"Test various watch events for given counter device\n"
+>>> +		"  --channel -c <n>\n"
+>>> +		"        Set watch.channel\n"
+>>> +		"  --debug -d\n"
+>>> +		"        Prints debug information\n"
+>>> +		"  --event -e <number or counter_event_type string>\n"
+>>> +		"        Sets watch.event\n"
+>>> +		"  --help -h\n"
+>>> +		"        Prints usage\n"
+>>> +		"  --device-num -n <n>\n"
+>>> +		"        Set device number (/dev/counter<n>, default to 0)\n"
+>>> +		"  --id -i <n>\n"
+>>> +		"        Set watch.component.id\n"
+>>> +		"  --loop -l <n>\n"
+>>> +		"        Loop for a number of events (forever if n < 0)\n"
+>>> +		"  --parent -p <n>\n"
+>>> +		"        Set watch.component.parent number\n"
+>>> +		"  --scope -s <number or counter_scope string>\n"
+>>> +		"        Set watch.component.scope\n"
+>>> +		"  --type -t <number or counter_component_type string>\n"
+>>> +		"        Set watch.component.type\n"
+>>> +		"\n"
+>>> +		"Example with two watched events:\n\n"
+>>> +		"counter_watch_events -d \\\n"
+>>> +		"\t-t COUNTER_COMPONENT_COUNT -s COUNTER_SCOPE_COUNT"
+>>> +		" -e COUNTER_EVENT_OVERFLOW_UNDERFLOW -i 0 -c 0 \\\n"
+>>> +		"\t-t COUNTER_COMPONENT_EXTENSION -s COUNTER_SCOPE_COUNT"
+>>> +		" -e COUNTER_EVENT_CAPTURE -i 7 -c 3\n"
+>>> +		);
+>>> +}
+>>
+>> Are you following any particular convention for the usage description? I
+>> wonder if there is a particular preferred standard for command-line
+>> interface descriptions. A quick search brought up a few, such as the
+>> POSIX Utility Conventions[^1] and docopt[^2].
+>>
+>> One improvement I would recommend here is to put the short form of the
+>> option before the long form and separate them with a command to make it
+>> clearer (e.g. "-h, --help").
+>>
+>> [^1] https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
+>> [^2] http://docopt.org
+> 
+> Thanks for pointing this! So definitely a good pointer, and suggestion
+> to look at!
+> 
+> I'll try to improve in v2.
+> 
+>>
+>>> +
+>>> +static void print_watch(struct counter_watch *watch, int nwatch)
+>>> +{
+>>> +	int i;
+>>> +
+>>> +	/* prints the watch array in C-like structure */
+>>> +	printf("watch[%d] = {\n", nwatch);
+>>> +	for (i = 0; i < nwatch; i++) {
+>>> +		printf(" [%d] =\t{\n"
+>>> +		       "\t\t.component.type = %s\n"
+>>> +		       "\t\t.component.scope = %s\n"
+>>> +		       "\t\t.component.parent = %d\n"
+>>> +		       "\t\t.component.id = %d\n"
+>>> +		       "\t\t.event = %s\n"
+>>> +		       "\t\t.channel = %d\n"
+>>> +		       "\t},\n",
+>>> +		       i,
+>>> +		       counter_component_type_name[watch[i].component.type],
+>>> +		       counter_scope_name[watch[i].component.scope],
+>>> +		       watch[i].component.parent,
+>>> +		       watch[i].component.id,
+>>> +		       counter_event_type_name[watch[i].event],
+>>> +		       watch[i].channel);
+>>> +	}
+>>> +	printf("};\n");
+>>> +}
+>>> +
+>>> +static const struct option longopts[] = {
+>>> +	{ "channel",		required_argument, 0, 'c' },
+>>> +	{ "debug",		no_argument,       0, 'd' },
+>>> +	{ "event",		required_argument, 0, 'e' },
+>>> +	{ "help",		no_argument,       0, 'h' },
+>>> +	{ "device-num",		required_argument, 0, 'n' },
+>>> +	{ "id",			required_argument, 0, 'i' },
+>>> +	{ "loop",		required_argument, 0, 'l' },
+>>> +	{ "parent",		required_argument, 0, 'p' },
+>>> +	{ "scope",		required_argument, 0, 's' },
+>>> +	{ "type",		required_argument, 0, 't' },
+>>> +	{ },
+>>> +};
+>>> +
+>>> +int main(int argc, char **argv)
+>>> +{
+>>> +	int c, fd, i, ret;
+>>> +	struct counter_event event_data;
+>>> +	char *device_name = NULL;
+>>> +	int debug = 0, loop = -1;
+>>> +	char *dummy;
+>>> +	int dev_num = 0, nwatch = 0, ncfg[] = {0, 0, 0, 0, 0, 0};
+>>> +	int num_chan = 0, num_evt = 0, num_id = 0, num_p = 0, num_s = 0, num_t = 0;
+>>> +	struct counter_watch *watches;
+>>> +
+>>> +	/*
+>>> +	 * 1st pass: count events configurations number to allocate the watch array.
+>>> +	 * Each watch argument can be repeated several times: each time it gets repeated,
+>>> +	 * a corresponding watch is allocated (and configured) in 2nd pass.
+>>> +	 */
+>>
+>> It feels a somewhat prone to error (at least cumbersome) to populate
+> 
+> Yes, this could be error prone. This is also why I added a print of the
+> gathered arguments when using --debug option.
+> Perhaps this could be better to always print it (e.g. print_watch()) ?
+> 
+>> each watch via individual arguments for each field. Since a watch always
+>> has these fields, perhaps instead we could pass some format string that
+>> represents a watch, and deliminate watches via commas. For example, we
+>> could have --watch="cco00,ecc73" to represent the two watches in the
+>> usage example.
+> 
+> I like the idea, to concatenate as a string. With current approach, the
+> command line quickly becomes very long.
+> 
+> It makes it obvious in your example, that two watches are used, and no
+> argument is omitted.
+> On the opposite, each argument isn't very easy to understand compared to
+> plain text definition.
+> 
+>>
+>> Of course, we'd need to define a more robust format string convention
+>> than in my example to ensure the correct configuration is properly
+> 
+> Indeed, by using a single letter, we could face limitations (ex:
+> overflow, underflow, overflow_underflow, which letter for the 3rd here?)
+> 
+> If we go this way, probably need to brainstorm a bit.
+> 
+>> communicated. What do you think, would this approach would make things
+>> simpler, or just more complicated in the end?
+> 
+> I'm not 100% sure if some helpers like getopt() will help here? So, I
+> guess this could be more complicated. This may also be against the
+> guideline "options should be preceded by the '-' delimiter character."
+> in [^1] (Ok, this would rather be the --watch option, fed with watch data.)
+> 
+> Would you have suggestions regarding possible helpers ? Or do you have
+> in mind some others tools that already adopted such approach ?
 
+
+Hi William,
+
+I've prototyped something to follow your suggestion regarding --watch=
+string arguments. This may endup in more easy to read, and hopefully
+simpler approach :-).
+
+I'll post a V2 soon for this series (removing some patches that seems
+already applied), or just this tool.
+
+Thanks,
+Fabrice
+
+> 
+>>
+>>> +	while ((c = getopt_long(argc, argv, "c:de:hn:i:l:p:s:t:", longopts, NULL)) != -1) {
+>>> +		switch (c) {
+>>> +		case 'c':
+>>> +			ncfg[0]++;
+>>> +			break;
+>>> +		case 'e':
+>>> +			ncfg[1]++;
+>>> +			break;
+>>> +		case 'i':
+>>> +			ncfg[2]++;
+>>> +			break;
+>>> +		case 'p':
+>>> +			ncfg[3]++;
+>>> +			break;
+>>> +		case 's':
+>>> +			ncfg[4]++;
+>>> +			break;
+>>> +		case 't':
+>>> +			ncfg[5]++;
+>>> +			break;
+>>> +		};
+>>> +	};
+>>> +
+>>> +	for (i = 0; i < ARRAY_SIZE(ncfg); i++)
+>>> +		if (ncfg[i] > nwatch)
+>>> +			nwatch = ncfg[i];
+>>> +
+>>> +	if (nwatch) {
+>>> +		watches = calloc(nwatch, sizeof(*watches));
+>>
+>> We need to check if calloc fails, right?
+> 
+> Yes, you're right, will fix this too.
+> 
+> Thanks for reviewing!
+> Best regards,
+> Fabrice
+> 
+>>
+>> William Breathitt Gray 

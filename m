@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 448F17A9F1F
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 22:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FDAD7A9F2D
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 22:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbjIUUSD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Sep 2023 16:18:03 -0400
+        id S231565AbjIUUTE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Sep 2023 16:19:04 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjIUURi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 16:17:38 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85CB15AE01
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:29:21 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9ae22bf33a0so529866466b.0
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:29:21 -0700 (PDT)
+        with ESMTP id S231402AbjIUUS0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 16:18:26 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBE75AAB3
+        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:29:20 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99bf3f59905so150640666b.3
+        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 10:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695317351; x=1695922151; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695317350; x=1695922150; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NC6Tj/wZ71OdWmHfRNe2x49Rd8CoFCC05cRR7nhn858=;
-        b=fPov4pJEJR8vmoluOACwouZ/+kXHmDY/kV7Bk2BRvONEOnWSPR1HmDD26NE5S7wzpM
-         zykLKW/uuPmvb1CKSa22N3sdEN+5z9qXOLG1TtpGnfjt85+i4TXLOTJOxCSx6HNK8Oir
-         TLrZnWSnr9VQibaK8jhNJJVii/RJL72Njcha8gqWfZrLQoegOdtrjxDG87ATCv/CVRTq
-         DvXbOgFWvr2xUkaOWHbfdzs6ebTBKMhsXoNIaYFPcKf+CAzMVd7IgHLGE/0O+61KSlsN
-         mm3klhrRqwgkKTumKKTgPtAa2D+2ot4D35YkddpKZ1awU6dnB7M/Y8K4+fooJFPZ8otN
-         FNsA==
+        bh=gabiCx8aQ+iMVEJft2DL0LHbd3RWq71VIbUUi+w3JfM=;
+        b=F1TliWLaUbu8KINHlkXT8KssGRcrjc5tsPHvDoOxWazAcgJyhutZjJu8G9I+wK+xkh
+         J5oK0ezlTGa4jEeHmzQw+ipxcs9LcyGE2YbdahhvuL+OmuJ5ZnO38oZ9FGqwW/fe3MMy
+         s4TBT8UutRlqVHjwBzERvj1YKhTW92p/ySbhSJjLUjkBh2EvKgmT4fIoC91gXzxHNyre
+         oAkn1HP9QejCxWTqAFyivxKQTi021DRO+jUMhb8FWWOU14LE35idO+ZbBUxiiAGBt5aW
+         Fxo/QnU2C9Te91bqNoKcseonsXi5aTaFtMe2eLyM8JZF9hJNefNYmq1Q9Z8QqnjpWGpi
+         Qq0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695317351; x=1695922151;
+        d=1e100.net; s=20230601; t=1695317350; x=1695922150;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NC6Tj/wZ71OdWmHfRNe2x49Rd8CoFCC05cRR7nhn858=;
-        b=u6Oyy8Vft5vkYQqLGchweNeDWwWd4fgFc/OIFgO+rvmL9yfHNQaA41FuWCIl6F0cbI
-         4tWoUSvcv+3OSLMWp+0Z7z1EQaQ4eywLvkT9/OZJ5NCT5NwwrHjvQX3nMrKsFYg49IiG
-         T6qU3Z3wW2bg1At6qD2oleSpAYCLXzhEbTmsWRckbWNaSeQaJnz+B2uxvjJ3KSiKOc3m
-         7AgSjF/7oZ+TQ/DCU/OFYHS6YFybsHreiIqHmqrdt8490qETz3MKwkm5LogCopVC9YOp
-         1fFs+RiOjHeEORZSbig9mLmfLFThdtFhFItIfxoxtpfQn2/OC4H1cKzky1mHHHVsV+AM
-         K6BA==
-X-Gm-Message-State: AOJu0Yyjc/s5PaXLC2SGpW/ANsEAbFjktixg6koB53/ZW/T8neW4JBAh
-        eAziJCeUjzHul3DuJ4t0RkTfVwaT/opOAz3I5tAM4+QZ
-X-Google-Smtp-Source: AGHT+IEeRgrsoxDfX29qrjpP91FiFRBv3vO2R0yidMQo5d2X1FKFBQlgvaBLgvFag4zdxsrc6bIIrA==
-X-Received: by 2002:a05:600c:3789:b0:3fb:c075:b308 with SMTP id o9-20020a05600c378900b003fbc075b308mr4598503wmr.12.1695307457067;
+        bh=gabiCx8aQ+iMVEJft2DL0LHbd3RWq71VIbUUi+w3JfM=;
+        b=s0xB1/lzfTG9DeK49Y+E8dUhdna5TsAgFNT5RaOMJ5ikRf6MPCbbRVGaztvGZNyNDg
+         hdgl697qutfiBDqkwhV5TbnEOH4rtTGbq2eNoXNkV1iLvQdW0gYPehiCE/UOb19YfVuv
+         13d0Znrf8PNFrRX4zZi1GnqWMtv92E8Oxkv33BHuPniBvLfb7BYHIt1glUMO0D3jO4J9
+         SAKjnivWds0E0wfVNrQZeXCZrPCq5aXr1B1R6/htza7dP1F2fJW25rBuidiUydDgV5Ff
+         B4wW+4BNZsj6PDQBTXGahQEghIJOpOX+Vmfgv+3oas6+YDH0UIGj1GAg3GD8I2NbVk/c
+         eHdw==
+X-Gm-Message-State: AOJu0Ywh1uTK3XTN3NWtRCOf3jD6Czr/CGmEiPsmDwJlNthQf3XAdNZ4
+        Ir60e7m48yIhCLclbzH8VZbQ0g9mNID43Jd2nhiZ0s/o
+X-Google-Smtp-Source: AGHT+IGMZl/TatrnYES3LNioCY2DwT26zyGRXXVW2ZtQaBOVUD3PWf2yg31geciAz9PBdjwldIVOpA==
+X-Received: by 2002:a05:600c:ad4:b0:3f9:b430:199b with SMTP id c20-20020a05600c0ad400b003f9b430199bmr5382331wmr.15.1695307457930;
         Thu, 21 Sep 2023 07:44:17 -0700 (PDT)
 Received: from localhost.localdomain (abordeaux-655-1-129-86.w90-5.abo.wanadoo.fr. [90.5.10.86])
-        by smtp.gmail.com with ESMTPSA id s17-20020a1cf211000000b003fe2a40d287sm2125515wmc.1.2023.09.21.07.44.16
+        by smtp.gmail.com with ESMTPSA id s17-20020a1cf211000000b003fe2a40d287sm2125515wmc.1.2023.09.21.07.44.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 07:44:16 -0700 (PDT)
+        Thu, 21 Sep 2023 07:44:17 -0700 (PDT)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-staging@lists.linux.dev
@@ -61,103 +61,72 @@ Cc:     linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v2 05/19] staging: iio: resolver: ad2s1210: fix probe
-Date:   Thu, 21 Sep 2023 09:43:46 -0500
-Message-Id: <20230921144400.62380-6-dlechner@baylibre.com>
+Subject: [PATCH v2 06/19] staging: iio: resolver: ad2s1210: always use 16-bit value for raw read
+Date:   Thu, 21 Sep 2023 09:43:47 -0500
+Message-Id: <20230921144400.62380-7-dlechner@baylibre.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921144400.62380-1-dlechner@baylibre.com>
 References: <20230921144400.62380-1-dlechner@baylibre.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This fixes a number of issues in the ad2s1210_probe() function:
-- Move call to ad2s1210_setup_gpios() after `st->sdev = spi;`. This
-  fixes use of this pointer before it is initialized.
-- Check return value on ad2s1210_initial().
-- Move devm_iio_device_register() to the end to avoid race of
-  registering before fully initialized.
-- Remove call to spi_setup(). Note: MODE_3 was incorrect, it should be
-  MODE_1 but we can let the device tree select this.
-- Change default value for fclkin. This is an external oscillator, not
-  the SPI bus clock. (Will use device tree to get the correct value
-  in a future patch. For now, using the eval board value.)
-- Remove spi_set_drvdata().
+This removes the special handling for resolutions lower than 16 bits.
+This will allow us to use a fixed scale independent of the resolution.
+
+Also, for the record, according to the datasheet, the logic for the
+special handling based on hysteresis that was removed was incorrect.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/staging/iio/resolver/ad2s1210.c | 30 ++++++++++++-------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/staging/iio/resolver/ad2s1210.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index 0bdd5a30d45d..9c7f76114360 100644
+index 9c7f76114360..985b8fecd65a 100644
 --- a/drivers/staging/iio/resolver/ad2s1210.c
 +++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -3,6 +3,7 @@
-  * ad2s1210.c support for the ADI Resolver to Digital Converters: AD2S1210
-  *
-  * Copyright (c) 2010-2010 Analog Devices Inc.
-+ * Copyright (C) 2023 BayLibre, SAS
-  */
- #include <linux/types.h>
- #include <linux/mutex.h>
-@@ -657,12 +658,8 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
- 	if (!indio_dev)
- 		return -ENOMEM;
--	st = iio_priv(indio_dev);
--	ret = ad2s1210_setup_gpios(st);
--	if (ret < 0)
--		return ret;
+@@ -465,10 +465,7 @@ static int ad2s1210_read_raw(struct iio_dev *indio_dev,
+ 			     long m)
+ {
+ 	struct ad2s1210_state *st = iio_priv(indio_dev);
+-	u16 negative;
+ 	int ret = 0;
+-	u16 pos;
+-	s16 vel;
  
--	spi_set_drvdata(spi, indio_dev);
-+	st = iio_priv(indio_dev);
+ 	mutex_lock(&st->lock);
+ 	gpiod_set_value(st->gpios[AD2S1210_SAMPLE], 0);
+@@ -494,20 +491,11 @@ static int ad2s1210_read_raw(struct iio_dev *indio_dev,
  
- 	mutex_init(&st->lock);
- 	st->sdev = spi;
-@@ -671,22 +668,25 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	st->resolution = 12;
- 	st->fexcit = AD2S1210_DEF_EXCIT;
- 
-+	ret = ad2s1210_setup_clocks(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_setup_gpios(st);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ad2s1210_initial(st);
-+	if (ret < 0)
-+		return ret;
-+
- 	indio_dev->info = &ad2s1210_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ad2s1210_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 
--	ret = devm_iio_device_register(&spi->dev, indio_dev);
--	if (ret)
--		return ret;
--
--	st->fclkin = spi->max_speed_hz;
--	spi->mode = SPI_MODE_3;
--	spi_setup(spi);
--	ad2s1210_initial(st);
--
--	return 0;
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
- static const struct of_device_id ad2s1210_of_match[] = {
+ 	switch (chan->type) {
+ 	case IIO_ANGL:
+-		pos = be16_to_cpup((__be16 *)st->rx);
+-		if (st->hysteresis)
+-			pos >>= 16 - st->resolution;
+-		*val = pos;
++		*val = be16_to_cpup((__be16 *)st->rx);
+ 		ret = IIO_VAL_INT;
+ 		break;
+ 	case IIO_ANGL_VEL:
+-		vel = be16_to_cpup((__be16 *)st->rx);
+-		vel >>= 16 - st->resolution;
+-		if (vel & 0x8000) {
+-			negative = (0xffff >> st->resolution) << st->resolution;
+-			vel |= negative;
+-		}
+-		*val = vel;
++		*val = (s16)be16_to_cpup((__be16 *)st->rx);
+ 		ret = IIO_VAL_INT;
+ 		break;
+ 	default:
 -- 
 2.34.1
 

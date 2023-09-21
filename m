@@ -2,149 +2,374 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5975D7A9E0F
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 21:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2843F7A9E53
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Sep 2023 22:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjIUTyi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Sep 2023 15:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
+        id S231284AbjIUUAO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Sep 2023 16:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbjIUTyW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 15:54:22 -0400
-Received: from mail-qk1-x74a.google.com (mail-qk1-x74a.google.com [IPv6:2607:f8b0:4864:20::74a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CA3D6E45
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 11:27:43 -0700 (PDT)
-Received: by mail-qk1-x74a.google.com with SMTP id af79cd13be357-773aeb22094so128937385a.1
-        for <linux-iio@vger.kernel.org>; Thu, 21 Sep 2023 11:27:43 -0700 (PDT)
+        with ESMTP id S231564AbjIUT7u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Sep 2023 15:59:50 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B40C86A5;
+        Thu, 21 Sep 2023 10:23:13 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-4050bd2e33aso13114715e9.2;
+        Thu, 21 Sep 2023 10:23:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695320862; x=1695925662; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PCRMmvveaVcVSR15oJLrWC1xgCD5rCKuEjC1MAuPd54=;
-        b=xUV3L/cBqUbplZvJ9Q8K/h6fKfYnPwvRKfxEuIOQoJGm7nXjDl/JTqIfTbAjTkAbeV
-         AaDfzKwWsUsyi8h3N4V0fLruES5aXVRFYKK2Da6vqBH918Uh9Pi/DWKMeTbyVDPGpEaP
-         zuSoY/UF9aLRKboeKDJLGjG0YFfaIxyeDCiowGaEpC6yd+5ieYHtl1b3ikdynZEeNigE
-         9CYtDzsgHgGu7Nsm2LeH7UwyhrPeTyhCxIM6tv9HpdhH/nyS59Bqa+tVquUKD4jdj120
-         TNwRQnINTMo4xujy53/15LHd3Il+MrasXefD0T157unikfLjTf+OwFvMZp+VAYo33892
-         sVzw==
+        d=gmail.com; s=20230601; t=1695316991; x=1695921791; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=okXjkJYdXOrn2tPHbkbKLTw1CNJlqNe1HNdVygKVesw=;
+        b=ALGVdnHcEqgwAerzBCh3NtJqKwv/JdE1tWrLYMDfuT6m3Us2o9ZAeJjJFz3Q+3t/xZ
+         VZTHLhdCSywBexh2ncI403etIywI3AdmeznrL7i34EbMpYHfHPBh36uqxtZcIMFBUI+e
+         UW7PpFIRKk0CpSgwXirUmkRvYjG0KUDHD52N/i3pWn2V14XrxS/X6iK9Iqm8v/NaRTtL
+         HOBVQithy/Q7rvIh9qza39cn0Gbp8x1x3Gmoc3KtDuVGWbEwLcxukFFwxW5iLMAS5k+g
+         dGmsW+zouwYBU3kbIM1u6O0t7VRWBS7tYEGnPMfiC7JsxdZvikAuXBSHC7nvpWSqUx9t
+         6nDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695320862; x=1695925662;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PCRMmvveaVcVSR15oJLrWC1xgCD5rCKuEjC1MAuPd54=;
-        b=j19+wbxN7Nj2Hw9TNRCsSRQOgly/UCcxEFqo9tnly1coT7+bJvMZr0r5MWlT/JyXfO
-         8JO5pCIa9soxU35mKe4iqyLalrr5O88mHzLRv3Q9mO9kg+4BXFMFrU0Lzjnn9TS4d8cT
-         RzLsXbpi0fTiNXP5oZB5WO76PMdAK28b7BDWg1Sv895zogdA3ImYi6Ef7ApQbtQ1jPat
-         NwZjKdoYxsWjsrF+3kf7PvbqKI/W1ghVc+cKvDdUgeyxFxGsN+MGpciIRtZuhBifib/O
-         EOjLhE1wFqXAUr1EnW7z3wGKYgnuAbVGuFIJfJ6QLfHzV3HO23TSPlPXaf5B4ZzjHU9E
-         /7Fg==
-X-Gm-Message-State: AOJu0YzQIcmn4JU8m9Q4fbIu0SOzwK/btVbsokTderM9rYxTyoCltX1o
-        yFnVPa213OLEdrjESRuU4hIpSqN9LXbIN7ildw==
-X-Google-Smtp-Source: AGHT+IHDyKp3cW0YeVyd0vhCpme6YAoecIObStizWMW7RFLYKWXmo/R2pTAhUCAwSHys9UXUTSOhS+KIcqAGjnZGfw==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a25:ce49:0:b0:d80:ff9:d19e with SMTP
- id x70-20020a25ce49000000b00d800ff9d19emr63960ybe.9.1695279663292; Thu, 21
- Sep 2023 00:01:03 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 07:01:01 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAC3qC2UC/x3NwQqDMAyA4VeRnBeojei6Vxk7jJptOawtiUhFf
- HeLx+/y/zsYq7DBo9tBeRWTnBr6Wwfx905fRpmbwTtPLvgebdEUy4azyspqKJKxaK7yl2VDq4H 8gBHvkQaaxml0FKDFivJH6jV6vo7jBIHQTo14AAAA
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1695279662; l=2848;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=9jDyBMkgavsnNjxewPyVtkova19FE84VVZK9Pvb/rDk=; b=e5TEjYsjowMhf9fPiePv9hrz9ZlUb1GRwFyDE70vdQLcICQkLpAoogAgOXukubFmfNkqyHkBm
- i+6F0QbTVSPBtqz25d/Mw5nxuJ1Y4S/g8IQULtXS2wdUiW7lNb3r3H6
-X-Mailer: b4 0.12.3
-Message-ID: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
-Subject: [PATCH] iio: sx9324: replace deprecated strncpy
-From:   Justin Stitt <justinstitt@google.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=no autolearn_force=no version=3.4.6
+        d=1e100.net; s=20230601; t=1695316991; x=1695921791;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=okXjkJYdXOrn2tPHbkbKLTw1CNJlqNe1HNdVygKVesw=;
+        b=ZgpI09S1pTTa7HcbjX1Sdxd3mUkA3mBG5BdO3sHrYovvpnfDnzxxHr9b6MtI2Ri+nM
+         9W+9g1WeLakKFuiCaxH+3H2Y60l9GCWMUY054I155h1GSTKzneN9CfdHg+XiS8lHF61L
+         azBSZfaWUjG+iU5NZypO8RuaUTq3NsaBFHueazwA67Ps2fsAoFUY624Hd7sXHAgXqvRy
+         vV2ng/+bEW956HJUbub3scE1L82c8e+6Iw0jEOLeAp0vnTXc4+smhK4EVEC12VAtuCNC
+         cN37isD1Eie1dClfm+1KFgSna0IzU7CStdUrk1gwyvYHtQ7Yk1QGdks+NZR8cVf7Yflh
+         PXQw==
+X-Gm-Message-State: AOJu0Yw7gmeSaHMQT1ypSxgvbJTSOD4Aqkh3Z/KvDbj8u7iVvQ3C16Qq
+        ip5UbEIAuB/1WA/g4xFaUQglR9CH8dg=
+X-Google-Smtp-Source: AGHT+IHcVU8NodSWCBKmDGv9jfTlJxfbXJ4HNXnRFJXA2quX61Id2XtQ6nRUzvvIugCjc6HW8A81oA==
+X-Received: by 2002:a05:6512:783:b0:503:905:c5a3 with SMTP id x3-20020a056512078300b005030905c5a3mr4467097lfr.35.1695284263038;
+        Thu, 21 Sep 2023 01:17:43 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id v20-20020ac25614000000b005041ce44bbdsm195445lfd.5.2023.09.21.01.17.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Sep 2023 01:17:42 -0700 (PDT)
+Message-ID: <7181e56e-9488-25c9-3d03-64e49b2c952a@gmail.com>
+Date:   Thu, 21 Sep 2023 11:17:41 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1694760170.git.mazziesaccount@gmail.com>
+ <f378a401cec4fb0b9287b52ab159f00dd77569a6.1694760170.git.mazziesaccount@gmail.com>
+ <20230917113518.7c4bb1a0@jic23-huawei>
+ <a5c19874-32ba-60bf-6e72-9139a2873c7e@gmail.com>
+ <c987f401-81c4-00e5-51a7-88a6a38a2ca2@gmail.com>
+ <20230919155340.0000076f@Huawei.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: Support ROHM BU1390
+In-Reply-To: <20230919155340.0000076f@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-`strncpy` is deprecated for use on NUL-terminated destination strings [1].
+On 9/19/23 17:53, Jonathan Cameron wrote:
+> On Tue, 19 Sep 2023 14:28:29 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> On 9/18/23 15:56, Matti Vaittinen wrote:
+>>> On 9/17/23 13:35, Jonathan Cameron wrote:
+>>>> On Fri, 15 Sep 2023 09:56:19 +0300
+>>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>>>   
+>>>>> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
+>>>>> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
+>>>>> averaging and internal FIFO. The sensor does also provide temperature
+>>>>> measurements.
+>>>>>
+>>>>> Sensor does also contain IIR filter implemented in HW. The data-sheet
+>>>>> says the IIR filter can be configured to be "weak", "middle" or
+>>>>> "strong". Some RMS noise figures are provided in data sheet but no
+>>>>> accurate maths for the filter configurations is provided. Hence, the IIR
+>>>>> filter configuration is not supported by this driver and the filter is
+>>>>> configured to the "middle" setting (at least not for now).
+>>>>>
+>>>>> The FIFO measurement mode is only measuring the pressure and not the
+>>>>> temperature. The driver measures temperature when FIFO is flushed and
+>>>>> simply uses the same measured temperature value to all reported
+>>>>> temperatures. This should not be a problem when temperature is not
+>>>>> changing very rapidly (several degrees C / second) but allows users to
+>>>>> get the temperature measurements from sensor without any additional
+>>>>> logic.
+>>>>>
+>>>>> This driver allows the sensor to be used in two muitually exclusive
+>>>>> ways,
+>>>>>
+>>>>> 1. With trigger (data-ready IRQ).
+>>>>> In this case the FIFO is not used as we get data ready for each
+>>>>> collected
+>>>>> sample. Instead, for each data-ready IRQ we read the sample from sensor
+>>>>> and push it to the IIO buffer.
+>>>>>
+>>>>> 2. With hardware FIFO and watermark IRQ.
+>>>>> In this case the data-ready is not used but we enable watermark IRQ. At
+>>>>> each watermark IRQ we go and read all samples in FIFO and push them
+>>>>> to the
+>>>>> IIO buffer.
+>>>>>
+>>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+>> ...
+>>
+>>>>> +
+>>>>> +static const unsigned long bm1390_scan_masks[] = {
+>>>>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+>>>> Why?  Doesn't look hard to support just one or the other?
+>>>> Normally we only do this sort of limitation when there is a heavily
+>>>> optimized read routine for a set of channels and it is better
+>>>> to grab them all and throw away the ones we don't care about.
+>>>> That doesn't seem to be true here. So if the fifo grabbed both
+>>>> temp and pressure it would makes sense here, but doesn't seem
+>>>> like it does.
+>>>
+>>> I have a feeling I have misunderstood how this mask works. I have
+>>> assumed all the channels with corresponding mask bit _can_ be enabled
+>>> simultaneously, but I have not understood they _must_ all be enabled. I
+>>> think I must go back studying this, but if all channels really _must_ be
+>>> enabled, then you are correct. It actually makes a lot of sense to
+>>> support the pressure values alone, as, according to the data-sheet, the
+>>> HW is doing a "MEMS temperature compensation" to the pressure values.
+>>> So, my assuimption is the temperature data may not be required to be
+>>> captured.
+>>>
+>>> This also means I should revise the scan masks for the BU27008, BU27010
+>>> and BU27034 light sensors as I don't think all the users want all the
+>>> channels enabled. I wonder how I have not noticed any problems when I
+>>> tested those things - did I really always enable all the channels...? @_@
+>>>
+>>> Anyways, Thanks.
+>>
+>> Hi Jonathan,
+>>
+>> There's something in IIO scan_masks / buffer demuxing that I don't quite
+>> understand
 
-We should prefer more robust and less ambiguous string interfaces.
+Thank You for the patience and the explanation Jonathan. I have a - 
+hopefully not totally wrong - feeling I understand this better. I didn't 
+understand that IIO framework has this extra logic and that 
+available_scan_masks was not really meant for telling what IIO allows 
+_users_ to enable - but it was for driver to tell IIO core what the 
+driver can give. (Naturally this impacts to what IIO allows users to 
+enable, but not directly). Eg, if I now get it right, the 
+'available_scan_masks' is information what data flows between driver and 
+IIO. Similarly, 'active_scan_mask' tells what the IIO core 'expects' to 
+get from the driver, right? So, in bm1390 case, if I set both:
 
-`prop` is defined as this string literal with size 30 (including null):
-|       #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-|      	char prop[] = SX9324_PROXRAW_DEF;
+BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP),
+and
+BIT(BM1390_CHAN_PRESSURE),
 
-Each of the strncpy->strscpy replacements involve string literals with a
-size less than 30 which means there are no current problems with how
-strncpy is used. However, let's move away from using strncpy entirely.
+to 'available_scan_masks', then it means driver is telling IIO it can 
+give both pressure and temperature, or temperature alone. As a result, 
+IIO can set either both temp and pressure to 'active_scan_mask' - in 
+which case driver should push both in the buffers - or just the 
+pressure, in which case the driver should not push the temperature.
 
-A suitable replacement is `strscpy` [2] due to the fact that it
-guarantees NUL-termination on the destination buffer without
-unnecessarily NUL-padding.
+>>
+>> The bm1390 driver as sent in v2 does not do demuxing but always pushes
+>> whole chunk of data and trusts IIO to do demuxing.
+> 
+> Yup. That should work.  But in this case you can trivially decide not to read
+> or fill in the temperature and hence save some bus cycles.
+> 
+>>
+>> 2) I noticed the 'available_scan_masks' was marked as an optional field.
+>> So, I think that if there is no restrictions to which of the channels
+>> can be enabled, then we can omit setting it. This is what I tried.
+>>
+>> It appears that when we do not populate the 'available_scan_masks' with the:
+>>   >>> +static const unsigned long bm1390_scan_masks[] = {
+>>   >>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+>>
+>> things change. When I tested enabling only temperature and ran the
+>> iio_generic_buffer -c 20 -N 0 -t bm1390data-rdy-dev0 - the reported
+>> values seemed completely random.
+> 
+> You need to pack the data correctly yourself in the driver.
+> So it adds small amount of code complexity but potentially saves bus
+> traffic.
 
-Moreover, let's opt for the more conventional `sizeof()` as opposed to
-`ARRAY_SIZE` for these simple strings.
+...
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
-FWIW: It seems fragile to base future `prop` stores on the
-size of it's default string.
+>>
+>> Based on this experimenting (and headache obtained from reading the
+>> demuxing code) - the IIO framework does not do channel demuxing if the
+>> 'available_scan_masks' is not given? To me this was somewhat unexpected.
+> 
+> Yes.  If you don't tell it what channel setups are available (note there can
+> be lots) you are saying that we support any random combination and have
+> to do the data packing by hand.
+> 
 
-Note: build-tested
----
- drivers/iio/proximity/sx9324.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+Okay... I think it kind of makes sense to leave an option where the 
+driver can create buffer as it wants. I am not sure I can wrap my head 
+around this to the extent that I knew when the IIO does not know what 
+channels the driver has enabled - and thus, what types of data there 
+will be - but I can accept the answer that such situations can exist :) 
+Besides, allowing the driver to do the buffer formatting may allow some 
+'use-case specific, custom optimizations' when user-space knows what to 
+expect (for example, regarding the data alignments and ordering to for 
+example save space).
 
-diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-index 438f9c9aba6e..25ac2733bcef 100644
---- a/drivers/iio/proximity/sx9324.c
-+++ b/drivers/iio/proximity/sx9324.c
-@@ -937,11 +937,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
- 	case SX9324_REG_AFE_CTRL4:
- 	case SX9324_REG_AFE_CTRL7:
- 		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
--			strncpy(prop, "semtech,ph01-resolution",
--				ARRAY_SIZE(prop));
-+			strscpy(prop, "semtech,ph01-resolution", sizeof(prop));
- 		else
--			strncpy(prop, "semtech,ph23-resolution",
--				ARRAY_SIZE(prop));
-+			strscpy(prop, "semtech,ph23-resolution", sizeof(prop));
- 
- 		ret = device_property_read_u32(dev, prop, &raw);
- 		if (ret)
-@@ -1012,11 +1010,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
- 	case SX9324_REG_PROX_CTRL0:
- 	case SX9324_REG_PROX_CTRL1:
- 		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
--			strncpy(prop, "semtech,ph01-proxraw-strength",
--				ARRAY_SIZE(prop));
-+			strscpy(prop, "semtech,ph01-proxraw-strength", sizeof(prop));
- 		else
--			strncpy(prop, "semtech,ph23-proxraw-strength",
--				ARRAY_SIZE(prop));
-+			strscpy(prop, "semtech,ph23-proxraw-strength", sizeof(prop));
- 		ret = device_property_read_u32(dev, prop, &raw);
- 		if (ret)
- 			break;
+...This leads to another thing I noticed - and to another question :)
 
----
-base-commit: 2cf0f715623872823a72e451243bbf555d10d032
-change-id: 20230921-strncpy-drivers-iio-proximity-sx9324-c-8c3437676039
+I was experimenting with the bm1390 scan masks and iio_generic_buffer 
+tool. It seems to me that the iio_generic_buffer does not expect the 
+padding when the data in buffer is u32 + u16. When I enable the pressure 
+(32bits) and temperature (16 bits) in bm1390 and keep the time-stamp 
+disabled, the user-space will get buffer where 2 bytes of padding is 
+added to each temperature sample so the next pressure sample stays 
+correctly aligned. I believe kernel side does sane job here.
 
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
+This, however, did result (at least my version of) the 
+iio_generic_buffer tool to read garbage values after the first sample. 
+My assumption is that the iio_generic_buffer does not add the padding 
+bytes to the end of last data in the scan in order to ensure also the 
+next scan will be correctly aligned.
+
+I did following change to the iio_generic_buffer:
+
+Author: Matti Vaittinen <mazziesaccount@gmail.com>
+Date:   Thu Sep 21 10:15:19 2023 +0300
+
+     tools: iio: iio_generic_buffer ensure alignment
+
+     The iio_generic_buffer can return garbage values when the total size of
+     scan data is not a multiple of largest element in the scan. This can be
+     demonstrated by reading a scan consisting for example of one 4 byte and
+     one 2 byte element, where the 4 byte elemnt is first in the buffer.
+
+     The IIO generic buffert code does not take into accunt the last two
+     padding bytes that are needed to ensure that the 4byte data for next
+     scan is correctly aligned.
+
+     Add padding bytes required to align the next sample into the scan size.
+
+     Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index 44bbf80f0cfd..fc562799a109 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -54,9 +54,12 @@ enum autochan {
+  static unsigned int size_from_channelarray(struct iio_channel_info 
+*channels, int num_channels)
+  {
+         unsigned int bytes = 0;
+-       int i = 0;
++       int i = 0, max = 0;
++       unsigned int misalignment;
+
+         while (i < num_channels) {
++               if (channels[i].bytes > max)
++                       max = channels[i].bytes;
+                 if (bytes % channels[i].bytes == 0)
+                         channels[i].location = bytes;
+                 else
+@@ -66,6 +69,16 @@ static unsigned int size_from_channelarray(struct 
+iio_channel_info *channels, in
+                 bytes = channels[i].location + channels[i].bytes;
+                 i++;
+         }
++       /*
++        * We wan't the data in next sample to also be properly aligned so
++        * we'll add padding at the end if needed. TODO: should we use fixed
++        * 8 byte alignment instead of the size of the biggest samnple?
++        */
++       misalignment = bytes % max;
++       if (misalignment) {
++               printf("Misalignment %u. Adding Padding %u\n", 
+misalignment,  max - misalignment);
++               bytes += max - misalignment;
++       }
+
+         return bytes;
+  }
+
+I can send this as a proper patch if you guys think it is correct.
+
+
+>>
+>> Finally, when the watermark IRQ is used, we can't omit reading the
+>> pressure data because clearing the WMI is done based on the pressure
+>> data in FIFO.
+> 
+> Hmm. That is a good reason to keep the available scan masks set.
+> Add a comment on that next to the mask.
+> 
+>>
+>> So, I would propose we do:
+>>
+>> static const unsigned long bm1390_scan_masks[] = {
+>> 	BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP),
+>> 	BIT(BM1390_CHAN_PRESSURE), 0
+> 
+> Makes sense given need to read the pressure channel.
+>>
+>> which better reflects what the hardware is capable of - and, unless I am
+>> missing something, also allows us to offload the buffer demuxing to the IIO.
+>>
+>> Still, as mentioned in 1), the
+>>
+>>   >>> +static const unsigned long bm1390_scan_masks[] = {
+>>   >>> +    BIT(BM1390_CHAN_PRESSURE) | BIT(BM1390_CHAN_TEMP), 0
+>>
+>> does not seem to prevent enabling only the temperature channel - so in
+>> the driver buffer handler we still must unconditionally read the
+>> pressure data regardles the active_scan_mask.
+> 
+> active_scan_mask should match the above - it's separate from what is enabled.
+> active_scan_mask is on the data capture side of the demux - the buffers
+> are then fed repacked data reflecting what is enabled.
+
+Cool! So, the driver can rely on IIO asking for the pressure (in 
+active_scan_mask) after it has correctly set the available scan mask. It 
+may not be a big thing but I like it. It is enough to take care of 
+ensuring all required stuff is read from HW in one place (in available 
+scan masks) and not to worry about it in actual data reading path but 
+just read stuff IIO is asking to be read. I like it.
+
+Another thing to note is that, when we build the available_scan_mask 
+array - we should either pay attention to the order of masks - or change 
+the iio_scan_mask_match() to not accept first matching subset but to go 
+through all of the masks unless it finds and exactly matching one (and 
+in general prefer the smallest subset). Not sure this is worth the extra 
+cycles though.
+
+Thanks again - feel like I've learned something today :)
+
+Yours,
+	-- Matti Vaittinen
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

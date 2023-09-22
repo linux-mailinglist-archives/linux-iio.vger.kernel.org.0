@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4877AB065
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Sep 2023 13:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF5F7AB069
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Sep 2023 13:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233378AbjIVLSG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Sep 2023 07:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
+        id S233384AbjIVLSt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Sep 2023 07:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbjIVLSF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Sep 2023 07:18:05 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A866AF;
-        Fri, 22 Sep 2023 04:17:59 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-50437f39c9dso1036218e87.3;
-        Fri, 22 Sep 2023 04:17:59 -0700 (PDT)
+        with ESMTP id S229800AbjIVLSr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Sep 2023 07:18:47 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2628CAF;
+        Fri, 22 Sep 2023 04:18:41 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-502a4f33440so3444190e87.1;
+        Fri, 22 Sep 2023 04:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695381477; x=1695986277; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695381519; x=1695986319; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cIAB6MpcjuuKqpe+1Lhuap6hKVsOivGLkNwO83oo9k0=;
-        b=DdXYddpVAz5TSDVu2S7BpvGzts8SN4rn2NVYUSpgm1KVA3cPLCCzb83ukZes6s0P9s
-         Rje2sFAV7pmqKCg3vzlQ95AjtaGajZQVQYYpVxDzS/qgZ89usx9LBbjMQcUthrsDQEaF
-         9/3mup9+mZGXcWL1enfi2ZgksElk4prlBE3gBqMXBMUImcDcYIHjP9mKi9gdHP40OShs
-         5u80suFrU+AaZlipgLFB8Nui2cKoiiyIs3JwOBGe5gX6ntrBw9Qx/+4DHPKRudkjU/Jl
-         LDAKLSbRhfpzO4DTsfBUA+mL/5lhq62eaDr0mmLqesOyK8nLkAZ3HX3Y/5qp/cXzeFWy
-         GqtA==
+        bh=Zmze11S8ZKQPsA7TXsgSAXZTNdn4AZMA9dhhd+bRC2o=;
+        b=Jcp0hbxBrEotXzeZV88NtVkkgYIE1uFh47lDHDzz4hI+6S4zEIHvBhcA53pUYaRwsh
+         TOEMOsVXq+Qf8UELIXF4TX1nUrtNnZo2cD+ZmmJBpvMsqQlNmgP5rlaSY1TrdS+WcJpx
+         BKVRZ+ioXQgZeZ+yeDzu1u8C/ehJT2B045AfYWlFENfku7mt83K/ZRxBCr7ksdjFy0yR
+         82/mQQ38UC/aPn3C1G7bCtRkaxCIRelIcFJX4GPFOUPjL5xZLljDa/aqghJxAskKfhNr
+         QFimU82rDqTbSTJ0IRrokXym9CeQGsC+x7vxrvgc7h95p9M8jH+VrFsLfuXSH2lkKOX/
+         pg/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695381477; x=1695986277;
+        d=1e100.net; s=20230601; t=1695381519; x=1695986319;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cIAB6MpcjuuKqpe+1Lhuap6hKVsOivGLkNwO83oo9k0=;
-        b=szRwBVhqiZvOcNR1FUge2ByEvQnkwzVvzJZ03Jj57nBl/XMGm0VOBbChskdRobCn8s
-         Ed2CyCkgBu41UEP+OeWHrYRc/qbcz62r4U1WltuK4gQhLWNVe7v1F0Z1tW18mln1FEtT
-         lRQ1IcWIsN5A1UcbUgX9zAF/00gBNKnWUKAP/JBmhTUrM2wqvGsBGnOqqo4f1kslXcpG
-         Zuj0fwpE1qYpiU9nKLEwQv7mPlSe+f2pmAfk4bjEM6tX7yLss2eqX5uHgy/HjxMxwsQ3
-         H/2kOOKy7kEjUr2YNH6cIXy5WsEzC98xlmFpkAY9z0rwQeMEVaYWJOrV7amoLmqaF2yq
-         jwBQ==
-X-Gm-Message-State: AOJu0Yw/aysW0+YcjzcElcYq8/1Wp5MAEu9X2sli3p32h0UVqBp6OUFj
-        uWW/WOnpChJXIGayhsRdCmI=
-X-Google-Smtp-Source: AGHT+IHOHpc2JdOxK7d0YeAjtZfPNR/OIge9cN+0kT1HFVT5iiJj7Btc30lBmOLE4ebyIj9/6ABypA==
-X-Received: by 2002:a05:6512:2356:b0:504:35a1:31ce with SMTP id p22-20020a056512235600b0050435a131cemr2576998lfu.30.1695381477520;
-        Fri, 22 Sep 2023 04:17:57 -0700 (PDT)
+        bh=Zmze11S8ZKQPsA7TXsgSAXZTNdn4AZMA9dhhd+bRC2o=;
+        b=cJnsTJ0xEt2uBOB5XllMf5Df+FELmBJnpVUi7Q3orMZ5KsUReJrzfVAZvV9fm0ecBR
+         txgNFgobHRb3XTPVKjNV/pi99NXoJxbwXt8cjCsXKdSGPsX6bQFTeHdZKvNPogHmBPAa
+         yGZsrChzp/YF6DN49Z+AjL0lCEIP5iiLmdiPwnrqyzWuq4P15Z5d5fTMNfZRrAjv12Cr
+         CvPVnkUlBdlwJLT2VcMNIopnzcrs57iLCqG3MLqi1/BDJ7Jd7Pzoirr2H604M3HAkN2t
+         JlYhzHsaJ+dqB6O7C3l+MAkAm7Wx6DypvkdEQYiJbZJgel8FL6MuYOETbnjglGm6rqsk
+         WHyQ==
+X-Gm-Message-State: AOJu0Yw5+zal9SId3o/X/MXy+5M3Ir7rlvyk2lXapZRH2Zg17XZOo+Yw
+        YUlAVwVnY/g3S+imAioWhPM=
+X-Google-Smtp-Source: AGHT+IHK5MZ925TFz8RsVg6pa9cvY/c0ggYfVN3OD2VsDC7ocrFlt26e2OVSAou5/29wZrXMbukQ0Q==
+X-Received: by 2002:a19:6746:0:b0:500:c348:7efb with SMTP id e6-20020a196746000000b00500c3487efbmr7271924lfj.48.1695381519084;
+        Fri, 22 Sep 2023 04:18:39 -0700 (PDT)
 Received: from dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id u2-20020a056512040200b005030a35019dsm692099lfk.178.2023.09.22.04.17.56
+        by smtp.gmail.com with ESMTPSA id eq25-20020a056512489900b00502e0ea7174sm689598lfb.186.2023.09.22.04.18.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 04:17:56 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 14:17:49 +0300
+        Fri, 22 Sep 2023 04:18:38 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 14:18:33 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -64,18 +64,18 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/6] iio: try searching for exact scan_mask
-Message-ID: <24a577e6e157e1199817ab36631cec51675ef3ca.1695380366.git.mazziesaccount@gmail.com>
+Subject: [PATCH v3 4/6] dt-bindings: Add ROHM BM1390 pressure sensor
+Message-ID: <1a4c0ee68d26f91cf58e12a4dd02b0d1accb79d5.1695380366.git.mazziesaccount@gmail.com>
 References: <cover.1695380366.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7R35CQ0ZLI6pqD5C"
+        protocol="application/pgp-signature"; boundary="IL6muAW2kuJQJ472"
 Content-Disposition: inline
 In-Reply-To: <cover.1695380366.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -83,79 +83,92 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---7R35CQ0ZLI6pqD5C
+--IL6muAW2kuJQJ472
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-When IIO goes through the available scan masks in order to select the
-best suiting one, it will just accept the first listed subset of channels
-which meets the user's requirements. This works great for most of the
-drivers as they can sort the list of channels in the order where
-the 'least costy' channel selections come first.
+BM1390GLV-Z is a pressure sensor which performs internal temperature
+compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
+and sample averaging and IIR filtering is built in sensor. Temperature
+measurement is also supported.
 
-It may be that in some cases the ordering of the list of available scan
-masks is not thoroughly considered. We can't really try outsmarting the
-drivers by selecting the smallest supported subset - as this might not
-be the 'least costy one' - but we can at least try searching through the
-list to see if we have an exactly matching mask. It should be sane
-assumption that if the device can support reading only the exact
-channels user is interested in, then this should be also the least costy
-selection - and if it is not and optimization is important, then the
-driver could consider omitting setting the 'available_scan_mask' and
-doing demuxing - or just omitting the 'costy exact match' and providing
-only the more efficient broader selection of channels.
+Add dt-bindings for the sensor.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- drivers/iio/industrialio-buffer.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-b=
-uffer.c
-index 176d31d9f9d8..e97396623373 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -411,19 +411,32 @@ static const unsigned long *iio_scan_mask_match(const=
- unsigned long *av_masks,
- 						const unsigned long *mask,
- 						bool strict)
- {
-+	const unsigned long *first_subset =3D NULL;
+---
+Revision history:
+v1 =3D> v2:
+- Improve spelling in description
+- Drop unnecessary '|'
+- Use correct example (fix compatible)
+---
+ .../bindings/iio/pressure/rohm,bm1390.yaml    | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,bm1=
+390.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yam=
+l b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+new file mode 100644
+index 000000000000..7c4ca6322bf8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/rohm,bm1390.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	if (bitmap_empty(mask, masklength))
- 		return NULL;
--	while (*av_masks) {
--		if (strict) {
++title: ROHM BM1390 pressure sensor
 +
-+	if (strict) {
-+		while (*av_masks) {
- 			if (bitmap_equal(mask, av_masks, masklength))
- 				return av_masks;
--		} else {
--			if (bitmap_subset(mask, av_masks, masklength))
--				return av_masks;
++maintainers:
++  - Matti Vaittinen <mazziesaccount@gmail.com>
 +
-+			av_masks +=3D BITS_TO_LONGS(masklength);
- 		}
++description:
++  BM1390GLV-Z is a pressure sensor which performs internal temperature
++  compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
++  and sample averaging and IIR filtering is built in. Temperature
++  measurement is also supported.
 +
-+		return NULL;
-+	}
-+	while (*av_masks) {
-+		if (bitmap_equal(mask, av_masks, masklength))
-+			return av_masks;
++properties:
++  compatible:
++    const: rohm,bm1390glv-z
 +
-+		if (!first_subset && bitmap_subset(mask, av_masks, masklength))
-+			first_subset =3D av_masks;
++  reg:
++    maxItems: 1
 +
- 		av_masks +=3D BITS_TO_LONGS(masklength);
- 	}
--	return NULL;
++  interrupts:
++    maxItems: 1
 +
-+	return first_subset;
- }
-=20
- static bool iio_validate_scan_mask(struct iio_dev *indio_dev,
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++        pressure-sensor@5d {
++            compatible =3D "rohm,bm1390glv-z";
++            reg =3D <0x5d>;
++
++            interrupt-parent =3D <&gpio1>;
++            interrupts =3D <29 IRQ_TYPE_LEVEL_LOW>;
++
++            vdd-supply =3D <&vdd>;
++        };
++    };
 --=20
 2.41.0
 
@@ -172,19 +185,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---7R35CQ0ZLI6pqD5C
+--IL6muAW2kuJQJ472
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUNd90ACgkQeFA3/03a
-ocU2WQf6Auw4pqbkWyR7JsNtuC7v1QjKz5jrZegmivTs0dL1j1z10SwoAHvS0A9W
-asnYKWnIeu4+JapN1nQsg/oSmhMIB155kvieyIywiOmMRONTkw1TS34ldE4jpYAd
-osVM3JnM8tXCqXKjFJRB69OuRSXXr3+S6h3QGGdnKeTvsJLv4FonQmEuPtKZTp7u
-8Xo6CZSOzG8gXGrG6D6G/Mafq9Y9/Fl8lhURwk/Ri2CdjG7laXZk2/JjKoq1Mb7t
-vHY51PbtMB+W/wnSY8ictXAn5OXV4zuFvL+aa0IRzIgKzRejkZpWIVZhZIJAUM0P
-bPF3yRpfUKlaAj/5pAsZkUjeFR0T+A==
-=pMvn
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUNeAkACgkQeFA3/03a
+ocXGPwgAjnFpbjYuKkZd5xDMZJC+pvEvm/QFPMxcxuRMg+73u6HqV3uaroPRd9eU
+qhrtOT1sPQ5NyIhbLdaMkUK6fy/1fQkKJhFjBIG5SSxpxekdoD7CVu8wOiTN3ZNi
+J9FBFyF7HmkqHgB91WDYqYIpvKNBMre2KIPhWdRFGWr4TMiiS2uXa+z/TkIWcWG5
+1URzj55o3BjqeerEp2faxqGkbu33jWBdGXGUypHHIB1MKnsuRKeu2kyyGx+jLdSj
+Fg3Kg8Qmps3rlK6d+ikkY6Sg3TMWp7Ca3h/xXQUmZl0sqUuxB8wtyNpgZtSF6wlq
+uYGh5cX6ar0RODRtc4NAaC0hVH3HkQ==
+=KWyF
 -----END PGP SIGNATURE-----
 
---7R35CQ0ZLI6pqD5C--
+--IL6muAW2kuJQJ472--

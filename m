@@ -2,39 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DABED7AC410
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 19:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E9047AC413
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 19:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbjIWRkD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Sep 2023 13:40:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54178 "EHLO
+        id S231403AbjIWRkn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Sep 2023 13:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbjIWRkC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 13:40:02 -0400
+        with ESMTP id S231593AbjIWRkm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 13:40:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD58E136;
-        Sat, 23 Sep 2023 10:39:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABF1C433C8;
-        Sat, 23 Sep 2023 17:39:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30B9124
+        for <linux-iio@vger.kernel.org>; Sat, 23 Sep 2023 10:40:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE7CC433C7;
+        Sat, 23 Sep 2023 17:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695490796;
-        bh=FnS3ok7in/fBj9/mDYEW2dhcaSuQTDf9YAPVVeESsY8=;
+        s=k20201202; t=1695490836;
+        bh=ugb+Q7yUo6vOZ78Q9LWkOQP4MwXiiPMfFXOkwc1MmKU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iO8JFQ6yzim66llMAm6fhiAjUX/Dl76hCTEZKgKXHakvQQkErbKTqN+dxu6Ujp+S/
-         9T4Tx/mQjFst1uvXzl/0H/eNjQ9vIsaJcDV13QYIpfV2xtqflfZnA8noTISKs3k/+A
-         gX8MHqRvDpuIU/pTP9JVkipuTIPfrmBXeDRjW0UhSDiR9vSqryDLTv0ayQ1yBGpcEj
-         VtZoa+4tQNEQ/TyQF+WdnB/TzLNS0SFWVJDc/VQjdG9721FZZLD8DYlhrzF9RqfAH6
-         mv2k2bP0FBr7yWuDzZ0stgqtYcX71jRAYHDAbOxXFaehzXs0HP+FLFEsEdl6YAs5li
-         BSDm1TNrFvpJQ==
-Date:   Sat, 23 Sep 2023 18:39:49 +0100
+        b=Q0nkZFCJxBNOzqUYCxVViad5Be+xfCn7Z507+LJLbHAIu9UmJBD1U8ZNfpENFLkbe
+         WNBQA35eqlfSaQaXTiwxLZ5D9yhYA7DzoHhOh+ftWbffQVsCpktUvSk3AK4I9g55Pa
+         lxE/Oc62ttZEiHr7kEcWwqGT/uFd0CJ2swJZjbgP9lNId/Js8I/bN3Qa9F3GOWPyBJ
+         oy/6DOQxXLEQ0JSrf1Fibo/TmAIcBz8msJEbE+zyxAuT5+PiMW6NQkMZynD3CddgNX
+         sZFmJZ4/UJ5E852Ql634BKWLm9ZEPXUVqWVor3kGwm5c4xv5bQVS/y7d6g4yeWrJ8d
+         ZJpfFGHItCXAQ==
+Date:   Sat, 23 Sep 2023 18:40:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shen Shen <shengaoya@inspur.com>
-Cc:     <lars@metafoo.de>, <robh@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: for kernel comment
-Message-ID: <20230923183949.62b9715b@jic23-huawei>
-In-Reply-To: <20230921031444.63594-1-shengaoya@inspur.com>
-References: <20230921031444.63594-1-shengaoya@inspur.com>
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
+        Alexandru Lazar <alazar@startmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: ti,ads1015: Document optional
+ interrupt line
+Message-ID: <20230923184026.577d4644@jic23-huawei>
+In-Reply-To: <20230922-demise-shallot-2623f8ff869b@spud>
+References: <20230921192420.70643-1-marex@denx.de>
+        <20230922-demise-shallot-2623f8ff869b@spud>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,38 +57,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Sep 2023 11:14:44 +0800
-Andy Shen Shen <shengaoya@inspur.com> wrote:
+On Fri, 22 Sep 2023 12:30:06 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> In line 460 of the palmas_gpadc.c file, fix kernel comment errors.
-For future reference (I've tweaked it this time) please include
-the driver name in the description and also say what the change
-was at least briefly (drop duplicated the).
-
-Applied to the togreg branch of iio.git and pushed out as testing because
-other things on that branch need some build testing etc.
+> On Thu, Sep 21, 2023 at 09:24:20PM +0200, Marek Vasut wrote:
+> > The ADS1015 can have optional IRQ line connected, document it in the DT bindings.
+> > 
+> > Signed-off-by: Marek Vasut <marex@denx.de>
+> > ---
+> > Cc: Alexandru Lazar <alazar@startmail.com>
+> > Cc: Conor Dooley <conor+dt@kernel.org>  
+> 
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Applied to the togreg branch of iio.git
 
 Thanks,
 
 Jonathan
 
 > 
-> Signed-off-by: Andy Shen Shen <shengaoya@inspur.com>
-> ---
->  drivers/iio/adc/palmas_gpadc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Thanks,
+> Conor.
 > 
-> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> index e202ea18af10..203cbbc70719 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -457,7 +457,7 @@ static int palmas_gpadc_get_calibrated_code(struct palmas_gpadc *adc,
->   *
->   * The gain error include both gain error, as specified in the datasheet, and
->   * the gain error drift. These paramenters vary depending on device and whether
-> - * the the channel is calibrated (trimmed) or not.
-> + * the channel is calibrated (trimmed) or not.
->   */
->  static int palmas_gpadc_threshold_with_tolerance(int val, const int INL,
->  						 const int gain_error,
+> > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>
+> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > Cc: Marco Felsch <m.felsch@pengutronix.de>
+> > Cc: Marek Vasut <marex@denx.de>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Cc: devicetree@vger.kernel.org
+> > Cc: linux-iio@vger.kernel.org
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+> > index e004659099c19..d605999ffe288 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+> > @@ -23,6 +23,9 @@ properties:
+> >    reg:
+> >      maxItems: 1
+> >  
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> >    "#address-cells":
+> >      const: 1
+> >  
+> > -- 
+> > 2.40.1
+> >   
 

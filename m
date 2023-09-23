@@ -2,47 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9047AC413
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 19:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 005E67AC42A
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 19:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbjIWRkn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Sep 2023 13:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38810 "EHLO
+        id S229939AbjIWRsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Sep 2023 13:48:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231593AbjIWRkm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 13:40:42 -0400
+        with ESMTP id S232006AbjIWRsE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 13:48:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30B9124
-        for <linux-iio@vger.kernel.org>; Sat, 23 Sep 2023 10:40:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE7CC433C7;
-        Sat, 23 Sep 2023 17:40:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E5D136;
+        Sat, 23 Sep 2023 10:47:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BBAC433C8;
+        Sat, 23 Sep 2023 17:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695490836;
-        bh=ugb+Q7yUo6vOZ78Q9LWkOQP4MwXiiPMfFXOkwc1MmKU=;
+        s=k20201202; t=1695491277;
+        bh=pXFjjIo52VpqBLzSpVTwm0qtUeJqbtXcgnQcpU2K5IA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Q0nkZFCJxBNOzqUYCxVViad5Be+xfCn7Z507+LJLbHAIu9UmJBD1U8ZNfpENFLkbe
-         WNBQA35eqlfSaQaXTiwxLZ5D9yhYA7DzoHhOh+ftWbffQVsCpktUvSk3AK4I9g55Pa
-         lxE/Oc62ttZEiHr7kEcWwqGT/uFd0CJ2swJZjbgP9lNId/Js8I/bN3Qa9F3GOWPyBJ
-         oy/6DOQxXLEQ0JSrf1Fibo/TmAIcBz8msJEbE+zyxAuT5+PiMW6NQkMZynD3CddgNX
-         sZFmJZ4/UJ5E852Ql634BKWLm9ZEPXUVqWVor3kGwm5c4xv5bQVS/y7d6g4yeWrJ8d
-         ZJpfFGHItCXAQ==
-Date:   Sat, 23 Sep 2023 18:40:26 +0100
+        b=ZX5Ich2bTnSu/1xEz5odYS2wZwmVvI2ndgOvJE1acPw9E1Z/833ffAZPllAAc4mFe
+         ouFvlaCb1KiMHtm8KWQre/4pp1EUcX7//rCaRsliU7IUBlHcE5Pttk90WC832htNzp
+         q6lMTC9mIoYOfbOywin5hvW81Ko+89JlICCw+MQ2lc8mp2W5/ittxBamp5LEWpvxov
+         EidfP5f9al4JVXhjuaN+p8Urhm8cDIWES7F/u89B812RBC+PlZGuXSk95fxTVZNIfJ
+         ow3vfmHpMViWU7hbk5SIyXuW9iWQNeTWP/BRfdQgMtd4BqjPufSpt9w+imZOLGJKr6
+         Zcb/mG+qF0W6w==
+Date:   Sat, 23 Sep 2023 18:47:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
-        Alexandru Lazar <alazar@startmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: ti,ads1015: Document optional
- interrupt line
-Message-ID: <20230923184026.577d4644@jic23-huawei>
-In-Reply-To: <20230922-demise-shallot-2623f8ff869b@spud>
-References: <20230921192420.70643-1-marex@denx.de>
-        <20230922-demise-shallot-2623f8ff869b@spud>
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] iio: sx9324: replace deprecated strncpy
+Message-ID: <20230923184751.41d52b9d@jic23-huawei>
+In-Reply-To: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
+References: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,56 +49,91 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Sep 2023 12:30:06 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Thu, 21 Sep 2023 07:01:01 +0000
+Justin Stitt <justinstitt@google.com> wrote:
 
-> On Thu, Sep 21, 2023 at 09:24:20PM +0200, Marek Vasut wrote:
-> > The ADS1015 can have optional IRQ line connected, document it in the DT bindings.
-> > 
-> > Signed-off-by: Marek Vasut <marex@denx.de>
-> > ---
-> > Cc: Alexandru Lazar <alazar@startmail.com>
-> > Cc: Conor Dooley <conor+dt@kernel.org>  
+> `strncpy` is deprecated for use on NUL-terminated destination strings [1].
 > 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Applied to the togreg branch of iio.git
+> We should prefer more robust and less ambiguous string interfaces.
+> 
+> `prop` is defined as this string literal with size 30 (including null):
+> |       #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
+> |      	char prop[] = SX9324_PROXRAW_DEF;
+> 
+> Each of the strncpy->strscpy replacements involve string literals with a
+> size less than 30 which means there are no current problems with how
+> strncpy is used. However, let's move away from using strncpy entirely.
+> 
+> A suitable replacement is `strscpy` [2] due to the fact that it
+> guarantees NUL-termination on the destination buffer without
+> unnecessarily NUL-padding.
+> 
+> Moreover, let's opt for the more conventional `sizeof()` as opposed to
+> `ARRAY_SIZE` for these simple strings.
+> 
+> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+> Link: https://github.com/KSPP/linux/issues/90
+> Cc: linux-hardening@vger.kernel.org
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
+> FWIW: It seems fragile to base future `prop` stores on the
+> size of it's default string.
 
-Thanks,
+Agreed - can we just get rid of the copying?  Just set a const char *
+to point to appropriate string instead and use that?
+
+The dance is just about reasonable for the case where there is
+a string format being used to fill in the numbers, here I can't see any
+advantage at all. (for the other case, a kasprintf() or similar is probably
+more appropriate anyway) given this isn't a particular hot path.
 
 Jonathan
-
 > 
-> Thanks,
-> Conor.
+> Note: build-tested
+> ---
+>  drivers/iio/proximity/sx9324.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 > 
-> > Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Marco Felsch <m.felsch@pengutronix.de>
-> > Cc: Marek Vasut <marex@denx.de>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: devicetree@vger.kernel.org
-> > Cc: linux-iio@vger.kernel.org
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
-> > index e004659099c19..d605999ffe288 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
-> > @@ -23,6 +23,9 @@ properties:
-> >    reg:
-> >      maxItems: 1
-> >  
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> >    "#address-cells":
-> >      const: 1
-> >  
-> > -- 
-> > 2.40.1
-> >   
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> index 438f9c9aba6e..25ac2733bcef 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -937,11 +937,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  	case SX9324_REG_AFE_CTRL4:
+>  	case SX9324_REG_AFE_CTRL7:
+>  		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
+> -			strncpy(prop, "semtech,ph01-resolution",
+> -				ARRAY_SIZE(prop));
+> +			strscpy(prop, "semtech,ph01-resolution", sizeof(prop));
+>  		else
+> -			strncpy(prop, "semtech,ph23-resolution",
+> -				ARRAY_SIZE(prop));
+> +			strscpy(prop, "semtech,ph23-resolution", sizeof(prop));
+>  
+>  		ret = device_property_read_u32(dev, prop, &raw);
+>  		if (ret)
+> @@ -1012,11 +1010,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  	case SX9324_REG_PROX_CTRL0:
+>  	case SX9324_REG_PROX_CTRL1:
+>  		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
+> -			strncpy(prop, "semtech,ph01-proxraw-strength",
+> -				ARRAY_SIZE(prop));
+> +			strscpy(prop, "semtech,ph01-proxraw-strength", sizeof(prop));
+>  		else
+> -			strncpy(prop, "semtech,ph23-proxraw-strength",
+> -				ARRAY_SIZE(prop));
+> +			strscpy(prop, "semtech,ph23-proxraw-strength", sizeof(prop));
+>  		ret = device_property_read_u32(dev, prop, &raw);
+>  		if (ret)
+>  			break;
+> 
+> ---
+> base-commit: 2cf0f715623872823a72e451243bbf555d10d032
+> change-id: 20230921-strncpy-drivers-iio-proximity-sx9324-c-8c3437676039
+> 
+> Best regards,
+> --
+> Justin Stitt <justinstitt@google.com>
+> 
 

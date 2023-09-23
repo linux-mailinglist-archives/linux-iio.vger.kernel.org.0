@@ -2,138 +2,229 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 005E67AC42A
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 19:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A20A7AC4C4
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Sep 2023 21:20:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229939AbjIWRsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Sep 2023 13:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
+        id S229539AbjIWTUw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Sep 2023 15:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjIWRsE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 13:48:04 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E5D136;
-        Sat, 23 Sep 2023 10:47:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BBAC433C8;
-        Sat, 23 Sep 2023 17:47:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695491277;
-        bh=pXFjjIo52VpqBLzSpVTwm0qtUeJqbtXcgnQcpU2K5IA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZX5Ich2bTnSu/1xEz5odYS2wZwmVvI2ndgOvJE1acPw9E1Z/833ffAZPllAAc4mFe
-         ouFvlaCb1KiMHtm8KWQre/4pp1EUcX7//rCaRsliU7IUBlHcE5Pttk90WC832htNzp
-         q6lMTC9mIoYOfbOywin5hvW81Ko+89JlICCw+MQ2lc8mp2W5/ittxBamp5LEWpvxov
-         EidfP5f9al4JVXhjuaN+p8Urhm8cDIWES7F/u89B812RBC+PlZGuXSk95fxTVZNIfJ
-         ow3vfmHpMViWU7hbk5SIyXuW9iWQNeTWP/BRfdQgMtd4BqjPufSpt9w+imZOLGJKr6
-         Zcb/mG+qF0W6w==
-Date:   Sat, 23 Sep 2023 18:47:51 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Justin Stitt <justinstitt@google.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] iio: sx9324: replace deprecated strncpy
-Message-ID: <20230923184751.41d52b9d@jic23-huawei>
-In-Reply-To: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
-References: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229456AbjIWTUw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Sep 2023 15:20:52 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762E3194
+        for <linux-iio@vger.kernel.org>; Sat, 23 Sep 2023 12:20:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=jMXd1quUr0+4Bgg8K1TIGdstVnnOb1EijX3MMcy3RFQ=; b=MbtgFZukg+xQ0j2QGvNlpu1xQg
+        6K8ceyinxfnZsZZtNof+BsB10qCvxWd5aTrKqTDu/2gkgblFE77r6rq0PVStUrZCeEFpBRNseOjyX
+        KKgAvsEMYXsLKz+brH/xlQS6XzQBdq1jGe/yBsWUCREIiQk0PNKmFMrwOfy9+vQ+VmVXtxInRh/wS
+        O9623vweCUuF20Jhes7mglr/EMUtbtV92HQ+thOxP9yLj1kPn5psTXaurPXxYGOHKEf3N2kTiFmOw
+        MSfQS5RbzfAaBLVxuwki1aaJdZWE2sPqqIjlnSpg+K04GC3gcBDdVksEaOQrS5L8rN35sexEVPoXk
+        j5ZCUu/w==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1qk8BG-0007Up-U0; Sat, 23 Sep 2023 21:20:42 +0200
+Received: from [136.25.87.181] (helo=[192.168.86.26])
+        by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1qk8BG-000MRy-Gr; Sat, 23 Sep 2023 21:20:42 +0200
+Message-ID: <06c78732-5f35-8b33-e374-7e8b148ddff9@metafoo.de>
+Date:   Sat, 23 Sep 2023 12:20:39 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] iio: adc: Add driver support for MAX34408/9
+Content-Language: en-US
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20230917211143.7094-1-fr0st61te@gmail.com>
+ <20230917211143.7094-3-fr0st61te@gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230917211143.7094-3-fr0st61te@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27040/Sat Sep 23 09:38:24 2023)
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Sep 2023 07:01:01 +0000
-Justin Stitt <justinstitt@google.com> wrote:
+Hi,
 
-> `strncpy` is deprecated for use on NUL-terminated destination strings [1].
-> 
-> We should prefer more robust and less ambiguous string interfaces.
-> 
-> `prop` is defined as this string literal with size 30 (including null):
-> |       #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-> |      	char prop[] = SX9324_PROXRAW_DEF;
-> 
-> Each of the strncpy->strscpy replacements involve string literals with a
-> size less than 30 which means there are no current problems with how
-> strncpy is used. However, let's move away from using strncpy entirely.
-> 
-> A suitable replacement is `strscpy` [2] due to the fact that it
-> guarantees NUL-termination on the destination buffer without
-> unnecessarily NUL-padding.
-> 
-> Moreover, let's opt for the more conventional `sizeof()` as opposed to
-> `ARRAY_SIZE` for these simple strings.
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> ---
-> FWIW: It seems fragile to base future `prop` stores on the
-> size of it's default string.
+Looks very good. Few small comments.
 
-Agreed - can we just get rid of the copying?  Just set a const char *
-to point to appropriate string instead and use that?
+On 9/17/23 14:11, Ivan Mikhaylov wrote:
+> [...]
+> +static int max34408_read_adc_avg(struct max34408_data *max34408, int channel, int *val)
+> +{
+> +	unsigned long ctrl;
+Should be unsigned int so its compatible with the regmap API and you do 
+not have to cast. Otherwise you'll run into trouble where long is 64 bit.
+> +	int rc;
+> +	u8 tmp;
+> +
+> +	mutex_lock(&max34408->lock);
+> +	rc = regmap_read(max34408->regmap, MAX34408_CONTROL, (u32 *)&ctrl);
+> +	if (rc)
+> +		goto err_unlock;
+> +
+> +	/* set averaging (0b100) default values*/
+> +	tmp = ctrl;
+> +	set_bit(CONTROL_AVG2, &ctrl);
+> +	clear_bit(CONTROL_AVG1, &ctrl);
+> +	clear_bit(CONTROL_AVG0, &ctrl);
 
-The dance is just about reasonable for the case where there is
-a string format being used to fill in the numbers, here I can't see any
-advantage at all. (for the other case, a kasprintf() or similar is probably
-more appropriate anyway) given this isn't a particular hot path.
+While using set and clear_bit is not wrong these are the atomic 
+versions. There is __{set,clear}_bit as the non atomic version. But in 
+my opinion is fine to just use |= and &= here.
 
-Jonathan
-> 
-> Note: build-tested
-> ---
->  drivers/iio/proximity/sx9324.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> index 438f9c9aba6e..25ac2733bcef 100644
-> --- a/drivers/iio/proximity/sx9324.c
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -937,11 +937,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  	case SX9324_REG_AFE_CTRL4:
->  	case SX9324_REG_AFE_CTRL7:
->  		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
-> -			strncpy(prop, "semtech,ph01-resolution",
-> -				ARRAY_SIZE(prop));
-> +			strscpy(prop, "semtech,ph01-resolution", sizeof(prop));
->  		else
-> -			strncpy(prop, "semtech,ph23-resolution",
-> -				ARRAY_SIZE(prop));
-> +			strscpy(prop, "semtech,ph23-resolution", sizeof(prop));
->  
->  		ret = device_property_read_u32(dev, prop, &raw);
->  		if (ret)
-> @@ -1012,11 +1010,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  	case SX9324_REG_PROX_CTRL0:
->  	case SX9324_REG_PROX_CTRL1:
->  		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
-> -			strncpy(prop, "semtech,ph01-proxraw-strength",
-> -				ARRAY_SIZE(prop));
-> +			strscpy(prop, "semtech,ph01-proxraw-strength", sizeof(prop));
->  		else
-> -			strncpy(prop, "semtech,ph23-proxraw-strength",
-> -				ARRAY_SIZE(prop));
-> +			strscpy(prop, "semtech,ph23-proxraw-strength", sizeof(prop));
->  		ret = device_property_read_u32(dev, prop, &raw);
->  		if (ret)
->  			break;
-> 
-> ---
-> base-commit: 2cf0f715623872823a72e451243bbf555d10d032
-> change-id: 20230921-strncpy-drivers-iio-proximity-sx9324-c-8c3437676039
-> 
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
-> 
+
+> +	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, ctrl);
+> +	if (rc) {
+> +		dev_err(max34408->dev,
+> +			"Error (%d) writing control register\n", rc);
+> +		goto err_unlock;
+> +	}
+> +
+> +	rc = max34408_read_adc(max34408, channel, val);
+> +	if (rc)
+> +		goto err_unlock;
+> +
+> +	/* back to old values */
+> +	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, tmp);
+> +	if (rc)
+> +		dev_err(max34408->dev,
+> +			"Error (%d) writing control register\n", rc);
+> +
+> +err_unlock:
+> +	mutex_unlock(&max34408->lock);
+> +
+> +	return rc;
+> +}
+> +
+> +static int max34408_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct max34408_data *max34408 = iio_priv(indio_dev);
+> +	int rc;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +	case IIO_CHAN_INFO_AVERAGE_RAW:
+> +		rc = max34408_read_adc_avg(max34408, chan->channel,
+> +					   val);
+> +		if (rc)
+> +			return rc;
+> +
+> +		if (mask == IIO_CHAN_INFO_PROCESSED) {
+
+
+Usually we only have either raw + offset and scale or processed. In this 
+case I'd go with raw + scale and offset since it is a linear 
+transformation. processed is usually only used when the transformation 
+is non linear.
+
+> +			/*
+> +			 * calcluate current for 8bit ADC with Rsense
+> +			 * value.
+> +			 * 10 mV * 1000 / Rsense uOhm = max current
+> +			 * (max current * adc val * 1000) / (2^8 - 1) mA
+> +			 */
+> +			*val = DIV_ROUND_CLOSEST((10000 / max34408->rsense) *
+> +						 *val * 1000, 256);
+> +		}
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_RAW:
+> +		rc = max34408_read_adc(max34408, chan->channel, val);
+> +		if (rc)
+> +			return rc;
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info max34408_info = {
+> +	.read_raw	= max34408_read_raw,
+> +};
+> +
+> +static int max34408_probe(struct i2c_client *client)
+> +{
+> +	struct device_node *np = client->dev.of_node;
+> +	struct max34408_data *max34408;
+> +	struct iio_dev *indio_dev;
+> +	struct regmap *regmap;
+> +	int rc;
+> +
+> +	regmap = devm_regmap_init_i2c(client, &max34408_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(&client->dev, "regmap_init failed\n");
+There is a the dev_err_probe function, which has the advantage of having 
+a unified formatting for the error message style.
+> +		return PTR_ERR(regmap);
+> +	}
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*max34408));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	max34408 = iio_priv(indio_dev);
+> +	i2c_set_clientdata(client, indio_dev);
+> +	max34408->regmap = regmap;
+> +	max34408->dev = &client->dev;
+> +	mutex_init(&max34408->lock);
+> +	rc = device_property_read_u32(&client->dev,
+> +				      "maxim,rsense-val-micro-ohms",
+> +				      &max34408->rsense);
+> +	if (rc)
+> +		return -EINVAL;
+> +
+> +	/* disable ALERT and averaging */
+> +	rc = regmap_write(max34408->regmap, MAX34408_CONTROL, 0x0);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (of_device_is_compatible(np, "maxim,max34408")) {
+Instead of using of_device_is_compatible it is usually preferred to 
+assign some sort of chip_data struct to the data field of the of the 
+compatible array. This makes it both easier to add new chips and also 
+other ways to instantiate the device besides devicetree.
+> +		indio_dev->channels = max34408_channels;
+> +		indio_dev->num_channels = ARRAY_SIZE(max34408_channels);
+> +		indio_dev->name = "max34408";
+> +	} else if (of_device_is_compatible(np, "maxim,max34409")) {
+> +		indio_dev->channels = max34409_channels;
+> +		indio_dev->num_channels = ARRAY_SIZE(max34409_channels);
+> +		indio_dev->name = "max34409";
+> +	}
+> +	indio_dev->info = &max34408_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->dev.of_node = np;
+The assignment of of_node should not be needed, the IIO core will take 
+care of this.
+> +
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+> +
+
 

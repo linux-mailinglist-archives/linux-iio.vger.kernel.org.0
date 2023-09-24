@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704917ACAD2
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 18:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF43F7ACAE2
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 19:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjIXQ5g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 12:57:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
+        id S229836AbjIXRP0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 13:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIXQ5f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 12:57:35 -0400
+        with ESMTP id S229667AbjIXRPZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 13:15:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC838FC;
-        Sun, 24 Sep 2023 09:57:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE36C433C8;
-        Sun, 24 Sep 2023 16:57:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4F0C6;
+        Sun, 24 Sep 2023 10:15:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF742C433C7;
+        Sun, 24 Sep 2023 17:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695574648;
-        bh=pcqmIy1Oq4US3JaYcyp2KhT0P2GlDacSxfYdLEt31LU=;
+        s=k20201202; t=1695575718;
+        bh=sVhGlOD14LMROhYEMLTXgJ2FHDbAiYFrk0XMDjt5gpM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=piWVI9jdLyRif7YKlT4Kl3TPfpbY+im7I7I3WCI5xe0yuB0r1GLG8PEsisSviBHE5
-         f8LsuGbVIfZBYzt/2VWh8m2dDp+2XvuGMBAi3HRBslBSP3JxzhE5RJ8OByJQsnazBs
-         nS/Rbx1GSRd+iVmeIrwZpu3RbVGuI1xaJMk6H0UBUAv8pcGFGE3nPwJ8QfN0dfH1L1
-         9Tcfl6INT2s05PvPoH5RnYN5/VwLu79K2KvrcSV4wSX2pdct3rIrjOAY6Jmi+UhyIe
-         1qKYZbPXfe1Enh2NKkmSaW7qjDeSakl9hTNp1tswqMJZzUqqKX+svBDiCcCyNapG8Z
-         xsoB9nEAi+IXw==
-Date:   Sun, 24 Sep 2023 17:57:20 +0100
+        b=Go7f/62peC6gUtxUozVC56G0Vym5HJPl9O5fY1aaMKfHyKGNIp/EKDW1s+Cgy/0M6
+         ACpBdaC44RW9makSGqkk9Y7FKU0CPa2AC/nu0WfRd+ZykRjk5vY97tKNJGjw37dhRE
+         LOR/5fcIBH9IqCdsmVdYtLYM91WHCLjuNcUWlZOzf7pc6DE4sLy/nmNDMXIQKU4+Gt
+         imD96HBRIoKwV/LCc2M/uRz4scE9ZfO1q3tz4fJV6YazJpVYhaodqU8qKKPZSEEbrN
+         ghRyyOaJV6J8vjkx3sqjVIdKBid0Gj1cF93Kb3mCJGtvGgQYKe0Dx2fUdLnV7laQeK
+         7rhE0JfmnCxoQ==
+Date:   Sun, 24 Sep 2023 18:15:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -37,14 +37,13 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
         Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        Apelete Seketeli <aseketeli@baylibre.com>
-Subject: Re: [PATCH v2 01/19] dt-bindings: iio: resolver: add devicetree
- bindings for ad2s1210
-Message-ID: <20230924175720.3be2540b@jic23-huawei>
-In-Reply-To: <20230921144400.62380-2-dlechner@baylibre.com>
+        Philip Molloy <pmolloy@baylibre.com>
+Subject: Re: [PATCH v2 02/19] staging: iio: Documentation: document IIO
+ resolver AD2S1210 sysfs attributes
+Message-ID: <20230924181510.1fb89e74@jic23-huawei>
+In-Reply-To: <20230921144400.62380-3-dlechner@baylibre.com>
 References: <20230921144400.62380-1-dlechner@baylibre.com>
-        <20230921144400.62380-2-dlechner@baylibre.com>
+        <20230921144400.62380-3-dlechner@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,206 +57,188 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Sep 2023 09:43:42 -0500
+On Thu, 21 Sep 2023 09:43:43 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> This adds new DeviceTree bindings for the Analog Devices, Inc. AD2S1210
-> resolver-to-digital converter.
+> This adds documentation for the device-specific sysfs attributes of the
+> iio/resolver/ad2s1210 driver.
 > 
-> Co-developed-by: Apelete Seketeli <aseketeli@baylibre.com>
-> Signed-off-by: Apelete Seketeli <aseketeli@baylibre.com>
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-We've become more fussy about it recently but for new bindings at least,
-we want to include all power supplies and mark them as required.
+Hi David,
 
-A few other trivial things inline,
+I'm fine with carrying these docs in staging, but I think we need to resolve
+mapping as many of these as possible to standard ABI if we can for
+all the normal reasons about software having no idea how to deal
+with custom ABI.
+
+Anyhow, I'll use this as an opportunity to comment on the individual
+files.
+
+
+
+> ---
+>  .../sysfs-bus-iio-resolver-ad2s1210           | 109 ++++++++++++++++++
+>  1 file changed, 109 insertions(+)
+>  create mode 100644 drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
+> 
+> diff --git a/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210 b/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
+> new file mode 100644
+> index 000000000000..32890c85168e
+> --- /dev/null
+> +++ b/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
+> @@ -0,0 +1,109 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/dos_mis_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Degradation of Signal Mismatch
+> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
+> +		to 127 (4.826V). To convert the value to volts, multiply by
+> +		0.038.
+
+I mention in the cover letter, but I wonder if we can map this to a threshold
+on a differential channel between the cosine and sine channels (use labels for
+the channels to identify them). It's a stretch but perhaps better than
+completely custom as at least we have event tooling to read it.
+
+If nothing else we need these to have standard units and the
+unit to be obvious from the name.  Voltages in IIO are mV (because
+we copied hwmon a long time back)
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/dos_ovr_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Degradation of Signal Overrange
+> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
+> +		to 127 (4.826V). To convert the value to volts, multiply by
+> +		0.038.
+Not clear what this actually is to me, but it's a threshold on something!
+Probably two channels which is always a pain as we'll have indicate two events
+if they are enabled.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_max_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Degradation of Signal Reset Maximum
+> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
+> +		to 127 (4.826V). To convert the value to volts, multiply by
+> +		0.038.
+
+No idea what this one is.  What does 'reset' have to do with it?
+Ah I went and looked.  This is the reset value used for the running maximum / minimum
+values.  They matter because they fault detection is difference between the values
+and if we say init the minimum to lower than actually seen that will make the
+error more likely (I think!).
+
+So not sure what we map this to.  Maybe this just has to be custom ABI but
+it should be associated with the threshold event - though I'd not registered
+that's on a running minimum and maximum rather than some 'windowed' version
+for recent values...
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/dos_rst_min_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Degradation of Signal Reset Minimum
+> +		Threshold value. Writing sets the value. Valid values are 0 (0V)
+> +		to 127 (4.826V). To convert the value to volts, multiply by
+> +		0.038.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/fault
+
+This fails the sniff test for a sysfs attribute giving multiple things.
+If we do use this sort of reporting rather than an event, maybe a fault
+directory (sysfs group) with 8 files in it.
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns a hex value containing the fault bit flags.
+> +
+> +		Bit	Description
+> +		---	-----------
+> +		D7	Sine/cosine inputs clipped
+> +		D6	Sine/cosine inputs below LOS threshold
+> +		D5	Sine/cosine inputs exceed DOS overrange threshold
+> +		D4	Sine/cosine inputs exceed DOS mismatch threshold
+> +		D3	Tracking error exceeds LOT threshold
+> +		D2	Velocity exceeds maximum tracking rate
+> +		D1	Phase error exceeds phase lock range
+> +		D0	Configuration parity error
+> +
+> +		Writing any value will clear any fault conditions.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/excitation_frequency
+
+Hmm. I though we already had this.  Turns up in various types of device.
+But nope, can't find it.  I'm fine with this one being added to the main ABI.
+
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Excitation Frequency in Hz. Writing
+> +		sets the Excitation Frequency and performs a software reset on
+> +		the device to apply the change. Valid values are 2000 (2kHz) to
+> +		20000 (20kHz).
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/los_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Loss of Signal Reset Threshold
+> +		value. Writing sets the value. Valid values are 0 (0V) to
+> +		127 (4.826V). To convert the value to volts, multiply by 0.038.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/lot_high_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Loss of Position Tracking Detection
+> +		High Threshold value. Writing sets the value. Valid values are
+> +		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
+> +		depends on the selected resolution. To convert the value to
+> +		degrees, multiply by 0.35 for 10-bit resolution, multiply by
+> +		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
+> +		resolution.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/lot_low_thrd
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Loss of Position Tracking Detection
+> +		Low Threshold value. Writing sets the value. Valid values are
+> +		0 (0 deg) to 127 (9/18/45 deg). The interpretation of the value
+> +		depends on the selected resolution. To convert the value to
+> +		degrees, multiply by 0.35 for 10-bit resolution, multiply by
+> +		0.14 for 12-bit resolution or multiply by 0.09 for 14 and 16-bit
+> +		resolution.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range
+
+For what it's worth Phases in IIO (phase_raw in ABI docs) are defined
+in radians so this will want to be appropriately scaled if we keep it around.
+
+This one feels like a threshold on phase which is already in the IIO ABI
+(for 3 phase power monitors IIRC)
 
 Jonathan
 
 
-> ---
-> 
-> v2 changes:
-> * Add Co-developed-by:
-> * Remove extraneous quotes on strings
-> * Remove extraneous pipe on some multi-line descriptions
-> 
->  .../bindings/iio/resolver/adi,ad2s1210.yaml   | 150 ++++++++++++++++++
->  1 file changed, 150 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
-> new file mode 100644
-> index 000000000000..f55c9652cfb7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
-> @@ -0,0 +1,150 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/resolver/adi,ad2s1210.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the current Phase lock range in degrees. Writing
+> +		sets the value in the configuration register.
 > +
-> +title: Analog Devices AD2S1210 Resolver-to-Digital Converter
-> +
-> +maintainers:
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  The AD2S1210 is a complete 10-bit to 16-bit resolution tracking
-> +  resolver-to-digital converter, integrating an on-board programmable
-> +  sinusoidal oscillator that provides sine wave excitation for
-> +  resolvers.
-> +
-> +  The AD2S1210 allows the user to read the angular position or the
-> +  angular velocity data directly from the parallel outputs or through
-> +  the serial interface.
-> +
-> +    A1  A0  Result
-
-Should say what A0 and A1 are.  It's down below but seems odd
-that it is here for RES0 and RES1 but not the A1 and A0 signals.
-
-> +     0   0  Normal mode - position output
-> +     0   1  Normal mode - velocity output
-> +     1   0  Reserved
-> +     1   1  Configuration mode
-> +
-> +  In normal mode, the resolution of the digital output is selected using
-> +  the RES0 and RES1 input pins. In configuration mode, the resolution is
-> +  selected by setting the RES0 and RES1 bits in the control register.
-> +
-> +  RES1  RES0  Resolution (Bits)
-> +     0     0  10
-> +     0     1  12
-> +     1     0  14
-> +     1     1  16
-> +
-> +  Note on SPI connections: The CS line on the AD2S1210 should hard-wired to
-> +  logic low and the WR/FSYNC line on the AD2S1210 should be connected to the
-> +  SPI CSn output of the SPI controller.
-
-That is impressively random ;)  Good to call it out.
-
-> +
-> +  Datasheet:
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad2s1210.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: adi,ad2s1210
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 25000000
-> +
-> +  spi-cpha: true
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: External oscillator clock (CLKIN).
-> +
-> +  reset-gpios:
-> +    description:
-> +      GPIO connected to the /RESET pin. As the line needs to be low for the
-> +      reset to be active, it should be configured as GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  sample-gpios:
-> +    description:
-> +      GPIO connected to the /SAMPLE pin. As the line needs to be low to trigger
-> +      a sample, it should be configured as GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  mode-gpios:
-> +    description:
-> +      GPIO lines connected to the A0 and A1 pins. These pins select the data
-> +      transfer mode.
-> +    minItems: 2
-> +    maxItems: 2
-> +
-> +  resolution-gpios:
-> +    description:
-> +      GPIO lines connected to the RES0 and RES1 pins. These pins select the
-> +      resolution of the digital output. If omitted, it is assumed that the
-> +      RES0 and RES1 pins are hard-wired to match the assigned-resolution-bits
-> +      property.
-> +    minItems: 2
-> +    maxItems: 2
-> +
-> +  fault-gpios:
-> +    description:
-> +      GPIO lines connected to the LOT and DOS pins. These pins combined indicate
-> +      the type of fault present, if any. As these pins a pulled low to indicate
-> +      a fault condition, they should be configured as GPIO_ACTIVE_LOW.
-
-What if someone is being odd and connected only 1 of them?
-It's annoying how often people run out of pins and do things like this.
-
-> +    minItems: 2
-> +    maxItems: 2
-> +
-> +  adi,fixed-mode:
-> +    description:
-> +      This is used to indicate the selected mode if A0 and A1 are hard-wired
-> +      instead of connected to GPIOS (i.e. mode-gpios is omitted).
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [config, velocity, position]
-> +
-> +  assigned-resolution-bits:
-> +    description:
-> +      Resolution of the digital output required by the application. This
-> +      determines the precision of the angle and/or the maximum speed that can
-> +      be measured. If resolution-gpios is omitted, it is assumed that RES0 and
-> +      RES1 are hard-wired to match this value.
-> +    enum: [10, 12, 14, 16]
-
-Good description as this was non obvious.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpha
-> +  - clocks
-> +  - sample-gpios
-> +  - assigned-resolution-bits
-> +
-> +oneOf:
-> +  - required:
-> +      - mode-gpios
-> +  - required:
-> +      - adi,fixed-mode
-I think this allows for both.  It's fiddlier to exclude that but would be a nice
-to have perhaps rather than relying on text above that says 'don't do it'.
-
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        resolver@0 {
-> +            compatible = "adi,ad2s1210";
-> +            reg = <0>;
-> +            spi-max-frequency = <20000000>;
-> +            spi-cpha;
-> +            clocks = <&ext_osc>;
-> +            sample-gpios = <&gpio0 90 GPIO_ACTIVE_LOW>;
-> +            mode-gpios = <&gpio0 86 0>, <&gpio0 87 0>;
-> +            resolution-gpios = <&gpio0 88 0>, <&gpio0 89 0>;
-> +            assigned-resolution-bits = <16>;
-> +        };
-> +    };
+> +What:		/sys/bus/iio/devices/iio:deviceX/phase_lock_range_available
+> +KernelVersion:  6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns the possible values for the phase_lock_range
+> +		attribute, namely 44 and 360.
 

@@ -2,44 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD487ACACA
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 18:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5683B7ACACF
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 18:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbjIXQed (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 12:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35678 "EHLO
+        id S229780AbjIXQvi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 12:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIXQed (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 12:34:33 -0400
+        with ESMTP id S229437AbjIXQvh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 12:51:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF66FC;
-        Sun, 24 Sep 2023 09:34:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD60C433C7;
-        Sun, 24 Sep 2023 16:34:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AB4FD;
+        Sun, 24 Sep 2023 09:51:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D30C433C8;
+        Sun, 24 Sep 2023 16:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695573266;
-        bh=iASfj17cqi8s/uASPn0k5gn6J4ssJb4sKyxilelbtR0=;
+        s=k20201202; t=1695574291;
+        bh=rKfvvK2fWtROu5dnahrRZoarOaavt6eOxye7CB3KXic=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GntrjhnzpN/FnXQcpk2ULg2lV8xUjFCbRT4RkNjDbDXBma/QqHaNu/7uIjqlvZoni
-         niHtymt/lLriBwv14b4R6YaE7DL5qh+JqlZphgug53y855hYobYaVqe65Vd0cjBikK
-         uym8BceK2cW6qWapmlcU49qf4fMHATyDaRnvumeUn3pfZX/Wpwltn+de64tgZOS28U
-         EQLw9GeVFkaVeECja6zUAZTJDITaPAawG4GzY9mpnpgkwT9Q4eS+1jCoUYFXW4PQ8E
-         hmI5JDWMFkxKz/835ZE7haw0ydNh09J0CmjaveFIPBO+Rsm65x2Q1maqoCIopof4N2
-         K6q1ueNbRWFQg==
-Date:   Sun, 24 Sep 2023 17:34:18 +0100
+        b=HwB/B5ZPJ6jTFkWe3POgACEQRFjxdgbrHbDdAtg6slmTKz5mkHC1YrqTVjSDJ2tx0
+         LfM6kX1EkOT9wloJ5Jex0Ve+Cx8skibbINQzSJ29aN3SB1sk0fq7f+8DK0Gb7qVQKP
+         1j7RwZXD1FPnZ/Kbb9w52I5FLPWDZHDBXWXtEpPnlgG1IB4pA89G3ntPzazB4Gx68T
+         vnxMnVUBvHNImQyiOMpKnB2IgiKIrWsR8Ay2pApC91ifFp/QCRuTIrOwiZCuSDy3Dj
+         S04JSSTZ5V2guwC1af2wT0zq6dz/sl3rHCeRiMTagTUMSqVw0WXhmR8jVql9iixM3Q
+         17XGVm2VD9A1A==
+Date:   Sun, 24 Sep 2023 17:51:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     alisadariana@gmail.com
-Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
-        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+To:     David Lechner <dlechner@baylibre.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7192: Correct reference voltage
-Message-ID: <20230924173418.4d83ac04@jic23-huawei>
-In-Reply-To: <20230924152149.41884-1-alisadariana@gmail.com>
-References: <20230924152149.41884-1-alisadariana@gmail.com>
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>
+Subject: Re: [PATCH v2 00/19] iio: resolver: move ad2s1210 out of staging
+Message-ID: <20230924175123.268e8de4@jic23-huawei>
+In-Reply-To: <20230921144400.62380-1-dlechner@baylibre.com>
+References: <20230921144400.62380-1-dlechner@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,82 +55,133 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 24 Sep 2023 18:21:48 +0300
-alisadariana@gmail.com wrote:
+On Thu, 21 Sep 2023 09:43:41 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> From: Alisa-Dariana Roman <alisa.roman@analog.com>
+> Resending v2 with proper `PATCH v2` prefix.
 > 
-> The avdd and the reference voltage are two different sources but the
-> reference voltage was assigned according to the avdd supply.
+> Changes since v1:
+> * Address initial device tree patch feedback
+> * Drop "iio: sysfs: add IIO_DEVICE_ATTR_NAMED_RW macro" (related cleanups
+>   also dropped for now, will address in a future series if needed)
+> * Apply improvements as a series as patches to the staging driver. It is not
+>   quite ready for the move out of staging patch yet.
 > 
-> Add vref regulator structure and set the reference voltage according to
-> the vref supply from the devicetree.
-> 
-> In case vref supply is missing, reference voltage is set according to
-> the avdd supply for compatibility with old devicetrees.
-> 
-> Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> Cc: stable@vger.kernel.org
-Applied to the fixes-togreg branch of iio.git
+> This series has been tested on actual hardware using a EVAL-AD2S1210 evaluation
+> board. (Note: not all device tree features have been implemented in the driver
+> since the eval board doesn't support them out of the box. We plan to add them
+> later if needed.)
 
-Thanks,
+Thanks for breaking it up.
 
-Jonathan
+> 
+> One thing left over from the staging driver that probably needs more attention
+> still is the fault handling (both the fault threshold attributes and how
+> userspace gets notified of fault conditions). We considered adding these as
+> events, but the fault conditions are related to internal measurements in the
+> chip that aren't available as channels.
+> 
+> Since the chip is designed to read the fault register each time we read the
+> data registers for one of the two channels it seems like faults should be
+> associated with channels one way or another. Would it make sense to add extra
+> channels for the internal signals that only have fault events (mostly with
+> IIO_EV_TYPE_THRESH)? Or would it make sense to add a new "flags" channel type
+> where the "raw" value is bit flags? Or something else?
 
-> ---
-> v1 -> v2
-> 	- use dev_err_probe()
-> 	Link: https://lore.kernel.org/lkml/20230923225827.75681-1-alisadariana@gmail.com/
+Fault reporting is a continuing problem across all similar subsystems.
+Every now and then there is a discussion about something 'generic' as
+in most cases you want faults to surface separately from the main datastream.
+Unfortunately no one ever did more than talk about it as far as I know.
+
+I'm not keen on the flags channel because it's effectively custom to a particular
+driver.  Describing the various possible bits in a way generic software can
+interpret them is really challenging.  Faults tend to be a lot less 'consistent
+in form' than actual data.  You are correct that at least some of these
+could be mapped to channels though.
+
 > 
->  drivers/iio/adc/ad7192.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
+> Here is the table of available faults for context. Sine/cosine inputs are
+> internal signals.
+
+Some of these we could consider 'normal' events.
 > 
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 69d1103b9508..b64fd365f83f 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -177,6 +177,7 @@ struct ad7192_chip_info {
->  struct ad7192_state {
->  	const struct ad7192_chip_info	*chip_info;
->  	struct regulator		*avdd;
-> +	struct regulator		*vref;
->  	struct clk			*mclk;
->  	u16				int_vref_mv;
->  	u32				fclk;
-> @@ -1008,10 +1009,30 @@ static int ad7192_probe(struct spi_device *spi)
->  	if (ret)
->  		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
->  
-> -	ret = regulator_get_voltage(st->avdd);
-> -	if (ret < 0) {
-> -		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
-> -		return ret;
-> +	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
-> +	if (IS_ERR(st->vref)) {
-> +		if (PTR_ERR(st->vref) != -ENODEV)
-> +			return PTR_ERR(st->vref);
-> +
-> +		ret = regulator_get_voltage(st->avdd);
-> +		if (ret < 0)
-> +			return dev_err_probe(&spi->dev, ret,
-> +					     "Device tree error, AVdd voltage undefined\n");
-> +	} else {
-> +		ret = regulator_enable(st->vref);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regulator_get_voltage(st->vref);
-> +		if (ret < 0)
-> +			return dev_err_probe(&spi->dev, ret,
-> +					     "Device tree error, Vref voltage undefined\n");
->  	}
->  	st->int_vref_mv = ret / 1000;
->  
+> | Bit | Description
+> +-----+------------
+> | D7  |  Sine/cosine inputs clipped
+
+Not really related to any channel.  It's pushing the boundaries
+a little but you could add an alternating voltage channel and
+describe this as a threshold being crossed on that.  It's a bit
+of a stretch but it is something existing tooling should handle
+even if it's not easy to interpret the error.
+
+> | D6  |  Sine/cosine inputs below LOS threshold
+Also a threshold on the input alternative voltage channel.
+Problem here is that IIO only supports one threshold. So you
+would need to figure out how to handle this vs the clip detection.
+
+> | D5  |  Sine/cosine inputs exceed DOS overrange threshold
+Not 100% sure I understood this one right, but could it be considered
+an over threshold condition?
+> | D4  |  Sine/cosine inputs exceed DOS mismatch threshold
+My knowledge of resolvers is a little limited, but this could
+be considered an event on a differential channel (between
+sine and cosine inputs.
+
+> | D3  |  Tracking error exceeds LOT threshold
+Not sure if this one is expected to occur except at reset.
+It describes it as result of a step change in rotational position
+which feels like something that doesn't happen other than when
+device is reset... Could be wrong though!
+
+> | D2  |  Velocity exceeds maximum tracking rate
+This one is I think just a threshold on velocity matching what the
+hardware is capable of.
+
+> | D1  |  Phase error exceeds phase lock range
+
+
+> | D0  |  Configuration parity error
+This one has nothing to do with the data. I'd spit a log message
+out if you see it. Chances are device is dead. You 'could' keep
+a cache of what you think should be in the registers and try
+a full reset and re configuration.  Like any other parity error
+though you will want to have something watching for repeats that
+mean the part needs replacing.
+
+> 
+> David Lechner (19):
+>   dt-bindings: iio: resolver: add devicetree bindings for ad2s1210
+>   staging: iio: Documentation: document IIO resolver AD2S1210 sysfs
+>     attributes
+>   staging: iio: resolver: ad2s1210: fix ad2s1210_show_fault
+>   staging: iio: resolver: ad2s1210: fix not restoring sample gpio in
+>     channel read
+>   staging: iio: resolver: ad2s1210: fix probe
+>   staging: iio: resolver: ad2s1210: always use 16-bit value for raw read
+>   staging: iio: resolver: ad2s1210: implement IIO_CHAN_INFO_SCALE
+>   staging: iio: resolver: ad2s1210: use devicetree to get fclkin
+>   staging: iio: resolver: ad2s1210: use regmap for config registers
+>   staging: iio: resolver: ad2s1210: add debugfs reg access
+>   staging: iio: resolver: ad2s1210: remove config attribute
+>   staging: iio: resolver: ad2s1210: rework gpios
+>   staging: iio: resolver: ad2s1210: implement hysteresis as channel attr
+>   staging: iio: resolver: ad2s1210: refactor setting excitation
+>     frequency
+>   staging: iio: resolver: ad2s1210: read excitation frequency from
+>     control register
+>   staging: iio: resolver: ad2s1210: rename fexcit attribute
+>   staging: iio: resolver: ad2s1210: convert resolution to devicetree
+>     property
+>   staging: iio: resolver: ad2s1210: add phase_lock_range attributes
+>   staging: iio: resolver: ad2s1210: add triggered buffer support
+> 
+>  .../bindings/iio/resolver/adi,ad2s1210.yaml   | 150 +++
+>  .../sysfs-bus-iio-resolver-ad2s1210           | 109 ++
+>  drivers/staging/iio/resolver/Kconfig          |   1 +
+>  drivers/staging/iio/resolver/ad2s1210.c       | 948 +++++++++++-------
+>  4 files changed, 857 insertions(+), 351 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
+>  create mode 100644 drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
+> 
 

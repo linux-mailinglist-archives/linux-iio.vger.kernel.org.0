@@ -2,217 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B997ACB4A
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 20:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B08B87ACC19
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 23:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjIXSR1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 14:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58254 "EHLO
+        id S229813AbjIXVw0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 17:52:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIXSR1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 14:17:27 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D35FB;
-        Sun, 24 Sep 2023 11:17:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1777CC433C7;
-        Sun, 24 Sep 2023 18:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695579440;
-        bh=UB9EHCgTSx/Ae7TVo6Ze4gnE+haUhN6Xn6Ix/hTUP2g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sBLsgvTCv9GofGv/degCP1e20cVhtusQ6l7YSH7NQm2qSsuY9EcpCi7Ip0nphjFV8
-         auoly+qTSPLwfcUOkVs+Dfxle9YdPA9fIjFKGZUAv7DXSWZ5mK4MlSJpJKdOs/KesF
-         1DgYYdEB9lMSTB2innNEP9vOKaGQiq3OgcEL0jsaN3yyAb56xlp5qp/ijO+ucYuYLJ
-         g+wnsIzWzSSpm90MWxI4TF5tF2jrhx1S/yuUVN3VTzO9YDEIdJduwD7+v1i44rkpQ7
-         0mIgCMrqOCehVL1AUTqdF+0C1QtDwD46An6FDFYuOpWEKkcoDwPn8U1fxTNamUobrE
-         Fl+skn1kXMKEQ==
-Date:   Sun, 24 Sep 2023 19:17:11 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <dlechner@baylibre.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
+        with ESMTP id S229521AbjIXVwZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 17:52:25 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E69CF;
+        Sun, 24 Sep 2023 14:52:19 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31ff985e292so4883533f8f.1;
+        Sun, 24 Sep 2023 14:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695592337; x=1696197137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NSCEBssBikQzY5aYKeN0gHTQNX/uGtO0UC9XEC97/7Y=;
+        b=CjdSUzlogm6OGqrIRYGpOzvHEhbifotUtn9M5gg6+S6+q8V6KTOfxkbOFHovzZFH0N
+         FFVLIMOYhULXVFGyNd6h3BlGIeANQgN7dIq0e1oJHNsJkXGbv9HLe0X8K0muU1WzVdRj
+         JAu91Bgo+pCQECKfxlhBNmg7f+5wIaFzNA7pYskXP8k/7X2DatX7pA7PDnj3PBQfzsRy
+         EuM14CKUKpk/4MKmxGg0JYwz0dkPppjvPzNAXxNGBG7Nfyr+cAjw8QSrSp9T+UOXxwaP
+         MXzw7RRd2cBJ/iUXeXZOlofArk1NeF4ZAPb3QI/qIKkaCCepz7jNQwnjPpTnoMpWO5xQ
+         8naw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695592337; x=1696197137;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NSCEBssBikQzY5aYKeN0gHTQNX/uGtO0UC9XEC97/7Y=;
+        b=EcfQ1tU4YwsFW8GFe1CA35hTKR3rfK/JC74TMRsIYOzeO6CwT7CBgxWv/uxEAC/FXA
+         R7TTIYmQ2FIiXED6u+z+G+FaIe+ha7OfEOajOP1IK4xiwlqJ8n/6iymBs7dZ9PMK/HgC
+         xKNCMLkFUTMa9TpJ5qmm65A+/2fNnlgsbTJdK/yyxU+NoEBSdl+017Q0adhTfNN9sNmM
+         U4FR7Ur2rJr9UKn1teUvvzCGiPBzqw0/AxGYcUtZrGJibd5cSqRtlL/iHyK3mD5yUD3y
+         6XBVqYx2+2reryYGa4cCX7jyQCVY6xHWlSlA4AYheWTJAQmysMx/5t2QiNi8wx0eYhXD
+         NVfg==
+X-Gm-Message-State: AOJu0Yzy2ctCoiO8pLbUndocbtJEDU8vJ9uTFOQCwVNkKGxJna99vhF2
+        ZyNQPQ7WCwsLhEXpG5e8Q7k=
+X-Google-Smtp-Source: AGHT+IFdCn2dmRcwfphz4wodGO2Ivx3qIBwaXfOPeCGfL6EnxE/x/4F2pPdMzoB9WpIQsXhylu9CmQ==
+X-Received: by 2002:adf:cb8e:0:b0:323:22d9:4930 with SMTP id q14-20020adfcb8e000000b0032322d94930mr1333958wrh.33.1695592337484;
+        Sun, 24 Sep 2023 14:52:17 -0700 (PDT)
+Received: from spiri.. ([2a02:2f08:a301:7000:1bc9:cab8:e784:6ddb])
+        by smtp.gmail.com with ESMTPSA id c10-20020a5d4f0a000000b0031f3ad17b2csm10144444wru.52.2023.09.24.14.52.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Sep 2023 14:52:17 -0700 (PDT)
+From:   alisadariana@gmail.com
+Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>
-Subject: Re: [PATCH v2 19/19] staging: iio: resolver: ad2s1210: add
- triggered buffer support
-Message-ID: <20230924191711.244ec842@jic23-huawei>
-In-Reply-To: <20230921144400.62380-20-dlechner@baylibre.com>
-References: <20230921144400.62380-1-dlechner@baylibre.com>
-        <20230921144400.62380-20-dlechner@baylibre.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] iio: adc: ad7192: Add improvements and feature
+Date:   Mon, 25 Sep 2023 00:51:45 +0300
+Message-Id: <20230924215148.102491-1-alisadariana@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Sep 2023 09:44:00 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+From: Alisa-Dariana Roman <alisa.roman@analog.com>
 
-> This adds support for triggered buffers to the AD2S1210 resolver driver.
-> 
-Looks good. A few trivial comments inline.
+Hello again,
 
-Jonathan
+Thank you Jonathan for the feedback! Here is the updated series of
+patches for the ad7192 driver.
 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/staging/iio/resolver/ad2s1210.c | 84 ++++++++++++++++++++++++-
->  1 file changed, 83 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-> index f5b8b290e860..44a2ecaeeeff 100644
-> --- a/drivers/staging/iio/resolver/ad2s1210.c
-> +++ b/drivers/staging/iio/resolver/ad2s1210.c
-> @@ -19,8 +19,11 @@
->  #include <linux/sysfs.h>
->  #include <linux/types.h>
->  
-> +#include <linux/iio/buffer.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
->  
->  #define DRV_NAME "ad2s1210"
->  
-> @@ -85,6 +88,12 @@ struct ad2s1210_state {
->  	unsigned long fclkin;
->  	/** The selected resolution */
->  	enum ad2s1210_resolution resolution;
-> +	/** Scan buffer */
-> +	struct {
-> +		__be16 chan[2];
-> +		/* Ensure timestamp is naturally aligned. */
-> +		s64 timestamp __aligned(8);
-> +	} scan;
->  	u8 rx[2] __aligned(IIO_DMA_MINALIGN);
->  	u8 tx[2];
->  };
-> @@ -592,18 +601,35 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
->  		.type = IIO_ANGL,
->  		.indexed = 1,
->  		.channel = 0,
-> +		.scan_index = 0,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 16,
-> +			.storagebits = 16,
-> +			.endianness = IIO_BE,
-> +		},
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_HYSTERESIS),
->  		.info_mask_separate_available =
->  					BIT(IIO_CHAN_INFO_HYSTERESIS),
-> +		.datasheet_name = "position",
->  	}, {
->  		.type = IIO_ANGL_VEL,
->  		.indexed = 1,
->  		.channel = 0,
-> +		.scan_index = 1,
-> +		.scan_type = {
-> +			.sign = 's',
-> +			.realbits = 16,
-> +			.storagebits = 16,
-> +			.endianness = IIO_BE,
-> +		},
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE),
-> -	}
-> +		.datasheet_name = "velocity",
+Quick reminder that the patches need to be applied in order.
 
-Not sure adding these is useful at this stage unless you have in kernel
-consumers for this device.
+v2 -> v3
+	- move comment line above
+	- correct FIELD_PREP to FIELD_GET where needed
+	- remove unnecessary !!
+	- "rms" -> "RMS"
+	Link: https://lore.kernel.org/all/20230920003342.118813-1-alisadariana@gmail.com/
 
-> +	},
-> +	IIO_CHAN_SOFT_TIMESTAMP(2),
->  };
->  
->  static struct attribute *ad2s1210_attributes[] = {
-> @@ -665,6 +691,55 @@ static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
->  	return ret;
->  }
->  
-> +static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +	size_t chan = 0;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	memset(&st->scan, 0, sizeof(st->scan));
-> +	gpiod_set_value(st->sample_gpio, 1);
-> +
-> +	if (test_bit(0, indio_dev->active_scan_mask)) {
-> +		ret = ad2s1210_set_mode(st, MOD_POS);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		/* REVIST: we can read 3 bytes here and also get fault flags */
+v1 -> v2
+	- replace old macros with FIELD_PREP() in commit "Use bitfield
+	  access macros"
+	- update the other commits accordingly
+	Link: https://lore.kernel.org/all/20230918214854.252781-1-alisadariana@gmail.com/
 
-Given we have fault detection outputs, does it make sense to do so?
-Or should we just rely on those triggering an interrupt?
+Kind regards,
 
-> +		ret = spi_read(st->sdev, st->rx, 2);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		memcpy(&st->scan.chan[chan++], st->rx, 2);
-> +	}
-> +
-> +	if (test_bit(1, indio_dev->active_scan_mask)) {
-> +		ret = ad2s1210_set_mode(st, MOD_VEL);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		/* REVIST: we can read 3 bytes here and also get fault flags */
-> +		ret = spi_read(st->sdev, st->rx, 2);
-> +		if (ret < 0)
-> +			goto error_ret;
-> +
-> +		memcpy(&st->scan.chan[chan++], st->rx, 2);
-> +	}
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan, pf->timestamp);
-> +
-> +error_ret:
-> +	gpiod_set_value(st->sample_gpio, 0);
-> +	mutex_unlock(&st->lock);
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
->  static const struct iio_info ad2s1210_info = {
->  	.read_raw = ad2s1210_read_raw,
->  	.read_avail = ad2s1210_read_avail,
-> @@ -850,6 +925,13 @@ static int ad2s1210_probe(struct spi_device *spi)
->  	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
->  	indio_dev->name = spi_get_device_id(spi)->name;
->  
-> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &ad2s1210_trigger_handler, NULL);
-> +	if (ret < 0)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				     "iio triggered buffer setup failed\n");
-> +
->  	return devm_iio_device_register(&spi->dev, indio_dev);
->  }
->  
+Alisa-Dariana Roman (3):
+  iio: adc: ad7192: Use bitfield access macros
+  iio: adc: ad7192: Improve f_order computation
+  iio: adc: ad7192: Add fast settling support
+
+ .../ABI/testing/sysfs-bus-iio-adc-ad7192      |  18 ++
+ drivers/iio/adc/ad7192.c                      | 241 ++++++++++++++----
+ 2 files changed, 206 insertions(+), 53 deletions(-)
+
+-- 
+2.34.1
 

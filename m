@@ -2,43 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 664B67ACA17
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1737ACA1C
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjIXOrf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 10:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
+        id S230070AbjIXOur (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 10:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbjIXOrf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:47:35 -0400
+        with ESMTP id S229973AbjIXOuq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:50:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D828FB;
-        Sun, 24 Sep 2023 07:47:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533C1C433C7;
-        Sun, 24 Sep 2023 14:47:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08113FC;
+        Sun, 24 Sep 2023 07:50:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC351C433C8;
+        Sun, 24 Sep 2023 14:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695566848;
-        bh=RmbrxrU9l9CyB5p5ygtaBTP0+0uEydNb9Aqm2XCNw2E=;
+        s=k20201202; t=1695567039;
+        bh=PA4HpJZ/oM4RsAfWDJNFj966iei9Is4OvBg8CiMxIrc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eeVBWqolcPI0jwuYPbPlaCKV1FQc+H9E+UnESvco0REOVWsGCoONRdUTx3jH9sI1d
-         R8Gxygt6/fnHWz7QXOhRHrljIY0W47IR+vzDzymentGv8jenNzGeP0U1mOhGbIU1B6
-         34ru9r10JahGFbFyZMRp82CoTKHsr5Yzz6vsHwh+yARsQtwWL6y28mpYDyYSKXZddO
-         NCkM8OAfCB9oWWXDpbdG5HKxDaBJQ6/w6l6tWFNhttMi0JiqX2dgp30kkCwiIM7G0Y
-         1fJrzr/5bUBvcd2VcguC35fWEP+hWlfQ3uu3vMdWkDLhDF2lqze4WBD2MUljzY2mc+
-         aOoT2AU9ZI/ww==
-Date:   Sun, 24 Sep 2023 15:47:22 +0100
+        b=Dbx1lwT7m8TFgbEUbh0Fsnu2wvoR2AuxgNOMNEKhXWSrvpM2bKoXBATVzpnuPxIsw
+         puNDNe/sZxU5sVsgk8aDSXS8Ocdy5huNObC6XzMgamPUzltP85qtRhy8A7Ju96+uQt
+         H10yyzZfJ1c0Esy6RpYG4B6ZpuNKWfVXVxK5QXRNQX8LR8O6beglAut29btsPQEvLs
+         fvq3FZxZ7rUyv7LhZvxzpdy8JDbba1s6wPpkjIpYQ8FrlGxn+RSMHK9SxKp/N2ngLz
+         D3cNY4aYLVGOLswwZHwi/ETJ719iF3YzjncPNwLu+0I3fDPkaq9qjVPor30C5Dsrv7
+         a0qFqETOy5Wew==
+Date:   Sun, 24 Sep 2023 15:50:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     alisadariana@gmail.com
 Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
+        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] iio: adc: ad7192: Add fast settling support
-Message-ID: <20230924154722.14ea28ef@jic23-huawei>
-In-Reply-To: <20230920003342.118813-4-alisadariana@gmail.com>
-References: <20230920003342.118813-1-alisadariana@gmail.com>
-        <20230920003342.118813-4-alisadariana@gmail.com>
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: Correct reference voltage
+Message-ID: <20230924155019.1675a37d@jic23-huawei>
+In-Reply-To: <20230923225827.75681-1-alisadariana@gmail.com>
+References: <20230923225827.75681-1-alisadariana@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,100 +54,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 Sep 2023 03:33:42 +0300
+On Sun, 24 Sep 2023 01:58:27 +0300
 alisadariana@gmail.com wrote:
 
 > From: Alisa-Dariana Roman <alisadariana@gmail.com>
 > 
-> Add fast settling mode support for AD7193.
+> The avdd and the reference voltage are two different sources but the
+> reference voltage was assigned according to the avdd supply.
 > 
-> Add fast_settling_average_factor attribute. Expose to user the current
-> value of the fast settling average factor. User can change the value by
-> writing a new one.
+> Add vref regulator structure and set the reference voltage according to
+> the vref supply from the devicetree.
 > 
-> Add fast_settling_average_factor_available attribute. Expose to user
-> possible values for the fast settling average factor.
+> In case vref supply is missing, reference voltage is set according to
+> the avdd supply for compatibility with old devicetrees.
 > 
+> Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
->  .../ABI/testing/sysfs-bus-iio-adc-ad7192      |  18 +++
->  drivers/iio/adc/ad7192.c                      | 128 ++++++++++++++++--
->  2 files changed, 134 insertions(+), 12 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
-> index f8315202c8f0..5790adbb1cc1 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
-> @@ -19,6 +19,24 @@ Description:
->  		the bridge can be disconnected (when it is not being used
->  		using the bridge_switch_en attribute.
->  
-> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute, if available, is used to activate or deactivate
-> +		fast settling mode and set the value of the average factor to
-> +		1, 2, 8 or 16. If the average factor is set to 1, the fast
-> +		settling mode is disabled. The data from the sinc filter is
-> +		averaged by chosen value. The averaging reduces the output data
-> +		rate for a given FS word, however, the rms noise improves.
+> Cc: stable@vger.kernel.org
 
-Trivial but RMS as it's an acronym.
+Looks good but I'd prefer dev_err_probe() for the error messages.
+Obviously that wasn't true for the existing one but as we are touching the
+code good to clean it up.
 
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor_available
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns a list with the possible values for the fast
-> +		settling average factor: 1, 2, 8, 16.
-> +
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration
->  KernelVersion:
->  Contact:	linux-iio@vger.kernel.org
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index eed3de02c26d..8987b78865f3 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -60,6 +60,8 @@
->  #define AD7192_MODE_SEL_MASK	GENMASK(23, 21) /* Operation Mode Select Mask */
->  #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
->  #define AD7192_MODE_CLKSRC_MASK	GENMASK(19, 18) /* Clock Source Select Mask */
-> +#define AD7192_MODE_AVG_MASK	GENMASK(17, 16)
-> +		  /* Fast Settling Filter Average Select Mask (AD7193 only) */
->  #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
->  #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
->  #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
-> @@ -182,6 +184,7 @@ struct ad7192_state {
->  	u32				mode;
->  	u32				conf;
->  	u32				scale_avail[8][2];
-> +	u8				avg_avail[4];
->  	u8				gpocon;
->  	u8				clock_sel;
->  	struct mutex			lock;	/* protect sensor state */
-> @@ -459,6 +462,13 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
->  		st->scale_avail[i][0] = scale_uv;
->  	}
->  
-> +	if (st->chip_info->chip_id == CHIPID_AD7193) {
-
-Hmm. This does match with local style, but I'd have preferred if the driver
-put all this information in the chip_info structure rather than scattered in code
-thoughout the driver.  That would be a bigger and mostly unrelated cleanup however
-and this doesn't make the situation any worse really so I'm fine with this
-patch as it stands.
+Thanks,
 
 Jonathan
 
-
-> +		st->avg_avail[0] = 1;
-> +		st->avg_avail[1] = 2;
-> +		st->avg_avail[2] = 8;
-> +		st->avg_avail[3] = 16;
-> +	}
-> +
->  	return 0;
->  }
+> ---
+>  drivers/iio/adc/ad7192.c | 31 +++++++++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 69d1103b9508..c414fed60dd3 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -177,6 +177,7 @@ struct ad7192_chip_info {
+>  struct ad7192_state {
+>  	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+> +	struct regulator		*vref;
+>  	struct clk			*mclk;
+>  	u16				int_vref_mv;
+>  	u32				fclk;
+> @@ -1008,10 +1009,32 @@ static int ad7192_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
 >  
+> -	ret = regulator_get_voltage(st->avdd);
+> -	if (ret < 0) {
+> -		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+> -		return ret;
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
+> +	if (IS_ERR(st->vref)) {
+> +		if (PTR_ERR(st->vref) != -ENODEV)
+> +			return PTR_ERR(st->vref);
+> +
+> +		ret = regulator_get_voltage(st->avdd);
+> +		if (ret < 0) {
+> +			dev_err(&spi->dev, "Device tree error, AVdd voltage undefined\n");
+dev_err_probe()
+
+> +			return ret;
+> +		}
+> +	} else {
+> +		ret = regulator_enable(st->vref);
+> +		if (ret) {
+> +			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
+dev_err_probe()
+> +			return ret;
+> +		}
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regulator_get_voltage(st->vref);
+> +		if (ret < 0) {
+> +			dev_err(&spi->dev, "Device tree error, Vref voltage undefined\n");
+dev_err_probe()
+
+> +			return ret;
+> +		}
+>  	}
+>  	st->int_vref_mv = ret / 1000;
+>  
+

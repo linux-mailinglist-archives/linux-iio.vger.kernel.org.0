@@ -2,55 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7153E7AC7EC
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 14:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D01797AC808
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 14:32:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbjIXMPK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 08:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
+        id S229450AbjIXMcK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 08:32:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjIXMPJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 08:15:09 -0400
+        with ESMTP id S229449AbjIXMcJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 08:32:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C7DAFE;
-        Sun, 24 Sep 2023 05:15:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3A4C433C8;
-        Sun, 24 Sep 2023 12:14:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A01101;
+        Sun, 24 Sep 2023 05:32:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C74DC433C7;
+        Sun, 24 Sep 2023 12:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695557703;
-        bh=gPXi1eCu0s1miFDC6/sjRthketQrCVLtEzbLlQDVX8A=;
+        s=k20201202; t=1695558722;
+        bh=4O8Z/nlwUMfJ5kW6vROIpHUGLRtUh9kQDaNRYgH56ck=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Qk6DIL+3JVpmfVsGfuoTpzwbFVb9R3arD5zA7u3hs/aC2/zlIcu8eY42UZNKpk/WB
-         VQLEpgsOMaBOzuS/Zq/z9yN5DHTUHYJqKEtcsPLhbzExB2eAoHtRQpgNsgXCN5TK6F
-         f7xsKcNGTBChaF45vSHxymIeu/ZSTMBHrzc3vGAA4Mxkywz3h1/qdeddPhQ1ChGIL+
-         gPiOpJmMNIa2WdrBQkyhoNkaYT4AqbsGLLb8n7RVVuh90DJFuHf83J3bmgV1n0Pcq3
-         JL+5mvuBGvPPaXRFvmIxV6eEqxIHsZBpzeLfQywDuxDCLTdCaLJHzQbkZYZFsdDi7x
-         D0We8EeEiiA1A==
-Date:   Sun, 24 Sep 2023 13:14:54 +0100
+        b=cX+G1R2HwjyhGBE0l8VRphVl9tiNFnqdNMDw2rtDJYsHm/ek/8pR5g1moCaICZxAO
+         HeydWTVqVthlZpvc8xe0YmFzHy9fFF1j4cnoiQT6/M9XxpUZl+y3q6sFWXOIqSVZ7U
+         dV038a8DOXvGThuGfZRU2chYsvlyLgFi1FYLWliaQhwSyREpUsJvu+L4wDZzjVTXAP
+         DUdSzR06Y9YubTae4C80Pw147/75W4BDTyCZkXGxKMeh3lYdn+/DL+UA5WceEGl0Eb
+         gM9FRaoZjH5O2h0U6ZOiyqud1b3sxLpGhB2urz51RaceEkQODyzkX7Px4DyUxYoLb3
+         Fecz9WtQRwx7w==
+Date:   Sun, 24 Sep 2023 13:31:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: pressure: Support ROHM BU1390
-Message-ID: <20230924131454.7cae02a9@jic23-huawei>
-In-Reply-To: <9d929df3-ac51-7d1f-ec00-856849cc70c7@gmail.com>
-References: <cover.1694760170.git.mazziesaccount@gmail.com>
-        <f378a401cec4fb0b9287b52ab159f00dd77569a6.1694760170.git.mazziesaccount@gmail.com>
-        <20230917113518.7c4bb1a0@jic23-huawei>
-        <a5c19874-32ba-60bf-6e72-9139a2873c7e@gmail.com>
-        <c987f401-81c4-00e5-51a7-88a6a38a2ca2@gmail.com>
-        <20230919155340.0000076f@Huawei.com>
-        <7181e56e-9488-25c9-3d03-64e49b2c952a@gmail.com>
-        <9d929df3-ac51-7d1f-ec00-856849cc70c7@gmail.com>
+To:     Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Cc:     <jikos@kernel.org>, <benjamin.tissoires@redhat.com>,
+        <lars@metafoo.de>, <srinivas.pandruvada@linux.intel.com>,
+        <linux-input@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 6/9] iio: Add channel type for chromaticity
+Message-ID: <20230924133155.48da9a8d@jic23-huawei>
+In-Reply-To: <20230919081054.2050714-7-Basavaraj.Natikar@amd.com>
+References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
+        <20230919081054.2050714-7-Basavaraj.Natikar@amd.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,75 +51,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Sep 2023 12:00:39 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Tue, 19 Sep 2023 13:40:51 +0530
+Basavaraj Natikar <Basavaraj.Natikar@amd.com> wrote:
 
-> On 9/21/23 11:17, Matti Vaittinen wrote:
+> In most cases, ambient color sensors also support the x and y light
+> colors, which represent the coordinates on the CIE 1931 chromaticity
+> diagram. Thus, add channel type for chromaticity.
 > 
-> > Another thing to note is that, when we build the available_scan_mask 
-> > array - we should either pay attention to the order of masks - or change 
-> > the iio_scan_mask_match() to not accept first matching subset but to go 
-> > through all of the masks unless it finds and exactly matching one (and 
-> > in general prefer the smallest subset). Not sure this is worth the extra 
-> > cycles though.  
-> 
-> Replying to myself and to those who I perhaps managed to confuse :)
-> 
-> As a result of above pondering I wrote this:
-> 
-> @@ -411,6 +418,8 @@ static const unsigned long 
-> *iio_scan_mask_match(const unsigned long *av_masks,
->                                                  const unsigned long *mask,
->                                                  bool strict)
->   {
-> +       const unsigned long *smallest = NULL;
-> +
->          if (bitmap_empty(mask, masklength))
->                  return NULL;
->          while (*av_masks) {
-> @@ -418,12 +427,16 @@ static const unsigned long 
-> *iio_scan_mask_match(const unsigned long *av_masks,
->                          if (bitmap_equal(mask, av_masks, masklength))
->                                  return av_masks;
->                  } else {
-> -                       if (bitmap_subset(mask, av_masks, masklength))
-> -                               return av_masks;
-> +                       if (bitmap_subset(mask, av_masks, masklength)) {
-> +                               if (!smallest ||
-> +                                   bitmap_weight(av_masks, BITS_PER_LONG) <
-> +                                   bitmap_weight(smallest, BITS_PER_LONG))
-> +                                       smallest = av_masks;
-> +                       }
->                  }
->                  av_masks += BITS_TO_LONGS(masklength);
->          }
-> -       return NULL;
-> +       return smallest;
->   }
-> 
-> but ...
-> ... I see a problem that some of the channels may be more costly to 
-> access than the other. It could be that reading some of the channels is 
-> just a matter of getting a cached value, while other could require a 
-> long measurement time and access to significant amount of registers. So, 
-> the knowledge of preferred scan masks should indeed be on the driver 
-> side. Hence, the ordering of the masks in the order of preference makes 
-> perfect sense. What we could do in the IIO core side is still go through 
-> all of the available masks to see if we find an exact match. I guess we 
-> could also document the fact that the order of masks matters.
-
-I should have read on in the thread. Indeed - ordering of preferences needs
-to be in driver control for exactly the reason you came up with!
-
-Thanks,
+> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+One small thing I fixed up whilst applying.
 
 Jonathan
 
-
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio | 8 ++++++++
+>  drivers/iio/industrialio-core.c         | 1 +
+>  include/uapi/linux/iio/types.h          | 1 +
+>  tools/iio/iio_event_monitor.c           | 1 +
+>  4 files changed, 11 insertions(+)
 > 
-> Thanks for listening - and sorry for the noise :)
-> 
-> Yours,
-> 	-- Matti
-> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 4cf7ed9ca57b..0c9389ad3709 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -2186,3 +2186,11 @@ Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Represents light color temperature, which measures light color
+>  		temperature in Kelvin.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_chromaticity_x_raw
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_chromaticity_y_raw
+> +KernelVersion:	6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		The x and y light color coordinate on the CIE 1931 chromaticity
+> +		diagram.
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index cba942cadf97..6dc4d2b296bb 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -91,6 +91,7 @@ static const char * const iio_chan_type_name_spec[] = {
+>  	[IIO_PHASE] = "phase",
+>  	[IIO_MASSCONCENTRATION] = "massconcentration",
+>  	[IIO_COLORTEMP] = "colortemp",
+> +	[IIO_CHROMATICITY] = "chromaticity",
+>  };
+>  
+>  static const char * const iio_modifier_names[] = {
+> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+> index 08c20e540c13..4832c611c027 100644
+> --- a/include/uapi/linux/iio/types.h
+> +++ b/include/uapi/linux/iio/types.h
+> @@ -48,6 +48,7 @@ enum iio_chan_type {
+>  	IIO_PHASE,
+>  	IIO_MASSCONCENTRATION,
+>  	IIO_COLORTEMP,
+> +	IIO_CHROMATICITY,
+>  };
+>  
+>  enum iio_modifier {
+> diff --git a/tools/iio/iio_event_monitor.c b/tools/iio/iio_event_monitor.c
+> index a63741e43ddf..5edacc358c5d 100644
+> --- a/tools/iio/iio_event_monitor.c
+> +++ b/tools/iio/iio_event_monitor.c
+> @@ -175,6 +175,7 @@ static bool event_is_known(struct iio_event_data *event)
+>  	case IIO_PHASE:
+>  	case IIO_MASSCONCENTRATION:
+>  	case IIO_COLORTEMP:
+> +	case IIO_CHROMATICITY:
+This is missing updating the strings in the same file.
+I only notice whilst dealing with a merge conflict where the colortemp one was
+there and this wasn't.
+>  		break;
+>  	default:
+>  		return false;
 

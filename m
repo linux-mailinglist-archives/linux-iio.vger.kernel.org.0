@@ -2,42 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF7F17ACAC8
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 18:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD487ACACA
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 18:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbjIXQcY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 12:32:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
+        id S229578AbjIXQed (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 12:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIXQcX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 12:32:23 -0400
+        with ESMTP id S229437AbjIXQed (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 12:34:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA65FC
-        for <linux-iio@vger.kernel.org>; Sun, 24 Sep 2023 09:32:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E872DC433C7;
-        Sun, 24 Sep 2023 16:32:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF66FC;
+        Sun, 24 Sep 2023 09:34:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD60C433C7;
+        Sun, 24 Sep 2023 16:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695573137;
-        bh=xrgcKcIJ3NKA/H9G4RGIq7yveFU9dVoZ/QCyw2vR8NM=;
+        s=k20201202; t=1695573266;
+        bh=iASfj17cqi8s/uASPn0k5gn6J4ssJb4sKyxilelbtR0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EWD1u8LdQFX6+Ekxyeh2LNnyiCNuiRoSCa9B/vyijd/JMRcnYloywR47OtQpnZuMJ
-         5Z5fz2hh0uHMOH6PQsUVEhtscWjIZ1p60npqoEiXtk8w2o1Z8sUhmm23tAZX90ugZp
-         IF9K6OuPQrJsV2CykJVzQhrvNv7tarA5ySkxJTNtPpHl+2VTLqnQHbm6Cl5CuJluse
-         PII9GQMHVgXPokJMaOOAkgvICez27Nq/24i61mY2ASunvlxFALxE+k5cTby85CIj2Q
-         dexohY8E+XbzhgQURfPOnmeGYVCYYoIX07QaOaKSh9N/p4iFYWw9idSXhRXN825Wqu
-         6ZvBUAplT0SYA==
-Date:   Sun, 24 Sep 2023 17:32:10 +0100
+        b=GntrjhnzpN/FnXQcpk2ULg2lV8xUjFCbRT4RkNjDbDXBma/QqHaNu/7uIjqlvZoni
+         niHtymt/lLriBwv14b4R6YaE7DL5qh+JqlZphgug53y855hYobYaVqe65Vd0cjBikK
+         uym8BceK2cW6qWapmlcU49qf4fMHATyDaRnvumeUn3pfZX/Wpwltn+de64tgZOS28U
+         EQLw9GeVFkaVeECja6zUAZTJDITaPAawG4GzY9mpnpgkwT9Q4eS+1jCoUYFXW4PQ8E
+         hmI5JDWMFkxKz/835ZE7haw0ydNh09J0CmjaveFIPBO+Rsm65x2Q1maqoCIopof4N2
+         K6q1ueNbRWFQg==
+Date:   Sun, 24 Sep 2023 17:34:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Michal Simek <michal.simek@amd.com>
-Cc:     Robert Hancock <robert.hancock@calian.com>,
-        Conall O'Griofa <conall.ogriofa@amd.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2 0/2] Xilinx XADC fixes
-Message-ID: <20230924173210.13f2bf85@jic23-huawei>
-In-Reply-To: <bae646e9-7977-4de3-927b-ffcb7a94ac48@amd.com>
-References: <20230915001019.2862964-1-robert.hancock@calian.com>
-        <bae646e9-7977-4de3-927b-ffcb7a94ac48@amd.com>
+To:     alisadariana@gmail.com
+Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: ad7192: Correct reference voltage
+Message-ID: <20230924173418.4d83ac04@jic23-huawei>
+In-Reply-To: <20230924152149.41884-1-alisadariana@gmail.com>
+References: <20230924152149.41884-1-alisadariana@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,38 +53,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Sep 2023 08:52:49 +0200
-Michal Simek <michal.simek@amd.com> wrote:
+On Sun, 24 Sep 2023 18:21:48 +0300
+alisadariana@gmail.com wrote:
 
-> +Conall
+> From: Alisa-Dariana Roman <alisa.roman@analog.com>
 > 
-> On 9/15/23 02:10, Robert Hancock wrote:
-> > Fixes for a couple of issues in the Xilinx XADC driver: one where
-> > preconfigured temperature/voltage thresholds were being clobbered and
-> > potentially breaking overtemperature shutdown, and another for inaccurate
-> > temperature readings on UltraScale family devices.
-> > 
-> > Changed since v2: Updated to also remove disabling XADC alarm bits.
-> > 
-> > Robert Hancock (2):
-> >    iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature
-> >      thresholds
-> >    iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
-> > 
-> >   drivers/iio/adc/xilinx-xadc-core.c | 39 +++++++++++-------------------
-> >   drivers/iio/adc/xilinx-xadc.h      |  2 ++
-> >   2 files changed, 16 insertions(+), 25 deletions(-)
-> >   
+> The avdd and the reference voltage are two different sources but the
+> reference voltage was assigned according to the avdd supply.
 > 
-> Conall: Please test and review.
+> Add vref regulator structure and set the reference voltage according to
+> the vref supply from the devicetree.
+> 
+> In case vref supply is missing, reference voltage is set according to
+> the avdd supply for compatibility with old devicetrees.
+> 
+> Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> Cc: stable@vger.kernel.org
+Applied to the fixes-togreg branch of iio.git
 
-I'm sitting on this one until I hear back.   No huge rush, but if you
-can estimate when you'll get to this I know to leave you alone until after
-that!
+Thanks,
 
 Jonathan
 
+> ---
+> v1 -> v2
+> 	- use dev_err_probe()
+> 	Link: https://lore.kernel.org/lkml/20230923225827.75681-1-alisadariana@gmail.com/
 > 
-> Thanks,
-> Michal
+>  drivers/iio/adc/ad7192.c | 29 +++++++++++++++++++++++++----
+>  1 file changed, 25 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 69d1103b9508..b64fd365f83f 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -177,6 +177,7 @@ struct ad7192_chip_info {
+>  struct ad7192_state {
+>  	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+> +	struct regulator		*vref;
+>  	struct clk			*mclk;
+>  	u16				int_vref_mv;
+>  	u32				fclk;
+> @@ -1008,10 +1009,30 @@ static int ad7192_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
+>  
+> -	ret = regulator_get_voltage(st->avdd);
+> -	if (ret < 0) {
+> -		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+> -		return ret;
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
+> +	if (IS_ERR(st->vref)) {
+> +		if (PTR_ERR(st->vref) != -ENODEV)
+> +			return PTR_ERR(st->vref);
+> +
+> +		ret = regulator_get_voltage(st->avdd);
+> +		if (ret < 0)
+> +			return dev_err_probe(&spi->dev, ret,
+> +					     "Device tree error, AVdd voltage undefined\n");
+> +	} else {
+> +		ret = regulator_enable(st->vref);
+> +		if (ret) {
+> +			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
+> +			return ret;
+> +		}
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regulator_get_voltage(st->vref);
+> +		if (ret < 0)
+> +			return dev_err_probe(&spi->dev, ret,
+> +					     "Device tree error, Vref voltage undefined\n");
+>  	}
+>  	st->int_vref_mv = ret / 1000;
+>  
 

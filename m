@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B647ACA0F
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 664B67ACA17
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbjIXOkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 10:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
+        id S230018AbjIXOrf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 10:47:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjIXOkM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:40:12 -0400
+        with ESMTP id S229837AbjIXOrf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:47:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ADA9FB;
-        Sun, 24 Sep 2023 07:40:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE75C433C7;
-        Sun, 24 Sep 2023 14:40:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D828FB;
+        Sun, 24 Sep 2023 07:47:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533C1C433C7;
+        Sun, 24 Sep 2023 14:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695566404;
-        bh=NXnXdvDgyMCz8lucrw3g7olRfu8jkj55sAdy8uI/qAA=;
+        s=k20201202; t=1695566848;
+        bh=RmbrxrU9l9CyB5p5ygtaBTP0+0uEydNb9Aqm2XCNw2E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qrH4HlZATvaevxgNXmzcUQolGRGUMmiFyJwcbp+aaR5CqRzoJtKilluskaOnU7xsr
-         pvx7FyYgJkhpjn4gtuadGK0kQS6jCPl4q97knhPuYHvlNtdKzlt4gIevWq7P6j2crg
-         +ZBfG8JFxq3ktSg02PS6rL8ZgDSDfk7uf3yhCBC10sEkqxC9NCauut+0aQ8VukNcio
-         9Ti+xw5H1xxLTK3yXkwt//GSra6i5hHbzX1q9DPnHn/vmVCsg0y5sLOll2Om+JW+70
-         ZNd/XslTChS5P7YQApdKZjFhC5GUTFqF1GqHutCek2xAEpWzMWqoZrROTgdIbTjyBB
-         knBcO2JaWaPcQ==
-Date:   Sun, 24 Sep 2023 15:39:58 +0100
+        b=eeVBWqolcPI0jwuYPbPlaCKV1FQc+H9E+UnESvco0REOVWsGCoONRdUTx3jH9sI1d
+         R8Gxygt6/fnHWz7QXOhRHrljIY0W47IR+vzDzymentGv8jenNzGeP0U1mOhGbIU1B6
+         34ru9r10JahGFbFyZMRp82CoTKHsr5Yzz6vsHwh+yARsQtwWL6y28mpYDyYSKXZddO
+         NCkM8OAfCB9oWWXDpbdG5HKxDaBJQ6/w6l6tWFNhttMi0JiqX2dgp30kkCwiIM7G0Y
+         1fJrzr/5bUBvcd2VcguC35fWEP+hWlfQ3uu3vMdWkDLhDF2lqze4WBD2MUljzY2mc+
+         aOoT2AU9ZI/ww==
+Date:   Sun, 24 Sep 2023 15:47:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     alisadariana@gmail.com
 Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -34,11 +34,11 @@ Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: adc: ad7192: Use bitfield access macros
-Message-ID: <20230924153958.56755045@jic23-huawei>
-In-Reply-To: <20230920003342.118813-2-alisadariana@gmail.com>
+Subject: Re: [PATCH v2 3/3] iio: adc: ad7192: Add fast settling support
+Message-ID: <20230924154722.14ea28ef@jic23-huawei>
+In-Reply-To: <20230920003342.118813-4-alisadariana@gmail.com>
 References: <20230920003342.118813-1-alisadariana@gmail.com>
-        <20230920003342.118813-2-alisadariana@gmail.com>
+        <20230920003342.118813-4-alisadariana@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,298 +53,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 Sep 2023 03:33:40 +0300
+On Wed, 20 Sep 2023 03:33:42 +0300
 alisadariana@gmail.com wrote:
 
 > From: Alisa-Dariana Roman <alisadariana@gmail.com>
 > 
-> Include bitfield.h and update driver to use bitfield access macros
-> GENMASK, FIELD_PREP and FIELD_GET.
+> Add fast settling mode support for AD7193.
 > 
-> Remove old macros in favor of using FIELD_PREP and masks.
+> Add fast_settling_average_factor attribute. Expose to user the current
+> value of the fast settling average factor. User can change the value by
+> writing a new one.
+> 
+> Add fast_settling_average_factor_available attribute. Expose to user
+> possible values for the fast settling average factor.
 > 
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-
-Hi Alisa-Darinana,
-
-Please fix the author for these to match your sign off
-git commit --amend --author="Alisa-Dariana Roman <alisa.roman@analog.com>"
-should fix that up.
-
-There are a few interesting corners in the original code where a single
-macro was used for the get and set paths.  I think a few places you picked
-the one with the wrong semantics whilst cleaning it up.
-
-Also some unnecessary !! horribleness now we are extracting the value rather
-than a shifted version of the value.
-
-Thanks,
-
-Jonathan
-
 > ---
->  drivers/iio/adc/ad7192.c | 73 ++++++++++++++++++++--------------------
->  1 file changed, 37 insertions(+), 36 deletions(-)
+>  .../ABI/testing/sysfs-bus-iio-adc-ad7192      |  18 +++
+>  drivers/iio/adc/ad7192.c                      | 128 ++++++++++++++++--
+>  2 files changed, 134 insertions(+), 12 deletions(-)
 > 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> index f8315202c8f0..5790adbb1cc1 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> @@ -19,6 +19,24 @@ Description:
+>  		the bridge can be disconnected (when it is not being used
+>  		using the bridge_switch_en attribute.
+>  
+> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute, if available, is used to activate or deactivate
+> +		fast settling mode and set the value of the average factor to
+> +		1, 2, 8 or 16. If the average factor is set to 1, the fast
+> +		settling mode is disabled. The data from the sinc filter is
+> +		averaged by chosen value. The averaging reduces the output data
+> +		rate for a given FS word, however, the rms noise improves.
+
+Trivial but RMS as it's an acronym.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns a list with the possible values for the fast
+> +		settling average factor: 1, 2, 8, 16.
+> +
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration
+>  KernelVersion:
+>  Contact:	linux-iio@vger.kernel.org
 > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 69d1103b9508..64bc09ce3cb1 100644
+> index eed3de02c26d..8987b78865f3 100644
 > --- a/drivers/iio/adc/ad7192.c
 > +++ b/drivers/iio/adc/ad7192.c
-> @@ -6,6 +6,7 @@
->   */
->  
->  #include <linux/interrupt.h>
-> +#include <linux/bitfield.h>
->  #include <linux/clk.h>
->  #include <linux/device.h>
->  #include <linux/kernel.h>
-> @@ -43,7 +44,7 @@
->  #define AD7192_COMM_WEN		BIT(7) /* Write Enable */
->  #define AD7192_COMM_WRITE	0 /* Write Operation */
->  #define AD7192_COMM_READ	BIT(6) /* Read Operation */
-> -#define AD7192_COMM_ADDR(x)	(((x) & 0x7) << 3) /* Register Address */
-> +#define AD7192_COMM_ADDR_MASK	GENMASK(5, 3) /* Register Address Mask */
->  #define AD7192_COMM_CREAD	BIT(2) /* Continuous Read of Data Register */
->  
->  /* Status Register Bit Designations (AD7192_REG_STAT) */
-> @@ -56,17 +57,16 @@
->  #define AD7192_STAT_CH1		BIT(0) /* Channel 1 */
->  
->  /* Mode Register Bit Designations (AD7192_REG_MODE) */
-> -#define AD7192_MODE_SEL(x)	(((x) & 0x7) << 21) /* Operation Mode Select */
-> -#define AD7192_MODE_SEL_MASK	(0x7 << 21) /* Operation Mode Select Mask */
-> -#define AD7192_MODE_STA(x)	(((x) & 0x1) << 20) /* Status Register transmission */
-> +#define AD7192_MODE_SEL_MASK	GENMASK(23, 21) /* Operation Mode Select Mask */
+> @@ -60,6 +60,8 @@
+>  #define AD7192_MODE_SEL_MASK	GENMASK(23, 21) /* Operation Mode Select Mask */
 >  #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
-> -#define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
-> +#define AD7192_MODE_CLKSRC_MASK	GENMASK(19, 18) /* Clock Source Select Mask */
+>  #define AD7192_MODE_CLKSRC_MASK	GENMASK(19, 18) /* Clock Source Select Mask */
+> +#define AD7192_MODE_AVG_MASK	GENMASK(17, 16)
+> +		  /* Fast Settling Filter Average Select Mask (AD7193 only) */
 >  #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
 >  #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
 >  #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
->  #define AD7192_MODE_SCYCLE	BIT(11) /* Single cycle conversion */
->  #define AD7192_MODE_REJ60	BIT(10) /* 50/60Hz notch filter */
-> -#define AD7192_MODE_RATE(x)	((x) & 0x3FF) /* Filter Update Rate Select */
-> +#define AD7192_MODE_RATE_MASK	GENMASK(9, 0)
-> +				  /* Filter Update Rate Select Mask */
+> @@ -182,6 +184,7 @@ struct ad7192_state {
+>  	u32				mode;
+>  	u32				conf;
+>  	u32				scale_avail[8][2];
+> +	u8				avg_avail[4];
+>  	u8				gpocon;
+>  	u8				clock_sel;
+>  	struct mutex			lock;	/* protect sensor state */
+> @@ -459,6 +462,13 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
+>  		st->scale_avail[i][0] = scale_uv;
+>  	}
+>  
+> +	if (st->chip_info->chip_id == CHIPID_AD7193) {
 
-Put the comment on the line above the thing it is talking about, not the line below.
+Hmm. This does match with local style, but I'd have preferred if the driver
+put all this information in the chip_info structure rather than scattered in code
+thoughout the driver.  That would be a bigger and mostly unrelated cleanup however
+and this doesn't make the situation any worse really so I'm fine with this
+patch as it stands.
 
->  
->  /* Mode Register: AD7192_MODE_SEL options */
->  #define AD7192_MODE_CONT		0 /* Continuous Conversion Mode */
-> @@ -92,13 +92,12 @@
->  #define AD7192_CONF_CHOP	BIT(23) /* CHOP enable */
->  #define AD7192_CONF_ACX		BIT(22) /* AC excitation enable(AD7195 only) */
->  #define AD7192_CONF_REFSEL	BIT(20) /* REFIN1/REFIN2 Reference Select */
-> -#define AD7192_CONF_CHAN(x)	((x) << 8) /* Channel select */
-> -#define AD7192_CONF_CHAN_MASK	(0x7FF << 8) /* Channel select mask */
-> +#define AD7192_CONF_CHAN_MASK	GENMASK(18, 8) /* Channel select mask */
->  #define AD7192_CONF_BURN	BIT(7) /* Burnout current enable */
->  #define AD7192_CONF_REFDET	BIT(6) /* Reference detect enable */
->  #define AD7192_CONF_BUF		BIT(4) /* Buffered Mode Enable */
->  #define AD7192_CONF_UNIPOLAR	BIT(3) /* Unipolar/Bipolar Enable */
-> -#define AD7192_CONF_GAIN(x)	((x) & 0x7) /* Gain Select */
-> +#define AD7192_CONF_GAIN_MASK	GENMASK(2, 0) /* Gain Select */
->  
->  #define AD7192_CH_AIN1P_AIN2M	BIT(0) /* AIN1(+) - AIN2(-) */
->  #define AD7192_CH_AIN3P_AIN4M	BIT(1) /* AIN3(+) - AIN4(-) */
-> @@ -130,7 +129,7 @@
->  #define CHIPID_AD7192		0x0
->  #define CHIPID_AD7193		0x2
->  #define CHIPID_AD7195		0x6
-> -#define AD7192_ID_MASK		0x0F
-> +#define AD7192_ID_MASK		GENMASK(3, 0)
->  
->  /* GPOCON Register Bit Designations (AD7192_REG_GPOCON) */
->  #define AD7192_GPOCON_BPDSW	BIT(6) /* Bridge power-down switch enable */
-> @@ -272,7 +271,7 @@ static int ad7192_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
->  	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
->  
->  	st->conf &= ~AD7192_CONF_CHAN_MASK;
-> -	st->conf |= AD7192_CONF_CHAN(channel);
-> +	st->conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, channel);
->  
->  	return ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
->  }
-> @@ -283,7 +282,7 @@ static int ad7192_set_mode(struct ad_sigma_delta *sd,
->  	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
->  
->  	st->mode &= ~AD7192_MODE_SEL_MASK;
-> -	st->mode |= AD7192_MODE_SEL(mode);
-> +	st->mode |= FIELD_PREP(AD7192_MODE_SEL_MASK, mode);
->  
->  	return ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
->  }
-> @@ -295,7 +294,7 @@ static int ad7192_append_status(struct ad_sigma_delta *sd, bool append)
->  	int ret;
->  
->  	mode &= ~AD7192_MODE_STA_MASK;
-> -	mode |= AD7192_MODE_STA(append);
-> +	mode |= FIELD_PREP(AD7192_MODE_STA_MASK, append);
->  
->  	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, mode);
->  	if (ret < 0)
-> @@ -399,17 +398,17 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
->  	if (ret)
->  		return ret;
->  
-> -	id &= AD7192_ID_MASK;
-> +	id = FIELD_GET(AD7192_ID_MASK, id);
->  
->  	if (id != st->chip_info->chip_id)
->  		dev_warn(&st->sd.spi->dev, "device ID query failed (0x%X != 0x%X)\n",
->  			 id, st->chip_info->chip_id);
->  
-> -	st->mode = AD7192_MODE_SEL(AD7192_MODE_IDLE) |
-> -		AD7192_MODE_CLKSRC(st->clock_sel) |
-> -		AD7192_MODE_RATE(480);
-> +	st->mode = FIELD_PREP(AD7192_MODE_SEL_MASK, AD7192_MODE_IDLE) |
-> +		FIELD_PREP(AD7192_MODE_CLKSRC_MASK, st->clock_sel) |
-> +		FIELD_PREP(AD7192_MODE_RATE_MASK, 480);
->  
-> -	st->conf = AD7192_CONF_GAIN(0);
-> +	st->conf = FIELD_PREP(AD7192_CONF_GAIN_MASK, 0);
->  
->  	rej60_en = of_property_read_bool(np, "adi,rejection-60-Hz-enable");
->  	if (rej60_en)
-> @@ -455,7 +454,7 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
->  	for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++) {
->  		scale_uv = ((u64)st->int_vref_mv * 100000000)
->  			>> (indio_dev->channels[0].scan_type.realbits -  
-> -			((st->conf & AD7192_CONF_UNIPOLAR) ? 0 : 1));
-> +			!FIELD_GET(AD7192_CONF_UNIPOLAR, st->conf));
->  		scale_uv >>= i;
->  
->  		st->scale_avail[i][1] = do_div(scale_uv, 100000000) * 10;
-> @@ -472,7 +471,7 @@ static ssize_t ad7192_show_ac_excitation(struct device *dev,
->  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->  	struct ad7192_state *st = iio_priv(indio_dev);
->  
-> -	return sysfs_emit(buf, "%d\n", !!(st->conf & AD7192_CONF_ACX));
-> +	return sysfs_emit(buf, "%d\n", !!FIELD_GET(AD7192_CONF_ACX, st->conf));
+Jonathan
 
-Can drop the !! as FIELD_GET() will shift it so the value is 0 or 1 anyway.
 
+> +		st->avg_avail[0] = 1;
+> +		st->avg_avail[1] = 2;
+> +		st->avg_avail[2] = 8;
+> +		st->avg_avail[3] = 16;
+> +	}
+> +
+>  	return 0;
 >  }
 >  
->  static ssize_t ad7192_show_bridge_switch(struct device *dev,
-> @@ -482,7 +481,8 @@ static ssize_t ad7192_show_bridge_switch(struct device *dev,
->  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->  	struct ad7192_state *st = iio_priv(indio_dev);
->  
-> -	return sysfs_emit(buf, "%d\n", !!(st->gpocon & AD7192_GPOCON_BPDSW));
-> +	return sysfs_emit(buf, "%d\n",
-> +			  !!FIELD_GET(AD7192_GPOCON_BPDSW, st->gpocon));
-Drop the !!
-
->  }
->  
->  static ssize_t ad7192_set(struct device *dev,
-> @@ -537,14 +537,14 @@ static void ad7192_get_available_filter_freq(struct ad7192_state *st,
->  
->  	/* Formulas for filter at page 25 of the datasheet */
->  	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
-> +				 AD7192_SYNC4_FILTER * FIELD_PREP(AD7192_MODE_RATE_MASK, st->mode));
-FIELD_GET()
->  	freq[0] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
->  
->  	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 AD7192_SYNC3_FILTER * AD7192_MODE_RATE(st->mode));
-> +				 AD7192_SYNC3_FILTER * FIELD_PREP(AD7192_MODE_RATE_MASK, st->mode));
-FIELD_GET()
-
->  	freq[1] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
->  
-> -	fadc = DIV_ROUND_CLOSEST(st->fclk, AD7192_MODE_RATE(st->mode));
-> +	fadc = DIV_ROUND_CLOSEST(st->fclk, FIELD_PREP(AD7192_MODE_RATE_MASK, st->mode));
-
-As below FIELD_GET()
-
->  	freq[2] = DIV_ROUND_CLOSEST(fadc * 230, 1024);
->  	freq[3] = DIV_ROUND_CLOSEST(fadc * 272, 1024);
->  }
-> @@ -665,11 +665,11 @@ static int ad7192_get_3db_filter_freq(struct ad7192_state *st)
->  	unsigned int fadc;
->  
->  	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 st->f_order * AD7192_MODE_RATE(st->mode));
-> +				 st->f_order * FIELD_PREP(AD7192_MODE_RATE_MASK, st->mode));
-
-As below.  I think this should be a FIELD_GET()
-
->  
-> -	if (st->conf & AD7192_CONF_CHOP)
-> +	if (FIELD_GET(AD7192_CONF_CHOP, st->conf))
->  		return DIV_ROUND_CLOSEST(fadc * 240, 1024);
-> -	if (st->mode & AD7192_MODE_SINC3)
-> +	if (FIELD_GET(AD7192_MODE_SINC3, st->mode))
->  		return DIV_ROUND_CLOSEST(fadc * 272, 1024);
->  	else
->  		return DIV_ROUND_CLOSEST(fadc * 230, 1024);
-> @@ -682,7 +682,8 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
->  			   long m)
->  {
->  	struct ad7192_state *st = iio_priv(indio_dev);
-> -	bool unipolar = !!(st->conf & AD7192_CONF_UNIPOLAR);
-> +	bool unipolar = !!FIELD_GET(AD7192_CONF_UNIPOLAR, st->conf);
-> +	u8 gain = FIELD_PREP(AD7192_CONF_GAIN_MASK, st->conf);
->  
->  	switch (m) {
->  	case IIO_CHAN_INFO_RAW:
-> @@ -691,8 +692,8 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
->  		switch (chan->type) {
->  		case IIO_VOLTAGE:
->  			mutex_lock(&st->lock);
-> -			*val = st->scale_avail[AD7192_CONF_GAIN(st->conf)][0];
-> -			*val2 = st->scale_avail[AD7192_CONF_GAIN(st->conf)][1];
-> +			*val = st->scale_avail[gain][0];
-> +			*val2 = st->scale_avail[gain][1];
->  			mutex_unlock(&st->lock);
->  			return IIO_VAL_INT_PLUS_NANO;
->  		case IIO_TEMP:
-> @@ -713,7 +714,7 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		*val = st->fclk /
-> -			(st->f_order * 1024 * AD7192_MODE_RATE(st->mode));
-> +			(st->f_order * 1024 * FIELD_PREP(AD7192_MODE_RATE_MASK, st->mode));
-
-FIELD_GET() I think. Though not 100% sure of intent and as it just masks
-it isn't a code change to flip from one to the other.
-
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
->  		*val = ad7192_get_3db_filter_freq(st);
-> @@ -746,8 +747,8 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
->  			if (val2 == st->scale_avail[i][1]) {
->  				ret = 0;
->  				tmp = st->conf;
-> -				st->conf &= ~AD7192_CONF_GAIN(-1);
-> -				st->conf |= AD7192_CONF_GAIN(i);
-> +				st->conf &= ~AD7192_CONF_GAIN_MASK;
-> +				st->conf |= FIELD_PREP(AD7192_CONF_GAIN_MASK, i);
->  				if (tmp == st->conf)
->  					break;
->  				ad_sd_write_reg(&st->sd, AD7192_REG_CONF,
-> @@ -769,8 +770,8 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
->  			break;
->  		}
->  
-> -		st->mode &= ~AD7192_MODE_RATE(-1);
-> -		st->mode |= AD7192_MODE_RATE(div);
-> +		st->mode &= ~AD7192_MODE_RATE_MASK;
-> +		st->mode |= FIELD_PREP(AD7192_MODE_RATE_MASK, div);
->  		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
->  		break;
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> @@ -830,7 +831,7 @@ static int ad7192_update_scan_mode(struct iio_dev *indio_dev, const unsigned lon
->  
->  	conf &= ~AD7192_CONF_CHAN_MASK;
->  	for_each_set_bit(i, scan_mask, 8)
-> -		conf |= AD7192_CONF_CHAN(i);
-> +		conf |= FIELD_PREP(AD7192_CONF_CHAN_MASK, i);
->  
->  	ret = ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, conf);
->  	if (ret < 0)
-

@@ -2,205 +2,1036 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB0E7AC9F4
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DABC7ACA04
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Sep 2023 16:31:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229646AbjIXOUa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 10:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39650 "EHLO
+        id S229708AbjIXObP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Sep 2023 10:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjIXOU3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:20:29 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2071.outbound.protection.outlook.com [40.107.223.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA107D3;
-        Sun, 24 Sep 2023 07:20:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bap3ph6qORQUwhLBxNA/2l7IxeophjR2AQKqY+/LiEQyvJCk/9YYdviPA946yW1ccvqyTxDsjzVFQIcUcc8f0iYAxYTfmzkj2ZaxYZ0Fzlkm5jAxGuRXe5rQaqkC/26AaV9LJTwEnRyWHvHxTziZemwpSgqhPTHnusgQtQ2bM1MRwwcduyUVPKHhcTZabxHWq6lAN2zsLn4izdzfCoTwg5dDmiPaNh1dq8cP609QwtDBCfqPvXZSIiLtoQgPZLJvz/qxMfXUA5z6mpsk43Pv+pXqGb6DZGmCEWwNnJ7fAOQkwZ1ayQXiqNvYYVk/Jt6nunk1fqA3wYpaH7t+ET4ZPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bRLO3OYOO9OmGUc5L+OPihhFNd4vh+478t1bQlKOEoo=;
- b=FtCbhkd0EupVn4HeBLwonh76stD6W6vpVY4BKPI8kA0DfcACYWNLOm1y1UNpbldChYMCwivyhdt8wRxFGYLaB3GvDXOIablRXFUjc9xWISsnDjj3PbolDtdo5JaQqf7EgrHbtpgsTIFQbE9yFVIq6lSNYrrH/rjD+tbwILiynIIiT9D1zJveW9MisOCyWDrn8/zp9exygvmilQ/+qtp7HgOPcpYpTAT2O43+w+7CLqn9PwY7TB9WrCPuiK005jQM2oLS6/mvhhfDAMoY5wQcbCmvWKYwzBos0SubvJ+6pWe3/bq3F2sogWFJ52vYqwZsR9Mx3lTneZcj/T+Yyku75w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bRLO3OYOO9OmGUc5L+OPihhFNd4vh+478t1bQlKOEoo=;
- b=SNRlsEGEKPxVpVBc1+0JJVj5AefVS8HjbS9ianhE031i6VCMAiP63uvd55oIknYHpCN8V9Hu/eQeQcs96TCRYUovqEsP7Yv3nPHnS4fIdi+Kmn8jckfNA4JZS+0VmFNjeHuTI9n8F5Dn1KpB0sVu3nJ+GsGh5PKz37gh8tvd4ys=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN9PR12MB5033.namprd12.prod.outlook.com (2603:10b6:408:132::14)
- by DS0PR12MB7581.namprd12.prod.outlook.com (2603:10b6:8:13d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.19; Sun, 24 Sep
- 2023 14:20:18 +0000
-Received: from BN9PR12MB5033.namprd12.prod.outlook.com
- ([fe80::c301:75fa:c6ec:d2fc]) by BN9PR12MB5033.namprd12.prod.outlook.com
- ([fe80::c301:75fa:c6ec:d2fc%5]) with mapi id 15.20.6813.017; Sun, 24 Sep 2023
- 14:20:17 +0000
-Message-ID: <28aff697-531f-497b-874c-72e12c4af488@amd.com>
-Date:   Sun, 24 Sep 2023 19:50:04 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/9] Support light color temperature and chromaticity
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jiri Kosina <jikos@kernel.org>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        benjamin.tissoires@redhat.com, lars@metafoo.de,
-        srinivas.pandruvada@linux.intel.com, linux-input@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
- <nycvar.YFH.7.76.2309201612350.14216@cbobk.fhfr.pm>
- <520df871-a6d1-0db3-fba1-cffd35d9cc81@amd.com>
- <20230924134224.64e54daa@jic23-huawei>
-Content-Language: en-US
-From:   Basavaraj Natikar <bnatikar@amd.com>
-In-Reply-To: <20230924134224.64e54daa@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0015.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:25::20) To BN9PR12MB5033.namprd12.prod.outlook.com
- (2603:10b6:408:132::14)
+        with ESMTP id S229861AbjIXObO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 10:31:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C7DFA;
+        Sun, 24 Sep 2023 07:31:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C38C433C7;
+        Sun, 24 Sep 2023 14:30:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695565863;
+        bh=MifHPrnweUgv4MNKXzdDevJH6n2kck+z2SzMNpF8z7Y=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=km1iYKeRSnNCaiGWg0crgao+oZK+zlBM2l0D2iTWwPX31N4cV2hrUGA2pUJUzV+Fj
+         7YOsWEXGPjzcQJF/onm/wxUfTeBiWzQ2X9bWshSR14hL8dZpXZED09oYWdS29TwuzD
+         tyoLijZxjzL3I0cvFAAEHKZcyGAaVde5IqnlDe3FwHHNMVrGrgSROhi/8silO+O4jm
+         EwYTz+6wF3U6HYgrYGoWnMGm/vctboywMPZuJFv73nKRq4UoN87gpr3t5nX5V5n3cY
+         Y8n0uaivVAcRhDAwjydtNuiWLxKhbygClgM5ciU7k/aOaWT2o6g1fHFGgNUACFAmOj
+         IhRWmA6i0Ae2g==
+Date:   Sun, 24 Sep 2023 15:30:55 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     andriy.shevchenko@linux.intel.com, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
+Message-ID: <20230924153055.0b3486f9@jic23-huawei>
+In-Reply-To: <20230918080314.11959-3-jagathjog1996@gmail.com>
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+        <20230918080314.11959-3-jagathjog1996@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5033:EE_|DS0PR12MB7581:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73f1110d-a95e-4b80-d437-08dbbd096046
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UNKaPQqqaqg1wM6lcUA+FtUkRDIwryLM2ubc9r6Es6QEyDYwg2Gsx1vmEWiWx6XJsFI8ud4nzPnjqqr8E4EcT529EkV5m9tVS2IXdYUfYV2ZHYM3MRKnU/wbDrFvl5pxMdrdtiLzAzBqt/9f7wMVXxqQe15NyXVV/WBklVrFHkStvq1KuN9/naPUemjLF/4rhrmoKmNsDJNZefKNJm7UxkyuiNN7QpmqzskFfSjdUarUe+iwx0FbDCSBUMG00X/Jk3j9BaJeGRuO4iPzVLa3imrnh8x4omRYQ2O9KW4yDUjbuQzSLRJ0ytZunE1nnn08liWesX7ktqVBGkbeZ8AK4VznEZj6YTB9kgnh8dYaR68B+BPcHebWrWeo9XRpwh9GPm4uYuoJODNjULc6V56hFTJPb5BZqEUyvBXoz8pQIc6m8Vh2WnRx7BCiIMXQsSF3AsNjXj5dcs+P/XMCQi6i6sCxHF3ZrSgZzlEeYWRzZpmzNrH3QYt5P565V/J7czK6PObjX+T53+A0UQUFMGX3eXlNo+ydWP1qTNdZ1MMMELEs+WxcXKxYZMsnsyPv7iMJydKR8t5Q+32UUeCoAcz61dxTTXJQm7CWzcaACbeBoRgSyWOT5OYFORE5a15cGDQNdxPP59O2xUmt9cNR+YiOyQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5033.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(136003)(396003)(376002)(346002)(230922051799003)(1800799009)(451199024)(186009)(83380400001)(8676002)(2616005)(4326008)(5660300002)(8936002)(26005)(6486002)(6506007)(53546011)(41300700001)(6512007)(31686004)(6666004)(478600001)(31696002)(66946007)(54906003)(66476007)(6916009)(38100700002)(66556008)(36756003)(2906002)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHpWNGRxZEhFajIrN3c2VHVmQmZXaEk0V21vMmdPd1lPZ3NzYWNhMUNHYkdD?=
- =?utf-8?B?QUJBVko1RCt0b0d4U0JHRU5IcG1EY2hPOU14MHVXaG9pdFFuWmRCU2o1OXBj?=
- =?utf-8?B?NmYzeU5RSURlR0hIcitHSkFQRTZ3WkdHMitUWEtUejcxWjFONGVKZlNGZk1J?=
- =?utf-8?B?RFJFemQ0SkMxZHlXMWtYNlVnU2R3b3c3cjF4b3BDdHF2V1pOcC85a3RIenJo?=
- =?utf-8?B?MEl4b01BaDE5aUtOblhMTThSSXN0QW4xWUVhclVITWYvMU1wZ0tuNHpWZ0hM?=
- =?utf-8?B?Vzk4UE10QUNUNEpnZkd0WTNTK2IzSGcwT1NRU0RuT0xPbUhqQWtFS3QvM1RJ?=
- =?utf-8?B?dUVzRGxRZ3lpNnUwUk9vQ1QvUW5yUFRId1JQYUF4dlZnb25BVXRzWkV3eDNk?=
- =?utf-8?B?b0d0bUlVb2NYQ1JBUHlUT0hsY3FQWHhkdXVrSDY5OWw3WndCZDZxbXE2TVlX?=
- =?utf-8?B?eXBOTWlDbGZCbEdwQmZmZCtnLzV3ZFQ5ZHEyc0JGOS9tVnc2SW45NUtsdHF1?=
- =?utf-8?B?WmpjWlRSTDZ3NmNwbEwrQTNpMGpQTmlhd0MxZkw0VllrdTZTZkI3Qjk5U1cv?=
- =?utf-8?B?Skk3c1Nlb3lrTnpNd1hKSkVveWNHNWNkRzJ5L0ZvQVRlam80K3BCZjNvRzRz?=
- =?utf-8?B?Qkp6c0w4aXFGbmVPUTVLTFJ1MVBiM3ZkOXYzUFV5ZU1vTXFsZ1hWSC8wajRx?=
- =?utf-8?B?N1B0MDRRdDZVMUVyY1pDTkZ0MjRrQVB2OVZNQXlMNmwxSEtsQzhIYmVWalpL?=
- =?utf-8?B?RDdOajJIQms1Yk5LTEsvZXN0SVBXUksyT09rdER3Q0duMTdtMitLYTdqdjRY?=
- =?utf-8?B?eDlkTHR5dmQ0RDlXR2xUdTJ4NDZiVDg0czVWVXd0VGRubjZFUHo1UGV3NzR1?=
- =?utf-8?B?bUhSY3VxZGFyNXVlT0gyUFR3bVQrM24waElROTFnMmRtaldYK3N1MWt3MDIx?=
- =?utf-8?B?VHh4N1pQcGlEVStGOEdtZ29YRjRtKzRSSDEvUy9VMEJ6Z2ttNVdYVnZGcGty?=
- =?utf-8?B?VS9GZWdDSE83cDdtdDdPMzY0eXZZTmhwS3oyNGxlWHE3THVnb1dwYUpBWWV1?=
- =?utf-8?B?S0NCZXBzc0hkb0ZWVFRvSWRjdW1udEJGMlhYdytNM2ZtaWNveEE5ZXN2Wnov?=
- =?utf-8?B?N2Y1MVhqUlRFRVJUNG1PeEc1bHRuNFp5VDRJNzlTMkZDVGdob0g1bFJsYUpq?=
- =?utf-8?B?dG9TSTBrTjdkRFFxL0ZNd2FUcUdiY0hwd3pVeDRxMnZrNFE5L2FtekVuVGdR?=
- =?utf-8?B?V05IbDIvcGx6Y1pQZnhkQlRoSnhyR0diMTFwUnNQU1V4bGhMM2o0TFJmMGRY?=
- =?utf-8?B?NTFteHl0NTVadERNSzBObXFNTGszOWxjRDJ5SEtqSm9rUVFEcmdRbEo0azdO?=
- =?utf-8?B?RDFwRkFlSmtBVU55SDVHeXFFNWI5M3dUUklRN0hnY3ZWRkR3dGZuU1I1RWx5?=
- =?utf-8?B?MTA2UC9ySTBlN1FTeEFSdHdzdkpPNXh3RXZQSUEyT0N3b0VnSDJTOVl6cjZw?=
- =?utf-8?B?aE15dm8zeTdoeGFwOVhBL0pIRmZVRmdJZStuWVRyQVcyOW0xdU5IMUlBUVRG?=
- =?utf-8?B?eVU5SEp0VlZIVm5JMWw1d2NrTEtUSzFmNFBGL1pzdndwWEtvd0FMaGptcXVy?=
- =?utf-8?B?YkI4MmxiVTFaZUhZK2xqL3ZVTDRuMkVSUDY4VjQwQXM2SlZmUFBRK3ZkcStU?=
- =?utf-8?B?REdMR3hOV2kxbXNHejhPbVRWdm96Vkl3Z1lnSmhHdlZVSjRsYW1ObVZNZUwr?=
- =?utf-8?B?K0Q4ZFJGejhlWTd4aGE4dDF2T2NuQzlvODZtaEowekh4czEvcjM0TnJwaUQ2?=
- =?utf-8?B?QnlYSHlCQlpTeTlQc1ZNdkdZOG05UmdBUERTeXhZY2s0ZS9LWGdqWFcvMWlO?=
- =?utf-8?B?dUxMWU5MUWtnUit3RjBUNkhqMzFBV01mWkp0R1NxMlpnb28wRkpQdlpIYnEz?=
- =?utf-8?B?eGJOcHE4aW9ET2cxSVdXZnQralpib3FmSGdkVmhhZmpWbGZVUTAxSEpJeVRX?=
- =?utf-8?B?MXovejN1czdkYnNFaWswdFNzREJkcDFvMFBEWVFma29rNW5SVDJaVm5XQTFI?=
- =?utf-8?B?WnBrcFlBQnhuNFAwaEdXL2xGakIrRGRFR0tuR0hTUi9CbzN2SWhXSC9ITGth?=
- =?utf-8?Q?B25kkkUw3o8NvdEUr1byvnc1x?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73f1110d-a95e-4b80-d437-08dbbd096046
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5033.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2023 14:20:17.4133
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BxH1d8tng0PoQcEdK7LVRu7XQC5W4etZJHaJTB1wOc9YMDU36Q5e27664GlnDu9Q2GFxFloeLCW4eFsDyYFv6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7581
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 18 Sep 2023 13:33:14 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-On 9/24/2023 6:12 PM, Jonathan Cameron wrote:
-> On Wed, 20 Sep 2023 20:53:33 +0530
-> Basavaraj Natikar <bnatikar@amd.com> wrote:
->
->> On 9/20/2023 7:43 PM, Jiri Kosina wrote:
->>> On Tue, 19 Sep 2023, Basavaraj Natikar wrote:
->>>  
->>>> This series adds support for light color temperature and chromaticity.
->>>>
->>>> v1->v2:
->>>> *Rename the series.
->>>> *Rename als_illum to als channel as it supports other channels.
->>>> *Update patch description to include same reading for the two existing
->>>>  channels to use channel index to support more hub attributes.
->>>> *Keep line length under 80chars in hid-sensor-als.
->>>> *Add new channel type IIO_COLORTEMP.
->>>> *Update patch description and its subject to add channel type for 
->>>>  chromaticity. 
->>>>
->>>> Basavaraj Natikar (9):
->>>>   iio: hid-sensor-als: Use channel index to support more hub attributes
->>>>   iio: Add channel type light color temperature
->>>>   iio: hid-sensor-als: Add light color temperature support
->>>>   HID: amd_sfh: Add support for light color temperature
->>>>   HID: amd_sfh: Add support for SFH1.1 light color temperature
->>>>   iio: Add channel type for chromaticity
->>>>   iio: hid-sensor-als: Add light chromaticity support
->>>>   HID: amd_sfh: Add light chromaticity support
->>>>   HID: amd_sfh: Add light chromaticity for SFH1.1
->>>>
->>>>  Documentation/ABI/testing/sysfs-bus-iio       |  15 ++
->>>>  .../hid_descriptor/amd_sfh_hid_desc.c         |   7 +
->>>>  .../hid_descriptor/amd_sfh_hid_desc.h         |   3 +
->>>>  .../hid_descriptor/amd_sfh_hid_report_desc.h  |  21 +++
->>>>  drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c |   9 ++
->>>>  .../amd-sfh-hid/sfh1_1/amd_sfh_interface.h    |  15 ++
->>>>  drivers/iio/industrialio-core.c               |   2 +
->>>>  drivers/iio/light/hid-sensor-als.c            | 130 +++++++++++++++---
->>>>  include/linux/hid-sensor-ids.h                |   4 +
->>>>  include/uapi/linux/iio/types.h                |   2 +
->>>>  tools/iio/iio_event_monitor.c                 |   3 +
->>>>  11 files changed, 195 insertions(+), 16 deletions(-)  
->>> I believe this should go through Jonathan's tree as a whole, right?  
->> Yes, this should go through Jonathan's tree as a whole.
->> If you don't have concerns, can you please ack HID amd_sfh changes?
-> I'll do an immutable branch in case this needs pulling into the hid tree
-> later in the cycle.
->
-> In short that means I'll create a branch with just this series on top of v6.6-rc1
-> and push that out as ib-iio-hid-sensors-v6.6-rc1.
-> I'll then merge that into the IIO tree before I do a pull request.
-> The advantage of this being that it can be pulled into other trees as necessary
-> and keep the same git IDs etc so that git can cleanly unwind the splitting and
-> merging of the history to cover the different paths.
->
-> However, note this will be messy as the merge into IIO isn't clean. I'll fix it
-> up but please take a quick look at the testing branch of iio.git on kernel.org
-> where the results of that merge will be.  Some other channel types were added
-> recently. So the fix was obvious.
->
-> So applied to the branch ib-iio-hid-sensors-6.6-rc1.  I'll merge that into the
-> IIO tree. That will get pushed out as testing for the build bots to see if they can
-> find anything we missed before I push this out as togreg which is what
-> linux-next picks up.
->
-> Note the IB branch might be rebased if any test issues show up.
+> The Bosch BMI323 is a 6-axis low-power IMU that provide measurements for
+> acceleration, angular rate, and temperature. This sensor includes
+> motion-triggered interrupt features, such as a step counter, tap detection,
+> and activity/inactivity interrupt capabilities.
+> 
+> The driver supports various functionalities, including data ready, FIFO
+> data handling, and events such as tap detection, step counting, and
+> activity interrupts
+> 
+> Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi323-ds000.pdf
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
 
-Sure I will check testing branch, Thank you Jonathan.
+Given Andy has done a thorough review (as he always does!)
+and there is quite a bit in my review queue, I'll just scan
+through quickly and call out a few things.  Will take a closer
+look at next version.
+
+One thing that is useful for a complex driver like this is to include
+(typically in the cover letter) a full listing of what shows up in sysfs.
+That gives an easy way to check the ABI looks right without having to figure
+out what all the generated file names are from the code.
 
 Thanks,
---
-Basavaraj
 
+Jonathan
+
+
+
+> ---
+>  MAINTAINERS                          |    7 +
+>  drivers/iio/imu/Kconfig              |    1 +
+>  drivers/iio/imu/Makefile             |    1 +
+>  drivers/iio/imu/bmi323/Kconfig       |   33 +
+>  drivers/iio/imu/bmi323/Makefile      |    7 +
+>  drivers/iio/imu/bmi323/bmi323.h      |  198 +++
+>  drivers/iio/imu/bmi323/bmi323_core.c | 2260 ++++++++++++++++++++++++++
+>  drivers/iio/imu/bmi323/bmi323_i2c.c  |  115 ++
+>  drivers/iio/imu/bmi323/bmi323_spi.c  |  106 ++
+>  9 files changed, 2728 insertions(+)
+>  create mode 100644 drivers/iio/imu/bmi323/Kconfig
+>  create mode 100644 drivers/iio/imu/bmi323/Makefile
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323.h
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_core.c
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_i2c.c
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_spi.c
+> 
+
+> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> new file mode 100644
+> index 000000000000..adbcfbc6b97d
+> --- /dev/null
+> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> @@ -0,0 +1,2260 @@
+
+> +struct bmi323_data {
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	struct iio_mount_matrix orientation;
+> +	enum bmi323_irq_pin irq_pin;
+> +	struct iio_trigger *trig;
+> +	bool drdy_trigger_enabled;
+> +	enum bmi323_state state;
+> +	s64 fifo_tstamp, old_fifo_tstamp;
+> +	u32 odrns[2];
+> +	u32 odrhz[2];
+> +	unsigned int feature_events;
+> +
+> +	/*
+> +	 * Lock to protect the members of device's private data from concurrent
+> +	 * access and also to serialize the access of extended registers.
+> +	 * See bmi323_write_ext_reg(..) for more info.
+> +	 */
+> +	struct mutex mutex;
+> +	int watermark;
+> +	__le16 fifo_buff[BMI323_FIFO_FULL_IN_WORDS] __aligned(IIO_DMA_MINALIGN);
+> +	struct {
+> +		__le16 channels[6];
+> +		s64 ts __aligned(8);
+
+Hopefully Andy's aligned_s64 set will land soon and we can tidy this up.
+I'm a bit unsure of this, but can you overlap some of these buffers or are
+they used concurrently? (if they are then we have problems with DMA safety.)
+
+Perhaps an anonymous union is appropriate?
+
+
+
+> +	} buffer;
+> +	__le16 steps_count[2];
+> +};
+
+
+
+
+
+> +static int bmi323_buffer_preenable(struct iio_dev *indio_dev)
+> +{
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	int ret = 0;
+> +
+> +	mutex_lock(&data->mutex);
+> +	/*
+> +	 * When the ODR of the accelerometer and gyroscope do not match, the
+> +	 * maximum ODR value between the accelerometer and gyroscope is used
+> +	 * for FIFO and the signal with lower ODR will insert dummy frame.
+yuk.
+> +	 * So allow buffer read only when ODR's of accelero and gyro are equal.
+> +	 * See datasheet section 5.7 "FIFO Data Buffering".
+
+Good :)
+
+> +	 */
+> +	if (data->odrns[BMI323_ACCEL] != data->odrns[BMI323_GYRO]) {
+> +		dev_err(data->dev, "Accelero and Gyro ODR doesn't match\n");
+> +		ret = -EINVAL;
+> +	}
+> +	mutex_unlock(&data->mutex);
+> +
+> +	return ret;
+> +}
+
+> +
+> +static int bmi323_set_drdy_irq(struct bmi323_data *data,
+> +			       enum bmi323_irq_pin irq_pin)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(data->regmap, BMI323_INT_MAP2_REG,
+> +				 BMI323_GYR_DRDY_MSK,
+> +				 FIELD_PREP(BMI323_GYR_DRDY_MSK, irq_pin));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_update_bits(data->regmap, BMI323_INT_MAP2_REG,
+> +				  BMI323_ACC_DRDY_MSK,
+> +				  FIELD_PREP(BMI323_ACC_DRDY_MSK, irq_pin));
+> +}
+> +
+> +static int bmi323_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> +					     bool state)
+> +{
+> +	struct bmi323_data *data = iio_trigger_get_drvdata(trig);
+> +	enum bmi323_irq_pin irq_pin;
+> +	int ret;
+> +
+> +	mutex_lock(&data->mutex);
+guard(mutex)(&data->mutex);
+
+> +
+> +	if (data->state == BMI323_BUFFER_FIFO) {
+> +		dev_warn(data->dev, "Can't set trigger when FIFO enabled\n");
+> +		ret = -EBUSY;
+> +		goto unlock_out;
+> +	}
+> +
+> +	if (state) {
+> +		data->state = BMI323_BUFFER_DRDY_TRIGGERED;
+> +		irq_pin = data->irq_pin;
+> +	} else {
+> +		data->state = BMI323_IDLE;
+> +		irq_pin = BMI323_IRQ_DISABLED;
+> +	}
+> +
+> +	ret = bmi323_set_drdy_irq(data, irq_pin);
+> +
+> +unlock_out:
+> +	mutex_unlock(&data->mutex);
+> +	return ret;
+> +}
+> +
+> +static const struct iio_trigger_ops bmi323_trigger_ops = {
+> +	.set_trigger_state = &bmi323_data_rdy_trigger_set_state,
+> +};
+> +
+> +static irqreturn_t bmi323_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	/* Lock to protect the data->buffer */
+> +	mutex_lock(&data->mutex);
+
+scoped_guard(mutex)(&data->mutex); might work well here though it
+will push up the indent.
+
+> +	ret = regmap_bulk_read(data->regmap, BMI323_ACCEL_X_REG,
+> +			       &data->buffer.channels,
+> +			       ARRAY_SIZE(data->buffer.channels));
+> +	if (ret)
+> +		goto unlock_out;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+> +					   iio_get_time_ns(indio_dev));
+> +	mutex_unlock(&data->mutex);
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +	return IRQ_HANDLED;
+> +
+> +unlock_out:
+> +	mutex_unlock(&data->mutex);
+> +	return IRQ_NONE;
+> +}
+> +
+
+
+
+> +static IIO_DEVICE_ATTR_RW(in_accel_gyro_averaging, 0);
+> +static IIO_CONST_ATTR(in_accel_gyro_averaging_available, "2 4 8 16 32 64");
+> +
+> +static struct attribute *bmi323_attributes[] = {
+> +	&iio_dev_attr_in_accel_gyro_averaging.dev_attr.attr,
+> +	&iio_const_attr_in_accel_gyro_averaging_available.dev_attr.attr,
+
+So averaging often maps directly to oversampling.  Kind of different names
+for the same thing.  Perhaps that standard ABI can be used?
+It tends to make sampling frequency reporting need to take it into account
+though as that drops as divided by oversampling ratio.
+
+> +	NULL
+> +};
+> +
+
+> +}
+> +
+> +static int bmi323_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int val,
+> +			    int val2, long mask)
+> +{
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		mutex_lock(&data->mutex);
+> +		ret = bmi323_set_odr(data, bmi323_iio_to_sensor(chan->type),
+> +				     val, val2);
+> +		mutex_unlock(&data->mutex);
+> +		iio_device_release_direct_mode(indio_dev);
+> +		return ret;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		mutex_lock(&data->mutex);
+> +		ret = bmi323_set_scale(data, bmi323_iio_to_sensor(chan->type),
+> +				       val, val2);
+> +		mutex_unlock(&data->mutex);
+> +		iio_device_release_direct_mode(indio_dev);
+> +		return ret;
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		mutex_lock(&data->mutex);
+> +		ret = bmi323_enable_steps(data, val);
+> +		mutex_unlock(&data->mutex);
+> +		return ret;
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		if (val || !FIELD_GET(BMI323_FEAT_IO0_STP_CNT_MSK,
+> +				      data->feature_events))
+> +			return -EINVAL;
+> +
+> +		/* Clear step counter value */
+> +		return bmi323_update_ext_reg(data, BMI323_STEP_SC1_REG,
+> +					     BMI323_STEP_SC1_RST_CNT_MSK,
+> +					     FIELD_PREP(BMI323_STEP_SC1_RST_CNT_MSK,
+> +							1));
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int bmi323_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan, int *val,
+> +			   int *val2, long mask)
+> +{
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		mutex_lock(&data->mutex);
+
+	scoped_guard() might be mice for some of these cases
+or push the guards down into the function being called perhaps.
+
+
+> +		ret = bmi323_read_steps(data, val);
+> +		mutex_unlock(&data->mutex);
+> +		return ret;
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_ACCEL:
+> +		case IIO_ANGL_VEL:
+> +			ret = iio_device_claim_direct_mode(indio_dev);
+> +			if (ret)
+> +				return ret;
+> +
+> +			mutex_lock(&data->mutex);
+> +			ret = bmi323_read_axis(data, chan, val);
+> +			mutex_unlock(&data->mutex);
+> +
+> +			iio_device_release_direct_mode(indio_dev);
+> +			return ret;
+> +		case IIO_TEMP:
+> +			mutex_lock(&data->mutex);
+> +			ret = bmi323_get_temp_data(data, val);
+> +			mutex_unlock(&data->mutex);
+> +			return ret;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		mutex_lock(&data->mutex);
+> +		ret = bmi323_get_odr(data, chan->type, val, val2);
+> +		mutex_unlock(&data->mutex);
+> +		return ret;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		switch (chan->type) {
+> +		case IIO_ACCEL:
+> +		case IIO_ANGL_VEL:
+> +			*val = 0;
+> +			mutex_lock(&data->mutex);
+> +			ret = bmi323_get_scale(data, chan->type, val2);
+> +			mutex_unlock(&data->mutex);
+> +			return ret;
+> +		case IIO_TEMP:
+> +			*val = BMI323_TEMP_SCALE / MEGA;
+> +			*val2 = BMI323_TEMP_SCALE % MEGA;
+> +			return IIO_VAL_INT_PLUS_MICRO;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		switch (chan->type) {
+> +		case IIO_TEMP:
+> +			*val = BMI323_TEMP_OFFSET;
+> +			return IIO_VAL_INT;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		mutex_lock(&data->mutex);
+> +		*val = FIELD_GET(BMI323_FEAT_IO0_STP_CNT_MSK,
+> +				 data->feature_events);
+> +		mutex_unlock(&data->mutex);
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info bmi323_info = {
+> +	.read_raw = bmi323_read_raw,
+> +	.write_raw = bmi323_write_raw,
+> +	.read_avail = bmi323_read_avail,
+> +	.attrs = &bmi323_attrs_group,
+> +	.hwfifo_set_watermark = bmi323_set_watermark,
+> +	.write_event_config = bmi323_write_event_config,
+> +	.read_event_config = bmi323_read_event_config,
+> +	.write_event_value = bmi323_write_event_value,
+> +	.read_event_value = bmi323_read_event_value,
+> +	.event_attrs = &bmi323_event_attribute_group,
+> +};
+> +
+> +#define BMI323_SCAN_MASK_ACCEL_3AXIS		\
+> +	(BIT(BMI323_ACCEL_X) | BIT(BMI323_ACCEL_Y) | BIT(BMI323_ACCEL_Z))
+> +
+> +#define BMI323_SCAN_MASK_GYRO_3AXIS		\
+> +	(BIT(BMI323_GYRO_X) | BIT(BMI323_GYRO_Y) | BIT(BMI323_GYRO_Z))
+> +
+> +static const unsigned long bmi323_avail_scan_masks[] = {
+> +	/* 3-axis accel + 3-axis gyro */
+> +	BMI323_SCAN_MASK_ACCEL_3AXIS | BMI323_SCAN_MASK_GYRO_3AXIS,
+
+Can you poke this an see if you get what you expect which is the minimum
+sufficient set of channels.  Matti pointed out earlier that the search
+logic isn't well documented in iio_scan_mask_match() but it
+looks to match against first case where the requested values are a subset.
+So this would need to be in the opposite order or you will always
+get everything turned on.
+
+Chances are we have this wrong in other drivers as well :(
+Won't break things, but may mean that we over read in some configurations.
+
+> +	/* 3-axis accel */
+> +	BMI323_SCAN_MASK_ACCEL_3AXIS,
+> +	/* 3-axis gyro */
+> +	BMI323_SCAN_MASK_GYRO_3AXIS,
+> +	0
+> +};
+> +
+> +static int bmi323_int_pin_config(struct bmi323_data *data,
+> +				 enum bmi323_irq_pin irq_pin,
+> +				 bool active_high, bool open_drain, bool latch)
+> +{
+> +	unsigned int mask, field_value = 0;
+> +	int ret;
+> +
+> +	switch (irq_pin) {
+> +	case BMI323_IRQ_INT1:
+> +		mask = BMI323_IO_INT1_LVL_OD_OP_MSK;
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT1_LVL_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT1_LVL_MSK, active_high));
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT1_OD_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT1_OD_MSK, open_drain));
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT1_OP_EN_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT1_OP_EN_MSK, 1));
+Given you are filling in a value that starts as zero and don't overwrite values
+you set earlier this is much simpler as
+		mask = ...
+		field_value = FIELD_PREP(...) |
+			      FIELD_PREP(...) |
+			      FIELD_PREP(...);
+
+Also move working this out to just before it is used. Right now it is hard
+to spot where that is.
+
+> +		break;
+> +	case BMI323_IRQ_INT2:
+> +		mask = BMI323_IO_INT2_LVL_OD_OP_MSK;
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT2_LVL_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT2_LVL_MSK, active_high));
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT2_OD_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT2_OD_MSK, open_drain));
+> +
+> +		set_mask_bits(&field_value, BMI323_IO_INT2_OP_EN_MSK,
+> +			      FIELD_PREP(BMI323_IO_INT2_OP_EN_MSK, 1));
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = regmap_update_bits(data->regmap, BMI323_IO_INT_CONF_REG,
+> +				 BMI323_IO_INT_LTCH_MSK,
+> +				 FIELD_PREP(BMI323_IO_INT_LTCH_MSK, latch));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bmi323_update_ext_reg(data, BMI323_GEN_SET1_REG,
+> +				    BMI323_GEN_HOLD_DUR_MSK,
+> +				    FIELD_PREP(BMI323_GEN_HOLD_DUR_MSK, 0));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_update_bits(data->regmap, BMI323_IO_INT_CTR_REG, mask,
+> +				  field_value);
+> +}
+> +
+> +static int bmi323_trigger_probe(struct bmi323_data *data,
+> +				struct iio_dev *indio_dev)
+> +{
+> +	bool open_drain, active_high, latch;
+> +	struct fwnode_handle *fwnode;
+> +	enum bmi323_irq_pin irq_pin;
+> +	int ret, irq, irq_type;
+> +	struct irq_data *desc;
+> +
+> +	fwnode = dev_fwnode(data->dev);
+> +	if (!fwnode)
+> +		return -ENODEV;
+> +
+> +	irq = fwnode_irq_get_byname(fwnode, "INT1");
+> +	if (irq > 0) {
+> +		irq_pin = BMI323_IRQ_INT1;
+> +	} else {
+> +		irq = fwnode_irq_get_byname(fwnode, "INT2");
+> +		if (irq <= 0)
+> +			return 0;
+> +
+> +		irq_pin = BMI323_IRQ_INT2;
+> +	}
+> +
+> +	desc = irq_get_irq_data(irq);
+> +	if (!desc) {
+> +		dev_err(data->dev, "Could not find IRQ %d\n", irq);
+> +		return -EINVAL;
+> +	}
+> +
+> +	irq_type = irqd_get_trigger_type(desc);
+> +
+> +	switch (irq_type) {
+> +	case IRQF_TRIGGER_RISING:
+> +		latch = false;
+> +		active_high = true;
+> +		break;
+> +	case IRQF_TRIGGER_HIGH:
+> +		latch = true;
+> +		active_high = true;
+> +		break;
+> +	case IRQF_TRIGGER_FALLING:
+> +		latch = false;
+> +		active_high = false;
+> +		break;
+> +	case IRQF_TRIGGER_LOW:
+> +		latch = true;
+> +		active_high = false;
+> +		break;
+> +	default:
+> +		dev_err(data->dev, "Invalid interrupt type 0x%x specified\n",
+> +			irq_type);
+> +		return -EINVAL;
+> +	}
+> +
+> +	open_drain = fwnode_property_read_bool(fwnode, "drive-open-drain");
+> +
+> +	ret = bmi323_int_pin_config(data, irq_pin, active_high, open_drain,
+> +				    latch);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Failed to configure irq line\n");
+> +
+> +	data->trig = devm_iio_trigger_alloc(data->dev, "%s-trig-%d",
+> +					    indio_dev->name, irq_pin);
+> +	if (!data->trig)
+> +		return -ENOMEM;
+> +
+> +	data->trig->ops = &bmi323_trigger_ops;
+> +	iio_trigger_set_drvdata(data->trig, data);
+> +
+> +	ret = devm_request_threaded_irq(data->dev, irq, NULL,
+> +					bmi323_irq_thread_handler,
+> +					irq_type | IRQF_ONESHOT,
+
+I think if you leave the irq_type bit out, it will be set up to match what was
+specified in firmware anyway. Could be wrong on that though so check.
+
+> +					"bmi323-int", indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "Failed to request IRQ\n");
+> +
+> +	ret = devm_iio_trigger_register(data->dev, data->trig);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Trigger registration failed\n");
+> +
+> +	data->irq_pin = irq_pin;
+> +
+> +	return ret;
+> +}
+> +
+> +static int bmi323_feature_engine_enable(struct bmi323_data *data, bool en)
+> +{
+> +	unsigned int feature_status;
+> +	int ret, i;
+> +
+> +	if (en) {
+> +		ret = regmap_write(data->regmap, BMI323_FEAT_IO2_REG,
+> +				   0x012c);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regmap_write(data->regmap, BMI323_FEAT_IO_STATUS_REG,
+> +				   BMI323_FEAT_IO_STATUS_MSK);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regmap_write(data->regmap, BMI323_FEAT_CTRL_REG,
+> +				   BMI323_FEAT_ENG_EN_MSK);
+> +		if (ret)
+> +			return ret;
+> +
+> +		i = 5;
+
+Why 5?
+
+> +		do {
+> +			ret = regmap_read(data->regmap, BMI323_FEAT_IO1_REG,
+> +					  &feature_status);
+> +			if (ret)
+> +				return ret;
+> +
+> +			i--;
+> +			mdelay(2);
+> +		} while (feature_status != 0x01 && i);
+
+GET_FIELD() always rather than directly masking out values
+It means we have a clear name for what is being checked.
+
+> +
+> +		if (feature_status != 0x01) {
+> +			dev_err(data->dev, "Failed to enable feature engine\n");
+> +			return -EINVAL;
+> +		}
+> +
+> +		return ret;
+> +	} else {
+> +		return regmap_write(data->regmap, BMI323_FEAT_CTRL_REG, 0);
+Flip the logic for readability by reducing indent
+	if (!en)
+		return regmap_write()
+
+	ret = regmap_write() etc
+
+> +	}
+> +}
+
+> +static int bmi323_init(struct bmi323_data *data)
+> +{
+> +	int ret, val;
+> +
+> +	/*
+> +	 * Perform soft reset to make sure the device is in a known state after
+> +	 * start up. A delay of 1.5 ms is required after reset.
+> +	 * See datasheet section 5.17 "Soft Reset".
+> +	 */
+> +	ret = regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(1500, 2000);
+> +
+> +	/*
+> +	 * Dummy read is required to enable SPI interface after reset.
+> +	 * See datasheet section 7.2.1 "Protocol Selection".
+> +	 */
+> +	regmap_read(data->regmap, BMI323_CHIP_ID_REG, &val);
+> +
+> +	ret = regmap_read(data->regmap, BMI323_CHIP_ID_REG, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if ((val & 0xFF) != BMI323_CHIP_ID_VAL) {
+
+FIELD_GET() and appropriate mask given this is half of a 16 bit register.
+
+> +		dev_err(data->dev, "Chip ID mismatch\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = bmi323_feature_engine_enable(data, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(data->regmap, BMI323_ERR_REG, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (val) {
+> +		dev_err(data->dev, "Sensor power error = 0x%x\n", val);
+> +		return -EINVAL;
+I think this is only called in probe() so an use dev_err_probe()
+in here as well.
+
+> +	}
+> +
+> +	ret = regmap_read(data->regmap, BMI323_STATUS_REG, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (val != 0x01) {
+
+FIELD_GET() and appropriate definition.
+
+> +		dev_err(data->dev, "Sensor initialization error = 0x%x\n", val);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * Set the Bandwidth coefficient which defines the 3 dB cutoff
+> +	 * frequency in relation to the ODR.
+> +	 */
+> +	ret = bmi323_set_bw(data, BMI323_ACCEL, BMI323_BW_ODR_BY_2);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = bmi323_set_bw(data, BMI323_GYRO, BMI323_BW_ODR_BY_2);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = bmi323_set_odr(data, BMI323_ACCEL, 25, 0);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = bmi323_set_odr(data, BMI323_GYRO, 25, 0);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = devm_add_action_or_reset(data->dev, bmi323_disable, data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +int bmi323_core_probe(struct device *dev)
+> +{
+> +	static const char * const regulator_names[] = { "vdd", "vddio" };
+> +	struct iio_dev *indio_dev;
+> +	struct bmi323_data *data;
+> +	struct regmap *regmap;
+> +	int ret;
+> +
+> +	regmap = dev_get_regmap(dev, NULL);
+> +	if (!regmap) {
+> +		dev_err(dev, "No regmap\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulator_names),
+> +					     regulator_names);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
+> +
+> +	data = iio_priv(indio_dev);
+> +	data->dev = dev;
+> +	data->regmap = regmap;
+> +	mutex_init(&data->mutex);
+> +
+> +	ret = bmi323_init(data);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = iio_read_mount_matrix(dev, &data->orientation);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->name = "bmi323-imu";
+> +	indio_dev->info = &bmi323_info;
+> +	indio_dev->channels = bmi323_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(bmi323_channels);
+> +	indio_dev->available_scan_masks = bmi323_avail_scan_masks;
+> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+> +	dev_set_drvdata(data->dev, indio_dev);
+> +
+> +	ret = bmi323_trigger_probe(data, indio_dev);
+
+What if interrupt isn't wired?  Do we need it for basic read of channels?
+Would expect the interfaces provided to be more limited, but not that we
+would provide none at all.
+
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	ret = devm_iio_triggered_buffer_setup_ext(data->dev, indio_dev,
+> +						  &iio_pollfunc_store_time,
+> +						  bmi323_trigger_handler,
+> +						  IIO_BUFFER_DIRECTION_IN,
+> +						  &bmi323_buffer_ops,
+> +						  bmi323_fifo_attributes);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Failed to setup trigger buffer\n");
+> +
+> +	ret = devm_iio_device_register(data->dev, indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Unable to register iio device\n");
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
+> +
+> +MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
+> +MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> new file mode 100644
+> index 000000000000..afbaa3d3c638
+> --- /dev/null
+> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> @@ -0,0 +1,115 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * I2C driver for Bosch BMI323 6-Axis IMU.
+> + *
+> + * Copyright (C) 2023, Jagath Jog J <jagathjog1996@gmail.com>
+> + */
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "bmi323.h"
+> +
+> +/*
+> + * From BMI323 datasheet section 4: Notes on the Serial Interface Support.
+> + * Each I2C register read operation requires to read two dummy bytes before
+> + * the actual payload.
+> + */
+> +static int bmi323_regmap_i2c_read(void *context, const void *reg_buf,
+> +				  size_t reg_size, void *val_buf,
+> +				  size_t val_size)
+> +{
+> +	struct device *dev = context;
+> +	struct i2c_client *i2c = to_i2c_client(dev);
+> +	struct i2c_msg msgs[2];
+> +	u8 *buff = NULL;
+> +	int ret;
+> +
+> +	buff = kmalloc(val_size + BMI323_I2C_DUMMY, GFP_KERNEL);
+> +	if (!buff)
+> +		return -ENOMEM;
+> +
+> +	msgs[0].addr = i2c->addr;
+> +	msgs[0].flags = i2c->flags;
+> +	msgs[0].len = reg_size;
+> +	msgs[0].buf = (u8 *)reg_buf;
+> +
+> +	msgs[1].addr = i2c->addr;
+> +	msgs[1].len = val_size + BMI323_I2C_DUMMY;
+> +	msgs[1].buf = (u8 *)buff;
+> +	msgs[1].flags = i2c->flags | I2C_M_RD;
+> +
+> +	ret = i2c_transfer(i2c->adapter, msgs, ARRAY_SIZE(msgs));
+> +	if (ret < 0) {
+> +		kfree(buff);
+> +		return -EIO;
+> +	}
+> +
+> +	memcpy(val_buf, buff + BMI323_I2C_DUMMY, val_size);
+
+Annoyingly can't do same trick as I suggest for SPI as we need
+the address send vs when data turns up to be correct.
+
+Whilst this code is 'generic' do you know the max size of the
+buffer that might be read?  If it's small I'd just use an array
+on the stack.  If large, then the cleanup.h stuff will help
+with code, but it's still annoying to have to do an allocation
+in here.  You can probably put something in context alongside
+dev.
+
+> +	kfree(buff);
+> +
+> +	return 0;
+> +}
+> +
+> +static int bmi323_regmap_i2c_write(void *context, const void *data,
+> +				   size_t count)
+> +{
+> +	struct device *dev = context;
+> +	struct i2c_client *i2c = to_i2c_client(dev);
+> +	int ret;
+> +	u8 reg;
+> +
+> +	reg = *(u8 *)data;
+> +	ret = i2c_smbus_write_i2c_block_data(i2c, reg, count - 1,
+> +					     data + sizeof(u8));
+> +
+	return i2c_smbus...
+
+> +	return ret;
+> +}
+> +
+> +static struct regmap_bus bmi323_regmap_bus = {
+> +	.read = bmi323_regmap_i2c_read,
+> +	.write = bmi323_regmap_i2c_write,
+> +};
+> +
+> +static int bmi323_i2c_probe(struct i2c_client *i2c)
+> +{
+> +	struct device *dev = &i2c->dev;
+> +	struct regmap *regmap;
+> +
+> +	regmap = devm_regmap_init(dev, &bmi323_regmap_bus, dev,
+> +				  &bmi323_regmap_config);
+> +	if (IS_ERR(regmap))
+> +		return dev_err_probe(dev, PTR_ERR(regmap),
+> +				     "Failed to initialize I2C Regmap\n");
+> +
+> +	return bmi323_core_probe(dev);
+> +}
+> +
+> +static const struct i2c_device_id bmi323_i2c_ids[] = {
+> +	{ "bmi323", 0 },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, bmi323_i2c_ids);
+> +
+> +static const struct of_device_id bmi323_of_i2c_match[] = {
+> +	{ .compatible = "bosch,bmi323" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
+> +
+> +static struct i2c_driver bmi323_i2c_driver = {
+> +	.driver = {
+> +		.name = "bmi323",
+> +		.of_match_table = bmi323_of_i2c_match,
+> +	},
+> +	.probe_new = bmi323_i2c_probe,
+> +	.id_table = bmi323_i2c_ids,
+> +};
+> +module_i2c_driver(bmi323_i2c_driver);
+> +
+> +MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
+> +MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS(IIO_BMI323);
+> diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
+> new file mode 100644
+> index 000000000000..2b802a0c6d9d
+> --- /dev/null
+> +++ b/drivers/iio/imu/bmi323/bmi323_spi.c
+> @@ -0,0 +1,106 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * SPI driver for Bosch BMI323 6-Axis IMU.
+> + *
+> + * Copyright (C) 2023, Jagath Jog J <jagathjog1996@gmail.com>
+> + */
+> +
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include "bmi323.h"
+> +
+> +/*
+> + * From BMI323 datasheet section 4: Notes on the Serial Interface Support.
+> + * Each SPI register read operation requires to read one dummy byte before
+> + * the actual payload.
+> + */
+> +static int bmi323_regmap_spi_read(void *context, const void *reg_buf,
+> +				  size_t reg_size, void *val_buf,
+> +				  size_t val_size)
+> +{
+> +	struct spi_device *spi = context;
+> +	u8 reg, *buff = NULL;
+> +	int ret;
+> +
+> +	buff = kmalloc(val_size + BMI323_SPI_DUMMY, GFP_KERNEL);
+
+Hmm.  Regmap has pad_bits (which can be multiple bytes) but this case
+is unusual in that they only apply to reads.
+
+I wonder if we can make this cheaper though rather than having
+to handle either some context or having dynamic allocations in here.
+
+How about making the write bigger?  Does that have any effect?
+Looks like don't care state in Figure 31.  If that's the case,
+send some zeros on that as it's known fixed size (2 bytes including
+the padding) and then you can directly use the read buffer without
+yet another memcpy.
+
+
+> +	if (!buff)
+> +		return -ENOMEM;
+> +
+> +	reg = *(u8 *)reg_buf | 0x80;
+> +	ret = spi_write_then_read(spi, &reg, sizeof(reg), buff,
+> +				  val_size + BMI323_SPI_DUMMY);
+> +	if (ret) {
+> +		kfree(buff);
+> +		return ret;
+> +	}
+> +
+> +	memcpy(val_buf, buff + BMI323_SPI_DUMMY, val_size);
+> +	kfree(buff);
+> +
+> +	return ret;
+> +}
+> +
+> +static int bmi323_regmap_spi_write(void *context, const void *data,
+> +				   size_t count)
+> +{
+> +	struct spi_device *spi = context;
+> +
+> +	return spi_write(spi, data, count);
+> +}
+> +
+> +static struct regmap_bus bmi323_regmap_bus = {
+> +	.read = bmi323_regmap_spi_read,
+> +	.write = bmi323_regmap_spi_write,
+> +};
 

@@ -2,111 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC7A57ACCF1
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 01:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154847AD040
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 08:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjIXXkL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Sep 2023 19:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
+        id S232053AbjIYGf7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 02:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjIXXkL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Sep 2023 19:40:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05D0DA;
-        Sun, 24 Sep 2023 16:40:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695598804; x=1727134804;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tTLXRE1soXSYBY2G5ExuJtYE7YESikpbce6IZI55gSg=;
-  b=RieCc0P6A+XXmrbpiJmnFvY+6T0UgPiKv4En2c/oFupqG4GuwEs3nLY+
-   ZtApjmPJ4BNKyOHLX9jfr9xw7rHdFdYstfanzn77eFwR9XyadHhw/kBS4
-   6Ey3jx3F+2Wn7BNO6Y0O/XoPlDCZ+jo8ciAdd3Z7Mpxe38kpB4CE1roau
-   ywrLJRWc6Lmz0coLMPqvsqKmk5eIqp3tK5w2qia8hfX2oeYGwYHvFFzkN
-   RRnfvapJsZkbmw/B7hFIY+yRW+SQUSpdqgJ46Hwr8/xrgyiJeXHHTEj6F
-   nHyJrq6QoxWvQU+G7w8s6EjGvxVXrPvUCrhEEU7WifBNtmoG11KzeZ5sk
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="381042092"
-X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
-   d="scan'208";a="381042092"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2023 16:40:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="838402627"
-X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
-   d="scan'208";a="838402627"
-Received: from lkp-server02.sh.intel.com (HELO 32c80313467c) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 24 Sep 2023 16:40:00 -0700
-Received: from kbuild by 32c80313467c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qkYhi-0000bx-2V;
-        Sun, 24 Sep 2023 23:39:58 +0000
-Date:   Mon, 25 Sep 2023 07:39:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-Message-ID: <202309250753.7v7FAzek-lkp@intel.com>
-References: <20230924222559.2038721-2-andreas@kemnade.info>
+        with ESMTP id S232097AbjIYGfy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 02:35:54 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3EDCF;
+        Sun, 24 Sep 2023 23:35:45 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-50437f39c9dso6662001e87.3;
+        Sun, 24 Sep 2023 23:35:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695623744; x=1696228544; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:content-language
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XdVp8fabZrl+SetbhyIwcfplRAGrgJKdiRNDgwwsIts=;
+        b=c98MR4y/+gV/jfdxnD7jHhVs2a7uzLX8KxBti8T3VwDmbgyPaW2oJQdMXSoe371ow+
+         rNtXzuggOXNmXxXklNTkgzwThMxKSPsrEpUiT9+GiWJLoOnAsgd1cYD4SVnldAhCVQbV
+         NzFszOo0THs6ly6br/DFMZKd59S/x2Le1bs3IXaxMBxlx7lsRerCzA2znWFMQlKTTk30
+         1s4B+IxMMtw8cyaIoL1uNMoOVSYGqyDd4z26iDxUkFXdl/NTV53ByQc6BaEL5exvkTIx
+         0y4gK1dRi3HYzOn8Et8PWU+hOcrHbsYeecWCBw2OwAwIGdwm3j0jl5NEbDjBYAw7GDg/
+         Cebw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695623744; x=1696228544;
+        h=content-transfer-encoding:in-reply-to:subject:from:content-language
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XdVp8fabZrl+SetbhyIwcfplRAGrgJKdiRNDgwwsIts=;
+        b=bGmhF8PMIa9Pn8QeTZ2sj9VPec2rN9TIUqM4zuC8suBW/cl3cxg+hhgi8ux5bDrTJ7
+         KIZmugJrIsyTMFSzOI3LE5KuB7XuupGa+gnRUQdF/na3k0ywdQNjIWGdOylHlPCfbwUm
+         aWGQRVHf4MlSrCKtCBYKbP3pkO5nalCHLhAXBjbi/80iEgN3/8VcRwcvi1Ls49jie2EJ
+         gM70SjfcwbJoMngtj7wPwXGltqzLByk6hku6Kco/kHc5Do8ItfToYuqwdHKeB8Akqzq0
+         BE0k/jJVS/VI5ZJlhHQFVgN5smJFg8iL2F2k6VgUZSUSinHjzsJZ9d6IFOm83xnX68Pb
+         FXYg==
+X-Gm-Message-State: AOJu0Yz5FNjjVF+IFncNbL2piMJgrOhQj/uVKD0dwgOFNnwJqJ90bwao
+        dHISaaEtS0YEhaXgAOIii+0VS/BjJEQ=
+X-Google-Smtp-Source: AGHT+IEZQJlUOwrQ/1uHkcqDpKZKmdLFnmpC+JeDRRVV2XBilkNnduNyMZVzgX5x3uTMWVKJ0OF5PA==
+X-Received: by 2002:a05:6512:e85:b0:500:adbd:43e7 with SMTP id bi5-20020a0565120e8500b00500adbd43e7mr5490959lfb.8.1695623743244;
+        Sun, 24 Sep 2023 23:35:43 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id r28-20020ac252bc000000b00501c1794883sm1717087lfm.251.2023.09.24.23.35.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Sep 2023 23:35:42 -0700 (PDT)
+Message-ID: <59000a48-cb01-b92b-0a36-24227a990976@gmail.com>
+Date:   Mon, 25 Sep 2023 09:35:41 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230924222559.2038721-2-andreas@kemnade.info>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1695380366.git.mazziesaccount@gmail.com>
+ <20230924165331.6df2e9c1@jic23-huawei>
+Content-Language: en-US, en-GB
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v3 0/6] Support ROHM BM1390 pressure sensor
+In-Reply-To: <20230924165331.6df2e9c1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andreas,
+On 9/24/23 18:53, Jonathan Cameron wrote:
+> On Fri, 22 Sep 2023 14:14:52 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>> Revision history:
+>> Major changes here, please see the head room of individual patches for
+>> more detailed list.
+>> v2 => v3:
+>> 	rebased on v6.6-rc2
+> 
+> Stick to rc1 though I doubt it makes much difference.
 
-kernel test robot noticed the following build warnings:
+It shouldn't probably change much - but it 's still good to know -rc1 is 
+what you'll stick at :) Thanks for pointing it out.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.6-rc3 next-20230921]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> The IIO tree
+> will remain based on v6.6-rc1 until it is rebased after Greg takes
+> a pull request.
+> 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Kemnade/dt-bindings-iio-imu-mpu6050-Add-level-shifter/20230925-062804
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230924222559.2038721-2-andreas%40kemnade.info
-patch subject: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20230925/202309250753.7v7FAzek-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309250753.7v7FAzek-lkp@intel.com/
-
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml: properties:invensense,level-shifter: True is not of type 'object'
-   	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-   	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
->> Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml: properties:invensense,level-shifter: More than one condition true in oneOf schema:
-   	{'description': 'Vendor specific properties must have a type and '
-   	                'description unless they have a defined, common '
-   	                'suffix.',
-   	 'oneOf': [{'additionalProperties': False,
-   	            'description': 'A vendor boolean property can use "type: '
-   	                           'boolean"',
-   	            'properties': {'deprecated': True,
-   	                           'description': True,
-   	                           'type': {'const': 'boolean'}},
-   	            'required': ['type', 'description']},
+Yours,
+	--Matti
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

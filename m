@@ -2,44 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15AD97AD329
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 10:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A6E7AD4D2
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 11:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbjIYIS6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 04:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49854 "EHLO
+        id S229437AbjIYJu5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 05:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232117AbjIYIS5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 04:18:57 -0400
-Received: from TWMBX02.aspeed.com (mail.aspeedtech.com [211.20.114.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A560CA3;
-        Mon, 25 Sep 2023 01:18:49 -0700 (PDT)
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 25 Sep
- 2023 16:18:46 +0800
-Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 25 Sep 2023 16:18:46 +0800
-From:   Billy Tsai <billy_tsai@aspeedtech.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <billy_tsai@aspeedtech.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <Potin.Lai@quantatw.com>, <patrickw3@meta.com>
-Subject: [PATCH v1] iio: adc: aspeed: Support deglitch feature.
-Date:   Mon, 25 Sep 2023 16:18:45 +0800
-Message-ID: <20230925081845.4147424-1-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229579AbjIYJu5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 05:50:57 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26EFA3;
+        Mon, 25 Sep 2023 02:50:49 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-50336768615so10167778e87.0;
+        Mon, 25 Sep 2023 02:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695635448; x=1696240248; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x6urbypd/JPj46RxbzcfUv0+mt9BQ2YKzGt/PpzONi8=;
+        b=jHbI78Rp6GrxoPtCUs4tEpYmBlMoWwpV8SckR15v6G8uuWCZPAHSoJgU4y+rfEo7Lw
+         qDXv5BE9oAF2How93CdrvkWMSdNw5aSGPltIQ3/qCJ/3Mm5PYC1QBWG2XYJauipJFr1h
+         6HTwRHII0Vw5T6jPG1R09x9/D+/9tkOQ2ogs5vzZRga100ULlVS7c0ru1mYKJMg32KDu
+         QvGM1sx59vvGJN6R1Y0jHQiDZ7X7MlHjTdpvJfPGNjKd0tc+xpVi5DqpxOXer1TUPIiS
+         fmWuE4rI579V5W2b4Wz0fD5yUcjiQh05icyvyHgFHQAF31lDZ0kabLufP1GwYWeQyyTh
+         Ydtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695635448; x=1696240248;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6urbypd/JPj46RxbzcfUv0+mt9BQ2YKzGt/PpzONi8=;
+        b=q5MG/4hGxhcv49q+zxZJHvZ3yD75kJMgZn5Swcf282yWlI9L0fRDbFVHgskb/AOZP0
+         CALrrcHxrkUk4GZOSWGZYW7TD/dh4CBh/Dn1oIXObnJuPtWgcmm0Vw+4ersg9FIYjiTV
+         oxJsLkgy652I3gTQ6GY7nDkgK6mmwOxqnB6QLdB8ZAAukVUfpkwL7aY8cEmoRdQ0hI20
+         35bx+Qxr2yZrPMc9Rv0SYqvQGviz302HDUa0kyxxFDLkuf49ZRU57QK5ZDSd/SaLZ7Lg
+         qljIjS0ZskgfBGHRZCxvYNYI2eh1uamdtRmEPumz45jy6FJTOEjHbq38F/xUWBrArKek
+         UPPg==
+X-Gm-Message-State: AOJu0YyjlJczCtIHIBBSW7HCx63CV8SoUrLl8/ZD0CrMh2G7fT/7OI2r
+        GnLS8VLDEk/8P1c8LQk+EKiHp2TEu8I=
+X-Google-Smtp-Source: AGHT+IEP6nxaunpg0g+mD90TO5ii10hJtP90BGL7zBBliiNiblrIJj0VXzliZgFqUZ3ztpeBlMj6ww==
+X-Received: by 2002:a05:6512:3d08:b0:504:2970:da62 with SMTP id d8-20020a0565123d0800b005042970da62mr6205435lfv.64.1695635447853;
+        Mon, 25 Sep 2023 02:50:47 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id h8-20020ac25968000000b0050089b26ea1sm1744070lfp.276.2023.09.25.02.50.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Sep 2023 02:50:47 -0700 (PDT)
+Message-ID: <9c0938d7-7c35-4d46-ec69-4171e0cf14ae@gmail.com>
+Date:   Mon, 25 Sep 2023 12:50:46 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-Received-SPF: Fail (TWMBX02.aspeed.com: domain of billy_tsai@aspeedtech.com
- does not designate 192.168.10.10 as permitted sender)
- receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
- helo=twmbx02.aspeed.com;
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 2/6] iio: improve doc for available_scan_mask
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1695380366.git.mazziesaccount@gmail.com>
+ <74b66a5b9eee2fb7046f254928391e3da61aa3b2.1695380366.git.mazziesaccount@gmail.com>
+ <20230924165908.5a332fac@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230924165908.5a332fac@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,308 +85,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Create event sysfs for applying the deglitch condition. When
-in_voltageY_thresh_rising_en/in_voltageY_thresh_falling_en is set to true,
-the driver will use the in_voltageY_thresh_rising_value and
-in_voltageY_thresh_falling_value as threshold values. If the ADC value
-falls outside this threshold, the driver will wait for the ADC sampling
-period and perform an additional read once to achieve the deglitching
-purpose.
+On 9/24/23 18:59, Jonathan Cameron wrote:
+> On Fri, 22 Sep 2023 14:16:57 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The available_scan_mask is an array of bitmaps representing the channels
+>> which can be simultaneously enabled by the driver. In many cases the
+>> hardware can offer more channels than what the user is interested in
+>> obtaining. In such cases it may be preferred that only subset of
+>> channels are enabled, and driver reads only a subset of the channels from
+>> the hardware.
+>>
+>> Some devices can't support all channel combinations. For example the
+>> BM1390 pressure sensor must always read the pressure data in order to
+>> acknowledge the watermark IRQ, while reading temperature can be omitted.
+>> So, the available scan mask would be 'pressure and temperature' and
+>> 'pressure only'.
+>>
+>> When IIO seatchs for the scan mask it asks the driver to use, it will
+> 
+> Spell check description.  searches
 
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
----
- drivers/iio/adc/aspeed_adc.c | 193 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 189 insertions(+), 4 deletions(-)
+Oh, right. Thanks!
 
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 998e8bcc06e1..9e746c81d916 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -95,6 +95,7 @@ struct aspeed_adc_model_data {
- 	bool wait_init_sequence;
- 	bool need_prescaler;
- 	bool bat_sense_sup;
-+	bool require_extra_eoc;
- 	u8 scaler_bit_width;
- 	unsigned int num_channels;
- 	const struct aspeed_adc_trim_locate *trim_locate;
-@@ -120,6 +121,26 @@ struct aspeed_adc_data {
- 	int			cv;
- 	bool			battery_sensing;
- 	struct adc_gain		battery_mode_gain;
-+	unsigned int		required_eoc_num;
-+	u16			*upper_bound;
-+	u16			*lower_bound;
-+	bool			*upper_en;
-+	bool			*lower_en;
-+};
-+
-+static const struct iio_event_spec aspeed_adc_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_separate =
-+			BIT(IIO_EV_INFO_VALUE) | BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_separate =
-+			BIT(IIO_EV_INFO_VALUE) | BIT(IIO_EV_INFO_ENABLE),
-+	},
- };
- 
- #define ASPEED_CHAN(_idx, _data_reg_addr) {			\
-@@ -131,6 +152,8 @@ struct aspeed_adc_data {
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
- 				BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
- 				BIT(IIO_CHAN_INFO_OFFSET),	\
-+	.event_spec = aspeed_adc_events,			\
-+	.num_event_specs = ARRAY_SIZE(aspeed_adc_events),	\
- }
- 
- static const struct iio_chan_spec aspeed_adc_iio_channels[] = {
-@@ -277,6 +300,35 @@ static int aspeed_adc_set_sampling_rate(struct iio_dev *indio_dev, u32 rate)
- 	return 0;
- }
- 
-+static int aspeed_adc_get_voltage_raw(struct aspeed_adc_data *data,
-+				      struct iio_chan_spec const *chan)
-+{
-+	int val;
-+
-+	val = readw(data->base + chan->address);
-+	dev_dbg(data->dev,
-+		"%d upper_bound: %d %x, lower_bound: %d %x, delay: %d * %d ns",
-+		chan->channel, data->upper_en[chan->channel],
-+		data->upper_bound[chan->channel], data->lower_en[chan->channel],
-+		data->lower_bound[chan->channel], data->sample_period_ns,
-+		data->required_eoc_num);
-+	if (data->upper_en[chan->channel]) {
-+		if (val >= data->upper_bound[chan->channel]) {
-+			ndelay(data->sample_period_ns *
-+			       data->required_eoc_num);
-+			val = readw(data->base + chan->address);
-+		}
-+	}
-+	if (data->lower_en[chan->channel]) {
-+		if (val <= data->lower_bound[chan->channel]) {
-+			ndelay(data->sample_period_ns *
-+			       data->required_eoc_num);
-+			val = readw(data->base + chan->address);
-+		}
-+	}
-+	return val;
-+}
-+
- static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan,
- 			       int *val, int *val2, long mask)
-@@ -299,14 +351,15 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
- 			 * Experiment result is 1ms.
- 			 */
- 			mdelay(1);
--			*val = readw(data->base + chan->address);
-+			*val = aspeed_adc_get_voltage_raw(data, chan);
- 			*val = (*val * data->battery_mode_gain.mult) /
- 			       data->battery_mode_gain.div;
- 			/* Restore control register value */
- 			writel(adc_engine_control_reg_val,
- 			       data->base + ASPEED_REG_ENGINE_CONTROL);
--		} else
--			*val = readw(data->base + chan->address);
-+		} else {
-+			*val = aspeed_adc_get_voltage_raw(data, chan);
-+		}
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OFFSET:
-@@ -369,9 +422,106 @@ static int aspeed_adc_reg_access(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
-+static int aspeed_adc_read_event_config(struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan,
-+					enum iio_event_type type,
-+					enum iio_event_direction dir)
-+{
-+	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return data->upper_en[chan->channel];
-+	case IIO_EV_DIR_FALLING:
-+		return data->lower_en[chan->channel];
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int aspeed_adc_write_event_config(struct iio_dev *indio_dev,
-+					 const struct iio_chan_spec *chan,
-+					 enum iio_event_type type,
-+					 enum iio_event_direction dir,
-+					 int state)
-+{
-+	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		data->upper_en[chan->channel] = state ? 1 : 0;
-+		break;
-+	case IIO_EV_DIR_FALLING:
-+		data->lower_en[chan->channel] = state ? 1 : 0;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int aspeed_adc_write_event_value(struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan,
-+					enum iio_event_type type,
-+					enum iio_event_direction dir,
-+					enum iio_event_info info, int val,
-+					int val2)
-+{
-+	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+
-+	if (info != IIO_EV_INFO_VALUE)
-+		return -EINVAL;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		if (val >= BIT(ASPEED_RESOLUTION_BITS))
-+			return -EINVAL;
-+		data->upper_bound[chan->channel] = val;
-+		break;
-+	case IIO_EV_DIR_FALLING:
-+		data->lower_bound[chan->channel] = val;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int aspeed_adc_read_event_value(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan,
-+				       enum iio_event_type type,
-+				       enum iio_event_direction dir,
-+				       enum iio_event_info info, int *val,
-+				       int *val2)
-+{
-+	struct aspeed_adc_data *data = iio_priv(indio_dev);
-+
-+	if (info != IIO_EV_INFO_VALUE)
-+		return -EINVAL;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		*val = data->upper_bound[chan->channel];
-+		break;
-+	case IIO_EV_DIR_FALLING:
-+		*val = data->lower_bound[chan->channel];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return IIO_VAL_INT;
-+}
-+
- static const struct iio_info aspeed_adc_iio_info = {
- 	.read_raw = aspeed_adc_read_raw,
- 	.write_raw = aspeed_adc_write_raw,
-+	.read_event_config = &aspeed_adc_read_event_config,
-+	.write_event_config = &aspeed_adc_write_event_config,
-+	.read_event_value = &aspeed_adc_read_event_value,
-+	.write_event_value = &aspeed_adc_write_event_value,
- 	.debugfs_reg_access = aspeed_adc_reg_access,
- };
- 
-@@ -502,6 +652,30 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->base))
- 		return PTR_ERR(data->base);
- 
-+	data->upper_bound = devm_kzalloc(&pdev->dev,
-+					 sizeof(data->upper_bound) *
-+						 data->model_data->num_channels,
-+					 GFP_KERNEL);
-+	if (!data->upper_bound)
-+		return -ENOMEM;
-+	data->upper_en = devm_kzalloc(&pdev->dev,
-+				      sizeof(data->upper_en) *
-+					      data->model_data->num_channels,
-+				      GFP_KERNEL);
-+	if (!data->upper_en)
-+		return -ENOMEM;
-+	data->lower_bound = devm_kzalloc(&pdev->dev,
-+					 sizeof(data->lower_bound) *
-+						 data->model_data->num_channels,
-+					 GFP_KERNEL);
-+	if (!data->lower_bound)
-+		return -ENOMEM;
-+	data->lower_en = devm_kzalloc(&pdev->dev,
-+				      sizeof(data->lower_en) *
-+					      data->model_data->num_channels,
-+				      GFP_KERNEL);
-+	if (!data->lower_en)
-+		return -ENOMEM;
- 	/* Register ADC clock prescaler with source specified by device tree. */
- 	spin_lock_init(&data->clk_lock);
- 	snprintf(clk_parent_name, ARRAY_SIZE(clk_parent_name), "%s",
-@@ -632,7 +806,14 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	adc_engine_control_reg_val |= ASPEED_ADC_CTRL_CHANNEL;
- 	writel(adc_engine_control_reg_val,
- 	       data->base + ASPEED_REG_ENGINE_CONTROL);
--
-+	adc_engine_control_reg_val =
-+		FIELD_GET(ASPEED_ADC_CTRL_CHANNEL,
-+			  readl(data->base + ASPEED_REG_ENGINE_CONTROL));
-+	data->required_eoc_num = hweight_long(adc_engine_control_reg_val);
-+	if (data->model_data->require_extra_eoc &&
-+	    (adc_engine_control_reg_val &
-+	     BIT(data->model_data->num_channels - 1)))
-+		data->required_eoc_num += 12;
- 	indio_dev->name = data->model_data->model_name;
- 	indio_dev->info = &aspeed_adc_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-@@ -668,6 +849,7 @@ static const struct aspeed_adc_model_data ast2400_model_data = {
- 	.need_prescaler = true,
- 	.scaler_bit_width = 10,
- 	.num_channels = 16,
-+	.require_extra_eoc = 0,
- };
- 
- static const struct aspeed_adc_model_data ast2500_model_data = {
-@@ -680,6 +862,7 @@ static const struct aspeed_adc_model_data ast2500_model_data = {
- 	.scaler_bit_width = 10,
- 	.num_channels = 16,
- 	.trim_locate = &ast2500_adc_trim,
-+	.require_extra_eoc = 0,
- };
- 
- static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
-@@ -691,6 +874,7 @@ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
- 	.scaler_bit_width = 16,
- 	.num_channels = 8,
- 	.trim_locate = &ast2600_adc0_trim,
-+	.require_extra_eoc = 1,
- };
- 
- static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
-@@ -702,6 +886,7 @@ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
- 	.scaler_bit_width = 16,
- 	.num_channels = 8,
- 	.trim_locate = &ast2600_adc1_trim,
-+	.require_extra_eoc = 1,
- };
- 
- static const struct of_device_id aspeed_adc_matches[] = {
+> 
+>> pick the first suitable one from the 'available_scan_mask' array. Hence,
+>> ordering the masks in the array makes difference. We should 'prefer'
+>> reading just the pressure from the hardware (as it is cheaper operation
+>> than reading both pressure and temperature) over reading both pressure
+>> and temperature. Hence, we should set the 'only pressure' as first scan
+>> mask in available_scan_mask array. If we set the 'pressure and
+>> temperature' as first in array, then the 'only temperature' will never
+>> get used as 'pressure and temperature' can always serve the user's
+>> needs.
+>>
+>> Add (minimal) kerneldoc to the 'available_scan_mask' to hint the user
+>> that ordering of masks matters.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>>   include/linux/iio/iio.h | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+>> index 202e55b0a28b..7bfa1b9bc8a2 100644
+>> --- a/include/linux/iio/iio.h
+>> +++ b/include/linux/iio/iio.h
+>> @@ -556,7 +556,9 @@ struct iio_buffer_setup_ops {
+>>    *			and owner
+>>    * @buffer:		[DRIVER] any buffer present
+>>    * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
+>> - * @available_scan_masks: [DRIVER] optional array of allowed bitmasks
+>> + * @available_scan_masks: [DRIVER] optional array of allowed bitmasks. Sort the
+>> + *			   array in order of preference, the most preferred
+>> + *			   masks first.
+> 
+> LGTM
+
+I'll try to spell check the commit message and then I treat this as an 
+ack. Please, let me know if it's not Ok.
+
+>>    * @masklength:		[INTERN] the length of the mask established from
+>>    *			channels
+>>    * @active_scan_mask:	[INTERN] union of all scan masks requested by buffers
+> 
+
 -- 
-2.25.1
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

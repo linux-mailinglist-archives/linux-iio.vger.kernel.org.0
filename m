@@ -2,107 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C1EB7ADDF8
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 19:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FA47ADE54
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 20:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230042AbjIYRsK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 13:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57080 "EHLO
+        id S231351AbjIYSDG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 14:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjIYRsJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 13:48:09 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB4410E
-        for <linux-iio@vger.kernel.org>; Mon, 25 Sep 2023 10:48:02 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso857361866b.1
-        for <linux-iio@vger.kernel.org>; Mon, 25 Sep 2023 10:48:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1695664081; x=1696268881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1/UN+h0syPysLtxsvFcqWbygnTfY7kE0+mV4pd8zbOE=;
-        b=RYEr9cYaG57l52hf6D92FVsynybyMfC04x1z06kXcMPBIFTgkV3pwcPmmyEh6CHsmZ
-         k9CFkgieBKsHcaSx4R3liGCSX28LEbeboiK6HiPvLpc3mbsX5BoMREGE+yark4ZU3Se3
-         VJxat/ofNc+oYjiaENTdqRdcvyCkWWctYItLGqsHgn0EUopDDxjbN6Mym/OnxCnTFgci
-         d58HDyP4YLN3C8hXPz7utdfofyPoHVPy9lWxenzQJSsJQ0YLBxQ2aZ/fwf4G4dQoJ1UQ
-         5nXUnkFKlAgaAglDfKOysQpm/JFwVkhIaP4uidAO8XxBrxUfw7/wjSsqM/Sx4fqXv9q5
-         QFHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695664081; x=1696268881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1/UN+h0syPysLtxsvFcqWbygnTfY7kE0+mV4pd8zbOE=;
-        b=uLmiH5JTcYfvPPnK2klzNzKFSHZ5vRxT1BVhwlw2Ix/rbXpzR4WvNt8t/jfu2wPnxV
-         4Q8SpavpOEeDRLK5hDeqfAwPYF13JvXKl7+BdSBBbKcLxEK7bz+poD+gXQEkCyEpcZZX
-         wosr3o+Mj1pcG+rCsy4hRz38BH6HMVPj0aEOD55/FmcY2K5joM6B4+rIItS+0e8EINw7
-         sFbrLOmp26+WILTpBUM18IhGM30Af7hQGWLmoM7ncsV5cVxWwG28akE+N9eBT6/J7qSq
-         SU1mECAFl1ktmY0e5zgqJvioBbHMNdsHyYiJu5MnfqFUhemsr3VMvuGwaQspOyFS2Pzo
-         VtxA==
-X-Gm-Message-State: AOJu0Yw+3/aSJdkd+zYqwyQkcaMVSQkjQb9ra1JL+BNJww9lMX47SKsF
-        nHzwuBbMuKGn4t+9/+3xT4IMo4jMJDwGwVHldCXuYA==
-X-Google-Smtp-Source: AGHT+IFopHnRoAlyF6POHIUhcvwlhiL61OgNYhhH4qY+wuY7Lc/f7rCYUm4UIz9VvEggFLjrRogYHi+m9F2UFzb7uQQ=
-X-Received: by 2002:a17:906:2189:b0:9a1:e941:6f49 with SMTP id
- 9-20020a170906218900b009a1e9416f49mr6620490eju.44.1695664081274; Mon, 25 Sep
- 2023 10:48:01 -0700 (PDT)
+        with ESMTP id S229584AbjIYSDG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 14:03:06 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA6510D;
+        Mon, 25 Sep 2023 11:02:58 -0700 (PDT)
+Received: from pd9e2f713.dip0.t-ipconnect.de ([217.226.247.19] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qkpuo-004At7-Ci; Mon, 25 Sep 2023 20:02:38 +0200
+Date:   Mon, 25 Sep 2023 20:02:36 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <bcousson@baylibre.com>, <tony@atomide.com>,
+        <jean-baptiste.maneyrol@tdk.com>, <chenhuiz@axis.com>,
+        <andy.shevchenko@gmail.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
+Message-ID: <20230925200236.55fe2db7@aktux>
+In-Reply-To: <20230925142157.00000914@Huawei.com>
+References: <20230924222559.2038721-1-andreas@kemnade.info>
+        <20230924222559.2038721-2-andreas@kemnade.info>
+        <6db5b758-2ae6-46fb-a699-d73a2b98b4c2@linaro.org>
+        <20230925112852.00007d34@Huawei.com>
+        <20230925130225.55fe6fd4@aktux>
+        <3b81a9a7-69a3-4fd6-875f-7a5170c5c872@linaro.org>
+        <20230925142157.00000914@Huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230921144400.62380-1-dlechner@baylibre.com> <20230921144400.62380-2-dlechner@baylibre.com>
- <20230924175720.3be2540b@jic23-huawei>
-In-Reply-To: <20230924175720.3be2540b@jic23-huawei>
-From:   David Lechner <dlechner@baylibre.com>
-Date:   Mon, 25 Sep 2023 12:47:50 -0500
-Message-ID: <CAMknhBF56CWKNZ-xvsiaC3c+av8Dvyh+i-op1YxvXv2g8BPYWg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] dt-bindings: iio: resolver: add devicetree
- bindings for ad2s1210
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        Apelete Seketeli <aseketeli@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Sep 24, 2023 at 11:57=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Thu, 21 Sep 2023 09:43:42 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->
-...
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - spi-cpha
-> > +  - clocks
-> > +  - sample-gpios
-> > +  - assigned-resolution-bits
-> > +
-> > +oneOf:
-> > +  - required:
-> > +      - mode-gpios
-> > +  - required:
-> > +      - adi,fixed-mode
-> I think this allows for both.  It's fiddlier to exclude that but would be=
- a nice
-> to have perhaps rather than relying on text above that says 'don't do it'=
-.
->
+On Mon, 25 Sep 2023 14:21:57 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-example-schema.yaml says that oneOf is XOR (anyOf is OR and would
-allow both).
+> On Mon, 25 Sep 2023 14:24:32 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+> > On 25/09/2023 13:02, Andreas Kemnade wrote:  
+> > > On Mon, 25 Sep 2023 11:28:52 +0100
+> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > >     
+> > >> On Mon, 25 Sep 2023 08:54:08 +0200
+> > >> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> > >>    
+> > >>> On 25/09/2023 00:25, Andreas Kemnade wrote:      
+> > >>>> Found in ancient platform data struct:
+> > >>>> level_shifter: 0: VLogic, 1: VDD
+> > >>>>
+> > >>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > >>>> ---
+> > >>>>  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml         | 2 ++
+> > >>>>  1 file changed, 2 insertions(+)
+> > >>>>
+> > >>>> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> > >>>> index 1db6952ddca5e..6aae2272fa15c 100644
+> > >>>> --- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> > >>>> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> > >>>> @@ -48,6 +48,8 @@ properties:
+> > >>>>  
+> > >>>>    mount-matrix: true
+> > >>>>  
+> > >>>> +  invensense,level-shifter: true        
+> > >>>
+> > >>> It does not look like you tested the bindings, at least after quick
+> > >>> look. Please run `make dt_binding_check` (see
+> > >>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> > >>> Maybe you need to update your dtschema and yamllint.
+> > >>>
+> > >>> Best regards,
+> > >>> Krzysztof
+> > >>>
+> > >>>       
+> > >>
+> > >> Also this one isn't obvious - give it a description in the binding doc.
+> > >>
+> > >> I'm not sure of the arguement for calling it level shift in general.
+> > >>    
+> > > I have no more descrption than the old source (see the citation from there)
+citation = line from ancient pdata struct comment cited in the commit message.
+
+> > > https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-9150-Register-Map.pdf    
+> > 
+> > I could not find any reference to level shift in this manual. To which
+> > page and part do you refer?
+> >
+> > > 
+> > > does not list it. But that bit is needed to get things to work what also does the
+> > > vendor kernel do.
+> > > 
+> > > What could be a better descrption?    
+> > 
+> > I don't know, but something reasonable to you should be put there.  
+> 
+> The text you have in the commit log seems better than nothing.
+> I suspect it's internally wiring VDD to VDDIO. Normally people just
+> connect both power supplies to same supply if they want to do that,
+> but maybe there was a chip variant that didn't have enough pins?
+> 
+> If you have the device, can you see it actually matches the packaging
+> types in the manual?
+> 
+packaging matches. It is just as usual. I think VLogic (=VDDIO) would be 1.8V
+while VDD needs to be something higher, so I guess here it might be 3.3V.
+There are some slight hints about level shifting here:
+https://product.tdk.com/system/files/dam/doc/product/sensor/mortion-inertial/imu/data_sheet/mpu-9150-datasheet.pdf
+page 37. The aux i2c bus seem to run at levels till VDD. But here, there
+seems to be nothing at the aux i2c bus besides that internal magnetometer.
+
+Regards,
+Andreas

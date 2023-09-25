@@ -2,122 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BB67AD80A
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 14:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0C3C7AD8BB
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 15:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231480AbjIYM27 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 08:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
+        id S230503AbjIYNQl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 09:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231502AbjIYM26 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 08:28:58 -0400
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC659C0;
-        Mon, 25 Sep 2023 05:28:51 -0700 (PDT)
-Received: by mail-oo1-xc2b.google.com with SMTP id 006d021491bc7-57b8a0f320dso2472871eaf.1;
-        Mon, 25 Sep 2023 05:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695644931; x=1696249731; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AEMB+aMclhd1sl71SWaIAmlGGLDyHVrWoaX/gY8/R5c=;
-        b=V7KDck2LK6EjRLkng9gatYnO7JdSommgSsf4gkzKxtgvD0qU9Nz1AgNErTZ281S6V6
-         Ox3kO/gQttIKUWuUn3AV9S0/HmOuBb3qDRjQ5BLKzIY9pJNi1oddX65Y+B18M6M0dBPA
-         yXbo7i4s7LF/OFOkKDTMQzDTmbeQ9BOd4QZeu6yryn4rJ5ZBoJgrn4IQL17D36pm1Jt4
-         mpE/feuJ1tejwkdS0V7ARmiJpykH6y98THurnB1B0qUZWSuzn9zSkml6Kon69i4AHYI2
-         dOLj+9xHebAxFTyGjTrO+CtJNZI7/SvuClB5fH3MdHKtC6UAhS+3Gzvyd5YtJnIZXDji
-         b9LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695644931; x=1696249731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AEMB+aMclhd1sl71SWaIAmlGGLDyHVrWoaX/gY8/R5c=;
-        b=YW1huWns4+34NhE8V18MWKrsgJcCIy0J6bgTIfRVyQKCz9BCjfrdSfbIEIdNFF2K4H
-         c1ztbXT1crHEIyp0OFJCkBBk8P+yYjhY5Okn5WSCxhwhquieaTa9pPc0SZhGjIsK+Ma8
-         hNj57tCz8j5KhoqZfCyiCs3H952I5GCzxdkvPu6EcxduOzfSOkIb+XBvqlxBpq+weqMQ
-         YCJhxbWfabkBuUBGOOyUXNTYZCliV6J/aj2bZvneoYmkhTLklI6g2bLtxGcCl98ZKEBz
-         bcE5PsrEa16zrR0PsFwYBJhCyqsxA21Yq50wdInm6UbqIiHU2/SDy8IPd78MxR7eJ5U5
-         i7EA==
-X-Gm-Message-State: AOJu0Yw2O3DZcSPYqOF3uUT8j44zI4HyoGFaR0fcJn7LeAQBTFmJ7s1r
-        JXlHssny3dr8SaUbPhmk6kgEGO0irH2ELMzkTKI=
-X-Google-Smtp-Source: AGHT+IGIn17QRT9sghZGFLapfE2B79F0bn2aZRTy/vN6Uwtkl2OMEt9VJArKEss1Aal2b/jP5XnS7vRIpVGaykVipLw=
-X-Received: by 2002:a4a:2a14:0:b0:576:8b77:59ee with SMTP id
- k20-20020a4a2a14000000b005768b7759eemr5823510oof.2.1695644931104; Mon, 25 Sep
- 2023 05:28:51 -0700 (PDT)
+        with ESMTP id S230445AbjIYNQk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 09:16:40 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562C3107;
+        Mon, 25 Sep 2023 06:16:33 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvNf037XGz6J72G;
+        Mon, 25 Sep 2023 21:15:20 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
+ 2023 14:16:30 +0100
+Date:   Mon, 25 Sep 2023 14:16:29 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>,
+        Benjamin Bara <bbara93@gmail.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/6] tools: iio: iio_generic_buffer ensure alignment
+Message-ID: <20230925141629.00004522@Huawei.com>
+In-Reply-To: <7ff22aa4-475c-b524-9f7a-f47ad02e940b@gmail.com>
+References: <cover.1695380366.git.mazziesaccount@gmail.com>
+        <029b4e3e18c76b330b606f5b14699e5ee4e5ed35.1695380366.git.mazziesaccount@gmail.com>
+        <20230924165737.54631dd3@jic23-huawei>
+        <7ff22aa4-475c-b524-9f7a-f47ad02e940b@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230924222559.2038721-1-andreas@kemnade.info>
- <20230924222559.2038721-3-andreas@kemnade.info> <CAHp75VfvmED4ZsmrH4B6m9kGsH=68-zjQd5JMszb6UBTtbF0bw@mail.gmail.com>
- <20230925140415.00130082@aktux>
-In-Reply-To: <20230925140415.00130082@aktux>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Sep 2023 15:28:15 +0300
-Message-ID: <CAHp75VeyCnDwCAf4pKVynQDXdqM9nURLFHKODkgF0c+BLCrQ7w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: imu: mpu6050: add level shifter flag
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 25, 2023 at 3:04=E2=80=AFPM Andreas Kemnade <andreas@kemnade.in=
-fo> wrote:
-> On Mon, 25 Sep 2023 14:07:58 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Sep 25, 2023 at 1:26=E2=80=AFAM Andreas Kemnade <andreas@kemnad=
-e.info> wrote:
-> > >
-> > > Some boards fail in magnetometer probe if flag is not set.
-> >
-> > Which flag? Can you elaborate a bit more?
-> >
-> well see $subj. The level shifter flag.
+On Mon, 25 Sep 2023 10:01:09 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Well. it is better to have the commit message being self-contained.
+> On 9/24/23 18:57, Jonathan Cameron wrote:
+> > On Fri, 22 Sep 2023 14:16:08 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> The iio_generic_buffer can return garbage values when the total size of
+> >> scan data is not a multiple of largest element in the scan. This can be
+> >> demonstrated by reading a scan consisting for example of one 4 byte and
+> >> one 2 byte element, where the 4 byte elemnt is first in the buffer.
+> >>
+> >> The IIO generic buffert code does not take into accunt the last two
+> >> padding bytes that are needed to ensure that the 4byte data for next
+> >> scan is correctly aligned.
+> >>
+> >> Add padding bytes required to align the next sample into the scan size.
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >> ---
+> >> Please note, This one could have RFC in subject.:
+> >> I attempted to write the fix so that the alignment is done based on the
+> >> biggest channel data. This may be wrong. Maybe a fixed 8 byte alignment
+> >> should be used instead? This patch can be dropped from the series if the
+> >> fix is not correct / agreed.
+> >>
+> >>   tools/iio/iio_generic_buffer.c | 15 ++++++++++++++-
+> >>   1 file changed, 14 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+> >> index 44bbf80f0cfd..fc562799a109 100644
+> >> --- a/tools/iio/iio_generic_buffer.c
+> >> +++ b/tools/iio/iio_generic_buffer.c
+> >> @@ -54,9 +54,12 @@ enum autochan {
+> >>   static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+> >>   {
+> >>   	unsigned int bytes = 0;
+> >> -	int i = 0;
+> >> +	int i = 0, max = 0;
+> >> +	unsigned int misalignment;
+> >>   
+> >>   	while (i < num_channels) {
+> >> +		if (channels[i].bytes > max)
+> >> +			max = channels[i].bytes;
+> >>   		if (bytes % channels[i].bytes == 0)
+> >>   			channels[i].location = bytes;
+> >>   		else
+> >> @@ -66,6 +69,16 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
+> >>   		bytes = channels[i].location + channels[i].bytes;
+> >>   		i++;
+> >>   	}
+> >> +	/*
+> >> +	 * We wan't the data in next sample to also be properly aligned so
+> >> +	 * we'll add padding at the end if needed. TODO: should we use fixed
+> >> +	 * 8 byte alignment instead of the size of the biggest samnple?
+> >> +	 */  
+> > 
+> > Should be aligned to max size seen in the scan.  
+> 
+> Or, maybe it should be
+> min(max_size_in_scan, 8);
+> ?
 
-> > Does it deserve the Fixes tag?
-> >
-> As there are only certain boards affected, they would also have
-> to add the flag in dtb, I do not think it deservers a Fixes tag.
-> Even in the board I have here, there are basically two
-> mpu9150 connected per cable, only one of them needs the flag.
+Definitely not.   If you are grabbing just one channel of 8 bit data,
+we want it to be tightly packed.
 
-OK.
+If we have a bug that already made that true then we might be stuck
+with it, but I'm fairly sure we don't.
+> 
+> I think my suggestion above may yield undesirable effects should the 
+> scan elements be greater than 8 bytes. (Don't know if this is supported 
+> though)
 
-...
+It is supported in theory, in practice not seen one yet.
 
-> > >         unsigned int val;
-> > >         int ret;
-> >
-> > > +       ret =3D regmap_update_bits(st->map, 0x1, 0x80,
-> > > +                                st->level_shifter ? 0x80 : 0);
-> >
-> > This is a bit cryptic, what does 1 stand for?
-> >
-> Well, I do not find anything in
-> https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-9150-Register-M=
-ap.pdf
-> I have just found a similar line in the ancient 3.0 vendor kernel. No sym=
-bolic
-> names there.
+> 
+> >   
+> >> +	misalignment = bytes % max;
+> >> +	if (misalignment) {
+> >> +		printf("Misalignment %u. Adding Padding %u\n", misalignment,  max - misalignment);  
+> > 
+> > No print statement as this is correct behaviour (well the tool is buggy but the kernel generates it
+> > correctly I believe).  Fine to add a comment though!  
+> 
+> Oh, indeed. The print was forgotten from my test runs. Thanks for 
+> pointing it out!
+> 
+> >   
+> >> +		bytes += max - misalignment;
+> >> +	}
+> >>   
+> >>   	return bytes;
+> >>   }  
+> >   
+> 
+> Yours,
+> 	-- Matti
+> 
 
-Okay, perhaps a comment on top to point out this ("the code based on
-v3.0 vendor kernel, the meaning is unknown").
-
---=20
-With Best Regards,
-Andy Shevchenko

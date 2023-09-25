@@ -2,82 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6B07AD0F4
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 09:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15AD97AD329
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 10:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232348AbjIYHBZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 03:01:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
+        id S230250AbjIYIS6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 04:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232347AbjIYHBW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 03:01:22 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30853E8;
-        Mon, 25 Sep 2023 00:01:14 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c038a1e2e6so86865391fa.2;
-        Mon, 25 Sep 2023 00:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695625272; x=1696230072; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iYQkx42hAwqXvNKUFpRxlN/NVuhqNtrXo/dMgV1J1JM=;
-        b=PiO1YVkXzglRkSragH7pph1GRSKpYQYw1xeyH8mbZLlQgoWpf0IrY41TTmEEqA0Bwo
-         P1HNN0IgDxLmT319N19j9EB88NxzEEfzyklPnUWCU+m0wUUhOgMBBJgr/sVGF9X7IUFB
-         cF6i1Pvai91/18LJpynIq3toHUcZDzzunfLoZ88vmH5bhRHqt3naD8IuYOy8th5jPPHD
-         xjyozQsl8qWnE4zRa1ns2VY9DwDGiOB4eZY2vLv9BUFKuyAg10XlDbhaw/cQDaG9EM7w
-         v2L9ZYM4/soYzqdCCEWhmt+P0AzW7Ou7ox/QgVzRvfCH2jvbA/a+/Gxk3IRguzvZfU/5
-         JPpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695625272; x=1696230072;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iYQkx42hAwqXvNKUFpRxlN/NVuhqNtrXo/dMgV1J1JM=;
-        b=kJFwnSMyAUp1/Xp/AMHAdmGC6F/SbnvMAnvTQwLR+vlDFK83XeLPvqBtwtkkr0YqZ/
-         WBR2V4vQujZuyqBjbtMfIWibIH4097OQ9GSLmLcttKufQbSakjqZh7V0aASOJO3azkOS
-         zNBUDzdlD+GpUv3TSg6PGoJgj8l3iLEf8V1EojdBOC11sbiAXEr35r3krmPBo5yG8MxP
-         xJwRnVRGKlfrGFxBk+/vaqymwqaP895YZGiypgU263BZrO4B3jK6lu7TnEHkLrTVeyfh
-         ZBKDyDkCoPz/AC2fPr1p0ppU5Jtdx7ZHtShURaYbFtD2fm8OmxhOoC1bs/dpu/A6//QO
-         ot9Q==
-X-Gm-Message-State: AOJu0Yzv/lFyLGFKh9/+nzz14pjEFrC7Wy2jyxyTPSeDz4t/s/mDgzNL
-        nfPIhIOLoo4uXm6GbFryRmE=
-X-Google-Smtp-Source: AGHT+IHTnpauAoRjZUS0BV1CBUX4/GxNP2t4RiiSUtfvjd9Hed1meKRyFYk5XtDTfjyDNiU8VmAmCQ==
-X-Received: by 2002:a2e:730b:0:b0:2bc:b75e:b88 with SMTP id o11-20020a2e730b000000b002bcb75e0b88mr4964849ljc.18.1695625271923;
-        Mon, 25 Sep 2023 00:01:11 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id p2-20020a2e9a82000000b002c001e57e1asm2086956lji.73.2023.09.25.00.01.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Sep 2023 00:01:11 -0700 (PDT)
-Message-ID: <7ff22aa4-475c-b524-9f7a-f47ad02e940b@gmail.com>
-Date:   Mon, 25 Sep 2023 10:01:09 +0300
+        with ESMTP id S232117AbjIYIS5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 04:18:57 -0400
+Received: from TWMBX02.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A560CA3;
+        Mon, 25 Sep 2023 01:18:49 -0700 (PDT)
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 25 Sep
+ 2023 16:18:46 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 25 Sep 2023 16:18:46 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <billy_tsai@aspeedtech.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <Potin.Lai@quantatw.com>, <patrickw3@meta.com>
+Subject: [PATCH v1] iio: adc: aspeed: Support deglitch feature.
+Date:   Mon, 25 Sep 2023 16:18:45 +0800
+Message-ID: <20230925081845.4147424-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 1/6] tools: iio: iio_generic_buffer ensure alignment
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Benjamin Bara <bbara93@gmail.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1695380366.git.mazziesaccount@gmail.com>
- <029b4e3e18c76b330b606f5b14699e5ee4e5ed35.1695380366.git.mazziesaccount@gmail.com>
- <20230924165737.54631dd3@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20230924165737.54631dd3@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+Received-SPF: Fail (TWMBX02.aspeed.com: domain of billy_tsai@aspeedtech.com
+ does not designate 192.168.10.10 as permitted sender)
+ receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
+ helo=twmbx02.aspeed.com;
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,96 +47,308 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/24/23 18:57, Jonathan Cameron wrote:
-> On Fri, 22 Sep 2023 14:16:08 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> The iio_generic_buffer can return garbage values when the total size of
->> scan data is not a multiple of largest element in the scan. This can be
->> demonstrated by reading a scan consisting for example of one 4 byte and
->> one 2 byte element, where the 4 byte elemnt is first in the buffer.
->>
->> The IIO generic buffert code does not take into accunt the last two
->> padding bytes that are needed to ensure that the 4byte data for next
->> scan is correctly aligned.
->>
->> Add padding bytes required to align the next sample into the scan size.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->> Please note, This one could have RFC in subject.:
->> I attempted to write the fix so that the alignment is done based on the
->> biggest channel data. This may be wrong. Maybe a fixed 8 byte alignment
->> should be used instead? This patch can be dropped from the series if the
->> fix is not correct / agreed.
->>
->>   tools/iio/iio_generic_buffer.c | 15 ++++++++++++++-
->>   1 file changed, 14 insertions(+), 1 deletion(-)
->>
->> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
->> index 44bbf80f0cfd..fc562799a109 100644
->> --- a/tools/iio/iio_generic_buffer.c
->> +++ b/tools/iio/iio_generic_buffer.c
->> @@ -54,9 +54,12 @@ enum autochan {
->>   static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
->>   {
->>   	unsigned int bytes = 0;
->> -	int i = 0;
->> +	int i = 0, max = 0;
->> +	unsigned int misalignment;
->>   
->>   	while (i < num_channels) {
->> +		if (channels[i].bytes > max)
->> +			max = channels[i].bytes;
->>   		if (bytes % channels[i].bytes == 0)
->>   			channels[i].location = bytes;
->>   		else
->> @@ -66,6 +69,16 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
->>   		bytes = channels[i].location + channels[i].bytes;
->>   		i++;
->>   	}
->> +	/*
->> +	 * We wan't the data in next sample to also be properly aligned so
->> +	 * we'll add padding at the end if needed. TODO: should we use fixed
->> +	 * 8 byte alignment instead of the size of the biggest samnple?
->> +	 */
-> 
-> Should be aligned to max size seen in the scan.
+Create event sysfs for applying the deglitch condition. When
+in_voltageY_thresh_rising_en/in_voltageY_thresh_falling_en is set to true,
+the driver will use the in_voltageY_thresh_rising_value and
+in_voltageY_thresh_falling_value as threshold values. If the ADC value
+falls outside this threshold, the driver will wait for the ADC sampling
+period and perform an additional read once to achieve the deglitching
+purpose.
 
-Or, maybe it should be
-min(max_size_in_scan, 8);
-?
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+---
+ drivers/iio/adc/aspeed_adc.c | 193 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 189 insertions(+), 4 deletions(-)
 
-I think my suggestion above may yield undesirable effects should the 
-scan elements be greater than 8 bytes. (Don't know if this is supported 
-though)
-
-> 
->> +	misalignment = bytes % max;
->> +	if (misalignment) {
->> +		printf("Misalignment %u. Adding Padding %u\n", misalignment,  max - misalignment);
-> 
-> No print statement as this is correct behaviour (well the tool is buggy but the kernel generates it
-> correctly I believe).  Fine to add a comment though!
-
-Oh, indeed. The print was forgotten from my test runs. Thanks for 
-pointing it out!
-
-> 
->> +		bytes += max - misalignment;
->> +	}
->>   
->>   	return bytes;
->>   }
-> 
-
-Yours,
-	-- Matti
-
+diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+index 998e8bcc06e1..9e746c81d916 100644
+--- a/drivers/iio/adc/aspeed_adc.c
++++ b/drivers/iio/adc/aspeed_adc.c
+@@ -95,6 +95,7 @@ struct aspeed_adc_model_data {
+ 	bool wait_init_sequence;
+ 	bool need_prescaler;
+ 	bool bat_sense_sup;
++	bool require_extra_eoc;
+ 	u8 scaler_bit_width;
+ 	unsigned int num_channels;
+ 	const struct aspeed_adc_trim_locate *trim_locate;
+@@ -120,6 +121,26 @@ struct aspeed_adc_data {
+ 	int			cv;
+ 	bool			battery_sensing;
+ 	struct adc_gain		battery_mode_gain;
++	unsigned int		required_eoc_num;
++	u16			*upper_bound;
++	u16			*lower_bound;
++	bool			*upper_en;
++	bool			*lower_en;
++};
++
++static const struct iio_event_spec aspeed_adc_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate =
++			BIT(IIO_EV_INFO_VALUE) | BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate =
++			BIT(IIO_EV_INFO_VALUE) | BIT(IIO_EV_INFO_ENABLE),
++	},
+ };
+ 
+ #define ASPEED_CHAN(_idx, _data_reg_addr) {			\
+@@ -131,6 +152,8 @@ struct aspeed_adc_data {
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
+ 				BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
+ 				BIT(IIO_CHAN_INFO_OFFSET),	\
++	.event_spec = aspeed_adc_events,			\
++	.num_event_specs = ARRAY_SIZE(aspeed_adc_events),	\
+ }
+ 
+ static const struct iio_chan_spec aspeed_adc_iio_channels[] = {
+@@ -277,6 +300,35 @@ static int aspeed_adc_set_sampling_rate(struct iio_dev *indio_dev, u32 rate)
+ 	return 0;
+ }
+ 
++static int aspeed_adc_get_voltage_raw(struct aspeed_adc_data *data,
++				      struct iio_chan_spec const *chan)
++{
++	int val;
++
++	val = readw(data->base + chan->address);
++	dev_dbg(data->dev,
++		"%d upper_bound: %d %x, lower_bound: %d %x, delay: %d * %d ns",
++		chan->channel, data->upper_en[chan->channel],
++		data->upper_bound[chan->channel], data->lower_en[chan->channel],
++		data->lower_bound[chan->channel], data->sample_period_ns,
++		data->required_eoc_num);
++	if (data->upper_en[chan->channel]) {
++		if (val >= data->upper_bound[chan->channel]) {
++			ndelay(data->sample_period_ns *
++			       data->required_eoc_num);
++			val = readw(data->base + chan->address);
++		}
++	}
++	if (data->lower_en[chan->channel]) {
++		if (val <= data->lower_bound[chan->channel]) {
++			ndelay(data->sample_period_ns *
++			       data->required_eoc_num);
++			val = readw(data->base + chan->address);
++		}
++	}
++	return val;
++}
++
+ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
+ 			       struct iio_chan_spec const *chan,
+ 			       int *val, int *val2, long mask)
+@@ -299,14 +351,15 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
+ 			 * Experiment result is 1ms.
+ 			 */
+ 			mdelay(1);
+-			*val = readw(data->base + chan->address);
++			*val = aspeed_adc_get_voltage_raw(data, chan);
+ 			*val = (*val * data->battery_mode_gain.mult) /
+ 			       data->battery_mode_gain.div;
+ 			/* Restore control register value */
+ 			writel(adc_engine_control_reg_val,
+ 			       data->base + ASPEED_REG_ENGINE_CONTROL);
+-		} else
+-			*val = readw(data->base + chan->address);
++		} else {
++			*val = aspeed_adc_get_voltage_raw(data, chan);
++		}
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OFFSET:
+@@ -369,9 +422,106 @@ static int aspeed_adc_reg_access(struct iio_dev *indio_dev,
+ 	return 0;
+ }
+ 
++static int aspeed_adc_read_event_config(struct iio_dev *indio_dev,
++					const struct iio_chan_spec *chan,
++					enum iio_event_type type,
++					enum iio_event_direction dir)
++{
++	struct aspeed_adc_data *data = iio_priv(indio_dev);
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		return data->upper_en[chan->channel];
++	case IIO_EV_DIR_FALLING:
++		return data->lower_en[chan->channel];
++	default:
++		return -EINVAL;
++	}
++}
++
++static int aspeed_adc_write_event_config(struct iio_dev *indio_dev,
++					 const struct iio_chan_spec *chan,
++					 enum iio_event_type type,
++					 enum iio_event_direction dir,
++					 int state)
++{
++	struct aspeed_adc_data *data = iio_priv(indio_dev);
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		data->upper_en[chan->channel] = state ? 1 : 0;
++		break;
++	case IIO_EV_DIR_FALLING:
++		data->lower_en[chan->channel] = state ? 1 : 0;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int aspeed_adc_write_event_value(struct iio_dev *indio_dev,
++					const struct iio_chan_spec *chan,
++					enum iio_event_type type,
++					enum iio_event_direction dir,
++					enum iio_event_info info, int val,
++					int val2)
++{
++	struct aspeed_adc_data *data = iio_priv(indio_dev);
++
++	if (info != IIO_EV_INFO_VALUE)
++		return -EINVAL;
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		if (val >= BIT(ASPEED_RESOLUTION_BITS))
++			return -EINVAL;
++		data->upper_bound[chan->channel] = val;
++		break;
++	case IIO_EV_DIR_FALLING:
++		data->lower_bound[chan->channel] = val;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int aspeed_adc_read_event_value(struct iio_dev *indio_dev,
++				       const struct iio_chan_spec *chan,
++				       enum iio_event_type type,
++				       enum iio_event_direction dir,
++				       enum iio_event_info info, int *val,
++				       int *val2)
++{
++	struct aspeed_adc_data *data = iio_priv(indio_dev);
++
++	if (info != IIO_EV_INFO_VALUE)
++		return -EINVAL;
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		*val = data->upper_bound[chan->channel];
++		break;
++	case IIO_EV_DIR_FALLING:
++		*val = data->lower_bound[chan->channel];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return IIO_VAL_INT;
++}
++
+ static const struct iio_info aspeed_adc_iio_info = {
+ 	.read_raw = aspeed_adc_read_raw,
+ 	.write_raw = aspeed_adc_write_raw,
++	.read_event_config = &aspeed_adc_read_event_config,
++	.write_event_config = &aspeed_adc_write_event_config,
++	.read_event_value = &aspeed_adc_read_event_value,
++	.write_event_value = &aspeed_adc_write_event_value,
+ 	.debugfs_reg_access = aspeed_adc_reg_access,
+ };
+ 
+@@ -502,6 +652,30 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(data->base))
+ 		return PTR_ERR(data->base);
+ 
++	data->upper_bound = devm_kzalloc(&pdev->dev,
++					 sizeof(data->upper_bound) *
++						 data->model_data->num_channels,
++					 GFP_KERNEL);
++	if (!data->upper_bound)
++		return -ENOMEM;
++	data->upper_en = devm_kzalloc(&pdev->dev,
++				      sizeof(data->upper_en) *
++					      data->model_data->num_channels,
++				      GFP_KERNEL);
++	if (!data->upper_en)
++		return -ENOMEM;
++	data->lower_bound = devm_kzalloc(&pdev->dev,
++					 sizeof(data->lower_bound) *
++						 data->model_data->num_channels,
++					 GFP_KERNEL);
++	if (!data->lower_bound)
++		return -ENOMEM;
++	data->lower_en = devm_kzalloc(&pdev->dev,
++				      sizeof(data->lower_en) *
++					      data->model_data->num_channels,
++				      GFP_KERNEL);
++	if (!data->lower_en)
++		return -ENOMEM;
+ 	/* Register ADC clock prescaler with source specified by device tree. */
+ 	spin_lock_init(&data->clk_lock);
+ 	snprintf(clk_parent_name, ARRAY_SIZE(clk_parent_name), "%s",
+@@ -632,7 +806,14 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	adc_engine_control_reg_val |= ASPEED_ADC_CTRL_CHANNEL;
+ 	writel(adc_engine_control_reg_val,
+ 	       data->base + ASPEED_REG_ENGINE_CONTROL);
+-
++	adc_engine_control_reg_val =
++		FIELD_GET(ASPEED_ADC_CTRL_CHANNEL,
++			  readl(data->base + ASPEED_REG_ENGINE_CONTROL));
++	data->required_eoc_num = hweight_long(adc_engine_control_reg_val);
++	if (data->model_data->require_extra_eoc &&
++	    (adc_engine_control_reg_val &
++	     BIT(data->model_data->num_channels - 1)))
++		data->required_eoc_num += 12;
+ 	indio_dev->name = data->model_data->model_name;
+ 	indio_dev->info = &aspeed_adc_iio_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+@@ -668,6 +849,7 @@ static const struct aspeed_adc_model_data ast2400_model_data = {
+ 	.need_prescaler = true,
+ 	.scaler_bit_width = 10,
+ 	.num_channels = 16,
++	.require_extra_eoc = 0,
+ };
+ 
+ static const struct aspeed_adc_model_data ast2500_model_data = {
+@@ -680,6 +862,7 @@ static const struct aspeed_adc_model_data ast2500_model_data = {
+ 	.scaler_bit_width = 10,
+ 	.num_channels = 16,
+ 	.trim_locate = &ast2500_adc_trim,
++	.require_extra_eoc = 0,
+ };
+ 
+ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
+@@ -691,6 +874,7 @@ static const struct aspeed_adc_model_data ast2600_adc0_model_data = {
+ 	.scaler_bit_width = 16,
+ 	.num_channels = 8,
+ 	.trim_locate = &ast2600_adc0_trim,
++	.require_extra_eoc = 1,
+ };
+ 
+ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
+@@ -702,6 +886,7 @@ static const struct aspeed_adc_model_data ast2600_adc1_model_data = {
+ 	.scaler_bit_width = 16,
+ 	.num_channels = 8,
+ 	.trim_locate = &ast2600_adc1_trim,
++	.require_extra_eoc = 1,
+ };
+ 
+ static const struct of_device_id aspeed_adc_matches[] = {
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.25.1
 

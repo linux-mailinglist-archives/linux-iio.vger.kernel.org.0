@@ -2,47 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A777AD8C5
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 15:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 880677AD8F1
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 15:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbjIYNRg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 09:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38622 "EHLO
+        id S231160AbjIYNWI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Sep 2023 09:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbjIYNRg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 09:17:36 -0400
+        with ESMTP id S230445AbjIYNWH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 09:22:07 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD6AA2;
-        Mon, 25 Sep 2023 06:17:29 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvNdp4dbPz6D9xP;
-        Mon, 25 Sep 2023 21:15:10 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E735EA2;
+        Mon, 25 Sep 2023 06:22:00 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvNl16n7cz6D9y0;
+        Mon, 25 Sep 2023 21:19:41 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
- 2023 14:17:27 +0100
-Date:   Mon, 25 Sep 2023 14:17:26 +0100
+ 2023 14:21:58 +0100
+Date:   Mon, 25 Sep 2023 14:21:57 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>,
-        Benjamin Bara <bbara93@gmail.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/6] iio: improve doc for available_scan_mask
-Message-ID: <20230925141726.0000325d@Huawei.com>
-In-Reply-To: <9c0938d7-7c35-4d46-ec69-4171e0cf14ae@gmail.com>
-References: <cover.1695380366.git.mazziesaccount@gmail.com>
-        <74b66a5b9eee2fb7046f254928391e3da61aa3b2.1695380366.git.mazziesaccount@gmail.com>
-        <20230924165908.5a332fac@jic23-huawei>
-        <9c0938d7-7c35-4d46-ec69-4171e0cf14ae@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC:     Andreas Kemnade <andreas@kemnade.info>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <bcousson@baylibre.com>, <tony@atomide.com>,
+        <jean-baptiste.maneyrol@tdk.com>, <chenhuiz@axis.com>,
+        <andy.shevchenko@gmail.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
+Message-ID: <20230925142157.00000914@Huawei.com>
+In-Reply-To: <3b81a9a7-69a3-4fd6-875f-7a5170c5c872@linaro.org>
+References: <20230924222559.2038721-1-andreas@kemnade.info>
+        <20230924222559.2038721-2-andreas@kemnade.info>
+        <6db5b758-2ae6-46fb-a699-d73a2b98b4c2@linaro.org>
+        <20230925112852.00007d34@Huawei.com>
+        <20230925130225.55fe6fd4@aktux>
+        <3b81a9a7-69a3-4fd6-875f-7a5170c5c872@linaro.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -61,77 +59,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Sep 2023 12:50:46 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 25 Sep 2023 14:24:32 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On 9/24/23 18:59, Jonathan Cameron wrote:
-> > On Fri, 22 Sep 2023 14:16:57 +0300
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> On 25/09/2023 13:02, Andreas Kemnade wrote:
+> > On Mon, 25 Sep 2023 11:28:52 +0100
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 > >   
-> >> The available_scan_mask is an array of bitmaps representing the channels
-> >> which can be simultaneously enabled by the driver. In many cases the
-> >> hardware can offer more channels than what the user is interested in
-> >> obtaining. In such cases it may be preferred that only subset of
-> >> channels are enabled, and driver reads only a subset of the channels from
-> >> the hardware.
+> >> On Mon, 25 Sep 2023 08:54:08 +0200
+> >> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> >>  
+> >>> On 25/09/2023 00:25, Andreas Kemnade wrote:    
+> >>>> Found in ancient platform data struct:
+> >>>> level_shifter: 0: VLogic, 1: VDD
+> >>>>
+> >>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> >>>> ---
+> >>>>  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml         | 2 ++
+> >>>>  1 file changed, 2 insertions(+)
+> >>>>
+> >>>> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> >>>> index 1db6952ddca5e..6aae2272fa15c 100644
+> >>>> --- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> >>>> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> >>>> @@ -48,6 +48,8 @@ properties:
+> >>>>  
+> >>>>    mount-matrix: true
+> >>>>  
+> >>>> +  invensense,level-shifter: true      
+> >>>
+> >>> It does not look like you tested the bindings, at least after quick
+> >>> look. Please run `make dt_binding_check` (see
+> >>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> >>> Maybe you need to update your dtschema and yamllint.
+> >>>
+> >>> Best regards,
+> >>> Krzysztof
+> >>>
+> >>>     
 > >>
-> >> Some devices can't support all channel combinations. For example the
-> >> BM1390 pressure sensor must always read the pressure data in order to
-> >> acknowledge the watermark IRQ, while reading temperature can be omitted.
-> >> So, the available scan mask would be 'pressure and temperature' and
-> >> 'pressure only'.
+> >> Also this one isn't obvious - give it a description in the binding doc.
 > >>
-> >> When IIO seatchs for the scan mask it asks the driver to use, it will  
+> >> I'm not sure of the arguement for calling it level shift in general.
+> >>  
+> > I have no more descrption than the old source (see the citation from there)
+> > https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-9150-Register-Map.pdf  
+> 
+> I could not find any reference to level shift in this manual. To which
+> page and part do you refer?
+> 
 > > 
-> > Spell check description.  searches  
-> 
-> Oh, right. Thanks!
-> 
-> >   
-> >> pick the first suitable one from the 'available_scan_mask' array. Hence,
-> >> ordering the masks in the array makes difference. We should 'prefer'
-> >> reading just the pressure from the hardware (as it is cheaper operation
-> >> than reading both pressure and temperature) over reading both pressure
-> >> and temperature. Hence, we should set the 'only pressure' as first scan
-> >> mask in available_scan_mask array. If we set the 'pressure and
-> >> temperature' as first in array, then the 'only temperature' will never
-> >> get used as 'pressure and temperature' can always serve the user's
-> >> needs.
-> >>
-> >> Add (minimal) kerneldoc to the 'available_scan_mask' to hint the user
-> >> that ordering of masks matters.
-> >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >> ---
-> >>   include/linux/iio/iio.h | 4 +++-
-> >>   1 file changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> >> index 202e55b0a28b..7bfa1b9bc8a2 100644
-> >> --- a/include/linux/iio/iio.h
-> >> +++ b/include/linux/iio/iio.h
-> >> @@ -556,7 +556,9 @@ struct iio_buffer_setup_ops {
-> >>    *			and owner
-> >>    * @buffer:		[DRIVER] any buffer present
-> >>    * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
-> >> - * @available_scan_masks: [DRIVER] optional array of allowed bitmasks
-> >> + * @available_scan_masks: [DRIVER] optional array of allowed bitmasks. Sort the
-> >> + *			   array in order of preference, the most preferred
-> >> + *			   masks first.  
+> > does not list it. But that bit is needed to get things to work what also does the
+> > vendor kernel do.
 > > 
-> > LGTM  
+> > What could be a better descrption?  
 > 
-> I'll try to spell check the commit message and then I treat this as an 
-> ack. Please, let me know if it's not Ok.
-Given I'll be picking these up anyway, not a formal Ack that you should carry
-with the next version, but looks fine to me.
+> I don't know, but something reasonable to you should be put there.
 
-J
+The text you have in the commit log seems better than nothing.
+I suspect it's internally wiring VDD to VDDIO. Normally people just
+connect both power supplies to same supply if they want to do that,
+but maybe there was a chip variant that didn't have enough pins?
+
+If you have the device, can you see it actually matches the packaging
+types in the manual?
+
+Jonathan
 
 > 
-> >>    * @masklength:		[INTERN] the length of the mask established from
-> >>    *			channels
-> >>    * @active_scan_mask:	[INTERN] union of all scan masks requested by buffers  
-> >   
+> Best regards,
+> Krzysztof
+> 
 > 
 

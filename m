@@ -2,133 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3FA47ADE54
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Sep 2023 20:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B36777AE864
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Sep 2023 10:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231351AbjIYSDG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Sep 2023 14:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35540 "EHLO
+        id S229685AbjIZI5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Sep 2023 04:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbjIYSDG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Sep 2023 14:03:06 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA6510D;
-        Mon, 25 Sep 2023 11:02:58 -0700 (PDT)
-Received: from pd9e2f713.dip0.t-ipconnect.de ([217.226.247.19] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qkpuo-004At7-Ci; Mon, 25 Sep 2023 20:02:38 +0200
-Date:   Mon, 25 Sep 2023 20:02:36 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <bcousson@baylibre.com>, <tony@atomide.com>,
-        <jean-baptiste.maneyrol@tdk.com>, <chenhuiz@axis.com>,
-        <andy.shevchenko@gmail.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-Message-ID: <20230925200236.55fe2db7@aktux>
-In-Reply-To: <20230925142157.00000914@Huawei.com>
-References: <20230924222559.2038721-1-andreas@kemnade.info>
-        <20230924222559.2038721-2-andreas@kemnade.info>
-        <6db5b758-2ae6-46fb-a699-d73a2b98b4c2@linaro.org>
-        <20230925112852.00007d34@Huawei.com>
-        <20230925130225.55fe6fd4@aktux>
-        <3b81a9a7-69a3-4fd6-875f-7a5170c5c872@linaro.org>
-        <20230925142157.00000914@Huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229684AbjIZI5t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Sep 2023 04:57:49 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF133DD;
+        Tue, 26 Sep 2023 01:57:43 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38Q6uBXe013768;
+        Tue, 26 Sep 2023 04:57:35 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3tacvjvs8q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 04:57:35 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 38Q8vXrj038821
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 26 Sep 2023 04:57:33 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 26 Sep 2023 04:57:33 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 26 Sep 2023 04:57:32 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 26 Sep 2023 04:57:32 -0400
+Received: from rbolboac.ad.analog.com ([10.48.65.173])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 38Q8vOYW024299;
+        Tue, 26 Sep 2023 04:57:26 -0400
+From:   Ramona Gradinariu <ramona.gradinariu@analog.com>
+To:     <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH 0/1] iio: imu: adis16475.c: Add buffer padding after temp
+Date:   Tue, 26 Sep 2023 11:57:20 +0300
+Message-ID: <20230926085721.645687-1-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: PQTyh47q4AB_NNCQrIa1buc6Sv2prgXB
+X-Proofpoint-GUID: PQTyh47q4AB_NNCQrIa1buc6Sv2prgXB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-26_07,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ phishscore=0 suspectscore=0 adultscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2309180000 definitions=main-2309260078
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Sep 2023 14:21:57 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+The temperature channel has 16-bit storage size. We need to perform
+the padding to have the buffer elements naturally aligned in case
+the temperature channel is enabled and there are any 32-bit storage
+size channels enabled which have a scan index higher than the
+temperature channel scan index.
+This is a fix for the bug which was introduced with
+8f6bc87d67c0 ("iio: imu: adis16475.c: Add delta angle and delta velocity channels").
 
-> On Mon, 25 Sep 2023 14:24:32 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
-> > On 25/09/2023 13:02, Andreas Kemnade wrote:  
-> > > On Mon, 25 Sep 2023 11:28:52 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> > >     
-> > >> On Mon, 25 Sep 2023 08:54:08 +0200
-> > >> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > >>    
-> > >>> On 25/09/2023 00:25, Andreas Kemnade wrote:      
-> > >>>> Found in ancient platform data struct:
-> > >>>> level_shifter: 0: VLogic, 1: VDD
-> > >>>>
-> > >>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > >>>> ---
-> > >>>>  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml         | 2 ++
-> > >>>>  1 file changed, 2 insertions(+)
-> > >>>>
-> > >>>> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-> > >>>> index 1db6952ddca5e..6aae2272fa15c 100644
-> > >>>> --- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-> > >>>> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-> > >>>> @@ -48,6 +48,8 @@ properties:
-> > >>>>  
-> > >>>>    mount-matrix: true
-> > >>>>  
-> > >>>> +  invensense,level-shifter: true        
-> > >>>
-> > >>> It does not look like you tested the bindings, at least after quick
-> > >>> look. Please run `make dt_binding_check` (see
-> > >>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
-> > >>> Maybe you need to update your dtschema and yamllint.
-> > >>>
-> > >>> Best regards,
-> > >>> Krzysztof
-> > >>>
-> > >>>       
-> > >>
-> > >> Also this one isn't obvious - give it a description in the binding doc.
-> > >>
-> > >> I'm not sure of the arguement for calling it level shift in general.
-> > >>    
-> > > I have no more descrption than the old source (see the citation from there)
-citation = line from ancient pdata struct comment cited in the commit message.
+Ramona Gradinariu (1):
+  iio: imu: adis16475.c: Add buffer padding after temp channel
 
-> > > https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-9150-Register-Map.pdf    
-> > 
-> > I could not find any reference to level shift in this manual. To which
-> > page and part do you refer?
-> >
-> > > 
-> > > does not list it. But that bit is needed to get things to work what also does the
-> > > vendor kernel do.
-> > > 
-> > > What could be a better descrption?    
-> > 
-> > I don't know, but something reasonable to you should be put there.  
-> 
-> The text you have in the commit log seems better than nothing.
-> I suspect it's internally wiring VDD to VDDIO. Normally people just
-> connect both power supplies to same supply if they want to do that,
-> but maybe there was a chip variant that didn't have enough pins?
-> 
-> If you have the device, can you see it actually matches the packaging
-> types in the manual?
-> 
-packaging matches. It is just as usual. I think VLogic (=VDDIO) would be 1.8V
-while VDD needs to be something higher, so I guess here it might be 3.3V.
-There are some slight hints about level shifting here:
-https://product.tdk.com/system/files/dam/doc/product/sensor/mortion-inertial/imu/data_sheet/mpu-9150-datasheet.pdf
-page 37. The aux i2c bus seem to run at levels till VDD. But here, there
-seems to be nothing at the aux i2c bus besides that internal magnetometer.
+ drivers/iio/imu/adis16475.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Regards,
-Andreas
+--
+2.34.1
+

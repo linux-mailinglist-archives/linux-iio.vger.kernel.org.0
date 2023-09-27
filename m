@@ -2,69 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 845747B06DC
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 16:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B947B0700
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 16:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232103AbjI0ObO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 10:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33612 "EHLO
+        id S232050AbjI0OfA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 10:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232073AbjI0ObM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 10:31:12 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BA1CC7;
-        Wed, 27 Sep 2023 07:31:04 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d865685f515so11845303276.1;
-        Wed, 27 Sep 2023 07:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695825063; x=1696429863; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+XcH3Kg4tqaXqUqMGIX62DqKGdxuMvU3zUQWNdRoSWU=;
-        b=TX5h1zCnWPGDjUTUVKGIHt4DhaM6dHet5po93pn0BPDwOjnwPUpalc1uJlGHbWNQdN
-         jFKDIuNI6tQn2RWyK/mZkm3YMPXgSbnFSKpRyULidm6fDGplVMfyWhHTB+72szsvi4FJ
-         c/qUA1AY0Cw6kcdaNiluEoBRVy1HYyByfg54mYqk/O3pflvJk/PJPrI0DLTf74HWCbZL
-         b618avgu/o1Yam3gn7nYi+lIsj334ytyGWGgwrn2wynsgyMDFiBKm8JtMvVXe1KEJaYj
-         KJcDDklazDhYTxHnC0um+TCJdbApUBE6IgNTMIzi5nw9Bu6CgKqZTzNqmMeTaOzIK7Iu
-         DW5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695825063; x=1696429863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+XcH3Kg4tqaXqUqMGIX62DqKGdxuMvU3zUQWNdRoSWU=;
-        b=Tgd1faJawegb3CXuE+EUNRmKIPl9QFzNYLXyuuz3rilyO4ag676TxxjEQgwv+UPWOp
-         xtNPIIoZIkkdx9cFcaiywS2Ajl2RD5L+6Yrmlp5T0jPFuXfg2NdxdL+XnxDi/gQUybBp
-         lQ+LZ3sj5nw2Cb6QmSdH6L/mIxPyPXM6mae8RgSe94igkGZAwW7f7qH08UWkyE/m7HZt
-         a8PlBfylXNiSbMaUioB1SM3VjunwSEUqe1k6sjxz51QPlT4F+D7LwTr+wBw57IR2cOER
-         8NnYw7449YI3JLJNTWxeuPsHvCEXZQ0ehQNxoCj3PXwEoAk8u2IJ2ISP3SKNxcly7scA
-         B8wQ==
-X-Gm-Message-State: AOJu0YwcqQ88sbpUt8Z+M/vABcLSxvjwp1w9aM25ctriu8Skcs+UMRnD
-        eLFQe1NyzCaJP7yoMzscRvtRipZB9k5YgqmWwDE=
-X-Google-Smtp-Source: AGHT+IGIaO2Tlhc7AHmo2IhY2FbTkDnzNzwRH/dCMK4WzzYx3iWVKy6RrzH1eJ55DkG9Gy4zUeGJ8/NjX4+Ek9fyZ+c=
-X-Received: by 2002:a25:688d:0:b0:d47:3fcc:9911 with SMTP id
- d135-20020a25688d000000b00d473fcc9911mr1867935ybc.2.1695825063536; Wed, 27
- Sep 2023 07:31:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1695819243.git.mazziesaccount@gmail.com>
-In-Reply-To: <cover.1695819243.git.mazziesaccount@gmail.com>
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-Date:   Wed, 27 Sep 2023 16:30:52 +0200
-Message-ID: <CAFukWp0TM+v7Y93gFuHL2_ihefxxPmDkGT4R9nmruL70D7KNZA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Support ROHM KX132ACR-LBZ Accelerometer
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        with ESMTP id S232159AbjI0OfA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 10:35:00 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D919139
+        for <linux-iio@vger.kernel.org>; Wed, 27 Sep 2023 07:34:58 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlVcj-0007du-JP; Wed, 27 Sep 2023 16:34:45 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlVci-009MaV-1x; Wed, 27 Sep 2023 16:34:44 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlVch-005LnT-Ot; Wed, 27 Sep 2023 16:34:43 +0200
+Date:   Wed, 27 Sep 2023 16:34:43 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jagath Jog J <jagathjog1996@gmail.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
+Message-ID: <20230927143443.f4xpfzkwylipo25g@pengutronix.de>
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+ <20230918080314.11959-3-jagathjog1996@gmail.com>
+ <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
+ <ZRQhdkVNFdCfPseY@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6qll4arutm5puf3a"
+Content-Disposition: inline
+In-Reply-To: <ZRQhdkVNFdCfPseY@smile.fi.intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,39 +58,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Matti,
 
-On Wed, Sep 27, 2023 at 2:56=E2=80=AFPM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
->
-> The ROHM KX132ACR-LBZ is an accelerometer for industrial applications.
-> It has a subset of KX022A (NOTE: Not KX132-1211) functionalities, droppin=
-g
-> support for tap, free fall and tilt detection engines. Also, the register
-> interface is an exact subset of what is found on KX022A (except the
-> WHO_AM_I register value).
->
-> This series adds own DT compatible for the KX132ACR-LBZ and also own
-> chip-info in driver to allow handling the different 'WHO_AM_I' value.
-> The separation of the Kionix KX022A and ROHM KX132ACR-LBZ does also
-> allow adding support for the KX022A tilt/free fall/tap engines which are
-> not present on KX132ACR-LBZ.
->
-> Matti Vaittinen (2):
->   dt-bindings: iio: Add KX132ACR-LBZ accelerometer
->   iio: kx022a: Support ROHM KX132ACR-LBZ
->
->  .../bindings/iio/accel/kionix,kx022a.yaml     | 10 +++---
->  drivers/iio/accel/kionix-kx022a-i2c.c         |  4 ++-
->  drivers/iio/accel/kionix-kx022a-spi.c         |  4 ++-
->  drivers/iio/accel/kionix-kx022a.c             | 34 ++++++++++++++++++-
->  drivers/iio/accel/kionix-kx022a.h             |  2 ++
->  5 files changed, 47 insertions(+), 7 deletions(-)
->
+--6qll4arutm5puf3a
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-You could also mention this device in the list of supported devices
-under drivers/iio/accel/Kconfig
+On Wed, Sep 27, 2023 at 03:35:02PM +0300, Andy Shevchenko wrote:
+> On Wed, Sep 27, 2023 at 11:57:08AM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Mon, Sep 18, 2023 at 01:33:14PM +0530, Jagath Jog J wrote:
+>=20
+> ...
+>=20
+> > > Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downl=
+oads/datasheets/bst-bmi323-ds000.pdf
+> >=20
+> > Maybe put this link better in the driver.
+>=20
+> Why? We have a handful commits with this and it's better to see the link
+> to the datasheet without browsing the source code.
 
---
-Kind Regards
-Mehdi Djait
+But if you later work on a problem in the driver, it's better to see the
+link without browsing git history. :-)
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--6qll4arutm5puf3a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUUPYIACgkQj4D7WH0S
+/k74wAf/bKI3Et3gPAiOaaSXOYWg7yGxuEkgLT0MChmeipxFuTXHohip+DTJJtYv
+/omw0NS3Ysa2BGAg6ytQWuSuA5DE/6GxpiZ1GVwsLQLd7mFkIOg0DP7pp6elhqCR
+Ex9/ioVWyWEKKCFjeywO+dYruEDFD87//au1bpNyY5ZTTNBvfQhuPsRmD1SQ1IUc
+X0NuZxB7WwYTR83Zpw5kgViBjYAvL3qgd470uwrbAESBSJfCCE7noB7trU18A5mR
+/BjCr6RzE/CWUKX6fE+tfw4PQr2l+eDeYE12W96JAgduRwVk3d/JSIlhSd6Rkkvp
+2c+EnW0JyNOKnA7L0F8RBFyUXjOLaw==
+=bJTb
+-----END PGP SIGNATURE-----
+
+--6qll4arutm5puf3a--

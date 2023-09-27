@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB0017AFE4E
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 10:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DFE7AFE58
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 10:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbjI0I05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 04:26:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47828 "EHLO
+        id S230177AbjI0I2A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 04:28:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230380AbjI0I01 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 04:26:27 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A732CE9;
-        Wed, 27 Sep 2023 01:26:23 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-503397ee920so16761852e87.1;
-        Wed, 27 Sep 2023 01:26:23 -0700 (PDT)
+        with ESMTP id S230253AbjI0I1t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 04:27:49 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BC31AC;
+        Wed, 27 Sep 2023 01:27:48 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2bffc55af02so172410331fa.2;
+        Wed, 27 Sep 2023 01:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695803182; x=1696407982; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695803266; x=1696408066; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3M+fhkSU75ZwJTVy/9LEZES58n3Sr/w+Y0+8L0nomxI=;
-        b=S6bnlg6iw3CoIgvx97RpA9I+w/dZH1ssIGt+8PXtX2ZW1ICm+Tcuh2HwsUN7rPaAWq
-         a9DF0IFLKSw1QzovG0nPPrExbNyyqc4POBE+lZznDUIqb5HzHN6OstWvg7lfOp1EAuAT
-         cc2xXpxvVv5E8sOGM9T/y/nepfh0lud54ANJwqe3ZN7KIVFpZXmQdwlKQq5EZrlkQv4c
-         Mfe50mhAk58KE14xYi/gH1y8F+EY3H2dIYcZnC+xbgcorO9IDqouYinD9dXTLrXtg6Ce
-         r//3j1lnMEXVDyAwisflX3gLMzLM2n4/0r/NC0kuenDmq70MHYbi+ZFHjptMb1G7yNQb
-         kyOA==
+        bh=Hj1fAt2POw3G1BVuIsXBKGLxebPu14W+cyBpSJ0ZvcI=;
+        b=FV8ocweEHg8MOpz/GP3m88ft4DP+kL++AYzTqo7SVK1cFVuHy0qLy6d40Hm38vrHaj
+         ZUcFF3oALF4W2DaBNDtP4H31SxenWPhLFATIZvAj61cMjdexJCL9wT4Xg0/CK8FwaNpA
+         fECravsyKdfcShIF6v3YMRSpuGIRrRwGN7yw3J7IgfvYs91698lxFnDm9M5NOxhL1HJg
+         cnnDz/AmKjPckbUQizjuklqvwRS51v+e7LMx/9zeuU6Z1UvoAR3AX/wLzL91Otq+ldnB
+         F1WW1l4kQwrC3PHSMXluVFBZ+5KH67Mh+1Ah+/tgT4qWfwsPDqbKiRM/Y1s24eWlO02D
+         19qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695803182; x=1696407982;
+        d=1e100.net; s=20230601; t=1695803266; x=1696408066;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3M+fhkSU75ZwJTVy/9LEZES58n3Sr/w+Y0+8L0nomxI=;
-        b=MWQ0GEcHmkY+kdQ2UmT65ZkiaTpzPqOn1Z6e9Kec1srAWOgww6G6MiwZLOKinDqvGk
-         75uE7PnD6qzNQUH6SGdUcjkZbGxFdYEWoc13w4ZMUoOPf5StBf4Qnq1aAmimt+ATWzqu
-         U9KY3xAXrC8ZrSpcqDyC3AwYH6IYAdlV9DPLj70jQ1A0KPC1NkA0ci0hAaKEf5cpv8hS
-         kL5xz/sGuWqGKfjTlhHYqZ+WZAPuY/Boqp2UVe4a0rbVMPXzSXfqx5iDQjiB3k2kpzEq
-         4BPJy/VlogUdA3ZmNiMiuL4jJeKzuYUX7fBK1HInrUW9RH+7FVxfXCgvr+x006xkix3E
-         SIgg==
-X-Gm-Message-State: AOJu0Yyevn2YS4lSq5rEj8Kh2G15OPuxzS7cTH5HjbiRB9VAfJjx9GAe
-        M4qWfxuUySyLs9UHQuwBii/ngh/dJT4=
-X-Google-Smtp-Source: AGHT+IEvTKArd+9rhJz1P3ux20jG6esY8uIeRZvvlL70yqMnj+s8j9q6aFlo4F34eBNu31UMcyyttQ==
-X-Received: by 2002:a05:6512:11c6:b0:4fa:5e76:7ad4 with SMTP id h6-20020a05651211c600b004fa5e767ad4mr983405lfr.10.1695803181724;
-        Wed, 27 Sep 2023 01:26:21 -0700 (PDT)
+        bh=Hj1fAt2POw3G1BVuIsXBKGLxebPu14W+cyBpSJ0ZvcI=;
+        b=LQl78bnKQzC+12GXOP7iEflB7Hund3B/09Hk8eiaY6GulXRJ/+qWt8atOYnkvdj2bv
+         JIumaMMnZZzFVm49FddezNEm1PFlVzgOdyf6QTxTuanaJOkuNQx//e1mLuumdfNuI5zT
+         i4ewB8QJsf+j2UXkd58An3odKIi/pqnp1I58o6Yw3tyHDBYDHvoiXD9ec/nf+d6kPDbc
+         tXuyVwrNKnObIGnNoqEJQnKbpdYgena0j6u/SRicoH6RTQUBGTbfN3zbcCvl/g9ChEGO
+         xWEsjVRL8d5ScJluM/Zx9HJCRM9K9jrMNMjvcxheo132GKN6w5aZ6IElimG7a3+okLP5
+         NGBA==
+X-Gm-Message-State: AOJu0YwwRzKg96LBmJFBPjMAYRtXj+/Q75EqUGhKH3+sBqGJk313B98a
+        ghbHFHcAZG8OzXLszapYBxk=
+X-Google-Smtp-Source: AGHT+IEt/OpJyHtIN1ai4xGP0BH/uIzC9mzeDahbG3aAQiXYDWUoiUCtV76TBdGUS3UiZ7XaV2pwFA==
+X-Received: by 2002:a2e:9612:0:b0:2bc:be3c:9080 with SMTP id v18-20020a2e9612000000b002bcbe3c9080mr1314766ljh.27.1695803266085;
+        Wed, 27 Sep 2023 01:27:46 -0700 (PDT)
 Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id h18-20020a197012000000b0050309ea3a62sm2479646lfc.277.2023.09.27.01.26.20
+        by smtp.gmail.com with ESMTPSA id y4-20020a2e95c4000000b002ba586d27a2sm3038128ljh.26.2023.09.27.01.27.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Sep 2023 01:26:20 -0700 (PDT)
-Date:   Wed, 27 Sep 2023 11:26:07 +0300
+        Wed, 27 Sep 2023 01:27:45 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 11:27:41 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -65,12 +65,12 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/5] tools: iio: iio_generic_buffer ensure alignment
-Message-ID: <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
+Subject: [PATCH v4 2/5] iio: improve doc for available_scan_mask
+Message-ID: <4e43bf0186df5c8a56b470318b4827605f9cad6c.1695727471.git.mazziesaccount@gmail.com>
 References: <cover.1695727471.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="FUsvzO4N/DXR6Pi1"
+        protocol="application/pgp-signature"; boundary="ysY46l6I9tFYuZdP"
 Content-Disposition: inline
 In-Reply-To: <cover.1695727471.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,95 +84,59 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---FUsvzO4N/DXR6Pi1
+--ysY46l6I9tFYuZdP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The iio_generic_buffer can return garbage values when the total size of
-scan data is not a multiple of the largest element in the scan. This can be
-demonstrated by reading a scan, consisting, for example of one 4-byte and
-one 2-byte element, where the 4-byte element is first in the buffer.
+The available_scan_mask is an array of bitmaps representing the channels
+which can be simultaneously enabled by the driver. In many cases, the
+hardware can offer more channels than what the user is interested in
+obtaining. In such cases, it may be preferred that only a subset of
+channels are enabled, and the driver reads only a subset of the channels
+=66rom the hardware.
 
-The IIO generic buffer code does not take into account the last two
-padding bytes that are needed to ensure that the 4-byte data for next
-scan is correctly aligned.
+Some devices can't support all channel combinations. For example, the
+BM1390 pressure sensor must always read the pressure data in order to
+acknowledge the watermark IRQ, while reading temperature can be omitted.
+So, the available scan masks would be 'pressure and temperature' and
+'pressure only'.
 
-Add the padding bytes required to align the next sample with the scan size.
+When IIO searches for the scan mask it asks the driver to use, it will
+pick the first suitable one from the 'available_scan_mask' array. Hence,
+ordering the masks in the array makes a difference. We should 'prefer'
+reading just the pressure from the hardware (as it is a cheaper operation
+than reading both pressure and temperature) over reading both pressure
+and temperature. Hence, we should set the 'only pressure' as the first
+scan mask in available_scan_mask array. If we set the 'pressure and
+temperature' as first in the array, then the 'only temperature' will never
+get used as 'pressure and temperature' can always serve the user's
+needs.
+
+Add (minimal) kerneldoc to the 'available_scan_mask' to hint the user
+that the ordering of masks matters.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
 ---
-I think the whole alignment code could be revised here, but I am unsure
-what kind of alignment is expected, and if it actually depends on the
-architecture. Anyways, I'll quote myself from another mail to explain
-how this patch handles things:
+ include/linux/iio/iio.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> For non power of2 sizes, the alignment code will result strange alignment=
-s.
-> For example, scan consisting of two 6-byte elements would be packed -
-> meaning the second element would probably break the alignment rules by
-> starting from address '6'. I think that on most architectures the proper
-> access would require 2 padding bytes to be added at the end of the first
-> sample. Current code wouldn't do that.
-
-> If we allow only power of 2 sizes - I would expect a scan consisting of a
-> 8 byte element followed by a 16 byte element to be tightly packed. I'd
-> assume that for the 16 byte data, it'd be enough to ensure 8 byte alignme=
-nt.
-> Current code would however add 8 bytes of padding at the end of the first
-> 8 byte element to make the 16 byte scan element to be aligned at 16 byte
-> address. To my uneducated mind this is not needed - but maybe I just don't
-> know what I am writing about :)
-
-Revision history
-v3 =3D> v4:
- - drop extra print and TODO coment
- - add comment clarifying alignment sizes
----
- tools/iio/iio_generic_buffer.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 44bbf80f0cfd..c07c49397b19 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -54,9 +54,12 @@ enum autochan {
- static unsigned int size_from_channelarray(struct iio_channel_info *channe=
-ls, int num_channels)
- {
- 	unsigned int bytes =3D 0;
--	int i =3D 0;
-+	int i =3D 0, max =3D 0;
-+	unsigned int misalignment;
-=20
- 	while (i < num_channels) {
-+		if (channels[i].bytes > max)
-+			max =3D channels[i].bytes;
- 		if (bytes % channels[i].bytes =3D=3D 0)
- 			channels[i].location =3D bytes;
- 		else
-@@ -66,6 +69,19 @@ static unsigned int size_from_channelarray(struct iio_ch=
-annel_info *channels, in
- 		bytes =3D channels[i].location + channels[i].bytes;
- 		i++;
- 	}
-+	/*
-+	 * We wan't the data in next sample to also be properly aligned so
-+	 * we'll add padding at the end if needed.
-+	 *
-+	 * Please note, this code does ensure alignment to maximum channel
-+	 * size. It works only as long as the channel sizes are 1, 2, 4 or 8
-+	 * bytes. Also, on 32 bit platforms it might be enough to align also
-+	 * the 8 byte elements to 4 byte boundary - which this code is not
-+	 * doing.
-+	 */
-+	misalignment =3D bytes % max;
-+	if (misalignment)
-+		bytes +=3D max - misalignment;
-=20
- 	return bytes;
- }
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 202e55b0a28b..7bfa1b9bc8a2 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -556,7 +556,9 @@ struct iio_buffer_setup_ops {
+  *			and owner
+  * @buffer:		[DRIVER] any buffer present
+  * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
+- * @available_scan_masks: [DRIVER] optional array of allowed bitmasks
++ * @available_scan_masks: [DRIVER] optional array of allowed bitmasks. Sor=
+t the
++ *			   array in order of preference, the most preferred
++ *			   masks first.
+  * @masklength:		[INTERN] the length of the mask established from
+  *			channels
+  * @active_scan_mask:	[INTERN] union of all scan masks requested by buffers
 --=20
 2.41.0
 
@@ -189,19 +153,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---FUsvzO4N/DXR6Pi1
+--ysY46l6I9tFYuZdP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUT5x8ACgkQeFA3/03a
-ocXFBAf/agzdoD0BTlSQt9kSg5PKTv+tn0wW7rJuXFzNBCu5rhlqLNP6QOi99QWI
-hK2rxH58jseymEaYPW4eIlpcqodLlRbiDmFgo9sPSyxHG05rUXZjdWPR32WQ3F3D
-uSwmI2UNclE6waCiEWsHSGHeziVrCd5HVLShM1lpdRYBXx208ETBvCxSxANEi6tN
-bhK79Y8dTMexxtYZ3cvFG+8hfFACPeU26dOFk2FX3kscg84MUsfPyynmq6bPybU9
-93KkSixmo5GtqbqQUufAY7zeitoxPqwb6CjR16TowaLnyuxsSuokd8YPw8/oizDC
-O/XW9NqFLWrJ1KK5bA8NgoaB2fgp4w==
-=bVGG
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUT530ACgkQeFA3/03a
+ocVWFggAzH/J6YyXt2/bFTdC4/7cF9pTBmmxoFHEZ9Gdda0iWn6aXAL0VVjfBqxd
+0qjKQGd4iPI0Zhwq1BulAAe6+fkpaFS034VD7vLz8uMj2nGLRGFAiSdh1XV5p9xe
+nIf2lFYts605GZvmpbMAbUgoXCjhUHuFlId/Az/brI86vlLhMJnGC/1GIO1tZV++
+gCBY3AoycklGLNnFviVCLjt8Gkn2qPgT3ZZc5zadtKFR8rQY5q2hmlrfpdg9RpD7
+7ko0xsynsMnv7XRAJxtpKD+mW6Xk/nyLwA3ENqzMjRj9K3+OFlsBm6D+bzH92rBR
+GSM3U14IBVeVpFmZPAESzT4olJeAYQ==
+=/H1j
 -----END PGP SIGNATURE-----
 
---FUsvzO4N/DXR6Pi1--
+--ysY46l6I9tFYuZdP--

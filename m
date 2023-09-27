@@ -2,118 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 904247B0123
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 11:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A94447B0414
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 14:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjI0J5X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 05:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54474 "EHLO
+        id S231138AbjI0M2N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 08:28:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjI0J5W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 05:57:22 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBA4E6
-        for <linux-iio@vger.kernel.org>; Wed, 27 Sep 2023 02:57:21 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qlRI6-0005gM-PA; Wed, 27 Sep 2023 11:57:10 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qlRI5-009JFx-7k; Wed, 27 Sep 2023 11:57:09 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qlRI4-005FLO-UV; Wed, 27 Sep 2023 11:57:08 +0200
-Date:   Wed, 27 Sep 2023 11:57:08 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     jic23@kernel.org, andriy.shevchenko@linux.intel.com,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
-Message-ID: <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
-References: <20230918080314.11959-1-jagathjog1996@gmail.com>
- <20230918080314.11959-3-jagathjog1996@gmail.com>
+        with ESMTP id S231339AbjI0M2F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 08:28:05 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5A0CCA;
+        Wed, 27 Sep 2023 05:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695817680; x=1727353680;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=W3h2wW/brscHyngLBq3Ts+PQWQBvYW/Hdi4JL7jg9iI=;
+  b=a03mMW0EXnizVPctyTDsh442ehhFvsyPh/gZmgn1t6v75X/6NqSqBjJf
+   ZOlRc4veNJ6OsXqspBi47mdDqZ0z8iLSDPTR6VhV1xfcCYJ+j2gC68i4h
+   x8OVd/MHJ+WNyHSWP3Yb1iIkITlU5t7L/pJyuIXlmoLdDOrRGjWiz8b8D
+   XUsjZn6SVpJ+sK7PNnZmOqpSxlqqhGkLVt8q0lXUW4znFV//FeOWbD3Lq
+   yI1/EWaWBrjwRgivn7v3dgx2om+CarVvR/cVYxPrEPlRzCyfR4uVg7Sgb
+   0n/JIGoqed+z0d4o5U5XWTMKuL5pWwfCZlZNHC81OJ9oKEznQliLO4vZI
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="379089223"
+X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
+   d="scan'208";a="379089223"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 05:28:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="742693950"
+X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
+   d="scan'208";a="742693950"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 05:27:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qlTdw-00000000sl9-3Dmm;
+        Wed, 27 Sep 2023 15:27:52 +0300
+Date:   Wed, 27 Sep 2023 15:27:52 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Benjamin Bara <bbara93@gmail.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] tools: iio: iio_generic_buffer ensure alignment
+Message-ID: <ZRQfyNX9WsvmpZ1r@smile.fi.intel.com>
+References: <cover.1695727471.git.mazziesaccount@gmail.com>
+ <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ayzzs7ssu5nzixlw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230918080314.11959-3-jagathjog1996@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Sep 27, 2023 at 11:26:07AM +0300, Matti Vaittinen wrote:
+> The iio_generic_buffer can return garbage values when the total size of
+> scan data is not a multiple of the largest element in the scan. This can be
+> demonstrated by reading a scan, consisting, for example of one 4-byte and
+> one 2-byte element, where the 4-byte element is first in the buffer.
+> 
+> The IIO generic buffer code does not take into account the last two
+> padding bytes that are needed to ensure that the 4-byte data for next
+> scan is correctly aligned.
+> 
+> Add the padding bytes required to align the next sample with the scan size.
 
---ayzzs7ssu5nzixlw
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-Hello,
+> +	/*
+> +	 * We wan't the data in next sample to also be properly aligned so
 
-On Mon, Sep 18, 2023 at 01:33:14PM +0530, Jagath Jog J wrote:
-> The Bosch BMI323 is a 6-axis low-power IMU that provide measurements for
-> acceleration, angular rate, and temperature. This sensor includes
-> motion-triggered interrupt features, such as a step counter, tap detectio=
-n,
-> and activity/inactivity interrupt capabilities.
->=20
-> The driver supports various functionalities, including data ready, FIFO
-> data handling, and events such as tap detection, step counting, and
-> activity interrupts
->=20
-> Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads=
-/datasheets/bst-bmi323-ds000.pdf
+Pardon me, won't or want, I didn't get?..
 
-Maybe put this link better in the driver.
+> +	 * we'll add padding at the end if needed.
+> +	 *
+> +	 * Please note, this code does ensure alignment to maximum channel
+> +	 * size. It works only as long as the channel sizes are 1, 2, 4 or 8
+> +	 * bytes. Also, on 32 bit platforms it might be enough to align also
 
-> +static struct i2c_driver bmi323_i2c_driver =3D {
-> +	.driver =3D {
-> +		.name =3D "bmi323",
-> +		.of_match_table =3D bmi323_of_i2c_match,
-> +	},
-> +	.probe_new =3D bmi323_i2c_probe,
-> +	.id_table =3D bmi323_i2c_ids,
-> +};
-> +module_i2c_driver(bmi323_i2c_driver);
+32-bit
 
-If you want to compile this driver after v6.6-rc2 (which includes=20
-commit 5eb1e6e459cf ("i2c: Drop legacy callback .probe_new()")) better
-use .probe here instead of .probe_new().
+> +	 * the 8 byte elements to 4 byte boundary - which this code is not
 
-Best regards
-Uwe
+8-byte
+4-byte
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+> +	 * doing.
+> +	 */
 
---ayzzs7ssu5nzixlw
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+With Best Regards,
+Andy Shevchenko
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUT/HQACgkQj4D7WH0S
-/k5O+AgAupD7sxxsTSWm21ccqUt6/DseGEcb01TUR1IxTfoMogC9MdJRO23HF3hn
-5x61HUQAMPjb2pw1yOASyRfE6L1A2+iojJ93053SBtw3c2puzc6SgW/bLBuMCyoi
-64Y1DTm0PP3vZwRLxOV66k3v7wecsMak0p/4l5XaiAgwNNQDTEA9MX68Peu91k2F
-N7E+GnUs8eNOLRC7E0YJHSv5S3SqilqeknU8IhOZBNDcOIoz+punWdFSbWBJGMAM
-kS4e//zRjf6gU7KRvs8ABe8Iux3NTqcyVAXjT7fIG9vdimsu0QXlymNXuz2eYNcw
-3/Kgp/AZrVmTr+7l3VovKGB3PyHJqA==
-=AfNQ
------END PGP SIGNATURE-----
-
---ayzzs7ssu5nzixlw--

@@ -2,167 +2,208 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4446C7AFD28
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 09:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D5D7AFE09
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 10:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230077AbjI0H5I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 03:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39456 "EHLO
+        id S230039AbjI0IS7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 04:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbjI0H5H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 03:57:07 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18FA911D
-        for <linux-iio@vger.kernel.org>; Wed, 27 Sep 2023 00:57:05 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9ad810be221so1340559366b.2
-        for <linux-iio@vger.kernel.org>; Wed, 27 Sep 2023 00:57:05 -0700 (PDT)
+        with ESMTP id S229910AbjI0IS6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 04:18:58 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC5095;
+        Wed, 27 Sep 2023 01:18:55 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-503065c4b25so16760266e87.1;
+        Wed, 27 Sep 2023 01:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695801423; x=1696406223; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1695802734; x=1696407534; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=G6qcjno+1zTbyZy3oHtVK6lgUt4U3JQtrPZBgB3GEp4=;
-        b=qb+H3EG4YrLMjUf36Az5tFbEGNEAwFvd4fyCkEMq23t4tur2frxb00RNOVWUwiJhQ7
-         /c8WJg44Ac23/soUVbJky5u43ycpWMzSLyEvpj1bUlqdZtuyJmX/OITOMEV8FZp/yneQ
-         6zfWCJe9apVoHjGuA5JOswuNXMVB10q5eKmENEcPMv6O7/cZBxIvLKEYr4PgmOqTsAii
-         jPq8uwJRX245PRWkRy0bOL8QgtVxXVK5/Cx4wqK3coQZxoa4y2eNMg2wLeRJ+AAoLXsU
-         G5f8b3lyHAVMLweEB5+MDNl+TkzG7u3Y2ur9S5pEKOuOHox0XfmwJud5E6qVMLZ6Oupa
-         RC5w==
+        bh=+3x8vUXTH+hRGX3fxYyM/ow7F7EZ9k5o10DeJwSjcq4=;
+        b=PSR5ojaGddvT2WStqShEF+rlWJXrxyKdabBR7meq6i0yuBMCkw6pz3V0aKujdV1lb6
+         hYd3pf5AciAZQeJMnFQCRKlG+5g1oZyue/ij+ukSOkx8Kgitq8OdQQyfbCVFJXSjT3Oh
+         Dk1cwECTKPy1JDtzpWCo3s653UhBwXH/07A+N1lvE73qSbtre3TnsrwPe4OektrFx2Px
+         DPt+hnW4yf4wwLWC+U5i+HD4YMH61LcHJq9lqEHJl6rcFoa+phx7XYCSqJZEGzpeDMsz
+         DBoHVayIW+lp6zwsHpeNuO8MfbEM8AN/CSftpamwUGxx0bgVsFKO8n+ITF6N87sawlG4
+         0/ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695801423; x=1696406223;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1695802734; x=1696407534;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G6qcjno+1zTbyZy3oHtVK6lgUt4U3JQtrPZBgB3GEp4=;
-        b=pV0Hw+OOec3XugIrbsz+G0B5LAPRQvTUlzQt9KMTgYR//g6ilaoEWW2TREN6sB32Cc
-         rZWKYwYkboUKSybekMwB5cLJwY62bVqoIjjkj9kgur4aJST/X/z20YXh2Ou8JS0jJJxy
-         kUkwh7YsaJrF3VtRjbeOa3zGPIzxFsIyi1RzP9nmaEdM/tR0pGcFLSkODlLpG10Y6Y4d
-         cTy6iNNcIIOBeNF+DqTwdq6ZdB2do/7G+l1MHrWpaKZKoctyx8J8ib6Kg1VTCPVzT7Nu
-         yWAiBqzp62TnfeqwnGCJ1k790uRjv1SBTFQKLMi9f0TG/+YfSvHU8bN/GbsHsRmUfqFo
-         banA==
-X-Gm-Message-State: AOJu0YzkexhNnRzLy1AyW1xz+idedwFRIFlSN0nYtBHK4rY9cDzKYNRM
-        8/lxwz9DPsyoEt5ikVjYYKCK/g==
-X-Google-Smtp-Source: AGHT+IHbHseys7ButVUwKibA5PCwnJwlZhiyl16BTUVQe6h1n528HbZWVv3sqikuXMetDvvYS7xC/w==
-X-Received: by 2002:a17:906:29c:b0:9a1:debe:6b9b with SMTP id 28-20020a170906029c00b009a1debe6b9bmr886358ejf.35.1695801423529;
-        Wed, 27 Sep 2023 00:57:03 -0700 (PDT)
-Received: from [192.168.1.160] (host-87-4-82-94.retail.telecomitalia.it. [87.4.82.94])
-        by smtp.gmail.com with ESMTPSA id vb5-20020a170907d04500b009b299529709sm2198845ejc.132.2023.09.27.00.57.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Sep 2023 00:57:03 -0700 (PDT)
-Message-ID: <63c5fab2-281d-4354-b20b-b2bbb82d7ff6@linaro.org>
-Date:   Wed, 27 Sep 2023 09:57:01 +0200
+        bh=+3x8vUXTH+hRGX3fxYyM/ow7F7EZ9k5o10DeJwSjcq4=;
+        b=UBrLbp/tGRBmZfZuIpC6KGIc3dIJFOwtm0QPokqY/Pbb2y4n9Ax7Yyoi/EHnnW2jh1
+         6S9NsV4I1yIfbOl6ntafIQCF02pG/fB6R+axKKnQjov8FeTjtIldtM/55JMdmo9ZhDOj
+         7IrSGOi7Iqicz1MgpRoMj+QO8waNGvRR3wh+efXUupRcEa0VL6h7XjBs4JsuLD///40v
+         r7UxD92RSmVL+9KCMGJG8Ka8WwTxtZ1U/UboAkAbEAwmfC2JL1Gkhp+xzJSBvroo+xnt
+         akjsNO84dufIJPlCNdtcrNt5USpVdgpuTdYAy6ACcZ/jQvXqVzsSCFnQkUARVgSG4Oej
+         em4Q==
+X-Gm-Message-State: AOJu0Yz3ggMhIS3JeTypI4KLrxtJsh6VNJRohlooNfRuOrvUiUwqEH3U
+        puyqpGh1nshweILrtA70dxRm+EE/JrM=
+X-Google-Smtp-Source: AGHT+IEpHX0mNt6z5BMFuuLqTJ8UidjxgMkPm8uup8OdQ2EUIBGLEmKcUqWlzTaHcQnK9t5kfNyubg==
+X-Received: by 2002:a19:5e1c:0:b0:4fe:5860:7abf with SMTP id s28-20020a195e1c000000b004fe58607abfmr1088770lfb.13.1695802733518;
+        Wed, 27 Sep 2023 01:18:53 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id t17-20020ac243b1000000b00502ae8db086sm2517072lfl.19.2023.09.27.01.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Sep 2023 01:18:52 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 11:18:38 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Benjamin Bara <bbara93@gmail.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/5] Support ROHM BM1390 pressure sensor
+Message-ID: <cover.1695727471.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] ARM: dts: omap: omap4-embt2ws: Add IMU at control
- unit
-Content-Language: en-US
-To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20230926203739.2119963-1-andreas@kemnade.info>
- <20230926203739.2119963-4-andreas@kemnade.info>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20230926203739.2119963-4-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fSwAP33zslKgzBDb"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 26/09/2023 22:37, Andreas Kemnade wrote:
-> Add also the level-shifter flag to avoid probe failure in magnetometer
-> probe.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  .../boot/dts/ti/omap/omap4-epson-embt2ws.dts    | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> index cd4f858d846ab..0cc66e158a8d5 100644
-> --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> @@ -391,7 +391,16 @@ tlv320aic3x: codec@18 {
->  		reset-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
->  	};
->  
-> -	/* TODO: mpu9150 at control unit, seems to require quirks */
-> +	mpu9150: imu@68 {
-> +		compatible = "invensense,mpu9150";
-> +		reg = <0x68>;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&mpu9150_pins>;
-> +		interrupt-parent = <&gpio2>;
-> +		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
-> +		invensense,level-shifter;
-> +	};
->  };
->  
->  &keypad {
-> @@ -530,6 +539,12 @@ OMAP4_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)       /* abe_mcbsp2_fsx */
->  		>;
->  	};
->  
-> +	mpu9150_pins: pinmux_mpu9150-pins {
 
-Not much improved.
+--fSwAP33zslKgzBDb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Krzysztof
+ROHM BM1390 Pressure sensor (BM1390GLV-Z) can measure pressures ranging
+=66rom 300 hPa to 1300 hPa with configurable measurement averaging and an
+internal FIFO. The sensor does also provide temperature measurements
+although, according to the data sheet, sensor performs internal
+temperature compensation for the MEMS.
 
+Sensor does also contain IIR filter implemented in HW. The data-sheet
+says the IIR filter can be configured to be "weak", "middle" or
+"strong". Some RMS noise figures are provided in data sheet but no
+accurate maths for the filter configurations is provided.
+
+I actually asked if we can define 3db frequencies corresponding to these
+IIR filter settings - and I received values 0.452Hz, 0.167Hz, and 0.047Hz
+but I am not at all sure we understood each others with the HW
+colleagues... Hence, the IIR filter configuration is not supported by this
+driver and the filter is just configured to the "middle" setting.
+(at least for now)
+
+It would also be possible to not use IIR filter but just do some simple
+averaging. I wonder if it would make sense to implement the OVERSAMPLING
+value setting so that if this value is written, IIR filter is disabled and
+number of samples to be averaged is set to value requested by
+OVERSAMPLING. The data-sheet has a mention that if IIR is used, the
+number of averaged samples must be set to a fixed value.
+
+The FIFO measurement mode (in sensor hardware) is only measuring the
+pressure and not the temperature. The driver measures temperature when
+FIFO is flushed and simply uses the same measured temperature value to
+all reported temperatures. This should not be a problem when temperature
+is not changing very rapidly (several degrees C / second) but allows users
+to get the temperature measurements from sensor without any additional
+logic.
+
+Revision history:
+Major changes here, please see the head room of individual patches for
+more detailed list.
+v3 =3D> v4:
+	rebased back on v6.6-rc1
+	dropped patch implementing the exact match search for
+	available_scan_mask
+	tools: iio_generic_buffer: comment on aligning logic
+	bm1390 driver:
+	 - cleanups and fixes
+         - own info struct for case where IRQ is omitted and FIFO not
+           supported
+	 - fix support for using other triggers. (not really tested but
+	   should work)
+
+v2 =3D> v3:
+	rebased on v6.6-rc2
+	added three IIO fixup patches so numbering of patches changed
+	dt-bindings/MAINTAINERS: No changes
+	bm1390 driver:
+	 - various cleanups and fixes
+	 - do not disable IRQ
+	 - fix temperature reading when FIFO is used
+	 - separate buffer and trigger initialization
+
+v1 =3D> v2:
+	rebased on v6.6-rc1
+	dt-bindings:
+	  - fix compatible in the example
+	sensor driver:
+	  - drop unnecessary write_raw callback
+	  - plenty of small improvements and fixes
+	MAINTAINERS:
+	  - No changes
+
+Matti Vaittinen (5):
+  tools: iio: iio_generic_buffer ensure alignment
+  iio: improve doc for available_scan_mask
+  dt-bindings: Add ROHM BM1390 pressure sensor
+  iio: pressure: Support ROHM BU1390
+  MAINTAINERS: Add ROHM BM1390
+
+ .../bindings/iio/pressure/rohm,bm1390.yaml    |  52 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/pressure/Kconfig                  |   9 +
+ drivers/iio/pressure/Makefile                 |   1 +
+ drivers/iio/pressure/rohm-bm1390.c            | 934 ++++++++++++++++++
+ include/linux/iio/iio.h                       |   4 +-
+ tools/iio/iio_generic_buffer.c                |  18 +-
+ 7 files changed, 1022 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,bm1=
+390.yaml
+ create mode 100644 drivers/iio/pressure/rohm-bm1390.c
+
+
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+--=20
+2.41.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--fSwAP33zslKgzBDb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUT5U8ACgkQeFA3/03a
+ocXQTggArZYjJmcqpldv5kUoB8oC4OFUOC5FE/+rvhGYHZeZp958xTZY+53A6wdL
+9kedZhSCM8MFObWkCQdG01NcEoD1tdJ1ISLee8BBNzGM9o8I6Y5DG4T0ptNCx7uw
+6//SY0oTUee2MEtGOYHWsms8VG57OBh4qW2Uv0vSCDiTQ2YyO+zFVdYJCJQzRCC3
+C6x5JMv+OiYx1wtM1zPwAqV+uK8/IO+48b3amVd2tbYpfrGBmOO3lIz3xy6i43NA
+AS7kJNrHZSvKRyhyeLCEKxuO3iFIl5HHpjo+fgAppajsd32oIfXfnzDwKe0ONpJi
+VEKr2DqZK0K+n1EQ5ttDAI5hgEv+Fg==
+=yTSK
+-----END PGP SIGNATURE-----
+
+--fSwAP33zslKgzBDb--

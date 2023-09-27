@@ -2,94 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43BE87B0E00
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 23:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 734577B0E27
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 23:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229460AbjI0VZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 17:25:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37662 "EHLO
+        id S229799AbjI0VhR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 17:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjI0VZJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 17:25:09 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3A3D6;
-        Wed, 27 Sep 2023 14:25:07 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-99c1c66876aso1548069966b.2;
-        Wed, 27 Sep 2023 14:25:07 -0700 (PDT)
+        with ESMTP id S229458AbjI0VhQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 17:37:16 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F8411D;
+        Wed, 27 Sep 2023 14:37:14 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-523100882f2so14286684a12.2;
+        Wed, 27 Sep 2023 14:37:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695849906; x=1696454706; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lLt2EWwiAamue+aQFCf1ccw7xlWtw/NamUWzlxPh9vg=;
-        b=SxvozSPNQ369+5Iw4tK2Uvlqo4FkvntgqiM5b1mODe4EzB4+s6rrBFRwuydrNd/Ga1
-         4zQ7Zwexu8KxB6AcfUyqhUAnAkc8lzGLnlZsbXJHDOXyzFw10UCL395hRGxPRiMRotnd
-         o9ZxJqXLiwqf8jwnlhiJjrIqKBu7g3tnHJ1kR13BDJVEtJueirWixKPrA2Y5lUCZnKwX
-         bL0IttBVX2w/ozN8X/qglkgh/eYva5C1Y9zN0j9444PKFXZfpNvuAn+om8wWYFn9jKm8
-         sZQZNpMXHxKvcD/Hij5BsEslg7KmMFunUGS0EZGotYeQCQ28vK8/zxV18IMrVZ95HoOy
-         m1Kg==
+        d=gmail.com; s=20230601; t=1695850633; x=1696455433; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EJVhey8RIggiy940PuwmSoQQP3nNcn3uKLurpxTPjJ4=;
+        b=PNyj6tzMPDst0UTvSjWHGhgCbU7EqXGSHo4NNHScMCa1rSseKXoReJRFXmCDuO7L37
+         UUtQPsmoEVs7tKjVJl7IFLfIKzhwEhwyaeveVHL4CUr2ijd77Nb7JCVCYiN8zZhnFK0x
+         nLDRsvYpaVBQiVegiHG0CWJC8Ro9+ODnljUksADX/xxRBvTN44yd331NcyYCfRLpzLpq
+         AYgCMN1L6JtvfN/hCC1PQrs8RATY4r0o508g7GHygi6V1bijy/YS5avyHsNE+Yhxc9GI
+         aNcnqefFHmLG1UDJm9EI1ZK52HRysyeR5+FE8MD92vEAvZ970HIXm7SwoUcrDopMdJGk
+         f8GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695849906; x=1696454706;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lLt2EWwiAamue+aQFCf1ccw7xlWtw/NamUWzlxPh9vg=;
-        b=YNLIdH0flwrAxDLiF4FW88BJBWxTdf9vFst/59ROoBuRpmE9rCELth9coO/vT5voBJ
-         vlF8BKNE5jOJUpRKg+9lJNtF+siSK7akMcPITblmF3XxmhJXIODWtFETsic0GBUBa5X1
-         pa+2HuSqDYAScbETfgDtS8P0BO/T4wEkhFQC+Et3kFHIIOgibQgBKRzepls+4gnGC2c4
-         kTvUPM4LFgZLHCpl9QSBqZF3g9qfaVNhlfTjHq8UfFwVGq73ZPjJKmFqfewuOVLap2MM
-         vCZFpK+cvpvb59ipSc+Pn2pODjVJb+IN9u96/NURxffkRnRsvHeygeWALxaH9mhGnbUW
-         9EpA==
-X-Gm-Message-State: AOJu0YxfAh5ZHUIaRFDPmvAh7UW2eJrs5j9Y2wO0aaTCxO4xCEW88r+c
-        yctUK/2Ag1DEaXy29zV5bnI=
-X-Google-Smtp-Source: AGHT+IERdbconsI7Dm22p0pAU1PPLVIbctTBnBxcCPOg/9FqmujbKEGkmv5aDTBQECYmoQmXzl8WTg==
-X-Received: by 2002:a17:907:77da:b0:9b2:b43e:4fcf with SMTP id kz26-20020a17090777da00b009b2b43e4fcfmr2352742ejc.64.1695849905945;
-        Wed, 27 Sep 2023 14:25:05 -0700 (PDT)
-Received: from [192.168.1.99] ([151.95.123.113])
-        by smtp.gmail.com with ESMTPSA id bg1-20020a170906a04100b009adce1c97ccsm9886969ejb.53.2023.09.27.14.25.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Sep 2023 14:25:05 -0700 (PDT)
-Message-ID: <5eb148b4-25eb-460d-9ec8-0a40bec1dc6f@gmail.com>
-Date:   Wed, 27 Sep 2023 23:25:04 +0200
+        d=1e100.net; s=20230601; t=1695850633; x=1696455433;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EJVhey8RIggiy940PuwmSoQQP3nNcn3uKLurpxTPjJ4=;
+        b=rSQj+VFO0AQxh+PY/DceHV5ASG0ipqVweOGmgWWDp9nVa3g7YeUi7Sqdxx8tS2r0r3
+         k5UezGyraRvcZpioX2ZGTx1tNC/Cb1kQwlrm6y71IVfHtW0LJ6997IO6Nn/UlEy6cPQk
+         VKfpe51IA//xIGpz4x9TpqxI2hWra7mr+6u/PrZdO5Xw98L6aG0s76aMRtq+cuRaSpl9
+         B8mmtuRdh5E5VO/YwZd0oac//0zWTDRu3tHW/QSA0WJeTXdwdEB7AHIq5tHqED2NOrW0
+         klSB5Lw3BH8Hk1BabSczxYC1UPXrehtPZRVjoA4HAy3iCK+q2xUXOqknTtFJ8ZlM2eH8
+         qSXA==
+X-Gm-Message-State: AOJu0YwEzDUYuo/tA9A1iofl7C1T/VNml1kDnzFi4dbnSFG7CEVTW4Bc
+        J+aKwT1Az5+NUVcHNGbUt7bLLf+kmLNexIIhgmk=
+X-Google-Smtp-Source: AGHT+IG6pMYUePSEQczqS5u0bJro8yBf0c7CsCbSAt5egf17Tv7W1oRMwwnTk/DE99VVKAiAtPGubtxYFbYY3CYuCMs=
+X-Received: by 2002:aa7:d043:0:b0:522:2ce0:d80a with SMTP id
+ n3-20020aa7d043000000b005222ce0d80amr3066327edo.35.1695850632999; Wed, 27 Sep
+ 2023 14:37:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
-Content-Language: en-US, en-US-large
-To:     Jagath Jog J <jagathjog1996@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     andriy.shevchenko@linux.intel.com, lars@metafoo.de,
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+ <20230918080314.11959-2-jagathjog1996@gmail.com> <b27b58d9-9e55-b803-dd61-dd86a78e7c5c@linaro.org>
+ <CAM+2Eu+R6M7U+t4z5K0Cty736ybAzis7xnrT1edk4-y6B=JAOA@mail.gmail.com> <20230924143126.60a142c4@jic23-huawei>
+In-Reply-To: <20230924143126.60a142c4@jic23-huawei>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Thu, 28 Sep 2023 03:07:01 +0530
+Message-ID: <CAM+2EuJ+LGe5Gu8jek32yJe4cLYHSrrbND8WPyPsYsuyFSJNoQ@mail.gmail.com>
+Subject: Re: [RFC 1/2] dt-bindings: iio: imu: Add DT binding doc for BMI323
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        andriy.shevchenko@linux.intel.com, lars@metafoo.de,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20230918080314.11959-1-jagathjog1996@gmail.com>
- <20230918080314.11959-3-jagathjog1996@gmail.com>
- <20230924153055.0b3486f9@jic23-huawei>
- <CAM+2EuJBxj7P-ymu84u308g8LCemSEsYi_TSHYtaK9PyrhqrfA@mail.gmail.com>
-From:   Denis Benato <benato.denis96@gmail.com>
-In-Reply-To: <CAM+2EuJBxj7P-ymu84u308g8LCemSEsYi_TSHYtaK9PyrhqrfA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+Hi Jonathan
 
-Some devices (as my asus rog ally) have an ACPI node describing a BOSC0200 sensor. The IC being used in those devices is a  bmi323 but as a result of how the ACPI table reports that device, it is detected by the existing kernel module and we have no way of differentiating until after the chip ID probe.
+On Sun, Sep 24, 2023 at 7:01=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Tue, 19 Sep 2023 22:14:40 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> > Hi Krzysztof,
+> >
+> > On Mon, Sep 18, 2023 at 5:55=E2=80=AFPM Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> > >
+> > > On 18/09/2023 10:03, Jagath Jog J wrote:
+> > > > Add devicetree description document for Bosch BMI323, a 6-Axis IMU.
+> > >
+> > > I don't know why this is RFC and cover letter does not explain it. Sh=
+all
+> > > I just ignore it? Patch is no ready? Recently at least two times some=
+one
+> > > was disappointed that his code marked as RFC received my review.
+> >
+> > Thank you for reviewing. This was the sensor's first patch series,
+> > so I initially submitted it as an RFC. I will mark it as "Patch"
+> > in the next series.
+>
+> Have more confidence!  RFCs need to have clearly stated questions.
+> If you don't have any then you are putting forwards driver for review
+> in ordering to get it merged upstream - so PATCH is appropriate.
+> As you'll see many IIO drivers go through a 'few' revisions once they
+> are posted (hopefully not too many!)
+>
+> Krzysztof is great at reviewing whatever shows up, but in many
+> cases reviewers won't look at an RFC (unless a big discussion starts) bec=
+ause
+> they aren't interested in open questions, just code that the author consi=
+ders
+> ready.
 
-The module loaded is bmc150-accel-i2c.c which currently doesn't support the bmi323 and the loading of the module just fails at chip check.
+Thank you for your feedback and guidance. I appreciate
+the insight into the RFC process and the importance of
+clearly stated questions. I'll keep this in mind when
+preparing future submissions.
 
-I have solved the problem by expanding the current bmc150-accel-i2c.c and bmc150-accel-core.c files to handle that IC in almost every part: gyroscope, accelerometer and temperature sensor.
+Regards
+Jagath
 
-What is the best way of organizing code to have this module mainlined? Is it correct leaving files called bmc150-accel-* even if it is managing another IC and and not just the accelerometer part anymore?
-
-TIA for your time.
-
-Best regards,
-Denis Benato
+>
+> Jonathan

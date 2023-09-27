@@ -2,95 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F967AF554
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Sep 2023 22:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE3657AF8A8
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 05:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbjIZUiL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Sep 2023 16:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
+        id S229584AbjI0D2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Sep 2023 23:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235870AbjIZUiK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Sep 2023 16:38:10 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5E1126;
-        Tue, 26 Sep 2023 13:38:04 -0700 (PDT)
-Received: from p200300ccff2a5b001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff2a:5b00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qlEoY-004D5A-SA; Tue, 26 Sep 2023 22:37:50 +0200
-Received: from andi by aktux with local (Exim 4.96)
-        (envelope-from <andreas@kemnade.info>)
-        id 1qlEoY-008tVV-0Z;
-        Tue, 26 Sep 2023 22:37:50 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        jean-baptiste.maneyrol@tdk.com, andreas@kemnade.info,
-        chenhuiz@axis.com, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH v2 3/3] ARM: dts: omap: omap4-embt2ws: Add IMU at control unit
-Date:   Tue, 26 Sep 2023 22:37:39 +0200
-Message-Id: <20230926203739.2119963-4-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230926203739.2119963-1-andreas@kemnade.info>
-References: <20230926203739.2119963-1-andreas@kemnade.info>
+        with ESMTP id S229513AbjI0D03 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Sep 2023 23:26:29 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C868272AA;
+        Tue, 26 Sep 2023 18:47:42 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c63164a2b6so18484335ad.0;
+        Tue, 26 Sep 2023 18:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695779262; x=1696384062; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kdJIQdTaHI0k4LukyVP6v1Fv5TtDAf1OoI8Bd0E9aK8=;
+        b=U47/cp4hH+KbCm2Jq2Jyxba1UgQRjLM7ioT6KuVLWLtMgSDTItfSCUe4hcFihgDy6K
+         3QHlPwnnAKJtjRMzMYMqSPRNu7VhumxE7p4NC4mB/JlmY6IXepVGQyE5ojn9DfeI4Eu0
+         33LHTaTnUmk3PPS+0CZxmV+l0iq6DcTc31igq90c0RTZhIQX54CenEIT68oQ/eJ+NN67
+         deAmIEP9SKXAfQGRIVlzAbbDq4FtLWqUwjCBBObKJ8nVy/Lguee/YFUldXxbrn3tv6nV
+         9voTu2q0MGlWOzTOe4rh2f4OkTIstqwJ4oWLKvzIdUsx2JTy3uLLKw59WUffs0K7gRyX
+         xOmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695779262; x=1696384062;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kdJIQdTaHI0k4LukyVP6v1Fv5TtDAf1OoI8Bd0E9aK8=;
+        b=wLTzvfTPl7G3R84TzQmTPeC3pdLCeCclD3rVgoMnBmQ7SxccAcFh0Jd0TqbP2/7xBd
+         s2SGlEnJJ/zB2crnBU/1s4uBPldknqNQC4SxAIbvUuNcOk0XiZP0Om246tn4Ya+GRfi4
+         gOQ83N9Gk+VGioi9+8oi40OjQQcmSx8UDvF5vAcZnG+P2kQ3ycWx/l04cKQu8kSFVsTv
+         Gxb3x7XtVtqkg97ybATW6vXqExdKJq3qiyralwdjwkz7ij+SkPRCpcmtwa9Wb7KXmAYk
+         Nv01zNkL2ELSUFYx/FdnSkKY/ipQ0Jw1HRHDgr272YGbcsXeHxzldfhaMMCzBgR8e3X4
+         OOvg==
+X-Gm-Message-State: AOJu0YyhpltzKQUGuRal6UT3N6vj2soefuVv7be35FZrLHoFXRk9xbG3
+        ilcSVRfVrYdLkE4FiA0gd8ya3eFXcK4SHw==
+X-Google-Smtp-Source: AGHT+IHNbU5YWvLueYGJ0d4j/juY2IrOftABxxWQl3+rEGkb6aUw/CBCHn1A7vxf+om//IVkt1GxuA==
+X-Received: by 2002:a17:902:d2c7:b0:1b7:f64b:379b with SMTP id n7-20020a170902d2c700b001b7f64b379bmr1051920plc.17.1695779262159;
+        Tue, 26 Sep 2023 18:47:42 -0700 (PDT)
+Received: from localhost ([2804:30c:974:7600:2605:6970:d08b:fd3d])
+        by smtp.gmail.com with ESMTPSA id e1-20020a170902d38100b001acae9734c0sm131190pld.266.2023.09.26.18.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Sep 2023 18:47:41 -0700 (PDT)
+Date:   Tue, 26 Sep 2023 22:47:39 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: adi,ad7292: Fix
+ additionalProperties on channel nodes
+Message-ID: <ZROJuya87tMI4Q/y@marsc.168.1.7>
+References: <20230926164357.100325-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230926164357.100325-1-robh@kernel.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add also the level-shifter flag to avoid probe failure in magnetometer
-probe.
+On 09/26, Rob Herring wrote:
+> "additionalProperties: true" is only for incomplete schemas such as bus
+> child nodes in a bus's schema. That doesn't apply to the "channel" nodes
+> in the adi,ad7292 binding, so fix additionalProperties to be false.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- .../boot/dts/ti/omap/omap4-epson-embt2ws.dts    | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Acked-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-index cd4f858d846ab..0cc66e158a8d5 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-@@ -391,7 +391,16 @@ tlv320aic3x: codec@18 {
- 		reset-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
- 	};
- 
--	/* TODO: mpu9150 at control unit, seems to require quirks */
-+	mpu9150: imu@68 {
-+		compatible = "invensense,mpu9150";
-+		reg = <0x68>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mpu9150_pins>;
-+		interrupt-parent = <&gpio2>;
-+		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
-+		invensense,level-shifter;
-+	};
- };
- 
- &keypad {
-@@ -530,6 +539,12 @@ OMAP4_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)       /* abe_mcbsp2_fsx */
- 		>;
- 	};
- 
-+	mpu9150_pins: pinmux_mpu9150-pins {
-+		pinctrl-single,pins = <
-+			OMAP4_IOPAD(0x5e, PIN_INPUT_PULLUP | MUX_MODE3)
-+		>;
-+	};
-+
- 	mpu9150h_pins: pinmux-mpu9150h-pins {
- 		pinctrl-single,pins = <
- 			OMAP4_IOPAD(0x76, PIN_INPUT_PULLUP | MUX_MODE3)
--- 
-2.39.2
-
+Thanks,
+Marcelo

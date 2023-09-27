@@ -2,89 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA807B0446
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 14:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 275257B04BE
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Sep 2023 14:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjI0MfL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Sep 2023 08:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        id S231737AbjI0M4L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Sep 2023 08:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbjI0MfL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 08:35:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F97139;
-        Wed, 27 Sep 2023 05:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695818108; x=1727354108;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=wHFoOefAecLIgZERRLYz5FZSvZCU5QTJbhhe5Vz/dxI=;
-  b=CBehDosFCt8rbHzmhCC3UPTn1+Xc9xKwsxJRhIOsRsfVp0H/5VBIkjj3
-   aDutM/FIG95DKX0RL6rqKRfYRAjFQ76sVXzPhQk7Ps7AUQa+/tDiuKWGd
-   4otIF/pAEi0HQgN2HE8ASSdc3i6g8VfMOGcU8asJPGiqMkmauqblNiz73
-   9d9QeuDUraVpuSK0cOM/ynoUD+eYjyR7cev2RzmldvVmAsu5jTiata5Dd
-   eCtHKHO07RKQGTAzA6tEB1NBaTeCrMDK5LzDyKHdACeuPt+G2pbkCv1Vu
-   kur5pkWruS0BBk+1pJRAhKGCYxFc4vmK5EGmk7ylMqtZHiFfPTzxA5nLL
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="412723452"
-X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
-   d="scan'208";a="412723452"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 05:35:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="819405757"
-X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
-   d="scan'208";a="819405757"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 05:35:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qlTks-00000000sqT-25xD;
-        Wed, 27 Sep 2023 15:35:02 +0300
-Date:   Wed, 27 Sep 2023 15:35:02 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Jagath Jog J <jagathjog1996@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
-Message-ID: <ZRQhdkVNFdCfPseY@smile.fi.intel.com>
-References: <20230918080314.11959-1-jagathjog1996@gmail.com>
- <20230918080314.11959-3-jagathjog1996@gmail.com>
- <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
+        with ESMTP id S231689AbjI0M4K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Sep 2023 08:56:10 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34147F3;
+        Wed, 27 Sep 2023 05:56:05 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-5046bf37ec1so8419627e87.1;
+        Wed, 27 Sep 2023 05:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695819363; x=1696424163; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0x06RSY7/Vq9q7hdrauvpq/UhEcx6nGlRRG9za9o8+M=;
+        b=IGDCJPmVLdoyvSZrUqrf5D0Y3w48BRbk9FonVkX9GJHbQ5IfHIO4VP923JVRK4mCNz
+         iEXYId7AXeAxWrLc3RbpX2whYir8qXI2lNXYNlmHJ3umgZWlU5Ctr8KsDbEtJ3MACWA0
+         U5Y8lMaNt9sUq6yLMJvuErq/d+GKIPJRXvH1sOeK4HO5ZL3jRbjCNytTd4Pi9dMogAUd
+         Vg2AMyP8N/wfkWLaSQQXVzX1pKvxB65+ORkB5lWiDh29hCl1jG3ygKfIelK0Gapc4sK+
+         gepZzv2HXQN4Qmq0R51O7+0pasxB64GMMy0vsm/yANMq5jfpF/vJF9zK//kV/blxpxCN
+         g7Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695819363; x=1696424163;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0x06RSY7/Vq9q7hdrauvpq/UhEcx6nGlRRG9za9o8+M=;
+        b=RcrhFY3nG9vTisl+rOMZ5XqnfKPTVzrponNoSIbMLD3SzNeKw5pmYopoIQid1q/DMp
+         jSAWepVeN1R+8NUi/fQixm/Z49akyL3wIF2d3YYVarTUdi+xpglD9HQoMGnvfhiaarGl
+         s3rCo52q0IkThDJh69XI6MbhvLnGiU56s6HENfW5bzlCyenMnvm3NEHoWcVi2vvf5Wf7
+         y3QZurTwQYOyOz0JWWRnaPTlrvgAJ+6w6Djitfr2kolbomAi1h8xTe2d2uLSzh1GKt1/
+         qRTjVHdQJ/vQa+SNJxdN0wTFYKZZ0EpzgkT5UeOP8lZ+k9ntbPFmGbwh1qeSeUJvou9b
+         VHbw==
+X-Gm-Message-State: AOJu0YyT9PyXyxjzq9zqUZVqz8Du/v2SlTm2NzECckgHfsnR+QtEqIL4
+        ZhhaIdwmBqIyo8Q/vvdFR9E=
+X-Google-Smtp-Source: AGHT+IH82iz5fs1Vc/NcXc83wSQz61KS+Jr/dykoPfkqok0zfupCFLdGpDbALC5enYwAj7hhFZ6LdA==
+X-Received: by 2002:ac2:5315:0:b0:503:385c:4319 with SMTP id c21-20020ac25315000000b00503385c4319mr1631981lfh.19.1695819362778;
+        Wed, 27 Sep 2023 05:56:02 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id v4-20020ac25924000000b004fdde1db756sm48045lfi.26.2023.09.27.05.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Sep 2023 05:56:01 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 15:55:45 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] Support ROHM KX132ACR-LBZ Accelerometer
+Message-ID: <cover.1695819243.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="v9JK0SVvtbCzYQYP"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 27, 2023 at 11:57:08AM +0200, Uwe Kleine-König wrote:
-> On Mon, Sep 18, 2023 at 01:33:14PM +0530, Jagath Jog J wrote:
 
-...
+--v9JK0SVvtbCzYQYP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi323-ds000.pdf
-> 
-> Maybe put this link better in the driver.
+The ROHM KX132ACR-LBZ is an accelerometer for industrial applications.
+It has a subset of KX022A (NOTE: Not KX132-1211) functionalities, dropping
+support for tap, free fall and tilt detection engines. Also, the register
+interface is an exact subset of what is found on KX022A (except the
+WHO_AM_I register value).
 
-Why? We have a handful commits with this and it's better to see the link
-to the datasheet without browsing the source code.
+This series adds own DT compatible for the KX132ACR-LBZ and also own
+chip-info in driver to allow handling the different 'WHO_AM_I' value.
+The separation of the Kionix KX022A and ROHM KX132ACR-LBZ does also
+allow adding support for the KX022A tilt/free fall/tap engines which are
+not present on KX132ACR-LBZ.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Matti Vaittinen (2):
+  dt-bindings: iio: Add KX132ACR-LBZ accelerometer
+  iio: kx022a: Support ROHM KX132ACR-LBZ
+
+ .../bindings/iio/accel/kionix,kx022a.yaml     | 10 +++---
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  4 ++-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  4 ++-
+ drivers/iio/accel/kionix-kx022a.c             | 34 ++++++++++++++++++-
+ drivers/iio/accel/kionix-kx022a.h             |  2 ++
+ 5 files changed, 47 insertions(+), 7 deletions(-)
 
 
+base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
+--=20
+2.41.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--v9JK0SVvtbCzYQYP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUUJkQACgkQeFA3/03a
+ocWAmAgAgW89E5nHGv7lJWkqt+qkY/U/jUxa3TXfUqQtzdBWm2tnI1Sq6+oQ9T4M
+AQzmGfx4PPb91eB4KDK2C/ZW5B7B0d+RxlbiUHqA2yTGuocRruedJg7sdCOxA6aR
+U+aJcurYJ3Y/p4HWTgNoJ3z9BXPpm5qHoIdrlhP5va0jOTeixcvoWL4Ib8K2Gcio
+UiEXffcmlPuu8rq9gTNI7/OVp1MiDZZh3Z/4ynWXzUZLGluGEBLt/SmuxTjphZnh
+hB86T6LOfYannQRi1MfJFP7VZj+ZyjONBrr4NiMWDxuscm0D9Ym1WVsxGO2smMW3
+TxTShJKVhzz8ok4rBLGUqdnjCG78nA==
+=Gs/n
+-----END PGP SIGNATURE-----
+
+--v9JK0SVvtbCzYQYP--

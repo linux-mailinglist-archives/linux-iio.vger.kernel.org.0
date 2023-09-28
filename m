@@ -2,52 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 874067B2555
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 20:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B6B87B26CF
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 22:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbjI1SeP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 14:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S230251AbjI1UsW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Sep 2023 16:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjI1SeO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 14:34:14 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAC5BF;
-        Thu, 28 Sep 2023 11:34:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C17FC433C8;
-        Thu, 28 Sep 2023 18:34:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695926052;
-        bh=2NJ2R290lFgn343l702zf8oxmfde2JDPKjH1749HjD8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WEf0EaEk9iRWOkL9jIAgNO3NJ385d8K64JccvOdU0+D/dVouoyDp99Up7/jY2XQlA
-         CAczvIRwHJC8ewLX5eQQUI6bw1muPRk74UoBCfBwui6ZTm0P8xmYB+PMbZh+f36yof
-         0BzWlgi6XtIgkiAPPjR3I9IoaFGJinCkkLFwVNdoG/xQosbNJxJJDC/qU2om/14RvB
-         LJCxoD5g1Iy8HM1gVXTc553suizGbnMGNCu0Ll839tRyQI91qEEJgof5KboWC6CCaT
-         4OUcT44DGLikc+cDahzgjElVYUinDMW+Ndg9buqkFQ8w8A9m3LrUQoxA9JhzxumnIf
-         8JWwGdbQX9KvQ==
-Received: (nullmailer pid 1033329 invoked by uid 1000);
-        Thu, 28 Sep 2023 18:34:10 -0000
-Date:   Thu, 28 Sep 2023 13:34:10 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     lars@metafoo.de, robh+dt@kernel.org, bcousson@baylibre.com,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        tony@atomide.com, linux-iio@vger.kernel.org,
-        jean-baptiste.maneyrol@tdk.com, linux-kernel@vger.kernel.org,
-        chenhuiz@axis.com, andy.shevchenko@gmail.com, conor+dt@kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
-Message-ID: <169592604948.1033273.7825083218859073623.robh@kernel.org>
-References: <20230927173245.2151083-1-andreas@kemnade.info>
- <20230927173245.2151083-2-andreas@kemnade.info>
+        with ESMTP id S229478AbjI1UsV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 16:48:21 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95102180
+        for <linux-iio@vger.kernel.org>; Thu, 28 Sep 2023 13:48:19 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlxvW-0006Oy-Fq; Thu, 28 Sep 2023 22:48:02 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlxvV-009erQ-B8; Thu, 28 Sep 2023 22:48:01 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qlxvV-005kYi-1e; Thu, 28 Sep 2023 22:48:01 +0200
+Date:   Thu, 28 Sep 2023 22:48:00 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     jic23@kernel.org, andriy.shevchenko@linux.intel.com,
+        lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
+Message-ID: <20230928204800.tlsauorjk6iz5r7f@pengutronix.de>
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+ <20230918080314.11959-3-jagathjog1996@gmail.com>
+ <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
+ <CAM+2EuKb9-Wc+HAmsmPfmdM49k=7yoXboDF+swaMS_bgXbCOQA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gahfz3hanrircdwo"
 Content-Disposition: inline
-In-Reply-To: <20230927173245.2151083-2-andreas@kemnade.info>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAM+2EuKb9-Wc+HAmsmPfmdM49k=7yoXboDF+swaMS_bgXbCOQA@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -55,15 +59,83 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On Wed, 27 Sep 2023 19:32:43 +0200, Andreas Kemnade wrote:
-> Add a level shifter flag as found in ancient platform data struct:
-> level_shifter: 0: VLogic, 1: VDD
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml      | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+--gahfz3hanrircdwo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Rob Herring <robh@kernel.org>
+On Thu, Sep 28, 2023 at 11:49:01PM +0530, Jagath Jog J wrote:
+> Hi Uwe Kleine-K=C3=B6nig,
+>=20
+> On Wed, Sep 27, 2023 at 3:27=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> >
+> > Hello,
+> >
+> > On Mon, Sep 18, 2023 at 01:33:14PM +0530, Jagath Jog J wrote:
+> > > The Bosch BMI323 is a 6-axis low-power IMU that provide measurements =
+for
+> > > acceleration, angular rate, and temperature. This sensor includes
+> > > motion-triggered interrupt features, such as a step counter, tap dete=
+ction,
+> > > and activity/inactivity interrupt capabilities.
+> > >
+> > > The driver supports various functionalities, including data ready, FI=
+FO
+> > > data handling, and events such as tap detection, step counting, and
+> > > activity interrupts
+> > >
+> > > Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downl=
+oads/datasheets/bst-bmi323-ds000.pdf
+> >
+> > Maybe put this link better in the driver.
+>=20
+> Yes, if there are multiple commits on the driver, the datasheet
+> link will move further down with the initial commit. I will add
+> datasheet link in the driver.
+>=20
+> >
+> > > +static struct i2c_driver bmi323_i2c_driver =3D {
+> > > +     .driver =3D {
+> > > +             .name =3D "bmi323",
+> > > +             .of_match_table =3D bmi323_of_i2c_match,
+> > > +     },
+> > > +     .probe_new =3D bmi323_i2c_probe,
+> > > +     .id_table =3D bmi323_i2c_ids,
+> > > +};
+> > > +module_i2c_driver(bmi323_i2c_driver);
+> >
+> > If you want to compile this driver after v6.6-rc2 (which includes
+> > commit 5eb1e6e459cf ("i2c: Drop legacy callback .probe_new()")) better
+> > use .probe here instead of .probe_new().
+>=20
+> Thanks for pointing it out.
+> I switched to v6.6-rc3 and I will change to .probe.
 
+Note that you can use .probe (with that prototype) already since
+v6.3-rc2. So there is no hard requirement to go to v6.6-rc3.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
+   |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--gahfz3hanrircdwo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUV5oAACgkQj4D7WH0S
+/k4esgf7BLpFWcXJXdhUexxP4+lc7WqPmab2RU67NFt7RdHv88Da4TAqWR+H7oWD
+KJ1C8M59Ko+CV2jwfyCsef5tHE7WYlVUQOZixU+It/DOOY0r9wTOgt1B+iYl7BF9
+vlfKNolt5AAlWMbunLjot7h3/37+mXLV+5JWMOBu/pmo6R1FM8mduXVJ7mdSZfRj
+hWDuGnfTysXg60mPgVhMfjGNRkgc5qfmt/ec4Cf9uznBKfm8SbtH1oy4Ucs+uGtl
+WaqtKfNh+shFge+7maB/JUo/bur8IO90K+Tadf4Gfh9i71J3RZKBQZioiWlaAyAX
+skxOOb/jTr0UPgpUqnuINOcaTDoQFA==
+=QnTw
+-----END PGP SIGNATURE-----
+
+--gahfz3hanrircdwo--

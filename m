@@ -2,136 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 479FC7B1E5E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 15:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 538127B218A
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 17:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbjI1N3N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 09:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
+        id S231887AbjI1Pok (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Sep 2023 11:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231788AbjI1N3M (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 09:29:12 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D59198;
-        Thu, 28 Sep 2023 06:29:08 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9ae7383b7ecso2561657266b.0;
-        Thu, 28 Sep 2023 06:29:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695907747; x=1696512547; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ROU8+ExR4QbhUibvmX7F0zp678ehgrkdHVtekRiu3/c=;
-        b=K+gB6NHK7HDUKbX7ZlC0/7sh79v6fhP3ca/DGRnsUPDrRbbG491YhIrA7rwFS7eg+m
-         mAsWOvOSY6d7NdnIJucOornadTX2SYeslZsX/j+4q6G7qz2MMbyloDeOOoZkq1cf+i3M
-         owr+4P1xV9cO97aG+2WT7KwpTadmgM+pQUc1JY3HQesK1Sju/yKA1tfIkPsuAn1ZjkLi
-         srCyWv/R/ZS/7V1ZFSPMi6KrxHRbmJBxA7U35HhDXkp5BbgAgepT+aQ01RkKEK5OOpia
-         4k7IxJDY/hOUyACNQKI5pa4jlOUJj+rxTWcBQDAsJO6kE6aKoZAt8afli6Qh/quS6dIN
-         O/iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695907747; x=1696512547;
-        h=content-transfer-encoding:in-reply-to:from:references:cc
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ROU8+ExR4QbhUibvmX7F0zp678ehgrkdHVtekRiu3/c=;
-        b=Ca6H+ZjaA0RCiVX5PvCmbRQPcoPFogyFbA84HTANZBERyI4tkH00k7mmE/6Z+dKsNO
-         FCtsOCibf+bRwYtILHXjrYbNZraNuJQjV2K4TRntqQ2mp09EVCHQPA27sy0HLO9Cn1IE
-         NrkeRKBsd3y74qjbSQV6ra03VgFgKbhb9unOikyNXOsoF3Gts/snYa6eKFtuLsyzirGV
-         /z7uLhSpzM1jZ9v0lEFAnDbwM/v2g61Mhbq0AUA1HXx7SQ/T1i3WpFkjwzOc0APwvH+6
-         lhezhEmxM5T9dbQXURDt259IUoDO+0l1ph3pf7xEdawEVq0MYywH0xnhm22tBJ3ZSSeB
-         D8RQ==
-X-Gm-Message-State: AOJu0YwQJvqZO1XjPIIxcmnp3u5rMIJPAWoWVz41LdAj+CQIYdCvpBtR
-        q3kZ0xiVpYjC3Le419k7Dds=
-X-Google-Smtp-Source: AGHT+IHJJy/exKddlnMOuyJmSuJkajIryMA/BQi30k2HkEvqF/moQuCSzUvwJ9e/9jpcsu+5cwhmSQ==
-X-Received: by 2002:a17:906:5a46:b0:9ae:5513:e475 with SMTP id my6-20020a1709065a4600b009ae5513e475mr1377678ejc.9.1695907746714;
-        Thu, 28 Sep 2023 06:29:06 -0700 (PDT)
-Received: from [10.76.84.110] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id gy18-20020a170906f25200b009a9fbeb15f5sm10868883ejb.46.2023.09.28.06.29.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Sep 2023 06:29:05 -0700 (PDT)
-Message-ID: <823f03d7-2af4-f4f6-4e74-9beb299ab0e8@gmail.com>
-Date:   Thu, 28 Sep 2023 16:29:03 +0300
+        with ESMTP id S231669AbjI1Poj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 11:44:39 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22916AC;
+        Thu, 28 Sep 2023 08:44:36 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38SE466G015807;
+        Thu, 28 Sep 2023 17:43:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:subject:to:cc:references:from
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=6T7vbZG0OatVCzrOUmocqe0etbqi1byTjrfN1YkQoYE=; b=fL
+        9+e7J6OIfXQpnq6WHBL/m56cPdxye7XORHa4e/GNn4iRdwCB0xFD6o9ZYQAKjon0
+        f5HUbpw4Ix0frpU2kvNOCKVFEwvWJkKOW73YVT5JyV0zLHgtzzUoWl3F6cNmAKyb
+        UMJPEsjoC/guC48wUILQSbN7Si/bPAqspVm4Q3K3XGjySUlhB1Ii3rkoxn0sLfEZ
+        QTCJA/iLyCDE7Z3wF+OtyrjFecFf1Iv05IMiVA3on6mQuM8jXNiIL8GzxWIOG19k
+        bvhuhV8dKqjrhD3PqRPht1jClNa+HxVU65W9phEQjlLo203IyNwiok9UQGizuRnh
+        T6hK4Mp3G6d5dheHFACg==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3t9qbx76ha-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Sep 2023 17:43:53 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F3259100057;
+        Thu, 28 Sep 2023 17:43:48 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8F6EC24B8AC;
+        Thu, 28 Sep 2023 17:43:48 +0200 (CEST)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 28 Sep
+ 2023 17:43:46 +0200
+Message-ID: <3c232c26-e03c-31ec-8ec8-f99c86a3ab83@foss.st.com>
+Date:   Thu, 28 Sep 2023 17:43:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+Subject: Re: [PATCH v4 05/11] firewall: introduce stm32_firewall framework
+To:     Simon Horman <horms@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>, <linux-crypto@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
+ <20230811100731.108145-6-gatien.chevallier@foss.st.com>
+ <ZNeSiFQGdOXbR+2S@vergenet.net>
 Content-Language: en-US
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230928125443.615006-1-mitrutzceclan@gmail.com>
- <20230928125443.615006-2-mitrutzceclan@gmail.com>
-From:   Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
-In-Reply-To: <20230928125443.615006-2-mitrutzceclan@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <ZNeSiFQGdOXbR+2S@vergenet.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MISSING_HEADERS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.201.20.32]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-28_15,2023-09-28_02,2023-05-22_02
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/28/23 15:54, Dumitru Ceclan wrote:
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
+
+
+On 8/12/23 16:09, Simon Horman wrote:
+> On Fri, Aug 11, 2023 at 12:07:25PM +0200, Gatien Chevallier wrote:
 > 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ...
+> 
+>> diff --git a/drivers/bus/stm32_firewall.c b/drivers/bus/stm32_firewall.c
+>> new file mode 100644
+>> index 000000000000..900f3b052a66
+>> --- /dev/null
+>> +++ b/drivers/bus/stm32_firewall.c
+>> @@ -0,0 +1,293 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
+>> + */
+>> +
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bits.h>
+>> +#include <linux/bus/stm32_firewall_device.h>
+>> +#include <linux/device.h>
+>> +#include <linux/err.h>
+>> +#include <linux/init.h>
+>> +#include <linux/io.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_platform.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/types.h>
+>> +#include <linux/slab.h>
+>> +
+>> +#include "stm32_firewall.h"
+>> +
+>> +/* Corresponds to STM32_FIREWALL_MAX_EXTRA_ARGS + firewall ID */
+>> +#define STM32_FIREWALL_MAX_ARGS		(STM32_FIREWALL_MAX_EXTRA_ARGS + 1)
+>> +
+>> +static LIST_HEAD(firewall_controller_list);
+>> +static DEFINE_MUTEX(firewall_controller_list_lock);
+>> +
+>> +/* Firewall device API */
+>> +int stm32_firewall_get_firewall(struct device_node *np, struct stm32_firewall *firewall,
+>> +				unsigned int nb_firewall)
+>> +{
+>> +	struct stm32_firewall_controller *ctrl;
+>> +	struct of_phandle_iterator it;
+>> +	unsigned int i, j = 0;
+>> +	int err;
+>> +
+>> +	if (!firewall || !nb_firewall)
+>> +		return -EINVAL;
+>> +
+>> +	/* Parse property with phandle parsed out */
+>> +	of_for_each_phandle(&it, err, np, "feature-domains", "#feature-domain-cells", 0) {
+>> +		struct of_phandle_args provider_args;
+>> +		struct device_node *provider = it.node;
+>> +		const char *fw_entry;
+>> +		bool match = false;
+>> +
+>> +		if (err) {
+>> +			pr_err("Unable to get feature-domains property for node %s\n, err: %d",
+>> +			       np->full_name, err);
+>> +			of_node_put(provider);
+>> +			return err;
+>> +		}
+>> +
+>> +		if (j > nb_firewall) {
+>> +			pr_err("Too many firewall controllers");
+>> +			of_node_put(provider);
+>> +			return -EINVAL;
+>> +		}
+>> +
+>> +		provider_args.args_count = of_phandle_iterator_args(&it, provider_args.args,
+>> +								    STM32_FIREWALL_MAX_ARGS);
+>> +
+>> +		/* Check if the parsed phandle corresponds to a registered firewall controller */
+>> +		mutex_lock(&firewall_controller_list_lock);
+>> +		list_for_each_entry(ctrl, &firewall_controller_list, entry) {
+>> +			if (ctrl->dev->of_node->phandle == it.phandle) {
+>> +				match = true;
+>> +				firewall[j].firewall_ctrl = ctrl;
+>> +				break;
+>> +			}
+>> +		}
+>> +		mutex_unlock(&firewall_controller_list_lock);
+>> +
+>> +		if (!match) {
+>> +			firewall[j].firewall_ctrl = NULL;
+>> +			pr_err("No firewall controller registered for %s\n", np->full_name);
+>> +			of_node_put(provider);
+>> +			return -ENODEV;
+>> +		}
+>> +
+>> +		err = of_property_read_string_index(np, "feature-domain-names", j, &fw_entry);
+>> +		if (err == 0)
+>> +			firewall[j].entry = fw_entry;
+>> +
+>> +		/* Handle the case when there are no arguments given along with the phandle */
+>> +		if (provider_args.args_count < 0 ||
+>> +		    provider_args.args_count > STM32_FIREWALL_MAX_ARGS) {
+>> +			of_node_put(provider);
+>> +			return -EINVAL;
+>> +		} else if (provider_args.args_count == 0) {
+>> +			firewall[j].extra_args_size = 0;
+>> +			firewall[j].firewall_id = U32_MAX;
+>> +			j++;
+>> +			continue;
+>> +		}
+>> +
+>> +		/* The firewall ID is always the first argument */
+>> +		firewall[j].firewall_id = provider_args.args[0];
+>> +
+>> +		/* Extra args start at the third argument */
+>> +		for (i = 0; i < provider_args.args_count; i++)
+>> +			firewall[j].extra_args[i] = provider_args.args[i + 1];
+> 
+> Hi Gatien,
+> 
+> Above it is checked that the maximum value of provider_args.args_count is
+> STM32_FIREWALL_MAX_ARGS.
+> So here the maximum value of i is STM32_FIREWALL_MAX_ARGS - 1.
+> 
+> STM32_FIREWALL_MAX_ARGS is defined as STM32_FIREWALL_MAX_EXTRA_ARGS + 1
+> And STM32_FIREWALL_MAX_EXTRA_ARGS is defined as 5.
+> So the maximum value of i is (5 + 1 - 1) = 5.
+> 
+> firewall[j] is of type struct stm32_firewall.
+> And its args field has STM32_FIREWALL_MAX_EXTRA_ARGS (5) elements.
+> Thus the maximum valid index is (5 - 1) = 4.
+> 
+> But the line above may access index 5.
+> 
+> Flagged by Smatch.
+> 
 
-Forgot changelog
-V1 -> V2
+Hi Simon,
 
- - keep original out-of-tree AD7173 naming
- - remove gpio_cleanup
- - handle 32bit realbits offset case
- - use iio_device_claim_direct_mode, drop own mutex
- - use dev_err_probe
- - cleanup headers include
- - use GENMASK() and FIELD_PREP()
- - use HZ_PER_MHZ
- - change #ifdef GPIOLIB to if( IS_ENABLED(CONFIG_GPIOLIB)) 
- - use gpio-regmap
- - change boolean flag in info struct to number of gpios
- - NIH memset64
- - use struct pointers for config comparison
- - use spi_write_then_read for ADC reset
- - use stack allocated buffer for reset
- - define constant for reset sequence size
- - use kcalloc instead of kzalloc
- - change of naming to fw of dt parse function
- - change de-referencing chain to local variable dev in multiple locations
- - drop write_raw_get_fmt
- - add driver private data to spi_device_id table
- - use fsleep() instead of usleep_range()
- - put config value inline
- - align read/write raw arguments
- - remove zeroed values from channel templates structure
- - define constants for temperature sensor positive and negative inputs
- - always enable temperature channel
- - configure spi clock phase and polarity from driver
+Thank you for pointing this out.
 
- misc changes (test bit, return disable all, indentation fix, change statements to single line)
+I'll correct it for V5.
 
-
+Best regards,
+Gatien
+>> +
+>> +		/* Remove the firewall ID arg that is not an extra argument */
+>> +		firewall[j].extra_args_size = provider_args.args_count - 1;
+>> +
+>> +		j++;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(stm32_firewall_get_firewall);
+> 
+> ...
+> 
+>> diff --git a/include/linux/bus/stm32_firewall_device.h b/include/linux/bus/stm32_firewall_device.h
+>> new file mode 100644
+>> index 000000000000..7b4450a8ec15
+>> --- /dev/null
+>> +++ b/include/linux/bus/stm32_firewall_device.h
+>> @@ -0,0 +1,141 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +/*
+>> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
+>> + */
+>> +
+>> +#ifndef STM32_FIREWALL_DEVICE_H
+>> +#define STM32_FIREWALL_DEVICE_H
+>> +
+>> +#include <linux/of.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/types.h>
+>> +
+>> +#define STM32_FIREWALL_MAX_EXTRA_ARGS		5
+>> +
+>> +/* Opaque reference to stm32_firewall_controller */
+>> +struct stm32_firewall_controller;
+>> +
+>> +/**
+>> + * struct stm32_firewall - Information on a device's firewall. Each device can have more than one
+>> + *			   firewall.
+>> + *
+>> + * @firewall_ctrl:		Pointer referencing a firewall controller of the device. It is
+>> + *				opaque so a device cannot manipulate the controller's ops or access
+>> + *				the controller's data
+>> + * @extra_args:			Extra arguments that are implementation dependent
+>> + * @entry:			Name of the firewall entry
+>> + * @extra_args_size:		Number of extra arguments
+>> + * @firewall_id:		Firewall ID associated the device for this firewall controller
+>> + */
+>> +struct stm32_firewall {
+>> +	struct stm32_firewall_controller *firewall_ctrl;
+>> +	u32 extra_args[STM32_FIREWALL_MAX_EXTRA_ARGS];
+>> +	const char *entry;
+>> +	size_t extra_args_size;
+>> +	u32 firewall_id;
+>> +};
+> 
+> ...

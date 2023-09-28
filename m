@@ -2,88 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 538127B218A
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 17:44:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E22E7B2254
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 18:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbjI1Pok (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 11:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
+        id S230225AbjI1Qam (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Sep 2023 12:30:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231669AbjI1Poj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 11:44:39 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22916AC;
-        Thu, 28 Sep 2023 08:44:36 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38SE466G015807;
-        Thu, 28 Sep 2023 17:43:53 +0200
+        with ESMTP id S230212AbjI1Qal (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 12:30:41 -0400
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39332195;
+        Thu, 28 Sep 2023 09:30:37 -0700 (PDT)
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38SE6rKI005085;
+        Thu, 28 Sep 2023 18:30:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
         message-id:date:mime-version:subject:to:cc:references:from
         :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=6T7vbZG0OatVCzrOUmocqe0etbqi1byTjrfN1YkQoYE=; b=fL
-        9+e7J6OIfXQpnq6WHBL/m56cPdxye7XORHa4e/GNn4iRdwCB0xFD6o9ZYQAKjon0
-        f5HUbpw4Ix0frpU2kvNOCKVFEwvWJkKOW73YVT5JyV0zLHgtzzUoWl3F6cNmAKyb
-        UMJPEsjoC/guC48wUILQSbN7Si/bPAqspVm4Q3K3XGjySUlhB1Ii3rkoxn0sLfEZ
-        QTCJA/iLyCDE7Z3wF+OtyrjFecFf1Iv05IMiVA3on6mQuM8jXNiIL8GzxWIOG19k
-        bvhuhV8dKqjrhD3PqRPht1jClNa+HxVU65W9phEQjlLo203IyNwiok9UQGizuRnh
-        T6hK4Mp3G6d5dheHFACg==
+        selector1; bh=bvNBbixCloH7Xwi0TBlRlSpUDysnojk2/mk/b9mk82s=; b=OE
+        qrDHxWrynswCpqkMRL7maWIqAY9AHEWgPJi7PnKwTfsUxFxo1j3SFz1fMj/fZ7Wk
+        hu78ESseC/t8fqHsmDn3n5urW1QCSVRGCV/LYoZ8rnui/u4mY4+HL3bPSPcuUH24
+        nESrdAfUJ//GfsGu4tMO2xtR9QYY4S6QNED2JQ14oT5/seyliiKwsjypEVPk2djk
+        9dACpGQc5wjJmInNV4gqMBE+mPpZhY5x8wOC+ScUnX+xmPsnr4DA1/otDmHNhROd
+        EPiHgDalc4KLZzLRlAyfAQWo7VXpJoZNlZ6LVTCjVaijzNnvcsgQ64OD7cxjLGS4
+        rkScfsuF32ORkjS4ZfXg==
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3t9qbx76ha-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3taayhwtb8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 28 Sep 2023 17:43:53 +0200 (MEST)
+        Thu, 28 Sep 2023 18:30:19 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F3259100057;
-        Thu, 28 Sep 2023 17:43:48 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 63075100057;
+        Thu, 28 Sep 2023 18:30:18 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8F6EC24B8AC;
-        Thu, 28 Sep 2023 17:43:48 +0200 (CEST)
-Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 597E825AF14;
+        Thu, 28 Sep 2023 18:30:18 +0200 (CEST)
+Received: from [10.201.20.178] (10.201.20.178) by SHFDAG1NODE1.st.com
  (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 28 Sep
- 2023 17:43:46 +0200
-Message-ID: <3c232c26-e03c-31ec-8ec8-f99c86a3ab83@foss.st.com>
-Date:   Thu, 28 Sep 2023 17:43:35 +0200
+ 2023 18:30:17 +0200
+Message-ID: <efc6590f-be79-3cb5-3264-f11a4e0c372c@foss.st.com>
+Date:   Thu, 28 Sep 2023 18:30:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v4 05/11] firewall: introduce stm32_firewall framework
-To:     Simon Horman <horms@kernel.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <vkoul@kernel.org>, <jic23@kernel.org>,
-        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
-        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
-        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
-        <catalin.marinas@arm.com>, <arnd@kernel.org>,
-        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
-        <peng.fan@oss.nxp.com>, <linux-crypto@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
- <20230811100731.108145-6-gatien.chevallier@foss.st.com>
- <ZNeSiFQGdOXbR+2S@vergenet.net>
+Subject: Re: [RFC v2 01/11] iio: introduce iio backend device
 Content-Language: en-US
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <ZNeSiFQGdOXbR+2S@vergenet.net>
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        "Fabrice GASNIER" <fabrice.gasnier@st.com>
+References: <20230727150324.1157933-1-olivier.moysan@foss.st.com>
+ <20230727150324.1157933-2-olivier.moysan@foss.st.com>
+ <7ec3fe6183409c218b97a3359e951731b47fe16d.camel@gmail.com>
+ <095f9c64-bcac-e838-ba69-b5df623c444f@foss.st.com>
+ <8b63cad8749ceca31d2f50ee36925ce18523620f.camel@gmail.com>
+ <9cf91ed4-8d57-6d84-1767-708a296803b9@foss.st.com>
+ <7704da82b99730da5f62668246ba4249000a52f9.camel@gmail.com>
+ <75287793-a1c1-9b61-73aa-a2cf8d61dac2@foss.st.com>
+ <311803c091a70b2c242592eab267079db86f85f9.camel@gmail.com>
+ <c25d404fa19c03cafc6dfe70b964369c7c773849.camel@gmail.com>
+ <8991b1a2-d9bf-c04d-81e4-5ce60da579ab@foss.st.com>
+ <60e913e81ce67192ed0449fe7b718434fd360d97.camel@gmail.com>
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+In-Reply-To: <60e913e81ce67192ed0449fe7b718434fd360d97.camel@gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.20.32]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.201.20.178]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
  (10.75.129.69)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-28_15,2023-09-28_02,2023-05-22_02
+ definitions=2023-09-28_16,2023-09-28_02,2023-05-22_02
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -93,204 +84,440 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Nuno,
 
+On 9/28/23 09:15, Nuno Sá wrote:
+> Hi Olivier,
+> 
+> On Tue, 2023-09-26 at 18:44 +0200, Olivier MOYSAN wrote:
+>> Hi Nuno,
+>>
+>> On 9/25/23 08:48, Nuno Sá wrote:
+>>> Hi Olivier,
+>>>
+>>> On Fri, 2023-09-22 at 10:53 +0200, Nuno Sá wrote:
+>>>> Hi Olivier,
+>>>>
+>>>> Sorry for the delay...
+>>>>
+>>>> On Mon, 2023-09-18 at 17:52 +0200, Olivier MOYSAN wrote:
+>>>>> Hi Nuno
+>>>>>
+>>>>> On 9/11/23 11:39, Nuno Sá wrote:
+>>>>>> On Tue, 2023-09-05 at 12:06 +0200, Olivier MOYSAN wrote:
+>>>>>>> Hi Nuno,
+>>>>>>>
+>>>>>>> On 9/1/23 10:01, Nuno Sá wrote:
+>>>>>>>> Hi Olivier,
+>>>>>>>>
+>>>>>>>> On Thu, 2023-08-31 at 18:14 +0200, Olivier MOYSAN wrote:
+>>>>>>>>> Hi Nuno,
+>>>>>>>>>
+>>>>>>>>> On 7/28/23 10:42, Nuno Sá wrote:
+>>>>>>>>>> Hi Olivier,
+>>>>>>>>>>
+>>>>>>>>>> On Thu, 2023-07-27 at 17:03 +0200, Olivier Moysan wrote:
+>>>>>>>>>>> Add a new device type in IIO framework.
+>>>>>>>>>>> This backend device does not compute channel attributes and does
+>>>>>>>>>>> not
+>>>>>>>>>>> expose
+>>>>>>>>>>> them through sysfs, as done typically in iio-rescale frontend
+>>>>>>>>>>> device.
+>>>>>>>>>>> Instead, it allows to report information applying to channel
+>>>>>>>>>>> attributes through callbacks. These backend devices can be
+>>>>>>>>>>> cascaded
+>>>>>>>>>>> to represent chained components.
+>>>>>>>>>>> An IIO device configured as a consumer of a backend device can
+>>>>>>>>>>> compute
+>>>>>>>>>>> the channel attributes of the whole chain.
+>>>>>>>>>>>
+>>>>>>>>>>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>>>>>>>>>>> ---
+>>>>>>>>>>>       drivers/iio/Makefile               |   1 +
+>>>>>>>>>>>       drivers/iio/industrialio-backend.c | 107
+>>>>>>>>>>> +++++++++++++++++++++++++++++
+>>>>>>>>>>>       include/linux/iio/backend.h        |  56 +++++++++++++++
+>>>>>>>>>>>       3 files changed, 164 insertions(+)
+>>>>>>>>>>>       create mode 100644 drivers/iio/industrialio-backend.c
+>>>>>>>>>>>       create mode 100644 include/linux/iio/backend.h
+>>>>>>>>>>>
+>>>>>>>>>>> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+>>>>>>>>>>> index 9622347a1c1b..9b59c6ab1738 100644
+>>>>>>>>>>> --- a/drivers/iio/Makefile
+>>>>>>>>>>> +++ b/drivers/iio/Makefile
+>>>>>>>>>>> @@ -5,6 +5,7 @@
+>>>>>>>>>>>       
+>>>>>>>>>>>       obj-$(CONFIG_IIO) += industrialio.o
+>>>>>>>>>>>       industrialio-y := industrialio-core.o industrialio-event.o
+>>>>>>>>>>> inkern.o
+>>>>>>>>>>> +industrialio-$(CONFIG_IIO_BACKEND) += industrialio-backend.o
+>>>>>>>>>>>       industrialio-$(CONFIG_IIO_BUFFER) += industrialio-buffer.o
+>>>>>>>>>>>       industrialio-$(CONFIG_IIO_TRIGGER) += industrialio-trigger.o
+>>>>>>>>>>>       
+>>>>>>>>>>> diff --git a/drivers/iio/industrialio-backend.c
+>>>>>>>>>>> b/drivers/iio/industrialio-
+>>>>>>>>>>> backend.c
+>>>>>>>>>>> new file mode 100644
+>>>>>>>>>>> index 000000000000..7d0625889873
+>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>> +++ b/drivers/iio/industrialio-backend.c
+>>>>>>>>>>> @@ -0,0 +1,107 @@
+>>>>>>>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>>>>>>>> +/* The industrial I/O core, backend handling functions
+>>>>>>>>>>> + *
+>>>>>>>>>>> + */
+>>>>>>>>>>> +
+>>>>>>>>>>> +#include <linux/kernel.h>
+>>>>>>>>>>> +#include <linux/device.h>
+>>>>>>>>>>> +#include <linux/property.h>
+>>>>>>>>>>> +#include <linux/iio/iio.h>
+>>>>>>>>>>> +#include <linux/iio/backend.h>
+>>>>>>>>>>> +
+>>>>>>>>>>> +static DEFINE_IDA(iio_backend_ida);
+>>>>>>>>>>> +
+>>>>>>>>>>> +#define to_iio_backend(_device) container_of((_device), struct
+>>>>>>>>>>> iio_backend,
+>>>>>>>>>>> dev)
+>>>>>>>>>>> +
+>>>>>>>>>>> +static void iio_backend_release(struct device *device)
+>>>>>>>>>>> +{
+>>>>>>>>>>> +       struct iio_backend *backend = to_iio_backend(device);
+>>>>>>>>>>> +
+>>>>>>>>>>> +       kfree(backend->name);
+>>>>>>>>>>> +       kfree(backend);
+>>>>>>>>>>> +}
+>>>>>>>>>>> +
+>>>>>>>>>>> +static const struct device_type iio_backend_type = {
+>>>>>>>>>>> +       .release = iio_backend_release,
+>>>>>>>>>>> +       .name = "iio_backend_device",
+>>>>>>>>>>> +};
+>>>>>>>>>>> +
+>>>>>>>>>>> +struct iio_backend *iio_backend_alloc(struct device *parent)
+>>>>>>>>>>> +{
+>>>>>>>>>>> +       struct iio_backend *backend;
+>>>>>>>>>>> +
+>>>>>>>>>>> +       backend = devm_kzalloc(parent, sizeof(*backend),
+>>>>>>>>>>> GFP_KERNEL);
+>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> No error checking.
+>>>>>>>>>>
+>>>>>>>>>> I guess a lot of cleanings are still missing but the important
+>>>>>>>>>> thing
+>>>>>>>>>> I
+>>>>>>>>>> wanted to
+>>>>>>>>>> notice is that the above pattern is not ok.
+>>>>>>>>>> Your 'struct iio_backend *backend'' embeds a 'stuct device' which
+>>>>>>>>>> is
+>>>>>>>>>> a
+>>>>>>>>>> refcounted object. Nevertheless, you're binding the lifetime of
+>>>>>>>>>> your
+>>>>>>>>>> object to
+>>>>>>>>>> the parent device and that is wrong. The reason is that as soon as
+>>>>>>>>>> your
+>>>>>>>>>> parent
+>>>>>>>>>> device get's released or just unbinded from it's driver, all the
+>>>>>>>>>> devres
+>>>>>>>>>> stuff
+>>>>>>>>>> (including your 'struct iio_backend' object) will be released
+>>>>>>>>>> independentof
+>>>>>>>>>> your 'struct device' refcount value...
+>>>>>>>>>>
+>>>>>>>>>> So, you might argue this won't ever be an issue in here but the
+>>>>>>>>>> pattern
+>>>>>>>>>> is still
+>>>>>>>>>> wrong. There are some talks about this, the last one was given at
+>>>>>>>>>> the
+>>>>>>>>>> latest
+>>>>>>>>>> EOSS:
+>>>>>>>>>>
+>>>>>>>>>> https://www.youtube.com/watch?v=HCiJL7djGw8&list=PLbzoR-pLrL6pY8a8zSKRC6-AihFrruOkq&index=27&ab_channel=TheLinuxFoundation
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> This is a good point. Thanks for pointing it out. Sure, there are
+>>>>>>>>> still
+>>>>>>>>> many things to improve.
+>>>>>>>>>
+>>>>>>>>> I have seen the comment from Jonathan on your "Add converter
+>>>>>>>>> framework"
+>>>>>>>>> serie. I had a quick look at the serie. It seems that we share the
+>>>>>>>>> need
+>>>>>>>>> to aggregate some IIO devices. But I need to read it more carefully
+>>>>>>>>> to
+>>>>>>>>> check if we can find some convergences here.
+>>>>>>>>
+>>>>>>>> Yeah, In my case, the backend devices are typically FPGA soft cores and
+>>>>>>>> the
+>>>>>>>> aggregate
+>>>>>>>> device might connect to multiple of these backends. That was one of the
+>>>>>>>> reason why I
+>>>>>>>> used the component API where the aggregate device is only configured
+>>>>>>>> when
+>>>>>>>> all the
+>>>>>>>> devices are probed. Similarly, when one of them is unbind, the whole
+>>>>>>>> thing
+>>>>>>>> should be
+>>>>>>>> torn down. Also, in my case, the frontend device needs to do a lot of
+>>>>>>>> setup
+>>>>>>>> on the
+>>>>>>>> backend device so the whole thing works (so I do have/need a lot more
+>>>>>>>> .ops).
+>>>>>>>>
+>>>>>>>> Anyways, it does not matter much what the backend device is and from a
+>>>>>>>> first
+>>>>>>>> glance
+>>>>>>>> and looking at the .ops you have, it seems that this could easily be
+>>>>>>>> supported in the
+>>>>>>>> framework I'm adding. The only things I'm seeing are:
+>>>>>>>
+>>>>>>> Thanks for your feedback. Yes, my feeling is that the API I need for the
+>>>>>>> dfsdm use case, can be covered by the API you propose. I'm not familiar
+>>>>>>> with component API however, as I discovered it in your serie. It is not
+>>>>>>> clear for me how this affects device tree description of the hardware.
+>>>>>>
+>>>>>> Your aggregate device (that we can think of as a frontend device needs to
+>>>>>> properly reference all the backends it needs - in your case I guess it's
+>>>>>> just
+>>>>>> one device). The dts properties I have for now are 'converters' and
+>>>>>> 'converter-
+>>>>>> names'. But one thing that starts to become clear to me is that I should
+>>>>>> probably change the name for the framework. Maybe industrialio-aggregate.c
+>>>>>> if we
+>>>>>> keep the component API (and so the same frontend + backend naming) or just
+>>>>>> industrialio-backend.c (as you have now) if we go with a typical OF lookup.
+>>>>>>
+>>>>>
+>>>>> In my case I have a digital filter peripheral (frontend) linked to
+>>>>> several sigma delta converters (backends). So, here 'converters'
+>>>>> property may be relevant as well. But I agree that a more generic name
+>>>>> seems better for the long term.
+>>>>>
+>>>>> My backend devices need to get a regulator phandle from the device tree.
+>>>>> It seems that the component API does not offer services allowing to
+>>>>> retrieve DT properties for the sub-devices. Tell me if I'm wrong, but I
+>>>>> think this constraint require to change converter framework to a typical
+>>>>> OF lookup.
+>>>>>
+>>>>> Could you please share the structure of your DT for your ad9476 based
+>>>>> example ? This will help me identify the gaps regarding my need.
+>>>>>
+>>>>
+>>>> I might be missing something but there should be no limitation in the component
+>>>> stuff for this. Note your frontend/backend devices are just normal device tree
+>>>> nodes (meaning that they can have all the properties they want as a normal
+>>>> node)
+>>>> and then in the correspondent drivers you handle all the properties. For now,
+>>>> the only FW properties supported in the framework I sent are 'converters' and
+>>>> 'converter-name' which will be used to "create" the aggregate device. This
+>>>> pretty much means that the complete thing should only come up when all the
+>>>> devices you set in DT probe.
+>>>>
+>>>> Of course we can move more properties into the framework if we start to see
+>>>> some
+>>>> generic ones that are almost always present...
+>>>>
+>>>> One thing that Jonathan already mentioned is that the component API works in a
+>>>> away that you can have either 1->1 or 1->N (frontends->backends). So, if you
+>>>> have setups where you have more than one frontend (basically M->N) we need to
+>>>> make sure it still works. In theory (in the component API), I think you can
+>>>> have
+>>>> one backend associated with more than one frontend so we should be able to
+>>>> still
+>>>> get the M->N topology. Of course the "communications link" is always between
+>>>> frontend -> backend.
+>>>>
+>>>> I'll see if I send the devicetree over the weekend (don't have it in my current
+>>>> machine)
+>>>>
+>>>>
+>>>
+>>> Here it goes the 2 nodes of interest in my testing...
+>>>
+>>> adc_ad9467: ad9467@0 {
+>>>           compatible = "adi,ad9467";
+>>>           reg = <0>;
+>>>
+>>>           dmas = <&rx_dma 0>;
+>>>           dma-names = "rx";
+>>>
+>>>           spi-max-frequency = <10000000>;
+>>>           adi,spi-3wire-enable;
+>>>
+>>>           clocks = <&clk_ad9517 3>;
+>>>           clock-names = "adc-clk";
+>>>
+>>>           converters = <&cf_ad9467_core_0>;
+>>> };
+>>>
+>>> cf_ad9467_core_0: cf-ad9467-core-lpc@44a00000 {
+>>>           compatible = "adi,axi-adc-10.0.a";
+>>>           reg = <0x44A00000 0x10000>;
+>>>
+>>>           clocks = <&clkc 16>;
+>>> };
+>>>
+>>> Naturally, converter-names only makes sense when you have more than one backend.
+>>> But
+>>> see that in 'cf_ad9467_core_0', you are free to place a regulator (as I have a
+>>> clock)
+>>> as long as you handle it in the backend driver.
+>>>
+>>> - Nuno Sá
+>>
+>> Thanks for the example. This helped me prototyping a dfsdm driver based
+>> on the converter framework. Regarding device tree and driver update this
+>> looks fine. I could integrate the API smartly in my frontend (dfsdm) and
+>> backend (sd modulator).
+>>
+>> My prototype executes up to probe. I have noticed however that init
+>> (backend & frontend) ops are not called in my implementation. I can see
+>> that init ops are called from bind ops. component_bind_all() calls
+> 
+> Note that you need to call converter_frontend_add() from your frontend device (stm32-
+> dfsdm-adc) probe function and converter_add() from your backend's probes. And
+> ideally, this is the only thing you do at probe. Then, once all the elements are
+> probed, the complete aggregate device is initialised and the .bind()/.init() function
+> should be called.
+> 
+> And I want to reinforce the above, in the component API, things will only come up
+> when all the pieces (all the converters you specified in DT) are probed. The same is
+> true if one of the elements is unbound from it's driver - all the other elements in
+> the aggregate device will be torn down and converter_frontend_unbind() will be
+> called. This means it's an all or nothing solution... Let me know if this does not
+> work for you.
+> 
+>> converter bind ops, but component_bind_all() is called from converter
+>> bind ops. So, I don't understand how initialization can proceed with
+>> these circular calls. Maybe I missed something here.
+>>
+> 
+> This one I'm not following... component_bind_all() should be called from
+> converter_frontend_bind() and this will call all converter_bind() you have (depends
+> on how many backends you have). After all backends are initialized, .frontend_init()
+> is called. In there, if you need (most likely you do) an handle to a converter you
+> then need to call converter_get(). So, component_bind_all() should not be called from
+> converter bind ops but from frontend_component_ops which are the
+> component_master_ops. If this is not happening, then we have an issue :)
+> 
 
-On 8/12/23 16:09, Simon Horman wrote:
-> On Fri, Aug 11, 2023 at 12:07:25PM +0200, Gatien Chevallier wrote:
-> 
-> ...
-> 
->> diff --git a/drivers/bus/stm32_firewall.c b/drivers/bus/stm32_firewall.c
->> new file mode 100644
->> index 000000000000..900f3b052a66
->> --- /dev/null
->> +++ b/drivers/bus/stm32_firewall.c
->> @@ -0,0 +1,293 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
->> + */
->> +
->> +#include <linux/bitfield.h>
->> +#include <linux/bits.h>
->> +#include <linux/bus/stm32_firewall_device.h>
->> +#include <linux/device.h>
->> +#include <linux/err.h>
->> +#include <linux/init.h>
->> +#include <linux/io.h>
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +#include <linux/of.h>
->> +#include <linux/of_platform.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/types.h>
->> +#include <linux/slab.h>
->> +
->> +#include "stm32_firewall.h"
->> +
->> +/* Corresponds to STM32_FIREWALL_MAX_EXTRA_ARGS + firewall ID */
->> +#define STM32_FIREWALL_MAX_ARGS		(STM32_FIREWALL_MAX_EXTRA_ARGS + 1)
->> +
->> +static LIST_HEAD(firewall_controller_list);
->> +static DEFINE_MUTEX(firewall_controller_list_lock);
->> +
->> +/* Firewall device API */
->> +int stm32_firewall_get_firewall(struct device_node *np, struct stm32_firewall *firewall,
->> +				unsigned int nb_firewall)
->> +{
->> +	struct stm32_firewall_controller *ctrl;
->> +	struct of_phandle_iterator it;
->> +	unsigned int i, j = 0;
->> +	int err;
->> +
->> +	if (!firewall || !nb_firewall)
->> +		return -EINVAL;
->> +
->> +	/* Parse property with phandle parsed out */
->> +	of_for_each_phandle(&it, err, np, "feature-domains", "#feature-domain-cells", 0) {
->> +		struct of_phandle_args provider_args;
->> +		struct device_node *provider = it.node;
->> +		const char *fw_entry;
->> +		bool match = false;
->> +
->> +		if (err) {
->> +			pr_err("Unable to get feature-domains property for node %s\n, err: %d",
->> +			       np->full_name, err);
->> +			of_node_put(provider);
->> +			return err;
->> +		}
->> +
->> +		if (j > nb_firewall) {
->> +			pr_err("Too many firewall controllers");
->> +			of_node_put(provider);
->> +			return -EINVAL;
->> +		}
->> +
->> +		provider_args.args_count = of_phandle_iterator_args(&it, provider_args.args,
->> +								    STM32_FIREWALL_MAX_ARGS);
->> +
->> +		/* Check if the parsed phandle corresponds to a registered firewall controller */
->> +		mutex_lock(&firewall_controller_list_lock);
->> +		list_for_each_entry(ctrl, &firewall_controller_list, entry) {
->> +			if (ctrl->dev->of_node->phandle == it.phandle) {
->> +				match = true;
->> +				firewall[j].firewall_ctrl = ctrl;
->> +				break;
->> +			}
->> +		}
->> +		mutex_unlock(&firewall_controller_list_lock);
->> +
->> +		if (!match) {
->> +			firewall[j].firewall_ctrl = NULL;
->> +			pr_err("No firewall controller registered for %s\n", np->full_name);
->> +			of_node_put(provider);
->> +			return -ENODEV;
->> +		}
->> +
->> +		err = of_property_read_string_index(np, "feature-domain-names", j, &fw_entry);
->> +		if (err == 0)
->> +			firewall[j].entry = fw_entry;
->> +
->> +		/* Handle the case when there are no arguments given along with the phandle */
->> +		if (provider_args.args_count < 0 ||
->> +		    provider_args.args_count > STM32_FIREWALL_MAX_ARGS) {
->> +			of_node_put(provider);
->> +			return -EINVAL;
->> +		} else if (provider_args.args_count == 0) {
->> +			firewall[j].extra_args_size = 0;
->> +			firewall[j].firewall_id = U32_MAX;
->> +			j++;
->> +			continue;
->> +		}
->> +
->> +		/* The firewall ID is always the first argument */
->> +		firewall[j].firewall_id = provider_args.args[0];
->> +
->> +		/* Extra args start at the third argument */
->> +		for (i = 0; i < provider_args.args_count; i++)
->> +			firewall[j].extra_args[i] = provider_args.args[i + 1];
-> 
-> Hi Gatien,
-> 
-> Above it is checked that the maximum value of provider_args.args_count is
-> STM32_FIREWALL_MAX_ARGS.
-> So here the maximum value of i is STM32_FIREWALL_MAX_ARGS - 1.
-> 
-> STM32_FIREWALL_MAX_ARGS is defined as STM32_FIREWALL_MAX_EXTRA_ARGS + 1
-> And STM32_FIREWALL_MAX_EXTRA_ARGS is defined as 5.
-> So the maximum value of i is (5 + 1 - 1) = 5.
-> 
-> firewall[j] is of type struct stm32_firewall.
-> And its args field has STM32_FIREWALL_MAX_EXTRA_ARGS (5) elements.
-> Thus the maximum valid index is (5 - 1) = 4.
-> 
-> But the line above may access index 5.
-> 
-> Flagged by Smatch.
-> 
+A quick update to my previous feedback:
+As you mentioned it in the converter fw serie, 
+component_compare_fwnode() and component_release_fwnode() patch is not 
+included. By default I used the component_release_of() and 
+component_compare_of() from the component API. This was not the best 
+idea. With a correct compare function the init callbacks are actually 
+called. So, no real issue here :-)
 
-Hi Simon,
+Olivier
 
-Thank you for pointing this out.
-
-I'll correct it for V5.
-
-Best regards,
-Gatien
->> +
->> +		/* Remove the firewall ID arg that is not an extra argument */
->> +		firewall[j].extra_args_size = provider_args.args_count - 1;
->> +
->> +		j++;
->> +	}
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(stm32_firewall_get_firewall);
+>> The change in the DT has an impact (But moderated) on legacy. Breaking
+>> the legacy was unavoidable anyway.
+>>
+>> DFSDM legacy binding (with two channels)
+>>         dfsdm_pdm1: filter@1 {
+>>           compatible = "st,stm32-dfsdm-adc";
+>>           st,adc-channels = <2 3>;
+>>           st,adc-channel-types = "SPI_R", "SPI_R";
+>>           ...
+>>           io-channels = <&sd_adc2 &sd_adc3>;
+>>         };
+>>
+>> DFSDM binding with converter fw
+>>       dfsdm_pdm1: filter@1 {
+>>           compatible = "st,stm32-dfsdm-adc";
+>>           st,adc-channels = <2 3>;
+>>           st,adc-channel-types = "SPI_R", "SPI_R";
+>>           ...
+>>           converters = <&sd_adc2 &sd_adc3>;
+>>         };
+>>
+>> I have also the aim to change DFSDM bindings to use IIO generic channels
+>> bindings (bindings/iio/adc/adc.yaml).
+>>
+>> Ideally the DFSDM bindings should looks like this:
+>>         dfsdm_pdm1: filter@1 {
+>>           compatible = "st,stm32-dfsdm-adc";
+>>           channel@2 {
+>>                   reg = <2>;
+>>                   st,adc-channel-types = "SPI_R";
+>>                   ...
+>>                   converters = <&sd_adc2>;
+>>           };
+>>           channel@3 {
+>>                   reg = <3>;
+>>                   st,adc-channel-types = "SPI_R";
+>>                   ...
+>>                   converters = <&sd_adc3>;
+>>           };
+>>         };
+>>
+>> But it seems that current framework converter API cannot support this
+>> topology.
+>>
 > 
-> ...
+> Indeed this won't work and I honestly it never crossed my mind ehehe,
 > 
->> diff --git a/include/linux/bus/stm32_firewall_device.h b/include/linux/bus/stm32_firewall_device.h
->> new file mode 100644
->> index 000000000000..7b4450a8ec15
->> --- /dev/null
->> +++ b/include/linux/bus/stm32_firewall_device.h
->> @@ -0,0 +1,141 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
->> + */
->> +
->> +#ifndef STM32_FIREWALL_DEVICE_H
->> +#define STM32_FIREWALL_DEVICE_H
->> +
->> +#include <linux/of.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/types.h>
->> +
->> +#define STM32_FIREWALL_MAX_EXTRA_ARGS		5
->> +
->> +/* Opaque reference to stm32_firewall_controller */
->> +struct stm32_firewall_controller;
->> +
->> +/**
->> + * struct stm32_firewall - Information on a device's firewall. Each device can have more than one
->> + *			   firewall.
->> + *
->> + * @firewall_ctrl:		Pointer referencing a firewall controller of the device. It is
->> + *				opaque so a device cannot manipulate the controller's ops or access
->> + *				the controller's data
->> + * @extra_args:			Extra arguments that are implementation dependent
->> + * @entry:			Name of the firewall entry
->> + * @extra_args_size:		Number of extra arguments
->> + * @firewall_id:		Firewall ID associated the device for this firewall controller
->> + */
->> +struct stm32_firewall {
->> +	struct stm32_firewall_controller *firewall_ctrl;
->> +	u32 extra_args[STM32_FIREWALL_MAX_EXTRA_ARGS];
->> +	const char *entry;
->> +	size_t extra_args_size;
->> +	u32 firewall_id;
->> +};
+>> As a fallback solution the following binding may be adopted
+>>         dfsdm_pdm1: filter@1 {
+>>           compatible = "st,stm32-dfsdm-adc";
+>>           channel@2 {
+>>                   reg = <2>;
+>>                   st,adc-channel-types = "SPI_R";
+>>                   ...
+>>           };
+>>           channel@3 {
+>>                   reg = <3>;
+>>                   st,adc-channel-types = "SPI_R";
+>>                   ...
+>>           };
+>>           converters = <&sd_adc2 &sd_adc3>;
+>>
+>> In this case the frontend driver needs a mean to map backend and
+>> channels. It's not the smartest solution, yet. Especially since the use
+>> of generic channel is quite common.
 > 
-> ...
+> Yeah, I'm also not a fan of that... To support the above topology and from the top of
+> my head we could either:
+> 
+> 1) Somehow split converter_frontend_add() to give more control to the caller to call
+> converter_frontend_add_matches() and in this case have another API that accepts a
+> fwnode.
+> 
+> 2) Just extend converter_frontend_add_matches() so that we also look into child nodes
+> for 'converters'
+> 
+> Then, on the get() side, we would need something like converters_get_from_fwnode() to
+> get each handle. I would likely prefer to go with 2) because 1) already implies some
+> FW parsing during probe that I would like to avoid.
+> 
+> Anyways the above is already showing that maybe going with the component API for
+> something more generic might be a stretch and harder to scale for everyone needs.
+> With an OF lookup, the above topology would be easier to accomplish (though we would
+> always need a converters_get_from_fwnode() kind of function).
+> 
+> When you say:
+> 
+> "In this case the frontend driver needs a mean to map backend and channels."
+> 
+> Could 'converter-names' be used for the above? Or would the above be trivial with an
+> OF lookup?
+> 
+>> Perhaps the converter_frontend_add() API needs to be extended to support
+>> generic channel configuration. Maybe the IIO core should provide the
+>> related helpers as well. (As far as I know this does not exists).
+>> So, still opened questions ..
+>>
+> 
+> No sure what do you mean by the above?
+> 
+>> That said, I feel confident that the converter framework is a good
+>> option for the DFSDM use case.
+>>
+> 
+> Yeah, I'm also confident that we can get something that suits both our usecases
+> either with OF or component. I must say that I'm tempted to send a version of this
+> with an OF lookup just so we get a look on how it would look like and compare against
+> the component API.
+> 
+> - Nuno Sá
+>>>>

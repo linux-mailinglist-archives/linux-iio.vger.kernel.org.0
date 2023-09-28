@@ -2,73 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 993827B164B
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 10:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A4EA7B1D15
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 14:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231365AbjI1Ipw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 04:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43054 "EHLO
+        id S232576AbjI1Mzv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Sep 2023 08:55:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbjI1Ipu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 04:45:50 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5128AB7;
-        Thu, 28 Sep 2023 01:45:46 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c16bc71e4cso108624921fa.0;
-        Thu, 28 Sep 2023 01:45:46 -0700 (PDT)
+        with ESMTP id S232583AbjI1Mzt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 08:55:49 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BAC31A1;
+        Thu, 28 Sep 2023 05:55:47 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9b2b53e17feso402534566b.3;
+        Thu, 28 Sep 2023 05:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695890744; x=1696495544; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=50z2MEUhAPtqMgr4yb84Qg2LVyVTcD2ZWZZsvEtxjSs=;
-        b=QJF7C+6dBNexSQYn56wTFlp6bGfP9U6D8KJP2RTqa5Rixtq8OTMixFpEaGDGq984h4
-         ypThsIKGbKpngEToMI94qa7upDJDHj8KTupGtvk+IM7gl7M0/foe3dQEpvoCmy+GN+Zt
-         +8r3RQa6qctd1ilhSidIYukAnGo5tvwn02DtKoLUEbiY3OOx6jhWT3VjYSAeJboJp5Fi
-         iWd/wrAU2/M7anPGFbE9v6u1Bmc3/COXKhYRubzM5kbwWDfSoq3Z+R0Wp0i+GrMYBN4O
-         3e58qr+/P6py9pz1pzGb4pGZ/5IPI0T6mBD8bB3YZL0KeVhXDPpQx+YE2rAaekaItJ87
-         +Ihw==
+        d=gmail.com; s=20230601; t=1695905746; x=1696510546; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IjmABsbUI05o+ZavzLjhEq7Z627HD3chbAFdNF0zJvg=;
+        b=TTkMQLk3I9njcpf5hQueq9cEVDSpBsxvD8SLqRsJd5tnzvMFx5Hm9Fvm6x6ydx7OkU
+         U9NXh3dzbxO2ybpQHySKW/doHH/wCJI1UqmJYT6ckEF1DpB4mvifFVbmePirP/7qhrln
+         J/UBY8Xj76jcB3ZBnDPkLtpncsi7K4XA1eBFHewnpN6K3vMTIfXf1DLPCTbN4nJl+r76
+         fOdN7s+72pndChPOpSWAIffVbymUGXBxKIV91zmvplOhYNjNOnPrZzDQaFJSG3RsqfhW
+         fzVGGrQ4YaG5cWn+PqzPDiDazV+jJwPPqO2+3KpkiYZ37Z/4rWfkolKAhY2X3TwIWD9w
+         k1rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695890744; x=1696495544;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=50z2MEUhAPtqMgr4yb84Qg2LVyVTcD2ZWZZsvEtxjSs=;
-        b=XZYm+9qcBu9kABuGl4Q2UiJF/0OBT6DYN0AufmtXoVordtLhul2/zkm5CMfEHrbfw8
-         1isUXZ5/xq33/8XTUNOT2klNGZr4MNqXt9mg8a3OJwFrTczSYD5LE1wzMk5NRDdtc2b3
-         fxR/961nFoFbHzaAj8d6H+C3RAbl71Gniez9JWoA28YrMmK4S/wrrSEbAYn19o2dpeYx
-         SNbSaJhjBP4jjZYMCc9v6CxBd7vExRBf8ZeDQSTdP01g8m2+QxQcg73y7E1z18jSOv1d
-         XWy2Q5llxKV8rQ/Eb0Em6X0XQzqVxM3yXY/ZN6DinlTFQhiPLXCQlN0XmSAOaxQ6W5h4
-         Aeiw==
-X-Gm-Message-State: AOJu0YzlFnmuftK5lz/NwCPnF73jOS9J8p/pLYNnN9MKWiyc9hTsyRzi
-        NkCJXjjSjNvAyw8v2/PwcHE=
-X-Google-Smtp-Source: AGHT+IFTZPq9NKygHXkvsgphakOeGT4miEW5q8OLmo5JY59/YJhaUF0iCR/Q6rWyABv/pCKKzWmU8Q==
-X-Received: by 2002:a2e:9698:0:b0:2c0:a0c:120a with SMTP id q24-20020a2e9698000000b002c00a0c120amr661733lji.25.1695890744303;
-        Thu, 28 Sep 2023 01:45:44 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id f13-20020a2ea0cd000000b002c029a4b681sm3511917ljm.15.2023.09.28.01.45.42
+        d=1e100.net; s=20230601; t=1695905746; x=1696510546;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IjmABsbUI05o+ZavzLjhEq7Z627HD3chbAFdNF0zJvg=;
+        b=PMzsaP8dpWqd83tbS+Sa0XOU02hEzAqkTeB9bSKpeuZY49rZpuEwNfGNYQWCcAh6XR
+         wPgSsC7A8UwjDNvXfvzVfro0bJ3xjWR2V8L8e+ljgIiQmHQ6xFWpcMM+XzaOlvnOCQaX
+         8PFHZ2sMc41VEL1gbjPRrEsUoCVzXcZcC6G+2nemnQuZDYOsIE4d6ENNHRNN2KYz9Ru8
+         euGckHnzm1hRAnPIM7XZd0W8ON21xBmu5uTGXS3zqPl7Gl8Pl1oIzpieAuq1AHLMpWc5
+         nTzOfQZj1FHUCtjAfyezVCgCXYlV9GH0irdpg7erqQ93tzBMzFqp16ShpsWEWrol1ZBr
+         ySgg==
+X-Gm-Message-State: AOJu0YyeHe8rWVEeng62SOr728rsmWIaBsndJvA2FIzpSecAfD/TIC2v
+        B9l9JySpB2uW8N0fx/6zqXQ=
+X-Google-Smtp-Source: AGHT+IFtNeoLNoLDkcr4QfSp2qY6+buxJfNcj8i4yaqq92Ic2jUBbdQN9m3MHm3/F3W0nNO0K0Rvbw==
+X-Received: by 2002:a17:907:2e01:b0:9b0:169b:eee2 with SMTP id ig1-20020a1709072e0100b009b0169beee2mr1078693ejc.10.1695905745460;
+        Thu, 28 Sep 2023 05:55:45 -0700 (PDT)
+Received: from localhost.localdomain ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id p26-20020a170906229a00b009ad8338aafasm11027787eja.13.2023.09.28.05.55.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Sep 2023 01:45:43 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 11:45:39 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Thu, 28 Sep 2023 05:55:44 -0700 (PDT)
+From:   Dumitru Ceclan <mitrutzceclan@gmail.com>
+To:     mitrutzceclan@gmail.com
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: kx022a: Support ROHM KX132ACR-LBZ
-Message-ID: <272065b9f35b817aff86b7760ff1aaaaaaa969f5.1695879676.git.mazziesaccount@gmail.com>
-References: <cover.1695879676.git.mazziesaccount@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: adc: add AD7173
+Date:   Thu, 28 Sep 2023 15:54:42 +0300
+Message-Id: <20230928125443.615006-1-mitrutzceclan@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="NB2KxAcFsF2+M6hw"
-Content-Disposition: inline
-In-Reply-To: <cover.1695879676.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -79,228 +84,163 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+which can be used in high precision, low noise single channel applications
+or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+primarily for measurement of signals close to DC but also delivers
+outstanding performance with input bandwidths out to ~10kHz.
 
---NB2KxAcFsF2+M6hw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-dt-bindings: iio: Add KX132ACR-LBZ accelerometer
-
-ROHM KX132ACR-LBZ is an accelerometer for industrial applications. It
-has a subset of KX022A functionalities, dropping support for tap, free
-fall and tilt detection engines. Also, the register interface is an exact
-subset of what is found on KX022A (except the WHO_AM_I register value).
-
-Add support for KX132ACR-LBZ.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
+Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 ---
+ .../bindings/iio/adc/adi,ad7173.yaml          | 139 ++++++++++++++++++
+ 1 file changed, 139 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 
-Revision history:
-v1 =3D> v2:
- - Added KX132ACR-LBZ as supported IC to Kconfig
----
- drivers/iio/accel/Kconfig             |  4 ++--
- drivers/iio/accel/kionix-kx022a-i2c.c |  4 +++-
- drivers/iio/accel/kionix-kx022a-spi.c |  4 +++-
- drivers/iio/accel/kionix-kx022a.c     | 34 ++++++++++++++++++++++++++-
- drivers/iio/accel/kionix-kx022a.h     |  2 ++
- 5 files changed, 43 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index 373257d64a7e..f113dae59048 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -420,7 +420,7 @@ config IIO_KX022A_SPI
- 	help
- 	  Enable support for the Kionix digital tri-axis accelerometers
- 	  connected to SPI interface. Supported devices are:
--	    KX022A, KX132-1211
-+	    KX022A, KX132-1211, KX132ACR-LBZ
-=20
- config IIO_KX022A_I2C
- 	tristate "Kionix KX022A tri-axis digital accelerometer I2C interface"
-@@ -430,7 +430,7 @@ config IIO_KX022A_I2C
- 	help
- 	  Enable support for the Kionix digital tri-axis accelerometers
- 	  connected to I2C interface. Supported devices are:
--	    KX022A, KX132-1211
-+	    KX022A, KX132-1211, KX132ACR-LBZ
-=20
- config KXSD9
- 	tristate "Kionix KXSD9 Accelerometer Driver"
-diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kion=
-ix-kx022a-i2c.c
-index fc53e527cae0..8a1d4fc28ddd 100644
---- a/drivers/iio/accel/kionix-kx022a-i2c.c
-+++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (C) 2022 ROHM Semiconductors
-  *
-- * ROHM/KIONIX KX022A accelerometer driver
-+ * ROHM/KIONIX accelerometer driver
-  */
-=20
- #include <linux/i2c.h>
-@@ -38,6 +38,7 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
- static const struct i2c_device_id kx022a_i2c_id[] =3D {
- 	{ .name =3D "kx022a", .driver_data =3D (kernel_ulong_t)&kx022a_chip_info =
-},
- 	{ .name =3D "kx132-1211", .driver_data =3D (kernel_ulong_t)&kx132_chip_in=
-fo },
-+	{ .name =3D "kx132acr-lbz", .driver_data =3D (kernel_ulong_t)&kx132acr_ch=
-ip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
-@@ -45,6 +46,7 @@ MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
- static const struct of_device_id kx022a_of_match[] =3D {
- 	{ .compatible =3D "kionix,kx022a", .data =3D &kx022a_chip_info },
- 	{ .compatible =3D "kionix,kx132-1211", .data =3D &kx132_chip_info },
-+	{ .compatible =3D "rohm,kx132acr-lbz", .data =3D &kx132acr_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kion=
-ix-kx022a-spi.c
-index e7878ba67827..f798b964d0b5 100644
---- a/drivers/iio/accel/kionix-kx022a-spi.c
-+++ b/drivers/iio/accel/kionix-kx022a-spi.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (C) 2022 ROHM Semiconductors
-  *
-- * ROHM/KIONIX KX022A accelerometer driver
-+ * ROHM/KIONIX accelerometer driver
-  */
-=20
- #include <linux/interrupt.h>
-@@ -38,6 +38,7 @@ static int kx022a_spi_probe(struct spi_device *spi)
- static const struct spi_device_id kx022a_id[] =3D {
- 	{ .name =3D "kx022a", .driver_data =3D (kernel_ulong_t)&kx022a_chip_info =
-},
- 	{ .name =3D "kx132-1211", .driver_data =3D (kernel_ulong_t)&kx132_chip_in=
-fo },
-+	{ .name =3D "kx132acr-lbz", .driver_data =3D (kernel_ulong_t)&kx132acr_ch=
-ip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, kx022a_id);
-@@ -45,6 +46,7 @@ MODULE_DEVICE_TABLE(spi, kx022a_id);
- static const struct of_device_id kx022a_of_match[] =3D {
- 	{ .compatible =3D "kionix,kx022a", .data =3D &kx022a_chip_info },
- 	{ .compatible =3D "kionix,kx132-1211", .data =3D &kx132_chip_info },
-+	{ .compatible =3D "rohm,kx132acr-lbz", .data =3D &kx132acr_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-k=
-x022a.c
-index c5b555094e60..60864be3a667 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (C) 2022 ROHM Semiconductors
-  *
-- * ROHM/KIONIX KX022A accelerometer driver
-+ * ROHM/KIONIX accelerometer driver
-  */
-=20
- #include <linux/delay.h>
-@@ -1188,6 +1188,38 @@ const struct kx022a_chip_info kx132_chip_info =3D {
- };
- EXPORT_SYMBOL_NS_GPL(kx132_chip_info, IIO_KX022A);
-=20
-+/*
-+ * Despite the naming, KX132ACR-LBZ is not similar to KX132-1211 but it is
-+ * exact subset of KX022A. KX132ACR-LBZ is meant to be used for industrial
-+ * applications and the tap/double tap, free fall and tilt engines were
-+ * removed. Rest of the registers and functionalities (excluding the ID
-+ * register) are exact match to what is found in KX022.
-+ */
-+const struct kx022a_chip_info kx132acr_chip_info =3D {
-+	.name				=3D "kx132acr-lbz",
-+	.regmap_config			=3D &kx022a_regmap_config,
-+	.channels			=3D kx022a_channels,
-+	.num_channels			=3D ARRAY_SIZE(kx022a_channels),
-+	.fifo_length			=3D KX022A_FIFO_LENGTH,
-+	.who				=3D KX022A_REG_WHO,
-+	.id				=3D KX132ACR_LBZ_ID,
-+	.cntl				=3D KX022A_REG_CNTL,
-+	.cntl2				=3D KX022A_REG_CNTL2,
-+	.odcntl				=3D KX022A_REG_ODCNTL,
-+	.buf_cntl1			=3D KX022A_REG_BUF_CNTL1,
-+	.buf_cntl2			=3D KX022A_REG_BUF_CNTL2,
-+	.buf_clear			=3D KX022A_REG_BUF_CLEAR,
-+	.buf_status1			=3D KX022A_REG_BUF_STATUS_1,
-+	.buf_read			=3D KX022A_REG_BUF_READ,
-+	.inc1				=3D KX022A_REG_INC1,
-+	.inc4				=3D KX022A_REG_INC4,
-+	.inc5				=3D KX022A_REG_INC5,
-+	.inc6				=3D KX022A_REG_INC6,
-+	.xout_l				=3D KX022A_REG_XOUT_L,
-+	.get_fifo_bytes_available	=3D kx022a_get_fifo_bytes_available,
-+};
-+EXPORT_SYMBOL_NS_GPL(kx132acr_chip_info, IIO_KX022A);
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+new file mode 100644
+index 000000000000..a0f437297a23
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+@@ -0,0 +1,139 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_inf=
-o *chip_info)
- {
- 	static const char * const regulator_names[] =3D {"io-vdd", "vdd"};
-diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-k=
-x022a.h
-index 35c548ae7eff..7060438ad88c 100644
---- a/drivers/iio/accel/kionix-kx022a.h
-+++ b/drivers/iio/accel/kionix-kx022a.h
-@@ -13,6 +13,7 @@
-=20
- #define KX022A_REG_WHO		0x0f
- #define KX022A_ID		0xc8
-+#define KX132ACR_LBZ_ID		0xd8
-=20
- #define KX022A_REG_CNTL2	0x19
- #define KX022A_MASK_SRST	BIT(7)
-@@ -186,5 +187,6 @@ int kx022a_probe_internal(struct device *dev, const str=
-uct kx022a_chip_info *chi
-=20
- extern const struct kx022a_chip_info kx022a_chip_info;
- extern const struct kx022a_chip_info kx132_chip_info;
-+extern const struct kx022a_chip_info kx132acr_chip_info;
-=20
- #endif
---=20
-2.41.0
++title: Analog Devices AD7173 ADC device driver
++
++maintainers:
++  - Ceclan Dumitru <dumitru.ceclan@analog.com>
++
++description: |
++  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7172-2
++      - adi,ad7173-8
++      - adi,ad7175-2
++      - adi,ad7176-2
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  spi-max-frequency:
++    maximum: 20000000
++
++  spi-cpol:
++    type: boolean
++
++  spi-cpha:
++    type: boolean
++
++  required:
++    - compatible
++    - reg
++    - interrupts
++
++patternProperties:
++  "^channel@[0-9a-f]$":
++    type: object
++    $ref: adc.yaml
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        description: Channel number
++        minimum: 0
++        maximum: 15
++
++      diff-channels:
++        description:
++          Analog input pins
++        items:
++          minimum: 0
++          maximum: 31
++
++      adi,bipolar:
++        description: Specify if the channel should measure in bipolar mode.
++        type: boolean
++
++    required:
++      - reg
++      - diff-channels
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      adc@0 {
++        compatible = "adi,ad7173-8";
++        reg = <0>;
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++        interrupt-parent = <&gpio>;
++        spi-max-frequency = <5000000>;
++
++        channel@0 {
++          reg = <0>;
++          adi,bipolar;
++
++          diff-channels = <0 1>;
++        };
++
++        channel@1 {
++          reg = <1>;
++
++          diff-channels = <2 3>;
++        };
++
++        channel@2 {
++          reg = <2>;
++          adi,bipolar;
++
++          diff-channels = <4 5>;
++        };
++
++        channel@3 {
++          reg = <3>;
++          adi,bipolar;
++
++          diff-channels = <6 7>;
++        };
++
++        channel@4 {
++          reg = <4>;
++
++          diff-channels = <8 9>;
++        };
++      };
++    };
+-- 
+2.39.2
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---NB2KxAcFsF2+M6hw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUVPTMACgkQeFA3/03a
-ocVelQf/am1Mg0p5ijdZIcuiKiVy/FRRhuZtlRyrte1DGTmjl3h1nKl7/SazDRXL
-dcZebkLbtnZdZDNnjbiFNTrNOfPPtJpqx2WULYXAHwpulp0RdLnJRVU8NX87iVPN
-LDNfGd/LR0O+jEzzNDJkJc4CsKxFmX0ZOaxc8yAfTmAsd6rjIauRP17iS3sUeFmh
-v2ZsShOf0glny2qf2aTVMAcbGB0d9A83HjGL9waiCZX7YsRgqawhvIswNCQfhuzt
-hNZU6B5iFQCy4SNfgB3FMqjV3mcg83xIBK49Xcw9jwmgf6AXiUPQDPKUm/UfOxbm
-rekC8QvK+Ovzv2ZaK2jGKEkLxdQeYQ==
-=6f9/
------END PGP SIGNATURE-----
-
---NB2KxAcFsF2+M6hw--

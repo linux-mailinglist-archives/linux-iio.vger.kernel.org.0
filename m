@@ -2,133 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0628D7B251A
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 20:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874067B2555
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Sep 2023 20:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjI1STR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 14:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
+        id S231808AbjI1SeP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Sep 2023 14:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230139AbjI1STR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 14:19:17 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE48F99;
-        Thu, 28 Sep 2023 11:19:14 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-32488a22810so816718f8f.3;
-        Thu, 28 Sep 2023 11:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695925153; x=1696529953; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X/vYG8CJ/ewvJ2G4SHIfjDvp/E77tz/2UvBKFbRj/OM=;
-        b=lkEIwUBJcgz3w1n8+0KuwHDPVHp7o6QRATLJFyobfjPlx6EIplO8BHWk/OU2qHRtwg
-         LL+Zf3YzCmFTVO+pr6ZEQRvuI14qVOjnJVW6jw3gCzoNYxTpCagjHGBqMMj3WsGlrjtR
-         gqu5X1JI2VgwiuPyA+2R1z9UG80JYxg9D848eQz//o5dTjuzdtHR+er4ZyiF+3EBwe9Y
-         uMEyYpLmotHx1Li1GhiTtdfRgV9UxWO9x65POAP90j9zrin2beVZdATjGegiIAq00BAO
-         XaBApHbheo01iLQe5hlBxuF5b1tS0EUpILOus/Y8BcOEOIY+TG9QlftIDxoNs8r7FvX/
-         phUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695925153; x=1696529953;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X/vYG8CJ/ewvJ2G4SHIfjDvp/E77tz/2UvBKFbRj/OM=;
-        b=M+EOMdulBXJkZ/+do9BpmIrn5rvVEpdaO1DBNeuR0HUWeKKFPizH5/34pNurl/Z2Yq
-         GLdo7kZK5yza6kwlLTKfAxw6agZFNZixWCncSNkRrXgj1cOqO7hlTvhsQbsj+8+9ly93
-         ktgN4oMZ+iRF05MKx5FYp2DGRv6SdKAD8GZg1lbzgoz86NJlZscGTE1zmm1B2o4/4vtd
-         I56suwEi5akTeu3rA6UzQhjobJ5VpCYdierlEW/TNaXigrG4HFfuvdPStAWg/zU64OE5
-         T6tMF+8UX8OAO6muBpow9xNmXVDK7DQUuaYmPxK+dia55qmtceLcHZG6Qy39QunpsUgr
-         nExw==
-X-Gm-Message-State: AOJu0YxAlSeu1jfmqyzReXkJvuBE5agcrILuiJYrbyBoDHEF4Odjrbth
-        mg2pCiF0ygY8YwxqnDOQaLOroVeFk0PgY40pCqw=
-X-Google-Smtp-Source: AGHT+IEkXnAd53of4antYDJ+mebfWoU45tHrRpXzvuqB49hiREtfEaw/BcVrqDN2SzGAfN7vXbEQS6lOPaT+Cixw1HM=
-X-Received: by 2002:a05:6000:1006:b0:31f:9b4f:1910 with SMTP id
- a6-20020a056000100600b0031f9b4f1910mr1808253wrx.63.1695925152811; Thu, 28 Sep
- 2023 11:19:12 -0700 (PDT)
+        with ESMTP id S230239AbjI1SeO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 14:34:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAC5BF;
+        Thu, 28 Sep 2023 11:34:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C17FC433C8;
+        Thu, 28 Sep 2023 18:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695926052;
+        bh=2NJ2R290lFgn343l702zf8oxmfde2JDPKjH1749HjD8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WEf0EaEk9iRWOkL9jIAgNO3NJ385d8K64JccvOdU0+D/dVouoyDp99Up7/jY2XQlA
+         CAczvIRwHJC8ewLX5eQQUI6bw1muPRk74UoBCfBwui6ZTm0P8xmYB+PMbZh+f36yof
+         0BzWlgi6XtIgkiAPPjR3I9IoaFGJinCkkLFwVNdoG/xQosbNJxJJDC/qU2om/14RvB
+         LJCxoD5g1Iy8HM1gVXTc553suizGbnMGNCu0Ll839tRyQI91qEEJgof5KboWC6CCaT
+         4OUcT44DGLikc+cDahzgjElVYUinDMW+Ndg9buqkFQ8w8A9m3LrUQoxA9JhzxumnIf
+         8JWwGdbQX9KvQ==
+Received: (nullmailer pid 1033329 invoked by uid 1000);
+        Thu, 28 Sep 2023 18:34:10 -0000
+Date:   Thu, 28 Sep 2023 13:34:10 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     lars@metafoo.de, robh+dt@kernel.org, bcousson@baylibre.com,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        tony@atomide.com, linux-iio@vger.kernel.org,
+        jean-baptiste.maneyrol@tdk.com, linux-kernel@vger.kernel.org,
+        chenhuiz@axis.com, andy.shevchenko@gmail.com, conor+dt@kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: imu: mpu6050: Add level shifter
+Message-ID: <169592604948.1033273.7825083218859073623.robh@kernel.org>
+References: <20230927173245.2151083-1-andreas@kemnade.info>
+ <20230927173245.2151083-2-andreas@kemnade.info>
 MIME-Version: 1.0
-References: <20230918080314.11959-1-jagathjog1996@gmail.com>
- <20230918080314.11959-3-jagathjog1996@gmail.com> <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
-In-Reply-To: <20230927095708.l57kmdc3mmrtaco7@pengutronix.de>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Thu, 28 Sep 2023 23:49:01 +0530
-Message-ID: <CAM+2EuKb9-Wc+HAmsmPfmdM49k=7yoXboDF+swaMS_bgXbCOQA@mail.gmail.com>
-Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     jic23@kernel.org, andriy.shevchenko@linux.intel.com,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230927173245.2151083-2-andreas@kemnade.info>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Uwe Kleine-K=C3=B6nig,
 
-On Wed, Sep 27, 2023 at 3:27=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> Hello,
->
-> On Mon, Sep 18, 2023 at 01:33:14PM +0530, Jagath Jog J wrote:
-> > The Bosch BMI323 is a 6-axis low-power IMU that provide measurements fo=
-r
-> > acceleration, angular rate, and temperature. This sensor includes
-> > motion-triggered interrupt features, such as a step counter, tap detect=
-ion,
-> > and activity/inactivity interrupt capabilities.
-> >
-> > The driver supports various functionalities, including data ready, FIFO
-> > data handling, and events such as tap detection, step counting, and
-> > activity interrupts
-> >
-> > Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloa=
-ds/datasheets/bst-bmi323-ds000.pdf
->
-> Maybe put this link better in the driver.
+On Wed, 27 Sep 2023 19:32:43 +0200, Andreas Kemnade wrote:
+> Add a level shifter flag as found in ancient platform data struct:
+> level_shifter: 0: VLogic, 1: VDD
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml      | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
 
-Yes, if there are multiple commits on the driver, the datasheet
-link will move further down with the initial commit. I will add
-datasheet link in the driver.
+Acked-by: Rob Herring <robh@kernel.org>
 
->
-> > +static struct i2c_driver bmi323_i2c_driver =3D {
-> > +     .driver =3D {
-> > +             .name =3D "bmi323",
-> > +             .of_match_table =3D bmi323_of_i2c_match,
-> > +     },
-> > +     .probe_new =3D bmi323_i2c_probe,
-> > +     .id_table =3D bmi323_i2c_ids,
-> > +};
-> > +module_i2c_driver(bmi323_i2c_driver);
->
-> If you want to compile this driver after v6.6-rc2 (which includes
-> commit 5eb1e6e459cf ("i2c: Drop legacy callback .probe_new()")) better
-> use .probe here instead of .probe_new().
-
-Thanks for pointing it out.
-I switched to v6.6-rc3 and I will change to .probe.
-
-Regards
-Jagath
-
-Jagath
-
->
-> Best regards
-> Uwe
->
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig       =
-     |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
-|

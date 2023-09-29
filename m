@@ -2,91 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674887B335B
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 15:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A457B34DF
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 16:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233298AbjI2NTe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Sep 2023 09:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
+        id S233314AbjI2O1N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Sep 2023 10:27:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233156AbjI2NTd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 09:19:33 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B74EE7;
-        Fri, 29 Sep 2023 06:19:31 -0700 (PDT)
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38TABSom007571;
-        Fri, 29 Sep 2023 15:18:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        message-id:date:mime-version:subject:from:to:cc:references
-        :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=KMM5HFfGi3/V+NX/zIj16MtndrNJ3wjO6VBqQEWwOzE=; b=ga
-        rM6WT7soC9Qg5lgEynlNIDEz19ICFxdBxx8K4WKaa81yBoo69ZoqQgPtPJrk+yqH
-        6Ke+T4tgb/wvQ7+D6b8/REeHXj+x3qhuVXstjmlbfDXVsD7fnq1otz0IBlMfWVfL
-        E4pait5J8DRp751sajaRVoUu+IBQuOKISwGGaDU+w8jkYTr9fXxKlpYDQovtoe8f
-        gElrQ2fdRogxsh24zwaguSO+d3txrH3Ag2t7373pPcvxthqul803q1iHU52Zkj5N
-        HDkK8wgJgLFXVxL19kvPUsq9yAyQ76DfuoiJhXjgKUsphyNPOIYM5JXL5gCdij8s
-        EmQ/SdD52jWC2koKfFGg==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ta9k0s0fb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Sep 2023 15:18:50 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AE29710002A;
-        Fri, 29 Sep 2023 15:18:48 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4AB3A2865FC;
-        Fri, 29 Sep 2023 15:18:48 +0200 (CEST)
-Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 29 Sep
- 2023 15:18:46 +0200
-Message-ID: <6e419e89-10f1-e448-10fe-64f1ea9ff862@foss.st.com>
-Date:   Fri, 29 Sep 2023 15:18:18 +0200
+        with ESMTP id S233276AbjI2O1M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 10:27:12 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459D31A8;
+        Fri, 29 Sep 2023 07:27:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB05C433C7;
+        Fri, 29 Sep 2023 14:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695997629;
+        bh=UQ6oQU3g9esk983G3d2F4i53nKTP2haEycF4QbnPhWQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Kt3NxYX359IxuRGHEF8siCj7BsALwXJ+HAmcHJhlI+Mwvah5t/eTgow4mNwazhxMs
+         doT0J1cdoj8seH1qCgBZdWh+sSSe44AYzuYDqJ4QEojUb8C8ZFNM8VUHrIDdOnJTTk
+         vqcAD5XSoBYyj45BdQxPw1LD1zv5hpx6Fxi1Wh9Rn9g8g92iT/Gk4DWyJtRZzFo9wy
+         sLBFuAAd+0gyOa7OX8bgifUyUIha9ZQv5SXG16Y1PWbjsuB9r9glGA5hI1FNDO2iwD
+         tGeqo2Tb8P8V4v9FTJBigE2c6N9WNDRG7b0CHggMGgc8P9Q68jDmJkA0kgQ6/6U9XA
+         lUUMeH5PzGfCQ==
+Date:   Fri, 29 Sep 2023 15:27:05 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: Add KX132ACR-LBZ accelerometer
+Message-ID: <20230929-cognitive-lunar-0d93abe00e7a@spud>
+References: <cover.1695879676.git.mazziesaccount@gmail.com>
+ <5c9e03ffad5e6e5970d6e71fb02eab4b652e109f.1695879676.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [IGNORE][PATCH v4 01/11] dt-bindings: Document common device
- controller bindings
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <herbert@gondor.apana.org.au>,
-        <davem@davemloft.net>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
-        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
-        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
-        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
-        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
-        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
-        <arnd@kernel.org>, <richardcochran@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
-        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
- <20230811100731.108145-2-gatien.chevallier@foss.st.com>
- <2023081117-sprout-cruncher-862c@gregkh>
- <4f0f9d6c-ce4d-73a2-60bf-801c1a1d6cc3@foss.st.com>
-Content-Language: en-US
-In-Reply-To: <4f0f9d6c-ce4d-73a2-60bf-801c1a1d6cc3@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.201.20.32]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-29_11,2023-09-28_03,2023-05-22_02
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7iv7Fv6rLC7l1irA"
+Content-Disposition: inline
+In-Reply-To: <5c9e03ffad5e6e5970d6e71fb02eab4b652e109f.1695879676.git.mazziesaccount@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,63 +57,92 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--7iv7Fv6rLC7l1irA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 8/11/23 14:00, Gatien CHEVALLIER wrote:
-> 
-> 
-> On 8/11/23 12:16, Greg KH wrote:
->> On Fri, Aug 11, 2023 at 12:07:21PM +0200, Gatien Chevallier wrote:
->>> From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
->>>
->>> Introducing of the common device controller bindings for the controller
->>> provider and consumer devices. Those bindings are intended to allow
->>> divided system on chip into multiple domains, that can be used to
->>> configure hardware permissions.
->>>
->>> Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
->>> [Gatien: Fix typos and YAML error]
->>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->>> ---
->>>
->>> Changes in V4:
->>>     Corrected typos and YAML errors
->>
->> Why are we supposed to ignore the first patch in this series, but pay
->> attention to the 10 after this that depend on it?
->>
->> totally confused,
->>
->> greg k-h
-> 
-> Hello Greg,
-> 
-> I'm sorry that this tag troubles your review. It was first suggested
-> in [1]. The "IGNORE" means ignore review on this thread, as it is still
-> under review in another thread (Link in the cover letter). It does not
-> mean that the content should be ignored for the series. I will change
-> this to something else as this is obviously confusing the review.
-> 
-> @Oleksii, can we imagine integrating this patch to this series or do
-> you prefer to keep it apart?
-> 
+On Thu, Sep 28, 2023 at 11:45:21AM +0300, Matti Vaittinen wrote:
+> ROHM KX132ACR-LBZ is an accelerometer for industrial applications. It
+> has a subset of KX022A functionalities, dropping support for tap, free
+> fall and tilt detection engines. Also, the register interface is an exact
+> subset of what is found on KX022A.
 
-Hi,
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-after a discussion with Oleksii: I'll rename the binding to narrow
-down its scope and integrate the patch in my series. This way, I'll drop
-the [IGNORE] tag.
+Thanks,
+Conor.
 
-=> I'll stick with the generic binding for V5 (Sorry for the misleading
-    information in the previous mail)
+>=20
+> Extend the kionix,kx022a.yaml file to support the KX132ACR-LBZ device
+>=20
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/accel/kionix,kx022a.yaml   | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.ya=
+ml b/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
+> index 034b69614416..66ea894dbe55 100644
+> --- a/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
+> +++ b/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
+> @@ -4,21 +4,23 @@
+>  $id: http://devicetree.org/schemas/iio/accel/kionix,kx022a.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+> -title: ROHM/Kionix KX022A and KX132-1211 Accelerometers
+> +title: ROHM/Kionix KX022A, KX132-1211 and KX132ACR-LBZ Accelerometers
+> =20
+>  maintainers:
+>    - Matti Vaittinen <mazziesaccount@gmail.com>
+> =20
+>  description: |
+> -  KX022A and KX132-1211 are 3-axis accelerometers supporting +/- 2G, 4G,=
+ 8G and
+> -  16G ranges, variable output data-rates and a hardware-fifo buffering.
+> -  KX022A and KX132-1211 can be accessed either via I2C or SPI.
+> +  KX022A, KX132ACR-LBZ and KX132-1211 are 3-axis accelerometers supporti=
+ng
+> +  +/- 2G, 4G, 8G and 16G ranges, variable output data-rates and a
+> +  hardware-fifo buffering. These accelerometers can be accessed either
+> +  via I2C or SPI.
+> =20
+>  properties:
+>    compatible:
+>      enum:
+>        - kionix,kx022a
+>        - kionix,kx132-1211
+> +      - rohm,kx132acr-lbz
+> =20
+>    reg:
+>      maxItems: 1
+> --=20
+> 2.41.0
+>=20
+>=20
+> --=20
+> Matti Vaittinen, Linux device drivers
+> ROHM Semiconductors, Finland SWDC
+> Kiviharjunlenkki 1E
+> 90220 OULU
+> FINLAND
+>=20
+> ~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+> Simon says - in Latin please.
+> ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+> Thanks to Simon Glass for the translation =3D]=20
 
-Best regards,
-Gatien
 
-> Should I consider a resend with another tag if Oleksii prefers to keep
-> this patch apart?
-> 
-> [1] 
-> https://lore.kernel.org/all/1e498b93-d3bd-bd12-e991-e3f4bedf632d@linaro.org/
-> 
-> Best regards,
-> Gatien
+
+--7iv7Fv6rLC7l1irA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZRbeuQAKCRB4tDGHoIJi
+0hIyAQCZKh2jezPaE6cHGzvo+WAxGa9bRqvutsE1E1UYhq1ERAD/Shmli5Uv85uc
+Znz8bXVz3b0W0B8g9Vm5uaBQ2UY3ag4=
+=SqZD
+-----END PGP SIGNATURE-----
+
+--7iv7Fv6rLC7l1irA--

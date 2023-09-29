@@ -2,66 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97F547B36F2
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 17:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D987B389C
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 19:25:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233712AbjI2Pfz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Sep 2023 11:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43480 "EHLO
+        id S233249AbjI2RZv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Sep 2023 13:25:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233700AbjI2Pfg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 11:35:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077C3DB;
-        Fri, 29 Sep 2023 08:35:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC20C433B6;
-        Fri, 29 Sep 2023 15:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696001734;
-        bh=ti/iY/I8rL5lxV45hGyYfqiTkZyE90nEyx2osM8ZrS4=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=LNMo1g0SUF0MshCK7LlJJbQzOUCYhoIrwB0l6YUZb0PbLJcbMcvwykPloDmyIsYoi
-         xeuehITcBmi1duzE7qO/Gf+8zjPBf4h/K12XsEQitc121OMB5jVeYkH3oXiLB7xWxu
-         kXUNZMRei9/6rqt0Q0FMOWrglBmLQ6sJLLP/YSybuNwXFYIlkJRtXU6iTpLssd7fwG
-         O22v6dCSsNK8eDTRkhxq5FT0KmsluuikuLnEg+u32nnRXryeQgN+oHyNvrBL5WohX2
-         f8izjKJFjvLfLIKunnmccRHUFUKTzmEt2CUc3FVbzHa8YcLJunWI1jUweUpca0UaXk
-         lp7u+svNF7Etg==
-Received: (nullmailer pid 3601357 invoked by uid 1000);
-        Fri, 29 Sep 2023 15:35:24 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S232985AbjI2RZu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 13:25:50 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB27B1AE
+        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:25:47 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-57b811a6ce8so6252547eaf.3
+        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:25:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696008346; x=1696613146; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MbPw3SdxVMOi5+mJx90LgQ0nJGAgyoL5GKfrPagHL7w=;
+        b=aEpg8rmUbCr9O2gBn+rRp/ldiywUmbLpBQBw49/21/OzYcY+REAv7VB26phufmm1qe
+         iXQJ889j7tOgCE7/2AA0n9jdRAQ/dT7cZQxzUtMlfpmCbs2JonO9poKqkncPcwX5gAJN
+         aW3md1mgDM408HQM0gkVuc90mvJZeYxV/WdDM7W0UlJQtlPgbbY/BOxumVRyBwznF8jZ
+         lNvb/7aVjZWWgHtV3KFUWkSrjuDiC3gO/Th9TYxnTvTRMJ+zqb2dQPJ+ZEAypqIGUlR7
+         1U1X/7B/tfxtfOZCVY25GWDtSqxF9e8bTxzYUwGWT+XrXjYFkppZBc0Qwszk/gkCNvkY
+         p3TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696008346; x=1696613146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MbPw3SdxVMOi5+mJx90LgQ0nJGAgyoL5GKfrPagHL7w=;
+        b=Ve4+LHFEYTA/zI3cljtbc/wTo7m+3EkUdATc6o95//+ijEyZDhcc32foa5e+rc0QYH
+         ikmIQf4OfbMyhNL7k8OvqueE4Z51rpUjAKEtkibZ1cY2FrDPjGKSz0n74L49ct9FxG+X
+         X4EOSZrBM5/QnDgFhwn2K3IMMLyD7MCR5XXR0l4cxjrEYbkxEnbY57o8XZx8nNTMOYyD
+         ca5rtOVXQXHSPsD7ubbJZizsQKA/BPMlBXD092VxMTiFb8GCVOAMuzeuYmULm8fmM8N/
+         mJ8GwjO6ydRFhAoya307pl0vYufqPqr8aKqlhjJNwnz+YMjO0IwdpLHeyBE0fAMthrKn
+         HqBg==
+X-Gm-Message-State: AOJu0YyBT4CoYMfe/9RwAHHg66M9YVL8gyLn9AZh8aSMFNJjhw9u4c6v
+        8nxhpYVLE7IAJvAtaWvU+JeXKjDcnlT8cxEpTTrg9w==
+X-Google-Smtp-Source: AGHT+IF0csG6N9BuFlyuHkB6djQxR9a22o1PRZ8iOj0V3U757910msJ+x86IgOQlTZKIfra/i+eHug==
+X-Received: by 2002:a4a:6f49:0:b0:57b:5e98:f733 with SMTP id i9-20020a4a6f49000000b0057b5e98f733mr4812352oof.3.1696008346626;
+        Fri, 29 Sep 2023 10:25:46 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id f128-20020a4a5886000000b0057bb326cad4sm2272915oob.33.2023.09.29.10.25.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Sep 2023 10:25:46 -0700 (PDT)
+From:   David Lechner <dlechner@baylibre.com>
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev
+Cc:     David Lechner <david@lechnology.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org,
+        David Lechner <dlechner@baylibre.com>,
+        Apelete Seketeli <aseketeli@baylibre.com>
+Subject: [PATCH v3 00/27] iio: resolver: move ad2s1210 out of staging
+Date:   Fri, 29 Sep 2023 12:23:05 -0500
+Message-ID: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
-Cc:     ulf.hansson@linaro.org, Frank Rowand <frowand.list@gmail.com>,
-        edumazet@google.com, jic23@kernel.org, richardcochran@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        fabrice.gasnier@foss.st.com, linux-mmc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-        davem@davemloft.net, kuba@kernel.org, Oleksii_Moisieiev@epam.com,
-        hugues.fruchet@foss.st.com, linux-arm-kernel@lists.infradead.org,
-        linux-usb@vger.kernel.org, conor+dt@kernel.org,
-        linux-phy@lists.infradead.org, mchehab@kernel.org,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-i2c@vger.kernel.org, vkoul@kernel.org,
-        linux-spi@vger.kernel.org, olivier.moysan@foss.st.com,
-        linux-serial@vger.kernel.org, arnd@kernel.org,
-        alsa-devel@alsa-project.org, herbert@gondor.apana.org.au,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, dmaengine@vger.kernel.org,
-        alexandre.torgue@foss.st.com, lee@kernel.org, peng.fan@oss.nxp.com,
-        arnaud.pouliquen@foss.st.com, catalin.marinas@arm.com,
-        will@kernel.org, pabeni@redhat.com, robh+dt@kernel.org,
-        andi.shyti@kernel.org
-In-Reply-To: <20230929142852.578394-3-gatien.chevallier@foss.st.com>
-References: <20230929142852.578394-1-gatien.chevallier@foss.st.com>
- <20230929142852.578394-3-gatien.chevallier@foss.st.com>
-Message-Id: <169600172300.3601265.2185363377386180804.robh@kernel.org>
-Subject: Re: [PATCH v5 02/11] dt-bindings: treewide: add access-controller
- description
-Date:   Fri, 29 Sep 2023 10:35:24 -0500
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,83 +80,105 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: David Lechner <david@lechnology.com>
 
-On Fri, 29 Sep 2023 16:28:43 +0200, Gatien Chevallier wrote:
-> access-controller is an optional property that allows a peripheral to
-> refer to one or more domain access controller(s).
-> 
-> Description of this property is added to all peripheral binding files of
-> the peripheral under the STM32 firewall controllers. It allows an accurate
-> representation of the hardware, where various peripherals are connected
-> to this firewall bus. The firewall can then check the peripheral accesses
-> before allowing it to probe.
-> 
-> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> ---
-> 
-> Changes in V5:
-> 	- Discarded review tags as the content has changed
-> 	- Renamed feature-domains to access-controller
-> 	- Removed extra blank line in st,stm32-timers.yaml
-> 
-> Changes in V4:
-> 	- Added Jonathan's tag for IIO
-> 
-> Changes in V2:
-> 	- Add missing "feature-domains" property declaration
-> 	  in bosch,m_can.yaml and st,stm32-cryp.yaml files
-> 
->  Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml   | 4 ++++
->  Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml   | 4 ++++
->  Documentation/devicetree/bindings/dma/st,stm32-dma.yaml       | 4 ++++
->  Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml    | 4 ++++
->  Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml       | 4 ++++
->  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml   | 4 ++++
->  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml       | 4 ++++
->  Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml   | 4 ++++
->  Documentation/devicetree/bindings/media/cec/st,stm32-cec.yaml | 4 ++++
->  Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml    | 4 ++++
->  .../bindings/memory-controllers/st,stm32-fmc2-ebi.yaml        | 4 ++++
->  Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml   | 4 ++++
->  Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml    | 4 ++++
->  Documentation/devicetree/bindings/mmc/arm,pl18x.yaml          | 4 ++++
->  Documentation/devicetree/bindings/net/can/bosch,m_can.yaml    | 4 ++++
->  Documentation/devicetree/bindings/net/stm32-dwmac.yaml        | 4 ++++
->  Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml  | 4 ++++
->  .../devicetree/bindings/regulator/st,stm32-vrefbuf.yaml       | 4 ++++
->  Documentation/devicetree/bindings/rng/st,stm32-rng.yaml       | 4 ++++
->  Documentation/devicetree/bindings/serial/st,stm32-uart.yaml   | 4 ++++
->  Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml     | 4 ++++
->  Documentation/devicetree/bindings/sound/st,stm32-sai.yaml     | 4 ++++
->  Documentation/devicetree/bindings/sound/st,stm32-spdifrx.yaml | 4 ++++
->  Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml      | 4 ++++
->  Documentation/devicetree/bindings/spi/st,stm32-spi.yaml       | 4 ++++
->  Documentation/devicetree/bindings/usb/dwc2.yaml               | 4 ++++
->  26 files changed, 104 insertions(+)
-> 
+v3 changes:
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+* Added description of A0/A1 lines in DT bindings.
+* Added power supply regulators to DT bindings.
+* Dropped "staging: iio: Documentation: document IIO resolver AD2S1210
+  sysfs attributes" (these attributes are being removed instead).
+* Dropped applied patches:
+  * "staging: iio: resolver: ad2s1210: fix ad2s1210_show_fault"
+  * "iio: adc: MCP3564: fix the static checker warning"
+* Split "staging: iio: resolver: ad2s1210: fix probe" into multiple patches.
+* Moved sorting imports to separate patch.
+* Renamed fclkin to clkin_hz.
+* Added __be16 sample field to state struct for reading raw samples.
+* Split out new function ad2s1210_single_conversion() from
+  ad2s1210_read_raw().
+* Split out new ad2s1210_get_hysteresis() and ad2s1210_set_hysteresis()
+  functions.
+* Fixed multi-line comment style.
+* Added notes about soft reset not resetting config registers.
+* Made use of FIELD_PREP() macro.
+* Added more explanation to regmap commit message.
+* Removed datasheet names from channel specs.
+* Replaced "staging: iio: resolver: ad2s1210: rename fexcit attribute"
+  with "staging: iio: resolver: ad2s1210: convert fexcit to channel
+  attribute".
+* Replaced "staging: iio: resolver: ad2s1210: add phase_lock_range
+  attributes" with "staging: iio: resolver: ad2s1210: add phase lock
+  range support"
+* Added additional patches to convert custom device attributes to event
+  attributes.
+* Added patch to add channel label attributes.
 
-yamllint warnings/errors:
+v2 changes:
+* Address initial device tree patch feedback
+* Drop "iio: sysfs: add IIO_DEVICE_ATTR_NAMED_RW macro" (related cleanups
+  also dropped for now, will address in a future series if needed)
+* Apply improvements as a series of patches to the staging driver. It is
+  not quite ready for the move out of staging patch yet.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml: access-controller: missing type definition
+This series has been tested on actual hardware using a EVAL-AD2S1210 evaluation
+board. (Note: not all device tree features have been implemented in the driver
+since the eval board doesn't support them out of the box. We plan to add them
+later if needed.)
 
-doc reference errors (make refcheckdocs):
+Most of the questions about dealing with faults from the v2 cover letter
+have been addressed. There is still the question about what to do with
+the current `fault` attribute (it is the only custom device attribute
+remaining from the original staging driver). It was suggested to split it
+out into multiple attributes in a subdirectory. Since we now have events
+for all of the faults, I'm wondering if this is something that is still needed.
+In the current implementation, it is possible to start listening to events,
+clear the faults and then read a sample to trigger events for any current
+faults so we have a way to get current faults already.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230929142852.578394-3-gatien.chevallier@foss.st.com
+There is also the matter of clearing faults. Writing the excitation
+frequency has a side-effect of clearing the faults, so we could use
+that as the reset. Or we could change the current fault attribute to
+write-only and rename it. Or is there a better way that I have overlooked?
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+Once this last issue is addressed, I think this driver will be ready
+for consideration for moving out of staging.
+---
+David Lechner (27):
+      dt-bindings: iio: resolver: add devicetree bindings for ad2s1210
+      staging: iio: resolver: ad2s1210: fix use before initialization
+      staging: iio: resolver: ad2s1210: remove call to spi_setup()
+      staging: iio: resolver: ad2s1210: check return of ad2s1210_initial()
+      staging: iio: resolver: ad2s1210: remove spi_set_drvdata()
+      staging: iio: resolver: ad2s1210: sort imports
+      staging: iio: resolver: ad2s1210: always use 16-bit value for raw read
+      staging: iio: resolver: ad2s1210: implement IIO_CHAN_INFO_SCALE
+      staging: iio: resolver: ad2s1210: use devicetree to get CLKIN rate
+      staging: iio: resolver: ad2s1210: use regmap for config registers
+      staging: iio: resolver: ad2s1210: add debugfs reg access
+      staging: iio: resolver: ad2s1210: remove config attribute
+      staging: iio: resolver: ad2s1210: rework gpios
+      staging: iio: resolver: ad2s1210: implement hysteresis as channel attr
+      staging: iio: resolver: ad2s1210: refactor setting excitation frequency
+      staging: iio: resolver: ad2s1210: read excitation frequency from control register
+      staging: iio: resolver: ad2s1210: convert fexcit to channel attribute
+      staging: iio: resolver: ad2s1210: convert resolution to devicetree property
+      staging: iio: resolver: ad2s1210: add phase lock range support
+      staging: iio: resolver: ad2s1210: add triggered buffer support
+      staging: iio: resolver: ad2s1210: convert LOT threshold attrs to event attrs
+      staging: iio: resolver: ad2s1210: convert LOS threshold to event attr
+      staging: iio: resolver: ad2s1210: convert DOS overrange threshold to event attr
+      staging: iio: resolver: ad2s1210: convert DOS mismatch threshold to event attr
+      staging: iio: resolver: ad2s1210: rename DOS reset min/max attrs
+      staging: iio: resolver: ad2s1210: implement fault events
+      staging: iio: resolver: ad2s1210: add label attribute support
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+ .../bindings/iio/resolver/adi,ad2s1210.yaml        |  177 +++
+ .../Documentation/sysfs-bus-iio-resolver-ad2s1210  |   27 +
+ drivers/staging/iio/resolver/Kconfig               |    1 +
+ drivers/staging/iio/resolver/ad2s1210.c            | 1583 +++++++++++++++-----
+ 4 files changed, 1391 insertions(+), 397 deletions(-)
+---
+base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
+change-id: 20230925-ad2s1210-mainline-2791ef75e386
 

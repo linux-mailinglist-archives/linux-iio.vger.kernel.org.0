@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1347B38CA
+	by mail.lfdr.de (Postfix) with ESMTP id D979C7B38CD
 	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 19:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233758AbjI2R0T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Sep 2023 13:26:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41892 "EHLO
+        id S233736AbjI2R0V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Sep 2023 13:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233752AbjI2R0P (ORCPT
+        with ESMTP id S233760AbjI2R0P (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 13:26:15 -0400
 Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D54ACF4
-        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:26:01 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6c454a5f3c7so8584553a34.0
-        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:26:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D159CCFD
+        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:26:02 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6c4b9e09528so7298411a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 29 Sep 2023 10:26:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696008360; x=1696613160; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696008361; x=1696613161; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XS50HOcpy/QoGApJtkl2RYFn1gK8dkP+DI1nE8H7bnU=;
-        b=hb557TEXYQ/JGNiroi51jsyhFb7mBM/Z/gGTBJGrISnjdZZTRVQbMOBTypnHnSqMRQ
-         v2ZAOWmOxmVh4aKolp/IkvHifJx8pIWXzNdPcbEA25f5YKEj5QnnaEqE8t7hC+Y9cRyN
-         R1q25OXXITHXn/HOWKcHkxMcPhllIdtCMzx5txhTkfZGusl+Kusk6KZDMImkzIng1Gpt
-         upiN80CrWyKWVBKy5IxrsG2qvD8AYnL3Clvvh2iquKx1yshxOp7/f3wOE5L9XHD1MbKi
-         dCqAagKMPsp3zfP7Ni+X1v2uwJ3dzLNy3ac+To2qFgGZWlRtL9rDxuTGjNf5ktcwOZEu
-         ZFHQ==
+        bh=qjPcJpinx/2oZi6yDOcic02ZSonPgH6LaRKRfAMz/Qo=;
+        b=NTaAZ/ElMlLTaST/8bI5S/fYU3n/AKHJEy6EdJja37MJzbEos/gy2vWsQVS6GlyF+6
+         glBThJ8t7HBFflhb0N9nAbYYRTOQYEuhxJ3+5o62Lh4ONCjOhSIs9kpXBWvW1u0eYxTt
+         eUblPkxkf1RJtiRXdFfCSd1skxjXmr/TjAOysHJ+QiP6ldwL2+byPx7E1iRlekBmwm79
+         QHGHbH+HyIfDElxYeOWeQltAlbuYPL0HDAaUPIuV3SIlJbUyUAoRmPMR09ed+64GPbUb
+         KVcELnr5c0+hvmE0hbVaACs6gW6ZaqH4Pq47GuP2iovitLlCUqsBkOcRBFJGcTAJJvv9
+         Nb2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696008360; x=1696613160;
+        d=1e100.net; s=20230601; t=1696008361; x=1696613161;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XS50HOcpy/QoGApJtkl2RYFn1gK8dkP+DI1nE8H7bnU=;
-        b=df8Y11ZAZV3JwZBm2eoTb8OFXNvF7PhQ+4/KOPRvTtzt4IfQtkCTIFtchLgvNKB7hY
-         PYH4VMSBsrY5wVac7tkiXTHkwwfH67SBn9MHkBas6a5Oem//nzIRDovCE10OMrY2dLmL
-         fancsmDOQSSVeTTnX7snxx6N9c++dl33zqdrENGSOX+N/UKT/XZWE9e0xsBspNdaueh8
-         pu4sCWgmxJv6f/6/kRvPwtdTimS1xpniZdyrK3oG5nqZhD/cj7r6/65unb0QX9ZJZ3yR
-         y2KGOOm9xHVcYlDjSnwVthYjroTOlxtQ+GkuwfX3dSDxX1qhl4yhc3Ntu0CXJO9R6spG
-         Mc8Q==
-X-Gm-Message-State: AOJu0YyfICkgOtgbyY9yvCOZzlZKJRTjzVe+hL3yAFxcXNK86KaOHNJt
-        jBvPdQIwFeWtiLUG/579GRGh9UEfMIZ7+8inU8bZFw==
-X-Google-Smtp-Source: AGHT+IHLnYiy+7PPix22DynFrPx1RUsq+t82qdrnF7e2G+kZP1wzIwVXe3GJzaQug4eHhVHYJweBOA==
-X-Received: by 2002:a05:6830:1555:b0:6c4:948d:a957 with SMTP id l21-20020a056830155500b006c4948da957mr5755655otp.3.1696008360460;
-        Fri, 29 Sep 2023 10:26:00 -0700 (PDT)
+        bh=qjPcJpinx/2oZi6yDOcic02ZSonPgH6LaRKRfAMz/Qo=;
+        b=rX8zJkUc0f+BDGSpFyR4L0ZZKnsFnP3RaI/X+pR3F3KYBuB2SifKLgIPaFoLurvOAq
+         dQ+app2gmnTxuwsPiP7nyG4oEVgzhwZDciHFtc4PETgsCPteZzeA6LdpBaQcDVfrlxeO
+         SfJ5io0ycb18FttD5v6KI8jnDvQCks/ISkX7WCqX7NRixOFi7I7A9peGOJvgfXhmHAeP
+         UIe0EKRrliFdL6nLj2inew5Q9j5eBwPeYpvsTTAEWvN++iwJ8YunPstwBOxWQJps4A+x
+         KEgW1Z7VL4faxV7irmlL/qHXoCfkFNuOQE6ZzLqCMS1S2VgOatO5SrdpM65yiLNNJ5Yz
+         fbuQ==
+X-Gm-Message-State: AOJu0YxavUNG+ogZTUb0zcupiGAQ7n801TEKgvFdy54G+vDacCVBll4r
+        fqZUPbLrhMITnMrt6pxqc8+bAdqNrgUVjCwZE5ABGQ==
+X-Google-Smtp-Source: AGHT+IEU7xTxC2XhMOwTtgm0vgklQ781pNwhnGaa2Z5tu0SKY+s5O96AmKgrtXu11x/eKzuKi97bUg==
+X-Received: by 2002:a05:6830:11c6:b0:6bc:de9b:a3e6 with SMTP id v6-20020a05683011c600b006bcde9ba3e6mr5194286otq.24.1696008361316;
+        Fri, 29 Sep 2023 10:26:01 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id f128-20020a4a5886000000b0057bb326cad4sm2272915oob.33.2023.09.29.10.25.59
+        by smtp.gmail.com with ESMTPSA id f128-20020a4a5886000000b0057bb326cad4sm2272915oob.33.2023.09.29.10.26.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 29 Sep 2023 10:26:00 -0700 (PDT)
 From:   David Lechner <dlechner@baylibre.com>
@@ -62,9 +62,9 @@ Cc:     David Lechner <david@lechnology.com>,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v3 15/27] staging: iio: resolver: ad2s1210: refactor setting excitation frequency
-Date:   Fri, 29 Sep 2023 12:23:20 -0500
-Message-ID: <20230929-ad2s1210-mainline-v3-15-fa4364281745@baylibre.com>
+Subject: [PATCH v3 16/27] staging: iio: resolver: ad2s1210: read excitation frequency from control register
+Date:   Fri, 29 Sep 2023 12:23:21 -0500
+Message-ID: <20230929-ad2s1210-mainline-v3-16-fa4364281745@baylibre.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
 References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
@@ -85,155 +85,63 @@ From: David Lechner <david@lechnology.com>
 
 From: David Lechner <dlechner@baylibre.com>
 
-This combines the ad2s1210_update_frequency_control_word() and
-ad2s1210_soft_reset() functions into a single function since they
-both have to be called together. (The software reset does not reset
-any configuration registers, it only updates the excitation output
-and resets the tracking loop.)
-
-Also clean up a few things while touching this:
-- move AD2S1210_DEF_EXCIT macro with similar macros
-- remove unnecessary dev_err() calls
+This modifies the ad2s1210_show_fexcit() function to read the excitation
+frequency from the control register. This way we don't have to keep
+track of the value and don't risk returning a stale value.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-v3 changes:
-* Expanded comment on soft reset register write.
-* Fixed multiline comment style.
+v3 changes: None
 
- drivers/staging/iio/resolver/ad2s1210.c | 66 +++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 32 deletions(-)
+ drivers/staging/iio/resolver/ad2s1210.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index a82cb124a12f..28ab877e1bc0 100644
+index 28ab877e1bc0..b15d71b17266 100644
 --- a/drivers/staging/iio/resolver/ad2s1210.c
 +++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -51,12 +51,11 @@
- #define AD2S1210_MIN_CLKIN	6144000
- #define AD2S1210_MAX_CLKIN	10240000
- #define AD2S1210_MIN_EXCIT	2000
-+#define AD2S1210_DEF_EXCIT	10000
- #define AD2S1210_MAX_EXCIT	20000
- #define AD2S1210_MIN_FCW	0x4
- #define AD2S1210_MAX_FCW	0x50
+@@ -76,7 +76,6 @@ struct ad2s1210_state {
+ 	struct regmap *regmap;
+ 	/** The external oscillator frequency in Hz. */
+ 	unsigned long clkin_hz;
+-	unsigned int fexcit;
+ 	u8 resolution;
+ 	/** For reading raw sample value via SPI. */
+ 	__be16 sample __aligned(IIO_DMA_MINALIGN);
+@@ -206,8 +205,6 @@ static int ad2s1210_reinit_excitation_frequency(struct ad2s1210_state *st,
+ 	if (ret < 0)
+ 		return ret;
  
--#define AD2S1210_DEF_EXCIT	10000
+-	st->fexcit = fexcit;
 -
- enum ad2s1210_mode {
- 	MOD_POS = 0b00,
- 	MOD_VEL = 0b01,
-@@ -188,18 +187,32 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
- 	return 0;
- }
- 
--static inline
--int ad2s1210_update_frequency_control_word(struct ad2s1210_state *st)
-+/*
-+ * Sets the excitation frequency and performs software reset.
-+ *
-+ * Must be called with lock held.
-+ */
-+static int ad2s1210_reinit_excitation_frequency(struct ad2s1210_state *st,
-+						u16 fexcit)
- {
--	unsigned char fcw;
-+	int ret;
-+	u8 fcw;
- 
--	fcw = (unsigned char)(st->fexcit * (1 << 15) / st->clkin_hz);
--	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW) {
--		dev_err(&st->sdev->dev, "ad2s1210: FCW out of range\n");
-+	fcw = fexcit * (1 << 15) / st->clkin_hz;
-+	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW)
- 		return -ERANGE;
--	}
- 
--	return regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
-+	ret = regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
-+	if (ret < 0)
-+		return ret;
-+
-+	st->fexcit = fexcit;
-+
-+	/*
-+	 * Software reset reinitializes the excitation frequency output.
-+	 * It does not reset any of the configuration registers.
-+	 */
-+	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
- }
- 
- static int ad2s1210_set_resolution_gpios(struct ad2s1210_state *st,
-@@ -214,11 +227,6 @@ static int ad2s1210_set_resolution_gpios(struct ad2s1210_state *st,
- 				     bitmap);
- }
- 
--static inline int ad2s1210_soft_reset(struct ad2s1210_state *st)
--{
--	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
--}
--
- static ssize_t ad2s1210_show_fexcit(struct device *dev,
- 				    struct device_attribute *attr,
+ 	/*
+ 	 * Software reset reinitializes the excitation frequency output.
+ 	 * It does not reset any of the configuration registers.
+@@ -232,8 +229,22 @@ static ssize_t ad2s1210_show_fexcit(struct device *dev,
  				    char *buf)
-@@ -233,27 +241,24 @@ static ssize_t ad2s1210_store_fexcit(struct device *dev,
- 				     const char *buf, size_t len)
  {
  	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
--	unsigned int fexcit;
++	unsigned int value;
 +	u16 fexcit;
- 	int ret;
++	int ret;
  
--	ret = kstrtouint(buf, 10, &fexcit);
--	if (ret < 0)
--		return ret;
--	if (fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT) {
--		dev_err(dev,
--			"ad2s1210: excitation frequency out of range\n");
-+	ret = kstrtou16(buf, 10, &fexcit);
-+	if (ret < 0 || fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT)
- 		return -EINVAL;
--	}
+-	return sprintf(buf, "%u\n", st->fexcit);
++	mutex_lock(&st->lock);
++	ret = regmap_read(st->regmap, AD2S1210_REG_EXCIT_FREQ, &value);
++	if (ret < 0)
++		goto error_ret;
 +
- 	mutex_lock(&st->lock);
--	st->fexcit = fexcit;
--	ret = ad2s1210_update_frequency_control_word(st);
-+	ret = ad2s1210_reinit_excitation_frequency(st, fexcit);
- 	if (ret < 0)
- 		goto error_ret;
--	ret = ad2s1210_soft_reset(st);
++	fexcit = value * st->clkin_hz / (1 << 15);
 +
-+	ret = len;
++	ret = sprintf(buf, "%u\n", fexcit);
 +
- error_ret:
- 	mutex_unlock(&st->lock);
- 
--	return ret < 0 ? ret : len;
++error_ret:
++	mutex_unlock(&st->lock);
 +	return ret;
  }
  
- static ssize_t ad2s1210_show_resolution(struct device *dev,
-@@ -630,10 +635,8 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
- 	if (ret < 0)
- 		goto error_ret;
- 
--	ret = ad2s1210_update_frequency_control_word(st);
--	if (ret < 0)
--		goto error_ret;
--	ret = ad2s1210_soft_reset(st);
-+	ret = ad2s1210_reinit_excitation_frequency(st, AD2S1210_DEF_EXCIT);
-+
- error_ret:
- 	mutex_unlock(&st->lock);
- 	return ret;
-@@ -778,7 +781,6 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	mutex_init(&st->lock);
- 	st->sdev = spi;
- 	st->resolution = 12;
--	st->fexcit = AD2S1210_DEF_EXCIT;
- 
- 	ret = ad2s1210_setup_clocks(st);
- 	if (ret < 0)
+ static ssize_t ad2s1210_store_fexcit(struct device *dev,
 
 -- 
 2.42.0

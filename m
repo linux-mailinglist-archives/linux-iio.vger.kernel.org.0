@@ -2,140 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2D87B28D0
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 01:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2FE7B2D55
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Sep 2023 09:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjI1XaR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Sep 2023 19:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
+        id S231774AbjI2H73 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Sep 2023 03:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjI1XaR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Sep 2023 19:30:17 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BEF4139;
-        Thu, 28 Sep 2023 16:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695943815; x=1727479815;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v2ds4YulUEFwf7eurxc1fXVnPOhX2AoXRA7TsEihdLU=;
-  b=VUbWUMU5Jkr64DBYPmUAIchk6mH3b4Z34RL65KORIa6wevx3FcsFwpI6
-   1rACF2JNY64R5zXtHLw3F5Blezpy24H8sgKUgTgkdC8x0i3WcjIQNkFcs
-   cSV0Dy43Jk/QC/2QbY6NdveEtYBt1u71yOUVAKMUnAysNv2My2sRtYfXq
-   AfD/XaLhokWcZCCVcZxOVX2wiuWNAByhnIcz2ESeSdzV94T5fQkMnEDh+
-   Rm9NCZ8IM34nQQM1obMIPkFFeG5L56TIlyzAouQ0l8W+nBJwGgMaHV60s
-   U3ZeyvaD6cT3orCnvGPmiy74GO3J7CpI/uV4ayUkBYwzsWCEMxeSeA5iQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="382098096"
-X-IronPort-AV: E=Sophos;i="6.03,185,1694761200"; 
-   d="scan'208";a="382098096"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 16:30:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="726418460"
-X-IronPort-AV: E=Sophos;i="6.03,185,1694761200"; 
-   d="scan'208";a="726418460"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 28 Sep 2023 16:29:54 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qm0S8-000297-2A;
-        Thu, 28 Sep 2023 23:29:52 +0000
-Date:   Fri, 29 Sep 2023 07:29:01 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc:     oe-kbuild-all@lists.linux.dev, linus.walleij@linaro.org,
-        brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        with ESMTP id S229754AbjI2H72 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Sep 2023 03:59:28 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282701A5;
+        Fri, 29 Sep 2023 00:59:27 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9b0168a9e05so1543741266b.3;
+        Fri, 29 Sep 2023 00:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695974365; x=1696579165; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DSP8isM0GoS6W9oufJSrOdk6wkTwTTXRU6nx8T2M560=;
+        b=TqOQFvWeqCAjPZBkApTlerDt/aj8vVF3LK3/PeHcyoCaNxsUJhpg64TVN6FGjjuTNL
+         /WHoU/g5ZgG8kSDGGp/a10NpgqKjbSbhhdYLNwzWQ+l5pqZYgvDS1sIFmOHsDG12KRP3
+         Aa2jVAOxb015RfYj9ecskgnasxEAQsMqmzK1Rl0Bhfi+DFlSjWtyyrrnCy8ypvNs5FT4
+         +OTFjUzKf+LSWfwKwTAK7UzKSs2ddJYAOp1o2GqzFz9qjYLI+xY907h8/JAGPY/Wo0qf
+         HL+/iwFQHqPUxWVlE5h+SKamv/WzgusCl875t3AaL35QFJTty2NjEzy/PxrR+ugW7r7v
+         LHGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695974365; x=1696579165;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DSP8isM0GoS6W9oufJSrOdk6wkTwTTXRU6nx8T2M560=;
+        b=mufamnFHjChmuk/jbS+uO9/ZWTxpzewWUjR8LJy2o3LpfibwDokrg8tl/855cMcLiN
+         EF74NhfcOrMTbiquUEY0n/BEkg87oqeEspV42i5U7bkDWgCCflHhn6PFTejxrD/g8GJe
+         vG65anprRDy/tgYysZMlhAmoBIHFDkpZOa9j4JepNMze/Ys2aJKQedfK6hu0sR9Y/eJC
+         T4Tm+w8GEABzBZ0z7x1g5RmqJCzbqNAUplEtO4IrrInw71K5BcDJNOQRfGjkG6LwnCSk
+         gpc2q+lcKqs2tQ0Rze6AalFR/VFoGYg68sGh9CRhiR5cZ2SYWVc2Hzwmqd/qzrU1XoDY
+         SYyw==
+X-Gm-Message-State: AOJu0YyAIkH8Qx+h5JesxLyXUehCZ7YynxDBLenf7CuhkSAKQTWnrasQ
+        1us0YaaCmtVzilK11bidwya8qI56nBJKcI/6M0M=
+X-Google-Smtp-Source: AGHT+IHMdijcNPZlVaRfqfbEcQinrnRSYE8PJ67FzIWMLqlKzBR9NB1mCvGz0VpAAcR6XKkMK+k1SwRtqZbkAyicIEc=
+X-Received: by 2002:a17:906:530b:b0:9ae:6632:a8cc with SMTP id
+ h11-20020a170906530b00b009ae6632a8ccmr3209343ejo.54.1695974365173; Fri, 29
+ Sep 2023 00:59:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+ <20230918080314.11959-3-jagathjog1996@gmail.com> <20230924153055.0b3486f9@jic23-huawei>
+ <CAM+2EuJBxj7P-ymu84u308g8LCemSEsYi_TSHYtaK9PyrhqrfA@mail.gmail.com> <5eb148b4-25eb-460d-9ec8-0a40bec1dc6f@gmail.com>
+In-Reply-To: <5eb148b4-25eb-460d-9ec8-0a40bec1dc6f@gmail.com>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Fri, 29 Sep 2023 13:29:13 +0530
+Message-ID: <CAM+2EuJUGu4QUCdZ7d28RaLNipJRVuASP9wSzF14k=oBoC4e_Q@mail.gmail.com>
+Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
+To:     Denis Benato <benato.denis96@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        andriy.shevchenko@linux.intel.com, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <202309290756.MgmIdaDl-lkp@intel.com>
-References: <20230928125443.615006-2-mitrutzceclan@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230928125443.615006-2-mitrutzceclan@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Dumitru,
+Hi Denis,
 
-kernel test robot noticed the following build warnings:
+On Thu, Sep 28, 2023 at 2:55=E2=80=AFAM Denis Benato <benato.denis96@gmail.=
+com> wrote:
+>
+> Hello,
+>
+> Some devices (as my asus rog ally) have an ACPI node describing a BOSC020=
+0 sensor. The IC being used in those devices is a  bmi323 but as a result o=
+f how the ACPI table reports that device, it is detected by the existing ke=
+rnel module and we have no way of differentiating until after the chip ID p=
+robe.
+>
+> The module loaded is bmc150-accel-i2c.c which currently doesn't support t=
+he bmi323 and the loading of the module just fails at chip check.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.6-rc3 next-20230928]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dumitru-Ceclan/iio-adc-ad7173-add-AD7173-driver/20230928-205802
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230928125443.615006-2-mitrutzceclan%40gmail.com
-patch subject: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
-config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20230929/202309290756.MgmIdaDl-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230929/202309290756.MgmIdaDl-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309290756.MgmIdaDl-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad7173.c:829:23: warning: initialization of 'long unsigned int' from 'const struct ad7173_device_info *' makes integer from pointer without a cast [-Wint-conversion]
-     829 |         { "ad7172-2", &ad7173_device_info[ID_AD7172_2], },
-         |                       ^
-   drivers/iio/adc/ad7173.c:829:23: note: (near initialization for 'ad7173_id_table[0].driver_data')
-   drivers/iio/adc/ad7173.c:830:23: warning: initialization of 'long unsigned int' from 'const struct ad7173_device_info *' makes integer from pointer without a cast [-Wint-conversion]
-     830 |         { "ad7173-8", &ad7173_device_info[ID_AD7173_8], },
-         |                       ^
-   drivers/iio/adc/ad7173.c:830:23: note: (near initialization for 'ad7173_id_table[1].driver_data')
-   drivers/iio/adc/ad7173.c:831:23: warning: initialization of 'long unsigned int' from 'const struct ad7173_device_info *' makes integer from pointer without a cast [-Wint-conversion]
-     831 |         { "ad7175-2", &ad7173_device_info[ID_AD7175_2], },
-         |                       ^
-   drivers/iio/adc/ad7173.c:831:23: note: (near initialization for 'ad7173_id_table[2].driver_data')
-   drivers/iio/adc/ad7173.c:832:23: warning: initialization of 'long unsigned int' from 'const struct ad7173_device_info *' makes integer from pointer without a cast [-Wint-conversion]
-     832 |         { "ad7176-2", &ad7173_device_info[ID_AD7176_2], },
-         |                       ^
-   drivers/iio/adc/ad7173.c:832:23: note: (near initialization for 'ad7173_id_table[3].driver_data')
+bmc150 driver supports multiple accelerometer sensors such as
+bma222, bma280, bmi055 and all of them are having similar
+register map, but the bmi323 register map is completely different
+from bmc150.
 
 
-vim +829 drivers/iio/adc/ad7173.c
+>
+> I have solved the problem by expanding the current bmc150-accel-i2c.c and=
+ bmc150-accel-core.c files to handle that IC in almost every part: gyroscop=
+e, accelerometer and temperature sensor.
+>
+> What is the best way of organizing code to have this module mainlined? Is=
+ it correct leaving files called bmc150-accel-* even if it is managing anot=
+her IC and and not just the accelerometer part anymore?
+>
+> TIA for your time.
+>
+> Best regards,
+> Denis Benato
 
-   827	
-   828	static const struct spi_device_id ad7173_id_table[] = {
- > 829		{ "ad7172-2", &ad7173_device_info[ID_AD7172_2], },
-   830		{ "ad7173-8", &ad7173_device_info[ID_AD7173_8], },
-   831		{ "ad7175-2", &ad7173_device_info[ID_AD7175_2], },
-   832		{ "ad7176-2", &ad7173_device_info[ID_AD7176_2], },
-   833		{ },
-   834	};
-   835	MODULE_DEVICE_TABLE(spi, ad7173_id_table);
-   836	
+Regards
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jagath

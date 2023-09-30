@@ -2,46 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A78E7B40B7
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20C3D7B40D7
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 16:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234185AbjI3OJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 10:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52684 "EHLO
+        id S234252AbjI3OX2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 10:23:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231364AbjI3OJ3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 10:09:29 -0400
+        with ESMTP id S234225AbjI3OX1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 10:23:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A18AB3;
-        Sat, 30 Sep 2023 07:09:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C917C433C8;
-        Sat, 30 Sep 2023 14:09:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02A3C5;
+        Sat, 30 Sep 2023 07:23:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3565CC433C8;
+        Sat, 30 Sep 2023 14:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696082966;
-        bh=hk3AhPgtuY5Ipeir8PTEBRwQE9bjMtb3/FCCgihi7II=;
+        s=k20201202; t=1696083804;
+        bh=c755zVlWXxQovsxHLo0qYqvK1xDXA/WABDKjLlXgABc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K7pxfGkEQh8MeyGFqQ5h986qm2vtG+qycbl0qGkwQGD/FWzMKhwvb44aNA4PEITUH
-         7McwyDKHNOhCR4Rdwf9NwglznPkAa+wsNMbuFkyOjjpd7Np2vBcBc58VWY4Aeqi6Kn
-         as3m9ez6hT9Bg6YfAOdq0AwjKrLPoCRPB8RsYtpiXh/qKLK4nfU2orKyHvEi5qnm4R
-         L3fWk+rb6MvPYiOzg58QQNYyDbaeHspe8MJb3//YwOjbL/icDBjOdrirG9a/UD3bG4
-         /ovHG48XpnXf4Qsi6rgwedgX0FRDfS1n81tT6gssIgxmLnYTE/TE9Sibn+n5Vdw+E5
-         VUqQY/m8JBCYQ==
-Date:   Sat, 30 Sep 2023 15:09:26 +0100
+        b=kSSwq4ODa4PedjG5oPwH8oG5biSLYLe/edSU/N6jW0WHSyfAK/+0BxpjERaFpihA9
+         TkiMLNYLBC1rD+DDf2Xd/JgFX8SnxlAHu77LYz06/px+aNf31hVuvRaZDgQYDN/Rs+
+         CwzGFp1HHvExleStybJ4aCHGle4CrzWyJErNXbkU4KsK3EqJbOhxPNlmxf8UVnn4Ls
+         GxFk6afMg3kvppJqLS6rHD8y6uI7r1L/sKdwXwTY7YmrxtTx5ipIvGelnWiDMOvjkG
+         A+uHJ4PZWQzWf7FrHrHoNZqDKFViZf6L28VbY1t+POi/EH3nXFajfPrhLpJmJ+DSR6
+         u+RbO75q6EnRA==
+Date:   Sat, 30 Sep 2023 15:23:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: provide max34408/9 device tree
- binding document
-Message-ID: <20230930150926.47c1e6eb@jic23-huawei>
-In-Reply-To: <20230930-lusty-antihero-f381434ab682@spud>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add driver support for MAX34408/9
+Message-ID: <20230930152324.33e6e199@jic23-huawei>
+In-Reply-To: <20230929200844.23316-3-fr0st61te@gmail.com>
 References: <20230929200844.23316-1-fr0st61te@gmail.com>
-        <20230929200844.23316-2-fr0st61te@gmail.com>
-        <20230930-lusty-antihero-f381434ab682@spud>
+        <20230929200844.23316-3-fr0st61te@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,163 +52,379 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 30 Sep 2023 10:37:09 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Fri, 29 Sep 2023 23:08:44 +0300
+Ivan Mikhaylov <fr0st61te@gmail.com> wrote:
 
-> Hey,
+> The MAX34408/MAX34409 are two- and four-channel current monitors that are
+> configured and monitored with a standard I2C/SMBus serial interface. Each
+> unidirectional current sensor offers precision high-side operation with a
+> low full-scale sense voltage. The devices automatically sequence through
+> two or four channels and collect the current-sense samples and average them
+> to reduce the effect of impulse noise. The raw ADC samples are compared to
+> user-programmable digital thresholds to indicate overcurrent conditions.
+> Overcurrent conditions trigger a hardware output to provide an immediate
+> indication to shut down any necessary external circuitry.
 > 
-> On Fri, Sep 29, 2023 at 11:08:43PM +0300, Ivan Mikhaylov wrote:
-> > The hardware binding for i2c current monitoring device with overcurrent
-> > control.
-> > 
-> > Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
-> > ---
-> >  .../bindings/iio/adc/maxim,max34408.yaml      | 101 ++++++++++++++++++
-> >  1 file changed, 101 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > new file mode 100644
-> > index 000000000000..cdf89fa4c80e
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > @@ -0,0 +1,101 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Two- and four-channel current monitors with overcurrent control
-> > +
-> > +maintainers:
-> > +  - Ivan Mikhaylov <fr0st61te@gmail.com>
-> > +
-> > +description: |
-> > +  The MAX34408/MAX34409 are two- and four-channel current monitors that are
-> > +  configured and monitored with a standard I2C/SMBus serial interface. Each
-> > +  unidirectional current sensor offers precision high-side operation with a
-> > +  low full-scale sense voltage. The devices automatically sequence through
-> > +  two or four channels and collect the current-sense samples and average them
-> > +  to reduce the effect of impulse noise. The raw ADC samples are compared to
-> > +  user-programmable digital thresholds to indicate overcurrent conditions.
-> > +  Overcurrent conditions trigger a hardware output to provide an immediate
-> > +  indication to shut down any necessary external circuitry.
-> > +
-> > +  Specifications about the devices can be found at:
-> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - maxim,max34408
-> > +      - maxim,max34409
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  maxim,input1-rsense-val-micro-ohms:
-> > +    description:
-> > +      Adjust the Rsense value to monitor higher or lower current levels for
-> > +      input 1.
-> > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
-> > +    default: 1000
-> > +
-> > +  maxim,input2-rsense-val-micro-ohms:
-> > +    description:
-> > +      Adjust the Rsense value to monitor higher or lower current levels for
-> > +      input 2.
-> > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
-> > +    default: 1000
-> > +
-> > +  maxim,input3-rsense-val-micro-ohms:
-> > +    description:
-> > +      Adjust the Rsense value to monitor higher or lower current levels for
-> > +      input 3.
-> > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
-> > +    default: 1000
-> > +
-> > +  maxim,input4-rsense-val-micro-ohms:
-> > +    description:
-> > +      Adjust the Rsense value to monitor higher or lower current levels for
-> > +      input 4.
-> > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
-> > +    default: 1000  
+> Add as ADC driver which only supports current monitoring for now.
 > 
-> Having 4 almost identical properties makes it seem like this should have
-> some channel nodes, each containing an rsense-micro-ohms type property.
-Agreed.  That is most flexible route if there is any chance of ending up
-with more channel specific stuff in future.
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+> 
+> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
 
-There should also be some magic in here to rule out the input3 and input4
-for the devices with only two channels. (lots of examples in tree)
+Hi Ivan,
 
-Otherwise, in theory this could be an array I guess, but I'd also prefer
-channel nodes.
+Various small comments inline. Mostly simplifications to the code.
 
-> 
-> > +
-> > +  maxim,shtdn:
-> > +    description:
-> > +      Shutdown Output. Open-drain output. This output transitions to high impedance
-> > +      when any of the digital comparator thresholds are exceeded as long as the ENA
-> > +      pin is high.
-> > +    type: boolean  
-> 
-> I don't understand what this property is used for. The description here,
-> and below for "ena", read like they are the descriptions in the
-> datasheet for the pin, rather than how to use the property.
-> 
-> The drivers don't appear to contain users either - what is the point of
-> these properties?
-> 
-> > +
-> > +  maxim,ena:
-> > +    description:
-> > +      SHTDN Enable Input. CMOS digital input. Connect to GND to clear the latch and
-> > +      unconditionally deassert (force low) the SHTDN output and reset the shutdown
-> > +      delay. Connect to VDD to enable normal latch operation of the SHTDN output.
-> > +    type: boolean
-> > +
-> > +  supply-vdd: true  
-> 
-> As pointed out by the bot, this is not correct. You need to use a
-> -supply affix, not a supply-prefix.
-My error in earlier review (not enough coffee that day I guess :)
-
-Anyhow it does show that the tests weren't run which isn't a good thing to see.
+Thanks,
 
 Jonathan
 
-> 
-> Thanks,
-> Conor.
-> 
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        adc@1e {
-> > +              compatible = "maxim,max34409";
-> > +              reg = <0x1e>;
-> > +              maxim,input1-rsense-val-micro-ohms = <5000>;
-> > +              maxim,input2-rsense-val-micro-ohms = <10000>;
-> > +        };
-> > +    };
-> > -- 
-> > 2.42.0
-> >  
+> diff --git a/drivers/iio/adc/max34408.c b/drivers/iio/adc/max34408.c
+> new file mode 100644
+> index 000000000000..f576c65e3900
+> --- /dev/null
+> +++ b/drivers/iio/adc/max34408.c
+> @@ -0,0 +1,334 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * IIO driver for Maxim MAX34409/34408 ADC, 4-Channels/2-Channels, 8bits, I2C
+> + *
+> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+> + *
+> + * TODO: ALERT interrupt, Overcurrent delay, Shutdown delay
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/init.h>
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/of_device.h>
+> +#include <linux/regmap.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/types.h>
+> +
+> +#define MAX34408_STATUS_REG		0x0
+> +#define MAX34408_CONTROL_REG		0x1
+> +#define MAX34408_OCDELAY_REG		0x2
+> +#define MAX34408_SDDELAY_REG		0x3
+> +
+> +#define MAX34408_ADC1_REG		0x4
+> +#define MAX34408_ADC2_REG		0x5
+> +/* ADC3 & ADC4 always returns 0x0 on 34408 */
+> +#define MAX34409_ADC3_REG		0x6
+> +#define MAX34409_ADC4_REG		0x7
+> +
+> +#define MAX34408_OCT1_REG		0x8
+> +#define MAX34408_OCT2_REG		0x9
+> +#define MAX34408_OCT3_REG		0xA
+> +#define MAX34408_OCT4_REG		0xB
+> +
+> +#define MAX34408_DID_REG		0xC
+> +#define MAX34408_DCYY_REG		0xD
+> +#define MAX34408_DCWW_REG		0xE
+> +
+> +/* Bit masks for status register */
+> +#define MAX34408_STATUS_OC_MSK		GENMASK(1, 0)
+> +#define MAX34409_STATUS_OC_MSK		GENMASK(3, 0)
+> +#define MAX34408_STATUS_SHTDN		BIT(4)
+> +#define MAX34408_STATUS_ENA		BIT(5)
+> +
+> +/* Bit masks for control register */
+> +#define MAX34408_CONTROL_AVG0		BIT(0)
+> +#define MAX34408_CONTROL_AVG1		BIT(1)
+> +#define MAX34408_CONTROL_AVG2		BIT(2)
+> +#define MAX34408_CONTROL_ALERT		BIT(3)
+> +
+> +/* Bit masks for over current delay */
+> +#define MAX34408_OCDELAY_OCD_MSK	GENMASK(6, 0)
+> +#define MAX34408_OCDELAY_RESET		BIT(7)
+> +
+> +/* Bit masks for shutdown delay */
+> +#define MAX34408_SDDELAY_SHD_MSK	GENMASK(6, 0)
+> +#define MAX34408_SDDELAY_RESET		BIT(7)
+> +
+> +#define MAX34408_DEFAULT_RSENSE		1000
+> +
+> +/**
+> + * struct max34408_data - max34408/max34409 specific data.
+> + * @regmap:	device register map.
+> + * @dev:	max34408 device.
+> + * @lock:	lock for protecting access to device hardware registers, mostly
+> + *		for read modify write cycles for control registers.
+> + * @rsense:	Rsense value in uOhm.
+
+Bot complained about this doc being out of date.
+As mentioned below, an array seems more appropriate to me than 4
+separate struct elements.
+
+> + */
+> +struct max34408_data {
+> +	struct regmap *regmap;
+> +	struct device *dev;
+> +	struct mutex lock;
+> +	u32 input1_rsense;
+> +	u32 input2_rsense;
+> +	u32 input3_rsense;
+> +	u32 input4_rsense;
+> +};
+> +
+> +static const struct regmap_config max34408_regmap_config = {
+> +	.reg_bits	= 8,
+> +	.val_bits	= 8,
+> +	.max_register	= MAX34408_DCWW_REG,
+> +};
+> +
+> +struct max34408_adc_model_data {
+> +	const char *model_name;
+> +	const struct iio_chan_spec *channels;
+> +	const int num_channels;
+> +};
+> +
+> +#define MAX34008_CHANNEL(_index)					\
+> +	{								\
+> +		.type = IIO_CURRENT,					\
+> +		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |	\
+
+I'd drop the tab and not force that indent.  A space is enough and consistent
+with other elements.
+
+> +					  BIT(IIO_CHAN_INFO_SCALE) |	\
+> +					  BIT(IIO_CHAN_INFO_OFFSET),	\
+> +		.channel = (_index),					\
+> +		.indexed = 1,						\
+> +	}
+> +
+> +static const struct iio_chan_spec max34408_channels[] = {
+> +	MAX34008_CHANNEL(0),
+> +	MAX34008_CHANNEL(1),
+> +};
+> +
+> +static const struct iio_chan_spec max34409_channels[] = {
+> +	MAX34008_CHANNEL(0),
+> +	MAX34008_CHANNEL(1),
+> +	MAX34008_CHANNEL(2),
+> +	MAX34008_CHANNEL(3),
+> +};
+> +
+> +static int max34408_read_adc(struct max34408_data *max34408, int channel,
+> +			     int *val)
+> +{
+> +	u32 adc_reg;
+> +
+> +	switch (channel) {
+> +	case 0:
+> +		adc_reg = MAX34408_ADC1_REG;
+Channels have an .address field for this purpose.
+I would put this in there then this just becomes
+
+	return regmap_read(max34408->regmap, chan->address, val);
+
+with no need for the switch statement.
+
+
+> +		break;
+> +	case 1:
+> +		adc_reg = MAX34408_ADC2_REG;
+> +		break;
+> +	case 2:
+> +		adc_reg = MAX34409_ADC3_REG;
+> +		break;
+> +	case 3:
+> +		adc_reg = MAX34409_ADC4_REG;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return regmap_read(max34408->regmap, adc_reg, val);
+> +}
+> +
+> +static int max34408_read_adc_avg(struct max34408_data *max34408, int channel, int *val)
+> +{
+> +	unsigned int ctrl;
+> +	int rc;
+> +	u8 tmp;
+> +
+> +	guard(mutex)(&max34408->lock);
+> +	rc = regmap_read(max34408->regmap, MAX34408_CONTROL_REG, (u32 *)&ctrl);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* set averaging (0b100) default values*/
+> +	tmp = ctrl;
+> +	ctrl |= MAX34408_CONTROL_AVG2;
+> +	ctrl &= ~MAX34408_CONTROL_AVG1;
+> +	ctrl &= ~MAX34408_CONTROL_AVG0;
+It's a 3 bit field. Define a single mask for the field and then either
+as set of defines for the values, or (if my maths is write)
+
+#define	MAX34408_CONTROL_AVG_FIELD_TO_SAMPLES(x)	(1 << x)
+#define MAX34408_CONTROL_AVG_SAMPLES_TO_FIELD(x)  ffs(x)
+
+to go backwards and forwards from the encoded value which is just powers of 2
+
+> +	rc = regmap_write(max34408->regmap, MAX34408_CONTROL_REG, ctrl);
+> +	if (rc) {
+> +		dev_err(max34408->dev,
+> +			"Error (%d) writing control register\n", rc);
+> +		return rc;
+> +	}
+> +
+> +	rc = max34408_read_adc(max34408, channel, val);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* back to old values */
+> +	rc = regmap_write(max34408->regmap, MAX34408_CONTROL_REG, tmp);
+> +	if (rc)
+> +		dev_err(max34408->dev,
+> +			"Error (%d) writing control register\n", rc);
+> +
+> +	return rc;
+> +}
+> +
+> +static int max34408_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct max34408_data *max34408 = iio_priv(indio_dev);
+> +	int input_rsense;
+> +	int rc;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		rc = max34408_read_adc_avg(max34408, chan->channel,
+> +					   val);
+Fits on one line under 80 chars.  Check for other cases and tidy
+those up as well.
+
+> +		if (rc)
+> +			return rc;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/*
+> +		 * calcluate current for 8bit ADC with Rsense
+> +		 * value.
+> +		 * 10 mV * 1000 / Rsense uOhm = max current
+> +		 * (max current * adc val * 1000) / (2^8 - 1) mA
+> +		 */
+> +		switch (chan->channel) {
+> +		case 0:
+> +			input_rsense = max34408->input1_rsense;
+Array?
+Then this becomes
+		input_rsense = max34408->input_rsense[chan->channel];
+
+or skip the local variable and use it directly
+
+		*val = 10000 / max34408->input_rsense[chan->chanel];
+		*val2 = 8;
+		return IIO_VAL_FRACTION_LOG2;
+
+> +			break;
+> +		case 1:
+> +			input_rsense = max34408->input2_rsense;
+> +			break;
+> +		case 2:
+> +			input_rsense = max34408->input3_rsense;
+> +			break;
+> +		case 3:
+> +			input_rsense = max34408->input4_rsense;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +		*val = 10000 / input_rsense;
+> +		*val2 = 8;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		*val = 0;
+
+When the offset is 0, there is no in exposing that interface.
+0 is the default if the file isn't there in sysfs.
+
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info max34408_info = {
+> +	.read_raw	= max34408_read_raw,
+> +};
+
+...
+
+> +static int max34408_probe(struct i2c_client *client)
+> +{
+> +	const struct max34408_adc_model_data *model_data;
+> +	const struct of_device_id *match;
+> +	struct max34408_data *max34408;
+> +	struct iio_dev *indio_dev;
+> +	struct regmap *regmap;
+> +	int rc;
+> +
+> +	match = of_match_device(max34408_of_match, &client->dev);
+> +	if (!match)
+> +		return -EINVAL;
+> +	model_data = match->data;
+> +
+> +	regmap = devm_regmap_init_i2c(client, &max34408_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err_probe(&client->dev, PTR_ERR(regmap),
+> +			      "regmap_init failed\n");
+> +		return PTR_ERR(regmap);
+> +	}
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*max34408));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	max34408 = iio_priv(indio_dev);
+> +	max34408->regmap = regmap;
+> +	max34408->dev = &client->dev;
+> +	mutex_init(&max34408->lock);
+> +
+> +	rc = device_property_read_u32(&client->dev,
+> +				      "maxim,input1-rsense-val-micro-ohms",
+> +				      &max34408->input1_rsense);
+> +	if (rc)
+> +		max34408->input1_rsense = MAX34408_DEFAULT_RSENSE;
+> +
+> +	rc = device_property_read_u32(&client->dev,
+> +				      "maxim,input2-rsense-val-micro-ohms",
+> +				      &max34408->input2_rsense);
+> +	if (rc)
+> +		max34408->input2_rsense = MAX34408_DEFAULT_RSENSE;
+> +
+> +	rc = device_property_read_u32(&client->dev,
+> +				      "maxim,input3-rsense-val-micro-ohms",
+> +				      &max34408->input3_rsense);
+> +	if (rc)
+> +		max34408->input3_rsense = MAX34408_DEFAULT_RSENSE;
+> +
+> +	rc = device_property_read_u32(&client->dev,
+> +				      "maxim,input4-rsense-val-micro-ohms",
+> +				      &max34408->input4_rsense);
+> +	if (rc)
+> +		max34408->input4_rsense = MAX34408_DEFAULT_RSENSE;
+> +
+So, device_property_read_u32() is guaranteed to have no side effects on the
+value being set if there is an error. Hence normal way of doing defaults
+for optional parameters is the simpler.
+
+	max34408->input4_rsense = MAX34408_DEFAULT_RENSE;
+	device_property_read_u32(dev, "....", &max34408->input4_rsense);
+
+So deliberately don't check the return value.
+
+Not I would also suggest introducing a
+struct device *dev = &client->dev; local variable as you use &client->dev
+a lot.
+
+Jonathan
+
+
 

@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEAE67B41D6
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 17:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E227B41EB
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 18:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbjI3Prh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 11:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35122 "EHLO
+        id S232709AbjI3QAv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 12:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232986AbjI3Prf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 11:47:35 -0400
+        with ESMTP id S234460AbjI3QAv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 12:00:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE818F;
-        Sat, 30 Sep 2023 08:47:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667D4C433C7;
-        Sat, 30 Sep 2023 15:47:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEC7EB;
+        Sat, 30 Sep 2023 09:00:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11892C433C7;
+        Sat, 30 Sep 2023 16:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696088853;
-        bh=Gor7hCiDiW4Jc346jiB8/6JVwQoGcfKYgZ6QWObW8cY=;
+        s=k20201202; t=1696089647;
+        bh=GnDBtud2gOLs0KL+egFH2wAxcCUYgicSKPG1u0J6bFI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uR5/74pgtU3bWICZedmsfmolkXmgw1MzXq/N4TYCXl+QvUfNxVH/xidREmFNBktf4
-         fd6D3yreDGWmwvo4qkXIx+h/EoxGdku6pPpFY/tMOfTBj3InjPA83TDCIAsH5rVi7z
-         QP2CKniYoTU4tNb7/mvGkKxsUh3ToH2kzKViiwXZC3u8FAz0KzHUNLye7oqRyULwld
-         b4oRzbJf82CJOT1VbnoyjBKKYEJHZrsSeaScG8Dp36C5lbJ1fsGqdB8Q7UV1UQJOaH
-         QAO1ZoUAkGhmJnrNrKXqkEfbMQXo9NBqHbbvq72PY2IHKmFeTWV6asO8f+sPbfJCQD
-         CxfqOglvk6SRA==
-Date:   Sat, 30 Sep 2023 16:47:32 +0100
+        b=UoFsdHtr3HKzO4alyHJRv1nu+gt7fqTxEdx5hfy1nWv7dXqO23sPM9ZjMfz4s6H4T
+         S5dowidN4SvRX8mZdWCuq425h4gB/E1QCc4+56Cp7PtOPwCHIJiXA88xW20CYFkeNu
+         EUwuRVLcbA+ND/zZJpiCmAJL8Jbp5A2BUdqVweOvWTisGqDuUESYEHAJAYjicrJYiq
+         F33xdZQEBEETxySGxp1NME8xGe1ccgOp2FIiMkmlpdukRTWnIhMrj1QOkIEPc71MHz
+         SK1ybHWXMocM/BFMhZzSTY3OMNvQsWhEueaZvjLmeigyErep7YJior5oL5UGXH133d
+         +OWN0vZsEvfkA==
+Date:   Sat, 30 Sep 2023 17:00:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -40,12 +40,12 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 25/27] staging: iio: resolver: ad2s1210: rename DOS
- reset min/max attrs
-Message-ID: <20230930164732.34e62b20@jic23-huawei>
-In-Reply-To: <20230929-ad2s1210-mainline-v3-25-fa4364281745@baylibre.com>
+Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
+ fault events
+Message-ID: <20230930170046.36637e9c@jic23-huawei>
+In-Reply-To: <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
 References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-25-fa4364281745@baylibre.com>
+        <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,227 +59,381 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Sep 2023 12:23:30 -0500
+On Fri, 29 Sep 2023 12:23:31 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > From: David Lechner <david@lechnology.com>
 > 
 > From: David Lechner <dlechner@baylibre.com>
 > 
-> The AD2S1210 has a programmable threshold for the degradation of signal
-> (DOS) mismatch fault. This fault is triggered when the difference in
-> amplitude between the sine and cosine inputs exceeds the threshold.
+> When reading the position and velocity on the AD2S1210, there is also a
+> 3rd byte following the two data bytes that contains the fault flag bits.
+> This patch adds support for reading this byte and generating events when
+> faults occur.
 > 
-> The DOS reset min/max registers on the chip provide initial values
-> for internal tracking of the min/max of the monitor signal after the
-> fault register is cleared.
-> 
-> This patch converts the custom device DOS reset min/max threshold
-> attributes custom event attributes on the monitor signal channel.
-> 
-> The attributes now use millivolts instead of the raw register value in
-> accordance with the IIO ABI.
-> 
-> Emitting the event will be implemented in a later patch.
+> The faults are mapped to various channels and event types in order to
+> have a unique event for each fault.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
+
+Use of x and y modifiers is a little odd.  What was your reasoning?
+Was it just that there was a X_OR_Y modifier?  If so, don't use that!
+It seemed like a good idea at the time, but it's not nice to deal with
+and requires a channel with that modifier to hang the controls off
++ make sure userspace expects that event code.
+
 > ---
 > 
 > v3 changes: This is a new patch in v3
 > 
->  .../Documentation/sysfs-bus-iio-resolver-ad2s1210  | 27 ++++++
->  drivers/staging/iio/resolver/ad2s1210.c            | 99 ++++++++++++----------
->  2 files changed, 82 insertions(+), 44 deletions(-)
+>  drivers/staging/iio/resolver/ad2s1210.c | 175 +++++++++++++++++++++++++++++---
+>  1 file changed, 161 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210 b/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
-> new file mode 100644
-> index 000000000000..ea75881b0c77
-> --- /dev/null
-> +++ b/drivers/staging/iio/Documentation/sysfs-bus-iio-resolver-ad2s1210
-> @@ -0,0 +1,27 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_altvoltage0-altvoltage1_thresh_rising_reset_max
-Ah. So these are differential.  But the mismatch channel value isn't?  
-
-I also got the format wrong for differential channels. Oops. Should
-be the in_altvoltage0-altvoltage1 format for the previous suggestion
-to change that channel type to differential.
-
-This looks fine to me as new ABI.
-
-Jonathan
-
-
-
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Reset Maximum
-> +		Threshold value in millivolts. Writing sets the value.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_altvoltage0-altvoltage1_thresh_rising_reset_max_available
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the allowable voltage range for
-> +		in_altvoltage0-altvoltage1_thresh_rising_reset_max.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_altvoltage0-altvoltage1_thresh_rising_reset_min
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the current Degradation of Signal Reset Minimum
-> +		Threshold value in millivolts. Writing sets the value.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_altvoltage0-altvoltage1_thresh_rising_reset_min_available
-> +KernelVersion:  6.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading returns the allowable voltage range for
-> +		in_altvoltage0-altvoltage1_thresh_rising_reset_min.
 > diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-> index aa14edbe8a77..e1c95ec73545 100644
+> index e1c95ec73545..dc3cc3ab855e 100644
 > --- a/drivers/staging/iio/resolver/ad2s1210.c
 > +++ b/drivers/staging/iio/resolver/ad2s1210.c
-> @@ -283,41 +283,6 @@ static ssize_t ad2s1210_clear_fault(struct device *dev,
+> @@ -21,6 +21,7 @@
+>  #include <linux/types.h>
+>  
+>  #include <linux/iio/buffer.h>
+> +#include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+>  #include <linux/iio/trigger_consumer.h>
+> @@ -35,6 +36,16 @@
+>  #define AD2S1210_SET_ENRES		GENMASK(3, 2)
+>  #define AD2S1210_SET_RES		GENMASK(1, 0)
+>  
+> +/* fault register flags */
+> +#define AD2S1210_FAULT_CLIP		BIT(7)
+> +#define AD2S1210_FAULT_LOS		BIT(6)
+> +#define AD2S1210_FAULT_DOS_OVR		BIT(5)
+> +#define AD2S1210_FAULT_DOS_MIS		BIT(4)
+> +#define AD2S1210_FAULT_LOT		BIT(3)
+> +#define AD2S1210_FAULT_VELOCITY		BIT(2)
+> +#define AD2S1210_FAULT_PHASE		BIT(1)
+> +#define AD2S1210_FAULT_CONFIG_PARITY	BIT(0)
+> +
+>  #define AD2S1210_REG_POSITION_MSB	0x80
+>  #define AD2S1210_REG_POSITION_LSB	0x81
+>  #define AD2S1210_REG_VELOCITY_MSB	0x82
+> @@ -71,6 +82,8 @@
+>  /* max voltage for threshold registers is 0x7F * 38 mV */
+>  #define THRESHOLD_RANGE_STR "[0 38 4826]"
+>  
+> +#define FAULT_ONESHOT(bit, new, old) (new & bit && !(old & bit))
+> +
+>  enum ad2s1210_mode {
+>  	MOD_POS = 0b00,
+>  	MOD_VEL = 0b01,
+> @@ -98,8 +111,13 @@ struct ad2s1210_state {
+>  	unsigned long clkin_hz;
+>  	/** The selected resolution */
+>  	enum ad2s1210_resolution resolution;
+> +	/** Copy of fault register from the previous read. */
+> +	u8 prev_fault_flags;
+>  	/** For reading raw sample value via SPI. */
+> -	__be16 sample __aligned(IIO_DMA_MINALIGN);
+> +	struct {
+> +		__be16 raw;
+> +		u8 fault;
+> +	} sample __aligned(IIO_DMA_MINALIGN);;
+>  	/** Scan buffer */
+>  	struct {
+>  		__be16 chan[2];
+> @@ -158,7 +176,15 @@ static int ad2s1210_regmap_reg_write(void *context, unsigned int reg,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	return spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
+> +	ret = spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* soft reset also clears the fault register */
+> +	if (reg == AD2S1210_REG_SOFT_RESET)
+> +		st->prev_fault_flags = 0;
+> +
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -200,6 +226,10 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	/* reading the fault register also clears it */
+> +	if (reg == AD2S1210_REG_FAULT)
+> +		st->prev_fault_flags = 0;
+> +
+>  	/*
+>  	 * If the D7 bit is set on any read/write register, it indicates a
+>  	 * parity error. The fault register is read-only and the D7 bit means
+> @@ -283,14 +313,92 @@ static ssize_t ad2s1210_clear_fault(struct device *dev,
 >  	return ret < 0 ? ret : len;
 >  }
 >  
-> -static ssize_t ad2s1210_show_reg(struct device *dev,
-> -				 struct device_attribute *attr,
-> -				 char *buf)
-> -{
-> -	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> -	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> -	unsigned int value;
-> -	int ret;
-> -
-> -	mutex_lock(&st->lock);
-> -	ret = regmap_read(st->regmap, iattr->address, &value);
-> -	mutex_unlock(&st->lock);
-> -
-> -	return ret < 0 ? ret : sprintf(buf, "%d\n", value);
-> -}
-> -
-> -static ssize_t ad2s1210_store_reg(struct device *dev,
-> -				  struct device_attribute *attr,
-> -				  const char *buf, size_t len)
-> -{
-> -	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> -	unsigned char data;
-> -	int ret;
-> -	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> -
-> -	ret = kstrtou8(buf, 10, &data);
-> -	if (ret)
-> -		return -EINVAL;
-> -
-> -	mutex_lock(&st->lock);
-> -	ret = regmap_write(st->regmap, iattr->address, data);
-> -	mutex_unlock(&st->lock);
-> -	return ret < 0 ? ret : len;
-> -}
-> -
->  static int ad2s1210_single_conversion(struct ad2s1210_state *st,
+> -static int ad2s1210_single_conversion(struct ad2s1210_state *st,
+> +static void ad2s1210_push_events(struct iio_dev *indio_dev,
+> +				 u8 flags, s64 timestamp)
+> +{
+> +	struct ad2s1210_state *st = iio_priv(indio_dev);
+> +
+> +	/* Sine/cosine inputs clipped */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_CLIP, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_MOD_EVENT_CODE(IIO_ALTVOLTAGE, 1,
+> +			       			  IIO_MOD_X_OR_Y,
+Hmm. So this is a weird corner I'd forgotten about and explains your
+use of X and Y modifiers. 
+Long ago this was added to support a similar case to the one you have,
+but mixing and matching modifiers like this doesn't scale, so
+I think we'd be better just signally events on both channels.
+If nothing else, someone waiting for an event on a specific channel
+isn't looking for this weird modifier.
+
+When it was used before we added a channel for MOD_X_OR_Y so events
+were enabled on that. It's horrible though so don't do that.
+
+> +						  IIO_EV_TYPE_MAG,
+> +						  IIO_EV_DIR_NONE),
+> +			       timestamp);
+> +
+> +	/* Sine/cosine inputs below LOS threshold */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_LOS, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_ALTVOLTAGE, 0,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_FALLING),
+> +			       timestamp);
+> +
+> +	/* Sine/cosine inputs exceed DOS overrange threshold */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_DOS_OVR, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_ALTVOLTAGE, 0,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +			       timestamp);
+> +
+> +	/* Sine/cosine inputs exceed DOS mismatch threshold */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_DOS_MIS, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_ALTVOLTAGE, 0,
+> +						    IIO_EV_TYPE_MAG,
+> +						    IIO_EV_DIR_NONE),
+> +			       timestamp);
+> +
+> +	/* Tracking error exceeds LOT threshold */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_LOT, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_ANGL, 1,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +			       timestamp);
+> +
+> +	/* Velocity exceeds maximum tracking rate */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_VELOCITY, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_ANGL_VEL, 0,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +			       timestamp);
+> +
+> +	/* Phase error exceeds phase lock range */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_PHASE, flags, st->prev_fault_flags))
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_PHASE, 0,
+> +						    IIO_EV_TYPE_MAG,
+> +						    IIO_EV_DIR_NONE),
+> +			       timestamp);
+> +
+> +	/* Configuration parity error */
+> +	if (FAULT_ONESHOT(AD2S1210_FAULT_CONFIG_PARITY, flags,
+> +			  st->prev_fault_flags))
+> +		/*
+> +		 * Userspace should also get notified of this via error return
+> +		 * when trying to write to any attribute that writes a register.
+> +		 */
+> +		dev_err_ratelimited(&indio_dev->dev,
+> +				    "Configuration parity error\n");
+> +
+> +	st->prev_fault_flags = flags;
+> +}
+> +
+> +static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
 >  				      struct iio_chan_spec const *chan,
 >  				      int *val)
-> @@ -743,13 +708,6 @@ static int ad2s1210_write_raw(struct iio_dev *indio_dev,
->  static IIO_DEVICE_ATTR(fault, 0644,
->  		       ad2s1210_show_fault, ad2s1210_clear_fault, 0);
+>  {
+> +	struct ad2s1210_state *st = iio_priv(indio_dev);
+> +	s64 timestamp;
+>  	int ret;
 >  
-> -static IIO_DEVICE_ATTR(dos_rst_max_thrd, 0644,
-> -		       ad2s1210_show_reg, ad2s1210_store_reg,
-> -		       AD2S1210_REG_DOS_RST_MAX_THRD);
-> -static IIO_DEVICE_ATTR(dos_rst_min_thrd, 0644,
-> -		       ad2s1210_show_reg, ad2s1210_store_reg,
-> -		       AD2S1210_REG_DOS_RST_MIN_THRD);
-> -
->  static const struct iio_event_spec ad2s1210_position_event_spec[] = {
+>  	mutex_lock(&st->lock);
+>  	gpiod_set_value(st->sample_gpio, 1);
+> +	timestamp = iio_get_time_ns(indio_dev);
+>  	/* delay (6 * tck + 20) nano seconds */
+>  	udelay(1);
+>  
+> @@ -307,17 +415,17 @@ static int ad2s1210_single_conversion(struct ad2s1210_state *st,
+>  	}
+>  	if (ret < 0)
+>  		goto error_ret;
+> -	ret = spi_read(st->sdev, &st->sample, 2);
+> +	ret = spi_read(st->sdev, &st->sample, 3);
+>  	if (ret < 0)
+>  		goto error_ret;
+>  
+>  	switch (chan->type) {
+>  	case IIO_ANGL:
+> -		*val = be16_to_cpu(st->sample);
+> +		*val = be16_to_cpu(st->sample.raw);
+>  		ret = IIO_VAL_INT;
+>  		break;
+>  	case IIO_ANGL_VEL:
+> -		*val = (s16)be16_to_cpu(st->sample);
+> +		*val = (s16)be16_to_cpu(st->sample.raw);
+>  		ret = IIO_VAL_INT;
+>  		break;
+>  	default:
+> @@ -325,6 +433,8 @@ static int ad2s1210_single_conversion(struct ad2s1210_state *st,
+>  		break;
+>  	}
+>  
+> +	ad2s1210_push_events(indio_dev, st->rx[2], timestamp);
+> +
+>  error_ret:
+>  	gpiod_set_value(st->sample_gpio, 0);
+>  	/* delay (2 * tck + 20) nano seconds */
+> @@ -608,7 +718,7 @@ static int ad2s1210_read_raw(struct iio_dev *indio_dev,
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		return ad2s1210_single_conversion(st, chan, val);
+> +		return ad2s1210_single_conversion(indio_dev, chan, val);
+>  	case IIO_CHAN_INFO_SCALE:
+>  		switch (chan->type) {
+>  		case IIO_ANGL:
+> @@ -721,6 +831,14 @@ static const struct iio_event_spec ad2s1210_position_event_spec[] = {
+>  	},
+>  };
+>  
+> +static const struct iio_event_spec ad2s1210_velocity_event_spec[] = {
+> +	{
+> +		/* Velocity exceeds maximum tracking rate fault. */
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_RISING,
+> +	},
+> +};
+> +
+>  static const struct iio_event_spec ad2s1210_phase_event_spec[] = {
 >  	{
->  		/* Tracking error exceeds LOT threshold fault. */
-> @@ -867,8 +825,6 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
->  
->  static struct attribute *ad2s1210_attributes[] = {
->  	&iio_dev_attr_fault.dev_attr.attr,
-> -	&iio_dev_attr_dos_rst_max_thrd.dev_attr.attr,
-> -	&iio_dev_attr_dos_rst_min_thrd.dev_attr.attr,
->  	NULL,
+>  		/* Phase error fault. */
+> @@ -754,6 +872,14 @@ static const struct iio_event_spec ad2s1210_monitor_signal_event_spec[] = {
+>  	},
 >  };
 >  
-> @@ -876,6 +832,49 @@ static const struct attribute_group ad2s1210_attribute_group = {
->  	.attrs = ad2s1210_attributes,
+> +static const struct iio_event_spec ad2s1210_sin_cos_event_spec[] = {
+> +	{
+> +		/* Sine/cosine clipping fault. */
+> +		.type = IIO_EV_TYPE_MAG,
+> +		.dir = IIO_EV_DIR_NONE,
+> +	},
+> +};
+> +
+>  static const struct iio_chan_spec ad2s1210_channels[] = {
+>  	{
+>  		.type = IIO_ANGL,
+> @@ -784,6 +910,8 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
+>  		},
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>  				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.event_spec = ad2s1210_velocity_event_spec,
+> +		.num_event_specs = ARRAY_SIZE(ad2s1210_velocity_event_spec),
+>  	},
+>  	IIO_CHAN_SOFT_TIMESTAMP(2),
+>  	{
+> @@ -820,6 +948,26 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
+>  		.scan_index = -1,
+>  		.event_spec = ad2s1210_monitor_signal_event_spec,
+>  		.num_event_specs = ARRAY_SIZE(ad2s1210_monitor_signal_event_spec),
+> +	}, {
+> +		/* sine input */
+> +		.type = IIO_ALTVOLTAGE,
+> +		.indexed = 1,
+> +		.channel = 1,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_Y,
+A bit odd and I'm not sure it's beneficial over just using an index
+and a label for the channel. 
+
+If a modifier is necessary then we could add a new one for this.
+Another option might be to provide in_altvoltage0_phase 
+
+or... can we map this to i (inphase) and q (quadrature) phases?
+Sort of feels like we can, and those modifiers already exist.
+
+Note though that if we do that, we'll need to modify the various
+ABI docs etc to include the modifiers whenever it's about the sine
+and cosine channels.
+
+> +		.scan_index = -1,
+> +		.event_spec = ad2s1210_sin_cos_event_spec,
+> +		.num_event_specs = ARRAY_SIZE(ad2s1210_sin_cos_event_spec),
+> +	}, {
+> +		/* cosine input */
+> +		.type = IIO_ALTVOLTAGE,
+> +		.indexed = 1,
+> +		.channel = 1,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_X,
+> +		.scan_index = -1,
+> +		.event_spec = ad2s1210_sin_cos_event_spec,
+> +		.num_event_specs = ARRAY_SIZE(ad2s1210_sin_cos_event_spec),
+>  	},
 >  };
 >  
-> +static ssize_t event_attr_voltage_reg_show(struct device *dev,
-> +					   struct device_attribute *attr,
-> +					   char *buf)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> +	unsigned int value;
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_read(st->regmap, iattr->address, &value);
-> +	mutex_unlock(&st->lock);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return sprintf(buf, "%d\n", value * THRESHOLD_MILLIVOLT_PER_LSB);
-> +}
-> +
-> +static ssize_t event_attr_voltage_reg_store(struct device *dev,
-> +					    struct device_attribute *attr,
-> +					    const char *buf, size_t len)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
-> +	struct iio_dev_attr *iattr = to_iio_dev_attr(attr);
-> +	u16 data;
-> +	int ret;
-> +
-> +	ret = kstrtou16(buf, 10, &data);
-> +	if (ret)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_write(st->regmap, iattr->address,
-> +			   data / THRESHOLD_MILLIVOLT_PER_LSB);
-> +	mutex_unlock(&st->lock);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
->  static ssize_t
->  in_angl1_thresh_rising_value_available_show(struct device *dev,
->  					    struct device_attribute *attr,
-> @@ -906,6 +905,14 @@ IIO_CONST_ATTR(in_phase0_mag_value_available,
->  IIO_CONST_ATTR(in_altvoltage0_thresh_falling_value_available, THRESHOLD_RANGE_STR);
->  IIO_CONST_ATTR(in_altvoltage0_thresh_rising_value_available, THRESHOLD_RANGE_STR);
->  IIO_CONST_ATTR(in_altvoltage0_mag_value_available, THRESHOLD_RANGE_STR);
-> +IIO_DEVICE_ATTR(in_altvoltage0_mag_reset_max, 0644,
-> +		event_attr_voltage_reg_show, event_attr_voltage_reg_store,
-> +		AD2S1210_REG_DOS_RST_MAX_THRD);
-> +IIO_CONST_ATTR(in_altvoltage0_mag_reset_max_available, THRESHOLD_RANGE_STR);
-> +IIO_DEVICE_ATTR(in_altvoltage0_mag_reset_min, 0644,
-> +		event_attr_voltage_reg_show, event_attr_voltage_reg_store,
-> +		AD2S1210_REG_DOS_RST_MIN_THRD);
-> +IIO_CONST_ATTR(in_altvoltage0_mag_reset_min_available, THRESHOLD_RANGE_STR);
->  IIO_DEVICE_ATTR_RO(in_angl1_thresh_rising_value_available, 0);
->  IIO_DEVICE_ATTR_RO(in_angl1_thresh_rising_hysteresis_available, 0);
+> @@ -936,7 +1084,7 @@ static const struct attribute_group ad2s1210_event_attribute_group = {
 >  
-> @@ -914,6 +921,10 @@ static struct attribute *ad2s1210_event_attributes[] = {
->  	&iio_const_attr_in_altvoltage0_thresh_falling_value_available.dev_attr.attr,
->  	&iio_const_attr_in_altvoltage0_thresh_rising_value_available.dev_attr.attr,
->  	&iio_const_attr_in_altvoltage0_mag_value_available.dev_attr.attr,
-> +	&iio_dev_attr_in_altvoltage0_mag_reset_max.dev_attr.attr,
-> +	&iio_const_attr_in_altvoltage0_mag_reset_max_available.dev_attr.attr,
-> +	&iio_dev_attr_in_altvoltage0_mag_reset_min.dev_attr.attr,
-> +	&iio_const_attr_in_altvoltage0_mag_reset_min_available.dev_attr.attr,
->  	&iio_dev_attr_in_angl1_thresh_rising_value_available.dev_attr.attr,
->  	&iio_dev_attr_in_angl1_thresh_rising_hysteresis_available.dev_attr.attr,
->  	NULL,
+>  static int ad2s1210_initial(struct ad2s1210_state *st)
+>  {
+> -	unsigned char data;
+> +	unsigned int data;
+>  	int ret;
+>  
+>  	mutex_lock(&st->lock);
+> @@ -1073,12 +1221,11 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
+>  		if (ret < 0)
+>  			goto error_ret;
+>  
+> -		/* REVIST: we can read 3 bytes here and also get fault flags */
+> -		ret = spi_read(st->sdev, st->rx, 2);
+> +		ret = spi_read(st->sdev, &st->sample, 3);
+>  		if (ret < 0)
+>  			goto error_ret;
+>  
+> -		memcpy(&st->scan.chan[chan++], st->rx, 2);
+> +		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
+>  	}
+>  
+>  	if (test_bit(1, indio_dev->active_scan_mask)) {
+> @@ -1086,14 +1233,14 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
+>  		if (ret < 0)
+>  			goto error_ret;
+>  
+> -		/* REVIST: we can read 3 bytes here and also get fault flags */
+> -		ret = spi_read(st->sdev, st->rx, 2);
+> +		ret = spi_read(st->sdev, &st->sample, 3);
+>  		if (ret < 0)
+>  			goto error_ret;
+>  
+> -		memcpy(&st->scan.chan[chan++], st->rx, 2);
+> +		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
+>  	}
+>  
+> +	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
+>  	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan, pf->timestamp);
+>  
+>  error_ret:
 > 
 

@@ -2,54 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 349F67B422C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 18:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3957B4239
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 18:39:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232946AbjI3QeP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 12:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
+        id S234531AbjI3QjS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 12:39:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232221AbjI3QeO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 12:34:14 -0400
+        with ESMTP id S232221AbjI3QjR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 12:39:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C81C6;
-        Sat, 30 Sep 2023 09:34:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D08C433C7;
-        Sat, 30 Sep 2023 16:34:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A05DAB;
+        Sat, 30 Sep 2023 09:39:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B001C433C7;
+        Sat, 30 Sep 2023 16:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696091651;
-        bh=QN0DUz4XIKMWjuArId5bSKDyvo7SIQjTXOmmbnVcF2c=;
+        s=k20201202; t=1696091954;
+        bh=5Rso+ZSnc5OcCyyuD3mBmZDa4c7Bh6j3+cSFPCMfCUQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Bg5jvZOg4EwLkYjOit6uHQNqkYetAyeY6BTDCJCxARC9rJIpM5LcvOXPdwO+rN9uD
-         WwYMGYPHn9ZuEnyHhRfxNGajCg0FsVr8sC5eroaysbHPZCy9OzyRSqF9y92XplA59E
-         Nv3+larLCI3pyNkQpq6aAZd2NW7sL4448cSWtQ9KAoMHV6Nwy4qWODuSjUQrb8nVKJ
-         BpcA1/WJBIlqOKkDABqecfDEzT+ZVf1iAi3w9icXGrJlGG5AIMgyfEseKGXndU06ap
-         uPG7A0GtGG7E56jcXBGm9qjAoOnSjMAptDoC3ddbinSNbrUuyMsy+IlyX6Qefy9Ts0
-         X4e/2Ba8wkawA==
-Date:   Sat, 30 Sep 2023 17:34:09 +0100
+        b=TDYxRJaGGZ7zEGwfJuPt645qmtLUp5vVT8yHQRf+CDfQCDhKpkyHQ41Hx16E+OhG3
+         KI6o+unOr95bUAw0pVbacQ++NFP2XsMXLeWlxkAoIpkxrfDJ2rWvrtipol6LrX0OSU
+         Wd1PBtS6hrzPipsk0znjeL+z4JvBLErJZu8mOwWeO3v8zxlbI/3TMKU6Rz+Ky2P+fF
+         oBCQ+u7sIiR8XocyoaTtJ6et+P9wZTiDpg116hU4qcGLpE1jxXPVmFLPaYzPuSlgLj
+         obzUpBwsioYUL8UMIZOfuzAYuygPBAqVniv48RN53YJPHNKmBbXZOjGMI0o3ITAaPd
+         bJbCRPK6MHKtQ==
+Date:   Sat, 30 Sep 2023 17:39:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Benjamin Bara <bbara93@gmail.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Ramona Gradinariu <ramona.gradinariu@analog.com>,
+        nuno.sa@analog.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] tools: iio: iio_generic_buffer ensure alignment
-Message-ID: <20230930173409.4fe38d94@jic23-huawei>
-In-Reply-To: <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
-References: <cover.1695727471.git.mazziesaccount@gmail.com>
-        <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH 1/1] iio: imu: adis16475.c: Add buffer padding after
+ temp channel
+Message-ID: <20230930173916.7bed020c@jic23-huawei>
+In-Reply-To: <d1c7ce3085ad30e568181852df07fed3a0427d8c.camel@gmail.com>
+References: <20230926085721.645687-1-ramona.gradinariu@analog.com>
+        <20230926085721.645687-2-ramona.gradinariu@analog.com>
+        <d1c7ce3085ad30e568181852df07fed3a0427d8c.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,101 +52,86 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 Sep 2023 11:26:07 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Tue, 26 Sep 2023 12:50:38 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> The iio_generic_buffer can return garbage values when the total size of
-> scan data is not a multiple of the largest element in the scan. This can be
-> demonstrated by reading a scan, consisting, for example of one 4-byte and
-> one 2-byte element, where the 4-byte element is first in the buffer.
-> 
-> The IIO generic buffer code does not take into account the last two
-> padding bytes that are needed to ensure that the 4-byte data for next
-> scan is correctly aligned.
-> 
-> Add the padding bytes required to align the next sample with the scan size.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> I think the whole alignment code could be revised here, but I am unsure
-> what kind of alignment is expected, and if it actually depends on the
-> architecture. Anyways, I'll quote myself from another mail to explain
-> how this patch handles things:
-> 
-> > For non power of2 sizes, the alignment code will result strange alignments.
-> > For example, scan consisting of two 6-byte elements would be packed -
-> > meaning the second element would probably break the alignment rules by
-> > starting from address '6'. I think that on most architectures the proper
-> > access would require 2 padding bytes to be added at the end of the first
-> > sample. Current code wouldn't do that.  
-> 
-> > If we allow only power of 2 sizes - I would expect a scan consisting of a
-> > 8 byte element followed by a 16 byte element to be tightly packed. I'd
-> > assume that for the 16 byte data, it'd be enough to ensure 8 byte alignment.
-> > Current code would however add 8 bytes of padding at the end of the first
-> > 8 byte element to make the 16 byte scan element to be aligned at 16 byte
-> > address. To my uneducated mind this is not needed - but maybe I just don't
-> > know what I am writing about :)  
-> 
-> Revision history
-> v3 => v4:
->  - drop extra print and TODO coment
->  - add comment clarifying alignment sizes
-> ---
->  tools/iio/iio_generic_buffer.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-> index 44bbf80f0cfd..c07c49397b19 100644
-> --- a/tools/iio/iio_generic_buffer.c
-> +++ b/tools/iio/iio_generic_buffer.c
-> @@ -54,9 +54,12 @@ enum autochan {
->  static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
->  {
->  	unsigned int bytes = 0;
-> -	int i = 0;
-> +	int i = 0, max = 0;
-> +	unsigned int misalignment;
->  
->  	while (i < num_channels) {
-> +		if (channels[i].bytes > max)
-> +			max = channels[i].bytes;
->  		if (bytes % channels[i].bytes == 0)
->  			channels[i].location = bytes;
->  		else
-> @@ -66,6 +69,19 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
->  		bytes = channels[i].location + channels[i].bytes;
->  		i++;
->  	}
-> +	/*
-> +	 * We wan't the data in next sample to also be properly aligned so
-> +	 * we'll add padding at the end if needed.
-> +	 *
-> +	 * Please note, this code does ensure alignment to maximum channel
-> +	 * size. It works only as long as the channel sizes are 1, 2, 4 or 8
-> +	 * bytes. Also, on 32 bit platforms it might be enough to align also
-> +	 * the 8 byte elements to 4 byte boundary - which this code is not
-> +	 * doing.
-Very much not!  We need to present same data alignment to userspace
-indpendent of what architecture is running. 
+> On Tue, 2023-09-26 at 11:57 +0300, Ramona Gradinariu wrote:
+> > The temperature channel has 16-bit storage size. We need to perform
+> > the padding to have the buffer elements naturally aligned in case
+> > the temperature channel is enabled and there are any 32-bit storage
+> > size channels enabled which have a scan index higher than the
+> > temperature channel scan index.
+> >=20
+> > Fixes: 8f6bc87d67c0 ("iio: imu: adis16475.c: Add delta angle and delta
+> > velocity channels")
+> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > --- =20
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Applied to the togreg branch of iio.git.
 
-It's annoyingly inconsistent how 8 byte elements are handled on 32 bit
-architectures as some have optimized aligned access routines and others
-will read as 2 32 bit fields.  Hence we just stick to 8 byte value is
-8 byte aligned which is always fine but wastes a bit of space on x86 32
-bit - which I don't care about ;)
+Jonathan
 
-Please drop this last bit of the comment as we should just say what it
-does, not conjecture what it might do!
-
-
-
-> +	 */
-> +	misalignment = bytes % max;
-> +	if (misalignment)
-> +		bytes += max - misalignment;
->  
->  	return bytes;
->  }
+>=20
+> > =C2=A0drivers/iio/imu/adis16475.c | 10 ++++++++++
+> > =C2=A01 file changed, 10 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+> > index 00e4e09cdafb..9af07fec0d89 100644
+> > --- a/drivers/iio/imu/adis16475.c
+> > +++ b/drivers/iio/imu/adis16475.c
+> > @@ -1197,6 +1197,16 @@ static irqreturn_t adis16475_trigger_handler(int=
+ irq,
+> > void *p)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0switch (bit) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0case ADIS16475_SCAN_TEMP:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+st->data[i++] =3D buffer[offset];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The=
+ temperature channel has 16-bit storage size.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * We =
+need to perform the padding to have the buffer
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * ele=
+ments naturally aligned in case there are any
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * 32-=
+bit storage size channels enabled which have a
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * sca=
+n index higher than the temperature channel scan
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * ind=
+ex.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (*i=
+ndio_dev->active_scan_mask &
+> > GENMASK(ADIS16475_SCAN_DELTVEL_Z, ADIS16475_SCAN_DELTANG_X))
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->data[i++] =3D 0; =20
+>=20
+> You could use ADIS16500_BURST_DATA_SEL_1_CHN_MASK but I kind of agree lik=
+e this
+> is more obvious what's going on...
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+break;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0case ADIS16475_SCAN_DELTANG_X ... ADIS16475_SCAN=
+_DELTVEL_Z:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+buff_offset =3D ADIS16475_SCAN_DELTANG_X; =20
+>=20
 

@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D997B42AD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 19:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E667F7B42C0
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 19:31:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234652AbjI3RZF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 13:25:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
+        id S234658AbjI3Rbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 13:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234640AbjI3RZE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 13:25:04 -0400
+        with ESMTP id S233050AbjI3Rbf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 13:31:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE89DD;
-        Sat, 30 Sep 2023 10:25:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D7EC433C7;
-        Sat, 30 Sep 2023 17:24:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D99CE1;
+        Sat, 30 Sep 2023 10:31:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2B8C433C7;
+        Sat, 30 Sep 2023 17:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696094701;
-        bh=pHmVmDjDsZiy9N1fgB5bCX18M375YcsUpZJ8j7cjWL4=;
+        s=k20201202; t=1696095092;
+        bh=OIF3qTZzv4fmyLYYTtHMwTXoCRzHXWoRyRsQrWSbiao=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NGSm6OCaP2nD1YXnbePaRlDIdijp5Lir7VmTk3yRUteWCzoOAfsWmHYg0HZuVv+GR
-         UlCS/xg1UrLOnH0h1308CyOJqVgXTVNNoWhnW6sVeBeCekDj+GQcCxKIv2cDNgatLL
-         3iRmETJPqJg3JtKgrKRVagYOZmdzQksecF6u+nDOR5mTy3iK5i5cLrQnv3MktUEv1i
-         qRnb2UTs0W52YRisYUq1BIVFc1WBZ37kBV6Z82v8UQ+f6W2nNGIfmq0L+Djr2Gkdk4
-         9q5ETGuT1TUREQ+hqtWP4yj7L6HLel8TR7BXANgxfGCqD320uZMG2xpb3+vuYkwOnj
-         yU1c1M2fuvHsw==
-Date:   Sat, 30 Sep 2023 18:25:02 +0100
+        b=gkG9ZrhksFsGZc9fwu+4MOLSw66E3EDZoVAihz5wLqZF2LnFUvtM+GNMIQe7p0vuJ
+         L3lAtYDPJhKOeFapkxQk1kRVNCgCa9+y4QHMIiV0lxfN7nFuUYa4sDqk3izN0Y281U
+         uXp5O9RwViNq4rbAaco51QsJdbKU1LENvkUjjahqAo7LVZGFaRL7iuLVTrBmCD7Vxx
+         Tg1KCd/5MhWuJLuO2jLfGeTKpXkK+Rerh8v6b4gJkkb1U1diZNi03XjJSKE8s2BBK0
+         vKxTrmBTE0NMeePVI5zjKpYFMEl3vsM1+f90b5ag7JYxhilyN5M1C1FGSYKCYK4dI2
+         9mnvSIH9XJ8Cw==
+Date:   Sat, 30 Sep 2023 18:31:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     alisadariana@gmail.com
 Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -34,11 +34,11 @@ Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: adc: ad7192: Improve f_order computation
-Message-ID: <20230930182502.106d2c78@jic23-huawei>
-In-Reply-To: <20230924215148.102491-3-alisadariana@gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: ad7192: Add fast settling support
+Message-ID: <20230930183117.45d311ed@jic23-huawei>
+In-Reply-To: <20230924215148.102491-4-alisadariana@gmail.com>
 References: <20230924215148.102491-1-alisadariana@gmail.com>
-        <20230924215148.102491-3-alisadariana@gmail.com>
+        <20230924215148.102491-4-alisadariana@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,181 +53,208 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Sep 2023 00:51:47 +0300
+On Mon, 25 Sep 2023 00:51:48 +0300
 alisadariana@gmail.com wrote:
 
 > From: Alisa-Dariana Roman <alisa.roman@analog.com>
 > 
-> Instead of using the f_order member of ad7192_state, a function that
-> computes the f_order coefficient makes more sense. This coefficient is a
-> function of the sinc filter and chop filter states.
+> Add fast settling mode support for AD7193.
 > 
-> Remove f_order member of ad7192_state structure. Instead use
-> ad7192_compute_f_order function to compute the f_order coefficient
-> according to the sinc filter and chop filter states passed as
-> parameters.
+> Add fast_settling_average_factor attribute. Expose to user the current
+> value of the fast settling average factor. User can change the value by
+> writing a new one.
 > 
-> Add ad7192_get_f_order function that returns the current f_order
-> coefficient of the device.
-> 
-> Add ad7192_compute_f_adc function that computes the f_adc value
-> according to the sinc filter and chop filter states passed as
-> parameters.
-> 
-> Add ad7192_get_f_adc function that returns the current f_adc value of
-> the device.
+> Add fast_settling_average_factor_available attribute. Expose to user
+> possible values for the fast settling average factor.
 > 
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to see if it can find anything we missed.
 
-Thanks,
+Hi Alisa-Dariana,
+
+Some questions inline.
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ad7192.c | 62 +++++++++++++++++++++++++++++-----------
->  1 file changed, 46 insertions(+), 16 deletions(-)
+>  .../ABI/testing/sysfs-bus-iio-adc-ad7192      |  18 +++
+>  drivers/iio/adc/ad7192.c                      | 128 ++++++++++++++++--
+>  2 files changed, 134 insertions(+), 12 deletions(-)
 > 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> index f8315202c8f0..780c6841b0c3 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+> @@ -19,6 +19,24 @@ Description:
+>  		the bridge can be disconnected (when it is not being used
+>  		using the bridge_switch_en attribute.
+>  
+> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute, if available, is used to activate or deactivate
+> +		fast settling mode and set the value of the average factor to
+> +		1, 2, 8 or 16. If the average factor is set to 1, the fast
+> +		settling mode is disabled. The data from the sinc filter is
+> +		averaged by chosen value. The averaging reduces the output data
+> +		rate for a given FS word, however, the RMS noise improves.
+
+So I got distracted in earlier patches, and didn't read your description closely
+so was assuming this was some weird filter control.
+
+Despite it being described as being closely related to the sinc filter, is this
+just an oversampling ratio control?  If it is, then you can use the standard
+ABI for this.  Making sure to reflect changes in this on the sampling frequency
+as the apparent sampling frequency will reduce.
+
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/fast_settling_average_factor_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading returns a list with the possible values for the fast
+> +		settling average factor: 1, 2, 8, 16.
+> +
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration
+>  KernelVersion:
+>  Contact:	linux-iio@vger.kernel.org
 > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index d693f2ce8a20..0f9d33002d35 100644
+> index 0f9d33002d35..3b7de23b024e 100644
 > --- a/drivers/iio/adc/ad7192.c
 > +++ b/drivers/iio/adc/ad7192.c
-> @@ -179,7 +179,6 @@ struct ad7192_state {
->  	struct clk			*mclk;
->  	u16				int_vref_mv;
->  	u32				fclk;
-> -	u32				f_order;
+> @@ -60,6 +60,8 @@
+>  #define AD7192_MODE_SEL_MASK	GENMASK(23, 21) /* Operation Mode Select Mask */
+>  #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
+>  #define AD7192_MODE_CLKSRC_MASK	GENMASK(19, 18) /* Clock Source Select Mask */
+> +#define AD7192_MODE_AVG_MASK	GENMASK(17, 16)
+> +		  /* Fast Settling Filter Average Select Mask (AD7193 only) */
+>  #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
+>  #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
+>  #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
+> @@ -182,6 +184,7 @@ struct ad7192_state {
 >  	u32				mode;
 >  	u32				conf;
 >  	u32				scale_avail[8][2];
-> @@ -419,7 +418,6 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
->  		st->conf |= AD7192_CONF_REFSEL;
+> +	u8				avg_avail[4];
+>  	u8				gpocon;
+>  	u8				clock_sel;
+>  	struct mutex			lock;	/* protect sensor state */
+> @@ -459,6 +462,13 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
+>  		st->scale_avail[i][0] = scale_uv;
+>  	}
 >  
->  	st->conf &= ~AD7192_CONF_CHOP;
-> -	st->f_order = AD7192_NO_SYNC_FILTER;
+> +	if (st->chip_info->chip_id == CHIPID_AD7193) {
+> +		st->avg_avail[0] = 1;
+> +		st->avg_avail[1] = 2;
+> +		st->avg_avail[2] = 8;
+> +		st->avg_avail[3] = 16;
+> +	}
+> +
+>  	return 0;
+>  }
 >  
->  	buf_en = of_property_read_bool(np, "adi,buffer-enable");
->  	if (buf_en)
-> @@ -530,22 +528,60 @@ static ssize_t ad7192_set(struct device *dev,
+> @@ -483,6 +493,18 @@ static ssize_t ad7192_show_bridge_switch(struct device *dev,
+>  			  FIELD_GET(AD7192_GPOCON_BPDSW, st->gpocon));
+>  }
+>  
+> +static ssize_t ad7192_show_average_factor(struct device *dev,
+> +					  struct device_attribute *attr,
+> +					  char *buf)
+> +{
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct ad7192_state *st = iio_priv(indio_dev);
+> +	u8 avg_factor_index;
+> +
+> +	avg_factor_index = FIELD_GET(AD7192_MODE_AVG_MASK, st->mode);
+> +	return sysfs_emit(buf, "%d\n", st->avg_avail[avg_factor_index]);
+> +}
+> +
+>  static ssize_t ad7192_set(struct device *dev,
+>  			  struct device_attribute *attr,
+>  			  const char *buf,
+> @@ -491,12 +513,10 @@ static ssize_t ad7192_set(struct device *dev,
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct ad7192_state *st = iio_priv(indio_dev);
+>  	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+> +	bool val, ret_einval;
+> +	u8 val_avg_factor;
+
+There isn't really that much code shared between the new use of this
+and previous ones. I'd introduce a new callback for that particular sysfs
+attribute instead of changing this one.
+
+
+> +	unsigned int i;
+>  	int ret;
+> -	bool val;
+> -
+> -	ret = kstrtobool(buf, &val);
+> -	if (ret < 0)
+> -		return ret;
+>  
+>  	ret = iio_device_claim_direct_mode(indio_dev);
+>  	if (ret)
+> @@ -504,6 +524,10 @@ static ssize_t ad7192_set(struct device *dev,
+>  
+>  	switch ((u32)this_attr->address) {
+>  	case AD7192_REG_GPOCON:
+> +		ret = kstrtobool(buf, &val);
+> +		if (ret < 0)
+> +			return ret;
+> +
+>  		if (val)
+>  			st->gpocon |= AD7192_GPOCON_BPDSW;
+>  		else
+> @@ -512,6 +536,10 @@ static ssize_t ad7192_set(struct device *dev,
+>  		ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, st->gpocon);
+>  		break;
+>  	case AD7192_REG_CONF:
+> +		ret = kstrtobool(buf, &val);
+> +		if (ret < 0)
+> +			return ret;
+> +
+>  		if (val)
+>  			st->conf |= AD7192_CONF_ACX;
+>  		else
+> @@ -519,6 +547,27 @@ static ssize_t ad7192_set(struct device *dev,
+>  
+>  		ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+>  		break;
+> +	case AD7192_REG_MODE:
+> +		ret = kstrtou8(buf, 10, &val_avg_factor);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret_einval = true;
+I'd rather this relected the positive condition.
+So maybe
+		bool found = false;
+> +		for (i = 0; i < ARRAY_SIZE(st->avg_avail); i++) {
+> +			if (val_avg_factor == st->avg_avail[i]) {
+> +				st->mode &= ~AD7192_MODE_AVG_MASK;
+> +				st->mode |= FIELD_PREP(AD7192_MODE_AVG_MASK, i);
+> +				ret_einval = false;
+found = true;
+break;
+> +			}
+> +		}
+> +
+> +		if (ret_einval)
+if (!found)
+	return -EINVAL;
+
+> +			return -EINVAL;
+> +
+> +		ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> +		if (ret)
+> +			return ret;
+> +		break;
+>  	default:
+>  		ret = -EINVAL;
+>  	}
+> @@ -528,15 +577,22 @@ static ssize_t ad7192_set(struct device *dev,
 >  	return ret ? ret : len;
 >  }
->  
-> +static int ad7192_compute_f_order(bool sinc3_en, bool chop_en)
-> +{
-> +	if (!chop_en)
-> +		return 1;
-> +
-> +	if (sinc3_en)
-> +		return AD7192_SYNC3_FILTER;
-> +
-> +	return AD7192_SYNC4_FILTER;
-> +}
-> +
-> +static int ad7192_get_f_order(struct ad7192_state *st)
-> +{
-> +	bool sinc3_en, chop_en;
-> +
-> +	sinc3_en = FIELD_GET(AD7192_MODE_SINC3, st->mode);
-> +	chop_en = FIELD_GET(AD7192_CONF_CHOP, st->conf);
-> +
-> +	return ad7192_compute_f_order(sinc3_en, chop_en);
-> +}
-> +
-> +static int ad7192_compute_f_adc(struct ad7192_state *st, bool sinc3_en,
-> +				bool chop_en)
-> +{
-> +	unsigned int f_order = ad7192_compute_f_order(sinc3_en, chop_en);
-> +
-> +	return DIV_ROUND_CLOSEST(st->fclk,
-> +				 f_order * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +}
-> +
-> +static int ad7192_get_f_adc(struct ad7192_state *st)
-> +{
-> +	unsigned int f_order = ad7192_get_f_order(st);
-> +
-> +	return DIV_ROUND_CLOSEST(st->fclk,
-> +				 f_order * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +}
-> +
->  static void ad7192_get_available_filter_freq(struct ad7192_state *st,
->  						    int *freq)
->  {
->  	unsigned int fadc;
->  
->  	/* Formulas for filter at page 25 of the datasheet */
-> -	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 AD7192_SYNC4_FILTER * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +	fadc = ad7192_compute_f_adc(st, false, true);
->  	freq[0] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
->  
-> -	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 AD7192_SYNC3_FILTER * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +	fadc = ad7192_compute_f_adc(st, true, true);
->  	freq[1] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
->  
-> -	fadc = DIV_ROUND_CLOSEST(st->fclk, FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +	fadc = ad7192_compute_f_adc(st, false, false);
->  	freq[2] = DIV_ROUND_CLOSEST(fadc * 230, 1024);
-> +
-> +	fadc = ad7192_compute_f_adc(st, true, false);
->  	freq[3] = DIV_ROUND_CLOSEST(fadc * 272, 1024);
->  }
->  
-> @@ -628,25 +664,21 @@ static int ad7192_set_3db_filter_freq(struct ad7192_state *st,
->  
->  	switch (idx) {
->  	case 0:
-> -		st->f_order = AD7192_SYNC4_FILTER;
->  		st->mode &= ~AD7192_MODE_SINC3;
->  
->  		st->conf |= AD7192_CONF_CHOP;
->  		break;
->  	case 1:
-> -		st->f_order = AD7192_SYNC3_FILTER;
->  		st->mode |= AD7192_MODE_SINC3;
->  
->  		st->conf |= AD7192_CONF_CHOP;
->  		break;
->  	case 2:
-> -		st->f_order = AD7192_NO_SYNC_FILTER;
->  		st->mode &= ~AD7192_MODE_SINC3;
->  
->  		st->conf &= ~AD7192_CONF_CHOP;
->  		break;
->  	case 3:
-> -		st->f_order = AD7192_NO_SYNC_FILTER;
->  		st->mode |= AD7192_MODE_SINC3;
->  
->  		st->conf &= ~AD7192_CONF_CHOP;
-> @@ -664,8 +696,7 @@ static int ad7192_get_3db_filter_freq(struct ad7192_state *st)
->  {
->  	unsigned int fadc;
->  
-> -	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> -				 st->f_order * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +	fadc = ad7192_get_f_adc(st);
->  
->  	if (FIELD_GET(AD7192_CONF_CHOP, st->conf))
->  		return DIV_ROUND_CLOSEST(fadc * 240, 1024);
-> @@ -713,8 +744,7 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
->  			*val -= 273 * ad7192_get_temp_scale(unipolar);
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		*val = st->fclk /
-> -			(st->f_order * 1024 * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-> +		*val = DIV_ROUND_CLOSEST(ad7192_get_f_adc(st), 1024);
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
->  		*val = ad7192_get_3db_filter_freq(st);
-> @@ -764,7 +794,7 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
->  			break;
->  		}
->  
-> -		div = st->fclk / (val * st->f_order * 1024);
-> +		div = st->fclk / (val * ad7192_get_f_order(st) * 1024);
->  		if (div < 1 || div > 1023) {
->  			ret = -EINVAL;
->  			break;
+
 

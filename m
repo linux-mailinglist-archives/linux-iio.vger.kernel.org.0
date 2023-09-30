@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E26217B4266
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 18:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19097B426D
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 19:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234569AbjI3QyJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 12:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54768 "EHLO
+        id S234542AbjI3RBX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 13:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbjI3QyI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 12:54:08 -0400
+        with ESMTP id S229788AbjI3RBW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 13:01:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3CC2DA;
-        Sat, 30 Sep 2023 09:54:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128B0C433C8;
-        Sat, 30 Sep 2023 16:54:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B7EDA;
+        Sat, 30 Sep 2023 10:01:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D365C433C8;
+        Sat, 30 Sep 2023 17:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696092846;
-        bh=3FWZ2qW2Ezn08XF7jE/SiC+XcEI8boNjlLaX2s5XXj0=;
+        s=k20201202; t=1696093280;
+        bh=PtP8kQO7PSDeECoZK0s8MvcnNBLnIZH+JHVGfpAN/dQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kBH/u9QrsdIL0Bc2HrdOfgtLT/lqXpGNTnTlP69fi8Ump94+jFCr03KYTSTcgwWqz
-         D7aqfgDQ5XlSm9YyBQO2awR/goy7ZwHYh4JZRnmADYJo1L6yICx1oPxsnBpn8w3J5O
-         ULJSYJQ3nAEHb8UklF1lAGbT+3l28/JWZwx2gcbUXX4RqPZ6Cx8MeoKo4Ra7aEjYy8
-         jChr7f1OByeRMIhuUiLftT2zRpa8m5IvY+x2/ncjIwT/q8ESLOLQlJCLKq9oILfSCc
-         JP45pFa7h62dXuBF/uK2KGjFk/XdmAYdvoMTwagoHsaxuvQU7f+YgS9Z/6OuEqTYy4
-         mzqktP+JjH8Qw==
-Date:   Sat, 30 Sep 2023 17:54:04 +0100
+        b=fjYDDDhFufw5uPZYpXeI8gzp9zlxjQkRaEktPEE/pPzoV8USME1/DH898ClvwWi/I
+         Pmx2omTOtJ4+9UcJ8IHjRnqU3CE7k+bvdc12S+w+9bSOzZYjAIsntTkRoDqmCRwMB7
+         7r/YtIAibV7gTHSObGZTVrr5jdj52L++aRiLKNOeInEMk75SbWPR+LJcWfKzEUphy4
+         5AwUJ2HpjnafeTpRluTuh5Z6DbqtfsPARHp4DkC6xvdnOj9/kMIVrDSWOAmIQRNQ6J
+         A16HFdih+weJWgII9l/84JdsZVwrRHqvZ5AV341JXOxu3ZugTBiDUDvK50U5o9E1BA
+         VSS1NRbEKZLfA==
+Date:   Sat, 30 Sep 2023 18:01:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -41,11 +41,11 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] iio: improve doc for available_scan_mask
-Message-ID: <20230930175404.033da19e@jic23-huawei>
-In-Reply-To: <4e43bf0186df5c8a56b470318b4827605f9cad6c.1695727471.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v4 5/5] MAINTAINERS: Add ROHM BM1390
+Message-ID: <20230930180118.04acbd33@jic23-huawei>
+In-Reply-To: <fb19d3027ac19663789e18d4dc972a5dac0fde74.1695727471.git.mazziesaccount@gmail.com>
 References: <cover.1695727471.git.mazziesaccount@gmail.com>
-        <4e43bf0186df5c8a56b470318b4827605f9cad6c.1695727471.git.mazziesaccount@gmail.com>
+        <fb19d3027ac19663789e18d4dc972a5dac0fde74.1695727471.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,65 +59,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 Sep 2023 11:27:41 +0300
+On Wed, 27 Sep 2023 11:28:29 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The available_scan_mask is an array of bitmaps representing the channels
-> which can be simultaneously enabled by the driver. In many cases, the
-> hardware can offer more channels than what the user is interested in
-> obtaining. In such cases, it may be preferred that only a subset of
-> channels are enabled, and the driver reads only a subset of the channels
-> from the hardware.
-> 
-> Some devices can't support all channel combinations. For example, the
-> BM1390 pressure sensor must always read the pressure data in order to
-> acknowledge the watermark IRQ, while reading temperature can be omitted.
-> So, the available scan masks would be 'pressure and temperature' and
-> 'pressure only'.
-> 
-> When IIO searches for the scan mask it asks the driver to use, it will
-> pick the first suitable one from the 'available_scan_mask' array. Hence,
-> ordering the masks in the array makes a difference. We should 'prefer'
-> reading just the pressure from the hardware (as it is a cheaper operation
-> than reading both pressure and temperature) over reading both pressure
-> and temperature. Hence, we should set the 'only pressure' as the first
-> scan mask in available_scan_mask array. If we set the 'pressure and
-> temperature' as first in the array, then the 'only temperature' will never
-> get used as 'pressure and temperature' can always serve the user's
-> needs.
-> 
-> Add (minimal) kerneldoc to the 'available_scan_mask' to hint the user
-> that the ordering of masks matters.
+> Add myself as a maintainer for ROHM BM1390 pressure sensor driver.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Applied, 3-5 (as well as 2 that I replied to separately).
 
-Applied this patch to the togreg branch of iio.git
-If you fancy turning the patch description into some more formal
-documentation under Documentation/... that might be a good thing in the
-long run. I always mean to spend some time working on that, but too manyt
-things to do :(
-
-Thanks,
+Nice driver.  Thanks,
 
 Jonathan
 
 > ---
->  include/linux/iio/iio.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 202e55b0a28b..7bfa1b9bc8a2 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -556,7 +556,9 @@ struct iio_buffer_setup_ops {
->   *			and owner
->   * @buffer:		[DRIVER] any buffer present
->   * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
-> - * @available_scan_masks: [DRIVER] optional array of allowed bitmasks
-> + * @available_scan_masks: [DRIVER] optional array of allowed bitmasks. Sort the
-> + *			   array in order of preference, the most preferred
-> + *			   masks first.
->   * @masklength:		[INTERN] the length of the mask established from
->   *			channels
->   * @active_scan_mask:	[INTERN] union of all scan masks requested by buffers
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 90f13281d297..91390f571a05 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18563,6 +18563,12 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/iio/light/bh1750.yaml
+>  F:	drivers/iio/light/bh1750.c
+>  
+> +ROHM BM1390 PRESSURE SENSOR DRIVER
+> +M:	Matti Vaittinen <mazziesaccount@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +F:	drivers/iio/pressure/rohm-bm1390.c
+> +
+>  ROHM BU270xx LIGHT SENSOR DRIVERs
+>  M:	Matti Vaittinen <mazziesaccount@gmail.com>
+>  L:	linux-iio@vger.kernel.org
 

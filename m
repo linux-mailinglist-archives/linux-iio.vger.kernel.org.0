@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 312B57B416C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 17:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545B27B4172
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Sep 2023 17:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234369AbjI3PDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Sep 2023 11:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37358 "EHLO
+        id S234374AbjI3PGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Sep 2023 11:06:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234355AbjI3PDl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 11:03:41 -0400
+        with ESMTP id S234377AbjI3PGL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Sep 2023 11:06:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C746BD;
-        Sat, 30 Sep 2023 08:03:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D8BC433C8;
-        Sat, 30 Sep 2023 15:03:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7037E92;
+        Sat, 30 Sep 2023 08:06:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C451AC433C8;
+        Sat, 30 Sep 2023 15:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696086217;
-        bh=oc3yqphUC0dKNs9xjyNjFTM6qHopZJCOW0oefQNLdz0=;
+        s=k20201202; t=1696086364;
+        bh=wnkyExyaG21DXgTSmLw5ySjs4l/o+ms9WJYMq4obo0o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qa7XMf51NYuCrCQnq5UCARNc4TCNYjFGdQDqXPAPlmqSAM0jeT+u1YCk8fVWIXyPM
-         PrVWbA5A56GV5Wvg1dlAe1b3D6ZnKKZF0F3ViFYtGqoBADD7Kc6hx9R84A+tDxs1R7
-         m3+GDNcXgwh2EsnctKxYSKCYsBNBLMqWrA+GM2diLDzxFVnXzPxRvCxW5U12u1cRnC
-         EhnrBQNQWOwevne8mszK4ECdFxXt6rrCuLjDWFfOO/z0it/MfhFEgV9L8Pb9gLIAf9
-         x3FxYmQzfp3CYxEE6rnR8OcgLshLHq48UIDW4u9LhSOvBFGyoJPOZUKUzTBVWHIbks
-         4QCDgdxkDURPQ==
-Date:   Sat, 30 Sep 2023 16:03:36 +0100
+        b=Ktwi0N+7iaRVmKSObmzkW5wQR8IqI+uNHAq1oMq9UY14r2Xuh+LSoRwRcB9e6eDd7
+         Q4vzHRNqY0nNA6NKQPXzeUKgbxu8VpbW1R73WFkaRyUTsRqdvkcslzBtN2SJ18bucP
+         pWzbnxFowx5waETeQ6aU8SLZPhSdHyQ8n5fksfMdOTz03+sQYJngGJxSwQ5pM05pzp
+         HbTwE+PgvwtlIFOWFTNGG17whQJ6iD03kV4Jij046ZirNapaPBWp51prsu79mcDYN0
+         UySxvGCjkFndsec2Tbp+jbFNntHC+ahuxzjN7QTUyRp6zn68m76g2sAswxjTngqEtE
+         Z5q6nK0OZDZzg==
+Date:   Sat, 30 Sep 2023 16:06:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -40,12 +40,12 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 14/27] staging: iio: resolver: ad2s1210: implement
- hysteresis as channel attr
-Message-ID: <20230930160336.6a67765a@jic23-huawei>
-In-Reply-To: <20230929-ad2s1210-mainline-v3-14-fa4364281745@baylibre.com>
+Subject: Re: [PATCH v3 15/27] staging: iio: resolver: ad2s1210: refactor
+ setting excitation frequency
+Message-ID: <20230930160603.08b01a33@jic23-huawei>
+In-Reply-To: <20230929-ad2s1210-mainline-v3-15-fa4364281745@baylibre.com>
 References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-14-fa4364281745@baylibre.com>
+        <20230929-ad2s1210-mainline-v3-15-fa4364281745@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,20 +59,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Sep 2023 12:23:19 -0500
+On Fri, 29 Sep 2023 12:23:20 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > From: David Lechner <david@lechnology.com>
 > 
 > From: David Lechner <dlechner@baylibre.com>
 > 
-> The AD2S1210 resolver has a hysteresis feature that can be used to
-> prevent flicker in the LSB of the position register. This can be either
-> enabled or disabled. Disabling hysteresis is useful for increasing
-> precision by oversampling.
+> This combines the ad2s1210_update_frequency_control_word() and
+> ad2s1210_soft_reset() functions into a single function since they
+> both have to be called together. (The software reset does not reset
+> any configuration registers, it only updates the excitation output
+> and resets the tracking loop.)
+> 
+> Also clean up a few things while touching this:
+> - move AD2S1210_DEF_EXCIT macro with similar macros
+> - remove unnecessary dev_err() calls
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-One trivial thing inline.
+I'm sure it'll will stop me at some point but I'll keep trying to apply
+patches even though I skipped previous one on basis the fewer I see
+again, the less terrifying my inbox looks :)
+
+So applied this one and pushed out as testing. Bit of fuzz as you'd expect.
 
 Thanks,
 
@@ -81,148 +90,140 @@ Jonathan
 > ---
 > 
 > v3 changes:
-> * Refactored into more functions to reduce complexity of switch statements.
-> * Use early return instead of break in switch statements.
+> * Expanded comment on soft reset register write.
+> * Fixed multiline comment style.
 > 
->  drivers/staging/iio/resolver/ad2s1210.c | 86 +++++++++++++++++++++++++++++++--
->  1 file changed, 83 insertions(+), 3 deletions(-)
+>  drivers/staging/iio/resolver/ad2s1210.c | 66 +++++++++++++++++----------------
+>  1 file changed, 34 insertions(+), 32 deletions(-)
 > 
 > diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-> index 0ec3598b600a..a82cb124a12f 100644
+> index a82cb124a12f..28ab877e1bc0 100644
 > --- a/drivers/staging/iio/resolver/ad2s1210.c
 > +++ b/drivers/staging/iio/resolver/ad2s1210.c
-> @@ -78,7 +78,6 @@ struct ad2s1210_state {
->  	/** The external oscillator frequency in Hz. */
->  	unsigned long clkin_hz;
->  	unsigned int fexcit;
-> -	bool hysteresis;
->  	u8 resolution;
->  	/** For reading raw sample value via SPI. */
->  	__be16 sample __aligned(IIO_DMA_MINALIGN);
-> @@ -430,6 +429,35 @@ static int ad2s1210_single_conversion(struct ad2s1210_state *st,
->  	return ret;
+> @@ -51,12 +51,11 @@
+>  #define AD2S1210_MIN_CLKIN	6144000
+>  #define AD2S1210_MAX_CLKIN	10240000
+>  #define AD2S1210_MIN_EXCIT	2000
+> +#define AD2S1210_DEF_EXCIT	10000
+>  #define AD2S1210_MAX_EXCIT	20000
+>  #define AD2S1210_MIN_FCW	0x4
+>  #define AD2S1210_MAX_FCW	0x50
+>  
+> -#define AD2S1210_DEF_EXCIT	10000
+> -
+>  enum ad2s1210_mode {
+>  	MOD_POS = 0b00,
+>  	MOD_VEL = 0b01,
+> @@ -188,18 +187,32 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
+>  	return 0;
 >  }
 >  
-> +static int ad2s1210_get_hysteresis(struct ad2s1210_state *st, int *val)
-> +{
+> -static inline
+> -int ad2s1210_update_frequency_control_word(struct ad2s1210_state *st)
+> +/*
+> + * Sets the excitation frequency and performs software reset.
+> + *
+> + * Must be called with lock held.
+> + */
+> +static int ad2s1210_reinit_excitation_frequency(struct ad2s1210_state *st,
+> +						u16 fexcit)
+>  {
+> -	unsigned char fcw;
 > +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +			       AD2S1210_ENABLE_HYSTERESIS);
-> +	mutex_unlock(&st->lock);
-> +
+> +	u8 fcw;
+>  
+> -	fcw = (unsigned char)(st->fexcit * (1 << 15) / st->clkin_hz);
+> -	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW) {
+> -		dev_err(&st->sdev->dev, "ad2s1210: FCW out of range\n");
+> +	fcw = fexcit * (1 << 15) / st->clkin_hz;
+> +	if (fcw < AD2S1210_MIN_FCW || fcw > AD2S1210_MAX_FCW)
+>  		return -ERANGE;
+> -	}
+>  
+> -	return regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
+> +	ret = regmap_write(st->regmap, AD2S1210_REG_EXCIT_FREQ, fcw);
 > +	if (ret < 0)
 > +		return ret;
 > +
-> +	*val = !!ret;
-
-regmap_test_bits() is documented as returning 1 or 0 anyway.
-So this !! isn't necessary..
-
-> +	return IIO_VAL_INT;
-> +}
+> +	st->fexcit = fexcit;
 > +
-> +static int ad2s1210_set_hysteresis(struct ad2s1210_state *st, int val)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-> +				 AD2S1210_ENABLE_HYSTERESIS,
-> +				 val ? AD2S1210_ENABLE_HYSTERESIS : 0);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
->  static const int ad2s1210_velocity_scale[] = {
->  	17089132, /* 8.192MHz / (2*pi * 2500 / 2^15) */
->  	42722830, /* 8.192MHz / (2*pi * 1000 / 2^15) */
-> @@ -462,7 +490,55 @@ static int ad2s1210_read_raw(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			return ad2s1210_get_hysteresis(st, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ad2s1210_read_avail(struct iio_dev *indio_dev,
-> +			       struct iio_chan_spec const *chan,
-> +			       const int **vals, int *type,
-> +			       int *length, long mask)
-> +{
-> +	static const int hysteresis_available[] = { 0, 1 };
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			*vals = hysteresis_available;
-> +			*type = IIO_VAL_INT;
-> +			*length = ARRAY_SIZE(hysteresis_available);
-> +			return IIO_AVAIL_LIST;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
+> +	/*
+> +	 * Software reset reinitializes the excitation frequency output.
+> +	 * It does not reset any of the configuration registers.
+> +	 */
+> +	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
+>  }
 >  
-> +static int ad2s1210_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int val, int val2, long mask)
-> +{
-> +	struct ad2s1210_state *st = iio_priv(indio_dev);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_HYSTERESIS:
-> +		switch (chan->type) {
-> +		case IIO_ANGL:
-> +			return ad2s1210_set_hysteresis(st, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
+>  static int ad2s1210_set_resolution_gpios(struct ad2s1210_state *st,
+> @@ -214,11 +227,6 @@ static int ad2s1210_set_resolution_gpios(struct ad2s1210_state *st,
+>  				     bitmap);
+>  }
+>  
+> -static inline int ad2s1210_soft_reset(struct ad2s1210_state *st)
+> -{
+> -	return regmap_write(st->regmap, AD2S1210_REG_SOFT_RESET, 0);
+> -}
+> -
+>  static ssize_t ad2s1210_show_fexcit(struct device *dev,
+>  				    struct device_attribute *attr,
+>  				    char *buf)
+> @@ -233,27 +241,24 @@ static ssize_t ad2s1210_store_fexcit(struct device *dev,
+>  				     const char *buf, size_t len)
+>  {
+>  	struct ad2s1210_state *st = iio_priv(dev_to_iio_dev(dev));
+> -	unsigned int fexcit;
+> +	u16 fexcit;
+>  	int ret;
+>  
+> -	ret = kstrtouint(buf, 10, &fexcit);
+> -	if (ret < 0)
+> -		return ret;
+> -	if (fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT) {
+> -		dev_err(dev,
+> -			"ad2s1210: excitation frequency out of range\n");
+> +	ret = kstrtou16(buf, 10, &fexcit);
+> +	if (ret < 0 || fexcit < AD2S1210_MIN_EXCIT || fexcit > AD2S1210_MAX_EXCIT)
 >  		return -EINVAL;
->  	}
-> @@ -503,7 +579,10 @@ static const struct iio_chan_spec ad2s1210_channels[] = {
->  		.indexed = 1,
->  		.channel = 0,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> -				      BIT(IIO_CHAN_INFO_SCALE),
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_HYSTERESIS),
-> +		.info_mask_separate_available =
-> +					BIT(IIO_CHAN_INFO_HYSTERESIS),
->  	}, {
->  		.type = IIO_ANGL_VEL,
->  		.indexed = 1,
-> @@ -581,6 +660,8 @@ static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
+> -	}
+> +
+>  	mutex_lock(&st->lock);
+> -	st->fexcit = fexcit;
+> -	ret = ad2s1210_update_frequency_control_word(st);
+> +	ret = ad2s1210_reinit_excitation_frequency(st, fexcit);
+>  	if (ret < 0)
+>  		goto error_ret;
+> -	ret = ad2s1210_soft_reset(st);
+> +
+> +	ret = len;
+> +
+>  error_ret:
+>  	mutex_unlock(&st->lock);
 >  
->  static const struct iio_info ad2s1210_info = {
->  	.read_raw = ad2s1210_read_raw,
-> +	.read_avail = ad2s1210_read_avail,
-> +	.write_raw = ad2s1210_write_raw,
->  	.attrs = &ad2s1210_attribute_group,
->  	.debugfs_reg_access = &ad2s1210_debugfs_reg_access,
->  };
-> @@ -696,7 +777,6 @@ static int ad2s1210_probe(struct spi_device *spi)
+> -	return ret < 0 ? ret : len;
+> +	return ret;
+>  }
 >  
+>  static ssize_t ad2s1210_show_resolution(struct device *dev,
+> @@ -630,10 +635,8 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
+>  	if (ret < 0)
+>  		goto error_ret;
+>  
+> -	ret = ad2s1210_update_frequency_control_word(st);
+> -	if (ret < 0)
+> -		goto error_ret;
+> -	ret = ad2s1210_soft_reset(st);
+> +	ret = ad2s1210_reinit_excitation_frequency(st, AD2S1210_DEF_EXCIT);
+> +
+>  error_ret:
+>  	mutex_unlock(&st->lock);
+>  	return ret;
+> @@ -778,7 +781,6 @@ static int ad2s1210_probe(struct spi_device *spi)
 >  	mutex_init(&st->lock);
 >  	st->sdev = spi;
-> -	st->hysteresis = true;
 >  	st->resolution = 12;
->  	st->fexcit = AD2S1210_DEF_EXCIT;
+> -	st->fexcit = AD2S1210_DEF_EXCIT;
 >  
+>  	ret = ad2s1210_setup_clocks(st);
+>  	if (ret < 0)
 > 
 

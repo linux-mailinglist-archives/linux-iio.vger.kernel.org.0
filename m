@@ -2,174 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9BC67B4BE2
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 08:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 344D67B4C8E
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 09:33:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235575AbjJBG5o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 02:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53900 "EHLO
+        id S235696AbjJBHdh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Oct 2023 03:33:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235457AbjJBG5n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 02:57:43 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2120.outbound.protection.outlook.com [40.107.113.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D019F;
-        Sun,  1 Oct 2023 23:57:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X3HDdqpuvMnXUMR+X3qYHqOwcjj+l43KrVLICSq4BUtL3qMruxrrrj1tS4nzBqRtsUFj8vKhWTdb717HJU/4YGdw7tRc4pnM92B6YainuAeummHze51NTqzGEVCR7v/LYwM9xhRO1QfL2uIvsR0Nh6KSm/UPr0ydFjKXihBf6ylDE8SlT11ZyrGG5fCwHGWBWwsWOfSfN8kh70Y6AAr1r6/aiPRXMSlSXH/rmxrcK8f2UreQct2F/PHXO1f9DbjB/YjuueNpprTbD1IiTTXG+QiqLTIJP4DTeO2hJ5aWHGNSgbW8dVUgdsvpzJH/Z+K0AyykzVwxKmJuUTPsHwm++w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PEpdvLeaMxJ650mwwbF0Nim6pcc3DA07TJFbUxBz9rM=;
- b=R/FQoRFWoANPZXYv6yt2j73br9t4GVUdVYPf8c5K/aOiVwKDNz84aQ98cefY+AE60kYgDEfXag2Nzy08AtTvG8l88FM6crC4lOWsu33LGbFBa27S1iy9QHiw5B4465U1E7sn6jdeXzwzAo17V4XQjROME6tR2wyNggvoH2enKLEdPSL3c90/F94BYCmybqhAozvmHoM7bIlRo5fBxe+TG+A/5+PhMC0OzfbJsJGAWB/WyQvokR/YVVT4IaT0v7bJuJvJD56+smb3dm2cG39o8wiTc235vPCgzs/BjV/gMAJfUNF19SdymqUORdkvrdJWjXq3EK5LNwqFGAwONBI5kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PEpdvLeaMxJ650mwwbF0Nim6pcc3DA07TJFbUxBz9rM=;
- b=HRZOsSXM6blATHqCCzJvlgrgwjhtgHwbuPqZN3BnBUQyev7SUc2QQDNMT6LxzeG/G0V/OP8JT9kPg64KYq92iEMJP0ojRibFaB57Y80HuKE9ntgmPe2AkyAIFJzbQWWegTAxss+tmZcNZsxJ87fRo7oo4eaKenOVueNBpiV+KaU=
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
- by TYVPR01MB10622.jpnprd01.prod.outlook.com (2603:1096:400:29b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.30; Mon, 2 Oct
- 2023 06:57:36 +0000
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::fb78:2e8c:f7f9:5629]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::fb78:2e8c:f7f9:5629%7]) with mapi id 15.20.6838.028; Mon, 2 Oct 2023
- 06:57:32 +0000
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     =?utf-8?B?QW5kcsOpIEFwaXR6c2No?= <git@apitzsch.eu>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] iio: magnetometer: ak8975: Fix 'Unexpected device' error
-Thread-Topic: [PATCH] iio: magnetometer: ak8975: Fix 'Unexpected device' error
-Thread-Index: AQHZ9IHazMX7YhLcF0uqntJC6sFjerA2Ec2A
-Date:   Mon, 2 Oct 2023 06:57:32 +0000
-Message-ID: <OS0PR01MB5922F29615450C4397F7123886C5A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
-In-Reply-To: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYVPR01MB10622:EE_
-x-ms-office365-filtering-correlation-id: e7eff979-b3fb-44cb-d612-08dbc314d9ff
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: L/yrTuOSSyw8HVWWmF+qiFN6+tW5dxyy5VvxW5Tl05vBVFFoOoR4tx5ljxQbNZb6fEGQAtXYJiHLMHTQgDv1ZtVscmU0MrqB9qg7/qirLI0K39tBwgBF2LObRnT+WQTvTM6jtIgbR/SpSokyyxKEJtPLT/W7Ku/PzC9jhrg7QlQssh83M56gUfdPfXZlDB1vvN126619BFePh9RTAG44NAULT4m4HRs0kF22yZwb+6loq36kXTninYIo1pir6LNwNMDDrkqEVlw7GSYm83GVUxYYwDKlBUPp7VylJScYGR6qEs5gbNDzRByOvU9eoa+TI2hWA9ExHd6AOkhcLeBETflIE6ltZ60B2nv+kigP1NYreu22LQ9eHEIH1I11Z+wp6f4lxcPM21j2G9aR4O/K97UINyM3fZBNbA/D5qgRokVOGJhuEHtgYv9QGgAXmGGRT5Q+yzaa76oIWEZvuSqysqXGQNB8hbJNX3bm9VZXUBnJKUiAih4o8GNO/b0oCUzapcX90hqFnSYbOpdAgmJMnf9zfc+6qT0XstDxHnd/f3eEG111csl7CDmAzarz6QPntuGL/xcuRyI1jRqd0OxRDcwqOUQ8IBLfIztC5BgLBmAz2fGaIMpnT4LfyRAv6NsN
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(396003)(366004)(136003)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(66556008)(66476007)(76116006)(66446008)(54906003)(316002)(64756008)(66946007)(2906002)(478600001)(110136005)(8936002)(8676002)(71200400001)(4326008)(26005)(52536014)(5660300002)(83380400001)(6506007)(7696005)(9686003)(41300700001)(122000001)(38070700005)(38100700002)(86362001)(33656002)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eEkyNG0xR2Q4N2c4bDdhUksyVEhJZGJmclAxdTlPQ29PVC9UdlF1WWRJSkJm?=
- =?utf-8?B?ZjNaUDRiQmhTL25oSm1kRURUUHdxREhEQm9aYnN3U1lEQkxJT0xQbm1SaVRW?=
- =?utf-8?B?YUExcjdEY1ZaVlU3KzM2LzhTb2E2UGpnTS9FelZNUE53bTc5SjdPWnVyNFhE?=
- =?utf-8?B?cDU3OElNMFVYVUZNVnA0ZktBNWY1WTc3MU5PWW53dU14SXpLbGY2SkdSdkxv?=
- =?utf-8?B?YzJYV3FxU1JTSGU3ZTNWYUpZWmwzNHBuUGNwcGlZMFR3WFBvaHAwUEdXbk9M?=
- =?utf-8?B?M1N1M01QREZKejBsdVBuYktJYjlGWFpHZld6anZLVk13SzJtZUtFNDRqM3JL?=
- =?utf-8?B?OVFXV1hKVnJWU1BqYUR6Rmk2c1ozazk3SHFmdmhHT3liTElTN21iT1p4ODR4?=
- =?utf-8?B?akptaEg5QzQ1eWZXYUhyTkMzLzRZTXhOWFczN3lpRG8xVmdaWUNIUGU1U0Zw?=
- =?utf-8?B?cWNMTmR6OUxxT0d2Wk1iNXh0TzBNOW9HZzV4Mi8wa2I1Z05oOW5iREtic2hY?=
- =?utf-8?B?MzJKRFFsZDd3dDBweFArTWhIQzB4aDAwdmdUUWo1bkxJWEhFTGFWWWhBd3ZZ?=
- =?utf-8?B?TWxGblF1R09rbUxmSEs3UG9iVUttL1NVNUZJeTAyYTBKdjBGanlSOGpkQzZO?=
- =?utf-8?B?OGVCdXVYUithNjNoZzdyOWVkOG1yaE5lcWw1SnZtQzcweWlWdlhHc05DMW1W?=
- =?utf-8?B?bDlsUC9ZVnd2Wm1LenlwSWxoZk5qbFFVWm9jbCtobEpCems4djYrOS8wV1c5?=
- =?utf-8?B?cHVHbm5XM2F3NTArL0I0MWJDcGxweS90R1ovZUxDZm5GdUFPRjZDWGkwOHN2?=
- =?utf-8?B?UlZQRWNPRVlrMTVJY0tqSU5BbUk3MUdWVUNkWUFNZ0l4dEhSNkIyL21QMjFZ?=
- =?utf-8?B?RW9RWkdvT0UzQmhZaWlXckdwS1ZoWTRBc3ROVEhIYURhNDBUeVN4ZHFSWFhn?=
- =?utf-8?B?bGttSmFzWmw1bWQxNXBEMjJzQWdpTDdVdkhLZlZlZ1hwTnVQM2dGcGVER1Fj?=
- =?utf-8?B?ZUZRWHpudm1FVEtZaFRobGhyL2NQV0ZwSmd3VVVRSGVIdnF1bzlPSzJGUHEr?=
- =?utf-8?B?bFF6cFRPVHhoajlmZjNWeDRHZEFKdmE0OTRLN3cxWlMvekE4SFBreWNpUzJ4?=
- =?utf-8?B?aXY2bmxnQ1pVNHlwbGR4VmxURlNod0VlM0JGb2kzT2l4V1ZYV0JnSWlpQVRK?=
- =?utf-8?B?WUpNU2JxbGtGTkFBdFZKQmFEK3VoMWZOSnh5ckg5OXFFLzRJNHdNQi9vSjhL?=
- =?utf-8?B?czV1dWlITnRtbG9CblVqUnpvVU5HeWNtUmVpb0o4b3h5WDZHSWdPM0oreWZa?=
- =?utf-8?B?SWJycW5PTjBFQ0ZBM21hRkg0clZVTEFXWk9meHd2VkYxY0srOVgycDNmRjZo?=
- =?utf-8?B?N0JnZzM3TjdhaE93ZEVtVThvdTBUdnBDNk9JNzI5SFd6REpEYXBKeVFuVXZq?=
- =?utf-8?B?alRQZTliV1JNVEpGR2dyblRHU0RiRXB5OWY1RDgrN1kzNGd4UUNWQXZCbURI?=
- =?utf-8?B?bTNUMjlvY2VPdzlwV296QVdDRVZCV09uM0IxbFE0U2hpNnkvMEVIc25HWnBY?=
- =?utf-8?B?ZUVmVzIxSFZEZ3dPNzV0Z1ZNQXlyMWY5UzBCTnFXamNNNVRiL2RzbnpDZFNy?=
- =?utf-8?B?cVpyZCtmbmp4VjlORUxnTzBxWkxzZ3JrWUh5MkU3OUpHaURDOHdEcStwMkJm?=
- =?utf-8?B?RmtlU0lsc3F3dlFwU0E2WGdSWDg1blM4UWE5WU9aTVl5emhGOFczOVpYN3VK?=
- =?utf-8?B?VGUwQ0lzWS9DaWhTdUI0MnA5RnlhbE9EaU51OE5rVnhqUGg1VnpjMzhjc0lL?=
- =?utf-8?B?TjJieEE1SlEzbkVPQjBFSUdYd0VCZDNIRXJhcTRuWnppTUhRRlRoampPL3U4?=
- =?utf-8?B?RDJIZFlaaWt5TmNIcDQ2VUs3YzlhKzBZK0h2TnEyQkh1Z1I2S3BQbTRpUWVp?=
- =?utf-8?B?L1RodFR5TnlKNTJGRkJTRmhraFVCODZpVzduSDJiODB4TzlwMTg1d0dObzBN?=
- =?utf-8?B?aHVzM29qUi93L0JuTFVkUjNlZGQ4WXgzSDNOYXFEajdpRkh4MFBQaDd1dmNY?=
- =?utf-8?B?RkJ2WGtGa0NTUk0rYkNOcEZsTG1BdHgvQnkxS2sxcFVLT1NkdUxHZVBuSDNE?=
- =?utf-8?B?OUlsWUhXZ0Y3M3lOeGErSlMwVm5uOUZTcW5LUGNhSCsxS2tFbTBENjlZME5z?=
- =?utf-8?B?L0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S235630AbjJBHdh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 03:33:37 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4BD83;
+        Mon,  2 Oct 2023 00:33:33 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c28e35752cso26803531fa.0;
+        Mon, 02 Oct 2023 00:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696232011; x=1696836811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tPMk98xbDjSu/d7zq/OqT3E5dxTEAuHNUfRDfBNu09M=;
+        b=iHoFqerJLWvsMbJ1X18xKeGDB4a7MMRMcgJPr0DrBM5iRCtzHG8b0U63BqdpuPDRq+
+         h3NgBSjvqGWZo2qLiiYPrw2kjbJbAxWsSiZDJ7jbevt9ynoPA1KfmS4mrxjU7h4zNCrA
+         dViSSsJe/ou/ei8j+dol2U31RIz/fVpLs84UAruRbl60owdnr8omCJDNoukNmE2VtCyP
+         BwGDMPO1/hrF/fefSXDKZw4ah3eo8cEAmiXReZ0BSuAD2eEkjcQtML6OaPaEc41YEPoy
+         vdeHp3inYwHlpRgIuLpHDDM11GKq236Ds178EdehrtXg6ygTTcfTLtamvNHV3GTlb3UZ
+         Jelw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696232011; x=1696836811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tPMk98xbDjSu/d7zq/OqT3E5dxTEAuHNUfRDfBNu09M=;
+        b=WzjULZZWPimoMfaWMHmrh6xap+heoIjkb20a05d9wO81v+vKWszWHGOdWDQnyK4lnz
+         V9amKrhSZCTf7nj09v4n/u467m3TSay2ZWz6MjcGj7O8JHGMO8Yv1L5BgRDmB1dmkaPZ
+         5hZHCOQ233geBqonSlcFIMOocWCn6KDOp/WDexqbjqHEGa3ym661OXa6yTaRJ0/1XwHP
+         Wh3eYVUxJ15/TT5UQ/WZY/Qo131A9QTMiEIWshlUoed4nZsHl0L1/PNzUg6WzBtGJ4N1
+         R48eRPousgmGYSeYuyHwtKtKcX+HDZq50SzsPdxbgxM1vOBwLrHmPWVCQn+9TVBF1dx+
+         p/EA==
+X-Gm-Message-State: AOJu0YzXuN1xX3jj1ct40OgextH1TmFrWpp+2PXl+GWtJG+psRw0Exy3
+        e2s392pPDgGzCmiMrwhir5iRgXgctao=
+X-Google-Smtp-Source: AGHT+IEKUBzdD3IBYzVwMB+ztCKmxhrGIchOs8J21tfb3W3iZHq6hiK+7zJFt9eI0T6sgshZw91YCw==
+X-Received: by 2002:a2e:9652:0:b0:2bc:c004:cc22 with SMTP id z18-20020a2e9652000000b002bcc004cc22mr9106922ljh.33.1696232011243;
+        Mon, 02 Oct 2023 00:33:31 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id p20-20020a2e9a94000000b002b9f0fb5f20sm5155259lji.72.2023.10.02.00.33.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Oct 2023 00:33:30 -0700 (PDT)
+Message-ID: <7e571a3c-ccd4-22cc-f1a0-c69b62aa2f7a@gmail.com>
+Date:   Mon, 2 Oct 2023 10:33:29 +0300
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7eff979-b3fb-44cb-d612-08dbc314d9ff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2023 06:57:32.6900
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: e7Ne2fcjnlOrlHS8zEcU/4/6aibrBr5N4QUQaNDjdXgqyq2ro7zbN/6oWUf2yJGAocW/VSvb3IvlZ7isx2Eb5bjssS1npXLjMqmgQX1Kz9g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYVPR01MB10622
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 1/5] tools: iio: iio_generic_buffer ensure alignment
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Benjamin Bara <bbara93@gmail.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1695727471.git.mazziesaccount@gmail.com>
+ <e986b4562ca663e19ea30b81d15221c15bd87227.1695727471.git.mazziesaccount@gmail.com>
+ <20230930173409.4fe38d94@jic23-huawei>
+Content-Language: en-US, en-GB
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230930173409.4fe38d94@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgQW5kcsOpIEFwaXR6c2NoLA0KDQo+IFN1YmplY3Q6IFtQQVRDSF0gaWlvOiBtYWduZXRvbWV0
-ZXI6IGFrODk3NTogRml4ICdVbmV4cGVjdGVkIGRldmljZScgZXJyb3INCj4gDQo+IEV4cGxpY2l0
-eSBzcGVjaWZ5IGFycmF5IGluZGljZXMgdG8gZml4IG1hcHBpbmcgYmV0d2Vlbg0KPiBhc2FoaV9j
-b21wYXNzX2NoaXBzZXQgYW5kIGFrX2RlZl9hcnJheS4NCj4gV2hpbGUgYXQgaXQsIHJlbW92ZSB1
-bm5lZWRlZCBBS1hYWFguDQo+IA0KPiBGaXhlczogNGY5ZWE5M2FmZGUxICgiaWlvOiBtYWduZXRv
-bWV0ZXI6IGFrODk3NTogQ29udmVydCBlbnVtLT5wb2ludGVyIGZvcg0KPiBkYXRhIGluIHRoZSBt
-YXRjaCB0YWJsZXMiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBBbmRyw6kgQXBpdHpzY2ggPGdpdEBhcGl0
-enNjaC5ldT4NCj4gLS0tDQo+ICBkcml2ZXJzL2lpby9tYWduZXRvbWV0ZXIvYWs4OTc1LmMgfCAx
-MSArKysrKy0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNiBkZWxl
-dGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9tYWduZXRvbWV0ZXIvYWs4
-OTc1LmMNCj4gYi9kcml2ZXJzL2lpby9tYWduZXRvbWV0ZXIvYWs4OTc1LmMNCj4gaW5kZXggOGNm
-Y2ViMDA3OTM2Li5kZDQ2NmM1ZmE2MjEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvaWlvL21hZ25l
-dG9tZXRlci9hazg5NzUuYw0KPiArKysgYi9kcml2ZXJzL2lpby9tYWduZXRvbWV0ZXIvYWs4OTc1
-LmMNCj4gQEAgLTIwNCw3ICsyMDQsNiBAQCBzdGF0aWMgbG9uZyBhazA5OTEyX3Jhd190b19nYXVz
-cyh1MTYgZGF0YSkNCj4gDQo+ICAvKiBDb21wYXRpYmxlIEFzYWhpIEthc2VpIENvbXBhc3MgcGFy
-dHMgKi8gIGVudW0gYXNhaGlfY29tcGFzc19jaGlwc2V0IHsNCj4gLQlBS1hYWFgJCT0gMCwNCg0K
-SSBndWVzcyB0aGlzIGNoYW5nZSBpcyBlbm91Z2gsIGFmdGVyIHRoaXMgQUs4OTc1ID0gMCBhbmQN
-Ck5vIG5lZWQgdG8gdXBkYXRlIHRoZSBtYXBwaW5nLiBBbnl3YXkgdGhpcyBpcyBwZXJzb25hbCBw
-cmVmZXJlbmNlLg0KDQpMb29rcyBnb29kIHRvIG1lLg0KDQpSZXZpZXdlZC1ieTogQmlqdSBEYXMg
-PGJpanUuZGFzLmp6QGJwLnJlbmVzYXMuY29tPg0KDQpDaGVlcnMsDQpCaWp1DQoNCj4gIAlBSzg5
-NzUsDQo+ICAJQUs4OTYzLA0KPiAgCUFLMDk5MTEsDQo+IEBAIC0yNDgsNyArMjQ3LDcgQEAgc3Ry
-dWN0IGFrX2RlZiB7DQo+ICB9Ow0KPiANCj4gIHN0YXRpYyBjb25zdCBzdHJ1Y3QgYWtfZGVmIGFr
-X2RlZl9hcnJheVtdID0gew0KPiAtCXsNCj4gKwlbQUs4OTc1XSA9IHsNCj4gIAkJLnR5cGUgPSBB
-Szg5NzUsDQo+ICAJCS5yYXdfdG9fZ2F1c3MgPSBhazg5NzVfcmF3X3RvX2dhdXNzLA0KPiAgCQku
-cmFuZ2UgPSA0MDk2LA0KPiBAQCAtMjczLDcgKzI3Miw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-YWtfZGVmIGFrX2RlZl9hcnJheVtdID0gew0KPiAgCQkJQUs4OTc1X1JFR19IWUwsDQo+ICAJCQlB
-Szg5NzVfUkVHX0haTH0sDQo+ICAJfSwNCj4gLQl7DQo+ICsJW0FLODk2M10gPSB7DQo+ICAJCS50
-eXBlID0gQUs4OTYzLA0KPiAgCQkucmF3X3RvX2dhdXNzID0gYWs4OTYzXzA5OTExX3Jhd190b19n
-YXVzcywNCj4gIAkJLnJhbmdlID0gODE5MCwNCj4gQEAgLTI5OCw3ICsyOTcsNyBAQCBzdGF0aWMg
-Y29uc3Qgc3RydWN0IGFrX2RlZiBha19kZWZfYXJyYXlbXSA9IHsNCj4gIAkJCUFLODk3NV9SRUdf
-SFlMLA0KPiAgCQkJQUs4OTc1X1JFR19IWkx9LA0KPiAgCX0sDQo+IC0Jew0KPiArCVtBSzA5OTEx
-XSA9IHsNCj4gIAkJLnR5cGUgPSBBSzA5OTExLA0KPiAgCQkucmF3X3RvX2dhdXNzID0gYWs4OTYz
-XzA5OTExX3Jhd190b19nYXVzcywNCj4gIAkJLnJhbmdlID0gODE5MiwNCj4gQEAgLTMyMyw3ICsz
-MjIsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGFrX2RlZiBha19kZWZfYXJyYXlbXSA9IHsNCj4g
-IAkJCUFLMDk5MTJfUkVHX0hZTCwNCj4gIAkJCUFLMDk5MTJfUkVHX0haTH0sDQo+ICAJfSwNCj4g
-LQl7DQo+ICsJW0FLMDk5MTJdID0gew0KPiAgCQkudHlwZSA9IEFLMDk5MTIsDQo+ICAJCS5yYXdf
-dG9fZ2F1c3MgPSBhazA5OTEyX3Jhd190b19nYXVzcywNCj4gIAkJLnJhbmdlID0gMzI3NTIsDQo+
-IEBAIC0zNDgsNyArMzQ3LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBha19kZWYgYWtfZGVmX2Fy
-cmF5W10gPSB7DQo+ICAJCQlBSzA5OTEyX1JFR19IWUwsDQo+ICAJCQlBSzA5OTEyX1JFR19IWkx9
-LA0KPiAgCX0sDQo+IC0Jew0KPiArCVtBSzA5OTE2XSA9IHsNCj4gIAkJLnR5cGUgPSBBSzA5OTE2
-LA0KPiAgCQkucmF3X3RvX2dhdXNzID0gYWswOTkxMl9yYXdfdG9fZ2F1c3MsDQo+ICAJCS5yYW5n
-ZSA9IDMyNzUyLA0KPiANCj4gLS0tDQo+IGJhc2UtY29tbWl0OiBkZjk2NGNlOWVmOWZlYTEwY2Yx
-MzFiZjZiYWQ4NjU4ZmRlNzk1NmY2DQo+IGNoYW5nZS1pZDogMjAyMzEwMDEtYWtfbWFnbmV0b21l
-dGVyLWIwNjMwOTgwODJkZA0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiAtLQ0KPiBBbmRyw6kgQXBp
-dHpzY2ggPGdpdEBhcGl0enNjaC5ldT4NCg0K
+On 9/30/23 19:34, Jonathan Cameron wrote:
+> On Wed, 27 Sep 2023 11:26:07 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The iio_generic_buffer can return garbage values when the total size of
+>> scan data is not a multiple of the largest element in the scan. This can be
+>> demonstrated by reading a scan, consisting, for example of one 4-byte and
+>> one 2-byte element, where the 4-byte element is first in the buffer.
+>>
+>> The IIO generic buffer code does not take into account the last two
+>> padding bytes that are needed to ensure that the 4-byte data for next
+>> scan is correctly aligned.
+>>
+>> Add the padding bytes required to align the next sample with the scan size.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+>> ---
+>> I think the whole alignment code could be revised here, but I am unsure
+>> what kind of alignment is expected, and if it actually depends on the
+>> architecture. Anyways, I'll quote myself from another mail to explain
+>> how this patch handles things:
+>>
+>>> For non power of2 sizes, the alignment code will result strange alignments.
+>>> For example, scan consisting of two 6-byte elements would be packed -
+>>> meaning the second element would probably break the alignment rules by
+>>> starting from address '6'. I think that on most architectures the proper
+>>> access would require 2 padding bytes to be added at the end of the first
+>>> sample. Current code wouldn't do that.
+>>
+>>> If we allow only power of 2 sizes - I would expect a scan consisting of a
+>>> 8 byte element followed by a 16 byte element to be tightly packed. I'd
+>>> assume that for the 16 byte data, it'd be enough to ensure 8 byte alignment.
+>>> Current code would however add 8 bytes of padding at the end of the first
+>>> 8 byte element to make the 16 byte scan element to be aligned at 16 byte
+>>> address. To my uneducated mind this is not needed - but maybe I just don't
+>>> know what I am writing about :)
+>>
+>> Revision history
+>> v3 => v4:
+>>   - drop extra print and TODO coment
+>>   - add comment clarifying alignment sizes
+>> ---
+>>   tools/iio/iio_generic_buffer.c | 18 +++++++++++++++++-
+>>   1 file changed, 17 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+>> index 44bbf80f0cfd..c07c49397b19 100644
+>> --- a/tools/iio/iio_generic_buffer.c
+>> +++ b/tools/iio/iio_generic_buffer.c
+>> @@ -54,9 +54,12 @@ enum autochan {
+>>   static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+>>   {
+>>   	unsigned int bytes = 0;
+>> -	int i = 0;
+>> +	int i = 0, max = 0;
+>> +	unsigned int misalignment;
+>>   
+>>   	while (i < num_channels) {
+>> +		if (channels[i].bytes > max)
+>> +			max = channels[i].bytes;
+>>   		if (bytes % channels[i].bytes == 0)
+>>   			channels[i].location = bytes;
+>>   		else
+>> @@ -66,6 +69,19 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
+>>   		bytes = channels[i].location + channels[i].bytes;
+>>   		i++;
+>>   	}
+>> +	/*
+>> +	 * We wan't the data in next sample to also be properly aligned so
+>> +	 * we'll add padding at the end if needed.
+>> +	 *
+>> +	 * Please note, this code does ensure alignment to maximum channel
+>> +	 * size. It works only as long as the channel sizes are 1, 2, 4 or 8
+>> +	 * bytes. Also, on 32 bit platforms it might be enough to align also
+>> +	 * the 8 byte elements to 4 byte boundary - which this code is not
+>> +	 * doing.
+> Very much not!  We need to present same data alignment to userspace
+> indpendent of what architecture is running.
+> 
+> It's annoyingly inconsistent how 8 byte elements are handled on 32 bit
+> architectures as some have optimized aligned access routines and others
+> will read as 2 32 bit fields.  Hence we just stick to 8 byte value is
+> 8 byte aligned which is always fine but wastes a bit of space on x86 32
+> bit - which I don't care about ;)
+> 
+> Please drop this last bit of the comment as we should just say what it
+> does, not conjecture what it might do!
+
+Ok. The comment was more to catch the reviewers' attention ;) I'll just 
+note the alignment works for power of 2 sample sizes and aligns 
+according to the max sized sample, even if it was bigger than 8.
+
+Thanks!
+
+-- Matti
+
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

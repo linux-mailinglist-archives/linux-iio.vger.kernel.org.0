@@ -2,61 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F607B59D8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 20:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E987B5A97
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 20:55:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234871AbjJBR6e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 13:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
+        id S238836AbjJBSuI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Oct 2023 14:50:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjJBR6d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 13:58:33 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B77BC90
-        for <linux-iio@vger.kernel.org>; Mon,  2 Oct 2023 10:58:30 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id 98e67ed59e1d1-27758be8a07so47330a91.0
-        for <linux-iio@vger.kernel.org>; Mon, 02 Oct 2023 10:58:30 -0700 (PDT)
+        with ESMTP id S229655AbjJBSuI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 14:50:08 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596EAB3
+        for <linux-iio@vger.kernel.org>; Mon,  2 Oct 2023 11:50:04 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-522bd411679so44866a12.0
+        for <linux-iio@vger.kernel.org>; Mon, 02 Oct 2023 11:50:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=happybizdata-com.20230601.gappssmtp.com; s=20230601; t=1696269510; x=1696874310; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696272603; x=1696877403; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Lx3rGq7xkfpJfugVxIhCG8q+j0sp54c0pLA6F3q0y6Y=;
-        b=USKYQuL0ssRIZCXry55OgQAc3k9+pcQrxUVPXfc364FBtfDsYJSHRmwu+v4PfSi1B9
-         zbmYHPxYMxdXazfhCCQa5nljdNbJlqMWb4eOwPXyJjWXDq/M5X2UxZ81EX0J2UpO4RT3
-         K1shePhBQzHcSzPSTsU1eMOrYnz1kcmBtqaPHOXqmQB2nsAfd1aSZ4S9kUvTAhatXKTE
-         p/P9M2eky7sDaLdPTsgWQEF4iAyTrWaZ6e6r1MGNMrBP1GFUKLeMGFI30r3mWa4Ea05k
-         ejLUF7BBUxRHBKD14l3Tt3jBsA274AtZ1moQ3k1///kwdwNa3+KMJvZ3ZslUlxybUPsN
-         QDkA==
+        bh=Lci7aE9Nr12rnsuBj8lxjXGwqKY+F3Jq4/Wt3MfIP2I=;
+        b=O38wsdmxtsyna4oOXPYL4H+Twdm/qOzAHz9KQdyr4mqdZm+XuEjlfGkoeVFVJcNc5K
+         prA2f9hvBEW4j2GmaGH+mZkZEuZ7vT4tUN2PxFMO2zFWEE78UN/L9tZd8yFrHysdI8bT
+         Sjc3V/qlMwZ1PRlCe0NqqX9v5qQTmI5EF7BTNqXre8YISVLhtQpO6aIJMkmfwql5Lm16
+         NmqVf4qF0BgshIbmiVXajOgmlD8yV61dL7MA9kXd2at14bpFxY5a5eLR8VLZ09cUemol
+         lNY/6flNkYKFezBSqltNp1tBut2dhfOiKHBPJyr93qOwO1KVDXkS3sua5eKiEcvtVpi6
+         eqaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696269510; x=1696874310;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1696272603; x=1696877403;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Lx3rGq7xkfpJfugVxIhCG8q+j0sp54c0pLA6F3q0y6Y=;
-        b=j0ADq5i8rBiW+TsAJc6Zh4XUnf7gChGLM1ASdITr+zKSQwSWQaqToap+YqIYW5djjX
-         zQTgH/GVddpY50qTm3tuxbb5wOtdKHmIQ7rW4rfLTjbkGqxSwUT4X5B+ltkzBavtzO3Q
-         fVEbqmGeLCawxn91+7IywphFx+TKx4sk88iiwwJ2VTnKiEEra7XpyvcKFMjiCbHblCZn
-         sJhVo9d07tPVG9sjR2eaxIwoK5ZLuLS6tyJxeczEd8kpEl49iwq9eqZvm5N/LmIRP/K2
-         ek2CFnkRiMQ9nEYARLTLP3knvwtXZe+0oMPRJ0VZTYNeKAMAkceGYwNPMrGA4VYexSzp
-         yzUA==
-X-Gm-Message-State: AOJu0YzzhYMY4eiPybgaihsA5XfM4A0pPHPyWNp9TTI9zKq83+/upkOu
-        64T6RmY5HcyeqOyxI2ZvbboN9FWQU7konou4DWUcJg==
-X-Google-Smtp-Source: AGHT+IGQHjMRZAb7D3/nVzd2/AuO/u/pLs7STuLvMMyCNUSMsKelOauEJxObp6KbnPAWTkuafrQAIqw86pMbVxu6h2k=
-X-Received: by 2002:a17:90b:3a85:b0:278:faf8:af9f with SMTP id
- om5-20020a17090b3a8500b00278faf8af9fmr11357020pjb.20.1696269510187; Mon, 02
- Oct 2023 10:58:30 -0700 (PDT)
+        bh=Lci7aE9Nr12rnsuBj8lxjXGwqKY+F3Jq4/Wt3MfIP2I=;
+        b=dZn+7EnjB5SL4svPeaEcmRJTktPkGh475X72/SJkANMoq3qFldVJTe2VflPYG38+2N
+         OhaTu80hyAlHrJvfB79HZBHrf6vUxUAfsflE2mGpD6b/xFMkmx2ujnqvJhyrhNXlJ831
+         AOI4FEkrKblT7WKNNgcRlATRitN0osJpMsGnGP/an79/lWE0EQCW4JJTGzwcbOKAt4CN
+         fOSG3VJaI9HVc59XLf5GTiN6faitUYB9cWE5cA3X4nuw3jdNzHDvOPSVEGfDrpc7k4WG
+         dE/n5a6zo6H2p/4EBT+LJaY2aXgsuQSCnzoxu9ZvLSULbFB4+DXg54Y9Jr5PXSVeVXla
+         QgWg==
+X-Gm-Message-State: AOJu0YyBd5wD7wu4BhEJAwMTKdqW8Ok95t6azzrqipwUXetUxjudXD1k
+        qvawlVMjWIha89FGRlsXYHhswzdXXj3leg6E3AmxZA==
+X-Google-Smtp-Source: AGHT+IGL+kcb6ZIi1pHexQ8Fkm4S3zA9EjTyFErM4ZJzlSAeQCJ0yHHY0K9LT47stqhw9jK05IhHUx7c6c+C9uoQT4Y=
+X-Received: by 2002:a05:6402:1a28:b0:531:1241:3e98 with SMTP id
+ be8-20020a0564021a2800b0053112413e98mr9957195edb.9.1696272602654; Mon, 02 Oct
+ 2023 11:50:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAMh3ZMKYnXqAKMHMafqrwYMvNF+vD+Y6GrDNJinYQnAm=e3_Gw@mail.gmail.com>
-In-Reply-To: <CAMh3ZMKYnXqAKMHMafqrwYMvNF+vD+Y6GrDNJinYQnAm=e3_Gw@mail.gmail.com>
-From:   Sofia Gonzales <sofia@happybizdata.com>
-Date:   Mon, 2 Oct 2023 12:58:18 -0500
-Message-ID: <CAMh3ZM+8k1J2VKOmeaVVXz6+PJn3fkHbbXxd4fej5yjenVmuRQ@mail.gmail.com>
-Subject: Re: HIMSS Global Health Conference Email List 2023
-To:     Sofia Gonzales <sofia@happybizdata.com>
+References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+ <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
+ <20230930170046.36637e9c@jic23-huawei> <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
+In-Reply-To: <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
+From:   David Lechner <dlechner@baylibre.com>
+Date:   Mon, 2 Oct 2023 13:49:51 -0500
+Message-ID: <CAMknhBGFpYx3oYqJgVgKZpoeANmVmXtUn+V3VnAW7woc7ytTow@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
+ fault events
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,35 +79,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-
-How you=E2=80=99re doing today? Did you have the chance to review my previo=
-us
-email with the follow up below request, I am wondering if it actually
-reached you.
-
-Kindly let me know your interest on this
-
-Thanks and waiting for your response.
-
-Kind Regards,
-Sofia Gonzales
-Marketing Coordinator
-
-On Mon, 25 Sept 2023 at 10:14, Sofia Gonzales <sofia@happybizdata.com> wrot=
-e:
+On Mon, Oct 2, 2023 at 11:58=E2=80=AFAM David Lechner <dlechner@baylibre.co=
+m> wrote:
 >
-> Hi,
+> On Sat, Sep 30, 2023 at 11:00=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
+rg> wrote:
+> >
+> > On Fri, 29 Sep 2023 12:23:31 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >
+> > > From: David Lechner <david@lechnology.com>
+> > >
+> > > From: David Lechner <dlechner@baylibre.com>
+> > >
+> > > When reading the position and velocity on the AD2S1210, there is also=
+ a
+> > > 3rd byte following the two data bytes that contains the fault flag bi=
+ts.
+> > > This patch adds support for reading this byte and generating events w=
+hen
+> > > faults occur.
+> > >
+> > > The faults are mapped to various channels and event types in order to
+> > > have a unique event for each fault.
+> > >
+> > > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> >
+> > Use of x and y modifiers is a little odd.  What was your reasoning?
+> > Was it just that there was a X_OR_Y modifier?  If so, don't use that!
+> > It seemed like a good idea at the time, but it's not nice to deal with
+> > and requires a channel with that modifier to hang the controls off
+> > + make sure userspace expects that event code.
 >
-> Would you be interested in acquiring the Healthcare Information and
-> Management Systems Society Email List?
 >
-> Number of Contacts: 45,486
-> Cost: $1,918
+> Regarding the point about "requires a channel with that modifier to
+> hang the controls off...". Although that comment was about modifiers,
+> does it also apply in general.
 >
-> Interested? Email me back; I would love to provide more information on th=
-e list.
+> There are several fault events that don't have any configurable
+> parameters, namely _sine/cosine inputs clipping_ and _velocity exceeds
+> max tracking rate_. So there won't be any attributes that contain the
+> event specification for those (e.g. no `events/in_angl0_*`
+> attributes). It sounds like this would be a problem as well?
 >
-> Kind Regards,
-> Sofia Gonzales
-> Marketing Coordinator
+> Should we consider a IIO_EV_INFO_LABEL so that we can have some sort
+> of attribute (namely `events/<dir>_<channel spec>_label`) so that
+> userspace can enumerate expected events for non-configurable events?
+
+Well, I didn't think that all the way through before I hit send.
+IIO_EV_INFO_LABEL is clearly not the right way to implement a
+`events/*_label` attribute, but however we consider going about it,
+the point of adding such an attribute was the main idea.

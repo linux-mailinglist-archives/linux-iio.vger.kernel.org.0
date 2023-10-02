@@ -2,151 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84EAF7B57A7
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 18:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2317B585E
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 18:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237999AbjJBQJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 12:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50920 "EHLO
+        id S238423AbjJBQQf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Oct 2023 12:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238087AbjJBQJ2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 12:09:28 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F3C91
-        for <linux-iio@vger.kernel.org>; Mon,  2 Oct 2023 09:09:24 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-533d6a8d6b6so19486325a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 02 Oct 2023 09:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696262962; x=1696867762; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rvcS4k60SiYin2IuqPChFBTYjG7PvZn5VhPIg+Hqi40=;
-        b=JVCA5WSQ3q3Rm6fabULBbJVRjB73DvKwoYvWLe9xXUaLXqlD345g4blEiLYXhnM4iI
-         KbKZ6B0JSxRZoj65/YPwLsXkKEmV/Q5rTEdM9klldTEH2CgPdnFd2PcUb0hElEJGt3iJ
-         tKXaMHk6db681dN8PkXVWDbKeCQuUZgwVr/wudd77BE3I/dCb2qxxrqf0t7wzqNntrg1
-         uP9vnBX9oKLWz+QbTS1HwqZYfM4kDetZa/STSsOciUC25cS9WL+CSEbzYy3slISrFsuM
-         k8OXxEIDU7/HZzJwdefMpnLy3oF9NBYedVKbFYPG0CVkJndmhopZKADsIQgsTBqdDl82
-         dtSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696262962; x=1696867762;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rvcS4k60SiYin2IuqPChFBTYjG7PvZn5VhPIg+Hqi40=;
-        b=l84ELoTTqxy1NKNPUv0BN9N4vEZt/q0/RyuEIhVL7dhvki6JXm7XKP37jsTBRIdlW8
-         eCJU1M4GIq/6LIEDIAj76XIjIpaicmZfAotWvKYNjQwFa9pZ7h00dt/1CVLMseaCPY2E
-         DZyDZZKzBjQDQ6kVUJkTPl4T6f2ryMba5BewHPP4Q15/tHsSF7fplJGzYMZSo6GWAJmS
-         Z/f87khGYWn/Qwe+cuV0coNVoNlDzLjnVqw5rECxkNtbYIa6gu2cqHkgAIuVAH9mTtDx
-         vDm5bmFac4RPlmWCdeATSwC8jfi8C+qowHnKCj1lP1TlBk8a90CcLQB7V1tfgMAyQCtZ
-         uo7g==
-X-Gm-Message-State: AOJu0YxKK9XpkQdoz8BoOEzJaHw9Jv6f8DtAvS/ooUN9aIV/moGt4DZn
-        ZQcS03VEm1U4GSwqs7abCgFX1p5iaEjwBck3R6b0QA==
-X-Google-Smtp-Source: AGHT+IGyK+JVMEa1oJv7JXbe9a1iudhE0A9YYgOaQ6viM6YWtllJ+ds+jBI2VPpJJm6BYqbzrjaOUBXtWKX9kd051Ig=
-X-Received: by 2002:aa7:c1d9:0:b0:530:a0a9:ee36 with SMTP id
- d25-20020aa7c1d9000000b00530a0a9ee36mr10463704edp.38.1696262962483; Mon, 02
- Oct 2023 09:09:22 -0700 (PDT)
+        with ESMTP id S238488AbjJBQQc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 12:16:32 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63889E;
+        Mon,  2 Oct 2023 09:16:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1696263389; x=1727799389;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DPrZPdYeRNfXZOtbRB8PnTVno3GzcqOBQS4+4QktUg4=;
+  b=lu8FI5Q/DBu+DUAfA7dIG6R/munxfToM5VLF8zyz56uM6I/YVxSaGXSG
+   s/dFBKkd4CxsjMputLBUnB+2DZHClgj/5zWvbYJtXLZ1hm5rj0vRz7w/q
+   W28497nGRh4RMwpO2C6E5hBolRIDNVJY1WGAv2DtiN7TuPI1YH2IXWan9
+   jBle+S1ccjNcXa1sDfthA1KpWwZuXXbEVEKrX8kY6ftBZSBaUZoqBYNVx
+   UAorNKaOyZPbJOUK1KUUjeJNq+PM+v3OLoHJXrkcsDiDUp7iOdF0K1AYg
+   ljYlkw3CK7IxeVPRXXd4ZwdqdGs4/Nu/2n3Xsu4j7lo3gxnvk58QTEnMo
+   Q==;
+X-CSE-ConnectionGUID: M5MHFYEZQ66VfybJvKr2SQ==
+X-CSE-MsgGUID: yuxl+01OQCaK38yX3xDJQg==
+X-ThreatScanner-Verdict: Negative
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="7940525"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Oct 2023 09:16:29 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 2 Oct 2023 09:16:28 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Mon, 2 Oct 2023 09:16:27 -0700
+From:   <marius.cristea@microchip.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <marius.cristea@microchip.com>
+Subject: [PATCH v1] iio: adc: MCP3564: fix warn: unsigned '__x' is never less than zero.
+Date:   Mon, 2 Oct 2023 19:16:18 +0300
+Message-ID: <20231002161618.36373-1-marius.cristea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
- <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com> <20230930164251.5c07723c@jic23-huawei>
-In-Reply-To: <20230930164251.5c07723c@jic23-huawei>
-From:   David Lechner <dlechner@baylibre.com>
-Date:   Mon, 2 Oct 2023 11:09:11 -0500
-Message-ID: <CAMknhBFKSqXvgOeRjGAOfURzndmxmCffdU6MUirEmfzKqwM_Kg@mail.gmail.com>
-Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
- threshold to event attr
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Sep 30, 2023 at 10:42=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Fri, 29 Sep 2023 12:23:27 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->
-> > From: David Lechner <david@lechnology.com>
-> >
-> > From: David Lechner <dlechner@baylibre.com>
-> >
-> > The AD2S1210 has a programmable threshold for the loss of signal (LOS)
-> > fault. This fault is triggered when either the sine or cosine input
-> > falls below the threshold voltage.
-> >
-> > This patch converts the custom device LOS threshold attribute to an
-> > event falling edge threshold attribute on a new monitor signal channel.
-> > The monitor signal is an internal signal that combines the amplitudes
-> > of the sine and cosine inputs as well as the current angle and position
-> > output. This signal is used to detect faults in the input signals.
->
-> Hmm. Looking forwards, I'm less sure that we should be shoving all these
-> error conditions onto one channel. Fundamentally we have
-> sine and cosine inputs. I think we should treat those as separate channel=
-s
-> and include a third differential channel between them.
+From: Marius Cristea <marius.cristea@microchip.com>
 
-At first, I did consider a differential channel as you suggested in
-v2. However, the datasheet is quite clear that the LOS and DOS faults
-(and only those faults) come from a signal it calls the "monitor
-signal". This signal is defined as:
+The patch efea15e3c65d: "iio: adc: MCP3564: fix the static checker warning"
+leads to the following Smatch static checker warning:
 
-    Monitor =3D A1 * sin(theta)  * sin(phi) + A2 * cos(theta) * cos(phi)
+   smatch warnings:
+   drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls() warn: unsigned '__x' is never less than zero.
 
-where A1 * sin(theta) is the the sine input, A2 * cos(theta) is the
-cosine input and phi is the position output. So mathematically
-speaking, there is no signal that is the difference between the two
-inputs. (See "Theory of Operation" section in the datasheet.)
+vim +/__x +1105 drivers/iio/adc/mcp3564.c
 
-But if we want to hide these internal details and don't care about a
-strict definition of "differential", then what is suggested below
-seems fine.
+   1094
+   1095  static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
+   1096  {
+   .....
+   1103          for (i = 0; i < MCP3564_MAX_PGA; i++) {
+   1104                  ref = adc->vref_mv;
+ > 1105                  tmp1 = shift_right((u64)ref * NANO, pow);
+   1106                  div_u64_rem(tmp1, NANO, &tmp0);
+   1107
+   .....
+   1113  }
 
->
-> So this one becomes a double event (you need to signal it on both
-> cosine and sine channels).  The DOS overange is similar.
-> The DOS mismatch is a threshold on the differential channel giving
->
-> events/in_altvoltage0_thresh_falling_value
-> events/in_altvoltage1_thresh_falling_value (these match)
-> events/in_altvoltage0_thresh_rising_value
-> events/in_altvoltage1_thresh_rising_value (matches previous which is fine=
-)
-> events/in_altvoltage1-altvoltage0_mag_rising_value
->
-> Does that work here?  Avoids smashing different types of signals together=
-.
-> We could even do the LOT as differential between two angle channels
-> (tracking one and measured one) but meh that's getting complex.>
-> Note this will rely on channel labels to make the above make any sense at=
- all.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309280738.NWjVfVt4-lkp@intel.com/
+Fixes: efea15e3c65d (iio: adc: MCP3564: fix the static checker warning)
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+---
+ drivers/iio/adc/mcp3564.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think this could be OK - I think what matters most is having some
-documentation that maps the faults and registers on the chip to the
-iio names. Where would the sine/cosine clipping fault fit in though? I
-got a bit too creative and used X_OR_Y to differentiate it (see
-discussion in "staging: iio: resolver: ad2s1210: implement fault
-events"). Strictly speaking, it should probably be a type: threshold,
-direction: either event on both the sine and cosine input channels
-(another double event) since it occurs if either of the signal exceeds
-the power or ground rail voltage. But we already have threshold rising
-and threshold falling on these channels with a different meaning. I
-guess it could call it magnitude instead of a threshold?
+diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+index 9ede1a5d5d7b..e3f1de5fcc5a 100644
+--- a/drivers/iio/adc/mcp3564.c
++++ b/drivers/iio/adc/mcp3564.c
+@@ -1102,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
+ 
+ 	for (i = 0; i < MCP3564_MAX_PGA; i++) {
+ 		ref = adc->vref_mv;
+-		tmp1 = shift_right((u64)ref * NANO, pow);
++		tmp1 = ((u64)ref * NANO) >> pow;
+ 		div_u64_rem(tmp1, NANO, &tmp0);
+ 
+ 		tmp1 = tmp1 * mcp3564_hwgain_frac[(2 * i) + 1];
+
+base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
+-- 
+2.34.1
+

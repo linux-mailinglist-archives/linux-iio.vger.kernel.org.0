@@ -2,113 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2317B585E
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 18:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4D47B5883
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 18:57:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238423AbjJBQQf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 12:16:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
+        id S237860AbjJBQng (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Oct 2023 12:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238488AbjJBQQc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 12:16:32 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63889E;
-        Mon,  2 Oct 2023 09:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1696263389; x=1727799389;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DPrZPdYeRNfXZOtbRB8PnTVno3GzcqOBQS4+4QktUg4=;
-  b=lu8FI5Q/DBu+DUAfA7dIG6R/munxfToM5VLF8zyz56uM6I/YVxSaGXSG
-   s/dFBKkd4CxsjMputLBUnB+2DZHClgj/5zWvbYJtXLZ1hm5rj0vRz7w/q
-   W28497nGRh4RMwpO2C6E5hBolRIDNVJY1WGAv2DtiN7TuPI1YH2IXWan9
-   jBle+S1ccjNcXa1sDfthA1KpWwZuXXbEVEKrX8kY6ftBZSBaUZoqBYNVx
-   UAorNKaOyZPbJOUK1KUUjeJNq+PM+v3OLoHJXrkcsDiDUp7iOdF0K1AYg
-   ljYlkw3CK7IxeVPRXXd4ZwdqdGs4/Nu/2n3Xsu4j7lo3gxnvk58QTEnMo
-   Q==;
-X-CSE-ConnectionGUID: M5MHFYEZQ66VfybJvKr2SQ==
-X-CSE-MsgGUID: yuxl+01OQCaK38yX3xDJQg==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="7940525"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Oct 2023 09:16:29 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 2 Oct 2023 09:16:28 -0700
-Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
- Transport; Mon, 2 Oct 2023 09:16:27 -0700
-From:   <marius.cristea@microchip.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <marius.cristea@microchip.com>
-Subject: [PATCH v1] iio: adc: MCP3564: fix warn: unsigned '__x' is never less than zero.
-Date:   Mon, 2 Oct 2023 19:16:18 +0300
-Message-ID: <20231002161618.36373-1-marius.cristea@microchip.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231737AbjJBQnf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 12:43:35 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDC0D3
+        for <linux-iio@vger.kernel.org>; Mon,  2 Oct 2023 09:43:31 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-53406799540so17129180a12.1
+        for <linux-iio@vger.kernel.org>; Mon, 02 Oct 2023 09:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696265010; x=1696869810; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x93iIN0fNUqVoRi/c/6JJ+kFUaB/mOrDLlTEcgIl4+M=;
+        b=yi328mmjajwyHxqAYIb7cxvfQlP5nsVnr6S7Ekg88z9MMu5fXTEAnoIo3/W1fia/BQ
+         2M1i+Hcn9NH11dg061mxWxjZjHjE9F3KxmnmQaault8yt/wuH/VBgDb6ma3vUjR078pC
+         J/A1VeSS6qUnJaB5MmTtdckhQUCKTPEey/j6Kgc5zfZDfbXvI1l+GViYL03IjA1RfT5V
+         hjTxq2bvZp5xyDlcqgYYGELzZUm9AVVG/6sxqbd8qsM2TM2HXpoKUvvw0jmjnw9GrSyb
+         7hJHkEcUK0/89v4RSDo0S0Ca433uzBwyJfp+4sD9ONFRoG8/1Io13MphalwFSMQ3Y6Tf
+         A55g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696265010; x=1696869810;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x93iIN0fNUqVoRi/c/6JJ+kFUaB/mOrDLlTEcgIl4+M=;
+        b=p43Dko68jUTRi5DP40LxaZaqer+cXT+LTRKB4Em8sU4o1iHgJdU50GpD7CLBQuhOt3
+         yM4htmYQiaYwniHRMh/IJi8zyIQogoQtH5VCmjolALkMnWKdXu6CBYxemuG51rwm6OdK
+         sgrZ5qOMUBG8I1il2ui8l0PV7kj5+Y0PPhU9nVqNPzVlv90m/09cIX377M828HAYIo9i
+         /13zTlh4QjsDod7IUQLmKt+mHTvMQMEaC5iNm7G+PjZiPxqg4wceQWgNEYwlYY8xbB8V
+         jEofBcRO9V/lnseU/F1M+b98pqlRYRlNLIQ3m+otgvEyAvBiZj5ObZIxcaKu3uEtLEG2
+         ssPg==
+X-Gm-Message-State: AOJu0Yz1yv4IZyJpih+OQqvv91xEwPSQianBfDU89QEkzRKhDXl/ikfe
+        DRc4k8se+T50nno36cbEVyUTDF2zTNwu5sUOzC8mDA==
+X-Google-Smtp-Source: AGHT+IHDDMMxoHK1rMkkwfVFldZ+KWxjIjoU9+PtnwHrVewlRhb5UP5vNxEhatM3whdpv4O1/RWIUBsxnkMjfmKqjDE=
+X-Received: by 2002:aa7:c157:0:b0:533:4c67:c911 with SMTP id
+ r23-20020aa7c157000000b005334c67c911mr11352514edp.19.1696265010143; Mon, 02
+ Oct 2023 09:43:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+ <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com> <20230930170046.36637e9c@jic23-huawei>
+In-Reply-To: <20230930170046.36637e9c@jic23-huawei>
+From:   David Lechner <dlechner@baylibre.com>
+Date:   Mon, 2 Oct 2023 11:43:19 -0500
+Message-ID: <CAMknhBE0CfASN9Vb0aZWt4Cebik2cF8QVBaXCvyJy9dNF-PjdA@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
+ fault events
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Marius Cristea <marius.cristea@microchip.com>
+On Sat, Sep 30, 2023 at 11:00=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Fri, 29 Sep 2023 12:23:31 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+>
+> > From: David Lechner <david@lechnology.com>
+> >
+> > From: David Lechner <dlechner@baylibre.com>
+> >
+> > When reading the position and velocity on the AD2S1210, there is also a
+> > 3rd byte following the two data bytes that contains the fault flag bits=
+.
+> > This patch adds support for reading this byte and generating events whe=
+n
+> > faults occur.
+> >
+> > The faults are mapped to various channels and event types in order to
+> > have a unique event for each fault.
+> >
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+>
+> Use of x and y modifiers is a little odd.  What was your reasoning?
+> Was it just that there was a X_OR_Y modifier?  If so, don't use that!
+> It seemed like a good idea at the time, but it's not nice to deal with
+> and requires a channel with that modifier to hang the controls off
+> + make sure userspace expects that event code.
+>
 
-The patch efea15e3c65d: "iio: adc: MCP3564: fix the static checker warning"
-leads to the following Smatch static checker warning:
-
-   smatch warnings:
-   drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls() warn: unsigned '__x' is never less than zero.
-
-vim +/__x +1105 drivers/iio/adc/mcp3564.c
-
-   1094
-   1095  static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
-   1096  {
-   .....
-   1103          for (i = 0; i < MCP3564_MAX_PGA; i++) {
-   1104                  ref = adc->vref_mv;
- > 1105                  tmp1 = shift_right((u64)ref * NANO, pow);
-   1106                  div_u64_rem(tmp1, NANO, &tmp0);
-   1107
-   .....
-   1113  }
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309280738.NWjVfVt4-lkp@intel.com/
-Fixes: efea15e3c65d (iio: adc: MCP3564: fix the static checker warning)
-Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
----
- drivers/iio/adc/mcp3564.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-index 9ede1a5d5d7b..e3f1de5fcc5a 100644
---- a/drivers/iio/adc/mcp3564.c
-+++ b/drivers/iio/adc/mcp3564.c
-@@ -1102,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
- 
- 	for (i = 0; i < MCP3564_MAX_PGA; i++) {
- 		ref = adc->vref_mv;
--		tmp1 = shift_right((u64)ref * NANO, pow);
-+		tmp1 = ((u64)ref * NANO) >> pow;
- 		div_u64_rem(tmp1, NANO, &tmp0);
- 
- 		tmp1 = tmp1 * mcp3564_hwgain_frac[(2 * i) + 1];
-
-base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
--- 
-2.34.1
-
+Yes, I was perhaps getting a bit too creative here (the two inputs
+come from transformers mounted 90 degrees apart so measure X and Y
+component of an angle). The only reason I did this was to take
+advantage of the possibility of an "OR" event to avoid double events
+for a single fault bit. We can just go with the double event on the
+two different input channels as discussed in "[PATCH v3 22/27]
+staging: iio: resolver: ad2s1210: convert LOS threshold to event
+attr".

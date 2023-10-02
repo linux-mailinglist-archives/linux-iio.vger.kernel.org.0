@@ -2,112 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 515F27B4F2B
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814DB7B4F97
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236149AbjJBJjt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 05:39:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43272 "EHLO
+        id S236129AbjJBJzZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Oct 2023 05:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236156AbjJBJjs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:39:48 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAD0F2;
-        Mon,  2 Oct 2023 02:39:44 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RzbVB2Vv3z6K60M;
-        Mon,  2 Oct 2023 17:38:10 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
- 2023 10:39:41 +0100
-Date:   Mon, 2 Oct 2023 10:39:40 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "joel@jms.id.au" <joel@jms.id.au>,
-        "andrew@aj.id.au" <andrew@aj.id.au>,
+        with ESMTP id S236112AbjJBJzY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:55:24 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC7B8E;
+        Mon,  2 Oct 2023 02:55:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696240522; x=1727776522;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=fOrOmvdF6LT3+L3Jy/6pyrjx2JfHMcCZvJIukRslaqg=;
+  b=g/PtyqUjQJGgwpVUO4BSTBuy7+c9gWBRGG8ojvT2/xjFHR7KFVT5ZPzE
+   ZnpzzuWbRkA2U32+FHcrbUUaE1WJba4mIRGpNQAmpmpxPSkBvev5WECXJ
+   ODVL0sNxn//dyXzMUvCH3TLJTtvsQ1KoRU845+1FlpvYqdC49gmVye4ii
+   aLpmoxLmEL6MUuAdXcz8G8tSPS8p+ewsjZ8/XInIOOT/dxaMMD5vGo/5L
+   QAz/2yLKR0PAXfgrCnDKDemnpv4GhOfO3QdfZOhHIZ8MQLnRup8n3Dcj1
+   Na4i1020zm8G/JZQjpZnQfu+uYX0BitLk6k5UtOaAcRlf7s2B6JeO7OgB
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="413524513"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="413524513"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:55:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="840935007"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="840935007"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:55:20 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qnFe1-000000027n8-0Hr2;
+        Mon, 02 Oct 2023 12:55:17 +0300
+Date:   Mon, 2 Oct 2023 12:55:16 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Potin.Lai@quantatw.com" <Potin.Lai@quantatw.com>,
-        "patrickw3@meta.com" <patrickw3@meta.com>
-Subject: Re: [PATCH v1] iio: adc: aspeed: Support deglitch feature.
-Message-ID: <20231002103940.00001dbd@Huawei.com>
-In-Reply-To: <SG2PR06MB3365E89B1543B770AC2EE7E78BC5A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-References: <20230925081845.4147424-1-billy_tsai@aspeedtech.com>
-        <20230930174501.039095da@jic23-huawei>
-        <SG2PR06MB3365E89B1543B770AC2EE7E78BC5A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: magnetometer: ak8975: Fix 'Unexpected device' error
+Message-ID: <ZRqThAuMogtcMtHI@smile.fi.intel.com>
+References: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
+ <20231002102745.0000540b@Huawei.com>
+ <ZRqOn8tnJqvU22ex@smile.fi.intel.com>
+ <OS0PR01MB5922C468BEF67BC2A19F87D286C5A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <OS0PR01MB5922C468BEF67BC2A19F87D286C5A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Oct 2023 02:30:43 +0000
-Billy Tsai <billy_tsai@aspeedtech.com> wrote:
+On Mon, Oct 02, 2023 at 09:38:17AM +0000, Biju Das wrote:
+> > On Mon, Oct 02, 2023 at 10:27:45AM +0100, Jonathan Cameron wrote:
+> > > On Sun, 1 Oct 2023 18:09:56 +0200
+> > > André Apitzsch <git@apitzsch.eu> wrote:
+> > 
+> > > > Fixes: 4f9ea93afde1 ("iio: magnetometer: ak8975: Convert
+> > > > enum->pointer for data in the match tables")
+> > 
+> > ^^^ (1)
 
-> On Mon, 25 Sep 2023 16:18:45 +0800
-> Billy Tsai <billy_tsai@aspeedtech.com> wrote:
-> 
-> > > Create event sysfs for applying the deglitch condition. When
-> > > in_voltageY_thresh_rising_en/in_voltageY_thresh_falling_en is set to true,
-> > > the driver will use the in_voltageY_thresh_rising_value and
-> > > in_voltageY_thresh_falling_value as threshold values. If the ADC value
-> > > falls outside this threshold, the driver will wait for the ADC sampling
-> > > period and perform an additional read once to achieve the deglitching
-> > > purpose.
-> > >
-> > > Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>  
-> 
-> > Hi Billy  
-> 
-> > This is pushing the meaning of the events interface too far.
-> > You can't use it to hide a value you don't like from userspace.  
-> 
-> > If you can explain what the condition is that you are seeing
-> > and what you need to prevent happening if it is seen that would help
-> > us figure out if there is another way to do this.  
-> 
-> > Jonathan  
-> 
-> Hi Jonathan,
-> 
-> Currently, we are experiencing some voltage glitches while reading from our
-> controller, but we do not wish to report these false alarms to the user space.
-> Instead, we want to retry the operation as soon as possible. This is why the
-> driver requires this patch to handle retries internally, rather than relying on user
-> space which could introduce unpredictable timing for retrying the reading process.
-> This software approach aims to minimize the possibility of false alarms as much as possible.
-Thanks for the extra detail. Perhaps share more of that in the cover letter for v2.
-> 
-> If you have any suggestions or recommendations regarding this situation, please feel free to
-> share them with me.
+...
 
-Why do you need userspace control for the thresholds?
-Perhaps this is something that belongs in DT for a particular board design?
+> > > So we need the spacer until someone converts this driver to use
+> > > pointers instead for both of and ACPI tables.
+> > 
+> > Isn't it done by (1) which is in your tree?
+> 
+> How (1) can trigger 'Unexpected device' error??
+> It returns match_data, and match_data has correct device type.
 
-Jonathan
-> 
-> Thanks 
-> 
-> > > ---
-> > >  drivers/iio/adc/aspeed_adc.c | 193 ++++++++++++++++++++++++++++++++++-
-> > >  1 file changed, 189 insertions(+), 4 deletions(-)
-> >   
+How? The enum starts from 0 with a AKXXXX and ak_def_array starts from 0
+indexing, it's classical off-by-one, you got the driver data for a wrong chip.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

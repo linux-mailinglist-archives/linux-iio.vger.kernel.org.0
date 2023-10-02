@@ -2,53 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E3D7B4ED9
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A488B7B4EF2
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236028AbjJBJRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Oct 2023 05:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41112 "EHLO
+        id S236062AbjJBJWC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 2 Oct 2023 05:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235965AbjJBJRs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:17:48 -0400
+        with ESMTP id S236063AbjJBJWB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:22:01 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F33B93;
-        Mon,  2 Oct 2023 02:17:46 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzb2S44nNz67L0F;
-        Mon,  2 Oct 2023 17:17:36 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CF699;
+        Mon,  2 Oct 2023 02:21:58 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzb7K3QN6z6K6dl;
+        Mon,  2 Oct 2023 17:21:49 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
- 2023 10:17:43 +0100
-Date:   Mon, 2 Oct 2023 10:17:42 +0100
+ 2023 10:21:56 +0100
+Date:   Mon, 2 Oct 2023 10:21:55 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-CC:     David Lechner <dlechner@baylibre.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-staging@lists.linux.dev>,
-        David Lechner <david@lechnology.com>,
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>
+CC:     Conor Dooley <conor@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?ISO-8859-1?Q?S?= =?ISO-8859-1?Q?=E1?= 
-        <nuno.sa@analog.com>, Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        <linux-kernel@vger.kernel.org>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>
-Subject: Re: [PATCH v3 02/27] staging: iio: resolver: ad2s1210: fix use
- before initialization
-Message-ID: <20231002101742.0000774b@Huawei.com>
-In-Reply-To: <1b366292-6e05-421e-914e-6d3457886238@kadam.mountain>
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com>
-        <1b366292-6e05-421e-914e-6d3457886238@kadam.mountain>
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: adc: provide max34408/9 device tree
+ binding document
+Message-ID: <20231002102155.000030bb@Huawei.com>
+In-Reply-To: <591e8c9a4018938df17cdfb55306813858904d9d.camel@gmail.com>
+References: <20230929200844.23316-1-fr0st61te@gmail.com>
+        <20230929200844.23316-2-fr0st61te@gmail.com>
+        <20230930-lusty-antihero-f381434ab682@spud>
+        <591e8c9a4018938df17cdfb55306813858904d9d.camel@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
 X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -62,52 +58,178 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Oct 2023 11:07:15 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Sat, 30 Sep 2023 22:38:58 +0300
+Ivan Mikhaylov <fr0st61te@gmail.com> wrote:
 
-> On Fri, Sep 29, 2023 at 12:23:07PM -0500, David Lechner wrote:
-> > From: David Lechner <david@lechnology.com>
+> On Sat, 2023-09-30 at 10:37 +0100, Conor Dooley wrote:
+> > Hey,
 > > 
-> > From: David Lechner <dlechner@baylibre.com>
+> > On Fri, Sep 29, 2023 at 11:08:43PM +0300, Ivan Mikhaylov wrote:  
+> > > The hardware binding for i2c current monitoring device with
+> > > overcurrent
+> > > control.
+> > > 
+> > > Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+> > > ---
+> > >  .../bindings/iio/adc/maxim,max34408.yaml      | 101
+> > > ++++++++++++++++++
+> > >  1 file changed, 101 insertions(+)
+> > >  create mode 100644
+> > > Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> > > 
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> > > b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> > > new file mode 100644
+> > > index 000000000000..cdf89fa4c80e
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> > > @@ -0,0 +1,101 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Two- and four-channel current monitors with overcurrent
+> > > control
+> > > +
+> > > +maintainers:
+> > > +  - Ivan Mikhaylov <fr0st61te@gmail.com>
+> > > +
+> > > +description: |
+> > > +  The MAX34408/MAX34409 are two- and four-channel current monitors
+> > > that are
+> > > +  configured and monitored with a standard I2C/SMBus serial
+> > > interface. Each
+> > > +  unidirectional current sensor offers precision high-side
+> > > operation with a
+> > > +  low full-scale sense voltage. The devices automatically sequence
+> > > through
+> > > +  two or four channels and collect the current-sense samples and
+> > > average them
+> > > +  to reduce the effect of impulse noise. The raw ADC samples are
+> > > compared to
+> > > +  user-programmable digital thresholds to indicate overcurrent
+> > > conditions.
+> > > +  Overcurrent conditions trigger a hardware output to provide an
+> > > immediate
+> > > +  indication to shut down any necessary external circuitry.
+> > > +
+> > > +  Specifications about the devices can be found at:
+> > > + 
+> > > https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - maxim,max34408
+> > > +      - maxim,max34409
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  maxim,input1-rsense-val-micro-ohms:
+> > > +    description:
+> > > +      Adjust the Rsense value to monitor higher or lower current
+> > > levels for
+> > > +      input 1.
+> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
+> > > 500000]
+> > > +    default: 1000
+> > > +
+> > > +  maxim,input2-rsense-val-micro-ohms:
+> > > +    description:
+> > > +      Adjust the Rsense value to monitor higher or lower current
+> > > levels for
+> > > +      input 2.
+> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
+> > > 500000]
+> > > +    default: 1000
+> > > +
+> > > +  maxim,input3-rsense-val-micro-ohms:
+> > > +    description:
+> > > +      Adjust the Rsense value to monitor higher or lower current
+> > > levels for
+> > > +      input 3.
+> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
+> > > 500000]
+> > > +    default: 1000
+> > > +
+> > > +  maxim,input4-rsense-val-micro-ohms:
+> > > +    description:
+> > > +      Adjust the Rsense value to monitor higher or lower current
+> > > levels for
+> > > +      input 4.
+> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
+> > > 500000]
+> > > +    default: 1000  
 > > 
-> > This fixes a use before initialization in ad2s1210_probe(). The
-> > ad2s1210_setup_gpios() function uses st->sdev but it was being called
-> > before this field was initialized.
-> > 
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
+> > Having 4 almost identical properties makes it seem like this should
+> > have
+> > some channel nodes, each containing an rsense-micro-ohms type
+> > property.  
+> 
+> Conor, I'll look through.
+> 
 > >   
+> > > +
+> > > +  maxim,shtdn:
+> > > +    description:
+> > > +      Shutdown Output. Open-drain output. This output transitions
+> > > to high impedance
+> > > +      when any of the digital comparator thresholds are exceeded
+> > > as long as the ENA
+> > > +      pin is high.
+> > > +    type: boolean  
+> > 
+> > I don't understand what this property is used for. The description
+> > here,
+> > and below for "ena", read like they are the descriptions in the
+> > datasheet for the pin, rather than how to use the property.
+> > 
+> > The drivers don't appear to contain users either - what is the point
+> > of
+> > these properties?  
 > 
-> Fixes: b19e9ad5e2cb ("staging:iio:resolver:ad2s1210 general driver cleanup.")
-Thanks but nope, not that one.
+> ena and shtdn physical pins of hardware, in the previous version
+> Jonathan asked about adding them into yaml even if it's not used in
+> code. should I do it in some other way?
 
-At that point ad2s1210_setup_gpios, didn't use st->sdev.
-I think this went wrong when the platform data was removed in 
+Yes, use the gpio bindings.
 
-I 'think' it was
-Fixes: f356dc6ec26b ("staging: iio: ad2s1210: Switch to the gpio descriptor interface")
+enable-gpios, isshutdown-gpios 
+perhaps - though try and find a similar example for the naming.
 
-
-
-> 
-> This would crash the driver right away, on probe.  It's amazing no one
-> filed a bug report even though the bug is 12 years old.
-Only 5 years :)
-
-Welcome to the long tail of IIO Devices and the long term availability of the
-hardware - this is still a production part.  Clearly no one was using the
-upstream driver for 5 + years, but here comes David who is not only fixing
-the bugs but cleaning it up.
-
-Hmm. What happened to roadtest? I was hoping that would solve this sort
-of issue by allowing simple testing of basic functionality... Hope it
-is still headed for a new version / upstream!
+The shutdown one is a bit unusual in that it indicates the device
+has shutdown for one of several possible reasons (IIRC)
 
 Jonathan
 
-> regards,
-> dan carpenter
-
-
-
+> 
+> >   
+> > > +
+> > > +  maxim,ena:
+> > > +    description:
+> > > +      SHTDN Enable Input. CMOS digital input. Connect to GND to
+> > > clear the latch and
+> > > +      unconditionally deassert (force low) the SHTDN output and
+> > > reset the shutdown
+> > > +      delay. Connect to VDD to enable normal latch operation of
+> > > the SHTDN output.
+> > > +    type: boolean
+> > > +
+> > > +  supply-vdd: true  
+> > 
+> > As pointed out by the bot, this is not correct. You need to use a
+> > -supply affix, not a supply-prefix.  
+> 
+> Oops.
+> 
+> Thanks.
+> 
+> 
 

@@ -2,44 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A488B7B4EF2
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5117B4F07
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Oct 2023 11:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236062AbjJBJWC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 2 Oct 2023 05:22:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47392 "EHLO
+        id S236063AbjJBJ14 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 2 Oct 2023 05:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236063AbjJBJWB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:22:01 -0400
+        with ESMTP id S236033AbjJBJ14 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Oct 2023 05:27:56 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CF699;
-        Mon,  2 Oct 2023 02:21:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2A183;
+        Mon,  2 Oct 2023 02:27:52 -0700 (PDT)
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzb7K3QN6z6K6dl;
-        Mon,  2 Oct 2023 17:21:49 +0800 (CST)
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RzbDT4GGgz6K63t;
+        Mon,  2 Oct 2023 17:26:17 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
- 2023 10:21:56 +0100
-Date:   Mon, 2 Oct 2023 10:21:55 +0100
+ 2023 10:27:46 +0100
+Date:   Mon, 2 Oct 2023 10:27:45 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ivan Mikhaylov <fr0st61te@gmail.com>
-CC:     Conor Dooley <conor@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: provide max34408/9 device tree
- binding document
-Message-ID: <20231002102155.000030bb@Huawei.com>
-In-Reply-To: <591e8c9a4018938df17cdfb55306813858904d9d.camel@gmail.com>
-References: <20230929200844.23316-1-fr0st61te@gmail.com>
-        <20230929200844.23316-2-fr0st61te@gmail.com>
-        <20230930-lusty-antihero-f381434ab682@spud>
-        <591e8c9a4018938df17cdfb55306813858904d9d.camel@gmail.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: magnetometer: ak8975: Fix 'Unexpected device'
+ error
+Message-ID: <20231002102745.0000540b@Huawei.com>
+In-Reply-To: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
+References: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -58,178 +52,98 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 30 Sep 2023 22:38:58 +0300
-Ivan Mikhaylov <fr0st61te@gmail.com> wrote:
+On Sun, 1 Oct 2023 18:09:56 +0200
+André Apitzsch <git@apitzsch.eu> wrote:
 
-> On Sat, 2023-09-30 at 10:37 +0100, Conor Dooley wrote:
-> > Hey,
-> > 
-> > On Fri, Sep 29, 2023 at 11:08:43PM +0300, Ivan Mikhaylov wrote:  
-> > > The hardware binding for i2c current monitoring device with
-> > > overcurrent
-> > > control.
-> > > 
-> > > Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
-> > > ---
-> > >  .../bindings/iio/adc/maxim,max34408.yaml      | 101
-> > > ++++++++++++++++++
-> > >  1 file changed, 101 insertions(+)
-> > >  create mode 100644
-> > > Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > > 
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > > b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > > new file mode 100644
-> > > index 000000000000..cdf89fa4c80e
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> > > @@ -0,0 +1,101 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Two- and four-channel current monitors with overcurrent
-> > > control
-> > > +
-> > > +maintainers:
-> > > +  - Ivan Mikhaylov <fr0st61te@gmail.com>
-> > > +
-> > > +description: |
-> > > +  The MAX34408/MAX34409 are two- and four-channel current monitors
-> > > that are
-> > > +  configured and monitored with a standard I2C/SMBus serial
-> > > interface. Each
-> > > +  unidirectional current sensor offers precision high-side
-> > > operation with a
-> > > +  low full-scale sense voltage. The devices automatically sequence
-> > > through
-> > > +  two or four channels and collect the current-sense samples and
-> > > average them
-> > > +  to reduce the effect of impulse noise. The raw ADC samples are
-> > > compared to
-> > > +  user-programmable digital thresholds to indicate overcurrent
-> > > conditions.
-> > > +  Overcurrent conditions trigger a hardware output to provide an
-> > > immediate
-> > > +  indication to shut down any necessary external circuitry.
-> > > +
-> > > +  Specifications about the devices can be found at:
-> > > + 
-> > > https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - maxim,max34408
-> > > +      - maxim,max34409
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 1
-> > > +
-> > > +  maxim,input1-rsense-val-micro-ohms:
-> > > +    description:
-> > > +      Adjust the Rsense value to monitor higher or lower current
-> > > levels for
-> > > +      input 1.
-> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
-> > > 500000]
-> > > +    default: 1000
-> > > +
-> > > +  maxim,input2-rsense-val-micro-ohms:
-> > > +    description:
-> > > +      Adjust the Rsense value to monitor higher or lower current
-> > > levels for
-> > > +      input 2.
-> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
-> > > 500000]
-> > > +    default: 1000
-> > > +
-> > > +  maxim,input3-rsense-val-micro-ohms:
-> > > +    description:
-> > > +      Adjust the Rsense value to monitor higher or lower current
-> > > levels for
-> > > +      input 3.
-> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
-> > > 500000]
-> > > +    default: 1000
-> > > +
-> > > +  maxim,input4-rsense-val-micro-ohms:
-> > > +    description:
-> > > +      Adjust the Rsense value to monitor higher or lower current
-> > > levels for
-> > > +      input 4.
-> > > +    enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000,
-> > > 500000]
-> > > +    default: 1000  
-> > 
-> > Having 4 almost identical properties makes it seem like this should
-> > have
-> > some channel nodes, each containing an rsense-micro-ohms type
-> > property.  
+> Explicity specify array indices to fix mapping between
+> asahi_compass_chipset and ak_def_array.
+> While at it, remove unneeded AKXXXX.
 > 
-> Conor, I'll look through.
+> Fixes: 4f9ea93afde1 ("iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables")
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> ---
+>  drivers/iio/magnetometer/ak8975.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
-> >   
-> > > +
-> > > +  maxim,shtdn:
-> > > +    description:
-> > > +      Shutdown Output. Open-drain output. This output transitions
-> > > to high impedance
-> > > +      when any of the digital comparator thresholds are exceeded
-> > > as long as the ENA
-> > > +      pin is high.
-> > > +    type: boolean  
-> > 
-> > I don't understand what this property is used for. The description
-> > here,
-> > and below for "ena", read like they are the descriptions in the
-> > datasheet for the pin, rather than how to use the property.
-> > 
-> > The drivers don't appear to contain users either - what is the point
-> > of
-> > these properties?  
-> 
-> ena and shtdn physical pins of hardware, in the previous version
-> Jonathan asked about adding them into yaml even if it's not used in
-> code. should I do it in some other way?
+> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+> index 8cfceb007936..dd466c5fa621 100644
+> --- a/drivers/iio/magnetometer/ak8975.c
+> +++ b/drivers/iio/magnetometer/ak8975.c
+> @@ -204,7 +204,6 @@ static long ak09912_raw_to_gauss(u16 data)
+>  
+>  /* Compatible Asahi Kasei Compass parts */
+>  enum asahi_compass_chipset {
+> -	AKXXXX		= 0,
 
-Yes, use the gpio bindings.
+When we see this 'spacer' it is normally there to avoid a
+confusion between 'not defined' and set too the first element.
 
-enable-gpios, isshutdown-gpios 
-perhaps - though try and find a similar example for the naming.
+So look at device_get_match_data() implementation and how we tell
+if it worked.  That will return 0 if we have an AK8975 which is
+then detected as a failure to match. 
 
-The shutdown one is a bit unusual in that it indicates the device
-has shutdown for one of several possible reasons (IIRC)
+https://elixir.bootlin.com/linux/v6.6-rc3/source/drivers/iio/magnetometer/ak8975.c#L932
+
+So we need the spacer until someone converts this driver to use
+pointers instead for both of and ACPI tables. I also don't like that
+the of path here is falling back to the i2c_device_id match.
+
+The data should be set in ak8975_of_match[] as well.
 
 Jonathan
 
+>  	AK8975,
+>  	AK8963,
+>  	AK09911,
+> @@ -248,7 +247,7 @@ struct ak_def {
+>  };
+>  
+>  static const struct ak_def ak_def_array[] = {
+> -	{
+> +	[AK8975] = {
+>  		.type = AK8975,
+>  		.raw_to_gauss = ak8975_raw_to_gauss,
+>  		.range = 4096,
+> @@ -273,7 +272,7 @@ static const struct ak_def ak_def_array[] = {
+>  			AK8975_REG_HYL,
+>  			AK8975_REG_HZL},
+>  	},
+> -	{
+> +	[AK8963] = {
+>  		.type = AK8963,
+>  		.raw_to_gauss = ak8963_09911_raw_to_gauss,
+>  		.range = 8190,
+> @@ -298,7 +297,7 @@ static const struct ak_def ak_def_array[] = {
+>  			AK8975_REG_HYL,
+>  			AK8975_REG_HZL},
+>  	},
+> -	{
+> +	[AK09911] = {
+>  		.type = AK09911,
+>  		.raw_to_gauss = ak8963_09911_raw_to_gauss,
+>  		.range = 8192,
+> @@ -323,7 +322,7 @@ static const struct ak_def ak_def_array[] = {
+>  			AK09912_REG_HYL,
+>  			AK09912_REG_HZL},
+>  	},
+> -	{
+> +	[AK09912] = {
+>  		.type = AK09912,
+>  		.raw_to_gauss = ak09912_raw_to_gauss,
+>  		.range = 32752,
+> @@ -348,7 +347,7 @@ static const struct ak_def ak_def_array[] = {
+>  			AK09912_REG_HYL,
+>  			AK09912_REG_HZL},
+>  	},
+> -	{
+> +	[AK09916] = {
+>  		.type = AK09916,
+>  		.raw_to_gauss = ak09912_raw_to_gauss,
+>  		.range = 32752,
 > 
-> >   
-> > > +
-> > > +  maxim,ena:
-> > > +    description:
-> > > +      SHTDN Enable Input. CMOS digital input. Connect to GND to
-> > > clear the latch and
-> > > +      unconditionally deassert (force low) the SHTDN output and
-> > > reset the shutdown
-> > > +      delay. Connect to VDD to enable normal latch operation of
-> > > the SHTDN output.
-> > > +    type: boolean
-> > > +
-> > > +  supply-vdd: true  
-> > 
-> > As pointed out by the bot, this is not correct. You need to use a
-> > -supply affix, not a supply-prefix.  
+> ---
+> base-commit: df964ce9ef9fea10cf131bf6bad8658fde7956f6
+> change-id: 20231001-ak_magnetometer-b063098082dd
 > 
-> Oops.
-> 
-> Thanks.
-> 
-> 
+> Best regards,
 

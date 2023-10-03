@@ -2,66 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2F37B65EE
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 11:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0B37B667F
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 12:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239778AbjJCJ6E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 05:58:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53054 "EHLO
+        id S230384AbjJCKdp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 06:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239820AbjJCJ6D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 05:58:03 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195E8BB;
-        Tue,  3 Oct 2023 02:57:59 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso849270e87.1;
-        Tue, 03 Oct 2023 02:57:58 -0700 (PDT)
+        with ESMTP id S231680AbjJCKdo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 06:33:44 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EE2B3;
+        Tue,  3 Oct 2023 03:33:40 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-533cbbd0153so1207978a12.0;
+        Tue, 03 Oct 2023 03:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696327077; x=1696931877; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=gmail.com; s=20230601; t=1696329219; x=1696934019; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=itn+jp9DqMJguXGxeI/EyyIrxZjnVISE01BS8qN3dyg=;
-        b=HWEHy5W0JGmUi2jdakt+ia773lejEEEq1G5f5AojpRkhbWaGapHZs18Dfg5yxOZGuq
-         f8qWxhhVbkeN0Or44NfLrt+wujR6MDsukW2/T9OuhCA9bkbNgDnBkS6ueEsnSfUzWhr+
-         dOQDkMlkpg2Pb/QyCeIpsimF54/PlcBPtbMbyTmmhNONV8Ia3MSvE0j5aH74qtH5iHYZ
-         g/zWAY+J7hwc9AdatDVLVoVgM/sZgaAGliNNkkZqtGhobOr75lIV3MKSfqy7uZdriqSv
-         WW7m6GfYfMNCtBbtnwkY/FKQx4G5iRqVzTGo8v/PVa39HpEPbYnbKNL2cznuAeExLgrH
-         sI6Q==
+        bh=J/WhFVjfA28clBMUuGiPeq+RU/kn5UwfaZNEZffja6o=;
+        b=Ckg/6iY3LPQp0Q0jQvFiQrKLTbnIzAGBtd2IP1uSwXxqVgcs5TkCybmFpjdwi6C/TG
+         1L1ObxgsCPiG76gR9/0iPyWy8lX89HmAcit4FmxBZ4zxVNjl3Mt0eIFgeFH2HQRZEqgT
+         HUGZuik0FU1uwIN6PBTnsXOD0nE61WqFtcXHiD30sVwt618owRy20J/7Cz6xycbYfGoZ
+         iR4Z7KGzYo9jNJLfOiMXFi+1kVZq9f7MLy7vGb4J20WjMKmdMrQByFpupQwq5SfEmIag
+         FLkf9htJ4oFPbhkv6oYGhaj9UMB6Kg2TFG5FluwEh2hcSEs58++TU5+/Aoggxd9NINs1
+         ZhDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696327077; x=1696931877;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1696329219; x=1696934019;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=itn+jp9DqMJguXGxeI/EyyIrxZjnVISE01BS8qN3dyg=;
-        b=D+cAGrj67+lrxklQ3e1VftJZCr5O4ELXqI9EtcSXw+B5W+6cFYUS3GtFvPnfq76tT8
-         QuHTcQiII3U2cX2DwFE4qhUQVUJNDOrnbsGTT3+FcmN8iiHfMg6liUFpdEYSinLgRvsO
-         V9DVRmBaJa0QHKPc1gmT3my9aAHouoEKZI6/Oemv2iH9+2u2/G8ZqUTo2XNfk2nNyaVa
-         jdRAkQ9IRmYhsgkteV+NHLr4zt9Bg50IrKpg8M9/DGMvYeEzozVmNvZrJfC7/aGb2bEX
-         LqipksDKNWVInGoipifWB1MRCoEbdXdQbDxLsjjSo1fcOlfeYXcvI9jEFDxWV06fte2x
-         K/Jg==
-X-Gm-Message-State: AOJu0YyDBHjSofhS86xCQOfgicKblymXmjFNdDN4tLmT105jJij5Dwqo
-        6Ye43JjmIQCxKFQxafm2kXA=
-X-Google-Smtp-Source: AGHT+IFdijcQl/2mpTmHsUb2wvWwGJhb4kCp3u9fmLvo3Rh8+5MRyVRQrMwl8/qM5UlckIlYrfDaFw==
-X-Received: by 2002:a05:6512:4819:b0:505:6ede:20b0 with SMTP id eo25-20020a056512481900b005056ede20b0mr8846121lfb.58.1696327076936;
-        Tue, 03 Oct 2023 02:57:56 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id l19-20020a19c213000000b005042ae2baf8sm132270lfc.258.2023.10.03.02.57.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 02:57:55 -0700 (PDT)
-Date:   Tue, 3 Oct 2023 12:57:47 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v6] tools: iio: iio_generic_buffer ensure alignment
-Message-ID: <ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+        bh=J/WhFVjfA28clBMUuGiPeq+RU/kn5UwfaZNEZffja6o=;
+        b=ToFLjjTZh6vwUxfvh09IjQW+l7wAt6K3AV7F075/YfRGQ64KLUyRe2eVNW6ZCRbsi/
+         QQwBX7k+QNqtpE0I8xPYiNvz+8j9NktIFbcwKI0Hbc+2JJtzx73pIROzmAf9tDPn3Cv7
+         Xe+rNXvdKJE0IYlawUJ3GQ7+gPw8am+xV6gZCwLEGJAb5Q+IAu2AjaU/GgLseQjMHaMq
+         Q/H+1oqNMzA1tZ0aQdSofmm/5/Fd1zwAlXCERtDVry7M7e46Dl9azqnjbiGYY6XbNKVw
+         9MPuWlCfaP+qDwSEoAEWJem7aJcP4k88CZElYjb1MVHjs4EbA6yNLW0ZlGyWyd7blhd8
+         xtVQ==
+X-Gm-Message-State: AOJu0YxnsMxuFsgaQMGFqcXhh/pA6ropTPRmPY9CmZkYt421e78Nk9nj
+        fbXfH5sjzgbjIz3yB4yN/Wb4OLbFLg7fAQLV
+X-Google-Smtp-Source: AGHT+IFfx16hk+3TKsdvFVRiT8Hmfx8XAO9TSLCnESlY/wH2HQ9arzhYWBibHzQolmpk/cd4rMuhSQ==
+X-Received: by 2002:a17:906:101a:b0:9b2:babb:5fe9 with SMTP id 26-20020a170906101a00b009b2babb5fe9mr12719211ejm.23.1696329218778;
+        Tue, 03 Oct 2023 03:33:38 -0700 (PDT)
+Received: from [10.76.84.110] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id h27-20020a170906261b00b0099bd86f9248sm835102ejc.63.2023.10.03.03.33.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Oct 2023 03:33:38 -0700 (PDT)
+Message-ID: <c52afe87-eaa0-eb7f-090f-b22aec95e49d@gmail.com>
+Date:   Tue, 3 Oct 2023 13:33:36 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="X2pRPnCTlVZaKbsj"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230928125443.615006-1-mitrutzceclan@gmail.com>
+ <20230928125443.615006-2-mitrutzceclan@gmail.com>
+ <20230930150531.083c51d4@jic23-huawei>
+From:   Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
+In-Reply-To: <20230930150531.083c51d4@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,107 +91,21 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---X2pRPnCTlVZaKbsj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-The iio_generic_buffer can return garbage values when the total size of
-scan data is not a multiple of the largest element in the scan. This can be
-demonstrated by reading a scan, consisting, for example of one 4-byte and
-one 2-byte element, where the 4-byte element is first in the buffer.
-
-The IIO generic buffer code does not take into account the last two
-padding bytes that are needed to ensure that the 4-byte data for next
-scan is correctly aligned.
-
-Add the padding bytes required to align the next sample with the scan size.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: e58537ccce73 ("staging: iio: update example application.")
-
----
-Revision history
-v5 =3D> v6:
- - fix typo pointed by Andy (wan't =3D> want).
-v4 =3D> v5:
- - drop unnecessary comment.
- - drop all other patches as those were already applied.
- - add Fixes-tag.
-v3 =3D> v4:
- - drop extra print and TODO coment
- - add comment clarifying alignment sizes
----
- tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 44bbf80f0cfd..0d0a7a19d6f9 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -54,9 +54,12 @@ enum autochan {
- static unsigned int size_from_channelarray(struct iio_channel_info *channe=
-ls, int num_channels)
- {
- 	unsigned int bytes =3D 0;
--	int i =3D 0;
-+	int i =3D 0, max =3D 0;
-+	unsigned int misalignment;
-=20
- 	while (i < num_channels) {
-+		if (channels[i].bytes > max)
-+			max =3D channels[i].bytes;
- 		if (bytes % channels[i].bytes =3D=3D 0)
- 			channels[i].location =3D bytes;
- 		else
-@@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_ch=
-annel_info *channels, in
- 		bytes =3D channels[i].location + channels[i].bytes;
- 		i++;
- 	}
-+	/*
-+	 * We want the data in next sample to also be properly aligned so
-+	 * we'll add padding at the end if needed. Adding padding only
-+	 * works for channel data which size is 2^n bytes.
-+	 */
-+	misalignment =3D bytes % max;
-+	if (misalignment)
-+		bytes +=3D max - misalignment;
-=20
- 	return bytes;
- }
-
-base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
---=20
-2.41.0
+On 9/30/23 17:05, Jonathan Cameron wrote:
+> On Thu, 28 Sep 2023 15:54:43 +0300
+> Dumitru Ceclan <mitrutzceclan@gmail.com> wrote>> +config AD7173
+>> +	tristate "Analog Devices AD7173 driver"
+>> +	depends on SPI_MASTER
+>> +	select AD_SIGMA_DELTA
+>> +	select GPIO_REGMAP
+> If you are selecting it, why does it have if guards in the driver.
+> I prefer the select here, so drop this if guards.
 
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+From what i checked, selecting GPIO_REGMAP does not select GPIOLIB but only REGMAP.
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---X2pRPnCTlVZaKbsj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUb5ZsACgkQeFA3/03a
-ocW5wggAlOggIxqFVoJD+8TnfOgo9flg0eq3Cj9dq8lTa1fKH3emYtXpdHkoRS3S
-pd8ZuCSFOmQ9r4ijAd4B2488fdtjf+XJPnStVO8eRDKAwgih4o+ri0p05HJzC56l
-Ih4fujrRzl1oDtdIJOaGISYTELPF52uvkd7Yw6O6IubgWloZYQ9jzXEQ8ZCFsvMR
-Q/SwRomSBroNAUtJwSWthAAteXPZ8lPFxcFUjg84sMKIqR6G9xyx0QioijnCDDwM
-eRDzEbKTDGFojVpFYz7ReSl5/YyICM+gHCo5ldueGi2jX86ngrh5rfYEW85qxLG6
-w/nqWWm3dmqbRV4313ZfqE16iFkfiA==
-=EdzQ
------END PGP SIGNATURE-----
-
---X2pRPnCTlVZaKbsj--
+Also, in the thread from V1 Arnd Bergmann suggested:
+	" I think the best way to handle these is to remove both
+	 the 'select' and the #ifdef in the driver and instead use
+	 'if (IS_ENABLED(CONFIG_GPIOLIB))' to handle optional gpio
+	 providers in the code. "

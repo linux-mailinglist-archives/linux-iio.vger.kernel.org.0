@@ -2,166 +2,254 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E2C7B6109
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 08:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D927B62B8
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 09:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbjJCGxP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 02:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51034 "EHLO
+        id S230330AbjJCHqh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 03:46:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjJCGxO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 02:53:14 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF5EAC;
-        Mon,  2 Oct 2023 23:53:11 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 116305C02F9;
-        Tue,  3 Oct 2023 02:53:08 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
-  by compute4.internal (MEProxy); Tue, 03 Oct 2023 02:53:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
-        :content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1696315988; x=1696402388; bh=DQ
-        9fnka5ezD2MosoIlfkv7KgG/vCuTqTaE7p+egKu68=; b=eN2KXjNHIYJbQgWGle
-        rlLQ7w3kLGnQyjyLU/OByRNITYptT+q/ecOtOeoMHSt/IYM6Ml7nMyXXfnQwKzB2
-        4OWQDI+0xrY455eK8tEEWntyOgHDGhhQZEtV7e9IZOHi26Wwrfr05KDiGkX6bBu0
-        MnI6jh1024OucjBiqF0xJcmYsN4W5mTkJHenVaE0A2L3JdEjPtvJg4H9bR1S6V81
-        2Q5XWxZDityvc54+joXw66sSHq0MgJdN05hLBpsJ2SqJuTf/kOJq1pD4aLZdDGOo
-        zvc32xd9qIkt2KB7J2m0Cwb4B9lF1Xivfk6V3ymPqQ/5+BMVoZc5aZvKFwOJFsIj
-        rNyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1696315988; x=1696402388; bh=DQ9fnka5ezD2M
-        osoIlfkv7KgG/vCuTqTaE7p+egKu68=; b=Xfm66XNf66JzisjrpSREKJpPTffZ9
-        0BJDDCF7HeFd0JQgVt0EksolRz9oaXTaCOli1Au2qC9Vaz763j4lfXBqZKTOv0UM
-        dyxj0xjGLzBUd1+pd1FipUIG+8T03CiFaO4xJX6FO1E6sgjVcX/5tB0Jgi7v4qOP
-        Z50ZeTdXX7dzvuiUHH9tQpfXmcCbwc+LHblD/OQ9C5QmkZB2Q+vfaEE1ifD+0N73
-        v91cHlQ0MnzgCdd1Skg0fXop7cm0LwiT6/eEaZZlmWtpzeNrxnGYwXNS/uMtWxIW
-        0ImfeZ+zniypvEZOJLj5TRb2+TRiJkIRevte9EIlkm3SSOMYxX9XTSrYg==
-X-ME-Sender: <xms:UrobZSPogWQZp4XvkklxNgta43YSMuij42Y557ew1W8leDREAUrYnw>
-    <xme:UrobZQ9lGSTNF5QWcuIw6pANwVl-qlmAtX5xU1O1Vf9Nc_uO4HmaVvUfUKBQijFvi
-    0_KEzgbulZuY6Ojeg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfeehgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehnughr
-    vgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucggtffrrg
-    htthgvrhhnpeehhfefkefgkeduveehffehieehudejfeejveejfedugfefuedtuedvhefh
-    veeuffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grnhgurhgvfiesrghjrdhiugdrrghu
-X-ME-Proxy: <xmx:UrobZZTZz1Kri7_9m83dhS-pbB2hBr_MkiYMhCK821-K0C0aPwvumg>
-    <xmx:UrobZSsITjFDf-6sfVp1OVXge8Av-fQnSE2PZ1t83qU5n6NfldJ-BA>
-    <xmx:UrobZafgdyfD6QHIxz3qiAAssdgxDSHA3HOxLNBJHPufQqHD4YFZwA>
-    <xmx:VLobZQtRcrrazDs0uBaxrEJ0pEMJBuIfNb8Nr9pm-w-8Nggp6Cm5AQ>
-Feedback-ID: idfb84289:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id AFA081700089; Tue,  3 Oct 2023 02:53:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-958-g1b1b911df8-fm-20230927.002-g1b1b911d
+        with ESMTP id S229835AbjJCHqg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 03:46:36 -0400
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7289F90;
+        Tue,  3 Oct 2023 00:46:32 -0700 (PDT)
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39353va3021962;
+        Tue, 3 Oct 2023 09:45:56 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:subject:to:cc:references:from
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=x3zvFTP/cLetsfZPkK+gIr/Q1D7D0ztqpwYaPZYqEI8=; b=uO
+        k9aJK7R1840fb0b3pBnvZI/Q+sO/3kzxpReIyl8a2WtjvEs45JT6XTDrlHMrsGPn
+        Io4kdlT3zs4GfXE3bNHXaM0035fkGjMAqp2uMreLcEPQiYepILPOa+cc7NCAPguM
+        XG/+aAp+4tKUhiooqE+RCJHYp2y7MjmaJGdf1IMZoAa94a14CtlOeJUBnEw8dsgw
+        u6oWujro9NzuU9qeHL/ppQLDYgxAEDr6y873+ikT+KJq7Fg4e8TZp7c+qkB+QmPp
+        mFyCfe1vyeHFUsZQmgUNkpuoVew6YGy6z2Wppfm2ptuSn7pxaIHLo+x4mVReKTrQ
+        5oexx004P/dDF0l4T6kQ==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3texmj0c3h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Oct 2023 09:45:56 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 787F8100057;
+        Tue,  3 Oct 2023 09:45:54 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1D361229A9D;
+        Tue,  3 Oct 2023 09:45:54 +0200 (CEST)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 3 Oct
+ 2023 09:45:52 +0200
+Message-ID: <1a48fce4-0faf-5e26-c57a-064307573c69@foss.st.com>
+Date:   Tue, 3 Oct 2023 09:45:36 +0200
 MIME-Version: 1.0
-Message-Id: <4bee3205-212b-4032-a105-9b8f1fb1fa22@app.fastmail.com>
-In-Reply-To: <SG2PR06MB336555C2C52E24FCCDE72C748BC5A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-References: <20230925081845.4147424-1-billy_tsai@aspeedtech.com>
- <a310aba3-0f04-4549-a776-36ff8cef736e@app.fastmail.com>
- <SG2PR06MB336555C2C52E24FCCDE72C748BC5A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-Date:   Tue, 03 Oct 2023 17:22:45 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Billy Tsai" <billy_tsai@aspeedtech.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Joel Stanley" <joel@jms.id.au>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v5 01/11] dt-bindings: document generic access controller
+To:     Rob Herring <robh@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
+        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
+        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
+        <arnd@kernel.org>, <richardcochran@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Potin Lai" <Potin.Lai@quantatw.com>,
-        "patrickw3@meta.com" <patrickw3@meta.com>
-Subject: Re: [PATCH v1] iio: adc: aspeed: Support deglitch feature.
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-p.hy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+References: <20230929142852.578394-1-gatien.chevallier@foss.st.com>
+ <20230929142852.578394-2-gatien.chevallier@foss.st.com>
+ <20231002173019.GA2037244-robh@kernel.org>
+Content-Language: en-US
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <20231002173019.GA2037244-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.32]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-03_04,2023-10-02_01,2023-05-22_02
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Billy,
+Hi Rob,
 
-On Mon, 2 Oct 2023, at 19:20, Billy Tsai wrote:
-> On Mon, 25 Sep 2023, at 17:48, Billy Tsai wrote:
->> > Create event sysfs for applying the deglitch condition. When
->> > in_voltageY_thresh_rising_en/in_voltageY_thresh_falling_en is set to true,
->> > the driver will use the in_voltageY_thresh_rising_value and
->> > in_voltageY_thresh_falling_value as threshold values. If the ADC value
->> > falls outside this threshold, the driver will wait for the ADC sampling
->> > period and perform an additional read once to achieve the deglitching
->> > purpose.
->> >
->> > Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
->> > ---
->> >  drivers/iio/adc/aspeed_adc.c | 193 ++++++++++++++++++++++++++++++++++-
->> >  1 file changed, 189 insertions(+), 4 deletions(-)
->> >
->> > diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
->> > index 998e8bcc06e1..9e746c81d916 100644
->> > --- a/drivers/iio/adc/aspeed_adc.c
->> > +++ b/drivers/iio/adc/aspeed_adc.c
->> > @@ -95,6 +95,7 @@ struct aspeed_adc_model_data {
->> >       bool wait_init_sequence;
->> >       bool need_prescaler;
->> >       bool bat_sense_sup;
->> > +     bool require_extra_eoc;
->
->> What is "eoc"? Can we use a better name or add an explanatory comment?
->
-> Hi Andrew,
-> This is the signal name for our ADC controller, it means "End Of 
-> Conversion".
-> The appearance of this signal period indicates that the ADC value is 
-> valid and being updated to the register.
+On 10/2/23 19:30, Rob Herring wrote:
+> On Fri, Sep 29, 2023 at 04:28:42PM +0200, Gatien Chevallier wrote:
+>> From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
+>>
+>> Introducing of the generic access controller bindings for the
+>> access controller provider and consumer devices. Those bindings are
+>> intended to allow a better handling of accesses to resources in a
+>> hardware architecture supporting several compartments.
+>>
+>> This patch is based on [1]. It is integrated in this patchset as it
+>> provides a use-case for it.
+>>
+>> Diffs with [1]:
+>> 	- Rename feature-domain* properties to access-control* to narrow
+>> 	  down the scope of the binding
+>> 	- YAML errors and typos corrected.
+>> 	- Example updated
+>> 	- Some rephrasing in the binding description
+>>
+>> [1]: https://lore.kernel.org/lkml/0c0a82bb-18ae-d057-562b
+>>
+>> Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>>
+>> ---
+>> Changes in V5:
+>> 	- Diffs with [1]
+>> 	- Discarded the [IGNORE] tag as the patch is now part of the
+>> 	  patchset
+>>
+>>   .../access-controllers/access-controller.yaml | 90 +++++++++++++++++++
+>>   1 file changed, 90 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/access-controllers/access-controller.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/access-controllers/access-controller.yaml b/Documentation/devicetree/bindings/access-controllers/access-controller.yaml
+>> new file mode 100644
+>> index 000000000000..9d305fccc333
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/access-controllers/access-controller.yaml
+>> @@ -0,0 +1,90 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/access-controllers/access-controller.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Generic Domain Access Controller
+>> +
+>> +maintainers:
+>> +  - Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+>> +
+>> +description: |+
+>> +  Common access controllers properties
+>> +
+>> +  Access controllers are in charge of stating which of the hardware blocks under
+>> +  their responsibility (their domain) can be accesssed by which compartment. A
+>> +  compartment can be a cluster of CPUs (or coprocessors), a range of addresses
+>> +  or a group of hardware blocks. An access controller's domain is the set of
+>> +  resources covered by the access controller.
+>> +
+>> +  This device tree bindings can be used to bind devices to their access
+>> +  controller provided by access-controller property. In this case, the device is
+>> +  a consumer and the access controller is the provider.
+>> +
+>> +  An access controller can be represented by any node in the device tree and
+>> +  can provide one or more configuration parameters, needed to control parameters
+>> +  of the consumer device. A consumer node can refer to the provider by phandle
+>> +  and a set of phandle arguments, specified by '#access-controller-cells'
+>> +  property in the access controller node.
+>> +
+>> +  Access controllers are typically used to set/read the permissions of a
+>> +  hardware block and grant access to it. Any of which depends on the access
+>> +  controller. The capabilities of each access controller are defined by the
+>> +  binding of the access controller device.
+>> +
+>> +  Each node can be a consumer for the several access controllers.
+>> +
+>> +# always select the core schema
+>> +select: true
+>> +
+>> +properties:
+>> +  "#access-controller-cells":
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+> 
+> Drop. "#.*-cells" already defines the type.
+> 
 
-Okay, searching for "conversion" in the datasheet didn't turn up anything like this. It seems I wasn't off-track with asking. If you go forward with the patch in some manner, can you add a comment to the code documenting the meaning of 'eoc'?
+Ok, I will drop it for V6
 
->
->> >       /* Register ADC clock prescaler with source specified by device tree.
->> > */
->> >       spin_lock_init(&data->clk_lock);
->> >       snprintf(clk_parent_name, ARRAY_SIZE(clk_parent_name), "%s",
->> > @@ -632,7 +806,14 @@ static int aspeed_adc_probe(struct platform_device
->> > *pdev)
->> >       adc_engine_control_reg_val |= ASPEED_ADC_CTRL_CHANNEL;
->> >       writel(adc_engine_control_reg_val,
->> >              data->base + ASPEED_REG_ENGINE_CONTROL);
->> > -
->> > +     adc_engine_control_reg_val =
->> > +             FIELD_GET(ASPEED_ADC_CTRL_CHANNEL,
->> > +                       readl(data->base + ASPEED_REG_ENGINE_CONTROL));
->> > +     data->required_eoc_num = hweight_long(adc_engine_control_reg_val);
->> > +     if (data->model_data->require_extra_eoc &&
->> > +         (adc_engine_control_reg_val &
->> > +          BIT(data->model_data->num_channels - 1)))
->> > +             data->required_eoc_num += 12;
->
->> Why 12? Why add a value to the number of engines enabled? Have I misunderstood?
->
-> This behavior is specified by the hardware. In our ADC, it requires 12 
-> dummy sampling
-> periods to switch the sampling channel from CH7 to CH0. Hence, this 
-> condition checks
-> the enable status of channel 7 to determine the necessary delay period 
-> for obtaining the
-> updated ADC values for each channel.
+>> +    description:
+>> +      Number of cells in a access-controller specifier;
+>> +      Can be any value as specified by device tree binding documentation
+>> +      of a particular provider.
+>> +
+>> +  access-control-provider:
+>> +    description:
+>> +      Indicates that the node is an access controller.
+> 
+> Drop. The presence of "#access-controller-cells" is enough to do that.
+> 
 
-Okay, I feel using a magic value '12' with what you wrote above as an explanation is asking a bit much of the reader. Again, if you go forward with this patch in some fashion, can you document the meaning of 12 in a comment (and possibly use a macro to name it)?
+Ok, I wasn't sure. I'll will drop it for V6
 
-Cheers,
+>> +
+>> +  access-controller-names:
+>> +    $ref: /schemas/types.yaml#/definitions/string-array
+>> +    description:
+>> +      A list of access-controller names, sorted in the same order as
+>> +      access-controller entries. Consumer drivers will use
+>> +      access-controller-names to match with existing access-controller entries.
+>> +
+>> +  access-controller:
+> 
+> For consistency with other provider bindings: access-controllers
+> 
 
-Andrew
+Ack
+
+>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+>> +    description:
+>> +      A list of access controller specifiers, as defined by the
+>> +      bindings of the access-controller provider.
+>> +
+>> +additionalProperties: true
+>> +
+>> +examples:
+>> +  - |
+>> +    uart_controller: access-controller@50000 {
+>> +        reg = <0x50000 0x10>;
+>> +        access-control-provider;
+>> +        #access-controller-cells = <2>;
+>> +    };
+>> +
+>> +    bus_controller: bus@60000 {
+>> +        reg = <0x60000 0x10000>;
+>> +        #address-cells = <1>;
+>> +        #size-cells = <1>;
+>> +        ranges;
+>> +        access-control-provider;
+>> +        #access-controller-cells = <3>;
+>> +
+>> +        uart4: serial@60100 {
+>> +            reg = <0x60100 0x400>;
+>> +            access-controller = <&uart_controller 1 2>,
+>> +                                <&bus_controller 1 3 5>;
+>> +            access-controller-names = "controller", "bus-controller";
+> 
+> Not great names. It should indicate what access is being controlled
+> locally. Perhaps "reg" for register access, "dma" or "bus" for bus
+> master access. (Not sure what your uart_controller is controlling access
+> to.)
+> 
+> Rob
+
+Yes, I agree it's poor naming. I'll come up with something more
+adequate. Thank you for the input.
+
+Best regards,
+Gatien

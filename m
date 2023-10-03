@@ -2,106 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 243297B7257
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 22:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8705D7B7296
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 22:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231915AbjJCUJP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 16:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
+        id S240116AbjJCUfv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 16:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232069AbjJCUJO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 16:09:14 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71610AB;
-        Tue,  3 Oct 2023 13:09:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696363751; x=1727899751;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=m1jzLPKVwohtVS0OdopZyn0iGeijh4uOxRMQpSXsukI=;
-  b=OL4v7ZHnqM2jcCNwXqroGe921w6x+WdJTD4WvPtfY8ZrXdyflfoXFQBQ
-   8HNkE4SMZx2EAMQzIoHYsuYVPeK26H5Pjaw7I/VTfSJXDpP4yIavEkHaF
-   eKcWzQ54Exo+VlSMWD+rn/z9Cibc74X0t1M7LtlXjs8+MJtpAeqfw3xQN
-   zpDkkQK3W2MRZhfGTfWky+GJLf1qNL9H7ck2bFM2u/MViC5a0glYlBcUN
-   a2YRxm9UY+sM0uudWQWQ2rGJvpYoudjRaVerxoB487lFk+9213WFfYLhn
-   Oy2p7/v6StF0SOOcRR8cRtP5KrXGoeO1IoK/jFghupLe4CmQrQ3yIdWin
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="386840389"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="386840389"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 13:09:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="841494545"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="841494545"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 03 Oct 2023 13:09:07 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qnlhY-0008t2-0L;
-        Tue, 03 Oct 2023 20:09:04 +0000
-Date:   Wed, 4 Oct 2023 04:08:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     oe-kbuild-all@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 24/27] staging: iio: resolver: ad2s1210: convert DOS
- mismatch threshold to event attr
-Message-ID: <202310040309.rX4s31l7-lkp@intel.com>
-References: <20230929-ad2s1210-mainline-v3-24-fa4364281745@baylibre.com>
+        with ESMTP id S231582AbjJCUfu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 16:35:50 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBF6AB;
+        Tue,  3 Oct 2023 13:35:47 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-534659061afso2292452a12.3;
+        Tue, 03 Oct 2023 13:35:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696365345; x=1696970145; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WqdB+JUHcFiGktTAMBzkuM441kM6m0DdlaLG8beYiPI=;
+        b=g9ctOq66oJCRGqrTObc/vmDlcYLgxodnOlStf+YDsazSVp8PGcQ7wNzCOO4PzEUQ1F
+         GFFPlosdJsEv4WSt1UMzARs0LJaFbiZf8KCgspP+Bcctxsv2RVnTAjg0dDJ3UMjxALfI
+         0eFTbvrYsLc9ZbnX3kl6D1Y4j3iiqs8Zsw4Urte6991nXiENzfRdm2o2HdYfhX/7VGE6
+         s4kzc64WLY1l8UpBRfVFJh70NNGaiNF1Fb9lq/d339nd+Hi2NxS5IOq2xyEnc7IYCjmI
+         2DLRiLZQKXvE6B4ca0WfClrgH/onRcpyBv/5p4MPBCJz6S+6rUseMYkVoKzl48ScmfmE
+         82Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696365345; x=1696970145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WqdB+JUHcFiGktTAMBzkuM441kM6m0DdlaLG8beYiPI=;
+        b=NmWI70cLVzjtPY7LLGMPxxSJZ3BsTvO8kxXSp6Sp063SW7ygbdpq/RR9leLrxmTVvL
+         sVPi2QNWLRD5H1Z9er7HNkDZhLEeXhr7il49Gv++2YT0x/ezXy2YOPlDEt1LT+h7bi8b
+         vxlB7CqRtTsNjPZ5PP5/ugEslo9INP8mAUm2hEdim/Ay5cHmQX4bD7cBxGzjEam+/TAf
+         xASWPKat/g6yteBqHJBKkWItSNd6T9hcZLE5Gql0b/FoyvTxMskFu0Ej6N9Kyv+8N+6K
+         18tUAbTky9HOfciI6q2+CeF57VzoChjucwF6SwvDG6wyGzljgCV+vE1eXwoXglvPaDtX
+         uhBw==
+X-Gm-Message-State: AOJu0YzFYZzYFLNEqF+4fsPrdoMsyUfqWVYmIxfp/lnSAvuUnlOnlr4m
+        xGpALfbHpFq6u+/0jVUT2pbKTEdXtB5ZOoejo9sndsnKwM8u0g==
+X-Google-Smtp-Source: AGHT+IFtz3sRHIiHBp0ES9GvQG+rFCC7YNSRi0k8np6ylSpW+5DQTBzH7jeF5qdF+RpJKkYX0W/losyCF7NajUlo4Fw=
+X-Received: by 2002:aa7:d503:0:b0:538:ae5:6138 with SMTP id
+ y3-20020aa7d503000000b005380ae56138mr259035edq.34.1696365345398; Tue, 03 Oct
+ 2023 13:35:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230929-ad2s1210-mainline-v3-24-fa4364281745@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+ <20230918080314.11959-3-jagathjog1996@gmail.com> <20230924153055.0b3486f9@jic23-huawei>
+ <CAM+2EuJBxj7P-ymu84u308g8LCemSEsYi_TSHYtaK9PyrhqrfA@mail.gmail.com>
+ <5eb148b4-25eb-460d-9ec8-0a40bec1dc6f@gmail.com> <CAM+2EuJUGu4QUCdZ7d28RaLNipJRVuASP9wSzF14k=oBoC4e_Q@mail.gmail.com>
+ <833fc809-b1d4-471e-afa3-68ded78b20f0@gmail.com>
+In-Reply-To: <833fc809-b1d4-471e-afa3-68ded78b20f0@gmail.com>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Wed, 4 Oct 2023 02:05:33 +0530
+Message-ID: <CAM+2EuKJwW8i9-1Y4v7ccaT3HUHJ9E79j7cPWqzbig_tcFWxSA@mail.gmail.com>
+Subject: Re: [RFC 2/2] iio: imu: Add driver for BMI323 IMU
+To:     Denis Benato <benato.denis96@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        andriy.shevchenko@linux.intel.com, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+Hi Denis, Jonathan
 
-kernel test robot noticed the following build warnings:
+On Sun, Oct 1, 2023 at 7:23=E2=80=AFPM Denis Benato <benato.denis96@gmail.c=
+om> wrote:
+>
+> Hello Jagath,
+>
+> On 9/29/23 09:59, Jagath Jog J wrote:
+> > Hi Denis,
+> >
+> > On Thu, Sep 28, 2023 at 2:55=E2=80=AFAM Denis Benato <benato.denis96@gm=
+ail.com> wrote:
+> >>
+> >> Hello,
+> >>
+> >> Some devices (as my asus rog ally) have an ACPI node describing a BOSC=
+0200 sensor. The IC being used in those devices is a  bmi323 but as a resul=
+t of how the ACPI table reports that device, it is detected by the existing=
+ kernel module and we have no way of differentiating until after the chip I=
+D probe.
+> >>
+> >> The module loaded is bmc150-accel-i2c.c which currently doesn't suppor=
+t the bmi323 and the loading of the module just fails at chip check.
+> >
+> > bmc150 driver supports multiple accelerometer sensors such as
+> > bma222, bma280, bmi055 and all of them are having similar
+> > register map, but the bmi323 register map is completely different
+> > from bmc150.
+>
+> I apologize for the confusion.
+>
+> What I was trying to say is that to have the bmi323 working in those afor=
+ementioned devices bmc150 will need to be modified: that is the probe funct=
+ion that ends up being executed, fact that cannot be changed because it dep=
+ends on the ACPI implementation shipped on those devices.
+>
+> Therefore I was asking about the best way of handing control to the new d=
+river and how that should be organized: in my implementation the new bmi323=
+ code was written inside the bmc150-accel-core.c and only shares sleep/susp=
+end, probe and removal functions in addition to checking for the new chip p=
+resence before checking for any bmc150 chip as that issues an i2c write, wh=
+ile the check for the bmi323 only requires an i2c read.
 
-[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
+Means you want to handle control to the standalone driver from bmc150.
+Sorry, I didn't find any examples.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/dt-bindings-iio-resolver-add-devicetree-bindings-for-ad2s1210/20230930-014031
-base:   5e99f692d4e32e3250ab18d511894ca797407aec
-patch link:    https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-24-fa4364281745%40baylibre.com
-patch subject: [PATCH v3 24/27] staging: iio: resolver: ad2s1210: convert DOS mismatch threshold to event attr
-config: i386-randconfig-062-20231003 (https://download.01.org/0day-ci/archive/20231004/202310040309.rX4s31l7-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231004/202310040309.rX4s31l7-lkp@intel.com/reproduce)
+Important thing to handle is the bmi323 private structure and call required
+exported functions from another driver.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310040309.rX4s31l7-lkp@intel.com/
+Jonathan: Can you suggest any example wrapper drivers which handle that way=
+?
 
-sparse warnings: (new ones prefixed by >>)
-   drivers/staging/iio/resolver/ad2s1210.c:901:1: sparse: sparse: symbol 'iio_const_attr_in_phase0_mag_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:906:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_thresh_falling_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:907:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_thresh_rising_value_available' was not declared. Should it be static?
->> drivers/staging/iio/resolver/ad2s1210.c:908:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_mag_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:909:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:910:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_hysteresis_available' was not declared. Should it be static?
+>
+> We also have done duplicate work as I have written a driver for that chip=
+ myself, but it's not as good as yours because my hardware didn't come with=
+ the IRQ pin connected and so I couldn't develop triggers and I only got th=
+e i2c interface working.
+>
+> >
+> >
+> >>
+> >> I have solved the problem by expanding the current bmc150-accel-i2c.c =
+and bmc150-accel-core.c files to handle that IC in almost every part: gyros=
+cope, accelerometer and temperature sensor.
+> >>
+> >> What is the best way of organizing code to have this module mainlined?=
+ Is it correct leaving files called bmc150-accel-* even if it is managing a=
+nother IC and and not just the accelerometer part anymore?
+> >>
+> >> TIA for your time.
+> >>
+> >> Best regards,
+> >> Denis Benato
+> >
+> > Regards
+> >
+> > Jagath
+>
+> TIA for your time.
+>
+> Best regards,
+> Denis Benato
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards
+Jagath

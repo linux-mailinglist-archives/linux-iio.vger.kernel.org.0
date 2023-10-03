@@ -2,167 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EDBF7B66CD
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 12:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235637B66ED
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 12:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239707AbjJCKxf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 06:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59504 "EHLO
+        id S239722AbjJCK6B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 06:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231572AbjJCKxe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 06:53:34 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90790B8
-        for <linux-iio@vger.kernel.org>; Tue,  3 Oct 2023 03:53:30 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40666aa674fso7416765e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Oct 2023 03:53:30 -0700 (PDT)
+        with ESMTP id S231555AbjJCK57 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 06:57:59 -0400
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D83D7DD;
+        Tue,  3 Oct 2023 03:57:53 -0700 (PDT)
+Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-7a269637b98so24786939f.3;
+        Tue, 03 Oct 2023 03:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696330409; x=1696935209; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y1zEdiBl0ExGGXae3livewx7OK91KyMJUhCwm90pFhU=;
-        b=dAbVnjeTtuGXmH22VTPslFg0+3MgTbf3jbQKWpVP+DHFK3FWL0t8nt7whadL1q6jxy
-         B/RJDH0gr8ojdF0iZ9enlqVsCi4T+yco3zI11rJUsigsg2P9i5sCVisGpdPLxp3fpuZq
-         IlHjgmaqhkDoEj0HBiLjeHwhW3A+Pl8pjw94lZNk8QJx/hn05zjsDzCLRJMac4Y77FYE
-         Ek2qMkkaYSFdCRc+w0zL9Vi26rQsyzDxEHDZPlwLyf+PKW3mGOOgEMBin9Kr8m+k7pC/
-         bLmppTep3yMcYgBJ46Gj91iTuySEhCVyofp6CpUKNoPwTNw3yR0Y4+6I5tXzbHVGjB6L
-         m83g==
+        d=gmail.com; s=20230601; t=1696330673; x=1696935473; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qThTQ2EndUgzuynlyMsCB3sIEKXBzP2bceTtmpfh6iQ=;
+        b=ATa9ZjEq6U2y9yUCTuJ5G9b9vdDkS73kO3fA+7g2pwHxQouLw3BqTe8DuLbjL2WPs0
+         9hrcvSEncSiBqmFTxn6Xz1VQ8vKDD0DLSx1h3q++2qw8t9voImMnrKaiekUwYDa7ORen
+         UeOcBnJr/yqi9Fym7EICwtbJqBfT9MzcABgEngpsD9zslqg2V2qXfyo7L6xmwVWNQItp
+         /WS+VsV7yVXOPvXEqQzKpE6W6UbQYglU6zGk5IqKZncLICF62m8R30GpHKuV62oohw+k
+         DtlubXn3AEX2FSj89jvk4WY5XpuFlh9NuecBcEDggqDo8WpF+OKNpafB+gMO8K5u6Z/B
+         3M+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696330409; x=1696935209;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y1zEdiBl0ExGGXae3livewx7OK91KyMJUhCwm90pFhU=;
-        b=lnuI7hiwe8hAh7ypocwTCI2U7zZcEY8hvsVys/CDc5z8HVZMXWLHF+6QsH3/VXEKo9
-         4d+NiBph5n0ZEJJMauJAM6kOf3adxapcsW13Pr3zxkNwkN1lQWc23NkUYl3XP7PJVNGw
-         rX6EGbQY147O3Ilqz86G2Ne9CAimAWSVkWplkHhmlLx5nTb0JdNnz+3wsSTCxvT53d/y
-         VgkV8uF96Y7xFEqC0LurgConLRqPdYRHqO7Vo31x9G09l+1ZGaX1tFhlXEk5LvO1pV9Q
-         AHXqjc147W0c+cJsxocXYMYhy4CIvuKwxah6CYMHuP7DmTHlsPhvyP97vFhQnv7devf3
-         fjUw==
-X-Gm-Message-State: AOJu0YzIghnsD7WRNRQEaCBsw1JTo3rRspnHZw78bd18OAMdv3Lnunwt
-        GJPJyrsNJ1h9VtD5zUrLr7KW3w==
-X-Google-Smtp-Source: AGHT+IFrlFTbWNC8M7mfAowD4//qf9eH7koPKNnANa5WAno4xaY32Mn62vsE1r4OcW8lmx133LVOGQ==
-X-Received: by 2002:a5d:4951:0:b0:31f:fb02:4dcd with SMTP id r17-20020a5d4951000000b0031ffb024dcdmr12544705wrs.4.1696330408555;
-        Tue, 03 Oct 2023 03:53:28 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id e11-20020a056000194b00b0032320a9b010sm1305878wry.28.2023.10.03.03.53.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 03:53:27 -0700 (PDT)
-Date:   Tue, 3 Oct 2023 13:53:25 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     oe-kbuild@lists.linux.dev, David Lechner <dlechner@baylibre.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev
-Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
- fault events
-Message-ID: <d54a43ad-0044-465c-92f4-2ffd46ccf983@kadam.mountain>
+        d=1e100.net; s=20230601; t=1696330673; x=1696935473;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qThTQ2EndUgzuynlyMsCB3sIEKXBzP2bceTtmpfh6iQ=;
+        b=oujiQNuc0GKpt61NhrXfyVB6o0Ox5vWLLuIviOEwAnoOAo8B2YEvMFBQjyZINf9jtE
+         wOSQ3bCfMGFaX5Nr/C1947CuRxwVqdB+37Hd3Q9PcnL4Uz6Euz++L3g16YoaWTwPDU91
+         4WuY99OnWJnoSEPqFoHzaFRWHQR0XfW81o2Hg7965burA3qYU8QxoON8RQgmUX9CnEUZ
+         leDh3ZYuEbhWUAatn8F9r4wxNDw6KGdeEw/XHapNlz5RT/1DfU46LKxKWbNrBijWj43b
+         fo82V/8ACA+z4WMJFRsN9yTyAsgihyL08TTWpGd37+mpQAckaiwNHvVG0cISknv7H+fs
+         aPoQ==
+X-Gm-Message-State: AOJu0YzQz0ohupq0HbX7G3Njr3G3oM0ia4C6VmLFHUdBHaZkeRM50WAI
+        eYFU1IOWBLyE72+Xv5qTdnM=
+X-Google-Smtp-Source: AGHT+IGttW4UKMJ5ur0fccwnHqXX3X6oJOU8nZcdsSYnBv+UUPjdTwMwO+7FbE7T/xEg3gJRLc9FhA==
+X-Received: by 2002:a5d:9cd5:0:b0:786:2125:a034 with SMTP id w21-20020a5d9cd5000000b007862125a034mr15217606iow.18.1696330672860;
+        Tue, 03 Oct 2023 03:57:52 -0700 (PDT)
+Received: from [10.76.84.110] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id p18-20020a0566380e9200b00430bb70004dsm280745jas.103.2023.10.03.03.57.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Oct 2023 03:57:52 -0700 (PDT)
+Message-ID: <303d2869-2273-f643-e8ff-e27675f929dc@gmail.com>
+Date:   Tue, 3 Oct 2023 13:57:45 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+Content-Language: en-US
+To:     Andy Shevchenko <andy@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230928125443.615006-1-mitrutzceclan@gmail.com>
+ <20230928125443.615006-2-mitrutzceclan@gmail.com>
+ <20230930150531.083c51d4@jic23-huawei>
+ <c52afe87-eaa0-eb7f-090f-b22aec95e49d@gmail.com>
+ <ZRvwrDcT770sJXkd@smile.fi.intel.com>
+From:   Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
+In-Reply-To: <ZRvwrDcT770sJXkd@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+On 10/3/23 13:45, Andy Shevchenko wrote:
+> Subject:
+> Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+> From:
+> Andy Shevchenko <andy@kernel.org>
+> Date:
+> 10/3/23, 13:45
+> 
+> To:
+> Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
+> CC:
+> Jonathan Cameron <jic23@kernel.org>, linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard Göhrs <l.goehrs@pengutronix.de>, Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+> 
+> 
+> On Tue, Oct 03, 2023 at 01:33:36PM +0300, Ceclan Dumitru-Ioan wrote:
+>> On 9/30/23 17:05, Jonathan Cameron wrote:
+>>> On Thu, 28 Sep 2023 15:54:43 +0300
+>>> Dumitru Ceclan <mitrutzceclan@gmail.com> wrote>> +config AD7173
+>>>> +	tristate "Analog Devices AD7173 driver"
+>>>> +	depends on SPI_MASTER
+>>>> +	select AD_SIGMA_DELTA
+>>>> +	select GPIO_REGMAP
+>>> If you are selecting it, why does it have if guards in the driver.
+>>> I prefer the select here, so drop this if guards.
+>> From what i checked, selecting GPIO_REGMAP does not select GPIOLIB but only REGMAP.
+>>
+>> Also, in the thread from V1 Arnd Bergmann suggested:
+>> 	" I think the best way to handle these is to remove both
+>> 	 the 'select' and the #ifdef in the driver and instead use
+>> 	 'if (IS_ENABLED(CONFIG_GPIOLIB))' to handle optional gpio
+>> 	 providers in the code. "
+> Why not simply to be dependent on GPIOLIB like other drivers do in this folder?
 
-kernel test robot noticed the following build warnings:
+I followed the suggestion given by Arnd. The full argument:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/dt-bindings-iio-resolver-add-devicetree-bindings-for-ad2s1210/20230930-014031
-base:   5e99f692d4e32e3250ab18d511894ca797407aec
-patch link:    https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-26-fa4364281745%40baylibre.com
-patch subject: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement fault events
-config: x86_64-randconfig-161-20231002 (https://download.01.org/0day-ci/archive/20231003/202310031839.tKR53HoP-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20231003/202310031839.tKR53HoP-lkp@intel.com/reproduce)
+"From a Kconfig perspective, any user-visible symbol ideally only uses
+'depends on', while hidden symbols usually use 'select'.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202310031839.tKR53HoP-lkp@intel.com/
+For the GPIOLIB symbol specifically, we have a mix of both, but the
+overall usage is that gpio consumers only use 'depends on',
+while some of the providers use 'select'. This risks causing build
+breakage from a dependency loop when combined with other symbols
+that have the same problem (e.g. I2C), but it tends to work out
+as long as a strong hierarchy is kept. In particular, using 'select'
+from an arch/*/Kconfig platform option is generally harmless as
+long as those don't depend on anything else.
 
-smatch warnings:
-drivers/staging/iio/resolver/ad2s1210.c:436 ad2s1210_single_conversion() error: buffer overflow 'st->rx' 2 <= 2
+The new driver is a gpio provider and at least ad4130 and
+ad5592r uses 'select' here, but then again ad74115 and
+ad74113 use 'depends on' and ads7950 uses neither.
 
-vim +436 drivers/staging/iio/resolver/ad2s1210.c
+I think the best way to handle these is to remove both
+the 'select' and the #ifdef in the driver and instead use
+'if (IS_ENABLED(CONFIG_GPIOLIB))' to handle optional gpio
+providers in the code."
 
-ecf16f4922f691 David Lechner    2023-09-29  391  static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
-29148543c52146 Jonathan Cameron 2011-10-05  392  				      struct iio_chan_spec const *chan,
-e9336a85ceb885 David Lechner    2023-09-29  393  				      int *val)
-817e5c65c511d4 Graf Yang        2010-10-27  394  {
-ecf16f4922f691 David Lechner    2023-09-29  395  	struct ad2s1210_state *st = iio_priv(indio_dev);
-ecf16f4922f691 David Lechner    2023-09-29  396  	s64 timestamp;
-69cc7fbdcdf2e3 David Lechner    2023-09-29  397  	int ret;
-817e5c65c511d4 Graf Yang        2010-10-27  398  
-817e5c65c511d4 Graf Yang        2010-10-27  399  	mutex_lock(&st->lock);
-69cc7fbdcdf2e3 David Lechner    2023-09-29  400  	gpiod_set_value(st->sample_gpio, 1);
-ecf16f4922f691 David Lechner    2023-09-29  401  	timestamp = iio_get_time_ns(indio_dev);
-817e5c65c511d4 Graf Yang        2010-10-27  402  	/* delay (6 * tck + 20) nano seconds */
-817e5c65c511d4 Graf Yang        2010-10-27  403  	udelay(1);
-817e5c65c511d4 Graf Yang        2010-10-27  404  
-29148543c52146 Jonathan Cameron 2011-10-05  405  	switch (chan->type) {
-29148543c52146 Jonathan Cameron 2011-10-05  406  	case IIO_ANGL:
-69cc7fbdcdf2e3 David Lechner    2023-09-29  407  		ret = ad2s1210_set_mode(st, MOD_POS);
-29148543c52146 Jonathan Cameron 2011-10-05  408  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  409  	case IIO_ANGL_VEL:
-69cc7fbdcdf2e3 David Lechner    2023-09-29  410  		ret = ad2s1210_set_mode(st, MOD_VEL);
-29148543c52146 Jonathan Cameron 2011-10-05  411  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  412  	default:
-29148543c52146 Jonathan Cameron 2011-10-05  413  		ret = -EINVAL;
-29148543c52146 Jonathan Cameron 2011-10-05  414  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  415  	}
-29148543c52146 Jonathan Cameron 2011-10-05  416  	if (ret < 0)
-29148543c52146 Jonathan Cameron 2011-10-05  417  		goto error_ret;
-ecf16f4922f691 David Lechner    2023-09-29  418  	ret = spi_read(st->sdev, &st->sample, 3);
-29148543c52146 Jonathan Cameron 2011-10-05  419  	if (ret < 0)
-817e5c65c511d4 Graf Yang        2010-10-27  420  		goto error_ret;
-29148543c52146 Jonathan Cameron 2011-10-05  421  
-29148543c52146 Jonathan Cameron 2011-10-05  422  	switch (chan->type) {
-29148543c52146 Jonathan Cameron 2011-10-05  423  	case IIO_ANGL:
-ecf16f4922f691 David Lechner    2023-09-29  424  		*val = be16_to_cpu(st->sample.raw);
-29148543c52146 Jonathan Cameron 2011-10-05  425  		ret = IIO_VAL_INT;
-29148543c52146 Jonathan Cameron 2011-10-05  426  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  427  	case IIO_ANGL_VEL:
-ecf16f4922f691 David Lechner    2023-09-29  428  		*val = (s16)be16_to_cpu(st->sample.raw);
-29148543c52146 Jonathan Cameron 2011-10-05  429  		ret = IIO_VAL_INT;
-29148543c52146 Jonathan Cameron 2011-10-05  430  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  431  	default:
-5e99f692d4e32e David Lechner    2023-09-21  432  		ret = -EINVAL;
-5e99f692d4e32e David Lechner    2023-09-21  433  		break;
-29148543c52146 Jonathan Cameron 2011-10-05  434  	}
-29148543c52146 Jonathan Cameron 2011-10-05  435  
-ecf16f4922f691 David Lechner    2023-09-29 @436  	ad2s1210_push_events(indio_dev, st->rx[2], timestamp);
-                                                                                          ^^^^^^
-Apparently ->rx only has 2 elements.
-
-ecf16f4922f691 David Lechner    2023-09-29  437  
-817e5c65c511d4 Graf Yang        2010-10-27  438  error_ret:
-69cc7fbdcdf2e3 David Lechner    2023-09-29  439  	gpiod_set_value(st->sample_gpio, 0);
-817e5c65c511d4 Graf Yang        2010-10-27  440  	/* delay (2 * tck + 20) nano seconds */
-817e5c65c511d4 Graf Yang        2010-10-27  441  	udelay(1);
-817e5c65c511d4 Graf Yang        2010-10-27  442  	mutex_unlock(&st->lock);
-29148543c52146 Jonathan Cameron 2011-10-05  443  	return ret;
-817e5c65c511d4 Graf Yang        2010-10-27  444  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+I do not have a lot of experience with this subject.
+As such, if you consider the argument invalid, mention it and i will
+change to 'depends on'.

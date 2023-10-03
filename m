@@ -2,85 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 383A47B6954
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 14:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C22307B6B4F
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 16:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229803AbjJCMrT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 08:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46506 "EHLO
+        id S239048AbjJCOW0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 10:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229689AbjJCMrT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 08:47:19 -0400
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2637891;
-        Tue,  3 Oct 2023 05:47:14 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id CFEBA100007;
-        Tue,  3 Oct 2023 15:47:10 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru CFEBA100007
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1696337230;
-        bh=/WnGfwCh7HXbbHZcZiPkpNdYkHbP4G9AgWQIHB0A3+s=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-        b=UmO/eb65HGSvpvMFWZkoWnvqwcCh3Hvm4r47Lb6Nh47/fA7JSjHhbhA8t1AoGR7fM
-         prWhv66oQDpC7UN2sxmlB2bWVlWVf3t3J1QUUjZNhR+vtsm9VT+eqSJchsOsqVdUAF
-         bWXsjuxKNEMnxHpeW9y/QntlC+sFiGFJzOU9BCK+oJGsKaVmU5GSGPmc6XwzVofv7U
-         qYNv6FGPOjBfEIpPJV8PPJRsvR5/F9lD7yNU270H48HlR/7Kjt86RVVLeGmTS5+hWo
-         L6aqbgHQ0+LkordfcGAtqLX9/PYj7p0unplRElE7UJw6WUmIY61aU0tbXYslsd0pfH
-         838Yf0epIxZ7A==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Tue,  3 Oct 2023 15:47:09 +0300 (MSK)
-Received: from [192.168.1.127] (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Tue, 3 Oct 2023 15:47:08 +0300
-Message-ID: <8ef7ff71-08e1-b0af-483d-e7cf3cc5efea@sberdevices.ru>
-Date:   Tue, 3 Oct 2023 15:47:23 +0300
+        with ESMTP id S239479AbjJCOWZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 10:22:25 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA52AB;
+        Tue,  3 Oct 2023 07:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696342943; x=1727878943;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cjks6CkF+4bewzoomLbEOwdv2hYLwa0cZHBRPyA2qlk=;
+  b=Cn6+tXrhcr4Rh01hVJM3p6mPXtIiFhDRNG1+0xoHVAqEURBIseoVbjVW
+   E1Iljanns4mz/9S0D9NuZ48FeuVkNBb2ctZXqGRySw5Qpt+mjAc2p60wa
+   U1xRv4m0f06uhjn2czfjl7EeQjdCfgU4STg5ty8AcbTuEIMegDRudpRSN
+   Zs6TYUd8DJJqEerz6UN5gU33a4ttb3FzfIHLJhSW1VXzVxcujdNxB/yIV
+   t5Yx53tBg5tfb1IRE2AtMjK5frcN08h6O/iSW4aC9h+qviWMDIiKoDcHT
+   dIGXsmbl8MhTrspumbdA5Nf4wi1JECV+ka7V3B/OZNgEmavEkIz33fzTz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="382794208"
+X-IronPort-AV: E=Sophos;i="6.03,197,1694761200"; 
+   d="scan'208";a="382794208"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 07:22:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="816701888"
+X-IronPort-AV: E=Sophos;i="6.03,197,1694761200"; 
+   d="scan'208";a="816701888"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 03 Oct 2023 07:22:18 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qngHu-0007B6-1v;
+        Tue, 03 Oct 2023 14:22:15 +0000
+Date:   Tue, 3 Oct 2023 22:21:38 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     oe-kbuild-all@lists.linux.dev,
+        David Lechner <david@lechnology.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
+ threshold to event attr
+Message-ID: <202310032242.jYDq0057-lkp@intel.com>
+References: <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2 2/2] iio: adc: meson: improve error logging at probe
- stage
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>, <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
-References: <20230721102413.255726-1-gnstark@sberdevices.ru>
- <20230721102413.255726-3-gnstark@sberdevices.ru>
- <ZLphZzO20QW+t1m/@smile.fi.intel.com> <20230722181559.02c8362c@jic23-huawei>
-From:   George Stark <gnstark@sberdevices.ru>
-In-Reply-To: <20230722181559.02c8362c@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 180317 [Oct 03 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 535 535 da804c0ea8918f802fc60e7a20ba49783d957ba2, {Tracking_smtp_not_equal_from}, {Tracking_arrow_text}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;salutedevices.com:7.1.1;127.0.0.199:7.1.2;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;sberdevices.ru:5.0.1,7.1.1;100.64.160.123:7.1.2, FromAlignment: n, {Tracking_smtp_domain_mismatch}, {Tracking_smtp_domain_2level_mismatch}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/10/03 10:12:00 #22029534
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -89,35 +75,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan
+Hi David,
 
-It seems like you haven't had time for this patch yet. Should I fix it 
-myself or just be more patient?
+kernel test robot noticed the following build warnings:
 
-On 7/22/23 20:15, Jonathan Cameron wrote:
-> On Fri, 21 Jul 2023 13:43:51 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
->> On Fri, Jul 21, 2023 at 01:23:09PM +0300, George Stark wrote:
->>> Add log messages for errors that may occur at probe stage
->>
->> the probe
-> 
-> British English - excellent ! :) (I argue this one far too often in
-> specification committees :)
-> 
-> 
->>
->> stage.
->>
-> 
-> I can tidy this up, but the patch will be a while anyway given the fix
-> needs to work it's way into the upstream for my togreg branch (and I need
-> to have send a pull request for togreg as well).
-> 
-> Jonathan
-> 
+[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/dt-bindings-iio-resolver-add-devicetree-bindings-for-ad2s1210/20230930-014031
+base:   5e99f692d4e32e3250ab18d511894ca797407aec
+patch link:    https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-22-fa4364281745%40baylibre.com
+patch subject: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS threshold to event attr
+config: i386-randconfig-062-20231003 (https://download.01.org/0day-ci/archive/20231003/202310032242.jYDq0057-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231003/202310032242.jYDq0057-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310032242.jYDq0057-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+   drivers/staging/iio/resolver/ad2s1210.c:896:1: sparse: sparse: symbol 'iio_const_attr_in_phase0_mag_value_available' was not declared. Should it be static?
+>> drivers/staging/iio/resolver/ad2s1210.c:901:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_thresh_falling_value_available' was not declared. Should it be static?
+   drivers/staging/iio/resolver/ad2s1210.c:902:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_value_available' was not declared. Should it be static?
+   drivers/staging/iio/resolver/ad2s1210.c:903:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_hysteresis_available' was not declared. Should it be static?
 
 -- 
-Best regards
-George
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

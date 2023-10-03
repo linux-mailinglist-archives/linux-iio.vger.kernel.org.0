@@ -2,100 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B09F7B6315
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 10:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413527B65CE
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Oct 2023 11:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbjJCIEL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 04:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S231968AbjJCJrC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 05:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjJCIEL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 04:04:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E97A1;
-        Tue,  3 Oct 2023 01:04:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696320248; x=1727856248;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3K4aURGVYOaf5OVDO2plBOvkP7ewKrn9eW1RfQj1b6I=;
-  b=L7jj7pgNQ2qO7camTwfPOGoGn1etZr5CB7V1SevmQPQePfG9875L59xI
-   n7b3mwJFL4zi2LsInF3XvnR9a8q9EmEZD+gz0AH89rGHxW5gUbNpZaHkX
-   ZnPgs82+lMSxgKo9vFtNWHMISVBM/CG8asis/feV6FRsBW+XlcbMUa7E9
-   e8hBYIurJ9hc6deUb8a9c5nUY0cJGZDwhILsWfYe06vEjpZV/Et1WCutt
-   T0XXdNDcesqIiupb3aUvbgHh+9LxG5tjoeZxd25gwYm3a8PB21apNyvNV
-   dJAxD11DePmgo1saCkqfYstFmW4/PHx6aWo1lj8HUcHLVCoKsrUK6ZBSX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="1408400"
-X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
-   d="scan'208";a="1408400"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 01:04:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="866781970"
-X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
-   d="scan'208";a="866781970"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 03 Oct 2023 01:04:03 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qnaNt-0006uN-12;
-        Tue, 03 Oct 2023 08:04:01 +0000
-Date:   Tue, 3 Oct 2023 16:03:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     oe-kbuild-all@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 19/27] staging: iio: resolver: ad2s1210: add phase
- lock range support
-Message-ID: <202310031533.yGtxQ3t0-lkp@intel.com>
-References: <20230929-ad2s1210-mainline-v3-19-fa4364281745@baylibre.com>
+        with ESMTP id S231734AbjJCJrC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 05:47:02 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6438FAB;
+        Tue,  3 Oct 2023 02:46:55 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50433d8385cso878664e87.0;
+        Tue, 03 Oct 2023 02:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696326413; x=1696931213; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Pjcnc813AQNriCrzkI748osWJLP9CPteXDrIUaw4UpI=;
+        b=Q9rf7tygJX92aFz4FO7hklhFg0b0v6p13iEY+Zy4x1p/cZUb6GMe7OUZZaPxF8JFoy
+         m4IKn8fEjcXPbCBd6zu/ZOs+5hmDa+nsnXX7VKMLVaC/R1NslILAxVlxtMf6Hu3lMuLW
+         H3XwXpx1KVQpo1qGVcCYA6ja6aw6rd4mMdWx0g5bF7YZ4nWbtpxkpChWIkGrcq2ioQbY
+         BcEK9IWqcreJCSP+eOK2BMcamVNKNYf7djiLdP3/APEaSexUmtMCJybehXG67FOdLEnq
+         3HId3JL3ix2Yz572KeQPyfBmce7n97j4WzLyZBRuj3m9IGHRkLmg7R399jnwmIQAX8GQ
+         zkZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696326413; x=1696931213;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pjcnc813AQNriCrzkI748osWJLP9CPteXDrIUaw4UpI=;
+        b=DjWi1bOV85LCge0+SYQa62uAavVAfBmq6xpEr0uQtEbrl6O3MSTrF/BFNw1Y4xeLR8
+         jnhUZTubM3DbB9GNM90LE0EMc+Wv6IwnTTh1TZTsya74FIiYZ6ydRroWGD0zljIf+ehg
+         qwY0qcurZVVRJWd8lufIyaSZL3j9QJazg+Rb+2G+7248mvP4NBs0sBZAHli1pUX/owOL
+         /iGMSYx3TR25O6ykLfD5CbdwSp/ZYcVdKOHkL8l0XcXhjnvRuFtH9nctDVqlckrPqnOn
+         Z2m3g4RSmRgcU+vwY2VtznMUYog05Yf8rLUNHt1zzLCcU7d1J4BNkSDbQugJrGJ1O6gU
+         YIqw==
+X-Gm-Message-State: AOJu0YzIQyePgkdJEvl3wjyMsbzHU2p0OwP2LcDr8N0VzSwNS7FWPRCU
+        SRA5ah88juL7bV+zsxvB+eCzo0TLubc=
+X-Google-Smtp-Source: AGHT+IFmixYJy0/vl5++bZej9bmelyUH6l5bptdqRMseLCH6t6Z/KZJOPQQILa9NWs1cuYRByRotLQ==
+X-Received: by 2002:ac2:46ee:0:b0:502:bdbd:8442 with SMTP id q14-20020ac246ee000000b00502bdbd8442mr12369581lfo.50.1696326413383;
+        Tue, 03 Oct 2023 02:46:53 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id w20-20020ac254b4000000b00505656b98adsm129884lfk.245.2023.10.03.02.46.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Oct 2023 02:46:52 -0700 (PDT)
+Message-ID: <e1aca4f0-d705-ba13-c391-ffe251803ef3@gmail.com>
+Date:   Tue, 3 Oct 2023 12:46:51 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230929-ad2s1210-mainline-v3-19-fa4364281745@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5] tools: iio: iio_generic_buffer ensure alignment
+Content-Language: en-US, en-GB
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZRq9lm/C7g9m9zen@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <ZRq9lm/C7g9m9zen@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+On 10/2/23 15:54, Matti Vaittinen wrote:
+> The iio_generic_buffer can return garbage values when the total size of
+> scan data is not a multiple of the largest element in the scan. This can be
+> demonstrated by reading a scan, consisting, for example of one 4-byte and
+> one 2-byte element, where the 4-byte element is first in the buffer.
+> 
+> The IIO generic buffer code does not take into account the last two
+> padding bytes that are needed to ensure that the 4-byte data for next
+> scan is correctly aligned.
+> 
+> Add the padding bytes required to align the next sample with the scan size.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Fixes: e58537ccce73 ("staging: iio: update example application.")
+> 
+> ---
+> Revision history
+> v4 => v5:
+>   - drop unnecessary comment.
+>   - drop all other patches as those were already applied.
+>   - add Fixes-tag.
+> v3 => v4:
+>   - drop extra print and TODO coment
+>   - add comment clarifying alignment sizes
+> ---
+>   tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+> index 44bbf80f0cfd..c1c037ee0071 100644
+> --- a/tools/iio/iio_generic_buffer.c
+> +++ b/tools/iio/iio_generic_buffer.c
+> @@ -54,9 +54,12 @@ enum autochan {
+>   static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+>   {
+>   	unsigned int bytes = 0;
+> -	int i = 0;
+> +	int i = 0, max = 0;
+> +	unsigned int misalignment;
+>   
+>   	while (i < num_channels) {
+> +		if (channels[i].bytes > max)
+> +			max = channels[i].bytes;
+>   		if (bytes % channels[i].bytes == 0)
+>   			channels[i].location = bytes;
+>   		else
+> @@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
+>   		bytes = channels[i].location + channels[i].bytes;
+>   		i++;
+>   	}
+> +	/*
+> +	 * We wan't the data in next sample to also be properly aligned so
 
-kernel test robot noticed the following build warnings:
+I just realized I didn't fix the typo mentioned by Andy. I can re-spin 
+this with wan't => want. Sorry!
 
-[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/dt-bindings-iio-resolver-add-devicetree-bindings-for-ad2s1210/20230930-014031
-base:   5e99f692d4e32e3250ab18d511894ca797407aec
-patch link:    https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-19-fa4364281745%40baylibre.com
-patch subject: [PATCH v3 19/27] staging: iio: resolver: ad2s1210: add phase lock range support
-config: i386-randconfig-062-20231003 (https://download.01.org/0day-ci/archive/20231003/202310031533.yGtxQ3t0-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231003/202310031533.yGtxQ3t0-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310031533.yGtxQ3t0-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/staging/iio/resolver/ad2s1210.c:667:1: sparse: sparse: symbol 'iio_const_attr_in_phase0_mag_value_available' was not declared. Should it be static?
+> +	 * we'll add padding at the end if needed. Adding padding only
+> +	 * works for channel data which size is 2^n bytes.
+> +	 */
+> +	misalignment = bytes % max;
+> +	if (misalignment)
+> +		bytes += max - misalignment;
+>   
+>   	return bytes;
+>   }
+> 
+> base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

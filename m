@@ -2,63 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1233A7B96AE
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 23:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1EB7B971D
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 00:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244144AbjJDVu6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Oct 2023 17:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
+        id S231196AbjJDWDn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Oct 2023 18:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244099AbjJDVuz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 17:50:55 -0400
-Received: from qs51p00im-qukt01071902.me.com (qs51p00im-qukt01071902.me.com [17.57.155.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BBDC1
-        for <linux-iio@vger.kernel.org>; Wed,  4 Oct 2023 14:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-        s=1a1hai; t=1696456247;
-        bh=Hbw27RqrnkmZsouexnsyZjMFcBnI4MG8WYB6dVJNrA8=;
-        h=Content-Type:From:Mime-Version:Subject:Message-Id:Date:To;
-        b=N159VIWYZjQuGOxalUHhdvmC/4Fq2XfO/w2iMhuTH4oq9FT/NrKVFxJ+tzcifYj0h
-         1sremY7hQdihiGRHvRRprr/nxOYGUm6ksn3pg64jess5QEXPgU1socEZnfGXM4br63
-         ycnwODs8QDjnhyn3x/TzCcuzTaCB9p7OocD30Skz/6WiM55YxyQlM9ZxTlTk93b03q
-         EIipNzik2hgvH7vZB9ee1PuacMq8V1vcgJUraYA0+UsbCK4YosxV89wnUgTzZw7n4+
-         whc1yLFBg69MYsg1UqPWXwKg7wkk3j9YOXm3WM1Oi/xMn/tsdwKAo/ZsKWzOyqwl7l
-         L7kSy86A0vjxw==
-Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
-        by qs51p00im-qukt01071902.me.com (Postfix) with ESMTPSA id E6E475EC02A0;
-        Wed,  4 Oct 2023 21:50:36 +0000 (UTC)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Yeah Yeah <yeah32857@icloud.com>
-Mime-Version: 1.0 (1.0)
-Subject: RE: [PATCH] iio: buffer: Fix demux update
-Message-Id: <2CF81190-6E2E-4407-B49B-630140F08364@icloud.com>
-Date:   Wed, 4 Oct 2023 17:50:31 -0400
-Cc:     Jonathan.Cameron@huawei.com, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, pmeerw@pmeerw.net
-To:     nuno.sa@analog.com
-X-Mailer: iPhone Mail (18F72)
-X-Proofpoint-GUID: Tb6RU7w7dP-yGMmSnmNSkGXWdsSCauN4
-X-Proofpoint-ORIG-GUID: Tb6RU7w7dP-yGMmSnmNSkGXWdsSCauN4
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.572,17.0.605.474.0000000_definitions?=
- =?UTF-8?Q?=3D2022-01-11=5F01:2022-01-11=5F01,2020-02-14=5F11,2020-01-23?=
- =?UTF-8?Q?=5F02_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=1 adultscore=0 bulkscore=0 mlxscore=1
- spamscore=1 mlxlogscore=187 clxscore=1015 phishscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2310040161
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229973AbjJDWDn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 18:03:43 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E8FBD;
+        Wed,  4 Oct 2023 15:03:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696457019; x=1727993019;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9cBg1srJbGdmQ36/Me/28e8gGP+MspxyR+FDEJ6Nxl0=;
+  b=aGA2Ju/deTtMVZ4h8b3F4TRnCyhxv2kwcOL0AJ3zzpxNSgcAiYj5S9zX
+   p0UW31kDhaoze+b41Rmp6yf+pbneL0cEnrkVCYb6VqftdUEy9PlKN0oII
+   4usv6h5Vcjnrm98oD4g4DK+LK0XAgjEra404f1TSMzOxWyf4ld0Dxz6a2
+   3kLWOeygnDitT26qKtzORGdKjcjE6PYy+glJ5dAO9JLTHAsEcLZp7qEUX
+   nPj9HSv9lPXHgrNL92X8xovqa6Qz3Wgd5/7V5NNjE6Pg2/gwvHtfg9lHj
+   OPXSxaV+4aaZ1qtIQr5zbXRhgyJOtsGf+qIn+FTPyb7cuxbnVxk/m2JPN
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="368380951"
+X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
+   d="scan'208";a="368380951"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 15:03:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="817302103"
+X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
+   d="scan'208";a="817302103"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 04 Oct 2023 15:03:33 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qo9xr-000Kex-1d;
+        Wed, 04 Oct 2023 22:03:31 +0000
+Date:   Thu, 5 Oct 2023 06:02:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc:     oe-kbuild-all@lists.linux.dev, linus.walleij@linaro.org,
+        brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <202310050520.VEIzHNiM-lkp@intel.com>
+References: <20230928125443.615006-2-mitrutzceclan@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230928125443.615006-2-mitrutzceclan@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-=EF=BB=BF
+Hi Dumitru,
 
-Sent from my iPhone=
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.6-rc4 next-20231004]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Dumitru-Ceclan/iio-adc-ad7173-add-AD7173-driver/20230928-205802
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230928125443.615006-2-mitrutzceclan%40gmail.com
+patch subject: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+config: i386-randconfig-063-20231005 (https://download.01.org/0day-ci/archive/20231005/202310050520.VEIzHNiM-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231005/202310050520.VEIzHNiM-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310050520.VEIzHNiM-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/adc/ad7173.c:829:42: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long [usertype] driver_data @@     got struct ad7173_device_info const * @@
+   drivers/iio/adc/ad7173.c:829:42: sparse:     expected unsigned long [usertype] driver_data
+   drivers/iio/adc/ad7173.c:829:42: sparse:     got struct ad7173_device_info const *
+   drivers/iio/adc/ad7173.c:830:42: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long [usertype] driver_data @@     got struct ad7173_device_info const * @@
+   drivers/iio/adc/ad7173.c:830:42: sparse:     expected unsigned long [usertype] driver_data
+   drivers/iio/adc/ad7173.c:830:42: sparse:     got struct ad7173_device_info const *
+   drivers/iio/adc/ad7173.c:831:42: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long [usertype] driver_data @@     got struct ad7173_device_info const * @@
+   drivers/iio/adc/ad7173.c:831:42: sparse:     expected unsigned long [usertype] driver_data
+   drivers/iio/adc/ad7173.c:831:42: sparse:     got struct ad7173_device_info const *
+   drivers/iio/adc/ad7173.c:832:42: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long [usertype] driver_data @@     got struct ad7173_device_info const * @@
+   drivers/iio/adc/ad7173.c:832:42: sparse:     expected unsigned long [usertype] driver_data
+   drivers/iio/adc/ad7173.c:832:42: sparse:     got struct ad7173_device_info const *
+
+vim +829 drivers/iio/adc/ad7173.c
+
+   827	
+   828	static const struct spi_device_id ad7173_id_table[] = {
+ > 829		{ "ad7172-2", &ad7173_device_info[ID_AD7172_2], },
+   830		{ "ad7173-8", &ad7173_device_info[ID_AD7173_8], },
+   831		{ "ad7175-2", &ad7173_device_info[ID_AD7175_2], },
+   832		{ "ad7176-2", &ad7173_device_info[ID_AD7176_2], },
+   833		{ },
+   834	};
+   835	MODULE_DEVICE_TABLE(spi, ad7173_id_table);
+   836	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

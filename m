@@ -2,239 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 238BF7B7DB2
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 13:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510B57B8166
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 15:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbjJDLDH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Oct 2023 07:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36172 "EHLO
+        id S233306AbjJDNy2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 4 Oct 2023 09:54:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233041AbjJDLDG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 07:03:06 -0400
-Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D82BF;
-        Wed,  4 Oct 2023 04:03:03 -0700 (PDT)
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3947JnBL006410;
-        Wed, 4 Oct 2023 07:02:01 -0400
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2047.outbound.protection.outlook.com [104.47.51.47])
-        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3th3jg141b-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Oct 2023 07:02:01 -0400 (EDT)
+        with ESMTP id S232786AbjJDNy2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 09:54:28 -0400
+Received: from NOR01-OL1-obe.outbound.protection.outlook.com (mail-ol1nor01on2091.outbound.protection.outlook.com [40.107.224.91])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8A7AB
+        for <linux-iio@vger.kernel.org>; Wed,  4 Oct 2023 06:54:24 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mJAN9ESUUTFKHyN+s2S/89OsXCnHLfY7bmsz9RofHU+sgcHoRx90SdW1gC7AJZ6yOWBx4zM7JWoh1DYOGrW4I8Jj1wLzakHlk2G5zX4AgSW/DgPIZEfGeombjEkJygCHGxCcEYWv8g34j0XUU1mNwuA8P9KnBvo0cn0wiSoTzUeZTFQiLDtbLmUOl78ETRDnpHzGDMeRUe2UZBfBROLzRZ3j4d2n+ukYuzN8TgDNd2nppmF1XRtLUuKj08h+MgklvklC4XS9lL4Ny19bZ4Xiq+1NY7adn2+Ve+qnTpe6KyKyNeU905jIUy+h4mHyfEZDhBZ+Cds/MoqP7Wldt1SU2A==
+ b=i4jtRq/Z+Xhm/aVxD1RPqELeaMIWp9Y1GrW4XXM+A57AjU6IIoLm/La+InUeR8GO2s4tkZEXDxxEaj/Hr8YWQW2o8LPiJlZasU79yOAR/ysswUiK0M4DG+9cHAMC2PihFn7T2z9wuMmoBIrdpCOJKM6dkB/ECYOkEWiHcmpaou4X6UCCHZnhHaO0qlTWJIzJsr/8u555WnfU3MOE/q1Cfh2XYS4TgZ/ch3y3RDm0eXI5eHeJY3gnY1LPu7aONmq/Wb2aGS3OhSs/+xPebislYmNaAiNvoI3qimBEcbAcHmzhSF3glDY7TADULi3czsjlSLq5tyi5Ek7ndynTz9+Ipg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QTJ9QgeEp4RCjMY8LckXqVd+qBhjzZSBtaKfHvJaIrU=;
- b=JUfZrruOkViEe+86U7rQp2JiVM123DKmrDZ0E+9VIi5Yf9+j5ULWn/dgImCKi+7kxIMEgxX+fdzZJ2tT8uWC1rVPfuqLIyVpL8FGGlVrfDuqWS5l+xRdq93P+Gme92TTLf1qT8RyO5JiNRpzamVKla9glw8CAhlGzYOGJrVO2vnY2Sz9D93eVnGTLtsrwiwUT5gUr4QIuX8B5ifN9U4kaPRdHmbEQtbhQdhavFyE659TeGoIuFdOUCLMtfsalHYzczTEPEjp0PV8KpLhHAtDB1tsPV4PebG0sUGm3J/n/fq0j5CA+VEaLDs/+FTA+hhV/fx0+KBgYfC0Vx/5JqSdGw==
+ bh=+y0AaeJQoTGzzJbuB+FXznZIhEvg2g0h6ATwj1Lnrts=;
+ b=ZFuylfzkLoqreRtz0nv2BHYkYz6/crbIlp6kaqcIcbVShDiVI4SPDF41LT/EHAZ5A+HfcgoL2QLkq4otQ9mDbrvTKGX/mAJRDLYSSK9+KywqzF1QckeZzEuSBEm3Z3f7QrN2d7maoK8UVpvQ47aepOwcFvZU2DCBT/gpyKIv4CTgvgRJ88tUv2lr6NxL90GoNcBELlQrK7brdZwmHcBQQgtAoZCo90dyJoliEkwEpkMOO+G6tgB4g48Z8XCV6GFo1V7BusxM/o8POvbyoOV1BSIGruL6XHDXOsMBytz0J7aCp6Ill7jDcvzY5dbX6O3x6m3z/5vh5Bz9MovqWag7Sg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QTJ9QgeEp4RCjMY8LckXqVd+qBhjzZSBtaKfHvJaIrU=;
- b=MalFYWT4Wakd+QC95a6qGUNWmWpXQggWfZzTYKOJKbVnzHie5PAip/fKKyXUCaDTKHtzG2KryDLflSI2Xc/E9+1SJUfx6V+XULlJ0/xUsAxlmAm5twreqv6vfO6d6UiAEMxrCcpTHrRrnoESvraocRlMWvJPKM2UQV4BBpW6Kl4=
-Received: from SN7PR03MB7132.namprd03.prod.outlook.com (2603:10b6:806:352::6)
- by BY5PR03MB5297.namprd03.prod.outlook.com (2603:10b6:a03:218::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.31; Wed, 4 Oct
- 2023 11:01:57 +0000
-Received: from SN7PR03MB7132.namprd03.prod.outlook.com
- ([fe80::b34d:a248:7b9a:c625]) by SN7PR03MB7132.namprd03.prod.outlook.com
- ([fe80::b34d:a248:7b9a:c625%5]) with mapi id 15.20.6838.016; Wed, 4 Oct 2023
- 11:01:57 +0000
-From:   "Hennerich, Michael" <Michael.Hennerich@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Sa, Nuno" <Nuno.Sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
- threshold to event attr
-Thread-Topic: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
- threshold to event attr
-Thread-Index: AQHZ8voK4kGP7RgaL0+1UUgTmxMToLAzgJiAgAX7huA=
-Date:   Wed, 4 Oct 2023 11:01:56 +0000
-Message-ID: <SN7PR03MB71329FB51185EAD7BE6C65A78ECBA@SN7PR03MB7132.namprd03.prod.outlook.com>
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
- <20230930163209.17ee0020@jic23-huawei>
-In-Reply-To: <20230930163209.17ee0020@jic23-huawei>
-Accept-Language: de-DE, en-US
+ smtp.mailfrom=gustavsen.com; dmarc=pass action=none
+ header.from=gustavsen.com; dkim=pass header.d=gustavsen.com; arc=none
+Received: from OS4P279MB0449.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:1e::6) by
+ SV0P279MB0626.NORP279.PROD.OUTLOOK.COM (2603:10a6:f10:23::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6838.35; Wed, 4 Oct 2023 13:54:20 +0000
+Received: from OS4P279MB0449.NORP279.PROD.OUTLOOK.COM
+ ([fe80::162b:cb0c:eae7:5b12]) by OS4P279MB0449.NORP279.PROD.OUTLOOK.COM
+ ([fe80::162b:cb0c:eae7:5b12%4]) with mapi id 15.20.6838.033; Wed, 4 Oct 2023
+ 13:54:20 +0000
+From:   Hein Gustavsen <hein@gustavsen.com>
+To:     "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Error "swiotlb buffer is full" when reading 8 channels using AD7923
+ driver
+Thread-Topic: Error "swiotlb buffer is full" when reading 8 channels using
+ AD7923 driver
+Thread-Index: Adn2yEzFy51I4/2YTTi0ifomqWHcxQ==
+Date:   Wed, 4 Oct 2023 13:54:20 +0000
+Message-ID: <OS4P279MB04495DA9652AF1D253D125E1C5CBA@OS4P279MB0449.NORP279.PROD.OUTLOOK.COM>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbWhlbm5lcmlc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy02YzNiYTlkZC02MmE1LTExZWUtYjgxZS1iY2Yx?=
- =?us-ascii?Q?NzFjNDc2MTZcYW1lLXRlc3RcNmMzYmE5ZGYtNjJhNS0xMWVlLWI4MWUtYmNm?=
- =?us-ascii?Q?MTcxYzQ3NjE2Ym9keS50eHQiIHN6PSI1MjMyIiB0PSIxMzM0MDg5MDkxNDQ5?=
- =?us-ascii?Q?NTQ1MDgiIGg9Iml5RHo3VG5nYlJkM2F5NlVzTnhjaXJSanNVND0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?Q01GblV2c3ZiWkFSS3lYdEp0d1FOOEVySmUwbTNCQTN3REFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBbEdUR1ZnQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-dg-rorf: true
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=gustavsen.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR03MB7132:EE_|BY5PR03MB5297:EE_
-x-ms-office365-filtering-correlation-id: cbc3b264-0684-4b60-d1b7-08dbc4c9536e
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-traffictypediagnostic: OS4P279MB0449:EE_|SV0P279MB0626:EE_
+x-ms-office365-filtering-correlation-id: 7bd4228f-1ecc-4a95-01c9-08dbc4e16896
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1TDHS9jmgdNwJhHPxRHcR1fKVo5SrwHWLb26BoeiyxarFsI6ZN1yrv4AtS7Q+feJq22mOicn6baKEjAyr9jOzNxVYKehcXiwQmq0heRsUmcs0QEIXduAtV++qMb8fnhROsV80V1+2naU6tOGuZVpjwF2aaX5ePKDOqjEuwiW7ez8kRHPtoGS5ooxsDb0gqlN/p0/i3sP83jlr4Nz3O3tPKTVkD6knUyI21uGgwGf3LoiOBpTHVvfwFjoPJI5lf0OhedZOJhD8Ef0cztadN+Zb16F50SE+WFg8o0XnYTtiBvrad9rbmnOM9xRd50/EhrCcxe83QdtPLLvHy4/yRod/Pcr7eNopVeAbAYKI5aN76o92Soxvj4/pXfw3OwLLhyIBhN90x2eZRFlZCelGWNwLTTRf1Y4ROaMlqVGqNQRrQ64EuP+InMYHJ9Ni0snoOrbriUrk/1/FOCGL2NXk8bOk30ipavUUJMSIDx1r0m2K6eIoWWlkOrKTTxqrIn9QuDxP7PcJulJWa9FOfRxWJLol1FnLBT257cSR7mUWL4szZKEY47gRWWUgIFpDOoB3p7F/Faew+uMd5i+C0F6+OMtqlbcu2yZPhui1yCpx0pWkMDS8JlOH1fFY7yCVGtIV5+A
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR03MB7132.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(39860400002)(396003)(366004)(346002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(26005)(9686003)(66899024)(83380400001)(86362001)(122000001)(38070700005)(33656002)(55016003)(38100700002)(66446008)(66556008)(66476007)(76116006)(478600001)(7416002)(316002)(64756008)(54906003)(52536014)(66946007)(5660300002)(41300700001)(8936002)(110136005)(4326008)(7696005)(6506007)(8676002)(53546011)(2906002)(71200400001);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: 9rRboWKgyLrscCM1K/Z+Q7xrDLlsuZceEilPR0OdYbooZVHwkrIJAXJ8VuVNvehLbL386BRfpW3KBmz/V6UjJemCPJ0dLiWSRMzmzLtlKhKdybq50pXEu0EqDmQC8vIqeS5ZGNdJQJMYd0SLfVfKaEbM9+qVpuYjjqZVkw5khN6/rVfC3/qyjBD3Mgznqi2eni7htpWyWmlnBazgu21awotXLPkCImP0RF8Ri/dDs8I9vkGSaoGZbGHbKcfs2Yb28LXrsZZAP5/GyygwbQXdn9VtQrOyLAVeY13aPi5DYysKJ/p6U1KTyz+zx6aWEOZJQohH3OngMBejTklaUzn/MXa/MecAb+iYjFFDIQ6awutOfPgQ2ndqsS0/sHE93hllwF/nOqfnrmjVKgT5+xT5bPlYzTc3ILfACcXax+D1sSgXWHxoDpifKAXjRneWPzjy4dGlB/QanL2K3CzJb0ZLbSN1NbS9jyg3T6mc3pWe9DEdrGyJ6FnhZVG3bfTFaKTL9o02iQe863dZg1z+n/Gx95j7OaobRJjtro7Vtb+mcOfZmNIGOTn/8eGX6nnhhVgGzVC9I99R+7dDFWhEn6Kw7C4R6sd2EkqPgCwTxzbSv1M=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS4P279MB0449.NORP279.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(136003)(39830400003)(346002)(396003)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(5660300002)(8676002)(52536014)(2906002)(4326008)(8936002)(41300700001)(316002)(6916009)(66946007)(66556008)(66476007)(64756008)(66446008)(76116006)(55016003)(26005)(71200400001)(7696005)(6506007)(33656002)(9686003)(122000001)(38070700005)(38100700002)(83380400001)(86362001)(45080400002)(478600001);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?D/84odI/64ykLw2JnbPtXTawNPtAAIxqyniXmVv8a2JloAf3A+VaiS8buVO/?=
- =?us-ascii?Q?dOEw+qN1B01KPGHavbDZDQX/AJhzNYByXkJ4j6qks0I9RU3gyCr/fZ8cFrxM?=
- =?us-ascii?Q?RUmJvAbwdP+qU0XIYObRyI5ehNVbJL/NkXS2Pxsx//NYn1uXa7v4YdQtavAZ?=
- =?us-ascii?Q?DTIvogy6KBQbXq+nXbmKpfjUABeMYmWh0KoEm1TiFLJRbV/Lelnw4mdXVonH?=
- =?us-ascii?Q?RXbp0f0lLo8voKCSkWZs2elkvgRr3hET+67xybjLOULvpbNq/hdnxza3Wc2E?=
- =?us-ascii?Q?dVXpYeEyhTK6Q1Fzn6ZqQQcS5rWlTMeIeGKDxJTvpoHr3/ntRqWxNpkLH/Le?=
- =?us-ascii?Q?8vZoXZsmDC6YSFcrbQGQEO/TT5g9/jLIZAenQYLRoJyrMbaBeXegLPWP0fIs?=
- =?us-ascii?Q?LYTdk3k5gNhDLbvDqR/lyRzy+9p5I3I1mdz6zaQi3RtX+zlBsXA0M0CWLUhY?=
- =?us-ascii?Q?cPae9+4cSJnZ+mLuwhv+jxx3F6HB4tkJnEEFXMK6GxIxq3Bd2+/KosXUsFD+?=
- =?us-ascii?Q?tEwvkJcL8lVTd3Fcdxqk2NcDVmkNLpA8kaUP08/X47bqTzuZQBATEA7+wPuZ?=
- =?us-ascii?Q?W21Xk8cRFb7IsNDkrZUhlow+8SQ6M/87O8jVFYjmopsZznU+R1PGchqWoQsI?=
- =?us-ascii?Q?3JkiYxG+mkpEaeDdkiJ7BnUJKhEegooFcB0o6IsW2O4XDgrIeb39ujHZp13i?=
- =?us-ascii?Q?Vo/iJSd7zd5vyJotj4UNsipK0zzwMvJlo9GINdvRicH7bu3J5aRLMucMgHAE?=
- =?us-ascii?Q?4hmiIX2Xo1H3iM88TM00k7jYCcotyNHgfr5Oab1WCRpvYzWaf2tYkJ4HZ+Sx?=
- =?us-ascii?Q?1pFBID/TzHGdORdvqZg4HHgfd+5WwjVSlorI66kWu2/brHkfK3TSFdU5OIOg?=
- =?us-ascii?Q?N2gIGuxBWk8cReyjePKt+YqQZYqX5g8LG8v0OtVq6b7UgLHQZ4+XrNu22hdA?=
- =?us-ascii?Q?r2sRccHzJ1C9dP6/WYwBjuGZduXrZcF22EFmumLcSNIcBixN40SlImaWG8+J?=
- =?us-ascii?Q?lFpTw0GZtC8H4YGNpUAq4W6h/50TKOk9bD/lrhNg/FgMCILDw01Lk6bK4Bq3?=
- =?us-ascii?Q?GnwPakki5FQ84h4eSjJ8eO5EgccevtnMG31vDz3O6gSYNUXwPJlIUJf7F8cw?=
- =?us-ascii?Q?ElWiAUWTz+Sd1/MakvkfsT0avVAfbuWYu5Xp/RuvSmB1J1ti1/buAocvhhYK?=
- =?us-ascii?Q?haIXJ5dsW9bWC98uWmVZJHAPbRnyeswTKqOfGYGrwlG72+wUQvu2k1FzzkSb?=
- =?us-ascii?Q?1dDvKq5Ctkx/sDr0EtZD7jy6/i4BxZPzaXzHZztpr2a1/aqvHIAowoZO7J7v?=
- =?us-ascii?Q?2LA6uuS6iaPrLYCCQ7JQSzO6usgiGezcDc2Lx2n1k1cu4kTRcM8bHGByh7ZD?=
- =?us-ascii?Q?QQhl3VFhJlzThXZ0KJlPwjWFXSC0y+OWlYP9+PtD5ZiDL9KH3kiY98JPkcHd?=
- =?us-ascii?Q?VAQEczSyo8RbfWoraCYDt4QG3pO7HGYAiKxKgmHAaqj7tLSebTxgGgXmMMYL?=
- =?us-ascii?Q?qZeAgGFtT4m7loeWQVRj9gGYWyc+QqoXRUGh0bPDIRB0Z0J6/VipfPmQFOwD?=
- =?us-ascii?Q?LlvQoYHDMSmvPtoSe975h5lRTayt4aqujaswGDXmR4zcvDdAQmBB87aawW/B?=
- =?us-ascii?Q?pg=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?olmkjo2yc8GPXR1jOJ3I2/88ZPX1+m2L9GkydZyfvRqaPfqyT09rMalK4FNc?=
+ =?us-ascii?Q?VrxbYu4oJwJaLoQJ/dLFOYnzZiVk4PMdIjlXNxUVtznbv1SYUyfcitjxhS7s?=
+ =?us-ascii?Q?k+7J3Nj5mXRNGV9Od+snVHHIJ4xQezsLglfQnpBsUxDMaXzPXJYbpXAT6pjb?=
+ =?us-ascii?Q?6r0ZORUQnZQ8posd+GmMzr0i3VO7aOeDOuwElPWgHgQMFyeVKlF/rU2AcFo6?=
+ =?us-ascii?Q?e/89QI5U5M1QMr07Plx4F9iJBaCNF0pYPKollvF+IUodtun3wZXw0Efc9ko4?=
+ =?us-ascii?Q?aDb18htqmnk95D4W55wIPHuQnOMmo4Ycm3lInRsyz1Mg+kaokzF5shl/pBPJ?=
+ =?us-ascii?Q?dCFv6Hwc73zNuEEp0lWf316d7SvB5k9DtPxs+0BzijjZDsy+LRyl2VukQTuS?=
+ =?us-ascii?Q?XxsHnXgraFPbW12mQ0omsaxq25nBVMQEMLzV7ZCocUG5Aq0ZFXvIxgxWqxIh?=
+ =?us-ascii?Q?pRivCI9tQOrz4bzDv/jConxOuL0/ZAgVaCFUsJ5OcJuYMsz4jFC7batP0WSt?=
+ =?us-ascii?Q?ELrYuc1LbzNSoW3WnJ747mHpd83oECf4SkswycvmWRS2lZoV/B6hcyWzj5Aw?=
+ =?us-ascii?Q?32ped8vYrG//z0DoRSTiRGjuK+RLrbZrN2RmfLFtIvik8x+/wSJuMLXxAwUN?=
+ =?us-ascii?Q?MkGkhJy954bfbna4diTuzUrCUOLgs4xfmHxMSVj2NNXUsjDHWfRlLXmFnBYg?=
+ =?us-ascii?Q?FTfA/BZO714uWGU/FNpbUFAFfTHYUNaC5jaCi6CTTxGGM4/qVZtm8cno/Qj2?=
+ =?us-ascii?Q?BBvBOTWAFlTN8h9mWlupKn36nNTkdWINeUz9q6zYi+zS1hhY+JiAfkBImyoG?=
+ =?us-ascii?Q?2ls7tVtzv2DwhxvAu1wMu7xyoCcb3LXkXuhyzmd3O3mTbMOTXMmQEDa0OZVL?=
+ =?us-ascii?Q?QYYB/byUzH/C7oBveZizgSsDitQAJFZHe91WYmUZX4F/YM4Kil1gl6u0XRMr?=
+ =?us-ascii?Q?dl9k2fNU6aP3GOBT/8SDjMfwy++pWBtbDRGKZbIeBhDrh9shZ7zg2JHYE1yT?=
+ =?us-ascii?Q?mBBXJlGndDLxn/x52A1rvODRuUQo5LUTTas6xmB1codjkyPeQs1WXnBhoSfa?=
+ =?us-ascii?Q?ITQ1Yr1yLy2gdUZgzFdzh6iTWv5m1LIz0EfZsBBhHkFV4HXMl6pN+IUjm3Rj?=
+ =?us-ascii?Q?K5JBxGSxXICUQDotGW3fzE7rrAn0YsYXXGlYJK35d5+/2sajcDqZxok8CjEn?=
+ =?us-ascii?Q?CMQJs+jQaig6eHT2e7ovkTBhrL62M2Dia+Ou2vy4cj5IGwMH3KDesNgTNWeg?=
+ =?us-ascii?Q?Th5LuN0Z96QHNjUM37oT1xM5h6K1JNYUgrXDYrzOkY3Nrbue2lnoGn2o5ji9?=
+ =?us-ascii?Q?kUFJWdLHgOcazxfjUhSa+//hTt2G1ekryD2CgN1QxrV2BSKuWuzGAURlbNGw?=
+ =?us-ascii?Q?YGoq8TteO3clYZH9C5gC9jNzHvhRVLYh9YirzkUtiAZbJcA6G0MEjUc0lUJ3?=
+ =?us-ascii?Q?0rKwsVl+k53LxzeXILTEIGmU4iuP32m+nR2A2I3RGzQUVgSZ4SI1UDjE0YEx?=
+ =?us-ascii?Q?BTd4GCvMMMAlgBcs/jmxkFCKRkI82WuGadEGd2TOCI8KZpUNXVa7BIWTyuzV?=
+ =?us-ascii?Q?VpTJ4nRXJXYyKjqdMAs=3D?=
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
+X-OriginatorOrg: gustavsen.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR03MB7132.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbc3b264-0684-4b60-d1b7-08dbc4c9536e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2023 11:01:56.9805
+X-MS-Exchange-CrossTenant-AuthSource: OS4P279MB0449.NORP279.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bd4228f-1ecc-4a95-01c9-08dbc4e16896
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2023 13:54:20.4088
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-id: b5bb78fb-cab8-450e-82fe-f7d5992fd16b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mbbVJ0FVtJttSLC9LBvCc/36o42wkwTyfh9u0PaP1JfN35GanC6off/EalQgWlv9HaJORGS4dljhtDzbZ027ySYqFJCBPF8G72zICG/pFmg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB5297
-X-Proofpoint-ORIG-GUID: ATNzkWjhXjf-mxwMYmgsY_cMgr8P3fMZ
-X-Proofpoint-GUID: ATNzkWjhXjf-mxwMYmgsY_cMgr8P3fMZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_02,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- malwarescore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2309180000 definitions=main-2310040080
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-userprincipalname: Bxb010epSPgRkiuNfGZx/0cvy6dPhlzoNvGPuOGanarA4YwhtUissZiDewqREDf9ctVKjSeqATKbsR9Ar4vx/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SV0P279MB0626
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
+
+When I enable all 8 channels from an AD7927 chip using the AD7923 driver I get the following kernel error:
+
+[   98.429633] imx-sdma 30bd0000.dma-controller: swiotlb buffer is full (sz: 32768 bytes), total 32768 (slots), used 32736 (slots)
+[   98.431413] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+[   98.431425] Mem abort info:
+[   98.431427]   ESR = 0x96000004
+[   98.431430]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   98.431434]   SET = 0, FnV = 0
+[   98.431437]   EA = 0, S1PTW = 0
+[   98.431439]   FSC = 0x04: level 0 translation fault
+[   98.431442] Data abort info:
+[   98.431444]   ISV = 0, ISS = 0x00000004
+[   98.431446]   CM = 0, WnR = 0
+[   98.431448] user pgtable: 4k pages, 48-bit VAs, pgdp=00000001073a1000
+[   98.431453] [0000000000000008] pgd=0000000000000000, p4d=0000000000000000
+[   98.431461] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[   98.437036] Modules linked in: cfg80211 fsl_jr_uio caam_jr caamkeyblob_desc caamhash_desc caamalg_desc crypto_engine rng_core authenc libdes crct10dif_ce snd_soc_fsl_sai rtc_ds1307 imx_sdma extcon_ptn5150 snd_soc_wm8904 caam secvio error fuse overlay
+[   98.459228] CPU: 2 PID: 517 Comm: irq/233-ad7928_ Not tainted 5.15.60+ge9858f40abc9 #1
+[   98.467145] Hardware name: Variscite DART-MX8M-PLUS
+[   98.474799] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   98.481761] pc : _raw_write_lock_irqsave+0x254/0x318
+[   98.486732] lr : complete+0x24/0x64
+[   98.490220] sp : ffff80000b43bbe0
+[   98.493534] x29: ffff80000b43bbe0 x28: 0000000000000000 x27: 0000000000000000
+[   98.500674] x26: ffff0000c0f179b8 x25: ffff0000c6154338 x24: ffff0000c198c370
+[   98.507813] x23: ffff8000089f8b20 x22: ffff0000c6154410 x21: ffff0000c0f17978
+[   98.514949] x20: 0000000000000008 x19: 0000000000000000 x18: ffffffffffffffff
+[   98.522090] x17: 3233203a7a732820 x16: 6c6c756620736920 x15: 0000000000000000
+[   98.529228] x14: 0009201c149cb862 x13: 0000000000000000 x12: 0000000000000003
+[   98.536365] x11: 0000000000000000 x10: 000000000000021f x9 : 0000000000000000
+[   98.543502] x8 : 0000000000000001 x7 : 0000000000000003 x6 : 0000000000000000
+[   98.550642] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000008
+[   98.557781] x2 : 0000000000000001 x1 : 0000000000000000 x0 : 0000000000000001
+[   98.564923] Call trace:
+[   98.567368]  _raw_write_lock_irqsave+0x254/0x318
+[   98.571990]  complete+0x24/0x64
+[   98.575130]  spi_complete+0x10/0x20
+[   98.578622]  spi_finalize_current_message+0x168/0x1f0
+[   98.583672]  __spi_pump_messages+0x48c/0x5b0
+[   98.587945]  __spi_sync+0x234/0x26c
+[   98.591434]  spi_sync+0x30/0x54
+[   98.594578]  ad7923_trigger_handler+0x24/0x8c
+[   98.598934]  irq_thread_fn+0x2c/0x9c
+[   98.602512]  irq_thread+0x178/0x2c0
+[   98.605998]  kthread+0x150/0x160
+[   98.609227]  ret_from_fork+0x10/0x20
+[   98.612808] Code: 17fffeba d5384613 521b0a60 f9800071 (885ffc60)
+[   98.618901] ---[ end trace 9fd562a23b7ff000 ]---
+[   98.623517] note: irq/233-ad7928_[517] exited with preempt_count 1
+[   98.629757] genirq: exiting task "irq/233-ad7928_" (517) is an active IRQ thread (irq 233)
 
 
-> -----Original Message-----
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Samstag, 30. September 2023 17:32
-> To: David Lechner <dlechner@baylibre.com>
-> Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> staging@lists.linux.dev; David Lechner <david@lechnology.com>; Rob Herrin=
-g
-> <robh+dt@kernel.org>; Krzysztof Kozlowski
-> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
-> Hennerich, Michael <Michael.Hennerich@analog.com>; Sa, Nuno
-> <Nuno.Sa@analog.com>; Axel Haslam <ahaslam@baylibre.com>; Philip Molloy
-> <pmolloy@baylibre.com>; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert L=
-OS
-> threshold to event attr
->=20
->=20
-> On Fri, 29 Sep 2023 12:23:27 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->=20
-> > From: David Lechner <david@lechnology.com>
-> >
-> > From: David Lechner <dlechner@baylibre.com>
-> >
-> > The AD2S1210 has a programmable threshold for the loss of signal (LOS)
-> > fault. This fault is triggered when either the sine or cosine input
-> > falls below the threshold voltage.
-> >
-> > This patch converts the custom device LOS threshold attribute to an
-> > event falling edge threshold attribute on a new monitor signal channel.
-> > The monitor signal is an internal signal that combines the amplitudes
-> > of the sine and cosine inputs as well as the current angle and
-> > position output. This signal is used to detect faults in the input sign=
-als.
-> >
-> > The attribute now uses millivolts instead of the raw register value in
-> > accordance with the IIO ABI.
-> >
-> > Emitting the event will be implemented in a later patch.
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
->=20
-> I think I'm fine with treating these internal signals like this, but I wo=
-uld ideally
-> like someone from Analog devices to take a look at how these are being do=
-ne
-> and make sure our interpretations of the signals make sense to them.  We =
-are
-> pushing the boundaries a little here (though we have done similar before =
-for
-> fault events I think.)
+Six channels work fine. Increasing the swiotlb buffer to 262144 does not help. All slots are still used.
 
-Hi Jonathan,
-David and I we also had some internal discussion related to this.
-I'm sure these fault events and thresholds are understood correctly.
-Doing it this or the other way, it needs to be properly documented in order=
- to make sense.
-So from my perspective whatever makes the most sense from a IIO ABI
-perspective, is the way to forward.
+To reproduce, I run the following commands:
 
--Michael
+TRIGGER_NAME=trigger
+IIO_DEVICE=/sys/bus/iio/devices/iio\:device0
+TRIGGER_DEVICE=/sys/bus/iio/devices/trigger0
+SAMPLING_FREQUENCY=1
+mkdir -p /sys/kernel/config/iio/triggers/hrtimer/$TRIGGER_NAME
+echo $TRIGGER_NAME > $IIO_DEVICE/trigger/current_trigger
+echo $SAMPLING_FREQUENCY > $TRIGGER_DEVICE/sampling_frequency
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage0_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage1_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage2_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage3_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage4_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage5_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage6_en
+echo 1 > $IIO_DEVICE/scan_elements/in_voltage7_en
+echo 1 > $IIO_DEVICE/buffer/enable
 
->=20
-> Jonathan
+
+The error message appears immediately after the last command.
+Kernel version is 5.15.60 (https://github.com/varigit/linux-imx/tree/5.15-2.0.x-imx_var01)
+
+Best regards,
+Hein Gustavsen
 

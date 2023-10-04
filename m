@@ -2,70 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6F97B7654
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 03:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4A527B785E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 09:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjJDBiC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 21:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56274 "EHLO
+        id S241469AbjJDHHq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Oct 2023 03:07:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239633AbjJDBiB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 21:38:01 -0400
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C98C4
-        for <linux-iio@vger.kernel.org>; Tue,  3 Oct 2023 18:37:57 -0700 (PDT)
-Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-495cf1bf9f9so686946e0c.2
-        for <linux-iio@vger.kernel.org>; Tue, 03 Oct 2023 18:37:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696383477; x=1696988277; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ut7xWoIyAkKaAS+UBG8acxM2uYnbNKB4bITE7OuyUn8=;
-        b=F/5RRAKLmW2qRiZrC1rpshlSbTD/0EguwBg3QhSqyHK3S7rS4z+jFPUl32SZZd0JSQ
-         YSMpuNwRMvuC386MRS+soH/aGfbDo7fFPwIIf03C8MLZtOVcStBoZ3hHOasTm/hLPdZu
-         m4ldVUtwAWESkbgP5UEs7uMb3/K4uVT6L5Tuac4MtefSLpN/UnGFi6VX2QrDhFUxbtWf
-         eQz2iCMcIEKJAbt5gfSPv8vUaC3fyMVmtcWu+ra1RtKI6Cws4fvUcagZjQrBAUa1Awn8
-         OBFZf4sAsI4RXfyGB+svmpcX+lZpilreigTH1A5wj1jMRXX1x8/uuQMwO3/XZPF8zDzD
-         4/og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696383477; x=1696988277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ut7xWoIyAkKaAS+UBG8acxM2uYnbNKB4bITE7OuyUn8=;
-        b=DF+aUEApe5SgjVY8279afNMzyc8ez5aKvtodb9wWBPGwlf6VdQyI6FqvtHm+u2g7xN
-         Tr7Dxc+dTQQOWmvnD/AbJDiQUeLYrSZ3i8fMuJTmZFYd9raOSKZCildWH2Nfkas0F7nP
-         29CKYvfJEiRzct+lbFT89E5JnGcJpIHCNGEAgTi/4z0QKYLANbb/cIfLIi7eoDbZvVZX
-         B2VGirv9rRST+uxriWAU2m+uAd/n6UXROMnalnRi89428B0tUU7u3dhAiYxzPh9VIiSc
-         2kZ4s8FDhTyJNEPn/D50xqiGUYy25ve8bUW5Yd8jkTPhaYyzDabcow74irUKPbI8O5Eh
-         BsiQ==
-X-Gm-Message-State: AOJu0Ywx+gr0M0o7uTUvEF8RZhQWyybTamPpaMwxRowEOXqBndEfoFqZ
-        LDZBFaFDuuzUr9s1RlHmeuKi8w==
-X-Google-Smtp-Source: AGHT+IFe9WGtyUnwFgSpm2oOiz9vnIspKZLXWvuP1DOW+PgtsVRIlTTNJUn1eT68WXpwzGTuIifS6Q==
-X-Received: by 2002:a05:6122:2208:b0:48f:cd3a:108 with SMTP id bb8-20020a056122220800b0048fcd3a0108mr1039736vkb.12.1696383476933;
-        Tue, 03 Oct 2023 18:37:56 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id c9-20020ac5c769000000b0049ab44fce7esm333804vkn.50.2023.10.03.18.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 18:37:56 -0700 (PDT)
-Date:   Tue, 3 Oct 2023 21:37:53 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     lee@kernel.org, alexandre.torgue@foss.st.com,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] tools/counter: add a flexible watch events tool
-Message-ID: <ZRzB8f/SF4LSLS3c@fedora>
-References: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
- <20230922143920.3144249-2-fabrice.gasnier@foss.st.com>
+        with ESMTP id S241453AbjJDHHq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 03:07:46 -0400
+Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF736AF;
+        Wed,  4 Oct 2023 00:07:41 -0700 (PDT)
+Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.3ffe.de (Postfix) with ESMTPSA id A177F168B;
+        Wed,  4 Oct 2023 09:07:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+        t=1696403259;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=MH9KWBMgqso6+BwvpRM3ahjbzr5vwavoxYlNVWr5Dc8=;
+        b=iqqByt9hnspznEXEbnUfOCTYhmqOBL2lCq3CqX35EOyzDHT8b8leJ1v/g0KOLRCwbtGpX3
+        9cIcLj7+StsfSTWJoaBTyMJoJPQQQymh3rWFKdpGwDDurZ2+/BNPRxhu/PF53uDmU0fvj6
+        4EHEi1WQPhn8ys6/Q4BpjX1foGRS2Ldg6TYo9FpwhZO9HVF38vwuLku/jCM2SbYINO68gA
+        Tp8wmXxxLGfxjI4EBgYRD1vAurwKLJEWXGfvm96UeJN7Rwnpd5bEu0w4x+sE8mGXDjMNao
+        yHjQZHTM7rQbgT1FQ5vwKPEgDhGePEspM54gQT6SLQb/CjTOvBUNZF/LMEJPrw==
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ud/ll0XBucuOa13p"
-Content-Disposition: inline
-In-Reply-To: <20230922143920.3144249-2-fabrice.gasnier@foss.st.com>
+Date:   Wed, 04 Oct 2023 09:07:39 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc:     mitrutzceclan@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+        andy@kernel.org, linux-gpio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add AD7173 driver
+In-Reply-To: <20230928125443.615006-2-mitrutzceclan@gmail.com>
+References: <20230928125443.615006-1-mitrutzceclan@gmail.com>
+ <20230928125443.615006-2-mitrutzceclan@gmail.com>
+Message-ID: <cc64b68545b4e178e1f5d90109f72e9a@walle.cc>
+X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,92 +73,66 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---ud/ll0XBucuOa13p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I've just had a look at the gpio-regmap part.
 
-On Fri, Sep 22, 2023 at 04:39:15PM +0200, Fabrice Gasnier wrote:
-> This adds a new counter tool to be able to test various watch events.
-> A flexible watch array can be populated from command line, each field
-> may be tuned with a dedicated command line sub-option in "--watch" string.
-> Several watch events can be defined, each can have specific watch options,
-> by using "--watch <watch 1 options> --watch <watch 2 options>".
-> Watch options is a comma separated list.
->=20
-> It also comes with a simple default watch (to monitor overflow/underflow
-> events), used when no watch parameters are provided. It's equivalent to:
-> counter_watch_events -w comp_count,scope_count,evt_ovf_udf
->=20
-> The print_usage() routine proposes another example, from the command line,
-> which generates a 2 elements watch array, to monitor:
-> - overflow underflow events
-> - capture events, on channel 3, that reads read captured data by
->   specifying the component id (capture3_component_id being 7 here).
->=20
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> +static int ad7173_mask_xlate(struct gpio_regmap *gpio, unsigned int 
+> base,
+> +			     unsigned int offset, unsigned int *reg,
+> +			     unsigned int *mask)
+> +{
+> +	*mask = AD7173_GPO_DATA(offset);
+> +	*reg = AD7173_REG_GPIO;
 
-Hi Fabrice,
+*reg = base;
 
-This tool is independent from the rest of the patches in this patchset,
-so I suggest separating and submitting the next revision of this patch
-independently.
+See also below.
 
-> ---
-> Changes in v2:
-> Review comments from William:
-> - revisit watch options to be less error prone: add --watch with
->   sub-options to properly define each watch one by one, as a comma
->   separated list
-> - by the way, drop string/array parsing routines, replaced by getsubopt()
-> - Improve command-line interface descriptions, e.g. like "-h, --help"
-> - Makefile: adopt ARRAY_SIZE from tools/include/linux.kernel.h (via CFLAG)
-> - remove reference to counter_example
-> - clarify commit message, code comment: Index/overflow/underflow event
-> - check calloc return value
-> - Makefile: sort count_watch_events in alphabetic order
-> - Makefile: add a clean rule to delete .*.o.cmd files
+> +	return 0;
+> +}
+> +
+> +static int ad7173_gpio_init(struct iio_dev *indio_dev)
+> +{
+> +	struct ad7173_state *st = iio_priv(indio_dev);
+> +	struct gpio_regmap_config gpio_regmap = {};
+> +	struct device *dev = &st->sd.spi->dev;
+> +	unsigned int mask;
+> +
+> +	st->regmap = devm_regmap_init_spi(st->sd.spi, &ad7173_regmap_config);
+> +	if (IS_ERR(st->regmap)) {
+> +		return dev_err_probe(dev, PTR_ERR(st->regmap),
+> +				     "Unable to init regmap\n");
+> +	}
+> +
+> +	mask = AD7173_GPIO_OP_EN0 | AD7173_GPIO_OP_EN1 | 
+> AD7173_GPIO_OP_EN2_3;
+> +	regmap_update_bits(st->regmap, AD7173_REG_GPIO, mask, mask);
+> +
+> +	gpio_regmap.parent = dev;
+> +	gpio_regmap.regmap = st->regmap;
+> +	gpio_regmap.ngpio = st->info->num_gpios;
+> +	gpio_regmap.reg_set_base = GPIO_REGMAP_ADDR_ZERO;
 
-It looks like you implemented all the changes I requested in the first
-review so I don't have much to comment inline for this revision.
+Why don't you set it to AD7173_REG_GPIO? Register 0 seems wrong, it
+looks like you're using that to say this is a output-only I/O.
 
-It looks like the memory allocated (via calloc()) for the watches array
-is never freed, so fix that in the next revision.
 
-Also, add a MAINTAINERS entry with at least you as the point of contact
-or someone else (an ST engineer?) who is willing to respond to any
-bug reports the mailing list could get for this utility.
+> +	gpio_regmap.reg_mask_xlate = ad7173_mask_xlate;
+> +
+> +	st->gpio_regmap = devm_gpio_regmap_register(dev, &gpio_regmap);
+> +	if (IS_ERR(st->gpio_regmap)) {
+> +		return dev_err_probe(dev, PTR_ERR(st->gpio_regmap),
+> +				     "Unable to init gpio-regmap\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +#endif /* CONFIG_GPIOLIB */
 
-Regarding watch options, I looked up how a few other utilities handle
-similar situations. Some utilities like the nftables nft command line
-utility takes in a configuration file where you can specify the verbose
-rule-sets, while others such as bfptrace allows entire programs to be
-specified via one-liner constructs passed in a single option ("-e").
+Otherwise looks good. But I've noticed that the chip can actually
+also do input on gpio0 and gpio1. If you ever want to support that,
+it seems like you need two gpio-regmaps.
 
-Although powerful, I found those approaches to be far too complex for
-our simple test utility here. Instead, uilities with a simpler interface
-take an approach similar to yours by providing several well-defined
-sub-options; for example, to filter tcpdump packets users can provide
-the particular sub-options they desire ("-i eth0 port 22").
-
-The watch option solution here with sub-options is simple and clear, so
-for now let's go with it as you have it. If the need arises in the
-future for a more complex option interface, we'll tackle it as it comes.
-
-Thanks,
-
-William Breathitt Gray
-
---ud/ll0XBucuOa13p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZRzB8QAKCRC1SFbKvhIj
-K8MOAP40On/mofJvCleupa6Ta0fCuH3zADKugk7CCkCLpyljWwD/TAi5GM0LSIWa
-mlOzR+0lN8QEY6op3Qh1ojgvHuugqgQ=
-=cxjL
------END PGP SIGNATURE-----
-
---ud/ll0XBucuOa13p--
+-michael

@@ -2,72 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DE987B74CB
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 01:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9727B7619
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 03:06:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232502AbjJCXYW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Oct 2023 19:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
+        id S232430AbjJDBGN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Oct 2023 21:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231855AbjJCXYV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 19:24:21 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93BCFAB;
-        Tue,  3 Oct 2023 16:24:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696375458; x=1727911458;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZIJaTXdQoK+Tc9rKwmO+j/pkBSYtbKY2aE/ScAzMB3c=;
-  b=N2A/ezaTLDK1VDjyTvYksjXvUuI3YaTHfwi4ARDxeJExP8ETacPPhCUg
-   ZHWIeqFks9Vt55LvE+iC2G6j1YsYVowQqjGxdNaEyOxHOeUfSpR/3OfLs
-   gtXSb1udcD5CGmYneiwM14fUpXgonSGwiGkCIRpxDMe8BNOvAzxB1478u
-   Yxa/KnT/Tr29ot/dHfDrLRczFhYQvXbMlANqNzugf6aF6wFBe8dvRWRpA
-   CoRhE+GxZHe2B+A5fvBCjX+2MmOSzHRSLLHg6sdRYFebmYAjeWMiCSqbd
-   y8uthwEP3ewJtTulVY6j6vj8iEhGa0EdU7rUIUNAYBKRFL725Y/St4rmv
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="449493734"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="449493734"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 16:24:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="874853647"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="874853647"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 03 Oct 2023 16:24:13 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qnokN-0009j4-1G;
-        Tue, 03 Oct 2023 23:24:11 +0000
-Date:   Wed, 4 Oct 2023 07:23:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     oe-kbuild-all@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 25/27] staging: iio: resolver: ad2s1210: rename DOS
- reset min/max attrs
-Message-ID: <202310040601.lZjvyOu7-lkp@intel.com>
-References: <20230929-ad2s1210-mainline-v3-25-fa4364281745@baylibre.com>
+        with ESMTP id S232316AbjJDBGM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Oct 2023 21:06:12 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE98FBB
+        for <linux-iio@vger.kernel.org>; Tue,  3 Oct 2023 18:06:04 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-7ab9488f2f0so729846241.3
+        for <linux-iio@vger.kernel.org>; Tue, 03 Oct 2023 18:06:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696381564; x=1696986364; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FD7N4+ki8yTbIdFjxebxQX9Pl+69rX6n0uIJQxEwL/U=;
+        b=JqGEHJcwTtp/zESninS3W1haptLQU+5+Hap5MsNpkIIQ7Uz0X+TaV11BE7c1TAcpw9
+         yAtjKrChRbrS3oD55MYbFOljdWkGfPlk3/hRWV45SlXpRjMbxTR/rOB0Od0Xs/6A9TNS
+         MV/YmjLH8QZCYzlgNHXh5a0XgNvHSc86yAlPdTufbE2yZBurmz4J7ANIPvBsRNROEsz9
+         SW+ZOlj+uzYtGm8RQageeG2N1Wd7zYTuv+IwsYC0sM5ls/bKRhGOOArpZj0VWUyw1Xia
+         eKFoo0hyDBUBXvSoPMIufvb3Q0YepIMqGOF3QMCP5ETU1wd/EQs7WPzYOngFyX/TJLlF
+         C1jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696381564; x=1696986364;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FD7N4+ki8yTbIdFjxebxQX9Pl+69rX6n0uIJQxEwL/U=;
+        b=VPHIQx08TgGcRNrLKFSd74qzUkb9Sqc8Lzv/OK9RjpqDfJgUy/WN7GAdBgiTT7xKTR
+         ctLW7FFbXyUHuYEDW61x1q3TrhVH82iGbC4/jkkHvhl5r+7L5FkSEwIEbVA3FjhfeTxu
+         HtWxp5dGGYJPwGse7Ri9YxGbK8KRYT0CU6xwh501gq9y9XaiXwPIdSV4cmtBmTMR+KCO
+         B5kc8bfsdjd/2GHTpRpRBPSnZQYhyA3KcOzx9B6Z+CrSm4ZomrA/Sne+A/5hNczv8zUR
+         psyEOLTXeyaNK38ENriXL/V8PMSY1XLB6V08buU5fwOiqdsXN1Fb3BybyTScokH5PUFY
+         rGDg==
+X-Gm-Message-State: AOJu0YyYDRbcDQ0j/QYO6IuoKM0QF/WBcOOWHB/T2Css58IaoB4CjLcw
+        CGzkcfB/aLq0A/jZrxWcVeI0pA==
+X-Google-Smtp-Source: AGHT+IGYmIVwKRybktecfaCThlChpL8Li43s8SGPeblCnhS/dSopbmKh5eEzTeCOe+/o6Pgb7hDS5g==
+X-Received: by 2002:a67:f65a:0:b0:44d:3f96:6c61 with SMTP id u26-20020a67f65a000000b0044d3f966c61mr895407vso.30.1696381563938;
+        Tue, 03 Oct 2023 18:06:03 -0700 (PDT)
+Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id h1-20020ab04701000000b007aba00406a4sm369973uac.7.2023.10.03.18.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Oct 2023 18:06:03 -0700 (PDT)
+Date:   Tue, 3 Oct 2023 21:06:00 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc:     lee@kernel.org, alexandre.torgue@foss.st.com,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/8] tools/counter: add a flexible watch events tool
+Message-ID: <ZRy6eCSE7PhTTyvN@fedora>
+References: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
+ <20230829134029.2402868-4-fabrice.gasnier@foss.st.com>
+ <ZQdOcDQR6qONmmnR@fedora>
+ <7aa66ac8-eceb-2f6e-960b-2c4dac9f595e@foss.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="jZtSijHBWetMsQRX"
 Content-Disposition: inline
-In-Reply-To: <20230929-ad2s1210-mainline-v3-25-fa4364281745@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+In-Reply-To: <7aa66ac8-eceb-2f6e-960b-2c4dac9f595e@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,37 +76,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
 
-kernel test robot noticed the following build warnings:
+--jZtSijHBWetMsQRX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
+On Tue, Sep 19, 2023 at 05:37:34PM +0200, Fabrice Gasnier wrote:
+> On 9/17/23 21:07, William Breathitt Gray wrote:
+> > On Tue, Aug 29, 2023 at 03:40:24PM +0200, Fabrice Gasnier wrote:
+> >> This adds a new counter tool to be able to test various watch events.
+> >> A flexible watch array can be populated from command line, each field
+> >> may be tuned with a dedicated command line argument.
+> >> Each argument can be repeated several times: each time it gets repeate=
+d,
+> >> a corresponding new watch element is allocated.
+> >>
+> >> It also comes with a simple default watch (to monitor overflows), used
+> >> when no watch parameters are provided.
+> >>
+> >> The print_usage() routine proposes another example, from the command l=
+ine,
+> >> which generates a 2 elements watch array, to monitor:
+> >> - overflow events
+> >> - capture events, on channel 3, that reads read captured data by
+> >>   specifying the component id (capture3_component_id being 7 here).
+> >>
+> >> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/dt-bindings-iio-resolver-add-devicetree-bindings-for-ad2s1210/20230930-014031
-base:   5e99f692d4e32e3250ab18d511894ca797407aec
-patch link:    https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-25-fa4364281745%40baylibre.com
-patch subject: [PATCH v3 25/27] staging: iio: resolver: ad2s1210: rename DOS reset min/max attrs
-config: i386-randconfig-062-20231003 (https://download.01.org/0day-ci/archive/20231004/202310040601.lZjvyOu7-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231004/202310040601.lZjvyOu7-lkp@intel.com/reproduce)
+Fabrice,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310040601.lZjvyOu7-lkp@intel.com/
+Sorry for the delay, I'm currently working through my backlog. I see you
+have already submitted a version 2 of this patchset, so I'll continue my
+review there but I do want to make some direct replys here below as
+well.
 
-sparse warnings: (new ones prefixed by >>)
-   drivers/staging/iio/resolver/ad2s1210.c:900:1: sparse: sparse: symbol 'iio_const_attr_in_phase0_mag_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:905:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_thresh_falling_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:906:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_thresh_rising_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:907:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_mag_value_available' was not declared. Should it be static?
->> drivers/staging/iio/resolver/ad2s1210.c:908:1: sparse: sparse: symbol 'iio_dev_attr_in_altvoltage0_mag_reset_max' was not declared. Should it be static?
->> drivers/staging/iio/resolver/ad2s1210.c:911:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_mag_reset_max_available' was not declared. Should it be static?
->> drivers/staging/iio/resolver/ad2s1210.c:912:1: sparse: sparse: symbol 'iio_dev_attr_in_altvoltage0_mag_reset_min' was not declared. Should it be static?
->> drivers/staging/iio/resolver/ad2s1210.c:915:1: sparse: sparse: symbol 'iio_const_attr_in_altvoltage0_mag_reset_min_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:916:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_value_available' was not declared. Should it be static?
-   drivers/staging/iio/resolver/ad2s1210.c:917:1: sparse: sparse: symbol 'iio_dev_attr_in_angl1_thresh_rising_hysteresis_available' was not declared. Should it be static?
+> > This is a new tool, so would you add a MAINTAINERS entry for the
+> > counter_watch_events.c file?
+>=20
+> I haven't thought about it.
+> I can add a MAINTAINERS entry, yes!
+> Who would you suggest ?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Typically the author of the initial patch will also maintain what they
+are introducing, but an alternative person is acceptable to serve as
+maintainer if that's the plan that's agreed upon. I assume you're
+introducing this tool because you're using it internally at ST for
+testing, so I suppose the intention is not to get this merged upstream
+just to abandon it (i.e. you intend to keep using and improving it). Is
+the plan for you to maintain this utility, or is someone else at ST
+interested in it?
+
+> >> +	}
+> >> +
+> >> +	/* fallback to number */
+> >=20
+> > I'm not sure it makes sense to support numbers. Although it's true that
+> > the component type, component scope, and event type are passed as __u8
+> > values, users are expected to treat those values are opaque and pass
+> > them via the respective enum constants. Since we don't guarantee that
+> > the specific enum constant values will remain consistent between kernel
+> > versions, I don't think it's a good idea to give to users that sort of
+> > implication by allowing them to use raw numbers for configuration
+> > selection.
+>=20
+> Ack, I can remove this.
+>=20
+> I'm a bit surprised by this statement. I may be wrong... I'd expect a
+> userland binary to be compatible when updating to a newer kernel: e.g.
+> user API (ABI?) definitions to be stable (including enum constants) ?
+
+I was wrong in my previous reply. You're absolutely correct[^1] that
+userspace ABI must be consistent ("Breaking user programs simply isn't
+acceptable"[^2]) so the specific values must remain the same between
+kernel versions.
+
+Regardless, I don't think raw numbers provide much benefit for the
+use-case of this particular utility; users are testing watch
+configurations for a particular device, not the specific constant values
+in the data structures. So in the end I still think the raw numbers
+code path should be removed.
+
+[^1] Well technically Linux kernel ABI README documentation file
+     (Documentation/ABI/README) states that backwards compatibility for
+     stable interfaces is only guaranteed for at least 2 years, but in
+     practice we strive to never change the user-facing ABI.
+[^2] https://yarchive.net/comp/linux/gcc_vs_kernel_stability.html
+
+William Breathitt Gray
+
+--jZtSijHBWetMsQRX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZRy6eAAKCRC1SFbKvhIj
+K9STAP95tTRE+0GzRVXB8MfYNUgv5OwuwuDTLlkR6iV5UAPp3gEA1+ZCNsosBzzF
+Lbr/PCTCJRifx7T+S4h36fLilUjYaAE=
+=C8xr
+-----END PGP SIGNATURE-----
+
+--jZtSijHBWetMsQRX--

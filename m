@@ -2,1349 +2,463 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5577B7D07
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 12:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D184F7B7D71
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Oct 2023 12:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242069AbjJDKXp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Oct 2023 06:23:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
+        id S232982AbjJDKmK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Oct 2023 06:42:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242162AbjJDKXn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 06:23:43 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92BD95;
-        Wed,  4 Oct 2023 03:23:36 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso1959850f8f.0;
-        Wed, 04 Oct 2023 03:23:36 -0700 (PDT)
+        with ESMTP id S232814AbjJDKmJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Oct 2023 06:42:09 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC4EA1;
+        Wed,  4 Oct 2023 03:42:05 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3948baLg000457;
+        Wed, 4 Oct 2023 06:41:11 -0400
+Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2170.outbound.protection.outlook.com [104.47.73.170])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3tgtsjm56t-2
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 04 Oct 2023 06:41:10 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DRyAz8HRDIWSeyVrWtP8W8fH4m7DMXUFr469FN/IlS6l5wirVOJ4+9WbXEbeFKz6IUZDpH0p7IgEYraAft/7iuy/8DR92aPZ78h1YDP8k1bZcvtsZUEj0MrZ1dsA1tvFHHDkdUgjA7qdN1k7Uu0eg9lFLywlz21Kj41Fq6YzgU82yIXpaJgkZ3sckX9S68dhhSh/IeM56pDz9NDAet76plGK5T4YqHWMRYtd6C1R0O/pKZ0xqv+XwIl1fZFBS7nH137KIwSiH9d2JPD/iXz3PC6YoPk907yAjlSO2wiFWkO4JbOS3PCyTOdhhNRagxOsDfVUtiRU5XPyCP80RyArGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3gt3vyLJiXhPPsZavIzdHhpYBmtV+X03RkxXMpuMlCY=;
+ b=eHmGD1C/zS8Le6Z3du6xO0mMQpqIKvf1S8p3pO2auK2b7jfy2Thd+/2lsuYPlkRU1LQhVwf70c+rEe1Xcy1y35mp0dqCRCs6U1piY06pqN3q+pfVL+rjp+GYgLx3YqBdv+u3UyK8xRbMgaBIbsLd4G8KJmY/j+T3lK3hQ/hzNxrzlKvLmacsvLQvOs0Ge17JXRYFGK/MPPUN1YETEMJmLzLZdZm91odxWZKflPeit6CZUuwUjDRxGiZ96mJZ+f/hkLL2tma7PDVm8MkXATlxQtbjOk4jzvsxukIwvw9nAoCCYV94sOrrrMd18MM8TY9X/wPFzaINoztuU0pYWuSbdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696415015; x=1697019815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p7nQ0uIziiyZOrBvz20AVk6ovJ+kidjNVmlOM815bs4=;
-        b=VjJvARiNTd12vZnBa8wFihhmmnpmFKNp//Q0yQH8ptrMcKfpXdp1Z+gu07GyleCLSk
-         DCVmYikdiMvYg/nHHZvsES2vda+Z+DJYkuZ+HmqSK7LKvaNakS/iyly/lpsk5av2ztrF
-         HiX/RsMWXASvpJvaEQ3hJpx2xfOobI0DyA4MJpQJ4UW1zxk0vJ92tGEo3qDaHopo9vmg
-         sAGpalfeXC7Wj9hMs+ZIlSWSF60acLrMWNWBmu39m8XkaObSRwQc7XOxu+tmoO7ywJpq
-         WD76YaWBimUDkcL2K7/Sl8TAjyd1cimYrUrlIggkYeO/NhhmNQb9JvcXVT7kz88nG9Ch
-         is5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696415015; x=1697019815;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p7nQ0uIziiyZOrBvz20AVk6ovJ+kidjNVmlOM815bs4=;
-        b=gmLvJGT+SaFbicEOk5sBEKNiKao4AlPzqiqgMm8yPXJR13LayeCUh264jVBtq24JI5
-         TIaibtLQW4frqHW/QDpWsIq9usAQ5lSwe2AYeoye4BKUmXlklRPXaMnmiz6fMwfVT0WH
-         +taWYK4suz4mXjIFcxpdkJBMjUjpLuUrlN7L8iHbP2gNZXbKghmc+6xVb+Vdp/nP6/t+
-         RkuU1UPnzhj5P+vPhzaBFgze8zn5wRojqvgCWlw7ViN7DkEzRHgBZXHNCV236zeIBMMm
-         B8Fhs3LrjG1UsoQ5cfDYj2qH1aIV65BEyTpZJmBhwD2tJVKQ6IUvlPI6kRUPwzE3WZQf
-         hAXg==
-X-Gm-Message-State: AOJu0YyEDwBP5hyh5fjM9wQwIMt0U/RgXT4TARINdq/v0Iha5nIebcqx
-        OM4yMST8sSH10IvuMBCam68=
-X-Google-Smtp-Source: AGHT+IHTcraEcRDTuQAJMcmPvZKGuaQH6cW7zALtHGz9Pcbw8qIjCZRnBFSJLoWLCpL3ZtuaeWyWIA==
-X-Received: by 2002:adf:fd46:0:b0:31c:7001:3873 with SMTP id h6-20020adffd46000000b0031c70013873mr1660203wrs.60.1696415014959;
-        Wed, 04 Oct 2023 03:23:34 -0700 (PDT)
-Received: from ws-565760.systec.local ([212.185.67.148])
-        by smtp.gmail.com with ESMTPSA id c15-20020a5d63cf000000b003143c9beeaesm3631043wrw.44.2023.10.04.03.23.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 03:23:34 -0700 (PDT)
-From:   werneazc@gmail.com
-X-Google-Original-From: andre.werner@systec-electronic.com
-To:     jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lars@metafoo.de
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andre Werner <andre.werner@systec-electronic.com>
-Subject: [PATCH 2/2] iio: adc: ads7038: Add driver support for 12bit ADC
-Date:   Wed,  4 Oct 2023 12:23:30 +0200
-Message-ID: <20231004102330.3713-2-andre.werner@systec-electronic.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004102330.3713-1-andre.werner@systec-electronic.com>
-References: <20231004102330.3713-1-andre.werner@systec-electronic.com>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3gt3vyLJiXhPPsZavIzdHhpYBmtV+X03RkxXMpuMlCY=;
+ b=7iGNztM3+uevyBb7u/E9tL3EYKiWjFjhe0Zz9/pUqCCgnnaLTwGvBlYU1Lro3avtURx4BEEXiIfrZ+lDZ9Cuh5KaMkwxZjLOPiuRC7JRgNncYPMDe8y4r5Fnrs00aUYwHbSosGbKwGlqUjGA86juSmRro3auKMWgGewNHs4VLuU=
+Received: from SN7PR03MB7132.namprd03.prod.outlook.com (2603:10b6:806:352::6)
+ by BY5PR03MB4967.namprd03.prod.outlook.com (2603:10b6:a03:1e2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.34; Wed, 4 Oct
+ 2023 10:41:07 +0000
+Received: from SN7PR03MB7132.namprd03.prod.outlook.com
+ ([fe80::b34d:a248:7b9a:c625]) by SN7PR03MB7132.namprd03.prod.outlook.com
+ ([fe80::b34d:a248:7b9a:c625%5]) with mapi id 15.20.6838.016; Wed, 4 Oct 2023
+ 10:41:07 +0000
+From:   "Hennerich, Michael" <Michael.Hennerich@analog.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Sa, Nuno" <Nuno.Sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Apelete Seketeli <aseketeli@baylibre.com>
+Subject: RE: [PATCH v3 01/27] dt-bindings: iio: resolver: add devicetree
+ bindings for ad2s1210
+Thread-Topic: [PATCH v3 01/27] dt-bindings: iio: resolver: add devicetree
+ bindings for ad2s1210
+Thread-Index: AQHZ8voiHr0CPygis0qlB8JK4Lezn7AzcHuAgAYH0hA=
+Date:   Wed, 4 Oct 2023 10:41:06 +0000
+Message-ID: <SN7PR03MB7132D8899A862B7D4D475F848ECBA@SN7PR03MB7132.namprd03.prod.outlook.com>
+References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+        <20230929-ad2s1210-mainline-v3-1-fa4364281745@baylibre.com>
+ <20230930153429.0387ab8c@jic23-huawei>
+In-Reply-To: <20230930153429.0387ab8c@jic23-huawei>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbWhlbm5lcmlc?=
+ =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
+ =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy04MmM5YjA3OS02MmEyLTExZWUtYjgxZS1iY2Yx?=
+ =?us-ascii?Q?NzFjNDc2MTZcYW1lLXRlc3RcODJjOWIwN2ItNjJhMi0xMWVlLWI4MWUtYmNm?=
+ =?us-ascii?Q?MTcxYzQ3NjE2Ym9keS50eHQiIHN6PSIxOTAxNCIgdD0iMTMzNDA4ODk2NjQ0?=
+ =?us-ascii?Q?ODM5OTMxIiBoPSJzeVd4bzVqOTJHSUlJZWRpVjNjS2t6MDhkNW89IiBpZD0i?=
+ =?us-ascii?Q?IiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFFb0NB?=
+ =?us-ascii?Q?QUQ3ZVdSR3IvYlpBVWNXMDZoYndhV2ZSeGJUcUZ2QnBaOERBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBRUFBUUFCQUFBQWxHVEdWZ0FBQUFBQUFBQUFBQUFBQUo0QUFBQmhBR1FB?=
+ =?us-ascii?Q?YVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0JsQUdNQWRBQnpB?=
+ =?us-ascii?Q?RjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFHa0FkZ0JsQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQVpBQnBBRjhBY3dCbEFHTUFk?=
+ =?us-ascii?Q?UUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFE?=
+ =?us-ascii?Q?RUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNB?=
+ =?us-ascii?Q?QUFBQUFDZUFBQUFZUUJrQUdrQVh3QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNn?=
+ =?us-ascii?Q?QnZBR29BWlFCakFIUUFjd0JmQUhRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9t?=
+ =?us-ascii?Q?ZXRhPg=3D=3D?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN7PR03MB7132:EE_|BY5PR03MB4967:EE_
+x-ms-office365-filtering-correlation-id: ac7d5923-4d8f-4ecd-1cbe-08dbc4c66a45
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Gm5sE6xFKhg2qRQMPG6XXjO4cULvMqoQc6lHCexrcdD74PVbieMk5oqaLtmd0fAkT9KylobeW3HTcoHdZo0FHZIHY4KXqu5QL3kQhD5DdSI0Fv3OPSWjN6ljVzjQqVANYaRscq1gMap+lNimH/h2bQqBmJHUFxCyDY+MUvwo+5vXDjcnVIusQQxmFtmfZa8r8brooQVsMRZDfWC1Flw0vAipfG6d+qjDSke/t6/2SuxNQ2+gBh8bi7Wesfllyh3eV599TFeddrW70u/K/OGBdM17a+CYgn4aKPke8t6Z9IKrBDjPwNvEeGF2zbRXsqQQG8tWytw9cL4x369E//yst7MOVMNdQtaUysOd3xc/nQQ/pLstbTRPt/7gqJ4MhgHhqrjdV0wS7BfhTWB0fG+wkO+kdQxl+hG7hvW/pANIDWmettqKF9Yi6OI3cq2VKrSj+bRnePhvOcg9UJ7bNupE4xLfOucJx462jLMT1fKIycH5loJtYETM178GxxVTIt3YYKBYLHJdlRDv2yMXUm5mxfSeqovfYrNPTfVEZy+6NIfydPjRxl0O7CkVGkpaQm2Jesmfh1wrDDxeiaI8dIcxRFhcyzJFSC3GFEVo/1Nd32I8xf+ILdPmp8rK0IxY1j1CJfgIh8QQCN6fQc4yXIdkp5YWzZH4ZvX5Q/ZhB4lcfsA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR03MB7132.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(376002)(39860400002)(136003)(396003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(2906002)(83380400001)(66899024)(7416002)(38070700005)(86362001)(33656002)(38100700002)(122000001)(55016003)(53546011)(316002)(66476007)(54906003)(76116006)(66446008)(66556008)(64756008)(9686003)(6506007)(7696005)(66946007)(110136005)(41300700001)(966005)(478600001)(52536014)(71200400001)(4326008)(8676002)(5660300002)(26005)(8936002)(138113003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7eQtH6knqCGDJ6xoBrNtgOxPock4vzcgaLP2SaB/AMGg8aPKIh29i7SGAmPz?=
+ =?us-ascii?Q?qVUlocJ9jxA3Lc/dQPlYq24NOstGAgVYNd1zLAf82comD2AvvpwcQy1/GCUb?=
+ =?us-ascii?Q?nlFnebgj+5uSaHcyYDY82b7Z4FbVrv60BPLdgPfbqOyjFIVlQIM5hn1uM9O0?=
+ =?us-ascii?Q?dWq+09IcbZe/cUu0p7vkOSn0tGrLUq2kCEdvkWdhqAe3mloKCAPATtKZQJ5r?=
+ =?us-ascii?Q?5p2mdrJV/8qnAEph3PhRk8M7lbDRH+Co7yJIOCXbAE85DdrTtxeill1MT9gE?=
+ =?us-ascii?Q?pHKSrRjJxBoV8k2ADZv1OtrA7ucqlxPgyze0XPIksvLzNvJO/pHMDcjxt/iW?=
+ =?us-ascii?Q?k0Y1G68w00m5DB3Vxorv56womEzkAd9sJFef3FF8xJsMRT1MwrvjD97IASGC?=
+ =?us-ascii?Q?+I2R0D4Qq1pehtzKVZuUcmy0ZGxqgO2Snf+BceiENXbWVXb+MUg4lgoaX8EZ?=
+ =?us-ascii?Q?+LYcnyeDwHWO75enk6k49ijmlxcoMOv0Z8jmy5yVQAl6S/s3+gzcsONJmmTX?=
+ =?us-ascii?Q?QyBjfxYeE/4nyFqfC/2PjR3W/iceji8fnGQNhkWX/PQXOQzv6fhbz1/Nzhzl?=
+ =?us-ascii?Q?rndoR9rgorzXzJBGFD0sSKY5B8oZm0RRXzQ/o/5PM1V2VrbMPuA4EuNsoFSg?=
+ =?us-ascii?Q?SXF6GRLeSTGbjEUFvE+kGNvd+PS809PrQbnJpqgL9EzaYVMogSM1ukVncPWc?=
+ =?us-ascii?Q?UfqhnIZNJOb/CFfEJ4VBydASPMNYfJffOCmGitPMDThcIytWDai7SEmRZNGI?=
+ =?us-ascii?Q?J8Cny9Qu14lt/b2C//eqrIxWKudPYaYAilW2dtEsdSY2iIKy8tTRiSkrl3Yf?=
+ =?us-ascii?Q?uBIdsZwHr0l3a2k+WJDNC3u/iUhf9mLlWrhT7/77iGKyrIPrZytyioXRJ0gp?=
+ =?us-ascii?Q?RxaVim2NsdNeamXhDCGy86vvn9v3IaqrY2jK+B81IVjuD6fESvg8SaOlKhG+?=
+ =?us-ascii?Q?AUE2y6nDmKm1EYY1x2zLBtJNLPmqmMSu0yChxSM6AExXROrCnfzW4ePc+m8Z?=
+ =?us-ascii?Q?iyjH4Y5x9/L2LBw+gOtRDVgTbLRCI+maxy/z6sRL2sEHElP2X2XoWU7/PIVx?=
+ =?us-ascii?Q?wUronu3HgS38glR1VVjdktc9ngtSr0l5w+cKcOoNsgu0gDYQ7hxZanhsMZ/T?=
+ =?us-ascii?Q?9Jz6WZnBd5Z7gWMJebZZE7eTmw1ewNaVz45XO/UEHdjmwGmDHKuAMr5KGLtt?=
+ =?us-ascii?Q?yNloJSROiD5uKcMptvKCp+SJBvvBpHXj39Dp5wCNAZ2KlbttZP2vhfmoLHzX?=
+ =?us-ascii?Q?0Be6C4VfogiwrCqQG2nJ0PmGengKZG6F9ENdZz1i6sANa2MXVmAfdveuhfL+?=
+ =?us-ascii?Q?nwInwTc3CbvWgkUW0ZR6VcfMYjYLpvpqkRAV6LK+TnUOvB3Hhlj9pIxJD8PQ?=
+ =?us-ascii?Q?tHzaj5gvzq6dpGOwFwdiaRyO6ZOmdaRchYqL2nfFYHL7sn3HvyY5QmdnWsfS?=
+ =?us-ascii?Q?EGSIdyjTwNVyEvqlbtZ/6H+qCiOoTLo4F0CEgNmeXRH16Q1h1pe5vzdYUwi/?=
+ =?us-ascii?Q?TH0mjowuB6pECrGtp1ukjM0R1egDPjXQJiyIaeCq+UUnHp1nno9WZyHdKKnB?=
+ =?us-ascii?Q?IBRBlccJaHHxa6oB6frtpA1wOeQmFQXbsr9NKkBcJS5L1qXerIa+pYvDKzUL?=
+ =?us-ascii?Q?GQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR03MB7132.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac7d5923-4d8f-4ecd-1cbe-08dbc4c66a45
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2023 10:41:06.8424
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ddPuBs3XuKzr2+uvBJjUU23JLlaJRFzzY8/ZAwf0mg2lwWhT2GHpfitmklQgOmW8IAFwtWdUdfC2+OCNV7l7KQibjRWm4+djF/J+2tBqaaA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB4967
+X-Proofpoint-GUID: 71mZCSyTGx9YT4Kf8PWjSsYF1WQF9bAP
+X-Proofpoint-ORIG-GUID: 71mZCSyTGx9YT4Kf8PWjSsYF1WQF9bAP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_02,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2309180000 definitions=main-2310040076
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Andre Werner <andre.werner@systec-electronic.com>
 
-The driver is designed to support both, ADS7038 and ADS7138, but the
-implementation of the device access is limited to ADS7038 (SPI). The
-ADS7138 is accessed via I2C.
 
-The driver has a regmap and a core file that abstracts device access.
-Currently, the driver does support manual mode only.
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Samstag, 30. September 2023 16:34
+> To: David Lechner <dlechner@baylibre.com>
+> Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> staging@lists.linux.dev; David Lechner <david@lechnology.com>; Rob Herrin=
+g
+> <robh+dt@kernel.org>; Krzysztof Kozlowski
+> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
+> Hennerich, Michael <Michael.Hennerich@analog.com>; Sa, Nuno
+> <Nuno.Sa@analog.com>; Axel Haslam <ahaslam@baylibre.com>; Philip Molloy
+> <pmolloy@baylibre.com>; linux-kernel@vger.kernel.org; Apelete Seketeli
+> <aseketeli@baylibre.com>
+> Subject: Re: [PATCH v3 01/27] dt-bindings: iio: resolver: add devicetree
+> bindings for ad2s1210
+>=20
+>=20
+> On Fri, 29 Sep 2023 12:23:06 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+>=20
+> > From: David Lechner <david@lechnology.com>
+> >
+> > From: David Lechner <dlechner@baylibre.com>
+> >
+> > This adds new DeviceTree bindings for the Analog Devices, Inc.
+> > AD2S1210 resolver-to-digital converter.
+> >
+> > Co-developed-by: Apelete Seketeli <aseketeli@baylibre.com>
+> > Signed-off-by: Apelete Seketeli <aseketeli@baylibre.com>
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+>=20
+> Michael, ideally I'd like your ack on this given it volunteers you as mai=
+ntainer. If
+> I don't hear I'm fine with leaving Michael listed because he's in MAINTAI=
+NERS
+> anyway covering these bindings via a wild card entry:
 
-Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
----
- MAINTAINERS                         |  10 +
- drivers/iio/adc/Kconfig             |  22 ++
- drivers/iio/adc/Makefile            |   3 +
- drivers/iio/adc/ti-ads7038-core.c   | 137 +++++++
- drivers/iio/adc/ti-ads7038-regmap.c |  91 +++++
- drivers/iio/adc/ti-ads7038-spi.c    | 375 +++++++++++++++++++
- drivers/iio/adc/ti-ads7038.h        | 551 ++++++++++++++++++++++++++++
- 7 files changed, 1189 insertions(+)
- create mode 100644 drivers/iio/adc/ti-ads7038-core.c
- create mode 100644 drivers/iio/adc/ti-ads7038-regmap.c
- create mode 100644 drivers/iio/adc/ti-ads7038-spi.c
- create mode 100644 drivers/iio/adc/ti-ads7038.h
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 35977b269d5e..dace0a03987e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21252,6 +21252,16 @@ T:	git https://github.com/jcmvbkbc/linux-xtensa.git
- F:	arch/xtensa/
- F:	drivers/irqchip/irq-xtensa-*
- 
-+TEXAS INSTRUMENT'S ADS7038 ADC DRIVER
-+M:	Andre Werner <andre.werner@systec-electronic.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
-+F:	drivers/iio/adc/ti-ads7038.h
-+F:	drivers/iio/adc/ti-ads7038-core.c
-+F:	drivers/iio/adc/ti-ads7038-regmap.c
-+F:	drivers/iio/adc/ti-ads7038-spi.c
-+
- TEXAS INSTRUMENTS ASoC DRIVERS
- M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 517b3db114b8..b3a2f27ecd69 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1239,6 +1239,28 @@ config TI_ADS1015
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads1015.
- 
-+config TI_ADS7038
-+	tristate "Texas Instruments ADS7038 ADC driver"
-+	depends on (I2C || SPI_MASTER)
-+	select REGMAP
-+	select TI_ADS7038_SPI if (SPI_MASTER)
-+	help
-+	  Say yes here to build support for TI ADS7038 12BIT ADC.
-+
-+	  To compile this driver as a module, choose M here: the core module
-+	  will be called ti-ads7038 and you will also get ti-ads7038-spi for SPI support.
-+
-+config TI_ADS7038_SPI
-+	tristate
-+	depends on TI_ADS7038
-+	depends on SPI_MASTER
-+	select REGMAP
-+	help
-+	  Say yes here to build support for TI ADS7038 12BIT ADC (SPI connected).
-+
-+	  To compile this driver as a module, choose M here: the core module
-+	  will be called ti-ads7038 and you will also get ti-ads7038-spi for SPI support.
-+
- config TI_ADS7924
- 	tristate "Texas Instruments ADS7924 ADC"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 2facf979327d..6aa355ab24de 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -111,6 +111,9 @@ obj-$(CONFIG_TI_ADC128S052) += ti-adc128s052.o
- obj-$(CONFIG_TI_ADC161S626) += ti-adc161s626.o
- obj-$(CONFIG_TI_ADS1015) += ti-ads1015.o
- obj-$(CONFIG_TI_ADS1100) += ti-ads1100.o
-+obj-$(CONFIG_TI_ADS7038) += ti-ads7038.o
-+ti-ads7038-objs := ti-ads7038-core.o ti-ads7038-regmap.o
-+obj-$(CONFIG_TI_ADS7038_SPI) += ti-ads7038-spi.o
- obj-$(CONFIG_TI_ADS7924) += ti-ads7924.o
- obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
- obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
-diff --git a/drivers/iio/adc/ti-ads7038-core.c b/drivers/iio/adc/ti-ads7038-core.c
-new file mode 100644
-index 000000000000..21a84589d99b
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads7038-core.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* This driver supports TI 12Bit ADC devices
-+ *
-+ *	 - ADS7038 with SPI interface
-+ *	 - ADS7138 with I2C interface (future)
-+ *
-+ * Copyright (C) 2023 SYS TEC electronic AG
-+ * Author: Andre Werner <andre.werner@systec-electronic.com>
-+ */
-+#include <linux/device.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/types.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include "linux/regulator/consumer.h"
-+
-+#include "ti-ads7038.h"
-+
-+#define ADS7038_V_CHAN(_chan, _addr)				\
-+	{							\
-+	.type = IIO_VOLTAGE,					\
-+	.indexed = 1,						\
-+	.address = _addr,					\
-+	.channel = _chan,					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-+			      BIT(IIO_CHAN_INFO_SCALE),		\
-+	.scan_index = _addr,					\
-+	.scan_type = {						\
-+		.sign = 's',					\
-+		.realbits = 12,					\
-+		.storagebits = 16,				\
-+		.shift = 4,					\
-+		.endianness = IIO_CPU,				\
-+	},							\
-+	.datasheet_name = "AIN"#_chan,				\
-+	}
-+
-+static const struct iio_chan_spec ads7038_channels[] = {
-+	ADS7038_V_CHAN(0, AIN0), ADS7038_V_CHAN(1, AIN1),
-+	ADS7038_V_CHAN(2, AIN2), ADS7038_V_CHAN(3, AIN3),
-+	ADS7038_V_CHAN(4, AIN4), ADS7038_V_CHAN(5, AIN5),
-+	ADS7038_V_CHAN(6, AIN6), ADS7038_V_CHAN(7, AIN7),
-+};
-+
-+int ads7038_read_raw(struct iio_dev *indio_dev,
-+		     struct iio_chan_spec const *chan,
-+		     int *val, int *val2,
-+		     long mask)
-+{
-+	unsigned int ret;
-+	struct ads7038_ch_meas_result tmp_val;
-+	struct ads7038_data *const data = (struct ads7038_data *)iio_priv(indio_dev);
-+	struct ads7038_info *const info = (struct ads7038_info *)data->info;
-+
-+	ret = info->read_channel(indio_dev, chan->channel, &tmp_val);
-+
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev, "Read channel returned with error %d", ret);
-+		return ret;
-+	}
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		*val = tmp_val.raw;
-+
-+		ret = IIO_VAL_INT;
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = regulator_get_voltage(data->reg);
-+		if (ret < 0)
-+			break;
-+
-+		*val = ret / 1000;	/* uV -> mV */
-+		*val2 = (1 << chan->scan_type.realbits) - 1;
-+
-+		ret = IIO_VAL_FRACTIONAL;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static const struct iio_info ads7038_iio_info = {
-+	.read_raw = ads7038_read_raw,
-+};
-+
-+int ads7038_common_probe(struct device *parent, const struct ads7038_info *info,
-+			 struct regmap *const regmap,
-+			 struct regulator *const ref_voltage_reg,
-+			 const char *name, int irq)
-+{
-+	struct ads7038_data *data;
-+	struct iio_dev *indio_dev;
-+
-+	indio_dev = devm_iio_device_alloc(parent, sizeof(struct ads7038_data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	indio_dev->name = name;
-+	indio_dev->channels = ads7038_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ads7038_channels);
-+	indio_dev->info = &ads7038_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	data = (struct ads7038_data *)iio_priv(indio_dev);
-+	mutex_init(&data->lock);
-+	data->dev = parent;
-+	data->info = info;
-+	data->regmap = regmap;
-+	data->reg = ref_voltage_reg;
-+
-+	/* Link general device driver with IIO device driver data */
-+	dev_set_drvdata(parent, indio_dev);
-+
-+	iio_device_register(indio_dev);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ads7038_common_probe);
-+
-+int ads7038_common_remove(struct device *parent)
-+{
-+	struct iio_dev *indio_dev = (struct iio_dev *)dev_get_drvdata(parent);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ads7038_common_remove);
-+
-+MODULE_AUTHOR("Andre Werner <andre.werner@systec-electronic.com>");
-+MODULE_DESCRIPTION("ADS7038 and ADS7138 core driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/adc/ti-ads7038-regmap.c b/drivers/iio/adc/ti-ads7038-regmap.c
-new file mode 100644
-index 000000000000..d10ca3122681
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads7038-regmap.c
-@@ -0,0 +1,91 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* This driver supports TI 12Bit ADC devices
-+ *
-+ *	 - ADS7038 with SPI interface
-+ *	 - ADS7138 with I2C interface (future)
-+ *
-+ * Copyright (C) 2023 SYS TEC electronic AG
-+ * Author: Andre Werner <andre.werner@systec-electronic.com>
-+ */
-+#include <linux/bitops.h>
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#include "ti-ads7038.h"
-+
-+static const struct regmap_range ads7038_noaccess_ranges[] = {
-+	regmap_reg_range(0x06, 0x06), regmap_reg_range(0x08, 0x08),
-+	regmap_reg_range(0x0A, 0x0A), regmap_reg_range(0x0C, 0x0C),
-+	regmap_reg_range(0x0E, 0x0F), regmap_reg_range(0x15, 0x15),
-+	regmap_reg_range(0x19, 0x19), regmap_reg_range(0x1B, 0x1B),
-+	regmap_reg_range(0x1D, 0x1D), regmap_reg_range(0x1F, 0x1F),
-+	regmap_reg_range(0x40, 0x5F), regmap_reg_range(0x70, 0x7F),
-+	regmap_reg_range(0xB0, 0xC2), regmap_reg_range(0xC4, 0xC4),
-+	regmap_reg_range(0xC6, 0xC6), regmap_reg_range(0xC8, 0xC8),
-+	regmap_reg_range(0xCA, 0xCA), regmap_reg_range(0xCC, 0xCC),
-+	regmap_reg_range(0xCE, 0xCE), regmap_reg_range(0xD0, 0xD0),
-+	regmap_reg_range(0xD2, 0xE8), regmap_reg_range(0xEA, 0xEA),
-+};
-+
-+static const struct regmap_range ads7038_readable_ranges[] = {
-+	regmap_reg_range(0x00, 0x00),	/*This is a dummy entry to provide a valid access pointer */
-+};
-+
-+static const struct regmap_access_table ads7038_readable_table = {
-+	.yes_ranges = ads7038_readable_ranges,
-+	.n_yes_ranges = 0,	/* regmap.c: In case zero "yes ranges" are supplied, any reg is OK */
-+	.no_ranges = ads7038_noaccess_ranges,
-+	.n_no_ranges = ARRAY_SIZE(ads7038_noaccess_ranges),
-+};
-+
-+static const struct regmap_range ads7038_volatile_ranges[] = {
-+	regmap_reg_range(ADS7038_SYSTEM_STATUS_REG, ADS7038_SYSTEM_STATUS_REG),
-+	regmap_reg_range(ADS7038_GPI_VALUE_REG, ADS7038_GPI_VALUE_REG),
-+	regmap_reg_range(ADS7038_EVENT_FLAG_REG, ADS7038_EVENT_FLAG_REG),
-+	regmap_reg_range(ADS7038_MAX_CH0_LSB_REG, ADS7038_MAX_CH7_MSB_REG),
-+	regmap_reg_range(ADS7038_MIN_CH0_LSB_REG, ADS7038_MIN_CH7_MSB_REG),
-+	regmap_reg_range(ADS7038_RECENT_CH0_LSB_REG,
-+			 ADS7038_RECENT_CH7_MSB_REG),
-+};
-+
-+static const struct regmap_access_table ads7038_volatile_table = {
-+	.yes_ranges = ads7038_volatile_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(ads7038_volatile_ranges),
-+	.no_ranges = ads7038_noaccess_ranges,
-+	.n_no_ranges = ARRAY_SIZE(ads7038_noaccess_ranges),
-+};
-+
-+/* It is okay to include noaccess registers in range, because they have been proven at first. */
-+static const struct regmap_range ads7038_writable_range[] = {
-+	regmap_reg_range(ADS7038_SYSTEM_STATUS_REG, ADS7038_GPO_VALUE_REG),
-+	regmap_reg_range(ADS7038_SEQUENCE_CFG_REG, ADS7038_ALERT_PIN_CFG_REG),
-+	regmap_reg_range(ADS7038_EVENT_HIGH_FLAG_REG, ADS7038_LOW_TH_CH7_REG),
-+	regmap_reg_range(ADS7038_GPO0_TRIG_EVENT_SEL_REG,
-+			 ADS7038_GPO_VALUE_TRIG_REG),
-+};
-+
-+static const struct regmap_access_table ads7038_writable_table = {
-+	.yes_ranges = ads7038_writable_range,
-+	.n_yes_ranges = ARRAY_SIZE(ads7038_writable_range),
-+	.no_ranges = ads7038_noaccess_ranges,
-+	.n_no_ranges = ARRAY_SIZE(ads7038_noaccess_ranges),
-+};
-+
-+const struct regmap_config ads7038_regmap_config = {
-+	.name = "ads7038",
-+	.reg_bits = ADS7038_REGISTER_SIZE,
-+	.val_bits = ADS7038_REGISTER_SIZE,
-+
-+	.wr_table = &ads7038_writable_table,
-+	.rd_table = &ads7038_readable_table,
-+	.volatile_table = &ads7038_volatile_table,
-+
-+	.max_register = ADS7038_REG_ADDRESS_MAX,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+EXPORT_SYMBOL(ads7038_regmap_config);
-+
-+MODULE_AUTHOR("Andre Werner <andre.werner@systec-electronic.com>");
-+MODULE_DESCRIPTION("ADS7038 SPI bus driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/adc/ti-ads7038-spi.c b/drivers/iio/adc/ti-ads7038-spi.c
-new file mode 100644
-index 000000000000..e26884afb9c6
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads7038-spi.c
-@@ -0,0 +1,375 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * This driver supports TI 12Bit ADC devices
-+ *
-+ *	 - ADS7038 with SPI interface
-+ *
-+ * Copyright (C) 2023 SYS TEC electronic AG
-+ * Author: Andre Werner <andre.werner@systec-electronic.com>
-+ */
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+
-+#include "ti-ads7038.h"
-+
-+#define ADS7038_OPCODE_NOOP		0x00
-+#define ADS7038_OPCODE_REGREAD		0x10
-+#define ADS7038_OPCODE_REGWRITE		0x08
-+#define ADS7038_OPCODE_SETBIT		0x18
-+#define ADS7038_OPCODE_CLEATBIT		0x20
-+
-+/*
-+ * The bitwidth for ADC channel results differ
-+ * by setting average and status
-+ * in the dedicated configuration registers.
-+ */
-+#define ADS7038_NO_AVG_NO_STAT		12	/* bits */
-+#define ADS7038_NO_AVG_STAT		16	/* bits */
-+#define ADS7038_AVG_NO_STAT		16	/* bits */
-+#define ADS7038_AVG_STAT		20	/* bits */
-+
-+#define ADS7038_SPI_FRAME_SIZE_REG		3	/* bytes */
-+#define ADS7038_SPI_FRAME_SIZE_CHAN_MAX		2	/* elements */
-+
-+static int ads7038_regmap_spi_read(void *context, unsigned int reg,
-+				   unsigned int *val)
-+{
-+	struct device *const dev = (struct device *)context;
-+	struct spi_device *const spi = to_spi_device(dev);
-+	int ret;
-+	const u8 tx_buf[ADS7038_SPI_FRAME_SIZE_REG] = {
-+		[0] = ADS7038_OPCODE_REGREAD,
-+		[1] = (u8)(reg & GENMASK(7, 0)),
-+		[2] = 0,	/* dummy data */
-+	};
-+	u8 rx_buf[ADS7038_SPI_FRAME_SIZE_REG] = { 0 };
-+
-+	/* Data contains 8bit address and 8bit register data */
-+	struct spi_transfer xfer[] = {
-+		{
-+		 .tx_buf = tx_buf,
-+		 .rx_buf = NULL,
-+		 .len = ADS7038_SPI_FRAME_SIZE_REG,
-+		 .bits_per_word = ADS7038_REGISTER_SIZE,
-+		 .cs_change = 1,
-+		  },
-+		{
-+		 .tx_buf = NULL,
-+		 .rx_buf = rx_buf,
-+		 .len = ADS7038_SPI_FRAME_SIZE_REG,
-+		 .bits_per_word = ADS7038_REGISTER_SIZE,
-+		  },
-+	};
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	ret = spi_sync_transfer(spi, xfer, ARRAY_SIZE(xfer));
-+
-+	if (ret != 0)
-+		return ret;
-+
-+	*val = (unsigned int)rx_buf[0];
-+
-+	return ret;
-+}
-+
-+static int ads7038_regmap_spi_write(void *context, unsigned int reg,
-+				    unsigned int val)
-+{
-+	unsigned int ret;
-+	unsigned int regval;
-+	struct device *const dev = (struct device *)context;
-+	struct spi_device *const spi = to_spi_device(dev);
-+	struct iio_dev *const indio_dev =
-+	    (struct iio_dev *)dev_get_drvdata(dev);
-+	struct ads7038_data *const data =
-+	    (struct ads7038_data *)iio_priv(indio_dev);
-+	const u8 buf[ADS7038_SPI_FRAME_SIZE_REG] = {
-+		[0] = ADS7038_OPCODE_REGWRITE,
-+		[1] = (u8)(reg & GENMASK(7, 0)),
-+		[2] = (u8)(val & GENMASK(7, 0)),
-+	};
-+
-+	struct spi_transfer xfer[] = {
-+		{.tx_buf = buf,
-+		 .rx_buf = NULL,
-+		 .len = ARRAY_SIZE(buf) },
-+	};
-+
-+	ret = spi_sync_transfer(spi, xfer, ARRAY_SIZE(xfer));
-+
-+	if (ret != 0)
-+		goto error;
-+
-+	/* If status or avaraging is used, the length for the spi output frame changes. */
-+	if (reg == ADS7038_DATA_CFG_REG || reg == ADS7038_OSR_CFG_REG) {
-+		ret = ads7038_regmap_spi_read(context, ADS7038_DATA_CFG_REG, &regval);
-+		if (ret != 0)
-+			goto error;
-+
-+		data->faverage = (regval & ADS7038_DATA_CFG_APPEND_STATUS) ? 1 : 0;
-+
-+		ret = ads7038_regmap_spi_read(context, ADS7038_OSR_CFG_REG, &regval);
-+		if (ret != 0)
-+			goto error;
-+
-+		data->fstatus = (regval & ADS7038_OSR_CFG_OSR) ? 1 : 0;
-+	}
-+
-+error:
-+	return ret;
-+}
-+
-+static int ads7038_read_reg(struct device *dev, const unsigned int reg,
-+			    unsigned int *val)
-+{
-+	int ret;
-+	struct iio_dev *const indio_dev = (struct iio_dev *)dev_get_drvdata(dev);
-+	struct ads7038_data *const data = (struct ads7038_data *)iio_priv(indio_dev);
-+	struct regmap *const map = data->regmap;
-+
-+	ret = regmap_read(map, reg, val);
-+
-+	return ret;
-+}
-+
-+static int ads7038_write_reg(struct device *dev, const unsigned int reg,
-+			     unsigned int val)
-+{
-+	struct iio_dev *const indio_dev = (struct iio_dev *)dev_get_drvdata(dev);
-+	struct ads7038_data *const data = (struct ads7038_data *)iio_priv(indio_dev);
-+	struct regmap *const map = data->regmap;
-+	int ret;
-+
-+	ret = regmap_write(map, reg, val);
-+
-+	return ret;
-+}
-+
-+static int ads7038_set_mode_manual(struct spi_device *dev,
-+				   struct ads7038_data *const data)
-+{
-+	int ret;
-+	struct regmap *const map = data->regmap;
-+	const unsigned int regs[] = { ADS7038_OPMODE_CFG_REG,
-+		ADS7038_SEQUENCE_CFG_REG
-+	};
-+	unsigned int reg_values[2] = { 0 };
-+	unsigned int idx;
-+
-+	/* Registers need to be read first to adapt configuration bits. */
-+	for (idx = 0; idx < ARRAY_SIZE(regs); ++idx) {
-+		ret = regmap_read(map, regs[idx], &reg_values[idx]);
-+		if (ret != 0) {
-+			dev_dbg(&dev->dev,
-+				"Cannot read value from register %02X.\n",
-+				regs[idx]);
-+			break;
-+		}
-+	}
-+
-+	if (ret != 0)
-+		goto out;
-+
-+	reg_values[0] &= ~ADS7038_OPMODE_CFG_CONV_MODE;
-+	reg_values[0] |= ADS7038_OPMODE_CFG_CONV_MODE_MANUAL;
-+	reg_values[0] &= ~ADS7038_SEQUENCE_CFG_SEQ_MODE;
-+	reg_values[0] |= ADS7038_SEQUENCE_CFG_SEQ_MODE_MANUAL;
-+
-+	for (idx = 0; idx < ARRAY_SIZE(regs); ++idx) {
-+		ret = regmap_write(map, regs[idx], reg_values[idx]);
-+		if (ret != 0) {
-+			dev_dbg(&dev->dev,
-+				"Cannot write value to register %02X.\n",
-+				regs[idx]);
-+			break;
-+		}
-+	}
-+
-+out:
-+	return ret;
-+}
-+
-+static int ads7038_read_channel(struct iio_dev *indio_dev,
-+				const enum MANUAL_CHID chan,
-+				struct ads7038_ch_meas_result *const res)
-+{
-+	int ret;
-+	struct ads7038_data *const data = (struct ads7038_data *)iio_priv(indio_dev);
-+	struct spi_device *const spi_dev = to_spi_device(data->dev);
-+	enum FUNC_MODE *const current_mode = &data->func_mode;
-+	const u8 chan_buf[ADS7038_SPI_FRAME_SIZE_REG] = {
-+		[0] = ADS7038_OPCODE_REGWRITE,
-+		[1] = ADS7038_CHANNEL_SEL_REG,
-+		[2] = chan,
-+	};
-+	u16 rx_buf[ADS7038_SPI_FRAME_SIZE_CHAN_MAX] = { 0 };
-+
-+	/*
-+	 * Fixup: If the channel not changes between sequential reads, the first
-+	 * SPI frame is not necessary. This can be handled separately.
-+	 */
-+	struct spi_transfer xfer[] = {
-+		{
-+		 .tx_buf = chan_buf,
-+		 .rx_buf = NULL,
-+		 .len = ARRAY_SIZE(chan_buf),
-+		 .bits_per_word = ADS7038_REGISTER_SIZE,
-+		 .tx_nbits = SPI_NBITS_SINGLE,
-+		 .cs_change = 1,
-+		  },
-+		{
-+		 .tx_buf = NULL,
-+		 .rx_buf = rx_buf,
-+		 .len = sizeof(rx_buf),
-+		 .tx_nbits = SPI_NBITS_SINGLE,
-+		 .cs_change = 1,
-+		  },
-+		{.tx_buf = NULL,
-+		 .rx_buf = rx_buf,
-+		 .len = sizeof(rx_buf),
-+		 .tx_nbits = SPI_NBITS_SINGLE },
-+	};
-+
-+	if (chan > AIN_MAX)
-+		return -EINVAL;
-+
-+	mutex_lock(&data->lock);
-+
-+	/* Configure read manual mode for single read of channel value */
-+	if (*current_mode != MAN) {
-+		dev_dbg(&spi_dev->dev, "Set manual mode for reading data.\n");
-+		ret = ads7038_set_mode_manual(spi_dev, data);
-+		if (ret != 0)
-+			goto out;
-+
-+		*current_mode = MAN;
-+	}
-+
-+	ret = spi_sync_transfer(spi_dev, xfer, ARRAY_SIZE(xfer));
-+
-+	if (ret != 0)
-+		goto out;
-+
-+	if (!!data->faverage) {
-+		res->raw = be16_to_cpup((__be16 *)&rx_buf[0]);
-+		res->faverage = 1;
-+		if (!!data->fstatus) {
-+			res->status = (be16_to_cpup((__be16 *)&rx_buf[1]) & GENMASK(15, 11)) >> 11;
-+			res->fstatus = 1;
-+		}
-+	} else {
-+		res->raw = be16_to_cpup((__be16 *)&rx_buf[0]);
-+		res->raw >>= 4;
-+		if (!!data->fstatus) {
-+			res->status = (be16_to_cpup((__be16 *)&rx_buf[0]) & GENMASK(3, 0));
-+			res->fstatus = 1;
-+		}
-+	}
-+
-+out:
-+	mutex_unlock(&data->lock);
-+	return ret;
-+}
-+
-+static struct regmap_bus ads7038_regmap_bus = {
-+	.reg_write = ads7038_regmap_spi_write,
-+	.reg_read = ads7038_regmap_spi_read,
-+	.reg_format_endian_default = REGMAP_ENDIAN_LITTLE,
-+	.val_format_endian_default = REGMAP_ENDIAN_LITTLE,
-+};
-+
-+static const struct ads7038_info ads7038_info = {
-+	.read_reg = ads7038_read_reg,
-+	.write_reg = ads7038_write_reg,
-+	.read_channel = ads7038_read_channel,
-+};
-+
-+static int ads7038_spi_probe(struct spi_device *spi)
-+{
-+	const struct spi_device_id *id = spi_get_device_id(spi);
-+	struct regmap *regmap;
-+	const struct regmap_config *regmap_config = &ads7038_regmap_config;
-+	int ret;
-+	struct regulator *reg;
-+
-+	ret = spi_setup(spi);
-+	if (ret < 0) {
-+		dev_dbg(&spi->dev, "Spi_setup failed!\n");
-+		goto error_spi;
-+	}
-+
-+	regmap = devm_regmap_init(&spi->dev, &ads7038_regmap_bus, &spi->dev,
-+				  regmap_config);
-+	if (IS_ERR(regmap)) {
-+		dev_dbg(&spi->dev, "Failed to allocate register map\n");
-+		ret = PTR_ERR(regmap);
-+		goto error_spi;
-+	}
-+
-+	reg = devm_regulator_get(&spi->dev, "vref");
-+	if (IS_ERR(reg)) {
-+		dev_dbg(&spi->dev, "Failed to get regulator \"vref\"\n");
-+		ret = PTR_ERR(reg);
-+		goto error_spi;
-+	}
-+
-+	ret = regulator_enable(reg);
-+	if (ret) {
-+		dev_dbg(&spi->dev, "Failed to enable regulator \"vref\"\n");
-+		goto error_spi;
-+	}
-+
-+	return ads7038_common_probe(&spi->dev, &ads7038_info, regmap,
-+				    reg, id->name, spi->irq);
-+
-+error_spi:
-+	dev_err(&spi->dev, "Probe failed\n");
-+	return ret;
-+}
-+
-+static void ads7038_spi_remove(struct spi_device *spi)
-+{
-+	int ret;
-+
-+	ret = ads7038_common_remove(&spi->dev);
-+	if (ret != 0)
-+		dev_err(&spi->dev, "Error while removing general driver\n.");
-+}
-+
-+static const struct of_device_id ads7038_of_spi_match[] = {
-+	{.compatible = "ti,ads7038" },
-+	{ },
-+};
-+
-+MODULE_DEVICE_TABLE(of, ads7038_of_spi_match);
-+
-+const struct spi_device_id ads7038_spi_id[] = {
-+	{.name = "ads7038" },
-+	{ },
-+};
-+
-+MODULE_DEVICE_TABLE(spi, ads7038_spi_id);
-+
-+static struct spi_driver ads7038_spi_driver = {
-+	.driver = {
-+		   .name = "ads7038-spi",
-+		   .of_match_table = ads7038_of_spi_match,
-+		    },
-+	.id_table = ads7038_spi_id,
-+	.probe = ads7038_spi_probe,
-+	.remove = ads7038_spi_remove,
-+};
-+
-+module_spi_driver(ads7038_spi_driver);
-+
-+MODULE_AUTHOR("Andre Werner <andre.werner@systec-electronic.com>");
-+MODULE_DESCRIPTION("ADS7038 SPI bus driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/adc/ti-ads7038.h b/drivers/iio/adc/ti-ads7038.h
-new file mode 100644
-index 000000000000..7df41425d7d3
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads7038.h
-@@ -0,0 +1,551 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * This driver supports TI 12Bit ADC devices
-+ *
-+ *	 - ADS7038 with SPI interface
-+ *	 - ADS7138 with I2C interface (future)
-+ *
-+ * Copyright (C) 2023 SYS TEC electronic AG
-+ * Author: Andre Werner <andre.werner@systec-electronic.com>
-+ */
-+#include <linux/bitops.h>
-+#include <linux/mutex.h>
-+#include <linux/types.h>
-+
-+#ifndef IIO_TI_ADS7038_H_
-+#define IIO_TI_ADS7038_H_
-+
-+#define ADS7038_REGISTER_SIZE	8	/* bits */
-+
-+/* Opcodes for commands */
-+#define ADS7038_OP_NOOP		0x00
-+#define ADS7038_OP_REG_READ	0x10
-+#define ADS7038_OP_REG_WRITE	0x08
-+#define ADS7038_OP_SET_BIT	0x18
-+#define ADS7038_OP_CLEAR_BIT	0x20
-+
-+/* ADS7038 System Status Register */
-+#define ADS7038_SYSTEM_STATUS_REG		0x00
-+#define ADS7038_SYSTEM_STATUS_BOR		BIT(0)
-+#define ADS7038_SYSTEM_STATUS_CRC_ERROR_IN	BIT(1)
-+#define ADS7038_SYSTEM_STATUS_CRC_ERROR_FUSE	BIT(2)
-+#define ADS7038_SYSTEM_STATUS_OSR_DONE		BIT(3)
-+#define ADS7038_SYSTEM_STATUS_OSR_SEQ_STATUS	BIT(6)
-+
-+/* ADS7038 General Configuration Register */
-+#define ADS7038_GENERAL_CFG_REG		0x01
-+#define ADS7038_GENERAL_CFG_RST		BIT(0)
-+#define ADS7038_GENERAL_CFG_CAL		BIT(1)
-+#define ADS7038_GENERAL_CFG_CH_RST	BIT(2)
-+#define ADS7038_GENERAL_CFG_DWC_EN	BIT(4)
-+#define ADS7038_GENERAL_CFG_STATS_EN	BIT(5)
-+#define ADS7038_GENERAL_CFG_CRC_EN	BIT(6)
-+
-+/* ADS7038 Data Configuration Register */
-+#define ADS7038_DATA_CFG_REG			0x02
-+#define ADS7038_DATA_CFG_CPOL_CPHA		GENMASK(1, 0)
-+#define ADS7038_DATA_CFG_CPOL_CPHA_SPI00	0x00	/* solely ADS7038 */
-+#define ADS7038_DATA_CFG_CPOL_CPHA_SPI01	0x01	/* solely ADS7038 */
-+#define ADS7038_DATA_CFG_CPOL_CPHA_SPI10	0x02	/* solely ADS7038 */
-+#define ADS7038_DATA_CFG_CPOL_CPHA_SPI11	0x03	/* solely ADS7038 */
-+#define ADS7038_DATA_CFG_APPEND_STATUS		GENMASK(5, 4)
-+#define ADS7038_DATA_CFG_APPEND_STATUS_NO	0x00
-+#define ADS7038_DATA_CFG_APPEND_STATUS_CHID	BIT(4)
-+#define ADS7038_DATA_CFG_APPEND_STATUS_STATUS	BIT(5)
-+#define ADS7038_DATA_CFG_FIX_PAT		BIT(7)
-+
-+/* ADS7038 Oversampling Configuration Register */
-+#define ADS7038_OSR_CFG_REG	0x03
-+#define ADS7038_OSR_CFG_OSR	GENMASK(2, 0)
-+#define ADS7038_OSR_CFG_OSR_NO	0x00
-+#define ADS7038_OSR_CFG_OSR_2	0x01
-+#define ADS7038_OSR_CFG_OSR_4	0x02
-+#define ADS7038_OSR_CFG_OSR_8	0x03
-+#define ADS7038_OSR_CFG_OSR_16	0x04
-+#define ADS7038_OSR_CFG_OSR_32	0x05
-+#define ADS7038_OSR_CFG_OSR_64	0x06
-+#define ADS7038_OSR_CFG_OSR_128	0x07
-+
-+/* ADS7038 Operation Mode Configuration Register */
-+#define ADS7038_OPMODE_CFG_REG			0x04
-+#define ADS7038_OPMODE_CFG_CLK_DIV		GENMASK(3, 0)
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_1US0	0x00
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_1US5	0x01
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_2US0	0x02
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_3US0	0x03
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_4US0	0x04
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_6US0	0x05
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_8US0	0x06
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_12US0	0x07
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_16US0	0x08
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_24US0	0x09
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_32US0	0x0A
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_48US0	0x0B
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_64US0	0x0C
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_96US0	0x0D
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_128US0	0x0E
-+#define ADS7038_OPMODE_CFG_CLK_DIV_FTIME_192US0	0x0F
-+#define ADS7038_OPMODE_CFG_OSC_SEL		BIT(4)
-+#define ADS7038_OPMODE_CFG_OSC_SEL_HIGHSPEED	0x00
-+#define ADS7038_OPMODE_CFG_OSC_SEL_LOWSPEED	0x01
-+#define ADS7038_OPMODE_CFG_CONV_MODE		GENMASK(6, 5)
-+#define ADS7038_OPMODE_CFG_CONV_MODE_MANUAL	0x00
-+#define ADS7038_OPMODE_CFG_CONV_MODE_AUTONOMOUS	BIT(5)
-+#define ADS7038_OPMODE_CFG_CONV_ON_ERR		BIT(7)
-+#define ADS7038_OPMODE_CFG_CONV_ON_ERR_CONTINUE	0x00
-+#define ADS7038_OPMODE_CFG_CONV_ON_ERR_PAUSE	BIT(7)
-+
-+/* ADS7038 Pin Mode Configuration Register */
-+#define ADS7038_PIN_CFG_REG		0x05
-+#define ADS7038_PIN_CFG_ALL_AIN		0x00
-+#define ADS7038_PIN_CFG_ALL_GPIO	GENMASK(7, 0)
-+
-+/* ADS7038 GPIO Mode Configuration Register */
-+#define ADS7038_GPIO_CFG_REG		0x07
-+#define ADS7038_GPIO_CFG_ALL_IN		0x00
-+#define ADS7038_GPIO_CFG_ALL_OUT	GENMASK(7, 0)
-+
-+/* ADS7038 GPO Drive Strengh Configuration Register */
-+#define ADS7038_GPO_DRIVE_CFG_REG		0x09
-+#define ADS7038_GPO_DRIVE_CFG_ALL_OPEN_DRAIN	0x00
-+#define ADS7038_GPO_DRIVE_CFG_ALL_PP		GENMASK(7, 0)
-+
-+/* ADS7038 GPO Value Register */
-+#define ADS7038_GPO_VALUE_REG		0x0B
-+#define ADS7038_GPO_VALUE_ALL_LOW	0x00
-+#define ADS7038_GPO_VALUE_ALL_HIGH	GENMASK(7, 0)
-+
-+/* ADS7038 GPI Value Register */
-+#define ADS7038_GPI_VALUE_REG		0x0D
-+
-+/* ADS7038 Sequence Configuration Register */
-+#define ADS7038_SEQUENCE_CFG_REG			0x10
-+#define ADS7038_SEQUENCE_CFG_SEQ_MODE			GENMASK(1, 0)
-+#define ADS7038_SEQUENCE_CFG_SEQ_MODE_MANUAL		0x00
-+#define ADS7038_SEQUENCE_CFG_SEQ_MODE_AUTO_SEQ		0x01
-+#define ADS7038_SEQUENCE_CFG_SEQ_MODE_ON_THE_FLY	0x02	/* solely ADS7038 */
-+#define ADS7038_SEQUENCE_CFG_SEQ_START BIT(4)
-+
-+/* ADS7038 Channel Selection Register */
-+#define ADS7038_CHANNEL_SEL_REG			0x11
-+#define ADS7038_CHANNEL_SEL_MCHILDID		GENMASK(3, 0)
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN0	0x00
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN1	0x01
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN2	0x02
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN3	0x03
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN4	0x04
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN5	0x05
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN6	0x06
-+#define ADS7038_CHANNEL_SEL_MCHILDID_AIN7	0x07
-+
-+/* ADS7038 Auto Sequence Channel Selection Register */
-+#define ADS7038_AUTO_SEQ_CH_SEL_REG	0x12
-+#define ADS7038_AUTO_SEQ_CH_SEL_ALL	GENMASK(7, 0)
-+
-+/* ADS7038 Alert Channel Selection Register */
-+#define ADS7038_ALERT_CH_SEL_REG	0x14
-+#define ADS7038_ALERT_CH_SEL_ALL	GENMASK(7, 0)
-+
-+/* ADS7038 Alert Map Register */
-+#define ADS7038_ALERT_MAP_REG		0x16
-+#define ADS7038_ALERT_MAP_ALERT_CRCIN	BIT(0)
-+
-+/* ADS7038 Alert Pin Configuration Register */
-+#define ADS7038_ALERT_PIN_CFG_REG			0x17
-+#define ADS7038_ALERT_PIN_CFG_ALERT_LOGIC		GENMASK(1, 0)
-+#define ADS7038_ALERT_PIN_CFG_ALERT_LOGIC_ACTIVE_LOW	0x00
-+#define ADS7038_ALERT_PIN_CFG_ALERT_LOGIC_ACTIVE_HIGH	BIT(0)
-+#define ADS7038_ALERT_PIN_CFG_ALERT_LOGIC_PULSED_LOW	BIT(1)
-+#define ADS7038_ALERT_PIN_CFG_ALERT_LOGIC_PULSED_HIGH	GENMASK(1, 0)
-+#define ADS7138_ALERT_PIN_CFG_ALERT_DRIVE		BIT(2)	/* solely ADS7138 */
-+#define ADS7038_ALERT_PIN_CFG_ALERT_PIN			0xF0	/* solely ADS7038 */
-+
-+/* ADS7038 Event Flag Register */
-+#define ADS7038_EVENT_FLAG_REG	0x18
-+
-+/* ADS7038 Event High Flag Register */
-+#define ADS7038_EVENT_HIGH_FLAG_REG	0x1A
-+
-+/* ADS7038 Event Low Flag Register */
-+#define ADS7038_EVENT_LOW_FLAG_REG	0x1C
-+
-+/* ADS7038 Event Region Register */
-+#define ADS7038_EVENT_RGN_REG	0x1E
-+
-+/* ADS7038 HYSTERESIS CH0 Register */
-+#define ADS7038_HYSTERESIS_CH0_REG			0x20
-+#define ADS7038_HYSTERESIS_CH0_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH0_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH0 Register */
-+#define ADS7038_HIGH_TH_CH0_REG		0x21
-+
-+/* ADS7038 Event Count CH0 Register */
-+#define ADS7038_EVENT_CNT_CH0_REG			0x22
-+#define ADS7038_EVENT_CNT_CH0_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH0_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH0 Register */
-+#define ADS7038_LOW_TH_CH0_REG	0x23
-+
-+/* ADS7038 HYSTERESIS CH1 Register */
-+#define ADS7038_HYSTERESIS_CH1_REG			0x24
-+#define ADS7038_HYSTERESIS_CH1_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH1_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH1 Register */
-+#define ADS7038_HIGH_TH_CH1_REG	0x25
-+
-+/* ADS7038 Event Count CH1 Register */
-+#define ADS7038_EVENT_CNT_CH1_REG			0x26
-+#define ADS7038_EVENT_CNT_CH1_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH1_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH1 Register */
-+#define ADS7038_LOW_TH_CH1_REG	0x27
-+
-+/* ADS7038 HYSTERESIS CH2 Register */
-+#define ADS7038_HYSTERESIS_CH2_REG			0x28
-+#define ADS7038_HYSTERESIS_CH2_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH2_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH2 Register */
-+#define ADS7038_HIGH_TH_CH2_REG				0x29
-+
-+/* ADS7038 Event Count CH2 Register */
-+#define ADS7038_EVENT_CNT_CH2_REG			0x2A
-+#define ADS7038_EVENT_CNT_CH2_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH2_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH2 Register */
-+#define ADS7038_LOW_TH_CH2_REG	0x2B
-+
-+/* ADS7038 HYSTERESIS CH3 Register */
-+#define ADS7038_HYSTERESIS_CH3_REG			0x2C
-+#define ADS7038_HYSTERESIS_CH3_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH3_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH3 Register */
-+#define ADS7038_HIGH_TH_CH3_REG				0x2D
-+
-+/* ADS7038 Event Count CH3 Register */
-+#define ADS7038_EVENT_CNT_CH3_REG			0x2E
-+#define ADS7038_EVENT_CNT_CH3_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH3_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH3 Register */
-+#define ADS7038_LOW_TH_CH3_REG 0x2F
-+
-+/* ADS7038 HYSTERESIS CH4 Register */
-+#define ADS7038_HYSTERESIS_CH4_REG			0x30
-+#define ADS7038_HYSTERESIS_CH4_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH4_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH4 Register */
-+#define ADS7038_HIGH_TH_CH4_REG				0x31
-+
-+/* ADS7038 Event Count CH4 Register */
-+#define ADS7038_EVENT_CNT_CH4_REG			0x32
-+#define ADS7038_EVENT_CNT_CH4_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH4_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH4 Register */
-+#define ADS7038_LOW_TH_CH4_REG				0x33
-+
-+/* ADS7038 HYSTERESIS CH5 Register */
-+#define ADS7038_HYSTERESIS_CH5_REG			0x34
-+#define ADS7038_HYSTERESIS_CH5_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH5_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH5 Register */
-+#define ADS7038_HIGH_TH_CH5_REG				0x35
-+
-+/* ADS7038 Event Count CH5 Register */
-+#define ADS7038_EVENT_CNT_CH5_REG			0x36
-+#define ADS7038_EVENT_CNT_CH5_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH5_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH5 Register */
-+#define ADS7038_LOW_TH_CH5_REG				0x37
-+
-+/* ADS7038 HYSTERESIS CH6 Register */
-+#define ADS7038_HYSTERESIS_CH6_REG			0x38
-+#define ADS7038_HYSTERESIS_CH6_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH6_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH6 Register */
-+#define ADS7038_HIGH_TH_CH6_REG 0x39
-+
-+/* ADS7038 Event Count CH6 Register */
-+#define ADS7038_EVENT_CNT_CH6_REG			0x3A
-+#define ADS7038_EVENT_CNT_CH6_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH6_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH6 Register */
-+#define ADS7038_LOW_TH_CH6_REG				0x3B
-+
-+/* ADS7038 HYSTERESIS CH7 Register */
-+#define ADS7038_HYSTERESIS_CH7_REG			0x3C
-+#define ADS7038_HYSTERESIS_CH7_HYSTERESIS_CH0		GENMASK(3, 0)
-+#define ADS7038_HYSTERESIS_CH7_HIGH_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH7 Register */
-+#define ADS7038_HIGH_TH_CH7_REG				0x3D
-+
-+/* ADS7038 Event Count CH7 Register */
-+#define ADS7038_EVENT_CNT_CH7_REG			0x3E
-+#define ADS7038_EVENT_CNT_CH7_EVENT_CNT_CH0		GENMASK(3, 0)
-+#define ADS7038_EVENT_CNT_CH7_LOW_THRESHOLD_CH0_LSB	GENMASK(7, 4)
-+
-+/* ADS7038 High Threshold CH7 Register */
-+#define ADS7038_LOW_TH_CH7_REG		0x3F
-+
-+/* ADS7038 MAX CH0 LSB Register */
-+#define ADS7038_MAX_CH0_LSB_REG		0x60
-+
-+/* ADS7038 MAX CH0 MSB Register */
-+#define ADS7038_MAX_CH0_MSB_REG		0x61
-+
-+/* ADS7038 MAX CH1 LSB Register */
-+#define ADS7038_MAX_CH1_LSB_REG		0x62
-+
-+/* ADS7038 MAX CH1 MSB Register */
-+#define ADS7038_MAX_CH1_MSB_REG		0x63
-+
-+/* ADS7038 MAX CH2 LSB Register */
-+#define ADS7038_MAX_CH2_LSB_REG		0x64
-+
-+/* ADS7038 MAX CH2 MSB Register */
-+#define ADS7038_MAX_CH2_MSB_REG		0x65
-+
-+/* ADS7038 MAX CH3 LSB Register */
-+#define ADS7038_MAX_CH3_LSB_REG		0x66
-+
-+/* ADS7038 MAX CH3 MSB Register */
-+#define ADS7038_MAX_CH3_MSB_REG		0x67
-+
-+/* ADS7038 MAX CH4 LSB Register */
-+#define ADS7038_MAX_CH4_LSB_REG		0x68
-+
-+/* ADS7038 MAX CH4 MSB Register */
-+#define ADS7038_MAX_CH4_MSB_REG		0x69
-+
-+/* ADS7038 MAX CH5 LSB Register */
-+#define ADS7038_MAX_CH5_LSB_REG		0x6A
-+
-+/* ADS7038 MAX CH5 MSB Register */
-+#define ADS7038_MAX_CH5_MSB_REG		0x6B
-+
-+/* ADS7038 MAX CH6 LSB Register */
-+#define ADS7038_MAX_CH6_LSB_REG		0x6C
-+
-+/* ADS7038 MAX CH6 MSB Register */
-+#define ADS7038_MAX_CH6_MSB_REG		0x6D
-+
-+/* ADS7038 MAX CH7 LSB Register */
-+#define ADS7038_MAX_CH7_LSB_REG		0x6E
-+
-+/* ADS7038 MAX CH7 MSB Register */
-+#define ADS7038_MAX_CH7_MSB_REG		0x6F
-+
-+/* ADS7038 MIN CH0 LSB Register */
-+#define ADS7038_MIN_CH0_LSB_REG		0x80
-+
-+/* ADS7038 MIN CH0 MSB Register */
-+#define ADS7038_MIN_CH0_MSB_REG		0x81
-+
-+/* ADS7038 MIN CH1 LSB Register */
-+#define ADS7038_MIN_CH1_LSB_REG		0x82
-+
-+/* ADS7038 MIN CH1 MSB Register */
-+#define ADS7038_MIN_CH1_MSB_REG		0x83
-+
-+/* ADS7038 MIN CH2 LSB Register */
-+#define ADS7038_MIN_CH2_LSB_REG		0x84
-+
-+/* ADS7038 MIN CH2 MSB Register */
-+#define ADS7038_MIN_CH2_MSB_REG		0x85
-+
-+/* ADS7038 MIN CH3 LSB Register */
-+#define ADS7038_MIN_CH3_LSB_REG		0x86
-+
-+/* ADS7038 MIN CH3 MSB Register */
-+#define ADS7038_MIN_CH3_MSB_REG		0x87
-+
-+/* ADS7038 MIN CH4 LSB Register */
-+#define ADS7038_MIN_CH4_LSB_REG		0x88
-+
-+/* ADS7038 MIN CH4 MSB Register */
-+#define ADS7038_MIN_CH4_MSB_REG		0x89
-+
-+/* ADS7038 MIN CH5 LSB Register */
-+#define ADS7038_MIN_CH5_LSB_REG		0x8A
-+
-+/* ADS7038 MIN CH5 MSB Register */
-+#define ADS7038_MIN_CH5_MSB_REG		0x8B
-+
-+/* ADS7038 MIN CH6 LSB Register */
-+#define ADS7038_MIN_CH6_LSB_REG		0x8C
-+
-+/* ADS7038 MIN CH6 MSB Register */
-+#define ADS7038_MIN_CH6_MSB_REG		0x8D
-+
-+/* ADS7038 MIN CH7 LSB Register */
-+#define ADS7038_MIN_CH7_LSB_REG		0x8E
-+
-+/* ADS7038 MIN CH7 MSB Register */
-+#define ADS7038_MIN_CH7_MSB_REG		0x8F
-+
-+/* ADS7038 RECENT CH0 LSB Register */
-+#define ADS7038_RECENT_CH0_LSB_REG	0xA0
-+
-+/* ADS7038 RECENT CH0 MSB Register */
-+#define ADS7038_RECENT_CH0_MSB_REG	0xA1
-+
-+/* ADS7038 RECENT CH1 LSB Register */
-+#define ADS7038_RECENT_CH1_LSB_REG	0xA2
-+
-+/* ADS7038 RECENT CH1 MSB Register */
-+#define ADS7038_RECENT_CH1_MSB_REG	0xA3
-+
-+/* ADS7038 RECENT CH2 LSB Register */
-+#define ADS7038_RECENT_CH2_LSB_REG	0xA4
-+
-+/* ADS7038 RECENT CH2 MSB Register */
-+#define ADS7038_RECENT_CH2_MSB_REG	0xA5
-+
-+/* ADS7038 RECENT CH3 LSB Register */
-+#define ADS7038_RECENT_CH3_LSB_REG	0xA6
-+
-+/* ADS7038 RECENT CH3 MSB Register */
-+#define ADS7038_RECENT_CH3_MSB_REG	0xA7
-+
-+/* ADS7038 RECENT CH4 LSB Register */
-+#define ADS7038_RECENT_CH4_LSB_REG	0xA8
-+
-+/* ADS7038 RECENT CH4 MSB Register */
-+#define ADS7038_RECENT_CH4_MSB_REG	0xA9
-+
-+/* ADS7038 RECENT CH5 LSB Register */
-+#define ADS7038_RECENT_CH5_LSB_REG	0xAA
-+
-+/* ADS7038 RECENT CH5 MSB Register */
-+#define ADS7038_RECENT_CH5_MSB_REG	0xAB
-+
-+/* ADS7038 RECENT CH6 LSB Register */
-+#define ADS7038_RECENT_CH6_LSB_REG	0xAC
-+
-+/* ADS7038 RECENT CH6 MSB Register */
-+#define ADS7038_RECENT_CH6_MSB_REG	0xAD
-+
-+/* ADS7038 RECENT CH7 LSB Register */
-+#define ADS7038_RECENT_CH7_LSB_REG	0xAE
-+
-+/* ADS7038 RECENT CH7 MSB Register */
-+#define ADS7038_RECENT_CH7_MSB_REG	0xAF
-+
-+/* ADS7038 GPO0 Trigger Event Selection Register */
-+#define ADS7038_GPO0_TRIG_EVENT_SEL_REG		0xC3
-+
-+/* ADS7038 GPO1 Trigger Event Selection Register */
-+#define ADS7038_GPO1_TRIG_EVENT_SEL_REG		0xC5
-+
-+/* ADS7038 GPO2 Trigger Event Selection Register */
-+#define ADS7038_GPO2_TRIG_EVENT_SEL_REG		0xC7
-+
-+/* ADS7038 GPO3 Trigger Event Selection Register */
-+#define ADS7038_GPO3_TRIG_EVENT_SEL_REG		0xC9
-+
-+/* ADS7038 GPO4 Trigger Event Selection Register */
-+#define ADS7038_GPO4_TRIG_EVENT_SEL_REG		0xCB
-+
-+/* ADS7038 GPO5 Trigger Event Selection Register */
-+#define ADS7038_GPO5_TRIG_EVENT_SEL_REG		0xCD
-+
-+/* ADS7038 GPO6 Trigger Event Selection Register */
-+#define ADS7038_GPO6_TRIG_EVENT_SEL_REG		0xCF
-+
-+/* ADS7038 GPO7 Trigger Event Selection Register */
-+#define ADS7038_GPO7_TRIG_EVENT_SEL_REG		0xD1
-+
-+/* ADS7038 GPO Trigger Configuration Register */
-+#define ADS7038_GPO_TRIG_CFG_REG		0xE9
-+
-+/* ADS7038 GPO Value Trigger Register */
-+#define ADS7038_GPO_VALUE_TRIG_REG	0xEB
-+
-+/* ADS7038 Register Address Max */
-+#define ADS7038_REG_ADDRESS_MAX		0xEB
-+
-+/* Channel IDs to use for manual mode */
-+enum MANUAL_CHID {
-+	AIN0 = ADS7038_CHANNEL_SEL_MCHILDID_AIN0,
-+	AIN1 = ADS7038_CHANNEL_SEL_MCHILDID_AIN1,
-+	AIN2 = ADS7038_CHANNEL_SEL_MCHILDID_AIN2,
-+	AIN3 = ADS7038_CHANNEL_SEL_MCHILDID_AIN3,
-+	AIN4 = ADS7038_CHANNEL_SEL_MCHILDID_AIN4,
-+	AIN5 = ADS7038_CHANNEL_SEL_MCHILDID_AIN5,
-+	AIN6 = ADS7038_CHANNEL_SEL_MCHILDID_AIN6,
-+	AIN7 = ADS7038_CHANNEL_SEL_MCHILDID_AIN7,
-+	AIN_MAX,
-+};
-+
-+/* Functional Modes */
-+enum FUNC_MODE {
-+	MAN = 0,
-+	ON_THE_FLY,
-+	AUTO_SEQ,
-+	AUTO,
-+};
-+
-+struct ads7038_ch_meas_result {
-+	unsigned int raw;
-+	unsigned int status;
-+	u8 faverage;		/* Flag indicates average result */
-+	u8 fstatus;		/* Flag indicated if status is appended */
-+};
-+
-+struct device;
-+struct iio_dev;
-+struct regmap;
-+struct regulator;
-+
-+/* Functions to address registers and */
-+struct ads7038_info {
-+	/* Address configuration registers of IC */
-+	int (*read_reg)(struct device *dev, const unsigned int reg,
-+			unsigned int *val);
-+	int (*write_reg)(struct device *dev, const unsigned int reg,
-+			 unsigned int val);
-+	/* Perform a single read of a channel */
-+	int (*read_channel)(struct iio_dev *indio_dev,
-+			    const enum MANUAL_CHID chan,
-+			    struct ads7038_ch_meas_result *const res);
-+};
-+
-+struct ads7038_data {
-+	struct device *dev;
-+	const struct ads7038_info *info;
-+	struct regmap *regmap;
-+
-+	enum FUNC_MODE func_mode;	/* actual measure mode */
-+	u8 faverage;		/* flag indicates averaging enabled */
-+	u8 fstatus;		/* flag indicates status appended */
-+
-+	struct mutex lock;	/* Mutex for single communication resource */
-+
-+	struct regulator *reg;	/* Regulator that controls ADC reference voltage */
-+};
-+
-+/* Regmap configurations */
-+extern const struct regmap_config ads7038_regmap_config;
-+
-+/* Probe called from different transports */
-+int ads7038_common_probe(struct device *parent, const struct ads7038_info *info,
-+			 struct regmap *const regmap,
-+			 struct regulator *const ref_voltage_reg,
-+			 const char *name, const int irq);
-+
-+int ads7038_common_remove(struct device *parent);
-+
-+#endif
--- 
-2.42.0
+>=20
+> ANALOG DEVICES INC IIO DRIVERS
+> M:	Lars-Peter Clausen <lars@metafoo.de>
+> M:	Michael Hennerich <Michael.Hennerich@analog.com>
+> ...
+> F:	Documentation/devicetree/bindings/iio/*/adi,*
+>=20
+> So any queries should hit Michael anyway.
+>=20
+> LGTM but I'll also want the dt binding maintainers input before picking t=
+his up.
+>=20
+> Jonathan
+>=20
+> > ---
+> >
+> > v3 changes:
+> > * Expanded top-level description of A0/A1 lines.
+> > * Added required voltage -supply properties. (I did not pick up Rob's
+> >   Reviewed-by since I wasn't sure if this was trivial enough.)
+> >
+> > v2 changes:
+> > * Add Co-developed-by:
+> > * Remove extraneous quotes on strings
+> > * Remove extraneous pipe on some multi-line descriptions
+> >
+> >  .../bindings/iio/resolver/adi,ad2s1210.yaml        | 177
+> +++++++++++++++++++++
+> >  1 file changed, 177 insertions(+)
+> >
+> > diff --git
+> > a/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
+> > b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
+> > new file mode 100644
+> > index 000000000000..8980b3cd8337
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s1210.yaml
+> > @@ -0,0 +1,177 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> > +---
+> > +$id:
+> > +https://urldefense.com/v3/__http://devicetree.org/schemas/iio/resolve
+> >
+> +r/adi,ad2s1210.yaml*__;Iw!!A3Ni8CS0y2Y!_mSGRdlDHlqAKev0r38paa3K51l2k
+> G
+> > +o8bShqK2TH4nAF_cYu2WixIa62xv0p-A70086DQmj4oN9FWvOlk78$
+> > +$schema:
+> > +https://urldefense.com/v3/__http://devicetree.org/meta-schemas/core.y
+> >
+> +aml*__;Iw!!A3Ni8CS0y2Y!_mSGRdlDHlqAKev0r38paa3K51l2kGo8bShqK2TH4n
+> AF_c
+> > +Yu2WixIa62xv0p-A70086DQmj4oN9FWzdE10U$
+> > +
+> > +title: Analog Devices AD2S1210 Resolver-to-Digital Converter
+> > +
+> > +maintainers:
+> > +  - Michael Hennerich <michael.hennerich@analog.com>
+> > +
+> > +description: |
+> > +  The AD2S1210 is a complete 10-bit to 16-bit resolution tracking
+> > +  resolver-to-digital converter, integrating an on-board programmable
+> > +  sinusoidal oscillator that provides sine wave excitation for
+> > +  resolvers.
+> > +
+> > +  The AD2S1210 allows the user to read the angular position or the
+> > + angular velocity data directly from the parallel outputs or through
+> > + the serial interface.
+> > +
+> > +  The mode of operation of the communication channel (parallel or
+> > + serial) is  selected by the A0 and A1 input pins. In normal mode,
+> > + data is latched by  toggling the SAMPLE line and can then be read
+> > + directly. In configuration mode,  data is read or written using a
+> > + register access scheme (address byte with  read/write flag and data b=
+yte).
+> > +
+> > +    A1  A0  Result
+> > +     0   0  Normal mode - position output
+> > +     0   1  Normal mode - velocity output
+> > +     1   0  Reserved
+> > +     1   1  Configuration mode
+> > +
+> > +  In normal mode, the resolution of the digital output is selected
+> > + using  the RES0 and RES1 input pins. In configuration mode, the
+> > + resolution is  selected by setting the RES0 and RES1 bits in the cont=
+rol
+> register.
+> > +
+> > +  RES1  RES0  Resolution (Bits)
+> > +     0     0  10
+> > +     0     1  12
+> > +     1     0  14
+> > +     1     1  16
+> > +
+> > +  Note on SPI connections: The CS line on the AD2S1210 should
+> > + hard-wired to  logic low and the WR/FSYNC line on the AD2S1210
+> > + should be connected to the  SPI CSn output of the SPI controller.
+> > +
+> > +  Datasheet:
+> > +
+> > + https://www.analog.com/media/en/technical-documentation/data-sheets/
+> > + ad2s1210.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: adi,ad2s1210
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  spi-max-frequency:
+> > +    maximum: 25000000
+> > +
+> > +  spi-cpha: true
+> > +
+> > +  avdd-supply:
+> > +    description:
+> > +      A 4.75 to 5.25 V regulator that powers the Analog Supply Voltage
+> (AVDD)
+> > +      pin.
+> > +
+> > +  dvdd-supply:
+> > +    description:
+> > +      A 4.75 to 5.25 V regulator that powers the Digital Supply Voltag=
+e (DVDD)
+> > +      pin.
+> > +
+> > +  vdrive-supply:
+> > +    description:
+> > +      A 2.3 to 5.25 V regulator that powers the Logic Power Supply Inp=
+ut
+> > +      (VDrive) pin.
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +    description: External oscillator clock (CLKIN).
+> > +
+> > +  reset-gpios:
+> > +    description:
+> > +      GPIO connected to the /RESET pin. As the line needs to be low fo=
+r the
+> > +      reset to be active, it should be configured as GPIO_ACTIVE_LOW.
+> > +    maxItems: 1
+> > +
+> > +  sample-gpios:
+> > +    description:
+> > +      GPIO connected to the /SAMPLE pin. As the line needs to be low t=
+o
+> trigger
+> > +      a sample, it should be configured as GPIO_ACTIVE_LOW.
+> > +    maxItems: 1
+> > +
+> > +  mode-gpios:
+> > +    description:
+> > +      GPIO lines connected to the A0 and A1 pins. These pins select th=
+e data
+> > +      transfer mode.
+> > +    minItems: 2
+> > +    maxItems: 2
+> > +
+> > +  resolution-gpios:
+> > +    description:
+> > +      GPIO lines connected to the RES0 and RES1 pins. These pins selec=
+t the
+> > +      resolution of the digital output. If omitted, it is assumed that=
+ the
+> > +      RES0 and RES1 pins are hard-wired to match the assigned-resoluti=
+on-bits
+> > +      property.
+> > +    minItems: 2
+> > +    maxItems: 2
+> > +
+> > +  fault-gpios:
+> > +    description:
+> > +      GPIO lines connected to the LOT and DOS pins. These pins combine=
+d
+> indicate
+> > +      the type of fault present, if any. As these pins a pulled low to=
+ indicate
+> > +      a fault condition, they should be configured as GPIO_ACTIVE_LOW.
+> > +    minItems: 2
+> > +    maxItems: 2
+> > +
+> > +  adi,fixed-mode:
+> > +    description:
+> > +      This is used to indicate the selected mode if A0 and A1 are hard=
+-wired
+> > +      instead of connected to GPIOS (i.e. mode-gpios is omitted).
+> > +    $ref: /schemas/types.yaml#/definitions/string
+> > +    enum: [config, velocity, position]
+> > +
+> > +  assigned-resolution-bits:
+> > +    description:
+> > +      Resolution of the digital output required by the application. Th=
+is
+> > +      determines the precision of the angle and/or the maximum speed t=
+hat
+> can
+> > +      be measured. If resolution-gpios is omitted, it is assumed that =
+RES0 and
+> > +      RES1 are hard-wired to match this value.
+> > +    enum: [10, 12, 14, 16]
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - spi-cpha
+> > +  - avdd-supply
+> > +  - dvdd-supply
+> > +  - vdrive-supply
+> > +  - clocks
+> > +  - sample-gpios
+> > +  - assigned-resolution-bits
+> > +
+> > +oneOf:
+> > +  - required:
+> > +      - mode-gpios
+> > +  - required:
+> > +      - adi,fixed-mode
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +
+> > +    spi {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        resolver@0 {
+> > +            compatible =3D "adi,ad2s1210";
+> > +            reg =3D <0>;
+> > +            spi-max-frequency =3D <20000000>;
+> > +            spi-cpha;
+> > +            avdd-supply =3D <&avdd_regulator>;
+> > +            dvdd-supply =3D <&dvdd_regulator>;
+> > +            vdrive-supply =3D <&vdrive_regulator>;
+> > +            clocks =3D <&ext_osc>;
+> > +            sample-gpios =3D <&gpio0 90 GPIO_ACTIVE_LOW>;
+> > +            mode-gpios =3D <&gpio0 86 0>, <&gpio0 87 0>;
+> > +            resolution-gpios =3D <&gpio0 88 0>, <&gpio0 89 0>;
+> > +            assigned-resolution-bits =3D <16>;
+> > +        };
+> > +    };
+> >
 

@@ -2,52 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 862647BA279
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC507BA28B
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233653AbjJEPiu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 11:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
+        id S233193AbjJEPk4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 11:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234155AbjJEPi0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:38:26 -0400
+        with ESMTP id S233303AbjJEPkZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:40:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2F1346EC;
-        Thu,  5 Oct 2023 07:53:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6ABC43391;
-        Thu,  5 Oct 2023 14:52:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 703D4545A8;
+        Thu,  5 Oct 2023 07:55:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B660C433C8;
+        Thu,  5 Oct 2023 14:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696517528;
-        bh=UWSMwZTut3ulgdkrQlViyt+e9WAmg8wzX3BDkFVh4Fk=;
+        s=k20201202; t=1696517714;
+        bh=HNIq3gj9XwCf0xsBOATUrSerdosaus7GV7T403QAhtE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uv6KEnn88kGqvoYCqaxameFBk/0fMjMdvTUk1fXSuCnAlcj8ae8RF3vM7Ar3kzzCp
-         n6/MkMtWBfbU4ChNRsWTZjr5Xj1iw5oIGa1pK35iskZTyJ7dyz0E35k1ITwnK49Nui
-         HTZ0g8I7FCDOIyBlaD8N+j0vo0xBn0f89BZNZjYZFwr+izDD8zxOdhO87K8tH3e4YU
-         hALtCR3/253I66T56mVGqgpMxWgrBvedcjK+FE22aO/N4tlZ2ywcpzM6wltgDWwROT
-         9swgT9aojZhsZOjPnOFDWCH+FnSPE5qNbcNGA0f9yJvgXzXgJX+kDkxA0CseIm/UGa
-         ipR7MghYIfDZg==
-Date:   Thu, 5 Oct 2023 15:52:11 +0100
+        b=q7yZ9fIOszejj1ZSjqvX2yzqeAQL22a/p632pnplredVzk0zsxhbSKUlwuULgVwTM
+         MHRB/4NAy0t5Cm6hKKkf/XK/jjJ102iq443DLpaGtGmCNl2DbR9IIncKsRduliJBnZ
+         Apu2j/DOVEahsd6tW+WazbnbfGgKiFcElTEGNgE+Sjrp+SiXi5d6dQtL2zmvrIxs3B
+         cmUqBAMC2sdhNGjsbKfmvyEg6NmfCfRoAQa/Zs67DQkMSfSevAMwv2VPD1+sm2xDaZ
+         BlvUsYJQyChMUHJOx5h9QWSe+8gUDFmsWDhP+XT9qXD/WEeXUACP0tCafm/DvmsWKb
+         1xqWul69SyLKA==
+Date:   Thu, 5 Oct 2023 15:55:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <dlechner@baylibre.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
- fault events
-Message-ID: <20231005155211.102a4292@jic23-huawei>
-In-Reply-To: <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
-        <20230930170046.36637e9c@jic23-huawei>
-        <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?B?QW5k?= =?UTF-8?B?csOp?= Apitzsch <git@apitzsch.eu>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: magnetometer: ak8975: Fix 'Unexpected device'
+ error
+Message-ID: <20231005155518.2fa53b49@jic23-huawei>
+In-Reply-To: <20231003165535.000000b8@Huawei.com>
+References: <20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu>
+        <20231002102745.0000540b@Huawei.com>
+        <ZRqOn8tnJqvU22ex@smile.fi.intel.com>
+        <20231003165535.000000b8@Huawei.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,79 +55,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Oct 2023 11:58:17 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, 3 Oct 2023 16:55:35 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> On Sat, Sep 30, 2023 at 11:00=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
-> >
-> > On Fri, 29 Sep 2023 12:23:31 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
-> > > From: David Lechner <david@lechnology.com>
-> > >
-> > > From: David Lechner <dlechner@baylibre.com>
-> > >
-> > > When reading the position and velocity on the AD2S1210, there is also=
- a
-> > > 3rd byte following the two data bytes that contains the fault flag bi=
-ts.
-> > > This patch adds support for reading this byte and generating events w=
-hen
-> > > faults occur.
-> > >
-> > > The faults are mapped to various channels and event types in order to
-> > > have a unique event for each fault.
-> > >
-> > > Signed-off-by: David Lechner <dlechner@baylibre.com> =20
-> >
-> > Use of x and y modifiers is a little odd.  What was your reasoning?
-> > Was it just that there was a X_OR_Y modifier?  If so, don't use that!
-> > It seemed like a good idea at the time, but it's not nice to deal with
-> > and requires a channel with that modifier to hang the controls off
-> > + make sure userspace expects that event code. =20
+> On Mon, 2 Oct 2023 12:34:23 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>=20
+> > On Mon, Oct 02, 2023 at 10:27:45AM +0100, Jonathan Cameron wrote: =20
+> > > On Sun, 1 Oct 2023 18:09:56 +0200
+> > > Andr=C3=A9 Apitzsch <git@apitzsch.eu> wrote:   =20
+> >  =20
+> > > > Fixes: 4f9ea93afde1 ("iio: magnetometer: ak8975: Convert enum->poin=
+ter for data in the match tables")   =20
+> >=20
+> > ^^^ (1)
+> >=20
+> > ...
+> >  =20
+> > > So we need the spacer until someone converts this driver to use
+> > > pointers instead for both of and ACPI tables.   =20
+> >=20
+> > Isn't it done by (1) which is in your tree?
+> >  =20
+> I can't remember what's in my tree :)
+>=20
+> Good point...
 >=20
 >=20
-> Regarding the point about "requires a channel with that modifier to
-> hang the controls off...". Although that comment was about modifiers,
-> does it also apply in general.
->=20
-> There are several fault events that don't have any configurable
-> parameters, namely _sine/cosine inputs clipping_ and _velocity exceeds
-> max tracking rate_. So there won't be any attributes that contain the
-> event specification for those (e.g. no `events/in_angl0_*`
-> attributes). It sounds like this would be a problem as well?
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to poke at it.
 
-It's fine to have a channel that doesn't have controls or the ability
-to be read.
-
-We do have history of doing what you have here (a couple
-of accelerometers do it) but it's esoteric and rather hard for userspace
-to comprehend so I'd rather not introduce it for other types of devices.
-
-I think we should go with the most flexible option of allowing
-events to trigger when they 'may be true' to incorporate this case.
-Unfortunately I can't see another option that would scale to all the
-random combinations of events that might occur.  There are all sorts
-of extensions we could make to the event descriptions, but only at the
-cost of breaking backwards compatibility and simplicity.
-
-SWith hindsight the whole IIO_MOD_X_OR_Y_OR_Z mess was a design error :(
-We can teach userspace code about that quirk for accelerations where
-the one that would be hard to handle is the AND case used for
-freefall detectors (you detect that the signal magnitude is near 0 for
-all axes).  I can't think of another option for that one other than
-the weird modifier (unlike this case)
-
->=20
-> Should we consider a IIO_EV_INFO_LABEL so that we can have some sort
-> of attribute (namely `events/<dir>_<channel spec>_label`) so that
-> userspace can enumerate expected events for non-configurable events?
-
-Probably needs something similar to channel labelling, so a separate
-callback given we don't handle strings, but sure something like this
-would be useful and provide 'hints' along the lines of what the
-datasheet calls a particular event.  Not however for what event is sent
-as such info should be apparent from the event naming.
+Thanks,
 
 Jonathan
+
+

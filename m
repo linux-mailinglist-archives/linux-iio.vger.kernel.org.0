@@ -2,192 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C77007BA4F0
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135E97BA647
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239135AbjJEQNZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 12:13:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S235148AbjJEQdI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 12:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240619AbjJEQMN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:12:13 -0400
+        with ESMTP id S237125AbjJEQcc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:32:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FCF8E83;
-        Thu,  5 Oct 2023 08:30:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE2C433C8;
-        Thu,  5 Oct 2023 15:30:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8EE29B30;
+        Thu,  5 Oct 2023 08:38:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34DDC433C7;
+        Thu,  5 Oct 2023 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696519820;
-        bh=NuCRzVUHR0bnsOcH35H7Igd6EZEuXotDfK6oA+MFivU=;
+        s=k20201202; t=1696520320;
+        bh=xqrKx4Kd9+GEwmVN2AFDTKEreQZrRE6Wy71JqH75+OE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DSk3o6BMFz/HP6YdCF+ymIM9ZPmIIQKeOBtjR8ZIrBsKjFoHlcMiUp+sSphuRNM62
-         QShlaLmJzjOcxIHc/A1sENsoNoMLt8m5shB/GCi4WRYazmSMRRXH3g5C3juu2BNcon
-         VFAUaFsOIKXhAcLgHGmmP3gCXcUmamGS9hdRrVnAHnGJrohiavwuRHWw+4jQo09tIv
-         +x5ICQZTsJ+cxR7GREtxjgncSFpoKUoA2pYD9Wj+zHX/8epsMIENMqeVRw7tL0XWmH
-         W4KPdtQMM2XClL06LSLG/fIOH8TWLekDzTrNH6/lzs/700dGnAFEh5zS2o0dbBtExn
-         nx6N2YdOmTIkA==
-Date:   Thu, 5 Oct 2023 16:30:26 +0100
+        b=LqCYd0wShQEfQ34aCPNRYpG9e1rGe5FNRozfs/5sOKIA7TYVUgPTcijdTj55JFWfQ
+         auvuso6FRNRvidbRggXlLxtCwXiF4iNXlwfJGvSsgs/hO/3op6t1hPMIONqaXIrZ2w
+         Q2mv8hKik9Ebvlu064LHGgiEYBub0T7YobcTM+ShQ4zVSJljVfhHsn+FnEEg/UkAaR
+         BrErZ1FXfwVsWQNVbdO755cLE4C3aM6wzbhZZHZouxWn1O/C4XMTe0UnflQ14xMm1W
+         Tx4Z1/aYWNgLgnxbBIfmbcjKn39eOQGviAjTdvZ0M81mTSMbXkfuSyR4yo7ZkMzGHY
+         8J1tjnGUqTqYQ==
+Date:   Thu, 5 Oct 2023 16:38:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: sanity check available_scan_masks array
-Message-ID: <20231005163026.2c7707de@jic23-huawei>
-In-Reply-To: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
-References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+To:     werneazc <werneazc@gmail.com>
+Cc:     Rob Herring <robh@kernel.org>, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, lars@metafoo.de, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andre Werner <andre.werner@systec-electronic.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti,ads7038: Add description
+ for ADS7038
+Message-ID: <20231005163844.3294e4e1@jic23-huawei>
+In-Reply-To: <CAKDJRcf4ikKWvENrg=9JW1EneY8qehD8HTxahL8x+5KxoCSQ0g@mail.gmail.com>
+References: <20231004102330.3713-1-andre.werner@systec-electronic.com>
+        <20231004151150.GA3140591-robh@kernel.org>
+        <CAKDJRcf4ikKWvENrg=9JW1EneY8qehD8HTxahL8x+5KxoCSQ0g@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Oct 2023 12:49:45 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Thu, 5 Oct 2023 05:51:40 +0200
+werneazc <werneazc@gmail.com> wrote:
 
-> When IIO goes through the available scan masks in order to select the
-> best suiting one, it will just accept the first listed subset of channels
-> which meets the user's requirements. If driver lists a mask which is a
-> subset of some of the masks previously in the array of
-> avaliable_scan_masks, then the latter one will never be selected.
-> 
-> Add a warning if driver registers masks which can't be used due to the
-> available_scan_masks-array ordering.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Hi Matti
+> Dear Mr. Herring,
+>=20
+> On Wed, Oct 4, 2023 at 5:11=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
+e:
+> >
+> > On Wed, Oct 04, 2023 at 12:23:29PM +0200, werneazc@gmail.com wrote: =20
+> > > From: Andre Werner <andre.werner@systec-electronic.com>
+> > > =20
+> >
+> > Needs a commit message. =20
+>=20
+> Added in an upcoming commit.
+>=20
+> > =20
+> > > Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
+> > > ---
+> > >  .../bindings/iio/adc/ti,ads7038.yaml          | 51 +++++++++++++++++=
+++
+> > >  1 file changed, 51 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7=
+038.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yam=
+l b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
+> > > new file mode 100644
+> > > index 000000000000..37fbae95c8e6
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
+> > > @@ -0,0 +1,51 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/ti,ads7038.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Texas Instruments ADS7038 and similar ADCs
+> > > +
+> > > +maintainers:
+> > > +  - Andre Werner <andre.werner@systec-electronic.com>
+> > > +
+> > > +description: |
+> > > +  Family of 7 channel, 12 bit ADCs with SPI/I2C interface.
+> > > +
+> > > +  Datasheet: https://www.ti.com/lit/gpn/ads7038
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - ti,ads7038
+> > > +      - ti,ads7138
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  spi-max-frequency:
+> > > +    maximum: 60000000
+> > > +
+> > > +  vref-supply:
+> > > +    description: Supplies the 2.5V or 5V reference voltage =20
+> >
+> > I don't see that in the datasheet. It has AVDD and DVDD. =20
+>=20
+> Yes, that was a copy-and-paste error from another description used as
+> a template.
+>=20
+> >
+> > Also, looks like there are GPIOs. Those aren't ever exposed to the OS? =
+=20
+>=20
+> Yes, you are right. This is a fundamental implementation of the driver
+> to support the chip family. I want to add further functionalities in
+> upcoming commits.
+> I wanted to get some feedback when the first steps are done to not
+> reinvent everything from the beginning if something is generally
+> wrong in the driver structure and the way I had used the APIs.
 
-Thanks for doing this.  A few comments inline + maybe we need to think
-about a unit test for the matching code. I feel we aren't pushing the
-corners of that in any drivers so far so it might bite us later.
+Device tree binding should fully describe the hardware, not what
+the driver currently implements.
 
-Still that's a job for another day.
-
-Jonathan
-
-> 
-> ---
-> The change was suggested by Jonathan here:
-> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
-> ---
->  drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
-> 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index c77745b594bd..d4f37f4eeec0 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
->  
->  static const struct iio_buffer_setup_ops noop_ring_setup_ops;
->  
-> +static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
-> +{
-> +	unsigned int num_masks, masklength, longs_per_mask;
-> +	const unsigned long *av_masks;
-> +	int i;
-> +
-> +	av_masks = indio_dev->available_scan_masks;
-> +	masklength = indio_dev->masklength;
-> +	longs_per_mask = BITS_TO_LONGS(masklength);
-> +
-> +	if (bitmap_empty(av_masks, masklength))
-> +		dev_warn(indio_dev->dev.parent, "empty scan mask\n");
-
-They'd definitely notice this one as you'd never be able to enable the
-buffer - if someone hasn't tested that, then meh.  Still this function
-is called sanity_check so might as well check for insanity.
-
-
-> +
-> +	for (num_masks = 0; *av_masks; num_masks++)
-
-I think we can't just check *av_masks - need bitmap_empty() as first
-long might be 0 but could be bits set in the next one.
-
-> +		av_masks += longs_per_mask;
-hmm. Makes me wonder if the available scan mask stuff actually works
-for large numbers of channels (so more than one long).  I don't think
-we have any drivers that both have large channel counts and use
-available_scan_masks.   The code is there to support matching in this
-case but probably wants a selftest at somepoint to make sure it will work
-if such a device comes along...
-
-
-> +
-> +	if (num_masks < 2)
-> +		return;
-
-Not sure it's worth bothering with this early exit route.  The loops
-will be trivial anyway if num_masks == 1.
-
-
-> +
-> +	av_masks = indio_dev->available_scan_masks;
-> +
-> +	/*
-> +	 * Go through all the masks from first to one before the last, and see
-> +	 * that no mask found later from the available_scan_masks array is a
-> +	 * subset of mask found earlier. If this happens, then the mask found
-> +	 * later will never get used because scanning the array is stopped when
-> +	 * the first suitable mask is found. Drivers should order the array of
-> +	 * available masks in the order of preference (presumably the least
-> +	 * costy to access masks first).
-> +	 */
-> +	for (i = 0; i < num_masks - 1; i++) {
-> +		const unsigned long *mask1;
-> +		int j;
-> +
-> +		mask1 = av_masks + i * longs_per_mask;
-> +		for (j = i + 1; j < num_masks; j++) {
-> +			const unsigned long *mask2;
-> +
-> +			mask2 = av_masks + j * longs_per_mask;
-> +			if (bitmap_subset(mask2, mask1, masklength))
-> +				dev_warn(indio_dev->dev.parent,
-> +					 "available_scan_mask %d subset of %d. Never used\n",
-> +					 j, i);
-> +		}
-> +	}
-> +}
-> +
->  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->  {
->  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> @@ -1934,6 +1981,16 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->  		goto error_unreg_debugfs;
->  	}
->  
-> +	/*
-> +	 * In order to not wreck utter havoc we just warn for now. Might want
-> +	 * to convert this to a failure after people have had time to act upon
-> +	 * the warning. It'd be nice to check this earlier, but we need the
-> +	 * iio_buffers_alloc_sysfs_and_mask() to have the masklength set.
-
-It's not going to break anyone if they get this wrong, they will just waste time
-and possibly power reading too many channels!  So warn is appropriate I think.
-
-I'm not sure the comment adds much in general so I'd slim it down or drop it
-from v2.
-
-> +	 */
-> +	if (indio_dev->available_scan_masks)
-> +		iio_sanity_check_avail_scan_masks(indio_dev);
-> +
-One blank line is enough ;)
-
-> +
->  	ret = iio_device_register_sysfs(indio_dev);
->  	if (ret) {
->  		dev_err(indio_dev->dev.parent,
-> 
-> base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
+So add the GPIOs for v3.
+>=20
+> > =20
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - vref-supply
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    spi {
+> > > +        #address-cells =3D <1>;
+> > > +        #size-cells =3D <0>;
+> > > +
+> > > +        adc@0 {
+> > > +            compatible =3D "ti,ads7038";
+> > > +            reg =3D <0>;
+> > > +            vref-supply =3D <&refin_supply>;
+> > > +            spi-max-frequency =3D <10000000>;
+> > > +        };
+> > > +    };
+> > > --
+> > > 2.42.0
+> > > =20
+>=20
+> Regards,
+>=20
+> Andr=C3=A9
 

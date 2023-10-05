@@ -2,49 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 254BB7BA388
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5196E7BA098
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237866AbjJEP55 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 11:57:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37758 "EHLO
+        id S235505AbjJEOjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 10:39:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233998AbjJEP4o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:56:44 -0400
+        with ESMTP id S235999AbjJEOg1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:36:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2884ED8;
-        Thu,  5 Oct 2023 06:52:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1E4C4AF6A;
-        Thu,  5 Oct 2023 13:32:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A542570A;
+        Thu,  5 Oct 2023 06:59:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C49C4AF73;
+        Thu,  5 Oct 2023 13:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696512782;
-        bh=BGZ37AUUud0e+3inw2fY++6jafQ2Lo1A7FxJ7ZWUW4w=;
+        s=k20201202; t=1696513089;
+        bh=IHjcJEdzOn5XpuR4rXMoCHN3hdl6l6qbxCqy3uQRR68=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=b3cGXr1nzW94OjzF9GJSrd+tj7iA+dk3N9vU2mSZ3nZ6hy5iRAIro31mwNe87ghmC
-         RWu7hPzf8zrr1BOg15vzlq0qip/k/qWJxO5c9bp48EGc+IVwo09JSU565Gd9aXGSYr
-         mC2661YLfXyGxm/osYsLycgUA+Opm2qvhYIq6kyymniScSJXzkTs2sNrmzjHvm5sTX
-         zmQtgAa2ke/84PQYj9N0CBih+BSclejJavfVL76HakvznVoxjmYvvUBHrD7+Q8hcqg
-         XC4D4XTFpc+lihsAeTC0i8H2UTeVYK5NiKQxrN59J3xS1bDylMLMKVo1pp+4u8V+73
-         XN3qxW2LDNkqw==
-Date:   Thu, 5 Oct 2023 14:33:06 +0100
+        b=hdhzp6tQXl6tvjcq1x6OfQN/c974rRNvEZaKS4R2RpqKqYifvkLl1kGaRhD9rvTWZ
+         ga2o1a64DLAey6jhLH1efLIVZcJHzJVYtHSbSBDeeDLl0dXGd/ZS7Ygvj8zyhp2RAW
+         x+wXEqby0DQ5y+eMWs3uRzwYGu4Ih4nuE+Y+rcnvbcwXqb1D4Im5BcZJ6epVdP3Bdl
+         sc9A9slKc5hXs8qQY85LP0eHqVN/TW0AoYE+g0tYBo9R/THyvGAAJxt/RsuTDTAlg4
+         s165+CJNCUAcAv+zB8o7RtfsIo3Oip1XoIuBKen59qYNX95pHYqnyK18ENhmkZ7k6n
+         7AvPCNpAyslzQ==
+Date:   Thu, 5 Oct 2023 14:38:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>, <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
-Subject: Re: [PATCH v2 2/2] iio: adc: meson: improve error logging at probe
- stage
-Message-ID: <20231005143306.6add05e6@jic23-huawei>
-In-Reply-To: <8ef7ff71-08e1-b0af-483d-e7cf3cc5efea@sberdevices.ru>
-References: <20230721102413.255726-1-gnstark@sberdevices.ru>
-        <20230721102413.255726-3-gnstark@sberdevices.ru>
-        <ZLphZzO20QW+t1m/@smile.fi.intel.com>
-        <20230722181559.02c8362c@jic23-huawei>
-        <8ef7ff71-08e1-b0af-483d-e7cf3cc5efea@sberdevices.ru>
+To:     David Lechner <dlechner@baylibre.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 13/27] staging: iio: resolver: ad2s1210: rework gpios
+Message-ID: <20231005143812.42aff573@jic23-huawei>
+In-Reply-To: <20230930155536.5a5e982e@jic23-huawei>
+References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+        <20230929-ad2s1210-mainline-v3-13-fa4364281745@baylibre.com>
+        <20230930155536.5a5e982e@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,47 +59,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Oct 2023 15:47:23 +0300
-George Stark <gnstark@sberdevices.ru> wrote:
+On Sat, 30 Sep 2023 15:55:36 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Hello Jonathan
+> On Fri, 29 Sep 2023 12:23:18 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> It seems like you haven't had time for this patch yet. Should I fix it 
-> myself or just be more patient?
-I've been exceptionally slow on this one.  Was still sitting in patchwork
-but I'd failed to notice the dependency was now upstream.
-
-Applied to the togreg branch of iio.git and I'll push that out initially
-as testing later today (I have to do a rebase to fix up an issue
-0-day caught on previous push before I do).
-
-Thanks for the poke and sorry it was necessary!
-
-Jonathan
-
-> 
-> On 7/22/23 20:15, Jonathan Cameron wrote:
-> > On Fri, 21 Jul 2023 13:43:51 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >   
-> >> On Fri, Jul 21, 2023 at 01:23:09PM +0300, George Stark wrote:  
-> >>> Add log messages for errors that may occur at probe stage  
-> >>
-> >> the probe  
+> > From: David Lechner <david@lechnology.com>
 > > 
-> > British English - excellent ! :) (I argue this one far too often in
-> > specification committees :)
+> > From: David Lechner <dlechner@baylibre.com>
 > > 
-> >   
-> >>
-> >> stage.
-> >>  
+> > - Remove "adi," prefix from gpio names.
+> > - Sample gpio is now expected to be active low.
+> > - Convert A0 and A1 gpios to "mode-gpios" gpio array.
+> > - Convert RES0 and RES1 gpios to "resolution-gpios" gpio array.
+> > - Remove extraneous lookup tables.
+> > - Remove unused mode field from state struct.
+> > - Swap argument order of ad2s1210_set_mode() while we are touching this.
 > > 
-> > I can tidy this up, but the patch will be a while anyway given the fix
-> > needs to work it's way into the upstream for my togreg branch (and I need
-> > to have send a pull request for togreg as well).
-> > 
-> > Jonathan
-> >   
-> 
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>  
+> Applied,
+0-day ran smatch on this and it picked up that a log isn't released in
+an error path.  I've fixed that up with a goto error_ret and will push out a
+fresh testing branch for 0-day to take another look at.
 
+...
+
+> > @@ -546,7 +537,9 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
+> >  	int ret;
+> >  
+> >  	mutex_lock(&st->lock);
+> > -	ad2s1210_set_resolution_pin(st);
+> > +	ret = ad2s1210_set_resolution_gpios(st, st->resolution);
+> > +	if (ret < 0)
+Exiting with lock held.  There is an error_ret label that releases the lock
+so use that.
+
+> > +		return ret;
+> >  
+> >  	/* Use default config register value plus resolution from devicetree. */
+> >  	data = FIELD_PREP(AD2S1210_PHASE_LOCK_RANGE_44, 1);

@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 891007BA1EB
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 862647BA279
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbjJEPEh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 11:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39724 "EHLO
+        id S233653AbjJEPiu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 11:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233553AbjJEPDk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:03:40 -0400
+        with ESMTP id S234155AbjJEPi0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:38:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A1C22CAD;
-        Thu,  5 Oct 2023 07:37:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7BC433CD;
-        Thu,  5 Oct 2023 14:37:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2F1346EC;
+        Thu,  5 Oct 2023 07:53:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6ABC43391;
+        Thu,  5 Oct 2023 14:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696516652;
-        bh=d5+bWfEGP0zzHGLVWG6rfcD81J5u9prc/EH+42gaTdg=;
+        s=k20201202; t=1696517528;
+        bh=UWSMwZTut3ulgdkrQlViyt+e9WAmg8wzX3BDkFVh4Fk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=a1pDpUJju0AcHm6fU/iQF79zZqsI1AxA1yGAzioSWGVAKnD1Xq9zeenOhE/5fKDqV
-         TKboDLI/Y1gm20v/8EGW3Z8DJ8wYaTwvGs3CBZpm4mrRrI793gKRkF4+lkmX1tyl0g
-         rkWCSi2pc2uFUOx4YMnDhTV8LwclzXzMDxM16SnneD7tqw7yTjIktegCKVtpRNKuYa
-         3J910BSa05WkhnQgbyj6sxFKFDIfI5jb7ircIji5xhKhuAewSympDCGD2l2K58+fO5
-         Ic3fROCGfH57hDvUwxWZ6OadV4I6ieHsffJLXw3Q2lQjI4spxxlqXpCx6sw5C31YBC
-         4glJ/qqpq2v5w==
-Date:   Thu, 5 Oct 2023 15:37:36 +0100
+        b=uv6KEnn88kGqvoYCqaxameFBk/0fMjMdvTUk1fXSuCnAlcj8ae8RF3vM7Ar3kzzCp
+         n6/MkMtWBfbU4ChNRsWTZjr5Xj1iw5oIGa1pK35iskZTyJ7dyz0E35k1ITwnK49Nui
+         HTZ0g8I7FCDOIyBlaD8N+j0vo0xBn0f89BZNZjYZFwr+izDD8zxOdhO87K8tH3e4YU
+         hALtCR3/253I66T56mVGqgpMxWgrBvedcjK+FE22aO/N4tlZ2ywcpzM6wltgDWwROT
+         9swgT9aojZhsZOjPnOFDWCH+FnSPE5qNbcNGA0f9yJvgXzXgJX+kDkxA0CseIm/UGa
+         ipR7MghYIfDZg==
+Date:   Thu, 5 Oct 2023 15:52:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -40,14 +40,14 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
- threshold to event attr
-Message-ID: <20231005153736.2603dbbf@jic23-huawei>
-In-Reply-To: <CAMknhBFKSqXvgOeRjGAOfURzndmxmCffdU6MUirEmfzKqwM_Kg@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] staging: iio: resolver: ad2s1210: implement
+ fault events
+Message-ID: <20231005155211.102a4292@jic23-huawei>
+In-Reply-To: <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
 References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
-        <20230930164251.5c07723c@jic23-huawei>
-        <CAMknhBFKSqXvgOeRjGAOfURzndmxmCffdU6MUirEmfzKqwM_Kg@mail.gmail.com>
+        <20230929-ad2s1210-mainline-v3-26-fa4364281745@baylibre.com>
+        <20230930170046.36637e9c@jic23-huawei>
+        <CAMknhBH4+cUSX_j3-Y0xuTEiZHd3Ke4Zm8FdxLZJwn5gr_d-ug@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,114 +61,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Oct 2023 11:09:11 -0500
+On Mon, 2 Oct 2023 11:58:17 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On Sat, Sep 30, 2023 at 10:42=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
+> On Sat, Sep 30, 2023 at 11:00=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
 rg> wrote:
 > >
-> > On Fri, 29 Sep 2023 12:23:27 -0500
+> > On Fri, 29 Sep 2023 12:23:31 -0500
 > > David Lechner <dlechner@baylibre.com> wrote:
 > > =20
 > > > From: David Lechner <david@lechnology.com>
 > > >
 > > > From: David Lechner <dlechner@baylibre.com>
 > > >
-> > > The AD2S1210 has a programmable threshold for the loss of signal (LOS)
-> > > fault. This fault is triggered when either the sine or cosine input
-> > > falls below the threshold voltage.
+> > > When reading the position and velocity on the AD2S1210, there is also=
+ a
+> > > 3rd byte following the two data bytes that contains the fault flag bi=
+ts.
+> > > This patch adds support for reading this byte and generating events w=
+hen
+> > > faults occur.
 > > >
-> > > This patch converts the custom device LOS threshold attribute to an
-> > > event falling edge threshold attribute on a new monitor signal channe=
-l.
-> > > The monitor signal is an internal signal that combines the amplitudes
-> > > of the sine and cosine inputs as well as the current angle and positi=
-on
-> > > output. This signal is used to detect faults in the input signals. =20
+> > > The faults are mapped to various channels and event types in order to
+> > > have a unique event for each fault.
+> > >
+> > > Signed-off-by: David Lechner <dlechner@baylibre.com> =20
 > >
-> > Hmm. Looking forwards, I'm less sure that we should be shoving all these
-> > error conditions onto one channel. Fundamentally we have
-> > sine and cosine inputs. I think we should treat those as separate chann=
-els
-> > and include a third differential channel between them. =20
+> > Use of x and y modifiers is a little odd.  What was your reasoning?
+> > Was it just that there was a X_OR_Y modifier?  If so, don't use that!
+> > It seemed like a good idea at the time, but it's not nice to deal with
+> > and requires a channel with that modifier to hang the controls off
+> > + make sure userspace expects that event code. =20
 >=20
-> At first, I did consider a differential channel as you suggested in
-> v2. However, the datasheet is quite clear that the LOS and DOS faults
-> (and only those faults) come from a signal it calls the "monitor
-> signal". This signal is defined as:
 >=20
->     Monitor =3D A1 * sin(theta)  * sin(phi) + A2 * cos(theta) * cos(phi)
+> Regarding the point about "requires a channel with that modifier to
+> hang the controls off...". Although that comment was about modifiers,
+> does it also apply in general.
 >=20
-> where A1 * sin(theta) is the the sine input, A2 * cos(theta) is the
-> cosine input and phi is the position output. So mathematically
-> speaking, there is no signal that is the difference between the two
-> inputs. (See "Theory of Operation" section in the datasheet.)
+> There are several fault events that don't have any configurable
+> parameters, namely _sine/cosine inputs clipping_ and _velocity exceeds
+> max tracking rate_. So there won't be any attributes that contain the
+> event specification for those (e.g. no `events/in_angl0_*`
+> attributes). It sounds like this would be a problem as well?
 
-Hmm. That's certainly a bit more complex than I expected.
-Relying on the brief description led me astray.
+It's fine to have a channel that doesn't have controls or the ability
+to be read.
 
-It's related to the differences in the measured and  as if
-theta =3D=3D phi and A1 =3D=3D A2 (ideal) then it will be A1.
+We do have history of doing what you have here (a couple
+of accelerometers do it) but it's esoteric and rather hard for userspace
+to comprehend so I'd rather not introduce it for other types of devices.
 
-I can see it's relevant to DOS, but not LOS.  The description of LOS
-seems to overlap a number of different things unfortunately.
+I think we should go with the most flexible option of allowing
+events to trigger when they 'may be true' to incorporate this case.
+Unfortunately I can't see another option that would scale to all the
+random combinations of events that might occur.  There are all sorts
+of extensions we could make to the event descriptions, but only at the
+cost of breaking backwards compatibility and simplicity.
 
-
-
->=20
-> But if we want to hide these internal details and don't care about a
-> strict definition of "differential", then what is suggested below
-> seems fine.
-
-Probably best to introduce that monitor signal though we'll have
-to be a bit vague about what it is which has the side effect that
-anyone trying to understand what on earth these faults are is going
-to be confused (having read the datasheet section a couple of times
-I'm not 100% sure...)
+SWith hindsight the whole IIO_MOD_X_OR_Y_OR_Z mess was a design error :(
+We can teach userspace code about that quirk for accelerations where
+the one that would be hard to handle is the AND case used for
+freefall detectors (you detect that the signal magnitude is near 0 for
+all axes).  I can't think of another option for that one other than
+the weird modifier (unlike this case)
 
 >=20
-> >
-> > So this one becomes a double event (you need to signal it on both
-> > cosine and sine channels).  The DOS overange is similar.
-> > The DOS mismatch is a threshold on the differential channel giving
-> >
-> > events/in_altvoltage0_thresh_falling_value
-> > events/in_altvoltage1_thresh_falling_value (these match)
-> > events/in_altvoltage0_thresh_rising_value
-> > events/in_altvoltage1_thresh_rising_value (matches previous which is fi=
-ne)
-> > events/in_altvoltage1-altvoltage0_mag_rising_value
-> >
-> > Does that work here?  Avoids smashing different types of signals togeth=
-er.
-> > We could even do the LOT as differential between two angle channels
-> > (tracking one and measured one) but meh that's getting complex.>
-> > Note this will rely on channel labels to make the above make any sense =
-at all. =20
->=20
-> I think this could be OK - I think what matters most is having some
-> documentation that maps the faults and registers on the chip to the
-> iio names. Where would the sine/cosine clipping fault fit in though? I
-> got a bit too creative and used X_OR_Y to differentiate it (see
-> discussion in "staging: iio: resolver: ad2s1210: implement fault
-> events"). Strictly speaking, it should probably be a type: threshold,
-> direction: either event on both the sine and cosine input channels
-> (another double event) since it occurs if either of the signal exceeds
-> the power or ground rail voltage. But we already have threshold rising
-> and threshold falling on these channels with a different meaning. I
-> guess it could call it magnitude instead of a threshold?
+> Should we consider a IIO_EV_INFO_LABEL so that we can have some sort
+> of attribute (namely `events/<dir>_<channel spec>_label`) so that
+> userspace can enumerate expected events for non-configurable events?
 
-Tricky indeed.  Though I guess we only hit the clipping case after
-LOS or DOS fires or if their thresholds are set too wide (is that
-even possible?).  So it is useful to report it as we are already in
-error? Or can we combine the cases by treating it as a cap on the
-threshold controls for LOS and DOS?
-
-Even when they aren't just there for error reporting, designers
-seem to always come up with new create signals to use for event
-detection and sometimes it's a real struggle to map them to
-something general.
+Probably needs something similar to channel labelling, so a separate
+callback given we don't handle strings, but sure something like this
+would be useful and provide 'hints' along the lines of what the
+datasheet calls a particular event.  Not however for what event is sent
+as such info should be apparent from the event naming.
 
 Jonathan
-
-

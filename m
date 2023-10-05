@@ -2,141 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96BFD7BA54A
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C77007BA4F0
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240917AbjJEQPi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 12:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
+        id S239135AbjJEQNZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 12:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240864AbjJEQNk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:13:40 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B469019
-        for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 01:45:42 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533c5d10dc7so1153320a12.3
-        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 01:45:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696495541; x=1697100341; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+4P4b96UdXQbXmBFJo6wRwH4nx/RGhKjCusuMDEpgm8=;
-        b=IaiCchk81SKtI+qBVw4jZEUBplOweq5ikh0cpn0Z1ee4qpObt9ATd+n+Tbi65BqG3G
-         cdjpr3ERb+477kslh7X2vLhy6FHdsfJHn3LRn+IMKO39SY0IpGQ90t7RbnQIm7V3Wrty
-         lUGIDCh22l2/xCasIBdQSYYH7WumCJMkmXCHBP+Yl0apc0GCfRTPME+PXLAe3pwtMhuk
-         qB/rCte3MBEuQa8bwGmlwwFe2MyLi2lU31fae9c7mdjPb5RshVqEIAHO3K/05mkCrHe/
-         T1JnJ2AFtMk8aPhYay/jxm9oONm0tATfCnlbg+6W8LCfOqcxfdAT4cSiVZjNkYuBEkP8
-         OqNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696495541; x=1697100341;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+4P4b96UdXQbXmBFJo6wRwH4nx/RGhKjCusuMDEpgm8=;
-        b=e+cYjmfwvzgmt6rX3ThdDuO75dNSdLmdE/as5XBI101GfCgOAoY4cE8nw2U1BbOk2C
-         6ZCSTAdZ1lvuIz2qcYAig7AN/uZkBNYID1DJlrWqmO5gPmkHawH/73mTyqaa/44o/8DG
-         kHr6nGPs88UAkG+At/7mbPm7WugaL2/h2adxTerb42njLe4EzKVe5P9++wUOI4jM2A6J
-         Vbf6i/3MmWAK4rmns9dlSUWxHF0N9sxEygUby2U7WM5ucVq0Jweme+sGNTzLqgdeOJ+f
-         aorgqR9jTnAnz0TuHcuz7V9cfAOP9n3dPMZuDOl5GIHqTpGYJvRHKiEwNjsWUjLkn+Jr
-         N3/g==
-X-Gm-Message-State: AOJu0YyHLfq3tozhFsq86398sD8aK+rT4UQpF1Dyy/6NFDrAhsFivbQv
-        emuCn+iSksvXE3O7sti7tv7sVg==
-X-Google-Smtp-Source: AGHT+IFIYpuS8ITCn8vKA9+EFXwFRJjNpinVTzMkXbu7BuMUtTrludu2valwtbzVgOkOTEJTCZDjeg==
-X-Received: by 2002:a17:906:31c5:b0:9a2:5bf:8b14 with SMTP id f5-20020a17090631c500b009a205bf8b14mr4453180ejf.22.1696495540590;
-        Thu, 05 Oct 2023 01:45:40 -0700 (PDT)
-Received: from [192.168.1.197] (5-157-101-10.dyn.eolo.it. [5.157.101.10])
-        by smtp.gmail.com with ESMTPSA id a1-20020a1709064a4100b009b65a698c5csm815655ejv.57.2023.10.05.01.45.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Oct 2023 01:45:40 -0700 (PDT)
-Message-ID: <2699d3eb-f0c4-453c-8fa0-cb88fba7926e@linaro.org>
-Date:   Thu, 5 Oct 2023 10:45:39 +0200
+        with ESMTP id S240619AbjJEQMN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:12:13 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FCF8E83;
+        Thu,  5 Oct 2023 08:30:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE2C433C8;
+        Thu,  5 Oct 2023 15:30:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696519820;
+        bh=NuCRzVUHR0bnsOcH35H7Igd6EZEuXotDfK6oA+MFivU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DSk3o6BMFz/HP6YdCF+ymIM9ZPmIIQKeOBtjR8ZIrBsKjFoHlcMiUp+sSphuRNM62
+         QShlaLmJzjOcxIHc/A1sENsoNoMLt8m5shB/GCi4WRYazmSMRRXH3g5C3juu2BNcon
+         VFAUaFsOIKXhAcLgHGmmP3gCXcUmamGS9hdRrVnAHnGJrohiavwuRHWw+4jQo09tIv
+         +x5ICQZTsJ+cxR7GREtxjgncSFpoKUoA2pYD9Wj+zHX/8epsMIENMqeVRw7tL0XWmH
+         W4KPdtQMM2XClL06LSLG/fIOH8TWLekDzTrNH6/lzs/700dGnAFEh5zS2o0dbBtExn
+         nx6N2YdOmTIkA==
+Date:   Thu, 5 Oct 2023 16:30:26 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: sanity check available_scan_masks array
+Message-ID: <20231005163026.2c7707de@jic23-huawei>
+In-Reply-To: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: accel: mxc4005: allow module autoloading via OF
- compatible
-Content-Language: en-US
-To:     Luca Ceresoli <luca.ceresoli@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20231004-mxc4005-device-tree-support-v1-0-e7c0faea72e4@bootlin.com>
- <20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/10/2023 18:39, Luca Ceresoli wrote:
-> Add OF device table with compatible strings to allow automatic module
-> loading.
+On Tue, 3 Oct 2023 12:49:45 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+> When IIO goes through the available scan masks in order to select the
+> best suiting one, it will just accept the first listed subset of channels
+> which meets the user's requirements. If driver lists a mask which is a
+> subset of some of the masks previously in the array of
+> avaliable_scan_masks, then the latter one will never be selected.
 > 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Add a warning if driver registers masks which can't be used due to the
+> available_scan_masks-array ordering.
+> 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Hi Matti
+
+Thanks for doing this.  A few comments inline + maybe we need to think
+about a unit test for the matching code. I feel we aren't pushing the
+corners of that in any drivers so far so it might bite us later.
+
+Still that's a job for another day.
+
+Jonathan
+
+> 
 > ---
->  drivers/iio/accel/mxc4005.c | 8 ++++++++
+> The change was suggested by Jonathan here:
+> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
+> ---
+>  drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index c77745b594bd..d4f37f4eeec0 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
+>  
+>  static const struct iio_buffer_setup_ops noop_ring_setup_ops;
+>  
+> +static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
+> +{
+> +	unsigned int num_masks, masklength, longs_per_mask;
+> +	const unsigned long *av_masks;
+> +	int i;
+> +
+> +	av_masks = indio_dev->available_scan_masks;
+> +	masklength = indio_dev->masklength;
+> +	longs_per_mask = BITS_TO_LONGS(masklength);
+> +
+> +	if (bitmap_empty(av_masks, masklength))
+> +		dev_warn(indio_dev->dev.parent, "empty scan mask\n");
+
+They'd definitely notice this one as you'd never be able to enable the
+buffer - if someone hasn't tested that, then meh.  Still this function
+is called sanity_check so might as well check for insanity.
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> +
+> +	for (num_masks = 0; *av_masks; num_masks++)
 
-Best regards,
-Krzysztof
+I think we can't just check *av_masks - need bitmap_empty() as first
+long might be 0 but could be bits set in the next one.
+
+> +		av_masks += longs_per_mask;
+hmm. Makes me wonder if the available scan mask stuff actually works
+for large numbers of channels (so more than one long).  I don't think
+we have any drivers that both have large channel counts and use
+available_scan_masks.   The code is there to support matching in this
+case but probably wants a selftest at somepoint to make sure it will work
+if such a device comes along...
+
+
+> +
+> +	if (num_masks < 2)
+> +		return;
+
+Not sure it's worth bothering with this early exit route.  The loops
+will be trivial anyway if num_masks == 1.
+
+
+> +
+> +	av_masks = indio_dev->available_scan_masks;
+> +
+> +	/*
+> +	 * Go through all the masks from first to one before the last, and see
+> +	 * that no mask found later from the available_scan_masks array is a
+> +	 * subset of mask found earlier. If this happens, then the mask found
+> +	 * later will never get used because scanning the array is stopped when
+> +	 * the first suitable mask is found. Drivers should order the array of
+> +	 * available masks in the order of preference (presumably the least
+> +	 * costy to access masks first).
+> +	 */
+> +	for (i = 0; i < num_masks - 1; i++) {
+> +		const unsigned long *mask1;
+> +		int j;
+> +
+> +		mask1 = av_masks + i * longs_per_mask;
+> +		for (j = i + 1; j < num_masks; j++) {
+> +			const unsigned long *mask2;
+> +
+> +			mask2 = av_masks + j * longs_per_mask;
+> +			if (bitmap_subset(mask2, mask1, masklength))
+> +				dev_warn(indio_dev->dev.parent,
+> +					 "available_scan_mask %d subset of %d. Never used\n",
+> +					 j, i);
+> +		}
+> +	}
+> +}
+> +
+>  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  {
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> @@ -1934,6 +1981,16 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  		goto error_unreg_debugfs;
+>  	}
+>  
+> +	/*
+> +	 * In order to not wreck utter havoc we just warn for now. Might want
+> +	 * to convert this to a failure after people have had time to act upon
+> +	 * the warning. It'd be nice to check this earlier, but we need the
+> +	 * iio_buffers_alloc_sysfs_and_mask() to have the masklength set.
+
+It's not going to break anyone if they get this wrong, they will just waste time
+and possibly power reading too many channels!  So warn is appropriate I think.
+
+I'm not sure the comment adds much in general so I'd slim it down or drop it
+from v2.
+
+> +	 */
+> +	if (indio_dev->available_scan_masks)
+> +		iio_sanity_check_avail_scan_masks(indio_dev);
+> +
+One blank line is enough ;)
+
+> +
+>  	ret = iio_device_register_sysfs(indio_dev);
+>  	if (ret) {
+>  		dev_err(indio_dev->dev.parent,
+> 
+> base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
 

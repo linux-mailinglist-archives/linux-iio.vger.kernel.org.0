@@ -2,147 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A29AA7B9FD2
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9400E7BA0DF
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:52:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233477AbjJEOaN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 10:30:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37160 "EHLO
+        id S230299AbjJEOp2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 10:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234144AbjJEO2c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:28:32 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF7B21D01;
-        Thu,  5 Oct 2023 02:43:30 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so4129652a12.1;
-        Thu, 05 Oct 2023 02:43:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696499009; x=1697103809; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yFk1hMyZRR6j/Q7MSUiSQpNux3PKUHqj/LJOWiGIaOc=;
-        b=Qan5Z/GKLo1blKcuGgBwMCp0WOHAo/yDJuTzlDQPwAxR0RhTDs1dK5Yz6Af8PiJozm
-         r2pSeHQTCGv9+PqJNxESy4eWiJsVAGXEexJ1XoDJTY7v/J/95JFI/uVIRuVWRcYmxJ1k
-         zP1/xq4pxt1EqbxEEjvx4hKN6DcHkZ8guYW2TP7vWYvk2er8bNS0RrSgQwuGOXaDDpzC
-         OyRVvWBX9jsUcKWo3QgBboqnpf7tGEseXF1GEoCADqoCWQkP8lk3O9v7DulbNhsHhLGx
-         GHBFuKWrTTvTvTFl6d7Horu/l8DHCan/lihdYCj0pTXmF77+h2cKszNFEnR3v7MdZT0f
-         1EhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696499009; x=1697103809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yFk1hMyZRR6j/Q7MSUiSQpNux3PKUHqj/LJOWiGIaOc=;
-        b=dMaxldNOieM9KCdpMK9Sf2GCVWR/TCkIn4EB8n7s82njw2jDElToqwEKAELEk0xZkw
-         X6UBZim7JhdUDtkoOlWcA6ylaz8RJCuS6zSh8u/6vQGyVK3USupAo0YSFaZrcsbdM7uH
-         UeoYsLjzgqHnd8z5I5vWZM6zbBQMeohD9+9VT/574zNfXeJdR3LYl0iqHuj+5WP0vyE5
-         eLWx4iyAj6mQdQU20g2JK2WxdIGBI5+GsRfbY3gMWY5ecR/6bVSg8RXGq+kXA9aXwT+g
-         CDWqlgiY2bwRapMVs0mr8yEP0F81rIhmlf7sNTS2SEjfnEdvybMJJMdiebvPFZDwtNOb
-         Z7aA==
-X-Gm-Message-State: AOJu0YxA3TBh2SajVOZlmZzzHOOhXy8Q0RKS7CQxvApGLgJH4n75KV6X
-        gbxYoLg22snWnFTmjuGwarLxtyxc3vbfL6wHT3knLH/8aTw=
-X-Google-Smtp-Source: AGHT+IEUPEfNrlvMx3t5Sfp8v/9vGMhpyGjbTnVN6udKEfGdXvyew0SV3xmGgz4HOrJ5XMN/i8O1g6gCEDL32l2P1mg=
-X-Received: by 2002:a05:6402:2037:b0:534:2e37:dfd4 with SMTP id
- ay23-20020a056402203700b005342e37dfd4mr1824893edb.1.1696499009070; Thu, 05
- Oct 2023 02:43:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231005035933.31016-1-andre.werner@systec-electronic.com> <f2e2d122-f5a7-401e-a429-0a86c2c0b3ab@linaro.org>
-In-Reply-To: <f2e2d122-f5a7-401e-a429-0a86c2c0b3ab@linaro.org>
-From:   werneazc <werneazc@gmail.com>
-Date:   Thu, 5 Oct 2023 11:43:18 +0200
-Message-ID: <CAKDJRcczo+8FAfDzNBhdZb8uBx_q5zP+f_X+jdZTr0qENj6vuA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: ti,ads7038: Add description
- for ADS7038
+        with ESMTP id S239240AbjJEOmD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:42:03 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C430D8723C;
+        Thu,  5 Oct 2023 07:17:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5929C3277D;
+        Thu,  5 Oct 2023 10:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696502472;
+        bh=H7QsAgn7LBwCWmNPERn7PZ2ivqiRzZN2vcLos6zUMnQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TY0lOBANpSJ4TxeMou7VuKThItJptvQjXX0Y0Xu3mm8YmwEPszlJJ/MErAikK+n+i
+         6RDZ256+EU1mMXcXp+m0dIfqL0OhbR2Kl4eSWJZGU/vt4mQLO2voPdAxoPvhU3Xt5L
+         1Hr2NsE2qLzE5QIYoRf5V/Y5ZEtMkoiLYz5xxe5Jf3GWZ4EKntLhjh579aBa2g4mHV
+         cS6078ZODgR38pDzNZBBxUF05eOIKvqcKLTjWxGoG7VC8UvTIDaE2KMl7FuGA+dxGL
+         R02VNMyywG036Phd8x3Hzc+UGj+99bvQBe9Ro+c5p2xcrAbgGU+zo+LRkbIOw5yR7f
+         NLNUy1TO7x6fg==
+Date:   Thu, 5 Oct 2023 11:41:07 +0100
+From:   Conor Dooley <conor@kernel.org>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        lars@metafoo.de, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andre Werner <andre.werner@systec-electronic.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: add missing reset-gpios constrain
+Message-ID: <20231005-thrift-backer-d2f58a1bd441@spud>
+References: <20231005083650.92222-1-krzysztof.kozlowski@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="IP8sdSnYW24Jv8+L"
+Content-Disposition: inline
+In-Reply-To: <20231005083650.92222-1-krzysztof.kozlowski@linaro.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Renaming is done and will be published in v3 version of the patch.
-Waiting for remarks for the second patch file before publishing the
-next version of the patch set.
 
-Regards,
-Andr=C3=A9
+--IP8sdSnYW24Jv8+L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 5, 2023 at 9:33=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 05/10/2023 05:54, werneazc@gmail.com wrote:
-> > From: Andre Werner <andre.werner@systec-electronic.com>
-> >
-> > Add basic description for ADS7x38 ADC devices. The driver does only
-> > support a very basic set of functionalities provided by the chip.
-> > Also, the example in the description covers only a setup for ADS7038 de=
-vices
-> > while the driver structure will support both ADS7038 (SPI) and ADS7138 =
-(I2C) devices.
-> >
-> > Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
-> > ---
-> > - v2: Add commit message and correct vref-description copy-paste-error.
-> > ---
-> >  .../bindings/iio/adc/ti,ads7038.yaml          | 51 +++++++++++++++++++
-> >  1 file changed, 51 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads703=
-8.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml =
-b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
-> > new file mode 100644
-> > index 000000000000..d40869b9a604
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
-> > @@ -0,0 +1,51 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/ti,ads7038.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Texas Instruments ADS7038 and similar ADCs
-> > +
-> > +maintainers:
-> > +  - Andre Werner <andre.werner@systec-electronic.com>
-> > +
-> > +description: |
-> > +  Family of 7 channel, 12 bit ADCs with SPI/I2C interface.
-> > +
-> > +  Datasheet: https://www.ti.com/lit/gpn/ads7038
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - ti,ads7038
-> > +      - ti,ads7138
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 60000000
-> > +
-> > +  vref-supply:
-> > +    description: Supplies the reference voltage AVDD
->
-> Didn't you already get a comment that there is no vref but avdd, so
-> avdd-supply?
->
->
-> Best regards,
-> Krzysztof
->
+On Thu, Oct 05, 2023 at 10:36:50AM +0200, Krzysztof Kozlowski wrote:
+> The Documentation/devicetree/bindings/gpio/gpio-consumer-common.yaml
+> schema does not enforce number of reset GPIOs, thus each device binding
+> must do it.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+> ---
+>  Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml | 3 ++-
+>  Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml    | 3 ++-
+>  Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml | 3 ++-
+>  Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml | 3 ++-
+>  4 files changed, 8 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml=
+ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> index 2594fa192f93..2a04906531fb 100644
+> --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> @@ -32,7 +32,8 @@ properties:
+> =20
+>    spi-cpol: true
+> =20
+> -  reset-gpios: true
+> +  reset-gpios:
+> +    maxItems: 1
+> =20
+>    interrupts:
+>      minItems: 1
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml b/=
+Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> index 4e508bfcc9d8..5121685337b5 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> @@ -78,7 +78,8 @@ properties:
+>            - const: -1000
+>            - const: 22000
+> =20
+> -  reset-gpios: true
+> +  reset-gpios:
+> +    maxItems: 1
+> =20
+>    adi,dc-dc-ilim-microamp:
+>      enum: [150000, 200000, 250000, 300000, 350000, 400000]
+> diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml=
+ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> index b9b5beac33b2..5b6cde86b5a5 100644
+> --- a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> @@ -23,7 +23,8 @@ properties:
+>      maxItems: 1
+>      description: Connected to ADC_RDY pin.
+> =20
+> -  reset-gpios: true
+> +  reset-gpios:
+> +    maxItems: 1
+> =20
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml=
+ b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> index 2958c4ca75b4..167d10bd60af 100644
+> --- a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> @@ -23,7 +23,8 @@ properties:
+>      maxItems: 1
+>      description: Connected to ADC_RDY pin.
+> =20
+> -  reset-gpios: true
+> +  reset-gpios:
+> +    maxItems: 1
+> =20
+>  additionalProperties: false
+> =20
+> --=20
+> 2.34.1
+>=20
+
+--IP8sdSnYW24Jv8+L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZR6SwwAKCRB4tDGHoIJi
+0gJnAQCE6henlUKuR+rKeIPonoiRNWu9XupZ7JL5eHFos8uHxgEAsfvRvMaMcYu6
+ZlvDaY0cp2AXNAKJL00y4ydHUa3tSgM=
+=Kzfj
+-----END PGP SIGNATURE-----
+
+--IP8sdSnYW24Jv8+L--

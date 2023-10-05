@@ -2,50 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5196E7BA098
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D1687BA0D1
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235505AbjJEOjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 10:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
+        id S237035AbjJEOnP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 10:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235999AbjJEOg1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:36:27 -0400
+        with ESMTP id S237013AbjJEOhr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:37:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A542570A;
-        Thu,  5 Oct 2023 06:59:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C49C4AF73;
-        Thu,  5 Oct 2023 13:38:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D7C4EF2;
+        Thu,  5 Oct 2023 07:03:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BDEC43215;
+        Thu,  5 Oct 2023 14:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696513089;
-        bh=IHjcJEdzOn5XpuR4rXMoCHN3hdl6l6qbxCqy3uQRR68=;
+        s=k20201202; t=1696514554;
+        bh=Yym/0Ckebdzm9KAQ3LjZwwE9ndHEvxXkPTtFfyHgzvE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hdhzp6tQXl6tvjcq1x6OfQN/c974rRNvEZaKS4R2RpqKqYifvkLl1kGaRhD9rvTWZ
-         ga2o1a64DLAey6jhLH1efLIVZcJHzJVYtHSbSBDeeDLl0dXGd/ZS7Ygvj8zyhp2RAW
-         x+wXEqby0DQ5y+eMWs3uRzwYGu4Ih4nuE+Y+rcnvbcwXqb1D4Im5BcZJ6epVdP3Bdl
-         sc9A9slKc5hXs8qQY85LP0eHqVN/TW0AoYE+g0tYBo9R/THyvGAAJxt/RsuTDTAlg4
-         s165+CJNCUAcAv+zB8o7RtfsIo3Oip1XoIuBKen59qYNX95pHYqnyK18ENhmkZ7k6n
-         7AvPCNpAyslzQ==
-Date:   Thu, 5 Oct 2023 14:38:12 +0100
+        b=ER3vAkdFfURm/ku44XkFaBj8mcSYJLYFIYPR8MrjZrUJHY3tihb1iK/Bz/mNn5mJX
+         nqafOXXXRV/PZt8t2NgzI/Kdq3BZIsN9QCNi5Gdy+6eXj0uTql3Cn6PLdrt8hky8md
+         ozSiQcR+qZRxEJWWYd1Baedcigz67LabOdu7W4mm0UQV5M6dhp111qJ4M7y3fODTfk
+         V4sR7fedFXtIjsCvaM5S+R9s7HSQthyB8cVFHA48Jyg1elyf9RoT4FQOca2mibPYdt
+         SN4tvojfOQ4tWW81z9o1Ues63Mc8ksEvPQjebNgHEicof6x7R3Iiir30sCJ6gwaD+7
+         5ps5SdnvV4MhQ==
+Date:   Thu, 5 Oct 2023 15:02:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <dlechner@baylibre.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 13/27] staging: iio: resolver: ad2s1210: rework gpios
-Message-ID: <20231005143812.42aff573@jic23-huawei>
-In-Reply-To: <20230930155536.5a5e982e@jic23-huawei>
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-13-fa4364281745@baylibre.com>
-        <20230930155536.5a5e982e@jic23-huawei>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Justin Stitt <justinstitt@google.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: stm32-adc: replace deprecated strncpy
+Message-ID: <20231005150238.0f5ff100@jic23-huawei>
+In-Reply-To: <202309301056.5A21C37D5@keescook>
+References: <20230921-strncpy-drivers-iio-adc-stm32-adc-c-v1-1-c50eca098597@google.com>
+        <202309232006.690F89A@keescook>
+        <20230930184118.73d7465a@jic23-huawei>
+        <202309301056.5A21C37D5@keescook>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,43 +57,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 30 Sep 2023 15:55:36 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, 30 Sep 2023 10:57:03 -0700
+Kees Cook <keescook@chromium.org> wrote:
 
-> On Fri, 29 Sep 2023 12:23:18 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+> On Sat, Sep 30, 2023 at 06:41:18PM +0100, Jonathan Cameron wrote:
+> > On Sat, 23 Sep 2023 20:15:09 -0700
+> > Kees Cook <keescook@chromium.org> wrote:
+> >   
+> > > On Thu, Sep 21, 2023 at 04:54:00AM +0000, Justin Stitt wrote:  
+> > > > `strncpy` is deprecated for use on NUL-terminated destination strings [1].
+> > > > 
+> > > > We should prefer more robust and less ambiguous string interfaces.
+> > > > 
+> > > > We expect adc->chan_name[val] to be NUL-terminated based on ch_name's
+> > > > use within functions that expect NUL-terminated strings like strncmp and
+> > > > printf-likes:
+> > > > | 	if (!strncmp(stm32_adc_ic[i].name, ch_name, STM32_ADC_CH_SZ)) {
+> > > > | 		/* Check internal channel availability */
+> > > > | 		switch (i) {
+> > > > | 		case STM32_ADC_INT_CH_VDDCORE:
+> > > > | 			if (!adc->cfg->regs->or_vddcore.reg)
+> > > > | 				dev_warn(&indio_dev->dev,
+> > > > | 					 "%s channel not available\n", ch_name);
+> > > > ...
+> > > > 
+> > > > There is no evidence that NUL-padding is needed either.    
+> > > 
+> > > Agreed -- it's used as a C string everywhere I can see.
+> > >   
+> > > > 
+> > > > Considering the above, a suitable replacement is `strscpy` [2] due to
+> > > > the fact that it guarantees NUL-termination on the destination buffer
+> > > > without unnecessarily NUL-padding. If, for any reason, NUL-padding _is_
+> > > > required we should go for `strscpy_pad`.
+> > > > 
+> > > > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> > > > Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+> > > > Link: https://github.com/KSPP/linux/issues/90
+> > > > Cc: linux-hardening@vger.kernel.org
+> > > > Signed-off-by: Justin Stitt <justinstitt@google.com>
+> > > > ---
+> > > > Note: build-tested
+> > > > ---
+> > > >  drivers/iio/adc/stm32-adc.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> > > > index f7613efb870d..9cdcf396d901 100644
+> > > > --- a/drivers/iio/adc/stm32-adc.c
+> > > > +++ b/drivers/iio/adc/stm32-adc.c
+> > > > @@ -2209,7 +2209,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+> > > >  				ret = -EINVAL;
+> > > >  				goto err;
+> > > >  			}
+> > > > -			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+> > > > +			strscpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);    
+> > > 
+> > > I still prefer sizeof($dst), but yes, these are the same:
+> > > 
+> > >         char chan_name[STM32_ADC_CH_MAX][STM32_ADC_CH_SZ];
+> > > 
+> > > If this needs a v2, please improve the Subject, but it is technically
+> > > correct, so:  
+> > 
+> > Hi Kees,
+> > 
+> > I can tweak the subject whilst applying.  What did you have in mind
+> > as a better one?  
 > 
-> > From: David Lechner <david@lechnology.com>
-> > 
-> > From: David Lechner <dlechner@baylibre.com>
-> > 
-> > - Remove "adi," prefix from gpio names.
-> > - Sample gpio is now expected to be active low.
-> > - Convert A0 and A1 gpios to "mode-gpios" gpio array.
-> > - Convert RES0 and RES1 gpios to "resolution-gpios" gpio array.
-> > - Remove extraneous lookup tables.
-> > - Remove unused mode field from state struct.
-> > - Swap argument order of ad2s1210_set_mode() while we are touching this.
-> > 
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>  
-> Applied,
-0-day ran smatch on this and it picked up that a log isn't released in
-an error path.  I've fixed that up with a goto error_ret and will push out a
-fresh testing branch for 0-day to take another look at.
+> I would use "iio: adc: stm32-adc: Replace deprecated strncpy() with strscpy()"
+Makes sense. I also used the () approach to identify functions in the
+text of the patch description instead of `funcname`
 
-...
+Applied with those tweaks to the togreg branch of iio.git but initially
+just pushed out as testing to let 0-day take a look at it.
 
-> > @@ -546,7 +537,9 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
-> >  	int ret;
-> >  
-> >  	mutex_lock(&st->lock);
-> > -	ad2s1210_set_resolution_pin(st);
-> > +	ret = ad2s1210_set_resolution_gpios(st, st->resolution);
-> > +	if (ret < 0)
-Exiting with lock held.  There is an error_ret label that releases the lock
-so use that.
+Thanks,
 
-> > +		return ret;
-> >  
-> >  	/* Use default config register value plus resolution from devicetree. */
-> >  	data = FIELD_PREP(AD2S1210_PHASE_LOCK_RANGE_44, 1);
+Jonathan
+
+> 
+> Thanks!
+> 
+> -Kees
+> 
+

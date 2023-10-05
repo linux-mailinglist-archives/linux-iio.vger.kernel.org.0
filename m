@@ -2,125 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFA87BA3BE
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96BFD7BA54A
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:16:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236259AbjJEP6a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 11:58:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37758 "EHLO
+        id S240917AbjJEQPi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 12:15:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237198AbjJEP5g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:57:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9F95FEB;
-        Thu,  5 Oct 2023 08:17:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB54C433C7;
-        Thu,  5 Oct 2023 15:17:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696519033;
-        bh=CaTNBuS9Fb+l4tmi5Xy/KGFrITEbvOikbxtS6uzbucQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RmrQmJWsiOI0JOKuWZWH5xdVVFwz84p4aSCWCLx4AbpCab9LDFs+I7CKPX4pWDy71
-         y8S1ua7EdGnzFqblYc7vfLslKvpbicVKf9a9jx2Gi7UZH1Brwsin7U39NGSrlz2bjg
-         2CpMIAyxKbfSrs2ySjKKLzB6X7JCNECwTURpmEjjIEt8h/QU+wU5uOjfSGReSFWqMy
-         VSBZ9Ecczyox3r88Si/HGCH96nlwsN2/7kREX5rHFrLqIfEICs2WqnnKXxMHFBcjTA
-         YByJwxMeeQy08EwPtvKSZhIocbYJx1EeCn1a7QrifspH0K1HkhDFgm8dKDOwnz2qhM
-         4Py4qq+UtZvlg==
-Date:   Thu, 5 Oct 2023 16:17:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] tools: iio: iio_generic_buffer ensure alignment
-Message-ID: <20231005161718.612fab8c@jic23-huawei>
-In-Reply-To: <ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
-References: <ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S240864AbjJEQNk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:13:40 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B469019
+        for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 01:45:42 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533c5d10dc7so1153320a12.3
+        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 01:45:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696495541; x=1697100341; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+4P4b96UdXQbXmBFJo6wRwH4nx/RGhKjCusuMDEpgm8=;
+        b=IaiCchk81SKtI+qBVw4jZEUBplOweq5ikh0cpn0Z1ee4qpObt9ATd+n+Tbi65BqG3G
+         cdjpr3ERb+477kslh7X2vLhy6FHdsfJHn3LRn+IMKO39SY0IpGQ90t7RbnQIm7V3Wrty
+         lUGIDCh22l2/xCasIBdQSYYH7WumCJMkmXCHBP+Yl0apc0GCfRTPME+PXLAe3pwtMhuk
+         qB/rCte3MBEuQa8bwGmlwwFe2MyLi2lU31fae9c7mdjPb5RshVqEIAHO3K/05mkCrHe/
+         T1JnJ2AFtMk8aPhYay/jxm9oONm0tATfCnlbg+6W8LCfOqcxfdAT4cSiVZjNkYuBEkP8
+         OqNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696495541; x=1697100341;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+4P4b96UdXQbXmBFJo6wRwH4nx/RGhKjCusuMDEpgm8=;
+        b=e+cYjmfwvzgmt6rX3ThdDuO75dNSdLmdE/as5XBI101GfCgOAoY4cE8nw2U1BbOk2C
+         6ZCSTAdZ1lvuIz2qcYAig7AN/uZkBNYID1DJlrWqmO5gPmkHawH/73mTyqaa/44o/8DG
+         kHr6nGPs88UAkG+At/7mbPm7WugaL2/h2adxTerb42njLe4EzKVe5P9++wUOI4jM2A6J
+         Vbf6i/3MmWAK4rmns9dlSUWxHF0N9sxEygUby2U7WM5ucVq0Jweme+sGNTzLqgdeOJ+f
+         aorgqR9jTnAnz0TuHcuz7V9cfAOP9n3dPMZuDOl5GIHqTpGYJvRHKiEwNjsWUjLkn+Jr
+         N3/g==
+X-Gm-Message-State: AOJu0YyHLfq3tozhFsq86398sD8aK+rT4UQpF1Dyy/6NFDrAhsFivbQv
+        emuCn+iSksvXE3O7sti7tv7sVg==
+X-Google-Smtp-Source: AGHT+IFIYpuS8ITCn8vKA9+EFXwFRJjNpinVTzMkXbu7BuMUtTrludu2valwtbzVgOkOTEJTCZDjeg==
+X-Received: by 2002:a17:906:31c5:b0:9a2:5bf:8b14 with SMTP id f5-20020a17090631c500b009a205bf8b14mr4453180ejf.22.1696495540590;
+        Thu, 05 Oct 2023 01:45:40 -0700 (PDT)
+Received: from [192.168.1.197] (5-157-101-10.dyn.eolo.it. [5.157.101.10])
+        by smtp.gmail.com with ESMTPSA id a1-20020a1709064a4100b009b65a698c5csm815655ejv.57.2023.10.05.01.45.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Oct 2023 01:45:40 -0700 (PDT)
+Message-ID: <2699d3eb-f0c4-453c-8fa0-cb88fba7926e@linaro.org>
+Date:   Thu, 5 Oct 2023 10:45:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: accel: mxc4005: allow module autoloading via OF
+ compatible
+Content-Language: en-US
+To:     Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20231004-mxc4005-device-tree-support-v1-0-e7c0faea72e4@bootlin.com>
+ <20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Oct 2023 12:57:47 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-
-> The iio_generic_buffer can return garbage values when the total size of
-> scan data is not a multiple of the largest element in the scan. This can be
-> demonstrated by reading a scan, consisting, for example of one 4-byte and
-> one 2-byte element, where the 4-byte element is first in the buffer.
+On 04/10/2023 18:39, Luca Ceresoli wrote:
+> Add OF device table with compatible strings to allow automatic module
+> loading.
 > 
-> The IIO generic buffer code does not take into account the last two
-> padding bytes that are needed to ensure that the 4-byte data for next
-> scan is correctly aligned.
-> 
-> Add the padding bytes required to align the next sample with the scan size.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Fixes: e58537ccce73 ("staging: iio: update example application.")
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-all the normal reasons.
-
-Thanks,
-
-Jonathan
-> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
-> Revision history
-> v5 => v6:
->  - fix typo pointed by Andy (wan't => want).
-> v4 => v5:
->  - drop unnecessary comment.
->  - drop all other patches as those were already applied.
->  - add Fixes-tag.
-> v3 => v4:
->  - drop extra print and TODO coment
->  - add comment clarifying alignment sizes
-> ---
->  tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-> index 44bbf80f0cfd..0d0a7a19d6f9 100644
-> --- a/tools/iio/iio_generic_buffer.c
-> +++ b/tools/iio/iio_generic_buffer.c
-> @@ -54,9 +54,12 @@ enum autochan {
->  static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
->  {
->  	unsigned int bytes = 0;
-> -	int i = 0;
-> +	int i = 0, max = 0;
-> +	unsigned int misalignment;
->  
->  	while (i < num_channels) {
-> +		if (channels[i].bytes > max)
-> +			max = channels[i].bytes;
->  		if (bytes % channels[i].bytes == 0)
->  			channels[i].location = bytes;
->  		else
-> @@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
->  		bytes = channels[i].location + channels[i].bytes;
->  		i++;
->  	}
-> +	/*
-> +	 * We want the data in next sample to also be properly aligned so
-> +	 * we'll add padding at the end if needed. Adding padding only
-> +	 * works for channel data which size is 2^n bytes.
-> +	 */
-> +	misalignment = bytes % max;
-> +	if (misalignment)
-> +		bytes += max - misalignment;
->  
->  	return bytes;
->  }
-> 
-> base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+>  drivers/iio/accel/mxc4005.c | 8 ++++++++
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 

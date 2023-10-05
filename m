@@ -2,419 +2,219 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E186E7BA987
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 20:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A47527BAA0C
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 21:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231500AbjJESz7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 14:55:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39402 "EHLO
+        id S231469AbjJETZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 15:25:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230506AbjJESz5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 14:55:57 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2101790;
-        Thu,  5 Oct 2023 11:55:56 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2bfea381255so15922451fa.3;
-        Thu, 05 Oct 2023 11:55:56 -0700 (PDT)
+        with ESMTP id S231716AbjJETZY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 15:25:24 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B02D51
+        for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 12:25:16 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9b1ebc80d0aso244608166b.0
+        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 12:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696532154; x=1697136954; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696533913; x=1697138713; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X2LX0rOH4ptg6iToWhFnGDkQs1T8mG/o/1vt3Vpaz2Q=;
-        b=Q+15D+NdCSYrB6DnmgfTh5JiXPQmTu13eW8jJc3f7GOc1Q/KMGrc/CR4ciKrnfNRDP
-         Cl8KCoobeY+4VmpjYWY4pe/vd4bLH4f2p+tdprLezo0D4LfFPk01bXggsEILFF2CJ0J8
-         I7BKoRnsc8gZScDzS1ZHdUt69Ylg7II8RYmUOEjXC7xQXys5NV69UYpNTl9RKefN+TAO
-         yHs+fv52L/lg7Q5M1LojCFEbN/z7dU1Aj3sxrt7uD79B/YSjSC6XWL6KzsyOmkYGrvtu
-         zNtNXn96XxFs/mNV3FeEmeOJDIJt1LeDCQCjHRvlvt6sorrE1f0LzjlbR/G3KbznA2+/
-         wA7Q==
+        bh=QAIuNzRqeVKL4UBHwUYQTQv/MFOTl6dEpbXD6CCqo5M=;
+        b=CP+wsGlVZz+ZBWwKajzI5e//MDd4smfNBVfr7IWfyq0+QnepCbUxNgZEccvXVHMBZp
+         SJOje4LpCysyu932xIZpREMKVnEPC8KH5viEu01HeG4u8jsPdQ/V0xPRzXXtWZu9X7R+
+         mK28RFL3xFRUho+P+s8qJGLqt19rUgKSsdOF9OCmW5zlLMUVtZyLbZ8od7QeTvK2lMLI
+         mO4ZnejzbzuBvRFR+MtxVO+roPVXOWjHrJPZRn/04VWl3m9L06kCwzgInRmynmB2xZvr
+         4Yn9H5BrMo8A5LjmeFTLJJbIxKwq8TQ3Iz9dvtTFy5HTbrOj+FHfa3fXbQk0qmVIj1bI
+         fnlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696532154; x=1697136954;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1696533913; x=1697138713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X2LX0rOH4ptg6iToWhFnGDkQs1T8mG/o/1vt3Vpaz2Q=;
-        b=SHksMz2caZRgDaJSiIIZEaM6DENYUH7SpzDy0cPR1NZjXCqPiiW5N6MyN/AirxmsCo
-         48sdcNNK1qSkNIs1+zMIzhdxSInBEiV2jV+njjNNd9u5QBFstYRcVr1eiYI05Z+HTctW
-         jn9t710/sSfPWCaCfgE+SY8cHq4XReALUYodJxa9Y9c0+WCG84YO5RuABTY1j/BssmO1
-         77TmElHMQ/k0hnTnNi4mVleFEx7VbpXANNB7cnuORm0LMy7Ryp05MO+fDsR0jP2CbKzv
-         PaH7nhO9DZiQgrxY3vRjGeTP3qRBa04MUmdHVlbWnBoBjO9t6bDftmE6Z/IKnEgUBddA
-         NGag==
-X-Gm-Message-State: AOJu0Ywg2FyOHnxsayvO6YFuQ0Pbv9mFt+fN9tSACMLgs/bOKsnGEuuC
-        +Iuhi1ErOEkfW3gZbZZkluY=
-X-Google-Smtp-Source: AGHT+IEYPEVM4hPa0KSlcBVYQ7CkmspdXjQCVgrDUeGOufNkK8HH+4oPvjR05jZhD3HdTMrdKwrPyQ==
-X-Received: by 2002:a05:6512:2022:b0:502:a4f4:ced9 with SMTP id s2-20020a056512202200b00502a4f4ced9mr4914753lfs.62.1696532154028;
-        Thu, 05 Oct 2023 11:55:54 -0700 (PDT)
-Received: from fr.lan ([46.31.31.132])
-        by smtp.googlemail.com with ESMTPSA id q1-20020ac246e1000000b004fe48d0b639sm402341lfo.83.2023.10.05.11.55.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 11:55:53 -0700 (PDT)
-From:   Ivan Mikhaylov <fr0st61te@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        bh=QAIuNzRqeVKL4UBHwUYQTQv/MFOTl6dEpbXD6CCqo5M=;
+        b=B/YzzOBRLOjjuVhUks0eHvNS9NcHUsBQYN9C5jryHcA6zpzfBDoCk90w/lgz5kmdIR
+         dIDdsrS+TqjqagMmE4ZZcXJ2AXymu05Cbbyi/jL5r+ahG3mT/9PvSFXEyR8zE9ZsWaBj
+         6hB5XTva2902M9aUaGYQ41PDcdL+Q0rH7EiranWZpZw4vsp36Fa+IqqeFurmbhWhi8Hx
+         v6hwv7yqXrIyjx8vuhRVflHgbh44w6+CImsbPlBg7QNkHQ0EJBW6w5C5mmu1SFuHAP4Y
+         SpGOxwvsYfhUQPR+ba1L10VdszPFDyS6dEP+9HPCQyVPClBT9k22yXLjDGf2X+bg9CHn
+         is5A==
+X-Gm-Message-State: AOJu0Yx7ZfQQhbyiUUQA6LIcJyBZk6GBBG+MdKNSXVCRyc5QVlF/F3ob
+        6qoV2rQtUi7BVvYooCTNWhF8OvJggINR1tAnmPJXtA==
+X-Google-Smtp-Source: AGHT+IE/lNkGrp8J2WkjY7FP16+AvJpLMZkj9ptYmYvBvpsK946+tDKXzby/+pwCKElpnR04kI+486BfdcMim4oAt3U=
+X-Received: by 2002:a17:906:3048:b0:9ae:37d9:803e with SMTP id
+ d8-20020a170906304800b009ae37d9803emr5549553ejd.8.1696533913393; Thu, 05 Oct
+ 2023 12:25:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
+ <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
+ <20230930164251.5c07723c@jic23-huawei> <CAMknhBFKSqXvgOeRjGAOfURzndmxmCffdU6MUirEmfzKqwM_Kg@mail.gmail.com>
+ <20231005153736.2603dbbf@jic23-huawei>
+In-Reply-To: <20231005153736.2603dbbf@jic23-huawei>
+From:   David Lechner <dlechner@baylibre.com>
+Date:   Thu, 5 Oct 2023 14:25:02 -0500
+Message-ID: <CAMknhBEuX9sA_eHM2xqjGkDDtq-hDMtmmYyqYbER3B42TqWRmw@mail.gmail.com>
+Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
+ threshold to event attr
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        David Lechner <david@lechnology.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Ivan Mikhaylov <fr0st61te@gmail.com>
-Subject: [PATCH v4 2/2] iio: adc: Add driver support for MAX34408/9
-Date:   Thu,  5 Oct 2023 21:55:37 +0300
-Message-ID: <20231005185537.32267-3-fr0st61te@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231005185537.32267-1-fr0st61te@gmail.com>
-References: <20231005185537.32267-1-fr0st61te@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The MAX34408/MAX34409 are two- and four-channel current monitors that are
-configured and monitored with a standard I2C/SMBus serial interface. Each
-unidirectional current sensor offers precision high-side operation with a
-low full-scale sense voltage. The devices automatically sequence through
-two or four channels and collect the current-sense samples and average them
-to reduce the effect of impulse noise. The raw ADC samples are compared to
-user-programmable digital thresholds to indicate overcurrent conditions.
-Overcurrent conditions trigger a hardware output to provide an immediate
-indication to shut down any necessary external circuitry.
+On Thu, Oct 5, 2023 at 9:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Mon, 2 Oct 2023 11:09:11 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+>
+> > On Sat, Sep 30, 2023 at 10:42=E2=80=AFAM Jonathan Cameron <jic23@kernel=
+.org> wrote:
+> > >
+> > > On Fri, 29 Sep 2023 12:23:27 -0500
+> > > David Lechner <dlechner@baylibre.com> wrote:
+> > >
+> > > > From: David Lechner <david@lechnology.com>
+> > > >
+> > > > From: David Lechner <dlechner@baylibre.com>
+> > > >
+> > > > The AD2S1210 has a programmable threshold for the loss of signal (L=
+OS)
+> > > > fault. This fault is triggered when either the sine or cosine input
+> > > > falls below the threshold voltage.
+> > > >
+> > > > This patch converts the custom device LOS threshold attribute to an
+> > > > event falling edge threshold attribute on a new monitor signal chan=
+nel.
+> > > > The monitor signal is an internal signal that combines the amplitud=
+es
+> > > > of the sine and cosine inputs as well as the current angle and posi=
+tion
+> > > > output. This signal is used to detect faults in the input signals.
+> > >
+> > > Hmm. Looking forwards, I'm less sure that we should be shoving all th=
+ese
+> > > error conditions onto one channel. Fundamentally we have
+> > > sine and cosine inputs. I think we should treat those as separate cha=
+nnels
+> > > and include a third differential channel between them.
+> >
+> > At first, I did consider a differential channel as you suggested in
+> > v2. However, the datasheet is quite clear that the LOS and DOS faults
+> > (and only those faults) come from a signal it calls the "monitor
+> > signal". This signal is defined as:
+> >
+> >     Monitor =3D A1 * sin(theta)  * sin(phi) + A2 * cos(theta) * cos(phi=
+)
+> >
+> > where A1 * sin(theta) is the the sine input, A2 * cos(theta) is the
+> > cosine input and phi is the position output. So mathematically
+> > speaking, there is no signal that is the difference between the two
+> > inputs. (See "Theory of Operation" section in the datasheet.)
+>
+> Hmm. That's certainly a bit more complex than I expected.
+> Relying on the brief description led me astray.
+>
+> It's related to the differences in the measured and  as if
+> theta =3D=3D phi and A1 =3D=3D A2 (ideal) then it will be A1.
+>
+> I can see it's relevant to DOS, but not LOS.  The description of LOS
+> seems to overlap a number of different things unfortunately.
+>
 
-Add as ADC driver which only supports current monitoring for now.
+One thing to watch out for in the datasheet is the difference between
+the fault output pins and the fault bits read over the bus. The LOS
+output pin does indicate one or more of multiple faults, but we are
+not currently using that. We are only looking at the fault bits which
+are more granular.
 
-Link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+>
+>
+> >
+> > But if we want to hide these internal details and don't care about a
+> > strict definition of "differential", then what is suggested below
+> > seems fine.
+>
+> Probably best to introduce that monitor signal though we'll have
+> to be a bit vague about what it is which has the side effect that
+> anyone trying to understand what on earth these faults are is going
+> to be confused (having read the datasheet section a couple of times
+> I'm not 100% sure...)
+>
+> >
+> > >
+> > > So this one becomes a double event (you need to signal it on both
+> > > cosine and sine channels).  The DOS overange is similar.
+> > > The DOS mismatch is a threshold on the differential channel giving
+> > >
+> > > events/in_altvoltage0_thresh_falling_value
+> > > events/in_altvoltage1_thresh_falling_value (these match)
+> > > events/in_altvoltage0_thresh_rising_value
+> > > events/in_altvoltage1_thresh_rising_value (matches previous which is =
+fine)
+> > > events/in_altvoltage1-altvoltage0_mag_rising_value
+> > >
+> > > Does that work here?  Avoids smashing different types of signals toge=
+ther.
+> > > We could even do the LOT as differential between two angle channels
+> > > (tracking one and measured one) but meh that's getting complex.>
+> > > Note this will rely on channel labels to make the above make any sens=
+e at all.
+> >
+> > I think this could be OK - I think what matters most is having some
+> > documentation that maps the faults and registers on the chip to the
+> > iio names. Where would the sine/cosine clipping fault fit in though? I
+> > got a bit too creative and used X_OR_Y to differentiate it (see
+> > discussion in "staging: iio: resolver: ad2s1210: implement fault
+> > events"). Strictly speaking, it should probably be a type: threshold,
+> > direction: either event on both the sine and cosine input channels
+> > (another double event) since it occurs if either of the signal exceeds
+> > the power or ground rail voltage. But we already have threshold rising
+> > and threshold falling on these channels with a different meaning. I
+> > guess it could call it magnitude instead of a threshold?
+>
+> Tricky indeed.  Though I guess we only hit the clipping case after
+> LOS or DOS fires or if their thresholds are set too wide (is that
+> even possible?).
 
-Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
----
- drivers/iio/adc/Kconfig    |  11 ++
- drivers/iio/adc/Makefile   |   1 +
- drivers/iio/adc/max34408.c | 278 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 290 insertions(+)
- create mode 100644 drivers/iio/adc/max34408.c
+I suppose it _could_ be possible on the high side if the AVDD voltage
+supply was selected to be less than the 4.4V max of the threshold
+voltage registers.
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 517b3db114b8..c215a2861350 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -735,6 +735,17 @@ config MAX1363
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called max1363.
- 
-+config MAX34408
-+	tristate "Maxim max34408/max344089 ADC driver"
-+	depends on I2C
-+	help
-+	  Say yes here to build support for Maxim max34408/max34409 current sense
-+	  monitor with 8-bits ADC interface with overcurrent delay/threshold and
-+	  shutdown delay.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called max34408.
-+
- config MAX77541_ADC
- 	tristate "Analog Devices MAX77541 ADC driver"
- 	depends on MFD_MAX77541
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 2facf979327d..46dceab85e9a 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
- obj-$(CONFIG_MAX11410) += max11410.o
- obj-$(CONFIG_MAX1241) += max1241.o
- obj-$(CONFIG_MAX1363) += max1363.o
-+obj-$(CONFIG_MAX34408) += max34408.o
- obj-$(CONFIG_MAX77541_ADC) += max77541-adc.o
- obj-$(CONFIG_MAX9611) += max9611.o
- obj-$(CONFIG_MCP320X) += mcp320x.o
-diff --git a/drivers/iio/adc/max34408.c b/drivers/iio/adc/max34408.c
-new file mode 100644
-index 000000000000..85cd7b1ec186
---- /dev/null
-+++ b/drivers/iio/adc/max34408.c
-@@ -0,0 +1,278 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * IIO driver for Maxim MAX34409/34408 ADC, 4-Channels/2-Channels, 8bits, I2C
-+ *
-+ * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
-+ *
-+ * TODO: ALERT interrupt, Overcurrent delay, Shutdown delay
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/init.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
-+
-+#define MAX34408_STATUS_REG		0x0
-+#define MAX34408_CONTROL_REG		0x1
-+#define MAX34408_OCDELAY_REG		0x2
-+#define MAX34408_SDDELAY_REG		0x3
-+
-+#define MAX34408_ADC1_REG		0x4
-+#define MAX34408_ADC2_REG		0x5
-+/* ADC3 & ADC4 always returns 0x0 on 34408 */
-+#define MAX34409_ADC3_REG		0x6
-+#define MAX34409_ADC4_REG		0x7
-+
-+#define MAX34408_OCT1_REG		0x8
-+#define MAX34408_OCT2_REG		0x9
-+#define MAX34409_OCT3_REG		0xA
-+#define MAX34409_OCT4_REG		0xB
-+
-+#define MAX34408_DID_REG		0xC
-+#define MAX34408_DCYY_REG		0xD
-+#define MAX34408_DCWW_REG		0xE
-+
-+/* Bit masks for status register */
-+#define MAX34408_STATUS_OC_MSK		GENMASK(1, 0)
-+#define MAX34409_STATUS_OC_MSK		GENMASK(3, 0)
-+#define MAX34408_STATUS_SHTDN		BIT(4)
-+#define MAX34408_STATUS_ENA		BIT(5)
-+
-+/* Bit masks for control register */
-+#define MAX34408_CONTROL_AVG0		BIT(0)
-+#define MAX34408_CONTROL_AVG1		BIT(1)
-+#define MAX34408_CONTROL_AVG2		BIT(2)
-+#define MAX34408_CONTROL_ALERT		BIT(3)
-+
-+#define MAX34408_DEFAULT_AVG		0x4
-+
-+/* Bit masks for over current delay */
-+#define MAX34408_OCDELAY_OCD_MSK	GENMASK(6, 0)
-+#define MAX34408_OCDELAY_RESET		BIT(7)
-+
-+/* Bit masks for shutdown delay */
-+#define MAX34408_SDDELAY_SHD_MSK	GENMASK(6, 0)
-+#define MAX34408_SDDELAY_RESET		BIT(7)
-+
-+#define MAX34408_DEFAULT_RSENSE		1000
-+
-+/**
-+ * struct max34408_data - max34408/max34409 specific data.
-+ * @regmap:	device register map.
-+ * @dev:	max34408 device.
-+ * @lock:	lock for protecting access to device hardware registers, mostly
-+ *		for read modify write cycles for control registers.
-+ * @input_rsense:	Rsense values in uOhm, will be overwritten by
-+ *			values from channel nodes.
-+ */
-+struct max34408_data {
-+	struct regmap *regmap;
-+	struct device *dev;
-+	struct mutex lock;
-+	u32 input_rsense[4];
-+};
-+
-+static const struct regmap_config max34408_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+	.max_register	= MAX34408_DCWW_REG,
-+};
-+
-+struct max34408_adc_model_data {
-+	const char *model_name;
-+	const struct iio_chan_spec *channels;
-+	const int num_channels;
-+};
-+
-+#define MAX34008_CHANNEL(_index, _address)			\
-+	{							\
-+		.type = IIO_CURRENT,				\
-+		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) | \
-+					  BIT(IIO_CHAN_INFO_SCALE) | \
-+					  BIT(IIO_CHAN_INFO_OFFSET), \
-+		.channel = (_index),				\
-+		.address = (_address),				\
-+		.indexed = 1,					\
-+	}
-+
-+static const struct iio_chan_spec max34408_channels[] = {
-+	MAX34008_CHANNEL(0, MAX34408_ADC1_REG),
-+	MAX34008_CHANNEL(1, MAX34408_ADC2_REG),
-+};
-+
-+static const struct iio_chan_spec max34409_channels[] = {
-+	MAX34008_CHANNEL(0, MAX34408_ADC1_REG),
-+	MAX34008_CHANNEL(1, MAX34408_ADC2_REG),
-+	MAX34008_CHANNEL(2, MAX34409_ADC3_REG),
-+	MAX34008_CHANNEL(3, MAX34409_ADC4_REG),
-+};
-+
-+static int max34408_read_adc_avg(struct max34408_data *max34408,
-+				 const struct iio_chan_spec *chan, int *val)
-+{
-+	unsigned int ctrl;
-+	int rc;
-+
-+	guard(mutex)(&max34408->lock);
-+	rc = regmap_read(max34408->regmap, MAX34408_CONTROL_REG, (u32 *)&ctrl);
-+	if (rc)
-+		return rc;
-+
-+	/* set averaging (0b100) default values*/
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL_REG,
-+			  MAX34408_DEFAULT_AVG);
-+	if (rc) {
-+		dev_err(max34408->dev,
-+			"Error (%d) writing control register\n", rc);
-+		return rc;
-+	}
-+
-+	rc = regmap_read(max34408->regmap, chan->address, val);
-+	if (rc)
-+		return rc;
-+
-+	/* back to old values */
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL_REG, ctrl);
-+	if (rc)
-+		dev_err(max34408->dev,
-+			"Error (%d) writing control register\n", rc);
-+
-+	return rc;
-+}
-+
-+static int max34408_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
-+{
-+	struct max34408_data *max34408 = iio_priv(indio_dev);
-+	int rc;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		rc = max34408_read_adc_avg(max34408, chan, val);
-+		if (rc)
-+			return rc;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		/*
-+		 * calcluate current for 8bit ADC with Rsense
-+		 * value.
-+		 * 10 mV * 1000 / Rsense uOhm = max current
-+		 * (max current * adc val * 1000) / (2^8 - 1) mA
-+		 */
-+		*val = 10000 / max34408->input_rsense[chan->channel];
-+		*val2 = 8;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info max34408_info = {
-+	.read_raw	= max34408_read_raw,
-+};
-+
-+static const struct max34408_adc_model_data max34408_model_data = {
-+	.model_name = "max34408",
-+	.channels = max34408_channels,
-+	.num_channels = 2,
-+};
-+
-+static const struct max34408_adc_model_data max34409_model_data = {
-+	.model_name = "max34409",
-+	.channels = max34409_channels,
-+	.num_channels = 4,
-+};
-+
-+static const struct of_device_id max34408_of_match[] = {
-+	{
-+		.compatible = "maxim,max34408",
-+		.data = &max34408_model_data,
-+	},
-+	{
-+		.compatible = "maxim,max34409",
-+		.data = &max34409_model_data,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, max34408_of_match);
-+
-+static int max34408_probe(struct i2c_client *client)
-+{
-+	const struct max34408_adc_model_data *model_data;
-+	struct device *dev = &client->dev;
-+	const struct of_device_id *match;
-+	struct max34408_data *max34408;
-+	struct fwnode_handle *node;
-+	struct iio_dev *indio_dev;
-+	struct regmap *regmap;
-+	int rc, i;
-+
-+	match = i2c_of_match_device(max34408_of_match, client);
-+	if (!match)
-+		return -EINVAL;
-+	model_data = i2c_get_match_data(client);
-+
-+	regmap = devm_regmap_init_i2c(client, &max34408_regmap_config);
-+	if (IS_ERR(regmap)) {
-+		dev_err_probe(dev, PTR_ERR(regmap),
-+			      "regmap_init failed\n");
-+		return PTR_ERR(regmap);
-+	}
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*max34408));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	max34408 = iio_priv(indio_dev);
-+	max34408->regmap = regmap;
-+	max34408->dev = dev;
-+	mutex_init(&max34408->lock);
-+
-+	device_for_each_child_node(dev, node) {
-+		fwnode_property_read_u32(node, "maxim,rsense-val-micro-ohms",
-+					 &max34408->input_rsense[i]);
-+		i++;
-+	}
-+
-+	/* disable ALERT and averaging */
-+	rc = regmap_write(max34408->regmap, MAX34408_CONTROL_REG, 0x0);
-+	if (rc)
-+		return rc;
-+
-+	indio_dev->channels = model_data->channels;
-+	indio_dev->num_channels = model_data->num_channels;
-+	indio_dev->name = model_data->model_name;
-+
-+	indio_dev->info = &max34408_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id max34408_id[] = {
-+	{ "max34408", (kernel_ulong_t)&max34408_model_data },
-+	{ "max34409", (kernel_ulong_t)&max34409_model_data },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, max34408_id);
-+
-+static struct i2c_driver max34408_driver = {
-+	.driver = {
-+		.name   = "max34408",
-+		.of_match_table = max34408_of_match,
-+	},
-+	.probe = max34408_probe,
-+	.id_table = max34408_id,
-+};
-+module_i2c_driver(max34408_driver);
-+
-+MODULE_AUTHOR("Ivan Mikhaylov <fr0st61te@gmail.com>");
-+MODULE_DESCRIPTION("Maxim MAX34408/34409 ADC driver");
-+MODULE_LICENSE("GPL");
--- 
-2.42.0
+> So it is useful to report it as we are already in
+> error? Or can we combine the cases by treating it as a cap on the
+> threshold controls for LOS and DOS?
 
+I found the clipping error useful while developing this driver since
+it help identify that we had a gain setting wrong on the excitation
+output (on the circuit board) which in turn caused the inputs to be
+overdriven. But, yes when this happened, it also always triggered at
+least one or more of the LOS and DOS faults as well.
+
+>
+> Even when they aren't just there for error reporting, designers
+> seem to always come up with new create signals to use for event
+> detection and sometimes it's a real struggle to map them to
+> something general.
+>
+> Jonathan
+>
+>

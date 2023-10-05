@@ -2,169 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 135E97BA647
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09AD37BA609
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 18:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235148AbjJEQdI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 12:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
+        id S240999AbjJEQXM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 12:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237125AbjJEQcc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:32:32 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8EE29B30;
-        Thu,  5 Oct 2023 08:38:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34DDC433C7;
-        Thu,  5 Oct 2023 15:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696520320;
-        bh=xqrKx4Kd9+GEwmVN2AFDTKEreQZrRE6Wy71JqH75+OE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LqCYd0wShQEfQ34aCPNRYpG9e1rGe5FNRozfs/5sOKIA7TYVUgPTcijdTj55JFWfQ
-         auvuso6FRNRvidbRggXlLxtCwXiF4iNXlwfJGvSsgs/hO/3op6t1hPMIONqaXIrZ2w
-         Q2mv8hKik9Ebvlu064LHGgiEYBub0T7YobcTM+ShQ4zVSJljVfhHsn+FnEEg/UkAaR
-         BrErZ1FXfwVsWQNVbdO755cLE4C3aM6wzbhZZHZouxWn1O/C4XMTe0UnflQ14xMm1W
-         Tx4Z1/aYWNgLgnxbBIfmbcjKn39eOQGviAjTdvZ0M81mTSMbXkfuSyR4yo7ZkMzGHY
-         8J1tjnGUqTqYQ==
-Date:   Thu, 5 Oct 2023 16:38:44 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     werneazc <werneazc@gmail.com>
-Cc:     Rob Herring <robh@kernel.org>, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, lars@metafoo.de, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andre Werner <andre.werner@systec-electronic.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti,ads7038: Add description
- for ADS7038
-Message-ID: <20231005163844.3294e4e1@jic23-huawei>
-In-Reply-To: <CAKDJRcf4ikKWvENrg=9JW1EneY8qehD8HTxahL8x+5KxoCSQ0g@mail.gmail.com>
-References: <20231004102330.3713-1-andre.werner@systec-electronic.com>
-        <20231004151150.GA3140591-robh@kernel.org>
-        <CAKDJRcf4ikKWvENrg=9JW1EneY8qehD8HTxahL8x+5KxoCSQ0g@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S242387AbjJEQUy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 12:20:54 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67986A250;
+        Thu,  5 Oct 2023 09:09:38 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c17de836fbso14134071fa.1;
+        Thu, 05 Oct 2023 09:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696522176; x=1697126976; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WIPUtpgijMmDn9tQCeaAXK1QL2D5dmaPFM04rK5dMRI=;
+        b=G8PgANzy5LX7P9glIoxaRaMo4/uj7JFvaA3bjDNLwzN453U5ruH3Pd+5G84jwwWlCV
+         Y1SZtKKyhjEekNyvQfC2BuL+IkDmPokghWhClRiCYdVa9XQkAt9DBbuSVF3aQnFG2LE3
+         lMoTVpVPW70JB1Lu6A3Xa8lQLoHg/hXU0HHhC7Wg5GGKCjdIA8aUDAZyQNWrkjKz6kAe
+         YnPm5Vd1NlXUvlFkhoeYOxL1YBCk8fRsDEsXHAaEUNTC2CE2bPPRn6bQM+25TXTdz1Ta
+         n0+ImAXyaDobkehyVO99gVE2HTYcLq4Jpyb6o2LOGxnj9aslK398CxSzd2k5FoG/nSdo
+         m97Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696522176; x=1697126976;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WIPUtpgijMmDn9tQCeaAXK1QL2D5dmaPFM04rK5dMRI=;
+        b=EMBSqXz3V49yZPIOmoY80ImXvhCbgfEYvfWtQiGrXbyqB930mC/Onel5/z0Ytlan2B
+         oEpNwmdq0Hilai9wm6lGxhDNsfGLo18Bke9zpvBwzetmmqoKTITXGMVzy68di/v3IHhc
+         tm5Uo1VFO/ZzAqP/ebK58ndpdgrODF00oSLu4qyaKuiS7oa1OhS44ea48tzXDkHucK97
+         V6ssy/wezLhcO59D0SzWW3JZf5WhKkXifmREqa2kQJFsf7BVNwRt4MZ3YOmESgV8wDR4
+         DMacfItbRto0P74GFEUis8NTTYuSFLw7GzS491Ta/jdmRuAkvwz45mEKHadNFmAsj7Ac
+         pJTA==
+X-Gm-Message-State: AOJu0Yy09UxxQ7oqNUGsSFU+c386voW23OouTH1HfymFF1KTbNJL2Aj3
+        ceGy9pQGs/VHI6X6ZSNu2pY=
+X-Google-Smtp-Source: AGHT+IEVeqLEn/ZyaGvOxctwgur9v2I5LYeqoVRpMqTO36LSn7wKOND6cXpJUefw8kRdOf3rs40Mpw==
+X-Received: by 2002:a05:6512:203a:b0:504:33da:b659 with SMTP id s26-20020a056512203a00b0050433dab659mr4708583lfs.57.1696522175118;
+        Thu, 05 Oct 2023 09:09:35 -0700 (PDT)
+Received: from localhost.localdomain ([46.31.31.132])
+        by smtp.googlemail.com with ESMTPSA id r16-20020ac24d10000000b00502ae64f46asm349088lfi.126.2023.10.05.09.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Oct 2023 09:09:34 -0700 (PDT)
+From:   Ivan Mikhaylov <fr0st61te@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Ivan Mikhaylov <fr0st61te@gmail.com>
+Subject: [PATCH v3 0/2] Add maxim max34408/34409 ADC driver and yaml
+Date:   Thu,  5 Oct 2023 19:09:28 +0300
+Message-ID: <20231005160930.14665-1-fr0st61te@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 5 Oct 2023 05:51:40 +0200
-werneazc <werneazc@gmail.com> wrote:
+Add Maxim max34408/34409 ADC driver and yaml for it. Until now it
+supports only current monitioring function without overcurrent
+threshold/delay, shutdown delay configuration, alert interrupt.
 
-> Dear Mr. Herring,
->=20
-> On Wed, Oct 4, 2023 at 5:11=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
-> >
-> > On Wed, Oct 04, 2023 at 12:23:29PM +0200, werneazc@gmail.com wrote: =20
-> > > From: Andre Werner <andre.werner@systec-electronic.com>
-> > > =20
-> >
-> > Needs a commit message. =20
->=20
-> Added in an upcoming commit.
->=20
-> > =20
-> > > Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
-> > > ---
-> > >  .../bindings/iio/adc/ti,ads7038.yaml          | 51 +++++++++++++++++=
-++
-> > >  1 file changed, 51 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7=
-038.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yam=
-l b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
-> > > new file mode 100644
-> > > index 000000000000..37fbae95c8e6
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7038.yaml
-> > > @@ -0,0 +1,51 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/adc/ti,ads7038.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Texas Instruments ADS7038 and similar ADCs
-> > > +
-> > > +maintainers:
-> > > +  - Andre Werner <andre.werner@systec-electronic.com>
-> > > +
-> > > +description: |
-> > > +  Family of 7 channel, 12 bit ADCs with SPI/I2C interface.
-> > > +
-> > > +  Datasheet: https://www.ti.com/lit/gpn/ads7038
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - ti,ads7038
-> > > +      - ti,ads7138
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  spi-max-frequency:
-> > > +    maximum: 60000000
-> > > +
-> > > +  vref-supply:
-> > > +    description: Supplies the 2.5V or 5V reference voltage =20
-> >
-> > I don't see that in the datasheet. It has AVDD and DVDD. =20
->=20
-> Yes, that was a copy-and-paste error from another description used as
-> a template.
->=20
-> >
-> > Also, looks like there are GPIOs. Those aren't ever exposed to the OS? =
-=20
->=20
-> Yes, you are right. This is a fundamental implementation of the driver
-> to support the chip family. I want to add further functionalities in
-> upcoming commits.
-> I wanted to get some feedback when the first steps are done to not
-> reinvent everything from the beginning if something is generally
-> wrong in the driver structure and the way I had used the APIs.
+Changes from v1:
+   - minor changes from Rob's comments for yaml
+   - add ena, shtdn and make 4 inputs for R sense from Jonathan's comments for yaml
+   - add _REG suffix and make prefix for bitmasks and statuses
+   - add SCALE/OFFSET instead of AVG/PROCESSED from Jonathan and
+     Lars-Peter comments
+   - add chip data from Jonathan and Lars-Peter comments
+   - minor changes from Lars-Peter and Jonathan comments for driver
 
-Device tree binding should fully describe the hardware, not what
-the driver currently implements.
+Changes from v2:
+   - add channels into hardware description into yaml
+   - add rsense property per channel
+   - rename pins for shtdn and ena pins
+   - make one array for input_rsense values
 
-So add the GPIOs for v3.
->=20
-> > =20
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +  - vref-supply
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    spi {
-> > > +        #address-cells =3D <1>;
-> > > +        #size-cells =3D <0>;
-> > > +
-> > > +        adc@0 {
-> > > +            compatible =3D "ti,ads7038";
-> > > +            reg =3D <0>;
-> > > +            vref-supply =3D <&refin_supply>;
-> > > +            spi-max-frequency =3D <10000000>;
-> > > +        };
-> > > +    };
-> > > --
-> > > 2.42.0
-> > > =20
->=20
-> Regards,
->=20
-> Andr=C3=A9
+Ivan Mikhaylov (2):
+  dt-bindings: adc: provide max34408/9 device tree binding document
+  iio: adc: Add driver support for MAX34408/9
+
+ .../bindings/iio/adc/maxim,max34408.yaml      | 137 +++++++++
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max34408.c                    | 270 ++++++++++++++++++
+ 4 files changed, 419 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+ create mode 100644 drivers/iio/adc/max34408.c
+
+-- 
+2.42.0
 

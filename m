@@ -2,219 +2,256 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47527BAA0C
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 21:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DBE7BAF5A
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 01:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjJETZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 15:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
+        id S229688AbjJEXfS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 19:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbjJETZY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 15:25:24 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B02D51
-        for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 12:25:16 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9b1ebc80d0aso244608166b.0
-        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 12:25:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696533913; x=1697138713; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QAIuNzRqeVKL4UBHwUYQTQv/MFOTl6dEpbXD6CCqo5M=;
-        b=CP+wsGlVZz+ZBWwKajzI5e//MDd4smfNBVfr7IWfyq0+QnepCbUxNgZEccvXVHMBZp
-         SJOje4LpCysyu932xIZpREMKVnEPC8KH5viEu01HeG4u8jsPdQ/V0xPRzXXtWZu9X7R+
-         mK28RFL3xFRUho+P+s8qJGLqt19rUgKSsdOF9OCmW5zlLMUVtZyLbZ8od7QeTvK2lMLI
-         mO4ZnejzbzuBvRFR+MtxVO+roPVXOWjHrJPZRn/04VWl3m9L06kCwzgInRmynmB2xZvr
-         4Yn9H5BrMo8A5LjmeFTLJJbIxKwq8TQ3Iz9dvtTFy5HTbrOj+FHfa3fXbQk0qmVIj1bI
-         fnlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696533913; x=1697138713;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QAIuNzRqeVKL4UBHwUYQTQv/MFOTl6dEpbXD6CCqo5M=;
-        b=B/YzzOBRLOjjuVhUks0eHvNS9NcHUsBQYN9C5jryHcA6zpzfBDoCk90w/lgz5kmdIR
-         dIDdsrS+TqjqagMmE4ZZcXJ2AXymu05Cbbyi/jL5r+ahG3mT/9PvSFXEyR8zE9ZsWaBj
-         6hB5XTva2902M9aUaGYQ41PDcdL+Q0rH7EiranWZpZw4vsp36Fa+IqqeFurmbhWhi8Hx
-         v6hwv7yqXrIyjx8vuhRVflHgbh44w6+CImsbPlBg7QNkHQ0EJBW6w5C5mmu1SFuHAP4Y
-         SpGOxwvsYfhUQPR+ba1L10VdszPFDyS6dEP+9HPCQyVPClBT9k22yXLjDGf2X+bg9CHn
-         is5A==
-X-Gm-Message-State: AOJu0Yx7ZfQQhbyiUUQA6LIcJyBZk6GBBG+MdKNSXVCRyc5QVlF/F3ob
-        6qoV2rQtUi7BVvYooCTNWhF8OvJggINR1tAnmPJXtA==
-X-Google-Smtp-Source: AGHT+IE/lNkGrp8J2WkjY7FP16+AvJpLMZkj9ptYmYvBvpsK946+tDKXzby/+pwCKElpnR04kI+486BfdcMim4oAt3U=
-X-Received: by 2002:a17:906:3048:b0:9ae:37d9:803e with SMTP id
- d8-20020a170906304800b009ae37d9803emr5549553ejd.8.1696533913393; Thu, 05 Oct
- 2023 12:25:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
- <20230929-ad2s1210-mainline-v3-22-fa4364281745@baylibre.com>
- <20230930164251.5c07723c@jic23-huawei> <CAMknhBFKSqXvgOeRjGAOfURzndmxmCffdU6MUirEmfzKqwM_Kg@mail.gmail.com>
- <20231005153736.2603dbbf@jic23-huawei>
-In-Reply-To: <20231005153736.2603dbbf@jic23-huawei>
-From:   David Lechner <dlechner@baylibre.com>
-Date:   Thu, 5 Oct 2023 14:25:02 -0500
-Message-ID: <CAMknhBEuX9sA_eHM2xqjGkDDtq-hDMtmmYyqYbER3B42TqWRmw@mail.gmail.com>
-Subject: Re: [PATCH v3 22/27] staging: iio: resolver: ad2s1210: convert LOS
- threshold to event attr
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        David Lechner <david@lechnology.com>,
+        with ESMTP id S229570AbjJEXeO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 19:34:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E164A12A;
+        Thu,  5 Oct 2023 16:34:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4F1C433C7;
+        Thu,  5 Oct 2023 23:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696548852;
+        bh=XH827zbbYk1K6D5cvTdeOv5tt/6OMGuFkDJbCdQeAhY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ijl9CLug3INcIwbSVPhjoNh3qBDNOj8WJ1sW7eu2O/SC/vdH80HmuYEnU1F+L4mvu
+         7FSP4WL/AZsfeJtrC5XOBOLgvRuHFElH9qlqh+2EFjcu7r0WHRZfo4yT0el8Dsl6X3
+         5i5myfiDn3B4xR2m5iCeveoILE1tJeyDYalk4eY0qiGbbWDX5iopcOeIcWONTWzY+W
+         HMLIHhfgZoEXrJ3o/dvzsW3gJyKbLa1w5JUvH13gNc6cxuQ0O7Nd7scqv2K/rc8b1z
+         THpr8ZxpdjwtvYWFErUBjie8EGFglbutpVWPQfuMetm+kXvg6QBQL4xjyNxapTZ2EY
+         cmd41Dugc2JSA==
+Date:   Fri, 6 Oct 2023 00:34:05 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
+        Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3 1/2] dt-bindings: adc: add AD7173
+Message-ID: <20231006-ravioli-hangout-ef9a9bf9cd7c@spud>
+References: <20231005105921.460657-1-mitrutzceclan@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="taPXRJOU8lSR+tKW"
+Content-Disposition: inline
+In-Reply-To: <20231005105921.460657-1-mitrutzceclan@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Oct 5, 2023 at 9:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org> =
-wrote:
->
-> On Mon, 2 Oct 2023 11:09:11 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->
-> > On Sat, Sep 30, 2023 at 10:42=E2=80=AFAM Jonathan Cameron <jic23@kernel=
-.org> wrote:
-> > >
-> > > On Fri, 29 Sep 2023 12:23:27 -0500
-> > > David Lechner <dlechner@baylibre.com> wrote:
-> > >
-> > > > From: David Lechner <david@lechnology.com>
-> > > >
-> > > > From: David Lechner <dlechner@baylibre.com>
-> > > >
-> > > > The AD2S1210 has a programmable threshold for the loss of signal (L=
-OS)
-> > > > fault. This fault is triggered when either the sine or cosine input
-> > > > falls below the threshold voltage.
-> > > >
-> > > > This patch converts the custom device LOS threshold attribute to an
-> > > > event falling edge threshold attribute on a new monitor signal chan=
-nel.
-> > > > The monitor signal is an internal signal that combines the amplitud=
-es
-> > > > of the sine and cosine inputs as well as the current angle and posi=
-tion
-> > > > output. This signal is used to detect faults in the input signals.
-> > >
-> > > Hmm. Looking forwards, I'm less sure that we should be shoving all th=
-ese
-> > > error conditions onto one channel. Fundamentally we have
-> > > sine and cosine inputs. I think we should treat those as separate cha=
-nnels
-> > > and include a third differential channel between them.
-> >
-> > At first, I did consider a differential channel as you suggested in
-> > v2. However, the datasheet is quite clear that the LOS and DOS faults
-> > (and only those faults) come from a signal it calls the "monitor
-> > signal". This signal is defined as:
-> >
-> >     Monitor =3D A1 * sin(theta)  * sin(phi) + A2 * cos(theta) * cos(phi=
-)
-> >
-> > where A1 * sin(theta) is the the sine input, A2 * cos(theta) is the
-> > cosine input and phi is the position output. So mathematically
-> > speaking, there is no signal that is the difference between the two
-> > inputs. (See "Theory of Operation" section in the datasheet.)
->
-> Hmm. That's certainly a bit more complex than I expected.
-> Relying on the brief description led me astray.
->
-> It's related to the differences in the measured and  as if
-> theta =3D=3D phi and A1 =3D=3D A2 (ideal) then it will be A1.
->
-> I can see it's relevant to DOS, but not LOS.  The description of LOS
-> seems to overlap a number of different things unfortunately.
->
 
-One thing to watch out for in the datasheet is the difference between
-the fault output pins and the fault bits read over the bus. The LOS
-output pin does indicate one or more of multiple faults, but we are
-not currently using that. We are only looking at the fault bits which
-are more granular.
+--taPXRJOU8lSR+tKW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->
-> >
-> > But if we want to hide these internal details and don't care about a
-> > strict definition of "differential", then what is suggested below
-> > seems fine.
->
-> Probably best to introduce that monitor signal though we'll have
-> to be a bit vague about what it is which has the side effect that
-> anyone trying to understand what on earth these faults are is going
-> to be confused (having read the datasheet section a couple of times
-> I'm not 100% sure...)
->
-> >
-> > >
-> > > So this one becomes a double event (you need to signal it on both
-> > > cosine and sine channels).  The DOS overange is similar.
-> > > The DOS mismatch is a threshold on the differential channel giving
-> > >
-> > > events/in_altvoltage0_thresh_falling_value
-> > > events/in_altvoltage1_thresh_falling_value (these match)
-> > > events/in_altvoltage0_thresh_rising_value
-> > > events/in_altvoltage1_thresh_rising_value (matches previous which is =
-fine)
-> > > events/in_altvoltage1-altvoltage0_mag_rising_value
-> > >
-> > > Does that work here?  Avoids smashing different types of signals toge=
-ther.
-> > > We could even do the LOT as differential between two angle channels
-> > > (tracking one and measured one) but meh that's getting complex.>
-> > > Note this will rely on channel labels to make the above make any sens=
-e at all.
-> >
-> > I think this could be OK - I think what matters most is having some
-> > documentation that maps the faults and registers on the chip to the
-> > iio names. Where would the sine/cosine clipping fault fit in though? I
-> > got a bit too creative and used X_OR_Y to differentiate it (see
-> > discussion in "staging: iio: resolver: ad2s1210: implement fault
-> > events"). Strictly speaking, it should probably be a type: threshold,
-> > direction: either event on both the sine and cosine input channels
-> > (another double event) since it occurs if either of the signal exceeds
-> > the power or ground rail voltage. But we already have threshold rising
-> > and threshold falling on these channels with a different meaning. I
-> > guess it could call it magnitude instead of a threshold?
->
-> Tricky indeed.  Though I guess we only hit the clipping case after
-> LOS or DOS fires or if their thresholds are set too wide (is that
-> even possible?).
+On Thu, Oct 05, 2023 at 01:59:21PM +0300, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
+>=20
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-I suppose it _could_ be possible on the high side if the AVDD voltage
-supply was selected to be less than the 4.4V max of the threshold
-voltage registers.
+With Jonathan's two items addressed, you can add:
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-> So it is useful to report it as we are already in
-> error? Or can we combine the cases by treating it as a cap on the
-> threshold controls for LOS and DOS?
+Thanks,
+Conor.
 
-I found the clipping error useful while developing this driver since
-it help identify that we had a gain setting wrong on the excitation
-output (on the circuit board) which in turn caused the inputs to be
-overdriven. But, yes when this happened, it also always triggered at
-least one or more of the LOS and DOS faults as well.
+> ---
+> V2 -> V3
+>  - remove redundant descriptions
+>  - use referenced 'bipolar' property
+>  - remove newlines from example
+>=20
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 130 ++++++++++++++++++
+>  1 file changed, 130 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.=
+yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> new file mode 100644
+> index 000000000000..bf9e3cbf842e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> @@ -0,0 +1,130 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2023 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD7173 ADC device driver
+> +
+> +maintainers:
+> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> +
+> +description: |
+> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported=
+ chips:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7173-8.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7176-2.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7172-2
+> +      - adi,ad7173-8
+> +      - adi,ad7175-2
+> +      - adi,ad7176-2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  spi-cpol:
+> +    type: boolean
+> +
+> +  spi-cpha:
+> +    type: boolean
+> +
+> +  required:
+> +    - compatible
+> +    - reg
+> +    - interrupts
+> +
+> +patternProperties:
+> +  "^channel@[0-9a-f]$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 15
+> +
+> +      diff-channels:
+> +        items:
+> +          minimum: 0
+> +          maximum: 31
+> +
+> +      bipolar:
+> +        type: boolean
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      adc@0 {
+> +        compatible =3D "adi,ad7173-8";
+> +        reg =3D <0>;
+> +
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
+> +        interrupt-parent =3D <&gpio>;
+> +        spi-max-frequency =3D <5000000>;
+> +
+> +        channel@0 {
+> +          reg =3D <0>;
+> +          bipolar;
+> +          diff-channels =3D <0 1>;
+> +        };
+> +
+> +        channel@1 {
+> +          reg =3D <1>;
+> +          diff-channels =3D <2 3>;
+> +        };
+> +
+> +        channel@2 {
+> +          reg =3D <2>;
+> +          bipolar;
+> +          diff-channels =3D <4 5>;
+> +        };
+> +
+> +        channel@3 {
+> +          reg =3D <3>;
+> +          bipolar;
+> +          diff-channels =3D <6 7>;
+> +        };
+> +
+> +        channel@4 {
+> +          reg =3D <4>;
+> +          diff-channels =3D <8 9>;
+> +        };
+> +      };
+> +    };
+> --=20
+> 2.39.2
+>=20
 
->
-> Even when they aren't just there for error reporting, designers
-> seem to always come up with new create signals to use for event
-> detection and sometimes it's a real struggle to map them to
-> something general.
->
-> Jonathan
->
->
+--taPXRJOU8lSR+tKW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZR9HygAKCRB4tDGHoIJi
+0l2SAQCTpojOiYhgWtcaGleXgMHQyDxcwPwEaMySBZYIH9qMPAD+K33f7oMRFfvF
+P/CwGzhdh5jnNs1aEeD1Vw6OCR6pJQM=
+=1JZt
+-----END PGP SIGNATURE-----
+
+--taPXRJOU8lSR+tKW--

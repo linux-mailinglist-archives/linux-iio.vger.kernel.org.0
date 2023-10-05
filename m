@@ -2,42 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4737BA0D0
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 16:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C5A7BA312
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Oct 2023 17:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237002AbjJEOnR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 10:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
+        id S235097AbjJEPvu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Oct 2023 11:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235741AbjJEOi2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 10:38:28 -0400
+        with ESMTP id S233998AbjJEPu6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 11:50:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3334E364;
-        Thu,  5 Oct 2023 07:03:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C699C43397;
-        Thu,  5 Oct 2023 14:03:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F38478A;
+        Thu,  5 Oct 2023 07:09:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDDEC433B7;
+        Thu,  5 Oct 2023 14:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696514639;
-        bh=piLsE53Q1gZgSQFUl07BSGRXu3dJHS5CexWfLgjoioM=;
+        s=k20201202; t=1696514953;
+        bh=k1FKWxeYnMbMWKz9v6DyRx1G4lOfFBO4olyVSlLtx5g=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=unHERqPdEuFsnlwkj8m5qiTQxIrHwyFBS4Ylk8EvqN9DZvHS4F+PgVWWJRKs04qLZ
-         UjVvRObXsKf1C+0743hADeJSmBxP16oo6/prqwkUa5/B/g2/5ySPticvvoJbK7GcqV
-         M+4dx6jkCc5RZUJio1GnO1OPuS67YePnXZKRrA1TDVxlm0Ft6NAgRA+UTdQEOL7ueQ
-         RQzgSQEtCMQvVsa960b2UCCpCFrLYuvRs9u64LzUUSwrejrOgXU9HSEfPm+8RZ/D9k
-         Fwc+vjtTmBFauSo73drSeW5QhEYYlYo8fU/5QTZ0oQxYtDDKVBzCDqLdLNT+RdTh2V
-         jtv3yMjVoxJqg==
-Date:   Thu, 5 Oct 2023 15:04:03 +0100
+        b=q34l+jf/WhLuJLokRZRcE4VCOn4IptAUrPATBg6vJxDQdv4TSxJfLoUgqliV4QFka
+         HPySTubr5L5yS+C6GTiEsRcnHl9yXvxeVN+z/ztCtPkRmHPJV6umSoGdeHVRBY0Tnd
+         GRnlHbKCCO9+46xm5wEqozL6JEp16DKI6SeBast6baQxZ9xLf8dxscLwal/IAupnC+
+         lxWoKhqQK266ndBpaR314QpXA9WtRM2aW7IRgyRfzF5CLsdSo7tfJiR1MPfTnCZQ/g
+         xtSwxA6wX0+5HauESPx/SxDzFodhqFPu8hYzFGK9JnqjjRg/hPtUx4NkzSzPh04YHK
+         gzQ1TZP4OfhiQ==
+Date:   Thu, 5 Oct 2023 15:09:17 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <dlechner@baylibre.com>
-Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH] staging: iio: resolver: ad2s1210: fix return with lock
- held
-Message-ID: <20231005150403.453851f3@jic23-huawei>
-In-Reply-To: <20231004-staging-iio-resolver-ad2s1210-fix-return-with-lock-held-v1-1-812b932997bd@baylibre.com>
-References: <20231004-staging-iio-resolver-ad2s1210-fix-return-with-lock-held-v1-1-812b932997bd@baylibre.com>
+To:     Wadim Egorov <w.egorov@phytec.de>
+Cc:     <lars@metafoo.de>, <robh@kernel.org>, <heiko@sntech.de>,
+        <peter.ujfalusi@ti.com>, <mugunthanvnm@ti.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <nm@ti.com>, <upstream@lists.phytec.de>,
+        Bhavya Kapoor <b-kapoor@ti.com>
+Subject: Re: [PATCH v2] iio: adc: ti_am335x_adc: Fix return value check of
+ tiadc_request_dma()
+Message-ID: <20231005150917.2d0c833e@jic23-huawei>
+In-Reply-To: <20230925134427.214556-1-w.egorov@phytec.de>
+References: <20230925134427.214556-1-w.egorov@phytec.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,46 +52,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  4 Oct 2023 09:17:26 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 25 Sep 2023 15:44:27 +0200
+Wadim Egorov <w.egorov@phytec.de> wrote:
 
-> We missed a return statement in ad2s1210_initial() that would cause
-> the lock to be held when returning an error.
+> Fix wrong handling of a DMA request where the probing only failed
+> if -EPROPE_DEFER was returned. Instead, let us fail if a non -ENODEV
+> value is returned. This makes DMAs explicitly optional. Even if the
+> DMA request is unsuccessfully, the ADC can still work properly.
+> We do also handle the defer probe case by making use of dev_err_probe().
 > 
-> This is fixed by replacing the return with a goto to release the lock
-> before returning.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/r/202310030222.iokamE9T-lkp@intel.com/
-> Fixes: 0d03d0e65846 ("staging: iio: resolver: ad2s1210: rework gpios")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/staging/iio/resolver/ad2s1210.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-> index 98afd2e9ea41..67d8af0dd7ae 100644
-> --- a/drivers/staging/iio/resolver/ad2s1210.c
-> +++ b/drivers/staging/iio/resolver/ad2s1210.c
-> @@ -555,7 +555,7 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
->  	mutex_lock(&st->lock);
->  	ret = ad2s1210_set_resolution_gpios(st, st->resolution);
->  	if (ret < 0)
-> -		return ret;
-> +		goto error_ret;
-Ah.  I squashed the same fix into the original patch as it wasn't yet on a non
-rebasing tree.
+> Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 
-Thanks
++CC Bhavya,
+
+Could you take a look at this given you had comments on v1.
+
+Thanks,
 
 Jonathan
 
->  
->  	/* Use default config register value plus resolution from devicetree. */
->  	data = FIELD_PREP(AD2S1210_PHASE_LOCK_RANGE_44, 1);
-> 
 > ---
-> base-commit: a533eeaef80e879b3ad1937eee7a43d1f9961c5d
-> change-id: 20231004-staging-iio-resolver-ad2s1210-fix-return-with-lock-held-f547ce6fae49
+> v2:
+>   - Update description
+>   - Drop line break after Fixes tag
+>   - Move decision about optional DMA into probe/caller
+> ---
+>  drivers/iio/adc/ti_am335x_adc.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+> index 8db7a01cb5fb..5f8795986995 100644
+> --- a/drivers/iio/adc/ti_am335x_adc.c
+> +++ b/drivers/iio/adc/ti_am335x_adc.c
+> @@ -670,8 +670,10 @@ static int tiadc_probe(struct platform_device *pdev)
+>  	platform_set_drvdata(pdev, indio_dev);
+>  
+>  	err = tiadc_request_dma(pdev, adc_dev);
+> -	if (err && err == -EPROBE_DEFER)
+> +	if (err && err != -ENODEV) {
+> +		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
+>  		goto err_dma;
+> +	}
+>  
+>  	return 0;
+>  
 

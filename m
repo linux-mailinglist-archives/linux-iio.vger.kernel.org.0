@@ -2,74 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 651DA7BAFD4
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 02:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 811BD7BB113
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 07:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbjJFAwX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Oct 2023 20:52:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34300 "EHLO
+        id S230038AbjJFFBX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Oct 2023 01:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjJFAvb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 20:51:31 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF230F3
-        for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 17:51:19 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1e1b1b96746so1001312fac.2
-        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 17:51:19 -0700 (PDT)
+        with ESMTP id S229876AbjJFFBV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Oct 2023 01:01:21 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90771BF;
+        Thu,  5 Oct 2023 22:01:19 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c008042211so20388311fa.2;
+        Thu, 05 Oct 2023 22:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696553478; x=1697158278; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bvy2ayD735MSl5ZTX0UlQERY4ZoXQRp7gkWExI7lVYw=;
-        b=1U2OiZOkF5GlWMVZzavEG5oq8tliFyjyI6dj1iwtBkZvYR7qACJDjpxPL1RXTg0QDK
-         7oeWTT5D1JPFihKbVj5cRkQ+kn6tezmNhT20J0CTEjd7R5Z7G9x3HTy08xne977b/P+A
-         8/QozdsQ3xTX/99/DC3gIwahN2uIsy1msYln+up472wyZXZZsiHcrmAzjcxVf7a6mNdW
-         7fjWCj9aR9+Nl7P8gJTflvXS7a/VusYuJdig/ARhUH9RzUOd5KOHPYvWQltV2KHXDmuB
-         chPIvgEZv0l8pGODXJQ7Mz/bc0WB8zJDPjXCv2RVScKUxx7ymSYt0CYU7UdPwmt3O/+Q
-         sX/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696553478; x=1697158278;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20230601; t=1696568478; x=1697173278; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bvy2ayD735MSl5ZTX0UlQERY4ZoXQRp7gkWExI7lVYw=;
-        b=i8REWyt1bkwMRqkIRA9A3cz0ns9gDjenauNT38CFk3BMND3ls5B64W4KsMoCzQ0wXr
-         vEhLG7jONHdqgludgBi94NBQMci7HCH1Zn4m+d156z2rk8HnW4+NriArLmL6PZ0hEJNJ
-         w+KzX8hDS7hsOjS1HtkX9U/57TjTP3KTs14WCwCRwn0OzNWrXgFbup7WXcNCENojSKwk
-         Y7qelw294ZE2U4FE5vykPSAytL7nifEeZP3gGO5/svxbfqnmHft+QEpBMkaJBbgm52Wr
-         jj3ypV9qNHIAY/l+9wEm/9k39ATTFUAg5rXZqnKKJ5ZKpaQWVb3F0GQXVjud3cF497ZY
-         wHEg==
-X-Gm-Message-State: AOJu0YwINas9209hhyr0MuNPrJjXdXjsASo1SxEEncOjH7L+0DkHH2I/
-        hQ1+jaobVu8MEvv6XLFhBO5myVL4IgMu4z+Xv7sdhg==
-X-Google-Smtp-Source: AGHT+IHETgGeqGZSvktD/tKU7BzXYk2Is2jzn6GMo6B98IovaMoUy/6NXzQov+m+TDvrTga6TxDudg==
-X-Received: by 2002:a05:6870:d188:b0:1d5:3fd3:390a with SMTP id a8-20020a056870d18800b001d53fd3390amr7418497oac.49.1696553477962;
-        Thu, 05 Oct 2023 17:51:17 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id mo9-20020a056871320900b001dd0ff401edsm545072oac.51.2023.10.05.17.51.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 17:51:17 -0700 (PDT)
-From:   David Lechner <dlechner@baylibre.com>
-To:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     David Lechner <dlechner@baylibre.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Axel Haslam <ahaslam@baylibre.com>,
-        Philip Molloy <pmolloy@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 17/17] staging: iio: resolver: ad2s1210: simplify code with guard(mutex)
-Date:   Thu,  5 Oct 2023 19:50:34 -0500
-Message-ID: <20231005-ad2s1210-mainline-v4-17-ec00746840fc@baylibre.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
-References: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
+        bh=BZH8uAsDsFjlqPdAL3+yVZGxtsgHB50dQvC+iy9zr+A=;
+        b=gm9bJcHX43nkJQSMbUXYdA/cDa/F0c6L/u6YIQoMS1pSgvZDKro8VwHDymU4ZQzqPd
+         D0yADBNzgrZkGH4pn8PO/xVyTYFIslhvzszR+lN2qv4Bffr/lpcvBOuaQxJzd0iRM+3e
+         spr26IqySfiIveJsOHzy8GJr98DCY8Q+27ltdDuAuUTEkxmVJARihAldIc0IWOoZtNDB
+         NoZgckQBAywuqN60PYFsGE9Kp/3jk/+XMyr1gItRw5CC+TZZYaF2HKa9b1IhPg+c3OSC
+         VdcGtGsuft5fCeHB15siHla6VWErL/QVYanSfihMiIr3Y/5TU9xcJWN8W8j7vBJhcFMI
+         M0Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696568478; x=1697173278;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BZH8uAsDsFjlqPdAL3+yVZGxtsgHB50dQvC+iy9zr+A=;
+        b=hQur98wVRNYMhP+bFaqruJTx/c31NgI3WKN+qMC1BBP7lhVZNAvZGm+NwUgrxGk0zQ
+         lNzbAUVAOAjPtkpVoAjjO8PLuVODxb6UtAmbAVIAhdYu9QQw35tqUg9XnHhQvfqHUxGk
+         vEGiXaM3+7IknUO+IbCG8j/tjkxhngJSpyt/qj3qyFGf9ZlG7A5B86I/T9smbUJ53j0+
+         u7Dg9pwpvVhITxX2ajA+1GRfTP5aTrEaEhPdT1BRnJUzyu/aZCPyqj3AjqEiHyzpw4CR
+         LLtGvikTAZ9d1ETA3W+h3vHdbKzBwXh2OZaMB24ajfewR7CsPO9wCwPGQOuBXrpDPtZV
+         3nCg==
+X-Gm-Message-State: AOJu0YwLgufBO6ydV00rwDkz0F5C9jiiR2tRM2qwo/Su9uBBIZotnkX+
+        F3xSw82JJw7G2YXvwC0megztnJ3aJ9o=
+X-Google-Smtp-Source: AGHT+IFoZq/eJfIr5sxAnqZeyJuI8DYceQse8Eec3/zgP18APTtDaxe7JklEiX6jm2ShsvhuS8z90A==
+X-Received: by 2002:a2e:8241:0:b0:2c1:9a8b:f67 with SMTP id j1-20020a2e8241000000b002c19a8b0f67mr6271747ljh.1.1696568477227;
+        Thu, 05 Oct 2023 22:01:17 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id h15-20020a2eb0ef000000b002bce8404157sm601920ljl.12.2023.10.05.22.01.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Oct 2023 22:01:16 -0700 (PDT)
+Message-ID: <07d2740d-d251-842c-ad9f-788fd2546110@gmail.com>
+Date:   Fri, 6 Oct 2023 08:01:15 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.3
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZRq4pdDn6N73n7BO@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20231005161455.22d68c22@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH] iio: bu27008: Add processed illuminance channel
+In-Reply-To: <20231005161455.22d68c22@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,405 +76,342 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-We can simplify the code and get rid of most of the gotos by using
-guard(mutex) from cleanup.h.
+On 10/5/23 18:14, Jonathan Cameron wrote:
+> On Mon, 2 Oct 2023 15:33:41 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The RGB + IR data can be used to calculate illuminance value (Luxes).
+>> Implement the equation obtained from the ROHM HW colleagues and add a
+>> light data channel outputting illuminance values in (nano) Luxes.
+> Units in the ABI doc for illuminance are Lux, not nanolux.
+> I'm guessing that you actually provide it in Lux but via scale.
+> 
+> Make that clearer in this description if so.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
+Yep. Also, the "processed" is misleading as I implement a raw channel. I 
+did originally think I'll only implement the read_raw (as I thought 
+we'll need all RGBC + IR and end up doing two accesses - which wouldn't 
+be nice due to the doubled measurement time). I actually did that and 
+used INT_PLUS_NANO. While implementing this I noticed the 'clear' data 
+was not used - and thought I might as well support buffering when RGB+IR 
+are enabled. I needed the scale to get the buffered values to decent 
+format though - so I converted channel to raw one and added scale. The 
+commit title still contains the 'processed' which reflects the original 
+thinking. Thanks for pointing out the confusion.
 
-v4 changes: New patch in v4.
+>> Both the read_raw and buffering values is supported, with the limitation
+>> that buffering is only allowed when suitable scan-mask is used. (RGB+IR,
+>> no clear).
+>>
+>> The equation has been developed by ROHM HW colleagues for open air sensor.
+>> Adding any lens to the sensor is likely to impact to the used c1, c2, c3
+>> coefficients. Also, The output values have only been tested on BU27008.
+>>
+>> According to the HW colleagues, the very same equation should work also
+>> on BU27010.
+>>
+>> Calculate and output illuminance values from BU27008 and BU27010.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+> 
+> A few comments inline, but in general looks fine to me.
 
- drivers/staging/iio/resolver/ad2s1210.c | 157 ++++++++++----------------------
- 1 file changed, 50 insertions(+), 107 deletions(-)
+Thanks Jonathan. I had to give also the BU27008 sensor away for a while. 
+I guess I won't send the next version until I am able to do some very 
+basic testing even if the changes were minor. That's probably sometime 
+next week.
 
-diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index c4e1bc22e8b0..c4e0ffa92dc2 100644
---- a/drivers/staging/iio/resolver/ad2s1210.c
-+++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -47,6 +47,7 @@
- 
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -404,11 +405,13 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 	s64 timestamp;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
-+
- 	gpiod_set_value(st->sample_gpio, 1);
- 	timestamp = iio_get_time_ns(indio_dev);
- 	/* delay (6 * tck + 20) nano seconds */
- 	udelay(1);
-+	gpiod_set_value(st->sample_gpio, 0);
- 
- 	switch (chan->type) {
- 	case IIO_ANGL:
-@@ -418,14 +421,13 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 		ret = ad2s1210_set_mode(st, MOD_VEL);
- 		break;
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 	ret = spi_read(st->sdev, &st->sample, 3);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
- 	switch (chan->type) {
- 	case IIO_ANGL:
-@@ -437,17 +439,11 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 		ret = IIO_VAL_INT;
- 		break;
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
- 
- 	ad2s1210_push_events(indio_dev, st->sample.fault, timestamp);
- 
--error_ret:
--	gpiod_set_value(st->sample_gpio, 0);
--	/* delay (2 * tck + 20) nano seconds */
--	udelay(1);
--	mutex_unlock(&st->lock);
- 	return ret;
- }
- 
-@@ -455,11 +451,9 @@ static int ad2s1210_get_hysteresis(struct ad2s1210_state *st, int *val)
- {
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
- 			       AD2S1210_ENABLE_HYSTERESIS);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -469,15 +463,10 @@ static int ad2s1210_get_hysteresis(struct ad2s1210_state *st, int *val)
- 
- static int ad2s1210_set_hysteresis(struct ad2s1210_state *st, int val)
- {
--	int ret;
--
--	mutex_lock(&st->lock);
--	ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
--				 AD2S1210_ENABLE_HYSTERESIS,
--				 val ? AD2S1210_ENABLE_HYSTERESIS : 0);
--	mutex_unlock(&st->lock);
--
--	return ret;
-+	guard(mutex)(&st->lock);
-+	return regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-+				  AD2S1210_ENABLE_HYSTERESIS,
-+				  val ? AD2S1210_ENABLE_HYSTERESIS : 0);
- }
- 
- static int ad2s1210_get_phase_lock_range(struct ad2s1210_state *st,
-@@ -485,11 +474,9 @@ static int ad2s1210_get_phase_lock_range(struct ad2s1210_state *st,
- {
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_test_bits(st->regmap, AD2S1210_REG_CONTROL,
- 			       AD2S1210_PHASE_LOCK_RANGE_44);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -509,7 +496,7 @@ static int ad2s1210_get_phase_lock_range(struct ad2s1210_state *st,
- static int ad2s1210_set_phase_lock_range(struct ad2s1210_state *st,
- 					 int val, int val2)
- {
--	int deg, ret;
-+	int deg;
- 
- 	/* convert radians to degrees - only two allowable values */
- 	if (val == PHASE_44_DEG_TO_RAD_INT && val2 == PHASE_44_DEG_TO_RAD_MICRO)
-@@ -520,12 +507,10 @@ static int ad2s1210_set_phase_lock_range(struct ad2s1210_state *st,
- 	else
- 		return -EINVAL;
- 
--	mutex_lock(&st->lock);
--	ret = regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
--				 AD2S1210_PHASE_LOCK_RANGE_44,
--				 deg == 44 ? AD2S1210_PHASE_LOCK_RANGE_44 : 0);
--	mutex_unlock(&st->lock);
--	return ret;
-+	guard(mutex)(&st->lock);
-+	return regmap_update_bits(st->regmap, AD2S1210_REG_CONTROL,
-+				  AD2S1210_PHASE_LOCK_RANGE_44,
-+				  deg == 44 ? AD2S1210_PHASE_LOCK_RANGE_44 : 0);
- }
- 
- /* map resolution to microradians/LSB for LOT registers */
-@@ -542,10 +527,8 @@ static int ad2s1210_get_voltage_threshold(struct ad2s1210_state *st,
- 	unsigned int reg_val;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_read(st->regmap, reg, &reg_val);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -557,15 +540,11 @@ static int ad2s1210_set_voltage_threshold(struct ad2s1210_state *st,
- 					  unsigned int reg, int val)
- {
- 	unsigned int reg_val;
--	int ret;
- 
- 	reg_val = val / THRESHOLD_MILLIVOLT_PER_LSB;
- 
--	mutex_lock(&st->lock);
--	ret = regmap_write(st->regmap, reg, reg_val);
--	mutex_unlock(&st->lock);
--
--	return ret;
-+	guard(mutex)(&st->lock);
-+	return regmap_write(st->regmap, reg, reg_val);
- }
- 
- static int ad2s1210_get_lot_high_threshold(struct ad2s1210_state *st,
-@@ -574,10 +553,8 @@ static int ad2s1210_get_lot_high_threshold(struct ad2s1210_state *st,
- 	unsigned int reg_val;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_HIGH_THRD, &reg_val);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -596,18 +573,18 @@ static int ad2s1210_set_lot_high_threshold(struct ad2s1210_state *st,
- 	if (val != 0)
- 		return -EINVAL;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	/*
- 	 * We need to read both high and low registers first so we can preserve
- 	 * the hysteresis.
- 	 */
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_HIGH_THRD, &high_reg_val);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_LOW_THRD, &low_reg_val);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
- 	hysteresis = high_reg_val - low_reg_val;
- 	high_reg_val = val2 / ad2s1210_lot_threshold_urad_per_lsb[st->resolution];
-@@ -615,14 +592,9 @@ static int ad2s1210_set_lot_high_threshold(struct ad2s1210_state *st,
- 
- 	ret = regmap_write(st->regmap, AD2S1210_REG_LOT_HIGH_THRD, high_reg_val);
- 	if (ret < 0)
--		goto error_ret;
--
--	ret = regmap_write(st->regmap, AD2S1210_REG_LOT_LOW_THRD, low_reg_val);
--
--error_ret:
--	mutex_unlock(&st->lock);
-+		return ret;
- 
--	return ret;
-+	return regmap_write(st->regmap, AD2S1210_REG_LOT_LOW_THRD, low_reg_val);
- }
- 
- static int ad2s1210_get_lot_low_threshold(struct ad2s1210_state *st,
-@@ -631,16 +603,13 @@ static int ad2s1210_get_lot_low_threshold(struct ad2s1210_state *st,
- 	unsigned int high_reg_val, low_reg_val;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
-+
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_HIGH_THRD, &high_reg_val);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_LOW_THRD, &low_reg_val);
--
--error_ret:
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -663,18 +632,14 @@ static int ad2s1210_set_lot_low_threshold(struct ad2s1210_state *st,
- 
- 	hysteresis = val2 / ad2s1210_lot_threshold_urad_per_lsb[st->resolution];
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
-+
- 	ret = regmap_read(st->regmap, AD2S1210_REG_LOT_HIGH_THRD, &reg_val);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
--	ret = regmap_write(st->regmap, AD2S1210_REG_LOT_LOW_THRD,
-+	return regmap_write(st->regmap, AD2S1210_REG_LOT_LOW_THRD,
- 			   reg_val - hysteresis);
--
--error_ret:
--	mutex_unlock(&st->lock);
--
--	return ret;
- }
- 
- static int ad2s1210_get_excitation_frequency(struct ad2s1210_state *st, int *val)
-@@ -682,31 +647,23 @@ static int ad2s1210_get_excitation_frequency(struct ad2s1210_state *st, int *val
- 	unsigned int reg_val;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
-+
- 	ret = regmap_read(st->regmap, AD2S1210_REG_EXCIT_FREQ, &reg_val);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 
- 	*val = reg_val * st->clkin_hz / (1 << 15);
--	ret = IIO_VAL_INT;
--
--error_ret:
--	mutex_unlock(&st->lock);
--	return ret;
-+	return IIO_VAL_INT;
- }
- 
- static int ad2s1210_set_excitation_frequency(struct ad2s1210_state *st, int val)
- {
--	int ret;
--
- 	if (val < AD2S1210_MIN_EXCIT || val > AD2S1210_MAX_EXCIT)
- 		return -EINVAL;
- 
--	mutex_lock(&st->lock);
--	ret = ad2s1210_reinit_excitation_frequency(st, val);
--	mutex_unlock(&st->lock);
--
--	return ret;
-+	guard(mutex)(&st->lock);
-+	return ad2s1210_reinit_excitation_frequency(st, val);
- }
- 
- static const int ad2s1210_velocity_scale[] = {
-@@ -982,10 +939,8 @@ static ssize_t event_attr_voltage_reg_show(struct device *dev,
- 	unsigned int value;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_read(st->regmap, iattr->address, &value);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -1005,11 +960,9 @@ static ssize_t event_attr_voltage_reg_store(struct device *dev,
- 	if (ret)
- 		return -EINVAL;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_write(st->regmap, iattr->address,
- 			   data / THRESHOLD_MILLIVOLT_PER_LSB);
--	mutex_unlock(&st->lock);
--
- 	if (ret < 0)
- 		return ret;
- 
-@@ -1083,7 +1036,7 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
- 	unsigned int data;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	/* Use default config register value plus resolution from devicetree. */
- 	data = FIELD_PREP(AD2S1210_PHASE_LOCK_RANGE_44, 1);
-@@ -1093,13 +1046,9 @@ static int ad2s1210_initial(struct ad2s1210_state *st)
- 
- 	ret = regmap_write(st->regmap, AD2S1210_REG_CONTROL, data);
- 	if (ret < 0)
--		goto error_ret;
--
--	ret = ad2s1210_reinit_excitation_frequency(st, AD2S1210_DEF_EXCIT);
-+		return ret;
- 
--error_ret:
--	mutex_unlock(&st->lock);
--	return ret;
-+	return ad2s1210_reinit_excitation_frequency(st, AD2S1210_DEF_EXCIT);
- }
- 
- static int ad2s1210_read_label(struct iio_dev *indio_dev,
-@@ -1243,18 +1192,13 @@ static int ad2s1210_debugfs_reg_access(struct iio_dev *indio_dev,
- 				       unsigned int *readval)
- {
- 	struct ad2s1210_state *st = iio_priv(indio_dev);
--	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	if (readval)
--		ret = regmap_read(st->regmap, reg, readval);
--	else
--		ret = regmap_write(st->regmap, reg, writeval);
--
--	mutex_unlock(&st->lock);
-+		return regmap_read(st->regmap, reg, readval);
- 
--	return ret;
-+	return regmap_write(st->regmap, reg, writeval);
- }
- 
- static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
-@@ -1265,7 +1209,7 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
- 	size_t chan = 0;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	memset(&st->scan, 0, sizeof(st->scan));
- 	gpiod_set_value(st->sample_gpio, 1);
-@@ -1299,7 +1243,6 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
- 
- error_ret:
- 	gpiod_set_value(st->sample_gpio, 0);
--	mutex_unlock(&st->lock);
- 	iio_trigger_notify_done(indio_dev->trig);
- 
- 	return IRQ_HANDLED;
+> 
+> Jonathan
+> 
+>> ---
+>>
+>> I did very dummy testing at very normal daylight inside a building. No
+>> special equipments were used - I simply compared values computed from
+>> BU27008 RGB+IR channels, to values displayed by the ALS in my mobile
+>> phone. Results were roughly the same (around 400 lux). Couldn't repeat
+>> test on BU27010, but the data it outputs should be same format as
+>> BU27008 data so equation should work for both sensors.
+>> ---
+>>   drivers/iio/light/rohm-bu27008.c | 216 ++++++++++++++++++++++++++++++-
+>>   1 file changed, 211 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/rohm-bu27008.c b/drivers/iio/light/rohm-bu27008.c
+>> index 6a6d77805091..d480cf761377 100644
+>> --- a/drivers/iio/light/rohm-bu27008.c
+>> +++ b/drivers/iio/light/rohm-bu27008.c
+>> @@ -130,6 +130,7 @@
+>>    * @BU27008_BLUE:	Blue channel. Via data2 (when used).
+>>    * @BU27008_CLEAR:	Clear channel. Via data2 or data3 (when used).
+>>    * @BU27008_IR:		IR channel. Via data3 (when used).
+>> + * @BU27008_LUX:	Illuminance channel, computed using RGB and IR.
+>>    * @BU27008_NUM_CHANS:	Number of channel types.
+>>    */
+>>   enum bu27008_chan_type {
+>> @@ -138,6 +139,7 @@ enum bu27008_chan_type {
+>>   	BU27008_BLUE,
+>>   	BU27008_CLEAR,
+>>   	BU27008_IR,
+>> +	BU27008_LUX,
+>>   	BU27008_NUM_CHANS
+>>   };
+>>   
+>> @@ -172,6 +174,8 @@ static const unsigned long bu27008_scan_masks[] = {
+>>   	ALWAYS_SCANNABLE | BIT(BU27008_CLEAR) | BIT(BU27008_IR),
+>>   	/* buffer is R, G, B, IR */
+>>   	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR),
+>> +	/* buffer is R, G, B, IR, LUX */
+>> +	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR) | BIT(BU27008_LUX),
+>>   	0
+>>   };
+>>   
+>> @@ -331,6 +335,19 @@ static const struct iio_chan_spec bu27008_channels[] = {
+>>   	 * Hence we don't advertise available ones either.
+>>   	 */
+>>   	BU27008_CHAN(IR, DATA3, 0),
+>> +	{
+>> +		.type = IIO_LIGHT,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.channel = BU27008_LUX,
+>> +		.scan_index = BU27008_LUX,
+>> +		.scan_type = {
+>> +			.sign = 'u',
+>> +			.realbits = 64,
+>> +			.storagebits = 64,
+>> +			.endianness = IIO_CPU,
+>> +		},
+>> +	},
+>>   	IIO_CHAN_SOFT_TIMESTAMP(BU27008_NUM_CHANS),
+>>   };
+>>   
+>> @@ -1004,6 +1021,183 @@ static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
+>>   	return ret;
+>>   }
+>>   
+>> +static int bu27008_get_rgb_ir(struct bu27008_data *data, unsigned int *red,
+>> +		    unsigned int *green, unsigned int *blue, unsigned int *ir)
+>> +{
+>> +	int ret, chan_sel, int_time, tmpret, valid;
+>> +	__le16 chans[BU27008_NUM_HW_CHANS];
+>> +
+>> +	chan_sel = BU27008_BLUE2_IR3 << (ffs(data->cd->chan_sel_mask) - 1);
+>> +
+>> +	ret = regmap_update_bits(data->regmap, data->cd->chan_sel_reg,
+>> +				 data->cd->chan_sel_mask, chan_sel);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = bu27008_meas_set(data, true);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = bu27008_get_int_time_us(data);
+>> +	if (ret < 0)
+>> +		int_time = BU27008_MEAS_TIME_MAX_MS;
+>> +	else
+>> +		int_time = ret / USEC_PER_MSEC;
+>> +
+>> +	msleep(int_time);
+>> +
+>> +	ret = regmap_read_poll_timeout(data->regmap, data->cd->valid_reg,
+>> +				       valid, (valid & BU27008_MASK_VALID),
+>> +				       BU27008_VALID_RESULT_WAIT_QUANTA_US,
+>> +				       BU27008_MAX_VALID_RESULT_WAIT_US);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = regmap_bulk_read(data->regmap, BU27008_REG_DATA0_LO, chans,
+>> +			       sizeof(chans));
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	*red = le16_to_cpu(chans[0]);
+>> +	*green = le16_to_cpu(chans[1]);
+>> +	*blue = le16_to_cpu(chans[2]);
+>> +	*ir = le16_to_cpu(chans[3]);
+> 
+> I'd be tempted to use an array + definitely pass them as u16 rather
+> than unsigned int.
+
+I'm not really convinced the u16 is better here. We need the 32 bits 
+later for the calculations - and (afaics) using natural size int for 
+arguments shouldn't harm. We read the channel data to correct type array 
+so code should be pretty clear as to what we have in HW.
+
+Also, I think that having an array obfuscates what element is which 
+channel because these ICs didn't have the 1 to 1 mapping from channel 
+index to colour. I was thinking of adding a struct for this but decided 
+to just keep it simple and clear.
+
+>> +
+>> +out:
+>> +	tmpret = bu27008_meas_set(data, false);
+>> +	if (tmpret)
+>> +		dev_warn(data->dev, "Stopping measurement failed\n");
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +/*
+>> + * Following equation for computing lux out of register values was given by
+>> + * ROHM HW colleagues;
+>> + *
+>> + * Red = RedData*1024 / Gain * 20 / meas_mode
+>> + * Green = GreenData* 1024 / Gain * 20 / meas_mode
+>> + * Blue = BlueData* 1024 / Gain * 20 / meas_mode
+>> + * IR = IrData* 1024 / Gain * 20 / meas_mode
+>> + *
+>> + * where meas_mode is the integration time in mS / 10
+>> + *
+>> + * IRratio = (IR > 0.18 * Green) ? 0 : 1
+>> + *
+>> + * Lx = max(c1*Red + c2*Green + c3*Blue,0)
+>> + *
+>> + * for
+>> + * IRratio 0: c1 = -0.00002237, c2 = 0.0003219, c3 = -0.000120371
+>> + * IRratio 1: c1 = -0.00001074, c2 = 0.000305415, c3 = -0.000129367
+>> + */
+>> +
+>> +/*
+>> + * The max chan data is 0xffff. When we multiply it by 1024 * 20, we'll get
+>> + * 0x4FFFB000 which still fits in 32-bit integer. So this can't overflow.
+>> + */
+>> +#define NORM_CHAN_DATA_FOR_LX_CALC(chan, gain, time) ((chan) * 1024 * 20 / \
+>> +				   (gain) / (time))
+>> +static u64 bu27008_calc_nlux(struct bu27008_data *data, unsigned int red,
+>> +		unsigned int green, unsigned int blue,  unsigned int ir,
+>> +		unsigned int gain, unsigned int gain_ir, unsigned int time)
+>> +{
+>> +	s64 c1, c2, c3, nlux;
+>> +
+>> +	time /= 10000;
+>> +	ir = NORM_CHAN_DATA_FOR_LX_CALC(ir, gain_ir, time);
+>> +	red = NORM_CHAN_DATA_FOR_LX_CALC(red, gain, time);
+>> +	green = NORM_CHAN_DATA_FOR_LX_CALC(green, gain, time);
+>> +	blue = NORM_CHAN_DATA_FOR_LX_CALC(blue, gain, time);
+
+> I'd prefer to see the inputs parameters and the normalized version given different
+> names. Also the inputs are still u16, so nice to reflect that here.
+
+So, you suggest we bring the data as u16 until here and only here we 
+assign it into 32bit variables when doing the 'normalization'? I'm sure 
+it works, but I dislike doing computations like multiplying u16 by u32 
+as I never know (out of my head) how the implicit type conversions work 
+and if we get some results cropped. Adding the casts to computation make 
+it less pretty for my eyes while having all variables in large enough 
+types does not leave me wondering if it works correctly and if explicit 
+casts are needed.
+
+I am not strongly opposing this though if you insist - I am sure I can 
+at the end of the day get the code right - but I am afraid I will later 
+look at the code and wonder if it contains hideous issues...
+
+> Also when doing normalization I'd used fixed with types so there is no
+> confusion over what was intended (here u32)
+
+Ok.
+
+> 
+>> +
+>> +	if ((u64)ir * 100LLU > 18LLU * (u64)green) {
+> 
+> Putting scaling for ir to the right and green to the left is
+> unusual. I'd chose one side and stick to it.
+
+Sorry Jonathan. I must be a bit slow today but I just seem to not be 
+able to think how you would like to have this? I think this line is 
+somehow mappable to the:
+
+IRratio = (IR > 0.18 * Green) ? 0 : 1
+formula I got from HW colleagues and added in the comment preceding the 
+function.
+
+> 
+>> +		c1 = -22370;
+>> +		c2 = 321900;
+>> +		c3 = -120371;
+>> +	} else {
+>> +		c1 = -10740;
+>> +		c2 = 305415;
+>> +		c3 = -129367;
+>> +	}
+>> +	nlux = c1 * red + c2 * green + c3 * blue;
+>> +	if (nlux < 0)
+>> +		nlux = 0;
+> 
+> 	return max(0, nlux); is a bit neater and makes
+> it clear this is simple clamping to possible values given unlikely we'll see
+> negative light sources :)
+
+Ok. I should've remembered how you prefered max()/min() when clamping :)
+
+>> +
+>> +	return nlux;
+>> +}
+>> +
+>> +static int bu27008_get_time_n_gains(struct bu27008_data *data,
+>> +		unsigned int *gain, unsigned int *gain_ir, unsigned int *time)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = bu27008_get_gain(data, &data->gts, gain);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	ret = bu27008_get_gain(data, &data->gts_ir, gain_ir);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	ret = bu27008_get_int_time_us(data);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	/* Max integration time is 400000i. Fits in signed int. */
+>> +	*time = ret;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +struct bu27008_buf {
+>> +	__le16 chan[BU27008_NUM_HW_CHANS];
+>> +	u64 lux __aligned(8);
+>> +	s64 ts __aligned(8);
+>> +};
+>> +
+>> +static int bu27008_buffer_get_lux(struct bu27008_data *data,
+>> +				  struct bu27008_buf *raw)
+>> +{
+>> +	unsigned int red, green, blue, ir, gain, gain_ir, time;
+>> +	int ret;
+>> +
+>> +	red = le16_to_cpu(raw->chan[0]);
+>> +	green = le16_to_cpu(raw->chan[1]);
+>> +	blue = le16_to_cpu(raw->chan[2]);
+>> +	ir = le16_to_cpu(raw->chan[3]);
+>> +	ret = bu27008_get_time_n_gains(data, &gain, &gain_ir, &time);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	raw->lux = bu27008_calc_nlux(data, red, green, blue, ir, gain, gain_ir,
+>> +				     time);
+> 
+> Probably call this function *fill_in_lux() or something like that because I'd expect
+> a *get_lux() function to return the lux value.
+> 
+
+Ok. Makes sense.
+
+Thanks for the review again!
+
+Yours,
+	-- Matti
 
 -- 
-2.42.0
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

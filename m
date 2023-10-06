@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 677867BAFB2
+	by mail.lfdr.de (Postfix) with ESMTP id C11217BAFB3
 	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 02:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjJFAvL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S229649AbjJFAvL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Thu, 5 Oct 2023 20:51:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55448 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjJFAvJ (ORCPT
+        with ESMTP id S229545AbjJFAvJ (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Oct 2023 20:51:09 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0588CD9
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0EACE7
         for <linux-iio@vger.kernel.org>; Thu,  5 Oct 2023 17:51:06 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1e12f41e496so957143fac.3
-        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 17:51:05 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1e106eb414cso1018157fac.0
+        for <linux-iio@vger.kernel.org>; Thu, 05 Oct 2023 17:51:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696553465; x=1697158265; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dj54Gl1jd+w9QgbJ5IpGgS95Y27Kw5ws4fL1QKoqHoA=;
-        b=tG8HUy4JAU0I0ARM0XEMccY4swQP4zaVTcuxZW5auZ1HghCJRZF8RUV2C2s974M9HB
-         slcL1chsk16XQWqVHoxgOFV26j6hM4/8jfNZl56ni/UJPzRRTH8ODOaVun0MsG7AGEUL
-         xYiht4RnMqtPPINGkm9d0bOe3S1zcfOdmKeBC+yor/qV0BF9CSJl4RB5ssWxm1XKygb4
-         xtjs8RmNzqNYMF+T5FJFrnCCjGPGAtSo2T+302aEP7vWJgGlhaAtH1J76IYfW71fS23g
-         oVua5HBcUbQrRehAOVFIMQhAyHjG3LbtPmbt+LRpSBTnmx+aWVyDj0U/W0fdzd/b4vZT
-         o7Qg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696553466; x=1697158266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FmnWnKvM60dm/oO+QIaL6SFHQ4EDYTo8nwIRSW4SLrI=;
+        b=PF/idpmj+1syfPcemCEME+Oj7dUosCzZZ9H/mDEyV+Qb+Ss3P80kTGQ3DsML0PyeW4
+         AjQIJR3OBT8HdwmDLxsqIPMPf5+ok5kQ7gEwPFncueKhcKWNdnb1ONL0RLARqOXH5mfe
+         jq8LMUIX5ZX6kt/GxA30dMyXZ5PUxOWOjtYtGRnJou8MCnkKVT5mUroFriDygb+tft6B
+         PRUu7MU6YPEg/UTSYPDzwjrYMUCCOd4FymqzM/xycF7SQfuaHWrfQKuKQfuDA7d8CDCw
+         vMoLpoTFFNAgi8greS6BQxDhYUj717t9R9vcg7+OS7c+mEAaMm6PzHLeL1Qw1uKCCCnj
+         xYBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696553465; x=1697158265;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Dj54Gl1jd+w9QgbJ5IpGgS95Y27Kw5ws4fL1QKoqHoA=;
-        b=hQeglsgk8TnvieD+l22hzkoqE9CGRsFhS4Q/zNLNDGbETV1US5fmjA/nACjOwyw4Qm
-         VyhZgg6OVRfbfk878fOP/VCFG18SgZOEvd0mJzoDKtfIGuOV/MF0Grrm5dWTEhK3Xq2c
-         JRoq5jlJnfDXWWR4E1HET8+Mq2dTnvM6ox0dhdf2/SYldRqTI3lFXtuZP+3/Zs5iZAkk
-         G3Dsp3NLi2wyzXdDXeG4RHDyh4VGyz/y9pSGUufKaGkBrxj5W2w2uLgg6b/drXFugWEg
-         Y2U25sSurvhLkOvEucL6h4aSwT2rB/757UKIiX2u3Un0Vd7DHJjeSFICb+0+Wcy6P129
-         Wc8w==
-X-Gm-Message-State: AOJu0YzC8zMRCHIYQMbUmnSvJ7YbtsSu8QXx+NR3tML3AvfFidgYPzud
-        +t6LZMtFWjZY8YdNZ0rp26b3UO2RhIw5aa6FzmX0jQ==
-X-Google-Smtp-Source: AGHT+IG1hSjqGVvnbK0ZQXLALAHV4h6eK08b8Sg1VE/BxT+UJ3tKdYKuqZ0DT9gCvR470zCjPxGqCw==
-X-Received: by 2002:a05:6870:96a3:b0:1dc:7e71:d471 with SMTP id o35-20020a05687096a300b001dc7e71d471mr7341864oaq.31.1696553465199;
-        Thu, 05 Oct 2023 17:51:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696553466; x=1697158266;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FmnWnKvM60dm/oO+QIaL6SFHQ4EDYTo8nwIRSW4SLrI=;
+        b=W1OSRBaprBvz2n0IuFjx0PvJ9wCI2RB7kxiQQuYfooOUNdIrNtvDRCOTZ/FzekSG6l
+         Rd7FVKVCWd47Tr8fw1Phmp04PEC/aYAOrDU/6Nh5gWesk8k/hhXHwOSeiZiLbAUScqhC
+         eV8by+AB/6noCcpx629Ciyg9MZjJo9vr/Z2M2/t1CDNdO/9ZdDJ4nXkiNm7WlLrnEcYT
+         l49H8CtmOSDgjs9+fbuxKUOizmo301aVYZYPvqYYbkRbeAjTggPN8sgNFgV6v4MVEK10
+         yl2RPRX7+0msnSARvPDGiw5UmBTfY+R3kUVefi4c4Hk3dwsawomosKmeXqj6KX0K+0uE
+         cQLg==
+X-Gm-Message-State: AOJu0YzUjggotGZpTNgxWovv4tb7DQUCSROiqQKzUfxKNbRcjr9uorZq
+        f7b7JLxQu63sIO3Y2DxjByTpuK066rsduSXxjNgqtg==
+X-Google-Smtp-Source: AGHT+IEv6WtS6qh9/yTfpep5SGFAYpPtAHL09gstutBcqD5TCzldqYdZkPKppJ2qxWVI1cuLcrDWug==
+X-Received: by 2002:a05:6870:9a21:b0:1db:3031:c97c with SMTP id fo33-20020a0568709a2100b001db3031c97cmr8089382oab.26.1696553466001;
+        Thu, 05 Oct 2023 17:51:06 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id mo9-20020a056871320900b001dd0ff401edsm545072oac.51.2023.10.05.17.51.04
+        by smtp.gmail.com with ESMTPSA id mo9-20020a056871320900b001dd0ff401edsm545072oac.51.2023.10.05.17.51.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 17:51:04 -0700 (PDT)
+        Thu, 05 Oct 2023 17:51:05 -0700 (PDT)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
 Cc:     David Lechner <dlechner@baylibre.com>,
@@ -57,10 +58,12 @@ Cc:     David Lechner <dlechner@baylibre.com>,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 00/17] iio: resolver: move ad2s1210 out of staging
-Date:   Thu,  5 Oct 2023 19:50:17 -0500
-Message-ID: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
+Subject: [PATCH v4 01/17] staging: iio: resolver: ad2s1210: do not use fault register for dummy read
+Date:   Thu,  5 Oct 2023 19:50:18 -0500
+Message-ID: <20231005-ad2s1210-mainline-v4-1-ec00746840fc@baylibre.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
+References: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.3
@@ -74,124 +77,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This series is working towards moving the ad2s1210 resolver driver out of
-staging (after 13 years!). It involves a bunch of fixes and improvements
-to make proper device tree bindings and use standard IIO sysfs attributes.
+When reading registers on the AD2S1210 chip, we have to supply a "dummy"
+address for the second SPI tx byte so that we don't accidentally write
+to a register. This register will be read and the value discarded on the
+next regmap read or write call.
 
-This series has been tested on actual hardware using a EVAL-AD2S1210 evaluation
-board. (Note: not all device tree features have been implemented in the driver
-since the eval board doesn't support them out of the box. We plan to add them
-later if needed.)
+Reading the fault register has a side-effect of clearing the faults
+so we should not use this register for the dummy read.
 
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-v4 changes:
-* Dropped applied patches:
-  * "dt-bindings: iio: resolver: add devicetree bindings for ad2s1210"
-  * "staging: iio: resolver: ad2s1210: read excitation frequency from
-    control register"
-  * "staging: iio: resolver: ad2s1210: refactor setting excitation
-    frequency"
-  * "staging: iio: resolver: ad2s1210: rework gpios"
-  * "staging: iio: resolver: ad2s1210: remove config attribute"
-  * "staging: iio: resolver: ad2s1210: add debugfs reg access"
-  * "staging: iio: resolver: ad2s1210: use regmap for config registers"
-  * "staging: iio: resolver: ad2s1210: use devicetree to get CLKIN rate"
-  * "staging: iio: resolver: ad2s1210: implement IIO_CHAN_INFO_SCALE"
-  * "staging: iio: resolver: ad2s1210: always use 16-bit value for raw
-    read"
-  * "staging: iio: resolver: ad2s1210: sort imports"
-  * "staging: iio: resolver: ad2s1210: remove spi_set_drvdata()"
-  * "staging: iio: resolver: ad2s1210: check return of ad2s1210_initial()"
-  * "staging: iio: resolver: ad2s1210: remove call to spi_setup()"
-  * "staging: iio: resolver: ad2s1210: fix use before initialization"
-* Added new patches:
-  * "staging: iio: resolver: ad2s1210: do not use fault register for
-    dummy read"
-  * "iio: event: add optional event label support"
-  * "staging: iio: resolver: ad2s1210: add register/fault support summary"
-  * "staging: iio: resolver: ad2s1210: remove fault attribute"
-  * "staging: iio: resolver: ad2s1210: simplify code with guard(mutex)"
-* Fixed DT property name in commit description of "staging: iio:
-  resolver: ad2s1210: convert resolution to devicetree property"
-* Fixed compile error in "staging: iio: resolver: ad2s1210: implement
-  fault events".
-* Fixed angl0 hysteresis raw values when assigned-resolution-bits != 16.
-* Fixed missing word in "staging: iio: resolver: ad2s1210: convert DOS
-  overrange threshold to event attr" commit description.
-* Fixed missing static qualifier on event attribute definitions.
-* Dropped used of X/Y modifiers on sine/cosine channels.
-* Changed type/direction on some events.
-* Added event *_label attributes.
+v4 changes: New patch
 
-Link to v3: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com
+(this probably should have been done before "staging: iio: resolver:
+ad2s1210: use regmap for config registers" but was overlooked until now)
 
-v3 changes:
-* Dropped applied patches:
-  * "staging: iio: resolver: ad2s1210: fix ad2s1210_show_fault"
-  * "iio: adc: MCP3564: fix the static checker warning"
-* Dropped "staging: iio: Documentation: document IIO resolver AD2S1210
-  sysfs attributes". We will attempt to use existing ABI for faults/
-  thresholds in a future series.
-* Added description of A0/A1 lines in DT bindings.
-* Added power supply regulators to DT bindings.
-* Moved sorting imports to separate patch.
-* Renamed fclkin to clkin_hz.
-* Added __be16 sample field to state struct for reading raw samples.
-* Split out new function ad2s1210_single_conversion() from
-  ad2s1210_read_raw().
-* Split out new ad2s1210_get_hysteresis() and ad2s1210_set_hysteresis()
-  functions.
-* Fixed multi-line comment style.
-* Added notes about soft reset not resetting config registers.
-* Made use of FIELD_PREP() macro.
-* Added more explanation to regmap commit message.
-* Removed datasheet names from channel specs.
-* Replaced "staging: iio: resolver: ad2s1210: rename fexcit attribute"
-  with "staging: iio: resolver: ad2s1210: convert fexcit to channel
-  attribute".
-* Replaced "staging: iio: resolver: ad2s1210: add phase_lock_range
-  attributes" with "staging: iio: resolver: ad2s1210: add phase lock
-  range support"
-* Added additional patches to convert custom device attributes to event
-  attributes.
-* Added patch for to add label attributes.
+ drivers/staging/iio/resolver/ad2s1210.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Link to v2: https://lore.kernel.org/r/20230921144400.62380-1-dlechner@baylibre.com
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index 67d8af0dd7ae..8fbde9517fe9 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -166,9 +166,10 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
+ 	st->tx[0] = reg;
+ 	/*
+ 	 * Must be valid register address here otherwise this could write data.
+-	 * It doesn't matter which one.
++	 * It doesn't matter which one as long as reading doesn't have side-
++	 * effects.
+ 	 */
+-	st->tx[1] = AD2S1210_REG_FAULT;
++	st->tx[1] = AD2S1210_REG_CONTROL;
+ 
+ 	ret = spi_sync_transfer(st->sdev, xfers, ARRAY_SIZE(xfers));
+ 	if (ret < 0)
 
-v2 changes:
-* Address initial device tree patch feedback
-* Drop "iio: sysfs: add IIO_DEVICE_ATTR_NAMED_RW macro" (related cleanups
-  also dropped for now, will address in a future series if needed)
-* Apply improvements as a series of patches to the staging driver. It is
-  not quite ready for the move out of staging patch yet.
+-- 
+2.42.0
 
----
-David Lechner (17):
-      staging: iio: resolver: ad2s1210: do not use fault register for dummy read
-      staging: iio: resolver: ad2s1210: implement hysteresis as channel attr
-      staging: iio: resolver: ad2s1210: convert fexcit to channel attribute
-      staging: iio: resolver: ad2s1210: convert resolution to devicetree property
-      staging: iio: resolver: ad2s1210: add phase lock range support
-      staging: iio: resolver: ad2s1210: add triggered buffer support
-      staging: iio: resolver: ad2s1210: convert LOT threshold attrs to event attrs
-      staging: iio: resolver: ad2s1210: convert LOS threshold to event attr
-      staging: iio: resolver: ad2s1210: convert DOS overrange threshold to event attr
-      staging: iio: resolver: ad2s1210: convert DOS mismatch threshold to event attr
-      staging: iio: resolver: ad2s1210: rename DOS reset min/max attrs
-      iio: event: add optional event label support
-      staging: iio: resolver: ad2s1210: implement fault events
-      staging: iio: resolver: ad2s1210: add register/fault support summary
-      staging: iio: resolver: ad2s1210: add label attribute support
-      staging: iio: resolver: ad2s1210: remove fault attribute
-      staging: iio: resolver: ad2s1210: simplify code with guard(mutex)
-
- Documentation/ABI/testing/sysfs-bus-iio            |   15 +
- drivers/iio/industrialio-event.c                   |   55 +
- .../Documentation/sysfs-bus-iio-resolver-ad2s1210  |   27 +
- drivers/staging/iio/resolver/ad2s1210.c            | 1194 ++++++++++++++++----
- include/linux/iio/iio.h                            |    8 +
- 5 files changed, 1061 insertions(+), 238 deletions(-)
----
-base-commit: 2d3dff577dd0ea8fe9637a13822f7603c4a881c8
-change-id: 20230925-ad2s1210-mainline-2791ef75e386

@@ -2,69 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91DDF7BB5FA
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 13:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 113127BBA11
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 16:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbjJFLKX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Oct 2023 07:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40550 "EHLO
+        id S230444AbjJFOSm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Oct 2023 10:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231678AbjJFLKW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Oct 2023 07:10:22 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683B0C5;
-        Fri,  6 Oct 2023 04:10:21 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c60a514f3aso15942995ad.3;
-        Fri, 06 Oct 2023 04:10:21 -0700 (PDT)
+        with ESMTP id S229492AbjJFOSm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Oct 2023 10:18:42 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE168C5;
+        Fri,  6 Oct 2023 07:18:40 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9936b3d0286so403045766b.0;
+        Fri, 06 Oct 2023 07:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696590621; x=1697195421; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YKxwMziyF9f+XcW5KbzLvdRwT1A0PF/qR26nQ89ZGrw=;
-        b=H+1K9uICCO+k3z/YVnyZYxy33o3UCVfRk3lAEMl7l764bj8+wGKCr4bwz1CMIxaVg0
-         NUcvgGm+yj7DjdR4wkxLViFh/NYCaLdBMqHDaH78kpN3SaFgNNtDf43evzKN++TBv7RJ
-         Z3vQuTR9yQlWNtnfTILEbKnODObfbgN4xJzUiHDQx6KrMDVY+NLbcJ3NjPTpmKrY/Gc7
-         NIvogFo+cc62oI6RcUmjv55JyxeZLnDTXs9Z4rwDYIiOOs2eTS+UKqnKWtsK0XDiUTwi
-         WGg1/QDOTAaGG5BxrPQfcBJPgMrSxvOWIEVtIbtrEmVLotyCC6a/d8bCJyA0/7Icretf
-         hEeA==
+        d=gmail.com; s=20230601; t=1696601919; x=1697206719; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AmTNhahVlLjLwaQlHbv41r5WgbZRC4QhjNNkQIXElyw=;
+        b=XoiK9GUJuSlOBU0sdAEfniSGdyRyMqBn3R/cjtwRgVXJbsAaQbifbDH3H8fsAb938Y
+         QMaV6MZHzbIwADP+tScFvnBjrTUMyxrRmiLIsB1E33hSiY5fPk/X8tv2qPRQGX+eTiZW
+         yckRc1er9Glpp3YXbbBD0Hdicy09CqA9mSmen5oRCrTwBHpH1lxBlGqw8LXviDXnPjQx
+         7jq/TGXLqH7hN1GX7NdXBXunhW3Ao4pB8uj1VEnT2vQz6rUjPg4H/jpvKBB1xH8JUmnF
+         7JNS19Hvi3mrsBfYEbYe1lhKiiF97ZMUlOcQSC+FG4gVfA930wuwGIafmnKtoF+acD50
+         FQHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696590621; x=1697195421;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1696601919; x=1697206719;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YKxwMziyF9f+XcW5KbzLvdRwT1A0PF/qR26nQ89ZGrw=;
-        b=ClO5OM/Zzpppcc8ks16aZXbTDw31/B9sptnSP/PtJdyyWDrsrbLd9VNO/ozzIcRPsQ
-         3C/B0sI7QMogxhZNxI+iqfqon3ZpFMoDATieKcrw0EfuaY5VTfxIN437vKoIkOiRwgAc
-         GYPGz2lqUtUBrfRC0KKOpctwezpFt6vH3pH/1q5IRBuroxKxtWTTZuSjbp06qxZVhcTn
-         waL9E379xfQqessed08DWHA2uNA3fGYzihQCl4+PT2087Fv1oGmPx3UCdrGXMbf1RQOq
-         +Mr6tY7tqX25hcR63kNfBAm0Qq0RG0leZ/y3o+LfWVTFneDyV9ybEYSlA9RTJzNPxb8Z
-         N8Xg==
-X-Gm-Message-State: AOJu0YyijM1vl8AiXtNHQ30otjxoNifG2kxHEeoU3Q8g2/pOwm3qR+6T
-        OR6JObO0X4sHvzadw40updumfWxXKjY=
-X-Google-Smtp-Source: AGHT+IH9vE9f9myc1J/3QI01q0u8tNp2b6twK6teuvgHg/NI/fdG5hczmvP3X96/SnE1Bt3mGdQijg==
-X-Received: by 2002:a17:902:e5d0:b0:1c5:6157:f073 with SMTP id u16-20020a170902e5d000b001c56157f073mr9723898plf.11.1696590620621;
-        Fri, 06 Oct 2023 04:10:20 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170902eb0600b001bbab888ba0sm3544776plb.138.2023.10.06.04.10.18
+        bh=AmTNhahVlLjLwaQlHbv41r5WgbZRC4QhjNNkQIXElyw=;
+        b=ZBsszL3rzmK09bwmkdq9P1YSyG+oGyi7/DKqfhNXLCwDk4Hq6xWSHUwoZfFloEtxrv
+         ua6Beaxt1usDu6nAnHJ2DGSAQ2QlRv3IPJQgO8YG4ElZK5ItiSpH55v5o8hrRoXxipMh
+         +LdWQJK3uhCCHgwFnnkRDn9F/c9a27CVuJrLRJeU+uzzxqJlOSgvhc2f4hZhwXZ8xYBf
+         S3qetoBAZ2bw8EQXxMfr2ngXFZUZWQZ/L2OYBmRrBZAgNO5DkHxqG5mJMbTKako03363
+         uuloMb7+YFuJqj6t3rpNbh8VRUTd3E+vOQtdx92afxb/4hkZaSGKb1P1TlvDTJ/IQnfV
+         6ztw==
+X-Gm-Message-State: AOJu0YxIoX06ovzOEvJc9XiGl2126UoovqfOVOef5GsJUEbZ1jAbcS+m
+        MB4hh5+kVlD3iQoxxnaeYaBhQbyCZnsyBSrL
+X-Google-Smtp-Source: AGHT+IFPssNvdDSrhsENbJLGoa0rvZp3zpleLsg6gyuJ+0YhysS296jJ15ngd5HgjjZ1TuGY4WGJGQ==
+X-Received: by 2002:a17:906:308c:b0:9ae:829e:d930 with SMTP id 12-20020a170906308c00b009ae829ed930mr8031948ejv.9.1696601918987;
+        Fri, 06 Oct 2023 07:18:38 -0700 (PDT)
+Received: from [10.76.84.110] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id w19-20020a170906481300b009b9720a85e5sm2932839ejq.38.2023.10.06.07.18.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Oct 2023 04:10:19 -0700 (PDT)
-Message-ID: <751a87c9-a4aa-4e06-1d12-1e2b1a3487de@gmail.com>
-Date:   Fri, 6 Oct 2023 14:10:16 +0300
+        Fri, 06 Oct 2023 07:18:38 -0700 (PDT)
+Message-ID: <07afa29c-bfef-72dc-d471-f72dfcebe342@gmail.com>
+Date:   Fri, 6 Oct 2023 17:18:36 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 2/2] iio: adc: ad7173: add AD7173 driver
+Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20231005163026.2c7707de@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH] iio: sanity check available_scan_masks array
-In-Reply-To: <20231005163026.2c7707de@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ceclan Dumitru <dumitru.ceclan@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231005105921.460657-1-mitrutzceclan@gmail.com>
+ <20231005105921.460657-2-mitrutzceclan@gmail.com>
+ <20231005180131.0518f46c@jic23-huawei>
+From:   Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
+In-Reply-To: <20231005180131.0518f46c@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
@@ -76,168 +91,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Again Jonathan.
-
-On 10/5/23 18:30, Jonathan Cameron wrote:
-> On Tue, 3 Oct 2023 12:49:45 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 10/5/23 20:01, Jonathan Cameron wrote:
+> On Thu,  5 Oct 2023 13:59:22 +0300
+> Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
 > 
->> When IIO goes through the available scan masks in order to select the
->> best suiting one, it will just accept the first listed subset of channels
->> which meets the user's requirements. If driver lists a mask which is a
->> subset of some of the masks previously in the array of
->> avaliable_scan_masks, then the latter one will never be selected.
+>> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+>> which can be used in high precision, low noise single channel
+>> applications or higher speed multiplexed applications. The Sigma-Delta
+>> ADC is intended primarily for measurement of signals close to DC but also
+>> delivers outstanding performance with input bandwidths out to ~10kHz.
 >>
->> Add a warning if driver registers masks which can't be used due to the
->> available_scan_masks-array ordering.
->>
->> Suggested-by: Jonathan Cameron <jic23@kernel.org>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Hi Matti
-> 
-> Thanks for doing this.  A few comments inline + maybe we need to think
-> about a unit test for the matching code. I feel we aren't pushing the
-> corners of that in any drivers so far so it might bite us later.
-> 
-> Still that's a job for another day.
-> 
-> Jonathan
-> 
->>
->> ---
->> The change was suggested by Jonathan here:
->> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
->> ---
->>   drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
->>   1 file changed, 57 insertions(+)
->>
->> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
->> index c77745b594bd..d4f37f4eeec0 100644
->> --- a/drivers/iio/industrialio-core.c
->> +++ b/drivers/iio/industrialio-core.c
->> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
 
 ...
 
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		ret = ad_sigma_delta_single_conversion(indio_dev, chan, val);
+> 
+> It's fairly usual for it to be safe to grab a single conversion when the
+> buffered mode might be enabled.  Do you need an iio_device_claim_direct_mode()
+> here?
+> 
+ad_sigma_delta_single_conversion() calls iio_device_claim_direct_mode()
+
+
+>> +static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
+>> +				   const unsigned long *scan_mask)
+>> +{
+>> +	struct ad7173_state *st = iio_priv(indio_dev);
+>> +	int i, ret = 0;
 >> +
->> +	for (num_masks = 0; *av_masks; num_masks++)
+>> +	iio_device_claim_direct_mode(indio_dev);
 > 
-> I think we can't just check *av_masks - need bitmap_empty() as first
-> long might be 0 but could be bits set in the next one.
+> This looks wrong.
+> Firstly iio_device_claim_direct_mode() can fail so you always have
+> to check the return value. If it does fail and you then call
+> iio_release_direct_mode() it is unbalanced release of a mutex.
 > 
->> +		av_masks += longs_per_mask;
+> Secondly update_scan_mode is only called as part of buffer setup
+> and there should be no races around that (and the mutex this
+> tries to grab is already held.
+> https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-buffer.c#L1265
+> )
+> 
+> If you are protecting something device specific (rather than
+> the mode) then a device specific lock should be taken.
+> 
 
-I did switch this to:
-+       for (num_masks = 0; !bitmap_empty(av_masks, masklength); 
-num_masks++)
-+               av_masks += longs_per_mask;
+The use of a lock was inspired from ad7124, but from looking at it the only use it has
+was to protect concurrent access of the device setup from write_raw (that now uses ...direct_mode())
 
-but this kind of freaks me out.
+I think it's best to drop this lock. 
 
-I think in kernel we see two ways of constructing and passing arrays to 
-frameworks. One is creating a NULL terminated array, the other being an 
-array which size is given. The available_scan_masks is using the first 
-approach.
 
-The array represents bitmasks, which are thought to be of arbitrary 
-length. The type of array items is longs though. When building an arry 
-like this, it is easy to just do:
+>> +		chan[chan_index].differential = fwnode_property_read_bool(child, "bipolar");
+> 
+> bipolar doesn't normally == differential. 
+> You can have unipolar differential (just that you can't get a negative answer)
+> Perhaps just a terminology thing?
+>
 
-unsigned long masks[] = {
-	mask1_hi,
-	mask1_lo,
-	mask2_hi,
-	mask2_lo,
-	...
-	maskN_lo,
-	/* sentinel */
-	0
-}
+This device supports only differential channels. Here, the differential flag is used to show
+if bipolar coding should be used.
 
-(By the way, I've always hated that 'sentinel' comment as it - in my 
-opinion - is not worth adding. I think the meaning of 0 should be 
-obvious, but here I just added it to alleviate the problem).
 
-Here, if I'm not mistaken, the check I implemented would go reading out 
-of the array bounds.
-
-Knowing how easy it would be slip the above array past my reviewing eyes 
-- I find this scary. And ugly part of this is that we can't detect this 
-in the iio-core side, because we have no way of knowing how big the 
-array and sentinel are. What makes this worse is that the core does:
-
-for (i = 0; i < indio_dev->num_channels; i++)
-                         ml = max(ml, channels[i].scan_index + 1);
-                 indio_dev->masklength = ml;
-
-so, masklength may not be what was set in driver.
-
-I did quick and dirty grep for "_scan_mask\[" in iio directory and 
-didn't spot any bigger than a few channels masks. Still, this makes me 
-worried.
-
-BTW: I did also:
-
-Author: Matti Vaittinen <mazziesaccount@gmail.com>
-Date:   Fri Oct 6 13:53:11 2023 +0300
-
-     iio: buffer: use bitmap_empty() to find last mask
-
-     When IIO buffer code is scanning the array of available masks for
-     matching the user's enable request to channel configuration 
-supported by
-     driver, the code uses a 'check for long 0' as indication of last mask.
-     This does not work right for channel masks greater than BITS_PER_LONG.
-
-     Use bitmap_empty() to find the last element in available_scan_masks
-     array.
-
-     Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-     ---
-     NOTE: This is potentially hazardous change. Please, don't pick without
-     thorough check and understanding.
-
-diff --git a/drivers/iio/industrialio-buffer.c 
-b/drivers/iio/industrialio-buffer.c
-index 176d31d9f9d8..1e59afddcf9a 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -413,7 +413,7 @@ static const unsigned long 
-*iio_scan_mask_match(const unsigned long *av_masks,
-  {
-         if (bitmap_empty(mask, masklength))
-                 return NULL;
--       while (*av_masks) {
-+       while (!bitmap_empty(av_masks, masklength)) {
-                 if (strict) {
-                         if (bitmap_equal(mask, av_masks, masklength))
-                                 return av_masks;
-
-but this is just as fragile - for obvious reasons.
-
-One way around this would be to have the first bit in the long always 
-set for a valid mask - and take this into account when going through the 
-masks. It's probably somewhat more confusing than current code though - 
-but it would allow using just a single long (with all - or  at least 
-first - bits zero to indicate end of masks).
-
-Other option I see is to just error out if available_scan_masks array is 
-given with larger than one 'long' wide masks and worry things when this 
-breaks.
-
-Anyways, I don't like using bitmap_empty() for array of bitmaps which 
-may be longer than BITS_PER_LONG unless we can sanity check the size of 
-the array...
-
-How do you feel about this?
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+>> +	st->info = device_get_match_data(dev);
+>> +	if (!st->info)
+>> +		return -ENODEV;
+> This works for the cases of DT and ACPI but not for anyone just
+> using the spi_device_id table. 
+> There is spi_device_get_match_data() to cover all options.
+> 
+I could not find the spi_device_get_match_data() function in the repo.
+It appears however as a suggestion from Andy Shevchenko in a thread:
+https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg2382960.html
+ Is this it? 

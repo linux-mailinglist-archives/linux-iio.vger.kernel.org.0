@@ -2,270 +2,288 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C90B17BB152
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 08:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88D247BB499
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Oct 2023 11:55:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230133AbjJFGFO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Oct 2023 02:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
+        id S231492AbjJFJzL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Oct 2023 05:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbjJFGFN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Oct 2023 02:05:13 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63F4CA;
-        Thu,  5 Oct 2023 23:05:11 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-50585357903so2307456e87.2;
-        Thu, 05 Oct 2023 23:05:11 -0700 (PDT)
+        with ESMTP id S231439AbjJFJzK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Oct 2023 05:55:10 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE72A9F
+        for <linux-iio@vger.kernel.org>; Fri,  6 Oct 2023 02:55:08 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1c5c91bec75so15052365ad.3
+        for <linux-iio@vger.kernel.org>; Fri, 06 Oct 2023 02:55:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696572310; x=1697177110; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3cMKqeHdcLaYIVOad0Hv0/Btgcw9EyTJiBgrMl1ZuO8=;
-        b=g87U6IsbR7eqONA1OzYNjc2tH7LipysBIn//d9Ggw45sQZ9/gyd784710gpE/D4+uN
-         Yi+wctSTNfFk5O6wJXIuUZrdvLF4POQEyj/vbliBaVTt0PWpgtkLzujMzhTuFSt2RFyg
-         oe6sZYnUbw+MizJ4KX3oZKXs7bWtCXOizjx+JVJd/rYu0o398sZcY1vpOqXxqbVAMIJz
-         nqXbE99wO/u1+M8cZz6iDlxNzngtnCm19Mr4AB7IRSJTp2OCv+LikDUf3BNOj9pZkpGK
-         ZmBkZKg9zUR3KViqmJNtacqbIeBSyCnFtnNrQNQgaBlRVDkSzVr3fZ+ca6MgTSzVvUli
-         BXGQ==
+        d=linaro.org; s=google; t=1696586108; x=1697190908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=va6279LqB/seoOCOHbdXG67T3Sqj31GhP8cK9knO7lQ=;
+        b=LZnfMslZotV92c5PlQ0A5N0WIv9zbDDWmUlX4qMNCiqR8Kcys/ygvcB3cAk1knt+qC
+         EaGRZyX9rzZSrZr6ciYMitFfYuzAiUkxGTaSue53PXkOpWyoNOnqOoJBzmCBXqNfEq/f
+         +4IydxWml0PMdDZ9/Zps3KEvmAJ5f5ItfqPAauA4QdnHl9k0unSbfXFVlPU8KMezHGbv
+         KyBBsltr+sQuoeEUo+q/AOG8GgWwifnVAPYCuygYSSgCUafmYAW1syOQ9cD+1lDO4QXD
+         tQDFlKC0LPhjY7L4rzHAcWXmnZ9qbMa3UzUb3M5sLdogmqGkhMhesUbqn4z6Dfj+lEyO
+         wvpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696572310; x=1697177110;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1696586108; x=1697190908;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3cMKqeHdcLaYIVOad0Hv0/Btgcw9EyTJiBgrMl1ZuO8=;
-        b=JIFuJ/qIyhpgC4ejXKIhHDf/xfZPjAnabELv11TP+3wq0jwvU2lKqFCkAjZlsZTbMX
-         IBJPE9m9u75B1CMSUE7N1QwyoS47E8qoWMWkjAcROv6S9tLfvTJ+KUNNTaRv+JyW1J/T
-         SYSBShz5XB7akT1ZwLk+xMH8NAXKpz9+HKTlb/z/rlcb0HjWSVnONfia0Xhab4TQ6Pz6
-         yvWqiQePX+Oea5kXbTqTkwiUf8nGii2nOMazi8rhRTTv6zTK0VhwPCra62+oTNZMcUAr
-         hFpSwVZR8lzgGVcSfat8c3GwGqE1TwLautauRJb0P0kNjpLxkOJlzhMBobPN58SBzhn2
-         fdug==
-X-Gm-Message-State: AOJu0YxEruuYRbPaFDM3f9jqrOxp6C6yz4tGk3B1XjvfDLnphK7O/JoV
-        enSii9X7mR9li1jhD70BghnOvlDOIVY=
-X-Google-Smtp-Source: AGHT+IEDGdDfaB6KxKnyN8VLdPCGcMaXaolIZnTkW2IMzKBXIwIyLvfl1Dpdc5VcltY2KqSxLuYZrg==
-X-Received: by 2002:ac2:5f98:0:b0:503:18c3:d881 with SMTP id r24-20020ac25f98000000b0050318c3d881mr5762602lfe.14.1696572309449;
-        Thu, 05 Oct 2023 23:05:09 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id a6-20020a056512020600b004f85d80ca64sm162955lfo.221.2023.10.05.23.05.08
+        bh=va6279LqB/seoOCOHbdXG67T3Sqj31GhP8cK9knO7lQ=;
+        b=obhVBFG1+q5lAlpO2MfCrmP5la7UF1RKbukOPP7FggO4ShFc+OGcptjepPcYCNuG6d
+         fcMc8gp3C+zorb05IHDTbcSlw4V+vaC+DrmrrwBg51jf4qwDGtSU2gRrzk/F7p78k2ok
+         yBblbjuTognZ76y6TxZ/5UQv7WIKum7T7G6txUQDGisx809hnUDj0PWuW9CFiOAeLM/h
+         4NmXGrmU61542gntgN4TU37xG5bkJBcXj6rsx1oSxjINqNG/sT0smEvPjSUjer+2zZIS
+         Qy8SbWxt1053EkFjaIu+BsFgUoe/MOAYf3PCK55757W8ereSnYNZg9uA1VcyL4mUlMz5
+         ICYA==
+X-Gm-Message-State: AOJu0YzoDwHMDrU8FaYpjyRJtN8W+rzs/VjybvbvPvQTpUgFh/9YrR9S
+        tE13a6Q/0M4WyZ4SS1oN9X99Zg==
+X-Google-Smtp-Source: AGHT+IFcNrFSTODFX+dGgwWocT0UzAFWNQzLB1H3jlWLEy7tDCtTRcn8etVzAnGEe7SIBHS8vPII1Q==
+X-Received: by 2002:a17:903:110d:b0:1c1:fe97:bf34 with SMTP id n13-20020a170903110d00b001c1fe97bf34mr9060380plh.24.1696586108092;
+        Fri, 06 Oct 2023 02:55:08 -0700 (PDT)
+Received: from [192.168.1.197] (5-157-101-10.dyn.eolo.it. [5.157.101.10])
+        by smtp.gmail.com with ESMTPSA id a12-20020a170902ee8c00b001bde65894c8sm3372472pld.268.2023.10.06.02.55.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Oct 2023 23:05:09 -0700 (PDT)
-Message-ID: <fffbf40f-c2be-60d6-8a6f-4790a8e309ea@gmail.com>
-Date:   Fri, 6 Oct 2023 09:05:08 +0300
+        Fri, 06 Oct 2023 02:55:07 -0700 (PDT)
+Message-ID: <1006be55-85be-4f13-90c3-ec9c06996534@linaro.org>
+Date:   Fri, 6 Oct 2023 11:55:03 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] dt-bindings: adc: provide max34408/9 device tree
+ binding document
+Content-Language: en-US
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20231005163026.2c7707de@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH] iio: sanity check available_scan_masks array
-In-Reply-To: <20231005163026.2c7707de@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20231005185537.32267-1-fr0st61te@gmail.com>
+ <20231005185537.32267-2-fr0st61te@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231005185537.32267-2-fr0st61te@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/5/23 18:30, Jonathan Cameron wrote:
-> On Tue, 3 Oct 2023 12:49:45 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 05/10/2023 20:55, Ivan Mikhaylov wrote:
+> The hardware binding for i2c current monitoring device with overcurrent
+> control.
 > 
->> When IIO goes through the available scan masks in order to select the
->> best suiting one, it will just accept the first listed subset of channels
->> which meets the user's requirements. If driver lists a mask which is a
->> subset of some of the masks previously in the array of
->> avaliable_scan_masks, then the latter one will never be selected.
->>
->> Add a warning if driver registers masks which can't be used due to the
->> available_scan_masks-array ordering.
->>
->> Suggested-by: Jonathan Cameron <jic23@kernel.org>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Hi Matti
+> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+> ---
+>  .../bindings/iio/adc/maxim,max34408.yaml      | 137 ++++++++++++++++++
+>  1 file changed, 137 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
 > 
-> Thanks for doing this.  A few comments inline + maybe we need to think
-> about a unit test for the matching code. I feel we aren't pushing the
-> corners of that in any drivers so far so it might bite us later.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> new file mode 100644
+> index 000000000000..4262bedb4bfa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> @@ -0,0 +1,137 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Two- and four-channel current monitors with overcurrent control
+> +
+> +maintainers:
+> +  - Ivan Mikhaylov <fr0st61te@gmail.com>
+> +
+> +description: |
+> +  The MAX34408/MAX34409 are two- and four-channel current monitors that are
+> +  configured and monitored with a standard I2C/SMBus serial interface. Each
+> +  unidirectional current sensor offers precision high-side operation with a
+> +  low full-scale sense voltage. The devices automatically sequence through
+> +  two or four channels and collect the current-sense samples and average them
+> +  to reduce the effect of impulse noise. The raw ADC samples are compared to
+> +  user-programmable digital thresholds to indicate overcurrent conditions.
+> +  Overcurrent conditions trigger a hardware output to provide an immediate
+> +  indication to shut down any necessary external circuitry.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - maxim,max34408
+> +      - maxim,max34409
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  shutdown-gpios:
+> +    description:
+> +      Shutdown Output. Open-drain output. This output transitions to high impedance
+> +      when any of the digital comparator thresholds are exceeded as long as the ENA
+> +      pin is high.
+> +    maxItems: 1
+> +
+> +  shtdn-enable-gpios:
 
-I am extremely conservative what comes to adding unit tests. I have seen 
-some projects where the amount of existing unit test code made code 
-changes very much very slow - stopping people doing any improvements. 
-Basically, no one wanted to touch the existing code unless it was 
-absolutely must because even a minor code change caused several tests to 
-break. OTOH, that unit test setup did not only test that end result of a 
-function was expected - it did also check the calls done from the 
-function to be tested - checking for example that the certain prints 
-appeared with certain inputs and so on. That project stopped being fun 
-very quickly...
+Are these both GPIOs different than standard powerdown-gpios? I suspect
+one is different, but the other should be the same. If both are
+different, use different names. shutdown gpios is the same as powerdown
+gpios....
 
-But yes. After spending a while reading IIO code, I agree that _some_ 
-parts of it could benefit from a few carefully designed unit tests. (And 
-sorry, I haven't checked what tests are existing already - so may be 
-there already is relevant tests) :) Channel data demuxing and the mask 
-handling are indeed the first to come to my mind ;) I wouldn't dare to 
-touch that part without some testing.
+> +    description:
+> +      SHTDN Enable Input. CMOS digital input. Connect to GND to clear the latch and
+> +      unconditionally deassert (force low) the SHTDN output and reset the shutdown
+> +      delay. Connect to VDD to enable normal latch operation of the SHTDN output.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
 
-> Still that's a job for another day.
+required goes after patternProperties.
 
-Hey, we need to have something for tomorrow, right? :)
+> +
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    $ref: adc.yaml
+> +    type: object
+> +    description:
+> +      Represents the internal channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        items:
+> +          minimum: 0
+> +          maximum: 3
+> +
+> +      maxim,rsense-val-micro-ohms:
+> +        description:
+> +          Adjust the Rsense value to monitor higher or lower current levels for
+> +          input.
+> +        enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
+> +        default: 1000
+> +
+> +    required:
+> +      - reg
+> +      - maxim,rsense-val-micro-ohms
+> +
+> +    unevaluatedProperties: false
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: maxim,max34408
+> +    then:
+> +      patternProperties:
+> +        "^channel@[2-3]$": false
+> +        "^channel@[0-1]$":
+> +          properties:
+> +            reg:
+> +              minimum: 0
+> +              maximum: 1
+> +    else:
+> +      patternProperties:
+> +        "^channel@[0-3]$":
+> +          properties:
+> +            reg:
+> +              minimum: 0
+> +              maximum: 3
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +
 
-> 
->>
->> ---
->> The change was suggested by Jonathan here:
->> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
->> ---
->>   drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
->>   1 file changed, 57 insertions(+)
->>
->> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
->> index c77745b594bd..d4f37f4eeec0 100644
->> --- a/drivers/iio/industrialio-core.c
->> +++ b/drivers/iio/industrialio-core.c
->> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
->>   
->>   static const struct iio_buffer_setup_ops noop_ring_setup_ops;
->>   
->> +static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
->> +{
->> +	unsigned int num_masks, masklength, longs_per_mask;
->> +	const unsigned long *av_masks;
->> +	int i;
->> +
->> +	av_masks = indio_dev->available_scan_masks;
->> +	masklength = indio_dev->masklength;
->> +	longs_per_mask = BITS_TO_LONGS(masklength);
->> +
->> +	if (bitmap_empty(av_masks, masklength))
->> +		dev_warn(indio_dev->dev.parent, "empty scan mask\n");
-> 
-> They'd definitely notice this one as you'd never be able to enable the
-> buffer - if someone hasn't tested that, then meh.  Still this function
-> is called sanity_check so might as well check for insanity.
-> 
-> 
->> +
->> +	for (num_masks = 0; *av_masks; num_masks++)
-> 
-> I think we can't just check *av_masks - need bitmap_empty() as first
-> long might be 0 but could be bits set in the next one.
+Stray blank line.
 
-Ah. In case where we have bitmap consisting of many longs. Indeed. By 
-the way, I think I stole this check from the actual matching code - we 
-should probably fix it as well.
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        adc@1e {
+> +              compatible = "maxim,max34409";
+> +              reg = <0x1e>;
+> +
+> +              #address-cells = <1>;
+> +              #size-cells = <0>;
 
->> +		av_masks += longs_per_mask;
-> hmm. Makes me wonder if the available scan mask stuff actually works
-> for large numbers of channels (so more than one long).
+Missing blank line
 
-After you pointed out the problem in for-condition - it probably does 
-not work for all cases.
 
->  I don't think
-> we have any drivers that both have large channel counts and use
-> available_scan_masks.   The code is there to support matching in this
-> case but probably wants a selftest at somepoint to make sure it will work
-> if such a device comes along...
-> 
-> 
->> +
->> +	if (num_masks < 2)
->> +		return;
-> 
-> Not sure it's worth bothering with this early exit route.  The loops
-> will be trivial anyway if num_masks == 1.
+Extend example with GPIOs to make it as complete as reasonable/possible.
 
-I probably thought about the num_masks == 0 when adding this check. 
-Decided we might just early exit while checking.
-
->> +
->> +	av_masks = indio_dev->available_scan_masks;
->> +
->> +	/*
->> +	 * Go through all the masks from first to one before the last, and see
->> +	 * that no mask found later from the available_scan_masks array is a
->> +	 * subset of mask found earlier. If this happens, then the mask found
->> +	 * later will never get used because scanning the array is stopped when
->> +	 * the first suitable mask is found. Drivers should order the array of
->> +	 * available masks in the order of preference (presumably the least
->> +	 * costy to access masks first).
->> +	 */
->> +	for (i = 0; i < num_masks - 1; i++) {
->> +		const unsigned long *mask1;
->> +		int j;
->> +
->> +		mask1 = av_masks + i * longs_per_mask;
->> +		for (j = i + 1; j < num_masks; j++) {
->> +			const unsigned long *mask2;
->> +
->> +			mask2 = av_masks + j * longs_per_mask;
->> +			if (bitmap_subset(mask2, mask1, masklength))
->> +				dev_warn(indio_dev->dev.parent,
->> +					 "available_scan_mask %d subset of %d. Never used\n",
->> +					 j, i);
->> +		}
->> +	}
->> +}
->> +
->>   int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->>   {
->>   	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
->> @@ -1934,6 +1981,16 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->>   		goto error_unreg_debugfs;
->>   	}
->>   
->> +	/*
->> +	 * In order to not wreck utter havoc we just warn for now. Might want
->> +	 * to convert this to a failure after people have had time to act upon
->> +	 * the warning. It'd be nice to check this earlier, but we need the
->> +	 * iio_buffers_alloc_sysfs_and_mask() to have the masklength set.
-> 
-> It's not going to break anyone if they get this wrong, they will just waste time
-> and possibly power reading too many channels!  So warn is appropriate I think.
-> 
-> I'm not sure the comment adds much in general so I'd slim it down or drop it
-> from v2.
-
-I'm fine with dropping the comment. My mindset is easily leaning too 
-much on developing new drivers when I think of checks like this one. 
-It'd be nice to get a noticeable kick immediately when developing a 
-driver - but yes, one should be kicked just by the warning alone.
-
-> 
->> +	 */
->> +	if (indio_dev->available_scan_masks)
->> +		iio_sanity_check_avail_scan_masks(indio_dev);
->> +
-> One blank line is enough ;)
-
-Again... Thanks!
-
->> +
->>   	ret = iio_device_register_sysfs(indio_dev);
->>   	if (ret) {
->>   		dev_err(indio_dev->dev.parent,
->>
->> base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
-
-Yours,
-	-- Matti
-
-> 
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+Best regards,
+Krzysztof
 

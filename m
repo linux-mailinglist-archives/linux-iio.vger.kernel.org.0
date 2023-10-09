@@ -2,111 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E5D7BE621
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 18:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 527647BE722
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 18:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377115AbjJIQRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Oct 2023 12:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
+        id S1377804AbjJIQ6B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Oct 2023 12:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377094AbjJIQRl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 12:17:41 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F5C92;
-        Mon,  9 Oct 2023 09:17:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272BFC433C8;
-        Mon,  9 Oct 2023 16:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696868259;
-        bh=1I9Mf0P70RDfN2bWDORGQ7rejIEzlWu8nj21FaxunAg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ueG4FvCWARpNVmDgXA7EKEoHYkK543c6nnLJkJyo1VXbTfAzaCxx5Aoua/yEHbol3
-         o4sr5OFut3T87VxzmRx+WXRKdyVLf/xZhv8183TPX6B1vkvQv9/uTTqD6XimoP9Ih/
-         D2HQK+a0ZGa8qetpGmHe1ibvwWiZqjCA+FOn6OjJR695v+oPEDf2AHM1jJXvgD8FZb
-         aWHGDcYi0Qi/Ty4+fKTd3ty51g9VtP5mOFbsKCAt9dnm4nyWbDe6mbVzHJ/2vWtCeR
-         7KkaSaIYYATYR+AExbXJo5js5rjpkB008YqkEJpQPi2y5pt2wjCSZwRs44oKPSfivQ
-         xIACtvNeuJffw==
-Date:   Mon, 9 Oct 2023 17:17:34 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Conor Dooley <conor.dooley@microchip.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH v3 0/5] Add RZ/G2UL MTU3a support
-Message-ID: <20231009-elderly-squad-a739461e5e64@spud>
-References: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
- <20230831-iphone-muscular-7442cda2c39e@spud>
- <TYCPR01MB5933370B7660B8504B2D8D7386FBA@TYCPR01MB5933.jpnprd01.prod.outlook.com>
- <TYCPR01MB112697D67514D2E6FC690B9F886CEA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
- <576809c2-b7bc-4342-9c63-0662bfcecebf@linaro.org>
- <20231009-lure-overcome-f33ee1fd6480@wendy>
- <42ed1a41-a59c-478b-8ef2-4000f0509150@linaro.org>
+        with ESMTP id S1377730AbjJIQ54 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 12:57:56 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB73FB0
+        for <linux-iio@vger.kernel.org>; Mon,  9 Oct 2023 09:57:54 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-32003aae100so3545744f8f.0
+        for <linux-iio@vger.kernel.org>; Mon, 09 Oct 2023 09:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1696870673; x=1697475473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F2D+qd1LEt3eJ/8XHGRVqxXgOIKNs9E3/VA/WHhSU4M=;
+        b=MPD6ZLz3Oygw97Ahyj3zMbBaAvQcaeBhP4L0iVE53kYmz51MUTV7Z40oQDqXtj5PKX
+         /YxCDgtUIoCEgUlOCwFDcZGzuBLalKfv4dyWpAVMJZXoNjjgk9/2/66L92j6R7Wtdnkn
+         //uFE74D9h9n4/EbntkNepOWScQwhUcgxNLA5fBb3G8kSogc7z9KkXMAFq/LTR3EejoJ
+         J4q0afWgH6VWW4GBiOkkiLZQcSKDer3mrri4QkeYhMDa4h3AVX3KGTQGnanAAq57cjlu
+         vAE+7pNAI15CDWdLJrORbaEayWTDDtxKWzmXptNhwhasP8z238s4gcx37w1NHq7U6WYV
+         RMsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696870673; x=1697475473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F2D+qd1LEt3eJ/8XHGRVqxXgOIKNs9E3/VA/WHhSU4M=;
+        b=PYDzcLF7AllO59X7DdYBrPAuCvglXfqHX5Gsp95/U8FpDaIvf1zYOtIKahmnOfFfZj
+         n0XCrcz60SXW5Fi13ND4kIcg9bqjvpXZ4VqGthzc2n5dciTUbNY3Z2NKIMUtIVaX7tl/
+         +Bw85BMb5YVuqhvb/R7Fvy2A5mLmNnIwYAmZgyr/0s99G49FycKtkwCqKbdJQndTNjW6
+         DOljSuTdgTdFUGQc4SVT98op3h6AhuoXSO4Gl0pW+EWHt5/i37U2Dup9y6Y9rTa/+hg4
+         CH+Mvo7T/GRS00FFULxjt9X616l79YUIasaBsOVeTJ/f4aT/JmrmmzvApYKZo5gO782x
+         NDUQ==
+X-Gm-Message-State: AOJu0YzeGgBHYUNSaTJNz9idq7qp33nOvTm14fYdAcrb27dYAQaPGQcF
+        7NAGGQdybz79kuj08nfrR8ExYA==
+X-Google-Smtp-Source: AGHT+IElXmP4SCjtxv9ewcCHPAkm9pRR5k2/mRyhENiprO5xOyrGrQtF+ixAcWjFdyzzy5QLvmmn1g==
+X-Received: by 2002:a05:6000:1092:b0:320:968:f3b0 with SMTP id y18-20020a056000109200b003200968f3b0mr8718653wrw.35.1696870673079;
+        Mon, 09 Oct 2023 09:57:53 -0700 (PDT)
+Received: from heron.intern.cm-ag (p200300dc6f49a600529a4cfffe3dd983.dip0.t-ipconnect.de. [2003:dc:6f49:a600:529a:4cff:fe3d:d983])
+        by smtp.gmail.com with ESMTPSA id d9-20020adff2c9000000b00324887a13f7sm10199828wrp.0.2023.10.09.09.57.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 09:57:52 -0700 (PDT)
+From:   Max Kellermann <max.kellermann@ionos.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Max Kellermann <max.kellermann@ionos.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 4/7] drivers/counter: add local variable for newly allocated attribute_group**
+Date:   Mon,  9 Oct 2023 18:57:37 +0200
+Message-Id: <20231009165741.746184-4-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231009165741.746184-1-max.kellermann@ionos.com>
+References: <20231009165741.746184-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aAbF7L5PVlLbwYHe"
-Content-Disposition: inline
-In-Reply-To: <42ed1a41-a59c-478b-8ef2-4000f0509150@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This allows the compiler to keep the pointer in a register and
+prepares for making the struct field "const".
 
---aAbF7L5PVlLbwYHe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ drivers/counter/counter-sysfs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-On Mon, Oct 09, 2023 at 04:18:13PM +0200, Daniel Lezcano wrote:
-> On 09/10/2023 15:59, Conor Dooley wrote:
-> > On Mon, Oct 09, 2023 at 11:52:13AM +0200, Daniel Lezcano wrote:
-> > > On 09/10/2023 08:54, Biju Das wrote:
-> > > > Hi all,
-> > > >=20
-> > > > Gentle ping. This patch is in the patch work for a while.
-> > > > It is acked/reviewed by Conor Dooley and Geert Uytterhoeven.
-> > > >=20
-> > > > Can we apply to mainline if you are happy? Or do you want me
-> > > > to RESEND the patches? Please let me know.
-> > >=20
-> > > Krzysztof ?
-> >=20
-> > Daniel ?
-> >=20
-> > (Or for the non-telepathic, what is "Krzysztof ?" supposed to mean?)
->=20
-> Sorry I missed you were in the DT bindings maintainer list. I was expecti=
-ng
-> Krzysztof tag.
+diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+index 42c523343d32..47e1e2c61cf0 100644
+--- a/drivers/counter/counter-sysfs.c
++++ b/drivers/counter/counter-sysfs.c
+@@ -1122,6 +1122,7 @@ int counter_sysfs_add(struct counter_device *const counter)
+ 	struct counter_attribute_group *cattr_groups;
+ 	size_t i, j;
+ 	int err;
++	const struct attribute_group **dev_groups;
+ 	struct attribute_group *groups;
+ 	struct counter_attribute *p;
+ 
+@@ -1141,9 +1142,9 @@ int counter_sysfs_add(struct counter_device *const counter)
+ 		return err;
+ 
+ 	/* Allocate attribute group pointers for association with device */
+-	dev->groups = devm_kcalloc(dev, num_groups + 1, sizeof(*dev->groups),
++	dev->groups = dev_groups = devm_kcalloc(dev, num_groups + 1, sizeof(*dev_groups),
+ 				   GFP_KERNEL);
+-	if (!dev->groups)
++	if (!dev_groups)
+ 		return -ENOMEM;
+ 
+ 	/* Allocate space for attribute groups */
+@@ -1169,7 +1170,7 @@ int counter_sysfs_add(struct counter_device *const counter)
+ 			groups[i].attrs[j++] = &p->dev_attr.attr;
+ 
+ 		/* Associate attribute group */
+-		dev->groups[i] = &groups[i];
++		dev_groups[i] = &groups[i];
+ 	}
+ 
+ 	return 0;
+-- 
+2.39.2
 
-Heh, I figured that that is what was going on, but my telepathy skills
-were a bit lacking and I was not 100% sure... NW!
-
---aAbF7L5PVlLbwYHe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZSQnngAKCRB4tDGHoIJi
-0l8PAP9T0L4kqeS6/ASmu3yIS50Za7MyLA0Jb8xkzTKiqMKSFQEA/j8oMP+ApNPf
-I85BeVxW73nPy5pB8htbvqQXubCK2AA=
-=ObgY
------END PGP SIGNATURE-----
-
---aAbF7L5PVlLbwYHe--

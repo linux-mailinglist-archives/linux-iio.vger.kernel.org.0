@@ -2,124 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6D87BE2BE
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 16:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E5D7BE621
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 18:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234560AbjJIO2X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Oct 2023 10:28:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        id S1377115AbjJIQRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Oct 2023 12:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234088AbjJIO2X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 10:28:23 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F217AB
-        for <linux-iio@vger.kernel.org>; Mon,  9 Oct 2023 07:28:21 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4056ce55e7eso43258615e9.2
-        for <linux-iio@vger.kernel.org>; Mon, 09 Oct 2023 07:28:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696861700; x=1697466500; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jaxTCWdqEwpHMFZ/k9l1kxgISLFvaRHznpUGV5E8oyw=;
-        b=Vy4M/QWXJiOwlz6JXkFrbc8xxY/jLo94dld8sK0D6VX/YU8Arj5cPKBqPs9kFtPZcf
-         5bcYG/MKW9fejO2wrDWWrHsKujY0wuslqRth7WT+1QlabWIsfYmYRnITdBiHU2enIw3E
-         q2FQJpBBHZbxDjvtku6kiCBqBUrbfvZpW5BdTmdk7d6PA/wA2Iz86ARurxmIqJuoIecE
-         +0kUlfuAHZqDjbxykrnUyMfxWzQobAte1lx8Y9UJhZhyk/Tb3CYiAGQKr4Rw0XHiwSDT
-         r5iVjmWl2/j0ynifwwin3+eE/YmkE4tAlliEKALtA3ZODa9UX9eix7fbpjvGR03ZiXnV
-         Lx9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696861700; x=1697466500;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jaxTCWdqEwpHMFZ/k9l1kxgISLFvaRHznpUGV5E8oyw=;
-        b=ES3kyXDkSzrOZHc5ggm3InhllWIetSMtlrdU/qgt4rQxmtQIutpLVvHzd547kG6LV9
-         zFAp73HapwGVYGya3ASTRDnzlCEi5qRN+iSGWGjFUW4q5SvxWqRcZNuRk3ML+jXuiJx1
-         iH6D27xm+XwtucFQRjZyyKc8DxJxfU3kn7wV/m74ICU/qcdlFJpPX1G/Xkh0fN7Ap2aN
-         Q0sJ8di9W8/XqWsH1F178iUNA/QG+ZjD+a/1Ndb1Kldfd2VEEK8e904JEVT53rN+nOzK
-         fTPJm0zQjm+NJCHXhpCxAZS4+D/Q3k/WslxEM+CJz1sB5aEVtXIAVojuGz24sHdotsnS
-         y+2g==
-X-Gm-Message-State: AOJu0Yx/zJGRSqsL7xPMRPaGJCFmIIe6zl+618/hHCiCcDWYLcnhgmne
-        kYTX+8a0H5tz3dedsompGz0IpA==
-X-Google-Smtp-Source: AGHT+IHPx2g19dEJyQjEKpONxssLueazSgV9mC0ZnOd2rJWMa5sbVjl2Lz6+EQkU+2CdW/whY50bsw==
-X-Received: by 2002:a1c:6a18:0:b0:401:eb0:a974 with SMTP id f24-20020a1c6a18000000b004010eb0a974mr13345124wmc.3.1696861699960;
-        Mon, 09 Oct 2023 07:28:19 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:88ad:b7c0:92ba:cace? ([2a05:6e02:1041:c10:88ad:b7c0:92ba:cace])
-        by smtp.googlemail.com with ESMTPSA id i9-20020a5d4389000000b0031ad5fb5a0fsm9814573wrq.58.2023.10.09.07.28.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 07:28:18 -0700 (PDT)
-Message-ID: <eb5bea56-6ad8-4617-a9cf-d4226fd45c56@linaro.org>
-Date:   Mon, 9 Oct 2023 16:28:17 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/5] Add RZ/G2UL MTU3a support
-Content-Language: en-US
-To:     Biju Das <biju.das.jz@bp.renesas.com>,
+        with ESMTP id S1377094AbjJIQRl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 12:17:41 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F5C92;
+        Mon,  9 Oct 2023 09:17:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272BFC433C8;
+        Mon,  9 Oct 2023 16:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696868259;
+        bh=1I9Mf0P70RDfN2bWDORGQ7rejIEzlWu8nj21FaxunAg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ueG4FvCWARpNVmDgXA7EKEoHYkK543c6nnLJkJyo1VXbTfAzaCxx5Aoua/yEHbol3
+         o4sr5OFut3T87VxzmRx+WXRKdyVLf/xZhv8183TPX6B1vkvQv9/uTTqD6XimoP9Ih/
+         D2HQK+a0ZGa8qetpGmHe1ibvwWiZqjCA+FOn6OjJR695v+oPEDf2AHM1jJXvgD8FZb
+         aWHGDcYi0Qi/Ty4+fKTd3ty51g9VtP5mOFbsKCAt9dnm4nyWbDe6mbVzHJ/2vWtCeR
+         7KkaSaIYYATYR+AExbXJo5js5rjpkB008YqkEJpQPi2y5pt2wjCSZwRs44oKPSfivQ
+         xIACtvNeuJffw==
+Date:   Mon, 9 Oct 2023 17:17:34 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Conor Dooley <conor+dt@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH v3 0/5] Add RZ/G2UL MTU3a support
+Message-ID: <20231009-elderly-squad-a739461e5e64@spud>
 References: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <20230831-iphone-muscular-7442cda2c39e@spud>
+ <TYCPR01MB5933370B7660B8504B2D8D7386FBA@TYCPR01MB5933.jpnprd01.prod.outlook.com>
+ <TYCPR01MB112697D67514D2E6FC690B9F886CEA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+ <576809c2-b7bc-4342-9c63-0662bfcecebf@linaro.org>
+ <20231009-lure-overcome-f33ee1fd6480@wendy>
+ <42ed1a41-a59c-478b-8ef2-4000f0509150@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="aAbF7L5PVlLbwYHe"
+Content-Disposition: inline
+In-Reply-To: <42ed1a41-a59c-478b-8ef2-4000f0509150@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27/07/2023 10:18, Biju Das wrote:
-> This patch series aims to add MTU3a support for RZ/G2UL SMARC EVK.
-> Also it fixes overflow/underflow interrupt names.
-> 
-> v2->v3:
->   * Dropped patch#4, as it accepted for 6.5 fixes.
->   * Moved patch#2 to patch#1 as it is fixes patch.
->   * Added Rb tag from Geert for patch#1 and patch#3.
->   * Updated the link to lore for Closes tag for patch#2.
->   * Documented RZ/Five SoC as the same IP used in RZ/G2UL SoC.
-> 
-> v1->v2:
->   * Added Ack tags from Conor Dooley for binding patches
->   * Updated commit description RZ/G2UL->RZ/{G2UL,Five} for patch#5.
->   * Fixed build error reported by kernel test robot by replacing
->     GIC_SPI x ->SOC_PERIPHERAL_IRQ(x) for patch#5.
-> 
-> Biju Das (5):
->    dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt
->      names
->    dt-bindings: timer: renesas,rz-mtu3: Improve documentation
->    dt-bindings: timer: renesas,rz-mtu3: Document RZ/{G2UL,Five} SoCs
->    arm64: dts: renesas: r9a07g043: Add MTU3a node
->    arm64: dts: renesas: rzg2ul-smarc: Add support for enabling MTU3
-> 
->   .../bindings/timer/renesas,rz-mtu3.yaml       | 67 +++++++++---------
->   arch/arm64/boot/dts/renesas/r9a07g043.dtsi    | 70 +++++++++++++++++++
->   .../boot/dts/renesas/r9a07g043u11-smarc.dts   | 11 +++
->   .../dts/renesas/rzg2ul-smarc-pinfunction.dtsi |  6 ++
->   arch/arm64/boot/dts/renesas/rzg2ul-smarc.dtsi | 13 ++++
->   5 files changed, 134 insertions(+), 33 deletions(-)
-> 
 
-patches 1,2 and 3 applied
+--aAbF7L5PVlLbwYHe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
+On Mon, Oct 09, 2023 at 04:18:13PM +0200, Daniel Lezcano wrote:
+> On 09/10/2023 15:59, Conor Dooley wrote:
+> > On Mon, Oct 09, 2023 at 11:52:13AM +0200, Daniel Lezcano wrote:
+> > > On 09/10/2023 08:54, Biju Das wrote:
+> > > > Hi all,
+> > > >=20
+> > > > Gentle ping. This patch is in the patch work for a while.
+> > > > It is acked/reviewed by Conor Dooley and Geert Uytterhoeven.
+> > > >=20
+> > > > Can we apply to mainline if you are happy? Or do you want me
+> > > > to RESEND the patches? Please let me know.
+> > >=20
+> > > Krzysztof ?
+> >=20
+> > Daniel ?
+> >=20
+> > (Or for the non-telepathic, what is "Krzysztof ?" supposed to mean?)
+>=20
+> Sorry I missed you were in the DT bindings maintainer list. I was expecti=
+ng
+> Krzysztof tag.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Heh, I figured that that is what was going on, but my telepathy skills
+were a bit lacking and I was not 100% sure... NW!
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+--aAbF7L5PVlLbwYHe
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZSQnngAKCRB4tDGHoIJi
+0l8PAP9T0L4kqeS6/ASmu3yIS50Za7MyLA0Jb8xkzTKiqMKSFQEA/j8oMP+ApNPf
+I85BeVxW73nPy5pB8htbvqQXubCK2AA=
+=ObgY
+-----END PGP SIGNATURE-----
+
+--aAbF7L5PVlLbwYHe--

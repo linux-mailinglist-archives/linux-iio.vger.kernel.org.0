@@ -2,163 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C20FD7BD54D
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 10:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C1C7BD7AD
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Oct 2023 11:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234424AbjJIIgU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Oct 2023 04:36:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49466 "EHLO
+        id S1345880AbjJIJwT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Oct 2023 05:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234409AbjJIIgT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 04:36:19 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C76A3A3
-        for <linux-iio@vger.kernel.org>; Mon,  9 Oct 2023 01:36:17 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4064867903cso42323125e9.2
-        for <linux-iio@vger.kernel.org>; Mon, 09 Oct 2023 01:36:17 -0700 (PDT)
+        with ESMTP id S1345925AbjJIJwS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Oct 2023 05:52:18 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD7E97
+        for <linux-iio@vger.kernel.org>; Mon,  9 Oct 2023 02:52:16 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-3248e90f032so4269418f8f.1
+        for <linux-iio@vger.kernel.org>; Mon, 09 Oct 2023 02:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696840576; x=1697445376; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1696845135; x=1697449935; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0EdUztj4PjCIGdsXMecz3X+x1slyI8NMeGuaMCNiLRs=;
-        b=BZOTiZJZLaYGYZLLPsKEOPIFXenGVMZ6HAoybNNe1MZ8OqQN31hwmp9QHibUo648gx
-         UDwSsksA+wg0j+yvMiAGSKcV5Cwas8Av6Am6XP2/MWVgyUowxJXEpVZKLHfEhX5igfWr
-         Lt1rF0GkI2JkiYz60ZpMnGvJvkAyQHnVBBbUEAlfXpSgaS9yZSgp6l2C9mcRuiLrI0kn
-         L2jiY+r9kLKhOMYmiA3xBugrkgGuRYoAS5gnoeSlxMv5tNjsBZ9V7w8DlsI9ikSi3fMT
-         tof4a/bsXSZHQkPYcI+p3lHHzl5uAELvHvhO9heoC9Pdl7ybcfL6+2dYETnGGBspKFRZ
-         zdFg==
+        bh=KTlCqvJvWR1oqZWw+hzx3aeKDF9bM2oUn/096ZaKcwQ=;
+        b=cRlQLn/bMrK+fOgp0JS65vtETwDuMcTZ7ySMj57YxmaGhmSisSu0y5zp4yLaoSoyDH
+         klGcr2l7OxRwMdyi7k+/KThOguM4n7zRzwDzp4uFKIdVPkdsO0G68xtinxWMeItBcouy
+         k22awPaoqmFYVDTU108dAkHkWNOd2Uw5sGmjpetmHNUzK3BvH5ImegB4cD+s80RZFcav
+         sunuu8o1ORd5WpmcZaPpxSP7Mim4XuGXxf56GBCcFeHQ0ZRMXaY6nPiIN2DTVMZ0r7T9
+         zlZ12TNNGkysQpvjyJQ+Fog0H8G5Grt5uHgfm1vyH4TfolMtT0V07lyWEZGWR3lkRT+9
+         aF/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696840576; x=1697445376;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1696845135; x=1697449935;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EdUztj4PjCIGdsXMecz3X+x1slyI8NMeGuaMCNiLRs=;
-        b=VZ+8xcnD5wNqdSg5f93D/86h6Odtyw4iEBuiXJ1Xp0/X+bPOhlxTTRSxnwNUef+PGb
-         ljBb+hOe5I8tl4osdOvboOY1u9sKVxlV2Dp6skjDRza2Hrn0wBK17X9xoRTSgTC6gwhq
-         O2C0Q+nasqla16RBWWVfwZBMO2SA+hFkpZDq19o1bRn5qHv6NxPIirnHUVRzB8Aq9ZQq
-         bBOBz+VzSzu0NKaTFvo2BIgqpgQM1YWOJrb9bGlJxaY7dm5dykoVgnJPM6HyB789+pfR
-         LjJnJoottjLhTVGKUaMUOm8bQj9nqB57y4ppsXi+NkNVKyRFNzk7PRWPA8T29XKysRk+
-         xIlA==
-X-Gm-Message-State: AOJu0YzQxvqoYpjG7QGLz6K7jHlzn95sGfDKrj56d9q1uphLU3PtmYPL
-        fr4N+znQc4BznjXK+/7gnnXBUg==
-X-Google-Smtp-Source: AGHT+IEm34kh6f3irVu+blOkX5zzu402f1S7hUSJvTs+DLvEWp1/ntfaS5rc/oWOsilEgCUwVZK+RA==
-X-Received: by 2002:a5d:60d1:0:b0:319:7656:3863 with SMTP id x17-20020a5d60d1000000b0031976563863mr12895657wrt.47.1696840576192;
-        Mon, 09 Oct 2023 01:36:16 -0700 (PDT)
-Received: from [192.168.1.197] (5-157-101-10.dyn.eolo.it. [5.157.101.10])
-        by smtp.gmail.com with ESMTPSA id l2-20020a5d4802000000b0031fe0576460sm8923180wrq.11.2023.10.09.01.36.14
+        bh=KTlCqvJvWR1oqZWw+hzx3aeKDF9bM2oUn/096ZaKcwQ=;
+        b=pOfOF6ljXATMkFAeAZu1MXRaJAomlnme0NQtVvx4u4m9zsI+SIFsYlAF9H/PcmKL2z
+         3FrcrBClKgTRQX4HkcmV3emTY0kOrwVKuDvdNXJQmBUqfn2tLSPnz+EA5b7k3j3Uhm5C
+         fvRPoSAw01Z3GiMuUdZkt6x1i5MrdWx6Gv10EPVBAJJWIK5bSVPnnw8NqiztJkOJxeVo
+         Wbgk2dKY7ccOO/RtgkXh2Odngz6QWAnURno0WwTBUmJ6vY9H3OudO5zJZcmG6dfVBifA
+         WdzaSI4evM8CTNZMj6LLnp0ZkLwKLrEfXE0G8X32EO3lltykhHodY0WeRji+me5yv18S
+         ky/A==
+X-Gm-Message-State: AOJu0Yz7rL4coGtm3yBW7DojGRVIVig4dej45X4ifhnkpfU2c5DnjGax
+        757imc/DdyoSIP8CudBqvwNh0g==
+X-Google-Smtp-Source: AGHT+IHMPU/ttq6UzR4WDhz6H1sSoSmpPEbYEoiffHswXnHcX5EM8YUtNHk4AdOQOQliiw/LHSs02w==
+X-Received: by 2002:adf:ec4d:0:b0:31f:b79a:c4b7 with SMTP id w13-20020adfec4d000000b0031fb79ac4b7mr13874817wrn.24.1696845134761;
+        Mon, 09 Oct 2023 02:52:14 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:88ad:b7c0:92ba:cace? ([2a05:6e02:1041:c10:88ad:b7c0:92ba:cace])
+        by smtp.googlemail.com with ESMTPSA id b16-20020adfe650000000b003266ece0fe2sm9026653wrn.98.2023.10.09.02.52.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 01:36:15 -0700 (PDT)
-Message-ID: <4e785d2e-d310-4592-a75a-13549938dcef@linaro.org>
-Date:   Mon, 9 Oct 2023 10:36:13 +0200
+        Mon, 09 Oct 2023 02:52:14 -0700 (PDT)
+Message-ID: <576809c2-b7bc-4342-9c63-0662bfcecebf@linaro.org>
+Date:   Mon, 9 Oct 2023 11:52:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
+Subject: Re: [PATCH v3 0/5] Add RZ/G2UL MTU3a support
 Content-Language: en-US
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+To:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
- <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Conor Dooley <conor@kernel.org>
+References: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
+ <20230831-iphone-muscular-7442cda2c39e@spud>
+ <TYCPR01MB5933370B7660B8504B2D8D7386FBA@TYCPR01MB5933.jpnprd01.prod.outlook.com>
+ <TYCPR01MB112697D67514D2E6FC690B9F886CEA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <TYCPR01MB112697D67514D2E6FC690B9F886CEA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 08/10/2023 17:48, Subhajit Ghosh wrote:
-> Add devicetree bindings for Avago APDS9306 Ambient Light Sensor.
+On 09/10/2023 08:54, Biju Das wrote:
+> Hi all,
 > 
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> ---
->  .../bindings/iio/light/avago,apds9306.yaml    | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+> Gentle ping. This patch is in the patch work for a while.
+> It is acked/reviewed by Conor Dooley and Geert Uytterhoeven.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> new file mode 100644
-> index 000000000000..e8bb897782fc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> @@ -0,0 +1,49 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/avago,apds9306.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Avago APDS9306 Ambient Light Sensor
-> +
-> +maintainers:
-> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> +
-> +description:
-> +  Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+> Can we apply to mainline if you are happy? Or do you want me
+> to RESEND the patches? Please let me know.
 
-This is exactly the same as two other Avago devices. It should be
-squashed - first two device schemas squashed, then add new device support.
+Krzysztof ?
 
-Also, the supply is not vin, but vdd.
 
-Best regards,
-Krzysztof
+>>> On Thu, Jul 27, 2023 at 09:18:43AM +0100, Biju Das wrote:
+>>>> This patch series aims to add MTU3a support for RZ/G2UL SMARC EVK.
+>>>> Also it fixes overflow/underflow interrupt names.
+>>>>
+>>>> v2->v3:
+>>>>   * Dropped patch#4, as it accepted for 6.5 fixes.
+>>>>   * Moved patch#2 to patch#1 as it is fixes patch.
+>>>>   * Added Rb tag from Geert for patch#1 and patch#3.
+>>>>   * Updated the link to lore for Closes tag for patch#2.
+>>>>   * Documented RZ/Five SoC as the same IP used in RZ/G2UL SoC.
+>>>>
+>>>> v1->v2:
+>>>>   * Added Ack tags from Conor Dooley for binding patches
+>>>>   * Updated commit description RZ/G2UL->RZ/{G2UL,Five} for patch#5.
+>>>>   * Fixed build error reported by kernel test robot by replacing
+>>>>     GIC_SPI x ->SOC_PERIPHERAL_IRQ(x) for patch#5.
+>>>>
+>>>> Biju Das (5):
+>>>>    dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt
+>>>>      names
+>>>>    dt-bindings: timer: renesas,rz-mtu3: Improve documentation
+>>>>    dt-bindings: timer: renesas,rz-mtu3: Document RZ/{G2UL,Five} SoCs
+>>>>    arm64: dts: renesas: r9a07g043: Add MTU3a node
+>>>>    arm64: dts: renesas: rzg2ul-smarc: Add support for enabling MTU3
+> 
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

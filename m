@@ -2,43 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 075677C0173
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C3557C019C
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:28:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233719AbjJJQTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 12:19:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
+        id S229675AbjJJQ2z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 12:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjJJQTS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:19:18 -0400
+        with ESMTP id S233062AbjJJQ2w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:28:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07899D
-        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 09:19:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6ABCC433C7;
-        Tue, 10 Oct 2023 16:19:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8694F9D;
+        Tue, 10 Oct 2023 09:28:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5BDC433C8;
+        Tue, 10 Oct 2023 16:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696954757;
-        bh=GjxqpjwchcuUVKMmIq+lPxoh8A/cioZblyS6xHSS1Gw=;
+        s=k20201202; t=1696955330;
+        bh=dZZKpZb7/IrHqlUDIL57KB0JnLLJTBKUAfjmfWFKd3k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WSLWfEoBnRXLelSNl9kLo+Kv8Qn/UkRLCmcqbgooemBjgdeEwwvxJLRvoWSiYVh9S
-         r6H6xoIn5Tu5yt/FV0MT5qtqj4e4USLREeSn3oNJy08FIxmNhxhGnctW3BRsAkBfkQ
-         OmZ7HPuVY0geolxuLad3Ad7+b/4EhYHpqz9ijaDwfGwjwvooxgrCNi8Tk/lqJcVzcR
-         2Sj+A0bs6mOpqK6p6Vhs7vNF9xlQFZH5+mT2UT2VsKvbl3Zc1kXum9nqLJMnqiKuh2
-         1s5038kGI5R6N8QH43DvbmzKpwdCii01oGkd224NEqDKdVZDp8NjFAwlC65KoK9tsm
-         H47ul+as0OvQw==
-Date:   Tue, 10 Oct 2023 17:19:28 +0100
+        b=IUrtf2ZnIH79dMMyNf+Ugws9XsYhHqEF5n1FQKToIOY7tDeeesubk3zQ4pwrpJcLP
+         PQOp96npG8t6fluGUNlfcLCFdnMKSuznJEiULqz7zZpKgInNR4GSKiE03TB/0u4JKk
+         tjNOUVEHWHVWhdKVtZvHkWPChZn+F/OqoccYYKL1yVLQDn9aoPNmAHQO4dauUuJ+UE
+         OWB0Y8z6nWKopSrSvJCO+EIAaBIDdzZGsUC5Y3AIyBiv94vjkZ3VLg+VUUQfIUUbwu
+         U+N1/UyOlxGI230H5ZNafLr8RZYHHmidVOvgStxEnLKzlyTDFsxg4BbnyjfNh2zdG5
+         oMSs5VDrcxPPQ==
+Date:   Tue, 10 Oct 2023 17:28:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Michal Simek <michal.simek@amd.com>
-Cc:     Robert Hancock <robert.hancock@calian.com>,
-        Conall O'Griofa <conall.ogriofa@amd.com>,
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2 0/2] Xilinx XADC fixes
-Message-ID: <20231010171928.75451192@jic23-huawei>
-In-Reply-To: <20230924173210.13f2bf85@jic23-huawei>
-References: <20230915001019.2862964-1-robert.hancock@calian.com>
-        <bae646e9-7977-4de3-927b-ffcb7a94ac48@amd.com>
-        <20230924173210.13f2bf85@jic23-huawei>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: add missing reset-gpios constrain
+Message-ID: <20231010172859.45efe481@jic23-huawei>
+In-Reply-To: <20231005-thrift-backer-d2f58a1bd441@spud>
+References: <20231005083650.92222-1-krzysztof.kozlowski@linaro.org>
+        <20231005-thrift-backer-d2f58a1bd441@spud>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,51 +55,92 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 24 Sep 2023 17:32:10 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 5 Oct 2023 11:41:07 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> On Fri, 15 Sep 2023 08:52:49 +0200
-> Michal Simek <michal.simek@amd.com> wrote:
-> 
-> > +Conall
+> On Thu, Oct 05, 2023 at 10:36:50AM +0200, Krzysztof Kozlowski wrote:
+> > The Documentation/devicetree/bindings/gpio/gpio-consumer-common.yaml
+> > schema does not enforce number of reset GPIOs, thus each device binding
+> > must do it.
 > > 
-> > On 9/15/23 02:10, Robert Hancock wrote:  
-> > > Fixes for a couple of issues in the Xilinx XADC driver: one where
-> > > preconfigured temperature/voltage thresholds were being clobbered and
-> > > potentially breaking overtemperature shutdown, and another for inaccurate
-> > > temperature readings on UltraScale family devices.
-> > > 
-> > > Changed since v2: Updated to also remove disabling XADC alarm bits.
-> > > 
-> > > Robert Hancock (2):
-> > >    iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature
-> > >      thresholds
-> > >    iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
-> > > 
-> > >   drivers/iio/adc/xilinx-xadc-core.c | 39 +++++++++++-------------------
-> > >   drivers/iio/adc/xilinx-xadc.h      |  2 ++
-> > >   2 files changed, 16 insertions(+), 25 deletions(-)
-> > >     
-> > 
-> > Conall: Please test and review.  
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>  
 > 
-> I'm sitting on this one until I hear back.   No huge rush, but if you
-> can estimate when you'll get to this I know to leave you alone until after
-> that!
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-I'll ask one more time, then probably just assume these are fine and apply.
-
-So Conall, have you had a chance to look at these?
+Applied to the fixes-togreg branch of iio.git
 
 Thanks,
 
 Jonathan
 
 > 
-> Jonathan
+> Thanks,
+> Conor.
 > 
+> > ---
+> >  Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml | 3 ++-
+> >  Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml    | 3 ++-
+> >  Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml | 3 ++-
+> >  Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml | 3 ++-
+> >  4 files changed, 8 insertions(+), 4 deletions(-)
 > > 
-> > Thanks,
-> > Michal  
-> 
+> > diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> > index 2594fa192f93..2a04906531fb 100644
+> > --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> > @@ -32,7 +32,8 @@ properties:
+> >  
+> >    spi-cpol: true
+> >  
+> > -  reset-gpios: true
+> > +  reset-gpios:
+> > +    maxItems: 1
+> >  
+> >    interrupts:
+> >      minItems: 1
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> > index 4e508bfcc9d8..5121685337b5 100644
+> > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+> > @@ -78,7 +78,8 @@ properties:
+> >            - const: -1000
+> >            - const: 22000
+> >  
+> > -  reset-gpios: true
+> > +  reset-gpios:
+> > +    maxItems: 1
+> >  
+> >    adi,dc-dc-ilim-microamp:
+> >      enum: [150000, 200000, 250000, 300000, 350000, 400000]
+> > diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> > index b9b5beac33b2..5b6cde86b5a5 100644
+> > --- a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> > @@ -23,7 +23,8 @@ properties:
+> >      maxItems: 1
+> >      description: Connected to ADC_RDY pin.
+> >  
+> > -  reset-gpios: true
+> > +  reset-gpios:
+> > +    maxItems: 1
+> >  
+> >  required:
+> >    - compatible
+> > diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> > index 2958c4ca75b4..167d10bd60af 100644
+> > --- a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+> > @@ -23,7 +23,8 @@ properties:
+> >      maxItems: 1
+> >      description: Connected to ADC_RDY pin.
+> >  
+> > -  reset-gpios: true
+> > +  reset-gpios:
+> > +    maxItems: 1
+> >  
+> >  additionalProperties: false
+> >  
+> > -- 
+> > 2.34.1
+> >   
 

@@ -2,104 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 011FE7BF88D
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 12:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C147BFB0B
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 14:17:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbjJJK0T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 06:26:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S231246AbjJJMRZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 08:17:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230511AbjJJK0S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 06:26:18 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59181AF;
-        Tue, 10 Oct 2023 03:26:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1584EC433C8;
-        Tue, 10 Oct 2023 10:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696933576;
-        bh=PqLwa/jUv0/v1YHnMTFC+aJ+JxMcrb9OrAWtpCIlSVI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SjGJc9OXY4TmtAKccg9N8dWKXu8WN0fawl0VNIqj4TJBQLwfeThvQ3cim64MtrDnB
-         AVWMnva+eyVktQHmkI83jbsmtWTb+rErQJXK6MnNAlQ4lcLJeokGNc1gK4J1TYqpnr
-         PR0B4014dStxg2v6nFC8wMyixp1gHgFgnnKNGx727ZX7eNSwNwO41WrlpJI2ruxMMd
-         /zvhFNesw7t+FDLmr6SBAMc2w40IrqAirb7fQtlvE9Wh1JROnQyS25hJ595Ea7mY0M
-         jcR9TnVdL02Yeab6mJGg1e20cS+HnjZyOwLau5LurYQpHxZe+s+DldxxueWEgdfYRz
-         T9RGc0ZpcLsQA==
-Date:   Tue, 10 Oct 2023 11:26:21 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ceclan Dumitru-Ioan <mitrutzceclan@gmail.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-        linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <20231010112621.0b371e74@jic23-huawei>
-In-Reply-To: <07afa29c-bfef-72dc-d471-f72dfcebe342@gmail.com>
-References: <20231005105921.460657-1-mitrutzceclan@gmail.com>
-        <20231005105921.460657-2-mitrutzceclan@gmail.com>
-        <20231005180131.0518f46c@jic23-huawei>
-        <07afa29c-bfef-72dc-d471-f72dfcebe342@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S231614AbjJJMRY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 08:17:24 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B6B7
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:17:23 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-690f7d73a3aso4930822b3a.0
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1696940243; x=1697545043; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bKsq0H0QHqCTR39XhYQAd4r30i5LT0wElncnk9nlAWQ=;
+        b=A8FsNjTX5N5T228pMHyRyTyr3FKmc0o6girvqXeO4tYRk5VFuft/9yWSOStOdyvRz/
+         nITYR1dy3Kf1H5SSY1W1xfess+lbcBRyOLX4U7QJPZImb+stu4woc1qPuTQi98xl6tTY
+         kqr47f0ofei8Kgiu+BD1/7wXfqm3aJ+ZekJ55B9+Il37qUkgDye4KOc/5/1vpyDb1msR
+         2In51Ys4hIVu68WcUQLjC4L1jIdfm0dxzcvQtQFznssghYaDp3BG7Ai/zNj0AG9dmFee
+         U6kAfqOkTTEePk1Il/5L187QwmAjOwIa6uxC5tk2/BNtRHTe7hNEh5l2tE1+tLizbbAS
+         55Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696940243; x=1697545043;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bKsq0H0QHqCTR39XhYQAd4r30i5LT0wElncnk9nlAWQ=;
+        b=GNUbubwdxW3PX04bZIopOvIwXuTIf+AP2jo2pWumZE5FG0HHQ5mjqC4BoZqVu43peE
+         2MqytG3D9R+zdRvg1O7xh0OwD25ujYdVyMHIsBoEVD3Z5IHt8+m4uCOD2gWVtMM5YGs1
+         uudzXq3m6D8nMl/7Awa43JLJekNa2xCQsIDSA8YM5MthuOt0rg8K6GZHWaoPw342q7nx
+         Rq6w36Pz9dd8f6/pn2AiGntHSF2sh7AdznlTFUTrhxTc07O0+u+iMhV6gBA5QsXl2lsS
+         Mwr+30rVKEsiLRh0jWb1JNl2VNgsBx0AdqGsB6nnSUjszYJYl/zkJk+tdmmaJG1335Rk
+         4Sfg==
+X-Gm-Message-State: AOJu0Yyr8fmrKFkDedehhwCGR/hww2SWlepM4+Kkrr12Cx9EaiskbVWl
+        9l5OAxt84wljlmH597lS64VHNg==
+X-Google-Smtp-Source: AGHT+IEUlWGc7mdwetT4X/g4G+YezcJB76QdtqNNVGdyf3Tx9Wy+OaeCYmbdV/DF+8bkhhKAOGs4aw==
+X-Received: by 2002:a05:6300:8003:b0:172:9b19:66b6 with SMTP id an3-20020a056300800300b001729b1966b6mr360575pzc.32.1696940242810;
+        Tue, 10 Oct 2023 05:17:22 -0700 (PDT)
+Received: from ?IPV6:2403:580d:82f4:0:4346:670f:8942:33b? (2403-580d-82f4-0-4346-670f-8942-33b.ip6.aussiebb.net. [2403:580d:82f4:0:4346:670f:8942:33b])
+        by smtp.gmail.com with ESMTPSA id e24-20020a62aa18000000b006979f70fdd5sm8083541pff.219.2023.10.10.05.17.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 05:17:22 -0700 (PDT)
+Message-ID: <09a07473-2558-2b05-c9d5-8d439749bfa7@tweaklogic.com>
+Date:   Tue, 10 Oct 2023 22:47:14 +1030
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
+ <20231008154857.24162-3-subhajit.ghosh@tweaklogic.com>
+ <ae210957-4a72-24b3-2f11-8d5824041e85@gmail.com>
+Content-Language: en-US
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <ae210957-4a72-24b3-2f11-8d5824041e85@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 10/10/23 20:15, Matti Vaittinen wrote:
 
 > 
-> >> +		chan[chan_index].differential = fwnode_property_read_bool(child, "bipolar");  
-> > 
-> > bipolar doesn't normally == differential. 
-> > You can have unipolar differential (just that you can't get a negative answer)
-> > Perhaps just a terminology thing?
-> >  
+> To my eyes this driver looks nice. Just spotted two minor things.
 > 
-> This device supports only differential channels. Here, the differential flag is used to show
-> if bipolar coding should be used.
 
-I'm confused - you are setting differential in the iio_chan_spec with this.
-That affects the sysfs naming and a bunch of other stuff - not merely
-the bipolar nature of the channel.
+Thanks Matti. Nice is one nice thing I heard after some time!
 
-
+>> +    gain_new_closest = iio_find_closest_gain_low(&data->gts, gain_new, &ok);
+>> +    if (gain_new_closest < 0) {
+>> +        gain_new_closest = iio_gts_get_min_gain(&data->gts);
+>> +        if (gain_new_closest < 0)
+>> +            return gain_new_closest < 0;
 > 
+> Returning the truth value on purpose? :)
+
+Nope, it's a bug. I'll fix it.
+
+>> +static int get_device_id_lux_per_count(struct apds9306_data *data)
+>> +{
+>> +    int ret, part_id;
+>> +
+>> +    ret = regmap_read(data->regmap, APDS9306_PART_ID, &part_id);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (part_id == apds9306_part_id_nlux_per_count[0].part_id)
+>> +        data->nlux_per_count =
+>> +            apds9306_part_id_nlux_per_count[0].nlux_per_count;
+>> +    else if (part_id == apds9306_part_id_nlux_per_count[1].part_id)
+>> +        data->nlux_per_count =
+>> +            apds9306_part_id_nlux_per_count[1].nlux_per_count;
+>> +    else
+>> +        return -ENXIO;
 > 
-> >> +	st->info = device_get_match_data(dev);
-> >> +	if (!st->info)
-> >> +		return -ENODEV;  
-> > This works for the cases of DT and ACPI but not for anyone just
-> > using the spi_device_id table. 
-> > There is spi_device_get_match_data() to cover all options.
-> >   
-> I could not find the spi_device_get_match_data() function in the repo.
-> It appears however as a suggestion from Andy Shevchenko in a thread:
-> https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg2382960.html
->  Is this it? 
+> I think we should be able to differentiate between the IC variants by DT compatible. (Commented that on bindings patch). Not sure if we need to support cases where the sensor is instantiated without device-tree. I am not super happy when code requires the part-id to be known if we have separate compatibles for variants. Can we in dt-case just print a warning if the part-ID is not what we expect - and proceed assuming the nlux_per_count based on the DT information? (Sometimes we see new variants with same part-IDs - or many part-IDs with no SW changes needed. Hence maintaining the part-ID lists may be tedious). This is just some pondering though, no strong requirements from my side
 
-ah. I got the name wrong.
-spi_get_device_match_data()
+Yes, I agree with you. The purpose of DT is to provide proper hardware descriptions.
+I will throw a warning as well as implement a compatibility match.
 
+Regards,
+Subhajit Ghosh
 
-https://elixir.bootlin.com/linux/v6.6-rc5/source/drivers/spi/spi.c#L364

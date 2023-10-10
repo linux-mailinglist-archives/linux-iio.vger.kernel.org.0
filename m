@@ -2,102 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B15A7C0170
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 075677C0173
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233479AbjJJQTE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 12:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45164 "EHLO
+        id S233719AbjJJQTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 12:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233961AbjJJQTD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:19:03 -0400
+        with ESMTP id S229675AbjJJQTS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:19:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDDE93;
-        Tue, 10 Oct 2023 09:19:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDF5C433C8;
-        Tue, 10 Oct 2023 16:19:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07899D
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 09:19:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6ABCC433C7;
+        Tue, 10 Oct 2023 16:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696954742;
-        bh=ag41vErJLcdKpWvik5kJhsbnkB03toTtYunAk74GnXI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dx7YaSUcnpJ6i31sJjGmTurhcph5FdWf+D6PUKBdn7Kpq4plRrckNxcBAOeYqXbPf
-         MiQKYc0310YaucJacgIq6+fgIQArdHKfLY7kpbGRk864Cakn8zYBRC/5YY14vfJGEj
-         K5CHmkZKhkPOxzHHtEOdZRJORREJKlMOGYMr+sYIqxlhouiZzxu33loyGXcRu8C45d
-         h0CQRL+GQuon+oqhK5MCfkIVyaanl7ni3gAdJ1QvqQTPXM0BOJ4wYCBBS/8ZGWlIyD
-         pVib/siMUCWjRsQaW/eJXLbD9fDeXoLhGN2BCpKp85b+6PtaVW0Gdh/TRxkoObx5N8
-         VCVOy5R8KsKEw==
-Received: (nullmailer pid 1003012 invoked by uid 1000);
-        Tue, 10 Oct 2023 16:19:00 -0000
-Date:   Tue, 10 Oct 2023 11:19:00 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        s=k20201202; t=1696954757;
+        bh=GjxqpjwchcuUVKMmIq+lPxoh8A/cioZblyS6xHSS1Gw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WSLWfEoBnRXLelSNl9kLo+Kv8Qn/UkRLCmcqbgooemBjgdeEwwvxJLRvoWSiYVh9S
+         r6H6xoIn5Tu5yt/FV0MT5qtqj4e4USLREeSn3oNJy08FIxmNhxhGnctW3BRsAkBfkQ
+         OmZ7HPuVY0geolxuLad3Ad7+b/4EhYHpqz9ijaDwfGwjwvooxgrCNi8Tk/lqJcVzcR
+         2Sj+A0bs6mOpqK6p6Vhs7vNF9xlQFZH5+mT2UT2VsKvbl3Zc1kXum9nqLJMnqiKuh2
+         1s5038kGI5R6N8QH43DvbmzKpwdCii01oGkd224NEqDKdVZDp8NjFAwlC65KoK9tsm
+         H47ul+as0OvQw==
+Date:   Tue, 10 Oct 2023 17:19:28 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Michal Simek <michal.simek@amd.com>
+Cc:     Robert Hancock <robert.hancock@calian.com>,
+        Conall O'Griofa <conall.ogriofa@amd.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
-Message-ID: <20231010161900.GA999361-robh@kernel.org>
-References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
- <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
- <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
+        <linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2 0/2] Xilinx XADC fixes
+Message-ID: <20231010171928.75451192@jic23-huawei>
+In-Reply-To: <20230924173210.13f2bf85@jic23-huawei>
+References: <20230915001019.2862964-1-robert.hancock@calian.com>
+        <bae646e9-7977-4de3-927b-ffcb7a94ac48@amd.com>
+        <20230924173210.13f2bf85@jic23-huawei>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 11:52:28AM +0300, Matti Vaittinen wrote:
-> On 10/8/23 18:48, Subhajit Ghosh wrote:
-> > Add devicetree bindings for Avago APDS9306 Ambient Light Sensor.
-> > 
-> > Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> > ---
-> >   .../bindings/iio/light/avago,apds9306.yaml    | 49 +++++++++++++++++++
-> >   1 file changed, 49 insertions(+)
-> >   create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> > new file mode 100644
-> > index 000000000000..e8bb897782fc
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> > @@ -0,0 +1,49 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/light/avago,apds9306.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Avago APDS9306 Ambient Light Sensor
-> > +
-> > +maintainers:
-> > +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> > +
-> > +description:
-> > +  Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: avago,apds9306
+On Sun, 24 Sep 2023 17:32:10 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Fri, 15 Sep 2023 08:52:49 +0200
+> Michal Simek <michal.simek@amd.com> wrote:
 > 
-> I see the driver supports two different variants of this IC, differentiated
-> by the part-ID register. Variants are named as apds9306 and apds9306-065. I
-> wonder if we could/should have different compatibles for them?
+> > +Conall
+> > 
+> > On 9/15/23 02:10, Robert Hancock wrote:  
+> > > Fixes for a couple of issues in the Xilinx XADC driver: one where
+> > > preconfigured temperature/voltage thresholds were being clobbered and
+> > > potentially breaking overtemperature shutdown, and another for inaccurate
+> > > temperature readings on UltraScale family devices.
+> > > 
+> > > Changed since v2: Updated to also remove disabling XADC alarm bits.
+> > > 
+> > > Robert Hancock (2):
+> > >    iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature
+> > >      thresholds
+> > >    iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
+> > > 
+> > >   drivers/iio/adc/xilinx-xadc-core.c | 39 +++++++++++-------------------
+> > >   drivers/iio/adc/xilinx-xadc.h      |  2 ++
+> > >   2 files changed, 16 insertions(+), 25 deletions(-)
+> > >     
+> > 
+> > Conall: Please test and review.  
+> 
+> I'm sitting on this one until I hear back.   No huge rush, but if you
+> can estimate when you'll get to this I know to leave you alone until after
+> that!
 
-If 1 compatible is sufficient to know how to power on both devices and 
-read the part-ID register, then no need for different compatibles.
+I'll ask one more time, then probably just assume these are fine and apply.
 
-Rob
+So Conall, have you had a chance to look at these?
+
+Thanks,
+
+Jonathan
+
+> 
+> Jonathan
+> 
+> > 
+> > Thanks,
+> > Michal  
+> 
+

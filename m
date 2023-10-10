@@ -2,192 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 603C67C410D
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 22:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747B17C421B
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 23:12:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjJJUW5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 16:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44090 "EHLO
+        id S234090AbjJJVM6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 17:12:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJJUW4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 16:22:56 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DA494;
-        Tue, 10 Oct 2023 13:22:53 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so77888381fa.3;
-        Tue, 10 Oct 2023 13:22:53 -0700 (PDT)
+        with ESMTP id S229933AbjJJVM5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 17:12:57 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50B992
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 14:12:54 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1dcfb2a3282so4236353fac.2
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 14:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696969372; x=1697574172; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vDjPtqZx84zWguUSFW1JsiqpZUg5GWs2kKDpjG6iuuE=;
-        b=NrpAmGDko6K4pgTw8dZ3MtXYZqXcvmi//oKGO9eaoSbGmQD5N49oySQz96YpV+3py9
-         saDrNHkWlXFX3eeSGvHwvOY42O41/kwP8Cb75xFrwakE9AxtkBqw1YEF5lkT4Wlrozbm
-         pb6vLGJ7WQEsmgR8jqqYj5yB4581TqXIC8i7A6LMGdHcYUYv92MdhAM7Biyq6uuI/bS6
-         arn+6tt3K6JHLaJHL7qz5nWAGGsSBc37QO0B8t4WY3zNSFLdepvuKc+Sc61My16J205Z
-         u3Apq2LeAx2DNxSS4EAQ7k4kGxnCU56ILHgQ5ljCD2Hgb7MPkTh2S/8gqLIvblcfRP98
-         Iksw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696972374; x=1697577174; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZlsnSgCmX4sVGhEbLuDndjyGxg5h5NrDjU/cZAb9NoA=;
+        b=e+wnQ2qs0C2gnuUTCNTcfEjEPy0svVm1gsQk8+hd78V6e/jbRXGgTyBXBNt+C7Y+L5
+         oib4Tv9G1L198ceTJUg2s4NZCZamUFiCYtdL8C9lfaPfeXLZIil4mhcoACqqEFyYMhMu
+         rj2WM8dD542jLdAB7h5DzEYRo2TuG7kF78aUmb6+mYm4OJRig57/i9zfhftILknyJIke
+         ICKyTsm/Dq8SdUadMKUXASj8OrbfiO204JzgteWiqIlHJGg3PKGwZRbLqs86EUGvuUk/
+         yuhyV7xSOi+XlKJwbgX4toY3uE25XPqpVDwzARbCkaXR4pcusdRxBIzfUFJxWK+1HF/x
+         VReA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696969372; x=1697574172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vDjPtqZx84zWguUSFW1JsiqpZUg5GWs2kKDpjG6iuuE=;
-        b=fIeVECZoVOU8/gAS+DY+iQemDpmzLqpfQuJZFCEKdczjlNhbFdSNlmfcEJN0mudvQj
-         BxZ7jNYCh0ELmXEfOnEGDQefYuyWW3QbO46hPvhZ957ua2TYZ4JiwAeyBmnQ7yjchkWb
-         Frt4g9ltZRkwoHs6igaPkAlQ0vqwbGpT8jCqIoeoIiVWkUCgO1OLKWyNoZXt19eCifKZ
-         GG6eqw5xWUrrbNdadQe3SRVSdSac4w/HKigon6WbTOym7TWTkmYpOrQe3ig6YRJV0YqF
-         Gc5h2jxkWwu0h3ZFNVaHIAA84CZMtfBaG8TaOH4V+ni4Si9oRTDEe8uygmhubrExEi8g
-         5P/A==
-X-Gm-Message-State: AOJu0YzlaAlhCHVKz4A+n79Jc/gLzCt38jykvVbg7ssPrDycFiXl/fZG
-        mn846bdAOsArMJeBP5bcxw1Vz0uw9DJFhoAK
-X-Google-Smtp-Source: AGHT+IE28CXznW0UVKK+i7P1urClXsfMtm49e1W8qAbYhWfoHwDVTzmedHYwt3dD+7JS6Wd8AmZdug==
-X-Received: by 2002:a2e:3a10:0:b0:2bc:bd41:ab7c with SMTP id h16-20020a2e3a10000000b002bcbd41ab7cmr15028105lja.53.1696969371587;
-        Tue, 10 Oct 2023 13:22:51 -0700 (PDT)
-Received: from [192.168.1.161] ([46.31.31.132])
-        by smtp.gmail.com with ESMTPSA id o18-20020a2e7312000000b002ba586d27a2sm2558615ljc.26.2023.10.10.13.22.49
+        d=1e100.net; s=20230601; t=1696972374; x=1697577174;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZlsnSgCmX4sVGhEbLuDndjyGxg5h5NrDjU/cZAb9NoA=;
+        b=v19uFRb9dUXBXGa0dba7/DMqbxiSK9RtS35+UZcLUZe6gwnlmQn8kDzco5027aVxVu
+         iyQoAW40wm9qlcGUUQ9qpLgLJfai0Wu5Q+93e4b7AWCXevmhJtgXaiVW5igR62AEEXWv
+         hAc+lw0c+zz+TrwMwFZg0pCZwlb6QQpu4Xyw3aOdtYkY3ySDqZtAh9R8572DTd0AnbNj
+         EUqcIw2NRTTLUqTo4KQK/7OM/gabKCvRB1UOath9gs2jJJonNniOlJ1wDXDMercC5Vft
+         1XNKN6CzTARCGzv0pg4Pa7O61dV3+CGjhqSOVvQHCcqF3nPRptqCFAZIrsUMdbcjHqrp
+         Boew==
+X-Gm-Message-State: AOJu0Yw+Df1OSY0lId906cgvwew/KGxsXijDstFPvUAblgeTO+76aXQF
+        h3cDJOmtOZuTnYTnUVDwFj2s62P3y8kgK/6B5FV5kw==
+X-Google-Smtp-Source: AGHT+IFSw4GHNmx2wRUTzM1w0z5iHkn32KDkZKdCIDHjQDJtfMdEts3yp7oPhq3RhZHVfPAL7K6rqw==
+X-Received: by 2002:a05:6870:808a:b0:1a6:c968:4a15 with SMTP id q10-20020a056870808a00b001a6c9684a15mr22571454oab.4.1696972374046;
+        Tue, 10 Oct 2023 14:12:54 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id ed46-20020a056870b7ae00b001e98b1544fesm52494oab.9.2023.10.10.14.12.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 13:22:50 -0700 (PDT)
-Message-ID: <383064a5b0863a4a616cd60cff8d4bc18e397fd7.camel@gmail.com>
-Subject: Re: [PATCH v5 1/2] dt-bindings: adc: provide max34408/9 device tree
- binding document
-From:   Ivan Mikhaylov <fr0st61te@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Date:   Tue, 10 Oct 2023 23:22:48 +0300
-In-Reply-To: <20231010154042.2ef667b2@jic23-huawei>
-References: <20231007234838.8748-1-fr0st61te@gmail.com>
-         <20231007234838.8748-2-fr0st61te@gmail.com>
-         <20231010154042.2ef667b2@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 
+        Tue, 10 Oct 2023 14:12:53 -0700 (PDT)
+From:   David Lechner <dlechner@baylibre.com>
+To:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     David Lechner <dlechner@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        Axel Haslam <ahaslam@baylibre.com>,
+        Philip Molloy <pmolloy@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/4] iio: resolver: move ad2s1210 out of staging
+Date:   Tue, 10 Oct 2023 16:12:32 -0500
+Message-ID: <20231010-ad2s1210-mainline-v5-0-35a0f6ffa04a@baylibre.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDIzLTEwLTEwIGF0IDE1OjQwICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Ogo+IE9uIFN1bizCoCA4IE9jdCAyMDIzIDAyOjQ4OjM3ICswMzAwCj4gSXZhbiBNaWtoYXlsb3Yg
-PGZyMHN0NjF0ZUBnbWFpbC5jb20+IHdyb3RlOgo+IAo+ID4gVGhlIGhhcmR3YXJlIGJpbmRpbmcg
-Zm9yIGkyYyBjdXJyZW50IG1vbml0b3JpbmcgZGV2aWNlIHdpdGgKPiA+IG92ZXJjdXJyZW50Cj4g
-PiBjb250cm9sLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBJdmFuIE1pa2hheWxvdiA8ZnIwc3Q2
-MXRlQGdtYWlsLmNvbT4KPiA+IC0tLQo+ID4gwqAuLi4vYmluZGluZ3MvaWlvL2FkYy9tYXhpbSxt
-YXgzNDQwOC55YW1swqDCoMKgwqDCoCB8IDE0MQo+ID4gKysrKysrKysrKysrKysrKysrCj4gPiDC
-oDEgZmlsZSBjaGFuZ2VkLCAxNDEgaW5zZXJ0aW9ucygrKQo+ID4gwqBjcmVhdGUgbW9kZSAxMDA2
-NDQKPiA+IERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL21heGltLG1h
-eDM0NDA4LnlhbWwKPiA+IAo+ID4gZGlmZiAtLWdpdAo+ID4gYS9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9tYXhpbSxtYXgzNDQwOC55YW1sCj4gPiBiL0RvY3VtZW50
-YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL21heGltLG1heDM0NDA4LnlhbWwKPiA+
-IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gPiBpbmRleCAwMDAwMDAwMDAwMDAuLjk3NDlmMWZkMTgw
-Mgo+ID4gLS0tIC9kZXYvbnVsbAo+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2Jp
-bmRpbmdzL2lpby9hZGMvbWF4aW0sbWF4MzQ0MDgueWFtbAo+ID4gQEAgLTAsMCArMSwxNDEgQEAK
-PiA+ICsjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiAoR1BMLTIuMCBPUiBCU0QtMi1DbGF1c2Up
-Cj4gPiArJVlBTUwgMS4yCj4gPiArLS0tCj4gPiArJGlkOiBodHRwOi8vZGV2aWNldHJlZS5vcmcv
-c2NoZW1hcy9paW8vYWRjL21heGltLG1heDM0NDA4LnlhbWwjCj4gPiArJHNjaGVtYTogaHR0cDov
-L2RldmljZXRyZWUub3JnL21ldGEtc2NoZW1hcy9jb3JlLnlhbWwjCj4gPiArCj4gPiArdGl0bGU6
-IFR3by0gYW5kIGZvdXItY2hhbm5lbCBjdXJyZW50IG1vbml0b3JzIHdpdGggb3ZlcmN1cnJlbnQK
-PiA+IGNvbnRyb2wKPiA+ICsKPiA+ICttYWludGFpbmVyczoKPiA+ICvCoCAtIEl2YW4gTWlraGF5
-bG92IDxmcjBzdDYxdGVAZ21haWwuY29tPgo+ID4gKwo+ID4gK2Rlc2NyaXB0aW9uOiB8Cj4gPiAr
-wqAgVGhlIE1BWDM0NDA4L01BWDM0NDA5IGFyZSB0d28tIGFuZCBmb3VyLWNoYW5uZWwgY3VycmVu
-dCBtb25pdG9ycwo+ID4gdGhhdCBhcmUKPiA+ICvCoCBjb25maWd1cmVkIGFuZCBtb25pdG9yZWQg
-d2l0aCBhIHN0YW5kYXJkIEkyQy9TTUJ1cyBzZXJpYWwKPiA+IGludGVyZmFjZS4gRWFjaAo+ID4g
-K8KgIHVuaWRpcmVjdGlvbmFsIGN1cnJlbnQgc2Vuc29yIG9mZmVycyBwcmVjaXNpb24gaGlnaC1z
-aWRlCj4gPiBvcGVyYXRpb24gd2l0aCBhCj4gPiArwqAgbG93IGZ1bGwtc2NhbGUgc2Vuc2Ugdm9s
-dGFnZS4gVGhlIGRldmljZXMgYXV0b21hdGljYWxseSBzZXF1ZW5jZQo+ID4gdGhyb3VnaAo+ID4g
-K8KgIHR3byBvciBmb3VyIGNoYW5uZWxzIGFuZCBjb2xsZWN0IHRoZSBjdXJyZW50LXNlbnNlIHNh
-bXBsZXMgYW5kCj4gPiBhdmVyYWdlIHRoZW0KPiA+ICvCoCB0byByZWR1Y2UgdGhlIGVmZmVjdCBv
-ZiBpbXB1bHNlIG5vaXNlLiBUaGUgcmF3IEFEQyBzYW1wbGVzIGFyZQo+ID4gY29tcGFyZWQgdG8K
-PiA+ICvCoCB1c2VyLXByb2dyYW1tYWJsZSBkaWdpdGFsIHRocmVzaG9sZHMgdG8gaW5kaWNhdGUg
-b3ZlcmN1cnJlbnQKPiA+IGNvbmRpdGlvbnMuCj4gPiArwqAgT3ZlcmN1cnJlbnQgY29uZGl0aW9u
-cyB0cmlnZ2VyIGEgaGFyZHdhcmUgb3V0cHV0IHRvIHByb3ZpZGUgYW4KPiA+IGltbWVkaWF0ZQo+
-ID4gK8KgIGluZGljYXRpb24gdG8gc2h1dCBkb3duIGFueSBuZWNlc3NhcnkgZXh0ZXJuYWwgY2ly
-Y3VpdHJ5Lgo+ID4gKwo+ID4gK8KgIFNwZWNpZmljYXRpb25zIGFib3V0IHRoZSBkZXZpY2VzIGNh
-biBiZSBmb3VuZCBhdDoKPiA+ICvCoAo+ID4gaHR0cHM6Ly93d3cuYW5hbG9nLmNvbS9tZWRpYS9l
-bi90ZWNobmljYWwtZG9jdW1lbnRhdGlvbi9kYXRhLXNoZWV0cy9NQVgzNDQwOC1NQVgzNDQwOS5w
-ZGYKPiA+ICsKPiA+ICtwcm9wZXJ0aWVzOgo+ID4gK8KgIGNvbXBhdGlibGU6Cj4gPiArwqDCoMKg
-IGVudW06Cj4gPiArwqDCoMKgwqDCoCAtIG1heGltLG1heDM0NDA4Cj4gPiArwqDCoMKgwqDCoCAt
-IG1heGltLG1heDM0NDA5Cj4gPiArCj4gPiArwqAgIiNhZGRyZXNzLWNlbGxzIjoKPiA+ICvCoMKg
-wqAgY29uc3Q6IDEKPiA+ICsKPiA+ICvCoCAiI3NpemUtY2VsbHMiOgo+ID4gK8KgwqDCoCBjb25z
-dDogMAo+ID4gKwo+ID4gK8KgIHJlZzoKPiA+ICvCoMKgwqAgbWF4SXRlbXM6IDEKPiA+ICsKPiA+
-ICvCoCBpbnRlcnJ1cHRzOgo+ID4gK8KgwqDCoCBtYXhJdGVtczogMQo+ID4gKwo+ID4gK8KgIHBv
-d2VyZG93bi1ncGlvczoKPiA+ICvCoMKgwqAgZGVzY3JpcHRpb246Cj4gPiArwqDCoMKgwqDCoCBT
-aHV0ZG93biBPdXRwdXQuIE9wZW4tZHJhaW4gb3V0cHV0LiBUaGlzIG91dHB1dCB0cmFuc2l0aW9u
-cwo+ID4gdG8gaGlnaCBpbXBlZGFuY2UKPiA+ICvCoMKgwqDCoMKgIHdoZW4gYW55IG9mIHRoZSBk
-aWdpdGFsIGNvbXBhcmF0b3IgdGhyZXNob2xkcyBhcmUgZXhjZWVkZWQKPiA+IGFzIGxvbmcgYXMg
-dGhlIEVOQQo+ID4gK8KgwqDCoMKgwqAgcGluIGlzIGhpZ2guCj4gPiArwqDCoMKgIG1heEl0ZW1z
-OiAxCj4gPiArCj4gPiArwqAgc2h0ZG4tZW5hYmxlLWdwaW9zOgo+IAo+IEkgZ3Vlc3MgdGhlIHJl
-dmlldyBjcm9zc2VkIHdpdGggeW91IHNlbmRpbmcgdjUuwqAgVGhlcmUgaXMgc29tZQo+IGZlZWRi
-YWNrIG9uIHY0IHlvdSBuZWVkCj4gdG8gYWRkcmVzcyBoZXJlLgoKSm9uYXRoYW4sIEkgdGhvdWdo
-dCBJIGRpZCwgSSd2ZSBjaGFuZ2VkIGVuYSB0byBwb3dlcmRvd24tZ3Bpb3MgZnJvbQpLcnp5c3p0
-b2YncyBjb21tZW50cyBidXQgYWJvdXQgdGhpcyBvbmUgcGluIEknbSBzdGlsbCBub3Qgc3VyZSwg
-aXQKbG9va3MgbGlrZSAqLWVuYWJsZS1ncGlvcyAobGlrZSBpbiAqLWVuYWJsZS1ncGlvcyBwaW5z
-IGluCmlpby9mcmVxdWVuY3kvYWRpLGFkZjQzNzcueWFtbCkgcGluIG9yIGlzIGl0IG5vdD8gT3Ig
-bWF5YmUgYW55IG90aGVyCnN1Z2dlc3Rpb25zIGFib3V0IG5hbWluZyBvZiB0aGlzIG9uZT8KClRo
-YW5rcy4KCj4gCj4gPiArwqDCoMKgIGRlc2NyaXB0aW9uOgo+ID4gK8KgwqDCoMKgwqAgU0hURE4g
-RW5hYmxlIElucHV0LiBDTU9TIGRpZ2l0YWwgaW5wdXQuIENvbm5lY3QgdG8gR05EIHRvCj4gPiBj
-bGVhciB0aGUgbGF0Y2ggYW5kCj4gPiArwqDCoMKgwqDCoCB1bmNvbmRpdGlvbmFsbHkgZGVhc3Nl
-cnQgKGZvcmNlIGxvdykgdGhlIFNIVEROIG91dHB1dCBhbmQKPiA+IHJlc2V0IHRoZSBzaHV0ZG93
-bgo+ID4gK8KgwqDCoMKgwqAgZGVsYXkuIENvbm5lY3QgdG8gVkREIHRvIGVuYWJsZSBub3JtYWwg
-bGF0Y2ggb3BlcmF0aW9uIG9mCj4gPiB0aGUgU0hURE4gb3V0cHV0Lgo+ID4gK8KgwqDCoCBtYXhJ
-dGVtczogMQo+ID4gKwo+ID4gK8KgIHZkZC1zdXBwbHk6IHRydWUKPiA+ICsKPiA+ICtwYXR0ZXJu
-UHJvcGVydGllczoKPiA+ICvCoCAiXmNoYW5uZWxAWzAtM10kIjoKPiA+ICvCoMKgwqAgJHJlZjog
-YWRjLnlhbWwKPiA+ICvCoMKgwqAgdHlwZTogb2JqZWN0Cj4gPiArwqDCoMKgIGRlc2NyaXB0aW9u
-Ogo+ID4gK8KgwqDCoMKgwqAgUmVwcmVzZW50cyB0aGUgaW50ZXJuYWwgY2hhbm5lbHMgb2YgdGhl
-IEFEQy4KPiA+ICsKPiA+ICvCoMKgwqAgcHJvcGVydGllczoKPiA+ICvCoMKgwqDCoMKgIHJlZzoK
-PiA+ICvCoMKgwqDCoMKgwqDCoCBpdGVtczoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqAgbWluaW11
-bTogMAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoCBtYXhpbXVtOiAzCj4gPiArCj4gPiArwqDCoMKg
-wqDCoCBtYXhpbSxyc2Vuc2UtdmFsLW1pY3JvLW9obXM6Cj4gPiArwqDCoMKgwqDCoMKgwqAgZGVz
-Y3JpcHRpb246Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgIEFkanVzdCB0aGUgUnNlbnNlIHZhbHVl
-IHRvIG1vbml0b3IgaGlnaGVyIG9yIGxvd2VyCj4gPiBjdXJyZW50IGxldmVscyBmb3IKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqAgaW5wdXQuCj4gPiArwqDCoMKgwqDCoMKgwqAgZW51bTogWzI1MCwg
-NTAwLCAxMDAwLCA1MDAwLCAxMDAwMCwgNTAwMDAsIDEwMDAwMCwgMjAwMDAwLAo+ID4gNTAwMDAw
-XQo+ID4gK8KgwqDCoMKgwqDCoMKgIGRlZmF1bHQ6IDEwMDAKPiA+ICsKPiA+ICvCoMKgwqAgcmVx
-dWlyZWQ6Cj4gPiArwqDCoMKgwqDCoCAtIHJlZwo+ID4gK8KgwqDCoMKgwqAgLSBtYXhpbSxyc2Vu
-c2UtdmFsLW1pY3JvLW9obXMKPiA+ICsKPiA+ICvCoMKgwqAgdW5ldmFsdWF0ZWRQcm9wZXJ0aWVz
-OiBmYWxzZQo+ID4gKwo+ID4gK3JlcXVpcmVkOgo+ID4gK8KgIC0gY29tcGF0aWJsZQo+ID4gK8Kg
-IC0gcmVnCj4gPiArCj4gPiArYWxsT2Y6Cj4gPiArwqAgLSBpZjoKPiA+ICvCoMKgwqDCoMKgIHBy
-b3BlcnRpZXM6Cj4gPiArwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZToKPiA+ICvCoMKgwqDCoMKg
-wqDCoMKgwqAgY29udGFpbnM6Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb25zdDogbWF4
-aW0sbWF4MzQ0MDgKPiA+ICvCoMKgwqAgdGhlbjoKPiA+ICvCoMKgwqDCoMKgIHBhdHRlcm5Qcm9w
-ZXJ0aWVzOgo+ID4gK8KgwqDCoMKgwqDCoMKgICJeY2hhbm5lbEBbMi0zXSQiOiBmYWxzZQo+ID4g
-K8KgwqDCoMKgwqDCoMKgICJeY2hhbm5lbEBbMC0xXSQiOgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oCBwcm9wZXJ0aWVzOgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVnOgo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1pbmltdW06IDAKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBtYXhpbXVtOiAxCj4gPiArwqDCoMKgIGVsc2U6Cj4gPiArwqDCoMKgwqDCoCBwYXR0
-ZXJuUHJvcGVydGllczoKPiA+ICvCoMKgwqDCoMKgwqDCoCAiXmNoYW5uZWxAWzAtM10kIjoKPiA+
-ICvCoMKgwqDCoMKgwqDCoMKgwqAgcHJvcGVydGllczoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIHJlZzoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBtaW5pbXVtOiAwCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbWF4aW11bTogMwo+ID4gKwo+ID4gK2FkZGl0aW9u
-YWxQcm9wZXJ0aWVzOiBmYWxzZQo+ID4gKwo+ID4gK2V4YW1wbGVzOgo+ID4gK8KgIC0gfAo+ID4g
-K8KgwqDCoCAjaW5jbHVkZSA8ZHQtYmluZGluZ3MvZ3Bpby9ncGlvLmg+Cj4gPiArCj4gPiArwqDC
-oMKgIGkyYyB7Cj4gPiArwqDCoMKgwqDCoMKgwqAgI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gPiAr
-wqDCoMKgwqDCoMKgwqAgI3NpemUtY2VsbHMgPSA8MD47Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKg
-wqAgYWRjQDFlIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0g
-Im1heGltLG1heDM0NDA5IjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWcgPSA8
-MHgxZT47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcG93ZXJkb3duLWdwaW9zID0g
-PCZncGlvMCAxIEdQSU9fQUNUSVZFX0xPVz47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgc2h0ZG4tZW5hYmxlLWdwaW9zID0gPCZncGlvMCAyIEdQSU9fQUNUSVZFX0hJR0g+Owo+ID4g
-Kwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICNhZGRyZXNzLWNlbGxzID0gPDE+Owo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICNzaXplLWNlbGxzID0gPDA+Owo+ID4gKwo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNoYW5uZWxAMCB7Cj4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWcgPSA8MHgwPjsKPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1heGltLHJzZW5zZS12YWwtbWljcm8tb2htcyA9IDw1MDAw
-PjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Owo+ID4gKwo+ID4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGNoYW5uZWxAMSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCByZWcgPSA8MHgxPjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIG1heGltLHJzZW5zZS12YWwtbWljcm8tb2htcyA9IDwxMDAwMD47Cj4gPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIH07Cj4gPiArwqDCoMKgwqDCoMKgwqAgfTsKPiA+ICvCoMKg
-wqAgfTsKPiAKCg==
+This series is working towards moving the ad2s1210 resolver driver out of
+staging (after 13 years!). It involves a bunch of fixes and improvements
+to make proper device tree bindings and use standard IIO sysfs attributes.
+
+This series has been tested on actual hardware using a EVAL-AD2S1210 evaluation
+board. (Note: not all device tree features have been implemented in the driver
+since the eval board doesn't support them out of the box. We plan to add them
+later if needed.)
+
+---
+
+v5 changes:
+* Dropped applied patches:
+  * "staging: iio: resolver: ad2s1210: do not use fault register for dummy read"
+  * "staging: iio: resolver: ad2s1210: implement hysteresis as channel attr"
+  * "staging: iio: resolver: ad2s1210: convert fexcit to channel attribute"
+  * "staging: iio: resolver: ad2s1210: convert resolution to devicetree property"
+  * "staging: iio: resolver: ad2s1210: add phase lock range support"
+  * "staging: iio: resolver: ad2s1210: add triggered buffer support"
+  * "staging: iio: resolver: ad2s1210: convert LOT threshold attrs to event attrs"
+  * "staging: iio: resolver: ad2s1210: convert LOS threshold to event attr"
+  * "staging: iio: resolver: ad2s1210: convert DOS overrange threshold to event attr"
+  * "staging: iio: resolver: ad2s1210: convert DOS mismatch threshold to event attr"
+  * "staging: iio: resolver: ad2s1210: rename DOS reset min/max attrs"
+  * "iio: event: add optional event label support"
+  * "staging: iio: resolver: ad2s1210: implement fault events"
+  * "staging: iio: resolver: ad2s1210: add register/fault support summary"
+  * "staging: iio: resolver: ad2s1210: add label attribute support"
+  * "staging: iio: resolver: ad2s1210: remove fault attribute"
+* Added new patches:
+  * "staging: iio: resolver: ad2s1210: refactor sample toggle"
+  * "staging: iio: resolver: ad2s1210: clear faults after soft reset"
+  * "iio: resolver: ad2s1210: move out of staging"
+
+Link to v4: https://lore.kernel.org/r/20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com
+
+v4 changes:
+* Dropped applied patches:
+  * "dt-bindings: iio: resolver: add devicetree bindings for ad2s1210"
+  * "staging: iio: resolver: ad2s1210: read excitation frequency from
+    control register"
+  * "staging: iio: resolver: ad2s1210: refactor setting excitation
+    frequency"
+  * "staging: iio: resolver: ad2s1210: rework gpios"
+  * "staging: iio: resolver: ad2s1210: remove config attribute"
+  * "staging: iio: resolver: ad2s1210: add debugfs reg access"
+  * "staging: iio: resolver: ad2s1210: use regmap for config registers"
+  * "staging: iio: resolver: ad2s1210: use devicetree to get CLKIN rate"
+  * "staging: iio: resolver: ad2s1210: implement IIO_CHAN_INFO_SCALE"
+  * "staging: iio: resolver: ad2s1210: always use 16-bit value for raw
+    read"
+  * "staging: iio: resolver: ad2s1210: sort imports"
+  * "staging: iio: resolver: ad2s1210: remove spi_set_drvdata()"
+  * "staging: iio: resolver: ad2s1210: check return of ad2s1210_initial()"
+  * "staging: iio: resolver: ad2s1210: remove call to spi_setup()"
+  * "staging: iio: resolver: ad2s1210: fix use before initialization"
+* Added new patches:
+  * "staging: iio: resolver: ad2s1210: do not use fault register for
+    dummy read"
+  * "iio: event: add optional event label support"
+  * "staging: iio: resolver: ad2s1210: add register/fault support summary"
+  * "staging: iio: resolver: ad2s1210: remove fault attribute"
+  * "staging: iio: resolver: ad2s1210: simplify code with guard(mutex)"
+* Fixed DT property name in commit description of "staging: iio:
+  resolver: ad2s1210: convert resolution to devicetree property"
+* Fixed compile error in "staging: iio: resolver: ad2s1210: implement
+  fault events".
+* Fixed angl0 hysteresis raw values when assigned-resolution-bits != 16.
+* Fixed missing word in "staging: iio: resolver: ad2s1210: convert DOS
+  overrange threshold to event attr" commit description.
+* Fixed missing static qualifier on event attribute definitions.
+* Dropped used of X/Y modifiers on sine/cosine channels.
+* Changed type/direction on some events.
+* Added event *_label attributes.
+
+Link to v3: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com
+
+v3 changes:
+* Dropped applied patches:
+  * "staging: iio: resolver: ad2s1210: fix ad2s1210_show_fault"
+  * "staging: iio: resolver: ad2s1210: fix not restoring sample gpio in
+    channel read"
+* Dropped "staging: iio: Documentation: document IIO resolver AD2S1210
+  sysfs attributes". We will attempt to use existing ABI for faults/
+  thresholds in a future series.
+* Added description of A0/A1 lines in DT bindings.
+* Added power supply regulators to DT bindings.
+* Moved sorting imports to separate patch.
+* Renamed fclkin to clkin_hz.
+* Added __be16 sample field to state struct for reading raw samples.
+* Split out new function ad2s1210_single_conversion() from
+  ad2s1210_read_raw().
+* Split out new ad2s1210_get_hysteresis() and ad2s1210_set_hysteresis()
+  functions.
+* Fixed multi-line comment style.
+* Added notes about soft reset not resetting config registers.
+* Made use of FIELD_PREP() macro.
+* Added more explanation to regmap commit message.
+* Removed datasheet names from channel specs.
+* Replaced "staging: iio: resolver: ad2s1210: rename fexcit attribute"
+  with "staging: iio: resolver: ad2s1210: convert fexcit to channel
+  attribute".
+* Replaced "staging: iio: resolver: ad2s1210: add phase_lock_range
+  attributes" with "staging: iio: resolver: ad2s1210: add phase lock
+  range support"
+* Added additional patches to convert custom device attributes to event
+  attributes.
+* Added patch for to add label attributes.
+
+Link to v2: https://lore.kernel.org/r/20230921144400.62380-1-dlechner@baylibre.com
+
+v2 changes:
+* Address initial device tree patch feedback
+* Drop "iio: sysfs: add IIO_DEVICE_ATTR_NAMED_RW macro" (related cleanups
+  also dropped for now, will address in a future series if needed)
+* Apply improvements as a series of patches to the staging driver. It is
+  not quite ready for the move out of staging patch yet.
+
+---
+David Lechner (4):
+      staging: iio: resolver: ad2s1210: refactor sample toggle
+      staging: iio: resolver: ad2s1210: clear faults after soft reset
+      staging: iio: resolver: ad2s1210: simplify code with guard(mutex)
+      iio: resolver: ad2s1210: move out of staging
+
+ .../ABI/testing}/sysfs-bus-iio-resolver-ad2s1210   |   0
+ drivers/iio/resolver/Kconfig                       |  13 ++
+ drivers/iio/resolver/Makefile                      |   1 +
+ drivers/{staging => }/iio/resolver/ad2s1210.c      | 208 ++++++++++-----------
+ drivers/staging/iio/Kconfig                        |   1 -
+ drivers/staging/iio/Makefile                       |   1 -
+ drivers/staging/iio/resolver/Kconfig               |  19 --
+ drivers/staging/iio/resolver/Makefile              |   6 -
+ 8 files changed, 109 insertions(+), 140 deletions(-)
+---
+base-commit: 57fd97ead0e87ca528736f1945a3ba3096de2f3e
+change-id: 20230925-ad2s1210-mainline-2791ef75e386
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 

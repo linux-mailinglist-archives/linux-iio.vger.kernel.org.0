@@ -2,332 +2,274 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E134B7BF825
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 12:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC837BF82C
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 12:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbjJJKBf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 06:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37990 "EHLO
+        id S230248AbjJJKEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 06:04:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229987AbjJJKBe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 06:01:34 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C637DA4;
-        Tue, 10 Oct 2023 03:01:30 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-5042bfb4fe9so6685826e87.1;
-        Tue, 10 Oct 2023 03:01:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696932089; x=1697536889; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LihL4ulTO5Te7HGkKh0lXqYhPYCbqDNSQkLHPMrY4TA=;
-        b=Wo+7K57WJDdGdxFQ3cACJ1TvQ77acfIXkeL+Olx9QEyOoop7Ix5O9jv87x0iL6yRn5
-         hGh+JsB3kGc2ZhZKmP5qRYWpn5JzJqYR72G0KOK2I8gWuyw4D/hC+uiSV7+mUqT2Z2o6
-         DhxHzciiIyGX1+YH2eeDwVEcF8+xdHENTgHk+QGr8udSxWr5KXyLAHjQd3ylmZzZVbOu
-         IpMjUe++iMed+gPtzet5NNmjKz4ROG8zxopyCORIdEZ+7MFep8rE/BEvWrZeimMZiORH
-         b4r3WQQftTy3hRSpxxQOBGCbFnShCZeEPwX4qeGc+7IbCseVb4KUlHxcYa9vMijjkTV7
-         oYGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696932089; x=1697536889;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LihL4ulTO5Te7HGkKh0lXqYhPYCbqDNSQkLHPMrY4TA=;
-        b=BBOB94dBb83VZfmzMRUp+wQdQT+Dx9OYK0nOI7w28HaRJRuW62p82jsVuL42cw5/tL
-         g/uvV5aXa1XCyFjYhC9uuqMp07fBLMxNbHsa3r+xvs+duqEoNGcms8S0aQo18LJYoUgf
-         o0gWsCfapOqtR0sr2rkSo400hDdleCVixosydyPhFWgmx6UX22T/7wIqT2L69j3uG//T
-         E2QhVxoI2bm5/1Rqa743mq0dIjJqAAtrFvkKhS6OIJaWbHTnYfKcVDCKQiapgjYH213J
-         gkzi3/CMTlqcfwJd6eBr6zjWIRI2N11jMzHNDPf6WgmF4oJXrREy+Bja3Xzp1IJaJnRF
-         1gGg==
-X-Gm-Message-State: AOJu0YxQd+xO6lzQtojjBbCX8L4dRz+EVe71IN5xoGpf77EdS/5Osqwe
-        CPReG1BjHrycO1sAe/B0olA=
-X-Google-Smtp-Source: AGHT+IFGaC3BoIcDaPR22jM4K8yAU6B/49hkH6eb3g9q2X86slKwCSidlTceY/O0oNYT3PADNOCIIw==
-X-Received: by 2002:a05:6512:208d:b0:500:bfcb:1bf9 with SMTP id t13-20020a056512208d00b00500bfcb1bf9mr13927891lfr.67.1696932088734;
-        Tue, 10 Oct 2023 03:01:28 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id r26-20020ac25a5a000000b00502c6dc612fsm1726799lfn.219.2023.10.10.03.01.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Oct 2023 03:01:28 -0700 (PDT)
-Message-ID: <4b3d2013-841f-55d1-64ff-54e13b8b52d8@gmail.com>
-Date:   Tue, 10 Oct 2023 13:01:27 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
+        with ESMTP id S229987AbjJJKEK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 06:04:10 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD9B94;
+        Tue, 10 Oct 2023 03:04:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6A2C433CB;
+        Tue, 10 Oct 2023 10:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696932247;
+        bh=mn3zjhWL1qWRx7zYIkF0MFuS9a9Ph4ybWsNqNi7p9RA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=eRtkSJsQ3dfCQMb7oQW95nJMO26WCjQCoKf8tqZqbDsonqiBF/IjMLU97HrZkkNW7
+         T/6TTVWjANzlKk8Qoe/a8j5X3Sk2VHvFFlrBQzSTppB0zm/NooySI9Qfk9KG1yS6rz
+         0xoPFEX5Y9c+i8RU3FR6cMzqEzGsPybwPjkR0ivCe87Xf9nThWU8m87MfVw09HTfKK
+         rafD0FQ2SIhyija0nRC6XkGtatVfC61aANJygoiFDNcMZhNAxqJV9G5FZqf17giGZD
+         upW1unQ7zYBhLKwH/jQzIXx34xcdUsFl2+bOKzeOhs2EqdXpqSzS2ZOYh7qRw9RosI
+         3h1r63JY7DKKg==
+Date:   Tue, 10 Oct 2023 11:04:19 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZRq4pdDn6N73n7BO@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20231005161455.22d68c22@jic23-huawei>
- <07d2740d-d251-842c-ad9f-788fd2546110@gmail.com>
- <20231010104037.4c23ba1d@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH] iio: bu27008: Add processed illuminance channel
-In-Reply-To: <20231010104037.4c23ba1d@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] iio: sanity check available_scan_masks array
+Message-ID: <20231010110419.00899e0e@jic23-huawei>
+In-Reply-To: <751a87c9-a4aa-4e06-1d12-1e2b1a3487de@gmail.com>
+References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+        <20231005163026.2c7707de@jic23-huawei>
+        <751a87c9-a4aa-4e06-1d12-1e2b1a3487de@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/10/23 12:40, Jonathan Cameron wrote:
-> On Fri, 6 Oct 2023 08:01:15 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> On 10/5/23 18:14, Jonathan Cameron wrote:
->>> On Mon, 2 Oct 2023 15:33:41 +0300
->>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>    
->>>> The RGB + IR data can be used to calculate illuminance value (Luxes).
->>>> Implement the equation obtained from the ROHM HW colleagues and add a
->>>> light data channel outputting illuminance values in (nano) Luxes.
->>> Units in the ABI doc for illuminance are Lux, not nanolux.
->>> I'm guessing that you actually provide it in Lux but via scale.
->>>
->>> Make that clearer in this description if so.
->>
->> Yep. Also, the "processed" is misleading as I implement a raw channel. I
->> did originally think I'll only implement the read_raw (as I thought
->> we'll need all RGBC + IR and end up doing two accesses - which wouldn't
->> be nice due to the doubled measurement time). I actually did that and
->> used INT_PLUS_NANO. While implementing this I noticed the 'clear' data
->> was not used - and thought I might as well support buffering when RGB+IR
->> are enabled. I needed the scale to get the buffered values to decent
->> format though - so I converted channel to raw one and added scale. The
->> commit title still contains the 'processed' which reflects the original
->> thinking. Thanks for pointing out the confusion.
->>
->>>> Both the read_raw and buffering values is supported, with the limitation
->>>> that buffering is only allowed when suitable scan-mask is used. (RGB+IR,
->>>> no clear).
->>>>
->>>> The equation has been developed by ROHM HW colleagues for open air sensor.
->>>> Adding any lens to the sensor is likely to impact to the used c1, c2, c3
->>>> coefficients. Also, The output values have only been tested on BU27008.
->>>>
->>>> According to the HW colleagues, the very same equation should work also
->>>> on BU27010.
->>>>
->>>> Calculate and output illuminance values from BU27008 and BU27010.
->>>>
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>>   
->>>
->>> A few comments inline, but in general looks fine to me.
->>
->> Thanks Jonathan. I had to give also the BU27008 sensor away for a while.
->> I guess I won't send the next version until I am able to do some very
->> basic testing even if the changes were minor. That's probably sometime
->> next week.
->>
->>>
->>> Jonathan
->>>    
->>>> ---
->>>>
+On Fri, 6 Oct 2023 14:10:16 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-//snip
+> Hi Again Jonathan.
+> 
+> On 10/5/23 18:30, Jonathan Cameron wrote:
+> > On Tue, 3 Oct 2023 12:49:45 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> When IIO goes through the available scan masks in order to select the
+> >> best suiting one, it will just accept the first listed subset of channels
+> >> which meets the user's requirements. If driver lists a mask which is a
+> >> subset of some of the masks previously in the array of
+> >> avaliable_scan_masks, then the latter one will never be selected.
+> >>
+> >> Add a warning if driver registers masks which can't be used due to the
+> >> available_scan_masks-array ordering.
+> >>
+> >> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> > Hi Matti
+> > 
+> > Thanks for doing this.  A few comments inline + maybe we need to think
+> > about a unit test for the matching code. I feel we aren't pushing the
+> > corners of that in any drivers so far so it might bite us later.
+> > 
+> > Still that's a job for another day.
+> > 
+> > Jonathan
+> >   
+> >>
+> >> ---
+> >> The change was suggested by Jonathan here:
+> >> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
+> >> ---
+> >>   drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
+> >>   1 file changed, 57 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> >> index c77745b594bd..d4f37f4eeec0 100644
+> >> --- a/drivers/iio/industrialio-core.c
+> >> +++ b/drivers/iio/industrialio-core.c
+> >> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)  
+> 
+> ...
+> 
+> >> +
+> >> +	for (num_masks = 0; *av_masks; num_masks++)  
+> > 
+> > I think we can't just check *av_masks - need bitmap_empty() as first
+> > long might be 0 but could be bits set in the next one.
+> >   
+> >> +		av_masks += longs_per_mask;  
+> 
+> I did switch this to:
+> +       for (num_masks = 0; !bitmap_empty(av_masks, masklength); 
+> num_masks++)
+> +               av_masks += longs_per_mask;
+> 
+> but this kind of freaks me out.
 
->>>>    
->>>> +static int bu27008_get_rgb_ir(struct bu27008_data *data, unsigned int *red,
->>>> +		    unsigned int *green, unsigned int *blue, unsigned int *ir)
->>>> +{
->>>> +	int ret, chan_sel, int_time, tmpret, valid;
->>>> +	__le16 chans[BU27008_NUM_HW_CHANS];
->>>> +
->>>> +	chan_sel = BU27008_BLUE2_IR3 << (ffs(data->cd->chan_sel_mask) - 1);
->>>> +
->>>> +	ret = regmap_update_bits(data->regmap, data->cd->chan_sel_reg,
->>>> +				 data->cd->chan_sel_mask, chan_sel);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	ret = bu27008_meas_set(data, true);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	ret = bu27008_get_int_time_us(data);
->>>> +	if (ret < 0)
->>>> +		int_time = BU27008_MEAS_TIME_MAX_MS;
->>>> +	else
->>>> +		int_time = ret / USEC_PER_MSEC;
->>>> +
->>>> +	msleep(int_time);
->>>> +
->>>> +	ret = regmap_read_poll_timeout(data->regmap, data->cd->valid_reg,
->>>> +				       valid, (valid & BU27008_MASK_VALID),
->>>> +				       BU27008_VALID_RESULT_WAIT_QUANTA_US,
->>>> +				       BU27008_MAX_VALID_RESULT_WAIT_US);
->>>> +	if (ret)
->>>> +		goto out;
->>>> +
->>>> +	ret = regmap_bulk_read(data->regmap, BU27008_REG_DATA0_LO, chans,
->>>> +			       sizeof(chans));
->>>> +	if (ret)
->>>> +		goto out;
->>>> +
->>>> +	*red = le16_to_cpu(chans[0]);
->>>> +	*green = le16_to_cpu(chans[1]);
->>>> +	*blue = le16_to_cpu(chans[2]);
->>>> +	*ir = le16_to_cpu(chans[3]);
->>>
->>> I'd be tempted to use an array + definitely pass them as u16 rather
->>> than unsigned int.
->>
->> I'm not really convinced the u16 is better here. We need the 32 bits
->> later for the calculations - and (afaics) using natural size int for
->> arguments shouldn't harm. We read the channel data to correct type array
->> so code should be pretty clear as to what we have in HW.
-> 
-> ok.  I don't like lack of range clamping - so at the point of the caller
-> I can't immediately see that these will be sub 16bit value.  Not htat
-> important I guess.
-> 
->>
->> Also, I think that having an array obfuscates what element is which
->> channel because these ICs didn't have the 1 to 1 mapping from channel
->> index to colour. I was thinking of adding a struct for this but decided
->> to just keep it simple and clear.
-> A struct or array + enum would work.
-> I just don't much like lots of very similar parameters.
+Good because I'm fairly sure you need to reduce the masklength int hat
+bitmap_empty as well.  It is getting a bit complex.
 
-Right. A struct is not a problem. I am less fond with an enum because 
-the HW channel which carries a specific color may change. I think adding 
-an enum which indicates a place where a color is in array may be 
-misleading one to think that HW has a fixed channel (data register 
-address) for a colour. (I think that is quite usual while ICs where one 
-color may be in different channels depending on the config are likely to 
-be rare... I haven't read too many light sensor specs/drivers to know 
-for sure though).
-
->>
->>>> +
->>>> +out:
->>>> +	tmpret = bu27008_meas_set(data, false);
->>>> +	if (tmpret)
->>>> +		dev_warn(data->dev, "Stopping measurement failed\n");
->>>> +
->>>> +	return ret;
->>>> +}
->>>> +
->>>> +/*
->>>> + * Following equation for computing lux out of register values was given by
->>>> + * ROHM HW colleagues;
->>>> + *
->>>> + * Red = RedData*1024 / Gain * 20 / meas_mode
->>>> + * Green = GreenData* 1024 / Gain * 20 / meas_mode
->>>> + * Blue = BlueData* 1024 / Gain * 20 / meas_mode
->>>> + * IR = IrData* 1024 / Gain * 20 / meas_mode
->>>> + *
->>>> + * where meas_mode is the integration time in mS / 10
->>>> + *
->>>> + * IRratio = (IR > 0.18 * Green) ? 0 : 1
->>>> + *
->>>> + * Lx = max(c1*Red + c2*Green + c3*Blue,0)
->>>> + *
->>>> + * for
->>>> + * IRratio 0: c1 = -0.00002237, c2 = 0.0003219, c3 = -0.000120371
->>>> + * IRratio 1: c1 = -0.00001074, c2 = 0.000305415, c3 = -0.000129367
->>>> + */
->>>> +
->>>> +/*
->>>> + * The max chan data is 0xffff. When we multiply it by 1024 * 20, we'll get
->>>> + * 0x4FFFB000 which still fits in 32-bit integer. So this can't overflow.
->>>> + */
->>>> +#define NORM_CHAN_DATA_FOR_LX_CALC(chan, gain, time) ((chan) * 1024 * 20 / \
->>>> +				   (gain) / (time))
->>>> +static u64 bu27008_calc_nlux(struct bu27008_data *data, unsigned int red,
->>>> +		unsigned int green, unsigned int blue,  unsigned int ir,
->>>> +		unsigned int gain, unsigned int gain_ir, unsigned int time)
->>>> +{
->>>> +	s64 c1, c2, c3, nlux;
->>>> +
->>>> +	time /= 10000;
->>>> +	ir = NORM_CHAN_DATA_FOR_LX_CALC(ir, gain_ir, time);
->>>> +	red = NORM_CHAN_DATA_FOR_LX_CALC(red, gain, time);
->>>> +	green = NORM_CHAN_DATA_FOR_LX_CALC(green, gain, time);
->>>> +	blue = NORM_CHAN_DATA_FOR_LX_CALC(blue, gain, time);
->>
->>> I'd prefer to see the inputs parameters and the normalized version given different
->>> names. Also the inputs are still u16, so nice to reflect that here.
->>
->> So, you suggest we bring the data as u16 until here and only here we
->> assign it into 32bit variables when doing the 'normalization'? I'm sure
->> it works, but I dislike doing computations like multiplying u16 by u32
->> as I never know (out of my head) how the implicit type conversions work
->> and if we get some results cropped. Adding the casts to computation make
->> it less pretty for my eyes while having all variables in large enough
->> types does not leave me wondering if it works correctly and if explicit
->> casts are needed.
->>
->> I am not strongly opposing this though if you insist - I am sure I can
->> at the end of the day get the code right - but I am afraid I will later
->> look at the code and wonder if it contains hideous issues...
-> 
-> This isn't particularly important either way.  My gut would have
-> been to keep them as __le16 to the point where the maths happens
-> but I don't mind it happening elsewhere.
-> 
-> I do want different names though given the inputs and outputs are
-> different 'things'.
-> 
-
-I'll try improving this and hopefully send a new version later this 
-week. I should get the sensor at my hands latest at Thursday.
 
 > 
->>
->>> Also when doing normalization I'd used fixed with types so there is no
->>> confusion over what was intended (here u32)
->>
->> Ok.
->>
->>>    
->>>> +
->>>> +	if ((u64)ir * 100LLU > 18LLU * (u64)green) {
->>>
->>> Putting scaling for ir to the right and green to the left is
->>> unusual. I'd chose one side and stick to it.
->>
->> Sorry Jonathan. I must be a bit slow today but I just seem to not be
->> able to think how you would like to have this? I think this line is
->> somehow mappable to the:
+> I think in kernel we see two ways of constructing and passing arrays to 
+> frameworks. One is creating a NULL terminated array, the other being an 
+> array which size is given. The available_scan_masks is using the first 
+> approach.
 > 
-> if ((u64)ir * 100LLU > (u64)green * 18LLU)
-> or
-> if ((100LLU * (u64)ir > 18LLU * (u64)green)
+> The array represents bitmasks, which are thought to be of arbitrary 
+> length. The type of array items is longs though. When building an arry 
+> like this, it is easy to just do:
 > 
-> Either is fine.  Just don't like the scaling from different sides of
-> the variable.  I can see how you got there from 0.18 * Green but equally
-> valid to premultiply by 100 as it is to post multiply (when doing the
-> maths on paper).
+> unsigned long masks[] = {
+> 	mask1_hi,
+> 	mask1_lo,
+> 	mask2_hi,
+> 	mask2_lo,
+> 	...
+> 	maskN_lo,
+> 	/* sentinel */
+> 	0
+> }
+> 
+> (By the way, I've always hated that 'sentinel' comment as it - in my 
+> opinion - is not worth adding. I think the meaning of 0 should be 
+> obvious, but here I just added it to alleviate the problem).
+> 
+> Here, if I'm not mistaken, the check I implemented would go reading out 
+> of the array bounds.
 
-Now I see what you meant :) I misread your comment to meant that you 
-didn't like the scaling on both sides of the '>'. /me feels slightly stupid.
+It does indeed.
 
-Thanks again!
 
->>
->> IRratio = (IR > 0.18 * Green) ? 0 : 1
->> formula I got from HW colleagues and added in the comment preceding the
->> function.
->>
+> 
+> Knowing how easy it would be slip the above array past my reviewing eyes 
+> - I find this scary. And ugly part of this is that we can't detect this 
+> in the iio-core side, because we have no way of knowing how big the 
+> array and sentinel are. What makes this worse is that the core does:
+> 
+> for (i = 0; i < indio_dev->num_channels; i++)
+>                          ml = max(ml, channels[i].scan_index + 1);
+>                  indio_dev->masklength = ml;
+> 
+> so, masklength may not be what was set in driver.
 
-Yours,
-	-- Matti
+IIRC this is there to allow for sparse scan_index values.  Those are
+very rare, but I think there are a few drivers doing that because
+it allowed for slightly simpler code a long time back.  May not even
+matter today.  Key is that mask_length is big enough to allow the
+bits at all present scan_index values to be set.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+So it should always match with the drivers where this is used to make
+sure available_scan_masks has the right number of longs per entry,
+but the drivers may need to be a little clever if they are both
+doing large numbers of channels and sparse scan_index values.
+AFAIK there are none doing that. Going further I don't recall any
+drivers that use the available_scan_masks stuff going beyond 32
+channels (so needing more than one unsigned long per element).
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+> 
+> I did quick and dirty grep for "_scan_mask\[" in iio directory and 
+> didn't spot any bigger than a few channels masks. Still, this makes me 
+> worried.
+> 
+> BTW: I did also:
+> 
+> Author: Matti Vaittinen <mazziesaccount@gmail.com>
+> Date:   Fri Oct 6 13:53:11 2023 +0300
+> 
+>      iio: buffer: use bitmap_empty() to find last mask
+> 
+>      When IIO buffer code is scanning the array of available masks for
+>      matching the user's enable request to channel configuration 
+> supported by
+>      driver, the code uses a 'check for long 0' as indication of last mask.
+>      This does not work right for channel masks greater than BITS_PER_LONG.
+> 
+>      Use bitmap_empty() to find the last element in available_scan_masks
+>      array.
+> 
+>      Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>      ---
+>      NOTE: This is potentially hazardous change. Please, don't pick without
+>      thorough check and understanding.
+> 
+> diff --git a/drivers/iio/industrialio-buffer.c 
+> b/drivers/iio/industrialio-buffer.c
+> index 176d31d9f9d8..1e59afddcf9a 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -413,7 +413,7 @@ static const unsigned long 
+> *iio_scan_mask_match(const unsigned long *av_masks,
+>   {
+>          if (bitmap_empty(mask, masklength))
+>                  return NULL;
+> -       while (*av_masks) {
+> +       while (!bitmap_empty(av_masks, masklength)) {
+>                  if (strict) {
+>                          if (bitmap_equal(mask, av_masks, masklength))
+>                                  return av_masks;
+> 
+> but this is just as fragile - for obvious reasons.
+Ah. yes, that is indeed a bug.  I'm not sure your fix is particularly
+fragile though.  This comes back to us having no drivers that actually use
+big bitmaps yet.
+
+Key is that we need the available_scan_masks null terminator to be the
+same length as any other entry - so if multiple unsigned longs needed
+then multiple 0's should be there.  We should definitely document that
+and ideally add a test case.   We can bulk out the dummy driver
+to trigger these and provide an example of how available_scan_masks
+should be set.
+
+> 
+> One way around this would be to have the first bit in the long always 
+> set for a valid mask - and take this into account when going through the 
+> masks. It's probably somewhat more confusing than current code though - 
+> but it would allow using just a single long (with all - or  at least 
+> first - bits zero to indicate end of masks).
+
+Too complex.
+
+> 
+> Other option I see is to just error out if available_scan_masks array is 
+> given with larger than one 'long' wide masks and worry things when this 
+> breaks.
+
+That would kick the problem into the long grass.
+
+> 
+> Anyways, I don't like using bitmap_empty() for array of bitmaps which 
+> may be longer than BITS_PER_LONG unless we can sanity check the size of 
+> the array...
+> 
+> How do you feel about this?
+
+Agreed it's problematic as that null terminator isn't clearly forced to
+be big enough.  Hmm. Can we cheat for any drivers that actually need large
+masks (when they come along) and use an appropriate 2D array.
+
+unsigned long available_masks[][2] = {
+	{mask0_ll, mask0_hl},
+	{mask0_ll, mask0_hl},
+	{}
+};
+
+	iio_dev->available_scan_masks = (unsigned long *)available_masks;
+
+If we put such an example into the dummy / example driver then that might
+act to avoid us getting bugs in future + test the fix you have above and
+related.
+
+Jonathan
+
+> 
+> Yours,
+> 	-- Matti
+> 
 

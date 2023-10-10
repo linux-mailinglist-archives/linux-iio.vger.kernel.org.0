@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C147BFB0B
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 14:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0907BFB12
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 14:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231246AbjJJMRZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 08:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
+        id S231730AbjJJMS6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 08:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbjJJMRY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 08:17:24 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B6B7
-        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:17:23 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-690f7d73a3aso4930822b3a.0
-        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:17:23 -0700 (PDT)
+        with ESMTP id S231796AbjJJMSz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 08:18:55 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC81DA
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:18:52 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-5859b2eaa67so3034582a12.0
+        for <linux-iio@vger.kernel.org>; Tue, 10 Oct 2023 05:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1696940243; x=1697545043; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=tweaklogic.com; s=google; t=1696940332; x=1697545132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bKsq0H0QHqCTR39XhYQAd4r30i5LT0wElncnk9nlAWQ=;
-        b=A8FsNjTX5N5T228pMHyRyTyr3FKmc0o6girvqXeO4tYRk5VFuft/9yWSOStOdyvRz/
-         nITYR1dy3Kf1H5SSY1W1xfess+lbcBRyOLX4U7QJPZImb+stu4woc1qPuTQi98xl6tTY
-         kqr47f0ofei8Kgiu+BD1/7wXfqm3aJ+ZekJ55B9+Il37qUkgDye4KOc/5/1vpyDb1msR
-         2In51Ys4hIVu68WcUQLjC4L1jIdfm0dxzcvQtQFznssghYaDp3BG7Ai/zNj0AG9dmFee
-         U6kAfqOkTTEePk1Il/5L187QwmAjOwIa6uxC5tk2/BNtRHTe7hNEh5l2tE1+tLizbbAS
-         55Mg==
+        bh=m/uEl57rkB9FlUc8/Z3IPGgI3YZRBzcpqKdiv4r4u1s=;
+        b=Lm8NHp89ZTc1yIw7DQiuYLMD2DwyugXiiwUDN6hC5oevK3OKa9X6nlPx+oNbDdAlqv
+         d03Wey1yPycLxV1ADWVSCMSEEZUngFQZxPdOfx4u1nMAKLC0RGiEEdbrstfMqUEmAeIi
+         D3pWh+gpsxJr7DxvqYf/UYNiNUwdBgDnvufwUm9yBopNRoffjsf0Z/0rzL1Aijj97poU
+         1Pnl7yLDb7ghgZOtmFewjNbmw5srWcnIdiqh2IMrOq9jfiHlVNdhzmvk8hQ1ka29qWwP
+         iBldJk5Xqs5l+eebWgGlyN+3WKYWK2uXvsod51ZYlzYwq2efiJ5N6nOJHHJL4KZqIrJR
+         KvVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696940243; x=1697545043;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1696940332; x=1697545132;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bKsq0H0QHqCTR39XhYQAd4r30i5LT0wElncnk9nlAWQ=;
-        b=GNUbubwdxW3PX04bZIopOvIwXuTIf+AP2jo2pWumZE5FG0HHQ5mjqC4BoZqVu43peE
-         2MqytG3D9R+zdRvg1O7xh0OwD25ujYdVyMHIsBoEVD3Z5IHt8+m4uCOD2gWVtMM5YGs1
-         uudzXq3m6D8nMl/7Awa43JLJekNa2xCQsIDSA8YM5MthuOt0rg8K6GZHWaoPw342q7nx
-         Rq6w36Pz9dd8f6/pn2AiGntHSF2sh7AdznlTFUTrhxTc07O0+u+iMhV6gBA5QsXl2lsS
-         Mwr+30rVKEsiLRh0jWb1JNl2VNgsBx0AdqGsB6nnSUjszYJYl/zkJk+tdmmaJG1335Rk
-         4Sfg==
-X-Gm-Message-State: AOJu0Yyr8fmrKFkDedehhwCGR/hww2SWlepM4+Kkrr12Cx9EaiskbVWl
-        9l5OAxt84wljlmH597lS64VHNg==
-X-Google-Smtp-Source: AGHT+IEUlWGc7mdwetT4X/g4G+YezcJB76QdtqNNVGdyf3Tx9Wy+OaeCYmbdV/DF+8bkhhKAOGs4aw==
-X-Received: by 2002:a05:6300:8003:b0:172:9b19:66b6 with SMTP id an3-20020a056300800300b001729b1966b6mr360575pzc.32.1696940242810;
-        Tue, 10 Oct 2023 05:17:22 -0700 (PDT)
+        bh=m/uEl57rkB9FlUc8/Z3IPGgI3YZRBzcpqKdiv4r4u1s=;
+        b=YLHXwOw2DAUn6NlLU+4tMKa4F0/dZnm4zIqtzopTXHEVnU1Mobps766WG9HCxX50B3
+         dEzmeArFjMLImrWf1I/hQXmecSKOd6RubJWywSSlsV9SoUw72LA+rDVljhprcN8du7H/
+         kxGT93C0tmyD61VZ/f1tri+fH45ihitLQTwUTz/ZMnOOywu2LlPTk/mtDuEjGHUEBzNp
+         qscLV7GuEf8uyFDvZiKlrEQaUYYBZkPw0l/fNaJG4k9LHpGrNgT+Eh7t6Jt+/3Mk+OLY
+         6T6/924qDl7jhLYXc/Q/+uxS1NpH51D88Kd5ZdWy/gMY8IAPIgORiF60Wi5K5eOiP+Nh
+         9eSw==
+X-Gm-Message-State: AOJu0YzgevdNAL/UwYe2mn7alCwmkx0dOE9Yl9AzKpdnoYSZHR80ARvI
+        JX+57fHQHa3kOvgpDH0vnaZIIg==
+X-Google-Smtp-Source: AGHT+IHw/JvHNya/HvLyiP3273/LTzyAj8keMwXYe74c2W6FN1+g3m3s4WDbkHEV195vAl+vK+qsew==
+X-Received: by 2002:a17:90b:1d03:b0:26b:5205:525e with SMTP id on3-20020a17090b1d0300b0026b5205525emr14171953pjb.42.1696940332153;
+        Tue, 10 Oct 2023 05:18:52 -0700 (PDT)
 Received: from ?IPV6:2403:580d:82f4:0:4346:670f:8942:33b? (2403-580d-82f4-0-4346-670f-8942-33b.ip6.aussiebb.net. [2403:580d:82f4:0:4346:670f:8942:33b])
-        by smtp.gmail.com with ESMTPSA id e24-20020a62aa18000000b006979f70fdd5sm8083541pff.219.2023.10.10.05.17.17
+        by smtp.gmail.com with ESMTPSA id ev7-20020a17090aeac700b00274922d4b38sm10128842pjb.27.2023.10.10.05.18.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Oct 2023 05:17:22 -0700 (PDT)
-Message-ID: <09a07473-2558-2b05-c9d5-8d439749bfa7@tweaklogic.com>
-Date:   Tue, 10 Oct 2023 22:47:14 +1030
+        Tue, 10 Oct 2023 05:18:51 -0700 (PDT)
+Message-ID: <83bb2425-aff1-6359-37f4-4182d4f8ed05@tweaklogic.com>
+Date:   Tue, 10 Oct 2023 22:48:43 +1030
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
+Content-Language: en-US
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,11 +67,10 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Conor Dooley <conor+dt@kernel.org>,
         Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
 References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
- <20231008154857.24162-3-subhajit.ghosh@tweaklogic.com>
- <ae210957-4a72-24b3-2f11-8d5824041e85@gmail.com>
-Content-Language: en-US
+ <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
+ <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
 From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <ae210957-4a72-24b3-2f11-8d5824041e85@gmail.com>
+In-Reply-To: <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -83,45 +83,16 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/10/23 20:15, Matti Vaittinen wrote:
+On 10/10/23 19:22, Matti Vaittinen wrote:
 
+>> +properties:
+>> +  compatible:
+>> +    const: avago,apds9306
 > 
-> To my eyes this driver looks nice. Just spotted two minor things.
+> I see the driver supports two different variants of this IC, differentiated by the part-ID register. Variants are named as apds9306 and apds9306-065. I wonder if we could/should have different compatibles for them?
 > 
 
-Thanks Matti. Nice is one nice thing I heard after some time!
-
->> +    gain_new_closest = iio_find_closest_gain_low(&data->gts, gain_new, &ok);
->> +    if (gain_new_closest < 0) {
->> +        gain_new_closest = iio_gts_get_min_gain(&data->gts);
->> +        if (gain_new_closest < 0)
->> +            return gain_new_closest < 0;
-> 
-> Returning the truth value on purpose? :)
-
-Nope, it's a bug. I'll fix it.
-
->> +static int get_device_id_lux_per_count(struct apds9306_data *data)
->> +{
->> +    int ret, part_id;
->> +
->> +    ret = regmap_read(data->regmap, APDS9306_PART_ID, &part_id);
->> +    if (ret)
->> +        return ret;
->> +
->> +    if (part_id == apds9306_part_id_nlux_per_count[0].part_id)
->> +        data->nlux_per_count =
->> +            apds9306_part_id_nlux_per_count[0].nlux_per_count;
->> +    else if (part_id == apds9306_part_id_nlux_per_count[1].part_id)
->> +        data->nlux_per_count =
->> +            apds9306_part_id_nlux_per_count[1].nlux_per_count;
->> +    else
->> +        return -ENXIO;
-> 
-> I think we should be able to differentiate between the IC variants by DT compatible. (Commented that on bindings patch). Not sure if we need to support cases where the sensor is instantiated without device-tree. I am not super happy when code requires the part-id to be known if we have separate compatibles for variants. Can we in dt-case just print a warning if the part-ID is not what we expect - and proceed assuming the nlux_per_count based on the DT information? (Sometimes we see new variants with same part-IDs - or many part-IDs with no SW changes needed. Hence maintaining the part-ID lists may be tedious). This is just some pondering though, no strong requirements from my side
-
-Yes, I agree with you. The purpose of DT is to provide proper hardware descriptions.
-I will throw a warning as well as implement a compatibility match.
+Yes, we can. It makes sense. I'll implement that.
 
 Regards,
 Subhajit Ghosh

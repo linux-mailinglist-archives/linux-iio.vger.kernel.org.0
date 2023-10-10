@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 041837C0135
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B9627C013C
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 18:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232311AbjJJQId (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 12:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38728 "EHLO
+        id S233647AbjJJQJR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 12:09:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232239AbjJJQI2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:08:28 -0400
+        with ESMTP id S232543AbjJJQJJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 12:09:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8092F97;
-        Tue, 10 Oct 2023 09:08:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE7BC433C7;
-        Tue, 10 Oct 2023 16:08:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D95B7;
+        Tue, 10 Oct 2023 09:09:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73F8C433C8;
+        Tue, 10 Oct 2023 16:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696954106;
-        bh=hvsSbVRMxYaENVzyHutIe4XZE6lBZw3zkFmbhOVi42E=;
+        s=k20201202; t=1696954148;
+        bh=VLi55CcTcM0KgnOau/gbeJ9eXnvitesGKRn8dvJeGqQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eH2nOTO4QKmo8B+WTWRfKTne9WyvPi9WHgqV1VvNn14OCAJdHyaHfPlb9Yb/lQ+Ix
-         KIAVIMWhD8GEvjVRkyuhJQEzdjOCW8694l9tWgai25oY44+Uw59Ouv+t6QfZzk90Dp
-         bCZ2wszQ4pCLIfpYvmT7lrcdlyaNe6oExMiVp+H4+LQskLzEnMV5HiAm9jgu0V9CB7
-         zd1u9M3VImrd8NnezyOqFaYSbBINRXHy7TKy8fdqQ4n+md95gJx0ihuTHmixRNGveE
-         oImKvRlvmpOgenwXCJbmNecr8otwz4fm+gMdGDvs9QVMTWj+YuPM+tJBNWur6QylXz
-         cwvlU3q9ryzuQ==
-Date:   Tue, 10 Oct 2023 17:08:36 +0100
+        b=XwmdmFvXDm/37DAyjeysBeCrNBRZCfyB8+XBizMzjP0in0Xgh5TlWu82JDOd0C/5x
+         HMnff1m5DCOO4QuRQVJrlYf6M7l6CzvioiHyI6Qz6zKkr+lOxhaA840P+oxQWS5/rW
+         Q6Zza84u3Nd/sOpBslWOfmtiIHSaDLSxbxlAG/TA71t1ug5R9TYCwwpwIuhRNd+0p8
+         7+nKPRfcXHsh23hBVG1H9pmMZRARbCJTb7Y/mFkODk+/Orgz+tADpIa89wOXM83IxM
+         7r5uZI3MwuF25AhtS9nVM7O0xCRd9mNOVPAf8WPDYyEqENFKf6tdD21kJjdT7HiMEt
+         jyzvIp/8FthtQ==
+Date:   Tue, 10 Oct 2023 17:09:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
@@ -35,12 +35,12 @@ Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 15/17] staging: iio: resolver: ad2s1210: add label
- attribute support
-Message-ID: <20231010170836.285effbb@jic23-huawei>
-In-Reply-To: <20231005-ad2s1210-mainline-v4-15-ec00746840fc@baylibre.com>
+Subject: Re: [PATCH v4 16/17] staging: iio: resolver: ad2s1210: remove fault
+ attribute
+Message-ID: <20231010170918.5f2d2595@jic23-huawei>
+In-Reply-To: <20231005-ad2s1210-mainline-v4-16-ec00746840fc@baylibre.com>
 References: <20231005-ad2s1210-mainline-v4-0-ec00746840fc@baylibre.com>
-        <20231005-ad2s1210-mainline-v4-15-ec00746840fc@baylibre.com>
+        <20231005-ad2s1210-mainline-v4-16-ec00746840fc@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,13 +54,19 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  5 Oct 2023 19:50:32 -0500
+On Thu,  5 Oct 2023 19:50:33 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> The ad2s1210 resolver driver has quite a few channels, mostly for
-> internal signals for event support. This makes it difficult to know
-> which channel is which. This patch adds a label attribute to the
-> channels to make it easier to identify them.
+> Faults have been converted to events and we are now polling the fault
+> register each time we read a sample, so we no longer need the fault
+> attribute.
+> 
+> This attribute was not suitable for promotion out of staging anyway
+> since it was returning multiple values in a single attribute.
+> 
+> The fault clearing feature should not be needed unless we need to
+> support the fault output pins on the chip which is not currently
+> supported. So we can add this feature back in if we need it later.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Applied.
+Applied

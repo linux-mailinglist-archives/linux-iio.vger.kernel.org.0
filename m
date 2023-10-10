@@ -2,313 +2,359 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0974B7BFBCA
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 14:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C9C7BFBDC
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 14:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232076AbjJJMtw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 08:49:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
+        id S231473AbjJJM42 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 08:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232077AbjJJMtv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 08:49:51 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A5BDB;
-        Tue, 10 Oct 2023 05:49:47 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-53d9b94731aso835012a12.1;
-        Tue, 10 Oct 2023 05:49:46 -0700 (PDT)
+        with ESMTP id S231400AbjJJM41 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 08:56:27 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD73B6;
+        Tue, 10 Oct 2023 05:56:25 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50306b2920dso6854644e87.0;
+        Tue, 10 Oct 2023 05:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696942185; x=1697546985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=msy7jv8g0SLNU2c8sB4y8hw1WS5I1nkPJ94zB1gQH70=;
-        b=SrkxS6evptDFFJzSFWZFpxT1YPVBfPPyyzA/3mlwrP9esJAz8n5OLYo08JpYMsK4/o
-         kYPMHTTz1tvbq7YIrJ0+IYAwtpUKz5eh8csWbkitaJLOokto/Y62qLRZRkxZQVdo62/K
-         90aElQOP08jgt8+gI+quJJAo8+lSuP6ynOCWgv0y29nnxq1sgwEFSpnVwxwQv/4SCtRj
-         N4rEWN0ts/t00Ut6fV8ldo8E29GT/2iQ7yMDIUear1vJjXt5s0CmbHdtcEhHHEAZLBRa
-         ywB4xZljnFDf7wuAOlgFPYWZfIQAcI1MiT1+ugeVqSU5C8Cel/x90CYd3iDWbd4qAHBc
-         X3Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696942185; x=1697546985;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20230601; t=1696942584; x=1697547384; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=msy7jv8g0SLNU2c8sB4y8hw1WS5I1nkPJ94zB1gQH70=;
-        b=tNR5g+OYXV+Yr30SWEXnCCqXIDdEXpAlyrLt/HLoAR6/UZ9TyDB1GJcGEto77aQFTG
-         nWnVlaZOwRRt7KEaRsVX9kNocWQ0DCSRhJgs2F9jHa+yTnLwKyMeD9Y2vsfnI7AAPsPM
-         BqP7BfW66W0f5FWHihtAJ9tS/Dl9WiWKQfKZd0GqifrGahMfSF0DTpvSuFOxs1FMs6Zs
-         N/E4Wt+2J6ujpoeNQqm+crVfpX0w1lB/E62YJHCdIyVh3LeoHIpLkzVWhIiMJLRSSINh
-         OAFfaooWEwG+qEmr1WxHZvuIXd6ZB9+TmUJxo2m4kMtzcfq3z8V1wXdVJeQyJmNh9ETc
-         JUdw==
-X-Gm-Message-State: AOJu0Yw56w/1qzg2J8f2WPHSYl4mwMHjMlQcguTh5pCuQt8+w/Nk5Nl3
-        SsUhW/j/5Gt2JcLquVwRNNY=
-X-Google-Smtp-Source: AGHT+IFJunh/iFx66Xg6oiovR2A+r8a9IIdNmv4a9lXSvnlMDsMw2UNT8MvI3qU6pnHx28ec0wvLaw==
-X-Received: by 2002:aa7:cfda:0:b0:522:ae79:3ee8 with SMTP id r26-20020aa7cfda000000b00522ae793ee8mr15865968edy.5.1696942185420;
-        Tue, 10 Oct 2023 05:49:45 -0700 (PDT)
-Received: from spiri.. ([5.14.139.113])
-        by smtp.gmail.com with ESMTPSA id f26-20020a056402005a00b00530bc7cf377sm7629476edu.12.2023.10.10.05.49.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 05:49:45 -0700 (PDT)
-From:   alisadariana@gmail.com
-Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/3] iio: adc: ad7192: Add fast settling support
-Date:   Tue, 10 Oct 2023 15:49:26 +0300
-Message-Id: <20231010124927.143343-4-alisadariana@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231010124927.143343-1-alisadariana@gmail.com>
-References: <20231010124927.143343-1-alisadariana@gmail.com>
+        bh=GY9gPDeUaSknCeaElg4I6hYIBAvst50tsadQ+lMYZbM=;
+        b=F0X9+iRkX/D/BEhm+6Cc+FDOI07w7ojK+pyA8Ly1oc/PTTIxnBvBtOUq2qFmSSTlSP
+         NIN6Fkeo5vwMnNLW1akLGjrb6ucotMr+LZiezAJuR/JI9x2M8PBLbpm381i5+O1IaegI
+         ExVXKWGLivOlJasp5rVphk16ZC0lta+FA9IrEY3DsriWka76yM/jSijXneJdLvwUkTUt
+         o3rD4+DtluiAJP9Dwx9lVowtq0iJj9rcfp4VmkqHLXXvhStvUfyHD1VzYEyOKtag0aZD
+         rem0QjJeP2904LRkBBjsKhRHl4s1ULBEVqGL2H2HikeUqyPS5fpnmJJxCEX8K6sDXHRa
+         yaeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696942584; x=1697547384;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GY9gPDeUaSknCeaElg4I6hYIBAvst50tsadQ+lMYZbM=;
+        b=e7yBPsFlQeX3tTImRqmGt/bOs4eFHp3lwpBhVDorkyD8z0tN8Iqf0020IgPCo3ztk7
+         ntEYitjS/FryLlzYKci/uDz/e77ZmN+Y7iT3T7lIuheYlQaz7NWW16ygMEtuGLbnKjw0
+         BP+mOrRBj/4JibmdcDVDkHFa9AzLrdMx1Ph908mBR0jRLXIoer+rPOMTBsC7PJ4nP7wE
+         JeKqnq20o4Uk1NdmmWnvXVQxHKoA1nQhUaw64Jp2AOoYyb4lswf7ET+1yNdzWt+10QkA
+         jgewGzzEmxEihL3hY8f9tqyLfqSGDmt2RCQCQi8Gk9BglwZ1xajOdtawtTP/pHFEWc3U
+         eQpQ==
+X-Gm-Message-State: AOJu0YyFPZnqDs5j8yZc0LJbavgYy5bWEZzSbkZt6dJEfK6jh3G4DGcH
+        t6CkUjp1tG5d838nWRCwpc0=
+X-Google-Smtp-Source: AGHT+IGjnHkXFFIZmo81XTStNXHpebORjc4xjSe2sljK9Zh74PIK+03yiYxpob5LABfxaQZTob/KvA==
+X-Received: by 2002:a05:6512:1391:b0:500:a1e4:fc45 with SMTP id fc17-20020a056512139100b00500a1e4fc45mr11212632lfb.21.1696942583404;
+        Tue, 10 Oct 2023 05:56:23 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id h22-20020ac25976000000b005048f11892dsm1804969lfp.171.2023.10.10.05.56.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 05:56:22 -0700 (PDT)
+Message-ID: <0d05bf24-caa6-0f86-b531-22dc08b9cadc@gmail.com>
+Date:   Tue, 10 Oct 2023 15:56:22 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20231005163026.2c7707de@jic23-huawei>
+ <751a87c9-a4aa-4e06-1d12-1e2b1a3487de@gmail.com>
+ <20231010110419.00899e0e@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH] iio: sanity check available_scan_masks array
+In-Reply-To: <20231010110419.00899e0e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+On 10/10/23 13:04, Jonathan Cameron wrote:
+> On Fri, 6 Oct 2023 14:10:16 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> Hi Again Jonathan.
+>>
+>> On 10/5/23 18:30, Jonathan Cameron wrote:
+>>> On Tue, 3 Oct 2023 12:49:45 +0300
+>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>>    
+>>>> When IIO goes through the available scan masks in order to select the
+>>>> best suiting one, it will just accept the first listed subset of channels
+>>>> which meets the user's requirements. If driver lists a mask which is a
+>>>> subset of some of the masks previously in the array of
+>>>> avaliable_scan_masks, then the latter one will never be selected.
+>>>>
+>>>> Add a warning if driver registers masks which can't be used due to the
+>>>> available_scan_masks-array ordering.
+>>>>
+>>>> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>> Hi Matti
+>>>
+>>> Thanks for doing this.  A few comments inline + maybe we need to think
+>>> about a unit test for the matching code. I feel we aren't pushing the
+>>> corners of that in any drivers so far so it might bite us later.
+>>>
+>>> Still that's a job for another day.
+>>>
+>>> Jonathan
+>>>    
+>>>>
+>>>> ---
+>>>> The change was suggested by Jonathan here:
+>>>> https://lore.kernel.org/lkml/20230924170726.41443502@jic23-huawei/
+>>>> ---
+>>>>    drivers/iio/industrialio-core.c | 57 +++++++++++++++++++++++++++++++++
+>>>>    1 file changed, 57 insertions(+)
+>>>>
+>>>> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+>>>> index c77745b594bd..d4f37f4eeec0 100644
+>>>> --- a/drivers/iio/industrialio-core.c
+>>>> +++ b/drivers/iio/industrialio-core.c
+>>>> @@ -1896,6 +1896,53 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
+>>
+>> ...
+>>
+>>>> +
+>>>> +	for (num_masks = 0; *av_masks; num_masks++)
+>>>
+>>> I think we can't just check *av_masks - need bitmap_empty() as first
+>>> long might be 0 but could be bits set in the next one.
+>>>    
+>>>> +		av_masks += longs_per_mask;
+>>
+>> I did switch this to:
+>> +       for (num_masks = 0; !bitmap_empty(av_masks, masklength);
+>> num_masks++)
+>> +               av_masks += longs_per_mask;
+>>
+>> but this kind of freaks me out.
+> 
+> Good because I'm fairly sure you need to reduce the masklength int hat
+> bitmap_empty as well.  It is getting a bit complex.
 
-Add fast settling mode support for AD7193.
+Hm. As far as I can say the masklength is constant telling how many bits 
+there is in one mask(?) I don't think we can reduce it. Idea is just to 
+increment the av_masks pointer until we find the zero mask indicating 
+end of an array. This is how we count the amount of masks in the array.
 
-Add two new device specific attributes: oversampling_ratio and
-oversampling_ratio_available.
+Caveat being that if driver has used single long '0' to indicate the end 
+of an array, and if the masklength > 32 - we'll end up reading out of 
+bounds. (as we agreed later in the mail. OTOH, we also agreed there does 
+not seem to be drivers with masklength > 32 utilizing the 
+available_scan_masks - so this is just trying to avoid problems in the 
+future).
 
-For AD7193 the user can set the average factor by writing to
-oversampling_ratio. The possible values are exposed when reading
-oversampling_ratio_available.
+>>
+>> I think in kernel we see two ways of constructing and passing arrays to
+>> frameworks. One is creating a NULL terminated array, the other being an
+>> array which size is given. The available_scan_masks is using the first
+>> approach.
+>>
+>> The array represents bitmasks, which are thought to be of arbitrary
+>> length. The type of array items is longs though. When building an arry
+>> like this, it is easy to just do:
+>>
+>> unsigned long masks[] = {
+>> 	mask1_hi,
+>> 	mask1_lo,
+>> 	mask2_hi,
+>> 	mask2_lo,
+>> 	...
+>> 	maskN_lo,
+>> 	/* sentinel */
+>> 	0
+>> }
+>>
+>> (By the way, I've always hated that 'sentinel' comment as it - in my
+>> opinion - is not worth adding. I think the meaning of 0 should be
+>> obvious, but here I just added it to alleviate the problem).
+>>
+>> Here, if I'm not mistaken, the check I implemented would go reading out
+>> of the array bounds.
+> 
+> It does indeed.
+> 
+> 
+>>
+>> Knowing how easy it would be slip the above array past my reviewing eyes
+>> - I find this scary. And ugly part of this is that we can't detect this
+>> in the iio-core side, because we have no way of knowing how big the
+>> array and sentinel are. What makes this worse is that the core does:
+>>
+>> for (i = 0; i < indio_dev->num_channels; i++)
+>>                           ml = max(ml, channels[i].scan_index + 1);
+>>                   indio_dev->masklength = ml;
+>>
+>> so, masklength may not be what was set in driver.
+> 
+> IIRC this is there to allow for sparse scan_index values.  Those are
+> very rare, but I think there are a few drivers doing that because
+> it allowed for slightly simpler code a long time back.  May not even
+> matter today.  Key is that mask_length is big enough to allow the
+> bits at all present scan_index values to be set.
+> 
+> So it should always match with the drivers where this is used to make
+> sure available_scan_masks has the right number of longs per entry,
+> but the drivers may need to be a little clever if they are both
+> doing large numbers of channels and sparse scan_index values.
+> AFAIK there are none doing that. Going further I don't recall any
+> drivers that use the available_scan_masks stuff going beyond 32
+> channels (so needing more than one unsigned long per element).
 
-Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
----
- drivers/iio/adc/ad7192.c | 107 +++++++++++++++++++++++++++++----------
- 1 file changed, 81 insertions(+), 26 deletions(-)
+I didn't find one either.
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index fe47ef43b3d7..954093ee0fbd 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -60,6 +60,8 @@
- #define AD7192_MODE_SEL_MASK	GENMASK(23, 21) /* Operation Mode Select Mask */
- #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
- #define AD7192_MODE_CLKSRC_MASK	GENMASK(19, 18) /* Clock Source Select Mask */
-+#define AD7192_MODE_AVG_MASK	GENMASK(17, 16)
-+		  /* Fast Settling Filter Average Select Mask (AD7193 only) */
- #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
- #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
- #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
-@@ -185,6 +187,7 @@ struct ad7192_state {
- 	u32				mode;
- 	u32				conf;
- 	u32				scale_avail[8][2];
-+	u32				oversampling_ratio_avail[4];
- 	u8				gpocon;
- 	u8				clock_sel;
- 	struct mutex			lock;	/* protect sensor state */
-@@ -462,6 +465,11 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
- 		st->scale_avail[i][0] = scale_uv;
- 	}
- 
-+	st->oversampling_ratio_avail[0] = 1;
-+	st->oversampling_ratio_avail[1] = 2;
-+	st->oversampling_ratio_avail[2] = 8;
-+	st->oversampling_ratio_avail[3] = 16;
-+
- 	return 0;
- }
- 
-@@ -531,15 +539,21 @@ static ssize_t ad7192_set(struct device *dev,
- 	return ret ? ret : len;
- }
- 
--static int ad7192_compute_f_order(bool sinc3_en, bool chop_en)
-+static int ad7192_compute_f_order(struct ad7192_state *st, bool sinc3_en, bool chop_en)
- {
--	if (!chop_en)
-+	u8 avg_factor_selected, oversampling_ratio;
-+
-+	avg_factor_selected = FIELD_GET(AD7192_MODE_AVG_MASK, st->mode);
-+
-+	if (!avg_factor_selected && !chop_en)
- 		return 1;
- 
-+	oversampling_ratio = st->oversampling_ratio_avail[avg_factor_selected];
-+
- 	if (sinc3_en)
--		return AD7192_SYNC3_FILTER;
-+		return AD7192_SYNC3_FILTER + oversampling_ratio - 1;
- 
--	return AD7192_SYNC4_FILTER;
-+	return AD7192_SYNC4_FILTER + oversampling_ratio - 1;
- }
- 
- static int ad7192_get_f_order(struct ad7192_state *st)
-@@ -549,13 +563,13 @@ static int ad7192_get_f_order(struct ad7192_state *st)
- 	sinc3_en = FIELD_GET(AD7192_MODE_SINC3, st->mode);
- 	chop_en = FIELD_GET(AD7192_CONF_CHOP, st->conf);
- 
--	return ad7192_compute_f_order(sinc3_en, chop_en);
-+	return ad7192_compute_f_order(st, sinc3_en, chop_en);
- }
- 
- static int ad7192_compute_f_adc(struct ad7192_state *st, bool sinc3_en,
- 				bool chop_en)
- {
--	unsigned int f_order = ad7192_compute_f_order(sinc3_en, chop_en);
-+	unsigned int f_order = ad7192_compute_f_order(st, sinc3_en, chop_en);
- 
- 	return DIV_ROUND_CLOSEST(st->fclk,
- 				 f_order * FIELD_GET(AD7192_MODE_RATE_MASK, st->mode));
-@@ -753,6 +767,9 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
- 		*val = ad7192_get_3db_filter_freq(st);
- 		*val2 = 1000;
- 		return IIO_VAL_FRACTIONAL;
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		*val = st->oversampling_ratio_avail[FIELD_GET(AD7192_MODE_AVG_MASK, st->mode)];
-+		return IIO_VAL_INT;
- 	}
- 
- 	return -EINVAL;
-@@ -810,6 +827,23 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		ret = ad7192_set_3db_filter_freq(st, val, val2 / 1000);
- 		break;
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		ret = -EINVAL;
-+		mutex_lock(&st->lock);
-+		for (i = 0; i < ARRAY_SIZE(st->oversampling_ratio_avail); i++)
-+			if (val == st->oversampling_ratio_avail[i]) {
-+				ret = 0;
-+				tmp = st->mode;
-+				st->mode &= ~AD7192_MODE_AVG_MASK;
-+				st->mode |= FIELD_PREP(AD7192_MODE_AVG_MASK, i);
-+				if (tmp == st->mode)
-+					break;
-+				ad_sd_write_reg(&st->sd, AD7192_REG_MODE,
-+						3, st->mode);
-+				break;
-+			}
-+		mutex_unlock(&st->lock);
-+		break;
- 	default:
- 		ret = -EINVAL;
- 	}
-@@ -830,6 +864,8 @@ static int ad7192_write_raw_get_fmt(struct iio_dev *indio_dev,
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -849,6 +885,12 @@ static int ad7192_read_avail(struct iio_dev *indio_dev,
- 		/* Values are stored in a 2D matrix  */
- 		*length = ARRAY_SIZE(st->scale_avail) * 2;
- 
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		*vals = (int *)st->oversampling_ratio_avail;
-+		*type = IIO_VAL_INT;
-+		*length = ARRAY_SIZE(st->oversampling_ratio_avail);
-+
- 		return IIO_AVAIL_LIST;
- 	}
- 
-@@ -896,7 +938,7 @@ static const struct iio_info ad7195_info = {
- };
- 
- #define __AD719x_CHANNEL(_si, _channel1, _channel2, _address, _type, \
--	_mask_type_av, _ext_info) \
-+	_mask_all, _mask_type_av, _mask_all_av, _ext_info) \
- 	{ \
- 		.type = (_type), \
- 		.differential = ((_channel2) == -1 ? 0 : 1), \
-@@ -908,8 +950,10 @@ static const struct iio_info ad7195_info = {
- 			BIT(IIO_CHAN_INFO_OFFSET), \
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
--			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY), \
-+			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) | \
-+			(_mask_all), \
- 		.info_mask_shared_by_type_available = (_mask_type_av), \
-+		.info_mask_shared_by_all_available = (_mask_all_av), \
- 		.ext_info = (_ext_info), \
- 		.scan_index = (_si), \
- 		.scan_type = { \
-@@ -921,15 +965,26 @@ static const struct iio_info ad7195_info = {
- 	}
- 
- #define AD719x_DIFF_CHANNEL(_si, _channel1, _channel2, _address) \
--	__AD719x_CHANNEL(_si, _channel1, _channel2, _address, IIO_VOLTAGE, \
--		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
-+	__AD719x_CHANNEL(_si, _channel1, _channel2, _address, IIO_VOLTAGE, 0, \
-+		BIT(IIO_CHAN_INFO_SCALE), 0, ad7192_calibsys_ext_info)
- 
- #define AD719x_CHANNEL(_si, _channel1, _address) \
--	__AD719x_CHANNEL(_si, _channel1, -1, _address, IIO_VOLTAGE, \
--		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
-+	__AD719x_CHANNEL(_si, _channel1, -1, _address, IIO_VOLTAGE, 0, \
-+		BIT(IIO_CHAN_INFO_SCALE), 0, ad7192_calibsys_ext_info)
- 
- #define AD719x_TEMP_CHANNEL(_si, _address) \
--	__AD719x_CHANNEL(_si, 0, -1, _address, IIO_TEMP, 0, NULL)
-+	__AD719x_CHANNEL(_si, 0, -1, _address, IIO_TEMP, 0, 0, 0, NULL)
-+
-+#define AD7193_DIFF_CHANNEL(_si, _channel1, _channel2, _address) \
-+	__AD719x_CHANNEL(_si, _channel1, _channel2, _address, \
-+		IIO_VOLTAGE, \
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-+		BIT(IIO_CHAN_INFO_SCALE), \
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-+		ad7192_calibsys_ext_info)
-+
-+#define AD7193_CHANNEL(_si, _channel1, _address) \
-+	AD7193_DIFF_CHANNEL(_si, _channel1, -1, _address)
- 
- static const struct iio_chan_spec ad7192_channels[] = {
- 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
-@@ -944,20 +999,20 @@ static const struct iio_chan_spec ad7192_channels[] = {
- };
- 
- static const struct iio_chan_spec ad7193_channels[] = {
--	AD719x_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
--	AD719x_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
--	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
--	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
-+	AD7193_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
-+	AD7193_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
-+	AD7193_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
-+	AD7193_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
- 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
--	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
--	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
--	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
--	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
--	AD719x_CHANNEL(9, 4, AD7193_CH_AIN4),
--	AD719x_CHANNEL(10, 5, AD7193_CH_AIN5),
--	AD719x_CHANNEL(11, 6, AD7193_CH_AIN6),
--	AD719x_CHANNEL(12, 7, AD7193_CH_AIN7),
--	AD719x_CHANNEL(13, 8, AD7193_CH_AIN8),
-+	AD7193_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
-+	AD7193_CHANNEL(6, 1, AD7193_CH_AIN1),
-+	AD7193_CHANNEL(7, 2, AD7193_CH_AIN2),
-+	AD7193_CHANNEL(8, 3, AD7193_CH_AIN3),
-+	AD7193_CHANNEL(9, 4, AD7193_CH_AIN4),
-+	AD7193_CHANNEL(10, 5, AD7193_CH_AIN5),
-+	AD7193_CHANNEL(11, 6, AD7193_CH_AIN6),
-+	AD7193_CHANNEL(12, 7, AD7193_CH_AIN7),
-+	AD7193_CHANNEL(13, 8, AD7193_CH_AIN8),
- 	IIO_CHAN_SOFT_TIMESTAMP(14),
- };
- 
+>> I did quick and dirty grep for "_scan_mask\[" in iio directory and
+>> didn't spot any bigger than a few channels masks. Still, this makes me
+>> worried.
+>>
+>> BTW: I did also:
+>>
+>> Author: Matti Vaittinen <mazziesaccount@gmail.com>
+>> Date:   Fri Oct 6 13:53:11 2023 +0300
+>>
+>>       iio: buffer: use bitmap_empty() to find last mask
+>>
+>>       When IIO buffer code is scanning the array of available masks for
+>>       matching the user's enable request to channel configuration
+>> supported by
+>>       driver, the code uses a 'check for long 0' as indication of last mask.
+>>       This does not work right for channel masks greater than BITS_PER_LONG.
+>>
+>>       Use bitmap_empty() to find the last element in available_scan_masks
+>>       array.
+>>
+>>       Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>       ---
+>>       NOTE: This is potentially hazardous change. Please, don't pick without
+>>       thorough check and understanding.
+>>
+>> diff --git a/drivers/iio/industrialio-buffer.c
+>> b/drivers/iio/industrialio-buffer.c
+>> index 176d31d9f9d8..1e59afddcf9a 100644
+>> --- a/drivers/iio/industrialio-buffer.c
+>> +++ b/drivers/iio/industrialio-buffer.c
+>> @@ -413,7 +413,7 @@ static const unsigned long
+>> *iio_scan_mask_match(const unsigned long *av_masks,
+>>    {
+>>           if (bitmap_empty(mask, masklength))
+>>                   return NULL;
+>> -       while (*av_masks) {
+>> +       while (!bitmap_empty(av_masks, masklength)) {
+>>                   if (strict) {
+>>                           if (bitmap_equal(mask, av_masks, masklength))
+>>                                   return av_masks;
+>>
+>> but this is just as fragile - for obvious reasons.
+> Ah. yes, that is indeed a bug.  I'm not sure your fix is particularly
+> fragile though.  This comes back to us having no drivers that actually use
+> big bitmaps yet.
+> 
+> Key is that we need the available_scan_masks null terminator to be the
+> same length as any other entry - so if multiple unsigned longs needed
+> then multiple 0's should be there.
+
+Exactly my thinking, and why I think this fix would be fragile. I am not 
+convinced people would think of adding enough of zeroes.
+
+> We should definitely document that
+> and ideally add a test case.   We can bulk out the dummy driver
+> to trigger these and provide an example of how available_scan_masks
+> should be set.
+> 
+>>
+>> One way around this would be to have the first bit in the long always
+>> set for a valid mask - and take this into account when going through the
+>> masks. It's probably somewhat more confusing than current code though -
+>> but it would allow using just a single long (with all - or  at least
+>> first - bits zero to indicate end of masks).
+> 
+> Too complex.
+> 
+
+I think I agree. At least for as long as we don't actually have any 
+available_scan_masks users with masklength > 32
+
+>>
+>> Other option I see is to just error out if available_scan_masks array is
+>> given with larger than one 'long' wide masks and worry things when this
+>> breaks.
+> 
+> That would kick the problem into the long grass.
+
+Well, not 100% sure I interpret the idiom correctly ;) In any case, I'd 
+say this would indeed postpone dealing with the problem to the future. 
+To the point we actually seem to have a problem. The "long grass" as if 
+hiding the problem is something we can avoid by adding something like:
+
+if (masklength > 32 && idev->available_scan_masks) {
+	/*
+	 * Comment mowing the long grass.
+	 */
+	dev_err( ...);
+	return -EINVAL;
+}
+
+to the device registration.
+
+>>
+>> Anyways, I don't like using bitmap_empty() for array of bitmaps which
+>> may be longer than BITS_PER_LONG unless we can sanity check the size of
+>> the array...
+>>
+>> How do you feel about this?
+> 
+> Agreed it's problematic as that null terminator isn't clearly forced to
+> be big enough.  Hmm. Can we cheat for any drivers that actually need large
+> masks (when they come along) and use an appropriate 2D array.
+
+I think we could. Or, maybe develop some mask initialization macro 
+magic. It'd just be cool if one did not need to do things differently 
+for multi long masks.
+
+> unsigned long available_masks[][2] = {
+> 	{mask0_ll, mask0_hl},
+> 	{mask0_ll, mask0_hl},
+> 	{}
+> };
+
+don't know how would it work to have
+unsigned long available_masks[][1] = {
+	{mask0},
+	{mask1},
+	{}
+};
+
+for regular masks with 1 long / mask as well? At first look it seems 
+horrible to me but at least it would be a standard :) Don't know if 
+there is a sane way to make a macro for it.
+
+> 	iio_dev->available_scan_masks = (unsigned long *)available_masks;
+> 
+> If we put such an example into the dummy / example driver then that might
+> act to avoid us getting bugs in future + test the fix you have above and
+> related.
+
+Well, at least it shouldn't hurt to have some example - although I'm 
+still tempted to use the "long grass" - option ;)
+
+Yours,
+	-- Matti
+
 -- 
-2.34.1
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

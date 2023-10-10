@@ -2,203 +2,324 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A23D7BF7BC
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 11:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E134B7BF825
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 12:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229499AbjJJJpd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 05:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
+        id S230128AbjJJKBf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 06:01:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbjJJJpX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 05:45:23 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F7FE93;
-        Tue, 10 Oct 2023 02:45:19 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c189dabcc3so64531641fa.1;
-        Tue, 10 Oct 2023 02:45:19 -0700 (PDT)
+        with ESMTP id S229987AbjJJKBe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 06:01:34 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C637DA4;
+        Tue, 10 Oct 2023 03:01:30 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-5042bfb4fe9so6685826e87.1;
+        Tue, 10 Oct 2023 03:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696931117; x=1697535917; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696932089; x=1697536889; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l/qBEDnL1u2dQTbFvw89P6kT4AtOIC2NsWDvt/lq/VU=;
-        b=GxS7HhknCZyyD9+0gOdv3e60OK2bwzwsZvXcD9dNV6PS+EFdKjtoaTWr8fUywLVLCs
-         6bkkzb+VRSKgu1QknQjB+PS3K2Ca7nF5VTKhFIH4vrlSuYK7U+K2daOE6bdejveCUBCm
-         S1xzaPrvJAeG/kJU6x6IPluUHZzeWwcW7BHbj5lpxkeSrSuWz+BdHRDBOVbavZVXWW4X
-         iIg3eFXbuC/poB51F5BRmGS9uWYiRq1jXQavn3WDqmal2v+mznFyc7YZLXGivPxx+jPM
-         eMW7o+k2S1JehL4i4BON8Xy0JBdNG6uMyBllKbMixnhNyCmhwxsu9YFdrAAP6rrZfDVL
-         qhoQ==
+        bh=LihL4ulTO5Te7HGkKh0lXqYhPYCbqDNSQkLHPMrY4TA=;
+        b=Wo+7K57WJDdGdxFQ3cACJ1TvQ77acfIXkeL+Olx9QEyOoop7Ix5O9jv87x0iL6yRn5
+         hGh+JsB3kGc2ZhZKmP5qRYWpn5JzJqYR72G0KOK2I8gWuyw4D/hC+uiSV7+mUqT2Z2o6
+         DhxHzciiIyGX1+YH2eeDwVEcF8+xdHENTgHk+QGr8udSxWr5KXyLAHjQd3ylmZzZVbOu
+         IpMjUe++iMed+gPtzet5NNmjKz4ROG8zxopyCORIdEZ+7MFep8rE/BEvWrZeimMZiORH
+         b4r3WQQftTy3hRSpxxQOBGCbFnShCZeEPwX4qeGc+7IbCseVb4KUlHxcYa9vMijjkTV7
+         oYGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696931117; x=1697535917;
+        d=1e100.net; s=20230601; t=1696932089; x=1697536889;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/qBEDnL1u2dQTbFvw89P6kT4AtOIC2NsWDvt/lq/VU=;
-        b=IohlslcuSt+wDAR9RccNE96VURxTL5txVivqa2sw6MfUkywTPr4vCIZZbIDP6QdBBV
-         AuvdYANybJUFrMMdMXKuP8PyGb0M9MsW9ec9QVcpdntv44eAGItVCNrk8JZ9Ioocw4bz
-         5F4foKKAM2lOmp2xyVCtvcbTbQiQhgROF8EltgO4xOcgxxtXD5nfye5kyV4/1tqiVz84
-         b2+s43gR7ZT5VxdPcLrMzAt5vuHW2phl13KCryWssidO2KKToRXHPN87N5kwhEuVoQQV
-         Uy9UHCndB3K1dN+t++Np/BkeImp3wlRcWa6GUlqd0qmBWpJhzm+5sdTEIi53/mk+UuFR
-         H/pg==
-X-Gm-Message-State: AOJu0Yy32uyVQ/vHj9lnzZrSM1IbXpnKnIZ9CChHDFD2uiSD7OGPHqPx
-        cutGIZBAU6iqqhWF/lieOAE=
-X-Google-Smtp-Source: AGHT+IGURrCq9x7WCrBfQMb8RbXjeUXmsx6TKHE9oCtovGBEdCzvj5Gy1hwvHFblJg3zgcGo8vPCxQ==
-X-Received: by 2002:ac2:4c46:0:b0:500:b56d:e11a with SMTP id o6-20020ac24c46000000b00500b56de11amr16807742lfk.43.1696931117005;
-        Tue, 10 Oct 2023 02:45:17 -0700 (PDT)
+        bh=LihL4ulTO5Te7HGkKh0lXqYhPYCbqDNSQkLHPMrY4TA=;
+        b=BBOB94dBb83VZfmzMRUp+wQdQT+Dx9OYK0nOI7w28HaRJRuW62p82jsVuL42cw5/tL
+         g/uvV5aXa1XCyFjYhC9uuqMp07fBLMxNbHsa3r+xvs+duqEoNGcms8S0aQo18LJYoUgf
+         o0gWsCfapOqtR0sr2rkSo400hDdleCVixosydyPhFWgmx6UX22T/7wIqT2L69j3uG//T
+         E2QhVxoI2bm5/1Rqa743mq0dIjJqAAtrFvkKhS6OIJaWbHTnYfKcVDCKQiapgjYH213J
+         gkzi3/CMTlqcfwJd6eBr6zjWIRI2N11jMzHNDPf6WgmF4oJXrREy+Bja3Xzp1IJaJnRF
+         1gGg==
+X-Gm-Message-State: AOJu0YxQd+xO6lzQtojjBbCX8L4dRz+EVe71IN5xoGpf77EdS/5Osqwe
+        CPReG1BjHrycO1sAe/B0olA=
+X-Google-Smtp-Source: AGHT+IFGaC3BoIcDaPR22jM4K8yAU6B/49hkH6eb3g9q2X86slKwCSidlTceY/O0oNYT3PADNOCIIw==
+X-Received: by 2002:a05:6512:208d:b0:500:bfcb:1bf9 with SMTP id t13-20020a056512208d00b00500bfcb1bf9mr13927891lfr.67.1696932088734;
+        Tue, 10 Oct 2023 03:01:28 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id k15-20020a0565123d8f00b00500b561285bsm1612452lfv.292.2023.10.10.02.45.16
+        by smtp.gmail.com with ESMTPSA id r26-20020ac25a5a000000b00502c6dc612fsm1726799lfn.219.2023.10.10.03.01.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Oct 2023 02:45:16 -0700 (PDT)
-Message-ID: <ae210957-4a72-24b3-2f11-8d5824041e85@gmail.com>
-Date:   Tue, 10 Oct 2023 12:45:15 +0300
+        Tue, 10 Oct 2023 03:01:28 -0700 (PDT)
+Message-ID: <4b3d2013-841f-55d1-64ff-54e13b8b52d8@gmail.com>
+Date:   Tue, 10 Oct 2023 13:01:27 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Content-Language: en-US, en-GB
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
- <20231008154857.24162-3-subhajit.ghosh@tweaklogic.com>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZRq4pdDn6N73n7BO@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20231005161455.22d68c22@jic23-huawei>
+ <07d2740d-d251-842c-ad9f-788fd2546110@gmail.com>
+ <20231010104037.4c23ba1d@jic23-huawei>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
-In-Reply-To: <20231008154857.24162-3-subhajit.ghosh@tweaklogic.com>
+Subject: Re: [PATCH] iio: bu27008: Add processed illuminance channel
+In-Reply-To: <20231010104037.4c23ba1d@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/8/23 18:48, Subhajit Ghosh wrote:
-> Driver support for Avago (Broadcom) APDS9306
-> Ambient Light Sensor with als and clear channels.
-> This driver exposes raw values for both the channels and
-> processed(lux) values for the als channel.
-> Support for both with or without hardware interrupt
-> configurations are provided.
+On 10/10/23 12:40, Jonathan Cameron wrote:
+> On Fri, 6 Oct 2023 08:01:15 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+>> On 10/5/23 18:14, Jonathan Cameron wrote:
+>>> On Mon, 2 Oct 2023 15:33:41 +0300
+>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>>    
+>>>> The RGB + IR data can be used to calculate illuminance value (Luxes).
+>>>> Implement the equation obtained from the ROHM HW colleagues and add a
+>>>> light data channel outputting illuminance values in (nano) Luxes.
+>>> Units in the ABI doc for illuminance are Lux, not nanolux.
+>>> I'm guessing that you actually provide it in Lux but via scale.
+>>>
+>>> Make that clearer in this description if so.
+>>
+>> Yep. Also, the "processed" is misleading as I implement a raw channel. I
+>> did originally think I'll only implement the read_raw (as I thought
+>> we'll need all RGBC + IR and end up doing two accesses - which wouldn't
+>> be nice due to the doubled measurement time). I actually did that and
+>> used INT_PLUS_NANO. While implementing this I noticed the 'clear' data
+>> was not used - and thought I might as well support buffering when RGB+IR
+>> are enabled. I needed the scale to get the buffered values to decent
+>> format though - so I converted channel to raw one and added scale. The
+>> commit title still contains the 'processed' which reflects the original
+>> thinking. Thanks for pointing out the confusion.
+>>
+>>>> Both the read_raw and buffering values is supported, with the limitation
+>>>> that buffering is only allowed when suitable scan-mask is used. (RGB+IR,
+>>>> no clear).
+>>>>
+>>>> The equation has been developed by ROHM HW colleagues for open air sensor.
+>>>> Adding any lens to the sensor is likely to impact to the used c1, c2, c3
+>>>> coefficients. Also, The output values have only been tested on BU27008.
+>>>>
+>>>> According to the HW colleagues, the very same equation should work also
+>>>> on BU27010.
+>>>>
+>>>> Calculate and output illuminance values from BU27008 and BU27010.
+>>>>
+>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>>   
+>>>
+>>> A few comments inline, but in general looks fine to me.
+>>
+>> Thanks Jonathan. I had to give also the BU27008 sensor away for a while.
+>> I guess I won't send the next version until I am able to do some very
+>> basic testing even if the changes were minor. That's probably sometime
+>> next week.
+>>
+>>>
+>>> Jonathan
+>>>    
+>>>> ---
+>>>>
+
+//snip
+
+>>>>    
+>>>> +static int bu27008_get_rgb_ir(struct bu27008_data *data, unsigned int *red,
+>>>> +		    unsigned int *green, unsigned int *blue, unsigned int *ir)
+>>>> +{
+>>>> +	int ret, chan_sel, int_time, tmpret, valid;
+>>>> +	__le16 chans[BU27008_NUM_HW_CHANS];
+>>>> +
+>>>> +	chan_sel = BU27008_BLUE2_IR3 << (ffs(data->cd->chan_sel_mask) - 1);
+>>>> +
+>>>> +	ret = regmap_update_bits(data->regmap, data->cd->chan_sel_reg,
+>>>> +				 data->cd->chan_sel_mask, chan_sel);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	ret = bu27008_meas_set(data, true);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	ret = bu27008_get_int_time_us(data);
+>>>> +	if (ret < 0)
+>>>> +		int_time = BU27008_MEAS_TIME_MAX_MS;
+>>>> +	else
+>>>> +		int_time = ret / USEC_PER_MSEC;
+>>>> +
+>>>> +	msleep(int_time);
+>>>> +
+>>>> +	ret = regmap_read_poll_timeout(data->regmap, data->cd->valid_reg,
+>>>> +				       valid, (valid & BU27008_MASK_VALID),
+>>>> +				       BU27008_VALID_RESULT_WAIT_QUANTA_US,
+>>>> +				       BU27008_MAX_VALID_RESULT_WAIT_US);
+>>>> +	if (ret)
+>>>> +		goto out;
+>>>> +
+>>>> +	ret = regmap_bulk_read(data->regmap, BU27008_REG_DATA0_LO, chans,
+>>>> +			       sizeof(chans));
+>>>> +	if (ret)
+>>>> +		goto out;
+>>>> +
+>>>> +	*red = le16_to_cpu(chans[0]);
+>>>> +	*green = le16_to_cpu(chans[1]);
+>>>> +	*blue = le16_to_cpu(chans[2]);
+>>>> +	*ir = le16_to_cpu(chans[3]);
+>>>
+>>> I'd be tempted to use an array + definitely pass them as u16 rather
+>>> than unsigned int.
+>>
+>> I'm not really convinced the u16 is better here. We need the 32 bits
+>> later for the calculations - and (afaics) using natural size int for
+>> arguments shouldn't harm. We read the channel data to correct type array
+>> so code should be pretty clear as to what we have in HW.
 > 
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-
-Hi Subhajit,
-
-To my eyes this driver looks nice. Just spotted two minor things.
-
-> ---
->   drivers/iio/light/Kconfig    |   12 +
->   drivers/iio/light/Makefile   |    1 +
->   drivers/iio/light/apds9306.c | 1381 ++++++++++++++++++++++++++++++++++
->   3 files changed, 1394 insertions(+)
->   create mode 100644 drivers/iio/light/apds9306.c
+> ok.  I don't like lack of range clamping - so at the point of the caller
+> I can't immediately see that these will be sub 16bit value.  Not htat
+> important I guess.
 > 
-...
+>>
+>> Also, I think that having an array obfuscates what element is which
+>> channel because these ICs didn't have the 1 to 1 mapping from channel
+>> index to colour. I was thinking of adding a struct for this but decided
+>> to just keep it simple and clear.
+> A struct or array + enum would work.
+> I just don't much like lots of very similar parameters.
 
-> +
-> +static int apds9306_intg_time_set(struct apds9306_data *data, int val2)
-> +{
-> +	struct device *dev = data->dev;
-> +	int ret, intg_old, gain_old, gain_new, gain_new_closest;
-> +	bool ok;
-> +
-> +	if (!iio_gts_valid_time(&data->gts, val2)) {
-> +		dev_err(dev, "Unsupported integration time %u\n", val2);
-> +		return ret;
-> +	}
-> +
-> +	intg_old = iio_gts_find_int_time_by_sel(&data->gts,
-> +						data->intg_time_idx);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (intg_old == val2)
-> +		return 0;
-> +
-> +	gain_old = iio_gts_find_gain_by_sel(&data->gts, data->gain_idx);
-> +	if (gain_old < 0)
-> +		return gain_old;
-> +
-> +	ret = iio_gts_find_new_gain_by_old_gain_time(&data->gts, gain_old,
-> +				intg_old, val2, &gain_new);
-> +	if (gain_new < 0) {
-> +		dev_err(dev, "Unsupported gain with time\n");
-> +		return gain_new;
-> +	}
-> +
-> +	gain_new_closest = iio_find_closest_gain_low(&data->gts, gain_new, &ok);
-> +	if (gain_new_closest < 0) {
-> +		gain_new_closest = iio_gts_get_min_gain(&data->gts);
-> +		if (gain_new_closest < 0)
-> +			return gain_new_closest < 0;
+Right. A struct is not a problem. I am less fond with an enum because 
+the HW channel which carries a specific color may change. I think adding 
+an enum which indicates a place where a color is in array may be 
+misleading one to think that HW has a fixed channel (data register 
+address) for a colour. (I think that is quite usual while ICs where one 
+color may be in different channels depending on the config are likely to 
+be rare... I haven't read too many light sensor specs/drivers to know 
+for sure though).
 
-Returning the truth value on purpose? :)
+>>
+>>>> +
+>>>> +out:
+>>>> +	tmpret = bu27008_meas_set(data, false);
+>>>> +	if (tmpret)
+>>>> +		dev_warn(data->dev, "Stopping measurement failed\n");
+>>>> +
+>>>> +	return ret;
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Following equation for computing lux out of register values was given by
+>>>> + * ROHM HW colleagues;
+>>>> + *
+>>>> + * Red = RedData*1024 / Gain * 20 / meas_mode
+>>>> + * Green = GreenData* 1024 / Gain * 20 / meas_mode
+>>>> + * Blue = BlueData* 1024 / Gain * 20 / meas_mode
+>>>> + * IR = IrData* 1024 / Gain * 20 / meas_mode
+>>>> + *
+>>>> + * where meas_mode is the integration time in mS / 10
+>>>> + *
+>>>> + * IRratio = (IR > 0.18 * Green) ? 0 : 1
+>>>> + *
+>>>> + * Lx = max(c1*Red + c2*Green + c3*Blue,0)
+>>>> + *
+>>>> + * for
+>>>> + * IRratio 0: c1 = -0.00002237, c2 = 0.0003219, c3 = -0.000120371
+>>>> + * IRratio 1: c1 = -0.00001074, c2 = 0.000305415, c3 = -0.000129367
+>>>> + */
+>>>> +
+>>>> +/*
+>>>> + * The max chan data is 0xffff. When we multiply it by 1024 * 20, we'll get
+>>>> + * 0x4FFFB000 which still fits in 32-bit integer. So this can't overflow.
+>>>> + */
+>>>> +#define NORM_CHAN_DATA_FOR_LX_CALC(chan, gain, time) ((chan) * 1024 * 20 / \
+>>>> +				   (gain) / (time))
+>>>> +static u64 bu27008_calc_nlux(struct bu27008_data *data, unsigned int red,
+>>>> +		unsigned int green, unsigned int blue,  unsigned int ir,
+>>>> +		unsigned int gain, unsigned int gain_ir, unsigned int time)
+>>>> +{
+>>>> +	s64 c1, c2, c3, nlux;
+>>>> +
+>>>> +	time /= 10000;
+>>>> +	ir = NORM_CHAN_DATA_FOR_LX_CALC(ir, gain_ir, time);
+>>>> +	red = NORM_CHAN_DATA_FOR_LX_CALC(red, gain, time);
+>>>> +	green = NORM_CHAN_DATA_FOR_LX_CALC(green, gain, time);
+>>>> +	blue = NORM_CHAN_DATA_FOR_LX_CALC(blue, gain, time);
+>>
+>>> I'd prefer to see the inputs parameters and the normalized version given different
+>>> names. Also the inputs are still u16, so nice to reflect that here.
+>>
+>> So, you suggest we bring the data as u16 until here and only here we
+>> assign it into 32bit variables when doing the 'normalization'? I'm sure
+>> it works, but I dislike doing computations like multiplying u16 by u32
+>> as I never know (out of my head) how the implicit type conversions work
+>> and if we get some results cropped. Adding the casts to computation make
+>> it less pretty for my eyes while having all variables in large enough
+>> types does not leave me wondering if it works correctly and if explicit
+>> casts are needed.
+>>
+>> I am not strongly opposing this though if you insist - I am sure I can
+>> at the end of the day get the code right - but I am afraid I will later
+>> look at the code and wonder if it contains hideous issues...
+> 
+> This isn't particularly important either way.  My gut would have
+> been to keep them as __le16 to the point where the maths happens
+> but I don't mind it happening elsewhere.
+> 
+> I do want different names though given the inputs and outputs are
+> different 'things'.
+> 
 
-> +	}
-> +	if (!ok)
-> +		dev_dbg(dev, "Unable to find optimum gain, setting minimum");
-> +
-> +	ret = iio_gts_find_sel_by_int_time(&data->gts, val2);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = apds9306_intg_time_set_hw(data, ret);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = iio_gts_find_sel_by_gain(&data->gts, gain_new_closest);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return apds9306_gain_set_hw(data, ret);
-> +}
+I'll try improving this and hopefully send a new version later this 
+week. I should get the sensor at my hands latest at Thursday.
 
-...
+> 
+>>
+>>> Also when doing normalization I'd used fixed with types so there is no
+>>> confusion over what was intended (here u32)
+>>
+>> Ok.
+>>
+>>>    
+>>>> +
+>>>> +	if ((u64)ir * 100LLU > 18LLU * (u64)green) {
+>>>
+>>> Putting scaling for ir to the right and green to the left is
+>>> unusual. I'd chose one side and stick to it.
+>>
+>> Sorry Jonathan. I must be a bit slow today but I just seem to not be
+>> able to think how you would like to have this? I think this line is
+>> somehow mappable to the:
+> 
+> if ((u64)ir * 100LLU > (u64)green * 18LLU)
+> or
+> if ((100LLU * (u64)ir > 18LLU * (u64)green)
+> 
+> Either is fine.  Just don't like the scaling from different sides of
+> the variable.  I can see how you got there from 0.18 * Green but equally
+> valid to premultiply by 100 as it is to post multiply (when doing the
+> maths on paper).
 
-> +static int get_device_id_lux_per_count(struct apds9306_data *data)
-> +{
-> +	int ret, part_id;
-> +
-> +	ret = regmap_read(data->regmap, APDS9306_PART_ID, &part_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (part_id == apds9306_part_id_nlux_per_count[0].part_id)
-> +		data->nlux_per_count =
-> +			apds9306_part_id_nlux_per_count[0].nlux_per_count;
-> +	else if (part_id == apds9306_part_id_nlux_per_count[1].part_id)
-> +		data->nlux_per_count =
-> +			apds9306_part_id_nlux_per_count[1].nlux_per_count;
-> +	else
-> +		return -ENXIO;
+Now I see what you meant :) I misread your comment to meant that you 
+didn't like the scaling on both sides of the '>'. /me feels slightly stupid.
 
-I think we should be able to differentiate between the IC variants by DT 
-compatible. (Commented that on bindings patch). Not sure if we need to 
-support cases where the sensor is instantiated without device-tree. I am 
-not super happy when code requires the part-id to be known if we have 
-separate compatibles for variants. Can we in dt-case just print a 
-warning if the part-ID is not what we expect - and proceed assuming the 
-nlux_per_count based on the DT information? (Sometimes we see new 
-variants with same part-IDs - or many part-IDs with no SW changes 
-needed. Hence maintaining the part-ID lists may be tedious). This is 
-just some pondering though, no strong requirements from my side
+Thanks again!
 
-> +
-> +	return 0;
-> +}
-> +
+>>
+>> IRratio = (IR > 0.18 * Green) ? 0 : 1
+>> formula I got from HW colleagues and added in the comment preceding the
+>> function.
+>>
 
 Yours,
 	-- Matti

@@ -2,131 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 296197BF681
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 10:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3C07BF6AE
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 11:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjJJIwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 04:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
+        id S229695AbjJJJAM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 05:00:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjJJIwe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 04:52:34 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CAEC6;
-        Tue, 10 Oct 2023 01:52:32 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c008042211so65470261fa.2;
-        Tue, 10 Oct 2023 01:52:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696927950; x=1697532750; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TeEaic7DEAY9zd0WyuqM/4JYbRdrtkfWh/cZqj1+uHU=;
-        b=NvikLWBBYBXGNzOZWvhhwrwfiW0JOpSCaPjmSJGCOdN3ybiGq9SmTi4b2w6DK6s/md
-         VayrGSrom8RctkAPXOC63W/VEqIGyAYlAoDlbSy350hxFvLTpMS3w3L7k/TQ4a0M1igO
-         wUorzM8pSh3PHyhZ1tLLjkJmA28jtjv+LI+9pmCmcuL4THPvkCDT4lWMu9TQtmQ8lvov
-         c7x60rtJWN4x3o+fCBnbAMb9tq1i4gZ5UJEjkR3DIPbb8Ard3+wm/fpRo/oqjRrXOOMh
-         CUOdbvvSht15Rf1UqcW/qmud7sXupjwV+V1Ck7wSUgcQnb8BF0DU9SeYNPbHPPGlb0Wm
-         9XZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696927950; x=1697532750;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TeEaic7DEAY9zd0WyuqM/4JYbRdrtkfWh/cZqj1+uHU=;
-        b=Dhq2Jz/kKfyXvUDEhKBslwbNKI50qMCn9NIeFOc5cBl7Yc40jQvR7Cp9XdFc98IGQ8
-         9QjD+6sPfM5SScr789boVqQRwWeBGLGHmc1vUM+j/YxDpNiAsB6U2RcQe6z6WQ25CqGu
-         9MVTpSyDPpcjTpYpBxloyiqVV+IOMVApHGipVNhK2P9oq1CnxNzVVImOnCgutX3nDWIh
-         05thSEBYFMNDTiqgWnmrUdHbWOWbDm5HrN2X2QMsOK/V63ef/hanjksVo7dNUbCq2WQB
-         UB9OvgaciZdcrvUMENcXOQzaBLdFFDqRuQWyLAaNQWjMuIJa5RNkrZoh48tEOa0r/OqJ
-         6wTw==
-X-Gm-Message-State: AOJu0YyXrPNOL/aGr/t2BTgmqkoRRjQS8GuHmv2WjG5ftV3zaW4CJi3T
-        Pioovtd4/5PY1+JQp/6lV8o=
-X-Google-Smtp-Source: AGHT+IFRDeEjYXjaBWFWXr0sryFJAu3lGH0OBSOOIm/FGuRn05jaZpgsOGgCZmg/jBQkRmA66inhew==
-X-Received: by 2002:a2e:870f:0:b0:2b6:da1e:d063 with SMTP id m15-20020a2e870f000000b002b6da1ed063mr14278324lji.45.1696927950311;
-        Tue, 10 Oct 2023 01:52:30 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b002bfba0d26bcsm2368605ljj.8.2023.10.10.01.52.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Oct 2023 01:52:29 -0700 (PDT)
-Message-ID: <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
-Date:   Tue, 10 Oct 2023 11:52:28 +0300
+        with ESMTP id S229912AbjJJI7z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 04:59:55 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40AA7B6;
+        Tue, 10 Oct 2023 01:59:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B7BC433C7;
+        Tue, 10 Oct 2023 08:59:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696928393;
+        bh=VPdLVYDkYK6Xvvcav5U5Gbw4A7BwKmwy+jdIVkYAH2I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=EC7EPtjKcAAcpm/405fN5lsGG+9c3dRCZJiVjy5bcLboQL9MxDHd2N4su1QzUSmj6
+         6YkKV9H/B+zOO+0TZBp4dmJ9jgUG4YqoNx6AvMMekEpfKOHOmS4Kfo9BB3izTET1Om
+         u00gHSpP+Gp+eeHXroaxJuOr5D1X2lW8wdTtLf12vOrBNdKpN5ohTADh/utOt21+Mp
+         Ui9qeqFcCAFCScX64YLzzmk1TkGnjQY7vOchevn9S0w/T2SxM0Ltth3py6KSRF45lL
+         n0pGPZWtqQSA9CwwnpAsklG2RC4bUW8sTbgU/ws5JV4XwnHcHD6JcCsMBp2xLeG5hh
+         +13ZbjgTp57Ww==
+Date:   Tue, 10 Oct 2023 10:00:02 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     andriy.shevchenko@linux.intel.com, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [RFC 1/2] dt-bindings: iio: imu: Add DT binding doc for BMI323
+Message-ID: <20231010100002.0163d681@jic23-huawei>
+In-Reply-To: <CAM+2EuKzBVbTF2SrpYEYfzap1wrONboFV-QuTU9Fz7sVjqJLeA@mail.gmail.com>
+References: <20230918080314.11959-1-jagathjog1996@gmail.com>
+        <20230918080314.11959-2-jagathjog1996@gmail.com>
+        <20230924143710.7c6edc4a@jic23-huawei>
+        <CAM+2EuJ8o5X2ucph8gic2=03bbLQmUCX=j3SFLrqD4Y6rwXs9A@mail.gmail.com>
+        <20230930170530.0b8f185c@jic23-huawei>
+        <CAM+2EuKzBVbTF2SrpYEYfzap1wrONboFV-QuTU9Fz7sVjqJLeA@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
-Content-Language: en-US, en-GB
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
- <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/8/23 18:48, Subhajit Ghosh wrote:
-> Add devicetree bindings for Avago APDS9306 Ambient Light Sensor.
-> 
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> ---
->   .../bindings/iio/light/avago,apds9306.yaml    | 49 +++++++++++++++++++
->   1 file changed, 49 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> new file mode 100644
-> index 000000000000..e8bb897782fc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> @@ -0,0 +1,49 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/avago,apds9306.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Avago APDS9306 Ambient Light Sensor
-> +
-> +maintainers:
-> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> +
-> +description:
-> +  Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
-> +
-> +properties:
-> +  compatible:
-> +    const: avago,apds9306
+On Sun, 8 Oct 2023 11:54:39 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-I see the driver supports two different variants of this IC, 
-differentiated by the part-ID register. Variants are named as apds9306 
-and apds9306-065. I wonder if we could/should have different compatibles 
-for them?
+> Hi Jonathan,
+>=20
+> Few more questions before sending the next series.
+>=20
+> On Sat, Sep 30, 2023 at 9:35=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > On Thu, 28 Sep 2023 03:07:22 +0530
+> > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > =20
+> > > HI Jonathan,
+> > >
+> > > On Sun, Sep 24, 2023 at 7:07=E2=80=AFPM Jonathan Cameron <jic23@kerne=
+l.org> wrote: =20
+> > > >
+> > > > On Mon, 18 Sep 2023 13:33:13 +0530
+> > > > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > > > =20
+> > > > > Add devicetree description document for Bosch BMI323, a 6-Axis IM=
+U.
+> > > > >
+> > > > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com> =20
+>=20
+> > > > > +  interrupts:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  interrupt-names:
+> > > > > +    enum:
+> > > > > +      - INT1
+> > > > > +      - INT2
+> > > > > +    description: |
+> > > > > +      set to "INT1" if INT1 pin should be used as interrupt inpu=
+t, set
+> > > > > +      to "INT2" if INT2 pin should be used instead =20
+> > > >
+> > > > Why not both?  Sure driver might elect to use only one, but the bin=
+ding
+> > > > describes the hardware not the driver and both might be wired. =20
+> > >
+> > > If both interrupt pins are wired, should the DTS file need to define
+> > > both of the pins? =20
+> >
+> > Yes it should. + we need the names to know which is which.
+> > You could rely on order, but it's more flexible to not do so, particula=
+rly
+> > when you also need to support case where only one is wired. =20
+>=20
+> In the driver, I currently prioritize INT1 over INT2 when checking
+> (bmi323_trigger_probe(..)) based on the interrupt-names defined
+> in the device tree. However, I'm open to suggestions on the best
+> way to ensure that the order doesn't affect the selection process
+> when both interrupts are defined in the device tree.
 
-Yours,
-	-- Matti
+If they are both present it is absolutely fine to pick one in preference
+to the other.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+>=20
+> Each feature, such as data-ready, watermark, tap, and others, supports
+> either INT1 or INT2. Based on the interrupt pin defined in the device tre=
+e,
+> I configure the all the features accordingly.
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+That's an implementation choice to do them all based on one interrupt
+pin so absolutely fine to do that in the Linux driver, but the dt binding
+should allow for other choices as there are sometimes efficiency gains
+in doing so.
+
+>=20
+> Regarding your earlier suggestion to have two different controls for
+> drive-open-drain, do I need to define sensor-specific drive controls
+> in bindings for both interrupt pins?
+> for ex: bosch,irq{1,2}-open-drain
+
+Hmm. We do have precedence for a single control e.g.
+nxp,fxls8962af.yaml as drive-open-drain.  So perhaps just go with that
+and if anyone is needs different values we can figure it out later.
+pin control (which is where that binding item comes from) seems to have
+examples doing much the same.  Sets of pins with a single drive-open-drain
+entry.
+
+Linus, any comments on this as you've dealt with far more similar cases
+than me!
+
+Jonathan
+
+>=20
+> Regards
+> Jagath
+> >
+> >
+> > Jonathan
+> >
+> > =20
 

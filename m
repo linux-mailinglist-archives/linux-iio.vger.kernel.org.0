@@ -2,139 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 573587BF662
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 10:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296197BF681
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 10:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjJJIsm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 04:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
+        id S229485AbjJJIwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 04:52:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjJJIsl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 04:48:41 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D269F;
-        Tue, 10 Oct 2023 01:48:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EF8C433C7;
-        Tue, 10 Oct 2023 08:48:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696927720;
-        bh=Qshdf56p2PmgtMepW/YIwcuyGu3PnxXeQRi+mQdc19M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Av5JAAq+aX0+glsIlI3y2nB4vmBMX3mKRFSg/INBNb0zC5mf+vokPVXizghhdtEtz
-         h2tmZtDPaMQH6tltozkSwBbReKygEodMRVsnSu9FsnMFv0RpDNLAlQagm+Ai5LhWUm
-         vbq0okGFzV5iMx3set7wiTNKkB9iaoLv8TiqM7L3C8xOr6vGF5vVFpKB7wzJcuDSPn
-         2rpmESqVcA0AYIJ7cbmdyR8XxN7EJ8Qmfd0jb+Cx0MWBq6FIXxQp/3RaW1kkq2FKIy
-         lxtrfy+FBANqLYW+Rn8AFVCAefDezr6IBYNfgmW3+Zx633yLytzImitOvA2Tvi/gE4
-         euKYABFO3cKpg==
-Date:   Tue, 10 Oct 2023 09:48:51 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 4/5] iio: magnetometer: ak8975: Drop deprecated enums
- from OF table
-Message-ID: <20231010094851.3bde8530@jic23-huawei>
-In-Reply-To: <CAL_Jsq+dcabJ14w793TBneipwZUFnXuA2vvPzEq9Kr98edakBA@mail.gmail.com>
-References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
-        <20230818075600.24277-5-biju.das.jz@bp.renesas.com>
-        <ZN9WCKQ/hv4zKfsK@smile.fi.intel.com>
-        <OS0PR01MB5922F93ABF408AA9037A8EAC861BA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-        <ZN+IDGfc0MJfqOV9@smile.fi.intel.com>
-        <CAMuHMdWwo1hYnbztoRUtHD7iw53f7Np-vPsfMMBdwbMP7-Q98A@mail.gmail.com>
-        <20230828152137.2db2668d@jic23-huawei>
-        <CAL_Jsq+dcabJ14w793TBneipwZUFnXuA2vvPzEq9Kr98edakBA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229449AbjJJIwe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 04:52:34 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CAEC6;
+        Tue, 10 Oct 2023 01:52:32 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c008042211so65470261fa.2;
+        Tue, 10 Oct 2023 01:52:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696927950; x=1697532750; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TeEaic7DEAY9zd0WyuqM/4JYbRdrtkfWh/cZqj1+uHU=;
+        b=NvikLWBBYBXGNzOZWvhhwrwfiW0JOpSCaPjmSJGCOdN3ybiGq9SmTi4b2w6DK6s/md
+         VayrGSrom8RctkAPXOC63W/VEqIGyAYlAoDlbSy350hxFvLTpMS3w3L7k/TQ4a0M1igO
+         wUorzM8pSh3PHyhZ1tLLjkJmA28jtjv+LI+9pmCmcuL4THPvkCDT4lWMu9TQtmQ8lvov
+         c7x60rtJWN4x3o+fCBnbAMb9tq1i4gZ5UJEjkR3DIPbb8Ard3+wm/fpRo/oqjRrXOOMh
+         CUOdbvvSht15Rf1UqcW/qmud7sXupjwV+V1Ck7wSUgcQnb8BF0DU9SeYNPbHPPGlb0Wm
+         9XZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696927950; x=1697532750;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TeEaic7DEAY9zd0WyuqM/4JYbRdrtkfWh/cZqj1+uHU=;
+        b=Dhq2Jz/kKfyXvUDEhKBslwbNKI50qMCn9NIeFOc5cBl7Yc40jQvR7Cp9XdFc98IGQ8
+         9QjD+6sPfM5SScr789boVqQRwWeBGLGHmc1vUM+j/YxDpNiAsB6U2RcQe6z6WQ25CqGu
+         9MVTpSyDPpcjTpYpBxloyiqVV+IOMVApHGipVNhK2P9oq1CnxNzVVImOnCgutX3nDWIh
+         05thSEBYFMNDTiqgWnmrUdHbWOWbDm5HrN2X2QMsOK/V63ef/hanjksVo7dNUbCq2WQB
+         UB9OvgaciZdcrvUMENcXOQzaBLdFFDqRuQWyLAaNQWjMuIJa5RNkrZoh48tEOa0r/OqJ
+         6wTw==
+X-Gm-Message-State: AOJu0YyXrPNOL/aGr/t2BTgmqkoRRjQS8GuHmv2WjG5ftV3zaW4CJi3T
+        Pioovtd4/5PY1+JQp/6lV8o=
+X-Google-Smtp-Source: AGHT+IFRDeEjYXjaBWFWXr0sryFJAu3lGH0OBSOOIm/FGuRn05jaZpgsOGgCZmg/jBQkRmA66inhew==
+X-Received: by 2002:a2e:870f:0:b0:2b6:da1e:d063 with SMTP id m15-20020a2e870f000000b002b6da1ed063mr14278324lji.45.1696927950311;
+        Tue, 10 Oct 2023 01:52:30 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id r25-20020a2e9959000000b002bfba0d26bcsm2368605ljj.8.2023.10.10.01.52.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 01:52:29 -0700 (PDT)
+Message-ID: <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
+Date:   Tue, 10 Oct 2023 11:52:28 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
+Content-Language: en-US, en-GB
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
+ <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 6 Oct 2023 09:58:34 -0500
-Rob Herring <robh@kernel.org> wrote:
+On 10/8/23 18:48, Subhajit Ghosh wrote:
+> Add devicetree bindings for Avago APDS9306 Ambient Light Sensor.
+> 
+> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> ---
+>   .../bindings/iio/light/avago,apds9306.yaml    | 49 +++++++++++++++++++
+>   1 file changed, 49 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+> new file mode 100644
+> index 000000000000..e8bb897782fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+> @@ -0,0 +1,49 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/avago,apds9306.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Avago APDS9306 Ambient Light Sensor
+> +
+> +maintainers:
+> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> +
+> +description:
+> +  Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+> +
+> +properties:
+> +  compatible:
+> +    const: avago,apds9306
 
-> On Mon, Aug 28, 2023 at 9:22=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Fri, 18 Aug 2023 17:17:44 +0200
-> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > =20
-> > > Hi Andy,
-> > >
-> > > CC devicetree
-> > >
-> > > On Fri, Aug 18, 2023 at 5:03=E2=80=AFPM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote: =20
-> > > > On Fri, Aug 18, 2023 at 11:40:37AM +0000, Biju Das wrote: =20
-> > > > > > Subject: Re: [PATCH v2 4/5] iio: magnetometer: ak8975: Drop dep=
-recated
-> > > > > > enums from OF table
-> > > > > >
-> > > > > > On Fri, Aug 18, 2023 at 08:55:59AM +0100, Biju Das wrote: =20
-> > > > > > > Drop deprecated enums from OF table as corresponding entries =
-are
-> > > > > > > removed from bindings and it also saves memory. =20
-> > > > > >
-> > > > > > You can't do this.
-> > > > > >
-> > > > > > Only sorting by "prefixed first" criteria is possible. =20
-> > > > >
-> > > > > The rule applies only for fallback compatible. I checked bindings=
- and I don't
-> > > > > find any fallback compatibles. All compatibles are just enums. Am=
- I missing
-> > > > > anything here?? =20
-> > > >
-> > > > Yes. As per above patch. The _whole_ world is not under your / our =
-control.
-> > > > NAK to this change, sorry. =20
-> > >
-> > > The single user ever in the upstream kernel was fixed in commit
-> > > 9846210b1ec9bbaa ("ARM: tegra: seaboard: add missing DT vendor
-> > > prefixes") in v3.8 back in 2012.
-> > > And it had to be fixed again 9 years later in commit fa0fdb78cb5d4cde
-> > > ("ARM: dts: am335x: Use correct vendor prefix for Asahi Kasei Corp.").
-> > >
-> > > There may be other out-of-tree users, which would be broken by this
-> > > change.  Typically we wait a few years between deprecating a compatib=
-le
-> > > value and removing support from the driver.
-> > >
-> > > As Biju is only deprecating these compatible values in PATCH 3/5 of
-> > > his series, this may be a bit premature. =20
-> > Absolutely.  I'd go a bit further.
-> > Unless there is a maintenance reason to remove these (after a few years=
- from
-> > removal in the binding doc) then we never remove them as it can only hu=
-rt users. =20
->=20
-> I'm tracking undocumented compatibles (with 'make
-> dt_compatible_check') in the kernel tree. Dropping the binding makes
-> these undocumented (and now showing up in my diff between Linus and
-> next). So please apply both or none.
->=20
-> Rob
+I see the driver supports two different variants of this IC, 
+differentiated by the part-ID register. Variants are named as apds9306 
+and apds9306-065. I wonder if we could/should have different compatibles 
+for them?
 
-Given I have some merges in the togreg tree and it's at least in theory
-non rebasing, I'll revert patch 3 from this series rather than dropping it.
+Yours,
+	-- Matti
 
-Thanks for letting me know.
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-Jonathan
+~~ When things go utterly wrong vim users can always type :help! ~~
+

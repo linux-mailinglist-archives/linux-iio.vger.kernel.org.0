@@ -2,131 +2,233 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2247C7BFE6A
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 15:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 989C37BFF5E
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 16:33:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231792AbjJJNvZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 09:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S232993AbjJJOdV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 10:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231984AbjJJNvY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 09:51:24 -0400
+        with ESMTP id S232147AbjJJOdV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 10:33:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE12115;
-        Tue, 10 Oct 2023 06:51:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44E4C433C8;
-        Tue, 10 Oct 2023 13:51:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039A7A4;
+        Tue, 10 Oct 2023 07:33:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB943C433C7;
+        Tue, 10 Oct 2023 14:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696945881;
-        bh=EpXqTphoLKu37K9NdPvllSGp61XV715UYGlavQy1hmM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ouUpsJv3gGrhyQ/2AcycBVMVM1BLgNdajK0z4aJoVCjvCcjfq3LXXlZ661XHX8m5Q
-         ATnKAwdODd+KWQIHEte0mMFeqqPRA+kSwu7/1C44Ci/Kab3OOSzMV+aaG4sHjrl1E+
-         6TZVM/QxDPxkhJPPydAMhoOBSCQHaDLkg16R6VS9Banse7fdooiAsgAMe5q5prVuwE
-         FwAH1fp4WKNRtuBV2ORZlfR39F0ToQ9KJ5y5CU+OiJQ+b2A3E84DEXFouOtisEoLW4
-         PTpXnsysSMMJf9fOh6fF2f0ChYhr8kHl+rY4kIiHJkvBiHrboWVX8hDXHDf/RsMP/F
-         ZcmCoYMSlvPsg==
-Date:   Tue, 10 Oct 2023 14:51:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        s=k20201202; t=1696948399;
+        bh=pcUljfDqBz+5zaYl7PUC11MbDiE8H1prd/gX1DsPBjw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LsidtITI0+z28z1dZ4UqR042n9o4GknAiiVcgcwnAicoS7LVHwe5n30W/Gwb1CjZ2
+         TfzyUvxbg6ExIsBJRh3wrXmYJLcvs0eakt64mib+U3MewVW4IUrRz67tcNScghLGlF
+         Kz5ue3fqSbUAOXcp7Cq5WFttNSEuzEujSViD14RxxZaDzCDWt2HmMNpfH6d4AtQu8q
+         0fqj/nO67IW3ludGrSbS5qYa3Vq9VXZXv/S8F1CXDkks3AH6FbzhuK7T/RByJhgBwT
+         VFI1PpLyTlzQPOHPix0XAugZHSoc5nVdoXiHuf1frmzIyr+Y5T/SjVjP/yACSQsfLg
+         PV8WrNrS4a+Dg==
+Received: (nullmailer pid 847247 invoked by uid 1000);
+        Tue, 10 Oct 2023 14:33:17 -0000
+Date:   Tue, 10 Oct 2023 09:33:17 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
-Message-ID: <20231010145130.3d5ff9c7@jic23-huawei>
-In-Reply-To: <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
-        <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] dt-bindings: adc: provide max34408/9 device tree
+ binding document
+Message-ID: <20231010143317.GA841985-robh@kernel.org>
+References: <20231007234838.8748-1-fr0st61te@gmail.com>
+ <20231007234838.8748-2-fr0st61te@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231007234838.8748-2-fr0st61te@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  9 Oct 2023 02:18:56 +1030
-Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
-
-> Add devicetree bindings for Avago APDS9306 Ambient Light Sensor.
+On Sun, Oct 08, 2023 at 02:48:37AM +0300, Ivan Mikhaylov wrote:
+> The hardware binding for i2c current monitoring device with overcurrent
+> control.
 > 
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
 > ---
->  .../bindings/iio/light/avago,apds9306.yaml    | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+>  .../bindings/iio/adc/maxim,max34408.yaml      | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
 > new file mode 100644
-> index 000000000000..e8bb897782fc
+> index 000000000000..9749f1fd1802
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
-> @@ -0,0 +1,49 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> @@ -0,0 +1,141 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/light/avago,apds9306.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Avago APDS9306 Ambient Light Sensor
+> +title: Two- and four-channel current monitors with overcurrent control
+
+Maxim MAX34408/MAX34409 current monitors with overcurrent control
+
 > +
 > +maintainers:
-> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> +  - Ivan Mikhaylov <fr0st61te@gmail.com>
 > +
-> +description:
-> +  Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+> +description: |
+> +  The MAX34408/MAX34409 are two- and four-channel current monitors that are
+> +  configured and monitored with a standard I2C/SMBus serial interface. Each
+> +  unidirectional current sensor offers precision high-side operation with a
+> +  low full-scale sense voltage. The devices automatically sequence through
+> +  two or four channels and collect the current-sense samples and average them
+> +  to reduce the effect of impulse noise. The raw ADC samples are compared to
+> +  user-programmable digital thresholds to indicate overcurrent conditions.
+> +  Overcurrent conditions trigger a hardware output to provide an immediate
+> +  indication to shut down any necessary external circuitry.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/MAX34408-MAX34409.pdf
 > +
 > +properties:
 > +  compatible:
-> +    const: avago,apds9306
+> +    enum:
+> +      - maxim,max34408
+> +      - maxim,max34409
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  vin-supply:
-> +    description: Regulator supply to the sensor
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  powerdown-gpios:
+> +    description:
+> +      Shutdown Output. Open-drain output. This output transitions to high impedance
+> +      when any of the digital comparator thresholds are exceeded as long as the ENA
+> +      pin is high.
+> +    maxItems: 1
+> +
+> +  shtdn-enable-gpios:
+> +    description:
+> +      SHTDN Enable Input. CMOS digital input. Connect to GND to clear the latch and
+> +      unconditionally deassert (force low) the SHTDN output and reset the shutdown
+> +      delay. Connect to VDD to enable normal latch operation of the SHTDN output.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    $ref: adc.yaml
+> +    type: object
+> +    description:
+> +      Represents the internal channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        items:
+> +          minimum: 0
+> +          maximum: 3
 
-Why vin?  It seems to be vdd on the datasheet.
-We tend to match the datasheet naming for power supplies as that is normally
-what is seen on circuit board schematics.
+This allows any number of 'reg' entries. You need this instead:
+
+items:
+  - minimum: 0
+    maximum: 3
 
 
 > +
-> +  interrupts:
-> +    maxItems: 1
+> +      maxim,rsense-val-micro-ohms:
+> +        description:
+> +          Adjust the Rsense value to monitor higher or lower current levels for
+> +          input.
+> +        enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 500000]
+> +        default: 1000
+> +
+> +    required:
+> +      - reg
+> +      - maxim,rsense-val-micro-ohms
+> +
+> +    unevaluatedProperties: false
 > +
 > +required:
 > +  - compatible
 > +  - reg
 > +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: maxim,max34408
+> +    then:
+> +      patternProperties:
+> +        "^channel@[2-3]$": false
+> +        "^channel@[0-1]$":
+> +          properties:
+> +            reg:
+> +              minimum: 0
+
+0 is already the minimum
+
+> +              maximum: 1
+> +    else:
+> +      patternProperties:
+> +        "^channel@[0-3]$":
+> +          properties:
+> +            reg:
+> +              minimum: 0
+
+ditto
+
+> +              maximum: 3
+> +
 > +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
 > +
 > +    i2c {
 > +        #address-cells = <1>;
 > +        #size-cells = <0>;
 > +
-> +        light-sensor@52 {
-> +            compatible = "avago,apds9306";
-> +            reg = <0x52>;
-> +            interrupt-parent = <&gpiof>;
-> +            interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
+> +        adc@1e {
+> +              compatible = "maxim,max34409";
+> +              reg = <0x1e>;
+> +              powerdown-gpios = <&gpio0 1 GPIO_ACTIVE_LOW>;
+> +              shtdn-enable-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> +
+> +              #address-cells = <1>;
+> +              #size-cells = <0>;
+> +
+> +              channel@0 {
+> +                  reg = <0x0>;
+> +                  maxim,rsense-val-micro-ohms = <5000>;
+> +              };
+> +
+> +              channel@1 {
+> +                  reg = <0x1>;
+> +                  maxim,rsense-val-micro-ohms = <10000>;
+> +             };
 > +        };
 > +    };
-> +...
-
+> -- 
+> 2.42.0
+> 

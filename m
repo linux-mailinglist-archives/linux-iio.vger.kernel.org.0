@@ -2,67 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9DEF7BF74E
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 11:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C87C7BF795
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Oct 2023 11:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjJJJ3K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Oct 2023 05:29:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44862 "EHLO
+        id S230293AbjJJJk2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Oct 2023 05:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229594AbjJJJ3J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 05:29:09 -0400
+        with ESMTP id S230294AbjJJJk1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Oct 2023 05:40:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42066A7;
-        Tue, 10 Oct 2023 02:29:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8835CC433C7;
-        Tue, 10 Oct 2023 09:28:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F83B9F;
+        Tue, 10 Oct 2023 02:40:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F96DC433C7;
+        Tue, 10 Oct 2023 09:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696930146;
-        bh=eFUd/n8o3VVFHQz6wd12ub7oPEuB2ug/zCfzJKYSH9o=;
+        s=k20201202; t=1696930825;
+        bh=E2xPENBRiIMEUR3iKFMwXUqnHFuFH4IyCJ1gJufNLVI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ajcUgIYOTXJUNpLXSOJ27Kmcw2PFHR1m12BzVFgzf5jt3qce+GYJJF1ZRnbbUwQDh
-         Fo3unuFReI+9q5C1M2FLFOTjRYDooeKOjRrn+I22Zl4ReXzvqEGv1UBRoaJ+Cdg3UV
-         S0vtnncZc6JxtJMohtX56hvQL53W8sbOYmRGW1r5BLYmFVVOGHw1Wi7MCNh77WpUsw
-         7etyYuG54qu1EvQV+z/d7bNsagq0tmbBD6sbYV6n/3ufzssoMrjUnG4xV1bhgdYrXs
-         nQZluMhd1hvANGPtY12EqCKZLDB6Yi5f0HImAV8mwdep58HaYNUp5R+5I+NDy3O8nQ
-         cAhtNtmDSUiNg==
-Date:   Tue, 10 Oct 2023 10:29:12 +0100
+        b=YdbObQNLlzrj/Znu7cE0dsejgV0oEqOmTQ43nOs6ilE8ithpjCzegSA4xZ9kz58EN
+         O6Gji/blnDHTH+01P2xArQDH7AsYqIgTvdVHHwmJSctUsqm4iEnc+93cGzYl47iuwB
+         SnVUvb7Y+5WlPqjbZO0ynwVrJRWHleLbnS1wpg7cCUKMeyLKDDdH/363qknWxCMc0G
+         wH78k/GGinzGiEC3awsvDJhOuJeLtdtoQCKxwGW6r8hi+1tCb8nGiQM6Qgd0l9d7iT
+         z5fryO+CPwE0vpcY/RZXXjMUOSRkShaPgn9UUk83aHDurdfod3lqWMBauicGkpPOpv
+         54W7U2uPEt3yQ==
+Date:   Tue, 10 Oct 2023 10:40:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-Cc:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "dan.carpenter@linaro.org" <dan.carpenter@linaro.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        kernel <kernel@axis.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "dlechner@baylibre.com" <dlechner@baylibre.com>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "pmolloy@baylibre.com" <pmolloy@baylibre.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "ahaslam@baylibre.com" <ahaslam@baylibre.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "david@lechnology.com" <david@lechnology.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v3 02/27] staging: iio: resolver: ad2s1210: fix use
- before initialization
-Message-ID: <20231010102912.0b70c3e0@jic23-huawei>
-In-Reply-To: <de527e3f87effe7e446b44d84e43aead26f9fdec.camel@axis.com>
-References: <20230929-ad2s1210-mainline-v3-0-fa4364281745@baylibre.com>
-        <20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com>
-        <1b366292-6e05-421e-914e-6d3457886238@kadam.mountain>
-        <20231002101742.0000774b@Huawei.com>
-        <de527e3f87effe7e446b44d84e43aead26f9fdec.camel@axis.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: bu27008: Add processed illuminance channel
+Message-ID: <20231010104037.4c23ba1d@jic23-huawei>
+In-Reply-To: <07d2740d-d251-842c-ad9f-788fd2546110@gmail.com>
+References: <ZRq4pdDn6N73n7BO@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+        <20231005161455.22d68c22@jic23-huawei>
+        <07d2740d-d251-842c-ad9f-788fd2546110@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -72,137 +51,284 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 6 Oct 2023 14:48:29 +0000
-Vincent Whitchurch <Vincent.Whitchurch@axis.com> wrote:
+On Fri, 6 Oct 2023 08:01:15 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Hi Vincent
+> On 10/5/23 18:14, Jonathan Cameron wrote:
+> > On Mon, 2 Oct 2023 15:33:41 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> The RGB + IR data can be used to calculate illuminance value (Luxes).
+> >> Implement the equation obtained from the ROHM HW colleagues and add a
+> >> light data channel outputting illuminance values in (nano) Luxes.  
+> > Units in the ABI doc for illuminance are Lux, not nanolux.
+> > I'm guessing that you actually provide it in Lux but via scale.
+> > 
+> > Make that clearer in this description if so.  
+> 
+> Yep. Also, the "processed" is misleading as I implement a raw channel. I 
+> did originally think I'll only implement the read_raw (as I thought 
+> we'll need all RGBC + IR and end up doing two accesses - which wouldn't 
+> be nice due to the doubled measurement time). I actually did that and 
+> used INT_PLUS_NANO. While implementing this I noticed the 'clear' data 
+> was not used - and thought I might as well support buffering when RGB+IR 
+> are enabled. I needed the scale to get the buffered values to decent 
+> format though - so I converted channel to raw one and added scale. The 
+> commit title still contains the 'processed' which reflects the original 
+> thinking. Thanks for pointing out the confusion.
+> 
+> >> Both the read_raw and buffering values is supported, with the limitation
+> >> that buffering is only allowed when suitable scan-mask is used. (RGB+IR,
+> >> no clear).
+> >>
+> >> The equation has been developed by ROHM HW colleagues for open air sensor.
+> >> Adding any lens to the sensor is likely to impact to the used c1, c2, c3
+> >> coefficients. Also, The output values have only been tested on BU27008.
+> >>
+> >> According to the HW colleagues, the very same equation should work also
+> >> on BU27010.
+> >>
+> >> Calculate and output illuminance values from BU27008 and BU27010.
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>  
+> > 
+> > A few comments inline, but in general looks fine to me.  
+> 
+> Thanks Jonathan. I had to give also the BU27008 sensor away for a while. 
+> I guess I won't send the next version until I am able to do some very 
+> basic testing even if the changes were minor. That's probably sometime 
+> next week.
+> 
+> > 
+> > Jonathan
+> >   
+> >> ---
+> >>
+> >> I did very dummy testing at very normal daylight inside a building. No
+> >> special equipments were used - I simply compared values computed from
+> >> BU27008 RGB+IR channels, to values displayed by the ALS in my mobile
+> >> phone. Results were roughly the same (around 400 lux). Couldn't repeat
+> >> test on BU27010, but the data it outputs should be same format as
+> >> BU27008 data so equation should work for both sensors.
+> >> ---
+> >>   drivers/iio/light/rohm-bu27008.c | 216 ++++++++++++++++++++++++++++++-
+> >>   1 file changed, 211 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/light/rohm-bu27008.c b/drivers/iio/light/rohm-bu27008.c
+> >> index 6a6d77805091..d480cf761377 100644
+> >> --- a/drivers/iio/light/rohm-bu27008.c
+> >> +++ b/drivers/iio/light/rohm-bu27008.c
+> >> @@ -130,6 +130,7 @@
+> >>    * @BU27008_BLUE:	Blue channel. Via data2 (when used).
+> >>    * @BU27008_CLEAR:	Clear channel. Via data2 or data3 (when used).
+> >>    * @BU27008_IR:		IR channel. Via data3 (when used).
+> >> + * @BU27008_LUX:	Illuminance channel, computed using RGB and IR.
+> >>    * @BU27008_NUM_CHANS:	Number of channel types.
+> >>    */
+> >>   enum bu27008_chan_type {
+> >> @@ -138,6 +139,7 @@ enum bu27008_chan_type {
+> >>   	BU27008_BLUE,
+> >>   	BU27008_CLEAR,
+> >>   	BU27008_IR,
+> >> +	BU27008_LUX,
+> >>   	BU27008_NUM_CHANS
+> >>   };
+> >>   
+> >> @@ -172,6 +174,8 @@ static const unsigned long bu27008_scan_masks[] = {
+> >>   	ALWAYS_SCANNABLE | BIT(BU27008_CLEAR) | BIT(BU27008_IR),
+> >>   	/* buffer is R, G, B, IR */
+> >>   	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR),
+> >> +	/* buffer is R, G, B, IR, LUX */
+> >> +	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR) | BIT(BU27008_LUX),
+> >>   	0
+> >>   };
+> >>   
+> >> @@ -331,6 +335,19 @@ static const struct iio_chan_spec bu27008_channels[] = {
+> >>   	 * Hence we don't advertise available ones either.
+> >>   	 */
+> >>   	BU27008_CHAN(IR, DATA3, 0),
+> >> +	{
+> >> +		.type = IIO_LIGHT,
+> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> >> +				      BIT(IIO_CHAN_INFO_SCALE),
+> >> +		.channel = BU27008_LUX,
+> >> +		.scan_index = BU27008_LUX,
+> >> +		.scan_type = {
+> >> +			.sign = 'u',
+> >> +			.realbits = 64,
+> >> +			.storagebits = 64,
+> >> +			.endianness = IIO_CPU,
+> >> +		},
+> >> +	},
+> >>   	IIO_CHAN_SOFT_TIMESTAMP(BU27008_NUM_CHANS),
+> >>   };
+> >>   
+> >> @@ -1004,6 +1021,183 @@ static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
+> >>   	return ret;
+> >>   }
+> >>   
+> >> +static int bu27008_get_rgb_ir(struct bu27008_data *data, unsigned int *red,
+> >> +		    unsigned int *green, unsigned int *blue, unsigned int *ir)
+> >> +{
+> >> +	int ret, chan_sel, int_time, tmpret, valid;
+> >> +	__le16 chans[BU27008_NUM_HW_CHANS];
+> >> +
+> >> +	chan_sel = BU27008_BLUE2_IR3 << (ffs(data->cd->chan_sel_mask) - 1);
+> >> +
+> >> +	ret = regmap_update_bits(data->regmap, data->cd->chan_sel_reg,
+> >> +				 data->cd->chan_sel_mask, chan_sel);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = bu27008_meas_set(data, true);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = bu27008_get_int_time_us(data);
+> >> +	if (ret < 0)
+> >> +		int_time = BU27008_MEAS_TIME_MAX_MS;
+> >> +	else
+> >> +		int_time = ret / USEC_PER_MSEC;
+> >> +
+> >> +	msleep(int_time);
+> >> +
+> >> +	ret = regmap_read_poll_timeout(data->regmap, data->cd->valid_reg,
+> >> +				       valid, (valid & BU27008_MASK_VALID),
+> >> +				       BU27008_VALID_RESULT_WAIT_QUANTA_US,
+> >> +				       BU27008_MAX_VALID_RESULT_WAIT_US);
+> >> +	if (ret)
+> >> +		goto out;
+> >> +
+> >> +	ret = regmap_bulk_read(data->regmap, BU27008_REG_DATA0_LO, chans,
+> >> +			       sizeof(chans));
+> >> +	if (ret)
+> >> +		goto out;
+> >> +
+> >> +	*red = le16_to_cpu(chans[0]);
+> >> +	*green = le16_to_cpu(chans[1]);
+> >> +	*blue = le16_to_cpu(chans[2]);
+> >> +	*ir = le16_to_cpu(chans[3]);  
+> > 
+> > I'd be tempted to use an array + definitely pass them as u16 rather
+> > than unsigned int.  
+> 
+> I'm not really convinced the u16 is better here. We need the 32 bits 
+> later for the calculations - and (afaics) using natural size int for 
+> arguments shouldn't harm. We read the channel data to correct type array 
+> so code should be pretty clear as to what we have in HW.
 
-Thanks for the update,
+ok.  I don't like lack of range clamping - so at the point of the caller
+I can't immediately see that these will be sub 16bit value.  Not htat
+important I guess.
 
-> On Mon, 2023-10-02 at 10:17 +0100, Jonathan Cameron wrote:
-> > Hmm. What happened to roadtest?  I was hoping that would solve this sort
-> > of issue by allowing simple testing of basic functionality... =20
->=20
-> Roadtest is alive and well.  Several of my coworkers have been using it
-> for development and testing of new drivers[0][1][2][3][4] and
-> patches[5][6], and this has resulted in easier testing and refactoring
-> during development, more robust code, and of course the ability to
-> easily detect regressions after the patches are merged.
->=20
-> [0] https://lore.kernel.org/lkml/20230323-add-opt4001-driver-v2-2-0bae039=
-8669d@axis.com/
-> [1] https://lore.kernel.org/lkml/d218a1bc75402b5ebd6e12a563f7315f83fe966c=
-.1689753076.git.waqar.hameed@axis.com/
-> [2] https://lore.kernel.org/lkml/7b856b74c4c0f8c6c539d7c692051c9203b103c0=
-.1692699931.git.waqar.hameed@axis.com/
-> [3] https://lore.kernel.org/lkml/20231002-rx8111-add-timestamp0-v1-1-3537=
-27cf7f14@axis.com/
-> [4] https://lore.kernel.org/lkml/20230502-tps6287x-driver-v3-2-e25140a023=
-f5@axis.com/
-> [5] https://lore.kernel.org/lkml/20221012102347.153201-1-chenhuiz@axis.co=
-m/
-> [6] https://lore.kernel.org/lkml/20220413114014.2204623-3-camel.guo@axis.=
-com/
->=20
-> In fact, by running our roadtests on newer kernels we have found
-> numerous bugs[10][12][14] and regressions[7][8][9][11][15] in mainline,
-> including subsystem-level issues affecting other drivers too.
->=20
-> [7] https://lore.kernel.org/lkml/20230911-regulator-voltage-sel-v1-1-886e=
-b1ade8d8@axis.com/
-> [8] https://lore.kernel.org/lkml/20230918-power-uaf-v1-1-73c397178c42@axi=
-s.com/
-> [9] https://lore.kernel.org/lkml/20230829-tps-voltages-v1-1-7ba4f958a194@=
-axis.com/
-> [10] https://lore.kernel.org/lkml/20230613-genirq-nested-v3-1-ae58221143e=
-b@axis.com/
-> [11] https://lore.kernel.org/lkml/20220503114333.456476-1-camel.guo@axis.=
-com/
-> [12] https://lore.kernel.org/linux-iio/20220816080828.1218667-1-vincent.w=
-hitchurch@axis.com/
-> [13] https://lore.kernel.org/linux-iio/20220519091925.1053897-1-vincent.w=
-hitchurch@axis.com/
-> [14] https://lore.kernel.org/linux-iio/20220620144231.GA23345@axis.com/
-> [15] https://lore.kernel.org/linux-spi/YxBX4bXG02E4lSUW@axis.com/
->=20
-> (The above lists are not exhaustive.)
->=20
+> 
+> Also, I think that having an array obfuscates what element is which 
+> channel because these ICs didn't have the 1 to 1 mapping from channel 
+> index to colour. I was thinking of adding a struct for this but decided 
+> to just keep it simple and clear.
+A struct or array + enum would work. 
+I just don't much like lots of very similar parameters. 
+> 
+> >> +
+> >> +out:
+> >> +	tmpret = bu27008_meas_set(data, false);
+> >> +	if (tmpret)
+> >> +		dev_warn(data->dev, "Stopping measurement failed\n");
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +/*
+> >> + * Following equation for computing lux out of register values was given by
+> >> + * ROHM HW colleagues;
+> >> + *
+> >> + * Red = RedData*1024 / Gain * 20 / meas_mode
+> >> + * Green = GreenData* 1024 / Gain * 20 / meas_mode
+> >> + * Blue = BlueData* 1024 / Gain * 20 / meas_mode
+> >> + * IR = IrData* 1024 / Gain * 20 / meas_mode
+> >> + *
+> >> + * where meas_mode is the integration time in mS / 10
+> >> + *
+> >> + * IRratio = (IR > 0.18 * Green) ? 0 : 1
+> >> + *
+> >> + * Lx = max(c1*Red + c2*Green + c3*Blue,0)
+> >> + *
+> >> + * for
+> >> + * IRratio 0: c1 = -0.00002237, c2 = 0.0003219, c3 = -0.000120371
+> >> + * IRratio 1: c1 = -0.00001074, c2 = 0.000305415, c3 = -0.000129367
+> >> + */
+> >> +
+> >> +/*
+> >> + * The max chan data is 0xffff. When we multiply it by 1024 * 20, we'll get
+> >> + * 0x4FFFB000 which still fits in 32-bit integer. So this can't overflow.
+> >> + */
+> >> +#define NORM_CHAN_DATA_FOR_LX_CALC(chan, gain, time) ((chan) * 1024 * 20 / \
+> >> +				   (gain) / (time))
+> >> +static u64 bu27008_calc_nlux(struct bu27008_data *data, unsigned int red,
+> >> +		unsigned int green, unsigned int blue,  unsigned int ir,
+> >> +		unsigned int gain, unsigned int gain_ir, unsigned int time)
+> >> +{
+> >> +	s64 c1, c2, c3, nlux;
+> >> +
+> >> +	time /= 10000;
+> >> +	ir = NORM_CHAN_DATA_FOR_LX_CALC(ir, gain_ir, time);
+> >> +	red = NORM_CHAN_DATA_FOR_LX_CALC(red, gain, time);
+> >> +	green = NORM_CHAN_DATA_FOR_LX_CALC(green, gain, time);
+> >> +	blue = NORM_CHAN_DATA_FOR_LX_CALC(blue, gain, time);  
+> 
+> > I'd prefer to see the inputs parameters and the normalized version given different
+> > names. Also the inputs are still u16, so nice to reflect that here.  
+> 
+> So, you suggest we bring the data as u16 until here and only here we 
+> assign it into 32bit variables when doing the 'normalization'? I'm sure 
+> it works, but I dislike doing computations like multiplying u16 by u32 
+> as I never know (out of my head) how the implicit type conversions work 
+> and if we get some results cropped. Adding the casts to computation make 
+> it less pretty for my eyes while having all variables in large enough 
+> types does not leave me wondering if it works correctly and if explicit 
+> casts are needed.
+> 
+> I am not strongly opposing this though if you insist - I am sure I can 
+> at the end of the day get the code right - but I am afraid I will later 
+> look at the code and wonder if it contains hideous issues...
 
-Great stuff!
+This isn't particularly important either way.  My gut would have
+been to keep them as __le16 to the point where the maths happens
+but I don't mind it happening elsewhere.
 
-> > Hope it is still headed for a new version / upstream! =20
->=20
-> I pushed out an update with a squash of (most parts of) our internal
-> version out to the following repo, it's based on v6.6-rc4.
->=20
->   https://github.com/vwax/linux/tree/roadtest/devel
+I do want different names though given the inputs and outputs are
+different 'things'.
 
-Thanks.
 
->=20
-> (There are currently 6 lines of --diff-filter=3DM against v6.6-rc4 on the
->  linked repo.  Two of those are from a patch which is posted and waiting
->  for review on the lists, and the rest are for enabling regmap debugfs
->  writes which are used from some of the newer tests.)
->=20
-> Since roadtest itself does not require any patches to the kernel or any
-> out-of-tree modules, the maintenance of the framework would not really
-> be simplified by putting it in the upstream tree.  However, there is of
-> course a potentially large benefit to the quality of many kinds of
-> kernel drivers if roadtest gets used by others, and having it in-tree
-> could facilitate that.  And it would potentially allow regressions like
-> the ones we're finding to be caught _before_ they go in, since anyone
-> can run the tests without special hardware.
+> 
+> > Also when doing normalization I'd used fixed with types so there is no
+> > confusion over what was intended (here u32)  
+> 
+> Ok.
+> 
+> >   
+> >> +
+> >> +	if ((u64)ir * 100LLU > 18LLU * (u64)green) {  
+> > 
+> > Putting scaling for ir to the right and green to the left is
+> > unusual. I'd chose one side and stick to it.  
+> 
+> Sorry Jonathan. I must be a bit slow today but I just seem to not be 
+> able to think how you would like to have this? I think this line is 
+> somehow mappable to the:
 
-Exactly  - my main interest is the dream of getting to the point where
-new drivers typically also come with roadtest tests, with the aim that
-they will be used for regression testing. For IIO I might lean on
-/ ask nicely  few of the bigger contributors to add fairly comprehensive
-tests for say one in 3 of their drivers, providing a canary for any
-subsystem level problems that might sneak in. The stability gained for
-those drivers might also prove it's own benefit to push people to add tests.
-At somepoint in the longer term I might even make it a requirement for
-upstreaming a new driver + slowly tackle the backlog of existing ones.
-=46rom my experiments with it last year, this is a trivial burden fo
+if ((u64)ir * 100LLU > (u64)green * 18LLU)
+or
+if ((100LLU * (u64)ir > 18LLU * (u64)green)
 
->=20
-> The idea of having to maintain it in-tree and doing all the work that
-> goes along with that (dealing with the expectations of maintainers,
-> wrangling patches from mailing lists, etc), is something I personally
-> have had a hard time warming up to, but I have some coworkers who may
-> potentially be interested in that kind of work, so I wouldn't rule out
-> another posting of the patch set targeting upstream sometime in the
-> future.
+Either is fine.  Just don't like the scaling from different sides of
+the variable.  I can see how you got there from 0.18 * Green but equally
+valid to premultiply by 100 as it is to post multiply (when doing the
+maths on paper).
 
-I fully appreciate your concern.  I just really like roadtest and want
-a smooth way to integrate using it with my upstream maintenance (and occasi=
-onal
-development) process...  I of course can't expect you to commit to anything
-though - I'd be delighted if someone else wants to take this forwards but
-that would be very much their decision to make!
-
-Having not yet waded into the latest code, how 'stable' is it from the point
-of view of modifications to tests?  I can rebase the ones I have out of tree
-and see, but I'm after an assessment that incorporates what you are
-planning to change in future.
-
-I guess the nasty stuff is if you have a few hundred additional drivers
-in the test set, any modification to the way they interact with the core
-of roadtest becomes very painful to push into those tests.
-
-One starting point would be to separate the tests directory from the
-directories containing roadtest frameworks etc as that would help to
-limit scope of responsibility.
-
-If a potential upstream roadtest maintainer is primarily concerned about
-review + handling of the actual tests, other than potentially letting in
-some ugly code, I'd imagine any subsystem maintainer who opts into this
-will take that burden on - perhaps with the occasional question heading
-your way. I'd certainly not expect you to have to deal with high patch flows
-and would ensure that didn't happen for any IIO tests (any review people
-have time for is of course welcome!)
-
-+CC a few maintainers of other subsystems who may be interested (I know
-one of them is ;)
-
-Jonathan
+> 
+> IRratio = (IR > 0.18 * Green) ? 0 : 1
+> formula I got from HW colleagues and added in the comment preceding the 
+> function.
+> 

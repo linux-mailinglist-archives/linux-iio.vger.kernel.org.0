@@ -2,147 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D74F37C4DA0
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Oct 2023 10:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E26487C54BA
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Oct 2023 15:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjJKIvJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Oct 2023 04:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
+        id S231817AbjJKNE1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Oct 2023 09:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230382AbjJKIvI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Oct 2023 04:51:08 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A75798;
-        Wed, 11 Oct 2023 01:51:05 -0700 (PDT)
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39B5xlfO011115;
-        Wed, 11 Oct 2023 10:50:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        message-id:date:mime-version:subject:to:cc:references:from
-        :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=8gYo5goS4DqeD1ldn/WMNS5pR/ViIwg7IylwRkFLbCQ=; b=Za
-        TlXAtbPx+MB2v0D8AaSOiCRr0QWaExzh07Zo/oJZvuCeapBUJIlchy/0wVkKmKEn
-        wF4z0gNW2gVgYd+nm+OoUH3zQARoNUOh9jLOsqhjQPZQakZgQ8UQum8NC5lIu53G
-        J9/i4D9RVwogLLkVq45t8JbhccX58FoBHOkPFG54l4Myu31cTN8/lVAO4VwO3iQ/
-        QVK9wmSpmZQtWB32TwY8Jbg0FQFxf0GPdf5ZAKxNUqJf8bLx+7v473H+0cTRORLN
-        +6OGQsijOBEGjRMLIhQfjAvoAYEoRWr3fmVZBKuazCBrw1XmeMdLs2GuCUkIAx4t
-        D2E7cjGWOwhthrlESwYw==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tnp24gtuh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 Oct 2023 10:50:08 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 21883100064;
-        Wed, 11 Oct 2023 10:50:05 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B630822FA2E;
-        Wed, 11 Oct 2023 10:50:05 +0200 (CEST)
-Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 11 Oct
- 2023 10:50:03 +0200
-Message-ID: <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
-Date:   Wed, 11 Oct 2023 10:49:58 +0200
+        with ESMTP id S231317AbjJKNEZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Oct 2023 09:04:25 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269018F
+        for <linux-iio@vger.kernel.org>; Wed, 11 Oct 2023 06:04:22 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2773af0c5dbso4597262a91.1
+        for <linux-iio@vger.kernel.org>; Wed, 11 Oct 2023 06:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1697029461; x=1697634261; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uKGDsSgRWaVRqguRQzytVv1LFKTRkfGDmTPgMhFGmI4=;
+        b=NUC94I6JIABY3ySPzqj2qvktDwsPMfsa+rKp9EFeCRa6qj+xkG3RykpkJVLxrCAcFm
+         4G3NxHQX7ZXltrOe3p5l5NhfumYNwRzZqriAZ715UzgJs5nedWt3/408MFmRbqiXoRK5
+         b46NwkW9uUnrIAW3VVcXuQgrovTE0UmJGYmpzOXYEp33cWKgnjI1AmG+pQSioxZsjqOP
+         KlclJxkSzNr181bYhcx16SuednbjK9WZBATI0R7YVIvI7IY5OFDKMlq349Z4lMJPYhS9
+         ypqOpw9H8Og4Y/ZquWP5NCI2gLmzy1N2Qjya6ciRnlvC3rurwoyXjf0Ity0KekzjWZlM
+         zpCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697029461; x=1697634261;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uKGDsSgRWaVRqguRQzytVv1LFKTRkfGDmTPgMhFGmI4=;
+        b=aNjMIbhNj/ppuBPzxWwVD+9Zb8elK/1xrEemb7vqzYOEh84K29Q/K67e5GNARqp5MX
+         ivlAVKIVAlU7ziCHvDqPJC0/KsjarTLFjEoO2TbOyUTJJ1Q5+AcU9FiRgnMNJBdTA4/Q
+         3gbFqKjMLZEoykx63los08mXXqXskRUGDuAXzYjgp0GdPEmMubNCrp07Z17F1lEcRL2k
+         gthJ0Ju2Y3254w4W2yrhZziK1X4ui85QzvyfcafblppZEOUcGMj2z5HUyLE6lfA/A9ET
+         D52CHUQ7Pdq8t8C2w+gG6ypnBCPouh6H386b6UVF0encJkeHydnMkUCtKL6Tgz8CZkHl
+         5C0g==
+X-Gm-Message-State: AOJu0YyFX0u1vQToobfTWIFXP9xiE53EdIuSerXY5JJdr1LdDSAqa4Jr
+        WMMe6xhfiOl8qFtU6vpC6VgYsA==
+X-Google-Smtp-Source: AGHT+IHbRm3s2xZzTaph0FHcK0YjQdqB2JHxO34y+v1bOoDkYN44ErW9Cudd/NnuxxI1L7fxSi23kQ==
+X-Received: by 2002:a17:90b:4f46:b0:267:f9c4:c0a8 with SMTP id pj6-20020a17090b4f4600b00267f9c4c0a8mr17714675pjb.4.1697029461274;
+        Wed, 11 Oct 2023 06:04:21 -0700 (PDT)
+Received: from ?IPV6:2403:580d:82f4:0:92f1:e901:1eef:a22? (2403-580d-82f4-0-92f1-e901-1eef-a22.ip6.aussiebb.net. [2403:580d:82f4:0:92f1:e901:1eef:a22])
+        by smtp.gmail.com with ESMTPSA id c6-20020a17090ad90600b0027d0de51454sm734373pjv.19.2023.10.11.06.04.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Oct 2023 06:04:20 -0700 (PDT)
+Message-ID: <70bb5281-18f6-f5b3-9226-7a7d552671f2@tweaklogic.com>
+Date:   Wed, 11 Oct 2023 23:34:12 +1030
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
- STM32MP15x boards
-To:     Rob Herring <robh@kernel.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
-        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
-        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
-        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
-        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
-        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
-        <arnd@kernel.org>, <richardcochran@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
-        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-p.hy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
- <20231010125719.784627-11-gatien.chevallier@foss.st.com>
- <20231010184212.GA1221641-robh@kernel.org>
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Avago APDS9306
+To:     Rob Herring <robh@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
+ <20231008154857.24162-2-subhajit.ghosh@tweaklogic.com>
+ <2c6ff28f-9031-beb2-f8d0-e7f12b0a07b4@gmail.com>
+ <20231010161900.GA999361-robh@kernel.org>
 Content-Language: en-US
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <20231010184212.GA1221641-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20231010161900.GA999361-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.20.32]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-11_06,2023-10-10_01,2023-05-22_02
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob,
+On 11/10/23 02:49, Rob Herring wrote:
 
-On 10/10/23 20:42, Rob Herring wrote:
-> On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
->> ETZPC is a firewall controller. Put all peripherals filtered by the
->> ETZPC as ETZPC subnodes and reference ETZPC as an
->> access-control-provider.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: avago,apds9306
 >>
->> For more information on which peripheral is securable or supports MCU
->> isolation, please read the STM32MP15 reference manual.
->>
->> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->> ---
->>
->> Changes in V6:
->>      	- Renamed access-controller to access-controllers
->>      	- Removal of access-control-provider property
->>
->> Changes in V5:
->>      	- Renamed feature-domain* to access-control*
->>
->>   arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
->>   arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
->>   arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
->>   3 files changed, 1450 insertions(+), 1377 deletions(-)
+>> I see the driver supports two different variants of this IC, differentiated
+>> by the part-ID register. Variants are named as apds9306 and apds9306-065. I
+>> wonder if we could/should have different compatibles for them?
 > 
-> This is not reviewable. Change the indentation and any non-functional
-> change in one patch and then actual changes in another.
-
-Ok, I'll make it easier to read.
-
+> If 1 compatible is sufficient to know how to power on both devices and
+> read the part-ID register, then no need for different compatibles.
 > 
-> This is also an ABI break. Though I'm not sure it's avoidable. All the
-> devices below the ETZPC node won't probe on existing kernel. A
-> simple-bus fallback for ETZPC node should solve that.
-> 
-
-I had one issue when trying with a simple-bus fallback that was the
-drivers were probing even though the access rights aren't correct.
-Hence the removal of the simple-bus compatible in the STM32MP25 patch.
-
-Even though a node is tagged with the OF_POPULATED flag when checking
-the access rights with the firewall controller, it seems that when
-simple-bus is probing, there's no check of this flag.
-
-of_platform_populate() checks and sets the OF_POPULATED_BUS flag.
-Maybe that is my error and the firewall bus populate should set
-OF_POPULATED_BUS instead of OF_POPULATED. Is that correct?
-
-Best regards,
-Gatien
-
 > Rob
+Understood. Thanks Rob.
+
+Regards,
+Subhajit Ghosh

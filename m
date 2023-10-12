@@ -2,81 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C087C77A4
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 22:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F047C7809
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 22:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442691AbjJLUHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 16:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49590 "EHLO
+        id S1442723AbjJLUp7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 16:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442408AbjJLUHR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 16:07:17 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E400DB7;
-        Thu, 12 Oct 2023 13:07:14 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-32d3755214dso1344749f8f.0;
-        Thu, 12 Oct 2023 13:07:14 -0700 (PDT)
+        with ESMTP id S1442540AbjJLUp6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 16:45:58 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A56D8
+        for <linux-iio@vger.kernel.org>; Thu, 12 Oct 2023 13:45:55 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6c4f1f0774dso929274a34.2
+        for <linux-iio@vger.kernel.org>; Thu, 12 Oct 2023 13:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697141233; x=1697746033; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=844OlQadaEhHMSKbiHRWaU2MB0ZcHGDbo8z2G63xyiU=;
-        b=Wgxv3GOrOY6H4LQvmZbgdQIJ/SgeihkMheDc9c1t70nC7TGFo9fyLzbfkuO3ldW29Q
-         88q7/DSV1sGg8/ymfKUVKNG7t5NoekE5FSb7sCXF2dTnhiiRTaj9+7wCeu0eLAQUCosa
-         2dNa7TaSqutqi9MciDkZpiHIgMHHkfsSnaCS6eOZKwzPshh9+3L3ZZJvgDaqv0JQiwah
-         7CODyUs39Xgts62fZYNMXgSDqFJUa/qUC+VRff+/28OeLaO10Yn42V9XOarNyz9GErkC
-         9T5gXStnqKake8XVhfoS8+yHBw+kdDFz+pA1fcfZn6LcqS7z0Q1ThTmz3ME+B4lRLtjl
-         soAw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697143555; x=1697748355; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mmYQTwnq/ofc5mmsg/d6LMBWdP6YzfcA9Z3KEowYm3s=;
+        b=DUEmJylwzO3k9UmqjTCyEfuTuUnTSnX2Koa5xeoY4IE2IhOi1Dgn0C/B6sfpIGF8l+
+         amtx/eD7U9hFUcCnlOlZ5H6HS/KRFRtLUwDxjmWOus7HR/9Nb9YJl922Az/nvjbfPAM1
+         XELr0XYeWXxm8+qZXxa/wu2rweUACfoSSJ8/1zSIpwbR2aMpbSHiRT8v7kBFBe9aPPnY
+         M/l1oIAuS6UsON8pZ1aJjJcKgPV7vnvK/5oTcV8XNRT301aj8npAyt4Ud3lO1ZaXaGDK
+         ieREcvGahAYYSL96ZGnQ2QbIz/ALKb+ivpJaT/RMRAHQHZCVjSIniYDnpTqeNOghzNxA
+         gpNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697141233; x=1697746033;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=844OlQadaEhHMSKbiHRWaU2MB0ZcHGDbo8z2G63xyiU=;
-        b=bjhl7qtGSFMDTweCVtXj1etjUTh8uV/sWDVERpphBnPrLvTFI/sAZjX7huiatvgLIE
-         G81EIyCtTPrAd6k7VuBL93xZlZl5W85Q3E9E+biqLKGRp5Pv9z4FoXSM61kQFC6OXE1g
-         jWwd+zuEuKj1BmQU35IZHf2d95bPxXxBnznHVZhqOiY0jk9vk0w1OvAhL6mjepcR12wI
-         dL8mk5y/GJjR7La02jKr0FJ5nKOEZhk83NX1nXsYTX98SsfeUNWkk64shjNfqNLbVIpA
-         ms0N5mUwJ6suPwYm4oT5DNSLDq/vbgxV5mTTuyvhoa2tkreqP9om7VMp+j4Hp3XJ5qa0
-         +aEw==
-X-Gm-Message-State: AOJu0YyReyh6/dOxrF7iKH0lM3kZ/pdP2BSF213+XXUGGFecjmunH5Pk
-        FHiHn1N5p2gXYl3xCBa62aYYq7C13nI32Q==
-X-Google-Smtp-Source: AGHT+IHOGn/X5J+AWMRx7A5V5zQqemztxQ5iU67inudRawhkTjAESJa6IRgUrL4alprG9L8gzReigA==
-X-Received: by 2002:adf:ee10:0:b0:317:393f:8633 with SMTP id y16-20020adfee10000000b00317393f8633mr21990772wrn.58.1697141232924;
-        Thu, 12 Oct 2023 13:07:12 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-de42-73c9-6d1f-dd27.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:de42:73c9:6d1f:dd27])
-        by smtp.gmail.com with ESMTPSA id p7-20020a056000018700b003217cbab88bsm182093wrx.16.2023.10.12.13.07.11
+        d=1e100.net; s=20230601; t=1697143555; x=1697748355;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mmYQTwnq/ofc5mmsg/d6LMBWdP6YzfcA9Z3KEowYm3s=;
+        b=R1XCI4P8JunC79nXIrU8UOmvanmlKOFxV59AfHACM+pDcri+wl85KS6SNqKsoK8PtK
+         7vd9EIG60u6j4vcWcza5fiGyWSc5RHH5p1zAw7EGNDZ/LN93tIXF8kxUddFHPJXhByLX
+         nVFrm8aaHcs8qGtSrHzbBhsGCPSpFgroa/CO2TDITTE9xPQaNCta5Nd1CMmhd8uL4n2R
+         yWw+L4qSA0OQJuoevDV1d7NWqsN7EDk8xDbsoqQSXRlUZqkp2qpyqrYbRWy/BEF9X7Sj
+         KSE+0pSadpW2wkXCUO6dVMYnPT8huA3dATQfwQW+PWquPGmOrazmONl1SyyqQe4T8MQv
+         ZSPg==
+X-Gm-Message-State: AOJu0YwZ1BKhMyZzNRUtYEMSbB/RqRw9hHMGIl8q2zHsw+oyWjvPgA0m
+        lCdtLYOqJ2UEoHAFF53j7Tli4wNzIgHDrdQlxTH9bg==
+X-Google-Smtp-Source: AGHT+IF7kfh4GL/zfwZpEJsA3AD0dscmPz1SGRR51txqbUb9nPk/xMS4WYi+HAV9RWGvcdz7bHAikw==
+X-Received: by 2002:a05:6870:23a0:b0:1be:dfdf:cb1 with SMTP id e32-20020a05687023a000b001bedfdf0cb1mr30935485oap.46.1697143554736;
+        Thu, 12 Oct 2023 13:45:54 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id k11-20020a056870f10b00b001d6e9bb67d2sm499056oac.7.2023.10.12.13.45.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 13:07:12 -0700 (PDT)
-From:   Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date:   Thu, 12 Oct 2023 22:07:08 +0200
-Subject: [PATCH 2/2] dt-bindings: trivial-devices: add silabs,si7005
+        Thu, 12 Oct 2023 13:45:54 -0700 (PDT)
+From:   David Lechner <dlechner@baylibre.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        nuno.sa@analog.com, linux-kernel@vger.kernel.org,
+        David Lechner <dlechner@baylibre.com>
+Subject: [PATCH] iio: resolver: ad2s1210: add support for adi,fixed-mode
+Date:   Thu, 12 Oct 2023 15:45:09 -0500
+Message-ID: <20231012204509.3095010-1-dlechner@baylibre.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231012-topic-si7005_devicetree-v1-2-6c8a6fa7b3ec@gmail.com>
-References: <20231012-topic-si7005_devicetree-v1-0-6c8a6fa7b3ec@gmail.com>
-In-Reply-To: <20231012-topic-si7005_devicetree-v1-0-6c8a6fa7b3ec@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697141229; l=1043;
- i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=2+Iyh8RVH9Y2roARFTNQ7lEeeGJEecebSRkJV3HqyTo=;
- b=vtYzfZQdHu33vVjqLjQBWU7nHVCR30V1nzT888DJEely7Y+Bida3p8nivZ1Zs5EQ2BtVJvDUZ
- oKRUSs5mh1zBpWb88sfmv5fRyrTgba7HCrYwLniU9mN/q1NGRXiSnYx
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,28 +69,299 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This simple I2C humidity sensor does not have any additional properties
-and can be added to the trivial-devices binding.
+It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1).
+According to the devicetree bindings, in this case the adi,fixed-mode
+property will specify which of the 3 possible modes the mode pins are
+hardwired for and the gpio-modes property is not allowed.
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+This adds support for the case where the mode pins are hardwired for
+config mode. In this configuration, the position and velocity must be read
+from the config register.
+
+The cases of hardwired position or velocity modes is not supported as
+there would be no way to configure the device.
+
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/resolver/ad2s1210.c | 193 +++++++++++++++++++++++++++-----
+ 1 file changed, 162 insertions(+), 31 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 430a814f64a5..05bf410ca9dd 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -348,6 +348,8 @@ properties:
-             # Silicon Labs SI3210 Programmable CMOS SLIC/CODEC with SPI interface
-           - silabs,si3210
-             # Relative Humidity and Temperature Sensors
-+          - silabs,si7005
-+            # Relative Humidity and Temperature Sensors
-           - silabs,si7020
-             # Skyworks SKY81452: Six-Channel White LED Driver with Touch Panel Bias Supply
-           - skyworks,sky81452
-
+diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
+index 1bd1b950e7cc..e6d3f31d529f 100644
+--- a/drivers/iio/resolver/ad2s1210.c
++++ b/drivers/iio/resolver/ad2s1210.c
+@@ -141,7 +141,7 @@ struct ad2s1210_state {
+ 	struct spi_device *sdev;
+ 	/** GPIO pin connected to SAMPLE line. */
+ 	struct gpio_desc *sample_gpio;
+-	/** GPIO pins connected to A0 and A1 lines. */
++	/** GPIO pins connected to A0 and A1 lines (optional). */
+ 	struct gpio_descs *mode_gpios;
+ 	/** Used to access config registers. */
+ 	struct regmap *regmap;
+@@ -149,6 +149,8 @@ struct ad2s1210_state {
+ 	unsigned long clkin_hz;
+ 	/** Available raw hysteresis values based on resolution. */
+ 	int hysteresis_available[2];
++	/* adi,fixed-mode property - only valid when mode_gpios == NULL. */
++	enum ad2s1210_mode fixed_mode;
+ 	/** The selected resolution */
+ 	enum ad2s1210_resolution resolution;
+ 	/** Copy of fault register from the previous read. */
+@@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
+ 	struct gpio_descs *gpios = st->mode_gpios;
+ 	DECLARE_BITMAP(bitmap, 2);
+ 
++	if (!gpios)
++		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
++
+ 	bitmap[0] = mode;
+ 
+ 	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
+@@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
+ 	 * parity error. The fault register is read-only and the D7 bit means
+ 	 * something else there.
+ 	 */
+-	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
++	if ((reg > AD2S1210_REG_VELOCITY_LSB && reg != AD2S1210_REG_FAULT)
++	     && st->rx[1] & AD2S1210_ADDRESS_DATA)
+ 		return -EBADMSG;
+ 
+ 	*val = st->rx[1];
+@@ -437,6 +443,40 @@ static void ad2s1210_push_events(struct iio_dev *indio_dev,
+ 	st->prev_fault_flags = flags;
+ }
+ 
++/**
++ * Reads position or velocity from the config registers.
++ *
++ * This is used when the mode gpios are not available.
++ *
++ * Must be called with the lock held.
++ *
++ * @param st The device state.
++ * @param val Pointer to hold the value read.
++ * @param msb_reg The register address of the MSB register.
++ * @param lsb_reg The register address of the LSB register.
++ * @return 0 on success, negative error code otherwise.
++ */
++static int ad2s1210_read_val_from_config(struct ad2s1210_state *st, __be16 *val,
++					 u8 msb_reg, u8 lsb_reg)
++{
++	unsigned int reg_val;
++	int ret;
++
++	ret = regmap_read(st->regmap, msb_reg, &reg_val);
++	if (ret < 0)
++		return ret;
++
++	((u8 *)val)[0] = reg_val;
++
++	ret = regmap_read(st->regmap, lsb_reg, &reg_val);
++	if (ret < 0)
++		return ret;
++
++	((u8 *)val)[1] = reg_val;
++
++	return 0;
++}
++
+ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
+ 				      struct iio_chan_spec const *chan,
+ 				      int *val)
+@@ -450,21 +490,53 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
+ 	ad2s1210_toggle_sample_line(st);
+ 	timestamp = iio_get_time_ns(indio_dev);
+ 
+-	switch (chan->type) {
+-	case IIO_ANGL:
+-		ret = ad2s1210_set_mode(st, MOD_POS);
+-		break;
+-	case IIO_ANGL_VEL:
+-		ret = ad2s1210_set_mode(st, MOD_VEL);
+-		break;
+-	default:
+-		return -EINVAL;
++	if (st->fixed_mode == MOD_CONFIG) {
++		unsigned int reg_val;
++
++		switch (chan->type) {
++		case IIO_ANGL:
++			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
++						AD2S1210_REG_POSITION_MSB,
++						AD2S1210_REG_POSITION_LSB);
++			if (ret < 0)
++				return ret;
++
++			break;
++		case IIO_ANGL_VEL:
++			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
++						AD2S1210_REG_VELOCITY_MSB,
++						AD2S1210_REG_VELOCITY_LSB);
++			if (ret < 0)
++				return ret;
++
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
++		if (ret < 0)
++			return ret;
++
++		st->sample.fault = reg_val;
++	} else {
++		switch (chan->type) {
++		case IIO_ANGL:
++			ret = ad2s1210_set_mode(st, MOD_POS);
++			break;
++		case IIO_ANGL_VEL:
++			ret = ad2s1210_set_mode(st, MOD_VEL);
++			break;
++		default:
++			return -EINVAL;
++		}
++		if (ret < 0)
++			return ret;
++
++		ret = spi_read(st->sdev, &st->sample, 3);
++		if (ret < 0)
++			return ret;
+ 	}
+-	if (ret < 0)
+-		return ret;
+-	ret = spi_read(st->sdev, &st->sample, 3);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	switch (chan->type) {
+ 	case IIO_ANGL:
+@@ -1252,27 +1324,53 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
+ 	ad2s1210_toggle_sample_line(st);
+ 
+ 	if (test_bit(0, indio_dev->active_scan_mask)) {
+-		ret = ad2s1210_set_mode(st, MOD_POS);
+-		if (ret < 0)
+-			goto error_ret;
+-
+-		ret = spi_read(st->sdev, &st->sample, 3);
+-		if (ret < 0)
+-			goto error_ret;
++		if (st->fixed_mode == MOD_CONFIG) {
++			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
++						AD2S1210_REG_POSITION_MSB,
++						AD2S1210_REG_POSITION_LSB);
++			if (ret < 0)
++				goto error_ret;
++		} else {
++			ret = ad2s1210_set_mode(st, MOD_POS);
++			if (ret < 0)
++				goto error_ret;
++
++			ret = spi_read(st->sdev, &st->sample, 3);
++			if (ret < 0)
++				goto error_ret;
++		}
+ 
+ 		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
+ 	}
+ 
+ 	if (test_bit(1, indio_dev->active_scan_mask)) {
+-		ret = ad2s1210_set_mode(st, MOD_VEL);
+-		if (ret < 0)
+-			goto error_ret;
++		if (st->fixed_mode == MOD_CONFIG) {
++			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
++						AD2S1210_REG_VELOCITY_MSB,
++						AD2S1210_REG_VELOCITY_LSB);
++			if (ret < 0)
++				goto error_ret;
++		} else {
++			ret = ad2s1210_set_mode(st, MOD_VEL);
++			if (ret < 0)
++				goto error_ret;
++
++			ret = spi_read(st->sdev, &st->sample, 3);
++			if (ret < 0)
++				goto error_ret;
++		}
+ 
+-		ret = spi_read(st->sdev, &st->sample, 3);
++		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
++	}
++
++	if (st->fixed_mode == MOD_CONFIG) {
++		unsigned int reg_val;
++
++		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
+ 		if (ret < 0)
+-			goto error_ret;
++			return ret;
+ 
+-		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
++		st->sample.fault = reg_val;
+ 	}
+ 
+ 	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
+@@ -1299,9 +1397,33 @@ static const struct iio_info ad2s1210_info = {
+ static int ad2s1210_setup_properties(struct ad2s1210_state *st)
+ {
+ 	struct device *dev = &st->sdev->dev;
++	const char *str_val;
+ 	u32 val;
+ 	int ret;
+ 
++	ret = device_property_read_string(dev, "adi,fixed-mode", &str_val);
++	if (ret == -EINVAL)
++		st->fixed_mode = -1;
++	else if (ret < 0)
++		return dev_err_probe(dev, ret,
++			"failed to read adi,fixed-mode property\n");
++	else {
++		if (strcmp(str_val, "position") == 0)
++			st->fixed_mode = MOD_POS;
++		else if (strcmp(str_val, "velocity") == 0)
++			st->fixed_mode = MOD_VEL;
++		else if (strcmp(str_val, "config") == 0)
++			st->fixed_mode = MOD_CONFIG;
++		else
++			return dev_err_probe(dev, -EINVAL,
++				"invalid adi,fixed-mode property value: %s\n",
++				str_val);
++
++		if (st->fixed_mode != MOD_CONFIG)
++			return dev_err_probe(dev, -EINVAL,
++				"only adi,fixed-mode=\"config\" is supported\n");
++	}
++
+ 	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret,
+@@ -1357,12 +1479,21 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
+ 				     "failed to request sample GPIO\n");
+ 
+ 	/* both pins high means that we start in config mode */
+-	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
++	st->mode_gpios = devm_gpiod_get_array_optional(dev, "mode",
++						       GPIOD_OUT_HIGH);
+ 	if (IS_ERR(st->mode_gpios))
+ 		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
+ 				     "failed to request mode GPIOs\n");
+ 
+-	if (st->mode_gpios->ndescs != 2)
++	if (!st->mode_gpios && st->fixed_mode == -1)
++		return dev_err_probe(dev, -EINVAL,
++			"must specify either adi,fixed-mode or mode-gpios\n");
++
++	if (st->mode_gpios && st->fixed_mode != -1)
++		return dev_err_probe(dev, -EINVAL,
++			"must specify only one of adi,fixed-mode or mode-gpios\n");
++
++	if (st->mode_gpios && st->mode_gpios->ndescs != 2)
+ 		return dev_err_probe(dev, -EINVAL,
+ 				     "requires exactly 2 mode-gpios\n");
+ 
 -- 
-2.39.2
+2.42.0
 

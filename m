@@ -2,71 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3B757C7102
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 17:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 341D87C717B
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 17:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378198AbjJLPJL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 11:09:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50430 "EHLO
+        id S1379449AbjJLPaT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 11:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347171AbjJLPJJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 11:09:09 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F8BCB8;
-        Thu, 12 Oct 2023 08:09:07 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-4065dea9a33so11526955e9.3;
-        Thu, 12 Oct 2023 08:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697123346; x=1697728146; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZIVOoI+PIg0Wo1D0v9gT9jKhAogWFUlI5EJKrF5EVvs=;
-        b=JJybegZ75RBVs917p6HlNjofvejUwOBXXJSFEFw2BYcP42n3a3Pq/HjjiVsXyvtgIG
-         yVfBE/w0pMwlx+rqIFZhY3yMpFXrdhiJJDH1878uPpFXzTQrc8ImD6aGZWkZnwA6sbgF
-         N48trAAxP9EOu5AjTXKD8W7d/NKOyAtl+Mv2LUVx+0fRUvmHQGuNndFXD1NMrLIhgm7V
-         lUtVFnvbt/XmRYrr3MwlcQhKVqhNdpRq8Ns4yuJqKiEYwdKGeLSnwMKx8WgkGQTcoMTx
-         U9kU/MHFzv47XVwNh40zjt2yFrHkMxk9xSO3Qm8o//OMz52z/TXTa+S6wu7OOxdSSIHD
-         aZTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697123346; x=1697728146;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZIVOoI+PIg0Wo1D0v9gT9jKhAogWFUlI5EJKrF5EVvs=;
-        b=pRb7xN6qhU7V54bDuXZJ5+TLlZ7adJK1Pr/6fuTSTuk45tjzlLewDF7XGpdeENoPHN
-         9Pc5GQ5E0mvLPcJEI5e5Q36DiH71Y580uUD9QTtj1vLhpZfrs6kdXDVAh3Ow/vF5Y6A2
-         dmXqnNTvGUKAQwPytWxgcYoDc1A6X8YfpWVmy9UX+DP8BUo4DHm3/sLRnoWENYmOsSkY
-         nVRLI409my9zjcDj0A55/Wy8MeZxHlHk8jEb1LkZS2+p+yxHdps8CHaoNFaJ2oXIUD+W
-         dOabidLGnfwmeFo0bfmErmku1m7ENuY+qHyqQ0oFrSeDL+ogb8dvFR3dwUcUPWHKBYen
-         YgoA==
-X-Gm-Message-State: AOJu0YzkG+waRj6iE/CRpR5r6WBiJGMQtFaDBwVqoYVVpT8rEyTjED3s
-        CUPzkkNhrLZn2KZ16r//GGS1X8a35YAZ9g==
-X-Google-Smtp-Source: AGHT+IFKqljoCBkYiin7g8cJyyfJ/QgkQglVoBWqb4Qw7Mq4PcB3d4iFYPjoXiVcCt4flnJ2CDehGg==
-X-Received: by 2002:a05:600c:230d:b0:401:dc7c:2494 with SMTP id 13-20020a05600c230d00b00401dc7c2494mr23014764wmo.27.1697123345289;
-        Thu, 12 Oct 2023 08:09:05 -0700 (PDT)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id m8-20020a7bcb88000000b0040646a708dasm78843wmi.15.2023.10.12.08.09.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 08:09:04 -0700 (PDT)
-Message-ID: <fa310a081779e92a44756a0b561171e97b7cdbaf.camel@gmail.com>
-Subject: Re: [PATCH 1/1] drivers: imu: adis16475.c: Remove scan index from
- delta channels
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 12 Oct 2023 17:09:04 +0200
-In-Reply-To: <20231012122456.765709-2-ramona.gradinariu@analog.com>
-References: <20231012122456.765709-1-ramona.gradinariu@analog.com>
-         <20231012122456.765709-2-ramona.gradinariu@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S1379229AbjJLPaS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 11:30:18 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA29C0;
+        Thu, 12 Oct 2023 08:30:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F77C433C8;
+        Thu, 12 Oct 2023 15:30:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697124617;
+        bh=ZtcSIbjB2WpeZfQRyCvdpc+0MAvoSIsAVFQJFGWoAZY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sNlqy8imXhwlW5ogqsGatXLJh6x3ULy2dxsaSxs56ggFVkTV6XlGelwtvmknbj7Xu
+         ShUCZ/8OXslZolbuuvyrBlxLrcJ01GSlmz7CSJEaxf3rAcgbPMbnfuFHufU09E90RW
+         5ApYEGyJHTTls7cFvAibnKaw6QYJ/MgybICMj+V6qAR0vsGzNnF3N6loiEvhXeakbo
+         Tc8RBxaMuLt9cw9IyN5cmf2yVbPk/7zrWOf/NIL+18Z146Hj24oQ+EZR236LNiKgxH
+         rW8s1EpB9lyTQA3S/nGP0hy8u95XFa9UJYnNgK7IXnZV4NIWHKMv5YsKgXN/Jehq6j
+         lkrAiKBqcY2gw==
+Received: (nullmailer pid 821925 invoked by uid 1000);
+        Thu, 12 Oct 2023 15:30:12 -0000
+Date:   Thu, 12 Oct 2023 10:30:12 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org,
+        olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com,
+        mchehab@kernel.org, fabrice.gasnier@foss.st.com,
+        andi.shyti@kernel.org, ulf.hansson@linaro.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, hugues.fruchet@foss.st.com,
+        lee@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+        arnd@kernel.org, richardcochran@gmail.com,
+        Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-p.hy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
+ STM32MP15x boards
+Message-ID: <20231012153012.GA698406-robh@kernel.org>
+References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
+ <20231010125719.784627-11-gatien.chevallier@foss.st.com>
+ <20231010184212.GA1221641-robh@kernel.org>
+ <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,118 +71,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgUmFtb25hLAoKVGhlcmUgYXJlIHNvbWUgb2RkIHN0dWZmLi4uCgpPbiBUaHUsIDIwMjMtMTAt
-MTIgYXQgMTU6MjQgKzAzMDAsIFJhbW9uYSBHcmFkaW5hcml1IHdyb3RlOgo+IFNvbWUgZGV2aWNl
-cyBkbyBub3Qgc3VwcG9ydCBkZWx0YSBhbmdsZSBhbmQgZGVsdGEgdmVsb2NpdHkKPiBidXJzdCBy
-ZWFkaW5ncywgd2hpY2ggbWVhbnMgdGhlcmUgc2hvdWxkIGJlIG5vIGJ1ZmZlciBzdXBwb3J0Cj4g
-Zm9yIHRoZXNlIHR5cGVzIG9mIGNoYW5uZWxzLgo+IEEgbmV3IGxpc3Qgb2YgY2hhbm5lbHMgaXMg
-Y3JlYXRlZCB3aGljaCBjb250YWlucyB0aGUgZGVsdGEKPiBjaGFubmVscyBzdHJ1Y3R1cmVzIHdp
-dGggdGhlIHNjYW4gaW5kZXggZXF1YWwgdG8gLTEgdG8gYWxsb3cKPiBmb3IgcmF3IHJlZ2lzdGVy
-IHJlYWRpbmdzLCB3aXRob3V0IGJ1ZmZlciBzdXBwb3J0Lgo+IFRoaXMgbGlzdCBvZiBjaGFubmVs
-cyBpcyBhc3NpZ25lZCB0byB0aGUgZGV2aWNlcyB3aGljaAo+IGRvIG5vdCBzdXBwb3J0IGRlbHRh
-IGFuZ2xlIGFuZCBkZWx0YSB2ZWxvY2l0eSBidXJzdAo+IHJlYWRpbmdzLgo+IAo+IEZpeGVzOiA4
-ZjZiYzg3ZDY3YzAgKCJpaW86IGltdTogYWRpczE2NDc1LmM6IEFkZCBkZWx0YSBhbmdsZSBhbmQg
-ZGVsdGEgdmVsb2NpdHkKPiBjaGFubmVscyIpCj4gU2lnbmVkLW9mZi1ieTogUmFtb25hIEdyYWRp
-bmFyaXUgPHJhbW9uYS5ncmFkaW5hcml1QGFuYWxvZy5jb20+Cj4gLS0tCj4gwqBkcml2ZXJzL2lp
-by9pbXUvYWRpczE2NDc1LmMgfCA2NyArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
-LS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25zKC0p
-Cj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2ltdS9hZGlzMTY0NzUuYyBiL2RyaXZlcnMv
-aWlvL2ltdS9hZGlzMTY0NzUuYwo+IGluZGV4IDlhZjA3ZmVjMGQ4OS4uYjdjYmUxNTY1YWVlIDEw
-MDY0NAo+IC0tLSBhL2RyaXZlcnMvaWlvL2ltdS9hZGlzMTY0NzUuYwo+ICsrKyBiL2RyaXZlcnMv
-aWlvL2ltdS9hZGlzMTY0NzUuYwo+IEBAIC02MDQsNyArNjA0LDE1IEBAIHN0YXRpYyBpbnQgYWRp
-czE2NDc1X3dyaXRlX3JhdyhzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LAo+IMKgwqDCoMKgwqDC
-oMKgwqBBRElTMTY0NzVfTU9EX0NIQU5fREVMVEEoSUlPX0RFTFRBX1ZFTE9DSVRZLCBJSU9fTU9E
-XyAjIyBfbW9kLCBcCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBBRElTMTY0NzVfUkVHXyAjIyBfbW9kICMjIF9ERUxUVkVMX0wsCj4gQURJUzE2
-NDc1X1NDQU5fREVMVFZFTF8gIyMgX21vZCwgMzIsIDMyKQo+IMKgCj4gLXN0YXRpYyBjb25zdCBz
-dHJ1Y3QgaWlvX2NoYW5fc3BlYyBhZGlzMTY0NzVfY2hhbm5lbHNbXSA9IHsKPiArI2RlZmluZSBB
-RElTMTY0NzVfREVMVEFOR19DSEFOX05PX1NDQU4oX21vZCkgXAo+ICvCoMKgwqDCoMKgwqDCoEFE
-SVMxNjQ3NV9NT0RfQ0hBTl9ERUxUQShJSU9fREVMVEFfQU5HTCwgSUlPX01PRF8gIyMgX21vZCwg
-XAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBB
-RElTMTY0NzVfUkVHXyAjIyBfbW9kICMjIF9ERUxUQU5HX0wsIC0xLCAzMiwgMzIpCj4gKwo+ICsj
-ZGVmaW5lIEFESVMxNjQ3NV9ERUxUVkVMX0NIQU5fTk9fU0NBTihfbW9kKSBcCj4gK8KgwqDCoMKg
-wqDCoMKgQURJUzE2NDc1X01PRF9DSEFOX0RFTFRBKElJT19ERUxUQV9WRUxPQ0lUWSwgSUlPX01P
-RF8gIyMgX21vZCwgXAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBBRElTMTY0NzVfUkVHXyAjIyBfbW9kICMjIF9ERUxUVkVMX0wsIC0xLCAzMiwg
-MzIpCj4gKwo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19jaGFuX3NwZWMgYWRpczE2NDc3X2No
-YW5uZWxzW10gPSB7Cj4gwqDCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9HWVJPX0NIQU5ORUwoWCks
-Cj4gwqDCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9HWVJPX0NIQU5ORUwoWSksCj4gwqDCoMKgwqDC
-oMKgwqDCoEFESVMxNjQ3NV9HWVJPX0NIQU5ORUwoWiksCj4gQEAgLTYyMSw2ICs2MjksMjMgQEAg
-c3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hhbl9zcGVjIGFkaXMxNjQ3NV9jaGFubmVsc1tdID0g
-ewo+IMKgwqDCoMKgwqDCoMKgwqBJSU9fQ0hBTl9TT0ZUX1RJTUVTVEFNUCgxMykKPiDCoH07Cj4g
-wqAKPiArc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hhbl9zcGVjIGFkaXMxNjQ3NV9jaGFubmVs
-c1tdID0gewoKSSBndWVzcyB5b3UgbWVhbiBhZGlzMTY0NzdfY2hhbm5lbHM/Cgo+ICvCoMKgwqDC
-oMKgwqDCoEFESVMxNjQ3NV9HWVJPX0NIQU5ORUwoWCksCj4gK8KgwqDCoMKgwqDCoMKgQURJUzE2
-NDc1X0dZUk9fQ0hBTk5FTChZKSwKPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfR1lST19DSEFO
-TkVMKFopLAo+ICvCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9BQ0NFTF9DSEFOTkVMKFgpLAo+ICvC
-oMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9BQ0NFTF9DSEFOTkVMKFkpLAo+ICvCoMKgwqDCoMKgwqDC
-oEFESVMxNjQ3NV9BQ0NFTF9DSEFOTkVMKFopLAo+ICvCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9U
-RU1QX0NIQU5ORUwoKSwKPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVEFOR19DSEFOX05P
-X1NDQU4oWCksCj4gK8KgwqDCoMKgwqDCoMKgQURJUzE2NDc1X0RFTFRBTkdfQ0hBTl9OT19TQ0FO
-KFkpLAo+ICvCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9ERUxUQU5HX0NIQU5fTk9fU0NBTihaKSwK
-PiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVFZFTF9DSEFOX05PX1NDQU4oWCksCj4gK8Kg
-wqDCoMKgwqDCoMKgQURJUzE2NDc1X0RFTFRWRUxfQ0hBTl9OT19TQ0FOKFkpLAo+ICvCoMKgwqDC
-oMKgwqDCoEFESVMxNjQ3NV9ERUxUVkVMX0NIQU5fTk9fU0NBTihaKSwKPiArwqDCoMKgwqDCoMKg
-wqBJSU9fQ0hBTl9TT0ZUX1RJTUVTVEFNUCg3KQo+ICt9Owo+ICsKPiDCoGVudW0gYWRpczE2NDc1
-X3ZhcmlhbnQgewo+IMKgwqDCoMKgwqDCoMKgwqBBRElTMTY0NzAsCj4gwqDCoMKgwqDCoMKgwqDC
-oEFESVMxNjQ3NV8xLAo+IEBAIC03ODIsOCArODA3LDggQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBh
-ZGlzMTY0NzVfY2hpcF9pbmZvIGFkaXMxNjQ3NV9jaGlwX2luZm9bXSA9Cj4gewo+IMKgwqDCoMKg
-wqDCoMKgwqB9LAo+IMKgwqDCoMKgwqDCoMKgwqBbQURJUzE2NDc3XzFdID0gewo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm5hbWUgPSAiYWRpczE2NDc3LTEiLAo+IC3CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubnVtX2NoYW5uZWxzID0gQVJSQVlfU0laRShhZGlzMTY0
-NzVfY2hhbm5lbHMpLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbHMg
-PSBhZGlzMTY0NzVfY2hhbm5lbHMsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5u
-dW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5jaGFubmVscyA9IGFkaXMxNjQ3N19jaGFubmVscywKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5neXJvX21heF92YWwgPSAxLAo+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmd5cm9fbWF4X3NjYWxlID0gSUlPX1JBRF9UT19E
-RUdSRUUoMTYwIDw8IDE2KSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5hY2Nl
-bF9tYXhfdmFsID0gMSwKPiBAQCAtODAwLDggKzgyNSw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-YWRpczE2NDc1X2NoaXBfaW5mbyBhZGlzMTY0NzVfY2hpcF9pbmZvW10gPQo+IHsKPiDCoMKgwqDC
-oMKgwqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKgW0FESVMxNjQ3N18yXSA9IHsKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5uYW1lID0gImFkaXMxNjQ3Ny0yIiwKPiAtwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51bV9jaGFubmVscyA9IEFSUkFZX1NJWkUoYWRpczE2
-NDc1X2NoYW5uZWxzKSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxz
-ID0gYWRpczE2NDc1X2NoYW5uZWxzLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAu
-bnVtX2NoYW5uZWxzID0gQVJSQVlfU0laRShhZGlzMTY0NzdfY2hhbm5lbHMpLAo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbHMgPSBhZGlzMTY0NzdfY2hhbm5lbHMsCj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhfdmFsID0gMSwKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5neXJvX21heF9zY2FsZSA9IElJT19SQURfVE9f
-REVHUkVFKDQwIDw8IDE2KSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5hY2Nl
-bF9tYXhfdmFsID0gMSwKPiBAQCAtODE4LDggKzg0Myw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-YWRpczE2NDc1X2NoaXBfaW5mbyBhZGlzMTY0NzVfY2hpcF9pbmZvW10gPQo+IHsKPiDCoMKgwqDC
-oMKgwqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKgW0FESVMxNjQ3N18zXSA9IHsKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5uYW1lID0gImFkaXMxNjQ3Ny0zIiwKPiAtwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51bV9jaGFubmVscyA9IEFSUkFZX1NJWkUoYWRpczE2
-NDc1X2NoYW5uZWxzKSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxz
-ID0gYWRpczE2NDc1X2NoYW5uZWxzLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAu
-bnVtX2NoYW5uZWxzID0gQVJSQVlfU0laRShhZGlzMTY0NzdfY2hhbm5lbHMpLAo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbHMgPSBhZGlzMTY0NzdfY2hhbm5lbHMsCj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhfdmFsID0gMSwKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5neXJvX21heF9zY2FsZSA9IElJT19SQURfVE9f
-REVHUkVFKDEwIDw8IDE2KSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5hY2Nl
-bF9tYXhfdmFsID0gMSwKPiBAQCAtOTM4LDggKzk2Myw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-YWRpczE2NDc1X2NoaXBfaW5mbyBhZGlzMTY0NzVfY2hpcF9pbmZvW10gPQo+IHsKPiDCoMKgwqDC
-oMKgwqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKgW0FESVMxNjUwMF0gPSB7Cj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubmFtZSA9ICJhZGlzMTY1MDAiLAo+IC3CoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAubnVtX2NoYW5uZWxzID0gQVJSQVlfU0laRShhZGlzMTY0NzVf
-Y2hhbm5lbHMpLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbHMgPSBh
-ZGlzMTY0NzVfY2hhbm5lbHMsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1f
-Y2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoC5jaGFubmVscyA9IGFkaXMxNjQ3N19jaGFubmVscywKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5neXJvX21heF92YWwgPSAxLAo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmd5cm9fbWF4X3NjYWxlID0gSUlPX1JBRF9UT19ERUdS
-RUUoMTAgPDwgMTYpLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmFjY2VsX21h
-eF92YWwgPSAzOTIsCj4gQEAgLTk1Nyw4ICs5ODIsOCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGFk
-aXMxNjQ3NV9jaGlwX2luZm8gYWRpczE2NDc1X2NoaXBfaW5mb1tdID0KPiB7Cj4gwqDCoMKgwqDC
-oMKgwqDCoH0sCj4gwqDCoMKgwqDCoMKgwqDCoFtBRElTMTY1MDVfMV0gPSB7Cj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubmFtZSA9ICJhZGlzMTY1MDUtMSIsCj4gLcKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3
-NV9jaGFubmVscyksCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5jaGFubmVscyA9
-IGFkaXMxNjQ3NV9jaGFubmVscywKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51
-bV9jaGFubmVscyA9IEFSUkFZX1NJWkUoYWRpczE2NDc3X2NoYW5uZWxzKSwKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc3X2NoYW5uZWxzLAoKQUZB
-SUNTLCB0aGlzIHN1cHBvcnRzIGRlbHRhIGNoYW5uZWxzIGluIGJ1cnN0IG1vZGUuLi4gcmlnaHQ/
-IFBsZWFzZSBtYWtlIHN1cmUgdG8gZ28KYWdhaW4gdGhyb3VnaCB0aGUgZGF0YXNoZWV0cyBzbyB3
-ZSBtYWtlIHRoaXMgcmlnaHQuLi4KCi0gTnVubyBTw6EKPiAKCg==
+On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
+> Hi Rob,
+> 
+> On 10/10/23 20:42, Rob Herring wrote:
+> > On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
+> > > ETZPC is a firewall controller. Put all peripherals filtered by the
+> > > ETZPC as ETZPC subnodes and reference ETZPC as an
+> > > access-control-provider.
+> > > 
+> > > For more information on which peripheral is securable or supports MCU
+> > > isolation, please read the STM32MP15 reference manual.
+> > > 
+> > > Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> > > ---
+> > > 
+> > > Changes in V6:
+> > >      	- Renamed access-controller to access-controllers
+> > >      	- Removal of access-control-provider property
+> > > 
+> > > Changes in V5:
+> > >      	- Renamed feature-domain* to access-control*
+> > > 
+> > >   arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
+> > >   arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
+> > >   arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
+> > >   3 files changed, 1450 insertions(+), 1377 deletions(-)
+> > 
+> > This is not reviewable. Change the indentation and any non-functional
+> > change in one patch and then actual changes in another.
+> 
+> Ok, I'll make it easier to read.
+> 
+> > 
+> > This is also an ABI break. Though I'm not sure it's avoidable. All the
+> > devices below the ETZPC node won't probe on existing kernel. A
+> > simple-bus fallback for ETZPC node should solve that.
+> > 
+> 
+> I had one issue when trying with a simple-bus fallback that was the
+> drivers were probing even though the access rights aren't correct.
+> Hence the removal of the simple-bus compatible in the STM32MP25 patch.
 
+But it worked before, right? So the difference is you have either added 
+new devices which need setup or your firmware changed how devices are 
+setup (or not setup). Certainly can't fix the latter case. You just need 
+to be explicit about what you are doing to users.
+
+
+> Even though a node is tagged with the OF_POPULATED flag when checking
+> the access rights with the firewall controller, it seems that when
+> simple-bus is probing, there's no check of this flag.
+
+It shouldn't. Those flags are for creating the devices (or not) and 
+removing only devices of_platform_populate() created.
+
+> of_platform_populate() checks and sets the OF_POPULATED_BUS flag.
+> Maybe that is my error and the firewall bus populate should set
+> OF_POPULATED_BUS instead of OF_POPULATED. Is that correct?
+
+Shrug. Off hand, I'd say probably not, but am not certain.
+
+Rob

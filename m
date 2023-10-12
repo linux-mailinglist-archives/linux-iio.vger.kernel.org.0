@@ -2,68 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 341D87C717B
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 17:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12B2B7C7198
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 17:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379449AbjJLPaT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 11:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
+        id S235697AbjJLPfJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 11:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379229AbjJLPaS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 11:30:18 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA29C0;
-        Thu, 12 Oct 2023 08:30:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F77C433C8;
-        Thu, 12 Oct 2023 15:30:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697124617;
-        bh=ZtcSIbjB2WpeZfQRyCvdpc+0MAvoSIsAVFQJFGWoAZY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sNlqy8imXhwlW5ogqsGatXLJh6x3ULy2dxsaSxs56ggFVkTV6XlGelwtvmknbj7Xu
-         ShUCZ/8OXslZolbuuvyrBlxLrcJ01GSlmz7CSJEaxf3rAcgbPMbnfuFHufU09E90RW
-         5ApYEGyJHTTls7cFvAibnKaw6QYJ/MgybICMj+V6qAR0vsGzNnF3N6loiEvhXeakbo
-         Tc8RBxaMuLt9cw9IyN5cmf2yVbPk/7zrWOf/NIL+18Z146Hj24oQ+EZR236LNiKgxH
-         rW8s1EpB9lyTQA3S/nGP0hy8u95XFa9UJYnNgK7IXnZV4NIWHKMv5YsKgXN/Jehq6j
-         lkrAiKBqcY2gw==
-Received: (nullmailer pid 821925 invoked by uid 1000);
-        Thu, 12 Oct 2023 15:30:12 -0000
-Date:   Thu, 12 Oct 2023 10:30:12 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org,
-        olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com,
-        mchehab@kernel.org, fabrice.gasnier@foss.st.com,
-        andi.shyti@kernel.org, ulf.hansson@linaro.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, hugues.fruchet@foss.st.com,
-        lee@kernel.org, will@kernel.org, catalin.marinas@arm.com,
-        arnd@kernel.org, richardcochran@gmail.com,
-        Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-p.hy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
- STM32MP15x boards
-Message-ID: <20231012153012.GA698406-robh@kernel.org>
-References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
- <20231010125719.784627-11-gatien.chevallier@foss.st.com>
- <20231010184212.GA1221641-robh@kernel.org>
- <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
+        with ESMTP id S233879AbjJLPfI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 11:35:08 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49739BE;
+        Thu, 12 Oct 2023 08:35:06 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-3296b49c546so935364f8f.3;
+        Thu, 12 Oct 2023 08:35:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697124905; x=1697729705; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QVaqoJy5jWvHXpTDEpVonsEamyxT41Uverd+sOrBEZs=;
+        b=WdOZesG2HRi7shPgmuDSyYArmd6HffuDR1Bbd7nAPjPxxDNNfRtMQKm0v99eoFhlaj
+         NR6BgPwmJ4fR5eoi97HMQ8o2rEOxtJdjnGn5Ih1qIWl+nZka0P/vejd7dw/BTsuq+Dy0
+         lRUB4AIpSIB7FAtY0bDE9TJpHRIUtz2MR5FGVH091XY6pj5o1tD/O7nNVc6BLfatiFV7
+         uGHB7tynk1cC90+PwfJOFhsTLsF2uE7fFEG0h77wiZMv0yeGmezxcyUtw6o+IwSgLBDL
+         UE1kY2/J1XDlrfqM5QtbcFvnAt89R5HicKx6pc9zcgrBw4uW4ZZFfIHGisaFGI3a8Z5/
+         gKqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697124905; x=1697729705;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QVaqoJy5jWvHXpTDEpVonsEamyxT41Uverd+sOrBEZs=;
+        b=TH5TzsIzLSkOJA8kgFSqEKsKCJifBSSzwfQcwt6/JIA+JYttoA1jJdVjxXMV1M4w+a
+         cJF3vcQS0bMUbmo3km/kCh8/sdpAvcCaVEF7S2kVH0iwRuMQnEopyBNLMa+p9h0kBVe1
+         acRgucWxA1Nf8B5E1kFwPfnPtfYseU5jy9hi+nheOrYVlxlV8VrzQsV1qeGqTSiPJlrI
+         QUVmIb5uqFAi82lzcK4yTs5TxoWvesy5rIs9cyPjGuQk2PPdvci9AnLosJTyozRRHK3G
+         j2EcIpYzpM+h6jTD3vtmctNtfXWSOlizSrHRRX2iJimKbze1ybEElu2rEw8Y/oo/3nsZ
+         Jsdg==
+X-Gm-Message-State: AOJu0Yxlp+Lhz7/uhONyEHRyZw2tL/rKAsYvJkoiGhQIYqC0yYCmyn/u
+        sm85wDN8jPFAsao3AzRJEXM=
+X-Google-Smtp-Source: AGHT+IFmPnncmA3Y14+J1pCA0SHbm70GHx+asNmAoOjFtlihsopsi+CNoyBkjUV41p6r26khraMHcw==
+X-Received: by 2002:a05:6000:5c6:b0:32d:5870:8b8a with SMTP id bh6-20020a05600005c600b0032d58708b8amr7498035wrb.56.1697124904300;
+        Thu, 12 Oct 2023 08:35:04 -0700 (PDT)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id g7-20020adfe407000000b003232d122dbfsm18846114wrm.66.2023.10.12.08.35.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 08:35:03 -0700 (PDT)
+Message-ID: <1bbca62efe038e37a6a87f873d71d131d5ebdd2f.camel@gmail.com>
+Subject: Re: [PATCH 1/1] drivers: imu: adis16475.c: Remove scan index from
+ delta channels
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
+        nuno.sa@analog.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 12 Oct 2023 17:35:02 +0200
+In-Reply-To: <fa310a081779e92a44756a0b561171e97b7cdbaf.camel@gmail.com>
+References: <20231012122456.765709-1-ramona.gradinariu@analog.com>
+         <20231012122456.765709-2-ramona.gradinariu@analog.com>
+         <fa310a081779e92a44756a0b561171e97b7cdbaf.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,65 +75,127 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
-> Hi Rob,
-> 
-> On 10/10/23 20:42, Rob Herring wrote:
-> > On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
-> > > ETZPC is a firewall controller. Put all peripherals filtered by the
-> > > ETZPC as ETZPC subnodes and reference ETZPC as an
-> > > access-control-provider.
-> > > 
-> > > For more information on which peripheral is securable or supports MCU
-> > > isolation, please read the STM32MP15 reference manual.
-> > > 
-> > > Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> > > ---
-> > > 
-> > > Changes in V6:
-> > >      	- Renamed access-controller to access-controllers
-> > >      	- Removal of access-control-provider property
-> > > 
-> > > Changes in V5:
-> > >      	- Renamed feature-domain* to access-control*
-> > > 
-> > >   arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
-> > >   arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
-> > >   arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
-> > >   3 files changed, 1450 insertions(+), 1377 deletions(-)
-> > 
-> > This is not reviewable. Change the indentation and any non-functional
-> > change in one patch and then actual changes in another.
-> 
-> Ok, I'll make it easier to read.
-> 
-> > 
-> > This is also an ABI break. Though I'm not sure it's avoidable. All the
-> > devices below the ETZPC node won't probe on existing kernel. A
-> > simple-bus fallback for ETZPC node should solve that.
-> > 
-> 
-> I had one issue when trying with a simple-bus fallback that was the
-> drivers were probing even though the access rights aren't correct.
-> Hence the removal of the simple-bus compatible in the STM32MP25 patch.
+T24gVGh1LCAyMDIzLTEwLTEyIGF0IDE3OjA5ICswMjAwLCBOdW5vIFPDoSB3cm90ZToKPiBIaSBS
+YW1vbmEsCj4gCj4gVGhlcmUgYXJlIHNvbWUgb2RkIHN0dWZmLi4uCj4gCj4gT24gVGh1LCAyMDIz
+LTEwLTEyIGF0IDE1OjI0ICswMzAwLCBSYW1vbmEgR3JhZGluYXJpdSB3cm90ZToKPiA+IFNvbWUg
+ZGV2aWNlcyBkbyBub3Qgc3VwcG9ydCBkZWx0YSBhbmdsZSBhbmQgZGVsdGEgdmVsb2NpdHkKPiA+
+IGJ1cnN0IHJlYWRpbmdzLCB3aGljaCBtZWFucyB0aGVyZSBzaG91bGQgYmUgbm8gYnVmZmVyIHN1
+cHBvcnQKPiA+IGZvciB0aGVzZSB0eXBlcyBvZiBjaGFubmVscy4KPiA+IEEgbmV3IGxpc3Qgb2Yg
+Y2hhbm5lbHMgaXMgY3JlYXRlZCB3aGljaCBjb250YWlucyB0aGUgZGVsdGEKPiA+IGNoYW5uZWxz
+IHN0cnVjdHVyZXMgd2l0aCB0aGUgc2NhbiBpbmRleCBlcXVhbCB0byAtMSB0byBhbGxvdwo+ID4g
+Zm9yIHJhdyByZWdpc3RlciByZWFkaW5ncywgd2l0aG91dCBidWZmZXIgc3VwcG9ydC4KPiA+IFRo
+aXMgbGlzdCBvZiBjaGFubmVscyBpcyBhc3NpZ25lZCB0byB0aGUgZGV2aWNlcyB3aGljaAo+ID4g
+ZG8gbm90IHN1cHBvcnQgZGVsdGEgYW5nbGUgYW5kIGRlbHRhIHZlbG9jaXR5IGJ1cnN0Cj4gPiBy
+ZWFkaW5ncy4KPiA+IAo+ID4gRml4ZXM6IDhmNmJjODdkNjdjMCAoImlpbzogaW11OiBhZGlzMTY0
+NzUuYzogQWRkIGRlbHRhIGFuZ2xlIGFuZCBkZWx0YSB2ZWxvY2l0eQo+ID4gY2hhbm5lbHMiKQo+
+ID4gU2lnbmVkLW9mZi1ieTogUmFtb25hIEdyYWRpbmFyaXUgPHJhbW9uYS5ncmFkaW5hcml1QGFu
+YWxvZy5jb20+Cj4gPiAtLS0KPiA+IMKgZHJpdmVycy9paW8vaW11L2FkaXMxNjQ3NS5jIHwgNjcg
+KysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLQo+ID4gwqAxIGZpbGUgY2hhbmdl
+ZCwgNDYgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL2lpby9pbXUvYWRpczE2NDc1LmMgYi9kcml2ZXJzL2lpby9pbXUvYWRpczE2NDc1
+LmMKPiA+IGluZGV4IDlhZjA3ZmVjMGQ4OS4uYjdjYmUxNTY1YWVlIDEwMDY0NAo+ID4gLS0tIGEv
+ZHJpdmVycy9paW8vaW11L2FkaXMxNjQ3NS5jCj4gPiArKysgYi9kcml2ZXJzL2lpby9pbXUvYWRp
+czE2NDc1LmMKPiA+IEBAIC02MDQsNyArNjA0LDE1IEBAIHN0YXRpYyBpbnQgYWRpczE2NDc1X3dy
+aXRlX3JhdyhzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LAo+ID4gwqDCoMKgwqDCoMKgwqDCoEFE
+SVMxNjQ3NV9NT0RfQ0hBTl9ERUxUQShJSU9fREVMVEFfVkVMT0NJVFksIElJT19NT0RfICMjIF9t
+b2QsIFwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgQURJUzE2NDc1X1JFR18gIyMgX21vZCAjIyBfREVMVFZFTF9MLAo+ID4gQURJUzE2NDc1
+X1NDQU5fREVMVFZFTF8gIyMgX21vZCwgMzIsIDMyKQo+ID4gwqAKPiA+IC1zdGF0aWMgY29uc3Qg
+c3RydWN0IGlpb19jaGFuX3NwZWMgYWRpczE2NDc1X2NoYW5uZWxzW10gPSB7Cj4gPiArI2RlZmlu
+ZSBBRElTMTY0NzVfREVMVEFOR19DSEFOX05PX1NDQU4oX21vZCkgXAo+ID4gK8KgwqDCoMKgwqDC
+oMKgQURJUzE2NDc1X01PRF9DSEFOX0RFTFRBKElJT19ERUxUQV9BTkdMLCBJSU9fTU9EXyAjIyBf
+bW9kLCBcCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgQURJUzE2NDc1X1JFR18gIyMgX21vZCAjIyBfREVMVEFOR19MLCAtMSwgMzIsIDMyKQo+
+ID4gKwo+ID4gKyNkZWZpbmUgQURJUzE2NDc1X0RFTFRWRUxfQ0hBTl9OT19TQ0FOKF9tb2QpIFwK
+PiA+ICvCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9NT0RfQ0hBTl9ERUxUQShJSU9fREVMVEFfVkVM
+T0NJVFksIElJT19NT0RfICMjIF9tb2QsIFwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBBRElTMTY0NzVfUkVHXyAjIyBfbW9kICMjIF9ERUxU
+VkVMX0wsIC0xLCAzMiwgMzIpCj4gPiArCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hh
+bl9zcGVjIGFkaXMxNjQ3N19jaGFubmVsc1tdID0gewo+ID4gwqDCoMKgwqDCoMKgwqDCoEFESVMx
+NjQ3NV9HWVJPX0NIQU5ORUwoWCksCj4gPiDCoMKgwqDCoMKgwqDCoMKgQURJUzE2NDc1X0dZUk9f
+Q0hBTk5FTChZKSwKPiA+IMKgwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfR1lST19DSEFOTkVMKFop
+LAo+ID4gQEAgLTYyMSw2ICs2MjksMjMgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hhbl9z
+cGVjIGFkaXMxNjQ3NV9jaGFubmVsc1tdID0gewo+ID4gwqDCoMKgwqDCoMKgwqDCoElJT19DSEFO
+X1NPRlRfVElNRVNUQU1QKDEzKQo+ID4gwqB9Owo+ID4gwqAKPiA+ICtzdGF0aWMgY29uc3Qgc3Ry
+dWN0IGlpb19jaGFuX3NwZWMgYWRpczE2NDc1X2NoYW5uZWxzW10gPSB7Cj4gCj4gSSBndWVzcyB5
+b3UgbWVhbiBhZGlzMTY0NzdfY2hhbm5lbHM/Cj4gCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0
+NzVfR1lST19DSEFOTkVMKFgpLAo+ID4gK8KgwqDCoMKgwqDCoMKgQURJUzE2NDc1X0dZUk9fQ0hB
+Tk5FTChZKSwKPiA+ICvCoMKgwqDCoMKgwqDCoEFESVMxNjQ3NV9HWVJPX0NIQU5ORUwoWiksCj4g
+PiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfQUNDRUxfQ0hBTk5FTChYKSwKPiA+ICvCoMKgwqDC
+oMKgwqDCoEFESVMxNjQ3NV9BQ0NFTF9DSEFOTkVMKFkpLAo+ID4gK8KgwqDCoMKgwqDCoMKgQURJ
+UzE2NDc1X0FDQ0VMX0NIQU5ORUwoWiksCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfVEVN
+UF9DSEFOTkVMKCksCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVEFOR19DSEFOX05P
+X1NDQU4oWCksCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVEFOR19DSEFOX05PX1ND
+QU4oWSksCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVEFOR19DSEFOX05PX1NDQU4o
+WiksCj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVFZFTF9DSEFOX05PX1NDQU4oWCks
+Cj4gPiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVFZFTF9DSEFOX05PX1NDQU4oWSksCj4g
+PiArwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfREVMVFZFTF9DSEFOX05PX1NDQU4oWiksCj4gPiAr
+wqDCoMKgwqDCoMKgwqBJSU9fQ0hBTl9TT0ZUX1RJTUVTVEFNUCg3KQo+ID4gK307Cj4gPiArCj4g
+PiDCoGVudW0gYWRpczE2NDc1X3ZhcmlhbnQgewo+ID4gwqDCoMKgwqDCoMKgwqDCoEFESVMxNjQ3
+MCwKPiA+IMKgwqDCoMKgwqDCoMKgwqBBRElTMTY0NzVfMSwKPiA+IEBAIC03ODIsOCArODA3LDgg
+QEAgc3RhdGljIGNvbnN0IHN0cnVjdCBhZGlzMTY0NzVfY2hpcF9pbmZvIGFkaXMxNjQ3NV9jaGlw
+X2luZm9bXQo+ID4gPQo+ID4gewo+ID4gwqDCoMKgwqDCoMKgwqDCoH0sCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgW0FESVMxNjQ3N18xXSA9IHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgLm5hbWUgPSAiYWRpczE2NDc3LTEiLAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3NV9jaGFubmVscyksCj4gPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc1X2NoYW5u
+ZWxzLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1fY2hhbm5lbHMgPSBB
+UlJBWV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc3X2NoYW5uZWxzLAo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhfdmFsID0gMSwKPiA+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgLmd5cm9fbWF4X3NjYWxlID0gSUlPX1JBRF9UT19ERUdSRUUoMTYw
+IDw8IDE2KSwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmFjY2VsX21heF92
+YWwgPSAxLAo+ID4gQEAgLTgwMCw4ICs4MjUsOCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGFkaXMx
+NjQ3NV9jaGlwX2luZm8gYWRpczE2NDc1X2NoaXBfaW5mb1tdCj4gPiA9Cj4gPiB7Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgfSwKPiA+IMKgwqDCoMKgwqDCoMKgwqBbQURJUzE2NDc3XzJdID0gewo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubmFtZSA9ICJhZGlzMTY0NzctMiIsCj4g
+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51bV9jaGFubmVscyA9IEFSUkFZX1NJ
+WkUoYWRpczE2NDc1X2NoYW5uZWxzKSwKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAuY2hhbm5lbHMgPSBhZGlzMTY0NzVfY2hhbm5lbHMsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgLm51bV9jaGFubmVscyA9IEFSUkFZX1NJWkUoYWRpczE2NDc3X2NoYW5uZWxz
+KSwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuY2hhbm5lbHMgPSBhZGlzMTY0
+NzdfY2hhbm5lbHMsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5neXJvX21h
+eF92YWwgPSAxLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhf
+c2NhbGUgPSBJSU9fUkFEX1RPX0RFR1JFRSg0MCA8PCAxNiksCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoC5hY2NlbF9tYXhfdmFsID0gMSwKPiA+IEBAIC04MTgsOCArODQzLDgg
+QEAgc3RhdGljIGNvbnN0IHN0cnVjdCBhZGlzMTY0NzVfY2hpcF9pbmZvIGFkaXMxNjQ3NV9jaGlw
+X2luZm9bXQo+ID4gPQo+ID4gewo+ID4gwqDCoMKgwqDCoMKgwqDCoH0sCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgW0FESVMxNjQ3N18zXSA9IHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgLm5hbWUgPSAiYWRpczE2NDc3LTMiLAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3NV9jaGFubmVscyksCj4gPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc1X2NoYW5u
+ZWxzLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1fY2hhbm5lbHMgPSBB
+UlJBWV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc3X2NoYW5uZWxzLAo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhfdmFsID0gMSwKPiA+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgLmd5cm9fbWF4X3NjYWxlID0gSUlPX1JBRF9UT19ERUdSRUUoMTAg
+PDwgMTYpLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuYWNjZWxfbWF4X3Zh
+bCA9IDEsCj4gPiBAQCAtOTM4LDggKzk2Myw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgYWRpczE2
+NDc1X2NoaXBfaW5mbyBhZGlzMTY0NzVfY2hpcF9pbmZvW10KPiA+ID0KPiA+IHsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqB9LAo+ID4gwqDCoMKgwqDCoMKgwqDCoFtBRElTMTY1MDBdID0gewo+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubmFtZSA9ICJhZGlzMTY1MDAiLAo+ID4gLcKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFk
+aXMxNjQ3NV9jaGFubmVscyksCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNo
+YW5uZWxzID0gYWRpczE2NDc1X2NoYW5uZWxzLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc3X2No
+YW5uZWxzLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuZ3lyb19tYXhfdmFs
+ID0gMSwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmd5cm9fbWF4X3NjYWxl
+ID0gSUlPX1JBRF9UT19ERUdSRUUoMTAgPDwgMTYpLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAuYWNjZWxfbWF4X3ZhbCA9IDM5MiwKPiA+IEBAIC05NTcsOCArOTgyLDggQEAg
+c3RhdGljIGNvbnN0IHN0cnVjdCBhZGlzMTY0NzVfY2hpcF9pbmZvIGFkaXMxNjQ3NV9jaGlwX2lu
+Zm9bXQo+ID4gPQo+ID4gewo+ID4gwqDCoMKgwqDCoMKgwqDCoH0sCj4gPiDCoMKgwqDCoMKgwqDC
+oMKgW0FESVMxNjUwNV8xXSA9IHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+Lm5hbWUgPSAiYWRpczE2NTA1LTEiLAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oC5udW1fY2hhbm5lbHMgPSBBUlJBWV9TSVpFKGFkaXMxNjQ3NV9jaGFubmVscyksCj4gPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc1X2NoYW5uZWxz
+LAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5udW1fY2hhbm5lbHMgPSBBUlJB
+WV9TSVpFKGFkaXMxNjQ3N19jaGFubmVscyksCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgLmNoYW5uZWxzID0gYWRpczE2NDc3X2NoYW5uZWxzLAo+IAo+IEFGQUlDUywgdGhpcyBz
+dXBwb3J0cyBkZWx0YSBjaGFubmVscyBpbiBidXJzdCBtb2RlLi4uIHJpZ2h0PyBQbGVhc2UgbWFr
+ZSBzdXJlIHRvIGdvCj4gYWdhaW4gdGhyb3VnaCB0aGUgZGF0YXNoZWV0cyBzbyB3ZSBtYWtlIHRo
+aXMgcmlnaHQuLi4KPiAKCkFscmlnaHQsIEkganVzdCBzYXcgSSBtaXNzZWQgdGhlIGRpZmYgcmVu
+YW1pbmcgYWRpczE2NDc1X2NoYW5uZWxzID4KYWRpczE2NDc3X2NoYW5uZWxzLiBNQXliZSB5b3Ug
+Y291bGQgc3RhdGUgd2h5IHlvdSBkaWQgaXQgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLgpBbnlob3c6
+CgpSZXZpZXdlZC1ieTogTnVubyBTYSA8bnVuby5zYUBhbmFsb2cuY29tPgoK
 
-But it worked before, right? So the difference is you have either added 
-new devices which need setup or your firmware changed how devices are 
-setup (or not setup). Certainly can't fix the latter case. You just need 
-to be explicit about what you are doing to users.
-
-
-> Even though a node is tagged with the OF_POPULATED flag when checking
-> the access rights with the firewall controller, it seems that when
-> simple-bus is probing, there's no check of this flag.
-
-It shouldn't. Those flags are for creating the devices (or not) and 
-removing only devices of_platform_populate() created.
-
-> of_platform_populate() checks and sets the OF_POPULATED_BUS flag.
-> Maybe that is my error and the firewall bus populate should set
-> OF_POPULATED_BUS instead of OF_POPULATED. Is that correct?
-
-Shrug. Off hand, I'd say probably not, but am not certain.
-
-Rob

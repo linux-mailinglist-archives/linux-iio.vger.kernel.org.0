@@ -2,243 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A4E7C6700
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 09:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C9B7C670B
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 09:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233675AbjJLHf7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 03:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
+        id S233898AbjJLHyV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 03:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232199AbjJLHf7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 03:35:59 -0400
+        with ESMTP id S233050AbjJLHyT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 03:54:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73EB290;
-        Thu, 12 Oct 2023 00:35:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09031C433C8;
-        Thu, 12 Oct 2023 07:35:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99054B7;
+        Thu, 12 Oct 2023 00:54:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD161C433C7;
+        Thu, 12 Oct 2023 07:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697096157;
-        bh=vtUjYzbh3ksyEdtvSfgyPNGccq8OhGyaDiH5w29dMb4=;
+        s=k20201202; t=1697097257;
+        bh=p2v0qVTwQ8zFtxDaAzDhCwQKGwVkcbZvyeApiQQ8j/o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JxRguLzShyfjqtscKFYcmXK4uKSohmdngtg0iVJbqrgODN+jrrlJJ8h16r9weMO4Y
-         UIfefhoNYPiDLQv91cs6cFFgYbEXyduuTkmrQ/MM4tY3NKdoeXHe58Dd3IB4Dx90oG
-         FNCnVVi24NKh9+3N2YIrNY52llaOSpiyqq1wSSu36lHKuDfzoMu+PJodjRi63B4buw
-         8qUCzocG0yZ717WL2r+3BXyabetdTsEmr80ngL37VcgdpXSnS8mlSXRfZpmm2F4P3P
-         b2d1IWozt94EdWGjhcMrE/ESHiAsMttxtLaxgY4xIgiFybuKrRVRvF9eNog3iuFQ8/
-         6dI7V9fCi3pMQ==
-Date:   Thu, 12 Oct 2023 08:36:10 +0100
+        b=ouBLpUMketvQ6mCLH7X09kSCmOomHs0DOSCilC36YVntLPf5w9krayQFWbPXi9Cg4
+         ipBtNLnFUYoqwz+14rkFcqz9E/4Ho2rhQsGFqclgH7IuYqtCeArTZEVEizJSshwoa0
+         CyFK1aecdN7YKe34LYpTI1x7dJ/cnhMM55Cb7T4Ublq8iOJ/LAyhj7wUQt1/xgfA9b
+         wyKBna83KbcAYtLyuMlrgCyE2lJLG9Grvxn2yU8Uzxv6o+OXgizFJP2iIEJI+5n2VC
+         LYhuQSAfwsLJ9JAa7cmz3855ThYGftRJrHeN/qlUFUxV7exNppjYnnYkDBp7D0vAuM
+         xpEyDIGQiKidA==
+Date:   Thu, 12 Oct 2023 08:54:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <Marius.Cristea@microchip.com>
-Cc:     <lgirdwood@gmail.com>, <broonie@kernel.org>, <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1] iio: adc: MCP3564: fix warn: unsigned '__x' is never
- less than zero.
-Message-ID: <20231012083610.742cc74c@jic23-huawei>
-In-Reply-To: <bcc76066305e1c191ca02566132527b4c7520588.camel@microchip.com>
-References: <20231002161618.36373-1-marius.cristea@microchip.com>
-        <20231010104444.12e61984@jic23-huawei>
-        <bcc76066305e1c191ca02566132527b4c7520588.camel@microchip.com>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Paul Gazzillo <paul@pgazz.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+Subject: Re: [PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <20231012085427.5f0fa4a3@jic23-huawei>
+In-Reply-To: <07761a6c-85a8-c7bd-a0af-28d0f29b3e5d@tweaklogic.com>
+References: <20231008154857.24162-1-subhajit.ghosh@tweaklogic.com>
+        <20231008154857.24162-3-subhajit.ghosh@tweaklogic.com>
+        <20231010153807.6335a043@jic23-huawei>
+        <07761a6c-85a8-c7bd-a0af-28d0f29b3e5d@tweaklogic.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 11 Oct 2023 16:41:38 +0000
-<Marius.Cristea@microchip.com> wrote:
+On Thu, 12 Oct 2023 01:07:10 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
->   Hi Jonathan,
->=20
->  Sorry, I think I've made a "mistake" related to naming the patches and
-> also not running the Smatch checker at a point in time.
->=20
->=20
->=20
-> On Tue, 2023-10-10 at 10:44 +0100, Jonathan Cameron wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > know the content is safe
-> >=20
-> > On Mon, 2 Oct 2023 19:16:18 +0300
-> > <marius.cristea@microchip.com> wrote:
-> >  =20
-> > > From: Marius Cristea <marius.cristea@microchip.com>
-> > >=20
-> > > The patch efea15e3c65d: "iio: adc: MCP3564: fix the static checker
-> > > warning"
-> > > leads to the following Smatch static checker warning:
-> > >=20
-> > > =C2=A0=C2=A0 smatch warnings:
-> > > =C2=A0=C2=A0 drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls()=
- warn:
-> > > unsigned '__x' is never less than zero.
-> > >=20
-> > > vim +/__x +1105 drivers/iio/adc/mcp3564.c
-> > >=20
-> > > =C2=A0=C2=A0 1094
-> > > =C2=A0=C2=A0 1095=C2=A0 static void mcp3564_fill_scale_tbls(struct mc=
-p3564_state
-> > > *adc)
-> > > =C2=A0=C2=A0 1096=C2=A0 {
-> > > =C2=A0=C2=A0 .....
-> > > =C2=A0=C2=A0 1103=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 for (i =3D 0; i < MCP3564_MAX_PGA; i++) {
-> > > =C2=A0=C2=A0 1104=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ref =3D adc->vref_mv; =
-=20
-> > > =C2=A0> 1105=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tmp1 =3D shift_right((u64)ref=
- * NANO, pow); =20
-> > > =C2=A0=C2=A0 1106=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 div_u64_rem(tmp1, NANO,=
- &tmp0);
-> > > =C2=A0=C2=A0 1107
-> > > =C2=A0=C2=A0 .....
-> > > =C2=A0=C2=A0 1113=C2=A0 }
-> > >=20
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Closes:
-> > > https://lore.kernel.org/oe-kbuild-all/202309280738.NWjVfVt4-lkp@intel=
-.com/
-> > > Fixes: efea15e3c65d (iio: adc: MCP3564: fix the static checker
-> > > warning) =20
-> >=20
-> > This fix is fine but can you talk me through how the static checker
-> > warning fix
-> > in question has anything to do with this one?
-> >=20
-> > Was it just a case of fixing that issue allowing the static checker
-> > to
-> > get further before giving up?=C2=A0 In which case the description needs
-> > modifying.
-> >=20
-> > Or am I missing something in the following fix?
-> >=20
-> > diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-> > index 64145f4ae55c..9ede1a5d5d7b 100644
-> > --- a/drivers/iio/adc/mcp3564.c
-> > +++ b/drivers/iio/adc/mcp3564.c
-> > @@ -1422,11 +1422,8 @@ static int mcp3564_probe(struct spi_device
-> > *spi)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp3564_state *adc;
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 indio_dev =3D devm_iio_devic=
-e_alloc(&spi->dev, sizeof(*adc));
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!indio_dev) {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 dev_err_probe(&indio_dev->dev, PTR_ERR(indio_dev),
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 "Can't allocate iio device\n");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!indio_dev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> >  =20
->=20
->   I've got two bugs reported:
->=20
-> - The first one was reported by Dan Carpenter "Re: [bug report] iio:
-> adc: adding support for MCP3564 ADC". This bug was found using the
-> "Smatch static checker warning" and it was related to:
-> > --> 1426                 dev_err_probe(&indio_dev->dev, =20
-> PTR_ERR(indio_dev),
->=20
-> This bug was fixed by the above "[PATCH v1] iio: adc: MCP3564: fix the
-> static checker warning" and it was applied on "Applied to the togreg
-> branch of iio.git as that's where this driver is at the moment."
->=20
-> Also my mistake at this point was that I didn't setup and run the
-> "Smatch static checker warning"
->=20
->=20
-> > as that's all I'm seeing in that commit.
-> >  =20
-> Yes, that commit only handled part of the fix.
->=20
->=20
->=20
-> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> > > ---
-> > > =C2=A0drivers/iio/adc/mcp3564.c | 2 +-
-> > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-> > > index 9ede1a5d5d7b..e3f1de5fcc5a 100644
-> > > --- a/drivers/iio/adc/mcp3564.c
-> > > +++ b/drivers/iio/adc/mcp3564.c
-> > > @@ -1102,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct
-> > > mcp3564_state *adc)
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < MCP3564_MAX_PGA; i++=
-) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 ref =3D adc->vref_mv;
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 tmp1 =3D shift_right((u64)ref * NANO, pow);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 tmp1 =3D ((u64)ref * NANO) >> pow;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 div_u64_rem(tmp1, NANO, &tmp0);
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 tmp1 =3D tmp1 * mcp3564_hwgain_frac[(2 * i) + 1];
-> > >=20
-> > > base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec =20
-> >  =20
->=20
-> - The second bug was reported by "kernel test robot <lkp@intel.com>"
-> also by running Smatch and it was run on the initial driver (without
-> having the first patch applied)
->=20
-> smatch warnings:
-> drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls() warn: unsigned
-> '__x' is never less than zero.
-> drivers/iio/adc/mcp3564.c:1426 mcp3564_probe() warn: passing zero to
-> 'PTR_ERR'
-> drivers/iio/adc/mcp3564.c:1426 mcp3564_probe() warn: address of NULL
-> pointer 'indio_dev'
->=20
->=20
-> The:"drivers/iio/adc/mcp3564.c:1426 mcp3564_probe() warn: passing zero
-> to 'PTR_ERR'" and "drivers/iio/adc/mcp3564.c:1426 mcp3564_probe() warn:
-> address of NULL pointer 'indio_dev'" were fixed by the first patch.
->=20
-> The "drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls() warn:
-> unsigned '__x' is never less than zero." is fixed by the last patch
-> "[PATCH v1] iio: adc: MCP3564: fix warn: unsigned '__x' is never less
-> than zero."
->  by changeing:
->=20
-> -		tmp1 =3D shift_right((u64)ref * NANO, pow);
-> +		tmp1 =3D ((u64)ref * NANO) >> pow;
->=20
-> shift_right function is "Required to safely shift negative values" but
-> my value is always unsigned so it doesn't make sense to used it. This
-> error was reported when I have run the Smatch over the driver + first
-> patch (what was the latest from togreg).
->=20
-> I have applied the patch on top of what was the "latest" from togreg
-> branch and not on the initial driver.
->=20
->=20
-> I could change the description or I could provide a patch to handle
-> both warning reporting at once.
-If there are multiple issues then should be multiple patches. So starting
-point is definitely a version of this one with the correct description.
+> On 11/10/23 01:08, Jonathan Cameron wrote:
+> > 
+> > No need to wrap the patch description quite so short. Aim
+> > for up to 75 char for a commit message (and 80 for the code)
+> > Here you are under 60.
+> >   
+> Thank you for taking time to point out these small issues.
+> 
+> >>
+> >> Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+> >>  
+> > There is a tag for datasheets in the format tags block so
+> > Datasheet: https://docs.broadcom.com/doc/AV02-4755EN  
+> >> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>  
+> > 
+> > I took a quick look at the most similar part number adps9300 and
+> > this does look substantially different but could you confirm you've
+> > taken a look at the plausible drivers to which support for this part
+> > could be added and perhaps mention why that doesn't make sense
+> > I think it will be mainly feature set being different here, but also
+> > it seems they have completely different register maps despite similar
+> > part numbers!  
+> I have taken a look at quiet a few light sensor drivers including
+> apds9960 and apds9300, as you said that they are different. There are
+> another two drivers apds990x and apds9802als in drivers/misc which are
+> also very different but I can't say that I have been through all the
+> driver files.
+> 
 
-Thanks,
+Great.  Then as expected this separate driver make sense even if the
+DT bindings can be combined.  Would be nice if they standardised
+the interface, but some companies seem to feel the need to start from
+scratch for each device they produce :(
+
+
+> 
+> > The interrupt controller for starters takes to no locks and can run concurrently
+> > with other accesses from other CPUs.  That seems unwise.
+> >  
+> Well, regarding device access, interrupt handler just reads the status registers
+> thereby clearing the interrupt status flag and releasing the physical interrupt line.
+> What can be the issue if I don't use a lock?
+Gah. I was far too sleepy that day.  Glad you interpreted my comment as intended :)
+
+Hmm. You will be relying on the internal implementation of the regmap bus interface
+resulting in locks being taken in the i2c controller.  That may be fine, but
+it makes me a little nervous that it's relying on a particular implementation.
+
+My normal assumption is that any driver that turns off locking in regmap is doing
+so because it has various complex read modify write cycles so needs to have it's
+own locks - but that it also applies those locks everywhere regmap would have
+done (so for duration of every regmap call).
+
+You may be fine, but you aren't meeting the requirements documented.
+The flag to disable locking in regmap states:
+
+ * @disable_locking: This regmap is either protected by external means or
+ *                   is guaranteed not to be accessed from multiple threads.
+ *                   Don't use any locking mechanisms.
+
+It doesn't say you are fine for simple accesses and there are multiple threads
+accessing 'the regmap'.
+
+Unless you really care about it, I'd just leave regmap locking enabled.
+The likely performance hit on a device on a slow bus is low and it avoids
+us having to think too hard about this.
+
+
+> >> +	ret = devm_add_action_or_reset(dev, apds9306_powerdown, data);  
+> > 
+> > Why at this point? I'd have thought it wasn't powered up until init_device()
+> > which follows?  So I'd expect to see this call after that, not before.
+> >   
+> Right. I will do a bit more reading on this before using this. I assumed this
+> functions registers the callback which gets called at driver release by the
+> subsystem similar to release().
+
+That's true, but with the addition that it is called in the reverse order of
+being add to the devm managed release list.  So ordering matters.
+
+
+> 
+> Thank you Jonathan for the review. I'll get the changes done in the next version.
+> 
+No problem.   As a side note, feel free to just crop out any responses where
+you agree with a review.  Default assumption is that if you don't comment that
+is the case and it cuts down on scrolling when reviewer next looks.
+They are also much more likely to take a look at a short reply than a long one!
 
 Jonathan
 
->=20
-> Thanks,
-> Marius
+> Regards,
+> Subhajit Ghosh
+> 
+> 
+> 
+> 
 

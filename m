@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B67807C682B
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 10:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 192627C6800
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 10:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235328AbjJLH7R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 03:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55676 "EHLO
+        id S1378198AbjJLIBK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 04:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235233AbjJLH7Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 03:59:16 -0400
+        with ESMTP id S1378212AbjJLIBJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 04:01:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3BAA9;
-        Thu, 12 Oct 2023 00:59:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B96C433C7;
-        Thu, 12 Oct 2023 07:59:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A2CCF;
+        Thu, 12 Oct 2023 01:01:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C45C433C8;
+        Thu, 12 Oct 2023 08:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697097555;
-        bh=lhJ0mABYqusmJwDzlvcyUF3yYu3BzZ0v1uLfQprQBNs=;
+        s=k20201202; t=1697097663;
+        bh=4bm9Oe6eauMqGsfo8NuDGjzg2j6K20kXnmsJNdIG000=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=V1zYE4tIiqS5kPTew9ChTnNex2WSFFzks2Gb9aYTSNuV0stTrkyL5bUqMyUTFlxBp
-         yqpSdE01jvChrNqEA19iQhfLhx9Y0XC+c9mODlbT0fPKuXV6ySqrIk3duNx2B1KL44
-         hXATxkv/7tOrvTtbgAN6mBv2kjHgFnJHXRY3K8YhCz8iZSe3LTI3CDAuVG4Wi8KylE
-         mnpc5e58nJqjxlB5ELcOi3X2Z9e1FWuBgUxcYwxONXlgESSs+rgCv1eNgkTg4AyB1/
-         cG44q3DIYFb+/yueXP6QyiHM5sklWLkVJphbdnmbwpmcnjzGu9Jlxvb1SFCgZEcONh
-         5zChIRomWiRGg==
-Date:   Thu, 12 Oct 2023 08:59:26 +0100
+        b=tDttq06gKUul26yHhCrKsEKmy+r8THeGlb1ONLXVU0k6bFFZmn3cmxse/u9OQMJ8+
+         wo3btVKpeF/QoymLLqR2nTCMSE2lC0W7QyYdiCq6XGTTSr+ZiMYiaEz/6YEEkNnBWH
+         7OoOodgeSDSIdDM+hE07SNMJpbuVmExapHgaMvUOfidwlaPncV8wYfjVfNcdhqaDyF
+         O0pXHH3mHS+LgtPUTGfT099WPLqt2r++Y9XEOfK8mZOb89wyorT9ldNqNs6gLL7XrY
+         lEFCGX/6MDh3QqHwTZkVjbXlbQu6RbZEaHk+w8pElG6Rt1Yi0ErI8ZPhbJH95P7JTq
+         tedMrucX/TDOQ==
+Date:   Thu, 12 Oct 2023 09:01:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Lechner <dlechner@baylibre.com>
 Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
@@ -35,12 +35,12 @@ Cc:     linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
         Axel Haslam <ahaslam@baylibre.com>,
         Philip Molloy <pmolloy@baylibre.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/4] staging: iio: resolver: ad2s1210: clear faults
- after soft reset
-Message-ID: <20231012085926.2104251a@jic23-huawei>
-In-Reply-To: <20231010-ad2s1210-mainline-v5-2-35a0f6ffa04a@baylibre.com>
+Subject: Re: [PATCH v5 3/4] staging: iio: resolver: ad2s1210: simplify code
+ with guard(mutex)
+Message-ID: <20231012090113.212342cf@jic23-huawei>
+In-Reply-To: <20231010-ad2s1210-mainline-v5-3-35a0f6ffa04a@baylibre.com>
 References: <20231010-ad2s1210-mainline-v5-0-35a0f6ffa04a@baylibre.com>
-        <20231010-ad2s1210-mainline-v5-2-35a0f6ffa04a@baylibre.com>
+        <20231010-ad2s1210-mainline-v5-3-35a0f6ffa04a@baylibre.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,18 +55,11 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Oct 2023 16:12:34 -0500
+On Tue, 10 Oct 2023 16:12:35 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> When a software reset is performed on the AD2S1210 to make the selected
-> excitation frequency take effect, it always triggers faults on the
-> input signals because the output signal is interrupted momentarily.
-> So we need to clear the faults after the software reset to avoid
-> triggering fault events the next time a sample is read.
-> 
-> The datasheet specifies a time t[track] in Table 27 that specifies the
-> settle time in milliseconds after a reset depending on the selected
-> resolution. This is used in the driver to add an appropriate delay.
+> We can simplify the code and get rid of most of the gotos by using
+> guard(mutex) from cleanup.h.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Applied
+Applied.

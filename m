@@ -2,60 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A3C7C7FA1
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 10:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E44FD7C7F99
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 10:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjJMIKY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 04:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
+        id S230025AbjJMIKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 04:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbjJMIKU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 04:10:20 -0400
+        with ESMTP id S229743AbjJMIKT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 04:10:19 -0400
 Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E1EDE
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 01:10:15 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9ad8a822508so297352566b.0
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 01:10:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8595E6
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 01:10:16 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9b98a699f45so284765666b.3
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 01:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1697184614; x=1697789414; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1697184615; x=1697789415; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=I/XXmyKti81VH1ptNw2dE1ihFch8qRO8aJsAFTskBo0=;
-        b=PNftcScRwB6nCWGZkNuk+Ig0IdH/zzXBfJXKzelFqHWHzAaewIxkEua2HMAJNp4BQd
-         VSgIRueLCzI+Ab04UtrbcY3F4Phh3oH8aOgrlVWfSgphAauD0VmRd9q0OmcWsHfriA8v
-         oVxZkMAl+LsI65Fz2/zcdngBag0fUqVW0vF6cU6YYKdNdDt3aQJhDk39eq7/3Z3fuirS
-         /G5a7N4iF4SFw9U+wvHTuYNr20uAhFYdJad5VFY9DvFxHidMoopAAAzJzYqgsFIrflvg
-         8XoN1hUZ7h/13AlbDpxA1du1NAmxuj2a8RWk6J7OcEX1JmRGJoNGQmnMsjC6yuTDmIWA
-         1ZJw==
+        bh=Jlv+KGmApZQb5ngFkmANnSdVyEJSRpRKLkkFinUp/fw=;
+        b=xHvpy+3UUaAd16gpq8FGrYjYUqq4ushKYwSL8Gm54N+cGA97K8V/eB3/HlAXcXoXcC
+         zvePbfQsW+94CkgIN5tJAYCruK0bnNHVTvQRaAD8+WxFQ+QiqilE1DyOLniFtvY4VBn6
+         /+aRpaXMKP6lCaKQol1BlMrVCvihl9XYDQJA4/CqEn6vTIZrTf7OcPuG83KBzHqVRktN
+         rixygb1US+5hij4OfXGrEs92lzP6OYn10gnw65jGrZyDkobxbdyTkGYzt6B3zdbyfE+A
+         b1Iro7nYT5IcOdbiEO7PNkm8j916n1xHIZkWJPZRYBwryMIy2iTu6O19NMOBcjuE5Bpt
+         R2KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697184614; x=1697789414;
+        d=1e100.net; s=20230601; t=1697184615; x=1697789415;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=I/XXmyKti81VH1ptNw2dE1ihFch8qRO8aJsAFTskBo0=;
-        b=pz3LDV9GkyE04RL0kXu33lkpzdJD6ENLZGRfl9kRK1Q8OLQQs+6Jo/0p8qKVSlIkw2
-         t558vJqpRFTbmWBfKRM0GkKlUnnEZ4ctlaoMCp4nUDlgvTneZqtOPTHk9XG4bSl+Jzxj
-         ncxoc3a4t0nvt9IDXkTt6NsCz9GdDcjqc2yUHKIUlOi+GH5cO8eLqgG3AetkbNNFAeDx
-         AAI+i6IgazAkAAp/x+ueMYATfRzG32E1JSgWZVkQgUlmcG9SdRXtIpHJ5KYgsGTUs53I
-         N3ICnjtOm58D468YmjE40cCehwHd6ccb5PY0cbE2y6scLgJTleu8syI6uZ1B2m2teVnu
-         Fm9Q==
-X-Gm-Message-State: AOJu0YxV3u+pYFfmUzRPcG9bfX10RSxQOtXDG0A72sPZxXBqjLeJb7D6
-        /YOzq3uABZP0OLpTGIT86XmqYw==
-X-Google-Smtp-Source: AGHT+IGoWDADVMXWKr+jNxj7Wbo6DoL/2A7ROb+JP+5px1M2xbYi7735/jq101vucGRY54ky/ufEvQ==
-X-Received: by 2002:a17:907:78a:b0:9bd:a662:c066 with SMTP id xd10-20020a170907078a00b009bda662c066mr603283ejb.76.1697184614461;
-        Fri, 13 Oct 2023 01:10:14 -0700 (PDT)
+        bh=Jlv+KGmApZQb5ngFkmANnSdVyEJSRpRKLkkFinUp/fw=;
+        b=KlVR3g/ykoA70EVFqV41ch1kDBTAofLzZSnl6qoEUv4+2Ba+c6XW2pqm3YeO+MBnh7
+         GYTViFZoGyY+vOl7ZWqXvE/T/eb4+vb8MBLf6dZ1r89j+nKe2f1kJzfMQr1lKMJzgkut
+         HOafTM9cFIPc3zeCj5VNtztYvuW//7jWYjRevameFK18RBm4jkwZGYQCcaZ+NrIZEbf2
+         D1OBrOZrZAT97czNDK9LtHlPjdmSVH314KYGwLt0iKY58E5EP4r56X0m7DS08bJR9Tav
+         7oZom2Q0vEaYP8aqgqH84+8SgWNmWIlchfNVq+wpDAWjDoJh2mTa0hMLAEfqAz3dCwkY
+         j+rA==
+X-Gm-Message-State: AOJu0Yz3PYjcFaxOG5ul26xJtNDjErCbbhla0mCUyxesnIGJc/jpxP3y
+        sDpycUcNV5zeee+QvZvsY2mDhQ==
+X-Google-Smtp-Source: AGHT+IH6fKZ6Dd+Z/J7NrjhZ5tEemEPVoWu2xo8L6j2bj4m320D5czjSmYk6p9ksaCTKFydidoegew==
+X-Received: by 2002:a17:906:31cc:b0:9b2:b2f8:85dc with SMTP id f12-20020a17090631cc00b009b2b2f885dcmr21672339ejf.34.1697184615263;
+        Fri, 13 Oct 2023 01:10:15 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id q14-20020a170906360e00b009a5f1d1564dsm11910761ejb.126.2023.10.13.01.10.13
+        by smtp.gmail.com with ESMTPSA id q14-20020a170906360e00b009a5f1d1564dsm11910761ejb.126.2023.10.13.01.10.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 01:10:14 -0700 (PDT)
+        Fri, 13 Oct 2023 01:10:15 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 13 Oct 2023 10:09:53 +0200
-Subject: [PATCH 1/4] iio: adc: Add PM7325 PMIC7 ADC bindings
+Date:   Fri, 13 Oct 2023 10:09:54 +0200
+Subject: [PATCH 2/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7250B
+ thermals
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231013-fp5-thermals-v1-1-f14df01922e6@fairphone.com>
+Message-Id: <20231013-fp5-thermals-v1-2-f14df01922e6@fairphone.com>
 References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
 In-Reply-To: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -73,97 +74,105 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 X-Mailer: b4 0.12.3
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the defines for the ADC channels found on the PM7325. The list is
-taken from downstream msm-5.4 and adjusted for mainline.
+Configure the thermals for the CHARGER_SKIN_THERM and USB_CONN_THERM
+thermistors connected to PM7250B.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h | 69 +++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 66 ++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h
-new file mode 100644
-index 000000000000..96908014e09e
---- /dev/null
-+++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h
-@@ -0,0 +1,69 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-+ */
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 2de0b8c26c35..7fe19b556e6a 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -134,6 +134,36 @@ afvdd_2p8: regulator-afvdd-2p8 {
+ 		enable-active-high;
+ 		vin-supply = <&vreg_bob>;
+ 	};
 +
-+#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H
-+#define _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H
++	thermal-zones {
++		chg-skin-thermal {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&pm7250b_adc_tm 0>;
 +
-+#ifndef PM7325_SID
-+#define PM7325_SID					1
-+#endif
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
 +
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
++		conn-thermal {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&pm7250b_adc_tm 1>;
 +
-+/* ADC channels for PM7325_ADC for PMIC7 */
-+#define PM7325_ADC7_REF_GND			(PM7325_SID << 8 | ADC7_REF_GND)
-+#define PM7325_ADC7_1P25VREF			(PM7325_SID << 8 | ADC7_1P25VREF)
-+#define PM7325_ADC7_VREF_VADC			(PM7325_SID << 8 | ADC7_VREF_VADC)
-+#define PM7325_ADC7_DIE_TEMP			(PM7325_SID << 8 | ADC7_DIE_TEMP)
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++	};
+ };
+ 
+ &apps_rsc {
+@@ -425,6 +455,42 @@ &ipa {
+ 	status = "okay";
+ };
+ 
++&pm7250b_adc {
++	channel@4d {
++		reg = <ADC5_AMUX_THM1_100K_PU>;
++		qcom,ratiometric;
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		label = "charger_skin_therm";
++	};
 +
-+#define PM7325_ADC7_AMUX_THM1			(PM7325_SID << 8 | ADC7_AMUX_THM1)
-+#define PM7325_ADC7_AMUX_THM2			(PM7325_SID << 8 | ADC7_AMUX_THM2)
-+#define PM7325_ADC7_AMUX_THM3			(PM7325_SID << 8 | ADC7_AMUX_THM3)
-+#define PM7325_ADC7_AMUX_THM4			(PM7325_SID << 8 | ADC7_AMUX_THM4)
-+#define PM7325_ADC7_AMUX_THM5			(PM7325_SID << 8 | ADC7_AMUX_THM5)
-+#define PM7325_ADC7_GPIO1			(PM7325_SID << 8 | ADC7_GPIO1)
-+#define PM7325_ADC7_GPIO2			(PM7325_SID << 8 | ADC7_GPIO2)
-+#define PM7325_ADC7_GPIO3			(PM7325_SID << 8 | ADC7_GPIO3)
-+#define PM7325_ADC7_GPIO4			(PM7325_SID << 8 | ADC7_GPIO4)
++	channel@4f {
++		reg = <ADC5_AMUX_THM3_100K_PU>;
++		qcom,ratiometric;
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		label = "conn_therm";
++	};
++};
 +
-+/* 30k pull-up1 */
-+#define PM7325_ADC7_AMUX_THM1_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_30K_PU)
-+#define PM7325_ADC7_AMUX_THM2_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_30K_PU)
-+#define PM7325_ADC7_AMUX_THM3_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_30K_PU)
-+#define PM7325_ADC7_AMUX_THM4_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_30K_PU)
-+#define PM7325_ADC7_AMUX_THM5_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_30K_PU)
-+#define PM7325_ADC7_GPIO1_30K_PU		(PM7325_SID << 8 | ADC7_GPIO1_30K_PU)
-+#define PM7325_ADC7_GPIO2_30K_PU		(PM7325_SID << 8 | ADC7_GPIO2_30K_PU)
-+#define PM7325_ADC7_GPIO3_30K_PU		(PM7325_SID << 8 | ADC7_GPIO3_30K_PU)
-+#define PM7325_ADC7_GPIO4_30K_PU		(PM7325_SID << 8 | ADC7_GPIO4_30K_PU)
++&pm7250b_adc_tm {
++	status = "okay";
 +
-+/* 100k pull-up2 */
-+#define PM7325_ADC7_AMUX_THM1_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_100K_PU)
-+#define PM7325_ADC7_AMUX_THM2_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_100K_PU)
-+#define PM7325_ADC7_AMUX_THM3_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_100K_PU)
-+#define PM7325_ADC7_AMUX_THM4_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_100K_PU)
-+#define PM7325_ADC7_AMUX_THM5_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_100K_PU)
-+#define PM7325_ADC7_GPIO1_100K_PU		(PM7325_SID << 8 | ADC7_GPIO1_100K_PU)
-+#define PM7325_ADC7_GPIO2_100K_PU		(PM7325_SID << 8 | ADC7_GPIO2_100K_PU)
-+#define PM7325_ADC7_GPIO3_100K_PU		(PM7325_SID << 8 | ADC7_GPIO3_100K_PU)
-+#define PM7325_ADC7_GPIO4_100K_PU		(PM7325_SID << 8 | ADC7_GPIO4_100K_PU)
++	charger-skin-therm@0 {
++		reg = <0>;
++		io-channels = <&pm7250b_adc ADC5_AMUX_THM1_100K_PU>;
++		qcom,ratiometric;
++		qcom,hw-settle-time-us = <200>;
++	};
 +
-+/* 400k pull-up3 */
-+#define PM7325_ADC7_AMUX_THM1_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_400K_PU)
-+#define PM7325_ADC7_AMUX_THM2_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_400K_PU)
-+#define PM7325_ADC7_AMUX_THM3_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_400K_PU)
-+#define PM7325_ADC7_AMUX_THM4_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_400K_PU)
-+#define PM7325_ADC7_AMUX_THM5_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_400K_PU)
-+#define PM7325_ADC7_GPIO1_400K_PU		(PM7325_SID << 8 | ADC7_GPIO1_400K_PU)
-+#define PM7325_ADC7_GPIO2_400K_PU		(PM7325_SID << 8 | ADC7_GPIO2_400K_PU)
-+#define PM7325_ADC7_GPIO3_400K_PU		(PM7325_SID << 8 | ADC7_GPIO3_400K_PU)
-+#define PM7325_ADC7_GPIO4_400K_PU		(PM7325_SID << 8 | ADC7_GPIO4_400K_PU)
++	conn-therm@1 {
++		reg = <1>;
++		io-channels = <&pm7250b_adc ADC5_AMUX_THM3_100K_PU>;
++		qcom,ratiometric;
++		qcom,hw-settle-time-us = <200>;
++	};
++};
 +
-+/* 1/3 Divider */
-+#define PM7325_ADC7_GPIO4_DIV3			(PM7325_SID << 8 | ADC7_GPIO4_DIV3)
-+
-+#define PM7325_ADC7_VPH_PWR			(PM7325_SID << 8 | ADC7_VPH_PWR)
-+
-+#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H */
+ &pm7325_gpios {
+ 	volume_down_default: volume-down-default-state {
+ 		pins = "gpio6";
 
 -- 
 2.42.0

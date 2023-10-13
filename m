@@ -2,110 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3377C9124
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 01:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BE0D7C9134
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 01:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232421AbjJMXDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 19:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S232597AbjJMXLe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 19:11:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbjJMXDd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 19:03:33 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9A2BE
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:03:31 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-7b625d782b9so1081712241.2
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:03:31 -0700 (PDT)
+        with ESMTP id S232574AbjJMXLd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 19:11:33 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4EEBBB
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:11:29 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c5028e5b88so19841961fa.3
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697238210; x=1697843010; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rcn85z62MW6ga0naGLzuTjsyYsLiQwr0ThT4Anw3LQg=;
-        b=BQsNjhkMDfJskhnmNfWzaus27gbDoaDZ9uSIIYaJCGO0RXPm3WooZ5HgabWmNIbOAK
-         Mmkm/AbDjQVee3KVfu3/KBVYcimxsAJ2ZquZU4fwOFAPb+CUpX6Woxyofv0K1M8XmpVQ
-         q7r+YLMa2d1KfTq9PKUoS/stmKNgPMLz0KX99i5N9u1twYjPQMzrznAVuOeRwVZiPB8I
-         XbefDsEZYUOV9Zcgbx01MeO8LQRmiDI/6lngutx3wvWWgj+Sjx0CnHPsrnmrjbzhcnft
-         Xop1tArTQHBIUoddJd/RiGT2VVK81Ad8BXc2yUzp1RDvYf/VNKSUo/EcTBrF08z6bqTY
-         P3+g==
+        d=linaro.org; s=google; t=1697238688; x=1697843488; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EWU/+WqAgXcxNYFK/JJOEWv3zLwoSSnl+KX8FO0LsS4=;
+        b=K/7eJcmTxUpFkXHXjohV5k+hqlyYSBv94aUq3CmhBGXtTrI8GD7gd1StiXIg9dAlcw
+         cUR3FtMOSW9THf5QSpVtW5xuK1DSyJZFPHGaM2hFP3nBqp76IeQIOK5ZFG0nmOugLZ7v
+         rlVafYMfJzJ0eA81gppPJ6JqrACZ+nllX/vTJWnxKd5yRzXnKlBERzFU4DZGIx/UTPMi
+         +BXfFEpFfWKzLJkau7Kr1DOxveMFF053zwX0gPvRn7eEA1tdV0Gu+Nf18Xm9RKcc0kW1
+         PRcCcRWjnf5+95OTrdz9j7AmGFHz0jM4MBc8ojes0HMRJtiIL/1BJlEBp6xLp8xYoT6D
+         bH0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697238210; x=1697843010;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rcn85z62MW6ga0naGLzuTjsyYsLiQwr0ThT4Anw3LQg=;
-        b=jBcdK2gNS/Cn3qLoOICQH+JFbXohseO5/nwz/LN5i01j69hBDSQC3+d6BOSGD+1Gxm
-         3jNdkxaCcRnvoqcU1UEDUEqhqHVxR+4UK+YfTqO4OQ/E8UeOcm114o+epYCXF6lbX/xI
-         1GbW9iZnEi5GeFIYYeZdjaqMyjlVzAhMOLUuio/jBHE15BbSfN2BWEcgPah1hhL+7xtP
-         vque7HlRZQIXm7XGbakDIoDPD1BZEG7QBQuFXfv9i+hnqeUjwG3+osyJSJmD4V0F6Id7
-         iu5OegIsu+ciSrQJyR6/8Yg1dPB+clVha7Osw8P0plz3FHzfNQMAInbHfsxQefPVPPM7
-         9hiA==
-X-Gm-Message-State: AOJu0YwKy0Z9KscOb0QhZtvOLJWJ3BR/IDXwBIYRJHQUVvTF7Hxa4295
-        rYlTOW0Wid4SAzG1rG6nE/LaqA==
-X-Google-Smtp-Source: AGHT+IESShPQpD+fP8oD44dOFdRAXvUyePnVcWCuKhsxWqQa7Q51s71AiV0cNscNwQFJMSB6GIsyvA==
-X-Received: by 2002:a67:ec53:0:b0:452:7617:a757 with SMTP id z19-20020a67ec53000000b004527617a757mr27797924vso.26.1697238210704;
-        Fri, 13 Oct 2023 16:03:30 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id c12-20020ab0694c000000b0078cc4e0d7e3sm551678uas.27.2023.10.13.16.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 16:03:30 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 19:03:06 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     lee@kernel.org, alexandre.torgue@foss.st.com,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] counter: stm32-timer-cnt: add support for events
-Message-ID: <ZSnMqienA28Phx6b@fedora>
-References: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
- <20230922143920.3144249-7-fabrice.gasnier@foss.st.com>
+        d=1e100.net; s=20230601; t=1697238688; x=1697843488;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EWU/+WqAgXcxNYFK/JJOEWv3zLwoSSnl+KX8FO0LsS4=;
+        b=RcEiqVPAIJ0DUYJZUqlW9rdpw0ff1D10iBlrcdB9z90mPPxOa9ZdR1KpLbBa6QwF6Y
+         hMI8CexD1amuj/c3b3R/VMCb7JLcjn1l76NMMb42XQUUH1PuKF3aYibtkoiEaV7B4MSu
+         1+Ep9MJCf7nRjc3RkSDx/4H3rCRSaOIZRyAWf+rUgLlZhliGoMSTOwCINv+9nQDR5wDD
+         C38/B+Beam2zv95efjmSdyBSYfi+bL51QXRiiyNSrHqUs1fAS0M1Ny+4e+p7lGLjjFvr
+         Jk2EXB1Tg8ph1lUDvMFrcHN+ihlVuTrmW13ZcV7cg++NxnULpEEFI1FZW+ajn1+Ztp4V
+         +Ulg==
+X-Gm-Message-State: AOJu0YzS1MXYJfV4WlSzvaytgkxJS/zjabnsLPEbvZzyaEoKcCfqXj5a
+        ELs0+Cx4/08Aqn3NRha+Hcop0A==
+X-Google-Smtp-Source: AGHT+IECxyFGX1stwS0bg8+VeZ3MRPq6ISGYinfcRWYkJ8MHbnb6mRRnht2So4Vb1GODNQnZeh0jhQ==
+X-Received: by 2002:a2e:7010:0:b0:2c1:2211:97d1 with SMTP id l16-20020a2e7010000000b002c1221197d1mr21619139ljc.50.1697238688141;
+        Fri, 13 Oct 2023 16:11:28 -0700 (PDT)
+Received: from [192.168.4.141] (178235177169.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.169])
+        by smtp.gmail.com with ESMTPSA id s6-20020a2e81c6000000b002bffb3f8cebsm86473ljg.54.2023.10.13.16.11.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Oct 2023 16:11:27 -0700 (PDT)
+Message-ID: <84c7bc95-0252-4a5b-9591-6c6d5e3bdb1e@linaro.org>
+Date:   Sat, 14 Oct 2023 01:11:26 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pxeJ7ygJWhyBF1Hz"
-Content-Disposition: inline
-In-Reply-To: <20230922143920.3144249-7-fabrice.gasnier@foss.st.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7250B
+ thermals
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
+ <20231013-fp5-thermals-v1-2-f14df01922e6@fairphone.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
+ BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
+ HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
+ TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
+ zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
+ MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
+ t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
+ UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
+ aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
+ kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
+ Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
+ R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
+ BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
+ yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
+ xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
+ 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
+ GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
+ mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
+ x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
+ BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
+ mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
+ Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
+ xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
+ AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
+ 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
+ jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
+ cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
+ jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
+ cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
+ bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
+ YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
+ bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
+ nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
+ izWDgYvmBE8=
+In-Reply-To: <20231013-fp5-thermals-v1-2-f14df01922e6@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 13.10.2023 10:09, Luca Weiss wrote:
+> Configure the thermals for the CHARGER_SKIN_THERM and USB_CONN_THERM
+> thermistors connected to PM7250B.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 66 ++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 2de0b8c26c35..7fe19b556e6a 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -134,6 +134,36 @@ afvdd_2p8: regulator-afvdd-2p8 {
+>  		enable-active-high;
+>  		vin-supply = <&vreg_bob>;
+>  	};
+> +
+> +	thermal-zones {
+> +		chg-skin-thermal {
+skin
 
---pxeJ7ygJWhyBF1Hz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> +			polling-delay-passive = <0>;
+> +			polling-delay = <0>;
+> +			thermal-sensors = <&pm7250b_adc_tm 0>;
+> +
+> +			trips {
+> +				active-config0 {
+> +					temperature = <125000>;
+125
 
-On Fri, Sep 22, 2023 at 04:39:20PM +0200, Fabrice Gasnier wrote:
-> Add support for capture and overflow events. Also add the related
-> validation and configuration. Captured counter value can be retrieved
-> through CCRx register. Register and enable interrupts to push events.
->=20
-> Acked-by: Lee Jones <lee@kernel.org>
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+hmm..
 
-Hi Fabrice,
-
-Please split the capture and overflow events code to their own patches.
-
-I think there will be some changes to this patch anyway due to the
-changes you'll make in the precursor patches, so I'll hold off until v3
-to review.
-
-William Breathitt Gray
-
---pxeJ7ygJWhyBF1Hz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZSnMqgAKCRC1SFbKvhIj
-K6CGAP9OtP4qcJ/aIPKgrEecjHFXVX6zX1mOr8ftEiECf8/tVAD/cjbV86RlHwaQ
-f/v03XJrz5ibiBFz53tKPk1+KnZ76AQ=
-=cWtK
------END PGP SIGNATURE-----
-
---pxeJ7ygJWhyBF1Hz--
+Konrad

@@ -2,134 +2,240 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8057C7E5D
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 09:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2019C7C7EF2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 09:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbjJMHHb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 03:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
+        id S229927AbjJMHvC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 03:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjJMHHa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 03:07:30 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 306D6BD
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 00:07:28 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-405497850dbso18544455e9.0
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 00:07:28 -0700 (PDT)
+        with ESMTP id S230019AbjJMHvA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 03:51:00 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CE3CA;
+        Fri, 13 Oct 2023 00:50:58 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-325e9cd483eso1746983f8f.2;
+        Fri, 13 Oct 2023 00:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697180846; x=1697785646; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=57fteXKWjZ/rGSZs43ktyabzt6HdxTU52LoZeVhMZOE=;
-        b=t/0AUh21GHlmhTMUa2Rax7ssm9ViWwxSGD0D8w9DgiR8jMCJfxZdPbTXKx6S7hyFSE
-         ZcZ1K/tHIGN/JE06/XBRMR0acPBeuZWTIT1jlBkb1ZLnJTZwDKWk7sVpcxZo4+KBR5GW
-         3iHfbzKMcoofcq2fj4IDyZnMzSAvAGgOiQzUn3H/NSBckzr38R0LH1l7kaLUeUa6rUTf
-         nSsjuyNjapnVunMJTi6k/KMMKW7gzZt/9+we2tyWcOX57JhwipKhSAqw2fERxO4AnVML
-         UCZQMq0y0gEerFHPXxzhofOU3okGKmsHxuOQ0ybCKxpvFeoCYM1ZDb0SOlwz+ehf64WN
-         PQSQ==
+        d=gmail.com; s=20230601; t=1697183457; x=1697788257; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zv2n61VBsq2mcqHoTV6jBdn/VB73fJy0U9y8ByOkexw=;
+        b=PnSAlIWenJxFY6mU6evQquPhfYQqtgsJG9jhw04PS+xQpKraudFg+GEQvsWBk1ywvH
+         PbqJiy9sgCut21f5bK+AWNrTi47GyCXgYJJUAOpQK0U1JpyuwXkE/ZqZRFb+0SUyQkeB
+         m7iG3khjKgF9jyOcqTAUYWyNF/QNzgYPHbyds+l0kvE7DbET/ky8x4AhdLg3NDA1eszM
+         QnCiDTu+vAb+yLKxcxzgoQwJMWvwUDA+YTbUGnOIvN/rmxZQGkixMY9gVnjBKPK8XZfW
+         nENONMZsXxYwV5xp0wAhbTAzUzGopTl2stLKBAVWPiOgedxnsJDJlBML/yeiGy8pgaM2
+         Rvvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697180846; x=1697785646;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=57fteXKWjZ/rGSZs43ktyabzt6HdxTU52LoZeVhMZOE=;
-        b=S1nCgbuqkoA5mmn0qJ89j15fk3x8/FCl5jfjN9wzAOZ46tG89IDFx5e2AheJjYZn57
-         qPFruen0tFHM5g9UGv2bMt/+9U5pVcAIw7mur5ShKf95jcLyzuxYN/JoWdvLdiQP0gyU
-         +MMMckVhFa3U2175uel9QRxRk+vv6LaBh9w6XHL3dQl/Iz1p0pnnsc44AcnBfsu0Dl+m
-         VgQocGlIR+Kkm6BCSBgwZVm4xlrkNWBz5MV51Ou7YWcSrRAWQXU4tLPZwLWgnDWmIwRl
-         RiY+5LE84P4TzMv6e6eVpuB2oPpc86h6lbbwevqxg3uOfI58+KRFX3Fl6mRvMBcHbdjY
-         NiEQ==
-X-Gm-Message-State: AOJu0YykUozjKTJrhi8Dj/5Q6fzDeLDANVdzDJ3bB0DqBWxN5m1KaSVW
-        bDT7gU9nZfCxiVzudivru/SJWQ==
-X-Google-Smtp-Source: AGHT+IGkyXsQKS3O2F34PRFAevDYTNRC7wrpuerfxouBlG3eBgTrxoWq3ISTk+tQ2MGtWDsu8t0gMQ==
-X-Received: by 2002:a5d:5258:0:b0:32d:9701:90e5 with SMTP id k24-20020a5d5258000000b0032d970190e5mr2042202wrc.34.1697180846741;
-        Fri, 13 Oct 2023 00:07:26 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.100])
-        by smtp.gmail.com with ESMTPSA id u18-20020adff892000000b00326b8a0e817sm574081wrp.84.2023.10.13.00.07.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 00:07:26 -0700 (PDT)
-Message-ID: <36be9af8-4629-4607-ac62-9f4fc1ad42c6@linaro.org>
-Date:   Fri, 13 Oct 2023 09:07:25 +0200
+        d=1e100.net; s=20230601; t=1697183457; x=1697788257;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zv2n61VBsq2mcqHoTV6jBdn/VB73fJy0U9y8ByOkexw=;
+        b=iZz4PthCntVxYldCIM6DUTgZ9CmXhTZoVLOIQV6nxEdjZERE9NiZj/mlbTaQwSHLcw
+         coL68azvfhG7u5Q6FMmNYZDmxVkPD2RwFk1iEfsRUAXf49Fa4nvaF4Az0+h6WC1NiUns
+         lSbTfc58UyuJj1Xk3FItd6l7ZHGlLzna9zIwXRLCnhf9CtF31lY+YS5qz7Y8B5n0fGiH
+         1/+VrNuVVgih6i4GEQgRPJUr82tkryQlrEZxTrIRa3foWoeuc9XwHe4SmmuR18QdP2Re
+         oXCUVENzDD3bi9DNeEF/YuC6wPnUJrqqtWrNo4bmF9nqFlJ2ixRpjjU9l+xQt6Ndf3di
+         WEtQ==
+X-Gm-Message-State: AOJu0YxFmFGgDhQPcQK452iD5fYdOzvWoHzbRp5T+45kgxr/eS2ph+lH
+        ZjYeWsxyEJ2s8WdGm2pQI08=
+X-Google-Smtp-Source: AGHT+IEYGxPAtx6P91C2r8HYfcPkxBIciNqThOnzhtot4yV6WsU0EJrOaPkDjhNXK3O/Uw5oE0QoPg==
+X-Received: by 2002:a5d:6909:0:b0:31a:d551:c2c0 with SMTP id t9-20020a5d6909000000b0031ad551c2c0mr23146967wru.57.1697183456681;
+        Fri, 13 Oct 2023 00:50:56 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:361b:8f29:1cbf:5e69? (p200300f6ef1b2000361b8f291cbf5e69.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:361b:8f29:1cbf:5e69])
+        by smtp.gmail.com with ESMTPSA id b5-20020a056000054500b00326dd5486dcsm20232126wrf.107.2023.10.13.00.50.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 00:50:56 -0700 (PDT)
+Message-ID: <56e2d1cbe6671bc6709926771602b3aa412c1656.camel@gmail.com>
+Subject: Re: [PATCH] iio: resolver: ad2s1210: add support for adi,fixed-mode
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        nuno.sa@analog.com, linux-kernel@vger.kernel.org
+Date:   Fri, 13 Oct 2023 09:53:45 +0200
+In-Reply-To: <20231012204509.3095010-1-dlechner@baylibre.com>
+References: <20231012204509.3095010-1-dlechner@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: trivial-devices: add silabs,si7005
-Content-Language: en-US
-To:     Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-References: <20231012-topic-si7005_devicetree-v1-0-6c8a6fa7b3ec@gmail.com>
- <20231012-topic-si7005_devicetree-v1-2-6c8a6fa7b3ec@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231012-topic-si7005_devicetree-v1-2-6c8a6fa7b3ec@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/10/2023 22:07, Javier Carrasco wrote:
-> This simple I2C humidity sensor does not have any additional properties
-> and can be added to the trivial-devices binding.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi David,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Couple of minor things...
 
-Best regards,
-Krzysztof
+On Thu, 2023-10-12 at 15:45 -0500, David Lechner wrote:
+> It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1).
+> According to the devicetree bindings, in this case the adi,fixed-mode
+> property will specify which of the 3 possible modes the mode pins are
+> hardwired for and the gpio-modes property is not allowed.
+>=20
+> This adds support for the case where the mode pins are hardwired for
+> config mode. In this configuration, the position and velocity must be rea=
+d
+> from the config register.
+>=20
+> The cases of hardwired position or velocity modes is not supported as
+> there would be no way to configure the device.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> =C2=A0drivers/iio/resolver/ad2s1210.c | 193 +++++++++++++++++++++++++++--=
+---
+> =C2=A01 file changed, 162 insertions(+), 31 deletions(-)
+>=20
+> diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1=
+210.c
+> index 1bd1b950e7cc..e6d3f31d529f 100644
+> --- a/drivers/iio/resolver/ad2s1210.c
+> +++ b/drivers/iio/resolver/ad2s1210.c
+> @@ -141,7 +141,7 @@ struct ad2s1210_state {
+> =C2=A0	struct spi_device *sdev;
+> =C2=A0	/** GPIO pin connected to SAMPLE line. */
+> =C2=A0	struct gpio_desc *sample_gpio;
+> -	/** GPIO pins connected to A0 and A1 lines. */
+> +	/** GPIO pins connected to A0 and A1 lines (optional). */
+> =C2=A0	struct gpio_descs *mode_gpios;
+> =C2=A0	/** Used to access config registers. */
+> =C2=A0	struct regmap *regmap;
+> @@ -149,6 +149,8 @@ struct ad2s1210_state {
+> =C2=A0	unsigned long clkin_hz;
+> =C2=A0	/** Available raw hysteresis values based on resolution. */
+> =C2=A0	int hysteresis_available[2];
+> +	/* adi,fixed-mode property - only valid when mode_gpios =3D=3D NULL. */
+> +	enum ad2s1210_mode fixed_mode;
+> =C2=A0	/** The selected resolution */
+> =C2=A0	enum ad2s1210_resolution resolution;
+> =C2=A0	/** Copy of fault register from the previous read. */
+> @@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state *s=
+t,
+> enum ad2s1210_mode mode)
+> =C2=A0	struct gpio_descs *gpios =3D st->mode_gpios;
+> =C2=A0	DECLARE_BITMAP(bitmap, 2);
+> =C2=A0
+> +	if (!gpios)
+> +		return mode =3D=3D st->fixed_mode ? 0 : -EOPNOTSUPP;
+> +
+> =C2=A0	bitmap[0] =3D mode;
+> =C2=A0
+> =C2=A0	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->in=
+fo,
+> @@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context,
+> unsigned int reg,
+> =C2=A0	 * parity error. The fault register is read-only and the D7 bit me=
+ans
+> =C2=A0	 * something else there.
+> =C2=A0	 */
+> -	if (reg !=3D AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
+> +	if ((reg > AD2S1210_REG_VELOCITY_LSB && reg !=3D AD2S1210_REG_FAULT)
+> +	=C2=A0=C2=A0=C2=A0=C2=A0 && st->rx[1] & AD2S1210_ADDRESS_DATA)
+> =C2=A0		return -EBADMSG;
+> =C2=A0
+> =C2=A0	*val =3D st->rx[1];
+> @@ -437,6 +443,40 @@ static void ad2s1210_push_events(struct iio_dev
+> *indio_dev,
+> =C2=A0	st->prev_fault_flags =3D flags;
+> =C2=A0}
+> =C2=A0
+> +/**
+> + * Reads position or velocity from the config registers.
+> + *
+> + * This is used when the mode gpios are not available.
+> + *
+> + * Must be called with the lock held.
+> + *
+> + * @param st The device state.
+> + * @param val Pointer to hold the value read.
+> + * @param msb_reg The register address of the MSB register.
+> + * @param lsb_reg The register address of the LSB register.
+> + * @return 0 on success, negative error code otherwise.
+> + */
+> +static int ad2s1210_read_val_from_config(struct ad2s1210_state *st, __be=
+16
+> *val,
+> +					 u8 msb_reg, u8 lsb_reg)
+> +{
+> +	unsigned int reg_val;
+> +	int ret;
+> +
+> +	ret =3D regmap_read(st->regmap, msb_reg, &reg_val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	((u8 *)val)[0] =3D reg_val;
+> +
+> +	ret =3D regmap_read(st->regmap, lsb_reg, &reg_val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	((u8 *)val)[1] =3D reg_val;
 
+These casts are not that nice... Is sparse even ok with this without __forc=
+e?
+I didn't looked at the datasheet so I have no idea but is regmap_bulk_read(=
+) an
+option? It would simplify things.
+
+> +
+> +	return 0;
+> +}
+
+...
+
+>=20
+> =C2=A0	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
+> @@ -1299,9 +1397,33 @@ static const struct iio_info ad2s1210_info =3D {
+> =C2=A0static int ad2s1210_setup_properties(struct ad2s1210_state *st)
+> =C2=A0{
+> =C2=A0	struct device *dev =3D &st->sdev->dev;
+> +	const char *str_val;
+> =C2=A0	u32 val;
+> =C2=A0	int ret;
+> =C2=A0
+> +	ret =3D device_property_read_string(dev, "adi,fixed-mode", &str_val);
+> +	if (ret =3D=3D -EINVAL)
+> +		st->fixed_mode =3D -1;
+> +	else if (ret < 0)
+> +		return dev_err_probe(dev, ret,
+> +			"failed to read adi,fixed-mode property\n");
+> +	else {
+> +		if (strcmp(str_val, "position") =3D=3D 0)
+> +			st->fixed_mode =3D MOD_POS;
+> +		else if (strcmp(str_val, "velocity") =3D=3D 0)
+> +			st->fixed_mode =3D MOD_VEL;
+> +		else if (strcmp(str_val, "config") =3D=3D 0)
+> +			st->fixed_mode =3D MOD_CONFIG;
+> +		else
+> +			return dev_err_probe(dev, -EINVAL,
+> +				"invalid adi,fixed-mode property value:
+> %s\n",
+> +				str_val);
+> +
+> +		if (st->fixed_mode !=3D MOD_CONFIG)
+> +			return dev_err_probe(dev, -EINVAL,
+> +				"only adi,fixed-mode=3D\"config\" is
+> supported\n");
+
+Why not?
+
+if (strcmp(str_val, "config"))
+	return dev_err_probe();
+
+st->fixed_mode =3D MOD_CONFIG;
+
+Am I missing something obvious?
+
+- Nuno S=C3=A1

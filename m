@@ -2,66 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F047C7809
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Oct 2023 22:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69BE87C7C4D
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 05:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442723AbjJLUp7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Oct 2023 16:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
+        id S229541AbjJMDsQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Oct 2023 23:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442540AbjJLUp6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 16:45:58 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A56D8
-        for <linux-iio@vger.kernel.org>; Thu, 12 Oct 2023 13:45:55 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6c4f1f0774dso929274a34.2
-        for <linux-iio@vger.kernel.org>; Thu, 12 Oct 2023 13:45:55 -0700 (PDT)
+        with ESMTP id S229556AbjJMDsP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Oct 2023 23:48:15 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081FBC9;
+        Thu, 12 Oct 2023 20:48:14 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c8a1541232so14877275ad.0;
+        Thu, 12 Oct 2023 20:48:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697143555; x=1697748355; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697168893; x=1697773693; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mmYQTwnq/ofc5mmsg/d6LMBWdP6YzfcA9Z3KEowYm3s=;
-        b=DUEmJylwzO3k9UmqjTCyEfuTuUnTSnX2Koa5xeoY4IE2IhOi1Dgn0C/B6sfpIGF8l+
-         amtx/eD7U9hFUcCnlOlZ5H6HS/KRFRtLUwDxjmWOus7HR/9Nb9YJl922Az/nvjbfPAM1
-         XELr0XYeWXxm8+qZXxa/wu2rweUACfoSSJ8/1zSIpwbR2aMpbSHiRT8v7kBFBe9aPPnY
-         M/l1oIAuS6UsON8pZ1aJjJcKgPV7vnvK/5oTcV8XNRT301aj8npAyt4Ud3lO1ZaXaGDK
-         ieREcvGahAYYSL96ZGnQ2QbIz/ALKb+ivpJaT/RMRAHQHZCVjSIniYDnpTqeNOghzNxA
-         gpNA==
+        bh=Kr4Un2J3jt7fvFMVUktnjSzI1aZyjE49Ly+HVVoep3w=;
+        b=QpoPuAuq3qCr5GDyQgYt4BgHhv4fCoS81f+FMt4gOjv5bzvib+UN7qq82x24e1WJMr
+         0TFn4buPghbY0UgIIdOnQWrGT0/9XffXolSfpunrEha1aoLec6Kh8lmBTHHng6o9ffTj
+         90JTlhpfEyATBpTJ0Q4MTHJLg8i2YOwMbpZrDjTWKhDLP/3D/MOAuC5R7cbKaPbQKWnd
+         KtgychM+aOdmrQ9fL+/AvKwYqKhjdFZNkY7jyMtecwx+gFaxqNGIOImppsXpMan1bLll
+         ysVzgUcwD+yhQjJQWStoCbpH0O/BLahno/e5V7u5mtReotIiZ6qgkomb9UKx5Kf9eXam
+         Gpsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697143555; x=1697748355;
+        d=1e100.net; s=20230601; t=1697168893; x=1697773693;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mmYQTwnq/ofc5mmsg/d6LMBWdP6YzfcA9Z3KEowYm3s=;
-        b=R1XCI4P8JunC79nXIrU8UOmvanmlKOFxV59AfHACM+pDcri+wl85KS6SNqKsoK8PtK
-         7vd9EIG60u6j4vcWcza5fiGyWSc5RHH5p1zAw7EGNDZ/LN93tIXF8kxUddFHPJXhByLX
-         nVFrm8aaHcs8qGtSrHzbBhsGCPSpFgroa/CO2TDITTE9xPQaNCta5Nd1CMmhd8uL4n2R
-         yWw+L4qSA0OQJuoevDV1d7NWqsN7EDk8xDbsoqQSXRlUZqkp2qpyqrYbRWy/BEF9X7Sj
-         KSE+0pSadpW2wkXCUO6dVMYnPT8huA3dATQfwQW+PWquPGmOrazmONl1SyyqQe4T8MQv
-         ZSPg==
-X-Gm-Message-State: AOJu0YwZ1BKhMyZzNRUtYEMSbB/RqRw9hHMGIl8q2zHsw+oyWjvPgA0m
-        lCdtLYOqJ2UEoHAFF53j7Tli4wNzIgHDrdQlxTH9bg==
-X-Google-Smtp-Source: AGHT+IF7kfh4GL/zfwZpEJsA3AD0dscmPz1SGRR51txqbUb9nPk/xMS4WYi+HAV9RWGvcdz7bHAikw==
-X-Received: by 2002:a05:6870:23a0:b0:1be:dfdf:cb1 with SMTP id e32-20020a05687023a000b001bedfdf0cb1mr30935485oap.46.1697143554736;
-        Thu, 12 Oct 2023 13:45:54 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id k11-20020a056870f10b00b001d6e9bb67d2sm499056oac.7.2023.10.12.13.45.54
+        bh=Kr4Un2J3jt7fvFMVUktnjSzI1aZyjE49Ly+HVVoep3w=;
+        b=Z8dlXvGyxXDN00u111AJNygtxTURJqcKjzmVaCKy/uECRZJMpYdeRn3l3u+QPqL0rk
+         6pwFLK5htUF4jfoeBtd3k2gCsYcmGHozdbE4W+pGweFCTJDQlGrApbcO5O+IWRk/+5Hs
+         MgXiq1IKQ4/pTIFGdSsns/GMfXCA6YURiI65VOw/lSbOtkaR1b0+GhVn5RJegdMNcaPI
+         h2L4GG3J/y5jh11HSDTH8p5ElOMOMu69L70dQgQzspwBit5aHRKF1CiYzMUyU9a80+xM
+         GJzFznXK4CJkBXsy+ytnYhSMuJj+5MeF1/S0JJrg+ISrcUT5ADJU+ONhs1pzdkFNcGPn
+         9b1g==
+X-Gm-Message-State: AOJu0YzqSksjXedWsGMjStR7mfI87Ac3KcfEFs9srgYIZjKnrXODDSfR
+        ve0wD8idSz9Ot3qXMWHbSeE=
+X-Google-Smtp-Source: AGHT+IFidRYlkEHqj1tWWtltBc02aHhD35+f5eTk/EM2t1ORycK4mmjOVTYMIFt5q6f+1oRjq4cIYw==
+X-Received: by 2002:a17:902:d509:b0:1bd:d911:2a85 with SMTP id b9-20020a170902d50900b001bdd9112a85mr32617053plg.12.1697168893398;
+        Thu, 12 Oct 2023 20:48:13 -0700 (PDT)
+Received: from localhost.localdomain ([115.99.190.148])
+        by smtp.gmail.com with ESMTPSA id h21-20020a170902f7d500b001b53c8659fesm2777023plw.30.2023.10.12.20.48.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 13:45:54 -0700 (PDT)
-From:   David Lechner <dlechner@baylibre.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        nuno.sa@analog.com, linux-kernel@vger.kernel.org,
-        David Lechner <dlechner@baylibre.com>
-Subject: [PATCH] iio: resolver: ad2s1210: add support for adi,fixed-mode
-Date:   Thu, 12 Oct 2023 15:45:09 -0500
-Message-ID: <20231012204509.3095010-1-dlechner@baylibre.com>
-X-Mailer: git-send-email 2.42.0
+        Thu, 12 Oct 2023 20:48:13 -0700 (PDT)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     jic23@kernel.org, andriy.shevchenko@linux.intel.com,
+        u.kleine-koenig@pengutronix.de, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linus.walleij@linaro.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] iio: imu: Add driver and dt-bindings for BMI323
+Date:   Fri, 13 Oct 2023 09:18:06 +0530
+Message-Id: <20231013034808.8948-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,299 +72,207 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1).
-According to the devicetree bindings, in this case the adi,fixed-mode
-property will specify which of the 3 possible modes the mode pins are
-hardwired for and the gpio-modes property is not allowed.
+Add dt-bindings and IIO driver for Bosch BMI323 a 6 axis IMU.
 
-This adds support for the case where the mode pins are hardwired for
-config mode. In this configuration, the position and velocity must be read
-from the config register.
+Complete list of device sysfs files
+.
+├── buffer
+│   ├── data_available
+│   ├── direction
+│   ├── enable
+│   ├── hwfifo_enabled
+│   ├── hwfifo_watermark
+│   ├── length
+│   └── watermark
+├── buffer0
+│   ├── data_available
+│   ├── direction
+│   ├── enable
+│   ├── hwfifo_enabled
+│   ├── hwfifo_watermark
+│   ├── in_accel_x_en
+│   ├── in_accel_x_index
+│   ├── in_accel_x_type
+│   ├── in_accel_y_en
+│   ├── in_accel_y_index
+│   ├── in_accel_y_type
+│   ├── in_accel_z_en
+│   ├── in_accel_z_index
+│   ├── in_accel_z_type
+│   ├── in_anglvel_x_en
+│   ├── in_anglvel_x_index
+│   ├── in_anglvel_x_type
+│   ├── in_anglvel_y_en
+│   ├── in_anglvel_y_index
+│   ├── in_anglvel_y_type
+│   ├── in_anglvel_z_en
+│   ├── in_anglvel_z_index
+│   ├── in_anglvel_z_type
+│   ├── in_timestamp_en
+│   ├── in_timestamp_index
+│   ├── in_timestamp_type
+│   ├── length
+│   └── watermark
+├── current_timestamp_clock
+├── dev
+├── events
+│   ├── in_accel_gesture_doubletap_en
+│   ├── in_accel_gesture_doubletap_reset_timeout
+│   ├── in_accel_gesture_doubletap_tap2_min_delay
+│   ├── in_accel_gesture_doubletap_tap2_min_delay_available
+│   ├── in_accel_gesture_doubletap_value
+│   ├── in_accel_gesture_singletap_en
+│   ├── in_accel_gesture_singletap_reset_timeout
+│   ├── in_accel_gesture_singletap_value
+│   ├── in_accel_gesture_tap_reset_timeout_available
+│   ├── in_accel_gesture_tap_value_available
+│   ├── in_accel_gesture_tap_wait_dur
+│   ├── in_accel_gesture_tap_wait_dur_available
+│   ├── in_accel_gesture_tap_wait_timeout
+│   ├── in_accel_mag_falling_en
+│   ├── in_accel_mag_falling_hysteresis
+│   ├── in_accel_mag_falling_period
+│   ├── in_accel_mag_falling_value
+│   ├── in_accel_mag_hysteresis_available
+│   ├── in_accel_mag_period_available
+│   ├── in_accel_mag_rising_en
+│   ├── in_accel_mag_rising_hysteresis
+│   ├── in_accel_mag_rising_period
+│   ├── in_accel_mag_rising_value
+│   ├── in_accel_mag_value_available
+│   ├── in_steps_change_en
+│   └── in_steps_change_value
+├── in_accel_mount_matrix
+├── in_accel_oversampling_ratio
+├── in_accel_oversampling_ratio_available
+├── in_accel_sampling_frequency
+├── in_accel_sampling_frequency_available
+├── in_accel_scale
+├── in_accel_scale_available
+├── in_accel_x_raw
+├── in_accel_y_raw
+├── in_accel_z_raw
+├── in_anglvel_mount_matrix
+├── in_anglvel_oversampling_ratio
+├── in_anglvel_oversampling_ratio_available
+├── in_anglvel_sampling_frequency
+├── in_anglvel_sampling_frequency_available
+├── in_anglvel_scale
+├── in_anglvel_scale_available
+├── in_anglvel_x_raw
+├── in_anglvel_y_raw
+├── in_anglvel_z_raw
+├── in_steps_en
+├── in_steps_input
+├── in_temp_offset
+├── in_temp_raw
+├── in_temp_scale
+├── name
+├── of_node -> ../../../../../../../firmware/devicetree/base/soc/i2c@7e804000/i2c_bmi323@68
+├── power
+│   ├── autosuspend_delay_ms
+│   ├── control
+│   ├── runtime_active_time
+│   ├── runtime_status
+│   └── runtime_suspended_time
+├── scan_elements
+│   ├── in_accel_x_en
+│   ├── in_accel_x_index
+│   ├── in_accel_x_type
+│   ├── in_accel_y_en
+│   ├── in_accel_y_index
+│   ├── in_accel_y_type
+│   ├── in_accel_z_en
+│   ├── in_accel_z_index
+│   ├── in_accel_z_type
+│   ├── in_anglvel_x_en
+│   ├── in_anglvel_x_index
+│   ├── in_anglvel_x_type
+│   ├── in_anglvel_y_en
+│   ├── in_anglvel_y_index
+│   ├── in_anglvel_y_type
+│   ├── in_anglvel_z_en
+│   ├── in_anglvel_z_index
+│   ├── in_anglvel_z_type
+│   ├── in_timestamp_en
+│   ├── in_timestamp_index
+│   └── in_timestamp_type
+├── subsystem -> ../../../../../../../bus/iio
+├── trigger
+│   └── current_trigger
+├── uevent
+└── waiting_for_supplier
 
-The cases of hardwired position or velocity modes is not supported as
-there would be no way to configure the device.
+Changes from RFC to v2
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/resolver/ad2s1210.c | 193 +++++++++++++++++++++++++++-----
- 1 file changed, 162 insertions(+), 31 deletions(-)
+Review by Andy:
+- Sorted header files and added unit.h
+- Splitting macro
+- Defined new macros and enums to use in place of magic numbers.
+- Used KILO instead of large number
+- Used guard and scoped_guard from cleanup.h
+- Used ARRAY_SIZE() instead of value
+- Replaced kstrtoint with kstrtobool
+- Used min() and in_range() from minmax.h
+- Used GENMASK instead of magic number
+- Remove error print from interrupt handler
+- Removed casting and le16_to_cpup, used sign_extend32 for getting final value
+- Used while loop instead of for
+- Remove the check for the return value of 0 from fwnode_irq_get_byname()
+- Used dev_err_probe() in all probe paths
+- Removed 0 from i2c_ids[]
+- Used read_flag_mask for spi regmap configuration
+- Dropped blank line
+- Used regmap_read_poll_timeout() function instead of while loop
+- Applied fixes as per review
 
-diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-index 1bd1b950e7cc..e6d3f31d529f 100644
---- a/drivers/iio/resolver/ad2s1210.c
-+++ b/drivers/iio/resolver/ad2s1210.c
-@@ -141,7 +141,7 @@ struct ad2s1210_state {
- 	struct spi_device *sdev;
- 	/** GPIO pin connected to SAMPLE line. */
- 	struct gpio_desc *sample_gpio;
--	/** GPIO pins connected to A0 and A1 lines. */
-+	/** GPIO pins connected to A0 and A1 lines (optional). */
- 	struct gpio_descs *mode_gpios;
- 	/** Used to access config registers. */
- 	struct regmap *regmap;
-@@ -149,6 +149,8 @@ struct ad2s1210_state {
- 	unsigned long clkin_hz;
- 	/** Available raw hysteresis values based on resolution. */
- 	int hysteresis_available[2];
-+	/* adi,fixed-mode property - only valid when mode_gpios == NULL. */
-+	enum ad2s1210_mode fixed_mode;
- 	/** The selected resolution */
- 	enum ad2s1210_resolution resolution;
- 	/** Copy of fault register from the previous read. */
-@@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
- 	struct gpio_descs *gpios = st->mode_gpios;
- 	DECLARE_BITMAP(bitmap, 2);
- 
-+	if (!gpios)
-+		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
-+
- 	bitmap[0] = mode;
- 
- 	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
-@@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
- 	 * parity error. The fault register is read-only and the D7 bit means
- 	 * something else there.
- 	 */
--	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
-+	if ((reg > AD2S1210_REG_VELOCITY_LSB && reg != AD2S1210_REG_FAULT)
-+	     && st->rx[1] & AD2S1210_ADDRESS_DATA)
- 		return -EBADMSG;
- 
- 	*val = st->rx[1];
-@@ -437,6 +443,40 @@ static void ad2s1210_push_events(struct iio_dev *indio_dev,
- 	st->prev_fault_flags = flags;
- }
- 
-+/**
-+ * Reads position or velocity from the config registers.
-+ *
-+ * This is used when the mode gpios are not available.
-+ *
-+ * Must be called with the lock held.
-+ *
-+ * @param st The device state.
-+ * @param val Pointer to hold the value read.
-+ * @param msb_reg The register address of the MSB register.
-+ * @param lsb_reg The register address of the LSB register.
-+ * @return 0 on success, negative error code otherwise.
-+ */
-+static int ad2s1210_read_val_from_config(struct ad2s1210_state *st, __be16 *val,
-+					 u8 msb_reg, u8 lsb_reg)
-+{
-+	unsigned int reg_val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, msb_reg, &reg_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	((u8 *)val)[0] = reg_val;
-+
-+	ret = regmap_read(st->regmap, lsb_reg, &reg_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	((u8 *)val)[1] = reg_val;
-+
-+	return 0;
-+}
-+
- static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 				      struct iio_chan_spec const *chan,
- 				      int *val)
-@@ -450,21 +490,53 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 	ad2s1210_toggle_sample_line(st);
- 	timestamp = iio_get_time_ns(indio_dev);
- 
--	switch (chan->type) {
--	case IIO_ANGL:
--		ret = ad2s1210_set_mode(st, MOD_POS);
--		break;
--	case IIO_ANGL_VEL:
--		ret = ad2s1210_set_mode(st, MOD_VEL);
--		break;
--	default:
--		return -EINVAL;
-+	if (st->fixed_mode == MOD_CONFIG) {
-+		unsigned int reg_val;
-+
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
-+						AD2S1210_REG_POSITION_MSB,
-+						AD2S1210_REG_POSITION_LSB);
-+			if (ret < 0)
-+				return ret;
-+
-+			break;
-+		case IIO_ANGL_VEL:
-+			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
-+						AD2S1210_REG_VELOCITY_MSB,
-+						AD2S1210_REG_VELOCITY_LSB);
-+			if (ret < 0)
-+				return ret;
-+
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
-+		if (ret < 0)
-+			return ret;
-+
-+		st->sample.fault = reg_val;
-+	} else {
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			ret = ad2s1210_set_mode(st, MOD_POS);
-+			break;
-+		case IIO_ANGL_VEL:
-+			ret = ad2s1210_set_mode(st, MOD_VEL);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = spi_read(st->sdev, &st->sample, 3);
-+		if (ret < 0)
-+			return ret;
- 	}
--	if (ret < 0)
--		return ret;
--	ret = spi_read(st->sdev, &st->sample, 3);
--	if (ret < 0)
--		return ret;
- 
- 	switch (chan->type) {
- 	case IIO_ANGL:
-@@ -1252,27 +1324,53 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
- 	ad2s1210_toggle_sample_line(st);
- 
- 	if (test_bit(0, indio_dev->active_scan_mask)) {
--		ret = ad2s1210_set_mode(st, MOD_POS);
--		if (ret < 0)
--			goto error_ret;
--
--		ret = spi_read(st->sdev, &st->sample, 3);
--		if (ret < 0)
--			goto error_ret;
-+		if (st->fixed_mode == MOD_CONFIG) {
-+			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
-+						AD2S1210_REG_POSITION_MSB,
-+						AD2S1210_REG_POSITION_LSB);
-+			if (ret < 0)
-+				goto error_ret;
-+		} else {
-+			ret = ad2s1210_set_mode(st, MOD_POS);
-+			if (ret < 0)
-+				goto error_ret;
-+
-+			ret = spi_read(st->sdev, &st->sample, 3);
-+			if (ret < 0)
-+				goto error_ret;
-+		}
- 
- 		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
- 	}
- 
- 	if (test_bit(1, indio_dev->active_scan_mask)) {
--		ret = ad2s1210_set_mode(st, MOD_VEL);
--		if (ret < 0)
--			goto error_ret;
-+		if (st->fixed_mode == MOD_CONFIG) {
-+			ret = ad2s1210_read_val_from_config(st, &st->sample.raw,
-+						AD2S1210_REG_VELOCITY_MSB,
-+						AD2S1210_REG_VELOCITY_LSB);
-+			if (ret < 0)
-+				goto error_ret;
-+		} else {
-+			ret = ad2s1210_set_mode(st, MOD_VEL);
-+			if (ret < 0)
-+				goto error_ret;
-+
-+			ret = spi_read(st->sdev, &st->sample, 3);
-+			if (ret < 0)
-+				goto error_ret;
-+		}
- 
--		ret = spi_read(st->sdev, &st->sample, 3);
-+		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
-+	}
-+
-+	if (st->fixed_mode == MOD_CONFIG) {
-+		unsigned int reg_val;
-+
-+		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
- 		if (ret < 0)
--			goto error_ret;
-+			return ret;
- 
--		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
-+		st->sample.fault = reg_val;
- 	}
- 
- 	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
-@@ -1299,9 +1397,33 @@ static const struct iio_info ad2s1210_info = {
- static int ad2s1210_setup_properties(struct ad2s1210_state *st)
- {
- 	struct device *dev = &st->sdev->dev;
-+	const char *str_val;
- 	u32 val;
- 	int ret;
- 
-+	ret = device_property_read_string(dev, "adi,fixed-mode", &str_val);
-+	if (ret == -EINVAL)
-+		st->fixed_mode = -1;
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+			"failed to read adi,fixed-mode property\n");
-+	else {
-+		if (strcmp(str_val, "position") == 0)
-+			st->fixed_mode = MOD_POS;
-+		else if (strcmp(str_val, "velocity") == 0)
-+			st->fixed_mode = MOD_VEL;
-+		else if (strcmp(str_val, "config") == 0)
-+			st->fixed_mode = MOD_CONFIG;
-+		else
-+			return dev_err_probe(dev, -EINVAL,
-+				"invalid adi,fixed-mode property value: %s\n",
-+				str_val);
-+
-+		if (st->fixed_mode != MOD_CONFIG)
-+			return dev_err_probe(dev, -EINVAL,
-+				"only adi,fixed-mode=\"config\" is supported\n");
-+	}
-+
- 	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret,
-@@ -1357,12 +1479,21 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
- 				     "failed to request sample GPIO\n");
- 
- 	/* both pins high means that we start in config mode */
--	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
-+	st->mode_gpios = devm_gpiod_get_array_optional(dev, "mode",
-+						       GPIOD_OUT_HIGH);
- 	if (IS_ERR(st->mode_gpios))
- 		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
- 				     "failed to request mode GPIOs\n");
- 
--	if (st->mode_gpios->ndescs != 2)
-+	if (!st->mode_gpios && st->fixed_mode == -1)
-+		return dev_err_probe(dev, -EINVAL,
-+			"must specify either adi,fixed-mode or mode-gpios\n");
-+
-+	if (st->mode_gpios && st->fixed_mode != -1)
-+		return dev_err_probe(dev, -EINVAL,
-+			"must specify only one of adi,fixed-mode or mode-gpios\n");
-+
-+	if (st->mode_gpios && st->mode_gpios->ndescs != 2)
- 		return dev_err_probe(dev, -EINVAL,
- 				     "requires exactly 2 mode-gpios\n");
- 
+Review by Jonathan
+- Used oversampling instead of averaging
+- Reverse the order of avail_scan_masks
+- Use FIELD_PREP() directly in place of set_mask_bits
+- Remove irq_type from devm_request_threaded_irq
+- Use FIELD_GET() with mask
+- Added comment for delay used for feature engine enable
+- Use dev_err_probe in all probe paths
+- For I2C regmap, allocated memory in device private data
+- Use pad_bits=16 for spi regmap_configuration
+- Added both interrupts in the dt-bindings
+
+Review by Krzysztof Kozlowski
+- Removed duplicated words from subject
+- Removed '|'
+- Added supplies
+- Used generic node name "imu"
+- Removed spi example node
+
+Review by Uwe Kleine-König
+- Use probe instead of probe_new
+- Placed datasheet in driver
+
+Jagath Jog J (2):
+  dt-bindings: iio: imu: Add Bosch BMI323
+  iio: imu: Add driver for BMI323 IMU
+
+ Documentation/ABI/testing/sysfs-bus-iio       |   18 +
+ .../bindings/iio/imu/bosch,bmi323.yaml        |   77 +
+ MAINTAINERS                                   |    7 +
+ drivers/iio/imu/Kconfig                       |    1 +
+ drivers/iio/imu/Makefile                      |    1 +
+ drivers/iio/imu/bmi323/Kconfig                |   33 +
+ drivers/iio/imu/bmi323/Makefile               |    7 +
+ drivers/iio/imu/bmi323/bmi323.h               |  209 ++
+ drivers/iio/imu/bmi323/bmi323_core.c          | 2139 +++++++++++++++++
+ drivers/iio/imu/bmi323/bmi323_i2c.c           |  121 +
+ drivers/iio/imu/bmi323/bmi323_spi.c           |   92 +
+ 11 files changed, 2705 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+ create mode 100644 drivers/iio/imu/bmi323/Kconfig
+ create mode 100644 drivers/iio/imu/bmi323/Makefile
+ create mode 100644 drivers/iio/imu/bmi323/bmi323.h
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_core.c
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_i2c.c
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_spi.c
+
 -- 
-2.42.0
+2.20.1
 

@@ -2,68 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DBC77C9114
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 00:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3377C9124
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 01:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232332AbjJMW5W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 18:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46520 "EHLO
+        id S232421AbjJMXDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 19:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231924AbjJMW5V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 18:57:21 -0400
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9953B7
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 15:57:19 -0700 (PDT)
-Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-457bac7c3f5so845246137.2
-        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 15:57:19 -0700 (PDT)
+        with ESMTP id S229958AbjJMXDd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 19:03:33 -0400
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9A2BE
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:03:31 -0700 (PDT)
+Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-7b625d782b9so1081712241.2
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 16:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697237839; x=1697842639; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697238210; x=1697843010; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6wPwnmETenw6MmBk8K6nY/876otg8xGa1r8lksqWFBc=;
-        b=R1//LzMzLKPsUvAlnDcBcG/qOgiKfnUNJoCjk88FFoqB/d6paLYE+Xz2MFvdFcg/QL
-         WyJIA8oCZiwcR2CucLYrutT/OPCKHaDX3i39FkkTjLBAEGr9MjMKit5jS6bRLWb3vYhC
-         N7AOiIaRHbCFujVbQ9r1O8x0a1jqjaiqZSG20H95bUJYSTwDlo31YvXUZ+11AeQKfQcr
-         YI+TTd29+QpAQcfTVX/BP2oaRhuagB+s/9l8WIKtVcsdtYtPe12umNLeCPfJKVA+HTQy
-         2QHdszF1kgVKwqFA7eEhB1pSxqp6LObUGK5UKWDfgqJSqFiKrMxjWaZMi9vfivEO+mz3
-         GTFQ==
+        bh=rcn85z62MW6ga0naGLzuTjsyYsLiQwr0ThT4Anw3LQg=;
+        b=BQsNjhkMDfJskhnmNfWzaus27gbDoaDZ9uSIIYaJCGO0RXPm3WooZ5HgabWmNIbOAK
+         Mmkm/AbDjQVee3KVfu3/KBVYcimxsAJ2ZquZU4fwOFAPb+CUpX6Woxyofv0K1M8XmpVQ
+         q7r+YLMa2d1KfTq9PKUoS/stmKNgPMLz0KX99i5N9u1twYjPQMzrznAVuOeRwVZiPB8I
+         XbefDsEZYUOV9Zcgbx01MeO8LQRmiDI/6lngutx3wvWWgj+Sjx0CnHPsrnmrjbzhcnft
+         Xop1tArTQHBIUoddJd/RiGT2VVK81Ad8BXc2yUzp1RDvYf/VNKSUo/EcTBrF08z6bqTY
+         P3+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697237839; x=1697842639;
+        d=1e100.net; s=20230601; t=1697238210; x=1697843010;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6wPwnmETenw6MmBk8K6nY/876otg8xGa1r8lksqWFBc=;
-        b=TMkZgrmUPd7Mhe/PHE7GpK5edj2I6aqmhmBR1xXpUpgn8pWJMX5N4q/rbbZup7eTQg
-         KSj/y2CNKIhWsNFTWyGX+HV7EBBmS7mxI/irKlUgXY7CbAKt4eYqgQfSkE9TpnPSaADi
-         VHF/fKjGZvB8TLL4leqYOT431UjUTs0SFewA5Uv/2M/QUqpTEkknWOiPmn/JLiUHbln/
-         aDFrR+mh2lqOoMJI75vKidMm/pgqoG/g5YlODZ4REH5R+uBHeZe5dsoG7KcaRfu/Okg2
-         NKw8RF8bAdJC2ms8dRFseHon91t5D2+8nsCLBaL38mOAMd+DGFM9SymQiDNEZplqtbkY
-         1E+g==
-X-Gm-Message-State: AOJu0YztC74sicGXPR9XbuPRu0U6g4p0q3G1qWnPXcY/r8v7agMpKlkV
-        LupiIEdV8HFcX67LeOXlHdawuQ==
-X-Google-Smtp-Source: AGHT+IEm521axeEFcZNtZSTDXsrzq0pBe+Wjc+fnqpTA3yy2QUWHpG+Ba3EbnGKWa7HD0w1qKfSdyg==
-X-Received: by 2002:a67:ce81:0:b0:454:607d:196f with SMTP id c1-20020a67ce81000000b00454607d196fmr29124394vse.20.1697237838405;
-        Fri, 13 Oct 2023 15:57:18 -0700 (PDT)
+        bh=rcn85z62MW6ga0naGLzuTjsyYsLiQwr0ThT4Anw3LQg=;
+        b=jBcdK2gNS/Cn3qLoOICQH+JFbXohseO5/nwz/LN5i01j69hBDSQC3+d6BOSGD+1Gxm
+         3jNdkxaCcRnvoqcU1UEDUEqhqHVxR+4UK+YfTqO4OQ/E8UeOcm114o+epYCXF6lbX/xI
+         1GbW9iZnEi5GeFIYYeZdjaqMyjlVzAhMOLUuio/jBHE15BbSfN2BWEcgPah1hhL+7xtP
+         vque7HlRZQIXm7XGbakDIoDPD1BZEG7QBQuFXfv9i+hnqeUjwG3+osyJSJmD4V0F6Id7
+         iu5OegIsu+ciSrQJyR6/8Yg1dPB+clVha7Osw8P0plz3FHzfNQMAInbHfsxQefPVPPM7
+         9hiA==
+X-Gm-Message-State: AOJu0YwKy0Z9KscOb0QhZtvOLJWJ3BR/IDXwBIYRJHQUVvTF7Hxa4295
+        rYlTOW0Wid4SAzG1rG6nE/LaqA==
+X-Google-Smtp-Source: AGHT+IESShPQpD+fP8oD44dOFdRAXvUyePnVcWCuKhsxWqQa7Q51s71AiV0cNscNwQFJMSB6GIsyvA==
+X-Received: by 2002:a67:ec53:0:b0:452:7617:a757 with SMTP id z19-20020a67ec53000000b004527617a757mr27797924vso.26.1697238210704;
+        Fri, 13 Oct 2023 16:03:30 -0700 (PDT)
 Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id g13-20020a056102244d00b00450fc8d2c76sm540643vss.28.2023.10.13.15.57.17
+        by smtp.gmail.com with ESMTPSA id c12-20020ab0694c000000b0078cc4e0d7e3sm551678uas.27.2023.10.13.16.03.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 15:57:17 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 18:57:15 -0400
+        Fri, 13 Oct 2023 16:03:30 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 19:03:06 -0400
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 Cc:     lee@kernel.org, alexandre.torgue@foss.st.com,
         linux-iio@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] counter: fix, improvements and stm32 timer events
- support
-Message-ID: <ZSnLSwsr7RxLdPie@fedora>
+Subject: Re: [PATCH v2 6/6] counter: stm32-timer-cnt: add support for events
+Message-ID: <ZSnMqienA28Phx6b@fedora>
 References: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
+ <20230922143920.3144249-7-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fFNMSGoF3fO7Sh+E"
+        protocol="application/pgp-signature"; boundary="pxeJ7ygJWhyBF1Hz"
 Content-Disposition: inline
-In-Reply-To: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
+In-Reply-To: <20230922143920.3144249-7-fabrice.gasnier@foss.st.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -74,80 +74,38 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---fFNMSGoF3fO7Sh+E
+--pxeJ7ygJWhyBF1Hz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 22, 2023 at 04:39:14PM +0200, Fabrice Gasnier wrote:
-> This series combines some fix and improvements to the counter interface,
-> found while stm32 timer counter driver developements.
-> It also introduces a new tool that can be used for testing.
+On Fri, Sep 22, 2023 at 04:39:20PM +0200, Fabrice Gasnier wrote:
+> Add support for capture and overflow events. Also add the related
+> validation and configuration. Captured counter value can be retrieved
+> through CCRx register. Register and enable interrupts to push events.
 >=20
-> Then, it improves the stm32 timer counter driver by introducing new signa=
-ls,
-> e.g. counting frequency, and missing channels.
-> It also adds support for interrupt based events using the chrdev interfac=
-e.
-> Two event types are added in this series: overflows and capture.
->=20
-> Up to now, stm32 timer counter driver focused mainly on quadrature
-> encoder feature. With this series, all timer instances can be enabled
-> for simple counting (with overflow and capture events).
+> Acked-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
 Hi Fabrice,
 
-Would you give a brief summary of the possible configurations we can
-have for these devices. For example, the existing driver supports a
-quadrature counting mode where Channel 1 and Channel 2 serve as A and B
-inputs; I also see that another mode is a simple tally counter with the
-internal clock serving as the input. How do Channel 3 and Channel 4 fit
-in here?
+Please split the capture and overflow events code to their own patches.
 
-If you list out all the possible arrangements, I think it'll help me
-understand how the signals match up with each particular mode.
-
-Thanks,
+I think there will be some changes to this patch anyway due to the
+changes you'll make in the precursor patches, so I'll hold off until v3
+to review.
 
 William Breathitt Gray
 
->=20
-> Changes in v2:
-> - counter fix and improvement patch applied, hence dropped in v2 series
-> - mfd patch applied, hence dropped in v2 series
-> - revisit watch events tool (mainly command line interface)
-> - add one patch to rename STM32 Timer counter
-> - various review comments from v1
->=20
-> Fabrice Gasnier (6):
->   tools/counter: add a flexible watch events tool
->   counter: stm32-timer-cnt: rename quadrature signal
->   counter: stm32-timer-cnt: rename counter
->   counter: stm32-timer-cnt: introduce clock signal
->   counter: stm32-timer-cnt: populate capture channels and check encoder
->   counter: stm32-timer-cnt: add support for events
->=20
->  drivers/counter/stm32-timer-cnt.c    | 558 ++++++++++++++++++++++++++-
->  include/linux/mfd/stm32-timers.h     |  15 +
->  tools/counter/Build                  |   1 +
->  tools/counter/Makefile               |  12 +-
->  tools/counter/counter_watch_events.c | 368 ++++++++++++++++++
->  5 files changed, 934 insertions(+), 20 deletions(-)
->  create mode 100644 tools/counter/counter_watch_events.c
->=20
-> --=20
-> 2.25.1
->=20
-
---fFNMSGoF3fO7Sh+E
+--pxeJ7ygJWhyBF1Hz
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZSnLSwAKCRC1SFbKvhIj
-KzirAQDCyH9zW+B+KquLIfRNSk5vcmFjucDHtM60OcOVpFTebgEAxPZD+Cu+RmK1
-WYaD1a0bSMAQ1xu3JYrlOIxW+sxb5QM=
-=QW5W
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZSnMqgAKCRC1SFbKvhIj
+K6CGAP9OtP4qcJ/aIPKgrEecjHFXVX6zX1mOr8ftEiECf8/tVAD/cjbV86RlHwaQ
+f/v03XJrz5ibiBFz53tKPk1+KnZ76AQ=
+=cWtK
 -----END PGP SIGNATURE-----
 
---fFNMSGoF3fO7Sh+E--
+--pxeJ7ygJWhyBF1Hz--

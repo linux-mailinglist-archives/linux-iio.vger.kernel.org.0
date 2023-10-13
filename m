@@ -2,113 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDE127C86BA
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 15:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF37E7C87D5
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 16:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231892AbjJMNYT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 09:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54210 "EHLO
+        id S232109AbjJMO1s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 10:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjJMNYS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 09:24:18 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4709EC0;
-        Fri, 13 Oct 2023 06:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1697203456; x=1728739456;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qbYnMk/PklOc0qHxIL6AsmTgq+JW0Tw9jXwiPLpTzqA=;
-  b=bkVYaM7Hk5xiBe0akduqH+MgoNvab0JyZId8aBPhcMWTNMQagdPTdr4f
-   /w64vHcEWj4h2br5d0luVLtSGjKtuqnAx0aZlkT750uBRC5+P41m1yz48
-   CT5fussSnBvCSYWPQuHUnT0sFQP0CqO79vUxOfosjP1KIHk1/qGWLIvBX
-   rR4Rxt2Zs/b4QioIrhQJwEBFCouOhshrUuYzu7fTZOiHHWEf2v8fSoQSb
-   3BMTghQsI0PsAkjCX15s2y68dwbhkedkpRimb4AnhvpVDuJaiXhn/exbH
-   NYuWK19lLASkb5acRu5Z8Uhl9d93yf1Rpi6MAauPU0ypAvURPqXiX773/
-   w==;
-X-CSE-ConnectionGUID: wo16nO66Q8+fbxSUIcLVMQ==
-X-CSE-MsgGUID: Rhe3GexBQSuFx8F9wttwvA==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
-   d="scan'208";a="9931472"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Oct 2023 06:24:15 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Fri, 13 Oct 2023 06:23:37 -0700
-Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
- Transport; Fri, 13 Oct 2023 06:23:35 -0700
-From:   <marius.cristea@microchip.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <marius.cristea@microchip.com>
-Subject: [PATCH v2] iio: adc: MCP3564: fix warn: unsigned '__x' is never less than zero.
-Date:   Fri, 13 Oct 2023 16:23:33 +0300
-Message-ID: <20231013132333.10582-1-marius.cristea@microchip.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232105AbjJMO1r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 10:27:47 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC7CEBB
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 07:27:44 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c5087d19a6so8684481fa.0
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 07:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697207263; x=1697812063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IrTbq6l4vJ/ozH4YXSFIVlz5uNA4zxMvtoWBLcKvON0=;
+        b=eBU5488fE0r/QyCwW13LkSA6B79bL1HH5gtSKR1iqs6wdutZisTkw/C7ArhOIGbhHj
+         Mb3erGUUgwqvMn/C0ukoCQmVrCtYtPnIYlkUQ1p3SNl+SEYkKsscSbFLn5lH1BwMSSJi
+         rfojaDAGNAvddtJTw5iOCgt5EMfapYAgnmpT46spbH3hoUNW1wBbbeUVpxCOP3y5UhPw
+         pUyaBB/iRazj5hbhJ2lp5N04mp53MZDpGQwKGAttZI4VH+P6RJmWpqq7Tzf9OXjCZ/sW
+         yVZKDPmM9fEDFH8lrZC+nt8I34yYkQsSnqhD0MtNrz47pYe8b/R9JugLXvvHJ4NguQdn
+         h2bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697207263; x=1697812063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IrTbq6l4vJ/ozH4YXSFIVlz5uNA4zxMvtoWBLcKvON0=;
+        b=lx6w/TDmu654VVjH0JmPCabl0U9AvQqxPP9Yr5JbgR8gxUHimm0DQEHcOCzXI3RKnp
+         8w+KoER4yIVLYJjKjrTM6BCBxnvqVTl8F75qsXJU+DzX5X2ZBI3usSPAbMSDqoNBNZRc
+         j6YXIgZEDxtDfUZuAh+9jQ4UcZJfXpKcK40L3xJrgrtFuAED3Od3k/OEhZE/3WfS0diR
+         Aif2w3Ywxqh6/oxSgsh2XzbR2K60G4Sk/cgh2AfS4ycrFHTPo6Vk3W3fXVak22x+s5Qk
+         LquyLlWPd/+/Rf86iuKUeKvD6ONPevmEyaCBAXHawcsgYP4B0hP7eOZ56VfeSlUWvII9
+         sYPQ==
+X-Gm-Message-State: AOJu0YzJlo8aotZDj3gUAWI/uzLFDj5yXSKFtr1/4wYpmtvc5QSfiCly
+        Op6EPzKfyANiYhhAyxgTmYDwtKJQ5eF5CkMhfCNxTg==
+X-Google-Smtp-Source: AGHT+IE4eiUmsANlY3d/dxY0iEZjlTkOUetIaZ78hfjOEopvNkHH3FOMB9rHnm6XoBcEp2hdELOl9b26kywoz5Z7rYU=
+X-Received: by 2002:a2e:91da:0:b0:2bf:e65d:e815 with SMTP id
+ u26-20020a2e91da000000b002bfe65de815mr26608297ljg.38.1697207262865; Fri, 13
+ Oct 2023 07:27:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20231012204509.3095010-1-dlechner@baylibre.com> <56e2d1cbe6671bc6709926771602b3aa412c1656.camel@gmail.com>
+In-Reply-To: <56e2d1cbe6671bc6709926771602b3aa412c1656.camel@gmail.com>
+From:   David Lechner <dlechner@baylibre.com>
+Date:   Fri, 13 Oct 2023 09:27:31 -0500
+Message-ID: <CAMknhBGdfdm8VpzXs1qh0N8F-CmkZk+1KM5+1WCz1D70Cmm_=A@mail.gmail.com>
+Subject: Re: [PATCH] iio: resolver: ad2s1210: add support for adi,fixed-mode
+To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        nuno.sa@analog.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Marius Cristea <marius.cristea@microchip.com>
+On Fri, Oct 13, 2023 at 2:50=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
+>
+> Hi David,
+>
+> Couple of minor things...
+>
+> On Thu, 2023-10-12 at 15:45 -0500, David Lechner wrote:
+> > It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1)=
+.
+> > According to the devicetree bindings, in this case the adi,fixed-mode
+> > property will specify which of the 3 possible modes the mode pins are
+> > hardwired for and the gpio-modes property is not allowed.
+> >
+> > This adds support for the case where the mode pins are hardwired for
+> > config mode. In this configuration, the position and velocity must be r=
+ead
+> > from the config register.
+> >
+> > The cases of hardwired position or velocity modes is not supported as
+> > there would be no way to configure the device.
+> >
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > ---
+> >  drivers/iio/resolver/ad2s1210.c | 193 +++++++++++++++++++++++++++-----
+> >  1 file changed, 162 insertions(+), 31 deletions(-)
+> >
+> > diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2=
+s1210.c
+> > index 1bd1b950e7cc..e6d3f31d529f 100644
+> > --- a/drivers/iio/resolver/ad2s1210.c
+> > +++ b/drivers/iio/resolver/ad2s1210.c
+> > @@ -141,7 +141,7 @@ struct ad2s1210_state {
+> >       struct spi_device *sdev;
+> >       /** GPIO pin connected to SAMPLE line. */
+> >       struct gpio_desc *sample_gpio;
+> > -     /** GPIO pins connected to A0 and A1 lines. */
+> > +     /** GPIO pins connected to A0 and A1 lines (optional). */
+> >       struct gpio_descs *mode_gpios;
+> >       /** Used to access config registers. */
+> >       struct regmap *regmap;
+> > @@ -149,6 +149,8 @@ struct ad2s1210_state {
+> >       unsigned long clkin_hz;
+> >       /** Available raw hysteresis values based on resolution. */
+> >       int hysteresis_available[2];
+> > +     /* adi,fixed-mode property - only valid when mode_gpios =3D=3D NU=
+LL. */
+> > +     enum ad2s1210_mode fixed_mode;
+> >       /** The selected resolution */
+> >       enum ad2s1210_resolution resolution;
+> >       /** Copy of fault register from the previous read. */
+> > @@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state =
+*st,
+> > enum ad2s1210_mode mode)
+> >       struct gpio_descs *gpios =3D st->mode_gpios;
+> >       DECLARE_BITMAP(bitmap, 2);
+> >
+> > +     if (!gpios)
+> > +             return mode =3D=3D st->fixed_mode ? 0 : -EOPNOTSUPP;
+> > +
+> >       bitmap[0] =3D mode;
+> >
+> >       return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->i=
+nfo,
+> > @@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context,
+> > unsigned int reg,
+> >        * parity error. The fault register is read-only and the D7 bit m=
+eans
+> >        * something else there.
+> >        */
+> > -     if (reg !=3D AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_D=
+ATA)
+> > +     if ((reg > AD2S1210_REG_VELOCITY_LSB && reg !=3D AD2S1210_REG_FAU=
+LT)
+> > +          && st->rx[1] & AD2S1210_ADDRESS_DATA)
+> >               return -EBADMSG;
+> >
+> >       *val =3D st->rx[1];
+> > @@ -437,6 +443,40 @@ static void ad2s1210_push_events(struct iio_dev
+> > *indio_dev,
+> >       st->prev_fault_flags =3D flags;
+> >  }
+> >
+> > +/**
+> > + * Reads position or velocity from the config registers.
+> > + *
+> > + * This is used when the mode gpios are not available.
+> > + *
+> > + * Must be called with the lock held.
+> > + *
+> > + * @param st The device state.
+> > + * @param val Pointer to hold the value read.
+> > + * @param msb_reg The register address of the MSB register.
+> > + * @param lsb_reg The register address of the LSB register.
+> > + * @return 0 on success, negative error code otherwise.
+> > + */
+> > +static int ad2s1210_read_val_from_config(struct ad2s1210_state *st, __=
+be16
+> > *val,
+> > +                                      u8 msb_reg, u8 lsb_reg)
+> > +{
+> > +     unsigned int reg_val;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, msb_reg, &reg_val);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     ((u8 *)val)[0] =3D reg_val;
+> > +
+> > +     ret =3D regmap_read(st->regmap, lsb_reg, &reg_val);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     ((u8 *)val)[1] =3D reg_val;
+>
+> These casts are not that nice... Is sparse even ok with this without __fo=
+rce?
+> I didn't looked at the datasheet so I have no idea but is regmap_bulk_rea=
+d() an
+> option? It would simplify things.
 
-The patch 33ec3e5fc1ea: "iio: adc: adding support for MCP3564 ADC"
-leads to the following Smatch static checker warning:
+regmap_bulk_read() does work, thanks for the suggestion.
 
-   smatch warnings:
-   drivers/iio/adc/mcp3564.c:1105 mcp3564_fill_scale_tbls() warn: unsigned '__x' is never less than zero.
+>
+> > +
+> > +     return 0;
+> > +}
+>
+> ...
+>
+> >
+> >       ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
+> > @@ -1299,9 +1397,33 @@ static const struct iio_info ad2s1210_info =3D {
+> >  static int ad2s1210_setup_properties(struct ad2s1210_state *st)
+> >  {
+> >       struct device *dev =3D &st->sdev->dev;
+> > +     const char *str_val;
+> >       u32 val;
+> >       int ret;
+> >
+> > +     ret =3D device_property_read_string(dev, "adi,fixed-mode", &str_v=
+al);
+> > +     if (ret =3D=3D -EINVAL)
+> > +             st->fixed_mode =3D -1;
+> > +     else if (ret < 0)
+> > +             return dev_err_probe(dev, ret,
+> > +                     "failed to read adi,fixed-mode property\n");
+> > +     else {
+> > +             if (strcmp(str_val, "position") =3D=3D 0)
+> > +                     st->fixed_mode =3D MOD_POS;
+> > +             else if (strcmp(str_val, "velocity") =3D=3D 0)
+> > +                     st->fixed_mode =3D MOD_VEL;
+> > +             else if (strcmp(str_val, "config") =3D=3D 0)
+> > +                     st->fixed_mode =3D MOD_CONFIG;
+> > +             else
+> > +                     return dev_err_probe(dev, -EINVAL,
+> > +                             "invalid adi,fixed-mode property value:
+> > %s\n",
+> > +                             str_val);
+> > +
+> > +             if (st->fixed_mode !=3D MOD_CONFIG)
+> > +                     return dev_err_probe(dev, -EINVAL,
+> > +                             "only adi,fixed-mode=3D\"config\" is
+> > supported\n");
+>
+> Why not?
+>
+> if (strcmp(str_val, "config"))
+>         return dev_err_probe();
+>
+> st->fixed_mode =3D MOD_CONFIG;
+>
+> Am I missing something obvious?
 
-vim +/__x +1105 drivers/iio/adc/mcp3564.c
+I made different error messages to differentiate between values not
+allowed by the device tree vs. not supported by the driver. I don't
+have a problem with simplifying it though.
 
-   1094
-   1095  static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
-   1096  {
-   .....
-   1103          for (i = 0; i < MCP3564_MAX_PGA; i++) {
-   1104                  ref = adc->vref_mv;
- > 1105                  tmp1 = shift_right((u64)ref * NANO, pow);
-   1106                  div_u64_rem(tmp1, NANO, &tmp0);
-   1107
-   .....
-   1113  }
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309280738.NWjVfVt4-lkp@intel.com/
-Fixes: 33ec3e5fc1ea (iio: adc: adding support for MCP3564 ADC)
-Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
----
- drivers/iio/adc/mcp3564.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-index 9ede1a5d5d7b..e3f1de5fcc5a 100644
---- a/drivers/iio/adc/mcp3564.c
-+++ b/drivers/iio/adc/mcp3564.c
-@@ -1102,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
- 
- 	for (i = 0; i < MCP3564_MAX_PGA; i++) {
- 		ref = adc->vref_mv;
--		tmp1 = shift_right((u64)ref * NANO, pow);
-+		tmp1 = ((u64)ref * NANO) >> pow;
- 		div_u64_rem(tmp1, NANO, &tmp0);
- 
- 		tmp1 = tmp1 * mcp3564_hwgain_frac[(2 * i) + 1];
-
-base-commit: 5e99f692d4e32e3250ab18d511894ca797407aec
--- 
-2.34.1
-
+>
+> - Nuno S=C3=A1

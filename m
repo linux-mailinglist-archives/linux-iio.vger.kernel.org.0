@@ -2,133 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36AB97C8B1D
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 18:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B0377C8CCE
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Oct 2023 20:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjJMQYQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Oct 2023 12:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
+        id S229830AbjJMSJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Oct 2023 14:09:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230220AbjJMQYP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 12:24:15 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F8ACA9;
-        Fri, 13 Oct 2023 09:24:11 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-536b39daec1so3852649a12.2;
-        Fri, 13 Oct 2023 09:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697214250; x=1697819050; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zizxzHDdvMghQ8MHo3aHnYXx7ejJUjFj9o4g619WJCQ=;
-        b=JsHvwilsPDTjxAZ+XtOVJ8WyqONQWgXiYqseX3FoBljQhel1fQ2CUSGD62+i691mE4
-         1GhLq5TW0r5tSuTwv3dKMfBhtjc916S0tYgebs1w1Z6o2pkcUwFCLPUqE/wWUy6RYHTt
-         CQwsiDlM5SeCgUF0egkiL/3FBnPfIfkfkrFE2vx7rivt88OExzH6CfX7WIamsH+no4w9
-         wEk2ljv9CLz0a6V2nYvwTycnOIOG4ep4ctPSTnMdD9sLWD0Fvr/r+bw8TZYJb0Uog4PW
-         Tu5EVWnx+q3eOEyPLpiIRqzrBbReOUuaee6X4kdGnKLSNK5axJIz2mehgf08e9vgcWyh
-         IiqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697214250; x=1697819050;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zizxzHDdvMghQ8MHo3aHnYXx7ejJUjFj9o4g619WJCQ=;
-        b=tE+zRGVPkbDsrodSzFl+O97TsK64L/WfSJPkWpaLc4NA+P7rtEehWUVb2JJKCw2wYZ
-         F2xpS4PwxZsCuSsTXWf87fnuI+eAiBQmCNI4NIOC0170Y+lp1IRNT9EYQnTahHbUyBxd
-         DdhgfvG5hznHlRit8vTSFZbMK3wtjiVecLCKI5W8uRGLGrosnov58vo9wQ87JYhDmjko
-         T5rnc/LmaZuvBUiZajpzJmPW7kRCEMBwwTuasHfiWie4fDwVMENEiagfgemD0xS6MrnE
-         lq34FYRPyPfcnyj9cFeU8lOKiGK0Fr/sJIhxBXWXfdmejulHNG8qb9wpkBKeuxr1eOwa
-         mIVg==
-X-Gm-Message-State: AOJu0YxuHXQaetf2uIWoV84I8VgHbA3D6yQNCk5kCfoixj8ZjXAldlfX
-        kyExlTKnazHcO+/emgfDuIRGYe9h+7B75tvtrGQq3q41ydE=
-X-Google-Smtp-Source: AGHT+IEszXjFKSidX2y7Q+53gnLCwRD+Y69DadWTR+KKbDxL1IitJsgUwsdzTKiu3hi42npHihA53UsX/ig2NR0Z+Q8=
-X-Received: by 2002:a50:d68f:0:b0:53e:4c39:5608 with SMTP id
- r15-20020a50d68f000000b0053e4c395608mr1455028edi.17.1697214249625; Fri, 13
- Oct 2023 09:24:09 -0700 (PDT)
+        with ESMTP id S229632AbjJMSJo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Oct 2023 14:09:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE1991
+        for <linux-iio@vger.kernel.org>; Fri, 13 Oct 2023 11:09:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E02C433C7;
+        Fri, 13 Oct 2023 18:09:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697220582;
+        bh=CHLL/TyQTja+JRvBseAF7Alk0rHDgoNMClzQSpKtjqc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=OOfEP2G61Kx4R2W09dOqBgP8/I3Ey4F0icJOfyqAP8PTjAm3de/QwLL3zs+4TyvVq
+         3JO6wISpPZgbFDdRqA+MdTo+fFoGKLlIRLJGiS7WjPHN6JTRuQikLlhkXosPjEt6RE
+         OOI0N5HXv9hye6oHNKEkRMXmayFOaGDFBfixSMXxj9p2o37CwFz+xLV5YNkoQ7JkOE
+         1MRha0PhbaKqfJP7oNvTHbnRRiaaMEkfG2Jw68VG46dhMQuXTaVnJItmdd1l7oFrC9
+         NpkkqdqvO096tsEsJCWEtvSRJwNb9YZ87i5nl0mUBUKgo16LY9RnkdgGKiopBeRIiQ
+         agScAznjdOBgQ==
+Date:   Fri, 13 Oct 2023 19:09:56 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "O'Griofa, Conall" <conall.ogriofa@amd.com>
+Cc:     "Simek, Michal" <michal.simek@amd.com>,
+        Robert Hancock <robert.hancock@calian.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2 0/2] Xilinx XADC fixes
+Message-ID: <20231013190956.6c814db4@jic23-huawei>
+In-Reply-To: <DM6PR12MB4217D5104DF438AA05039CC58BD3A@DM6PR12MB4217.namprd12.prod.outlook.com>
+References: <20230915001019.2862964-1-robert.hancock@calian.com>
+        <bae646e9-7977-4de3-927b-ffcb7a94ac48@amd.com>
+        <20230924173210.13f2bf85@jic23-huawei>
+        <20231010171928.75451192@jic23-huawei>
+        <DM6PR12MB4217D5104DF438AA05039CC58BD3A@DM6PR12MB4217.namprd12.prod.outlook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230918080314.11959-1-jagathjog1996@gmail.com>
- <20230918080314.11959-2-jagathjog1996@gmail.com> <20230924143710.7c6edc4a@jic23-huawei>
- <CAM+2EuJ8o5X2ucph8gic2=03bbLQmUCX=j3SFLrqD4Y6rwXs9A@mail.gmail.com>
- <20230930170530.0b8f185c@jic23-huawei> <CAM+2EuKzBVbTF2SrpYEYfzap1wrONboFV-QuTU9Fz7sVjqJLeA@mail.gmail.com>
- <20231010100002.0163d681@jic23-huawei> <CACRpkdY+K90mN1Q1tf38FLRgEsz3q8dK9SJYSQVwGe=PL3FaUQ@mail.gmail.com>
- <20231010154216.6032a1c2@jic23-huawei> <CACRpkdY4yJKmc_Sbr=4sJ0WseCEEBOQ7wKj4fBUMG2_cx-Xxbw@mail.gmail.com>
- <20231013091615.00007399@Huawei.com>
-In-Reply-To: <20231013091615.00007399@Huawei.com>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Fri, 13 Oct 2023 21:53:57 +0530
-Message-ID: <CAM+2EuLFZBnrhqb1e67XAU0ssOwsfjeR+c=xn5j7Hpts80D96Q@mail.gmail.com>
-Subject: Re: [RFC 1/2] dt-bindings: iio: imu: Add DT binding doc for BMI323
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        andriy.shevchenko@linux.intel.com, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Thu, 12 Oct 2023 09:53:44 +0000
+"O'Griofa, Conall" <conall.ogriofa@amd.com> wrote:
 
-On Fri, Oct 13, 2023 at 1:46=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Tue, 10 Oct 2023 21:51:17 +0200
-> Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> > On Tue, Oct 10, 2023 at 4:42=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
-org> wrote:
-> >
-> > > We kind of lost the question along the way.  Wasn't so much about whe=
-ther
-> > > there was a generic binding but more about whether it is worth provid=
-ing
-> > > separate controls for the two IRQ pins?  Or just assume no one is cra=
-zy
-> > > enough to play that level of mix and match.
-> >
-> > Ugh no, that's upfront design for a nonexistent use case.
-> >
-> > - First, to even consider open drain the designer need to be really
-> >   short of IRQ lines/rails, and, despite knowing it's a bad idea, decid=
-e
-> >   to share this line between several peripherals, even though it will
-> >   require I2C traffic to just determine which one even fired the IRQ.
-> >
-> > - Second, be interested in using two IRQs to distinguish between
-> >   different events? When we just faced the situation that we had
-> >   too few IRQ lines so we need to start sharing them with open
-> >   drain...?
-> >
-> > It's not gonna happen.
-> >
-> > Stay with just drive-open-drain; and configure them all as that if
-> > that property is set.
->
-> Good insights, I'd not really thought about the wider reasons for using
-> this :)  Not done any circuit design or embedded board bring up in a
-> long while.
->
-> Thanks!
+> [AMD Official Use Only - General]
+> 
+> Acked-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+> Tested-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+> 
+> Hi Jonathan,
+> 
+> Thanks for the patches, changes look good, I have tested on board and not seen any issues from my testing.
+Great. Applied to the fixes-togreg branch of iio.git.
 
-Thank you for the explanation and suggestion.
+thanks,
 
-Regards
-Jagath.
+Jonathan
 
->
+> 
+> Cheers,
+> Conall.
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Tuesday, October 10, 2023 5:19 PM
+> > To: Simek, Michal <michal.simek@amd.com>
+> > Cc: Robert Hancock <robert.hancock@calian.com>; O'Griofa, Conall
+> > <conall.ogriofa@amd.com>; Lars-Peter Clausen <lars@metafoo.de>; linux-
+> > iio@vger.kernel.org; linux-arm-kernel@lists.infradead.org
+> > Subject: Re: [PATCH v2 0/2] Xilinx XADC fixes
 > >
-> > Yours,
-> > Linus Walleij
+> > Caution: This message originated from an External Source. Use proper caution
+> > when opening attachments, clicking links, or responding.
 > >
->
+> >
+> > On Sun, 24 Sep 2023 17:32:10 +0100
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >  
+> > > On Fri, 15 Sep 2023 08:52:49 +0200
+> > > Michal Simek <michal.simek@amd.com> wrote:
+> > >  
+> > > > +Conall
+> > > >
+> > > > On 9/15/23 02:10, Robert Hancock wrote:  
+> > > > > Fixes for a couple of issues in the Xilinx XADC driver: one where
+> > > > > preconfigured temperature/voltage thresholds were being clobbered
+> > > > > and potentially breaking overtemperature shutdown, and another for
+> > > > > inaccurate temperature readings on UltraScale family devices.
+> > > > >
+> > > > > Changed since v2: Updated to also remove disabling XADC alarm bits.
+> > > > >
+> > > > > Robert Hancock (2):
+> > > > >    iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature
+> > > > >      thresholds
+> > > > >    iio: adc: xilinx-xadc: Correct temperature offset/scale for
+> > > > > UltraScale
+> > > > >
+> > > > >   drivers/iio/adc/xilinx-xadc-core.c | 39 +++++++++++-------------------
+> > > > >   drivers/iio/adc/xilinx-xadc.h      |  2 ++
+> > > > >   2 files changed, 16 insertions(+), 25 deletions(-)
+> > > > >  
+> > > >
+> > > > Conall: Please test and review.  
+> > >
+> > > I'm sitting on this one until I hear back.   No huge rush, but if you
+> > > can estimate when you'll get to this I know to leave you alone until
+> > > after that!  
+> >
+> > I'll ask one more time, then probably just assume these are fine and apply.
+> >
+> > So Conall, have you had a chance to look at these?
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> > >
+> > > Jonathan
+> > >  
+> > > >
+> > > > Thanks,
+> > > > Michal  
+> > >  
+> 
+

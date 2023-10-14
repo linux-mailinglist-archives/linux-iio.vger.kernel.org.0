@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8656E7C9558
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 18:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2829D7C956D
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 18:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbjJNQSz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Oct 2023 12:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
+        id S230211AbjJNQqN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Oct 2023 12:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjJNQSy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 12:18:54 -0400
+        with ESMTP id S230016AbjJNQqM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 12:46:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D625A2;
-        Sat, 14 Oct 2023 09:18:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB93C433C7;
-        Sat, 14 Oct 2023 16:18:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53FDB7;
+        Sat, 14 Oct 2023 09:46:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D9BC433C7;
+        Sat, 14 Oct 2023 16:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697300332;
-        bh=rcHe2IojBHzrFe/8C4CXM2Y34afpD5jZN4BNeTTGPSA=;
+        s=k20201202; t=1697301970;
+        bh=UkfmNLmsfbE9sjB4/yEQF1Ft7jr9aA3XJDIvkkE44fo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=W11XEmFFSK0FSzKN3yrJEz3qYTacjYsL3JhaN6VQTF9mZFldTjlqSR6aoK1lti0w1
-         MbJOPOpp+q29FZjYdEG/yl3VkUnQT9Tix6HA+DDLnR4K8+Lft+7FkcmbOW3jOiHQTZ
-         WqP96eL7yigHTCNDOielAkp1WdcApJvCLCUp3SI2MOmFWvNEXzhafV8dL4s73rQqlY
-         1Jz0TmAozrjQ10YVd9x1PagUkyf1LQpQwprGjCsD40n3F/vkD9gOf0DSrjXHqNdEDJ
-         LZjJzFgHvMR6d9IA9EIr0mRWowuEkKf3A5watNXbKAH2jb/+TfxdkoVrisehlS7tVx
-         EfRrx5CbuYgGA==
-Date:   Sat, 14 Oct 2023 17:19:06 +0100
+        b=YmPSIqUvEHAxvFAjD6DrziJgMQL/SbwsYC8Z61eSceDlL32C92Ogki1SAOSWthKCk
+         j7BwSQ5azdfLnbONZN6EkgLERGpNEOtubu/H/+IRWn7Omico3Ic+v0jNCZt6WP2nOO
+         wWWnxMyIiioYfN1PoJh0Da524R+9v3F8SshyArfE9DABTOlbNRqRu4kXs1tpf0+Fr2
+         bh3SUJKs9gk+wsw3oOHQcEicNxA4ntPc4ZcEhcQqO+8cC/sQhZm+FW6znO2ULQ5p2e
+         qHevB5ZVnrnLP7eDF3UN2j8PBrRuJuD6iza2TYJ9enV0Jy3aT1ME4XiIqwCoCv5hBj
+         y68Mw4NJGN4eA==
+Date:   Sat, 14 Oct 2023 17:46:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: Use device_get_match_data()
-Message-ID: <20231014171906.42459f40@jic23-huawei>
-In-Reply-To: <20231006224440.442864-1-robh@kernel.org>
-References: <20231006224440.442864-1-robh@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     andriy.shevchenko@linux.intel.com, u.kleine-koenig@pengutronix.de,
+        lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linus.walleij@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: imu: Add driver for BMI323 IMU
+Message-ID: <20231014174626.3c203096@jic23-huawei>
+In-Reply-To: <20231013034808.8948-3-jagathjog1996@gmail.com>
+References: <20231013034808.8948-1-jagathjog1996@gmail.com>
+        <20231013034808.8948-3-jagathjog1996@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,135 +53,127 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  6 Oct 2023 17:44:39 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Fri, 13 Oct 2023 09:18:08 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> Use preferred device_get_match_data() instead of of_match_device() to
-> get the driver match data. With this, adjust the includes to explicitly
-> include the correct headers.
+> The Bosch BMI323 is a 6-axis low-power IMU that provide measurements for
+> acceleration, angular rate, and temperature. This sensor includes
+> motion-triggered interrupt features, such as a step counter, tap detection,
+> and activity/inactivity interrupt capabilities.
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-Applied to the togreg branch of iio.git and pushed out first as testing
-to let 0-day see if it can find any issues that we missed.
+> The driver supports various functionalities, including data ready, FIFO
+> data handling, and events such as tap detection, step counting, and
+> activity interrupts.
+> 
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+Hi Jagath,
 
-Thanks,
+Nice driver.
+
+We are rapidly approaching the end of this cycle and as this is a
+large driver, I think it could do to remain on list at least a week
+before I apply it or until it picks up some tags from others if that
+happens sooner. Hence I'm afraid it might well sneak into next cycle.
+
+A couple of really small things in the docs and build files from me.
 
 Jonathan
 
 > ---
->  drivers/iio/adc/stm32-adc-core.c | 11 +++--------
->  drivers/iio/adc/twl6030-gpadc.c  | 10 ++++------
->  drivers/iio/dac/stm32-dac-core.c |  9 ++++-----
->  3 files changed, 11 insertions(+), 19 deletions(-)
+>  Documentation/ABI/testing/sysfs-bus-iio |   18 +
+>  MAINTAINERS                             |    7 +
+>  drivers/iio/imu/Kconfig                 |    1 +
+>  drivers/iio/imu/Makefile                |    1 +
+>  drivers/iio/imu/bmi323/Kconfig          |   33 +
+>  drivers/iio/imu/bmi323/Makefile         |    7 +
+>  drivers/iio/imu/bmi323/bmi323.h         |  209 +++
+>  drivers/iio/imu/bmi323/bmi323_core.c    | 2139 +++++++++++++++++++++++
+>  drivers/iio/imu/bmi323/bmi323_i2c.c     |  121 ++
+>  drivers/iio/imu/bmi323/bmi323_spi.c     |   92 +
+>  10 files changed, 2628 insertions(+)
+>  create mode 100644 drivers/iio/imu/bmi323/Kconfig
+>  create mode 100644 drivers/iio/imu/bmi323/Makefile
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323.h
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_core.c
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_i2c.c
+>  create mode 100644 drivers/iio/imu/bmi323/bmi323_spi.c
 > 
-> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> index c19506b0aac8..616dd729666a 100644
-> --- a/drivers/iio/adc/stm32-adc-core.c
-> +++ b/drivers/iio/adc/stm32-adc-core.c
-> @@ -17,10 +17,11 @@
->  #include <linux/irqdomain.h>
->  #include <linux/mfd/syscon.h>
->  #include <linux/module.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
->  #include <linux/of_platform.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
-> @@ -708,8 +709,6 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	struct stm32_adc_priv *priv;
->  	struct device *dev = &pdev->dev;
->  	struct device_node *np = pdev->dev.of_node;
-> -	const struct of_device_id *of_id;
-> -
->  	struct resource *res;
->  	u32 max_rate;
->  	int ret;
-> @@ -722,11 +721,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  	platform_set_drvdata(pdev, &priv->common);
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 19cde14f3869..c66fc560ee4b 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -2254,3 +2254,21 @@ Description:
+>  		If a label is defined for this event add that to the event
+>  		specific attributes. This is useful for userspace to be able to
+>  		better identify an individual event.
+> +
+> +What:		/sys/.../events/in_accel_gesture_tap_wait_timeout
+> +KernelVersion:	6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Enable tap gesture confirmation with timeout.
+
+> +
+> +What:		/sys/.../events/in_accel_gesture_tap_wait_dur
+> +KernelVersion:	6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Timeout value for tap gesture confirmation.
+
+Units need to be specified.  Seconds?
+
+> +
+> +What:		/sys/.../events/in_accel_gesture_tap_wait_dur_available
+> +KernelVersion:	6.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		List of available timeout value for tap gesture confirmation.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4e07c032d06a..47ca415212a7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3595,6 +3595,13 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
+>  F:	drivers/iio/accel/bma400*
 >  
-> -	of_id = of_match_device(dev->driver->of_match_table, dev);
-> -	if (!of_id)
-> -		return -ENODEV;
-> -
-> -	priv->cfg = (const struct stm32_adc_priv_cfg *)of_id->data;
-> +	priv->cfg = device_get_match_data(dev);
->  	priv->nb_adc_max = priv->cfg->num_adcs;
->  	spin_lock_init(&priv->common.lock);
+> +BOSCH SENSORTEC BMI323 IMU IIO DRIVER
+> +M:	Jagath Jog J <jagathjog1996@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/imu/bosch,bma400.yaml
+> +F:	drivers/iio/imu/bmi323/
+> +
+>  BPF JIT for ARM
+>  M:	Shubham Bansal <illusionist.neo@gmail.com>
+>  L:	bpf@vger.kernel.org
+> diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
+> index c2f97629e9cd..6c9a85294bc1 100644
+> --- a/drivers/iio/imu/Kconfig
+> +++ b/drivers/iio/imu/Kconfig
+> @@ -54,6 +54,7 @@ config ADIS16480
 >  
-> diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
-> index 224e9cb5e147..78bf55438b2c 100644
-> --- a/drivers/iio/adc/twl6030-gpadc.c
-> +++ b/drivers/iio/adc/twl6030-gpadc.c
-> @@ -16,9 +16,10 @@
->   */
->  #include <linux/interrupt.h>
->  #include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/property.h>
->  #include <linux/mfd/twl.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -879,17 +880,14 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct twl6030_gpadc_data *gpadc;
->  	const struct twl6030_gpadc_platform_data *pdata;
-> -	const struct of_device_id *match;
->  	struct iio_dev *indio_dev;
->  	int irq;
->  	int ret;
+>  source "drivers/iio/imu/bmi160/Kconfig"
+>  source "drivers/iio/imu/bno055/Kconfig"
+> +source "drivers/iio/imu/bmi323/Kconfig"
+Same on ordering.
 >  
-> -	match = of_match_device(of_twl6030_match_tbl, dev);
-> -	if (!match)
-> +	pdata = device_get_match_data(&pdev->dev);
-> +	if (!pdata)
->  		return -EINVAL;
+>  config FXOS8700
+>  	tristate
+> diff --git a/drivers/iio/imu/Makefile b/drivers/iio/imu/Makefile
+> index 6eb612034722..627406476357 100644
+> --- a/drivers/iio/imu/Makefile
+> +++ b/drivers/iio/imu/Makefile
+> @@ -16,6 +16,7 @@ obj-$(CONFIG_IIO_ADIS_LIB) += adis_lib.o
 >  
-> -	pdata = match->data;
-> -
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
->  	if (!indio_dev)
->  		return -ENOMEM;
-> diff --git a/drivers/iio/dac/stm32-dac-core.c b/drivers/iio/dac/stm32-dac-core.c
-> index 15abe048729e..e150ac729154 100644
-> --- a/drivers/iio/dac/stm32-dac-core.c
-> +++ b/drivers/iio/dac/stm32-dac-core.c
-> @@ -9,9 +9,12 @@
->  
->  #include <linux/clk.h>
->  #include <linux/delay.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/property.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/reset.h>
->  
-> @@ -94,16 +97,12 @@ static int stm32_dac_probe(struct platform_device *pdev)
->  	struct reset_control *rst;
->  	int ret;
->  
-> -	if (!dev->of_node)
-> -		return -ENODEV;
-> -
->  	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->  	if (!priv)
->  		return -ENOMEM;
->  	platform_set_drvdata(pdev, &priv->common);
->  
-> -	cfg = (const struct stm32_dac_cfg *)
-> -		of_match_device(dev->driver->of_match_table, dev)->data;
-> +	cfg = device_get_match_data(dev);
->  
->  	mmio = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(mmio))
+>  obj-y += bmi160/
+>  obj-y += bno055/
+> +obj-y += bmi323/ 
+Alphabetical order. 
+
+> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> new file mode 100644
+> index 000000000000..0bd5dedd9a63
+> --- /dev/null
+> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> @@ -0,0 +1,2139 @@
 

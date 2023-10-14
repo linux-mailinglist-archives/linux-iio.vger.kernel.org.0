@@ -2,40 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902157C94A2
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 14:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EFC7C94A7
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 14:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232999AbjJNMxp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Oct 2023 08:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60406 "EHLO
+        id S232957AbjJNMzv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Oct 2023 08:55:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232957AbjJNMxp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 08:53:45 -0400
+        with ESMTP id S233199AbjJNMzv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 08:55:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02A8EB7;
-        Sat, 14 Oct 2023 05:53:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC811C433C8;
-        Sat, 14 Oct 2023 12:53:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC99BC9;
+        Sat, 14 Oct 2023 05:55:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE83CC433C8;
+        Sat, 14 Oct 2023 12:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697288023;
-        bh=uUtGBAb/1IWM5+oLfn00HVz1r6IegTXwDfThcfuAGic=;
+        s=k20201202; t=1697288149;
+        bh=/lc79HEJR074zhVDTlVtO5LTAdeKCDnQSo7gS31fcjI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tvLTWYW2s2FXTsZFdCWXoC5NdCYb1b9Y92KiCSkX2OewK0Ink5FfKBSpvg1Dljnw3
-         z+JHf4hI7vL50CB3+Pokl7c/YJgWV88FoKZva6o0BYawDuau8bbKZkGnZe9kCKXTTy
-         J1DMJx4wyug74B5LjATNjvLH/7kMveXEDB/Mpocm0b/om++UrjGmtV5eUbjMiLzBqt
-         8VPGZ9q5qrFWmLgFwK5gA+F7ZhX42jCUmVbod22zpv62NOp3SfH0/ibmoVftgnn4Fu
-         sVZoe4FSIXuDo/gp3BDMVt1HkSR0ecwznEu+GWcxfTjOq9gzH457ZtTQRgztz0wRtv
-         82dlYshXnpYZA==
-Date:   Sat, 14 Oct 2023 13:54:00 +0100
+        b=qqlHHKcZdLhDWJxm1NuBxTdlUHaRSnSFIQ9q9zq2ruckPGylkmaqyiwGCrABL8ZDD
+         wG28TjhOuHnmxpxA/zVViVAUEszi7bowEF7Cv+/uMb/CeX058kWlP/IoAKVey1sPMw
+         f8LCbxOA87yEDB3oG+OCXrFqHX0t/czr8Ped69mOc6KVFwBDyoOkZZMbrFX+3/dsyD
+         5hm70g5fwMKqfu3Oi6MHL2byDyzyBlgced5vuCRWzEawk5zGpn6WpgXKfqiUu0fI0G
+         zcg0rNOw3/jXf+mKheaNjICNCZtVy+65YstJJgQpwxEhwWN5Pabp9KXzCurLqLdg6Y
+         XQThwD9L6oYUw==
+Date:   Sat, 14 Oct 2023 13:56:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <dlechner@baylibre.com>
-Cc:     linux-iio@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] iio: resolver: ad2s1210: small cleanups
-Message-ID: <20231014135400.51ebaac3@jic23-huawei>
-In-Reply-To: <20231012-ad2s1210-mainline-v1-0-b2ee31c0e9dd@baylibre.com>
-References: <20231012-ad2s1210-mainline-v1-0-b2ee31c0e9dd@baylibre.com>
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Martin Kepplinger <martink@posteo.de>, lorenzo@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        kernel@puri.sm, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: iio: imu: st,lsm6dsx: add mount-matrix
+ property
+Message-ID: <20231014135603.4f4a632c@jic23-huawei>
+In-Reply-To: <20231013-violin-craziness-f63d75ce0116@spud>
+References: <20231012142041.253332-1-martink@posteo.de>
+        <20231013-violin-craziness-f63d75ce0116@spud>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,27 +53,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 12 Oct 2023 11:18:11 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Fri, 13 Oct 2023 16:19:54 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> This series contains a few small cleanups for the ad2s1210 resolver
-> driver following up from the previous series[1].
+> On Thu, Oct 12, 2023 at 02:20:41PM +0000, Martin Kepplinger wrote:
+> > Add the mount-matrix optional property to the binding since it's supported
+> > and very useful when using the chip on a board.
+> > 
+> > Signed-off-by: Martin Kepplinger <martink@posteo.de>  
 > 
-> [1] https://lore.kernel.org/linux-iio/20231012092522.27ef48dd@jic23-huawei
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 > 
-> ---
-> David Lechner (2):
->       iio: resolver: ad2s1210: remove DRV_NAME macro
->       iio: resolver: ad2s1210: remove of_match_ptr()
+> Thanks,
+> Cnor.
 > 
->  drivers/iio/resolver/ad2s1210.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> ---
-> base-commit: 291e45eeeb901b1d22b74ac5ea48cab3c407c705
-> change-id: 20231012-ad2s1210-mainline-d80cc13acdce
-> 
-> Best regards,
+> > ---
+> > 
+> > revision history
+> > ----------------
+> > v2: (thanks Jonathan)
+> > * remove the addition to the example to avoid unrelated discussions :)
+:)
 
-Applied.  Thanks,
+Applied
 
-J
+> > 
+> > v1:
+> > https://lore.kernel.org/linux-devicetree/20230721103410.575555-1-martink@posteo.de/
+> > 
+> > 
+> >  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > index ee8724ad33ab..28b667a9cb76 100644
+> > --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > @@ -93,6 +93,9 @@ properties:
+> >    wakeup-source:
+> >      $ref: /schemas/types.yaml#/definitions/flag
+> >  
+> > +  mount-matrix:
+> > +    description: an optional 3x3 mounting rotation matrix
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > -- 
+> > 2.39.2
+> >   
+

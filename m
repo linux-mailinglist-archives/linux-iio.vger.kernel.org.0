@@ -2,146 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7076A7C95C9
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 19:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 393077C9670
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Oct 2023 23:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232238AbjJNRx2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Oct 2023 13:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47478 "EHLO
+        id S233326AbjJNVND (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Oct 2023 17:13:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjJNRxV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 13:53:21 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECAEAD;
-        Sat, 14 Oct 2023 10:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697305966; bh=J6E11bWGXsldQJECPuC0snlXP/OiLacD+sKcuNZkyLM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LHxU4RsKfzcPKNkWGel5p6xLlzZot7D1l8dhZ9lLIxbaXNCMd4FC1OB/U8Ssf79/n
-         MRk5MCU616km8zpjji8NK9FHAeUkHJh5ryfc96F1b2QWlM9UKZf8sK8e8YIMBgRR9u
-         1szYjx1LpkM4vHvGmBo9aLbB7BcpbQfyxve76LIo=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229683AbjJNVND (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Oct 2023 17:13:03 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B60CE;
+        Sat, 14 Oct 2023 14:13:00 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-5079c846dcfso1987693e87.2;
+        Sat, 14 Oct 2023 14:13:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697317978; x=1697922778; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y0kP5eY/UA3bzuOu4DpvQfR2TaaataaNhpPQGnL7330=;
+        b=ndvlOupfmxT1Fy5dfv5QyO5AJGyVs/VhgnoLJQXBB7H/VgVHw2KGEGTsGIGjtrBzOO
+         nRF27rVkM23zjoVXTEEGafQcrIyN4ATCfIiSLZV62iDhler5ZdH02/sILUY4B9FrWE27
+         LBGSkwWYKXT+eYkeqI2lL0EYxq5XRT9ee587dyO84hUT2esctL4QTt9oQ7xcCVHKNXT1
+         1v0BTiMerTCQet7B1iNJiXnmEHE30JHLMY0jDCUP+POyKubfmpl/27+7u22ykMs9b/VK
+         K5UgkffqSL5bY8G99TxvTl2LLHl5t60z6p716lPsnwfti1nqYLC/EumtfwxupADxxJf0
+         +sPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697317978; x=1697922778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y0kP5eY/UA3bzuOu4DpvQfR2TaaataaNhpPQGnL7330=;
+        b=rqVU1vtOAN7Eh0NQ6eOo/C2MSLAsqwTk9J2nRj2vj2ifiYGM+b9Kj+J8+RtgQRCAZZ
+         +D0km36PH99Pr5ZxaTBRacdrdy83oeqplzgMls9C+tjPA8RJpbpC3QK244Rim+UGgqlQ
+         fKvkwAjfoIFDRvMw7xyeZM5aee1ox5cMYi3pCDHvko1hZiOzTMhuQRWGgJgbcKpu9vD8
+         xBET44Dg2N08Swk6NeDryrT9Sc4B9tiOgeET64W+d/BVcBkQde7JCteKV/MvMPiozL31
+         lNG1CuYYPIj1ckzTZbjBO2/KoSo4c820VTVF7FJJCkkWH35cOv6I/IPlpQXN9H7+r/VH
+         xNnw==
+X-Gm-Message-State: AOJu0YxRjURfUWVFeShxCUhPIFA8RavLkPsU5qvrTI0HvlyRs7jrftQD
+        gvAP/0qCBGGPz1Poew+EGL0=
+X-Google-Smtp-Source: AGHT+IFreEc1NpIWamPWW00rUTFFa62be+gcxqUaXCLRh3Bg+lWCNoZ8k4EVxWuZItpxD74Ci3+hHA==
+X-Received: by 2002:a05:6512:794:b0:502:cc8d:f1fc with SMTP id x20-20020a056512079400b00502cc8df1fcmr22437887lfr.37.1697317978149;
+        Sat, 14 Oct 2023 14:12:58 -0700 (PDT)
+Received: from fr.lan ([46.31.31.132])
+        by smtp.googlemail.com with ESMTPSA id g3-20020a056512118300b00507a9b2eff4sm78759lfr.22.2023.10.14.14.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Oct 2023 14:12:57 -0700 (PDT)
+From:   Ivan Mikhaylov <fr0st61te@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325 thermals
-Date:   Sat, 14 Oct 2023 19:52:45 +0200
-Message-ID: <4958673.31r3eYUQgx@z3ntu.xyz>
-In-Reply-To: <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
-References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
- <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
- <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Ivan Mikhaylov <fr0st61te@gmail.com>
+Subject: [PATCH v6 0/2] Add maxim max34408/34409 ADC driver and yaml
+Date:   Sun, 15 Oct 2023 00:12:52 +0300
+Message-ID: <20231014211254.16719-1-fr0st61te@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
-> On 13.10.2023 10:09, Luca Weiss wrote:
-> > Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THERM
-> > and RFC_CAM_THERM thermistors connected to PM7325.
-> > 
-> > With this PMIC the software communication to the ADC is going through
-> > PMK7325 (= PMK8350).
-> > 
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > 
-> >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
-> >  +++++++++++++++++++++ 1 file changed, 117 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
-> > 2c01f799a6b2..d0b1e4e507ff 100644
-> > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > @@ -9,6 +9,7 @@
-> > 
-> >  #define PM7250B_SID 8
-> >  #define PM7250B_SID1 9
-> > 
-> > +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
-> > 
-> >  #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
-> >  #include <dt-bindings/leds/common.h>
-> >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> > 
-> > @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
-> > 
-> >  	};
-> >  	
-> >  	thermal-zones {
-> > 
-> > +		camera-thermal {
-> > +			polling-delay-passive = <0>;
-> > +			polling-delay = <0>;
-> > +			thermal-sensors = <&pmk8350_adc_tm 2>;
-> > +
-> > +			trips {
-> > +				active-config0 {
-> > +					temperature = <125000>;
-> 
-> are
-> 
-> > +		rear-cam-thermal {
-> > 
-> > +					temperature = <125000>;
-> 
-> you
-> 
-> > +		sdm-skin-thermal {
-> > 
-> > +					temperature = <125000>;
-> 
-> sure
-> 
-> about these temps?
+Add Maxim max34408/34409 ADC driver and yaml for it. Until now it
+supports only current monitioring function without overcurrent
+threshold/delay, shutdown delay configuration, alert interrupt.
 
-(email from my other address, quicker right now)
+Changes from v1:
+   - minor changes from Rob's comments for yaml
+   - add ena, shtdn and make 4 inputs for R sense from Jonathan's comments for yaml
+   - add _REG suffix and make prefix for bitmasks and statuses
+   - add SCALE/OFFSET instead of AVG/PROCESSED from Jonathan and
+     Lars-Peter comments
+   - add chip data from Jonathan and Lars-Peter comments
+   - minor changes from Lars-Peter and Jonathan comments for driver
 
-Well yes and no.
+Changes from v2:
+   - add channels into hardware description into yaml
+   - add rsense property per channel
+   - rename pins for shtdn and ena pins
+   - make one array for input_rsense values
 
-Yes as in those are the temps specified in downstream dtb.
-No as in I'm 99% sure there's user space with definitely lower threshold that 
-actually does something in response to the temps.
+Changes from v3:
+   - change *_34408_OCT3 and 4 to *_34409_OCT3 and 4
+   - change of_property_read_u32 to fwnode family calls
+   - add i2c dev table
+   - change of_match_device to i2c_of_match_device
+   - change match->data to i2c_get_match_data 
 
-I didn't look too much into this but does the kernel even do something when it 
-hits one of these trip points? I assume when there's a cooling device thing 
-specified then it can actually tell the driver to do something, but without 
-(and most drivers don't support this?) I'm assuming the kernel can't do much 
-anyways?
+Changes from v4:
+   - minor changes in yaml
 
-So e.g. when the temperature for the flash led is reached I'm assuming 
-downstream (+Android) either dims the led or turns it off? But I'd have to dig 
-quite a bit into the thermal setup there to check what it's really doing.
+Changes from v5:
+   - name and minor changes to properties in yaml from Rob's comments
+   - shtdn-enable-gpios -> powerdown-status-gpios from Krzysztof and
+     Jonathan comments in yaml
+   - minor changes to driver
 
-But for now I think it's okay to put this current thermal config into dts and 
-we'll improve it later when 1. I understand more and 2. maybe some useful 
-drivers support the cooling bits?
+Ivan Mikhaylov (2):
+  dt-bindings: adc: provide max34408/9 device tree binding document
+  iio: adc: Add driver support for MAX34408/9
 
-Regards
-Luca
+ .../bindings/iio/adc/maxim,max34408.yaml      | 139 +++++++++
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max34408.c                    | 276 ++++++++++++++++++
+ 4 files changed, 427 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+ create mode 100644 drivers/iio/adc/max34408.c
 
-> 
-> Konrad
-
-
-
+-- 
+2.42.0
 

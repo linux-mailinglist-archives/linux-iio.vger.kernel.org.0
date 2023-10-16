@@ -2,150 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804EF7CA63C
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 13:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91F4A7CA792
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 14:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjJPLFE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 07:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46420 "EHLO
+        id S230209AbjJPMDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 08:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232974AbjJPLFD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 07:05:03 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B22BEB4;
-        Mon, 16 Oct 2023 04:05:01 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so45180711fa.3;
-        Mon, 16 Oct 2023 04:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697454300; x=1698059100; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N6dSXg+vWqlViQZ7pvaQOjS16WN6O2z0EqZFtWA/VVw=;
-        b=X2KZusCIS/61L3auZBDPnqazMPYQlgWOr4h3RnvEFF0rjHiDH0gKK49E06eWLAsJI7
-         fvyqjn42ZJczR7lHxlxJvMeRTzA6YRuqldAhMOeAbn9sQu5zKa7vMsgbeCwtYx4HbYY+
-         uGY6JrxfkUSIxPIndoqekbQjiREHUxBuohH661vfKQgsM6hEw1y1/dzeCD2Ak6+Qj57Q
-         X92y0tGjxhe+rM6Yq9FWgu2hoJCxhK4ORqyUula07zQZ0ZTxMgcdV5meXyZCWRjz+aE/
-         nBifCFEer+6m/Y4BBEk28CFpy5g0LazYr7sF2T1not3aYw9jcUpIcjkIbWEAK37dbG4Z
-         yprQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697454300; x=1698059100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N6dSXg+vWqlViQZ7pvaQOjS16WN6O2z0EqZFtWA/VVw=;
-        b=E9hbj05H8ImFtdT/3J6NN2uuMxN1Chnm/bSQ50D91Q/poiANUrAZ2kYVfmMh1RGdqc
-         wfLGGLu6AYFD3Z2QuIn597fRruXLxikM7icr2O1p4bBqAVZasZEcMXb4Z1+ADbfW+k7M
-         SGOLIiVJCvwuuFBEvP2ZW5NQnTLoX7fcKDEQreHoRA/i0LJlDNoSkZPD/s8CDMJOuMkw
-         XqKrjUf8WRDWAwELNt8uNpgfCffuT2+TH2/7tKZVSj+RCCcF48/v9gN1B8itQ1xpHBHt
-         OHXii11twrV2Iihb2H8X4LmW16XHist7rUCL1/MxuU3ITtNCVo3G/DUU/Q5FZue8N5CU
-         sADQ==
-X-Gm-Message-State: AOJu0YxAyayV+f/RTXLNFngBx66Rboccp+FncrOaBeOL5REpcUGLJQky
-        lIb/v7e1pMIuDpJV9zO9Ye2rRSHJBiIDEQ==
-X-Google-Smtp-Source: AGHT+IE5WXbg3xeYYdwJOB/JSElE8Ux/VtDghmt9oxK+zws1wRbx2GGjHCCFwAt4t8qFpcOxxDIIiQ==
-X-Received: by 2002:ac2:4247:0:b0:507:ab66:f118 with SMTP id m7-20020ac24247000000b00507ab66f118mr2549170lfl.68.1697454299865;
-        Mon, 16 Oct 2023 04:04:59 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id b22-20020ac247f6000000b0050363f87c64sm4519363lfp.36.2023.10.16.04.04.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 04:04:58 -0700 (PDT)
-Date:   Mon, 16 Oct 2023 14:04:55 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: buffer: document known issue
-Message-ID: <ef61c2c1e9a1c5e9f713f656871fdcb1652afdc2.1697452986.git.mazziesaccount@gmail.com>
-References: <cover.1697452986.git.mazziesaccount@gmail.com>
+        with ESMTP id S229501AbjJPMDc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 08:03:32 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C840AE6;
+        Mon, 16 Oct 2023 05:03:29 -0700 (PDT)
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39G7h1Um007323;
+        Mon, 16 Oct 2023 14:02:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:from:subject:to:cc:references
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=GEtT1vGNrN2L3qXSsS6BjSB5ruMmKsplVyDRLRyeo9Y=; b=1J
+        98O2DjQg2zsjt4f510btLN/TCgkmPUp32hr+x1F3zVIG6OoZLfC3Cbyjc01lX9nZ
+        VSS73Gn48GLdu2Pj2PdtzQCh6rQpYFXh63DE6xW8H+rsFN1zzvxxEYZ+i7yOrOVy
+        1ybut4hcc4ZKwAQt8fVMxknPbllcUus7znWDRJmPQvi1rHJqIrPWzqu6PICGgi4T
+        lPhNG+AgOBhZOVBNR4OCi7G99qM+FbpiuaYRVCuRKuOTObDyKtkIfcpdvYv/o3Zu
+        vwBRb1d9cJyQS7368vGtITam91qeWebiryaExexOXLeN9hsY/CpxbuHNjAGKdma9
+        ZC1Ob39vbFcYhfvYRXtg==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tr4hyn1db-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Oct 2023 14:02:47 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3AB9A10005B;
+        Mon, 16 Oct 2023 14:02:45 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A384A22F7D3;
+        Mon, 16 Oct 2023 14:02:45 +0200 (CEST)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 16 Oct
+ 2023 14:02:43 +0200
+Message-ID: <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
+Date:   Mon, 16 Oct 2023 14:02:39 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AmYoofSM0ro6sMkn"
-Content-Disposition: inline
-In-Reply-To: <cover.1697452986.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
+ STM32MP15x boards
+To:     Rob Herring <robh@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
+        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
+        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
+        <arnd@kernel.org>, <richardcochran@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-p.hy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
+ <20231010125719.784627-11-gatien.chevallier@foss.st.com>
+ <20231010184212.GA1221641-robh@kernel.org>
+ <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
+ <20231012153012.GA698406-robh@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20231012153012.GA698406-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.32]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_05,2023-10-12_01,2023-05-22_02
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Rob,
 
---AmYoofSM0ro6sMkn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 10/12/23 17:30, Rob Herring wrote:
+> On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
+>> Hi Rob,
+>>
+>> On 10/10/23 20:42, Rob Herring wrote:
+>>> On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
+>>>> ETZPC is a firewall controller. Put all peripherals filtered by the
+>>>> ETZPC as ETZPC subnodes and reference ETZPC as an
+>>>> access-control-provider.
+>>>>
+>>>> For more information on which peripheral is securable or supports MCU
+>>>> isolation, please read the STM32MP15 reference manual.
+>>>>
+>>>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>>>> ---
+>>>>
+>>>> Changes in V6:
+>>>>       	- Renamed access-controller to access-controllers
+>>>>       	- Removal of access-control-provider property
+>>>>
+>>>> Changes in V5:
+>>>>       	- Renamed feature-domain* to access-control*
+>>>>
+>>>>    arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
+>>>>    arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
+>>>>    arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
+>>>>    3 files changed, 1450 insertions(+), 1377 deletions(-)
+>>>
+>>> This is not reviewable. Change the indentation and any non-functional
+>>> change in one patch and then actual changes in another.
+>>
+>> Ok, I'll make it easier to read.
+>>
+>>>
+>>> This is also an ABI break. Though I'm not sure it's avoidable. All the
+>>> devices below the ETZPC node won't probe on existing kernel. A
+>>> simple-bus fallback for ETZPC node should solve that.
+>>>
+>>
+>> I had one issue when trying with a simple-bus fallback that was the
+>> drivers were probing even though the access rights aren't correct.
+>> Hence the removal of the simple-bus compatible in the STM32MP25 patch.
+> 
+> But it worked before, right? So the difference is you have either added
+> new devices which need setup or your firmware changed how devices are
+> setup (or not setup). Certainly can't fix the latter case. You just need
+> to be explicit about what you are doing to users.
+> 
 
-Add documentation explaining why the code which scans all available scan
-masks is checking only a single long worth of bits even though the code
-was intended to be supporting masks wider than single long.
+I should've specified it was during a test where I deliberately set
+incorrect rights on a peripheral and enabled its node to see if the
+firewall would allow the creation of the device.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- drivers/iio/industrialio-buffer.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+> 
+>> Even though a node is tagged with the OF_POPULATED flag when checking
+>> the access rights with the firewall controller, it seems that when
+>> simple-bus is probing, there's no check of this flag.
+> 
+> It shouldn't. Those flags are for creating the devices (or not) and
+> removing only devices of_platform_populate() created.
+> 
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-b=
-uffer.c
-index 176d31d9f9d8..09c41e9ccf87 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -413,6 +413,22 @@ static const unsigned long *iio_scan_mask_match(const =
-unsigned long *av_masks,
- {
- 	if (bitmap_empty(mask, masklength))
- 		return NULL;
-+	/*
-+	 * The condition here do not handle multi-long masks correctly.
-+	 * It only checks the first long to be zero, and will use such mask
-+	 * as a terminator even if there was bits set after the first long.
-+	 *
-+	 * Correct check would require using:
-+	 * while (!bitmap_empty(av_masks, masklength))
-+	 * instead. This is potentially hazardous because the
-+	 * avaliable_scan_masks is a zero terminated array of longs - and
-+	 * using the proper bitmap_empty() check for multi-long wide masks
-+	 * would require the array to be terminated with multiple zero longs -
-+	 * which is not such an usual pattern.
-+	 *
-+	 * As writing of this no multi-long wide masks were found in-tree, so
-+	 * the simple while (*av_masks) check is working.
-+	 */
- 	while (*av_masks) {
- 		if (strict) {
- 			if (bitmap_equal(mask, av_masks, masklength))
---=20
-2.41.0
+About the "simple-bus" being a fallback, I think I understood why I saw
+that the devices were created.
 
+All devices under a node whose compatible is "simple-bus" are created
+in of_platform_device_create_pdata(), called by
+of_platform_default_populate_init() at arch_initcall level. This
+before the firewall-controller has a chance to populate it's bus.
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Therefore, when I flag nodes when populating the firewall-bus, the
+devices are already created. The "simple-bus" mechanism is not a
+fallback here as it precedes the driver probe.
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+Is there a safe way to safely remove/disable a device created this way?
+Devices that are under the firewall controller (simple-bus) node
+should not be probed before it as they're child of it.
 
---AmYoofSM0ro6sMkn
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Gatien
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUtGNcACgkQeFA3/03a
-ocWMqggAh3OkVyVf1/GokE7MDORJJyRrq+HheDQj17woZx7SToxe3ne6m13rPfvj
-5/RFOdTzCd3l8LwqKKd5Dg/1LHqLNwkmSMnxuriGRDRRmA0woHJeJfI8C2jd2DtL
-pdx0cQ+k6zfgjFczu8vvrnwad1i6qZwv/5zH8XYuHDps0LfMoU7N4DasTmevLA56
-3rRj0+f/AMq1npJ+cS5Uak59dgVHFm6brqCptoIMC1ZRRcWL2ym6K9dXS0Yx3BGz
-I4GbC2B7rWIEs/XFVM9wWZDSi+bTAzgk2A4AUIuW9QfJ8eyEADQB2J7b87u3d+/9
-TVMRW9XSRs8DE4QzzCxGzNajyPG1Hg==
-=2yU6
------END PGP SIGNATURE-----
-
---AmYoofSM0ro6sMkn--
+>> of_platform_populate() checks and sets the OF_POPULATED_BUS flag.
+>> Maybe that is my error and the firewall bus populate should set
+>> OF_POPULATED_BUS instead of OF_POPULATED. Is that correct?
+> 
+> Shrug. Off hand, I'd say probably not, but am not certain.
+> 
+> Rob

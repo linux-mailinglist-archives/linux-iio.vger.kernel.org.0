@@ -2,146 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CB8A7CA890
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 14:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CFB7CA8C4
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 15:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbjJPMyk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 08:54:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37234 "EHLO
+        id S233374AbjJPNCY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 09:02:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231896AbjJPMyj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 08:54:39 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A9BBB4
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 05:54:38 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-5a7a80a96dbso46277147b3.0
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 05:54:38 -0700 (PDT)
+        with ESMTP id S233341AbjJPNCW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 09:02:22 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93EDEEA
+        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:02:20 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-406609df1a6so43721495e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697460877; x=1698065677; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m/f+7YFh/6osBiwAV+h/Emo8XmTTY549abIctApwupw=;
-        b=ixExQdjICwf7Hh80IFNCXjM+ha1PVKOk1BJr7t2CTgdNzENilrtNFWYsGW2hWk/OjM
-         DcjD0IP0y1Q9iY99KVt4PcvWC+2HWxtiExhaFKG9nTqUZuDlUjl/aDb95DU8w8emE46B
-         wi0WfcdqH5xe8XB7yr6wlQ0fiwP4JaA8Co0guWaBNX4QGdShkLDbmnNisax+3NBoY92U
-         tNXl826VSCPYQktPFvWXO1zpm6eO8K9jmRMrJN8/R4IWdhpNuEPiA4pievALaltcpxnl
-         JASEWtDdNuSE/+MuIvbEJv1FF1/vf0A6NZapmgACHn8jdLDZ6b5mcQ+HH1vQPwaPTGdZ
-         pivA==
+        d=linaro.org; s=google; t=1697461339; x=1698066139; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/EH2dEgsJLwAH6x6TB5tIwbL+xd8YAQY92MOeRXRDMw=;
+        b=vzR1CFMRpsJ5H8bfyIkpSYB+sM3aWc5aeQnxj5Fx7z0YOxBuiCIH57OJqUBtba3+JH
+         nto4z8ArWPyq9Lvx+fzvx8ozZQk4zgvtWyxcPrkhZH+rbCyfFgcRbtg9InDm6Zi68WQk
+         G+m9Jdv423afoCf63AUmQ+DaNUmweN1EF+fmlmK1ZIiZNL+bn0udkJKjgn3HUC5wiekJ
+         yBB6PFcbPvuNm67vrFuui199ysuJkATRuhi1goaPaypj7O2fgnnrEZZ818OZT5j+KZhn
+         9BFQ2KfKfDSTu5K2hFSTwy9LEjNgOyIPvhaA+42eTtcsZWMhIqRcDW7uya487WDUWHPF
+         MuwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697460877; x=1698065677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m/f+7YFh/6osBiwAV+h/Emo8XmTTY549abIctApwupw=;
-        b=mFH+adPFN2QCeJ1HHXf4+LSJ3kcZshmqNNRT7yuTSPcsjvO7ZLPchb98kiMzfWtPL7
-         AsKHB1wkfH8ep1K7TP9X3YjMzaCIHJ8Igm0njwH7/fS+ruScvTKblSAHBa9JU6xswsep
-         jPIAzAH2aP0ksZ9S+s4F4oGWuiV6ZUSg2GBsaLJo5wiDbbnMtiolXB258ejPq0AIIXE3
-         VSkVXZcbphn9cKWw6ZuDTQu54AUY4WHt5kz+NeiSx+GJZbjYAVZu9gUyECpjzfivkEVY
-         +DUN/1RsR06z1+6gXUa9rXUtMt640PN5GbIob8urwkGDrTCSo9ZMEhW3gfFRnwZ8IZZo
-         WMwg==
-X-Gm-Message-State: AOJu0Yw7Jng8Vzkevg9KDJfSFeGTvryBsetfksgDvMBwIcQZ1YrepWDI
-        wCTHRRmef7DJyKqScAXgSWJQJM2KFvfeUy8AeOBocQ==
-X-Google-Smtp-Source: AGHT+IEIO9ua7hyWa8fA/t5JFZ6FfnNcKJ/jZvoD622EiDhisoWGG+6/Eq/ikTva7/Wckm9tAOVlDvR8nXdSjObadzM=
-X-Received: by 2002:a81:520a:0:b0:5a5:575:e944 with SMTP id
- g10-20020a81520a000000b005a50575e944mr4339145ywb.4.1697460877194; Mon, 16 Oct
- 2023 05:54:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697461339; x=1698066139;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/EH2dEgsJLwAH6x6TB5tIwbL+xd8YAQY92MOeRXRDMw=;
+        b=SAGqtZ0sSsKNm1rSPeNx7JTiYDSGUoES0/CISyaAsUdIzkfzCZpwQKUfOBs31QSoyx
+         PfL695msQLakmZY+QNdPmyaXlZ8aCsVZhQGhUSW/YGZpMrotHeWOGsdjjxfCtoQYkflN
+         1CsMrRKm8a7OcCF82ARmodFas+PA3fEVDTSSMYZOcnuGdXjNlfez6lxPeJwSyW/6lA+h
+         7oQrkL+lRKDAYKcEHTvA9lC3oayJp6+b1TXgwu4avT7uM3MMh4pvJWanjlLbEH2CapfK
+         mB9HBSoEmV1zMhy5BfmtUnTWGGWSuYI569ZB8njRRpiShqVDh57Urv/7cm5y7/dmal4Q
+         o9BA==
+X-Gm-Message-State: AOJu0Yzv0gkVsIfsQug6TDHtuzx15xP8McXyLSxZBAePRGcwYeLb9/Cl
+        bJNReB6eajWwYkQc8eXCsf4B7w==
+X-Google-Smtp-Source: AGHT+IHdCOnma6YN+P7JmmGKWE0LEaeU3oh5C33pnHwvUfv9ASDBQWU/M1I+wa4WhVudTagK+D4D7g==
+X-Received: by 2002:adf:9c8d:0:b0:32d:88dd:4142 with SMTP id d13-20020adf9c8d000000b0032d88dd4142mr11506607wre.16.1697461338882;
+        Mon, 16 Oct 2023 06:02:18 -0700 (PDT)
+Received: from [192.168.1.15] (host-2-99-112-229.as13285.net. [2.99.112.229])
+        by smtp.gmail.com with ESMTPSA id e26-20020adfa45a000000b003143c9beeaesm15373107wra.44.2023.10.16.06.02.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Oct 2023 06:02:18 -0700 (PDT)
+Message-ID: <5382aff2-30b0-4e6d-9fcd-ffd6dac0abff@linaro.org>
+Date:   Mon, 16 Oct 2023 14:02:16 +0100
 MIME-Version: 1.0
-References: <20230902-iio-rescale-only-offset-v2-1-988b807754c8@linaro.org>
- <a0a55276-297b-e2b7-79b3-e4aadd39b400@axentia.se> <CACRpkdaMj2XFcwqaSiRSA2A41zYsW=AG_Fi7v7AjbuLBByxVaQ@mail.gmail.com>
- <948548a0-d132-4f5c-819e-40bacb367be4@axentia.se>
-In-Reply-To: <948548a0-d132-4f5c-819e-40bacb367be4@axentia.se>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 16 Oct 2023 14:54:24 +0200
-Message-ID: <CACRpkdb=a-QVdMpzBHLDrFrK-rmkQD9ddueL=yuXe2ScL33zEw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: afe: rescale: Accept only offset channels
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8350-lemonade(p): new devices
+Content-Language: en-US
+To:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
+ <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 12:05=E2=80=AFPM Peter Rosin <peda@axentia.se> wrot=
-e:
 
 
-> > Just raw (with neither offset or rescale) doesn't make sense, since
->
-> And I don't see why not. That's the crux.
+On 16/10/2023 13:47, Nia Espera wrote:
+> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
+> mentioned in the cover letter for this patch series, but for
+> accessibility also repeated here:
+> 
+> - USB OTG
+> - UFS
+> - Framebuffer display
+> - Touchscreen (for lemonade)
+> - Power & volume down keys
+> - Battery reading
+> - Modem, IPA, and remoteproc bringup
+> 
+> Steps to get booting:
+> 
+> - Wipe dtbo partition
+> - Flash vbmeta with disabled verity bit
+> - Flash kernel and initfs to boot partition with CLI args pd_ignore_unused
+> and clk_ignore_unused
+> - Flash rootfs to some other partition (probably super or userdata)
+> 
+> Signed-off-by: Nia Espera <nespera@igalia.com>
 
-OK I can implement that, but then we need to define the priority of
-"just raw" vs "processed". It is quite common that ADC drivers
-provide raw and processed. Which one goes first?
+Small comment below, for the next revision:
 
-Right now the priority is:
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+>  arch/arm64/boot/dts/qcom/Makefile                  |    2 +
+>  .../arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi | 1247 ++++++++++++++++++++
+>  .../boot/dts/qcom/sm8350-oneplus-lemonade.dts      |   82 ++
+>  .../boot/dts/qcom/sm8350-oneplus-lemonadep.dts     |   37 +
+>  4 files changed, 1368 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index 2cca20563a1d..369ad4721b29 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -211,6 +211,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish-csot.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-hdk.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-microsoft-surface-duo2.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-mtp.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-oneplus-lemonade.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-oneplus-lemonadep.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-sony-xperia-sagami-pdx214.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-sony-xperia-sagami-pdx215.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8450-hdk.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi
+> new file mode 100644
+> index 000000000000..2f6768f35259
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi
+> @@ -0,0 +1,1247 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (c) 2023 Caleb Connolly <caleb.connolly@linaro.org>
 
-1. Raw + scale, if scale exists else
-2. Processed
+This is loosely based on some initial work I did, but not to the degree
+where this copyright is necessary, feel free to drop it on the next
+revision.
+> + *
+> + * Copyright (c) 2023 Igalia S.L.
+> + * Authors:
+> + *	Nia Espera <nespera@igalia.com>
+> + */
+> +
+> +#include <dt-bindings/iio/qcom,spmi-adc7-pm8350.h>
+> +#include <dt-bindings/iio/qcom,spmi-adc7-pm8350b.h>
+> +#define SMB139x_1_SID 0x0b
+> +#define SMB139x_2_SID 0x0c
+> +#include <dt-bindings/iio/qcom,spmi-adc7-smb139x.h>
+> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> +#include "sm8350.dtsi"
+> +#include "pm8350.dtsi"
+> +#include "pm8350b.dtsi"
+> +#include "pm8350c.dtsi"
+> +#include "pmk8350.dtsi"
+> +#include "pmr735a.dtsi"
+> +#include "pmr735b.dtsi"
+> +
+> +/ {
+> +	/* As with the Sony devices, msm-id and board-id aren't needed here */
+> +	chassis-type = "handset";
+> +	interrupt-parent = <&intc>;
+> +
 
-After this patch the priority would be:
+[...]
 
-1. Raw+scale OR Raw+offset if either scale or offset exists else
-2. Processed
+> +
+> +	/*
+> +	 * Hack; OP9 bootloader specifically checks that the timer node has
+> +	 * this label.
+> +	 */
+> +	arch_timer: timer {};
 
-How do you expect a raw channel to be prioritized?
+For this to work you also need to build the DTB with labels (the -@ flag
+to dtc), otherwise this board won't boot. You can add the following to
+the Makefile:
 
-I can only put it last, as putting it second would break existing users
-that provide both raw and processed. Is this how you imagine this
-to work?
+DTC_FLAGS_sm8350-oneplus-lemonade := -@
+DTC_FLAGS_sm8350-oneplus-lemonadep := -@
 
-Further, that could be a separate patch on top of this so it is a little
-bit of feature creepy to push into this patch, but I can make a 2-patch
-series if you like. It basically does not block applying this one patch
-on the way there.
+See for reference:
+https://lore.kernel.org/linux-arm-msm/20231009172717.2695854-1-dmitry.baryshkov@linaro.org/
 
-> > the AFE rescaler does just offsetting and rescaling, in that case the
-> > user should just use the raw channel. Also it would then take
-> > precedence over a processed channel (which applies rescale and
-> > offset internally) which doesn't make sense to me.
->
-> Why isn't it perfectly fine for a device to provide only a raw
-> channel and then expect that to be interpreted as the real unit?
+Regards,
 
-You're right there is no problem with that.
-
-The only problem I have with it is how to prioritize it.
-
-Would need Jonathan's feedback here too though, I might be
-missing something.
-
-> Why would it need a processed channel when no processing is
-> going on? E.g. a device reporting the temp in the expected unit
-> in one of its registers. Or whatever with such a friendly
-> register.
-
-Good point.
-
-Unless someone would call that a "processed channel" albeit
-processed in hardware. But this definition of raw =3D=3D raw register
-reads works for me.
-
-> > I'm not sure I fully understood the remark, please elaborate if I got i=
-t wrong!
->
-> I agree that the patch does exactly as you intend. I question if
-> what you intend is correct, but since I don't know the rules, I'd
-> simply like to have the rules clarified.
-
-Like I know the rules :D
-
-Whenever I do anything in IIO I feel like Socrates, all I know is
-that I know nothing.
-
-Yours,
-Linus Walleij
+-- 
+// Caleb (they/them)

@@ -2,128 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2177CA0F0
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 09:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1907A7CA106
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 09:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbjJPHno (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 03:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34274 "EHLO
+        id S231360AbjJPHxp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 03:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjJPHnn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 03:43:43 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334EA95
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 00:43:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CEEC433C8;
-        Mon, 16 Oct 2023 07:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697442221;
-        bh=AxGiQpsgiVK4n0R3cbO5cXmvI+G4x8Yk00FfT4N5Odg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=a7xmbPokbfRIgluL0vQFmUZZhG8aTnYGDUKb0azlD8FtDLFWX35dwm1Da29EYp6o3
-         FHlAjFrO7D6RQlrKZn0PcMJwY4qSc4PCssNVqNjTzhRGxCc3eKdjsmQd30KyDXruBa
-         KcGGiCHPvoef7paK73KO1q0h9XwrhOmLUIwQrcSoOQB5j/zEJouI/tNhVK1NYuwSSr
-         O3bj6YC+Lqai6G+f1dj9w7wHCo5VgV/vgdn4kCB1yZGqTWAztBAyLL1B/lYQDvqADD
-         5MwDRm2q5EX9LTIFtBxUCl+1Wx0mpVjrmgFbNk6RBHUAcL/lbjKYhkS+Tgi6ZK3IVU
-         P12nYj79ft30Q==
-Date:   Mon, 16 Oct 2023 08:44:00 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Philipp Jungkamp <p.jungkamp@gmx.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
-Message-ID: <20231016084400.79932e58@jic23-huawei>
-In-Reply-To: <20231015120448.6279430d@jic23-huawei>
-References: <20230806130558.89812-2-p.jungkamp@gmx.net>
-        <cd33e36768322d4e8f7919711d3474f57c4383ff.camel@linux.intel.com>
-        <trinity-2e8c2d00-be4a-4590-ae0f-265289d9256b-1691497330952@3c-app-gmx-bs40>
-        <20231014175206.6b2ff811@jic23-huawei>
-        <32200d0651ba77d03bad5733d8690f9f1b7b8d1a.camel@linux.intel.com>
-        <20231015120448.6279430d@jic23-huawei>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229478AbjJPHxp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 03:53:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF33AD;
+        Mon, 16 Oct 2023 00:53:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697442823; x=1728978823;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ixX0RLZqUvYdCViWR3QC9hB3nJJiOPVVdf0NCyC6K4w=;
+  b=UaQ3UF6tZkAdy8GjSn568XIgUttoPiobxb/anzT0RCEmhnGpl/YHT8Aq
+   xSd3Ial+nQn7nN94iT0vDsYgwbOfS4GFnjEOPamMIwofmz9RaBrxmZHdF
+   M0USy4cjdxp1z7qu6ky/elz3CG8KH9zNvgSfTNaSwLE8ruAlcfSsfzJUX
+   AGrimZho/9pmqTaej9CLmiu8a0n+kaKx5nWq8HHI5TJHVqakgK0uXWujn
+   VRHBLsEwD65ku0z2B4JtkiJ4irzXKFDta7gLOsCjwDFOXKlKhzB4WksuN
+   xahhZpcydK8iSiBAnJfYgk8NE0gxp1W5IMlBq90eo6EbbrZQkY52zBIha
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="370544795"
+X-IronPort-AV: E=Sophos;i="6.03,228,1694761200"; 
+   d="scan'208";a="370544795"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 00:53:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="929256670"
+X-IronPort-AV: E=Sophos;i="6.03,228,1694761200"; 
+   d="scan'208";a="929256670"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 00:53:41 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qsIPy-00000005x8u-2BI4;
+        Mon, 16 Oct 2023 10:53:38 +0300
+Date:   Mon, 16 Oct 2023 10:53:38 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 4/5] iio: pressure: bmp280: Allow multiple chips id per
+ family of devices
+Message-ID: <ZSzsAnE38p7zwM2+@smile.fi.intel.com>
+References: <cover.1697381932.git.ang.iglesiasg@gmail.com>
+ <9f8489d82325b2dfb5c8c71c3d558d509b2b01bf.1697381932.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f8489d82325b2dfb5c8c71c3d558d509b2b01bf.1697381932.git.ang.iglesiasg@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Oct 2023 12:04:48 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, Oct 15, 2023 at 05:16:26PM +0200, Angel Iglesias wrote:
+> Improve device detection in certain chip families known to have various
+> chip ids.
 
-> On Sat, 14 Oct 2023 19:56:26 -0700
-> srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
->=20
-> > On Sat, 2023-10-14 at 17:52 +0100, Jonathan Cameron wrote: =20
-> > > On Tue, 8 Aug 2023 14:22:10 +0200
-> > > Philipp Jungkamp <p.jungkamp@gmx.net> wrote:
-> > >    =20
-> > > > > > The hid-sensor-prox returned an empty string on sysfs
-> > > > > > in_proximity_scale
-> > > > > > read. This is due to the the driver's scale never being
-> > > > > > initialized.=C2=A0    =20
-> > > > >=20
-> > > > > What is scale value reporting here? Is it 1.
-> > > > >=20
-> > > > > Thanks,
-> > > > > Srinivas=C2=A0    =20
-> > > >=20
-> > > > Calling `read` on the sysfs file `in_proximity_scale` returns 0,
-> > > > thus an empty string.
-> > > > Adding the hid_format_scale call makes that a '1.000000'.
-> > > >=20
-> > > > Regards,
-> > > > Philipp   =20
-> > >=20
-> > > Srinivas - I was kind of waiting for a reply to say if you are happy
-> > > with the explanation.
-> > > All good?   =20
-> > All good.
-> >=20
-> > Acked-by: Srinivas Pandruvada<srinivas.pandruvada@linux.intel.com>
-> >  =20
-> Given we are late in the cycle and my next fixes pull will probably end up
-> going in during the merge window anyway, I've applied this to the togreg
-> branch of iio.git (so the slow path).
->=20
-> Phillipp, if a backport makes sense you can request that after this
-> goes upstream.
-Whilst typing up a pull request I saw this again and thought a bit more on =
-it.
+...
 
-This fix is probably wrong approach.  Proximity sensors are often scale free
-because they depend on reflectance off something or a capacitance changing =
-etc
-so we don't know the scaling.  So the right response then is not to return =
-a scale
-value of 1.0 but to not provide the attribute at all.  Is that something th=
-at
-could be easily done here?
+> +#include <linux/overflow.h>
 
-For now I'm dropping the patch. Sorry I wasn't paying enough attention to n=
-otice
-this was a proximity sensor.
+Probably you don't need this, see below.
 
-Jonathan
+...
 
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> > >=20
-> > > Phillipp - this sounds like a fix to me.=C2=A0 Fixes tag?
-> > >=20
-> > > Thanks,
-> > >=20
-> > > Jonathan   =20
-> >  =20
->=20
+>  	ret = regmap_read(regmap, data->chip_info->id_reg, &chip_id);
+>  	if (ret < 0)
+>  		return ret;
+
+> +	if (i == data->chip_info->num_chip_id) {
+> +		size_t nbuf;
+> +		char *buf;
+> +
+> +		// 0x<id>, so four chars per number plus one space + ENDL
+> +		if (check_mul_overflow(data->chip_info->num_chip_id, 5, &nbuf))
+> +			return ret;
+
+First of all, it _implicitly_ returns 0 here...
+
+> +		buf = kmalloc_array(data->chip_info->num_chip_id, 5, GFP_KERNEL);
+> +		if (!buf)
+> +			return ret;
+
+...and here.
+
+Second, kmalloc_array() has that check inside.
+
+Third, define this magic 5 either as strlen(), or a constant (in latter case
+with the comment of its meaning).
+
+> +		for (i = 0; i < data->chip_info->num_chip_id; i++)
+> +			snprintf(&buf[i*5], nbuf - i*5, "0x%x ", data->chip_info->chip_id[i]);
+
+Fourth, use incremental position, i.e. use retuned value from snprintf().
+
+> +		dev_err(dev, "bad chip id: expected one of [ %s ] got 0x%x\n", buf, chip_id);
+> +		kfree(buf);
+
+> +		return ret;
+
+As per "first" and "second" above.
+
+>  	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

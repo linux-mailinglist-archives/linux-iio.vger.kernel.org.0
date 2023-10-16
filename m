@@ -2,50 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F41517CA1D3
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 10:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387577CA477
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 11:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjJPIkD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 04:40:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S229621AbjJPJrE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 05:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbjJPIkC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 04:40:02 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1321C9B;
-        Mon, 16 Oct 2023 01:40:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25172C433C7;
-        Mon, 16 Oct 2023 08:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697445600;
-        bh=rmw2Gyr5SU67GW0eQyC6iyRURFy4AfyL0xIkvkWfRY0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nNvyszDkNJr4kRPfkbDuwIZGqxPZDCQ1R3vKY3QUff4HzYB2OJrTkfRTSUurx1I0h
-         ekHc7kV+qD0AI0tf0GV+b7mSBFjmVNjQghNdIgNU9N8dyb3HuKWSrvIQQPAwLf58c1
-         Jt1geBvW+eMx7WECbhW6KADtZAIvaF6DsKbcJirW14AAie443WCFbDul/KxgxcpWny
-         sKsxDcQwJO+nmovpC6miqrR8MmM991Dgr1L0QJGetYKvFWtnqNzTHEm7fnyKkBR9Y9
-         yPBiFNE5KfZ9NjHHaIuedWaZ4tIlBSx2xtsLPmsbXcqMOMT8Er8esB1gLfbe4R/wE2
-         1DyKRcoUxl6fA==
-Date:   Mon, 16 Oct 2023 09:40:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Uwe =?UTF-8?B?S2xlaW5l?= =?UTF-8?B?LUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 3/5] iio: pressure: bmp280: Rearrange vars in reverse
- xmas tree order
-Message-ID: <20231016094018.6f89eee9@jic23-huawei>
-In-Reply-To: <7db5fe65a78513137206ae6b33abb1e48d356fbf.1697381932.git.ang.iglesiasg@gmail.com>
-References: <cover.1697381932.git.ang.iglesiasg@gmail.com>
-        <7db5fe65a78513137206ae6b33abb1e48d356fbf.1697381932.git.ang.iglesiasg@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229459AbjJPJrE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 05:47:04 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52E2AB;
+        Mon, 16 Oct 2023 02:47:01 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2c4fdf94666so42264651fa.2;
+        Mon, 16 Oct 2023 02:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697449620; x=1698054420; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D0+r6taFyH+fgxvjyk1ODq9Nj67HjWUkYOptkmVa1t4=;
+        b=UIOpM/bY3wJWOeenNnBL9wnoT0xcq4nnlJW0KcGC/VgN7yyimOGIt2H9S/ICnuQplW
+         XZGGFN3E2LHkF4dCu4B633P8NOxeE9QAdLgY9+b2cwsamMrgo2zQHqo2mxeEegEXPHpN
+         eJ7SUczU2IFMYx9GnoyqOOYXG+JiSMCbtRlSUCc/sosgEC2g7W33sdujw62glofsdECo
+         s+18OqFgtJqizALGk2TptdpVAM2wiGmmVluFW5288E5lWmrqNj+NkEqO6QUfV/ZatR0+
+         WDZvCPs9oM9LIAbzUTjTljeRJkoN/ZlAox/2GOC+Psv5zSocJYOsfHGA1/YXpIRuqPxP
+         UNdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697449620; x=1698054420;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D0+r6taFyH+fgxvjyk1ODq9Nj67HjWUkYOptkmVa1t4=;
+        b=t3892Xl3hjnsq1d5S95/1weSdLQrMpJ0bH7p5N5gqXu4/4ooDQZIZIoeQ3+WvtpIq1
+         0QVeehEsPWCPkrtTXQa1uKEyRhmmoUBsIIF/sF0G/e5Q9eEWleKVA1iRe9w5k7XM/WbY
+         qpolpevOl1wYs/vLPgtgKdj+1+ZTq647eZGuaK6e5Ny7SG1PeTfJorfJL7tbqN/TeE9d
+         FE/o6ddZ2KsOelo5Km2NH3mLf1GBZGtID+48mVS8984hq9Pd9L0t/c60o/nNWtyaNhYm
+         9p+F53ot2u8wJS1NBPA6aSM7pM1doldiZfiL9xcJ2Z8Y1GpKg89aj5yCvNkCH0oNPfzm
+         485g==
+X-Gm-Message-State: AOJu0YwzN/ozVLJIxkQkted/JQpti1a3WkPu0gimGlJ2j6FOdpwo99Wi
+        cCvP59CfMmJUvrHx0L6VdXjMVaKg7TP6AA==
+X-Google-Smtp-Source: AGHT+IGUWewJtTOip/zoJBre50p+aWq1xey4im4GNNn6H0i0TTPoyw5b2q3Y9faL+TSdd58pBavGqg==
+X-Received: by 2002:a05:6512:138e:b0:503:7dd:7ebc with SMTP id fc14-20020a056512138e00b0050307dd7ebcmr35277012lfb.18.1697449619822;
+        Mon, 16 Oct 2023 02:46:59 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id c14-20020ac2414e000000b0050309ea3a62sm4471555lfi.277.2023.10.16.02.46.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Oct 2023 02:46:59 -0700 (PDT)
+Message-ID: <d6cb909f-46fa-45b1-a65f-f5adf840d91c@gmail.com>
+Date:   Mon, 16 Oct 2023 12:46:58 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: sanity check available_scan_masks array
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20231005163026.2c7707de@jic23-huawei>
+ <751a87c9-a4aa-4e06-1d12-1e2b1a3487de@gmail.com>
+ <20231010110419.00899e0e@jic23-huawei>
+ <0d05bf24-caa6-0f86-b531-22dc08b9cadc@gmail.com>
+ <20231010154734.7728fe2b@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20231010154734.7728fe2b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,74 +79,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Oct 2023 17:16:25 +0200
-Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
-
-> Small cleanup reordering local variable declarations following reverse
-> christmas tree convention.
+On 10/10/23 17:47, Jonathan Cameron wrote:
+> On Tue, 10 Oct 2023 15:56:22 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+>> On 10/10/23 13:04, Jonathan Cameron wrote:
+>>> On Fri, 6 Oct 2023 14:10:16 +0300
+>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>>    
+>>>> Hi Again Jonathan.
+>>>>
+>>>> On 10/5/23 18:30, Jonathan Cameron wrote:
+>>>>> On Tue, 3 Oct 2023 12:49:45 +0300
+>>>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+...
+
+>>>> Other option I see is to just error out if available_scan_masks array is
+>>>> given with larger than one 'long' wide masks and worry things when this
+>>>> breaks.
+>>>
+>>> That would kick the problem into the long grass.
+>>
+>> Well, not 100% sure I interpret the idiom correctly ;) In any case, I'd
+>> say this would indeed postpone dealing with the problem to the future.
 > 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 6089f3f9d8f4..ea02a623bb58 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -766,8 +766,8 @@ static const struct iio_info bmp280_info = {
->  
->  static int bmp280_chip_config(struct bmp280_data *data)
->  {
-> -	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-> -		  FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
-> +	u8 osrs = FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1) |
-> +		  FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1);
+> It does indeed mean that!  Sorry bad habit to use idioms in discussions like
+> this.
+> 
+>> To the point we actually seem to have a problem. The "long grass" as if
+>> hiding the problem is something we can avoid by adding something like:
+>>
+>> if (masklength > 32 && idev->available_scan_masks) {
+>> 	/*
+>> 	 * Comment mowing the long grass.
+>> 	 */
+>> 	dev_err( ...);
+>> 	return -EINVAL;
+>> }
+>>
+>> to the device registration.
 
-For fields within a register, don't bother.
-Normally the order is dictated by someone reading the fields on a datasheet.  
-Feels like reorganzing them is just noise to me.
+...
 
-The rest look like good little tidy ups to me.
+>>> 	iio_dev->available_scan_masks = (unsigned long *)available_masks;
+>>>
+>>> If we put such an example into the dummy / example driver then that might
+>>> act to avoid us getting bugs in future + test the fix you have above and
+>>> related.
+>>
+>> Well, at least it shouldn't hurt to have some example - although I'm
+>> still tempted to use the "long grass" - option ;)
+> 
+> That is probably a good idea for now.  Though we are carrying other infrastructure
+> to support this eventually and it feels weird to error out on it whilst we have
+> code to support it (assuming that terminator is long enough).
 
->  	int ret;
->  
->  	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
-> diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
-> index b3e069730f97..34e3bc758493 100644
-> --- a/drivers/iio/pressure/bmp280-i2c.c
-> +++ b/drivers/iio/pressure/bmp280-i2c.c
-> @@ -7,9 +7,9 @@
->  
->  static int bmp280_i2c_probe(struct i2c_client *client)
->  {
-> -	struct regmap *regmap;
-> -	const struct bmp280_chip_info *chip_info;
->  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> +	const struct bmp280_chip_info *chip_info;
-> +	struct regmap *regmap;
->  
->  	chip_info = i2c_get_match_data(client);
->  
-> diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-> index 2eed483a8cc4..433d6fac83c4 100644
-> --- a/drivers/iio/pressure/bmp280-spi.c
-> +++ b/drivers/iio/pressure/bmp280-spi.c
-> @@ -14,8 +14,7 @@
->  static int bmp280_regmap_spi_write(void *context, const void *data,
->                                     size_t count)
->  {
-> -	struct device *dev = context;
-> -	struct spi_device *spi = to_spi_device(dev);
-> +	struct spi_device *spi = to_spi_device(context);
->  	u8 buf[2];
->  
->  	memcpy(buf, data, 2);
-> @@ -31,8 +30,7 @@ static int bmp280_regmap_spi_write(void *context, const void *data,
->  static int bmp280_regmap_spi_read(void *context, const void *reg,
->                                    size_t reg_size, void *val, size_t val_size)
->  {
-> -	struct device *dev = context;
-> -	struct spi_device *spi = to_spi_device(dev);
-> +	struct spi_device *spi = to_spi_device(context);
->  
->  	return spi_write_then_read(spi, reg, reg_size, val, val_size);
->  }
+I agree. I think I won't use the bitmap_empty() - because I feel it is 
+unsafe. I'll leave the *av_masks check as it is implemented in 
+iio_scan_mask_match() for now. Eg:
+
+... const unsigned long *av_masks ...
+
+while (*av_masks) {
+	...
+	av_masks += BITS_TO_LONGS(masklength);
+}
+
+This will fail if mask is longer than unsigned long - and if we have 
+masks with zero bits worth a leading long. Still, this won't overflow 
+and it also works for masks which are wider than long but do not have 
+the leading bits zeroed. Balanced act of safety and functionality.
+
+This should allow us to safely do:
+
+if (masklength > 32 && idev->available_scan_masks) {
+	/*
+	 * Comment mowing the long grass.
+	 */
+	dev_warn( ...);
+}
+
+without returning the error.
+
+Not perfect, but should be safe and also adds a warning if someone 
+trusts the multi-long masks to work.
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

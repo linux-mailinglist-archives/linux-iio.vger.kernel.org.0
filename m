@@ -2,321 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 047D37CAA82
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 15:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17AF77CAB7B
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 16:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232959AbjJPNy3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 09:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
+        id S233445AbjJPO2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 10:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231508AbjJPNy3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 09:54:29 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D585F0
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:54:26 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3ae214a077cso3422238b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697464466; x=1698069266; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Qb3nQOmS4eBZNe2aGjgDsQO1OOhOOIU5vu95mwm6m0=;
-        b=oN5UaAHdYMEQR3FpmIEUj1EbL7N0U9fH4G20+5ydgpdeZHK+tMn9aCuX4vys0n+GWs
-         p2gm+CSjGl5mixsLF74olRP20dxV0ri8Ib+sv4ttwKGW0LhWUwd1Mji4bPcI4oaYf6qN
-         /9BwIvybCB2yljexNk975NnY4wxpLgTrg1L/DmdbKHiWBd7Lu0MGSK6dCYk/Y3JMd9ue
-         IZLCVC8hIuri2OYjheVc4KC0D+Vr8JKw4IjqmbGXolRBvheJKIHmdCwvZgLtmTzj2uGx
-         JxH5Bkbu7V2EIVHOAYF/QqYDHSrEq5At+duvwIpmeaFW0dx3wzGaLQaM/gYKf2MSpElv
-         ZB/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697464466; x=1698069266;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9Qb3nQOmS4eBZNe2aGjgDsQO1OOhOOIU5vu95mwm6m0=;
-        b=FeA8L+slH+jOpz9TfbHAQHMUdiAPYD6YET5ApwGDMg5jVsURip2q4VYTRk8mZzNbpg
-         VQzRzzKED6lHPgDCgZ5UW9VckguLfak1E5ANzRIy6PxLzvQk3Y/vTifCNxFhOIogL16F
-         EdqtC2qSbRVTij51jx6nirdQ0AZ+Z67+1NfATksAz+nbi+DXfn0MOC3QMZLl6ei+dnRF
-         ESS7qnyHmjoPbxvLRqGlIRYAJyQZ5BYh19uMoRjnM/VK1MV018FOrSeAs5T4pm+GyL3X
-         P8DauCXXZyod/3/U2HoFWg9QEw9+DHXLocqoupxnbwJFuukMdH8grvaIGTqPhR5+rOcy
-         a05g==
-X-Gm-Message-State: AOJu0YwwGhUdRysn0lOqmaJVSxuA/zNvCNM7Waznog+bl9/Bp8uYAJXt
-        yEMy6fTH0odQcKNuDtwW41t36l5wSOcN+uxXFn1QPw==
-X-Google-Smtp-Source: AGHT+IGn/zbm67yt24jOBp3UnbWNqU++gqXQkXqM8yQc7GC5LM7vsd+4eOC6ozXxrtctNkl7n5c3Ow==
-X-Received: by 2002:a05:6870:582:b0:1dc:723d:b8d0 with SMTP id m2-20020a056870058200b001dc723db8d0mr41487601oap.27.1697464465724;
-        Mon, 16 Oct 2023 06:54:25 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id zh38-20020a0568716ba600b001e9888ab4e7sm2014399oab.5.2023.10.16.06.54.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 06:54:25 -0700 (PDT)
-From:   David Lechner <dlechner@baylibre.com>
-To:     linux-iio@vger.kernel.org
-Cc:     David Lechner <dlechner@baylibre.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        nuno.sa@analog.com, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: resolver: ad2s1210: add support for adi,fixed-mode
-Date:   Mon, 16 Oct 2023 08:54:22 -0500
-Message-ID: <20231016135423.16808-1-dlechner@baylibre.com>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S233425AbjJPO2i (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 10:28:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7171E9B
+        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 07:28:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697466517; x=1729002517;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=ho3QGzeQld9DlHQRvrg5sPruXbnAT9UV/5Yu7BB+aMo=;
+  b=AhxE5PSYyLmp3eqEGhouLAWbBbs/eyyjbc6KnD07lyFQrYyMh0terR8x
+   qYX8oQR1ouR4uqeO6vfawQ+1bz14eHB2CftYtNf53XB9QDtAEW0pBDsPr
+   SKT+c12pBcPjDdFHnqFKhYD8W98uMGdaMUf7UjyYR1ske/7w00MLvVFFA
+   evj/npziqAXeRJkY32A5QPXWTrRxM3Ayp9T2XUWJJGJLwYp7YCIxbSTvw
+   qDxkMJuaBr4Dx6MzrHhOgJI1xGFlLLYuIqKfCQk21ZwM3escgU3E9IiVF
+   9KnjbyP75OrColW0sEXOmo+ErIkgnLzY4aG3bIBdfgNx4UGpw0jCtRfxK
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="382758238"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
+   d="scan'208";a="382758238"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 07:28:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
+   d="scan'208";a="3545533"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.209.124.179])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 07:27:33 -0700
+Message-ID: <7c09e707455e43d87a0e2368842c9b5b1afcf80f.camel@linux.intel.com>
+Subject: Re: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Philipp Jungkamp <p.jungkamp@gmx.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Date:   Mon, 16 Oct 2023 07:28:36 -0700
+In-Reply-To: <20231016084400.79932e58@jic23-huawei>
+References: <20230806130558.89812-2-p.jungkamp@gmx.net>
+         <cd33e36768322d4e8f7919711d3474f57c4383ff.camel@linux.intel.com>
+         <trinity-2e8c2d00-be4a-4590-ae0f-265289d9256b-1691497330952@3c-app-gmx-bs40>
+         <20231014175206.6b2ff811@jic23-huawei>
+         <32200d0651ba77d03bad5733d8690f9f1b7b8d1a.camel@linux.intel.com>
+         <20231015120448.6279430d@jic23-huawei>
+         <20231016084400.79932e58@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1).
-According to the devicetree bindings, in this case the adi,fixed-mode
-property will specify which of the 3 possible modes the mode pins are
-hardwired for and the gpio-modes property is not allowed.
+On Mon, 2023-10-16 at 08:44 +0100, Jonathan Cameron wrote:
+> On Sun, 15 Oct 2023 12:04:48 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>=20
+> > On Sat, 14 Oct 2023 19:56:26 -0700
+> > srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+> >=20
+> > > On Sat, 2023-10-14 at 17:52 +0100, Jonathan Cameron wrote:=C2=A0=20
+> > >=20
+> >=20
 
-This adds support for the case where the mode pins are hardwired for
-config mode. In this configuration, the position and value must be read
-from the config register.
+[...]
 
-The case of hardwired position or velocity mode is not supported as
-there would be no way to configure the device.
+> > Phillipp, if a backport makes sense you can request that after this
+> > goes upstream.
+> Whilst typing up a pull request I saw this again and thought a bit
+> more on it.
+>=20
+> This fix is probably wrong approach.=C2=A0 Proximity sensors are often
+> scale free
+> because they depend on reflectance off something or a capacitance
+> changing etc
+> so we don't know the scaling.=C2=A0 So the right response then is not to
+> return a scale
+> value of 1.0 but to not provide the attribute at all.=C2=A0 Is that
+> something that
+> could be easily done here?
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
+I think so. But hope that iio-sensor-proxy can handle absence of scale
+attribute.
 
-v2 changes:
-* Use regmap_bulk_read() instead of new local function.
-* Simplify adi,fixed-mode property error checking.
+git diff drivers/iio/light/hid-sensor-prox.c
+diff --git a/drivers/iio/light/hid-sensor-prox.c
+b/drivers/iio/light/hid-sensor-prox.c
+index a47591e1bad9..e4b81fa948f5 100644
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -36,7 +36,6 @@ static const struct iio_chan_spec prox_channels[] =3D {
+                .type =3D IIO_PROXIMITY,
+                .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
+                .info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_OFFSET) |
+-               BIT(IIO_CHAN_INFO_SCALE) |
+                BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+                BIT(IIO_CHAN_INFO_HYSTERESIS),
+                .scan_index =3D CHANNEL_SCAN_INDEX_PRESENCE,
 
- drivers/iio/resolver/ad2s1210.c | 150 +++++++++++++++++++++++++-------
- 1 file changed, 119 insertions(+), 31 deletions(-)
+Thanks,
+Srinivas
 
-diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-index 1bd1b950e7cc..7f688bfe2172 100644
---- a/drivers/iio/resolver/ad2s1210.c
-+++ b/drivers/iio/resolver/ad2s1210.c
-@@ -141,7 +141,7 @@ struct ad2s1210_state {
- 	struct spi_device *sdev;
- 	/** GPIO pin connected to SAMPLE line. */
- 	struct gpio_desc *sample_gpio;
--	/** GPIO pins connected to A0 and A1 lines. */
-+	/** GPIO pins connected to A0 and A1 lines (optional). */
- 	struct gpio_descs *mode_gpios;
- 	/** Used to access config registers. */
- 	struct regmap *regmap;
-@@ -149,6 +149,8 @@ struct ad2s1210_state {
- 	unsigned long clkin_hz;
- 	/** Available raw hysteresis values based on resolution. */
- 	int hysteresis_available[2];
-+	/* adi,fixed-mode property - only valid when mode_gpios == NULL. */
-+	enum ad2s1210_mode fixed_mode;
- 	/** The selected resolution */
- 	enum ad2s1210_resolution resolution;
- 	/** Copy of fault register from the previous read. */
-@@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
- 	struct gpio_descs *gpios = st->mode_gpios;
- 	DECLARE_BITMAP(bitmap, 2);
- 
-+	if (!gpios)
-+		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
-+
- 	bitmap[0] = mode;
- 
- 	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
-@@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
- 	 * parity error. The fault register is read-only and the D7 bit means
- 	 * something else there.
- 	 */
--	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
-+	if ((reg > AD2S1210_REG_VELOCITY_LSB && reg != AD2S1210_REG_FAULT)
-+	     && st->rx[1] & AD2S1210_ADDRESS_DATA)
- 		return -EBADMSG;
- 
- 	*val = st->rx[1];
-@@ -450,21 +456,53 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
- 	ad2s1210_toggle_sample_line(st);
- 	timestamp = iio_get_time_ns(indio_dev);
- 
--	switch (chan->type) {
--	case IIO_ANGL:
--		ret = ad2s1210_set_mode(st, MOD_POS);
--		break;
--	case IIO_ANGL_VEL:
--		ret = ad2s1210_set_mode(st, MOD_VEL);
--		break;
--	default:
--		return -EINVAL;
-+	if (st->fixed_mode == MOD_CONFIG) {
-+		unsigned int reg_val;
-+
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			ret = regmap_bulk_read(st->regmap,
-+					       AD2S1210_REG_POSITION_MSB,
-+					       &st->sample.raw, 2);
-+			if (ret < 0)
-+				return ret;
-+
-+			break;
-+		case IIO_ANGL_VEL:
-+			ret = regmap_bulk_read(st->regmap,
-+					       AD2S1210_REG_VELOCITY_MSB,
-+					       &st->sample.raw, 2);
-+			if (ret < 0)
-+				return ret;
-+
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
-+		if (ret < 0)
-+			return ret;
-+
-+		st->sample.fault = reg_val;
-+	} else {
-+		switch (chan->type) {
-+		case IIO_ANGL:
-+			ret = ad2s1210_set_mode(st, MOD_POS);
-+			break;
-+		case IIO_ANGL_VEL:
-+			ret = ad2s1210_set_mode(st, MOD_VEL);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = spi_read(st->sdev, &st->sample, 3);
-+		if (ret < 0)
-+			return ret;
- 	}
--	if (ret < 0)
--		return ret;
--	ret = spi_read(st->sdev, &st->sample, 3);
--	if (ret < 0)
--		return ret;
- 
- 	switch (chan->type) {
- 	case IIO_ANGL:
-@@ -1252,27 +1290,53 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
- 	ad2s1210_toggle_sample_line(st);
- 
- 	if (test_bit(0, indio_dev->active_scan_mask)) {
--		ret = ad2s1210_set_mode(st, MOD_POS);
--		if (ret < 0)
--			goto error_ret;
--
--		ret = spi_read(st->sdev, &st->sample, 3);
--		if (ret < 0)
--			goto error_ret;
-+		if (st->fixed_mode == MOD_CONFIG) {
-+			ret = regmap_bulk_read(st->regmap,
-+					       AD2S1210_REG_POSITION_MSB,
-+					       &st->sample.raw, 2);
-+			if (ret < 0)
-+				goto error_ret;
-+		} else {
-+			ret = ad2s1210_set_mode(st, MOD_POS);
-+			if (ret < 0)
-+				goto error_ret;
-+
-+			ret = spi_read(st->sdev, &st->sample, 3);
-+			if (ret < 0)
-+				goto error_ret;
-+		}
- 
- 		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
- 	}
- 
- 	if (test_bit(1, indio_dev->active_scan_mask)) {
--		ret = ad2s1210_set_mode(st, MOD_VEL);
--		if (ret < 0)
--			goto error_ret;
-+		if (st->fixed_mode == MOD_CONFIG) {
-+			ret = regmap_bulk_read(st->regmap,
-+					       AD2S1210_REG_VELOCITY_MSB,
-+					       &st->sample.raw, 2);
-+			if (ret < 0)
-+				goto error_ret;
-+		} else {
-+			ret = ad2s1210_set_mode(st, MOD_VEL);
-+			if (ret < 0)
-+				goto error_ret;
-+
-+			ret = spi_read(st->sdev, &st->sample, 3);
-+			if (ret < 0)
-+				goto error_ret;
-+		}
- 
--		ret = spi_read(st->sdev, &st->sample, 3);
-+		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
-+	}
-+
-+	if (st->fixed_mode == MOD_CONFIG) {
-+		unsigned int reg_val;
-+
-+		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
- 		if (ret < 0)
--			goto error_ret;
-+			return ret;
- 
--		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
-+		st->sample.fault = reg_val;
- 	}
- 
- 	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
-@@ -1299,9 +1363,24 @@ static const struct iio_info ad2s1210_info = {
- static int ad2s1210_setup_properties(struct ad2s1210_state *st)
- {
- 	struct device *dev = &st->sdev->dev;
-+	const char *str_val;
- 	u32 val;
- 	int ret;
- 
-+	ret = device_property_read_string(dev, "adi,fixed-mode", &str_val);
-+	if (ret == -EINVAL)
-+		st->fixed_mode = -1;
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+			"failed to read adi,fixed-mode property\n");
-+	else {
-+		if (strcmp(str_val, "config"))
-+			return dev_err_probe(dev, -EINVAL,
-+				"only adi,fixed-mode=\"config\" is supported\n");
-+
-+		st->fixed_mode = MOD_CONFIG;
-+	}
-+
- 	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret,
-@@ -1357,12 +1436,21 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
- 				     "failed to request sample GPIO\n");
- 
- 	/* both pins high means that we start in config mode */
--	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
-+	st->mode_gpios = devm_gpiod_get_array_optional(dev, "mode",
-+						       GPIOD_OUT_HIGH);
- 	if (IS_ERR(st->mode_gpios))
- 		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
- 				     "failed to request mode GPIOs\n");
- 
--	if (st->mode_gpios->ndescs != 2)
-+	if (!st->mode_gpios && st->fixed_mode == -1)
-+		return dev_err_probe(dev, -EINVAL,
-+			"must specify either adi,fixed-mode or mode-gpios\n");
-+
-+	if (st->mode_gpios && st->fixed_mode != -1)
-+		return dev_err_probe(dev, -EINVAL,
-+			"must specify only one of adi,fixed-mode or mode-gpios\n");
-+
-+	if (st->mode_gpios && st->mode_gpios->ndescs != 2)
- 		return dev_err_probe(dev, -EINVAL,
- 				     "requires exactly 2 mode-gpios\n");
- 
--- 
-2.42.0
+>=20
+> For now I'm dropping the patch. Sorry I wasn't paying enough
+> attention to notice
+> this was a proximity sensor.
+>=20
+> Jonathan
+>=20
+> >=20
+> > Thanks,
+> >=20
+> > Jonathan
+> >=20
+> > > >=20
+> > > > Phillipp - this sounds like a fix to me.=C2=A0 Fixes tag?
+> > > >=20
+> > > > Thanks,
+> > > >=20
+> > > > Jonathan=C2=A0=C2=A0=C2=A0=20
+> > > =C2=A0=20
+> >=20
+>=20
 

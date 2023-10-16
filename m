@@ -2,126 +2,321 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 382B37CAA7D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 15:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 047D37CAA82
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Oct 2023 15:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232355AbjJPNxs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Oct 2023 09:53:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54374 "EHLO
+        id S232959AbjJPNy3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Oct 2023 09:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231508AbjJPNxs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 09:53:48 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4626DF0
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:53:46 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-53ebf429b4fso2024464a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:53:46 -0700 (PDT)
+        with ESMTP id S231508AbjJPNy3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Oct 2023 09:54:29 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D585F0
+        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:54:26 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3ae214a077cso3422238b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 16 Oct 2023 06:54:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1697464425; x=1698069225; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vOvRSIBCKDO/EoG06SNXpskpBSv5uHfI6z7Qbijhh84=;
-        b=ZGfXHDIEVPsrSdi6s+cmpqGpouYUKTMnHCS0XjgyskuNwWucIDjhMF7sJdA650u0aF
-         F6LffFSACGmJSI0ChVpnRRmsvDqaSedds+h4Pq2bhnEXceocq6j1uKfCv5VZk5GxK8LQ
-         QGlBpWwk0qLq3vPnL4ILlwUdvrCcYNkzABzYzs1HEiKVKwYFehlXmDnkLhGVla1K6qq/
-         5Dpoa8QwjjfdotnmCzsEhOl7rplTtfTMuEPnT6YtISlME/pEkSdm5bxTXeoB7YeiOgHN
-         TGDg77JFPEL7UTIhgBoRUTcVz+P0KCmntScaYclCQVXVL3ZqPWrlU5GndpHBd/CXgr9e
-         Hq7A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697464466; x=1698069266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Qb3nQOmS4eBZNe2aGjgDsQO1OOhOOIU5vu95mwm6m0=;
+        b=oN5UaAHdYMEQR3FpmIEUj1EbL7N0U9fH4G20+5ydgpdeZHK+tMn9aCuX4vys0n+GWs
+         p2gm+CSjGl5mixsLF74olRP20dxV0ri8Ib+sv4ttwKGW0LhWUwd1Mji4bPcI4oaYf6qN
+         /9BwIvybCB2yljexNk975NnY4wxpLgTrg1L/DmdbKHiWBd7Lu0MGSK6dCYk/Y3JMd9ue
+         IZLCVC8hIuri2OYjheVc4KC0D+Vr8JKw4IjqmbGXolRBvheJKIHmdCwvZgLtmTzj2uGx
+         JxH5Bkbu7V2EIVHOAYF/QqYDHSrEq5At+duvwIpmeaFW0dx3wzGaLQaM/gYKf2MSpElv
+         ZB/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697464425; x=1698069225;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vOvRSIBCKDO/EoG06SNXpskpBSv5uHfI6z7Qbijhh84=;
-        b=HceUR4SasiuQ4MZ+0asK19WigIC3Ep0jvs7o3cqDLz2qTA3ANkdd6KSUyMA+i8H+7n
-         fzl0v7ASgthm63auIe3JmT5JuPiBMuvziwxhk8OGRFvTOiTzoNhBV5Q/Ty2V4CUn7D3G
-         gDD53U1ZzAmsIeXmPDrtN2rSD2d267fmZUYIxpUX2daBkHftHkllNebZk2vcboaH/noD
-         2yR8lcK81NnPDt8cQ/0oo1owYWZ5QyTxn0G1LAQJ25tS2fssqhHqTrq8sJzzQJuEbQ/d
-         VZBSuuHyFM29vDEdgWaAkq0O+3LA6nwMQQh+K1v9g/Foinuc5EbFNs9QzriwqCoKQDaa
-         I2lg==
-X-Gm-Message-State: AOJu0YyqkVXJJgNjZ+2OEVmUYixb/cIbADh23T0iMoWF0duJBjJZfmck
-        UuVbkeMsSrS83hxQdp4DTKSz6w==
-X-Google-Smtp-Source: AGHT+IHoxPW8PwdZUvfviYS7QdbDikx9yohEhHLS/XOTq3T9uH87ZFiSCdLJimiupbVDzkcfzqrchA==
-X-Received: by 2002:aa7:c549:0:b0:525:6e47:10f6 with SMTP id s9-20020aa7c549000000b005256e4710f6mr29895269edr.22.1697464424717;
-        Mon, 16 Oct 2023 06:53:44 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id q18-20020a50c352000000b0053e9352643csm3015296edb.62.2023.10.16.06.53.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 06:53:43 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 16 Oct 2023 15:53:42 +0200
-Message-Id: <CW9WX2BFW95K.2PHV8UU363BFE@fairphone.com>
-Cc:     <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <phone-devel@vger.kernel.org>,
-        "Rob" <Me@orbit.sh>, "Clayton Craft" <clayton@igalia.com>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH 1/5] iio: adc: add smb139x bindings
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Nia Espera" <nespera@igalia.com>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Kees Cook" <keescook@chromium.org>,
-        "Tony Luck" <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-X-Mailer: aerc 0.15.2
-References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
- <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
-In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        d=1e100.net; s=20230601; t=1697464466; x=1698069266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9Qb3nQOmS4eBZNe2aGjgDsQO1OOhOOIU5vu95mwm6m0=;
+        b=FeA8L+slH+jOpz9TfbHAQHMUdiAPYD6YET5ApwGDMg5jVsURip2q4VYTRk8mZzNbpg
+         VQzRzzKED6lHPgDCgZ5UW9VckguLfak1E5ANzRIy6PxLzvQk3Y/vTifCNxFhOIogL16F
+         EdqtC2qSbRVTij51jx6nirdQ0AZ+Z67+1NfATksAz+nbi+DXfn0MOC3QMZLl6ei+dnRF
+         ESS7qnyHmjoPbxvLRqGlIRYAJyQZ5BYh19uMoRjnM/VK1MV018FOrSeAs5T4pm+GyL3X
+         P8DauCXXZyod/3/U2HoFWg9QEw9+DHXLocqoupxnbwJFuukMdH8grvaIGTqPhR5+rOcy
+         a05g==
+X-Gm-Message-State: AOJu0YwwGhUdRysn0lOqmaJVSxuA/zNvCNM7Waznog+bl9/Bp8uYAJXt
+        yEMy6fTH0odQcKNuDtwW41t36l5wSOcN+uxXFn1QPw==
+X-Google-Smtp-Source: AGHT+IGn/zbm67yt24jOBp3UnbWNqU++gqXQkXqM8yQc7GC5LM7vsd+4eOC6ozXxrtctNkl7n5c3Ow==
+X-Received: by 2002:a05:6870:582:b0:1dc:723d:b8d0 with SMTP id m2-20020a056870058200b001dc723db8d0mr41487601oap.27.1697464465724;
+        Mon, 16 Oct 2023 06:54:25 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id zh38-20020a0568716ba600b001e9888ab4e7sm2014399oab.5.2023.10.16.06.54.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Oct 2023 06:54:25 -0700 (PDT)
+From:   David Lechner <dlechner@baylibre.com>
+To:     linux-iio@vger.kernel.org
+Cc:     David Lechner <dlechner@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        nuno.sa@analog.com, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: resolver: ad2s1210: add support for adi,fixed-mode
+Date:   Mon, 16 Oct 2023 08:54:22 -0500
+Message-ID: <20231016135423.16808-1-dlechner@baylibre.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon Oct 16, 2023 at 2:47 PM CEST, Nia Espera wrote:
-> Bindings for a charger controller chip found on sm8350
->
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-> ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/d=
-t-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..fe163cd8bbdd
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | 0x06)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | 0x18)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | 0x19)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | 0x06)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | 0x18)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | 0x19)
+It is possible to use the AD2S1210 with hardwired mode pins (A0 and A1).
+According to the devicetree bindings, in this case the adi,fixed-mode
+property will specify which of the 3 possible modes the mode pins are
+hardwired for and the gpio-modes property is not allowed.
 
-I think you should expand qcom,spmi-vadc.h with the 0x06, 0x18 and 0x19,
-in the ADC7 defines somewhere below ADC7_REF_GND.
+This adds support for the case where the mode pins are hardwired for
+config mode. In this configuration, the position and value must be read
+from the config register.
 
-Regards
-Luca
+The case of hardwired position or velocity mode is not supported as
+there would be no way to configure the device.
 
-> +
-> +#endif
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+
+v2 changes:
+* Use regmap_bulk_read() instead of new local function.
+* Simplify adi,fixed-mode property error checking.
+
+ drivers/iio/resolver/ad2s1210.c | 150 +++++++++++++++++++++++++-------
+ 1 file changed, 119 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
+index 1bd1b950e7cc..7f688bfe2172 100644
+--- a/drivers/iio/resolver/ad2s1210.c
++++ b/drivers/iio/resolver/ad2s1210.c
+@@ -141,7 +141,7 @@ struct ad2s1210_state {
+ 	struct spi_device *sdev;
+ 	/** GPIO pin connected to SAMPLE line. */
+ 	struct gpio_desc *sample_gpio;
+-	/** GPIO pins connected to A0 and A1 lines. */
++	/** GPIO pins connected to A0 and A1 lines (optional). */
+ 	struct gpio_descs *mode_gpios;
+ 	/** Used to access config registers. */
+ 	struct regmap *regmap;
+@@ -149,6 +149,8 @@ struct ad2s1210_state {
+ 	unsigned long clkin_hz;
+ 	/** Available raw hysteresis values based on resolution. */
+ 	int hysteresis_available[2];
++	/* adi,fixed-mode property - only valid when mode_gpios == NULL. */
++	enum ad2s1210_mode fixed_mode;
+ 	/** The selected resolution */
+ 	enum ad2s1210_resolution resolution;
+ 	/** Copy of fault register from the previous read. */
+@@ -175,6 +177,9 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
+ 	struct gpio_descs *gpios = st->mode_gpios;
+ 	DECLARE_BITMAP(bitmap, 2);
+ 
++	if (!gpios)
++		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
++
+ 	bitmap[0] = mode;
+ 
+ 	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
+@@ -276,7 +281,8 @@ static int ad2s1210_regmap_reg_read(void *context, unsigned int reg,
+ 	 * parity error. The fault register is read-only and the D7 bit means
+ 	 * something else there.
+ 	 */
+-	if (reg != AD2S1210_REG_FAULT && st->rx[1] & AD2S1210_ADDRESS_DATA)
++	if ((reg > AD2S1210_REG_VELOCITY_LSB && reg != AD2S1210_REG_FAULT)
++	     && st->rx[1] & AD2S1210_ADDRESS_DATA)
+ 		return -EBADMSG;
+ 
+ 	*val = st->rx[1];
+@@ -450,21 +456,53 @@ static int ad2s1210_single_conversion(struct iio_dev *indio_dev,
+ 	ad2s1210_toggle_sample_line(st);
+ 	timestamp = iio_get_time_ns(indio_dev);
+ 
+-	switch (chan->type) {
+-	case IIO_ANGL:
+-		ret = ad2s1210_set_mode(st, MOD_POS);
+-		break;
+-	case IIO_ANGL_VEL:
+-		ret = ad2s1210_set_mode(st, MOD_VEL);
+-		break;
+-	default:
+-		return -EINVAL;
++	if (st->fixed_mode == MOD_CONFIG) {
++		unsigned int reg_val;
++
++		switch (chan->type) {
++		case IIO_ANGL:
++			ret = regmap_bulk_read(st->regmap,
++					       AD2S1210_REG_POSITION_MSB,
++					       &st->sample.raw, 2);
++			if (ret < 0)
++				return ret;
++
++			break;
++		case IIO_ANGL_VEL:
++			ret = regmap_bulk_read(st->regmap,
++					       AD2S1210_REG_VELOCITY_MSB,
++					       &st->sample.raw, 2);
++			if (ret < 0)
++				return ret;
++
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
++		if (ret < 0)
++			return ret;
++
++		st->sample.fault = reg_val;
++	} else {
++		switch (chan->type) {
++		case IIO_ANGL:
++			ret = ad2s1210_set_mode(st, MOD_POS);
++			break;
++		case IIO_ANGL_VEL:
++			ret = ad2s1210_set_mode(st, MOD_VEL);
++			break;
++		default:
++			return -EINVAL;
++		}
++		if (ret < 0)
++			return ret;
++
++		ret = spi_read(st->sdev, &st->sample, 3);
++		if (ret < 0)
++			return ret;
+ 	}
+-	if (ret < 0)
+-		return ret;
+-	ret = spi_read(st->sdev, &st->sample, 3);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	switch (chan->type) {
+ 	case IIO_ANGL:
+@@ -1252,27 +1290,53 @@ static irqreturn_t ad2s1210_trigger_handler(int irq, void *p)
+ 	ad2s1210_toggle_sample_line(st);
+ 
+ 	if (test_bit(0, indio_dev->active_scan_mask)) {
+-		ret = ad2s1210_set_mode(st, MOD_POS);
+-		if (ret < 0)
+-			goto error_ret;
+-
+-		ret = spi_read(st->sdev, &st->sample, 3);
+-		if (ret < 0)
+-			goto error_ret;
++		if (st->fixed_mode == MOD_CONFIG) {
++			ret = regmap_bulk_read(st->regmap,
++					       AD2S1210_REG_POSITION_MSB,
++					       &st->sample.raw, 2);
++			if (ret < 0)
++				goto error_ret;
++		} else {
++			ret = ad2s1210_set_mode(st, MOD_POS);
++			if (ret < 0)
++				goto error_ret;
++
++			ret = spi_read(st->sdev, &st->sample, 3);
++			if (ret < 0)
++				goto error_ret;
++		}
+ 
+ 		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
+ 	}
+ 
+ 	if (test_bit(1, indio_dev->active_scan_mask)) {
+-		ret = ad2s1210_set_mode(st, MOD_VEL);
+-		if (ret < 0)
+-			goto error_ret;
++		if (st->fixed_mode == MOD_CONFIG) {
++			ret = regmap_bulk_read(st->regmap,
++					       AD2S1210_REG_VELOCITY_MSB,
++					       &st->sample.raw, 2);
++			if (ret < 0)
++				goto error_ret;
++		} else {
++			ret = ad2s1210_set_mode(st, MOD_VEL);
++			if (ret < 0)
++				goto error_ret;
++
++			ret = spi_read(st->sdev, &st->sample, 3);
++			if (ret < 0)
++				goto error_ret;
++		}
+ 
+-		ret = spi_read(st->sdev, &st->sample, 3);
++		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
++	}
++
++	if (st->fixed_mode == MOD_CONFIG) {
++		unsigned int reg_val;
++
++		ret = regmap_read(st->regmap, AD2S1210_REG_FAULT, &reg_val);
+ 		if (ret < 0)
+-			goto error_ret;
++			return ret;
+ 
+-		memcpy(&st->scan.chan[chan++], &st->sample.raw, 2);
++		st->sample.fault = reg_val;
+ 	}
+ 
+ 	ad2s1210_push_events(indio_dev, st->sample.fault, pf->timestamp);
+@@ -1299,9 +1363,24 @@ static const struct iio_info ad2s1210_info = {
+ static int ad2s1210_setup_properties(struct ad2s1210_state *st)
+ {
+ 	struct device *dev = &st->sdev->dev;
++	const char *str_val;
+ 	u32 val;
+ 	int ret;
+ 
++	ret = device_property_read_string(dev, "adi,fixed-mode", &str_val);
++	if (ret == -EINVAL)
++		st->fixed_mode = -1;
++	else if (ret < 0)
++		return dev_err_probe(dev, ret,
++			"failed to read adi,fixed-mode property\n");
++	else {
++		if (strcmp(str_val, "config"))
++			return dev_err_probe(dev, -EINVAL,
++				"only adi,fixed-mode=\"config\" is supported\n");
++
++		st->fixed_mode = MOD_CONFIG;
++	}
++
+ 	ret = device_property_read_u32(dev, "assigned-resolution-bits", &val);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret,
+@@ -1357,12 +1436,21 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
+ 				     "failed to request sample GPIO\n");
+ 
+ 	/* both pins high means that we start in config mode */
+-	st->mode_gpios = devm_gpiod_get_array(dev, "mode", GPIOD_OUT_HIGH);
++	st->mode_gpios = devm_gpiod_get_array_optional(dev, "mode",
++						       GPIOD_OUT_HIGH);
+ 	if (IS_ERR(st->mode_gpios))
+ 		return dev_err_probe(dev, PTR_ERR(st->mode_gpios),
+ 				     "failed to request mode GPIOs\n");
+ 
+-	if (st->mode_gpios->ndescs != 2)
++	if (!st->mode_gpios && st->fixed_mode == -1)
++		return dev_err_probe(dev, -EINVAL,
++			"must specify either adi,fixed-mode or mode-gpios\n");
++
++	if (st->mode_gpios && st->fixed_mode != -1)
++		return dev_err_probe(dev, -EINVAL,
++			"must specify only one of adi,fixed-mode or mode-gpios\n");
++
++	if (st->mode_gpios && st->mode_gpios->ndescs != 2)
+ 		return dev_err_probe(dev, -EINVAL,
+ 				     "requires exactly 2 mode-gpios\n");
+ 
+-- 
+2.42.0
 

@@ -2,141 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B87F7CCDBC
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Oct 2023 22:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0EE97CCEE4
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Oct 2023 23:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235186AbjJQURf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Oct 2023 16:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33086 "EHLO
+        id S230056AbjJQVME convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 17 Oct 2023 17:12:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235197AbjJQURZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Oct 2023 16:17:25 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB5E6EAB;
-        Tue, 17 Oct 2023 13:07:26 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-507b18cf2e1so3139907e87.3;
-        Tue, 17 Oct 2023 13:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697573245; x=1698178045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DAg++LrW3itK5V1WlKpiZ2b/nQX2LkLJrp9r6Hg+m/U=;
-        b=fyla5S4OvCipJM/zDK1s9UNIRpBC7Mjb63FEuf2qgq0w3eZv54ii8U42n1acRtFlSw
-         yq7k00GwzCMKz4jmt+KiJkYiSeUE/4cmbNDHSYktDKIdlWGDYIgNhcs0DFWG1Jl56MPo
-         uo6VDd30BbtIAiX3au4GT4clz9qYZ4VUaSb7GVary8cdy8mjgcBsXph+n7+UvIUE7AoH
-         7mi5/PZBMvos2gTshF8dLYuXvkjs29nNkgprcGMwjmduhikymaPHRKGLQSYw/ppFrHSb
-         /HoLYon3T3DmFb9hMflTuH3GBB7EBwfTrBPnNSWY58le9XUVTjeEAky+5tYHtIxK8GAw
-         wmpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697573245; x=1698178045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DAg++LrW3itK5V1WlKpiZ2b/nQX2LkLJrp9r6Hg+m/U=;
-        b=HtHe4gpvG1/Y25iUr/McroqkQAACDbn8l4UYVUY+3hpxnmYhm+zFKLGcxrWWSIf9tj
-         5e0xZcVmweCm1OB3ljG7Mz2/tKBA3elFabB1LcfC5ALm3RNKWq9dg28ZkZWiiepYB1pq
-         2HIwyQybQgh8EBu0ntTy1jkfMkc8lMiz+iiaWi27T9mML+bZ62hdh1cNfSGlkYrLCOOY
-         mkgXJ2/LVHcu9Hx9yqTzOn4nluo2YmE2CcJVYi47k1o2S1NtrrgN18lZ2o89zOBzRU6r
-         pGhmd1VbMuY6cK31IHvaKcXW0Yy4RPtbgcm9GixbVWGycwt0/duMt9Pm8rzOgq/LuEhE
-         rZ6w==
-X-Gm-Message-State: AOJu0Yx4Pt1zgTrZSevJIRBWWt7tA9ZRqc9ycdsQ2Vh4naix6XvSDelp
-        EYxx/1w0ICTi/SKl2XyuqWDik/mHPSq4Kdg9csY=
-X-Google-Smtp-Source: AGHT+IEqwRenbscVZ0NA7c0QZm2NZMJwFuAjJu03tHzrSKrWUtbnnSQutaqDUbCBHGH8REY6dKqpQ5X1YCi2LT8F0nQ=
-X-Received: by 2002:ac2:4827:0:b0:507:9f4c:efc8 with SMTP id
- 7-20020ac24827000000b005079f4cefc8mr2339662lft.14.1697573244534; Tue, 17 Oct
- 2023 13:07:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1666614295.git.mazziesaccount@gmail.com> <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
-In-Reply-To: <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Wed, 18 Oct 2023 01:37:12 +0530
-Message-ID: <CAM+2Eu+Xp6j1ppLd+zHMTu6jfc6DQKBShfe-nAyokVi0MUmoSA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] iio: accel: Support Kionix/ROHM KX022A accelerometer
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S229883AbjJQVMD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Oct 2023 17:12:03 -0400
+Received: from smtprelay06.ispgateway.de (smtprelay06.ispgateway.de [80.67.18.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA9D94
+        for <linux-iio@vger.kernel.org>; Tue, 17 Oct 2023 14:12:00 -0700 (PDT)
+Received: from [92.206.139.21] (helo=note-book.lan)
+        by smtprelay06.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96.1)
+        (envelope-from <git@apitzsch.eu>)
+        id 1qsrM3-0000rb-2r;
+        Tue, 17 Oct 2023 23:11:56 +0200
+Message-ID: <5e0d2716fb757d408ebe77cb132ae242ef3aa470.camel@apitzsch.eu>
+Subject: Re: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum->pointer
+ for data in the match tables
+From:   =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Date:   Tue, 17 Oct 2023 23:11:54 +0200
+In-Reply-To: <20230818075600.24277-2-biju.das.jz@bp.renesas.com>
+References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
+         <20230818075600.24277-2-biju.das.jz@bp.renesas.com>
+Autocrypt: addr=git@apitzsch.eu; prefer-encrypt=mutual;
+ keydata=mQINBFZtkcEBEADF2OvkhLgFvPPShI0KqafRlTDlrZw5H7pGDHUCxh0Tnxsj7r1V6N7M8L2ck9GBhoQ9uSNeer9sYJV3QCMs6uIJD8XV60fsLrGZxSnZejYxAmT5IMp7hHZ6EXtgbRBwPUUymfKpMJ55pmyNFBkxWxQA6E33X/rH0ddtGmAsw+g6tOHBY+byBDZrsAZ7MLKqGVaW7IZCQAk4yzO7cLnLVHS2Pk4EOaG+XR/NYQ+jTfMtszD/zSW6hwskGZ6RbADHzCbV01105lnh61jvzpKPXMNTJ31L13orLJyaok1PUfyH0KZp8xki8+cXUxy+4m0QXVJemnnBNW5DG3YEpQ59jXn3I7Eu2pzn2N+NcjqK8sjOffXSccIyz8jwYdhASL5psEvQqZ6t60fvkwQw7++IZvs2BPmaCiQRo415/jZrEkBBE3xi1qdb3HEmpeASVaxkinM5O44bmQdsWTyamuuUOqziHZc9MO0lR0M1vUwnnQ3sZBu2lPx/HBLGWWOyzeERalqkXQz1w2p487Gc+fC8ZLXp7oknfX0Mo1hwTQ+2g2bf78xdsIhqH15KgRE/QiazM87mkaIcHz7UE+ikkffODyjtzGuaqDHQIUqpKIiXGKXoKzENFJel71Wb2FoSMXJfMNE/zEOE5ifufDkBGlwEqEUmkHzu7BbSPootR0GUInzm5QARAQABtCNBbmRyw6kgQXBpdHpzY2ggPGFuZHJlQGFwaXR6c2NoLmV1PokCVwQTAQoAQQIbAwIeAQIXgAULCQgHAgYVCgkICwIEFgIDAQIZARYhBGs5YOi9bIzbfpKzQoJ34hc2fkk7BQJjw9ROBQkPVdDvAAoJEIJ34hc2fkk7wkQP/RK8za0mwjXC0N3H3LG8b2dL9xvPNxOllbduGZ2VGypD4inCT/9bC7XXWr9aUqjfiNrZRf5DTUQeHf0hxeFndfjsJFODToQnnPDoZVIlEX7wS31MPYTpB
+        Gdkq687RJrHc4A7u/304OXaj4iXk3hmZDI4ax2XeFdj1Lt/PrfazCdtI8E6FvUBL5bcBdZsygeNWt5Jk3r2Gk4Gn+iuw1rxALfcBNIFD7dZiz7/KYycNJV6/ZQKXWWkHJZ8/MSwKhv6bJcAu5zkPKVnT3A/vZ/7bUWSXxR5Dy0i3Rbu2/DVGBBx/JRlmKy06KyE1Y9KmSt35NPJSimA7l4ITktfHiE3o6VXgvRX88h65RNiCi0zLl8jRCDTGkwv+DKFV1KcJTINgdbp310rZvMOaK0r16wzrWrTGmOiUv2ZTr8ZOJ+F9M2AxYwANrl72txyw9r6QKyIaHnbUeQjmnz28WtoxzVPHytuq7GIjn2YnJYeJnGC/12gmnRmq6jMiOhbA9kTCt5+gZONLk+D4AhBTIG71Z4e65mrGhoYYef8N4F0DAPhQgyoBxZuGmYQMPTV0VZc5EjLcAbXQeC1Gvhf/Kjc2T4uSAUGQq3zweRIdTOLDXmWTj9290aTiE12ZPXCrby103oTLyCdrC/5dAjlk0S+sgJm0dMr5uHcvl3W/Gt9sTejseOOtCFBbmRyw6kgQXBpdHpzY2ggPGdpdEBhcGl0enNjaC5ldT6JAlQEEwEKAD4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRrOWDovWyM236Ss0KCd+IXNn5JOwUCY8PUTgUJD1XQ7wAKCRCCd+IXNn5JOy04EACmk3rjyBGaELCMdi9Ijv2P25nBhhWKHnY+w7UWvJ3QjkqFslYIwXTFqeue7yw+jeEEuqW0415e1SN8UKi8gkmlxSI5gahvmu3TA6sipBmiEhci2lli0jdz6scL85H4UIdnYrLqSP+liJmPv2tTChgJzPaOs/anyYGNom6+SYl3LdpWp5PjFxWkz4ERC5UDfhJa8fHzCw1xkadkxgz8ihBULzMfrea8crLF4W64qewrF032h4T4yCBqjqtARVFtikqAUvyxhGXmeU
+        Of5hPifLqjlzsIpszJOwGh32ggK2WxqqAB20aRyuCXKc2MshyD+ANUj4hZGYFp0hT1q0E1KLFoRhy+CAZ+DBGMSI3MlES/NNvm3wRVlc4lr2RkaPUmM6PyQtmbtM4xbgQGD29Q4D44tPoLLgh0jK6c05EA/ZSjA8KTj2HNL3lUSMXdEDBTql1ccFXDqPvl5YiTfcK6r72H8Zz20qFgxNOAYPEf7xCfoWJTpAPYNY5rJyAJWzEYFEqZolJXP768n3ObVVtJq0Q5cYf46IbtTXDHFOIFUvQVXzFh9eAyv1tN4ZlZAm/oyWYChgzOIoymFz8S9i8a4A07m3Zhgxa80vmMvlhQntd9Wc1OMkjnxLIl+4WZUKH4PLwccQGysSXC7UVWiO8ZtofyMOqYY7BwzMllhWoyoXwulbkCDQRWbZHBARAA35+q2gnCcqTJm3MCqTsGGfsKIpGSn7qnr7l7C+jomiQSfg84SP0f4GclhBfSghpgUqBFiIgv3BzJREDrziSaJLwRp+NKILkZ2QW41JccushDEcUCVWnZpViUF1als6PU4M8uHmfzoNXZtAaeTKpA3eeOyUPUuNm4lSZH9Aq20BeCNDy9puzCnjpKWemI2oVC5J0eNQ+tw3sOtO7GeOWZiDh/eciJAEF08H1FnJ+4Gs04NQUjAKiZobQIqJI2PuRWPUs2Ijjx7mp7SPNU/rmKXFWXT3o83WMxo41QLoyJoMnaocM7AeTT4PVv3Fnl7o9S36joAaFVZ7zTp86JluQavNK74y35sYTiDTSSeqpmOlcyGIjrqtOyCXoxHpwIL56YkHmsJ9b4zriFS/CplQJ5aXaUDiDNfbt+9Zm7KI4g6J59h5tQGVwz/4pmre02NJFh1yiILCfOkGtAr1uJAemk0P1E/5SmrTMSj5/zpuHV+wsUjMpRKoREWYBgHzypaJC93h9N+Wl2KjDdwfg7cBboKBKTjbjaofhkG6f4noKagB7IAEKf14EUg1e
+        r5/Xx0McgWkIzYEvmRJspoPoSH5DLSd05QwJmMjXoLsq74iRUf0Y8glNEquc7u8aDtfORxxzfcY2WuL6WsOy7YrKHpinrlODwgI1/zUXQirPIGdFV9MsAEQEAAYkCPAQYAQoAJgIbDBYhBGs5YOi9bIzbfpKzQoJ34hc2fkk7BQJjw9RjBQkPVdDvAAoJEIJ34hc2fkk7PMcP/3ew9uNxXMYPMs292yuromvRxUXcsryyT4sTcsQ/w/V+12teaZZemU/hf9rhyd/Op8osIKenTQYcUb0BrKYn7bEQRYXjIR8AkfkePmNYGqhs37SB7uqnz9u7twk2lvRmMV0lW25g3EHzveV5CrMpSsBZ6M5Pe0rMs/lT5ws5P7atgFUYmmpijIBi1pzT8OLKhsoGwMayB4Cctt2YU1tpAoFjFcB2i9cyfoxGyjqXBJ/0u+6V6EocSeJbpI8T07GlFRNQok9NvImqBfOvMKk7eSSNJVYRu9FkbFFVxFQKh5wbAZelGItQLr6yrVIKmZmi+DLQHPGKmvoSatwPKsKIqvNHdWJQyvhrkQnzxnbQsixH/InWhJ/qbPhWKWNAq+fGkAVVXlZW91RW9h3r+ZIH95dCBnYNgi0ehVftqf0AEHXWRZgtKToYrG9kfkUdxft0fpilIG5aK0r242OKtQcGESyCltiwGakQ4qytf7kQ4SUYiJ8YQ2E2QU19zUrOkmjq32Be4C3QUYRBloU2l2VyGghZxdShJvNIZvup0ID0BFhcs0+4dWS4Loz8HW7FBWcmsUsti3mUBuBb6PN+jRoIYBbsUGDffbxz2/tHF3mckCS4qVtwiD7noU0l69FqZm/aOOUbwZ7UiTuuYgZ0HvQBMEb9PiiC0qjrTIST/U6zqLs4
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.50.0 
+MIME-Version: 1.0
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Matti,
+Hi,
 
-On Mon, Oct 24, 2022 at 6:10=E2=80=AFPM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
->
-> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
-> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
-> tap/motion detection, wake-up & back-to-sleep events, four acceleration
-> ranges (2, 4, 8 and 16g), and probably some other cool features.
+Am Freitag, dem 18.08.2023 um 08:55 +0100 schrieb Biju Das:
+> Convert enum->pointer for data in the match tables to simplify the
+> probe()
+> by replacing device_get_match_data() and i2c_client_get_device_id by
+> i2c_get_match_data() as we have similar I2C, ACPI and DT matching
+> table.
+> 
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v1->v2:
+>  * No change
+> ---
+>  drivers/iio/magnetometer/ak8975.c | 75 +++++++++++++----------------
+> --
+>  1 file changed, 30 insertions(+), 45 deletions(-)
+> 
+> diff --git a/drivers/iio/magnetometer/ak8975.c
+> b/drivers/iio/magnetometer/ak8975.c
+> index eb706d0bf70b..104798549de1 100644
+> --- a/drivers/iio/magnetometer/ak8975.c
+> +++ b/drivers/iio/magnetometer/ak8975.c
+> @@ -813,13 +813,13 @@ static const struct iio_info ak8975_info = {
+>  };
+>  
+>  static const struct acpi_device_id ak_acpi_match[] = {
+> -	{"AK8975", AK8975},
+> -	{"AK8963", AK8963},
+> -	{"INVN6500", AK8963},
+> -	{"AK009911", AK09911},
+> -	{"AK09911", AK09911},
+> -	{"AKM9911", AK09911},
+> -	{"AK09912", AK09912},
+> +	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
+> +	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
+> +	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
+> +	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
+> +	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
+> +	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
+> +	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
+> @@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client
+> *client)
+>  	struct iio_dev *indio_dev;
+>  	struct gpio_desc *eoc_gpiod;
+>  	struct gpio_desc *reset_gpiod;
+> -	const void *match;
+> -	unsigned int i;
+>  	int err;
+> -	enum asahi_compass_chipset chipset;
+>  	const char *name = NULL;
+>  
+>  	/*
+> @@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client
+> *client)
+>  		return err;
+>  
+>  	/* id will be NULL when enumerated via ACPI */
+> -	match = device_get_match_data(&client->dev);
+> -	if (match) {
+> -		chipset = (uintptr_t)match;
+> -		name = dev_name(&client->dev);
+> -	} else if (id) {
+> -		chipset = (enum asahi_compass_chipset)(id-
+> >driver_data);
+> -		name = id->name;
+> -	} else
+> -		return -ENOSYS;
+> -
+> -	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
+> -		if (ak_def_array[i].type == chipset)
+> -			break;
+> -
+> -	if (i == ARRAY_SIZE(ak_def_array)) {
+> -		dev_err(&client->dev, "AKM device type unsupported:
+> %d\n",
+> -			chipset);
+> +	data->def = i2c_get_match_data(client);
+> +	if (!data->def)
+>  		return -ENODEV;
+> -	}
+>  
+> -	data->def = &ak_def_array[i];
+> +	/* If enumerated via firmware node, fix the ABI */
+> +	if (dev_fwnode(&client->dev))
+> +		name = dev_name(&client->dev);
+> +	else
+> +		name = id->name;
+>  
 
-This is a nice driver, and I found it very helpful as a reference.
-One question regarding scale please see below.
+I just noticed, that with the above change '0-000d' instead of the
+previous and expected 'ak09911' is shown now as name for the
+magnetometer in longcheer l9100 [1].
 
-> + * range is typically +-2G/4G/8G/16G, distributed over the amount of bit=
-s.
-> + * The scale table can be calculated using
-> + *     (range / 2^bits) * g =3D (range / 2^bits) * 9.80665 m/s^2
-> + *     =3D> KX022A uses 16 bit (HiRes mode - assume the low 8 bits are z=
-eroed
-> + *     in low-power mode(?) )
-> + *     =3D> +/-2G  =3D> 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
-> + *     =3D> +/-2G  - 598.550415
-> + *        +/-4G  - 1197.10083
-> + *        +/-8G  - 2394.20166
-> + *        +/-16G - 4788.40332
-> + */
-> +static const int kx022a_scale_table[][2] =3D {
-> +       { 598, 550415 },
-> +       { 1197, 100830 },
-> +       { 2394, 201660 },
-> +       { 4788, 403320 },
-> +};
+id->name contains the expected string ('ak09911'), but because of
+dev_fwnode(&client->dev) being true, it is not used.
 
-Given that the integer part is non-zero, and
-IIO_VAL_INT_PLUS_MICRO is returned for read_scale,
-As raw value will never be fractional how does this
-correspond to a reading of 9.8 m/s=C2=B2 for the Z-axis?
+André
 
-> +
-> +static int kx022a_read_avail(struct iio_dev *indio_dev,
-> +                            struct iio_chan_spec const *chan,
-> +                            const int **vals, int *type, int *length,
-> +                            long mask)
-> +{
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               *vals =3D (const int *)kx022a_accel_samp_freq_table;
-> +               *length =3D ARRAY_SIZE(kx022a_accel_samp_freq_table) *
-> +                         ARRAY_SIZE(kx022a_accel_samp_freq_table[0]);
-> +               *type =3D IIO_VAL_INT_PLUS_MICRO;
-> +               return IIO_AVAIL_LIST;
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *vals =3D (const int *)kx022a_scale_table;
-> +               *length =3D ARRAY_SIZE(kx022a_scale_table) *
-> +                         ARRAY_SIZE(kx022a_scale_table[0]);
-> +               *type =3D IIO_VAL_INT_PLUS_MICRO;
-> +               return IIO_AVAIL_LIST;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts?h=next-20231017#n127
 
-Regards
-Jagath
+>  	/* Fetch the regulators */
+>  	data->vdd = devm_regulator_get(&client->dev, "vdd");
+> @@ -1077,28 +1062,28 @@ static
+> DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
+>  				 ak8975_runtime_resume, NULL);
+>  
+>  static const struct i2c_device_id ak8975_id[] = {
+> -	{"ak8975", AK8975},
+> -	{"ak8963", AK8963},
+> -	{"AK8963", AK8963},
+> -	{"ak09911", AK09911},
+> -	{"ak09912", AK09912},
+> -	{"ak09916", AK09916},
+> +	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
+> +	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
+> +	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
+> +	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
+> +	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+> +	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
+>  	{}
+>  };
+>  
+>  MODULE_DEVICE_TABLE(i2c, ak8975_id);
+>  
+>  static const struct of_device_id ak8975_of_match[] = {
+> -	{ .compatible = "asahi-kasei,ak8975", },
+> -	{ .compatible = "ak8975", },
+> -	{ .compatible = "asahi-kasei,ak8963", },
+> -	{ .compatible = "ak8963", },
+> -	{ .compatible = "asahi-kasei,ak09911", },
+> -	{ .compatible = "ak09911", },
+> -	{ .compatible = "asahi-kasei,ak09912", },
+> -	{ .compatible = "ak09912", },
+> -	{ .compatible = "asahi-kasei,ak09916", },
+> -	{ .compatible = "ak09916", },
+> +	{ .compatible = "asahi-kasei,ak8975", .data =
+> &ak_def_array[AK8975] },
+> +	{ .compatible = "ak8975", .data = &ak_def_array[AK8975] },
+> +	{ .compatible = "asahi-kasei,ak8963", .data =
+> &ak_def_array[AK8963] },
+> +	{ .compatible = "ak8963", .data = &ak_def_array[AK8963] },
+> +	{ .compatible = "asahi-kasei,ak09911", .data =
+> &ak_def_array[AK09911] },
+> +	{ .compatible = "ak09911", .data = &ak_def_array[AK09911] },
+> +	{ .compatible = "asahi-kasei,ak09912", .data =
+> &ak_def_array[AK09912] },
+> +	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
+> +	{ .compatible = "asahi-kasei,ak09916", .data =
+> &ak_def_array[AK09916] },
+> +	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, ak8975_of_match);
+

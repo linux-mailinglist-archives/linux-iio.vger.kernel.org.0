@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03EAD7CDFA9
+	by mail.lfdr.de (Postfix) with ESMTP id DCDB27CDFAB
 	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 16:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345656AbjJRO12 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Oct 2023 10:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54280 "EHLO
+        id S1345482AbjJRO13 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Oct 2023 10:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345658AbjJRO1S (ORCPT
+        with ESMTP id S1345665AbjJRO1S (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 10:27:18 -0400
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E30945FCD;
-        Wed, 18 Oct 2023 07:25:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274A53C2D;
+        Wed, 18 Oct 2023 07:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
         Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
         Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
         :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ph2HNOFu6ShT/rsQc1S8mJc4ao2RB+pOWhhItYG94CA=; b=izcoy8tUBmg/QK99GwKWwCm4Qm
-        YcHFLacurcJOQiVaUysS4yAfdrJaMMP1WUauMnerkKvA8PRrkFUuA2ItZ/wRqzk6DPYP2BpjjIM7x
-        X5csqa05XfHgZCQNZ2QS+iIrKVEXM6DvlCuwhMD0Ukab1az3VMwihx3A/T6L5USSeSHUrZLwbVGku
-        djpMhmc7P1/E6L7svpcQtocpwk936IC+wQJBpGZzD8O5DzIluuaHTfUo+2VhAzzj82rHfrHTWTI59
-        cMStre1l8HIvmtgyBRAiojWek/tBdJGi8Kez6ZhfcRmW9RWeOB/HqMLP1O1Lx+N4cyIqyMrH4YKuN
-        0AYmsBJQ==;
+        bh=wUhOmt/JEXhu/+rgszsfWXdTXH8GnE4jpA6yDaWqehU=; b=fJQHCTN875kaB9N/97kZhJAtQS
+        01+2QAFkBZjOZKu/3O0C9PU8HL84wfv4NpjhuxNSZWZXlPcgbt1HyN1Xl4ISFTakXozPQrHYm1WhW
+        wOjnsWSUIEZvRFrEKGFkT+8bioxtz0mLxR1lrnWWoGdHTUabqOPVVnORQTTLoajAHCKQuA7hRBDbi
+        TO23M2j58HPReriQqhBuD713kkesjSvu0BuEZRV0zsQ/xRqYZOMDGcEyF5MiLXGMJCdHVWSWp8Hel
+        8tpORH/D5EmqtZcw6t6Fo7+sX8ERmCngXoyaZnB2e5kTFlxUuUCAORupQX8b9babgR/RUo9jdY/55
+        w5gPa/9Q==;
 Received: from [145.18.212.154]
         by fanzine2.igalia.com with esmtpsa 
         (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1qt7Ug-001paE-5j; Wed, 18 Oct 2023 16:25:54 +0200
+        id 1qt7Uh-001paE-6K; Wed, 18 Oct 2023 16:25:55 +0200
 From:   Nia Espera <nespera@igalia.com>
-Date:   Wed, 18 Oct 2023 16:25:12 +0200
-Subject: [PATCH v2 1/6] iio: adc: add smb139x bindings
+Date:   Wed, 18 Oct 2023 16:25:13 +0200
+Subject: [PATCH v2 2/6] arm64: dts: qcom: sm8350: Fix DMA0 address
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231018-nia-sm8350-for-upstream-v2-1-7b243126cb77@igalia.com>
+Message-Id: <20231018-nia-sm8350-for-upstream-v2-2-7b243126cb77@igalia.com>
 References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
 In-Reply-To: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -59,17 +59,17 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nia Espera <nespera@igalia.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1969; i=nespera@igalia.com;
- h=from:subject:message-id; bh=qG/+w4/iwYleK9lDCuoPvHI0i6EeZNXt2CWHfVYC5c0=;
- b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlL+rqJuSbDKfiY/R6SZflVGRIoe+Z+PqwbXbzQ
- WyCJiTPJTCJAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZS/q6gAKCRDyJM7CN1bi
- rQ9HDACRU1jabHMEKiuLMV8c4+bWhzgmD/X2smF3BFmviw4oDoyIJrjvKkXxQvMXYXdTIgSdQ/B
- E4PSh0yimlWIH4ZBRQEAVUfwROiWmxxmtPrx6sVxax/g8dedaNR2aJaIVccA/BuZK30pY7Olh0n
- 9BHC9oSPSASM0xxhBprci+FszxXVHXgb/qrWws2aAOIxPrZESoKBBdDc7jDEOo1lnAwm+nqmYOE
- i8s0grSc40NJ7kOdNgj/ajX0Y8eqEGEALXjm7/CbtUwoxPND+UA/8UHLNKBXQSpWXyQ0EzxzSlV
- JPG9SC0XXdacfOodwgj3NCMjCi5qcPl7Zl1eIKxRziTtemRYz6Pb2P7rt1Pp/z54ytdnvCW9+gI
- hGWYFeTK17nzqr27/dce/28IAOzI/PaBNUfgBblnjSGfEHZmQOY8jSU8OgA6n/HZQmKj1TyoYSz
- 6hJQacdvY0pzWKQBYrpK3eVVRjrqP9A/GZ8jxq6o7AlDVIuw0fvB8crxVBoZrC75v2g+Q=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1152; i=nespera@igalia.com;
+ h=from:subject:message-id; bh=YpKfI4JRXwrBSsHlSbVyPJk1UALjztlq3r+ERNAhx+g=;
+ b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlL+rqQ990LAhoiLSu5iHaZuiLJ/ZxDDbzpGO0l
+ MiWIlUG6/CJAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZS/q6gAKCRDyJM7CN1bi
+ rZ2NC/wJN7B79hvv8s57VOtTNPqL6UbLccJa4MT0OZu1r2Gh3S10QWilpc3DJmr8f+bOqyCEn8T
+ 1mBgm1qnbAcpl1o9RJ4O2PMlhXbAmL44aKMiDcTQFMsbs1fG1zSH1M1gXo5+u/06JZ18qr6H4Wo
+ CSOTXkyqr8B3818RsIQrHnEkkLYXxUJ+wJLW/MBciqE6zhk2I/ivhbIvb1mlUiSACQgWrXsxjIV
+ SGXymNs1Erq7FIijDDRPYm8V1/hm0ab3cMC8TmZanxlsMZ1nPIzJcyb4ear0u7xg1YrcSQEXihz
+ 8B99sAUWWbbrJ4lg/3xhOLXwYdpL+XP644Y7KnB7Lmtoi8UUrLSJhvgjxf8kpZhHUbiQHwf9VAo
+ NX88nByUyU6kBc5pb7tswXS5KlDLXq0o1KIOdC8jiIEib3miRxDUeoDFk3iIturLOu3iiRYCre3
+ /62pTs66z/hWOQaLnBi+72RurSlTaFWgYMC653br0RG/MSGwssNM7NqQEaHxyAM7i54TY=
 X-Developer-Key: i=nespera@igalia.com; a=openpgp;
  fpr=813C3A26BA0DEC9432449EE6F224CEC23756E2AD
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,59 +81,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Bindings for a charger controller chip found on sm8350
+DMA0 node downstream is specified at 0x900000, so fix the typo. Without
+this, enabling any i2c node using DMA0 causes a hang.
 
+Fixes: bc08fbf49bc8 ("arm64: dts: qcom: sm8350: Define GPI DMA engines")
+Fixes: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Nia Espera <nespera@igalia.com>
 ---
- include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
- include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
- 2 files changed, 22 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-new file mode 100644
-index 000000000000..c0680d1285cf
---- /dev/null
-+++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-+/*
-+ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-+ */
-+
-+#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-+#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-+
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+
-+#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
-+#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
-+#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | ADC7_IIN_SMB)
-+
-+#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | ADC7_SMB_TEMP)
-+#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | ADC7_ICHG_SMB)
-+#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | ADC7_IIN_SMB)
-+
-+#endif
-diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-index 08adfe25964c..ef07ecd4d585 100644
---- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-+++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-@@ -239,12 +239,15 @@
- #define ADC7_GPIO3				0x0c
- #define ADC7_GPIO4				0x0d
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index 00604bf7724f..6d12066389fa 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -918,9 +918,9 @@ spi19: spi@894000 {
+ 			};
+ 		};
  
-+#define ADC7_SMB_TEMP				0x06
- #define ADC7_CHG_TEMP				0x10
- #define ADC7_USB_IN_V_16			0x11
- #define ADC7_VDC_16				0x12
- #define ADC7_CC1_ID				0x13
- #define ADC7_VREF_BAT_THERM			0x15
- #define ADC7_IIN_FB				0x17
-+#define ADC7_ICHG_SMB				0x18
-+#define ADC7_IIN_SMB				0x19
- 
- /* 30k pull-up1 */
- #define ADC7_AMUX_THM1_30K_PU			0x24
+-		gpi_dma0: dma-controller@9800000 {
++		gpi_dma0: dma-controller@900000 {
+ 			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
+-			reg = <0 0x09800000 0 0x60000>;
++			reg = <0 0x00900000 0 0x60000>;
+ 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 246 IRQ_TYPE_LEVEL_HIGH>,
 
 -- 
 2.42.0

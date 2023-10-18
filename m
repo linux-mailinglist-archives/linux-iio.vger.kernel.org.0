@@ -2,187 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBC57CD20D
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 03:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2EA7CD504
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 09:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229462AbjJRB4l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Oct 2023 21:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        id S1344591AbjJRHFD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 18 Oct 2023 03:05:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjJRB4k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Oct 2023 21:56:40 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 476ECC6
-        for <linux-iio@vger.kernel.org>; Tue, 17 Oct 2023 18:56:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697594199; x=1729130199;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=wg2GqSF4/xw05SDpARE7Ugy2pKRO35vXu9r273tHoEQ=;
-  b=jOaVq0r3AmXJvsco2k/Fe4QItliXY/J/4T0Z35kDcrdQdYMWXJ3yZoZ5
-   64RPkaLlFMkBREUZFO6flbubvGzpoALWahoQ8QeCQTDqgb84HNwI1LNlh
-   CfAEQQWu9z8WHPpRBgILI2GpbRsPQQ3DPIXliDB8pe8D+oOo4zJmKKLKQ
-   4VjSLoESI3Gl8gWMen7bpdMI+72x+uINgMHV42mOaA14Ad/P+fd8HnNiQ
-   XW+pQZ1ws8h/dpF0dteqA1/zjNlHSufDboXA4uSEabV33Wcpw8rro+Ret
-   hyod/98at36KmjtLJjqny2ltlFMvJeSLvtJAhVgmXJWsvtgl6XpAYwNrG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="450138553"
-X-IronPort-AV: E=Sophos;i="6.03,233,1694761200"; 
-   d="scan'208";a="450138553"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 18:56:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="706246439"
-X-IronPort-AV: E=Sophos;i="6.03,233,1694761200"; 
-   d="scan'208";a="706246439"
-Received: from spandruv-desk1.amr.corp.intel.com ([10.209.89.232])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 18:56:38 -0700
-Message-ID: <861ee3a58a52afb9e3f4001e4f25a2fd5c318618.camel@linux.intel.com>
-Subject: Re: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Philipp Jungkamp <p.jungkamp@gmx.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Date:   Tue, 17 Oct 2023 18:56:38 -0700
-In-Reply-To: <20231017201116.63d54c60@jic23-huawei>
-References: <20230806130558.89812-2-p.jungkamp@gmx.net>
-         <cd33e36768322d4e8f7919711d3474f57c4383ff.camel@linux.intel.com>
-         <trinity-2e8c2d00-be4a-4590-ae0f-265289d9256b-1691497330952@3c-app-gmx-bs40>
-         <20231014175206.6b2ff811@jic23-huawei>
-         <32200d0651ba77d03bad5733d8690f9f1b7b8d1a.camel@linux.intel.com>
-         <20231015120448.6279430d@jic23-huawei>
-         <20231016084400.79932e58@jic23-huawei>
-         <7c09e707455e43d87a0e2368842c9b5b1afcf80f.camel@linux.intel.com>
-         <20231017201116.63d54c60@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S1344581AbjJRHFC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 03:05:02 -0400
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D11B0;
+        Wed, 18 Oct 2023 00:04:59 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5a2536adaf3so87836327b3.2;
+        Wed, 18 Oct 2023 00:04:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697612698; x=1698217498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ehq7lt09mwOzTppGLck+YyAM10dg6P1xZomRPZqI724=;
+        b=HjPf/v4kfJMOEAb6YAiEuFvS8GPxZ0b0IR3pIsVtQW8lXwT1WboJ8KJrHSe2Z/3fs8
+         dtcowqfMKf4lmSCSwRqsRvx68VFr+VdeWs+TZwY9HTrs3ZKJz8+RKWHFNXeyrxwl4rB7
+         AQDwzqw+nMLTSMTHXG9Rv4nJwKBDdN1RYTqVkhUrpo3/ZGizdscbJss02O9wAoRi1/13
+         jS4LE+ocPcOrpQgkZsggGw+TRri4AxyEfIT2teKj9soBynWVgkdI2e8OOiIjZ4lMnitn
+         4v+vmSSCYVK09WYZtTgOALu9e1maOuCJdAc+vaXTuQujxz1jAz8n0tQS9lyFghwjdqwS
+         cUmw==
+X-Gm-Message-State: AOJu0YwLg9pZt3LazMF5xVhYrzT8ORY4rpmjUMO4YwY8YH0S5rYMBDOs
+        LlgbMdo+5Zg6hF2R06nkDqjjLzv7nIDjRQ==
+X-Google-Smtp-Source: AGHT+IF6u8W8Oksz2vO6EhNr4pbMKHdcWbQZBvtnHLYHWwv0nz3X6t1YGbHsPg6SN7NBaZ27P8TY4A==
+X-Received: by 2002:a81:8407:0:b0:5a7:a81d:e410 with SMTP id u7-20020a818407000000b005a7a81de410mr5004991ywf.18.1697612698487;
+        Wed, 18 Oct 2023 00:04:58 -0700 (PDT)
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
+        by smtp.gmail.com with ESMTPSA id i20-20020a81d514000000b00583b144fe51sm1262906ywj.118.2023.10.18.00.04.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Oct 2023 00:04:57 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d9a64ca9cedso6629977276.1;
+        Wed, 18 Oct 2023 00:04:57 -0700 (PDT)
+X-Received: by 2002:a25:19d7:0:b0:d9a:618a:d727 with SMTP id
+ 206-20020a2519d7000000b00d9a618ad727mr3996335ybz.41.1697612697358; Wed, 18
+ Oct 2023 00:04:57 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
+ <20230818075600.24277-2-biju.das.jz@bp.renesas.com> <5e0d2716fb757d408ebe77cb132ae242ef3aa470.camel@apitzsch.eu>
+In-Reply-To: <5e0d2716fb757d408ebe77cb132ae242ef3aa470.camel@apitzsch.eu>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 18 Oct 2023 09:04:44 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUTxQym7+vYPtnvMQeH8GKSk0iOyuMnLkgr3LH1E8TTYA@mail.gmail.com>
+Message-ID: <CAMuHMdUTxQym7+vYPtnvMQeH8GKSk0iOyuMnLkgr3LH1E8TTYA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum->pointer
+ for data in the match tables
+To:     git@apitzsch.eu
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2023-10-17 at 20:11 +0100, Jonathan Cameron wrote:
-> On Mon, 16 Oct 2023 07:28:36 -0700
-> srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
->=20
-> > On Mon, 2023-10-16 at 08:44 +0100, Jonathan Cameron wrote:
-> > > On Sun, 15 Oct 2023 12:04:48 +0100
-> > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > > =C2=A0=20
-> > > > On Sat, 14 Oct 2023 19:56:26 -0700
-> > > > srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-> > > > wrote:
-> > > > =C2=A0=20
-> > > > > On Sat, 2023-10-14 at 17:52 +0100, Jonathan Cameron wrote:=C2=A0=
-=20
-> > > > > =C2=A0=20
-> > > > =C2=A0=20
-> >=20
-> > [...]
-> >=20
-> > > > Phillipp, if a backport makes sense you can request that after
-> > > > this
-> > > > goes upstream.=C2=A0=20
-> > > Whilst typing up a pull request I saw this again and thought a
-> > > bit
-> > > more on it.
-> > >=20
-> > > This fix is probably wrong approach.=C2=A0 Proximity sensors are ofte=
-n
-> > > scale free
-> > > because they depend on reflectance off something or a capacitance
-> > > changing etc
-> > > so we don't know the scaling.=C2=A0 So the right response then is not
-> > > to
-> > > return a scale
-> > > value of 1.0 but to not provide the attribute at all.=C2=A0 Is that
-> > > something that
-> > > could be easily done here?=C2=A0=20
-> >=20
-> > I think so. But hope that iio-sensor-proxy can handle absence of
-> > scale
-> > attribute.
-> >=20
-> > git diff drivers/iio/light/hid-sensor-prox.c
-> > diff --git a/drivers/iio/light/hid-sensor-prox.c
-> > b/drivers/iio/light/hid-sensor-prox.c
-> > index a47591e1bad9..e4b81fa948f5 100644
-> > --- a/drivers/iio/light/hid-sensor-prox.c
-> > +++ b/drivers/iio/light/hid-sensor-prox.c
-> > @@ -36,7 +36,6 @@ static const struct iio_chan_spec prox_channels[]
-> > =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .type =3D IIO_PROXIMITY,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .info_mask_shared_by_type =3D
-> > BIT(IIO_CHAN_INFO_OFFSET) |
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 BIT(IIO_CHAN_INFO_SCALE) |
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 BIT(IIO_CHAN_INFO_HYSTERESIS),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .scan_index =3D CHANNEL_SCAN_INDEX_PRESENCE,
-> >=20
-> > Thanks,
-> > Srinivas
->=20
-> Just to check. Are we guaranteed that there is never a scale
-> parameter?
-> Some proximity sensors do have absolute units (time of flight sensors
-> for example).
->=20
-This driver is implementing:
-Biometric: Human Presence (Usage ID 0x11) from HID sensor hub
-specification.
+Hi André,
 
-"Biometric: Human
-PresenceCA,CP =E2=80=93 An application-level or physical collection that
-identifies
-a device that detects human presence (Boolean yes or no)."
+On Tue, Oct 17, 2023 at 11:12 PM André Apitzsch <git@apitzsch.eu> wrote:
+> Am Freitag, dem 18.08.2023 um 08:55 +0100 schrieb Biju Das:
+> > Convert enum->pointer for data in the match tables to simplify the
+> > probe()
+> > by replacing device_get_match_data() and i2c_client_get_device_id by
+> > i2c_get_match_data() as we have similar I2C, ACPI and DT matching
+> > table.
+> >
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
+> > --- a/drivers/iio/magnetometer/ak8975.c
+> > +++ b/drivers/iio/magnetometer/ak8975.c
+> > @@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client
+> > *client)
+> >       struct iio_dev *indio_dev;
+> >       struct gpio_desc *eoc_gpiod;
+> >       struct gpio_desc *reset_gpiod;
+> > -     const void *match;
+> > -     unsigned int i;
+> >       int err;
+> > -     enum asahi_compass_chipset chipset;
+> >       const char *name = NULL;
+> >
+> >       /*
+> > @@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client
+> > *client)
+> >               return err;
+> >
+> >       /* id will be NULL when enumerated via ACPI */
+> > -     match = device_get_match_data(&client->dev);
+> > -     if (match) {
+> > -             chipset = (uintptr_t)match;
+> > -             name = dev_name(&client->dev);
+> > -     } else if (id) {
+> > -             chipset = (enum asahi_compass_chipset)(id-
+> > >driver_data);
+> > -             name = id->name;
+> > -     } else
+> > -             return -ENOSYS;
+> > -
+> > -     for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
+> > -             if (ak_def_array[i].type == chipset)
+> > -                     break;
+> > -
+> > -     if (i == ARRAY_SIZE(ak_def_array)) {
+> > -             dev_err(&client->dev, "AKM device type unsupported:
+> > %d\n",
+> > -                     chipset);
+> > +     data->def = i2c_get_match_data(client);
+> > +     if (!data->def)
+> >               return -ENODEV;
+> > -     }
+> >
+> > -     data->def = &ak_def_array[i];
+> > +     /* If enumerated via firmware node, fix the ABI */
+> > +     if (dev_fwnode(&client->dev))
+> > +             name = dev_name(&client->dev);
+> > +     else
+> > +             name = id->name;
+> >
+>
+> I just noticed, that with the above change '0-000d' instead of the
+> previous and expected 'ak09911' is shown now as name for the
+> magnetometer in longcheer l9100 [1].
 
-It is not implementing Biometric: Human Proximity (Usage ID 0x12).
-This has range of values, then unit will be applicable.
+While this doesn't help much, note that the old name would break
+the case of having two instances of the same device.
 
-Thanks,
-Srinivas
+>
+> id->name contains the expected string ('ak09911'), but because of
+> dev_fwnode(&client->dev) being true, it is not used.
+>
+> André
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts?h=next-20231017#n127
 
-> Jonathan
->=20
-> >=20
-> > >=20
-> > > For now I'm dropping the patch. Sorry I wasn't paying enough
-> > > attention to notice
-> > > this was a proximity sensor.
-> > >=20
-> > > Jonathan
-> > > =C2=A0=20
-> > > >=20
-> > > > Thanks,
-> > > >=20
-> > > > Jonathan
-> > > > =C2=A0=20
-> > > > > >=20
-> > > > > > Phillipp - this sounds like a fix to me.=C2=A0 Fixes tag?
-> > > > > >=20
-> > > > > > Thanks,
-> > > > > >=20
-> > > > > > Jonathan=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > =C2=A0=C2=A0=C2=A0=20
-> > > > =C2=A0=20
-> > > =C2=A0=20
-> >=20
->=20
+Gr{oetje,eeting}s,
 
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

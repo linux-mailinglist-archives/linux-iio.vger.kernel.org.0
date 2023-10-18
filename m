@@ -2,260 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB357CE176
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 17:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 890867CE1AD
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 17:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344704AbjJRPqB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Oct 2023 11:46:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37824 "EHLO
+        id S232187AbjJRPuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Oct 2023 11:50:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235327AbjJRPho (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 11:37:44 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0423511D;
-        Wed, 18 Oct 2023 08:37:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E11C433C8;
-        Wed, 18 Oct 2023 15:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697643459;
-        bh=KuvGZME4C2exlYdvjeO0ta7U9dgF8t2M9SMRbaom3jU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nt6i5XYrXUinUiWPTgJLAPojMaalJL6Om+IOp19+CXtjh/vouX7US47u+OtKyzrdV
-         iWPydwvm82WjSXn16Mmu/7s+kZmkoy/RWNYnLZd21hLR4rxk+tqRMlfujQojMTz9Lw
-         XjbhkWtQvUHldkdcJuVqmuisbVq2jMpS4HRnVxbHJyvbuVRR/kQ2WmkAl0Kc6sDh5m
-         iZnANV6bpB78O/ksTUJG8L/SBkhOiLi8Qmy75V7ggZ9vIQuxUNF5hPtgssn7i/P097
-         48NC/NXanHlMnNCgSNqMnJKtMNbecrKf8fDwIn5gveCmDlPVpdcfHK8gyILGzxhLjR
-         Wd3xEHr5RQWxA==
-Date:   Wed, 18 Oct 2023 16:37:35 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Ivan Mikhaylov <fr0st61te@gmail.com>
+        with ESMTP id S231235AbjJRPub (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 11:50:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A6B11B;
+        Wed, 18 Oct 2023 08:50:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697644229; x=1729180229;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iUWqA3urvNBr4npcinV5L9hti7YX3A4rFGtlJxXUm4M=;
+  b=Wys1n9wwf59F9qVkTdoxBF7TTmRMbtI1HOhdzxOK1LnDXXaQ4emagq8J
+   bGwO4bv01zUFXwmuSwvqoHRIjUJwXtoYHusTrfsVW4LXde+UAt7TTWM/S
+   SxyhZLWDOAwz41UkEEuXt2Z7lPuG1Ho7ZC1Tr6UGKl9b7BX787buW3NkE
+   GJjdXZrCMvbxhOCGCJO/MbrQomGkUwFI0tzAlwZweM4TMJCpb77bJs+CY
+   XbyL4ZGPGOpbOEdd9jlB+4s3M/ra9vueNrdIPHHgjWaoJuzugz24SMZVN
+   vd1eh3spIM+NIuiEN7DrujKt6aFJQXlIFbc9rEtLbmuhOoC+h1vj6sL8b
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="376416077"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
+   d="scan'208";a="376416077"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 08:50:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="930246859"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
+   d="scan'208";a="930246859"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 08:50:25 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qt8oQ-00000006cwJ-3Zqz;
+        Wed, 18 Oct 2023 18:50:22 +0300
+Date:   Wed, 18 Oct 2023 18:50:22 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andreas Klinger <ak@it-klinger.de>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: adc: provide max34408/9 device tree
- binding document
-Message-ID: <20231018-basket-pelt-1cac6a6926d0@spud>
-References: <20231014211254.16719-1-fr0st61te@gmail.com>
- <20231014211254.16719-2-fr0st61te@gmail.com>
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sergei Korolev <dssoftsk@gmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: bmp280: fix eoc interrupt usage
+Message-ID: <ZS/+vjVRNucewoQs@smile.fi.intel.com>
+References: <20231018152816.56589-1-ak@it-klinger.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="57kmueR2dZ6U4lAk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231014211254.16719-2-fr0st61te@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20231018152816.56589-1-ak@it-klinger.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Oct 18, 2023 at 05:28:16PM +0200, Andreas Klinger wrote:
+> Only the bmp085 can have an End-Of-Conversion (EOC) interrupt. But the
+> bmp085 and bmp180 share the same chip id. Therefore it's necessary to
+> distinguish the case in which the interrupt is set.
+> 
+> Fix the if statement so that only when the interrupt is set and the chip
+> id is recognized the interrupt is requested.
+> 
+> This bug exists since the support of EOC interrupt was introduced.
+> Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+> 
+> Also add a link to bmp085 datasheet for reference.
 
---57kmueR2dZ6U4lAk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Sun, Oct 15, 2023 at 12:12:53AM +0300, Ivan Mikhaylov wrote:
-> The hardware binding for i2c current monitoring device with overcurrent
-> control.
->=20
-> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+> -	if (irq > 0 || (chip_id  == BMP180_CHIP_ID)) {
+> +	if (irq > 0 && (chip_id  == BMP180_CHIP_ID)) {
 
-It looks as if the comments on the property names & the conditionals
-=66rom previous versions have been resolved.
+While at it, perhaps drop extra space?
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks,
-Conor.
 
-> ---
->  .../bindings/iio/adc/maxim,max34408.yaml      | 139 ++++++++++++++++++
->  1 file changed, 139 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34=
-408.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yam=
-l b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> new file mode 100644
-> index 000000000000..4cba856e8d47
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
-> @@ -0,0 +1,139 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim MAX34408/MAX34409 current monitors with overcurrent control
-> +
-> +maintainers:
-> +  - Ivan Mikhaylov <fr0st61te@gmail.com>
-> +
-> +description: |
-> +  The MAX34408/MAX34409 are two- and four-channel current monitors that =
-are
-> +  configured and monitored with a standard I2C/SMBus serial interface. E=
-ach
-> +  unidirectional current sensor offers precision high-side operation wit=
-h a
-> +  low full-scale sense voltage. The devices automatically sequence throu=
-gh
-> +  two or four channels and collect the current-sense samples and average=
- them
-> +  to reduce the effect of impulse noise. The raw ADC samples are compare=
-d to
-> +  user-programmable digital thresholds to indicate overcurrent condition=
-s.
-> +  Overcurrent conditions trigger a hardware output to provide an immedia=
-te
-> +  indication to shut down any necessary external circuitry.
-> +
-> +  Specifications about the devices can be found at:
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/MA=
-X34408-MAX34409.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxim,max34408
-> +      - maxim,max34409
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  powerdown-gpios:
-> +    description:
-> +      Shutdown Output. Open-drain output. This output transitions to hig=
-h impedance
-> +      when any of the digital comparator thresholds are exceeded as long=
- as the ENA
-> +      pin is high.
-> +    maxItems: 1
-> +
-> +  powerdown-status-gpios:
-> +    description:
-> +      SHTDN Enable Input. CMOS digital input. Connect to GND to clear th=
-e latch and
-> +      unconditionally deassert (force low) the SHTDN output and reset th=
-e shutdown
-> +      delay. Connect to VDD to enable normal latch operation of the SHTD=
-N output.
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +patternProperties:
-> +  "^channel@[0-3]$":
-> +    $ref: adc.yaml
-> +    type: object
-> +    description:
-> +      Represents the internal channels of the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        items:
-> +          - minimum: 0
-> +            maximum: 3
-> +
-> +      maxim,rsense-val-micro-ohms:
-> +        description:
-> +          Adjust the Rsense value to monitor higher or lower current lev=
-els for
-> +          input.
-> +        enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 50000=
-0]
-> +        default: 1000
-> +
-> +    required:
-> +      - reg
-> +      - maxim,rsense-val-micro-ohms
-> +
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: maxim,max34408
-> +    then:
-> +      patternProperties:
-> +        "^channel@[2-3]$": false
-> +        "^channel@[0-1]$":
-> +          properties:
-> +            reg:
-> +              maximum: 1
-> +    else:
-> +      patternProperties:
-> +        "^channel@[0-3]$":
-> +          properties:
-> +            reg:
-> +              maximum: 3
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        adc@1e {
-> +              compatible =3D "maxim,max34409";
-> +              reg =3D <0x1e>;
-> +              powerdown-gpios =3D <&gpio0 1 GPIO_ACTIVE_LOW>;
-> +              powerdown-status-gpios =3D <&gpio0 2 GPIO_ACTIVE_HIGH>;
-> +
-> +              #address-cells =3D <1>;
-> +              #size-cells =3D <0>;
-> +
-> +              channel@0 {
-> +                  reg =3D <0x0>;
-> +                  maxim,rsense-val-micro-ohms =3D <5000>;
-> +              };
-> +
-> +              channel@1 {
-> +                  reg =3D <0x1>;
-> +                  maxim,rsense-val-micro-ohms =3D <10000>;
-> +             };
-> +        };
-> +    };
-> --=20
-> 2.42.0
->=20
-
---57kmueR2dZ6U4lAk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZS/7vwAKCRB4tDGHoIJi
-0neKAQCD6rOZgvbznHoFC94D8o8wiVrPS2ip26fyAhsxPGqPSwD/UAKGAMvo7/5v
-EL7arWOGdOEASMpLOrmoh1frIZ8EzQU=
-=+50V
------END PGP SIGNATURE-----
-
---57kmueR2dZ6U4lAk--

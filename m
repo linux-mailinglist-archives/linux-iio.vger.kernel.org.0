@@ -2,101 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 994087CE132
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 17:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB357CE176
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 17:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232311AbjJRP3s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Oct 2023 11:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39032 "EHLO
+        id S1344704AbjJRPqB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Oct 2023 11:46:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231686AbjJRP3r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 11:29:47 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E21911C;
-        Wed, 18 Oct 2023 08:29:43 -0700 (PDT)
-Received: from anderl.fritz.box ([31.220.117.52]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M6DrU-1qvJH9150C-006ipT; Wed, 18 Oct 2023 17:29:23 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sergei Korolev <dssoftsk@gmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>
-Subject: [PATCH] iio: bmp280: fix eoc interrupt usage
-Date:   Wed, 18 Oct 2023 17:28:16 +0200
-Message-Id: <20231018152816.56589-1-ak@it-klinger.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S235327AbjJRPho (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 11:37:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0423511D;
+        Wed, 18 Oct 2023 08:37:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E11C433C8;
+        Wed, 18 Oct 2023 15:37:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697643459;
+        bh=KuvGZME4C2exlYdvjeO0ta7U9dgF8t2M9SMRbaom3jU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Nt6i5XYrXUinUiWPTgJLAPojMaalJL6Om+IOp19+CXtjh/vouX7US47u+OtKyzrdV
+         iWPydwvm82WjSXn16Mmu/7s+kZmkoy/RWNYnLZd21hLR4rxk+tqRMlfujQojMTz9Lw
+         XjbhkWtQvUHldkdcJuVqmuisbVq2jMpS4HRnVxbHJyvbuVRR/kQ2WmkAl0Kc6sDh5m
+         iZnANV6bpB78O/ksTUJG8L/SBkhOiLi8Qmy75V7ggZ9vIQuxUNF5hPtgssn7i/P097
+         48NC/NXanHlMnNCgSNqMnJKtMNbecrKf8fDwIn5gveCmDlPVpdcfHK8gyILGzxhLjR
+         Wd3xEHr5RQWxA==
+Date:   Wed, 18 Oct 2023 16:37:35 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Ivan Mikhaylov <fr0st61te@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] dt-bindings: adc: provide max34408/9 device tree
+ binding document
+Message-ID: <20231018-basket-pelt-1cac6a6926d0@spud>
+References: <20231014211254.16719-1-fr0st61te@gmail.com>
+ <20231014211254.16719-2-fr0st61te@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:nVIfArh+ACgV1NyAM+Org8TtE666lV4/Eim/mlj1rKNf9qDhtbe
- uDDWUIn500623kjcT1k8VfMaRh96PF4JqMYueQar2YKbO4dBHB4MASJrgs6ChHZ6Nf77apg
- q7bHS1wTw7L6YLT7OrO6Z9SvhWQi3rkGH2/gdJn7Hw+A4NsBbBbdEHJERN0jwsl3cUioAba
- FuX53Ahl5tYJ4X1BOh3pA==
-UI-OutboundReport: notjunk:1;M01:P0:RIzKeBoNxnc=;WtVtJ/V5MjQ226125xic9IEFupG
- KMIILVfmhzy2K6yAjPP+ql/HqFGkPFULubhTxHYN4KgQSWXzZB93A8GWiqp2BW2T0PzgRqIsG
- rSDE3HAN90aCresdy36oBP3UuhKQCPSAlDCx+jz3jvg2z+SimiVGfaLfriw9wCWO4fSi6RKbW
- WD51kD+vYYwy7WdhxsoQkVkczidHo1QoUFxOyh75I12LVnn/DJfUbYe5G3ygVVIlPQs7etbFr
- y+hX7H2IytDha4V0CUmo1fozPn7xpG0d5fJ1vKo4k7DPfenGTAXMIpd5eflet5HAkYzP1Ifob
- vpmPlmCKnvNeNjOAlY6qCm1Ulo0oOGzc3c7av1bU+d508x1XFFzfPmq/nWSOHydkT3mjFAInT
- u0dzkFA7TiM5EjpSI90ZgzvMHwchT6JBQ+UOPbluWQEJBx9tNjuz8uwI7lCCM8YqWNZGzMCOj
- EW6Qvg/xO/dmsVpfkeLpr77ULxaYprhb3kkh6hdvt2MxarrSLk/7hG7ix63DfOA9sJvkEyCyF
- XsK1h60be35n4/buJZBmqz9XhUZVpGxj5EFfkI5/L4eM7CP1TVRInM71vCNVHQpw6V9UV8iLK
- m5FFnepRUwmrfqfYnMCwvAxgO1t7xDCYewUibOEDpsGxNM3J/fzqY3L4mPwH6K9atEnVgS1KB
- NaMIAwwJ/Gg48eDGY8IC3Ecs1Enc4fIGIOfYYfewVfxx4Y8NUiO7aH3D/7XP3zhSLaYEmuIQS
- I6G+TC/R/ASTBhDQRrDXrGVbShCwsrjCwU6V8LK8ce5FMOnVo/IesKmZVuXMqYIoTIFlHe1SW
- WJlUydrygy+Ar3+9+OgecxVxdsdmyZ8FpuYL5FQdGdo6bOWitMFR8ngL4azK1H74ln/dH0guQ
- pzSF3vYBigRA1fA==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,T_SPF_PERMERROR
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="57kmueR2dZ6U4lAk"
+Content-Disposition: inline
+In-Reply-To: <20231014211254.16719-2-fr0st61te@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Only the bmp085 can have an End-Of-Conversion (EOC) interrupt. But the
-bmp085 and bmp180 share the same chip id. Therefore it's necessary to
-distinguish the case in which the interrupt is set.
 
-Fix the if statement so that only when the interrupt is set and the chip
-id is recognized the interrupt is requested.
+--57kmueR2dZ6U4lAk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This bug exists since the support of EOC interrupt was introduced.
-Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+On Sun, Oct 15, 2023 at 12:12:53AM +0300, Ivan Mikhaylov wrote:
+> The hardware binding for i2c current monitoring device with overcurrent
+> control.
+>=20
+> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
 
-Also add a link to bmp085 datasheet for reference.
+It looks as if the comments on the property names & the conditionals
+=66rom previous versions have been resolved.
 
-Suggested-by: Sergei Korolev <dssoftsk@gmail.com>
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- drivers/iio/pressure/bmp280-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 6089f3f9d8f4..9b7beeb1c088 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -9,6 +9,7 @@
-  * Driver for Bosch Sensortec BMP180 and BMP280 digital pressure sensor.
-  *
-  * Datasheet:
-+ * https://www.sparkfun.com/datasheets/Components/General/BST-BMP085-DS000-05.pdf
-  * https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
-@@ -2179,7 +2180,7 @@ int bmp280_common_probe(struct device *dev,
- 	 * however as it happens, the BMP085 shares the chip ID of BMP180
- 	 * so we look for an IRQ if we have that.
- 	 */
--	if (irq > 0 || (chip_id  == BMP180_CHIP_ID)) {
-+	if (irq > 0 && (chip_id  == BMP180_CHIP_ID)) {
- 		ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
- 		if (ret)
- 			return ret;
--- 
-2.39.2
+Thanks,
+Conor.
 
+> ---
+>  .../bindings/iio/adc/maxim,max34408.yaml      | 139 ++++++++++++++++++
+>  1 file changed, 139 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34=
+408.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yam=
+l b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> new file mode 100644
+> index 000000000000..4cba856e8d47
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+> @@ -0,0 +1,139 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/maxim,max34408.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Maxim MAX34408/MAX34409 current monitors with overcurrent control
+> +
+> +maintainers:
+> +  - Ivan Mikhaylov <fr0st61te@gmail.com>
+> +
+> +description: |
+> +  The MAX34408/MAX34409 are two- and four-channel current monitors that =
+are
+> +  configured and monitored with a standard I2C/SMBus serial interface. E=
+ach
+> +  unidirectional current sensor offers precision high-side operation wit=
+h a
+> +  low full-scale sense voltage. The devices automatically sequence throu=
+gh
+> +  two or four channels and collect the current-sense samples and average=
+ them
+> +  to reduce the effect of impulse noise. The raw ADC samples are compare=
+d to
+> +  user-programmable digital thresholds to indicate overcurrent condition=
+s.
+> +  Overcurrent conditions trigger a hardware output to provide an immedia=
+te
+> +  indication to shut down any necessary external circuitry.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/MA=
+X34408-MAX34409.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - maxim,max34408
+> +      - maxim,max34409
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  powerdown-gpios:
+> +    description:
+> +      Shutdown Output. Open-drain output. This output transitions to hig=
+h impedance
+> +      when any of the digital comparator thresholds are exceeded as long=
+ as the ENA
+> +      pin is high.
+> +    maxItems: 1
+> +
+> +  powerdown-status-gpios:
+> +    description:
+> +      SHTDN Enable Input. CMOS digital input. Connect to GND to clear th=
+e latch and
+> +      unconditionally deassert (force low) the SHTDN output and reset th=
+e shutdown
+> +      delay. Connect to VDD to enable normal latch operation of the SHTD=
+N output.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    $ref: adc.yaml
+> +    type: object
+> +    description:
+> +      Represents the internal channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        items:
+> +          - minimum: 0
+> +            maximum: 3
+> +
+> +      maxim,rsense-val-micro-ohms:
+> +        description:
+> +          Adjust the Rsense value to monitor higher or lower current lev=
+els for
+> +          input.
+> +        enum: [250, 500, 1000, 5000, 10000, 50000, 100000, 200000, 50000=
+0]
+> +        default: 1000
+> +
+> +    required:
+> +      - reg
+> +      - maxim,rsense-val-micro-ohms
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: maxim,max34408
+> +    then:
+> +      patternProperties:
+> +        "^channel@[2-3]$": false
+> +        "^channel@[0-1]$":
+> +          properties:
+> +            reg:
+> +              maximum: 1
+> +    else:
+> +      patternProperties:
+> +        "^channel@[0-3]$":
+> +          properties:
+> +            reg:
+> +              maximum: 3
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@1e {
+> +              compatible =3D "maxim,max34409";
+> +              reg =3D <0x1e>;
+> +              powerdown-gpios =3D <&gpio0 1 GPIO_ACTIVE_LOW>;
+> +              powerdown-status-gpios =3D <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> +
+> +              #address-cells =3D <1>;
+> +              #size-cells =3D <0>;
+> +
+> +              channel@0 {
+> +                  reg =3D <0x0>;
+> +                  maxim,rsense-val-micro-ohms =3D <5000>;
+> +              };
+> +
+> +              channel@1 {
+> +                  reg =3D <0x1>;
+> +                  maxim,rsense-val-micro-ohms =3D <10000>;
+> +             };
+> +        };
+> +    };
+> --=20
+> 2.42.0
+>=20
+
+--57kmueR2dZ6U4lAk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZS/7vwAKCRB4tDGHoIJi
+0neKAQCD6rOZgvbznHoFC94D8o8wiVrPS2ip26fyAhsxPGqPSwD/UAKGAMvo7/5v
+EL7arWOGdOEASMpLOrmoh1frIZ8EzQU=
+=+50V
+-----END PGP SIGNATURE-----
+
+--57kmueR2dZ6U4lAk--

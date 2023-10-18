@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A0F7CDD34
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 15:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 157F07CDDC1
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Oct 2023 15:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231614AbjJRN13 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Oct 2023 09:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54504 "EHLO
+        id S231827AbjJRNr1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Oct 2023 09:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231159AbjJRN12 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 09:27:28 -0400
+        with ESMTP id S231776AbjJRNr0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 09:47:26 -0400
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9149B;
-        Wed, 18 Oct 2023 06:27:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F5183;
+        Wed, 18 Oct 2023 06:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
         References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=r8Bqex/38A4ezczJfz9FPUlkM3Kg2IG0JvU8td6nQVA=; b=KxOQf/tsmJV9rxJ501bU7Oh2zF
-        P84ekdB0pNGaltLoX6uIu8FHOJ30LCIWtWkrU+zbM1Z3XEFDDMJYiW0shrvls4VmkJfR/Ai4Yg9lQ
-        1uuUnPtMJMX7z0pUyH8sYukhlOdFCFnfzwRjdip9ml7kFXJjwQRSwkXIDgshCcSbUVorCAyKuyU+M
-        Jzte1OgInPud2Y6B1ix0Gez1yIzYm8b2jH+eLPFqiCN432+VyGB/HUPrxbqviGTin5zIQhpw8Qtsh
-        ieN5vSlxJBDRAyBtnJ5UzhnZKCfMp8rnG600CVOd4RAqGI93zrI16xj4Y0NuGQrjHHa0YXda1dfj4
-        X5GkWJvw==;
+        bh=kbDCGaShnOgb9MTpQ3xCa2htqfzPOv6O0lGoh7UvWhI=; b=T5poKZ68tPs6DbgM3IGbPARYFr
+        aAsS09loumfjF32M1C7xlnkwacysxfmLNNdG7P+CR/rkv5yj2BjkOb4AR5Udf/cbr3W4e5/jx/rWY
+        4FHv220tKNeK+PFQprjnC3gpvOPpKir6sySkgnoJUe7dFsilVOXwojKFa26kdAx7D1pq+yJdro2iz
+        6bHRyuapLo8i2LD8iUbXu++FPlq9yedCPvc9ifdDbXesJcp3gVxXY5zb06CeyZqDEt6lT2oyNcnHI
+        +1UbY15OMYvSGl/trRUSSOBJw4STDoatuufo+/zIkZZtpiH1gEYyxsK92wqADB+w5/hR2rxLTKGAf
+        83PBQExw==;
 Received: from [145.18.212.154]
         by fanzine2.igalia.com with esmtpsa 
         (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1qt6Zn-001oal-M8; Wed, 18 Oct 2023 15:27:07 +0200
-Message-ID: <68fd8b41-031d-4f9f-a978-8b61b8251b2d@igalia.com>
-Date:   Wed, 18 Oct 2023 15:27:06 +0200
+        id 1qt6tB-001oxQ-Sr; Wed, 18 Oct 2023 15:47:09 +0200
+Message-ID: <adf80c31-dcb2-4991-a8c0-375d44ae379c@igalia.com>
+Date:   Wed, 18 Oct 2023 15:47:08 +0200
 MIME-Version: 1.0
 User-Agent: Thunderbird Daily
 Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8350-lemonade(p): new devices
@@ -55,6 +55,8 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
 References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
  <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
  <CW9WUOLK18R1.2HI2MM4P47HPV@fairphone.com>
+ <49850e9c-5307-489f-9587-f016188bb59a@igalia.com>
+ <CWAI58LU9PXA.3N99LXRT1NWIM@fairphone.com>
 From:   Nia Espera <nespera@igalia.com>
 Autocrypt: addr=nespera@igalia.com; keydata=
  xsDNBGS6YogBDAC5b4ZStgb7M6ERUXxOuB9RDHE02dSmBmPBEGD7aIxnqgS0wNHnTw4rkY2R
@@ -90,7 +92,7 @@ Autocrypt: addr=nespera@igalia.com; keydata=
  YdliMbaPb7uhO9eT+GPEnj38b9rNDCxMvyK+LcKXB+3eXYUFUq2paiNf+/qjG9/I8L9GZHUb
  qAkjMkbaLCNg+C+svQynThpBa1VAxNCDVpc9KeoZXmmBCQzK2ramISfVgx8Swq79IeRdpQVt
  T+I7o407lOB8a/PJA2YXM4VVC/iyMBM=
-In-Reply-To: <CW9WUOLK18R1.2HI2MM4P47HPV@fairphone.com>
+In-Reply-To: <CWAI58LU9PXA.3N99LXRT1NWIM@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -103,23 +105,50 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On 10/16/23 15:50, Luca Weiss wrote:
-> Hi Nia,
-> 
-> On Mon Oct 16, 2023 at 2:47 PM CEST, Nia Espera wrote:
+On 10/17/23 08:31, Luca Weiss wrote:
+> On Mon Oct 16, 2023 at 11:41 PM CEST, Nia Espera wrote:
+>> Hi,
+>>
+>> On 10/16/23 15:50, Luca Weiss wrote:
+>>> Hi Nia,
+>>>
+>>> On Mon Oct 16, 2023 at 2:47 PM CEST, Nia Espera wrote:
 
 [ ... ]
 
->> +	/*
->> +	 * USB3 is not tested (though it is enabled downstream) so limit to
->> +	 * high-speed for now.
->> +	 */
->> +	qcom,select-utmi-as-pipe-clk;
+>>>> +&i2c13 {
+>>>> +	clock-frequency = <100000>;
+>>>> +	status = "okay";
+>>>> +
+>>>> +	fsa4480@42 {
+>>>> +		compatible = "fcs,fsa4480";
+>>>> +		reg = <0x42>;
+>>>> +		mode-switch;
+>>>> +		orientation-switch;
+>>>> +	};
+>>>> +
+>>>> +	/* Qualcomm PM8008i/PM8008j (?) @ 8, 9, c, d */
+>>>
+>>> Check again in downstream if the @c and @d are actually enabled, at
+>>> least they're not on my boards and the PM8008 is only addressable on @8
+>>> and @9.
+>>
+>> Seems like they all are used on this device; (d) in particular seems to
+>> be needed for the camera.
 > 
-> You never plugged the device into a USB 3.0 port? Should be trivial to
-> test I think?
+> PM8008 is a I2C-addressable regulator that is just used for camera. But
+> still if you have some time, double check if really both 8+9 and c+d are
+> used. For example you could use i2cdetect on the bus, I think the PM8008
+> shows up without manually flipping some enable GPIO. Or check downstream
+> dmesg to see what it says, or at runtime in /sys (e.g. in TWRP should be
+> enough).
 
-Tested; seems broken. Definitely enabled downstream though, which is 
-odd, so it might just be a case of requiring bringup of other things 
-first. Regardless, I'll update the comment and keep this for now.
+It looks like there's something there, though it might not be touched 
+downstream on this device. dmesg spits out:
+
+[    2.005455] (3)[9:kworker/u24:0][    2.005452]@3 qcom,pm8008-chip: 
+probe of a94000.i2c:pm8008j@c:pm8008-chip@900 failed with error -107
+
+which seems to imply c/d are unused; however, they do show up under 
+/sys/bus/i2c/devices/9-000[c/d], so I'm not quite sure what to make of it.
 

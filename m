@@ -2,87 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C347CEE89
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 06:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A100A7CEF57
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 07:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229894AbjJSEGh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Oct 2023 00:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
+        id S230297AbjJSFxt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 01:53:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjJSEGg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 00:06:36 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6B8119
-        for <linux-iio@vger.kernel.org>; Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b1ef786b7fso5600291b3a.3
-        for <linux-iio@vger.kernel.org>; Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
+        with ESMTP id S229632AbjJSFxs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 01:53:48 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE59B6;
+        Wed, 18 Oct 2023 22:53:46 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c5087d19a6so82482091fa.0;
+        Wed, 18 Oct 2023 22:53:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697688393; x=1698293193; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eQIMJ/nxxafee7WyxE0d+o9+7mfW1f+sldaH4ghTpNo=;
-        b=YSo4ZV9wRaNJO23IHnuJg4u2Agufp6YcnLHU0i288i0/ihlyPExBf8C8zhXl/0P1nm
-         QD6yQ0naylX/wcb2ViIKhnuXzOBYr1TbdEmAihVIdkXp3hFeBsQcNEj6HjueCCdOYMey
-         UXLCYN23HyOthNPi4ou5gWv5eDhHtaXbGZyszzGF+Xwt+nk3DbSfkztBzPXu4xtWG9Wp
-         3sLKGF5LV9ZlvvkU8EGaCVHFjw4swssEkCSajhASFcik4TTyqiXVNi7D7NpouLQKU/EU
-         yZPc8RsL/7LhVhFtyTdU0nT6d4CP1Iy06ljeBq/RPeFcndhrlvEhdIs4CkLkrZ3lOxms
-         lU/A==
+        d=gmail.com; s=20230601; t=1697694824; x=1698299624; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XObVuaWXr/rmZ3JntkdvlKmSVs/dr+MV+e6w2yjEeN0=;
+        b=iWLlOD+ZFhg7GXu2M8lbBlZCsoYupI2z7tOq2I5xpfLBYizKIfyc8YjPvrDa63xzDv
+         Tb+3kfuCcY5pwxZIVkDSDos0zqGpzQDYVlqMes2klr7ULYUlnx+ugB4woAoyK32Cxnrg
+         qisB/nuZESzE63C+8iMtJP0ftDVZrm3NQueGJqI+L0Mwc+E40yTP4uIhMxVijjJUSyhw
+         eNq/z5O3a4fv3I5o8NB0WoJzSV125dqfi+cjS6Blarko9fVRWi4pbKOWpG2TFEwVeeqO
+         pgsJkN8JskIRZ4ldeJunpp0O3uR5sRzYSSW/v2uDqTsTGkrv73FvXi0sXJudIzbKmYqg
+         v28Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697688393; x=1698293193;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1697694824; x=1698299624;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eQIMJ/nxxafee7WyxE0d+o9+7mfW1f+sldaH4ghTpNo=;
-        b=l74pR8ILjuXXg0lCgJuLeIBgKYdrVMuPWyV+v4vk6ccOMwwMe2BtcWGcwlsyO8qQeI
-         1ceFjZcPqk0RAPEQS9GQVPYyep279DKrwUa5b1wv8PHjlha2N4g9HU5Bkfp6jxbcREw+
-         043UzfBfxAiGWQijvXjFFDh2neOBCAkvN9MpN4BOkgMA8yhXNSPDfYXDNI/UUgcuvagD
-         MscdwJx2XFVt5wY6aXMfO2aWznRgnOdZ7Y0ZnPaVhSc1kIKuTSMdUtWG1TMrMMTDsQNT
-         +a6oZn4BmTQgA1s64aunBfPQTPCaiexJH4ljDDiqaJvFvR+l+jbYclB43l904zbNNKGc
-         WbCQ==
-X-Gm-Message-State: AOJu0YxWmBFip31w468kpOR6VjmP6YZ+NH2oaCFsaSx+BY0lB4XT0/hm
-        pILaS6Y9xd/v2RJFt8urh/XG
-X-Google-Smtp-Source: AGHT+IGP8RYAqcC88qwdKj5FydUxjIzvKQRY7eQzz8t/NsXRcn/MCN9hzfd2K6b1Dw4tL9sPvOVWrQ==
-X-Received: by 2002:a05:6a21:7742:b0:16b:977d:f7cf with SMTP id bc2-20020a056a21774200b0016b977df7cfmr1127597pzc.36.1697688393183;
-        Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
-Received: from thinkpad ([117.202.186.25])
-        by smtp.gmail.com with ESMTPSA id x19-20020a1709027c1300b001c3721897fcsm717665pll.277.2023.10.18.21.06.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 21:06:32 -0700 (PDT)
-Date:   Thu, 19 Oct 2023 09:36:23 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        bh=XObVuaWXr/rmZ3JntkdvlKmSVs/dr+MV+e6w2yjEeN0=;
+        b=h8XLRidEr8BmbWkbjwl44f/0pHNLljLhE/VzmUJv/rmlaXba0NT1j9hChLVpjlA0ub
+         FDloQDYWb3JfSDoemsE6hQtHXRm+2DcmkQ5jw2ETR0WDYg5A42w2lfUWmJI/Fq00uMfW
+         WfApRCgIzhBuP/4palZKXK3jTio823/SpjBOFhdwq5pUCdk7ti7p8BQcR16ZIFDEoJdT
+         +hfu/j736rNPATXeeTTPOlWtQ+cpLMNMgmbvEbL8yX7WnZe7U8H2499hyyLnSsJGtqTz
+         nx7rHVuvMWkvjmUiEw4uS4ds2K13bDjw34h1MzbbBwEe5SMIKKHa0t6eKlXEMCIa4pO8
+         zvLw==
+X-Gm-Message-State: AOJu0YxW03YS1TV8qN5CfHSqZIW7T2065yo/vjT4MFWTBzfQ6KNSCoF9
+        a7wwXe76w/+n518/trg3cfE=
+X-Google-Smtp-Source: AGHT+IE46NqU53DsPQM/Jpuj/PKokomausjxbvM15qvRe0+1GoBDjUvz6vOTpHtJ6S3NqLd3RRjJxQ==
+X-Received: by 2002:a05:651c:1058:b0:2c5:13e8:d54e with SMTP id x24-20020a05651c105800b002c513e8d54emr648637ljm.38.1697694823867;
+        Wed, 18 Oct 2023 22:53:43 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id z16-20020a2e8e90000000b002c0414c3b6csm966928ljk.121.2023.10.18.22.53.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Oct 2023 22:53:42 -0700 (PDT)
+Message-ID: <ceaf7033-d86b-4d63-b8e0-bc7445cf0df0@gmail.com>
+Date:   Thu, 19 Oct 2023 08:53:31 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/3] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 4/6] arm64: dts: qcom: sm8350: Fix remoteproc
- interrupt type
-Message-ID: <20231019040623.GA5142@thinkpad>
-References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
- <20231018-nia-sm8350-for-upstream-v2-4-7b243126cb77@igalia.com>
- <6ac842b8-5fcb-4094-8488-4d6e250bf102@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mehdi Djait <mehdi.djait.k@gmail.com>
+References: <cover.1666614295.git.mazziesaccount@gmail.com>
+ <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
+ <CAM+2Eu+Xp6j1ppLd+zHMTu6jfc6DQKBShfe-nAyokVi0MUmoSA@mail.gmail.com>
+ <20231018203423.06f20a6c@jic23-huawei>
+Content-Language: en-US, en-GB
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20231018203423.06f20a6c@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6ac842b8-5fcb-4094-8488-4d6e250bf102@linaro.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,38 +85,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 18, 2023 at 10:17:15PM +0200, Konrad Dybcio wrote:
+On 10/18/23 22:34, Jonathan Cameron wrote:
+> On Wed, 18 Oct 2023 01:37:12 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+
+Hi Jagath - and thanks!
+
+>> Hi Matti,
+>>
+>> On Mon, Oct 24, 2022 at 6:10 PM Matti Vaittinen
+>> <mazziesaccount@gmail.com> wrote:
+>>>
+>>> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
+>>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+>>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+>>> ranges (2, 4, 8 and 16g), and probably some other cool features.
+>>
+>> This is a nice driver, and I found it very helpful as a reference.
+>> One question regarding scale please see below.
+>>
+>>> + * range is typically +-2G/4G/8G/16G, distributed over the amount of bits.
+>>> + * The scale table can be calculated using
+>>> + *     (range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
+>>> + *     => KX022A uses 16 bit (HiRes mode - assume the low 8 bits are zeroed
+>>> + *     in low-power mode(?) )
+>>> + *     => +/-2G  => 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
+>>> + *     => +/-2G  - 598.550415
+>>> + *        +/-4G  - 1197.10083
+>>> + *        +/-8G  - 2394.20166
+>>> + *        +/-16G - 4788.40332
+>>> + */
+>>> +static const int kx022a_scale_table[][2] = {
+>>> +       { 598, 550415 },
+>>> +       { 1197, 100830 },
+>>> +       { 2394, 201660 },
+>>> +       { 4788, 403320 },
+>>> +};
+>>
+>> Given that the integer part is non-zero, and
+>> IIO_VAL_INT_PLUS_MICRO is returned for read_scale,
+>> As raw value will never be fractional how does this
+>> correspond to a reading of 9.8 m/s² for the Z-axis?
 > 
+> Definitely suspicious as should be in m/s^2 for an acceleration and
+> it should be
 > 
-> On 10/18/23 16:25, Nia Espera wrote:
-> > In a similar vein to
-> > https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
-> > the remote processors on sm8350 fail to initialize with the 'correct'
-> > (i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
-> > 
-> > Signed-off-by: Nia Espera <nespera@igalia.com>
-> > ---
-> Hm, apparently 8250 and 7180 have the same thing.
+> 9.8*16/2^bits
 > 
-> Mani, could you elaborate on this?
-> 
+> So I think these are out by a factor of 10^6
+I think you are right. Looks like I misinterpreted the meaning of 
+IIO_VAL_INT_PLUS_MICRO when I took my first tour in the IIO with this 
+driver. The comment above the scale table does support that assumption 
+... 10^6 would match such a brainfart. (This is my first thought. I will 
+take better look at this later today and see if I can come up with a fix 
+if no-one else has sent a patch already).
 
-So the remoteproc driver expects the wdog interrupts to be edge triggered as the
-rest of the interrupts, but DT specifies them as level triggered. This won't
-cause any issue during the first instance of the probe as the driver requested
-trigger will be given precedence. But if the probe defers for some reason and
-during the next try, request_irq() will fail with error similar to below:
+I CC'd Mehdi who has also been working on this driver.
 
-irq: type mismatch, failed to map hwirq-x for interrupt-controller@xxxxxx!
+Regarding the KX022A - I am not aware of upstream users of this IC 
+(yet). May be you're the first lucky one :) Hence, I am tempted to just 
+fixing the driver - but it's Jonathan who will take the splatters when 
+**** hits the fan - so it's his call to decide whether we can still fix 
+this. _If_ there are users who have adapted to this buggy scale (users I 
+am not aware of) then fix will break their apps. Mehdi, do you know any 
+users of this upstream driver?
 
-This error is often confusing and I tried to fix it. But Maz didn't agree with
-me, so I just ended up fixing the DTs for some platform I have access to.
+I will ping the HQ guy who has contacts to those who might be using the 
+driver in a downstream repository and ask him to inform potential users.
 
-So ideally, DTs of all platforms should be fixed to pass correct trigger type.
+It'd be very nice to get this fixed.
 
-- Mani
+Sorry and thanks!
 
-> Konrad
+Yours,
+	-- Matti
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

@@ -2,150 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F93B7CF655
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 13:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A340C7CF66F
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 13:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345224AbjJSLMe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 19 Oct 2023 07:12:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
+        id S1345251AbjJSLQ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 07:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345324AbjJSLMc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 07:12:32 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26089116;
-        Thu, 19 Oct 2023 04:12:30 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB4kK4yCFz67M2K;
-        Thu, 19 Oct 2023 19:10:01 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
- 2023 12:12:27 +0100
-Date:   Thu, 19 Oct 2023 12:12:26 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        with ESMTP id S233097AbjJSLQ0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 07:16:26 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D5A124
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 04:16:24 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b26a3163acso5243751b3a.2
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 04:16:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1697714184; x=1698318984; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sAnUoey8f2fAlcA64pZt7TpkGrm2kpPx8+dtgGFHVW8=;
+        b=fx42ypQOc3rHVgMKPPkF9KJj+cV3gbIuQ6YFMJLdtFN4KwK4RaJewYHSMihB2qJ2Ma
+         C2BGvi20FLg9Oxi1LEsBFbYHsbeD8NqKGvQJIf8mgiYUxFV6/wZnWVEcCCgXqgKtCejv
+         rNFOK6KFGeqtUlOK4U5vYDnLjazuxF8zdhvOGHft6vs7yZti7DzrMQ1mamas9qXm3KUo
+         etTzTlLRsib9Fbxq6aPJq0h71q1qxQAhAoyQ3EXvfROuabS4N3J4YVhLAetmMssP08wF
+         Qxue2TAAJoznVjx+FUe6Piia9tnmi4Qbq4rB/W/KUkF5euBzKVvnkvWtuBkQ9QfkrIGI
+         zfDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697714184; x=1698318984;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sAnUoey8f2fAlcA64pZt7TpkGrm2kpPx8+dtgGFHVW8=;
+        b=WWKnObVHf7TlPTd8Gv2kW9fwIc6iS3wU21cuqpiDv79+cN/3bGYtXotOouShqoOSsr
+         J8M8ipUAeKhwKHxEyqoh3ALcJcyqPop6h98NDlVf5PggyLX8bRr8rWWy7VWgyjbgMErl
+         L2iK1LXzlU5r0tSy9ofqbcTwh6jnOqms/dC0qSRKvgx0vqfnAv6TRryuVcSBZhi4XROp
+         4Q9pSZ9DBvt23SuK2AIlvm477HWklcV8ZZ/8lxt/LgsC1uVQb/inRL5Dq80cBZVXL82u
+         fbSnCHgbG5Q9jFix31cV/blQ5TPGucMf6JK/KVOFhFo29+fMkByJ4/3eTgWvRwzG5wLz
+         9PsQ==
+X-Gm-Message-State: AOJu0YyIGRoWTqTjY0hLAXywCP22LbazNAJFxp/nmmlaqtmaf6xWRSyB
+        upSyUfFjWg57bEu9Z9fv0Pj30w==
+X-Google-Smtp-Source: AGHT+IEdgUYVhwk+hQedV6eZvAiFZLxaNtxLNrge4xvkAKGXUjQS80bNVpCeBl/1/TMUSDGIKy3xiQ==
+X-Received: by 2002:a05:6a20:3d8b:b0:158:1387:6a95 with SMTP id s11-20020a056a203d8b00b0015813876a95mr1960369pzi.19.1697714183661;
+        Thu, 19 Oct 2023 04:16:23 -0700 (PDT)
+Received: from ?IPV6:2403:580d:82f4:0:43ac:2324:cc6e:9fa5? (2403-580d-82f4-0-43ac-2324-cc6e-9fa5.ip6.aussiebb.net. [2403:580d:82f4:0:43ac:2324:cc6e:9fa5])
+        by smtp.gmail.com with ESMTPSA id jb11-20020a170903258b00b001bc21222e34sm1672782plb.285.2023.10.19.04.16.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Oct 2023 04:16:23 -0700 (PDT)
+Message-ID: <6b721019-c98e-d926-04a9-e71f9ea20762@tweaklogic.com>
+Date:   Thu, 19 Oct 2023 21:46:18 +1030
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] dt-bindings: iio: light: Squash APDS9300 and APDS9960
+ schemas
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>
-Subject: Re: [PATCH v5 2/3] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-Message-ID: <20231019121226.000078fe@Huawei.com>
-In-Reply-To: <ceaf7033-d86b-4d63-b8e0-bc7445cf0df0@gmail.com>
-References: <cover.1666614295.git.mazziesaccount@gmail.com>
-        <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
-        <CAM+2Eu+Xp6j1ppLd+zHMTu6jfc6DQKBShfe-nAyokVi0MUmoSA@mail.gmail.com>
-        <20231018203423.06f20a6c@jic23-huawei>
-        <ceaf7033-d86b-4d63-b8e0-bc7445cf0df0@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231019080437.94849-1-subhajit.ghosh@tweaklogic.com>
+ <472aa31d-7d6c-41df-86e6-d17f05998256@linaro.org>
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <472aa31d-7d6c-41df-86e6-d17f05998256@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 19 Oct 2023 08:53:31 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 19/10/23 19:50, Krzysztof Kozlowski wrote:
+> On 19/10/2023 10:04, Subhajit Ghosh wrote:
+>> Squashing Avago (Broadcom) APDS9300 and APDS9960 schemas into one
+>> file and removing the other.
+> 
+> Please answer: why?
+Apologies for not providing detailed explanation.
+Link: https://lore.kernel.org/all/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
+As per your comments on the patch series in the above link and as per my understanding,
+I have to do two operations:
+1. Squash existing apds9300 schema and apds9960 schema as they look similar.
+2. Add apds9306 (work in progress) support after that (which belongs to my original patch series).
+This patch is the first operation.
+>>   
+>> +allOf:
+>> +  - $ref: ../common.yaml#
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            enum:
+>> +              - avago,apds9960
+>> +    then:
+>> +      required:
+>> +        - interrupts
+> 
+> Why? This wasn't in original binding.
+I am not sure about this. I went through the driver code and found out that probe()
+of apds9300 handles both situations whether interrupt bindings are provided or not, whereas,
+apds9960 requires an interrupt binding for probe() to be successful. I thought it would
+be appropriate to add that in the schema.
+> 
+> Separate patch please.
+> 
+> You are doing way too many unexpected and not explained changes.
+Sure. Thank you for reviewing.
 
-> On 10/18/23 22:34, Jonathan Cameron wrote:
-> > On Wed, 18 Oct 2023 01:37:12 +0530
-> > Jagath Jog J <jagathjog1996@gmail.com> wrote:  
-> 
-> Hi Jagath - and thanks!
-> 
-> >> Hi Matti,
-> >>
-> >> On Mon, Oct 24, 2022 at 6:10 PM Matti Vaittinen
-> >> <mazziesaccount@gmail.com> wrote:  
-> >>>
-> >>> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
-> >>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
-> >>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
-> >>> ranges (2, 4, 8 and 16g), and probably some other cool features.  
-> >>
-> >> This is a nice driver, and I found it very helpful as a reference.
-> >> One question regarding scale please see below.
-> >>  
-> >>> + * range is typically +-2G/4G/8G/16G, distributed over the amount of bits.
-> >>> + * The scale table can be calculated using
-> >>> + *     (range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
-> >>> + *     => KX022A uses 16 bit (HiRes mode - assume the low 8 bits are zeroed
-> >>> + *     in low-power mode(?) )
-> >>> + *     => +/-2G  => 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
-> >>> + *     => +/-2G  - 598.550415
-> >>> + *        +/-4G  - 1197.10083
-> >>> + *        +/-8G  - 2394.20166
-> >>> + *        +/-16G - 4788.40332
-> >>> + */
-> >>> +static const int kx022a_scale_table[][2] = {
-> >>> +       { 598, 550415 },
-> >>> +       { 1197, 100830 },
-> >>> +       { 2394, 201660 },
-> >>> +       { 4788, 403320 },
-> >>> +};  
-> >>
-> >> Given that the integer part is non-zero, and
-> >> IIO_VAL_INT_PLUS_MICRO is returned for read_scale,
-> >> As raw value will never be fractional how does this
-> >> correspond to a reading of 9.8 m/s² for the Z-axis?  
-> > 
-> > Definitely suspicious as should be in m/s^2 for an acceleration and
-> > it should be
-> > 
-> > 9.8*16/2^bits
-> > 
-> > So I think these are out by a factor of 10^6  
-> I think you are right. Looks like I misinterpreted the meaning of 
-> IIO_VAL_INT_PLUS_MICRO when I took my first tour in the IIO with this 
-> driver. The comment above the scale table does support that assumption 
-> ... 10^6 would match such a brainfart. (This is my first thought. I will 
-> take better look at this later today and see if I can come up with a fix 
-> if no-one else has sent a patch already).
-> 
-> I CC'd Mehdi who has also been working on this driver.
-> 
-> Regarding the KX022A - I am not aware of upstream users of this IC 
-> (yet). May be you're the first lucky one :) Hence, I am tempted to just 
-> fixing the driver - but it's Jonathan who will take the splatters when 
-> **** hits the fan - so it's his call to decide whether we can still fix 
-> this. _If_ there are users who have adapted to this buggy scale (users I 
-> am not aware of) then fix will break their apps. Mehdi, do you know any 
-> users of this upstream driver?
-
-It's an ABI usage bug so allowed fix even if it has impacts...
-Hopefully those aren't too painful for people to fix :(
-
-So we fix and get it into stable asap.
-
-
-> 
-> I will ping the HQ guy who has contacts to those who might be using the 
-> driver in a downstream repository and ask him to inform potential users.
-> 
-> It'd be very nice to get this fixed.
-> 
-> Sorry and thanks!
-> 
-> Yours,
-> 	-- Matti
-> 
-
+Regards,
+Subhajit Ghosh.

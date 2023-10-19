@@ -2,121 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A340C7CF66F
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 13:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92A57CF678
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 13:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345251AbjJSLQ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Oct 2023 07:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50870 "EHLO
+        id S1344861AbjJSLR3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 07:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbjJSLQ0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 07:16:26 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D5A124
-        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 04:16:24 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b26a3163acso5243751b3a.2
-        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 04:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1697714184; x=1698318984; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sAnUoey8f2fAlcA64pZt7TpkGrm2kpPx8+dtgGFHVW8=;
-        b=fx42ypQOc3rHVgMKPPkF9KJj+cV3gbIuQ6YFMJLdtFN4KwK4RaJewYHSMihB2qJ2Ma
-         C2BGvi20FLg9Oxi1LEsBFbYHsbeD8NqKGvQJIf8mgiYUxFV6/wZnWVEcCCgXqgKtCejv
-         rNFOK6KFGeqtUlOK4U5vYDnLjazuxF8zdhvOGHft6vs7yZti7DzrMQ1mamas9qXm3KUo
-         etTzTlLRsib9Fbxq6aPJq0h71q1qxQAhAoyQ3EXvfROuabS4N3J4YVhLAetmMssP08wF
-         Qxue2TAAJoznVjx+FUe6Piia9tnmi4Qbq4rB/W/KUkF5euBzKVvnkvWtuBkQ9QfkrIGI
-         zfDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697714184; x=1698318984;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sAnUoey8f2fAlcA64pZt7TpkGrm2kpPx8+dtgGFHVW8=;
-        b=WWKnObVHf7TlPTd8Gv2kW9fwIc6iS3wU21cuqpiDv79+cN/3bGYtXotOouShqoOSsr
-         J8M8ipUAeKhwKHxEyqoh3ALcJcyqPop6h98NDlVf5PggyLX8bRr8rWWy7VWgyjbgMErl
-         L2iK1LXzlU5r0tSy9ofqbcTwh6jnOqms/dC0qSRKvgx0vqfnAv6TRryuVcSBZhi4XROp
-         4Q9pSZ9DBvt23SuK2AIlvm477HWklcV8ZZ/8lxt/LgsC1uVQb/inRL5Dq80cBZVXL82u
-         fbSnCHgbG5Q9jFix31cV/blQ5TPGucMf6JK/KVOFhFo29+fMkByJ4/3eTgWvRwzG5wLz
-         9PsQ==
-X-Gm-Message-State: AOJu0YyIGRoWTqTjY0hLAXywCP22LbazNAJFxp/nmmlaqtmaf6xWRSyB
-        upSyUfFjWg57bEu9Z9fv0Pj30w==
-X-Google-Smtp-Source: AGHT+IEdgUYVhwk+hQedV6eZvAiFZLxaNtxLNrge4xvkAKGXUjQS80bNVpCeBl/1/TMUSDGIKy3xiQ==
-X-Received: by 2002:a05:6a20:3d8b:b0:158:1387:6a95 with SMTP id s11-20020a056a203d8b00b0015813876a95mr1960369pzi.19.1697714183661;
-        Thu, 19 Oct 2023 04:16:23 -0700 (PDT)
-Received: from ?IPV6:2403:580d:82f4:0:43ac:2324:cc6e:9fa5? (2403-580d-82f4-0-43ac-2324-cc6e-9fa5.ip6.aussiebb.net. [2403:580d:82f4:0:43ac:2324:cc6e:9fa5])
-        by smtp.gmail.com with ESMTPSA id jb11-20020a170903258b00b001bc21222e34sm1672782plb.285.2023.10.19.04.16.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Oct 2023 04:16:23 -0700 (PDT)
-Message-ID: <6b721019-c98e-d926-04a9-e71f9ea20762@tweaklogic.com>
-Date:   Thu, 19 Oct 2023 21:46:18 +1030
+        with ESMTP id S1345280AbjJSLR2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 07:17:28 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A49115;
+        Thu, 19 Oct 2023 04:17:26 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB4tC2sFfz6K6gc;
+        Thu, 19 Oct 2023 19:16:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
+ 2023 12:17:23 +0100
+Date:   Thu, 19 Oct 2023 12:17:22 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?ISO-8859-1?Q?An?= =?ISO-8859-1?Q?dr=E9?= Apitzsch 
+        <git@apitzsch.eu>, Jonathan Cameron <jic23@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum->pointer
+ for data in the match tables
+Message-ID: <20231019121722.00007e6e@Huawei.com>
+In-Reply-To: <TYCPR01MB11269269A3237CC119644F4D286D4A@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
+        <20230818075600.24277-2-biju.das.jz@bp.renesas.com>
+        <5e0d2716fb757d408ebe77cb132ae242ef3aa470.camel@apitzsch.eu>
+        <CAMuHMdUTxQym7+vYPtnvMQeH8GKSk0iOyuMnLkgr3LH1E8TTYA@mail.gmail.com>
+        <20231018204533.39399b0b@jic23-huawei>
+        <82b99e17f45b09623eeaed12e4fac12609c15426.camel@apitzsch.eu>
+        <TYCPR01MB11269EEF17ABCE541CC7B38CE86D4A@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+        <TYCPR01MB11269D21D7DD5356A64E5679586D4A@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+        <ZTD0UN4+wQjguCDF@smile.fi.intel.com>
+        <TYCPR01MB11269269A3237CC119644F4D286D4A@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] dt-bindings: iio: light: Squash APDS9300 and APDS9960
- schemas
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231019080437.94849-1-subhajit.ghosh@tweaklogic.com>
- <472aa31d-7d6c-41df-86e6-d17f05998256@linaro.org>
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <472aa31d-7d6c-41df-86e6-d17f05998256@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 19/10/23 19:50, Krzysztof Kozlowski wrote:
-> On 19/10/2023 10:04, Subhajit Ghosh wrote:
->> Squashing Avago (Broadcom) APDS9300 and APDS9960 schemas into one
->> file and removing the other.
-> 
-> Please answer: why?
-Apologies for not providing detailed explanation.
-Link: https://lore.kernel.org/all/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
-As per your comments on the patch series in the above link and as per my understanding,
-I have to do two operations:
-1. Squash existing apds9300 schema and apds9960 schema as they look similar.
-2. Add apds9306 (work in progress) support after that (which belongs to my original patch series).
-This patch is the first operation.
->>   
->> +allOf:
->> +  - $ref: ../common.yaml#
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - avago,apds9960
->> +    then:
->> +      required:
->> +        - interrupts
-> 
-> Why? This wasn't in original binding.
-I am not sure about this. I went through the driver code and found out that probe()
-of apds9300 handles both situations whether interrupt bindings are provided or not, whereas,
-apds9960 requires an interrupt binding for probe() to be successful. I thought it would
-be appropriate to add that in the schema.
-> 
-> Separate patch please.
-> 
-> You are doing way too many unexpected and not explained changes.
-Sure. Thank you for reviewing.
+On Thu, 19 Oct 2023 09:41:06 +0000
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-Regards,
-Subhajit Ghosh.
+> > Subject: Re: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum-  
+> > >pointer for data in the match tables  
+> > 
+> > On Thu, Oct 19, 2023 at 07:08:23AM +0000, Biju Das wrote:  
+> > > > Subject: RE: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum-  
+> > 
+> > ...
+> >   
+> > > > As mentioned in the patch.
+> > > > /* If enumerated via firmware node, fix the ABI */
+> > > >
+> > > > Looks like this issue is not introduced by this patch.
+> > > > The previous code uses device_get_match_data() which returns a match
+> > > > as it uses DT node and it uses dev_name(&client->dev) instead of
+> > > > id->name;
+> > > >
+> > > > Am I missing anything here? If it is just a test program, can it be  
+> > fixed??  
+> > > >
+> > > > Please correct me if I am wrong.  
+> > >
+> > > I just realized that there is no .data in previous code for OF tables.
+> > >
+> > > Maybe we should add a check, if it is DT node, return id->name?
+> > >
+> > > Is there any API to distinguish DT node from ACPI??  
+> > 
+> > Of course, but I discourage people to use that, you have to have a very
+> > good justification why you need it (and this case doesn't sound good enough
+> > to me, or please elaborate). Hence I leave it as a homework to find those
+> > APIs.  
+> 
+> Andre, complained that his test app is broken with this patch. I am waiting for his response whether he can fix his test app? 
+> If not, we need to find a solution. One solution
+> is adding a name variable and use consistent name across
+> OF/ACPI/I2C tables for various devices.
+> 
+> Other solution is just add this check,
+> 
+> if (dev_fwnode(&client->dev) && !(IS_ENABLED(CONFIG_OF) && dev->of_node))
+> 	name = dev_name(&client->dev);
+> else
+> 	name = id->name;
+
+Given this is a userspace regression (caused by accidental "fix" - I missed
+the fact it had this impact :(), I think it is valid to special case the ACPI in this rare
+case but definitely needs a big fat comment saying why we are doing it and that it
+should not be copied into other drivers!!!
+
+If we can get away with fixing the original (many years old ABI misuse - but IIRC from a time
+where our ABI docs were lacking) then I'm keen on doing so, but I doubt we can.
+Definitely don't want to accidentally spread that bug though to new cases!
+
+Jonathan
+
+> 
+> Cheers,
+> Biju
+> 
+

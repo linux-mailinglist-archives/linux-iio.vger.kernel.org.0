@@ -2,81 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9B37CF862
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 14:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729587CF871
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 14:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345626AbjJSMJS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Oct 2023 08:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39572 "EHLO
+        id S235337AbjJSML3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 08:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345830AbjJSMJH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 08:09:07 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7E335BD;
-        Thu, 19 Oct 2023 05:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697717225; x=1729253225;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=cZrpDI17ZMb/Ton/XpJWiGZ39wcbVjXpretuf1XL3Y0=;
-  b=FBuS/3O4hKI2dUyrTn5pPJ3cDchgTXMQ/DWXLfaK9kugYgv78FJx+Fii
-   XIW3kSV47et8wWFnpfIJCYPROtRG3TbFOvmqX+AUYRg2CV34UU/CS4uiw
-   Y1bnGyJ7YfmQ7XP6zbJQvlEYLxjGGpblLpynX8vnzSlg5quHqPm48e8M2
-   d3pBGqgQ8hZgH/BRuzEmnGNSQQObgy6obg9Rj2SUJxi0c2YpRiswpQTJ3
-   2/VTEL5mEtQVUgPoJAusSHPlU2ycvhnQZAos06l2r/kMlziFJOslmzTL9
-   VMwVkkJfx1ilYlNMm1nXnu+QFTbAy/K19ECDMlZjRDvNFyAIkXctgBChh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="7786902"
-X-IronPort-AV: E=Sophos;i="6.03,237,1694761200"; 
-   d="scan'208";a="7786902"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:05:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004211901"
-X-IronPort-AV: E=Sophos;i="6.03,237,1694761200"; 
-   d="scan'208";a="1004211901"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:05:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qtRmf-00000006r6E-12MY;
-        Thu, 19 Oct 2023 15:05:49 +0300
-Date:   Thu, 19 Oct 2023 15:05:48 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <ZTEbnIy9fWdez/Ff@smile.fi.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
- <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
- <20230809185944.1ae78e34@jic23-huawei>
- <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
- <20230828190101.50f70921@jic23-huawei>
- <CAJZ5v0gOXsX98jQTRSwoYmfYBfva1RHTsDaLL++m7c+kLjStVA@mail.gmail.com>
- <ZS7jyHkKJcubVxws@smile.fi.intel.com>
- <20231018203755.06cb1118@jic23-huawei>
+        with ESMTP id S235387AbjJSMLR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 08:11:17 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B42610D9
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 05:10:58 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6bd0e1b1890so4141958b3a.3
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 05:10:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1697717457; x=1698322257; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b7TOTIKoWImuAkDVVYCBVqPy3Cdis5b4Vo38tYuQrdI=;
+        b=d8UyzsFmlR5wEaODr/yL3J9LGIQEMJWnmNN2KVJDKAwmTsS7vPJqW6T2Pb/TpU/4oN
+         eDm1JO7Ypv6w7iBPbWFmEXK7erhcKYeXH1vUvJGEBxxW/uqCdbSQmDNjifIhsRf4BmxH
+         fSJdkTYfCF1qN9E6Hmkj4aQ7k1BcjP0i/X4Q7U4Ia7IU1H5eZ/gFzrhZAeHDBIqJMHh6
+         ddqy4kEaDYHgInK1QKQwXA9NqlxJaNUH5rOKo6q8VdboUeWJn+p6QYW7FOA55ygVM6+Y
+         szzglpOeHpVauLc8I2+wDUZrbOQTkLmJd69MqsdoFQz01Q7WBSLJ9g3zvkxbeAYrbmzE
+         Ru3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697717457; x=1698322257;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b7TOTIKoWImuAkDVVYCBVqPy3Cdis5b4Vo38tYuQrdI=;
+        b=fXer/nvi0P9n6zAYvNmkPkZI4r3K+HscmzPcJN1rMtUJrb4U5044nRLvQdq8GtSPSn
+         84+IzcF6sj1dYPD3vEA7oFOOokLwARc9FdgO39J2h1QaEMU/ZFwGU8x1n7A2JgTqnLbS
+         MFCgHKIgcwiADr/oAlMPDSMwHoPlr5AFOEDtmBPsY/yyopWsBEZKYSVi+vgt/hAkBOoF
+         CrHiYQKZnSVGe1oB5RTfvE3VA+fF9E4i+OSbxrXWQe9mCjWG/WVYLXxERuOd9RypAIOI
+         7bc2GGIA8wMHInyzWGXvVeQCqZdmA35QVJDK7FMxsoBxYS15lbiD5md+9WiHzXpua+8I
+         JXVw==
+X-Gm-Message-State: AOJu0YxrAfUAGIVZa6VYxTUu4HNH1mm4c71tO5GdTxHE5g0VsQXD/gS+
+        HSJPJlBlUooW4plxVUq19jQiiA==
+X-Google-Smtp-Source: AGHT+IGyjJ5achfYpuzb0OcmwqIHdD90ognp6JgCUWc4UnEvDk50gbaB0ggnIRhz4omdqkMNYXqe2Q==
+X-Received: by 2002:a05:6a21:3e0d:b0:17a:dc55:4dc4 with SMTP id bk13-20020a056a213e0d00b0017adc554dc4mr1725217pzc.26.1697717457492;
+        Thu, 19 Oct 2023 05:10:57 -0700 (PDT)
+Received: from ?IPV6:2403:580d:82f4:0:43ac:2324:cc6e:9fa5? (2403-580d-82f4-0-43ac-2324-cc6e-9fa5.ip6.aussiebb.net. [2403:580d:82f4:0:43ac:2324:cc6e:9fa5])
+        by smtp.gmail.com with ESMTPSA id a186-20020a6390c3000000b005898a3619c7sm3262535pge.48.2023.10.19.05.10.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Oct 2023 05:10:56 -0700 (PDT)
+Message-ID: <5a7d1ff3-8ac4-cdd1-028a-84b9fc240201@tweaklogic.com>
+Date:   Thu, 19 Oct 2023 22:40:50 +1030
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231018203755.06cb1118@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] dt-bindings: iio: light: Squash APDS9300 and APDS9960
+ schemas
+Content-Language: en-US
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231019080437.94849-1-subhajit.ghosh@tweaklogic.com>
+ <20231019-rematch-ethically-9d482ca4607e@spud>
+ <6b856b0d-4f69-70ac-59a7-237fd21d1a92@tweaklogic.com>
+ <20231019-hurry-eagle-0ffa95b1a026@spud>
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20231019-hurry-eagle-0ffa95b1a026@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,39 +82,18 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 18, 2023 at 08:37:55PM +0100, Jonathan Cameron wrote:
-> On Tue, 17 Oct 2023 22:43:04 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Oct 17, 2023 at 09:19:30PM +0200, Rafael J. Wysocki wrote:
-> > > On Mon, Aug 28, 2023 at 8:00 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+>> Sorry, I should have put a longer description and a longer commit message.
+>> That patch series adds a new driver - apds9306 which is separate to this
+>> patch. As per Krzysztof's comments, first operation is to merge the existing
+>> apds9300 and apds9960 schemas. This patch is the first operation.
+>>
+>> Second operation will be to add apds9306 support on top of that. I will
+>> explain more on Krzysztof's comments. Thank you for reviewing.
+> 
+> Ahh apologies then. The best course of action would likely be to include
+> the patch merging the two bindings in your series adding the third user.
+No worries. Sure. You can reject this patch then. I will add my changes in the
+main apds9306 patch series.
 
-...
-
-> > > Sorry for the delay, I've lost track of this.  
-> > 
-> > NP!
-> > 
-> > > Honestly, I have no strong opinion, but I think that this is going to
-> > > reduce some code duplication which is a valid purpose, so please feel
-> > > free to add
-> > > 
-> > > Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> > > 
-> > > to this patch.  
-> > 
-> > Thank you!
-> > 
-> > Jonathan, are we all set for applying this series?
-> > 
-> Applied, but it might end up as 6.8 material depending on exactly how
-> timing turns out.  I have one pull request sent and I'm not sure I'll get
-> another one in this cycle. Given I just applied some big drivers I'd like to, but
-> not sure yet...
-
-It's fine, I'm not in hurry with this and thank you!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Subhajit Ghosh

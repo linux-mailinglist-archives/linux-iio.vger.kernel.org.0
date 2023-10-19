@@ -2,70 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF9C7CFAE8
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 15:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C87C67CFB00
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 15:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345923AbjJSNYL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Oct 2023 09:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54672 "EHLO
+        id S235394AbjJSNaJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 09:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345858AbjJSNYK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 09:24:10 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C863112;
-        Thu, 19 Oct 2023 06:24:08 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-507c50b7c36so3350522e87.3;
-        Thu, 19 Oct 2023 06:24:08 -0700 (PDT)
+        with ESMTP id S233178AbjJSNaI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 09:30:08 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FEFCF7
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 06:30:06 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4083ac51d8aso16676375e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 19 Oct 2023 06:30:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697721846; x=1698326646; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=linaro.org; s=google; t=1697722205; x=1698327005; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6XTlMS7+GX23qRM9fgW0oBkKi4/d88mo4TG26yVCQlU=;
-        b=MVRxRbVeDptSZdxE499zyIqIDCoR66BglmR1rlG0rlBuoUxEdWWg3OOTm5Jh1KgMnj
-         PZ7T1uCBoBVzpOdvx52lyDlwKcx2hD2kPwJ+KTkb8uuL6JkDEJyfIFxaTuBG6JCE3DSN
-         dpEwZ1Qu1edWFO7b/stBhXfLNV3W4Wj2uydGnZDYqbTc4ROHCrMsehlfZc235DJxVJoE
-         9QX0fRTxa6DURqYfA1OoeCYGjSCKM4te2J+0gTG/S9kTW0Ukt+tXO763QZppis5f6UBq
-         gEUi7hOduMWzzbXMbC3pfrzOv3UEIMxYVULdEe8VKeOq/EzU349bfkZMVFhI7MN/9WfK
-         J5pg==
+        bh=K7p6hKXquzEuK3VVgr+SAGS98BIcyCawYVt9gii/wPg=;
+        b=nhaW9EKOrR74kVwEK/mDDSPuQP4kZKaLpX30Z9hC1Wg52239M2eHzAheGxnuhD1so4
+         F4CDgBSAvnmyg2VD/8NPyqcUfA7fxLQizJ3G8Y4e/NpjXUG+x/IYG/ut6O+lVpKlVaiY
+         8dYUZ/h0LJqPgAE8bkWYCfy88+8ns/YCT7VYVSnuK2v+OCxl5YBkI2ev8OoXSfTx6eWt
+         QYqmjmgz9+KIUxcxoZ2diNTcl1e158/ik8Ep6Sn5mpQwUK610lYj3mHIIFUSoi9uTjyb
+         YTwZ0VAeU6iW0mPXWX3DkTTJo9fi4OOOCl2T7Xvn0avfbysx4IjVSoqFTzHZRZ/cs6Fp
+         S5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697721846; x=1698326646;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1697722205; x=1698327005;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6XTlMS7+GX23qRM9fgW0oBkKi4/d88mo4TG26yVCQlU=;
-        b=q/263Jx7uqD3FZ/Tua/1IO4KwOlCzupYB5Q24vacqbG8/3dHTR+C8qIiDzdFK+niLC
-         0+FNXu8DW6W1aGwwA6duflsePXJGJ72EwM3O4njg+HIBrjtOGmyV1uwwII2gdO4AG9Qu
-         JgKb4oAK+BL71jVVITrtb4TgnQZpkPRbKRVPfX8Xux1IgJgXC998kMx/z8p6Arja2HpA
-         W/FTrIoFbcKgIATGXFx9K6a/sYFa5W/7/Pz4cennCrNl2+cU8WDUcxpBFUsRq7D14Ncb
-         8tIL0ClfaOoWmddGrpm00MBpbUHTnGG1/ww+GYDr214B7qN0XED9nreU8N9vpg1pMJfF
-         7ZOw==
-X-Gm-Message-State: AOJu0YzSCr5a+pS+59o9/vSvufSITAV1ntscOUCBLTZzYOPJ/Soqde9V
-        ZysXJzfZwwOgPO3xu6aV87U=
-X-Google-Smtp-Source: AGHT+IFIy7ju57cvz9D/tYYiVheOKr1pHbTihQJxulDADgNu0cX04cPb68kvrRu29Ihr8dExZgjYdQ==
-X-Received: by 2002:ac2:5a1e:0:b0:507:9701:2700 with SMTP id q30-20020ac25a1e000000b0050797012700mr1399666lfn.20.1697721846098;
-        Thu, 19 Oct 2023 06:24:06 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id h9-20020a197009000000b005030cef433esm1088538lfc.94.2023.10.19.06.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 06:24:05 -0700 (PDT)
-Date:   Thu, 19 Oct 2023 16:23:56 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        bh=K7p6hKXquzEuK3VVgr+SAGS98BIcyCawYVt9gii/wPg=;
+        b=mmi/SgimxxNqQWZOVh3LzVWRgmTz2gDWXMeEhEBAXH8QAZz4WwyUJTURn5kxAnDdqy
+         AEQ5zK0eWduDKrMhSu7I0mby/herxxkXw9/2ZfG1sLhYbn2gg+qk/tu6asEYp2yp4iXq
+         GbXT7OrtRgbF0GOTNvbm6iCjUF6+pdO7HDaIZ7CDkOmckuFhPFLQB/tYwsK0HSxlQ2VR
+         lDnR716VMZ0V75Q35e8FZ0UGNohZIHS/lOsk0bi7H4t/5YUNvPIVXzx4y+AMiPxC0M7e
+         gAqMOZ9iXRVBX+YHJHzXiKjb1RVhY96tQhgARqsXzT9NMjl2alEdl7N+YKCIAVy9JAs4
+         ABHQ==
+X-Gm-Message-State: AOJu0YzKUKKTuu8jn3K9cWwvp21w8eNcSLjueB7MXzpfZI4XvdD8o+h/
+        RVZDb7T+wfPF668dE8f661peVA==
+X-Google-Smtp-Source: AGHT+IEdsTaau+Nb8hpFr+zA7v4Es2jQlN1Tj6fWsIKnB129Sbfd6Khz2lLL7FalpXONUXpshF1Ggw==
+X-Received: by 2002:adf:f74d:0:b0:32d:8da0:48d0 with SMTP id z13-20020adff74d000000b0032d8da048d0mr1340000wrp.68.1697722204877;
+        Thu, 19 Oct 2023 06:30:04 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.218.126])
+        by smtp.gmail.com with ESMTPSA id f5-20020a056000128500b0032d2f09d991sm4458749wrx.33.2023.10.19.06.30.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Oct 2023 06:30:04 -0700 (PDT)
+Message-ID: <eedc5ebf-f8e5-4cbf-b394-c260d2fc53c8@linaro.org>
+Date:   Thu, 19 Oct 2023 15:30:03 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: light: Squash APDS9300 and APDS9960
+ schemas
+Content-Language: en-US
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: kx022a: Fix acceleration value scaling
-Message-ID: <ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BRC617NORhFtqw3Q"
-Content-Disposition: inline
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231019080437.94849-1-subhajit.ghosh@tweaklogic.com>
+ <472aa31d-7d6c-41df-86e6-d17f05998256@linaro.org>
+ <6b721019-c98e-d926-04a9-e71f9ea20762@tweaklogic.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <6b721019-c98e-d926-04a9-e71f9ea20762@tweaklogic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,154 +125,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 19/10/2023 13:16, Subhajit Ghosh wrote:
+> On 19/10/23 19:50, Krzysztof Kozlowski wrote:
+>> On 19/10/2023 10:04, Subhajit Ghosh wrote:
+>>> Squashing Avago (Broadcom) APDS9300 and APDS9960 schemas into one
+>>> file and removing the other.
+>>
+>> Please answer: why?
+> Apologies for not providing detailed explanation.
+> Link: https://lore.kernel.org/all/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
+> As per your comments on the patch series in the above link and as per my understanding,
+> I have to do two operations:
+> 1. Squash existing apds9300 schema and apds9960 schema as they look similar.
+> 2. Add apds9306 (work in progress) support after that (which belongs to my original patch series).
+> This patch is the first operation.
 
---BRC617NORhFtqw3Q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Answer in the commit. The commits should answer to the question: why are
+you doing it?
 
-The IIO ABI mandates acceleration values from accelerometer to be
-emitted in m/s^2. The KX022A was emitting values in micro m/s^2.
+>>>   
+>>> +allOf:
+>>> +  - $ref: ../common.yaml#
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            enum:
+>>> +              - avago,apds9960
+>>> +    then:
+>>> +      required:
+>>> +        - interrupts
+>>
+>> Why? This wasn't in original binding.
+> I am not sure about this. I went through the driver code and found out that probe()
 
-Fix driver to report the correct scale values.
+Not explained in commit msg.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reported-by: Jagath Jog J <jagathjog1996@gmail.com>
-Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
+> of apds9300 handles both situations whether interrupt bindings are provided or not, whereas,
+> apds9960 requires an interrupt binding for probe() to be successful. I thought it would
+> be appropriate to add that in the schema.
 
----
-The fix is somewhat crude and just crops the last 3 digits (rounds) of the
-scale while using IIO_VAL_INT_PLUS_NANO. I played with a thought of using
-IIO_VAL_FRACTIONAL, which could have modelled the computation
-G_range * g * scaling / (2^16 * scaling) - where scaling 10000 would
-have allowed using g value 980665.
+Not explained in commit msg.
 
-This would have worked fine for reporting scale and available scales -
-but would be somewhat tricky when converting the user-supplied scale to
-register values in write_raw().
+Best regards,
+Krzysztof
 
-Well, the g varies from 9.832 (poles) to 9.780 (equator) according to
-some website - no proper source check done but this sounds about right -
-so maybe the loss of accuracy is acceptable.
-
-I did only very quick testing on KX022A and iio_generic_buffer. After
-the patch the values seemed to be correct order of magnitude. Further
-testing is appreciated :)
-
----
- drivers/iio/accel/kionix-kx022a.c | 37 ++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-k=
-x022a.c
-index 4ea3c6718ed4..971fc60efef0 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -273,17 +273,17 @@ static const unsigned int kx022a_odrs[] =3D {
-  *	(range / 2^bits) * g =3D (range / 2^bits) * 9.80665 m/s^2
-  *	=3D> KX022A uses 16 bit (HiRes mode - assume the low 8 bits are zeroed
-  *	in low-power mode(?) )
-- *	=3D> +/-2G  =3D> 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
-- *	=3D> +/-2G  - 598.550415
-- *	   +/-4G  - 1197.10083
-- *	   +/-8G  - 2394.20166
-- *	   +/-16G - 4788.40332
-+ *	=3D> +/-2G  =3D> 4 / 2^16 * 9,80665
-+ *	=3D> +/-2G  - 0.000598550415
-+ *	   +/-4G  - 0.00119710083
-+ *	   +/-8G  - 0.00239420166
-+ *	   +/-16G - 0.00478840332
-  */
- static const int kx022a_scale_table[][2] =3D {
--	{ 598, 550415 },
--	{ 1197, 100830 },
--	{ 2394, 201660 },
--	{ 4788, 403320 },
-+	{ 0, 598550 },
-+	{ 0, 1197101 },
-+	{ 0, 2394202 },
-+	{ 0, 4788403 },
- };
-=20
- static int kx022a_read_avail(struct iio_dev *indio_dev,
-@@ -302,7 +302,7 @@ static int kx022a_read_avail(struct iio_dev *indio_dev,
- 		*vals =3D (const int *)kx022a_scale_table;
- 		*length =3D ARRAY_SIZE(kx022a_scale_table) *
- 			  ARRAY_SIZE(kx022a_scale_table[0]);
--		*type =3D IIO_VAL_INT_PLUS_MICRO;
-+		*type =3D IIO_VAL_INT_PLUS_NANO;
- 		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
-@@ -366,6 +366,20 @@ static int kx022a_turn_on_unlock(struct kx022a_data *d=
-ata)
- 	return ret;
- }
-=20
-+static int kx022a_write_raw_get_fmt(struct iio_dev *idev,
-+				    struct iio_chan_spec const *chan,
-+				    long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int kx022a_write_raw(struct iio_dev *idev,
- 			    struct iio_chan_spec const *chan,
- 			    int val, int val2, long mask)
-@@ -510,7 +524,7 @@ static int kx022a_read_raw(struct iio_dev *idev,
-=20
- 		kx022a_reg2scale(regval, val, val2);
-=20
--		return IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_VAL_INT_PLUS_NANO;
- 	}
-=20
- 	return -EINVAL;
-@@ -712,6 +726,7 @@ static int kx022a_fifo_flush(struct iio_dev *idev, unsi=
-gned int samples)
- static const struct iio_info kx022a_info =3D {
- 	.read_raw =3D &kx022a_read_raw,
- 	.write_raw =3D &kx022a_write_raw,
-+	.write_raw_get_fmt =3D &kx022a_write_raw_get_fmt,
- 	.read_avail =3D &kx022a_read_avail,
-=20
- 	.validate_trigger	=3D iio_validate_own_trigger,
---=20
-2.41.0
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---BRC617NORhFtqw3Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUxLecACgkQeFA3/03a
-ocVJvwf9HKVfeU6NszWIyfoQdxF8uhuKnpuDaRHsUF/SY2XwL8Kwk0PeZKM9jfbc
-KWw47J6bC0CQZOYbxT/rgCmckiobiDXCzJAqsyI33HN+r966FST6IsY2LUDRJiFO
-1mXmv5mzXN8gv0Dow4fUDJchWq6zl8+XzXn621qttbsDsENWAxYgpfnOmf2I3XRn
-2Xz46DV4XkUg3sauniWyJG5kZ3zlqazL4HpHHogrNolRgu4tJI1qjoEW+4OoNqSj
-+IMHBZB0t1QWb8anqXECzvYVzEV60wwHHwHgUtchm8vfiRnsnxv5C26VmUADrMDU
-MKtj4xun2ZowPCk0Lhv/uIa+8LkqBQ==
-=1jdQ
------END PGP SIGNATURE-----
-
---BRC617NORhFtqw3Q--

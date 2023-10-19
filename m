@@ -2,88 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B2D27CEDE7
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 04:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C347CEE89
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Oct 2023 06:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231950AbjJSCRW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Oct 2023 22:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59102 "EHLO
+        id S229894AbjJSEGh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Oct 2023 00:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232294AbjJSCRV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Oct 2023 22:17:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D44F123
-        for <linux-iio@vger.kernel.org>; Wed, 18 Oct 2023 19:17:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F027C433C7;
-        Thu, 19 Oct 2023 02:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697681838;
-        bh=HNyaJK1axkB8a7ESL1pozO2YJsPnMyYS2HYz0QpJPBM=;
-        h=Date:From:To:Cc:Subject:From;
-        b=tZhSOuuhqLGi8uy8RXT9IOlF6Ze9IlHoMSbr4b6M6/3RDWF8wtqtB+vmVtYrLFdwo
-         w7hPYjwDkSveBb5Trvm4Zl1lPR4siJBwVWhgZ92vPZvAf/FJZtnVVjMDpAm1sa/Oqb
-         w7SDKx70pIl++Pl1rfykYbXhcKKzty/y9rlfznTA9Dj+JHM20O4xlDqGz1XQsVnpPb
-         ba50o3NlO+h03arD/WSEOA0vwo2bFUFNtmD1Ora0Li67JvtLRM8rj7ibAjtkIx9f2t
-         V3zNlQHue/Mip1naz9ciGBvJl0qy6hEbl/pmuQgd8UzHpLmGPx41qzCvbXY8vLSMgq
-         X8uglZ9ncfv/A==
-Date:   Wed, 18 Oct 2023 22:17:15 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [GIT PULL] First set of Counter updates for 6.7
-Message-ID: <ZTCRq/9L64kTqiyz@ishi>
+        with ESMTP id S230051AbjJSEGg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Oct 2023 00:06:36 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6B8119
+        for <linux-iio@vger.kernel.org>; Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b1ef786b7fso5600291b3a.3
+        for <linux-iio@vger.kernel.org>; Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697688393; x=1698293193; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eQIMJ/nxxafee7WyxE0d+o9+7mfW1f+sldaH4ghTpNo=;
+        b=YSo4ZV9wRaNJO23IHnuJg4u2Agufp6YcnLHU0i288i0/ihlyPExBf8C8zhXl/0P1nm
+         QD6yQ0naylX/wcb2ViIKhnuXzOBYr1TbdEmAihVIdkXp3hFeBsQcNEj6HjueCCdOYMey
+         UXLCYN23HyOthNPi4ou5gWv5eDhHtaXbGZyszzGF+Xwt+nk3DbSfkztBzPXu4xtWG9Wp
+         3sLKGF5LV9ZlvvkU8EGaCVHFjw4swssEkCSajhASFcik4TTyqiXVNi7D7NpouLQKU/EU
+         yZPc8RsL/7LhVhFtyTdU0nT6d4CP1Iy06ljeBq/RPeFcndhrlvEhdIs4CkLkrZ3lOxms
+         lU/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697688393; x=1698293193;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eQIMJ/nxxafee7WyxE0d+o9+7mfW1f+sldaH4ghTpNo=;
+        b=l74pR8ILjuXXg0lCgJuLeIBgKYdrVMuPWyV+v4vk6ccOMwwMe2BtcWGcwlsyO8qQeI
+         1ceFjZcPqk0RAPEQS9GQVPYyep279DKrwUa5b1wv8PHjlha2N4g9HU5Bkfp6jxbcREw+
+         043UzfBfxAiGWQijvXjFFDh2neOBCAkvN9MpN4BOkgMA8yhXNSPDfYXDNI/UUgcuvagD
+         MscdwJx2XFVt5wY6aXMfO2aWznRgnOdZ7Y0ZnPaVhSc1kIKuTSMdUtWG1TMrMMTDsQNT
+         +a6oZn4BmTQgA1s64aunBfPQTPCaiexJH4ljDDiqaJvFvR+l+jbYclB43l904zbNNKGc
+         WbCQ==
+X-Gm-Message-State: AOJu0YxWmBFip31w468kpOR6VjmP6YZ+NH2oaCFsaSx+BY0lB4XT0/hm
+        pILaS6Y9xd/v2RJFt8urh/XG
+X-Google-Smtp-Source: AGHT+IGP8RYAqcC88qwdKj5FydUxjIzvKQRY7eQzz8t/NsXRcn/MCN9hzfd2K6b1Dw4tL9sPvOVWrQ==
+X-Received: by 2002:a05:6a21:7742:b0:16b:977d:f7cf with SMTP id bc2-20020a056a21774200b0016b977df7cfmr1127597pzc.36.1697688393183;
+        Wed, 18 Oct 2023 21:06:33 -0700 (PDT)
+Received: from thinkpad ([117.202.186.25])
+        by smtp.gmail.com with ESMTPSA id x19-20020a1709027c1300b001c3721897fcsm717665pll.277.2023.10.18.21.06.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 21:06:32 -0700 (PDT)
+Date:   Thu, 19 Oct 2023 09:36:23 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 4/6] arm64: dts: qcom: sm8350: Fix remoteproc
+ interrupt type
+Message-ID: <20231019040623.GA5142@thinkpad>
+References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
+ <20231018-nia-sm8350-for-upstream-v2-4-7b243126cb77@igalia.com>
+ <6ac842b8-5fcb-4094-8488-4d6e250bf102@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mtW7wjFwRTHXkVQo"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6ac842b8-5fcb-4094-8488-4d6e250bf102@linaro.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Oct 18, 2023 at 10:17:15PM +0200, Konrad Dybcio wrote:
+> 
+> 
+> On 10/18/23 16:25, Nia Espera wrote:
+> > In a similar vein to
+> > https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
+> > the remote processors on sm8350 fail to initialize with the 'correct'
+> > (i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
+> > 
+> > Signed-off-by: Nia Espera <nespera@igalia.com>
+> > ---
+> Hm, apparently 8250 and 7180 have the same thing.
+> 
+> Mani, could you elaborate on this?
+> 
 
---mtW7wjFwRTHXkVQo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+So the remoteproc driver expects the wdog interrupts to be edge triggered as the
+rest of the interrupts, but DT specifies them as level triggered. This won't
+cause any issue during the first instance of the probe as the driver requested
+trigger will be given precedence. But if the probe defers for some reason and
+during the next try, request_irq() will fail with error similar to below:
 
-The following changes since commit 58720809f52779dc0f08e53e54b014209d13eebb:
+irq: type mismatch, failed to map hwirq-x for interrupt-controller@xxxxxx!
 
-  Linux 6.6-rc6 (2023-10-15 13:34:39 -0700)
+This error is often confusing and I tried to fix it. But Maz didn't agree with
+me, so I just ended up fixing the DTs for some platform I have access to.
 
-are available in the Git repository at:
+So ideally, DTs of all platforms should be fixed to pass correct trigger type.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-updates-for-6.7a
+- Mani
 
-for you to fetch changes up to 7904cdf1397c9391178ce53a7ebfa099c6bc4a59:
+> Konrad
 
-  counter: chrdev: remove a typo in header file comment (2023-10-16 11:38:56 -0400)
-
-----------------------------------------------------------------
-First set of Counter updates for the 6.7 cycle
-
-A minor typographical error is fixed in the description comment block
-for struct counter_component.
-
-----------------------------------------------------------------
-Fabrice Gasnier (1):
-      counter: chrdev: remove a typo in header file comment
-
- include/uapi/linux/counter.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---mtW7wjFwRTHXkVQo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZTCRqwAKCRC1SFbKvhIj
-K2sCAQDzQFxUQSQDjCFCaMAeGY9xi6EZbCBxon00PiI3UGav/QEArqnZiY6Tf68i
-Vq7dLDEi63wcetQ9NFtXlFD9Zc/oBgk=
-=YU9W
------END PGP SIGNATURE-----
-
---mtW7wjFwRTHXkVQo--
+-- 
+மணிவண்ணன் சதாசிவம்

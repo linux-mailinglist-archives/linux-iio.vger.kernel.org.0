@@ -2,128 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CDDF7D0F64
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Oct 2023 14:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B0C7D1182
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Oct 2023 16:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377175AbjJTMJW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Oct 2023 08:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50932 "EHLO
+        id S1377523AbjJTOZT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Oct 2023 10:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377099AbjJTMJV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Oct 2023 08:09:21 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55239E;
-        Fri, 20 Oct 2023 05:09:18 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c503da4fd6so10556411fa.1;
-        Fri, 20 Oct 2023 05:09:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697803757; x=1698408557; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mGwuaBFtqO94TAMSnO/Xh6NCf2pq0vUZ7fh5FlEE1TU=;
-        b=UOD1IR7jqLMlN9d4+r+Lk7+JogbOFvRlbgWrxJXqC29vtOP4v+6otcPGa8fYOulN6C
-         fcvvo3Zy4qHBMlFBGeZ4SWQ/KIm+7RcMt7FtBNUU9hJlWVl/gnKLHUE4NICYJa6QO7TS
-         /HoyXGfnYEHD7B85vwj8ewhOQ54x2pUOQLsNqq9H4dlXblEHwGo3+ZQObBfGheojHmm5
-         iuK+/9Vkf15a/ZQADBOoOFT9Kit6gOs9lw+aRopvLUpflZy3o8KYS3uNNlOIvXxItqgK
-         0VQ8KI/AbIvjZAJ2XDleNvc7swx9otzxa5uuPsPsVT1xkh7tsMjHaECUmjsSV+rbB+u8
-         oZuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697803757; x=1698408557;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mGwuaBFtqO94TAMSnO/Xh6NCf2pq0vUZ7fh5FlEE1TU=;
-        b=q0GaLh19VNN5O7USmkEf6Znq/L3y4Qf5ZsknkaemVsqvir2W+uA3AKPpsrQH4zWSqD
-         +Oj206R0/dDc9/j7aZpco2qrSjT70w5K/x2xlDX5UNSB9ULwgRI4EDQp3Pds6cNoTBVo
-         a/0P3N5KzmXQiSstzJ0KuHCkGqGpsblGGpZV/LDRpk+rT8uefbmGGkqv9m1BxOxibtgw
-         MJtjFjVWOI2cQwSuS1x1WCEFI3oVr3zmNwL8UB/F4rtJLhesbYy0vMwbJPiJwQpYs7zK
-         kpyB0YJEmMTEMZwD4fFwvaVXJvHiczOa3rc4KJruZ9pffLMkv4Z/SLcc0oMjkgD+0LlH
-         ETlg==
-X-Gm-Message-State: AOJu0YxE6B/3ihe4rPGt0IftJ8Xfd9bFwj3luSr7De5jHWpsIH578oUk
-        S0r+4nAqMLXBQD1eqzgUyxw=
-X-Google-Smtp-Source: AGHT+IEybAXYasW4+8nL3Y9BDeBDb2GKJMqPe11p+UYNhBwcDhvtQ7xIF3mruApuJa8FW18hS/8pOQ==
-X-Received: by 2002:a05:651c:a0c:b0:2c5:24a8:c22d with SMTP id k12-20020a05651c0a0c00b002c524a8c22dmr1760577ljq.3.1697803756767;
-        Fri, 20 Oct 2023 05:09:16 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id p12-20020a2e740c000000b002b6ad323248sm336000ljc.10.2023.10.20.05.09.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Oct 2023 05:09:15 -0700 (PDT)
-Message-ID: <c623b6ff-6d6c-4351-b828-4ed4663f9de9@gmail.com>
-Date:   Fri, 20 Oct 2023 15:09:14 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: kx022a: Fix acceleration value scaling
-Content-Language: en-US, en-GB
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1377541AbjJTOZS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Oct 2023 10:25:18 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E991B19E;
+        Fri, 20 Oct 2023 07:25:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58324C433C8;
+        Fri, 20 Oct 2023 14:25:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697811916;
+        bh=PdEijCCqs6eHOgtQhlQOCpXG95OQYCeSQG6gEQ7o8DI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lUXt4nGeVKfkLYINAkezPy4TTl+guqDEdZcvzJYBSgiUce47Jv9fT4vleQGb347hL
+         0mRCqPg8ZUy5xNQH6Cgbc+NN+lt6o3GdLgTzAxMD+zcwR7tcu3QhFZgAB+jHU6A303
+         N94o37HNrhkm+gSc3Y79EKXmwWt7kDRbMCaAjkn7vf7ch+ZxVZGxlDGwQ9XvxiIkTX
+         eQMVkUUkicsDhJhCI+pdmgU7nzbc82Bh+W7eK9bHbxt25GpSRXVoRRr1a5BWvrFvVZ
+         REZ0O9gfOJpsmXosl/HqwVnIb89ES3YyGpPkhLKgT1U+qyl4fELy35l5KhGjdSCZUx
+         u+5Ap3etRhIxg==
+Date:   Fri, 20 Oct 2023 15:25:12 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <CAM+2Eu+ndzS9NLvsZaX_=YTHb_+t4cE5GjQevJ1Lgc2EBO20rA@mail.gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <CAM+2Eu+ndzS9NLvsZaX_=YTHb_+t4cE5GjQevJ1Lgc2EBO20rA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        matt@ranostay.org
+Subject: Re: [PATCH] dt-bindings: iio: light: Squash APDS9300 and APDS9960
+ schemas
+Message-ID: <20231020-clunky-tummy-290b557207fd@spud>
+References: <20231019080437.94849-1-subhajit.ghosh@tweaklogic.com>
+ <20231019-rematch-ethically-9d482ca4607e@spud>
+ <20231019-theme-clunky-f4a2e1d122e7@spud>
+ <0084ddad-d6fc-ca26-2d26-ba71e81f5f8b@tweaklogic.com>
+ <20231019122120.00007cdd@Huawei.com>
+ <20231020082804.5ee8364a@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zYibD16LsXD1wAkk"
+Content-Disposition: inline
+In-Reply-To: <20231020082804.5ee8364a@jic23-huawei>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/19/23 21:21, Jagath Jog J wrote:
-> Hi Matti,
-> 
-> On Thu, Oct 19, 2023 at 6:54 PM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
->>
->> The IIO ABI mandates acceleration values from accelerometer to be
->> emitted in m/s^2. The KX022A was emitting values in micro m/s^2.
->>
->> Fix driver to report the correct scale values.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> Reported-by: Jagath Jog J <jagathjog1996@gmail.com>
->> Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
->>
->> ---
->> The fix is somewhat crude and just crops the last 3 digits (rounds) of the
->> scale while using IIO_VAL_INT_PLUS_NANO. I played with a thought of using
->> IIO_VAL_FRACTIONAL, which could have modelled the computation
->> G_range * g * scaling / (2^16 * scaling) - where scaling 10000 would
->> have allowed using g value 980665.
->>
->> This would have worked fine for reporting scale and available scales -
->> but would be somewhat tricky when converting the user-supplied scale to
->> register values in write_raw().
->>
->> Well, the g varies from 9.832 (poles) to 9.780 (equator) according to
->> some website - no proper source check done but this sounds about right -
->> so maybe the loss of accuracy is acceptable.
->>
->> I did only very quick testing on KX022A and iio_generic_buffer. After
->> the patch the values seemed to be correct order of magnitude. Further
->> testing is appreciated :)
-> 
-> Values are correct with this change, Thank you for fixing.
-> Tested-by: Jagath Jog J <jagathjog1996@gmail.com>
 
-Thanks a ton for testing! May I ask which component did you use (or did 
-you just use some 'simulated' regster values?)
+--zYibD16LsXD1wAkk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yours,
-	-- Matti
+On Fri, Oct 20, 2023 at 08:28:04AM +0100, Jonathan Cameron wrote:
+> On Thu, 19 Oct 2023 12:21:20 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+>=20
+> > On Thu, 19 Oct 2023 21:24:09 +1030
+> > Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
+> >=20
+> > > > Also:
+> > > > <matt.ranostay@konsulko.com>: host aspmx.l.google.com said:
+> > > >      550-5.1.1 The email account that you tried to reach does not e=
+xist.   =20
+> > > Thanks Conor for pointing this out. Can you please help me out with t=
+his?
+> > > get_maintainer.pl suggested me to add this email ID. =20
+> >=20
+> > Matt has moved job, I've messaged him to find out if he has a new prefe=
+rred
+> > email address.
+> >
+> +CC address Matt suggested using going forwards.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Matt, can you please update your contact information in the various
+places where that is relevant?
+A mailmap entry would likely be a good idea too.
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+Cheers,
+Conor.
 
+--zYibD16LsXD1wAkk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTKNxwAKCRB4tDGHoIJi
+0nXMAQDYE5epxVgzgquyXUK1kk1YWiueaHq6K0DNAuiLEVp26wEAnz0OpIWfRtU/
+mWIgZMvTCNkGnCQs+Jt1y5/UabKisAQ=
+=MWsb
+-----END PGP SIGNATURE-----
+
+--zYibD16LsXD1wAkk--

@@ -2,428 +2,241 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BAE7D0DEE
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Oct 2023 12:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 711E97D0E65
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Oct 2023 13:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376699AbjJTKyG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Oct 2023 06:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38460 "EHLO
+        id S1377080AbjJTLb3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Oct 2023 07:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377095AbjJTKx7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Oct 2023 06:53:59 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF189E;
-        Fri, 20 Oct 2023 03:53:56 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-507adc3381cso891363e87.3;
-        Fri, 20 Oct 2023 03:53:56 -0700 (PDT)
+        with ESMTP id S1377008AbjJTLb2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Oct 2023 07:31:28 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8051A8
+        for <linux-iio@vger.kernel.org>; Fri, 20 Oct 2023 04:31:24 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9bdf5829000so111694766b.0
+        for <linux-iio@vger.kernel.org>; Fri, 20 Oct 2023 04:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697799234; x=1698404034; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YrIXhW9fDb1wr4YgeeiJSlMMniaQbLXxwpyIEv7KRq8=;
-        b=d9T5MakhaSzL6qp2PTYLkfi4MFvpR5v5ONs3wO9+tsRCBYRB1zGHQH8GMP5GQzXSav
-         o5LJdpOA6JfXo0iGIgn4WcBBN7j5KfWnP7k/U9lj6H6cKZDCZTbTmwX4GnMn37uwLu6Z
-         Ga5tlPwqUoR7NPo07b0hZpjNMLoqSLzU3fgSbId/uLhtVi3SnqJ/FwWxd8hq7XMIYxnl
-         /+Ljf9yImki6VU+4foYP7M4i3qU+iqMQhOUGpv97EWQV9vvm3bjsfki3SaAqIrPJV2aA
-         96Jv3xcw35zfsy/WIUEAlSPolU0jp5gagFbQ4xO8K5qhOQZeqN4zR/ThQCiYF74xgT+N
-         lvmg==
+        d=fairphone.com; s=fair; t=1697801483; x=1698406283; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wq2xrfNltYx9WSMnF1/a8wXflPx/W1Agx/pfa3OmDS8=;
+        b=RHXNqmjaBKZTAcM5cWSGFFK5xghL1oI26DeoGCEFtbVthNIDcTg2ELcd2vLHvvVaaz
+         Xmh/8gCaHAr2HsEgV3K6m0rWirq5bHfp/mU7wQlJ6VvjDfREp98Ei1dfXUuE9DiYUupB
+         +pqHHUkMwkPiDNfCK4m4100Ob6tErA1krpZWae9F9XQt1fDpuKZhCBPVs4yklwzqvk0b
+         k506piHOxXfr9yCopSZ66h7BlDeTjdbZYoDoo1lymXjsti1vPAE+qFbinJYHxuI7U6C/
+         CvJE5kkfwYhPiB/Uit5AmFBRXUfbTw4aFC627iaWd5NdraVa00wU40xB44PDT/P2Z7CY
+         kYUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697799234; x=1698404034;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YrIXhW9fDb1wr4YgeeiJSlMMniaQbLXxwpyIEv7KRq8=;
-        b=vIGrFtXcbzIZ6NCrFGrKOOsGq60MZjc+EbdzlLA/MW2AUNgf4mOMNOrpqylJlGBEu0
-         npu//Ldne/YJ7jDzMwgBxfCvVQ/Ow9Z8sMwmwB5NJtd9f/jFliqNERizB/sGHeifdZHH
-         6ja1bVR4+GHy+tq2xGtD7IaRSzjcTQjkc9PV1u/bB6EU1P+Jhf1SD//+h2ROXBpELPIR
-         52nN3shAoM51fmVci6Tg8wkU+3286QUwHQRZBRgJfHSjkQ2j/+UFTkWtf4Q5Bn9ChY+d
-         M+fLkTGDxXzeKjVyj8bSQ/u4ACAyVSuJWb2N+SeFgdLzrwyrZThQirgjj68qAF5ZVZH/
-         pemA==
-X-Gm-Message-State: AOJu0YyO0ctHwQOMV62w+3f3P6w1bkHLC/bF1UhVBD2X7Q/9aTbmb9yq
-        APdCrgvkSpg6dNwJcwrwhW0=
-X-Google-Smtp-Source: AGHT+IFbdAunxW/Q9e8+0t6SUOc93BsBHkpKPnqQsN04wGQYxI1uXWvvHuR+MM0m3CsDQlV7jgm5FA==
-X-Received: by 2002:a19:434d:0:b0:507:984e:9f17 with SMTP id m13-20020a19434d000000b00507984e9f17mr910047lfj.34.1697799233969;
-        Fri, 20 Oct 2023 03:53:53 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id l7-20020a056512110700b005031641b40asm298881lfg.159.2023.10.20.03.53.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 03:53:52 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 13:53:47 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: bu27008: Add illuminance channel
-Message-ID: <ZTJcOxSb/WHzdN8h@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="CZzpS91aR3CsPOh0"
-Content-Disposition: inline
+        d=1e100.net; s=20230601; t=1697801483; x=1698406283;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wq2xrfNltYx9WSMnF1/a8wXflPx/W1Agx/pfa3OmDS8=;
+        b=hgYb7O0xk07X5E2Tm/7NmTd3KyFlX/YpqpqKu246AptxVuW1M5IVWuhid3XRIvfO4Z
+         wZoiDgybOr9jIgi4mskPHH3CsnCdJQdv7TUFhTTR7UeHU92x1KzcV/NplTlumecTKUEC
+         LrxqWtFpo94JOG+cE3strQquWhMwknKh4kGO1hncAkQFSIlsz7pePVfoU6tWjHY/okDL
+         ZU2YMSOh33pW7gBY0zuLheJOTv/qlLXk66W+4XI/0LJLa2c9XfVVDCd9c4ZzHfTXSbuw
+         +Q+2q/LzkOTtpJGHKVMduYMB9cmlZWHVQa8r3us4QqRkahKB/0yrAv8qvoqU+LTyM22t
+         23XA==
+X-Gm-Message-State: AOJu0Yzm2j5pEd9MNmjequ/sEBcKgBYfrdLZhCPb32fDxMXWF8Jgeymu
+        P7FtMPPKeNqchGKoq3Dj0vcOig==
+X-Google-Smtp-Source: AGHT+IEoeeFassbx3MNsZzZQpCjvyxQFxuHG8gi+lfJpmHgfzm7BufAONGqis7o9C64A7nCYKhEJSA==
+X-Received: by 2002:a17:906:c112:b0:9a5:846d:d81f with SMTP id do18-20020a170906c11200b009a5846dd81fmr1026518ejc.17.1697801483081;
+        Fri, 20 Oct 2023 04:31:23 -0700 (PDT)
+Received: from localhost (k10064.upc-k.chello.nl. [62.108.10.64])
+        by smtp.gmail.com with ESMTPSA id o14-20020a17090611ce00b009b29553b648sm1279266eja.206.2023.10.20.04.31.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Oct 2023 04:31:22 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 20 Oct 2023 13:31:21 +0200
+Message-Id: <CWD8E95B0W8L.1UMMGJXJF47D@fairphone.com>
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Luca Weiss" <luca@z3ntu.xyz>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Jonathan Cameron" <jic23@kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>
+Cc:     <phone-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325
+ thermals
+X-Mailer: aerc 0.15.2
+References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
+ <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
+ <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
+ <4958673.31r3eYUQgx@z3ntu.xyz>
+ <5ac0d16a-0303-46c7-a008-31280629cc11@linaro.org>
+In-Reply-To: <5ac0d16a-0303-46c7-a008-31280629cc11@linaro.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed Oct 18, 2023 at 10:28 PM CEST, Konrad Dybcio wrote:
+>
+>
+> On 10/14/23 19:52, Luca Weiss wrote:
+> > On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
+> >> On 13.10.2023 10:09, Luca Weiss wrote:
+> >>> Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THER=
+M
+> >>> and RFC_CAM_THERM thermistors connected to PM7325.
+> >>>
+> >>> With this PMIC the software communication to the ADC is going through
+> >>> PMK7325 (=3D PMK8350).
+> >>>
+> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> >>> ---
+> >>>
+> >>>   arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
+> >>>   +++++++++++++++++++++ 1 file changed, 117 insertions(+)
+> >>>
+> >>> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> >>> b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
+> >>> 2c01f799a6b2..d0b1e4e507ff 100644
+> >>> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> >>> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> >>> @@ -9,6 +9,7 @@
+> >>>
+> >>>   #define PM7250B_SID 8
+> >>>   #define PM7250B_SID1 9
+> >>>
+> >>> +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
+> >>>
+> >>>   #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
+> >>>   #include <dt-bindings/leds/common.h>
+> >>>   #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> >>>
+> >>> @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
+> >>>
+> >>>   	};
+> >>>   =09
+> >>>   	thermal-zones {
+> >>>
+> >>> +		camera-thermal {
+> >>> +			polling-delay-passive =3D <0>;
+> >>> +			polling-delay =3D <0>;
+> >>> +			thermal-sensors =3D <&pmk8350_adc_tm 2>;
+> >>> +
+> >>> +			trips {
+> >>> +				active-config0 {
+> >>> +					temperature =3D <125000>;
+> >>
+> >> are
+> >>
+> >>> +		rear-cam-thermal {
+> >>>
+> >>> +					temperature =3D <125000>;
+> >>
+> >> you
+> >>
+> >>> +		sdm-skin-thermal {
+> >>>
+> >>> +					temperature =3D <125000>;
+> >>
+> >> sure
+> >>
+> >> about these temps?
+> >=20
+> > (email from my other address, quicker right now)
+> >=20
+> > Well yes and no.
+> >=20
+> > Yes as in those are the temps specified in downstream dtb.
+> > No as in I'm 99% sure there's user space with definitely lower threshol=
+d that
+> > actually does something in response to the temps.
+> >=20
+> > I didn't look too much into this but does the kernel even do something =
+when it
+> > hits one of these trip points? I assume when there's a cooling device t=
+hing
+> > specified then it can actually tell the driver to do something, but wit=
+hout
+> > (and most drivers don't support this?) I'm assuming the kernel can't do=
+ much
+> > anyways?
+> >=20
+> > So e.g. when the temperature for the flash led is reached I'm assuming
+> > downstream (+Android) either dims the led or turns it off? But I'd have=
+ to dig
+> > quite a bit into the thermal setup there to check what it's really doin=
+g.
+> I think reaching "critical" shuts down the platform, unless something
+> registering the thermal zone explicitly overrides the behavior.
 
---CZzpS91aR3CsPOh0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Should probably be easy to test, especially the camera flash thermal
+zone heats up *very* quickly when the flash is on, so should be trivial
+to set the trip point down from 125degC to e.g. 45degC and see what
+happens.
 
-The RGB + IR data can be used to calculate the illuminance value (luxes).
-Implement the equation obtained from the ROHM HW colleagues and add a
-raw light data channel outputting illuminance values in (nano) Luxes.
+So I did this and... nothing happened.
+I watched /sys/class/thermal/thermal_zone34/temp climb above 45degC and
+nothing happened.
 
-Both the read_raw and buffering values are supported, with the limitation
-that buffering is only allowed when a suitable scan-mask is used. (RGB+IR,
-no clear).
+I guess trip type being "passive" and no cooling-device makes it not do
+anything.
 
-The equation has been developed by ROHM HW colleagues for open air sensor.
-Adding any lens to the sensor is likely to impact to used c1, c2, c3
-coefficients. Also, the output values have only been tested on BU27008.
+  =3D=3D> /sys/class/thermal/thermal_zone34/trip_point_0_hyst <=3D=3D
+  1000
+  =3D=3D> /sys/class/thermal/thermal_zone34/trip_point_0_temp <=3D=3D
+  45000
+  =3D=3D> /sys/class/thermal/thermal_zone34/trip_point_0_type <=3D=3D
+  passive
 
-According to the HW colleagues, the very same equation should work on
-BU27010 as well.
+From Documentation/devicetree/bindings/thermal/thermal-zones.yaml:
 
-Calculate and output illuminance values from BU27008 and BU27010.
+  - active   # enable active cooling e.g. fans
+  - passive  # enable passive cooling e.g. throttling cpu
+  - hot      # send notification to driver
+  - critical # send notification to driver, trigger shutdown
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+So unless we want to just shut down the system (with "critical"), I
+don't think thermal can't really do anything else right now, since e.g.
+leds-qcom-flash.c driver doesn't have any cooling support to lower the
+brightness or turn off the LED.
 
----
-Revision history:
-v1 =3D> v2:
-- reduce lux function parameters using an array
-- streamline code by converting channel data to meaningful values in
-  bu27008_calc_nlux() for both the raw read and buffering
-- some minor styling
+So.. in essence not much we can do right now.
 
-I did very dummy testing at very normal daylight inside a building. No
-special equipments were used - I simply compared values computed from
-BU27008 RGB+IR channels, to values displayed by the ALS in my mobile
-phone. Results were roughly the same (around 400 lux). Couldn't repeat
-test on BU27010, but the data it outputs should be same format as
-BU27008 data so equation should work for both sensors.
----
- drivers/iio/light/rohm-bu27008.c | 201 ++++++++++++++++++++++++++++++-
- 1 file changed, 196 insertions(+), 5 deletions(-)
+But seems we also cannot remove this (kinda useless) trip since we need
+at least one trip point in the dts if I read the bindings yaml
+correctly.
 
-diff --git a/drivers/iio/light/rohm-bu27008.c b/drivers/iio/light/rohm-bu27=
-008.c
-index 6a6d77805091..0f010eff1981 100644
---- a/drivers/iio/light/rohm-bu27008.c
-+++ b/drivers/iio/light/rohm-bu27008.c
-@@ -130,6 +130,7 @@
-  * @BU27008_BLUE:	Blue channel. Via data2 (when used).
-  * @BU27008_CLEAR:	Clear channel. Via data2 or data3 (when used).
-  * @BU27008_IR:		IR channel. Via data3 (when used).
-+ * @BU27008_LUX:	Illuminance channel, computed using RGB and IR.
-  * @BU27008_NUM_CHANS:	Number of channel types.
-  */
- enum bu27008_chan_type {
-@@ -138,6 +139,7 @@ enum bu27008_chan_type {
- 	BU27008_BLUE,
- 	BU27008_CLEAR,
- 	BU27008_IR,
-+	BU27008_LUX,
- 	BU27008_NUM_CHANS
- };
-=20
-@@ -172,6 +174,8 @@ static const unsigned long bu27008_scan_masks[] =3D {
- 	ALWAYS_SCANNABLE | BIT(BU27008_CLEAR) | BIT(BU27008_IR),
- 	/* buffer is R, G, B, IR */
- 	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR),
-+	/* buffer is R, G, B, IR, LUX */
-+	ALWAYS_SCANNABLE | BIT(BU27008_BLUE) | BIT(BU27008_IR) | BIT(BU27008_LUX),
- 	0
- };
-=20
-@@ -331,6 +335,19 @@ static const struct iio_chan_spec bu27008_channels[] =
-=3D {
- 	 * Hence we don't advertise available ones either.
- 	 */
- 	BU27008_CHAN(IR, DATA3, 0),
-+	{
-+		.type =3D IIO_LIGHT,
-+		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.channel =3D BU27008_LUX,
-+		.scan_index =3D BU27008_LUX,
-+		.scan_type =3D {
-+			.sign =3D 'u',
-+			.realbits =3D 64,
-+			.storagebits =3D 64,
-+			.endianness =3D IIO_CPU,
-+		},
-+	},
- 	IIO_CHAN_SOFT_TIMESTAMP(BU27008_NUM_CHANS),
- };
-=20
-@@ -1004,6 +1021,169 @@ static int bu27008_read_one(struct bu27008_data *da=
-ta, struct iio_dev *idev,
- 	return ret;
- }
-=20
-+#define BU27008_LUX_DATA_RED	0
-+#define BU27008_LUX_DATA_GREEN	1
-+#define BU27008_LUX_DATA_BLUE	2
-+#define BU27008_LUX_DATA_IR	3
-+#define LUX_DATA_SIZE (BU27008_NUM_HW_CHANS * sizeof(__le16))
-+
-+static int bu27008_read_lux_chans(struct bu27008_data *data, unsigned int =
-time,
-+				  __le16 *chan_data)
-+{
-+	int ret, chan_sel, tmpret, valid;
-+
-+	chan_sel =3D BU27008_BLUE2_IR3 << (ffs(data->cd->chan_sel_mask) - 1);
-+
-+	ret =3D regmap_update_bits(data->regmap, data->cd->chan_sel_reg,
-+				 data->cd->chan_sel_mask, chan_sel);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D bu27008_meas_set(data, true);
-+	if (ret)
-+		return ret;
-+
-+	msleep(time / USEC_PER_MSEC);
-+
-+	ret =3D regmap_read_poll_timeout(data->regmap, data->cd->valid_reg,
-+				       valid, (valid & BU27008_MASK_VALID),
-+				       BU27008_VALID_RESULT_WAIT_QUANTA_US,
-+				       BU27008_MAX_VALID_RESULT_WAIT_US);
-+	if (ret)
-+		goto out;
-+
-+	ret =3D regmap_bulk_read(data->regmap, BU27008_REG_DATA0_LO, chan_data,
-+			       LUX_DATA_SIZE);
-+	if (ret)
-+		goto out;
-+out:
-+	tmpret =3D bu27008_meas_set(data, false);
-+	if (tmpret)
-+		dev_warn(data->dev, "Stopping measurement failed\n");
-+
-+	return ret;
-+}
-+
-+/*
-+ * Following equation for computing lux out of register values was given by
-+ * ROHM HW colleagues;
-+ *
-+ * Red =3D RedData*1024 / Gain * 20 / meas_mode
-+ * Green =3D GreenData* 1024 / Gain * 20 / meas_mode
-+ * Blue =3D BlueData* 1024 / Gain * 20 / meas_mode
-+ * IR =3D IrData* 1024 / Gain * 20 / meas_mode
-+ *
-+ * where meas_mode is the integration time in mS / 10
-+ *
-+ * IRratio =3D (IR > 0.18 * Green) ? 0 : 1
-+ *
-+ * Lx =3D max(c1*Red + c2*Green + c3*Blue,0)
-+ *
-+ * for
-+ * IRratio 0: c1 =3D -0.00002237, c2 =3D 0.0003219, c3 =3D -0.000120371
-+ * IRratio 1: c1 =3D -0.00001074, c2 =3D 0.000305415, c3 =3D -0.000129367
-+ */
-+
-+/*
-+ * The max chan data is 0xffff. When we multiply it by 1024 * 20, we'll get
-+ * 0x4FFFB000 which still fits in 32-bit integer. This won't overflow.
-+ */
-+#define NORM_CHAN_DATA_FOR_LX_CALC(chan, gain, time) (le16_to_cpu(chan) * \
-+				   1024 * 20 / (gain) / (time))
-+static u64 bu27008_calc_nlux(struct bu27008_data *data, __le16 *lux_data,
-+		unsigned int gain, unsigned int gain_ir, unsigned int time)
-+{
-+	unsigned int red, green, blue, ir;
-+	s64 c1, c2, c3, nlux;
-+
-+	time /=3D 10000;
-+	ir =3D NORM_CHAN_DATA_FOR_LX_CALC(lux_data[BU27008_LUX_DATA_IR], gain_ir,=
- time);
-+	red =3D NORM_CHAN_DATA_FOR_LX_CALC(lux_data[BU27008_LUX_DATA_RED], gain, =
-time);
-+	green =3D NORM_CHAN_DATA_FOR_LX_CALC(lux_data[BU27008_LUX_DATA_GREEN], ga=
-in, time);
-+	blue =3D NORM_CHAN_DATA_FOR_LX_CALC(lux_data[BU27008_LUX_DATA_BLUE], gain=
-, time);
-+
-+	if ((u64)ir * 100LLU > (u64)green * 18LLU) {
-+		c1 =3D -22370;
-+		c2 =3D 321900;
-+		c3 =3D -120371;
-+	} else {
-+		c1 =3D -10740;
-+		c2 =3D 305415;
-+		c3 =3D -129367;
-+	}
-+	nlux =3D c1 * red + c2 * green + c3 * blue;
-+
-+	return max_t(s64, 0, nlux);
-+}
-+
-+static int bu27008_get_time_n_gains(struct bu27008_data *data,
-+		unsigned int *gain, unsigned int *gain_ir, unsigned int *time)
-+{
-+	int ret;
-+
-+	ret =3D bu27008_get_gain(data, &data->gts, gain);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret =3D bu27008_get_gain(data, &data->gts_ir, gain_ir);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret =3D bu27008_get_int_time_us(data);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Max integration time is 400000. Fits in signed int. */
-+	*time =3D ret;
-+
-+	return 0;
-+}
-+
-+struct bu27008_buf {
-+	__le16 chan[BU27008_NUM_HW_CHANS];
-+	u64 lux __aligned(8);
-+	s64 ts __aligned(8);
-+};
-+
-+static int bu27008_buffer_fill_lux(struct bu27008_data *data,
-+				   struct bu27008_buf *raw)
-+{
-+	unsigned int gain, gain_ir, time;
-+	int ret;
-+
-+	ret =3D bu27008_get_time_n_gains(data, &gain, &gain_ir, &time);
-+	if (ret)
-+		return ret;
-+
-+	raw->lux =3D bu27008_calc_nlux(data, raw->chan, gain, gain_ir, time);
-+
-+	return 0;
-+}
-+
-+static int bu27008_read_lux(struct bu27008_data *data, struct iio_dev *ide=
-v,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2)
-+{
-+	__le16 lux_data[BU27008_NUM_HW_CHANS];
-+	unsigned int gain, gain_ir, time;
-+	u64 nlux;
-+	int ret;
-+
-+	ret =3D bu27008_get_time_n_gains(data, &gain, &gain_ir, &time);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D bu27008_read_lux_chans(data, time, lux_data);
-+	if (ret)
-+		return ret;
-+
-+	nlux =3D bu27008_calc_nlux(data, lux_data, gain, gain_ir, time);
-+	*val =3D (int)nlux;
-+	*val2 =3D nlux >> 32LLU;
-+
-+	return IIO_VAL_INT_64;
-+}
-+
- static int bu27008_read_raw(struct iio_dev *idev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2, long mask)
-@@ -1018,7 +1198,10 @@ static int bu27008_read_raw(struct iio_dev *idev,
- 			return -EBUSY;
-=20
- 		mutex_lock(&data->mutex);
--		ret =3D bu27008_read_one(data, idev, chan, val, val2);
-+		if (chan->type =3D=3D IIO_LIGHT)
-+			ret =3D bu27008_read_lux(data, idev, chan, val, val2);
-+		else
-+			ret =3D bu27008_read_one(data, idev, chan, val, val2);
- 		mutex_unlock(&data->mutex);
-=20
- 		iio_device_release_direct_mode(idev);
-@@ -1026,6 +1209,11 @@ static int bu27008_read_raw(struct iio_dev *idev,
- 		return ret;
-=20
- 	case IIO_CHAN_INFO_SCALE:
-+		if (chan->type =3D=3D IIO_LIGHT) {
-+			*val =3D 0;
-+			*val2 =3D 1;
-+			return IIO_VAL_INT_PLUS_NANO;
-+		}
- 		ret =3D bu27008_get_scale(data, chan->scan_index =3D=3D BU27008_IR,
- 					val, val2);
- 		if (ret)
-@@ -1236,10 +1424,7 @@ static irqreturn_t bu27008_trigger_handler(int irq, =
-void *p)
- 	struct iio_poll_func *pf =3D p;
- 	struct iio_dev *idev =3D pf->indio_dev;
- 	struct bu27008_data *data =3D iio_priv(idev);
--	struct {
--		__le16 chan[BU27008_NUM_HW_CHANS];
--		s64 ts __aligned(8);
--	} raw;
-+	struct bu27008_buf raw;
- 	int ret, dummy;
-=20
- 	memset(&raw, 0, sizeof(raw));
-@@ -1257,6 +1442,12 @@ static irqreturn_t bu27008_trigger_handler(int irq, =
-void *p)
- 	if (ret < 0)
- 		goto err_read;
-=20
-+	if (test_bit(BU27008_LUX, idev->active_scan_mask)) {
-+		ret =3D bu27008_buffer_fill_lux(data, &raw);
-+		if (ret)
-+			goto err_read;
-+	}
-+
- 	iio_push_to_buffers_with_timestamp(idev, &raw, pf->timestamp);
- err_read:
- 	iio_trigger_notify_done(idev->trig);
+>
+> >=20
+> > But for now I think it's okay to put this current thermal config into d=
+ts and
+> > we'll improve it later when 1. I understand more and 2. maybe some usef=
+ul
+> > drivers support the cooling bits?
+> Yeah it's better than nothing, but ultimately we should probably move
+> the values that userspace daemon operates on here in the dt..
 
-base-commit: 89e2233386a5670d15908628b63e611cb03b0d03
---=20
-2.41.0
+For sure.. I spent a bit of time looking into the proprietary Qualcomm
+thermal-daemon sources but didn't really see much interesting things
+there for this platform, maybe some of this thermal handling is
+somewhere else - or half of these thermal zones aren't even used with
+Android.
 
+So.. good to get the current patch upstream or not? :)
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Regards
+Luca
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+>
+> Konrad
 
---CZzpS91aR3CsPOh0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmUyXDgACgkQeFA3/03a
-ocUxFAgAwqKEwKXLo429cwZg8xw7/vq42UhhyL6t5vxsLhXlo6B5JvPUzIhddZrs
-Uunl5UkkA82DLFPsw0UBBVTDUsQQ6OJnYg4Dl7UdoiB/4FqzQXz7VHZ0ngH5Jctp
-AmPjgAgE69KFUnhDHQcAGOMJK1nhFSiqE/xklgyseL/fp3lske9F4m3RxryDl3nf
-YeFDpenmyhpej99kaQmCPss17SX4YVJEiGw7Oiib0Ql4ev36ED93eVi9KqpGaFz8
-e3KobYXFqbt5mwGtFuuGtbLxvP+JddSKArNejGsDK3O2WgL8zlmS+kzH2auMxe4l
-3F9ewy1P0rHOqrS0KaUaAoMiRHcRCA==
-=xF4o
------END PGP SIGNATURE-----
-
---CZzpS91aR3CsPOh0--

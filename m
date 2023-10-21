@@ -2,144 +2,237 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1257D1E19
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Oct 2023 18:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B6857D1E39
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Oct 2023 18:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbjJUQDX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Oct 2023 12:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47406 "EHLO
+        id S231793AbjJUQWm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Oct 2023 12:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231372AbjJUQDW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Oct 2023 12:03:22 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A391A4;
-        Sat, 21 Oct 2023 09:03:19 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-507c5249d55so2594233e87.3;
-        Sat, 21 Oct 2023 09:03:19 -0700 (PDT)
+        with ESMTP id S231801AbjJUQWm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Oct 2023 12:22:42 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67D910F1
+        for <linux-iio@vger.kernel.org>; Sat, 21 Oct 2023 09:22:26 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2c504a5e1deso30029841fa.2
+        for <linux-iio@vger.kernel.org>; Sat, 21 Oct 2023 09:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697904198; x=1698508998; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697905345; x=1698510145; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yENL9JqeGB/W0WlC7U8msTzsOxSGZPZmnQurVbpgogo=;
-        b=KNciIUxg25RKKJsMrBm6/TwVZ/Fh+RGZV+YLj0/XPUfcb6utLF8wKp2Rh3K7oHhUnZ
-         7sEYUldv0r3k8oSwehXhPtOp0rBvsIT7QpbxAMOExgkKBiG2ePPDZYGzzS+BEpKuGFXt
-         AXb1gO38dogIq2d9oRunWLvCIewkfCMGCkGM6ilsNLrQ4g+t0rRQIuagzXg3pEgM/a9R
-         Krt0EYXcb55LXkCW0uOs2PnvEi44mSeXEhNJ8YsK47o9pVbpNhb7+70hNiYxI7eKTG7x
-         VN1emn4Qi2vTdmpm+Yr1rYBul5d3NnT+i0fxizGMC3R7gKZ08TlKHjkq4tDFrYTWz3gg
-         oX+w==
+        bh=bq4OEcwD40oryiY81T817LlNpOkk1oBYf6X08dXM5lM=;
+        b=HZc0/7LiCDpQAz3/J1MM0KFQ7YwQAmYjW00L7nzTWJ3UgqmXmXS8qbmOD+Cie6Xq+5
+         jLLdLgdntKRTKRFnN+qeYfYSUvSRyHOx9GptSJAf/UljTKJAMFGOosCosZ4XCbrAQcmA
+         CiGvAGhWJqCIdrtl43pOCZyPyoQHwZTTlX5qBS2/nG3on5uOEnfvYnpe0z3XYfnmfRmk
+         n09SD6aWmwvYy0wdItPnk5uyyIlnva+QCk1KtkfdPB3lyEHYdDWsfBOpQOP29WqZX+NE
+         NMyUxmn4X1PpOyj68Uc7Nr5JhnB7GPygEldsRhYXAzTvOwn7q12Skr1POjgp79jBnMT4
+         XrAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697904198; x=1698508998;
+        d=1e100.net; s=20230601; t=1697905345; x=1698510145;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yENL9JqeGB/W0WlC7U8msTzsOxSGZPZmnQurVbpgogo=;
-        b=Y68Locg8f1zhwokfGXtZO6Z8x4n9vpOtm2AdrHdYmW4MmDUFrFI+sVqdqIPG92zd+3
-         vFLe7vJX2zC7iPVPYj0+yBeRTiCXxfi8EEKgxmJAgBcFzUEKQd9nXPh4OKMbHkk7N2Gz
-         dicK6D+qi8dK1AqUQ1pmIkFmuBG7BRHN/jxHUEAlnrGzxnOr8DaBZYndDKMo6jWwb2c1
-         +K3wI5UtSagXYOKzxVZCKVNWQaovfmQLuxFlLRShGEABsKHanas69y4IXHUIo4iQNE+y
-         sOJIb8zqTICgeDvEGXt4jWgSyoXeVgak/xGAh2UdXIivo+bvnYAkzretAM8frLcI3GBL
-         uCNA==
-X-Gm-Message-State: AOJu0YzdD6SMGzD2NUILWj4DhrK4fQv5gtX/4h/5STuBIVX2vCieja12
-        1n/z6HuSkL/v6k9OXaS3xkRFDSrDNZKM6A==
-X-Google-Smtp-Source: AGHT+IGH7AMKl0Xwlmzj55l5riL3G0wb8amXF57YE1VsV+VEDlxAnwhlSzoufdoAt2Q63ydZ+WJmNA==
-X-Received: by 2002:ac2:58e2:0:b0:4fe:db6:cb41 with SMTP id v2-20020ac258e2000000b004fe0db6cb41mr2941277lfo.39.1697904197333;
-        Sat, 21 Oct 2023 09:03:17 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id h2-20020ac25962000000b005079db81105sm912538lfp.116.2023.10.21.09.03.15
+        bh=bq4OEcwD40oryiY81T817LlNpOkk1oBYf6X08dXM5lM=;
+        b=Pb15cU5oItjn5Upj/X82sCyK53FawREo6YiCJJRA+iHYzLZiNOV+X7yJqK/I1RB8pv
+         MOoGa8D0sTLeGWEoEoY4FGeb5l0pApYDEFNsJBtvn9xh5d5vHmnd3ABJOZkkzHuPuz5X
+         bkPasJ23nxSWe7CrFpEmGyYBqZmtclcdojO92+asGSNPQWXWzQXxNJYU0XG/+lqkO9MZ
+         dDjRGlA146wDGlnxckegn/dBvRZuQ/e6vl3WqJzHDfiP9O/dP4tTeMGYSBOLpH8RS/x8
+         BKlwWm5475VhOsjemEvmFXq35f6vjgOuIctGxpf9YyNTb1y7RDkgo55Hu++KeXN/jaKD
+         kFrQ==
+X-Gm-Message-State: AOJu0YwOYQH0f2vtTERLnGNLh4h38UoejWA3CLJCMnYfPjzGmI2CfkzC
+        1Tv3MaTCM3hD/vfV1JjsJXEM6g==
+X-Google-Smtp-Source: AGHT+IE4SQlDKL3C8DoT4QQEe8B1Xg/q1a1xGIoy+N5YYsQVIl2h3Ew9Mq7OT46yW7hK/1Y9L5ZQrw==
+X-Received: by 2002:a2e:a690:0:b0:2bf:f670:36dc with SMTP id q16-20020a2ea690000000b002bff67036dcmr2963289lje.49.1697905344949;
+        Sat, 21 Oct 2023 09:22:24 -0700 (PDT)
+Received: from [192.168.1.116] (abyl4.neoplus.adsl.tpnet.pl. [83.9.31.4])
+        by smtp.gmail.com with ESMTPSA id j10-20020a2e3c0a000000b002b657f10b78sm867290lja.58.2023.10.21.09.22.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Oct 2023 09:03:16 -0700 (PDT)
-Message-ID: <db83cafb-1a96-40c4-ab36-8cb1ef0f2f30@gmail.com>
-Date:   Sat, 21 Oct 2023 19:03:15 +0300
+        Sat, 21 Oct 2023 09:22:24 -0700 (PDT)
+Message-ID: <9a37d4a4-dcdf-4c39-8059-b640969f242a@linaro.org>
+Date:   Sat, 21 Oct 2023 18:22:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Sanity-check available_scan_masks array
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325
+ thermals
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>, Luca Weiss <luca@z3ntu.xyz>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1697452986.git.mazziesaccount@gmail.com>
- <20231021165535.34dcb94b@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20231021165535.34dcb94b@jic23-huawei>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
+ <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
+ <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
+ <4958673.31r3eYUQgx@z3ntu.xyz>
+ <5ac0d16a-0303-46c7-a008-31280629cc11@linaro.org>
+ <CWD8E95B0W8L.1UMMGJXJF47D@fairphone.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <CWD8E95B0W8L.1UMMGJXJF47D@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/21/23 18:55, Jonathan Cameron wrote:
-> On Mon, 16 Oct 2023 14:04:11 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+
+On 10/20/23 13:31, Luca Weiss wrote:
+> On Wed Oct 18, 2023 at 10:28 PM CEST, Konrad Dybcio wrote:
+>>
+>>
+>> On 10/14/23 19:52, Luca Weiss wrote:
+>>> On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
+>>>> On 13.10.2023 10:09, Luca Weiss wrote:
+>>>>> Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THERM
+>>>>> and RFC_CAM_THERM thermistors connected to PM7325.
+>>>>>
+>>>>> With this PMIC the software communication to the ADC is going through
+>>>>> PMK7325 (= PMK8350).
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>>
+>>>>>    arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
+>>>>>    +++++++++++++++++++++ 1 file changed, 117 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
+>>>>> 2c01f799a6b2..d0b1e4e507ff 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> @@ -9,6 +9,7 @@
+>>>>>
+>>>>>    #define PM7250B_SID 8
+>>>>>    #define PM7250B_SID1 9
+>>>>>
+>>>>> +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
+>>>>>
+>>>>>    #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
+>>>>>    #include <dt-bindings/leds/common.h>
+>>>>>    #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>>>>>
+>>>>> @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
+>>>>>
+>>>>>    	};
+>>>>>    	
+>>>>>    	thermal-zones {
+>>>>>
+>>>>> +		camera-thermal {
+>>>>> +			polling-delay-passive = <0>;
+>>>>> +			polling-delay = <0>;
+>>>>> +			thermal-sensors = <&pmk8350_adc_tm 2>;
+>>>>> +
+>>>>> +			trips {
+>>>>> +				active-config0 {
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> are
+>>>>
+>>>>> +		rear-cam-thermal {
+>>>>>
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> you
+>>>>
+>>>>> +		sdm-skin-thermal {
+>>>>>
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> sure
+>>>>
+>>>> about these temps?
+>>>
+>>> (email from my other address, quicker right now)
+>>>
+>>> Well yes and no.
+>>>
+>>> Yes as in those are the temps specified in downstream dtb.
+>>> No as in I'm 99% sure there's user space with definitely lower threshold that
+>>> actually does something in response to the temps.
+>>>
+>>> I didn't look too much into this but does the kernel even do something when it
+>>> hits one of these trip points? I assume when there's a cooling device thing
+>>> specified then it can actually tell the driver to do something, but without
+>>> (and most drivers don't support this?) I'm assuming the kernel can't do much
+>>> anyways?
+>>>
+>>> So e.g. when the temperature for the flash led is reached I'm assuming
+>>> downstream (+Android) either dims the led or turns it off? But I'd have to dig
+>>> quite a bit into the thermal setup there to check what it's really doing.
+>> I think reaching "critical" shuts down the platform, unless something
+>> registering the thermal zone explicitly overrides the behavior.
 > 
->> Sanity-check available_scan_masks array
->>
->> The available_scan_masks is an array of bitmasks representing the
->> channels which can be simultaneously(*) scanned by a driver from the
->> device. Following special characteristics apply:
->>
->> - When IIO is scanning through the array it will use the first mask
->>    which can be used to scan all enabled channels. This means drivers
->>    should order the array in the order of the preference. This does also
->>    mean that a mask which is a subset of a mask located earler in array
->>    will never be used because the earlier one will be picked by the core.
->> - Masks wider than size of long are supported only to some extent. The
->>    code scanning through the array will interpret the first mask with
->>    first long zeroed as end-of-array terminator. Changing this behaviour
->>    would make mask-arrays for multi-long masks to be terminated by more
->>    than one zero long. Failure to do so would result kernel to read
->>    beyond the array generating a potentially hazardous bug.
->>
->> Add a sanity-check to IIO-device registration emitting a warning if
->> available_scan_mask array is misordered or if mask width is larger than
->> a long while available_scan_mask-array is populated. Currently there
->> should be no in-tree drivers with available_scan_mask populated and mask
->> wider than a long.
->>
->> Revision history:
->> v1 => v2:
->> 	- Add patch 2/2 documenting why iio_scan_mask_match() checks only
->> 	  a long worth of bits while searching for the end of the
->> 	  available_scan_mask-array.
->> 	- Styling of patch 1/2 as per comments from Jonathan
->> 	v1 and related discussion here:
->> 	https://lore.kernel.org/lkml/ZRvjuZaQWdZw1U1I@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi/
->>
->> Matti Vaittinen (2):
->>    iio: sanity check available_scan_masks array
->>    iio: buffer: document known issue
->>
->>   drivers/iio/industrialio-buffer.c | 16 ++++++++
->>   drivers/iio/industrialio-core.c   | 63 +++++++++++++++++++++++++++++++
->>   2 files changed, 79 insertions(+)
->>
+> Should probably be easy to test, especially the camera flash thermal
+> zone heats up *very* quickly when the flash is on, so should be trivial
+> to set the trip point down from 125degC to e.g. 45degC and see what
+> happens.
 > 
-> Hi Matti,
+> So I did this and... nothing happened.
+> I watched /sys/class/thermal/thermal_zone34/temp climb above 45degC and
+> nothing happened.
 > 
-> Just a quick note to say this looks fine to me, but I don't want to queue it up
-> just yet given proximity to merge window etc.
+> I guess trip type being "passive" and no cooling-device makes it not do
+> anything.
+> 
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_hyst <==
+>    1000
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_temp <==
+>    45000
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_type <==
+>    passive
+> 
+>  From Documentation/devicetree/bindings/thermal/thermal-zones.yaml:
+> 
+>    - active   # enable active cooling e.g. fans
+>    - passive  # enable passive cooling e.g. throttling cpu
+>    - hot      # send notification to driver
+>    - critical # send notification to driver, trigger shutdown
+> 
+> So unless we want to just shut down the system (with "critical"), I
+> don't think thermal can't really do anything else right now, since e.g.
+> leds-qcom-flash.c driver doesn't have any cooling support to lower the
+> brightness or turn off the LED.
+> 
+> So.. in essence not much we can do right now.
+Yeah.. crashing the phone because the LED is too hot is sorta
+suboptimal! Though I mainly had the skin temp in mind..
 
-Makes perfect sense to me.
+> 
+> But seems we also cannot remove this (kinda useless) trip since we need
+> at least one trip point in the dts if I read the bindings yaml
+> correctly.
+Right
 
->  I'll aim to pick it up early
-> in next cycle. Give me a poke if I still haven't by rc3 or so.
+> 
+>>
+>>>
+>>> But for now I think it's okay to put this current thermal config into dts and
+>>> we'll improve it later when 1. I understand more and 2. maybe some useful
+>>> drivers support the cooling bits?
+>> Yeah it's better than nothing, but ultimately we should probably move
+>> the values that userspace daemon operates on here in the dt..
+> 
+> For sure.. I spent a bit of time looking into the proprietary Qualcomm
+> thermal-daemon sources but didn't really see much interesting things
+> there for this platform, maybe some of this thermal handling is
+> somewhere else - or half of these thermal zones aren't even used with
+> Android.
+> 
+> So.. good to get the current patch upstream or not? :)
+Yep, just having the ability to read out thing is always good ;)
 
-Ouch... My memory gets worse year by year - well, I'll try to remember :)
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Konrad

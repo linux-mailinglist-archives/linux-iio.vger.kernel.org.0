@@ -2,76 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27DA97D24E8
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Oct 2023 19:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685957D260F
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Oct 2023 23:11:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232901AbjJVRXw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Oct 2023 13:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
+        id S231903AbjJVVLF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Oct 2023 17:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232774AbjJVRXi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Oct 2023 13:23:38 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886A0188;
-        Sun, 22 Oct 2023 10:23:33 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4084e49a5e5so21860775e9.3;
-        Sun, 22 Oct 2023 10:23:33 -0700 (PDT)
+        with ESMTP id S229500AbjJVVLE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Oct 2023 17:11:04 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF33297
+        for <linux-iio@vger.kernel.org>; Sun, 22 Oct 2023 14:11:01 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c509d5ab43so40218541fa.0
+        for <linux-iio@vger.kernel.org>; Sun, 22 Oct 2023 14:11:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697995411; x=1698600211; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1698009060; x=1698613860; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=79Dx0uLbBVkqJTCtZs4cLaK3T8okZZKMf9z3Pmca9Oo=;
-        b=JiPNAfhDcupoMTkEa4wuCujCo24drVu7+lVyw+XjavznDkQg1NRuoeHgy+IpsuU7RO
-         WClrY9r1GFhqvOXU32Kn9LoHPPu+9yqKet5dKoAGqHuh1Q3ZcQ385oj4ERuI79v52Q7l
-         JqTY4V/Hbw6EWCNu9fdPMeO0EYzszsg+jGfyz4reO89BLwd4+QLEodhg0tryklhBQWGO
-         VXfQcnVwzUToOsPZNgmjj9zkxa70/QdVoUSgBJvewh/bM3sc99TkWbleUxP1x+B1vfam
-         c8frhcEFpzSjT5rNMmZlvAvC9DK5GbsASKvMfSA/DV4XFkK7F4WmVbJqNKShrSYgakbe
-         jxXg==
+        bh=auQpGaECjTCs+PFuyDE8IKn2Q0sSCjMRbWmc04At4Ck=;
+        b=bAs8pPlthd9zrUQONA3hLrAMznCim45qBflHoRK9411dTshezxkV4jymipvNxBV/Ae
+         jMJmWcEpZVG4yHL7UlytMb2igNA7XUGMglrF5SUIEdYmY5qMuOVEFt4sILcZUKSvv/op
+         nxXUUO0UUgPmj8GlE6AvxxM4daPuwRwzrIcvwm8nwajJKjJkD4ODMFHJnKxALW5sG/SH
+         6s/ct3blR7NYqNoV7m8XPDqA7rs63Ceg4+6XahfskXUg4MsNcx04LUMB18czoeYZQg4B
+         Am7dsJ3/RDVBQH4xz4DzhzaLrDGSQ7AkwKm4drrdNP2Kt/aVdbu23XhmyjvISi/uWemB
+         q08A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697995411; x=1698600211;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1698009060; x=1698613860;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=79Dx0uLbBVkqJTCtZs4cLaK3T8okZZKMf9z3Pmca9Oo=;
-        b=URUudC7aTZhNjKzTk4EVuvHJRl1fdyh2FuIEwl3/lI+zyhRqCVAvLyZwCC794uyw6J
-         Wmwm/yMIjA8fo1HjPONte8HtiD8G6GTqD+MvV9D2hy96UjaNxDAU0QB+kKh3xShvZVDf
-         ZJ+awoAc3WO4gxL1k+++TLGbCeiKDIasUyMSLe4Zb5iRjV0EW8atL3lQSyrLNWabfgCR
-         B6z8kcOEHkpE6ZJ0A1wWyh/X8nLbLT4LU++qPFPJgotIsAbGF+kbtph4b1lDSUrH7DWL
-         kuIVS3mH+fLwumw0OcK808zim9H6ASSR45OzWrC1DzN5zkMU3Es3OO4L5JU5cYDMPKEE
-         uUxQ==
-X-Gm-Message-State: AOJu0YxqGh/fZy8tDRfmXAmnszUWR+1dBTLeRnlYWOnxW7Mddu+HvdqZ
-        347V/kdoj7WWWUxjtsMa/gSvGRikrbw=
-X-Google-Smtp-Source: AGHT+IEHo0j83UHCKmOEJ57H0YfOUxlOeVgfQCKw4Qz64tkfoyF7VQOLu5v2+Pmss52iH5ezoZl9vg==
-X-Received: by 2002:a05:600c:188a:b0:406:7021:7d8 with SMTP id x10-20020a05600c188a00b00406702107d8mr5560229wmp.20.1697995411245;
-        Sun, 22 Oct 2023 10:23:31 -0700 (PDT)
-Received: from toolbox.taileb357.ts.net (13.red-83-35-58.dynamicip.rima-tde.net. [83.35.58.13])
-        by smtp.gmail.com with ESMTPSA id o12-20020adfe80c000000b0032da49e18fasm6043836wrm.23.2023.10.22.10.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 10:23:31 -0700 (PDT)
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        linux-kernel@vger.kernel.org,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Phil Elwell <phil@raspberrypi.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH v2 5/5] iio: pressure: bmp280: Add support for BMP390
-Date:   Sun, 22 Oct 2023 19:22:21 +0200
-Message-ID: <d6a9e9ca4670c7401545d0d086cd3059e29044c8.1697994521.git.ang.iglesiasg@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <cover.1697994521.git.ang.iglesiasg@gmail.com>
-References: <cover.1697994521.git.ang.iglesiasg@gmail.com>
+        bh=auQpGaECjTCs+PFuyDE8IKn2Q0sSCjMRbWmc04At4Ck=;
+        b=As3FJCZVlKCKIS5dw7HJ7z+NnG3yXj9xEd4AHvBukSs698H87YPCT5f4COtOy/FqaS
+         M/SJKd2Kx6AfuuXR47637kxH7Fw4Uc6Qo8LNWtrzvc8QGhLkpvuL2dOaxmgn8NQhnJZy
+         /+o0txWGGCYzt4xsY6bzprtIrjtMHf602jvC0/7SULo9pHGC2AwWP+PysszcfghMZjCL
+         L6ESc4BmKGcKQN8zUDwpKpxdZmc4o7P+XVwGcJ7hW7v5NHyAfQO5HzPVT85rbQnVn40P
+         7ISvy0pAG+eqBuQXHVhrBpcJu02uwz3daU8Gcj4lo6IZo5Xh5e8Hmpz47MkZRK5Ci0CS
+         dlVg==
+X-Gm-Message-State: AOJu0YylF32mzztqlaV4dgU+usA0pz5zEEMisBliMYMcD/eV1lFZLChE
+        q6qoUOZqZuVCV3HZJRpUW+THBz7ZB9jYDPKM7WH65g==
+X-Google-Smtp-Source: AGHT+IEsQWsOIWJCc5YEaFEZ3EIR7+fpbJoniyuDA083CwEduaYPSal7tJoMq5a2BagWvAGflgNU87ek7Re4ToqCwVc=
+X-Received: by 2002:a05:651c:2328:b0:2c5:1e70:7d30 with SMTP id
+ bi40-20020a05651c232800b002c51e707d30mr4931578ljb.30.1698009059516; Sun, 22
+ Oct 2023 14:10:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20231022154710.402590-1-jic23@kernel.org> <20231022154710.402590-2-jic23@kernel.org>
+In-Reply-To: <20231022154710.402590-2-jic23@kernel.org>
+From:   David Lechner <dlechner@baylibre.com>
+Date:   Sun, 22 Oct 2023 16:10:48 -0500
+Message-ID: <CAMknhBEEPC-JArFJvpHw0YAmdA+BrAQzkxU5vNvCwxf5OdHKrw@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/8] iio: locking: introduce __cleanup() based direct
+ mode claiming infrastructure
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Daniel Campello <campello@chromium.org>,
+        gregkh@linuxfoundation.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,43 +73,129 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add BMP390 device ID to the supported IDs on bmp380 sensor family
+On Sun, Oct 22, 2023 at 10:47=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Allows use of:
+>
+>         CLASS(iio_claim_direct, claimed_dev)(indio_dev);
+>         if (IS_ERR(claimed_dev))
+>                 return PTR_ERR(claimed_dev);
+>
+>         st =3D iio_priv(claimed_dev);
+>
+> to automatically call iio_device_release_direct_mode() based on scope.
+> Typically seen in combination with local device specific locks which
+> are already have automated cleanup options via guard(mutex)(&st->lock)
+> and scoped_guard().  Using both together allows most error handling to
+> be automated.
+>
+> Note that whilst this pattern results in a struct iio_dev *claimed_dev
+> that can be used, it is not necessary to do so as long as that pointer
+> has been checked for errors as in the example.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/industrialio-core.c |  4 ++++
+>  include/linux/iio/iio.h         | 25 +++++++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+>
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+ore.c
+> index c77745b594bd..93bfad105eb5 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -2065,6 +2065,10 @@ EXPORT_SYMBOL_GPL(iio_device_claim_direct_mode);
+>   */
+>  void iio_device_release_direct_mode(struct iio_dev *indio_dev)
+>  {
+> +       /* Auto cleanup can result in this being called with an ERR_PTR *=
+/
+> +       if (IS_ERR(indio_dev))
+> +               return;
+> +
+>         mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
+>  }
+>  EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index d0ce3b71106a..11c42170fda1 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -9,6 +9,7 @@
+>
+>  #include <linux/device.h>
+>  #include <linux/cdev.h>
+> +#include <linux/cleanup.h>
+>  #include <linux/slab.h>
+>  #include <linux/iio/types.h>
+>  /* IIO TODO LIST */
+> @@ -644,6 +645,30 @@ int __devm_iio_device_register(struct device *dev, s=
+truct iio_dev *indio_dev,
+>  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp=
+);
+>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+> +/*
+> + * Auto cleanup version of iio_device_claim_direct_mode,
+> + *
+> + *     CLASS(iio_claim_direct, claimed_dev)(indio_dev);
+> + *     if (IS_ERR(claimed_dev))
+> + *             return PTR_ERR(claimed_dev);
+> + *
+> + *     st =3D iio_priv(claimed_dev);
+> + *     ....
+> + */
+> +DEFINE_CLASS(iio_claim_direct, struct iio_dev *,
+> +            iio_device_release_direct_mode(_T),
+> +            ({
+> +                       struct iio_dev *dev;
+> +                       int d =3D iio_device_claim_direct_mode(_T);
+> +
+> +                       if (d < 0)
+> +                               dev =3D ERR_PTR(d);
+> +                       else
+> +                               dev =3D _T;
+> +                       dev;
+> +            }),
+> +            struct iio_dev *_T);
+> +
+>  int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
+>  void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+>
+> --
+> 2.42.0
+>
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+What is the benefit of exposing `claimed_dev` rather than just the int
+return value? It seems like it just makes more noise in the error
+check.
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index deb336781b26..c6c761e84006 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -13,6 +13,7 @@
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp388-ds001.pdf
-+ * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp390-ds002.pdf
-  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf
-  *
-  * Notice:
-@@ -1225,7 +1226,7 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 
- static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
- static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
--static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID };
-+static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
- 
- const struct bmp280_chip_info bmp380_chip_info = {
- 	.id_reg = BMP380_REG_ID,
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index a230fcfc4a85..2971bf58f802 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -292,6 +292,7 @@
- #define BMP580_CHIP_ID_ALT		0x51
- #define BMP180_CHIP_ID			0x55
- #define BMP280_CHIP_ID			0x58
-+#define BMP390_CHIP_ID			0x60
- #define BME280_CHIP_ID			0x60
- #define BMP280_SOFT_RESET_VAL		0xB6
- 
--- 
-2.42.0
+Also, this seems like this is a pattern that could be generalized and
+put in cleanup.h. For example, this pattern could be used with
+mutex_trylock as well.
 
+Basically we could create a variation of the current `guard` like:
+
+#define DEFINE_CHECKED_GUARD(_name, _type, _lock, _unlock) ...
+#define checked_guard(_name) ...
+
+To be used like:
+
+/* linux/mutex.h */
+#define DEFINE_CHECKED_GUARD(mutex, struct mutex *, \
+    mutex_trylock(_T), mutex_unlock(_T))
+
+/* any/driver.c */
+if (!checked_guard(mutex)(&thing->lock))
+    return -EBUSY
+
+/* linux/iio/iio.h */
+#define DEFINE_CHECKED_GUARD(iio_claim_direct, struct iio_dev *indio_dev *,=
+ \
+    iio_device_claim_direct_mode(_T), iio_device_release_direct_mode(_T))
+
+/* iio/driver.c */
+if (!checked_guard(iio_claim_direct)(indio_dev))
+    return -EBUSY

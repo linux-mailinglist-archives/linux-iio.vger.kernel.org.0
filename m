@@ -2,47 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC78E7D23C4
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Oct 2023 17:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B54C7D2412
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Oct 2023 18:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232050AbjJVPr7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Oct 2023 11:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51520 "EHLO
+        id S231937AbjJVQBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Oct 2023 12:01:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232244AbjJVPr6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Oct 2023 11:47:58 -0400
+        with ESMTP id S231909AbjJVQA7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Oct 2023 12:00:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A90FF7
-        for <linux-iio@vger.kernel.org>; Sun, 22 Oct 2023 08:47:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB93CC433C9;
-        Sun, 22 Oct 2023 15:47:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4700BF4;
+        Sun, 22 Oct 2023 09:00:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A5DC433C7;
+        Sun, 22 Oct 2023 16:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697989675;
-        bh=9wqXg8cQsOo9A/EsCktbjIJgvdnUnkxzxOMTxc/KuOc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cvIwpDKBmGxyDu9fY30Dtzao8RGaGL79LEzhvErz9fjSY+gIfeu5l3HrWq65xoTzu
-         U2w3uDKGwFeHSio8LMobe+S3Twjyd5RVgUo6Gs/0NVnRTxXINPMo+CBrWLTVGyUx94
-         Rvfuk8rCWVGyZzVHpdepaBdfZKSjbmoXSV+aGofF479w1jMnWt0ifReV2YHHB/+zEl
-         n1idN68N7oSD4Wkl3kwD61a9HewN39lsdYobV4Lx+nktG2uejS4jR0PAHuwYmUhfcb
-         QIXUQUH/tUr01J/4ECG1zP1wlJ5RgbKrdy+6N+O9lyEEHBClT4rKLCUjXvzeJbTcHD
-         CF2vrpIMUEyUQ==
+        s=k20201202; t=1697990455;
+        bh=utWI+Zvn3U4GICP6jBDcLsKnfFN0aqL2pXHguYrSXAU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KkEi+BHgSsQ86250AV2fVisFXT3WcG6eDJgufYG8J/UzTdlnHzbabYt8n3zjJrsqR
+         2WG1vUCAC891qeHurQHgkjsBYF1gBCnC47AawxFbU+9EPHcne9YLtlTf9pJTCvQHqz
+         392vHHK1xtgOg0hrr/Jva6MyD3Mwmqhp857gDLOnq3jkTq0bIpxlxZNW4OopLUztYv
+         EibaDb/ozHuLUV/mQiv6eVVheWPZ+mzfIE237vXBtbdDdEQtC0n/zx1zuNWQpt7gr4
+         mcNz28yuiIZnbAraTDwp4uzLqrILoRIg9Zm2er5fPfgMrNm8xSiDdVyh1L3ngK+9n8
+         41O4tzEKam8bw==
+Date:   Sun, 22 Oct 2023 17:00:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        gregkh@linuxfoundation.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 8/8] iio: proximity: sx9310: Use automated cleanup for locks and IIO mode claiming.
-Date:   Sun, 22 Oct 2023 16:47:10 +0100
-Message-ID: <20231022154710.402590-9-jic23@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231022154710.402590-1-jic23@kernel.org>
-References: <20231022154710.402590-1-jic23@kernel.org>
+To:     Sukrut Bellary <sukrut.bellary@linux.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ti-adc128s052: Add lower resolution
+ devices support
+Message-ID: <20231022170048.289a1897@jic23-huawei>
+In-Reply-To: <20231022031203.632153-3-sukrut.bellary@linux.com>
+References: <20231022031203.632153-1-sukrut.bellary@linux.com>
+        <20231022031203.632153-3-sukrut.bellary@linux.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -53,245 +56,274 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sat, 21 Oct 2023 20:12:03 -0700
+Sukrut Bellary <sukrut.bellary@linux.com> wrote:
 
-This simplifies error handling paths and generallly removes a bunch
-of boilerplate.
+> The adcxx4s communicates with a host processor via an SPI/Microwire Bus
+> interface. The device family responds with 12-bit data, of which the LSB
+> bits are transmitted by the lower resolution devices as 0.
+> The unavailable bits are 0 in LSB.
+> Shift is calculated per resolution and used in scaling and
+> raw data read.
+> 
+> Lets reuse the driver to support the family of devices with name
+> ADC<bb><c>S<sss>, where
+> * bb is the resolution in number of bits (8, 10, 12)
+> * c is the number of channels (1, 2, 4, 8)
+> * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
+> and 101 for 1 MSPS)
+> 
+> Complete datasheets are available at TI's website here:
+> https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+> 
+> Tested only with ti-adc102s051 on BegalePlay SBC.
+> https://www.beagleboard.org/boards/beagleplay
+> 
+> arm64: dts: ti: k3-am625-beagleplay: Add adc102s051
+> Add adc102s051 support.
+> Tested on beaglePlay SBC
+> https://www.beagleboard.org/boards/beagleplay
+> 
+> Co-developed-by: Nishanth Menon <nm@ti.com>
+> Signed-off-by: Nishanth Menon <nm@ti.com>
+> Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
+> ---
+> Changes in v2:
+>         - Arranged of_device_id and spi_device_id in numeric order.
+>         - Used enum to index into adc128_config.
+>         - Reorder adc128_config in alphabetical.
+>         - Include channel resolution information.
+>         - Shift is calculated per resolution and used in scaling and 
+>           raw data read.
+> - Link to v1: https://lore.kernel.org/all/20220701042919.18180-3-nm@ti.com/
+> ---
+>  drivers/iio/adc/ti-adc128s052.c | 131 +++++++++++++++++++++++---------
+>  1 file changed, 96 insertions(+), 35 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> index a456ea78462f..61e3181b8daf 100644
+> --- a/drivers/iio/adc/ti-adc128s052.c
+> +++ b/drivers/iio/adc/ti-adc128s052.c
+> @@ -7,6 +7,22 @@
+>   * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
+>   * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
+>   * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
+> + *
+> + * The adcxx4s communicates with a host processor via an SPI/Microwire Bus
+> + * interface. This driver supports the whole family of devices with a name
+> + * ADC<bb><c>S<sss>, where
+> + * bb is the resolution in number of bits (8, 10, 12)
+> + * c is the number of channels (1, 2, 4, 8)
+> + * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
+> + * and 101 for 1 MSPS)
+> + *
+> + * Complete datasheets are available at TI's website here:
+> + *   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+> + *
+> + * 8, 10, and 12 bits converters send 12-bit data with
+> + * unavailable bits set to 0 in LSB.
+> + * Shift is calculated per resolution and used in scaling and
+> + * raw data read.
+>   */
+>  
+>  #include <linux/err.h>
+> @@ -53,7 +69,7 @@ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
+> +	return (adc->buffer[0] << 8 | adc->buffer[1]);
+Firstly outer brackets don't add anything.
+Secondly, this is an endian conversion.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/proximity/sx9310.c | 120 +++++++++++++--------------------
- 1 file changed, 45 insertions(+), 75 deletions(-)
+return be16_to_cpu(adc->buffer);
 
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index 0d230a0dff56..5e5436791550 100644
---- a/drivers/iio/proximity/sx9310.c
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -337,28 +337,25 @@ static int sx9310_read_raw(struct iio_dev *indio_dev,
- 			   int *val2, long mask)
- {
- 	struct sx_common_data *data = iio_priv(indio_dev);
--	int ret;
- 
- 	if (chan->type != IIO_PROXIMITY)
- 		return -EINVAL;
- 
- 	switch (mask) {
--	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+	case IIO_CHAN_INFO_RAW: {
-+		CLASS(iio_claim_direct, claimed_dev)(indio_dev);
-+		if (IS_ERR(claimed_dev))
-+			return PTR_ERR(claimed_dev);
- 
--		ret = sx_common_read_proximity(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
--		return ret;
--	case IIO_CHAN_INFO_HARDWAREGAIN:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		return sx_common_read_proximity(data, chan, val);
-+	}
-+	case IIO_CHAN_INFO_HARDWAREGAIN: {
-+		CLASS(iio_claim_direct, claimed_dev)(indio_dev);
-+		if (IS_ERR(claimed_dev))
-+			return PTR_ERR(claimed_dev);
- 
--		ret = sx9310_read_gain(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
--		return ret;
-+		return sx9310_read_gain(data, chan, val);
-+	}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return sx9310_read_samp_freq(data, val, val2);
- 	default:
-@@ -546,12 +543,10 @@ static int sx9310_write_thresh(struct sx_common_data *data,
- 		return -EINVAL;
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, reg,
--				 SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
--	mutex_unlock(&data->mutex);
- 
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, reg,
-+				  SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
- }
- 
- static int sx9310_write_hysteresis(struct sx_common_data *data,
-@@ -576,17 +571,14 @@ static int sx9310_write_hysteresis(struct sx_common_data *data,
- 		return -EINVAL;
- 
- 	hyst = FIELD_PREP(SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
--	mutex_unlock(&data->mutex);
- 
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
- }
- 
- static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
- {
--	int ret;
- 	unsigned int regval;
- 
- 	if (val > 0)
-@@ -596,18 +588,14 @@ static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
- {
--	int ret;
- 	unsigned int regval;
- 
- 	if (val > 0)
-@@ -617,13 +605,10 @@ static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9310_write_event_val(struct iio_dev *indio_dev,
-@@ -658,7 +643,7 @@ static int sx9310_write_event_val(struct iio_dev *indio_dev,
- 
- static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
- {
--	int i, ret;
-+	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
- 		if (val == sx9310_samp_freq_table[i].val &&
-@@ -668,23 +653,17 @@ static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
- 	if (i == ARRAY_SIZE(sx9310_samp_freq_table))
- 		return -EINVAL;
- 
--	mutex_lock(&data->mutex);
--
--	ret = regmap_update_bits(
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(
- 		data->regmap, SX9310_REG_PROX_CTRL0,
- 		SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK,
- 		FIELD_PREP(SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK, i));
--
--	mutex_unlock(&data->mutex);
--
--	return ret;
- }
- 
- static int sx9310_write_gain(struct sx_common_data *data,
- 			     const struct iio_chan_spec *chan, int val)
- {
- 	unsigned int gain, mask;
--	int ret;
- 
- 	gain = ilog2(val);
- 
-@@ -703,12 +682,9 @@ static int sx9310_write_gain(struct sx_common_data *data,
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
--				 gain);
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
-+				  gain);
- }
- 
- static int sx9310_write_raw(struct iio_dev *indio_dev,
-@@ -969,22 +945,18 @@ static int sx9310_suspend(struct device *dev)
- 
- 	disable_irq_nosync(data->client->irq);
- 
--	mutex_lock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
- 			  &data->suspend_ctrl);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	ctrl0 = data->suspend_ctrl & ~SX9310_REG_PROX_CTRL0_SENSOREN_MASK;
- 	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
- 	if (ret)
--		goto out;
--
--	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
-+		return ret;
- 
--out:
--	mutex_unlock(&data->mutex);
--	return ret;
-+	return regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
- }
- 
- static int sx9310_resume(struct device *dev)
-@@ -992,18 +964,16 @@ static int sx9310_resume(struct device *dev)
- 	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
- 	int ret;
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
--	if (ret)
--		goto out;
--
--	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
--			   data->suspend_ctrl);
-+	scoped_guard(mutex, &data->mutex) {
-+		ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
-+		if (ret)
-+			return ret;
- 
--out:
--	mutex_unlock(&data->mutex);
--	if (ret)
--		return ret;
-+		ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+				   data->suspend_ctrl);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	enable_irq(data->client->irq);
- 	return 0;
--- 
-2.42.0
+should do the job as we know it's aligned enough for a be16.
+
+
+>  }
+>  
+>  static int adc128_read_raw(struct iio_dev *indio_dev,
+> @@ -70,7 +86,8 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
+>  		if (ret < 0)
+>  			return ret;
+>  
+> -		*val = ret;
+> +		*val = (ret >> channel->scan_type.shift) &
+> +			GENMASK(channel->scan_type.realbits - 1, 0);
+>  		return IIO_VAL_INT;
+>  
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -80,7 +97,7 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
+>  			return ret;
+>  
+>  		*val = ret / 1000;
+> -		*val2 = 12;
+> +		*val2 = channel->scan_type.realbits;
+>  		return IIO_VAL_FRACTIONAL_LOG2;
+>  
+>  	default:
+> @@ -89,24 +106,34 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
+>  
+>  }
+>  
+> -#define ADC128_VOLTAGE_CHANNEL(num)	\
+> -	{ \
+> -		.type = IIO_VOLTAGE, \
+> -		.indexed = 1, \
+> -		.channel = (num), \
+> -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+> -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
+> +#define _ADC128_VOLTAGE_CHANNEL(num, real_bits, store_bits)		\
+> +	{								\
+> +		.type = IIO_VOLTAGE,					\
+> +		.indexed = 1,						\
+> +		.channel = (num),					\
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+> +		.scan_index = (num),					\
+> +		.scan_type = {						\
+> +			.sign = 'u',					\
+> +			.realbits = (real_bits),			\
+> +			.storagebits = (store_bits),			\
+> +			.shift = (12 - real_bits),			\
+> +		},							\
+>  	}
+>  
+> -static const struct iio_chan_spec adc128s052_channels[] = {
+> -	ADC128_VOLTAGE_CHANNEL(0),
+> -	ADC128_VOLTAGE_CHANNEL(1),
+> -	ADC128_VOLTAGE_CHANNEL(2),
+> -	ADC128_VOLTAGE_CHANNEL(3),
+> -	ADC128_VOLTAGE_CHANNEL(4),
+> -	ADC128_VOLTAGE_CHANNEL(5),
+> -	ADC128_VOLTAGE_CHANNEL(6),
+> -	ADC128_VOLTAGE_CHANNEL(7),
+> +#define ADC082_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 8, 16)
+> +#define ADC102_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 10, 16)
+> +#define ADC128_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 12, 16)
+> +
+> +static const struct iio_chan_spec adc082s021_channels[] = {
+> +	ADC082_VOLTAGE_CHANNEL(0),
+> +	ADC082_VOLTAGE_CHANNEL(1),
+> +};
+> +
+> +static const struct iio_chan_spec adc102s021_channels[] = {
+> +	ADC102_VOLTAGE_CHANNEL(0),
+> +	ADC102_VOLTAGE_CHANNEL(1),
+>  };
+>  
+>  static const struct iio_chan_spec adc122s021_channels[] = {
+> @@ -121,10 +148,32 @@ static const struct iio_chan_spec adc124s021_channels[] = {
+>  	ADC128_VOLTAGE_CHANNEL(3),
+>  };
+>  
+> +static const struct iio_chan_spec adc128s052_channels[] = {
+> +	ADC128_VOLTAGE_CHANNEL(0),
+> +	ADC128_VOLTAGE_CHANNEL(1),
+> +	ADC128_VOLTAGE_CHANNEL(2),
+> +	ADC128_VOLTAGE_CHANNEL(3),
+> +	ADC128_VOLTAGE_CHANNEL(4),
+> +	ADC128_VOLTAGE_CHANNEL(5),
+> +	ADC128_VOLTAGE_CHANNEL(6),
+> +	ADC128_VOLTAGE_CHANNEL(7),
+> +};
+> +
+>  static const struct adc128_configuration adc128_config[] = {
+> -	{ adc128s052_channels, ARRAY_SIZE(adc128s052_channels) },
+> +	{ adc082s021_channels, ARRAY_SIZE(adc082s021_channels) },
+> +	{ adc102s021_channels, ARRAY_SIZE(adc102s021_channels) },
+>  	{ adc122s021_channels, ARRAY_SIZE(adc122s021_channels) },
+>  	{ adc124s021_channels, ARRAY_SIZE(adc124s021_channels) },
+> +	{ adc128s052_channels, ARRAY_SIZE(adc128s052_channels) },
+> +};
+> +
+> +/* Ensure match with adc128_config indices */
+
+Make sure that is the case by using them when setting it up.
+
+static const struct adc128_configuration adc128_config[] {
+	[ADC128_CONFIG_INDEX_082S] = {
+		adc082s021_channels, ARRAY_SIZE(..) 
+	},
+	[ADC128_CONFIG_INDEX_102S] = ..
+}
+
+Or I think you can make it irrelevant by not using an array at all.
+static const struct ad128_configruation adc082s021_config = {
+};
+
+etc then just use the address of the right one directly.
+
+In this driver, I suspect that is simpler than using the array.
+
+> +enum adc128_configuration_index {
+> +	ADC128_CONFIG_INDEX_082S,
+> +	ADC128_CONFIG_INDEX_102S,
+> +	ADC128_CONFIG_INDEX_122S,
+> +	ADC128_CONFIG_INDEX_124S,
+> +	ADC128_CONFIG_INDEX_128S,
+
+>  };
+>  
+>  static const struct iio_info adc128_info = {
+> @@ -177,31 +226,43 @@ static int adc128_probe(struct spi_device *spi)
+>  }
+>  
+>  static const struct of_device_id adc128_of_match[] = {
+> -	{ .compatible = "ti,adc128s052", .data = &adc128_config[0] },
+> -	{ .compatible = "ti,adc122s021", .data = &adc128_config[1] },
+> -	{ .compatible = "ti,adc122s051", .data = &adc128_config[1] },
+> -	{ .compatible = "ti,adc122s101", .data = &adc128_config[1] },
+> -	{ .compatible = "ti,adc124s021", .data = &adc128_config[2] },
+> -	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
+> -	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
+> +	{ .compatible = "ti,adc082s021", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ .compatible = "ti,adc082s051", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ .compatible = "ti,adc082s101", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ .compatible = "ti,adc102s021", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ .compatible = "ti,adc102s051", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ .compatible = "ti,adc102s101", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ .compatible = "ti,adc122s021", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ .compatible = "ti,adc122s051", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ .compatible = "ti,adc122s101", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ .compatible = "ti,adc124s021", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ .compatible = "ti,adc124s051", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ .compatible = "ti,adc124s101", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ .compatible = "ti,adc128s052", .data = &adc128_config[ADC128_CONFIG_INDEX_128S] },
+>  	{ /* sentinel */ },
+>  };
+>  MODULE_DEVICE_TABLE(of, adc128_of_match);
+>  
+>  static const struct spi_device_id adc128_id[] = {
+> -	{ "adc128s052", (kernel_ulong_t)&adc128_config[0] },
+> -	{ "adc122s021",	(kernel_ulong_t)&adc128_config[1] },
+> -	{ "adc122s051",	(kernel_ulong_t)&adc128_config[1] },
+> -	{ "adc122s101",	(kernel_ulong_t)&adc128_config[1] },
+> -	{ "adc124s021", (kernel_ulong_t)&adc128_config[2] },
+> -	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
+> -	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
+> +	{ "adc082s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ "adc082s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ "adc082s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
+> +	{ "adc102s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ "adc102s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ "adc102s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
+> +	{ "adc122s021",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ "adc122s051",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ "adc122s101",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
+> +	{ "adc124s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ "adc124s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ "adc124s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
+> +	{ "adc128s052", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_128S] },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(spi, adc128_id);
+>  
+>  static const struct acpi_device_id adc128_acpi_match[] = {
+> -	{ "AANT1280", (kernel_ulong_t)&adc128_config[2] },
+> +	{ "AANT1280", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);
 

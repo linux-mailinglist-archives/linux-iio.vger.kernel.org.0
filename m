@@ -2,115 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0717D3140
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 13:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86FF57D3298
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 13:21:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233475AbjJWLHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
+        id S233828AbjJWLV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233398AbjJWLHS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 07:07:18 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D39E610C1;
-        Mon, 23 Oct 2023 04:07:14 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-5401bab7525so2648323a12.2;
-        Mon, 23 Oct 2023 04:07:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698059233; x=1698664033; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=akpOMj5d/8woIMFc1elzm+z11AzbUxl+8mKKF9Y05x4=;
-        b=KYUEqtVY0dPFgKH5BW4s4EC5G/rTxAocKASQqCvo1BBxESFRVwdOhowEU1Azo/Vjzv
-         BZKgKV/bb7vUS6tl7rNBTvPqIBAoRXUd83u7wUOuEFUuU4TfczBY0ThYmJ0qfCLMDJck
-         WXVDs4ER+6ct00RG6SAVlM1YM6lIXNBrT+c5rP3GMS58rpwFxexK9JDb45NrJu7XLzUr
-         GOYJMzVTnZif3dsTAb6m01JRFjS4gnNsofKUkhtmUmVw4+6P5MCFiLScVn9FAEj29CS9
-         E1f+kmvgCy7NTYBy3oHtkF+ebL6un2XkKJEdBpnYfHxhIIi5c/o3kwsNJ+TVBg2wTqso
-         T8Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698059233; x=1698664033;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=akpOMj5d/8woIMFc1elzm+z11AzbUxl+8mKKF9Y05x4=;
-        b=aPrNXLygEluvZeYQYuRAOd1Z+Xt5Z238mL2kdXSEWPlW7D1Ml/6qnuUioiVJ1InSLr
-         NpOv8U/M2kvWsAJggFc+7ZRODsnYAmk17lXFrhtdN5taAGqgkEVtTDmwy/jl0O4YIvmV
-         DHVswszlGtustBqcCLESBuKiKQ/geRovsfQt1g80mILpjLN4Vzoi7+MqWTz7fBkK8cHa
-         ox+sZh27Qfp2uwiQLk4j8en2jWW3aglEekwK7ewzRUaYjgKs9UjQKFS4nbPjABPuiB+R
-         /4NjJQI1Al6gxaQqsTzhpr8lDlJqOI8IeLbS6sjcHDOJNCzL31ic5ZHZgtGKg85kOnaX
-         aelA==
-X-Gm-Message-State: AOJu0Yyt2ABoY6W1HQNCAZCDbIzjP3GMZhLG2dPtKigB5NmcIbAWsEhY
-        BOBtieXaI1/egXZaumgPD6oEF7kpGHaf+a/HesWluIvE3Tk=
-X-Google-Smtp-Source: AGHT+IEZXn3icFVMprpTKAJBq8ZATZ8OjKGw9+gMt9vd6GvtN/HQYPrTH8CbfwUh4K+VheXfRTMbZCDAkYMsEodzgJI=
-X-Received: by 2002:a05:6402:518e:b0:53e:7597:77dc with SMTP id
- q14-20020a056402518e00b0053e759777dcmr7109901edd.25.1698059232954; Mon, 23
- Oct 2023 04:07:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231023081054.617292-1-colin.i.king@gmail.com>
-In-Reply-To: <20231023081054.617292-1-colin.i.king@gmail.com>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Mon, 23 Oct 2023 16:37:01 +0530
-Message-ID: <CAM+2EuK2LOL=g=r866c6zwE4XOSL5uZ-rweUjm6svgSi8v9Xkw@mail.gmail.com>
-Subject: Re: [PATCH][next] iio: imu: Fix spelling mistake "accelrometer" -> "accelerometer"
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S233822AbjJWLV5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 07:21:57 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749D4D6;
+        Mon, 23 Oct 2023 04:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698060115; x=1729596115;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dTMuOISm9OIG7zQeqd0pR9/QKceuYq5H6DY5SCz3AfI=;
+  b=LXCHS0PcGxRRTzeBCBjTfIn5xv89EnxUpRHbFYf788VRsLCKyqDeqjzY
+   xpZ3KLrq4jZFk5A1kFSJ7bLPs2/8yZ3RueU/bUiZiiGZIJYN28tSGp7yr
+   1p7r/iIdI8h2HA3pZo9RO8MuQyR88QO9ig2fBShpJGNo+NLDwUnXwMLui
+   VQoEykY29uKfmcB439W4MN08JKLWhTYveS3khqHzveo+0i3AraSKMUPNP
+   sPqjJinWwXJL01TyNtG65l2GlMVObBuW8tIkC2whP8EVUVWfUJJ1/m0Mu
+   zjQHzBCP7aZbvmaERqKSTOMrcXwpwlS4o4P8LRjucidTVwr5SuwNQtKqX
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="5441793"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="5441793"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 04:21:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="881730411"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="881730411"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 04:21:52 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qut0H-00000007v6h-0qzY;
+        Mon, 23 Oct 2023 14:21:49 +0300
+Date:   Mon, 23 Oct 2023 14:21:48 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Phil Elwell <phil@raspberrypi.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2 1/5] iio: pressure: bmp280: Use i2c_get_match_data()
+Message-ID: <ZTZXTLeWbUHKkHIn@smile.fi.intel.com>
+References: <cover.1697994521.git.ang.iglesiasg@gmail.com>
+ <0554ddae62ba04ccacf58c2de04ec598c876665e.1697994521.git.ang.iglesiasg@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0554ddae62ba04ccacf58c2de04ec598c876665e.1697994521.git.ang.iglesiasg@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 23, 2023 at 1:40=E2=80=AFPM Colin Ian King <colin.i.king@gmail.=
-com> wrote:
->
-> There are two spelling mistakes in dev_err messages. Fix them.
+On Sun, Oct 22, 2023 at 07:22:17PM +0200, Angel Iglesias wrote:
+> From: Biju Das <biju.das.jz@bp.renesas.com>
+> 
+> Replace device_get_match_data() and id lookup for retrieving match data
+> by i2c_get_match_data().
+> 
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Hi Colin,
+Hmm... What tools have you used to format/send this? It seems differs
+to what `git format-patch` does.
 
-Thanks for fixing this.
-Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/iio/imu/bmi323/bmi323_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi32=
-3/bmi323_core.c
-> index 0bd5dedd9a63..183af482828f 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_core.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
-> @@ -545,7 +545,7 @@ static int bmi323_tap_event_en(struct bmi323_data *da=
-ta,
->         guard(mutex)(&data->mutex);
->
->         if (data->odrhz[BMI323_ACCEL] < 200) {
-> -               dev_err(data->dev, "Invalid accelrometer parameter\n");
-> +               dev_err(data->dev, "Invalid accelerometer parameter\n");
->                 return -EINVAL;
->         }
->
-> @@ -1453,7 +1453,7 @@ static int bmi323_enable_steps(struct bmi323_data *=
-data, int val)
->
->         guard(mutex)(&data->mutex);
->         if (data->odrhz[BMI323_ACCEL] < 200) {
-> -               dev_err(data->dev, "Invalid accelrometer parameter\n");
-> +               dev_err(data->dev, "Invalid accelerometer parameter\n");
->                 return -EINVAL;
->         }
->
-> --
-> 2.39.2
->
+

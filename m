@@ -2,150 +2,178 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4CC7D37E3
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 15:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBA27D38B3
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 16:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233202AbjJWNYw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 09:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51416 "EHLO
+        id S230231AbjJWOAK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 10:00:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233252AbjJWNYd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 09:24:33 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEB61FFC
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 06:22:33 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32003aae100so2535704f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 06:22:33 -0700 (PDT)
+        with ESMTP id S231147AbjJWOAI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 10:00:08 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EA5910C2
+        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 07:00:04 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-507b18cf2e1so4573779e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 07:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698067351; x=1698672151; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1698069603; x=1698674403; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gZ4OTD+mAZ/PEriBd52ngcEYX2LeQoqs4YvhBcfpPaQ=;
-        b=Gg/xjm9LWVOQj6wm/dvLecVc8OkwXjka8m2Qf1CKdTmVjfp6RYA32ylDcxw52zAh50
-         dVR+vj/OfdnUfhf0QeU5m7UbUEl7umk6zj9tYEY3v2bLFXURErFi8EsYA8PKypd0F1py
-         HCOOpf+cM+w5LZBt6bK+3qN3C3R19BLSj9C5sMMrqNm/jJrGU2CTXi1QODiVKseRn4KT
-         xDnC8ho7irB2YsKzjB3nqa6cUKwgAYzlBCVX79vDpzeeGQ5kDDxcejC+uwIAOF+PPRvd
-         crOuu3p/1XWdg6fDjt5SUSwn8ll4owcy/TVXeFqOIBpPXAE7LEmhOp/o74OOMxc4+45F
-         YHRA==
+        bh=joifu3LEve1vM1OBDiP/ssq3Acb5MrmoAobzst77V3U=;
+        b=EjXdKug6vvtqLxTgjZM+oPE7gSVOtxEzNM24OlV5u8py5CVxcAoxoVnxbkuWMR3KbA
+         YCEWTdcMd7o1IT09Ffy3TrMig52AILYTEWE3ViWwMDnhndSkzG+nBCBwmuqvdklGUvW2
+         5Cx1WIECOUNafg/Uze1Ef9nlvzD9vTHthQkqQhwTw2uHRsAJ9iBEXXAErm3gz7OCys6U
+         QRN3f+6BuSYvd6WSf/6U24c6RbFAgAdlOPNEzbP3zvreirWBXdx1Rsvwp0q3nsxYCGWj
+         No+LEvqNEKEZAHh5nuTU35JevnLSh5b4yXtrOZ8qCQM89qdebP8XrnlQo4mao6LM+Adr
+         D2Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698067351; x=1698672151;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1698069603; x=1698674403;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gZ4OTD+mAZ/PEriBd52ngcEYX2LeQoqs4YvhBcfpPaQ=;
-        b=PkOt22nuQWn/oyxd1vSWwPl75x9nIpT4vHk3O7AQlgYJRJY0d/NQ9JfKOu0aL6rXQ9
-         opg9TcJlUJxL3wKqxb58BBMg+r1iJUs8ewqkPLU9GgABxm42al5//0hYuUrB63e574En
-         YRoUkgtczJ1fD6ZY4/U66ZVVfshkksWnjdEDRMdsBWCKFBX0cq9nftCtiheaEipG5F1J
-         avHnSumZONU1SBxxVTea2sTJQ//KwhV+lMaPYSL0wip6UDbaioU92Fq107iquvesJSz7
-         dBGUBmoZ5nUaj23ZLVbF4fTeGD/cGewRWK3my2r+Y+Hua5m+YZqZdbMGrke0e1SsrzKG
-         K6tA==
-X-Gm-Message-State: AOJu0Yzx6lmx5yQoDIoqwZ7hXxyZEdN7yJ6Xr/PBWDAEYadrHj8G2zcS
-        BKlLjzqei39b8XCM0qBq3p7V6g==
-X-Google-Smtp-Source: AGHT+IHaR0agTZOxHy4i0NkFCR+/+eBs7GaFEmyRJumeLHdjnvWaNRB6yL7tHE7LeYOhAWu3oFuaoA==
-X-Received: by 2002:adf:978c:0:b0:32d:c5da:d4c0 with SMTP id s12-20020adf978c000000b0032dc5dad4c0mr12928756wrb.3.1698067351421;
-        Mon, 23 Oct 2023 06:22:31 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id b14-20020a5d550e000000b0032d9caeab0fsm7756288wrv.77.2023.10.23.06.22.30
+        bh=joifu3LEve1vM1OBDiP/ssq3Acb5MrmoAobzst77V3U=;
+        b=Cg1PqcTY/sMvLqGxD7POGYtgPHmIfaHG8TkUcC3pu/jYG/HgNaif9kQwTWYcevoAAT
+         M3hlLprPUrPpm/SWP4YAlyVWpIGuh/d640oKyN4WeYiAX7tz6oC4wxIhZb4efiPzZA3L
+         EAIFQrbjRsTcm0CkyPmhRY6HJowXa5k8mcVLVnM1kahYWcbaP4e5l/AmL7iIHiGISkQ/
+         L/fuYC7bTVYNeBSVgpi5M/uA4AUgyWOke9tTIQa+/GedxpDyebXK1aV92B+8hjCU/4Bs
+         tlic6e1Tlt+qnH5YWMQ2cELN8H4FMBUvboy/I289hFms4vQjjgoU1sCq3JbP2JFX0oVQ
+         uKfw==
+X-Gm-Message-State: AOJu0YzYSWzMmz0W8rAlkqghkaJ+y0RsUvGa9Ctu5KYGdemS9UHrE7fH
+        ZeBWz8KEb582yktCklusXSXU1g==
+X-Google-Smtp-Source: AGHT+IFrtb9YbLiCDkqk99kjeOsRB8xIvp4vEoFUl9MZx1Q2cWGyBOpKkCWxHIYFbkNpCrk8OZjHtg==
+X-Received: by 2002:ac2:42c1:0:b0:503:3644:4a98 with SMTP id n1-20020ac242c1000000b0050336444a98mr6478074lfl.2.1698069602632;
+        Mon, 23 Oct 2023 07:00:02 -0700 (PDT)
+Received: from [192.168.204.110] (178235177080.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.80])
+        by smtp.gmail.com with ESMTPSA id s16-20020a056512215000b0050300e013f3sm1711680lfr.254.2023.10.23.06.59.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Oct 2023 06:22:30 -0700 (PDT)
-Message-ID: <b7011f02-a412-4642-862d-c2df88ae316b@linaro.org>
-Date:   Mon, 23 Oct 2023 15:22:30 +0200
+        Mon, 23 Oct 2023 07:00:02 -0700 (PDT)
+Message-ID: <efecb4cf-e42b-40fb-aa68-37433529604b@linaro.org>
+Date:   Mon, 23 Oct 2023 15:59:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: adis16460: Add
- 'spi-cs-inactive-delay-ns' property
+Subject: Re: [PATCH v2 4/6] arm64: dts: qcom: sm8350: Fix remoteproc interrupt
+ type
 Content-Language: en-US
-To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20231023123542.582392-1-ramona.gradinariu@analog.com>
- <20231023123542.582392-4-ramona.gradinariu@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231023123542.582392-4-ramona.gradinariu@analog.com>
+To:     Luca Weiss <luca@z3ntu.xyz>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Luca Weiss <luca.weiss@fairphone.com>
+References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
+ <20231019040623.GA5142@thinkpad>
+ <ca42af11-7b92-4d07-9b93-367f92c886fe@linaro.org>
+ <6985565.DvuYhMxLoT@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <6985565.DvuYhMxLoT@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23/10/2023 14:35, Ramona Gradinariu wrote:
-> Add 'spi-cs-inactive-delay-ns' property.
-
-This we see from the diff. Commit should explain: Why?
-
+On 21.10.2023 21:34, Luca Weiss wrote:
+> On Samstag, 21. Oktober 2023 19:44:20 CEST Konrad Dybcio wrote:
+>> On 10/19/23 06:06, Manivannan Sadhasivam wrote:
+>>> On Wed, Oct 18, 2023 at 10:17:15PM +0200, Konrad Dybcio wrote:
+>>>> On 10/18/23 16:25, Nia Espera wrote:
+>>>>> In a similar vein to
+>>>>> https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasiva
+>>>>> m@linaro.org/, the remote processors on sm8350 fail to initialize with
+>>>>> the 'correct' (i.e., specified in downstream) IRQ type. Change this to
+>>>>> EDGE_RISING.
+>>>>>
+>>>>> Signed-off-by: Nia Espera <nespera@igalia.com>
+>>>>> ---
+>>>>
+>>>> Hm, apparently 8250 and 7180 have the same thing.
+>>>>
+>>>> Mani, could you elaborate on this?
+>>>
+>>> So the remoteproc driver expects the wdog interrupts to be edge triggered
+>>> as the rest of the interrupts, but DT specifies them as level triggered.
+>>> This won't cause any issue during the first instance of the probe as the
+>>> driver requested trigger will be given precedence. But if the probe
+>>> defers for some reason and during the next try, request_irq() will fail
+>>> with error similar to below:
+>>>
+>>> irq: type mismatch, failed to map hwirq-x for interrupt-controller@xxxxxx!
+>>>
+>>> This error is often confusing and I tried to fix it. But Maz didn't agree
+>>> with me, so I just ended up fixing the DTs for some platform I have
+>>> access to.
+>>>
+>>> So ideally, DTs of all platforms should be fixed to pass correct trigger
+>>> type.
+>> So, this should be edge for all platforms, correct?
 > 
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
+> I'd believe so, iirc when I looked at the driver it always requests that
+> interrupt type.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> index 4e43c80e5119..3691c0be4f9d 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> @@ -25,6 +25,11 @@ properties:
->  
->    spi-cpol: true
->  
-> +  spi-cs-inactive-delay-ns:
-> +    minimum: 16000
-> +    description:
-> +      If not explicitly set in the device tree, the driver will set it to 16us.
+> For reference, these are my patches:
+> 
+> sm6350:
+> https://github.com/z3ntu/linux/commit/0522b7a1b981d80884a785c7e654bb5094ea1bc2
+> 
+> sc7280:
+> https://github.com/z3ntu/linux/commit/ead1d7b8f5648535b857cfa9250aac2480f00ed3
+Can you send those, as well as fix up other outliers? Probably won't get in
+for this cycle, but still very much worth to get them upstream..
 
-Why do you even need it here?
-
-Best regards,
-Krzysztof
-
+Konrad

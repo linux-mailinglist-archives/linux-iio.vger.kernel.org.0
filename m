@@ -2,120 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C43517D393E
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 16:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22EB67D3968
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 16:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjJWOZB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 10:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
+        id S233387AbjJWOek convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 23 Oct 2023 10:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbjJWOZB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 10:25:01 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403CA100;
-        Mon, 23 Oct 2023 07:24:59 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9be3b66f254so478789766b.3;
-        Mon, 23 Oct 2023 07:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698071097; x=1698675897; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HOo26F7ddMgMPqh3lV7DV+yYzFbyW/ocxujpUxCvn1o=;
-        b=lAT3OapmgowhVHbWZU3fz3YaNtGXYTpkzlflvv1PSaoM4EbL1hgY/Pf4m36hWykw0W
-         KlVLBr4p0Neci30Ulm5ezYobobpgpoePKDMapsIFi7DH7w3IVmCdCtq2aeCUMND+6NEB
-         jMxmZWhH+VGhKVM78fNrKX2naCdbFJ88L5Qi1bbjMmSgt1UOo7bvRyEE+kkYT3bdY8bd
-         jqC1Q8ZTLbSsrbcZ5BGYf4VU6qKj/jAfrM48Q4UmHDnLPXhZ0nyJZv21FW5caAg+Os8n
-         6CJG49zwMm2qiAfeOZpAkqVCOFqzEPy8ePf5IJ1m5ODrSHFx0ozHStGiPo4df1hWySJu
-         Voog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698071097; x=1698675897;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HOo26F7ddMgMPqh3lV7DV+yYzFbyW/ocxujpUxCvn1o=;
-        b=hlrlj96llRzwxOCvPcaHMz+ArXPkqLSkT1IdZf2o1QSd37F4Lkw7PK1KMwnKSM2Pv3
-         rZKUM0so/nQqIf7nrjbwQgr+XLydPB+fXW/WH7OVCAZd0dDR1/Uc0Yf7CZNTT5zVQt0b
-         qrzHut0QwPJzWwB+mEp0wivVPkg7gu8J7qUuB07lLtj75+eath56FWwpBspE0dSxIUlq
-         jg5Xi0mDEDMHHnD0df6JWIeJMQFsaI936r+IjaSZ59/OIJ3jG6ef990AEO+FhwM2pfuL
-         HwgLq9QBVZ+dAvqBOedrLbJ3uClB39sB2fuVNM5WHiN1WugWk3c6ric6s4FUTbXfYHwc
-         7vsw==
-X-Gm-Message-State: AOJu0YxxaO6Z1Ub9XRJ3tv+611vDVsWNiirYsStY2VcmrQ7f8pyyuVw9
-        epEDq0OIiK6kN2ec9cRCLVI=
-X-Google-Smtp-Source: AGHT+IGDPYcqybnKKGxteO1DjEkEWIGmlvC8h+HZU+3bP7Wgjm4MehUQpms5PfgDSWvJuk/B75OlaA==
-X-Received: by 2002:a17:906:db0a:b0:9bf:4915:22c4 with SMTP id xj10-20020a170906db0a00b009bf491522c4mr8074201ejb.67.1698071097349;
-        Mon, 23 Oct 2023 07:24:57 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
-        by smtp.gmail.com with ESMTPSA id lh22-20020a170906f8d600b0099290e2c163sm6618118ejb.204.2023.10.23.07.24.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Oct 2023 07:24:56 -0700 (PDT)
-Message-ID: <e97ac024cb2654507ed8f7af715f3604efefbdbb.camel@gmail.com>
-Subject: Re: [PATCH v2 3/3] dt-bindings: adis16460: Add
- 'spi-cs-inactive-delay-ns' property
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Date:   Mon, 23 Oct 2023 16:27:48 +0200
-In-Reply-To: <20231023140534.704312-4-ramona.gradinariu@analog.com>
-References: <20231023140534.704312-1-ramona.gradinariu@analog.com>
-         <20231023140534.704312-4-ramona.gradinariu@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0 
+        with ESMTP id S233342AbjJWOej (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 10:34:39 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F027ED7F
+        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 07:34:35 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SDd0K14C8z6JB9J;
+        Mon, 23 Oct 2023 22:30:57 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 23 Oct
+ 2023 15:34:32 +0100
+Date:   Mon, 23 Oct 2023 15:34:31 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+CC:     David Lechner <dlechner@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        <linux-iio@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        "Jagath Jog J" <jagathjog1996@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        "Daniel Campello" <campello@chromium.org>,
+        <gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH 1/8] iio: locking: introduce __cleanup() based
+ direct mode claiming infrastructure
+Message-ID: <20231023153431.000038b9@Huawei.com>
+In-Reply-To: <0147cfed5e8402722186daa49256d20a8e2c83a1.camel@gmail.com>
+References: <20231022154710.402590-1-jic23@kernel.org>
+        <20231022154710.402590-2-jic23@kernel.org>
+        <CAMknhBEEPC-JArFJvpHw0YAmdA+BrAQzkxU5vNvCwxf5OdHKrw@mail.gmail.com>
+        <462c181eab1c0b70c0350099b7f70aaf736aabe1.camel@gmail.com>
+        <20231023105323.00000370@Huawei.com>
+        <0147cfed5e8402722186daa49256d20a8e2c83a1.camel@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-10-23 at 17:05 +0300, Ramona Gradinariu wrote:
-> The adis16460 device requires a stall time between SPI
-> transactions (during which the chip select is inactive),
-> with a minimum value equal to 16 microseconds.
-> This commit adds 'spi-cs-inactive-delay-ns' property, which should
-> indicate the stall time between consecutive SPI transactions.
->=20
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> ---
-> changes in v2:
-> =C2=A0- added default value
-> =C2=A0- updated description
-> =C2=A0- updated commit message
-> =C2=A0.../devicetree/bindings/iio/imu/adi,adis16460.yaml=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 6 ++++++
-> =C2=A01 file changed, 6 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> index 4e43c80e5119..f10469b86ee0 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> @@ -25,6 +25,12 @@ properties:
->=20
-> =C2=A0=C2=A0 spi-cpol: true
->=20
-> +=C2=A0 spi-cs-inactive-delay-ns:
-> +=C2=A0=C2=A0=C2=A0 minimum: 16000
-> +=C2=A0=C2=A0=C2=A0 default: 16000
-> +=C2=A0=C2=A0=C2=A0 description:
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Indicates the stall time between consecut=
-ive SPI transactions.
-> +
+On Mon, 23 Oct 2023 13:51:04 +0200
+Nuno Sá <noname.nuno@gmail.com> wrote:
 
-You should drop the description...=20
+> On Mon, 2023-10-23 at 10:53 +0100, Jonathan Cameron wrote:
+> > On Mon, 23 Oct 2023 10:55:56 +0200
+> > Nuno Sá <noname.nuno@gmail.com> wrote:
+> >   
+> > > On Sun, 2023-10-22 at 16:10 -0500, David Lechner wrote:  
+> > > > On Sun, Oct 22, 2023 at 10:47 AM Jonathan Cameron <jic23@kernel.org>
+> > > > wrote:    
+> > > > > 
+> > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > 
+> > > > > Allows use of:
+> > > > > 
+> > > > >         CLASS(iio_claim_direct, claimed_dev)(indio_dev);
+> > > > >         if (IS_ERR(claimed_dev))
+> > > > >                 return PTR_ERR(claimed_dev);
+> > > > > 
+> > > > >         st = iio_priv(claimed_dev);
+> > > > > 
+> > > > > to automatically call iio_device_release_direct_mode() based on scope.
+> > > > > Typically seen in combination with local device specific locks which
+> > > > > are already have automated cleanup options via guard(mutex)(&st->lock)
+> > > > > and scoped_guard().  Using both together allows most error handling to
+> > > > > be automated.
+> > > > > 
+> > > > > Note that whilst this pattern results in a struct iio_dev *claimed_dev
+> > > > > that can be used, it is not necessary to do so as long as that pointer
+> > > > > has been checked for errors as in the example.
+> > > > > 
+> > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > ---
+> > > > >  drivers/iio/industrialio-core.c |  4 ++++
+> > > > >  include/linux/iio/iio.h         | 25 +++++++++++++++++++++++++
+> > > > >  2 files changed, 29 insertions(+)
+> > > > > 
+> > > > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-
+> > > > > core.c
+> > > > > index c77745b594bd..93bfad105eb5 100644
+> > > > > --- a/drivers/iio/industrialio-core.c
+> > > > > +++ b/drivers/iio/industrialio-core.c
+> > > > > @@ -2065,6 +2065,10 @@ EXPORT_SYMBOL_GPL(iio_device_claim_direct_mode);
+> > > > >   */
+> > > > >  void iio_device_release_direct_mode(struct iio_dev *indio_dev)
+> > > > >  {
+> > > > > +       /* Auto cleanup can result in this being called with an ERR_PTR
+> > > > > */
+> > > > > +       if (IS_ERR(indio_dev))
+> > > > > +               return;
+> > > > > +
+> > > > >         mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
+> > > > >  }
+> > > > >  EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+> > > > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > > > > index d0ce3b71106a..11c42170fda1 100644
+> > > > > --- a/include/linux/iio/iio.h
+> > > > > +++ b/include/linux/iio/iio.h
+> > > > > @@ -9,6 +9,7 @@
+> > > > > 
+> > > > >  #include <linux/device.h>
+> > > > >  #include <linux/cdev.h>
+> > > > > +#include <linux/cleanup.h>
+> > > > >  #include <linux/slab.h>
+> > > > >  #include <linux/iio/types.h>
+> > > > >  /* IIO TODO LIST */
+> > > > > @@ -644,6 +645,30 @@ int __devm_iio_device_register(struct device *dev,
+> > > > > struct iio_dev *indio_dev,
+> > > > >  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64
+> > > > > timestamp);
+> > > > >  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+> > > > >  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+> > > > > +/*
+> > > > > + * Auto cleanup version of iio_device_claim_direct_mode,
+> > > > > + *
+> > > > > + *     CLASS(iio_claim_direct, claimed_dev)(indio_dev);
+> > > > > + *     if (IS_ERR(claimed_dev))
+> > > > > + *             return PTR_ERR(claimed_dev);
+> > > > > + *
+> > > > > + *     st = iio_priv(claimed_dev);
+> > > > > + *     ....
+> > > > > + */
+> > > > > +DEFINE_CLASS(iio_claim_direct, struct iio_dev *,
+> > > > > +            iio_device_release_direct_mode(_T),
+> > > > > +            ({
+> > > > > +                       struct iio_dev *dev;
+> > > > > +                       int d = iio_device_claim_direct_mode(_T);
+> > > > > +
+> > > > > +                       if (d < 0)
+> > > > > +                               dev = ERR_PTR(d);
+> > > > > +                       else
+> > > > > +                               dev = _T;
+> > > > > +                       dev;
+> > > > > +            }),
+> > > > > +            struct iio_dev *_T);
+> > > > > +
+> > > > >  int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
+> > > > >  void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+> > > > > 
+> > > > > --
+> > > > > 2.42.0
+> > > > >     
+> > > > 
+> > > > What is the benefit of exposing `claimed_dev` rather than just the int
+> > > > return value? It seems like it just makes more noise in the error
+> > > > check.
+> > > >     
+> > > 
+> > > I don't really have a very strong opinion on this but what I really don't
+> > > like
+> > > much is the pattern:
+> > > 
+> > > CLASS(type, ret), where the return value is an argument of the macro... It
+> > > would
+> > > be nice if we could just make it like:
+> > > 
+> > > ret = guard(type)(...); //or any other variation of the guard() macro
+> > > if (ret) 
+> > > 	return ret;
+> > > 
+> > > the above could also be an error pointer or even have one variation of each.
+> > > but
+> > > yeah, that likely means changing the cleanup.h file and that might be out of
+> > > scope for Jonathan's patch series. 
+> > >   
+> > 
+> > I fully agree it's ugly and a little unintuitive but I don't see a way an
+> > "lvalue"
+> > can work work cleanly (due to magic types under the hood) and I suspect we
+> > will
+> > have to get used to this pattern.
+> >   
+> 
+> Yeah, given the games being played with the constructor and the _lock definition
+> so we return the variable we want to "release" I agree it would be hard to have
+> anything clean and likely even harder to read (more than it is already :)).
+> 
+> However, I think users of the cleanup.h stuff could build on top of it... For
+> instance, in our case we could have something like:
+> 
+> #define IIO_CLAIM_DIRECT(dev) 
+> 	int __ret = 0;
+> 	CLASS(iio_claim_direct, claimed_dev)(dev);
+> 	if ((IS_ERR(claimed_dev))
+> 		__ret = PTR_ERR(claimed_dev);
+> 	__ret
 
-Also, give more time before posting a v2 so others get a chance to review y=
-our
-patches. It's also better for you since you can gather more change requests=
-.
+Maybe, but we'll have to deal with people perpetually trying to brackets around
+the complex macro... 
+> 
+> Then we could use it in the same way as before... Or at the very least I would
+> simply make it a bit more readable for IIO (rather than the plain CLASS() call):
+> 
+> #define IIO_CLAIM_DIRECT(claimed_dev, dev)
+> 	CLASS(iio_claim_direct, claimed_dev)(dev)
+> 
+> Just some thoughts...
 
-- Nuno S=C3=A1
+Maybe. I'm not sure it's worth it though. This class stuff is
+odd and I don't really want to hid it from people too much.
+
+Sometimes better just to make people deal with the ugly on basis they hopefully
+go figure out what it is doing.
+
+Jonathan
+
+> 
+> - Nuno Sá
+> 
+> 
 

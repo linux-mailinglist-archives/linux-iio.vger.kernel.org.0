@@ -2,138 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FCB7D392F
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 16:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43517D393E
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 16:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbjJWOT5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 10:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
+        id S229686AbjJWOZB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 10:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjJWOT4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 10:19:56 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC950100;
-        Mon, 23 Oct 2023 07:19:54 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 319375C033F;
-        Mon, 23 Oct 2023 10:19:54 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 23 Oct 2023 10:19:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1698070794; x=1698157194; bh=bs
-        mBsb2C4biRFAK90R3YGndrC+6bsEOQQxqfzZ99ePQ=; b=lYc+ZBHk7xNLUtCtBW
-        SW8wU5/knar6IJPqYjl2CJlJp3v6LY9kHkC/0Zfhp+3PTywtBVWdAqtC05b7Pbzr
-        U0hz2+5uHYYsZS0NY32+N1gtTXo4aD7GNYc1rbazGdO0kyURlMQBaEirGbvxkG9d
-        SIAW0ZhuyzLDXAtskzdjRZxeHE7ttbI9ALKzJf0d6CeVwc9wvatHsle+gWRH4fVb
-        55FuhknZOFv5PHK4IK8rzARimnoff+PJPTeyjyIM0mWIRxMmzFwWahsJ2ZRGVauV
-        bOxKJuyw7zaSXKFAOCRJlzcHn9kWaL7DG1uRb2N9IQr83vl3yqUJiLntZnkFkXjF
-        tfTg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698070794; x=1698157194; bh=bsmBsb2C4biRF
-        AK90R3YGndrC+6bsEOQQxqfzZ99ePQ=; b=niRJqeL+BF+kNPZQvaQPd/1+q2SwC
-        69sqEW1ElhXcqkiS2L7UGVNTaxU+nsD5f0wrk/AX8LHVxxVBnJnQSNwuKytXPxt2
-        z7m3Hg++LJW/fAsDZj01KzRe4fZNimddMbymzw69rCMe5pVjfRD1VGtoqXlhUwYX
-        M82mbZRNauf5OBlCi9+V9Bbao1ZWLMekUgh7l1pUm6uKWjtg6u2JhkNnfvOiBkE1
-        8YioQ8s2B9pAvNmz5GZwg5JALdw67TAToo8hKHBX58mE4e6httVe8fqF3V9uNVde
-        xEQskAu0dFh408H21biJ8MxBRlaRvv0kmYld0GqBk3mKPnBHvJORtg9Rw==
-X-ME-Sender: <xms:CYE2ZU6h5o3AkFhd4qe-eFIxvZEUjYvLbfwcW4WGXBK3K-PsQTRkcQ>
-    <xme:CYE2ZV7e_D95Qufz1UVDxew2mQ-3zZrG04n_OxWOQt_VxIJeVMtUPQ7jfOdnnLapy
-    _tz_-BoCs3Ep7ShLgA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrkeeigdejfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
-    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:CoE2ZTd6e-iqyuzsZkMtdUeVlyibjgocKeAvVmwIt8yQZycGQhSUvg>
-    <xmx:CoE2ZZLf943EmtbrTJ9opSX9KHiXy-IqgACy1quGrRuG3IlaRUtLkw>
-    <xmx:CoE2ZYIhQxg_-d026fnfbeqRlwAXDB712lhngTpCP5fPmgyfVVHe6A>
-    <xmx:CoE2ZdUI7CZ4zJBij_i-AoyZBN_gMqojPy_Q-e-0n3S3UOkxBO9BTQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id DCB18B60089; Mon, 23 Oct 2023 10:19:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1048-g9229b632c5-fm-20231019.001-g9229b632
+        with ESMTP id S229578AbjJWOZB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 10:25:01 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403CA100;
+        Mon, 23 Oct 2023 07:24:59 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9be3b66f254so478789766b.3;
+        Mon, 23 Oct 2023 07:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698071097; x=1698675897; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HOo26F7ddMgMPqh3lV7DV+yYzFbyW/ocxujpUxCvn1o=;
+        b=lAT3OapmgowhVHbWZU3fz3YaNtGXYTpkzlflvv1PSaoM4EbL1hgY/Pf4m36hWykw0W
+         KlVLBr4p0Neci30Ulm5ezYobobpgpoePKDMapsIFi7DH7w3IVmCdCtq2aeCUMND+6NEB
+         jMxmZWhH+VGhKVM78fNrKX2naCdbFJ88L5Qi1bbjMmSgt1UOo7bvRyEE+kkYT3bdY8bd
+         jqC1Q8ZTLbSsrbcZ5BGYf4VU6qKj/jAfrM48Q4UmHDnLPXhZ0nyJZv21FW5caAg+Os8n
+         6CJG49zwMm2qiAfeOZpAkqVCOFqzEPy8ePf5IJ1m5ODrSHFx0ozHStGiPo4df1hWySJu
+         Voog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698071097; x=1698675897;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HOo26F7ddMgMPqh3lV7DV+yYzFbyW/ocxujpUxCvn1o=;
+        b=hlrlj96llRzwxOCvPcaHMz+ArXPkqLSkT1IdZf2o1QSd37F4Lkw7PK1KMwnKSM2Pv3
+         rZKUM0so/nQqIf7nrjbwQgr+XLydPB+fXW/WH7OVCAZd0dDR1/Uc0Yf7CZNTT5zVQt0b
+         qrzHut0QwPJzWwB+mEp0wivVPkg7gu8J7qUuB07lLtj75+eath56FWwpBspE0dSxIUlq
+         jg5Xi0mDEDMHHnD0df6JWIeJMQFsaI936r+IjaSZ59/OIJ3jG6ef990AEO+FhwM2pfuL
+         HwgLq9QBVZ+dAvqBOedrLbJ3uClB39sB2fuVNM5WHiN1WugWk3c6ric6s4FUTbXfYHwc
+         7vsw==
+X-Gm-Message-State: AOJu0YxxaO6Z1Ub9XRJ3tv+611vDVsWNiirYsStY2VcmrQ7f8pyyuVw9
+        epEDq0OIiK6kN2ec9cRCLVI=
+X-Google-Smtp-Source: AGHT+IGDPYcqybnKKGxteO1DjEkEWIGmlvC8h+HZU+3bP7Wgjm4MehUQpms5PfgDSWvJuk/B75OlaA==
+X-Received: by 2002:a17:906:db0a:b0:9bf:4915:22c4 with SMTP id xj10-20020a170906db0a00b009bf491522c4mr8074201ejb.67.1698071097349;
+        Mon, 23 Oct 2023 07:24:57 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
+        by smtp.gmail.com with ESMTPSA id lh22-20020a170906f8d600b0099290e2c163sm6618118ejb.204.2023.10.23.07.24.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 07:24:56 -0700 (PDT)
+Message-ID: <e97ac024cb2654507ed8f7af715f3604efefbdbb.camel@gmail.com>
+Subject: Re: [PATCH v2 3/3] dt-bindings: adis16460: Add
+ 'spi-cs-inactive-delay-ns' property
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
+        nuno.sa@analog.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Date:   Mon, 23 Oct 2023 16:27:48 +0200
+In-Reply-To: <20231023140534.704312-4-ramona.gradinariu@analog.com>
+References: <20231023140534.704312-1-ramona.gradinariu@analog.com>
+         <20231023140534.704312-4-ramona.gradinariu@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0 
 MIME-Version: 1.0
-Message-Id: <15f25d73-32d5-4809-8096-32c856559d66@app.fastmail.com>
-In-Reply-To: <BN7PR03MB4545DA4A9404F349170CBA1097D8A@BN7PR03MB4545.namprd03.prod.outlook.com>
-References: <20231019125646.14236-1-eliza.balas@analog.com>
- <20231019125646.14236-3-eliza.balas@analog.com>
- <2023101917-cork-numeric-dab8@gregkh>
- <BN7PR03MB4545E7EAB2D72B9098C30C6797DBA@BN7PR03MB4545.namprd03.prod.outlook.com>
- <2023102030-resort-glance-57ef@gregkh>
- <BN7PR03MB4545FF54B96514EC9F41887E97D8A@BN7PR03MB4545.namprd03.prod.outlook.com>
- <2023102339-outcast-scone-5a63@gregkh>
- <BN7PR03MB4545DA4A9404F349170CBA1097D8A@BN7PR03MB4545.namprd03.prod.outlook.com>
-Date:   Mon, 23 Oct 2023 16:19:32 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Eliza Balas" <Eliza.Balas@analog.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "derek.kiernan@amd.com" <derek.kiernan@amd.com>,
-        "dragan.cvetic@amd.com" <dragan.cvetic@amd.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] drivers: misc: adi-axi-tdd: Add TDD engine
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 23, 2023, at 15:30, Balas, Eliza wrote:
->> -----Original Message-----
->> Cvetic <dragan.cvetic@amd.com>; Arnd Bergmann <arnd@arndb.de>
->> Subject: Re: [PATCH v3 2/2] drivers: misc: adi-axi-tdd: Add TDD engine
+On Mon, 2023-10-23 at 17:05 +0300, Ramona Gradinariu wrote:
+> The adis16460 device requires a stall time between SPI
+> transactions (during which the chip select is inactive),
+> with a minimum value equal to 16 microseconds.
+> This commit adds 'spi-cs-inactive-delay-ns' property, which should
+> indicate the stall time between consecutive SPI transactions.
+>=20
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> ---
+> changes in v2:
+> =C2=A0- added default value
+> =C2=A0- updated description
+> =C2=A0- updated commit message
+> =C2=A0.../devicetree/bindings/iio/imu/adi,adis16460.yaml=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 6 ++++++
+> =C2=A01 file changed, 6 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+> b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+> index 4e43c80e5119..f10469b86ee0 100644
+> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+> @@ -25,6 +25,12 @@ properties:
+>=20
+> =C2=A0=C2=A0 spi-cpol: true
+>=20
+> +=C2=A0 spi-cs-inactive-delay-ns:
+> +=C2=A0=C2=A0=C2=A0 minimum: 16000
+> +=C2=A0=C2=A0=C2=A0 default: 16000
+> +=C2=A0=C2=A0=C2=A0 description:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Indicates the stall time between consecut=
+ive SPI transactions.
+> +
 
->> > > > Since the device is not an iio device, using an iio function would be confusing.
->> > >
->> > > Why isn't this an iio device?
->> >
->> > The device is not registered into the IIO device tree,
->> > and does not rely on IIO kernel APIs.
->> > Even though there are a few attributes that resemble the
->> > ones from iio, and the sysfs structure is similar,
->> > this is not an IIO device.
->> > In the previous patch versions 1 and 2 we concluded
->> > that this device fits better in the misc subsystem.
->> 
->> Ok, can you point to that in the changelog where the IIO maintainer
->> agreed that this doesn't fit into that subsystem?
->> 
-> This was one of the discussions from previous v2 : 
-> https://lore.kernel.org/all/5b6318f16799e6e2575fe541e83e42e0afebe6cf.camel@gmail.com/
->
-> I will add it to the changelog the next time I submit the patches.
+You should drop the description...=20
 
-It sounds like Jonathan wasn't quite sure either here, and I would
-still argue (as I did in that thread), that drivers/iio is probably
-a better option than drivers/misc.
+Also, give more time before posting a v2 so others get a chance to review y=
+our
+patches. It's also better for you since you can gather more change requests=
+.
 
-In particular, you mention that you actually make this device
-appear as an IIO device to user space using the "iio-fake" hack.
+- Nuno S=C3=A1
 
-I can see that IIO is not a perfect fit if this is the only
-device of its kind, but going that way anyway avoids a number
-of problems by reusing infrastructure for the IIO ABI and
-serialization with in-kernel users, as well as giving you
-the option of adding other compatible drivers later.
-
-     Arnd

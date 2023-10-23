@@ -2,120 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEC87D3BBC
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 18:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35B277D409B
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 22:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229989AbjJWQHB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 12:07:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53204 "EHLO
+        id S229533AbjJWUFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 16:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjJWQHA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 12:07:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57A8E9;
-        Mon, 23 Oct 2023 09:06:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C272C433C9;
-        Mon, 23 Oct 2023 16:06:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698077218;
-        bh=S6VMIhoVKsj2e7n62GkaiRTDJ8EPj3xrFNXOf/EI3g4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cYpDtb94XJDFXVmeIHBnQAYcWchRsElqnt/ALJtp2Nr9knWzV6ELe5NVhsPEEQTdy
-         VXSIPOkSDdLEup7euvSldPwpVw1JI5QcflcunBcK3ARhshUrB9zvbOz8VUeA1klxLW
-         BqBOvZ+zL3bibs4lmFSI8rwFEuJABaUEciz9oKA1e9YSAz9yLXoDYT80cVXulk84o6
-         0gxlU/VLdGkroOQGCb/m4vYMzEyNuyI4dytoehPFtu535+AF1Qr9uU9Be9wkkB1NKE
-         PM9hOBvnmDMx+Q951pglC1ZBfWmaDU2ZXNV+JDiGFyKtP8fD3dz8YtZHaJzMyNSQsY
-         y1hgR/8EWvgzA==
-Date:   Mon, 23 Oct 2023 17:06:54 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] dt-bindings: adis16460: Add
- 'spi-cs-inactive-delay-ns' property
-Message-ID: <20231023-repost-coma-2f67ea8b95af@spud>
-References: <20231023140534.704312-1-ramona.gradinariu@analog.com>
- <20231023140534.704312-4-ramona.gradinariu@analog.com>
- <e97ac024cb2654507ed8f7af715f3604efefbdbb.camel@gmail.com>
+        with ESMTP id S229498AbjJWUFc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 16:05:32 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264C6F9;
+        Mon, 23 Oct 2023 13:05:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698091531; x=1729627531;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vzCYBegKmD99AGE0G2Mekw/HeH8k/864tM2ZX6SzBRc=;
+  b=ZFn2sRnMbALWDb2nxWVHpTLoaGdvb87qqsv9Ro80a4lByjN+A76+gS3f
+   nU8H2HDcTh4OOJGdToHNXburWv1ln+fBwTXS0AdgwBXWHqogox2WYoRiy
+   I3fw3tSAuOC/wKdY6/0/p2cjn7nMBSmBKeJ/HTixAxhAU8D6fJyFqzGyc
+   IJOitJhchOeTHqv584JJgDVv0lkT4KgG4ks2mJ2S5MFJTvgOhkaZGHPk0
+   DB6hlS5JrsbOooAirn/dBJmuQ6R7r52aACsPIvSVcM4RTXaVml4nuJuVJ
+   YZ8iCWQx3cwZ5IJ4k6gboEBJ1gDpI43QJ0iAh+6Yo5yHuvPGOEx825LFB
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="385815094"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
+   d="scan'208";a="385815094"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 13:05:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="761862025"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
+   d="scan'208";a="761862025"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 13:05:28 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qv1Ay-000000081ke-3ovp;
+        Mon, 23 Oct 2023 23:05:24 +0300
+Date:   Mon, 23 Oct 2023 23:05:24 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Phil Elwell <phil@raspberrypi.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2 1/5] iio: pressure: bmp280: Use i2c_get_match_data()
+Message-ID: <ZTbSBK+lkPPKA74B@smile.fi.intel.com>
+References: <cover.1697994521.git.ang.iglesiasg@gmail.com>
+ <0554ddae62ba04ccacf58c2de04ec598c876665e.1697994521.git.ang.iglesiasg@gmail.com>
+ <ZTZXTLeWbUHKkHIn@smile.fi.intel.com>
+ <b4a76c2f3440da1ab6449b34fb352d21c9347b7b.camel@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Vq5WbrHhYg5Chr9o"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e97ac024cb2654507ed8f7af715f3604efefbdbb.camel@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <b4a76c2f3440da1ab6449b34fb352d21c9347b7b.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Oct 23, 2023 at 04:00:53PM +0200, Angel Iglesias wrote:
+> On Mon, 2023-10-23 at 14:21 +0300, Andy Shevchenko wrote:
+> > On Sun, Oct 22, 2023 at 07:22:17PM +0200, Angel Iglesias wrote:
+> > > From: Biju Das <biju.das.jz@bp.renesas.com>
+> > > 
+> > > Replace device_get_match_data() and id lookup for retrieving match data
+> > > by i2c_get_match_data().
+> > > 
+> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > 
+> > Hmm... What tools have you used to format/send this? It seems differs
+> > to what `git format-patch` does.
+> 
+> I just applied this patch from Biju's series with "git am" and then generated
+> this series running the following invocation:
+> "git format-patch -v2 -p -n --thread --cover-letter 
+> --to=linux-iio@vger.kernel.org --base=iio_upstream/togreg HEAD~5"
+> My work repository is publicly available here:
+> https://github.com/angiglesias/linux/commits/iio-bmp280-add-bmp390-support
 
---Vq5WbrHhYg5Chr9o
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Somehow the diffstat is stripped off...
 
-On Mon, Oct 23, 2023 at 04:27:48PM +0200, Nuno S=E1 wrote:
-> On Mon, 2023-10-23 at 17:05 +0300, Ramona Gradinariu wrote:
-> > The adis16460 device requires a stall time between SPI
-> > transactions (during which the chip select is inactive),
-> > with a minimum value equal to 16 microseconds.
-> > This commit adds 'spi-cs-inactive-delay-ns' property, which should
-> > indicate the stall time between consecutive SPI transactions.
-> >=20
-> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> > ---
-> > changes in v2:
-> > =A0- added default value
-> > =A0- updated description
-> > =A0- updated commit message
-> > =A0.../devicetree/bindings/iio/imu/adi,adis16460.yaml=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0 | 6 ++++++
-> > =A01 file changed, 6 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.ya=
-ml
-> > b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > index 4e43c80e5119..f10469b86ee0 100644
-> > --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > @@ -25,6 +25,12 @@ properties:
-> >=20
-> > =A0=A0 spi-cpol: true
-> >=20
-> > +=A0 spi-cs-inactive-delay-ns:
-> > +=A0=A0=A0 minimum: 16000
-> > +=A0=A0=A0 default: 16000
-> > +=A0=A0=A0 description:
-> > +=A0=A0=A0=A0=A0 Indicates the stall time between consecutive SPI trans=
-actions.
-> > +
->=20
-> You should drop the description...=20
->=20
-> Also, give more time before posting a v2 so others get a chance to review=
- your
-> patches. It's also better for you since you can gather more change reques=
-ts.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Further, I don't see an answer to Krzysztof's question of why the stall
-time would not just be set to 16,000 ns in the driver, based on the
-compatible.
 
---Vq5WbrHhYg5Chr9o
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTaaHgAKCRB4tDGHoIJi
-0hH3AQDXlI8mVw1mEWJZ4i6/O+ODetpJSdpxn2jwhPshD+QGfwEA6EW9738l8qsH
-kUrRwUbbQgTOSkDwjPsDlOYFAholUQo=
-=E9Go
------END PGP SIGNATURE-----
-
---Vq5WbrHhYg5Chr9o--

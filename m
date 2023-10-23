@@ -2,91 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5A87D2A43
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 08:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A727D2A58
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 08:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233303AbjJWGUa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 02:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
+        id S229729AbjJWGYq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 02:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjJWGU3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 02:20:29 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC1EAB9;
-        Sun, 22 Oct 2023 23:20:27 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39N5wxpj002986;
-        Mon, 23 Oct 2023 06:19:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=UiNyF/RZ+Y+U5yIffdrpOm0dqqjSpu0l0RIgED41prg=;
- b=etP0RkkKayZOS+5cQ25MIepAiOdU4hkHgjRr3lSZdzH4P7Crl+LXr4/H3Y+5/YuJxRnu
- R3Bd8Um1cbqYeepFIZJcs3xccnH9AXMXA8d6JByAIrE861GipAEtJ6n2AMwz0mXNIj5e
- 501/bV9OGQWBPWcDWk6MWl3lGzjU9Z/Pw62MYJEvMZR83x45dF46Cwotw2pmMFNT9gLc
- +piid8BiVlwc0Ge52MvznuBtjGMR2AwEfdCf91SORzpgptRIkCMjudBhnMJszsJc7Xec
- 4y20oOoYpWcCBpXl0hrIfnkVQ4tWbHfGRKYmZdVvdg98EOYy8OLYpslIwICbMcIvpNne yw== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tv5ndu9h0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Oct 2023 06:19:58 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39N6JvLA026101
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Oct 2023 06:19:57 GMT
-Received: from [10.216.48.174] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Sun, 22 Oct
- 2023 23:19:48 -0700
-Message-ID: <e6c27567-070e-1765-3d5a-30a6e6fa119b@quicinc.com>
-Date:   Mon, 23 Oct 2023 11:49:44 +0530
+        with ESMTP id S233346AbjJWGYp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 02:24:45 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08D9DF;
+        Sun, 22 Oct 2023 23:24:43 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2c50ec238aeso41401951fa.0;
+        Sun, 22 Oct 2023 23:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698042282; x=1698647082; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u63ePI/ecrbvy23ZluOCFzJyp4YA/m/rdW6t9+hNFxA=;
+        b=KUwRT3xj+9dDAFf+KqLGBpV0UfgTjQuojprHAzTnzjKAOMdhcjRfQRiLIYDbdOEcXz
+         RtfexO6dzqCTIMBbWNRNwn+zOaCZvURSb15vlWajGgDwWAHNoR4ltpDFvCGz4g3sxSUE
+         ZIeuxg2tY+SECqZnHqE+Kl2vve8x57wY2OsHoc08LDlbWZXbsPE7C1vcyH2G/QTKIOJL
+         +TZd+sGKT8/YtWeb6+J3phlhr2s6TytLWN2n3NcFeloZJcdmTW/YRbiz/n9fqiF9J5HR
+         xZzSA3QobZpbq047SACOMzcFZ+z3/BohnuSKrfz/71WLkQtlkaVuJYaKkHrJ5MBmEQXI
+         xIrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698042282; x=1698647082;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u63ePI/ecrbvy23ZluOCFzJyp4YA/m/rdW6t9+hNFxA=;
+        b=LhfxvJR0fPpuh3zmKzS3DeRtHrAPU4fbvnBgN2LHL3LgiBNKUAGoMymyE+Jwwuv6AF
+         4R6UUtSmjKSiy+Xnel91aSM9tlksXPCqV7rGKH6WS3e3vk1FMKyl8pA1t+HLkyD4M3cg
+         K5duXmrbNd+jo2A3ZCRpr/KlMOsMQdo0WogFkVN6umFOIJjAZb1WHwxmw5PZS7s8sAbx
+         hBVfie1mWfQYYTrQqiGSD/R1cLAupN4DsY+EOS+CLrNwYpeGuxecdbcvLwkrVtGre6QO
+         c/TbVRRXdIUX1NZLITTaox8Cfm/XLfbwQB1RoAuMFwRisTSntGuBBi0q4HFmpQnfrGK4
+         NcgA==
+X-Gm-Message-State: AOJu0Yw6gqYKuBwL4k3gDY3KPEy1jHIfFTueyzGwyjhGd0bsA76we1pj
+        SVCvm2v5OZtrLQMua9ueYd/VR1W5Txiy4g==
+X-Google-Smtp-Source: AGHT+IH2WW3hWxD70RfsVynOvdDaxRJ4BJQeLYa7I0biC2Jl991bZO1HchXjmPsgQeWn8MLMurGDDQ==
+X-Received: by 2002:a2e:b0e3:0:b0:2c5:1900:47a4 with SMTP id h3-20020a2eb0e3000000b002c5190047a4mr5402725ljl.0.1698042281688;
+        Sun, 22 Oct 2023 23:24:41 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::7? (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
+        by smtp.gmail.com with ESMTPSA id w10-20020a2e160a000000b002c032e54948sm1513805ljd.117.2023.10.22.23.24.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Oct 2023 23:24:40 -0700 (PDT)
+Message-ID: <77b5f4a6-4012-4409-9034-419b852a783f@gmail.com>
+Date:   Mon, 23 Oct 2023 09:24:39 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 11/11] dt-bindings: iio: remove QCOM ADC files from iio
- folder
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <agross@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linus.walleij@linaro.org>,
-        <Jonathan.Cameron@huawei.com>, <sboyd@kernel.org>,
-        <dmitry.baryshkov@linaro.org>, <quic_subbaram@quicinc.com>,
-        <quic_collinsd@quicinc.com>, <quic_kamalw@quicinc.com>,
-        <quic_jestar@quicinc.com>, <marijn.suijten@somainline.org>,
-        <andriy.shevchenko@linux.intel.com>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: kx022a: Fix acceleration value scaling
+Content-Language: en-US, en-GB
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>
-CC:     <linux-arm-msm-owner@vger.kernel.org>
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-12-quic_jprakash@quicinc.com>
- <8b2dd686-382a-f490-7b6e-9603d939bad7@linaro.org>
-From:   Jishnu Prakash <quic_jprakash@quicinc.com>
-In-Reply-To: <8b2dd686-382a-f490-7b6e-9603d939bad7@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: iOPs_cGueR93UyrTQiIXeLAv8rUQ2VJ_
-X-Proofpoint-ORIG-GUID: iOPs_cGueR93UyrTQiIXeLAv8rUQ2VJ_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-23_03,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- adultscore=0 impostorscore=0 mlxscore=0 phishscore=0 priorityscore=1501
- clxscore=1015 suspectscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310230054
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <CAM+2Eu+ndzS9NLvsZaX_=YTHb_+t4cE5GjQevJ1Lgc2EBO20rA@mail.gmail.com>
+ <c623b6ff-6d6c-4351-b828-4ed4663f9de9@gmail.com>
+ <CAM+2EuJ8J+sJNBqbPuFLXVK-Y9V=q+Lt=js9giWdSZ6H=aJ2Jg@mail.gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <CAM+2EuJ8J+sJNBqbPuFLXVK-Y9V=q+Lt=js9giWdSZ6H=aJ2Jg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -95,60 +79,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Krzysztof,
-
-On 7/9/2023 10:58 PM, Krzysztof Kozlowski wrote:
-> On 08/07/2023 09:28, Jishnu Prakash wrote:
->> Now that the ADC dt-binding paths have been updated everywhere
->> to use the files copied to the 'iio/adc' folder, remove them
->> from the 'iio' folder.
+On 10/20/23 19:48, Jagath Jog J wrote:
+> On Fri, Oct 20, 2023 at 5:39 PM Matti Vaittinen
+> <mazziesaccount@gmail.com> wrote:
 >>
->> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
->> ---
-> Nothing this was explained in previous patches... We should not have to
-> read patchset from the end to understand what is happening here. Anyway,
-> your commits lack rationale why this is done. Without it, this is pure
-> churn which breaks users. ABI breaks need to be explained in the commit
-> msg and come with some reason.
+>> On 10/19/23 21:21, Jagath Jog J wrote:
+>>> Hi Matti,
+>>>
+>>> On Thu, Oct 19, 2023 at 6:54 PM Matti Vaittinen
+>>> <mazziesaccount@gmail.com> wrote:
+>>>>
+> 
+>>>> I did only very quick testing on KX022A and iio_generic_buffer. After
+>>>> the patch the values seemed to be correct order of magnitude. Further
+>>>> testing is appreciated :)
+>>>
+>>> Values are correct with this change, Thank you for fixing.
+>>> Tested-by: Jagath Jog J <jagathjog1996@gmail.com>
+>>
+>> Thanks a ton for testing! May I ask which component did you use (or did
+>> you just use some 'simulated' regster values?)
+> 
+> Hi Matti,
+> 
+> I just simulated with the register values, Should the 'tested-by' tag only be
+> provided after hardware testing?
 
+I am not sure TBH. I didn't have a problem with your tag though, I was 
+merely curious to hear about the IC usage :)
 
-I'll try to do the changes in one or two patchsets, based on my replies 
-for the previous few patchsets (8, 9, 10), hope this can work.
+Now that you mentioned the tested-by tag usage, I started to wonder it 
+as well. From pure SW/driver point of view the register value simulation 
+is sufficient - but in practice we are not interested in whether the 
+code works "in theory" - but whether the products do really work. This 
+is something which includes handling of potential HW quircks and 
+oddities - which are not always documented or known.
 
+If we assume a case where someone is developing new gizmo and hits a bug 
+which is in reality caused by some undocumented HW hiccup - then fixes 
+with "tested-by" tags which are not actually tested on HW having this 
+hiccup but using SW simulation - may be misleading.
 
->
-> ...
->
->> -/* 400k pull-up3 */
->> -#define ADC5_GEN3_AMUX1_THM_400K_PU		0x64
->> -#define ADC5_GEN3_AMUX2_THM_400K_PU		0x65
->> -#define ADC5_GEN3_AMUX3_THM_400K_PU		0x66
->> -#define ADC5_GEN3_AMUX4_THM_400K_PU		0x67
->> -#define ADC5_GEN3_AMUX5_THM_400K_PU		0x68
->> -#define ADC5_GEN3_AMUX6_THM_400K_PU		0x69
->> -#define ADC5_GEN3_AMUX1_GPIO_400K_PU		0x6a
->> -#define ADC5_GEN3_AMUX2_GPIO_400K_PU		0x6b
->> -#define ADC5_GEN3_AMUX3_GPIO_400K_PU		0x6c
->> -#define ADC5_GEN3_AMUX4_GPIO_400K_PU		0x6d
->> -
->> -/* 1/3 Divider */
->> -#define ADC5_GEN3_AMUX1_GPIO_DIV3		0x8a
->> -#define ADC5_GEN3_AMUX2_GPIO_DIV3		0x8b
->> -#define ADC5_GEN3_AMUX3_GPIO_DIV3		0x8c
-> You just added these defines in previous patches. Don't add them to
-> incorrect places just to fix it second later.
+The above is just some overall pondering - I am not too concerned on 
+your tested-by tag :) Besides, it's cool you did the testing! I 
+appreciate that! However, I wonder if there is some wider consensus 
+whether the tests should be ran using real HW when tested-by tag is 
+given. Jonathan, do you have any educated opinion on this?
 
+> I referred to this driver because it's
+> the most recent accelerometer driver that was merged.
 
-Right, I'll avoid this and add the ADC5 Gen3 macros in the 
-dt-bindings/iio/adc/ folder in the next patchset, irrespective of what 
-happens with updating the file paths, hope there won't be any issues.
+Makes sense :) Thanks for replying!
 
-Thanks,
+Yours,
+	-- Matti
 
-Jishnu
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 
->
-> Best regards,
-> Krzysztof
->

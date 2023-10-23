@@ -2,168 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483317D2C25
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 10:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECEF7D2C3F
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 10:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjJWIEC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 04:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
+        id S229512AbjJWIK7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 04:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjJWIEB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 04:04:01 -0400
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E33A9F
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 01:03:58 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a82c2eb50cso27557307b3.2
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 01:03:58 -0700 (PDT)
+        with ESMTP id S229476AbjJWIK7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 04:10:59 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25750D6B;
+        Mon, 23 Oct 2023 01:10:57 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32d9b507b00so2212529f8f.1;
+        Mon, 23 Oct 2023 01:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698048237; x=1698653037; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmB9mDTwiF3uEH0iaSmju1hjjf2PC63Y5fnQXGlfFvY=;
-        b=fu7Fm2CWDTbU4vgkZvk0KUscLqzKdSu6257lMymgRY9sILLbrOqdqyinFyrNaDGfE4
-         m1nBqXpywvnoLTZ1tRewNBSZuvo0XQ+12uYKvMrvPBxGG6bx/sxoYOdOPh1942HSpuTq
-         che/cfCX5eANbAMk8+pZl6fzmuYHd9y9Z3iqTxGENKMe9e8/YxwvwPX0JLweZiyUogDy
-         vIXBTWsMpWbolKvbLfxoo8f3IWF0MrQ6oXZmiz6vO8qDTYgJuJzAh4X/JdgyJhSthmN9
-         mFGCuOs8ufYglvDsYWHA9busqoiS/wJeSXpd2VMSWGMLQafa3RJ8VlV6OPBIbGgo2tEJ
-         qkVg==
+        d=gmail.com; s=20230601; t=1698048655; x=1698653455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d7cqCaedoqoHpQD8+KvfrceThO52+AoPN4P2eMWZ0lk=;
+        b=NJ33L3H/QTwpLwqP0Lm6GJvUVM9jH76LiIt0iTIljXBJUwK23+1iO7yINTxHIKv8ow
+         6Vmid2unVbPV7jIoMMU4TeduilIlziXa0b8k4zx3M8tHkdCKDQnv1mPQrSkM0+OjaLnG
+         MupX44pVFqSYMd2Yz6exZBXIndgjpwMJ1CpbyVw1jVWGEKomK7+cPITfQwUydieUkN0U
+         VKKc1v0rWlHvpv1nkGvxZFqwdfUZnv6EagxYx+2PvvscN51i+Fe5v9r01deUpqoNksWd
+         /uvyuOTpvlC4FWioJtR1hYcvXNjRZ/JufRrWhwbNka4wOCXAnV2ivByTfhdijKJyR87t
+         uBww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698048237; x=1698653037;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1698048655; x=1698653455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gmB9mDTwiF3uEH0iaSmju1hjjf2PC63Y5fnQXGlfFvY=;
-        b=ce4a4JbV7W8W0btfXVA/d+SbNXJMqfXiBEOSAId5MJokJRVyNFKDv3ui1Cgn7fstXE
-         VYBPFMq36TAht1QUABlmgmbQe8V6IBKJk8L32DJft5NwHzQQ/fTHUZj+DJjMWjhhRQWv
-         QVxnWco+bAlf4GBZDcC7SCryWa203TZhx6qs0FEuk7iqL/JfKB6m8Nz7/Ae1somhePfp
-         j+hqEYyXDAIGpgnyU3EauoSqqNyPL4DoiWTuElQ2Yksk5NdMJMA0lxwai/1ypNh3NiI6
-         hL/J1zgqFK0hU/YGT/qin8EV5Q8c1JG1vcWzwzv2Zul/X/ORV+Q/8yDjy4dDVrxiSyQ5
-         nO3w==
-X-Gm-Message-State: AOJu0YwAaOTy/WVBlZkOi0zajj2omyKPW0U9zkvbHOTqIoUgJPMqZhpR
-        /0dPszDb9gXl/WyPr+Vj53mtpbIXet2om1Fg/6Ii5A==
-X-Google-Smtp-Source: AGHT+IElEdOoTwEWHGztCKoP/uOTBAVSI/z9UeRXX/JNfSNw3yEy28Sub6mcDg2QCSreuoawpXgqJLjt53W3G81bRMU=
-X-Received: by 2002:a25:ef4e:0:b0:d9d:116a:89c8 with SMTP id
- w14-20020a25ef4e000000b00d9d116a89c8mr4808003ybm.54.1698048237350; Mon, 23
- Oct 2023 01:03:57 -0700 (PDT)
+        bh=d7cqCaedoqoHpQD8+KvfrceThO52+AoPN4P2eMWZ0lk=;
+        b=FRHMNP/DtV6pWR732dgZAjEyLG2sWgqUQi45hKW4HCP8YXgpRtj8ogqht0FSUghfUt
+         Dlk79WK0jVHa28E4M5n0Mhu3V0deiunb48LdlAJu0kWWbimC5lX2AchD6jhx89rSwPqS
+         cj05fY7ku8X4ftkkZk9fzCgswLLi1zUXYIBr0QTBVachSEHhTiCzemAdAwMejCPlc5Tx
+         h6fAzhKqhs1of+FsLC82VFAv+vF+vNvC0OFT+GQ/pRjEpjRvoPDx61/sf6vSwUOmO/mJ
+         dmIRj8JKQ/ttgzvwsajjy6InsINxVWjOE/DvbWWUxo741FKjk4hXjvwHwe1i3e6STvGm
+         zyLA==
+X-Gm-Message-State: AOJu0YygwLVZ0SqTQ1ZomJMCr2GEMxHJnkKe2HO5NIAJyHF5Rrwmdh17
+        HIwL7YsRXJ3KU6Mez7KGTsCM8ZW14Kk=
+X-Google-Smtp-Source: AGHT+IEuu1pCWAMxs1QZIe5QYfyRiSzhhF+pj2KcV9gO4YSBwJ73Q58dPai8HlEnY56JCt10KECh/Q==
+X-Received: by 2002:a5d:4a86:0:b0:32d:a2c4:18bf with SMTP id o6-20020a5d4a86000000b0032da2c418bfmr5607012wrq.59.1698048655302;
+        Mon, 23 Oct 2023 01:10:55 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id y5-20020adff145000000b0031fd849e797sm7218480wro.105.2023.10.23.01.10.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 01:10:54 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: imu: Fix spelling mistake "accelrometer" -> "accelerometer"
+Date:   Mon, 23 Oct 2023 09:10:54 +0100
+Message-Id: <20231023081054.617292-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-8-quic_jprakash@quicinc.com> <20230708165955.08c1159c@jic23-huawei>
- <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
-In-Reply-To: <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Mon, 23 Oct 2023 11:03:46 +0300
-Message-ID: <CAA8EJprb=804S=GfxPw_7AxoHRO1XzC+wGPCsvNGrRpJgj+y6A@mail.gmail.com>
-Subject: Re: [PATCH 07/11] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-To:     Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, agross@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linus.walleij@linaro.org, Jonathan.Cameron@huawei.com,
-        sboyd@kernel.org, quic_subbaram@quicinc.com,
-        quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
-        marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
-        krzysztof.kozlowski@linaro.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        Haibo Chen <haibo.chen@nxp.com>, linux-iio@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Oct 2023 at 09:15, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
->
-> Hi Jonathan,
->
-> On 7/8/2023 9:29 PM, Jonathan Cameron wrote:
-> > On Sat, 8 Jul 2023 12:58:31 +0530
-> > Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
+There are two spelling mistakes in dev_err messages. Fix them.
 
-> >> +
-> >> +    ret = adc5_get_fw_data(adc);
-> >> +    if (ret < 0) {
-> >> +            dev_err(adc->dev, "adc get dt data failed, ret=%d\n", ret);
-> >> +            return ret;
-> >> +    }
-> >> +
-> >> +    for (i = 0; i < adc->num_sdams; i++) {
-> >> +            ret = devm_request_irq(dev, adc->base[i].irq, adc5_gen3_isr,
-> >> +                                    0, adc->base[i].irq_name, adc);
-> >> +            if (ret < 0) {
-> >> +                    dev_err(adc->dev, "Getting IRQ %d failed, ret=%d\n", adc->base[i].irq, ret);
-> >> +                    return ret;
-> >> +            }
-> >> +    }
-> >> +
-> >> +    ret = adc_tm_register_tzd(adc);
-> >> +    if (ret < 0)
-> >> +            return ret;
-> >> +
-> >> +    if (adc->n_tm_channels)
-> >> +            INIT_WORK(&adc->tm_handler_work, tm_handler_work);
-> >> +
-> >> +    indio_dev->name = pdev->name;
-> >> +    indio_dev->modes = INDIO_DIRECT_MODE;
-> >> +    indio_dev->info = &adc5_gen3_info;
-> >> +    indio_dev->channels = adc->iio_chans;
-> >> +    indio_dev->num_channels = adc->nchannels;
-> >> +
-> >> +    return devm_iio_device_register(dev, indio_dev);
-> >> +}
-> >> +
-> >> +static int adc5_gen3_exit(struct platform_device *pdev)
-> >> +{
-> > As you are mixing devm manged cleanup and the explicit sort the
-> > result is that you remove the userspace interfaces 'after' you run
-> > everything in here. I'm thinking disabling the channels at least
-> > isn't a good idea in that case.
-> >
-> > If you want to use devm (which is good) then you need to work out how
-> > to register additional callbacks during probe to tear down everything in
-> > the right order (typically the reverse of what happens in probe)
-> > devm_add_action_or_reset() is the way to add those extra callbacks.
-> >
-> > If not, just don't use devm for at least those bits that will end up
-> > running out of order (such as iio_device_register()) and manually call their
-> > cleanup routines instead.
->
->
-> I checked some other examples in the iio/adc/ folder, I think I see what
-> you mean here. It looks like drivers with a remove callback always use
-> iio_device_register and iio_device_unregister instead of the devm_*
-> variant, due to the issue with sysfs removal as you said.
->
-> I'll update the probe and remove functions similarly, to do explicit
-> cleanups as required, avoiding devm_ usage for places where it should be
-> avoided.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/imu/bmi323/bmi323_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I think you got the message all wrong. There is nothing bad with using
-devm_. As a matter of fact it is a preferred form in most of the
-cases. However you have to be careful to tear down your device in the
-correct order. And as Jonathan pointed
-out, you might add necessary hooks manually by calling
-devm_add_action_or_reset().
-
-[skipped the rest]
-
-
-
+diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+index 0bd5dedd9a63..183af482828f 100644
+--- a/drivers/iio/imu/bmi323/bmi323_core.c
++++ b/drivers/iio/imu/bmi323/bmi323_core.c
+@@ -545,7 +545,7 @@ static int bmi323_tap_event_en(struct bmi323_data *data,
+ 	guard(mutex)(&data->mutex);
+ 
+ 	if (data->odrhz[BMI323_ACCEL] < 200) {
+-		dev_err(data->dev, "Invalid accelrometer parameter\n");
++		dev_err(data->dev, "Invalid accelerometer parameter\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1453,7 +1453,7 @@ static int bmi323_enable_steps(struct bmi323_data *data, int val)
+ 
+ 	guard(mutex)(&data->mutex);
+ 	if (data->odrhz[BMI323_ACCEL] < 200) {
+-		dev_err(data->dev, "Invalid accelrometer parameter\n");
++		dev_err(data->dev, "Invalid accelerometer parameter\n");
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-With best wishes
-Dmitry
+2.39.2
+

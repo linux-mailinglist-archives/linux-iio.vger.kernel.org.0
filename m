@@ -2,145 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6B37D2C0B
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 09:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF347D2C20
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Oct 2023 10:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjJWH6j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Oct 2023 03:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47798 "EHLO
+        id S229514AbjJWIDC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Oct 2023 04:03:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjJWH6i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 03:58:38 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EDF107
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 00:58:35 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a7ad24b3aaso31222717b3.2
-        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 00:58:35 -0700 (PDT)
+        with ESMTP id S229565AbjJWIDC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Oct 2023 04:03:02 -0400
+Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78ED0D6E
+        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 01:02:59 -0700 (PDT)
+Received: by mail-oo1-xc43.google.com with SMTP id 006d021491bc7-5845213c583so713550eaf.0
+        for <linux-iio@vger.kernel.org>; Mon, 23 Oct 2023 01:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698047914; x=1698652714; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Hc1HQxMK6cov0ESZHcOE2hl8RJaLivF3ZZ3pITnRe4=;
-        b=dEDJpjG3E9QicDV/6CPz2khqGc+ze6HAwGYcRmhSEQizzis6mJhooPs3K2uIDKs8bq
-         g6ltCafmP6S0Kso9TVDLppWiTRCCtVEcZHNZ3uvqtr5qc+SrjFuORKcuyoZQ9j//X0E6
-         tj7qpji+G/Dh1EcGzp2TOBYEb05MNaWCePvlw94zeNakXNTZJxb27fZe04hHE14tgQmQ
-         9JKL08LD9pHa0nTvX8Dm6S/8Sd0VIXkTNjddimzuHfQ1hQEE4rb7P6/utU1CAo17bQ58
-         Cd3PE5ZM53mQtAwBnennJDeDxCYu8kDJJqSCwc0kDJre3+hCHifjwNWV5pRo++C770tI
-         tnDw==
+        d=gmail.com; s=20230601; t=1698048179; x=1698652979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2WJLRl7gW5F2R9FLKTDY4Su7u0rxcic9SiQezCgXXFA=;
+        b=dh/ed7X0OwFSvn2iT0oMJ24Ka6kasjYMC0NYy4gEKK2KkTXAiTmW4cuBo3dCYT1EjL
+         grE/wdyu9mvY1v57AYiJFXcBbcgJstRIQNyxXwNaQj21oVqelVKq5D7BKmTCkKbM8a5E
+         ZrmKvurAhNhTbAH6qifvf3FA7ree1Jc8LsbhgS+7lTsj0EHNwcZjp6H3emcwJk/Jj4sX
+         mmc64t9UhghsdCzyLho/u4lIum4sHWKYUbwdC+qzr52Y5j4YI22NKA0rj5nT17Q21D1K
+         ur6iZS3REbxvibNL6U3lKKJz+3opz7LtGETrxtdadAZT/ulObQLBVlyCa1yEHu3/Qxav
+         fhqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698047914; x=1698652714;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1698048179; x=1698652979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9Hc1HQxMK6cov0ESZHcOE2hl8RJaLivF3ZZ3pITnRe4=;
-        b=TNkGJBkCkhXCiWAQxfHJZDafRPfP/O6FqloRPzs5wk/3mZAPDs+cVbtsROm6w65t+3
-         teCG7SQC7+G3HK/6T7CNm9Quraeqbhzn8S3pj/lMbSIbkfzVpN8WFQB0ffcimF2iMTth
-         /TwFkLk/qzQLyFRurYjQMBsGEYl6dDneKj9qngaNqo9odIIHq5mPUDjtKqzXMv7oJGA3
-         sez5vbJNzowJVI/UbBvaUfLwebVK53pJPkpcmi9CmSuKXgzDQL/P5izqJM7EUTOnhk4Q
-         MhKSEjF5G3QIbyn+oEnv8pZWiHkgazwvzjPAkggDbV6l+4XZw+4qm/zh3kjnqWXVb9Bd
-         cllw==
-X-Gm-Message-State: AOJu0YxukApwpwAF6Xj5/F+fOk20ISEa27IbVL3VNfU+7LDzHporq1S7
-        ILUtIziuXtOgqTOZYGWv70kdJGHm5KB0tKHXp4VN+g==
-X-Google-Smtp-Source: AGHT+IHcGE7eYAlI8p2WSlLx/bFwKZDKurAJkefqlL92QCw9E55DVNlDs2SBU6J1Dc2EK+Fwg347Fnxddm2kJpuCkrA=
-X-Received: by 2002:a25:2d14:0:b0:d9b:4f28:f6ce with SMTP id
- t20-20020a252d14000000b00d9b4f28f6cemr8193335ybt.1.1698047914463; Mon, 23 Oct
- 2023 00:58:34 -0700 (PDT)
+        bh=2WJLRl7gW5F2R9FLKTDY4Su7u0rxcic9SiQezCgXXFA=;
+        b=HT0Kufiut13/SwgaO6cKF81heH+aSvizCIxlcQd9vMW92BxMKnByADOe34BP4kpByu
+         8WOTJAHdulx0+KcGqsofKF8GRB8+1udGVObb2V/7omhH1GEmSEGeHuXzgAnHvMVcHTDw
+         yRpnr/yKhCqyB6NCNrX3wQQWWmGPZ7B/9J8Jz+NvUKJvt72d9c0Lct3b8TCyTi0Od7EI
+         DBMNrZpJANnBDTjlZ0tNvkWBpZWx46ZHLx6Izyfox4g39YtnHDfWmw1/5pwzyKBX35f5
+         CLvBlG6PTL/nYV/vxwcQQwHFlA4lxtWx/OQ07XTgmoA+KXa5N08wGP9JB5ojmapC252E
+         zulw==
+X-Gm-Message-State: AOJu0YzUdgHAQih3I/+9HcVKRaZxJlKjKinM7n9ZH4oCtQh5tiK82d7T
+        9XzTbv45oYQxaN5c/hhKeqQ=
+X-Google-Smtp-Source: AGHT+IEWk7WstzpsJr+XrA7+1VpCfC6kuC2utCOurxpAMCtTR1wvVJmWh6XazeOPE6domYM1eYEX0w==
+X-Received: by 2002:a05:6358:c602:b0:168:cfc5:82c with SMTP id fd2-20020a056358c60200b00168cfc5082cmr4446670rwb.13.1698048178564;
+        Mon, 23 Oct 2023 01:02:58 -0700 (PDT)
+Received: from dawn-Aspire-A715-74G.. ([183.198.59.255])
+        by smtp.gmail.com with ESMTPSA id z8-20020a6553c8000000b00584aff3060dsm4539002pgr.59.2023.10.23.01.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 01:02:58 -0700 (PDT)
+From:   Li peiyu <579lpy@gmail.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        Li peiyu <579lpy@gmail.com>
+Subject: [PATCH] dt-bindings: iio: pressure: bmp085: Update links about sensor specifications
+Date:   Mon, 23 Oct 2023 16:02:37 +0800
+Message-Id: <20231023080237.218179-1-579lpy@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-10-quic_jprakash@quicinc.com> <20230708162318.1e2b169f@jic23-huawei>
- <2dc93e2b-61b4-943c-f938-296922fbece4@quicinc.com>
-In-Reply-To: <2dc93e2b-61b4-943c-f938-296922fbece4@quicinc.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Mon, 23 Oct 2023 10:58:23 +0300
-Message-ID: <CAA8EJprQFPvBdiwnnkGet7SQiv9nuo4zaDCn9kuLWS0QZ5Kc9Q@mail.gmail.com>
-Subject: Re: [PATCH 09/11] iio: adc: Update QCOM ADC drivers for bindings path change
-To:     Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, agross@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linus.walleij@linaro.org, Jonathan.Cameron@huawei.com,
-        sboyd@kernel.org, quic_subbaram@quicinc.com,
-        quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
-        marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
-        krzysztof.kozlowski@linaro.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FROM_STARTS_WITH_NUMS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Oct 2023 at 09:17, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
->
-> Hi Jonathan,
->
-> On 7/8/2023 8:53 PM, Jonathan Cameron wrote:
-> > On Sat, 8 Jul 2023 12:58:33 +0530
-> > Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
-> >
-> >> Update ADC dt-bindings file paths in QCOM ADC driver files to
-> >> match the dt-bindings change moving the files from 'iio' to
-> >> 'iio/adc' folder.
-> >>
-> >> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-> > Do the move in one go.
-> >
-> > Diff rename detection will make the resulting patch more trivial
-> > to look at than this multistep version.
-> >
-> > Jonathan
->
->
-> Hi Jonathan,
->
-> Just to recap, in patches 8-11, the intention is to move the dt-binding
-> files used for QCOM ADCs from /dt-bindings/iio folder to the
-> /dt-bindings/iio/adc folder.
->
-> I'm just confirming, can we move the files and update documentation,
-> bindings, driver and devicetree files all in one patch? Or you mean one
-> patch for documentation, bindings and driver files and one patch for
-> devicetree files (based on the comment from Krzysztof for the next patch
-> 10 in this series)?
->
-> Based on this patch series:
-> https://lore.kernel.org/all/cover.1646388139.git.zong.li@sifive.com/,
-> I'm wondering if I should add the files in the new location first, do
-> the file path updates and then completely remove the files in the old
-> path to avoid breaking the kernel.....or is it possible to get the
-> devicetree changes picked along with the binding changes, to avoid any
-> problems with bisectability?
+The link to the device specifications in bmp085.yaml is no longer valid
 
-Perform git mv & fix all failing DT and drivers in a single commit.
-You might also update guarding defines, if you wish. Perform all other
-changes in a separate commit.
+Signed-off-by: Li peiyu <579lpy@gmail.com>
+---
+ .../devicetree/bindings/iio/pressure/bmp085.yaml       | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-This way git diff will actually tell what has happened, instead of us
-seeing a series of add files, perform changes, remove files. It is
-impossible to review your changes otherwise.
-
->
->
-> >> ---
-> >>   drivers/iio/adc/qcom-spmi-adc5-gen3.c | 2 +-
-> >>   drivers/iio/adc/qcom-spmi-adc5.c      | 2 +-
-> >>   drivers/iio/adc/qcom-spmi-vadc.c      | 2 +-
-> >>   3 files changed, 3 insertions(+), 3 deletions(-)
-> >>
-> Thanks,
->
-> Jishnu
->
-
-
+diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+index 6fda887ee9d4..5c77769c8200 100644
+--- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
++++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+@@ -13,11 +13,11 @@ description: |
+   Pressure, temperature and humidity iio sensors with i2c and spi interfaces
+ 
+   Specifications about the sensor can be found at:
+-    https://www.bosch-sensortec.com/bst/products/all_products/bmp180
+-    https://www.bosch-sensortec.com/bst/products/all_products/bmp280
+-    https://www.bosch-sensortec.com/bst/products/all_products/bme280
+-    https://www.bosch-sensortec.com/bst/products/all_products/bmp380
+-    https://www.bosch-sensortec.com/bst/products/all_products/bmp580
++    https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
++    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/
++    https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/
++    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp380/
++    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp580/
+ 
+ properties:
+   compatible:
 -- 
-With best wishes
-Dmitry
+2.34.1
+

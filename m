@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE8E7D533E
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Oct 2023 15:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A967D5381
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Oct 2023 15:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343664AbjJXNwo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Oct 2023 09:52:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57810 "EHLO
+        id S234819AbjJXN7q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Oct 2023 09:59:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343727AbjJXNum (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Oct 2023 09:50:42 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F419B2117
-        for <linux-iio@vger.kernel.org>; Tue, 24 Oct 2023 06:48:15 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-32dff202b4bso1346892f8f.1
-        for <linux-iio@vger.kernel.org>; Tue, 24 Oct 2023 06:48:15 -0700 (PDT)
+        with ESMTP id S234706AbjJXN7o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Oct 2023 09:59:44 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 164062716
+        for <linux-iio@vger.kernel.org>; Tue, 24 Oct 2023 06:48:44 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32d9552d765so3283004f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 24 Oct 2023 06:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698155294; x=1698760094; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698155323; x=1698760123; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=o0zlICfKS9BIvwSLqYLNk0tKGQuHdKyXzE5RDB/FcwE=;
-        b=Z/NrMfOzAVVvFlBN6cYI/+FOvS9iDet2yLTLejMPfXBAIdRL2r0iRgmJsYm+mKYGJX
-         dYC90Rejx+nfGrj8/9FFqN9IRwdKNk7WVQsU1Lp7mZ3ocFNzfrZDvDtwdTgKeAjDY/Q6
-         3aKpHC6gRZDFzrZGVTZkQVg5EzDNhewSJ2jcdGsJxw9Xh6ArUY6KJagYgb87gQFXD0Lw
-         j4kF9Eg1vUTWWgRllmQz0tGt+pb3v2STEivwjb2QP+8yG/8lUDJX12uZMkoNn5rg3LZ3
-         /hxm5bZSO37cSZrIO2h0QfieHLGdGuGg2Whk4UgCkPJA0+LSRAliZVh5DgE1Fc57AqN8
-         WhgQ==
+        bh=kvDhGrwy/3K8mRhhMS5GQcVQUOXIcImGeVS1qFUGP2A=;
+        b=RUfQZaXTHzOzTksJ/ofTsmNXLTgqhmU42Per9HTjbrXICfn8T9BWfsmRp97LvEEWjY
+         e+EoT2Uj0qMOjC7ttWM0e3a7AM+6Cu2PzXqzj4FMTC8A6jJ55H7VjEX0kU3fOhOuBeVj
+         +2VRii97jO4gsXquh4UygHhcbxI5HccL/iadhLuBl4t9+ppQHjNrLfiPqM8Smn5htUVo
+         EoUoPrK8SXSC/laK5zty+n200hfhP7TBCzGG1xFeFX4djzncTuWIcU8d2BMtWAlggkAc
+         TmnuxigeLhuhraoHrlSFivdIR3f9Me8/ph9VyO7T7NWhS75caFVdsOb/LQgxqNUlAL7G
+         4s0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698155294; x=1698760094;
+        d=1e100.net; s=20230601; t=1698155323; x=1698760123;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o0zlICfKS9BIvwSLqYLNk0tKGQuHdKyXzE5RDB/FcwE=;
-        b=HaLyPNoLh3/d2jOk9V8Kvx6altHmo7rW5mcLkw8CO8BgfaDwZYUvoeukcRIJ5y70mf
-         LK2gkgz4Qwk/GeiOYM3b7LoWvkbJABMWWbe6pBSwSXw2R3I2CzSA9WjpVPkDoAoS4GID
-         DLoxpnnciSIY62idpC/k4CwUnTFJbIFbs9nY1SGlR34WYaw1XLdhRyx0SNbRkthET5ck
-         ha7qgiHDao4H1wyE6d4Ge4KxqHw8QeWRBvHFkVg5O1Z553RPKfHaitPjTDRi4JCwfCtI
-         ko4gWt0Dg0K/TiPdf22s+hXBEg6FPEIHtk5crwWr4aPttq7yaSoN7bUAon653T5zDjkx
-         5kiQ==
-X-Gm-Message-State: AOJu0YwG5ilThhHuZteFk25oy5VWNU4SDTd55JFo5bERwKqVaTLQKy80
-        kaE27x9EFVKzHCCUXRwDLqZuLPwe39naH10yUPA=
-X-Google-Smtp-Source: AGHT+IEzx4zSgbgdZJRVFVj0jmCQMoEPTeBdMoUIEF6ikOwrETN4Xn1KjrBm0vUz8Hcm7wy+EmXCrw==
-X-Received: by 2002:adf:e590:0:b0:32d:8357:42dd with SMTP id l16-20020adfe590000000b0032d835742ddmr8517272wrm.68.1698155294514;
-        Tue, 24 Oct 2023 06:48:14 -0700 (PDT)
+        bh=kvDhGrwy/3K8mRhhMS5GQcVQUOXIcImGeVS1qFUGP2A=;
+        b=Vx4nHdbKRT/+xfHG6bgEHTZYGrNolURAuIP2A/EKKU3j5uzfCbpiMhy0SBMWmaWLQY
+         WOBA2mJ9S7Zcb3C7ip8LOuHOJTJflakAaemiE7FyJPcRhocogt27MnYGQXBlCRMsrIdK
+         mP+8cFfj3W1Wm5HgUJPOuHqzHX3Z0i+TJPaSgk9YmiYJMln2vAURvNcz3JZ66uhvq7V6
+         dsxj8JkUJqDvON5NDvFfVArwU5iDFqHpzIGqW/as3lg7VsanuX95+Ki9AWODYBoxIASw
+         TKSWi6ohwAZ7FRr5hknLbMiRgJ5QJVhe2/pSa+kQhTkCUexU7JMiqrgVp7lvTDEcm4Lr
+         vEDA==
+X-Gm-Message-State: AOJu0Yzdbes40UHO5AWS/ZEm4eqRUeh8G/34R1fnF47B2qyr4DPHMyTQ
+        FI78diKZY/aZ1qYpDEuFTP5VBA==
+X-Google-Smtp-Source: AGHT+IHYYPtJG6lNq23QaSNDniavYnSV8dznpYEw/Cs9oc6E79PHB81OhBzRi1T4gZPUBbn1CW6I4Q==
+X-Received: by 2002:a5d:4a86:0:b0:32d:a2c4:18bf with SMTP id o6-20020a5d4a86000000b0032da2c418bfmr8412927wrq.59.1698155323133;
+        Tue, 24 Oct 2023 06:48:43 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id y10-20020a5d470a000000b0032d9efeccd8sm9975318wrq.51.2023.10.24.06.48.13
+        by smtp.gmail.com with ESMTPSA id y10-20020a5d470a000000b0032d9efeccd8sm9975318wrq.51.2023.10.24.06.48.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Oct 2023 06:48:14 -0700 (PDT)
-Message-ID: <fbf4af1f-fc3a-4111-8823-424fb3eea60a@linaro.org>
-Date:   Tue, 24 Oct 2023 15:48:13 +0200
+        Tue, 24 Oct 2023 06:48:42 -0700 (PDT)
+Message-ID: <dbc610bb-e261-4134-af9c-04c736af3d4b@linaro.org>
+Date:   Tue, 24 Oct 2023 15:48:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: adis16475: Add
+Subject: Re: [PATCH v2 3/3] dt-bindings: adis16460: Add
  'spi-cs-inactive-delay-ns' property
 Content-Language: en-US
 To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
@@ -62,7 +62,7 @@ To:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
 References: <20231023140534.704312-1-ramona.gradinariu@analog.com>
- <20231023140534.704312-3-ramona.gradinariu@analog.com>
+ <20231023140534.704312-4-ramona.gradinariu@analog.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -108,12 +108,13 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231023140534.704312-3-ramona.gradinariu@analog.com>
+In-Reply-To: <20231023140534.704312-4-ramona.gradinariu@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -121,37 +122,21 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 23/10/2023 16:05, Ramona Gradinariu wrote:
-> The devices supported by adis16475 driver require a stall period
-> between SPI transactions (during which the chip select is
-> inactive), with a minimum value equal to 16 microseconds, thus
-> adding 'spi-cs-inactive-delay-ns' property, which should indicate
-> the stall time between consecutive SPI transactions.
+> The adis16460 device requires a stall time between SPI
+> transactions (during which the chip select is inactive),
+> with a minimum value equal to 16 microseconds.
+> This commit adds 'spi-cs-inactive-delay-ns' property, which should
+> indicate the stall time between consecutive SPI transactions.
 > 
 > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
 > ---
 > changes in v2:
 >  - added default value
 >  - updated description
->  - updated commit message
->  .../devicetree/bindings/iio/imu/adi,adis16475.yaml          | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> index c73533c54588..135ccdd5c392 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> @@ -47,6 +47,12 @@ properties:
->    spi-max-frequency:
->      maximum: 2000000
-> 
-> +  spi-cs-inactive-delay-ns:
-> +    minimum: 16000
-> +    default: 16000
-> +    description:
-> +      Indicates the stall time between consecutive SPI transactions.
 
-You can skip the description entirely, it is coming from
-spi-peripheral-props.
+You can drop the description from the property.
+
+>  - updated commit message
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 

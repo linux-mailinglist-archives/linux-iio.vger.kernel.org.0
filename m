@@ -2,209 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5860C7D564C
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Oct 2023 17:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F217D58C3
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Oct 2023 18:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234796AbjJXP2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Oct 2023 11:28:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51952 "EHLO
+        id S1343914AbjJXQkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Oct 2023 12:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234959AbjJXP2Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Oct 2023 11:28:16 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 967F01731
-        for <linux-iio@vger.kernel.org>; Tue, 24 Oct 2023 08:28:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=Fc4bn544TwXhA3M2ue5d63axfXMECYTioIt9LX2YdOM=; b=bNpeeM8yKZObeEgSTjkHxTsEX8
-        oMLNPsLPK+7d7MFh/mASX2C3NX2+dsgtxp4XtwmgkUGtPshMIP1NnXhmOcwltoiifzkLPdSrx8sAZ
-        RGCAn0KZJtSkdIimJJ/5zHcuw3HBTr6UsGRQTG5/whcx2ATaqtuY2SLSnPH0eBwCdUsUUfYOx/Zw5
-        8P2HDa8wRLsXfA9c1mjGqfGVUSJQUW5LdZsUszuLEiYqwaN8hoMvG7VS9veKKoNm0bHuACYuENsWR
-        lx/Vj8dUZKUuXsloOVtyaDLL3jnqcHrtxANeVc3FryelDvRzWFviYe+ZFQyRG1DbHxZwIZE9DHnuW
-        EId2pAlA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qvJK4-003EhF-GW; Tue, 24 Oct 2023 15:28:00 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 2E25B300473; Tue, 24 Oct 2023 17:28:00 +0200 (CEST)
-Date:   Tue, 24 Oct 2023 17:28:00 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc:     David Lechner <dlechner@baylibre.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        gregkh@linuxfoundation.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 1/8] iio: locking: introduce __cleanup() based direct
- mode claiming infrastructure
-Message-ID: <20231024152800.GA13938@noisy.programming.kicks-ass.net>
-References: <20231022154710.402590-1-jic23@kernel.org>
- <20231022154710.402590-2-jic23@kernel.org>
- <CAMknhBEEPC-JArFJvpHw0YAmdA+BrAQzkxU5vNvCwxf5OdHKrw@mail.gmail.com>
- <462c181eab1c0b70c0350099b7f70aaf736aabe1.camel@gmail.com>
- <20231024151123.GB40044@noisy.programming.kicks-ass.net>
+        with ESMTP id S1343912AbjJXQkD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Oct 2023 12:40:03 -0400
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACFBD7D;
+        Tue, 24 Oct 2023 09:40:00 -0700 (PDT)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5845213c583so1594680eaf.0;
+        Tue, 24 Oct 2023 09:40:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698165599; x=1698770399;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4dgLAi1M/nR9fJIQpQVSn3gxY5AOxSN1+8PQWp2ZK3E=;
+        b=dJEL+fgbBkqa2Hxr8owONWDH6pO4QAKL8M6N0LblYDn0D+mvusaM9LI019LIX+Wr3i
+         SBvjWPRMymU3blibDCev3SK/2zggSLh7i4IpkcLL7+56UwaN+3Q+SvbKam8pCpGxanbT
+         He27KYjc4yS6cs4vdNENuanBRdI3kaR7tLAO5bj36M1FDWyM3CJw3cp0SmL52BmqFpit
+         BdEzxk39cE/f7g8NzIovM7D42nhpblBaxWAThWlKCuq1CXkrmypanbfJwfKuwEnp/Q8S
+         InLGUYhaL1tKdHvTD1oRCIWiQ8RKhoO9Sv7r+HPRugFqxsbmNwjwBGYgYl7NZvibTWWM
+         mHUQ==
+X-Gm-Message-State: AOJu0YxSrNVMn+fgX2LQrUQlYDXBSzDJcV9rjwPhKfF+AMIxCWFlyWiP
+        Fy1vX2SNzu3oZN9A3IdBaw==
+X-Google-Smtp-Source: AGHT+IH7r1RypTRYYRKdrh1wNi7leTTNBWI9FBY2oTxpLiREvX3LYW7p4YgROHwYcoRP/a6v+9+WQw==
+X-Received: by 2002:a4a:df11:0:b0:582:28e:93a8 with SMTP id i17-20020a4adf11000000b00582028e93a8mr12468463oou.3.1698165599325;
+        Tue, 24 Oct 2023 09:39:59 -0700 (PDT)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id f22-20020a4ad816000000b0057aef3cab33sm2002659oov.21.2023.10.24.09.39.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Oct 2023 09:39:58 -0700 (PDT)
+Received: (nullmailer pid 4062523 invoked by uid 1000);
+        Tue, 24 Oct 2023 16:39:56 -0000
+Date:   Tue, 24 Oct 2023 11:39:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org,
+        olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com,
+        mchehab@kernel.org, fabrice.gasnier@foss.st.com,
+        andi.shyti@kernel.org, ulf.hansson@linaro.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, hugues.fruchet@foss.st.com,
+        lee@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+        arnd@kernel.org, richardcochran@gmail.com,
+        Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-p.hy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
+ STM32MP15x boards
+Message-ID: <20231024163956.GA4049342-robh@kernel.org>
+References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
+ <20231010125719.784627-11-gatien.chevallier@foss.st.com>
+ <20231010184212.GA1221641-robh@kernel.org>
+ <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
+ <20231012153012.GA698406-robh@kernel.org>
+ <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231024151123.GB40044@noisy.programming.kicks-ass.net>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 05:11:23PM +0200, Peter Zijlstra wrote:
-> On Mon, Oct 23, 2023 at 10:55:56AM +0200, Nuno Sá wrote:
+On Mon, Oct 16, 2023 at 02:02:39PM +0200, Gatien CHEVALLIER wrote:
+> Hi Rob,
 > 
-> > > > +/*
-> > > > + * Auto cleanup version of iio_device_claim_direct_mode,
-> > > > + *
-> > > > + *     CLASS(iio_claim_direct, claimed_dev)(indio_dev);
-> > > > + *     if (IS_ERR(claimed_dev))
-> > > > + *             return PTR_ERR(claimed_dev);
-> > > > + *
-> > > > + *     st = iio_priv(claimed_dev);
-> > > > + *     ....
-> > > > + */
-> > > > +DEFINE_CLASS(iio_claim_direct, struct iio_dev *,
-> > > > +            iio_device_release_direct_mode(_T),
-> > > > +            ({
-> > > > +                       struct iio_dev *dev;
-> > > > +                       int d = iio_device_claim_direct_mode(_T);
-> > > > +
-> > > > +                       if (d < 0)
-> > > > +                               dev = ERR_PTR(d);
-> > > > +                       else
-> > > > +                               dev = _T;
-> > > > +                       dev;
-> > > > +            }),
-> > > > +            struct iio_dev *_T);
-> > > > +
-> 
-> > I don't really have a very strong opinion on this but what I really don't like
-> > much is the pattern:
+> On 10/12/23 17:30, Rob Herring wrote:
+> > On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
+> > > Hi Rob,
+> > > 
+> > > On 10/10/23 20:42, Rob Herring wrote:
+> > > > On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
+> > > > > ETZPC is a firewall controller. Put all peripherals filtered by the
+> > > > > ETZPC as ETZPC subnodes and reference ETZPC as an
+> > > > > access-control-provider.
+> > > > > 
+> > > > > For more information on which peripheral is securable or supports MCU
+> > > > > isolation, please read the STM32MP15 reference manual.
+> > > > > 
+> > > > > Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> > > > > ---
+> > > > > 
+> > > > > Changes in V6:
+> > > > >       	- Renamed access-controller to access-controllers
+> > > > >       	- Removal of access-control-provider property
+> > > > > 
+> > > > > Changes in V5:
+> > > > >       	- Renamed feature-domain* to access-control*
+> > > > > 
+> > > > >    arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
+> > > > >    arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
+> > > > >    arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
+> > > > >    3 files changed, 1450 insertions(+), 1377 deletions(-)
+> > > > 
+> > > > This is not reviewable. Change the indentation and any non-functional
+> > > > change in one patch and then actual changes in another.
+> > > 
+> > > Ok, I'll make it easier to read.
+> > > 
+> > > > 
+> > > > This is also an ABI break. Though I'm not sure it's avoidable. All the
+> > > > devices below the ETZPC node won't probe on existing kernel. A
+> > > > simple-bus fallback for ETZPC node should solve that.
+> > > > 
+> > > 
+> > > I had one issue when trying with a simple-bus fallback that was the
+> > > drivers were probing even though the access rights aren't correct.
+> > > Hence the removal of the simple-bus compatible in the STM32MP25 patch.
 > > 
-> > CLASS(type, ret), where the return value is an argument of the macro... It would
-> > be nice if we could just make it like:
+> > But it worked before, right? So the difference is you have either added
+> > new devices which need setup or your firmware changed how devices are
+> > setup (or not setup). Certainly can't fix the latter case. You just need
+> > to be explicit about what you are doing to users.
 > > 
-> > ret = guard(type)(...); //or any other variation of the guard() macro
-> > if (ret) 
-> > 	return ret;
+> 
+> I should've specified it was during a test where I deliberately set
+> incorrect rights on a peripheral and enabled its node to see if the
+> firewall would allow the creation of the device.
+> 
 > > 
-> > the above could also be an error pointer or even have one variation of each. but
-> > yeah, that likely means changing the cleanup.h file and that might be out of
-> > scope for Jonathan's patch series. 
+> > > Even though a node is tagged with the OF_POPULATED flag when checking
+> > > the access rights with the firewall controller, it seems that when
+> > > simple-bus is probing, there's no check of this flag.
+> > 
+> > It shouldn't. Those flags are for creating the devices (or not) and
+> > removing only devices of_platform_populate() created.
+> > 
 > 
-> So I have a version for trylocks that I've not managed to send out.. it
-> doesn't deal with arbitrary error codes, and as someone else down-thread
-> noted, the guard() thing is not really suited for tricks like this.
+> About the "simple-bus" being a fallback, I think I understood why I saw
+> that the devices were created.
 > 
-> Notably I have a patch that converts ptrace_attach() to have a loop like:
+> All devices under a node whose compatible is "simple-bus" are created
+> in of_platform_device_create_pdata(), called by
+> of_platform_default_populate_init() at arch_initcall level. This
+> before the firewall-controller has a chance to populate it's bus.
 > 
-> 	scoped_guard (mutex_intr, &task->signal->cred_guard_mutex) {
+> Therefore, when I flag nodes when populating the firewall-bus, the
+> devices are already created. The "simple-bus" mechanism is not a
+> fallback here as it precedes the driver probe.
 > 
-> 		goto success;
-> 	}
-> 	return -ERESTARTNOINTR;
-> 
-> success:
-> 	...
-> 	return 0;
-> 
-> 
-> And another patch that does something like:
-> 
-> 	scoped_cond_guard (rwsem_read_intr, no_lock,
-> 			   task ? &task->signal->exec_update_lock : NULL) {
-> 
-> 		if (0) {
-> no_lock:
-> 			if (task)
-> 				return -EINTR;
-> 		}
-> 		
-> 		...
-> 	}
-> 
+> Is there a safe way to safely remove/disable a device created this way?
 
-Hmm, looking at:
+There's 2 ways to handle this. Either controlling creating the device or 
+controlling probing the device. The latter should just work with 
+fw_devlink dependency. The former probably needs some adjustment to 
+simple-pm-bus driver if you have 'simple-bus' compatible. You want it to 
+probe on old kernels and not probe on new kernels with your firewall 
+driver. Look at the commit history for simple-pm-bus. There was some 
+discussion on it as well.
 
-+       case IIO_CHAN_INFO_RAW: { /* magic value - channel value read */
-+               CLASS(iio_claim_direct, claimed_dev)(indio_dev);
-+               if (IS_ERR(claimed_dev))
-+                       return PTR_ERR(claimed_dev);
-+               guard(mutex)(&st->lock);
-+
-                switch (chan->type) {
-                case IIO_VOLTAGE:
-                        if (chan->output) {
-                                /* Set integer part to cached value */
-                                *val = st->dac_val;
-+                               return IIO_VAL_INT;
-                        } else if (chan->differential) {
-                                if (chan->channel == 1)
-                                        *val = st->differential_adc_val[0];
-                                else
-                                        *val = st->differential_adc_val[1];
-+                               return IIO_VAL_INT;
-                        } else {
-                                *val = st->single_ended_adc_val;
-+                               return IIO_VAL_INT;
-                        }
-+
-                case IIO_ACCEL:
-                        *val = st->accel_val;
-+                       return IIO_VAL_INT;
-                default:
-+                       return -EINVAL;
-                }
-+       }
+> Devices that are under the firewall controller (simple-bus) node
+> should not be probed before it as they're child of it.
 
+fw_devlink should take care of parent/child dependencies without any 
+explicit handling of the access ctrl binding.
 
-And your iio_device_claim_direct_mode(), that is basically a trylock,
-either it succeeds (and returns 0) or fails with -EBUSY.
-
-Which means you could write your thing above like:
-
-DEFINE_CLASS(iio_claim_direct, struct iio_dev *,
-            iio_device_release_direct_mode(_T),
-            ({
-                       struct iio_dev *dev;
-                       int d = iio_device_claim_direct_mode(_T);
-
-                       if (d < 0)
-                               dev = NULL;
-                       else
-                               dev = _T;
-                       dev;
-            }),
-            struct iio_dev *_T);
-
-static inline void *
-class_iio_claim_direct_lock_ptr(class_iio_claim_direct_t *_T)
-{ return *_T; }
-
-
-
-	case IIO_CHAN_INFO_RAW: /* magic value - channel value read */
-		scoped_guard (iio_device_claim, indio_dev) {
-			guard(mutex)(&st->lock);
-			switch (chan->type) {
-			case ..:
-				return IIO_VAL_INT;
-			default:
-				return -EINVAL;
-			}
-		}
-		return -EBUSY;
-
-and it would all just work, no?
+Rob

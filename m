@@ -2,106 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C06857D723A
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 19:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A9B7D74C4
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 21:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjJYRY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 13:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
+        id S233381AbjJYTuM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 15:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjJYRYZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 13:24:25 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F53612F;
-        Wed, 25 Oct 2023 10:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698254663; x=1729790663;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mIbb037174+bOdznRrZiyWuHxU4yCQHlYl1BOSUWzbw=;
-  b=UIoYy9mP5W5U2XmpybyLG1NJGZfMhEf5Dh+34oWBzW4TjkG/2oI1rvOb
-   SZlyEAZ6pQBkUw5DwRmmv/lkOY0dH+3L4Js9ilSf5UdkUAfALIjslVzhQ
-   yjStByrreHcmgNbSnBDSTofw66ylLcw6C4AbAGpDwkXtkkm6zln0clyoY
-   kVZqXStLtTJy+Kw+KS1PcYo94KKm66NfVzNU6/JAWHuU8s81agBZAMhqI
-   g3PDmbSg2W2iGnPUNGMEFWjtT+JSYyr3H6vAdY391xS3TEO7hHkHRoU40
-   tq8Pci8cWixycvpIgiJjmGRDE9gcXWOVigTjVem6HsPMpeCtFC3N1ADzE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="139638"
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
-   d="scan'208";a="139638"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 10:24:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="824715376"
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
-   d="scan'208";a="824715376"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 25 Oct 2023 10:24:20 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qvhcA-000945-1S;
-        Wed, 25 Oct 2023 17:24:18 +0000
-Date:   Thu, 26 Oct 2023 01:23:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        marius.cristea@microchip.com
-Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
-Message-ID: <202310260114.N4b9wmIC-lkp@intel.com>
-References: <20231025134404.131485-3-marius.cristea@microchip.com>
+        with ESMTP id S234579AbjJYTuJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 15:50:09 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77E21A1;
+        Wed, 25 Oct 2023 12:50:04 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c50906f941so1538451fa.2;
+        Wed, 25 Oct 2023 12:50:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698263403; x=1698868203; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EHfvnUbqg9GtaO1sB11RiBDoSfdRrypjGI2a/Q+8XQQ=;
+        b=bOVtHpJsxD4cx3oyJTS/0IVxuILyUHezuL4579KB9y6LP0qhXEdMNHA0NvgqY8G/vC
+         bAk5CiYkyFk7N4Bt81H/k4jrD3/LhlaU0EaC7rLY/QP0pcYu3bMPJhG12d4ODQhlL3mp
+         NIcsm9SBw4fKJLCn/j4LRTDQnYMrLs/HcoLCjSThV6wW3UU3M/eUVEAVqc/yMzbs7o+x
+         6id1ktYVbLZo5JuPpcFLIyA3C3rQK13NGgSm66rzziXefsHJu+BDhnEmJYrdYw0xpU3X
+         f79BVtzgyDXpfP4RXJEg1/ikNCfFP7xhSoNs/IJSJRnA2673J+xYetAlXeYGMNuSIl7V
+         4UJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698263403; x=1698868203;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EHfvnUbqg9GtaO1sB11RiBDoSfdRrypjGI2a/Q+8XQQ=;
+        b=sT7NsU5Jyz2YSxDkPDNkkAwIQLLLgfEWAsL7IA4V32wxIEiITbcjbpJSpVQE0c9l5M
+         lRSceVINQdNJogUo2X/pJOYu5eg2cmG+ZSJhDPt83bTj1Y/E/gNhSyPTCntNmXg7K/zW
+         9Xb0FhHYOSom4KcQAhVw6IuYB9C9rMJtAOaIUQulcWqlU0nMNWl8GK4xmzrURefstc94
+         DQa9jjjAJmrf0brHGsRE5lgIL2BCDJHzpwMYwYFPoVO8poDiRQ31r2/VieHaqUnED9IS
+         o6V1uHQwmigNLoboDd/A4+amuKojYav9ccqVun5gD3Anhjv2dE7fsfTkTI/AgfC9p+4R
+         1CtQ==
+X-Gm-Message-State: AOJu0YyB0Jyc2bkFNYnSIKd/7tkeXRnUKW5N0J/fmQ+bWGUGwvwCI143
+        pXgHUPCI65Ba4zy+OdH7984UIIJY7DNvPmHgeQIgDUARhsu6SQ==
+X-Google-Smtp-Source: AGHT+IFTSIFhk7YK+RtSUQtz1foEIyZxmQA2dcXEGjb8hG3jcEut0JFjg8m+QhAobRlv9Wn6NZ/NFyUUAUASKYBl2LM=
+X-Received: by 2002:a19:2d5d:0:b0:4f8:77db:1d9e with SMTP id
+ t29-20020a192d5d000000b004f877db1d9emr11554827lft.12.1698263402639; Wed, 25
+ Oct 2023 12:50:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231025134404.131485-3-marius.cristea@microchip.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Thu, 26 Oct 2023 01:19:51 +0530
+Message-ID: <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC BMI323
+ IMU IIO DRIVER
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Wed, Oct 25, 2023 at 2:45=E2=80=AFPM Lukas Bulwahn <lukas.bulwahn@gmail.=
+com> wrote:
+>
+> Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
+> MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to a
+> non-existing device-tree file.
+>
+> Probably, this mistake was introduced by copying from the BOSCH SENSORTEC
+> BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
+> entry properly. This is however easily caught, as the script
+> ./scripts/get_maintainer.pl --self-test=3Dpatterns complains about a brok=
+en
+> reference.
+>
+> The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI323=
+")
+> adds bosch,bmi323.yaml, so refer to that intended file instead.
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-dt-bindings-for-PAC193X/20231025-214558
-base:   5e99f692d4e32e3250ab18d511894ca797407aec
-patch link:    https://lore.kernel.org/r/20231025134404.131485-3-marius.cristea%40microchip.com
-patch subject: [PATCH v2 2/2] iio: adc: adding support for pac193x
-config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20231026/202310260114.N4b9wmIC-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231026/202310260114.N4b9wmIC-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310260114.N4b9wmIC-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/pac1934.c:1751:36: warning: 'pac1934_acpi_match' defined but not used [-Wunused-const-variable=]
-    1751 | static const struct acpi_device_id pac1934_acpi_match[] = {
-         |                                    ^~~~~~~~~~~~~~~~~~
+My apologies for the silly mistake, and thank you for fixing it.
+Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
 
 
-vim +/pac1934_acpi_match +1751 drivers/iio/adc/pac1934.c
-
-  1749	
-  1750	/* using MCHP1930 to be compatible with WINDOWS ACPI */
-> 1751	static const struct acpi_device_id pac1934_acpi_match[] = {
-  1752		{"MCHP1930", 0},
-  1753		{ }
-  1754	};
-  1755	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a493d96ffd85..82ba3695f614 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3642,7 +3642,7 @@ BOSCH SENSORTEC BMI323 IMU IIO DRIVER
+>  M:     Jagath Jog J <jagathjog1996@gmail.com>
+>  L:     linux-iio@vger.kernel.org
+>  S:     Maintained
+> -F:     Documentation/devicetree/bindings/iio/imu/bosch,bma400.yaml
+> +F:     Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+>  F:     drivers/iio/imu/bmi323/
+>
+>  BPF JIT for ARM
+> --
+> 2.17.1
+>

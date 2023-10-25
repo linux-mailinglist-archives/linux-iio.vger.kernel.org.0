@@ -2,71 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D3637D6F61
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 16:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA327D7066
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 17:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234789AbjJYOf1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 10:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55902 "EHLO
+        id S232657AbjJYPI0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 11:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234863AbjJYOf0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 10:35:26 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A068137;
-        Wed, 25 Oct 2023 07:35:21 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9adca291f99so850289866b.2;
-        Wed, 25 Oct 2023 07:35:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698244520; x=1698849320; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wa2G+lxO+loR/ZXT0iDtzSScXiPVh25VRSHqQvCFhZA=;
-        b=f0Spdrci34wXz5639Gl8cg+bcFP6JqSbWh5EyzPZZ6oIjIdRKW6aWhZ6Yfi1R7kS39
-         sYBc7DUuejjFgxq3qcJ55i74ihpFU99pTsN83/bLqjwJZa22wrQjN9A5PqEHiYMpNj1r
-         sAMWJTm5po9zU5MlJ+28XT9kZYpe/jBP/WWWavR6Vya3ErPtRR58IJvtMNddSy++EDR5
-         bKlkUuld07/cqgDUXQRjEqt6OeyAuSFkuFgtS4ZmN+KlXALwYZwBQNOwySL09prsVurj
-         cBkaO+w/kCSfYBPyWg3PzlfXeYxQt1PYcYWxSkevLXPPvT9Jh7HCOhVlk0z4J1YfPNko
-         7Aag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698244520; x=1698849320;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wa2G+lxO+loR/ZXT0iDtzSScXiPVh25VRSHqQvCFhZA=;
-        b=o6A+H3D79zhFh5Z5pdnFPP/Uhk41Icp3UDWK38kTcP87f9u9d8V6CGImHaUibrcOtx
-         CRU71vteEsuKaC79HkbrTEyxu0gX5Gr4qyz9vOVbOCk8DjS+mKFOSt2lTMruqlK1PIvp
-         GHji7YhyzkpTcksFCFgNjf+0Qcu8D6iLznVp7xOfVvAJEVPktQb21z11b1rp9pOeGw8W
-         Bosqc82ddTbvbpa5cUgoJ156G7O7mlY/Ut4kvVpMQe/YRVQaUQYpiKZvtqfJi2XOZYqo
-         PuJVS9j1uhcscX2P+oxxGQxZmy3XBkn/nmLnC9bAS2t4gjO+/Pl1uyxqCIXIGe2zvvkq
-         9ONQ==
-X-Gm-Message-State: AOJu0Yz614E6bvNOfB4haghEbKTTzjJnLLPO+cTnrQ/WULHs9bMcrfEp
-        nXMHNc4Q0h0/59OioeblldM=
-X-Google-Smtp-Source: AGHT+IEJqDsloM/YroQyh74Z7dfLKajJ+dw1JlaYJw2anzB5FtuM1hIRt2JDymqT07lazEOdUQv3Fg==
-X-Received: by 2002:a17:906:9fc1:b0:9b2:b15b:383f with SMTP id hj1-20020a1709069fc100b009b2b15b383fmr13571020ejc.43.1698244519276;
-        Wed, 25 Oct 2023 07:35:19 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
-        by smtp.gmail.com with ESMTPSA id vg18-20020a170907d31200b009adc77fe164sm10005667ejc.66.2023.10.25.07.35.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 07:35:18 -0700 (PDT)
-Message-ID: <d914069815f76245ef91b6b7b0c6b382b054b562.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        with ESMTP id S233033AbjJYPIZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 11:08:25 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A960128;
+        Wed, 25 Oct 2023 08:08:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6307C433C8;
+        Wed, 25 Oct 2023 15:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698246502;
+        bh=EmGG2bIEHpNFNsbXGuXDFwFfImfIAEmvCH+yu4IiAQs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hxIJusxgziIeOjGZnH5vgUQdMAVFCU3Tj4YiMTQSqfHAJ/M591Z2FHQ6b5mJZp88o
+         CnaiV0kgufr/AUpXcdCPqIEIvWnVX+74FLa9KHS5G1PXI8BKgSWmZrOu+19pK02b1J
+         jVPLK1oFfw07klVxvto4kapMw+x8AzJYvv2FXMbp//ArEiY9ORXpAZBMSXn7pk1WGR
+         VtKa6awKAp+SsGoNfs/k/7KOrtdUw8xagMC0p4hmpIiWyEc5usyT1O98xG7qA8bv6e
+         I5eE8IOSi1iS2MmbZ8/i1sCYgaLtV5gcAuf5agw9TOGfngPO0EK9VKKp16D7wTL61U
+         WdQi57npZBnbA==
+Date:   Wed, 25 Oct 2023 16:08:18 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     marius.cristea@microchip.com
+Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Wed, 25 Oct 2023 16:38:10 +0200
-In-Reply-To: <20231025134404.131485-3-marius.cristea@microchip.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
+ PAC193X
+Message-ID: <20231025-cheddar-tucking-b2ea777ed4f9@spud>
 References: <20231025134404.131485-1-marius.cristea@microchip.com>
-         <20231025134404.131485-3-marius.cristea@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0 
+ <20231025134404.131485-2-marius.cristea@microchip.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ActSxKFGitGW1WzK"
+Content-Disposition: inline
+In-Reply-To: <20231025134404.131485-2-marius.cristea@microchip.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,23 +53,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2023-10-25 at 16:44 +0300, marius.cristea@microchip.com wrote:
+
+--ActSxKFGitGW1WzK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hey Marius,
+
+On Wed, Oct 25, 2023 at 04:44:03PM +0300, marius.cristea@microchip.com wrot=
+e:
 > From: Marius Cristea <marius.cristea@microchip.com>
 >=20
-> This is the iio driver for Microchip
-> PAC193X series of Power Monitor with Accumulator chip family.
+> This is the device tree schema for iio driver for
+> Microchip PAC193X series of Power Monitors with Accumulator.
 >=20
 > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 > ---
+>  .../bindings/iio/adc/microchip,pac1934.yaml   | 146 ++++++++++++++++++
+>  1 file changed, 146 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,p=
+ac1934.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.=
+yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> new file mode 100644
+> index 000000000000..837053ed8a71
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> @@ -0,0 +1,146 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip PAC1934 Power Monitors with Accumulator
+> +
+> +maintainers:
+> +  - Marius Cristea <marius.cristea@microchip.com>
+> +
+> +description: |
+> +  Bindings for the Microchip family of Power Monitors with Accumulator.
+> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found h=
+ere:
+> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produ=
+ctDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,pac1931
+> +      - microchip,pac1932
+> +      - microchip,pac1933
+> +      - microchip,pac1934
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  interrupts:
+> +    description: IRQ line of the ADC
+> +    maxItems: 1
+> +
+> +  drive-open-drain:
+> +    description: The IRQ signal is configured as open-drain.
+> +    type: boolean
+> +    maxItems: 1
+> +
+> +  microchip,slow-io:
+> +    type: boolean
+> +    description: |
+> +      A GPIO used to trigger a change is sampling rate (lowering the chi=
+p power consumption).
+> +      In default mode, if this pin is forced high, sampling rate is forc=
+ed to eight
+> +      samples/second. When it is forced low, the sampling rate is 1024 s=
+amples/second unless
+> +      a different sample rate has been programmed.
 
-Hi Marius,
+This description doesn't really make sense to me - if a GPIO is used to
+drive the pin low or high, why do we need a property? A DT property
+implies that this is a static configuration depending on the board, but
+reading the description this seems to be something that can be toggled
+at runtime.
+I do note though, that this GPIO is not documented in the binding, so I
+suppose what really needs to happen here is document the gpio so that
+the driver can determine at runtime what state this pin is in?
 
-I'll be honest and I just looked at this for 5min. But I'm seeing things li=
-ke
-shunt resistors, vsense, power, energy... This seems to me that it belong t=
-o
-drivers/hwmon. Any special reason for IIO?
+Also, you say "In default mode", but don't mention what the non-default
+mode is. What happens in the other mode?
 
-- Nuno S=C3=A1
+Cheers,
+Conor.
 
+--ActSxKFGitGW1WzK
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTkvYgAKCRB4tDGHoIJi
+0p/jAQC8aTY9tapI5zJAbel/AlSiuunOhpwryaeBOFSHulfBtwD/Qm+HEKQnOX21
+IT9MfeRfd0f0YwK+jzSSPQpdWjDaiw0=
+=Kxul
+-----END PGP SIGNATURE-----
+
+--ActSxKFGitGW1WzK--

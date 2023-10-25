@@ -2,102 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA0B77D667D
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 11:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41387D6A3E
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 13:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbjJYJP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 05:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42432 "EHLO
+        id S232688AbjJYLfz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 07:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233880AbjJYJP5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 05:15:57 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFEF138;
-        Wed, 25 Oct 2023 02:15:55 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9ba1eb73c27so847644266b.3;
-        Wed, 25 Oct 2023 02:15:55 -0700 (PDT)
+        with ESMTP id S232363AbjJYLfy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 07:35:54 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C8712A;
+        Wed, 25 Oct 2023 04:35:52 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c9de3f66e5so36911085ad.3;
+        Wed, 25 Oct 2023 04:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698225354; x=1698830154; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sA3KLuKCI9H+7Y8UJbCOZUdVsc0t74/8ar37Z4W1LJA=;
-        b=heeWbtRKQYAeHE6jWukhEJhuRNIoHMLldJLnXLPmcBJ/ATIwAjeyjFDVhJWT4CTaMQ
-         ghn4ETGXeUrtNSWzQaxr5RFTZ28igFa5CYZfQ8KOZ27lQnj38HBSlLE4ltQKk0E4ASG0
-         oo20b7wjzKVP0BwL5v4qcVpPE5TDfQzml9Z69KviQEng9pCnOivA0mQy6wd6jJ/9GxEP
-         iwJ/sFSuHzXladx9YUl97NMnLy50Tc1PEzj0eanHd0sjHsmZ0FMOGhgvE1wzAIPCR5i9
-         12ozVxfEqTtxx8gHDwO7vKcuGsqMV2dHwnrFqpqX1uoNmspYWxvFXr7Or0YigdpDldsa
-         i99A==
+        d=gmail.com; s=20230601; t=1698233752; x=1698838552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a++jEb3D87KmIQVIPb5nI/hnUzxvz4mflhHrfKFfvvA=;
+        b=DU0IBzArM72vC5FH9oJalL4B63Wnh1Bnsqp7sUZsBT0lFI6/f8V+mMkRzuwxHWvG/n
+         /a7k7SAPNRwBsTJQMkrrr/wUz9mvKyp9NcQNrBlDLkuiXkHtcLpYBmOAeD2VtMuwmQsA
+         XBPfboEicThS6t1ZtVBWk4P7asUXccteq4sD+XiGSgLEL36MpkotCE7P7/eE58afCI0q
+         fRyoXdpEtqB52UZz6mtrH5+83v0vzxAsGynw+uPYzQBLpbXYfWjgna0+aajQMNwu0Tv2
+         wzmzGmiNFfwxnFr0x0SMx+430gSh94wj14whkSqAfjbs5av7SDh6D8FaicrZVvAJJ2SJ
+         M58Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698225354; x=1698830154;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sA3KLuKCI9H+7Y8UJbCOZUdVsc0t74/8ar37Z4W1LJA=;
-        b=uyLBNAk2p2as7/56CzT3r0dmT4eFCnZoczYMme9iRjbiZAEt5MeCYF++592qFu7b6t
-         RAKsj7C8+BonYDTz0ESgEq5jzj5Gyf13luY75PXZqSfA3tv+jo8IplYSa0QMZEoIHY2W
-         qgcYTpprrfz1/t/FJJq0maWR31buo9E2H+DFcR/VD5y/56hkIuce3anfvhCe8Zx7JcIf
-         XRHhCwY0uxXqQYmPAmTQ8WgwawORdSx7hdrTj6jiDZKZ6QQKfMUqSL8YASB3g+1lP9Oq
-         eKrxCtGFpomF6sNtm6Nauds43Ged9hCyw2MTMLvd4JLItmYirXmh5MWsXe7X/dUIgkTX
-         YcVw==
-X-Gm-Message-State: AOJu0Yzw1wAVQxkBCVSOTGcHj9c3r1oWJHAD2a7KZ3II3l+E7GpC0bZ6
-        xNSht2+EEpTSkxjkpJEdz3M=
-X-Google-Smtp-Source: AGHT+IE0Mv6Iod3FRLXOFtaujOuioouSP5SZ3DRcTBOCmppK4r5+q19s0X13iI5wN/hT3yxSyw69Pw==
-X-Received: by 2002:a17:906:7311:b0:9bd:9507:ed1c with SMTP id di17-20020a170906731100b009bd9507ed1cmr12678504ejc.18.1698225353936;
-        Wed, 25 Oct 2023 02:15:53 -0700 (PDT)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:2cbd:f9ec:f035:ebea])
-        by smtp.gmail.com with ESMTPSA id cw23-20020a170906c79700b0099cce6f7d50sm9546446ejb.64.2023.10.25.02.15.52
+        d=1e100.net; s=20230601; t=1698233752; x=1698838552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a++jEb3D87KmIQVIPb5nI/hnUzxvz4mflhHrfKFfvvA=;
+        b=dMSwaeJqUhkx4jGEHtT2w3vXY2tszf38qZfS6G/pOMf4e6l0X27ntn40DLp5fsmbKm
+         0UpkGRMBZ2gJX0J+yIi5tG/W1IlLObjvgm7/qUOzeqoXcR5Wfw26NvoHu44xYtEk+fXf
+         QLUXbtagIv7JZNz5rm9K158EPVOKjCAioXo8s/DOALEq9hxmR39Jo0wHLxFwIXuilsiI
+         NDBDHPfm+O/gpCuiU1cosu/5gloUpyJprW2HsPiGspR8gxuQudq7HHqabNBOGm5gNzgU
+         EZkifWJRBuB/l0ABOos3BxsfcBP4xj63GHvUgLghogoR/F6R6qEv0vf2J1FoUD/rPZnz
+         OhDA==
+X-Gm-Message-State: AOJu0YzZbfuzSSWt75Ay6Ch0wer0OM9V3Unhzrtzm0nCGgjN1A6VMZwV
+        i5stsA2z534p4mFPS5egDzw=
+X-Google-Smtp-Source: AGHT+IHhGFq+Wxn6FN50Mp/tBx1KgeJMrdqv0Fm34gYV50HNOpBDWkBMD4DBiUig/9uiDjtzXt14MQ==
+X-Received: by 2002:a17:903:32c8:b0:1ca:8a38:38c4 with SMTP id i8-20020a17090332c800b001ca8a3838c4mr16041249plr.27.1698233752265;
+        Wed, 25 Oct 2023 04:35:52 -0700 (PDT)
+Received: from brag-vm.. ([117.243.111.63])
+        by smtp.gmail.com with ESMTPSA id h1-20020a170902748100b001c9bc811d59sm9001520pll.307.2023.10.25.04.35.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 02:15:53 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jagath Jog J <jagathjog1996@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC BMI323 IMU IIO DRIVER
-Date:   Wed, 25 Oct 2023 11:15:50 +0200
-Message-Id: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Wed, 25 Oct 2023 04:35:51 -0700 (PDT)
+From:   Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+To:     jmaneyrol@invensense.com, jic23@kernel.org, lars@metafoo.de
+Cc:     Bragatheswaran Manickavel <bragathemanick0908@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio/imu: inv_icm42600: Use max() helper macros
+Date:   Wed, 25 Oct 2023 17:05:44 +0530
+Message-Id: <20231025113544.4954-1-bragathemanick0908@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
-MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to a
-non-existing device-tree file.
+Use the standard max() helper macros instead of direct
+variable comparison using if/else blocks or ternary
+operator. Change identified using minmax.cocci
+Coccinelle semantic patch.
 
-Probably, this mistake was introduced by copying from the BOSCH SENSORTEC
-BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
-entry properly. This is however easily caught, as the script
-./scripts/get_maintainer.pl --self-test=patterns complains about a broken
-reference.
-
-The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI323")
-adds bosch,bmi323.yaml, so refer to that intended file instead.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a493d96ffd85..82ba3695f614 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3642,7 +3642,7 @@ BOSCH SENSORTEC BMI323 IMU IIO DRIVER
- M:	Jagath Jog J <jagathjog1996@gmail.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/iio/imu/bosch,bma400.yaml
-+F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
- F:	drivers/iio/imu/bmi323/
- 
- BPF JIT for ARM
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index b1e4fde27d25..f67bd5a39beb 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -137,10 +137,7 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+ 	/* sleep maximum required time */
+-	if (sleep_accel > sleep_temp)
+-		sleep = sleep_accel;
+-	else
+-		sleep = sleep_temp;
++	sleep = max(sleep_accel, sleep_temp);
+ 	if (sleep)
+ 		msleep(sleep);
+ 	return ret;
 -- 
-2.17.1
+2.34.1
 

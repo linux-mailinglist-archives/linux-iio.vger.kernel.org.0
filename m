@@ -2,165 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA327D7066
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 17:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06857D723A
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 19:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbjJYPI0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 11:08:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
+        id S229583AbjJYRY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 13:24:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbjJYPIZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 11:08:25 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A960128;
-        Wed, 25 Oct 2023 08:08:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6307C433C8;
-        Wed, 25 Oct 2023 15:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698246502;
-        bh=EmGG2bIEHpNFNsbXGuXDFwFfImfIAEmvCH+yu4IiAQs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hxIJusxgziIeOjGZnH5vgUQdMAVFCU3Tj4YiMTQSqfHAJ/M591Z2FHQ6b5mJZp88o
-         CnaiV0kgufr/AUpXcdCPqIEIvWnVX+74FLa9KHS5G1PXI8BKgSWmZrOu+19pK02b1J
-         jVPLK1oFfw07klVxvto4kapMw+x8AzJYvv2FXMbp//ArEiY9ORXpAZBMSXn7pk1WGR
-         VtKa6awKAp+SsGoNfs/k/7KOrtdUw8xagMC0p4hmpIiWyEc5usyT1O98xG7qA8bv6e
-         I5eE8IOSi1iS2MmbZ8/i1sCYgaLtV5gcAuf5agw9TOGfngPO0EK9VKKp16D7wTL61U
-         WdQi57npZBnbA==
-Date:   Wed, 25 Oct 2023 16:08:18 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     marius.cristea@microchip.com
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
- PAC193X
-Message-ID: <20231025-cheddar-tucking-b2ea777ed4f9@spud>
-References: <20231025134404.131485-1-marius.cristea@microchip.com>
- <20231025134404.131485-2-marius.cristea@microchip.com>
+        with ESMTP id S229453AbjJYRYZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 13:24:25 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F53612F;
+        Wed, 25 Oct 2023 10:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698254663; x=1729790663;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mIbb037174+bOdznRrZiyWuHxU4yCQHlYl1BOSUWzbw=;
+  b=UIoYy9mP5W5U2XmpybyLG1NJGZfMhEf5Dh+34oWBzW4TjkG/2oI1rvOb
+   SZlyEAZ6pQBkUw5DwRmmv/lkOY0dH+3L4Js9ilSf5UdkUAfALIjslVzhQ
+   yjStByrreHcmgNbSnBDSTofw66ylLcw6C4AbAGpDwkXtkkm6zln0clyoY
+   kVZqXStLtTJy+Kw+KS1PcYo94KKm66NfVzNU6/JAWHuU8s81agBZAMhqI
+   g3PDmbSg2W2iGnPUNGMEFWjtT+JSYyr3H6vAdY391xS3TEO7hHkHRoU40
+   tq8Pci8cWixycvpIgiJjmGRDE9gcXWOVigTjVem6HsPMpeCtFC3N1ADzE
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="139638"
+X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
+   d="scan'208";a="139638"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 10:24:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="824715376"
+X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
+   d="scan'208";a="824715376"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 25 Oct 2023 10:24:20 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qvhcA-000945-1S;
+        Wed, 25 Oct 2023 17:24:18 +0000
+Date:   Thu, 26 Oct 2023 01:23:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        marius.cristea@microchip.com
+Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
+Message-ID: <202310260114.N4b9wmIC-lkp@intel.com>
+References: <20231025134404.131485-3-marius.cristea@microchip.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ActSxKFGitGW1WzK"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231025134404.131485-2-marius.cristea@microchip.com>
+In-Reply-To: <20231025134404.131485-3-marius.cristea@microchip.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---ActSxKFGitGW1WzK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+kernel test robot noticed the following build warnings:
 
-Hey Marius,
+[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
 
-On Wed, Oct 25, 2023 at 04:44:03PM +0300, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> This is the device tree schema for iio driver for
-> Microchip PAC193X series of Power Monitors with Accumulator.
->=20
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
->  .../bindings/iio/adc/microchip,pac1934.yaml   | 146 ++++++++++++++++++
->  1 file changed, 146 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,p=
-ac1934.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.=
-yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> new file mode 100644
-> index 000000000000..837053ed8a71
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> @@ -0,0 +1,146 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip PAC1934 Power Monitors with Accumulator
-> +
-> +maintainers:
-> +  - Marius Cristea <marius.cristea@microchip.com>
-> +
-> +description: |
-> +  Bindings for the Microchip family of Power Monitors with Accumulator.
-> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found h=
-ere:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produ=
-ctDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,pac1931
-> +      - microchip,pac1932
-> +      - microchip,pac1933
-> +      - microchip,pac1934
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  interrupts:
-> +    description: IRQ line of the ADC
-> +    maxItems: 1
-> +
-> +  drive-open-drain:
-> +    description: The IRQ signal is configured as open-drain.
-> +    type: boolean
-> +    maxItems: 1
-> +
-> +  microchip,slow-io:
-> +    type: boolean
-> +    description: |
-> +      A GPIO used to trigger a change is sampling rate (lowering the chi=
-p power consumption).
-> +      In default mode, if this pin is forced high, sampling rate is forc=
-ed to eight
-> +      samples/second. When it is forced low, the sampling rate is 1024 s=
-amples/second unless
-> +      a different sample rate has been programmed.
+url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-dt-bindings-for-PAC193X/20231025-214558
+base:   5e99f692d4e32e3250ab18d511894ca797407aec
+patch link:    https://lore.kernel.org/r/20231025134404.131485-3-marius.cristea%40microchip.com
+patch subject: [PATCH v2 2/2] iio: adc: adding support for pac193x
+config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20231026/202310260114.N4b9wmIC-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231026/202310260114.N4b9wmIC-lkp@intel.com/reproduce)
 
-This description doesn't really make sense to me - if a GPIO is used to
-drive the pin low or high, why do we need a property? A DT property
-implies that this is a static configuration depending on the board, but
-reading the description this seems to be something that can be toggled
-at runtime.
-I do note though, that this GPIO is not documented in the binding, so I
-suppose what really needs to happen here is document the gpio so that
-the driver can determine at runtime what state this pin is in?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310260114.N4b9wmIC-lkp@intel.com/
 
-Also, you say "In default mode", but don't mention what the non-default
-mode is. What happens in the other mode?
+All warnings (new ones prefixed by >>):
 
-Cheers,
-Conor.
+>> drivers/iio/adc/pac1934.c:1751:36: warning: 'pac1934_acpi_match' defined but not used [-Wunused-const-variable=]
+    1751 | static const struct acpi_device_id pac1934_acpi_match[] = {
+         |                                    ^~~~~~~~~~~~~~~~~~
 
---ActSxKFGitGW1WzK
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+vim +/pac1934_acpi_match +1751 drivers/iio/adc/pac1934.c
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTkvYgAKCRB4tDGHoIJi
-0p/jAQC8aTY9tapI5zJAbel/AlSiuunOhpwryaeBOFSHulfBtwD/Qm+HEKQnOX21
-IT9MfeRfd0f0YwK+jzSSPQpdWjDaiw0=
-=Kxul
------END PGP SIGNATURE-----
+  1749	
+  1750	/* using MCHP1930 to be compatible with WINDOWS ACPI */
+> 1751	static const struct acpi_device_id pac1934_acpi_match[] = {
+  1752		{"MCHP1930", 0},
+  1753		{ }
+  1754	};
+  1755	
 
---ActSxKFGitGW1WzK--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

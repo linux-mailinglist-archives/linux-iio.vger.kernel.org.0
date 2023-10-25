@@ -2,372 +2,365 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4D17D5E7F
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 00:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE5A7D6251
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 09:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344484AbjJXWwd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Oct 2023 18:52:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S232464AbjJYHVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 03:21:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344466AbjJXWwd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Oct 2023 18:52:33 -0400
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8AF810C3;
-        Tue, 24 Oct 2023 15:52:29 -0700 (PDT)
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so4977517b3a.2;
-        Tue, 24 Oct 2023 15:52:29 -0700 (PDT)
+        with ESMTP id S232376AbjJYHVa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 03:21:30 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD99490
+        for <linux-iio@vger.kernel.org>; Wed, 25 Oct 2023 00:21:27 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9be3b66f254so747689966b.3
+        for <linux-iio@vger.kernel.org>; Wed, 25 Oct 2023 00:21:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698218486; x=1698823286; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=b1znAr3sKUxoqRkdig/U6P25Qg54QY6Csc3PBcGlAN4=;
+        b=Ur68CetA3uuygkQGkWCPRFockI+IQOvYU9v8Yu3hXlmhtuW/SLWM3gYtU/zMIoxHge
+         PF4i88SXuPonKT5lLYxHd3QSUpZHzFouZnbzl7g/6C73fcU26rZ0BcXWphw9r0byQLub
+         CZpeIcYT+yRdy+Zabhij85y62l9prRHZZm6+6IgVmyLHN7JsLtUrKgsO8cZvFeD8/bSt
+         KdcN6dGr4qhjgzqyWRvDA4FN4TBcLy6q1VZ+glYU8rh1pg3uYWPmkTs0GiMO42VaaKvM
+         pK1NDidBzwzOiYCQaobWo20z/aitHels6nuRpxM4rieT47pg1/Kr1xO/BbrO6znVqMVb
+         Z50Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698187949; x=1698792749;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gLgl3JoRpkmOsEAdSnZ+hGTtDITuelVfD3+phK7PYJo=;
-        b=I9Li32P+uVSVN1IGORnphPJ04YRhMufbcJpTDXXXHr2Q7VFL8syIta7KNKauw/JV8w
-         O5hYwvq+ShUJy304OBBJWIO3F7gJpJNH4Ed6VmQccf1rWOQX8eovdTikP62twE/JBP7l
-         iBifL7WjkKW2Vl1uJX1w3pqpcpmeGxLG8idWgQIuvEONGzK4oenBC7jjGlqZog01Zxbp
-         pP6JTHqVgbW6SLyGjJfWOfeEuoFW359qpU4pLcga4TfsjmKk9dwT7W+KTVfrdEkwQvhw
-         arpsz5nKjPHJfY28FGXQYFBQWME6rSKPe2vy2XRvYFBQcT/2jE7h93RfZlVhlNTkG7wA
-         +hZA==
-X-Gm-Message-State: AOJu0YzRzBr2ZT+7jPCYqDMwhTBcFXKAmwoto7nttx8J9LGrvxdlAxbg
-        qFs8nxs56Wiutdyz1PtpIXI=
-X-Google-Smtp-Source: AGHT+IFbFZO7RaFrExyngVf4BsfO585yeLiM40sLmpbJtXKSBg2Dy6982w1rHywiWZAUVoEV44Os9Q==
-X-Received: by 2002:a05:6a20:72a2:b0:17a:eff5:fbbd with SMTP id o34-20020a056a2072a200b0017aeff5fbbdmr4733379pzk.43.1698187948892;
-        Tue, 24 Oct 2023 15:52:28 -0700 (PDT)
-Received: from dev-linux.lan (cpe-70-95-21-110.san.res.rr.com. [70.95.21.110])
-        by smtp.gmail.com with ESMTPSA id oa14-20020a17090b1bce00b00279163e52bbsm7469466pjb.17.2023.10.24.15.52.28
+        d=1e100.net; s=20230601; t=1698218486; x=1698823286;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b1znAr3sKUxoqRkdig/U6P25Qg54QY6Csc3PBcGlAN4=;
+        b=QytAogusQxZ1vnlM5Gh96MmYxQn/vWQJo2ihsqdglUZI4ZIjk2ULZy5Mex1zOHZ2u/
+         6fNm9SjXINgortFFvDtrwvhmQWQznBb3dShS9V5ZYgHbTv7ZwmQZXZvqUFqZcMiCr8tS
+         2bDOmmTDRwvpeDb9ehEVXJ7Ecqnll6lG4sLfBD8Zr1ypXHz2KxPNwwpoFf/KC9ry4ySB
+         MifbXevFHNu8jbtKt/cxvlHq8c8lzkWZCMs2ZsBZp6FrwqoiRW01W9ZqRJQeRv/+5090
+         BTZJd7jnCuPUoZf66x4u8Sh3JMHwJD4JHMStWSwc56aAKsy7wqc3PCTEq79RhLxb+9G8
+         piCw==
+X-Gm-Message-State: AOJu0YzpYp7oSFmSI/1mlFzl4t0S3Hi45Ubb8a6vIigd6kzmZWKINWil
+        inU9ExKSzSPRWAfex1cde5s=
+X-Google-Smtp-Source: AGHT+IFCzBJodTctHcPRs5N7sar8haeBcMdvm75P0p24/E/NrkirSCJMqMOEaLCK14ByeOlaGKXXng==
+X-Received: by 2002:a17:907:7f8b:b0:9bf:2673:7371 with SMTP id qk11-20020a1709077f8b00b009bf26737371mr13242220ejc.13.1698218485874;
+        Wed, 25 Oct 2023 00:21:25 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
+        by smtp.gmail.com with ESMTPSA id v21-20020a170906489500b00997d76981e0sm9301750ejq.208.2023.10.25.00.21.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 15:52:28 -0700 (PDT)
-Date:   Tue, 24 Oct 2023 15:52:24 -0700
-From:   Sukrut Bellary <sukrut.bellary@linux.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ti-adc128s052: Add lower resolution
- devices support
-Message-ID: <ZThKqFN6l8HHSXGw@dev-linux.lan>
-References: <20231022031203.632153-1-sukrut.bellary@linux.com>
- <20231022031203.632153-3-sukrut.bellary@linux.com>
- <20231022170048.289a1897@jic23-huawei>
+        Wed, 25 Oct 2023 00:21:25 -0700 (PDT)
+Message-ID: <6db4383af5337985a3212327787194e93e536634.camel@gmail.com>
+Subject: Re: [RFC PATCH 1/8] iio: locking: introduce __cleanup() based
+ direct mode claiming infrastructure
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     David Lechner <dlechner@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Daniel Campello <campello@chromium.org>,
+        gregkh@linuxfoundation.org
+Date:   Wed, 25 Oct 2023 09:24:16 +0200
+In-Reply-To: <20231024132312.0000614c@Huawei.com>
+References: <20231022154710.402590-1-jic23@kernel.org>
+         <20231022154710.402590-2-jic23@kernel.org>
+         <CAMknhBEEPC-JArFJvpHw0YAmdA+BrAQzkxU5vNvCwxf5OdHKrw@mail.gmail.com>
+         <462c181eab1c0b70c0350099b7f70aaf736aabe1.camel@gmail.com>
+         <20231023105323.00000370@Huawei.com>
+         <0147cfed5e8402722186daa49256d20a8e2c83a1.camel@gmail.com>
+         <20231023153431.000038b9@Huawei.com>
+         <25cb785485ae585923b7b81276e10d8c048ba850.camel@gmail.com>
+         <20231024132312.0000614c@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231022170048.289a1897@jic23-huawei>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 22, 2023 at 05:00:48PM +0100, Jonathan Cameron wrote:
-> On Sat, 21 Oct 2023 20:12:03 -0700
-> Sukrut Bellary <sukrut.bellary@linux.com> wrote:
-> 
-> > The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> > interface. The device family responds with 12-bit data, of which the LSB
-> > bits are transmitted by the lower resolution devices as 0.
-> > The unavailable bits are 0 in LSB.
-> > Shift is calculated per resolution and used in scaling and
-> > raw data read.
-> > 
-> > Lets reuse the driver to support the family of devices with name
-> > ADC<bb><c>S<sss>, where
-> > * bb is the resolution in number of bits (8, 10, 12)
-> > * c is the number of channels (1, 2, 4, 8)
-> > * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > and 101 for 1 MSPS)
-> > 
-> > Complete datasheets are available at TI's website here:
-> > https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> > 
-> > Tested only with ti-adc102s051 on BegalePlay SBC.
-> > https://www.beagleboard.org/boards/beagleplay
-> > 
-> > arm64: dts: ti: k3-am625-beagleplay: Add adc102s051
-> > Add adc102s051 support.
-> > Tested on beaglePlay SBC
-> > https://www.beagleboard.org/boards/beagleplay
-> > 
-> > Co-developed-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
-> > ---
-> > Changes in v2:
-> >         - Arranged of_device_id and spi_device_id in numeric order.
-> >         - Used enum to index into adc128_config.
-> >         - Reorder adc128_config in alphabetical.
-> >         - Include channel resolution information.
-> >         - Shift is calculated per resolution and used in scaling and 
-> >           raw data read.
-> > - Link to v1: https://lore.kernel.org/all/20220701042919.18180-3-nm@ti.com/
-> > ---
-> >  drivers/iio/adc/ti-adc128s052.c | 131 +++++++++++++++++++++++---------
-> >  1 file changed, 96 insertions(+), 35 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> > index a456ea78462f..61e3181b8daf 100644
-> > --- a/drivers/iio/adc/ti-adc128s052.c
-> > +++ b/drivers/iio/adc/ti-adc128s052.c
-> > @@ -7,6 +7,22 @@
-> >   * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
-> >   * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
-> >   * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
-> > + *
-> > + * The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> > + * interface. This driver supports the whole family of devices with a name
-> > + * ADC<bb><c>S<sss>, where
-> > + * bb is the resolution in number of bits (8, 10, 12)
-> > + * c is the number of channels (1, 2, 4, 8)
-> > + * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > + * and 101 for 1 MSPS)
-> > + *
-> > + * Complete datasheets are available at TI's website here:
-> > + *   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> > + *
-> > + * 8, 10, and 12 bits converters send 12-bit data with
-> > + * unavailable bits set to 0 in LSB.
-> > + * Shift is calculated per resolution and used in scaling and
-> > + * raw data read.
-> >   */
-> >  
-> >  #include <linux/err.h>
-> > @@ -53,7 +69,7 @@ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
-> > +	return (adc->buffer[0] << 8 | adc->buffer[1]);
-> Firstly outer brackets don't add anything.
-> Secondly, this is an endian conversion.
-> 
-> return be16_to_cpu(adc->buffer);
-> 
-> should do the job as we know it's aligned enough for a be16.
-> 
->
+On Tue, 2023-10-24 at 13:23 +0100, Jonathan Cameron wrote:
+> On Mon, 23 Oct 2023 16:58:48 +0200
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Mon, 2023-10-23 at 15:34 +0100, Jonathan Cameron wrote:
+> > > On Mon, 23 Oct 2023 13:51:04 +0200
+> > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> > > =C2=A0=20
+> > > > On Mon, 2023-10-23 at 10:53 +0100, Jonathan Cameron wrote:=C2=A0=
+=20
+> > > > > On Mon, 23 Oct 2023 10:55:56 +0200
+> > > > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> > > > > =C2=A0=C2=A0=C2=A0=20
+> > > > > > On Sun, 2023-10-22 at 16:10 -0500, David Lechner wrote:=C2=A0=
+=C2=A0=C2=A0=20
+> > > > > > > On Sun, Oct 22, 2023 at 10:47=E2=80=AFAM Jonathan Cameron
+> > > > > > > <jic23@kernel.org>
+> > > > > > > wrote:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
+> > > > > > > >=20
+> > > > > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > > > >=20
+> > > > > > > > Allows use of:
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 CLASS(iio_claim_=
+direct, claimed_dev)(indio_dev);
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR(claim=
+ed_dev))
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return PTR_ERR(claimed_dev);
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st =3D iio_priv(=
+claimed_dev);
+> > > > > > > >=20
+> > > > > > > > to automatically call iio_device_release_direct_mode() base=
+d on
+> > > > > > > > scope.
+> > > > > > > > Typically seen in combination with local device specific lo=
+cks
+> > > > > > > > which
+> > > > > > > > are already have automated cleanup options via guard(mutex)=
+(&st-
+> > > > > > > > =C2=A0=20
+> > > > > > > > > lock)=C2=A0=20
+> > > > > > > > and scoped_guard().=C2=A0 Using both together allows most e=
+rror
+> > > > > > > > handling
+> > > > > > > > to
+> > > > > > > > be automated.
+> > > > > > > >=20
+> > > > > > > > Note that whilst this pattern results in a struct iio_dev
+> > > > > > > > *claimed_dev
+> > > > > > > > that can be used, it is not necessary to do so as long as t=
+hat
+> > > > > > > > pointer
+> > > > > > > > has been checked for errors as in the example.
+> > > > > > > >=20
+> > > > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.co=
+m>
+> > > > > > > > ---
+> > > > > > > > =C2=A0drivers/iio/industrialio-core.c |=C2=A0 4 ++++
+> > > > > > > > =C2=A0include/linux/iio/iio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 25 +++++++++++++++++++++++++
+> > > > > > > > =C2=A02 files changed, 29 insertions(+)
+> > > > > > > >=20
+> > > > > > > > diff --git a/drivers/iio/industrialio-core.c
+> > > > > > > > b/drivers/iio/industrialio-
+> > > > > > > > core.c
+> > > > > > > > index c77745b594bd..93bfad105eb5 100644
+> > > > > > > > --- a/drivers/iio/industrialio-core.c
+> > > > > > > > +++ b/drivers/iio/industrialio-core.c
+> > > > > > > > @@ -2065,6 +2065,10 @@
+> > > > > > > > EXPORT_SYMBOL_GPL(iio_device_claim_direct_mode);
+> > > > > > > > =C2=A0 */
+> > > > > > > > =C2=A0void iio_device_release_direct_mode(struct iio_dev *i=
+ndio_dev)
+> > > > > > > > =C2=A0{
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Auto cleanup can r=
+esult in this being called with an
+> > > > > > > > ERR_PTR
+> > > > > > > > */
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR(indio_dev)=
+)
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > > > > > > > +
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_unlock(&to=
+_iio_dev_opaque(indio_dev)->mlock);
+> > > > > > > > =C2=A0}
+> > > > > > > > =C2=A0EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+> > > > > > > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/ii=
+o.h
+> > > > > > > > index d0ce3b71106a..11c42170fda1 100644
+> > > > > > > > --- a/include/linux/iio/iio.h
+> > > > > > > > +++ b/include/linux/iio/iio.h
+> > > > > > > > @@ -9,6 +9,7 @@
+> > > > > > > >=20
+> > > > > > > > =C2=A0#include <linux/device.h>
+> > > > > > > > =C2=A0#include <linux/cdev.h>
+> > > > > > > > +#include <linux/cleanup.h>
+> > > > > > > > =C2=A0#include <linux/slab.h>
+> > > > > > > > =C2=A0#include <linux/iio/types.h>
+> > > > > > > > =C2=A0/* IIO TODO LIST */
+> > > > > > > > @@ -644,6 +645,30 @@ int __devm_iio_device_register(struct
+> > > > > > > > device
+> > > > > > > > *dev,
+> > > > > > > > struct iio_dev *indio_dev,
+> > > > > > > > =C2=A0int iio_push_event(struct iio_dev *indio_dev, u64 ev_=
+code, s64
+> > > > > > > > timestamp);
+> > > > > > > > =C2=A0int iio_device_claim_direct_mode(struct iio_dev *indi=
+o_dev);
+> > > > > > > > =C2=A0void iio_device_release_direct_mode(struct iio_dev *i=
+ndio_dev);
+> > > > > > > > +/*
+> > > > > > > > + * Auto cleanup version of iio_device_claim_direct_mode,
+> > > > > > > > + *
+> > > > > > > > + *=C2=A0=C2=A0=C2=A0=C2=A0 CLASS(iio_claim_direct, claimed=
+_dev)(indio_dev);
+> > > > > > > > + *=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR(claimed_dev))
+> > > > > > > > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 return PTR_ERR(claimed_dev);
+> > > > > > > > + *
+> > > > > > > > + *=C2=A0=C2=A0=C2=A0=C2=A0 st =3D iio_priv(claimed_dev);
+> > > > > > > > + *=C2=A0=C2=A0=C2=A0=C2=A0 ....
+> > > > > > > > + */
+> > > > > > > > +DEFINE_CLASS(iio_claim_direct, struct iio_dev *,
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 iio_device_release_direct_mode(_T),
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 ({
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ struct iio_dev *dev;
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ int d =3D
+> > > > > > > > iio_device_claim_direct_mode(_T);
+> > > > > > > > +
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ if (d < 0)
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev =3D ERR_PTR(d);
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ else
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev =3D _T;
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ dev;
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 }),
+> > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 struct iio_dev *_T);
+> > > > > > > > +
+> > > > > > > > =C2=A0int iio_device_claim_buffer_mode(struct iio_dev *indi=
+o_dev);
+> > > > > > > > =C2=A0void iio_device_release_buffer_mode(struct iio_dev *i=
+ndio_dev);
+> > > > > > > >=20
+> > > > > > > > --
+> > > > > > > > 2.42.0
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
+> > > > > > >=20
+> > > > > > > What is the benefit of exposing `claimed_dev` rather than jus=
+t the
+> > > > > > > int
+> > > > > > > return value? It seems like it just makes more noise in the e=
+rror
+> > > > > > > check.
+> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
+> > > > > >=20
+> > > > > > I don't really have a very strong opinion on this but what I re=
+ally
+> > > > > > don't
+> > > > > > like
+> > > > > > much is the pattern:
+> > > > > >=20
+> > > > > > CLASS(type, ret), where the return value is an argument of the
+> > > > > > macro...
+> > > > > > It
+> > > > > > would
+> > > > > > be nice if we could just make it like:
+> > > > > >=20
+> > > > > > ret =3D guard(type)(...); //or any other variation of the guard=
+()
+> > > > > > macro
+> > > > > > if (ret)=20
+> > > > > > 	return ret;
+> > > > > >=20
+> > > > > > the above could also be an error pointer or even have one varia=
+tion
+> > > > > > of
+> > > > > > each.
+> > > > > > but
+> > > > > > yeah, that likely means changing the cleanup.h file and that mi=
+ght
+> > > > > > be
+> > > > > > out of
+> > > > > > scope for Jonathan's patch series.=20
+> > > > > > =C2=A0=C2=A0=C2=A0=20
+> > > > >=20
+> > > > > I fully agree it's ugly and a little unintuitive but I don't see =
+a way
+> > > > > an
+> > > > > "lvalue"
+> > > > > can work work cleanly (due to magic types under the hood) and I
+> > > > > suspect we
+> > > > > will
+> > > > > have to get used to this pattern.
+> > > > > =C2=A0=C2=A0=C2=A0=20
+> > > >=20
+> > > > Yeah, given the games being played with the constructor and the _lo=
+ck
+> > > > definition
+> > > > so we return the variable we want to "release" I agree it would be =
+hard
+> > > > to
+> > > > have
+> > > > anything clean and likely even harder to read (more than it is alre=
+ady
+> > > > :)).
+> > > >=20
+> > > > However, I think users of the cleanup.h stuff could build on top of
+> > > > it...
+> > > > For
+> > > > instance, in our case we could have something like:
+> > > >=20
+> > > > #define IIO_CLAIM_DIRECT(dev)=20
+> > > > 	int __ret =3D 0;
+> > > > 	CLASS(iio_claim_direct, claimed_dev)(dev);
+> > > > 	if ((IS_ERR(claimed_dev))
+> > > > 		__ret =3D PTR_ERR(claimed_dev);
+> > > > 	__ret=C2=A0=20
+> > >=20
+> > > Maybe, but we'll have to deal with people perpetually trying to brack=
+ets
+> > > around
+> > > the complex macro...=20
+> > >=20
+> > > =C2=A0=20
+> >=20
+> > Not sure what you mean here... you mean dealing with people coming up w=
+ith
+> > funny
+> > new macros around CLASS(). In IIO, this is very specific and If I'm not
+> > missing
+> > anything the obvious, the above macro with give the same usage as=20
+> > iio_device_claim_direct_mode() but without caring about release() - so =
+not
+> > sure
+> > people could be that creative :)
+> Checkpatch will warn something along the lines of complex macros should b=
+e
+> contained
+> in brackets / or do while()
+>=20
+> So the class would go out of scope and be freed at the end of the macro :=
+)
+>=20
 
-Thanks for the review.
-Yes, I will use be16_to_cpu().
+Dohh! Tbh, I was not  being "smart" by not putting the brackets in my examp=
+le
+macro. I was just making it simple. For the real thing I had the brackets i=
+n my
+mind and completely forgot about the scope nature of the cleanup attr.
 
-> >  }
-> >  
-> >  static int adc128_read_raw(struct iio_dev *indio_dev,
-> > @@ -70,7 +86,8 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  		if (ret < 0)
-> >  			return ret;
-> >  
-> > -		*val = ret;
-> > +		*val = (ret >> channel->scan_type.shift) &
-> > +			GENMASK(channel->scan_type.realbits - 1, 0);
-> >  		return IIO_VAL_INT;
-> >  
-> >  	case IIO_CHAN_INFO_SCALE:
-> > @@ -80,7 +97,7 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  			return ret;
-> >  
-> >  		*val = ret / 1000;
-> > -		*val2 = 12;
-> > +		*val2 = channel->scan_type.realbits;
-> >  		return IIO_VAL_FRACTIONAL_LOG2;
-> >  
-> >  	default:
-> > @@ -89,24 +106,34 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  
-> >  }
-> >  
-> > -#define ADC128_VOLTAGE_CHANNEL(num)	\
-> > -	{ \
-> > -		.type = IIO_VOLTAGE, \
-> > -		.indexed = 1, \
-> > -		.channel = (num), \
-> > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> > -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
-> > +#define _ADC128_VOLTAGE_CHANNEL(num, real_bits, store_bits)		\
-> > +	{								\
-> > +		.type = IIO_VOLTAGE,					\
-> > +		.indexed = 1,						\
-> > +		.channel = (num),					\
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> > +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> > +		.scan_index = (num),					\
-> > +		.scan_type = {						\
-> > +			.sign = 'u',					\
-> > +			.realbits = (real_bits),			\
-> > +			.storagebits = (store_bits),			\
-> > +			.shift = (12 - real_bits),			\
-> > +		},							\
-> >  	}
-> >  
-> > -static const struct iio_chan_spec adc128s052_channels[] = {
-> > -	ADC128_VOLTAGE_CHANNEL(0),
-> > -	ADC128_VOLTAGE_CHANNEL(1),
-> > -	ADC128_VOLTAGE_CHANNEL(2),
-> > -	ADC128_VOLTAGE_CHANNEL(3),
-> > -	ADC128_VOLTAGE_CHANNEL(4),
-> > -	ADC128_VOLTAGE_CHANNEL(5),
-> > -	ADC128_VOLTAGE_CHANNEL(6),
-> > -	ADC128_VOLTAGE_CHANNEL(7),
-> > +#define ADC082_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 8, 16)
-> > +#define ADC102_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 10, 16)
-> > +#define ADC128_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 12, 16)
-> > +
-> > +static const struct iio_chan_spec adc082s021_channels[] = {
-> > +	ADC082_VOLTAGE_CHANNEL(0),
-> > +	ADC082_VOLTAGE_CHANNEL(1),
-> > +};
-> > +
-> > +static const struct iio_chan_spec adc102s021_channels[] = {
-> > +	ADC102_VOLTAGE_CHANNEL(0),
-> > +	ADC102_VOLTAGE_CHANNEL(1),
-> >  };
-> >  
-> >  static const struct iio_chan_spec adc122s021_channels[] = {
-> > @@ -121,10 +148,32 @@ static const struct iio_chan_spec adc124s021_channels[] = {
-> >  	ADC128_VOLTAGE_CHANNEL(3),
-> >  };
-> >  
-> > +static const struct iio_chan_spec adc128s052_channels[] = {
-> > +	ADC128_VOLTAGE_CHANNEL(0),
-> > +	ADC128_VOLTAGE_CHANNEL(1),
-> > +	ADC128_VOLTAGE_CHANNEL(2),
-> > +	ADC128_VOLTAGE_CHANNEL(3),
-> > +	ADC128_VOLTAGE_CHANNEL(4),
-> > +	ADC128_VOLTAGE_CHANNEL(5),
-> > +	ADC128_VOLTAGE_CHANNEL(6),
-> > +	ADC128_VOLTAGE_CHANNEL(7),
-> > +};
-> > +
-> >  static const struct adc128_configuration adc128_config[] = {
-> > -	{ adc128s052_channels, ARRAY_SIZE(adc128s052_channels) },
-> > +	{ adc082s021_channels, ARRAY_SIZE(adc082s021_channels) },
-> > +	{ adc102s021_channels, ARRAY_SIZE(adc102s021_channels) },
-> >  	{ adc122s021_channels, ARRAY_SIZE(adc122s021_channels) },
-> >  	{ adc124s021_channels, ARRAY_SIZE(adc124s021_channels) },
-> > +	{ adc128s052_channels, ARRAY_SIZE(adc128s052_channels) },
-> > +};
-> > +
-> > +/* Ensure match with adc128_config indices */
-> 
-> Make sure that is the case by using them when setting it up.
-> 
-> static const struct adc128_configuration adc128_config[] {
-> 	[ADC128_CONFIG_INDEX_082S] = {
-> 		adc082s021_channels, ARRAY_SIZE(..) 
-> 	},
-> 	[ADC128_CONFIG_INDEX_102S] = ..
-> }
-> 
+Anyways, I very much like all of this stuff and I'm starting to use it in a=
+ll
+the places I can...
 
-OK, I will use enum while setting it up
+- Nuno S=C3=A1
 
-+static const struct adc128_configuration adc128_config[] = {
-+       [ADC128_CONFIG_INDEX_082S] = {
-+               .channels = adc082s021_channels,
-+               .num_channels = ARRAY_SIZE(adc082s021_channels)
-}
 
-Use enum in spi_device_id[]
-
-static const struct spi_device_id adc128_id[] = {
-+       { "adc082s021", (kernel_ulong_t)ADC128_CONFIG_INDEX_082S },
-+       { "adc082s051", (kernel_ulong_t)ADC128_CONFIG_INDEX_082S },
-
-}
-
-And use it in probe to extract the config for channels and num_channels using
-
-config = &adc128_config[spi_get_device_id(spi)->driver_data];
-
-since we are not using of_device_id for extracting config, I can remove
-the .data entry or need to type case it.
-
-static const struct of_device_id adc128_of_match[] = {
-	{ .compatible = "ti,adc082s021", },
-}
-
-> Or I think you can make it irrelevant by not using an array at all.
-> static const struct ad128_configruation adc082s021_config = {
-> };
-> 
-> etc then just use the address of the right one directly.
-> 
-> In this driver, I suspect that is simpler than using the array.
-> 
-> > +enum adc128_configuration_index {
-> > +	ADC128_CONFIG_INDEX_082S,
-> > +	ADC128_CONFIG_INDEX_102S,
-> > +	ADC128_CONFIG_INDEX_122S,
-> > +	ADC128_CONFIG_INDEX_124S,
-> > +	ADC128_CONFIG_INDEX_128S,
-> 
-> >  };
-> >  
-> >  static const struct iio_info adc128_info = {
-> > @@ -177,31 +226,43 @@ static int adc128_probe(struct spi_device *spi)
-> >  }
-> >  
-> >  static const struct of_device_id adc128_of_match[] = {
-> > -	{ .compatible = "ti,adc128s052", .data = &adc128_config[0] },
-> > -	{ .compatible = "ti,adc122s021", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc122s051", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc122s101", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc124s021", .data = &adc128_config[2] },
-> > -	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
-> > -	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
-> > +	{ .compatible = "ti,adc082s021", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc082s051", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc082s101", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc102s021", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc102s051", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc102s101", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc122s021", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc122s051", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc122s101", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc124s021", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc124s051", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc124s101", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc128s052", .data = &adc128_config[ADC128_CONFIG_INDEX_128S] },
-> >  	{ /* sentinel */ },
-> >  };
-> >  MODULE_DEVICE_TABLE(of, adc128_of_match);
-> >  
-> >  static const struct spi_device_id adc128_id[] = {
-> > -	{ "adc128s052", (kernel_ulong_t)&adc128_config[0] },
-> > -	{ "adc122s021",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc122s051",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc122s101",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc124s021", (kernel_ulong_t)&adc128_config[2] },
-> > -	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
-> > -	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
-> > +	{ "adc082s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc082s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc082s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc102s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc102s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc102s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc122s021",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc122s051",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc122s101",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc124s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc124s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc124s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc128s052", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_128S] },
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(spi, adc128_id);
-> >  
-> >  static const struct acpi_device_id adc128_acpi_match[] = {
-> > -	{ "AANT1280", (kernel_ulong_t)&adc128_config[2] },
-> > +	{ "AANT1280", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);
-> 

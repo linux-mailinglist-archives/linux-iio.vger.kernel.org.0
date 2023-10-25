@@ -2,80 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA277D63A3
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 09:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA0B77D667D
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 11:16:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233963AbjJYHkd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 03:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
+        id S229606AbjJYJP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 05:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234023AbjJYHkU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 03:40:20 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9514C1E;
-        Wed, 25 Oct 2023 00:39:12 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9bf86b77a2aso770087966b.0;
-        Wed, 25 Oct 2023 00:39:12 -0700 (PDT)
+        with ESMTP id S233880AbjJYJP5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 05:15:57 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFEF138;
+        Wed, 25 Oct 2023 02:15:55 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9ba1eb73c27so847644266b.3;
+        Wed, 25 Oct 2023 02:15:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698219541; x=1698824341; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Te1iHE/rzZPd9szXvKoHrxnrvsuWVQsV/Q92fJ/vORo=;
-        b=EPIx3n7e+pKQ0f80dUAfj5PpO8iMz7j2601FY/O/+xPLEWGdw9qm3yamGwfJksJ1PY
-         CQUVqn1z/2tvxEBbnGDGcJzvTVzIjH74cdQXKVnJY15jFk4mKmTimkBq3I8fIMwm44kT
-         PybAY0AyhSB1FwpgdWhNOlf3u+Ahtdxx4ObFD90r/3GuRhcYhRh10P/mrMYL2dVEBWhr
-         OT6gkhNLFZVSGgXuhM+BUVl4YgXapvkyZ4P+H5gY1Onc3mnpj5F4uA1coiYKunfreySt
-         L8K+f+8S+cM7YUJ9v2AyIPBAkZcwPRQgESEFialvYiRVZ4IaM6wvys6b074YnOESgyvH
-         ROiw==
+        d=gmail.com; s=20230601; t=1698225354; x=1698830154; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sA3KLuKCI9H+7Y8UJbCOZUdVsc0t74/8ar37Z4W1LJA=;
+        b=heeWbtRKQYAeHE6jWukhEJhuRNIoHMLldJLnXLPmcBJ/ATIwAjeyjFDVhJWT4CTaMQ
+         ghn4ETGXeUrtNSWzQaxr5RFTZ28igFa5CYZfQ8KOZ27lQnj38HBSlLE4ltQKk0E4ASG0
+         oo20b7wjzKVP0BwL5v4qcVpPE5TDfQzml9Z69KviQEng9pCnOivA0mQy6wd6jJ/9GxEP
+         iwJ/sFSuHzXladx9YUl97NMnLy50Tc1PEzj0eanHd0sjHsmZ0FMOGhgvE1wzAIPCR5i9
+         12ozVxfEqTtxx8gHDwO7vKcuGsqMV2dHwnrFqpqX1uoNmspYWxvFXr7Or0YigdpDldsa
+         i99A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698219541; x=1698824341;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Te1iHE/rzZPd9szXvKoHrxnrvsuWVQsV/Q92fJ/vORo=;
-        b=Gg/wVVUtixvW5ifoGjhWiZewYD7RJmU5ReNb0iqd30AcBaSpV9a8jU5rShlpJVXtZO
-         ipwaEoD/Wzcs1vNL0x57no1iKxMYZl7PmdvtxoUzr7+1yOcQp+Cx9pPMtCFdL2milUqz
-         WO2lvVxJwCIrx5ie5X44XWY6sbpHbfCsjnKuq9XTE9UC3CqSMeSFoksmzLLXrxw4QI0F
-         1eGknJ39v7eGPIhQ7wmkEbN2wqmss4uD0+WVo29avGwZMoOZAtMftapcAki453S/gCXv
-         Ay5CZeAAoKx7lfeXDysRbU6CxMIv949Otfc7iiPWMkVIMtxAazAzvGPMfElmRN40AjM7
-         9goQ==
-X-Gm-Message-State: AOJu0YyKJwA9/gPA5fvEMMD00BI60Wpxvk7sPbY4IseEO5VAdoHKCCa3
-        BkYkFqPMhN9XM+Txgxr4Yco=
-X-Google-Smtp-Source: AGHT+IE0lUpM0EUlNscdNWAa/Cl2VZY0CrTcHc+MBtp3QU0BStJqOcVAL3+/3sISUqbrTUhYArOsiA==
-X-Received: by 2002:a17:907:a4b:b0:9c6:4dec:b1f0 with SMTP id be11-20020a1709070a4b00b009c64decb1f0mr10296102ejc.74.1698219540729;
-        Wed, 25 Oct 2023 00:39:00 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
-        by smtp.gmail.com with ESMTPSA id g27-20020a170906395b00b00988dbbd1f7esm9266810eje.213.2023.10.25.00.38.59
+        d=1e100.net; s=20230601; t=1698225354; x=1698830154;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sA3KLuKCI9H+7Y8UJbCOZUdVsc0t74/8ar37Z4W1LJA=;
+        b=uyLBNAk2p2as7/56CzT3r0dmT4eFCnZoczYMme9iRjbiZAEt5MeCYF++592qFu7b6t
+         RAKsj7C8+BonYDTz0ESgEq5jzj5Gyf13luY75PXZqSfA3tv+jo8IplYSa0QMZEoIHY2W
+         qgcYTpprrfz1/t/FJJq0maWR31buo9E2H+DFcR/VD5y/56hkIuce3anfvhCe8Zx7JcIf
+         XRHhCwY0uxXqQYmPAmTQ8WgwawORdSx7hdrTj6jiDZKZ6QQKfMUqSL8YASB3g+1lP9Oq
+         eKrxCtGFpomF6sNtm6Nauds43Ged9hCyw2MTMLvd4JLItmYirXmh5MWsXe7X/dUIgkTX
+         YcVw==
+X-Gm-Message-State: AOJu0Yzw1wAVQxkBCVSOTGcHj9c3r1oWJHAD2a7KZ3II3l+E7GpC0bZ6
+        xNSht2+EEpTSkxjkpJEdz3M=
+X-Google-Smtp-Source: AGHT+IE0Mv6Iod3FRLXOFtaujOuioouSP5SZ3DRcTBOCmppK4r5+q19s0X13iI5wN/hT3yxSyw69Pw==
+X-Received: by 2002:a17:906:7311:b0:9bd:9507:ed1c with SMTP id di17-20020a170906731100b009bd9507ed1cmr12678504ejc.18.1698225353936;
+        Wed, 25 Oct 2023 02:15:53 -0700 (PDT)
+Received: from felia.fritz.box ([2a02:810d:7e40:14b0:2cbd:f9ec:f035:ebea])
+        by smtp.gmail.com with ESMTPSA id cw23-20020a170906c79700b0099cce6f7d50sm9546446ejb.64.2023.10.25.02.15.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 00:39:00 -0700 (PDT)
-Message-ID: <1a7e525c664fe964606fa7fd1a5f5022111e6e2a.camel@gmail.com>
-Subject: Re: [PATCH v2 3/3] dt-bindings: adis16460: Add
- 'spi-cs-inactive-delay-ns' property
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Conor Dooley <conor@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Ramona Gradinariu <ramona.gradinariu@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Date:   Wed, 25 Oct 2023 09:41:52 +0200
-In-Reply-To: <20231024-backache-unranked-c4905d8944b7@spud>
-References: <20231023140534.704312-1-ramona.gradinariu@analog.com>
-         <20231023140534.704312-4-ramona.gradinariu@analog.com>
-         <e97ac024cb2654507ed8f7af715f3604efefbdbb.camel@gmail.com>
-         <20231023-repost-coma-2f67ea8b95af@spud>
-         <5c600a6db6173a56251302da8d2f438435959bd2.camel@gmail.com>
-         <8391fb67-e575-49e6-9857-806cb85e9e59@linaro.org>
-         <20231024-backache-unranked-c4905d8944b7@spud>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0 
-MIME-Version: 1.0
+        Wed, 25 Oct 2023 02:15:53 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC BMI323 IMU IIO DRIVER
+Date:   Wed, 25 Oct 2023 11:15:50 +0200
+Message-Id: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,107 +67,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2023-10-24 at 16:11 +0100, Conor Dooley wrote:
-> On Tue, Oct 24, 2023 at 03:47:16PM +0200, Krzysztof Kozlowski wrote:
-> > On 24/10/2023 08:53, Nuno S=C3=A1 wrote:
-> > > On Mon, 2023-10-23 at 17:06 +0100, Conor Dooley wrote:
-> > > > On Mon, Oct 23, 2023 at 04:27:48PM +0200, Nuno S=C3=A1 wrote:
-> > > > > On Mon, 2023-10-23 at 17:05 +0300, Ramona Gradinariu wrote:
-> > > > > > The adis16460 device requires a stall time between SPI
-> > > > > > transactions (during which the chip select is inactive),
-> > > > > > with a minimum value equal to 16 microseconds.
-> > > > > > This commit adds 'spi-cs-inactive-delay-ns' property, which sho=
-uld
-> > > > > > indicate the stall time between consecutive SPI transactions.
-> > > > > >=20
-> > > > > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> > > > > > ---
-> > > > > > changes in v2:
-> > > > > > =C2=A0- added default value
-> > > > > > =C2=A0- updated description
-> > > > > > =C2=A0- updated commit message
-> > > > > > =C2=A0.../devicetree/bindings/iio/imu/adi,adis16460.yaml=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 6
-> > > > > > ++++++
-> > > > > > =C2=A01 file changed, 6 insertions(+)
-> > > > > >=20
-> > > > > > diff --git
-> > > > > > a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > > > > > b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > > > > > index 4e43c80e5119..f10469b86ee0 100644
-> > > > > > --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.y=
-aml
-> > > > > > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.y=
-aml
-> > > > > > @@ -25,6 +25,12 @@ properties:
-> > > > > >=20
-> > > > > > =C2=A0=C2=A0 spi-cpol: true
-> > > > > >=20
-> > > > > > +=C2=A0 spi-cs-inactive-delay-ns:
-> > > > > > +=C2=A0=C2=A0=C2=A0 minimum: 16000
-> > > > > > +=C2=A0=C2=A0=C2=A0 default: 16000
-> > > > > > +=C2=A0=C2=A0=C2=A0 description:
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Indicates the stall time betwee=
-n consecutive SPI
-> > > > > > transactions.
-> > > > > > +
-> > > > >=20
-> > > > > You should drop the description...=20
-> > > > >=20
-> > > > > Also, give more time before posting a v2 so others get a chance t=
-o
-> > > > > review
-> > > > > your
-> > > > > patches. It's also better for you since you can gather more chang=
-e
-> > > > > requests.
-> > > >=20
-> > > > Further, I don't see an answer to Krzysztof's question of why the s=
-tall
-> > > > time would not just be set to 16,000 ns in the driver, based on the
-> > > > compatible.
-> > >=20
-> > > Hi Conor,
-> > >=20
-> > > Regarding that, I'm the one to blame since I was the one asking for t=
-he
-> > > property
-> > > during internal review... The reason is that "spi-cs-inactive-delay-n=
-s" is
-> > > already part of spi-peripheral-props.yaml which we already reference.=
- So
-> > > my
-> > > question would be why not using it?
-> > >=20
-> > > These devices are a bit sensitive regarding these timings. Not in dev=
-ices
-> > > supported by this driver but I already experienced having to set timi=
-ngs
-> > > bigger
-> > > than defined in the datasheet for spi to be reliable. this was true o=
-n a
-> > > RPI but
-> > > might not be in another platform.
-> > >=20
-> > > Hence having the flexibility to change the time in an already support=
-ed
-> > > property
-> > > does sound good to me. If not set, we still use the default value bas=
-ed on
-> > > the
-> > > compatible. Now, if you tell me "let's just add this if we really get=
- the
-> > > need
-> > > for it", I get it but I also don't understand why not add it now...
->=20
-> I don't object to having the property, it'd just be good for the commit
-> message to have mentioned that the minimum time may not be sufficient
-> for all configurations.
->=20
+Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
+MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to a
+non-existing device-tree file.
 
-Fair enough...
+Probably, this mistake was introduced by copying from the BOSCH SENSORTEC
+BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
+entry properly. This is however easily caught, as the script
+./scripts/get_maintainer.pl --self-test=patterns complains about a broken
+reference.
 
-Thanks!
-- Nuno S=C3=A1
+The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI323")
+adds bosch,bmi323.yaml, so refer to that intended file instead.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a493d96ffd85..82ba3695f614 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3642,7 +3642,7 @@ BOSCH SENSORTEC BMI323 IMU IIO DRIVER
+ M:	Jagath Jog J <jagathjog1996@gmail.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/iio/imu/bosch,bma400.yaml
++F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+ F:	drivers/iio/imu/bmi323/
+ 
+ BPF JIT for ARM
+-- 
+2.17.1
 

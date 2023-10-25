@@ -2,116 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44A9B7D74C4
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Oct 2023 21:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA537D78A7
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 01:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233381AbjJYTuM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Oct 2023 15:50:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
+        id S229877AbjJYXhM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Oct 2023 19:37:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234579AbjJYTuJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 15:50:09 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77E21A1;
-        Wed, 25 Oct 2023 12:50:04 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c50906f941so1538451fa.2;
-        Wed, 25 Oct 2023 12:50:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698263403; x=1698868203; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EHfvnUbqg9GtaO1sB11RiBDoSfdRrypjGI2a/Q+8XQQ=;
-        b=bOVtHpJsxD4cx3oyJTS/0IVxuILyUHezuL4579KB9y6LP0qhXEdMNHA0NvgqY8G/vC
-         bAk5CiYkyFk7N4Bt81H/k4jrD3/LhlaU0EaC7rLY/QP0pcYu3bMPJhG12d4ODQhlL3mp
-         NIcsm9SBw4fKJLCn/j4LRTDQnYMrLs/HcoLCjSThV6wW3UU3M/eUVEAVqc/yMzbs7o+x
-         6id1ktYVbLZo5JuPpcFLIyA3C3rQK13NGgSm66rzziXefsHJu+BDhnEmJYrdYw0xpU3X
-         f79BVtzgyDXpfP4RXJEg1/ikNCfFP7xhSoNs/IJSJRnA2673J+xYetAlXeYGMNuSIl7V
-         4UJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698263403; x=1698868203;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EHfvnUbqg9GtaO1sB11RiBDoSfdRrypjGI2a/Q+8XQQ=;
-        b=sT7NsU5Jyz2YSxDkPDNkkAwIQLLLgfEWAsL7IA4V32wxIEiITbcjbpJSpVQE0c9l5M
-         lRSceVINQdNJogUo2X/pJOYu5eg2cmG+ZSJhDPt83bTj1Y/E/gNhSyPTCntNmXg7K/zW
-         9Xb0FhHYOSom4KcQAhVw6IuYB9C9rMJtAOaIUQulcWqlU0nMNWl8GK4xmzrURefstc94
-         DQa9jjjAJmrf0brHGsRE5lgIL2BCDJHzpwMYwYFPoVO8poDiRQ31r2/VieHaqUnED9IS
-         o6V1uHQwmigNLoboDd/A4+amuKojYav9ccqVun5gD3Anhjv2dE7fsfTkTI/AgfC9p+4R
-         1CtQ==
-X-Gm-Message-State: AOJu0YyB0Jyc2bkFNYnSIKd/7tkeXRnUKW5N0J/fmQ+bWGUGwvwCI143
-        pXgHUPCI65Ba4zy+OdH7984UIIJY7DNvPmHgeQIgDUARhsu6SQ==
-X-Google-Smtp-Source: AGHT+IFTSIFhk7YK+RtSUQtz1foEIyZxmQA2dcXEGjb8hG3jcEut0JFjg8m+QhAobRlv9Wn6NZ/NFyUUAUASKYBl2LM=
-X-Received: by 2002:a19:2d5d:0:b0:4f8:77db:1d9e with SMTP id
- t29-20020a192d5d000000b004f877db1d9emr11554827lft.12.1698263402639; Wed, 25
- Oct 2023 12:50:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Thu, 26 Oct 2023 01:19:51 +0530
-Message-ID: <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC BMI323
- IMU IIO DRIVER
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229709AbjJYXhL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Oct 2023 19:37:11 -0400
+Received: from mail-108-mta156.mxroute.com (mail-108-mta156.mxroute.com [136.175.108.156])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CFD181
+        for <linux-iio@vger.kernel.org>; Wed, 25 Oct 2023 16:37:07 -0700 (PDT)
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta156.mxroute.com (ZoneMTA) with ESMTPSA id 18b692e47300008912.007
+ for <linux-iio@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Wed, 25 Oct 2023 23:32:02 +0000
+X-Zone-Loop: db06b666b271d3b5354dff743fdae9a5946c62c73147
+X-Originating-IP: [136.175.111.2]
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
+        s=x; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:
+        From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+        References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+        List-Owner:List-Archive; bh=uFQRte2LtvmVBjvFynl4AJsVJgA3W83CRZZB75zhHwY=; b=E
+        2sizVDXj6SO1oZNQuTbiklVPWOjOeANMnHGljimZT3MnHHhLyVHEVA+5k/aijZiEsS4sXsKVwVnoh
+        eliDMKqKo4oB16ZkcGDMHghFZZDcXTdU4foq2mQejohc205c+QVwurCNBiQefSHmKBuxkLvvTIZSg
+        2fM+nRKCXnQeknPF8uhI8fUCE6JDyz2tkW2y/ZLWQwayP8LPoLK9hyyyTmbG4JgNXK3ngTAcLTIW1
+        Z3Zhf5r8KgWfXL6mmLXNCTa3nS2NitJW2yOM2BcMB5Q+Tsd5vMPrKdMzl0EAQ8UnzXB2HXk/csIyR
+        AH1QhYxZOTvOYYr4rddbqqeVNfRGYD7zA==;
+From:   Andrew Hepp <andrew.hepp@ahepp.dev>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Andrew Hepp <andrew.hepp@ahepp.dev>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [v7,PATCH 1/2] dt-bindings: iio: Add MCP9600 thermocouple EMF converter
+Date:   Wed, 25 Oct 2023 16:31:52 -0700
+Message-Id: <20231025233153.5454-1-andrew.hepp@ahepp.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: andrew.hepp@ahepp.dev
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 25, 2023 at 2:45=E2=80=AFPM Lukas Bulwahn <lukas.bulwahn@gmail.=
-com> wrote:
->
-> Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
-> MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to a
-> non-existing device-tree file.
->
-> Probably, this mistake was introduced by copying from the BOSCH SENSORTEC
-> BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
-> entry properly. This is however easily caught, as the script
-> ./scripts/get_maintainer.pl --self-test=3Dpatterns complains about a brok=
-en
-> reference.
->
-> The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI323=
-")
-> adds bosch,bmi323.yaml, so refer to that intended file instead.
+Add support for the MCP9600 thermocouple electromotive force converter. The sensor has  integrated cold junction compensation and a typical accuracy of 0.5 degrees Celsius. The driver supports a resolution of 0.0625 degrees Celsius.
 
-My apologies for the silly mistake, and thank you for fixing it.
-Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Changes for v7:
+- none
+Changes for v6:
+- none
+Changes for v5:
+- remove "bindings" from subject
+- change unevaluatedProperties to additionalProperties
+Changes for v4:
+- use descriptive names for open/short circuit interrupts
+- remove vdd regulator description
+- remove unused import
+- use generic sensor name in example
+- don't use literal style for doc description
+Changes for v3:
+- Added dt-bindings
+---
+ .../iio/temperature/microchip,mcp9600.yaml    | 70 +++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
 
+diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+new file mode 100644
+index 000000000000..d2cafa38a544
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+@@ -0,0 +1,70 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip MCP9600 thermocouple EMF converter
++
++maintainers:
++  - Andrew Hepp <andrew.hepp@ahepp.dev>
++
++description:
++  https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
++
++properties:
++  compatible:
++    const: microchip,mcp9600
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 6
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 6
++    items:
++      enum:
++        - open-circuit
++        - short-circuit
++        - alert1
++        - alert2
++        - alert3
++        - alert4
++
++  thermocouple-type:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Type of thermocouple (THERMOCOUPLE_TYPE_K if omitted).
++      Use defines in dt-bindings/iio/temperature/thermocouple.h.
++      Supported types are B, E, J, K, N, R, S, T.
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/iio/temperature/thermocouple.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        temperature-sensor@60 {
++            compatible = "microchip,mcp9600";
++            reg = <0x60>;
++            interrupt-parent = <&gpio>;
++            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "open-circuit";
++            thermocouple-type = <THERMOCOUPLE_TYPE_K>;
++            vdd-supply = <&vdd>;
++        };
++    };
+-- 
+2.34.1
 
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a493d96ffd85..82ba3695f614 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3642,7 +3642,7 @@ BOSCH SENSORTEC BMI323 IMU IIO DRIVER
->  M:     Jagath Jog J <jagathjog1996@gmail.com>
->  L:     linux-iio@vger.kernel.org
->  S:     Maintained
-> -F:     Documentation/devicetree/bindings/iio/imu/bosch,bma400.yaml
-> +F:     Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
->  F:     drivers/iio/imu/bmi323/
->
->  BPF JIT for ARM
-> --
-> 2.17.1
->

@@ -2,58 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5BE17D806D
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 12:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D047D8196
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 13:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbjJZKPS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 06:15:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S229991AbjJZLNs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 07:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231200AbjJZKPR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 06:15:17 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FCE51AD;
-        Thu, 26 Oct 2023 03:15:15 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6b87c1edfd5so670574b3a.1;
-        Thu, 26 Oct 2023 03:15:15 -0700 (PDT)
+        with ESMTP id S229649AbjJZLNr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 07:13:47 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2688B9D;
+        Thu, 26 Oct 2023 04:13:46 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-27dc1e4d8b6so628480a91.0;
+        Thu, 26 Oct 2023 04:13:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698315314; x=1698920114; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698318825; x=1698923625; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lyDPyIOy3XGS88UTNLJJ1fkRqGcbB4V7iUeidXioJIs=;
-        b=guKqWrB2KLSZn9bDyKr7422ZnfRDpzZvUDsmNyQaYma9Rp7LXkgsiZLRNmC18T2UOQ
-         emrTihRRG6TM2vnD67P0xHPZYggAKpLBSP1mL9YFrjVJ9RAgaudg3OXDEvP94qbUHsos
-         5SM8lcDRuqVe/vTRjkImYL4u9YO1znXqUvktBp+PRlu+8ePxE+1mJB8oZGKWvkvcg6pr
-         kUSzTlVzVGupv6skwlunexuh5UcYwkGoggHfqkPChnbecFQHjcy3GEPIOAyGN/4jPyq3
-         kbi1ghwcTEYcacmO3GLwbOwGtNV3z7GMNb3r+kzF3v1ExbbPD+oG5V5ED7vP3KgFox/U
-         a18A==
+        bh=5ZFon3MaibAevtN9zdhx0zxMOp24hQ9jO8ot1zqWQZ0=;
+        b=Qz/PjCbLe5itd1j9NspgIoEpRTecZNhRK2B7arnpfO5iPOMKo5i6dIW9FPyAxCTtn0
+         4iDG/4sajfjWyqgrnzx40aOIwIT8cxvWgR1jBu1610unp/FQCyCNu7TnkulvJLiOXIrK
+         XirsBIG24H4B3h6ePCiPNexDgnYQ7VxSHQ3ubxvUPops7gG5vSozxgpyWSNbVT38DoiV
+         vxysoMRpw7FSOrvj9HXdqPF+Fv9rRMeIf8S7TiuNP3SR8YWejcyZjOhiL2z6JIEIgz25
+         bRUbPo01iZB+h4UyThB2xQfvrKs1+5VsdjEHf/rej58k3INP812tuFIHdDXB7rIatkMJ
+         Q4uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698315314; x=1698920114;
+        d=1e100.net; s=20230601; t=1698318825; x=1698923625;
         h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lyDPyIOy3XGS88UTNLJJ1fkRqGcbB4V7iUeidXioJIs=;
-        b=UeYq5AsVau3clibg5h2bHMgAkp61X9ImdVGG89+6JWYrY53BD9z6aC2LShQ/qoiGV2
-         bkn3b4K9f3KIt+n/xuTUmq4ZSYKwrFw/s16sd+pTiZ5rq3iv9ZIV+CYXlQyylQ3T1F9t
-         PqqIxBZQMdcuAv7sU6JeAxIIZxg+MKfqsIL2Tnk4S7Y/9IWQ24lzOrJgBu8kk17sCe7N
-         DTNa2vPn00f5vZ7hUY7RIrR4U8VCJKwfjyVELA/8izpmYjGrI61hCpGnsgCqBUswe4yJ
-         toZa2m5CD2hKlImhnlRowc7J9e6ntKobY94emEi8yJxYiGUAKDCmgDT99g5lJAlJ6xT4
-         WaYQ==
-X-Gm-Message-State: AOJu0Yzeyzm8qJL6oqhpx6Kg5NicsSgWoH3qnNyrbIXvZqiKHpYjht5G
-        ttZbM0rYvrVEeC4y/gQqJ0sjg4NdtwEgN+Sx16Q=
-X-Google-Smtp-Source: AGHT+IEvmXLZL/xtR66yyrtzsgrGj6la/m8oCdfPB91c59DRAGDeBlWylY+chg+bCKBIBocZbVFU5r0Fk/kq4IX1oaY=
-X-Received: by 2002:a05:6a21:7189:b0:15d:8409:8804 with SMTP id
- wq9-20020a056a21718900b0015d84098804mr7034921pzb.57.1698315314297; Thu, 26
- Oct 2023 03:15:14 -0700 (PDT)
+        bh=5ZFon3MaibAevtN9zdhx0zxMOp24hQ9jO8ot1zqWQZ0=;
+        b=HlKQWV2GPicEJ/oqEs/amK1Ny7Yh+gNahmNp+7mOlGFXo+GdPvTNO7Z+DOc+kBwySQ
+         18oelyqduU5UPzp0/bUL4kt6TwseFaKbHHJahqwjquor9i2coSoolp7AbGX6i325cH4X
+         RxUdeSlzUcfy0d58yc/rnVn4QdIxawdD9Sco5NKKoIid3uTOXViMjYv+4CU7bZvSqMXX
+         VTQ8wjCrNojBmNtxgPwegr455/jkITXp6n6kuj6/Kdvfv/ajQT7W7BsM/vJMRSUelo5H
+         sL3N3R1M4yejUYvLeKZWFiH50Y+FgFin7X9kHTylSmm+Jx0V6tj+Q97VRJQ8dN+zbPo0
+         HsrA==
+X-Gm-Message-State: AOJu0Yw8xPMfUB3M1OWTLg0ob5/zpvtPAFGsWWrnXz6UxMgt+cKs9Ybu
+        XZRBjHS5fr4RWvwXhVhyu1VsshlRAv3zAOqzez0=
+X-Google-Smtp-Source: AGHT+IFGj7m0laBf1IV+kcmIE6Q7YsmNBrpdVs5WJtRU6dvpXZecP8JKujp4hO6bRcP7p6kybCPuCT8LOYviQcu8Sdg=
+X-Received: by 2002:a17:90a:34ca:b0:273:4944:2eba with SMTP id
+ m10-20020a17090a34ca00b0027349442ebamr17458214pjf.40.1698318825396; Thu, 26
+ Oct 2023 04:13:45 -0700 (PDT)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 26 Oct 2023 03:15:13 -0700
+ HTTPREST; Thu, 26 Oct 2023 04:13:44 -0700
 From:   Amit Dhingra <mechanicalamit@gmail.com>
 References: <CAO=gReHuuwB6mBZAXpYHGk9XsWE8e8+U3T9e6iqCXYQMcjZZVg@mail.gmail.com>
  <a0636e8e-7a39-4c58-8dee-7187ffd7fc63@gmail.com> <e806f42f-9baa-4689-882a-144647cc03a3@gmail.com>
+ <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <e806f42f-9baa-4689-882a-144647cc03a3@gmail.com>
-Date:   Thu, 26 Oct 2023 03:15:13 -0700
-Message-ID: <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
-Subject: [PATCH v2] MAINTAINERS: correct file entry IIO LIGHT SENSOR
+In-Reply-To: <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
+Date:   Thu, 26 Oct 2023 04:13:44 -0700
+Message-ID: <CAO=gReFVhp7QK_XZRBO5vbv6fmFb4BdsZeQPSzWvuiz9UeQekA@mail.gmail.com>
+Subject: [PATCH v3] MAINTAINERS: correct file entry IIO LIGHT SENSOR
  GAIN-TIME_SCALE HELPERS
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -86,10 +87,10 @@ Signed-off-by: Amit Dhingra <mechanicalamit@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a493d96ffd85..6dd44ec48886 100644
+index 668d1e24452d..99c2285c58e5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -10287,8 +10287,8 @@ IIO LIGHT SENSOR GAIN-TIME-SCALE HELPERS
+@@ -10177,8 +10177,8 @@ IIO LIGHT SENSOR GAIN-TIME-SCALE HELPERS
  M:	Matti Vaittinen <mazziesaccount@gmail.com>
  L:	linux-iio@vger.kernel.org
  S:	Maintained

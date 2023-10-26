@@ -2,188 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9950F7D8621
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 17:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5E37D8673
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 18:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjJZPo4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 11:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S231326AbjJZQIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 12:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjJZPoz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 11:44:55 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648F7196;
-        Thu, 26 Oct 2023 08:44:53 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9c53e8b7cf4so170807466b.1;
-        Thu, 26 Oct 2023 08:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698335092; x=1698939892; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BOqZewXxQGVP1NcocKVuNRkU9OFyXGemHQI6cQ9yNks=;
-        b=EyJe4ebSgtQW89MTIf5Rtl6pAASHtePBqfA2YIvG1lBEuYnO+tdCzGLALWqry7SfFD
-         gCdOya0C5boXXYG2ZbMLmXYKPy3kHGn09zvElnMrCSCM6pb3cqeIVk0roZtJ70tlQda6
-         ldLZzasrN5+28qtkeV9ns8rO/ZEHbN0f5j8PUaiRaN10rxUccE8IqSrjAibaEC/aH/q1
-         kRQVm95viQO1/6bdBY0XP0KFjaxk0MPrGRiXR6jVFCt+eSLuVdXPHV0E12m2Dc/rISRD
-         T1JLBV7vlA25Z38xZCV9paaFd6RkzQB7TbR3GCY+8KaVuTmMQUB6zpSLecxdk4/9TgSI
-         6pkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698335092; x=1698939892;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BOqZewXxQGVP1NcocKVuNRkU9OFyXGemHQI6cQ9yNks=;
-        b=uG0VYWeEbeFe9hMioFB+wLZCAAKaTfyoahfsdQJMRE87Ds1Ruojb+gUTfXVhgyf1/1
-         SjVnvz5tCzZD+b0mEGmhfZJ19vaeoKiQguJhLmy5G5Jl8ZLCoxV3LelPYGNgLTgJJEfq
-         gDnVPVd8fQDo+BqB4RGG7XBCnIAxOguHmEqOIuj8VlZ5QDM8TVJSmUWsXUDbOpn6lOow
-         VhKBbMoE+qMo/iNemafhyuURGuKliXakQGjc0bmrCF6eb7JHjEVzcj4UtUljw9V7Ub86
-         xLoaFWOTEN4bLV5WkUNQf2irBrlqk91SnwoEbMdYSZcuqMgvbbZn92fLjKzHtd1KM6Mr
-         A8Mg==
-X-Gm-Message-State: AOJu0Ywpsik4os3pNMMnsHlH5je4sBSvHPtG1iyOoQlxCwGIwh1TL3TC
-        rL5Cj0kh0mSJ1rXSaSmcpJhYv+rZ1b5Hqw==
-X-Google-Smtp-Source: AGHT+IEefJdMKI8wkbUnTDRxw3MAhhTLd/xrtqsB9JhDqpHCGBd1IAvpOfXgRQ8kX0FbzVXPfmjSBA==
-X-Received: by 2002:a17:907:a03:b0:9bf:889e:32a4 with SMTP id bb3-20020a1709070a0300b009bf889e32a4mr43387ejc.54.1698335091602;
-        Thu, 26 Oct 2023 08:44:51 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-aa18-f9fe-f627-2a46.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:aa18:f9fe:f627:2a46])
-        by smtp.gmail.com with ESMTPSA id n17-20020a170906841100b009c8b720cf59sm8331164ejx.42.2023.10.26.08.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 08:44:51 -0700 (PDT)
-From:   Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date:   Thu, 26 Oct 2023 17:44:49 +0200
-Subject: [PATCH] iio: common: ms_sensors: ms_sensors_i2c: fix humidity
- conversion time table
+        with ESMTP id S230507AbjJZQIO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 12:08:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B5A1A6;
+        Thu, 26 Oct 2023 09:08:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6900C433C7;
+        Thu, 26 Oct 2023 16:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698336491;
+        bh=WFxJq0/989teIWW06N+2g4pyBHa4H3eufPVUdxZPeYY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ADe+Z3lMEHuDh0qqqAVl77fLn6VPJYM1TQjiDbmugE9JXn1ZNrTTLAzpd+jwgsw6t
+         VjnTUmu0zsKv3Dz62Ko5AL3P8PDQ9HNBA/Q9dWtZq5dqjYcd+LIeFnC5kCjiK3Avly
+         JZ84ad8+qqjrZwMDUR713ka8roxIz/X86QZvp2oX8rv4uR9hF0k/3pcVTdKTNZid/i
+         gPvlxVKShWCpx6DRniFMs55ekXzS0VBw2L5vOFXYSZufV1mJaIkHmcVvxTFUfp+aQ6
+         9Wa6Olw3kRNIfOq10k3PLxwXjcD+Uu/YgP64IePiEPNi/XRh4UeK8JpqWDYUxZBL/W
+         ZzsK6Ctp+gIdw==
+Date:   Thu, 26 Oct 2023 17:08:07 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Marius.Cristea@microchip.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        lars@metafoo.de, linux-kernel@vger.kernel.org, jic23@kernel.org,
+        conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
+ PAC193X
+Message-ID: <20231026-perkiness-financial-55313e297230@spud>
+References: <20231025134404.131485-1-marius.cristea@microchip.com>
+ <20231025134404.131485-2-marius.cristea@microchip.com>
+ <20231025-cheddar-tucking-b2ea777ed4f9@spud>
+ <937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAHCJOmUC/x2NQQrDIBRErxL+uoIaSNNepZRg7KT+RTR8bSiE3
- L3a5eMxbw7KEEame3eQYOfMKVYwl458cPENxa/KZLXtjbaDKmljr0L5WDP5FHdIm0yFV6gb3Gg
- wDlfdL1QLs8tQs7joQ2usLhdIE5tg4e//9vE8zx9aM49KhgAAAA==
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        William Markezana <william.markezana@meas-spec.com>,
-        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1698335090; l=4449;
- i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=8iImRaAF6cpsowlFJX62gZM3TPXl66xs7q2hHDrIAkk=;
- b=2mcpbQsmBS2XjpaRDf036urt72rxf6gtyy25oLE2pfF8dJKutOcZswYf8URTLU4Pq20/P4BZi
- L+mLBnl8LcrA6Xqp2tPmEv8E/1XcwFmqLvP9HNmhSZR9vTueKfM6bsy
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="6/TCsU+pwTa96crd"
+Content-Disposition: inline
+In-Reply-To: <937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
-associated to an index that is used to select the right measurement
-resolution and its corresponding measurement time. The current
-implementation selects the measurement resolution and the temperature
-measurement time properly, but it does not select the right humidity
-measurement time in all cases.
 
-In summary, the 40 and 70 humidity measurement times are swapped.
+--6/TCsU+pwTa96crd
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The reason for that is probably the unusual coding for the measurement
-resolution. According to the datasheet, the bits [7,0] of the "user
-register" are used as follows to select the bit resolution:
+On Thu, Oct 26, 2023 at 03:23:46PM +0000, Marius.Cristea@microchip.com wrot=
+e:
+> Hi Conor,
+>=20
+> On Wed, 2023-10-25 at 16:08 +0100, Conor Dooley wrote:
+> > Hey Marius,
+> >=20
+> > On Wed, Oct 25, 2023 at 04:44:03PM +0300,
+> > marius.cristea@microchip.com=A0wrote:
+> > > From: Marius Cristea <marius.cristea@microchip.com>
+> > >=20
+> > > This is the device tree schema for iio driver for
+> > > Microchip PAC193X series of Power Monitors with Accumulator.
+> > >=20
+> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> > > ---
+> > > =A0.../bindings/iio/adc/microchip,pac1934.yaml=A0=A0 | 146
+> > > ++++++++++++++++++
+> > > =A01 file changed, 146 insertions(+)
+> > > =A0create mode 100644
+> > > Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > >=20
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > new file mode 100644
+> > > index 000000000000..837053ed8a71
+> > > --- /dev/null
+> > > +++
+> > > b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > @@ -0,0 +1,146 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Microchip PAC1934 Power Monitors with Accumulator
+> > > +
+> > > +maintainers:
+> > > +=A0 - Marius Cristea <marius.cristea@microchip.com>
+> > > +
+> > > +description: |
+> > > +=A0 Bindings for the Microchip family of Power Monitors with
+> > > Accumulator.
+> > > +=A0 The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be
+> > > found here:
+> > > +=A0=A0=A0
+> > > https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produc=
+tDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> > > +
+> > > +properties:
+> > > +=A0 compatible:
+> > > +=A0=A0=A0 enum:
+> > > +=A0=A0=A0=A0=A0 - microchip,pac1931
+> > > +=A0=A0=A0=A0=A0 - microchip,pac1932
+> > > +=A0=A0=A0=A0=A0 - microchip,pac1933
+> > > +=A0=A0=A0=A0=A0 - microchip,pac1934
+> > > +
+> > > +=A0 reg:
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 "#address-cells":
+> > > +=A0=A0=A0 const: 1
+> > > +
+> > > +=A0 "#size-cells":
+> > > +=A0=A0=A0 const: 0
+> > > +
+> > > +=A0 interrupts:
+> > > +=A0=A0=A0 description: IRQ line of the ADC
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 drive-open-drain:
+> > > +=A0=A0=A0 description: The IRQ signal is configured as open-drain.
+> > > +=A0=A0=A0 type: boolean
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 microchip,slow-io:
+> > > +=A0=A0=A0 type: boolean
+> > > +=A0=A0=A0 description: |
+> > > +=A0=A0=A0=A0=A0 A GPIO used to trigger a change is sampling rate (lo=
+wering
+> > > the chip power consumption).
+> > > +=A0=A0=A0=A0=A0 In default mode, if this pin is forced high, samplin=
+g rate
+> > > is forced to eight
+> > > +=A0=A0=A0=A0=A0 samples/second. When it is forced low, the sampling =
+rate is
+> > > 1024 samples/second unless
+> > > +=A0=A0=A0=A0=A0 a different sample rate has been programmed.
+> >=20
+> > This description doesn't really make sense to me - if a GPIO is used
+> > to
+> > drive the pin low or high, why do we need a property? A DT property
+> > implies that this is a static configuration depending on the board,
+> > but
+> > reading the description this seems to be something that can be
+> > toggled
+> > at runtime.
+> > I do note though, that this GPIO is not documented in the binding, so
+> > I
+> > suppose what really needs to happen here is document the gpio so that
+> > the driver can determine at runtime what state this pin is in?
+> >=20
+> > Also, you say "In default mode", but don't mention what the non-
+> > default
+> > mode is. What happens in the other mode?
 
---------------------------------------------------
-| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
---------------------------------------------------
-|   0   |   0   | 12 |  14  |  16000   |  50000  |
---------------------------------------------------
-|   0   |   1   | 8  |  12  |  3000    |  13000  |
---------------------------------------------------
-|   1   |   0   | 10 |  13  |  5000    |  25000  |
---------------------------------------------------
-|   1   |   1   | 11 |  11  |  8000    |  7000   |
---------------------------------------------------
-*This table is available in the official datasheet, page 13/21. I have
-just appended the times provided in the humidity/temperature tables,
-pages 3/21, 5/21. Note that always a pair of resolutions is selected.
+> This is a "double function" pin. On the PAC193x there is the SLOW/ALERT
+> pin. At runtime this pin could be configured as an input to the PAC and
+> the functionality will be "SLOW" that means if it is forced high, the
+> PAC will work in low power mode by changing the sample rate to 8 SPS.
+> If it's forced low the PAC will work at it's full sample rate.
 
-The sampling frequencies [20, 40, 70, 120] are assigned to a linear
-index [0..3] which is then coded as follows [1]:
+Since this is a runtime thing, it doesn't make sense to have a property
+that is set at dts creation time that decides what mode the pin is in.
 
-Index    [7,0]
---------------
-idx 0     0,0
-idx 1     1,0
-idx 2     0,1
-idx 3     1,1
+> "SLOW" is the default function of the pin but it may be programmed to
+> function as ALERT pin (Open Collector when functioning as ALERT,
+> requires pull-up resistor to VDD I/O). This time the pin will be set as
+> output from PAC (ALERT functionality) to trigger an interrupt to the
+> system (this is covered by the interrupts and drive-open-drain).
 
-That is done that way because the temperature measurements are being
-used as the reference for the sampling frequency (the frequencies and
-the temperature measurement times are correlated), so increasing the
-index always reduces the temperature measurement time and its
-resolution. Therefore, the temperature measurement time array is as
-simple as [50000, 25000, 13000, 7000]
+Hmm, at the risk of getting out of my depth with what the GPIO subsystem
+is capable of doing, I would expect to see something like
 
-On the other hand, the humidity resolution cannot follow the same
-pattern because of the way it is coded in the "user register", where
-both resolutions are selected at the same time. The humidity measurement
-time array is the following: [16000, 3000, 5000, 8000], which defines
-the following assignments:
+sampling-rate-gpios:
+  description:
+    <what you have above>
+  maxItems: 1
 
-Index    [7,0]    Trh
------------------------
-idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
-idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
-idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
-idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
+Which would allow the driver to either drive this pin via the gpio
+subsystem, or to use the interrupt property to use it as an interrupt
+instead.
 
-The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
-which is not the case for the reason explained above.
+Perhaps Jonathan etc knows better for these sort of dual mode pins.
 
-So a simple modification is required to obtain the right humidity
-measurement time array, swapping the values in the positions 1 and 2.
+> The system could work fine without this pin. The driver doesn't use
+> interrupt at this time, but it could be extended.
 
-The right table should be the following: [16000, 5000, 3000, 8000]
+Cheers,
+Conor.
 
-Fix the humidity measurement time array with the right idex/value
-coding.
+--6/TCsU+pwTa96crd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[1] The actual code that makes this coding and assigns it to the current
-value of the "user register" is the following:
-config_reg &= 0x7E;
-config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
+-----BEGIN PGP SIGNATURE-----
 
-Fixes: d574a87cc311 ("Add meas-spec sensors common part")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/common/ms_sensors/ms_sensors_i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTqO5wAKCRB4tDGHoIJi
+0hmYAQCmkSnFNbvLOYoS5zpR/RrKQCjnseNtPyG7Q7Cd/8Q6lQEA5xp0wOClCL69
+r+PqDSbFGSDxR9U6JeWtWD5lnAIvMQw=
+=8fmx
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-index 6633b35a94e6..9c9bc77003c7 100644
---- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-+++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-@@ -15,8 +15,8 @@
- /* Conversion times in us */
- static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
- 						       13000, 7000 };
--static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
--						       5000, 8000 };
-+static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
-+						       3000, 8000 };
- static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
- 						     4100, 8220, 16440 };
- 
-
----
-base-commit: 611da07b89fdd53f140d7b33013f255bf0ed8f34
-change-id: 20231026-topic-htu21_conversion_time-9ea81e86703f
-
-Best regards,
--- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
-
+--6/TCsU+pwTa96crd--

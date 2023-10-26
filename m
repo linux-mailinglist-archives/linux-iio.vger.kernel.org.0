@@ -2,93 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3EB7D819C
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 13:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2F17D84D8
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 16:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjJZLO4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 07:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48928 "EHLO
+        id S1345255AbjJZOfs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 10:35:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbjJZLOz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 07:14:55 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0D21AD;
-        Thu, 26 Oct 2023 04:14:52 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b3c2607d9bso703475b3a.1;
-        Thu, 26 Oct 2023 04:14:52 -0700 (PDT)
+        with ESMTP id S1345236AbjJZOfr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 10:35:47 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC99591
+        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 07:35:44 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-27e0c1222d1so786257a91.0
+        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 07:35:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698318892; x=1698923692; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EkearvrdceNuYTs2jdkNmK1OqvyMKYioDUn4ZJUv9Nk=;
-        b=KZShzUZkIucmyFKKWnslILNHlDYFh97RBkmV9oMyrz7QJaW1QABjbrEqU/2wrBxhAI
-         K0HW9qEze7VzCSQ5QKESKeCLwW4HX+Fot5gnAHs8gGym7afUYkvQ66ztFoHlJsqt7c4E
-         c1wnVVwts85f+z3jFI396d/JXVn8XAFsHveMpSHJaLM2IPntefVXbTaze596ZTr4aZXd
-         /hhspFDOCtrINoB2lKks4+A42OalzrpvMRVRDchQubuQpGL8qBUPowdBi3FuxZSEp7e3
-         WnN1AED+MGAcNunVA4/pe9XBbbX2bb14zVysDlBvMF+tO3gCbiGIKfaIrqRJbj14TGO+
-         7Atg==
+        d=tweaklogic.com; s=google; t=1698330944; x=1698935744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6fcPIoP7TVmQOJVPPgogOEp5U2VXZnIM6xw7cT4MQ8=;
+        b=T4uK32Sv/SmHZgOdmKRjHJvXIG2qXJNy9VkA7TramYzk5xbgzWdJTfYiBRIQzEJFpF
+         KOJVm1kwvmE2Y2JZwi7Vsx9pI26ABbB+f5LneFH9fV3muOHdMOYBVpp5V4p19phdLPEm
+         Gk/Na4wEJHzZl15AsaaX1H0zyyDYxGgKyuBa32HK05sowf9pXDkGYKzO7cP4aBPWHnZq
+         IwRNUFsOctxEBkePjCR6unsad3vONTWRCQZYlm87N4pR1tuJNWTBsQL30s4dGdNlqx3u
+         pNmjrM2JrYHMjsvozD2si1Dh0CI6K5UbElOJjxGlaYLCVO5eHSKpiw45mE8Z2dXoVPiP
+         ep6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698318892; x=1698923692;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EkearvrdceNuYTs2jdkNmK1OqvyMKYioDUn4ZJUv9Nk=;
-        b=U9gBPjP89aAj0VoUwopDFJ7ukJ9kqZMkDkwWJA/pQuvGMN/EncbAp7tCRgfmJVNucS
-         Esc3PyFS4EAMn0ZuFISdJ86vybdKwawiapbMzHWhx5Smn4ifAJhiHuwp/PVzGDlJkGIO
-         pikvnZAqQ1DDaWuz5yDsrWZPYWJBXHQ9Sqjy5YDnwXDx7U7Trovdfuy61gSf7zN4NTsH
-         CJpiyp31pqNtqFuivJLw6Gp+C/AAzEQABA6JCuXiq9SWxozshVE2ip1cGoyU7t9zEqln
-         iYuphU8NPYeAHe9UweRXWwa711/EPa5+X/a4ZCeK5WtbnpznoNTR9wvHdYvXFvCdIwVm
-         t9uw==
-X-Gm-Message-State: AOJu0Yz/cPMYVJO9eta5yK0L4njUEd+D72XkZxBkYb8lJiIjxTFfv1s6
-        oQEVby2HWrOP66NrEKEdAxPYfgN7kFETDoSJGwY=
-X-Google-Smtp-Source: AGHT+IEdE0vafWyL5tlJ0mChrmln8wjHb6yEqAzZSnUzsNcWUD2fWcDu5bu1z74PKXPGhM2Oi1UX9xNmKNSTpiueXf4=
-X-Received: by 2002:a05:6a21:7985:b0:16b:afc2:3b69 with SMTP id
- bh5-20020a056a21798500b0016bafc23b69mr7327323pzc.36.1698318892351; Thu, 26
- Oct 2023 04:14:52 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 26 Oct 2023 04:14:51 -0700
-From:   Amit Dhingra <mechanicalamit@gmail.com>
-References: <CAO=gReHuuwB6mBZAXpYHGk9XsWE8e8+U3T9e6iqCXYQMcjZZVg@mail.gmail.com>
- <a0636e8e-7a39-4c58-8dee-7187ffd7fc63@gmail.com> <e806f42f-9baa-4689-882a-144647cc03a3@gmail.com>
- <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1698330944; x=1698935744;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x6fcPIoP7TVmQOJVPPgogOEp5U2VXZnIM6xw7cT4MQ8=;
+        b=A0/qd5DeqEh4UdiHYjFmqAwuxkZWJlx955AJuSnaY8YI5Ete8njxhs24nt8KF5+3Jf
+         s4jId5H5Uq4/BZwbTNfjnNn9IyADS/jTDlYA4qU1OUK/groweZW9ayTJuwBiUR5aCEnt
+         ocyAPnq44DTLiXMKe7nvXou4hSLFTQ0Apn3OIuUU+Hm4E29GQvkkJ0HV8VeuBHqBuMss
+         N6eWK3pNBZdcldeTG7FYIDdeHc+KLasujU3aD4QRDnFMOFhRAlny1udvkAX1UI2WjkLj
+         23nX45yodoMNoQkmAUoCt0QwLciUsns2lAzJd24dhkqgKeojBDoForECLrDvsWP/M/hq
+         MHvQ==
+X-Gm-Message-State: AOJu0Yyq0wSDAKAxTyQVhKUD4cu+mqjX+2JVH3gkgVeXa9eWSi4vUSpA
+        1GcZkUWOdkVjUtAtJqvXhh/tOQ==
+X-Google-Smtp-Source: AGHT+IGfpohH+wgf9zFOcXrPZIEKBo1PNL7rEYU1PHcczxpUdu42YaB/uM5R3t6XvjvBLhZRo6pQlw==
+X-Received: by 2002:a17:90a:1917:b0:27d:b4a4:2d87 with SMTP id 23-20020a17090a191700b0027db4a42d87mr16510046pjg.1.1698330944272;
+        Thu, 26 Oct 2023 07:35:44 -0700 (PDT)
+Received: from localhost.localdomain (2403-580d-82f4-0-16bf-4026-a446-e128.ip6.aussiebb.net. [2403:580d:82f4:0:16bf:4026:a446:e128])
+        by smtp.gmail.com with ESMTPSA id iq11-20020a17090afb4b00b00256b67208b1sm1727519pjb.56.2023.10.26.07.35.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 07:35:43 -0700 (PDT)
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>
+Cc:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] Support for Avago APDS9306 Ambient Light Sensor
+Date:   Fri, 27 Oct 2023 01:05:30 +1030
+Message-Id: <20231026143532.39660-1-subhajit.ghosh@tweaklogic.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
-Date:   Thu, 26 Oct 2023 04:14:51 -0700
-Message-ID: <CAO=gReGCris01BoeZuBK730uRZJr+rOOWVE+bPaMRp_BKQ7siw@mail.gmail.com>
-Subject: Re: [PATCH v2] MAINTAINERS: correct file entry IIO LIGHT SENSOR
- GAIN-TIME_SCALE HELPERS
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Oct 26, 2023 at 03:15:13AM -0700, Amit Dhingra wrote:
-> index a493d96ffd85..6dd44ec48886 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10287,8 +10287,8 @@ IIO LIGHT SENSOR GAIN-TIME-SCALE HELPERS
+This series adds support for Avago (Broadcom) APDS9306 Ambient Light
+Sensor.
 
-v1 and v2 were mistakenly based on linux-next. v3 is based on v6.6-rc7.
-Apologies.
+Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
 
->  M:	Matti Vaittinen <mazziesaccount@gmail.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Maintained
-> -F:	drivers/iio/light/gain-time-scale-helper.c
-> -F:	drivers/iio/light/gain-time-scale-helper.h
-> +F:	drivers/iio/industrialio-gts-helper.c
-> +F:	include/linux/iio/iio-gts-helper.h
->
->  IIO MULTIPLEXER
->  M:	Peter Rosin <peda@axentia.se>
-> --
-> 2.42.0
+Following features are supported:
+  - I2C interface
+  - 2 channels - als and clear
+  - Raw data for als and clear channels
+  - Up to 20 bit resolution
+  - 20 bit data register for each channel
+  - Common Configurable items for both channels
+    - Integration Time
+    - Scale
+  - High and Low threshold interrupts for each channel
+  - Selection of interrupt channels - als or clear
+  - Selection of interrupt mode - threshold or adaptive
+  - Level selection for adaptive threshold interrupts
+  - Persistence (Period) level selection for interrupts
+  
+This driver also uses the IIO GTS Helpers Namespace for Scales, Gains
+and Integration time implementation.
+
+root@stm32mp1:~# tree -I 'dev|name|of_node|power|subsystem|uevent' \
+> /sys/bus/iio/devices/iio:device1/
+/sys/bus/iio/devices/iio:device1/
+|-- events
+|   |-- in_illuminance_thresh_either_en
+|   |-- in_intensity_clear_thresh_either_en
+|   |-- thresh_adaptive_either_en
+|   |-- thresh_adaptive_either_value
+|   |-- thresh_adaptive_either_values_available
+|   |-- thresh_either_period
+|   |-- thresh_either_period_available
+|   |-- thresh_falling_value
+|   `-- thresh_rising_value
+|-- in_illuminance_raw
+|-- in_intensity_clear_raw
+|-- integration_time
+|-- integration_time_available
+|-- sampling_frequency
+|-- sampling_frequency_available
+|-- scale
+|-- scale_available
+`-- waiting_for_supplier
+
+1 directory, 18 files
+
+v0 -> v1
+  - dt_bindings
+   - Squashed apds9300 and apds9600 dt bindings, added apds9306 bindings on
+     top of that
+   - Added detailed commit message for dt_bindings
+  - apds9306 driver
+   - Fixes as per review
+   - Not disabling the regmap internal lock
+   - Removing processed attribute for als channel which exposes raw values
+   - Modified the iio gts scale implementation for above change
+   - Not implementing a fallback and warning for compatibility and part ID 
+     mismatch as suggested by Matti and Jonathan as Rob insisted on having
+     a single compatible string for the driver (if the device can power up
+     with a single compatible string, which it does).
+
+Subhajit Ghosh (2):
+  dt-bindings: iio: light: Avago APDS9306
+  iio: light: Add support for APDS9306 Light Sensor
+
+ .../bindings/iio/light/avago,apds9300.yaml    |   35 +-
+ .../bindings/iio/light/avago,apds9960.yaml    |   44 -
+ drivers/iio/light/Kconfig                     |   12 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/apds9306.c                  | 1334 +++++++++++++++++
+ 5 files changed, 1377 insertions(+), 49 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+ create mode 100644 drivers/iio/light/apds9306.c
+
+
+base-commit: 611da07b89fdd53f140d7b33013f255bf0ed8f34
+-- 
+2.34.1
+

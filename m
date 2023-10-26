@@ -2,240 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A31307D85EF
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 17:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9950F7D8621
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 17:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235146AbjJZPY1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 11:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49570 "EHLO
+        id S231422AbjJZPo4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 11:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235074AbjJZPYY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 11:24:24 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8688C187;
-        Thu, 26 Oct 2023 08:24:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1698333859; x=1729869859;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=OufQGj9Nx/4oyNheeJtMS2/FIoZ7GuyYAsF2vnzhl94=;
-  b=I0NaaZHscm6Ev1DWMk9jUrHp7EDMknnG7GT86gOS0ksq6IvOKX0Ek+P4
-   /dFrIC6PBeRDz4u7vV/3x9QLBypcdPdkty1kt9FQJCtcoTjpHGHeJOntx
-   5igOyT5QgBzJKcSOA1U8jmL4UUAck1Bcap8SN56GfQ7fBD7a2jGYr79U6
-   jTAxiONAPY7X6oEADMgyoGXJGAsrLvfILGahKvUosu8oR39uHcgr3WMPk
-   ioJtXhUELse4gs7G53faRDBL7/vMzsajcB1R6A8nwnUQj+7YkClDF1dhZ
-   Fy1Td2gTuRpHkXAv5Eu/AtT+sKnJRwO+9GDfGRcWHOf6bTZ6AIEm7elNK
-   g==;
-X-CSE-ConnectionGUID: mnYGqr+LRdS8TDsC4XikMQ==
-X-CSE-MsgGUID: YEC4EKH6TfC960Z8Kffg2g==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
-   d="scan'208";a="241406395"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Oct 2023 08:24:18 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 26 Oct 2023 08:23:49 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (10.10.215.250)
- by email.microchip.com (10.10.87.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21 via Frontend Transport; Thu, 26 Oct 2023 08:23:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gzQceVSEdunCgtNj8mHkik0GkSZyQFNt9iJnGHT5VgTt+WKST93m8z6ph6MDe3iAsBf3lYvGCRK0vdKL85htyY+/IouA/XMupEww6/owaC4gu7zP+eAZF8CSC8DIeFOJjR48AdTP7rKPQgz13ENlRVIy9RkmaA2Xgk73xH9j/jTJRSt2WWaMLA+xhUl7VIFRpvqZ/SMkQKYsOPnFWpEl51Hd8qbic/nsJlgrVOLxMchCzkWj2edZVKrgqV96NnBJf0+NtfnTTFud7ZL8PPFqHnMj8ilKyWO8hrOpxWCbRwYtyuNuPJOD/0cYcpnsinyS/wU3zMMdgLqvAVdmgR989w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OufQGj9Nx/4oyNheeJtMS2/FIoZ7GuyYAsF2vnzhl94=;
- b=mUg3Rr7PhWhUMbRWT3QWveQSamWVas0S17CeOhz+MJixj0sw0CB+PRdFqKknJRcmi1Vyx9H+/TuqTdkfII7+XnvxDrDFAuZYuqshkN/H8HeDaTJHkqn5sl54gtLw/xhXpcFh9TVwaG3+jipOpuvcD43Oql0EYhk3RfY8muNxguwrJJnbzRWGlyqh89iMiVti3aT2RZl+a81/71DJlnF5NdFnwDWfWjq3y4AKvfi+tyh6crpSUZ4ZGZ/8yn/NXoyglHHNjDCVV/kGyk41dZMInBXdLIKolsq2+xxwJyrJRLjClL7UbISzv+kHlboIkJc5oe5bcWivN6BTXaNRoJChSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        with ESMTP id S231280AbjJZPoz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 11:44:55 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648F7196;
+        Thu, 26 Oct 2023 08:44:53 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9c53e8b7cf4so170807466b.1;
+        Thu, 26 Oct 2023 08:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OufQGj9Nx/4oyNheeJtMS2/FIoZ7GuyYAsF2vnzhl94=;
- b=sEKgbw0T4QvZbo44guoeAxtOE9sQAio4bB0vm7+0CCGCU2g/g4aTwiFFpaK1W7a3tqIwq6YdHYRhQ8EMcdY/uEv7X+rVu96o73fKw13jonrC91zuYlKMZQQ3gE0Y4kXWcMy82lGWl0U3qdlXdE6BU/t+kr2aCYcf6vSP+Z0Z6Kk=
-Received: from IA1PR11MB6395.namprd11.prod.outlook.com (2603:10b6:208:3ac::14)
- by CY8PR11MB7685.namprd11.prod.outlook.com (2603:10b6:930:73::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Thu, 26 Oct
- 2023 15:23:47 +0000
-Received: from IA1PR11MB6395.namprd11.prod.outlook.com
- ([fe80::1268:3f:8109:622b]) by IA1PR11MB6395.namprd11.prod.outlook.com
- ([fe80::1268:3f:8109:622b%4]) with mapi id 15.20.6907.032; Thu, 26 Oct 2023
- 15:23:47 +0000
-From:   <Marius.Cristea@microchip.com>
-To:     <conor@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <lars@metafoo.de>, <linux-kernel@vger.kernel.org>,
-        <jic23@kernel.org>, <conor+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
- PAC193X
-Thread-Topic: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
- PAC193X
-Thread-Index: AQHaB0lj9PO1FMJaPku3xMkF5R2gP7Bam5gAgAGWpIA=
-Date:   Thu, 26 Oct 2023 15:23:46 +0000
-Message-ID: <937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
-References: <20231025134404.131485-1-marius.cristea@microchip.com>
-         <20231025134404.131485-2-marius.cristea@microchip.com>
-         <20231025-cheddar-tucking-b2ea777ed4f9@spud>
-In-Reply-To: <20231025-cheddar-tucking-b2ea777ed4f9@spud>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6395:EE_|CY8PR11MB7685:EE_
-x-ms-office365-filtering-correlation-id: d8d72538-6930-45c4-5da0-08dbd6378c5d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xiatvIZtXL8iep72rBS/BQGXipQ1nnvpgcUm96saR/+wx+cmbiFQJ+Yt1AWpviwsLow9iTaYUnc8Tl1o4pWKB0AlQrO7YtkfBZHg5k8jQtPjp8Q8N0EochDw1jEGC67zUpC0QMk1T4uUpjTnXcz5iFDXNBHUw/wNmazM+MWj5ZOReTN8S9/5eLSEqOuzeCPlAkY7DL3u2TuHbkGBqwDoWx7SBP0mboHIPHUY4iD62hMmDrs94vQlTWtCZPhSmXqTftD11/nQyCYmiTnGnrvRy0RHn5Nvi/hWK8LfZ9AE1clBp9MN2nCRj5mfa7esCjvjKSuqAlIw7Z5XqY1//F40Fct+DsT1iNXegAhrPcO9cakDPv1HFtyCvQOZJ1Mpq4E7IJ+ZUIp2mxE4JU051Ue48fTnAGzbrn0cjNCtYtB9LMR5blhlaFh76G849thWC33M1xdt9W/L1XatgfqQYeCJFYGuRHucJsDFbvZIFPlt2dqVWpGPH1/HN9m0+mnsjil/xAx4lkS6SMQtUwDvkioZCJ5l6gjurfHpUjyOl/suB6LcYIqcveSJFTDchHomh76vpKAfAOD4Oyp68ReMQSVoZZHxdEtaSE77PpKoyhd4V+oPsRU+/L57HyzCkKC6fug6DwiypajXnAQerUjJQh4SgQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6395.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(346002)(396003)(39860400002)(230922051799003)(1800799009)(64100799003)(451199024)(186009)(26005)(316002)(38100700002)(64756008)(122000001)(6512007)(66446008)(66946007)(76116006)(66476007)(66556008)(54906003)(2616005)(91956017)(6916009)(8936002)(83380400001)(4326008)(8676002)(966005)(478600001)(6486002)(6506007)(71200400001)(41300700001)(4001150100001)(2906002)(38070700009)(5660300002)(86362001)(36756003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VGRMSWVBeW9pcklWZkNMOEFOMlEwY0h4MjAzTTMxWEZ2RmM5bUVJcVlvTTJw?=
- =?utf-8?B?K2pMY0dBems3M0x2elBGNzhjb2FqdStKb2dEUXIzYlJVWGx1d3U0TnN2RjVY?=
- =?utf-8?B?WnlIN3IvbWJBSUtveTExN0dmdFQ4ZW5vSENTZGdNUDZ4QkNzY3hvTjlDRnlL?=
- =?utf-8?B?RmtDS2I2eTJ6YzE2NDRZdGNzU0EzdWxaSWxGcEhKZHdmUEZYRWlUSXdCTXdo?=
- =?utf-8?B?c0dqeFEyb3ZjeHhHeVkyV0VKeEJ6R0lNUmE4aWFNekI0L0I0U0VkY2V5VVQw?=
- =?utf-8?B?My92RFRGNlJHYmtWL3QvS3dnd25SU3RNeFllUHBheW5oZ1FCa21qRXMyTC9O?=
- =?utf-8?B?K1V6UmRicUluc2M5M3FiV2ptK2ZNODJETHQrOEVDRXVDcWkrS1N5UHF2MmVm?=
- =?utf-8?B?NXM3UjFNeUV3VFRCOVc2Vkgrem5pYVE1MG5TV0NhTGlPMmZ4QWtlaEhid1BD?=
- =?utf-8?B?dG5JcFdyc2M3YXZxMVFsZmlSNTd5THpuQ2YySzZaMjRvYmkranRBbEhJSm9j?=
- =?utf-8?B?Qzk1Y3JQa1pJKzRpRFY3SjdVYy9TRVNnb0pBYWdiMW9VWW5mNlFsbjhIeTNi?=
- =?utf-8?B?S1k4R01RZm8wUHhNbWxYaGdtU05KbjhKQUoyMFVPb0w5bDEyLzJRYXVhQi80?=
- =?utf-8?B?RVlEelA3OVZLSEUzaHpOWU1TM3FIUDhyM3FsR1RIRk96clBUQTdxTVU0ZEs5?=
- =?utf-8?B?SWtUc2VTeVA0d01TVTlpM3Bhc0xWYUdxL0xKRE5WQmR4a0djQnlLSFZmZkdJ?=
- =?utf-8?B?SzZKVmF5WDBYd21nUGVsWm1GenJBZEdwK2FQejdiMDRFU3EyUlFTcGY4QzZS?=
- =?utf-8?B?UVRGL3J3TTFnRUJGV3lNZGxDR3V1YVcyd3RYR2VxYlhsTjNYR292TnZRYVdi?=
- =?utf-8?B?L0FFTVNIQUtFSDVDUmVUd1o2VXBYaEl5WUlPamwrazNoUXJqZjRHazduQjBZ?=
- =?utf-8?B?NG52SjB4aW9YMWJNNUM2ZkZWd0ZCaHpwSnZKNHdta2lvdHF2MmhqamNqeWlD?=
- =?utf-8?B?YmJYZk51bXRFWXVvQks0UkJXU01UV1BmRnlIZDVRZ0JQODZWMkFaWGZXbWJ6?=
- =?utf-8?B?Qis4eGZ4b3JMVHVyQ3pzd2xJZnBuUzRlek5WZVh3RzdKWVhYOTJmaVFNeE5L?=
- =?utf-8?B?VkI1YTFsZGJvUWdGTGRlblRWNjVWMmw5N2NaTnptVmViMmkrUTRJcjR4cVR5?=
- =?utf-8?B?Zm9xUS8xczR5UUtieVV2elduU3hYUVNnb2hpN0VscTUvYVFnSDFzMlEyYzBR?=
- =?utf-8?B?Zlo1dDM3M0crVWtIaWNaSERya3g3eFBaandxd24zaVRRQitRTzFvTFRpc3Fi?=
- =?utf-8?B?Titzd255bU91SEZKSVlacTVtUGVjc1JnZDI1SUNmVDdNK2d1enZPb2FCcUFa?=
- =?utf-8?B?WXN3UVNPamJ5aUVLc0hDZHA0Szc0Uy8zMXJueGltSkpwNHpFc0RyRHlkelFT?=
- =?utf-8?B?TGFjVUx1NlBRV0RJN0RyZkYrSExIeUYwVGNjTVRHWWtQb2hlay9OdmpucHB4?=
- =?utf-8?B?emllK01XVEtWUUdCc0dQSUhIMEJTemJwemdiV0ZROFBIOWdFeVZKK3lFZ1Ey?=
- =?utf-8?B?OVdvR3A2SDJaVkNsQ1VqQ2pjVnVaVXBiK3phMC9FMWd0NkZOenlHT1FvQ3Bj?=
- =?utf-8?B?djRFWHdpTDRqUnQ4NjNjVnNIU2krVkEweW5URHpadFB6WTcxVExaMkFZVTZI?=
- =?utf-8?B?L3dmSU5xdWFMSGFOUStJKys2V2lHOEg0bmQ5Sm9jaWdLdUh3bHd0MGZObnZM?=
- =?utf-8?B?aUhkZnBOMDMxT0lpZ3RWZUFmVW1CN0F0cHlZaGpTc3BCenNPdkFiVmhIc2hU?=
- =?utf-8?B?Tmc2SUs3T2N1Sk14YWhXUjYvL3dFaGZPYmYweStVRmpjVWZTdUw3RjEvNTF5?=
- =?utf-8?B?cE9uVDltQVFRYWNZYjVYalNvcFFaWWpjK05BbmlHWTJMN3E4RHgzbzlRaWRB?=
- =?utf-8?B?OTVPZENabzhUV29BMjlvYVZOeTl0a2NsRTJsbmgySGF4SGxKdGJQWVpTeVli?=
- =?utf-8?B?R0hvNWViNjdlaDZHRlVIditmUGxLdzloN0hWREtSdk1nWHQzRXo0N3c3aUhm?=
- =?utf-8?B?UXBicXNzZFhXSUVWazdJM2lSbVY2TFFoWng3aXlTNGFyaW1OUHY0eHdkdTJh?=
- =?utf-8?B?STM4d2lyUWxHUDgrenZHWlU0eUJSYXVRY0xQT1RLSGFycDBieVE3d2xwMzk5?=
- =?utf-8?Q?cEflG6+DabVeD3xr+TAruXs=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E7F0FAE95B119242BE8FC95F3EEF0830@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20230601; t=1698335092; x=1698939892; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BOqZewXxQGVP1NcocKVuNRkU9OFyXGemHQI6cQ9yNks=;
+        b=EyJe4ebSgtQW89MTIf5Rtl6pAASHtePBqfA2YIvG1lBEuYnO+tdCzGLALWqry7SfFD
+         gCdOya0C5boXXYG2ZbMLmXYKPy3kHGn09zvElnMrCSCM6pb3cqeIVk0roZtJ70tlQda6
+         ldLZzasrN5+28qtkeV9ns8rO/ZEHbN0f5j8PUaiRaN10rxUccE8IqSrjAibaEC/aH/q1
+         kRQVm95viQO1/6bdBY0XP0KFjaxk0MPrGRiXR6jVFCt+eSLuVdXPHV0E12m2Dc/rISRD
+         T1JLBV7vlA25Z38xZCV9paaFd6RkzQB7TbR3GCY+8KaVuTmMQUB6zpSLecxdk4/9TgSI
+         6pkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698335092; x=1698939892;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BOqZewXxQGVP1NcocKVuNRkU9OFyXGemHQI6cQ9yNks=;
+        b=uG0VYWeEbeFe9hMioFB+wLZCAAKaTfyoahfsdQJMRE87Ds1Ruojb+gUTfXVhgyf1/1
+         SjVnvz5tCzZD+b0mEGmhfZJ19vaeoKiQguJhLmy5G5Jl8ZLCoxV3LelPYGNgLTgJJEfq
+         gDnVPVd8fQDo+BqB4RGG7XBCnIAxOguHmEqOIuj8VlZ5QDM8TVJSmUWsXUDbOpn6lOow
+         VhKBbMoE+qMo/iNemafhyuURGuKliXakQGjc0bmrCF6eb7JHjEVzcj4UtUljw9V7Ub86
+         xLoaFWOTEN4bLV5WkUNQf2irBrlqk91SnwoEbMdYSZcuqMgvbbZn92fLjKzHtd1KM6Mr
+         A8Mg==
+X-Gm-Message-State: AOJu0Ywpsik4os3pNMMnsHlH5je4sBSvHPtG1iyOoQlxCwGIwh1TL3TC
+        rL5Cj0kh0mSJ1rXSaSmcpJhYv+rZ1b5Hqw==
+X-Google-Smtp-Source: AGHT+IEefJdMKI8wkbUnTDRxw3MAhhTLd/xrtqsB9JhDqpHCGBd1IAvpOfXgRQ8kX0FbzVXPfmjSBA==
+X-Received: by 2002:a17:907:a03:b0:9bf:889e:32a4 with SMTP id bb3-20020a1709070a0300b009bf889e32a4mr43387ejc.54.1698335091602;
+        Thu, 26 Oct 2023 08:44:51 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-aa18-f9fe-f627-2a46.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:aa18:f9fe:f627:2a46])
+        by smtp.gmail.com with ESMTPSA id n17-20020a170906841100b009c8b720cf59sm8331164ejx.42.2023.10.26.08.44.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 08:44:51 -0700 (PDT)
+From:   Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date:   Thu, 26 Oct 2023 17:44:49 +0200
+Subject: [PATCH] iio: common: ms_sensors: ms_sensors_i2c: fix humidity
+ conversion time table
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6395.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8d72538-6930-45c4-5da0-08dbd6378c5d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Oct 2023 15:23:46.6863
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: k9GZxRLgfcLTlxU5e6hnvenWyxwQ+itjAfBB1WmRuT51/6ayJP//xBDOdr2Q0ersWeOb9hYc10tNoSRH2oz5u6VEINJbbEwq/O41eH3gdiE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7685
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAHCJOmUC/x2NQQrDIBRErxL+uoIaSNNepZRg7KT+RTR8bSiE3
+ L3a5eMxbw7KEEame3eQYOfMKVYwl458cPENxa/KZLXtjbaDKmljr0L5WDP5FHdIm0yFV6gb3Gg
+ wDlfdL1QLs8tQs7joQ2usLhdIE5tg4e//9vE8zx9aM49KhgAAAA==
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        William Markezana <william.markezana@meas-spec.com>,
+        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698335090; l=4449;
+ i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
+ bh=8iImRaAF6cpsowlFJX62gZM3TPXl66xs7q2hHDrIAkk=;
+ b=2mcpbQsmBS2XjpaRDf036urt72rxf6gtyy25oLE2pfF8dJKutOcZswYf8URTLU4Pq20/P4BZi
+ L+mLBnl8LcrA6Xqp2tPmEv8E/1XcwFmqLvP9HNmhSZR9vTueKfM6bsy
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgQ29ub3IsDQoNCk9uIFdlZCwgMjAyMy0xMC0yNSBhdCAxNjowOCArMDEwMCwgQ29ub3IgRG9v
-bGV5IHdyb3RlOg0KPiBIZXkgTWFyaXVzLA0KPiANCj4gT24gV2VkLCBPY3QgMjUsIDIwMjMgYXQg
-MDQ6NDQ6MDNQTSArMDMwMCwNCj4gbWFyaXVzLmNyaXN0ZWFAbWljcm9jaGlwLmNvbcKgd3JvdGU6
-DQo+ID4gRnJvbTogTWFyaXVzIENyaXN0ZWEgPG1hcml1cy5jcmlzdGVhQG1pY3JvY2hpcC5jb20+
-DQo+ID4gDQo+ID4gVGhpcyBpcyB0aGUgZGV2aWNlIHRyZWUgc2NoZW1hIGZvciBpaW8gZHJpdmVy
-IGZvcg0KPiA+IE1pY3JvY2hpcCBQQUMxOTNYIHNlcmllcyBvZiBQb3dlciBNb25pdG9ycyB3aXRo
-IEFjY3VtdWxhdG9yLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IE1hcml1cyBDcmlzdGVhIDxt
-YXJpdXMuY3Jpc3RlYUBtaWNyb2NoaXAuY29tPg0KPiA+IC0tLQ0KPiA+IMKgLi4uL2JpbmRpbmdz
-L2lpby9hZGMvbWljcm9jaGlwLHBhYzE5MzQueWFtbMKgwqAgfCAxNDYNCj4gPiArKysrKysrKysr
-KysrKysrKysNCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNDYgaW5zZXJ0aW9ucygrKQ0KPiA+IMKg
-Y3JlYXRlIG1vZGUgMTAwNjQ0DQo+ID4gRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdz
-L2lpby9hZGMvbWljcm9jaGlwLHBhYzE5MzQueWFtbA0KPiA+IA0KPiA+IGRpZmYgLS1naXQNCj4g
-PiBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL21pY3JvY2hpcCxw
-YWMxOTM0LnlhbWwNCj4gPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8v
-YWRjL21pY3JvY2hpcCxwYWMxOTM0LnlhbWwNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+
-IGluZGV4IDAwMDAwMDAwMDAwMC4uODM3MDUzZWQ4YTcxDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+
-ICsrKw0KPiA+IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvbWlj
-cm9jaGlwLHBhYzE5MzQueWFtbA0KPiA+IEBAIC0wLDAgKzEsMTQ2IEBADQo+ID4gKyMgU1BEWC1M
-aWNlbnNlLUlkZW50aWZpZXI6IChHUEwtMi4wIE9SIEJTRC0yLUNsYXVzZSkNCj4gPiArJVlBTUwg
-MS4yDQo+ID4gKy0tLQ0KPiA+ICskaWQ6IGh0dHA6Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL2lp
-by9hZGMvbWljcm9jaGlwLHBhYzE5MzQueWFtbCMNCj4gPiArJHNjaGVtYTogaHR0cDovL2Rldmlj
-ZXRyZWUub3JnL21ldGEtc2NoZW1hcy9jb3JlLnlhbWwjDQo+ID4gKw0KPiA+ICt0aXRsZTogTWlj
-cm9jaGlwIFBBQzE5MzQgUG93ZXIgTW9uaXRvcnMgd2l0aCBBY2N1bXVsYXRvcg0KPiA+ICsNCj4g
-PiArbWFpbnRhaW5lcnM6DQo+ID4gK8KgIC0gTWFyaXVzIENyaXN0ZWEgPG1hcml1cy5jcmlzdGVh
-QG1pY3JvY2hpcC5jb20+DQo+ID4gKw0KPiA+ICtkZXNjcmlwdGlvbjogfA0KPiA+ICvCoCBCaW5k
-aW5ncyBmb3IgdGhlIE1pY3JvY2hpcCBmYW1pbHkgb2YgUG93ZXIgTW9uaXRvcnMgd2l0aA0KPiA+
-IEFjY3VtdWxhdG9yLg0KPiA+ICvCoCBUaGUgZGF0YXNoZWV0IGZvciBQQUMxOTMxLCBQQUMxOTMy
-LCBQQUMxOTMzIGFuZCBQQUMxOTM0IGNhbiBiZQ0KPiA+IGZvdW5kIGhlcmU6DQo+ID4gK8KgwqDC
-oA0KPiA+IGh0dHBzOi8vd3cxLm1pY3JvY2hpcC5jb20vZG93bmxvYWRzL2FlbURvY3VtZW50cy9k
-b2N1bWVudHMvT1RIL1Byb2R1Y3REb2N1bWVudHMvRGF0YVNoZWV0cy9QQUMxOTMxLUZhbWlseS1E
-YXRhLVNoZWV0LURTMjAwMDU4NTBFLnBkZg0KPiA+ICsNCj4gPiArcHJvcGVydGllczoNCj4gPiAr
-wqAgY29tcGF0aWJsZToNCj4gPiArwqDCoMKgIGVudW06DQo+ID4gK8KgwqDCoMKgwqAgLSBtaWNy
-b2NoaXAscGFjMTkzMQ0KPiA+ICvCoMKgwqDCoMKgIC0gbWljcm9jaGlwLHBhYzE5MzINCj4gPiAr
-wqDCoMKgwqDCoCAtIG1pY3JvY2hpcCxwYWMxOTMzDQo+ID4gK8KgwqDCoMKgwqAgLSBtaWNyb2No
-aXAscGFjMTkzNA0KPiA+ICsNCj4gPiArwqAgcmVnOg0KPiA+ICvCoMKgwqAgbWF4SXRlbXM6IDEN
-Cj4gPiArDQo+ID4gK8KgICIjYWRkcmVzcy1jZWxscyI6DQo+ID4gK8KgwqDCoCBjb25zdDogMQ0K
-PiA+ICsNCj4gPiArwqAgIiNzaXplLWNlbGxzIjoNCj4gPiArwqDCoMKgIGNvbnN0OiAwDQo+ID4g
-Kw0KPiA+ICvCoCBpbnRlcnJ1cHRzOg0KPiA+ICvCoMKgwqAgZGVzY3JpcHRpb246IElSUSBsaW5l
-IG9mIHRoZSBBREMNCj4gPiArwqDCoMKgIG1heEl0ZW1zOiAxDQo+ID4gKw0KPiA+ICvCoCBkcml2
-ZS1vcGVuLWRyYWluOg0KPiA+ICvCoMKgwqAgZGVzY3JpcHRpb246IFRoZSBJUlEgc2lnbmFsIGlz
-IGNvbmZpZ3VyZWQgYXMgb3Blbi1kcmFpbi4NCj4gPiArwqDCoMKgIHR5cGU6IGJvb2xlYW4NCj4g
-PiArwqDCoMKgIG1heEl0ZW1zOiAxDQo+ID4gKw0KPiA+ICvCoCBtaWNyb2NoaXAsc2xvdy1pbzoN
-Cj4gPiArwqDCoMKgIHR5cGU6IGJvb2xlYW4NCj4gPiArwqDCoMKgIGRlc2NyaXB0aW9uOiB8DQo+
-ID4gK8KgwqDCoMKgwqAgQSBHUElPIHVzZWQgdG8gdHJpZ2dlciBhIGNoYW5nZSBpcyBzYW1wbGlu
-ZyByYXRlIChsb3dlcmluZw0KPiA+IHRoZSBjaGlwIHBvd2VyIGNvbnN1bXB0aW9uKS4NCj4gPiAr
-wqDCoMKgwqDCoCBJbiBkZWZhdWx0IG1vZGUsIGlmIHRoaXMgcGluIGlzIGZvcmNlZCBoaWdoLCBz
-YW1wbGluZyByYXRlDQo+ID4gaXMgZm9yY2VkIHRvIGVpZ2h0DQo+ID4gK8KgwqDCoMKgwqAgc2Ft
-cGxlcy9zZWNvbmQuIFdoZW4gaXQgaXMgZm9yY2VkIGxvdywgdGhlIHNhbXBsaW5nIHJhdGUgaXMN
-Cj4gPiAxMDI0IHNhbXBsZXMvc2Vjb25kIHVubGVzcw0KPiA+ICvCoMKgwqDCoMKgIGEgZGlmZmVy
-ZW50IHNhbXBsZSByYXRlIGhhcyBiZWVuIHByb2dyYW1tZWQuDQo+IA0KPiBUaGlzIGRlc2NyaXB0
-aW9uIGRvZXNuJ3QgcmVhbGx5IG1ha2Ugc2Vuc2UgdG8gbWUgLSBpZiBhIEdQSU8gaXMgdXNlZA0K
-PiB0bw0KPiBkcml2ZSB0aGUgcGluIGxvdyBvciBoaWdoLCB3aHkgZG8gd2UgbmVlZCBhIHByb3Bl
-cnR5PyBBIERUIHByb3BlcnR5DQo+IGltcGxpZXMgdGhhdCB0aGlzIGlzIGEgc3RhdGljIGNvbmZp
-Z3VyYXRpb24gZGVwZW5kaW5nIG9uIHRoZSBib2FyZCwNCj4gYnV0DQo+IHJlYWRpbmcgdGhlIGRl
-c2NyaXB0aW9uIHRoaXMgc2VlbXMgdG8gYmUgc29tZXRoaW5nIHRoYXQgY2FuIGJlDQo+IHRvZ2ds
-ZWQNCj4gYXQgcnVudGltZS4NCj4gSSBkbyBub3RlIHRob3VnaCwgdGhhdCB0aGlzIEdQSU8gaXMg
-bm90IGRvY3VtZW50ZWQgaW4gdGhlIGJpbmRpbmcsIHNvDQo+IEkNCj4gc3VwcG9zZSB3aGF0IHJl
-YWxseSBuZWVkcyB0byBoYXBwZW4gaGVyZSBpcyBkb2N1bWVudCB0aGUgZ3BpbyBzbyB0aGF0DQo+
-IHRoZSBkcml2ZXIgY2FuIGRldGVybWluZSBhdCBydW50aW1lIHdoYXQgc3RhdGUgdGhpcyBwaW4g
-aXMgaW4/DQo+IA0KPiBBbHNvLCB5b3Ugc2F5ICJJbiBkZWZhdWx0IG1vZGUiLCBidXQgZG9uJ3Qg
-bWVudGlvbiB3aGF0IHRoZSBub24tDQo+IGRlZmF1bHQNCj4gbW9kZSBpcy4gV2hhdCBoYXBwZW5z
-IGluIHRoZSBvdGhlciBtb2RlPw0KPiANCj4gQ2hlZXJzLA0KPiBDb25vci4NCg0KVGhpcyBpcyBh
-ICJkb3VibGUgZnVuY3Rpb24iIHBpbi4gT24gdGhlIFBBQzE5M3ggdGhlcmUgaXMgdGhlIFNMT1cv
-QUxFUlQNCnBpbi4gQXQgcnVudGltZSB0aGlzIHBpbiBjb3VsZCBiZSBjb25maWd1cmVkIGFzIGFu
-IGlucHV0IHRvIHRoZSBQQUMgYW5kDQp0aGUgZnVuY3Rpb25hbGl0eSB3aWxsIGJlICJTTE9XIiB0
-aGF0IG1lYW5zIGlmIGl0IGlzIGZvcmNlZCBoaWdoLCB0aGUNClBBQyB3aWxsIHdvcmsgaW4gbG93
-IHBvd2VyIG1vZGUgYnkgY2hhbmdpbmcgdGhlIHNhbXBsZSByYXRlIHRvIDggU1BTLg0KSWYgaXQn
-cyBmb3JjZWQgbG93IHRoZSBQQUMgd2lsbCB3b3JrIGF0IGl0J3MgZnVsbCBzYW1wbGUgcmF0ZS4N
-Cg0KIlNMT1ciIGlzIHRoZSBkZWZhdWx0IGZ1bmN0aW9uIG9mIHRoZSBwaW4gYnV0IGl0IG1heSBi
-ZSBwcm9ncmFtbWVkIHRvDQpmdW5jdGlvbiBhcyBBTEVSVCBwaW4gKE9wZW4gQ29sbGVjdG9yIHdo
-ZW4gZnVuY3Rpb25pbmcgYXMgQUxFUlQsDQpyZXF1aXJlcyBwdWxsLXVwIHJlc2lzdG9yIHRvIFZE
-RCBJL08pLiBUaGlzIHRpbWUgdGhlIHBpbiB3aWxsIGJlIHNldCBhcw0Kb3V0cHV0IGZyb20gUEFD
-IChBTEVSVCBmdW5jdGlvbmFsaXR5KSB0byB0cmlnZ2VyIGFuIGludGVycnVwdCB0byB0aGUNCnN5
-c3RlbSAodGhpcyBpcyBjb3ZlcmVkIGJ5IHRoZSBpbnRlcnJ1cHRzIGFuZCBkcml2ZS1vcGVuLWRy
-YWluKS4NCg0KVGhlIHN5c3RlbSBjb3VsZCB3b3JrIGZpbmUgd2l0aG91dCB0aGlzIHBpbi4gVGhl
-IGRyaXZlciBkb2Vzbid0IHVzZQ0KaW50ZXJydXB0IGF0IHRoaXMgdGltZSwgYnV0IGl0IGNvdWxk
-IGJlIGV4dGVuZGVkLg0KDQpUaGFua3MsDQpNYXJpdXMNCg0K
+The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
+associated to an index that is used to select the right measurement
+resolution and its corresponding measurement time. The current
+implementation selects the measurement resolution and the temperature
+measurement time properly, but it does not select the right humidity
+measurement time in all cases.
+
+In summary, the 40 and 70 humidity measurement times are swapped.
+
+The reason for that is probably the unusual coding for the measurement
+resolution. According to the datasheet, the bits [7,0] of the "user
+register" are used as follows to select the bit resolution:
+
+--------------------------------------------------
+| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
+--------------------------------------------------
+|   0   |   0   | 12 |  14  |  16000   |  50000  |
+--------------------------------------------------
+|   0   |   1   | 8  |  12  |  3000    |  13000  |
+--------------------------------------------------
+|   1   |   0   | 10 |  13  |  5000    |  25000  |
+--------------------------------------------------
+|   1   |   1   | 11 |  11  |  8000    |  7000   |
+--------------------------------------------------
+*This table is available in the official datasheet, page 13/21. I have
+just appended the times provided in the humidity/temperature tables,
+pages 3/21, 5/21. Note that always a pair of resolutions is selected.
+
+The sampling frequencies [20, 40, 70, 120] are assigned to a linear
+index [0..3] which is then coded as follows [1]:
+
+Index    [7,0]
+--------------
+idx 0     0,0
+idx 1     1,0
+idx 2     0,1
+idx 3     1,1
+
+That is done that way because the temperature measurements are being
+used as the reference for the sampling frequency (the frequencies and
+the temperature measurement times are correlated), so increasing the
+index always reduces the temperature measurement time and its
+resolution. Therefore, the temperature measurement time array is as
+simple as [50000, 25000, 13000, 7000]
+
+On the other hand, the humidity resolution cannot follow the same
+pattern because of the way it is coded in the "user register", where
+both resolutions are selected at the same time. The humidity measurement
+time array is the following: [16000, 3000, 5000, 8000], which defines
+the following assignments:
+
+Index    [7,0]    Trh
+-----------------------
+idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
+idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
+idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
+idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
+
+The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
+which is not the case for the reason explained above.
+
+So a simple modification is required to obtain the right humidity
+measurement time array, swapping the values in the positions 1 and 2.
+
+The right table should be the following: [16000, 5000, 3000, 8000]
+
+Fix the humidity measurement time array with the right idex/value
+coding.
+
+[1] The actual code that makes this coding and assigns it to the current
+value of the "user register" is the following:
+config_reg &= 0x7E;
+config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
+
+Fixes: d574a87cc311 ("Add meas-spec sensors common part")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+index 6633b35a94e6..9c9bc77003c7 100644
+--- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
++++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+@@ -15,8 +15,8 @@
+ /* Conversion times in us */
+ static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
+ 						       13000, 7000 };
+-static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
+-						       5000, 8000 };
++static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
++						       3000, 8000 };
+ static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
+ 						     4100, 8220, 16440 };
+ 
+
+---
+base-commit: 611da07b89fdd53f140d7b33013f255bf0ed8f34
+change-id: 20231026-topic-htu21_conversion_time-9ea81e86703f
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+

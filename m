@@ -2,217 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5E37D8673
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Oct 2023 18:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEE27D8C5A
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 01:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231326AbjJZQIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 12:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44266 "EHLO
+        id S230216AbjJZXxc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 19:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjJZQIO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 12:08:14 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B5A1A6;
-        Thu, 26 Oct 2023 09:08:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6900C433C7;
-        Thu, 26 Oct 2023 16:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698336491;
-        bh=WFxJq0/989teIWW06N+2g4pyBHa4H3eufPVUdxZPeYY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ADe+Z3lMEHuDh0qqqAVl77fLn6VPJYM1TQjiDbmugE9JXn1ZNrTTLAzpd+jwgsw6t
-         VjnTUmu0zsKv3Dz62Ko5AL3P8PDQ9HNBA/Q9dWtZq5dqjYcd+LIeFnC5kCjiK3Avly
-         JZ84ad8+qqjrZwMDUR713ka8roxIz/X86QZvp2oX8rv4uR9hF0k/3pcVTdKTNZid/i
-         gPvlxVKShWCpx6DRniFMs55ekXzS0VBw2L5vOFXYSZufV1mJaIkHmcVvxTFUfp+aQ6
-         9Wa6Olw3kRNIfOq10k3PLxwXjcD+Uu/YgP64IePiEPNi/XRh4UeK8JpqWDYUxZBL/W
-         ZzsK6Ctp+gIdw==
-Date:   Thu, 26 Oct 2023 17:08:07 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Marius.Cristea@microchip.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        lars@metafoo.de, linux-kernel@vger.kernel.org, jic23@kernel.org,
-        conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
- PAC193X
-Message-ID: <20231026-perkiness-financial-55313e297230@spud>
-References: <20231025134404.131485-1-marius.cristea@microchip.com>
- <20231025134404.131485-2-marius.cristea@microchip.com>
- <20231025-cheddar-tucking-b2ea777ed4f9@spud>
- <937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6/TCsU+pwTa96crd"
-Content-Disposition: inline
-In-Reply-To: <937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229437AbjJZXxb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 19:53:31 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D3290
+        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 16:53:29 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da03ef6fc30so1327477276.0
+        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 16:53:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698364409; x=1698969209; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HOfMzcxZ/3hjUoq4sBGrBF7S8BsQHvMQlln1OBJHdaA=;
+        b=fyS/Fttm+XrcfrCT68CXNNQqIYb2o7xzAIvJeQk9njM+P6ejIC49Nmv0O7meGg08I1
+         Ddu5qyPQK9pfyRnmapLaEQULUohDROTCxo9E8Ojp8wkRjTnOYgCKoXSZ7sFiVl7rR2oS
+         rXYDeV0IOxiD4YrhfMF4XMNRJotbN7CrMgBwOJU3CGCoIrOAVa0lHCSrk6+ss1tfjLnj
+         mqdGOw00D5uQO7n3G+Z1n0+uRAjUFXNNAR3LhDAMu3YbHWRZYgi4nAeZiCoKNX0la2YC
+         rhPLaN8+vdfKpA8VrEglUHGSFyQCo8Ki0iNiMdAV4dWIaS/iqmghK4CNbUAJ9vwHyGlR
+         ec5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698364409; x=1698969209;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HOfMzcxZ/3hjUoq4sBGrBF7S8BsQHvMQlln1OBJHdaA=;
+        b=sZwUfL9tMmtYFAeQ0PjAyZTyk9OQiDrFTlJUdocq0djZbHCCVfZtv8XuTlaD5Jhy2n
+         CkZByMpfzbObf2RHyE0/NbKdWyhWz0jED8exYgYelnSQH6i1n4eXDPgUdNu23Ypr+PCG
+         k3WCwjAVl14RVcSj751wVnv4o/ylTD6BWXVdj0boQgMHpX9A1SyTvjY9dhqFA5xpYor8
+         6pu7Ka+VVLbYRjPC6SVWQIhECZjEafbs/46WJaxPNBUfUlfxSHXLiitQ7vnwINVp9j6D
+         eMpdUNEtGnRbrdyA0xS74yrsFEx3NSviT7+WtisxnDRrX8L8PNTwe/U6IhSdvgGS7GfT
+         OKXw==
+X-Gm-Message-State: AOJu0YzQpv7V7b5IpugXb0+yoaAHSHqeMxm4pXSjMEEg1ZlotlTBagU4
+        8SxC2KnFY5DfBVuyoOY9Qvud3nwxZcqRaRN1pg==
+X-Google-Smtp-Source: AGHT+IG77MFSmT3SaKXGOWzPq3J8+lD5ZSXLYoOUz7kFuM5v0rKA6EBM0yqsRR2XDI8ZtGT38VH0WB9spzsB6e6bzA==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a05:6902:4c8:b0:d9a:54e7:e910 with
+ SMTP id v8-20020a05690204c800b00d9a54e7e910mr20910ybs.4.1698364408798; Thu,
+ 26 Oct 2023 16:53:28 -0700 (PDT)
+Date:   Thu, 26 Oct 2023 23:53:28 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPf7OmUC/5XNTQqDMBCG4atI1p1iEvGnq96juCjJqAPVyEwIi
+ nj3pt6gy/dbfM+hBJlQ1KM4FGMiobDkMLdCuem9jAjkcytTGlt2RoNEXty6g2dKyAJEAVYOG80
+ Ud5Cts6YCB62zlW3qpi5tp/LZyjjQdkGvPvdEEgPvl5v0b/2bSBo0VNh60w5eY+OeYwjjB+8uz Ko/z/MLSL34Rd0AAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698364408; l=3417;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=n9dHtlIRbaOPoLRJKV7YdDQxGf9+seWRweRY7Pvx3jE=; b=Y+JycQV+Q1UlcGlRHUqdjVh2wdc13xMEMzLG6WGAswtH5UOxvyWopXu5JAh9PTkSHDerAbnnd
+ LNZf0R7p+6TBwTdM/nH92qdptJLPoRrpb5I6HO7JG6OP6X4jjrc1jPa
+X-Mailer: b4 0.12.3
+Message-ID: <20231026-strncpy-drivers-iio-proximity-sx9324-c-v2-1-cee6e5db700c@google.com>
+Subject: [PATCH v2] iio: sx9324: avoid copying property strings
+From:   Justin Stitt <justinstitt@google.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+We're doing some needless string copies when trying to assign the proper
+`prop` string. We can make `prop` a const char* and simply assign to
+string literals.
 
---6/TCsU+pwTa96crd
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For the case where a format string is used, let's allocate some memory
+via kasprintf() and point prop to it.
 
-On Thu, Oct 26, 2023 at 03:23:46PM +0000, Marius.Cristea@microchip.com wrot=
-e:
-> Hi Conor,
->=20
-> On Wed, 2023-10-25 at 16:08 +0100, Conor Dooley wrote:
-> > Hey Marius,
-> >=20
-> > On Wed, Oct 25, 2023 at 04:44:03PM +0300,
-> > marius.cristea@microchip.com=A0wrote:
-> > > From: Marius Cristea <marius.cristea@microchip.com>
-> > >=20
-> > > This is the device tree schema for iio driver for
-> > > Microchip PAC193X series of Power Monitors with Accumulator.
-> > >=20
-> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> > > ---
-> > > =A0.../bindings/iio/adc/microchip,pac1934.yaml=A0=A0 | 146
-> > > ++++++++++++++++++
-> > > =A01 file changed, 146 insertions(+)
-> > > =A0create mode 100644
-> > > Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> > >=20
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> > > b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> > > new file mode 100644
-> > > index 000000000000..837053ed8a71
-> > > --- /dev/null
-> > > +++
-> > > b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> > > @@ -0,0 +1,146 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Microchip PAC1934 Power Monitors with Accumulator
-> > > +
-> > > +maintainers:
-> > > +=A0 - Marius Cristea <marius.cristea@microchip.com>
-> > > +
-> > > +description: |
-> > > +=A0 Bindings for the Microchip family of Power Monitors with
-> > > Accumulator.
-> > > +=A0 The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be
-> > > found here:
-> > > +=A0=A0=A0
-> > > https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produc=
-tDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
-> > > +
-> > > +properties:
-> > > +=A0 compatible:
-> > > +=A0=A0=A0 enum:
-> > > +=A0=A0=A0=A0=A0 - microchip,pac1931
-> > > +=A0=A0=A0=A0=A0 - microchip,pac1932
-> > > +=A0=A0=A0=A0=A0 - microchip,pac1933
-> > > +=A0=A0=A0=A0=A0 - microchip,pac1934
-> > > +
-> > > +=A0 reg:
-> > > +=A0=A0=A0 maxItems: 1
-> > > +
-> > > +=A0 "#address-cells":
-> > > +=A0=A0=A0 const: 1
-> > > +
-> > > +=A0 "#size-cells":
-> > > +=A0=A0=A0 const: 0
-> > > +
-> > > +=A0 interrupts:
-> > > +=A0=A0=A0 description: IRQ line of the ADC
-> > > +=A0=A0=A0 maxItems: 1
-> > > +
-> > > +=A0 drive-open-drain:
-> > > +=A0=A0=A0 description: The IRQ signal is configured as open-drain.
-> > > +=A0=A0=A0 type: boolean
-> > > +=A0=A0=A0 maxItems: 1
-> > > +
-> > > +=A0 microchip,slow-io:
-> > > +=A0=A0=A0 type: boolean
-> > > +=A0=A0=A0 description: |
-> > > +=A0=A0=A0=A0=A0 A GPIO used to trigger a change is sampling rate (lo=
-wering
-> > > the chip power consumption).
-> > > +=A0=A0=A0=A0=A0 In default mode, if this pin is forced high, samplin=
-g rate
-> > > is forced to eight
-> > > +=A0=A0=A0=A0=A0 samples/second. When it is forced low, the sampling =
-rate is
-> > > 1024 samples/second unless
-> > > +=A0=A0=A0=A0=A0 a different sample rate has been programmed.
-> >=20
-> > This description doesn't really make sense to me - if a GPIO is used
-> > to
-> > drive the pin low or high, why do we need a property? A DT property
-> > implies that this is a static configuration depending on the board,
-> > but
-> > reading the description this seems to be something that can be
-> > toggled
-> > at runtime.
-> > I do note though, that this GPIO is not documented in the binding, so
-> > I
-> > suppose what really needs to happen here is document the gpio so that
-> > the driver can determine at runtime what state this pin is in?
-> >=20
-> > Also, you say "In default mode", but don't mention what the non-
-> > default
-> > mode is. What happens in the other mode?
+This also cleans up some deprecated strncpy() uses [1].
 
-> This is a "double function" pin. On the PAC193x there is the SLOW/ALERT
-> pin. At runtime this pin could be configured as an input to the PAC and
-> the functionality will be "SLOW" that means if it is forced high, the
-> PAC will work in low power mode by changing the sample rate to 8 SPS.
-> If it's forced low the PAC will work at it's full sample rate.
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- make prop a const char* and do simple assignments (thanks Jonathan)
+- rebase onto 3a568e3a961ba330
+- Link to v1: https://lore.kernel.org/r/20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com
+---
+Note: build-tested
+---
+ drivers/iio/proximity/sx9324.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-Since this is a runtime thing, it doesn't make sense to have a property
-that is set at dts creation time that decides what mode the pin is in.
+diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+index 438f9c9aba6e..c8547035cb47 100644
+--- a/drivers/iio/proximity/sx9324.c
++++ b/drivers/iio/proximity/sx9324.c
+@@ -885,7 +885,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
+ #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
+ 	unsigned int pin_defs[SX9324_NUM_PINS];
+-	char prop[] = SX9324_PROXRAW_DEF;
++	const char *prop = SX9324_PROXRAW_DEF;
+ 	u32 start = 0, raw = 0, pos = 0;
+ 	int ret, count, ph, pin;
+ 	const char *res;
+@@ -899,7 +899,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ 	case SX9324_REG_AFE_PH2:
+ 	case SX9324_REG_AFE_PH3:
+ 		ph = reg_def->reg - SX9324_REG_AFE_PH0;
+-		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
++		prop = kasprintf(GFP_KERNEL, "semtech,ph%d-pin", ph);
+ 
+ 		count = device_property_count_u32(dev, prop);
+ 		if (count != ARRAY_SIZE(pin_defs))
+@@ -913,6 +913,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ 			raw |= (pin_defs[pin] << (2 * pin)) &
+ 			       SX9324_REG_AFE_PH0_PIN_MASK(pin);
+ 		reg_def->def = raw;
++		kfree(prop);
+ 		break;
+ 	case SX9324_REG_AFE_CTRL0:
+ 		ret = device_property_read_string(dev,
+@@ -937,11 +938,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ 	case SX9324_REG_AFE_CTRL4:
+ 	case SX9324_REG_AFE_CTRL7:
+ 		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
+-			strncpy(prop, "semtech,ph01-resolution",
+-				ARRAY_SIZE(prop));
++			prop = "semtech,ph01-resolution";
+ 		else
+-			strncpy(prop, "semtech,ph23-resolution",
+-				ARRAY_SIZE(prop));
++			prop = "semtech,ph23-resolution";
+ 
+ 		ret = device_property_read_u32(dev, prop, &raw);
+ 		if (ret)
+@@ -1012,11 +1011,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ 	case SX9324_REG_PROX_CTRL0:
+ 	case SX9324_REG_PROX_CTRL1:
+ 		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
+-			strncpy(prop, "semtech,ph01-proxraw-strength",
+-				ARRAY_SIZE(prop));
++			prop = "semtech,ph01-proxraw-strength";
+ 		else
+-			strncpy(prop, "semtech,ph23-proxraw-strength",
+-				ARRAY_SIZE(prop));
++			prop = "semtech,ph23-proxraw-strength";
+ 		ret = device_property_read_u32(dev, prop, &raw);
+ 		if (ret)
+ 			break;
 
-> "SLOW" is the default function of the pin but it may be programmed to
-> function as ALERT pin (Open Collector when functioning as ALERT,
-> requires pull-up resistor to VDD I/O). This time the pin will be set as
-> output from PAC (ALERT functionality) to trigger an interrupt to the
-> system (this is covered by the interrupts and drive-open-drain).
+---
+base-commit: 3a568e3a961ba330091cd031647e4c303fa0badb
+change-id: 20230921-strncpy-drivers-iio-proximity-sx9324-c-8c3437676039
 
-Hmm, at the risk of getting out of my depth with what the GPIO subsystem
-is capable of doing, I would expect to see something like
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
-sampling-rate-gpios:
-  description:
-    <what you have above>
-  maxItems: 1
-
-Which would allow the driver to either drive this pin via the gpio
-subsystem, or to use the interrupt property to use it as an interrupt
-instead.
-
-Perhaps Jonathan etc knows better for these sort of dual mode pins.
-
-> The system could work fine without this pin. The driver doesn't use
-> interrupt at this time, but it could be extended.
-
-Cheers,
-Conor.
-
---6/TCsU+pwTa96crd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTqO5wAKCRB4tDGHoIJi
-0hmYAQCmkSnFNbvLOYoS5zpR/RrKQCjnseNtPyG7Q7Cd/8Q6lQEA5xp0wOClCL69
-r+PqDSbFGSDxR9U6JeWtWD5lnAIvMQw=
-=8fmx
------END PGP SIGNATURE-----
-
---6/TCsU+pwTa96crd--

@@ -2,92 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 155C07D9AA0
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D07697D9AAB
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346016AbjJ0OA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 10:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S1345996AbjJ0OCl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 10:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345998AbjJ0OA0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:00:26 -0400
+        with ESMTP id S1345943AbjJ0OCk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:02:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E103CA;
-        Fri, 27 Oct 2023 07:00:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C8DC433C8;
-        Fri, 27 Oct 2023 14:00:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6D5C0
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 07:02:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC30AC433C7;
+        Fri, 27 Oct 2023 14:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698415223;
-        bh=GqUoq/JnTOGA/NUBYPlElzP2R5B+dPinIucjNVQO58Q=;
+        s=k20201202; t=1698415358;
+        bh=uxMVYafoD0kHgKfOSPj18Gk0qoRCj9fYkbmoIUBeQ7E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ADOKI5eRQ/uDfirD5R4HAl777pjX1RPv5Jo/nnIGwlYynfqbxIi4nzmHrHnj2PNj+
-         h6XDezDrxVS/0yfog78g82NpzP4W9lxhQUPWph+rvb1MROQEt8GhMfqq/SVwIHNeNM
-         oLNwXM+JaC6vhyAV2IH5bCJOUgxwnSAsPn2/Y3LnQNpf+HxsoT6Nz6oivWcr+TtYkZ
-         k9/Cs2Aq71ksZbXLlD6gSzSHx5fxHYuWd2En+QDWwZX8D4loMvV9ncXBvuFFvTPk3i
-         pT5a+BGHCPOT2bU5ssZFS2MVzP9027QiZqbhB9Wlyli9UuBIkCHYdiEg8FfSGsoY6L
-         d4HLe1TLE4ieQ==
-Date:   Fri, 27 Oct 2023 14:59:49 +0100
+        b=bapCnaApUObQaRoQPNOONV6jMj8QvVCpfd2UChLNIageObQvTWbNL+TJWZ+bSXoWg
+         Ia+kpkXxdVI5FWqkGRyLpFJZWaaF99Uf/XSdKL6t/tyrgA9Q9b5DxolXKZ4S1DbnKN
+         q7Q2MxtWqqMXADJFubEVhYMeTwMKufIWK2We/BfV6pCbQEMRrFHDOeRMgVUMXk6qhK
+         QUN0x2N9rNJI4J+ujgU1Y56e2HSSStmZD56gkE3TYhwyyvaU+z7bQtdDNVabkWFtqR
+         G3zOfLAXda8684ayNqCLA3beNg5031FeseAZQqC/nxJxEiZ7fdgInQ19F7PO+G22Wg
+         eSl+cb04otPbw==
+Date:   Fri, 27 Oct 2023 15:02:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Su Hui <suhui@nfschina.com>
-Cc:     Jonathan.Cameron@Huawei.com, lars@metafoo.de,
-        jean-baptiste.maneyrol@tdk.com, andy.shevchenko@gmail.com,
-        chenhuiz@axis.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix an error code problem in
- inv_mpu6050_read_raw
-Message-ID: <20231027145949.243f03f2@jic23-huawei>
-In-Reply-To: <20231023040551.68902-1-suhui@nfschina.com>
-References: <20231023040551.68902-1-suhui@nfschina.com>
+To:     Li peiyu <579lpy@gmail.com>
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de
+Subject: Re: [PATCH] dt-bindings: iio: pressure: bmp085: Update links about
+ sensor specifications
+Message-ID: <20231027150222.6b41f023@jic23-huawei>
+In-Reply-To: <20231023080237.218179-1-579lpy@gmail.com>
+References: <20231023080237.218179-1-579lpy@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Oct 2023 12:05:52 +0800
-Su Hui <suhui@nfschina.com> wrote:
+On Mon, 23 Oct 2023 16:02:37 +0800
+Li peiyu <579lpy@gmail.com> wrote:
 
-> inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
-> true value rather than only return IIO_VAL_INT.
+> The link to the device specifications in bmp085.yaml is no longer valid
 > 
-> Signed-off-by: Su Hui <suhui@nfschina.com>
+> Signed-off-by: Li peiyu <579lpy@gmail.com>
 
-If you can figure out a fixes tag that would be great.  Just reply to this thread
-with it and I'll pick it up from here.
+As this is touching a device tree binding, it needs to be cc'd to the
+device tree list and the maintainers.
+
+Otherwise they won't review it.  I doubt they will care much about this one
+but we should still aim to follow procedure consistently.
+
+Please resend with the CCs added.
+
+Thanks,
+
+Jonathan
+
 > ---
-> v2:
->  - fix the error of commit title.
-> v1: 
->  - https://lore.kernel.org/all/20231020091413.205743-2-suhui@nfschina.com/
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  .../devicetree/bindings/iio/pressure/bmp085.yaml       | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> index 29f906c884bd..a9a5fb266ef1 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> @@ -749,13 +749,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
->  			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
->  						chan->channel2, val);
->  			mutex_unlock(&st->lock);
-> -			return IIO_VAL_INT;
-> +			return ret;
->  		case IIO_ACCEL:
->  			mutex_lock(&st->lock);
->  			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
->  						chan->channel2, val);
->  			mutex_unlock(&st->lock);
-> -			return IIO_VAL_INT;
-> +			return ret;
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> index 6fda887ee9d4..5c77769c8200 100644
+> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> @@ -13,11 +13,11 @@ description: |
+>    Pressure, temperature and humidity iio sensors with i2c and spi interfaces
 >  
->  		default:
->  			return -EINVAL;
+>    Specifications about the sensor can be found at:
+> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp180
+> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp280
+> -    https://www.bosch-sensortec.com/bst/products/all_products/bme280
+> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp380
+> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp580
+> +    https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
+> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/
+> +    https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/
+> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp380/
+> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp580/
+>  
+>  properties:
+>    compatible:
 

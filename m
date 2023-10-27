@@ -2,82 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE2E7D999A
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DD67D99B1
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345688AbjJ0NUi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 09:20:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56334 "EHLO
+        id S1345851AbjJ0N0h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 09:26:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345889AbjJ0NUh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:20:37 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A473011F
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 06:20:29 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6b1ef786b7fso2019133b3a.3
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 06:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1698412829; x=1699017629; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qprUqvSwAJrP5Tyyg9w1KEiGF88xpKK0NNsji4Q5ejA=;
-        b=JXevnYNe4BMEgOeky7f5XBpOHnKfA0jk7MF6FnKrn55P6F2UBhNOLF3NKxuHCyZEIE
-         VF6dgiULTdQialia6mEepVKTXqyNqxpMi2r0Me/ITKr6S4pnjWpCNNLIoKpv0MzaEzZx
-         YtOZxQxB+Dj98OE51Urhe7jCusxsabwfpwhvCKzfWHTEXggYKYNR1l40dh9/3Bt21/AQ
-         xzNCwEPmMXAiQr0vAPh5esEejznVXlfJru0ejcp3Mag68eVETCv3kX4PjYJyVhmfuX+S
-         vyMK4lSyoqh+IvImDNXzZv9UDo0qrY+EKIxJuSJe4VJSGh0eutwY6wHKLqGFFXwmv64R
-         KhpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698412829; x=1699017629;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qprUqvSwAJrP5Tyyg9w1KEiGF88xpKK0NNsji4Q5ejA=;
-        b=r/8ipklVva8BaI8LP7PEwvTyw+c/NhuN/3oU5XYDjFTUFyDfbjQlgyyG0EitbkW8np
-         j34aI10l/sanb8/0WiUKJ19eiS+1Rbc21UW36g4ofuwvZf2Xzd2eTAblyudml+sEVocL
-         zEqFu8CJRikgqk0gyaYJh5nLeq9vptG8igJPZcApt73C0a+o0MQkQqjfHeE6sltkvtDK
-         At3Db4vAz7FudDFK8zOaUUndyz6+0ehf5PGx06bbSpLMhY8wr+W1FTgSHlvld7/NYZIo
-         F7n+qSXCTymGQD6OvaCsYG1FmlQ/vlQq6Lia30EKi/nGtOMlJvLhp2r8dDUjBIN0EKcz
-         lzPg==
-X-Gm-Message-State: AOJu0YwJWMWkKWGUYHaLSPvqxcGSR44RKrEmU/HeiAEKd8+hcvFPceAM
-        ExDOzRhq+kbSC8BuIpqfXR6hrw==
-X-Google-Smtp-Source: AGHT+IHBTDWE8t8o6nwJ/SnTSrdQwlBf/6NVb5DKk4vWJvPuywesD28pqeKNxUMEaHpXJZtwNJZ/qg==
-X-Received: by 2002:a05:6a21:4988:b0:15e:9c50:73ee with SMTP id ax8-20020a056a21498800b0015e9c5073eemr2976807pzc.53.1698412828990;
-        Fri, 27 Oct 2023 06:20:28 -0700 (PDT)
-Received: from ?IPV6:2403:580d:82f4:0:c232:f53e:32d4:5510? (2403-580d-82f4-0-c232-f53e-32d4-5510.ip6.aussiebb.net. [2403:580d:82f4:0:c232:f53e:32d4:5510])
-        by smtp.gmail.com with ESMTPSA id u28-20020a62d45c000000b006870ed427b2sm1441163pfl.94.2023.10.27.06.20.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 06:20:28 -0700 (PDT)
-Message-ID: <03440236-9290-4848-86bc-6f735447bacd@tweaklogic.com>
-Date:   Fri, 27 Oct 2023 23:50:19 +1030
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] iio: light: Add support for APDS9306 Light Sensor
-Content-Language: en-US
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1345458AbjJ0N0g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:26:36 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEEFE5;
+        Fri, 27 Oct 2023 06:26:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ED5C433C7;
+        Fri, 27 Oct 2023 13:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698413194;
+        bh=NxFd9nO3ucmlh23SRQn9ZpC46HILj4aPbNXF73EekQo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=m7b2Oyd9zhPJtcjMUZofdXh2MMnITOJlLsMsFBdBxY4mhu4WPX8wELATU36R22R8p
+         iWPIOsH9G7S6Jr9nQ6fTS57qXLHvvvp195gx1oFnx7lrdwHeViDBSWu8nQ9SJ1Cmsh
+         v+3l9vQMLKADLk0sYfap6YFrdeU5wFZI41QZs9KW2yk9/d79KQHZ8W58pccMasBcag
+         iAEYrMDoSTd6pIAbtimJspKgE8mJC7wDPqIy/Spx/9ZXGbBzVNpWW6RCxdPE1jLFyQ
+         u0JxB2PHNF1c9tAmAVg9HPrXpHdX6gl5Rnp1dH54do4V/8OYz/UY0o8pNw0Un4R4ex
+         RRBDrxHnQeoAg==
+Date:   Fri, 27 Oct 2023 14:26:18 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jishnu Prakash <quic_jprakash@quicinc.com>
+Cc:     <agross@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linus.walleij@linaro.org>,
+        <Jonathan.Cameron@huawei.com>, <sboyd@kernel.org>,
+        <dmitry.baryshkov@linaro.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <marijn.suijten@somainline.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        <krzysztof.kozlowski@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231026143532.39660-1-subhajit.ghosh@tweaklogic.com>
- <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
- <ZTuuUl0PBklbVjb9@smile.fi.intel.com>
- <7524a9ef-c1c4-462e-8f9d-fc03c29ca092@tweaklogic.com>
-In-Reply-To: <7524a9ef-c1c4-462e-8f9d-fc03c29ca092@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        "Bjorn Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        "Mike Looijmans" <mike.looijmans@topic.nl>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Ibrahim Tilki" <Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
+        Haibo Chen <haibo.chen@nxp.com>, <linux-iio@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-msm-owner@vger.kernel.org>
+Subject: Re: [PATCH 07/11] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <20231027142512.37358c60@jic23-huawei>
+In-Reply-To: <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
+References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
+        <20230708072835.3035398-8-quic_jprakash@quicinc.com>
+        <20230708165955.08c1159c@jic23-huawei>
+        <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,8 +73,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-Also, thank you for the code snippets in the comments, they really help.
-Rgds,
-- Ghosh
+> > +  
+> >> +static const struct iio_info adc5_gen3_info = {
+> >> +	.read_raw = adc5_gen3_read_raw,
+> >> +	.fwnode_xlate = adc5_gen3_fwnode_xlate,
+> >> +};  
+> > ...  
+> 
+> 
+> Did you mean to leave any comment here...?
+
+Nope ... is a cut mark to indicate I dropped a load of quoted text.
+
+On that note, don't bother replying to say you'll do things suggested
+by reviewers - we assume you will unless you say otherwise :)
+
+If you want to add a boilerplate message alongside comments on the
+bits that need further discussion, along the lines of 
+"All other comments accepted." That's fine but it's not really necessary.
+
+...
+
+> >> +
+> >> +static int adc5_gen3_exit(struct platform_device *pdev)
+> >> +{  
+> > As you are mixing devm manged cleanup and the explicit sort the
+> > result is that you remove the userspace interfaces 'after' you run
+> > everything in here. I'm thinking disabling the channels at least
+> > isn't a good idea in that case.
+> >
+> > If you want to use devm (which is good) then you need to work out how
+> > to register additional callbacks during probe to tear down everything in
+> > the right order (typically the reverse of what happens in probe)
+> > devm_add_action_or_reset() is the way to add those extra callbacks.
+> >
+> > If not, just don't use devm for at least those bits that will end up
+> > running out of order (such as iio_device_register()) and manually call their
+> > cleanup routines instead.  
+> 
+> 
+> I checked some other examples in the iio/adc/ folder, I think I see what 
+> you mean here. It looks like drivers with a remove callback always use 
+> iio_device_register and iio_device_unregister instead of the devm_* 
+> variant, due to the issue with sysfs removal as you said.
+> 
+> I'll update the probe and remove functions similarly, to do explicit 
+> cleanups as required, avoiding devm_ usage for places where it should be 
+> avoided.
+
+Better to go the other way as Dmitry suggested.  Make everything you can
+devm managed.
 

@@ -2,47 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC137D9A91
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 155C07D9AA0
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346010AbjJ0N6b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 09:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
+        id S1346016AbjJ0OA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 10:00:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345998AbjJ0N6a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:58:30 -0400
+        with ESMTP id S1345998AbjJ0OA0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:00:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1A6CA;
-        Fri, 27 Oct 2023 06:58:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A372BC433C8;
-        Fri, 27 Oct 2023 13:58:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E103CA;
+        Fri, 27 Oct 2023 07:00:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C8DC433C8;
+        Fri, 27 Oct 2023 14:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698415107;
-        bh=/xWES3FSiUGIU7b9EqfsoVSFchIzdwwI2L/BP4yA53M=;
+        s=k20201202; t=1698415223;
+        bh=GqUoq/JnTOGA/NUBYPlElzP2R5B+dPinIucjNVQO58Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cYnx02ElsXJcWsi2wvNWWubBIRh6jWo7nXNyKUOqSwHpJzunKMTEK3gmXvkye0DKa
-         7WkcyhnwMIXhEqoBtVX+87caTh3JB3+7g6mbQVQDEzybxU+9wAQMf2u3mHc2uhlcib
-         Dza6oTrGi7AtuBTzAgFiHOP4qEPdny9LF1ZK/8LdYkGb+IWLBZ9JttwDquOep14ckF
-         IWzId9DYSMkK0QKb8va4t675X5STFuUliJ+bxulouFrAfRdgu9raZGBUahfrmm7oFl
-         9aYK4elZEjKmnBaIYV8l1N4WakhuIqBQ7Ny/HGodVxH6aQIURZNbwEDjp7JXsFieyc
-         vZl2LlLOgN5zw==
-Date:   Fri, 27 Oct 2023 14:57:53 +0100
+        b=ADOKI5eRQ/uDfirD5R4HAl777pjX1RPv5Jo/nnIGwlYynfqbxIi4nzmHrHnj2PNj+
+         h6XDezDrxVS/0yfog78g82NpzP4W9lxhQUPWph+rvb1MROQEt8GhMfqq/SVwIHNeNM
+         oLNwXM+JaC6vhyAV2IH5bCJOUgxwnSAsPn2/Y3LnQNpf+HxsoT6Nz6oivWcr+TtYkZ
+         k9/Cs2Aq71ksZbXLlD6gSzSHx5fxHYuWd2En+QDWwZX8D4loMvV9ncXBvuFFvTPk3i
+         pT5a+BGHCPOT2bU5ssZFS2MVzP9027QiZqbhB9Wlyli9UuBIkCHYdiEg8FfSGsoY6L
+         d4HLe1TLE4ieQ==
+Date:   Fri, 27 Oct 2023 14:59:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Ramona Gradinariu <ramona.gradinariu@analog.com>,
-        <nuno.sa@analog.com>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 3/3] dt-bindings: adis16460: Add
- 'spi-cs-inactive-delay-ns' property
-Message-ID: <20231027145753.528b6308@jic23-huawei>
-In-Reply-To: <20231024132705.00003cf4@Huawei.com>
-References: <20231023123542.582392-1-ramona.gradinariu@analog.com>
-        <20231023123542.582392-4-ramona.gradinariu@analog.com>
-        <b7011f02-a412-4642-862d-c2df88ae316b@linaro.org>
-        <20231024132705.00003cf4@Huawei.com>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     Jonathan.Cameron@Huawei.com, lars@metafoo.de,
+        jean-baptiste.maneyrol@tdk.com, andy.shevchenko@gmail.com,
+        chenhuiz@axis.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix an error code problem in
+ inv_mpu6050_read_raw
+Message-ID: <20231027145949.243f03f2@jic23-huawei>
+In-Reply-To: <20231023040551.68902-1-suhui@nfschina.com>
+References: <20231023040551.68902-1-suhui@nfschina.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,53 +52,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Oct 2023 13:27:05 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Mon, 23 Oct 2023 12:05:52 +0800
+Su Hui <suhui@nfschina.com> wrote:
 
-> On Mon, 23 Oct 2023 15:22:30 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
+> true value rather than only return IIO_VAL_INT.
 > 
-> > On 23/10/2023 14:35, Ramona Gradinariu wrote:  
-> > > Add 'spi-cs-inactive-delay-ns' property.    
-> > 
-> > This we see from the diff. Commit should explain: Why?
-> >   
-> > > 
-> > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > > index 4e43c80e5119..3691c0be4f9d 100644
-> > > --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> > > @@ -25,6 +25,11 @@ properties:
-> > >  
-> > >    spi-cpol: true
-> > >  
-> > > +  spi-cs-inactive-delay-ns:
-> > > +    minimum: 16000
-> > > +    description:
-> > > +      If not explicitly set in the device tree, the driver will set it to 16us.    
-> > 
-> > Why do you even need it here?  
-> 
-> Along side that, if you have a default
-> default: xxxx
-> rather than in the description.
+> Signed-off-by: Su Hui <suhui@nfschina.com>
 
-ah. I didn't get Krzysztof's reply to patch 1 for some reason where he already
-said this... 
-
-Anyhow, I've nothing to add to comments on v2.  Will aim to pick up v3.
-
+If you can figure out a fixes tag that would be great.  Just reply to this thread
+with it and I'll pick it up from here.
+> ---
+> v2:
+>  - fix the error of commit title.
+> v1: 
+>  - https://lore.kernel.org/all/20231020091413.205743-2-suhui@nfschina.com/
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> 
-> > 
-> > Best regards,
-> > Krzysztof
-> > 
-> >   
-> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 29f906c884bd..a9a5fb266ef1 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -749,13 +749,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
+>  			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
+>  						chan->channel2, val);
+>  			mutex_unlock(&st->lock);
+> -			return IIO_VAL_INT;
+> +			return ret;
+>  		case IIO_ACCEL:
+>  			mutex_lock(&st->lock);
+>  			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
+>  						chan->channel2, val);
+>  			mutex_unlock(&st->lock);
+> -			return IIO_VAL_INT;
+> +			return ret;
+>  
+>  		default:
+>  			return -EINVAL;
 

@@ -2,107 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F34F67D96D2
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 13:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D98037D975A
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:11:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345688AbjJ0LmY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 07:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36606 "EHLO
+        id S1345740AbjJ0MLE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 08:11:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjJ0LmX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 07:42:23 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EE1AC
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 04:42:19 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6bd73395bceso1446424b3a.0
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 04:42:19 -0700 (PDT)
+        with ESMTP id S1345810AbjJ0MLD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:11:03 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4739121
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:10:59 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-507cd62472dso3566774e87.0
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:10:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1698406939; x=1699011739; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1698408658; x=1699013458; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ui+0X6RaOuqdgWAsDjJ4EPnCuY3qudStVnPGxxdS4w8=;
-        b=Y18zZWQpSkvMLu0XXlyA6JQoWdUREYAxQDTsdJNFo3Tq/+VDNUIaOvVVJOdO1MmLEr
-         ndVDcNmK3RieV7zzy6ezk/H7kub7nEYjx/fRLkH1+YOXxrWBzEtuFhycdMPlPSIr0o8H
-         i68slCGay+rBE5gacmWSta6+h9uCCD8obwrBEEs7qYSPV9Q6I3zEbKt1HQjGpW/h+KVK
-         bmgZ3KbjYIaV8UsR9eHsMO4q+asXhPwjlkqLDfyQv2Jwv+i3LwFOJ+zpEKtM63neh2Sz
-         X9EyJKFSDL/Y4ap1ygwOL/0jpOk1ihEHXvZj3u+gb4iCfBx91Q0sRtlZAj8AamjE1JYm
-         NT4g==
+        bh=B7gWHcGlTpaaljG/otxoVL85w9IG0UfK7VjhEM26lvY=;
+        b=ShEmcBGtsri8Ej3aaeiVm+JRoY/3XVnQjE+IkAm8vx9DzVJEjH8BnG2SqIg2ddM/3V
+         LCWz6siRE9e4QwRwWo7pJUM62Ze7U3HSzBE8pGg3yY11VXYLosrY1sbWdGHhAsoYhHXz
+         0s5jGkMhwL5uC0pp5DllL4OxOPk+E50bodtMvS3JepvOcX5EoA6mSFJDJ59fCFD408bO
+         wlKOfAr4JdCXGH8V/xbxk4LQZ5kt9eoXi33HC8vwXm6JHiiCXnsGyJpIdaFNxlL3Sbu3
+         DIX+GW3g53nnaVc3FXW+WOYd1oOX2ReE8VXACeQNs+n3ptO/7JcnCbLVjgIazTaO92q0
+         A25g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698406939; x=1699011739;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1698408658; x=1699013458;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ui+0X6RaOuqdgWAsDjJ4EPnCuY3qudStVnPGxxdS4w8=;
-        b=GKSZ9lCyb8jr5+D3sxwqpa4SofUSQ+qfYOAgnhagk2eylsxGRTzQXaoMlpRvVbuQEl
-         TDid1by1k9TeC3QnhZCK18llplTWpHo0kdJj33EFyhbITXuljGfDt3L2vFWMEL0IxFjB
-         hrqXpHEbvkIz+1vKdeVBG9pKcl2SF8HNKMzS0xC3Cb86QThECCzZt29jrAKW7UPCbQOW
-         KRz29CeuAGxAuXv1kMDbGIQKVcWgI8uczjRwMOvK7CYzy3aBf4l7C90YS0gXnJ3Len2Y
-         m//71KEUXjbBZn7h/KPEf0Dg8oU5YToG9mYhG4K3lG6FdsTKe637cO/0Nywoe7bxkS3a
-         a8kw==
-X-Gm-Message-State: AOJu0YyNGDTsc2pCESW0U7jh9j5TwFm+aGt9iSTAxp4Lzv5XJipxLEtv
-        SyHROj90/Ye+jDNCy10geVHJ4A==
-X-Google-Smtp-Source: AGHT+IGGyKRa3hQHUhJilPpV747GjhOTRZGEgbsYmHh2pSPtU1N4qqaDf2+sIRpTV6aCdutQx9ddqg==
-X-Received: by 2002:a05:6a00:230d:b0:68c:44ed:fb6 with SMTP id h13-20020a056a00230d00b0068c44ed0fb6mr3387285pfh.16.1698406939330;
-        Fri, 27 Oct 2023 04:42:19 -0700 (PDT)
-Received: from ?IPV6:2403:580d:82f4:0:c232:f53e:32d4:5510? (2403-580d-82f4-0-c232-f53e-32d4-5510.ip6.aussiebb.net. [2403:580d:82f4:0:c232:f53e:32d4:5510])
-        by smtp.gmail.com with ESMTPSA id e21-20020aa78c55000000b0069ee4242f89sm1228768pfd.13.2023.10.27.04.42.13
+        bh=B7gWHcGlTpaaljG/otxoVL85w9IG0UfK7VjhEM26lvY=;
+        b=dMrkDOAu0/gR0dI4ti0H3VlmmwOaCBHRXPYUrpTv5JsTVxrCU3UEoCA8nPAjDgGC0+
+         1i1fb6RSVrCAp1fA8fSpaItkO13bqWbxpCkdvLKgpRO+x9GZF5CU1k09BFro55HzBot0
+         OMMWnCmztoUAxpieWIJEH+iRpN60rV5u3dMSxvbVFTvhLdapInvOEH34KKnDt26MlS2z
+         2pqUA8GLFQtzkA6qArCYOsuvb/QOFFDMLl0kIoN5PRTjq06KBRfJFBQRGpgOTpdX50Lt
+         bMhqMDc039HaYqfOnpNbyCzEytcsZFoHUMUk5seZV0LuZEtbMdQqFS2F1hwaq+dxQAXv
+         xJlg==
+X-Gm-Message-State: AOJu0YxMAjvpHxbckaZtb+2QScKOux31xVEPVbZi/Ep9tPrS++lwO/4L
+        7HksONR0F/XOtvAES13lHrxVhQ==
+X-Google-Smtp-Source: AGHT+IHsB1Hl9JsB2Mt8u063cyZU7KM1cBVcLY/vBUcqpdYFu6XaHIVSTpkPu/IN+LGVuMc0iGsFVw==
+X-Received: by 2002:a05:6512:39c5:b0:502:e0dd:628b with SMTP id k5-20020a05651239c500b00502e0dd628bmr1907272lfu.32.1698408657857;
+        Fri, 27 Oct 2023 05:10:57 -0700 (PDT)
+Received: from [192.168.0.22] ([78.10.206.168])
+        by smtp.gmail.com with ESMTPSA id z6-20020ac25de6000000b004fddb0eb961sm261279lfq.18.2023.10.27.05.10.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 04:42:19 -0700 (PDT)
-Message-ID: <ab671f50-7a0f-4e72-98a0-fa4d5f2ed889@tweaklogic.com>
-Date:   Fri, 27 Oct 2023 22:12:11 +1030
+        Fri, 27 Oct 2023 05:10:57 -0700 (PDT)
+Message-ID: <d83fcddf-a6e7-4152-b2ae-d6913a3bd69d@linaro.org>
+Date:   Fri, 27 Oct 2023 14:10:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
+Subject: Re: [PATCH v2 0/2] adding support for Microchip PAC193X Power Monitor
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>
-Cc:     Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
- <d7ba077d-6bcd-4e04-b678-51e4bbc935ca@linaro.org>
- <9e55b561-a0ad-4503-9f20-b7c98507afa0@tweaklogic.com>
- <ebcf3e9f-2bc2-4d91-8b5c-51405236e4ab@linaro.org>
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <ebcf3e9f-2bc2-4d91-8b5c-51405236e4ab@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20231025134404.131485-1-marius.cristea@microchip.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231025134404.131485-1-marius.cristea@microchip.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27/10/23 21:34, Krzysztof Kozlowski wrote:
-> On 27/10/2023 10:42, Subhajit Ghosh wrote:
->> 4. Conor reviewed the patch and said that it would be better that I handle all
->>      these operations in apds9306 driver (this) patch series rather than submitting
->>      a new patch.
->>      "Ahh apologies then. The best course of action would likely be to include
->>       the patch merging the two bindings in your series adding the third user."
->> 5. As per this patch series -- RFC->v0->v1-v2
+On 25/10/2023 15:44, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
 > 
-> RFC was the first version sent to mailing list. So after RFC there is
-> second version - v2. This is v4.
+> Adding support for Microchip PAC193X series of Power Monitor with
+> Accumulator chip family. This driver covers the following part numbers:
+>  - PAC1931, PAC1932, PAC1933 and PAC1934
+> 
+> Differences related to previous patch:
+> 
+> v2:
+> - fix review comments:
+>   - change the device tree bindings
 
-Acknowledging all your other comments. Appreciate your time and effort in reviewing
-this. One last question on this - So what version should I use for the patchset
-which I will submit next - "v3" or "v5" in the Subject of the emails?
+Change? Everything is a change. You must be specific.
 
-Regards,
-Subhajit Ghosh
+
+Best regards,
+Krzysztof
 

@@ -2,58 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D98037D975A
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CBD67D9773
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345740AbjJ0MLE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 08:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35234 "EHLO
+        id S231345AbjJ0MNh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 08:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345810AbjJ0MLD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:11:03 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4739121
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:10:59 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-507cd62472dso3566774e87.0
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:10:59 -0700 (PDT)
+        with ESMTP id S231302AbjJ0MNg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:13:36 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1981CFA
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:13:34 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so26391981fa.3
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698408658; x=1699013458; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698408812; x=1699013612; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=B7gWHcGlTpaaljG/otxoVL85w9IG0UfK7VjhEM26lvY=;
-        b=ShEmcBGtsri8Ej3aaeiVm+JRoY/3XVnQjE+IkAm8vx9DzVJEjH8BnG2SqIg2ddM/3V
-         LCWz6siRE9e4QwRwWo7pJUM62Ze7U3HSzBE8pGg3yY11VXYLosrY1sbWdGHhAsoYhHXz
-         0s5jGkMhwL5uC0pp5DllL4OxOPk+E50bodtMvS3JepvOcX5EoA6mSFJDJ59fCFD408bO
-         wlKOfAr4JdCXGH8V/xbxk4LQZ5kt9eoXi33HC8vwXm6JHiiCXnsGyJpIdaFNxlL3Sbu3
-         DIX+GW3g53nnaVc3FXW+WOYd1oOX2ReE8VXACeQNs+n3ptO/7JcnCbLVjgIazTaO92q0
-         A25g==
+        bh=VUL6IlUEOIax/5vRykNbsQP7Z3idyhcA4b4ILMkbTKk=;
+        b=VlzPL5X6MOptBYnFcFbt+/Y/eBg1cp7fW3vGCcnr0mwLFGMrryRJ1Ymxvdb4D+T280
+         d3ULvijuEBpaSx9T/povhjwiIujXNGttGvmvcBu0SjTP3Gw5QHIsj45L7JXcdIv1VhBn
+         /Y4au5qgMy8PYXNMsUsqYmktFXEVWjl4V/ub9zrwbjHgnSrRyd/bzma+eVFG5SciVJ1v
+         xHd5mt7cPuRcDtkp1mprb33kR8evcUTlr6tql8eYNrdwVfX4Xn1ip/tNHd1ddtd6uFNt
+         bD4iixLN0yhrlz6GHWwlOz5facrxaVjgjschV06gzbPZOpr/uqDpYZrlLU2A6AqpEowi
+         sibQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698408658; x=1699013458;
+        d=1e100.net; s=20230601; t=1698408812; x=1699013612;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B7gWHcGlTpaaljG/otxoVL85w9IG0UfK7VjhEM26lvY=;
-        b=dMrkDOAu0/gR0dI4ti0H3VlmmwOaCBHRXPYUrpTv5JsTVxrCU3UEoCA8nPAjDgGC0+
-         1i1fb6RSVrCAp1fA8fSpaItkO13bqWbxpCkdvLKgpRO+x9GZF5CU1k09BFro55HzBot0
-         OMMWnCmztoUAxpieWIJEH+iRpN60rV5u3dMSxvbVFTvhLdapInvOEH34KKnDt26MlS2z
-         2pqUA8GLFQtzkA6qArCYOsuvb/QOFFDMLl0kIoN5PRTjq06KBRfJFBQRGpgOTpdX50Lt
-         bMhqMDc039HaYqfOnpNbyCzEytcsZFoHUMUk5seZV0LuZEtbMdQqFS2F1hwaq+dxQAXv
-         xJlg==
-X-Gm-Message-State: AOJu0YxMAjvpHxbckaZtb+2QScKOux31xVEPVbZi/Ep9tPrS++lwO/4L
-        7HksONR0F/XOtvAES13lHrxVhQ==
-X-Google-Smtp-Source: AGHT+IHsB1Hl9JsB2Mt8u063cyZU7KM1cBVcLY/vBUcqpdYFu6XaHIVSTpkPu/IN+LGVuMc0iGsFVw==
-X-Received: by 2002:a05:6512:39c5:b0:502:e0dd:628b with SMTP id k5-20020a05651239c500b00502e0dd628bmr1907272lfu.32.1698408657857;
-        Fri, 27 Oct 2023 05:10:57 -0700 (PDT)
+        bh=VUL6IlUEOIax/5vRykNbsQP7Z3idyhcA4b4ILMkbTKk=;
+        b=qhPMl8OGdlVl77ccUBciqs96WdsBFTqUYwg7zN5yl3zjg1rizq+iIKntEfHP7OKu7b
+         21RJzBQhSvNUy1780JJveUY8lmqCCYbc4LxHmZxa1mDUB0qlyBCn1q6xIMaJW/Gy2/SP
+         X0p+lPmc3NgLQ/gnYN4VLK06/Cblb5k6mLhHQSUMDpJEyEAdRsvp7yPD6Rycbm1OvKKl
+         aYteOp8rIoYxhofa0oHi9hzZeuCQA9vB9dsgFn+sMC76ViG2a7CzNOAcJYKqmSqjS8H+
+         wiziOGWRJO82u9UMS92/+qxW6Vu+2h0rwVygdYxRxabKfJAh+AvatKct8aYcfshIcZHY
+         9/JA==
+X-Gm-Message-State: AOJu0YzpTYCxipRtLkwkTH7oWNc00+eXT3HoGK0ooLYWpl0HDKLeYrWY
+        Cv/BGTSGD7wYwEKtyboPaCV1ag==
+X-Google-Smtp-Source: AGHT+IGRh+R4Vj9GCOzv9RW3vP69NLTvXlZ1sojUIR7I6sKYZ3/PSQ12RxMpd/7vnJehn5BAnKZ4uw==
+X-Received: by 2002:a2e:9a90:0:b0:2c5:13e8:e6d5 with SMTP id p16-20020a2e9a90000000b002c513e8e6d5mr1746914lji.23.1698408811856;
+        Fri, 27 Oct 2023 05:13:31 -0700 (PDT)
 Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id z6-20020ac25de6000000b004fddb0eb961sm261279lfq.18.2023.10.27.05.10.56
+        by smtp.gmail.com with ESMTPSA id y7-20020a2e9d47000000b002b724063010sm258933ljj.47.2023.10.27.05.13.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 05:10:57 -0700 (PDT)
-Message-ID: <d83fcddf-a6e7-4152-b2ae-d6913a3bd69d@linaro.org>
-Date:   Fri, 27 Oct 2023 14:10:56 +0200
+        Fri, 27 Oct 2023 05:13:31 -0700 (PDT)
+Message-ID: <0a094f10-fac3-4b66-9691-1a4d0225ce0d@linaro.org>
+Date:   Fri, 27 Oct 2023 14:13:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] adding support for Microchip PAC193X Power Monitor
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
+ PAC193X
 Content-Language: en-US
 To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
         robh+dt@kernel.org
@@ -61,6 +62,7 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20231025134404.131485-1-marius.cristea@microchip.com>
+ <20231025134404.131485-2-marius.cristea@microchip.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -106,34 +108,183 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231025134404.131485-1-marius.cristea@microchip.com>
+In-Reply-To: <20231025134404.131485-2-marius.cristea@microchip.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+A nit, subject: drop second/last, redundant "bindings". The
+"dt-bindings" prefix is already stating that these are bindings.
 On 25/10/2023 15:44, marius.cristea@microchip.com wrote:
 > From: Marius Cristea <marius.cristea@microchip.com>
 > 
-> Adding support for Microchip PAC193X series of Power Monitor with
-> Accumulator chip family. This driver covers the following part numbers:
->  - PAC1931, PAC1932, PAC1933 and PAC1934
-> 
-> Differences related to previous patch:
-> 
-> v2:
-> - fix review comments:
->   - change the device tree bindings
 
-Change? Everything is a change. You must be specific.
 
+> This is the device tree schema for iio driver for
+> Microchip PAC193X series of Power Monitors with Accumulator.
+> 
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> ---
+>  .../bindings/iio/adc/microchip,pac1934.yaml   | 146 ++++++++++++++++++
+>  1 file changed, 146 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> new file mode 100644
+> index 000000000000..837053ed8a71
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> @@ -0,0 +1,146 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip PAC1934 Power Monitors with Accumulator
+> +
+> +maintainers:
+> +  - Marius Cristea <marius.cristea@microchip.com>
+> +
+> +description: |
+> +  Bindings for the Microchip family of Power Monitors with Accumulator.
+
+Drop "Bindings for" and describe instead the hardware.
+
+> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found here:
+> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,pac1931
+> +      - microchip,pac1932
+> +      - microchip,pac1933
+> +      - microchip,pac1934
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  interrupts:
+> +    description: IRQ line of the ADC
+
+Drop, useless.
+
+> +    maxItems: 1
+> +
+> +  drive-open-drain:
+> +    description: The IRQ signal is configured as open-drain.
+> +    type: boolean
+
+
+> +    maxItems: 1
+> +
+> +  microchip,slow-io:
+> +    type: boolean
+> +    description: |
+> +      A GPIO used to trigger a change is sampling rate (lowering the chip power consumption).
+> +      In default mode, if this pin is forced high, sampling rate is forced to eight
+> +      samples/second. When it is forced low, the sampling rate is 1024 samples/second unless
+> +      a different sample rate has been programmed.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +
+> +patternProperties:
+
+patternProperties: follow properties:, not required: block. Reorder.
+
+> +  "^channel@[1-4]+$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    description: Represents the external channels which are connected to the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number.
+> +          It can have up to 4 channels, numbered from 1 to 4.
+
+Drop, redundant, comes with adc.yaml.
+
+> +        items:
+> +          - minimum: 1
+> +            maximum: 4
+> +
+> +      shunt-resistor-micro-ohms:
+> +        description: |
+> +          Value in micro Ohms of the shunt resistor connected between
+> +          the SENSE+ and SENSE- inputs, across which the current is measured. Value
+> +          is needed to compute the scaling of the measured current.
+> +
+> +      label:
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        description: Name of the monitored power rail.
+
+Drop property, comes with adc.yaml.
+
+> +
+> +      bipolar:
+> +        description: Whether the channel is bi-directional.
+> +        type: boolean
+
+Drop property, comes with adc.yaml.
+> +
+> +    required:
+> +      - reg
+> +      - shunt-resistor-micro-ohms
+> +
+> +    additionalProperties: false
+
+unevaluatedProperties: false
+
+> +
+> +allOf:
+> +  - if:
+> +      required:
+> +        - interrupts
+> +    then:
+> +      required:
+> +        - drive-open-drain
+> +    else:
+> +      properties:
+> +        drive-open-drain: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        pac193x: pac193x@10 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +            compatible = "microchip,pac1934";
+> +            reg = <0x10>;
+> +
 
 Best regards,
 Krzysztof

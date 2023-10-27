@@ -2,59 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CBD67D9773
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D83A77D97BF
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbjJ0MNh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 08:13:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
+        id S1345735AbjJ0MUT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 08:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231302AbjJ0MNg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:13:36 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1981CFA
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:13:34 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so26391981fa.3
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:13:34 -0700 (PDT)
+        with ESMTP id S231340AbjJ0MUS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:20:18 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501BF10A
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:20:13 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-507c91582fdso2928926e87.2
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:20:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698408812; x=1699013612; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698409211; x=1699014011; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VUL6IlUEOIax/5vRykNbsQP7Z3idyhcA4b4ILMkbTKk=;
-        b=VlzPL5X6MOptBYnFcFbt+/Y/eBg1cp7fW3vGCcnr0mwLFGMrryRJ1Ymxvdb4D+T280
-         d3ULvijuEBpaSx9T/povhjwiIujXNGttGvmvcBu0SjTP3Gw5QHIsj45L7JXcdIv1VhBn
-         /Y4au5qgMy8PYXNMsUsqYmktFXEVWjl4V/ub9zrwbjHgnSrRyd/bzma+eVFG5SciVJ1v
-         xHd5mt7cPuRcDtkp1mprb33kR8evcUTlr6tql8eYNrdwVfX4Xn1ip/tNHd1ddtd6uFNt
-         bD4iixLN0yhrlz6GHWwlOz5facrxaVjgjschV06gzbPZOpr/uqDpYZrlLU2A6AqpEowi
-         sibQ==
+        bh=lNWeKQrm3Pv4VEOmFSW+qGUcdVGYIzaM8ErPxXFUzug=;
+        b=ewEZX41M+sf+DDJ4zLYqeATdukxNb7DKvwGBdmTCi6jTcU/o4jJ9giOIK1K7dWraZ8
+         i4ZgNUC5jRdTnpYV3nBUkiIZcOQQx3a4IWce2COVVVKNrvKN0ELPf3WYUtDmBSRN/kwO
+         txWAbzQfHCZ9zaKkeSji3Lhygwj6F2vcM9ijIucgCDQsW7EhBnx0cdiiQFsRyExozMsn
+         RPMiTe1b+yBuY34GbF57pfAfTtkb/q/54NfWU7mFCc1aJ1t0s/S6wDapJ3SDvvR/mAUd
+         zWJnnrcVcTZ30uKZuOXlnSWRUo3PgBKiFKwqzn6UGe+ZPbZIBdP1uhUMAlo6EEltJ57r
+         wJGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698408812; x=1699013612;
+        d=1e100.net; s=20230601; t=1698409211; x=1699014011;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VUL6IlUEOIax/5vRykNbsQP7Z3idyhcA4b4ILMkbTKk=;
-        b=qhPMl8OGdlVl77ccUBciqs96WdsBFTqUYwg7zN5yl3zjg1rizq+iIKntEfHP7OKu7b
-         21RJzBQhSvNUy1780JJveUY8lmqCCYbc4LxHmZxa1mDUB0qlyBCn1q6xIMaJW/Gy2/SP
-         X0p+lPmc3NgLQ/gnYN4VLK06/Cblb5k6mLhHQSUMDpJEyEAdRsvp7yPD6Rycbm1OvKKl
-         aYteOp8rIoYxhofa0oHi9hzZeuCQA9vB9dsgFn+sMC76ViG2a7CzNOAcJYKqmSqjS8H+
-         wiziOGWRJO82u9UMS92/+qxW6Vu+2h0rwVygdYxRxabKfJAh+AvatKct8aYcfshIcZHY
-         9/JA==
-X-Gm-Message-State: AOJu0YzpTYCxipRtLkwkTH7oWNc00+eXT3HoGK0ooLYWpl0HDKLeYrWY
-        Cv/BGTSGD7wYwEKtyboPaCV1ag==
-X-Google-Smtp-Source: AGHT+IGRh+R4Vj9GCOzv9RW3vP69NLTvXlZ1sojUIR7I6sKYZ3/PSQ12RxMpd/7vnJehn5BAnKZ4uw==
-X-Received: by 2002:a2e:9a90:0:b0:2c5:13e8:e6d5 with SMTP id p16-20020a2e9a90000000b002c513e8e6d5mr1746914lji.23.1698408811856;
-        Fri, 27 Oct 2023 05:13:31 -0700 (PDT)
+        bh=lNWeKQrm3Pv4VEOmFSW+qGUcdVGYIzaM8ErPxXFUzug=;
+        b=A51FDeKCtGYaLjiGvHPOLfyan/Z/yp2twhu0UfjhJ93FcOFqI89yoRb91YkdyDiJUK
+         Sbc0m9O6NBmnc2YK+72TGoZ+EPEgSv9CzjJAFmHAdGvUymOMu7IRf8N+O4jL3M0DnhD2
+         FKTlNiyVzKUbgFOg5xsbIRM9eaFKoH/Tghgwr0H65Cn339iDjIvSK71Il/uSjWr8PHM2
+         drd9eDCLWES/r7rKAB8gHzgpiehNO6Y2PeN7TV4LojPfGEtWhoefsLSFeTHXr9pCWFGW
+         G5o/0FQrM/mf/dIW+LWaS9d2fcVbiGk4MkzI1ZYMx20Z4OyVsdzng3AjoDi3N1kbLsoP
+         t9Tg==
+X-Gm-Message-State: AOJu0YzWKtRrKvDzocJg+dr1xGqAXWD8zg1YrAF4QbDuO16xwvOl5NyX
+        8X0HaqNQaK704JKVpcZEzf9aWw==
+X-Google-Smtp-Source: AGHT+IFjosSc8YG1jOkfgyv8MjGZT4SObLRX06yPJk1Iwhv4fkBq8L+ICLUaFZ0Y92aC+Z1cchGyAA==
+X-Received: by 2002:ac2:430a:0:b0:503:257a:7f5d with SMTP id l10-20020ac2430a000000b00503257a7f5dmr1481038lfh.31.1698409211446;
+        Fri, 27 Oct 2023 05:20:11 -0700 (PDT)
 Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id y7-20020a2e9d47000000b002b724063010sm258933ljj.47.2023.10.27.05.13.30
+        by smtp.gmail.com with ESMTPSA id z12-20020a19504c000000b00507b869b068sm261691lfj.302.2023.10.27.05.20.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 05:13:31 -0700 (PDT)
-Message-ID: <0a094f10-fac3-4b66-9691-1a4d0225ce0d@linaro.org>
-Date:   Fri, 27 Oct 2023 14:13:30 +0200
+        Fri, 27 Oct 2023 05:20:10 -0700 (PDT)
+Message-ID: <42fd061d-7832-4531-bb85-eb8860c7e5e1@linaro.org>
+Date:   Fri, 27 Oct 2023 14:20:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
- PAC193X
+Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
 Content-Language: en-US
 To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
         robh+dt@kernel.org
@@ -62,7 +61,7 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20231025134404.131485-1-marius.cristea@microchip.com>
- <20231025134404.131485-2-marius.cristea@microchip.com>
+ <20231025134404.131485-3-marius.cristea@microchip.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -108,183 +107,276 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231025134404.131485-2-marius.cristea@microchip.com>
+In-Reply-To: <20231025134404.131485-3-marius.cristea@microchip.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-A nit, subject: drop second/last, redundant "bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
 On 25/10/2023 15:44, marius.cristea@microchip.com wrote:
 > From: Marius Cristea <marius.cristea@microchip.com>
 > 
-
-
-> This is the device tree schema for iio driver for
-> Microchip PAC193X series of Power Monitors with Accumulator.
+> This is the iio driver for Microchip
+> PAC193X series of Power Monitor with Accumulator chip family.
 > 
 > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 > ---
->  .../bindings/iio/adc/microchip,pac1934.yaml   | 146 ++++++++++++++++++
->  1 file changed, 146 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> new file mode 100644
-> index 000000000000..837053ed8a71
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> @@ -0,0 +1,146 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip PAC1934 Power Monitors with Accumulator
-> +
-> +maintainers:
-> +  - Marius Cristea <marius.cristea@microchip.com>
-> +
-> +description: |
-> +  Bindings for the Microchip family of Power Monitors with Accumulator.
-
-Drop "Bindings for" and describe instead the hardware.
-
-> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found here:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,pac1931
-> +      - microchip,pac1932
-> +      - microchip,pac1933
-> +      - microchip,pac1934
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  interrupts:
-> +    description: IRQ line of the ADC
-
-Drop, useless.
-
-> +    maxItems: 1
-> +
-> +  drive-open-drain:
-> +    description: The IRQ signal is configured as open-drain.
-> +    type: boolean
 
 
-> +    maxItems: 1
-> +
-> +  microchip,slow-io:
-> +    type: boolean
-> +    description: |
-> +      A GPIO used to trigger a change is sampling rate (lowering the chip power consumption).
-> +      In default mode, if this pin is forced high, sampling rate is forced to eight
-> +      samples/second. When it is forced low, the sampling rate is 1024 samples/second unless
-> +      a different sample rate has been programmed.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +patternProperties:
-
-patternProperties: follow properties:, not required: block. Reorder.
-
-> +  "^channel@[1-4]+$":
-> +    type: object
-> +    $ref: adc.yaml
-> +    description: Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number.
-> +          It can have up to 4 channels, numbered from 1 to 4.
-
-Drop, redundant, comes with adc.yaml.
-
-> +        items:
-> +          - minimum: 1
-> +            maximum: 4
-> +
-> +      shunt-resistor-micro-ohms:
-> +        description: |
-> +          Value in micro Ohms of the shunt resistor connected between
-> +          the SENSE+ and SENSE- inputs, across which the current is measured. Value
-> +          is needed to compute the scaling of the measured current.
-> +
-> +      label:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        description: Name of the monitored power rail.
-
-Drop property, comes with adc.yaml.
+...
 
 > +
-> +      bipolar:
-> +        description: Whether the channel is bi-directional.
-> +        type: boolean
+> +static ssize_t reset_accumulators_store(struct device *dev,
+> +					struct device_attribute *attr,
+> +					const char *buf, size_t count)
+> +{
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct pac1934_chip_info *info = iio_priv(indio_dev);
+> +	int ret, i;
+> +	u8 refresh_cmd = PAC1934_REFRESH_REG_ADDR;
+> +
+> +	ret = i2c_smbus_write_byte(info->client, refresh_cmd);
+> +	if (ret) {
+> +		dev_err(&indio_dev->dev,
+> +			"%s - cannot send 0x%02X\n",
+> +			__func__, refresh_cmd);
+> +	}
+> +
+> +	for (i = 0 ; i < info->phys_channels; i++)
+> +		info->chip_reg_data.energy_sec_acc[i] = 0;
+> +
+> +	return count;
+> +}
+> +
+> +static IIO_DEVICE_ATTR(in_shunt_resistor_1, 0644, shunt_value_show, shunt_value_store, 0);
+> +static IIO_DEVICE_ATTR(in_shunt_resistor_2, 0644, shunt_value_show, shunt_value_store, 0);
+> +static IIO_DEVICE_ATTR(in_shunt_resistor_3, 0644, shunt_value_show, shunt_value_store, 0);
+> +static IIO_DEVICE_ATTR(in_shunt_resistor_4, 0644, shunt_value_show, shunt_value_store, 0);
+> +static IIO_DEVICE_ATTR(reset_accumulators, 0200, NULL, reset_accumulators_store, 0);
+> +
+> +static struct attribute *pac1934_all_attributes[] = {
+> +	PAC1934_DEV_ATTR(in_shunt_resistor_1),
+> +	PAC1934_DEV_ATTR(in_shunt_resistor_2),
+> +	PAC1934_DEV_ATTR(in_shunt_resistor_3),
+> +	PAC1934_DEV_ATTR(in_shunt_resistor_4),
+> +	PAC1934_DEV_ATTR(reset_accumulators),
+> +	NULL
+> +};
+> +
+> +static int pac1934_prep_custom_attributes(struct pac1934_chip_info *info,
+> +					  struct iio_dev *indio_dev)
+> +{
+> +	int i, j, active_channels_count = 0;
+> +	struct attribute **pac1934_custom_attributes;
+> +	struct attribute_group *pac1934_group;
+> +	struct i2c_client *client = info->client;
+> +
+> +	for (i = 0 ; i < info->phys_channels; i++)
+> +		if (info->active_channels[i])
+> +			active_channels_count++;
+> +
+> +	pac1934_group = devm_kzalloc(&client->dev, sizeof(*pac1934_group), GFP_KERNEL);
+> +
+> +	pac1934_custom_attributes = devm_kzalloc(&client->dev,
+> +						 (PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
+> +						 active_channels_count +
+> +						 PAC1934_SHARED_DEVATTRS_COUNT)
+> +						 * sizeof(*pac1934_group) + 1,
+> +						 GFP_KERNEL);
+> +	j = 0;
+> +
+> +	for (i = 0 ; i < info->phys_channels; i++) {
+> +		if (info->active_channels[i]) {
+> +			pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * j] =
+> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * i];
+> +			pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * j + 1] =
+> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * i + 1];
+> +			j++;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < PAC1934_SHARED_DEVATTRS_COUNT; i++)
+> +		pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
+> +			active_channels_count + i] =
+> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
+> +			info->phys_channels + i];
+> +
+> +	pac1934_group->attrs = pac1934_custom_attributes;
+> +	info->pac1934_info.attrs = pac1934_group;
+> +
+> +	return 0;
+> +}
+> +
+> +static void pac1934_remove(struct i2c_client *client)
 
-Drop property, comes with adc.yaml.
-> +
-> +    required:
-> +      - reg
-> +      - shunt-resistor-micro-ohms
-> +
-> +    additionalProperties: false
+Remove functions goes always after probe.
 
-unevaluatedProperties: false
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(&client->dev);
+> +	struct pac1934_chip_info *info = iio_priv(indio_dev);
+> +
+> +	cancel_delayed_work_sync(&info->work_chip_rfsh);
+> +}
+> +
+> +static int pac1934_probe(struct i2c_client *client)
+> +{
+> +	struct pac1934_chip_info *info;
+> +	struct iio_dev *indio_dev;
+> +	const char *name = NULL;
+> +	int cnt, ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*info));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	info = iio_priv(indio_dev);
+> +
+> +	i2c_set_clientdata(client, indio_dev);
+> +	info->client = client;
+> +
+> +	/*
+> +	 * load default settings - all channels disabled,
+> +	 * uni directional flow
+> +	 */
+> +	for (cnt = 0; cnt < PAC1934_MAX_NUM_CHANNELS; cnt++) {
+> +		info->active_channels[cnt] = false;
+> +		info->bi_dir[cnt] = false;
+> +	}
+> +
+> +	info->crt_samp_spd_bitfield = PAC1934_SAMP_1024SPS;
+> +
+> +	ret = pac1934_chip_identify(info);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+> +	if (ACPI_HANDLE(&client->dev)) {
+> +		if (!info->phys_channels)
+> +			/* failed to identify part number, unknown number of channels available */
+> +			return -EINVAL;
+> +
+> +		name = pac1934_match_acpi_device(client, info);
+> +	} else {
+> +		name = pac1934_match_of_device(client, info);
+> +	}
+> +
+> +	if (!name) {
+> +		dev_dbg(&client->dev, "parameter parsing returned an error\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	mutex_init(&info->lock);
+> +
+> +	/*
+> +	 * do now any chip specific initialization (e.g. read/write
+> +	 * some registers), enable/disable certain channels, change the sampling
+> +	 * rate to the requested value
+> +	 */
+> +	ret = pac1934_chip_configure(info);
+> +	if (ret < 0)
+> +		goto fail;
+
+Why do you need to go to fail here? Is the work scheduled in error cases?
 
 > +
-> +allOf:
-> +  - if:
-> +      required:
-> +        - interrupts
-> +    then:
-> +      required:
-> +        - drive-open-drain
-> +    else:
-> +      properties:
-> +        drive-open-drain: false
+> +	/* prepare the channel information */
+> +	ret = pac1934_prep_iio_channels(info, indio_dev);
+> +	if (ret < 0)
+> +		goto fail;
 > +
-> +additionalProperties: false
+> +	ret = pac1934_prep_custom_attributes(info, indio_dev);
+> +	if (ret < 0) {
+> +		dev_err_probe(&indio_dev->dev, ret,
+> +			      "Can't configure custom attributes for PAC1934 device\n");
+> +		goto fail;
+> +	}
 > +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> +	info->pac1934_info.read_raw = pac1934_read_raw;
+> +	info->pac1934_info.read_avail = pac1934_read_avail;
+> +	info->pac1934_info.write_raw = pac1934_write_raw;
+> +	info->pac1934_info.read_label = pac1934_read_label;
 > +
-> +        pac193x: pac193x@10 {
+> +	indio_dev->info = &info->pac1934_info;
+> +	indio_dev->name = name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	/*
+> +	 * read whatever has been accumulated in the chip so far
+> +	 * and reset the accumulators
+> +	 */
+> +	ret = pac1934_reg_snapshot(info, true, PAC1934_REFRESH_REG_ADDR,
+> +				   PAC1934_MIN_UPDATE_WAIT_TIME_US);
+> +	if (ret < 0)
+> +		goto fail;
+> +
+> +	ret = devm_iio_device_register(&client->dev, indio_dev);
+> +	if (ret < 0) {
+> +		dev_err_probe(&indio_dev->dev, ret,
+> +			      "Can't register IIO device\n");
+> +		goto fail;
+> +	}
+> +
+> +	return 0;
+> +
+> +fail:
+> +	cancel_delayed_work_sync(&info->work_chip_rfsh);
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct i2c_device_id pac1934_id[] = {
+> +	{ .name = "pac1931", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1931] },
+> +	{ .name = "pac1932", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1932] },
+> +	{ .name = "pac1933", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1933] },
+> +	{ .name = "pac1934", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1934] },
+> +	{}
+> +};
+> +
+> +MODULE_DEVICE_TABLE(i2c, pac1934_id);
+> +
+> +static const struct of_device_id pac1934_of_match[] = {
+> +	{
+> +		.compatible = "microchip,pac1931",
+> +		.data = &pac1934_chip_config[PAC1931]
+> +	},
+> +	{
+> +		.compatible = "microchip,pac1932",
+> +		.data = &pac1934_chip_config[PAC1932]
+> +	},
+> +	{
+> +		.compatible = "microchip,pac1933",
+> +		.data = &pac1934_chip_config[PAC1933]
+> +	},
+> +	{
+> +		.compatible = "microchip,pac1934",
+> +		.data = &pac1934_chip_config[PAC1934]
+> +	},
+> +	{}
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, pac1934_of_match);
+> +
+> +/* using MCHP1930 to be compatible with WINDOWS ACPI */
+> +static const struct acpi_device_id pac1934_acpi_match[] = {
+> +	{"MCHP1930", 0},
+> +	{ }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(acpi, pac1934_acpi_match);
+> +
+> +static struct i2c_driver pac1934_driver = {
+> +	.driver	 = {
+> +		.name = "pac1934",
+> +		.of_match_table = pac1934_of_match,
+> +		.acpi_match_table = ACPI_PTR(pac1934_acpi_match)
 
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-
-> +            compatible = "microchip,pac1934";
-> +            reg = <0x10>;
-> +
+Drop ACPI_PTR, causes warnings.
 
 Best regards,
 Krzysztof

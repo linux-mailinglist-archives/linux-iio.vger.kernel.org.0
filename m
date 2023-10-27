@@ -2,146 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 604C47D90D4
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 10:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F108C7D9227
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 10:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjJ0INM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 04:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56990 "EHLO
+        id S235236AbjJ0IlZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 04:41:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbjJ0INL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 04:13:11 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06490196
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:13:09 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-507975d34e8so2633349e87.1
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:13:08 -0700 (PDT)
+        with ESMTP id S1345597AbjJ0Ikz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 04:40:55 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404B41B6;
+        Fri, 27 Oct 2023 01:40:25 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5406c099cebso2690903a12.2;
+        Fri, 27 Oct 2023 01:40:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698394387; x=1698999187; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WaU+VzqqAMvguWmnxiwuxYmqBvrom9QacJqWkrVVdu8=;
-        b=wUZulFrPTLEtH8kYqbDi9xU28WxME80O/JuEFVGyjOlPGvY9wQVnZFjba2AbppH1Ge
-         ARKZ0GuRYEh74Nv8jsTIeMkrB8aPprS+8Gtef4fcnBFnIvN3N76gpXxqFQSdXeR6HOuX
-         tsTbTEx48KjinyswaTZGH20m90Hdvzlz1MDO8A/Qv5B8pVmQwh0nmeZDntAocEpogZvN
-         Kce5R/v96FgJ71h3hu8y/Cq1IK1k92374GB9eqXO6yPikxiU1LSDic1WcfJhZMnLb59h
-         nW6NN06r8eZQ4JeWWTtYngMmR4WbOp63EP+OrjLbouu9Wz2jzg/taJ1iqmaxgPYEyJPj
-         /6yA==
+        d=gmail.com; s=20230601; t=1698396023; x=1699000823; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+ZNnHFWiSKIHBdwdRjz0nWKM4UEVROjCQQBMy6BxpmY=;
+        b=eTTPYQH58gNX8SCfiwfANdeNDP5A9VgZrY+KjaPB3BDPjTT7+AE0vu3AZogPCpkPCf
+         BAc3mEsVxexcB5TV1edobIeS6n1r3QYNmdWbO6oIAeSIAIAYkRlevTT1s+JQonb9KB+2
+         yxS2EZTkeLSsJYP/YmZJFHPS0xR5VcCxRwwjAhdLsvA2mWm6mB392fdtX7R67dvcAJ6F
+         zADUBW54PENyWSF/Iw0rW1sPUMH5HWSXauHA36DtZpllSEYmaLWVzJah5BH0na2xJLUI
+         WrdjskFfZoIX7DLhk840k59JPhbevum9OKBjTwH2SdNARpW1Zzo+AKw6cMgKr1KuFRpT
+         +Ncw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698394387; x=1698999187;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WaU+VzqqAMvguWmnxiwuxYmqBvrom9QacJqWkrVVdu8=;
-        b=V1uF9YwbHxe5n1h0Rocc3bnVaXCO2AyxBoZctdh54YJ52J/vooV8OuStdrrhHfOmKl
-         rpdqtIRTNx+90loo/qdHMGfuWKwiIiLiNGI1xj0nzFmYMgxIxdMCU8mtO4QutN/gYkMf
-         qwvRR8zbOBFYEbDfR9rSBG8UDaAS26sQgqNZ6jNIHpCloRSJJS+pm27AKoloPQ3eVekT
-         RVUNNW0+sG27dBon9RZmHIcwT9NQHVjOHiMgccZPEscb4mh1Q96zTGg7kuY+SoXuuaxN
-         7nnqodApGEvd5/vjkk2flXUTg9u8SKFxaezRPbKgGtsnj8PbAKAjsyS+gKw11vUfYJUJ
-         dxDg==
-X-Gm-Message-State: AOJu0YzSYCXA5NQ9bbSbSXRnFMXCmcmVa7KTh+SPR0KsmTJ/euZpx95y
-        iiN4sLA4desVpTIMBsk92aY/6A==
-X-Google-Smtp-Source: AGHT+IFsoHXfD9HiDoMksyk4QuQG3CdhxxjXj1bwBFtrS+/O2I4qHfwp3VCpzZW96b3jw1Ae9XZE6Q==
-X-Received: by 2002:ac2:4f13:0:b0:503:18c3:d874 with SMTP id k19-20020ac24f13000000b0050318c3d874mr1724309lfr.45.1698394387314;
-        Fri, 27 Oct 2023 01:13:07 -0700 (PDT)
-Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id y5-20020ac24e65000000b00505713722b9sm181142lfs.38.2023.10.27.01.13.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 01:13:06 -0700 (PDT)
-Message-ID: <d7ba077d-6bcd-4e04-b678-51e4bbc935ca@linaro.org>
-Date:   Fri, 27 Oct 2023 10:13:05 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-Content-Language: en-US
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>
-Cc:     Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        d=1e100.net; s=20230601; t=1698396023; x=1699000823;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+ZNnHFWiSKIHBdwdRjz0nWKM4UEVROjCQQBMy6BxpmY=;
+        b=kINk2by5TQadIiU5eZLihroDFLQPy8Lp1eUSa2QRkhqF2oJPgdntkmfwHyTVVHCuL5
+         h6Z0Pb+CtHlpuH5V0E4lA2HnLU2l3X76Xo8tPRflbUY9ip2F61aCHmDurhggTQ+M8Uzp
+         3F/lVfP4ZByal1NZ1BgJzKQzIZUZmI+HKTYwHzaGxzBazIiJUBFBLUuUHA1aG7E91LlB
+         0U/B17Ht+Zmx0rKgo+cw+v5yiOnQx8FhPuY40oGPuB9Xw9aGTvrU8bhWP10xoc9qhYwo
+         6sEQaHNkfpZdjRSuBJObeASY8M/6jMB3KESXApJBAVygRSRw/0kCAMwiE5gkpGpsNsMR
+         VsHQ==
+X-Gm-Message-State: AOJu0YyNp9BCfmNCm4nBYlBpv6nCD4COo7VU8PAC3rXVY6aud14p0qCP
+        CpplpUAJ0E6z98fuyf3/PVE=
+X-Google-Smtp-Source: AGHT+IFrcDAN8E4GEX2tTqQ6m+OHLmYg96SzZXdJZD4SVuV4XPnzp/WjYBvqIO1UhQcua5eR9lAxGQ==
+X-Received: by 2002:aa7:d78a:0:b0:53d:d4a0:3154 with SMTP id s10-20020aa7d78a000000b0053dd4a03154mr1674010edq.31.1698396023205;
+        Fri, 27 Oct 2023 01:40:23 -0700 (PDT)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id j4-20020a50ed04000000b0053ebafe7a60sm871060eds.59.2023.10.27.01.40.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Oct 2023 01:40:22 -0700 (PDT)
+Message-ID: <b29594464415af0ea56b6d5431744982fa1385ee.camel@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Marius.Cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org
+Cc:     conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Fri, 27 Oct 2023 10:40:21 +0200
+In-Reply-To: <02ea54ae3a2ab4f0a19232a4df494f71b1de3b00.camel@microchip.com>
+References: <20231025134404.131485-1-marius.cristea@microchip.com>
+         <20231025134404.131485-3-marius.cristea@microchip.com>
+         <d914069815f76245ef91b6b7b0c6b382b054b562.camel@gmail.com>
+         <02ea54ae3a2ab4f0a19232a4df494f71b1de3b00.camel@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27/10/2023 09:45, Subhajit Ghosh wrote:
-> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor with als
-> and clear channels with i2c interface. Hardware interrupt configuration is
-> optional. It is a low power device with 20 bit resolution and has
-> configurable adaptive interrupt mode and interrupt persistence mode.
-> The device also features inbuilt hardware gain, multiple integration time
-> selection options and sampling frequency selection options.
-> 
-> v1 -> v2
-> - Renamed probe_new to probe
-> - Removed module id table
+On Thu, 2023-10-26 at 15:03 +0000, Marius.Cristea@microchip.com wrote:
+> Hi Nuno S=C3=A1,
+>=20
+> =C2=A0 Thanks for looking over the patch.
+>=20
+> On Wed, 2023-10-25 at 16:38 +0200, Nuno S=C3=A1 wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you
+> > know the content is safe
+> >=20
+> > On Wed, 2023-10-25 at 16:44 +0300,
+> > marius.cristea@microchip.com=C2=A0wrote:
+> > > From: Marius Cristea <marius.cristea@microchip.com>
+> > >=20
+> > > This is the iio driver for Microchip
+> > > PAC193X series of Power Monitor with Accumulator chip family.
+> > >=20
+> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> > > ---
+> >=20
+> > Hi Marius,
+> >=20
+> > I'll be honest and I just looked at this for 5min. But I'm seeing
+> > things like
+> > shunt resistors, vsense, power, energy... This seems to me that it
+> > belong to
+> > drivers/hwmon. Any special reason for IIO?
+> >=20
+>=20
+> =C2=A0 Yes, this device is at the boundary between IIO and HWMON if you a=
+re
+> looking just at the "shunt resistors, vsense, power, energy". The
+> device also has ADC internaly that can measure voltages (up to 4
+> channels) and also currents (up to 4 channels). Current is measured as
+> voltage across the shunt_resistor.
+>=20
 
-This is fourth version of this patchset, not second, so v4.
+I think this alone is not justification but...
 
-Best regards,
-Krzysztof
+> =C2=A0 As I said before: I was thinking to start with a simple driver (th=
+is
+> one that is more apropiate to be a HWMON) and add more functionality
+> later (like data buffering that is quite important for example if
+> someone wants to profile power consumtion of the procesor itself, or a
+> pheriperic, or a battery, this kind of functionality was requested by
+> our customers).
+>=20
+
+having buffering support already makes a case for IIO, yes.
+
+Hmm, I'm also just realizing this is v2 and indeed you already justified th=
+e very
+same question in v1. Sorry for noise!
+
+- Nuno S=C3=A1
+>=20
 

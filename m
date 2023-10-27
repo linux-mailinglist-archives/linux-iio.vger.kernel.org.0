@@ -2,95 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D07697D9AAB
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 298557D9AB5
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345996AbjJ0OCl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 10:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S1345997AbjJ0OEN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 10:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345943AbjJ0OCk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:02:40 -0400
+        with ESMTP id S1346058AbjJ0OEM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:04:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6D5C0
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 07:02:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC30AC433C7;
-        Fri, 27 Oct 2023 14:02:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654DFC0;
+        Fri, 27 Oct 2023 07:04:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79480C433C8;
+        Fri, 27 Oct 2023 14:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698415358;
-        bh=uxMVYafoD0kHgKfOSPj18Gk0qoRCj9fYkbmoIUBeQ7E=;
+        s=k20201202; t=1698415449;
+        bh=zb7VOvv5is8TXMsO8sefQ6eAL5YvHQLdJ+7pq0MU95E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bapCnaApUObQaRoQPNOONV6jMj8QvVCpfd2UChLNIageObQvTWbNL+TJWZ+bSXoWg
-         Ia+kpkXxdVI5FWqkGRyLpFJZWaaF99Uf/XSdKL6t/tyrgA9Q9b5DxolXKZ4S1DbnKN
-         q7Q2MxtWqqMXADJFubEVhYMeTwMKufIWK2We/BfV6pCbQEMRrFHDOeRMgVUMXk6qhK
-         QUN0x2N9rNJI4J+ujgU1Y56e2HSSStmZD56gkE3TYhwyyvaU+z7bQtdDNVabkWFtqR
-         G3zOfLAXda8684ayNqCLA3beNg5031FeseAZQqC/nxJxEiZ7fdgInQ19F7PO+G22Wg
-         eSl+cb04otPbw==
-Date:   Fri, 27 Oct 2023 15:02:22 +0100
+        b=oOOJG8kLy2ldsZdK6ka8h8Igbkkz6/Ls/YGOMzkmNQmFyHlVlyWX7JByU2ItRTF+k
+         Of+wNX4qK7MC7hkw+5e8QgFTKYv9SAJxxMqzpZt3rjzlHXK8FLRp6dWABdndgRUkhU
+         DOW9vzohYVifieynkObabH0wNTQymUdh5+TPavOOoYxf64NbiNuf8XE0nBJgkvgL/O
+         SnmicyONzOe5s0Lsu/S393nvY2DfbPwE7Zgoho9wUgwzyqujLb3ZDBiba0EVCP6hxF
+         S6YtgWuQu7TBgmf8Y8cZOc0HOvFSdJnviJ8mhN9XdW2e/F/hEK2B6PphClMXEJV0Yr
+         QgvNM6aLdKUxg==
+Date:   Fri, 27 Oct 2023 15:03:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Li peiyu <579lpy@gmail.com>
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de
-Subject: Re: [PATCH] dt-bindings: iio: pressure: bmp085: Update links about
- sensor specifications
-Message-ID: <20231027150222.6b41f023@jic23-huawei>
-In-Reply-To: <20231023080237.218179-1-579lpy@gmail.com>
-References: <20231023080237.218179-1-579lpy@gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] iio: imu: Fix spelling mistake "accelrometer" ->
+ "accelerometer"
+Message-ID: <20231027150333.2bc7bf8d@jic23-huawei>
+In-Reply-To: <CAM+2EuK2LOL=g=r866c6zwE4XOSL5uZ-rweUjm6svgSi8v9Xkw@mail.gmail.com>
+References: <20231023081054.617292-1-colin.i.king@gmail.com>
+        <CAM+2EuK2LOL=g=r866c6zwE4XOSL5uZ-rweUjm6svgSi8v9Xkw@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Oct 2023 16:02:37 +0800
-Li peiyu <579lpy@gmail.com> wrote:
+On Mon, 23 Oct 2023 16:37:01 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> The link to the device specifications in bmp085.yaml is no longer valid
-> 
-> Signed-off-by: Li peiyu <579lpy@gmail.com>
-
-As this is touching a device tree binding, it needs to be cc'd to the
-device tree list and the maintainers.
-
-Otherwise they won't review it.  I doubt they will care much about this one
-but we should still aim to follow procedure consistently.
-
-Please resend with the CCs added.
-
-Thanks,
-
-Jonathan
-
-> ---
->  .../devicetree/bindings/iio/pressure/bmp085.yaml       | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> index 6fda887ee9d4..5c77769c8200 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> @@ -13,11 +13,11 @@ description: |
->    Pressure, temperature and humidity iio sensors with i2c and spi interfaces
->  
->    Specifications about the sensor can be found at:
-> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp180
-> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp280
-> -    https://www.bosch-sensortec.com/bst/products/all_products/bme280
-> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp380
-> -    https://www.bosch-sensortec.com/bst/products/all_products/bmp580
-> +    https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
-> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/
-> +    https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/
-> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp380/
-> +    https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp580/
->  
->  properties:
->    compatible:
-
+> On Mon, Oct 23, 2023 at 1:40=E2=80=AFPM Colin Ian King <colin.i.king@gmai=
+l.com> wrote:
+> >
+> > There are two spelling mistakes in dev_err messages. Fix them. =20
+>=20
+> Hi Colin,
+>=20
+> Thanks for fixing this.
+> Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
+>=20
+Applied. thanks,

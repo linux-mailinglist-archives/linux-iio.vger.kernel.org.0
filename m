@@ -2,95 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE2697D9600
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 13:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5BE27D9668
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 13:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbjJ0LH7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 07:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57952 "EHLO
+        id S231493AbjJ0LVP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 07:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjJ0LH6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 07:07:58 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B159F9C;
-        Fri, 27 Oct 2023 04:07:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698404876; x=1729940876;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2vc4u83zhSQDbHRQB1dGUjT2PyjUrmwjzYV4iijhh68=;
-  b=Zk+k8gpisFthZ+Li7uLm2ooQtghtAP0SnvbYYbMU8gGnmr4fYJBTCPL7
-   qoA+HpplEJTLvYrMjs3dWg/GHWZGaDOvBqvOJ3+rKeknJ1sC/THG5JWpA
-   /b82khsG0BPPUIMGwr+G+emcawQKwI7XqC6s7obYX1OsQ408qUvunIMbR
-   1/2yUOKLXHgzdeQ0gyZC1NTGneoa1rWeE4p7y5+PWoV0YU8kLaJkvS+N9
-   u63L2DgCQc+cDQ6EeXN++nceiDMViDFeF9jUXgz95dUfKf9+w1vDM3Vdq
-   fX1M0X/0XePt1uaSXOmsab70y4y5eh/gLy+UJZAUs/JKsxvC5DJtZp/qW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="418866883"
-X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
-   d="scan'208";a="418866883"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 04:07:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="850216676"
-X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
-   d="scan'208";a="850216676"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 04:07:44 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qwKgn-000000097se-2gQW;
-        Fri, 27 Oct 2023 14:07:41 +0300
-Date:   Fri, 27 Oct 2023 14:07:41 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S231340AbjJ0LVO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 07:21:14 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E23F59C
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 04:21:10 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6b36e1fcee9so1852633b3a.3
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 04:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1698405670; x=1699010470; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OpDUNO6+wJLZCjUYYtsZ7P6CGyOdEndsDNhhPRxxHyU=;
+        b=gFo5EbVYclVt2BOhHsAfhX1lwRYLEnz4iJ5cx2jcyKjqZ/gkajsCeWlkCiS35b/Pfh
+         cIFLn/t8uig2fMxYU6SRCEoEp0ulYFoyF4Gp1r4BvrepjzNzwnWNUXlOKKt2m5OaKGe3
+         voI1twkrqkfpGTCFYU2IZ5qKvhDxw4rFKar6+A577ypKyMD62TGp9+g/rk7WMbkkkHv2
+         RYgbFOiSww6nMEzyLj90LnQeJKbvwVYcn64nWm+0U/IPWwEhDZj71pNpBW0JgX0ToKDc
+         Hhrcqmi9NwG2tWXXNNuvoTsRj/hGWOtFI74t8m8RfxHg3R48anqLokUE69owhnud5Y0i
+         /5Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698405670; x=1699010470;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OpDUNO6+wJLZCjUYYtsZ7P6CGyOdEndsDNhhPRxxHyU=;
+        b=MDkGP5qxkCmzh9EDmjdv5DbUXnt0IIAMDQP6i6YxuZ9GXDL5hhGb5x4j94II2rxq6k
+         yCJrs7FUCo/qPIp/7L0qLRd6dIjUBdiBJ/KPF880jhcO8R7R6FKcMEbvSKJ9QdmyIaIK
+         EhQmiB/v7CL4fouY9cgvQgYmDWyGdMrqVdbDZ30cyH16ZpUmweMdykWnd/KqGzAFBga3
+         iCVXHlWtFFt5rgGD7Y1shE1df5tB37FPvyuteiXmiUVGIIQwARXLcurrcenUT9I0loll
+         FpBOyeXiNM51V8WQFXuurMcIzon+DdJeDDO7Mep6xRUdOkWonY0fEHe2/komiyZ9CLSm
+         V3Hw==
+X-Gm-Message-State: AOJu0Yy3s0Qog/Q8k++2t6H7m3oZJq+vnJIDTBGTEW1jubVagh2cDPS5
+        N/3qhareZXP/jXrP7rFjZQT2Iw==
+X-Google-Smtp-Source: AGHT+IHr0HKYNWFJCCBhhVhyiRbjtCdvuHG6iPglG2lzT2vGoYkwfMDkR0h8WZF0FS9efvG0I5A3lQ==
+X-Received: by 2002:a05:6a20:428a:b0:16b:cc6c:d728 with SMTP id o10-20020a056a20428a00b0016bcc6cd728mr3267886pzj.44.1698405670213;
+        Fri, 27 Oct 2023 04:21:10 -0700 (PDT)
+Received: from ?IPV6:2403:580d:82f4:0:c232:f53e:32d4:5510? (2403-580d-82f4-0-c232-f53e-32d4-5510.ip6.aussiebb.net. [2403:580d:82f4:0:c232:f53e:32d4:5510])
+        by smtp.gmail.com with ESMTPSA id n3-20020a170902e54300b001b9d335223csm1324994plf.26.2023.10.27.04.21.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Oct 2023 04:21:09 -0700 (PDT)
+Message-ID: <9b9addeb-230c-48f0-9e50-78d30adeaf9d@tweaklogic.com>
+Date:   Fri, 27 Oct 2023 21:51:02 +1030
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] iio: light: Add support for APDS9306 Light Sensor
+Content-Language: en-US
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Matt Ranostay <matt@ranostay.sg>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>
+Cc:     Matt Ranostay <matt@ranostay.sg>,
         Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-Message-ID: <ZTuZ/Y2Go/RGOG7U@smile.fi.intel.com>
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20231026143532.39660-1-subhajit.ghosh@tweaklogic.com>
+ <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
+ <341cb934-2e91-442a-a4db-2f69f79ad0b6@gmail.com>
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <341cb934-2e91-442a-a4db-2f69f79ad0b6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 27, 2023 at 06:15:45PM +1030, Subhajit Ghosh wrote:
-> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor with als
-> and clear channels with i2c interface. Hardware interrupt configuration is
-> optional. It is a low power device with 20 bit resolution and has
-> configurable adaptive interrupt mode and interrupt persistence mode.
-> The device also features inbuilt hardware gain, multiple integration time
-> selection options and sampling frequency selection options.
+> Hi Subhajit,
+> 
+> It's nice to see the GTS helpers are used (and hopefully helpful). I didn't have the time to go through everything with full focus - so please just tell me if some of my questions are silly :) The comments I marked as 'nit' aren't really important - feel free to use your judgement on them :)
 
-Please, do not send so often this big patches (~1.5kLoC!), let reviewers a bit
-of time, please.
+Thank you Matti for the review.
+Acknowledging all your comments, updates will be in the next version.
+I am glad that you liked it.
 
-Since I have my message postponed, I finish review on the v1, and I believe
-100% of those comments will be applicable here.
+GTS helpers are great. It saved me a lot of complex and error prone mathematical calculations and coding.
+I was surprised to get consistent Lux values in userspace across all scale ranges which closely matched with
+my entry level Lux meter readings after using the GTS implementation. Great work.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Subhajit Ghosh

@@ -2,382 +2,707 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D83A77D97BF
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55EF87D985E
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 14:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345735AbjJ0MUT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 08:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
+        id S231464AbjJ0Mei (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 08:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231340AbjJ0MUS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:20:18 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501BF10A
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:20:13 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-507c91582fdso2928926e87.2
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 05:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698409211; x=1699014011; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lNWeKQrm3Pv4VEOmFSW+qGUcdVGYIzaM8ErPxXFUzug=;
-        b=ewEZX41M+sf+DDJ4zLYqeATdukxNb7DKvwGBdmTCi6jTcU/o4jJ9giOIK1K7dWraZ8
-         i4ZgNUC5jRdTnpYV3nBUkiIZcOQQx3a4IWce2COVVVKNrvKN0ELPf3WYUtDmBSRN/kwO
-         txWAbzQfHCZ9zaKkeSji3Lhygwj6F2vcM9ijIucgCDQsW7EhBnx0cdiiQFsRyExozMsn
-         RPMiTe1b+yBuY34GbF57pfAfTtkb/q/54NfWU7mFCc1aJ1t0s/S6wDapJ3SDvvR/mAUd
-         zWJnnrcVcTZ30uKZuOXlnSWRUo3PgBKiFKwqzn6UGe+ZPbZIBdP1uhUMAlo6EEltJ57r
-         wJGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698409211; x=1699014011;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNWeKQrm3Pv4VEOmFSW+qGUcdVGYIzaM8ErPxXFUzug=;
-        b=A51FDeKCtGYaLjiGvHPOLfyan/Z/yp2twhu0UfjhJ93FcOFqI89yoRb91YkdyDiJUK
-         Sbc0m9O6NBmnc2YK+72TGoZ+EPEgSv9CzjJAFmHAdGvUymOMu7IRf8N+O4jL3M0DnhD2
-         FKTlNiyVzKUbgFOg5xsbIRM9eaFKoH/Tghgwr0H65Cn339iDjIvSK71Il/uSjWr8PHM2
-         drd9eDCLWES/r7rKAB8gHzgpiehNO6Y2PeN7TV4LojPfGEtWhoefsLSFeTHXr9pCWFGW
-         G5o/0FQrM/mf/dIW+LWaS9d2fcVbiGk4MkzI1ZYMx20Z4OyVsdzng3AjoDi3N1kbLsoP
-         t9Tg==
-X-Gm-Message-State: AOJu0YzWKtRrKvDzocJg+dr1xGqAXWD8zg1YrAF4QbDuO16xwvOl5NyX
-        8X0HaqNQaK704JKVpcZEzf9aWw==
-X-Google-Smtp-Source: AGHT+IFjosSc8YG1jOkfgyv8MjGZT4SObLRX06yPJk1Iwhv4fkBq8L+ICLUaFZ0Y92aC+Z1cchGyAA==
-X-Received: by 2002:ac2:430a:0:b0:503:257a:7f5d with SMTP id l10-20020ac2430a000000b00503257a7f5dmr1481038lfh.31.1698409211446;
-        Fri, 27 Oct 2023 05:20:11 -0700 (PDT)
-Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id z12-20020a19504c000000b00507b869b068sm261691lfj.302.2023.10.27.05.20.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 05:20:10 -0700 (PDT)
-Message-ID: <42fd061d-7832-4531-bb85-eb8860c7e5e1@linaro.org>
-Date:   Fri, 27 Oct 2023 14:20:09 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: adding support for pac193x
-Content-Language: en-US
-To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        with ESMTP id S231340AbjJ0Meh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 08:34:37 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D917DBD;
+        Fri, 27 Oct 2023 05:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698410074; x=1729946074;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iIOysqrWfB9MlIYycR6MYiypQqiAGhoBsKxcZd/zCcg=;
+  b=FtyVnEGUReA0cwOiraGL/ACpJ0BKXfWoO5JXP2YJmQI3Qp5MlbJlKBjD
+   92/+uMlOmk3h3Yfd6dXKPYJ5xIZ4v8C6OnNKc2WIO4UcZ+m9dWxPf6Jh4
+   D7TYiVshAXfYf9a06AijDs9D/1Z4fYoVMX40V2+n1UVtAZDubVwobHSHt
+   rESDLqysYfmMybOoT1oBnR20BxApbPWmKVJP1J+u6z6AnuycTn4THoxhZ
+   0WEbBMdcsqk+RWVlBLhkGgsa/UksSjNGnLMlGVX2CUjRFWxkdrIfdIbr8
+   z8zOcQ0sN99EwERLk475ATX9T9CvZSBPnKS0IN5+t+8f9c39AFy5JsYKu
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="384974555"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="384974555"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 05:34:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="759583856"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="759583856"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 05:34:30 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qwM2l-000000098rB-0N8f;
+        Fri, 27 Oct 2023 15:34:27 +0300
+Date:   Fri, 27 Oct 2023 15:34:26 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20231025134404.131485-1-marius.cristea@microchip.com>
- <20231025134404.131485-3-marius.cristea@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231025134404.131485-3-marius.cristea@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v1 2/2] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <ZTuuUl0PBklbVjb9@smile.fi.intel.com>
+References: <20231026143532.39660-1-subhajit.ghosh@tweaklogic.com>
+ <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 25/10/2023 15:44, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
-> 
-> This is the iio driver for Microchip
-> PAC193X series of Power Monitor with Accumulator chip family.
-> 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+On Fri, Oct 27, 2023 at 01:05:32AM +1030, Subhajit Ghosh wrote:
+> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor with als
+
+WTH "als" is? Always think about reader of your commit message. It should be
+clear to the unprepared reader.
+
+> and clear channels with i2c interface. Hardware interrupt configuration is
+> optional. It is a low power device with 20 bit resolution and has
+> configurable adaptive interrupt mode and interrupt persistence mode.
+> The device also features inbuilt hardware gain, multiple integration time
+> selection options and sampling frequency selection options.
+
+> v0 -> v1
+> - Fixed errors as per previous review
+> - Longer commit messages and descriptions
+> - Updated scale calculations as per iio gts scheme to export proper scale
+>   values and tables to userspace
+> - Removed processed attribute for the same channel for which raw is
+>   provided, instead, exporting proper scale and scale table to userspace so
+>   that userspace can do "(raw + offset) * scale" and derive Lux values
+> - Fixed IIO attribute range syntax
+> - Keeping the regmap lock enabled as the driver uses unlocked regfield
+>   accesses from interrupt handler
+> - Several levels of cleanups by placing guard mutexes in proper places and
+>   returning immediately in case of an error
+> - Using iio_device_claim_direct_mode() during raw reads so that
+>   configurations could not be changed during an adc conversion period
+> - In case of a powerdown error, returning immediately
+> - Removing the definition of direction of the hardware interrupt and
+>   leaving it on to device tree
+> - Adding the powerdown callback after doing device initialization
+> - Removed the regcache_cache_only() implementation
+
+This is wrong location for the changelog...
+
+> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 > ---
 
+...should go here, after cutter '---' line.
+
+...
+
+Missing bits.h.
+
+Also array_size.h is pending for v6.7-rc1.
+
+> +#include <linux/delay.h>
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pm.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+
+Missing types.h.
+
+> +#include <linux/units.h>
+
+...
+
+> +#define APDS9306_ALS_THRES_VAL_MAX	0xFFFFF
+
+It seems like the limit is hardware based, then probably better to mark it via
+(BIT(20) - 1) to show this limitation explicitly.
+
+...
+
+> +enum apds9306_power_states {
+> +	STANDBY,
+> +	ACTIVE,
+
+Perhaps namespace?
+
+> +};
+
+...
+
+> +/**
+> + * struct part_id_gts_multiplier - Part no. & corresponding gts multiplier
+
+GTS? WTH "GTS" is, btw? (see comment on the commit message)
+
+> + * @part_id: Part ID of the device
+> + * @max_scale_int: Multiplier for iio_init_iio_gts()
+> + * @max_scale_nano: Multiplier for iio_init_iio_gts()
+> + */
+
+...
+
+> +/**
+
+Hmm... Do we really need this in kernel doc?
+Ditto for the similar cases.
+
+> + * apds9306_repeat_rate_freq - Sampling Frequency in uHz
+> + */
+
+...
+
+> +static const int apds9306_repeat_rate_period[] = {
+> +	25000, 50000, 100000, 200000, 500000, 1000000, 2000000
+
+Leave the trailing comma.
+
+> +};
+
+> +static_assert(ARRAY_SIZE(apds9306_repeat_rate_freq) ==
+> +	      ARRAY_SIZE(apds9306_repeat_rate_period));
+
+Instead you may add a new definition and use it in [] in the respective arrays.
+
+...
+
+> +/**
+> + * struct apds9306_data - apds9306 private data and registers definitions
+
+> + * All regfield definitions are named exactly according to datasheet for easy
+> + * search
+
+I'm not sure this comment adds any value.
+
+> + * @dev:	Pointer to the device structure
+> + * @gts:	IIO Gain Time Scale structure
+> + * @mutex:	Lock for protecting register access, adc reads and power
+> + * @regmap:	Regmap structure pointer
+> + * @regfield_sw_reset:	Reg: MAIN_CTRL, Field: SW_Reset
+> + * @regfield_en:	Reg: MAIN_CTRL, Field: ALS_EN
+> + * @regfield_intg_time:	Reg: ALS_MEAS_RATE, Field: ALS Resolution/Bit Width
+> + * @regfield_repeat_rate:	Reg: ALS_MEAS_RATE, Field: ALS Measurement Rate
+> + * @regfield_scale:	Reg: ALS_GAIN, Field: ALS Gain Range
+> + * @regfield_int_src:	Reg: INT_CFG, Field: ALS Interrupt Source
+> + * @regfield_int_thresh_var_en:	Reg: INT_CFG, Field: ALS Var Interrupt Mode
+> + * @regfield_int_en:	Reg: INT_CFG, Field: ALS Interrupt Enable
+> + * @regfield_int_persist_val:	Reg: INT_PERSISTENCE, Field: ALS_PERSIST
+> + * @regfield_int_thresh_var_val:	Reg: ALS_THRSH_VAR, Field: ALS_THRES_VAR
+> + * @nlux_per_count:	nano lux per ADC count for a particular model
+> + * @read_data_available:	Flag set by IRQ handler for ADC data available
+> + * @intg_time_idx:	Array index for integration times
+> + * @repeat_rate_idx:	Array index for sampling frequency
+> + * @gain_idx:	Array index for gain
+> + * @int_ch:	Currently selected Interrupt channel
+> + */
+
+...
+
+> +static const struct iio_itime_sel_mul apds9306_itimes[] = {
+> +	GAIN_SCALE_ITIME_US(400000, APDS9306_MEAS_MODE_400MS, 128),
+> +	GAIN_SCALE_ITIME_US(200000, APDS9306_MEAS_MODE_200MS, 64),
+> +	GAIN_SCALE_ITIME_US(100000, APDS9306_MEAS_MODE_100MS, 32),
+> +	GAIN_SCALE_ITIME_US(50000, APDS9306_MEAS_MODE_50MS, 16),
+> +	GAIN_SCALE_ITIME_US(25000, APDS9306_MEAS_MODE_25MS, 8),
+> +	GAIN_SCALE_ITIME_US(3125, APDS9306_MEAS_MODE_3125US, 1),
+
+Hmm... Maybe BIT() in all values?
+
+> +};
+
+> +static const struct attribute_group apds9306_event_attr_group = {
+> +	.attrs = apds9306_event_attributes,
+> +};
+
+...
+
+> +	data->regfield_intg_time = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_intg_time);
+> +	if (IS_ERR(data->regfield_intg_time))
+> +		return PTR_ERR(data->regfield_intg_time);
+> +
+> +	data->regfield_repeat_rate = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_repeat_rate);
+> +	if (IS_ERR(data->regfield_repeat_rate))
+> +		return PTR_ERR(data->regfield_repeat_rate);
+> +
+> +	data->regfield_scale = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_scale);
+> +	if (IS_ERR(data->regfield_scale))
+> +		return PTR_ERR(data->regfield_scale);
+> +
+> +	data->regfield_int_src = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_int_src);
+> +	if (IS_ERR(data->regfield_int_src))
+> +		return PTR_ERR(data->regfield_int_src);
+> +
+> +	data->regfield_int_thresh_var_en = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_int_thresh_var_en);
+> +	if (IS_ERR(data->regfield_int_thresh_var_en))
+> +		return PTR_ERR(data->regfield_int_thresh_var_en);
+> +
+> +	data->regfield_int_en = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_int_en);
+> +	if (IS_ERR(data->regfield_int_en))
+> +		return PTR_ERR(data->regfield_int_en);
+> +
+> +	data->regfield_int_persist_val = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_int_persist_val);
+> +	if (IS_ERR(data->regfield_int_persist_val))
+> +		return PTR_ERR(data->regfield_int_en);
+> +
+> +	data->regfield_int_thresh_var_val = devm_regmap_field_alloc(dev, regmap,
+> +			apds9306_regfield_int_thresh_var_val);
+> +	if (IS_ERR(data->regfield_int_thresh_var_val))
+> +		return PTR_ERR(data->regfield_int_thresh_var_en);
+
+Instead I would rather do with a temporary variable all of these...
+
+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_int_thresh_var_val);
+	if (IS_ERR(tmp)
+		return PTR_ERR(tmp);
+	data->regfield_int_thresh_var_val = tmp;
+
+...
+
+> +static int apds9306_power_state(struct apds9306_data *data,
+> +				enum apds9306_power_states state)
+> +{
+> +	int ret;
+> +
+> +	/* Reset not included as it causes ugly I2C bus error */
+> +	switch (state) {
+> +	case STANDBY:
+> +		return regmap_field_write(data->regfield_en, 0);
+> +	case ACTIVE:
+> +		ret = regmap_field_write(data->regfield_en, 1);
+> +		if (ret)
+> +			return ret;
+> +		/* 5ms wake up time */
+> +		usleep_range(5000, 10000);
+
+fsleep()
+
+> +		return 0;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+...
+
+> +static int apds9306_runtime_power(struct apds9306_data *data, int en)
+> +{
+> +	struct device *dev = data->dev;
+> +	int ret;
+> +
+> +	if (en) {
+> +		ret = pm_runtime_resume_and_get(dev);
+> +		if (ret < 0) {
+> +			dev_err(dev, "runtime resume failed: %d\n", ret);
+> +			return ret;
+> +		}
+> +		return 0;
+> +	}
+> +
+> +	pm_runtime_mark_last_busy(dev);
+> +	pm_runtime_put_autosuspend(dev);
+> +	return 0;
+> +}
+
+Wouldn't be better to have something like
+
+static int apds9306_runtime_power_on(struct device *dev)
+{
+	int ret;
+
+	ret = pm_runtime_resume_and_get(dev);
+	if (ret < 0)
+		dev_err(dev, "runtime resume failed: %d\n", ret);
+	return ret;
+}
+
+static int apds9306_runtime_power_off(struct device *dev)
+{
+	pm_runtime_mark_last_busy(dev);
+	pm_runtime_put_autosuspend(dev);
+	return 0;
+}
+
+// Not sure you will even need this one
+static int apds9306_runtime_power(struct apds9306_data *data, bool en)
+{
+	struct device *dev = data->dev;
+
+	if (en)
+		return apds9306_runtime_power_on(dev);
+
+	return apds9306_runtime_power_off(dev);
+}
+
+?
+
+...
+
+> +static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
+> +{
+> +	struct device *dev = data->dev;
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	int ret, delay, intg_time, status = 0;
+> +	u8 buff[3];
+> +
+> +	ret = apds9306_runtime_power(data, 1);
+
+	ret = apds9306_runtime_power_on(dev);
+
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	intg_time = iio_gts_find_int_time_by_sel(&data->gts,
+> +						 data->intg_time_idx);
+> +	if (intg_time < 0)
+> +		delay = apds9306_repeat_rate_period[data->repeat_rate_idx];
+> +
+> +	/*
+> +	 * Whichever is greater - integration time period or
+> +	 * sampling period.
+> +	 */
+> +	delay = max(intg_time,
+> +		    apds9306_repeat_rate_period[data->repeat_rate_idx]);
+> +
+> +
+
+One blank line is enough.
+
+> +	/*
+> +	 * Clear stale data flag that might have been set by the interrupt
+> +	 * handler if it got data available flag set in the status reg.
+> +	 */
+> +	data->read_data_available = 0;
+> +
+> +	/*
+> +	 * If this function runs parallel with the interrupt handler, either
+> +	 * this reads and clears the status registers or the interrupt handler
+> +	 * does. The interrupt handler sets a flag for read data available
+> +	 * in our private structure which we read here.
+> +	 */
+> +	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS,
+> +				status, (status & (APDS9306_ALS_DATA_STAT_MASK |
+> +				APDS9306_ALS_INT_STAT_MASK)) ||
+> +				data->read_data_available,
+> +				APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
+
+> +
+
+Redundant blank line.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* If we reach here before the interrupt handler we push an event */
+> +	if ((status & APDS9306_ALS_INT_STAT_MASK)) {
+> +		iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_LIGHT,
+> +			       data->int_ch,
+> +			       IIO_EV_TYPE_THRESH, IIO_EV_DIR_EITHER),
+> +			       iio_get_time_ns(indio_dev));
+> +	}
+
+> +	if ((status & APDS9306_ALS_DATA_STAT_MASK) ||
+> +		data->read_data_available) {
+
+Wrong indentation, perhaps put them on one line?
+
+> +		ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+> +		if (ret) {
+> +			dev_err(dev, "read data failed\n");
+> +			return ret;
+> +		}
+> +		*val = get_unaligned_le24(&buff);
+> +	}
+> +
+> +	return apds9306_runtime_power(data, 0);
+
+	return apds9306_runtime_power_off(dev);
+
+> +}
+
+...
+
+> +	gain_new_closest = iio_find_closest_gain_low(&data->gts, gain_new, &ok);
+> +	if (gain_new_closest < 0) {
+> +		gain_new_closest = iio_gts_get_min_gain(&data->gts);
+> +		if (gain_new_closest < 0)
+
+> +			return gain_new_closest < 0;
+
+Typo?
+
+> +	}
+
+...
+
+> +static int apds9306_sampling_freq_set(struct apds9306_data *data, int val,
+> +				int val2)
+> +{
+> +	int i, ret = -EINVAL;
+
+Use value directly.
+
+> +
+> +	for (i = 0; i < ARRAY_SIZE(apds9306_repeat_rate_freq); i++)
+> +		if (apds9306_repeat_rate_freq[i][0] == val &&
+> +				apds9306_repeat_rate_freq[i][1] == val2) {
+
+Wrong indentation.
+
+> +			ret = regmap_field_write(data->regfield_repeat_rate, i);
+> +			if (ret)
+> +				return ret;
+> +			data->repeat_rate_idx = i;
+
+> +			return ret;
+
+You meant break here or return 0; ?
+
+> +		}
+> +
+> +	return ret;
+> +}
+
+You can rewrite this as
+
+	unsigned int i;
+	int ret;
+
+	for (i = 0; i < ARRAY_SIZE(apds9306_repeat_rate_freq); i++) {
+		if (apds9306_repeat_rate_freq[i][0] == val &&
+		    apds9306_repeat_rate_freq[i][1] == val2)
+			break;
+	}
+	if (i == ARRAY_SIZE(apds9306_repeat_rate_freq))
+		return -EINVAL;
+
+	ret = regmap_field_write(data->regfield_repeat_rate, i);
+	if (ret)
+		return ret;
+
+	data->repeat_rate_idx = i;
+
+	return 0;
+
+...which is easier to read and understand.
+
+...
+
+> +	ret = iio_gts_find_gain_sel_for_scale_using_time(&data->gts,
+> +				     data->intg_time_idx, val, val2, &gain_sel);
+> +	if (ret) {
+> +		for (i = 0; i < data->gts.num_itime; i++) {
+> +			time_sel = data->gts.itime_table[i].sel;
+> +
+> +			if (time_sel == data->intg_time_idx)
+> +				continue;
+> +
+> +			ret = iio_gts_find_gain_sel_for_scale_using_time(&data->gts,
+> +						time_sel, val, val2, &gain_sel);
+> +			if (!ret)
+> +				break;
+> +		}
+> +		if (ret)
+> +			return -EINVAL;
+> +
+> +		ret = apds9306_intg_time_set_hw(data, time_sel);
+> +		if (ret)
+> +			return ret;
+
+Looks like a candidate for a helper function.
+
+> +	}
+
+...
+
+> +	if (val < 0 || val > APDS9306_ALS_PERSIST_VAL_MAX)
+
+in_range()
+
+> +		return -EINVAL;
+
+...
+
+> +static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> +				     int *val)
+> +{
+> +	int var, ret;
+> +	u8 buff[3];
+> +
+> +	if (dir == IIO_EV_DIR_RISING)
+> +		var = APDS9306_ALS_THRES_UP_0;
+> +	else if (dir == IIO_EV_DIR_FALLING)
+> +		var = APDS9306_ALS_THRES_LOW_0;
+> +	else
+> +		return -EINVAL;
+
+> +	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
+> +	if (ret)
+> +		return ret;
+> +	*val = get_unaligned_le24(&buff);
+> +	return 0;
+
+In some cases you put blank line(s) in between, in some seems not. Please,
+be consistent with your style for whatever it is: blank lines, comments,
+indentation, ...
+
+> +}
+
+...
+
+> +	if (val < 0 || val > APDS9306_ALS_THRES_VAL_MAX)
+
+in_range()
+
+> +		return -EINVAL;
+
+...
+
+> +	if (val < 0 || val > APDS9306_ALS_THRES_VAR_VAL_MAX)
+
+Ditto.
+
+> +		return -EINVAL;
+
+...
+
+> +		return iio_gts_all_avail_scales(&data->gts, vals, type,
+> +						length);
+
+It's exactly 80 character if on a single line, why wrapped?
+
+...
+
+> +	mutex_lock(&data->mutex);
+
+You can use guard() from cleanup.h for this kind of stuff to make your life and
+maintenance easier.
+
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_INT_TIME:
+
+> +		if (!val)
+
+What's wrong with positive check and even more with the usual pattern -- check
+for errors first?
+
+> +			ret = apds9306_intg_time_set(data, val2);
+> +		else
+> +			ret = -EINVAL;
+> +		break;
+
+With the above (i.e guard() use) this will become as simple as
+
+		if (val)
+			return -EINVAL;
+
+		return apds9306_intg_time_set(data, val2);
+
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = apds9306_scale_set(data, val, val2);
+> +		break;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		ret = apds9306_sampling_freq_set(data, val, val2);
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +	}
+> +	mutex_unlock(&data->mutex);
+
+...
+
+> +	switch (type) {
+> +	case IIO_EV_TYPE_THRESH:
+> +		mutex_lock(&data->mutex);
+> +		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD)
+> +			ret = apds9306_event_period_get(data, val);
+> +		else
+> +			ret = apds9306_event_thresh_get(data, dir, val);
+> +		mutex_unlock(&data->mutex);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_EV_TYPE_THRESH_ADAPTIVE:
+> +		mutex_lock(&data->mutex);
+> +		ret = apds9306_event_thresh_adaptive_get(data, val);
+> +		mutex_unlock(&data->mutex);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+This will benefit from guard() or scoped_guard().
+And many other functions in your driver.
+I believe ~15% of LoCs can be dropped with help of cleanup.h.
+
+...
+
+> +#define APDS9306_IIO_INFO \
+> +	.read_avail = apds9306_read_avail, \
+> +	.read_raw = apds9306_read_raw, \
+> +	.write_raw = apds9306_write_raw, \
+> +	.write_raw_get_fmt = apds9306_write_raw_get_fmt,
+
+Not using this macro will only add 1 LoC, but will be much easier to read.
+
+...
+
+> +			return dev_err_probe(dev, ret,
+> +					"failed to assign interrupt.\n");
+
+Indentation issue.
+
+...
+
+> +		return dev_err_probe(dev, ret,
+> +				"failed to add action on driver unwind\n");
+
+Ditto.
 
 ...
 
 > +
-> +static ssize_t reset_accumulators_store(struct device *dev,
-> +					struct device_attribute *attr,
-> +					const char *buf, size_t count)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct pac1934_chip_info *info = iio_priv(indio_dev);
-> +	int ret, i;
-> +	u8 refresh_cmd = PAC1934_REFRESH_REG_ADDR;
-> +
-> +	ret = i2c_smbus_write_byte(info->client, refresh_cmd);
-> +	if (ret) {
-> +		dev_err(&indio_dev->dev,
-> +			"%s - cannot send 0x%02X\n",
-> +			__func__, refresh_cmd);
-> +	}
-> +
-> +	for (i = 0 ; i < info->phys_channels; i++)
-> +		info->chip_reg_data.energy_sec_acc[i] = 0;
-> +
-> +	return count;
-> +}
-> +
-> +static IIO_DEVICE_ATTR(in_shunt_resistor_1, 0644, shunt_value_show, shunt_value_store, 0);
-> +static IIO_DEVICE_ATTR(in_shunt_resistor_2, 0644, shunt_value_show, shunt_value_store, 0);
-> +static IIO_DEVICE_ATTR(in_shunt_resistor_3, 0644, shunt_value_show, shunt_value_store, 0);
-> +static IIO_DEVICE_ATTR(in_shunt_resistor_4, 0644, shunt_value_show, shunt_value_store, 0);
-> +static IIO_DEVICE_ATTR(reset_accumulators, 0200, NULL, reset_accumulators_store, 0);
-> +
-> +static struct attribute *pac1934_all_attributes[] = {
-> +	PAC1934_DEV_ATTR(in_shunt_resistor_1),
-> +	PAC1934_DEV_ATTR(in_shunt_resistor_2),
-> +	PAC1934_DEV_ATTR(in_shunt_resistor_3),
-> +	PAC1934_DEV_ATTR(in_shunt_resistor_4),
-> +	PAC1934_DEV_ATTR(reset_accumulators),
-> +	NULL
-> +};
-> +
-> +static int pac1934_prep_custom_attributes(struct pac1934_chip_info *info,
-> +					  struct iio_dev *indio_dev)
-> +{
-> +	int i, j, active_channels_count = 0;
-> +	struct attribute **pac1934_custom_attributes;
-> +	struct attribute_group *pac1934_group;
-> +	struct i2c_client *client = info->client;
-> +
-> +	for (i = 0 ; i < info->phys_channels; i++)
-> +		if (info->active_channels[i])
-> +			active_channels_count++;
-> +
-> +	pac1934_group = devm_kzalloc(&client->dev, sizeof(*pac1934_group), GFP_KERNEL);
-> +
-> +	pac1934_custom_attributes = devm_kzalloc(&client->dev,
-> +						 (PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
-> +						 active_channels_count +
-> +						 PAC1934_SHARED_DEVATTRS_COUNT)
-> +						 * sizeof(*pac1934_group) + 1,
-> +						 GFP_KERNEL);
-> +	j = 0;
-> +
-> +	for (i = 0 ; i < info->phys_channels; i++) {
-> +		if (info->active_channels[i]) {
-> +			pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * j] =
-> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * i];
-> +			pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * j + 1] =
-> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL * i + 1];
-> +			j++;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < PAC1934_SHARED_DEVATTRS_COUNT; i++)
-> +		pac1934_custom_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
-> +			active_channels_count + i] =
-> +			pac1934_all_attributes[PAC1934_CUSTOM_ATTR_FOR_CHANNEL *
-> +			info->phys_channels + i];
-> +
-> +	pac1934_group->attrs = pac1934_custom_attributes;
-> +	info->pac1934_info.attrs = pac1934_group;
-> +
-> +	return 0;
-> +}
-> +
-> +static void pac1934_remove(struct i2c_client *client)
 
-Remove functions goes always after probe.
+Unneeded blank line.
 
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(&client->dev);
-> +	struct pac1934_chip_info *info = iio_priv(indio_dev);
-> +
-> +	cancel_delayed_work_sync(&info->work_chip_rfsh);
-> +}
-> +
-> +static int pac1934_probe(struct i2c_client *client)
-> +{
-> +	struct pac1934_chip_info *info;
-> +	struct iio_dev *indio_dev;
-> +	const char *name = NULL;
-> +	int cnt, ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*info));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	info = iio_priv(indio_dev);
-> +
-> +	i2c_set_clientdata(client, indio_dev);
-> +	info->client = client;
-> +
-> +	/*
-> +	 * load default settings - all channels disabled,
-> +	 * uni directional flow
-> +	 */
-> +	for (cnt = 0; cnt < PAC1934_MAX_NUM_CHANNELS; cnt++) {
-> +		info->active_channels[cnt] = false;
-> +		info->bi_dir[cnt] = false;
-> +	}
-> +
-> +	info->crt_samp_spd_bitfield = PAC1934_SAMP_1024SPS;
-> +
-> +	ret = pac1934_chip_identify(info);
-> +	if (ret)
-> +		return -EINVAL;
-> +
-> +	if (ACPI_HANDLE(&client->dev)) {
-> +		if (!info->phys_channels)
-> +			/* failed to identify part number, unknown number of channels available */
-> +			return -EINVAL;
-> +
-> +		name = pac1934_match_acpi_device(client, info);
-> +	} else {
-> +		name = pac1934_match_of_device(client, info);
-> +	}
-> +
-> +	if (!name) {
-> +		dev_dbg(&client->dev, "parameter parsing returned an error\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	mutex_init(&info->lock);
-> +
-> +	/*
-> +	 * do now any chip specific initialization (e.g. read/write
-> +	 * some registers), enable/disable certain channels, change the sampling
-> +	 * rate to the requested value
-> +	 */
-> +	ret = pac1934_chip_configure(info);
-> +	if (ret < 0)
-> +		goto fail;
+> +module_i2c_driver(apds9306_driver);
 
-Why do you need to go to fail here? Is the work scheduled in error cases?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> +
-> +	/* prepare the channel information */
-> +	ret = pac1934_prep_iio_channels(info, indio_dev);
-> +	if (ret < 0)
-> +		goto fail;
-> +
-> +	ret = pac1934_prep_custom_attributes(info, indio_dev);
-> +	if (ret < 0) {
-> +		dev_err_probe(&indio_dev->dev, ret,
-> +			      "Can't configure custom attributes for PAC1934 device\n");
-> +		goto fail;
-> +	}
-> +
-> +	info->pac1934_info.read_raw = pac1934_read_raw;
-> +	info->pac1934_info.read_avail = pac1934_read_avail;
-> +	info->pac1934_info.write_raw = pac1934_write_raw;
-> +	info->pac1934_info.read_label = pac1934_read_label;
-> +
-> +	indio_dev->info = &info->pac1934_info;
-> +	indio_dev->name = name;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	/*
-> +	 * read whatever has been accumulated in the chip so far
-> +	 * and reset the accumulators
-> +	 */
-> +	ret = pac1934_reg_snapshot(info, true, PAC1934_REFRESH_REG_ADDR,
-> +				   PAC1934_MIN_UPDATE_WAIT_TIME_US);
-> +	if (ret < 0)
-> +		goto fail;
-> +
-> +	ret = devm_iio_device_register(&client->dev, indio_dev);
-> +	if (ret < 0) {
-> +		dev_err_probe(&indio_dev->dev, ret,
-> +			      "Can't register IIO device\n");
-> +		goto fail;
-> +	}
-> +
-> +	return 0;
-> +
-> +fail:
-> +	cancel_delayed_work_sync(&info->work_chip_rfsh);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct i2c_device_id pac1934_id[] = {
-> +	{ .name = "pac1931", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1931] },
-> +	{ .name = "pac1932", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1932] },
-> +	{ .name = "pac1933", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1933] },
-> +	{ .name = "pac1934", .driver_data = (kernel_ulong_t)&pac1934_chip_config[PAC1934] },
-> +	{}
-> +};
-> +
-> +MODULE_DEVICE_TABLE(i2c, pac1934_id);
-> +
-> +static const struct of_device_id pac1934_of_match[] = {
-> +	{
-> +		.compatible = "microchip,pac1931",
-> +		.data = &pac1934_chip_config[PAC1931]
-> +	},
-> +	{
-> +		.compatible = "microchip,pac1932",
-> +		.data = &pac1934_chip_config[PAC1932]
-> +	},
-> +	{
-> +		.compatible = "microchip,pac1933",
-> +		.data = &pac1934_chip_config[PAC1933]
-> +	},
-> +	{
-> +		.compatible = "microchip,pac1934",
-> +		.data = &pac1934_chip_config[PAC1934]
-> +	},
-> +	{}
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, pac1934_of_match);
-> +
-> +/* using MCHP1930 to be compatible with WINDOWS ACPI */
-> +static const struct acpi_device_id pac1934_acpi_match[] = {
-> +	{"MCHP1930", 0},
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(acpi, pac1934_acpi_match);
-> +
-> +static struct i2c_driver pac1934_driver = {
-> +	.driver	 = {
-> +		.name = "pac1934",
-> +		.of_match_table = pac1934_of_match,
-> +		.acpi_match_table = ACPI_PTR(pac1934_acpi_match)
-
-Drop ACPI_PTR, causes warnings.
-
-Best regards,
-Krzysztof
 

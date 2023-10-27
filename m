@@ -2,112 +2,249 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E05237D9AF6
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B187D9B4D
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346078AbjJ0OPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 10:15:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50240 "EHLO
+        id S1345877AbjJ0O0X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 10:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345998AbjJ0OPc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:15:32 -0400
+        with ESMTP id S1345834AbjJ0O0W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:26:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1657B8;
-        Fri, 27 Oct 2023 07:15:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B57C433CA;
-        Fri, 27 Oct 2023 14:15:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3045BC0;
+        Fri, 27 Oct 2023 07:26:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2AFC433CA;
+        Fri, 27 Oct 2023 14:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698416129;
-        bh=FeoSFjBClAtXEms1dJG9FSmvqhaVOV5FqfpXbkM0l+E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AQBhfqtnIqkANUon/plWcETuTbIxuFHYTXOC5YnH0l4iAG3UAWgwc+jGQJafTzoHD
-         owYdNx1V9LVHi3u6T42PHTalE3Z7yN+6R2FnWRuZovcHePHByCkmqu5QRZo+NNxOdA
-         oPTWYWapwlTXh4lqBpOqmUbt/CukWRfDq8815V63CGJmcFZ9oPU0XIhGSWF4Vu7CKr
-         W6ozmZ3IRISu+lRG7NAB+H/hm1YQ3tQEt4RAHcY6ZLDwHnZFdpaFRYMQWcd+v8ynYi
-         5EEh0ujBTx/bE6A3BsbX3hBPN0d79bew+/UweWV66whdtWVsNv9HRJb9dtSYlmdW6y
-         NfiCEPiSeZKpg==
-Date:   Fri, 27 Oct 2023 15:15:07 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Javier Carrasco <javier.carrasco@wolfvision.net>
-Cc:     Gerald Loacker <gerald.loacker@wolfvision.net>,
+        s=k20201202; t=1698416779;
+        bh=8qw0EbZsKfI+mcRiDV8ej9Au0jkLQmpK/TeFhPyywc0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YqrsoCJAZTU1G5TxXnts8bFdbd08TgNfMjuTCCFE90q2UXWM5ZjaznzG/39N6gnJL
+         P7jfc1XJAxr4Z2LP32asathQpDzPyZuHuiBdhf4yYqQlNlrjiEG8IGkd38DNjyxB88
+         ZufPg8vGPQxuXdCPm05PS0uLbPUF5DQO1DU8izlOjsshe5uAF1MBFmn1MkLUCLRXs8
+         pxgTEdDzQLdidgJr+NHr1byt/6xrw4eG49oXIr+dWxAOSiB0uFjm4tm4ehia80YlUf
+         cl9dyK38vULRUnUmHAXsosuXLog3XpJE5sil/ZxYPG9cF1hdJFZYEmOzr8SZCW0x5C
+         ItAzFKgS5c89g==
+Date:   Fri, 27 Oct 2023 15:26:14 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: tmag5273: fix temperature offset
-Message-ID: <20231027151507.2eac395c@jic23-huawei>
-In-Reply-To: <20231023-topic-tmag5273x1_temp_offset-v1-1-983dca43292c@wolfvision.net>
-References: <20231023-topic-tmag5273x1_temp_offset-v1-1-983dca43292c@wolfvision.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: light: Avago APDS9306
+Message-ID: <20231027-cryptic-smooth-c8826acea9b5@spud>
+References: <20231026143532.39660-1-subhajit.ghosh@tweaklogic.com>
+ <20231026143532.39660-2-subhajit.ghosh@tweaklogic.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lsk+N5ANcwQ3U5Sa"
+Content-Disposition: inline
+In-Reply-To: <20231026143532.39660-2-subhajit.ghosh@tweaklogic.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Oct 2023 11:50:02 +0200
-Javier Carrasco <javier.carrasco@wolfvision.net> wrote:
 
-> The current offset has the scale already applied to it. The ABI
-> documentation defines the offset parameter as "offset to be added
-> to <type>[Y]_raw prior to scaling by <type>[Y]_scale in order to
-> obtain value in the <type> units as specified in <type>[Y]_raw
-> documentation"
-> 
-> The right value is obtained at 0 degrees Celsius by the formula provided
-> in the datasheet:
-> 
-> T = Tsens_t0 + (Tadc_t - Tadc_t0) / Tadc_res
+--lsk+N5ANcwQ3U5Sa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So base units for temperature are milli degrees celsius. 
-T = 1000 * (25 + (adc - 17508) / 60.1)
+Yo,
 
-T =  1000/60.1 * (25 * 60.1 + adc - 17508)
-T = 10000/601 * (-16005.5 + adc)  
-So I think the maths is a little off..
-> 
-> where:
-> T = 0 degrees Celsius
-> Tsens_t0 (reference temperature) = 25 degrees Celsius
-> Tadc_t0 (16-bit format for Tsens_t0) = 17508
-> Tadc_res = 60.1 LSB/degree Celsius
-> 
-> The resulting offset is 16605.5, which has been truncated to 16005 to
-Interesting - the truncated value you have looks good to be but that's
-not matching with the resulting offset or the value below...
+On Fri, Oct 27, 2023 at 01:05:31AM +1030, Subhajit Ghosh wrote:
 
-> provide an integer value with a precision loss smaller than the 1-LSB
-> measurement precision.
-> 
-> Fix the offset to apply its value prior to scaling.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
+Missing a commit message.
+
+> v0 -> v1
+> - Squashing Avago (Broadcom) APDS9300 and APDS9960 schemas into one as
+>   they look similar
+> - Adding support for APDS9306 in the same schema file
+> - Adding mandatory interrupt property requirement for APDS9960 as per the
+>   driver's probe method which fails if interrupt bindings are not defined.
+
+I know this is in the changelog, and not the commit message, so you're
+saying what you changed and not the reasoning for doing something, but
+it'd be good to mention why the interrupt is required for this one device
+only in the commit message (and since this is a binding, that
+explanation needs to be something rooted in how the hardware works).
+
+>   Both APDS9300 and APDS9306 (this patch set) supports sensors with and
+>   without hardware interrupt bindings
+> - In the device tree example, replacing interrupt type number with macro
+>   from irq.h
+> - Updated the vin to vdd which is the same for all the three sensors
+> - Used proper "Datasheet:" tags
+
+This all goes below the --- line.
+
+Cheers,
+Conor.
+
+> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 > ---
->  drivers/iio/magnetometer/tmag5273.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
-> index c5e5c4ad681e..d22ca39007b6 100644
-> --- a/drivers/iio/magnetometer/tmag5273.c
-> +++ b/drivers/iio/magnetometer/tmag5273.c
-> @@ -356,7 +356,7 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_OFFSET:
->  		switch (chan->type) {
->  		case IIO_TEMP:
-> -			*val = -266314;
-> +			*val = -16605;
->  			return IIO_VAL_INT;
->  		default:
->  			return -EINVAL;
-> 
-> ---
-> base-commit: 05d3ef8bba77c1b5f98d941d8b2d4aeab8118ef1
-> change-id: 20231023-topic-tmag5273x1_temp_offset-17774cbce961
-> 
-> Best regards,
+>  .../bindings/iio/light/avago,apds9300.yaml    | 35 ++++++++++++---
+>  .../bindings/iio/light/avago,apds9960.yaml    | 44 -------------------
+>  2 files changed, 30 insertions(+), 49 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apd=
+s9960.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9300.y=
+aml b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> index 206af44f2c43..7a24a97d0594 100644
+> --- a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> @@ -4,17 +4,26 @@
+>  $id: http://devicetree.org/schemas/iio/light/avago,apds9300.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+> -title: Avago APDS9300 ambient light sensor
+> +title: Avago Gesture, RGB, ALS and Proximity sensors
+> =20
+>  maintainers:
+>    - Jonathan Cameron <jic23@kernel.org>
+> +  - Matt Ranostay <matt@ranostay.sg>
+> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> =20
+>  description: |
+> -  Datasheet at https://www.avagotech.com/docs/AV02-1077EN
+> +  Avago (Broadcom) optical and proximity sensors with I2C interfaces.
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-1077EN
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-4191EN
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
+> =20
+>  properties:
+>    compatible:
+> -    const: avago,apds9300
+> +    oneOf:
+> +      - enum:
+> +          - avago,apds9300
+> +          - avago,apds9306
+> +          - avago,apds9960
+> =20
+>    reg:
+>      maxItems: 1
+> @@ -22,14 +31,30 @@ properties:
+>    interrupts:
+>      maxItems: 1
+> =20
+> -additionalProperties: false
+> +  vdd-supply: true
+> =20
+>  required:
+>    - compatible
+>    - reg
+> =20
+> +allOf:
+> +  - $ref: ../common.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - avago,apds9960
+> +    then:
+> +      required:
+> +        - interrupts
+> +
+> +additionalProperties: false
+> +
+>  examples:
+>    - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+>      i2c {
+>          #address-cells =3D <1>;
+>          #size-cells =3D <0>;
+> @@ -38,7 +63,7 @@ examples:
+>              compatible =3D "avago,apds9300";
+>              reg =3D <0x39>;
+>              interrupt-parent =3D <&gpio2>;
+> -            interrupts =3D <29 8>;
+> +            interrupts =3D <29 IRQ_TYPE_EDGE_FALLING>;
+>          };
+>      };
+>  ...
+> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9960.y=
+aml b/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+> deleted file mode 100644
+> index f06e0fda5629..000000000000
+> --- a/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+> +++ /dev/null
+> @@ -1,44 +0,0 @@
+> -# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> -%YAML 1.2
+> ----
+> -$id: http://devicetree.org/schemas/iio/light/avago,apds9960.yaml#
+> -$schema: http://devicetree.org/meta-schemas/core.yaml#
+> -
+> -title: Avago APDS9960 gesture/RGB/ALS/proximity sensor
+> -
+> -maintainers:
+> -  - Matt Ranostay <matt.ranostay@konsulko.com>
+> -
+> -description: |
+> -  Datasheet at https://www.avagotech.com/docs/AV02-4191EN
+> -
+> -properties:
+> -  compatible:
+> -    const: avago,apds9960
+> -
+> -  reg:
+> -    maxItems: 1
+> -
+> -  interrupts:
+> -    maxItems: 1
+> -
+> -additionalProperties: false
+> -
+> -required:
+> -  - compatible
+> -  - reg
+> -
+> -examples:
+> -  - |
+> -    i2c {
+> -        #address-cells =3D <1>;
+> -        #size-cells =3D <0>;
+> -
+> -        light-sensor@39 {
+> -            compatible =3D "avago,apds9960";
+> -            reg =3D <0x39>;
+> -            interrupt-parent =3D <&gpio1>;
+> -            interrupts =3D <16 1>;
+> -        };
+> -    };
+> -...
+> --=20
+> 2.34.1
+>=20
 
+--lsk+N5ANcwQ3U5Sa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTvIhgAKCRB4tDGHoIJi
+0vpoAP9sOV4rKSfnB82x6BxZSqKDTQiJwYRQch7dCgI6jgz0xAEAm83dyQb3y+bk
+hXowr2Z3C8yOV8vGpkHUk/uX7Mmp/Ag=
+=dQX/
+-----END PGP SIGNATURE-----
+
+--lsk+N5ANcwQ3U5Sa--

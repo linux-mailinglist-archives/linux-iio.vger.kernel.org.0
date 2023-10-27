@@ -2,106 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E80B7D9ABF
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E05237D9AF6
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 16:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346079AbjJ0OEw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 10:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
+        id S1346078AbjJ0OPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 10:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346076AbjJ0OEw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:04:52 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635A1C0;
-        Fri, 27 Oct 2023 07:04:50 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39RB1Gma028823;
-        Fri, 27 Oct 2023 10:04:20 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3tyx01pa89-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Oct 2023 10:04:20 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 39RE4I3q048300
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Oct 2023 10:04:18 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 27 Oct
- 2023 10:04:17 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 27 Oct 2023 10:04:17 -0400
-Received: from rbolboac.ad.analog.com ([10.48.65.174])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 39RE40hc022983;
-        Fri, 27 Oct 2023 10:04:09 -0400
-From:   Ramona Gradinariu <ramona.gradinariu@analog.com>
-To:     <jic23@kernel.org>, <nuno.sa@analog.com>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     Ramona Gradinariu <ramona.gradinariu@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 3/3] dt-bindings: adis16460: Add 'spi-cs-inactive-delay-ns' property
-Date:   Fri, 27 Oct 2023 17:03:58 +0300
-Message-ID: <20231027140358.328699-4-ramona.gradinariu@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231027140358.328699-1-ramona.gradinariu@analog.com>
-References: <20231027140358.328699-1-ramona.gradinariu@analog.com>
+        with ESMTP id S1345998AbjJ0OPc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 10:15:32 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1657B8;
+        Fri, 27 Oct 2023 07:15:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B57C433CA;
+        Fri, 27 Oct 2023 14:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698416129;
+        bh=FeoSFjBClAtXEms1dJG9FSmvqhaVOV5FqfpXbkM0l+E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=AQBhfqtnIqkANUon/plWcETuTbIxuFHYTXOC5YnH0l4iAG3UAWgwc+jGQJafTzoHD
+         owYdNx1V9LVHi3u6T42PHTalE3Z7yN+6R2FnWRuZovcHePHByCkmqu5QRZo+NNxOdA
+         oPTWYWapwlTXh4lqBpOqmUbt/CukWRfDq8815V63CGJmcFZ9oPU0XIhGSWF4Vu7CKr
+         W6ozmZ3IRISu+lRG7NAB+H/hm1YQ3tQEt4RAHcY6ZLDwHnZFdpaFRYMQWcd+v8ynYi
+         5EEh0ujBTx/bE6A3BsbX3hBPN0d79bew+/UweWV66whdtWVsNv9HRJb9dtSYlmdW6y
+         NfiCEPiSeZKpg==
+Date:   Fri, 27 Oct 2023 15:15:07 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Javier Carrasco <javier.carrasco@wolfvision.net>
+Cc:     Gerald Loacker <gerald.loacker@wolfvision.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: tmag5273: fix temperature offset
+Message-ID: <20231027151507.2eac395c@jic23-huawei>
+In-Reply-To: <20231023-topic-tmag5273x1_temp_offset-v1-1-983dca43292c@wolfvision.net>
+References: <20231023-topic-tmag5273x1_temp_offset-v1-1-983dca43292c@wolfvision.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: i09VU6HRxbq9GHHEBk8fb73x9FrSS4iJ
-X-Proofpoint-GUID: i09VU6HRxbq9GHHEBk8fb73x9FrSS4iJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-27_12,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 adultscore=0 mlxscore=0 malwarescore=0 impostorscore=0
- clxscore=1015 phishscore=0 suspectscore=0 mlxlogscore=982 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2310240000 definitions=main-2310270121
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The adis16460 device requires a stall time between SPI
-transactions (during which the chip select is inactive),
-with a minimum value equal to 16 microseconds.
-This commit adds 'spi-cs-inactive-delay-ns' property, which should
-indicate the stall time between consecutive SPI transactions.
-The specified minimum time may not be sufficient for all
-configurations.
+On Mon, 23 Oct 2023 11:50:02 +0200
+Javier Carrasco <javier.carrasco@wolfvision.net> wrote:
 
-Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
-changes in v3:
- - removed description
- - updated commit message
- Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+> The current offset has the scale already applied to it. The ABI
+> documentation defines the offset parameter as "offset to be added
+> to <type>[Y]_raw prior to scaling by <type>[Y]_scale in order to
+> obtain value in the <type> units as specified in <type>[Y]_raw
+> documentation"
+> 
+> The right value is obtained at 0 degrees Celsius by the formula provided
+> in the datasheet:
+> 
+> T = Tsens_t0 + (Tadc_t - Tadc_t0) / Tadc_res
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-index 4e43c80e5119..4cacc9948726 100644
---- a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-@@ -25,6 +25,10 @@ properties:
+So base units for temperature are milli degrees celsius. 
+T = 1000 * (25 + (adc - 17508) / 60.1)
 
-   spi-cpol: true
+T =  1000/60.1 * (25 * 60.1 + adc - 17508)
+T = 10000/601 * (-16005.5 + adc)  
+So I think the maths is a little off..
+> 
+> where:
+> T = 0 degrees Celsius
+> Tsens_t0 (reference temperature) = 25 degrees Celsius
+> Tadc_t0 (16-bit format for Tsens_t0) = 17508
+> Tadc_res = 60.1 LSB/degree Celsius
+> 
+> The resulting offset is 16605.5, which has been truncated to 16005 to
+Interesting - the truncated value you have looks good to be but that's
+not matching with the resulting offset or the value below...
 
-+  spi-cs-inactive-delay-ns:
-+    minimum: 16000
-+    default: 16000
-+
-   interrupts:
-     maxItems: 1
-
---
-2.34.1
+> provide an integer value with a precision loss smaller than the 1-LSB
+> measurement precision.
+> 
+> Fix the offset to apply its value prior to scaling.
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
+> ---
+>  drivers/iio/magnetometer/tmag5273.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
+> index c5e5c4ad681e..d22ca39007b6 100644
+> --- a/drivers/iio/magnetometer/tmag5273.c
+> +++ b/drivers/iio/magnetometer/tmag5273.c
+> @@ -356,7 +356,7 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_OFFSET:
+>  		switch (chan->type) {
+>  		case IIO_TEMP:
+> -			*val = -266314;
+> +			*val = -16605;
+>  			return IIO_VAL_INT;
+>  		default:
+>  			return -EINVAL;
+> 
+> ---
+> base-commit: 05d3ef8bba77c1b5f98d941d8b2d4aeab8118ef1
+> change-id: 20231023-topic-tmag5273x1_temp_offset-17774cbce961
+> 
+> Best regards,
 

@@ -2,125 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E048D7D9CDA
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 17:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B2B7D9D1C
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 17:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346167AbjJ0PYd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 11:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48432 "EHLO
+        id S1346186AbjJ0Pia (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 11:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346211AbjJ0PYc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 11:24:32 -0400
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F5CAC;
-        Fri, 27 Oct 2023 08:24:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fi3Hy5MlnrhE9FKkTVVTj2qVAlvkeLy1y6uExt5JLThYlV0NeuNB/t2fS2E1LbxaFKnBwEpCwNrqxCzSH+iht/DhFGEuuAP6Mrwwd1G/9J1Cz//lHpA5rRIBWdk4MvFfB6wL38S2vVL1IkdS78fM/+XNP/xd9rsg4RMzJ9ugstvp0UzwLCVpY4U84NsbGeKK2LGod24NdMfCWTEdeVspCu98XW5JG8yZhoUQ2tEIMavbbT42x2VEmoTf6hFDtMiyxOYPwwPUGjVyaDBHVRqMVI+vM9+ZwptUfMXaT+ydWDjvJszfhuL7A4zGuN1mJCpX6NfdqeJS8BrFedo8NAnnkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/mhCY7chC5wkWRnB2GHs7EIiIl5MFD53U1F+IKlw4UU=;
- b=m+vZ1xalui+TIQ/l8dqyLHzCesvx6060u0MLVN5isTv9wvPI9hSAVFBViWg2ugTetrvryhRDQbmU0ChchLWFtjQTcK5yM8hIampndQa5nW7crOausWQGFCiHiWZKnUfeqbkg1NemoevCA0UqKO9Jk7HIKsOQJvSkiWZJYA7xUPtmm+q4ZBw2NXy5JXoGhG9WcY2cITLcX5og+BWrh0c8cKE3UWuEh3lOz2YCd5fKPWreohI3eGd0CPhX+2YM5vuzZXw4O0ckHHCFv4EI6FGSCDZXqD14Wp3HJWpX5Y0Is/4y0TwMzssPaMNX5dNOYlROv64fVPKJBi3FbELClObVjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/mhCY7chC5wkWRnB2GHs7EIiIl5MFD53U1F+IKlw4UU=;
- b=M6bKPXopCuUyqztwnwRc3R8SerGjboPXXaGa9+ugzdu4p5jpNZv+5ooTAShkgkud/S8dRgLnFEF0X5WitpMQbbH8jH6WiOd4XFHbOk48tksqUjY1xVPhOubux00n9JhcVyH0gX2lijWKd9mpINIZ0JV191+svKn8zLAc+N8LwJM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wolfvision.net;
-Received: from VE1PR08MB4974.eurprd08.prod.outlook.com (2603:10a6:803:111::15)
- by DBBPR08MB10772.eurprd08.prod.outlook.com (2603:10a6:10:53c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Fri, 27 Oct
- 2023 15:24:27 +0000
-Received: from VE1PR08MB4974.eurprd08.prod.outlook.com
- ([fe80::a309:1d65:f5fb:436b]) by VE1PR08MB4974.eurprd08.prod.outlook.com
- ([fe80::a309:1d65:f5fb:436b%6]) with mapi id 15.20.6933.019; Fri, 27 Oct 2023
- 15:24:27 +0000
-Message-ID: <26b07823-a560-4bb1-b37b-70752ceff469@wolfvision.net>
-Date:   Fri, 27 Oct 2023 17:24:23 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: tmag5273: fix temperature offset
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231023-topic-tmag5273x1_temp_offset-v1-1-983dca43292c@wolfvision.net>
- <20231027151507.2eac395c@jic23-huawei>
-Content-Language: en-US
-From:   Javier Carrasco <javier.carrasco@wolfvision.net>
-In-Reply-To: <20231027151507.2eac395c@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0502CA0031.eurprd05.prod.outlook.com
- (2603:10a6:803:1::44) To VE1PR08MB4974.eurprd08.prod.outlook.com
- (2603:10a6:803:111::15)
+        with ESMTP id S231429AbjJ0Pi2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 11:38:28 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D48AC;
+        Fri, 27 Oct 2023 08:38:25 -0700 (PDT)
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39RCc60x010675;
+        Fri, 27 Oct 2023 17:37:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:from:subject:to:cc:references
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=137N9qL9i5h4t8Cbod1j95elUvUuNi+rOMR+/nkEcGo=; b=EX
+        /VSOoOTnYBW0p53Tuy8tkZXHrE9TCpRNA/bI48SzdaVOLcAioGGb2rDjfu4AwA5k
+        v32rhDVol8dtT3+OOAzKYell3XeaqdcateC0Ht5f5f44AtAT8RLKlj4pjSRODpXr
+        C0G+tE9HPuhvxq3nm5EGbDWsx+uMm9et8AnfTgvKf1VjaRyB+OoZrlta+QCeusS4
+        DtxnglJxdX6gQPW+fzfVM9T+lLDdVWAiWn4tSE7mlX17rCSRm6jWnka0+g6Fhf8e
+        vNoBtK5Ifbj7KqtJXykvIpXKvK2oehCiK/hsOAlK4WYKA3vfmSNeg4DV8PILG2Rh
+        7NAyCWbRDCK0IX4FDaoA==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tywqq4fmr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 27 Oct 2023 17:37:17 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 023E9100062;
+        Fri, 27 Oct 2023 17:37:14 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6CD2C27DB5D;
+        Fri, 27 Oct 2023 17:37:14 +0200 (CEST)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 27 Oct
+ 2023 17:37:12 +0200
+Message-ID: <8fa014c3-c0e9-4183-b4fb-90962f71295a@foss.st.com>
+Date:   Fri, 27 Oct 2023 17:37:11 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR08MB4974:EE_|DBBPR08MB10772:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9cde2d55-2979-4fef-839d-08dbd700ce5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: eBJ3IEGLl64KcU4msvkRZYmTmObeG6qsIxzhJ04SE6nb2or1FjbHxpJ0EcxD3Xb/1rPBSGc6YaQoxq8EkpLEBrRhRl+kd8ogXf4eEui4VzkCGZPaELz/LtGR4ST3bgXIccP44f+h21aMbyUrO0p8kbgYwJ66xHRxDpzKGou1xFHgzt0tnf1Fcrg459TCvrf+93CAJK1NkiGW4qxBw/vo+RIdMxQEoY7KVwjuJsQIWzNekiNKJU7IIjruSWjLNqw1Q3kWdTu354OxpVLKlSyhG/eNj3dPCTJ1FZSmLV0xeKglucq1n0zoz4XeiOyTYmSGBGsvNwdvoP3NeOrGPcmYR0Bb7/JvDjDt80Re3aDNMDYfZDVLaYBRsVM3vjRXdYilPAL2Az8s6tj4MAr/rcJuJxod+2k1w2WFzUCkFGiZP2rRYfwME6G+wUHlBq1ZFsojbPnEgdxiU5X1GTwR8zcYaGSSk/lx1tOYgeNEkGYZ3hNyEKvgK8/pGqM+msCBiTv2yiWCK26ZaJHZHFK/FRrVPuhMqR1/l03q6J1jrPIETFIU/qhuLJZTKjbLzL/elwpni7UVj7SrGMmYRcuJYOUp4sNJyU260HbVKN7UgkZZxygInemhjXNrYPoZt+H7vb3fay3GYNWOl9NLFDF6YjFTJA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR08MB4974.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39850400004)(346002)(396003)(366004)(376002)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(31696002)(8936002)(6486002)(8676002)(31686004)(54906003)(66476007)(66946007)(66556008)(86362001)(2906002)(478600001)(5660300002)(41300700001)(6916009)(44832011)(316002)(6666004)(4326008)(6506007)(53546011)(36756003)(2616005)(38100700002)(6512007)(83380400001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SWRkU1J0NXg4Q21wOWRaQmV2OGhBQUc3REhtN0g1RzV4aWhuVXArVHFjaWM3?=
- =?utf-8?B?ODdjSDNmenZhRUJ0L3haaTNKa1dXczlieXQrOERadWk2WWhPZlFkTUpybkdo?=
- =?utf-8?B?Zm5FanpEN3N0cHptZStzTGhjYVpma1pjdTBsNFJvYjV0b0YveHl6REVxdWFq?=
- =?utf-8?B?b0pHeTRzUUluNGFITmRSemEvRStaTmJVd04zN2x3bzVoZE0wTnVhRG9PTjJs?=
- =?utf-8?B?citSeVF4bGRzZmU5ZUxhVDd5Y21XckNGNTVOSmpGc3g2Ly9BOTZhSFBzbmJS?=
- =?utf-8?B?Qm9OTWRHZzBwVWt5VXk5OVJIcjJGcG13NnNQcGE1NEpqT01EaWRYNTZmL1pz?=
- =?utf-8?B?N1liM0VHQXBJR200eFdqcGgxbVcwT0pwVmZoakNBc0ZKbjRaU09FNkFzYTNS?=
- =?utf-8?B?SGZTbTBkdm1QQmljRnRJc3NvV3hHdUFqcnJWYzRnRXRtTCtQY1lzeGpURDYw?=
- =?utf-8?B?THJVaGpjRHc1TlZocDNsS1Q1cmVIV1pqRngwcC9HTEpNWVJXRXpML08zWngr?=
- =?utf-8?B?TVFsbTk4VEVpeGZreWZUb2Y0NXRYU0pBOSsrOWVVVFRYM0hxN0h4VE9WZ29C?=
- =?utf-8?B?WUZlUmVNdWtFdXdHelhjRHpTc1AxTEwrclBscmt5QjlodDdKR2dNRDc3bkYz?=
- =?utf-8?B?VVVZeDV2bW01M01LaSt2WndNbjNmNlczVzh5YnE1Sm5NUFkxekg1SFRvb1Zw?=
- =?utf-8?B?eDdyVm1rZnFXK2R3eVNPK1poeVJtUTAydG1PNFc1VWoxTW9hajR1b21RazMv?=
- =?utf-8?B?OWtkRzlXQzYxY251Wm90Qzh4Vk4zMVg3OGVjNk4vUjQrOGxoVWVZKy9qbUh0?=
- =?utf-8?B?SVV0UkMwckhzZkVNOEdBeFJUUmppSllDQkxMZ0ZTQzhVUWo0RmxQdjdESWV2?=
- =?utf-8?B?dW1nTGprNjEvZ3Ntcy9pYUdWb3FOdERMOHJoU2gxRW1BTDlnSzhta3lBSTcy?=
- =?utf-8?B?QlFVTUNlSWpWNUpTYitiRk5laWc0YUFBSGxGS2VqZFBRVlBhSlJjVzF0cVdT?=
- =?utf-8?B?d1p5cC95RGhUSjNUOHVYRndaQlV6MmZPSmxKTFNnRGQwSkVya2VyT2txTjdV?=
- =?utf-8?B?Q3cwUTNTVlgyUEZYZDZkU3dRdjNjK1FTRlhERldvTVNINkFnZ3BKbmYvUmFF?=
- =?utf-8?B?anRUbzBiZlN5YlNsOW9qZElzSk04aEpBRzNmNlV1RlZjeGdkZTVScDlCUTNo?=
- =?utf-8?B?RktJR0xHcWMwQjk4NlI4YnlrRUVJM05vUzZXbjMzQitZaWM3WUwyazBBWmFr?=
- =?utf-8?B?TWV6Y3VwYkdMaStZZkMvNzdLZ0xiY1lDQ2JRdWdaVDZnVVZZa3BYeFRianVw?=
- =?utf-8?B?V0xNOFlqb3JtOFJiSVAxUVYyRFV0ZXM5dkJxY2FRQ2VaUnpjTjhuajY5U2Iw?=
- =?utf-8?B?ZENWK1FiRFR5VzVlS2NjWVcxUFZhNU54a3hxZzdIaWJDbHZJQ3V3eTRoMWdr?=
- =?utf-8?B?RFYvTmJYWEVad0tRQlgydVJ1NTZFOXVoV0krWVJabm9BVzN2R0V0RG1vTkNt?=
- =?utf-8?B?TEhoZ1ZZQXdvKzFFdGl0Q1BOS3RuWDg3bzAwSm01TnlkV3pCRllJL1BuV3RY?=
- =?utf-8?B?NytMSVN4bmhkNHV2dUxYUlBTNFM0V1FMdk94L2gvM2VGeHZOSkU3M3Y5OUM0?=
- =?utf-8?B?ellzVmRZYlg4UERGSkllRzhnZHkyV1l1aXp4SCsrV0NVZzlrY2pvZ3FYcUlJ?=
- =?utf-8?B?SnhZMGR1dzFlMkhMN0RHL0xHcTF1bFJjSkNWZElobno4azQ5SFFyY09aeFFD?=
- =?utf-8?B?M3RpODFkZjhudVNteUFRNldaTUlsclArUE1PbHdVcVVuU1RjWHNPL3hqUzU1?=
- =?utf-8?B?dHRNbStQU0tsSkE0eDMrS08yYzJDZ0g3b3Q0aXdUQXFiWGNHbnZja3lzVkUv?=
- =?utf-8?B?d2duTkFMNjFjZ1NObnJNaExsZ0hkVDhzV0h1aXhGOHN2L0hwcEJjTTBNSWE0?=
- =?utf-8?B?QzFjclRtYUZGTmdFMFRPRXdhVEJkUy9ROWhSZDhyUUtUZjdqbURLbkRpdVRF?=
- =?utf-8?B?OVU5NXVVSERid045RUw2SnBxWm9FQitoOGNaTnFDeEZSOHlZZzlMeGNkY0Np?=
- =?utf-8?B?YjRMRGJKNzNqWTl6cG9GdE1DMWRFQ25IdlFLakxxL21HWEVZRno4Z1JpZkxK?=
- =?utf-8?B?dS82NTR1dTYzZllBVkxNS1M3MzAxdXkwTlpFeVN5c3FnZ0ZNTUNRVUh3c0gv?=
- =?utf-8?B?TERUVXFOc0Vsd2lqUTk2VTcyQk9jTTNvZjlpeFAzTEFnOUNXS1JwUkdIbHdr?=
- =?utf-8?Q?TLqaPZWpzv1nvxHfHIL4rPHC1m5BTU8W5/F16r5y2o=3D?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9cde2d55-2979-4fef-839d-08dbd700ce5e
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR08MB4974.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 15:24:27.0158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1a4levzTqCbCxmtZgzBcnAg36Bck/V6/AxoU089cMqOnZkDGgWMMAyQFohZGA/NLAv8zbou6ypyizFk/uf6sPTv+ikwW8m3w1iT6ugxwb0w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB10772
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
+ STM32MP15x boards
+To:     Rob Herring <robh@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
+        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
+        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
+        <arnd@kernel.org>, <richardcochran@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-p.hy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
+ <20231010125719.784627-11-gatien.chevallier@foss.st.com>
+ <20231010184212.GA1221641-robh@kernel.org>
+ <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
+ <20231012153012.GA698406-robh@kernel.org>
+ <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
+ <20231024163956.GA4049342-robh@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20231024163956.GA4049342-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.32]
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-27_14,2023-10-27_01,2023-05-22_02
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -129,78 +98,146 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 27.10.23 16:15, Jonathan Cameron wrote:
-> On Mon, 23 Oct 2023 11:50:02 +0200
-> Javier Carrasco <javier.carrasco@wolfvision.net> wrote:
-> 
->> The current offset has the scale already applied to it. The ABI
->> documentation defines the offset parameter as "offset to be added
->> to <type>[Y]_raw prior to scaling by <type>[Y]_scale in order to
->> obtain value in the <type> units as specified in <type>[Y]_raw
->> documentation"
+On 10/24/23 18:39, Rob Herring wrote:
+> On Mon, Oct 16, 2023 at 02:02:39PM +0200, Gatien CHEVALLIER wrote:
+>> Hi Rob,
 >>
->> The right value is obtained at 0 degrees Celsius by the formula provided
->> in the datasheet:
+>> On 10/12/23 17:30, Rob Herring wrote:
+>>> On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
+>>>> Hi Rob,
+>>>>
+>>>> On 10/10/23 20:42, Rob Herring wrote:
+>>>>> On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
+>>>>>> ETZPC is a firewall controller. Put all peripherals filtered by the
+>>>>>> ETZPC as ETZPC subnodes and reference ETZPC as an
+>>>>>> access-control-provider.
+>>>>>>
+>>>>>> For more information on which peripheral is securable or supports MCU
+>>>>>> isolation, please read the STM32MP15 reference manual.
+>>>>>>
+>>>>>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>>>>>> ---
+>>>>>>
+>>>>>> Changes in V6:
+>>>>>>        	- Renamed access-controller to access-controllers
+>>>>>>        	- Removal of access-control-provider property
+>>>>>>
+>>>>>> Changes in V5:
+>>>>>>        	- Renamed feature-domain* to access-control*
+>>>>>>
+>>>>>>     arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
+>>>>>>     arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
+>>>>>>     arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
+>>>>>>     3 files changed, 1450 insertions(+), 1377 deletions(-)
+>>>>>
+>>>>> This is not reviewable. Change the indentation and any non-functional
+>>>>> change in one patch and then actual changes in another.
+>>>>
+>>>> Ok, I'll make it easier to read.
+>>>>
+>>>>>
+>>>>> This is also an ABI break. Though I'm not sure it's avoidable. All the
+>>>>> devices below the ETZPC node won't probe on existing kernel. A
+>>>>> simple-bus fallback for ETZPC node should solve that.
+>>>>>
+>>>>
+>>>> I had one issue when trying with a simple-bus fallback that was the
+>>>> drivers were probing even though the access rights aren't correct.
+>>>> Hence the removal of the simple-bus compatible in the STM32MP25 patch.
+>>>
+>>> But it worked before, right? So the difference is you have either added
+>>> new devices which need setup or your firmware changed how devices are
+>>> setup (or not setup). Certainly can't fix the latter case. You just need
+>>> to be explicit about what you are doing to users.
+>>>
 >>
->> T = Tsens_t0 + (Tadc_t - Tadc_t0) / Tadc_res
-> 
-> So base units for temperature are milli degrees celsius. 
-> T = 1000 * (25 + (adc - 17508) / 60.1)
-> 
-> T =  1000/60.1 * (25 * 60.1 + adc - 17508)
-> T = 10000/601 * (-16005.5 + adc)  
-> So I think the maths is a little off..
+>> I should've specified it was during a test where I deliberately set
+>> incorrect rights on a peripheral and enabled its node to see if the
+>> firewall would allow the creation of the device.
 >>
->> where:
->> T = 0 degrees Celsius
->> Tsens_t0 (reference temperature) = 25 degrees Celsius
->> Tadc_t0 (16-bit format for Tsens_t0) = 17508
->> Tadc_res = 60.1 LSB/degree Celsius
+>>>
+>>>> Even though a node is tagged with the OF_POPULATED flag when checking
+>>>> the access rights with the firewall controller, it seems that when
+>>>> simple-bus is probing, there's no check of this flag.
+>>>
+>>> It shouldn't. Those flags are for creating the devices (or not) and
+>>> removing only devices of_platform_populate() created.
+>>>
 >>
->> The resulting offset is 16605.5, which has been truncated to 16005 to
-> Interesting - the truncated value you have looks good to be but that's
-> not matching with the resulting offset or the value below...
+>> About the "simple-bus" being a fallback, I think I understood why I saw
+>> that the devices were created.
+>>
+>> All devices under a node whose compatible is "simple-bus" are created
+>> in of_platform_device_create_pdata(), called by
+>> of_platform_default_populate_init() at arch_initcall level. This
+>> before the firewall-controller has a chance to populate it's bus.
+>>
+>> Therefore, when I flag nodes when populating the firewall-bus, the
+>> devices are already created. The "simple-bus" mechanism is not a
+>> fallback here as it precedes the driver probe.
+>>
+>> Is there a safe way to safely remove/disable a device created this way?
 > 
-You are right, there is a typo in the resulting offset and value below.
+> There's 2 ways to handle this. Either controlling creating the device or
+> controlling probing the device. The latter should just work with
+> fw_devlink dependency. The former probably needs some adjustment to
+> simple-pm-bus driver if you have 'simple-bus' compatible. You want it to
+> probe on old kernels and not probe on new kernels with your firewall
+> driver. Look at the commit history for simple-pm-bus. There was some
+> discussion on it as well.
+> 
 
-The right value is the truncated one I mentioned, which is the one
-obtained with the formula.
-In the case of milli degrees Celsius for T = 0 (milli or not does not
-matter then):
+Hi Rob,
 
-0 = 1000 * (25 + (adc - 17508) / 60.1) =>
-=> adc = -25*60.1 + 17508 = 16005.5
+First, thank you for your suggestions.
 
-I will fix the value to use the one I actually obtained (16005)
+Regarding controlling probing the device: the philosophy of the firewall
+controller was to check a device secure configuration to determine if
+its associated driver should be probed (+handle some firewall
+resources). I'd rather avoid it so that the device isn't created at all.
 
-Thank you.
->> provide an integer value with a precision loss smaller than the 1-LSB
->> measurement precision.
->>
->> Fix the offset to apply its value prior to scaling.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
->> ---
->>  drivers/iio/magnetometer/tmag5273.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
->> index c5e5c4ad681e..d22ca39007b6 100644
->> --- a/drivers/iio/magnetometer/tmag5273.c
->> +++ b/drivers/iio/magnetometer/tmag5273.c
->> @@ -356,7 +356,7 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
->>  	case IIO_CHAN_INFO_OFFSET:
->>  		switch (chan->type) {
->>  		case IIO_TEMP:
->> -			*val = -266314;
->> +			*val = -16605;
->>  			return IIO_VAL_INT;
->>  		default:
->>  			return -EINVAL;
->>
->> ---
->> base-commit: 05d3ef8bba77c1b5f98d941d8b2d4aeab8118ef1
->> change-id: 20231023-topic-tmag5273x1_temp_offset-17774cbce961
->>
->> Best regards,
+I took a look on the simple-bus driver side. I don't see an obvious way
+on how to do it as the firewall controller driver is a module while the
+devices being populated is done at arch initcall level.
+
+I ended up with two propositions:
+
+1)I took a shot at implementing a new flag "OF_ACCESS_GRANTED" that
+should be set in the first call of the of_platform_bus_create()
+function for every child node of a "default bus" (simple-bus,
+simple-pm-bus, ...) having the access-controllers property.
+This flag should be unset by the access controller if the access is
+not granted. This covers the particular case where the access controller
+has a simple-bus fallback whilst not creating the devices on the first
+try for the bus' childs.
+
+This way, the first round of of_platform_populate() done at arch init
+call level won't create the devices of an access controller child
+nodes. Then, the firewall controller has a chance to clear the flag
+before the second call to this function by the simple-pm-bus driver.
+
+If the controller module isn't present, then it's a simple-bus
+behavior to extent of the child devices not being all created in the
+first place. This shouldn't be an issue as in only concerns childs
+of such bus that aren't probed before the bus driver.
+
+I have a patch that I can send as RFC on top of my series if my
+explanation isn't clear enough.
+
+2)Make the STM32_FIREWALL configuration switch select the OF_DYNAMIC
+one. This way I can use of_detach_node() function to remove the node
+from the device tree. The cons of this is the device tree is now
+used at runtime.
+
+Are you considering one of these two proposition as a viable solution?
+
+Best regards,
+Gatien
+
+>> Devices that are under the firewall controller (simple-bus) node
+>> should not be probed before it as they're child of it.
 > 
+> fw_devlink should take care of parent/child dependencies without any
+> explicit handling of the access ctrl binding.
+> 
+> Rob

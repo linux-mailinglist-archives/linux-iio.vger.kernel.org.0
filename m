@@ -2,106 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D60A7D9A54
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A1C7D9A66
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345851AbjJ0NrI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 09:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33062 "EHLO
+        id S1345998AbjJ0NtW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 09:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345458AbjJ0NrH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:47:07 -0400
+        with ESMTP id S1345982AbjJ0NtW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:49:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E0A9D;
-        Fri, 27 Oct 2023 06:47:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EECC433C9;
-        Fri, 27 Oct 2023 13:46:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E343E18A;
+        Fri, 27 Oct 2023 06:49:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F8CC433C8;
+        Fri, 27 Oct 2023 13:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698414425;
-        bh=PDM2diCGxCnhLmpepTocuodFEgpq+efi5FyxfOqLlW8=;
+        s=k20201202; t=1698414559;
+        bh=DtoBfgUD9SXkRxzblhXcctUN6fwy02Tc6e40hMWArIU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ILaqQ5REhAvAcZ/orSI/QjL66UWXtUG1zWKgw1N0/oszAW0XiPQ0iMLP3pxQISF1F
-         Zpp7EymGwHkfciz+HE4AMLusqZqIW3IUmTHtf2oX745uC5rK3AghcJgJ11vLSDxdsg
-         Rgiti8ozzeL7LMEzFTc9g4up+vExyQPx7Get3sSUhkwXpXb6orDLqOe+O/SEDMwqyD
-         diawqTyvMWwFpxQXfiC8dsE12MjL58AQcZbJ1kEshcKetZqRrCc0C3Ch6QnCI75vTW
-         Y6ju76hbVDBCyoAxwngQUfx6gneLqi+HsikcLuLX4oiAiyolSxNB1eKY6Wn/3xmtQs
-         mogEUvtb6bG6g==
-Date:   Fri, 27 Oct 2023 14:46:25 +0100
+        b=cwltWJ88666iLYUDxm4x1q3aEqU0LbdobISa/NGKQHcg9u1TUKe3UEq/ybSAUUnq4
+         fnpFmCzj5K/djXjLyRkKRMHOSomJ1M0rv6NvXu7/gxXJ6RWVl1Qh7uHdpEivNLqSsb
+         X66HPhj5Ifx5vGWnrk+LCKdUGbQh/TMEyBAgHUaUaHt2nKl9j0f7bU5xhNIt9daJuo
+         EV++XjT9NZwyBFYLdGsW5bV90e2hP2HkH3vaIJrRBE/omXPpQuWrGa5/NkW3cJ5wf2
+         ab/6ecq0YQZCvtvMJz6Ab5T4s0pfiFzt6UjThPe7DyzaCEWz6/exdlJ3VJx9A7/ngM
+         pntSIy96UrR1g==
+Date:   Fri, 27 Oct 2023 14:48:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
         linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Phil Elwell <phil@raspberrypi.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
+        Phil Elwell <phil@raspberrypi.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH v2 4/5] iio: pressure: bmp280: Allow multiple chips id
- per family of devices
-Message-ID: <20231027144625.36cc694c@jic23-huawei>
-In-Reply-To: <20231027144234.0ad6c7b6@jic23-huawei>
+Subject: Re: [PATCH v2 5/5] iio: pressure: bmp280: Add support for BMP390
+Message-ID: <20231027144843.623dc141@jic23-huawei>
+In-Reply-To: <d6a9e9ca4670c7401545d0d086cd3059e29044c8.1697994521.git.ang.iglesiasg@gmail.com>
 References: <cover.1697994521.git.ang.iglesiasg@gmail.com>
-        <eade22d11e9de4405ea19fdaa5a8249143ae94df.1697994521.git.ang.iglesiasg@gmail.com>
-        <ZTZYNjq/1X95ijXh@smile.fi.intel.com>
-        <20231027144234.0ad6c7b6@jic23-huawei>
+        <d6a9e9ca4670c7401545d0d086cd3059e29044c8.1697994521.git.ang.iglesiasg@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Oct 2023 14:42:34 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 22 Oct 2023 19:22:21 +0200
+Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> On Mon, 23 Oct 2023 14:25:42 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> Add BMP390 device ID to the supported IDs on bmp380 sensor family
 > 
-> > On Sun, Oct 22, 2023 at 07:22:20PM +0200, Angel Iglesias wrote:  
-> > > Improve device detection in certain chip families known to have various
-> > > chip ids.
-> > > When no known ids match, gives a warning but follows along what device
-> > > said on the firmware and tries to configure it.    
-> > 
-> > I would rephrase it a bit:
-> > 
-> > "Improve device detection in certain chip families known to have
-> > various chip IDs. When no ID matches, give a warning but follow
-> > along what device said on the firmware side and try to configure
-> > it."
-> > 
-> > ...
-> >   
-> > > +	for (i = 0; i < data->chip_info->num_chip_id; i++) {
-> > > +		if (chip_id == data->chip_info->chip_id[i]) {
-> > > +			dev_info(dev, "0x%x is a known chip id for %s\n", chip_id, name);
-> > > +			break;
-> > > +		}    
-> >   
-> > > +		dev_warn(dev, "chip id 0x%x does not match known id 0x%x\n",
-> > > +			 chip_id, data->chip_info->chip_id[i]);    
-> > 
-> > If the matching ID is not the first one, user will have an unneeded warning here.  
+> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 > 
-> Could be a dev_dbg() but I'd just drop it entirely.
-> 
-Given that was all that came up, I've hopefully saved us all time by
-dropping the bring and changing the patch description as Andy suggested.
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to poke at it.
 
-With that done, applied.
+Thanks,
 
 Jonathan
 
-> 
-> >   
-> > >  	}    
-> >   
-> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index deb336781b26..c6c761e84006 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -13,6 +13,7 @@
+>   * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
+>   * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
+>   * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp388-ds001.pdf
+> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp390-ds002.pdf
+>   * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf
+>   *
+>   * Notice:
+> @@ -1225,7 +1226,7 @@ static int bmp380_chip_config(struct bmp280_data *data)
+>  
+>  static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
+>  static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
+> -static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID };
+> +static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
+>  
+>  const struct bmp280_chip_info bmp380_chip_info = {
+>  	.id_reg = BMP380_REG_ID,
+> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> index a230fcfc4a85..2971bf58f802 100644
+> --- a/drivers/iio/pressure/bmp280.h
+> +++ b/drivers/iio/pressure/bmp280.h
+> @@ -292,6 +292,7 @@
+>  #define BMP580_CHIP_ID_ALT		0x51
+>  #define BMP180_CHIP_ID			0x55
+>  #define BMP280_CHIP_ID			0x58
+> +#define BMP390_CHIP_ID			0x60
+>  #define BME280_CHIP_ID			0x60
+>  #define BMP280_SOFT_RESET_VAL		0xB6
+>  
 

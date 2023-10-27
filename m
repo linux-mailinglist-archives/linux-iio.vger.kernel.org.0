@@ -2,66 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F8A7D90C5
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 10:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E02447D90CA
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 10:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjJ0IKx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 04:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56228 "EHLO
+        id S235072AbjJ0ILs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 04:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbjJ0IKw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 04:10:52 -0400
-Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DBF1196
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:10:47 -0700 (PDT)
-Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
-        id 526C5478E7; Fri, 27 Oct 2023 08:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
-        s=mail; t=1698394244;
-        bh=XJs7d1oOesLTWK1tCT5ZRN/D6Zrl/UejHZ/WB1pZoTo=;
-        h=Date:From:To:Subject:From;
-        b=UjokZGRl/JbCThDcPUD0i5fxHk6BBmCjzqCVqof8WIrd3idKwW3CJc03bnoqiZcib
-         Hi0K52cE6P8Y31GRzEBYIaWbppH7bAU0Z/7JASIXKBOAeLhlx4BJOT6dxX7qSUXDrx
-         A+F9i6sXbEfJ5LoWQRG+qXGFHyE2sZQGMAK0n9mFSxxVAFOull1PZ4IU/KkN25xmgL
-         99BLx+/T7s8ekvwzaIYTGKp56ZVgt8/lISQ4CtY+qUiavyx1NVqOndUl+2Rm5/kVzM
-         Swgdj+3Htvs55KeiFbmjZ2QJF8wzi9rnTwS+X6CRsoI/1g5X0q917sgKfRrYfUadw8
-         VbNlBYg+9bnfg==
-Received: by mail.venturelinkbiz.com for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 08:10:40 GMT
-Message-ID: <20231027064500-0.1.3a.93hz.0.o5tq14htf7@venturelinkbiz.com>
-Date:   Fri, 27 Oct 2023 08:10:40 GMT
-From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?Bezplatn=C3=A1_60denn=C3=AD_zku=C5=A1ebn=C3=AD_verze:_Vylep=C5=A1ete_sv=C3=A9_v=C3=BDrobn=C3=AD_procesy?=
-X-Mailer: mail.venturelinkbiz.com
+        with ESMTP id S235094AbjJ0ILr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 04:11:47 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79671196
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:11:44 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-507be298d2aso2616735e87.1
+        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698394303; x=1698999103; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ezp3xOLXhQ+1ymBhBqFKu7/uhMveGEMfKhSkjLXeOZU=;
+        b=yuOgG2Tdv5Qy3gx2kszPO/szssRH2hkkaLMeqagW4j7iFSv2tFNfMMSF0K/xVc9rzE
+         68C/4S8e7Tx9G9qhrV80KxAXifIv3tLKUjTRNV+sYut9yfdb2WOFyOO08brdVHk/5PGn
+         Ngj3NZMJrfg4adfbhcjShrueRgupn9kBtenGgTg4ofsJpgyAFnOAGCYLSDFVVIdUsUUH
+         wYM1nj71hHRKVVNE0bQRrwPZpphHs6GCgdobagD/jEwplhUPrm8eW62ki5RLBH9WRoAW
+         fYBPzjValjrhAz5tRTg6n5p/rdds0zw+cUayx9bDlC/VpUN1JLj64oKiBZzo3gwivCJS
+         a2nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698394303; x=1698999103;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ezp3xOLXhQ+1ymBhBqFKu7/uhMveGEMfKhSkjLXeOZU=;
+        b=MXMjdac5t31Tz3KghxLVXQLKO7/RX8ganjOTprfr+zcqXIqINzk3P900Y2Lb3E2qIg
+         LX8FLnQs6zZWPVXpv8Etz2OIpHMyInCRrRliAsjGswBBEDbah+wdFS+eC87VzH4wq9ud
+         uMqcAe4RJF+OIVUv74GZiJZS41Vz8mkFH0y1kspKo4aB6ivaM7f8DqQIyHmwGh69hDX1
+         GY5MqrW4GfyNR/MK0a8T0trinod6ogifcAQsXHmtatGYj29odxvkukDKegIgP6J9DzyS
+         5b7oy1y/UgT3R5xz53ECLVSzdiXgwlMcfHPP9LYJrj2LIkedEmpSuwlFKmZ9nWbQV/zV
+         FSug==
+X-Gm-Message-State: AOJu0YzI6OZ5TmCBnpJ0bigbLfIkcmZKo9rtV1XUN9gM2ns9VT3TRcQS
+        P4V/Ew5zvMGsxfB9BPVe7YGkAg==
+X-Google-Smtp-Source: AGHT+IFDBfAI8KcZD/ya+f6uxZ1P9bMX0/bFkkg2hqJluLwD/0h7LCKsZoi960FK9jSaNiA5kGhxzA==
+X-Received: by 2002:ac2:4575:0:b0:500:79f7:1738 with SMTP id k21-20020ac24575000000b0050079f71738mr1169834lfm.17.1698394302691;
+        Fri, 27 Oct 2023 01:11:42 -0700 (PDT)
+Received: from [192.168.0.22] ([78.10.206.168])
+        by smtp.gmail.com with ESMTPSA id y5-20020ac24e65000000b00505713722b9sm181142lfs.38.2023.10.27.01.11.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Oct 2023 01:11:42 -0700 (PDT)
+Message-ID: <b030cb0a-7a15-4497-9b0f-75615694dc04@linaro.org>
+Date:   Fri, 27 Oct 2023 10:11:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
-        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Avago APDS9306
+Content-Language: en-US
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>
+Cc:     Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
+ <20231027074545.6055-2-subhajit.ghosh@tweaklogic.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231027074545.6055-2-subhajit.ghosh@tweaklogic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Ahoj,
-
-jste se sezn=C3=A1mili s n=C3=A1strojem, kter=C3=BD dohl=C3=AD=C5=BE=C3=AD=
- na v=C3=BDrobn=C3=AD proces na ka=C5=BEd=C3=A9m stupni a generuje stabil=
-n=C3=AD zisky?
-
-D=C3=ADky rychl=C3=A9mu mont=C3=A1=C5=BEi a snadno pou=C5=BEiteln=C3=A9mu=
- =C5=99e=C5=A1en=C3=AD zam=C4=9Bstnanci zvy=C5=A1uj=C3=AD produktivitu a=C5=
-=BE o 10% - 20% d=C3=ADky schopnosti okam=C5=BEit=C4=9B reagovat na vznik=
-aj=C3=ADc=C3=AD probl=C3=A9my a symptomy.
-
-Kompletn=C3=AD syst=C3=A9m (tabule + skener) si m=C5=AF=C5=BEete v na=C5=A1=
-em z=C3=A1vod=C4=9B vyzkou=C5=A1et po dobu 60 dn=C5=AF. Jste zainteresov=C3=
-=A1ni v=C3=BDsledky?
+On 27/10/2023 09:45, Subhajit Ghosh wrote:
+> v1 -> v2
+> - No change
+> 
 
 
-Pozdravy
-Michal Rmoutil
+Missing commit msg.
+
+> v0 -> v1
+> - Squashing Avago (Broadcom) APDS9300 and APDS9960 schemas into one as
+>   they look similar
+> - Adding support for APDS9306 in the same schema file
+> - Adding mandatory interrupt property requirement for APDS9960 as per the
+>   driver's probe method which fails if interrupt bindings are not defined.
+>   Both APDS9300 and APDS9306 (this patch set) supports sensors with and
+>   without hardware interrupt bindings
+> - In the device tree example, replacing interrupt type number with macro
+>   from irq.h
+> - Updated the vin to vdd which is the same for all the three sensors
+> - Used proper "Datasheet:" tags
+
+This is changelog, so after ---.
+
+> 
+> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> ---
+>  .../bindings/iio/light/avago,apds9300.yaml    | 35 ++++++++++++---
+>  .../bindings/iio/light/avago,apds9960.yaml    | 44 -------------------
+>  2 files changed, 30 insertions(+), 49 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> index 206af44f2c43..7a24a97d0594 100644
+> --- a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
+> @@ -4,17 +4,26 @@
+>  $id: http://devicetree.org/schemas/iio/light/avago,apds9300.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Avago APDS9300 ambient light sensor
+> +title: Avago Gesture, RGB, ALS and Proximity sensors
+>  
+>  maintainers:
+>    - Jonathan Cameron <jic23@kernel.org>
+> +  - Matt Ranostay <matt@ranostay.sg>
+> +  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+>  
+>  description: |
+> -  Datasheet at https://www.avagotech.com/docs/AV02-1077EN
+> +  Avago (Broadcom) optical and proximity sensors with I2C interfaces.
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-1077EN
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-4191EN
+> +  Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
+>  
+>  properties:
+>    compatible:
+> -    const: avago,apds9300
+> +    oneOf:
+
+Drop
+
+> +      - enum:
+> +          - avago,apds9300
+> +          - avago,apds9306
+> +          - avago,apds9960
+
+I don't understand what is happening here. At all. Some compatibles are
+moved, some are added, nothing explains why you are doing it.
+
+
+Best regards,
+Krzysztof
+

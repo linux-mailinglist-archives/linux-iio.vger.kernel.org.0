@@ -2,43 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 007B17D99D5
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04DCC7D99DD
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345458AbjJ0NaQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 09:30:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
+        id S231305AbjJ0Ndk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 09:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345926AbjJ0NaP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:30:15 -0400
+        with ESMTP id S229503AbjJ0Ndj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:33:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA9718F;
-        Fri, 27 Oct 2023 06:30:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93F8C433C9;
-        Fri, 27 Oct 2023 13:30:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC82DCA;
+        Fri, 27 Oct 2023 06:33:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCF7C433C8;
+        Fri, 27 Oct 2023 13:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698413412;
-        bh=WhLHybGvjXg6KH83VHDPsIL/bPZh52vmPBOUFL8UsHM=;
+        s=k20201202; t=1698413617;
+        bh=WWRr7vPyHlc/VMGJypSn1m+NSFr6RCiyf59wCByVhWs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=G/BKEHw8qA2TK0n5/ruuZBbJ39DIAXA/pZJGtcKodXPkNfp8T8woPEed/iVvjuxD2
-         uSdWJ7Ee8yA6kBr7f33+5hBjsF2JXMcIbcEbqlcOF15fRwHFflunwNLvPPIrf4KlpW
-         8V0oh4uITqpT2sD+O3FybSwgjCWK62cUrpRrx1Yn16PezmPdr3Ry3aOo+nCHtIjjMJ
-         qIp2r2Dt+xI7svCU8jGGcyrKrCiQubkbgVfMgveEDuHXx5I4NEG37d3o6zja2vPeUe
-         vwArUo0kZDtjdXVdrbQLH7dVEORrFZbJvbxT0TYsKEfdwJuAt3s2Xm7Tfh1g3mM4t6
-         xO9knVzOskiMg==
-Date:   Fri, 27 Oct 2023 14:30:10 +0100
+        b=XazjmrpKo4oiA5ps8HBjVd49X8vONrubs+ZFGb0RlTNTNCYLBNjkeLO3xFb4FVhRP
+         ovNRF1Wp9caINQzMe/Pmr5m1hQkld20ynJNWa7DN3dAS5zylBICimP83sx2xYGyLIb
+         6RWepaBGaPFQ4AWBsUTwClQFy9Dydhw+tuRg8QJkCd1vYPz0R1vTLxfCwAwGuT6Neg
+         xzI8qiytku5rDGimt+CZnh3N0lr9UndHcb7yLl9JcbcGLD5DaidFQU6rhW4S6/am4Z
+         qyZ+9qc3IddggzVxUc7yu8hiI2I4/PdBfxOVqMurFUaClat9mlcdHnIbgp2trieL3/
+         KfpUpDuQFLOkw==
+Date:   Fri, 27 Oct 2023 14:33:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jagath Jog J <jagathjog1996@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC
- BMI323 IMU IIO DRIVER
-Message-ID: <20231027143010.2d49c82d@jic23-huawei>
-In-Reply-To: <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
-References: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
-        <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: kx022a: Fix acceleration value scaling
+Message-ID: <20231027143335.7faa87aa@jic23-huawei>
+In-Reply-To: <77b5f4a6-4012-4409-9034-419b852a783f@gmail.com>
+References: <ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+        <CAM+2Eu+ndzS9NLvsZaX_=YTHb_+t4cE5GjQevJ1Lgc2EBO20rA@mail.gmail.com>
+        <c623b6ff-6d6c-4351-b828-4ed4663f9de9@gmail.com>
+        <CAM+2EuJ8J+sJNBqbPuFLXVK-Y9V=q+Lt=js9giWdSZ6H=aJ2Jg@mail.gmail.com>
+        <77b5f4a6-4012-4409-9034-419b852a783f@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,33 +56,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 26 Oct 2023 01:19:51 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
+On Mon, 23 Oct 2023 09:24:39 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Wed, Oct 25, 2023 at 2:45=E2=80=AFPM Lukas Bulwahn <lukas.bulwahn@gmai=
-l.com> wrote:
-> >
-> > Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
-> > MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to=
- a
-> > non-existing device-tree file.
-> >
-> > Probably, this mistake was introduced by copying from the BOSCH SENSORT=
-EC
-> > BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
-> > entry properly. This is however easily caught, as the script
-> > ./scripts/get_maintainer.pl --self-test=3Dpatterns complains about a br=
-oken
-> > reference.
-> >
-> > The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI3=
-23")
-> > adds bosch,bmi323.yaml, so refer to that intended file instead. =20
+> On 10/20/23 19:48, Jagath Jog J wrote:
+> > On Fri, Oct 20, 2023 at 5:39=E2=80=AFPM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote: =20
+> >>
+> >> On 10/19/23 21:21, Jagath Jog J wrote: =20
+> >>> Hi Matti,
+> >>>
+> >>> On Thu, Oct 19, 2023 at 6:54=E2=80=AFPM Matti Vaittinen
+> >>> <mazziesaccount@gmail.com> wrote: =20
+> >>>> =20
+> >  =20
+> >>>> I did only very quick testing on KX022A and iio_generic_buffer. After
+> >>>> the patch the values seemed to be correct order of magnitude. Further
+> >>>> testing is appreciated :) =20
+> >>>
+> >>> Values are correct with this change, Thank you for fixing.
+> >>> Tested-by: Jagath Jog J <jagathjog1996@gmail.com> =20
+> >>
+> >> Thanks a ton for testing! May I ask which component did you use (or did
+> >> you just use some 'simulated' regster values?) =20
+> >=20
+> > Hi Matti,
+> >=20
+> > I just simulated with the register values, Should the 'tested-by' tag o=
+nly be
+> > provided after hardware testing? =20
 >=20
-> My apologies for the silly mistake, and thank you for fixing it.
-> Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
+> I am not sure TBH. I didn't have a problem with your tag though, I was=20
+> merely curious to hear about the IC usage :)
 >=20
-Applied to the togreg branch of iio.git and pushed out as testing.
+> Now that you mentioned the tested-by tag usage, I started to wonder it=20
+> as well. From pure SW/driver point of view the register value simulation=
+=20
+> is sufficient - but in practice we are not interested in whether the=20
+> code works "in theory" - but whether the products do really work. This=20
+> is something which includes handling of potential HW quircks and=20
+> oddities - which are not always documented or known.
+>=20
+> If we assume a case where someone is developing new gizmo and hits a bug=
+=20
+> which is in reality caused by some undocumented HW hiccup - then fixes=20
+> with "tested-by" tags which are not actually tested on HW having this=20
+> hiccup but using SW simulation - may be misleading.
+>=20
+> The above is just some overall pondering - I am not too concerned on=20
+> your tested-by tag :) Besides, it's cool you did the testing! I=20
+> appreciate that! However, I wonder if there is some wider consensus=20
+> whether the tests should be ran using real HW when tested-by tag is=20
+> given. Jonathan, do you have any educated opinion on this?
 
-Thanks,
+It's fine to add a note.  People typically do this if they've tested on
+a particular device from a set.  So if you want to (entirely optional)
+
+Tested-by .... #Tested by simulate register values
+
+I wouldn't describe that as a particularly educated opinion though :)
+Not something I care that much about.
+
+J
+>=20
+> > I referred to this driver because it's
+> > the most recent accelerometer driver that was merged. =20
+>=20
+> Makes sense :) Thanks for replying!
+>=20
+> Yours,
+> 	-- Matti
+>=20
 

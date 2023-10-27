@@ -2,63 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0DD67D99B1
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C37447D99CF
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 15:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345851AbjJ0N0h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 09:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
+        id S1345950AbjJ0N26 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 09:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345458AbjJ0N0g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:26:36 -0400
+        with ESMTP id S1345982AbjJ0N2y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 09:28:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEEFE5;
-        Fri, 27 Oct 2023 06:26:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ED5C433C7;
-        Fri, 27 Oct 2023 13:26:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B89C9;
+        Fri, 27 Oct 2023 06:28:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64ABC433C9;
+        Fri, 27 Oct 2023 13:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698413194;
-        bh=NxFd9nO3ucmlh23SRQn9ZpC46HILj4aPbNXF73EekQo=;
+        s=k20201202; t=1698413332;
+        bh=mIy3SOTr5JP1ZcZOaeFylzam1NEjWOPfdIq1B0ER9T8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=m7b2Oyd9zhPJtcjMUZofdXh2MMnITOJlLsMsFBdBxY4mhu4WPX8wELATU36R22R8p
-         iWPIOsH9G7S6Jr9nQ6fTS57qXLHvvvp195gx1oFnx7lrdwHeViDBSWu8nQ9SJ1Cmsh
-         v+3l9vQMLKADLk0sYfap6YFrdeU5wFZI41QZs9KW2yk9/d79KQHZ8W58pccMasBcag
-         iAEYrMDoSTd6pIAbtimJspKgE8mJC7wDPqIy/Spx/9ZXGbBzVNpWW6RCxdPE1jLFyQ
-         u0JxB2PHNF1c9tAmAVg9HPrXpHdX6gl5Rnp1dH54do4V/8OYz/UY0o8pNw0Un4R4ex
-         RRBDrxHnQeoAg==
-Date:   Fri, 27 Oct 2023 14:26:18 +0100
+        b=ljgdEUe2+n5YDJoZH2IATJIq+7r8ts7XXonc30DTfezrdKYeZ1q6hoYL5WHQV2ZKh
+         RSwVY9v/hcGxrC/ip6Xm4kPLUCK+n9RmZqfHnWG2KDhopU3Wn2+omS7uVhkuDDnRCG
+         OwvIe+QORZuEQomqgmhjdALz6lKChsZi5KhLQ7sukJEb35/2AhOlSzxuJwT91OumrE
+         DD6QrB86q+IZRwcuAfUeikhhUvNuc9qNXnZj/XQACDh/NxRX/Z1k5NcacPe05rN/th
+         BN2LBDFS1VtN08IeovE9w8ehInj7h9ECiANGvJchFiPy/910SCQ/vGpj+/o3rsHwVo
+         iTUgMwsB+lDrg==
+Date:   Fri, 27 Oct 2023 14:28:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc:     <agross@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linus.walleij@linaro.org>,
-        <Jonathan.Cameron@huawei.com>, <sboyd@kernel.org>,
-        <dmitry.baryshkov@linaro.org>, <quic_subbaram@quicinc.com>,
-        <quic_collinsd@quicinc.com>, <quic_kamalw@quicinc.com>,
-        <marijn.suijten@somainline.org>,
-        <andriy.shevchenko@linux.intel.com>,
-        <krzysztof.kozlowski@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        "Mike Looijmans" <mike.looijmans@topic.nl>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        "Ibrahim Tilki" <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
-        Haibo Chen <haibo.chen@nxp.com>, <linux-iio@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-msm-owner@vger.kernel.org>
-Subject: Re: [PATCH 07/11] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20231027142512.37358c60@jic23-huawei>
-In-Reply-To: <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
-        <20230708072835.3035398-8-quic_jprakash@quicinc.com>
-        <20230708165955.08c1159c@jic23-huawei>
-        <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
+To:     Amit Dhingra <mechanicalamit@gmail.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] MAINTAINERS: correct file entry IIO LIGHT SENSOR
+ GAIN-TIME_SCALE HELPERS
+Message-ID: <20231027142850.6c469cd2@jic23-huawei>
+In-Reply-To: <CAO=gReFVhp7QK_XZRBO5vbv6fmFb4BdsZeQPSzWvuiz9UeQekA@mail.gmail.com>
+References: <CAO=gReHuuwB6mBZAXpYHGk9XsWE8e8+U3T9e6iqCXYQMcjZZVg@mail.gmail.com>
+        <a0636e8e-7a39-4c58-8dee-7187ffd7fc63@gmail.com>
+        <e806f42f-9baa-4689-882a-144647cc03a3@gmail.com>
+        <CAO=gReECvyMDe5kbSeFQ3rAc1n6e2vkcE2mtMYUE3c45QMvW-A@mail.gmail.com>
+        <CAO=gReFVhp7QK_XZRBO5vbv6fmFb4BdsZeQPSzWvuiz9UeQekA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -73,54 +55,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> > +  
-> >> +static const struct iio_info adc5_gen3_info = {
-> >> +	.read_raw = adc5_gen3_read_raw,
-> >> +	.fwnode_xlate = adc5_gen3_fwnode_xlate,
-> >> +};  
-> > ...  
+On Thu, 26 Oct 2023 04:13:44 -0700
+Amit Dhingra <mechanicalamit@gmail.com> wrote:
+
+> Commit ca11e4a35154 ("MAINTAINERS: Add IIO gain-time-scale helpers"),
+> updates the MAINTAINERS file. However the files listed do not exist.
+> These presumably come from commit 38416c28e168 ("iio: light: Add
+> gain-time-scale helpers")
 > 
+> Fix the entries.
 > 
-> Did you mean to leave any comment here...?
-
-Nope ... is a cut mark to indicate I dropped a load of quoted text.
-
-On that note, don't bother replying to say you'll do things suggested
-by reviewers - we assume you will unless you say otherwise :)
-
-If you want to add a boilerplate message alongside comments on the
-bits that need further discussion, along the lines of 
-"All other comments accepted." That's fine but it's not really necessary.
-
-...
-
-> >> +
-> >> +static int adc5_gen3_exit(struct platform_device *pdev)
-> >> +{  
-> > As you are mixing devm manged cleanup and the explicit sort the
-> > result is that you remove the userspace interfaces 'after' you run
-> > everything in here. I'm thinking disabling the channels at least
-> > isn't a good idea in that case.
-> >
-> > If you want to use devm (which is good) then you need to work out how
-> > to register additional callbacks during probe to tear down everything in
-> > the right order (typically the reverse of what happens in probe)
-> > devm_add_action_or_reset() is the way to add those extra callbacks.
-> >
-> > If not, just don't use devm for at least those bits that will end up
-> > running out of order (such as iio_device_register()) and manually call their
-> > cleanup routines instead.  
+> Found by ./scripts/get_maintainer.pl --self-test=patterns
 > 
-> 
-> I checked some other examples in the iio/adc/ folder, I think I see what 
-> you mean here. It looks like drivers with a remove callback always use 
-> iio_device_register and iio_device_unregister instead of the devm_* 
-> variant, due to the issue with sysfs removal as you said.
-> 
-> I'll update the probe and remove functions similarly, to do explicit 
-> cleanups as required, avoiding devm_ usage for places where it should be 
-> avoided.
+> Fixes: ca11e4a35154 ("MAINTAINERS: Add IIO gain-time-scale helpers")
+> Signed-off-by: Amit Dhingra <mechanicalamit@gmail.com>
+Applied to the togreg branch of iio.git.
 
-Better to go the other way as Dmitry suggested.  Make everything you can
-devm managed.
+Whilst nice to tidy it up, I'm not sure it's going to make much difference
+to anyone so not rushing this in.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 668d1e24452d..99c2285c58e5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10177,8 +10177,8 @@ IIO LIGHT SENSOR GAIN-TIME-SCALE HELPERS
+>  M:	Matti Vaittinen <mazziesaccount@gmail.com>
+>  L:	linux-iio@vger.kernel.org
+>  S:	Maintained
+> -F:	drivers/iio/light/gain-time-scale-helper.c
+> -F:	drivers/iio/light/gain-time-scale-helper.h
+> +F:	drivers/iio/industrialio-gts-helper.c
+> +F:	include/linux/iio/iio-gts-helper.h
+> 
+>  IIO MULTIPLEXER
+>  M:	Peter Rosin <peda@axentia.se>
 

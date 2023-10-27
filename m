@@ -2,185 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D4B67D8C62
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 01:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A847D8D69
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 05:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233234AbjJZXy6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Oct 2023 19:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
+        id S234902AbjJ0D1h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Oct 2023 23:27:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232235AbjJZXy5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 19:54:57 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7F6D48
-        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 16:54:55 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9becde9ea7bso555928666b.0
-        for <linux-iio@vger.kernel.org>; Thu, 26 Oct 2023 16:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698364493; x=1698969293; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gAaMO15sOP8ipf1i58B2kwq6lW6S/mlb1MuQFi51atg=;
-        b=aRPnoCjBRbSaph76FeHWW3gCs5yDx4o6TmolrI2c1TyLLg4hN6EIw3rQI5wkMW4+k7
-         ehddxuQ6p0FXwx9xUknH6SCSgd1VlBqYENTru28gt3/1kpDD/tSeem9iEQIdAmrNClC5
-         ypUohhq005JaPqiddwt19ycqFfHCrl1ZBLrEZKOq5BNouD3PISkXM5GDtZyXF6+DrMLi
-         HhMPA1rbAcdtQTq/iUu4CCMF+fByus3I7vaqsy9Z47ufcaZNlI9LqtMi/UxtQfs4T5+H
-         QNF4qtvDrnpI3DQu0+AH9J9gABXNMzMQjJ9WP46ONkJMX0GyB3OC18xVxf9wUm4mXl+l
-         b9Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698364493; x=1698969293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gAaMO15sOP8ipf1i58B2kwq6lW6S/mlb1MuQFi51atg=;
-        b=F9MaHp2e21RuzfqStNzQVZKksbbJ5E5kHCTKJyd6HawF0xJRzNx+U6k7YRIBn5cPo5
-         gq03D7o6p21ATmyUoku8167gOp/cPbbEoXNaSNBr8L2tCjcuoKdpxqLCSB2WRy2WVj1e
-         fUfP4K8IBTi/uqfXZGMQAElvtKCaO3DDw6HMykJZ1BEs6JBw5yDqh0PUDLU8ny/6bQgP
-         tpPJKfJKF6/1uugXW42bwg/P8PAS4UhjngC5uyeqc3AoSq047SlPNDTUHw2pogQ9HGoz
-         J6szvGvRgC7GNz+On40DVO6wR9pUdCn58mg9i+CdP6/xOI2tg8k+eaKH1J+IcdghoYp/
-         0zCQ==
-X-Gm-Message-State: AOJu0YzuIZEvIi1kKMD2dZ2XKUMguG2RRTNh8WQcsSDNCvNJMsRY7zuU
-        yc0kNzlTl6soMzW+WQaMGLGG6IfWE6oRrTOj4jgJNA==
-X-Google-Smtp-Source: AGHT+IFgSYgDRXMomRCJLvfmtBG0oWjLSnEpDTrZuDKhKUfvgoZ6VAvavf/RCCAKcVAGSp5lLrwWL5ikv5eVrnLN/Ik=
-X-Received: by 2002:a17:907:3e9f:b0:9b6:3be9:a8f with SMTP id
- hs31-20020a1709073e9f00b009b63be90a8fmr1446357ejc.20.1698364493482; Thu, 26
- Oct 2023 16:54:53 -0700 (PDT)
+        with ESMTP id S233035AbjJ0D1g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Oct 2023 23:27:36 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA1991AC;
+        Thu, 26 Oct 2023 20:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698377254; x=1729913254;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p3RtJ8WNKEO9eNS9IXfnPQkHfpjLhAnRTEM/TPaXaw0=;
+  b=DB2QGDG8GFRDuKdIpKqAwd4e0TCgyTd3Kv+b/IBoinF/zPi9pmRSWvhC
+   drExLHQnh3pzFyZkv3gXdBsZwlbHAQjYMGgNcVTOwJcR18DR51XzEtRea
+   rKx2RnBlo3TZTmLPNdIx0E4YD815r5GrrJFOMhnbwfyqUte8InQBb1HD7
+   sdzzjUd+GPd8wH1Qi+iqsq7pygggaTluzD8TsZpP/19ZJaBl1AbCw2JpK
+   4TBBV9J4s1kqER9QBH4k0zhLZnf/braNVu7QRxrOB6b2otfi7VPBL3F1m
+   suDS3uF4Gk5ov9n3Kp9+GAkJeZKm7n5aOZx+A1O/DBuzl3VS+KZZZPZkE
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="451941365"
+X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
+   d="scan'208";a="451941365"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 20:27:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="903139065"
+X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
+   d="scan'208";a="903139065"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Oct 2023 20:24:34 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qwDUx-000AOh-1d;
+        Fri, 27 Oct 2023 03:26:59 +0000
+Date:   Fri, 27 Oct 2023 11:26:31 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <202310271158.rRHlxbrM-lkp@intel.com>
+References: <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
 MIME-Version: 1.0
-References: <20230921-strncpy-drivers-iio-proximity-sx9324-c-v1-1-4e8d28fd1e7c@google.com>
- <20230923184751.41d52b9d@jic23-huawei>
-In-Reply-To: <20230923184751.41d52b9d@jic23-huawei>
-From:   Justin Stitt <justinstitt@google.com>
-Date:   Thu, 26 Oct 2023 16:54:41 -0700
-Message-ID: <CAFhGd8putfBJH+ox4rdX478qLd+iDDEssMV2CwfPBd=C_wJzqw@mail.gmail.com>
-Subject: Re: [PATCH] iio: sx9324: replace deprecated strncpy
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231026143532.39660-3-subhajit.ghosh@tweaklogic.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Subhajit,
 
-On Sat, Sep 23, 2023 at 10:47=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Thu, 21 Sep 2023 07:01:01 +0000
-> Justin Stitt <justinstitt@google.com> wrote:
->
-> > `strncpy` is deprecated for use on NUL-terminated destination strings [=
-1].
-> >
-> > We should prefer more robust and less ambiguous string interfaces.
-> >
-> > `prop` is defined as this string literal with size 30 (including null):
-> > |       #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-> > |             char prop[] =3D SX9324_PROXRAW_DEF;
-> >
-> > Each of the strncpy->strscpy replacements involve string literals with =
-a
-> > size less than 30 which means there are no current problems with how
-> > strncpy is used. However, let's move away from using strncpy entirely.
-> >
-> > A suitable replacement is `strscpy` [2] due to the fact that it
-> > guarantees NUL-termination on the destination buffer without
-> > unnecessarily NUL-padding.
-> >
-> > Moreover, let's opt for the more conventional `sizeof()` as opposed to
-> > `ARRAY_SIZE` for these simple strings.
-> >
-> > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#st=
-rncpy-on-nul-terminated-strings [1]
-> > Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en=
-.html [2]
-> > Link: https://github.com/KSPP/linux/issues/90
-> > Cc: linux-hardening@vger.kernel.org
-> > Signed-off-by: Justin Stitt <justinstitt@google.com>
-> > ---
-> > FWIW: It seems fragile to base future `prop` stores on the
-> > size of it's default string.
->
-> Agreed - can we just get rid of the copying?  Just set a const char *
-> to point to appropriate string instead and use that?
->
-> The dance is just about reasonable for the case where there is
-> a string format being used to fill in the numbers, here I can't see any
-> advantage at all. (for the other case, a kasprintf() or similar is probab=
-ly
-> more appropriate anyway) given this isn't a particular hot path.
+kernel test robot noticed the following build errors:
 
-I sent a [v2]! Can you see if this matches your vision here?
+[auto build test ERROR on 611da07b89fdd53f140d7b33013f255bf0ed8f34]
 
->
-> Jonathan
-> >
-> > Note: build-tested
-> > ---
-> >  drivers/iio/proximity/sx9324.c | 12 ++++--------
-> >  1 file changed, 4 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9=
-324.c
-> > index 438f9c9aba6e..25ac2733bcef 100644
-> > --- a/drivers/iio/proximity/sx9324.c
-> > +++ b/drivers/iio/proximity/sx9324.c
-> > @@ -937,11 +937,9 @@ sx9324_get_default_reg(struct device *dev, int idx=
-,
-> >       case SX9324_REG_AFE_CTRL4:
-> >       case SX9324_REG_AFE_CTRL7:
-> >               if (reg_def->reg =3D=3D SX9324_REG_AFE_CTRL4)
-> > -                     strncpy(prop, "semtech,ph01-resolution",
-> > -                             ARRAY_SIZE(prop));
-> > +                     strscpy(prop, "semtech,ph01-resolution", sizeof(p=
-rop));
-> >               else
-> > -                     strncpy(prop, "semtech,ph23-resolution",
-> > -                             ARRAY_SIZE(prop));
-> > +                     strscpy(prop, "semtech,ph23-resolution", sizeof(p=
-rop));
-> >
-> >               ret =3D device_property_read_u32(dev, prop, &raw);
-> >               if (ret)
-> > @@ -1012,11 +1010,9 @@ sx9324_get_default_reg(struct device *dev, int i=
-dx,
-> >       case SX9324_REG_PROX_CTRL0:
-> >       case SX9324_REG_PROX_CTRL1:
-> >               if (reg_def->reg =3D=3D SX9324_REG_PROX_CTRL0)
-> > -                     strncpy(prop, "semtech,ph01-proxraw-strength",
-> > -                             ARRAY_SIZE(prop));
-> > +                     strscpy(prop, "semtech,ph01-proxraw-strength", si=
-zeof(prop));
-> >               else
-> > -                     strncpy(prop, "semtech,ph23-proxraw-strength",
-> > -                             ARRAY_SIZE(prop));
-> > +                     strscpy(prop, "semtech,ph23-proxraw-strength", si=
-zeof(prop));
-> >               ret =3D device_property_read_u32(dev, prop, &raw);
-> >               if (ret)
-> >                       break;
-> >
-> > ---
-> > base-commit: 2cf0f715623872823a72e451243bbf555d10d032
-> > change-id: 20230921-strncpy-drivers-iio-proximity-sx9324-c-8c3437676039
-> >
-> > Best regards,
-> > --
-> > Justin Stitt <justinstitt@google.com>
-> >
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Subhajit-Ghosh/dt-bindings-iio-light-Avago-APDS9306/20231026-223659
+base:   611da07b89fdd53f140d7b33013f255bf0ed8f34
+patch link:    https://lore.kernel.org/r/20231026143532.39660-3-subhajit.ghosh%40tweaklogic.com
+patch subject: [PATCH v1 2/2] iio: light: Add support for APDS9306 Light Sensor
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20231027/202310271158.rRHlxbrM-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231027/202310271158.rRHlxbrM-lkp@intel.com/reproduce)
 
-[v2]: https://lore.kernel.org/r/20231026-strncpy-drivers-iio-proximity-sx93=
-24-c-v2-1-cee6e5db700c@google.com
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310271158.rRHlxbrM-lkp@intel.com/
 
-Thanks
-Justin
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/light/apds9306.c:1325:10: error: 'struct i2c_driver' has no member named 'probe_new'
+    1325 |         .probe_new = apds9306_probe,
+         |          ^~~~~~~~~
+>> drivers/iio/light/apds9306.c:1325:22: error: initialization of 'const struct i2c_device_id *' from incompatible pointer type 'int (*)(struct i2c_client *)' [-Werror=incompatible-pointer-types]
+    1325 |         .probe_new = apds9306_probe,
+         |                      ^~~~~~~~~~~~~~
+   drivers/iio/light/apds9306.c:1325:22: note: (near initialization for 'apds9306_driver.id_table')
+   drivers/iio/light/apds9306.c:1326:21: warning: initialized field overwritten [-Woverride-init]
+    1326 |         .id_table = apds9306_id,
+         |                     ^~~~~~~~~~~
+   drivers/iio/light/apds9306.c:1326:21: note: (near initialization for 'apds9306_driver.id_table')
+   cc1: some warnings being treated as errors
+
+
+vim +1325 drivers/iio/light/apds9306.c
+
+  1317	
+  1318	static struct i2c_driver apds9306_driver = {
+  1319		.driver = {
+  1320			.name = "apds9306",
+  1321			.pm = pm_ptr(&apds9306_pm_ops),
+  1322			.of_match_table = apds9306_of_match,
+  1323			.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+  1324		},
+> 1325		.probe_new = apds9306_probe,
+  1326		.id_table = apds9306_id,
+  1327	};
+  1328	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

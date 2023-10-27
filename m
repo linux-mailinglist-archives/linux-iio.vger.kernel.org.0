@@ -2,83 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E64E7D92CC
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 10:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C777D935D
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Oct 2023 11:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345584AbjJ0IzQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Oct 2023 04:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50468 "EHLO
+        id S230502AbjJ0JTu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Oct 2023 05:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235048AbjJ0IzP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 04:55:15 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADBF01B8
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:55:12 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cc0e78ec92so11691275ad.3
-        for <linux-iio@vger.kernel.org>; Fri, 27 Oct 2023 01:55:12 -0700 (PDT)
+        with ESMTP id S230101AbjJ0JTt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Oct 2023 05:19:49 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4810C0;
+        Fri, 27 Oct 2023 02:19:47 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1c9c5a1b87bso14768975ad.3;
+        Fri, 27 Oct 2023 02:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1698396912; x=1699001712; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1698398387; x=1699003187; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Is4QFcJ/Sw1j/0rsJ9QPsUqhaamwV8h6F6t9b1JVKvc=;
-        b=GJJKvWdGpAeVnuXHi+1NgFJZSry4yz+Y7Jfu9LKYo2hFx31RNEY3nTF4f48gTWpYUo
-         YF1J+kdk8bXmxl8QlNFVfkyUv22StoFwhd4QppQttWxO26e11pHCGXzutPZGBfApPEri
-         K1xXnU+Iwf6+e6YXDx/zt/gZKbOE08/YNVr7hS02gO0BQHPMyvY1nF+nb8T9Hpkkoyjt
-         Lw8fPqjhIiGgcte+hmfxwRrsbNZnAy+7wiu/1JJQB5kOq7bAcwph9ZhfORCCdO/dTZEJ
-         7HW779utfEmK1lBq0w5q3JP1zkEatiRw89UFe4s5sX6jnvF9h+J89ouFvkT39YhzhtF9
-         +Hlw==
+        bh=lgS/jv4cYftJ2VLUevuTOfk+YPF/Cr+9ApUFZyAn5kY=;
+        b=E9Kr8zGzE1teTKllp+omg0ouqFAcCURJePI/9VSGJ+Y65S2mFrydD9z3NzGdke4YUj
+         fziuA4OTc/LWg7fGUgS4iQ1N4MB+SG9gJlvcmsX8FdHzS2/M82nJkmJTxSKs1KhVWwFF
+         WCM5WEdOfEEBgjawi24l/po6cMLKszuiNhW4aRtuktd+jBkulnv9Ev2k0XquHnAR9DnE
+         HgVRstd9MOYFbHTRFZCSLY0yfvszwEba2AZ6Q4nHMX6eQB0IYE7kBioN+h+G/icLsw+q
+         vzo33ZRXlk3OVVOFPkBSUh9saUHmJ7d2ZONbXy8Sruie/mGz7Swm08TKy8ywYDOIrUAs
+         O2qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698396912; x=1699001712;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1698398387; x=1699003187;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Is4QFcJ/Sw1j/0rsJ9QPsUqhaamwV8h6F6t9b1JVKvc=;
-        b=l6nVd5EQ/40SwoJCbcqcgYL4CVmTv2djCBzoXawg0RhqhIo8PNRIjZj1zQqJFT5v5E
-         2jSneSbzh2Dpz/IaSz569qeMR13PS7Fk6D/ldftgiHD+/xCYIYU8T2aFjKMV3oXYueaA
-         dXbPuDCZRsyb0pjkzrhjcdgqwP+0GnKXvp4td9gvTvBK4UtEncBnv6PsKxLT1OrMJzIf
-         Nuoaydv/qfV3uQABul7YITw4O1lEWAYP6mRZaFtq0tnOotjIsjhuzn9EDzWKg2AmTb+F
-         Zo34vDtD7KCSZBgRYlMDlk4RzBnW1bIKYg3btuk6WTxuegbsy7jjmAp79CIXI7XuGuPm
-         BVdA==
-X-Gm-Message-State: AOJu0YzhhA8NJXKDVZs9a+kiNpqqdp/N29fMe860s5jMMjPRnN1p23DO
-        kajNz+kx4SuO7YHtZ6e44vOgJw==
-X-Google-Smtp-Source: AGHT+IHX8Q247cpzVHxbUsznH2cd5jtDT0ExlXQQSJfa3Ax/5zi7xuosF299B5v4WhdLzyuVwdJ65Q==
-X-Received: by 2002:a17:903:11c4:b0:1c3:3363:8aea with SMTP id q4-20020a17090311c400b001c333638aeamr2208497plh.61.1698396912159;
-        Fri, 27 Oct 2023 01:55:12 -0700 (PDT)
-Received: from ?IPV6:2403:580d:82f4:0:bfe6:93ca:47b7:e8ec? (2403-580d-82f4-0-bfe6-93ca-47b7-e8ec.ip6.aussiebb.net. [2403:580d:82f4:0:bfe6:93ca:47b7:e8ec])
-        by smtp.gmail.com with ESMTPSA id s18-20020a17090330d200b001c5eb2c4d8csm1036273plc.160.2023.10.27.01.55.07
+        bh=lgS/jv4cYftJ2VLUevuTOfk+YPF/Cr+9ApUFZyAn5kY=;
+        b=rsx4mnljWs2zL1I7O4NyiY8ZnpISgKqywI/ktvUkhAL89UPnJTIU1o/0gHSUZJvPWc
+         RYgs6jnXxcDDR1dDJPrh0D6CKr+wYcIOzQym5xjMPyeEWTZLTgg97i1DRjVAv5Dinx6h
+         m2y+T15snaB8ivU8FRoUlA77PEKiNz1mb/0ntRJB8fCZFgtehmmHcnk3jHHk21XO9DNY
+         KjJoRpp/p38HoySIFzOCwaq66O7uWdxFSmJ00a5EqbkewoK8uRNcnq2u0P/fLuyAeSaT
+         U2l7FCS2GqNa27pw4ODJBQZKuVjrw0XmfB+Izx2mv5fmM1Wb4aFkkqyMbmUeW004bzQy
+         0eqw==
+X-Gm-Message-State: AOJu0YxlDPrnV3eqq9INJuWp8mSZdFBYBcnQ2jZMi8Xi6B9qv91LQijw
+        RVnjwmQ88ft9Sgrz9iMrJFa0534LOKw=
+X-Google-Smtp-Source: AGHT+IFyLx0K5l+UJCFp4j2n94XOj6IorEXPbv6ik/fLme4I9EoaFoND6iGxyz1U1qz/lqHAnlOSaA==
+X-Received: by 2002:a17:902:e2d1:b0:1cc:2a23:cbb4 with SMTP id l17-20020a170902e2d100b001cc2a23cbb4mr50155plc.35.1698398387235;
+        Fri, 27 Oct 2023 02:19:47 -0700 (PDT)
+Received: from ?IPV6:2409:40f4:13:48d5:c971:7c89:5be7:c8a2? ([2409:40f4:13:48d5:c971:7c89:5be7:c8a2])
+        by smtp.gmail.com with ESMTPSA id j8-20020a170902da8800b001b392bf9192sm1081387plx.145.2023.10.27.02.19.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 01:55:11 -0700 (PDT)
-Message-ID: <c71d095b-cd39-4c4d-a985-7032a1da49d9@tweaklogic.com>
-Date:   Fri, 27 Oct 2023 19:25:05 +1030
+        Fri, 27 Oct 2023 02:19:46 -0700 (PDT)
+Message-ID: <641f90da-332a-4021-869e-fdbcff435d90@gmail.com>
+Date:   Fri, 27 Oct 2023 14:49:41 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Avago APDS9306
+Subject: Re: [PATCH] iio/imu: inv_icm42600: Use max() helper macros
+To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20231025113544.4954-1-bragathemanick0908@gmail.com>
+ <FR3P281MB1757821128DD28BD9F2742A6CEDCA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>
-Cc:     Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-2-subhajit.ghosh@tweaklogic.com>
- <b030cb0a-7a15-4497-9b0f-75615694dc04@linaro.org>
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <b030cb0a-7a15-4497-9b0f-75615694dc04@linaro.org>
+From:   Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+In-Reply-To: <FR3P281MB1757821128DD28BD9F2742A6CEDCA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -86,31 +77,59 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
->>   
->>   properties:
->>     compatible:
->> -    const: avago,apds9300
->> +    oneOf:
-> 
-> Drop
-Sorry, do you mean I should not use the "oneOf"?
-> 
->> +      - enum:
->> +          - avago,apds9300
->> +          - avago,apds9306
->> +          - avago,apds9960
-> 
-> I don't understand what is happening here. At all. Some compatibles are
-> moved, some are added, nothing explains why you are doing it.
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
-I have formatted the commit message wrongly, it will be fixed at once.
-I am trying to add the support for all the three sensors in the same schema file.
+On 27/10/23 14:24, Jean-Baptiste Maneyrol wrote:
+> Hello,
+>
+> thanks for this patch.
+>
+> The same computation is also done inside inv_icm42600_gyro. Can you do a patch that is updating both files to use max?
+>
+> Thanks a lot,
+> JB
+Hi Jean,
 
-Regards,
-Subhajit Ghosh
+Same computation can be included in both inv_icm42600_gyro and 
+inv_icm42600_buffer.
+Will make those changes and send a new patch.
 
-
+Thanks,
+Bragathe
+>
+> From: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+> Sent: Wednesday, October 25, 2023 13:35
+> To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de>
+> Cc: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>
+> Subject: [PATCH] iio/imu: inv_icm42600: Use max() helper macros
+>   
+> Use the standard max() helper macros instead of direct variable comparison using if/else blocks or ternary operator. Change identified using minmax. cocci Coccinelle semantic patch. Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@ gmail. com>
+> ZjQcmQRYFpfptBannerStart
+> This Message Is From an Untrusted Sender
+> You have not previously corresponded with this sender.
+>   
+> ZjQcmQRYFpfptBannerEnd
+> Use the standard max() helper macros instead of direct
+> variable comparison using if/else blocks or ternary
+> operator. Change identified using minmax.cocci
+> Coccinelle semantic patch.
+>
+> Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+> ---
+>   drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> index b1e4fde27d25..f67bd5a39beb 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> @@ -137,10 +137,7 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+>   out_unlock:
+>   	mutex_unlock(&st->lock);
+>   	/* sleep maximum required time */
+> -	if (sleep_accel > sleep_temp)
+> -		sleep = sleep_accel;
+> -	else
+> -		sleep = sleep_temp;
+> +	sleep = max(sleep_accel, sleep_temp);
+>   	if (sleep)
+>   		msleep(sleep);
+>   	return ret;

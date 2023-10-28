@@ -2,74 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0851F7DA54F
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Oct 2023 08:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D30BE7DA6B2
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Oct 2023 13:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjJ1G3U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Oct 2023 02:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52252 "EHLO
+        id S229767AbjJ1LXz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Oct 2023 07:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjJ1G3T (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Oct 2023 02:29:19 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51B711B;
-        Fri, 27 Oct 2023 23:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698474558; x=1730010558;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZmPZf8J+GCs5OUrhdqek1E0Y1P76n/e4mnKOXv6ZLjM=;
-  b=ePirB8Uu75ZOnNNTsup760nCJuELLn5bMlJ0xlc1pXyQLNRllJ5eXqGE
-   FzcFij1ZVWml0QPdf/z4txiWFa8GUKjOTJN9gCpzqE2g+iU0aA1EMBidF
-   FgiDusMBcw7BvR1NB0vza3VBYgm6ucyjNHFVEgxl0aG4tGXo1rwm/0oZ3
-   jr+PEXErcsaQPWeMc8JMH8h86HF4cvcXJpIGLgHv1o39+12HVpXhHO7s5
-   jDSnargNi8Y5f916Lr3ykRT1rkSMfqd9G49kBVubjLpIzoBxQkNHL7FU7
-   hmgJaRD11FiE7moDVfsZAanYAeBjdcgYKx/RFKD7kQhavACYB8eB9bDOZ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="719988"
-X-IronPort-AV: E=Sophos;i="6.03,258,1694761200"; 
-   d="scan'208";a="719988"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 23:29:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="825578486"
-X-IronPort-AV: E=Sophos;i="6.03,258,1694761200"; 
-   d="scan'208";a="825578486"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 27 Oct 2023 23:29:13 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qwcoo-000BXT-3C;
-        Sat, 28 Oct 2023 06:29:11 +0000
-Date:   Sat, 28 Oct 2023 14:29:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-Message-ID: <202310281420.see2fNLh-lkp@intel.com>
-References: <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
+        with ESMTP id S229461AbjJ1LXy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Oct 2023 07:23:54 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A9FD9;
+        Sat, 28 Oct 2023 04:23:49 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4083f613275so21596785e9.2;
+        Sat, 28 Oct 2023 04:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698492228; x=1699097028; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=inkVXt8mNRsPeNjfeXHVk0mmWOAzErBsUID4u2QruF4=;
+        b=D1Y1aDfDLJwIPLuUBbTnslxAO+52jb/NtWkBnZAOqhYfRL+qO3zvYG/95X7gT5yvpJ
+         /Tc3lmAe7JUCNEuPbkoG1W2PpOU3UXndpUAVE1FcK8pHrphw/we00snRnWYmMedIv6uA
+         Tqgv2FijJXChGFBJMkQgdI/OC4FzJF1wXdu6d3bCXIPREzkeCseVpGCSa1J9zW/PIC7w
+         8qIOyRTksP3wBDC5XtR2Vr3TzsZTH1UA0f5OxHr/Rzjkl47iR0/XXh9mC4UbeiobiB86
+         +kb73n8Yu5FerKUl0sH5nDm1olPI16I6UIoz2Ry1LQeSkaqMJzdTQUQJSSh2RUsD0tyh
+         EJ1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698492228; x=1699097028;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=inkVXt8mNRsPeNjfeXHVk0mmWOAzErBsUID4u2QruF4=;
+        b=LS7W7qYAfDKxaP3QUSDkDGP9cU+TI3l7CTMMxVrqc6VgRlXh3ouxb2rLiDsOOCn3Th
+         nXT1NcnZOZ49WQc8/X0tv5LbIWwtHPJIECEGvSzmuMqf1R8SgI5K5uKV/oqP9a9JA1/X
+         ZfadfL+m21LHy1ncl5Eb54SMXnM0uuVWqJUUNwep+u0doYehD6xE9PkaNMsamGnJYf/V
+         3t+9t9K97LIERVDvkJXuqsVZLY48ou9R2FoMDyjs8lagOOrl8nx7aMEiCnXRG7UfcAdr
+         rdNK5R6kNYfJgoM3Jqf2dARsghtPMbxPZMQar1a91a2sfcjuL6Pl0cdu+nsOYznDp7t2
+         CnfA==
+X-Gm-Message-State: AOJu0YwBltZQx9Z0Gbbt6+EGsHJFHT/grbwlM3boih8jBoXn63msq7V/
+        husd6lwUPfrZg1+Rd0piJZM=
+X-Google-Smtp-Source: AGHT+IEEFA9l8QD0pR5Se8YVz8kj7afROVeCB03xCjYKtp22lS22SEJmqZZzv6je83H6Y4auL9pW2w==
+X-Received: by 2002:a05:600c:1c8f:b0:406:478e:9e2d with SMTP id k15-20020a05600c1c8f00b00406478e9e2dmr3851621wms.26.1698492227963;
+        Sat, 28 Oct 2023 04:23:47 -0700 (PDT)
+Received: from thinkpad-work.lan (13.red-83-35-58.dynamicip.rima-tde.net. [83.35.58.13])
+        by smtp.gmail.com with ESMTPSA id j8-20020a05600c190800b004063ea92492sm3785933wmq.22.2023.10.28.04.23.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Oct 2023 04:23:47 -0700 (PDT)
+Message-ID: <2a5ccee0ce33b2918e8b32b25ff1cd7221d01892.camel@gmail.com>
+Subject: Re: [PATCH v2 4/5] iio: pressure: bmp280: Allow multiple chips id
+ per family of devices
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Phil Elwell <phil@raspberrypi.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Date:   Sat, 28 Oct 2023 13:23:46 +0200
+In-Reply-To: <20231027144625.36cc694c@jic23-huawei>
+References: <cover.1697994521.git.ang.iglesiasg@gmail.com>
+         <eade22d11e9de4405ea19fdaa5a8249143ae94df.1697994521.git.ang.iglesiasg@gmail.com>
+         <ZTZYNjq/1X95ijXh@smile.fi.intel.com>
+         <20231027144234.0ad6c7b6@jic23-huawei>
+         <20231027144625.36cc694c@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.1 (by Flathub.org) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,57 +82,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Subhajit,
+On Fri, 2023-10-27 at 14:46 +0100, Jonathan Cameron wrote:
+> On Fri, 27 Oct 2023 14:42:34 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>=20
+> > On Mon, 23 Oct 2023 14:25:42 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >=20
+> > > On Sun, Oct 22, 2023 at 07:22:20PM +0200, Angel Iglesias wrote:=C2=A0=
+=20
+> > > > Improve device detection in certain chip families known to have var=
+ious
+> > > > chip ids.
+> > > > When no known ids match, gives a warning but follows along what dev=
+ice
+> > > > said on the firmware and tries to configure it.=C2=A0=C2=A0=C2=A0=
+=20
+> > >=20
+> > > I would rephrase it a bit:
+> > >=20
+> > > "Improve device detection in certain chip families known to have
+> > > various chip IDs. When no ID matches, give a warning but follow
+> > > along what device said on the firmware side and try to configure
+> > > it."
+> > >=20
+> > > ...
+> > > =C2=A0=20
+> > > > +	for (i =3D 0; i < data->chip_info->num_chip_id; i++) {
+> > > > +		if (chip_id =3D=3D data->chip_info->chip_id[i]) {
+> > > > +			dev_info(dev, "0x%x is a known chip id for
+> > > > %s\n", chip_id, name);
+> > > > +			break;
+> > > > +		}=C2=A0=C2=A0=C2=A0=20
+> > > =C2=A0=20
+> > > > +		dev_warn(dev, "chip id 0x%x does not match known id
+> > > > 0x%x\n",
+> > > > +			 chip_id, data->chip_info->chip_id[i]);=C2=A0=C2=A0=C2=A0=20
+> > >=20
+> > > If the matching ID is not the first one, user will have an unneeded
+> > > warning here.=C2=A0=20
+> >=20
+> > Could be a dev_dbg() but I'd just drop it entirely.
+> >=20
+> Given that was all that came up, I've hopefully saved us all time by
+> dropping the bring and changing the patch description as Andy suggested.
+>=20
+> With that done, applied.
+>=20
+> Jonathan
+>=20
 
-kernel test robot noticed the following build warnings:
+Sorry for the extra work Jonathan. Next time I'll be quicker checking the i=
+nbox.
 
-[auto build test WARNING on 611da07b89fdd53f140d7b33013f255bf0ed8f34]
+Thanks for your time guys.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Subhajit-Ghosh/dt-bindings-iio-light-Avago-APDS9306/20231027-154954
-base:   611da07b89fdd53f140d7b33013f255bf0ed8f34
-patch link:    https://lore.kernel.org/r/20231027074545.6055-3-subhajit.ghosh%40tweaklogic.com
-patch subject: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20231028/202310281420.see2fNLh-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231028/202310281420.see2fNLh-lkp@intel.com/reproduce)
+Angel
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310281420.see2fNLh-lkp@intel.com/
+> >=20
+> > > =C2=A0=20
+> > > > =C2=A0	}=C2=A0=C2=A0=C2=A0=20
+> > > =C2=A0=20
+> >=20
+>=20
 
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/light/apds9306.c:110: warning: cannot understand function prototype: 'const int apds9306_repeat_rate_freq[][2] = '
->> drivers/iio/light/apds9306.c:123: warning: cannot understand function prototype: 'const int apds9306_repeat_rate_period[] = '
-
-
-vim +110 drivers/iio/light/apds9306.c
-
-   106	
-   107	/**
-   108	 * apds9306_repeat_rate_freq - Sampling Frequency in uHz
-   109	 */
- > 110	static const int apds9306_repeat_rate_freq[][2] = {
-   111		{40, 0},
-   112		{20, 0},
-   113		{10, 0},
-   114		{5,  0},
-   115		{2,  0},
-   116		{1,  0},
-   117		{0, 500000},
-   118	};
-   119	
-   120	/**
-   121	 * apds9306_repeat_rate_period - Sampling period in uSec
-   122	 */
- > 123	static const int apds9306_repeat_rate_period[] = {
-   124		25000, 50000, 100000, 200000, 500000, 1000000, 2000000
-   125	};
-   126	static_assert(ARRAY_SIZE(apds9306_repeat_rate_freq) ==
-   127		      ARRAY_SIZE(apds9306_repeat_rate_period));
-   128	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki

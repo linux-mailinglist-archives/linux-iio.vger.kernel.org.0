@@ -2,46 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C24C7DA745
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Oct 2023 15:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B6B77DA756
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Oct 2023 15:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjJ1Ndr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Oct 2023 09:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
+        id S229449AbjJ1NhR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Oct 2023 09:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjJ1Ndq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Oct 2023 09:33:46 -0400
+        with ESMTP id S229519AbjJ1NhQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Oct 2023 09:37:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF2DC0;
-        Sat, 28 Oct 2023 06:33:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B608C433C8;
-        Sat, 28 Oct 2023 13:33:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD55E5;
+        Sat, 28 Oct 2023 06:37:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CD2C433C7;
+        Sat, 28 Oct 2023 13:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698500024;
-        bh=hLbfxuRpowB3R+I1UXL8u9WS/bWkX7DQHooMrGVVcXs=;
+        s=k20201202; t=1698500234;
+        bh=5AyITzoVLQwUHHtk9sF0h2RjlIO0I7u9Y5FstB2snsg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Iw8etJ7+NXu9Cqluj7e1KgtXkQS4V+iaC0HhlnNGyMEC69idLx1Lb4/3271MMWr+n
-         Go8lsCiwQjZCg4OLqz1ZRcHydPHZvd7o/NOUvThVRBGK2Y030Tf50GizZMzb7TQONZ
-         5g3EQMrP1yhxGaVS36TVNFjwT1qv8lVN3J5XZzCbqZc+EC4jviqLZ4V6XTRF0NsMdg
-         Hi6EcL0DDIggOnhRcCNVOucK43Uv57pGRKTfFpGlNFea81h5fR4H7MzBEe3PFpAPrB
-         kD+tASkPnPoO+O3KxqKGdpcvEBSTbmGkqADz4ryk7VzsPEHVyp1AfXmqK9sD/vxWgy
-         iLMNjo4+YSelg==
-Date:   Sat, 28 Oct 2023 14:33:10 +0100
+        b=TwvLP4ZKyVK3qt+mAQGdFv4avg6KANxf+qPcDPHfatSjgISfN29B1pV2J82Lg+yWJ
+         Oz+NYhlUmeRE4J+kTpXYbsdvkh0/rknzxDCSY9Etl1M78QpvfGF0VHWl+RRgTtzk6Q
+         iZ/FO1OSZH4B9dZ8hqCZ9eF3qtBw6vr8SfIuEUSWGf16B/5LbQ7fJWKXgLN7lfi4VN
+         7keIQU1We7Y5BAzt9yrEFG6dsMqMbJysVsEv2wAZErAcvfsNjrWGyOwy0ryoA8+J48
+         0ZgJ7LJK7DgugerYLOWzYk+WsGCFduNszC2TN9ITLLo5OWxjDDxEBjRvQIYPZ+pagc
+         XCoKPdonGc/tA==
+Date:   Sat, 28 Oct 2023 14:36:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc:     Bragatheswaran Manickavel <bragathemanick0908@gmail.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio/imu: inv_icm42600: Use max() helper macros
-Message-ID: <20231028143230.1a6f3187@jic23-huawei>
-In-Reply-To: <FR3P281MB1757C4183E5B536D463BAEBBCEDCA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20231027094410.3706-1-bragathemanick0908@gmail.com>
-        <FR3P281MB1757C4183E5B536D463BAEBBCEDCA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light
+ Sensor
+Message-ID: <20231028143631.2545f93e@jic23-huawei>
+In-Reply-To: <ab671f50-7a0f-4e72-98a0-fa4d5f2ed889@tweaklogic.com>
+References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
+        <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
+        <d7ba077d-6bcd-4e04-b678-51e4bbc935ca@linaro.org>
+        <9e55b561-a0ad-4503-9f20-b7c98507afa0@tweaklogic.com>
+        <ebcf3e9f-2bc2-4d91-8b5c-51405236e4ab@linaro.org>
+        <ab671f50-7a0f-4e72-98a0-fa4d5f2ed889@tweaklogic.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -51,113 +64,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Oct 2023 15:19:49 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+On Fri, 27 Oct 2023 22:12:11 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> Hello,
->=20
-> thanks for the patch, looks good.
->=20
-> Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> On 27/10/23 21:34, Krzysztof Kozlowski wrote:
+> > On 27/10/2023 10:42, Subhajit Ghosh wrote:  
+> >> 4. Conor reviewed the patch and said that it would be better that I handle all
+> >>      these operations in apds9306 driver (this) patch series rather than submitting
+> >>      a new patch.
+> >>      "Ahh apologies then. The best course of action would likely be to include
+> >>       the patch merging the two bindings in your series adding the third user."
+> >> 5. As per this patch series -- RFC->v0->v1-v2  
+> > 
+> > RFC was the first version sent to mailing list. So after RFC there is
+> > second version - v2. This is v4.  
+> 
+> Acknowledging all your other comments. Appreciate your time and effort in reviewing
+> this. One last question on this - So what version should I use for the patchset
+> which I will submit next - "v3" or "v5" in the Subject of the emails?
+Go with v5 and play it safe given possible confusion.
 
-Interestingly b4 isn't finding this tag.  I'm too lazy to look into why but
-seems your email didn't reach patchwork either.
-Applied it by hand whilst applying the patch to the togreg branch of iio.git
-which given timing will be rebase on rc1 once available.  For now I'll just
-push it out as testing to give 0-day a head start.
-
+Numbering when there has previously been one or more RFC versions is always rather
+confusing, but we tend not to have a v0!  So RFC-> v1 -> v2 -> V3 would have
+been fine in my opinion, or
+RFC -> V2 -> v3 
+With a note in v2 cover letter saying changes from RFC to make it clear there
+was not a separate v1.
 
 Jonathan
 
->=20
-> Thanks,
-> JB
->=20
-> From: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
-> Sent: Friday, October 27, 2023 11:44
-> To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; jic23@kernel=
-.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de>
-> Cc: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>; linux-iio@v=
-ger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel@vger.kernel.org <l=
-inux-kernel@vger.kernel.org>
-> Subject: [PATCH v2] iio/imu: inv_icm42600: Use max() helper macros=20
-> =C2=A0
-> Use the standard max() helper macros instead of direct variable compariso=
-n using if/else blocks or ternary operator. Change identified using minmax.=
-=E2=80=8Acocci Coccinelle semantic patch. Signed-off-by: Bragatheswaran Man=
-ickavel <bragathemanick0908@=E2=80=8Agmail.=E2=80=8Acom>=20
-> ZjQcmQRYFpfptBannerStart
-> This Message Is From an Untrusted Sender=20
-> You have not previously corresponded with this sender.=20
-> =C2=A0
-> ZjQcmQRYFpfptBannerEnd
-> Use the standard max() helper macros instead of direct
-> variable comparison using if/else blocks or ternary
-> operator. Change identified using minmax.cocci
-> Coccinelle semantic patch.
->=20
-> Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
-> ---
-> V1 -> V2: Adding similar changes to inv_icm42600_gyro & inv_icm42600_buff=
-er
->=20
->  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 5 +----
->  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 5 +----
->  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   | 5 +----
->  3 files changed, 3 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/=
-iio/imu/inv_icm42600/inv_icm42600_accel.c
-> index b1e4fde27d25..f67bd5a39beb 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> @@ -137,10 +137,7 @@ static int inv_icm42600_accel_update_scan_mode(struc=
-t iio_dev *indio_dev,
->  out_unlock:
->  	mutex_unlock(&st->lock);
->  	/* sleep maximum required time */
-> -	if (sleep_accel > sleep_temp)
-> -		sleep =3D sleep_accel;
-> -	else
-> -		sleep =3D sleep_temp;
-> +	sleep =3D max(sleep_accel, sleep_temp);
->  	if (sleep)
->  		msleep(sleep);
->  	return ret;
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers=
-/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> index 6ef1df9d60b7..b52f328fd26c 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> @@ -424,10 +424,7 @@ static int inv_icm42600_buffer_postdisable(struct ii=
-o_dev *indio_dev)
->  	mutex_unlock(&st->lock);
-> =20
->  	/* sleep maximum required time */
-> -	if (sleep_sensor > sleep_temp)
-> -		sleep =3D sleep_sensor;
-> -	else
-> -		sleep =3D sleep_temp;
-> +	sleep =3D max(sleep_sensor, sleep_temp);
->  	if (sleep)
->  		msleep(sleep);
-> =20
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/i=
-io/imu/inv_icm42600/inv_icm42600_gyro.c
-> index 3bf946e56e1d..3df0a715e885 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> @@ -137,10 +137,7 @@ static int inv_icm42600_gyro_update_scan_mode(struct=
- iio_dev *indio_dev,
->  out_unlock:
->  	mutex_unlock(&st->lock);
->  	/* sleep maximum required time */
-> -	if (sleep_gyro > sleep_temp)
-> -		sleep =3D sleep_gyro;
-> -	else
-> -		sleep =3D sleep_temp;
-> +	sleep =3D max(sleep_gyro, sleep_temp);
->  	if (sleep)
->  		msleep(sleep);
->  	return ret;
+> 
+> Regards,
+> Subhajit Ghosh
+> 
 

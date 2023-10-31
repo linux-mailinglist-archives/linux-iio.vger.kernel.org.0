@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 249647DCBF8
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Oct 2023 12:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3857DCCB1
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Oct 2023 13:14:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343751AbjJaLjm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Oct 2023 07:39:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38746 "EHLO
+        id S236061AbjJaMJ6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Oct 2023 08:09:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343743AbjJaLjl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Oct 2023 07:39:41 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05F397;
-        Tue, 31 Oct 2023 04:39:38 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507bd644a96so8020792e87.3;
-        Tue, 31 Oct 2023 04:39:38 -0700 (PDT)
+        with ESMTP id S236346AbjJaMJt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Oct 2023 08:09:49 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE961D75;
+        Tue, 31 Oct 2023 05:07:49 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-507c8316abcso7891602e87.1;
+        Tue, 31 Oct 2023 05:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698752377; x=1699357177; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698754068; x=1699358868; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JpvaywPQcScYU3CWlECXIqGt+NokSx/RNLM7YM3gDd8=;
-        b=jlERvauaOxea/pbESdstcJOIPr1B3jW0TGiU1X+zotnZS0v3k8Ml2s0HG8R9wWG9qj
-         HGbrFyiXYqb59XqdtZiX+H+xT9yu2O5DW7rQtDgFbKKehNlNyCjSbwNSVO1AzsLXFr0R
-         9C1R4i0gez1rCDclVz6Dn5QWfcK/Tzi737QRMHLamDkuVGB1HdcWCWwkqU31LpFuxKtX
-         LfyxD1c0+xOuGQwpKJe5u3aiOvfIqtGC0uXD2TOfA5q6WTjQcBeTQaFD3aShpXLo/Mat
-         6xEvGM6JF8i0Pe6yZyklf4WpprZLtzIarLhNqBG7EVJ5lRLYgbOMGuDWExB1w/GquWWF
-         qiCg==
+        bh=lUCtZhSY5oV6l43Ls3OIhFz4C70yenlnLI2HL0boR8w=;
+        b=CdEf+klDPPih3LbR4F0laHzcTUjYmEon2jfF4zCHuBATDn8/MIE+ddP/xrvkxdO07v
+         bh46ususLcoeiLtQjtrHZiPUIwzeJnAmkyumeED6mM5TkifxDtHy5gYk59vyiM7oBvLu
+         7Vu3iT04nge73gHhJGOcfCibORfr7cpx1INPXQPq++Np7SFPnh4Q43FqJHL4Xs4zaDPC
+         a5jMWSEZPlyyGaKDlJFpV1I4RRWNDcW+1+NetJr13ED18Hw6k42sCx0stKmftajTQx08
+         GCIzSDSKTHHJ584Y7BRkohQwZtWk75yTuFnZlg8ofA/y0GtD2b6gLUhLjURBB8hOz1SU
+         AKCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698752377; x=1699357177;
+        d=1e100.net; s=20230601; t=1698754068; x=1699358868;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JpvaywPQcScYU3CWlECXIqGt+NokSx/RNLM7YM3gDd8=;
-        b=kxkwPqxyAw9TpM7bn6PkOh8hUv0QTtFN0N1sxG5UMHyEVQ6Qeqj5HTdMcU1SDjCskl
-         4bUaZ7ib4GM2FkF2sxDtbjZ7BTL8VRIGLCVh3JqSKk+aqZLpCtf3XsoOTSoIQqd8VABJ
-         eqv4Pa5AcJI5+GvG44W8dAn15+1mxFl88TCGtbp36twDYGga55HU5hKkSMykmTWj/np8
-         6tvxDls2R1wExIDViAkVOC5xyj8Z8M4qWuLOpXt/GuVYL+aMJL3TlVi619T4uDBmEWoO
-         3LV0EPryZp+bZFoO3YNOMTQFv4abz+mCrpB7pcVC48Rn7j/LHtOJOTTQr34e26CJC9n9
-         bG3w==
-X-Gm-Message-State: AOJu0Yy+sE4Sgo4czk2qK8TczbH0rcrhljNSAQ5aWR57kYcWB33vtk4V
-        VOP4+rSziucF3R81KPIBNf4=
-X-Google-Smtp-Source: AGHT+IFoJ4xLZ2QU+Hc/BsrNDWd5uyInpcY7BOXW+0s3SsnRn5FzPJ3pVa1bukPcvChA+DgGxsrG7A==
-X-Received: by 2002:a19:ae08:0:b0:507:a58d:24ba with SMTP id f8-20020a19ae08000000b00507a58d24bamr9004591lfc.63.1698752376872;
-        Tue, 31 Oct 2023 04:39:36 -0700 (PDT)
+        bh=lUCtZhSY5oV6l43Ls3OIhFz4C70yenlnLI2HL0boR8w=;
+        b=jA88ALjTCCQn7mJ0W9gARs2jzCrIEYT0BvqpGmyhpC5qJYcCliluPdjNQ+AvaaXees
+         Jdf5eySVLg4nzz5V5zO3ev2P40ydo7rZr5fodzrvZ6vMrTSP8ZeWfVoacZPGflo0KCh0
+         pOLUMdQkBHnm0RxmQ1Fuw5lxcchlpA3ycYC9NxhmjuOlR/tU4uQ7TxGECSJHc6JWlAr0
+         e8H6NrvA4K7yd8D7Od516WKRhEG9JyNImlb+6EL77Dzi/d+qTxBh97LJ+sTNW28nVbhy
+         ie1NmwsSM3fPbSck51RttmKpK0pJGEKW/dMoJNTt2ysoc3lv9ooAkSnFC9pBp98Hqhhf
+         LJlA==
+X-Gm-Message-State: AOJu0YwQQa+rwZmTpSV56WkWfmGPThuTUeCzZC0JVXj4xevWS2QSDDlj
+        AjQUjjQ1ps+VQGAKsVC2Yk4=
+X-Google-Smtp-Source: AGHT+IF1y+hM4gKBDkSt+18SyrZ3a0rfAWa75K3VyYXz9chHkGngHoR/VKfMsaKVByMWS4ytLwpBYA==
+X-Received: by 2002:ac2:53ab:0:b0:507:ce2f:8f0c with SMTP id j11-20020ac253ab000000b00507ce2f8f0cmr9356349lfh.35.1698754067779;
+        Tue, 31 Oct 2023 05:07:47 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id o6-20020a056512050600b00507f0d2b32bsm185652lfb.249.2023.10.31.04.39.35
+        by smtp.gmail.com with ESMTPSA id v17-20020ac25591000000b00503189d8b8csm190149lfg.198.2023.10.31.05.07.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Oct 2023 04:39:36 -0700 (PDT)
-Message-ID: <16443f7b-846c-4133-8d73-22a847a4f4aa@gmail.com>
-Date:   Tue, 31 Oct 2023 13:39:34 +0200
+        Tue, 31 Oct 2023 05:07:47 -0700 (PDT)
+Message-ID: <b01930d6-5bec-496c-89de-6cf6d178c860@gmail.com>
+Date:   Tue, 31 Oct 2023 14:07:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
@@ -80,7 +80,7 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -104,19 +104,11 @@ On 10/31/23 12:38, Andy Shevchenko wrote:
 > 
 > ...which is NIH DIV_ROUND_CLOSEST_ULL()
 
-Thanks for the hint Andy. I do very much prefer using stuff like the 
-DIV_ROUND_CLOSEST_ULL().
+There is a difference though. The DIV_ROUND_CLOSEST_ULL() does
 
-I will use this - do you have other suggestions for me, especially 
-regarding the division u64 / u64?
+tmp + total_gain / 2;
 
-I would appreciate if you found the time and energy to look at:
-https://lore.kernel.org/all/ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi/ 
-
-as well. I feel like I am doing something someone else has already done. 
-(Yes, DIV_ROUND_CLOSEST_ULL() can be used there too).
-
-Anyways, Thanks for this!
+before division - which in theory may overflow.
 
 Yours,
 	-- Matti

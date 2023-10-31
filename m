@@ -2,158 +2,273 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B10D97DC883
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Oct 2023 09:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16AE47DCA2A
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Oct 2023 10:52:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235620AbjJaIj1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Oct 2023 04:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48546 "EHLO
+        id S235521AbjJaJwX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Oct 2023 05:52:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235449AbjJaIjI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Oct 2023 04:39:08 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E511DD5D
-        for <linux-iio@vger.kernel.org>; Tue, 31 Oct 2023 01:38:15 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5aa7172bafdso3592031a12.1
-        for <linux-iio@vger.kernel.org>; Tue, 31 Oct 2023 01:38:15 -0700 (PDT)
+        with ESMTP id S229658AbjJaJwD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Oct 2023 05:52:03 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E647710F2;
+        Tue, 31 Oct 2023 02:50:58 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c5071165d5so29954241fa.0;
+        Tue, 31 Oct 2023 02:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1698741495; x=1699346295; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1698745856; x=1699350656; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=28DXBAYX1XRtP2wWeR8rEQtVtlzWFlh45fzZ3wUwj5Y=;
-        b=eA9m+CUvm1HqM496Wb7XJXTX8jdqPpS1zzBpe4cZteYx43SrFTfz/uM6oPLZ0u/a63
-         9ATe395o4autr7RBpEsAXKaeSk6gYROtRg/gK1O5Ba7IvcXf1OiYkI9AQfV6zxGUA3MR
-         E8GzsqXqumCveOn0ZtFo7ij4BmM9VTLpuHA7cqJN3NopCUDRvZENLz7v5EBgPFRFs/kh
-         129PhNGECELk0BR3BmTcbTm6knTL94mig8IXUg9Zw99TmYLGvlq4yLgIa1SJjy1dMXaW
-         swL0T/UM5gRN68WCr/LJXuzeSQRV6BDRGdyukNuFj3JsD9v39Cf2qUwQNStIUPnqRKSM
-         T9jA==
+        bh=pm0E+qHfJ96Z5WGc1StxiY8bt/dlGJYxdkUl7eJLbGA=;
+        b=WeLLHKRZqlFsRTWn8NSO7ls0efZ1CGhoeDRxZHhDJVkeyyQmhD/+3zl8RwJYEbIuwm
+         g3m2L89otpss7EUQ0halGAQmu6Uj8F6TRrdMBResVshDG1RP1Awu7A1XoEin0idy9cmc
+         Z2ac6Rn2OSJsZo5i/WQU4Ms41Rskwo0WmzaUkCI7O2BxL8bmdhIJHyHqarPrm89MYbfi
+         FJh+cTIVuiPAkfCe/6LfUgQHkqmRIK3/uMcTeY5nmbfWoJuOYBO7bC7wD/8i+Ib0VVa9
+         FvXIoeBjjVcA4aShsrI7GZuY184XrWtkxW2D65dfmRlmcKNq9BTrkDtvU7p6kUKbMEWB
+         /bwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698741495; x=1699346295;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1698745856; x=1699350656;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=28DXBAYX1XRtP2wWeR8rEQtVtlzWFlh45fzZ3wUwj5Y=;
-        b=BN7IdkvhSHo21Y6Zz2amFEXDPg/vv6RjvIpHQjmwgiURy5BQt6z2W0EjPu8V5PjVCQ
-         XS7IOQDaEuYLTDcZt1gp204iaJljTvjoLgQJBekDGg0sBfWE8xisoKNwipJpCv5pxVbm
-         Cs3mv1KqPk2XTBOmROfGzmP2cacYTdH0LTfGSwwNoEjAD7jT86m/LHogihDbvwAU3PIY
-         cAhDrbFT2ygrFPLQULL1XruB/ZkmAaFSNAAqiVuzKfMIVEykaIm/IgCyYm06KnR8wxww
-         /IPdz1ox/7HOgSa/9OWDYlaP/qQpApmybol8ZmfhzAHDsuJpPpu3K7LcE+fvBdsrxzNz
-         SYAA==
-X-Gm-Message-State: AOJu0YzVeOA8B5YSpV1c2ST2IRJVrq9ejfSSQjVAUsmR62IiigcGGBks
-        ZONe7HFYI7HmMnWXJCK9xWXisA==
-X-Google-Smtp-Source: AGHT+IHxkBTG12jtDz6LskO7p7yf/0lY5uSyZBd4OmXP62L9S3rUvHiBXN4T9B04oSxoA88vrWaQJw==
-X-Received: by 2002:a05:6a20:7f87:b0:15b:c800:48af with SMTP id d7-20020a056a207f8700b0015bc80048afmr12323973pzj.23.1698741495120;
-        Tue, 31 Oct 2023 01:38:15 -0700 (PDT)
-Received: from ?IPV6:2403:580d:82f4:0:d7db:fc6b:2721:a9be? (2403-580d-82f4-0-d7db-fc6b-2721-a9be.ip6.aussiebb.net. [2403:580d:82f4:0:d7db:fc6b:2721:a9be])
-        by smtp.gmail.com with ESMTPSA id u10-20020a17090282ca00b001c1f4edfb9csm792534plz.173.2023.10.31.01.38.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Oct 2023 01:38:14 -0700 (PDT)
-Message-ID: <2974aa13-796c-49ef-bef7-fd7f3f9b7f49@tweaklogic.com>
-Date:   Tue, 31 Oct 2023 19:08:08 +1030
+        bh=pm0E+qHfJ96Z5WGc1StxiY8bt/dlGJYxdkUl7eJLbGA=;
+        b=ZwB/TG9O+cTbcq4J7TJKWQRM21l/L6qXERXkC6jd5ZoiMAzEUsAMSPA1Jeyt2d90fo
+         3peSccMg5UkiovCPef5kg7sQnzqiOcXi52JwnfsTYICVmKVgwF1GY7vevdPZZuo7ExnY
+         4e72jtvXiNkZcSZFKMxNkix5M6yXGW9WAilYU2elP83Y4ph3Q+zFJJEzFqavckVBaETX
+         zKFbUOobZgNcZ5Qlum/IZd8T+PPIs3jEu8IpdftZjtl9+nS270ivzVy6buuR5V5zeCH3
+         RiovQU7o74ebSw0zS3ouo7Y1rA1ISbVm03KDtfSMQcXg0TCyJ+tB5B68tHkRVXAVt4Wd
+         O3dw==
+X-Gm-Message-State: AOJu0YyVtbHz5LuPx6uLaXM/jpXIiFEB+MUM63+7+Vm2gh0TMr8pSf8W
+        TTIASQK/pw9HimN6PtkyXnc=
+X-Google-Smtp-Source: AGHT+IGRGUjLyn0PT8ojXQEGfSIlSLsjn3Syra41p+ZC2HcYufiZeONeBDnQ7P4FA/PvyhwDtGStsg==
+X-Received: by 2002:a2e:bb86:0:b0:2b6:ea3b:f082 with SMTP id y6-20020a2ebb86000000b002b6ea3bf082mr7634854lje.38.1698745856331;
+        Tue, 31 Oct 2023 02:50:56 -0700 (PDT)
+Received: from dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id s25-20020a2e2c19000000b002b70a8478ddsm143509ljs.44.2023.10.31.02.50.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Oct 2023 02:50:55 -0700 (PDT)
+Date:   Tue, 31 Oct 2023 11:50:46 +0200
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: gts-helpers: Round gains and scales
+Message-ID: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
- <20231028162025.4259f1cc@jic23-huawei>
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <20231028162025.4259f1cc@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ZJOGLzL4y7uQJBvg"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> 
->> +static struct iio_event_spec apds9306_event_spec_als[] = {
->> +	{
->> +		.type = IIO_EV_TYPE_THRESH,
->> +		.dir = IIO_EV_DIR_RISING,
->> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
->> +	}, {
->> +		.type = IIO_EV_TYPE_THRESH,
->> +		.dir = IIO_EV_DIR_FALLING,
->> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
->> +	}, {
->> +		.type = IIO_EV_TYPE_THRESH,
->> +		.mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
->> +	}, {
->> +		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
->> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
->> +			BIT(IIO_EV_INFO_ENABLE),
->> +	}, {
->> +		.type = IIO_EV_TYPE_THRESH,
->> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-> This matches an entry above for type. Don't have separate entries.
->> +	},
->> +};
->> +
->> +static struct iio_event_spec apds9306_event_spec_clear[] = {
->> +	{
->> +		.type = IIO_EV_TYPE_THRESH,
->> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
->> +	},
->> +};
->> +
->> +#define APDS9306_CHANNEL(_type) \
->> +	.type = _type, \
->> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | \
->> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
->> +	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | \
->> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> 
-> Scale on the intensity channel is interesting...  What are the units?
-> There tend not to be any well defined units for intensity (as opposed
-> to illuminance).  There may be gain on the signal, but it won't be in untils
-> that map directly to a scale userspace should apply.  This is one of the
-> rare reasons for using the HARDWARE_GAIN element of the ABI.
-> 
-> A tricky corner however as relationship between raw value and hardwaregain
-> is not tightly defined (as it can be really weird!)
-Hi Jonathan,
 
-Thank you for taking time for reviewing and clearing all my tiny doubts and
-queries especially for the dt and versioning part. Much appreciated.
+--ZJOGLzL4y7uQJBvg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the above case, should I not expose scale for the "clear" channel? Rather,
-how should I expose the "clear" channel to userspace?
+The GTS helpers do flooring of scale when calculating available scales.
+This results available-scales to be reported smaller than they should
+when the division in scale computation resulted remainder greater than
+half of the divider. (decimal part of result > 0.5)
 
-Regards,
-Subhajit Ghosh
+Furthermore, when gains are computed based on scale, the gain resulting
+=66rom the scale computation is also floored. As a consequence the
+floored scales reported by available scales may not match the gains that
+can be set.
 
-> 
->> +
->> +static struct iio_chan_spec apds9306_channels_without_events[] = {
->> +	{
->> +		APDS9306_CHANNEL(IIO_LIGHT)
->> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
->> +	}, {
->> +		APDS9306_CHANNEL(IIO_INTENSITY)
->> +		.channel2 = IIO_MOD_LIGHT_CLEAR,
->> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
->> +		.modified = 1,
->> +	},
->> +};
-> 
+The related discussion can be found from:
+https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
+
+Do rounding when computing scales and gains.
+
+Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+---
+Subjahit, is there any chance you test this patch with your driver? Can
+you drop the:
+	if (val2 % 10)
+		val2 +=3D 1;
+=66rom scale setting and do you see written and read scales matching?
+
+I did run a few Kunit tests on this change - but I'm still a bit jumpy
+on it... Reviewing/testing is highly appreciated!
+
+Just in case someone is interested in seeing the Kunit tests, they're
+somewhat unpolished & crude and can emit noisy debug prints - but can
+anyways be found from:
+https://github.com/M-Vaittinen/linux/commits/iio-gts-helpers-test-v6.6
+
+---
+ drivers/iio/industrialio-gts-helper.c | 58 +++++++++++++++++++++++----
+ 1 file changed, 50 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
+io-gts-helper.c
+index 7653261d2dc2..7dc144ac10c8 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -18,6 +18,32 @@
+ #include <linux/iio/iio-gts-helper.h>
+ #include <linux/iio/types.h>
+=20
++static int iio_gts_get_gain_32(u64 full, unsigned int scale)
++{
++	unsigned int full32 =3D (unsigned int) full;
++	unsigned int rem;
++	int result;
++
++	if (full =3D=3D (u64)full32) {
++		unsigned int rem;
++
++		result =3D full32 / scale;
++		rem =3D full32 - scale * result;
++		if (rem >=3D scale / 2)
++			result++;
++
++		return result;
++	}
++
++	rem =3D do_div(full, scale);
++	if ((u64)rem >=3D scale / 2)
++		result =3D full + 1;
++	else
++		result =3D full;
++
++	return result;
++}
++
+ /**
+  * iio_gts_get_gain - Convert scale to total gain
+  *
+@@ -28,30 +54,42 @@
+  *		scale is 64 100 000 000.
+  * @scale:	Linearized scale to compute the gain for.
+  *
+- * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
++ * Return:	(rounded) gain corresponding to the scale. -EINVAL if scale
+  *		is invalid.
+  */
+ static int iio_gts_get_gain(const u64 max, const u64 scale)
+ {
+-	u64 full =3D max;
++	u64 full =3D max, half_div;
++	unsigned int scale32 =3D (unsigned int) scale;
+ 	int tmp =3D 1;
+=20
+-	if (scale > full || !scale)
++	if (scale / 2 > full || !scale)
+ 		return -EINVAL;
+=20
++	/*
++	 * The loop-based implementation below will potentially run _long_
++	 * if we have a small scale and large 'max' - which may be needed when
++	 * GTS is used for channels returning specific units. Luckily we can
++	 * avoid the loop when scale is small and fits in 32 bits.
++	 */
++	if ((u64)scale32 =3D=3D scale)
++		return iio_gts_get_gain_32(full, scale32);
++
+ 	if (U64_MAX - full < scale) {
+ 		/* Risk of overflow */
+-		if (full - scale < scale)
++		if (full - scale / 2 < scale)
+ 			return 1;
+=20
+ 		full -=3D scale;
+ 		tmp++;
+ 	}
+=20
+-	while (full > scale * (u64)tmp)
++	half_div =3D scale >> 2;
++
++	while (full + half_div >=3D scale * (u64)tmp)
+ 		tmp++;
+=20
+-	return tmp;
++	return tmp - 1;
+ }
+=20
+ /**
+@@ -133,6 +171,7 @@ static int iio_gts_linearize(int scale_whole, int scale=
+_nano,
+  * Convert the total gain value to scale. NOTE: This does not separate gain
+  * generated by HW-gain or integration time. It is up to caller to decide =
+what
+  * part of the total gain is due to integration time and what due to HW-ga=
+in.
++ * Computed gain is rounded to nearest integer.
+  *
+  * Return: 0 on success. Negative errno on failure.
+  */
+@@ -140,10 +179,13 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, =
+int total_gain,
+ 				int *scale_int, int *scale_nano)
+ {
+ 	u64 tmp;
++	int rem;
+=20
+ 	tmp =3D gts->max_scale;
+=20
+-	do_div(tmp, total_gain);
++	rem =3D do_div(tmp, total_gain);
++	if (total_gain > 1 && rem >=3D total_gain / 2)
++		tmp +=3D 1ULL;
+=20
+ 	return iio_gts_delinearize(tmp, NANO, scale_int, scale_nano);
+ }
+@@ -192,7 +234,7 @@ static int gain_to_scaletables(struct iio_gts *gts, int=
+ **gains, int **scales)
+ 		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
+ 		     NULL);
+=20
+-		/* Convert gains to scales */
++		/* Convert gains to scales. */
+ 		for (j =3D 0; j < gts->num_hwgain; j++) {
+ 			ret =3D iio_gts_total_gain_to_scale(gts, gains[i][j],
+ 							  &scales[i][2 * j],
+
+base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
+--=20
+2.41.0
 
 
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--ZJOGLzL4y7uQJBvg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmVAzfIACgkQeFA3/03a
+ocXy0gf/ergLr28VxrsP+6FGMyLa4L+x7QFUWLVljoPVTq2v/FoT4GOmBizTlQiY
+QxrHuz0W1R4UF0iGzYEm+T/rR4byTYLv6hEG7vKAg40bQ834lnhg/SF381lwNTWx
+w/3RlT4kTQiiO1f8QA0///dPxdVmHlgFJ8HyCHTyE5kc66a6L3NtmpOsHwUAY5g6
+aj13rPnRu+mhrENkfC2gHgdfSZ2kHJsZlvrChcSiBULGN3O2S8TMXCWyUrjwCdT0
+W56C6cUruSh4PzLHeBEUkiZCP2czGObvjHZ8m1dxeEDTYm7UveJ/HvWsjqQtOmgQ
+WR3Euj+3O6UPivay2+qqpoh7qVq1Hw==
+=WlvL
+-----END PGP SIGNATURE-----
+
+--ZJOGLzL4y7uQJBvg--

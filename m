@@ -2,134 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EF57DDC6E
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 07:16:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C04E97DDED4
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 10:58:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231431AbjKAGQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Nov 2023 02:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44764 "EHLO
+        id S231719AbjKAJ6i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Nov 2023 05:58:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbjKAGQi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 02:16:38 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2612F3;
-        Tue, 31 Oct 2023 23:16:35 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507cd62472dso595148e87.0;
-        Tue, 31 Oct 2023 23:16:35 -0700 (PDT)
+        with ESMTP id S230216AbjKAJ6h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 05:58:37 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFE3103
+        for <linux-iio@vger.kernel.org>; Wed,  1 Nov 2023 02:58:29 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53e08e439c7so11251437a12.0
+        for <linux-iio@vger.kernel.org>; Wed, 01 Nov 2023 02:58:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698819394; x=1699424194; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=F9yle7VrmIO9F6x8DetVeUxbscZ9DT3LOEfWagzVsSw=;
-        b=RMj3aTIL6/2bDCxX0snbze/zEAqpwF2gERFn9tAMnqOsdfZHRfPu9kDqK/KX9Z/bz3
-         I1NIlfRNjB1Yu89Cg1jgmJ4hk73pf92lr9lhYY53fMoVYtVIUpfs0bdsAVhzQwbWuuiw
-         wZ9lVGtueX1yT3326cDM0KGSjmGcQ620Kq0H0eCEhLwNpup42aXy/HmxjNSNNx3wgGIs
-         j24OV824hMJm0eqlWsLP08IBoILhl79VoM6E5SUMBlajVspU/DrTrJQlDLJjomUOhaOt
-         lTOoxRGVm2n6RsDKsMtBM/5ws5usroVSuKe+sNUpEHv5cjIHk2kwPZ7OaUYsCzWJZ//v
-         7BAg==
+        d=student.uny.ac.id; s=google; t=1698832708; x=1699437508; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=U3pfk9cqqe8i+/+fOTb1lE6xWp6G+mo2TybLpvLQN5I=;
+        b=H3DVfF+wEgV1lWvS0EmtO8f5xlMAxXU8vU6p7DsVE1TjR7nsfBm/pWX20uAVHM7LdH
+         ijfDzSM+tUJF6na/SB7izFmtxQsIzRgcv893PTxEfzajTd0OEd/X76Wge6uVrieyodYx
+         4MrX2IgHKAakArMrtpmnrBqPfYQNkGhjkSGqk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698819394; x=1699424194;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F9yle7VrmIO9F6x8DetVeUxbscZ9DT3LOEfWagzVsSw=;
-        b=X5CEmXK9d8Z5OLnjOFAluURPTXGymPohwWfYRtJcH7JxcgI/S6ybahDlCZ+ZDWXxNI
-         P+bWLijEfmAE+ayHNeNR0nTR0S6aNLnMB9TvjD7FQNlL2ODAeFPOPAtgVcZ3DqC/zagl
-         50A4qXfl0ZA9phBZFLY5z9UqK792Krj3AMOxYh+w8W193SxZOP41Xd71psDJCHEQG3qK
-         GVeolSf90qa0xTrD1OUt2ODMwCSkTDl9DTCqE6cvKPiue8pMXhXhZZ57H8+Te460X5E4
-         oZsDL9DIxIIQs8biUUbj7HowP5NpnhKKgnY3xuSef66Drs62ZYaZKPKkZgS3u5B9OvKR
-         RgVA==
-X-Gm-Message-State: AOJu0YwIUKNYbR9oOJmHkU2bshN6p9R7WwGGcLfSSD4qpWtoUkjqjyyA
-        OxFvG8dNnTCz3m8vSoCC1w6wERSY8pI+vg==
-X-Google-Smtp-Source: AGHT+IFWsxF2Ff5zf6/CiiCtuLXE3tIiPkLBLUgMyHvwmtbh+xotWxyPgxYtMMAnoTLo6COspJ0rvA==
-X-Received: by 2002:a05:6512:3ba9:b0:508:15dc:ec11 with SMTP id g41-20020a0565123ba900b0050815dcec11mr2047875lfv.30.1698819393536;
-        Tue, 31 Oct 2023 23:16:33 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id p6-20020a056512234600b005057830c24dsm130670lfu.141.2023.10.31.23.16.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Oct 2023 23:16:32 -0700 (PDT)
-Message-ID: <6d553aaa-279f-48bf-96c9-30fdac1ae372@gmail.com>
-Date:   Wed, 1 Nov 2023 08:16:32 +0200
+        d=1e100.net; s=20230601; t=1698832708; x=1699437508;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U3pfk9cqqe8i+/+fOTb1lE6xWp6G+mo2TybLpvLQN5I=;
+        b=d8gjSzeH2HWchN+Iq1fnRVr262Ua3GX81azZqEo1l5886fQJGIdWgrg+bYIGgB8/CF
+         QLQUPzMLx+qEam0Q513h1KGy6mcI5c+p3jWhiB/o1Bxh4N1KXNiUFdo/NN5hG+z/n+6C
+         deSbZymlO8QlQA3QNTXM5KOIa7VqNE3MxdoyDYnhTBrys3KmHCR7vcSmdyIbnV+KkYKL
+         I/lR+RQuym9fmW4g6zz4KjN9br/fA/IlLNZZK6bzHN+wQA/VabJSGCkM6jt7iS9Kpcir
+         5cl4BvEI7vpk+q982VnW9dCaDddlNzc2Y6ZLE+X5R4/6rdrczRGJ1HoOwSUQHW+/HHmN
+         VIeA==
+X-Gm-Message-State: AOJu0Yzc8EjXFTDNNdQPk6cenrLmZGnPi4/HEeopi+cOJtaKaoLaBiIa
+        1Q/UEhC7KcbFrLgfwp/7rcnF7MeTdiEW22rLChhEa1HlvIfXuN61DfnOlP3MtesQyi7mGN1mhCP
+        qf/evljsGGj7ImorTIQ7VspYiVg/kIg==
+X-Google-Smtp-Source: AGHT+IGQktC2sEKth5oRBZPP6Z1EhwkaAU+R6GmqPxY+ksuSnwAzmNrgIMKI8l+p6kYO5vwANxomVoaDLf1ydNcZEPE=
+X-Received: by 2002:a17:907:3fa0:b0:9bf:d65d:dc0f with SMTP id
+ hr32-20020a1709073fa000b009bfd65ddc0fmr1668531ejc.4.1698832707889; Wed, 01
+ Nov 2023 02:58:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Matt Ranostay <matt@ranostay.sg>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
- <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
- <20231028162025.4259f1cc@jic23-huawei>
- <84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com>
- <6a697c62-6a7c-4b31-bc8e-10f40db0363d@gmail.com>
- <d528b45c-123d-4ef7-b110-7efbfef91bc5@gmail.com>
- <ZUDZIEY_uTVMHh3C@smile.fi.intel.com>
- <b01930d6-5bec-496c-89de-6cf6d178c860@gmail.com>
- <ZUEET34K7AOkFf4A@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZUEET34K7AOkFf4A@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:906:ee84:b0:9d1:3fc8:cea7 with HTTP; Wed, 1 Nov 2023
+ 02:58:27 -0700 (PDT)
+Reply-To: mrslovethkonnia5@gmail.com
+From:   PM <evitanadiadamayanti.2020@student.uny.ac.id>
+Date:   Wed, 1 Nov 2023 09:58:27 +0000
+Message-ID: <CAFhWKU2c-3mdiF2LU-ZkgQ8X+be2rXq662KOPvvfWK6yc=3eFg@mail.gmail.com>
+Subject: Querido
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/31/23 15:42, Andy Shevchenko wrote:
-> On Tue, Oct 31, 2023 at 02:07:46PM +0200, Matti Vaittinen wrote:
->> On 10/31/23 12:38, Andy Shevchenko wrote:
->>> On Tue, Oct 31, 2023 at 09:11:37AM +0200, Matti Vaittinen wrote:
->>>> On 10/30/23 12:21, Matti Vaittinen wrote:
->>>>> On 10/29/23 17:51, Matti Vaittinen wrote:
->>>>>> On 10/28/23 18:20, Jonathan Cameron wrote:
-> 
-> ...
-> 
->>>> 	tmp = gts->max_scale;
->>>>
->>>> 	rem = do_div(tmp, total_gain);
->>>> 	if (total_gain > 1 && rem >= total_gain / 2)
->>>> 		tmp += 1ULL;
->>>
->>> ...which is NIH DIV_ROUND_CLOSEST_ULL()
->>
->> There is a difference though. The DIV_ROUND_CLOSEST_ULL() does
->>
->> tmp + total_gain / 2;
->>
->> before division - which in theory may overflow.
-> 
-> Then you can fix it there for everybody, no?
+Ol=C3=A1 querido,
 
-Now that I know of this macro - Maybe. It's just always scary to touch 
-things which seem like fundamental building blocks and which may be used 
-by many. Odds are something breaks, so I tend to be very conservative 
-when suggesting changes to widely used stuff. Especially when I have no 
-idea when and why the API has been added - and if the thing I'm trying 
-to "fix" has been a deliberate choice.
+Como voc=C3=AA est=C3=A1 hoje?
 
-Yours,
-	-- Matti.
+Te mandei um e-mail ontem, voc=C3=AA recebeu?
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Sra.Loveth Konnia
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+....................................
+
+Hello Dear,
+
+How are you doing today?
+
+I sent you an email yesterday, did you receive it?
+
+Mrs.Loveth Konnia
+
+--=20
+
+
+
+-------------------------------------------Untuk mendukung =E2=80=9CGerakan=
+ UNY=20
+Hijau=E2=80=9D, disarankan tidak mencetak email ini dan lampirannya.
+(To support=20
+the =E2=80=9CGreen UNY movement=E2=80=9D, it is recommended not to print th=
+e contents of=20
+this email and its attachments)
+Universitas Negeri Yogyakarta
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=20
+www.uny.ac.id <http://www.uny.ac.id>
+-------------------------------------------
 

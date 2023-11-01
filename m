@@ -2,103 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A190A7DDEDA
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 11:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC94A7DE3D2
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 16:37:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232640AbjKAKAa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Nov 2023 06:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
+        id S232720AbjKAPRN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Nov 2023 11:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbjKAKA3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 06:00:29 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD4B101;
-        Wed,  1 Nov 2023 03:00:23 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SL2VL3Ckfz6K63t;
-        Wed,  1 Nov 2023 17:57:14 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 1 Nov
- 2023 10:00:20 +0000
-Date:   Wed, 1 Nov 2023 10:00:19 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Su Hui <suhui@nfschina.com>
-CC:     Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
-        <jean-baptiste.maneyrol@tdk.com>, <andy.shevchenko@gmail.com>,
-        <chenhuiz@axis.com>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix an error code problem in
- inv_mpu6050_read_raw
-Message-ID: <20231101100019.00004be7@Huawei.com>
-In-Reply-To: <7555437b-9289-eba4-efa8-965386e0e956@nfschina.com>
-References: <20231027145949.243f03f2@jic23-huawei>
-        <7555437b-9289-eba4-efa8-965386e0e956@nfschina.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S232649AbjKAPRM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 11:17:12 -0400
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30909D44;
+        Wed,  1 Nov 2023 08:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+        s=default2211; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=3dj/SzQCMYEV8JiersO7itjHD8Hx/T7dliSNS/XF7wk=; b=TIHizCpGG2gOLXLj/PnjAHXPyW
+        U7v+2Y9R+GHnNY0cjHv0XcnG1k9IeR3pQNrc1yzxBFWOPsLF9oLoSx7Tn+wVr6ys58NPgvTqnpOw8
+        FhLmufIhaT+PpWDXiw38qB2k38DVuJbnrfUnGF5LtW6l/Hq0xZy3yMiIkpp7IXGIhi+hxO4a4qEJn
+        sG3qL13z2H8L2g5pWPwgOTS0gYY6clcu7RiwLX03jdEKyE3ntoUXKvZgNmmLHNfeZFrdv0Luck41l
+        xZIvUEyIfJsSxibIMdTBOA6m2zP/H6bxiaJJDLV9pAdwEACwMPW0SyRSTfP61qm/vXm7FeLveewdL
+        WdDreyIg==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <sean@geanix.com>)
+        id 1qyCxQ-000EdY-HH; Wed, 01 Nov 2023 16:16:36 +0100
+Received: from [185.17.218.86] (helo=zen..)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sean@geanix.com>)
+        id 1qyCxQ-000WPw-5b; Wed, 01 Nov 2023 16:16:36 +0100
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH] iio: accel: st_accel: silent spi_device_id warnings
+Date:   Wed,  1 Nov 2023 16:16:12 +0100
+Message-ID: <20231101151612.4159362-1-sean@geanix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27079/Wed Nov  1 08:41:09 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Oct 2023 10:10:05 +0800
-Su Hui <suhui@nfschina.com> wrote:
+Add and correct spi_device_id entries to silent following warnings:
+ SPI driver st-accel-spi has no spi_device_id for st,lis302dl-spi
+ SPI driver st-accel-spi has no spi_device_id for st,lis3lv02dl-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lis3dh-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm330d-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm330dl-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm330dlc-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lis331dlh-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm330-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm303agr-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lis2dh12-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lng2dm-accel
+ SPI driver st-accel-spi has no spi_device_id for st,h3lis331dl-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lis331dl-accel
+ SPI driver st-accel-spi has no spi_device_id for st,lsm303c-accel
 
-> On 2023/10/27 21:59, Jonathan Cameron wrote:
-> > On Mon, 23 Oct 2023 12:05:52 +0800
-> > Su Hui <suhui@nfschina.com> wrote:
-> >  
-> >> inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
-> >> true value rather than only return IIO_VAL_INT.
-> >>
-> >> Signed-off-by: Su Hui <suhui@nfschina.com>  
-> > If you can figure out a fixes tag that would be great.  Just reply to this thread
-> > with it and I'll pick it up from here.  
-> Oh, I just send a v3 patch, sorry....
-> Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
-That works too!
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+Is the names with underscore from ACPI or?
+Is it fine to do this?
 
-Thanks,
+ drivers/iio/accel/st_accel.h     | 35 ++++++++++++++++----------------
+ drivers/iio/accel/st_accel_spi.c |  1 +
+ 2 files changed, 19 insertions(+), 17 deletions(-)
 
-J
-> >> ---
-> >> v2:
-> >>   - fix the error of commit title.
-> >> v1:
-> >>   - https://lore.kernel.org/all/20231020091413.205743-2-suhui@nfschina.com/
-> >>   drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
-> >>   1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> index 29f906c884bd..a9a5fb266ef1 100644
-> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> >> @@ -749,13 +749,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
-> >>   			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
-> >>   						chan->channel2, val);
-> >>   			mutex_unlock(&st->lock);
-> >> -			return IIO_VAL_INT;
-> >> +			return ret;
-> >>   		case IIO_ACCEL:
-> >>   			mutex_lock(&st->lock);
-> >>   			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
-> >>   						chan->channel2, val);
-> >>   			mutex_unlock(&st->lock);
-> >> -			return IIO_VAL_INT;
-> >> +			return ret;
-> >>   
-> >>   		default:
-> >>   			return -EINVAL;  
-> 
+diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
+index e7525615712b..817ccd0423d5 100644
+--- a/drivers/iio/accel/st_accel.h
++++ b/drivers/iio/accel/st_accel.h
+@@ -14,30 +14,31 @@
+ #include <linux/types.h>
+ #include <linux/iio/common/st_sensors.h>
+ 
+-#define H3LIS331DL_ACCEL_DEV_NAME	"h3lis331dl_accel"
+-#define LIS3LV02DL_ACCEL_DEV_NAME	"lis3lv02dl_accel"
+-#define LSM303DLHC_ACCEL_DEV_NAME	"lsm303dlhc_accel"
+-#define LIS3DH_ACCEL_DEV_NAME		"lis3dh"
+-#define LSM330D_ACCEL_DEV_NAME		"lsm330d_accel"
+-#define LSM330DL_ACCEL_DEV_NAME		"lsm330dl_accel"
+-#define LSM330DLC_ACCEL_DEV_NAME	"lsm330dlc_accel"
+-#define LIS331DL_ACCEL_DEV_NAME		"lis331dl_accel"
+-#define LIS331DLH_ACCEL_DEV_NAME	"lis331dlh"
+-#define LSM303DL_ACCEL_DEV_NAME		"lsm303dl_accel"
+-#define LSM303DLH_ACCEL_DEV_NAME	"lsm303dlh_accel"
+-#define LSM303DLM_ACCEL_DEV_NAME	"lsm303dlm_accel"
+-#define LSM330_ACCEL_DEV_NAME		"lsm330_accel"
+-#define LSM303AGR_ACCEL_DEV_NAME	"lsm303agr_accel"
+-#define LIS2DH12_ACCEL_DEV_NAME		"lis2dh12_accel"
++#define H3LIS331DL_ACCEL_DEV_NAME	"h3lis331dl-accel"
++#define LIS3LV02DL_ACCEL_DEV_NAME	"lis3lv02dl-accel"
++#define LSM303DLHC_ACCEL_DEV_NAME	"lsm303dlhc-accel"
++#define LIS3DH_ACCEL_DEV_NAME		"lis3dh-accel"
++#define LSM330D_ACCEL_DEV_NAME		"lsm330d-accel"
++#define LSM330DL_ACCEL_DEV_NAME		"lsm330dl-accel"
++#define LSM330DLC_ACCEL_DEV_NAME	"lsm330dlc-accel"
++#define LIS331DL_ACCEL_DEV_NAME		"lis331dl-accel"
++#define LIS331DLH_ACCEL_DEV_NAME	"lis331dlh-accel"
++#define LSM303DL_ACCEL_DEV_NAME		"lsm303dl-accel"
++#define LSM303DLH_ACCEL_DEV_NAME	"lsm303dlh-accel"
++#define LSM303DLM_ACCEL_DEV_NAME	"lsm303dlm-accel"
++#define LSM330_ACCEL_DEV_NAME		"lsm330-accel"
++#define LSM303AGR_ACCEL_DEV_NAME	"lsm303agr-accel"
++#define LIS2DH12_ACCEL_DEV_NAME		"lis2dh12-accel"
+ #define LIS3L02DQ_ACCEL_DEV_NAME	"lis3l02dq"
+-#define LNG2DM_ACCEL_DEV_NAME		"lng2dm"
++#define LNG2DM_ACCEL_DEV_NAME		"lng2dm-accel"
+ #define LIS2DW12_ACCEL_DEV_NAME		"lis2dw12"
+ #define LIS3DHH_ACCEL_DEV_NAME		"lis3dhh"
+ #define LIS3DE_ACCEL_DEV_NAME		"lis3de"
+ #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
+ #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
+ #define LIS302DL_ACCEL_DEV_NAME		"lis302dl"
+-#define LSM303C_ACCEL_DEV_NAME		"lsm303c_accel"
++#define LIS302DL_SPI_ACCEL_DEV_NAME	"lis302dl-spi"
++#define LSM303C_ACCEL_DEV_NAME		"lsm303c-accel"
+ #define SC7A20_ACCEL_DEV_NAME		"sc7a20"
+ #define IIS328DQ_ACCEL_DEV_NAME		"iis328dq"
+ 
+diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
+index f72a24f45322..749d770d2350 100644
+--- a/drivers/iio/accel/st_accel_spi.c
++++ b/drivers/iio/accel/st_accel_spi.c
+@@ -160,6 +160,7 @@ static const struct spi_device_id st_accel_id_table[] = {
+ 	{ LIS3DHH_ACCEL_DEV_NAME },
+ 	{ LIS3DE_ACCEL_DEV_NAME },
+ 	{ LIS302DL_ACCEL_DEV_NAME },
++	{ LIS302DL_SPI_ACCEL_DEV_NAME },
+ 	{ LSM303C_ACCEL_DEV_NAME },
+ 	{ IIS328DQ_ACCEL_DEV_NAME },
+ 	{},
+-- 
+2.42.0
 

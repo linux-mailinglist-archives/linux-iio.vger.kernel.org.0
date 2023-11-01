@@ -2,101 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C04E97DDED4
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 10:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A190A7DDEDA
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Nov 2023 11:00:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231719AbjKAJ6i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Nov 2023 05:58:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50400 "EHLO
+        id S232640AbjKAKAa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Nov 2023 06:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230216AbjKAJ6h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 05:58:37 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFE3103
-        for <linux-iio@vger.kernel.org>; Wed,  1 Nov 2023 02:58:29 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53e08e439c7so11251437a12.0
-        for <linux-iio@vger.kernel.org>; Wed, 01 Nov 2023 02:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=student.uny.ac.id; s=google; t=1698832708; x=1699437508; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3pfk9cqqe8i+/+fOTb1lE6xWp6G+mo2TybLpvLQN5I=;
-        b=H3DVfF+wEgV1lWvS0EmtO8f5xlMAxXU8vU6p7DsVE1TjR7nsfBm/pWX20uAVHM7LdH
-         ijfDzSM+tUJF6na/SB7izFmtxQsIzRgcv893PTxEfzajTd0OEd/X76Wge6uVrieyodYx
-         4MrX2IgHKAakArMrtpmnrBqPfYQNkGhjkSGqk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698832708; x=1699437508;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U3pfk9cqqe8i+/+fOTb1lE6xWp6G+mo2TybLpvLQN5I=;
-        b=d8gjSzeH2HWchN+Iq1fnRVr262Ua3GX81azZqEo1l5886fQJGIdWgrg+bYIGgB8/CF
-         QLQUPzMLx+qEam0Q513h1KGy6mcI5c+p3jWhiB/o1Bxh4N1KXNiUFdo/NN5hG+z/n+6C
-         deSbZymlO8QlQA3QNTXM5KOIa7VqNE3MxdoyDYnhTBrys3KmHCR7vcSmdyIbnV+KkYKL
-         I/lR+RQuym9fmW4g6zz4KjN9br/fA/IlLNZZK6bzHN+wQA/VabJSGCkM6jt7iS9Kpcir
-         5cl4BvEI7vpk+q982VnW9dCaDddlNzc2Y6ZLE+X5R4/6rdrczRGJ1HoOwSUQHW+/HHmN
-         VIeA==
-X-Gm-Message-State: AOJu0Yzc8EjXFTDNNdQPk6cenrLmZGnPi4/HEeopi+cOJtaKaoLaBiIa
-        1Q/UEhC7KcbFrLgfwp/7rcnF7MeTdiEW22rLChhEa1HlvIfXuN61DfnOlP3MtesQyi7mGN1mhCP
-        qf/evljsGGj7ImorTIQ7VspYiVg/kIg==
-X-Google-Smtp-Source: AGHT+IGQktC2sEKth5oRBZPP6Z1EhwkaAU+R6GmqPxY+ksuSnwAzmNrgIMKI8l+p6kYO5vwANxomVoaDLf1ydNcZEPE=
-X-Received: by 2002:a17:907:3fa0:b0:9bf:d65d:dc0f with SMTP id
- hr32-20020a1709073fa000b009bfd65ddc0fmr1668531ejc.4.1698832707889; Wed, 01
- Nov 2023 02:58:27 -0700 (PDT)
+        with ESMTP id S232930AbjKAKA3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Nov 2023 06:00:29 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD4B101;
+        Wed,  1 Nov 2023 03:00:23 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SL2VL3Ckfz6K63t;
+        Wed,  1 Nov 2023 17:57:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 1 Nov
+ 2023 10:00:20 +0000
+Date:   Wed, 1 Nov 2023 10:00:19 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Su Hui <suhui@nfschina.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
+        <jean-baptiste.maneyrol@tdk.com>, <andy.shevchenko@gmail.com>,
+        <chenhuiz@axis.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix an error code problem in
+ inv_mpu6050_read_raw
+Message-ID: <20231101100019.00004be7@Huawei.com>
+In-Reply-To: <7555437b-9289-eba4-efa8-965386e0e956@nfschina.com>
+References: <20231027145949.243f03f2@jic23-huawei>
+        <7555437b-9289-eba4-efa8-965386e0e956@nfschina.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Received: by 2002:a17:906:ee84:b0:9d1:3fc8:cea7 with HTTP; Wed, 1 Nov 2023
- 02:58:27 -0700 (PDT)
-Reply-To: mrslovethkonnia5@gmail.com
-From:   PM <evitanadiadamayanti.2020@student.uny.ac.id>
-Date:   Wed, 1 Nov 2023 09:58:27 +0000
-Message-ID: <CAFhWKU2c-3mdiF2LU-ZkgQ8X+be2rXq662KOPvvfWK6yc=3eFg@mail.gmail.com>
-Subject: Querido
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Ol=C3=A1 querido,
+On Mon, 30 Oct 2023 10:10:05 +0800
+Su Hui <suhui@nfschina.com> wrote:
 
-Como voc=C3=AA est=C3=A1 hoje?
+> On 2023/10/27 21:59, Jonathan Cameron wrote:
+> > On Mon, 23 Oct 2023 12:05:52 +0800
+> > Su Hui <suhui@nfschina.com> wrote:
+> >  
+> >> inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
+> >> true value rather than only return IIO_VAL_INT.
+> >>
+> >> Signed-off-by: Su Hui <suhui@nfschina.com>  
+> > If you can figure out a fixes tag that would be great.  Just reply to this thread
+> > with it and I'll pick it up from here.  
+> Oh, I just send a v3 patch, sorry....
+> Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
+That works too!
 
-Te mandei um e-mail ontem, voc=C3=AA recebeu?
+Thanks,
 
-Sra.Loveth Konnia
-
-....................................
-
-Hello Dear,
-
-How are you doing today?
-
-I sent you an email yesterday, did you receive it?
-
-Mrs.Loveth Konnia
-
---=20
-
-
-
--------------------------------------------Untuk mendukung =E2=80=9CGerakan=
- UNY=20
-Hijau=E2=80=9D, disarankan tidak mencetak email ini dan lampirannya.
-(To support=20
-the =E2=80=9CGreen UNY movement=E2=80=9D, it is recommended not to print th=
-e contents of=20
-this email and its attachments)
-Universitas Negeri Yogyakarta
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=20
-www.uny.ac.id <http://www.uny.ac.id>
--------------------------------------------
+J
+> >> ---
+> >> v2:
+> >>   - fix the error of commit title.
+> >> v1:
+> >>   - https://lore.kernel.org/all/20231020091413.205743-2-suhui@nfschina.com/
+> >>   drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
+> >>   1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> index 29f906c884bd..a9a5fb266ef1 100644
+> >> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> >> @@ -749,13 +749,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
+> >>   			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
+> >>   						chan->channel2, val);
+> >>   			mutex_unlock(&st->lock);
+> >> -			return IIO_VAL_INT;
+> >> +			return ret;
+> >>   		case IIO_ACCEL:
+> >>   			mutex_lock(&st->lock);
+> >>   			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
+> >>   						chan->channel2, val);
+> >>   			mutex_unlock(&st->lock);
+> >> -			return IIO_VAL_INT;
+> >> +			return ret;
+> >>   
+> >>   		default:
+> >>   			return -EINVAL;  
+> 
 

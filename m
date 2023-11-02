@@ -2,60 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FF8A7DF086
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Nov 2023 11:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C65F7DF2C6
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Nov 2023 13:50:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345942AbjKBKtN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Nov 2023 06:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35884 "EHLO
+        id S229868AbjKBMuO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Nov 2023 08:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346709AbjKBKtN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Nov 2023 06:49:13 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF28181
-        for <linux-iio@vger.kernel.org>; Thu,  2 Nov 2023 03:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=zcHop8NuQuPzRcwE1qtEp0smISu64VSHzQzb9edrhRg=; b=LawOFogMf+HUsU37euD0aNMwL7
-        qVaIMSD2M6hVqLDlWHga3qDhczJiOAolbQHe1OY0+1ccJ1WRJZWMi4FUeHQWCvoiRwUn0UC4H7JFs
-        mDU+W+38i9ccxkrq5va6JhPNKPElLzhO4PC0RyGxeOcSfx0RlhtTh1vYE+AvQLYJx0T4fJfJu6P3L
-        lnVontSAcSAo0IYcwTxGrCNPWaYxbLqE4BS6mvhhGcot38SjvHvaP5qeqH/iBz0bp5vpTj3uaPhvQ
-        pZ9kKkTjqdI83pTB/83xN5667kabgjOPdrMrgmrGY1Sw3hUdgVp7RM51r052gppixCnArrRFxMN6s
-        1pMOpXBQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qyVFo-00413U-MA; Thu, 02 Nov 2023 10:48:48 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 548E03004AB; Thu,  2 Nov 2023 11:48:48 +0100 (CET)
-Date:   Thu, 2 Nov 2023 11:48:48 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        David Lechner <dlechner@baylibre.com>,
-        linux-iio@vger.kernel.org, Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Daniel Campello <campello@chromium.org>,
-        gregkh@linuxfoundation.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 1/8] iio: locking: introduce __cleanup() based direct
- mode claiming infrastructure
-Message-ID: <20231102104848.GA3818@noisy.programming.kicks-ass.net>
-References: <20231022154710.402590-1-jic23@kernel.org>
- <20231022154710.402590-2-jic23@kernel.org>
- <CAMknhBEEPC-JArFJvpHw0YAmdA+BrAQzkxU5vNvCwxf5OdHKrw@mail.gmail.com>
- <462c181eab1c0b70c0350099b7f70aaf736aabe1.camel@gmail.com>
- <20231024151123.GB40044@noisy.programming.kicks-ass.net>
- <20231024152800.GA13938@noisy.programming.kicks-ass.net>
- <20231028175928.09047193@jic23-huawei>
+        with ESMTP id S229665AbjKBMuN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Nov 2023 08:50:13 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FDA12F;
+        Thu,  2 Nov 2023 05:50:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698929407; x=1730465407;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=c2vyFTVnaWpz+keCJtdyM0qcjQXSrJPEBxbkHvGNQoU=;
+  b=NJ4ossLPK6kPRTsjQhW63j1H4mE9/dsNNOqWUZBZBX/rBsqgaB1IL2UB
+   wVBUl9Cnc133GEAIULGM5cdcHb2/dUzQQcgqjIjryLcns0WNVMSE0jjjv
+   LxklUtYkPRzhimQQca2vU70uuQv89vgGg5ncPUegnjMv6M8MvNT3MrUjS
+   OP/JqYbYAuTbiUBuEa6BE8P23QYI/W1EENh4L2yKP7oEc4oIyCSDd/Qk/
+   m2YpsXDIZudHF2DV3yfrMQ7Xf8+AzDwUC8NcrGQgorN2CN+knWyrPH3Pe
+   Mxk6cRe9io2yIMF0mqX8/O9TcWeTM/W3ZoW/mS59cHZi3XmQ3TOicVfY4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="455185831"
+X-IronPort-AV: E=Sophos;i="6.03,271,1694761200"; 
+   d="scan'208";a="455185831"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 05:50:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711142226"
+X-IronPort-AV: E=Sophos;i="6.03,271,1694761200"; 
+   d="scan'208";a="711142226"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 05:50:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qyX96-0000000Agna-1mXE;
+        Thu, 02 Nov 2023 14:50:00 +0200
+Date:   Thu, 2 Nov 2023 14:50:00 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <ZUOa-Ml7YdWoAXBe@smile.fi.intel.com>
+References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
+ <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
+ <20231028162025.4259f1cc@jic23-huawei>
+ <84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com>
+ <6a697c62-6a7c-4b31-bc8e-10f40db0363d@gmail.com>
+ <d528b45c-123d-4ef7-b110-7efbfef91bc5@gmail.com>
+ <ZUDZIEY_uTVMHh3C@smile.fi.intel.com>
+ <b01930d6-5bec-496c-89de-6cf6d178c860@gmail.com>
+ <ZUEET34K7AOkFf4A@smile.fi.intel.com>
+ <6d553aaa-279f-48bf-96c9-30fdac1ae372@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231028175928.09047193@jic23-huawei>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+In-Reply-To: <6d553aaa-279f-48bf-96c9-30fdac1ae372@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,18 +83,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 28, 2023 at 05:59:28PM +0100, Jonathan Cameron wrote:
+On Wed, Nov 01, 2023 at 08:16:32AM +0200, Matti Vaittinen wrote:
+> On 10/31/23 15:42, Andy Shevchenko wrote:
+> > On Tue, Oct 31, 2023 at 02:07:46PM +0200, Matti Vaittinen wrote:
+> > > On 10/31/23 12:38, Andy Shevchenko wrote:
+> > > > On Tue, Oct 31, 2023 at 09:11:37AM +0200, Matti Vaittinen wrote:
+> > > > > On 10/30/23 12:21, Matti Vaittinen wrote:
+> > > > > > On 10/29/23 17:51, Matti Vaittinen wrote:
+> > > > > > > On 10/28/23 18:20, Jonathan Cameron wrote:
 
-> #define scoped_cond_guard_call(_name, _call, args...) \
-> +	for (CLASS(_name, scope)(args), \
-> +	     *done = NULL; !done; done = (void *)1) \
-> +		if (!__guard_ptr(_name)(&scope)) _call; \
-> +		else
+...
+
+> > > > > 	tmp = gts->max_scale;
+> > > > > 
+> > > > > 	rem = do_div(tmp, total_gain);
+> > > > > 	if (total_gain > 1 && rem >= total_gain / 2)
+> > > > > 		tmp += 1ULL;
+> > > > 
+> > > > ...which is NIH DIV_ROUND_CLOSEST_ULL()
+> > > 
+> > > There is a difference though. The DIV_ROUND_CLOSEST_ULL() does
+> > > 
+> > > tmp + total_gain / 2;
+> > > 
+> > > before division - which in theory may overflow.
+> > 
+> > Then you can fix it there for everybody, no?
 > 
-> Totally untested but hopefully conveys the idea (which is a tiny
-> extension of your scoped_cond_guard)
+> Now that I know of this macro - Maybe. It's just always scary to touch
+> things which seem like fundamental building blocks and which may be used by
+> many. Odds are something breaks, so I tend to be very conservative when
+> suggesting changes to widely used stuff. Especially when I have no idea when
+> and why the API has been added - and if the thing I'm trying to "fix" has
+> been a deliberate choice.
 
-It's a statement not a call, but yeah, I've done something like this,
-even made one of my cases simpler too,
+Welcome to the club of the div overflow in macros discussion:
 
-Let me got post this stuff so we can get it merged.
+https://lore.kernel.org/linux-clk/20231024161931.78567-1-sebastian.reichel@collabora.com/T/#t
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

@@ -2,167 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 627307DF558
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Nov 2023 15:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D09AB7E0530
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Nov 2023 16:02:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232822AbjKBOxa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Nov 2023 10:53:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
+        id S232488AbjKCPCF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Nov 2023 11:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232605AbjKBOxa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Nov 2023 10:53:30 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B239136
-        for <linux-iio@vger.kernel.org>; Thu,  2 Nov 2023 07:53:26 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c6b5841f61so11508401fa.0
-        for <linux-iio@vger.kernel.org>; Thu, 02 Nov 2023 07:53:26 -0700 (PDT)
+        with ESMTP id S229460AbjKCPCE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Nov 2023 11:02:04 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A5DD4C;
+        Fri,  3 Nov 2023 08:02:01 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-507f1c29f25so2691962e87.1;
+        Fri, 03 Nov 2023 08:02:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1698936804; x=1699541604; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OpPyVtURK3O1993/XOuCJ+rtbqqAwYQxZ3FZRcfqNLE=;
-        b=dcsuXAF8WQ/WQgnJlxp6mUTTx+tkLEHlwQC14+u0VWqWRXpz0ZInRrPJLniLztw4M8
-         LdraLSjUJ1nIsnOe928PBjFRvI9E8j92RISrAOK3YjKvS89WRDGkL6H2ZmAXbhghHFm5
-         BDn8ozX7Xc02+i6LvQmyIWF36qxEYrvyiokT1Ksx610H/syKEf6yN2pEZ8UHbZ3yVtNp
-         TtV7G1thlZICvMvQZQDPWZT+U4a/IelaMb1or0bNbFdmhKlAWKqFaUDg/bVtbZWkXtCm
-         UbDQG5HVzqOpdeLiDby/T6Eb2O9tDphJMPPL6hC+k3ZCO7e/25/WK8AC/Ih28Tqywn/3
-         lVqQ==
+        d=gmail.com; s=20230601; t=1699023720; x=1699628520; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wLP3jxyfUOUJLsqg3GaPkk4IR+kJBNyFel5/8Pny34M=;
+        b=RJxjDMtZChqPE2ZCjHw/8zJ3Me5+nQWSe+1U1l43vqJ9WR3C4t6Wfy9XS6iCawOwEa
+         TULTE3Yq6aSEiboCfzmZQ91ATcorWoKD/aJuh+62LjG89NMRGtEIOAZwMwEd80A+51H3
+         Dn+USi8pUl1tKQQ3hNjrT1FShqQHtbawBp68Huka66K9uFXsKHVix0ixzuTUxotaglNL
+         4RfkoqmXTemkoK9tKq/zh28Xl/Is8TBh8MIIloPt5PvcJZ+Q05GGUkgt3H7e5Xlq434c
+         Q7GdGMeG2BwFzYghpaQ2apAYrVtbtUeUXoaSgFLAZxC/Kzljs9+miMzQVgce+g2kA8EF
+         hunw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698936804; x=1699541604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OpPyVtURK3O1993/XOuCJ+rtbqqAwYQxZ3FZRcfqNLE=;
-        b=XlMZNi4aQedTKuhjr48wQW5+EMmB0HYRDmHpjqVgNU2rmqsH9FMh3nzbcBVCvRAPmu
-         5IShHdaPlsPqzDovCmQgnuUld7afKZ5PcSgWK6DBWu/MaC8XLfzfzySMfIQUCdimkDi5
-         apwrbqTit5M+ncCqeNXi3X/7hyGGlzVznXjLOS+Cf7JOYWjo1T8HdH6QJYu800gdrjlY
-         pe8rgSCccjeXXFtMb4v1YJMUusCB663JToaXrmh9wdVQVbUNvfIMdNWHwjKNhddQBPql
-         pdDymTmYXwYWELzK9UBrF0NLjeaK5a2sayKO1soV7LVV5VsFJjaFzcMFqU2PyKyZKB/3
-         SVWA==
-X-Gm-Message-State: AOJu0YwcHQ4UZUrKLeOpRWEvl+gs2Fb13xTUjRER8ciSnNzYjNQeHja7
-        t7k4x06fBXxvzoOVS1JzJGk0x901rrGGjOaM5xwwxA==
-X-Google-Smtp-Source: AGHT+IF+4kzPJza/2IUhZKr1xOdoJfGM7YL+7agh9GMsfaxBBtfJW0JigT3a/A8/z0p9Wkfv+y6XHzkoz2wBMSdK854=
-X-Received: by 2002:a2e:9695:0:b0:2bd:a67:e8c with SMTP id q21-20020a2e9695000000b002bd0a670e8cmr21102lji.3.1698936804612;
- Thu, 02 Nov 2023 07:53:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1699023720; x=1699628520;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wLP3jxyfUOUJLsqg3GaPkk4IR+kJBNyFel5/8Pny34M=;
+        b=XPzrokPKwv6XSUtFfGT8qK6LkirnvhayXSrJU0ajEhZmzfmYnQRUy8j1vsBeffumJx
+         rib5ecGZZV7Wx799iw54+EmCIoDA4TqDLzhUffZ8CAQxFuUpVef9cHNKGmnb2CMoNTVn
+         uGtxUqj+BX3TXZ3A8aPnSAIslOQYgJA4kW55KsoIjCSk/y7IdCgfnDu8I7v8QAEvbUgJ
+         P627pa+6TahNahMhBYhFj2g/fp5kU86K0S1tv1M1RBivbB2OjprcL/ixfRniZsWnNwK1
+         8X0JMpQpdL4YeYzHqsu4pD0a79HYDsFQCXBogwzlFUqNJIndu4dE31zqVk4rDQ3z3y4T
+         39IQ==
+X-Gm-Message-State: AOJu0YxBMLUv9f78+EszKT4tVM+fAE3MjIn14CZTPUeVeyr942LR5/Hy
+        pjbtMh2Xk33qg0sFM68pPrBdR49elbuRmg==
+X-Google-Smtp-Source: AGHT+IHpuRso4xtWjlPSeW4ndkfqTYZci2G+utdTJThRaovC9kcAw+ZRkL8n2UZGX9vECFoo6l5mJw==
+X-Received: by 2002:ac2:5b5c:0:b0:509:448a:d with SMTP id i28-20020ac25b5c000000b00509448a000dmr4384411lfp.31.1699023719697;
+        Fri, 03 Nov 2023 08:01:59 -0700 (PDT)
+Received: from ubuntu.. ([188.24.51.27])
+        by smtp.gmail.com with ESMTPSA id o8-20020a5d6848000000b0032f933556b8sm2077277wrw.7.2023.11.03.08.01.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Nov 2023 08:01:59 -0700 (PDT)
+From:   Ana-Maria Cusco <anamaria.cuscoo@gmail.com>
+To:     Ana-Maria Cusco <ana-maria.cusco@analog.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] Add ADRF5740 driver
+Date:   Fri,  3 Nov 2023 17:01:28 +0200
+Message-Id: <20231103150130.1090246-1-anamaria.cuscoo@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20231031210521.1661552-1-dlechner@baylibre.com> <3ea3d92db5c4c077a76b29dc5a89c4d491695752.camel@gmail.com>
-In-Reply-To: <3ea3d92db5c4c077a76b29dc5a89c4d491695752.camel@gmail.com>
-From:   David Lechner <dlechner@baylibre.com>
-Date:   Thu, 2 Nov 2023 09:53:13 -0500
-Message-ID: <CAMknhBEDp1baTDPrAfAv_gZ5o6LxNSt8bgS8wcGUmXdaCHq_Jw@mail.gmail.com>
-Subject: Re: [PATCH] iio: triggered-buffer: prevent possible freeing of wrong buffer
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 2, 2023 at 3:59=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
- wrote:
->
-> On Tue, 2023-10-31 at 16:05 -0500, David Lechner wrote:
-> > Commit ee708e6baacd ("iio: buffer: introduce support for attaching more
-> > IIO buffers") introduced support for multiple buffers per indio_dev but
-> > left indio_dev->buffer for a few legacy use cases.
-> >
-> > In the case of the triggered buffer, iio_triggered_buffer_cleanup()
-> > still assumes that indio_dev->buffer points to the buffer allocated by
-> > iio_triggered_buffer_setup_ext(). However, since
-> > iio_triggered_buffer_setup_ext() now calls iio_device_attach_buffer()
-> > to attach the buffer, indio_dev->buffer will only point to the buffer
-> > allocated by iio_device_attach_buffer() if it the first buffer attached=
-.
-> >
-> > This adds a check to make sure that no other buffer has been attached
-> > yet to ensure that indio_dev->buffer will be assigned when
-> > iio_device_attach_buffer() is called.
-> >
-> > Fixes: ee708e6baacd ("iio: buffer: introduce support for attaching more=
- IIO
-> > buffers")
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
-> >  drivers/iio/buffer/industrialio-triggered-buffer.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > b/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > index c7671b1f5ead..c06515987e7a 100644
-> > --- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > +++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > @@ -46,6 +46,16 @@ int iio_triggered_buffer_setup_ext(struct iio_dev
-> > *indio_dev,
-> >       struct iio_buffer *buffer;
-> >       int ret;
-> >
-> > +     /*
-> > +      * iio_triggered_buffer_cleanup() assumes that the buffer allocat=
-ed
-> > here
-> > +      * is assigned to indio_dev->buffer but this is only the case if =
-this
-> > +      * function is the first caller to iio_device_attach_buffer(). If
-> > +      * indio_dev->buffer is already set then we can't proceed otherwi=
-se
-> > the
-> > +      * cleanup function will try to free a buffer that was not alloca=
-ted
-> > here.
-> > +      */
-> > +     if (indio_dev->buffer)
-> > +             return -EADDRINUSE;
-> > +
->
-> Hmmm, good catch! But I think this is just workarounding the real problem
+From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
 
-Yes, I could have done a better job explaining my reason for this fix.
-It seemed like the simplest fix that could be easily backported to
-stable kernels. And then we can look at removing the legacy field
-completely in the future.
+This patch series adds support for ADRF5740 Attenuator.
 
-> because like this, you can only have a triggered buffer by device. This s=
-hould
-> be fine as we don't really have any multi buffer user so far but ideally =
-it
-> should be possible.
->
-> Long term we might want to think about moving 'pollfunc' to be a per buff=
-er
-> thing. Not sure how much trouble that would be given that a trigger is al=
-so per
-> device and I don't know if it would make sense to have a trigger per buff=
-er?!
-> Ideally, given the multi buffer concept, I would say it makes sense but i=
-t might
-> be difficult to accomplish. So better to think about it only if there's a=
- real
-> usecase for it.
->
-> On thing that I guess it could be done is to change the triggered API so =
-it
-> returns a buffer and so iio_triggered_buffer_cleanup() would also get a p=
-ointer
-> to the buffer it allocated (similar to what DMA buffer's are doing). But =
-that's
-> indeed also bigger change... Bahh, I'm likely over complicating things fo=
-r now.
+The ADRF5740 is a silicon, 4-bit digital attenuator with 22 dB
+attenuation control range in 2 dB steps.
+It offers parallel control mode through four digitally controlled inputs.
 
-This sounds very much like the work I am doing on SPI Engine offload
-support - having a trigger associated with a buffer. So maybe
-something will come out of that. =C2=AF\_(=E3=83=84)_/=C2=AF
+Ana-Maria Cusco (2):
+  iio: amplifiers: adrf5740: Add Support ADRF5740 4-bit Attenuator
+  dt-bindings: iio: hmc425a: add entry for ADRF5740
 
-> Fell free to:
->
-> Acked-by: Nuno Sa <nuno.sa@analog.com>
->
->
+ .../bindings/iio/amplifiers/adi,hmc425a.yaml  |  4 ++++
+ drivers/iio/amplifiers/hmc425a.c              | 23 +++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+
+-- 
+2.34.1
+

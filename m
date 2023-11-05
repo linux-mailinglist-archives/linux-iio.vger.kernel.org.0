@@ -2,81 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 331C47E16FF
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Nov 2023 22:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7CBF7E160D
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Nov 2023 20:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjKEV7T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Nov 2023 16:59:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43754 "EHLO
+        id S229477AbjKETcS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Nov 2023 14:32:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjKEV7S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Nov 2023 16:59:18 -0500
-X-Greylist: delayed 5169 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:15 PST
-Received: from SMTP-HCRC-200.brggroup.vn (mail.hcrc.vn [42.112.212.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA28CC;
-        Sun,  5 Nov 2023 13:59:15 -0800 (PST)
-Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id 844A215768;
-        Mon,  6 Nov 2023 01:57:29 +0700 (+07)
-Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id 7D3F4171D7;
-        Mon,  6 Nov 2023 01:57:29 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 199B21B8252B;
-        Mon,  6 Nov 2023 01:57:31 +0700 (+07)
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id aREbjDdrr8pp; Mon,  6 Nov 2023 01:57:31 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id DC6011B8250F;
-        Mon,  6 Nov 2023 01:57:30 +0700 (+07)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn DC6011B8250F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
-        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210650;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=ZmNflaH+yzlLmVve74LnG0r0LIb0orAc6A0NDozskRA5/84un83k9D9eUR6AG9cc3
-         57+vdHdibtytyPk3cgigMYw7g+utPb1SIhZGFGYIHhvhbexuMPFBsMnZf6qIyiwOTQ
-         sCDQatME2aoLjFZMBYJTARGVGBCxlNPG5ngJiOxx6zGMrL34zG8RD7E9X3kktRKn2O
-         9HCGE/ArYsbAP/YNjpKCWj0lhY6OjjCSLnZ/J+QeVvxUR210u/digy7Ig09ZF/XHfU
-         YnWdcu8fFB5iCTjJlbCbsoRkfgzP0BE6fG88nAFjJq7yEkDpvOGvwj9YS0UDv5KAt5
-         HIngBy/OQjv9w==
-X-Virus-Scanned: amavisd-new at hcrc.vn
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id vXlRdQ8Lympa; Mon,  6 Nov 2023 01:57:30 +0700 (+07)
-Received: from [192.168.1.152] (unknown [51.179.100.52])
-        by zimbra.hcrc.vn (Postfix) with ESMTPSA id 8698D1B8223A;
-        Mon,  6 Nov 2023 01:57:24 +0700 (+07)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229451AbjKETcS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Nov 2023 14:32:18 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7CFDD;
+        Sun,  5 Nov 2023 11:32:15 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9c2a0725825so549081766b.2;
+        Sun, 05 Nov 2023 11:32:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699212734; x=1699817534; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vleltte9bqYNVxoqP70DPmoJepyBKDB/qLui5qjstUc=;
+        b=Imx+mV+wr4Jq82FlpBy6iPAkSwDx5ZZQMW8BZK64S7GdGQQUwRBjGSYq/dP0Sh65LH
+         Sm5yz3jtkyPq/VVX4+8iejTxxHRNM51oRHZ3urs60guyZj68q/CtY6ziU/EUdTEiam51
+         VSkLIlZcC5HMJP0goLjrh4DPb5DIc9R4kvEpK9KhEBRqpiXQsqrpeOG1x6fsrIQvV5Te
+         1OiBgyFLEYokhjeTeIhxjWv4iEIYvuZS3zN6cZn68jpCJCmTlVUJngNaG8fJYp5gUyRP
+         KmxeT/nTNdjQ+WirKKC6ceajqSQmf/V4hcwuD6O8rCuXkxmH2OI/BIUOYCGfkfJFcmHL
+         iSBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699212734; x=1699817534;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vleltte9bqYNVxoqP70DPmoJepyBKDB/qLui5qjstUc=;
+        b=gXDv51NL2eBXBJZOd17LhIF+IXKHE8ME1z/6zOg97SIwhfExuDD0+78f5RPA30k8bF
+         fHwpXazKsjtRraqlOqiKWFDz7Ifl4PrM8dSKhEqEPR6PvC0O4NfwtJf2HiG83q9Q+9Jv
+         z/uhZvGahUe7PPcHm7fQ+fZNEGvqhC3ndQ81xlY5gY0nIB1C2ieQVFw9lNM/Wpf9feRT
+         I1VJN1dmSg31De2PJGq+0yUmtktyGew5rxpf+UykWbTyWgyuHNG3WuxwfSRaCDTQx72X
+         hUfOvV/VlID+MOrgmWnCzAUcvRasT/QjUijqLNDX6s9HCjVxNhwTi411YTOLkOKassNi
+         tvVQ==
+X-Gm-Message-State: AOJu0YxhNPhFn6uF2C+iWtxD86btnH6FkDB+nBVeEySwJqFmEWGTK+BX
+        QFfEns4MtNOW+r0dWvJyNx4=
+X-Google-Smtp-Source: AGHT+IG5YMre6qZJMtlewbPjPz7g4uPVaNPoH86enWch0Sj16kYSPmGech8CbjnYPAyhSh26dX6DqQ==
+X-Received: by 2002:a17:907:25cd:b0:9c7:4d98:981f with SMTP id ae13-20020a17090725cd00b009c74d98981fmr11167835ejc.33.1699212733678;
+        Sun, 05 Nov 2023 11:32:13 -0800 (PST)
+Received: from spiri.. ([5.14.137.80])
+        by smtp.gmail.com with ESMTPSA id d26-20020a1709064c5a00b009b947aacb4bsm3300259ejw.191.2023.11.05.11.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Nov 2023 11:32:13 -0800 (PST)
+From:   alisadariana@gmail.com
+Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Maksim Kiselev <bigunclemax@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Marius Cristea <marius.cristea@microchip.com>,
+        Okan Sahin <okan.sahin@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] iio: adc: ad7192: Add support for AD7194
+Date:   Sun,  5 Nov 2023 21:31:28 +0200
+Message-Id: <20231105193132.47009-1-alisadariana@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <ch.31hamnghi@hcrc.vn>
-From:   ch.31hamnghi@hcrc.vn
-Date:   Sun, 05 Nov 2023 19:57:14 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231105185724.8698D1B8223A@zimbra.hcrc.vn>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
+From: Alisa-Dariana Roman <alisa.roman@analog.com>
 
+Dear maintainers,
 
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
+I am submitting a series of patches to improve the ad7192 driver by
+adding suport for AD7194 also.
+
+Please consider applying these patches in order.
+
+Thank you for your time and attention.
+
+Kind regards,
+
+Alisa-Dariana Roman (3):
+  iio: adc: ad7192: Use device api
+  dt-bindings: iio: adc: ad7192: Add AD7194 support
+  iio: adc: ad7192: Add AD7194 support
+
+ .../bindings/iio/adc/adi,ad7192.yaml          |  69 +++++++
+ drivers/iio/adc/Kconfig                       |   4 +-
+ drivers/iio/adc/ad7192.c                      | 176 ++++++++++++++++--
+ 3 files changed, 228 insertions(+), 21 deletions(-)
+
+-- 
+2.34.1
 

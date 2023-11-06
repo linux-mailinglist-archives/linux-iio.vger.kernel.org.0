@@ -2,82 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA3F7E1FA3
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 12:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 302F87E1FB8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 12:14:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjKFLKR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Nov 2023 06:10:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42002 "EHLO
+        id S230160AbjKFLOF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Nov 2023 06:14:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbjKFLKN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 06:10:13 -0500
+        with ESMTP id S230155AbjKFLOE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 06:14:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFEBBBE;
-        Mon,  6 Nov 2023 03:10:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99BDC433C7;
-        Mon,  6 Nov 2023 11:10:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D723798;
+        Mon,  6 Nov 2023 03:14:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F952C433C8;
+        Mon,  6 Nov 2023 11:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699269010;
-        bh=Bw6MnMTTrDr7uSxkR5WanV+zHgmO66ylaD0/WXM95VQ=;
+        s=k20201202; t=1699269241;
+        bh=3rFOHrsFOQYq+raXX3AQ97EcKFDbUZXhJyj0nxmUet8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dAiBlpReuCecGSGvVCXXIv3WzDStlrN6NBjeVSBpjKCsZhXBczwrwqFYQ3v4NCDFQ
-         velTv7qtQ2gjJfdY3nxVMVjZTBuBjG1AB88+jHq/qTvALkmSYZuD89arf0i3zhXbRG
-         ll3eBoJFf9EOneOswnTb+s2RrINRnd5G7c9pais1+/FRhMEbGv42oG2e4kWh0U0807
-         EuyZK/sAFLGBlAGbx3dxeimO4sx9/b92cEzfXrRDeUk5r0lOdkdExa2DEKOKXLcf2o
-         ASoCJt2e8faoGt1kz0UjVRybQPaYdWpv7zXi8FqQNl6/qkxT3ExaC4w8iau0wmWnc8
-         lG9G2otmx5MIQ==
-Date:   Mon, 6 Nov 2023 11:10:05 +0000
+        b=M0f8UiyCntVadWOwOWAEI2Yz0mZtXoSOrbRWAqk0fbr7inHullOT1DiNpwz83cqsU
+         fTSa2Uf1EcZV4ZcihO5dJf17tk/9LerZ0H1LuiM8pJbJBoJFmKyaiGEQ1BUJjPYWnr
+         uOtBmRi9wtTZSf+HfWKQvezMTDReOO1f8InVtDvfDdzRk/zmhbM+8yGCeZyEcLP8kD
+         zX6TSwm5m49x/m2WYaMb9XOR4HmDpXJyCL0FFVlYxLGblu+KPhi25UyfUC78m4HSbT
+         tgz/z1N2M25PGBaZJGgNb10wnmUEVUlAxujMheydJrxdyy4aI1YsfACCUCLJPXDSVP
+         ypIicqxm3dyKA==
+Date:   Mon, 6 Nov 2023 11:13:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ana-Maria Cusco <anamaria.cuscoo@gmail.com>
-Cc:     Ana-Maria Cusco <ana-maria.cusco@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] Add ADRF5740 driver
-Message-ID: <20231106111005.6fd278fd@jic23-huawei>
-In-Reply-To: <20231103150130.1090246-1-anamaria.cuscoo@gmail.com>
-References: <20231103150130.1090246-1-anamaria.cuscoo@gmail.com>
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light
+ Sensor
+Message-ID: <20231106111355.2f8dfaa1@jic23-huawei>
+In-Reply-To: <2974aa13-796c-49ef-bef7-fd7f3f9b7f49@tweaklogic.com>
+References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
+        <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
+        <20231028162025.4259f1cc@jic23-huawei>
+        <2974aa13-796c-49ef-bef7-fd7f3f9b7f49@tweaklogic.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  3 Nov 2023 17:01:28 +0200
-Ana-Maria Cusco <anamaria.cuscoo@gmail.com> wrote:
+On Tue, 31 Oct 2023 19:08:08 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-Hi Ana-Maria,
+> >   
+> >> +static struct iio_event_spec apds9306_event_spec_als[] = {
+> >> +	{
+> >> +		.type = IIO_EV_TYPE_THRESH,
+> >> +		.dir = IIO_EV_DIR_RISING,
+> >> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
+> >> +	}, {
+> >> +		.type = IIO_EV_TYPE_THRESH,
+> >> +		.dir = IIO_EV_DIR_FALLING,
+> >> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
+> >> +	}, {
+> >> +		.type = IIO_EV_TYPE_THRESH,
+> >> +		.mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
+> >> +	}, {
+> >> +		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
+> >> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
+> >> +			BIT(IIO_EV_INFO_ENABLE),
+> >> +	}, {
+> >> +		.type = IIO_EV_TYPE_THRESH,
+> >> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),  
+> > This matches an entry above for type. Don't have separate entries.  
+> >> +	},
+> >> +};
+> >> +
+> >> +static struct iio_event_spec apds9306_event_spec_clear[] = {
+> >> +	{
+> >> +		.type = IIO_EV_TYPE_THRESH,
+> >> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> >> +	},
+> >> +};
+> >> +
+> >> +#define APDS9306_CHANNEL(_type) \
+> >> +	.type = _type, \
+> >> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | \
+> >> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> >> +	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | \
+> >> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \  
+> > 
+> > Scale on the intensity channel is interesting...  What are the units?
+> > There tend not to be any well defined units for intensity (as opposed
+> > to illuminance).  There may be gain on the signal, but it won't be in untils
+> > that map directly to a scale userspace should apply.  This is one of the
+> > rare reasons for using the HARDWARE_GAIN element of the ABI.
+> > 
+> > A tricky corner however as relationship between raw value and hardwaregain
+> > is not tightly defined (as it can be really weird!)  
+> Hi Jonathan,
+> 
+> Thank you for taking time for reviewing and clearing all my tiny doubts and
+> queries especially for the dt and versioning part. Much appreciated.
+> 
+> In the above case, should I not expose scale for the "clear" channel? Rather,
+> how should I expose the "clear" channel to userspace?
+What is the scale?  What units to you get after applying it?
 
-If you do a v2, then make it clear in the title that this is adding support
-to an additional driver rather than a whole new one.
+I suspect it's not well defined.
 
+Not sure what we've done in similar cases in the past.  Perhaps have
+a look at those.  There may be precedence for still using scale.
+
+I'm about to jump on a long haul flight (delayed - sigh) so don't have
+time to look myself!
+
+Jonathan
 
 > 
-> This patch series adds support for ADRF5740 Attenuator.
+> Regards,
+> Subhajit Ghosh
 > 
-> The ADRF5740 is a silicon, 4-bit digital attenuator with 22 dB
-> attenuation control range in 2 dB steps.
-> It offers parallel control mode through four digitally controlled inputs.
+> >   
+> >> +
+> >> +static struct iio_chan_spec apds9306_channels_without_events[] = {
+> >> +	{
+> >> +		APDS9306_CHANNEL(IIO_LIGHT)
+> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> >> +	}, {
+> >> +		APDS9306_CHANNEL(IIO_INTENSITY)
+> >> +		.channel2 = IIO_MOD_LIGHT_CLEAR,
+> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> >> +		.modified = 1,
+> >> +	},
+> >> +};  
+> >   
 > 
-> Ana-Maria Cusco (2):
->   iio: amplifiers: adrf5740: Add Support ADRF5740 4-bit Attenuator
->   dt-bindings: iio: hmc425a: add entry for ADRF5740
 > 
->  .../bindings/iio/amplifiers/adi,hmc425a.yaml  |  4 ++++
->  drivers/iio/amplifiers/hmc425a.c              | 23 +++++++++++++++++++
->  2 files changed, 27 insertions(+)
-> 
-
 

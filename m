@@ -2,54 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 976077E1E37
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 11:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F657E1F75
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 12:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjKFK1n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Nov 2023 05:27:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55476 "EHLO
+        id S231465AbjKFLHa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Nov 2023 06:07:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbjKFK1m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 05:27:42 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A7CD8;
-        Mon,  6 Nov 2023 02:27:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699266460; x=1730802460;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VV8FhN3eu/AlRFbG+72mkF5xgKloicJTe1Nvqf9cbbs=;
-  b=V7jfu8o0XDeBstCe/3s0cmyxvdUkCfcUH0sgr9sUivztgpZuCZAZWEqg
-   2E4Xs05SxZzLwJ/91Hbe8/8nudJRffPEGSV5sJUQ/baHTpfrdbHq8vdvv
-   J7Ri7vRIuPULJ0SOkUJLoIjpYm1P6sfdza3jFLLXL/zdiwKO6I/0Z+noo
-   AAbjBWxVQeYg1kDY75J0lC5naUcuY70fFVwtKQAQO9mzAQE4ZC6+Tlvx/
-   Xkyd5KDNyHWG3kXWKd8fzxqoEpjCf6fUnZ2Lafch6km+kHk9dMt8hxzY5
-   6Pb7tXvzYpQKTlonjfNDFJyFWMoH3Wi4L42+Bt1LHghkOMKBAY++apB29
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="2157336"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="2157336"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 02:27:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="738761530"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="738761530"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 02:27:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qzwpN-0000000BlGy-385G;
-        Mon, 06 Nov 2023 12:27:29 +0200
-Date:   Mon, 6 Nov 2023 12:27:29 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     alisadariana@gmail.com
-Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        with ESMTP id S231462AbjKFLHV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 06:07:21 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475D01700;
+        Mon,  6 Nov 2023 03:07:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EB3C433C7;
+        Mon,  6 Nov 2023 11:07:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699268828;
+        bh=QlAAP/B7tLRo9OBBNhArUNZWvgOjEW4JKbbEzOMYoTI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HLLJpl3FSRHGYK4RcM36IIUHPWPY5+mSfc9sBlmTA5nFd7YdorB/4xjP9w+0/+k3O
+         lDdvP7mCDIz9ybQL+fcgXoSME3t0t8GKQjM0a6vZx33xVKp+BffmtN/BnOfkoFa5RT
+         86rkAa7wnW9yrlBBGBx3cVjcmfcIHBK/rLnJZt0D0k2AGqAuRzpyNA48vlI1Rz4bPX
+         dfSNJvj8gS/ZWXF83OdngFraVMETZ1JpAtBGReFysmCvbH4VextVYpSk4UJ+RMYgyD
+         G3gDn/odqOD12tq1ZY/pUN+k8oHvXn+ZJpVoy/gWsycd2sTFoclOztfFXe25PgLZZC
+         FZI7GwkqumvLw==
+Date:   Mon, 6 Nov 2023 11:07:01 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     alisadariana@gmail.com,
+        Alisa-Dariana Roman <alisa.roman@analog.com>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
@@ -65,102 +49,50 @@ Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 3/3] iio: adc: ad7192: Add AD7194 support
-Message-ID: <ZUi_kWzZBMRBs3EU@smile.fi.intel.com>
+Message-ID: <20231106110701.0c2a9a25@jic23-huawei>
+In-Reply-To: <ZUi_kWzZBMRBs3EU@smile.fi.intel.com>
 References: <20231105193132.47009-1-alisadariana@gmail.com>
- <20231105193132.47009-4-alisadariana@gmail.com>
+        <20231105193132.47009-4-alisadariana@gmail.com>
+        <ZUi_kWzZBMRBs3EU@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231105193132.47009-4-alisadariana@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 05, 2023 at 09:31:31PM +0200, alisadariana@gmail.com wrote:
-> From: Alisa-Dariana Roman <alisa.roman@analog.com>
+On Mon, 6 Nov 2023 12:27:29 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+
+> On Sun, Nov 05, 2023 at 09:31:31PM +0200, alisadariana@gmail.com wrote:
+> > From: Alisa-Dariana Roman <alisa.roman@analog.com>
+> > 
+> > Unlike the other AD719Xs, AD7194 has configurable differential
+> > channels. The default configuration for these channels can be changed
+> > from the devicetree.
+> > 
+> > The default configuration is hardcoded in order to have a stable number
+> > of channels.  
 > 
-> Unlike the other AD719Xs, AD7194 has configurable differential
-> channels. The default configuration for these channels can be changed
-> from the devicetree.
+> ...
 > 
-> The default configuration is hardcoded in order to have a stable number
-> of channels.
+> >  config AD7192
+> > -	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
+> > +	tristate "Analog Devices AD7190 AD7192 AD7193 AD7194 AD7195 ADC driver"  
+> 
+> This doesn't scale. Please change this and below like:
+> 
+> 	tristate "Analog Devices AD719x ADC driver"
+Also tends to cause trouble given habit of manufacturers to not have consistent
+naming.
 
-...
-
->  config AD7192
-> -	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
-> +	tristate "Analog Devices AD7190 AD7192 AD7193 AD7194 AD7195 ADC driver"
-
-This doesn't scale. Please change this and below like:
-
-	tristate "Analog Devices AD719x ADC driver"
-
->  	depends on SPI
->  	select AD_SIGMA_DELTA
->  	help
->  	  Say yes here to build support for Analog Devices AD7190,
-> -	  AD7192, AD7193 or AD7195 SPI analog to digital converters (ADC).
-> +	  AD7192, AD7193, AD7194 or AD7195 SPI analog to digital converters (ADC).
-
-	  Say yes here to build support for Analog Devices SPI analog to
-	  digital converters (ADC):
-	  - AD7190
-	  - AD7192
-	  - AD7193
-	  - AD7194
-	  - AD7195
-
->  	  If unsure, say N (but it's safe to say "Y").
-
-With above change adding a new one will be just a mater of adding a single
-line.
-
-...
-
-> +static int ad7192_parse_channel(struct iio_dev *indio_dev,
-> +				struct fwnode_handle *child)
-> +{
-> +	u32 reg, ain[2];
-> +	int ret;
-> +
-> +	ret = fwnode_property_read_u32(child, "reg", &reg);
-> +	if (ret)
-> +		return ret;
-
-> +	if (reg < AD7194_CH_DIFF_NR_MIN || reg > AD7194_CH_DIFF_NR_MAX)
-> +		return -EINVAL;
-
-in_range()
-
-
-> +	ret = fwnode_property_read_u32_array(child, "diff-channels", ain,
-> +					     ARRAY_SIZE(ain));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (ain[0] < AD7194_CH_AIN_MIN || ain[0] > AD7194_CH_AIN_MAX ||
-> +	    ain[1] < AD7194_CH_AIN_MIN || ain[1] > AD7194_CH_AIN_MAX)
-
-Ditto.
-
-> +		return -EINVAL;
-> +
-> +	ad7194_channels[reg].channel = ain[0];
-> +	ad7194_channels[reg].channel2 = ain[1];
-> +	ad7194_channels[reg].address = AD7194_CH_DIFF(ain[0], ain[1]);
-> +
-> +	return 0;
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+"AD7194 and similar ADC driver"
+would be my preference.
 

@@ -2,84 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D1BD7E1CC4
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 09:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B15057E1D24
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 10:25:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231473AbjKFI5P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Nov 2023 03:57:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59810 "EHLO
+        id S231387AbjKFJZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Nov 2023 04:25:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231394AbjKFI5J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 03:57:09 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D3C10C2
-        for <linux-iio@vger.kernel.org>; Mon,  6 Nov 2023 00:57:02 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-507bd19eac8so5375384e87.0
-        for <linux-iio@vger.kernel.org>; Mon, 06 Nov 2023 00:57:02 -0800 (PST)
+        with ESMTP id S231250AbjKFJZI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 04:25:08 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2F3E1
+        for <linux-iio@vger.kernel.org>; Mon,  6 Nov 2023 01:25:03 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5446c9f3a77so2221578a12.0
+        for <linux-iio@vger.kernel.org>; Mon, 06 Nov 2023 01:25:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699261021; x=1699865821; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVIPqExVEDcYW9stsKCFCucn8fRishcYDXtJBl5fSIQ=;
-        b=uO+0GCMSJgc/RF/5JDwDcr0aMdudlsyy6VZIRzPhnt9j9lO7quL/WtNOofCpH+KecK
-         55l5i9hWc6J/YiILEsIng8r9fZdVa0oLebhhRaiSZYufkio/2LrjQ8jurn1xFrm1D5N5
-         5MTDdmtlALa1XiUf1n6m0vH8x3ZmSybhjqjGUYslAu5vzQZzohEb7svNF8Fkl5Uv4e9S
-         DfF5ySJIoRGqikIA8A6PP+2IA7yfle4Tu9eFyub3dAA13vD9mhLBi8gicEogEzhCx1wz
-         zbQnzc5U7cRyfIUju+ts+U0ygbjtqb1T8HXGnnA2nNbsEy8gY3j04B32lx0cato7Kvmy
-         NQxg==
+        d=linaro.org; s=google; t=1699262701; x=1699867501; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y1MoY1fVCRAbq5Lml/6r1WQBnV1piHLAXm79P6FYzBM=;
+        b=IaDOXoQvl6gQWM70nWyZlh6x7PfQQlYOlPboK2AelfqZQD78xTmBzgOqKz54CiXYi1
+         rD0DWEAOETK/yVHe2C3ydqligBiTsjt1p+6i1JU74lv2C9daSASfvfbyy+AqqJvSOih6
+         sXAvppGFu0KPh8pG8dxY1IdIzfYXPzhtQaLaTp4RsTj7bSrxurdvTP7TAcT0OUGGvwqe
+         H59/jPPgPE8D4tXbEMc0Lpl3shcvAe1xMvSeq5d8g7ha0wjCeSP7kk6t0JGldRegsGPB
+         6TOnvDq+7LTtI1GPO8UMHkKZspkaqGNLvlbzpWWX5Knyr0Iyai4fhC9xF1jWBFOkCFiF
+         QcBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699261021; x=1699865821;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZVIPqExVEDcYW9stsKCFCucn8fRishcYDXtJBl5fSIQ=;
-        b=MNgKuv/igR3KSGdgPkNAmFQlRGwAqsUYfz0qkWKdK6acpXSttkZc2qbKYVrHesZEjR
-         tt9yK9vysspWlSB62oqFApaDFv7T61csh15NcXPqc9kWhqXa/5l0tBQmqG0Bgb/lPUuV
-         MtRi/88fommYfv+b4+ThEQSxKn+/kgHj5qzu9sOH4i+CTb3yuTqCGuwzhD6kP+Eq61b8
-         /n+K5yEZew5DENcCFjwHiFYUvRHUztYQkQMUX3VYbmW25ELXyORHc99JoQ/SXBuZ3hX9
-         1rtwtsQADroj60OD0FLpQld7ve1K7pD1DkBclKqoRmbxtDzL358AjJldQroOlKpss4/S
-         rPYg==
-X-Gm-Message-State: AOJu0YwRUaVI+0PtPZP6rkoAyY1x+ckJuWZYdDK2Wpt9tqzp89NGSfki
-        VVAE65HRIUUVzhw9b3fePsEp0g==
-X-Google-Smtp-Source: AGHT+IG6nU0uTWnuuTHSGPSIPFuDTfFbH2mmiEM0WIVkO1AqNHVaQTLjH2JumFVB1WXwtqob+zBH1w==
-X-Received: by 2002:ac2:5398:0:b0:507:9f69:e8d9 with SMTP id g24-20020ac25398000000b005079f69e8d9mr20568958lfh.49.1699261020775;
-        Mon, 06 Nov 2023 00:57:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699262701; x=1699867501;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y1MoY1fVCRAbq5Lml/6r1WQBnV1piHLAXm79P6FYzBM=;
+        b=gcyYe7Ov+L3o05XBUlUoZ8sa28tevsSlL3WmMhZrtfj87k62CRXdXoErwf+/wbGIQu
+         EeAZrctNyHjEJXLKp3zTIOco27+O51Zxq/fbX0OM3I1u0e2UK/rOK0FqsXaqvSRRLccW
+         zSopoMk9ZOt1ZmYef7Vt71WCbVFsAX5HE5Tspml6QPQTf8xoRoLfreFsTHMqrEpLmUNi
+         agJf8jgsFyv39fiRFLE9lkIHRQ2pX/PM82776sCMfy0NAE9Z3Zq+NKl4ffyojr40qicz
+         wp092JnwBSRE56EXrySK4EBfXMWtqmHXySAGnGc4cxqjA4nlJ+PRC0Eq273pfGTcVVvJ
+         ykjA==
+X-Gm-Message-State: AOJu0YzVJrUaUGZ0MokmfSbW5iJOsh2pwo6JVQTbObhPgyIO3FfPiERU
+        cRGOJ/KGVykihVUQALaOm3Zj2g==
+X-Google-Smtp-Source: AGHT+IGk8Yc9+u3aRLu4K9qNGa0a/pdC8bafPfQPcVt2EX0XGyyeVfLzD7sXeegMCIDOcF68SzNjng==
+X-Received: by 2002:a05:6402:520d:b0:53b:3225:93c2 with SMTP id s13-20020a056402520d00b0053b322593c2mr29658511edd.8.1699262701479;
+        Mon, 06 Nov 2023 01:25:01 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id y8-20020a5d4708000000b0032d9523de65sm8857395wrq.48.2023.11.06.00.56.58
+        by smtp.gmail.com with ESMTPSA id v28-20020a50a45c000000b0053f10da1105sm4234700edb.87.2023.11.06.01.24.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 00:57:00 -0800 (PST)
-Message-ID: <e5c9eaaa-a8f3-4ca5-acf6-9ff714a07898@linaro.org>
-Date:   Mon, 6 Nov 2023 09:56:57 +0100
+        Mon, 06 Nov 2023 01:25:01 -0800 (PST)
+Message-ID: <8fae735c-c227-4f60-8ba8-8cb13dfb2626@linaro.org>
+Date:   Mon, 6 Nov 2023 10:24:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: ad7192: Add AD7194 support
+Subject: Re: [PATCH 1/3] iio: adc: ad7192: Use device api
+Content-Language: en-US
 To:     alisadariana@gmail.com
 Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Maksim Kiselev <bigunclemax@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Liam Beguin <liambeguin@gmail.com>,
         Marius Cristea <marius.cristea@microchip.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
         Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
         Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20231105193132.47009-1-alisadariana@gmail.com>
- <20231105193132.47009-3-alisadariana@gmail.com>
-Content-Language: en-US
+ <20231105193132.47009-2-alisadariana@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -125,12 +123,12 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231105193132.47009-3-alisadariana@gmail.com>
+In-Reply-To: <20231105193132.47009-2-alisadariana@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -141,106 +139,74 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On 05/11/2023 20:31, alisadariana@gmail.com wrote:
 > From: Alisa-Dariana Roman <alisa.roman@analog.com>
 > 
-> Unlike the other AD719Xs, AD7194 has configurable differential
-> channels. The default configuration for these channels can be changed
-> from the devicetree.
+> Replace of.h and corresponding functions with preferred device specific
+> functions.
 > 
-> Also add an example for AD7194 devicetree.
+> Also replace of_device_get_match_data function with
+> spi_get_device_match_data.
 > 
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
->  .../bindings/iio/adc/adi,ad7192.yaml          | 69 +++++++++++++++++++
->  1 file changed, 69 insertions(+)
+>  drivers/iio/adc/ad7192.c | 32 +++++++++++++++-----------------
+>  1 file changed, 15 insertions(+), 17 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 16def2985ab4..b9a9f7b20670 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -21,8 +21,15 @@ properties:
->        - adi,ad7190
->        - adi,ad7192
->        - adi,ad7193
-> +      - adi,ad7194
->        - adi,ad7195
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index adc3cbe92d6e..48e0357564af 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -17,7 +17,6 @@
+>  #include <linux/err.h>
+>  #include <linux/sched.h>
+>  #include <linux/delay.h>
+> -#include <linux/of.h>
 >  
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
->    reg:
->      maxItems: 1
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -364,19 +363,19 @@ static inline bool ad7192_valid_external_frequency(u32 freq)
+>  		freq <= AD7192_EXT_FREQ_MHZ_MAX);
+>  }
 >  
-> @@ -96,6 +103,31 @@ required:
->    - spi-cpol
->    - spi-cpha
+> -static int ad7192_of_clock_select(struct ad7192_state *st)
+> +static int ad7192_device_clock_select(struct ad7192_state *st)
+>  {
+> -	struct device_node *np = st->sd.spi->dev.of_node;
+> +	struct device *dev = &st->sd.spi->dev;
+>  	unsigned int clock_sel;
 >  
-> +patternProperties:
-> +  "^channel@([0-9a-f])$":
-> +    type: object
-> +    $ref: adc.yaml
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel index.
-> +        minimum: 0
-> +        maximum: 7
-
-Your pattern a bit above is not correct then: [0-7]
-
-> +
-> +      diff-channels:
-> +        description: |
-> +          The differential channel pair for Ad7194 configurable channels. The
-> +          first channel is the positive input, the second channel is the
-> +          negative input.
-> +        items:
-> +          minimum: 1
-> +          maximum: 16
-> +
-> +    required:
-> +      - reg
-> +      - diff-channels
-> +
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>  	clock_sel = AD7192_CLK_INT;
 >  
-> @@ -127,3 +159,40 @@ examples:
->              adi,burnout-currents-enable;
->          };
->      };
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            compatible = "adi,ad7194";
-> +            reg = <0>;
-> +            spi-max-frequency = <1000000>;
-> +            spi-cpol;
-> +            spi-cpha;
-> +            clocks = <&ad7192_mclk>;
-> +            clock-names = "mclk";
-> +            interrupts = <25 0x2>;
-> +            interrupt-parent = <&gpio>;
-> +            dvdd-supply = <&dvdd>;
-> +            avdd-supply = <&avdd>;
-> +            vref-supply = <&vref>;
-> +
-> +            adi,refin2-pins-enable;
-> +            adi,rejection-60-Hz-enable;
-> +            adi,buffer-enable;
-> +            adi,burnout-currents-enable;
-> +
-> +            channel@0 {
+>  	/* use internal clock */
+>  	if (!st->mclk) {
+> -		if (of_property_read_bool(np, "adi,int-clock-output-enable"))
+> +		if (device_property_read_bool(dev, "adi,int-clock-output-enable"))
+>  			clock_sel = AD7192_CLK_INT_CO;
+>  	} else {
+> -		if (of_property_read_bool(np, "adi,clock-xtal"))
+> +		if (device_property_read_bool(dev, "adi,clock-xtal"))
+>  			clock_sel = AD7192_CLK_EXT_MCLK1_2;
+>  		else
+>  			clock_sel = AD7192_CLK_EXT_MCLK2;
+> @@ -385,9 +384,10 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
+>  	return clock_sel;
+>  }
+>  
+> -static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
+> +static int ad7192_setup(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7192_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->sd.spi->dev;
+>  	bool rej60_en, refin2_en;
+>  	bool buf_en, bipolar, burnout_curr_en;
+>  	unsigned long long scale_uv;
+> @@ -416,26 +416,26 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
+>  
+>  	st->conf = FIELD_PREP(AD7192_CONF_GAIN_MASK, 0);
+>  
+> -	rej60_en = of_property_read_bool(np, "adi,rejection-60-Hz-enable");
+> +	rej60_en = device_property_read_bool(dev, "adi,rejection-60-Hz-enable");
 
-Why cannot you add this to the existing example?
-
+Not strictly related to your patch, but where are these properties
+documented?
 
 
 Best regards,

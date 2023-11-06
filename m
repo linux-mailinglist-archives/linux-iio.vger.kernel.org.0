@@ -2,192 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45ED87E20A1
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 13:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5D37E20CD
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 13:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230155AbjKFMDI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Nov 2023 07:03:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57174 "EHLO
+        id S231745AbjKFMFF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Nov 2023 07:05:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjKFMDH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 07:03:07 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF13992;
-        Mon,  6 Nov 2023 04:03:02 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-4083dbc43cfso27613465e9.3;
-        Mon, 06 Nov 2023 04:03:02 -0800 (PST)
+        with ESMTP id S231594AbjKFMEx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 07:04:53 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293CBD6D
+        for <linux-iio@vger.kernel.org>; Mon,  6 Nov 2023 04:04:48 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1cc330e8f58so29784835ad.3
+        for <linux-iio@vger.kernel.org>; Mon, 06 Nov 2023 04:04:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699272181; x=1699876981; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hWopxWat4tLgBobBQDVXcqZrUI2NXNoROsWDHLeZdno=;
-        b=V+FfS4qCdEIov7k+Zs2aFCATb297XOGDTElieh4eGYkIvcsCiVBheeH+BqeVR+NtgO
-         q/aRFYboJt+Al9OlTIpxsJm3TRITB+RSbK68MiT1GziLD6zT0GgnX7+SV+Z5zh6d+wI/
-         ckVOvfTE+2JwWlLW0/hnAyHu/4WBe1hS2s9pjkAezceuPcxUN2N5ymgnbv15/j1JyAhL
-         P3s3iKX52qcQE2e0QEgw+An3FhELpDQchJx8RzzLCIoWA60Yyquqvh/4qpcP6B+EXznT
-         P0BtRKLcZU6drqcc7LOoSDCZ3/7YydTxvHfO2GPR06yLVL/s3fUZrK/Ahwg/BEU0pTXN
-         TS2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699272181; x=1699876981;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=tweaklogic.com; s=google; t=1699272287; x=1699877087; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hWopxWat4tLgBobBQDVXcqZrUI2NXNoROsWDHLeZdno=;
-        b=PRytnuRI1nHZuKyAIWwGLa/rQ+yiMDrmZWwn4BZT1+wfc59NhZmBCojteHtmcD3+ID
-         r9jmrKwu39gc/VnFSVmruP+v2Jurd3a3eOYTFkyKUO4R+yyh0CQV85PLCbRUDFNUXfU9
-         s3FP+7TkciiuFjZpmWoNQ+hKUlJa7GCfLSo3OOKVQq8Aj/ok9Ql2TeM5pSnRO7Yxogyk
-         8Lit4Ox65yPb757ogaFl360kbPA5oLaHZMDlP7Fx7wp4w9gnseIwCplu5k1CTFvWgwTH
-         WuTJp8fAcrOCVN8T5f57akKS762YrV2XUcq+1I2w5o+4YKRMPtVmpfdh9gsbaG20OgFY
-         pVcg==
-X-Gm-Message-State: AOJu0YyORJNVl2btfz0KgNNnK78c21akHXg5vQJTMRB3jdXlYrJ7jI7h
-        pyCfW51ihpQ7pOGbGiAXaTw=
-X-Google-Smtp-Source: AGHT+IH9FobnFTnv63i2OrKL8vKRgqitZ6hOKWrbkAF49g6T/yEJYZwAbEjl3pE2dmEh0q9KzcBzbg==
-X-Received: by 2002:a05:600c:5488:b0:405:9666:5242 with SMTP id iv8-20020a05600c548800b0040596665242mr25163556wmb.31.1699272181008;
-        Mon, 06 Nov 2023 04:03:01 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id r22-20020a05600c35d600b003fee567235bsm12088863wmq.1.2023.11.06.04.02.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 04:02:59 -0800 (PST)
-Message-ID: <e29dc510c78205d87b573e0fe185dc7c7d509310.camel@gmail.com>
-Subject: Re: [alobakin:pfcp 5/20] drivers/iio/imu/adis16475.c:363
- adis16475_set_freq() warn: set_bit() takes a bit number
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Nuno Sa <nuno.sa@analog.com>
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
-        oe-kbuild@lists.linux.dev, lkp@intel.com,
-        oe-kbuild-all@lists.linux.dev,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 06 Nov 2023 13:02:58 +0100
-In-Reply-To: <bf2b6899-fad0-4ac7-a906-e8d361e5a46d@intel.com>
-References: <ff4ef031-774e-4e4d-a009-31f242bf6aee@kadam.mountain>
-         <5b0f8705-71cb-4c4c-a70c-d9d3a15886cb@intel.com>
-         <f040255ef1b3be87050b8255c947b4b375e75a02.camel@gmail.com>
-         <bf2b6899-fad0-4ac7-a906-e8d361e5a46d@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        bh=46VzGlmeELEIxClyfdA2R2VNLyfPNxMQefKC5OLuDoE=;
+        b=eKvnBqmR55R+XumMhCKheFarKvIURiFVUkB4N1p91yekdXmIPriBjirpyIYqM9yXoc
+         zF6wTWgwMsUTNp6B9ei3iZFNqAPWdkxdJTKe4v0tMU0ykilOrwkzgEuDB0jpc7yyj5y3
+         7Z4BrieAry2KLr76sPRG1mrbX8eiVakJPQMs16KCRQqYqTbi3vfr4UEjfgxFfe1YeslG
+         zzcUJyl5K2b9zMauwZp0OK7LByPSYA7SM84RKO4JJvqzY4zjfeZMkwj9+JT9R8qdf0ab
+         MzQB0Bh1p8draq6KbMLBgLsK5X61YkdrYjHvdggAWCGQ9upbXoACazI/wFbxn7ScU/rO
+         zPig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699272287; x=1699877087;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=46VzGlmeELEIxClyfdA2R2VNLyfPNxMQefKC5OLuDoE=;
+        b=ATDo+cQliY+pIalTimhZ+oXrp/NUppGbhFI0d/iF1Yg980r8/HlaGplCIdpzj+/dLm
+         62dLqeqqERLyGsPrfWFwbQrpdMAlH60+UbhMe7j37iCYc9vTO6iXvleKGFBMlerSyfUH
+         K06YKCo6hjC2agvYA2V5SQaRt9x3s0i66OT2FuxcHV7uPGcZVevsq2EHJJk1+urPZiCO
+         DYqWbBEb/BgbRoJ/j8hiNHBdVZpo+WgM1Ie8Uf2teHXzAomqEmLVBLLGKy8xWYZ+z+QV
+         Zl0ySs9kWxYODPuLcZooGjWG/I0GlRFJiSMQsWZrPJr4VcSqzxedglpK7ZNl3TXp4/A6
+         WMeQ==
+X-Gm-Message-State: AOJu0Yz8cph4D6UuA9Kdiwn3c42mOhK0J41RiRMbisidL6l/fQe9vIM5
+        lDxwVvtkj1EO4N8ODQ4bLTgWlw==
+X-Google-Smtp-Source: AGHT+IG7DRfNwPDxgoh3F9fkUL2pkjnMpshM1CiC9s8usB7+1pi0S4JLvaytBvlGwNlOI6TWZp2ZGQ==
+X-Received: by 2002:a17:902:d502:b0:1cc:6fdb:b640 with SMTP id b2-20020a170902d50200b001cc6fdbb640mr18684146plg.56.1699272287315;
+        Mon, 06 Nov 2023 04:04:47 -0800 (PST)
+Received: from ?IPV6:2403:580d:82f4:0:afde:b92c:1d26:d50c? (2403-580d-82f4-0-afde-b92c-1d26-d50c.ip6.aussiebb.net. [2403:580d:82f4:0:afde:b92c:1d26:d50c])
+        by smtp.gmail.com with ESMTPSA id d5-20020a170902c18500b001cc2f9fd74csm5744964pld.189.2023.11.06.04.04.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Nov 2023 04:04:46 -0800 (PST)
+Message-ID: <307f93f9-2a41-4704-ac4f-8d1e427e5060@tweaklogic.com>
+Date:   Mon, 6 Nov 2023 22:34:40 +1030
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: light: Add support for APDS9306 Light Sensor
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Matt Ranostay <matt@ranostay.sg>,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231027074545.6055-1-subhajit.ghosh@tweaklogic.com>
+ <20231027074545.6055-3-subhajit.ghosh@tweaklogic.com>
+ <20231028162025.4259f1cc@jic23-huawei>
+ <2974aa13-796c-49ef-bef7-fd7f3f9b7f49@tweaklogic.com>
+ <20231106111355.2f8dfaa1@jic23-huawei>
+Content-Language: en-US
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20231106111355.2f8dfaa1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-11-06 at 12:18 +0100, Alexander Lobakin wrote:
-> From: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> Date: Mon, 06 Nov 2023 11:07:16 +0100
->=20
-> > Hi Olek,
-> >=20
-> > On Mon, 2023-11-06 at 10:31 +0100, Alexander Lobakin wrote:
-> > > From: Dan Carpenter <dan.carpenter@linaro.org>
-> > > Date: Mon, 6 Nov 2023 11:50:03 +0300
-> > >=20
-> > > Hi,
-> > >=20
-> > > > tree:=C2=A0=C2=A0 https://github.com/alobakin/linux=C2=A0pfcp
-> > > > head:=C2=A0=C2=A0 89565e300e3d4033b8bb568774804fdc09d4f3cc
-> > > > commit: 945a0d6e86d97bf60f2fae88ee557ed3eae18b94 [5/20] bitops: let=
- the
-> > > > compiler
-> > > > optimize {__,}assign_bit()
-> > > > config: i386-randconfig-141-20231105
-> > > > (
-> > > > https://download.01.org/0day-ci/archive/20231106/202311060647.i9XyO=
-4ej-lkp@int
-> > > > el
-> > > > .com/config)
-> > > > compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> > > > reproduce:
-> > > > (
-> > > > https://download.01.org/0day-ci/archive/20231106/202311060647.i9XyO=
-4ej-lkp@int
-> > > > el
-> > > > .com/reproduce)
-> > > >=20
-> > > > If you fix the issue in a separate patch/commit (i.e. not just a ne=
-w version
-> > > > of
-> > > > the same patch/commit), kindly add following tags
-> > > > > Reported-by: kernel test robot <lkp@intel.com>
-> > > > > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > > > > Closes: https://lore.kernel.org/r/202311060647.i9XyO4ej-lkp@intel=
-.com/
-> > > >=20
-> > > > smatch warnings:
-> > > > drivers/iio/imu/adis16475.c:363 adis16475_set_freq() warn: set_bit(=
-) takes a
-> > > > bit
-> > > > number
-> > > > drivers/iio/imu/adis16475.c:363 adis16475_set_freq() warn: clear_bi=
-t() takes
-> > > > a
-> > > > bit number
-> > > > drivers/iio/imu/adis16475.c:416 adis16475_set_filter() warn: set_bi=
-t() takes
-> > > > a
-> > > > bit number
-> > > > drivers/iio/imu/adis16475.c:416 adis16475_set_filter() warn: clear_=
-bit()
-> > > > takes a
-> > > > bit number
-> > > >=20
-> > > > vim +363 drivers/iio/imu/adis16475.c
-> > > >=20
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13=C2=A0 357=C2=A0=20
-> > > > 9da1b86865ab43 Nuno S=C3=A1 2021-09-20=C2=A0 358=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0adis_dev_unlock(&st->adis);
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13=C2=A0 359=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13=C2=A0 360=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * If decimation is used,
-> > > > then
-> > > > gyro and accel data will have meaningful
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13=C2=A0 361=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * bits on the LSB registers.
-> > > > This info is used on the trigger handler.
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13=C2=A0 362=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > > > fff7352bf7a3ce Nuno S=C3=A1 2020-04-13
-> > > > @363=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ass=
-ign_bit(ADIS16475_LSB_DEC_MASK, &st->lsb_flag, dec);
-> > > >=20
-> > > > assign_bit() takes a bit number like 0.=C2=A0 But this is passing B=
-IT(0) so
-> > > > it's like BIT(BIT(0)).=C2=A0 Which is fine until you get to 5.
-> > >=20
-> > > Is this intended? There are 2 places where you pass
-> > > %ADIS16475_LSB_DEC_MASK and %ADIS16475_LSB_FIR_MASK, which is `BIT(0)=
-`
-> > > and `BIT(1)` respectively, to assign_bit(), which takes 0, 1 etc.
-> > >=20
-> >=20
-> > Sorry, I'm missing the point in here... This should be a simple mask as=
-=C2=A0
-> > GENMASK(1, 0) setting/clearing the bits when appropriate. Obviously,
->=20
-> assign_bit() does not take a bitmask as a first argument, but a bit numbe=
-r.
->=20
-> I.e. if you want to switch BIT(0), you call it like assign_bit(0, ...),
-> not assign_bit(BIT(0), ...). Same for the bit nr 1.
->=20
+On 6/11/23 21:43, Jonathan Cameron wrote:
+> On Tue, 31 Oct 2023 19:08:08 +1030
+> Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
+> 
+>>>    
+>>>> +static struct iio_event_spec apds9306_event_spec_als[] = {
+>>>> +	{
+>>>> +		.type = IIO_EV_TYPE_THRESH,
+>>>> +		.dir = IIO_EV_DIR_RISING,
+>>>> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
+>>>> +	}, {
+>>>> +		.type = IIO_EV_TYPE_THRESH,
+>>>> +		.dir = IIO_EV_DIR_FALLING,
+>>>> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
+>>>> +	}, {
+>>>> +		.type = IIO_EV_TYPE_THRESH,
+>>>> +		.mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
+>>>> +	}, {
+>>>> +		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
+>>>> +		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
+>>>> +			BIT(IIO_EV_INFO_ENABLE),
+>>>> +	}, {
+>>>> +		.type = IIO_EV_TYPE_THRESH,
+>>>> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+>>> This matches an entry above for type. Don't have separate entries.
+>>>> +	},
+>>>> +};
+>>>> +
+>>>> +static struct iio_event_spec apds9306_event_spec_clear[] = {
+>>>> +	{
+>>>> +		.type = IIO_EV_TYPE_THRESH,
+>>>> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+>>>> +	},
+>>>> +};
+>>>> +
+>>>> +#define APDS9306_CHANNEL(_type) \
+>>>> +	.type = _type, \
+>>>> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | \
+>>>> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+>>>> +	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | \
+>>>> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+>>>
+>>> Scale on the intensity channel is interesting...  What are the units?
+>>> There tend not to be any well defined units for intensity (as opposed
+>>> to illuminance).  There may be gain on the signal, but it won't be in untils
+>>> that map directly to a scale userspace should apply.  This is one of the
+>>> rare reasons for using the HARDWARE_GAIN element of the ABI.
+>>>
+>>> A tricky corner however as relationship between raw value and hardwaregain
+>>> is not tightly defined (as it can be really weird!)
+>> Hi Jonathan,
+>>
+>> Thank you for taking time for reviewing and clearing all my tiny doubts and
+>> queries especially for the dt and versioning part. Much appreciated.
+>>
+>> In the above case, should I not expose scale for the "clear" channel? Rather,
+>> how should I expose the "clear" channel to userspace?
+> What is the scale?  What units to you get after applying it?
+The scale is in Lux. The output after applying is Lux.
+> 
+> I suspect it's not well defined.
+> 
+> Not sure what we've done in similar cases in the past.  Perhaps have
+> a look at those.  There may be precedence for still using scale.
+Sure, I'll look it up.
+> 
+> I'm about to jump on a long haul flight (delayed - sigh) so don't have
+> time to look myself!
+> 
+No worries. I will update notes and application in next version.
+Have a good trip to where ever you are going. Are you coming to Australia
+by any chance?
+Thanks for the reply.
 
-Yes, I know... if you look at my reply to Dan you can see I realized that a=
-lready :)=20
+Regards,
+Subhajit Ghosh
 
-I guess by the time I first sent this time I didn't knew or maybe just a du=
-mb
-mistake...
 
-I'll send a patch later today removing the BIT() from the #define, thx!
-
-- Nuno S=C3=A1
 

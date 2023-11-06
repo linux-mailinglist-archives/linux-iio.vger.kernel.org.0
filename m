@@ -2,213 +2,212 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B15057E1D24
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 10:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C53867E1D4D
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Nov 2023 10:34:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231387AbjKFJZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Nov 2023 04:25:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41378 "EHLO
+        id S231338AbjKFJeZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Nov 2023 04:34:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231250AbjKFJZI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 04:25:08 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2F3E1
-        for <linux-iio@vger.kernel.org>; Mon,  6 Nov 2023 01:25:03 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5446c9f3a77so2221578a12.0
-        for <linux-iio@vger.kernel.org>; Mon, 06 Nov 2023 01:25:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699262701; x=1699867501; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y1MoY1fVCRAbq5Lml/6r1WQBnV1piHLAXm79P6FYzBM=;
-        b=IaDOXoQvl6gQWM70nWyZlh6x7PfQQlYOlPboK2AelfqZQD78xTmBzgOqKz54CiXYi1
-         rD0DWEAOETK/yVHe2C3ydqligBiTsjt1p+6i1JU74lv2C9daSASfvfbyy+AqqJvSOih6
-         sXAvppGFu0KPh8pG8dxY1IdIzfYXPzhtQaLaTp4RsTj7bSrxurdvTP7TAcT0OUGGvwqe
-         H59/jPPgPE8D4tXbEMc0Lpl3shcvAe1xMvSeq5d8g7ha0wjCeSP7kk6t0JGldRegsGPB
-         6TOnvDq+7LTtI1GPO8UMHkKZspkaqGNLvlbzpWWX5Knyr0Iyai4fhC9xF1jWBFOkCFiF
-         QcBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699262701; x=1699867501;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y1MoY1fVCRAbq5Lml/6r1WQBnV1piHLAXm79P6FYzBM=;
-        b=gcyYe7Ov+L3o05XBUlUoZ8sa28tevsSlL3WmMhZrtfj87k62CRXdXoErwf+/wbGIQu
-         EeAZrctNyHjEJXLKp3zTIOco27+O51Zxq/fbX0OM3I1u0e2UK/rOK0FqsXaqvSRRLccW
-         zSopoMk9ZOt1ZmYef7Vt71WCbVFsAX5HE5Tspml6QPQTf8xoRoLfreFsTHMqrEpLmUNi
-         agJf8jgsFyv39fiRFLE9lkIHRQ2pX/PM82776sCMfy0NAE9Z3Zq+NKl4ffyojr40qicz
-         wp092JnwBSRE56EXrySK4EBfXMWtqmHXySAGnGc4cxqjA4nlJ+PRC0Eq273pfGTcVVvJ
-         ykjA==
-X-Gm-Message-State: AOJu0YzVJrUaUGZ0MokmfSbW5iJOsh2pwo6JVQTbObhPgyIO3FfPiERU
-        cRGOJ/KGVykihVUQALaOm3Zj2g==
-X-Google-Smtp-Source: AGHT+IGk8Yc9+u3aRLu4K9qNGa0a/pdC8bafPfQPcVt2EX0XGyyeVfLzD7sXeegMCIDOcF68SzNjng==
-X-Received: by 2002:a05:6402:520d:b0:53b:3225:93c2 with SMTP id s13-20020a056402520d00b0053b322593c2mr29658511edd.8.1699262701479;
-        Mon, 06 Nov 2023 01:25:01 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id v28-20020a50a45c000000b0053f10da1105sm4234700edb.87.2023.11.06.01.24.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 01:25:01 -0800 (PST)
-Message-ID: <8fae735c-c227-4f60-8ba8-8cb13dfb2626@linaro.org>
-Date:   Mon, 6 Nov 2023 10:24:58 +0100
-MIME-Version: 1.0
+        with ESMTP id S230475AbjKFJeY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Nov 2023 04:34:24 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 014A2C6;
+        Mon,  6 Nov 2023 01:34:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699263262; x=1730799262;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=pg1crNRwfAlkPVDD/isEy5E3YgKPdYQp1QtgiyUa904=;
+  b=RwOrSr9QwjsTZ9uw6+KNPLFXT5wVlsU9Oq9CT1GM3mfnKtUN5M9gEF2B
+   MAJF7LePPFYxkdbD0S05R9lTmFcadxAcDeNOrAN30+tDW5VJxMCd9bNne
+   IscEQn6ElgHZafAlskCK2k/vN3Q+nKTIPFP5oN0bvsBDSx94Jdl2uFtuI
+   qhpniGud3+uXcNfv7kW2TlJuBZdpotKhuWGzej2If06EntaYjRRm3CsX/
+   OCF0C4FyWFFl0LTEvjMSMcaYcLy5CemqrIop816di7ODj6U0XS5XdnDMw
+   Ii/hvLblnQ2M7ObZhFheobLaMbWDlZQLcuGqDgg6KRmiNjpQd84cGb/pY
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="2228419"
+X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
+   d="scan'208";a="2228419"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 01:34:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="905997458"
+X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
+   d="scan'208";a="905997458"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Nov 2023 01:34:17 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Mon, 6 Nov 2023 01:34:17 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Mon, 6 Nov 2023 01:34:17 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Mon, 6 Nov 2023 01:34:15 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cwqq2I9qjbHfROJx6tU9p2HVtOQ24zEqtBtarXLw0oJQTuB0FNtVEwVmvP4YYA9fIg+0MSa/0ybvMt9ypsiA2pE72QeDQHRO4hUAtuc/d3QuAgxoCEa/ZucrgHP0vcdtBuT7r6oTK79aOfj9o99C19XueDtSuUyAicEeEpQoqB4gLJyaEylq2obYq00CT3KFsZCFV7nioTfOg7DCMFvoys73Eh3f+7Y1774ZqtBIXlueqNflVOSn4Tcc8YljPQu9V+Wf6G7l0PXPe4RLa9Hy+3QgvlqCR8JFKFo/tP436miR1q/G3Ha4zCTxBcDZJe2r3BJVKSd5Yvv5mkIICnbATg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P7aQ30prH2vMgdNFM1kFld2EnOXU2kYs0JDcVfJ3Hew=;
+ b=Kh+z1N9eY0efiVZ8ucMIqQLlLL5ZpLkUQv80YA6qf2LYuV1XwSVVS9HLMFiwpgf5fcmKc1iTcmQhlIb70OnQKqcQtlJSZI6aIfQxOAb/u+VfD6KWAWy4kTW2MeC8ZLG1wVzpxa6UTcV+5hFIP3FzgANZTMjH+KP3DRQh6ay4YAerh/JMR9Qwlde8QU5m/krHzIn6dmnSp258Yom896N50weZrTjAfjIH2numQifiEVTWqsuVk0Ykp4B8H6MWSptvBmi+CDw472ZTiPsPXMOiaXR7TqgeuSNNsnyT+lrPcDKVPfdjZwDuHgKH1tQmLF5byacXyJk4//8yFcQJkGS8zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
+ by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Mon, 6 Nov
+ 2023 09:34:13 +0000
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::36be:aaee:c5fe:2b80]) by DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::36be:aaee:c5fe:2b80%7]) with mapi id 15.20.6954.027; Mon, 6 Nov 2023
+ 09:34:13 +0000
+Message-ID: <5b0f8705-71cb-4c4c-a70c-d9d3a15886cb@intel.com>
+Date:   Mon, 6 Nov 2023 10:31:57 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] iio: adc: ad7192: Use device api
+Subject: Re: [alobakin:pfcp 5/20] drivers/iio/imu/adis16475.c:363
+ adis16475_set_freq() warn: set_bit() takes a bit number
+To:     Nuno Sa <nuno.sa@analog.com>
+CC:     Dan Carpenter <dan.carpenter@linaro.org>,
+        <oe-kbuild@lists.linux.dev>, <lkp@intel.com>,
+        <oe-kbuild-all@lists.linux.dev>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <ff4ef031-774e-4e4d-a009-31f242bf6aee@kadam.mountain>
 Content-Language: en-US
-To:     alisadariana@gmail.com
-Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Maksim Kiselev <bigunclemax@gmail.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Liam Beguin <liambeguin@gmail.com>,
-        Marius Cristea <marius.cristea@microchip.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231105193132.47009-1-alisadariana@gmail.com>
- <20231105193132.47009-2-alisadariana@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231105193132.47009-2-alisadariana@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <ff4ef031-774e-4e4d-a009-31f242bf6aee@kadam.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: WA1P291CA0021.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::21) To DM6PR11MB3625.namprd11.prod.outlook.com
+ (2603:10b6:5:13a::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|PH7PR11MB5817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35a35cf7-cf71-4dd6-eb0d-08dbdeab894f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: z15vW7jMPSvLsM6buaWzRjcYy4ZTRnPJXtXNgFltbOMsfErxoZUDbl/WwMSudSiIm3r/aZbjjQD6ZE0hst1sKVqUgmFnXgZjdfHeWbzEUdscLwgu+Bpo6DjmE+7vv3Vknd9pF+G7nA8/RQHeY5yeGe1SjvtBLeayx4jdR89zGCryGGo1MLjUU9La0FktUIZL7PbjmJoR6tLc00oDDLgGOhdxPahOa5pHYWzihVJRDF9chxgzEHm6/c/wgvFiNIIuXfF/Kkf98hqh+tOXscsl5VBBgMTL3dHRuDXCFAsQ5DE7KN13l7azBe+U6VYGyq8dqENn8bQUKnZYAsnnIy9fJq/7P5RKL02eFbGf52LAxtAJ5pQmUakAAxuBI48bOhBbG3WtW+GGRgJlP50K1/gcH/W00fSgd6gImfzH4xPKHsTSaFvYvV8AWzA6civPpE0DAz0lYG0NklGkPtQBFaCPZFjAZMOB82cZbsFE1MulebqL1bf4RFsME9JNSbQ5cM5h6NYpjo7cRZZ21l/6Y7N66/0utHyOlZ7wbTSOaeOIKa3JlN/9JycYDE1PqStuMO/HFvVfldcEGlcCbHqvZSG+fbucBA+Tuvt6QOA64flSGlLrpH5S8PG+5fGu5c7y7TaDvYopKGImclYwOG1cfwSzhGWTFg5+Uwt9VQX3lBssZyGyv8XeepnRDRmJtw9obXWxdJv8oSl37Wj2gS1WxjOfLw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(376002)(366004)(346002)(39860400002)(230273577357003)(230173577357003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(6916009)(4326008)(8676002)(8936002)(41300700001)(36756003)(2906002)(38100700002)(5660300002)(31696002)(6486002)(966005)(66556008)(6512007)(316002)(54906003)(66476007)(31686004)(86362001)(66946007)(83380400001)(26005)(82960400001)(2616005)(6666004)(6506007)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MG9iWnZoWGZIOVFrZDlZMFRvYzY4YkZCTUZPRkFmSnJqVDQ0Zkdhd2NYZjFj?=
+ =?utf-8?B?L2s5NkszbVZuUnlCMU5SZWlDSElac1J3Q3BMdTc1UU92cUFvdVdyZFRJTDFP?=
+ =?utf-8?B?d1BNZ0dkN0l2UlNiZEtIYXFMTFpneWg1eEsvV3ArR0NraVloVGx3TjUvaDRD?=
+ =?utf-8?B?aENIem5jOEhockdMSWl1bU9wWWhIc1FGRU9WS2luYytRQnlWd1R6L0RhdkpJ?=
+ =?utf-8?B?ZEVPV25saDRIYi82OTkzdjljcVpMMVh5ekFGb1B5NEtyb3Q4eDdleHpXRlow?=
+ =?utf-8?B?dENMOHpUM1RtUGE4ZzhYUWxPN21kUDVVenlHaGdKTXBsVkU0aHZCd3c5dWpO?=
+ =?utf-8?B?VTMvVDBLRzFiT0UwZE41OS9wT3J3VXc0Mmx0ek5PVXZGR1BadkV6QXcwMW95?=
+ =?utf-8?B?ck1DVHVNVHk4U0hjQUtsQXFYekE0bXBmakUwRGRoSU5UN3V5K0xFWUoxa0xR?=
+ =?utf-8?B?OW5QUW1MSE1MbSt3NTZYbWxoZXFSRWRrS2E1cC9pMmh2WnNMdlR0bFBSQ2Y2?=
+ =?utf-8?B?ZkxYK0U5TWRBbUxzTjBvRHFCRmJqYWVxS2owQUJmSU1ieVArRURjWGZrSHNP?=
+ =?utf-8?B?enBabEJMeUp4clVJeTZmR2VTRHJGbzB6SXdQd1Vpc1kycXByL3ozeXdxa0xX?=
+ =?utf-8?B?N2J5N3l0ZjYzY2thd3JtZWdyRXVZMXptS1VCNGZmRXZUdi9IdlMxcDVuakIr?=
+ =?utf-8?B?YlE0TUtUSlNFZUtYaCtRb3ppeXlYeXh3MTFNc3NWc2lyK2ljbHp6cXJBU0JL?=
+ =?utf-8?B?bHJqZEkrRysvT3lmcGRhVFMxWGhDZ0xaMHFyUFVLTkZmMTc0K3lUSjlPd3p3?=
+ =?utf-8?B?VzdlVDVzUmU0dVNCSzQ3MFJIYzBJQWtRb0VyNGpBSkpySDJPOHpiREhhYzNY?=
+ =?utf-8?B?RXdTTHBRd0JyV3lmVG9GZC9LYXJqL2N3cjMwUnRtTFdpRSszaTF2dHFiaitn?=
+ =?utf-8?B?Q0pMZ3ZpUG9oczFpK2R5ZnhDNC9pdGFRREhjeFhtQjBxNDR2K1ZyOHpkRFpS?=
+ =?utf-8?B?K3psaWUvRjNrVWk0eHJqQ01RajZod1NlcTUwRktDTjdmTVc4aFNyVExsWU9I?=
+ =?utf-8?B?RjZNVjJTdXEyMGxqOUttTGwxNjN6TFpaTWV2R3FjazNsSmRrcWZiYW1mNmpy?=
+ =?utf-8?B?c25hTkwvNjVVaFFRd1RHL0RweTI2WHN3R21RU2I3VkZUaXFlTE80VnpoRjN6?=
+ =?utf-8?B?YWZZMHA5ck5acFEvQWFyMmV0ZzFaZmRoMzlSR253SDVPRmlzd3hxTFFYTUdV?=
+ =?utf-8?B?bDdXemtjVHJwc0ZyTnB3aTE2Q3p3T05aQ3FrbjNKSTQxTHlvNHV4Ly9DV1Mv?=
+ =?utf-8?B?elpiN2J1cGZ5VHl1YnpCOFVCa08zMU0zdTA1UXAzNDc2WGkyQS9lNndDa3pV?=
+ =?utf-8?B?ZUNhRUxnU1pPN2ZNMC85YWNvblNKQ0F2Y0M0dHhsd1VZRENZQmN3OHg3L28v?=
+ =?utf-8?B?VjhMZ2Ftb1RiR0lGZ1RQWGVxei9uc2E3M2JxYVEyR3k0QUR4OWYyYWdrVW9U?=
+ =?utf-8?B?c1NzR0VyYTZjWm5ocm5lc2U2UmcvVjVIdjN2YUxuUHVTSWJmeW9Mc3RwTlVC?=
+ =?utf-8?B?WDRuOXpqY000Q2JueHRUaDIyUXIwZjRrUnRQTTRmai9SWlZEM0p0NG94R2dE?=
+ =?utf-8?B?SkZHTm1ad3V1V2RLRnE3UmRlNzZsSmw1MG4zNEFoTDg3NGtvSkt5L2VOY0wz?=
+ =?utf-8?B?ODJqWE4rcHdYODJlVjdMelo5WkVSUlBwOGswV3RqWlp1V1hZT0lTdzRCeVdR?=
+ =?utf-8?B?STYvY1JGNnNSb3l2VGhnOHJyLytuU216SWdNMERVRitnZDVrdTVIRlpwTGJI?=
+ =?utf-8?B?OGZzMCs4SnBmZitCVThmZDZRTDY5Um1qR1BJYUN6Q3BKdmpxOWlVbys3dGpS?=
+ =?utf-8?B?bFZwTWFXMVF5eXVMV0YvdGtDNjVQbmRsa2wxVXBqRFR4YXg4S1F5eUErVXlY?=
+ =?utf-8?B?bUVSbDJBZVpJT3hPZU9PWEtUbXZFbjdUYkdrMnVvTzB4YVRjQXNKb0ozeHB3?=
+ =?utf-8?B?SDRMbkxHUGxzelV0bmVKdXB5eHE3aGxNWElPTjQ5TVNkczBQbDA0bytSZFo3?=
+ =?utf-8?B?UDJLOGdOVGdZdEpmNkZNeFo3MURlTlNiandLSEFETVlYUUVDRVgwbXJUY3g0?=
+ =?utf-8?B?RWlqVURFUldRWmhVRnhURnpTY3cvdlFkM3FKWGpVTXVOZ0tuNi9sQ2VhYXFL?=
+ =?utf-8?B?dEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35a35cf7-cf71-4dd6-eb0d-08dbdeab894f
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2023 09:34:13.4604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: o0TpdiXmuwOC9uauLYERgtAt/9jhjVbHImg5BsLlD7BxpjFNGzhnZxsODlIVgyS7EPA1tWjpU87GzDbfKnFun6/GKpU3ED5mLJnQJOJvuyw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 05/11/2023 20:31, alisadariana@gmail.com wrote:
-> From: Alisa-Dariana Roman <alisa.roman@analog.com>
-> 
-> Replace of.h and corresponding functions with preferred device specific
-> functions.
-> 
-> Also replace of_device_get_match_data function with
-> spi_get_device_match_data.
-> 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
->  drivers/iio/adc/ad7192.c | 32 +++++++++++++++-----------------
->  1 file changed, 15 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index adc3cbe92d6e..48e0357564af 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -17,7 +17,6 @@
->  #include <linux/err.h>
->  #include <linux/sched.h>
->  #include <linux/delay.h>
-> -#include <linux/of.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -364,19 +363,19 @@ static inline bool ad7192_valid_external_frequency(u32 freq)
->  		freq <= AD7192_EXT_FREQ_MHZ_MAX);
->  }
->  
-> -static int ad7192_of_clock_select(struct ad7192_state *st)
-> +static int ad7192_device_clock_select(struct ad7192_state *st)
->  {
-> -	struct device_node *np = st->sd.spi->dev.of_node;
-> +	struct device *dev = &st->sd.spi->dev;
->  	unsigned int clock_sel;
->  
->  	clock_sel = AD7192_CLK_INT;
->  
->  	/* use internal clock */
->  	if (!st->mclk) {
-> -		if (of_property_read_bool(np, "adi,int-clock-output-enable"))
-> +		if (device_property_read_bool(dev, "adi,int-clock-output-enable"))
->  			clock_sel = AD7192_CLK_INT_CO;
->  	} else {
-> -		if (of_property_read_bool(np, "adi,clock-xtal"))
-> +		if (device_property_read_bool(dev, "adi,clock-xtal"))
->  			clock_sel = AD7192_CLK_EXT_MCLK1_2;
->  		else
->  			clock_sel = AD7192_CLK_EXT_MCLK2;
-> @@ -385,9 +384,10 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
->  	return clock_sel;
->  }
->  
-> -static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
-> +static int ad7192_setup(struct iio_dev *indio_dev)
->  {
->  	struct ad7192_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->sd.spi->dev;
->  	bool rej60_en, refin2_en;
->  	bool buf_en, bipolar, burnout_curr_en;
->  	unsigned long long scale_uv;
-> @@ -416,26 +416,26 @@ static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
->  
->  	st->conf = FIELD_PREP(AD7192_CONF_GAIN_MASK, 0);
->  
-> -	rej60_en = of_property_read_bool(np, "adi,rejection-60-Hz-enable");
-> +	rej60_en = device_property_read_bool(dev, "adi,rejection-60-Hz-enable");
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Mon, 6 Nov 2023 11:50:03 +0300
 
-Not strictly related to your patch, but where are these properties
-documented?
+Hi,
 
+> tree:   https://github.com/alobakin/linux pfcp
+> head:   89565e300e3d4033b8bb568774804fdc09d4f3cc
+> commit: 945a0d6e86d97bf60f2fae88ee557ed3eae18b94 [5/20] bitops: let the compiler optimize {__,}assign_bit()
+> config: i386-randconfig-141-20231105 (https://download.01.org/0day-ci/archive/20231106/202311060647.i9XyO4ej-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce: (https://download.01.org/0day-ci/archive/20231106/202311060647.i9XyO4ej-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202311060647.i9XyO4ej-lkp@intel.com/
+> 
+> smatch warnings:
+> drivers/iio/imu/adis16475.c:363 adis16475_set_freq() warn: set_bit() takes a bit number
+> drivers/iio/imu/adis16475.c:363 adis16475_set_freq() warn: clear_bit() takes a bit number
+> drivers/iio/imu/adis16475.c:416 adis16475_set_filter() warn: set_bit() takes a bit number
+> drivers/iio/imu/adis16475.c:416 adis16475_set_filter() warn: clear_bit() takes a bit number
+> 
+> vim +363 drivers/iio/imu/adis16475.c
+> 
+> fff7352bf7a3ce Nuno Sá 2020-04-13  357  
+> 9da1b86865ab43 Nuno Sá 2021-09-20  358  	adis_dev_unlock(&st->adis);
+> fff7352bf7a3ce Nuno Sá 2020-04-13  359  	/*
+> fff7352bf7a3ce Nuno Sá 2020-04-13  360  	 * If decimation is used, then gyro and accel data will have meaningful
+> fff7352bf7a3ce Nuno Sá 2020-04-13  361  	 * bits on the LSB registers. This info is used on the trigger handler.
+> fff7352bf7a3ce Nuno Sá 2020-04-13  362  	 */
+> fff7352bf7a3ce Nuno Sá 2020-04-13 @363  	assign_bit(ADIS16475_LSB_DEC_MASK, &st->lsb_flag, dec);
+> 
+> assign_bit() takes a bit number like 0.  But this is passing BIT(0) so
+> it's like BIT(BIT(0)).  Which is fine until you get to 5.
 
-Best regards,
-Krzysztof
+Is this intended? There are 2 places where you pass
+%ADIS16475_LSB_DEC_MASK and %ADIS16475_LSB_FIR_MASK, which is `BIT(0)`
+and `BIT(1)` respectively, to assign_bit(), which takes 0, 1 etc.
 
+> 
+> 
+> fff7352bf7a3ce Nuno Sá 2020-04-13  364  
+> fff7352bf7a3ce Nuno Sá 2020-04-13  365  	return 0;
+> 39c024b51b5607 Nuno Sa 2021-02-18  366  error:
+> 15aacc980dcb32 Nuno Sa 2021-02-18  367  	adis_dev_unlock(&st->adis);
+> 39c024b51b5607 Nuno Sa 2021-02-18  368  	return ret;
+> 
+
+Thanks,
+Olek

@@ -2,93 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9A57E4919
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Nov 2023 20:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8872A7E4CA4
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 00:22:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235176AbjKGTUd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 14:20:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35822 "EHLO
+        id S234904AbjKGXWi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Nov 2023 18:22:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235182AbjKGTU3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 14:20:29 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EA0D43;
-        Tue,  7 Nov 2023 11:20:27 -0800 (PST)
-Received: from shreeya.shreeya (cola.collaboradmins.com [195.201.22.229])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: shreeya)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0B588660748C;
-        Tue,  7 Nov 2023 19:20:22 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1699384825;
-        bh=v/+HlUbdkVlvRYJEfDzKEel5tt1IxqqmV9wyYAz5uuM=;
+        with ESMTP id S234038AbjKGXWi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 18:22:38 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CE5D79;
+        Tue,  7 Nov 2023 15:22:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5B1C433C7;
+        Tue,  7 Nov 2023 23:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699399355;
+        bh=+CbiV6rpXCNM6vhS/PR5+TmIMmNSjDz1OXp5IClnHWY=;
         h=From:To:Cc:Subject:Date:From;
-        b=VRIlsB1i9+5UiaT42ltAk6+bQE3hononkVqwxA+v9BZeHeHhUwwVByVglRmmTe1Ky
-         5cyF8e//xVUHbXwKw+OYnwDeRAkhJ/Zc2Z54EFBmO6LefqNjaPd5gzwrfxkAd8yOPe
-         8peLRWsj6j5uDJYR5wBm28WUIcTHadMDPd+WiCwnQizIF/mNUMeF8q9MleRFfApAR5
-         DHF04yh/ko0Ssbtg9BTx7hT7rhuOyVt8DmSs2VDU896iwvEIyHdsAhJOGz9iCLI8CG
-         oOiOPAZqtC+9GsNxwKzyZdbzUtNOPXX9hTTLGvD+4i1mCpOVy6zpjYrDiQ+TA+Z1AT
-         nl1HJcKBkABdw==
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Shreeya Patel <shreeya.patel@collabora.com>
-Subject: [PATCH] iio: light: ltrf216a: Return floating point values
-Date:   Wed,  8 Nov 2023 00:50:05 +0530
-Message-Id: <20231107192005.285534-1-shreeya.patel@collabora.com>
-X-Mailer: git-send-email 2.39.2
+        b=ppLF/uAX6TCx6i0kRXOW+epaJ/1C9INp1UglbkanA6RtlUloLywiBg0Iuxtawgg9H
+         2Tt6BPxkT3Xb6NOuIExSc5dNX8bGVDlRb6FPL/S4AFl+yPFcADIpPyfDxkahI4tXVf
+         b4z9nprXsiifyxHq5/Rwp/WZRnvsyZkeKuYMJnCil0pZ5LpN7SD0WOTHG5zBDcKxJl
+         F3HCFnaw+S/dsyKhL9Iy3iyN0rofoydLK2RWH91oIppExdX8QVTXMozO2C1LLeTHB8
+         JUQz3VJSxq5HMHDyf3dF2nVDSal8c4xN4uXS9cUWfSjMm6jycqmkjJYP+KJ+RoQ4Ja
+         pYMW8Wyk4aQSg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Zhang Shurong <zhang_shurong@foxmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        robh@kernel.org, u.kleine-koenig@pengutronix.de, frank.li@vivo.com,
+        heiko@sntech.de, olivier.moysan@foss.st.com,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 01/18] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
+Date:   Tue,  7 Nov 2023 18:21:55 -0500
+Message-ID: <20231107232231.3775605-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-For better precision of input light intesity, return floating point
-values through sysfs instead of an integer value
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+[ Upstream commit 3a23b384e7e3d64d5587ad10729a34d4f761517e ]
+
+of_match_device() may fail and returns a NULL pointer.
+
+In practice there is no known reasonable way to trigger this, but
+in case one is added in future, harden the code by adding the check
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/ltrf216a.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
-index 8de4dd849936..68dc48420a88 100644
---- a/drivers/iio/light/ltrf216a.c
-+++ b/drivers/iio/light/ltrf216a.c
-@@ -234,7 +234,7 @@ static int ltrf216a_read_data(struct ltrf216a_data *data, u8 addr)
- static int ltrf216a_get_lux(struct ltrf216a_data *data)
- {
- 	int ret, greendata;
--	u64 lux, div;
-+	u64 lux;
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index 2f082006550fd..bbd5bdd732f01 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -708,6 +708,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	struct stm32_adc_priv *priv;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = pdev->dev.of_node;
++	const struct of_device_id *of_id;
++
+ 	struct resource *res;
+ 	u32 max_rate;
+ 	int ret;
+@@ -720,8 +722,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	platform_set_drvdata(pdev, &priv->common);
  
- 	ret = ltrf216a_set_power_state(data, true);
- 	if (ret)
-@@ -246,10 +246,9 @@ static int ltrf216a_get_lux(struct ltrf216a_data *data)
+-	priv->cfg = (const struct stm32_adc_priv_cfg *)
+-		of_match_device(dev->driver->of_match_table, dev)->data;
++	of_id = of_match_device(dev->driver->of_match_table, dev);
++	if (!of_id)
++		return -ENODEV;
++
++	priv->cfg = (const struct stm32_adc_priv_cfg *)of_id->data;
+ 	priv->nb_adc_max = priv->cfg->num_adcs;
+ 	spin_lock_init(&priv->common.lock);
  
- 	ltrf216a_set_power_state(data, false);
- 
--	lux = greendata * 45 * LTRF216A_WIN_FAC * 100;
--	div = data->als_gain_fac * data->int_time_fac * 100;
-+	lux = greendata * 45 * LTRF216A_WIN_FAC;
- 
--	return div_u64(lux, div);
-+	return lux;
- }
- 
- static int ltrf216a_read_raw(struct iio_dev *indio_dev,
-@@ -279,7 +278,8 @@ static int ltrf216a_read_raw(struct iio_dev *indio_dev,
- 		if (ret < 0)
- 			return ret;
- 		*val = ret;
--		return IIO_VAL_INT;
-+		*val2 = data->als_gain_fac * data->int_time_fac;
-+		return IIO_VAL_FRACTIONAL;
- 	case IIO_CHAN_INFO_INT_TIME:
- 		mutex_lock(&data->lock);
- 		ret = ltrf216a_get_int_time(data, val, val2);
 -- 
-2.39.2
+2.42.0
 

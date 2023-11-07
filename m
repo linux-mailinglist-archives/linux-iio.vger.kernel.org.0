@@ -2,49 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EA97E4CEF
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 00:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A470E7E4D33
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 00:26:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235610AbjKGXYe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 18:24:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        id S1344478AbjKGX0R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Nov 2023 18:26:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344558AbjKGXYV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 18:24:21 -0500
+        with ESMTP id S235608AbjKGXZx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 18:25:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874291708;
-        Tue,  7 Nov 2023 15:23:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C8C433C9;
-        Tue,  7 Nov 2023 23:23:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F54019A5;
+        Tue,  7 Nov 2023 15:24:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82808C433C7;
+        Tue,  7 Nov 2023 23:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699399414;
-        bh=FX4s6gcUad54H7+HzmsvJ3/83m9wCEUkO0xbZpoE/O0=;
+        s=k20201202; t=1699399464;
+        bh=nKbL8zNE6DDMrjx3mFVmsXHLtjE3u1TKNWQuIqrghuE=;
         h=From:To:Cc:Subject:Date:From;
-        b=SuvoM/wkacOPyG+OD5Dh7x0NKdfRDaMji67tYzyIees8iZk4tfl6eDAEa57GOQakW
-         AsGivnB+nM+mmjJAL8UaFzvN44bqKTjAg8zloHPFAle/Rvh9bap4nKwe4Pve4btdzB
-         gyURNfhNVIt1RWdgextf+A8MFETf1FN4XoC03+ejbf827I9vugwMFve5iXsEgSk7Md
-         DxE0kdIdc6406Wg1I7vNB+3XgYgMZ0PoIqcwZukIyOG/I/gbNto9Ugbm2EdS5wG7be
-         jf6BXOl80YIcK3kcJFXmXMYWE1Oo4hm5fPYdmyOrkE+mog/NBxolcL0KgXU1cPjdXm
-         BxMTovHUdVHJA==
+        b=RuixqnJa71xgzYQvtPo0evzwWXGTagrVSPzVG26KTWTsGC1OEJXHFXqNS0G2/fLMl
+         VlOz6hJQSWygatHE0VCdk/XGVYvRZw8Ehor1LfX3m1oPRJaNF6dRbA6HCNb7GLZ9xl
+         7kHR9DWB1LA8/VpR3q1Dx8aGcg9+1Fdq5zfs8Zm7yLsUCgv454+YHCp5LHQ2sdjulm
+         zTNNugbmEFGyt1Jox0eCSbLKrPrXOlluTjY8Pxv/+3r7TRE6nTghQR9261KR/l94Lc
+         JdMK/nGb0r9dPL82H7kJHHwDDjmNU0Ao8BmIfJS5DUgvGHWapoESxKXnOKyx5cGFzM
+         4zxlYj4dU4ikg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zhang Shurong <zhang_shurong@foxmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        robh@kernel.org, olivier.moysan@foss.st.com,
-        andy.shevchenko@gmail.com, u.kleine-koenig@pengutronix.de,
-        frank.li@vivo.com, linux-iio@vger.kernel.org,
+        robh@kernel.org, frank.li@vivo.com, u.kleine-koenig@pengutronix.de,
+        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.5 01/18] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
-Date:   Tue,  7 Nov 2023 18:22:56 -0500
-Message-ID: <20231107232330.3776001-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 01/11] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
+Date:   Tue,  7 Nov 2023 18:24:02 -0500
+Message-ID: <20231107232420.3776419-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.10
+X-stable-base: Linux 6.1.61
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -68,10 +67,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 48f02dcc81c1b..70011fdbf5f63 100644
+index 81d5db91c67bf..dee47b899e5df 100644
 --- a/drivers/iio/adc/stm32-adc-core.c
 +++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -706,6 +706,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
+@@ -695,6 +695,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
  	struct stm32_adc_priv *priv;
  	struct device *dev = &pdev->dev;
  	struct device_node *np = pdev->dev.of_node;
@@ -80,7 +79,7 @@ index 48f02dcc81c1b..70011fdbf5f63 100644
  	struct resource *res;
  	u32 max_rate;
  	int ret;
-@@ -718,8 +720,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
+@@ -707,8 +709,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
  		return -ENOMEM;
  	platform_set_drvdata(pdev, &priv->common);
  

@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD367E476E
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Nov 2023 18:46:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F207E477F
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Nov 2023 18:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235176AbjKGRqh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 12:46:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
+        id S235110AbjKGRro (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Nov 2023 12:47:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235362AbjKGRqS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 12:46:18 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B371B1701
-        for <linux-iio@vger.kernel.org>; Tue,  7 Nov 2023 09:46:09 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9e28724ac88so136845766b.2
-        for <linux-iio@vger.kernel.org>; Tue, 07 Nov 2023 09:46:09 -0800 (PST)
+        with ESMTP id S233706AbjKGRrj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 12:47:39 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDF3130
+        for <linux-iio@vger.kernel.org>; Tue,  7 Nov 2023 09:47:37 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9d2d8343dc4so902966266b.0
+        for <linux-iio@vger.kernel.org>; Tue, 07 Nov 2023 09:47:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699379168; x=1699983968; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699379256; x=1699984056; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/phQShbLiFQzOkp+07zaJC2xh5u6a3NtoTaiSALQ5P4=;
-        b=fcHK/fOaNbl3C/dc5pZEhWJeSDGG0l6+co+/37RlQZKAdAUV4lSWx7mKNnzKdYVdu9
-         iqXxCkC+deaHgJdUKs11Dbmwxu1l+9qufQdAyVlmk2zu4+JryvxQlTwLPnZ1kdynmddl
-         YhQp+J+iY+cYbAMiEvtq4d6wRKZD6s1RtFsicuCq8ifLJ069jwpnBbsQA/yMVi7V58+y
-         kIUBeyPo7gkE4YRksLFyTtUloDDgWiTfLYxzf5OLhwEVhOAv4E6ut2aiZXbd3VnDZUet
-         uFU8qNqzbI58DeznhQfoehXHKJwmKq5/qwyactOQZOQtFZWj6QApVe4HsYWeeVJtQfGk
-         sY7w==
+        bh=WSmUDYezrRMsQxCZGKuJaXceyDK4AjhEJzY0uxoMoug=;
+        b=dzvKNjIEDQa0VtPhxodAhvWZTrhL3MiOgeyAlbQ8X22jE4ThK3KNbOrGUQ1V7ZQHSj
+         y0Y0+chu6OR5BN7QD/gZh21tJ5bTFOXunNP/43NzigaPrf4KpSIWd9g54ivhEkzJ40F8
+         ptfyQjy7HCaBNXr0BcPJd5JBIhlH/aKqOA5BpdksaR++Y0r93VuHOtOGqgM3ae1DiIQ6
+         tS5zohkmFkZwJauHHdpLtKZyvzwFLDrZQEfH4ZktGR6K6k2CmW7VYd9hE96DHPBKeUL/
+         XwaAMxwIpUmdCvmTeMe6ter5dMqMkZS6kBb7vKNTjNPP/AzJ5V3QlfdXjmYoV+W7UiQk
+         D0ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699379168; x=1699983968;
+        d=1e100.net; s=20230601; t=1699379256; x=1699984056;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/phQShbLiFQzOkp+07zaJC2xh5u6a3NtoTaiSALQ5P4=;
-        b=hux+ThIzhjRnEGkVgfmhyQq1LsCM3So6sTvjEdRNN9o5lbSpWv6KOrd3N7b+fQU+LT
-         P5N9LLS5iOkEbl7mepP0jm4Xxq6Bk/kUZ1+eowvpjbnb7Xun0VGz+BQwjPlfl0x9ow8x
-         QtgoblYzH+t+/OvxHM7NyQuUKBVxdNEktFsL4UXofSKC6gPq800pDsyBtTDszOXhAx96
-         MnPyy2G/lWsT2zO54vjnoyrREofYwTthNtBe3cEGQ7kCthD1WEncC4XksfUFefxcpnvO
-         dSd24/PONzi3TtQKcMwj0MGr2XtdQidOBMx1KFzRJECiaNegEFQ82rHfhL3f9taAxktz
-         oMmQ==
-X-Gm-Message-State: AOJu0YymBSXvlvZiMxv9L3sL5EVDZXPGkIPv1QEY2ilfP8bwUrS/eRWI
-        hUoO9oCHWeEVxns3CXH9wD6+aQ==
-X-Google-Smtp-Source: AGHT+IE6U4ZE0F76e4gyMzHtlTFPYuHPtbb89mz7h0vnkXm+UZtdMOyfWkyQ1nm5YlDkhmOXKORO4A==
-X-Received: by 2002:a17:907:9603:b0:9d3:f436:6807 with SMTP id gb3-20020a170907960300b009d3f4366807mr18756477ejc.42.1699379168133;
-        Tue, 07 Nov 2023 09:46:08 -0800 (PST)
+        bh=WSmUDYezrRMsQxCZGKuJaXceyDK4AjhEJzY0uxoMoug=;
+        b=nLguAHXrMLMWIn+SCgVlDSzBA5v4rRqRTP39+VZDVcYGZxSENvIMygZW7ta5uGBCwH
+         eveeDU6YezY8YtMaPxGW4VR2YaDUmpwUMHfNebWtF/C4isQtOZvqQ8fB2wlJjEAuAQIQ
+         lhDMuvGQYy1HwWWBzVg0I0ABFM4QnHxZ4ojziPOt4lu+AxuwLWCD9fE8UIZw4Cxz78+S
+         euXeDStosHa1QXRxzCp/lhItkYhbZ7806Ru1zEjeeWGYtujkDm36U1mEhSuG72Up4nfL
+         X3PIrMRMXF1sA+UBZDk30bo2YCg9K8bpsqQTR5+ymoOOpNC0MQ89zeo6lD8u2IhkN0+8
+         9kYA==
+X-Gm-Message-State: AOJu0YwOczEz7r6jn/6aSs0UeJ0R8B0VmQ/4cqFSGzjJQT3IYSrZz0wN
+        FvE5WxH52CHgnTPXmEZQxj9kwA==
+X-Google-Smtp-Source: AGHT+IHZt7HQgSljJImaRxyY9TMyowW0nqCjfkOaHJNL5xG/2Y1xYnrOOIiXaOSqEyyvpJZDCaX2wA==
+X-Received: by 2002:a17:907:3f03:b0:9be:aebc:d479 with SMTP id hq3-20020a1709073f0300b009beaebcd479mr16973571ejc.19.1699379255769;
+        Tue, 07 Nov 2023 09:47:35 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id ox11-20020a170907100b00b009dd949b75c7sm1288243ejb.151.2023.11.07.09.46.06
+        by smtp.gmail.com with ESMTPSA id ox11-20020a170907100b00b009dd949b75c7sm1288243ejb.151.2023.11.07.09.47.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 09:46:07 -0800 (PST)
-Message-ID: <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
-Date:   Tue, 7 Nov 2023 18:46:06 +0100
+        Tue, 07 Nov 2023 09:47:35 -0800 (PST)
+Message-ID: <1d5d1357-0b53-4639-add9-2b3f38aae744@linaro.org>
+Date:   Tue, 7 Nov 2023 18:47:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: add asair
+Subject: Re: [PATCH 2/3] dt-bindings: trivial-devices: add asair,ags02ma
 Content-Language: en-US
 To:     Anshul Dalal <anshulusr@gmail.com>, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -65,6 +65,7 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Shuah Khan <skhan@linuxfoundation.org>,
         linux-kernel-mentees@lists.linuxfoundation.org
 References: <20231107173100.62715-1-anshulusr@gmail.com>
+ <20231107173100.62715-2-anshulusr@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -110,7 +111,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231107173100.62715-1-anshulusr@gmail.com>
+In-Reply-To: <20231107173100.62715-2-anshulusr@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -118,31 +119,33 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 07/11/2023 18:30, Anshul Dalal wrote:
-> Aosong Electronic Co., LTD. is a supplier for MEMS sensors such as AHT20
-> temperature and humidity sensor under the name Asair
-
-The name of the company is Aosong Electronic or Asair? What does Asair
-stands for? Sensors name? Then it is not a vendor prefix.
-
+> Add bindings for Asair AGS02MA TVOC sensor to trivial devices.
+> 
+> The sensor communicates over i2c with the default address 0x1a.
+> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
+> 
+> Datasheet:
+>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
+> Product-Page:
+>   http://www.aosong.com/m/en/products-33.html
 > 
 > Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
 > ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
 >  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 573578db9509..df3204f9dda6 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -143,6 +143,8 @@ patternProperties:
->      description: Artesyn Embedded Technologies Inc.
->    "^asahi-kasei,.*":
->      description: Asahi Kasei Corp.
-> +  "^asair,.*":
-> +    description: Aosong Electronic Co., Ltd.
->    "^asc,.*":
->      description: All Sensors Corporation
->    "^asix,.*":
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index cd58179ae337..9cd67b758a88 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -47,6 +47,8 @@ properties:
+>            - adi,lt7182s
+>              # AMS iAQ-Core VOC Sensor
+>            - ams,iaq-core
+> +            # TVOC (Total Volatile Organic Compounds) i2c sensor
+> +          - asair,ags02ma
+
+I think you miss VDD supply.
 
 Best regards,
 Krzysztof

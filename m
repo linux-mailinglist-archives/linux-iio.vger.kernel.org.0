@@ -2,61 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1C37E5638
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 13:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BCBA7E568E
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 13:55:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232822AbjKHM3t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Nov 2023 07:29:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47560 "EHLO
+        id S1344373AbjKHMz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 07:55:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjKHM3s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 07:29:48 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52FB61BE8
-        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 04:29:46 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-409299277bbso47522415e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 04:29:46 -0800 (PST)
+        with ESMTP id S233967AbjKHMzZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 07:55:25 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857081BF6;
+        Wed,  8 Nov 2023 04:55:23 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cc5b7057d5so62017695ad.2;
+        Wed, 08 Nov 2023 04:55:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699446585; x=1700051385; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1699448123; x=1700052923; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WEwxhVkZ+suZRCLepHPEDyEGjw0C04lFSj6Fq9O+qQ0=;
-        b=cIur9H3fZ6yXOAIgryFFFYA88qA2JtmMkNRXpWzMKG6wmhDOnC33AJZv5az26UW8mt
-         K/KvWU4v2f3L4Fwo50AhBgHig2n8xy5yQFipTFV+14IbygnN5a9xUOnKmT9puhc8dqU7
-         GDPXSZD3QMYdqgCiAYqi5xajXYDHJp21zvg2bhwFv5ROEE72XyoMN9OMfuETQKVPpx/U
-         SBmT32iX1C5HcfSTOlW4wVBtNU8y4+wvELZNLq3CqqA8tqy3aOY9NZp+N1bVLqKtD3cn
-         XGeGxGXXsq+ZXDEJpk1aCccRBVbm0lGFljt4DHmrS26oYp1FZHKyBUwdmPXEhWPYRm/d
-         FWkA==
+        bh=cnFnGa1Xq3NRu1+Ex0WsMtBFHv4Yfs3kHDcwQXFSzNU=;
+        b=aIoqscuB0S3rqTjBvVxNyDGXyscccXl99cGr2UR5Jz3LCJeW1Vz0oiHw4rSbndkvH4
+         S0Q4RsZP13vx310dw3bIYO6pZEgAeBm45R6V48tiGy8sWL6ZB71loHS9+9jIdHCzz75m
+         fOW3WY3Wpag708onJp4CavwpXNawEaY4jeJdYsMZdyzi44HNHo4tiD31cSlYkPZD8fCE
+         s/gxukKAXegJ5DfQf2CJiRz4gvjo4luj0huPo1BW4R5qLZs+VNHvfOkcA9yra27SYzhg
+         SMw8cQjUSlrMP5LPGca2uG7y0Ts+QGkdrxqf/mvP67BXGSTxUkc7srUfgq8Fn07cUBa8
+         bskA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699446585; x=1700051385;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1699448123; x=1700052923;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WEwxhVkZ+suZRCLepHPEDyEGjw0C04lFSj6Fq9O+qQ0=;
-        b=u38ZXYmqlCrJdRQteWUNdcD3xDenU5GMO6EOMWpkhb4YrRcAq3SdOd1zwLc+zLiog0
-         EZrQmLZVMh7dQqZogT8X23yXoJfjvYSfz3XWnZoY4uzNaJSUFTvxkYB2D0r2j3P8u2kv
-         K+mszgCdDDYMBN8ffBALBOyx6a6HL7bUFNy5Rf4KzH3MD6NvnGeZHP86V/KVBwwOs+B7
-         w+UeXKqLdiQllt6e/astKkjsGM3y0YnlDoxBdCo006Bd/zNxpcMzBVx6S6tlH4XOUOty
-         Uvr6v9d5zncW0jdk1GF69RFUdx4Btq3mxQJlOhi+2R204jAolY8x6hmW6dBi+WDExEcu
-         rf+w==
-X-Gm-Message-State: AOJu0Yy2OULb4GJghv+BK1Nd/jmhfipUsTc5fbaHMWFcqSUTV49pRRl7
-        7V79zLsbS2plIB0yAvFiy/yaWQ==
-X-Google-Smtp-Source: AGHT+IGtvteu6oY5MW/lFPUmgAUSn2VrQkswaslGXVnER/rgoZB80sOS5KVjqmC4mIFBHB7BCdNOlw==
-X-Received: by 2002:a05:600c:4e86:b0:40a:20f3:d126 with SMTP id f6-20020a05600c4e8600b0040a20f3d126mr1515948wmq.6.1699446584659;
-        Wed, 08 Nov 2023 04:29:44 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id jg2-20020a05600ca00200b004065daba6casm19287874wmb.46.2023.11.08.04.29.43
+        bh=cnFnGa1Xq3NRu1+Ex0WsMtBFHv4Yfs3kHDcwQXFSzNU=;
+        b=r8U/bjizn0e9DFHeLPAAzWwj/rQwMKL999pa0N4072RYH0cLNk6vzDD23ZqU5UBBL3
+         jTuISfrJt9PlrcwFb+zC4CQANesFkUh2YaWVN1VaJAjDBb+N+4YQj2Bql2jPxsvyPDO1
+         Dyi5Zr/4rlPk1XOSQWRe5oF8SNLoe1TU7go4Xa+b13KDCBPzG08ANM+jcwBOJVmLDjvG
+         KP2sgjII+cOZe3fpniNRS/unf7Ec+fqCY8j8HnSx+N3+ynuCM18RiB7ARpOcqKgwW0nn
+         fm4Z1iF298O29cSnyEzVqtYOpsRUwEgoAyUU1OKvfdBp9+KQK6tbISw9dxxLl/lK3jfD
+         aDww==
+X-Gm-Message-State: AOJu0Yy2u+mwuUcyMDCUMTU8OKvMopxSlfxIXCFbwsM6Q4lms7nQFudo
+        Ujw3n3d31ri47LBU93yUz5M=
+X-Google-Smtp-Source: AGHT+IGrbJU4UhYwNZD8MuOWryrbZUlLrn0fvKGeRWexgJYA0rdUWu3Ogr2W8YqZPCXVFJU2nxeJFQ==
+X-Received: by 2002:a17:902:c403:b0:1ca:7086:60f7 with SMTP id k3-20020a170902c40300b001ca708660f7mr2494532plk.28.1699448122932;
+        Wed, 08 Nov 2023 04:55:22 -0800 (PST)
+Received: from ?IPV6:2401:4900:2353:8963:b940:1ac0:2fbc:6b6? ([2401:4900:2353:8963:b940:1ac0:2fbc:6b6])
+        by smtp.gmail.com with ESMTPSA id ju1-20020a170903428100b001b8622c1ad2sm1695286plb.130.2023.11.08.04.55.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Nov 2023 04:29:44 -0800 (PST)
-Message-ID: <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
-Date:   Wed, 8 Nov 2023 13:29:42 +0100
+        Wed, 08 Nov 2023 04:55:22 -0800 (PST)
+Message-ID: <e192a58e-47f8-4410-81a5-de1ebab3251d@gmail.com>
+Date:   Wed, 8 Nov 2023 18:23:49 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/3] dt-bindings: trivial-devices: add asair,ags02ma
 Content-Language: en-US
-To:     Anshul Dalal <anshulusr@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
@@ -70,122 +71,94 @@ References: <20231107173100.62715-1-anshulusr@gmail.com>
  <90cacd34-4812-4792-9bf0-362200431452@gmail.com>
  <77e1d308-6ac3-4200-b72a-6d5717869b06@linaro.org>
  <7501036c-4e1f-4993-97a7-6c36c7cc8358@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <7501036c-4e1f-4993-97a7-6c36c7cc8358@gmail.com>
+ <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
+From:   Anshul Dalal <anshulusr@gmail.com>
+In-Reply-To: <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 08/11/2023 13:15, Anshul Dalal wrote:
-> On 11/8/23 17:31, Krzysztof Kozlowski wrote:
->> On 08/11/2023 12:54, Anshul Dalal wrote:
->>>
->>> Hello Krzysztof,
->>>
->>> On 11/7/23 23:17, Krzysztof Kozlowski wrote:
->>>> On 07/11/2023 18:30, Anshul Dalal wrote:
->>>>> Add bindings for Asair AGS02MA TVOC sensor to trivial devices.
->>>>>
->>>>> The sensor communicates over i2c with the default address 0x1a.
->>>>> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
->>>>>
->>>>> Datasheet:
->>>>>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
->>>>> Product-Page:
->>>>>   http://www.aosong.com/m/en/products-33.html
->>>>>
->>>>> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
->>>>> ---
->>>>>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->>>>>  1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>> index cd58179ae337..9cd67b758a88 100644
->>>>> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>> @@ -47,6 +47,8 @@ properties:
->>>>>            - adi,lt7182s
->>>>>              # AMS iAQ-Core VOC Sensor
->>>>>            - ams,iaq-core
->>>>> +            # TVOC (Total Volatile Organic Compounds) i2c sensor
->>>>> +          - asair,ags02ma
+
+
+On 11/8/23 17:59, Krzysztof Kozlowski wrote:
+> On 08/11/2023 13:15, Anshul Dalal wrote:
+>> On 11/8/23 17:31, Krzysztof Kozlowski wrote:
+>>> On 08/11/2023 12:54, Anshul Dalal wrote:
 >>>>
->>>> I think you miss VDD supply.
+>>>> Hello Krzysztof,
+>>>>
+>>>> On 11/7/23 23:17, Krzysztof Kozlowski wrote:
+>>>>> On 07/11/2023 18:30, Anshul Dalal wrote:
+>>>>>> Add bindings for Asair AGS02MA TVOC sensor to trivial devices.
+>>>>>>
+>>>>>> The sensor communicates over i2c with the default address 0x1a.
+>>>>>> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
+>>>>>>
+>>>>>> Datasheet:
+>>>>>>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
+>>>>>> Product-Page:
+>>>>>>   http://www.aosong.com/m/en/products-33.html
+>>>>>>
+>>>>>> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+>>>>>> ---
+>>>>>>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>>>>>>  1 file changed, 2 insertions(+)
+>>>>>>
+>>>>>> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+>>>>>> index cd58179ae337..9cd67b758a88 100644
+>>>>>> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+>>>>>> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+>>>>>> @@ -47,6 +47,8 @@ properties:
+>>>>>>            - adi,lt7182s
+>>>>>>              # AMS iAQ-Core VOC Sensor
+>>>>>>            - ams,iaq-core
+>>>>>> +            # TVOC (Total Volatile Organic Compounds) i2c sensor
+>>>>>> +          - asair,ags02ma
+>>>>>
+>>>>> I think you miss VDD supply.
+>>>>
+>>>> I am sorry but I'm not sure what you meant. Are you referring to the
+>>>> addition of some information in the commit description?
 >>>
->>> I am sorry but I'm not sure what you meant. Are you referring to the
->>> addition of some information in the commit description?
+>>> I meant that your device might not be trivial. Your device takes VDD
+>>> supply, which is now not described in the bindings. Do you want to say
+>>> that VDD supply in all possible designs is hard-wired to
+>>> non-controllable regulator supply?
 >>
->> I meant that your device might not be trivial. Your device takes VDD
->> supply, which is now not described in the bindings. Do you want to say
->> that VDD supply in all possible designs is hard-wired to
->> non-controllable regulator supply?
+>> I can't speak for all possible designs but for testing this driver I had
+>> just connected the VDD pin to 5V out of the Raspberry Pi. I have since
+>> verified 3.3V to also work.
+>> Could you explain why `vdd-supply` is a property or point me to further
+>> sources. Wouldn't almost all devices have a VDD/VCC pin for power in?
 > 
-> I can't speak for all possible designs but for testing this driver I had
-> just connected the VDD pin to 5V out of the Raspberry Pi. I have since
-> verified 3.3V to also work.
-> Could you explain why `vdd-supply` is a property or point me to further
-> sources. Wouldn't almost all devices have a VDD/VCC pin for power in?
+> Most of the devices have such pin. For most of the devices we include it
+> in the bindings.
+> 
+> git grep regulator_get -- drivers/iio/
+> git grep vdd -- drivers/iio/
+> 
+> If you do not describe it in the bindings, then your device will have to
+> be supplied by always-on regulators (and marking controllable regulator
+> as always-on because of this is not correct).
+>
+Thanks for the explanation Krzysztof. If I understand correctly, having
+an vdd-supply in the binding indicates that the device may be powered by
+a controllable power source instead of one that is always on.
 
-Most of the devices have such pin. For most of the devices we include it
-in the bindings.
+> If you are unsure and you just work on some sensor not used for final
+> product, I think it's fine as is, so to add the regulator later if ever
+> needed.
 
-git grep regulator_get -- drivers/iio/
-git grep vdd -- drivers/iio/
+No problem, I can add the required properties in the next patch version.
+I need to make a few changes to the driver anyways.
 
-If you do not describe it in the bindings, then your device will have to
-be supplied by always-on regulators (and marking controllable regulator
-as always-on because of this is not correct).
+Just out of curiosity, the sensor supports reassigning of the i2c
+address by writing to the 0x21 register from the default address of
+0x1a. Is there some way to represent this in the binding.
+For future reference, is there some exhaustive list or specification
+document for all the allowed properties.
 
-If you are unsure and you just work on some sensor not used for final
-product, I think it's fine as is, so to add the regulator later if ever
-needed.
-
-Best regards,
-Krzysztof
-
+Thanks for the help,
+Anshul

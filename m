@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 009677E53D9
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 11:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8E27E53E9
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 11:44:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344577AbjKHKoo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Nov 2023 05:44:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59632 "EHLO
+        id S235652AbjKHKox (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 05:44:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344508AbjKHKoO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 05:44:14 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C261BEA
-        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 02:44:11 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4084e49a5e5so57068475e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 02:44:11 -0800 (PST)
+        with ESMTP id S1344454AbjKHKo3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 05:44:29 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE7351FD7
+        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 02:44:15 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40806e40fccso42129335e9.2
+        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 02:44:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699440250; x=1700045050; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699440254; x=1700045054; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XAqMvg09lZkovg+Zu0r4p30xWSnUqCaJm0pKp8M4YOY=;
-        b=zvcmuWcd0sa/D/sHSiwIDHuZap1L5e0XOksAP8VqOUKNDOrEhMaOQ20DOc+VkG4pYo
-         Sf9kxNuezGAO7krgeyrBM5Rec/kEcA7Aeqbf4KJiH4ScLnhFT28BBT+6970pkcIkuyju
-         FvNoV3pIcVxx9pmMSmD2+yoB6dT+GryPm1M0ph9CbSVGSJoZx8hWjB3hZwo/rQTUBnWV
-         N2jK8AWQOHh2z4DiWb+lXSuzb7RTmu8d1+BHoeEJxL2WFwZAL2xU439e51BcKtbrmNKz
-         edvIx8/TlDrTOSXDmPx3P4x1pQewGeGCgeHuwKFBm/pvIo+FIR1ByI7n7ZypyR3WxLBm
-         RScA==
+        bh=jaIBx0Az35AgmK0hmQ6KD07E3PCcuw+SeUDmsLqHS7Q=;
+        b=C86cKyLVHMSNiuARVDdTsIhu1bikbR/K1axeSIn64CBcsOV6oZ9hWoWYAsdIiPpkS+
+         Z0DLTluUmrh1z+pMUaBkjq7hyFpay3hOY0VPQ/18fdo325HM9C2w9Gwy7HSKLt4m4pTo
+         qF2nZ7uzCWxOMQ2biHutk5630xWet8r9pfJbIxQu+bpsqt4o5f9HmoKh7rlJLqVzRDuC
+         NeITvbCKWryfQwiptv3HSRi7QBxdfpqSqzFuLCUKdAUCnY0TP/EPL89G8f41PpP6GVKo
+         khymXT1hegSPib2gx0eij2q5kBEyKssjAKQeuJvGUD+yNNy26SL74sCuizOzeMtOdkPV
+         NCtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699440250; x=1700045050;
+        d=1e100.net; s=20230601; t=1699440254; x=1700045054;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XAqMvg09lZkovg+Zu0r4p30xWSnUqCaJm0pKp8M4YOY=;
-        b=rpSU4XU+USImMByoPS6rVIRwa/1s5hsHbmFQLCfEASthO/HO21ducVDwcv/eIqKRkU
-         u82Ans3MG9OVrT5gmdIgED6xd085oyZXHdLi6rq2ZK66w2cJHhfr2cSB0XjNQeM9B1XR
-         qQhqHhjn6CK781XzMRgS1sNvJmwqfMWuTWP/CSw9BlbWGWrtceAlcf0TZltsa/y/vaCY
-         GiRZT757YURGf/P5SFTzODClqMAE+SInc4mr1sbnNI1t9r7L2ELMiCgXwtr6+r+VrcyX
-         ibQEtFwxU3zPkg5jFIOf5q7fsAzjW3YTSMjK30Bsr3/lb42rfs2TeZ+EJGMIOSeYjz+K
-         jsyA==
-X-Gm-Message-State: AOJu0YwjcauhzTD8bMXntEWbxPQbbH5rpJuZGwpCVKzMC1SvpuXIY62Y
-        e77K9rtKoPQW89Co6YMh7md2MQ==
-X-Google-Smtp-Source: AGHT+IFviUW0LhnhTYkLsi418du0JsS+pSDR7WBQ3E2YbqFPxwTGmVG55ROJ8WQ2QG79sMX8+5JXdw==
-X-Received: by 2002:a05:600c:a49:b0:409:5d7d:b26d with SMTP id c9-20020a05600c0a4900b004095d7db26dmr1253167wmq.15.1699440250466;
-        Wed, 08 Nov 2023 02:44:10 -0800 (PST)
+        bh=jaIBx0Az35AgmK0hmQ6KD07E3PCcuw+SeUDmsLqHS7Q=;
+        b=K/VrKi4rPletW2M+i7PEx7MFNrgq2EvUkDGKlTmXagUV/KBxCc+PdS9UcKWoxwX+P/
+         IGwN3I7xSt3Lk12rp9SPFDiA5K5xJwI1Nwzs4YPWfoRxh0cWodIuLS59NCimuPDhNPeY
+         fNuaG5soUpW7QfDFQKd0yyiNcieWS+CO/ENGmV5ikni9oWE2EOzGUKw7WlXD3rlKULFi
+         BX+q1F6XsdBF/Y16Ddn67js3qY5PXJtU7YATS9CZpsrx6k/C71Wg2kdlE2LDcA8XrARV
+         cdshIUEONdZyw2ysR7ZNvilTr0+w7g9+PigSN1ga/5F8Xc2kg2mfvkBANeX+MFwfqPb/
+         Vk2w==
+X-Gm-Message-State: AOJu0YxvjNVEQoBorVrWXjxcxRMH8pNyjbNCODFrAuqSgtrDwNKrnqA6
+        Csky0ea3FsocEHOEvW+NfrWztg==
+X-Google-Smtp-Source: AGHT+IGJlG/0ZP5DkScPVOMejPSATBvkrEgkimXiOn6arKw3sdBhLlR3KhZAKEWBPjharUEFMBueGw==
+X-Received: by 2002:a05:600c:4f11:b0:406:5344:4212 with SMTP id l17-20020a05600c4f1100b0040653444212mr1447121wmq.41.1699440254278;
+        Wed, 08 Nov 2023 02:44:14 -0800 (PST)
 Received: from krzk-bin.. ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id fj12-20020a05600c0c8c00b004094c5d92bdsm19377377wmb.31.2023.11.08.02.44.06
+        by smtp.gmail.com with ESMTPSA id fj12-20020a05600c0c8c00b004094c5d92bdsm19377377wmb.31.2023.11.08.02.44.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:44:09 -0800 (PST)
+        Wed, 08 Nov 2023 02:44:13 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -85,9 +85,9 @@ To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 04/17] dt-bindings: mmc: samsung,exynos-dw-mshc: add specific compatibles for existing SoC
-Date:   Wed,  8 Nov 2023 11:43:30 +0100
-Message-Id: <20231108104343.24192-5-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 05/17] dt-bindings: pinctrl: samsung: add specific compatibles for existing SoC
+Date:   Wed,  8 Nov 2023 11:43:31 +0100
+Message-Id: <20231108104343.24192-6-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
 References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
@@ -107,9 +107,6 @@ Documentation/devicetree/bindings/writing-bindings.rst state that:
 Add compatibles specific to each SoC in front of all old-SoC-like
 compatibles.
 
-While re-indenting the first enum, put also axis,artpec8-dw-mshc in
-alphabetical order.
-
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 ---
@@ -117,45 +114,59 @@ Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 I propose to take the patch through Samsung SoC (me). See cover letter
 for explanation.
 ---
- .../bindings/mmc/samsung,exynos-dw-mshc.yaml  | 25 ++++++++++++-------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ .../samsung,pinctrl-wakeup-interrupt.yaml     | 24 ++++++++++++-------
+ .../bindings/pinctrl/samsung,pinctrl.yaml     |  3 ++-
+ 2 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-index 6ee78a38bd74..5fe65795f796 100644
---- a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-+++ b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-@@ -14,15 +14,22 @@ maintainers:
+diff --git a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
+index 1de91a51234d..1c07af24d6cf 100644
+--- a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
+@@ -28,15 +28,21 @@ description: |
  
  properties:
    compatible:
 -    enum:
--      - samsung,exynos4210-dw-mshc
--      - samsung,exynos4412-dw-mshc
--      - samsung,exynos5250-dw-mshc
--      - samsung,exynos5420-dw-mshc
--      - samsung,exynos5420-dw-mshc-smu
--      - samsung,exynos7-dw-mshc
--      - samsung,exynos7-dw-mshc-smu
--      - axis,artpec8-dw-mshc
+-      - samsung,s3c2410-wakeup-eint
+-      - samsung,s3c2412-wakeup-eint
+-      - samsung,s3c64xx-wakeup-eint
+-      - samsung,s5pv210-wakeup-eint
+-      - samsung,exynos4210-wakeup-eint
+-      - samsung,exynos7-wakeup-eint
+-      - samsung,exynos850-wakeup-eint
+-      - samsung,exynosautov9-wakeup-eint
 +    oneOf:
 +      - enum:
-+          - axis,artpec8-dw-mshc
-+          - samsung,exynos4210-dw-mshc
-+          - samsung,exynos4412-dw-mshc
-+          - samsung,exynos5250-dw-mshc
-+          - samsung,exynos5420-dw-mshc
-+          - samsung,exynos5420-dw-mshc-smu
-+          - samsung,exynos7-dw-mshc
-+          - samsung,exynos7-dw-mshc-smu
++          - samsung,s3c2410-wakeup-eint
++          - samsung,s3c2412-wakeup-eint
++          - samsung,s3c64xx-wakeup-eint
++          - samsung,s5pv210-wakeup-eint
++          - samsung,exynos4210-wakeup-eint
++          - samsung,exynos7-wakeup-eint
++          - samsung,exynos850-wakeup-eint
++          - samsung,exynosautov9-wakeup-eint
 +      - items:
 +          - enum:
-+              - samsung,exynos5433-dw-mshc-smu
-+              - samsung,exynos7885-dw-mshc-smu
-+              - samsung,exynos850-dw-mshc-smu
-+          - const: samsung,exynos7-dw-mshc-smu
++              - samsung,exynos5433-wakeup-eint
++              - samsung,exynos7885-wakeup-eint
++          - const: samsung,exynos7-wakeup-eint
  
-   reg:
-     maxItems: 1
+   interrupts:
+     description:
+diff --git a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl.yaml
+index 26614621774a..7509dc36af93 100644
+--- a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl.yaml
+@@ -313,7 +313,8 @@ examples:
+         pinctrl-0 = <&initial_alive>;
+ 
+         wakeup-interrupt-controller {
+-            compatible = "samsung,exynos7-wakeup-eint";
++            compatible = "samsung,exynos5433-wakeup-eint",
++                         "samsung,exynos7-wakeup-eint";
+             interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
+         };
+ 
 -- 
 2.34.1
 

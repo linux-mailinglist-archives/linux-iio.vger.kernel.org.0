@@ -2,113 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B1C7E4E2D
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 01:35:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A653F7E4F96
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 04:58:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232135AbjKHAf3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 19:35:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36046 "EHLO
+        id S229586AbjKHD6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Nov 2023 22:58:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235704AbjKHAfP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 19:35:15 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FBD1BD6;
-        Tue,  7 Nov 2023 16:34:19 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1ccce410660so22260135ad.3;
-        Tue, 07 Nov 2023 16:34:19 -0800 (PST)
+        with ESMTP id S229581AbjKHD6j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 22:58:39 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D265E10C9;
+        Tue,  7 Nov 2023 19:58:37 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2802d218242so6030607a91.1;
+        Tue, 07 Nov 2023 19:58:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699403659; x=1700008459; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bo+wNYvdH42XBot0MOWGC8vCva7jElVxl1Yf8J6aNZU=;
-        b=UNqvd+IFDSjtEVdd4F99EVHEK84W6x8mMLmJQq7Ljt+OeEA4PYqx9DziNvJI5R4Uu0
-         Dx6G6lJun7F0V91m0ebnDEA/0a54U4EQNWXT4/cy27/0PAofSEdPHlA8411L/P8jh/8t
-         G+h5lS4l47mu1yUU3mrH74ptf0qNssYSNiP2aTgvr1pLP1R5hAlDx9Bqh6U4k1IJZMB+
-         re5rdveirWHdCaufeb41jcD/IUipH3jLZ911W3lyhUSrWwhedNkSW3dZVKLLwfvUlbtJ
-         EGqFU4YK92aMQ7pZMJnBvBVHk5j2iMDUQI0+QfB7fjvX23Akg09YpnqjPkygf2TVnL3X
-         4BLQ==
+        d=gmail.com; s=20230601; t=1699415917; x=1700020717; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oW6+TAcsgkVX2L728YvNO81hwlzTKV4x5733S3mNdBs=;
+        b=bglv6N8DuJitXWrUptcBK8WcyKnGYo4TA1XyIylhx1WElnLpleGVemLVqSbUWUGBz7
+         tkiPILMkjTNAvcCUMNStW7YtHupXNTvckIgSNbR5ktHs6YHB9qeR9ANdwSi4f+pDbWsW
+         6X97FormUxyGIJpGlZu5PTO3L+ZN1UKHo2AglFl0rRrddsNnmgUhx1Ydn+aq3ZRZGUme
+         x1ugRebRbFoj5s2ubfd5A6ibMra9mtkJIZFeuBc07SwK9OajaEZUOdUeDjrqMr16WLd6
+         iRm/mpIzOWe4SfkZ/4OEHzR2OcNnnLkWLnB3mIMjbJRxVLDktKFNBHPmZwefWinSI+Pf
+         0LzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699403659; x=1700008459;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bo+wNYvdH42XBot0MOWGC8vCva7jElVxl1Yf8J6aNZU=;
-        b=bYFD95thV+6K0G/TmmXBWHznwta2JcmZLeWHoR7UK+nfJGy2CWEDCgDWCu8cqbilYP
-         ETcAv33JkuYuxuVRXurRCG0CwAS7zaYdesa+bDomCcyit0u089outJRyvUjIi16lANUy
-         1rayU94sPndqPmg+jAAHxvG0+Frg87DOsFWT//DEyM4lYr/O8PqH2HsIFFnlMxAi6Sm1
-         pBd+pDRZAbO3oA3u9TYbqnp64MSf2Wx2hz3/a0MlJFGD4uc6rLOLhhXjqzHlBiivOE7A
-         lh9PheNfXM1UnZHRrhLAhKMjpKajEFbn47+R6XZgzg9qFUK3MwpYPdEAIMPaIwZMC2/y
-         dpnA==
-X-Gm-Message-State: AOJu0YwQCpw6dptGJIGJEQ2+FYteiYo3Ztnv42mRXXDKnYmeii94bgTd
-        DIaI9hP+BHKgQ+l9EhrNETJEujguY4rzbY04
-X-Google-Smtp-Source: AGHT+IFDPzQtLh6+yY5GKCHMN9W6XwtxJ90L36jbtGh9dSGXzUV4r7YpeRT7sM7ArPOdn2NSQT8ExQ==
-X-Received: by 2002:a17:902:e9c5:b0:1cc:4ff3:c837 with SMTP id 5-20020a170902e9c500b001cc4ff3c837mr517996plk.68.1699403659132;
-        Tue, 07 Nov 2023 16:34:19 -0800 (PST)
-Received: from [10.3.171.174] ([103.4.222.252])
-        by smtp.gmail.com with ESMTPSA id j24-20020a170902759800b001c47541ecd7sm396385pll.250.2023.11.07.16.34.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 16:34:18 -0800 (PST)
-Message-ID: <f66cab34-266d-4e9f-b53f-26a2948f863f@gmail.com>
-Date:   Wed, 8 Nov 2023 06:02:52 +0530
+        d=1e100.net; s=20230601; t=1699415917; x=1700020717;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oW6+TAcsgkVX2L728YvNO81hwlzTKV4x5733S3mNdBs=;
+        b=Y4L9MS5kl277gtsdN20hTtFfi03Gii15tbR7InrLo8VzjnVKAU6zAO+tiOVXG4UraC
+         PiphLmQdtNGndH8k795f3WOTJR+0osOHsaInOHJcd7q6TUb94nN7KiJes4Xs84y1tLPe
+         tMPls1M/+Ggft0OCOqsBtyVkTt5j4fu72LwfARSYxL0xNYbobo+nLZGrx3gCN6KxH6qz
+         YwShDg8FtXB+a78YYtUmKqvMdZsNJ9TEKHlguP3RxaVqMsnJbzN3ae8Ghpoee7g7BeZ9
+         ap0hVuC/Qth93RD2NcOp+DcUHa3g37WFR/XsBXZRv01jnXqTeZGdKlxADp8oGGtQlf6u
+         RM6Q==
+X-Gm-Message-State: AOJu0YwmPVlSqf7cd3/jhAvv3kt5UJyuzO7fIc99LaxCXbsCXCnTP644
+        yZ0GwKmCvDMEA115/5xl5A0=
+X-Google-Smtp-Source: AGHT+IGxy8UqGEjSjO7aF6ymfbOkLNMyr0HazzEN6S/9GhcKtZvRfqbDP14jdiEY+DyyheZBAIs3sw==
+X-Received: by 2002:a17:90b:2250:b0:27d:b811:2fe4 with SMTP id hk16-20020a17090b225000b0027db8112fe4mr794680pjb.26.1699415917046;
+        Tue, 07 Nov 2023 19:58:37 -0800 (PST)
+Received: from localhost.localdomain ([115.99.190.148])
+        by smtp.gmail.com with ESMTPSA id 9-20020a17090a018900b002635db431a0sm628102pjc.45.2023.11.07.19.58.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Nov 2023 19:58:36 -0800 (PST)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     jic23@kernel.org, andriy.shevchenko@linux.intel.com
+Cc:     oe-kbuild-all@lists.linux.dev, lkp@intel.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: imu: bmi323: Make the local structures static
+Date:   Wed,  8 Nov 2023 09:28:31 +0530
+Message-Id: <20231108035831.5889-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: add asair
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20231107173100.62715-1-anshulusr@gmail.com>
- <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
-Content-Language: en-US
-From:   Anshul Dalal <anshulusr@gmail.com>
-In-Reply-To: <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/7/23 23:16, Krzysztof Kozlowski wrote:
-> On 07/11/2023 18:30, Anshul Dalal wrote:
->> Aosong Electronic Co., LTD. is a supplier for MEMS sensors such as AHT20
->> temperature and humidity sensor under the name Asair
-> 
-> The name of the company is Aosong Electronic or Asair? What does Asair
-> stands for? Sensors name? Then it is not a vendor prefix.
-> 
+Make the local structures static within their respective driver files.
 
-Asair is the brand name under which Aosong Electronics sells their
-products. I thought Asair would be the better choice since
-all their products use that as the manufacturer name instead of Aosong
-as well as all the retail suppliers of their sensors.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311070530.qKhLTz1Y-lkp@intel.com/
+Fixes: b512c767e7bc ("iio: imu: Add driver for BMI323 IMU")
+Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+---
+ drivers/iio/imu/bmi323/bmi323_i2c.c | 2 +-
+ drivers/iio/imu/bmi323/bmi323_spi.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
->>
->> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
->> ---
->>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> index 573578db9509..df3204f9dda6 100644
->> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> @@ -143,6 +143,8 @@ patternProperties:
->>      description: Artesyn Embedded Technologies Inc.
->>    "^asahi-kasei,.*":
->>      description: Asahi Kasei Corp.
->> +  "^asair,.*":
->> +    description: Aosong Electronic Co., Ltd.
->>    "^asc,.*":
->>      description: All Sensors Corporation
->>    "^asix,.*":
-> 
-> Best regards,
-> Krzysztof
-> 
+diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+index 0008e186367d..20a8001b9956 100644
+--- a/drivers/iio/imu/bmi323/bmi323_i2c.c
++++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+@@ -66,7 +66,7 @@ static struct regmap_bus bmi323_regmap_bus = {
+ 	.write = bmi323_regmap_i2c_write,
+ };
+ 
+-const struct regmap_config bmi323_i2c_regmap_config = {
++static const struct regmap_config bmi323_i2c_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 16,
+ 	.max_register = BMI323_CFG_RES_REG,
+diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
+index 6dc3352dd714..7b1e8127d0dd 100644
+--- a/drivers/iio/imu/bmi323/bmi323_spi.c
++++ b/drivers/iio/imu/bmi323/bmi323_spi.c
+@@ -41,7 +41,7 @@ static struct regmap_bus bmi323_regmap_bus = {
+ 	.write = bmi323_regmap_spi_write,
+ };
+ 
+-const struct regmap_config bmi323_spi_regmap_config = {
++static const struct regmap_config bmi323_spi_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 16,
+ 	.pad_bits = 8,
+-- 
+2.20.1
+

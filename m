@@ -2,55 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 346B87E5463
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 11:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB10C7E54C9
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 12:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344700AbjKHKsF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Nov 2023 05:48:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
+        id S1344193AbjKHLOn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 06:14:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344595AbjKHKrD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 05:47:03 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D50030E9
-        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 02:45:00 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4079ed65471so49560505e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 02:45:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699440299; x=1700045099; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YQ+G5s8RPHyPJsrBFGNZYZXOAO3f3klrHmjNTSjaK6I=;
-        b=W2x3r7qu6kvAoa6YNUPIxT0E6KPjTAYklsVnKTofKbvAg98XR3knJImbMSgo8hvKwD
-         8LPnlco7wqZc3KdQicPsuekNV4vgonbicgUT/H53JS0/P/QvrNlvG1eSi2OePM7I5hBi
-         K0CXhuHss8MvHXmw+sfOkMh3fetSIT7KhOE1xg10HLX1eKVCxy5o01+PWijCDAsNkCCh
-         t9awT+KNIKzM6znauX5Pccw990RIB6oZWUMb4DZb1vFwumRUWWCM0QtHALYoYeI0gZBZ
-         e3Z0tjmeqCngooyJFnIvo8IW24JaVkqJVRV34uVnhTkFDRByRlLirP6uwwJcpumE/8k1
-         ydQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699440299; x=1700045099;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YQ+G5s8RPHyPJsrBFGNZYZXOAO3f3klrHmjNTSjaK6I=;
-        b=DPW/P/fW3m3Bq2MLVCG7GVicVu5oCWu+qrU0je0kaXDLu6mWgGTqhcu40gBlua5ub7
-         46gC2ytrYsYQ7GUqdZmDRb4sy+D0Bq1wPfrSrSfmNIoXa6XVhe371qSXmzP0hm8D/yM0
-         vr3pK5tKgrvZgt2xXXQU8xLS9OH0UvFeiaBG06wO/kuhzjOjH7tRgsymRDrLiJjhndMz
-         0qiVGQqjQIBCjX1eYPWoYTmRN4LiXhvUTgD6BQ1MX4FmD/98RFTe3apySSWkIaTnLGF9
-         GW2cG1b4BM5vvApXnZY4AJ4ciQUfBncmGi3T47+2mgRF+Zeuw/bR6x4IHUrZrJbcqyen
-         UdBg==
-X-Gm-Message-State: AOJu0YyV6s+ZeRPQnRJ8Gtks55dTv77QgEQqIKwAABvMvqUYq5BY4oNL
-        YD1rEptK+jOLiKpk+bh6tGheSw==
-X-Google-Smtp-Source: AGHT+IFp84xxfo5QRAF0wCrKdORFx4iJmSqJoRpd/lOk7txHM8S/A55ohRCToPiG6pukjYjCgaIN3w==
-X-Received: by 2002:a05:600c:3b15:b0:405:95ae:4a94 with SMTP id m21-20020a05600c3b1500b0040595ae4a94mr1341542wms.5.1699440298865;
-        Wed, 08 Nov 2023 02:44:58 -0800 (PST)
-Received: from krzk-bin.. ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id fj12-20020a05600c0c8c00b004094c5d92bdsm19377377wmb.31.2023.11.08.02.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:44:58 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        with ESMTP id S1344395AbjKHLOm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 06:14:42 -0500
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB735186
+        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 03:14:39 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r0gVI-0006Zu-GZ; Wed, 08 Nov 2023 12:13:48 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r0gVF-007WPs-EG; Wed, 08 Nov 2023 12:13:45 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r0gVF-00F8iX-3y; Wed, 08 Nov 2023 12:13:45 +0100
+Date:   Wed, 8 Nov 2023 12:13:44 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
@@ -67,8 +47,6 @@ To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Sylwester Nawrocki <s.nawrocki@samsung.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
         Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -84,59 +62,74 @@ To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
         linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 17/17] arm64: dts: exynosautov9: add specific compatibles to several blocks
-Date:   Wed,  8 Nov 2023 11:43:43 +0100
-Message-Id: <20231108104343.24192-18-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 12/17] dt-bindings: pwm: samsung: add specific
+ compatibles for existing SoC
+Message-ID: <20231108111344.sxb6ehxmm6wwknal@pengutronix.de>
 References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+ <20231108104343.24192-13-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="s5lmtu7dwemwa3xs"
+Content-Disposition: inline
+In-Reply-To: <20231108104343.24192-13-krzysztof.kozlowski@linaro.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ExynosAutov9 reuses several devices from older designs, thus historically
-we kept the old (block's) compatible only.  This works fine and there is
-no bug here, however guidelines expressed in
-Documentation/devicetree/bindings/writing-bindings.rst state that:
-1. Compatibles should be specific.
-2. We should add new compatibles in case of bugs or features.
 
-Add compatibles specific to ExynosAutov9 in front of all old-SoC-like
-compatibles.  This will also help reviews of new code using existing
-DTS as template.  No functional impact on Linux drivers behavior.
+--s5lmtu7dwemwa3xs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm64/boot/dts/exynos/exynosautov9.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Hello,
 
-diff --git a/arch/arm64/boot/dts/exynos/exynosautov9.dtsi b/arch/arm64/boot/dts/exynos/exynosautov9.dtsi
-index b228cd7e351e..417aa56a81f6 100644
---- a/arch/arm64/boot/dts/exynos/exynosautov9.dtsi
-+++ b/arch/arm64/boot/dts/exynos/exynosautov9.dtsi
-@@ -166,7 +166,8 @@ soc: soc@0 {
- 		ranges = <0x0 0x0 0x0 0x20000000>;
- 
- 		chipid@10000000 {
--			compatible = "samsung,exynos850-chipid";
-+			compatible = "samsung,exynosautov9-chipid",
-+				     "samsung,exynos850-chipid";
- 			reg = <0x10000000 0x24>;
- 		};
- 
-@@ -349,7 +350,8 @@ pinctrl_peric1: pinctrl@10830000 {
- 		};
- 
- 		pmu_system_controller: system-controller@10460000 {
--			compatible = "samsung,exynos7-pmu", "syscon";
-+			compatible = "samsung,exynosautov9-pmu",
-+				     "samsung,exynos7-pmu", "syscon";
- 			reg = <0x10460000 0x10000>;
- 
- 			reboot: syscon-reboot {
--- 
-2.34.1
+On Wed, Nov 08, 2023 at 11:43:38AM +0100, Krzysztof Kozlowski wrote:
+> Samsung Exynos SoC reuses several devices from older designs, thus
+> historically we kept the old (block's) compatible only.  This works fine
+> and there is no bug here, however guidelines expressed in
+> Documentation/devicetree/bindings/writing-bindings.rst state that:
+> 1. Compatibles should be specific.
+> 2. We should add new compatibles in case of bugs or features.
+>=20
+> Add compatibles specific to each SoC in front of all old-SoC-like
+> compatibles.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>=20
+> ---
+>=20
+> I propose to take the patch through Samsung SoC (me). See cover letter
+> for explanation.
 
+Fine for me
+
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--s5lmtu7dwemwa3xs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVLbWgACgkQj4D7WH0S
+/k4a8ggAisMgSiojK34WM6Ei36Y1XLO8kOH1f//AzrO0UDibn0Zhvw287OngrOIl
+CkuyoKGazHXmGIDsSdfrCQkrUwkl0yIZY+W1FmlVnQCiFFJZ/VnDSR36w2jBKhn6
+Ds8GC5ZH/OCt0rHTiNJyRzDB+fw3/4A9//8AYffoXTNeELJwwE83KwkCutYtYPXT
+QSndSYIMX179M7Fk7C8gYoWAsU3YJrj4CgWSIc1nBIRRktBqTRbouRMFIY2lrFZ+
+R0boATVIMFI1BYsaGbn57pzYX2tAcnlRjthQ+4Nf3/rg+QdQxAJ3ejALN5acqqhd
+T9no5cHCm6UbLQwxWtECYc4IZn3dyQ==
+=4AYg
+-----END PGP SIGNATURE-----
+
+--s5lmtu7dwemwa3xs--

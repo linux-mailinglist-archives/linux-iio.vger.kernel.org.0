@@ -2,97 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A470E7E4D33
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 00:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B1C7E4E2D
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 01:35:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344478AbjKGX0R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 18:26:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        id S232135AbjKHAf3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Nov 2023 19:35:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235608AbjKGXZx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 18:25:53 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F54019A5;
-        Tue,  7 Nov 2023 15:24:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82808C433C7;
-        Tue,  7 Nov 2023 23:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699399464;
-        bh=nKbL8zNE6DDMrjx3mFVmsXHLtjE3u1TKNWQuIqrghuE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=RuixqnJa71xgzYQvtPo0evzwWXGTagrVSPzVG26KTWTsGC1OEJXHFXqNS0G2/fLMl
-         VlOz6hJQSWygatHE0VCdk/XGVYvRZw8Ehor1LfX3m1oPRJaNF6dRbA6HCNb7GLZ9xl
-         7kHR9DWB1LA8/VpR3q1Dx8aGcg9+1Fdq5zfs8Zm7yLsUCgv454+YHCp5LHQ2sdjulm
-         zTNNugbmEFGyt1Jox0eCSbLKrPrXOlluTjY8Pxv/+3r7TRE6nTghQR9261KR/l94Lc
-         JdMK/nGb0r9dPL82H7kJHHwDDjmNU0Ao8BmIfJS5DUgvGHWapoESxKXnOKyx5cGFzM
-         4zxlYj4dU4ikg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhang Shurong <zhang_shurong@foxmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        robh@kernel.org, frank.li@vivo.com, u.kleine-koenig@pengutronix.de,
-        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 01/11] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
-Date:   Tue,  7 Nov 2023 18:24:02 -0500
-Message-ID: <20231107232420.3776419-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S235704AbjKHAfP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 19:35:15 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FBD1BD6;
+        Tue,  7 Nov 2023 16:34:19 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1ccce410660so22260135ad.3;
+        Tue, 07 Nov 2023 16:34:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699403659; x=1700008459; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bo+wNYvdH42XBot0MOWGC8vCva7jElVxl1Yf8J6aNZU=;
+        b=UNqvd+IFDSjtEVdd4F99EVHEK84W6x8mMLmJQq7Ljt+OeEA4PYqx9DziNvJI5R4Uu0
+         Dx6G6lJun7F0V91m0ebnDEA/0a54U4EQNWXT4/cy27/0PAofSEdPHlA8411L/P8jh/8t
+         G+h5lS4l47mu1yUU3mrH74ptf0qNssYSNiP2aTgvr1pLP1R5hAlDx9Bqh6U4k1IJZMB+
+         re5rdveirWHdCaufeb41jcD/IUipH3jLZ911W3lyhUSrWwhedNkSW3dZVKLLwfvUlbtJ
+         EGqFU4YK92aMQ7pZMJnBvBVHk5j2iMDUQI0+QfB7fjvX23Akg09YpnqjPkygf2TVnL3X
+         4BLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699403659; x=1700008459;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bo+wNYvdH42XBot0MOWGC8vCva7jElVxl1Yf8J6aNZU=;
+        b=bYFD95thV+6K0G/TmmXBWHznwta2JcmZLeWHoR7UK+nfJGy2CWEDCgDWCu8cqbilYP
+         ETcAv33JkuYuxuVRXurRCG0CwAS7zaYdesa+bDomCcyit0u089outJRyvUjIi16lANUy
+         1rayU94sPndqPmg+jAAHxvG0+Frg87DOsFWT//DEyM4lYr/O8PqH2HsIFFnlMxAi6Sm1
+         pBd+pDRZAbO3oA3u9TYbqnp64MSf2Wx2hz3/a0MlJFGD4uc6rLOLhhXjqzHlBiivOE7A
+         lh9PheNfXM1UnZHRrhLAhKMjpKajEFbn47+R6XZgzg9qFUK3MwpYPdEAIMPaIwZMC2/y
+         dpnA==
+X-Gm-Message-State: AOJu0YwQCpw6dptGJIGJEQ2+FYteiYo3Ztnv42mRXXDKnYmeii94bgTd
+        DIaI9hP+BHKgQ+l9EhrNETJEujguY4rzbY04
+X-Google-Smtp-Source: AGHT+IFDPzQtLh6+yY5GKCHMN9W6XwtxJ90L36jbtGh9dSGXzUV4r7YpeRT7sM7ArPOdn2NSQT8ExQ==
+X-Received: by 2002:a17:902:e9c5:b0:1cc:4ff3:c837 with SMTP id 5-20020a170902e9c500b001cc4ff3c837mr517996plk.68.1699403659132;
+        Tue, 07 Nov 2023 16:34:19 -0800 (PST)
+Received: from [10.3.171.174] ([103.4.222.252])
+        by smtp.gmail.com with ESMTPSA id j24-20020a170902759800b001c47541ecd7sm396385pll.250.2023.11.07.16.34.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Nov 2023 16:34:18 -0800 (PST)
+Message-ID: <f66cab34-266d-4e9f-b53f-26a2948f863f@gmail.com>
+Date:   Wed, 8 Nov 2023 06:02:52 +0530
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.61
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: add asair
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org
+References: <20231107173100.62715-1-anshulusr@gmail.com>
+ <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
+Content-Language: en-US
+From:   Anshul Dalal <anshulusr@gmail.com>
+In-Reply-To: <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+On 11/7/23 23:16, Krzysztof Kozlowski wrote:
+> On 07/11/2023 18:30, Anshul Dalal wrote:
+>> Aosong Electronic Co., LTD. is a supplier for MEMS sensors such as AHT20
+>> temperature and humidity sensor under the name Asair
+> 
+> The name of the company is Aosong Electronic or Asair? What does Asair
+> stands for? Sensors name? Then it is not a vendor prefix.
+> 
 
-[ Upstream commit 3a23b384e7e3d64d5587ad10729a34d4f761517e ]
+Asair is the brand name under which Aosong Electronics sells their
+products. I thought Asair would be the better choice since
+all their products use that as the manufacturer name instead of Aosong
+as well as all the retail suppliers of their sensors.
 
-of_match_device() may fail and returns a NULL pointer.
-
-In practice there is no known reasonable way to trigger this, but
-in case one is added in future, harden the code by adding the check
-
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 81d5db91c67bf..dee47b899e5df 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -695,6 +695,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	struct stm32_adc_priv *priv;
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = pdev->dev.of_node;
-+	const struct of_device_id *of_id;
-+
- 	struct resource *res;
- 	u32 max_rate;
- 	int ret;
-@@ -707,8 +709,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	platform_set_drvdata(pdev, &priv->common);
- 
--	priv->cfg = (const struct stm32_adc_priv_cfg *)
--		of_match_device(dev->driver->of_match_table, dev)->data;
-+	of_id = of_match_device(dev->driver->of_match_table, dev);
-+	if (!of_id)
-+		return -ENODEV;
-+
-+	priv->cfg = (const struct stm32_adc_priv_cfg *)of_id->data;
- 	priv->nb_adc_max = priv->cfg->num_adcs;
- 	spin_lock_init(&priv->common.lock);
- 
--- 
-2.42.0
-
+>>
+>> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+>> ---
+>>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> index 573578db9509..df3204f9dda6 100644
+>> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> @@ -143,6 +143,8 @@ patternProperties:
+>>      description: Artesyn Embedded Technologies Inc.
+>>    "^asahi-kasei,.*":
+>>      description: Asahi Kasei Corp.
+>> +  "^asair,.*":
+>> +    description: Aosong Electronic Co., Ltd.
+>>    "^asc,.*":
+>>      description: All Sensors Corporation
+>>    "^asix,.*":
+> 
+> Best regards,
+> Krzysztof
+> 

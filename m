@@ -2,163 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BCBA7E568E
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 13:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E6A7E57C0
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 14:07:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344373AbjKHMz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Nov 2023 07:55:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
+        id S235217AbjKHNHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 08:07:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233967AbjKHMzZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 07:55:25 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857081BF6;
-        Wed,  8 Nov 2023 04:55:23 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cc5b7057d5so62017695ad.2;
-        Wed, 08 Nov 2023 04:55:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699448123; x=1700052923; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cnFnGa1Xq3NRu1+Ex0WsMtBFHv4Yfs3kHDcwQXFSzNU=;
-        b=aIoqscuB0S3rqTjBvVxNyDGXyscccXl99cGr2UR5Jz3LCJeW1Vz0oiHw4rSbndkvH4
-         S0Q4RsZP13vx310dw3bIYO6pZEgAeBm45R6V48tiGy8sWL6ZB71loHS9+9jIdHCzz75m
-         fOW3WY3Wpag708onJp4CavwpXNawEaY4jeJdYsMZdyzi44HNHo4tiD31cSlYkPZD8fCE
-         s/gxukKAXegJ5DfQf2CJiRz4gvjo4luj0huPo1BW4R5qLZs+VNHvfOkcA9yra27SYzhg
-         SMw8cQjUSlrMP5LPGca2uG7y0Ts+QGkdrxqf/mvP67BXGSTxUkc7srUfgq8Fn07cUBa8
-         bskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699448123; x=1700052923;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cnFnGa1Xq3NRu1+Ex0WsMtBFHv4Yfs3kHDcwQXFSzNU=;
-        b=r8U/bjizn0e9DFHeLPAAzWwj/rQwMKL999pa0N4072RYH0cLNk6vzDD23ZqU5UBBL3
-         jTuISfrJt9PlrcwFb+zC4CQANesFkUh2YaWVN1VaJAjDBb+N+4YQj2Bql2jPxsvyPDO1
-         Dyi5Zr/4rlPk1XOSQWRe5oF8SNLoe1TU7go4Xa+b13KDCBPzG08ANM+jcwBOJVmLDjvG
-         KP2sgjII+cOZe3fpniNRS/unf7Ec+fqCY8j8HnSx+N3+ynuCM18RiB7ARpOcqKgwW0nn
-         fm4Z1iF298O29cSnyEzVqtYOpsRUwEgoAyUU1OKvfdBp9+KQK6tbISw9dxxLl/lK3jfD
-         aDww==
-X-Gm-Message-State: AOJu0Yy2u+mwuUcyMDCUMTU8OKvMopxSlfxIXCFbwsM6Q4lms7nQFudo
-        Ujw3n3d31ri47LBU93yUz5M=
-X-Google-Smtp-Source: AGHT+IGrbJU4UhYwNZD8MuOWryrbZUlLrn0fvKGeRWexgJYA0rdUWu3Ogr2W8YqZPCXVFJU2nxeJFQ==
-X-Received: by 2002:a17:902:c403:b0:1ca:7086:60f7 with SMTP id k3-20020a170902c40300b001ca708660f7mr2494532plk.28.1699448122932;
-        Wed, 08 Nov 2023 04:55:22 -0800 (PST)
-Received: from ?IPV6:2401:4900:2353:8963:b940:1ac0:2fbc:6b6? ([2401:4900:2353:8963:b940:1ac0:2fbc:6b6])
-        by smtp.gmail.com with ESMTPSA id ju1-20020a170903428100b001b8622c1ad2sm1695286plb.130.2023.11.08.04.55.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Nov 2023 04:55:22 -0800 (PST)
-Message-ID: <e192a58e-47f8-4410-81a5-de1ebab3251d@gmail.com>
-Date:   Wed, 8 Nov 2023 18:23:49 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: trivial-devices: add asair,ags02ma
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S229940AbjKHNHU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 08:07:20 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B5D1AE;
+        Wed,  8 Nov 2023 05:07:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAAEC433C8;
+        Wed,  8 Nov 2023 13:07:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699448838;
+        bh=oi5w46XUUj+5eCHt5HUP0e7A7OgjsfNv+uqws1harcw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=USgbXuQE+ahS0wMNzK3GZRWrt2o4EadreHpU54UrkxxsZTTz0+LAe6fX8RvlykKp3
+         GnmJtzyZD1B5KT90EnuOrpS45Wn4Ug2QUbGzOlIaMw4h8TYxXniEVURlDAPEFofnAA
+         iULsGnxGgZ2r3S/txUvuyAC4NfimqV7S5ugviXvv/bC9zlMCTAI9ifoFUl0qap50eK
+         8xnqTE2LkaSAP45eLgiKG3jc+Tl0L9OlmfUcmBV78/c8SmRpnZH7a47rwrNZWy6prh
+         1BOu/wADh/rVR70guv/oGFc/pjZ9rrdvWZkVYr2T0XYKkEeW2YWOsyGVWaKdWKHEcO
+         jUDvq/YygN9Fw==
+Date:   Wed, 8 Nov 2023 13:07:14 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20231107173100.62715-1-anshulusr@gmail.com>
- <20231107173100.62715-2-anshulusr@gmail.com>
- <1d5d1357-0b53-4639-add9-2b3f38aae744@linaro.org>
- <90cacd34-4812-4792-9bf0-362200431452@gmail.com>
- <77e1d308-6ac3-4200-b72a-6d5717869b06@linaro.org>
- <7501036c-4e1f-4993-97a7-6c36c7cc8358@gmail.com>
- <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
-From:   Anshul Dalal <anshulusr@gmail.com>
-In-Reply-To: <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Lee Jones <lee@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 11/17] ASoC: dt-bindings: samsung-i2s: add specific
+ compatibles for existing SoC
+Message-ID: <ZUuIAihzcOqkVsWG@finisterre.sirena.org.uk>
+References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+ <20231108104343.24192-12-krzysztof.kozlowski@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="X+QegD6ebh8cp8W3"
+Content-Disposition: inline
+In-Reply-To: <20231108104343.24192-12-krzysztof.kozlowski@linaro.org>
+X-Cookie: Slow day.  Practice crawling.
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--X+QegD6ebh8cp8W3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 11/8/23 17:59, Krzysztof Kozlowski wrote:
-> On 08/11/2023 13:15, Anshul Dalal wrote:
->> On 11/8/23 17:31, Krzysztof Kozlowski wrote:
->>> On 08/11/2023 12:54, Anshul Dalal wrote:
->>>>
->>>> Hello Krzysztof,
->>>>
->>>> On 11/7/23 23:17, Krzysztof Kozlowski wrote:
->>>>> On 07/11/2023 18:30, Anshul Dalal wrote:
->>>>>> Add bindings for Asair AGS02MA TVOC sensor to trivial devices.
->>>>>>
->>>>>> The sensor communicates over i2c with the default address 0x1a.
->>>>>> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
->>>>>>
->>>>>> Datasheet:
->>>>>>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
->>>>>> Product-Page:
->>>>>>   http://www.aosong.com/m/en/products-33.html
->>>>>>
->>>>>> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
->>>>>> ---
->>>>>>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->>>>>>  1 file changed, 2 insertions(+)
->>>>>>
->>>>>> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>>> index cd58179ae337..9cd67b758a88 100644
->>>>>> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>>> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
->>>>>> @@ -47,6 +47,8 @@ properties:
->>>>>>            - adi,lt7182s
->>>>>>              # AMS iAQ-Core VOC Sensor
->>>>>>            - ams,iaq-core
->>>>>> +            # TVOC (Total Volatile Organic Compounds) i2c sensor
->>>>>> +          - asair,ags02ma
->>>>>
->>>>> I think you miss VDD supply.
->>>>
->>>> I am sorry but I'm not sure what you meant. Are you referring to the
->>>> addition of some information in the commit description?
->>>
->>> I meant that your device might not be trivial. Your device takes VDD
->>> supply, which is now not described in the bindings. Do you want to say
->>> that VDD supply in all possible designs is hard-wired to
->>> non-controllable regulator supply?
->>
->> I can't speak for all possible designs but for testing this driver I had
->> just connected the VDD pin to 5V out of the Raspberry Pi. I have since
->> verified 3.3V to also work.
->> Could you explain why `vdd-supply` is a property or point me to further
->> sources. Wouldn't almost all devices have a VDD/VCC pin for power in?
-> 
-> Most of the devices have such pin. For most of the devices we include it
-> in the bindings.
-> 
-> git grep regulator_get -- drivers/iio/
-> git grep vdd -- drivers/iio/
-> 
-> If you do not describe it in the bindings, then your device will have to
-> be supplied by always-on regulators (and marking controllable regulator
-> as always-on because of this is not correct).
->
-Thanks for the explanation Krzysztof. If I understand correctly, having
-an vdd-supply in the binding indicates that the device may be powered by
-a controllable power source instead of one that is always on.
+On Wed, Nov 08, 2023 at 11:43:37AM +0100, Krzysztof Kozlowski wrote:
+> Samsung Exynos SoC reuses several devices from older designs, thus
+> historically we kept the old (block's) compatible only.  This works fine
+> and there is no bug here, however guidelines expressed in
+> Documentation/devicetree/bindings/writing-bindings.rst state that:
 
-> If you are unsure and you just work on some sensor not used for final
-> product, I think it's fine as is, so to add the regulator later if ever
-> needed.
+Acked-by: Mark Brown <broonie@kernel.org>
 
-No problem, I can add the required properties in the next patch version.
-I need to make a few changes to the driver anyways.
+--X+QegD6ebh8cp8W3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Just out of curiosity, the sensor supports reassigning of the i2c
-address by writing to the 0x21 register from the default address of
-0x1a. Is there some way to represent this in the binding.
-For future reference, is there some exhaustive list or specification
-document for all the allowed properties.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks for the help,
-Anshul
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVLh/wACgkQJNaLcl1U
+h9D+/Af+MyEPu0I4eqVGYfK3Bo/6Rvq3LXEhL2x1vksJCKJjNwBBvQHqRWRTBZXL
+VEhtg6O887bE4a7Hy4RErRnb978JM4kG0mM4qBPhwgv9YoqD9Ymr7jFfp8dRru28
+hGY35dYXNXlC3LMJ1CdSVnubfo0QPHIzRYwWO4xpz0/BqNtsJlELPaU2s1q0wDHO
+v/nMVrIE3Xzjp4iQEXcyfZa4k73XOYHmSqxR0H9xiDayBgMuUkypOeDs/qGpO+mW
+Bp4IbvvgVJr9ifLmpCMlZWSQryHbiOR3cpJHR6Tb3UhjJKUgccQLyGHgBfAgiSqJ
+x6Tc2OIcYB5l2yn9+JONwgLPLMiALg==
+=Ypqx
+-----END PGP SIGNATURE-----
+
+--X+QegD6ebh8cp8W3--

@@ -2,17 +2,17 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B97877E5CAC
+	by mail.lfdr.de (Postfix) with ESMTP id 1FEE77E5CAB
 	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 18:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232160AbjKHRul (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S230118AbjKHRul (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 8 Nov 2023 12:50:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60376 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbjKHRui (ORCPT
+        with ESMTP id S230133AbjKHRui (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 12:50:38 -0500
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4681BEF;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE3B1FF9;
         Wed,  8 Nov 2023 09:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
@@ -20,23 +20,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
         :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qwqzZtkcXZc3OkNPJmm1+6PhhO4xyqN1G7JcRiwKhlI=; b=Fjj288HTDMLCJWN0KjkegXCR1m
-        qWBmGvOOlT0EkTAFhtcjh0RajOyPozi/DTZiBq5qdbARjYC4V396z4E7XiBUOe6+iTz25YOogVdgN
-        4a8ZH6QbJv0hRHrbAFyS8W7qNGIn9Al9e+TYUzI6tpe8jSLGaG1SlcU0tP1lkIxH7Si8GBJH/AjHI
-        8jSOhXXgt+jQzZEJm0zcRsAfiOBzD1sALZ9LnHnq+SAgPHckOui0+MMLUT043gpVhTwBYd9WclPst
-        dyera8XY+dQSFg0Z7XOtI36AdlWdTk8vxM913aeN9brpTHQWmObVteVDJFeItgykNKNplbEBettB4
-        cTbzX+5A==;
+        bh=2CnUQaTGxqUvfFdrUxE6AYsi+03ONnUHcjpsmARcoik=; b=cbdcb6A0LgGbNuTHg5tioFn0ou
+        O1goK9pUJoJelWf+WKFfm71/r9WUsSki7Wt/iOAdn5ZBFlym7uaI6ff9LGA7li0OSjb9CjFtdEK+f
+        JgT3U1dIhXIjCimR9f3rq1KHsCHRDCye0++3l0UKK8zk2BHf1tNHwTfO1SUjlqixd/a9XYbLLX4Zm
+        FbOw7EaXyCvT0U0WMC5qIKZcMsU/MfdDk7WezRNgssFvbd6P5M6xqRvRu6dS931tFeNYLR6GD/Jxn
+        jxw5hIpijBsQIn0VEbMO9hxXg1Xo3FzTkiS4yFy215MuXnIcffG0lrJU7kvGuxfqgvtc1bHxrXiLh
+        VoEAMuCA==;
 Received: from i73190.upc-i.chello.nl ([62.195.73.190] helo=[192.168.68.111])
         by fanzine2.igalia.com with esmtpsa 
         (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1r0mhE-000vX4-0d; Wed, 08 Nov 2023 18:50:32 +0100
+        id 1r0mhF-000vX4-8p; Wed, 08 Nov 2023 18:50:33 +0100
 From:   Nia Espera <nespera@igalia.com>
-Date:   Wed, 08 Nov 2023 18:50:26 +0100
-Subject: [PATCH v3 2/6] arm64: dts: qcom: sm8350: Fix DMA0 address
+Date:   Wed, 08 Nov 2023 18:50:27 +0100
+Subject: [PATCH v3 3/6] arm64: dts: qcom: pm8350k: Remove hanging
+ whitespace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231108-nia-sm8350-for-upstream-v3-2-18a024b5c74c@igalia.com>
+Message-Id: <20231108-nia-sm8350-for-upstream-v3-3-18a024b5c74c@igalia.com>
 References: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
 In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -60,50 +61,44 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nia Espera <nespera@igalia.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1152; i=nespera@igalia.com;
- h=from:subject:message-id; bh=uovBa8q6G8tS3dULOFwRiS9jeP93jHuTebmV0TK766Q=;
- b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlS8pksJJlF5qjz3S+bxuj7DQx9yy947g34uvKl
- P27At5KFB2JAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZUvKZAAKCRDyJM7CN1bi
- rVTkDACO7A3BmR3eGe0OJ8TK5cRLPCVmGXTpqX+QXzLY6uYGoPfIuQFrvo9EsB46Otlj6z55L49
- e0OKXSSbhTYuu5S0KS6Sbu4G6AsEk5UfmE0eozF+rI7XKwuvEclsxIhvNRIX2sIiO8LO6/JGCU2
- rcM0SXEwWEv6ItVSqvOdiwRkJMyW9CiqWAoSJ9Lie0xHo4+LIeE3ahGOq1o8BRuJ4riOHryP0gG
- d/HED+ZrKr7vUL+MyKYB8HYy8evpmW5Ide2kw3qbs5wcGLzFEWPo6fsoteUJEliqTrhxbI9LU7N
- 4YXjlotxeXJ2cRray1+3JEVWLxGhdwuuMokJ4vWdVkVzDphgGjXgAko39pS7h755a23f7c0KxIA
- y6C6yPk3gBLOdP2ckjBcXHSsz8DNq0DV5Lpzkwu+TzAm+WpbdBBTqqr0nY59KHi9wNUFFGSLuqg
- grzsgpW8wqHUxyRn/U/gw+V/m1chGXbGrx6RQyCC+c5LSv+QNHJ90IAG0RHigrtraXWTk=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=682; i=nespera@igalia.com;
+ h=from:subject:message-id; bh=0RUB7KOCa+Dyd4ytet9GLCvRq0z08dzAK+GEyion9dw=;
+ b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlS8pkSa+LkTVCCp7ia3T4NAXd2TvwQr8n1w3g6
+ lhcPdEdjcGJAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZUvKZAAKCRDyJM7CN1bi
+ rbQAC/0bU9DMocAQJ485pS6Cgu3+vWo8Bv9BjANYYfMSFSoVyF0UjfT41SDmxrp2lwTHdzdUvb5
+ jxE3AU5S4RVFIrwdJkUsmyBu2fmdp3SkAq/Qg4TUXR6uB2dioi7QTIMQeYBkIEBwjJQIHQgVpoy
+ +3dMVHPED3NbFnHzDvcP/lfI4c7K0qJtfJSiuLu1Y0LXQdePBNTZtw5a4SBbxi8QvI9f+wNdbNg
+ xR/HuuOEvyMbqqjv1jtJ+4r50tv/XABnA0nwtorZECJu0rxOy9seWOraIgnLF4BB3Hl78KvISGl
+ /zm4MGsFwvB4pGS4xThCuEY8UW3gxzEiwHZn1bBt5I9nWPZKhaLywA9oeIiP+ObFocfZiB8cY+H
+ a26RuPZkerUQRoM2yAEGnpLsJ5EALRqVwqdPliE8NPAEAu73Zzp7Wv7NTWAgAGIPQC+bCaJnu95
+ Ha1VMXM9JaFwJAfkYAZCfG1CaCV/ri44j4KpzHHMo92iXXBpRS4dq7Kc4gb9VcSl4rZ7w=
 X-Developer-Key: i=nespera@igalia.com; a=openpgp;
  fpr=813C3A26BA0DEC9432449EE6F224CEC23756E2AD
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DMA0 node downstream is specified at 0x900000, so fix the typo. Without
-this, enabling any i2c node using DMA0 causes a hang.
+pmk8350 has a random tab character inserted, so remove it.
 
-Fixes: bc08fbf49bc8 ("arm64: dts: qcom: sm8350: Define GPI DMA engines")
-Fixes: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Nia Espera <nespera@igalia.com>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/pmk8350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 00604bf7724f..6d12066389fa 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -918,9 +918,9 @@ spi19: spi@894000 {
- 			};
- 		};
- 
--		gpi_dma0: dma-controller@9800000 {
-+		gpi_dma0: dma-controller@900000 {
- 			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
--			reg = <0 0x09800000 0 0x60000>;
-+			reg = <0 0x00900000 0 0x60000>;
- 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 246 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+index 1eb74017062d..f0ed15458dd7 100644
+--- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+@@ -22,7 +22,7 @@ reboot-mode {
+ 		mode-bootloader = <0x02>;
+ 	};
+ };
+-	
++
+ &spmi_bus {
+ 	pmk8350: pmic@PMK8350_SID {
+ 		compatible = "qcom,pmk8350", "qcom,spmi-pmic";
 
 -- 
 2.42.1

@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25757E53FB
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 11:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4580B7E5408
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 11:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344552AbjKHKpG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Nov 2023 05:45:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59860 "EHLO
+        id S1344598AbjKHKpW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 05:45:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344575AbjKHKoo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 05:44:44 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57DC2100
-        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 02:44:19 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4084b0223ccso48499165e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 02:44:19 -0800 (PST)
+        with ESMTP id S235598AbjKHKow (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 05:44:52 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE222129
+        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 02:44:23 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so94533641fa.3
+        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 02:44:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699440258; x=1700045058; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699440262; x=1700045062; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TGrUPXldQQyi7i1y6HTuSgGxtg81Z3Wiq2G+ebaMhpQ=;
-        b=RRyZ2DsumWDob59sxIhP4NZ0+PB9uqb9zZOUEOANQYdG++ZFy2VRMKtljHlKQz2N/b
-         FWyNXAM90moRZUT9eT6+Uv5TbS7CPe9q7c3KOcLjxxzOBrfyWbaAqMDtmXsDpoRHWolZ
-         nNHIs3XfkQeqER0jUAusgARPrNPvSZ/cIxQT0M4y9KHtLyq8xxD2j4XSRCPRHVhLgkDT
-         fUZhaESpUcxCaH3amqo7JEmuqdlsvW/u71otvwXtUgpq/xDNfHn69aF7IovJ39IZgWy+
-         /UUa+J1L1aoAxKISj9Ttf0SEkrQTTFoRgxfETPWH1CVy5Tys9WnF6BKIBEH3NY2qfdRo
-         IwiA==
+        bh=932+POzuiCpVd1FMO8emES7304xq1CZHsFhbsNym7D8=;
+        b=EhaNtd0bfrAm6px/3RYUsAwCR4nSvu+SAtQY7zQxmXwMSDX3RxmwPOJxfDWG+rHUtq
+         ZR0WGiK5hakg8RqL7b1HXhHvryvlQrjQMmdE7HM9F3hx4jjJpMHfuuD7wbjN4OxPv1JW
+         VBxOYeByEVZOUu+DLYfGVEwqXx/Wvx9rEo1SEXNC3xQUlGZfnwfWhI0AsoZJUraZrt0Q
+         Q3zTvDhpnSP9qeC27LQ7+8HgM+LBMMjoDpLH7xCbf7x6+NZmboPp5VC6ilUHP7VDlr9h
+         bFTWvu7Jh07B5vQBaZ5YrDrLU3OX2QfVKO/K0jOm+uMx3qscz7WuCgoFRGyqWsR/oNyf
+         K6lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699440258; x=1700045058;
+        d=1e100.net; s=20230601; t=1699440262; x=1700045062;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TGrUPXldQQyi7i1y6HTuSgGxtg81Z3Wiq2G+ebaMhpQ=;
-        b=onJfIQdB+c2w14OFj6AMqtwV5W+uwv+bMHy2vPqBWGb/lrA1k0ye/2ymgeYwMfazjf
-         tpHTsCelRp7XLjgiw1RALDlfXLJleHOp+ar+6k7t9bUVq6oq7IZNdWA03NzC9y4xVdOJ
-         qQSMHXlhLCeJ0oqgffWywAyTVqqaGxfm0qWG5eOik/gVDaM9S3fc/N6lGtZWz0TOCv4H
-         sIf969es+NOpi7IxfkNIUm1kRlsk8KXzT4mBQz+NjAP7WfOrbFg5vADcE6RlXyB8piO7
-         yV80TsjaEsAD06Fi+X8cacizbxh/115Eq55wAchWic6s5Qdr1L9yG68ojN8nliMzXjYm
-         LrxQ==
-X-Gm-Message-State: AOJu0YyB9A1RicR7pQB6vt06GOyBMX8TxmiDU5sdsQoAQCYEPUpBXd9U
-        cnNnY+990CjZ/g9Ozy8YpyLhzw==
-X-Google-Smtp-Source: AGHT+IGzkWzdSSfC10gvMcrdr+HWpovdFD2tWKhVyooAAzLg7iLljfH0hHjLNTv+Bpu3NP726JCxaA==
-X-Received: by 2002:a05:600c:3553:b0:406:c6de:2bea with SMTP id i19-20020a05600c355300b00406c6de2beamr1367091wmq.17.1699440257975;
-        Wed, 08 Nov 2023 02:44:17 -0800 (PST)
+        bh=932+POzuiCpVd1FMO8emES7304xq1CZHsFhbsNym7D8=;
+        b=IPedTnE2EiHBBJsZNI2QXNJ72E6prORzN5uCotDAt7cFpeFefKoS+Fw1Pz0hnjEzpZ
+         nMlpyKpIyn8G0OhPCC1TFO1yscCDywa6hzdYqHfeeIRky9RoNJCtOlCBuG4506kII2EI
+         bXu2gabwmAzUU29ZiSWfru7xfYQaVqORGhBg/39VkU33p9t21H8s/MwO2YCOU7RdTmlU
+         4cqSqqx5Ip9JBTc8ki38aPbq9nTafkas1vAlQQGztM2RNY8YX21YIZHk3sNsbAJbXYaN
+         YVKFjv/8c0qb3pfYF8HHOY8UVZB0cZZWEFxMhRAVqXOATtiRAJFc0eFSh30EAnzDqiug
+         qo5A==
+X-Gm-Message-State: AOJu0YzBaqtl2jHVFWreuWJVPo458SpgnDBRIA5nljGE9LUZi2UqkXuS
+        bF68LMJRDGslRKBFVKoZp7Zy0Q==
+X-Google-Smtp-Source: AGHT+IGCpSGI0CR0667rdoPAw+/9BwGIOQ5vf5WLNiqXBsw+h3xPKE36aRvV/bSi7NnLY3zOJHYzOg==
+X-Received: by 2002:a05:651c:504:b0:2c5:14e3:f1b8 with SMTP id o4-20020a05651c050400b002c514e3f1b8mr1507701ljp.7.1699440261813;
+        Wed, 08 Nov 2023 02:44:21 -0800 (PST)
 Received: from krzk-bin.. ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id fj12-20020a05600c0c8c00b004094c5d92bdsm19377377wmb.31.2023.11.08.02.44.14
+        by smtp.gmail.com with ESMTPSA id fj12-20020a05600c0c8c00b004094c5d92bdsm19377377wmb.31.2023.11.08.02.44.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:44:17 -0800 (PST)
+        Wed, 08 Nov 2023 02:44:21 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -85,9 +85,9 @@ To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 06/17] dt-bindings: rtc: s3c-rtc: add specific compatibles for existing SoC
-Date:   Wed,  8 Nov 2023 11:43:32 +0100
-Message-Id: <20231108104343.24192-7-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 07/17] dt-bindings: serial: samsung: add specific compatibles for existing SoC
+Date:   Wed,  8 Nov 2023 11:43:33 +0100
+Message-Id: <20231108104343.24192-8-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
 References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
@@ -107,6 +107,9 @@ Documentation/devicetree/bindings/writing-bindings.rst state that:
 Add compatibles specific to each SoC in front of all old-SoC-like
 compatibles.
 
+Re-shuffle also the entries in compatibles, so the one-compatible-enum
+is the first.
+
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 ---
@@ -114,25 +117,41 @@ Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 I propose to take the patch through Samsung SoC (me). See cover letter
 for explanation.
 ---
- Documentation/devicetree/bindings/rtc/s3c-rtc.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../devicetree/bindings/serial/samsung_uart.yaml   | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-index d51b236939bf..bf4e11d6dffb 100644
---- a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-+++ b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-@@ -17,6 +17,11 @@ properties:
-           - samsung,s3c2416-rtc
-           - samsung,s3c2443-rtc
-           - samsung,s3c6410-rtc
+diff --git a/Documentation/devicetree/bindings/serial/samsung_uart.yaml b/Documentation/devicetree/bindings/serial/samsung_uart.yaml
+index ac60ab1e35e3..0d0215b23ab7 100644
+--- a/Documentation/devicetree/bindings/serial/samsung_uart.yaml
++++ b/Documentation/devicetree/bindings/serial/samsung_uart.yaml
+@@ -18,9 +18,6 @@ description: |+
+ properties:
+   compatible:
+     oneOf:
+-      - items:
+-          - const: samsung,exynosautov9-uart
+-          - const: samsung,exynos850-uart
+       - enum:
+           - apple,s5l-uart
+           - axis,artpec8-uart
+@@ -29,6 +26,17 @@ properties:
+           - samsung,exynos4210-uart
+           - samsung,exynos5433-uart
+           - samsung,exynos850-uart
 +      - items:
 +          - enum:
-+              - samsung,exynos7-rtc
-+              - samsung,exynos850-rtc
-+          - const: samsung,s3c6410-rtc
-       - const: samsung,exynos3250-rtc
-         deprecated: true
++              - samsung,exynos7-uart
++          - const: samsung,exynos4210-uart
++      - items:
++          - enum:
++              - samsung,exynos7885-uart
++          - const: samsung,exynos5433-uart
++      - items:
++          - const: samsung,exynosautov9-uart
++          - const: samsung,exynos850-uart
  
+   reg:
+     maxItems: 1
 -- 
 2.34.1
 

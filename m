@@ -2,103 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A653F7E4F96
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 04:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 339377E51E4
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Nov 2023 09:23:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjKHD6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Nov 2023 22:58:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36812 "EHLO
+        id S235136AbjKHIXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Nov 2023 03:23:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbjKHD6j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Nov 2023 22:58:39 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D265E10C9;
-        Tue,  7 Nov 2023 19:58:37 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2802d218242so6030607a91.1;
-        Tue, 07 Nov 2023 19:58:37 -0800 (PST)
+        with ESMTP id S233600AbjKHIXV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Nov 2023 03:23:21 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB89910D3
+        for <linux-iio@vger.kernel.org>; Wed,  8 Nov 2023 00:23:18 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9d2d8343dc4so997894966b.0
+        for <linux-iio@vger.kernel.org>; Wed, 08 Nov 2023 00:23:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699415917; x=1700020717; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oW6+TAcsgkVX2L728YvNO81hwlzTKV4x5733S3mNdBs=;
-        b=bglv6N8DuJitXWrUptcBK8WcyKnGYo4TA1XyIylhx1WElnLpleGVemLVqSbUWUGBz7
-         tkiPILMkjTNAvcCUMNStW7YtHupXNTvckIgSNbR5ktHs6YHB9qeR9ANdwSi4f+pDbWsW
-         6X97FormUxyGIJpGlZu5PTO3L+ZN1UKHo2AglFl0rRrddsNnmgUhx1Ydn+aq3ZRZGUme
-         x1ugRebRbFoj5s2ubfd5A6ibMra9mtkJIZFeuBc07SwK9OajaEZUOdUeDjrqMr16WLd6
-         iRm/mpIzOWe4SfkZ/4OEHzR2OcNnnLkWLnB3mIMjbJRxVLDktKFNBHPmZwefWinSI+Pf
-         0LzA==
+        d=linaro.org; s=google; t=1699431797; x=1700036597; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nBjF3QN4NW+kJO0QDov6tV4WhsDG0WNZQqs4Q9mGR9s=;
+        b=NyxWF19DieW76Vmj5vMQzSrwZIYwCR3Hkqu2KbP1HrR3Uhs6JxJfUJJdSdNtEhzpUJ
+         K2ZqPGh0pNgFu2FfvZx+VKm/MvtRvmMlJOYVqvR249LDRmCzpGdcOwZaFYWxlvHvs9IB
+         sN4epeawmXL7V1BPvmZJO12lycWAHwQHLbJWrLO2k5+DAd1xZ/zDz6uFcfwZT4Mkt/Es
+         LB5jYJVpgpjXPc8+pA7gB4oGhUCqIsmxycw9ugsuxbBiFtWWCnu6NKIqJItpHWAeRCyU
+         R0Z43DKcaKZ/bp8f+lrCJEFVSZvnOIUmNsE4kdwe5VAmAKL8EXsOWMQ+E8LB9Mwyg3cB
+         TYSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699415917; x=1700020717;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oW6+TAcsgkVX2L728YvNO81hwlzTKV4x5733S3mNdBs=;
-        b=Y4L9MS5kl277gtsdN20hTtFfi03Gii15tbR7InrLo8VzjnVKAU6zAO+tiOVXG4UraC
-         PiphLmQdtNGndH8k795f3WOTJR+0osOHsaInOHJcd7q6TUb94nN7KiJes4Xs84y1tLPe
-         tMPls1M/+Ggft0OCOqsBtyVkTt5j4fu72LwfARSYxL0xNYbobo+nLZGrx3gCN6KxH6qz
-         YwShDg8FtXB+a78YYtUmKqvMdZsNJ9TEKHlguP3RxaVqMsnJbzN3ae8Ghpoee7g7BeZ9
-         ap0hVuC/Qth93RD2NcOp+DcUHa3g37WFR/XsBXZRv01jnXqTeZGdKlxADp8oGGtQlf6u
-         RM6Q==
-X-Gm-Message-State: AOJu0YwmPVlSqf7cd3/jhAvv3kt5UJyuzO7fIc99LaxCXbsCXCnTP644
-        yZ0GwKmCvDMEA115/5xl5A0=
-X-Google-Smtp-Source: AGHT+IGxy8UqGEjSjO7aF6ymfbOkLNMyr0HazzEN6S/9GhcKtZvRfqbDP14jdiEY+DyyheZBAIs3sw==
-X-Received: by 2002:a17:90b:2250:b0:27d:b811:2fe4 with SMTP id hk16-20020a17090b225000b0027db8112fe4mr794680pjb.26.1699415917046;
-        Tue, 07 Nov 2023 19:58:37 -0800 (PST)
-Received: from localhost.localdomain ([115.99.190.148])
-        by smtp.gmail.com with ESMTPSA id 9-20020a17090a018900b002635db431a0sm628102pjc.45.2023.11.07.19.58.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Nov 2023 19:58:36 -0800 (PST)
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     jic23@kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     oe-kbuild-all@lists.linux.dev, lkp@intel.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: imu: bmi323: Make the local structures static
-Date:   Wed,  8 Nov 2023 09:28:31 +0530
-Message-Id: <20231108035831.5889-1-jagathjog1996@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        d=1e100.net; s=20230601; t=1699431797; x=1700036597;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nBjF3QN4NW+kJO0QDov6tV4WhsDG0WNZQqs4Q9mGR9s=;
+        b=wf3Ogun+R7Z5Xh0Wco5GyWnDQFFycJxYkIS43h/7zsxSN6IGiNQHLBp2S4k3COqmit
+         rThOGN+2Xu3PVfYBxctIvXdBDo8e9ijinORWi+yNt87xNteK2W95VE7wtlZQtRBfoyJv
+         iDH6eKyBIf8XsAfLzuS7Uvmwk7CkNOwZ5ZDtAR+cYPw0uEWyKMc6oYIqGeMnSzK9iV3C
+         sS5iHlAE2H5C8Qd/snmQjmitK2B5jgYQXPPWnnsDXc0Jrx/I4NgCSbKK/ETXJNhiVk92
+         g43f6DzpDRXccrml1orIWoKoUEJ+zk4x+6R49cOnO/QrTmDba3/Wq4t1O1kRKMUz8ZP8
+         NqDg==
+X-Gm-Message-State: AOJu0YyKmym/P9QtnngOmV20gLYvMHWlBFLuAAOkrrMeqRPjzfbFtQfU
+        zr8vPFhSKKP1MmsuP2Z5EicZAxEWX9WOy8ZKLVg=
+X-Google-Smtp-Source: AGHT+IG1slbMQdc3iD4IplZd1GXWm4ZNIZx6J+HwA5F+hJhHWbb4OszY7uOgSqB1iMw4isTGb/PTQQ==
+X-Received: by 2002:a17:906:ee81:b0:9c7:5db4:c943 with SMTP id wt1-20020a170906ee8100b009c75db4c943mr780034ejb.40.1699431797248;
+        Wed, 08 Nov 2023 00:23:17 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.218.126])
+        by smtp.gmail.com with ESMTPSA id j24-20020a170906255800b009932337747esm656436ejb.86.2023.11.08.00.23.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Nov 2023 00:23:16 -0800 (PST)
+Message-ID: <1f62ab04-1679-44b1-b95e-e3954afbfa88@linaro.org>
+Date:   Wed, 8 Nov 2023 09:23:15 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: add asair
+Content-Language: en-US
+To:     Anshul Dalal <anshulusr@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org
+References: <20231107173100.62715-1-anshulusr@gmail.com>
+ <87762a47-9caf-435a-9b73-397384660b11@linaro.org>
+ <f66cab34-266d-4e9f-b53f-26a2948f863f@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <f66cab34-266d-4e9f-b53f-26a2948f863f@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make the local structures static within their respective driver files.
+On 08/11/2023 01:32, Anshul Dalal wrote:
+> On 11/7/23 23:16, Krzysztof Kozlowski wrote:
+>> On 07/11/2023 18:30, Anshul Dalal wrote:
+>>> Aosong Electronic Co., LTD. is a supplier for MEMS sensors such as AHT20
+>>> temperature and humidity sensor under the name Asair
+>>
+>> The name of the company is Aosong Electronic or Asair? What does Asair
+>> stands for? Sensors name? Then it is not a vendor prefix.
+>>
+> 
+> Asair is the brand name under which Aosong Electronics sells their
+> products. I thought Asair would be the better choice since
+> all their products use that as the manufacturer name instead of Aosong
+> as well as all the retail suppliers of their sensors.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311070530.qKhLTz1Y-lkp@intel.com/
-Fixes: b512c767e7bc ("iio: imu: Add driver for BMI323 IMU")
-Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
----
- drivers/iio/imu/bmi323/bmi323_i2c.c | 2 +-
- drivers/iio/imu/bmi323/bmi323_spi.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+What if Aosong sells new product, e.g. power supply, under name Aosong.
+Would you create new prefix? One vendor should have one prefix, so in
+that case all other products not sold under Asair should be with "asair".
 
-diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-index 0008e186367d..20a8001b9956 100644
---- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-+++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-@@ -66,7 +66,7 @@ static struct regmap_bus bmi323_regmap_bus = {
- 	.write = bmi323_regmap_i2c_write,
- };
- 
--const struct regmap_config bmi323_i2c_regmap_config = {
-+static const struct regmap_config bmi323_i2c_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 16,
- 	.max_register = BMI323_CFG_RES_REG,
-diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
-index 6dc3352dd714..7b1e8127d0dd 100644
---- a/drivers/iio/imu/bmi323/bmi323_spi.c
-+++ b/drivers/iio/imu/bmi323/bmi323_spi.c
-@@ -41,7 +41,7 @@ static struct regmap_bus bmi323_regmap_bus = {
- 	.write = bmi323_regmap_spi_write,
- };
- 
--const struct regmap_config bmi323_spi_regmap_config = {
-+static const struct regmap_config bmi323_spi_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 16,
- 	.pad_bits = 8,
--- 
-2.20.1
+Best regards,
+Krzysztof
 

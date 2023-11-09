@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7CA7E66A5
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 10:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 625DC7E66A8
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 10:25:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbjKIJY3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Nov 2023 04:24:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58900 "EHLO
+        id S231336AbjKIJZS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Nov 2023 04:25:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232537AbjKIJY1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 04:24:27 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E37C2715
-        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 01:24:25 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c5087d19a6so8032181fa.0
-        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 01:24:25 -0800 (PST)
+        with ESMTP id S230343AbjKIJZS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 04:25:18 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6ABA2590
+        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 01:25:15 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40891d38e3fso3949775e9.1
+        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 01:25:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699521863; x=1700126663; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699521914; x=1700126714; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GJXwtGH444zWAkMF0YaXFftVh4rdmoenRc414KVxGjw=;
-        b=jfYVJhg19eGzQMwTFoQj64+HyA1rz3C966QfuV9bgxJ7eAFseVFeGuFtOwwbuMwp6b
-         HIASFAf2i6wiS2DVScLaoIeU3dbSec+i0HTslsPwBfTWbS8hqVrHYlXTI7ib/JVptj+h
-         +wizGCjk9K/ywuDCedvKKkh+woKom//dbhC2spluDjt48/wwh9H4No9r+HumRp9vhSjM
-         /m++LBYnQ8xwEirG7rmbkIN1Fe7PdEN+vMUQapvob4s93XliPUokP3ojBr6KiFTnifni
-         HJcYMm7WUh2tQU9BtVE08/7du1zKrLyj11fL4t6dhDj2OubTNOSLwyUQd6YU08bemj8e
-         dUvw==
+        bh=yu2Bz99YrHG5h0t1Y6EH0ZA0tC0nMOJamXBuRqnWXC8=;
+        b=jvdpy4Ser3d1uGlzejIf4w4G0i70OsMmPg9fDd/l6mLPELTB9zn+y6gZ7RiojjIyh4
+         P0QoN+VOxgObif00JHJkb8QsBPu4V8yumaCB08CZdY9EPq3EN5lbQKysMK3ejtfxAJQs
+         7btoAQf3uu9AY0Z33WNyzLWZj+SSdgkyBJPKesbeBJBnXa54wqJ/zqDjsUOnHmKX/nXE
+         e257pW5udQ/FrtZZ9v4oa7TY9cOxJoNPh/uXAjhd3pfxRUCYej8+iX16YkkN1c1sL+TW
+         ENNP+eUM7TdwGI0tThgQg9bxZ+ijy437zv4XNSyp0c/92Ujt2mULJD3Ikac4qO/GwOdz
+         pPrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699521863; x=1700126663;
+        d=1e100.net; s=20230601; t=1699521914; x=1700126714;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GJXwtGH444zWAkMF0YaXFftVh4rdmoenRc414KVxGjw=;
-        b=avQQSJDXymZYJ+quBgusT2Av0qulBUmJtnTm9dMXN0NZAyGwUpZ0mU19JayzkDoxoH
-         4LEEF3YEM2IPcuF5mIgO5kasXSkgc18sX4YlY/YRxFus0nQkGSLAOkzFt+XxAChrDOlY
-         MqQJj57T66+fcoTgqOD8A/5dKayYqRti57QamvrallGpBUcwaniezc0kk1uAEM+0MujE
-         WFX/uJZHe13Db2pU0m+kd1RPZKbIYnh7EFjP/hPof2mgsVzyLLWrOr6UkpPQXNVw6537
-         xkrhu9I0V1Ucr5uSoWweJNrbpeSAZEtgk4uLH+4rmNHurejto8GJy+kKJ2U4b928R0If
-         VW7w==
-X-Gm-Message-State: AOJu0Yyn6Fhyp+4kwdXD7FWGKt8J9de1H68RX4GYnh5eG6qgHMCnpW5F
-        3DSmJEzu3JsqmscdtAJ/sBBxqQ==
-X-Google-Smtp-Source: AGHT+IEEEgniggdXEwd1Az6e0zq7vQfx8tuSWIp2nkiNYCiHxXxoGWsnXEy2YIzFG1tySpUNPhTmOg==
-X-Received: by 2002:a2e:92d7:0:b0:2c5:5926:de15 with SMTP id k23-20020a2e92d7000000b002c55926de15mr3949688ljh.4.1699521863507;
-        Thu, 09 Nov 2023 01:24:23 -0800 (PST)
+        bh=yu2Bz99YrHG5h0t1Y6EH0ZA0tC0nMOJamXBuRqnWXC8=;
+        b=VZBkqhxtIjQdeK+pVGjNWIolzPqz55+TvbLXNlvsf5202NCJCu1WOMB814kt5/Q1w+
+         ATU2P2J23UMRt46siYwWhbB9Z3CZl18mixY+5dTXYT+5zckVgnkz6k0qdpZ8PNI+vcNU
+         uzZexKrszt1H8HYlAlZx07OX7MvsdoDZ3GyHIjfYIbxvHQRWOWEKNNhQ7cFLk/PJ1+Rl
+         yazHRz5BHW7xKh7Cn5y+tKSuRO1zN4vFroT9mlEkOY8kmS00N4jphhV6kc0HTvKCzSlN
+         g4iN/rYIAEY01blnpIJJVS7Zc4fLtmZPtI5w8joG+q6p9GyPoDgPm+5RSj5B+raCGf3d
+         wjGA==
+X-Gm-Message-State: AOJu0YyGKR6lPOF+++n9C1bgL1MEvXe1uLuFj/oN7llZ3yGMEuNHw+Wz
+        gKLyVM5V/10gVmLujt+KXmm1Ew==
+X-Google-Smtp-Source: AGHT+IGTTi0ZOvPJDH/f1JrRFhzq/J3p7AbUhC2yL0SaCLLNBTHANBNQEnr6WAubJuMuZOxdIBqFjg==
+X-Received: by 2002:a05:600c:293:b0:406:8c7a:9520 with SMTP id 19-20020a05600c029300b004068c7a9520mr3754318wmk.36.1699521914246;
+        Thu, 09 Nov 2023 01:25:14 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id 16-20020a05600c021000b004060f0a0fdbsm1443026wmi.41.2023.11.09.01.24.21
+        by smtp.gmail.com with ESMTPSA id 16-20020a05600c021000b004060f0a0fdbsm1443026wmi.41.2023.11.09.01.25.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 01:24:22 -0800 (PST)
-Message-ID: <15132bda-49c8-4cf9-82c5-a65c390088d7@linaro.org>
-Date:   Thu, 9 Nov 2023 10:24:20 +0100
+        Thu, 09 Nov 2023 01:25:13 -0800 (PST)
+Message-ID: <14ef8548-04ed-4158-93cf-85d5c1cd89e0@linaro.org>
+Date:   Thu, 9 Nov 2023 10:25:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] dt-bindings: iio: adc: add smb139x
+Subject: Re: [PATCH v3 5/6] dt-bindings: arm: qcom: Add oneplus-lemonade(p)
 Content-Language: en-US
 To:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -74,7 +74,7 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
- <20231108-nia-sm8350-for-upstream-v3-1-18a024b5c74c@igalia.com>
+ <20231108-nia-sm8350-for-upstream-v3-5-18a024b5c74c@igalia.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -120,7 +120,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-1-18a024b5c74c@igalia.com>
+In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-5-18a024b5c74c@igalia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -128,17 +128,25 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 08/11/2023 18:50, Nia Espera wrote:
-> Bindings for a charger controller chip found on sm8350
-
-Qualcomm SM8350. But then it is confusing because SM8350 does not have a
-charger inside.
-
-subject: qcom prefix or Qualcom smb139x
+> Document the devicetree bindings for oneplus-lemonade and oneplus-lemonadep.
 > 
 > Signed-off-by: Nia Espera <nespera@igalia.com>
 > ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+> index adbfaea32343..a1e7a9e8c6ff 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -972,6 +972,8 @@ properties:
+>                - microsoft,surface-duo2
+>                - qcom,sm8350-hdk
+>                - qcom,sm8350-mtp
+> +              - oneplus,lemonade
+> +              - oneplus,lemonadep
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Still not correct order. 'q' is not before 'o'. The order is alphabetical.
 
 Best regards,
 Krzysztof

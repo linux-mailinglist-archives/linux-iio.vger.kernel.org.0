@@ -2,79 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 625DC7E66A8
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 10:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C7A27E67FB
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 11:27:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231336AbjKIJZS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Nov 2023 04:25:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
+        id S234055AbjKIK10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Nov 2023 05:27:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjKIJZS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 04:25:18 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6ABA2590
-        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 01:25:15 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40891d38e3fso3949775e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 01:25:15 -0800 (PST)
+        with ESMTP id S233832AbjKIK1O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 05:27:14 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC112D73
+        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 02:27:11 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-32d81864e3fso372113f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 02:27:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699521914; x=1700126714; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699525629; x=1700130429; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yu2Bz99YrHG5h0t1Y6EH0ZA0tC0nMOJamXBuRqnWXC8=;
-        b=jvdpy4Ser3d1uGlzejIf4w4G0i70OsMmPg9fDd/l6mLPELTB9zn+y6gZ7RiojjIyh4
-         P0QoN+VOxgObif00JHJkb8QsBPu4V8yumaCB08CZdY9EPq3EN5lbQKysMK3ejtfxAJQs
-         7btoAQf3uu9AY0Z33WNyzLWZj+SSdgkyBJPKesbeBJBnXa54wqJ/zqDjsUOnHmKX/nXE
-         e257pW5udQ/FrtZZ9v4oa7TY9cOxJoNPh/uXAjhd3pfxRUCYej8+iX16YkkN1c1sL+TW
-         ENNP+eUM7TdwGI0tThgQg9bxZ+ijy437zv4XNSyp0c/92Ujt2mULJD3Ikac4qO/GwOdz
-         pPrg==
+        bh=xPjZqSoOPUFNGMJDM83VjmMrlwNr9JDON4HQIlUKGKY=;
+        b=c1SJrL7c5dDAfkDIq9uyrC25Lz0Ff1dCw/c47KrBQdCg+xRdCPRXJ9MA0Seda0kZva
+         b5S2T95HlXpARjkByiJQLBWcOo3QAiidUvw48veBMpqBseAdCIaE0L/UJJrqm4PG6dXM
+         bXGl8vajYEJKUaEOZt2U1yA8bVS21cFJqAaKYTbmtWKHSPHpGZ0VyfhumK1SQ0L+DfFk
+         p+Usjx4k1uJ1gayu4nMLmdBkv5HNRQPbhBIK9YVFWoxfuCR+cbjc3giuAUHaZJ+3FvD6
+         oelWVIHXy+n/Oii845BTKVcfQQB5iQGNnYG8PA1jMIF3YRQ9EeOWX8Qy8bkPaAJD8xOA
+         bhaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699521914; x=1700126714;
+        d=1e100.net; s=20230601; t=1699525629; x=1700130429;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yu2Bz99YrHG5h0t1Y6EH0ZA0tC0nMOJamXBuRqnWXC8=;
-        b=VZBkqhxtIjQdeK+pVGjNWIolzPqz55+TvbLXNlvsf5202NCJCu1WOMB814kt5/Q1w+
-         ATU2P2J23UMRt46siYwWhbB9Z3CZl18mixY+5dTXYT+5zckVgnkz6k0qdpZ8PNI+vcNU
-         uzZexKrszt1H8HYlAlZx07OX7MvsdoDZ3GyHIjfYIbxvHQRWOWEKNNhQ7cFLk/PJ1+Rl
-         yazHRz5BHW7xKh7Cn5y+tKSuRO1zN4vFroT9mlEkOY8kmS00N4jphhV6kc0HTvKCzSlN
-         g4iN/rYIAEY01blnpIJJVS7Zc4fLtmZPtI5w8joG+q6p9GyPoDgPm+5RSj5B+raCGf3d
-         wjGA==
-X-Gm-Message-State: AOJu0YyGKR6lPOF+++n9C1bgL1MEvXe1uLuFj/oN7llZ3yGMEuNHw+Wz
-        gKLyVM5V/10gVmLujt+KXmm1Ew==
-X-Google-Smtp-Source: AGHT+IGTTi0ZOvPJDH/f1JrRFhzq/J3p7AbUhC2yL0SaCLLNBTHANBNQEnr6WAubJuMuZOxdIBqFjg==
-X-Received: by 2002:a05:600c:293:b0:406:8c7a:9520 with SMTP id 19-20020a05600c029300b004068c7a9520mr3754318wmk.36.1699521914246;
-        Thu, 09 Nov 2023 01:25:14 -0800 (PST)
+        bh=xPjZqSoOPUFNGMJDM83VjmMrlwNr9JDON4HQIlUKGKY=;
+        b=xSMWYlwWsCckiyIj9CmT234AwM/ImEv8c8E8GUrKQWjeVos2y/DmcpJGEfHCbA+4o9
+         J8uQgLWEKv8l4AW3pPxwgmjQK9vZid7WIFp3jmVhBtapdNjzPNe14eET6VAt5R0fz4ia
+         UFe/cYsV+GgniS5a1tKTGF8PaaAjngF7nT+KNL0H2Xw8+olBx2qgy/qzEvHQWFeRS+3w
+         jn2dsgKRE4Cjs93sIc1drjhg5DK/VzGbsGux7GG2TdgsU9f5Dm4CQfdicUFMjtzcAsc7
+         FbW3mQc7Z5I/6QOQWDEXIcrzppWhXE/hlGzBVtoQBCaXl6bdJTm1cXWggmHR1z2/PcUt
+         xt4w==
+X-Gm-Message-State: AOJu0YxTdWu69eY8sQSfpDYoJ53SUrhVcBfaaFFz3Jo1e3nYl1athMZD
+        i6p1/rlTaJE+WYTDoD/1Cg99gw==
+X-Google-Smtp-Source: AGHT+IHDfZPEt8fjvIOuKozIo0wUuMjDPZMUhrM6VSOGwD64Tmr4U/laOnrM1sIddBTVvWmXzzPCxg==
+X-Received: by 2002:a5d:6483:0:b0:32f:7ae7:da49 with SMTP id o3-20020a5d6483000000b0032f7ae7da49mr3137589wri.51.1699525629601;
+        Thu, 09 Nov 2023 02:27:09 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id 16-20020a05600c021000b004060f0a0fdbsm1443026wmi.41.2023.11.09.01.25.12
+        by smtp.gmail.com with ESMTPSA id s1-20020adff801000000b003313069be5dsm2519379wrp.46.2023.11.09.02.27.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 01:25:13 -0800 (PST)
-Message-ID: <14ef8548-04ed-4158-93cf-85d5c1cd89e0@linaro.org>
-Date:   Thu, 9 Nov 2023 10:25:12 +0100
+        Thu, 09 Nov 2023 02:27:09 -0800 (PST)
+Message-ID: <f7fea4d1-c1ae-4ab5-bcbd-30683ad7a349@linaro.org>
+Date:   Thu, 9 Nov 2023 11:27:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] dt-bindings: arm: qcom: Add oneplus-lemonade(p)
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: add ltr390
 Content-Language: en-US
-To:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+To:     Anshul Dalal <anshulusr@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
- <20231108-nia-sm8350-for-upstream-v3-5-18a024b5c74c@igalia.com>
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org
+References: <20231109090456.814230-1-anshulusr@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -120,33 +111,49 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-5-18a024b5c74c@igalia.com>
+In-Reply-To: <20231109090456.814230-1-anshulusr@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 08/11/2023 18:50, Nia Espera wrote:
-> Document the devicetree bindings for oneplus-lemonade and oneplus-lemonadep.
+On 09/11/2023 10:04, Anshul Dalal wrote:
+> Add binding for Lite-On LTR390 which is an Ambient/UV light sensor that
+> communicates over i2c with an address of 0x53.
 > 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-> ---
->  Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> Datasheet:
+>   https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-390UV_Final_%20DS_V1%201.pdf
 > 
-> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-> index adbfaea32343..a1e7a9e8c6ff 100644
-> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
-> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-> @@ -972,6 +972,8 @@ properties:
->                - microsoft,surface-duo2
->                - qcom,sm8350-hdk
->                - qcom,sm8350-mtp
-> +              - oneplus,lemonade
-> +              - oneplus,lemonadep
+> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
 
-Still not correct order. 'q' is not before 'o'. The order is alphabetical.
+
+> +  interrupts:
+> +    maxItems: 1
+> +    description: |
+> +      Level interrupt pin with open drain output.
+> +      The sensor pulls this pin low when the measured reading is greater than
+> +      some configured threshold.
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@53 {
+> +            compatible = "liteon,ltr390";
+> +            reg = <0x53>;
+
+Please extend the example to be complete - interrupts and vdd-supply.
 
 Best regards,
 Krzysztof

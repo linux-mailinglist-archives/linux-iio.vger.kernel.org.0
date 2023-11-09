@@ -2,150 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 578FD7E6583
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 09:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C30F7E6637
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 10:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbjKIIoE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Nov 2023 03:44:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47994 "EHLO
+        id S233992AbjKIJGx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Nov 2023 04:06:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbjKIIoD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 03:44:03 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDA81FFB
-        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 00:44:01 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-53e2308198eso859641a12.1
-        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 00:44:01 -0800 (PST)
+        with ESMTP id S233785AbjKIJGw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 04:06:52 -0500
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0C61991;
+        Thu,  9 Nov 2023 01:06:50 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1cc2f17ab26so5328555ad.0;
+        Thu, 09 Nov 2023 01:06:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699519440; x=1700124240; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=35vsNanmShIbsIQ/CaOWaGcxfHxAFdyQE7/ZwF1aI9o=;
-        b=TK4Qsd3yEXsYDTrBoQkuRZirXrnSoQVoLMz0Sx+XoF1eDX4kWfc4lnI1MQFk+ekTTo
-         dK6PJJZgJIL8l0dFFL6MZ1n/m5oSUEMrRRhiaM/Cpagh4ZOOrk9R2dwTu1QfLrGUzQGG
-         Dum2jtP8hH64dTtYhURH18lgS8DCxM1ffbOgws1ZMNNj3MkvvYkhGHauIRhF8tn2U8wH
-         q9en3LfccC6gT7Sg7VCVQmI4nIlD9lRGXAB3mhgwNnuxv+KcFL1C86sJ2k2WkYsUIZTA
-         a4igyCukXBB4oaa2ECzD4wH0M6YJodydhmuU51s1y1b2G8Zus2AN3iOaNbLqS7w0iGko
-         yQHw==
+        d=gmail.com; s=20230601; t=1699520809; x=1700125609; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z5YF1mhym/Q5SMEev62zt7snyiNJO7d0PvYNhuYeeqE=;
+        b=D8UWIU2ic9yl7l6HYdH/gLRQqAZjK6EQxAkzqOOoVv1HQ561KBQ5ragKkGqnDpwxpA
+         TJafyVeJN7R3ZipQGqAznrm+Vn2MQ+GIGGZ0P9/8QsPC3AhEmKFwfFwbJn86OVYBxEsD
+         rsY7SENFg+o6NNOeLikcBPaBWdQdNjwazvhyQL9AYiGfv4paGD/U1nU7ciWHf/nzhtlL
+         LvVsyBEClC+eBGHvKmssr0INE0k+0dD/H0PMnJ9OSkcMLdf8T1zfgci2gJ+rxtBt+W0U
+         WnNTuMRxUHiSpZacQHC6u97iBgc4c4GvFc23G1E2Cv+yJFuRvcA3y05AWwAhIClz06LX
+         RMEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699519440; x=1700124240;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=35vsNanmShIbsIQ/CaOWaGcxfHxAFdyQE7/ZwF1aI9o=;
-        b=jq8gdUM21YW2aHpd7lq/cA5j5MAchYynZu8xpqdM8bcniQO8jRoGCkiyQh1M/vyL56
-         74U9MK+iJtVv3lIDyIHc8u+g1N7ezKohpjJ9QQexpnLpNfrpZ5u8S9eE4qH3+AFrZvCD
-         YBuMLb2jG0AFxp/RuHbTmHUgFio2MUWtDvyS90BSQMxTRsoQIg9i82N/Wumpxn0V0NYt
-         rV3nqbUZ/AlHh88dl8Hk3th/beb4RMBauymKOOPws1UMcLYriNxoMGyN43N9fTH93X1p
-         e1pEjS0M924PyPc5c2F4lWnIspYk1UJiQiKRkKcZJo5i1Y8ZEiStkALUYMT3KAx6pDYj
-         ko/Q==
-X-Gm-Message-State: AOJu0Yw1qJmtH/R9MzEdZdbXQAnsimSor1e19W12QBeuEyYIX4b8G87k
-        6aN05vI+sAsUP4vlLl5AboA1wg==
-X-Google-Smtp-Source: AGHT+IGilTG5PLIakSWfbBOmuwSzVn9Q4vpK27yeci9NBpkgiiCW6FWBLz5hddciO7gi9FNUwOfEmw==
-X-Received: by 2002:a50:c04b:0:b0:53e:343a:76bf with SMTP id u11-20020a50c04b000000b0053e343a76bfmr3789177edd.1.1699519440066;
-        Thu, 09 Nov 2023 00:44:00 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id g15-20020a50d0cf000000b0053e408aec8bsm8089767edf.6.2023.11.09.00.43.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 00:43:59 -0800 (PST)
-Message-ID: <5b4b1bf9-67d5-4b27-ac68-cb6e26716d67@linaro.org>
-Date:   Thu, 9 Nov 2023 09:43:57 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: trivial-devices: add asair,ags02ma
-Content-Language: en-US
-To:     Anshul Dalal <anshulusr@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        d=1e100.net; s=20230601; t=1699520809; x=1700125609;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z5YF1mhym/Q5SMEev62zt7snyiNJO7d0PvYNhuYeeqE=;
+        b=ANmJqZdXwEGAYXFx8R3LJMFvqXuxlGRnj1HoRnKHelG74lsHYK3wk8YSTE96/2XAdC
+         lvuWXXlhjuX9guZMfZ2B53sXia4Dnh4IUIthCMCxna81zVPHCj5oqxtxKvLQW4wNIIZl
+         ZAgJX0ZurDVUjEFbRwzqGIeCvMAwr7E/jX0QKcrjynpJuDbMq3S0objy9//vZuR/gKub
+         1HaWZCb8y749SSsfk5KGfnzalR4rHSFHvE07CnHYAiZWSWa0usHtGLfmNoKdlsRBFncw
+         1Oei4Ba+5iaoEYwqh1KGpok8Z8mjGiWtfQuHLGrNOaUvo3TLOKI8sRqOnOPkEdEb9huO
+         JKSw==
+X-Gm-Message-State: AOJu0Yz/8tEllXGYaT+01Km2b7PZse72MMR6bLs0Inj3R4py64PA2Tir
+        0N15FiHQlQS8nCL7QJr/swiDxh+E3zwzgoAJ
+X-Google-Smtp-Source: AGHT+IHpxuw4Y0T35Aw4w3pOI3If9f2PAE66GTL8rfrzRIIwH9aos1ks47m6+jp20RSPJRwFSOKbmw==
+X-Received: by 2002:a17:903:2447:b0:1cc:2f9d:6e9b with SMTP id l7-20020a170903244700b001cc2f9d6e9bmr5530340pls.20.1699520809131;
+        Thu, 09 Nov 2023 01:06:49 -0800 (PST)
+Received: from localhost.localdomain ([2401:4900:2353:8963:b940:1ac0:2fbc:6b6])
+        by smtp.gmail.com with ESMTPSA id jj17-20020a170903049100b001b06c106844sm3036318plb.151.2023.11.09.01.06.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Nov 2023 01:06:48 -0800 (PST)
+From:   Anshul Dalal <anshulusr@gmail.com>
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Anshul Dalal <anshulusr@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20231107173100.62715-1-anshulusr@gmail.com>
- <20231107173100.62715-2-anshulusr@gmail.com>
- <1d5d1357-0b53-4639-add9-2b3f38aae744@linaro.org>
- <90cacd34-4812-4792-9bf0-362200431452@gmail.com>
- <77e1d308-6ac3-4200-b72a-6d5717869b06@linaro.org>
- <7501036c-4e1f-4993-97a7-6c36c7cc8358@gmail.com>
- <6f654341-a9c0-4412-ac87-5800d6122023@linaro.org>
- <e192a58e-47f8-4410-81a5-de1ebab3251d@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <e192a58e-47f8-4410-81a5-de1ebab3251d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: light: add ltr390
+Date:   Thu,  9 Nov 2023 14:34:53 +0530
+Message-ID: <20231109090456.814230-1-anshulusr@gmail.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 08/11/2023 13:53, Anshul Dalal wrote:
->> If you are unsure and you just work on some sensor not used for final
->> product, I think it's fine as is, so to add the regulator later if ever
->> needed.
-> 
-> No problem, I can add the required properties in the next patch version.
-> I need to make a few changes to the driver anyways.
-> 
-> Just out of curiosity, the sensor supports reassigning of the i2c
-> address by writing to the 0x21 register from the default address of
-> 0x1a. 
+Add binding for Lite-On LTR390 which is an Ambient/UV light sensor that
+communicates over i2c with an address of 0x53.
 
-You can list allowed addresses, but we rarely do it.
+Datasheet:
+  https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-390UV_Final_%20DS_V1%201.pdf
 
-> Is there some way to represent this in the binding.
-> For future reference, is there some exhaustive list or specification
-> document for all the allowed properties.
+Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+---
+ .../bindings/iio/light/liteon,ltr390.yaml     | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltr390.yaml
 
-Any property could be allowed so the is no list of them.
-
-dt-extract-props -v Documentation/devicetree/bindings/
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/iio/light/liteon,ltr390.yaml b/Documentation/devicetree/bindings/iio/light/liteon,ltr390.yaml
+new file mode 100644
+index 000000000000..90c20076b6c5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/liteon,ltr390.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/liteon,ltr390.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Lite-On LTR390 ALS and UV Sensor
++
++description: |
++  The Lite-On LTR390 is an ALS (Ambient Light Sensor) and a UV sensor in a
++  single package with i2c address of 0x53.
++
++  Datasheet: https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-390UV_Final_%20DS_V1%201.pdf
++
++maintainers:
++  - Anshul Dalal <anshulusr@gmail.com>
++
++properties:
++  compatible:
++    enum:
++      - liteon,ltr390
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++    description: |
++      Level interrupt pin with open drain output.
++      The sensor pulls this pin low when the measured reading is greater than
++      some configured threshold.
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        light-sensor@53 {
++            compatible = "liteon,ltr390";
++            reg = <0x53>;
++        };
++    };
+-- 
+2.42.0
 

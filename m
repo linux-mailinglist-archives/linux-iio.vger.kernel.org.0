@@ -2,143 +2,335 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9307E7E6BCB
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 14:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6459E7E6D6C
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 16:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231835AbjKIN4t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Nov 2023 08:56:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52896 "EHLO
+        id S229925AbjKIPad (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Nov 2023 10:30:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231586AbjKIN4s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 08:56:48 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCEA830CD
-        for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 05:56:45 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-40836ea8cbaso5992995e9.0
-        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 05:56:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699538204; x=1700143004; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=UdUVsB+Fa5V/7Fo8EvFFFXSCmi1exosTp91+RA1AP/c=;
-        b=H+gQ4346HRto19djaBszk1J10JdNbawzEUR69jTALUZQ5XhszVbY3paCmCeVi5zFW5
-         wE+s5v0Q9wKNhntzHll8whyhhosKOzicjqkbMLsFmVggKpTV3lrXgqCiBlAI+JdHToKf
-         RJuMQ/fpq7Z/60YSmfREfHEC6ZQffk4mMsawaSRC3wrp1uk31KVX8wtdMM5ZCvSiygGM
-         SXG6l7QPaKLxlxvihd1K1hJHwR3znY5KJ2u8SfI/rGSIbU94ay7I8RQKmdo9QyT+f5XN
-         It7ROzMZwIIS6LD3RmNc889SFFU6b7gHR0G9r7SYePcDt3LJ9kaUAZ0lj9zkELU7wZhY
-         KewQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699538204; x=1700143004;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UdUVsB+Fa5V/7Fo8EvFFFXSCmi1exosTp91+RA1AP/c=;
-        b=Pj+42bUAV4iweavzbzGMlecW2NodxgFAu6b21fih6LdtNmVtpxsCYsD7eUzTmo4kyY
-         COiJwb6+toWxNJzyYxL+qqUTA5NhYBIXlwgpM1v9UHc3iQZbJK3TgPCRsA9m6zkckXVE
-         q7vrlHm5N0C0Yxq08hMEVFcT3V/PqVV3BZTTa+wlRKrjgM4tAQkaE7AlksTRiV6WpiFg
-         KDDrxlP4X9JvGYJtem07q7+a58piFkbOzbjPE+iax36gMzZqrcIy+48D5G4sQO4jk+G6
-         3EhmYcK5KMVHLU1szCGvTQarlNBHHxDOzU8tNi+rcXN1WV592dYnMT8VPvO2dRwDSz0O
-         v0Cg==
-X-Gm-Message-State: AOJu0Yz82jcWuIXpjL2WW5Glogv0gwj6WeV6Bl1vLPM9RGxJoL6AUr8h
-        QbPrb5AkR4rzJrUFp7Edy4SyAw==
-X-Google-Smtp-Source: AGHT+IFq80bnc4Y0YHDGoChHJeDu5MEYkLy042zRjF4ThC5IvVyF5PAkbfa7DmreCRMWa870jWWNnQ==
-X-Received: by 2002:adf:e388:0:b0:32d:8830:cda1 with SMTP id e8-20020adfe388000000b0032d8830cda1mr5182050wrm.63.1699538204257;
-        Thu, 09 Nov 2023 05:56:44 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id m28-20020a056000181c00b0032f78feb826sm7454185wrh.104.2023.11.09.05.56.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 05:56:43 -0800 (PST)
-Message-ID: <0e77965c-8ca8-4d50-99e9-45ae8102964b@linaro.org>
-Date:   Thu, 9 Nov 2023 14:56:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: add ltr390
-To:     Anshul Dalal <anshulusr@gmail.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
+        with ESMTP id S229770AbjKIPac (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 10:30:32 -0500
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2074.outbound.protection.outlook.com [40.107.239.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B69187;
+        Thu,  9 Nov 2023 07:30:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A9SdhEuqTmvTRg0gZcrNfXpX7eoVBEadV8hvXz9j8m7FS1hA/YtEO667YPVnTWEaZt0af1R9/lcYXjUNtVMypIFOIxdMVnDpDaneMixI1flc88i8OLboQL7kman3JTDvXLs5+uL73kOMTIE/GLpI3JMSnkxl9u2cDeOaklC997YJdA5dYRR4GopJoMNZxtx9cbPNdb2Etkwj6pEfdodakn5xlzo/qe9SZdakzuWN3+JXYNcD+NJ/CRYGc5rIkH2IPjad/KizOz9EEz8auFTGktCHRjRsCUb0mZ5C4eqczwJ6Dki7uN3r6nvGmdViUlygz7Dx7zwvOv8NxnmidVTDhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lE69vXZKQQ9WXn48IB8HITcujG4H9VmNVVA4hOz15Ow=;
+ b=C1h83Ok3Ye3tO8XjHfUi3+vgS+ODoPVMvrxwsD89qZG9nGRDPfRRP76tGwJOFuVOFZ2xk0xQ3dV3yHh6/x5YmU1MWS5Yf9cleGehCeiCQJUumop3ew8yVwRTfp2PfH0TBfYUmugkgmujgIyMKhEzWTgViw7YKqMIHTgP9teo4Ijd7GEn0uxsyDmrPVNZNyivWSRgt/zML8KnqgnUsdC+kSSFl1cqtwWt6DZ9HouM1MvMD8DqhPwWNtV0veTQPOs8P5syfxABELtXaK13VvzBNfrlptfdGWz3SoTfQcerhm9YeD5Fv+j6pFPVp5tbRhv96uab8TQSRTkYyrW6XM9xHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
+ header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+Received: from MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a01:8::12)
+ by MAZPR01MB8039.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a01:a2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Thu, 9 Nov
+ 2023 15:30:25 +0000
+Received: from MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1848:62aa:1da4:1924]) by MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1848:62aa:1da4:1924%3]) with mapi id 15.20.6977.018; Thu, 9 Nov 2023
+ 15:30:24 +0000
+From:   Hiten Chauhan <hiten.chauhan@siliconsignals.io>
+Cc:     hiten.chauhan@siliconsignals.io,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org
-References: <20231109090456.814230-1-anshulusr@gmail.com>
- <f7fea4d1-c1ae-4ab5-bcbd-30683ad7a349@linaro.org>
- <844937f1-b3f7-4156-b60a-e9e17d8aed6e@gmail.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <844937f1-b3f7-4156-b60a-e9e17d8aed6e@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: imu: Add tilt interrupt support for inv_icm42600
+Date:   Thu,  9 Nov 2023 20:59:49 +0530
+Message-Id: <20231109152949.66809-1-hiten.chauhan@siliconsignals.io>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: PN2PR01CA0073.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:23::18) To MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:8::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MAXPR01MB4118:EE_|MAZPR01MB8039:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5956d37-8ab1-4cd6-a8d3-08dbe138cb0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6hgCdFzZ+39F2ZK7ArkXMaqLv6H2m8XjDCnjDT4IjBaME8WEGyJJhZWRP2p0kpDIa+k+vcpVYSQ2qvJqsyVvgx3bmj/xf3ahNW9YnpHJ/u3hv328XF6RvIWcasYFe+Fv4Xf2E/sq7PwHzyMVh7i/ovRemBvxddEf80gUKD3nBaVt7kVnEIzryUI1NMsxc8z7ytM0UlZweHuSgduv3ZZ9E8i3GGDVlnjLhNV2sbOLuNOjjfKV2J89xzQqWYy15egu/5fBJOxsO0AUV29fpMLC5Nt7wjXSFLPUybKKdVFUxv1AAMLp1A908MaBBR1npELgBKd/cavEHfgBaEx7jA/3tUsaND6KjCdoEmSfuBqlIbq7cA/Fyt3VZlY7SH6Piit0CUb120laZzy1/gFaLVxZuhxevbS/JbdwdBNwsx3s4xScnh8i6ItPN62RMmVqYExX0m5P2x9GlUaEPbPjCSNifn1d78A7Tuwz5MRxdRUad3bI80CnT+WuTtVHb//GzcIiufucbP+hLVReWDaMAB464HQrymFC31Z/3qK3B0F8AQzfDI6Uu7fG5ASGPPdvflGSWjCk5KY6A5WIgklGnqO4ec9apKE6enWDzdT1Mv2Eu5LQ4TboSgLnhgv0dE40OYTF1/UpZbAVdJH31Un2RK2mebZKAnUnZgpjnHZf/67TFls=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(39830400003)(396003)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(109986022)(2906002)(44832011)(6512007)(41300700001)(2616005)(6486002)(4326008)(8676002)(8936002)(5660300002)(86362001)(66946007)(38100700002)(1076003)(66476007)(26005)(66556008)(316002)(54906003)(83380400001)(478600001)(52116002)(36756003)(38350700005)(3613699003)(6506007)(6666004)(266003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?G+RmV5ujucOz7lIioajEijL6pIpp1s1vje/sFt1UxtdtE+OCd21WZ0qzQJHA?=
+ =?us-ascii?Q?xltQy/byIJkgZ2kjaYaXgVVCF/GNM7ylJPOIWrzywfjZCKu+/LWG3gv8aTao?=
+ =?us-ascii?Q?qb+WUGsSXVu4l9Rt6Ghu6h13Y2L3bvGv9h3ka677cIpjy7nY7PyxI23nYIM6?=
+ =?us-ascii?Q?Brh637CxeH3mit8vwc396+8+Hi8uryXVFbFp24J01er2aaCrCCMcqr6sxVPL?=
+ =?us-ascii?Q?B0V9kbrZq+HfMS9g7t+cvK/0z5/WgYTWmP+nr9J1lQshyBOICaNWWTYGG3xK?=
+ =?us-ascii?Q?s02GpBBh2ZVboYn1kfOibIvLEgLVwZgXZC/T2OwQUMRz5LPJUT8cXbjK67qI?=
+ =?us-ascii?Q?cgFoh7bcDYgQjj4tUPKcUqPEyZPm9fQ+e/J7YdxC6fWsYK9rkx61kDbh/Ypm?=
+ =?us-ascii?Q?5gl9mXZPoRi30ojgzkFVNh0f1vpzLB7p6G/IY5ecKsHPV12b1N4btMG1WY8j?=
+ =?us-ascii?Q?lkfFpRGfXNq8xJ8hRf4xTkoEPKLy3H8lAe8fjjB557G0foqmXHR0jlbOF7F7?=
+ =?us-ascii?Q?8cPr9z83dlCtQ0CzvUEX4H9+JCOFsmaEXi3PW4sl5hMjt9FynyuD8b1uaPPP?=
+ =?us-ascii?Q?DMMz8nX9of9JUWRRHu7lB8pX21gA2cwc6eTMDaHF9dpv0lQN8itAlkMuIjdo?=
+ =?us-ascii?Q?b5Z+PrkN8NIZC2YCr6DkEBw+9V5ARcdDlOCU3J6N2feLx0HqKoU8NsIZkcaa?=
+ =?us-ascii?Q?5YlnhCuOUFghBB2WafcLWMN2Df5+6Cn7/TIGA8YMx4PCJhzYmVMz2sY8F6VJ?=
+ =?us-ascii?Q?EkHVws+H3ELkCVf0iUumWn0Kyb7iBfIUzOVJzzLo1wqU8moWuZNCVimlAvOj?=
+ =?us-ascii?Q?afAxvN28Sy3qmfPYppVhpeJJVbLYBjQ4UMKJaUbF0AdtA/+EdN9em1Q7bA/q?=
+ =?us-ascii?Q?2T4AuQQ5UkGe+5Rr4OWAnofVcFe2RHdjYUkwwKUsIZ4ivN4QaMS0zMkapd3i?=
+ =?us-ascii?Q?Sg1ZmVj66GyffzW0ypaeLFc/nVwZdy3oVwNqPIlYJekQKvho1lt0ovaFlukD?=
+ =?us-ascii?Q?z+jgxUJg4eNNTfhZKWouZp5tKLgdnvT3hW229Sq9HMvsBWkFCNADiY2KSfcy?=
+ =?us-ascii?Q?o3d4lVp891PHyJtKrSnYUjT3sKRDv7g2+cleVbZWN4rLJpR+nnyZGm4RRyly?=
+ =?us-ascii?Q?Bs4nNblfPkoRIjuqa2qBTCi5Zkx21+AijbRnbQeIgTC/eUJ7Wd24Qyqf/1Pv?=
+ =?us-ascii?Q?yWOqEgdks3sfP1HLqwRVOi1pkEbfGNtbMh+oIHlVIijuaI9aTZdsvy5dSqjW?=
+ =?us-ascii?Q?3AdYMyCUPoLWzcehxopu6gCitxFQEepzndanZ+JBHfqciSjIkObube1i3+7m?=
+ =?us-ascii?Q?gBec0C9YhLUcbvce0T2pCOBPFQ/epnmVRT4O4JmPel6UJGEqWXOgpANjbf2a?=
+ =?us-ascii?Q?/M42hLWa0dHtaET+1W2fw+sqLdmVgAAwih+RFPbOhcwIoRlEG1Y7eSHdkopc?=
+ =?us-ascii?Q?I+M6OkNlnVoZwV5ErFZqy4B6IgdDJnPkiEQ6w8F2/GO96/gb1GX7DUWZkhY9?=
+ =?us-ascii?Q?AfF7rweXPYXpAivwUFmI7ksjjNhjGFWh1IJ2JhsDKa0LXARa3VpLwBIsz14u?=
+ =?us-ascii?Q?ZOVvvLPCMrHVDxvhLBtntww+qKpV9v9ICROvd9s9nH43IYTBERJ+/zU/zjsX?=
+ =?us-ascii?Q?RA2/C5a2+7fVV1FaBM7/vU0=3D?=
+X-OriginatorOrg: siliconsignals.io
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5956d37-8ab1-4cd6-a8d3-08dbe138cb0c
+X-MS-Exchange-CrossTenant-AuthSource: MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 15:30:24.6501
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DS8JFyEPaBDX+gvGbPNT7qrpsGdHwdl2PAjosUZsJVZJzMKPfg+fiTAr6kQM3/OVxMp5CLEdiIaYuQpa0cTtPHC//XV3P7bDrP0JGkNxbY0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MAZPR01MB8039
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 09/11/2023 11:35, Anshul Dalal wrote:
->>> +examples:
->>> +  - |
->>> +    i2c {
->>> +        #address-cells = <1>;
->>> +        #size-cells = <0>;
->>> +
->>> +        light-sensor@53 {
->>> +            compatible = "liteon,ltr390";
->>> +            reg = <0x53>;
->>
->> Please extend the example to be complete - interrupts and vdd-supply.
-> 
-> Could the following be used as a suitable example.
-> 
+Added tit interrupt support in inv_icm42600 imu driver.
 
-Yes
-
-Best regards,
-Krzysztof
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+index 0e290c807b0f..9865155b06c4 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+@@ -187,6 +187,8 @@ struct inv_icm42600_state {
+ #define INV_ICM42600_FIFO_CONFIG_STOP_ON_FULL		\
+ 		FIELD_PREP(INV_ICM42600_FIFO_CONFIG_MASK, 2)
+ 
++#define INV_ICM42600_REG_MASK        GENMASK(7, 0)
++
+ /* all sensor data are 16 bits (2 registers wide) in big-endian */
+ #define INV_ICM42600_REG_TEMP_DATA			0x001D
+ #define INV_ICM42600_REG_ACCEL_DATA_X			0x001F
+@@ -239,6 +241,7 @@ struct inv_icm42600_state {
+ #define INV_ICM42600_REG_PWR_MGMT0			0x004E
+ #define INV_ICM42600_PWR_MGMT0_TEMP_DIS			BIT(5)
+ #define INV_ICM42600_PWR_MGMT0_IDLE			BIT(4)
++#define INV_ICM42600_PWR_ACCEL_MODE			BIT(1)
+ #define INV_ICM42600_PWR_MGMT0_GYRO(_mode)		\
+ 		FIELD_PREP(GENMASK(3, 2), (_mode))
+ #define INV_ICM42600_PWR_MGMT0_ACCEL(_mode)		\
+@@ -306,6 +309,21 @@ struct inv_icm42600_state {
+ #define INV_ICM42600_WHOAMI_ICM42622			0x46
+ #define INV_ICM42600_WHOAMI_ICM42631			0x5C
+ 
++/* Register configs for tilt interrupt */
++#define INV_ICM42605_REG_APEX_CONFIG4                  0x4043
++#define INV_ICM42605_APEX_CONFIG4_MASK                 GENMASK(7,0)
++
++#define INV_ICM42605_REG_APEX_CONFIG0                  0x0056
++#define INV_ICM42605_APEX_CONFIG0_TILT_ENABLE          BIT(4)
++#define INV_ICM42605_APEX_CONFIG0                      BIT(1)
++
++#define INV_ICM42605_REG_INTF_CONFIG1                   0x404D
++#define INV_ICM42605_INTF_CONFIG1_MASK                  GENMASK(5,0)
++#define INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_EN      BIT(3)
++
++#define INV_ICM42605_REG_INT_STATUS3                   0x0038
++
++
+ /* User bank 1 (MSB 0x10) */
+ #define INV_ICM42600_REG_SENSOR_CONFIG0			0x1003
+ #define INV_ICM42600_SENSOR_CONFIG0_ZG_DISABLE		BIT(5)
+@@ -364,6 +382,8 @@ typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+ extern const struct regmap_config inv_icm42600_regmap_config;
+ extern const struct dev_pm_ops inv_icm42600_pm_ops;
+ 
++extern uint8_t inv_icm42605_int_reg;
++
+ const struct iio_mount_matrix *
+ inv_icm42600_get_mount_matrix(const struct iio_dev *indio_dev,
+ 			      const struct iio_chan_spec *chan);
+@@ -395,4 +415,8 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st);
+ 
+ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev);
+ 
++int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st);
++
++int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st);
++
+ #endif
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index b1e4fde27d25..2afa38547f52 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -47,6 +47,8 @@
+ 		.ext_info = _ext_info,					\
+ 	}
+ 
++uint8_t inv_icm42605_int_reg = 0;
++
+ enum inv_icm42600_accel_scan {
+ 	INV_ICM42600_ACCEL_SCAN_X,
+ 	INV_ICM42600_ACCEL_SCAN_Y,
+@@ -60,6 +62,74 @@ static const struct iio_chan_spec_ext_info inv_icm42600_accel_ext_infos[] = {
+ 	{},
+ };
+ 
++static ssize_t tilt_interrupt_show(struct device *dev,
++                               struct device_attribute *attr, char *buf)
++{
++	struct inv_icm42600_state *st = dev_get_drvdata(dev);
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(st->map, inv_icm42605_int_reg, &val);
++
++	if (ret != 0) {
++		return ret;
++	}
++
++	snprintf(buf, PAGE_SIZE, "Read reg %x value %x\n", inv_icm42605_int_reg, val);
++
++	return strlen(buf);
++}
++
++static ssize_t tilt_interrupt_store(struct device *dev,
++		struct device_attribute *attr, const char *buf,
++		size_t count)
++{
++	struct inv_icm42600_state *st = dev_get_drvdata(dev);
++        int ret;
++        int value;
++
++        if (!st) {
++                return -EINVAL;
++        }
++
++	if (kstrtoint(buf, 10, &value)) {
++            return -EINVAL;
++        }
++
++	inv_icm42605_int_reg = INV_ICM42605_REG_INT_STATUS3;
++
++	switch (value) {
++            case 1:
++                ret = inv_icm42605_generate_tilt_interrupt(st);
++                if (ret != 0) {
++                    return -EIO;
++                }
++                break;
++            case 0:
++                ret = inv_icm42605_disable_tilt_interrupt(st);
++                if (ret != 0) {
++                    return -EIO;
++                }
++                break;
++            default:
++                return -EINVAL;
++        }
++
++        return count;
++}
++
++static DEVICE_ATTR(tilt_interrupt, S_IRUGO | S_IWUSR,
++                   tilt_interrupt_show, tilt_interrupt_store);
++
++static struct attribute *icm42605_attrs[] = {
++        &dev_attr_tilt_interrupt.attr,
++	NULL,
++};
++
++static const struct attribute_group icm42605_attrs_group = {
++        .attrs = icm42605_attrs,
++};
++
+ static const struct iio_chan_spec inv_icm42600_accel_channels[] = {
+ 	INV_ICM42600_ACCEL_CHAN(IIO_MOD_X, INV_ICM42600_ACCEL_SCAN_X,
+ 				inv_icm42600_accel_ext_infos),
+@@ -702,6 +772,7 @@ static const struct iio_info inv_icm42600_accel_info = {
+ 	.update_scan_mode = inv_icm42600_accel_update_scan_mode,
+ 	.hwfifo_set_watermark = inv_icm42600_accel_hwfifo_set_watermark,
+ 	.hwfifo_flush_to_buffer = inv_icm42600_accel_hwfifo_flush,
++	.attrs = &icm42605_attrs_group,
+ };
+ 
+ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
+@@ -791,3 +862,67 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
+ 
+ 	return 0;
+ }
++
++int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st)
++{
++	int ret;
++	int val;
++	char sleep = 10;
++
++	ret = regmap_update_bits(st->map, INV_ICM42605_REG_APEX_CONFIG4,
++                                 INV_ICM42605_APEX_CONFIG4_MASK, 0);
++        if (ret)
++                return ret;
++
++	val = INV_ICM42600_PWR_ACCEL_MODE;
++	ret = regmap_write(st->map, INV_ICM42600_REG_PWR_MGMT0, val);
++        if (ret)
++                return ret;
++
++	val = INV_ICM42605_APEX_CONFIG0;
++	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
++        if (ret)
++                return ret;
++
++	val = INV_ICM42600_SIGNAL_PATH_RESET_DMP_MEM_RESET;
++	ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET, val);
++        if (ret)
++                return ret;
++
++	msleep(sleep);
++
++	val = INV_ICM42600_SIGNAL_PATH_RESET_DMP_INIT_EN;
++	ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET, val);
++        if (ret)
++                return ret;
++
++	val = INV_ICM42605_APEX_CONFIG0_TILT_ENABLE |
++	      INV_ICM42605_APEX_CONFIG0;
++	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
++        if (ret)
++                return ret;
++
++	ret = regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
++                                 INV_ICM42605_INTF_CONFIG1_MASK,
++				 INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_EN);
++        if (ret)
++                return ret;
++
++	return 0;
++}
++
++int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st)
++{
++	int ret;
++
++	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, 0);
++        if (ret)
++                return ret;
++
++	ret = regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
++			INV_ICM42605_INTF_CONFIG1_MASK, 0);
++	if (ret)
++		return ret;
++
++	return 0;
++}
+-- 
+2.25.1
 

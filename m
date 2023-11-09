@@ -2,175 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF0D7E64CE
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 08:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB6877E6531
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Nov 2023 09:23:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232781AbjKIHzk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Nov 2023 02:55:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53426 "EHLO
+        id S233179AbjKIIXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Nov 2023 03:23:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232613AbjKIHzj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 02:55:39 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EE81716;
-        Wed,  8 Nov 2023 23:55:37 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9becde9ea7bso349223166b.0;
-        Wed, 08 Nov 2023 23:55:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699516535; x=1700121335; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4DT7KbStmBKIyXguUJVsEhwW3sZLd8u/CViWdFU++us=;
-        b=PDzgTFvd+vBIfxWwAaPCtNmC6E9/9arN58U7XKlT67+1m0S8qhNjcl3yj8HGgLYQXb
-         eiiumBNylBlJETv+eEhY54Utk6xRCGqKAiZ1vASUuqfRjbP4z/o58w94TBBqW9dWSgeY
-         KLrfa7z/mdv3U7J8uzK1TAOLGC7riRbRCm6ScheKHPiUk4Egd1Dy/QPuZ2+2wOSHzwtB
-         bAfvnKwuMemfOWcwWAcQg94Veob2Jkb7+6JmhaDmib8CxOTwc+s3W9iZR8+TE7FJtSyY
-         VZlfu6JiqnrHFI8VsPY37rQVB09ZduCUilTPjUv+RBAWSlxQ84gAVebF3/CLRQLSE6FS
-         d9jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699516535; x=1700121335;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4DT7KbStmBKIyXguUJVsEhwW3sZLd8u/CViWdFU++us=;
-        b=wfev15Sq+ak0ImmOv/FpaMeDxH0S3SVi8TfsGjC+9ijHLuCJJDszOC5LQowaHHUj+e
-         mS/p60TBOTvGkhGblnOw+orToUfQoUmWda0pJiB0AGmTZPHrGk3rIELPGrrSHkGcnDJw
-         hRioYjGDwdrMXkp3yRzyaw9N1rX2Db1qlX7Lqqvu5THBJgyT+ZAoHI5jXaQD2831wVaO
-         p0BlD3tHMEBSn87/z54BCSmwzrbEyxdxQTUukMjuFjkMVd6LMHKyUWWcpkZecJoMaOMM
-         ahpHAEkslMoZmfXThfETS8CH97jVza42erJ6iAnPnx5cGOr/6kbDEevwniXCznXjHM40
-         nWFA==
-X-Gm-Message-State: AOJu0Yye6Graya7mkQYgjkbin5K5bD6cA3Ttu8NTo1JL17p9yq3dxyYu
-        K2mLlEnp2TJBoyGRyET75dw=
-X-Google-Smtp-Source: AGHT+IHoZaA0GKZk6O7gCurRmuDoN2dF5sTBZ6TfLPTfaTomNuRl4tfRrqcffYnM+MhuHKNZcDUzIw==
-X-Received: by 2002:a17:907:d89:b0:9bd:d405:4e8a with SMTP id go9-20020a1709070d8900b009bdd4054e8amr4394735ejc.17.1699516535329;
-        Wed, 08 Nov 2023 23:55:35 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:361b:8f29:1cbf:5e69? (p200300f6ef1b2000361b8f291cbf5e69.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:361b:8f29:1cbf:5e69])
-        by smtp.gmail.com with ESMTPSA id bo17-20020a170906d05100b009dddec5a96fsm2234918ejb.170.2023.11.08.23.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 23:55:34 -0800 (PST)
-Message-ID: <9b9df9a9dec28ff46fef6df1c482e5a09f338891.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: amplifiers: hmc425a: add support for
- ADRF5740 Attenuator
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Ana-Maria Cusco <anamaria.cuscoo@gmail.com>,
-        Ana-Maria Cusco <ana-maria.cusco@analog.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S233167AbjKIIXd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Nov 2023 03:23:33 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9512B273E;
+        Thu,  9 Nov 2023 00:23:31 -0800 (PST)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A96OrKd004383;
+        Thu, 9 Nov 2023 08:23:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=B+GqainagvNOtu1pq9n6NRHe6VBbgoJkIl8FNVDCxec=;
+ b=krV4FkK9QJwNboB4Fg6CPpaW3aArdIEqllJSGOJ2fRlS5qmcY6Q0J1MWrjuKHdzTtbuH
+ KzNwL+D1ZC3wId26rBbqkVDbbKIxLykIAvCOqtECJxkDBOvIeMuchLbVTkGhelvpXk8/
+ fYb/DJxNftdiStCsnLoojs64P+sZPrHFm8YlRNlgw3olMK+5Ucwdt5pttVSoUqqkDILu
+ byBG4jmj/q/3wsCfKlvasL8w2+nLgELjuMU85F0WhP2OqX6EKMmWlA6tBevxgDLiSi+v
+ Q3sLzJHIDwQjus5X7atHVvQXqLqnjQPQRDkxldoLm1eOZGDJAtRGvcjjhp9PkQiNbksU sQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u8t0nrfjm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 08:23:16 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A98NFUx009181
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 9 Nov 2023 08:23:15 GMT
+Received: from [10.218.16.59] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 9 Nov
+ 2023 00:23:08 -0800
+Message-ID: <7ccaf08e-0add-33e5-fbea-ce737e53fa28@quicinc.com>
+Date:   Thu, 9 Nov 2023 13:52:25 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 03/11] ARM: dts: qcom: Update devicetree for ADC7 rename
+ for QCOM PMICs
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        <agross@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linus.walleij@linaro.org>,
+        <Jonathan.Cameron@huawei.com>, <sboyd@kernel.org>,
+        <dmitry.baryshkov@linaro.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <marijn.suijten@somainline.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 09 Nov 2023 08:58:30 +0100
-In-Reply-To: <20231107132118.1165494-2-anamaria.cuscoo@gmail.com>
-References: <20231107132118.1165494-1-anamaria.cuscoo@gmail.com>
-         <20231107132118.1165494-2-anamaria.cuscoo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 
-MIME-Version: 1.0
+        Conor Dooley <conor+dt@kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
+        <linux-arm-msm@vger.kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <linux-arm-msm-owner@vger.kernel.org>
+References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
+ <20230708072835.3035398-4-quic_jprakash@quicinc.com>
+ <839cfac2-8f74-3386-5854-e3fb2ba4e07f@linaro.org>
+ <27b5806f-ef15-7a90-5adc-5ee12690f2ca@quicinc.com>
+ <7af782f3-fe6c-415b-a993-55962845a102@linaro.org>
+From:   Jishnu Prakash <quic_jprakash@quicinc.com>
+In-Reply-To: <7af782f3-fe6c-415b-a993-55962845a102@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 2NcRwwyqo7OSH7oFqVYuiZwco9kz_LKS
+X-Proofpoint-GUID: 2NcRwwyqo7OSH7oFqVYuiZwco9kz_LKS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-09_07,2023-11-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=605 spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311090068
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2023-11-07 at 15:21 +0200, Ana-Maria Cusco wrote:
-> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
->=20
-> This adds support for the Analog Devices ADRF5740 2 dB LSB, 4-Bit,
-> Silicon Digital Attenuator, 10 MHz to 60 GHz
->=20
-> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-> ---
-> =C2=A0drivers/iio/amplifiers/hmc425a.c | 23 +++++++++++++++++++++++
-> =C2=A01 file changed, 23 insertions(+)
->=20
-> diff --git a/drivers/iio/amplifiers/hmc425a.c
-> b/drivers/iio/amplifiers/hmc425a.c
-> index e87d35d50a95..ed4d72922696 100644
-> --- a/drivers/iio/amplifiers/hmc425a.c
-> +++ b/drivers/iio/amplifiers/hmc425a.c
-> @@ -5,6 +5,7 @@
-> =C2=A0 * Copyright 2020 Analog Devices Inc.
-> =C2=A0 */
-> =C2=A0
-> +#include <linux/bitops.h>
-> =C2=A0#include <linux/device.h>
-> =C2=A0#include <linux/err.h>
-> =C2=A0#include <linux/gpio/consumer.h>
-> @@ -22,6 +23,7 @@
-> =C2=A0enum hmc425a_type {
-> =C2=A0	ID_HMC425A,
-> =C2=A0	ID_HMC540S,
-> +	ID_ADRF5740
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct hmc425a_chip_info {
-> @@ -74,6 +76,10 @@ static int hmc425a_read_raw(struct iio_dev *indio_dev,
-> =C2=A0		case ID_HMC540S:
-> =C2=A0			gain =3D ~code * -1000;
-> =C2=A0			break;
-> +		case ID_ADRF5740:
-> +			code =3D code & BIT(3) ? code & ~BIT(2) : code;
-> +			gain =3D code * -2000;
-> +			break;
-> =C2=A0		}
-> =C2=A0
-> =C2=A0		*val =3D gain / 1000;
-> @@ -113,6 +119,10 @@ static int hmc425a_write_raw(struct iio_dev *indio_d=
-ev,
-> =C2=A0	case ID_HMC540S:
-> =C2=A0		code =3D ~((abs(gain) / 1000) & 0xF);
-> =C2=A0		break;
-> +	case ID_ADRF5740:
-> +		code =3D (abs(gain) / 2000) & 0xF;
-> +		code =3D code & BIT(3) ? code | BIT(2) : code;
-> +		break;
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	mutex_lock(&st->lock);
-> @@ -165,6 +175,7 @@ static const struct iio_chan_spec hmc425a_channels[] =
-=3D {
-> =C2=A0static const struct of_device_id hmc425a_of_match[] =3D {
-> =C2=A0	{ .compatible =3D "adi,hmc425a", .data =3D (void *)ID_HMC425A },
-> =C2=A0	{ .compatible =3D "adi,hmc540s", .data =3D (void *)ID_HMC540S },
-> +	{ .compatible =3D "adi,adrf5740", .data =3D (void *)ID_ADRF5740 },
-> =C2=A0	{},
-> =C2=A0};
-> =C2=A0MODULE_DEVICE_TABLE(of, hmc425a_of_match);
-> @@ -188,6 +199,15 @@ static struct hmc425a_chip_info hmc425a_chip_info_tb=
-l[] =3D
-> {
-> =C2=A0		.gain_max =3D 0,
-> =C2=A0		.default_gain =3D -0x10, /* set default gain -15.0db*/
-> =C2=A0	},
-> +	[ID_ADRF5740] =3D {
-> +		.name =3D "adrf5740",
-> +		.channels =3D hmc425a_channels,
-> +		.num_channels =3D ARRAY_SIZE(hmc425a_channels),
-> +		.num_gpios =3D 4,
-> +		.gain_min =3D -22000,
-> +		.gain_max =3D 0,
-> +		.default_gain =3D 0xF, /* set default gain -22.0db*/
-> +	},
-> =C2=A0};
-> =C2=A0
-> =C2=A0static int hmc425a_probe(struct platform_device *pdev)
-> @@ -229,6 +249,9 @@ static int hmc425a_probe(struct platform_device *pdev=
-)
-> =C2=A0	indio_dev->info =3D &hmc425a_info;
-> =C2=A0	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> =C2=A0
-> +	/* Set default gain */
-> +	hmc425a_write(indio_dev, st->gain);
-> +
+Hi Krzysztof,
 
-This is an unrelated change. It's simple enough to sneak it in but you shou=
-ld at
-least mention it in the commit message.
+On 10/23/2023 12:02 PM, Krzysztof Kozlowski wrote:
+> On 23/10/2023 08:09, Jishnu Prakash wrote:
+>> Hi Krzysztof,
+>>
+>> On 7/9/2023 10:48 PM, Krzysztof Kozlowski wrote:
+>>> On 08/07/2023 09:28, Jishnu Prakash wrote:
+>>>> The name "ADC7" needs to be replaced with the name "ADC5_GEN2"
+>>>> everywhere to match the convention used for these ADC peripherals
+>>>> on Qualcomm Technologies, Inc. PMICs. Update devicetree files for
+>>> We do not rename compatibles to match convention. Please provide proper
+>>> rationale.
+>> I'll avoid renaming the compatible directly, will just mark it
+>> deprecated - but is it fine to do the other changes, for updating the
+>> macro names used in devicetree (replacing the ADC7 macros with the ADC5
+>> Gen2 macros)?
+> Please provide proper rationale why "ADC7 needs to be replaced". Your
+> marketing is not a proper rationale.
 
 
-With that,
+The name "ADC7" was the one used internally at first, but it got changed 
+later to "ADC5 Gen2" by our HW team, after we had added this support 
+both downstream and upstream. Since we are now adding support for the 
+next generation named "ADC5 Gen3", we thought it would be helpful to 
+indicate in some way that this generation (ADC7) lies between the 
+earlier ADC5 and the latest ADC5 Gen3.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Since you do not want us to modify the existing bindings, is it fine if 
+I just add a new compatible for ADC5 Gen2 and comments to indicate the 
+ADC7 compatible should be considered deprecated?
 
+If you are not convinced, we can drop the Gen2 name related changes from 
+the patch series.
+
+
+>
+>> I do see an example of a macro change in devicetree done in this patch:
+>> https://lore.kernel.org/all/cover.1646388139.git.zong.li@sifive.com/.
+>>
+>> Patch 2 here replaced some macro definitions:
+>> https://lore.kernel.org/all/f9284873c2993a9952d9fe4f8dd5e89f20daab75.1646388139.git.zong.li@sifive.com/.
+>>
+>> Patch 3 made the corresponding update in devicetree files:
+>> https://lore.kernel.org/all/db92d209fa700f7da8bc8028083476fcc138d80e.1646388139.git.zong.li@sifive.com/.
+> And what is rationale in that patchset?
+
+
+Right, I see that the change was made to refactor the driver code and 
+avoid unused variable errors, not just a name change.
+
+Thanks,
+
+Jishnu
+
+
+>
+>>
+>>   From this mail, it looks like the maintainer was willing to pick them
+>> at that time:
+>> https://lore.kernel.org/all/20220315225652.CDAD1C340E8@smtp.kernel.org/,
+>> would something similar be possible here?
+> For stated before marketing reasons - no, would not be possible.
+>
+> Best regards,
+> Krzysztof
+>

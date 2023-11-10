@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-3-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DE27E7F13
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 18:49:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013BA7E7F0C
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 18:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EE52B22293
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 17:49:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 218971C20F19
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 17:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E86C3D3AA;
-	Fri, 10 Nov 2023 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3C83D38D;
+	Fri, 10 Nov 2023 17:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l2JsI4A3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H9xuSCtg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574133C6A9
-	for <linux-iio@vger.kernel.org>; Fri, 10 Nov 2023 17:46:57 +0000 (UTC)
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A939E886F
-	for <linux-iio@vger.kernel.org>; Thu,  9 Nov 2023 23:58:16 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4083740f92dso12929685e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 09 Nov 2023 23:58:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80323C09D
+	for <linux-iio@vger.kernel.org>; Fri, 10 Nov 2023 17:46:54 +0000 (UTC)
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9742AD2D
+	for <linux-iio@vger.kernel.org>; Fri, 10 Nov 2023 02:59:11 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c79d8b67f3so10685711fa.0
+        for <linux-iio@vger.kernel.org>; Fri, 10 Nov 2023 02:59:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699603095; x=1700207895; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1699613950; x=1700218750; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CmNsSkxGNQJ9Q4GP0q3MvT9no1MR/Ri0odVIQEptAvk=;
-        b=l2JsI4A3ypjEZ3AJjIqfhYM9UrYSuWsC3igICfZ6Jp91/KeHpFC6ryJ8IMFoN9U/nb
-         zni6vUO5a9PgydZmLUVlkinp5VIQ3tiIYoAPGK0EFhQTWXhPbz2ubNxMpQJIasdx1iyO
-         eq8nsby6nz+4tQqE8lhqmS6D3whw0ikHK5xf2TDk4YJ/cHbJL/6WfPAH80lz7o56lzne
-         EGD0nvfeDKVO3aiGEbWyaB58BhS0lLU6fSk06UYniqe2IHRJMo8859RQqx3wjf8V8Beh
-         2oE6Hvp2228G4lxQl1zOELU0IYHi9YCBTAQnWRauzh5uZ2z2TEZk15bX9dVwwSmiJ6c6
-         Vqzg==
+        bh=0YtnsbkjgNmMK4oNQZ7/5K+J2+w6BQuYkA1R55uanv0=;
+        b=H9xuSCtgkd1Sge/1+o+eAXBgf1VOw6JF7k8n1LTvU79ZEoxEBKaI2d5ZWY1uNpHj3v
+         y7c+ht+oJLkH/2pYb2mxBhS4m5aHfRWApEGmxoESQRCZzEOYLfy7ycc3YKP0gdqT6jPq
+         G440DDmzcP897L86yXklBylW5UDVXcjk1srblmTCraQNopxQPuWxP8ev1cI/vbgeLkAw
+         HfBRXccCQ4DwP82b8Y1AsuuXkEOUejvyjrWu31Zw5e8PmHili6m8ZT+mTSNAXISVTbfU
+         OLl+hhpfHxagm29fwkE+2vOebAYo8uSCxU2qr2fncUIUZhmiYjcrxWrv8QTVKz0lwnNA
+         Rm7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699603095; x=1700207895;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1699613950; x=1700218750;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CmNsSkxGNQJ9Q4GP0q3MvT9no1MR/Ri0odVIQEptAvk=;
-        b=Dt+2qs2SsOZw6slm+IWd2Te+hMZrOPS1r0hv/nts7wkz8SZc8vpiYjhlSqgc2VtSvg
-         NP2Vf9xrqNDDeIaweEkdBzkOUCfPbE7LzqmvyPuuP6T2EClqeV7Eh1Rd1qx2zVmpc8K9
-         4tOXfesJ9D3JTddD0ISRipdAYhIa7BNNNIClxICJGNzu3V5cgWZb27vkY8YGDe0n2V90
-         guaAPYf/FoDb4JxZDFLWASobEBNoiyG+gZ/Y2WzdMB+Q+TJJn91Z7RiXWeMG7ctvWMTA
-         g04JYqnpBu4zdZ2Q/ErVLUQdXDVmRIOKPXvUUhTFMcDz01rq4+BS0Cl17JCQ0qlSgdta
-         Omjw==
-X-Gm-Message-State: AOJu0YzfdHYBU3a+ziFjz35ZyQE/i5WE94lXTn/sklaU/aGekfdeaVW+
-	tQFDdvEQog89JYAe+AOmR3jSgg==
-X-Google-Smtp-Source: AGHT+IGZKQiVi/l3PE3rMUGuuZB9Ya3QDCrJYK8NJRwEd76ii8VtTRZDdWH3qx39UjTk9tcaifEFJA==
-X-Received: by 2002:a05:6000:188c:b0:32d:9850:9e01 with SMTP id a12-20020a056000188c00b0032d98509e01mr4958052wri.61.1699603095075;
-        Thu, 09 Nov 2023 23:58:15 -0800 (PST)
+        bh=0YtnsbkjgNmMK4oNQZ7/5K+J2+w6BQuYkA1R55uanv0=;
+        b=uQ+rzAberYRqlTYlXvS1b1jnP/Esh1J0K3bzEZQ0QqHa6jvMJXpJrSwKhSqfKBEQDL
+         zIJkowAf7bpyLyNnMBVz8hcS+iauNlemwpR8xheAxLrmWLYlyMRJz3nWK+rPtgriQ5/W
+         gIk5/+gsJukXd0WH0UioKDoJI+XzGWGYtnOrcftg63QMmbWTI21DQdsJCV1Z2wroaRMr
+         c3FJT2NX08zzGxUBR5VsmsCmAujP9SBYRTnDWRjLNdD2NyOAkkIZdBmQQLag4cCQ/rHw
+         l3JiNuW4OJ17AoUajB8L/RWYQwVNtP0B8xhUcCX0JY8P04ondHDrSjYWNU1St4By9Qqe
+         X0/w==
+X-Gm-Message-State: AOJu0YwsHA5SC+yYOR/I7kq7WZqhaqxXgwMXz3ye+Ch+PfpPVhCk/+xt
+	2E5FLU5cNcV+/UAOHSdqYJehxw==
+X-Google-Smtp-Source: AGHT+IFSVrapyybW2AyJuImHeeidk8TiEnVGijxqBCd8mmjR/9eba809vpDi5XMmGFAGFZO7KB9ltA==
+X-Received: by 2002:a05:651c:2dd:b0:2c0:318a:6ee1 with SMTP id f29-20020a05651c02dd00b002c0318a6ee1mr5343889ljo.49.1699613949943;
+        Fri, 10 Nov 2023 02:59:09 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id j17-20020adfea51000000b0032d829e10c0sm1362413wrn.28.2023.11.09.23.58.12
+        by smtp.gmail.com with ESMTPSA id z12-20020a1c4c0c000000b003fe61c33df5sm4758021wmf.3.2023.11.10.02.59.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 23:58:14 -0800 (PST)
-Message-ID: <9db77625-8dc0-4963-b200-851c209ac238@linaro.org>
-Date: Fri, 10 Nov 2023 08:58:11 +0100
+        Fri, 10 Nov 2023 02:59:09 -0800 (PST)
+Message-ID: <8114d2f9-43d8-4761-adfa-aad9ae249cbc@linaro.org>
+Date: Fri, 10 Nov 2023 11:59:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,41 +67,27 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/17] dt-bindings: i2c: exynos5: add specific compatibles
- for existing SoC
+Subject: Re: [PATCH 03/11] ARM: dts: qcom: Update devicetree for ADC7 rename
+ for QCOM PMICs
 Content-Language: en-US
-To: Alim Akhtar <alim.akhtar@samsung.com>, 'David Airlie'
- <airlied@gmail.com>, 'Daniel Vetter' <daniel@ffwll.ch>,
- 'Maarten Lankhorst' <maarten.lankhorst@linux.intel.com>,
- 'Maxime Ripard' <mripard@kernel.org>,
- 'Thomas Zimmermann' <tzimmermann@suse.de>, 'Rob Herring'
- <robh+dt@kernel.org>,
- 'Krzysztof Kozlowski' <krzysztof.kozlowski+dt@linaro.org>,
- 'Conor Dooley' <conor+dt@kernel.org>, 'Andi Shyti' <andi.shyti@kernel.org>,
- 'Jonathan Cameron' <jic23@kernel.org>, 'Lars-Peter Clausen'
- <lars@metafoo.de>, 'Lee Jones' <lee@kernel.org>,
- 'Ulf Hansson' <ulf.hansson@linaro.org>, 'Tomasz Figa'
- <tomasz.figa@gmail.com>, 'Sylwester Nawrocki' <s.nawrocki@samsung.com>,
- 'Linus Walleij' <linus.walleij@linaro.org>,
- 'Thierry Reding' <thierry.reding@gmail.com>,
- =?UTF-8?Q?=27Uwe_Kleine-K=C3=B6nig=27?= <u.kleine-koenig@pengutronix.de>,
- 'Alessandro Zummo' <a.zummo@towertech.it>,
- 'Alexandre Belloni' <alexandre.belloni@bootlin.com>,
- 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
- 'Jiri Slaby' <jirislaby@kernel.org>, 'Liam Girdwood' <lgirdwood@gmail.com>,
- 'Mark Brown' <broonie@kernel.org>, 'Jaehoon Chung' <jh80.chung@samsung.com>,
- 'Sam Protsenko' <semen.protsenko@linaro.org>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
- alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
- <CGME20231108104407epcas5p4c52f140b035727b6110ff7d3c0f81bc0@epcas5p4.samsung.com>
- <20231108104343.24192-3-krzysztof.kozlowski@linaro.org>
- <02bb01da1337$65caf5e0$3160e1a0$@samsung.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linus.walleij@linaro.org, Jonathan.Cameron@huawei.com, sboyd@kernel.org,
+ dmitry.baryshkov@linaro.org, quic_subbaram@quicinc.com,
+ quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
+ marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, cros-qcom-dts-watchers@chromium.org,
+ linux-arm-msm@vger.kernel.org
+Cc: linux-iio@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
+References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
+ <20230708072835.3035398-4-quic_jprakash@quicinc.com>
+ <839cfac2-8f74-3386-5854-e3fb2ba4e07f@linaro.org>
+ <27b5806f-ef15-7a90-5adc-5ee12690f2ca@quicinc.com>
+ <7af782f3-fe6c-415b-a993-55962845a102@linaro.org>
+ <7ccaf08e-0add-33e5-fbea-ce737e53fa28@quicinc.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -147,35 +133,59 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <02bb01da1337$65caf5e0$3160e1a0$@samsung.com>
+In-Reply-To: <7ccaf08e-0add-33e5-fbea-ce737e53fa28@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/11/2023 19:05, Alim Akhtar wrote:
-
-(...)
-
-Please trim unrelated parts of response/quote before and after your message.
-
->> @@ -25,7 +25,15 @@ properties:
->>            - samsung,exynos5250-hsi2c    # Exynos5250 and Exynos5420
->>            - samsung,exynos5260-hsi2c    # Exynos5260
->>            - samsung,exynos7-hsi2c       # Exynos7
->> -          - samsung,exynosautov9-hsi2c  # ExynosAutoV9 and Exynos850
->> +          - samsung,exynosautov9-hsi2c
->> +      - items:
->> +          - enum:
->> +              - samsung,exynos5433-hsi2c
->> +          - const: samsung,exynos7-hsi2c
->> +      - items:
->> +          - enum:
->> +              - samsung,exynos850-hsi2c
-> Does this need an entry in allOf:? to indicate exynos850 also has 2 clocks?
+On 09/11/2023 09:22, Jishnu Prakash wrote:
+> Hi Krzysztof,
 > 
+> On 10/23/2023 12:02 PM, Krzysztof Kozlowski wrote:
+>> On 23/10/2023 08:09, Jishnu Prakash wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On 7/9/2023 10:48 PM, Krzysztof Kozlowski wrote:
+>>>> On 08/07/2023 09:28, Jishnu Prakash wrote:
+>>>>> The name "ADC7" needs to be replaced with the name "ADC5_GEN2"
+>>>>> everywhere to match the convention used for these ADC peripherals
+>>>>> on Qualcomm Technologies, Inc. PMICs. Update devicetree files for
+>>>> We do not rename compatibles to match convention. Please provide proper
+>>>> rationale.
+>>> I'll avoid renaming the compatible directly, will just mark it
+>>> deprecated - but is it fine to do the other changes, for updating the
+>>> macro names used in devicetree (replacing the ADC7 macros with the ADC5
+>>> Gen2 macros)?
+>> Please provide proper rationale why "ADC7 needs to be replaced". Your
+>> marketing is not a proper rationale.
+> 
+> 
+> The name "ADC7" was the one used internally at first, but it got changed 
+> later to "ADC5 Gen2" by our HW team, after we had added this support 
+> both downstream and upstream. Since we are now adding support for the 
+> next generation named "ADC5 Gen3", we thought it would be helpful to 
+> indicate in some way that this generation (ADC7) lies between the 
+> earlier ADC5 and the latest ADC5 Gen3.
 
-No, autov9 is there already.
+You keep replying with the same arguments as before. I wrote that
+marketing, so how you call your devices and then change your mind, is
+not the valid rationale.
 
->> +          - const: samsung,exynosautov9-hsi2c
+> 
+> Since you do not want us to modify the existing bindings, is it fine if 
+> I just add a new compatible for ADC5 Gen2 and comments to indicate the 
+> ADC7 compatible should be considered deprecated?
+
+No, because adc7 compatible is valid and there is no reason to replace
+it. Just because you changed naming does not matter for compatibles.
+It's just unique string, that's it. Don't touch it.
+
+
+> 
+> If you are not convinced, we can drop the Gen2 name related changes from 
+> the patch series.
+
+Feel free to add comments or descriptions, if you want to map some
+marketing name to real hardware or to compatibles.
 
 
 Best regards,

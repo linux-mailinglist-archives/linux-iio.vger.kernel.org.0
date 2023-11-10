@@ -1,114 +1,141 @@
-Return-Path: <linux-iio+bounces-16-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29BE7E8496
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 21:44:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DAD7E86AD
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Nov 2023 00:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D001C20B4B
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 20:44:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1B581F20ED2
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Nov 2023 23:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D593C099;
-	Fri, 10 Nov 2023 20:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D52B3D97C;
+	Fri, 10 Nov 2023 23:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mir1M6M3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A58A3C084;
-	Fri, 10 Nov 2023 20:43:56 +0000 (UTC)
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00E15596;
-	Fri, 10 Nov 2023 12:43:37 -0800 (PST)
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6ce2fc858feso1340548a34.3;
-        Fri, 10 Nov 2023 12:43:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699649017; x=1700253817;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8JelqBtasuctrFq8aA1lg5BQxbworEzE8yTnhOMjZkc=;
-        b=g3Z97gzxwzroBwBn23TrnQrTUU3yKB7lZPzm5LZHjrMTEThjfDkrn5X1FgQ2ji5wSi
-         dLpjzbjr0MX+pa5hlTfiBCSBDTKpYvcjvXan/UMF9dlTe9/OK0E++X/IgtqG/xQD84bs
-         oPQkgOebb3OhqCXYQzYgdXMsC5rzwFLGqPhAOF73R8mttCR09Ouc8yoK8+Kk8DNMu2pO
-         ymd6Py26ZN0E69vK0K/SNu26ZE+6/7LaeMZBHh2DQFuS4nMLZ7hofnLBixHPq+RzLg5x
-         KgCil5ReM8VEjqqA6HoM+OSfFFCSlnGIE96eNvevfmgtL3Jz8zChfHStWbrIp6NV0Z4j
-         2a7Q==
-X-Gm-Message-State: AOJu0Yxe3D0xrPc72/W/HPK4Crsvew2EY5B8uc9E9/3CjsLf6jHCPsdT
-	EEgPHtYC4eUwj2ageZhd8A==
-X-Google-Smtp-Source: AGHT+IHvxcWxE9DKzdafhiZ3HFcZS9N0tFj/iDRHQnxnirdx157d/x13I8sAnvTh754BbGSMSLyN9Q==
-X-Received: by 2002:a05:6830:3492:b0:6b8:dc53:9efd with SMTP id c18-20020a056830349200b006b8dc539efdmr345339otu.3.1699649017102;
-        Fri, 10 Nov 2023 12:43:37 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id l19-20020a056830269300b006ce2fce83cbsm52941otu.25.2023.11.10.12.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 12:43:36 -0800 (PST)
-Received: (nullmailer pid 399226 invoked by uid 1000);
-	Fri, 10 Nov 2023 20:43:34 -0000
-Date: Fri, 10 Nov 2023 14:43:34 -0600
-From: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-pwm@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-mmc@vger.kernel.org, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, linux-arm-kernel@lists.infradead.org, 
-	Liam Girdwood <lgirdwood@gmail.com>, Tomasz Figa <tomasz.figa@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-gpio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org, 
-	Andi Shyti <andi.shyti@kernel.org>, linux-sound@vger.kernel.org, 
-	linux-iio@vger.kernel.org, Sam Protsenko <semen.protsenko@linaro.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org, 
-	Daniel Vetter <daniel@ffwll.ch>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jaehoon Chung <jh80.chung@samsung.com>, linux-i2c@vger.kernel.org, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Rob Herring <robh+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Maxime Ripard <mripard@kernel.org>, alsa-devel@alsa-project.org, linux-rtc@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-samsung-soc@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, devicetree@vger.kernel.org, 
-	Alessandro Zummo <a.zummo@towertech.it>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, David Airlie <airlied@gmail.com>, 
-	Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH 12/17] dt-bindings: pwm: samsung: add specific
- compatibles for existing SoC
-Message-ID: <169964901433.399188.3619478168082919994.robh@kernel.org>
-References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
- <20231108104343.24192-13-krzysztof.kozlowski@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3611D681;
+	Fri, 10 Nov 2023 23:48:18 +0000 (UTC)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B8DA3C39;
+	Fri, 10 Nov 2023 15:48:17 -0800 (PST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AANMOLT029711;
+	Fri, 10 Nov 2023 23:48:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=qcppdkim1; bh=nPqLvqWSNzXaiUzUGDsBCTpfqHwVD2HejTtYoZlTink=;
+ b=mir1M6M3BRYIoTn3uk0nZU7tgMQRFTbeu8pQ/JwDO1cAK3ljK+9l8dJzD5ldJr0YuWPe
+ CinPYVMVE3PTr1JT74acqu0ic9gFPNnTSBlWjB4mH7HGT6PgmZzVTUFHW+/VKSGdpfgw
+ P39rxJDsC7THoRCaY5FhRdH/8e8Vlr0luf6QwsTQa+dvsqCCszl31BnKeAbpULwgTfU6
+ ++Ci8W8VJ4bgaP5JnGtYg5YIGhF/nNJwlRkV4/qPaTHrucsGTVzX3lRkZK9bePG8OeyP
+ CqCz8/bPenFA7EWxofzWR1ZwBxTxKDrv8AP5sOlA4NwiYSmZ79acH8WBEq0ub0ugFvQV Lw== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u9rgwrxda-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Nov 2023 23:48:01 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AANm0wj011811
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Nov 2023 23:48:01 GMT
+Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Fri, 10 Nov 2023 15:48:00 -0800
+Date: Fri, 10 Nov 2023 15:47:58 -0800
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>
+CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, <agross@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linus.walleij@linaro.org>, <Jonathan.Cameron@huawei.com>,
+        <sboyd@kernel.org>, <dmitry.baryshkov@linaro.org>,
+        <quic_subbaram@quicinc.com>, <quic_collinsd@quicinc.com>,
+        <quic_kamalw@quicinc.com>, <marijn.suijten@somainline.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-arm-msm-owner@vger.kernel.org>
+Subject: Re: [PATCH 10/11] ARM: dts: qcom: Update devicetree for QCOM ADC
+ bindings path change
+Message-ID: <20231110234758.GE3553829@hu-bjorande-lv.qualcomm.com>
+References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
+ <20230708072835.3035398-11-quic_jprakash@quicinc.com>
+ <59ea565c-93ad-e8e3-10db-ae3ba481ebe9@linaro.org>
+ <706d3b7e-a9b5-081c-52b2-7cce4f0d5f10@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231108104343.24192-13-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <706d3b7e-a9b5-081c-52b2-7cce4f0d5f10@quicinc.com>
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6AJ9hk15vPowi0gTtV63OjTn3Ge_Ojzm
+X-Proofpoint-GUID: 6AJ9hk15vPowi0gTtV63OjTn3Ge_Ojzm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-10_21,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=800 clxscore=1011 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311100197
 
+On Mon, Oct 23, 2023 at 11:48:13AM +0530, Jishnu Prakash wrote:
+> Hi Krzysztof,
+> 
+> On 7/9/2023 10:56 PM, Krzysztof Kozlowski wrote:
+> > On 08/07/2023 09:28, Jishnu Prakash wrote:
+> > > Update ADC dt-bindings file paths in QCOM devicetree files to
+> > > match the dt-bindings change moving the files from 'iio' to
+> > > 'iio/adc' folder.
+> > > 
+> > > Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> > > ---
+> > Your order of patches is incorrect. DTS cannot be before bindings,
+> > because this indicates you broke ABI. Please keep entire patchset
+> > bisectable and split DTS to separate patchset (linking the driver and
+> > bindings).
+> > 
+> > Best regards,
+> > Krzysztof
+> 
+> OK....so you mean I can move the dtbinding files and update documentation
+> and driver files for this, all in one patch and then make a second patch for
+> updating devicetree files for the file paths?
+> 
+> I'll make this change in the next patchset if it looks fine, although the
+> two patches would need to be picked together to avoid kernel breakage. I
+> have asked Jonathan about this too in my reply for the previous patchset 9.
+> 
 
-On Wed, 08 Nov 2023 11:43:38 +0100, Krzysztof Kozlowski wrote:
-> Samsung Exynos SoC reuses several devices from older designs, thus
-> historically we kept the old (block's) compatible only.  This works fine
-> and there is no bug here, however guidelines expressed in
-> Documentation/devicetree/bindings/writing-bindings.rst state that:
-> 1. Compatibles should be specific.
-> 2. We should add new compatibles in case of bugs or features.
-> 
-> Add compatibles specific to each SoC in front of all old-SoC-like
-> compatibles.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> I propose to take the patch through Samsung SoC (me). See cover letter
-> for explanation.
-> ---
->  Documentation/devicetree/bindings/pwm/pwm-samsung.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+1) We need to be able to use git bisect to identify regressions, and as
+such the kernel need to be buildable and functional after each applied
+patch.
 
-Acked-by: Rob Herring <robh@kernel.org>
+2) DeviceTree source (dts) changes enters the kernel through different
+maintainer paths than the DeviceTree binding and driver changes, and
+therefore at different times. In some cases the .dtb file is also
+delivered separately from the kernel, which means people might be
+running an old .dtb for a considerable amount of time after your change.
+As such your driver changes needs to be compatible with both the new and
+the old DeviceTree binding.
 
+Regards,
+Bjorn
 

@@ -1,652 +1,149 @@
-Return-Path: <linux-iio+bounces-35-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-41-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735EF7E8CFE
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Nov 2023 23:06:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB73C7E8D11
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Nov 2023 23:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28833280DFA
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Nov 2023 22:06:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE2AB20A4C
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Nov 2023 22:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D781DDE4;
-	Sat, 11 Nov 2023 22:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BECD208C8;
+	Sat, 11 Nov 2023 22:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T3B+hDNE"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hwkyFets"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E5D1DDEC
-	for <linux-iio@vger.kernel.org>; Sat, 11 Nov 2023 22:06:32 +0000 (UTC)
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD7635BB;
-	Sat, 11 Nov 2023 14:06:30 -0800 (PST)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6d261cb07dcso1966914a34.3;
-        Sat, 11 Nov 2023 14:06:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699740389; x=1700345189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NOvUDvKsQ8HwPHQZYqPbOTK09taQyo8krNmYaIbHCl0=;
-        b=T3B+hDNEOu3QLv7kPJXgAzlEzJIqgQQbW2TTU0XG8ThWwK3j9BXRwkXI9jkV+txsQl
-         50yrj4XbYIQZVRPASbHFdxn15i+nM5olgEXYHuWGZO0bh+XPh9G6Uu5O4RLlJY4I3sQn
-         lJ9Qewh/gPh60eluh7jZK2PnTv/DV0HojlELDV6BXs2qxtQuCI+w4nGzLFW3QfZjDgZV
-         mMWJBIrdXuH5tHq9gELR+IN25yuCwm2CHKLEvrMnbwHYV8KuxG0RNzKwezqqFHaAk2yI
-         /bLcO8/26TaZCW+clVzywwfhzcAVFMo1OgrkgoW3MbmsOb+fKSLoQDq84vkx9+SZOgaR
-         kR4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699740389; x=1700345189;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NOvUDvKsQ8HwPHQZYqPbOTK09taQyo8krNmYaIbHCl0=;
-        b=p+NN3jr8jag5tP2eCPcA6ezJ3md5Y6FTJ9E0hXaMyFkyl8MAYPSE1sC+RgxMpjGO6K
-         N518Di/g0wPxB+4RWwP1qTZynr+kZEgUmmaJpjwhP9VANPSid7neGf2dtbBP9FqroV3W
-         ry1jFkThOw+TeE/5Vm969trt6Tb2lpk6Ts0qIZybEI5rLhLFrZxZ55hORhvuUrgee2D2
-         zCbC4Vz+XcgF3B5FNEPWh8rOOiSBEfxvvrGCEeLmk83bUeCx2DwNcOBJhqA6dGWrYs0B
-         yx9f9iFpMH5xoGae4u7vv82WBfvz58e75YRv4eem+Do4AURyfQKAWD/kMjRWFQhC1pM3
-         vUlA==
-X-Gm-Message-State: AOJu0YwX2LizId2N3zZH3k/05mx+uXNdm93Qv50JId3S644pnHCNhZd5
-	5G+e5I3p4WwTZGHM5js7WRFm7simRl/D+g==
-X-Google-Smtp-Source: AGHT+IFj2NUHRYrmloOBRnzwa31FJZAiv+YE6dobfSsutKd53Bq+6dFIGOvWfY7p/IoKglpsbnYLIw==
-X-Received: by 2002:a05:6358:885:b0:16b:47dc:5ffb with SMTP id m5-20020a056358088500b0016b47dc5ffbmr2769872rwj.4.1699740389143;
-        Sat, 11 Nov 2023 14:06:29 -0800 (PST)
-Received: from localhost.localdomain (bras-base-ktnron0692w-grc-13-174-95-13-129.dsl.bell.ca. [174.95.13.129])
-        by smtp.gmail.com with ESMTPSA id z10-20020ac8710a000000b004196a813639sm758558qto.17.2023.11.11.14.06.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Nov 2023 14:06:28 -0800 (PST)
-From: Abdel Alkuor <alkuor@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: Abdel Alkuor <alkuor@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH 2/2] iio: temperature: Add support for AMS AS6200
-Date: Sat, 11 Nov 2023 17:05:02 -0500
-Message-Id: <cbde9aa61905a0fae6573d707b4c9c4fc4598fa5.1699740057.git.alkuor@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <7e108db19cd9ad19b6413f65099280c010325a91.1699740057.git.alkuor@gmail.com>
-References: <7e108db19cd9ad19b6413f65099280c010325a91.1699740057.git.alkuor@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61915673;
+	Sat, 11 Nov 2023 22:08:02 +0000 (UTC)
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D56B93253;
+	Sat, 11 Nov 2023 14:07:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=oLB1NGiEPNFZaXayNGepJMpKvCAIVEhg6rNxsCuSgls=; b=hwkyFetssa893Jbr5vdSd2GLMp
+	GHOy/TFvmVi2L3EwmPP4hNeAIiSRIeJMbt0DVhRZocz3QyGXiwLKk905EHrygtRSthBKcg5A5/onj
+	iICgrQkmfMphj56NfFrKAqzQT8H0GpXZaUaf8OkkebVMcu3X/Horg6LUOSMLxtRQEysLNmSh9Tw0N
+	GO2plECFeeyA9jrL4SjHVcRqS7C3R4tltOJ+ghUA1/u/joJEhFGcej9+bdMI62+KJF/FcYSzlJCOU
+	CZu2yXdzg4jGVZKc1Z8U6auOJyoXn54XhyPlT2/Ot517s5+BB5bvzbxTCGmv/XQ/1VFHc33tglFeG
+	H+KlSerA==;
+Received: from i73190.upc-i.chello.nl ([62.195.73.190] helo=[192.168.68.111])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1r1w8w-0029Vw-7T; Sat, 11 Nov 2023 23:07:54 +0100
+From: Nia Espera <nespera@igalia.com>
+Subject: [PATCH v4 0/6] support oneplus-lemonade(p) devices
+Date: Sat, 11 Nov 2023 23:07:38 +0100
+Message-Id: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACr7T2UC/4XNTQ7CIBCG4as0rMXAAKW68h7GBSBtJ7E/gdpom
+ t5d2o0aoy7fL5lnJhJ9QB/JPptI8CNG7NoUcpMRV5u28hTPqQkwEJzxnLZoaGwKoRgtu0CvfRy
+ CNw2FUioQee4lcJKu++BLvK3y8ZS6xjh04b4+Gvmy/jdHThm1ViltmCnB7w5YmQuaresasqAjv
+ ELFdwgSpC1IwSF3VusPSDwhzn5AIkG8MAykVU5L9wbN8/wA6KyPNlEBAAA=
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Vinod Koul <vkoul@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, Rob <Me@orbit.sh>, 
+ Clayton Craft <clayton@igalia.com>, 
+ Caleb Connolly <caleb.connolly@linaro.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ ~postmarketos/upstreaming@lists.sr.ht, Nia Espera <nespera@igalia.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2383; i=nespera@igalia.com;
+ h=from:subject:message-id; bh=iz6Nkw3EJXV5T7V4mGGoBF1mUCtOGZEEQH+li2dAIyw=;
+ b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlT/s4VzrDlRJUTT1/u3z88jS2qfkZ9P2GZaMmt
+ nSUAcL4iZ6JAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZU/7OAAKCRDyJM7CN1bi
+ refDC/9+Pxnu8X0/OVKU8BDsbDc4wiuolt/hRm97HTzy2AAuImks+0On36H9d6663Qm0kXm9F6s
+ Ek9XbZAjvb6Llm3K5Fd/9kogyUB+/h7Yarc8WXrAV0tSXn1Ce7zeXTTNjyL29lDeogxBpxtB/DD
+ +xlddQylUmDoM2EZWb47FmB4KsOMZ1KLSZJAo44ZlzPPjgipxjXAj1sg+IhsyLoh899HHYimTD9
+ hz0FI0RjClZpEQGvkxnNEsPGVL3Lbd9Jn/9aXBBAbyYjM4z4rn2HjXrVoS54rY2TJTPk4TBToky
+ u38XkOhUuCnEga62Sw03cPabnBquEftqBbrXC9YkasJOCxRdpqTHU88Qh/T/zZV1EoZqwf7ZLsn
+ prW22XYPEE00WlhClHttxmgyAlT4HWPqPtEqC0POHRLURPeDe966nwY5O6r7e0aGoit41bLk1vb
+ E0i9orZQKX6ZnisGXgsNP/zLXMInNVMSGj3jh2ktKPJzRQ5noKcqlYZj4FzjD3exFf+QA=
+X-Developer-Key: i=nespera@igalia.com; a=openpgp;
+ fpr=813C3A26BA0DEC9432449EE6F224CEC23756E2AD
 
-as6200 is a high accuracy temperature sensor of 0.0625C with a range
-between -40 to 125 Celsius degrees. The driver implements the alert
-trigger event in comparator mode where an alert would trigger
-when n number of consecutive current temperature is above the upper
-temp limit, and the alert is only cleared when the n number of
-consecutive current temperature is below the lower temp limit.
+Patch series adding support for oneplus-lemonade and oneplus-lemonadep
+devices (OnePlus 9 & 9 Pro), along with a few needed fixups. Currently
+working as of this series:
 
-The driver supports the following:
-- show available sampling frequencey
-- read/write sampling frequency
-- read raw temperature
-- read scaling factor
-- read/write consective faults to trigger/clear an alert
-- show available consecutive faults
-- buffer trigger
-- temperature alert event trigger
+- USB OTG
+- UFS
+- Framebuffer display
+- Touchscreen (for lemonade)
+- Power & volume down keys
+- Battery reading
+- Modem, IPA, and remoteproc bringup
 
-https://ams.com/documents/20143/36005/AS6200_DS000449_4-00.pdf
-
-Signed-off-by: Abdel Alkuor <alkuor@gmail.com>
+Signed-off-by: Nia Espera <nespera@igalia.com>
 ---
- drivers/iio/temperature/Kconfig  |   9 +
- drivers/iio/temperature/Makefile |   1 +
- drivers/iio/temperature/as6200.c | 507 +++++++++++++++++++++++++++++++
- 3 files changed, 517 insertions(+)
- create mode 100644 drivers/iio/temperature/as6200.c
+Changes in v4:
+- Fixed up some small naming-related nits.
+- Link to v3: https://lore.kernel.org/r/20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com
 
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index ed384f33e0c7..f32691744952 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -157,5 +157,14 @@ config MAX31865
- 
- 	  This driver can also be build as a module. If so, the module
- 	  will be called max31865.
-+config AS6200
-+       tristate "AS6200 temperature sensor"
-+       depends on I2C
-+       help
-+         If you say yes here you get support for AS6200
-+         temperature sensor chip connected via I2C.
-+
-+         This driver can also be built as a module.  If so, the module
-+         will be called as6200.
- 
- endmenu
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index dfec8c6d3019..48f647c273c1 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_TMP007) += tmp007.o
- obj-$(CONFIG_TMP117) += tmp117.o
- obj-$(CONFIG_TSYS01) += tsys01.o
- obj-$(CONFIG_TSYS02D) += tsys02d.o
-+obj-$(CONFIG_AS6200) += as6200.o
-diff --git a/drivers/iio/temperature/as6200.c b/drivers/iio/temperature/as6200.c
-new file mode 100644
-index 000000000000..a18c5be0a229
---- /dev/null
-+++ b/drivers/iio/temperature/as6200.c
-@@ -0,0 +1,507 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for AMS AS6200 Temperature sensor
-+ *
-+ * Auther: Abdel Alkuor <alkuor@gmail.com>
-+ */
-+
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/interrupt.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/device.h>
-+#include <linux/bitfield.h>
-+#include <linux/kstrtox.h>
-+
-+#define AS_TVAL_REG	0x0
-+#define AS_CONFIG_REG	0x1
-+#define AS_TLOW_REG	0x2
-+#define AS_THIGH_REG	0x3
-+
-+/* AS_CONFIG_REG */
-+#define AS_CONFIG_AL	BIT(5)
-+#define AS_CONFIG_CR	GENMASK(7, 6)
-+#define AS_CONFIG_SM	BIT(8)
-+#define AS_CONFIG_IM	BIT(9)
-+#define AS_CONFIG_POL	BIT(10)
-+#define AS_CONFIG_CF	GENMASK(12, 11)
-+
-+#define AS_TEMP_SCALE		62500
-+
-+struct as6200_freq {
-+	int val;
-+	int val2;
-+};
-+
-+struct as6200 {
-+	struct device *dev;
-+	struct regmap *regmap;
-+	struct mutex lock;
-+	struct iio_dev *indio_dev;
-+
-+	unsigned int data[3];
-+};
-+
-+static const struct as6200_freq as6200_samp_freq[4] = {
-+	{0, 250000},
-+	{1, 0},
-+	{4, 0},
-+	{8, 0},
-+};
-+
-+static const struct iio_event_spec as6200_temp_event[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE)
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE)
-+	},
-+};
-+
-+static const struct iio_chan_spec as6200_temp_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.indexed = 0,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 12,
-+			.storagebits = 16,
-+			.shift = 4,
-+		},
-+		.event_spec = as6200_temp_event,
-+		.num_event_specs = ARRAY_SIZE(as6200_temp_event),
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(1),
-+};
-+
-+static const struct regmap_config as6200_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 16,
-+	.max_register = 0x7F,
-+};
-+
-+static int
-+as6200_modify_config_reg(struct as6200 *as, unsigned int mask, unsigned int val)
-+{
-+	int ret;
-+	unsigned int reg;
-+
-+	ret = regmap_read(as->regmap, AS_CONFIG_REG, &reg);
-+	if (ret)
-+		return ret;
-+
-+	reg &= ~mask;
-+	reg |= val << (ffs(mask) - 1);
-+
-+	return regmap_write(as->regmap, AS_CONFIG_REG, reg);
-+}
-+
-+static int
-+as6200_read_config_reg(struct as6200 *as, unsigned int mask, unsigned int *val)
-+{
-+	int ret;
-+	unsigned int reg;
-+
-+	ret = regmap_read(as->regmap, AS_CONFIG_REG, &reg);
-+	if (ret)
-+		return ret;
-+
-+	*val = (reg & mask) >> (ffs(mask) - 1);
-+
-+	return 0;
-+}
-+
-+static int as6200_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val,
-+			   int *val2,
-+			   long mask)
-+{
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int reg;
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = regmap_read(as->regmap, AS_TVAL_REG, &reg);
-+		if (ret)
-+			return ret;
-+
-+		*val = sign_extend32(reg >> 4, 11);
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		*val2 = AS_TEMP_SCALE;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = as6200_read_config_reg(as, AS_CONFIG_CR, &reg);
-+		if (ret)
-+			return ret;
-+
-+		*val = as6200_samp_freq[reg].val;
-+		*val2 = as6200_samp_freq[reg].val2;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int as6200_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val,
-+			    int val2,
-+			    long mask)
-+{
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	int i;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		for (i = 0; i < ARRAY_SIZE(as6200_samp_freq); i++) {
-+			if (val == as6200_samp_freq[i].val &&
-+			    val2 == as6200_samp_freq[i].val2)
-+				break;
-+		}
-+
-+		if (i == ARRAY_SIZE(as6200_samp_freq))
-+			return -EINVAL;
-+
-+		return as6200_modify_config_reg(as, AS_CONFIG_CR, i);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int as6200_read_event_value(struct iio_dev *indio_dev,
-+			 const struct iio_chan_spec *chan,
-+			 enum iio_event_type type,
-+			 enum iio_event_direction dir,
-+			 enum iio_event_info info,
-+			 int *val, int *val2)
-+{
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int reg;
-+	int ret;
-+	unsigned int temp;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_FALLING:
-+		reg = AS_TLOW_REG;
-+		break;
-+	case IIO_EV_DIR_RISING:
-+		reg = AS_THIGH_REG;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_read(as->regmap, reg, &temp);
-+	if (ret)
-+		return ret;
-+
-+	*val = sign_extend32(temp >> 4, 11);
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int as6200_write_event_value(struct iio_dev *indio_dev,
-+			  const struct iio_chan_spec *chan,
-+			  enum iio_event_type type,
-+			  enum iio_event_direction dir,
-+			  enum iio_event_info info,
-+			  int val, int val2)
-+{
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int temp;
-+	unsigned int reg;
-+
-+	/*
-+	 * range without applying the scaling
-+	 * factor of 0.06250
-+	 */
-+	if (val > 2000 || val < -640)
-+		return -EINVAL;
-+
-+	temp = (val & 0xfff) << 4;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_FALLING:
-+		reg = AS_TLOW_REG;
-+		break;
-+	case IIO_EV_DIR_RISING:
-+		reg = AS_THIGH_REG;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return regmap_write(as->regmap, reg, temp);
-+}
-+
-+static irqreturn_t as6200_event_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int alert;
-+	enum iio_event_direction dir;
-+	int ret;
-+
-+	mutex_lock(&as->lock);
-+
-+	ret = as6200_read_config_reg(as, AS_CONFIG_AL, &alert);
-+	if (ret) {
-+		mutex_unlock(&as->lock);
-+		return IRQ_NONE;
-+	}
-+
-+	dir = alert ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+
-+	iio_push_event(indio_dev,
-+		       IIO_EVENT_CODE(IIO_TEMP, 0, 0,
-+				      dir,
-+				      IIO_EV_TYPE_THRESH,
-+				      0, 0, 0),
-+		       iio_get_time_ns(indio_dev));
-+
-+	mutex_unlock(&as->lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t as6200_trigger_handler(int irq, void *private)
-+{
-+	struct iio_poll_func *pf = private;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&as->lock);
-+
-+	ret = regmap_read(as->regmap, AS_TVAL_REG, &as->data[0]);
-+	if (!ret)
-+		iio_push_to_buffers_with_timestamp(indio_dev, as->data,
-+						   iio_get_time_ns(indio_dev));
-+
-+	mutex_unlock(&as->lock);
-+
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static ssize_t
-+consecutive_faults_show(struct device *dev,
-+			struct device_attribute *attr,
-+			char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int cf;
-+	int ret;
-+
-+	ret = as6200_read_config_reg(as, AS_CONFIG_CF, &cf);
-+	if (ret)
-+		return ret;
-+
-+	return sprintf(buf, "%u\n", cf ? cf * 2 : 1);
-+}
-+
-+static ssize_t
-+consecutive_faults_store(struct device *dev,
-+			 struct device_attribute *attr,
-+			 const char *buf, size_t count)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct as6200 *as = iio_device_get_drvdata(indio_dev);
-+	unsigned int cf;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 0, &cf);
-+	if (ret)
-+		return ret;
-+
-+	switch (cf) {
-+	case 1:
-+		cf = 0;
-+		break;
-+	case 2:
-+	case 4:
-+	case 6:
-+		cf /= 2;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	ret = as6200_modify_config_reg(as, AS_CONFIG_CF, cf);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("0.25 1 4 8");
-+static IIO_CONST_ATTR(avail_consecutive_faults, "1 2 4 6");
-+static IIO_DEVICE_ATTR_RW(consecutive_faults, 0);
-+
-+static struct attribute *as6200_event_attributes[] = {
-+	&iio_const_attr_avail_consecutive_faults.dev_attr.attr,
-+	&iio_dev_attr_consecutive_faults.dev_attr.attr,
-+	NULL,
-+};
-+
-+static struct attribute *as6200_attributes[] = {
-+	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group as6200_attribute_group = {
-+	.attrs = as6200_attributes,
-+};
-+
-+static const struct attribute_group as6200_event_attribute_group = {
-+	.attrs = as6200_event_attributes,
-+};
-+
-+static const struct iio_info as6200_temp_info = {
-+	.event_attrs = &as6200_event_attribute_group,
-+	.attrs = &as6200_attribute_group,
-+	.read_raw = &as6200_read_raw,
-+	.write_raw = &as6200_write_raw,
-+	.read_event_value = &as6200_read_event_value,
-+	.write_event_value = &as6200_write_event_value,
-+};
-+
-+static int as6200_probe(struct i2c_client *client)
-+{
-+	struct as6200 *as;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-+		return -EINVAL;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, 0);
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	as = devm_kzalloc(&client->dev, sizeof(*as), GFP_KERNEL);
-+	if (IS_ERR(as))
-+		return PTR_ERR(as);
-+
-+	as->regmap = devm_regmap_init_i2c(client, &as6200_regmap_config);
-+	if (IS_ERR(as->regmap))
-+		return PTR_ERR(as->regmap);
-+
-+	mutex_init(&as->lock);
-+
-+	as->dev = &client->dev;
-+	as->indio_dev = indio_dev;
-+
-+	iio_device_set_drvdata(indio_dev, as);
-+
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = as6200_temp_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(as6200_temp_channels);
-+	indio_dev->name = client->name;
-+	indio_dev->info = &as6200_temp_info;
-+
-+	ret = devm_iio_triggered_buffer_setup(as->dev, indio_dev,
-+					      NULL,
-+					      as6200_trigger_handler,
-+					      NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (client->irq) {
-+		ret = devm_request_threaded_irq(as->dev,
-+						client->irq,
-+						NULL,
-+						&as6200_event_handler,
-+						IRQF_ONESHOT,
-+						client->name,
-+						indio_dev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	i2c_set_clientdata(client, as);
-+
-+	return iio_device_register(indio_dev);
-+}
-+
-+static void as6200_remove(struct i2c_client *client)
-+{
-+	struct as6200 *as = i2c_get_clientdata(client);
-+
-+	iio_device_unregister(as->indio_dev);
-+}
-+
-+static int __maybe_unused as6200_suspend(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	struct as6200 *as = i2c_get_clientdata(client);
-+
-+	if (client->irq)
-+		disable_irq(client->irq);
-+
-+	return as6200_modify_config_reg(as, AS_CONFIG_SM, 1);
-+}
-+
-+static int __maybe_unused as6200_resume(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	struct as6200 *as = i2c_get_clientdata(client);
-+
-+	if (client->irq)
-+		enable_irq(client->irq);
-+
-+	return as6200_modify_config_reg(as, AS_CONFIG_SM, 0);
-+}
-+
-+static const struct dev_pm_ops as6200_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(as6200_suspend, as6200_resume)
-+};
-+
-+static const struct i2c_device_id as6200_id_table[] = {
-+	{ "as6200" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(i2c, as6200_id_table);
-+
-+static const struct of_device_id as6200_of_match[] = {
-+	{ .compatible = "ams,as6200" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, as6200_of_match);
-+
-+static struct i2c_driver as6200_driver = {
-+	.driver = {
-+		.name = "as6200",
-+		.pm = &as6200_pm_ops,
-+		.of_match_table = as6200_of_match,
-+	},
-+	.probe = as6200_probe,
-+	.remove = as6200_remove,
-+	.id_table = as6200_id_table,
-+};
-+module_i2c_driver(as6200_driver);
-+
-+MODULE_AUTHOR("Abdel Alkuor <alkuor@gmail.com");
-+MODULE_DESCRIPTION("AMS AS6200 Temperature Sensor");
-+MODULE_LICENSE("GPL");
+Changes in v3:
+- Fixed up more incorrect devicetree properties.
+- Properly enabled the fsa type-C mux.
+- Added node for sm8350 PMIC glink.
+- Patch name fixes.
+- Link to v2: https://lore.kernel.org/r/20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com
+
+Changes in v2:
+- Fixed up formatting/style.
+- Removed unused pinctrl nodes.
+- Removed unused properties.
+- Moved ADC7 defines to vadc header.
+- Edited copyright on lemonade dts and license on spmi header.
+- Fixed up therm channels.
+- Removed unnecessary hack w.r.t. timer node.
+- Link to v1: https://lore.kernel.org/r/20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com
+
+---
+Nia Espera (6):
+      dt-bindings: iio: adc: qcom: Add Qualcomm smb139x
+      arm64: dts: qcom: sm8350: Fix DMA0 address
+      arm64: dts: qcom: pm8350k: Remove hanging whitespace
+      arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
+      dt-bindings: arm: qcom: Add oneplus-lemonade(p)
+      arm64: dts: qcom: sm8350-lemonade(p): New devices
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |    2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |    2 +
+ arch/arm64/boot/dts/qcom/pmk8350.dtsi              |    2 +-
+ .../arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi | 1086 ++++++++++++++++++++
+ .../boot/dts/qcom/sm8350-oneplus-lemonade.dts      |   85 ++
+ .../boot/dts/qcom/sm8350-oneplus-lemonadep.dts     |   20 +
+ arch/arm64/boot/dts/qcom/sm8350.dtsi               |   12 +-
+ include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h   |   19 +
+ include/dt-bindings/iio/qcom,spmi-vadc.h           |    3 +
+ 9 files changed, 1224 insertions(+), 7 deletions(-)
+---
+base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
+change-id: 20231016-nia-sm8350-for-upstream-2f452366e421
+
+Best regards,
 -- 
-2.34.1
+Nia Espera <nespera@igalia.com>
 
 

@@ -1,66 +1,65 @@
-Return-Path: <linux-iio+bounces-43-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-44-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122A87E8EFA
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Nov 2023 08:36:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73887E8F04
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Nov 2023 08:44:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6257FB20ABA
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Nov 2023 07:36:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F5A1F20F83
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Nov 2023 07:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E93C6FC9;
-	Sun, 12 Nov 2023 07:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED605CAF;
+	Sun, 12 Nov 2023 07:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OysBrP0I"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Okl/T5ke"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1275233
-	for <linux-iio@vger.kernel.org>; Sun, 12 Nov 2023 07:36:14 +0000 (UTC)
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB5E30C2
-	for <linux-iio@vger.kernel.org>; Sat, 11 Nov 2023 23:36:12 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9db6cf8309cso527453166b.0
-        for <linux-iio@vger.kernel.org>; Sat, 11 Nov 2023 23:36:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA0F6FA2
+	for <linux-iio@vger.kernel.org>; Sun, 12 Nov 2023 07:43:57 +0000 (UTC)
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997882D7C
+	for <linux-iio@vger.kernel.org>; Sat, 11 Nov 2023 23:43:56 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9db6cf8309cso527781266b.0
+        for <linux-iio@vger.kernel.org>; Sat, 11 Nov 2023 23:43:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699774571; x=1700379371; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=oCGQXhpvyMAFxpuhEP9NG/J9Z0nM5/H/qtCPtk+8g/I=;
-        b=OysBrP0IB0ENbu7hEVw6VmXlQwnZJwx42rhtvoEtZF0A3Ap/rxOru6SWuy71S8dnEQ
-         Sf6t7u4KdWxNMdC08DMcKCV6ufi3gRH/AdOTuK6ZN6x7Os3Lqm0M9+2qaN/7oRKnFZuh
-         ZPuHanckYAn0km+6fW109kpG2CGDhquxlihSzqiq3aR/7foIA2epPsWPRkzhw3i9m/Lq
-         Tdx9fASLJGUYcyRm/Fw7fzn+TOULeCGtGHCL6qTRqFU8gDtbnbt38tfFkEHAVvh2lY1N
-         LBpi3s9hVErV6bTBc3o0WeZukr/bBa6EixYN5c0dG2L/psYt6Jh/SF+HkupzHVhxb/0j
-         KEAQ==
+        d=linaro.org; s=google; t=1699775035; x=1700379835; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Y3H7/ZwdKXZ4WCXhbDj4sGmO5/DaXqLJSBroNqKINI=;
+        b=Okl/T5ke2F+xcbIcFSR2UdaV3PERNsVsOaBuXkIPxtNDv4R/TTcX8kAyk03SvOl1Ct
+         B7ZKrCPgZOUFD5dZBk7uWS/X5llC8DJdlh2ZJ1Qr7GIbSLetKiaGA9HVrU6V1VNqiZDb
+         ITt+7tACLSHY23NGEdqCqwsPDLn3JC7ajivszXItWQwh1B7vCi1bO+57eeDy3x3blszg
+         obvHfRF7OhHaF4vCxztjjP1slAZPFyPmm1DCczD2f8NecHrwLBL/0bHVda1ZokKUq79O
+         Em7MGSBaRK09ZBZLOUUEP/PBcT3oiEVbi+2IAIgBmrNyYfjJfFToKVdC9qYYjSDVt4tG
+         GvuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699774571; x=1700379371;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oCGQXhpvyMAFxpuhEP9NG/J9Z0nM5/H/qtCPtk+8g/I=;
-        b=SUFDZM4jD+AtCneRxkwS/gO7E+M41Kl/BhBpi4Q2ybQ2NX6/em1imGEQA8RRAPRVC7
-         GjR4ETvVBHy4w/sy47dRdReNOJhYLMHT5LuTYaz6rl9uu6FTWvYoMeby6GAWYadru9G2
-         5jnWPyymBpDJQTajcfrb+whfPvBeVpz0j08HNdxxikZvtQmTSzmD02iymy+8SJQrPm+K
-         GXRaG2RVMCTAIvlwfL7NC72+va/Vo2Z4h9d8VElODGCoT6eZBrjB7OI60lqLLzGe5nS7
-         KlBs+tzu0ohGNLMDvaZ4IHqgggTRin08hZ55aXsk4SczlbviC2EvBBleHzzt0ebpQEtz
-         3d4Q==
-X-Gm-Message-State: AOJu0YwzcuTLnLBpE9Oc18VWTiBsEVAn8QvaczWzrj6Wx49bC6HvHgHJ
-	7RZ1nuT5Cq9JYStPyV2TWOMptA==
-X-Google-Smtp-Source: AGHT+IGzmqANRQ92G3ZDN6l0K5xRU8jKsfic8C6Ur5W7N7YFogktnw6nkFxSTFvnZGqGs09okRvDwA==
-X-Received: by 2002:a17:906:fa93:b0:9b2:89ec:d701 with SMTP id lt19-20020a170906fa9300b009b289ecd701mr2522924ejb.27.1699774571392;
-        Sat, 11 Nov 2023 23:36:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699775035; x=1700379835;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Y3H7/ZwdKXZ4WCXhbDj4sGmO5/DaXqLJSBroNqKINI=;
+        b=H6+OkZ54naez2QIrZO2S+go5LmAOhZpmiG2CAeFXazcCehhXApDXUnEMrwlIDbj/Lr
+         hK/LCoaUg5J/V3eprnrwVCpio1sEoTkJ4XgSOcQtcHY84kYVntIv7EqGUSz/GxG2MODa
+         j61U/UwVMvyWCg8tesEv3Jvlj/XsnO8BnouBp42EFAYADX8YuPpBp1g73MLqmLdpN+jH
+         rTYvBCwaC17BttbuKvNRwoPdJ7humKA5vxkTXTBJHSJtMq9FppgI7qRAE73vIqJ1louW
+         r9TwFXbSpSNJdHzhoS64kV5Qc7zp1lSj7sfb6OddCjQkuJpRWcoIHDGUDojlTRlqBmIc
+         bvLA==
+X-Gm-Message-State: AOJu0YxqRpDw+tQsqZWdUVfr9eQHX1cRvJAzxsu9AiODbgzi3vOFc/Tu
+	9uAY8tKoeGPCoxKR1s3DHpWFkw==
+X-Google-Smtp-Source: AGHT+IGGI0bPbELtqFV9h52PNHYc/6ECxe8Xm6OUunv5+rp0o8s5dq81aMbYW4x6x1sazn+1eJERtg==
+X-Received: by 2002:a17:906:19d8:b0:9be:cdca:dadb with SMTP id h24-20020a17090619d800b009becdcadadbmr2362987ejd.69.1699775035136;
+        Sat, 11 Nov 2023 23:43:55 -0800 (PST)
 Received: from [10.230.170.72] (46-253-189-43.dynamic.monzoon.net. [46.253.189.43])
-        by smtp.gmail.com with ESMTPSA id y10-20020a1709064b0a00b009dd7bc622fbsm2143073eju.113.2023.11.11.23.36.09
+        by smtp.gmail.com with ESMTPSA id o16-20020a170906359000b00989828a42e8sm2151260ejb.154.2023.11.11.23.43.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Nov 2023 23:36:10 -0800 (PST)
-Message-ID: <3ecc4341-b285-4c4b-96e3-a25d36a8be20@linaro.org>
-Date: Sun, 12 Nov 2023 08:36:09 +0100
+        Sat, 11 Nov 2023 23:43:54 -0800 (PST)
+Message-ID: <1436f009-888e-49e0-b4de-3eab55d9e431@linaro.org>
+Date: Sun, 12 Nov 2023 08:43:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -68,23 +67,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/6] dt-bindings: arm: qcom: Add oneplus-lemonade(p)
-To: Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Vinod Koul <vkoul@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, Rob <Me@orbit.sh>,
- Clayton Craft <clayton@igalia.com>,
- Caleb Connolly <caleb.connolly@linaro.org>,
- Luca Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
- <20231111-nia-sm8350-for-upstream-v4-5-3a638b02eea5@igalia.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: Add AMS AS6200
 Content-Language: en-US
+To: Abdel Alkuor <alkuor@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <7e108db19cd9ad19b6413f65099280c010325a91.1699740057.git.alkuor@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -130,19 +121,23 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-5-3a638b02eea5@igalia.com>
+In-Reply-To: <7e108db19cd9ad19b6413f65099280c010325a91.1699740057.git.alkuor@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/11/2023 23:07, Nia Espera wrote:
-> Document the devicetree bindings for oneplus-lemonade and oneplus-lemonadep.
+On 11/11/2023 23:05, Abdel Alkuor wrote:
+> as6200 is high accuracy temperature sensor of -/+ 0.4C degree
+> with a range between -40C to 125C degrees
 > 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
+> Signed-off-by: Abdel Alkuor <alkuor@gmail.com>
 > ---
+>  .../bindings/iio/temperature/ams,as6200.yaml  | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
 
+I did not receive the driver, so I hope you actually implement the
+binding accurately.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

@@ -1,225 +1,113 @@
-Return-Path: <linux-iio+bounces-63-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-64-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90477EB65D
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 19:27:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC3E7EB731
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 21:06:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 062741C20A42
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 18:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A36F1F25A9A
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 20:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6296133CCF;
-	Tue, 14 Nov 2023 18:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B19C35EE8;
+	Tue, 14 Nov 2023 20:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+xdIqS+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KLDLQY+p"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B716326AC0;
-	Tue, 14 Nov 2023 18:27:47 +0000 (UTC)
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E486812A;
-	Tue, 14 Nov 2023 10:27:45 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-507c5249d55so9252239e87.3;
-        Tue, 14 Nov 2023 10:27:45 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C035EE3;
+	Tue, 14 Nov 2023 20:06:05 +0000 (UTC)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341ACA7;
+	Tue, 14 Nov 2023 12:06:01 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9d242846194so889417966b.1;
+        Tue, 14 Nov 2023 12:06:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699986464; x=1700591264; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4aLKgnxjumveCQmA33N3eaw/7AnwbWNB2KFhyb6Fh/M=;
-        b=H+xdIqS+p279Rjx95XOnywx4dme8lCa5Vnh1CUWc7KTFSydT6PTyv1qEJ6LZpF/2BN
-         VDlGTqzAo2W/5xrwHZ9Fc31izITcsUYDSxXIIGWuj8XHsBwQRjvOFNTe20JCHfhevC3L
-         a5kr7ss345IyXYavYNxund5HOe05QnziBjyzNSxgGXuVoeYdsB3sHVSdjooJv3INzDYB
-         n1bVbzU1oVJ0LphTAl1ODkxk2MUMj9Fgr94KbFvWaletVXIXsCnzjUtd+bOpRqu3rrQI
-         ZlTMNnniaeo5nIBL1dRM6cNTiW6erEAFCJpO9vMvU5lQmkMwaULeCQaKJxfsg7byuTNO
-         baLg==
+        d=gmail.com; s=20230601; t=1699992359; x=1700597159; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yEOYqIoJdVSkU55czPwf7r14EQRegDnx+cT+pdey7ME=;
+        b=KLDLQY+pfZEOmG86b/6qicCtNLU2yo8gGVovIVcR9D5HYS60stJozyQGM6TSey/Q/3
+         liuDNeHoWb5a2ooHVJiPtgoKmTwSbELhMhXCrb/gmnXv+SBmFKpFl1hDOH35nW6nfA5v
+         PY2RQpCB0LQz+rA4P1UC1/sZPEoGs2N51+b8EWpZ237XG8yjGDi8Ufb4OIv3tJZr1BtP
+         s1XExsahW1Hl2gdiNtCH3/3CeBgmgYbuz2+oMRWNu4ruZbvrZlLF6e37mFSM7SqsfNE0
+         DPFZ7eAIfOHv3m6v3j7y2BKNg6y6z+9ZDfGZhg/EblFTF2vex5awy+NlCfJz41ZrvOzq
+         M5zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699986464; x=1700591264;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aLKgnxjumveCQmA33N3eaw/7AnwbWNB2KFhyb6Fh/M=;
-        b=XQXUrNFcqC3aYP99zqWCdS7Q6q+QtYYgJ/t/WmOzN3RvtBldahM6tQyIzxXulf7GVn
-         RQooy4l0y3xoE+fwdPr13EYL2Mprr75zNYhMJO8YIyPzSBgmgXdo+HAGix8Itv0tRzZ6
-         WtfjHVYA4ZEBDTyuCBk0zutiOgokwc6mHCuOgISMbMpAxbFoE/ZtQJtGDogqBxqWPtPl
-         kFP0cuLsDky8UI3XM3HlhpfQN8eQcoBvsc7N4DbMzYxoSrQbkj0nkXmmLbchc1Q5vwvN
-         adgyXwkmnD2Xf9QggHCjkdgmyT6c1z1TxgVSbjhTKm5Z8cplNHJ7ErcH+KgbCtA1A3Q7
-         HvIA==
-X-Gm-Message-State: AOJu0YyyLnHEJEFVRtxZpaIREEQQUZ2dbb8/XlOscWkdgmGZNsDFhczJ
-	pjx6D9QdVdWGn8141mYQkhnO2hOoW/qs65PuTW0=
-X-Google-Smtp-Source: AGHT+IEh9RjdZDWW7hfIGTr1M9kFP62rLBZYB/wEV27gSjM/hp1UXeKHJNEy56A3HMOhaV9tu+DkNQ==
-X-Received: by 2002:a05:6512:3f0:b0:50a:6fc5:e95c with SMTP id n16-20020a05651203f000b0050a6fc5e95cmr6168003lfq.60.1699986463736;
-        Tue, 14 Nov 2023 10:27:43 -0800 (PST)
-Received: from [10.76.84.181] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id w24-20020a50d798000000b00544f8271b5fsm5585115edi.8.2023.11.14.10.27.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Nov 2023 10:27:43 -0800 (PST)
-Message-ID: <80ad972c-9f98-4c57-8318-c84225e79cbe@gmail.com>
-Date: Tue, 14 Nov 2023 20:27:41 +0200
+        d=1e100.net; s=20230601; t=1699992359; x=1700597159;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yEOYqIoJdVSkU55czPwf7r14EQRegDnx+cT+pdey7ME=;
+        b=geQhgoN3hS4SuJBwsCMUIK5FUCRzAF50oTr0BGI6ZJMX3vAlQtoG8QhbGzpwyCIEVP
+         nruB2tg//3a3uOyJK8FG9xRUDIZnhUG/AGqoOY64Bg6X21AwvcgYUvQQv5Cuowv9LVIY
+         J+1gzLkMvPiymoQEtuHQ/ytjx6lOXGHzoawhxOvZ/5sqJOzkTEtTlQZrygafBOYvWl7+
+         yiG/m3gc7gHxgmc98TRhmNhZuGsgWSwsaSF9iNvEGvtPdy9dj7+6qUuUspmR3FZ/6JxF
+         ECquOcu3n2gLy1SHMCN64/Fp/YPNSiMKWR555/FbURiVB1lgRAliMPY/iGPoDXH+hTIW
+         rRUQ==
+X-Gm-Message-State: AOJu0YxDCy2nQykoqxHvaJ2kEBbJI3EjzHRgy7hQM1epsvRnOFIrkRg+
+	Rus/wHhmcPgxRNpy4YGbgj8=
+X-Google-Smtp-Source: AGHT+IGO7xk8qyDNVRUJnURRx+A/R/f81R+s7A2poSDsiwOfsrandMhDTXba7YI0/JIGJ99ZPPEpRg==
+X-Received: by 2002:a17:906:6009:b0:9c2:2d0a:320c with SMTP id o9-20020a170906600900b009c22d0a320cmr6690935ejj.46.1699992359409;
+        Tue, 14 Nov 2023 12:05:59 -0800 (PST)
+Received: from spiri.. ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id me19-20020a170906aed300b009ae587ce133sm5984429ejb.188.2023.11.14.12.05.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Nov 2023 12:05:58 -0800 (PST)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: 
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] iio: adc: ad7192: Add support for AD7194
+Date: Tue, 14 Nov 2023 22:05:29 +0200
+Message-Id: <20231114200533.137995-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: ad7192: Add AD7194 support
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Maksim Kiselev <bigunclemax@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Cosmin Tanislav <demonsingur@gmail.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Ibrahim Tilki <Ibrahim.Tilki@analog.com>, ChiaEn Wu <chiaen_wu@richtek.com>,
- Ivan Mikhaylov <fr0st61te@gmail.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231105193132.47009-1-alisadariana@gmail.com>
- <20231105193132.47009-3-alisadariana@gmail.com>
- <e5c9eaaa-a8f3-4ca5-acf6-9ff714a07898@linaro.org>
- <500eec71-e2f4-4f43-8bc9-6d4914b2493c@gmail.com>
- <124c97ca-0c2c-4b92-8d8e-99d589daf2da@linaro.org>
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-In-Reply-To: <124c97ca-0c2c-4b92-8d8e-99d589daf2da@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 14.11.2023 19:39, Krzysztof Kozlowski wrote:
-> On 14/11/2023 17:02, Alisa-Dariana Roman wrote:
->> On 06.11.2023 10:56, Krzysztof Kozlowski wrote:
->>> On 05/11/2023 20:31, alisadariana@gmail.com wrote:
->>>> From: Alisa-Dariana Roman <alisa.roman@analog.com>
->>>>
->>>> Unlike the other AD719Xs, AD7194 has configurable differential
->>>> channels. The default configuration for these channels can be changed
->>>> from the devicetree.
->>>>
->>>> Also add an example for AD7194 devicetree.
->>>>
->>>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
->>>> ---
->>>>    .../bindings/iio/adc/adi,ad7192.yaml          | 69 +++++++++++++++++++
->>>>    1 file changed, 69 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>> index 16def2985ab4..b9a9f7b20670 100644
->>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>> @@ -21,8 +21,15 @@ properties:
->>>>          - adi,ad7190
->>>>          - adi,ad7192
->>>>          - adi,ad7193
->>>> +      - adi,ad7194
->>>>          - adi,ad7195
->>>>    
->>>> +  '#address-cells':
->>>> +    const: 1
->>>> +
->>>> +  '#size-cells':
->>>> +    const: 0
->>>> +
->>>>      reg:
->>>>        maxItems: 1
->>>>    
->>>> @@ -96,6 +103,31 @@ required:
->>>>      - spi-cpol
->>>>      - spi-cpha
->>>>    
->>>> +patternProperties:
->>>> +  "^channel@([0-9a-f])$":
->>>> +    type: object
->>>> +    $ref: adc.yaml
->>>> +    unevaluatedProperties: false
->>>> +
->>>> +    properties:
->>>> +      reg:
->>>> +        description: The channel index.
->>>> +        minimum: 0
->>>> +        maximum: 7
->>>
->>> Your pattern a bit above is not correct then: [0-7]
->>>
->>>> +
->>>> +      diff-channels:
->>>> +        description: |
->>>> +          The differential channel pair for Ad7194 configurable channels. The
->>>> +          first channel is the positive input, the second channel is the
->>>> +          negative input.
->>>> +        items:
->>>> +          minimum: 1
->>>> +          maximum: 16
->>>> +
->>>> +    required:
->>>> +      - reg
->>>> +      - diff-channels
->>>> +
->>>>    allOf:
->>>>      - $ref: /schemas/spi/spi-peripheral-props.yaml#
->>>>    
->>>> @@ -127,3 +159,40 @@ examples:
->>>>                adi,burnout-currents-enable;
->>>>            };
->>>>        };
->>>> +  - |
->>>> +    spi {
->>>> +        #address-cells = <1>;
->>>> +        #size-cells = <0>;
->>>> +
->>>> +        adc@0 {
->>>> +            #address-cells = <1>;
->>>> +            #size-cells = <0>;
->>>> +            compatible = "adi,ad7194";
->>>> +            reg = <0>;
->>>> +            spi-max-frequency = <1000000>;
->>>> +            spi-cpol;
->>>> +            spi-cpha;
->>>> +            clocks = <&ad7192_mclk>;
->>>> +            clock-names = "mclk";
->>>> +            interrupts = <25 0x2>;
->>>> +            interrupt-parent = <&gpio>;
->>>> +            dvdd-supply = <&dvdd>;
->>>> +            avdd-supply = <&avdd>;
->>>> +            vref-supply = <&vref>;
->>>> +
->>>> +            adi,refin2-pins-enable;
->>>> +            adi,rejection-60-Hz-enable;
->>>> +            adi,buffer-enable;
->>>> +            adi,burnout-currents-enable;
->>>> +
->>>> +            channel@0 {
->>>
->>> Why cannot you add this to the existing example?
->>>
->>>
->>>
->>> Best regards,
->>> Krzysztof
->>>
->> I added another example to highlight the fact that only AD7194 supports
->> configurable channels. How should I proceed?
-> 
-> Bindings did not tell that, so it seems you miss that part - allOf
-> constraining channels per variant.
-> 
-> Best regards,
-> Krzysztof
-> 
-And should I remove the AD7194 example?
+Dear maintainers,
+
+Thank you very much for your feedback!
+
+I am submitting the upgraded series of patches for the ad7192 driver.
+
+Please consider applying the last 3 patches in order.
+
+Thank you!
+
+v1 -> v2
+	- new commit with missing documentation for properties
+	- add constraint for channels in binding
+	- correct pattern for channels
+	- correct commit message by adding "()" to functions
+	- use in_range
+	- use preferred structure in Kconfig
 
 Kind regards,
-Alisa-Dariana Roman
+
+Alisa-Dariana Roman (4):
+  dt-bindings: iio: adc: ad7192: Add properties
+  iio: adc: ad7192: Use device api
+  dt-bindings: iio: adc: ad7192: Add AD7194 support
+  iio: adc: ad7192: Add AD7194 support
+
+ .../bindings/iio/adc/adi,ad7192.yaml          |  84 +++++++++
+ drivers/iio/adc/Kconfig                       |  11 +-
+ drivers/iio/adc/ad7192.c                      | 176 ++++++++++++++++--
+ 3 files changed, 249 insertions(+), 22 deletions(-)
+
+-- 
+2.34.1
 
 

@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-70-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-71-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54E57EB7CF
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 21:31:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78847EB7DB
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 21:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF2B280291
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 20:31:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6520DB20C1D
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 20:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882AA35F0E;
-	Tue, 14 Nov 2023 20:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507C32C1BD;
+	Tue, 14 Nov 2023 20:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lTiAQsZ3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RjxRbrJQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABE52FC25
-	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 20:30:59 +0000 (UTC)
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F68F7
-	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 12:30:57 -0800 (PST)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-4af5ea40b7bso1403197e0c.2
-        for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 12:30:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAEA2FC34
+	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 20:32:43 +0000 (UTC)
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6235F112
+	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 12:32:42 -0800 (PST)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6ce2add34c9so3466409a34.1
+        for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 12:32:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699993857; x=1700598657; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699993961; x=1700598761; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tl1+Gkehjt1by60mLu4159xJvTILEA2zeoCgrTTns8A=;
-        b=lTiAQsZ3zw2lXto717VD/qcS3eivIGtWMDVa5HScelOKma+DBWylVaNpawS0sum9fu
-         f2Ju7lwgaO6oNLhkAhNro7k8JFRbJ5c9cGezySRuOFRScp+9U92cE0pb1uxvJPeL1K97
-         1IFihFWDACTv+fRhvwu3tutRdVz6EoVvBc+75KyffdhiFDrHrsGClRoeek1WNK7WNhgE
-         xEyIL0IxIy+/pt2T2ia76mPFwQu1OdErHg7PJYKS6GBWgSuU9bVxKk/ke0XGCWqCM5sr
-         FN+Ztt9NWy2TJOB2V/K0Rpgln74w1/PH84NzySStQ+8b1TKjj8BkcdT/YkWbm5x0UVgt
-         xHIA==
+        bh=GWuHm2PyhpvtXmafr8oA1u+dO28uYjRgGzuxSdieW3s=;
+        b=RjxRbrJQ6/KXXG64+3mxGVujkTrGkvoDyh94Slc+qUIAsFF/dDKr+jATLBEljT2sc2
+         QkTgFTxDTgPQ+1BPJlaS09/jaO6xBMLpOedjDr4oiicZEMGDd0kcCb+xvqCRAN52x051
+         akjGUOLAqkpcKC6UL+elK6zuMGFly/D+Tb6zSOOA1M+3fdfZ3NOWvqXMaxLv/b6/uCWO
+         ssEmIK5VyaJTxsjS2kzgIAZEI0wXLm4s9otL5IBhZ2bhA9i8qvBO5UdhELbHMWCClCUl
+         gvieNrMuYslzHVPuHmqG77OPdbS1rlEQxeslMc+AKAmH6pQm/YBTjcvkY8sp6sa+6tDz
+         vLMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699993857; x=1700598657;
+        d=1e100.net; s=20230601; t=1699993961; x=1700598761;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tl1+Gkehjt1by60mLu4159xJvTILEA2zeoCgrTTns8A=;
-        b=SJ8lnrSQTP96/N0s5In+0gKCOBMk1Nbl1SPCRFNV2ywAJL+VXDOPeA7pNUjgWOCN0P
-         lJ2ATUWGnzqaM8yAzycZhT376+emzJHZuZU8Tor2s/WzkiP4xuB/dYaLzbGKLqxY3ElC
-         0kuKU8BF9D7oGn2P4rApnGqCUpycHPNTp9unkqrTezOsgt5mMW1nagbNhha/AJvTmNh+
-         fbDOb8K6lyFS5ytgLUNR8p8sXTPFgaQRZr7aZAgmMlexGtZny4BhUm7sQVmHqsb1Zq3M
-         wmPCJ62TY5BWIknHqEqxLBanXERwT5MM/AvyZjt5Yk6iLws5P3nStjbyQKb6pr2jSM6v
-         7Udw==
-X-Gm-Message-State: AOJu0Yy0GdWovTcGXd94eJbD7eEwdCayxoUzRBhXlUI5aT/GNdpcEZbq
-	zEL8b16wjWNGYDfKq7mxQ4QjKg==
-X-Google-Smtp-Source: AGHT+IGV69USJ3JzgBy/S+1Svwq+5Q6qUvBOJYPXvyJ7WhrMmUn8OO2UIzY/nyc7EYqID+8yCMrPuw==
-X-Received: by 2002:a05:6122:1163:b0:496:2e22:29e3 with SMTP id q3-20020a056122116300b004962e2229e3mr10298944vko.1.1699993856815;
-        Tue, 14 Nov 2023 12:30:56 -0800 (PST)
+        bh=GWuHm2PyhpvtXmafr8oA1u+dO28uYjRgGzuxSdieW3s=;
+        b=oZd/P4R1tqC7ZHrY+y9ym0uazNdwzL7xo6sbAIY5wVv8jmEwJW7FTzYHEWYSp2+VHq
+         ljG9pS9Rj8YgHSwJyhatcxl1kwBD4HKu+uKF8igXKkH8J27HHGJIOqi8IPv7y5aZ99cC
+         jiCjijUdrJ11N0n4n8q45/g0PMwWSfyDhSdwWmR7a1+OFHBLKsG2fOmQMvbKec1yvCS7
+         fjdnjVj8/Zp+eFydxsFEnobI6jvYajtFTqw82c5fv0kUxU+gCw6M+oLrNB3wefZETIz/
+         ofbOVMZENTi/RHbGo2CgLmc/CDKa5NefpqvQHjTeqq0oaNbpi4cRdsJ2Rh6fEgGxznU9
+         lBZw==
+X-Gm-Message-State: AOJu0Yy2xTwFYqs/2hq8wPW8IPETw335b+X7/POZlpYmHPbHLZIBBOkc
+	nrGkxO2sMrgTIXP+CK8O8SanoQ==
+X-Google-Smtp-Source: AGHT+IHSfUE7hHE+1su6xChlOkcuvNvEt5G+y5FaHghn0x72P/EFVV2O7PU9IaRzlt9J7SuzRnwoIw==
+X-Received: by 2002:a9d:6502:0:b0:6d6:53fe:2181 with SMTP id i2-20020a9d6502000000b006d653fe2181mr3399558otl.26.1699993961734;
+        Tue, 14 Nov 2023 12:32:41 -0800 (PST)
 Received: from [172.25.83.73] ([12.186.190.1])
-        by smtp.gmail.com with ESMTPSA id h13-20020a0ceecd000000b00671b009412asm3132110qvs.141.2023.11.14.12.30.56
+        by smtp.gmail.com with ESMTPSA id h13-20020a0ceecd000000b00671b009412asm3132110qvs.141.2023.11.14.12.32.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Nov 2023 12:30:56 -0800 (PST)
-Message-ID: <ce63dba2-27d8-4285-8bf6-679e78675bb2@linaro.org>
-Date: Tue, 14 Nov 2023 21:30:56 +0100
+        Tue, 14 Nov 2023 12:32:41 -0800 (PST)
+Message-ID: <908fe905-b2e5-46c9-bb67-46c3797fd9ab@linaro.org>
+Date: Tue, 14 Nov 2023 21:32:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,20 +67,32 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: ad7192: Add AD7194 support
+Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: ad7192: Add AD7194 support
 Content-Language: en-US
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
- Alisa-Dariana Roman <alisa.roman@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
  Alexandru Tachici <alexandru.tachici@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-References: <20231114200533.137995-1-alisa.roman@analog.com>
- <20231114200533.137995-4-alisa.roman@analog.com>
+ Conor Dooley <conor+dt@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Maksim Kiselev <bigunclemax@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Cosmin Tanislav <demonsingur@gmail.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Ibrahim Tilki <Ibrahim.Tilki@analog.com>, ChiaEn Wu <chiaen_wu@richtek.com>,
+ Ivan Mikhaylov <fr0st61te@gmail.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231105193132.47009-1-alisadariana@gmail.com>
+ <20231105193132.47009-3-alisadariana@gmail.com>
+ <e5c9eaaa-a8f3-4ca5-acf6-9ff714a07898@linaro.org>
+ <500eec71-e2f4-4f43-8bc9-6d4914b2493c@gmail.com>
+ <124c97ca-0c2c-4b92-8d8e-99d589daf2da@linaro.org>
+ <80ad972c-9f98-4c57-8318-c84225e79cbe@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -126,61 +138,28 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231114200533.137995-4-alisa.roman@analog.com>
+In-Reply-To: <80ad972c-9f98-4c57-8318-c84225e79cbe@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/11/2023 21:05, Alisa-Dariana Roman wrote:
-> Unlike the other AD719Xs, AD7194 has configurable differential
-> channels. The default configuration for these channels can be changed
-> from the devicetree.
-> 
-> Also add an example for AD7194 devicetree.
-> 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
+On 14/11/2023 19:27, Alisa-Dariana Roman wrote:
 
-Where is the changelog?
+>>>>
+>>>> Best regards,
+>>>> Krzysztof
+>>>>
+>>> I added another example to highlight the fact that only AD7194 supports
+>>> configurable channels. How should I proceed?
+>>
+>> Bindings did not tell that, so it seems you miss that part - allOf
+>> constraining channels per variant.
+>>
+>> Best regards,
+>> Krzysztof
+>>
+> And should I remove the AD7194 example?
 
->  .../bindings/iio/adc/adi,ad7192.yaml          | 74 +++++++++++++++++++
->  1 file changed, 74 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 9b59d6eea368..800b396f5993 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -21,6 +21,7 @@ properties:
->        - adi,ad7190
->        - adi,ad7192
->        - adi,ad7193
-> +      - adi,ad7194
->        - adi,ad7195
->  
->    reg:
-> @@ -108,6 +109,42 @@ required:
->  
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: adi,ad7194
-> +    then:
-> +      properties:
-> +        '#address-cells':
-
-Use consistent quotes through the file, either ' or ".
-
-> +          const: 1
-> +
-> +        '#size-cells':
-> +          const: 0
-> +
-> +      patternProperties:
-> +        "^channel@([0-7a-f])$":
-
-Properties always go to top-level. In allOf you only constrain them or
-disallow (: false).
+You can add new example in such case (and keep old).
 
 Best regards,
 Krzysztof

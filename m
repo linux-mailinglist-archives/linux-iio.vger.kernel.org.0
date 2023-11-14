@@ -1,212 +1,164 @@
-Return-Path: <linux-iio+bounces-60-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-61-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775747EB455
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 17:02:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C607EB4D2
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 17:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22877281259
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 16:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 476731C20AA7
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Nov 2023 16:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519F441779;
-	Tue, 14 Nov 2023 16:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921A019448;
+	Tue, 14 Nov 2023 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0qaTbRx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h0oLxdom"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6AB41776;
-	Tue, 14 Nov 2023 16:02:36 +0000 (UTC)
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28BD1FE;
-	Tue, 14 Nov 2023 08:02:35 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9c41e95efcbso849596166b.3;
-        Tue, 14 Nov 2023 08:02:35 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4FC2AF1E
+	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 16:31:37 +0000 (UTC)
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EBAC132
+	for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 08:31:35 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-da37522a363so5950630276.0
+        for <linux-iio@vger.kernel.org>; Tue, 14 Nov 2023 08:31:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699977753; x=1700582553; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v7o5QmUXPo3E3VEamoF4ZTOZ4Zd/AR5NbdIm9cwl4NQ=;
-        b=W0qaTbRxY65vkTDI1zQyqlKcG6Si3x/oVu2GLExbRuCE8AFRRjGfS1AUhyr+PbqH8s
-         O6xGnKxpqbgxSszYPdnCd4aP+DHIUmaWOEGcLhjVe3zXtL/IjzUj3ySYyVzSy2t4K8IE
-         bq21aY2yrBpAHcanfNreMTdSVUFZWICXDW69OYteD8c4DOfz/Ao0REmt+sVLaLZUqElq
-         lq/TCxDMmlSOuefXLr2WG1YZvbNgG6XEQ4SY/mWMwr+F7bdb8DNE48k1R11VKjOYZlbt
-         f/6znF0fCltXG42r5F+i1gB57kVg8MAVk4toB++HKxGnOvd8pNkbriufUyA3ahQsACkV
-         SyDA==
+        d=linaro.org; s=google; t=1699979494; x=1700584294; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fr9fBrNQghS3PnJBIgxqFuQ3YV89v+EkFP5jOeoN9BI=;
+        b=h0oLxdombhcX61+QbhS50eWQ1gC2f7ymvb1PrvifsdEPOzbPWhmUfqTvCB5ONhKbwE
+         8HGwRvgNRrOtf+Kq6WjmsHHlyuDPxTlYVOLw91Ubg8YlhSkuGZr7OkVwiZJCL1sRVPtt
+         uxre0gBseJrRX39kQ9CfX1n4jRAFQVbWEKMWvlvIRKPPUt0kkWjDsz0KkxZNmvRIzcfQ
+         ZcA6SwWneWcCFlBw0AMBL+JtUNsWYwrxP+bXDpgfkZFp8a73MtUxUFH5gRHW9xY1LBmx
+         PSSf7tba6HmEucd6ABJIaEbLHPigHH16xlU/s7ImXFqGAa+p4l0mCmbheKvphCuqLqIo
+         009g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699977753; x=1700582553;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7o5QmUXPo3E3VEamoF4ZTOZ4Zd/AR5NbdIm9cwl4NQ=;
-        b=qD08UVZvSBjjJFmCTK62jXTfSBAVPomFS6WMNGfisd5Mt1Zy7DXlAnbqVVzQLfQvoD
-         EMWLgYScEfe5+VQ4WodsIH3fjcL+PpA+hxjW7RbXEsJMgovVAQZgLQ2PDzOvfO9IyWhz
-         JObzCVGUO3D3LLecJKK83XkDfwjT6zm2brzUwJasbxfj6CT2MH3OQARJWde5J5tTNu/l
-         kTNLdq+TAtN45via2WpTnAcUMlHBRvSwJGefR8pXdXrFlspV6JF223hQU74YVI/4YQqt
-         GsIzV0YsglGrOlIfPHatAMOPbVTuRc/5+3kpaGZMOnz+PlO/eUOmpdg+YuGp0kmtzxvi
-         VNFw==
-X-Gm-Message-State: AOJu0Yz3sQ6HiIQ9VukGiv2CO6KYzVj0z4IIphUMMC9FRc1WzHygOXlr
-	o93OALbha72JtHneAbyLXr8=
-X-Google-Smtp-Source: AGHT+IFijuEq+KWENnhrCTxm6KR4O5FgNbgxdRujmQMAkF+aq8oBCuUwkRXRm1A3/iHVlUkADwA0yw==
-X-Received: by 2002:a17:906:d8d2:b0:9ad:e180:16e3 with SMTP id re18-20020a170906d8d200b009ade18016e3mr7347700ejb.37.1699977753229;
-        Tue, 14 Nov 2023 08:02:33 -0800 (PST)
-Received: from [10.76.84.181] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id ay18-20020a170906d29200b009ce03057c48sm5766424ejb.214.2023.11.14.08.02.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Nov 2023 08:02:32 -0800 (PST)
-Message-ID: <500eec71-e2f4-4f43-8bc9-6d4914b2493c@gmail.com>
-Date: Tue, 14 Nov 2023 18:02:30 +0200
+        d=1e100.net; s=20230601; t=1699979494; x=1700584294;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fr9fBrNQghS3PnJBIgxqFuQ3YV89v+EkFP5jOeoN9BI=;
+        b=ENVf4Q5AtZzKPScd21DW/ch+VI/8V4o8p8guTahVaO/C0Oxv6pqmqhCn050YV+MYxl
+         9rGr/SNLlheauEezVBC6gNtqwL3TLVH6zmNNTuJkeBwY1g2uviHqEdoHN4QGOpdkFOGp
+         p5c2YYBfcgaBxJA1PlNFQZXh3KuMmr4b3yhP99/p4bhjA4jHlnLAB3Hvce5aw+x7jqCh
+         rRbjaGzZ9gaYtyBo2rVsJ2dP15PR6NjbUpQ9CKiJNpasUI2Nvual3OI+XWOWv6i/jtAf
+         HtNIZnX4I2zXVBato24rQVq3xqQYUldixynmX378r0HeIK3AymU/l0kUCzUSKsVsd1+e
+         50sg==
+X-Gm-Message-State: AOJu0Yxq8gW31nxMfsQOOUZfLDV3FiSDVJKxFJU9eDjipxghwr3Dx9Tn
+	fUUtfsX0Cp7s4b0c3kcOxLm3qxdRhkMStmXKbwhKtg==
+X-Google-Smtp-Source: AGHT+IE5JRixOjxRGUF+c61qIeYY24wdOAvccV78T4FRZCSUWSvo//Cy7fL+VTmLpOHSicQnDTECRUPpp9z3C1BQ8uY=
+X-Received: by 2002:a25:1646:0:b0:daf:579a:79cd with SMTP id
+ 67-20020a251646000000b00daf579a79cdmr7364262ybw.27.1699979494683; Tue, 14 Nov
+ 2023 08:31:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: ad7192: Add AD7194 support
-Content-Language: en-US
+References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org> <20231108104343.24192-5-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20231108104343.24192-5-krzysztof.kozlowski@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 14 Nov 2023 17:30:58 +0100
+Message-ID: <CAPDyKFrynEEd+y6Qkv_9aTSJy1iLO4bhg-Jg8hEP0CZiWnRJ0w@mail.gmail.com>
+Subject: Re: [PATCH 04/17] dt-bindings: mmc: samsung,exynos-dw-mshc: add
+ specific compatibles for existing SoC
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Maksim Kiselev <bigunclemax@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Cosmin Tanislav <demonsingur@gmail.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Ibrahim Tilki <Ibrahim.Tilki@analog.com>, ChiaEn Wu <chiaen_wu@richtek.com>,
- Ivan Mikhaylov <fr0st61te@gmail.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231105193132.47009-1-alisadariana@gmail.com>
- <20231105193132.47009-3-alisadariana@gmail.com>
- <e5c9eaaa-a8f3-4ca5-acf6-9ff714a07898@linaro.org>
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-In-Reply-To: <e5c9eaaa-a8f3-4ca5-acf6-9ff714a07898@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, 
+	Tomasz Figa <tomasz.figa@gmail.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	Alessandro Zummo <a.zummo@towertech.it>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Sam Protsenko <semen.protsenko@linaro.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 06.11.2023 10:56, Krzysztof Kozlowski wrote:
-> On 05/11/2023 20:31, alisadariana@gmail.com wrote:
->> From: Alisa-Dariana Roman <alisa.roman@analog.com>
->>
->> Unlike the other AD719Xs, AD7194 has configurable differential
->> channels. The default configuration for these channels can be changed
->> from the devicetree.
->>
->> Also add an example for AD7194 devicetree.
->>
->> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
->> ---
->>   .../bindings/iio/adc/adi,ad7192.yaml          | 69 +++++++++++++++++++
->>   1 file changed, 69 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->> index 16def2985ab4..b9a9f7b20670 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->> @@ -21,8 +21,15 @@ properties:
->>         - adi,ad7190
->>         - adi,ad7192
->>         - adi,ad7193
->> +      - adi,ad7194
->>         - adi,ad7195
->>   
->> +  '#address-cells':
->> +    const: 1
->> +
->> +  '#size-cells':
->> +    const: 0
->> +
->>     reg:
->>       maxItems: 1
->>   
->> @@ -96,6 +103,31 @@ required:
->>     - spi-cpol
->>     - spi-cpha
->>   
->> +patternProperties:
->> +  "^channel@([0-9a-f])$":
->> +    type: object
->> +    $ref: adc.yaml
->> +    unevaluatedProperties: false
->> +
->> +    properties:
->> +      reg:
->> +        description: The channel index.
->> +        minimum: 0
->> +        maximum: 7
-> 
-> Your pattern a bit above is not correct then: [0-7]
-> 
->> +
->> +      diff-channels:
->> +        description: |
->> +          The differential channel pair for Ad7194 configurable channels. The
->> +          first channel is the positive input, the second channel is the
->> +          negative input.
->> +        items:
->> +          minimum: 1
->> +          maximum: 16
->> +
->> +    required:
->> +      - reg
->> +      - diff-channels
->> +
->>   allOf:
->>     - $ref: /schemas/spi/spi-peripheral-props.yaml#
->>   
->> @@ -127,3 +159,40 @@ examples:
->>               adi,burnout-currents-enable;
->>           };
->>       };
->> +  - |
->> +    spi {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        adc@0 {
->> +            #address-cells = <1>;
->> +            #size-cells = <0>;
->> +            compatible = "adi,ad7194";
->> +            reg = <0>;
->> +            spi-max-frequency = <1000000>;
->> +            spi-cpol;
->> +            spi-cpha;
->> +            clocks = <&ad7192_mclk>;
->> +            clock-names = "mclk";
->> +            interrupts = <25 0x2>;
->> +            interrupt-parent = <&gpio>;
->> +            dvdd-supply = <&dvdd>;
->> +            avdd-supply = <&avdd>;
->> +            vref-supply = <&vref>;
->> +
->> +            adi,refin2-pins-enable;
->> +            adi,rejection-60-Hz-enable;
->> +            adi,buffer-enable;
->> +            adi,burnout-currents-enable;
->> +
->> +            channel@0 {
-> 
-> Why cannot you add this to the existing example?
-> 
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
-I added another example to highlight the fact that only AD7194 supports 
-configurable channels. How should I proceed?
+On Wed, 8 Nov 2023 at 11:44, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> Samsung Exynos SoC reuses several devices from older designs, thus
+> historically we kept the old (block's) compatible only.  This works fine
+> and there is no bug here, however guidelines expressed in
+> Documentation/devicetree/bindings/writing-bindings.rst state that:
+> 1. Compatibles should be specific.
+> 2. We should add new compatibles in case of bugs or features.
+>
+> Add compatibles specific to each SoC in front of all old-SoC-like
+> compatibles.
+>
+> While re-indenting the first enum, put also axis,artpec8-dw-mshc in
+> alphabetical order.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Kind regards,
-Alisa-Dariana Roman
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
+
+>
+> ---
+>
+> I propose to take the patch through Samsung SoC (me). See cover letter
+> for explanation.
+> ---
+>  .../bindings/mmc/samsung,exynos-dw-mshc.yaml  | 25 ++++++++++++-------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
+> index 6ee78a38bd74..5fe65795f796 100644
+> --- a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
+> @@ -14,15 +14,22 @@ maintainers:
+>
+>  properties:
+>    compatible:
+> -    enum:
+> -      - samsung,exynos4210-dw-mshc
+> -      - samsung,exynos4412-dw-mshc
+> -      - samsung,exynos5250-dw-mshc
+> -      - samsung,exynos5420-dw-mshc
+> -      - samsung,exynos5420-dw-mshc-smu
+> -      - samsung,exynos7-dw-mshc
+> -      - samsung,exynos7-dw-mshc-smu
+> -      - axis,artpec8-dw-mshc
+> +    oneOf:
+> +      - enum:
+> +          - axis,artpec8-dw-mshc
+> +          - samsung,exynos4210-dw-mshc
+> +          - samsung,exynos4412-dw-mshc
+> +          - samsung,exynos5250-dw-mshc
+> +          - samsung,exynos5420-dw-mshc
+> +          - samsung,exynos5420-dw-mshc-smu
+> +          - samsung,exynos7-dw-mshc
+> +          - samsung,exynos7-dw-mshc-smu
+> +      - items:
+> +          - enum:
+> +              - samsung,exynos5433-dw-mshc-smu
+> +              - samsung,exynos7885-dw-mshc-smu
+> +              - samsung,exynos850-dw-mshc-smu
+> +          - const: samsung,exynos7-dw-mshc-smu
+>
+>    reg:
+>      maxItems: 1
+> --
+> 2.34.1
+>
 

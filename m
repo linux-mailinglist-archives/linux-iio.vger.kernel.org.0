@@ -1,170 +1,105 @@
-Return-Path: <linux-iio+bounces-81-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-82-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C9B7EC80F
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Nov 2023 17:01:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFFF7ECDD9
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Nov 2023 20:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4169FB20CEA
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Nov 2023 16:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A204281553
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Nov 2023 19:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C66F31737;
-	Wed, 15 Nov 2023 16:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9B3C46D;
+	Wed, 15 Nov 2023 19:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PniLYnzs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lsY1/n01"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94402EAEC;
-	Wed, 15 Nov 2023 16:00:58 +0000 (UTC)
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A7519B;
-	Wed, 15 Nov 2023 08:00:56 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6bf03b98b9bso751808b3a.1;
-        Wed, 15 Nov 2023 08:00:56 -0800 (PST)
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A693E9E;
+	Wed, 15 Nov 2023 11:38:42 -0800 (PST)
+Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3b2ea7cc821so16666b6e.1;
+        Wed, 15 Nov 2023 11:38:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700064056; x=1700668856; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VsQDT2w0FjShhzuIz0BGJBYesGwhop9/GhNrCvVLr2Q=;
-        b=PniLYnzsOhDEQktpGugQb1CkHpwKBZcTsEBtusrxQkUruzwczUbESnSkm3siquj9T9
-         2qxBhLYnLdcDvKlD5pRI7AGjxdsxMA8cr8Wop6ri4qEj10eKKg/D9ONBpCUIwaHwj7pz
-         1/RGxEVcADZde9lyWIy2gDcD3DcmQfPnKYKEZyLnXgE79VPFPGZbZYk2eT7I9EORkuhh
-         Di34LB6loGdDk+Rqw2BfAxrlNbRXi329/AqVlFH6vQQZrgPH/jU3q+p7kjTRf4B0gYpO
-         bpPGQ1T2sKjP17qHyhzWSRpkpHi7ys6UhpxgQ+b5IVWAetJDMUHRkNa70K7Wn7m+jZl0
-         +sdA==
+        d=gmail.com; s=20230601; t=1700077122; x=1700681922; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XFx0ekih11cOSCq3z7TR5VeZ62EcRixYTQFMUdafBX0=;
+        b=lsY1/n01dSgimPQtPyjtgTEkbiAWKFwNdrGziHjaINQZJkL3A+FZoue3cjs6Uqmusc
+         CWfnd/rapg8tnaoT2eyylGbYFsTLUWK7cElk5lyZvH9w9DRWmnkyAnAm5XBGv69tEaQM
+         u/i8IZhDWjKCPIQR8sii7H3b3aK7A2qnBui9JLbfENJs7C97Yy+4IZKXkZbVrEpt5GNG
+         FHRm4dgAC6mFQVBSUSnFJ+CFhS7h0i3vjX/Q3Zpv/OD1XEYiQtPGn4WOb0iy1l4IiyCl
+         l29pBzq7am5A8+UYc3vl7CoDaxF0R41enPR470SgzbDjJ3QwThLo0/kTVoUknNe8czEB
+         R8oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700064056; x=1700668856;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VsQDT2w0FjShhzuIz0BGJBYesGwhop9/GhNrCvVLr2Q=;
-        b=PeIEcNp8QvpB3HyC8roWhBvX3STXiWFUcmOyQFfU3AKrKN5U/FVK8fMRph9puhhORr
-         DI0AO7vo2vM03+WjiK/8sWyr8GrqONZBV4J01ZxCnB2ylFiPY7+MT5pjJxELLfFaq45/
-         nt4snT9N8iKgiHZDWuqDJveYVtqR9j4QUBWfFIE+WtRYyjkAOPAKX+MlKP1qY/O5rd2U
-         5s9URs5K6zhc0gLL6umLyILfzrtm5khyw64KKkJWR1QKJVGP6c19WxlQBSWvhUIaOyeC
-         soioWr7G0A8Ql4xguAYVpk1JlzyU1g+DtIWE3rj8iXc7XSPUJK59tbS84LGFoA9Oj0qP
-         eZww==
-X-Gm-Message-State: AOJu0YyeQ1BYHL4BKppmJ2kH6DAI+yklITTYu4tr1zTQFWRuxAvgC019
-	BuH6dJuXK3y8DaegZpXieE8=
-X-Google-Smtp-Source: AGHT+IErQoAlZrZcHWhp4ZkLm0PXKuCT9RSh1Z01Cc4NXpJxtkY2vJXfxyBL4/jbcb3YpioGTdSvwQ==
-X-Received: by 2002:a05:6a20:e108:b0:187:962d:746b with SMTP id kr8-20020a056a20e10800b00187962d746bmr669389pzb.9.1700064055825;
-        Wed, 15 Nov 2023 08:00:55 -0800 (PST)
-Received: from [10.5.169.250] ([103.4.221.252])
-        by smtp.gmail.com with ESMTPSA id h21-20020a056a00219500b006c046a60580sm2943372pfi.21.2023.11.15.08.00.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Nov 2023 08:00:55 -0800 (PST)
-Message-ID: <9b1674d7-c41d-4d8b-bb28-09ed201c72cd@gmail.com>
-Date: Wed, 15 Nov 2023 21:29:20 +0530
+        d=1e100.net; s=20230601; t=1700077122; x=1700681922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XFx0ekih11cOSCq3z7TR5VeZ62EcRixYTQFMUdafBX0=;
+        b=vdLUp4KdShmiFgW8ChFZWTq/zTZPnUBARLpYLAFwwA1/QVk4eSyr5zHpbpeNihWjp/
+         HZTznPHTs9prMu9epeFSe8O7GOoCfeMayuu/ZUBn1Ym+JlmqkeckAlraIpapHeDMfRIX
+         lb5p4Fk87yxclLVEHapxqromJcJiCEU88kivO1yCpOAxZ2VJtjgJ1eSUh0Gu15cfwibR
+         U5DU9gZw7So2BfMfK9X5MMvI7xHDdaCYOI7DIaG575tULBGcGa1NCXq9wVCHlINBEMZm
+         10bboEhEdnBHvFubnKHkQIRDFsDQG06Bd7heQ73vTRRssoxP5fmxHqwBb0mQhMzevIrB
+         WdCw==
+X-Gm-Message-State: AOJu0YzMVqDUZFxeuyUHD/X0nTtYmQ+/4/G7Xxqmega9ptJsGf9qIFHE
+	xmCF6xjd83VCh8BLT7y66WjvEQAwQRE=
+X-Google-Smtp-Source: AGHT+IE9lQnZB3PWooEWwKrWprNsROTgUn1GfyeuPLXbeFCz8a3jVbe/iz5qJ9CHEge/G/4XifpZLA==
+X-Received: by 2002:a05:6870:4997:b0:1e9:fd9b:735 with SMTP id ho23-20020a056870499700b001e9fd9b0735mr17664766oab.56.1700077121736;
+        Wed, 15 Nov 2023 11:38:41 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s23-20020ac85297000000b00419c39dd28fsm3744298qtn.20.2023.11.15.11.38.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 11:38:41 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Wed, 15 Nov 2023 11:38:39 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: marius.cristea@microchip.com
+Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+	jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] adding support for Microchip PAC193X Power Monitor
+Message-ID: <3679da4c-fd70-4d2f-adfe-23592290eb30@roeck-us.net>
+References: <20231115134453.6656-1-marius.cristea@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: trivial-devices: add aosong,ags02ma
-Content-Language: en-US
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Jonathan Cameron <jic23@kernel.org>
-References: <20231115125810.1394854-1-anshulusr@gmail.com>
- <20231115125810.1394854-2-anshulusr@gmail.com>
- <20231115-stability-arrive-e0458f6f7b0f@squawk>
-From: Anshul Dalal <anshulusr@gmail.com>
-In-Reply-To: <20231115-stability-arrive-e0458f6f7b0f@squawk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231115134453.6656-1-marius.cristea@microchip.com>
 
-On 11/15/23 20:08, Conor Dooley wrote:
-> On Wed, Nov 15, 2023 at 06:28:07PM +0530, Anshul Dalal wrote:
->> Add bindings for Aosong AGS02MA TVOC sensor.
->>
->> The sensor communicates over i2c with the default address 0x1a.
->> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
->>
->> Datasheet:
->>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
->> Product-Page:
->>   http://www.aosong.com/m/en/products-33.html
->>
->> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
->> ---
->>
->> Changes for v2:
->> - Removed device from trivial-devices
+On Wed, Nov 15, 2023 at 03:44:51PM +0200, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
 > 
-> Your $subject still says "trivial-devices" though, so please fix that in
-> your next submission.
+> Adding support for Microchip PAC193X series of Power Monitor with
+> Accumulator chip family. This driver covers the following part numbers:
+>  - PAC1931, PAC1932, PAC1933 and PAC1934
 > 
->> - Added standalone binding with vdd-supply property
->> ---
->>  .../bindings/iio/chemical/aosong,ags02ma.yaml | 48 +++++++++++++++++++
->>  1 file changed, 48 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml b/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
->> new file mode 100644
->> index 000000000000..4a0278c6318c
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
->> @@ -0,0 +1,48 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/chemical/aosong,ags02ma.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Aosong AGS02MA VOC Sensor
->> +
->> +description: |
->> +  AGS02MA is an TVOC (Total Volatile Organic Compounds) i2c sensor with default
->> +  address of 0x1a.
->> +
->> +  Datasheet:
->> +    https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
->> +
->> +maintainers:
->> +  - Anshul Dalal <anshulusr@gmail.com>
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - aosong,ags02ma
->> +      - asair,ags02ma
+>   This device is at the boundary between IIO and HWMON (if you are
+> looking just at the "shunt resistors, vsense, power, energy"). The
+> device also has ADC internally that can measure voltages (up to 4
+> channels) and also currents (up to 4 channels). The current is measured as
+> voltage across the shunt_resistor.
 > 
-> Why do you have two compatibles for the same device? Please document and
-> use only one of these. The aoson website says:
-> "Guangzhou ASAIR Electronic Co., Ltd"
-
-I'm sorry but I couldn't find any reference to such name on
-http://www.aosong.com/en/
-In the contact page (http://www.aosong.com/en/article-34.html),
-I could only find references to "Guangzhou Aosong Electronic Co., Ltd."
-
-> so I suspect "asair" is a more apt vendor prefix.
+>   I have started with a simple driver (this one that is more appropriate to be a
+> HWMON) and willing to add more functionality later (like data buffering that is quite
+> important for example if someone wants to profile power consumption of the
+> processor itself, or a peripheral device, or a battery, this kind of functionality
+> was requested by our customers).
 > 
 
-Asair is the brand name under which Guangzhou Aosong Electronics sells
-their products [0]. After a prior discussion with Krzysztof [1], I
-thought it would be the best to go with Aosong instead.
+I sdon't immediately see any typical hwmon properties such as limit registers
+or alarms. The hwmon subsystem also doesn't support data buffering.
+Given that, the iio implementation seems more appropriate to me.
+Anyone using the chip for hardware monitoring can use the iio->hwmon bridge.
 
-The rationale being since a vendor can only have a single prefix, if
-Aosong were to sell some new product under the name Aosong, it would
-then have to have the same vendor-prefix as other products under the
-Asair brand.
-
-[0]: https://www.linkedin.com/company/asairsensor/
-[1]:
-https://lore.kernel.org/lkml/1f62ab04-1679-44b1-b95e-e3954afbfa88@linaro.org/
-Best regards,
-Anshul
+Thanks,
+Guenter
 

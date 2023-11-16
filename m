@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4E97EE360
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 15:54:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123917EE3C5
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 16:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833D41F27572
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 14:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F7B1C20B89
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 15:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117F0321B6;
-	Thu, 16 Nov 2023 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF0E3158D;
+	Thu, 16 Nov 2023 15:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KcdbNvGC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bAk79e7i"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC932182
-	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 06:54:15 -0800 (PST)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1e993765c1bso442897fac.3
-        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 06:54:15 -0800 (PST)
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137941AD
+	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 07:01:45 -0800 (PST)
+Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-66d09b6d007so5068376d6.1
+        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 07:01:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700146455; x=1700751255; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700146905; x=1700751705; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=93PcyiUm7i6Lhh8QjR/CsFJhap/PqPkL9V3uDMBpzNk=;
-        b=KcdbNvGCttnGUcfaonftizypnL0NddBJULzQEoyQepl7d1Jmglc66XJORvBAXf3LBh
-         nNdc5in9/RQdaLzZsjUcee9Ul2uqIBEXI+SPO+v7EKwdjpP+g1/CSosFjVcl3UFLTBWi
-         bXM2xgsoU6WLwZM/+QmcmEvVC4TtQwJNaVs8Rig7CX4XudFCukoYOxMZlwc2EbJc+iI6
-         wUK5J/ywZgpgLhgCmfVzXvfsL0/cffQZsBI5acaAa8spOT7wUsmeRnZUK5uVB5//kgoV
-         1u7ljzkAivgbbUqKjlukVle8NMqIlrzONvpggHnDgBrzTsl04FyExRrNtV0NBc4nz18i
-         H+ig==
+        bh=inOVU0x3pZACyCPPsXiQOvFDB8AI+bULX2g91qYkKhY=;
+        b=bAk79e7i5N/uEfbIItoYRKzaOiqIvxlzCqWzAY0C/2LTIXBcrt+uznGpGr/5SL4285
+         i1awqhZKzLoeuCqd5fXFH4+ppKGTKETTn8AGsbpW6Vg6HuTh/WMlv5GYr3PF7bTWdAow
+         YxIZ/jE+YAAqHzFo1APknpV5TWa3YTsUrhu9XUHWs2wpmDhVoAkTCtcdsMtAHe/4XlQA
+         jBOVWWD/Se15yHj7dytm6SGUEruqTNylgHuGKHDfV14pBeYIT9FZifppzom8t1pLDwp2
+         5zAxqRwQVjhLA74LrDTdFXAoSLlqz/jKv1YWFGuKAsX1ss2ohgRj/BAimvQxggRlfU1a
+         Bxcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700146455; x=1700751255;
+        d=1e100.net; s=20230601; t=1700146905; x=1700751705;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=93PcyiUm7i6Lhh8QjR/CsFJhap/PqPkL9V3uDMBpzNk=;
-        b=g3v5i1YgXrfFWOO5J0UcKCo4R58/omLbhc9BfxxTKTyvdW/TZMA/324luOn+Trs0Ov
-         e7TnjScXoNoy9NHYjW3+zPqxwFKljBoTchChEor72zZ+oYGNed7xRu87gSQzbMYQHnVf
-         VcbVDGelcz8maQQkiLKcBNxM6BXiPrYKaqsqmqIZg1CTY38NJPyoSfn+I2cwJwY8fbMH
-         p8NiwXver+sRJQ3JsxW9JHgjYEwkVwkjpnKVW15+ew0FLiyU8PqlB+LLtvUD5sGpomwt
-         nmYVInJLIFbvD0sdjSUrOLa352VprQYZLmRi19WAWI0b5f3hU15psp2NU6YZsZp7AGu2
-         A6Ew==
-X-Gm-Message-State: AOJu0Yw+w5ogAgTCrOfKY4rIGdimrtnNLwYcSUaec1ZHmDFNsKRGBYvk
-	NxiBGDVCrTJ+kuXFiaVTYvrwGQ==
-X-Google-Smtp-Source: AGHT+IHjbCHaJKX3PdF73fwcO+EzDwid40+JkzVeS221EfypzRQvtAkY5iDfQPKAEY233wRXGikU5A==
-X-Received: by 2002:a05:6871:b1e:b0:1f4:b55c:46b4 with SMTP id fq30-20020a0568710b1e00b001f4b55c46b4mr20421181oab.43.1700146455172;
-        Thu, 16 Nov 2023 06:54:15 -0800 (PST)
+        bh=inOVU0x3pZACyCPPsXiQOvFDB8AI+bULX2g91qYkKhY=;
+        b=iflWjhYBL1iQMsyFPZ/NztRnx4IAAKxvXE9o1p2XDcGE+WcEF2vDxUIkbkBl7qhuA0
+         HaCr3QxMb+YFnY4vWaFZzgWh3p5syNLM3FfGRXVdjSq8JL7BUWJtdl5IWIQNVt08/MoA
+         RC4+GRBDX9ye0wRNtQzVqWZUcUv8Dsy6HxGMEOJCsFHMggAHrI2eyaY1hMDOTWbQ0ZO6
+         63gUCVBPg7iLI5y0rsNd14poIrBKSA0pLQvnhmRwn/4fSFRKt2b77PJ5T/nWDvGCLo1Z
+         02afFwRrvQj/Ojip7s68KSzg0HyrR5KcvIyWeYNVgj7BsdDh8+Cyrq/rE7ssk5FkBBQU
+         uC7A==
+X-Gm-Message-State: AOJu0YyDHcLWlC5FD16udmXJNL3RuP04TL1O81YizpWbsQDb38jaLXH0
+	CFhpKR8JHhFwBzcybecJ8PmqaA==
+X-Google-Smtp-Source: AGHT+IGx7Ka5ImFx6cFZHYECx3kiiMZo9skRpwA5REYpdMG4aLvVNqTWkwT1waUFxWXG+HDSY+m7+Q==
+X-Received: by 2002:a0c:eb4e:0:b0:677:a09a:83bd with SMTP id c14-20020a0ceb4e000000b00677a09a83bdmr9150643qvq.19.1700146904714;
+        Thu, 16 Nov 2023 07:01:44 -0800 (PST)
 Received: from [10.50.4.74] ([50.201.115.146])
-        by smtp.gmail.com with ESMTPSA id g13-20020a05620a278d00b00767d8e12ce3sm4358648qkp.49.2023.11.16.06.54.14
+        by smtp.gmail.com with ESMTPSA id pp23-20020a056214139700b0065b02eaeee7sm1415782qvb.83.2023.11.16.07.01.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 06:54:14 -0800 (PST)
-Message-ID: <44cfcd9a-f139-479b-85ff-5fd23c9714b2@linaro.org>
-Date: Thu, 16 Nov 2023 15:54:13 +0100
+        Thu, 16 Nov 2023 07:01:44 -0800 (PST)
+Message-ID: <fedd4bcf-7892-4096-bcca-7ea72d39576f@linaro.org>
+Date: Thu, 16 Nov 2023 16:01:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,23 +62,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] dt-bindings: adc: add AD7173
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for PAC193X
 Content-Language: en-US
-To: mitrutzceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Conor Dooley <conor.dooley@microchip.com>
-References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
+To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+ robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+ linux-hwmon@vger.kernel.org
+Cc: krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20231115134453.6656-1-marius.cristea@microchip.com>
+ <20231115134453.6656-2-marius.cristea@microchip.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -124,173 +117,137 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
+In-Reply-To: <20231115134453.6656-2-marius.cristea@microchip.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 16/11/2023 14:46, mitrutzceclan wrote:
-> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+On 15/11/2023 14:44, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
 > 
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
+> This is the device tree schema for iio driver for
+> Microchip PAC193X series of Power Monitors with Accumulator.
 > 
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com> # except reference_select
-
-Please drop the tag. You clearly did not test it, so it must be
-re-reviewed. Do not send code which was not tested.
-
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 > ---
-> V3 -> V4
->  - include supply attributes
->  - add channel attribute for selecting conversion reference
+>  .../bindings/iio/adc/microchip,pac1934.yaml   | 137 ++++++++++++++++++
+>  1 file changed, 137 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
 > 
->  .../bindings/iio/adc/adi,ad7173.yaml          | 166 ++++++++++++++++++
->  1 file changed, 166 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
 > new file mode 100644
-> index 000000000000..92aa352b6653
+> index 000000000000..2609cb19c377
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> @@ -0,0 +1,166 @@
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> @@ -0,0 +1,137 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Analog Devices AD7173 ADC device driver
-
-Drop: device driver
-
-Bindings are for hardware.
-
+> +title: Microchip PAC1934 Power Monitors with Accumulator
 > +
 > +maintainers:
-> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> +  - Marius Cristea <marius.cristea@microchip.com>
 > +
 > +description: |
-> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
+> +  This device is part of the Microchip family of Power Monitors with Accumulator.
+> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found here:
+> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - adi,ad7172-2
-> +      - adi,ad7173-8
-> +      - adi,ad7175-2
-> +      - adi,ad7176-2
+> +      - microchip,pac1931
+> +      - microchip,pac1932
+> +      - microchip,pac1933
+> +      - microchip,pac1934
 > +
 > +  reg:
 > +    maxItems: 1
 > +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
 > +  interrupts:
 > +    maxItems: 1
 > +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  spi-max-frequency:
-> +    maximum: 20000000
-> +
-> +  refin-supply:
-> +    description: external reference supply, can be used as reference for conversion.
-> +
-> +  refin2-supply:
-> +    description: external reference supply, can be used as reference for conversion.
-> +
-> +  avdd-supply:
-> +    description: avdd supply, can be used as reference for conversion.
-> +
-> +  dependencies:
+> +  microchip,slow-io:
+> +    type: boolean
+> +    description: |
+> +      A GPIO used to trigger a change is sampling rate (lowering the chip power consumption).
 
-Nope, needs testing... See also example-schema.
+Use Linux coding style wrapping (as described in Linux Coding style). I
+am not going to tell you numbers because I want you to read the document
+first.
+
+This is boolean, not GPIO. I don't understand. "A GPIO", so any GPIO or
+some specific? How is this property related to GPIO?
 
 
-> +    refin2-supply:
-> +      properties:
-> +        compatible:
-> +          adi,ad7173-8
-> +
-> +  required:
+> +      If configured in SLOW mode, if this pin is forced high, sampling rate is forced to eight
 
-Please open example schema and put it in similar place.
+This pin? This is boolean, not a GPIO. GPIOs are phandles.
 
-> +    - compatible
-> +    - reg
-> +    - interrupts
+> +      samples/second. When it is forced low, the sampling rate is 1024 samples/second unless
+> +      a different sample rate has been programmed.
 > +
 > +patternProperties:
-> +  "^channel@[0-9a-f]$":
+> +  "^channel@[1-4]+$":
 > +    type: object
 > +    $ref: adc.yaml
-> +    unevaluatedProperties: false
+> +    description: Represents the external channels which are connected to the ADC.
 > +
 > +    properties:
 > +      reg:
-> +        minimum: 0
-> +        maximum: 15
-> +
-> +      diff-channels:
 > +        items:
-> +          minimum: 0
-> +          maximum: 31
+> +          minimum: 1
+> +          maximum: 4
 > +
-> +      adi,reference-select:
+> +      shunt-resistor-micro-ohms:
 > +        description: |
-> +          Select the reference source to use when converting on
-> +          the specific channel. Valid values are:
-> +          0: REFIN(+)/REFIN(−).
-> +          1: REFIN2(+)/REFIN2(−)
-> +          2: REFOUT/AVSS (Internal reference)
-> +          3: AVDD
-> +
-> +          External reference 2 only available on ad7173-8.
-> +          If not specified, internal reference used.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3]
-> +        default: 2
-> +
-> +      bipolar:
-> +        type: boolean
+> +          Value in micro Ohms of the shunt resistor connected between
+> +          the SENSE+ and SENSE- inputs, across which the current is measured. Value
+> +          is needed to compute the scaling of the measured current.
 > +
 > +    required:
 > +      - reg
-> +      - diff-channels
+> +      - shunt-resistor-micro-ohms
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
 > +
 > +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
 > +  - if:
 > +      properties:
 > +        compatible:
 > +          contains:
-> +            const: adi,ad7173-8
+> +            const: interrupts
+
+
+I don't understand what do you want to say here. I am also 100% sure you
+did not test it on a real case (maybe example passes but nothing more).
+
 > +    then:
-
-??? Maybe you want to use "not"?
-
+> +      properties:
+> +        microchip,slow-io: false
 > +    else:
-
-> +      patternProperties:
-> +        "^channel@[0-9a-f]$":
-> +          properties:
-> +            enum: [0, 2, 3]
-> +
-> +unevaluatedProperties: false
-> +
+> +      if:
+> +        properties:
+> +          compatible:
+> +            contains:
+> +              const: microchip,slow-io
+> +      then:
+> +        properties:
+> +          interrupts: false
 
 Best regards,
 Krzysztof

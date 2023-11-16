@@ -1,63 +1,50 @@
-Return-Path: <linux-iio+bounces-125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013C87EE62E
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 18:54:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653737EE6A0
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 19:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 973F428114F
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 17:54:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3775B20C20
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 18:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DE046540;
-	Thu, 16 Nov 2023 17:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A2B487B9;
+	Thu, 16 Nov 2023 18:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3hbPSNT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vhf0ra+0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCD13455B;
-	Thu, 16 Nov 2023 17:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5D5C433C8;
-	Thu, 16 Nov 2023 17:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AFD46536;
+	Thu, 16 Nov 2023 18:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B91C433C8;
+	Thu, 16 Nov 2023 18:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700157258;
-	bh=y8eFS6dl8OZQt7xyX9mow8MlruoXZo3WcMeBbYxVhcY=;
+	s=k20201202; t=1700158897;
+	bh=afcjSCTVmlV4p68dsI5fTXVa0bQhtpJng5oNuW2v4Os=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p3hbPSNTkZmgKqFxus5EZggFA2A4fn5RRIa2wG/hRfCNCfsqEIiuursx3IwSgoU1w
-	 suBvk/M6dg2EnjQj7x33oDeDwMzjut8XKNVX9Omqdk7qJADHPXHsAmVU6vtuJEAL6g
-	 W5jRH5NMq/0jVkIwTyNYKLmmEoKmI+/5YGEtz0ECWFtq/aznLIGasmTRKQtYFs6CX2
-	 A2mjP1/RGMkAEE6IdHY5o+3FkIHdiM/fSSePAGKeF7jMT14D8dOimMr4vWpi5hpcRV
-	 MT2xr97YYRAuJ/J05oa5zZ61vr27xHP4HNJVpWzuOnDr5eyQ202j1IdEdpz8M+Z10x
-	 FocS5sYEQYmZA==
-Date: Thu, 16 Nov 2023 17:54:13 +0000
+	b=Vhf0ra+0c6tEw4RTVE8zXQFo821hMFV3IIi4ZHo4MACQm6Xg84Nesnspov8/oyY20
+	 0nwWzipJ13BeDXrXcYEO/BIay6078ghGLkWB32pzXiKLr+g9/+ovKAUBqZHjOvuQN2
+	 fdNdQQTjV7mKZLCHFnyGLW2z+TqGMiitKy5ABkyFfRQG0O2z4E19Mm4u1IuSk6r3/f
+	 ffjuJG3uAtHVGH5Z5Luc9JV1IPKZCImNnCKPdaKRs6ruPB7AzJEuNBZ5p+thd4njqP
+	 y3s+JAcjB30SNTSxu/bAHyqMe3i78zsRYYFIm/jEMxLbrR/0Hg2s4Y5V6Jg777aFAY
+	 sO8sPfvN4vspw==
+Date: Thu, 16 Nov 2023 18:21:33 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: mitrutzceclan <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
-	brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: adc: add AD7173
-Message-ID: <20231116-spousal-mystify-dcd1d4fec7e6@squawk>
-References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
- <44cfcd9a-f139-479b-85ff-5fd23c9714b2@linaro.org>
+Cc: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+	robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for PAC193X
+Message-ID: <20231116-channel-variety-cc7c262924ad@squawk>
+References: <20231115134453.6656-1-marius.cristea@microchip.com>
+ <20231115134453.6656-2-marius.cristea@microchip.com>
+ <fedd4bcf-7892-4096-bcca-7ea72d39576f@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,225 +52,202 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="esKPrMVRLJw2O/9X"
+	protocol="application/pgp-signature"; boundary="CqQpzGUiaD3Sqhz2"
 Content-Disposition: inline
-In-Reply-To: <44cfcd9a-f139-479b-85ff-5fd23c9714b2@linaro.org>
+In-Reply-To: <fedd4bcf-7892-4096-bcca-7ea72d39576f@linaro.org>
 
 
---esKPrMVRLJw2O/9X
-Content-Type: text/plain; charset=utf-8
+--CqQpzGUiaD3Sqhz2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 16, 2023 at 03:54:13PM +0100, Krzysztof Kozlowski wrote:
-> On 16/11/2023 14:46, mitrutzceclan wrote:
-> > From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+On Thu, Nov 16, 2023 at 04:01:43PM +0100, Krzysztof Kozlowski wrote:
+> On 15/11/2023 14:44, marius.cristea@microchip.com wrote:
+> > From: Marius Cristea <marius.cristea@microchip.com>
 > >=20
-> > The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> > which can be used in high precision, low noise single channel applicati=
-ons
-> > or higher speed multiplexed applications. The Sigma-Delta ADC is intend=
-ed
-> > primarily for measurement of signals close to DC but also delivers
-> > outstanding performance with input bandwidths out to ~10kHz.
+> > This is the device tree schema for iio driver for
+> > Microchip PAC193X series of Power Monitors with Accumulator.
 > >=20
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com> # except referen=
-ce_select
->=20
-> Please drop the tag. You clearly did not test it, so it must be
-> re-reviewed. Do not send code which was not tested.
-
-yeah, this is vastly different from what I reviewed. I suppose if
-someone finds it necessary to add a "# except foo" to the end of a tag
-it is very good signifier that the tag should in fact be removed.
-
->=20
-> > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 > > ---
-> > V3 -> V4
-> >  - include supply attributes
-> >  - add channel attribute for selecting conversion reference
+> >  .../bindings/iio/adc/microchip,pac1934.yaml   | 137 ++++++++++++++++++
+> >  1 file changed, 137 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip=
+,pac1934.yaml
 > >=20
-> >  .../bindings/iio/adc/adi,ad7173.yaml          | 166 ++++++++++++++++++
-> >  1 file changed, 166 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad717=
-3.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml =
-b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac193=
+4.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
 > > new file mode 100644
-> > index 000000000000..92aa352b6653
+> > index 000000000000..2609cb19c377
 > > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> > @@ -0,0 +1,166 @@
+> > +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > @@ -0,0 +1,137 @@
 > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +# Copyright 2023 Analog Devices Inc.
 > > +%YAML 1.2
 > > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> > +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
 > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > > +
-> > +title: Analog Devices AD7173 ADC device driver
->=20
-> Drop: device driver
->=20
-> Bindings are for hardware.
->=20
+> > +title: Microchip PAC1934 Power Monitors with Accumulator
 > > +
 > > +maintainers:
-> > +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> > +  - Marius Cristea <marius.cristea@microchip.com>
 > > +
 > > +description: |
-> > +  Bindings for the Analog Devices AD717X ADC's. Datasheets for support=
-ed chips:
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
-s/AD7172-2.pdf
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
-s/AD7173-8.pdf
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
-s/AD7175-2.pdf
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
-s/AD7176-2.pdf
+> > +  This device is part of the Microchip family of Power Monitors with A=
+ccumulator.
+> > +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found=
+ here:
+> > +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Pro=
+ductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
 > > +
 > > +properties:
 > > +  compatible:
 > > +    enum:
-> > +      - adi,ad7172-2
-> > +      - adi,ad7173-8
-> > +      - adi,ad7175-2
-> > +      - adi,ad7176-2
+> > +      - microchip,pac1931
+> > +      - microchip,pac1932
+> > +      - microchip,pac1933
+> > +      - microchip,pac1934
 > > +
 > > +  reg:
 > > +    maxItems: 1
 > > +
+> > +  "#address-cells":
+> > +    const: 1
+> > +
+> > +  "#size-cells":
+> > +    const: 0
+> > +
 > > +  interrupts:
 > > +    maxItems: 1
 > > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 20000000
-> > +
-> > +  refin-supply:
-> > +    description: external reference supply, can be used as reference f=
-or conversion.
-> > +
-> > +  refin2-supply:
-> > +    description: external reference supply, can be used as reference f=
-or conversion.
-> > +
-> > +  avdd-supply:
-> > +    description: avdd supply, can be used as reference for conversion.
-> > +
-> > +  dependencies:
+> > +  microchip,slow-io:
+> > +    type: boolean
+> > +    description: |
+> > +      A GPIO used to trigger a change is sampling rate (lowering the c=
+hip power consumption).
 >=20
-> Nope, needs testing... See also example-schema.
+> Use Linux coding style wrapping (as described in Linux Coding style). I
+> am not going to tell you numbers because I want you to read the document
+> first.
+>=20
+> This is boolean, not GPIO. I don't understand. "A GPIO", so any GPIO or
+> some specific? How is this property related to GPIO?
 >=20
 >=20
-> > +    refin2-supply:
-> > +      properties:
-> > +        compatible:
-> > +          adi,ad7173-8
-> > +
-> > +  required:
+> > +      If configured in SLOW mode, if this pin is forced high, sampling=
+ rate is forced to eight
 >=20
-> Please open example schema and put it in similar place.
->=20
-> > +    - compatible
-> > +    - reg
-> > +    - interrupts
+> This pin? This is boolean, not a GPIO. GPIOs are phandles.
+
+I said it on the previous version, but this really seems like it should
+be something like "slow-io-gpios". I know Jonathan expressed some
+concerns about having to deal with it on the operating system side (as
+the pin is either an input & used for this slow-io control, or an output
+and used as an interrupt) but that is, in my opinion, a problem for the
+operating system & the binding should describe how the hardware works,
+even if that is not convenient. With this sort of property, a GPIO hog
+would be required to be set up (and the driver for that gpio controller
+bound etc before the pac driver loads) for correction functionality if
+this property was in the non-default state.
+
+> > +      samples/second. When it is forced low, the sampling rate is 1024=
+ samples/second unless
+> > +      a different sample rate has been programmed.
 > > +
 > > +patternProperties:
-> > +  "^channel@[0-9a-f]$":
+> > +  "^channel@[1-4]+$":
 > > +    type: object
 > > +    $ref: adc.yaml
-> > +    unevaluatedProperties: false
+> > +    description: Represents the external channels which are connected =
+to the ADC.
 > > +
 > > +    properties:
 > > +      reg:
-> > +        minimum: 0
-> > +        maximum: 15
-> > +
-> > +      diff-channels:
 > > +        items:
-> > +          minimum: 0
-> > +          maximum: 31
+> > +          minimum: 1
+> > +          maximum: 4
 > > +
-> > +      adi,reference-select:
+> > +      shunt-resistor-micro-ohms:
 > > +        description: |
-> > +          Select the reference source to use when converting on
-> > +          the specific channel. Valid values are:
-> > +          0: REFIN(+)/REFIN(=E2=88=92).
-> > +          1: REFIN2(+)/REFIN2(=E2=88=92)
-> > +          2: REFOUT/AVSS (Internal reference)
-> > +          3: AVDD
-> > +
-> > +          External reference 2 only available on ad7173-8.
-> > +          If not specified, internal reference used.
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        enum: [0, 1, 2, 3]
-> > +        default: 2
-
-I really don't like these properties where integers are mapped to
-functionalities like this. I'd much rather see a enum of strings where
-the meaning for these things can be put in & there's no need to look up
-the binding to figure out what "adi,reference-select =3D <3>" means.
-For example having "refin", "refin2", "refout-avss" & "avdd" as the
-options and therefore "adi,reference-select =3D "avdd" in a devicetree is
-a lot more understandable IMO.
-
-
-Cheers,
-Conor.
-
-> > +
-> > +      bipolar:
-> > +        type: boolean
+> > +          Value in micro Ohms of the shunt resistor connected between
+> > +          the SENSE+ and SENSE- inputs, across which the current is me=
+asured. Value
+> > +          is needed to compute the scaling of the measured current.
 > > +
 > > +    required:
 > > +      - reg
-> > +      - diff-channels
+> > +      - shunt-resistor-micro-ohms
+> > +
+> > +    unevaluatedProperties: false
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - "#address-cells"
+> > +  - "#size-cells"
 > > +
 > > +allOf:
-> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +
 > > +  - if:
 > > +      properties:
 > > +        compatible:
 > > +          contains:
-> > +            const: adi,ad7173-8
+> > +            const: interrupts
+>=20
+>=20
+> I don't understand what do you want to say here. I am also 100% sure you
+> did not test it on a real case (maybe example passes but nothing more).
+
+As far as I understand, the same pin on the device is used for both an
+output or an input depending on the configuration. As an input, it is
+the "slow-io" control, and as an output it is an interrupt.
+I think Marius is trying to convey that either this pin can be in
+exclusively one state or another.
+
+_However_ I am not sure that that is really the right thing to do - they
+might well be mutually exclusive modes, but I think the decision can be
+made at runtime, rather than at devicetree creation time. Say for
+example the GPIO controller this is connected to is capable of acting as
+an interrupt controller. Unless I am misunderstanding the runtime
+configurability of this hardware, I think it is possible to actually
+provide a "slow-io-gpios" and an interrupt property & let the operating
+system decide at runtime which mode it wants to work in.
+
+I'm off travelling at the moment Marius, but I should be back in work on
+Monday if you want to have a chat about it & explain a bit more to me?
+
+Cheers,
+Conor.
+
+>=20
 > > +    then:
->=20
-> ??? Maybe you want to use "not"?
->=20
+> > +      properties:
+> > +        microchip,slow-io: false
 > > +    else:
->=20
-> > +      patternProperties:
-> > +        "^channel@[0-9a-f]$":
-> > +          properties:
-> > +            enum: [0, 2, 3]
-> > +
-> > +unevaluatedProperties: false
-> > +
+> > +      if:
+> > +        properties:
+> > +          compatible:
+> > +            contains:
+> > +              const: microchip,slow-io
+> > +      then:
+> > +        properties:
+> > +          interrupts: false
 >=20
 > Best regards,
 > Krzysztof
 >=20
 
---esKPrMVRLJw2O/9X
+--CqQpzGUiaD3Sqhz2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHQEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZVZXPwAKCRB4tDGHoIJi
-0hUDAPdjZjcsiNy/vVJdyjREO1Ge/SU9glgPFwQpHxIOZJrqAP9cbEHhajGJgx9s
-3poiKjiTyKlIZg/Ls691B5MeTt6RDQ==
-=+iDh
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZVZdqwAKCRB4tDGHoIJi
+0ujbAQCjXBBuVPgyP4WT9ADe31P1IzbnBiEVymzdiv9hZVxnRAD/d9hSmWkAXypj
+w1fZogUDEFwlkt04d1QG4OsATZhxNQ8=
+=3oED
 -----END PGP SIGNATURE-----
 
---esKPrMVRLJw2O/9X--
+--CqQpzGUiaD3Sqhz2--
 

@@ -1,121 +1,289 @@
-Return-Path: <linux-iio+bounces-124-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-125-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F048B7EE562
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 17:45:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013C87EE62E
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 18:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211A01C20A3F
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 16:45:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 973F428114F
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 17:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C48534574;
-	Thu, 16 Nov 2023 16:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DE046540;
+	Thu, 16 Nov 2023 17:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2YWOJBm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3hbPSNT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E52B7;
-	Thu, 16 Nov 2023 08:45:19 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-507cee17b00so1316098e87.2;
-        Thu, 16 Nov 2023 08:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700153117; x=1700757917; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qiPd8UEBNEHtj74GdSCio3vEpqLG/F50AgqDf2lR2Ak=;
-        b=L2YWOJBmzhVRlQ70JS3Jq5L1w8qDgQ3zRlpw2EEmqMfRr6+891iNFwQZ+fcQiT8+HA
-         VS7eY6bbQhFdkRgpi/ZKAyKz8WidlIKwcX66eSj/uGHoiYyaIcnvAaAv4sMDVqJ3788+
-         pl1wjCyd76nxECxqRgZaaiuLUXlxJVIDoRXeQrg59oXMw7y4fDwP6UklA8eByDkr8Ztn
-         DX5xO6dVH/tk/p8Z0HJUJMzCawbBpiZngNvSYTthNBPmg8TwjGXjgiXhhcdSulmKlW0b
-         4nMdrqhchQ+gy5iuTJEi7q8TJV0+i9TL+ETSqnhkmUuVIChW3RLeX/mYZ0t46D/VsLUG
-         nZmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700153117; x=1700757917;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qiPd8UEBNEHtj74GdSCio3vEpqLG/F50AgqDf2lR2Ak=;
-        b=mKrD1dFL6rpwmsbrH8NgUM3NRrvUlPBiTCwDbossmUznT22LAGzyzqzeNJPMuGnLfT
-         JMcDovGYARR4qT2kln4qGmMjT3feIOwxPvx+SwmQuipXXKalK1CQzwsNJpe/RkzjY0Cp
-         UGEbWq5pjmoS7nKDcvV2TqF3tRnT5Zf0OjmVGr2yn2oaUp/E9YLb622WLeka0MeYv12J
-         ENGAj82xMqVUa7QtUE+lWpVpyVteVDMvDeCPbZjEfMvF5eZfKWfoRqsUMidYkW0geG9W
-         oWni7sduIdjr22iyOBR5348PJkDvW4uDZ/PR6Frs6+ddofZ7P7Mca7Ljhedw737FHDP2
-         BcQQ==
-X-Gm-Message-State: AOJu0Yz2ra+iJXv1ES4ICa2MHPI9kO3aKDfg2Da02KBsqWSBZ4ObYbDA
-	FayOooIkS/2YbUXk3TQco/8=
-X-Google-Smtp-Source: AGHT+IHNDgUcA7fd3nCJF5IFw8HKbQRnqPIlT5sDlAw5kPbjf2/KxRL+e9J6ifiCwEJzHciHM3PK0w==
-X-Received: by 2002:a05:6512:3b20:b0:507:aaab:528c with SMTP id f32-20020a0565123b2000b00507aaab528cmr14128591lfv.69.1700153116925;
-        Thu, 16 Nov 2023 08:45:16 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id p28-20020ac246dc000000b00509447753c5sm39897lfo.308.2023.11.16.08.45.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 08:45:16 -0800 (PST)
-Message-ID: <f2ca7f12-4a4c-441e-932d-5f03057e4c5d@gmail.com>
-Date: Thu, 16 Nov 2023 18:45:15 +0200
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCD13455B;
+	Thu, 16 Nov 2023 17:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5D5C433C8;
+	Thu, 16 Nov 2023 17:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700157258;
+	bh=y8eFS6dl8OZQt7xyX9mow8MlruoXZo3WcMeBbYxVhcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p3hbPSNTkZmgKqFxus5EZggFA2A4fn5RRIa2wG/hRfCNCfsqEIiuursx3IwSgoU1w
+	 suBvk/M6dg2EnjQj7x33oDeDwMzjut8XKNVX9Omqdk7qJADHPXHsAmVU6vtuJEAL6g
+	 W5jRH5NMq/0jVkIwTyNYKLmmEoKmI+/5YGEtz0ECWFtq/aznLIGasmTRKQtYFs6CX2
+	 A2mjP1/RGMkAEE6IdHY5o+3FkIHdiM/fSSePAGKeF7jMT14D8dOimMr4vWpi5hpcRV
+	 MT2xr97YYRAuJ/J05oa5zZ61vr27xHP4HNJVpWzuOnDr5eyQ202j1IdEdpz8M+Z10x
+	 FocS5sYEQYmZA==
+Date: Thu, 16 Nov 2023 17:54:13 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: mitrutzceclan <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
+	brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: adc: add AD7173
+Message-ID: <20231116-spousal-mystify-dcd1d4fec7e6@squawk>
+References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
+ <44cfcd9a-f139-479b-85ff-5fd23c9714b2@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: light: isl76682: Add ISL76682 driver
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Andre Werner <andre.werner@systec-electronic.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
- Jonathan Cameron <jic23@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Naresh Solanki <naresh.solanki@9elements.com>,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Rob Herring <robh+dt@kernel.org>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-References: <20231116131329.6801-1-marex@denx.de>
- <20231116131329.6801-2-marex@denx.de>
- <493c138c-ca67-4244-bcd7-c1c3d596048d@gmail.com>
-In-Reply-To: <493c138c-ca67-4244-bcd7-c1c3d596048d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 11/16/23 18:25, Matti Vaittinen wrote:
->> +
->> +static int isl76682_write_raw(struct iio_dev *indio_dev,
->> +                  struct iio_chan_spec const *chan,
->> +                  int val, int val2, long mask)
->> +{
->> +    struct isl76682_chip *chip = iio_priv(indio_dev);
->> +    int ret;
->> +
->> +    if (chan->type != IIO_LIGHT)
->> +        return -EINVAL;
->> +
->> +    if (mask != IIO_CHAN_INFO_SCALE)
->> +        return -EINVAL;
->> +
->> +    mutex_lock(&chip->lock);
->> +    ret = isl76682_set_als_scale(chip, val);
->> +    mutex_unlock(&chip->lock);
-> 
-> This looks a bit odd to me. I was under impression that the values would 
-> by default be IIO_VAL_INT_PLUS_MICRO unless the format is given in 
-> iio_info struct. If so, I'd expect the val to be zero for all of the 
-> scales because all scales are smaller than 1. (I may be wrong though). 
-> Eg, I'd expect that when range 1000 is set (scale 1000 / 65535), val = 
-> 0, val1 roughly 15259 (to mean 0.015259).
-
-I mean val2 is 15259. There is no val1. Well, as you see you can trust 
-me, numbers are my strong "thing" :rolleyes:
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="esKPrMVRLJw2O/9X"
+Content-Disposition: inline
+In-Reply-To: <44cfcd9a-f139-479b-85ff-5fd23c9714b2@linaro.org>
 
 
+--esKPrMVRLJw2O/9X
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Nov 16, 2023 at 03:54:13PM +0100, Krzysztof Kozlowski wrote:
+> On 16/11/2023 14:46, mitrutzceclan wrote:
+> > From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> >=20
+> > The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> > which can be used in high precision, low noise single channel applicati=
+ons
+> > or higher speed multiplexed applications. The Sigma-Delta ADC is intend=
+ed
+> > primarily for measurement of signals close to DC but also delivers
+> > outstanding performance with input bandwidths out to ~10kHz.
+> >=20
+> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com> # except referen=
+ce_select
+>=20
+> Please drop the tag. You clearly did not test it, so it must be
+> re-reviewed. Do not send code which was not tested.
+
+yeah, this is vastly different from what I reviewed. I suppose if
+someone finds it necessary to add a "# except foo" to the end of a tag
+it is very good signifier that the tag should in fact be removed.
+
+>=20
+> > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> > ---
+> > V3 -> V4
+> >  - include supply attributes
+> >  - add channel attribute for selecting conversion reference
+> >=20
+> >  .../bindings/iio/adc/adi,ad7173.yaml          | 166 ++++++++++++++++++
+> >  1 file changed, 166 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad717=
+3.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml =
+b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> > new file mode 100644
+> > index 000000000000..92aa352b6653
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> > @@ -0,0 +1,166 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +# Copyright 2023 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD7173 ADC device driver
+>=20
+> Drop: device driver
+>=20
+> Bindings are for hardware.
+>=20
+> > +
+> > +maintainers:
+> > +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> > +
+> > +description: |
+> > +  Bindings for the Analog Devices AD717X ADC's. Datasheets for support=
+ed chips:
+> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/AD7172-2.pdf
+> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/AD7173-8.pdf
+> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/AD7175-2.pdf
+> > +    https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/AD7176-2.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad7172-2
+> > +      - adi,ad7173-8
+> > +      - adi,ad7175-2
+> > +      - adi,ad7176-2
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+> > +
+> > +  spi-max-frequency:
+> > +    maximum: 20000000
+> > +
+> > +  refin-supply:
+> > +    description: external reference supply, can be used as reference f=
+or conversion.
+> > +
+> > +  refin2-supply:
+> > +    description: external reference supply, can be used as reference f=
+or conversion.
+> > +
+> > +  avdd-supply:
+> > +    description: avdd supply, can be used as reference for conversion.
+> > +
+> > +  dependencies:
+>=20
+> Nope, needs testing... See also example-schema.
+>=20
+>=20
+> > +    refin2-supply:
+> > +      properties:
+> > +        compatible:
+> > +          adi,ad7173-8
+> > +
+> > +  required:
+>=20
+> Please open example schema and put it in similar place.
+>=20
+> > +    - compatible
+> > +    - reg
+> > +    - interrupts
+> > +
+> > +patternProperties:
+> > +  "^channel@[0-9a-f]$":
+> > +    type: object
+> > +    $ref: adc.yaml
+> > +    unevaluatedProperties: false
+> > +
+> > +    properties:
+> > +      reg:
+> > +        minimum: 0
+> > +        maximum: 15
+> > +
+> > +      diff-channels:
+> > +        items:
+> > +          minimum: 0
+> > +          maximum: 31
+> > +
+> > +      adi,reference-select:
+> > +        description: |
+> > +          Select the reference source to use when converting on
+> > +          the specific channel. Valid values are:
+> > +          0: REFIN(+)/REFIN(=E2=88=92).
+> > +          1: REFIN2(+)/REFIN2(=E2=88=92)
+> > +          2: REFOUT/AVSS (Internal reference)
+> > +          3: AVDD
+> > +
+> > +          External reference 2 only available on ad7173-8.
+> > +          If not specified, internal reference used.
+> > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > +        enum: [0, 1, 2, 3]
+> > +        default: 2
+
+I really don't like these properties where integers are mapped to
+functionalities like this. I'd much rather see a enum of strings where
+the meaning for these things can be put in & there's no need to look up
+the binding to figure out what "adi,reference-select =3D <3>" means.
+For example having "refin", "refin2", "refout-avss" & "avdd" as the
+options and therefore "adi,reference-select =3D "avdd" in a devicetree is
+a lot more understandable IMO.
+
+
+Cheers,
+Conor.
+
+> > +
+> > +      bipolar:
+> > +        type: boolean
+> > +
+> > +    required:
+> > +      - reg
+> > +      - diff-channels
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            const: adi,ad7173-8
+> > +    then:
+>=20
+> ??? Maybe you want to use "not"?
+>=20
+> > +    else:
+>=20
+> > +      patternProperties:
+> > +        "^channel@[0-9a-f]$":
+> > +          properties:
+> > +            enum: [0, 2, 3]
+> > +
+> > +unevaluatedProperties: false
+> > +
+>=20
+> Best regards,
+> Krzysztof
+>=20
+
+--esKPrMVRLJw2O/9X
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZVZXPwAKCRB4tDGHoIJi
+0hUDAPdjZjcsiNy/vVJdyjREO1Ge/SU9glgPFwQpHxIOZJrqAP9cbEHhajGJgx9s
+3poiKjiTyKlIZg/Ls691B5MeTt6RDQ==
+=+iDh
+-----END PGP SIGNATURE-----
+
+--esKPrMVRLJw2O/9X--
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-102-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-103-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1608B7EE01D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:47:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969D07EE068
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 13:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA128B20C0B
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 11:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A081F244B5
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41102F843;
-	Thu, 16 Nov 2023 11:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6131B2DF91;
+	Thu, 16 Nov 2023 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pKJjhiMw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bm50j8mw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE7E193
-	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:47:11 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5a7c08b7744so7649887b3.3
-        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:47:11 -0800 (PST)
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051921A5
+	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 04:08:19 -0800 (PST)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5a81ab75f21so7798047b3.2
+        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 04:08:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700135231; x=1700740031; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700136498; x=1700741298; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9IZjcqGv42rVv0ipCzhYT3Hq96pkj962enz82vWbOD8=;
-        b=pKJjhiMw6qe5hxSpsuAv0AexpFThwXd/mbcu6fxBH/S/BesmocaCOMBhqkCAdUt+Q/
-         gMADdlaJ89slxm0Sf1Z7dvesvHkE200G7EzCJPO6xU7hSAgoFE49+lZTAHghVJ2bSbAj
-         +BuRVKvkMvOQ6Vu0NkMJp0s0xm5gCFZTBPI1g7OQXbf0BnDVjFm4sfBmGmbg9vDcHuMs
-         Lb9hUUjZcx2GFK6dmnQHIppoGc+EmueIBd8cZqXOauA5U/T6EiI9M0iXgiIA51nbFeKx
-         SJJPzvZLZDNwZ6wQQNUBs8qeP3HYj0sk/ZytPo5x3dQthg7Qb35UyoPbLTGi25ZJYSbe
-         iLhQ==
+        bh=AzqVKfInmMwmubdRC02oh2g2HmLf2Gm7CSrF5ZLMm0I=;
+        b=bm50j8mwUptEe74vJJUP2dtWuzRbEwVF8C8JJFryFg1nwDohjKNflH/tnjENqkIHFy
+         34VS9bsowO3O52nVk4bCCSIiL/jqrH6u5qUaZ9SitEkjreZBNbBRYpI6N7K4SAvMiAp0
+         gKpXD16tqdyL81RU/xrVuHowU+hJYUP8kPeYJ2YOTmN8IZ9LEUFzoyJfx7xIEMr8Dmb8
+         +FWlonEhftzB6BQHEmSKbVnpFmx2gXq/YHMvh9Cp5paYDxZ5Po1LDwlqpCZ5ED4ehwgr
+         x+1Shlsh53sBISNVle5KiiznRny/lTBn3Ayn92fdqMjbDq+jlcquHPNmNI+tj6Ha7s+e
+         OcCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700135231; x=1700740031;
+        d=1e100.net; s=20230601; t=1700136498; x=1700741298;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9IZjcqGv42rVv0ipCzhYT3Hq96pkj962enz82vWbOD8=;
-        b=tV1HQ2tw0cY+YeDqql+1nS8cYrDE0oQ/MZy70XdW8cItYvvRElYM78eHrYzVveDKuT
-         mQ70REqWMKP0Olnlybpp6Ex5opwWPUCggAH+BdmCpP1VezXEEHrlFNbPFOtCnIy0PsYp
-         AVb6QuV8EH818b9sHN9PEQjAPDqYS2IOPrxh8018SczoI4uszzLsM3y2mz8uRoEWDKKH
-         NCHTzoMGyCbjD/AHW4ZKGBL6k3dZzj52ueAFUo3mEVdwVoWGdjR2LIhYhGWVdjGaHAgc
-         Co1WCEFYK2prxRqzjUtTi/CuQs9yBcKLu3NWecgb95iEw0BmMkOtTgWNgCR+HXTjzhTE
-         TZKA==
-X-Gm-Message-State: AOJu0YxlnuPijvT9tcDjXN8H3LQLK5XAOpGwD/v/uc1d2QlzTpKYwHe0
-	V3iwaKaZ6dgcemys64GCvMPrwg==
-X-Google-Smtp-Source: AGHT+IGWA89zidPswf2TQAp+TqRFhSxa7Oyp6znP0Eb8YbE0oq3Ta/SGAHTPqcGO96abkl4ixVfjAA==
-X-Received: by 2002:a0d:c8c7:0:b0:5a7:bbca:8c9e with SMTP id k190-20020a0dc8c7000000b005a7bbca8c9emr14741014ywd.7.1700135230773;
-        Thu, 16 Nov 2023 03:47:10 -0800 (PST)
+        bh=AzqVKfInmMwmubdRC02oh2g2HmLf2Gm7CSrF5ZLMm0I=;
+        b=BPlyJfCV0TuUzZbVSTL878/aRfZXs8SY/k/6O/2io08e5sExfFf6Eo4XW+R4oKNI06
+         7tlwgeqmeNg4ybWus7eUqvg+TI1GReMYH6VnmmpvGJ8+LxD/GB+KkXrnMLPrtfDPD0CB
+         aQK6I4DvYDwgSApUUbNPliiEp7eeYK8kQ68EzzopzsPYMJy4rqPK02c+jhcRHCW1vcc1
+         pvhShhbWbqziQY2VcbIw1YrF9KB7e7yvwlgEQFt2JAgfXavmPnWjkUD746ycMsyulIP0
+         Ga7/4mDTcSJlffBpy5HwGt7JVWhLmmqpVYG9WSB7/GNyhudKTrxQGsq/q+XifDk0ugOm
+         E2Ag==
+X-Gm-Message-State: AOJu0YyVGGGWto0VPCLUSuAkW1qup5FEM3b1C/6lBPG/s6jkVJjyk9VE
+	ROFiStJsdBXRjpYCBvdYNif5Iw==
+X-Google-Smtp-Source: AGHT+IEYHLbBOEhxirBBTBLnlWcSD1mz8I0Zdnbn7w9rDakgIRZaAjZh+A5v7mUwBj5fQIOslEkQ7g==
+X-Received: by 2002:a25:44c4:0:b0:d81:894b:28e4 with SMTP id r187-20020a2544c4000000b00d81894b28e4mr13914953yba.51.1700136498205;
+        Thu, 16 Nov 2023 04:08:18 -0800 (PST)
 Received: from [192.168.212.13] ([12.191.197.195])
-        by smtp.gmail.com with ESMTPSA id qd6-20020a05620a658600b007758b25ac3bsm4229474qkn.82.2023.11.16.03.47.05
+        by smtp.gmail.com with ESMTPSA id cz1-20020a056214088100b00671b009412asm1302334qvb.141.2023.11.16.04.08.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 03:47:10 -0800 (PST)
-Message-ID: <e469039c-9370-4718-9081-98a203c62e77@linaro.org>
-Date: Thu, 16 Nov 2023 12:46:52 +0100
+        Thu, 16 Nov 2023 04:08:17 -0800 (PST)
+Message-ID: <c47558c8-58e0-4f97-b873-d37f2788a6ec@linaro.org>
+Date: Thu, 16 Nov 2023 13:08:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,27 +62,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/11] iio: adc: Add QCOM PMIC5 Gen3 ADC bindings
+Subject: Re: [PATCH 1/2] dt-bindings: iio: frequency: add admfm2000
 Content-Language: en-US
-To: Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linus.walleij@linaro.org, Jonathan.Cameron@huawei.com, sboyd@kernel.org,
- dmitry.baryshkov@linaro.org, quic_subbaram@quicinc.com,
- quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
- marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
  Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Luca Weiss <luca@z3ntu.xyz>,
- linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc: linux-arm-msm-owner@vger.kernel.org
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-7-quic_jprakash@quicinc.com>
- <bb225c12-f017-fac3-45f1-c828a10553e2@linaro.org>
- <99070bce-6188-82eb-c92c-cf7a323394e2@quicinc.com>
- <c4ef9cac-15ac-4c2c-9f9a-cb9e740e2900@linaro.org>
- <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231116005643.245314-1-kimseer.paller@analog.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -128,43 +117,135 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
+In-Reply-To: <20231116005643.245314-1-kimseer.paller@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/11/2023 04:23, Jishnu Prakash wrote:
-> Hi Krzysztof,
+On 16/11/2023 01:56, Kim Seer Paller wrote:
+> Dual microwave down converter module with input RF and LO frequency
+> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+> for each down conversion path.
 > 
-> On 10/23/2023 12:06 PM, Krzysztof Kozlowski wrote:
->> On 23/10/2023 08:14, Jishnu Prakash wrote:
->>> Hi Krzysztof,
->>>
->>> On 7/9/2023 10:53 PM, Krzysztof Kozlowski wrote:
->>>
->>>>>      reg:
->>>>>        description: VADC base address in the SPMI PMIC register map
->>>>> -    maxItems: 1
->>>>> +    minItems: 1
->>>> Why? This does not make any sense. With previous patches it looks like
->>>> random set of changes.
->>> The idea here is to convey that reg can have multiple values for ADC5
->>> Gen3 as there can be more than one peripheral used for ADC, so there can
->>> be multiple base addresses. I'll try to make this more clear in the next
->>> patchset.
->> You cannot remove constraints from an entry.
-> 
-> 
-> In this case, minItems: 1 will remain true for all other ADC devices 
-> documented here, but it will not be true for ADC5 Gen3, as this one can 
-> have multiple base addresses if more than one SDAM is used for ADC. I'll 
-> update this separately for each compatible, keeping it the same for the 
-> older ones, hope that should work.
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
 
-BTW, you disagree with me and send new version 2 minutes later.
-Basically you did not leave me any time to respond to you.
+...
 
-That's not how the process works.
+> +
+> +title: ADMFM2000 Dual Microwave Down Converter
+> +
+> +maintainers:
+> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +
+> +description: |
 
+Do not need '|' unless you need to preserve formatting.
+
+> +    Dual microwave down converter module with input RF and LO frequency ranges
+> +    from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
+> +    It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each down
+> +    conversion path.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admfm2000
+> +
+> +  switch1-gpios:
+> +    description:
+> +      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
+
+That's obvious. Instead say which pins are this.
+
+> +      connected to the channel 1 switch controls.
+> +    minItems: 2
+> +    maxItems: 2
+> +
+> +  switch2-gpios:
+> +    description:
+> +      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
+> +      connected to the channel 2 switch controls.
+> +    minItems: 2
+> +    maxItems: 2
+> +
+> +  attenuation1-gpios:
+> +    description:
+> +      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
+> +      connected to the channel 1 DSA attenuation controls.
+> +    minItems: 5
+> +    maxItems: 5
+> +
+> +  attenuation2-gpios:
+> +    description:
+> +      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
+> +      connected to the channel 2 DSA attenuation controls.
+> +    minItems: 5
+> +    maxItems: 5
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@[0-1]$":
+> +    type: object
+> +    description: Represents a channel of the device.
+
+Missing additionalProperties: false. Look at other bindings.
+
+> +
+> +    properties:
+> +      reg:
+> +        description:
+> +          The channel number.
+> +        minimum: 0
+> +        maximum: 1
+> +
+> +      adi,mode:
+> +        description:
+> +          RF path selected for the channel.
+> +            0 - Direct IF mode
+> +            1 - Mixer mode
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [0, 1]
+> +
+> +    required:
+> +      - reg
+> +      - adi,mode
+> +
+> +required:
+> +  - compatible
+> +  - switch1-gpios
+> +  - switch2-gpios
+> +  - attenuation1-gpios
+> +  - attenuation2-gpios
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    admfm2000 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +      compatible = "adi,admfm2000";
+> +
+> +      switch1-gpios = <&gpio 1 GPIO_ACTIVE_LOW>,
+> +        <&gpio 2 GPIO_ACTIVE_HIGH>;
+
+Align this with previous <
+
+> +
+> +      switch2-gpios = <&gpio 3 GPIO_ACTIVE_LOW>,
+> +        <&gpio 4 GPIO_ACTIVE_HIGH>;
+> +
 Best regards,
 Krzysztof
 

@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-87-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-88-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FED87EDA09
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 04:24:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F4F7EDA0C
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 04:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB3D4B20CE0
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 03:24:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A53C1C20B66
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 03:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C384179F2;
-	Thu, 16 Nov 2023 03:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81F079F2;
+	Thu, 16 Nov 2023 03:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PI1Yal6c"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cSBE7Iyi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C542D19B;
-	Wed, 15 Nov 2023 19:24:11 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AG2p3Rq012166;
-	Thu, 16 Nov 2023 03:23:50 GMT
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01166199;
+	Wed, 15 Nov 2023 19:24:57 -0800 (PST)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AG2h7uB001020;
+	Thu, 16 Nov 2023 03:24:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : from : subject : to : cc : references : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=eDFGf4awORWbaYLq/EcD9RiLerGQD3fRnlZ8vXdy10g=;
- b=PI1Yal6cX16jVPsXCqTzxOoOxX+vJdgGYRC6k0VC7naCq4LLIlmr/eCU7L7Ug5Q70z2H
- jFTTIf7+UPif5RowReI1A42DqiP2h9BZKjW85soH/wnPP4bDassHZmpbByVu/J6bqLzv
- 2waapKGBEYVXhdbh6K+eVVaXZ+acop1bSf0JCWxxEVyv+CIVEjsXceheVB3klzmiDxjW
- cQD309F5EI4UA7VedU+pRpyy/X7lY2GsPaTD5g/zKhVG7oBM3MwGGUGGRXc4wttjlAwV
- rw8ypOFQKxzaro5qSvRsTAGVoribQqU4i3T6om07IF54YJENvNh5r5WzFShqN4R/zZHy MQ== 
+ bh=I4yaIbz0iC/MoFwDc9aSKAR+Xpz3oNadrypAS22c5P4=;
+ b=cSBE7IyiBEMcjJWEUbcF5lxCeLmmqJcKyUa/mpYwxwhA0QhL7JXabxsI1vsdx83NiIen
+ 79tVXjidOstynaQrL3OVspMvTtHlJQ3Nz3R/hJdCQn9UXmKGKEm/vgXbAL0j4TVJruC5
+ d5Q4ZybxlIUXF/PmDYc2pIUVAre4LaJwmp7hRyJHSjAue0kjO5wz/OYGJRZDkdpr4epT
+ 5Sy4Uu0h4+Pa25xHBTpZfrIqm9r6F5aYbzFVe/8w1BjXhS1N2B+wQp/VT4oqd3md4RPJ
+ JrUa7LgLs45VKPFXDGiukMSEcRxE3Q0+7KNNZPmGEBbMCJTXbhEumkSpN5U3yy3crOHX IQ== 
 Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ud6ecgg8v-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ucfkabny2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Nov 2023 03:23:50 +0000
+	Thu, 16 Nov 2023 03:24:20 +0000
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AG3NnGu025759
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AG3OI0U026280
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Nov 2023 03:23:49 GMT
+	Thu, 16 Nov 2023 03:24:18 GMT
 Received: from [10.216.41.162] (10.80.80.8) by nalasex01b.na.qualcomm.com
  (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 15 Nov
- 2023 19:23:40 -0800
-Message-ID: <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
-Date: Thu, 16 Nov 2023 08:53:37 +0530
+ 2023 19:24:08 -0800
+Message-ID: <60a058ba-0bd3-9a5e-5021-4f80b9df65a8@quicinc.com>
+Date: Thu, 16 Nov 2023 08:54:04 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -53,146 +53,109 @@ MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
 From: Jishnu Prakash <quic_jprakash@quicinc.com>
-Subject: Re: [PATCH 06/11] iio: adc: Add QCOM PMIC5 Gen3 ADC bindings
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, <agross@kernel.org>,
+Subject: Re: [PATCH 07/11] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: Jonathan Cameron <jic23@kernel.org>, <agross@kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linus.walleij@linaro.org>, <Jonathan.Cameron@huawei.com>,
-        <sboyd@kernel.org>, <dmitry.baryshkov@linaro.org>,
-        <quic_subbaram@quicinc.com>, <quic_collinsd@quicinc.com>,
-        <quic_kamalw@quicinc.com>, <marijn.suijten@somainline.org>,
-        <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
+        <sboyd@kernel.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <marijn.suijten@somainline.org>, <andriy.shevchenko@linux.intel.com>,
+        <krzysztof.kozlowski@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>, Luca Weiss <luca@z3ntu.xyz>,
-        <linux-iio@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-CC: <linux-arm-msm-owner@vger.kernel.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Cosmin Tanislav <demonsingur@gmail.com>,
+        Mike Looijmans
+	<mike.looijmans@topic.nl>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ibrahim Tilki
+	<Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        =?UTF-8?Q?Leonard_G=c3=b6hrs?=
+	<l.goehrs@pengutronix.de>,
+        Haibo Chen <haibo.chen@nxp.com>, <linux-iio@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-arm-msm-owner@vger.kernel.org>
 References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-7-quic_jprakash@quicinc.com>
- <bb225c12-f017-fac3-45f1-c828a10553e2@linaro.org>
- <99070bce-6188-82eb-c92c-cf7a323394e2@quicinc.com>
- <c4ef9cac-15ac-4c2c-9f9a-cb9e740e2900@linaro.org>
+ <20230708072835.3035398-8-quic_jprakash@quicinc.com>
+ <20230708165955.08c1159c@jic23-huawei>
+ <13d5dee2-1da4-2ad0-91f8-a53b43adba2b@quicinc.com>
+ <CAA8EJprb=804S=GfxPw_7AxoHRO1XzC+wGPCsvNGrRpJgj+y6A@mail.gmail.com>
 Content-Language: en-US
-In-Reply-To: <c4ef9cac-15ac-4c2c-9f9a-cb9e740e2900@linaro.org>
+In-Reply-To: <CAA8EJprb=804S=GfxPw_7AxoHRO1XzC+wGPCsvNGrRpJgj+y6A@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Bjome4kBRawBaSie0Dt2rAgGW3KP7NRl
-X-Proofpoint-ORIG-GUID: Bjome4kBRawBaSie0Dt2rAgGW3KP7NRl
+X-Proofpoint-ORIG-GUID: 385GMTGPE6VVBBer0E3PHCrzfXcbmnY4
+X-Proofpoint-GUID: 385GMTGPE6VVBBer0E3PHCrzfXcbmnY4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-15_20,2023-11-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311160025
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1011 spamscore=0 bulkscore=0
+ phishscore=0 mlxscore=0 mlxlogscore=934 priorityscore=1501 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311160025
 
-Hi Krzysztof,
+Hi Dmitry,
 
-On 10/23/2023 12:06 PM, Krzysztof Kozlowski wrote:
-> On 23/10/2023 08:14, Jishnu Prakash wrote:
->> Hi Krzysztof,
+On 10/23/2023 1:33 PM, Dmitry Baryshkov wrote:
+> On Mon, 23 Oct 2023 at 09:15, Jishnu Prakash<quic_jprakash@quicinc.com>  wrote:
+>> Hi Jonathan,
 >>
->> On 7/9/2023 10:53 PM, Krzysztof Kozlowski wrote:
+>> On 7/8/2023 9:29 PM, Jonathan Cameron wrote:
+>>> On Sat, 8 Jul 2023 12:58:31 +0530
+>>> Jishnu Prakash<quic_jprakash@quicinc.com>  wrote:
+> +
+>>>> +    return devm_iio_device_register(dev, indio_dev);
+>>>> +}
+>>>> +
+>>>> +static int adc5_gen3_exit(struct platform_device *pdev)
+>>>> +{
+>>> As you are mixing devm manged cleanup and the explicit sort the
+>>> result is that you remove the userspace interfaces 'after' you run
+>>> everything in here. I'm thinking disabling the channels at least
+>>> isn't a good idea in that case.
+>>>
+>>> If you want to use devm (which is good) then you need to work out how
+>>> to register additional callbacks during probe to tear down everything in
+>>> the right order (typically the reverse of what happens in probe)
+>>> devm_add_action_or_reset() is the way to add those extra callbacks.
+>>>
+>>> If not, just don't use devm for at least those bits that will end up
+>>> running out of order (such as iio_device_register()) and manually call their
+>>> cleanup routines instead.
+>> I checked some other examples in the iio/adc/ folder, I think I see what
+>> you mean here. It looks like drivers with a remove callback always use
+>> iio_device_register and iio_device_unregister instead of the devm_*
+>> variant, due to the issue with sysfs removal as you said.
 >>
->>>>      reg:
->>>>        description: VADC base address in the SPMI PMIC register map
->>>> -    maxItems: 1
->>>> +    minItems: 1
->>> Why? This does not make any sense. With previous patches it looks like
->>> random set of changes.
->> The idea here is to convey that reg can have multiple values for ADC5
->> Gen3 as there can be more than one peripheral used for ADC, so there can
->> be multiple base addresses. I'll try to make this more clear in the next
->> patchset.
-> You cannot remove constraints from an entry.
-
-
-In this case, minItems: 1 will remain true for all other ADC devices 
-documented here, but it will not be true for ADC5 Gen3, as this one can 
-have multiple base addresses if more than one SDAM is used for ADC. I'll 
-update this separately for each compatible, keeping it the same for the 
-older ones, hope that should work.
-
-
->>>>    
->>>>      '#address-cells':
->>>>        const: 1
->>>> @@ -38,6 +39,12 @@ properties:
->>>>      '#size-cells':
->>>>        const: 0
->>>>    
->>>>    
->>>> +      qcom,adc-tm-type:
->>>> +        description: |
->>>> +            Indicates if ADC_TM monitoring is done on this channel.
->>> Description does not match property name.
->> You mean it sounds more like an enum which can take several values
->> rather than just a boolean? I can update it to "qcom,adc-tm" if that
->> looks better.
-> The property name suggests this is type of monitoring. Property
-> description says this will enable ADC_TM monitoring. These two do not match.
+>> I'll update the probe and remove functions similarly, to do explicit
+>> cleanups as required, avoiding devm_ usage for places where it should be
+>> avoided.
+> I think you got the message all wrong. There is nothing bad with using
+> devm_. As a matter of fact it is a preferred form in most of the
+> cases. However you have to be careful to tear down your device in the
+> correct order. And as Jonathan pointed
+> out, you might add necessary hooks manually by calling
+> devm_add_action_or_reset().
 >
-> Except that I wonder now whether this is a property of hardware at
-> all... What is this monitoring? By the driver?
+> [skipped the rest]
 
-
-The property description is right, this property is used to indicate 
-that one of the configurable channels on the ADC SDAMs will be used for 
-ADC_TM functionality, for periodically monitoring this particular ADC 
-channel . This is the exact same functionality as in the existing QCOM 
-ADC_TM device, documented at 
-devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml. I'll mention this 
-too in the description.
-
-It can be considered a property of the hardware as the monitoring is 
-done by a sequence under PBS (Programmable Boot Sequence, can be 
-considered firmware), which periodically gets the channel reading and 
-checks it against upper/lower thresholds set by clients of this driver, 
-for threshold violations.
-
-
-> ...
->
->>>>        then:
->>>>          patternProperties:
->>>> @@ -299,7 +315,7 @@ examples:
->>>>                    label = "xo_therm";
->>>>                };
->>>>    
-
->>>> diff --git a/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h b/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h
->>>> new file mode 100644
->>>> index 000000000000..74e6e2f6f9ed
->>>> --- /dev/null
->>>> +++ b/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h
->>>> @@ -0,0 +1,48 @@
->>>> +/* SPDX-License-Identifier: GPL-2.0-only */
->>> Dual license.
->> I think we do have an internal rule by which we do have to add these two
->> licenses....I'll check again and update them if required.
-> Just to be clear: your internal rules are your internal affair. We
-> expect here dual license.
-
-
-I misunderstood what you meant earlier, I understand now that 
-"GPL-2.0-only" is wrong, I'll update it.
+Thanks for your comment. I checked the code again and I think we can do 
+the teardown with a devm_add_action() call and drop the remove API 
+entirely in favor of using devm_* APIs , I'll update this in the next 
+patchset.
 
 Thanks,
 
 Jishnu
 
 
-> Best regards,
-> Krzysztof
 >
 

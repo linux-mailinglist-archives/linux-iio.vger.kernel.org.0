@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-101-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-102-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05D27EE00C
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:44:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1608B7EE01D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F9D1F25107
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 11:44:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA128B20C0B
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 11:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1D92EB11;
-	Thu, 16 Nov 2023 11:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41102F843;
+	Thu, 16 Nov 2023 11:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XHcEPy+R"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pKJjhiMw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300D6181
-	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:44:19 -0800 (PST)
-Received: by mail-qk1-x731.google.com with SMTP id af79cd13be357-7788f727dd7so37919785a.1
-        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:44:19 -0800 (PST)
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE7E193
+	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:47:11 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5a7c08b7744so7649887b3.3
+        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:47:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700135058; x=1700739858; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700135231; x=1700740031; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tV45YbliexJOfCFPPiFLqBcXz5CrNsVrk5m+AwS7zek=;
-        b=XHcEPy+ReeGMqTef+mLdgYaz43LQCOgUNYA8oE9qe1kipI/TjZRZLpWjwzfNpCRv+U
-         8QQz9/f2Z/ZAH6REsnSJpun2TkMPBGnzJsChek2wtHg1e5qqctvsbKzx3bbxIPAcThkI
-         t5JUIm9dyVMPffOjzzKJbjtGIOlEGNvcH/IrxRMeiLSdg3zyZt8ysPO5aVRmDrGjzPAh
-         Zp2wMpZZa3hIB9x81a9j6OXDusJ71M+UBDU3v9rPqq9pg4+RXdB7NbFz/Suzoqnq4f/E
-         eMiLzOux+93taU5KOVc7Rmd8FtsC1e/Qey6tKDzh19qCKhDZ7Z7ZJz4tnaeJSrR4vtUN
-         MFEg==
+        bh=9IZjcqGv42rVv0ipCzhYT3Hq96pkj962enz82vWbOD8=;
+        b=pKJjhiMw6qe5hxSpsuAv0AexpFThwXd/mbcu6fxBH/S/BesmocaCOMBhqkCAdUt+Q/
+         gMADdlaJ89slxm0Sf1Z7dvesvHkE200G7EzCJPO6xU7hSAgoFE49+lZTAHghVJ2bSbAj
+         +BuRVKvkMvOQ6Vu0NkMJp0s0xm5gCFZTBPI1g7OQXbf0BnDVjFm4sfBmGmbg9vDcHuMs
+         Lb9hUUjZcx2GFK6dmnQHIppoGc+EmueIBd8cZqXOauA5U/T6EiI9M0iXgiIA51nbFeKx
+         SJJPzvZLZDNwZ6wQQNUBs8qeP3HYj0sk/ZytPo5x3dQthg7Qb35UyoPbLTGi25ZJYSbe
+         iLhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700135058; x=1700739858;
+        d=1e100.net; s=20230601; t=1700135231; x=1700740031;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tV45YbliexJOfCFPPiFLqBcXz5CrNsVrk5m+AwS7zek=;
-        b=RdkeidlUE8ezEUGyEbMx0wVJ7NcgO8qauLPTBDSj+C13X3Ij6r4UgJe4RcTN3ZgqIc
-         M2WaRHvB3hYMxZ+JoWERSnoYkahBEhlvYsSuoyuXDX+0tFt37Tef6UHa/iGCV1YKyd+H
-         F7fDkCqeYI0cUzmdlPOy+rAKRy9DdSsMx6c5tSGpVObJMtPUQ/A8kpcIDJxAsP0IonnO
-         8D2cj39bRrJruGNrH7dx1idic0TDbBUfE85LMRMFBFd3WcvsiLiTDANyi0xN6/Ql9DAA
-         mrvBijdfzXOcnmQwsn3xWCNlA0ejqnyT4k9exU1qn0VLuhedcRq3SvPiIv9PqTx7XFvC
-         x+5g==
-X-Gm-Message-State: AOJu0YxTUyDVdMb635KpV7TTibiAAj0Htg/spEASFskdWPZgKoCpR+CX
-	iHGvX8SgYgAabLQFxg2TaogDVA==
-X-Google-Smtp-Source: AGHT+IGHzJYG1jFG+62j30PaHZC2JfD1dh4ycerusRL7of44rZeSFoUnA6kjXLJb4br/i8EdYE7XLA==
-X-Received: by 2002:a05:620a:2807:b0:778:93b5:fb1a with SMTP id f7-20020a05620a280700b0077893b5fb1amr8544479qkp.41.1700135058250;
-        Thu, 16 Nov 2023 03:44:18 -0800 (PST)
+        bh=9IZjcqGv42rVv0ipCzhYT3Hq96pkj962enz82vWbOD8=;
+        b=tV1HQ2tw0cY+YeDqql+1nS8cYrDE0oQ/MZy70XdW8cItYvvRElYM78eHrYzVveDKuT
+         mQ70REqWMKP0Olnlybpp6Ex5opwWPUCggAH+BdmCpP1VezXEEHrlFNbPFOtCnIy0PsYp
+         AVb6QuV8EH818b9sHN9PEQjAPDqYS2IOPrxh8018SczoI4uszzLsM3y2mz8uRoEWDKKH
+         NCHTzoMGyCbjD/AHW4ZKGBL6k3dZzj52ueAFUo3mEVdwVoWGdjR2LIhYhGWVdjGaHAgc
+         Co1WCEFYK2prxRqzjUtTi/CuQs9yBcKLu3NWecgb95iEw0BmMkOtTgWNgCR+HXTjzhTE
+         TZKA==
+X-Gm-Message-State: AOJu0YxlnuPijvT9tcDjXN8H3LQLK5XAOpGwD/v/uc1d2QlzTpKYwHe0
+	V3iwaKaZ6dgcemys64GCvMPrwg==
+X-Google-Smtp-Source: AGHT+IGWA89zidPswf2TQAp+TqRFhSxa7Oyp6znP0Eb8YbE0oq3Ta/SGAHTPqcGO96abkl4ixVfjAA==
+X-Received: by 2002:a0d:c8c7:0:b0:5a7:bbca:8c9e with SMTP id k190-20020a0dc8c7000000b005a7bbca8c9emr14741014ywd.7.1700135230773;
+        Thu, 16 Nov 2023 03:47:10 -0800 (PST)
 Received: from [192.168.212.13] ([12.191.197.195])
-        by smtp.gmail.com with ESMTPSA id az36-20020a05620a172400b0077580becd52sm4193397qkb.103.2023.11.16.03.44.15
+        by smtp.gmail.com with ESMTPSA id qd6-20020a05620a658600b007758b25ac3bsm4229474qkn.82.2023.11.16.03.47.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 03:44:17 -0800 (PST)
-Message-ID: <f7065032-206f-423e-bb03-0b808ff16868@linaro.org>
-Date: Thu, 16 Nov 2023 12:44:15 +0100
+        Thu, 16 Nov 2023 03:47:10 -0800 (PST)
+Message-ID: <e469039c-9370-4718-9081-98a203c62e77@linaro.org>
+Date: Thu, 16 Nov 2023 12:46:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,25 +62,27 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/3] dt-bindings: iio/adc: Move QCOM ADC bindings to
- iio/adc folder
+Subject: Re: [PATCH 06/11] iio: adc: Add QCOM PMIC5 Gen3 ADC bindings
 Content-Language: en-US
-To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
- daniel.lezcano@linaro.org, dmitry.baryshkov@linaro.org,
- linus.walleij@linaro.org, linux-arm-msm@vger.kernel.org,
- andriy.shevchenko@linux.intel.com, quic_subbaram@quicinc.com,
- quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
- quic_kamalw@quicinc.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, marijn.suijten@somainline.org
-Cc: lars@metafoo.de, luca@z3ntu.xyz, linux-iio@vger.kernel.org,
- lee@kernel.org, rafael@kernel.org, rui.zhang@intel.com, lukasz.luba@arm.com,
- cros-qcom-dts-watchers@chromium.org, sboyd@kernel.org,
- linux-pm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
- kernel@quicinc.com
-References: <20231116032644.753370-1-quic_jprakash@quicinc.com>
- <20231116032644.753370-2-quic_jprakash@quicinc.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linus.walleij@linaro.org, Jonathan.Cameron@huawei.com, sboyd@kernel.org,
+ dmitry.baryshkov@linaro.org, quic_subbaram@quicinc.com,
+ quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
+ marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Luca Weiss <luca@z3ntu.xyz>,
+ linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc: linux-arm-msm-owner@vger.kernel.org
+References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
+ <20230708072835.3035398-7-quic_jprakash@quicinc.com>
+ <bb225c12-f017-fac3-45f1-c828a10553e2@linaro.org>
+ <99070bce-6188-82eb-c92c-cf7a323394e2@quicinc.com>
+ <c4ef9cac-15ac-4c2c-9f9a-cb9e740e2900@linaro.org>
+ <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -126,34 +128,42 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231116032644.753370-2-quic_jprakash@quicinc.com>
+In-Reply-To: <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/11/2023 04:26, Jishnu Prakash wrote:
-> There are several files containing QCOM ADC macros for channel names
-> right now in the include/dt-bindings/iio folder. Since all of these
-> are specifically for adc, move the files to the
-> include/dt-bindings/iio/adc folder.
+On 16/11/2023 04:23, Jishnu Prakash wrote:
+> Hi Krzysztof,
 > 
-> Also update all affected devicetree and driver files to fix compilation
-> errors seen with this move and update documentation files to fix
-> dtbinding check errors for the same.
+> On 10/23/2023 12:06 PM, Krzysztof Kozlowski wrote:
+>> On 23/10/2023 08:14, Jishnu Prakash wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On 7/9/2023 10:53 PM, Krzysztof Kozlowski wrote:
+>>>
+>>>>>      reg:
+>>>>>        description: VADC base address in the SPMI PMIC register map
+>>>>> -    maxItems: 1
+>>>>> +    minItems: 1
+>>>> Why? This does not make any sense. With previous patches it looks like
+>>>> random set of changes.
+>>> The idea here is to convey that reg can have multiple values for ADC5
+>>> Gen3 as there can be more than one peripheral used for ADC, so there can
+>>> be multiple base addresses. I'll try to make this more clear in the next
+>>> patchset.
+>> You cannot remove constraints from an entry.
 > 
-> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-> ---
->  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml       | 4 ++--
->  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 2 +-
->  .../devicetree/bindings/thermal/qcom-spmi-adc-tm-hc.yaml  | 2 +-
->  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml    | 6 +++---
->  arch/arm64/boot/dts/qcom/pm2250.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm6125.dtsi                      | 2 +-
+> 
+> In this case, minItems: 1 will remain true for all other ADC devices 
+> documented here, but it will not be true for ADC5 Gen3, as this one can 
+> have multiple base addresses if more than one SDAM is used for ADC. I'll 
+> update this separately for each compatible, keeping it the same for the 
+> older ones, hope that should work.
 
-NAK, bindings are always separate from the other changes.
+BTW, you disagree with me and send new version 2 minutes later.
+Basically you did not leave me any time to respond to you.
 
-Please run scripts/checkpatch.pl and fix reported warnings. Some
-warnings can be ignored, but the code here looks like it needs a fix.
-Feel free to get in touch if the warning is not clear.
+That's not how the process works.
 
 Best regards,
 Krzysztof

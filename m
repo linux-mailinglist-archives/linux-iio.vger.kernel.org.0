@@ -1,198 +1,151 @@
-Return-Path: <linux-iio+bounces-97-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-98-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D107EDBB3
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 07:58:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155907EDBBF
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 08:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA342280F43
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 06:58:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0E2280ED4
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 07:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FDB8F6A;
-	Thu, 16 Nov 2023 06:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48EA5395;
+	Thu, 16 Nov 2023 07:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZjqKNQyA"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="js+JrPLE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9907135
-	for <linux-iio@vger.kernel.org>; Wed, 15 Nov 2023 22:58:15 -0800 (PST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5a82c2eb50cso4733067b3.2
-        for <linux-iio@vger.kernel.org>; Wed, 15 Nov 2023 22:58:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700117895; x=1700722695; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MlUMs5yfeQyYc6Y/Az4rq8fO2Clnbz+XnVMEINfcjBg=;
-        b=ZjqKNQyA7ZGNBR3j9PgeXKjjIp9NWNkFanm1n5QS8qQvLfiQhTEjaf4eecVWToiR/e
-         56mGrilKtR8gn4upU0ozDSwGqgyji07jFUrzM4RUk1Ntk2KN1jmvYiE5V8e4B/w1z4Sg
-         jTAoO8C+F44z2oBFF5ForQkRy/mSacdMkz1XMqgwGLIvhLhOjMOTsbZF35amGlIsL9uf
-         w806z+ZCx/3YKKmW3QDcJyBqF77lkl3gvJ436meBQTVexGfZE6D6cw/ErU1KkqiCiFR3
-         j47HQgczBT82sUfkDUBYW1rEM/qs0SjJe0VPIqoFqzgIerQ+4yms+OlufpxjGFAzgru1
-         EhMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700117895; x=1700722695;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MlUMs5yfeQyYc6Y/Az4rq8fO2Clnbz+XnVMEINfcjBg=;
-        b=jI+nJ81VHmbVnjOH95PTdmaTS9ACGC1vhgITDSFlvWX7cZowZc/pGgQtVvwgatnNzl
-         mJGYQJsdm0DvvtS9OGKW3Xt6NdKfvzN38KxaE/vIPhptj4B5KrepOZe7XC12wcONSyUQ
-         mPXWKDjnbNmAp+7wobo03Levilno04N77fwhPBIygm9BP1nufly4vj8y+aVqMgh6aY55
-         cX3niZ3obsnR4aeL1BvVev5Da7SdnfWIfReXkJeUtk3S8yinoi/t1H5t635DiXWtCqF1
-         3SFZJ9cn1AkKN957mv+LuAvC+KErwKJqIgYkHaktKksuUktOIyZYEXATTu2SYg3d6Q57
-         kFqg==
-X-Gm-Message-State: AOJu0YwO1USXiX0z+ziKZn1Y5H17+N3gMHkcTN9iTkrXBJJa685+N+31
-	iKlTnJm8ejmB4uvPxXes1O6gHbOZkxGEiIday8Qw9Q==
-X-Google-Smtp-Source: AGHT+IHve10MyqU2Jd1eMdvWSqrn1JhntSzmwKDJMgvOkWsqcxLkFxnFE4uOgoNAIt4GNReGlfE8m8apQkiSaQ9ingg=
-X-Received: by 2002:a0d:ea85:0:b0:5a7:e4d9:f091 with SMTP id
- t127-20020a0dea85000000b005a7e4d9f091mr13004592ywe.25.1700117894941; Wed, 15
- Nov 2023 22:58:14 -0800 (PST)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA83196
+	for <linux-iio@vger.kernel.org>; Wed, 15 Nov 2023 23:05:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cpxESFRaYIB9XvT3Bwg6NXEsp8YgZvwxemyVB52F2l+/4VEO+FRScLav6DEbzNBUsEhHsPX3mBmjtuwQfqnDpStS3o+PLi/W/hTPXJcDLhlQrPP/A+IKvTR0TML0WlODOAlVLW1fkYRAMT9abpWsI1kM/jiEPoDuCqPZ6z5I45gkrHVW2aItW+vnF4TwiQ3mb2NHOGa7hMmuxwPcKtC++YKd1WmAn93u+aL0lEgka6+FM7q5bnXJpFYVMOK2c/YMIpaIRqzB9ncGDNFjWJQJ6r6+v8NmbBBDiRQJPgrO80CGCNFufpegyQeWwSzxI3Jmj/l7Uj70bUDE4rywmLJPIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QlDZmxtvic3ZpEeDnXRcyEJUEsfzecD58E9b+98OPtA=;
+ b=PCjdnR+SeQ66c9Be4jziCXfda9m3HoyWZekr3plOeuxgCbzS/ufJVDMNNOeWHmYOlRASy1m7X25EjGQ1n+/7BZlez4Jm7HcTJcQPLALiXboein064GKoMfIkBaoLJHRZKfwJBsm09s2e14Tsd6ugRPXZSn7EmbzmQPRX9MsdNK0Vk8rTwuHnn4te7BKGkasOIaSxjpzOrdIzXCuUeC03EHiwyRXddWjBBHgcjF9ytv9WewrHKI0g1nt4G7aN7YcSkalhoEpWpI+utmT6t7qkNXK8YLxqCVghJe8AXy9CEVzIs5WQNsWTplNVIAraKEoM5IBKBpUT39Wbr0OQLWsOOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QlDZmxtvic3ZpEeDnXRcyEJUEsfzecD58E9b+98OPtA=;
+ b=js+JrPLEXfMaVRLaiwWvagYeG9lB10VM0KocASYyWv6KmEr2dxMNFPL/0QaRCniCow1Y89hl4Qr29Aw/8OasEspDyizNccwjGhei78VtneNTSpXNX9KiyqKCEH365Elx17/qCSmxlemb9BOa6QJqhMpFJT4JZyeiSHdXq5egQx4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com (2603:10a6:5:21::30) by
+ AM8PR04MB8002.eurprd04.prod.outlook.com (2603:10a6:20b:247::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.8; Thu, 16 Nov
+ 2023 07:05:09 +0000
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::c09:60ad:6ac5:d57f]) by DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::c09:60ad:6ac5:d57f%4]) with mapi id 15.20.7025.007; Thu, 16 Nov 2023
+ 07:05:09 +0000
+From: haibo.chen@nxp.com
+To: jic23@kernel.org,
+	lars@metafoo.de
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	haibo.chen@nxp.com,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: imx93: add four channels for imx93 adc
+Date: Thu, 16 Nov 2023 15:10:26 +0800
+Message-Id: <20231116071026.611269-1-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SGXP274CA0007.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::19)
+ To DB7PR04MB4010.eurprd04.prod.outlook.com (2603:10a6:5:21::30)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231116032530.753192-1-quic_jprakash@quicinc.com>
- <CAA8EJprJuiFq5UXc9weNr1hy2vW_10TaQweN_ZW5XW=3LKrgtA@mail.gmail.com> <5a476b51-5916-74f8-0395-60d94f210aa0@quicinc.com>
-In-Reply-To: <5a476b51-5916-74f8-0395-60d94f210aa0@quicinc.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 16 Nov 2023 08:58:03 +0200
-Message-ID: <CAA8EJpq+2cu4pyWRGm_DVQe7_6NJAssT=HWD6UieyXkAgncwMA@mail.gmail.com>
-Subject: Re: [PATCH V2 0/3] iio: adc: Add support for QCOM SPMI PMIC5 Gen3 ADC
-To: Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc: jic23@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, 
-	conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org, 
-	konrad.dybcio@linaro.org, daniel.lezcano@linaro.org, linus.walleij@linaro.org, 
-	linux-arm-msm@vger.kernel.org, andriy.shevchenko@linux.intel.com, 
-	quic_subbaram@quicinc.com, quic_collinsd@quicinc.com, 
-	quic_amelende@quicinc.com, quic_kamalw@quicinc.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	marijn.suijten@somainline.org, lars@metafoo.de, luca@z3ntu.xyz, 
-	linux-iio@vger.kernel.org, lee@kernel.org, rafael@kernel.org, 
-	rui.zhang@intel.com, lukasz.luba@arm.com, cros-qcom-dts-watchers@chromium.org, 
-	sboyd@kernel.org, linux-pm@vger.kernel.org, 
-	linux-arm-msm-owner@vger.kernel.org, kernel@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4010:EE_|AM8PR04MB8002:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e33bd05-11dd-4d45-4580-08dbe6725e66
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	cD+MTKsy9aMeRT/3PZgnxKZz/Pmi4NdikTE66HZz3hUmkGuXQDpHGZQvIe5YJoN56Y1tmKFzxkrbrqi+NjPodp2thcsRHOHBsgHBAgc9QTL27oaIvd5Pp9xOVHBOsLMj4dvdzxLir15DnTAUbDQpQ2ZEEb1c3SvZZHvdvIi/HUza42zdK0jYLfRmUwJID7vvUs7zr4QPm9yR6J16Gib9lZJjl/hP1sdTxc23dVKLLrtX7ozmcTJW4PiInjcx1YEeLRxQrtdUVSe4AA75pslNFGHszrn3LAYGzuKzsC/97+V0RTnFPuIKNbSEV1GPr1ySLprwy8215dMVEouWOQnjLImPJv3f+lEbR59bbEnTwba3MKnLN4WEao86JDphH72TVmk9kYHvbCegFIFjMBPylv1xRNPMvWPLmyXaIMnhsoj2FePg2jO2wnWDTmi+1Kd+aCMu0+oSaXAxFWUQjp3m5PdXMbblKbku6/eAX7WzqZ4jiMQQSIehVjy47nwN5X1zlByQDhx/8SxZYlDDltd8mGxwAEyAwwyZOiQd3v6I22EXGV/S8uQUqPAXyfVU/cMg9syHu0niIpSwFqXcWOhedI8gSH/Y0JskM4ogJ0GOEEFDh/r/1c7AsVDUWnV0VU4i
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4010.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(396003)(366004)(346002)(136003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(38100700002)(52116002)(66556008)(6506007)(66476007)(2906002)(5660300002)(4744005)(86362001)(41300700001)(8676002)(4326008)(8936002)(36756003)(1076003)(316002)(2616005)(6512007)(9686003)(38350700005)(66946007)(6666004)(478600001)(26005)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q1WO6rkDzi/dkcXL7VSFCnwMwi2Xocm7/H3DF5/HPIXb5FELUJig2UIg1emF?=
+ =?us-ascii?Q?ID++Hbnf9BeN2WOpIteeKFYrWM6FS1AjTcAEz/NgkLo55KOMvpG6nTVlsk6d?=
+ =?us-ascii?Q?1bf0tqf1VyjITgRFnAR94UVmAvH4SjoQivC/UF+UwRIMML+ELgipd6l07ibM?=
+ =?us-ascii?Q?2S0QCGRPjodp2l4SkO8divN16oQD96yGJ5C/+/qmeZvuHbpH5Xtn6liMSYYc?=
+ =?us-ascii?Q?6+3dso8uNCRTM/LUN/G/zYk7FgBW6E7yVUZjpLwFOroKCfEAxp3usvzZ5AyD?=
+ =?us-ascii?Q?bSeUXl1EDCUuMQV9nX160qgxHow8qALAx97zP2vIGsx3SVf28mKTB0JypoRq?=
+ =?us-ascii?Q?aJ+dPBQU7o3bEcsrMYqmUJ1HhyRvdEQgZPLQA1O3SrPC/oj4ZAfLyy5AYzmO?=
+ =?us-ascii?Q?sM4XF/DVoXqh3+c6TQ/OQidpwy3UsmM6Z8ckgreCfKXZsKTnAFaURUh+TPtL?=
+ =?us-ascii?Q?zLuyjRUoNsMHFyGDVsWN+F359YD0FKspxM1diggm6DY17EH2G8PiuhRWZKMi?=
+ =?us-ascii?Q?U2QitM4rkyLxxrnz+qM/yQQiEwuVTtV9UTFlrFDvW6Mhqr/OfUbskMkATGRP?=
+ =?us-ascii?Q?Q+04yz+UaL7H20WQyqhro1r9NLZHsH1bfPb4SiCJkaX14tskf+3eTq/+Ku6F?=
+ =?us-ascii?Q?D8aJe84WPRcj0SnsX3sTvDWvuVBFC2IAgcqG+8AItCJpkclcimfAByAFg6MT?=
+ =?us-ascii?Q?9K7KhWvR9WjLrh4gUfn3GM5ny1GSH+jeoNQVB3KCaMfR6fEhANMpl1x8kL82?=
+ =?us-ascii?Q?+See/HUj7tR1EzmUQoKmj9f4e/o4RJxXJIII7f7pm5NHglxGr8ZvgQMKa9Oz?=
+ =?us-ascii?Q?qv7pMdJ2aLmeqXM0HR8vYDoB2GtO75SmdcpitCtjf9URmg6c6/ezw01a3Yi1?=
+ =?us-ascii?Q?+spnqQWH+ujT/QViXI21chiW0lkuYMW6oOnf0GIi5lOp8mJiFffEBmkJ4Ufs?=
+ =?us-ascii?Q?hCPN1af4DegpOY30uHWhqBQ+BRL51g4CagcWM95s/tawP/C8aN8yaWN2mxOn?=
+ =?us-ascii?Q?rjJIkxPYGL8FMctlxkBYd/+GuOstZrFg78XujtvAjovksHW64W0USJvYLH3h?=
+ =?us-ascii?Q?Gm15FqKNub0aFI0mEuLMEGu8pANN2XMhHZrrLJ6VBe2DKq69CGSskEOILnSW?=
+ =?us-ascii?Q?ekD5xKrsDSPkgkWAhVv8XAbkytLMy8XHhg/XxemqFnjaU8DyaJviuxU7U1CD?=
+ =?us-ascii?Q?UEoaQLROjbsS7cCyA4KuFZrslAsaDzGmtUxshHzsRC/aNpGZQBmgjvKngBSj?=
+ =?us-ascii?Q?IHyg5uoYaFJG0B3GLbLfN2hzwenu9KNaWcJAsKWHpPzB87yiiJk/XUANF+LN?=
+ =?us-ascii?Q?TSptpGw8zKEUDvhDnYfLJHIn+5n+rYEsVLoaT9vKtIGxVAg/PWv/Ud0xb1vc?=
+ =?us-ascii?Q?sb/GTer+eCujbmV4l1N4obQ1Jj79w83YufhXFlsf2wPUag0uSBiu9be8CsfO?=
+ =?us-ascii?Q?dRCDxV7EYZB+4GPXameSWwbk59gB8dDr6R26MN3F5M4h2+sZh96XB4DueDYV?=
+ =?us-ascii?Q?57sBXFazS+HdVsADvcNQAsyu6A8UpGalv18B5nphF5jLG8uj/Dw5CcRogZA0?=
+ =?us-ascii?Q?MF0zz/rdVdSk8Gl3AxztLcApw7tlCCkapYMW3Z6I?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e33bd05-11dd-4d45-4580-08dbe6725e66
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4010.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2023 07:05:09.1048
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZvaqqU7ZlTjVB+vlc0CEOm2bbjq8wR8R4PLsJJTMztkXR2dzONFg9tn9RBzUrCG2mQDQ9puPoKyu979gVUyFRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8002
 
-On Thu, 16 Nov 2023 at 08:30, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
->
-> Hi Dmitry,
->
-> On 11/16/2023 10:52 AM, Dmitry Baryshkov wrote:
-> > On Thu, 16 Nov 2023 at 05:26, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
-> >> PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
-> >> with all SW communication to ADC going through PMK8550 which
-> >> communicates with other PMICs through PBS. The major difference is
-> >> that the register interface used here is that of an SDAM present on
-> >> PMK8550, rather than a dedicated ADC peripheral. There may be more than one
-> >> SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
-> >> be used for either immediate reads (same functionality as previous PMIC5 and
-> >> PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
-> >> Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
-> >> combined into the same driver.
-> >>
-> >> Patches 1 adds bindings for ADC5 Gen3 peripheral.
-> >>
-> >> Patches 2 adds driver support for ADC5 Gen3.
-> > For some reason I don't see this patch in my inbox. Maybe it will
-> > arrive later. Immediate response: please add
-> > devm_thermal_add_hwmon_sysfs().
->
->
-> Yes, I'll check and add this in the next patch series, I'll wait for
-> some more comments on the existing patches for now.
->
-> I ran into some error after sending the first two mails (cover letter
-> and patch 1), so I sent patches 2 and 3 separately after it, I think you
-> may have received them separately.
->
->
-> >
-> >> Patch 3 is a cleanup, to move the QCOM ADC dt-bindings files from
-> >> dt-bindings/iio to dt-bindings/iio/adc folder, as they are
-> >> specifically for ADC devices. It also fixes all compilation errors
-> >> with this change in driver and devicetree files and similar errors
-> >> in documentation for dtbinding check.
-> > NAK. The kernel is expected to build and work after each commit.
-> > Otherwise git-bisecting the kernel becomes impossible.
-> > So, please rework your series in a way that there are no compilation
-> > errors after any of the patches. The easiest way would be to rearrange
-> > your patches in 3-1-2 order.
->
->
-> I think you may have misunderstood the meaning here, I had verified
-> compilation works each time after applying each of the three patches in
-> this series. It's not that this last patch fixes compilation errors
-> caused by the first two, this is a completely separate patch which
-> affects existing QCOM ADC code (driver and devicetree) including ADC5 Gen3.
->
->
-> This patch does two things mainly:
->
-> Move the ADC binding files from dt-bindings/iio folder to
-> dt-bindings/iio/adc folder (this would naturally cause some errors in
-> driver and devicetree code due to path update)
->
-> Fix all compilation and dtbinding errors generated by the move
->
->
-> I added this change at the end of the series as I was not completely
-> sure if it could get picked, just wanted to make it easier to drop if
-> that is the final decision.
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Ah, so patch 1 adds new files to <dt-bindings/iio/adc>, while
-retaining old files in the old directory. I'd say, this is
-counterintuitive.
-Please reorder patches into 3-1-2 order. dt-binding changes anyway
-should come first.
+According to the spec, this ADC totally support 8 channels.
+i.MX93 contain this ADC with 4 channels connected to pins in
+the package. i.MX95 contain this ADC with 8 channels connected
+to pins in the package.
 
->
->
-> Thanks,
->
-> Jishnu
->
->
-> >
-> >
-> >> Changes since v1:
-> >> - Dropped patches 1-5 for changing 'ADC7' peripheral name to 'ADC5 Gen2'.
-> >> - Addressed reviewer comments for binding and driver patches for ADC5 Gen3.
-> >> - Combined patches 8-11 into a single patch as requested by reviewers to make
-> >>    the change clearer and made all fixes required in same patch.
-> >>
-> >>   .../iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    |    2 +-
-> >>   .../iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    |    2 +-
-> >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    |    2 +-
-> >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    |    0
-> >>   .../iio/{ => adc}/qcom,spmi-vadc.h            |   81 ++
-> >>   46 files changed, 1725 insertions(+), 61 deletions(-)
-> >>   create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
-> >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
-> >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
-> >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (100%)
-> >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (77%)
-> >>
-> >> --
-> >> 2.25.1
-> >>
-> >
-> > --
-> > With best wishes
-> > Dmitry
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/iio/adc/imx93_adc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-
-
+diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+index 9bb1e4ba1aee..4ccf4819f1f1 100644
+--- a/drivers/iio/adc/imx93_adc.c
++++ b/drivers/iio/adc/imx93_adc.c
+@@ -93,6 +93,10 @@ static const struct iio_chan_spec imx93_adc_iio_channels[] = {
+ 	IMX93_ADC_CHAN(1),
+ 	IMX93_ADC_CHAN(2),
+ 	IMX93_ADC_CHAN(3),
++	IMX93_ADC_CHAN(4),
++	IMX93_ADC_CHAN(5),
++	IMX93_ADC_CHAN(6),
++	IMX93_ADC_CHAN(7),
+ };
+ 
+ static void imx93_adc_power_down(struct imx93_adc *adc)
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 

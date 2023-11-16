@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-99-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-100-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25ED37EDFFD
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB3D7EE007
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495491C20971
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 11:40:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C201C204F8
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 11:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740AC2EB0C;
-	Thu, 16 Nov 2023 11:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F912EB10;
+	Thu, 16 Nov 2023 11:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jYqKi6+w"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y+sPBUq+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F11196
-	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:40:20 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5a7d9d357faso7449447b3.0
-        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:40:20 -0800 (PST)
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5C7193
+	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:43:27 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3b2e73a17a0so389379b6e.3
+        for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 03:43:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700134820; x=1700739620; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700135006; x=1700739806; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jPmwDyDnTt2mfJDFk4M04sRvgIpCqOiaXwSPPRNnyQQ=;
-        b=jYqKi6+wu2zNIPFDkIPFrSionXcyHO+OtJTUWTkWCEPSzn67e52UDkQZ6Y4JMVPdfH
-         9WQJQoXH1Kdm6ddt0AP8ykyqd8gNz/wJHh5gDLJAbj6UKB0pucukIEiBCfq1MWG2mNoF
-         kaZ5X0B/YQwk3WA5DVxje3sG//8yjV3VQBNrkqbMv7NIdYhqchbQeTSv81EmfR3jt1zz
-         GEtZvZ8hfIbgglsx4qowb7O4kYcGeIzPNs7erZg8CbtymEyH8mB88X46TKChAUHeOKe0
-         zn0dfo236zzwUxMGaZSr2fUpdXY2qloS+c029D8Q6kzF37dIChGgaBW7p6jSUp/fRjs3
-         YC2w==
+        bh=Zu99ZgJ4o++Kc5jXeErXKR/5BDUaWqse/nPXLryIj8o=;
+        b=y+sPBUq+mwlp0VuGsDOHKis090t9QwhmMjT7jeF0z1093yct26nffcP/gNavnP0zTg
+         IsF/4HL6+FHqNZKfqgOeejdDGuUe98LheAu6nCM/txMwMLT+mEjQ4Z182SXx7VSXGCU9
+         iiXPwgAUeJ7PAwrTSU5893fIMWIVCFqnXctlpcyO5LgmFIce6dpn0eEZtO4T1KFpI+YZ
+         KJjplpz3RTHbLfU+PsbEyLEiJQKtrYoPj2Aj5g+k98WGe07J2BBsOH8y0kCWcpyQgncf
+         R+dcmYXu48vY7XErq3RtPwzmDmJJ/CrhvqUPTS0RtnMr97iOXi5XIE4w/aZWSpAdtmFw
+         sqKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700134820; x=1700739620;
+        d=1e100.net; s=20230601; t=1700135006; x=1700739806;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jPmwDyDnTt2mfJDFk4M04sRvgIpCqOiaXwSPPRNnyQQ=;
-        b=SinhcxmxvI0Drrh1fwCTqUaxtR8hgH5f+1zUMFCuenX97eB5JrEuWxNrOIedDCiu+J
-         SkUv9XU02t5Lcj8XO24v8GfP+mTHlW/6pI4x2M1WqOj7+GJQddltSuLU5NjgkiEOre2S
-         pnoQT1tBS/AX2wYAG4Ib2go4+4VwPDsZuq/STiB4R5OunF9isHz+3XzoUW3yQH1xNuE9
-         PZpBuWvsKfLC6H39I68L6mDPTx9U6qCt+3Q63WiRknvYlEtKkghtdrKZo+yiqy53M/zt
-         EZaw+vshtHroh/ikfpSz8QvXOEuTyTA5ZcZOFqOhYJKLeu7Fd0xBICkxtrzHcUTxZrva
-         UFeA==
-X-Gm-Message-State: AOJu0YwkiwJJxbT6n+re4qpcSTChIlQgMBVJ+lxK7lR43spsmsvGKuBZ
-	4FtDKR4/C0vlo2m4Hd1dxonrrg==
-X-Google-Smtp-Source: AGHT+IFtwwpoOvZJIXX3Pr0GCvaufNrPMRU/FlgQ2Ejulw6x5wIeRakrK9kpyWpo2e7qWqZEcPKxYA==
-X-Received: by 2002:a0d:ca8f:0:b0:5a7:ba54:af02 with SMTP id m137-20020a0dca8f000000b005a7ba54af02mr17174955ywd.38.1700134819885;
-        Thu, 16 Nov 2023 03:40:19 -0800 (PST)
+        bh=Zu99ZgJ4o++Kc5jXeErXKR/5BDUaWqse/nPXLryIj8o=;
+        b=YaarR3RO0kH5RKf4XuCkbqnffgebbRyCYUO9edLR4vwdpLX9Q2yd4yRoUPba8E7t4y
+         4FWFF3h26+x21iLWUGwpKySVE8Wvr/immuX46CASO27AGffeS/uEpaFQcqTXVoW0ezxB
+         QUdLaMRFRgOcDcX1vCX6YUHpnUzXuNnhtVhoO5Lq+T2L7K7KRFR4HkAC80Stk70eqDUO
+         welS08arXY/jTZYGZQpOnWhSgUYu4YkA/QE3Bhkvj7iJVMrT9JlDqMbtzszuZjkeOG6J
+         7jaXsYQ5vnpxPlY6GtuybqH50YMVa8e3Qk8N84vueOsHpbg8ulyy7VNsvHec2/QF+YB5
+         W5fw==
+X-Gm-Message-State: AOJu0Yx0/bfuqI/3mMybBWdg6/KuV3oRiY+T5MLoGXM8ycpnmrz8ptxq
+	IZVSPBymYwh8eyf6jWhniZcNjg==
+X-Google-Smtp-Source: AGHT+IF1ny3sIjc3/bXjl6wUoDUuuue5gwzzHoBI3VTRCp1HhQk6S8ORtfEEtpMM6J+lbhMwV8Rjdw==
+X-Received: by 2002:a05:6870:3c09:b0:1ea:406:4dff with SMTP id gk9-20020a0568703c0900b001ea04064dffmr19861258oab.50.1700135006354;
+        Thu, 16 Nov 2023 03:43:26 -0800 (PST)
 Received: from [192.168.212.13] ([12.191.197.195])
-        by smtp.gmail.com with ESMTPSA id a17-20020a0cc591000000b0065b21f1b687sm1298370qvj.80.2023.11.16.03.40.16
+        by smtp.gmail.com with ESMTPSA id az36-20020a05620a172400b0077580becd52sm4193397qkb.103.2023.11.16.03.43.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 03:40:19 -0800 (PST)
-Message-ID: <a4d5293f-43ee-487c-a540-5a1f65e3c7d6@linaro.org>
-Date: Thu, 16 Nov 2023 12:40:13 +0100
+        Thu, 16 Nov 2023 03:43:25 -0800 (PST)
+Message-ID: <832053f4-bd5d-4e58-81bb-1a8188e7f364@linaro.org>
+Date: Thu, 16 Nov 2023 12:43:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,27 +62,25 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/11] iio: adc: Add QCOM PMIC5 Gen3 ADC bindings
+Subject: Re: [PATCH V2 1/3] dt-bindings: iio: adc: Add QCOM PMIC5 Gen3 ADC
+ bindings
 Content-Language: en-US
-To: Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linus.walleij@linaro.org, Jonathan.Cameron@huawei.com, sboyd@kernel.org,
- dmitry.baryshkov@linaro.org, quic_subbaram@quicinc.com,
- quic_collinsd@quicinc.com, quic_kamalw@quicinc.com,
- marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Luca Weiss <luca@z3ntu.xyz>,
- linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc: linux-arm-msm-owner@vger.kernel.org
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-7-quic_jprakash@quicinc.com>
- <bb225c12-f017-fac3-45f1-c828a10553e2@linaro.org>
- <99070bce-6188-82eb-c92c-cf7a323394e2@quicinc.com>
- <c4ef9cac-15ac-4c2c-9f9a-cb9e740e2900@linaro.org>
- <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+ daniel.lezcano@linaro.org, dmitry.baryshkov@linaro.org,
+ linus.walleij@linaro.org, linux-arm-msm@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, quic_subbaram@quicinc.com,
+ quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
+ quic_kamalw@quicinc.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, marijn.suijten@somainline.org
+Cc: lars@metafoo.de, luca@z3ntu.xyz, linux-iio@vger.kernel.org,
+ lee@kernel.org, rafael@kernel.org, rui.zhang@intel.com, lukasz.luba@arm.com,
+ cros-qcom-dts-watchers@chromium.org, sboyd@kernel.org,
+ linux-pm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
+ kernel@quicinc.com
+References: <20231116032530.753192-1-quic_jprakash@quicinc.com>
+ <20231116032530.753192-2-quic_jprakash@quicinc.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -128,107 +126,131 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <06d0f06a-7a5a-44d1-0bad-27f56bfc1421@quicinc.com>
+In-Reply-To: <20231116032530.753192-2-quic_jprakash@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/11/2023 04:23, Jishnu Prakash wrote:
-> Hi Krzysztof,
+On 16/11/2023 04:25, Jishnu Prakash wrote:
+> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
 > 
-> On 10/23/2023 12:06 PM, Krzysztof Kozlowski wrote:
->> On 23/10/2023 08:14, Jishnu Prakash wrote:
->>> Hi Krzysztof,
->>>
->>> On 7/9/2023 10:53 PM, Krzysztof Kozlowski wrote:
->>>
->>>>>      reg:
->>>>>        description: VADC base address in the SPMI PMIC register map
->>>>> -    maxItems: 1
->>>>> +    minItems: 1
->>>> Why? This does not make any sense. With previous patches it looks like
->>>> random set of changes.
->>> The idea here is to convey that reg can have multiple values for ADC5
->>> Gen3 as there can be more than one peripheral used for ADC, so there can
->>> be multiple base addresses. I'll try to make this more clear in the next
->>> patchset.
->> You cannot remove constraints from an entry.
-> 
-> 
-> In this case, minItems: 1 will remain true for all other ADC devices 
-> documented here, but it will not be true for ADC5 Gen3, as this one can 
-> have multiple base addresses if more than one SDAM is used for ADC. I'll 
-> update this separately for each compatible, keeping it the same for the 
-> older ones, hope that should work.
 
-You responded like you disagree with me, so just in case:  my comment
-stays. If you resend the same, I will NAK it.
+A nit, subject: drop second/last, redundant "bindings". The
+"dt-bindings" prefix is already stating that these are bindings.
 
+> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
+> going through PBS(Programmable Boot Sequence) firmware through a single
+> register interface. This interface is implemented on an SDAM (Shared
+> Direct Access Memory) peripheral on the master PMIC PMK8550 rather
+> than a dedicated ADC peripheral.
 > 
+> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
+> channels and virtual channels (combination of ADC channel number and
+> PMIC SID number) per PMIC, to be used by clients of this device.
 > 
->>>>>    
->>>>>      '#address-cells':
->>>>>        const: 1
->>>>> @@ -38,6 +39,12 @@ properties:
->>>>>      '#size-cells':
->>>>>        const: 0
->>>>>    
->>>>>    
->>>>> +      qcom,adc-tm-type:
->>>>> +        description: |
->>>>> +            Indicates if ADC_TM monitoring is done on this channel.
->>>> Description does not match property name.
->>> You mean it sounds more like an enum which can take several values
->>> rather than just a boolean? I can update it to "qcom,adc-tm" if that
->>> looks better.
->> The property name suggests this is type of monitoring. Property
->> description says this will enable ADC_TM monitoring. These two do not match.
->>
->> Except that I wonder now whether this is a property of hardware at
->> all... What is this monitoring? By the driver?
+> Changes since v1:
+> - Updated properties separately for all compatibles to clarify usage
+>   of new properties and updates in usage of old properties for ADC5 Gen3.
+> - Avoided updating 'adc7' name to 'adc5 gen2' and just left a comment
+>   mentioning this convention.
+> - Used predefined channel IDs in individual PMIC channel definitions
+>   instead of numeric IDs.
+> - Addressed other comments from reviewers.
 > 
+> Co-developed-by: Anjelique Melendez <quic_amelende@quicinc.com>
+> Signed-off-by: Anjelique Melendez <quic_amelende@quicinc.com>
+> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> ---
+>  .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 181 ++++++++++++++++--
+>  .../iio/adc/qcom,spmi-adc5-gen3-pm8550.h      |  50 +++++
+>  .../iio/adc/qcom,spmi-adc5-gen3-pm8550b.h     |  89 +++++++++
+>  .../iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h    |  22 +++
+>  .../iio/adc/qcom,spmi-adc5-gen3-pmk8550.h     |  56 ++++++
+>  include/dt-bindings/iio/qcom,spmi-vadc.h      |  81 ++++++++
+>  6 files changed, 464 insertions(+), 15 deletions(-)
+>  create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
+>  create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
+>  create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
+>  create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
 > 
-> The property description is right, this property is used to indicate 
-> that one of the configurable channels on the ADC SDAMs will be used for 
-> ADC_TM functionality, for periodically monitoring this particular ADC 
-> channel . This is the exact same functionality as in the existing QCOM 
-> ADC_TM device, documented at 
-> devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml. I'll mention this 
-> too in the description.
-> 
-> It can be considered a property of the hardware as the monitoring is 
-> done by a sequence under PBS (Programmable Boot Sequence, can be 
-> considered firmware), which periodically gets the channel reading and 
-> checks it against upper/lower thresholds set by clients of this driver, 
-> for threshold violations.
-> 
-> 
->> ...
->>
->>>>>        then:
->>>>>          patternProperties:
->>>>> @@ -299,7 +315,7 @@ examples:
->>>>>                    label = "xo_therm";
->>>>>                };
->>>>>    
-> 
->>>>> diff --git a/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h b/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h
->>>>> new file mode 100644
->>>>> index 000000000000..74e6e2f6f9ed
->>>>> --- /dev/null
->>>>> +++ b/include/dt-bindings/iio/qcom,spmi-adc5-gen3-pm8550.h
->>>>> @@ -0,0 +1,48 @@
->>>>> +/* SPDX-License-Identifier: GPL-2.0-only */
->>>> Dual license.
->>> I think we do have an internal rule by which we do have to add these two
->>> licenses....I'll check again and update them if required.
->> Just to be clear: your internal rules are your internal affair. We
->> expect here dual license.
-> 
-> 
-> I misunderstood what you meant earlier, I understand now that 
-> "GPL-2.0-only" is wrong, I'll update it.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> index ad7d6fc49de5..c988bd74a247 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> @@ -13,8 +13,10 @@ maintainers:
+>  description: |
+>    SPMI PMIC voltage ADC (VADC) provides interface to clients to read
+>    voltage. The VADC is a 15-bit sigma-delta ADC.
+> -  SPMI PMIC5/PMIC7 voltage ADC (ADC) provides interface to clients to read
+> -  voltage. The VADC is a 16-bit sigma-delta ADC.
+> +  SPMI PMIC5/PMIC7/PMIC5 Gen3 voltage ADC (ADC) provides interface to
+> +  clients to read voltage. The VADC is a 16-bit sigma-delta ADC.
+> +  Note that PMIC7 ADC is the generation between PMIC5 and PMIC5 Gen3 ADC,
+> +  it can be considered like PMIC5 Gen2.
+>  
+>  properties:
+>    compatible:
+> @@ -23,14 +25,18 @@ properties:
+>            - const: qcom,pms405-adc
+>            - const: qcom,spmi-adc-rev2
+>        - enum:
+> -          - qcom,spmi-vadc
+> -          - qcom,spmi-adc5
+>            - qcom,spmi-adc-rev2
+> +          - qcom,spmi-adc5
+> +          - qcom,spmi-adc5-gen3
+>            - qcom,spmi-adc7
+> +          - qcom,spmi-vadc
+>  
+>    reg:
+> -    description: VADC base address in the SPMI PMIC register map
+> -    maxItems: 1
 
-If only you run checkpatch before sending patches...
+NAK.
+
+I wrote it multiple times. You canno remove the widest constraints from
+top-level property.
+
+> +    description: |
+> +      - For compatible properties "qcom,spmi-vadc", "qcom,spmi-adc5", "qcom,spmi-adc-rev2"
+> +        and "qcom,spmi-adc7", reg is the VADC base address in the SPMI PMIC register map.
+> +      - For compatible property "qcom,spmi-adc5-gen3", each reg corresponds
+> +        to an SDAM peripheral base address that is being used for ADC.
+>  
+>    '#address-cells':
+>      const: 1
+> @@ -38,13 +44,26 @@ properties:
+>    '#size-cells':
+>      const: 0
+>  
+> +  "#thermal-sensor-cells":
+> +    const: 1
+> +    description:
+> +      Number of cells required to uniquely identify the thermal sensors. Since
+> +      we have multiple sensors this is set to 1. For compatible property
+> +      "qcom,spmi-adc5-gen3", this property is required for ADC_TM device.
+> +
+>    '#io-channel-cells':
+>      const: 1
+>  
+>    interrupts:
+> -    maxItems: 1
+
+No, srsly. We went through it.
+
+
+> -    description:
+> +    description: |
+>        End of conversion interrupt.
+> +      - For compatible property "qcom,spmi-adc5-gen3", interrupts are defined
+> +        for each SDAM being used.
+> +
+> +  interrupt-names:
+> +    description: |
+
+You must describe the names which also provides constraints.
+
+I am not going to review the rest of the file.
 
 Best regards,
 Krzysztof

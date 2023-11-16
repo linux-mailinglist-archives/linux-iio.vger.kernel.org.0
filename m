@@ -1,344 +1,289 @@
-Return-Path: <linux-iio+bounces-110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B117EE1C6
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 14:46:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC007EE1D1
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 14:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26131C209F3
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 13:46:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D30B9B20C3A
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 13:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CD72F841;
-	Thu, 16 Nov 2023 13:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EA230F8D;
+	Thu, 16 Nov 2023 13:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MimALJQB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2046.outbound.protection.outlook.com [40.107.239.46])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6E2AF;
-	Thu, 16 Nov 2023 05:45:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KLts0S2yiPxBxwuU2HTkeyC3l+dfMlT5VtUDsvjtKx7m980tHYErGLmMoJMG7OguPX5htiik0rbYhdLPMcGACmxsejyBnXi1V71XRmCBSX56P27m55CnXw64NuQfZdpLlW50iLD+39aqVCqoESrlAEeejf1IcQL+FufV+WuYyj/9xKBvK3soYrRh52js0etr4zv1avJBdvnUGaA19ck4evXeum2al/nTGkkINd9j6Sm6XSPUX3sPPWzSkfGr4J9li67ws66QN6Dte2exutE5RzPVnLc08VvTUJn0lYQY1StHaqd/MU1HIyOijlOU6irpMKRX+WXsq+H67mPi0JBdlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SFX9lePbbMmSwUMQqQVoRzTYbFzPpW1WsyNnIEDw8Ic=;
- b=Q7JLPoCDGdqjML/uoaI3LO2AxT1ss0PoqecG4MTD8NBMfu1xk45KrYEKjTuhDdYkcKGAsfMI1bB3NOeYhHULZ15m1kDhvupM2KrTEoCe6Oyt8d5oXJ99pu0LvSxlbeYpCvKkK1vmCxQn05ht/AKgwHcFfE04O+CB1faPf4wA0aH6Nd0+gi8Kz56icwreSU3RAMccyZl5uv+T5HyfSTPFFzJjh1cAGhELz/Od6Iwsni3QRrBP1RlnAAI5KpRp3jCaUB5cT1Em66oRna3GO2diKLOlwJRtv3LzhDqmiNHZOgp7l8AQkqqKxIoq5c8AfHrVLclLYkhfWiIYjvvmlUV8Fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a01:8::12)
- by PN3PR01MB7096.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:af::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.18; Thu, 16 Nov
- 2023 13:45:53 +0000
-Received: from MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::1848:62aa:1da4:1924]) by MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::1848:62aa:1da4:1924%3]) with mapi id 15.20.7002.019; Thu, 16 Nov 2023
- 13:45:51 +0000
-From: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
-To: jmaneyrol@invensense.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E710419D;
+	Thu, 16 Nov 2023 05:47:00 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-507bd19eac8so1065887e87.0;
+        Thu, 16 Nov 2023 05:47:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700142419; x=1700747219; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4riDUNHReIjba9jNFgLy2y8ooHDaaaBbqxL4CyG3VrQ=;
+        b=MimALJQBksQ7NPyZHU9nhDmLvep4M9MfIidiPBWuVUdopqzLF36NUHyIKaO8IsrMUG
+         U8Sp6Me5k1RNLkshbKnygBGZXn8W9mXuwXWyZYoSbc9ibpmLdZmhbwPWOLPTH6n9LB3J
+         60DBa4SMq8XCeU9UDTmMfGQtlO8cBEJ3FpCNc3LRY8m0EHyEEXOLJT8nmp/rqpj6wubC
+         pm1xFoXyeTCum6TwZPgKA2s1BQdCoVlJ5QLECTF3qi6vUP6xFI/0HoI1pCrTiztSigON
+         +P8DmC1ySRQ0wF+/XIqaXFtcsO0vnAVQQs+vqZ9MqQy467sl/0JciRAdyuY/mdveM3BX
+         7bJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700142419; x=1700747219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4riDUNHReIjba9jNFgLy2y8ooHDaaaBbqxL4CyG3VrQ=;
+        b=YidV1e281O4AgBF4uHTFVH8fEFejfR/zcaf1zTen6F7DYIPRqA9If0od9zdOkYnED9
+         VWN+wPZWZsnHcK52VOvPKpCyFjtxiC9TihWpbj5hZscdPWAbuP6+iONugBVVjGgsjn/k
+         O0L3mYPW4B5m7fKY668PS9qwjDMQwL6WEiWrnMJibUGRtc8g39EuXCv2z3tbkEStTSIm
+         bAOnY+7K7f4WDb2C2c9bHGaFtTlaBiwrDAgyX8mSK5gG0j1IGZ+ix6dkIQkRPZ9r7eeE
+         XvITZdH1IWRBvUo6umSasQIEHndyBK3Bja1dlF6DuzA7dUQ929oLePpn7xHwHgo6zknT
+         6uUA==
+X-Gm-Message-State: AOJu0YzbU4hzRfkEi9rOc6a89t3/VuOHgdMiyX8sMVwOdrwIBVh/e3g/
+	JxNEYVtJx/3Lth4HgxBkk00=
+X-Google-Smtp-Source: AGHT+IFL/NuWsDiaywQTihviTlNe0Yg6vEx4NWx9NSig2wcqKYD7Jxfw5VED8sevA8TPIIufd+tiyw==
+X-Received: by 2002:a19:f808:0:b0:500:9a45:63b with SMTP id a8-20020a19f808000000b005009a45063bmr11482079lff.13.1700142418660;
+        Thu, 16 Nov 2023 05:46:58 -0800 (PST)
+Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id ov3-20020a170906fc0300b00977cad140a8sm8467005ejb.218.2023.11.16.05.46.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Nov 2023 05:46:58 -0800 (PST)
+From: mitrutzceclan <mitrutzceclan@gmail.com>
+X-Google-Original-From: mitrutzceclan <CeclanDumitru>
+To: 
+Cc: linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	andy@kernel.org,
+	linux-gpio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
-Subject: [PATCH v2 1/1] Added tilt interrupt support in inv_icm42600
-Date: Thu, 16 Nov 2023 19:15:28 +0530
-Message-Id: <20231116134528.21467-1-hiten.chauhan@siliconsignals.io>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN3PR01CA0168.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:de::8) To MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:8::12)
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v4 1/2] dt-bindings: adc: add AD7173
+Date: Thu, 16 Nov 2023 15:46:54 +0200
+Message-ID: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MAXPR01MB4118:EE_|PN3PR01MB7096:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1940d450-8449-4783-53cb-08dbe6aa58fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	0iSHYeUQRaX2rz3ut7cAn7g3mdF07sRh3wG04s5HNX6a5lvRHpPjoyM/BAkYKi0k+bCkJU7Zm7b7E+EMx1RRlavEL/dHhZCkIs1ptvfJ360Uqdm4iEUR0QKjVDwB5FNJwx15w/DzEGxD23EOvwTP6vDOEbg4LB0ux3c2KkU/vSqU/d81ByiZ7Rx1YKBL9BrxMcxOgiH+rBSeGkYcw5oEO3OL5dCRtO62G0zGolPyQqiPY+6VJ1VOF5yltisb/Hbb/bZLkIwApqy9XTsYW9OsmvKmyBtLoT6YJLwbYHsieUQYhFHt88XQmRr9Mmw+is6oVd+c34I/CWkAYHXTc3PuiwM/xHTZUCvq94B5oMXicNX9XULhJuJK8vFD+3cw3ayLz61YjZrMsixrugV2fnm1dcKZMrxKgeBmZdlJcBlfyzbsQQZ/aKyMwjqHl/sc4Efe1vQ6ZiTkPmTn/SL+237bLxgIC9CXonYXv50HjTBNwKVjMHFDLQGSdXY4ClKrKoTNl3OjK5ie6CkkUgSB3oFjnSptEcGHLhG4VKFyQIIOqLiPvOmAuj9MGxUzMJIP+BJRnvArOliD3Y1ZGcTirPQ+mvqemPtE4UVQRl1YQSfe/c+Zw1wKAyglePEvRJDWVpXK35wLXQ4XgYl6A8Q0paHiwA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39830400003)(346002)(136003)(376002)(396003)(366004)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(2906002)(38100700002)(86362001)(5660300002)(4326008)(44832011)(8676002)(8936002)(83380400001)(41300700001)(1076003)(107886003)(6486002)(2616005)(36756003)(316002)(6512007)(66946007)(66556008)(66476007)(26005)(6666004)(6506007)(38350700005)(478600001)(52116002)(3613699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cqzlVZXwOk4VNDaEQLcMSt9zkgjXE0cBtoEnX5HUuasTss4f9IxKjMqzssrP?=
- =?us-ascii?Q?LDwIrqIfUQSkEyLIlVoCm9S47aOoKpAHIhf287kYE10Hlog7trTq+bZNJHUK?=
- =?us-ascii?Q?2xwH1rjYYKnqvRlobxjrigWzIWyIh0njvhuDRLtxst8gwj8yOhRpK57M+vdI?=
- =?us-ascii?Q?862S0y88NK4PAA0XaLfa/cxqjcya4S0XR0525SeENOxtiNH5CfbOYcVdAzDR?=
- =?us-ascii?Q?NbNBE7g8pDVTyATOtWBy2D8i3HQRZ0B60OjGj9tqAX1jzKFkzKnAEq/+O81q?=
- =?us-ascii?Q?HxUBdz1U8P3/FT/mJBQaQk3lRh1Mw5rQ6DDT4cWYIZjc+3RBxvTDReNMYwza?=
- =?us-ascii?Q?+qOhoGkv4lxZTaP8mYh818qyXg6Lx6L13m7s58JT4tZbeLQgH8wS6AdDwT+W?=
- =?us-ascii?Q?Xp08EkvJ48UoiI1434tsj4sScIXgXeVokjrym6dt5dCIelx3SaDWNBwaFQXj?=
- =?us-ascii?Q?CxuHscZTMezAzasHGjwj4cosMQkIQmHZ58qYN1t4x4WJ2it2D4GTwqt2h38R?=
- =?us-ascii?Q?ALuUvuOR72ouQYos9yPOFWFEw3amY3ubA1ZUbtX2KHF4bjqtnJbOmnvG1D1+?=
- =?us-ascii?Q?OJ1FpEZJ5mYiemzvEwtQVWB5k4n8ocQPxCCeA8LBKYs8bO6m+elmW3VjuXDA?=
- =?us-ascii?Q?bM/EMjbLLAWv7Yq8f7GkPZk+KXhZ+IAmof1TEKGtcDfgjOyE9+c+EATTp2SI?=
- =?us-ascii?Q?oo7Gn2tr6H5dmHOP2MXGQoS+shyoknEtpTsOYPa7VZJdd0At/Dj2a21wV9Qo?=
- =?us-ascii?Q?LwbtLoLdgZ1PGOR5JAdtEh42Oq8HY1wWVuC94Lclow8VfAvwqqCMRdzGylOO?=
- =?us-ascii?Q?ZC+yPM5qRG687fPqDFv2hcbJChRQVxRMm77MvJL20DJaBdFD5PfQZf3Bz/qv?=
- =?us-ascii?Q?tqwAIl/fpka2ldAwZCK4Ga0XkxCw3lU2OnWVwnSm9O4aijWCuhm5TetVHRnJ?=
- =?us-ascii?Q?LQ+86Xcv1ng0WQdT8MJ/PqBEC8F/Od6so4ZSQyRkgiX0r4LhuY81XZfFHqyJ?=
- =?us-ascii?Q?QEeBRp5fqxkHW3gKeE2v2P1JxDYEprX8qJXG1259/oGSffw/vWdYH/LfrmfJ?=
- =?us-ascii?Q?MYx5fKRpr4lWxB1fQdabR7UhUTSIvjr+if70W2tzozOE2OUSNNMvgkLa3Pck?=
- =?us-ascii?Q?QrgxOaLEzpF3PfVxmSaOWu3vaf9/fAkq0kYx332LKYPrh1nWCoNDTLmXqEWI?=
- =?us-ascii?Q?TlTMZw/M6tmcO4FRZDB8S0YgH2+T/6XghjSRAKt+muZ6SvnzicpB/Hu/19VI?=
- =?us-ascii?Q?mU3wgbYyAUXQS56p7KRShp8I7oy1UY2/+IGVveRIv4C05jnlhTEq3DlRmmHh?=
- =?us-ascii?Q?DVgMThrrxZxwEXdNvitKTqgKK7MP2JBYiV5t6YOUtldvIga0tJNYjC/8WGSk?=
- =?us-ascii?Q?M7LVm9DX7frZO9R1cUTLSEX1wPgmH3qWfbKKtLMA7Bv4x39Nr8moVrpFQKcV?=
- =?us-ascii?Q?xocIsbfmHa1/cY72IVimc45etDXhCTaq6JgyaCkY6nNjD4bBmHatfDuY3sUU?=
- =?us-ascii?Q?OCBOK/iVz0zK6lyKPsy94NlDcr4WxBwcs3ABzlsb1imrAq5JBXpIYPvKpzrz?=
- =?us-ascii?Q?YorLMruEJnzMr2Z5nDvNQ4U49NlR9DPZiszPi3nZ62G7E4Dh7p0oY04HwjH9?=
- =?us-ascii?Q?RMIAxiLMVsudGB6HIcpiKLc=3D?=
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1940d450-8449-4783-53cb-08dbe6aa58fd
-X-MS-Exchange-CrossTenant-AuthSource: MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2023 13:45:51.6136
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pGr9PyhjG9V5tHCBTtve4VDkY26ydEpP03cQ1CvUxJj8MdJ58rcps31aFv5ucxiSDTPywVbwXHa/jIja1iWM2CSyZZ5wR1dy0n2dgtZUjqM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3PR01MB7096
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Description:
-Add new device attribute to enable and disable
-Tilt interrupt from kernel user space
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-Signed-off-by: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
+The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+which can be used in high precision, low noise single channel applications
+or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+primarily for measurement of signals close to DC but also delivers
+outstanding performance with input bandwidths out to ~10kHz.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 0e290c807b0f..39ed39e77deb 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -187,6 +187,8 @@ struct inv_icm42600_state {
- #define INV_ICM42600_FIFO_CONFIG_STOP_ON_FULL		\
- 		FIELD_PREP(INV_ICM42600_FIFO_CONFIG_MASK, 2)
- 
-+#define INV_ICM42600_REG_MASK        GENMASK(7, 0)
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com> # except reference_select
+Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+---
+V3 -> V4
+ - include supply attributes
+ - add channel attribute for selecting conversion reference
+
+ .../bindings/iio/adc/adi,ad7173.yaml          | 166 ++++++++++++++++++
+ 1 file changed, 166 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+new file mode 100644
+index 000000000000..92aa352b6653
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+@@ -0,0 +1,166 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- /* all sensor data are 16 bits (2 registers wide) in big-endian */
- #define INV_ICM42600_REG_TEMP_DATA			0x001D
- #define INV_ICM42600_REG_ACCEL_DATA_X			0x001F
-@@ -239,6 +241,7 @@ struct inv_icm42600_state {
- #define INV_ICM42600_REG_PWR_MGMT0			0x004E
- #define INV_ICM42600_PWR_MGMT0_TEMP_DIS			BIT(5)
- #define INV_ICM42600_PWR_MGMT0_IDLE			BIT(4)
-+#define INV_ICM42600_PWR_ACCEL_MODE			BIT(1)
- #define INV_ICM42600_PWR_MGMT0_GYRO(_mode)		\
- 		FIELD_PREP(GENMASK(3, 2), (_mode))
- #define INV_ICM42600_PWR_MGMT0_ACCEL(_mode)		\
-@@ -306,6 +309,21 @@ struct inv_icm42600_state {
- #define INV_ICM42600_WHOAMI_ICM42622			0x46
- #define INV_ICM42600_WHOAMI_ICM42631			0x5C
- 
-+/* Register configs for tilt interrupt */
-+#define INV_ICM42605_REG_APEX_CONFIG4                  0x4043
-+#define INV_ICM42605_APEX_CONFIG4_MASK                 GENMASK(7, 0)
++title: Analog Devices AD7173 ADC device driver
 +
-+#define INV_ICM42605_REG_APEX_CONFIG0                  0x0056
-+#define INV_ICM42605_APEX_CONFIG0_TILT_ENABLE          BIT(4)
-+#define INV_ICM42605_APEX_CONFIG0                      BIT(1)
++maintainers:
++  - Ceclan Dumitru <dumitru.ceclan@analog.com>
 +
-+#define INV_ICM42605_REG_INTF_CONFIG1                   0x404D
-+#define INV_ICM42605_INTF_CONFIG1_MASK                  GENMASK(5, 0)
-+#define INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_EN      BIT(3)
++description: |
++  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
 +
-+#define INV_ICM42605_REG_INT_STATUS3                   0x0038
++properties:
++  compatible:
++    enum:
++      - adi,ad7172-2
++      - adi,ad7173-8
++      - adi,ad7175-2
++      - adi,ad7176-2
 +
++  reg:
++    maxItems: 1
 +
- /* User bank 1 (MSB 0x10) */
- #define INV_ICM42600_REG_SENSOR_CONFIG0			0x1003
- #define INV_ICM42600_SENSOR_CONFIG0_ZG_DISABLE		BIT(5)
-@@ -364,6 +382,8 @@ typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
- extern const struct regmap_config inv_icm42600_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
- 
-+extern uint8_t inv_icm42605_int_reg;
++  interrupts:
++    maxItems: 1
 +
- const struct iio_mount_matrix *
- inv_icm42600_get_mount_matrix(const struct iio_dev *indio_dev,
- 			      const struct iio_chan_spec *chan);
-@@ -395,4 +415,8 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st);
- 
- int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev);
- 
-+int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st);
++  '#address-cells':
++    const: 1
 +
-+int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st);
++  '#size-cells':
++    const: 0
 +
- #endif
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index b1e4fde27d25..7140ac967d88 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -47,6 +47,8 @@
- 		.ext_info = _ext_info,					\
- 	}
- 
-+uint8_t inv_icm42605_int_reg;
++  spi-max-frequency:
++    maximum: 20000000
 +
- enum inv_icm42600_accel_scan {
- 	INV_ICM42600_ACCEL_SCAN_X,
- 	INV_ICM42600_ACCEL_SCAN_Y,
-@@ -60,6 +62,69 @@ static const struct iio_chan_spec_ext_info inv_icm42600_accel_ext_infos[] = {
- 	{},
- };
- 
-+static ssize_t tilt_interrupt_show(struct device *dev,
-+			       struct device_attribute *attr, char *buf)
-+{
-+	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	unsigned int val;
-+	int ret;
++  refin-supply:
++    description: external reference supply, can be used as reference for conversion.
 +
-+	ret = regmap_read(st->map, inv_icm42605_int_reg, &val);
++  refin2-supply:
++    description: external reference supply, can be used as reference for conversion.
 +
-+	if (ret != 0)
-+		return ret;
++  avdd-supply:
++    description: avdd supply, can be used as reference for conversion.
 +
-+	snprintf(buf, PAGE_SIZE, "Read reg %x value %x\n", inv_icm42605_int_reg, val);
++  dependencies:
++    refin2-supply:
++      properties:
++        compatible:
++          adi,ad7173-8
 +
-+	return strlen(buf);
-+}
++  required:
++    - compatible
++    - reg
++    - interrupts
 +
-+static ssize_t tilt_interrupt_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf,
-+		size_t count)
-+{
-+	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	int ret;
-+	int value;
++patternProperties:
++  "^channel@[0-9a-f]$":
++    type: object
++    $ref: adc.yaml
++    unevaluatedProperties: false
 +
-+	if (!st)
-+		return -EINVAL;
++    properties:
++      reg:
++        minimum: 0
++        maximum: 15
 +
-+	if (kstrtoint(buf, 10, &value))
-+		return -EINVAL;
++      diff-channels:
++        items:
++          minimum: 0
++          maximum: 31
 +
-+	inv_icm42605_int_reg = INV_ICM42605_REG_INT_STATUS3;
++      adi,reference-select:
++        description: |
++          Select the reference source to use when converting on
++          the specific channel. Valid values are:
++          0: REFIN(+)/REFIN(−).
++          1: REFIN2(+)/REFIN2(−)
++          2: REFOUT/AVSS (Internal reference)
++          3: AVDD
 +
-+	switch (value) {
-+	case 1:
-+		ret = inv_icm42605_generate_tilt_interrupt(st);
-+		if (ret != 0)
-+			return -EIO;
-+		break;
-+	case 0:
-+		ret = inv_icm42605_disable_tilt_interrupt(st);
-+		if (ret != 0)
-+			return -EIO;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
++          External reference 2 only available on ad7173-8.
++          If not specified, internal reference used.
++        $ref: /schemas/types.yaml#/definitions/uint32
++        enum: [0, 1, 2, 3]
++        default: 2
 +
-+	return count;
-+}
++      bipolar:
++        type: boolean
 +
-+static DEVICE_ATTR_RW(tilt_interrupt, 0644,
-+		   tilt_interrupt_show, tilt_interrupt_store);
++    required:
++      - reg
++      - diff-channels
 +
-+static struct attribute *icm42605_attrs[] = {
-+	&dev_attr_tilt_interrupt.attr,
-+	NULL,
-+};
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
-+static const struct attribute_group icm42605_attrs_group = {
-+	.attrs = icm42605_attrs,
-+};
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: adi,ad7173-8
++    then:
++    else:
++      patternProperties:
++        "^channel@[0-9a-f]$":
++          properties:
++            enum: [0, 2, 3]
 +
- static const struct iio_chan_spec inv_icm42600_accel_channels[] = {
- 	INV_ICM42600_ACCEL_CHAN(IIO_MOD_X, INV_ICM42600_ACCEL_SCAN_X,
- 				inv_icm42600_accel_ext_infos),
-@@ -702,6 +767,7 @@ static const struct iio_info inv_icm42600_accel_info = {
- 	.update_scan_mode = inv_icm42600_accel_update_scan_mode,
- 	.hwfifo_set_watermark = inv_icm42600_accel_hwfifo_set_watermark,
- 	.hwfifo_flush_to_buffer = inv_icm42600_accel_hwfifo_flush,
-+	.attrs = &icm42605_attrs_group,
- };
- 
- struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
-@@ -791,3 +857,67 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
- 
- 	return 0;
- }
++unevaluatedProperties: false
 +
-+int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st)
-+{
-+	int ret;
-+	int val;
-+	char sleep = 10;
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
 +
-+	ret = regmap_update_bits(st->map, INV_ICM42605_REG_APEX_CONFIG4,
-+				 INV_ICM42605_APEX_CONFIG4_MASK, 0);
-+	if (ret)
-+		return ret;
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
 +
-+	val = INV_ICM42600_PWR_ACCEL_MODE;
-+	ret = regmap_write(st->map, INV_ICM42600_REG_PWR_MGMT0, val);
-+	if (ret)
-+		return ret;
++      adc@0 {
++        compatible = "adi,ad7173-8";
++        reg = <0>;
 +
-+	val = INV_ICM42605_APEX_CONFIG0;
-+	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
-+	if (ret)
-+		return ret;
++        #address-cells = <1>;
++        #size-cells = <0>;
 +
-+	val = INV_ICM42600_SIGNAL_PATH_RESET_DMP_MEM_RESET;
-+	ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET, val);
-+	if (ret)
-+		return ret;
++        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++        interrupt-parent = <&gpio>;
++        spi-max-frequency = <5000000>;
 +
-+	msleep(sleep);
++        channel@0 {
++          reg = <0>;
++          bipolar;
++          diff-channels = <0 1>;
++        };
 +
-+	val = INV_ICM42600_SIGNAL_PATH_RESET_DMP_INIT_EN;
-+	ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET, val);
-+	if (ret)
-+		return ret;
++        channel@1 {
++          reg = <1>;
++          diff-channels = <2 3>;
++        };
 +
-+	val = INV_ICM42605_APEX_CONFIG0_TILT_ENABLE |
-+	      INV_ICM42605_APEX_CONFIG0;
-+	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
-+	if (ret)
-+		return ret;
++        channel@2 {
++          reg = <2>;
++          bipolar;
++          diff-channels = <4 5>;
++        };
 +
-+	ret = regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
-+				 INV_ICM42605_INTF_CONFIG1_MASK,
-+				 INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_EN);
-+	if (ret)
-+		return ret;
++        channel@3 {
++          reg = <3>;
++          bipolar;
++          diff-channels = <6 7>;
++        };
 +
-+	return 0;
-+}
-+
-+int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st)
-+{
-+	int ret;
-+
-+	ret = regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
-+			INV_ICM42605_INTF_CONFIG1_MASK, 0);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
++        channel@4 {
++          reg = <4>;
++          diff-channels = <8 9>;
++        };
++      };
++    };
 -- 
-2.25.1
+2.42.0
 
 

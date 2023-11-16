@@ -1,52 +1,60 @@
-Return-Path: <linux-iio+bounces-122-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-123-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ABC7EE486
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 16:42:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A83D7EE521
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 17:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFCA6281022
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 15:42:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E49CB20D13
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 16:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF59430F91;
-	Thu, 16 Nov 2023 15:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25242FC2E;
+	Thu, 16 Nov 2023 16:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="wcf5HFrk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XPIPizUu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90EE11D
-	for <linux-iio@vger.kernel.org>; Thu, 16 Nov 2023 07:42:39 -0800 (PST)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3AGEbFUn015664;
-	Thu, 16 Nov 2023 16:42:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=jFTJykrWtj7jrjiBsW236MkhAvJOdPkAdVS1nZVmQBQ=; b=wc
-	f5HFrkC3THhjNEWcTWfPyF/pkD+As7iphJUHddWNtNe8IOMw5n0L+wOCaYulawSK
-	iC3uXJexyuWdPKzBoNCdIlT14KiPjZ8umJ8qF2ekmQnPcLLTMXv8Mg4uXZ94KxUv
-	QGAWb8cFtFSagMGCwkL133ppKci8GSG5/opWZX89T3TDDfEXqPYOX1bQClG8ARCY
-	wz3Pf9WWPFmnWe4iSf5UyEg2ESXB2BwrJCF92TwuYoWymHLpm3oDYX9h6qcDJHze
-	cWnHeJK4ffVKq5PtTfPXUmjNKyHa1z/1wpOPUC7RWIBhfD4GS3K1tSY+mzZlYxjJ
-	Re0zn6baO2rnkIYv3Xtw==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3udn0m098n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Nov 2023 16:42:14 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 89090100056;
-	Thu, 16 Nov 2023 16:42:11 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7B2D123BE1B;
-	Thu, 16 Nov 2023 16:42:11 +0100 (CET)
-Received: from [10.201.21.64] (10.201.21.64) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 16 Nov
- 2023 16:42:10 +0100
-Message-ID: <4f205182-6651-4b09-92ef-786ab62791d1@foss.st.com>
-Date: Thu, 16 Nov 2023 16:42:09 +0100
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82A4D50;
+	Thu, 16 Nov 2023 08:25:43 -0800 (PST)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c50ec238aeso14603421fa.0;
+        Thu, 16 Nov 2023 08:25:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700151942; x=1700756742; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OV4V5EcSwk6Sr7QObCUhY0l4eB9jqEOeHbasojNYrvs=;
+        b=XPIPizUus+Un/1Qf2BmCb10WEFaJYlJuGW61hI+PdNOeJsVwW1RUkJXT4TfCNUYg5z
+         RuLonCTYcEU3jJdxWNJkGmXNMIleUFTV0ZRvu5a65o+kmGzPdE1XvtjX2i4qCZnZhJY3
+         WITNyrB3KcQq+uvulTtppQO+leRfVt0SFtA3sxMHvOx63l8ThK7O131g+W2d2WMaW2//
+         JxFUQV6vVMoM62l1OKYwfbsWNxSdyrqkhLVbQ+vsSyK5i09oDVkWWecq58U1uzRzm3Fm
+         xqjEdZshlLy3lim9zQdWfpSuxhwgn+RoBhZsVaQf1Yp7O0k5aXWU2AC+M47D54L8eQj/
+         W56Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700151942; x=1700756742;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OV4V5EcSwk6Sr7QObCUhY0l4eB9jqEOeHbasojNYrvs=;
+        b=KA8TWK9ZkmaUctvgREnp3Il66bFeyDkLRUgYLSp39YA8C0iVVCfmQFq2LzDYPTqAmZ
+         1wXZsM4o9LMieZFw1YpXTVOzh44W0oBjRLb8TtiROXAfZxO54cXIyi0YJE8J8cfJiK/p
+         gqZjDHbjhkzvUzuT8Jql2zmhVDZf2exBHU6N49xlS0Ftkdpov2qBQrIhvHsI5nvnCdNq
+         f8bf3wnZNS8S+iWy+hmUqM5iTme2Q7jqChLZPkAmUfzRpVEYUzRM7xajokuTAwzJb2Yh
+         ldZPSXjoJl2lcwIbxjqGHBgFMn75NO6OO1xy0uiSIL41IypoPVyvJJshFLLEliHxc23i
+         lMzQ==
+X-Gm-Message-State: AOJu0YyfAZZNEs2KUVMgmRPQLqt7gYjI46k/hJs5YkaT7kuSLeBh4b9x
+	R/5jD+1aBqsH1ozKDgPLnpY=
+X-Google-Smtp-Source: AGHT+IEpn54+060Z+kRCSsgoSNAXcc6pfpQsB4R88OXPsCwrKO40kO+oxtuoXL31Km2DZDlNfzcXAg==
+X-Received: by 2002:a05:6512:1087:b0:507:b7db:1deb with SMTP id j7-20020a056512108700b00507b7db1debmr15345490lfg.38.1700151941662;
+        Thu, 16 Nov 2023 08:25:41 -0800 (PST)
+Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id i7-20020a198c47000000b00507a66f747csm39130lfj.30.2023.11.16.08.25.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Nov 2023 08:25:40 -0800 (PST)
+Message-ID: <493c138c-ca67-4244-bcd7-c1c3d596048d@gmail.com>
+Date: Thu, 16 Nov 2023 18:25:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,224 +62,313 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] iio: addac: add new converter framework
-Content-Language: en-US
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
-        Jonathan Cameron
-	<Jonathan.Cameron@Huawei.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>
-References: <20230804145342.1600136-1-nuno.sa@analog.com>
- <20230804145342.1600136-2-nuno.sa@analog.com>
- <20230830180234.00007437@Huawei.com>
- <aaed9bdef386f77a4211f6010f96cfaa92e70515.camel@gmail.com>
- <20230903115653.5bb8c0e8@jic23-huawei>
- <08793b1b73d7789b595def9afd8652e2f36f8e28.camel@gmail.com>
- <20230904163114.0000681c@Huawei.com>
- <9767cd6e-5201-430a-a9e5-f6c2a4ad3de4@foss.st.com>
- <93e0af8032422491a150153285f5edb58f071d0d.camel@gmail.com>
-From: Olivier MOYSAN <olivier.moysan@foss.st.com>
-In-Reply-To: <93e0af8032422491a150153285f5edb58f071d0d.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.201.21.64]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-16_16,2023-11-16_01,2023-05-22_02
+Subject: Re: [PATCH 2/2] iio: light: isl76682: Add ISL76682 driver
+Content-Language: en-US, en-GB
+To: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Andre Werner <andre.werner@systec-electronic.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+ Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
+References: <20231116131329.6801-1-marex@denx.de>
+ <20231116131329.6801-2-marex@denx.de>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20231116131329.6801-2-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Nuno,
+Hi dee Ho Marek,
 
-On 11/14/23 10:03, Nuno Sá wrote:
-> On Mon, 2023-11-13 at 18:20 +0100, Olivier MOYSAN wrote:
-> 
-> Ho Olivier,
-> 
->> Hi Nuno, Jonathan,
->>
->> On 9/4/23 17:31, Jonathan Cameron wrote:
->>> On Mon, 04 Sep 2023 16:14:17 +0200
->>> Nuno Sá <noname.nuno@gmail.com> wrote:
->>>
->>>> On Sun, 2023-09-03 at 11:56 +0100, Jonathan Cameron wrote:
->>>>> On Thu, 31 Aug 2023 11:32:54 +0200
->>>>> Nuno Sá <noname.nuno@gmail.com> wrote:
->>>>>     
->>>>>> On Wed, 2023-08-30 at 18:02 +0100, Jonathan Cameron wrote:
->>>>>>> On Fri, 4 Aug 2023 16:53:39 +0200
->>>>>>> Nuno Sa <nuno.sa@analog.com> wrote:
->>>>>>>       
->>>>>>>> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
->>>>>>>
->>>>>>> Hi Nuno,
->>>>>>>       
->>>>>>
->>>>>> Hi Jonathan,
->>>>>>
->>>>>> Thanks for the initial review...
->>>>>>     
->>>>>>>
->>>>>>> One general comment is that you could have stripped this back a fair
->>>>>>> bit
->>>>>>> for ease of understanding.  At this stage we don't care about things
->>>>>>> like debug or control of test patterns.  Bring those in as extra
->>>>>>> patches.
->>>>>>>       
->>>>>>
->>>>>> Agreed... As I mentioned (I think) in the cover, I made the RFC bigger
->>>>>> than
->>>>>> needed to
->>>>>> kind of showcase how we can properly configure the hdl core to support
->>>>>> things
->>>>>> (interface calibration) that were very hard to do with the current
->>>>>> implementation.
->>>>>> I'll make sure to add the minimum needed API to accommodate what we
->>>>>> have
->>>>>> right now.
->>>>>>     
->>>>>>> I haven't fully gotten my head around the ordering constraints on
->>>>>>> removal.
->>>>>>> Are there other users of the component framework that have similar
->>>>>>> problems?
->>>>>>>       
->>>>>>
->>>>>> My understanding on the component API is that one should do all the
->>>>>> tear
->>>>>> down in the
->>>>>> .unbind() callback. As usual, I can see some drivers not really doing
->>>>>> that.
->>>>>>     
->>>>>>> Also, I don't yet understand how a multiple front end, single
->>>>>>> backend
->>>>>>> setup
->>>>>>> would work.  Or indeed single front end, multiple backend...  Maybe
->>>>>>> we
->>>>>>> don't
->>>>>>> need those cases, but if we want this to be useful beyond adi-axi we
->>>>>>> probably at least want an outline of how they work.
->>>>>>>       
->>>>>>
->>>>>> Indeed we can have multiple (and we have it out of tree) backends on
->>>>>> one
->>>>>> frontend.
->>>>>> Think on an ADC/DAC with fairly complex data path with more than one
->>>>>> channel/interface (CMOS, LVDS, etc). Typically, in those case, each of
->>>>>> the
->>>>>> interface
->>>>>> will be connected to an instance of the hdl core (the backend).
->>>>>
->>>>> That might work out for your case, but not the stm32 one where I think
->>>>> we can
->>>>> end
->>>>> up with interleaved data from two front ends in the same buffer...
->>>>>     
->>>>
->>>> Not sure I'm following this one. But wouldn't that be something specific
->>>> for
->>>> each system (through devicetree)? I haven't tried but I think the same
->>>> backend
->>>> could be used in different frontend devices (using the component API).
->>>> That is
->>>> not really a usecase for me but definitely something that could be
->>>> supported (if
->>>> we need to start doing things like keep enable/disable counters and so on)
->>>> if it
->>>> is a usecase for stm32.
->>>
->>> If we are going to support both usecases, we just need to figure out what
->>> composite
->>> devices with N-M backend - frontend look like and make sure that doesn't
->>> cause problems.  I'd expect the separation between backend instances might
->>> reflect data storage on capture but then again that might end up like the
->>> many
->>> IIO devices for many buffers mess we had before the multiple buffer support
->>> was added.
->>>
->>
->> The stm32 dfsdm interleaved use case is not a problem as it is possible
->> to associate several backends to a frontend.
->> I did some experiments based on converter framework, and did not
->> identified blocking points regarding dfsdm use cases.
->>
->> Some limitations where discussed in [1], about generic bindings support.
->> The preferred solution was to extend converter_frontend_add_matches() to
->> parse also child nodes. I have added converters_get_from_fwnode() API
->> and adapted converter_frontend_add_matches() to test this approach.
->> With this changes and an additional api to support channel attributes
->> read, the framework fulfills all the needs for dfsdm.
->>
->> So, I feel comfortable to drop my previous "backend framework" proposal,
->> and move to the current proposal.
->>
->> If we go further in converter framework adaption, I will push these updates.
->>
-> 
-> I hope you didn't had too much trouble with those patches. The reason I'm saying
-> this is because, after some thought, I'm strongly considering in moving to
-> normal OF/ACPI lookup. 3 mains reasons for it:
-> 
+Long time no chat :/
 
-No problem, this was an opportunity to discover the component framework. 
-The converter API is quite simple to use once you understand the basics 
-of component concepts. It does the job for stm dfsdm, but I agree that 
-for the long-term, a component-based solution is probably less scalable.
+On 11/16/23 15:13, Marek Vasut wrote:
+> The ISL76682 is very basic ALS which only supports ALS or IR mode
+> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+> other fancy functionality.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Cc: Andre Werner <andre.werner@systec-electronic.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@denx.de>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> Cc: Naresh Solanki <naresh.solanki@9elements.com>
+> Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+> Cc: Vincent Tremblay <vincent@vtremblay.dev>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> ---
+> NOTE: I am not 100% sure about the SCALE handling, can you please
+>        check esp. that one ? Thanks !
 
-> 1) That "hack/rule" for a driver to provide a .remove() callback (in order to
-> devm_*) is really non obvious and might even be prune to subtle bugs (that I'm
-> not seeing now :)). But my main argument is that it can become hard to maintain
-> it (depending on how much people starts to use the framework).
-> 
-> 2) From the discussion we had about the limitations you pointed in your link, I
-> started to realize that it might get harder to scale the framework. Yes, we
-> found a fairly easy way of doing it but still took more code to do it when
-> compared to a typical lookup.
-> 
-> 3) This is the most important together with 1). You mentioned something like
-> cascaded designs and I just found an usercase in ADI out of tree drivers. We
-> have a design where we have something like:
-> 
->                     ------------------------------------------
->                     |		FPGA			    |
-> --------------     |  -------------    -------------------  |
-> |DAC Frontend| ->  |  |DAC Backend| -> |DAC Interpolation|  |
-> --------------     |  -------------    -------------------  |
->                     |					    |
->                     ------------------------------------------
-> 
-> In the above design we kind of have a cascaded thing where the DAC backend is
-> both a frontend and a backend and the Intrerpolation stuff just serves as
-> backend to the DAC core. So, ideally the DAC frontend should not have to know a
-> thing about the interpolation... I realized that having this with the component
-> framework is far from straight because we would need two components/aggregate
-> devices to accomplish this (DAC Front + DAC Back) and (DAC Back + DAC Interp)
-> and I think we would need some extra care regarding one of the components going
-> away (not sure though). One way to make it simple would be to not "respect" the
-> HW configuration and just have one aggregate device with 1 Frontend + 2 Backends
-> and so the frontend would need to "know" about the interpolation core. Again, I
-> think that with OF/ACPI this setup with be fairly straight to get and "respect".
-> 
-> Anyways, all the above makes me feel that component might not be the best choice
-> (even though I was eager to use it :))
-> 
-> I'll also get to work on this again and I might just use an industrialio-
-> backend.c file in the base dir as you had in your RFC. From a quick look on your
-> series, I'm no sure how much code I will reuse but we can see later if a Co-
-> authored-by tag makes sense or not.
-> 
 
-The APIs in my RFC were kept minimalistic to assess the proposal's 
-relevance. As you pointed out, there is room for improvement, 
-particularly with regards to object releasing. If you are on the way to 
-rework your framework, feel free to re-use some parts of this RFC.
-At the end, what really matters is to converge towards a solution :)
+I checked the data-sheet. Please correct me if I am wrong - I did only a 
+quick read.
 
-Regards
-Olivier
+To me it seems there are 16bit LSB data registers and 4 supported scales.
 
-> Let me know if there's something you don't agree or if there's any concern on
-> your side.
-> 
-> - Nuno Sá
->>>>
+I assume the data register value 0 means measurement was not done - but 
+rest of the values are computed as if the 0 would mean 0 Lx - and 
+register values then grow linearly from that up-to the range max.
+
+Hence, the most sensitive range is from 0 Lx to 1000 Lx. The full 16bit 
+value being 1000 Lx. For this range, the scaling should thus be
+1000 / 0xFFFF (1000 being decimal).
+
+
+> +enum isl76682_als_ir_mode {
+> +	ISL76682_MODE_NONE = 0,
+> +	ISL76682_MODE_ALS,
+> +	ISL76682_MODE_IR,
+> +};
+> +
+> +struct isl76682_chip {
+> +	struct mutex			lock;
+> +	struct regmap			*regmap;
+> +	enum isl76682_als_ir_mode	als_ir_mode;
+> +	int				lux_scale;
+> +};
+> +
+> +static int isl76682_set_als_scale(struct isl76682_chip *chip, int lux_scale)
+> +{
+> +	int ret, val;
+> +
+
+Would renaming the lux_scale to lux_range make it clearer? I think the 
+scale is really lux_scale/MAX_DATA_REG_VAL
+
+> +	if (lux_scale == 1000)
+> +		val = ISL76682_COMMAND_RANGE_LUX_1K;
+> +	else if (lux_scale == 4000)
+> +		val = ISL76682_COMMAND_RANGE_LUX_4K;
+> +	else if (lux_scale == 16000)
+> +		val = ISL76682_COMMAND_RANGE_LUX_16K;
+> +	else if (lux_scale == 64000)
+> +		val = ISL76682_COMMAND_RANGE_LUX_64K;
+> +	else
+> +		return -EINVAL;
+> +
+> +	ret = regmap_update_bits(chip->regmap, ISL76682_REG_COMMAND,
+> +				 ISL76682_COMMAND_RANGE_LUX_MASK, val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	chip->lux_scale = lux_scale;
+
+Maybe leave this to be cached by the regmap?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int isl76682_set_als_ir_mode(struct isl76682_chip *chip,
+> +				    enum isl76682_als_ir_mode mode)
+> +{
+> +	int ret;
+> +
+> +	if (chip->als_ir_mode == mode)
+> +		return 0;
+> +
+> +	if (mode == ISL76682_MODE_NONE) {
+> +		return regmap_clear_bits(chip->regmap, ISL76682_REG_COMMAND,
+> +					 ISL76682_COMMAND_EN);
+> +	}
+> +
+> +	ret = isl76682_set_als_scale(chip, chip->lux_scale);
+> +	if (ret < 0)
+> +		return ret;
+
+Does the HW require the scale to be set here?
+
+> +
+> +	if (mode == ISL76682_MODE_ALS) {
+> +		ret = regmap_clear_bits(chip->regmap, ISL76682_REG_COMMAND,
+> +					ISL76682_COMMAND_LIGHT_IR);
+> +	} else {
+> +		ret = regmap_set_bits(chip->regmap, ISL76682_REG_COMMAND,
+> +				      ISL76682_COMMAND_LIGHT_IR);
+> +	}
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Enable the ALS/IR */
+> +	ret = regmap_set_bits(chip->regmap, ISL76682_REG_COMMAND,
+> +			      ISL76682_COMMAND_EN |
+> +			      ISL76682_COMMAND_MODE_CONTINUOUS);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Need to wait for conversion time if ALS/IR mode enabled */
+> +	msleep(ISL76682_CONV_TIME_MS);
+> +
+> +	chip->als_ir_mode = mode;
+> +
+> +	return 0;
+> +}
+> +
+> +static int isl76682_read_als_ir(struct isl76682_chip *chip, int *als_ir)
+> +{
+> +	unsigned int lsb, msb;
+> +	int ret;
+> +
+> +	ret = regmap_read(chip->regmap, ISL76682_REG_ALSIR_L, &lsb);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_read(chip->regmap, ISL76682_REG_ALSIR_U, &msb);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*als_ir = (msb << 8) | lsb;
+> +
+> +	return 0;
+> +}
+> +
+> +static int isl76682_als_get(struct isl76682_chip *chip, int *als_data)
+> +{
+> +	int als_ir_data;
+> +	int ret;
+> +
+> +	ret = isl76682_set_als_ir_mode(chip, ISL76682_MODE_ALS);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = isl76682_read_als_ir(chip, &als_ir_data);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*als_data = als_ir_data;
+> +
+> +	return 0;
+> +}
+> +
+> +static int isl76682_ir_get(struct isl76682_chip *chip, int *ir_data)
+> +{
+> +	int ret;
+> +
+> +	ret = isl76682_set_als_ir_mode(chip, ISL76682_MODE_IR);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return isl76682_read_als_ir(chip, ir_data);
+> +}
+> +
+> +static int isl76682_write_raw(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      int val, int val2, long mask)
+> +{
+> +	struct isl76682_chip *chip = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (chan->type != IIO_LIGHT)
+> +		return -EINVAL;
+> +
+> +	if (mask != IIO_CHAN_INFO_SCALE)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&chip->lock);
+> +	ret = isl76682_set_als_scale(chip, val);
+> +	mutex_unlock(&chip->lock);
+
+This looks a bit odd to me. I was under impression that the values would 
+by default be IIO_VAL_INT_PLUS_MICRO unless the format is given in 
+iio_info struct. If so, I'd expect the val to be zero for all of the 
+scales because all scales are smaller than 1. (I may be wrong though). 
+Eg, I'd expect that when range 1000 is set (scale 1000 / 65535), val = 
+0, val1 roughly 15259 (to mean 0.015259).
+
+> +
+> +	return ret;
+> +}
+> +
+> +static int isl76682_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct isl76682_chip *chip = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&chip->lock);
+> +
+> +	ret = -EINVAL;
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_LIGHT:
+> +			ret = isl76682_als_get(chip, val);
+> +			break;
+> +		case IIO_INTENSITY:
+> +			ret = isl76682_ir_get(chip, val);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +
+> +		if (ret < 0)
+> +			break;
+> +
+> +		ret = IIO_VAL_INT;
+> +		break;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		if (chan->type != IIO_LIGHT)
+> +			break;
+> +		*val = chip->lux_scale;
+> +		*val2 = ISL76682_ADC_MAX;
+> +		ret = IIO_VAL_FRACTIONAL;
+
+This looks correct to me (with the remark about maybe leaving the 
+caching of scale to regmap).
+
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	mutex_unlock(&chip->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static IIO_CONST_ATTR(in_illuminance_scale_available, "1000 4000 16000 64000");
+
+This does not look correct to me. I'd guess the correct available scales 
+should be 0.015259... 0.06... 0.24... 0.96... (up to used accuracy - I 
+might go with the IIO_VAL_INT_PLUS_NANO. And, I didn't compute other 
+than the first, just stole the rest from the data-sheet MIN range value 
+which should equal to ADC count 1).
+
+Please just ignore me if you think I am writing nonsense - wouldn't be 
+the first time!
+
+Yours,
+	-- Matti
+
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
 

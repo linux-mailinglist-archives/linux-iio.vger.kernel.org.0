@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-104-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-105-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF4A7EE0EE
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 13:55:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DBB7EE0F4
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 13:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A282CB20A4F
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791311F2465F
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Nov 2023 12:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228102D04A;
-	Thu, 16 Nov 2023 12:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D3A2F857;
+	Thu, 16 Nov 2023 12:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ItWlN6YL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tf9PmCU2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-x43.google.com (mail-oa1-x43.google.com [IPv6:2001:4860:4864:20::43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65EA193;
-	Thu, 16 Nov 2023 04:54:53 -0800 (PST)
-Received: by mail-oa1-x43.google.com with SMTP id 586e51a60fabf-1f4e17c1edfso363816fac.0;
-        Thu, 16 Nov 2023 04:54:53 -0800 (PST)
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7DB131;
+	Thu, 16 Nov 2023 04:58:18 -0800 (PST)
+Received: by mail-pj1-x1043.google.com with SMTP id 98e67ed59e1d1-282e3beb418so627161a91.0;
+        Thu, 16 Nov 2023 04:58:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700139293; x=1700744093; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        d=gmail.com; s=20230601; t=1700139498; x=1700744298; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
         bh=mFAey1C9h9PS+NKMUCsuXi9TIL0A3GhPL0q3RW7hQNo=;
-        b=ItWlN6YLXiQqvluEfjtkwGa387lD+39305kCjvq8G+iQVnra+gl0tUDApgdQboSLu6
-         haCb1mEhGU7HFUg9VPJt8OqzPvhWmhd3TrdiaLy0rHxW7/NtsLuRD9d1WzGQszPzfFJ1
-         kV1Ht/HpCiQSwDZgQbiz9l0eN8JNvgXr4nllvkh12o7wKa+Ea4n+jBRejlRzl0EVq7kx
-         btEEWZ1E4hbGCl4C0IHxXW411dO15WMdhrUh4UjIL95awwGN0Iis+n2GcLLPr7XCuR6G
-         0dK8GI1VsYi5yfNRRXqJnlJLHu7tlbtfmXmTzEDnYPR4kG/5kH9bTm4MK8jqED2mY+Em
-         bdcg==
+        b=Tf9PmCU2H25yZDC8GbGfFMf29CV2z6g5p4UJr57Tneuee6daChgG1hTbeu1qUF2ipf
+         HeobVVOrK4HJq6I+93UpD8H4y4uMU5Om3xM5oetDTy/hJxGxCJeAKl6BiXwKHVxpLCxR
+         fC3NMbjIw4SHPyJz5l/9/1PLZb1D0BiSn8Uh7nFJvs8G0ZuVipQGNhCXin7vvmOfDSlD
+         TOZze5BlQep9XNWRn81ps/TtlzTPMJFHqxTdPDUndFYPt0XTg5Y2JDOOLbnEJQDB9CTR
+         Rw8Sm7o/hRQNsXuoizkKS0JtibrNOVR5mt1+4u8e6n63drKAYKKnAlJ2sulTNNFmL4tt
+         wZ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700139293; x=1700744093;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
+        d=1e100.net; s=20230601; t=1700139498; x=1700744298;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
         bh=mFAey1C9h9PS+NKMUCsuXi9TIL0A3GhPL0q3RW7hQNo=;
-        b=Zd9m4iq72W7NRomIXqm/vF16H5DG8IYdPeJ6n3ucQ5D+QvOSoDZm4zNbz5OPfyh6Qn
-         qdCwvSI8+GDUAt3xj7nWNpyKlVUZ21nXtsV4o4sibPvbptmS3wvZEwiksdhNT+2nRfcS
-         Ssezo05UxhbJdRoIIjVZ/WZ9xjXbT+kQSgyoopJpYdc3zySxqx9P4YhOm2Slxszzqjsl
-         z5E04Fjl7A86po5lHneWv6qrOgKc9FyDyOIdbZB1Gk+5Xz3beSI0mVgCW5Id5UUE0fjP
-         cCRHm8Z4J2LIyoc6m56hjjvKKi5BQZ1kUdRGdmnMznSgpy7hLu6uvwzdoJ6BziqDjcY6
-         afLQ==
-X-Gm-Message-State: AOJu0YzaVkC+WtaMi75aj0zAtXXDX/Dh4Z1FQZ1LWWNMXVPXCRQZhJOK
-	ROIxEg0i6BbsQFtuvsCrm9Q=
-X-Google-Smtp-Source: AGHT+IFhgBn0A+cn9W376rcJG9Vv6UYxV8agu6OvusRiQjXhunjjXw0maZviRGQKkwmm0pofgPafew==
-X-Received: by 2002:a05:6870:4994:b0:1e9:c224:bb91 with SMTP id ho20-20020a056870499400b001e9c224bb91mr20111075oab.38.1700139292810;
-        Thu, 16 Nov 2023 04:54:52 -0800 (PST)
+        b=Z0cYAYOnXDfwCR2dPShv/y/WV6LU+c4Vb7yElO3sw4D4FiYSzkUpUgr0x0q0H25gaK
+         SFGuL7JAkHznWCvEZEfOiG5tgwcnhnT/uR/TnB8jp+dZ9xbN9rpv7VSVmbCRS12dXesG
+         GLZE2STQ0fjWlH7878P2R3yvRRHefnxcHxGExstTh4dPgtkvZcwpD9HB9c+vOJvaxuJd
+         lZvIYJgK/81BIF+Xkc1IVGhNennommzy3okL53lcPr5S5D/NRl6K0/E/hmggygUKFVcy
+         LNeoLoDk5QfC/H09+9u7kPAuWUWwzc0srtre9JRm0PW7OoLZhX6VvW79vLvVxlvn3Yg4
+         npRg==
+X-Gm-Message-State: AOJu0Yzs0qeV0/iR2w2j7lzYxubm/uTuVQ1JUURJqS63I3+SI6wKulYJ
+	0q4BLBAy6v23zQWdNtAK/gw=
+X-Google-Smtp-Source: AGHT+IG193Te8qjX5ik/0JAT2aZnrWWWUZ5ammN4RxIbbd9przDCJ3LzFd7UsVP1lJLBCfbyf1OzYg==
+X-Received: by 2002:a17:90b:3850:b0:280:e2e1:f955 with SMTP id nl16-20020a17090b385000b00280e2e1f955mr16825962pjb.35.1700139497892;
+        Thu, 16 Nov 2023 04:58:17 -0800 (PST)
 Received: from dawn-virtual-machine.localdomain ([183.198.111.40])
-        by smtp.gmail.com with ESMTPSA id k20-20020a635614000000b005b9288d51f0sm2805548pgb.48.2023.11.16.04.54.47
+        by smtp.gmail.com with ESMTPSA id ck8-20020a17090afe0800b00280cd4fbd83sm1493140pjb.55.2023.11.16.04.58.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Nov 2023 04:54:52 -0800 (PST)
+        Thu, 16 Nov 2023 04:58:17 -0800 (PST)
 From: Li peiyu <579lpy@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -63,9 +64,11 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Li peiyu <579lpy@gmail.com>
 Subject: [PATCH [1/2]] iio: humidity: Add driver for ti HDC302x humidity sensors
-Date: Thu, 16 Nov 2023 20:54:32 +0800
-Message-Id: <20231116125433.13285-1-579lpy@gmail.com>
+Date: Thu, 16 Nov 2023 20:58:04 +0800
+Message-Id: <20231116125805.13466-1-579lpy@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231116125433.13285-1-579lpy@gmail.com>
+References: <20231116125433.13285-1-579lpy@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>

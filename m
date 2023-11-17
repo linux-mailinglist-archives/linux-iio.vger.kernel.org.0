@@ -1,67 +1,64 @@
-Return-Path: <linux-iio+bounces-145-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-146-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD0D7EF758
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Nov 2023 19:14:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E697EF771
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Nov 2023 19:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 435111F25100
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Nov 2023 18:14:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03BA1F255F5
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Nov 2023 18:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C7B41A97;
-	Fri, 17 Nov 2023 18:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3182543ABF;
+	Fri, 17 Nov 2023 18:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyPtRLGH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2nrMV+A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4648D5D;
-	Fri, 17 Nov 2023 10:14:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700244864; x=1731780864;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ak/qyDh8KxPCYfBsG+uj8tlB3hidZzbgTQrrCKymJ8o=;
-  b=TyPtRLGHIG5wBdGZq6JyUKKnNbeCisv/OENWbGMo01HIg3bObtpv11CI
-   8TuqQHczrPOyTqvuiAu3CDT3RQKrgTO7ljmoNsDYX40Sdk6gCJ8bWK2du
-   gnq0IrUh5R8jgNIxK3CJ7GqerQQ6ZXKOs6OiZ+3gPxT9NZgW4RwYLNDfz
-   W5QKZmQr3KHJUlWx0Yx5GGXFYQ0pn9oRUrD+aCsPA/Qm59SGM4WmuJvCw
-   rvEveX87gtoDG8g3WOfMl8oagD39p/dpLwUsJYKzOvtbij0gtG1WrZVWp
-   FQaNjHKhnOkmpdU2gwhL9sxWYRMloHb4SPlcLzBECCu6FA6YtLmx14r+e
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="12896400"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="12896400"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 10:14:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="1012995103"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="1012995103"
-Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 17 Nov 2023 10:14:20 -0800
-Received: from kbuild by b8de5498638e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r43Lr-00031r-1Z;
-	Fri, 17 Nov 2023 18:14:17 +0000
-Date: Sat, 18 Nov 2023 02:13:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anshul Dalal <anshulusr@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Anshul Dalal <anshulusr@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2 2/2] iio: light: driver for Lite-On ltr390
-Message-ID: <202311180127.eL4Rof8A-lkp@intel.com>
-References: <20231117074554.700970-2-anshulusr@gmail.com>
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5E6D75;
+	Fri, 17 Nov 2023 10:22:26 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-32fe1a29010so1435117f8f.0;
+        Fri, 17 Nov 2023 10:22:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700245345; x=1700850145; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=28+OcoZSRZ44ezk2etv7iw/x9HVKb7PrNB7Ju/IhAvA=;
+        b=Z2nrMV+AIOa/23WpeIJFqwPnRrzJozo3V4CPcM2qL/VC9P2nMLE2Gxt2V31SyqKvV8
+         6JIIOKrDUGCwYooJcG1DVVd07XJJ6Fq1IB55p5mebXyx0m44lDttCK6OXAXq1uJJ8Llv
+         0wN6+9DQJRJCmGEs4qhvSrFp0PfV5o38WGFTizPhiQShBKmV3svBYoDzDGl6X7w/IMPe
+         Yj57mZH5rSdXuNPf4K0OR92eHqb1QtodUuAKoDe7c+BdL6ig+lCS5xhnh+7UkFKUiT7R
+         8ykhTSP66Ij/z573JfjQJHu4aqTGLm49u0lf+qHjsV/55xG5FVG+dLVOUwFF+LGzgiz3
+         cq4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700245345; x=1700850145;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=28+OcoZSRZ44ezk2etv7iw/x9HVKb7PrNB7Ju/IhAvA=;
+        b=Kxx67XlKnI6ejxKHIRdsEjs6lNVognmEs8qGg18E1iCtv1Wlt1lFv48n6Yv8T/R/rm
+         FpuSNGAc8hGWTAU74IPIY3PhQ7VYg/r+q6FC95dZmCu4w9SK6PMlSKjJw5HabtjWHoCN
+         g/cZBqkMNL0EUdj/OEuSttLuZop5qDORX8cMpvaIHHuUJgetDTJcfb1xlS7xQdF7Caaf
+         Q/RONr75FstdWJRmnANsKfK1oA9z+WPwFgSXEAW+e+j6Jf5ZIavE7t5r2R1FYVfcvwfs
+         DRL/9cgGz81eWQQOExK3mAS/M5ZNNMzbXLeN0EtXyVRxZgbt86nmTrRxb2x4pkyiYfFo
+         59bg==
+X-Gm-Message-State: AOJu0YzAniD3RoVy5qjaMHaAuYezRDBMgIo0GT0hlKHjtaFU7G22L8JI
+	wQ5IrUF+d3R7l5g+9K0XMh6v2vzjrIw8yAZX
+X-Google-Smtp-Source: AGHT+IF1t7v03+Jq3PUk3N423c1v9yoSgrjMYbw6Gnps2IMI2RKxwE79ydqv/b059cua0KLz2omzpA==
+X-Received: by 2002:a05:6000:1564:b0:32f:7ae7:da49 with SMTP id 4-20020a056000156400b0032f7ae7da49mr17589538wrz.51.1700245344512;
+        Fri, 17 Nov 2023 10:22:24 -0800 (PST)
+Received: from tp440p.steeds.sam ([2602:fbf6:10:a::2])
+        by smtp.gmail.com with ESMTPSA id a18-20020adfeed2000000b00327de0173f6sm3014136wrp.115.2023.11.17.10.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Nov 2023 10:22:23 -0800 (PST)
+Date: Fri, 17 Nov 2023 20:21:59 +0200
+From: Sicelo <absicsz@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: maemo-leste@lists.dyne.org,
+	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+	linux-input@vger.kernel.org
+Subject: supporting binary (near-far) proximity sensors over gpio
+Message-ID: <ZVevR_ajeB1jfDS9@tp440p.steeds.sam>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -70,126 +67,27 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231117074554.700970-2-anshulusr@gmail.com>
 
-Hi Anshul,
+Hi
 
-kernel test robot noticed the following build errors:
+Some phones have 1-bit proximity sensors, which simply toggle a GPIO
+line to indicate that an object is near or far. Thresholds are set at
+hardware level. One such sensor is OSRAM SFH 7741 [1], which is used on
+the Nokia N900.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on robh/for-next linus/master v6.7-rc1 next-20231117]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+It is currently exported over evdev, emitting the SW_FRONT_PROXIMITY key
+code [2].
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Anshul-Dalal/iio-light-driver-for-Lite-On-ltr390/20231117-154922
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20231117074554.700970-2-anshulusr%40gmail.com
-patch subject: [PATCH v2 2/2] iio: light: driver for Lite-On ltr390
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20231118/202311180127.eL4Rof8A-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231118/202311180127.eL4Rof8A-lkp@intel.com/reproduce)
+So the question is: should a new, general purpose iio-gpio driver be
+written, that would switch such a proximity sensor to the iio framework?
+Or evdev is really the best place to support it?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311180127.eL4Rof8A-lkp@intel.com/
+There are a couple of people who are willing to write such an iio
+driver, if iio is the way to go.
 
-All errors (new ones prefixed by >>):
+Regards,
+Sicelo
 
-   In file included from drivers/iio/light/ltr390.c:23:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     547 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/iio/light/ltr390.c:23:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/iio/light/ltr390.c:23:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     584 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
->> drivers/iio/light/ltr390.c:217:25: error: use of undeclared identifier 'ltr390_id_table'; did you mean 'ltr390_of_table'?
-     217 | MODULE_DEVICE_TABLE(of, ltr390_id_table);
-         |                         ^~~~~~~~~~~~~~~
-         |                         ltr390_of_table
-   include/linux/module.h:244:15: note: expanded from macro 'MODULE_DEVICE_TABLE'
-     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
-         |               ^
-   drivers/iio/light/ltr390.c:213:34: note: 'ltr390_of_table' declared here
-     213 | static const struct of_device_id ltr390_of_table[] = {
-         |                                  ^
-   6 warnings and 1 error generated.
-
-
-vim +217 drivers/iio/light/ltr390.c
-
-   212	
-   213	static const struct of_device_id ltr390_of_table[] = {
-   214		{ .compatible = "liteon,ltr390"},
-   215		{ /* Sentinel */ }
-   216	};
- > 217	MODULE_DEVICE_TABLE(of, ltr390_id_table);
-   218	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://media.digikey.com/pdf/Data%20Sheets/Osram%20PDFs/SFH_7741.pdf
+[2] https://elixir.bootlin.com/linux/v6.6.1/source/arch/arm/boot/dts/ti/omap/omap3-n900.dts#L111
 

@@ -1,118 +1,123 @@
-Return-Path: <linux-iio+bounces-150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-151-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93797EFC0E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 00:19:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2434C7EFC6E
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 01:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25AB7B20AC0
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Nov 2023 23:19:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF4641F2806D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 00:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A7945BF3;
-	Fri, 17 Nov 2023 23:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2971736D;
+	Sat, 18 Nov 2023 00:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDMzpQBA"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="IT+0Lpmm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B837BD6D;
-	Fri, 17 Nov 2023 15:19:32 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-692c02adeefso2340824b3a.3;
-        Fri, 17 Nov 2023 15:19:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700263172; x=1700867972; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IUz1ZMfERfyYEZDG9gNO+HP+4waGni/sH3yv+ujzJzs=;
-        b=bDMzpQBAJc4BOsmqt2fk9Bp+es6wdMfYGGyiFzy9lXyPIvDmI8kgR6dNnHwXrWgY2w
-         1h1UTb+cZMywhFufnMo0Dj3xvHe9FKEKvjP2NsM5PXFKMx3Y+bPX/BXCPb1PhPvbJ7Qv
-         A558ijzLlnIGdeO9pMhNDGwgUdNzXilJ/2WVQb/+gUVILnfXVM65sCGyGnGtr+5yRxbq
-         cjnUTHAKpEx9r93G4QN537FkcRBdw7drlh7aa+dksIOuyXoE/fLRrhOKRF7e95ROH+3X
-         Li/LgcnuUVyuYwuBeDEaWXsxaioeM6XZ4V4nmz4g9apy+7y0g+BvTyFK1EwHtLF4bkI3
-         NnxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700263172; x=1700867972;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IUz1ZMfERfyYEZDG9gNO+HP+4waGni/sH3yv+ujzJzs=;
-        b=sCivBi9B2EPhaiiBXihEs2FrhzEQa7BvG0mQfd4gs7C72Xix1ANW9A+hm+7VZ35DhN
-         61dWlE74Wdgttmdeb/Twrrsy4agcVvwF9PMKsFkJM/If8g1SkE2yoW3Kw+pO0xg8BSV2
-         5TzFwyFHzoCGvdMCTPIq6sl3/ToBas81s4VFkJ4mK83fr8sJ809CEb4KjxMbaEJWnouk
-         FvtPYvNRlMNdKCF6Pkr7KXLlsJQB16VZ8YbL5g8ICATE7iGHWfuVVONm11/kwYvVTl9Q
-         5kxd5yKupCyzp6t6yw18g3+UWMt6nBiiJ+UZpHdul8+STLYQcX4Q0QnDbrFvkF/ZIbME
-         33PA==
-X-Gm-Message-State: AOJu0Ywp+8J3l9z+aWPUtrPnY4/AsogYceoNDP8eHWo+KpSv8dy+RoAS
-	v2r8Dvj0Ux2LxwAksID+Xoz0lvtysJpTbg==
-X-Google-Smtp-Source: AGHT+IGXfHa5y7X8ctpxO7+OEukHXWA/m8SgO//i3C/4fQlgN7ws8MdVrTO3Pyh7LyT3GJaDU2MFDQ==
-X-Received: by 2002:a05:6a00:93a8:b0:6be:2991:d878 with SMTP id ka40-20020a056a0093a800b006be2991d878mr1099966pfb.15.1700263171966;
-        Fri, 17 Nov 2023 15:19:31 -0800 (PST)
-Received: from [192.168.0.106] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id x3-20020aa784c3000000b006933866f49dsm1979809pfn.19.2023.11.17.15.19.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Nov 2023 15:19:31 -0800 (PST)
-Message-ID: <af464a37-63d4-45e6-971d-455507facef9@gmail.com>
-Date: Sat, 18 Nov 2023 06:19:23 +0700
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F54B4;
+	Fri, 17 Nov 2023 16:06:39 -0800 (PST)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id B83FB8082A;
+	Sat, 18 Nov 2023 01:06:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1700265992;
+	bh=TJd1jk2yMzMPxmvwDor3yFWaILErSR1YeuSpu23qXnk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IT+0LpmmaX+aqxl5Bf32dfMFJkw/2iVzyzXLWRTiNuj0y2koxKhqbapn+NrNmtZjI
+	 8c8O6Bo/z1jG1ztoNiVh0vBXP1LtiVU7clItxn7nrsh+hfxyE8G66CzxrSJiBF+mrW
+	 U2SK+uKoVj0POpR3Y/rZ/ryxO8MF8URoh2GL8p7rmv9ivipS7NKPKw7GD5oZevOLZZ
+	 Lav032/ectz0h2u4Np+9F8XFm7mCljnm131XfXlyq69CmOOxPdGe2QUaSjxzsWAoL9
+	 f+1oZqD67pbPt2ofknuanBZiLQcqTOnaSdHWeBSo9pilNFPJrNFI0Hzdm5k7pN0jr7
+	 mDj07YbIty6nw==
+From: Marek Vasut <marex@denx.de>
+To: linux-iio@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	Vincent Tremblay <vincent@vtremblay.dev>,
+	devicetree@vger.kernel.org
+Subject: [PATCH v2 1/2] dt-bindings: iio: light: isl76682: Document ISL76682
+Date: Sat, 18 Nov 2023 01:06:09 +0100
+Message-ID: <20231118000614.186558-1-marex@denx.de>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] checkpatch: add judgment condition for Kconfig help test
-Content-Language: en-US
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Cixi Geng <cixi.geng@linux.dev>, apw@canonical.com,
- Joe Perches <joe@perches.com>, dwaipayanray1@gmail.com,
- lukas.bulwahn@gmail.com, akpm@linux-foundation.org, rdunlap@infradead.org,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Cosmin Tanislav <demonsingur@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Maksim Kiselev <bigunclemax@gmail.com>, Liam Beguin <liambeguin@gmail.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Marius Cristea <marius.cristea@microchip.com>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Industrial I/O <linux-iio@vger.kernel.org>
-References: <20231116153904.15589-1-cixi.geng@linux.dev>
- <ZVarTLiczTZ8oCBg@archie.me> <ZVfXmlBbB3Y12Zz3@smile.fi.intel.com>
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <ZVfXmlBbB3Y12Zz3@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 11/18/23 04:14, Andy Shevchenko wrote:
-> On Fri, Nov 17, 2023 at 06:52:44AM +0700, Bagas Sanjaya wrote:
->> On Thu, Nov 16, 2023 at 11:39:04PM +0800, Cixi Geng wrote:
-> 
-> ...
-> 
->>> the checkpatch result:
->>>     WARNING: please write a help paragraph that fully describes the config symbol
->>>     #23: FILE: drivers/iio/adc/Kconfig:1050:
-> 
->>>      	help
->>>     +	  Say yes here to build support for the integrated ADC inside of the
->>>     +	  Say yes here to build support for the integrated ADC inside of the
->>>     +	  Say yes here to build support for the integrated ADC inside of the
->>>     +	  Spreadtrum SC27xx and UMPxx series PMICs.
->>>
->>>      	  This driver can also be built as a module. If so, the module
->>>      	  will be called sc27xx_adc.
->>>
->>>     total: 0 errors, 1 warnings, 17 lines checked
->>
->> This confuses me. What are you trying to achieve there?
-> 
-> Is the indentation correct in each line? No TABs/spaces mix?
-> 
+The ISL76682 is very basic ALS which only supports ALS or IR mode
+in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+other fancy functionality. Document it as trivial device.
 
-IDK as I'm not the patch author...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Andre Werner <andre.werner@systec-electronic.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@denx.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Naresh Solanki <naresh.solanki@9elements.com>
+Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+Cc: Vincent Tremblay <vincent@vtremblay.dev>
+Cc: devicetree@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+---
+V2: Add AB from Conor
+---
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index c3190f2a168a2..27164e9219276 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -179,6 +179,8 @@ properties:
+           - isil,isl29030
+             # Intersil ISL68137 Digital Output Configurable PWM Controller
+           - isil,isl68137
++            # Intersil ISL76682 Ambient Light Sensor
++          - isil,isl76682
+             # Linear Technology LTC2488
+           - lineartechnology,ltc2488
+             # 5 Bit Programmable, Pulse-Width Modulator
 -- 
-An old man doll... just what I always wanted! - Clara
+2.42.0
 
 

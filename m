@@ -1,489 +1,274 @@
-Return-Path: <linux-iio+bounces-152-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-153-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E677EFC6F
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 01:06:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE86D7EFDDD
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 06:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029701F27EEC
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 00:06:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9DDE1C20919
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Nov 2023 05:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630D462F;
-	Sat, 18 Nov 2023 00:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0621BD511;
+	Sat, 18 Nov 2023 05:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="UNhEXAMo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KX/vs6zF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A27110D0;
-	Fri, 17 Nov 2023 16:06:40 -0800 (PST)
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 6F4E28269F;
-	Sat, 18 Nov 2023 01:06:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1700265998;
-	bh=aQZ2MVgPH0EW3l45zMbEKjClYItWdYFHTacJjapzC70=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNhEXAMopTedR4iBthoRbC9XDMUjsTdL7TolXTn7y8yKNlQX/t6XQZlxoKdG26GTM
-	 vKOX6BUX789WKZ8K5BfKsOIiLp5Jr2NyEE8garOesBEoekwuXsRTm4dtAtf7FVC3dB
-	 fDTq0+SCzAwjztzZNFUfFTQztwZVv60/D4glkAOHhrzFE3oyf6zUj3NKacpiHLNs3U
-	 Ww/cNWVANyYKVXSqNXDgB6o2jX4ReGCroWzT+2x7OHxABtAUU6xB+2SydhJBKr4G4z
-	 yC/XNUsa9lLvXoq+ci9GVk8jjs6Efr9fQyFUHMLgYynqnrMHQ+FFpyjl22eXC7Gw5Z
-	 ZmMed63jERAqQ==
-From: Marek Vasut <marex@denx.de>
-To: linux-iio@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Andre Werner <andre.werner@systec-electronic.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@denx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007CC10D0;
+	Fri, 17 Nov 2023 21:21:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700284915; x=1731820915;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yEreUHMKYBFFkEB3u/u/R/cCq3R3tX2VCM4VmFEVxYA=;
+  b=KX/vs6zF1ZNDxhSICsi/JLSz08C3EA6MjqAxLesr2wPFei/k+f9ZnJBK
+   9Vo0Wng5f1V4GgltZpeI6Ovkga6IfKGOEVX4JUyPt6DMoQCE1yXg3gR50
+   XGlfANZAFnxEAf+ILIdgXuC78hZ1BGOGS5bea6L0P65B13ZVtn9ltWi8d
+   cd8SdvTNU8tWfnsnsEFnFark1nWmWMnnsap6dCYEZa+qX64FmdLYHpMf6
+   YmWneRSs099xuCH/m6cVYByq3P7mWI38jwT0s4mpqf8G8El2Y+tZtHFLV
+   rjCKQPXT30iQzhDvRhspTe7hJD/AgaBAVVO49rLgoVvJ0vJdjMOfK/zQt
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="395334557"
+X-IronPort-AV: E=Sophos;i="6.04,207,1695711600"; 
+   d="scan'208";a="395334557"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 21:21:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="1097293092"
+X-IronPort-AV: E=Sophos;i="6.04,207,1695711600"; 
+   d="scan'208";a="1097293092"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 17 Nov 2023 21:21:51 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r4Dm8-0003YN-2N;
+	Sat, 18 Nov 2023 05:21:48 +0000
+Date: Sat, 18 Nov 2023 13:21:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Andreas Klinger <ak@it-klinger.de>,
 	Rob Herring <robh+dt@kernel.org>,
-	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-	Vincent Tremblay <vincent@vtremblay.dev>,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: light: isl76682: Add ISL76682 driver
-Date: Sat, 18 Nov 2023 01:06:10 +0100
-Message-ID: <20231118000614.186558-2-marex@denx.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231118000614.186558-1-marex@denx.de>
-References: <20231118000614.186558-1-marex@denx.de>
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: pressure: driver for Honeywell HSC/SSC
+ series pressure sensors
+Message-ID: <202311181316.z2BmTZmP-lkp@intel.com>
+References: <20231117164232.8474-2-petre.rodan@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231117164232.8474-2-petre.rodan@subdimension.ro>
 
-The ISL76682 is very basic ALS which only supports ALS or IR mode
-in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
-other fancy functionality.
+Hi Petre,
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Andre Werner <andre.werner@systec-electronic.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@denx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Naresh Solanki <naresh.solanki@9elements.com>
-Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Cc: Vincent Tremblay <vincent@vtremblay.dev>
-Cc: devicetree@vger.kernel.org
-Cc: linux-iio@vger.kernel.org
----
-V2: - Overhaul the driver
-    - Cache the entire 8-bit command register instead of parts of it
-      and build up and rewrite the entire register if necessary
-    - Fix illumination scale, add intensity scale, add integration time
----
- drivers/iio/light/Kconfig    |   8 +
- drivers/iio/light/Makefile   |   1 +
- drivers/iio/light/isl76682.c | 336 +++++++++++++++++++++++++++++++++++
- 3 files changed, 345 insertions(+)
- create mode 100644 drivers/iio/light/isl76682.c
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 45edba797e4c7..124c45f509754 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -252,6 +252,14 @@ config ISL29125
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called isl29125.
- 
-+config ISL76682
-+	tristate "Intersil ISL76682 Light Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  Provides driver for the Intersil's ISL76682 device. This driver
-+	  supports the sysfs interface to get the ALS and IR intensity.
-+
- config HID_SENSOR_ALS
- 	depends on HID_SENSOR_HUB
- 	select IIO_BUFFER
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index c0db4c4c36ec9..09fa585f3109f 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -28,6 +28,7 @@ obj-$(CONFIG_IQS621_ALS)	+= iqs621-als.o
- obj-$(CONFIG_SENSORS_ISL29018)	+= isl29018.o
- obj-$(CONFIG_SENSORS_ISL29028)	+= isl29028.o
- obj-$(CONFIG_ISL29125)		+= isl29125.o
-+obj-$(CONFIG_ISL76682)		+= isl76682.o
- obj-$(CONFIG_JSA1212)		+= jsa1212.o
- obj-$(CONFIG_SENSORS_LM3533)	+= lm3533-als.o
- obj-$(CONFIG_LTR501)		+= ltr501.o
-diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
-new file mode 100644
-index 0000000000000..64ec8b8fe71ee
---- /dev/null
-+++ b/drivers/iio/light/isl76682.c
-@@ -0,0 +1,336 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * IIO driver for the light sensor ISL76682.
-+ * ISL76682 is Ambient Light Sensor
-+ *
-+ * Copyright (c) 2023 Marek Vasut <marex@denx.de>
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+
-+#define ISL76682_REG_COMMAND			0x00
-+
-+#define ISL76682_COMMAND_EN			BIT(7)
-+#define ISL76682_COMMAND_MODE_CONTINUOUS	BIT(6)
-+#define ISL76682_COMMAND_LIGHT_IR		BIT(5)
-+
-+#define ISL76682_COMMAND_RANGE_LUX_1K		0
-+#define ISL76682_COMMAND_RANGE_LUX_4K		(1 << 0)
-+#define ISL76682_COMMAND_RANGE_LUX_16K		(2 << 0)
-+#define ISL76682_COMMAND_RANGE_LUX_64K		(3 << 0)
-+#define ISL76682_COMMAND_RANGE_LUX_MASK		GENMASK(1, 0)
-+
-+#define ISL76682_REG_ALSIR_L			0x01
-+
-+#define ISL76682_REG_ALSIR_U			0x02
-+
-+#define ISL76682_NUM_REGS			(ISL76682_REG_ALSIR_U + 1)
-+
-+#define ISL76682_CONV_TIME_MS			100
-+
-+#define ISL76682_ADC_MAX			0xffff
-+
-+struct isl76682_chip {
-+	struct mutex			lock;
-+	struct regmap			*regmap;
-+	u8				range;
-+	u8				command;
-+};
-+
-+static int isl76682_get(struct isl76682_chip *chip, bool mode_ir, int *data)
-+{
-+	u8 command;
-+	int ret;
-+
-+	command = ISL76682_COMMAND_EN | ISL76682_COMMAND_MODE_CONTINUOUS |
-+		  chip->range;
-+
-+	if (mode_ir)
-+		command |= ISL76682_COMMAND_LIGHT_IR;
-+
-+	if (command != chip->command) {
-+		ret = regmap_write(chip->regmap, ISL76682_REG_COMMAND, command);
-+		if (ret)
-+			return ret;
-+
-+		/* Need to wait for conversion time if ALS/IR mode enabled */
-+		msleep(ISL76682_CONV_TIME_MS);
-+
-+		chip->command = command;
-+	}
-+
-+	return regmap_bulk_read(chip->regmap, ISL76682_REG_ALSIR_L, data, 2);
-+}
-+
-+static int isl76682_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
-+{
-+	struct isl76682_chip *chip = iio_priv(indio_dev);
-+	u8 range;
-+
-+	if (chan->type != IIO_LIGHT)
-+		return -EINVAL;
-+
-+	if (mask != IIO_CHAN_INFO_SCALE)
-+		return -EINVAL;
-+
-+	if (val != 0)
-+		return -EINVAL;
-+
-+	if (chan->type == IIO_LIGHT) {
-+		if (val2 == 15000)		/* 0.015 ... 1000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_1K;
-+		else if (val2 == 60000)		/* 0.060 ... 4000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_4K;
-+		else if (val2 == 240000)	/* 0.240 ... 16000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_16K;
-+		else if (val2 == 960000)	/* 0.960 ... 64000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_64K;
-+		else
-+			return -EINVAL;
-+	} else if (chan->type == IIO_INTENSITY) {
-+		if (val2 == 10500)		/* 0.0105 .. 1000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_1K;
-+		else if (val2 == 42000)		/* 0.042 ... 4000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_4K;
-+		else if (val2 == 168000)	/* 0.168 ... 16000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_16K;
-+		else if (val2 == 673000)	/* 0.673 ... 64000 lux */
-+			range = ISL76682_COMMAND_RANGE_LUX_64K;
-+		else
-+			return -EINVAL;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	mutex_lock(&chip->lock);
-+	chip->range = range;
-+	mutex_unlock(&chip->lock);
-+
-+	return 0;
-+}
-+
-+static int isl76682_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
-+{
-+	struct isl76682_chip *chip = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	mutex_lock(&chip->lock);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		switch (chan->type) {
-+		case IIO_LIGHT:
-+			ret = isl76682_get(chip, false, val);
-+			break;
-+		case IIO_INTENSITY:
-+			ret = isl76682_get(chip, true, val);
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		if (ret < 0)
-+			break;
-+
-+		ret = IIO_VAL_INT;
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		switch (chan->type) {
-+		case IIO_LIGHT:
-+			if (chip->range == ISL76682_COMMAND_RANGE_LUX_1K)
-+				*val2 = 15000;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_4K)
-+				*val2 = 60000;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_16K)
-+				*val2 = 240000;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_64K)
-+				*val2 = 960000;
-+			else
-+				break;
-+			ret = IIO_VAL_INT_PLUS_MICRO;
-+			break;
-+		case IIO_INTENSITY:
-+			if (chip->range == ISL76682_COMMAND_RANGE_LUX_1K)
-+				*val2 = 10500;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_4K)
-+				*val2 = 42000;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_16K)
-+				*val2 = 168000;
-+			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_64K)
-+				*val2 = 673000;
-+			else
-+				break;
-+			ret = IIO_VAL_INT_PLUS_MICRO;
-+			break;
-+		default:
-+			break;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	mutex_unlock(&chip->lock);
-+
-+	return ret;
-+}
-+
-+static IIO_CONST_ATTR(in_illuminance_scale_available, "0.015 0.06 0.24 0.96");
-+static IIO_CONST_ATTR(in_intensity_scale_available, "0.0105 0.042 0.168 0.673");
-+static IIO_CONST_ATTR(integration_time_available, "0.090");	/* 90 ms */
-+
-+static struct attribute *isl76682_attributes[] = {
-+	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
-+	&iio_const_attr_in_intensity_scale_available.dev_attr.attr,
-+	&iio_const_attr_integration_time_available.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group isl29108_group = {
-+	.attrs = isl76682_attributes,
-+};
-+
-+static const struct iio_chan_spec isl76682_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+	}, {
-+		.type = IIO_INTENSITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+	}
-+};
-+
-+static const struct iio_info isl76682_info = {
-+	.attrs		= &isl29108_group,
-+	.read_raw	= isl76682_read_raw,
-+	.write_raw	= isl76682_write_raw,
-+};
-+
-+static int isl76682_clear_configure_reg(struct isl76682_chip *chip)
-+{
-+	struct device *dev = regmap_get_device(chip->regmap);
-+	int ret;
-+
-+	ret = regmap_write(chip->regmap, ISL76682_REG_COMMAND, 0x0);
-+	if (ret < 0)
-+		dev_err(dev, "Error %d clearing the CONFIGURE register\n", ret);
-+
-+	chip->command = 0;
-+
-+	return ret;
-+}
-+
-+static bool isl76682_is_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case ISL76682_REG_ALSIR_L:
-+	case ISL76682_REG_ALSIR_U:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static const struct regmap_config isl76682_regmap_config = {
-+	.reg_bits		= 8,
-+	.val_bits		= 8,
-+	.volatile_reg		= isl76682_is_volatile_reg,
-+	.max_register		= ISL76682_NUM_REGS - 1,
-+	.num_reg_defaults_raw	= ISL76682_NUM_REGS,
-+	.cache_type		= REGCACHE_FLAT,
-+};
-+
-+static int isl76682_probe(struct i2c_client *client)
-+{
-+	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-+	struct device *dev = &client->dev;
-+	struct isl76682_chip *chip;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	chip = iio_priv(indio_dev);
-+
-+	i2c_set_clientdata(client, indio_dev);
-+	mutex_init(&chip->lock);
-+
-+	chip->regmap = devm_regmap_init_i2c(client, &isl76682_regmap_config);
-+	if (IS_ERR(chip->regmap)) {
-+		return dev_err_probe(dev, PTR_ERR(chip->regmap),
-+				     "Error initializing regmap\n");
-+	}
-+
-+	chip->range = ISL76682_COMMAND_RANGE_LUX_1K;
-+
-+	ret = isl76682_clear_configure_reg(chip);
-+	if (ret < 0)
-+		return ret;
-+
-+	indio_dev->info = &isl76682_info;
-+	indio_dev->channels = isl76682_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(isl76682_channels);
-+	indio_dev->name = id->name;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Device registration failed\n");
-+
-+	return 0;
-+}
-+
-+static void isl76682_remove(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct isl76682_chip *chip = iio_priv(indio_dev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	isl76682_clear_configure_reg(chip);
-+}
-+
-+static const struct i2c_device_id isl76682_id[] = {
-+	{"isl76682", 0},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, isl76682_id);
-+
-+static const struct of_device_id isl76682_of_match[] = {
-+	{ .compatible = "isil,isl76682", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, isl76682_of_match);
-+
-+static struct i2c_driver isl76682_driver = {
-+	.driver  = {
-+		.name		= "isl76682",
-+		.of_match_table	= isl76682_of_match,
-+	},
-+	.probe		= isl76682_probe,
-+	.remove		= isl76682_remove,
-+	.id_table	= isl76682_id,
-+};
-+
-+module_i2c_driver(isl76682_driver);
-+
-+MODULE_DESCRIPTION("ISL76682 Ambient Light Sensor driver");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Marek Vasut <marex@denx.de>");
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on robh/for-next linus/master v6.7-rc1]
+[cannot apply to next-20231117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Petre-Rodan/iio-pressure-driver-for-Honeywell-HSC-SSC-series-pressure-sensors/20231118-072654
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20231117164232.8474-2-petre.rodan%40subdimension.ro
+patch subject: [PATCH v2 2/2] iio: pressure: driver for Honeywell HSC/SSC series pressure sensors
+config: riscv-rv32_defconfig (attached as .config)
+compiler: riscv32-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231118/202311181316.z2BmTZmP-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311181316.z2BmTZmP-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/pressure/Kconfig:120: syntax error
+   drivers/iio/pressure/Kconfig:119:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:119: unknown statement "pressure"
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ','
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ':'
+   drivers/iio/pressure/Kconfig:121: unknown statement "To"
+   drivers/iio/pressure/Kconfig:122:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:122: unknown statement "called"
+   make[3]: *** [scripts/kconfig/Makefile:77: oldconfig] Error 1
+   make[2]: *** [Makefile:685: oldconfig] Error 2
+   make[1]: *** [Makefile:234: __sub-make] Error 2
+   make[1]: Target 'oldconfig' not remade because of errors.
+   make: *** [Makefile:234: __sub-make] Error 2
+   make: Target 'oldconfig' not remade because of errors.
+--
+>> drivers/iio/pressure/Kconfig:120: syntax error
+   drivers/iio/pressure/Kconfig:119:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:119: unknown statement "pressure"
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ','
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ':'
+   drivers/iio/pressure/Kconfig:121: unknown statement "To"
+   drivers/iio/pressure/Kconfig:122:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:122: unknown statement "called"
+   make[3]: *** [scripts/kconfig/Makefile:77: olddefconfig] Error 1
+   make[2]: *** [Makefile:685: olddefconfig] Error 2
+   make[1]: *** [Makefile:234: __sub-make] Error 2
+   make[1]: Target 'olddefconfig' not remade because of errors.
+   make: *** [Makefile:234: __sub-make] Error 2
+   make: Target 'olddefconfig' not remade because of errors.
+--
+>> drivers/iio/pressure/Kconfig:120: syntax error
+   drivers/iio/pressure/Kconfig:119:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:119: unknown statement "pressure"
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ','
+   drivers/iio/pressure/Kconfig:121:warning: ignoring unsupported character ':'
+   drivers/iio/pressure/Kconfig:121: unknown statement "To"
+   drivers/iio/pressure/Kconfig:122:warning: ignoring unsupported character '.'
+   drivers/iio/pressure/Kconfig:122: unknown statement "called"
+   make[5]: *** [scripts/kconfig/Makefile:87: defconfig] Error 1
+   make[4]: *** [Makefile:685: defconfig] Error 2
+   make[3]: *** [Makefile:350: __build_one_by_one] Error 2
+   make[3]: Target 'defconfig' not remade because of errors.
+   make[3]: Target '32-bit.config' not remade because of errors.
+   make[2]: *** [arch/riscv/Makefile:190: rv32_defconfig] Error 2
+   make[1]: *** [Makefile:234: __sub-make] Error 2
+   make[1]: Target 'rv32_defconfig' not remade because of errors.
+   make: *** [Makefile:234: __sub-make] Error 2
+   make: Target 'rv32_defconfig' not remade because of errors.
+
+
+vim +120 drivers/iio/pressure/Kconfig
+
+     8	
+     9	config ABP060MG
+    10		tristate "Honeywell ABP pressure sensor driver"
+    11		depends on I2C
+    12		help
+    13		  Say yes here to build support for the Honeywell ABP pressure
+    14		  sensors.
+    15	
+    16		  To compile this driver as a module, choose M here: the module
+    17		  will be called abp060mg.
+    18	
+    19	config ROHM_BM1390
+    20		tristate "ROHM BM1390GLV-Z pressure sensor driver"
+    21		depends on I2C
+    22		help
+    23		  Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z
+    24		  can measure pressures ranging from 300 hPa to 1300 hPa with
+    25		  configurable measurement averaging and internal FIFO. The
+    26		  sensor does also provide temperature measurements.
+    27	
+    28	config BMP280
+    29		tristate "Bosch Sensortec BMP180/BMP280/BMP380/BMP580 pressure sensor driver"
+    30		depends on (I2C || SPI_MASTER)
+    31		select REGMAP
+    32		select BMP280_I2C if (I2C)
+    33		select BMP280_SPI if (SPI_MASTER)
+    34		help
+    35		  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
+    36		  and BMP580 pressure and temperature sensors. Also supports the BME280 with
+    37		  an additional humidity sensor channel.
+    38	
+    39		  To compile this driver as a module, choose M here: the core module
+    40		  will be called bmp280 and you will also get bmp280-i2c for I2C
+    41		  and/or bmp280-spi for SPI support.
+    42	
+    43	config BMP280_I2C
+    44		tristate
+    45		depends on BMP280
+    46		depends on I2C
+    47		select REGMAP_I2C
+    48	
+    49	config BMP280_SPI
+    50		tristate
+    51		depends on BMP280
+    52		depends on SPI_MASTER
+    53		select REGMAP
+    54	
+    55	config IIO_CROS_EC_BARO
+    56		tristate "ChromeOS EC Barometer Sensor"
+    57		depends on IIO_CROS_EC_SENSORS_CORE
+    58		help
+    59		  Say yes here to build support for the Barometer sensor when
+    60		  presented by the ChromeOS EC Sensor hub.
+    61	
+    62		  To compile this driver as a module, choose M here: the module
+    63		  will be called cros_ec_baro.
+    64	
+    65	config DLHL60D
+    66		tristate "All Sensors DLHL60D and DLHL60G low voltage digital pressure sensors"
+    67		depends on I2C
+    68		select IIO_BUFFER
+    69		select IIO_TRIGGERED_BUFFER
+    70		help
+    71		  Say yes here to build support for the All Sensors DLH series
+    72		  pressure sensors driver.
+    73	
+    74		  To compile this driver as a module, choose M here: the module
+    75		  will be called dlhl60d.
+    76	
+    77	config DPS310
+    78		tristate "Infineon DPS310 pressure and temperature sensor"
+    79		depends on I2C
+    80		select REGMAP_I2C
+    81		help
+    82		  Support for the Infineon DPS310 digital barometric pressure sensor.
+    83		  It can be accessed over I2C bus.
+    84	
+    85		  This driver can also be built as a module.  If so, the module will be
+    86		  called dps310.
+    87	
+    88	config HID_SENSOR_PRESS
+    89		depends on HID_SENSOR_HUB
+    90		select IIO_BUFFER
+    91		select HID_SENSOR_IIO_COMMON
+    92		select HID_SENSOR_IIO_TRIGGER
+    93		tristate "HID PRESS"
+    94		help
+    95		  Say yes here to build support for the HID SENSOR
+    96		  Pressure driver
+    97	
+    98		  To compile this driver as a module, choose M here: the module
+    99		  will be called hid-sensor-press.
+   100	
+   101	config HP03
+   102		tristate "Hope RF HP03 temperature and pressure sensor driver"
+   103		depends on I2C
+   104		select REGMAP_I2C
+   105		help
+   106		  Say yes here to build support for Hope RF HP03 pressure and
+   107		  temperature sensor.
+   108	
+   109		  To compile this driver as a module, choose M here: the module
+   110		  will be called hp03.
+   111	
+   112	config HSC030PA
+   113		tristate "Honeywell HSC/SSC (TruStability pressure sensors series)"
+   114		depends on (I2C || SPI_MASTER)
+   115		select HSC030PA_I2C if (I2C)
+   116		select HSC030PA_SPI if (SPI_MASTER)
+   117		help
+   118		  Say Y here to build support for the Honeywell HSC and SSC TruStability
+   119	      pressure and temperature sensor series.
+ > 120	
+   121		  To compile this driver as a module, choose M here: the module will be
+   122		  called hsc030pa.
+   123	
+
 -- 
-2.42.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

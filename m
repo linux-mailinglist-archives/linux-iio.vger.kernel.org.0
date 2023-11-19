@@ -1,127 +1,132 @@
-Return-Path: <linux-iio+bounces-168-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-169-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CC67F0709
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 16:08:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37767F070F
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 16:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74A4D1F227FF
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 15:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A381280D8E
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 15:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8929A134C7;
-	Sun, 19 Nov 2023 15:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNTtecu+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01AF134D3;
+	Sun, 19 Nov 2023 15:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41537134BA;
-	Sun, 19 Nov 2023 15:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A71FC433C7;
-	Sun, 19 Nov 2023 15:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700406489;
-	bh=DaOvlUbm/d5dvcv4fwobRa+i+wZixsmjZoJS2PIC9AA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VNTtecu+LhBFOjoSX1gBMP+tbB6apLHBbBKWlvPq9Py3qanifjqE3OLX12lWH+9aN
-	 vznns/BAk+RKkNuHR+Gr7f0SX/5at/ixS3cOGxMadfSq4uIr6DbO5pp8wWMLqxXMRb
-	 Fde2og3EoUD8tX9moHehS0/o5yfmSgzlL6apfXx+DY66+yEPGXgILZIkC3NPLZgpAm
-	 0ABTrcRjkPHLXJUQzJtimhmY5EENUnO6g3Dg7mzkYNIW0hcOjFp08KYqAYok1XxWiE
-	 g5hgEWkm+BbmtB2FsS6UUteVCpAKFXaHzxhoZOldmj5/1MQ5s2cU+5yJNEUQ/vX950
-	 ZaN0dTD3LIPZQ==
-Date: Sun, 19 Nov 2023 15:07:56 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-iio@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>, Andre Werner
- <andre.werner@systec-electronic.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Naresh Solanki
- <naresh.solanki@9elements.com>, Patrick Rudolph
- <patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, Stefan
- Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
- <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: isl76682: Document
- ISL76682
-Message-ID: <20231119150756.20a023b5@jic23-huawei>
-In-Reply-To: <20231118000614.186558-1-marex@denx.de>
-References: <20231118000614.186558-1-marex@denx.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43015126;
+	Sun, 19 Nov 2023 07:10:25 -0800 (PST)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-586a516755aso2294739eaf.0;
+        Sun, 19 Nov 2023 07:10:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700406624; x=1701011424;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+UIvR5MQTDyaoA0l7ADQGaaV9mvqedh+AvuYjdvmLpY=;
+        b=m7JztmLkFTijE0xXO+PJkmMC2FV8jeV1IzrRmwUwgutduUdK3J6sNMqyqF71UivZ1P
+         72g5pH5p43Sf5ASeitM0NIPvHAfncWPyhuiUm/ihKMjZ8LsWEqan5YEPtEc4p02rr7Kd
+         J1PyZF7HAh3udjcoFZx3rLOE0nD0l+VIyISuUDFgr/6oBOTMbVxVZ7SfDDFKYjekjNr4
+         dyKxN2qEYlGLXIudsfocjb2B/gwe5HD/7ag8RZvccm4xg5QrpcZ/UG4Lv7Iv5sjDtbq7
+         bMiDa+blMkZcC3CrqU7dy9uolBIpYfxNn0HIeVR+fPpr2HlqShqr0z/i4ahRBWZ7iZ7U
+         p64w==
+X-Gm-Message-State: AOJu0YzmQH6WQAf3A/MLDfYlWAzBhRTKso8ha7AsSgtZWasjUJDg7e2L
+	IPxvoyEmyXwu0OxmEfLCsA==
+X-Google-Smtp-Source: AGHT+IE54AGxoyNmjush3LIBd25JOSFJEyVezI5EOKIVvgtCLmSTCTzHFX2sqcg1lU5JohP7sA/wCw==
+X-Received: by 2002:a05:6870:568d:b0:1e9:d5ac:dc9b with SMTP id p13-20020a056870568d00b001e9d5acdc9bmr2296357oao.25.1700406624495;
+        Sun, 19 Nov 2023 07:10:24 -0800 (PST)
+Received: from herring.priv ([2607:fb90:45e3:889f:15b4:1348:6d64:224b])
+        by smtp.gmail.com with ESMTPSA id s40-20020a05687050e800b001f938e6d904sm39749oaf.44.2023.11.19.07.10.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Nov 2023 07:10:23 -0800 (PST)
+Received: (nullmailer pid 208689 invoked by uid 1000);
+	Sun, 19 Nov 2023 15:10:19 -0000
+Date: Sun, 19 Nov 2023 09:10:19 -0600
+From: Rob Herring <robh@kernel.org>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>
+Cc: conor+dt@kernel.org, luca@z3ntu.xyz, jic23@kernel.org, linux-iio@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org, quic_kamalw@quicinc.com, andersson@kernel.org, andriy.shevchenko@linux.intel.com, sboyd@kernel.org, lee@kernel.org, cros-qcom-dts-watchers@chromium.org, linux-kernel@vger.kernel.org, quic_collinsd@quicinc.com, linux-arm-msm@vger.kernel.org, lars@metafoo.de, agross@kernel.org, rui.zhang@intel.com, devicetree@vger.kernel.org, linus.walleij@linaro.org, marijn.suijten@somainline.org, dmitry.baryshkov@linaro.org, linux-pm@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org, daniel.lezcano@linaro.org, quic_subbaram@quicinc.com, quic_amelende@quicinc.com, kernel@quicinc.com, konrad.dybcio@linaro.org, rafael@kernel.org, lukasz.luba@arm.com, robh+dt@kernel.org
+Subject: Re: [PATCH V2 3/3] dt-bindings: iio/adc: Move QCOM ADC bindings to
+ iio/adc folder
+Message-ID: <170040661849.208630.9288743740827489507.robh@kernel.org>
+References: <20231116032644.753370-1-quic_jprakash@quicinc.com>
+ <20231116032644.753370-2-quic_jprakash@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231116032644.753370-2-quic_jprakash@quicinc.com>
 
-On Sat, 18 Nov 2023 01:06:09 +0100
-Marek Vasut <marex@denx.de> wrote:
 
-> The ISL76682 is very basic ALS which only supports ALS or IR mode
-> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
-> other fancy functionality. Document it as trivial device.
+On Thu, 16 Nov 2023 08:56:44 +0530, Jishnu Prakash wrote:
+> There are several files containing QCOM ADC macros for channel names
+> right now in the include/dt-bindings/iio folder. Since all of these
+> are specifically for adc, move the files to the
+> include/dt-bindings/iio/adc folder.
 > 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Marek Vasut <marex@denx.de>
-
-I'm always a bit in 2 minds about trivial-devices as it doesn't
-include a basic power supply.  In this case vdd which I'd prefer
-to see documented even on such a simple device as this.
-Not everyone is going to leave it powered up all the time!
-
-Still I'm not that fussed. Maybe it's worth allowing vdd-supply in
-trivial-devices.yaml?
-
-Jonathan
-
-> ---
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Andre Werner <andre.werner@systec-electronic.com>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@denx.de>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-> Cc: Naresh Solanki <naresh.solanki@9elements.com>
-> Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-> Cc: Vincent Tremblay <vincent@vtremblay.dev>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> ---
-> V2: Add AB from Conor
-> ---
->  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> Also update all affected devicetree and driver files to fix compilation
+> errors seen with this move and update documentation files to fix
+> dtbinding check errors for the same.
 > 
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index c3190f2a168a2..27164e9219276 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -179,6 +179,8 @@ properties:
->            - isil,isl29030
->              # Intersil ISL68137 Digital Output Configurable PWM Controller
->            - isil,isl68137
-> +            # Intersil ISL76682 Ambient Light Sensor
-> +          - isil,isl76682
->              # Linear Technology LTC2488
->            - lineartechnology,ltc2488
->              # 5 Bit Programmable, Pulse-Width Modulator
+> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> ---
+>  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml       | 4 ++--
+>  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 2 +-
+>  .../devicetree/bindings/thermal/qcom-spmi-adc-tm-hc.yaml  | 2 +-
+>  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml    | 6 +++---
+>  arch/arm64/boot/dts/qcom/pm2250.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm6125.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm6150.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm6150l.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pm660.dtsi                       | 2 +-
+>  arch/arm64/boot/dts/qcom/pm660l.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm7250b.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8150.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8150b.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8150l.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8916.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8950.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8953.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8994.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pm8998.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pmi632.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/pmi8950.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi                 | 2 +-
+>  arch/arm64/boot/dts/qcom/pmp8074.dtsi                     | 2 +-
+>  arch/arm64/boot/dts/qcom/pms405.dtsi                      | 2 +-
+>  arch/arm64/boot/dts/qcom/sc7280-idp.dts                   | 2 +-
+>  arch/arm64/boot/dts/qcom/sc7280-idp.dtsi                  | 2 +-
+>  arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi                | 4 ++--
+>  arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi               | 2 +-
+>  .../arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 6 +++---
+>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts         | 2 +-
+>  arch/arm64/boot/dts/qcom/sm8450-hdk.dts                   | 8 ++++----
+>  drivers/iio/adc/qcom-spmi-adc5-gen3.c                     | 2 +-
+>  drivers/iio/adc/qcom-spmi-adc5.c                          | 2 +-
+>  drivers/iio/adc/qcom-spmi-vadc.c                          | 2 +-
+>  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h  | 2 +-
+>  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h | 2 +-
+>  .../dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h    | 2 +-
+>  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h | 2 +-
+>  include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h | 2 +-
+>  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    | 2 +-
+>  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    | 2 +-
+>  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    | 2 +-
+>  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    | 0
+>  include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h        | 0
+>  44 files changed, 51 insertions(+), 51 deletions(-)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (100%)
+>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (100%)
+> 
+
+Acked-by: Rob Herring <robh@kernel.org>
 
 

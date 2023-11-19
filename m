@@ -1,334 +1,161 @@
-Return-Path: <linux-iio+bounces-170-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-171-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E927F0741
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 16:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B54B7F082C
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 18:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7206B1C2080C
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 15:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2981C208A5
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Nov 2023 17:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B320112B72;
-	Sun, 19 Nov 2023 15:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FF014AA8;
+	Sun, 19 Nov 2023 17:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgOGRqvA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ixQBB7wC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B89F11C92;
-	Sun, 19 Nov 2023 15:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F78C433C8;
-	Sun, 19 Nov 2023 15:54:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700409269;
-	bh=w0TBwbMybQUEpvIlvhdb0ILVSRAMgdc9gIP02JnbPZA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SgOGRqvAJmW1nmRDb//FhkZRV3DRA8Hf2B926dT7bNR6Yem/k2JgiWKYJ7gYIWyyw
-	 6ZmAoVVFrU6xUaRfX2IK/NcpOijMrcoLmZVg9cTvL1oy0Qq5N7Bg6tcCvK6PoKRxAn
-	 xDyDzoo7Pv95iijFsDDAUVVxg05OkUPJsj55RXVV0H4Psy0rVpD8mhQlmxlSqwapQb
-	 i1VHZEH62gLYc7ixi79gp/oPdSH77B8ZJlNsJUM4wfgKICWjsR+EcFCPyxrlzqOYNf
-	 D2nSiqHnjRX7J8+CGuWfcr7KtG3N2QW8x9T9Uj+Ln8jV71NQV1wpBfd/SrtrnCZWIH
-	 e1NcIyQrnnOvg==
-Date: Sun, 19 Nov 2023 15:54:19 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-iio@vger.kernel.org, Alexander Stein
- <alexander.stein@ew.tq-group.com>, Andre Werner
- <andre.werner@systec-electronic.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Naresh Solanki
- <naresh.solanki@9elements.com>, Patrick Rudolph
- <patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, Stefan
- Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
- <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: light: isl76682: Add ISL76682 driver
-Message-ID: <20231119155419.3b1da82d@jic23-huawei>
-In-Reply-To: <20231118000614.186558-2-marex@denx.de>
-References: <20231118000614.186558-1-marex@denx.de>
-	<20231118000614.186558-2-marex@denx.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B3511D;
+	Sun, 19 Nov 2023 09:40:20 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9fa45e75ed9so162406366b.1;
+        Sun, 19 Nov 2023 09:40:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700415619; x=1701020419; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S9Hteg4XMK0Hthf2Z6YUi6WL0kiCnYnKAdT14d+QRy8=;
+        b=ixQBB7wCZJ8mrDG9P8cX3x5uuAt4larH9Rimg2hTttSG4vzZy2bqWxqds/0FMbve0n
+         PiD6R7NVStGBE0Km2Q89xX0aRMzDjV5v/MJ9aBEk0Gvva/DKySfXDbQh4e3/bhjaeNbW
+         WC+L9UaUxNro9a+K44s7on2q5i9wYGG+QCE9zGJgIS+bWUuroKEusZJxjnrXlC/sV5KL
+         9wTq7udsfybyX3XhvpjYwrzl05WsNrE6wMsrhl0Kd6pRDuJXm7iK/zUQGf5SrZe7ug5O
+         nTtLtAUeBVBija4ExiUaRXH2v5au45TWY6qGQtA+jOdeWeDfRJ6lNsKy/ypc3spu6jLm
+         hZWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700415619; x=1701020419;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S9Hteg4XMK0Hthf2Z6YUi6WL0kiCnYnKAdT14d+QRy8=;
+        b=MNQR7WCo+u5m37/hcqu2sRQ8+w+ikJcAfPgHuA15ITTtCR4DkgyI6Nup9vWOlnRjer
+         A+nM5PETlsxOqFyv2OciHULPpyBX0JTZNG2czguZq7qtwBivE/vBfS7PL+tTKUN6lgZe
+         SW1molhFn8LoGrlKUrpRLyx/eetLmsVGrx1C1VIcmMrukgfc/x1BRyilEBpaETxZ3Hia
+         3+z0H3Ie0in5nKyaCap7mqq4bomwsM2bjsg2l26yqhjm5Vg1KSxoXlw6SnhOHzMYTIL5
+         jGzjahq8TrCo/gNleO/MO5DBNmjRpVFNO6BjKiH3L9lv9dY4BAIy/q9HQdOoHauzDGC/
+         8euQ==
+X-Gm-Message-State: AOJu0YyajKZZQLksz3QgRNDDFR+Hx6h0Z1tf3xKEcb/TrRit5UJEKU1+
+	98Dq3PoALgysIVhztGHTF909973mHPfsaw==
+X-Google-Smtp-Source: AGHT+IHxkCcm1/ToZyIbojFo4fZZpb75XeQ3QjFH14Aghgv4d/B1c/UnXHjMoAal1El4IPtreQhnnQ==
+X-Received: by 2002:a17:907:a683:b0:9e7:3af8:1fcd with SMTP id vv3-20020a170907a68300b009e73af81fcdmr5413082ejc.76.1700415618858;
+        Sun, 19 Nov 2023 09:40:18 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:d0f6:1482:ec53:c448? (2a02-8389-41cf-e200-d0f6-1482-ec53-c448.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d0f6:1482:ec53:c448])
+        by smtp.gmail.com with ESMTPSA id b19-20020a170906709300b009e5eaf7a9b6sm3045266ejk.139.2023.11.19.09.40.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Nov 2023 09:40:18 -0800 (PST)
+Message-ID: <588dd3f4-bea5-4453-9ef6-f92fb42c7514@gmail.com>
+Date: Sun, 19 Nov 2023 18:40:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] iio: light: add VEML6075 UVA and UVB light sensor
+ driver
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20231110-veml6075-v1-0-354b3245e14a@gmail.com>
+ <20231110-veml6075-v1-1-354b3245e14a@gmail.com>
+ <20231119150233.10fdc66e@jic23-huawei>
+Content-Language: en-US
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20231119150233.10fdc66e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Sat, 18 Nov 2023 01:06:10 +0100
-Marek Vasut <marex@denx.de> wrote:
-
-> The ISL76682 is very basic ALS which only supports ALS or IR mode
-> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
-> other fancy functionality.
+On 19.11.23 16:02, Jonathan Cameron wrote:
+>> +
+>> +struct veml6075_data {
+>> +	struct i2c_client *client;
+>> +	struct regmap *regmap;
+>> +	struct mutex lock; /* register access lock */
 > 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-
-Hi Marek
-
-A few comments inline,
-
-Jonathan
-
->  drivers/iio/light/Kconfig    |   8 +
->  drivers/iio/light/Makefile   |   1 +
->  drivers/iio/light/isl76682.c | 336 +++++++++++++++++++++++++++++++++++
->  3 files changed, 345 insertions(+)
->  create mode 100644 drivers/iio/light/isl76682.c
+> regmap provides register locking as typically does the bus lock, so good to
+> say exactly what you mean here.  Is there a Read Modify Write cycle you need
+> to protect for instance, or consistency across multiple register accesses?
 > 
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index 45edba797e4c7..124c45f509754 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -252,6 +252,14 @@ config ISL29125
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called isl29125.
->  
-> +config ISL76682
-> +	tristate "Intersil ISL76682 Light Sensor"
-> +	depends on I2C
-> +	select REGMAP_I2C
-> +	help
-> +	  Provides driver for the Intersil's ISL76682 device. This driver
-> +	  supports the sysfs interface to get the ALS and IR intensity.
-> +
-One of the bots tends to moan about short descriptions + it can be useful
-to let someone know the module name. Hence I'd add the usual boilerplate description
-for that here.
+What I want to avoid with this lock is an access to the measurement
+trigger or an integration time modification from different places while
+there is a measurement reading going on. "register access lock" is
+probably not the best name I could have chosen though.
 
-> diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
-> new file mode 100644
-> index 0000000000000..64ec8b8fe71ee
-> --- /dev/null
-> +++ b/drivers/iio/light/isl76682.c
-> @@ -0,0 +1,336 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * IIO driver for the light sensor ISL76682.
-> + * ISL76682 is Ambient Light Sensor
-> + *
-> + * Copyright (c) 2023 Marek Vasut <marex@denx.de>
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regmap.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
+I was not aware of that guard(mutex) mechanism. I guess it is new
+because only one driver uses it in the iio subsystem (up to v6.7-rc1).
+I will have a look at it.
+>> +};
+> 
+>> +
+>> +static const struct iio_chan_spec veml6075_channels[] = {
+>> +	{
+>> +		.type = IIO_INTENSITY,
+>> +		.channel = CH_UVA,
+>> +		.modified = 1,
+>> +		.channel2 = IIO_MOD_LIGHT_UV,
+>> +		.extend_name = "UVA",
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +			BIT(IIO_CHAN_INFO_SCALE),
+>> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
+>> +	},
+>> +	{
+>> +		.type = IIO_INTENSITY,
+>> +		.channel = CH_UVB,
+>> +		.modified = 1,
+>> +		.channel2 = IIO_MOD_LIGHT_UV,
+>> +		.extend_name = "UVB",
+> 
+> Extent name is very rarely used any more.  It's a horrible userspace interface
+> and an old design mistake. 
+> Instead we use the channel label infrastructure.  Provide the read_label()
+> callback to use that instead.
+> 
+> I'm not sure this is a great solution here though.  For some similar cases
+> such as visible light colours we've just added additional modifiers, but that
+> doesn't really scale to lots of sensitive ranges.
+> 
+> One thing we have talked about in the past, but I don't think we have done in
+> a driver yet, is to provide actual characteristics of the sensitivity graph.
+> Perhaps just a wavelength of maximum sensitivity?
+> 
+> Visible light sensors often have hideous sensitivity curves, including sometimes
+> have multiple peaks, but in this case they look pretty good.
+> Do you think such an ABI would be more useful than A, B labelling?
+> 
+My first idea was adding new modifiers because I saw that
+IIO_MOD_LIGHT_UV and IIO_MOD_LIGHT_DUV coexist, but then I thought _UVA
+and _UVB might not be used very often (wrong assumption?) and opted for
+a local solution with extended names. But any cleaner solution would be
+welcome because the label attributes are redundant.
 
-After changes below, this sysfs.h include should not be needed.
+Maybe adding UV-A, UV-B and UV-C modifiers is not a big deal as these
+are fairly common bands. Actually DUV is pretty much UV-C and could be
+left as it is.
 
-> +
-> +#define ISL76682_REG_COMMAND			0x00
-> +
-> +#define ISL76682_COMMAND_EN			BIT(7)
-> +#define ISL76682_COMMAND_MODE_CONTINUOUS	BIT(6)
-> +#define ISL76682_COMMAND_LIGHT_IR		BIT(5)
-> +
-> +#define ISL76682_COMMAND_RANGE_LUX_1K		0
-> +#define ISL76682_COMMAND_RANGE_LUX_4K		(1 << 0)
-> +#define ISL76682_COMMAND_RANGE_LUX_16K		(2 << 0)
-> +#define ISL76682_COMMAND_RANGE_LUX_64K		(3 << 0)
-As you are writing these into a field with a mask, 0, 1, 2, 3 should
-be fine as the shift is done by FIELD_PREP()
+This sensor has a single peak per channel, but I do not know how I would
+provide that information to the core if that is better than adding UVA
+and UVB bands. Would that add attributes to sysfs for the wavelengths or
+extend the channel name? In that case two new modifiers might be a
+better  and more obvious solution.
+> Jonathan
+> 
+> 
+I will work on the other issues you pointed out. Thanks a lot for your
+review.
 
-> +#define ISL76682_COMMAND_RANGE_LUX_MASK		GENMASK(1, 0)
-
-> +struct isl76682_chip {
-> +	struct mutex			lock;
-A lock needs a comment on what scope it covers.  Be as specific as you can
-as you need to distinguish it from the locks in regmap or the underlying bus code.
-> +	struct regmap			*regmap;
-> +	u8				range;
-> +	u8				command;
-> +};
-
-> +static int isl76682_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int val, int val2, long mask)
-> +{
-> +	struct isl76682_chip *chip = iio_priv(indio_dev);
-> +	u8 range;
-> +
-> +	if (chan->type != IIO_LIGHT)
-> +		return -EINVAL;
-> +
-> +	if (mask != IIO_CHAN_INFO_SCALE)
-> +		return -EINVAL;
-> +
-> +	if (val != 0)
-> +		return -EINVAL;
-> +
-> +	if (chan->type == IIO_LIGHT) {
-> +		if (val2 == 15000)		/* 0.015 ... 1000 lux */
-
-As below, I'd prefer these to be lookups in the same table used for read_avail()
-callback.
-
-> +			range = ISL76682_COMMAND_RANGE_LUX_1K;
-> +		else if (val2 == 60000)		/* 0.060 ... 4000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_4K;
-> +		else if (val2 == 240000)	/* 0.240 ... 16000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_16K;
-> +		else if (val2 == 960000)	/* 0.960 ... 64000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_64K;
-> +		else
-> +			return -EINVAL;
-> +	} else if (chan->type == IIO_INTENSITY) {
-> +		if (val2 == 10500)		/* 0.0105 .. 1000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_1K;
-> +		else if (val2 == 42000)		/* 0.042 ... 4000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_4K;
-> +		else if (val2 == 168000)	/* 0.168 ... 16000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_16K;
-> +		else if (val2 == 673000)	/* 0.673 ... 64000 lux */
-> +			range = ISL76682_COMMAND_RANGE_LUX_64K;
-> +		else
-> +			return -EINVAL;
-> +	} else {
-> +		return -EINVAL;
-> +	}
-> +
-> +	mutex_lock(&chip->lock);
-
-scoped_guard(mutex, &chip->lock); or guard(mutex)(&chip->lock);
-nice here as well.
-
-> +	chip->range = range;
-> +	mutex_unlock(&chip->lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static int isl76682_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int *val, int *val2, long mask)
-> +{
-> +	struct isl76682_chip *chip = iio_priv(indio_dev);
-> +	int ret = -EINVAL;
-> +
-> +	mutex_lock(&chip->lock);
-guard(mutex)(&chip->lock);
-
-Will allow you to make direct returns instead of breaking to where the
-unlock is, generally simplifying the code flow.
-
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			ret = isl76682_get(chip, false, val);
-> +			break;
-> +		case IIO_INTENSITY:
-> +			ret = isl76682_get(chip, true, val);
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +
-> +		if (ret < 0)
-> +			break;
-> +
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			if (chip->range == ISL76682_COMMAND_RANGE_LUX_1K)
-> +				*val2 = 15000;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_4K)
-> +				*val2 = 60000;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_16K)
-> +				*val2 = 240000;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_64K)
-> +				*val2 = 960000;
-> +			else
-> +				break;
-> +			ret = IIO_VAL_INT_PLUS_MICRO;
-> +			break;
-> +		case IIO_INTENSITY:
-> +			if (chip->range == ISL76682_COMMAND_RANGE_LUX_1K)
-> +				*val2 = 10500;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_4K)
-> +				*val2 = 42000;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_16K)
-> +				*val2 = 168000;
-> +			else if (chip->range == ISL76682_COMMAND_RANGE_LUX_64K)
-> +				*val2 = 673000;
-> +			else
-> +				break;
-> +			ret = IIO_VAL_INT_PLUS_MICRO;
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	mutex_unlock(&chip->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static IIO_CONST_ATTR(in_illuminance_scale_available, "0.015 0.06 0.24 0.96");
-> +static IIO_CONST_ATTR(in_intensity_scale_available, "0.0105 0.042 0.168 0.673");
-> +static IIO_CONST_ATTR(integration_time_available, "0.090");	/* 90 ms */
-> +
-> +static struct attribute *isl76682_attributes[] = {
-> +	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
-> +	&iio_const_attr_in_intensity_scale_available.dev_attr.attr,
-> +	&iio_const_attr_integration_time_available.dev_attr.attr,
-Please use the read_avail() callback and matching bitmaps for these.
-Doing them with custom attributes is something we are trying to move away
-from as it prevents any sensible in kernel access to the values and tends
-to end up with duplication of data (and potential inconsistencies)
-given you also have to match against the values.
-
-There are lots of older drivers that predate that callback being added
-that we haven't converted over yet.
-
-> +	NULL,
-> +};
-> +
-
-...
-
-> +static void isl76682_remove(struct i2c_client *client)
-> +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> +	struct isl76682_chip *chip = iio_priv(indio_dev);
-> +
-> +	iio_device_unregister(indio_dev);
-> +
-> +	isl76682_clear_configure_reg(chip);
-
-Use a devm_add_action_or_reset() call with a custom callback to unwind this
-automatically... As they you can use devm_iio_device_register() and
-get rid of the need for any remove function at all.
-
-I am a little curious as to why it needs to be called here as it doesn't obviously
-match a call in probe that is being unwound.  As such a comment on 'why' would
-also be good.
-
-
-> +}
-> +
-
-
+Best regards,
+Javier Carrasco
 

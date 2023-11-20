@@ -1,158 +1,107 @@
-Return-Path: <linux-iio+bounces-193-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-195-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D515E7F193B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 18:01:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4837F199F
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 18:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4CD28180E
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 17:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF9FE1C2147C
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 17:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7071DDFF;
-	Mon, 20 Nov 2023 17:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8242F20338;
+	Mon, 20 Nov 2023 17:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BAF7BA;
-	Mon, 20 Nov 2023 09:01:17 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SYtzF4Xclz6K9KG;
-	Tue, 21 Nov 2023 00:59:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 20 Nov
- 2023 17:01:14 +0000
-Date: Mon, 20 Nov 2023 17:01:13 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: light: add VEML6075 UVA and UVB light sensor
- driver
-Message-ID: <20231120170113.00000992@Huawei.com>
-In-Reply-To: <588dd3f4-bea5-4453-9ef6-f92fb42c7514@gmail.com>
-References: <20231110-veml6075-v1-0-354b3245e14a@gmail.com>
-	<20231110-veml6075-v1-1-354b3245e14a@gmail.com>
-	<20231119150233.10fdc66e@jic23-huawei>
-	<588dd3f4-bea5-4453-9ef6-f92fb42c7514@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34FBBA;
+	Mon, 20 Nov 2023 09:19:06 -0800 (PST)
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7afff3ea94dso169365239f.3;
+        Mon, 20 Nov 2023 09:19:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700500746; x=1701105546;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oyclGiDya5ElTdlrbB14+3v/ARVDiHt2Ibniy8Hf1lw=;
+        b=u5u6tlbYj7aNKLYfUgrny4MqASRHqt3fE965oZ7FgBQP/HUJNh8Cuqvh/k3lzUt36K
+         LAB/gcvpYCjF+l2URRQrwpI84KpYrXQWiGpAV/fLntaHDJvDEv5Bwo4FtBqin/BXjeDB
+         kWwZNVOdx7S1eNx02dnjBlyCOFijL3R45KUFJ4bM6i1HjS7FnU0mPoWi7935sxO20U4X
+         43B/2QBwvYqrAb+HhO117uCIvUUWh0mBeXIxYKE4lXtkN6C62aVvmZKdOGUCI7vUyINg
+         Jv4Rx/IQt2lpQsPCUf1Uo9n6WbUHBa0TJCu62VIhy040QrhmCt4+HcQKGZofXk6xgWTw
+         2/gg==
+X-Gm-Message-State: AOJu0YyTH7piZmYq9/xCqrDtAxyegjuLKGChBf2pOeB0kSMlXCYWbU4c
+	D/L3UscPcdpsk3sRgExFCw==
+X-Google-Smtp-Source: AGHT+IGNqd6Hys+K1K83ex6FyIigc5GrfZUb/ep+oTstiRwKRhxOw7OPOP+jex+P9qmBuMGob+wskQ==
+X-Received: by 2002:a05:6602:3718:b0:7a9:4268:fc26 with SMTP id bh24-20020a056602371800b007a94268fc26mr10884199iob.10.1700500745982;
+        Mon, 20 Nov 2023 09:19:05 -0800 (PST)
+Received: from herring.priv ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id b17-20020a056638389100b0042b1061c6a8sm2141009jav.84.2023.11.20.09.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 09:19:05 -0800 (PST)
+Received: (nullmailer pid 2370658 invoked by uid 1000);
+	Mon, 20 Nov 2023 17:19:03 -0000
+Date: Mon, 20 Nov 2023 10:19:03 -0700
+From: Rob Herring <robh@kernel.org>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linux-kernel-mentees@lists.linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
+Message-ID: <20231120171903.GA2318732-robh@kernel.org>
+References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
+ <20231117192305.17612-1-petre.rodan@subdimension.ro>
+ <20231119134939.GA8784-robh@kernel.org>
+ <ZVpswo3MSScT43Bo@sunspire>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZVpswo3MSScT43Bo@sunspire>
 
-On Sun, 19 Nov 2023 18:40:16 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-
-> On 19.11.23 16:02, Jonathan Cameron wrote:
-> >> +
-> >> +struct veml6075_data {
-> >> +	struct i2c_client *client;
-> >> +	struct regmap *regmap;
-> >> +	struct mutex lock; /* register access lock */  
-> > 
-> > regmap provides register locking as typically does the bus lock, so good to
-> > say exactly what you mean here.  Is there a Read Modify Write cycle you need
-> > to protect for instance, or consistency across multiple register accesses?
-> >   
-> What I want to avoid with this lock is an access to the measurement
-> trigger or an integration time modification from different places while
-> there is a measurement reading going on. "register access lock" is
-> probably not the best name I could have chosen though.
+On Sun, Nov 19, 2023 at 10:14:58PM +0200, Petre Rodan wrote:
 > 
-> I was not aware of that guard(mutex) mechanism. I guess it is new
-> because only one driver uses it in the iio subsystem (up to v6.7-rc1).
-> I will have a look at it.
-
-Yup. It is very new.
-
-> >> +};  
-> >   
-> >> +
-> >> +static const struct iio_chan_spec veml6075_channels[] = {
-> >> +	{
-> >> +		.type = IIO_INTENSITY,
-> >> +		.channel = CH_UVA,
-> >> +		.modified = 1,
-> >> +		.channel2 = IIO_MOD_LIGHT_UV,
-> >> +		.extend_name = "UVA",
-> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >> +			BIT(IIO_CHAN_INFO_SCALE),
-> >> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-> >> +	},
-> >> +	{
-> >> +		.type = IIO_INTENSITY,
-> >> +		.channel = CH_UVB,
-> >> +		.modified = 1,
-> >> +		.channel2 = IIO_MOD_LIGHT_UV,
-> >> +		.extend_name = "UVB",  
-> > 
-> > Extent name is very rarely used any more.  It's a horrible userspace interface
-> > and an old design mistake. 
-> > Instead we use the channel label infrastructure.  Provide the read_label()
-> > callback to use that instead.
-> > 
-> > I'm not sure this is a great solution here though.  For some similar cases
-> > such as visible light colours we've just added additional modifiers, but that
-> > doesn't really scale to lots of sensitive ranges.
-> > 
-> > One thing we have talked about in the past, but I don't think we have done in
-> > a driver yet, is to provide actual characteristics of the sensitivity graph.
-> > Perhaps just a wavelength of maximum sensitivity?
-> > 
-> > Visible light sensors often have hideous sensitivity curves, including sometimes
-> > have multiple peaks, but in this case they look pretty good.
-> > Do you think such an ABI would be more useful than A, B labelling?
-> >   
-> My first idea was adding new modifiers because I saw that
-> IIO_MOD_LIGHT_UV and IIO_MOD_LIGHT_DUV coexist, but then I thought _UVA
-> and _UVB might not be used very often (wrong assumption?) and opted for
-> a local solution with extended names. But any cleaner solution would be
-> welcome because the label attributes are redundant.
+> Good morning!
 > 
-> Maybe adding UV-A, UV-B and UV-C modifiers is not a big deal as these
-> are fairly common bands. Actually DUV is pretty much UV-C and could be
-> left as it is.
-
-Ok. Add UV-A and UV-B as that's inline with other cases.
-Always a guessing game for how often a modifier will turn up.  We have
-space and the list isn't growing that fast so should be fine.
-
-> 
-> This sensor has a single peak per channel, but I do not know how I would
-> provide that information to the core if that is better than adding UVA
-> and UVB bands. Would that add attributes to sysfs for the wavelengths or
-> extend the channel name? In that case two new modifiers might be a
-> better  and more obvious solution.
-
-Would be attributes if we did add max sensitivity wavelengths.
-Might be worth a revisit at somepoint, but not feeling like it's necessary
-for this driver.
-
-> > Jonathan
+> On Sun, Nov 19, 2023 at 07:49:39AM -0600, Rob Herring wrote:
+> > On Fri, Nov 17, 2023 at 09:22:57PM +0200, Petre Rodan wrote:
+> > > Adds binding for digital Honeywell TruStability HSC and SSC series pressure 
+> > > and temperature sensors.
+> > > 
+> [..]
+> > > Changes for v2:
+> > > - Removed redundant quotations reported by robh's bot
+> > > - Fixed yamllint warnings
+> > > 
+> > > I'm failing to run 'make DT_CHECKER_FLAGS=-m dt_binding_check' due to
+> > > python errors and exceptions
 > > 
-> >   
-> I will work on the other issues you pointed out. Thanks a lot for your
-> review.
+> > What exceptions?
+> 
+> thanks for asking.
+> 
+> first off, installed packages. the first 4 are not part of the 
+> official Gentoo repo, so I might have prepared them with missing 
+> options if any where not included by default.
+> I know nothing about python.
+> 
+> $ equery l dtschema pylibfdt ruamel-yaml yamllint jsonschema python 
+> [I-O] [  ] dev-python/dtschema-2023.9:0
+> [I-O] [  ] dev-python/pylibfdt-1.7.0_p1:0
+> [I-O] [  ] dev-python/ruamel-yaml-0.18.5:0
+> [I-O] [  ] dev-python/yamllint-1.33.0:0
+> [IP-] [  ] dev-python/jsonschema-4.19.1:0
 
-> 
-> Best regards,
-> Javier Carrasco
-> 
-> 
+4.18 and later are not supported.
 
+Apparently behavior we relied on in pre-4.18 was "wrong" usage... 4.18 
+also makes rust a hard dependency. That's a problem for any arch without 
+LLVM support.
+
+Installing via pip will check this dependency.
+
+Rob
 

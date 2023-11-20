@@ -1,51 +1,61 @@
-Return-Path: <linux-iio+bounces-185-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-186-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258B17F148A
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 14:42:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD0B7F14FE
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 14:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF9628179C
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B7781C21792
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE71B26D;
-	Mon, 20 Nov 2023 13:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E3C1BDC5;
+	Mon, 20 Nov 2023 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="i751HDfF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FUd3Z9iu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F7E9E;
-	Mon, 20 Nov 2023 05:42:47 -0800 (PST)
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id A975D28EE6F;
-	Mon, 20 Nov 2023 13:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1700487765;
-	bh=bWmlv7HcEBkDpHScBAIC+ls7pXqAHfS+VuHaY8KKih8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i751HDfFooxJJbwvvaMsOURUCHavTnzSRP8g/B0V1tAxxngS7Ft1vvEfw0KITW87I
-	 Pi0fKtSxDMJguNdNEdjzWMBVRNwK/wkafPBScTZ9UlVVNwamsE3W3MPlbY9Rq7oWmX
-	 RdbTUAV1ewmb5prqUCcD+0XSf+P7cu7jWN/Z9BD4=
-Date: Mon, 20 Nov 2023 15:42:44 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
-Message-ID: <ZVtiVM2Gm1x1j_G1@sunspire>
-References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
- <20231117192305.17612-1-petre.rodan@subdimension.ro>
- <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28957113;
+	Mon, 20 Nov 2023 05:55:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700488543; x=1732024543;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PXGeN56aD7dUcwoqP9t0zuOvOUE2IgO279u+Pk2aipw=;
+  b=FUd3Z9iuOzb4UHiOlFF+JsPAvECGaG5LfajaAXlQC1poejR8w2ZUBe9I
+   S5jZgXo5G4Y4IqMjXHfW/ksd3YhsrO7dtEbsPgaPbyHuaRa9H+vs4HfWG
+   yGVxswl/Nk/cdKmXwVFtxuIslLapCJwGOdztEzgZ6KUp1aDJ0QLs8RR/0
+   y7iKllP8Ovprmho6kSf9HF4MwpDov5Rn7ufePEYulEQzS4IFQ/kmIkr+A
+   OVR3eJclHEv8QLCd5ug1rK3xaVQ6LfUWSFPM3/t4oRaexfw3patMeHz7P
+   Bw8udZ8QKxh7ypPjuID4Plja/r90yzMbTKNU5lIe+KTfYKxE+AP2MUvL8
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="4739444"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="4739444"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 05:55:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="742733512"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="742733512"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 20 Nov 2023 05:55:40 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r54kT-0006VW-1E;
+	Mon, 20 Nov 2023 13:55:37 +0000
+Date: Mon, 20 Nov 2023 21:54:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hiten Chauhan <hiten.chauhan@siliconsignals.io>,
+	jmaneyrol@invensense.com, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Hiten Chauhan <hiten.chauhan@siliconsignals.io>
+Subject: Re: [PATCH v2 1/1] Added tilt interrupt support in inv_icm42600
+Message-ID: <202311202146.D4gNcBnT-lkp@intel.com>
+References: <20231116134528.21467-1-hiten.chauhan@siliconsignals.io>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,247 +64,62 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
+In-Reply-To: <20231116134528.21467-1-hiten.chauhan@siliconsignals.io>
+
+Hi Hiten,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.7-rc2 next-20231120]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Hiten-Chauhan/Added-tilt-interrupt-support-in-inv_icm42600/20231116-214808
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20231116134528.21467-1-hiten.chauhan%40siliconsignals.io
+patch subject: [PATCH v2 1/1] Added tilt interrupt support in inv_icm42600
+config: i386-randconfig-062-20231120 (https://download.01.org/0day-ci/archive/20231120/202311202146.D4gNcBnT-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231120/202311202146.D4gNcBnT-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311202146.D4gNcBnT-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:116:39: error: too many arguments provided to function-like macro invocation
+   static DEVICE_ATTR_RW(tilt_interrupt, 0644,
+                                         ^
+   include/linux/device.h:179:9: note: macro 'DEVICE_ATTR_RW' defined here
+   #define DEVICE_ATTR_RW(_name) \
+           ^
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:116:8: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   static DEVICE_ATTR_RW(tilt_interrupt, 0644,
+   ~~~~~~ ^
+   int
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:120:3: error: use of undeclared identifier 'dev_attr_tilt_interrupt'
+           &dev_attr_tilt_interrupt.attr,
+            ^
+   3 errors generated.
 
 
-Hello Krzysztof,
+vim +116 drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
 
-thanks for the pointer regarding the version requirement for jsonschema.
-installing an older version fixed all python exceptions.
-
-
-On Mon, Nov 20, 2023 at 11:21:42AM +0100, Krzysztof Kozlowski wrote:
-> On 17/11/2023 20:22, Petre Rodan wrote:
-> > Adds binding for digital Honeywell TruStability HSC and SSC series pressure 
-> > and temperature sensors.
-> > 
-> > Datasheet:
-> >  [HSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
-> >  [SSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
-
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - honeywell,hsc
-> 
-> Way too generic
-
-I'm new to this, please excuse my ignorance.
-my driver covers all Honeywell pressure sensors under the "TruStability board mount HSC/SSC" moniker.
-that is why my intention was to provide a rather generic name for the driver itself.
-are you afraid that they will come up with a different device that they will call "hsc" in the future?
-in this case honeywell,trustability-hsc would be fine?
-
-as I see you prefer to target a particular chip, but I am a bit afraid that the end-user will be confused by needing to set up something like
-
-pressure@28 {
-	compatible = "honeywell,hsc030pa";
-	reg = <0x28>;
-	honeywell,transfer-function = <0>;
-	honeywell,pressure-range = "250MD";
-};
-
-ie. specifying "hsc030pa" as driver while his chip is not in the 030PA range, but 250MD.
-
-so do you prefer
- honeywell,trustability-hsc  OR
- honeywell,hsc030pa
-
-> > +  honeywell,range_str:
-> 
-> No underscores in property names.
-> 
-> "str" is redundant. Instead say what is it, because "range" is way too
-> vague.
-
-will rename to honeywell,pressure-range if that is ok with you.
-
-> > +    description: |
-> > +      Five character string that defines "pressure range, unit and type"
-> > +      as part of the device nomenclature. In the unlikely case of a custom
-> > +      chip, set to "NA" and provide honeywell,pmin-pascal honeywell,pmax-pascal
-> > +    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
-> > +           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
-> > +           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
-> > +           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
-> > +           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
-> > +           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
-> > +           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
-> > +           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
-> > +           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
-> > +           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
-> > +           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
-> > +           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
-> > +           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
-> > +           150PG, NA]
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +
-> > +  honeywell,pmin-pascal:
-> > +    description: |
-> > +      Minimum pressure value the sensor can measure in pascal.
-> > +      To be specified only if honeywell,range_str is set to "NA".
-> > +    $ref: /schemas/types.yaml#/definitions/int32
-> 
-> That's uint32. Why do you need negative values?
-
-signed int32 is intentional. some chips have two physical input ports and measure a pressure differential in which case pmin is negative.
-see either of the pdfs at page 14, table 8, column 2, row 7+
-
-> > +  honeywell,pmax-pascal:
-> > +    description: |
-> > +      Maximum pressure value the sensor can measure in pascal.
-> > +      To be specified only if honeywell,range_str is set to "NA".
-> > +    $ref: /schemas/types.yaml#/definitions/int32
-> 
-> Ditto
-
-well, since we saw pmin needs to be signed should we have pmax unsigned?
-
-> > +  vdd-supply:
-> > +    description: |
-> > +      Provide VDD power to the sensor (either 3.3V or 5V depending on the chip).
-> > +      Optional, activate only if required by the target board.
-> 
-> Drop the last sentence. The supplies are required not by target board
-> but by hardware. I also do not understand what "activate" means in terms
-> of bindings and DTS.
-
-ok, ignore rambling.
-
-> > +
-> > +  spi-max-frequency:
-> > +    description: SPI clock to be kept between 50 and 800kHz
-> 
-> Drop description, add minimum/maximum constraints if worth.
-
-will replace block with
-
-  spi-max-frequency:
-    maximum: 800000
-
-as I saw in other yaml files
- 
-> > +  clock-frequency:
-> > +    description: i2c clock to be kept between 100 and 400kHz
-> 
-> Drop, that's not really an I2C device property. Your driver must use
-> common clock framework.
-
-ack
-
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - honeywell,transfer-function
-> > +  - honeywell,range_str
-> > +  - clock-frequency
-> 
-> Why?
-
-dropped clock-frequency
-
-everything else below will be as you asked.
-
-I will provide a new set of patches after I get your inpyt.
-
-my very best regards,
-peter
-
-> > +  - spi-max-frequency
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    i2c {
-> > +        status = "okay";
-> 
-> ?!? Drop
-> 
-> > +        clock-frequency = <400000>;
-> 
-> Drop
-> 
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        HSCMRNN030PA2A3@28 {
-> 
-> Node names should be generic. See also an explanation and list of
-> examples (not exhaustive) in DT specification:
-> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-> 
-> Plus, upper case is not allowed...
-> 
-> > +          status = "okay";
-> 
-> Drop. BTW status never comes first!
-> 
-> > +          compatible = "honeywell,hsc";
-> > +          reg = <0x28>;
-> > +
-> > +          honeywell,transfer-function = <0>;
-> > +          honeywell,range_str = "030PA";
-> > +        };
-> > +    };
-> > +
-> > +    spi {
-> > +        # note that MOSI is not required by this sensor
-> 
-> This should be then part of description, not example.
-> 
-> > +        status = "okay";
-> 
-> Drop
-> 
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        HSCMLNN100PASA3@0 {
-> 
-> Eh...
-> 
-> > +          status = "okay";
-> 
-> Drop
-> 
-> > +          compatible = "honeywell,hsc";
-> > +          reg = <0>;
-> > +          spi-max-frequency = <800000>;
-> > +
-> > +          honeywell,transfer-function = <0>;
-> > +          honeywell,range_str = "100PA";
-> > +        };
-> > +
-> > +        HSC_CUSTOM_CHIP@0 {
-> 
-> Drop, not needed. One example is enough.
-> 
-> > +          status = "okay";
-> > +          compatible = "honeywell,hsc";
-> > +          reg = <1>;
-> > +          spi-max-frequency = <800000>;
-> 
-> Also, your indentation is broken.
-> 
-> Use 4 spaces for example indentation.
-> 
-> > +
-> > +          honeywell,transfer-function = <0>;
-> > +          honeywell,range_str = "NA";
-> > +          honeywell,pmin-pascal = <0>;
-> > +          honeywell,pmax-pascal = <206850>;
-> > +        };
-> > +
-> 
-> No stray blank lines.
-> 
-> Best regards,
-> Krzysztof
-> 
-> 
+   115	
+ > 116	static DEVICE_ATTR_RW(tilt_interrupt, 0644,
+   117			   tilt_interrupt_show, tilt_interrupt_store);
+   118	
+   119	static struct attribute *icm42605_attrs[] = {
+ > 120		&dev_attr_tilt_interrupt.attr,
+   121		NULL,
+   122	};
+   123	
 
 -- 
-petre rodan
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-178-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-179-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701837F100B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 11:15:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ECF7F1033
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 11:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A0AC282183
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 10:15:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E958B21646
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 10:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A14712B9C;
-	Mon, 20 Nov 2023 10:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B6D12E48;
+	Mon, 20 Nov 2023 10:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tDRd6VN9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CvrXlCb7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9810CF
-	for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:15:48 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5431614d90eso5983910a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:15:48 -0800 (PST)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA4CFBA
+	for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:21:47 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40907b82ab9so8578615e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:21:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700475347; x=1701080147; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700475706; x=1701080506; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=QQvgpCFnhaazymxXhphPFYasGRDeKdii9QoGG3qjZ8w=;
-        b=tDRd6VN9YH5EkT1K8Mi1UG2UfxQTarPd1+1FqgWuEugDUubY9P3R08kjHRIs7en/Du
-         gP4wMvqBWQ/u+rffEUDC5kFNzCoD94cJqqYhoSoDsRwNtaVcnWKIZc9syg47Yb8da01l
-         fERiuoJM87iymUmuffjyjvGF4CGEQJNC05J3uw+ox1HF44kKNavn0e0DiAOaYC2Vnevi
-         7gC6etomioDqh0VvYhlzgmfHIQmaoiG2g2Ras/BK1Yq+ZGpbgUwdZ74Yfu0uXMSogZSQ
-         rAqQsJed4GoLIGsEcJaeG0+fiI8M7aVn0Kn3rLU+oqFaulQ02AiezPe7+HQy/0wozs+o
-         2+8w==
+        bh=tngpdwuisNQKc4yHRR1zw3uy9f0IRUoH/YVWCHWZtpQ=;
+        b=CvrXlCb7LvOU8cne5sPAFJcgM0/zraAMRqYAxohoDZuZ+bY0r7xINlNO11KBRWiRmD
+         P2dqdTopGbSSfA+q087GhhSKtj3yqu39635syKo9q0CqGSeYPVJFglcHDfeRZjhlekVD
+         +jUbNMUS+ND0zx3dE+pfU2slEQnwm6U/v99kATkPoJCMUp7cJrFwXRgQTo+d8gr1UHpe
+         ywZnv6gvT9FUxvWCIrS9wjRyrjS8byBUZtg7qKwzlzx61oyEohwTcy6vEpfcuJaod9Nr
+         WzItzodLMKkDdoZmnIXPAwZIzM1HDRS6w+C+cjdb5wrX/2ZyvlFpYPmuqyzbUYne1n/h
+         hThw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700475347; x=1701080147;
+        d=1e100.net; s=20230601; t=1700475706; x=1701080506;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQvgpCFnhaazymxXhphPFYasGRDeKdii9QoGG3qjZ8w=;
-        b=rKZCY9S0MkpFMFUnM4fA0mdUUoB/Qivj1mGxUSByA8KSU+fYsBAhlYeerQ2WYzgeHj
-         68UlrjDuTIGjrE1LGLg5FJ5k0oJ2DgEZuv+vh6Rein9zBjHJ6MHZegqtjW6UQY7xwToM
-         u9UMiGYCYBfycxAHLxdM7lCdEdW0KFmfznEhDzFs32/a7o0vgqthpJ8uQ9mgUOkmPSql
-         H1dw2tbMXGOtV4jqtCQXHrNFi6qgDuZ8Ar24EqYq+/aYQSo2q6C53MobbocTCA0zoLvd
-         TVXGq2v87ibkFDybZdC9hgGQaUTxm0IPeGu1IhQLpNmv+P++s7tu0bYULu9VMFOOiGYN
-         h/CQ==
-X-Gm-Message-State: AOJu0YybFgKpYJekyAasv/ISleE6papf2WjwPe4pVO9mamHyiFkai6R9
-	tiotPLqLsx3EYn6IPdjd1GsL3g==
-X-Google-Smtp-Source: AGHT+IHzo0OO8PoMXTARWBHZXKM7DLL9A1qCpjY86RTeFujsT7cu/9mBk9e5WoUXy9WiZDmwtbgTug==
-X-Received: by 2002:a17:906:2cb:b0:9e0:dde:cc9f with SMTP id 11-20020a17090602cb00b009e00ddecc9fmr5231853ejk.22.1700475347140;
-        Mon, 20 Nov 2023 02:15:47 -0800 (PST)
+        bh=tngpdwuisNQKc4yHRR1zw3uy9f0IRUoH/YVWCHWZtpQ=;
+        b=Jqya17MGWt1e3bb7oF+3x9gfmQQ/AtGXH9/O/XygslJI58i4Ir4lRTB6iox29UDbcn
+         ThBZ3iFCyISQfErDa3ez/7fEdr4zZIY87EELTnAIj2Ih4Eyp4hFQL+4KkQJ64WehYZY5
+         5zim8szcVrNZW58NRZcqDc+lPQ3g5B+bFnExbvf/3cWnNv2tFYMqPKluNkXsl3bYaP1d
+         R5lh/i2ncqGyrwjjOPpPMJRcmuEomAZU+/Zq9GKtNjTL3Je8uztGU624QJtGL9iq+o3n
+         KutPadXnMihtpdMAHqWnyGDOpRaBP4HH2aOkKWPeSbOhD43DhmN3Y8998hNf58mUKVSW
+         iCSA==
+X-Gm-Message-State: AOJu0Yzk3AxYM9tAN0BOEpdPiCmGY9z6ZVMQdJvc3FbdVuDN565SMN3E
+	gTRi0gF1Ww6uOWVW3MBnsbrnSQ==
+X-Google-Smtp-Source: AGHT+IHdpu/jgQOo1ThY3WmjYCGXOAN5pKC+tnMqToAyZ8BBNTmS0ynW6TgaqBsZCwA107M21yFjEg==
+X-Received: by 2002:a05:6000:1a88:b0:332:cb9d:c145 with SMTP id f8-20020a0560001a8800b00332cb9dc145mr336973wry.18.1700475706348;
+        Mon, 20 Nov 2023 02:21:46 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.11])
-        by smtp.gmail.com with ESMTPSA id lz10-20020a170906fb0a00b009737b8d47b6sm3709867ejb.203.2023.11.20.02.15.44
+        by smtp.gmail.com with ESMTPSA id r7-20020a056000014700b0032fab28e9c9sm10766114wrx.73.2023.11.20.02.21.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 02:15:45 -0800 (PST)
-Message-ID: <efd3819c-6507-49c6-ba4d-7b6d9b7ce87b@linaro.org>
-Date: Mon, 20 Nov 2023 11:15:43 +0100
+        Mon, 20 Nov 2023 02:21:44 -0800 (PST)
+Message-ID: <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
+Date: Mon, 20 Nov 2023 11:21:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -64,16 +64,15 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
 Content-Language: en-US
-To: Petre Rodan <petre.rodan@subdimension.ro>, Rob Herring <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
+To: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  linux-kernel-mentees@lists.linuxfoundation.org,
  Jonathan Cameron <jic23@kernel.org>
 References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
  <20231117192305.17612-1-petre.rodan@subdimension.ro>
- <20231119134939.GA8784-robh@kernel.org> <ZVpswo3MSScT43Bo@sunspire>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -119,48 +118,264 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZVpswo3MSScT43Bo@sunspire>
+In-Reply-To: <20231117192305.17612-1-petre.rodan@subdimension.ro>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 19/11/2023 21:14, Petre Rodan wrote:
+On 17/11/2023 20:22, Petre Rodan wrote:
+> Adds binding for digital Honeywell TruStability HSC and SSC series pressure 
+> and temperature sensors.
 > 
-> Good morning!
+> Datasheet:
+>  [HSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
+>  [SSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
 > 
-> On Sun, Nov 19, 2023 at 07:49:39AM -0600, Rob Herring wrote:
->> On Fri, Nov 17, 2023 at 09:22:57PM +0200, Petre Rodan wrote:
->>> Adds binding for digital Honeywell TruStability HSC and SSC series pressure 
->>> and temperature sensors.
->>>
-> [..]
->>> Changes for v2:
->>> - Removed redundant quotations reported by robh's bot
->>> - Fixed yamllint warnings
->>>
->>> I'm failing to run 'make DT_CHECKER_FLAGS=-m dt_binding_check' due to
->>> python errors and exceptions
->>
->> What exceptions?
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> ---
 > 
-> thanks for asking.
+> Changes for v2:
+> - Removed redundant quotations reported by robh's bot
+> - Fixed yamllint warnings
 > 
-> first off, installed packages. the first 4 are not part of the official Gentoo repo, so I might have prepared them with missing options if any where not included by default.
-> I know nothing about python.
+> I'm failing to run 'make DT_CHECKER_FLAGS=-m dt_binding_check' due to
+> python errors and exceptions
+> ---
+>  .../iio/pressure/honeywell,hsc030pa.yaml      | 156 ++++++++++++++++++
+>  1 file changed, 156 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> new file mode 100644
+> index 000000000000..c7e5d3bd5ef4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> @@ -0,0 +1,156 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,hsc030pa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell TruStability HSC and SSC pressure sensor families
+> +
+> +description: |
+> +  support for Honeywell TruStability HSC and SSC digital pressure sensor
+> +  families.
+> +
+> +  These sensors have either an I2C, an SPI or an analog interface. Only the
+> +  digital versions are supported by this driver.
+> +
+> +  There are 118 models with different pressure ranges available in each family.
+> +  The vendor calls them "HSC series" and "SSC series". All of them have an
+> +  identical programming model but differ in pressure range, unit and transfer
+> +  function.
+> +
+> +  To support different models one need to specify the pressure range as well as
+> +  the transfer function. Pressure range can either be provided via range_str or
+> +  in case it's a custom chip via numerical range limits converted to pascals.
+> +
+> +  The transfer function defines the ranges of raw conversion values delivered
+> +  by the sensor. pmin-pascal and pmax-pascal corespond to the minimum and
+> +  maximum pressure that can be measured.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
+> +  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
+> +
+> +maintainers:
+> +  - Petre Rodan <petre.rodan@subdimension.ro>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - honeywell,hsc
 
-The easiest is to install them with pip. You might get old versions from
-your distro. Although in your case, it looks you got most recent.
+Way too generic
 
-> 
-> $ equery l dtschema pylibfdt ruamel-yaml yamllint jsonschema python 
-> [I-O] [  ] dev-python/dtschema-2023.9:0
-> [I-O] [  ] dev-python/pylibfdt-1.7.0_p1:0
-> [I-O] [  ] dev-python/ruamel-yaml-0.18.5:0
-> [I-O] [  ] dev-python/yamllint-1.33.0:0
-> [IP-] [  ] dev-python/jsonschema-4.19.1:0
+> +      - honeywell,ssc
 
-I guess this is the problem. The dtschema explicitly asks for:
-    "jsonschema>=4.1.2,<4.18",
-because newer jsonschema does not work well for us.
+Way too generic
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  honeywell,transfer-function:
+> +    description: |
+> +      Transfer function which defines the range of valid values delivered by
+> +      the sensor.
+> +      0 - A, 10% to 90% of 2^14
+> +      1 - B, 5% to 95% of 2^14
+> +      2 - C, 5% to 85% of 2^14
+> +      3 - F, 4% to 94% of 2^14
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  honeywell,range_str:
+
+No underscores in property names.
+
+"str" is redundant. Instead say what is it, because "range" is way too
+vague.
+
+> +    description: |
+> +      Five character string that defines "pressure range, unit and type"
+> +      as part of the device nomenclature. In the unlikely case of a custom
+> +      chip, set to "NA" and provide honeywell,pmin-pascal honeywell,pmax-pascal
+> +    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
+> +           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
+> +           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
+> +           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
+> +           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
+> +           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
+> +           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
+> +           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
+> +           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
+> +           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
+> +           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
+> +           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
+> +           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
+> +           150PG, NA]
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +
+> +  honeywell,pmin-pascal:
+> +    description: |
+> +      Minimum pressure value the sensor can measure in pascal.
+> +      To be specified only if honeywell,range_str is set to "NA".
+> +    $ref: /schemas/types.yaml#/definitions/int32
+
+That's uint32. Why do you need negative values?
+
+> +
+> +  honeywell,pmax-pascal:
+> +    description: |
+> +      Maximum pressure value the sensor can measure in pascal.
+> +      To be specified only if honeywell,range_str is set to "NA".
+> +    $ref: /schemas/types.yaml#/definitions/int32
+
+Ditto
+
+> +
+> +  vdd-supply:
+> +    description: |
+> +      Provide VDD power to the sensor (either 3.3V or 5V depending on the chip).
+> +      Optional, activate only if required by the target board.
+
+Drop the last sentence. The supplies are required not by target board
+but by hardware. I also do not understand what "activate" means in terms
+of bindings and DTS.
+
+> +
+> +  spi-max-frequency:
+> +    description: SPI clock to be kept between 50 and 800kHz
+
+Drop description, add minimum/maximum constraints if worth.
+
+> +
+> +  clock-frequency:
+> +    description: i2c clock to be kept between 100 and 400kHz
+
+Drop, that's not really an I2C device property. Your driver must use
+common clock framework.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - honeywell,transfer-function
+> +  - honeywell,range_str
+> +  - clock-frequency
+
+Why?
+
+> +  - spi-max-frequency
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c {
+> +        status = "okay";
+
+?!? Drop
+
+> +        clock-frequency = <400000>;
+
+Drop
+
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        HSCMRNN030PA2A3@28 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+Plus, upper case is not allowed...
+
+> +          status = "okay";
+
+Drop. BTW status never comes first!
+
+> +          compatible = "honeywell,hsc";
+> +          reg = <0x28>;
+> +
+> +          honeywell,transfer-function = <0>;
+> +          honeywell,range_str = "030PA";
+> +        };
+> +    };
+> +
+> +    spi {
+> +        # note that MOSI is not required by this sensor
+
+This should be then part of description, not example.
+
+> +        status = "okay";
+
+Drop
+
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        HSCMLNN100PASA3@0 {
+
+Eh...
+
+> +          status = "okay";
+
+Drop
+
+> +          compatible = "honeywell,hsc";
+> +          reg = <0>;
+> +          spi-max-frequency = <800000>;
+> +
+> +          honeywell,transfer-function = <0>;
+> +          honeywell,range_str = "100PA";
+> +        };
+> +
+> +        HSC_CUSTOM_CHIP@0 {
+
+Drop, not needed. One example is enough.
+
+> +          status = "okay";
+> +          compatible = "honeywell,hsc";
+> +          reg = <1>;
+> +          spi-max-frequency = <800000>;
+
+Also, your indentation is broken.
+
+Use 4 spaces for example indentation.
+
+> +
+> +          honeywell,transfer-function = <0>;
+> +          honeywell,range_str = "NA";
+> +          honeywell,pmin-pascal = <0>;
+> +          honeywell,pmax-pascal = <206850>;
+> +        };
+> +
+
+No stray blank lines.
 
 Best regards,
 Krzysztof

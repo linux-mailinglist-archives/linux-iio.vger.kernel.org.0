@@ -1,56 +1,69 @@
-Return-Path: <linux-iio+bounces-201-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-202-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876A27F1C50
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 19:25:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE9F7F1DFA
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 21:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0BC1C214A0
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 18:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13521C21242
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 20:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21C230675;
-	Mon, 20 Nov 2023 18:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76242374D5;
+	Mon, 20 Nov 2023 20:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="morhvBQT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJqmfgyA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8E1C8;
-	Mon, 20 Nov 2023 10:25:11 -0800 (PST)
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 2E5CC28EE6F;
-	Mon, 20 Nov 2023 18:25:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1700504710;
-	bh=TqPCYi/lfIqtwCO6M0vvyzzQcnlSevyzaWBJMKt67zI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=morhvBQTAbQh5MbTCeiLvnMOThf9SrBu76IjYpU/VGqvGd24SDnqdEqtQQaQ2hFa/
-	 1WdwaPW+9Yu7PczCiWz9tozCinhRSKceEkYghEO3wtCSk7fc/RtVnhLVAUiIFG8uh1
-	 F/irdTFARvvIzQ0nuW/UY/DlQAbrnMdzKlXufW5s=
-Date: Mon, 20 Nov 2023 20:25:08 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
-Message-ID: <ZVukhMcY8A3Crxc_@sunspire>
-References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
- <20231117192305.17612-1-petre.rodan@subdimension.ro>
- <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
- <ZVtiVM2Gm1x1j_G1@sunspire>
- <8aa11758-5eee-427b-adcb-c3578a521daf@linaro.org>
- <ZVtv8x8LqGMhCisw@sunspire>
- <20231120173929.00006a6d@Huawei.com>
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F8DE8;
+	Mon, 20 Nov 2023 12:23:25 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507bd64814fso6708038e87.1;
+        Mon, 20 Nov 2023 12:23:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700511803; x=1701116603; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lKHqxNOb0s+yYoiwVra6G4KKWe01UXwqHln/ApyC2m4=;
+        b=UJqmfgyAh/3nLkP39+aMZROgvKTO5UM0D+r+M923uueKERFDqUOv2DUdvDXN7PPR9D
+         rOAGTGqPzSv0+G94kJw2BhceK0zmUexZEB1e9VAxwHTofK9ExPlGJdVajz36ph7L4iUB
+         76CTS6IFHvKC+jn4vvFiR9W8sKOMMNwI9Y3T/qOREZqH4PYi0B5Pdf2zplOjvgPDBR7o
+         BgsJIms2TFJ/yFGXo9J32mDWu/46uwqqUojnPK4E4/hTaftYaOdJJSXJYputnAoaIxAn
+         H4RLsFtC19YjQ1dGQ3rY+kneV3qDx3Mtrdsm+lTh68/nsr1Wuqvpqqzp9GTzKvnNQuKz
+         EsXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700511803; x=1701116603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lKHqxNOb0s+yYoiwVra6G4KKWe01UXwqHln/ApyC2m4=;
+        b=Goz24CwTX538ynYYf5bELA6T4cm8i7NjzjSxykkeMiRZlpKkYojVHw3W1CvYSWJI9x
+         UBZtc+1PwM1aLDlS2rC/w1+7ONeOJsLxJlQTam935pNTDq/MXoES2eMJgXQTPWa0b31f
+         ry8QCtkWanMX2JcJnrdsMG6e32W1RxEkQ5JaSXwc4wAsA1fF0qF7Fci9G90fJMhmFpH/
+         TIOkTsPHIv5NB8KHuVDHQH6PWO4NJSO7FdPkakOc7BEt//zHVx4WS3fHaXtlaI3HLifK
+         GJaMn7oGlhQbpLbWF44EVkOKDf5ZPXG7cgLRqmijOYbyx3myBpxTs3huyxjybdIaf/su
+         +YCQ==
+X-Gm-Message-State: AOJu0YwFoYS/YRd825lUuzBHkdXVzom30AnOf+ITTJlciMX34DB1mEqp
+	0tuvwanjtN4TK7bdKglVn48=
+X-Google-Smtp-Source: AGHT+IFhXcnX4W2V7BVPtVW8s0A9taRDZ0J2v7bLApCBOk+kw4ysyv1kTbiCoFZmZAbjQLPwtNoywQ==
+X-Received: by 2002:a05:651c:3da:b0:2c8:7443:d111 with SMTP id f26-20020a05651c03da00b002c87443d111mr4938734ljp.10.1700511803167;
+        Mon, 20 Nov 2023 12:23:23 -0800 (PST)
+Received: from tp440p.steeds.sam ([2602:fbf6:10:a::2])
+        by smtp.gmail.com with ESMTPSA id uz4-20020a170907118400b009fc2a76ddedsm2357663ejb.17.2023.11.20.12.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 12:23:22 -0800 (PST)
+Date: Mon, 20 Nov 2023 22:23:13 +0200
+From: Sicelo <absicsz@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+	maemo-leste@lists.dyne.org,
+	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+	linux-input@vger.kernel.org
+Subject: Re: supporting binary (near-far) proximity sensors over gpio
+Message-ID: <ZVvAMbggKe9WLmw1@tp440p.steeds.sam>
+References: <ZVevR_ajeB1jfDS9@tp440p.steeds.sam>
+ <CAMknhBE5A3w7ntdWC9cFDYSrPQNPoH7sQ5PVXKEy6MAJmZ93SA@mail.gmail.com>
+ <20231120173131.000058a2@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,96 +72,30 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231120173929.00006a6d@Huawei.com>
+In-Reply-To: <20231120173131.000058a2@Huawei.com>
 
+Hi
 
-Hello!
-
-On Mon, Nov 20, 2023 at 05:39:29PM +0000, Jonathan Cameron wrote:
-> On Mon, 20 Nov 2023 16:40:51 +0200
-> Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Mon, Nov 20, 2023 at 05:31:31PM +0000, Jonathan Cameron wrote:
+> > Since this is really a proximity switch (it is either on or off)
+> > rather than measuring a proximity value over a continuous range, it
+> > doesn't seem like a good fit for the iio subsystem. If the sensor is
+> > on a phone, then it is likely to detect human presence so the input
+> > subsystem does seem like the right one for that application.
+> > 
+> > More at https://www.kernel.org/doc/html/latest/driver-api/iio/intro.html
+> > 
+> Agreed.  This one at least has a working distance of 30mm sensor, so
+> definitely switch type usecases where input tends to be the right choice.
 > 
-> > Hello!
-> > 
-> > On Mon, Nov 20, 2023 at 03:04:07PM +0100, Krzysztof Kozlowski wrote:
-> > > On 20/11/2023 14:42, Petre Rodan wrote:
-> > >   
-> > > >>> +properties:
-> > > >>> +  compatible:
-> > > >>> +    enum:
-> > > >>> +      - honeywell,hsc  
-> > > >>
-> > > >> Way too generic  
-> > > > 
-> > > > I'm new to this, please excuse my ignorance.
-> > > > my driver covers all Honeywell pressure sensors under the "TruStability board mount HSC/SSC" moniker.  
-> > > 
-> > > We talk here about bindings, not driver. For the driver you can use
-> > > whatever name is approved by reviewers of your driver.
-> > >   
-> > > > that is why my intention was to provide a rather generic name for the driver itself.
-> > > > are you afraid that they will come up with a different device that they will call "hsc" in the future?
-> > > > in this case honeywell,trustability-hsc would be fine?
-> > > > 
-> > > > as I see you prefer to target a particular chip, but I am a bit afraid that the end-user will be confused by needing to set up something like
-> > > > 
-> > > > pressure@28 {
-> > > > 	compatible = "honeywell,hsc030pa";  
-> > > 
-> > > The compatible should be specific, thus for example match exact model
-> > > number.  
-> > 
-> > there are an infinite number of combinations of 4 transfer functions and 118 ranges + one custom range, so providing an array with all specific chips that could end up as compatible is out of the question.
-> > I was aiming at providing a generic name for the binding and get the transfer function and the pressure range as required parameters.
-> > 
-> > > If you can guarantee that all devices from given family are the same in
-> > > respect of programming model and hardware requirements (e.g. supplies),
-> > > then you could go with family name. However such guarantees are rarely
-> > > given.  
-> > 
-> > I see your point.
-> > 
-> > > Therefore for mprls0025pa I agreed for using one specific model
-> > > for entire family.
-> > > 
-> > > https://lore.kernel.org/all/d577bc44-780f-f25d-29c6-ed1d353b540c@linaro.org/
-> > > 
-> > >   
-> > > > 	reg = <0x28>;
-> > > > 	honeywell,transfer-function = <0>;
-> > > > 	honeywell,pressure-range = "250MD";
-> > > > };
-> > > > 
-> > > > ie. specifying "hsc030pa" as driver while his chip is not in the 030PA range, but 250MD.
-> > > > 
-> > > > so do you prefer
-> > > >  honeywell,trustability-hsc  OR
-> > > >  honeywell,hsc030pa  
-> > > 
-> > > I think the latter, just like we did for mprls0025pa. How many devices
-> > > do you have there?  
-> > 
-> > both hsc and ssc have 118 ranges, 4 transfer functions and both can be requested from the manufacturer with custom measurement ranges.
-> > 
-> > ok,I will rename hsc->hsc030pa in the code as you requested.
+> If we wanted to use proximity range sensor for this usecase, we'd probably
+> bridge it to input (maybe in userspace, maybe in kernel) from the
+> underlying IIO driver.
 > 
-> Where does pa come from? 
+> Jonathan
 
-honeywell,hsc030pa was provided as an equivalent to honeywell,mprls0025pa (which is already in the repo).
+Thank you so much for the input. It makes sense.
 
-'030PA' and '0025PA' define the pressure range (0-30, 0-25), the unit of measure (Psi) and the measurement type (Absolute) for a particular chip in the honeywell catalog. (please ignore the psi part, we convert everything to pascals).
-but both my driver and Andreas Klinger's mprls0025pa actually provide a generic abstraction layer for entire series of sensors.
-
-> If we are going generic, feels like trustability-ssc etc are more representative
-> and matches the datasheet cover page.
-
-Krzysztof voted for non-generic, honeywell,mprls0025pa is already set up non-generic, my intent was to go generic.
-
-I'll rewrite the code to whatever you guys feel is best.
-
-peter
-
-
--- 
-petre rodan
+Sincerely
+Sicelo
 

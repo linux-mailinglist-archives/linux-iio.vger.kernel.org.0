@@ -1,173 +1,109 @@
-Return-Path: <linux-iio+bounces-180-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-181-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7607C7F1040
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 11:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9337F1203
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 12:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F40C92820FE
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 10:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D1D282633
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 11:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59BA12E4A;
-	Mon, 20 Nov 2023 10:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B3D14AB3;
+	Mon, 20 Nov 2023 11:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rErlRDjf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LiqgaJ2m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5374ACA
-	for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:24:07 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4081ccf69dcso8636355e9.0
-        for <linux-iio@vger.kernel.org>; Mon, 20 Nov 2023 02:24:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700475846; x=1701080646; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XIWcmzUATqFpSkLecm8t4yTqBewKCl5WovJgwXd+zUw=;
-        b=rErlRDjfWHYCT+Ki16A93twZ1jzQs9UaQkZSphyR+Xg8gRVEbSFhP+0vbvl3JAuS+h
-         ygPFAwUll5b+hozNjzQblJyHUu66iQvfv712fNiIBRSGi9V/nMdgmKbfHABQwHf/mUs9
-         hpQZKAF6msSyBswLK8d8HCECvTeRxmsHXIFgeUcf1SsBLUNhsxbWvNVDWUwZJ9a6OavG
-         K1aqG+/ofo/dEqnKGjkTsvBHFOr+iO0W0pV/CY+pg8DVS8F+2V0jdyagDUE7XFUOZDcZ
-         Z/u0x8Z1RFAa1aLSUrMaNGbu3sx2Vh3jtg737Oxs6viBrVStZgSz3O/0T5CsEV4+8JQ2
-         MGdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700475846; x=1701080646;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XIWcmzUATqFpSkLecm8t4yTqBewKCl5WovJgwXd+zUw=;
-        b=BucVL+jSgzxq10DyybWk9DwbuxhC+pCJmmkNVVYV+4HU14hf6YuHKH0gXSPZjh+dNm
-         8Y7AJWrhzrn8G7KCGiIjoaLmjyB6xcnD1qOoiphdZXJrw9Onk/DoqHba8tFT+yVkDhQ/
-         +xAAVhi5Z9AW36cEr9QT/sD5HWNvHgV64v5EKF8Hi4ehcBj86coR0aZY8rnYTgGXhlq/
-         jodJ3THwul5uQRNySelxhMinjeNevdF4pYZyWR2dGlZl1Tl9EYyUdGo258lj4pOkAvcN
-         w4jhI8DQSAX4mRxGwSQPwpFbFp0hcjK1h8xcec858wxVYhnUk7QQyKcxpZt5iFRW0rXH
-         a8XA==
-X-Gm-Message-State: AOJu0YwWB5HrSaNDXtu2+4BP27TqzT2s4cJf7w1b8apHa79jH8GjHUP7
-	i4aoKnuNjQmXZNSW9exP+0qEkdBuh0cNTVeX5Mg=
-X-Google-Smtp-Source: AGHT+IFQ7w/k9SyeHxrJ199qbMB5aXGKnTnt8OqZVG8kcepJ5M9Lgu3f54hmt6N1Hl7hh21IFAYXVQ==
-X-Received: by 2002:a05:600c:a48:b0:401:b425:2414 with SMTP id c8-20020a05600c0a4800b00401b4252414mr11011201wmq.18.1700475845749;
-        Mon, 20 Nov 2023 02:24:05 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.11])
-        by smtp.gmail.com with ESMTPSA id n23-20020a7bcbd7000000b004064ac107cfsm12799577wmi.39.2023.11.20.02.24.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 02:24:05 -0800 (PST)
-Message-ID: <861021e2-7169-4c4e-9a98-bda974b8076b@linaro.org>
-Date: Mon, 20 Nov 2023 11:24:03 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE4190;
+	Mon, 20 Nov 2023 03:31:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700479874; x=1732015874;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M5VyfO4HyHA+7dmKhfXxCvmtDyHikTHOa2LFJQGtoFw=;
+  b=LiqgaJ2mh9t0Z9Y1moEBpuc1q+0/L2qhQX0GMcI5D1EBWMBL9U3/K+xy
+   yg+MGLhXGsJ2B5Rjtp2msbuIRyA7pfD/i8NSVxk9EX1eb/uQriOPEaZ+2
+   xcc8jsLLFeb89yWXgVei6n/kAt0K8dtGXdZ2PintVfdPNdiM1ByOZjRdz
+   utLgntNmXSO0R/hMMDSkqyzaHN0IM2FnL//zhOh7aHI5NpHI/cfnhRR1q
+   bc0KANT5sshzoGg4WUKc7/0/C6QBW3LdX2Zast+cZ3CPvbym0S7RP8WWO
+   oL4SQAmOQxbhBQFs8N5wRloDlELdfKPfe+PKOJMSUoYVE92BJmZWSxu6n
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="458097875"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="458097875"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 03:31:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="910079573"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="910079573"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 03:31:06 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1r52UZ-0000000FXEw-1BiL;
+	Mon, 20 Nov 2023 13:31:03 +0200
+Date: Mon, 20 Nov 2023 13:31:03 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>
+Cc: jic23@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+	konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
+	dmitry.baryshkov@linaro.org, linus.walleij@linaro.org,
+	linux-arm-msm@vger.kernel.org, quic_subbaram@quicinc.com,
+	quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
+	quic_kamalw@quicinc.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, marijn.suijten@somainline.org,
+	lars@metafoo.de, luca@z3ntu.xyz, linux-iio@vger.kernel.org,
+	lee@kernel.org, rafael@kernel.org, rui.zhang@intel.com,
+	lukasz.luba@arm.com, cros-qcom-dts-watchers@chromium.org,
+	sboyd@kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-msm-owner@vger.kernel.org, kernel@quicinc.com
+Subject: Re: [PATCH V2 0/3] iio: adc: Add support for QCOM SPMI PMIC5 Gen3 ADC
+Message-ID: <ZVtDdySmDUmgUDlm@smile.fi.intel.com>
+References: <20231116032530.753192-1-quic_jprakash@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: iio: light: add support for Vishay
- VEML6075
-Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20231110-veml6075-v1-0-354b3245e14a@gmail.com>
- <20231110-veml6075-v1-2-354b3245e14a@gmail.com>
- <20231119143015.205c0219@jic23-huawei>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231119143015.205c0219@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231116032530.753192-1-quic_jprakash@quicinc.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 19/11/2023 15:30, Jonathan Cameron wrote:
-> On Sun, 19 Nov 2023 05:58:04 +0100
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Thu, Nov 16, 2023 at 08:55:27AM +0530, Jishnu Prakash wrote:
+> PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
+> with all SW communication to ADC going through PMK8550 which
+> communicates with other PMICs through PBS. The major difference is
+> that the register interface used here is that of an SDAM present on
+> PMK8550, rather than a dedicated ADC peripheral. There may be more than one
+> SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
+> be used for either immediate reads (same functionality as previous PMIC5 and
+> PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
+> Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
+> combined into the same driver.
 > 
->> The Vishay VEML6075 is a 16-bit digital UVA and UVB sensor with I2C
->> interface.
->>
->> Add bindings and an example for the Vishay VEML6075.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Patches 1 adds bindings for ADC5 Gen3 peripheral.
 > 
-> Hmm. This is a very simple device and we have a bunch of similar vishay light
-> sensor bindings. One option here would be to combine all the binding
-> docs and add an explicit check for no interrupts being specified for this
-> compatible.
+> Patches 2 adds driver support for ADC5 Gen3.
 > 
-> Perhaps that should be a follow up patch though given how simple this is
-> and a desire to not slow down merging the driver.
+> Patch 3 is a cleanup, to move the QCOM ADC dt-bindings files from
+> dt-bindings/iio to dt-bindings/iio/adc folder, as they are
+> specifically for ADC devices. It also fixes all compilation errors
+> with this change in driver and devicetree files and similar errors
+> in documentation for dtbinding check.
 
-I am fine with both approaches.
+Something wrong with the email chaining.
+Please be sure you are using --thread when preparing emails.
 
-> 
-> One comment inline,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-With this fixed:
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
----
-
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-Best regards,
-Krzysztof
 
 

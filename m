@@ -1,60 +1,51 @@
-Return-Path: <linux-iio+bounces-184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70787F13DE
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 14:01:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258B17F148A
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 14:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78963282229
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF9628179C
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07518E36;
-	Mon, 20 Nov 2023 13:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE71B26D;
+	Mon, 20 Nov 2023 13:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="i751HDfF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282119C;
-	Mon, 20 Nov 2023 05:00:53 -0800 (PST)
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="4794400"
-X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="4794400"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 05:00:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="801163675"
-X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="801163675"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 05:00:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andy@kernel.org>)
-	id 1r53tK-0000000FYIP-0fKV;
-	Mon, 20 Nov 2023 15:00:42 +0200
-Date: Mon, 20 Nov 2023 15:00:41 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: mitrutzceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F7E9E;
+	Mon, 20 Nov 2023 05:42:47 -0800 (PST)
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id A975D28EE6F;
+	Mon, 20 Nov 2023 13:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1700487765;
+	bh=bWmlv7HcEBkDpHScBAIC+ls7pXqAHfS+VuHaY8KKih8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i751HDfFooxJJbwvvaMsOURUCHavTnzSRP8g/B0V1tAxxngS7Ft1vvEfw0KITW87I
+	 Pi0fKtSxDMJguNdNEdjzWMBVRNwK/wkafPBScTZ9UlVVNwamsE3W3MPlbY9Rq7oWmX
+	 RdbTUAV1ewmb5prqUCcD+0XSf+P7cu7jWN/Z9BD4=
+Date: Mon, 20 Nov 2023 15:42:44 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
-	ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <ZVtYeWZmcDZ_SMPo@smile.fi.intel.com>
-References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
- <20231116134655.21052-2-user@HYB-hhAwRlzzMZb>
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
+Message-ID: <ZVtiVM2Gm1x1j_G1@sunspire>
+References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
+ <20231117192305.17612-1-petre.rodan@subdimension.ro>
+ <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,287 +54,247 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231116134655.21052-2-user@HYB-hhAwRlzzMZb>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <5b2e4b05-9408-48ea-92ac-15883e102013@linaro.org>
 
-On Thu, Nov 16, 2023 at 03:46:55PM +0200, mitrutzceclan wrote:
-> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+
+Hello Krzysztof,
+
+thanks for the pointer regarding the version requirement for jsonschema.
+installing an older version fixed all python exceptions.
+
+
+On Mon, Nov 20, 2023 at 11:21:42AM +0100, Krzysztof Kozlowski wrote:
+> On 17/11/2023 20:22, Petre Rodan wrote:
+> > Adds binding for digital Honeywell TruStability HSC and SSC series pressure 
+> > and temperature sensors.
+> > 
+> > Datasheet:
+> >  [HSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
+> >  [SSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
+
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - honeywell,hsc
 > 
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
-
-...
-
-> +	help
-> +	  Say yes here to build support for Analog Devices AD7173 and similar ADC
-> +	  (currently supported: AD7172-2, AD7173-8, AD7175-2, AD7176-2).
-
-This is hard to maintain, list it one model per a single line.
-
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called ad7173.
-
-...
-
-+ array_size.h
-
-> +#include <linux/bitfield.h>
-> +#include <linux/bitmap.h>
-
-> +#include <linux/bits.h>
-
-This is guaranteed to be included by one from the above (don't remember
-by heart which one or even both).
-
-+ container_of.h
-
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/interrupt.h>
-
-> +#include <linux/kernel.h>
-
-How is this being used (as not a proxy)?
-
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/property.h>
-> +#include <linux/regmap.h>
-> +#include <linux/gpio/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/slab.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/units.h>
-
-...
-
-> +#define AD7173_CH_ADDRESS(pos, neg) \
-> +	(FIELD_PREP(AD7173_CH_SETUP_AINPOS_MASK, pos) |\
-
-Space before \ here and everywhere else in multi-line definitions.
-
-> +	 FIELD_PREP(AD7173_CH_SETUP_AINNEG_MASK, neg))
-
-...
-
-> +#define AD7173_VOLTAGE_INT_REF_MICROV	2500000
-
-MICROV --> uV (yes, with small letter), it's a common use for Amperes, Volts,
-etc.
-
-...
-
-> +struct ad7173_channel_config {
-> +	bool live;
-> +	u8 cfg_slot;
-> +	/* Following fields are used to compare equality. Bipolar must be first */
-> +	bool bipolar;
-> +	bool input_buf;
-> +	u8 odr;
-> +	u8 ref_sel;
-
-If you group better by types, it might save a few bytes on the architectures /
-compilers where bool != byte.
-
-> +};
-
-...
-
-> +	st->reg_gpiocon_regmap = devm_regmap_init_spi(st->sd.spi, &ad7173_regmap_config);
-> +	if (IS_ERR(st->reg_gpiocon_regmap)) {
-> +		return dev_err_probe(dev, PTR_ERR(st->reg_gpiocon_regmap),
-> +				     "Unable to init regmap\n");
-> +	}
-
-{} are not needed, can also be written as
-
-	st->reg_gpiocon_regmap = devm_regmap_init_spi(st->sd.spi, &ad7173_regmap_config);
-	ret = PTR_ERR_OR_ZERO(st->reg_gpiocon_regmap);
-	if (ret)
-		return dev_err_probe(dev, ret, "Unable to init regmap\n");
-
-...
-
-> +	st->gpio_regmap = devm_gpio_regmap_register(dev, &gpio_regmap);
-> +	if (IS_ERR(st->gpio_regmap)) {
-> +		return dev_err_probe(dev, PTR_ERR(st->gpio_regmap),
-> +				     "Unable to init gpio-regmap\n");
-> +	}
-
-Ditto.
-
-...
-
-> +static struct ad7173_channel_config *ad7173_find_live_config
-> +	(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-
-This is strange indentation.
-
-Perhaps
-
-static struct ad7173_channel_config *
-ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-
-?
-
-...
-
-> +	offset = offsetof(struct ad7173_channel_config, cfg_slot) +
-> +		 sizeof(cfg->cfg_slot);
-
-Isn't it a offsetofend() from stddef.h?
-
-> +	cmp_size = sizeof(*cfg) - offset;
-
-sizeof_field() from the above mentioned header?
-
-...
-
-> +	for (i = 0; i < st->num_channels; i++) {
-> +		cfg_aux = &st->channels[i].cfg;
-> +
-> +		if (cfg_aux->live && !memcmp(&cfg->bipolar, &cfg_aux->bipolar,
-> +					     cmp_size))
-
-I would split this on logic operator, it will be easier to read.
-
-> +			return cfg_aux;
-> +	}
-
-...
-
-> +	free_cfg_slot = find_first_zero_bit(st->cfg_slots_status,
-> +					    st->info->num_configs);
-> +	if (free_cfg_slot == st->info->num_configs)
-> +		free_cfg_slot = ad7173_free_config_slot_lru(st);
-> +
-> +	set_bit(free_cfg_slot, st->cfg_slots_status);
-> +	cfg->cfg_slot = free_cfg_slot;
-
-Looks like reinvention of IDA.
-
-...
-
-> +	struct ad7173_state *st = iio_priv(indio_dev);
-> +	unsigned int id;
-> +	u8 buf[AD7173_RESET_LENGTH];
-> +	int ret;
-
-Reversed xmas tree order?
-
-	struct ad7173_state *st = iio_priv(indio_dev);
-	u8 buf[AD7173_RESET_LENGTH];
-	unsigned int id;
-	int ret;
-
-...
-
-> +	return vref / (MICRO/MILLI);
-
-What does the denominator mean and why you can't simply use MILL?
-
-...
-
-> +			if (ch->cfg.bipolar)
-> +				/* (1<<31) is UB for a 32bit channel */
-> +				*val = (chan->scan_type.realbits == 32) ?
-> +					INT_MIN :
-> +					-(1 << (chan->scan_type.realbits - 1));
-
-So, what's the issue to use BIT() which has no such issue with UB?
-
-> +			else
-> +				*val = 0;
-
-...
-
-> +		*val = st->info->sinc5_data_rates[reg] / (MICRO/MILLI);
-> +		*val2 = (st->info->sinc5_data_rates[reg] % MILLI) * (MICRO/MILLI);
-
-Same Q about denominator.
-
-...
-
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		freq = val * MILLI + val2 / MILLI;
-
-> +
-
-Unneeded blank line.
-
-> +		for (i = 0; i < st->info->num_sinc5_data_rates - 1; i++) {
-> +			if (freq >= st->info->sinc5_data_rates[i])
-> +				break;
-> +		}
-> +
-> +		cfg = &st->channels[chan->address].cfg;
-> +		cfg->odr = i;
-> +
-> +		if (!cfg->live)
-> +			break;
-> +
-> +		ret = ad_sd_read_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, &reg);
-> +		if (ret)
-> +			break;
-> +		reg &= ~AD7173_FILTER_ODR0_MASK;
-> +		reg |= FIELD_PREP(AD7173_FILTER_ODR0_MASK, i);
-> +		ret = ad_sd_write_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, reg);
-> +		break;
-
-...
-
-> +static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
-> +				   const unsigned long *scan_mask)
-> +{
-> +	struct ad7173_state *st = iio_priv(indio_dev);
-
-> +	int i, ret = 0;
-
-Use the 0 directly...
-
-> +
-> +	for (i = 0; i < indio_dev->num_channels; i++) {
-> +		if (test_bit(i, scan_mask))
-> +			ret = ad7173_set_channel(&st->sd, i);
-> +		else
-> +			ret = ad_sd_write_reg(&st->sd, AD7173_REG_CH(i), 2, 0);
-> +
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return ret;
-
-...here.
-
-> +}
-
-> +	chan_arr = devm_kcalloc(dev, sizeof(*chan_arr), num_channels,
-> +				GFP_KERNEL);
-
-One line.
-
-> +	if (!chan_arr)
-> +		return -ENOMEM;
-
-...
-
-> +		if (fwnode_property_read_u32(child, "adi,reference-select", &ref_sel))
-> +			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-
-if is redundant.
-
-		ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-		fwnode_property_read_u32(child, "adi,reference-select", &ref_sel);
+> Way too generic
+
+I'm new to this, please excuse my ignorance.
+my driver covers all Honeywell pressure sensors under the "TruStability board mount HSC/SSC" moniker.
+that is why my intention was to provide a rather generic name for the driver itself.
+are you afraid that they will come up with a different device that they will call "hsc" in the future?
+in this case honeywell,trustability-hsc would be fine?
+
+as I see you prefer to target a particular chip, but I am a bit afraid that the end-user will be confused by needing to set up something like
+
+pressure@28 {
+	compatible = "honeywell,hsc030pa";
+	reg = <0x28>;
+	honeywell,transfer-function = <0>;
+	honeywell,pressure-range = "250MD";
+};
+
+ie. specifying "hsc030pa" as driver while his chip is not in the 030PA range, but 250MD.
+
+so do you prefer
+ honeywell,trustability-hsc  OR
+ honeywell,hsc030pa
+
+> > +  honeywell,range_str:
+> 
+> No underscores in property names.
+> 
+> "str" is redundant. Instead say what is it, because "range" is way too
+> vague.
+
+will rename to honeywell,pressure-range if that is ok with you.
+
+> > +    description: |
+> > +      Five character string that defines "pressure range, unit and type"
+> > +      as part of the device nomenclature. In the unlikely case of a custom
+> > +      chip, set to "NA" and provide honeywell,pmin-pascal honeywell,pmax-pascal
+> > +    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
+> > +           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
+> > +           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
+> > +           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
+> > +           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
+> > +           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
+> > +           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
+> > +           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
+> > +           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
+> > +           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
+> > +           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
+> > +           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
+> > +           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
+> > +           150PG, NA]
+> > +    $ref: /schemas/types.yaml#/definitions/string
+> > +
+> > +  honeywell,pmin-pascal:
+> > +    description: |
+> > +      Minimum pressure value the sensor can measure in pascal.
+> > +      To be specified only if honeywell,range_str is set to "NA".
+> > +    $ref: /schemas/types.yaml#/definitions/int32
+> 
+> That's uint32. Why do you need negative values?
+
+signed int32 is intentional. some chips have two physical input ports and measure a pressure differential in which case pmin is negative.
+see either of the pdfs at page 14, table 8, column 2, row 7+
+
+> > +  honeywell,pmax-pascal:
+> > +    description: |
+> > +      Maximum pressure value the sensor can measure in pascal.
+> > +      To be specified only if honeywell,range_str is set to "NA".
+> > +    $ref: /schemas/types.yaml#/definitions/int32
+> 
+> Ditto
+
+well, since we saw pmin needs to be signed should we have pmax unsigned?
+
+> > +  vdd-supply:
+> > +    description: |
+> > +      Provide VDD power to the sensor (either 3.3V or 5V depending on the chip).
+> > +      Optional, activate only if required by the target board.
+> 
+> Drop the last sentence. The supplies are required not by target board
+> but by hardware. I also do not understand what "activate" means in terms
+> of bindings and DTS.
+
+ok, ignore rambling.
+
+> > +
+> > +  spi-max-frequency:
+> > +    description: SPI clock to be kept between 50 and 800kHz
+> 
+> Drop description, add minimum/maximum constraints if worth.
+
+will replace block with
+
+  spi-max-frequency:
+    maximum: 800000
+
+as I saw in other yaml files
+ 
+> > +  clock-frequency:
+> > +    description: i2c clock to be kept between 100 and 400kHz
+> 
+> Drop, that's not really an I2C device property. Your driver must use
+> common clock framework.
+
+ack
+
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - honeywell,transfer-function
+> > +  - honeywell,range_str
+> > +  - clock-frequency
+> 
+> Why?
+
+dropped clock-frequency
+
+everything else below will be as you asked.
+
+I will provide a new set of patches after I get your inpyt.
+
+my very best regards,
+peter
+
+> > +  - spi-max-frequency
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    i2c {
+> > +        status = "okay";
+> 
+> ?!? Drop
+> 
+> > +        clock-frequency = <400000>;
+> 
+> Drop
+> 
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        HSCMRNN030PA2A3@28 {
+> 
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> 
+> Plus, upper case is not allowed...
+> 
+> > +          status = "okay";
+> 
+> Drop. BTW status never comes first!
+> 
+> > +          compatible = "honeywell,hsc";
+> > +          reg = <0x28>;
+> > +
+> > +          honeywell,transfer-function = <0>;
+> > +          honeywell,range_str = "030PA";
+> > +        };
+> > +    };
+> > +
+> > +    spi {
+> > +        # note that MOSI is not required by this sensor
+> 
+> This should be then part of description, not example.
+> 
+> > +        status = "okay";
+> 
+> Drop
+> 
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        HSCMLNN100PASA3@0 {
+> 
+> Eh...
+> 
+> > +          status = "okay";
+> 
+> Drop
+> 
+> > +          compatible = "honeywell,hsc";
+> > +          reg = <0>;
+> > +          spi-max-frequency = <800000>;
+> > +
+> > +          honeywell,transfer-function = <0>;
+> > +          honeywell,range_str = "100PA";
+> > +        };
+> > +
+> > +        HSC_CUSTOM_CHIP@0 {
+> 
+> Drop, not needed. One example is enough.
+> 
+> > +          status = "okay";
+> > +          compatible = "honeywell,hsc";
+> > +          reg = <1>;
+> > +          spi-max-frequency = <800000>;
+> 
+> Also, your indentation is broken.
+> 
+> Use 4 spaces for example indentation.
+> 
+> > +
+> > +          honeywell,transfer-function = <0>;
+> > +          honeywell,range_str = "NA";
+> > +          honeywell,pmin-pascal = <0>;
+> > +          honeywell,pmax-pascal = <206850>;
+> > +        };
+> > +
+> 
+> No stray blank lines.
+> 
+> Best regards,
+> Krzysztof
+> 
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+petre rodan
 

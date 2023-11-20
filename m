@@ -1,67 +1,60 @@
-Return-Path: <linux-iio+bounces-183-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-184-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31797F1370
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:35:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70787F13DE
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 14:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59B61C216A5
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 12:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78963282229
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 13:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAEF101E2;
-	Mon, 20 Nov 2023 12:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bXHwtTpu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07518E36;
+	Mon, 20 Nov 2023 13:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BF7D2;
-	Mon, 20 Nov 2023 04:35:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700483746; x=1732019746;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EW4QOV8Cp40d80U9mTKsMaiSKXMcK1syNIIBO5FEK4k=;
-  b=bXHwtTpukQgTif3Fao8IRVHoOslAnB5Eddonpzyt6GlNRzVs8cfj0Vxd
-   FKVg07FM/vbKsvuYynjL4MqYxqGaR1Dp3ECebJbOzuAsKht4+/WanMc0D
-   jMXoNogjZVoqvgisPMgFxQJBsNWCL/1AZkgY65D14cFXd4M7qz6szXA2T
-   G9fIXoTUzNKVaz4VkDtBoIafolOYXDFZKCsSnbzWCyNbyPuL6N+4NehuQ
-   cspw/XPbh7lOwiK8crvSTDFQez0FTs4qxTa2mDVY8PTn4SjFDFA/TxalU
-   c27Oj4WkicH0a2qKSmP5nUfV91uD2Q+E2Zv7DQHuXA+YQ1K+yxKL8p/6J
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="477818183"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282119C;
+	Mon, 20 Nov 2023 05:00:53 -0800 (PST)
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="4794400"
 X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="477818183"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 04:35:45 -0800
+   d="scan'208";a="4794400"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 05:00:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="795454521"
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="801163675"
 X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="795454521"
+   d="scan'208";a="801163675"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 04:35:42 -0800
+  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 05:00:46 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1r53V5-0000000FXzK-2as6;
-	Mon, 20 Nov 2023 14:35:39 +0200
-Date: Mon, 20 Nov 2023 14:35:39 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
+	(envelope-from <andy@kernel.org>)
+	id 1r53tK-0000000FYIP-0fKV;
+	Mon, 20 Nov 2023 15:00:42 +0200
+Date: Mon, 20 Nov 2023 15:00:41 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: mitrutzceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 2/2] iio: pressure: driver for Honeywell HSC/SSC series
- pressure sensors
-Message-ID: <ZVtSm5f-Qyp8LFFp@smile.fi.intel.com>
-References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
- <20231117164232.8474-2-petre.rodan@subdimension.ro>
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <ZVtYeWZmcDZ_SMPo@smile.fi.intel.com>
+References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
+ <20231116134655.21052-2-user@HYB-hhAwRlzzMZb>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -70,752 +63,283 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231117164232.8474-2-petre.rodan@subdimension.ro>
+In-Reply-To: <20231116134655.21052-2-user@HYB-hhAwRlzzMZb>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Nov 17, 2023 at 06:42:06PM +0200, Petre Rodan wrote:
-> Adds driver for Honeywell TruStability HSC and SSC series pressure and
-> temperature sensors.
+On Thu, Nov 16, 2023 at 03:46:55PM +0200, mitrutzceclan wrote:
+> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > 
-> Covers i2c and spi-based interfaces. For both series it supports all the
-> combinations of four transfer functions and all 118 pressure ranges.
-> In case of a special chip not covered by the nomenclature a custom range
-> can be specified.
-> 
-> Devices tested:
->  HSCMLNN100PASA3 (SPI sensor)
->  HSCMRNN030PA2A3 (i2c sensor)
-
-> Datasheet:
->  [HSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
->  [SSC] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
->  [i2c comms] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/common/documents/sps-siot-i2c-comms-digital-output-pressure-sensors-tn-008201-3-en-ciid-45841.pdf
-
-Make it a single tag per one URL as
-Datasheet: URL_#1 [xxx]
-Datasheet: URL_#2 [yyy]
-
-
-> 
-
-No blank line in tags block.
-
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
 
 ...
-
-> +config HSC030PA
-> +	tristate "Honeywell HSC/SSC (TruStability pressure sensors series)"
-> +	depends on (I2C || SPI_MASTER)
-
-> +	select HSC030PA_I2C if (I2C)
-> +	select HSC030PA_SPI if (SPI_MASTER)
-
-Unneeded parentheses
 
 > +	help
-> +	  Say Y here to build support for the Honeywell HSC and SSC TruStability
-> +      pressure and temperature sensor series.
-> +
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called hsc030pa.
+> +	  Say yes here to build support for Analog Devices AD7173 and similar ADC
+> +	  (currently supported: AD7172-2, AD7173-8, AD7175-2, AD7176-2).
 
-Yeah besides indentation issues the LKP complain about this.
+This is hard to maintain, list it one model per a single line.
+
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ad7173.
 
 ...
+
++ array_size.h
+
+> +#include <linux/bitfield.h>
+> +#include <linux/bitmap.h>
+
+> +#include <linux/bits.h>
+
+This is guaranteed to be included by one from the above (don't remember
+by heart which one or even both).
+
++ container_of.h
+
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/interrupt.h>
+
+> +#include <linux/kernel.h>
+
+How is this being used (as not a proxy)?
 
 > +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/init.h>
-> +#include <linux/math64.h>
-> +#include <linux/units.h>
 > +#include <linux/mod_devicetable.h>
-> +#include <linux/printk.h>
-
-Keep them sorted alphabetically.
-Also there are missing at least these ones: array_size.h, types.h.
-
-+ blank line
-
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-
-+ blank line.
-
-> +#include "hsc030pa.h"
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/gpio/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/slab.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/units.h>
 
 ...
 
-> +// pressure range for current chip based on the nomenclature
-> +struct hsc_range_config {
-> +	char name[HSC_RANGE_STR_LEN];	// 5-char string that defines the range - ie "030PA"
-> +	s32 pmin;		// minimal pressure in pascals
-> +	s32 pmax;		// maximum pressure in pascals
+> +#define AD7173_CH_ADDRESS(pos, neg) \
+> +	(FIELD_PREP(AD7173_CH_SETUP_AINPOS_MASK, pos) |\
+
+Space before \ here and everywhere else in multi-line definitions.
+
+> +	 FIELD_PREP(AD7173_CH_SETUP_AINNEG_MASK, neg))
+
+...
+
+> +#define AD7173_VOLTAGE_INT_REF_MICROV	2500000
+
+MICROV --> uV (yes, with small letter), it's a common use for Amperes, Volts,
+etc.
+
+...
+
+> +struct ad7173_channel_config {
+> +	bool live;
+> +	u8 cfg_slot;
+> +	/* Following fields are used to compare equality. Bipolar must be first */
+> +	bool bipolar;
+> +	bool input_buf;
+> +	u8 odr;
+> +	u8 ref_sel;
+
+If you group better by types, it might save a few bytes on the architectures /
+compilers where bool != byte.
+
 > +};
 
-Can you utilize linear ranges data types and APIs? (linear_range.h)
-
 ...
 
-> +/*
-> + * the first two bits from the first byte contain a status code
-> + *
-> + * 00 - normal operation, valid data
-> + * 01 - device in hidden factory command mode
-> + * 10 - stale data
-> + * 11 - diagnostic condition
-> + *
-> + * function returns 1 only if both bits are zero
-> + */
-
-You really need to be consistent with style of multi-line comments.
-And also C++/C variants. Besides that, respect English grammar and
-punctuation.
-
-...
-
-> +static bool hsc_measurement_is_valid(struct hsc_data *data)
-> +{
-> +	if (data->buffer[0] & 0xc0)
-> +		return 0;
-> +
-> +	return 1;
-
-You use bool and return integers.
-
-Besides, it can be just a oneliner.
-
-	return !(buffer[0] & GENMASK(3, 2));
-
-(Note, you will need bits.h for this.)
-
-> +}
-
-...
-
-> +static int hsc_get_measurement(struct hsc_data *data)
-> +{
-> +	const struct hsc_chip_data *chip = data->chip;
-> +	int ret;
-> +
-> +	/* don't bother sensor more than once a second */
-> +	if (!time_after(jiffies, data->last_update + HZ))
-> +		return data->is_valid ? 0 : -EAGAIN;
-> +
-> +	data->is_valid = false;
-> +	data->last_update = jiffies;
-> +
-> +	ret = data->xfer(data);
-
-> +
-
-Redundant blank line.
-
-> +	if (ret < 0)
-> +		return ret;
-
-> +	ret = chip->valid(data);
-> +	if (!ret)
-> +		return -EAGAIN;
-> +
-> +	data->is_valid = true;
-
-Can this be like
-
-	bool is_valid;
-
-	is_valid = chip->valid(...);
-	if (!is_valid)
-		return ...
-
-
-	data->is_valid = is_valid;
-
-	// Depending on the flow you can even use that field directly
-
-> +	return 0;
-> +}
-
-> +static int hsc_read_raw(struct iio_dev *indio_dev,
-> +			struct iio_chan_spec const *channel, int *val,
-> +			int *val2, long mask)
-> +{
-> +	struct hsc_data *data = iio_priv(indio_dev);
-
-> +	int ret = -EINVAL;
-
-Just use value directly, no need to have this assignment.
-
-> +
-> +	switch (mask) {
-
-> +
-
-Redundant blank line.
-
-> +	case IIO_CHAN_INFO_RAW:
-> +		mutex_lock(&data->lock);
-> +		ret = hsc_get_measurement(data);
-> +		mutex_unlock(&data->lock);
-
-Use guard() operator from cleanup.h.
-
-> +		if (ret)
-> +			return ret;
-> +
-> +		switch (channel->type) {
-> +		case IIO_PRESSURE:
-> +			*val =
-> +			    ((data->buffer[0] & 0x3f) << 8) + data->buffer[1];
-> +			return IIO_VAL_INT;
-> +		case IIO_TEMP:
-> +			*val =
-> +			    (data->buffer[2] << 3) +
-> +			    ((data->buffer[3] & 0xe0) >> 5);
-
-Is this some endianess / sign extension? Please convert using proper APIs.
-
-> +			ret = 0;
-> +			if (!ret)
-
-lol
-
-> +				return IIO_VAL_INT;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +		break;
-> +
-> +/**
-> + *	IIO ABI expects
-> + *	value = (conv + offset) * scale
-> + *
-> + *	datasheet provides the following formula for determining the temperature
-> + *	temp[C] = conv * a + b
-> + *        where a = 200/2047; b = -50
-> + *
-> + *	temp[C] = (conv + (b/a)) * a * (1000)
-> + *      =>
-> + *	scale = a * 1000 = .097703957 * 1000 = 97.703957
-> + *	offset = b/a = -50 / .097703957 = -50000000 / 97704
-> + *
-> + *	based on the datasheet
-> + *	pressure = (conv - HSC_OUTPUT_MIN) * Q + Pmin =
-> + *	           ((conv - HSC_OUTPUT_MIN) + Pmin/Q) * Q
-> + *	=>
-> + *	scale = Q = (Pmax - Pmin) / (HSC_OUTPUT_MAX - HSC_OUTPUT_MIN)
-> + *	offset = Pmin/Q = Pmin * (HSC_OUTPUT_MAX - HSC_OUTPUT_MIN) / (Pmax - Pmin)
-> + */
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (channel->type) {
-> +		case IIO_TEMP:
-> +			*val = 97;
-> +			*val2 = 703957;
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		case IIO_PRESSURE:
-> +			*val = data->p_scale;
-> +			*val2 = data->p_scale_nano;
-> +			return IIO_VAL_INT_PLUS_NANO;
-> +		default:
-> +			return -EINVAL;
-> +		}
-
-> +		break;
-> +
-
-Dead code?
-
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		switch (channel->type) {
-> +		case IIO_TEMP:
-> +			*val = -50000000;
-> +			*val2 = 97704;
-> +			return IIO_VAL_FRACTIONAL;
-> +		case IIO_PRESSURE:
-> +			*val = data->p_offset;
-> +			*val2 = data->p_offset_nano;
-> +			return IIO_VAL_INT_PLUS_NANO;
-> +		default:
-> +			return -EINVAL;
-> +		}
+> +	st->reg_gpiocon_regmap = devm_regmap_init_spi(st->sd.spi, &ad7173_regmap_config);
+> +	if (IS_ERR(st->reg_gpiocon_regmap)) {
+> +		return dev_err_probe(dev, PTR_ERR(st->reg_gpiocon_regmap),
+> +				     "Unable to init regmap\n");
 > +	}
 
-> +	return ret;
+{} are not needed, can also be written as
 
-Use default with explicit error code.
-
-> +}
-
-...
-
-> +static const struct iio_chan_spec hsc_channels[] = {
-> +	{
-> +	 .type = IIO_PRESSURE,
-> +	 .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +	 BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET)
-> +	 },
-> +	{
-> +	 .type = IIO_TEMP,
-> +	 .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +	 BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET)
-> +	 },
-
-Strange indentation of }:s...
-
-> +};
+	st->reg_gpiocon_regmap = devm_regmap_init_spi(st->sd.spi, &ad7173_regmap_config);
+	ret = PTR_ERR_OR_ZERO(st->reg_gpiocon_regmap);
+	if (ret)
+		return dev_err_probe(dev, ret, "Unable to init regmap\n");
 
 ...
 
-> +int hsc_probe(struct iio_dev *indio_dev, struct device *dev,
-> +	      const char *name, int type)
-> +{
-> +	struct hsc_data *hsc;
-> +	u64 tmp;
-> +	int index;
-> +	int found = 0;
-> +
-> +	hsc = iio_priv(indio_dev);
-> +
-> +	hsc->last_update = jiffies - HZ;
-> +	hsc->chip = &hsc_chip;
-> +
-> +	if (strcasecmp(hsc->range_str, "na") != 0) {
-> +		// chip should be defined in the nomenclature
-> +		for (index = 0; index < ARRAY_SIZE(hsc_range_config); index++) {
-> +			if (strcasecmp
-> +			    (hsc_range_config[index].name,
-> +			     hsc->range_str) == 0) {
-> +				hsc->pmin = hsc_range_config[index].pmin;
-> +				hsc->pmax = hsc_range_config[index].pmax;
-> +				found = 1;
-> +				break;
-> +			}
-> +		}
-
-Reinventing match_string() / sysfs_match_string() ?
-
-> +		if (hsc->pmin == hsc->pmax || !found)
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "honeywell,range_str is invalid\n");
+> +	st->gpio_regmap = devm_gpio_regmap_register(dev, &gpio_regmap);
+> +	if (IS_ERR(st->gpio_regmap)) {
+> +		return dev_err_probe(dev, PTR_ERR(st->gpio_regmap),
+> +				     "Unable to init gpio-regmap\n");
 > +	}
-> +
-> +	hsc->outmin = hsc_func_spec[hsc->function].output_min;
-> +	hsc->outmax = hsc_func_spec[hsc->function].output_max;
-> +
-> +	// multiply with MICRO and then divide by NANO since the output needs
-> +	// to be in KPa as per IIO ABI requirement
-> +	tmp = div_s64(((s64) (hsc->pmax - hsc->pmin)) * MICRO,
-> +		      (hsc->outmax - hsc->outmin));
-> +	hsc->p_scale = div_s64_rem(tmp, NANO, &hsc->p_scale_nano);
-> +	tmp =
-> +	    div_s64(((s64) hsc->pmin * (s64) (hsc->outmax - hsc->outmin)) *
-> +		    MICRO, hsc->pmax - hsc->pmin);
-
-No need to have space after castings
-
-> +	hsc->p_offset =
-> +	    div_s64_rem(tmp, NANO, &hsc->p_offset_nano) - hsc->outmin;
-> +
-> +	mutex_init(&hsc->lock);
-> +	indio_dev->name = name;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &hsc_info;
-> +	indio_dev->channels = hsc->chip->channels;
-> +	indio_dev->num_channels = hsc->chip->num_channels;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
-This one devm wrapped...
-
-> +void hsc_remove(struct iio_dev *indio_dev)
-> +{
-> +	iio_device_unregister(indio_dev);
-> +}
-
-...but not this. Why do you even need remove if the above is using devm always?
-
-...
-
-> + * Copyright (c) 2023 Petre Rodan <petre.rodan@subdimension.ro>
-
-> + *
-
-Redundant blank line.
-
-...
-
-> +#ifndef _HSC030PA_H
-> +#define _HSC030PA_H
-
-This header is using a lot and you are missing to include even a single
-provider. :-(
-
-At first glance:
-
-mutex.h
-types.h
-
-A few forward declarations:
-
-struct device;
-
-struct iio_chan_spec;
-struct iio_dev;
-
-struct hsc_chip_data;
-
-(Note blank lines in between.)
-
-...
-
-> +struct hsc_data {
-> +	void *client;                           // either i2c or spi kernel interface struct for current dev
-> +	const struct hsc_chip_data *chip;
-> +	struct mutex lock;                      // lock protecting chip reads
-> +	int (*xfer)(struct hsc_data *data);    // function that implements the chip reads
-> +	bool is_valid;                          // false if last transfer has failed
-> +	unsigned long last_update;              // time of last successful conversion
-> +	u8 buffer[HSC_REG_MEASUREMENT_RD_SIZE]; // raw conversion data
-> +	char range_str[HSC_RANGE_STR_LEN];	// range as defined by the chip nomenclature - ie "030PA" or "NA"
-> +	s32 pmin;                               // min pressure limit
-> +	s32 pmax;                               // max pressure limit
-> +	u32 outmin;                             // minimum raw pressure in counts (based on transfer function)
-> +	u32 outmax;                             // maximum raw pressure in counts (based on transfer function)
-> +	u32 function;                           // transfer function
-> +	s64 p_scale;                            // pressure scale
-> +	s32 p_scale_nano;                       // pressure scale, decimal places
-> +	s64 p_offset;                           // pressure offset
-> +	s32 p_offset_nano;                      // pressure offset, decimal places
-> +};
-> +
-> +struct hsc_chip_data {
-> +	bool (*valid)(struct hsc_data *data);  // function that checks the two status bits
-> +	const struct iio_chan_spec *channels;   // channel specifications
-> +	u8 num_channels;                        // pressure and temperature channels
-> +};
-
-Convert comments to kernel-doc format.
-
-...
-
-> +enum hsc_func_id {
-> +	HSC_FUNCTION_A,
-> +	HSC_FUNCTION_B,
-> +	HSC_FUNCTION_C,
-> +	HSC_FUNCTION_F
-
-Leave trailing comma. It make code slightly better to maintain.
-
-> +};
-> +
-> +enum hsc_variant {
-> +	HSC,
-> +	SSC
 
 Ditto.
 
-> +};
+...
+
+> +static struct ad7173_channel_config *ad7173_find_live_config
+> +	(struct ad7173_state *st, struct ad7173_channel_config *cfg)
+
+This is strange indentation.
+
+Perhaps
+
+static struct ad7173_channel_config *
+ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
+
+?
 
 ...
 
-> +static int hsc_i2c_xfer(struct hsc_data *data)
+> +	offset = offsetof(struct ad7173_channel_config, cfg_slot) +
+> +		 sizeof(cfg->cfg_slot);
+
+Isn't it a offsetofend() from stddef.h?
+
+> +	cmp_size = sizeof(*cfg) - offset;
+
+sizeof_field() from the above mentioned header?
+
+...
+
+> +	for (i = 0; i < st->num_channels; i++) {
+> +		cfg_aux = &st->channels[i].cfg;
+> +
+> +		if (cfg_aux->live && !memcmp(&cfg->bipolar, &cfg_aux->bipolar,
+> +					     cmp_size))
+
+I would split this on logic operator, it will be easier to read.
+
+> +			return cfg_aux;
+> +	}
+
+...
+
+> +	free_cfg_slot = find_first_zero_bit(st->cfg_slots_status,
+> +					    st->info->num_configs);
+> +	if (free_cfg_slot == st->info->num_configs)
+> +		free_cfg_slot = ad7173_free_config_slot_lru(st);
+> +
+> +	set_bit(free_cfg_slot, st->cfg_slots_status);
+> +	cfg->cfg_slot = free_cfg_slot;
+
+Looks like reinvention of IDA.
+
+...
+
+> +	struct ad7173_state *st = iio_priv(indio_dev);
+> +	unsigned int id;
+> +	u8 buf[AD7173_RESET_LENGTH];
+> +	int ret;
+
+Reversed xmas tree order?
+
+	struct ad7173_state *st = iio_priv(indio_dev);
+	u8 buf[AD7173_RESET_LENGTH];
+	unsigned int id;
+	int ret;
+
+...
+
+> +	return vref / (MICRO/MILLI);
+
+What does the denominator mean and why you can't simply use MILL?
+
+...
+
+> +			if (ch->cfg.bipolar)
+> +				/* (1<<31) is UB for a 32bit channel */
+> +				*val = (chan->scan_type.realbits == 32) ?
+> +					INT_MIN :
+> +					-(1 << (chan->scan_type.realbits - 1));
+
+So, what's the issue to use BIT() which has no such issue with UB?
+
+> +			else
+> +				*val = 0;
+
+...
+
+> +		*val = st->info->sinc5_data_rates[reg] / (MICRO/MILLI);
+> +		*val2 = (st->info->sinc5_data_rates[reg] % MILLI) * (MICRO/MILLI);
+
+Same Q about denominator.
+
+...
+
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		freq = val * MILLI + val2 / MILLI;
+
+> +
+
+Unneeded blank line.
+
+> +		for (i = 0; i < st->info->num_sinc5_data_rates - 1; i++) {
+> +			if (freq >= st->info->sinc5_data_rates[i])
+> +				break;
+> +		}
+> +
+> +		cfg = &st->channels[chan->address].cfg;
+> +		cfg->odr = i;
+> +
+> +		if (!cfg->live)
+> +			break;
+> +
+> +		ret = ad_sd_read_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, &reg);
+> +		if (ret)
+> +			break;
+> +		reg &= ~AD7173_FILTER_ODR0_MASK;
+> +		reg |= FIELD_PREP(AD7173_FILTER_ODR0_MASK, i);
+> +		ret = ad_sd_write_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, reg);
+> +		break;
+
+...
+
+> +static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
+> +				   const unsigned long *scan_mask)
 > +{
-> +	struct i2c_client *client = data->client;
-> +	struct i2c_msg msg;
-> +	int ret;
+> +	struct ad7173_state *st = iio_priv(indio_dev);
+
+> +	int i, ret = 0;
+
+Use the 0 directly...
+
 > +
-> +	msg.addr = client->addr;
-> +	msg.flags = client->flags | I2C_M_RD;
-> +	msg.len = HSC_REG_MEASUREMENT_RD_SIZE;
-> +	msg.buf = (char *)&data->buffer;
+> +	for (i = 0; i < indio_dev->num_channels; i++) {
+> +		if (test_bit(i, scan_mask))
+> +			ret = ad7173_set_channel(&st->sd, i);
+> +		else
+> +			ret = ad_sd_write_reg(&st->sd, AD7173_REG_CH(i), 2, 0);
 > +
-> +	ret = i2c_transfer(client->adapter, &msg, 1);
-> +
-> +	return (ret == 2) ? 0 : ret;
-> +}
-
-Can you use regmap I2C?
-
-...
-
-> +static int hsc_i2c_probe(struct i2c_client *client,
-> +			 const struct i2c_device_id *id)
-
-No use of this function prototype, we have a new one.
-
-...
-
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*hsc));
-> +	if (!indio_dev) {
-
-> +		dev_err(&client->dev, "Failed to allocate device\n");
-> +		return -ENOMEM;
-
-First of all, use
-
-		return dev_err_probe();
-
-Second, since it's ENOMEM, we do not issue an errors like this, error
-code is already enough.
-
+> +		if (ret < 0)
+> +			return ret;
 > +	}
-> +
-> +	hsc = iio_priv(indio_dev);
-
-> +	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-> +		hsc->xfer = hsc_i2c_xfer;
-> +	else
-
-Redundant 'else', see below.
-
-> +		return -EOPNOTSUPP;
-
-Use traditional pattern, i.e. checking for errors first:
-
-	if (...)
-		return ...
-
-...
-
-> +	ret = devm_regulator_get_enable_optional(dev, "vdd");
-> +	if (ret == -EPROBE_DEFER)
-> +		return -EPROBE_DEFER;
-
-Oh, boy, this should check for ENODEV or so, yeah, regulator APIs a bit
-interesting.
-
-...
-
-> +	if (!dev_fwnode(dev))
-> +		return -EOPNOTSUPP;
-
-Why do you need this?
-And why this error code?
-
-
-> +	ret = device_property_read_u32(dev,
-> +				       "honeywell,transfer-function",
-> +				       &hsc->function);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "honeywell,transfer-function could not be read\n");
-
-...
-
-> +	ret = device_property_read_string(dev,
-> +					  "honeywell,range_str", &range_nom);
-
-One line.
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "honeywell,range_str not defined\n");
-
-...
-
-> +	memcpy(hsc->range_str, range_nom, HSC_RANGE_STR_LEN - 1);
-> +	hsc->range_str[HSC_RANGE_STR_LEN - 1] = 0;
-
-Oh, why do you need this all and can use the property value directly?
-(Besides the fact the interesting operations are being used for strings.)
-
-> +	if (strcasecmp(hsc->range_str, "na") == 0) {
-> +		// "not available"
-> +		// we got a custom-range chip not covered by the nomenclature
-> +		ret = device_property_read_u32(dev,
-> +					     "honeywell,pmin-pascal",
-> +					     &hsc->pmin);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "honeywell,pmin-pascal could not be read\n");
-> +		ret = device_property_read_u32(dev,
-> +					     "honeywell,pmax-pascal",
-> +					     &hsc->pmax);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "honeywell,pmax-pascal could not be read\n");
-> +	}
-
-...
-
-> +	i2c_set_clientdata(client, indio_dev);
-
-How is this being used?
-
-> +	hsc->client = client;
-> +
-> +	return hsc_probe(indio_dev, &client->dev, id->name, id->driver_data);
-> +}
-
-...
-
-> +static const struct of_device_id hsc_i2c_match[] = {
-> +	{.compatible = "honeywell,hsc",},
-> +	{.compatible = "honeywell,ssc",},
-
-Inner commas are redundant.
-
-> +	{},
-
-Drop the comma in the terminator entry.
-
-> +};
-
-> +
-
-Redundant blank line.
-
-> +MODULE_DEVICE_TABLE(of, hsc_i2c_match);
-> +
-> +static const struct i2c_device_id hsc_i2c_id[] = {
-> +	{"hsc", HSC},
-> +	{"ssc", SSC},
-
-Both ID tables should use pointers in driver data and respective API to get
-that.
-
-> +	{}
-> +};
-
-> +
-
-Redundant blank line.
-
-> +MODULE_DEVICE_TABLE(i2c, hsc_i2c_id);
-
-...
-
-> +static struct i2c_driver hsc_i2c_driver = {
-> +	.driver = {
-> +		   .name = "honeywell_hsc",
-> +		   .of_match_table = hsc_i2c_match,
-
-> +		   },
-
-Indentation level can be dropped a bit.
-
-> +	.probe = hsc_i2c_probe,
-> +	.id_table = hsc_i2c_id,
-> +};
-
-> +
-
-Redundant blank line.
-
-> +module_i2c_driver(hsc_i2c_driver);
-
-...
-
-> +++ b/drivers/iio/pressure/hsc030pa_spi.c
-
-...
-
-> +	int ret;
-> +
-> +	ret = spi_sync_transfer(data->client, &xfer, 1);
 > +
 > +	return ret;
 
-So, why ret is needed?
+...here.
+
+> +}
+
+> +	chan_arr = devm_kcalloc(dev, sizeof(*chan_arr), num_channels,
+> +				GFP_KERNEL);
+
+One line.
+
+> +	if (!chan_arr)
+> +		return -ENOMEM;
 
 ...
 
-> +	spi_set_drvdata(spi, indio_dev);
+> +		if (fwnode_property_read_u32(child, "adi,reference-select", &ref_sel))
+> +			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
 
-How is this being used?
+if is redundant.
 
-> +	spi->mode = SPI_MODE_0;
-> +	spi->max_speed_hz = min(spi->max_speed_hz, 800000U);
-> +	spi->bits_per_word = 8;
-> +	ret = spi_setup(spi);
-> +	if (ret < 0)
-> +		return ret;
-
-Why the firmware can't provide the correct information to begin with?
-
-...
-
-> +	ret = devm_regulator_get_enable_optional(dev, "vdd");
-> +	if (ret == -EPROBE_DEFER)
-> +		return -EPROBE_DEFER;
-
-As per I2C driver.
-
-But why is not in the main ->probe()?
-
-...
-
-> +	ret = device_property_read_u32(dev,
-> +				       "honeywell,transfer-function",
-> +				       &hsc->function);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "honeywell,transfer-function could not be read\n");
-> +	if (hsc->function > HSC_FUNCTION_F)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "honeywell,transfer-function %d invalid\n",
-> +				     hsc->function);
-> +
-> +	ret =
-> +	    device_property_read_string(dev, "honeywell,range_str", &range_nom);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "honeywell,range_str not defined\n");
-> +
-> +	// minimal input sanitization
-> +	memcpy(hsc->range_str, range_nom, HSC_RANGE_STR_LEN - 1);
-> +	hsc->range_str[HSC_RANGE_STR_LEN - 1] = 0;
-> +
-> +	if (strcasecmp(hsc->range_str, "na") == 0) {
-> +		// range string "not available"
-> +		// we got a custom chip not covered by the nomenclature with a custom range
-> +		ret = device_property_read_u32(dev, "honeywell,pmin-pascal",
-> +					       &hsc->pmin);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "honeywell,pmin-pascal could not be read\n");
-> +		ret = device_property_read_u32(dev, "honeywell,pmax-pascal",
-> +					       &hsc->pmax);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "honeywell,pmax-pascal could not be read\n");
-> +	}
-
-Ditto. Why is this duplication?
-
-...
-
-> +static const struct of_device_id hsc_spi_match[] = {
-> +	{.compatible = "honeywell,hsc",},
-> +	{.compatible = "honeywell,ssc",},
-> +	{},
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, hsc_spi_match);
-> +
-> +static const struct spi_device_id hsc_spi_id[] = {
-> +	{"hsc", HSC},
-> +	{"ssc", SSC},
-> +	{}
-> +};
-> +
-> +MODULE_DEVICE_TABLE(spi, hsc_spi_id);
-> +
-> +static struct spi_driver hsc_spi_driver = {
-> +	.driver = {
-> +		   .name = "honeywell_hsc",
-> +		   .of_match_table = hsc_spi_match,
-> +		   },
-> +	.probe = hsc_spi_probe,
-> +	.id_table = hsc_spi_id,
-> +};
-> +
-> +module_spi_driver(hsc_spi_driver);
-
-Same comments as per I2C driver above.
+		ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+		fwnode_property_read_u32(child, "adi,reference-select", &ref_sel);
 
 -- 
 With Best Regards,

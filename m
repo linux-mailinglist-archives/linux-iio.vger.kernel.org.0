@@ -1,66 +1,69 @@
-Return-Path: <linux-iio+bounces-249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98037F397F
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 23:52:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7720D7F3A3C
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 00:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D8FB218F9
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 22:52:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 989291C20AF5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 23:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C96058121;
-	Tue, 21 Nov 2023 22:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D17A5647D;
+	Tue, 21 Nov 2023 23:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZBG65u+f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Saq/Eh3E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEB6BB;
-	Tue, 21 Nov 2023 14:52:23 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96F0C19E;
+	Tue, 21 Nov 2023 15:27:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700607143; x=1732143143;
+  t=1700609261; x=1732145261;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6+g96D1uXgJOhDkq1ma1Sy1l9Wrpt2ZIVG+Q/XijQcE=;
-  b=ZBG65u+fAuENuWTGkvcaNMkv+WlcJW1JPGm/+tiCYUQdV3JZcHZkGVrY
-   hs/ueWDj3jS9hlrav2dvuFPQv6spWjomYRsR04xIgsh94o1wYaRbZDXa7
-   fUsA26bdeoa5boJcS9fomYKnOOMA0/7B6j0Sg/5tX5D1LN37RvW0GOeac
-   GNo2U6DgxA+M6c/bj9Q2B43TrelsaMxkOYZHAtg2NYLllHoTSo+4+seDP
-   c6dWfI+GnF4QUErdIsXMcJWfC7u59POfxhz+Q8ANxFM3LDpr8qMpnpbJ0
-   iD3O/gtK17zCzVTlNXEm2jktWJvrKolCD1jqBPS7cQz8wTLS9+PxpABpb
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="371290747"
+  bh=HyJyMoBDuxOGRbOeaJ9Qhm8C3JlvSS2xTGqn52Xg62Q=;
+  b=Saq/Eh3EotVULo5/vRim97V/d8c3zEhQNaOl6BvKMJGK39sPWYrWUzUA
+   pwc/q4/ojDUHYJl6KvFnvoSBFIgdUPTDWY143Zr9w6WH7Pqvo6xtAwUvt
+   yWw/hoEbUYYtZ3aBeG3l5ACsXBOiMRmfdt3hhu+ghEt8nm0xhwU5hLYrm
+   huWThp+f3r4jYJIcFuiLXD6jVGlP2OHVuTmgPd/N6ZwTsysxPDVsQDJe3
+   wE4v6Kgidk1fVShXHjtfEwqxTj1vZofsy5RFb32Cerr8es8qErLQvqFEO
+   1FphGaxmnxGRVPIVxTnFQuzmWSU2KZN0mGH6ZRa701ae0IwgeDrBNwq1P
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="394781690"
 X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
-   d="scan'208";a="371290747"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 14:52:23 -0800
+   d="scan'208";a="394781690"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 15:27:41 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="837191859"
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="801708661"
 X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
-   d="scan'208";a="837191859"
+   d="scan'208";a="801708661"
 Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 21 Nov 2023 14:52:20 -0800
+  by orsmga001.jf.intel.com with ESMTP; 21 Nov 2023 15:27:36 -0800
 Received: from kbuild by b8de5498638e with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1r5ZbO-0008Mo-1A;
-	Tue, 21 Nov 2023 22:52:18 +0000
-Date: Wed, 22 Nov 2023 06:52:13 +0800
+	id 1r5a9W-0008OS-1W;
+	Tue, 21 Nov 2023 23:27:34 +0000
+Date: Wed, 22 Nov 2023 07:27:08 +0800
 From: kernel test robot <lkp@intel.com>
-To: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Olivier MOYSAN <olivier.moysan@foss.st.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
-Message-ID: <202311220624.J7Nqg5h1-lkp@intel.com>
-References: <20231121100012.112861-1-kimseer.paller@analog.com>
+	Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH 12/12] iio: adc: adi-axi-adc: move to backend framework
+Message-ID: <202311220748.T1FnZwoy-lkp@intel.com>
+References: <20231121-dev-iio-backend-v1-12-6a3d542eba35@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -69,113 +72,228 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231121100012.112861-1-kimseer.paller@analog.com>
+In-Reply-To: <20231121-dev-iio-backend-v1-12-6a3d542eba35@analog.com>
 
-Hi Kim,
+Hi Nuno,
 
 kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on 98b1cc82c4affc16f5598d4fa14b1858671b2263]
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus robh/for-next linus/master v6.7-rc2 next-20231121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kim-Seer-Paller/iio-frequency-admfm2000-New-driver/20231121-180427
-base:   98b1cc82c4affc16f5598d4fa14b1858671b2263
-patch link:    https://lore.kernel.org/r/20231121100012.112861-1-kimseer.paller%40analog.com
-patch subject: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20231122/202311220624.J7Nqg5h1-lkp@intel.com/reproduce)
+url:    https://github.com/intel-lab-lkp/linux/commits/Nuno-Sa-via-B4-Relay/driver-core-allow-modifying-device_links-flags/20231121-182010
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20231121-dev-iio-backend-v1-12-6a3d542eba35%40analog.com
+patch subject: [PATCH 12/12] iio: adc: adi-axi-adc: move to backend framework
+config: i386-randconfig-141-20231122 (https://download.01.org/0day-ci/archive/20231122/202311220748.T1FnZwoy-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231122/202311220748.T1FnZwoy-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311220624.J7Nqg5h1-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311220748.T1FnZwoy-lkp@intel.com/
 
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml:14:5: [warning] wrong indentation: expected 2 but found 4 (indentation)
+All warnings (new ones prefixed by >>):
 
-vim +14 Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+>> drivers/iio/industrialio-backend.c:123: warning: expecting prototype for iio_backend_chan_enable(). Prototype was for iio_backend_enable() instead
+>> drivers/iio/industrialio-backend.c:242: warning: Function parameter or member 'back' not described in 'iio_backend_get_priv'
+>> drivers/iio/industrialio-backend.c:274: warning: Function parameter or member 'dev' not described in 'devm_iio_backend_register'
+>> drivers/iio/industrialio-backend.c:274: warning: Function parameter or member 'ops' not described in 'devm_iio_backend_register'
+>> drivers/iio/industrialio-backend.c:274: warning: Function parameter or member 'priv' not described in 'devm_iio_backend_register'
 
-     9	
-    10	maintainers:
-    11	  - Kim Seer Paller <kimseer.paller@analog.com>
-    12	
-    13	description:
-  > 14	    Dual microwave down converter module with input RF and LO frequency ranges
-    15	    from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
-    16	    It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each down
-    17	    conversion path.
-    18	
-    19	properties:
-    20	  compatible:
-    21	    enum:
-    22	      - adi,admfm2000
-    23	
-    24	  switch1-gpios:
-    25	    description:
-    26	      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
-    27	      connected to the B15 and B16.
-    28	    minItems: 2
-    29	    maxItems: 2
-    30	
-    31	  switch2-gpios:
-    32	    description:
-    33	      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
-    34	      connected to the L14 and K14.
-    35	    minItems: 2
-    36	    maxItems: 2
-    37	
-    38	  attenuation1-gpios:
-    39	    description:
-    40	      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
-    41	      connected to the C14, C15, C16, D14, and D15.
-    42	    minItems: 5
-    43	    maxItems: 5
-    44	
-    45	  attenuation2-gpios:
-    46	    description:
-    47	      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
-    48	      connected to the L15, L16, M14, M15, and M16.
-    49	    minItems: 5
-    50	    maxItems: 5
-    51	
-    52	  '#address-cells':
-    53	    const: 1
-    54	
-    55	  '#size-cells':
-    56	    const: 0
-    57	
-    58	patternProperties:
-    59	  "^channel@[0-1]$":
-    60	    type: object
-    61	    description: Represents a channel of the device.
-    62	
-    63	    additionalProperties: false
-    64	
-    65	    properties:
-    66	      reg:
-    67	        description:
-    68	          The channel number.
-    69	        minimum: 0
-    70	        maximum: 1
-    71	
-    72	      adi,mode:
-    73	        description:
-    74	          RF path selected for the channel.
-    75	            0 - Direct IF mode
-    76	            1 - Mixer mode
-    77	        $ref: /schemas/types.yaml#/definitions/uint32
-    78	        enum: [0, 1]
-    79	
-    80	    required:
-    81	      - reg
-    82	      - adi,mode
-    83	
-    84	required:
-    85	  - compatible
-    86	  - switch1-gpios
-    87	  - switch2-gpios
-    88	  - attenuation1-gpios
-    89	  - attenuation2-gpios
-    90	
+
+vim +242 drivers/iio/industrialio-backend.c
+
+67915cd5ae2cc11 Nuno Sa 2023-11-21  114  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  115  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  116   * iio_backend_chan_enable - Enable the backend.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  117   * @back:	Backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  118   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  119   * RETURNS:
+67915cd5ae2cc11 Nuno Sa 2023-11-21  120   * 0 on success, negative error number on failure.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  121   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  122  int iio_backend_enable(struct iio_backend *back)
+67915cd5ae2cc11 Nuno Sa 2023-11-21 @123  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  124  	return iio_backend_op_call(back, enable);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  125  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  126  EXPORT_SYMBOL_GPL(iio_backend_enable);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  127  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  128  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  129   * iio_backend_disable - Disable the backend.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  130   * @back:	Backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  131   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  132  void iio_backend_disable(struct iio_backend *back)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  133  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  134  	iio_backend_void_op_call(back, disable);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  135  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  136  EXPORT_SYMBOL_GPL(iio_backend_disable);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  137  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  138  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  139   * iio_backend_data_format_set - Configure the channel data format
+67915cd5ae2cc11 Nuno Sa 2023-11-21  140   * @back:	Backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  141   * @chan:	Channel number.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  142   * @data:	Data format.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  143   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  144   * Properly configure a channel with respect to the expected data format. A
+67915cd5ae2cc11 Nuno Sa 2023-11-21  145   * @struct iio_backend_data_fmt must be passed with the settings.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  146   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  147   * RETURNS:
+67915cd5ae2cc11 Nuno Sa 2023-11-21  148   * 0 on success, negative error number on failure
+67915cd5ae2cc11 Nuno Sa 2023-11-21  149   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  150  int iio_backend_data_format_set(struct iio_backend *back, unsigned int chan,
+67915cd5ae2cc11 Nuno Sa 2023-11-21  151  				const struct iio_backend_data_fmt *data)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  152  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  153  	if (!data || data->type >= IIO_BACKEND_DATA_TYPE_MAX)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  154  		return -EINVAL;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  155  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  156  	return iio_backend_op_call(back, data_format_set, chan, data);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  157  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  158  EXPORT_SYMBOL_GPL(iio_backend_data_format_set);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  159  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  160  static void iio_backend_free(struct kref *ref)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  161  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  162  	struct iio_backend *back = container_of(ref, struct iio_backend, ref);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  163  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  164  	kfree(back);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  165  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  166  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  167  static void iio_backend_release(void *arg)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  168  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  169  	struct iio_backend *back = arg;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  170  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  171  	module_put(back->owner);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  172  	kref_put(&back->ref, iio_backend_free);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  173  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  174  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  175  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  176   * devm_iio_backend_get - Get a backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  177   * @dev:	Device where to look for the backend.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  178   * @name:	Backend name.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  179   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  180   * Get's the backend associated with @dev.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  181   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  182   * RETURNS:
+67915cd5ae2cc11 Nuno Sa 2023-11-21  183   * A backend pointer, negative error pointer otherwise.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  184   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  185  struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  186  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  187  	struct fwnode_handle *fwnode;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  188  	struct iio_backend *back;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  189  	int index = 0, ret;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  190  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  191  	if (name) {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  192  		index = device_property_match_string(dev, "io-backends-names",
+67915cd5ae2cc11 Nuno Sa 2023-11-21  193  						     name);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  194  		if (index < 0)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  195  			return ERR_PTR(index);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  196  	}
+67915cd5ae2cc11 Nuno Sa 2023-11-21  197  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  198  	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  199  	if (IS_ERR(fwnode)) {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  200  		dev_err(dev, "Cannot get Firmware reference\n");
+67915cd5ae2cc11 Nuno Sa 2023-11-21  201  		return ERR_CAST(fwnode);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  202  	}
+67915cd5ae2cc11 Nuno Sa 2023-11-21  203  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  204  	guard(mutex)(&iio_back_lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  205  	list_for_each_entry(back, &iio_back_list, entry) {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  206  		struct device_link *link;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  207  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  208  		if (!device_match_fwnode(back->dev, fwnode))
+67915cd5ae2cc11 Nuno Sa 2023-11-21  209  			continue;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  210  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  211  		fwnode_handle_put(fwnode);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  212  		kref_get(&back->ref);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  213  		if (!try_module_get(back->owner)) {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  214  			dev_err(dev, "Cannot get module reference\n");
+67915cd5ae2cc11 Nuno Sa 2023-11-21  215  			return ERR_PTR(-ENODEV);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  216  		}
+67915cd5ae2cc11 Nuno Sa 2023-11-21  217  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  218  		ret = devm_add_action_or_reset(dev, iio_backend_release, back);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  219  		if (ret)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  220  			return ERR_PTR(ret);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  221  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  222  		link = device_link_add(dev, back->dev,
+67915cd5ae2cc11 Nuno Sa 2023-11-21  223  				       DL_FLAG_AUTOREMOVE_CONSUMER);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  224  		if (!link)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  225  			dev_warn(dev, "Could not link to supplier(%s)\n",
+67915cd5ae2cc11 Nuno Sa 2023-11-21  226  				 dev_name(back->dev));
+67915cd5ae2cc11 Nuno Sa 2023-11-21  227  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  228  		dev_dbg(dev, "Found backend(%s) device\n", dev_name(back->dev));
+67915cd5ae2cc11 Nuno Sa 2023-11-21  229  		return back;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  230  	}
+67915cd5ae2cc11 Nuno Sa 2023-11-21  231  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  232  	fwnode_handle_put(fwnode);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  233  	return ERR_PTR(-EPROBE_DEFER);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  234  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  235  EXPORT_SYMBOL_GPL(devm_iio_backend_get);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  236  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  237  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  238   * iio_backend_get_priv - Get driver private data
+67915cd5ae2cc11 Nuno Sa 2023-11-21  239   * @back	Backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  240   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  241  void *iio_backend_get_priv(const struct iio_backend *back)
+67915cd5ae2cc11 Nuno Sa 2023-11-21 @242  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  243  	return back->priv;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  244  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  245  EXPORT_SYMBOL_GPL(iio_backend_get_priv);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  246  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  247  static void iio_backend_unregister(void *arg)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  248  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  249  	struct iio_backend *back = arg;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  250  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  251  	mutex_lock(&iio_back_lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  252  	list_del(&back->entry);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  253  	mutex_unlock(&iio_back_lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  254  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  255  	mutex_lock(&back->lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  256  	back->ops = NULL;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  257  	mutex_unlock(&back->lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  258  	kref_put(&back->ref, iio_backend_free);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  259  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  260  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  261  /**
+67915cd5ae2cc11 Nuno Sa 2023-11-21  262   * devm_iio_backend_register - Register a new backend device
+67915cd5ae2cc11 Nuno Sa 2023-11-21  263   * @dev		Backend device being registered.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  264   * @ops		Backend ops
+67915cd5ae2cc11 Nuno Sa 2023-11-21  265   * @priv	Device private data.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  266   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  267   * @ops and @priv are both mandatory. Not providing them results in -EINVAL.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  268   *
+67915cd5ae2cc11 Nuno Sa 2023-11-21  269   * RETURNS:
+67915cd5ae2cc11 Nuno Sa 2023-11-21  270   * 0 on success, negative error number on failure.
+67915cd5ae2cc11 Nuno Sa 2023-11-21  271   */
+67915cd5ae2cc11 Nuno Sa 2023-11-21  272  int devm_iio_backend_register(struct device *dev,
+67915cd5ae2cc11 Nuno Sa 2023-11-21  273  			      const struct iio_backend_ops *ops, void *priv)
+67915cd5ae2cc11 Nuno Sa 2023-11-21 @274  {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  275  	struct iio_backend *back;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  276  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  277  	if (!ops || !priv) {
+67915cd5ae2cc11 Nuno Sa 2023-11-21  278  		dev_err(dev, "No backend ops or private data given\n");
+67915cd5ae2cc11 Nuno Sa 2023-11-21  279  		return -EINVAL;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  280  	}
+67915cd5ae2cc11 Nuno Sa 2023-11-21  281  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  282  	back = kzalloc(sizeof(*back), GFP_KERNEL);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  283  	if (!back)
+67915cd5ae2cc11 Nuno Sa 2023-11-21  284  		return -ENOMEM;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  285  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  286  	kref_init(&back->ref);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  287  	mutex_init(&back->lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  288  	back->ops = ops;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  289  	back->owner = dev->driver->owner;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  290  	back->dev = dev;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  291  	back->priv = priv;
+67915cd5ae2cc11 Nuno Sa 2023-11-21  292  	mutex_lock(&iio_back_lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  293  	list_add(&back->entry, &iio_back_list);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  294  	mutex_unlock(&iio_back_lock);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  295  
+67915cd5ae2cc11 Nuno Sa 2023-11-21  296  	return devm_add_action_or_reset(dev, iio_backend_unregister, back);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  297  }
+67915cd5ae2cc11 Nuno Sa 2023-11-21  298  EXPORT_SYMBOL_GPL(devm_iio_backend_register);
+67915cd5ae2cc11 Nuno Sa 2023-11-21  299  
 
 -- 
 0-DAY CI Kernel Test Service

@@ -1,101 +1,125 @@
-Return-Path: <linux-iio+bounces-202-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-203-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE9F7F1DFA
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 21:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2A67F2484
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 04:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13521C21242
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Nov 2023 20:23:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3571C218F0
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 03:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76242374D5;
-	Mon, 20 Nov 2023 20:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFA915ACA;
+	Tue, 21 Nov 2023 03:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJqmfgyA"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ojbLv3UL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F8DE8;
-	Mon, 20 Nov 2023 12:23:25 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507bd64814fso6708038e87.1;
-        Mon, 20 Nov 2023 12:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700511803; x=1701116603; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lKHqxNOb0s+yYoiwVra6G4KKWe01UXwqHln/ApyC2m4=;
-        b=UJqmfgyAh/3nLkP39+aMZROgvKTO5UM0D+r+M923uueKERFDqUOv2DUdvDXN7PPR9D
-         rOAGTGqPzSv0+G94kJw2BhceK0zmUexZEB1e9VAxwHTofK9ExPlGJdVajz36ph7L4iUB
-         76CTS6IFHvKC+jn4vvFiR9W8sKOMMNwI9Y3T/qOREZqH4PYi0B5Pdf2zplOjvgPDBR7o
-         BgsJIms2TFJ/yFGXo9J32mDWu/46uwqqUojnPK4E4/hTaftYaOdJJSXJYputnAoaIxAn
-         H4RLsFtC19YjQ1dGQ3rY+kneV3qDx3Mtrdsm+lTh68/nsr1Wuqvpqqzp9GTzKvnNQuKz
-         EsXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700511803; x=1701116603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lKHqxNOb0s+yYoiwVra6G4KKWe01UXwqHln/ApyC2m4=;
-        b=Goz24CwTX538ynYYf5bELA6T4cm8i7NjzjSxykkeMiRZlpKkYojVHw3W1CvYSWJI9x
-         UBZtc+1PwM1aLDlS2rC/w1+7ONeOJsLxJlQTam935pNTDq/MXoES2eMJgXQTPWa0b31f
-         ry8QCtkWanMX2JcJnrdsMG6e32W1RxEkQ5JaSXwc4wAsA1fF0qF7Fci9G90fJMhmFpH/
-         TIOkTsPHIv5NB8KHuVDHQH6PWO4NJSO7FdPkakOc7BEt//zHVx4WS3fHaXtlaI3HLifK
-         GJaMn7oGlhQbpLbWF44EVkOKDf5ZPXG7cgLRqmijOYbyx3myBpxTs3huyxjybdIaf/su
-         +YCQ==
-X-Gm-Message-State: AOJu0YwFoYS/YRd825lUuzBHkdXVzom30AnOf+ITTJlciMX34DB1mEqp
-	0tuvwanjtN4TK7bdKglVn48=
-X-Google-Smtp-Source: AGHT+IFhXcnX4W2V7BVPtVW8s0A9taRDZ0J2v7bLApCBOk+kw4ysyv1kTbiCoFZmZAbjQLPwtNoywQ==
-X-Received: by 2002:a05:651c:3da:b0:2c8:7443:d111 with SMTP id f26-20020a05651c03da00b002c87443d111mr4938734ljp.10.1700511803167;
-        Mon, 20 Nov 2023 12:23:23 -0800 (PST)
-Received: from tp440p.steeds.sam ([2602:fbf6:10:a::2])
-        by smtp.gmail.com with ESMTPSA id uz4-20020a170907118400b009fc2a76ddedsm2357663ejb.17.2023.11.20.12.23.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Nov 2023 12:23:22 -0800 (PST)
-Date: Mon, 20 Nov 2023 22:23:13 +0200
-From: Sicelo <absicsz@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-	maemo-leste@lists.dyne.org,
-	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-	linux-input@vger.kernel.org
-Subject: Re: supporting binary (near-far) proximity sensors over gpio
-Message-ID: <ZVvAMbggKe9WLmw1@tp440p.steeds.sam>
-References: <ZVevR_ajeB1jfDS9@tp440p.steeds.sam>
- <CAMknhBE5A3w7ntdWC9cFDYSrPQNPoH7sQ5PVXKEy6MAJmZ93SA@mail.gmail.com>
- <20231120173131.000058a2@Huawei.com>
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1FBBA;
+	Mon, 20 Nov 2023 19:11:08 -0800 (PST)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id ADB76871E7;
+	Tue, 21 Nov 2023 04:11:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1700536266;
+	bh=uVQFloNWOKt2Yo2do1Js998QQbM758GtYC2PYjwS8Sg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ojbLv3ULCsqUgbwzM/0Ua0T1j900Hu4OLnNX9I2M0pK6iRYdMc94qF/QqHZVp9deK
+	 Qd1YU8gh4foRHawhs9wAm5cqNyCOucNsD1q1hiiJdQfc42nkrsJYWzp7jIl+0I0N99
+	 r/bb3WVe0y+JWpRwC4R+EReQ6OOB+dr8JVHTK/RTEwWTmpv1H9HHR/sQSE36hkqH93
+	 EBcDcFua/OCNnnYY5G8d5RswlLr3p+3k1mXlLe6+QXtALQH6lFITXZrjDtQl6FaL3T
+	 dPKW7SGu12jd7TWDcYgvcIf8TK0WS4vwdbJC15bZyiH+SX1bZ9cDpQVZ1avsepGAMR
+	 gwQ9U42gYyPrg==
+From: Marek Vasut <marex@denx.de>
+To: linux-iio@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	Vincent Tremblay <vincent@vtremblay.dev>,
+	devicetree@vger.kernel.org
+Subject: [PATCH v4 1/2] dt-bindings: iio: light: isl76682: Document ISL76682
+Date: Tue, 21 Nov 2023 04:10:39 +0100
+Message-ID: <20231121031043.327614-1-marex@denx.de>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231120173131.000058a2@Huawei.com>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi
+The ISL76682 is very basic ALS which only supports ALS or IR mode
+in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+other fancy functionality. Document it as trivial device.
 
-On Mon, Nov 20, 2023 at 05:31:31PM +0000, Jonathan Cameron wrote:
-> > Since this is really a proximity switch (it is either on or off)
-> > rather than measuring a proximity value over a continuous range, it
-> > doesn't seem like a good fit for the iio subsystem. If the sensor is
-> > on a phone, then it is likely to detect human presence so the input
-> > subsystem does seem like the right one for that application.
-> > 
-> > More at https://www.kernel.org/doc/html/latest/driver-api/iio/intro.html
-> > 
-> Agreed.  This one at least has a working distance of 30mm sensor, so
-> definitely switch type usecases where input tends to be the right choice.
-> 
-> If we wanted to use proximity range sensor for this usecase, we'd probably
-> bridge it to input (maybe in userspace, maybe in kernel) from the
-> underlying IIO driver.
-> 
-> Jonathan
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Andre Werner <andre.werner@systec-electronic.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@denx.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Naresh Solanki <naresh.solanki@9elements.com>
+Cc: Patrick Rudolph <patrick.rudolph@9elements.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+Cc: Vincent Tremblay <vincent@vtremblay.dev>
+Cc: devicetree@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+---
+V2: Add AB from Conor
+V3: No change
+V4: No change
+---
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thank you so much for the input. It makes sense.
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index c3190f2a168a2..27164e9219276 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -179,6 +179,8 @@ properties:
+           - isil,isl29030
+             # Intersil ISL68137 Digital Output Configurable PWM Controller
+           - isil,isl68137
++            # Intersil ISL76682 Ambient Light Sensor
++          - isil,isl76682
+             # Linear Technology LTC2488
+           - lineartechnology,ltc2488
+             # 5 Bit Programmable, Pulse-Width Modulator
+-- 
+2.42.0
 
-Sincerely
-Sicelo
 

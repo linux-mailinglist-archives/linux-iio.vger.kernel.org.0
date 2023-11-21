@@ -1,171 +1,209 @@
-Return-Path: <linux-iio+bounces-233-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-234-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245DF7F3204
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 16:12:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93297F32E5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 16:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8CAEB21DE8
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 15:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1401F224EA
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 15:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F8B19BCF;
-	Tue, 21 Nov 2023 15:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C2659143;
+	Tue, 21 Nov 2023 15:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AXQOzTkA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CuDJBjya"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A8B6D1
-	for <linux-iio@vger.kernel.org>; Tue, 21 Nov 2023 07:12:01 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a02c48a0420so73388166b.2
-        for <linux-iio@vger.kernel.org>; Tue, 21 Nov 2023 07:12:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700579519; x=1701184319; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bsX+eO+Ogkr86jyvuNv6qELQRni+01OajEyrVAuovLE=;
-        b=AXQOzTkAe8MyJXdFHgMvuy4oFWnqHfFnwDXL46mIGt2Er1jOJJyeC6CIwcwdF4AeGh
-         HKDZy4vv75LxyjuBKHai57msrF9wYWSrMBtx/H7/PkEAmae14vLpootsQPw3MinUOV29
-         v036NYcfBLwgfvcY7RGJEQGuyGsKp6aNus4F7yWBNeZ0ckWISMNSt6fJ96NskcwsG0P7
-         2fYN/27DFihcYktTFDM9NykkFuZP9QxBT1AzLwRgC9bs2TWLBtlJsTvhbmB8EmcMvoTs
-         k7VJXj4JbtKukWFB7VwGkjZeUC+wwVbSzVCfxCnUqcANQXLNtyMM+6KVnTPMqIbpTKVX
-         zciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700579519; x=1701184319;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bsX+eO+Ogkr86jyvuNv6qELQRni+01OajEyrVAuovLE=;
-        b=pPOEUIM05Ms0g8iqYNlkSydIMuYHt4c49242VJwwHlxkPAalviewbIpaDW6kB28Lmf
-         2/etdcN1WSvCJQwIt1vp/pyViof9VPT5bYxWe6UBrTJAKscR/9RqzXpB7ROIY0dNMYKk
-         WhY/PDhgZGn0IJZbW12NTFDtvieQtXXKA8zqiN8yN7KwkK1tzt4T4XUARPGunohkrZrj
-         TBb1YN71lVemJjtMAjUyCX0+7RMXawoZB5ZNtxeI4o38YaYJizZ4vqdor80OkhZ0BNhm
-         BmcgipN6/kuXx2Pm6snaL5/9OWdpUecjsXmci28b6Sa9CNp+SjF8cajXTp47OSfFV0Tr
-         U6Cg==
-X-Gm-Message-State: AOJu0YxBF09M3Ua8LUlkJKH8gLEo+tBFKTMajHv8Prj5mAyTGGyehp+0
-	infjHaunq86Cb5OYKD8XNizFlg==
-X-Google-Smtp-Source: AGHT+IEcfPEYJa1Mrfsren6f3TBNqlmZPsAoz91zC7V9PmQGmkMltl/rVviZ3PQmo4mARJiFoEMxbg==
-X-Received: by 2002:a17:906:2a13:b0:9ff:9de7:126 with SMTP id j19-20020a1709062a1300b009ff9de70126mr3658001eje.70.1700579519575;
-        Tue, 21 Nov 2023 07:11:59 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.11])
-        by smtp.gmail.com with ESMTPSA id f4-20020a170906560400b009ff10633221sm2285603ejq.128.2023.11.21.07.11.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Nov 2023 07:11:59 -0800 (PST)
-Message-ID: <c6ed6ff6-5304-43e2-a434-bd024363da4e@linaro.org>
-Date: Tue, 21 Nov 2023 16:11:57 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D0A139;
+	Tue, 21 Nov 2023 07:57:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700582271; x=1732118271;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=49M9Oew0DdxgYWQvk9O06uOPIWnVNtnr8w/4okhcBTY=;
+  b=CuDJBjya9CkGg6erbkfyV57hII6n/mvOZEHPXFsWUHQROO4XdSfqzhs8
+   klqfFSLbLtXNLgMfyH2wnHP+buE6uH+vbd2zxEjx11r1hoo8EVCjLvE8Q
+   SPZppDJDfNFY+guBac/YBLetwQiaJTbk8V9ZBq7KZ1jFWhT9iYVjwrVfV
+   RSnAnWOGK5hXzcSKypuBXc0SFoUNN6Q7k1CYJT8VfgI9423H9sp/jNdaN
+   h80Oxpu2Z73l/eL5xmLa6YwCbxA3/XIOG5jBmTAd0nCtG1/8Gbeo+o8ed
+   cA+r7ncUEj9JkNxlpeExVMQi5sh/9Wt+n3gLsY7xjx6gf46aXzDjU69p1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="382261970"
+X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
+   d="scan'208";a="382261970"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 07:57:49 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="716576255"
+X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
+   d="scan'208";a="716576255"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 21 Nov 2023 07:57:46 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r5T8B-0007yk-2Q;
+	Tue, 21 Nov 2023 15:57:43 +0000
+Date: Tue, 21 Nov 2023 23:56:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+	robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, marius.cristea@microchip.com
+Subject: Re: [PATCH v3 2/2] iio: adc: adding support for PAC193x
+Message-ID: <202311212310.QEKkmOfh-lkp@intel.com>
+References: <20231115134453.6656-3-marius.cristea@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
-Content-Language: en-US
-To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20231121100012.112861-1-kimseer.paller@analog.com>
- <c4f31613-8365-4d4d-a3ec-1b573f822968@linaro.org>
- <PH0PR03MB7141E0B29DFEEE16C4A5D27FF9BBA@PH0PR03MB7141.namprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <PH0PR03MB7141E0B29DFEEE16C4A5D27FF9BBA@PH0PR03MB7141.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231115134453.6656-3-marius.cristea@microchip.com>
 
-On 21/11/2023 15:47, Paller, Kim Seer wrote:
-> 
-> 
->> -----Original Message-----
->> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> Sent: Tuesday, November 21, 2023 9:05 PM
->> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
->> Cc: Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
->> <lars@metafoo.de>; Hennerich, Michael <Michael.Hennerich@analog.com>;
->> Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
->> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
->> linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
->> kernel@vger.kernel.org
->> Subject: Re: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
->>
->> [External]
->>
->> On 21/11/2023 11:00, Kim Seer Paller wrote:
->>> Dual microwave down converter module with input RF and LO frequency
->>> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
->>> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
->>> for each down conversion path.
->>>
->>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
->>> ---
->>> V1 -> V2: Removed '|' after description. Specified the pins connected to
->>>           the GPIOs. Added additionalProperties: false. Changed node name to
->> gpio.
->>
->> Why? Is this a GPIO? Your bindings title say this is a converter, not a
->> GPIO.
-> 
-> I might have used an incorrect generic name, considering that it utilizes GPIOs 
-> for controlling both mode and attenuation. What would be the appropriate
-> name to use in this context?
+Hi,
 
-git grep @ -- Documentation/devictree/bindings/iio/frequency
+kernel test robot noticed the following build warnings:
 
-I would go with converter.
+[auto build test WARNING on 5e99f692d4e32e3250ab18d511894ca797407aec]
 
-Best regards,
-Krzysztof
+url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-support-for-PAC193X/20231115-214733
+base:   5e99f692d4e32e3250ab18d511894ca797407aec
+patch link:    https://lore.kernel.org/r/20231115134453.6656-3-marius.cristea%40microchip.com
+patch subject: [PATCH v3 2/2] iio: adc: adding support for PAC193x
+config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20231121/202311212310.QEKkmOfh-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231121/202311212310.QEKkmOfh-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311212310.QEKkmOfh-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/adc/pac1934.c:1239:3: warning: variable 'cnt' is incremented both in the loop header and in the loop body [-Wfor-loop-analysis]
+    1239 |                 cnt++;
+         |                 ^
+   drivers/iio/adc/pac1934.c:1236:44: note: incremented here
+    1236 |         for (cnt = 0;  cnt < info->phys_channels; cnt++) {
+         |                                                   ^
+   1 warning generated.
+
+
+vim +/cnt +1239 drivers/iio/adc/pac1934.c
+
+  1226	
+  1227	static int pac1934_chip_configure(struct pac1934_chip_info *info)
+  1228	{
+  1229		int cnt, ret;
+  1230		struct i2c_client *client = info->client;
+  1231		u8 regs[PAC1934_CTRL_STATUS_INFO_LEN], idx, ctrl_reg;
+  1232		u32 wait_time;
+  1233	
+  1234		cnt = 0;
+  1235		info->chip_reg_data.num_enabled_channels = 0;
+  1236		for (cnt = 0;  cnt < info->phys_channels; cnt++) {
+  1237			if (info->active_channels[cnt])
+  1238				info->chip_reg_data.num_enabled_channels++;
+> 1239			cnt++;
+  1240		}
+  1241	
+  1242		/*
+  1243		 * read whatever information was gathered before the driver was loaded
+  1244		 * establish which channels are enabled/disabled and then establish the
+  1245		 * information retrieval mode (using SKIP or no).
+  1246		 * Read the chip ID values
+  1247		 */
+  1248		ret = i2c_smbus_read_i2c_block_data(client, PAC1934_CTRL_STAT_REGS_ADDR,
+  1249						    sizeof(regs),
+  1250						    (u8 *)regs);
+  1251		if (ret < 0) {
+  1252			dev_err_probe(&client->dev, ret,
+  1253				      "%s - cannot read regs from 0x%02X\n",
+  1254				      __func__, PAC1934_CTRL_STAT_REGS_ADDR);
+  1255			return ret;
+  1256		}
+  1257	
+  1258		/* write the CHANNEL_DIS and the NEG_PWR registers */
+  1259		regs[PAC1934_CHANNEL_DIS_REG_OFF] =
+  1260			FIELD_PREP(PAC1934_CHAN_DIS_CH1_OFF_MASK, !(info->active_channels[PAC1934_CH_1])) |
+  1261			FIELD_PREP(PAC1934_CHAN_DIS_CH2_OFF_MASK, !(info->active_channels[PAC1934_CH_2])) |
+  1262			FIELD_PREP(PAC1934_CHAN_DIS_CH3_OFF_MASK, !(info->active_channels[PAC1934_CH_3])) |
+  1263			FIELD_PREP(PAC1934_CHAN_DIS_CH4_OFF_MASK, !(info->active_channels[PAC1934_CH_4])) |
+  1264			FIELD_PREP(PAC1934_SMBUS_TIMEOUT_MASK, 0) |
+  1265			FIELD_PREP(PAC1934_SMBUS_BYTECOUNT_MASK, 0) |
+  1266			FIELD_PREP(PAC1934_SMBUS_NO_SKIP_MASK, 0);
+  1267	
+  1268		regs[PAC1934_NEG_PWR_REG_OFF] =
+  1269			FIELD_PREP(PAC1934_NEG_PWR_CH1_BIDI_MASK, info->bi_dir[PAC1934_CH_1]) |
+  1270			FIELD_PREP(PAC1934_NEG_PWR_CH2_BIDI_MASK, info->bi_dir[PAC1934_CH_2]) |
+  1271			FIELD_PREP(PAC1934_NEG_PWR_CH3_BIDI_MASK, info->bi_dir[PAC1934_CH_3]) |
+  1272			FIELD_PREP(PAC1934_NEG_PWR_CH4_BIDI_MASK, info->bi_dir[PAC1934_CH_4]) |
+  1273			FIELD_PREP(PAC1934_NEG_PWR_CH1_BIDV_MASK, info->bi_dir[PAC1934_CH_1]) |
+  1274			FIELD_PREP(PAC1934_NEG_PWR_CH2_BIDV_MASK, info->bi_dir[PAC1934_CH_2]) |
+  1275			FIELD_PREP(PAC1934_NEG_PWR_CH3_BIDV_MASK, info->bi_dir[PAC1934_CH_3]) |
+  1276			FIELD_PREP(PAC1934_NEG_PWR_CH4_BIDV_MASK, info->bi_dir[PAC1934_CH_4]);
+  1277	
+  1278		/* no SLOW triggered REFRESH, clear POR */
+  1279		regs[PAC1934_SLOW_REG_OFF] = 0;
+  1280	
+  1281		ret =  i2c_smbus_write_block_data(client, PAC1934_CTRL_STAT_REGS_ADDR, 3, (u8 *)regs);
+  1282		if (ret)
+  1283			return ret;
+  1284	
+  1285		ctrl_reg = FIELD_PREP(PAC1934_CRTL_SAMPLE_RATE_MASK, info->crt_samp_spd_bitfield);
+  1286	
+  1287		ret = i2c_smbus_write_byte_data(client, PAC1934_CTRL_REG_ADDR, ctrl_reg);
+  1288		if (ret)
+  1289			return ret;
+  1290	
+  1291		/*
+  1292		 * send a REFRESH to the chip, so the new settings take place
+  1293		 * as well as resetting the accumulators
+  1294		 */
+  1295		ret = i2c_smbus_write_byte(client, PAC1934_REFRESH_REG_ADDR);
+  1296		if (ret) {
+  1297			dev_err(&client->dev,
+  1298				"%s - cannot send 0x%02X\n",
+  1299				__func__, PAC1934_REFRESH_REG_ADDR);
+  1300			return ret;
+  1301		}
+  1302	
+  1303		/*
+  1304		 * get the current(in the chip) sampling speed and compute the
+  1305		 * required timeout based on its value
+  1306		 * the timeout is 1/sampling_speed
+  1307		 */
+  1308		idx = regs[PAC1934_CTRL_ACT_REG_OFF] >> PAC1934_SAMPLE_RATE_SHIFT;
+  1309		wait_time = (1024 / samp_rate_map_tbl[idx]) * 1000;
+  1310	
+  1311		/*
+  1312		 * wait the maximum amount of time to be on the safe side
+  1313		 * the maximum wait time is for 8sps
+  1314		 */
+  1315		usleep_range(wait_time, wait_time + 100);
+  1316	
+  1317		INIT_DELAYED_WORK(&info->work_chip_rfsh, pac1934_work_periodic_rfsh);
+  1318		/* Setup the latest moment for reading the regs before saturation */
+  1319		schedule_delayed_work(&info->work_chip_rfsh,
+  1320				      msecs_to_jiffies(PAC1934_MAX_RFSH_LIMIT_MS));
+  1321	
+  1322		devm_add_action_or_reset(&client->dev, pac1934_cancel_delayed_work,
+  1323					 &info->work_chip_rfsh);
+  1324	
+  1325		return 0;
+  1326	}
+  1327	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,128 +1,194 @@
-Return-Path: <linux-iio+bounces-215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4A77F29E9
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C62D57F29FC
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A0F4B21280
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:14:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50178B2115F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E806E3D38A;
-	Tue, 21 Nov 2023 10:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF063D3AD;
+	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NnrlbR5r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXnuTG5n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D688ABA;
-	Tue, 21 Nov 2023 02:14:02 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3b3f6dd612cso3291374b6e.3;
-        Tue, 21 Nov 2023 02:14:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700561642; x=1701166442; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2rBM84BPH3h1OTNeKF8gkahQrwyTUFEFO20bhp2Xhd8=;
-        b=NnrlbR5r2soU9t9TIxVn4YCusKvlrRaEi0T8vpS8rWNE+v5AsTWn9/BZRr0voePTJ5
-         QEHDRO4gXSuBe7Lv4RFCKHi29Z5vzwejmjSltA8PhW9+2wcK0PBxYM3pQ9Q5deSiWnSe
-         2rm7mEjEDuFUGgW2/psCCHo3+trO66a2MGh5zN8/WOs73A25an1jKkzfFKEJcVDR8hGS
-         ATkdtpwRIkdh4IGk+mRCKzB4VwcoBsDSz5c6B7AL3WRBfA4YAmTRJRfY9GfYFgCen6Xk
-         ataR/stE8KyTMbn0X5lY2pjHuXs2lyQZYfY/rJixs7ICYw0a0YowXHzDMuTjkfPX+Z+T
-         9uuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700561642; x=1701166442;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2rBM84BPH3h1OTNeKF8gkahQrwyTUFEFO20bhp2Xhd8=;
-        b=lyrUmH7F0xDY6rQw2zatLt4YtEUoB35hleeUWE/o1nC9kevJNk2aD38Xi5ucWSrHlj
-         ViF/vgq7YmyuFTVLp2D/Mm5v3ljqaAm4dfVLIIshRJbUV8U5GX9KBjS8NOLw9i68KUTk
-         /7i2Ce///a1Fha1IjHDCOrfcX7MeaL1lioXj6vxzEXlmrW5YN+HdXRdKW2bnW96NJyCq
-         jQHDkCd4AxkUa+y1Rv4DfeVkAwDYaJ28x63ANGovTsDY7TXpqBoL3eubfAuE/DFUEnPl
-         GkanEsWQbp1+mIVN/nbw0++5v4difDly7S2kZ4Zrj8LJWA3ePCVRLkQ2UwmbaaWlEUkv
-         BPkw==
-X-Gm-Message-State: AOJu0YxBGzATvMOISZ+kPK7dVUoKe/DO/7QFlSjfRcwkKkrbImRu/jJG
-	bjKTGblZ7xUy5Tj7jc5rQCMM3XEDqQbKsg==
-X-Google-Smtp-Source: AGHT+IGhEXVp30ly+W+J0Vq5BReMmqT7YvixSbVC5mluqZTiIrvaPLLb925ROrcuhxW/NFuCjXOCsQ==
-X-Received: by 2002:a05:6871:7b0c:b0:1f5:c7bb:8f2d with SMTP id pf12-20020a0568717b0c00b001f5c7bb8f2dmr12045321oac.35.1700561642127;
-        Tue, 21 Nov 2023 02:14:02 -0800 (PST)
-Received: from ?IPV6:2401:4900:2353:8963:b940:1ac0:2fbc:6b6? ([2401:4900:2353:8963:b940:1ac0:2fbc:6b6])
-        by smtp.gmail.com with ESMTPSA id f2-20020a056a0022c200b0064fd4a6b306sm7538948pfj.76.2023.11.21.02.13.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Nov 2023 02:14:01 -0800 (PST)
-Message-ID: <4eb9d00a-a672-40a8-a923-d728432b1250@gmail.com>
-Date: Tue, 21 Nov 2023 15:42:18 +0530
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8E23C094;
+	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1E5F6C433C7;
+	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700561839;
+	bh=3Txu7PPyn6wb+lD0p7YfYmDJ0VmWJYBmGnKE5mN5Uvg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=LXnuTG5n7NZmqLVz/xbnVhEDlUMwDubNfJp5fyxB9a0RMHcFKPiOwzksJlHKCHMqu
+	 /n/85LoOR/alm7hNAS+2zkPBzWm0zNKaYkUn8LcZbH8HZNoHjkTBwTkdMFwaKBvghu
+	 3Mgjnrlwl1a+d+8ZvQzvARKEf3paWHtn/zjAOLipA2tp7UplpT8SFdz9xdhHCzCwM2
+	 MKt+muGsgPbElglzoi6dfEJvV3S8wKrG43lA1iceWUs+OoVwaPqBAhTNADFPRyQEMX
+	 nSV2MzA1+d6na95i7PQ7noB7jYoTvjnPHI//IKwC/QFkfia+aXPPvJmhBA/azt6gGV
+	 pM8k4SvMtapnA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D2BC5ACB3;
+	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH 00/12] iio: add new backend framework
+Date: Tue, 21 Nov 2023 11:20:13 +0100
+Message-Id: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: chemical: add aosong,ags02ma
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Jonathan Cameron <jic23@kernel.org>
-References: <20231121095800.2180870-1-anshulusr@gmail.com>
- <20231121095800.2180870-2-anshulusr@gmail.com>
- <81149957-0403-4e41-8405-77ef8bfa3c8c@linaro.org>
-Content-Language: en-US
-From: Anshul Dalal <anshulusr@gmail.com>
-In-Reply-To: <81149957-0403-4e41-8405-77ef8bfa3c8c@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAF2EXGUC/x3MMQqAMAxA0atIZgOmFUSvIg6tiRqEVloQoXh3i
+ +Mb/i+QJalkmJoCSW7NGkMFtQ2shwu7oHI1mM5YItMhy42qEb1bTwmMTL3vB+uIxw1qdSXZ9Pm
+ P8/K+Hy4eIYhhAAAA
+To: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-iio@vger.kernel.org
+Cc: Olivier MOYSAN <olivier.moysan@foss.st.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Frank Rowand <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1700562016; l=5028;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=3Txu7PPyn6wb+lD0p7YfYmDJ0VmWJYBmGnKE5mN5Uvg=;
+ b=EYGkUSMi6pIc/DEdOhknhZsaEsn+NJfPqBT/N8VADTcQg11HJ1dc4nH+Z+ZKHpoDtC2QnVjPt
+ 0JVB7uKlQpDD48SBIN3/sdFRETQkq0NV+e1CHRxJdXKFSS5piBFk26A
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received:
+ by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: <nuno.sa@analog.com>
 
+Hi all,
 
+This is a Framework to handle complex IIO aggregate devices.
 
-On 11/21/23 15:33, Krzysztof Kozlowski wrote:
-> On 21/11/2023 10:57, Anshul Dalal wrote:
->> Add bindings for Aosong AGS02MA TVOC sensor.
->>
->> The sensor communicates over i2c with the default address 0x1a.
->> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
->>
->> Datasheet:
->>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
->> Product-Page:
->>   http://www.aosong.com/m/en/products-33.html
->>
-> 
-> 
->> +---
->> +$id: http://devicetree.org/schemas/iio/chemical/aosong,ags02ma.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Aosong AGS02MA VOC Sensor
->> [..]
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +    i2c {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        light-sensor@1a {
-> 
-> 
-> You called it chemical, so why this is here light-sensor?
+The typical architecture is to have one device as the frontend device which
+can be "linked" against one or multiple backend devices. All the IIO and
+userspace interface is expected to be registers/managed by the frontend
+device which will callback into the backends when needed (to get/set
+some configuration that it does not directly control).
 
-I was working on a binding for a light sensor in parallel at that time,
-I probably forgot to change this when copying the example from the light
-sensor.
+The basic framework interface is pretty simple:
+ - Backends should register themselves with @devm_iio_backend_register()
+ - Frontend devices should get backends with @devm_iio_backend_get()
 
-Would be replaced by "voc-sensor" in the next revision, apologies for
-any inconvenience.
+(typical provider - consumer stuff)
 
-Thanks for the review.
+This is the result of the discussions in [1] and [2]. In short, both ADI
+and STM wanted some way to control/get configurations from a kind of
+IIO aggregate device. So discussions were made to have something that
+serves and can be used by everyone.
 
-Best Regards,
-Anshul
+The main differences with the converter framework RFC [1]:
+
+1) Dropped the component framework. One can get more overview about
+the concerns on the references but the main reasons were: 
+ * Relying on providing .remove() callbacks to be allowed to use device
+   managed functions. I was not even totally sure about the correctness
+   of it and in times where everyone tries to avoid that driver
+   callback, it could lead to some maintenance burden.
+ * Scalability issues. As mentioned in [2], to support backends defined
+   in FW child nodes was not so straightforward with the component
+   framework.
+ * Device links can already do some of the things that made me
+   try the component framework (eg: removing consumers on suppliers
+   unbind).
+
+2) Only support the minimal set of functionality to have the devices in
+   the same state as before using the backend framework. New features
+   will be added afterwards. 
+
+3) Moved the API docs into the .c files.
+
+4) Moved the framework to the IIO top dir and renamed it to
+   industrialio-backend.c.
+
+Also, as compared with the RFC in [2], I don't think there are that many
+similarities other than the filename. However, it should now be pretty
+straight for Olivier to build on top of it. Also to mention that I did
+grabbed patch 1 ("of: property: add device link support for
+io-backends") from that series and just did some minor changes:
+
+1) Renamed the property from "io-backend" to "io-backends".
+2) No '#io-backend-cells' as it's not supported/needed by the framework
+(at least for now) .
+
+Regarding the driver core patch
+("driver: core: allow modifying device_links flags"), it is more like a
+RFC one. I'm not really sure if the current behavior isn't just
+expected/wanted. Since I could not really understand if it is or not
+(or why the different handling DL_FLAG_AUTOREMOVE_CONSUMER vs
+DL_FLAG_AUTOREMOVE_SUPPLIER), I'm sending out the patch.
+
+Jonathan,
+
+I also have some fixes and cleanups for the ad9467 driver. I added
+Fixes tags but I'm not sure if it's really worth it to backport them (given
+what we already discussed about these drivers). I'll leave that to you
+:).
+
+I'm also not sure if I'm missing some tags (even though the series
+is frankly different from [2]). 
+
+Olivier,
+
+If you want to be included as a Reviewer let me know and I'll happily do
+so in the next version.
+
+Also regarding the new IIO fw schemas. Should I send patches/PR to:
+
+https://github.com/devicetree-org/dt-schema/
+
+? Or is there any other workflow for it?
+
+[1]: https://lore.kernel.org/linux-iio/20230727150324.1157933-1-olivier.moysan@foss.st.com/
+[2]: https://lore.kernel.org/linux-iio/20230727150324.1157933-1-olivier.moysan@foss.st.com/
+
+---
+Nuno Sa (11):
+      driver: core: allow modifying device_links flags
+      iio: add the IIO backend framework
+      iio: adc: ad9467: fix reset gpio handling
+      iio: adc: ad9467: don't ignore error codes
+      iio: adc: ad9467: add mutex to struct ad9467_state
+      iio: adc: ad9467: fix scale setting
+      iio: adc: ad9467: use spi_get_device_match_data()
+      iio: adc: ad9467: use chip_info variables instead of array
+      iio: adc: ad9467: convert to backend framework
+      iio: adc: adi-axi-adc: convert to regmap
+      iio: adc: adi-axi-adc: move to backend framework
+
+Olivier Moysan (1):
+      of: property: add device link support for io-backends
+
+ MAINTAINERS                         |   7 +
+ drivers/base/core.c                 |  14 +-
+ drivers/iio/Kconfig                 |   5 +
+ drivers/iio/Makefile                |   1 +
+ drivers/iio/adc/Kconfig             |   3 +-
+ drivers/iio/adc/ad9467.c            | 382 +++++++++++++++++++++-----------
+ drivers/iio/adc/adi-axi-adc.c       | 429 +++++++-----------------------------
+ drivers/iio/industrialio-backend.c  | 302 +++++++++++++++++++++++++
+ drivers/of/property.c               |   2 +
+ include/linux/iio/adc/adi-axi-adc.h |   4 +
+ include/linux/iio/backend.h         |  58 +++++
+ 11 files changed, 723 insertions(+), 484 deletions(-)
+
+Thanks!
+- Nuno Sá
+
 

@@ -1,566 +1,106 @@
-Return-Path: <linux-iio+bounces-225-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-229-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD757F2A11
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:17:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E737F2B10
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B401F255EF
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F10A282073
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D547764;
-	Tue, 21 Nov 2023 10:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwe9uYhz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352E1482CD;
+	Tue, 21 Nov 2023 10:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1629D3D964;
-	Tue, 21 Nov 2023 10:17:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E4672C4166B;
-	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700561839;
-	bh=KodMV26ca7GEsuJL/H7lYOP+04Qx83r0peydFy3c6MQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fwe9uYhzIqmrRqK9wt18UCOBkVNVij2q0PungQuybNWZZIZzyhYyoAf7TMLMrNJi/
-	 xm4gSEKxCPXrBZKIjzRpEov0/BGtCJnrq7IhqS1EraucS5kM8z2cetrnMnPwTHC1iE
-	 xwKUzQFF+w3khqGOewdieatwP0nKQEf4XcKoUoA5Gi5nIU1cvW7V3d1nYbm/7eaMej
-	 +pH9ESw63UqUKd0DCAWm+jbX8Bk6Z4QNCaVAr/bvqZ/88ZXOadGta/AlHJXCBl6Wx0
-	 2dKWXUUJKVB2I+UvJjoqmlS0vo2h66StZhQY9600j1R2iJMVQrY/iMIZbgdkHge5Xr
-	 b8mFo+8JLdMxw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D34AFC54FB9;
-	Tue, 21 Nov 2023 10:17:19 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 21 Nov 2023 11:20:25 +0100
-Subject: [PATCH 12/12] iio: adc: adi-axi-adc: move to backend framework
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5AB95;
+	Tue, 21 Nov 2023 02:57:27 -0800 (PST)
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-35b2144232bso784215ab.3;
+        Tue, 21 Nov 2023 02:57:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700564246; x=1701169046;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IWHRjyzNCrwuh+4RgzXhICmV3TY97RZEZ35SyiqAe3c=;
+        b=ODy4zyV51nwCSIYN8iYewQFnx9SM2/868fCC9HQDmtsIeQLJUf1xJ0UMxa2fEfMY6o
+         Fuy1G4eNy4jb3LkKSMCxRca8w6XFiMbHPYYx7tYcbjN5H9MbbOWqPUa4iODRIRqQkbLp
+         +pFwwWrYMLFfFGBrTt330mvH47tZBfruev9KguZkxepAYcmn7cxhAaIDE/UoVKga2Btz
+         bOMTr8q01ZZd9MCcGf9q0iDZ+MOgSdKa0EZQkdWcpOG9yMFMQRxxtHZE467qYNAwsais
+         uklxW3YbGa0FQCYKjDhUgMf6HpDQufHltx6iNl05G+hCHNaxV7M+KnNLG8kkPSzke1x1
+         msTg==
+X-Gm-Message-State: AOJu0YzTCE6MRUxtuPVq+xyrNlUew8pjKF70u7eg/BG+h8Lpzd/J1Lq1
+	YW3XXfHBeTgfdcbt4DPBTiTzXiIQNQ==
+X-Google-Smtp-Source: AGHT+IE4vUY5D8ruxozBz7YxFXj7QoJPOhStL5fM6GhhgtGsTmq8vQk09z4qIRi7Nc4M6dDvhUx8wg==
+X-Received: by 2002:a92:d0c8:0:b0:35b:110f:8127 with SMTP id y8-20020a92d0c8000000b0035b110f8127mr1829805ila.26.1700564246331;
+        Tue, 21 Nov 2023 02:57:26 -0800 (PST)
+Received: from herring.priv ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id z6-20020a023446000000b004665bc0a20esm1072609jaz.172.2023.11.21.02.57.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 02:57:25 -0800 (PST)
+Received: (nullmailer pid 1245593 invoked by uid 1000);
+	Tue, 21 Nov 2023 10:57:21 -0000
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231121-dev-iio-backend-v1-12-6a3d542eba35@analog.com>
-References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-In-Reply-To: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-To: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-iio@vger.kernel.org
-Cc: Olivier MOYSAN <olivier.moysan@foss.st.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
- Frank Rowand <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1700562016; l=14337;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=+u9HWUghl/248aJnsS8FrYOYG77gZgAnQv1PFeCSO1s=;
- b=tbqLWeExJMbjJ/4v6zWrjsAg+GNKLGrbhle82T3llI4pz3kYW9UZcgrhxLSENOUaDU8Pte51H
- VjmpMCFmNUGCrZPHQUSqQiiq8POYbUf5lsNEjVz6alFQaRrCxEgcStS
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+From: Rob Herring <robh@kernel.org>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Michael Hennerich <Michael.Hennerich@analog.com>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20231121100012.112861-1-kimseer.paller@analog.com>
+References: <20231121100012.112861-1-kimseer.paller@analog.com>
+Message-Id: <170056424171.1245555.12202034703605429855.robh@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
+Date: Tue, 21 Nov 2023 03:57:21 -0700
 
-From: Nuno Sa <nuno.sa@analog.com>
 
-Move to the IIO backend framework. Devices supported by adi-axi-adc now
-register themselves as backend devices.
+On Tue, 21 Nov 2023 18:00:11 +0800, Kim Seer Paller wrote:
+> Dual microwave down converter module with input RF and LO frequency
+> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+> for each down conversion path.
+> 
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
+> V1 -> V2: Removed '|' after description. Specified the pins connected to
+>           the GPIOs. Added additionalProperties: false. Changed node name to gpio.
+>           Aligned < syntax with the previous syntax in the examples.
+> 
+>  .../bindings/iio/frequency/adi,admfm2000.yaml | 130 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 137 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> 
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/adc/Kconfig       |   1 +
- drivers/iio/adc/adi-axi-adc.c | 364 ++++++++----------------------------------
- 2 files changed, 65 insertions(+), 300 deletions(-)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index af56df63beff..cc42a3399c63 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -292,6 +292,7 @@ config ADI_AXI_ADC
- 	select IIO_BUFFER
- 	select IIO_BUFFER_HW_CONSUMER
- 	select IIO_BUFFER_DMAENGINE
-+	select IIO_BACKEND
- 	depends on HAS_IOMEM
- 	depends on OF
- 	help
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index c247ff1541d2..b2ab2c119efa 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -17,13 +17,9 @@
- #include <linux/regmap.h>
- #include <linux/slab.h>
- 
--#include <linux/iio/iio.h>
--#include <linux/iio/sysfs.h>
--#include <linux/iio/buffer.h>
--#include <linux/iio/buffer-dmaengine.h>
--
- #include <linux/fpga/adi-axi-common.h>
--#include <linux/iio/adc/adi-axi-adc.h>
-+#include <linux/iio/backend.h>
-+
- 
- /*
-  * Register definitions:
-@@ -44,6 +40,7 @@
- #define   ADI_AXI_REG_CHAN_CTRL_PN_SEL_OWR	BIT(10)
- #define   ADI_AXI_REG_CHAN_CTRL_IQCOR_EN	BIT(9)
- #define   ADI_AXI_REG_CHAN_CTRL_DCFILT_EN	BIT(8)
-+#define   ADI_AXI_REG_CHAN_CTRL_FMT_MASK	GENMASK(6, 4)
- #define   ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT	BIT(6)
- #define   ADI_AXI_REG_CHAN_CTRL_FMT_TYPE	BIT(5)
- #define   ADI_AXI_REG_CHAN_CTRL_FMT_EN		BIT(4)
-@@ -55,286 +52,67 @@
- 	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
- 	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
- 
--struct adi_axi_adc_core_info {
--	unsigned int				version;
--};
--
- struct adi_axi_adc_state {
--	struct mutex				lock;
--
--	struct adi_axi_adc_client		*client;
- 	struct regmap				*regmap;
- };
- 
--struct adi_axi_adc_client {
--	struct list_head			entry;
--	struct adi_axi_adc_conv			conv;
--	struct adi_axi_adc_state		*state;
--	struct device				*dev;
--	const struct adi_axi_adc_core_info	*info;
--};
--
--static LIST_HEAD(registered_clients);
--static DEFINE_MUTEX(registered_clients_lock);
--
--static struct adi_axi_adc_client *conv_to_client(struct adi_axi_adc_conv *conv)
--{
--	return container_of(conv, struct adi_axi_adc_client, conv);
--}
--
--void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
--{
--	struct adi_axi_adc_client *cl = conv_to_client(conv);
--
--	return (char *)cl + ALIGN(sizeof(struct adi_axi_adc_client),
--				  IIO_DMA_MINALIGN);
--}
--EXPORT_SYMBOL_NS_GPL(adi_axi_adc_conv_priv, IIO_ADI_AXI);
--
--static int adi_axi_adc_config_dma_buffer(struct device *dev,
--					 struct iio_dev *indio_dev)
--{
--	const char *dma_name;
--
--	if (!device_property_present(dev, "dmas"))
--		return 0;
--
--	if (device_property_read_string(dev, "dma-names", &dma_name))
--		dma_name = "rx";
--
--	return devm_iio_dmaengine_buffer_setup(indio_dev->dev.parent,
--					       indio_dev, dma_name);
--}
--
--static int adi_axi_adc_read_raw(struct iio_dev *indio_dev,
--				struct iio_chan_spec const *chan,
--				int *val, int *val2, long mask)
--{
--	struct adi_axi_adc_state *st = iio_priv(indio_dev);
--	struct adi_axi_adc_conv *conv = &st->client->conv;
--
--	if (!conv->read_raw)
--		return -EOPNOTSUPP;
--
--	return conv->read_raw(conv, chan, val, val2, mask);
--}
--
--static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
--				 struct iio_chan_spec const *chan,
--				 int val, int val2, long mask)
--{
--	struct adi_axi_adc_state *st = iio_priv(indio_dev);
--	struct adi_axi_adc_conv *conv = &st->client->conv;
--
--	if (!conv->write_raw)
--		return -EOPNOTSUPP;
--
--	return conv->write_raw(conv, chan, val, val2, mask);
--}
--
--static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
--				  struct iio_chan_spec const *chan,
--				  const int **vals, int *type, int *length,
--				  long mask)
--{
--	struct adi_axi_adc_state *st = iio_priv(indio_dev);
--	struct adi_axi_adc_conv *conv = &st->client->conv;
--
--	if (!conv->read_avail)
--		return -EOPNOTSUPP;
--
--	return conv->read_avail(conv, chan, vals, type, length, mask);
--}
--
--static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
--					const unsigned long *scan_mask)
--{
--	struct adi_axi_adc_state *st = iio_priv(indio_dev);
--	struct adi_axi_adc_conv *conv = &st->client->conv;
--	unsigned int i;
--	int ret;
--
--	for (i = 0; i < conv->chip_info->num_channels; i++) {
--		if (test_bit(i, scan_mask))
--			ret = regmap_set_bits(st->regmap,
--					      ADI_AXI_REG_CHAN_CTRL(i),
--					      ADI_AXI_REG_CHAN_CTRL_ENABLE);
--		else
--			ret = regmap_clear_bits(st->regmap,
--						ADI_AXI_REG_CHAN_CTRL(i),
--						ADI_AXI_REG_CHAN_CTRL_ENABLE);
--		if (ret)
--			return ret;
--	}
--
--	return 0;
--}
--
--static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct device *dev,
--							  size_t sizeof_priv)
--{
--	struct adi_axi_adc_client *cl;
--	size_t alloc_size;
--
--	alloc_size = ALIGN(sizeof(struct adi_axi_adc_client), IIO_DMA_MINALIGN);
--	if (sizeof_priv)
--		alloc_size += ALIGN(sizeof_priv, IIO_DMA_MINALIGN);
--
--	cl = kzalloc(alloc_size, GFP_KERNEL);
--	if (!cl)
--		return ERR_PTR(-ENOMEM);
--
--	mutex_lock(&registered_clients_lock);
--
--	cl->dev = get_device(dev);
--
--	list_add_tail(&cl->entry, &registered_clients);
--
--	mutex_unlock(&registered_clients_lock);
--
--	return &cl->conv;
--}
--
--static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
--{
--	struct adi_axi_adc_client *cl = conv_to_client(conv);
--
--	mutex_lock(&registered_clients_lock);
--
--	list_del(&cl->entry);
--	put_device(cl->dev);
--
--	mutex_unlock(&registered_clients_lock);
--
--	kfree(cl);
--}
--
--static void devm_adi_axi_adc_conv_release(void *conv)
--{
--	adi_axi_adc_conv_unregister(conv);
--}
--
--struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
--							size_t sizeof_priv)
-+static int axi_adc_enable(struct iio_backend *back)
- {
--	struct adi_axi_adc_conv *conv;
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 	int ret;
- 
--	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
--	if (IS_ERR(conv))
--		return conv;
--
--	ret = devm_add_action_or_reset(dev, devm_adi_axi_adc_conv_release,
--				       conv);
-+	 ret = regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
-+			       ADI_AXI_REG_RSTN_MMCM_RSTN);
- 	if (ret)
--		return ERR_PTR(ret);
-+		return ret;
- 
--	return conv;
-+	fsleep(10);
-+	return regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
-+			       ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
- }
--EXPORT_SYMBOL_NS_GPL(devm_adi_axi_adc_conv_register, IIO_ADI_AXI);
- 
--static const struct iio_info adi_axi_adc_info = {
--	.read_raw = &adi_axi_adc_read_raw,
--	.write_raw = &adi_axi_adc_write_raw,
--	.update_scan_mode = &adi_axi_adc_update_scan_mode,
--	.read_avail = &adi_axi_adc_read_avail,
--};
--
--static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
--	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
--};
--
--static struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
-+static void axi_adc_disable(struct iio_backend *back)
- {
--	const struct adi_axi_adc_core_info *info;
--	struct adi_axi_adc_client *cl;
--	struct device_node *cln;
--
--	info = of_device_get_match_data(dev);
--	if (!info)
--		return ERR_PTR(-ENODEV);
--
--	cln = of_parse_phandle(dev->of_node, "adi,adc-dev", 0);
--	if (!cln) {
--		dev_err(dev, "No 'adi,adc-dev' node defined\n");
--		return ERR_PTR(-ENODEV);
--	}
--
--	mutex_lock(&registered_clients_lock);
--
--	list_for_each_entry(cl, &registered_clients, entry) {
--		if (!cl->dev)
--			continue;
--
--		if (cl->dev->of_node != cln)
--			continue;
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 
--		if (!try_module_get(cl->dev->driver->owner)) {
--			mutex_unlock(&registered_clients_lock);
--			of_node_put(cln);
--			return ERR_PTR(-ENODEV);
--		}
--
--		get_device(cl->dev);
--		cl->info = info;
--		mutex_unlock(&registered_clients_lock);
--		of_node_put(cln);
--		return cl;
--	}
--
--	mutex_unlock(&registered_clients_lock);
--	of_node_put(cln);
--
--	return ERR_PTR(-EPROBE_DEFER);
-+	regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
- }
- 
--static int adi_axi_adc_setup_channels(struct device *dev,
--				      struct adi_axi_adc_state *st)
-+static int axi_adc_data_format_set(struct iio_backend *back, unsigned int chan,
-+				   const struct iio_backend_data_fmt *data)
- {
--	struct adi_axi_adc_conv *conv = &st->client->conv;
--	int i, ret;
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-+	u32 val;
- 
--	if (conv->preenable_setup) {
--		ret = conv->preenable_setup(conv);
--		if (ret)
--			return ret;
--	}
-+	if (!data->enable)
-+		return regmap_clear_bits(st->regmap,
-+					 ADI_AXI_REG_CHAN_CTRL(chan),
-+					 ADI_AXI_REG_CHAN_CTRL_FMT_EN);
- 
--	for (i = 0; i < conv->chip_info->num_channels; i++) {
--		ret = regmap_write(st->regmap, ADI_AXI_REG_CHAN_CTRL(i),
--				   ADI_AXI_REG_CHAN_CTRL_DEFAULTS);
--		if (ret)
--			return ret;
--	}
-+	val = FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_EN, true);
-+	if (data->sign_extend)
-+		val |= FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT, true);
-+	if (data->type == IIO_BACKEND_OFFSET_BINARY)
-+		val |= FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_TYPE, true);
- 
--	return 0;
-+	return regmap_update_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
-+				  ADI_AXI_REG_CHAN_CTRL_FMT_MASK, val);
- }
- 
--static int axi_adc_reset(struct adi_axi_adc_state *st)
-+static int axi_adc_chan_enable(struct iio_backend *back, unsigned int chan)
- {
--	int ret;
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 
--	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
--	if (ret)
--		return ret;
--
--	mdelay(10);
--	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN,
--			   ADI_AXI_REG_RSTN_MMCM_RSTN);
--	if (ret)
--		return ret;
--
--	mdelay(10);
--	return regmap_write(st->regmap, ADI_AXI_REG_RSTN,
--			    ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
-+	return regmap_set_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
-+			       ADI_AXI_REG_CHAN_CTRL_ENABLE);
- }
- 
--static void adi_axi_adc_cleanup(void *data)
-+static int axi_adc_chan_disable(struct iio_backend *back, unsigned int chan)
- {
--	struct adi_axi_adc_client *cl = data;
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 
--	put_device(cl->dev);
--	module_put(cl->dev->driver->owner);
-+	return regmap_clear_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
-+				 ADI_AXI_REG_CHAN_CTRL_ENABLE);
- }
- 
- static const struct regmap_config axi_adc_regmap_config = {
-@@ -344,33 +122,25 @@ static const struct regmap_config axi_adc_regmap_config = {
- 	.max_register = 0x0800,
- };
- 
-+static const struct iio_backend_ops adi_axi_adc_generic = {
-+	.enable = axi_adc_enable,
-+	.disable = axi_adc_disable,
-+	.data_format_set = axi_adc_data_format_set,
-+	.chan_enable = axi_adc_chan_enable,
-+	.chan_disable = axi_adc_chan_disable,
-+};
-+
- static int adi_axi_adc_probe(struct platform_device *pdev)
- {
--	struct adi_axi_adc_conv *conv;
--	struct iio_dev *indio_dev;
--	struct adi_axi_adc_client *cl;
- 	struct adi_axi_adc_state *st;
- 	void __iomem *base;
--	unsigned int ver;
-+	unsigned int ver, *expected_ver;
- 	int ret;
- 
--	cl = adi_axi_adc_attach_client(&pdev->dev);
--	if (IS_ERR(cl))
--		return PTR_ERR(cl);
--
--	ret = devm_add_action_or_reset(&pdev->dev, adi_axi_adc_cleanup, cl);
--	if (ret)
--		return ret;
--
--	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
--	if (indio_dev == NULL)
-+	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
-+	if (!st)
- 		return -ENOMEM;
- 
--	st = iio_priv(indio_dev);
--	st->client = cl;
--	cl->state = st;
--	mutex_init(&st->lock);
--
- 	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
-@@ -380,9 +150,15 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(st->regmap))
- 		return PTR_ERR(st->regmap);
- 
--	conv = &st->client->conv;
-+	expected_ver = (unsigned int *)device_get_match_data(&pdev->dev);
-+	if (!expected_ver)
-+		return -ENODEV;
- 
--	ret = axi_adc_reset(st);
-+	/*
-+	 * Force disable the core. Up to the frontend to enable us. And we can
-+	 * still read/write registers...
-+	 */
-+	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
- 	if (ret)
- 		return ret;
- 
-@@ -390,37 +166,23 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	if (cl->info->version > ver) {
-+	if (*expected_ver > ver) {
- 		dev_err(&pdev->dev,
- 			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
--			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
--			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
--			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
-+			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
-+			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
-+			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
- 			ADI_AXI_PCORE_VER_MAJOR(ver),
- 			ADI_AXI_PCORE_VER_MINOR(ver),
- 			ADI_AXI_PCORE_VER_PATCH(ver));
- 		return -ENODEV;
- 	}
- 
--	indio_dev->info = &adi_axi_adc_info;
--	indio_dev->name = "adi-axi-adc";
--	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->num_channels = conv->chip_info->num_channels;
--	indio_dev->channels = conv->chip_info->channels;
--
--	ret = adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
-+	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
- 	if (ret)
- 		return ret;
- 
--	ret = adi_axi_adc_setup_channels(&pdev->dev, st);
--	if (ret)
--		return ret;
--
--	ret = devm_iio_device_register(&pdev->dev, indio_dev);
--	if (ret)
--		return ret;
--
--	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
-+	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
- 		 ADI_AXI_PCORE_VER_MAJOR(ver),
- 		 ADI_AXI_PCORE_VER_MINOR(ver),
- 		 ADI_AXI_PCORE_VER_PATCH(ver));
-@@ -428,6 +190,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static unsigned int adi_axi_adc_10_0_a_info = ADI_AXI_PCORE_VER(10, 0, 'a');
-+
- /* Match table for of_platform binding */
- static const struct of_device_id adi_axi_adc_of_match[] = {
- 	{ .compatible = "adi,axi-adc-10.0.a", .data = &adi_axi_adc_10_0_a_info },
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml:14:5: [warning] wrong indentation: expected 2 but found 4 (indentation)
 
--- 
-2.42.1
+dtschema/dtc warnings/errors:
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231121100012.112861-1-kimseer.paller@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

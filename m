@@ -1,75 +1,60 @@
-Return-Path: <linux-iio+bounces-210-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-211-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287A87F2995
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:00:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485DA7F299F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 11:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D27CC2828DF
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:00:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F31CA282A1F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 10:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0972C3C692;
-	Tue, 21 Nov 2023 10:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UA8M3rHB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEBD3C690;
+	Tue, 21 Nov 2023 10:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E99D11C;
-	Tue, 21 Nov 2023 01:59:57 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6b1d1099a84so5084688b3a.1;
-        Tue, 21 Nov 2023 01:59:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700560796; x=1701165596; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fQ/YNQr6tUgsIDrHiHHLOY/pXL1P8RTvK6IheVvqGHI=;
-        b=UA8M3rHBQwZdKFZMv2D2oVEedwKMzUc0sddUrKokheqq4uPqFBSvye9yCUbERCHgZj
-         R6EhmEsoUYIKo4ZPFcQ8YLBEl4BDT31DoLb01ej8CgJNX6wlC6o6t8U40d8l67KUaL+F
-         DkQuD3tsxCzw3tm4I/UdKgty7tXAph3QAygCbP7uXPC1+gI4K/KqGaj5sN3c0s4esaYm
-         nwDh7L2LM7muDZ7yavvAF2e4VgzUeE7pdOTDWXbH+KpKM29QKhCGN3Kve+AnXhSn57Zp
-         aj6JHxq4mlCTm3wpKje5VBTK6VBrZYpBdOhpJbfUu464F7s87VaM5p33zEOswGdf5W+V
-         8HPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700560796; x=1701165596;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fQ/YNQr6tUgsIDrHiHHLOY/pXL1P8RTvK6IheVvqGHI=;
-        b=nN3sr5sn+Tm1sAl4cgtktjBvaEmJPTFhb199tkjuMItBo1Bumsl3yc6WFifzo+j4Jm
-         67fE4QDOkw8fWnimcgaK575qtQ3H9F3n5QWkPIAlZ7LMjdykyg9GwclOVCxVL4PaUPar
-         oxmVVp/YS4rIqAtplHffbRHelJ2iwz/zyIs66PiQsXFx01Jk89kcKLoZiVIvJUp/pWH7
-         spGwrLP2Nf0sEAoO36Lh8MrtJfx5rtv8VsneoLCJYQqDny77JJvU0wxf2Id8DCG3Q5au
-         GzMU+s4HUQYYp/42ivX1n6FprIGGGBjtaQlsCmwtWsRN+QeiQYgvGQM51Jsqe4Gzkb30
-         yELw==
-X-Gm-Message-State: AOJu0Yz36q9d9XXFI2mnJHUegs0zDFyuLuS66XLUe7WCq4mxMpA0Dk5t
-	CaT2vLA1+MjUO8yh3gOSjGVEpvj12fU50Q==
-X-Google-Smtp-Source: AGHT+IELCT4f6RHWkvY5fyBGFOiGs8h9XYBqu0aGsrZxXQWjlca14E72x+FJoWsReCqFtNNG0TWIEw==
-X-Received: by 2002:a05:6a21:3403:b0:189:bde9:9cb0 with SMTP id yn3-20020a056a21340300b00189bde99cb0mr13223976pzb.27.1700560796196;
-        Tue, 21 Nov 2023 01:59:56 -0800 (PST)
-Received: from localhost.localdomain ([2401:4900:2353:8963:b940:1ac0:2fbc:6b6])
-        by smtp.gmail.com with ESMTPSA id c14-20020a170903234e00b001cf68e1c5a1sm2047415plh.4.2023.11.21.01.59.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 01:59:55 -0800 (PST)
-From: Anshul Dalal <anshulusr@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Anshul Dalal <anshulusr@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v3 3/3] iio: chemical: add support for Aosong AGS02MA
-Date: Tue, 21 Nov 2023 15:27:59 +0530
-Message-ID: <20231121095800.2180870-3-anshulusr@gmail.com>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231121095800.2180870-1-anshulusr@gmail.com>
-References: <20231121095800.2180870-1-anshulusr@gmail.com>
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61ADE114;
+	Tue, 21 Nov 2023 02:00:47 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3AL9EZMC027043;
+	Tue, 21 Nov 2023 05:00:32 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3uer08bfjr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Nov 2023 05:00:32 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3ALA0UY7019874
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 21 Nov 2023 05:00:30 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 21 Nov
+ 2023 05:00:29 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 21 Nov 2023 05:00:29 -0500
+Received: from KPALLER2-L02.ad.analog.com (KPALLER2-L02.ad.analog.com [10.117.220.24])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3ALA0HI2012212;
+	Tue, 21 Nov 2023 05:00:20 -0500
+From: Kim Seer Paller <kimseer.paller@analog.com>
+To: 
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kim
+ Seer Paller <kimseer.paller@analog.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/2] dt-bindings: iio: frequency: add admfm2000
+Date: Tue, 21 Nov 2023 18:00:11 +0800
+Message-ID: <20231121100012.112861-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,274 +62,192 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: QiTudwO5Pd9senbzBEnYX9d7hWEt5CkA
+X-Proofpoint-GUID: QiTudwO5Pd9senbzBEnYX9d7hWEt5CkA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_03,2023-11-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 bulkscore=0 suspectscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2311060001 definitions=main-2311210078
 
-A simple driver for the TVOC (Total Volatile Organic Compounds)
-sensor from Aosong: AGS02MA
+Dual microwave down converter module with input RF and LO frequency
+ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+for each down conversion path.
 
-Steps in reading the VOC sensor value over i2c:
-  1. Read 5 bytes from the register `AGS02MA_TVOC_READ_REG` [0x00]
-  2. The first 4 bytes are taken as the big endian sensor data with final
-     byte being the CRC
-  3. The CRC is verified and the value is returned over an
-     `IIO_CHAN_INFO_RAW` channel as percents
-
-Tested on Raspberry Pi Zero 2W
-
-Datasheet:
-  https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
-Product-Page:
-  http://www.aosong.com/m/en/products-33.html
-
-Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 ---
+V1 -> V2: Removed '|' after description. Specified the pins connected to
+          the GPIOs. Added additionalProperties: false. Changed node name to gpio.
+          Aligned < syntax with the previous syntax in the examples.
 
-Changes for v3:
-- Added of_device_id
+ .../bindings/iio/frequency/adi,admfm2000.yaml | 130 ++++++++++++++++++
+ MAINTAINERS                                   |   7 +
+ 2 files changed, 137 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
 
-v2: https://lore.kernel.org/lkml/20231115125810.1394854-3-anshulusr@gmail.com/
-
-Changes for v2:
-- Fixed Kconfig not selecting CRC8 (used to be `select crc8`)
-- Changed instances of asair to aosong
-- Report raw readings in percents instead of ppb
-- Added myself as maintainer for the device binding
-
-v1: https://lore.kernel.org/lkml/20231107173100.62715-3-anshulusr@gmail.com/
----
- MAINTAINERS                    |   7 ++
- drivers/iio/chemical/Kconfig   |  11 +++
- drivers/iio/chemical/Makefile  |   1 +
- drivers/iio/chemical/ags02ma.c | 168 +++++++++++++++++++++++++++++++++
- 4 files changed, 187 insertions(+)
- create mode 100644 drivers/iio/chemical/ags02ma.c
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+new file mode 100644
+index 000000000000..92a7736c6eeb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+@@ -0,0 +1,130 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADMFM2000 Dual Microwave Down Converter
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description:
++    Dual microwave down converter module with input RF and LO frequency ranges
++    from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
++    It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each down
++    conversion path.
++
++properties:
++  compatible:
++    enum:
++      - adi,admfm2000
++
++  switch1-gpios:
++    description:
++      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
++      connected to the B15 and B16.
++    minItems: 2
++    maxItems: 2
++
++  switch2-gpios:
++    description:
++      Must contain an array of 2 GPIO specifiers, referring to the GPIO pins
++      connected to the L14 and K14.
++    minItems: 2
++    maxItems: 2
++
++  attenuation1-gpios:
++    description:
++      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
++      connected to the C14, C15, C16, D14, and D15.
++    minItems: 5
++    maxItems: 5
++
++  attenuation2-gpios:
++    description:
++      Must contain an array of 5 GPIO specifiers, referring to the GPIO pins
++      connected to the L15, L16, M14, M15, and M16.
++    minItems: 5
++    maxItems: 5
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++patternProperties:
++  "^channel@[0-1]$":
++    type: object
++    description: Represents a channel of the device.
++
++    additionalProperties: false
++
++    properties:
++      reg:
++        description:
++          The channel number.
++        minimum: 0
++        maximum: 1
++
++      adi,mode:
++        description:
++          RF path selected for the channel.
++            0 - Direct IF mode
++            1 - Mixer mode
++        $ref: /schemas/types.yaml#/definitions/uint32
++        enum: [0, 1]
++
++    required:
++      - reg
++      - adi,mode
++
++required:
++  - compatible
++  - switch1-gpios
++  - switch2-gpios
++  - attenuation1-gpios
++  - attenuation2-gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    gpio {
++      compatible = "adi,admfm2000";
++
++      switch1-gpios = <&gpio 1 GPIO_ACTIVE_LOW>,
++                      <&gpio 2 GPIO_ACTIVE_HIGH>;
++
++      switch2-gpios = <&gpio 3 GPIO_ACTIVE_LOW>,
++                      <&gpio 4 GPIO_ACTIVE_HIGH>;
++
++      attenuation1-gpios = <&gpio 17 GPIO_ACTIVE_LOW>,
++                           <&gpio 22 GPIO_ACTIVE_LOW>,
++                           <&gpio 23 GPIO_ACTIVE_LOW>,
++                           <&gpio 24 GPIO_ACTIVE_LOW>,
++                           <&gpio 25 GPIO_ACTIVE_LOW>;
++
++      attenuation2-gpios = <&gpio 0 GPIO_ACTIVE_LOW>,
++                           <&gpio 5 GPIO_ACTIVE_LOW>,
++                           <&gpio 6 GPIO_ACTIVE_LOW>,
++                           <&gpio 16 GPIO_ACTIVE_LOW>,
++                           <&gpio 26 GPIO_ACTIVE_LOW>;
++
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      channel@0 {
++        reg = <0>;
++        adi,mode = <1>;
++      };
++
++      channel@1 {
++        reg = <1>;
++        adi,mode = <1>;
++      };
++    };
++...
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 81d5fc0bba68..ba3c950aca1b 100644
+index ea790149af79..a5d18864519e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3028,6 +3028,13 @@ S:	Supported
- W:	http://www.akm.com/
- F:	drivers/iio/magnetometer/ak8974.c
+@@ -1247,6 +1247,13 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
+ F:	drivers/hwmon/adm1177.c
  
-+AOSONG AGS02MA TVOC SENSOR DRIVER
-+M:	Anshul Dalal <anshulusr@gmail.com>
++ANALOG DEVICES INC ADMFM2000 DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
 +L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
-+F:	drivers/iio/chemical/ags02ma.c
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
 +
- ASC7621 HARDWARE MONITOR DRIVER
- M:	George Joseph <george.joseph@fairview5.com>
- L:	linux-hwmon@vger.kernel.org
-diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index c30657e10ee1..02649ab81b3c 100644
---- a/drivers/iio/chemical/Kconfig
-+++ b/drivers/iio/chemical/Kconfig
-@@ -5,6 +5,17 @@
- 
- menu "Chemical Sensors"
- 
-+config AOSONG_AGS02MA
-+	tristate "Aosong AGS02MA TVOC sensor driver"
-+	depends on I2C
-+	select CRC8
-+	help
-+	  Say Y here to build support for Aosong AGS02MA TVOC (Total Volatile
-+	  Organic Compounds) sensor.
-+
-+	  To compile this driver as module, choose M here: the module will be
-+	  called ags02ma.
-+
- config ATLAS_PH_SENSOR
- 	tristate "Atlas Scientific OEM SM sensors"
- 	depends on I2C
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index a11e777a7a00..2f3dee8bb779 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -4,6 +4,7 @@
- #
- 
- # When adding new entries keep the list in alphabetical order
-+obj-$(CONFIG_AOSONG_AGS02MA)	+= ags02ma.o
- obj-$(CONFIG_ATLAS_PH_SENSOR)	+= atlas-sensor.o
- obj-$(CONFIG_ATLAS_EZO_SENSOR)	+= atlas-ezo-sensor.o
- obj-$(CONFIG_BME680) += bme680_core.o
-diff --git a/drivers/iio/chemical/ags02ma.c b/drivers/iio/chemical/ags02ma.c
-new file mode 100644
-index 000000000000..04a07307caa9
---- /dev/null
-+++ b/drivers/iio/chemical/ags02ma.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (C) 2023 Anshul Dalal <anshulusr@gmail.com>
-+ *
-+ * Driver for Aosong AGS02MA
-+ *
-+ * Datasheet:
-+ *   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
-+ * Product Page:
-+ *   http://www.aosong.com/m/en/products-33.html
-+ *
-+ * TODO:
-+ *   - Add support for ug/m^3 units of measurement
-+ *   - Add support for modifying i2c address
-+ */
-+
-+#include <linux/crc8.h>
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+
-+#define AGS02MA_DEVICE_NAME		   "ags02ma"
-+
-+#define AGS02MA_TVOC_READ_REG		   0x00
-+#define AGS02MA_VERSION_REG		   0x11
-+
-+#define AGS02MA_VERSION_PROCESSING_DELAY   30
-+#define AGS02MA_TVOC_READ_PROCESSING_DELAY 1500
-+
-+#define AGS02MA_CRC8_INIT		   0xff
-+#define AGS02MA_CRC8_POLYNOMIAL		   0x31
-+#define AGS02MA_PPB_PERCENT_CONVERSION     10000000
-+
-+DECLARE_CRC8_TABLE(ags02ma_crc8_table);
-+
-+struct ags02ma_data {
-+	struct i2c_client *client;
-+};
-+
-+struct ags02ma_reading {
-+	__be32 data;
-+	u8 crc;
-+} __packed;
-+
-+static u32 ags02ma_register_read(struct i2c_client *client, u8 reg, u16 delay)
-+{
-+	u32 ret;
-+	u8 crc;
-+	struct ags02ma_reading read_buffer;
-+
-+	ret = i2c_master_send(client, &reg, sizeof(reg));
-+	if (ret < 0) {
-+		dev_err(&client->dev,
-+			"Failed to send data to register 0x%x: %d", reg, ret);
-+		return ret;
-+	}
-+
-+	/* Processing Delay, Check Table 7.7 in the datasheet */
-+	msleep_interruptible(delay);
-+
-+	ret = i2c_master_recv(client, (u8 *)&read_buffer, sizeof(read_buffer));
-+	if (ret < 0) {
-+		dev_err(&client->dev,
-+			"Failed to receive from register 0x%x: %d", reg, ret);
-+		return ret;
-+	}
-+	ret = be32_to_cpu(read_buffer.data);
-+
-+	crc = crc8(ags02ma_crc8_table, (u8 *)&read_buffer.data,
-+		   sizeof(read_buffer.data), AGS02MA_CRC8_INIT);
-+	if (crc != read_buffer.crc) {
-+		dev_err(&client->dev, "CRC error\n");
-+		return -EIO;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ags02ma_read_raw(struct iio_dev *iio_device,
-+			    struct iio_chan_spec const *chan, int *val,
-+			    int *val2, long mask)
-+{
-+	int ret;
-+	struct ags02ma_data *data = iio_priv(iio_device);
-+
-+	if (mask == IIO_CHAN_INFO_RAW) {
-+		/* The sensor reads data as ppb */
-+		ret = ags02ma_register_read(data->client, AGS02MA_TVOC_READ_REG,
-+					    AGS02MA_TVOC_READ_PROCESSING_DELAY);
-+		if (ret < 0)
-+			return ret;
-+		*val = ret;
-+		*val2 = AGS02MA_PPB_PERCENT_CONVERSION;
-+		return IIO_VAL_FRACTIONAL;
-+	} else {
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info ags02ma_info = {
-+	.read_raw = ags02ma_read_raw,
-+};
-+
-+static const struct iio_chan_spec ags02ma_channels[] = {
-+	{ .type = IIO_CONCENTRATION,
-+	  .channel2 = IIO_MOD_VOC,
-+	  .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) }
-+};
-+
-+static int ags02ma_probe(struct i2c_client *client)
-+{
-+	int ret;
-+	struct ags02ma_data *data;
-+	struct iio_dev *indio_dev;
-+	u32 version;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	crc8_populate_msb(ags02ma_crc8_table, AGS02MA_CRC8_POLYNOMIAL);
-+
-+	ret = ags02ma_register_read(client, AGS02MA_VERSION_REG,
-+				    AGS02MA_VERSION_PROCESSING_DELAY);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to read device version: %d", ret);
-+		return ret;
-+	}
-+	version = ret;
-+	dev_dbg(&client->dev, "Aosong AGS02MA, Version: 0x%x", version);
-+
-+	data = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	data->client = client;
-+	indio_dev->info = &ags02ma_info;
-+	indio_dev->channels = ags02ma_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ags02ma_channels);
-+	indio_dev->name = AGS02MA_DEVICE_NAME;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id ags02ma_id_table[] = {
-+	{ AGS02MA_DEVICE_NAME, 0 },
-+	{ /* Sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(i2c, ags02ma_id_table);
-+
-+static const struct of_device_id ags02ma_of_table[] = {
-+	{ .compatible = "aosong,ags02ma"},
-+	{ /* Sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, ags02ma_of_table);
-+
-+static struct i2c_driver ags02ma_driver = {
-+	.driver = {
-+		.name = AGS02MA_DEVICE_NAME,
-+		.of_match_table = of_match_ptr(ags02ma_of_table),
-+	},
-+	.id_table = ags02ma_id_table,
-+	.probe = ags02ma_probe,
-+};
-+module_i2c_driver(ags02ma_driver);
-+
-+MODULE_AUTHOR("Anshul Dalal <anshulusr@gmail.com>");
-+MODULE_DESCRIPTION("Aosong AGS02MA TVOC Driver");
-+MODULE_LICENSE("GPL");
+ ANALOG DEVICES INC ADMV1013 DRIVER
+ M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+ L:	linux-iio@vger.kernel.org
+
+base-commit: 98b1cc82c4affc16f5598d4fa14b1858671b2263
 -- 
-2.42.1
+2.34.1
 
 

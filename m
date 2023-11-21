@@ -1,125 +1,132 @@
-Return-Path: <linux-iio+bounces-235-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-236-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC69A7F34CC
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 18:17:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA497F34D3
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 18:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1943E1C20969
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 17:17:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E83F6B20FE4
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Nov 2023 17:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041175A111;
-	Tue, 21 Nov 2023 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920965A119;
+	Tue, 21 Nov 2023 17:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZXuj5ltu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gK7g3UYZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C5010DA;
-	Tue, 21 Nov 2023 09:17:08 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9fa45e75ed9so474060066b.1;
-        Tue, 21 Nov 2023 09:17:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700587027; x=1701191827; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:cc:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=swhdhjkQ4NCZZT2+5iCdL+NEq1b8GxVa0Me/RJxD8Hs=;
-        b=ZXuj5ltuVb5wZ33auRp2oxBY8VPwiNJGv7c8WI3sPblFjXHNvFAtSCu7BWfivItF+r
-         8jU0tyVz0gVDKzpu+etenBx4csLTQVBoYB2Geir8Y+Bz24wDaoJVUfCqAVskLL1UrHVn
-         j+BCotxkXxA/yl3f6HxoAp27dBhWvS6Dcx9ijBOKbkvi3/pK1ujY1LsE+aC/06zWysyQ
-         xrSlEtINQmfBtINRHwX9/wE4P1PzIy7gvg2CAzQyGtuWsIVuB+P09OebjIVVPXvpivuz
-         B1EU466I/lRtqLHTlPgU6zNOHwItEbyYdnqwNI/i9fP90wBHY9zKQo5ME2gHLPJ/y7WA
-         jbug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700587027; x=1701191827;
-        h=content-transfer-encoding:in-reply-to:from:cc:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=swhdhjkQ4NCZZT2+5iCdL+NEq1b8GxVa0Me/RJxD8Hs=;
-        b=Q+VkQ4/DyG3ylNojFauUcGMr5+yk6baCLC7LdwzkIM9/e+83QmprFFJQtD4qIi5S5B
-         rFW91q3uUT2P+5SC93HyEzF+hOGKt65C+0LiWej2qfzAIkrQBrfGHOi/0G/K3p7uzqM8
-         0K803TU5NZYfE4rlzyfcuzBLS2j9+FdlMmtvAH1ip2Cy32BwFxopsEFD1FM8O1Z2mOXR
-         TOY2hLmxRbfSoMHkgsSqrtUp+xLNTmahuY3g9W2edmxxhPVq8UIbpYTEaHPBm0zUK14t
-         0ASnbyY/puCpxwpJnCfuVX5IptPhEStDdva3btcMVuKideTrFKLlZwEFHdGRk7K3YIsq
-         2dHw==
-X-Gm-Message-State: AOJu0YzJTYt9wj8ShrCbOhItk/TkcImmMeaVf7oK3rVhJNi2AFVq4/pp
-	Nl2w7QvLAAhCeDgZWhtHXbI=
-X-Google-Smtp-Source: AGHT+IFnpq2tyXR/236QuDzP3r9GnwuVCYNJWclVkciClWmvYsMI6oPqg0/rnsmK3i7fIQrxgO45BQ==
-X-Received: by 2002:a17:906:d28c:b0:9fe:5d39:41c6 with SMTP id ay12-20020a170906d28c00b009fe5d3941c6mr5201086ejb.51.1700587026775;
-        Tue, 21 Nov 2023 09:17:06 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id uz4-20020a170907118400b009fc2a76ddedsm3606927ejb.17.2023.11.21.09.17.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Nov 2023 09:17:06 -0800 (PST)
-Message-ID: <7234efaa-58db-4a49-b422-27fc08d6b6e9@gmail.com>
-Date: Tue, 21 Nov 2023 19:17:03 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D864113;
+	Tue, 21 Nov 2023 09:20:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700587214; x=1732123214;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rmXyXdmIpGPFkC5nxq2ckbTRsSvvh69NGe2Z/8/ScyY=;
+  b=gK7g3UYZNU0oOjYczNcYNjgWR1VR/SCg7kl9Wzu3oheVLyMS/d4hGbv5
+   mZITl91pKE1JvYtkunzBGq9V90P3zl9MSn5RlYt21+2VBy1I2ojnNKCX3
+   vVKTFDmt2nWZe0kQqKs1c9uAY7WJxrqHGj4+t2V7lLmdZxkK2NpoBY4Im
+   U4vbSzhnrw06IK8meTUq8eaLYbbpHDM7ZEZk18DF5YEKG6DBzkcZIc/Tv
+   IqP4e3Tg0M4SuZb4pJC92wLmugyBnaLd6jpzZ8DsibsHJUK1L/vigJ5t2
+   GuZlf4GB0xbDt5bvLWxbzNUcs+UeV5GP1+YvQPvPypLWI4VKQvryrpgA3
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="10554723"
+X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
+   d="scan'208";a="10554723"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 09:20:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="1013974419"
+X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
+   d="scan'208";a="1013974419"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 09:20:08 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1r5UPs-0000000FsAr-2V7h;
+	Tue, 21 Nov 2023 19:20:04 +0200
+Date: Tue, 21 Nov 2023 19:20:04 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-iio@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	Vincent Tremblay <vincent@vtremblay.dev>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: light: isl76682: Add ISL76682 driver
+Message-ID: <ZVzmxP2FypnkUE4I@smile.fi.intel.com>
+References: <20231119212515.54001-1-marex@denx.de>
+ <20231119212515.54001-2-marex@denx.de>
+ <ZVtKyPvYHgg61JFG@smile.fi.intel.com>
+ <adb40cdd-c4c0-4564-99e5-aac25f5cd700@denx.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] iio: adc: ad7173: add AD7173 driver
-Content-Language: en-US
-To: Andy Shevchenko <andy@kernel.org>
-References: <20231116134655.21052-1-user@HYB-hhAwRlzzMZb>
- <20231116134655.21052-2-user@HYB-hhAwRlzzMZb>
- <ZVtYeWZmcDZ_SMPo@smile.fi.intel.com>
- <5cf3824f-6375-4c76-86ff-c5389ddf4196@gmail.com>
- <ZVuHcaUQL6xnchK-@smile.fi.intel.com>
- <643d2c2c8dd4490081c234b6831ee5dd@analog.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <643d2c2c8dd4490081c234b6831ee5dd@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adb40cdd-c4c0-4564-99e5-aac25f5cd700@denx.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Tue, Nov 21, 2023 at 04:14:54AM +0100, Marek Vasut wrote:
+> On 11/20/23 13:02, Andy Shevchenko wrote:
 
+[...]
 
-On 11/20/23 18:21, Andy Shevchenko wrote:> On Mon, Nov 20, 2023 at
-05:55:12PM +0200, Ceclan Dumitru wrote:
->> On 11/20/23 15:00, Andy Shevchenko wrote:
->>> On Thu, Nov 16, 2023 at 03:46:55PM +0200, mitrutzceclan wrote:
-
+> > > +static int isl76682_clear_configure_reg(struct isl76682_chip *chip)
+> > > +{
+> > > +	struct device *dev = regmap_get_device(chip->regmap);
+> > > +	int ret;
+> > > +
+> > > +	ret = regmap_write(chip->regmap, ISL76682_REG_COMMAND, 0x0);
+> > > +	if (ret < 0)
+> > > +		dev_err(dev, "Error %d clearing the CONFIGURE register\n", ret);
+> > 
+> > > +	chip->command = 0;
+> > 
+> > Even in an error case? Is it a problem?
 > 
-> Use struct_group() to show explicitly the group of members. If it's not an ABI in any sense, then memcmp() is fine.
-> 
+> I added a comment in V4, if the I2C communication fails, hopefully the next
+> time user reads data the command register will be rewritten again and the
+> communication would have succeeded by then (assuming this was some weird
+> glitch on the I2C bus). So this is best effort attempt to recover from that.
 
-Alright
+OK.
 
->>>> +	return vref / (MICRO/MILLI);
->>>
->>> What does the denominator mean and why you can't simply use MILL?
->>
->> Original vref values are in micro, I considered that it was adequate 
->> to represent the conversion from MICRO to MILLI as a fraction.
->>
->>>> +		*val = st->info->sinc5_data_rates[reg] / (MICRO/MILLI);
->>>> +		*val2 = (st->info->sinc5_data_rates[reg] % MILLI) * 
->>>> +(MICRO/MILLI);
->>>
->>> Same Q about denominator.
->>>
->> Here, a misunderstanding on my part of a suggestion from Jonathan in 
->> V2, will be removed.
+...
+
+> > > +
+> > 
+> > Redundant blank line.
+> > 
+> > > +module_i2c_driver(isl76682_driver);
 > 
-> You need to clarify with him that.
+> That ^ newline is above the module_i2c_driver or below it ?
 > 
-My misunderstanding was that he only referred to the multiplication, not
-the denominator. *val has a conversion from MILLI to no metric prefix
-while *val2 converts from MILLI to MICRO.
+> I removed the one below .
+
+Hmm... Comment was clearly about above one (as you see a single + there).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

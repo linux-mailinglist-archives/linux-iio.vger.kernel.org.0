@@ -1,64 +1,69 @@
-Return-Path: <linux-iio+bounces-268-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-271-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A967F467B
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 13:42:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53957F5000
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 19:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C93A281056
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 12:42:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EB50B20A92
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 18:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B4C1CA88;
-	Wed, 22 Nov 2023 12:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0CF59B6A;
+	Wed, 22 Nov 2023 18:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PxvPBb6w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jnTQMss2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3E9D8;
-	Wed, 22 Nov 2023 04:42:49 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A2E93;
+	Wed, 22 Nov 2023 10:55:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700656969; x=1732192969;
+  t=1700679300; x=1732215300;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SqizgiAch9won05vBf6kAWzFctwB2I+ZrA5SgAqyzfY=;
-  b=PxvPBb6w9J1TIWGo34Hg9WG0/XUS3ORzLxjQe5Uq5xocbvnpOOF48eUI
-   w+UhqQCZpN/w9XDhPc6hzjSNcGOGeiJw5PgEPt1HEqu07qn4KldCrGFwT
-   HVOquZRLz4fb484wmxRtM0dMjEn8fILyoUUHqpvBXQumisHfBfYhMM01j
-   fbLkJDoRCBJUEK97O+tpSb8hemOujkvhVqkXWF+wH39842wh5Fnj8S0zp
-   R8sTcZs5h3cbbYeAnPrU03VlAi8g2N/v3PXXDkYb3jp+MW4ciWKwr4+wn
-   OQo58ayCUx0X03fNTQbSJo83RxupnGbl6kG0+WVToowLKM+TitP/npR3k
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="391815110"
-X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="391815110"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 04:42:49 -0800
+  bh=DmyGZTLiw6DZM1o+vxlMQwrB7RXguFu8pPn+LN62oJw=;
+  b=jnTQMss2fz4UBE/TMIQmLuG0Io/n2RQW7CWEABXXEUVE/hxDr5nMSYor
+   SJHwteWKEeKOISVTxqzjiAcO1tMqO8P7tothrsWFTPekOnK7r2aFYJIaI
+   4GD/FL4WqknfrAfqhBCQFqGSLPDZ68yQqR28Ue7xuUIZuTCaoIoBtVuDZ
+   +DCtajs7U5gUIuG+UExWKY8y+xTLQpAs86wg+w1r2gAs4RlNakM2ULUNj
+   5/K0j4DPLTRqg+igvyVy/vNnqdPj8wneZgXekkGLTT3RyWVcaro02FgjV
+   pFGeM2WWVXqD7Qe4P6YTLkdNyrLrcy/HfZ43sdysKrdPinDbhpp1ExjBS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="423249588"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="423249588"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 10:39:13 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="910779563"
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="796029519"
 X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="910779563"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Nov 2023 04:42:46 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r5mZ2-0000T1-0u;
-	Wed, 22 Nov 2023 12:42:44 +0000
-Date: Wed, 22 Nov 2023 20:40:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: "marcelo.schmitt@analog.com" <marcelo.schmitt@analog.com>,
-	beniamin.bia@analog.com, paul.cercueil@analog.com,
-	Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org,
-	marcelo.schmitt1@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/7] dt-bindings: iio: Add binding documentation for
- AD7091R-8
-Message-ID: <202311221707.P5KpelyW-lkp@intel.com>
-References: <566503a54feba35178c778a7929bced66ebd8870.1700595310.git.marcelo.schmitt1@gmail.com>
+   d="scan'208";a="796029519"
+Received: from unknown (HELO smile.fi.intel.com) ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 02:49:02 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1r5kk2-0000000G47Y-272Q;
+	Wed, 22 Nov 2023 12:45:58 +0200
+Date: Wed, 22 Nov 2023 12:45:58 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 2/2] iio: pressure: driver for Honeywell HSC/SSC series
+ pressure sensors
+Message-ID: <ZV3b5sUrGEj5ZOF0@smile.fi.intel.com>
+References: <20231117164232.8474-1-petre.rodan@subdimension.ro>
+ <20231117164232.8474-2-petre.rodan@subdimension.ro>
+ <ZVtSm5f-Qyp8LFFp@smile.fi.intel.com>
+ <ZV2a213oidterHYZ@sunspire>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,109 +72,229 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <566503a54feba35178c778a7929bced66ebd8870.1700595310.git.marcelo.schmitt1@gmail.com>
+In-Reply-To: <ZV2a213oidterHYZ@sunspire>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
+On Wed, Nov 22, 2023 at 08:08:27AM +0200, Petre Rodan wrote:
+> On Mon, Nov 20, 2023 at 02:35:39PM +0200, Andy Shevchenko wrote:
 
-kernel test robot noticed the following build warnings:
+...
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.7-rc2 next-20231122]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> sorry, what is 'LKP' in this context and how do I reproduce?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/marcelo-schmitt-analog-com/MAINTAINERS-Add-MAINTAINERS-entry-for-AD7091R/20231122-093706
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/566503a54feba35178c778a7929bced66ebd8870.1700595310.git.marcelo.schmitt1%40gmail.com
-patch subject: [PATCH 5/7] dt-bindings: iio: Add binding documentation for AD7091R-8
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20231122/202311221707.P5KpelyW-lkp@intel.com/reproduce)
+It's an acronym for CI system run by Intel. You should have had an email in
+your mailbox with complains. It also duplicates them to a mailing list which
+address I don't know by heart.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311221707.P5KpelyW-lkp@intel.com/
+...
 
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml:50:11: [error] string value is redundantly quoted with any quotes (quoted-strings)
+> > Also there are missing at least these ones: array_size.h, types.h.
+> 
+> '#include <linux/array_size.h>' is a weird one.
 
-vim +50 Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+Why?
 
-     8	
-     9	maintainers:
-    10	  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-    11	
-    12	description: |
-    13	  Analog Devices AD7091R-8 8-Channel 12-Bit ADC
-    14	  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7091R-2_7091R-4_7091R-8.pdf
-    15	
-    16	properties:
-    17	  compatible:
-    18	    enum:
-    19	      - adi,ad7091r2
-    20	      - adi,ad7091r4
-    21	      - adi,ad7091r8
-    22	
-    23	  reg:
-    24	    maxItems: 1
-    25	
-    26	  vref-supply: true
-    27	
-    28	  spi-max-frequency: true
-    29	
-    30	  adi,conversion-start-gpios:
-    31	    description:
-    32	      Device tree identifier of the CONVST pin.
-    33	      This logic input is used to initiate conversions on the analog
-    34	      input channels.
-    35	    maxItems: 1
-    36	
-    37	  reset-gpios:
-    38	    maxItems: 1
-    39	
-    40	  interrupts:
-    41	    maxItems: 1
-    42	
-    43	required:
-    44	  - compatible
-    45	  - reg
-    46	  - adi,conversion-start-gpios
-    47	
-    48	patternProperties:
-    49	  "^channel@[0-7]$":
-  > 50	    $ref: "adc.yaml"
-    51	    type: object
-    52	    description: Represents the external channels which are connected to the ADC.
-    53	
-    54	    properties:
-    55	      reg:
-    56	        minimum: 0
-    57	        maximum: 7
-    58	
-    59	    required:
-    60	      - reg
-    61	
-    62	allOf:
-    63	  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-    64	
-    65	  # AD7091R-2 does not have ALERT/BUSY/GPO pin
-    66	  - if:
-    67	      properties:
-    68	        compatible:
-    69	          contains:
-    70	            enum:
-    71	              - adi,ad7091r4
-    72	              - adi,ad7091r8
-    73	    then:
-    74	      properties:
-    75	        interrupts: true
-    76	    else:
-    77	      properties:
-    78	        interrupts: false
-    79	
+> $ cd /usr/src/linux/drivers
+> $ grep -r ARRAY_SIZE * | grep '\.c:' |  wc -l
+>  32396
+> $ grep -r 'include.*array_size\.h' * | grep -E '\.[ch]:' | wc -l
+> 11
+> $ grep -r 'include.*array_size\.h' * | grep -E '\.[ch]:' | grep -v '^pinctrl' | wc -l
+> 0
+
+Hint, use `git grep ...` which much, much faster against the Git indexed data.
+
+> plus on a 6.1 version kernel, `make modules` actually reports that the header
+> can't be found if I include it. can't comprehend that. so I'll be skipping
+> that particular include.
+
+No, the new code is always should be submitted against latest release cycle,
+v6.7-rcX as of today. There is the header. Please, use it.
+
+...
+
+> > Can you utilize linear ranges data types and APIs? (linear_range.h)
+> 
+> not fit for this purpose, sorry.
+
+NP.
+
+...
+
+> > > +	if (data->buffer[0] & 0xc0)
+> > > +		return 0;
+> > > +
+> > > +	return 1;
+> > 
+> > You use bool and return integers.
+> > 
+> > Besides, it can be just a oneliner.
+> 
+> rewritten as a one-liner, without GENMASK.
+> 
+> > 	return !(buffer[0] & GENMASK(3, 2));
+> > 
+> > (Note, you will need bits.h for this.)
+> > 
+> > > +}
+
+Why no GENMASK() ? What the meaning of the 0xc0?
+Ideally it should be
+
+#define ...meaningful name...  GENMASK()
+
+...
+
+> > > +		mutex_lock(&data->lock);
+> > > +		ret = hsc_get_measurement(data);
+> > > +		mutex_unlock(&data->lock);
+> > 
+> > Use guard() operator from cleanup.h.
+> 
+> I'm not familiar with that, for the time being I'll stick to
+> mutex_lock/unlock if you don't mind.
+
+I do mind. RAII is a method to make code more robust against forgotten
+unlock/free calls.
+
+...
+
+> > > +		case IIO_PRESSURE:
+> > > +			*val =
+> > > +			    ((data->buffer[0] & 0x3f) << 8) + data->buffer[1];
+> > > +			return IIO_VAL_INT;
+> > > +		case IIO_TEMP:
+> > > +			*val =
+> > > +			    (data->buffer[2] << 3) +
+> > > +			    ((data->buffer[3] & 0xe0) >> 5);
+> > 
+> > Is this some endianess / sign extension? Please convert using proper APIs.
+> 
+> the raw conversion data is spread over 4 bytes and interlaced with other info
+> (see comment above the function).  I'm just cherry-picking the bits I'm
+> interested in, in a way my brain can understand what is going on.
+
+So, perhaps you need to use get_unaligned_.e32() and then FIELD_*() from
+bitfield.h. This will be much better in terms of understanding the semantics
+of these magic bit shifts and masks.
+
+...
+
+> > > +			ret = 0;
+> > > +			if (!ret)
+> > 
+> > lol
+> 
+> I should leave that in for comic relief. missed it after a lot of code
+> changes.
+
+I understand, that's why no shame on you, just fun code to see :-)
+
+...
+
+> > Strange indentation of }:s...
+> 
+> I blame `indent -linux --line-length 80` for these and weirdly-spaced pointer
+> declarations.  are you using something else?
+
+Some maintainers suggest to use clang-format. I find it weird in some corner
+cases. So, I would suggest to use it and reread the code and fix some
+strangenesses.
+
+...
+
+> > > +	if (strcasecmp(hsc->range_str, "na") != 0) {
+> > > +		// chip should be defined in the nomenclature
+> > > +		for (index = 0; index < ARRAY_SIZE(hsc_range_config); index++) {
+> > > +			if (strcasecmp
+> > > +			    (hsc_range_config[index].name,
+> > > +			     hsc->range_str) == 0) {
+> > > +				hsc->pmin = hsc_range_config[index].pmin;
+> > > +				hsc->pmax = hsc_range_config[index].pmax;
+> > > +				found = 1;
+> > > +				break;
+> > > +			}
+> > > +		}
+> > 
+> > Reinventing match_string() / sysfs_match_string() ?
+> 
+> match_string() is case-sensitive and operates on string arrays, so unfit for
+> this purpose.
+
+Let's put it this way: Why do you care of the relaxed case?
+I.o.w. why can we be slightly stricter?
+
+...
+
+> > Can you use regmap I2C?
+> 
+> the communication is one-way as in the sensors do not expect anything except
+> 4 bytes-worth of clock signals per 'packet' for both the i2c and spi
+> versions.  regmap is suited to sensors with an actual memory map.
+
+If not yet, worse to add in the comment area of the patch
+(after the cutter '---' line).
+
+...
+
+> > No use of this function prototype, we have a new one.
+> 
+> oops, I was hoping my 6.1.38 kernel is using the same API as 6.7.0
+> fixed.
+
+Same way with a (new) header :-)
+
+...
+
+> > > +	ret = devm_regulator_get_enable_optional(dev, "vdd");
+> > > +	if (ret == -EPROBE_DEFER)
+> > > +		return -EPROBE_DEFER;
+> > 
+> > Oh, boy, this should check for ENODEV or so, yeah, regulator APIs a bit
+> > interesting.
+> 
+> since I'm unable to test this I'd rather remove the block altogether.
+> if I go the ENODEV route my module will never load since I can't see any
+> vdd-supply support on my devboard.
+
+No, what I meant is to have something like
+
+	if (ret) {
+		if (ret != -ENODEV)
+			return ret;
+		...regulator is not present...
+	}
+
+This is how it's being used in dozens of places in the kernel. Just utilize
+`git grep ...` which should be a top-10 tool for the Linux kernel developer.
+
+Q: ...
+A: Try `git grep ...` to find your answer in the existing code.
+
+...
+
+> > > +	if (!dev_fwnode(dev))
+> > > +		return -EOPNOTSUPP;
+> > 
+> > Why do you need this?
+> > And why this error code?
+> 
+> it's intentional.
+> this module has a hard requirement on the correct parameters (transfer
+> function and pressure range) being provided in the devicetree.  without those
+> I don't want to provide any measurements since there can't be a default
+> transfer function and pressure range for a generic driver that supports an
+> infinite combination of those.
+> 
+> echo hsc030pa 0x28 > /sys/bus/i2c/devices/i2c-0/new_device
+> I want iio_info to detect 0 devices.
+
+So, fine, but the very first mandatory property check will fail as it has
+the very same check inside. So, why do you need a double check?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
+
 

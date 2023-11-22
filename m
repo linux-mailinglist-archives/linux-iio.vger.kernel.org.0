@@ -1,131 +1,115 @@
-Return-Path: <linux-iio+bounces-254-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-255-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3E87F3F2D
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 08:48:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09E17F3F55
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 08:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4063B281E6A
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 07:48:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB3CEB20E26
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 07:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6944620B0C;
-	Wed, 22 Nov 2023 07:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1720B1A;
+	Wed, 22 Nov 2023 07:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="fzb1ZwNv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMpQPW1e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7323D112;
-	Tue, 21 Nov 2023 23:47:52 -0800 (PST)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 53E20120017;
-	Wed, 22 Nov 2023 10:47:49 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 53E20120017
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1700639269;
-	bh=oU30MMu9WmhU+2fpdPT9gtSHN94XrD8m14J9f5rDEG0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=fzb1ZwNvSSqMGofOnI5AJBJqXEfseIC0KVAi3z7oH12Xt5C7EeKWzygZfdmQD5nye
-	 pW2BM+pKKAFdH0sxvqyDWxTYtjEwcU3ZAwRhPHFyMnNI6cKWMygjZQeRjHmSG6lZ7u
-	 /JKUl9I6wUhPuAUAWC36NbQqdaPQRwTFB4b6k8Kt/0nlsEEg7OFwbQAL/gILcUeO8V
-	 14N7FY5DUAEHNTvJZQckpR2LYvc1jIwU1lft9INJC9bKvLPXpBsOdoh4QG14SbYD2C
-	 cyCIwf6FCor/B1K5Gls4x8jlWbNwVd4NL9WIl+1K6tzK4NgVJynuS1Jf/XEGcjqkJc
-	 1ZGWMfu4/ax7A==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Wed, 22 Nov 2023 10:47:48 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 22 Nov 2023 10:47:48 +0300
-From: George Stark <gnstark@salutedevices.com>
-To: <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-	<khilman@baylibre.com>, <jbrunet@baylibre.com>,
-	<martin.blumenstingl@googlemail.com>, <andriy.shevchenko@linux.intel.com>,
-	<nuno.sa@analog.com>, <u.kleine-koenig@pengutronix.de>,
-	<gnstark@salutedevices.com>
-CC: <linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-	<kernel@salutedevices.com>
-Subject: [PATCH v2 1/1] iio: adc: meson: add separate config for axg SoC family
-Date: Wed, 22 Nov 2023 10:47:41 +0300
-Message-ID: <20231122074741.154228-1-gnstark@salutedevices.com>
-X-Mailer: git-send-email 2.41.0
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0D1F9;
+	Tue, 21 Nov 2023 23:56:34 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-548f35e6a4bso2682895a12.0;
+        Tue, 21 Nov 2023 23:56:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700639793; x=1701244593; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=attY11h1h0WyAPvIDEa+1GfI5MENPYGUC68Kv+mgJhQ=;
+        b=RMpQPW1eEolSNLkMF6y8u/eprUJtbsXwfMddiJ1l9HtaHXVdID0j5UHM6hBU6u10VG
+         cZMO/10E/sGJ91/M1dNyvDVz6L6H2p8+v4tmxUIiu/lHg5eMWeHMwlVyp5BTFPTHAOrW
+         nxw1Xq7ogjqwqZNsKDwPWnFR8wPWhXNyqp6O+F056woZP9QahTsu6RmCsOjwc6wqs0kj
+         w03dMdBrlBJ43BbnjG7ljnHIF3xAxSzPMcyap6mYN0vmKEgLAgPP1qbimUChxbmfiE55
+         3MiP4U7BnNotl3tI9QwhXVA+c3QPW1sRPvbQFprdtnW7o4pxXP7vLRr1UzHLScxArXBM
+         6ryw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700639793; x=1701244593;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=attY11h1h0WyAPvIDEa+1GfI5MENPYGUC68Kv+mgJhQ=;
+        b=wW2EUZdlevW8mih0WZDarpaDlg5rBa0oywG1Cq59gzBEk63JAX/1ESDc6Shlg7aVkm
+         QpeyDg3XMq7nYMnOCkpGtz7d56iI+km1nCHDUkSrlihtkviz8spRQU+bhO63Y14v3vVr
+         WAXRMQzad31WbHOkrBWfFG8oHT9Q7ZbhiPdyMiLGD8uC7pV45oot1ZF4h20HdTKCiE8q
+         SJOnCsbv9rE0Ts7daaKErPDchm/FK/K0aEzHYnhLW1Zf27yrrM3QPEMjy9DyySzLdLQx
+         kdlxJYMEj5JHa54o9FHeZbROoH5XvxF3moS2Gs0XA4FUqgAiR/KWso9fnS0IY3i8h4yH
+         vWOw==
+X-Gm-Message-State: AOJu0YxAi85c9nkOku+BuTIhYddUbAq5cPpRgMI7zYKZWDwefSxLWyVv
+	52IJTBFEAHcD+bFo1d4w3+c/Q6ByvwY=
+X-Google-Smtp-Source: AGHT+IEPGHlnRfT09L3HfIp+efOFBDzs439D/D2xsJWkmd8DJAAiGKS74VLrvi2Xw8aACeQ53Dy3gg==
+X-Received: by 2002:aa7:d3c6:0:b0:543:caf4:e5bc with SMTP id o6-20020aa7d3c6000000b00543caf4e5bcmr1235189edr.1.1700639792716;
+        Tue, 21 Nov 2023 23:56:32 -0800 (PST)
+Received: from felia.fritz.box ([2a02:810d:7e40:14b0:14bb:d13c:65e3:46bf])
+        by smtp.gmail.com with ESMTPSA id b8-20020aa7dc08000000b00543597cd190sm5759456edu.47.2023.11.21.23.56.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 23:56:32 -0800 (PST)
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To: Marius Cristea <marius.cristea@microchip.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: improve section MICROCHIP MCP3564 ADC DRIVER
+Date: Wed, 22 Nov 2023 08:56:29 +0100
+Message-Id: <20231122075629.21411-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 181523 [Nov 22 2023]
-X-KSMG-AntiSpam-Version: 6.0.0.2
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 3 0.3.3 e5c6a18a9a9bff0226d530c5b790210c0bd117c8, {Tracking_from_domain_doesnt_match_to}, p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;100.64.160.123:7.1.2;salutedevices.com:7.1.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/11/22 05:48:00 #22499758
-X-KSMG-AntiVirus-Status: Clean, skipped
 
-According to Amlogic custom kernels ADC of axg SoC family has
-vref_select and requires this setting to work nominally and thus
-needs a separate config.
+Commit 33ec3e5fc1ea ("iio: adc: adding support for MCP3564 ADC") adds a new
+iio driver and corresponding MAINTAINERS section. It however uses spaces
+instead of a single tab for all the entries in that MAINTAINERS section.
 
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Although, the get_maintainer.pl script handles spaces instead of tabs
+silently, the MAINTAINERS will quickly get into a messy state with
+different indentations throughout the file. So, the checkpatch.pl script
+complains when spaces instead of a single tab are used.
+
+Fix this recently added section using tabs instead of spaces.
+Further, add the driver's ABI documentation file to this section as well.
+
+Fixes: 33ec3e5fc1ea ("iio: adc: adding support for MCP3564 ADC")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/iio/adc/meson_saradc.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ MAINTAINERS | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index db280da9edbf..34555a85f131 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -1242,6 +1242,20 @@ static const struct meson_sar_adc_param meson_sar_adc_gxl_param = {
- 	.cmv_select = 1,
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 04c6fcbb21aa..c74ec0681aa1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14213,11 +14213,12 @@ F:	Documentation/devicetree/bindings/regulator/mcp16502-regulator.txt
+ F:	drivers/regulator/mcp16502.c
  
-+static const struct meson_sar_adc_param meson_sar_adc_axg_param = {
-+	.has_bl30_integration = true,
-+	.clock_rate = 1200000,
-+	.bandgap_reg = MESON_SAR_ADC_REG11,
-+	.regmap_config = &meson_sar_adc_regmap_config_gxbb,
-+	.resolution = 12,
-+	.disable_ring_counter = 1,
-+	.has_reg11 = true,
-+	.vref_volatge = 1,
-+	.has_vref_select = true,
-+	.vref_select = VREF_VDDA,
-+	.cmv_select = 1,
-+};
-+
- static const struct meson_sar_adc_param meson_sar_adc_g12a_param = {
- 	.has_bl30_integration = false,
- 	.clock_rate = 1200000,
-@@ -1286,7 +1300,7 @@ static const struct meson_sar_adc_data meson_sar_adc_gxm_data = {
- };
+ MICROCHIP MCP3564 ADC DRIVER
+-M:      Marius Cristea <marius.cristea@microchip.com>
+-L:      linux-iio@vger.kernel.org
+-S:      Supported
+-F:      Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
+-F:      drivers/iio/adc/mcp3564.c
++M:	Marius Cristea <marius.cristea@microchip.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++F:	Documentation/ABI/testing/sysfs-bus-iio-adc-mcp3564
++F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
++F:	drivers/iio/adc/mcp3564.c
  
- static const struct meson_sar_adc_data meson_sar_adc_axg_data = {
--	.param = &meson_sar_adc_gxl_param,
-+	.param = &meson_sar_adc_axg_param,
- 	.name = "meson-axg-saradc",
- };
- 
+ MICROCHIP MCP3911 ADC DRIVER
+ M:	Marcus Folkesson <marcus.folkesson@gmail.com>
 -- 
-2.38.4
+2.17.1
 
 

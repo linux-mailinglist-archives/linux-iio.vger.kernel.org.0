@@ -1,62 +1,60 @@
-Return-Path: <linux-iio+bounces-262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6697F447C
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 11:59:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E93B7F44B7
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 12:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9320A281586
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 10:59:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2210528150B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 11:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04A2D78B;
-	Wed, 22 Nov 2023 10:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3A22556F;
+	Wed, 22 Nov 2023 11:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="vwdiwioZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192DCC1;
-	Wed, 22 Nov 2023 02:59:13 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3AM7mqmp027043;
-	Wed, 22 Nov 2023 05:59:00 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3uer08gphs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Nov 2023 05:58:59 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 3AMAwwqH053170
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 22 Nov 2023 05:58:58 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 22 Nov
- 2023 05:58:57 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 22 Nov 2023 05:58:57 -0500
-Received: from KPALLER2-L02.ad.analog.com (KPALLER2-L02.ad.analog.com [10.117.220.22])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3AMAwbo4006221;
-	Wed, 22 Nov 2023 05:58:47 -0500
-From: Kim Seer Paller <kimseer.paller@analog.com>
-To: 
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring
-	<robh+dt@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kim
- Seer Paller <kimseer.paller@analog.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/2] iio: frequency: admfm2000: New driver
-Date: Wed, 22 Nov 2023 18:58:31 +0800
-Message-ID: <20231122105831.182570-2-kimseer.paller@analog.com>
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF8ED8;
+	Wed, 22 Nov 2023 03:11:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1700651493; x=1732187493;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bqZy+15bGo0cAdv3T10s82WMPZ8WYesT6PFaGMF8gZQ=;
+  b=vwdiwioZydBIWvwyyGiELvkWNuiTRl3OPS/tCKiaN184v4a2H6UHnZxg
+   MIX0mMwJwYUYHy29D0/+ABKMlgigIvMeCy9YYde3bDIXykmn8ZgVa0kPJ
+   kCLXnLhSyPO46FoaRozaH1LPnIommQWOtFDjJs4LtIzCRkVKtHJDt9PzD
+   yHARgDmbntFu2r7FgPcja13euXuo23d+t4S26jawGMeNcxRZ2qj1dpKns
+   F4XRe89hHjMkxWRBXQpcW7TF4ipGNEiuOLDFsUzp5O26+klcWzUGcm+ud
+   LDi0jtSMS3m/G7Y0emfgUE5kvmgG/5ZHqm7Bb6Yu4+zYbQdELhY66WTuG
+   A==;
+X-CSE-ConnectionGUID: pzcGjbUNQWmjzz0egclpxw==
+X-CSE-MsgGUID: AdC0IIYsSDao5AmsIV7zzw==
+X-ThreatScanner-Verdict: Negative
+X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
+   d="scan'208";a="179248509"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Nov 2023 04:11:32 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 22 Nov 2023 04:11:10 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Wed, 22 Nov 2023 04:11:08 -0700
+From: <marius.cristea@microchip.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+	<broonie@kernel.org>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<marius.cristea@microchip.com>
+Subject: [PATCH v1] iio: adc: MCP3564: fix hardware identification logic
+Date: Wed, 22 Nov 2023 13:11:06 +0200
+Message-ID: <20231122111106.45288-1-marius.cristea@microchip.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231122105831.182570-1-kimseer.paller@analog.com>
-References: <20231122105831.182570-1-kimseer.paller@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,394 +63,41 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: UVPIEMEFa24XtoBSnOUFdg7z5w8lIqps
-X-Proofpoint-GUID: UVPIEMEFa24XtoBSnOUFdg7z5w8lIqps
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-22_06,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- mlxlogscore=999 spamscore=0 bulkscore=0 suspectscore=0 phishscore=0
- clxscore=1015 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2311060001 definitions=main-2311220076
 
-Dual microwave down converter module with input RF and LO frequency
-ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
-8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
-for each down conversion path.
+From: Marius Cristea <marius.cristea@microchip.com>
 
-Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+In mcp3564_config() fix the hardware identification logic
+based on the hardware ID registers. Second part of the code was
+disabled by an logic error.
+Fix a typo related to the "MODULE_DESCRIPTION".
+
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 ---
-V1 -> V3: No changes.
+ drivers/iio/adc/mcp3564.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- MAINTAINERS                       |   1 +
- drivers/iio/frequency/Kconfig     |  10 +
- drivers/iio/frequency/Makefile    |   1 +
- drivers/iio/frequency/admfm2000.c | 309 ++++++++++++++++++++++++++++++
- 4 files changed, 321 insertions(+)
- create mode 100644 drivers/iio/frequency/admfm2000.c
+diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+index e3f1de5fcc5a..e914a885a868 100644
+--- a/drivers/iio/adc/mcp3564.c
++++ b/drivers/iio/adc/mcp3564.c
+@@ -1122,7 +1122,7 @@ static int mcp3564_config(struct iio_dev *indio_dev)
+ 	enum mcp3564_ids ids;
+ 	int ret = 0;
+ 	unsigned int tmp = 0x01;
+-	bool err = true;
++	bool err = false;
+ 
+ 	/*
+ 	 * The address is set on a per-device basis by fuses in the factory,
+@@ -1509,5 +1509,5 @@ static struct spi_driver mcp3564_driver = {
+ module_spi_driver(mcp3564_driver);
+ 
+ MODULE_AUTHOR("Marius Cristea <marius.cristea@microchip.com>");
+-MODULE_DESCRIPTION("Microchip MCP346x/MCP346xR and MCP356x/MCP346xR ADCs");
++MODULE_DESCRIPTION("Microchip MCP346x/MCP346xR and MCP356x/MCP356xR ADCs");
+ MODULE_LICENSE("GPL v2");
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f1692ec68..d8630e490 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1253,6 +1253,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
-+F:	drivers/iio/frequency/admfm2000.c
- 
- ANALOG DEVICES INC ADMV1013 DRIVER
- M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
-index 9e85dfa58..c455be7d4 100644
---- a/drivers/iio/frequency/Kconfig
-+++ b/drivers/iio/frequency/Kconfig
-@@ -60,6 +60,16 @@ config ADF4377
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called adf4377.
- 
-+config ADMFM2000
-+	tristate "Analog Devices ADMFM2000 Dual Microwave Down Converter"
-+	depends on GPIOLIB
-+	help
-+	  Say yes here to build support for Analog Devices ADMFM2000 Dual
-+	  Microwave Down Converter.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called admfm2000.
-+
- config ADMV1013
- 	tristate "Analog Devices ADMV1013 Microwave Upconverter"
- 	depends on SPI && COMMON_CLK
-diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
-index b616c29b4..70d0e0b70 100644
---- a/drivers/iio/frequency/Makefile
-+++ b/drivers/iio/frequency/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_AD9523) += ad9523.o
- obj-$(CONFIG_ADF4350) += adf4350.o
- obj-$(CONFIG_ADF4371) += adf4371.o
- obj-$(CONFIG_ADF4377) += adf4377.o
-+obj-$(CONFIG_ADMFM2000) += admfm2000.o
- obj-$(CONFIG_ADMV1013) += admv1013.o
- obj-$(CONFIG_ADMV1014) += admv1014.o
- obj-$(CONFIG_ADMV4420) += admv4420.o
-diff --git a/drivers/iio/frequency/admfm2000.c b/drivers/iio/frequency/admfm2000.c
-new file mode 100644
-index 000000000..e0b5edce7
---- /dev/null
-+++ b/drivers/iio/frequency/admfm2000.c
-@@ -0,0 +1,309 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ADMFM2000 Dual Microwave Down Converter
-+ *
-+ * Copyright 2023 Analog Devices Inc.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/regulator/consumer.h>
-+
-+#define ADMFM2000_MIXER_MODE		0
-+#define ADMFM2000_DIRECT_IF_MODE	1
-+#define ADMF20000_DSA_GPIOS		5
-+#define ADMF20000_MODE_GPIOS		2
-+#define ADMF20000_MAX_GAIN		0
-+#define ADMF20000_MIN_GAIN		-31000
-+#define ADMF20000_DEFAULT_GAIN		-0x20
-+
-+struct admfm2000_state {
-+	struct mutex			lock; /* protect sensor state */
-+	struct gpio_descs		*sw_ch[2];
-+	struct gpio_descs		*dsa_gpios[2];
-+	u32				gain[2];
-+};
-+
-+static int admfm2000_mode(struct iio_dev *indio_dev, u32 reg, u32 mode)
-+{
-+	struct admfm2000_state *st = iio_priv(indio_dev);
-+	DECLARE_BITMAP(values, 2);
-+
-+	switch (mode) {
-+	case ADMFM2000_MIXER_MODE:
-+		values[0] = (reg == 0) ? 1 : 2;
-+		gpiod_set_array_value_cansleep(st->sw_ch[reg]->ndescs,
-+					       st->sw_ch[reg]->desc,
-+					       NULL, values);
-+		break;
-+	case ADMFM2000_DIRECT_IF_MODE:
-+		values[0] = (reg == 0) ? 2 : 1;
-+		gpiod_set_array_value_cansleep(st->sw_ch[reg]->ndescs,
-+					       st->sw_ch[reg]->desc,
-+					       NULL, values);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int admfm2000_attenuation(struct iio_dev *indio_dev, u32 chan,
-+				 u32 value)
-+{
-+	struct admfm2000_state *st = iio_priv(indio_dev);
-+	DECLARE_BITMAP(values, BITS_PER_TYPE(value));
-+
-+	values[0] = value;
-+
-+	gpiod_set_array_value_cansleep(st->dsa_gpios[chan]->ndescs,
-+				       st->dsa_gpios[chan]->desc,
-+				       NULL, values);
-+	return 0;
-+}
-+
-+static int admfm2000_read_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan, int *val,
-+			      int *val2, long mask)
-+{
-+	struct admfm2000_state *st = iio_priv(indio_dev);
-+	int gain;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_HARDWAREGAIN:
-+		mutex_lock(&st->lock);
-+		gain = ~(st->gain[chan->channel]) * -1000;
-+		*val = gain / 1000;
-+		*val2 = (gain % 1000) * 1000;
-+		mutex_unlock(&st->lock);
-+
-+		return  IIO_VAL_INT_PLUS_MICRO_DB;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int admfm2000_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int val,
-+			     int val2, long mask)
-+{
-+	struct admfm2000_state *st = iio_priv(indio_dev);
-+	int gain, ret;
-+
-+	if (val < 0)
-+		gain = (val * 1000) - (val2 / 1000);
-+	else
-+		gain = (val * 1000) + (val2 / 1000);
-+
-+	if (gain > ADMF20000_MAX_GAIN || gain < ADMF20000_MIN_GAIN)
-+		return -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_HARDWAREGAIN:
-+		mutex_lock(&st->lock);
-+		st->gain[chan->channel] = ~((abs(gain) / 1000) & 0x1F);
-+
-+		ret = admfm2000_attenuation(indio_dev, chan->channel,
-+					    st->gain[chan->channel]);
-+
-+		mutex_unlock(&st->lock);
-+		if (ret)
-+			return ret;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int admfm2000_write_raw_get_fmt(struct iio_dev *indio_dev,
-+				       struct iio_chan_spec const *chan,
-+				       long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_HARDWAREGAIN:
-+		return IIO_VAL_INT_PLUS_MICRO_DB;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info admfm2000_info = {
-+	.read_raw = &admfm2000_read_raw,
-+	.write_raw = &admfm2000_write_raw,
-+	.write_raw_get_fmt = &admfm2000_write_raw_get_fmt,
-+};
-+
-+#define ADMFM2000_CHAN(_channel) {					\
-+	.type = IIO_VOLTAGE,						\
-+	.output = 1,							\
-+	.indexed = 1,							\
-+	.channel = _channel,						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
-+}
-+
-+static const struct iio_chan_spec admfm2000_channels[] = {
-+	ADMFM2000_CHAN(0),
-+	ADMFM2000_CHAN(1),
-+};
-+
-+static int admfm2000_channel_config(struct admfm2000_state *st,
-+				    struct iio_dev *indio_dev)
-+{
-+	struct platform_device *pdev = to_platform_device(indio_dev->dev.parent);
-+	struct device *dev = &pdev->dev;
-+	struct fwnode_handle *child;
-+	u32 reg, mode;
-+	int ret;
-+
-+	device_for_each_child_node(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret) {
-+			fwnode_handle_put(child);
-+			return dev_err_probe(dev, ret,
-+					     "Failed to get reg property\n");
-+		}
-+
-+		if (reg >= indio_dev->num_channels) {
-+			fwnode_handle_put(child);
-+			return dev_err_probe(dev, -EINVAL, "reg bigger than: %d\n",
-+					     indio_dev->num_channels);
-+		}
-+
-+		ret = fwnode_property_read_u32(child, "adi,mode", &mode);
-+		if (ret) {
-+			fwnode_handle_put(child);
-+			return dev_err_probe(dev, ret,
-+					     "Failed to get mode property\n");
-+		}
-+
-+		if (mode >= 2) {
-+			fwnode_handle_put(child);
-+			return dev_err_probe(dev, -EINVAL, "mode bigger than: 1\n");
-+		}
-+
-+		ret = admfm2000_mode(indio_dev, reg, mode);
-+		if (ret) {
-+			fwnode_handle_put(child);
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int admfm2000_setup(struct admfm2000_state *st,
-+			   struct iio_dev *indio_dev)
-+{
-+	struct platform_device *pdev = to_platform_device(indio_dev->dev.parent);
-+	struct device *dev = &pdev->dev;
-+
-+	st->sw_ch[0] = devm_gpiod_get_array(dev, "switch1", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->sw_ch[0]))
-+		return dev_err_probe(dev, PTR_ERR(st->sw_ch[0]),
-+				     "Failed to get gpios\n");
-+
-+	if (st->sw_ch[0]->ndescs != ADMF20000_MODE_GPIOS) {
-+		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
-+			      ADMF20000_MODE_GPIOS);
-+		return -ENODEV;
-+	}
-+
-+	st->sw_ch[1] = devm_gpiod_get_array(dev, "switch2", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->sw_ch[1]))
-+		return dev_err_probe(dev, PTR_ERR(st->sw_ch[1]),
-+				     "Failed to get gpios\n");
-+
-+	if (st->sw_ch[1]->ndescs != ADMF20000_MODE_GPIOS) {
-+		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
-+			      ADMF20000_MODE_GPIOS);
-+		return -ENODEV;
-+	}
-+
-+	st->dsa_gpios[0] = devm_gpiod_get_array(dev, "attenuation1",
-+						GPIOD_OUT_LOW);
-+	if (IS_ERR(st->dsa_gpios[0]))
-+		return dev_err_probe(dev, PTR_ERR(st->dsa_gpios[0]),
-+				     "Failed to get gpios\n");
-+
-+	if (st->dsa_gpios[0]->ndescs != ADMF20000_DSA_GPIOS) {
-+		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
-+			      ADMF20000_DSA_GPIOS);
-+		return -ENODEV;
-+	}
-+
-+	st->dsa_gpios[1] = devm_gpiod_get_array(dev, "attenuation2",
-+						GPIOD_OUT_LOW);
-+	if (IS_ERR(st->dsa_gpios[1]))
-+		return dev_err_probe(dev, PTR_ERR(st->dsa_gpios[1]),
-+				     "Failed to get gpios\n");
-+
-+	if (st->dsa_gpios[1]->ndescs != ADMF20000_DSA_GPIOS) {
-+		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
-+			      ADMF20000_DSA_GPIOS);
-+	}
-+
-+	return 0;
-+}
-+
-+static int admfm2000_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct iio_dev *indio_dev;
-+	struct admfm2000_state *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+
-+	indio_dev->name = "admfm2000";
-+	indio_dev->num_channels = ARRAY_SIZE(admfm2000_channels);
-+	indio_dev->channels = admfm2000_channels;
-+	indio_dev->info = &admfm2000_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	st->gain[0] = ADMF20000_DEFAULT_GAIN;
-+	st->gain[1] = ADMF20000_DEFAULT_GAIN;
-+
-+	mutex_init(&st->lock);
-+
-+	ret = admfm2000_setup(st, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = admfm2000_channel_config(st, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct of_device_id admfm2000_of_match[] = {
-+	{ .compatible = "adi,admfm2000" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, admfm2000_of_match);
-+
-+static struct platform_driver admfm2000_driver = {
-+	.driver = {
-+		.name = "admfm2000",
-+		.of_match_table = admfm2000_of_match,
-+	},
-+	.probe = admfm2000_probe,
-+};
-+module_platform_driver(admfm2000_driver);
-+
-+MODULE_AUTHOR("Kim Seer Paller <kimseer.paller@analog.com>");
-+MODULE_DESCRIPTION("ADMFM2000 Dual Microwave Down Converter");
-+MODULE_LICENSE("GPL");
+base-commit: 6543f376ec8aa90a6c1ed44b765f4f0d6c3eb1db
 -- 
 2.34.1
 

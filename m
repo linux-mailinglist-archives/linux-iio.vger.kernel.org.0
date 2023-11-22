@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-256-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-257-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8662D7F42FA
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 10:57:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C177F430B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 11:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B49B280F71
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 09:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563181C20847
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Nov 2023 10:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E295A25578;
-	Wed, 22 Nov 2023 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E701DDD6;
+	Wed, 22 Nov 2023 10:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f51q5szW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuqQ5y4Z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB471CA9B
-	for <linux-iio@vger.kernel.org>; Wed, 22 Nov 2023 09:57:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539EDC433C7;
-	Wed, 22 Nov 2023 09:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC0F51023
+	for <linux-iio@vger.kernel.org>; Wed, 22 Nov 2023 10:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478ADC433C7;
+	Wed, 22 Nov 2023 10:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700647033;
-	bh=R8AzpLhBlnSmiqQSga2HQjICVA5GPGTE6vSngH7Ls9c=;
+	s=k20201202; t=1700647312;
+	bh=16th6QDMJEjq6KILhAnwcfDH2x8BSn+uvdX9T2br+R8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f51q5szWw8hNmGM8L3YV+613sfnrX4ZZVjw5CXHizwNggr1YfJkfV9sbdaFW+n+lW
-	 4cIsFssRZuTV44UaU6yZ4ztC1oI/ZwvHxAI91lTSiGF59fTaTavYYRQk93Sd/lH6Y/
-	 V7gRu9rCjZzF9WoqkBuM4ceDGTNTXCAN5uVw/sbINicl63hb49W3RGoAIuaEraSoWD
-	 ++dMTtLtXUVEpqh+a1kYnB2jdQoynMxQ69vgoGwl+TtOf+U1YRRQrhB/UHKWPIgzkD
-	 Hfthx0Wg7Qe1ICqjHzUJTJ/LYbkOkCi89w9TO/75S77NU0DyU9+GqkzUdpr0yUEMrC
-	 YpDvrFMNqr8/g==
-Message-ID: <78518d57-04a7-4cfb-8c1a-1eaf4e3483cf@kernel.org>
-Date: Wed, 22 Nov 2023 10:57:09 +0100
+	b=YuqQ5y4ZH+oy4dVC9gpOGZ/ksV8omrnWIrx0K/YwWBjRRHvR3V08GjZH+kux24vkt
+	 D8j08Dhl2DNS1thdGgLKgCj0m6MCIxgqbFvAICTLb8o7SP6f9bG1gx3Kdlq9mvmb79
+	 c0QOqqu3istOaYIDOGnQAwkoUhhnyAiWf8+tTq1Gwa+kK/Q/NfN7FK54CVrWLivS1g
+	 U6uqZutVJQx7PaVYwF7Rggo6FdrJ/IY39jlOOWBb8oY4jne+dsmgZz+2VUzCus7Skr
+	 DgJxyDKOwy8faQ7/k+n3mZzdn2VOamWqqYjPhQ6dyEhlUvbIa5aWmyk1EHrj6FmEus
+	 o30Ien+4wcpAg==
+Message-ID: <b730a42a-600b-4207-8898-7e4a3b19203b@kernel.org>
+Date: Wed, 22 Nov 2023 11:01:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -41,15 +41,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] dt-bindings: iio: Add binding documentation for
- AD7091R-8
+Subject: Re: [PATCH 6/7] iio: adc: Add support for AD7091R-8
 Content-Language: en-US
 To: marcelo.schmitt@analog.com, beniamin.bia@analog.com,
  paul.cercueil@analog.com, Michael.Hennerich@analog.com, lars@metafoo.de,
  jic23@kernel.org, marcelo.schmitt1@gmail.com
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <cover.1700595310.git.marcelo.schmitt1@gmail.com>
- <566503a54feba35178c778a7929bced66ebd8870.1700595310.git.marcelo.schmitt1@gmail.com>
+ <514295a9b760b44a710425803a41decddd3e8df8.1700595310.git.marcelo.schmitt1@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -94,97 +93,81 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <566503a54feba35178c778a7929bced66ebd8870.1700595310.git.marcelo.schmitt1@gmail.com>
+In-Reply-To: <514295a9b760b44a710425803a41decddd3e8df8.1700595310.git.marcelo.schmitt1@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/11/2023 22:36, marcelo.schmitt@analog.com wrote:
 > From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > 
-> Add device tree binding documentation for AD7091R-8.
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
-
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time, thus I will skip this patch entirely till you follow
-the process allowing the patch to be tested.
-
-Please kindly resend and include all necessary To/Cc entries.
-
+> Add support for Analog Devices AD7091R-2, AD7091R-4, and AD7091R-8
+> low power 12-Bit SAR ADCs.
+> Extend ad7091r-base driver so it can be used by AD7091R-8 drivers.
 > 
 > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > ---
->  .../bindings/iio/adc/adi,ad7091r8.yaml        | 101 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  2 files changed, 102 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
-> new file mode 100644
-> index 000000000000..f10b6727737f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
-> @@ -0,0 +1,101 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7091r8.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD7091R8 8-Channel 12-Bit ADC
-> +
-> +maintainers:
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD7091R-8 8-Channel 12-Bit ADC
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7091R-2_7091R-4_7091R-8.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7091r2
-> +      - adi,ad7091r4
-> +      - adi,ad7091r8
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vref-supply: true
-> +
-> +  spi-max-frequency: true
-> +
-> +  adi,conversion-start-gpios:
-> +    description:
-> +      Device tree identifier of the CONVST pin.
-> +      This logic input is used to initiate conversions on the analog
-> +      input channels.
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
+> Device read/write might look odd due to the transfer protocol for these devices.
+> I'm glad to hear any suggestions on how to make it better.
+> 
 
-This goes after pattern.
 
-> +  - compatible
-> +  - reg
-> +  - adi,conversion-start-gpios
+...
+
 > +
-> +patternProperties:
-> +  "^channel@[0-7]$":
-> +    $ref: "adc.yaml"
+> +static int ad7091r8_gpio_setup(struct ad7091r_state *st)
+> +{
+> +	st->convst_gpio = devm_gpiod_get(st->dev, "adi,conversion-start",
+> +					 GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->convst_gpio))
+> +		return dev_err_probe(st->dev, PTR_ERR(st->convst_gpio),
+> +				     "Error getting convst GPIO: %ld\n",
+> +				     PTR_ERR(st->convst_gpio));
 
-You never tested this... considering that you opted-out of automated
-testing, you basically send buggy code. NAK.
+Don't print error code twice.
+
+> +
+> +	st->reset_gpio =  devm_gpiod_get_optional(st->dev, "reset",
+> +						  GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->reset_gpio))
+> +		return PTR_ERR(st->reset_gpio);
+> +
+> +	if (st->reset_gpio) {
+> +		fsleep(20);
+> +		gpiod_set_value_cansleep(st->reset_gpio, 0);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad7091r8_spi_probe(struct spi_device *spi)
+> +{
+> +	const struct ad7091r_chip_info *chip_info;
+> +	struct ad7091r_state *st;
+> +	struct iio_dev *iio_dev;
+> +	struct regmap *map;
+> +	int ret;
+> +
+> +	chip_info = spi_get_device_match_data(spi);
+> +	if (!chip_info)
+> +		return -EINVAL;
+> +
+> +	iio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!iio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(iio_dev);
+> +	st->dev = &spi->dev;
+> +
+> +	map = devm_regmap_init(&spi->dev, &ad7091r8_regmap_bus, st,
+> +			       &ad7091r_spi_regmap_config[chip_info->type]);
+> +
+> +	if (IS_ERR(map))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(map),
+> +				     "Error initializing spi regmap: %ld\n",
+> +				     PTR_ERR(map));
+
+Don't print error code twice.
 
 Best regards,
 Krzysztof

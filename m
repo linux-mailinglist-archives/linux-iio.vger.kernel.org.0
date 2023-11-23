@@ -1,113 +1,381 @@
-Return-Path: <linux-iio+bounces-298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8427F644E
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 17:43:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35C97F645A
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 17:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B49DB21025
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 16:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F430281A78
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 16:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704653418E;
-	Thu, 23 Nov 2023 16:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF803D392;
+	Thu, 23 Nov 2023 16:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CA19E;
-	Thu, 23 Nov 2023 08:43:38 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3ANFk7bq030777;
-	Thu, 23 Nov 2023 11:43:25 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3uhxk5thbh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 11:43:24 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 3ANGhN5c054371
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 23 Nov 2023 11:43:23 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 23 Nov 2023 11:43:22 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 23 Nov 2023 11:43:22 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 23 Nov 2023 11:43:22 -0500
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3ANGh7Fl019854;
-	Thu, 23 Nov 2023 11:43:10 -0500
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <paul.cercueil@analog.com>, <Michael.Hennerich@analog.com>,
-        <lars@metafoo.de>, <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <marcelo.schmitt1@gmail.com>
-CC: Marcelo Schmitt <marcelo.schmitt@analog.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 7/7] iio: adc: ad7091r-base: Add debugfs reg access
-Date: Thu, 23 Nov 2023 13:43:06 -0300
-Message-ID: <271203e245d324f94678d212e4daf13386bee463.1700751907.git.marcelo.schmitt1@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1700751907.git.marcelo.schmitt1@gmail.com>
-References: <cover.1700751907.git.marcelo.schmitt1@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB098AD;
+	Thu, 23 Nov 2023 08:47:37 -0800 (PST)
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="423430454"
+X-IronPort-AV: E=Sophos;i="6.04,222,1695711600"; 
+   d="scan'208";a="423430454"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 08:47:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="802018855"
+X-IronPort-AV: E=Sophos;i="6.04,222,1695711600"; 
+   d="scan'208";a="802018855"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 08:47:31 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andy@kernel.org>)
+	id 1r6CrO-0000000GPw7-3xQR;
+	Thu, 23 Nov 2023 18:47:26 +0200
+Date: Thu, 23 Nov 2023 18:47:26 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: mitrutzceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <ZV-CHima8bpXcopc@smile.fi.intel.com>
+References: <20231123152331.5751-1-user@HYB-hhAwRlzzMZb>
+ <20231123152331.5751-2-user@HYB-hhAwRlzzMZb>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: OQCKt7W2B-OVfZ353XB2MY1EGmA9gPOl
-X-Proofpoint-ORIG-GUID: OQCKt7W2B-OVfZ353XB2MY1EGmA9gPOl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-23_12,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 phishscore=0 mlxlogscore=999
- mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311060001
- definitions=main-2311230122
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231123152331.5751-2-user@HYB-hhAwRlzzMZb>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Add direct register access support for AD7091R-2/-4/-5/-8 ADCs.
+On Thu, Nov 23, 2023 at 05:23:22PM +0200, mitrutzceclan wrote:
+> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
- drivers/iio/adc/ad7091r-base.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Thank you for the update!
+My comments below.
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index dbc60ea1bafc..4d5051316428 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -177,8 +177,20 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
- 	return ret;
- }
- 
-+static int ad7091r_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-+			      unsigned int writeval, unsigned int *readval)
-+{
-+	struct ad7091r_state *st  = iio_priv(indio_dev);
-+
-+	if (readval)
-+		return regmap_read(st->map, reg, readval);
-+
-+	return regmap_write(st->map, reg, writeval);
-+}
-+
- static const struct iio_info ad7091r_info = {
- 	.read_raw = ad7091r_read_raw,
-+	.debugfs_reg_access = &ad7091r_reg_access,
- };
- 
- static irqreturn_t ad7091r_event_handler(int irq, void *private)
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
+> 
+> 
+
+One blank line is enough here.
+
+> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+
+...
+
+> V5->V6
+>  - No changes
+
+Don't issue patches too often (minimum gap between versions is 24h).
+
+...
+
+> +	help
+> +	  Say yes here to build support for Analog Devices AD7173 and similar ADC
+> +	  Currently supported models:
+> +	    AD7172-2,
+> +	    AD7173-8,
+> +	    AD7175-2,
+> +	    AD7176-2
+
+I would use
+
+ - FOO
+ - BAR
+
+style that will reduce amount of potential churn if you need to add an entry at
+the end of this list.
+
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ad7173.
+
+...
+
+> +#include <linux/stddef.h>
+
+You probably meant types.h here (it will include stddef, at least most of
+the code relies on that), which is currently absent.
+
+...
+
+> +struct ad7173_device_info {
+> +	char *name;
+> +	unsigned int id;
+> +	unsigned int num_inputs;
+> +	unsigned int num_configs;
+> +	unsigned int num_channels;
+
+> +	unsigned char num_gpios;
+
+I would use u8 as you have done for cfg_slot, for example. As it holds a number
+and not a real character.
+
+> +	bool has_temp;
+> +	unsigned int clock;
+> +
+> +	const unsigned int *sinc5_data_rates;
+> +	unsigned int num_sinc5_data_rates;
+> +};
+
+...
+
+> +struct ad7173_channel_config {
+> +	u8 cfg_slot;
+> +	bool live;
+
+Perhaps a blank line?
+
+> +	/* Following fields are used to compare equality. */
+> +	struct_group(config_props,
+> +		bool bipolar;
+> +		bool input_buf;
+> +		u8 odr;
+> +		u8 ref_sel;
+> +	);
+> +};
+
+...
+
+> +struct ad7173_state {
+> +	const struct ad7173_device_info *info;
+> +	struct ad_sigma_delta sd;
+
+It might be better to embed that struct first. In any case you always can
+consult with `pahole` tool for data structure layouts.
+
+> +	struct ad7173_channel *channels;
+> +	struct regulator_bulk_data regulators[3];
+> +	unsigned int adc_mode;
+> +	unsigned int interface_mode;
+> +	unsigned int num_channels;
+> +	struct ida cfg_slots_status;
+> +	unsigned long long config_usage_counter;
+> +	unsigned long long *config_cnts;
+> +#if IS_ENABLED(CONFIG_GPIOLIB)
+> +	struct regmap *reg_gpiocon_regmap;
+> +	struct gpio_regmap *gpio_regmap;
+> +#endif
+> +};
+
+...
+
+> +static const char *const ad7173_ref_sel_str[] = {
+> +	[AD7173_SETUP_REF_SEL_EXT_REF]    = "refin",
+> +	[AD7173_SETUP_REF_SEL_EXT_REF2]   = "refin2",
+> +	[AD7173_SETUP_REF_SEL_INT_REF]    = "refout-avss",
+
+> +	[AD7173_SETUP_REF_SEL_AVDD1_AVSS] = "avdd"
+
+Leave trailing comma here as well.
+
+> +};
+
+...
+
+> +	struct device *dev = &st->sd.spi->dev;
+
+For example, here st->sd become a no-op at compile time (see above about
+placing sd to be the first member). The code generation can be checked
+(for the size) by bloat-o-meter.
+
+...
+
+> +static int ad7173_free_config_slot_lru(struct ad7173_state *st)
+
+> +static int ad7173_load_config(struct ad7173_state *st,
+> +			      struct ad7173_channel_config *cfg)
+
+Have you checked, btw, list_lru.h? Maybe all this can be simply changed by
+using existing library?
+
+...
+
+> +	return vref / (MICRO/MILLI);
+
+Wouldn't MILLI in the denominator just suffice?
+
+...
+
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		reg = st->channels[chan->address].cfg.odr;
+> +
+> +		*val = st->info->sinc5_data_rates[reg] / MILLI;
+> +		*val2 = (st->info->sinc5_data_rates[reg] % MILLI) * (MICRO/MILLI);
+> +
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	}
+
+> +	return -EINVAL;
+
+Make this 'default' case.
+
+...
+
+> +static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
+> +				   const unsigned long *scan_mask)
+> +{
+> +	struct ad7173_state *st = iio_priv(indio_dev);
+> +	int i, ret;
+> +
+> +	for (i = 0; i < indio_dev->num_channels; i++) {
+> +		if (test_bit(i, scan_mask))
+> +			ret = ad7173_set_channel(&st->sd, i);
+> +		else
+> +			ret = ad_sd_write_reg(&st->sd, AD7173_REG_CH(i), 2, 0);
+
+> +
+
+Unneeded blank line.
+
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+
+> +static int ad7173_debug(struct iio_dev *indio_dev, unsigned int reg,
+> +			unsigned int writeval, unsigned int *readval)
+
+Hmm... The function suggests it debugs something or helps with debugging
+something. Without actual description is hard to understand the purpose.
+Can you add a top comment on this function with explanations?
+
+...
+
+> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(st->regulators),
+> +				      st->regulators);
+
+One line?
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+
+...
+
+> +			return dev_err_probe(dev, -EINVAL,
+> +				"Input pin number out of range for pair (%d %d).", ain[0], ain[1]);
+
+Seems broken indentation.
+
+...
+
+> +		ret = fwnode_property_read_string(child, "adi,reference-select", &ref_label);
+> +		if (!ret) {
+> +			for (i = 0; i < ARRAY_SIZE(ad7173_ref_sel_str); i++)
+> +				if (strcmp(ref_label, ad7173_ref_sel_str[i]) == 0) {
+> +					ref_sel = i;
+> +					break;
+> +				}
+
+> +			if (i == ARRAY_SIZE(ad7173_ref_sel_str))
+> +				return dev_err_probe(dev, -EINVAL, "Invalid channel reference name %s", ref_label);
+
+Too long line.
+
+> +		} else if (ret != -EINVAL) {
+> +			return dev_err_probe(dev, ret, "Invalid channel reference value");
+> +		}
+
+
+Use standard pattern and it will be easier to see that 'else' is redundant.
+
+		if (ret == -EINVAL) // However I don't like this handling of
+				    // properties, but up to you and maintainer
+			ret = 0;
+		if (ret)
+			return dev_err_probe(...);
+
+
+BUT. Isn't it a home grown variant of fwnode_property_match_property_string()?
+
+...
+
+> +		ret = ad7173_get_ref_voltage_milli(st, (u8)ref_sel);
+
+Why casting?
+
+> +		if (ret < 0)
+> +			return dev_err_probe(dev, ret,
+> +					     "Cannot use reference %u", ref_sel);
+
+...
+
+> +			return dev_err_probe(dev, -EINVAL, "External reference 2 is only available on ad7173-8");
+
+Missing \n. Check all your messages that they are terminated with \n.
+
+...
+
+> +	struct ad7173_state *st;
+> +	struct iio_dev *indio_dev;
+> +	struct device *dev = &spi->dev;
+> +	int ret;
+
+Reversed xmas tree order?
+
+	struct device *dev = &spi->dev;
+	struct iio_dev *indio_dev;
+	struct ad7173_state *st;
+	int ret;
+
+...
+
+> +static const struct of_device_id ad7173_of_match[] = {
+> +	{ .compatible = "adi,ad7172-2",
+> +	  .data = &ad7173_device_info[ID_AD7172_2], },
+> +	{ .compatible = "adi,ad7173-8",
+> +	  .data = &ad7173_device_info[ID_AD7173_8], },
+> +	{ .compatible = "adi,ad7175-2",
+> +	  .data = &ad7173_device_info[ID_AD7175_2], },
+> +	{ .compatible = "adi,ad7176-2",
+> +	  .data = &ad7173_device_info[ID_AD7176_2], },
+
+Last inner commas are not needed.
+
+> +	{ }
+> +};
+
+...
+
+> +static const struct spi_device_id ad7173_id_table[] = {
+> +	{ "ad7172-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7172_2], },
+> +	{ "ad7173-8", (kernel_ulong_t)&ad7173_device_info[ID_AD7173_8], },
+> +	{ "ad7175-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7175_2], },
+> +	{ "ad7176-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7176_2], },
+
+Ditto.
+
+> +	{ }
+> +};
+
 -- 
-2.42.0
+With Best Regards,
+Andy Shevchenko
+
 
 

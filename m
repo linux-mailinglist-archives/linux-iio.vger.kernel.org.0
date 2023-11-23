@@ -1,188 +1,125 @@
-Return-Path: <linux-iio+bounces-290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29A17F634E
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 16:48:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9907F63EE
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 17:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39661B217BB
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 15:48:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169D3281A38
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Nov 2023 16:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0DA3D977;
-	Thu, 23 Nov 2023 15:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EeHEMHjM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BAA3FB1B;
+	Thu, 23 Nov 2023 16:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D190D10D2
-	for <linux-iio@vger.kernel.org>; Thu, 23 Nov 2023 07:48:12 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-548d1f8b388so1492834a12.0
-        for <linux-iio@vger.kernel.org>; Thu, 23 Nov 2023 07:48:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700754491; x=1701359291; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dGFlvgruXhRu8yz7L9ZekLGqznWc+QZuVKrR49lhS6E=;
-        b=EeHEMHjM66IdclB7DXL5A9ZNB9cyPvqIoBfkovYrwzffQlryiVPTu91YqEpqz6z+0v
-         sMnEBMZ8vkQLvfFYL7a4JFDA9VDsrtQGQ5X31I4MQaAuMmtShJSlVNEr0ZpUcSDzvg4X
-         73yk6bs+wy8WXis0OsDF4vxOs7ieADU1fck2552FHzl72/BlXaM4nxPwwLcQxpMF9ulf
-         n5os3yKBimyP/vcg1ehIsjjasVaTrJJpUaL/1qk/53/SURaSaj55t/6phSOROSvyCa/I
-         fmEdVgeyRGiz+SovsR7wfiydSoxVCuY8DM6c5wrRi5tyrEAPNx0MBFqoBUBj4MCRPLr9
-         MYNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700754491; x=1701359291;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dGFlvgruXhRu8yz7L9ZekLGqznWc+QZuVKrR49lhS6E=;
-        b=crY52b5MBs/dv8reKwLOomRd41km18DGWwC1P9XAK3AcQMFUcm/AYydQov6L73Ujxf
-         m4cpuaGW4k/yRRSGpWHyQMVorBu4XheZ28GGGx7wsrCI1gleE1E1lZmw2v6GwJ/3CD35
-         mAzzQaS5Gdvs4SBxVuxuRLpmePLuZbE0Xg8p59QA1pZCqEDyo/CL37+b2pBJdQbI35Pi
-         cKskf//OuFclJ7Oz5CUEphGP6OwxVPhi8g+NjwhKjlb5KtnyPomSoZVTgqzcZknBG+ZI
-         C7dveu5Cee5YUYRDWcXb5ScJywKMktlZmeJgu2EG9aCo2Y0oR/7ozwt8xifCZ9eb6Af+
-         j/mQ==
-X-Gm-Message-State: AOJu0YxIT2lZtanhJp1h6bFXMQFVFImyqHSJ36XiAW2XUJQeKZ5fpR7W
-	i7Ik/msG8DJOooBggkuvFkbzyHPOyMb5L+44akQ=
-X-Google-Smtp-Source: AGHT+IGaJmhEqO/Y8HdUb2/TOpS7aETwYhgf8/09huNi6nknC6DEZo0NTNEU2jRYijP+J1qfr0f5cQ==
-X-Received: by 2002:a17:906:51ca:b0:9e3:fbab:e091 with SMTP id v10-20020a17090651ca00b009e3fbabe091mr4245964ejk.15.1700754491216;
-        Thu, 23 Nov 2023 07:48:11 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.100])
-        by smtp.gmail.com with ESMTPSA id w24-20020a170906481800b009920e9a3a73sm925358ejq.115.2023.11.23.07.48.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Nov 2023 07:48:10 -0800 (PST)
-Message-ID: <3af25437-9329-4d2a-9558-f04cb4855e16@linaro.org>
-Date: Thu, 23 Nov 2023 16:48:08 +0100
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A93910CF;
+	Thu, 23 Nov 2023 08:29:46 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3ANFk7a3030777;
+	Thu, 23 Nov 2023 11:29:32 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3uhxk5tg30-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Nov 2023 11:29:31 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3ANGTUwf045614
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 23 Nov 2023 11:29:30 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 23 Nov 2023 11:29:29 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 23 Nov 2023 11:29:29 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 23 Nov 2023 11:29:29 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3ANGTEJK019364;
+	Thu, 23 Nov 2023 11:29:17 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <beniamin.bia@analog.com>, <paul.cercueil@analog.com>,
+        <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/7] Add support for AD7091R-2/-4/-8
+Date: Thu, 23 Nov 2023 13:29:12 -0300
+Message-ID: <cover.1700751907.git.marcelo.schmitt1@gmail.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] dt-bindings: adc: add AD7173
-Content-Language: en-US
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231123140320.30409-1-user@HYB-hhAwRlzzMZb>
- <6882a92f-1a15-4ea5-be1e-9d56afc0ce5d@linaro.org>
- <643753e7-6f97-4c38-b21e-e95573f60f85@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <643753e7-6f97-4c38-b21e-e95573f60f85@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: er7PkQiZ7KzDAh-QEj3JkAQIeXeO2wxd
+X-Proofpoint-ORIG-GUID: er7PkQiZ7KzDAh-QEj3JkAQIeXeO2wxd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_12,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 phishscore=0 mlxlogscore=999
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311060001
+ definitions=main-2311230120
 
-On 23/11/2023 16:11, Ceclan Dumitru wrote:
-> 
-> 
-> On 11/23/23 16:26, Krzysztof Kozlowski wrote:
->> On 23/11/2023 15:02, mitrutzceclan wrote:
->>> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
->>
->> Drop "Bindings for" and instead describe hardware.
->>
-> 
-> Okay
-> 
-> ...
-> 
->>> +  avdd-supply:
->>> +    description: avdd supply, can be used as reference for conversion.
->>> +
->>> +  required:
->>
->> Please test your code before sending. You ignored my comment. This has
->> both wrong indentation and wrong placement - should be after all
->> properties and patternProperties.
->>
->> Do not ignore comments but respond to them.
->>
-> 
-> There were no errors while testing the yaml binding (with
-> DT_CHECKER_FLAGS=-m dt_binding_check - to make sure that this is how
-> bindings should be tested). Indeed I did not test the yaml if the
-> required properties are missing from the example. What is indicative in
-> this patch that it was not tested?
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-Then your testing method might miss something, because as you can see -
-Rob's bot found the issue.
+This series adds support for AD7091R-2/-4/-8 ADCs which can do single shot
+or sequenced readings. Threshold events are also supported.
+Overall, AD7091R-2/-4/-8 are very similar to AD7091R-5 except they use SPI interface.
 
-> 
-> I did not ignore your comment. I did not have questions about it. I
-> missed the indentation. Sorry about that.
-> 
-> But about the placement of 'required': the example-schema does not have
-> the exact case of pattern properties. Also, there are multiple iio/adc
-> (ad4130, ad7124, ad7292) bindings that place required before
-> patternProperties. I assumed that this placement is correct.
-> 
-> Will move it in next version.
-> 
-> In regards to responding to comments: if there are no questions about a
-> comment and will fix in next version, should there be a response anyway
-> just confirming it?
+This has been tested with raspberrypi and eval board on kernel 6.1 from ADI fork.
+Link: https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad7091r8
 
-The point is that code did not change here and there was no
-Ack/Done/something reply.
+I ran get_maintainers on driver files but completely forgot to run it on the
+yaml doc, my bad.
+I made the changes requested so far.
+For v2, I also ran dt_binding_check on iio testing branch to check out for any
+additional dt-schema issues. None reported.
+Didn't see any other warn after running Sparse, Smatch, and Coccicheck.
+I get a warn from checkpatch about IIO_DMA_MINALIGN which I don't know how to fix :(
 
-Best regards,
-Krzysztof
+Change log v1 -> v2:
+- Added device tree related To/Cc recipients.
+- Removed extra print of error code
+- $ref: "adc.yaml" -> $ref: adc.yaml
+- Fixed defined but not used build warn
+- Moved dt documentation of required properties to after patternProperties.
+- Removed incorrect return before regmap_update_bits().
+
+Marcelo Schmitt (7):
+  iio: adc: ad7091r-base: Set alert config and drvdata
+  MAINTAINERS: Add MAINTAINERS entry for AD7091R
+  iio: adc: ad7091r: Move defines to header file
+  iio: adc: ad7091r: Alloc IIO device before generic probe
+  dt-bindings: iio: Add binding documentation for AD7091R-8
+  iio: adc: Add support for AD7091R-8
+  iio: adc: ad7091r-base: Add debugfs reg access
+
+ .../bindings/iio/adc/adi,ad7091r8.yaml        | 101 +++++++
+ MAINTAINERS                                   |  12 +
+ drivers/iio/adc/Kconfig                       |  16 ++
+ drivers/iio/adc/Makefile                      |   4 +-
+ drivers/iio/adc/ad7091r-base.c                | 114 +++++---
+ drivers/iio/adc/ad7091r-base.h                |  64 ++++-
+ drivers/iio/adc/ad7091r5.c                    |  55 ++--
+ drivers/iio/adc/ad7091r8.c                    | 270 ++++++++++++++++++
+ 8 files changed, 549 insertions(+), 87 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+ create mode 100644 drivers/iio/adc/ad7091r8.c
+
+-- 
+2.42.0
 
 

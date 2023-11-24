@@ -1,76 +1,70 @@
-Return-Path: <linux-iio+bounces-310-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-311-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB507F7068
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Nov 2023 10:49:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AA47F70C0
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Nov 2023 11:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E091F20EFD
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Nov 2023 09:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F5928194B
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Nov 2023 10:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF617754;
-	Fri, 24 Nov 2023 09:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A84182A1;
+	Fri, 24 Nov 2023 10:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJje4ZPg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kbOp1eJ3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C2B10E7;
-	Fri, 24 Nov 2023 01:49:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700819354; x=1732355354;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OP/cCaco1RCdcFyVZXX4kd8okOpF/N7a+QQ1IHCxz4g=;
-  b=QJje4ZPgWRfH4tBmM0aI8W9DANEpRFfyuRWrXJTUejnj2DIi99Ll1fUc
-   St+yqSx8vvn7SMnysBF6bANalEyHZKI9K137P2FTbn8MMEnRcvK8WaXiJ
-   ki348KT4gzwyEuWsgFvbBXPctufXWIPZ6LhODrzvlJDnFLUP7QyDuvCYi
-   K/4yS/2JPehGUCowp7FsE9Lh3gQQRHo8P4JtBOqINiRpIr+Wa4RSWO6NV
-   dpWDKVplItVw2AkgTfM3OmkAHybDGjTiUT9KxeiyCsFZ7Z2OY8z1H/bf6
-   RzA4GxSPIKbSfA63bA6OPwzBp85ttcartvf1QkE4F22GTSP42YrWHokzZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="423534658"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="423534658"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 01:49:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="717327111"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="717327111"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 24 Nov 2023 01:49:08 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r6So6-0002LA-0K;
-	Fri, 24 Nov 2023 09:49:06 +0000
-Date: Fri, 24 Nov 2023 17:49:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: mitrutzceclan <mitrutzceclan@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <202311241251.qDeS0ZtB-lkp@intel.com>
-References: <20231123152331.5751-2-user@HYB-hhAwRlzzMZb>
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E6D81B6;
+	Fri, 24 Nov 2023 02:03:26 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-5079f3f3d7aso2448801e87.1;
+        Fri, 24 Nov 2023 02:03:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700820205; x=1701425005; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmNkkj8bOMsrzoaba81g1QSDAv4tnTjLgBhqzOK6UK4=;
+        b=kbOp1eJ34ADnT/53m0tY0wZ7qNtupNh7+7n4BxWzkiT7hKXOdx5B7btsvFlw4Y6TKl
+         sdD9TRvAJbbPc3XLYhdxYiKKUevAO5bCXBJ25/I4PuKScEXWdlYL3xVocQbO7LYRzcir
+         xxlhnmDNn70VHG5bG39niXGxleuy3nGnJAr95ZpbXUhOuIH7QM4gzFVl9/QEepZbV2M1
+         q38B7VnEVPHj50rg11uKqxzEB4SnNeiBUq9+tsrK7vkchPEFVqahVgqCFT45KtvnJ9St
+         vBhm26FKZbqe4p/0BtBq+xQiR+7Hu961Hd95p4o+KWNsbmrW1eiRV573XcjOC5hg8Jk1
+         1BKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700820205; x=1701425005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lmNkkj8bOMsrzoaba81g1QSDAv4tnTjLgBhqzOK6UK4=;
+        b=n2XE4152UHIcz/lGp6r2HPrDHb6eXRf37KYgqTog9J7QDVzEASg70B/9QggjlAt9/S
+         DcdXI6413HXVsvB55sRLQFEc/YWLS89f5de/zmhBlg2pYs5LtcgZqMbBrIcSrQnXMHgl
+         zE1ox2MiCYJc11b0iioZt4VV/S+fxvN3LwuaS5CXvW26mM6tysiHY2x5zhOZWV+RN0wY
+         knCMlSbbzBHS0WX+cWWbKKjqSe7Y9RzJbgGQXPT3asnKn3maVgMpGTnAxTSfWezX+W57
+         Q22wMRLbjXwFV/9qlRhi+IzxxrTDhF6v4z85pgO+mud0lBR9XnFMbwQcKx+eR1STCUVi
+         mmPA==
+X-Gm-Message-State: AOJu0Yy+7SV0v3JUJdhhALmOvvtyVB8X10YLdkC9Iih4v7/JzKALLJ32
+	X7zX3UCsKCKm1weE7zfHZ5c=
+X-Google-Smtp-Source: AGHT+IGKGiygZo1ggtDKRtbhF6qntEfAzuGcJlCZ7Ty9ql0DU8t3NC6/D4pEnRb/0csFDzpVt8tilA==
+X-Received: by 2002:ac2:4284:0:b0:509:7301:5738 with SMTP id m4-20020ac24284000000b0050973015738mr1398924lfh.62.1700820204401;
+        Fri, 24 Nov 2023 02:03:24 -0800 (PST)
+Received: from mobilestation ([178.176.56.174])
+        by smtp.gmail.com with ESMTPSA id g36-20020a0565123ba400b0050aaa7147b8sm464495lfv.141.2023.11.24.02.03.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Nov 2023 02:03:23 -0800 (PST)
+Date: Fri, 24 Nov 2023 13:03:21 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: correct white-spaces in examples
+Message-ID: <bianfx2bkdgtecquvvzxcyjzqim3ristgipzosqrljmhls2cxg@wlifizchsz4o>
+References: <20231124092121.16866-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,64 +73,53 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231123152331.5751-2-user@HYB-hhAwRlzzMZb>
+In-Reply-To: <20231124092121.16866-1-krzysztof.kozlowski@linaro.org>
 
-Hi mitrutzceclan,
+On Fri, Nov 24, 2023 at 10:21:21AM +0100, Krzysztof Kozlowski wrote:
+> Use only one and exactly one space around '=' in DTS example.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
+> 
+> Merging idea: Rob's DT.
+> Should apply cleanly on Rob's for-next.
+> ---
+>  .../devicetree/bindings/auxdisplay/hit,hd44780.yaml       | 2 +-
+>  .../devicetree/bindings/clock/baikal,bt1-ccu-pll.yaml     | 2 +-
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml | 6 +++---
+>  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml       | 2 +-
+>  .../devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml      | 2 +-
+>  .../interrupt-controller/st,stih407-irq-syscfg.yaml       | 4 ++--
+>  Documentation/devicetree/bindings/mmc/arm,pl18x.yaml      | 2 +-
+>  Documentation/devicetree/bindings/net/sff,sfp.yaml        | 2 +-
+>  .../devicetree/bindings/pci/toshiba,visconti-pcie.yaml    | 2 +-
+>  .../bindings/pinctrl/renesas,rzg2l-pinctrl.yaml           | 6 +++---
+>  .../devicetree/bindings/power/supply/richtek,rt9455.yaml  | 8 ++++----
+>  .../devicetree/bindings/regulator/mps,mp5416.yaml         | 4 ++--
+>  .../devicetree/bindings/regulator/mps,mpq7920.yaml        | 4 ++--
+>  .../devicetree/bindings/remoteproc/fsl,imx-rproc.yaml     | 8 ++++----
+>  14 files changed, 27 insertions(+), 27 deletions(-)
+> 
 
-kernel test robot noticed the following build warnings:
+[nip]
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.7-rc2 next-20231124]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> diff --git a/Documentation/devicetree/bindings/clock/baikal,bt1-ccu-pll.yaml b/Documentation/devicetree/bindings/clock/baikal,bt1-ccu-pll.yaml
+> index 624984d51c10..7f8d98226437 100644
+> --- a/Documentation/devicetree/bindings/clock/baikal,bt1-ccu-pll.yaml
+> +++ b/Documentation/devicetree/bindings/clock/baikal,bt1-ccu-pll.yaml
+> @@ -125,7 +125,7 @@ examples:
+>      clk25m: clock-oscillator-25m {
+>        compatible = "fixed-clock";
+>        #clock-cells = <0>;
+> -      clock-frequency  = <25000000>;
+> +      clock-frequency = <25000000>;
+>        clock-output-names = "clk25m";
+>      };
+>  ...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mitrutzceclan/iio-adc-ad7173-add-AD7173-driver/20231123-233012
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20231123152331.5751-2-user%40HYB-hhAwRlzzMZb
-patch subject: [PATCH v6 2/2] iio: adc: ad7173: add AD7173 driver
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231124/202311241251.qDeS0ZtB-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231124/202311241251.qDeS0ZtB-lkp@intel.com/reproduce)
+For Baikal-T1 CCU PLL DT-schema
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311241251.qDeS0ZtB-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad7173.c:329:22: warning: variable 'offset' set but not used [-Wunused-but-set-variable]
-           ptrdiff_t cmp_size, offset;
-                               ^
-   1 warning generated.
-
-
-vim +/offset +329 drivers/iio/adc/ad7173.c
-
-   324	
-   325	static struct ad7173_channel_config *
-   326	ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-   327	{
-   328		struct ad7173_channel_config *cfg_aux;
- > 329		ptrdiff_t cmp_size, offset;
-   330		int i;
-   331	
-   332		offset = offsetofend(struct ad7173_channel_config, live);
-   333		cmp_size = sizeof_field(struct ad7173_channel_config, config_props);
-   334	
-   335		for (i = 0; i < st->num_channels; i++) {
-   336			cfg_aux = &st->channels[i].cfg;
-   337	
-   338			if (cfg_aux->live &&
-   339			    !memcmp(&cfg->bipolar, &cfg_aux->bipolar, cmp_size))
-   340				return cfg_aux;
-   341		}
-   342		return NULL;
-   343	}
-   344	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-Serge(y)
 

@@ -1,51 +1,50 @@
-Return-Path: <linux-iio+bounces-335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-336-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418297F8A8D
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 13:07:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A66E7F8AA4
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 13:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6137D1C20C87
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A83BB212D9
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7B4EAE5;
-	Sat, 25 Nov 2023 12:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2777AFBE2;
+	Sat, 25 Nov 2023 12:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijLyFy/Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjJVHMw5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204FAD530;
-	Sat, 25 Nov 2023 12:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DF2C433C7;
-	Sat, 25 Nov 2023 12:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0B7E560;
+	Sat, 25 Nov 2023 12:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0756C433C7;
+	Sat, 25 Nov 2023 12:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700914072;
-	bh=D4kxke8I3u5kGrzOOHNBlvZ51Ki1vGdPFs5hwb4dDbs=;
+	s=k20201202; t=1700914374;
+	bh=HaPs6rO9d02viq7dWMbdaoM03RBF1QX65JlhKX2KKcQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ijLyFy/ZtJRy6r9c6iO9ei8RPEudxWqyIYBBykt5rjPo695Qm5s3h7oxloOtucRfm
-	 o+OTQ+rzXrZXtoMhhHDpx9vqjJ6DHz7SuVMCykhGi+/7MmbKrSoNJuEz4vDumxSZel
-	 doOZXOpIAwfsVQiXRIls58IY5bDqHAYceYGRP/MpEsBdytonerHnulaTJlwVKVvvbh
-	 kEspLTFEdtI4FMSnFZ1T9rblRjDO9NR6Oqu6cDiV92/n0isG65dGb6u3ohAKb/XU3B
-	 GxLVvya9b1PFCoM+XyibJ0VyS06XmBEGE57RxysWUgA+1muRcwOntPlD+QCqB1qFlP
-	 wBGsWfadxVY0A==
-Date: Sat, 25 Nov 2023 12:07:44 +0000
+	b=tjJVHMw53dN8MvofGbFCvqRLyBp8d4KD3v9p3MR2ir5f2sqPK/Yi2pCsrlUXUqEU1
+	 PZsoI54sw3oatvY01aMh71m2kgvNQ/tSD64kB3wt2ShKlQIaIrMzY3bFNnShrs5M1A
+	 br965+pL9uE44PkwUOr1gFvNbrHDJXR7lXdKAgK4+sZxZGZ4vBl48tPHGkL/JMzgmP
+	 rtom8SJ1Af1Cs9BedYeDJubTAB6jQFpp+HkKpEM479SNzc8JsMH2gr/dDCeAfECyMI
+	 ZyhsXzMePWmUzIipB7kJ23N5gbryxnE6h2VagHBIa0Ox5bNdowsWeUl1bMwmIoY51E
+	 JNf5JYCYE8N0w==
+Date: Sat, 25 Nov 2023 12:12:45 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Anshul Dalal <anshulusr@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter
  Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof
  Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- linux-kernel-mentees@lists.linuxfoundation.org, Shuah Khan
- <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 2/2] iio: dac: driver for MCP4821
-Message-ID: <20231125120744.23b0893d@jic23-huawei>
-In-Reply-To: <20231117073040.685860-2-anshulusr@gmail.com>
-References: <20231117073040.685860-1-anshulusr@gmail.com>
-	<20231117073040.685860-2-anshulusr@gmail.com>
+ linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH v4 2/3] dt-bindings: iio: chemical: add aosong,ags02ma
+Message-ID: <20231125121245.6664470d@jic23-huawei>
+In-Reply-To: <20231125100139.193584-2-anshulusr@gmail.com>
+References: <20231125100139.193584-1-anshulusr@gmail.com>
+	<20231125100139.193584-2-anshulusr@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,388 +55,104 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 17 Nov 2023 13:00:38 +0530
+On Sat, 25 Nov 2023 15:31:37 +0530
 Anshul Dalal <anshulusr@gmail.com> wrote:
 
-Hi Anshul,
-
-Comments inline.
-
-> Adds driver for the MCP48xx series of DACs.
+> Add bindings for Aosong AGS02MA TVOC sensor.
 > 
-> Device uses a simplex SPI channel.
-> To set the value of an output channel, a 16-bit
-> data of following format must be written:
-
-Wrap anything that isn't specifically formatted at 75 chars not this short.  
-I could fix that whilst applying but you are going to be doing a v2 anyway
-so you can tidy it up :)
-
-> 
-> Bit field | Description
-> 15 [MSB]  | Channel selection bit
->             0 -> Channel A
->             1 -> Channel B
-> 13        | Output Gain Selection bit
->             0 -> 2x Gain (Vref = 4.096V)
->             1 -> 1x Gain (Vref = 2.048V)
-> 12        | Output Shutdown Control bit
->             0 -> Shutdown the selected channel
->             1 -> Active mode operation
-> 11-0 [LSB]| DAC Input Data bits
->             Value's big endian representation is
->             taken as input for the selected DAC
->             channel.
->             For devices with a resolution of less
->             than 12-bits, only the x most
->             significant bits are considered where
->             x is the resolution of the device.
-> Reference: Page#22 [MCP48x2 Datasheet]
-> 
-> Supported devices:
->   +---------+--------------+-------------+
->   | Device  |  Resolution  |   Channels  |
->   |---------|--------------|-------------|
->   | MCP4801 |     8-bit    |      1      |
->   | MCP4811 |    10-bit    |      1      |
->   | MCP4821 |    12-bit    |      1      |
->   | MCP4802 |     8-bit    |      2      |
->   | MCP4812 |    10-bit    |      2      |
->   | MCP4822 |    12-bit    |      2      |
->   +---------+--------------+-------------+
-> 
-> Devices tested:
->   MCP4821 [12-bit single channel]
->   MCP4802 [8-bit dual channel]
-> 
-> Tested on Raspberry Pi Zero 2W
+> The sensor communicates over i2c with the default address 0x1a.
+> TVOC values can be read in the units of ppb and ug/m^3 at register 0x00.
 > 
 > Datasheet:
->   [MCP48x1] https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf
->   [MCP48x2] https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf
-So Datasheet is part of the tag block so no line break between this
-and sign off.  The way to format this is to add two entries and apply comments
-after them.  Don't worry about long lines for this.
-
+>   https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
+> Product-Page:
+>   http://www.aosong.com/m/en/products-33.html
 > 
-
-Datasheet: https//.... #MCP48x1
-Datasheet: https//.... #MCP48x2
-Signed-off-by: ...
-
 > Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
-...
-
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index 93b8be183de6..f5adc364de30 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -400,6 +400,16 @@ config MCP4728
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called mcp4728.
->  
-> +config MCP4821
-> +	tristate "MCP4801/11/21/02/12/22 DAC driver"
-> +	depends on SPI
-> +	help
-> +	  Say yes here to build the driver for the Microchip MCP4801
-> +	  MCP4811, MCP4821, MCP4802, MCP4812 and MCP4822 DAC devices.
-
-Numeric order her as well please.
-
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called mcp4821.
-> +
->  config MCP4922
->  	tristate "MCP4902, MCP4912, MCP4922 DAC driver"
->  	depends on SPI
-
-...
-
-> diff --git a/drivers/iio/dac/mcp4821.c b/drivers/iio/dac/mcp4821.c
+> ---
+> 
+> Changes for v4:
+> - Changed node name from 'light-sensor' to 'voc-sensor'
+> 
+> v3: https://lore.kernel.org/lkml/20231121095800.2180870-2-anshulusr@gmail.com/
+> 
+> Changes for v3:
+> - Fixed commit message
+> - Removed "asair,ags02ma" compatible
+> 
+> v2: https://lore.kernel.org/lkml/20231115125810.1394854-2-anshulusr@gmail.com/
+> 
+> Changes for v2:
+> - Removed device from trivial-devices
+> - Added standalone binding with vdd-supply property
+> 
+> v1: https://lore.kernel.org/lkml/20231107173100.62715-2-anshulusr@gmail.com/
+> ---
+>  .../bindings/iio/chemical/aosong,ags02ma.yaml | 46 +++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml b/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
 > new file mode 100644
-> index 000000000000..d08acf6b8993
+> index 000000000000..c176a6e102ac
 > --- /dev/null
-> +++ b/drivers/iio/dac/mcp4821.c
-> @@ -0,0 +1,207 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2023 Anshul Dalal <anshulusr@gmail.com>
-> + *
-> + * Driver for Microchip MCP4801, MCP4811, MCP4821, MCP4802, MCP4812 and MCP4822
-> + *
-> + * Based on the work of:
-> + *	Michael Welling (MCP4922 Driver)
-> + *
-> + * Datasheet:
-> + *	MCP48x1: https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf
-> + *	MCP48x2: https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf
-> + *
-> + * TODO:
-> + *	- Configurable gain
-> + *	- Regulator control
-> + */
+> +++ b/Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/chemical/aosong,ags02ma.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#include <asm/unaligned.h>
-So in IIO at least header ordering is normally (each block alphabetical)
-
-linux/*.h
-
-linux/iio/*.h (it's an IIO driver so sometimes good to separate these out)
-
-asm/*.h (these are effectively even more specific so we put them in their own block.
-
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/types.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/spi/spi.h>
+> +title: Aosong AGS02MA VOC Sensor
 > +
-> +#define MCP4821_ACTIVE_MODE BIT(12)
-> +#define MCP4802_SECOND_CHAN BIT(15)
-> +#define MCP4821_CHAN_NUM    1
-Not used so drop this.
-
+> +description: |
+> +  AGS02MA is an TVOC (Total Volatile Organic Compounds) i2c sensor with default
+> +  address of 0x1a.
 > +
-> +/* DAC uses an internal Voltage reference of 4.096V at a gain of 2x */
-> +#define MCP4821_2X_GAIN_VREF_MV 4096
+> +  Datasheet:
+> +    https://asairsensors.com/wp-content/uploads/2021/09/AGS02MA.pdf
 > +
-> +enum mcp4821_supported_drvice_ids {
-> +	ID_MCP4801,
-> +	ID_MCP4811,
-> +	ID_MCP4821,
-> +	ID_MCP4802,
-
-Numeric order preferred throughout if we have long lists like this.
-
-> +	ID_MCP4812,
-> +	ID_MCP4822,
-> +};
+> +maintainers:
+> +  - Anshul Dalal <anshulusr@gmail.com>
 > +
-> +static int mcp4821_chan_count(enum mcp4821_supported_drvice_ids device_id)
-> +{
-> +	switch (device_id) {
-> +	case ID_MCP4801:
-> +	case ID_MCP4811:
-> +	case ID_MCP4821:
-> +		return 1;
-> +	default:
-
-I'd rather see this explicit for each device even though it's a few more lines
-of code.
-
-> +		return 2;
-> +	}
-> +}
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - aosong,ags02ma
 > +
-> +struct mcp4821_state {
-> +	struct spi_device *spi;
-> +	struct mutex lock;
-
-All locks need to have a comment describing the scope of data they are protecting.
-
-> +	u16 dac_value[2];
-> +};
+> +  reg:
+> +    maxItems: 1
 > +
-> +#define MCP4821_CHAN(channel_id, resolution)				\
-> +	{								\
-> +		.type = IIO_VOLTAGE,					\
-> +		.output = 1,						\
-> +		.indexed = 1,						\
-> +		.channel = (channel_id),				\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> +		.scan_type = {						\
-> +			.sign = 'u',					\
-> +			.realbits = (resolution),			\
-> +			.storagebits = 16,				\
-> +			.shift = 12 - (resolution),			\
-> +		},							\
-> +	}
-> +
-> +static const struct iio_chan_spec mcp4821_channels[6][2] = {
-> +	[ID_MCP4801] = { MCP4821_CHAN(0, 8), {} },
+> +  vdd-supply: true
 
-C will fill in the second entry with zeros without needing a {} and
-as we don't care about it anyway, just don't bother adding the {} placeholder,
-making it a bit neater.
-
-> +	[ID_MCP4811] = { MCP4821_CHAN(0, 10), {} },
-> +	[ID_MCP4821] = { MCP4821_CHAN(0, 12), {} },
-> +	[ID_MCP4802] = { MCP4821_CHAN(0, 8), MCP4821_CHAN(1, 8) },
-> +	[ID_MCP4812] = { MCP4821_CHAN(0, 10), MCP4821_CHAN(1, 10) },
-> +	[ID_MCP4822] = { MCP4821_CHAN(0, 12), MCP4821_CHAN(1, 12) },
-> +};
-> +
-> +static int mcp4821_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int *val,
-> +			    int *val2, long mask)
-> +{
-> +	struct mcp4821_state *state;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		state = iio_priv(indio_dev);
-> +		mutex_lock(&state->lock);
-
-Can use the new auto cleanup stuff for this to shorten things a tiny bit.
-
-		scoped_guard(mutex, &state->lock)
-			*val = state->dac_channel[chan->channel];
-
-Obviously very minor advantage here so I don't mind either way.
-
-> +		*val = state->dac_value[chan->channel];
-> +		mutex_unlock(&state->lock);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = MCP4821_2X_GAIN_VREF_MV;
-> +		*val2 = chan->scan_type.realbits;
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int mcp4821_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan, int val,
-> +			     int val2, long mask)
-> +{
-> +	struct mcp4821_state *state;
-> +	__be16 write_val;
-> +	u8 write_buffer[2];
-
-type of these two is backwards.  you are build the value in write_val, so that should
-just be a u16, then converting it to be16 so write_buffer should be __be16
-
-> +	int ret;
-> +	bool is_value_valid = val >= 0 && val < BIT(chan->scan_type.realbits) &&
-> +			      val2 == 0;
-> +	if (mask == IIO_CHAN_INFO_RAW && is_value_valid) {
-> +		state = iio_priv(indio_dev);
-> +
-> +		write_val = MCP4821_ACTIVE_MODE | val << chan->scan_type.shift;
-> +		if (chan->channel)
-> +			write_val |= MCP4802_SECOND_CHAN;
-> +		put_unaligned_be16(write_val, write_buffer);
-
-
-
-> +		ret = spi_write(state->spi, write_buffer, sizeof(write_buffer));
-> +		if (ret) {
-> +			dev_err(&state->spi->dev,
-> +				"Failed to write to device: %d", ret);
-> +			return ret;
-> +		}
-> +
-> +		mutex_lock(&state->lock);
-
-As above if you want to.
-
-
-> +		state->dac_value[chan->channel] = val;
-> +		mutex_unlock(&state->lock);
-> +		return 0;
-> +	} else {
-> +		return -EINVAL;
-Flip this and separate the unrelated conditions.
-	if (mask != IIO_CHAN_INFO_RAW)
-		return -EINVAL;
-
-	if (!is_value_valid)
-		return -EINVAL;
-
-	...
-
-reduces unnecessary indent and generally puts the errors 'out of line' which
-is common kernel approach and generally 'what we expect to see' when reviewing.
-
-
-> +	}
-> +}
-> +
-> +static const struct iio_info mcp4821_info = {
-> +	.read_raw = &mcp4821_read_raw,
-> +	.write_raw = &mcp4821_write_raw,
-> +};
-> +
-> +static int mcp4821_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct mcp4821_state *state;
-> +	const struct spi_device_id *id;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
-> +	if (indio_dev == NULL) {
-> +		dev_err(&spi->dev, "Failed to allocate iio device\n");
-> +		return -ENOMEM;
-		return dev_err_probe(&spi->dev, -ENOMEM,
-				     "failed to allocate IIO device\n");
-
-However that's very unlikely to ever happen, so you could just not bother
-with the message.
-
-> +	}
-> +
-> +	state = iio_priv(indio_dev);
-> +	spi_set_drvdata(spi, indio_dev);
-
-Why?
-
-> +	id = spi_get_device_id(spi);
-For dt bindings this relies on the fallback of breaking up the compatible.
-That's fragile, so add the data to the of_table as well + use pointers
-not enum values so that you can then use spi_get_device_match_data()
-which handles other firmware types as well and falls back to what you
-have here.
-
-> +
-> +	state->spi = spi;
-> +	mutex_init(&state->lock);
-> +
-> +	indio_dev->name = id->name;
-
-Also fragile (very weird things happen if you end up with fallback DT compatibles
-in the future).  So embed a string in a device specific structure as described
-below.
-
-> +	indio_dev->info = &mcp4821_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = mcp4821_channels[id->driver_data];
-> +	indio_dev->num_channels = mcp4821_chan_count(id->driver_data);
-Combine channels and chan_count as static data in a
-struct mcp4821_info {
-	struct iio_chan_spec channels];
-	int num_channels;
-	const char *name;
-}
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct spi_device_id mcp4821_id_table[] = {
-> +	{ "mcp4801", ID_MCP4801},
-use &mcp4821_data[ID_MCP4801] etc in here.. (with cast as needed, lots of
-examples in tree...
-> +	{ "mcp4811", ID_MCP4811},
-> +	{ "mcp4821", ID_MCP4821},
-> +	{ "mcp4802", ID_MCP4802},
-> +	{ "mcp4812", ID_MCP4812},
-> +	{ "mcp4822", ID_MCP4822},
-> +	{ /* Sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, mcp4821_id_table);
-> +
-> +static const struct of_device_id mcp4821_of_table[] = {
-> +	{ .compatible = "microchip,mcp4801"},
-and provide the data here as well. 
-> +	{ .compatible = "microchip,mcp4811"},
-> +	{ .compatible = "microchip,mcp4821"},
-...
-
-Thanks,
+Similar to other review (I put more background there)
+Convention these days at least is to always require powersupplies
+that the device cannot work with out (even if you can use a fixed
+supply and rely on the regulator framework papering over that).
+We want to distinguish generally optional supplies from ones we might
+not specify in a given DT.
 
 Jonathan
 
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        voc-sensor@1a {
+> +            compatible = "aosong,ags02ma";
+> +            reg = <0x1a>;
+> +            vdd-supply = <&vdd_regulator>;
+> +        };
+> +    };
 
 

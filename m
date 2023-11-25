@@ -1,652 +1,443 @@
-Return-Path: <linux-iio+bounces-334-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-335-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB70C7F8A6F
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:57:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418297F8A8D
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 13:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46759B2141E
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 11:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6137D1C20C87
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1666FB8;
-	Sat, 25 Nov 2023 11:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7B4EAE5;
+	Sat, 25 Nov 2023 12:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NJ9SP5+S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijLyFy/Z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2121C10E7;
-	Sat, 25 Nov 2023 03:57:04 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-a02d12a2444so397740966b.3;
-        Sat, 25 Nov 2023 03:57:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700913422; x=1701518222; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hh9vZxL4rHi7//Khkg+z1SWYB8RqWtPqX2G6QnLn8GQ=;
-        b=NJ9SP5+S78QzAGqXXt3QKROCUaIcmLciWwZ+7M5raS9UfuMcBljypDLk9e+529cwMj
-         kyQAELE8lCVi7hRyOM73Pylo3odEbeDyFTHmm/HqUE7kSJvzWXHkdkKomYOZXEDY08eb
-         LZE4PAio3a2KABAGLB3Rj+4eMeXpaWkOjBY2QGHuI6V0pJY9duBkMUMncluf7ylfDH1s
-         VSMB8ueoDA/YlPtx0ITc489ZSmJGhItRDDmv7baol5RfHd5qCH6soRfiCui3tLjGjP2F
-         CC3+H7H9iOws8cabMk3JnaC28NhGtcQcgsiu5tJOdMuPV6HwbiVhps+wbsAKzFo8smbC
-         Klsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700913422; x=1701518222;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hh9vZxL4rHi7//Khkg+z1SWYB8RqWtPqX2G6QnLn8GQ=;
-        b=LPb0jdGLDAc+UFp3nevky2pz8T8p3fTZOMZSBHAnVL5DCOPUBXK7PC5/ydKOGzbX6y
-         m8hfGNWOagEDuXe9bCroLF5z0sQS94UsUOj+Jb50EYe/3sBcPbvX94Q5/jztCR+Q8Tr8
-         V1wK02wXNHc4+UOT8drbxba2QOZnG/tCCijOlKOVsUmhukfwZmLLbO44c9bSKvCkx+ou
-         lBYrVYxn2NP7+ijH5N3zdsHu6M4vCMBWsxq9oERoP+LpFpISUOXrrLEYBfpLYSe8jJ7f
-         WKr6po2rZqjHoIKe4lGwoOwJGNxeScbqkaB2Sgbxn+YxuiUqGELHbMIKl/V1eIB4xRSV
-         tUNg==
-X-Gm-Message-State: AOJu0YzCvlYUJdcaUeLiVR8HKVtce2o5RuzXLuY4efF6vy5UiYxUs0nE
-	GST2EAzSjhZmJTCr++ygEQCKCVRnXbw+tQ==
-X-Google-Smtp-Source: AGHT+IHxP9ghozljY/BHCFCGEqkaLaBByt90/SuewITK6uX24BmQIHzok8pFU9+s+Hn+E/rjNU7kDA==
-X-Received: by 2002:a17:906:1019:b0:9ff:dad:de15 with SMTP id 25-20020a170906101900b009ff0dadde15mr4184820ejm.50.1700913422137;
-        Sat, 25 Nov 2023 03:57:02 -0800 (PST)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-3176-084d-819d-12bf.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:3176:84d:819d:12bf])
-        by smtp.gmail.com with ESMTPSA id r17-20020a170906a21100b009ae57888718sm3344349ejy.207.2023.11.25.03.57.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Nov 2023 03:57:01 -0800 (PST)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sat, 25 Nov 2023 12:56:57 +0100
-Subject: [PATCH v2 3/3] iio: light: add VEML6075 UVA and UVB light sensor
- driver
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204FAD530;
+	Sat, 25 Nov 2023 12:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DF2C433C7;
+	Sat, 25 Nov 2023 12:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700914072;
+	bh=D4kxke8I3u5kGrzOOHNBlvZ51Ki1vGdPFs5hwb4dDbs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ijLyFy/ZtJRy6r9c6iO9ei8RPEudxWqyIYBBykt5rjPo695Qm5s3h7oxloOtucRfm
+	 o+OTQ+rzXrZXtoMhhHDpx9vqjJ6DHz7SuVMCykhGi+/7MmbKrSoNJuEz4vDumxSZel
+	 doOZXOpIAwfsVQiXRIls58IY5bDqHAYceYGRP/MpEsBdytonerHnulaTJlwVKVvvbh
+	 kEspLTFEdtI4FMSnFZ1T9rblRjDO9NR6Oqu6cDiV92/n0isG65dGb6u3ohAKb/XU3B
+	 GxLVvya9b1PFCoM+XyibJ0VyS06XmBEGE57RxysWUgA+1muRcwOntPlD+QCqB1qFlP
+	 wBGsWfadxVY0A==
+Date: Sat, 25 Nov 2023 12:07:44 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Anshul Dalal <anshulusr@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ linux-kernel-mentees@lists.linuxfoundation.org, Shuah Khan
+ <skhan@linuxfoundation.org>
+Subject: Re: [PATCH 2/2] iio: dac: driver for MCP4821
+Message-ID: <20231125120744.23b0893d@jic23-huawei>
+In-Reply-To: <20231117073040.685860-2-anshulusr@gmail.com>
+References: <20231117073040.685860-1-anshulusr@gmail.com>
+	<20231117073040.685860-2-anshulusr@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231110-veml6075-v2-3-d04efbc8bf51@gmail.com>
-References: <20231110-veml6075-v2-0-d04efbc8bf51@gmail.com>
-In-Reply-To: <20231110-veml6075-v2-0-d04efbc8bf51@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1700913416; l=15485;
- i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=YwkaZng5pAN3PTKkBmv+rawXHP6XARNO7S50VB0HjX8=;
- b=njsQrdJ1bfXsU/3DCGVy94CQ9zNk76Ya6J34RUMSBVVLysng8SyUQyvnGmfsmeeFpFAIEkOco
- MhYl0pKOgvXCbvv+hnc3QfkezCqHUL9EajVNBfVVzQeROCVN+kPr05o
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
-The Vishay VEMl6075 is a low power, 16-bit resolution UVA and UVB
-light sensor with I2C interface and noise compensation (visible and
-infrarred).
+On Fri, 17 Nov 2023 13:00:38 +0530
+Anshul Dalal <anshulusr@gmail.com> wrote:
 
-Every UV channel generates an output signal measured in counts per
-integration period, where the integration time is configurable.
+Hi Anshul,
 
-This driver adds support for both UV channels and the ultraviolet
-index (UVI) inferred from them according to the device application note
-with open-air (no teflon) coefficients.
+Comments inline.
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- MAINTAINERS                  |   6 +
- drivers/iio/light/Kconfig    |  11 +
- drivers/iio/light/Makefile   |   1 +
- drivers/iio/light/veml6075.c | 486 +++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 504 insertions(+)
+> Adds driver for the MCP48xx series of DACs.
+> 
+> Device uses a simplex SPI channel.
+> To set the value of an output channel, a 16-bit
+> data of following format must be written:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 97f51d5ec1cf..4ebf66036f6a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23184,6 +23184,12 @@ S:	Maintained
- F:	drivers/input/serio/userio.c
- F:	include/uapi/linux/userio.h
- 
-+VISHAY VEML6075 UVA AND UVB LIGHT SENSOR DRIVER
-+M:	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-+F:	drivers/iio/light/veml6075.c
-+
- VISL VIRTUAL STATELESS DECODER DRIVER
- M:	Daniel Almeida <daniel.almeida@collabora.com>
- L:	linux-media@vger.kernel.org
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 45edba797e4c..f68e62196bc2 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -637,6 +637,17 @@ config VEML6070
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called veml6070.
- 
-+config VEML6075
-+	tristate "VEML6075 UVA and UVB light sensor"
-+	select REGMAP_I2C
-+	depends on I2C
-+	help
-+	  Say Y here if you want to build a driver for the Vishay VEML6075 UVA
-+	  and UVB light sensor.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called veml6075.
-+
- config VL6180
- 	tristate "VL6180 ALS, range and proximity sensor"
- 	depends on I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index c0db4c4c36ec..c8289e24e3f6 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -60,5 +60,6 @@ obj-$(CONFIG_VCNL4000)		+= vcnl4000.o
- obj-$(CONFIG_VCNL4035)		+= vcnl4035.o
- obj-$(CONFIG_VEML6030)		+= veml6030.o
- obj-$(CONFIG_VEML6070)		+= veml6070.o
-+obj-$(CONFIG_VEML6075)		+= veml6075.o
- obj-$(CONFIG_VL6180)		+= vl6180.o
- obj-$(CONFIG_ZOPT2201)		+= zopt2201.o
-diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
-new file mode 100644
-index 000000000000..a33488884076
---- /dev/null
-+++ b/drivers/iio/light/veml6075.c
-@@ -0,0 +1,486 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Vishay VEML6075 UVA and UVB light sensor
-+ *
-+ * Copyright 2023 Javier Carrasco <javier.carrasco.cruz@gmail.com>
-+ *
-+ * 7-bit I2C slave, address 0x10
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/iio/iio.h>
-+
-+#define VEML6075_CMD_CONF	0x00 /* configuration register */
-+#define VEML6075_CMD_UVA	0x07 /* UVA channel */
-+#define VEML6075_CMD_UVB	0x09 /* UVB channel */
-+#define VEML6075_CMD_COMP1	0x0A /* visible light compensation */
-+#define VEML6075_CMD_COMP2	0x0B /* infrarred light compensation */
-+#define VEML6075_CMD_ID		0x0C /* device ID */
-+
-+#define VEML6075_CONF_IT	GENMASK(6, 4) /* intregration time */
-+#define VEML6075_CONF_HD	BIT(3) /* dynamic setting */
-+#define VEML6075_CONF_TRIG	BIT(2) /* trigger */
-+#define VEML6075_CONF_AF	BIT(1) /* active force enable */
-+#define VEML6075_CONF_SD	BIT(0) /* shutdown */
-+
-+#define VEML6075_IT_50_MS	0x00
-+#define VEML6075_IT_100_MS	0x01
-+#define VEML6075_IT_200_MS	0x02
-+#define VEML6075_IT_400_MS	0x03
-+#define VEML6075_IT_800_MS	0x04
-+
-+#define VEML6075_AF_DISABLE	0x00
-+#define VEML6075_AF_ENABLE	0x01
-+
-+#define VEML6075_SD_DISABLE	0x00
-+#define VEML6075_SD_ENABLE	0x01
-+
-+/* Open-air coefficients and responsivity */
-+#define VEML6075_A_COEF		2220
-+#define VEML6075_B_COEF		1330
-+#define VEML6075_C_COEF		2950
-+#define VEML6075_D_COEF		1740
-+#define VEML6075_UVA_RESP	1461
-+#define VEML6075_UVB_RESP	2591
-+
-+static const int veml6075_it_ms[] = { 50, 100, 200, 400, 800 };
-+
-+struct veml6075_data {
-+	struct i2c_client *client;
-+	struct regmap *regmap;
-+	struct mutex lock; /* integration time/measurement trigger lock */
-+};
-+
-+/* channel number */
-+enum veml6075_chan {
-+	CH_UVA,
-+	CH_UVB,
-+};
-+
-+static const struct iio_chan_spec veml6075_channels[] = {
-+	{
-+		.type = IIO_INTENSITY,
-+		.channel = CH_UVA,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_LIGHT_UVA,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+	},
-+	{
-+		.type = IIO_INTENSITY,
-+		.channel = CH_UVB,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_LIGHT_UVB,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+	},
-+	{
-+		.type = IIO_UVINDEX,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+	},
-+};
-+
-+static int veml6075_shutdown(struct veml6075_data *data)
-+{
-+	return regmap_update_bits(data->regmap, VEML6075_CMD_CONF,
-+				  VEML6075_CONF_SD, VEML6075_CONF_SD);
-+}
-+
-+static int veml6075_request_measurement(struct veml6075_data *data)
-+{
-+	int ret, conf, int_time;
-+
-+	ret = regmap_read(data->regmap, VEML6075_CMD_CONF, &conf);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* disable shutdown and trigger measurement */
-+	ret = regmap_write(data->regmap, VEML6075_CMD_CONF,
-+			   (conf | VEML6075_CONF_TRIG) & ~VEML6075_CONF_SD);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * A measurement requires between 1.30 and 1.40 times the integration
-+	 * time for all possible configurations. Using a 1.50 factor simplifies
-+	 * operations and ensures reliability under all circumstances.
-+	 */
-+	int_time = veml6075_it_ms[FIELD_GET(VEML6075_CONF_IT, conf)];
-+	msleep(int_time + (int_time / 2));
-+
-+	/* shutdown again, data registers are still accessible */
-+	return veml6075_shutdown(data);
-+}
-+
-+static int veml6075_uva_comp(int raw_uva, int comp1, int comp2)
-+{
-+	int comp1a_c, comp2a_c, uva_comp;
-+
-+	comp1a_c = (comp1 * VEML6075_A_COEF) / 1000U;
-+	comp2a_c = (comp2 * VEML6075_B_COEF) / 1000U;
-+	uva_comp = raw_uva - comp1a_c - comp2a_c;
-+
-+	return clamp_val(uva_comp, 0, U16_MAX);
-+}
-+
-+static int veml6075_uvb_comp(int raw_uvb, int comp1, int comp2)
-+{
-+	int comp1b_c, comp2b_c, uvb_comp;
-+
-+	comp1b_c = (comp1 * VEML6075_C_COEF) / 1000U;
-+	comp2b_c = (comp2 * VEML6075_D_COEF) / 1000U;
-+	uvb_comp = raw_uvb - comp1b_c - comp2b_c;
-+
-+	return clamp_val(uvb_comp, 0, U16_MAX);
-+}
-+
-+static int veml6075_read_comp(struct veml6075_data *data, int *c1, int *c2)
-+{
-+	int ret;
-+
-+	ret = regmap_read(data->regmap, VEML6075_CMD_COMP1, c1);
-+	if (ret < 0)
-+		return ret;
-+
-+	return regmap_read(data->regmap, VEML6075_CMD_COMP2, c2);
-+}
-+
-+static int veml6075_read_uv_direct(struct veml6075_data *data, int chan,
-+				   int *val)
-+{
-+	int c1, c2, ret;
-+
-+	guard(mutex)(&data->lock);
-+
-+	ret = veml6075_request_measurement(data);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = veml6075_read_comp(data, &c1, &c2);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (chan) {
-+	case CH_UVA:
-+		ret = regmap_read(data->regmap, VEML6075_CMD_UVA, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = veml6075_uva_comp(*val, c1, c2);
-+		return IIO_VAL_INT;
-+	case CH_UVB:
-+		ret = regmap_read(data->regmap, VEML6075_CMD_UVB, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = veml6075_uvb_comp(*val, c1, c2);
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int veml6075_read_int_time_index(struct veml6075_data *data)
-+{
-+	int ret, conf;
-+
-+	ret = regmap_read(data->regmap, VEML6075_CMD_CONF, &conf);
-+	if (ret < 0)
-+		return ret;
-+
-+	return FIELD_GET(VEML6075_CONF_IT, conf);
-+}
-+
-+static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)
-+{
-+	int int_index;
-+
-+	guard(mutex)(&data->lock);
-+	int_index = veml6075_read_int_time_index(data);
-+	if (int_index < 0)
-+		return int_index;
-+
-+	*val = veml6075_it_ms[int_index];
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int veml6075_get_uvi_micro(struct veml6075_data *data, int uva_comp,
-+				  int uvb_comp)
-+{
-+	int uvia_micro = uva_comp * VEML6075_UVA_RESP;
-+	int uvib_micro = uvb_comp * VEML6075_UVB_RESP;
-+	int int_index;
-+
-+	int_index = veml6075_read_int_time_index(data);
-+	if (int_index < 0)
-+		return int_index;
-+
-+	switch (int_index) {
-+	case VEML6075_IT_50_MS:
-+		return uvia_micro + uvib_micro;
-+	case VEML6075_IT_100_MS:
-+	case VEML6075_IT_200_MS:
-+	case VEML6075_IT_400_MS:
-+	case VEML6075_IT_800_MS:
-+		return (uvia_micro + uvib_micro) / (2 << int_index);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int veml6075_read_uvi(struct veml6075_data *data, int *val, int *val2)
-+{
-+	int ret, c1, c2, uva, uvb, uvi_micro;
-+
-+	guard(mutex)(&data->lock);
-+
-+	ret = veml6075_request_measurement(data);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = veml6075_read_comp(data, &c1, &c2);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_read(data->regmap, VEML6075_CMD_UVA, &uva);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_read(data->regmap, VEML6075_CMD_UVB, &uvb);
-+	if (ret < 0)
-+		return ret;
-+
-+	uvi_micro = veml6075_get_uvi_micro(data, veml6075_uva_comp(uva, c1, c2),
-+					   veml6075_uvb_comp(uvb, c1, c2));
-+	if (uvi_micro < 0)
-+		return uvi_micro;
-+
-+	*val = uvi_micro / 1000000LL;
-+	*val2 = uvi_micro % 1000000LL;
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int veml6075_read_responsivity(int chan, int *val, int *val2)
-+{
-+	/* scale = 1 / resp */
-+	switch (chan) {
-+	case CH_UVA:
-+		/* resp = 0.93 c/uW/cm2: scale = 1.75268817 */
-+		*val = 1;
-+		*val2 = 75268817;
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case CH_UVB:
-+		/* resp = 2.1 c/uW/cm2: scale = 0.476190476 */
-+		*val = 0;
-+		*val2 = 476190476;
-+		return IIO_VAL_INT_PLUS_NANO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int veml6075_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type, int *length,
-+			       long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*length = ARRAY_SIZE(veml6075_it_ms);
-+		*vals = veml6075_it_ms;
-+		*type = IIO_VAL_INT;
-+		return IIO_AVAIL_LIST;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int veml6075_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
-+{
-+	struct veml6075_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = veml6075_read_uv_direct(data, chan->channel, val);
-+		break;
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = veml6075_read_uvi(data, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		ret = veml6075_read_int_time_ms(data, val);
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		return veml6075_read_responsivity(chan->channel, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static int veml6075_write_int_time_ms(struct veml6075_data *data, int val)
-+{
-+	int i = ARRAY_SIZE(veml6075_it_ms);
-+
-+	guard(mutex)(&data->lock);
-+
-+	while (i-- > 0) {
-+		if (val == veml6075_it_ms[i])
-+			break;
-+	}
-+	if (i < 0)
-+		return -EINVAL;
-+
-+	return regmap_update_bits(data->regmap, VEML6075_CMD_CONF,
-+				  VEML6075_CONF_IT,
-+				  FIELD_PREP(VEML6075_CONF_IT, i));
-+}
-+
-+static int veml6075_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
-+{
-+	struct veml6075_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		ret = veml6075_write_int_time_ms(data, val);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static const struct iio_info veml6075_info = {
-+	.read_avail = veml6075_read_avail,
-+	.read_raw = veml6075_read_raw,
-+	.write_raw = veml6075_write_raw,
-+};
-+
-+static bool veml6075_readable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case VEML6075_CMD_CONF:
-+	case VEML6075_CMD_UVA:
-+	case VEML6075_CMD_UVB:
-+	case VEML6075_CMD_COMP1:
-+	case VEML6075_CMD_COMP2:
-+	case VEML6075_CMD_ID:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool veml6075_writable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case VEML6075_CMD_CONF:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static const struct regmap_config veml6075_regmap_config = {
-+	.name = "veml6075",
-+	.reg_bits = 8,
-+	.val_bits = 16,
-+	.max_register = VEML6075_CMD_ID,
-+	.readable_reg = veml6075_readable_reg,
-+	.writeable_reg = veml6075_writable_reg,
-+	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-+
-+};
-+
-+static int veml6075_probe(struct i2c_client *client)
-+{
-+	struct veml6075_data *data;
-+	struct iio_dev *indio_dev;
-+	struct regmap *regmap;
-+	int config, ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	regmap = devm_regmap_init_i2c(client, &veml6075_regmap_config);
-+	if (IS_ERR(regmap))
-+		return PTR_ERR(regmap);
-+
-+	data = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	data->client = client;
-+	data->regmap = regmap;
-+
-+	mutex_init(&data->lock);
-+
-+	indio_dev->name = "veml6075";
-+	indio_dev->info = &veml6075_info;
-+	indio_dev->channels = veml6075_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(veml6075_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = devm_regulator_get_enable(&client->dev, "vdd");
-+	if (ret < 0 && ret != -ENODEV)
-+		return ret;
-+
-+	/* default: 100ms integration time, active force enable, shutdown */
-+	config = FIELD_PREP(VEML6075_CONF_IT, VEML6075_IT_100_MS) |
-+		FIELD_PREP(VEML6075_CONF_AF, VEML6075_AF_ENABLE) |
-+		FIELD_PREP(VEML6075_CONF_SD, VEML6075_SD_ENABLE);
-+	ret = regmap_write(data->regmap, VEML6075_CMD_CONF, config);
-+	if (ret < 0)
-+		return ret;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id veml6075_id[] = {
-+	{ "veml6075" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, veml6075_id);
-+
-+static const struct of_device_id veml6075_of_match[] = {
-+	{ .compatible = "vishay,veml6075" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, veml6075_of_match);
-+
-+static struct i2c_driver veml6075_driver = {
-+	.driver = {
-+		.name   = "veml6075",
-+		.of_match_table = veml6075_of_match,
-+	},
-+	.probe = veml6075_probe,
-+	.id_table = veml6075_id,
-+};
-+
-+module_i2c_driver(veml6075_driver);
-+
-+MODULE_AUTHOR("Javier Carrasco <javier.carrasco.cruz@gmail.com>");
-+MODULE_DESCRIPTION("Vishay VEML6075 UVA and UVB light sensor driver");
-+MODULE_LICENSE("GPL");
+Wrap anything that isn't specifically formatted at 75 chars not this short.  
+I could fix that whilst applying but you are going to be doing a v2 anyway
+so you can tidy it up :)
 
--- 
-2.39.2
+> 
+> Bit field | Description
+> 15 [MSB]  | Channel selection bit
+>             0 -> Channel A
+>             1 -> Channel B
+> 13        | Output Gain Selection bit
+>             0 -> 2x Gain (Vref = 4.096V)
+>             1 -> 1x Gain (Vref = 2.048V)
+> 12        | Output Shutdown Control bit
+>             0 -> Shutdown the selected channel
+>             1 -> Active mode operation
+> 11-0 [LSB]| DAC Input Data bits
+>             Value's big endian representation is
+>             taken as input for the selected DAC
+>             channel.
+>             For devices with a resolution of less
+>             than 12-bits, only the x most
+>             significant bits are considered where
+>             x is the resolution of the device.
+> Reference: Page#22 [MCP48x2 Datasheet]
+> 
+> Supported devices:
+>   +---------+--------------+-------------+
+>   | Device  |  Resolution  |   Channels  |
+>   |---------|--------------|-------------|
+>   | MCP4801 |     8-bit    |      1      |
+>   | MCP4811 |    10-bit    |      1      |
+>   | MCP4821 |    12-bit    |      1      |
+>   | MCP4802 |     8-bit    |      2      |
+>   | MCP4812 |    10-bit    |      2      |
+>   | MCP4822 |    12-bit    |      2      |
+>   +---------+--------------+-------------+
+> 
+> Devices tested:
+>   MCP4821 [12-bit single channel]
+>   MCP4802 [8-bit dual channel]
+> 
+> Tested on Raspberry Pi Zero 2W
+> 
+> Datasheet:
+>   [MCP48x1] https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf
+>   [MCP48x2] https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf
+So Datasheet is part of the tag block so no line break between this
+and sign off.  The way to format this is to add two entries and apply comments
+after them.  Don't worry about long lines for this.
+
+> 
+
+Datasheet: https//.... #MCP48x1
+Datasheet: https//.... #MCP48x2
+Signed-off-by: ...
+
+> Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+...
+
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 93b8be183de6..f5adc364de30 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -400,6 +400,16 @@ config MCP4728
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called mcp4728.
+>  
+> +config MCP4821
+> +	tristate "MCP4801/11/21/02/12/22 DAC driver"
+> +	depends on SPI
+> +	help
+> +	  Say yes here to build the driver for the Microchip MCP4801
+> +	  MCP4811, MCP4821, MCP4802, MCP4812 and MCP4822 DAC devices.
+
+Numeric order her as well please.
+
+> +
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called mcp4821.
+> +
+>  config MCP4922
+>  	tristate "MCP4902, MCP4912, MCP4922 DAC driver"
+>  	depends on SPI
+
+...
+
+> diff --git a/drivers/iio/dac/mcp4821.c b/drivers/iio/dac/mcp4821.c
+> new file mode 100644
+> index 000000000000..d08acf6b8993
+> --- /dev/null
+> +++ b/drivers/iio/dac/mcp4821.c
+> @@ -0,0 +1,207 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2023 Anshul Dalal <anshulusr@gmail.com>
+> + *
+> + * Driver for Microchip MCP4801, MCP4811, MCP4821, MCP4802, MCP4812 and MCP4822
+> + *
+> + * Based on the work of:
+> + *	Michael Welling (MCP4922 Driver)
+> + *
+> + * Datasheet:
+> + *	MCP48x1: https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf
+> + *	MCP48x2: https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf
+> + *
+> + * TODO:
+> + *	- Configurable gain
+> + *	- Regulator control
+> + */
+> +
+> +#include <asm/unaligned.h>
+So in IIO at least header ordering is normally (each block alphabetical)
+
+linux/*.h
+
+linux/iio/*.h (it's an IIO driver so sometimes good to separate these out)
+
+asm/*.h (these are effectively even more specific so we put them in their own block.
+
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/types.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#define MCP4821_ACTIVE_MODE BIT(12)
+> +#define MCP4802_SECOND_CHAN BIT(15)
+> +#define MCP4821_CHAN_NUM    1
+Not used so drop this.
+
+> +
+> +/* DAC uses an internal Voltage reference of 4.096V at a gain of 2x */
+> +#define MCP4821_2X_GAIN_VREF_MV 4096
+> +
+> +enum mcp4821_supported_drvice_ids {
+> +	ID_MCP4801,
+> +	ID_MCP4811,
+> +	ID_MCP4821,
+> +	ID_MCP4802,
+
+Numeric order preferred throughout if we have long lists like this.
+
+> +	ID_MCP4812,
+> +	ID_MCP4822,
+> +};
+> +
+> +static int mcp4821_chan_count(enum mcp4821_supported_drvice_ids device_id)
+> +{
+> +	switch (device_id) {
+> +	case ID_MCP4801:
+> +	case ID_MCP4811:
+> +	case ID_MCP4821:
+> +		return 1;
+> +	default:
+
+I'd rather see this explicit for each device even though it's a few more lines
+of code.
+
+> +		return 2;
+> +	}
+> +}
+> +
+> +struct mcp4821_state {
+> +	struct spi_device *spi;
+> +	struct mutex lock;
+
+All locks need to have a comment describing the scope of data they are protecting.
+
+> +	u16 dac_value[2];
+> +};
+> +
+> +#define MCP4821_CHAN(channel_id, resolution)				\
+> +	{								\
+> +		.type = IIO_VOLTAGE,					\
+> +		.output = 1,						\
+> +		.indexed = 1,						\
+> +		.channel = (channel_id),				\
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+> +		.scan_type = {						\
+> +			.sign = 'u',					\
+> +			.realbits = (resolution),			\
+> +			.storagebits = 16,				\
+> +			.shift = 12 - (resolution),			\
+> +		},							\
+> +	}
+> +
+> +static const struct iio_chan_spec mcp4821_channels[6][2] = {
+> +	[ID_MCP4801] = { MCP4821_CHAN(0, 8), {} },
+
+C will fill in the second entry with zeros without needing a {} and
+as we don't care about it anyway, just don't bother adding the {} placeholder,
+making it a bit neater.
+
+> +	[ID_MCP4811] = { MCP4821_CHAN(0, 10), {} },
+> +	[ID_MCP4821] = { MCP4821_CHAN(0, 12), {} },
+> +	[ID_MCP4802] = { MCP4821_CHAN(0, 8), MCP4821_CHAN(1, 8) },
+> +	[ID_MCP4812] = { MCP4821_CHAN(0, 10), MCP4821_CHAN(1, 10) },
+> +	[ID_MCP4822] = { MCP4821_CHAN(0, 12), MCP4821_CHAN(1, 12) },
+> +};
+> +
+> +static int mcp4821_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int *val,
+> +			    int *val2, long mask)
+> +{
+> +	struct mcp4821_state *state;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		state = iio_priv(indio_dev);
+> +		mutex_lock(&state->lock);
+
+Can use the new auto cleanup stuff for this to shorten things a tiny bit.
+
+		scoped_guard(mutex, &state->lock)
+			*val = state->dac_channel[chan->channel];
+
+Obviously very minor advantage here so I don't mind either way.
+
+> +		*val = state->dac_value[chan->channel];
+> +		mutex_unlock(&state->lock);
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = MCP4821_2X_GAIN_VREF_MV;
+> +		*val2 = chan->scan_type.realbits;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int mcp4821_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, int val,
+> +			     int val2, long mask)
+> +{
+> +	struct mcp4821_state *state;
+> +	__be16 write_val;
+> +	u8 write_buffer[2];
+
+type of these two is backwards.  you are build the value in write_val, so that should
+just be a u16, then converting it to be16 so write_buffer should be __be16
+
+> +	int ret;
+> +	bool is_value_valid = val >= 0 && val < BIT(chan->scan_type.realbits) &&
+> +			      val2 == 0;
+> +	if (mask == IIO_CHAN_INFO_RAW && is_value_valid) {
+> +		state = iio_priv(indio_dev);
+> +
+> +		write_val = MCP4821_ACTIVE_MODE | val << chan->scan_type.shift;
+> +		if (chan->channel)
+> +			write_val |= MCP4802_SECOND_CHAN;
+> +		put_unaligned_be16(write_val, write_buffer);
+
+
+
+> +		ret = spi_write(state->spi, write_buffer, sizeof(write_buffer));
+> +		if (ret) {
+> +			dev_err(&state->spi->dev,
+> +				"Failed to write to device: %d", ret);
+> +			return ret;
+> +		}
+> +
+> +		mutex_lock(&state->lock);
+
+As above if you want to.
+
+
+> +		state->dac_value[chan->channel] = val;
+> +		mutex_unlock(&state->lock);
+> +		return 0;
+> +	} else {
+> +		return -EINVAL;
+Flip this and separate the unrelated conditions.
+	if (mask != IIO_CHAN_INFO_RAW)
+		return -EINVAL;
+
+	if (!is_value_valid)
+		return -EINVAL;
+
+	...
+
+reduces unnecessary indent and generally puts the errors 'out of line' which
+is common kernel approach and generally 'what we expect to see' when reviewing.
+
+
+> +	}
+> +}
+> +
+> +static const struct iio_info mcp4821_info = {
+> +	.read_raw = &mcp4821_read_raw,
+> +	.write_raw = &mcp4821_write_raw,
+> +};
+> +
+> +static int mcp4821_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct mcp4821_state *state;
+> +	const struct spi_device_id *id;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
+> +	if (indio_dev == NULL) {
+> +		dev_err(&spi->dev, "Failed to allocate iio device\n");
+> +		return -ENOMEM;
+		return dev_err_probe(&spi->dev, -ENOMEM,
+				     "failed to allocate IIO device\n");
+
+However that's very unlikely to ever happen, so you could just not bother
+with the message.
+
+> +	}
+> +
+> +	state = iio_priv(indio_dev);
+> +	spi_set_drvdata(spi, indio_dev);
+
+Why?
+
+> +	id = spi_get_device_id(spi);
+For dt bindings this relies on the fallback of breaking up the compatible.
+That's fragile, so add the data to the of_table as well + use pointers
+not enum values so that you can then use spi_get_device_match_data()
+which handles other firmware types as well and falls back to what you
+have here.
+
+> +
+> +	state->spi = spi;
+> +	mutex_init(&state->lock);
+> +
+> +	indio_dev->name = id->name;
+
+Also fragile (very weird things happen if you end up with fallback DT compatibles
+in the future).  So embed a string in a device specific structure as described
+below.
+
+> +	indio_dev->info = &mcp4821_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = mcp4821_channels[id->driver_data];
+> +	indio_dev->num_channels = mcp4821_chan_count(id->driver_data);
+Combine channels and chan_count as static data in a
+struct mcp4821_info {
+	struct iio_chan_spec channels];
+	int num_channels;
+	const char *name;
+}
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static const struct spi_device_id mcp4821_id_table[] = {
+> +	{ "mcp4801", ID_MCP4801},
+use &mcp4821_data[ID_MCP4801] etc in here.. (with cast as needed, lots of
+examples in tree...
+> +	{ "mcp4811", ID_MCP4811},
+> +	{ "mcp4821", ID_MCP4821},
+> +	{ "mcp4802", ID_MCP4802},
+> +	{ "mcp4812", ID_MCP4812},
+> +	{ "mcp4822", ID_MCP4822},
+> +	{ /* Sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, mcp4821_id_table);
+> +
+> +static const struct of_device_id mcp4821_of_table[] = {
+> +	{ .compatible = "microchip,mcp4801"},
+and provide the data here as well. 
+> +	{ .compatible = "microchip,mcp4811"},
+> +	{ .compatible = "microchip,mcp4821"},
+...
+
+Thanks,
+
+Jonathan
+
 
 

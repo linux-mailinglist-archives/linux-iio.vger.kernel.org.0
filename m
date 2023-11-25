@@ -1,200 +1,172 @@
-Return-Path: <linux-iio+bounces-364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60937F8CF6
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:06:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3D07F8D55
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6008BB2107A
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 18:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 207F01F20CDB
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 18:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C092D78D;
-	Sat, 25 Nov 2023 18:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7065E2DF9F;
+	Sat, 25 Nov 2023 18:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqtyaPAk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NdhfTqOt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B923DB;
-	Sat, 25 Nov 2023 18:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F86BC433C7;
-	Sat, 25 Nov 2023 18:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700935601;
-	bh=2mqDBd/8TiifGjoo0dqWg0EWWNxd6WuCAOk85z9NRvY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PqtyaPAkDxYpd6WhEyojObVwffExmJFfl5wbfM8apViabQv8DS0zPJUXqMOSRVimI
-	 gYSIwknQ50Vj3pct1jQNDDr3bDq0IaXqZbwd20X1+6+FeVCSro2zITfgzE6bFK1RU8
-	 1UDbafK6CNxOTKVRhthrEAmGdaIWF3ssGrCAocFvAK9tIIrZAHl4LkmRq5EbeWfp1n
-	 qdPFZSmhpXsndGbGDvaAaAPIaiqUIXhthkMSQIvvbJXL4m5YmnjC812Jr0C/4hgo3U
-	 h65sDasRhnOgKIP6UPSXq2Dp6qdDRL1mP47E8FNcmtkRq04DBLUhWwQXMaJDXyYkQ9
-	 FgHyH6FR/87ZQ==
-Date: Sat, 25 Nov 2023 18:06:31 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-iio@vger.kernel.org, Alexander Stein
- <alexander.stein@ew.tq-group.com>, Andre Werner
- <andre.werner@systec-electronic.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Naresh Solanki
- <naresh.solanki@9elements.com>, Patrick Rudolph
- <patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, Stefan
- Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
- <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: light: isl76682: Add ISL76682 driver
-Message-ID: <20231125180631.0dadc926@jic23-huawei>
-In-Reply-To: <20231121031043.327614-2-marex@denx.de>
-References: <20231121031043.327614-1-marex@denx.de>
-	<20231121031043.327614-2-marex@denx.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE77EA;
+	Sat, 25 Nov 2023 10:53:30 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c8790474d5so37612201fa.2;
+        Sat, 25 Nov 2023 10:53:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700938408; x=1701543208; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+PIN7PTLxMRDTTudo4CQU8eCZFkTohE+Jd4VNyt/7PI=;
+        b=NdhfTqOtmB5FL13vvF5QiOWC+IReMEpoGFwT8VHZlv/CYdu3n0TsJQRy4Qhwj/m8YX
+         kNdhp/X6h+8r8Q5fLPiQ/KkL70dX+97uMNimXfPomW9W3NhtqSxzb/3/ZLIIgVBCphu8
+         RLv6kNNhCt1awZXztV8VUz7Fc/3Jw9U6QPaLpgcAFHsSHDeWvgcVgwOuk2KNTewDjow1
+         ESGZFf6x3Nk+wb0q1I4Avr2Pa0M6ZJvpEqKcGQTbh8L8pImMAVh76YGV25bkhypjThAA
+         2oG/JP9q2t/bnqIKMYt4DuZKxIFJ/iVjSOS+Bqz3mgqFBcigNzty9dmBgECh79oWJTqL
+         Qbtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700938408; x=1701543208;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+PIN7PTLxMRDTTudo4CQU8eCZFkTohE+Jd4VNyt/7PI=;
+        b=vIubu1Lt3ADzN044wRPxg2nRuZ5JSwKaHAebUfV45a49bzqHNRqUPn2CQFicGhsBBG
+         gc5FQFjqZFyV01QPjqgxXhzAOWs8NqXlIw8UCfvZKV/9XXQZ0tsw2lbEK/iSysmdWuhw
+         G/wbOAOftuGrg2m3/LrIF618O2Xxxi08ZFDptkxIQYGJf5ucqayWVBDdM97MyxDv4F/z
+         6CHnJ9F0baesPlFH+oKx7dyXMWzf1Rw2e7d/bZXOEJsQyWOtTy7HdapLkloQAgmtLhoG
+         GsxPlmk8kvIxYSbpXi0nbIS8wAMwvyu5Aub5f3XmjmgqCbxO45v8f0k3UNlE42L3Z+Fw
+         f2tQ==
+X-Gm-Message-State: AOJu0Yy3Cl0h8hXuJBF21+NyXuxuOt/4ldytO6yoHd8LXQTMwhBpYp0C
+	IeWxSMt4876SQvdZZbUvu/8=
+X-Google-Smtp-Source: AGHT+IH+x/XNYXuxiqO1n1b/RSr+a1zct+aNzIBggut8xgUeQFtCSY6gjTSyGhx7RVFKHByk9DQAqg==
+X-Received: by 2002:a05:6512:3b96:b0:507:984e:9f17 with SMTP id g22-20020a0565123b9600b00507984e9f17mr5994637lfv.34.1700938408105;
+        Sat, 25 Nov 2023 10:53:28 -0800 (PST)
+Received: from [192.168.20.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
+        by smtp.gmail.com with ESMTPSA id d27-20020a0565123d1b00b0050aa7168652sm919048lfv.7.2023.11.25.10.53.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Nov 2023 10:53:26 -0800 (PST)
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+Date: Sat, 25 Nov 2023 19:57:24 +0100
+Subject: [PATCH] iio: adc: mcp3911: simplify code with guard macro
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20231125-mcp3911-guard-v1-1-2748d16a3f3f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJNDYmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDQyNT3dzkAmNLQ0Pd9NLEohRdCzMzU0vDVKNkSxNzJaCegqLUtMwKsHn
+ RsbW1ADu1J8BfAAAA
+To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Marcus Folkesson <marcus.folkesson@gmail.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2234;
+ i=marcus.folkesson@gmail.com; h=from:subject:message-id;
+ bh=rpcMjVNeuk9mH60/Jcj21hZ9UYtSsdL0mp9KTGJKGxk=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBlYkOikkVW2nrOJTvvxNdrBjP3lniQ1rWFtvKhI
+ rhPW5mwXfeJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZWJDogAKCRCIgE5vWV1S
+ Mru3D/9wYfUN54XDUMDx8bY+yD8nRyvgjGeIiJIiEyiiMMfyAHlRpM36n8Z9BvvA5z8MeCZHiB8
+ jF4+CfgnuGrDbdsu5f8bLcS2YR5K8rvk6rarGDdOB9j+nvLXKekbtZ6NRTWaR5N+xga0Aa+2kDF
+ r7WkTi9IPRxSlVQcuzC4cLkBP/jnK+ydeVVI2Fl9WTJsnyH9GuoVa+XnfoTvdtd7S0Y9hWd0hZs
+ g4LLDmC8yXNQzKcGDgCS7qNukc3KK06u3hvXqg8ifaHZSVIWs/ZBUOorDFfJDIvfYz0s+vtO3H2
+ 4DFeBEgSuRQjmn/i5i2PUCoK0UTUfo9ZE2P3aZE7SLg3PL1ocoyH6f0GRPBvKF8oYimHMYXqpvF
+ 0yPx94cdoHNfKe50OeJBlEfGKls5E+HQXhrlaVyfB/x5qpiSHYvxTKhY8mFOSNBd53a+rgwKKCw
+ Klnl3kfAAp9OvKTjwkgQbPIUdykFd8IMHfXFcvczhJH+urCoGBOdU8ns3URz99Xp5BNL7CTkfrn
+ Efu7Pf0OALhBJKdyn5ZQXa1kG7uV4YjxwvEtVB5fEYHc9D5+ZOApOZRL2Jbl2P42ylb7Zwuxo/9
+ 4iDbepIDdU8T1npu1yQxusWsj/QUexMsKcSagIaKu9QgPrHPpvdYGCvxN7EoWmUNAWaVksGWMVq
+ V7u04KvzCPUe1Kw==
+X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
+ fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-On Tue, 21 Nov 2023 04:10:40 +0100
-Marek Vasut <marex@denx.de> wrote:
+Use the guard(mutex) macro for handle mutex lock/unlocks.
 
-> The ISL76682 is very basic ALS which only supports ALS or IR mode
-> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
-> other fancy functionality.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-Nice little driver.
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+ drivers/iio/adc/mcp3911.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-A few comments inline.
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index 974c5bd923a6..85bb13eb6f3b 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -7,6 +7,7 @@
+  */
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+@@ -168,7 +169,7 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 	struct mcp3911 *adc = iio_priv(indio_dev);
+ 	int ret = -EINVAL;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		ret = mcp3911_read(adc,
+@@ -207,7 +208,6 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 	}
+ 
+ out:
+-	mutex_unlock(&adc->lock);
+ 	return ret;
+ }
+ 
+@@ -218,7 +218,7 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 	struct mcp3911 *adc = iio_priv(indio_dev);
+ 	int ret = -EINVAL;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SCALE:
+ 		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
+@@ -263,7 +263,6 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 	}
+ 
+ out:
+-	mutex_unlock(&adc->lock);
+ 	return ret;
+ }
+ 
+@@ -350,7 +349,7 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+ 	int i = 0;
+ 	int ret;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	adc->tx_buf = MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr);
+ 	ret = spi_sync_transfer(adc->spi, xfer, ARRAY_SIZE(xfer));
+ 	if (ret < 0) {
+@@ -368,7 +367,6 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
+ 					   iio_get_time_ns(indio_dev));
+ out:
+-	mutex_unlock(&adc->lock);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
-Thanks,
+---
+base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
+change-id: 20231125-mcp3911-guard-866591e2c947
 
-Jonathan
-
-> diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
-> new file mode 100644
-> index 0000000000000..7f0ccd0d37539
-> --- /dev/null
-> +++ b/drivers/iio/light/isl76682.c
-> @@ -0,0 +1,364 @@
-
-
-> +
-> +static int isl76682_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int *val, int *val2, long mask)
-> +{
-> +	struct isl76682_chip *chip = iio_priv(indio_dev);
-> +	int ret;
-> +	int i;
-> +
-> +	if (chan->type != IIO_LIGHT && chan->type != IIO_INTENSITY)
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&chip->lock);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			ret = isl76682_get(chip, false, val);
-> +			return (ret < 0) ? ret : IIO_VAL_INT;
-> +		case IIO_INTENSITY:
-> +			ret = isl76682_get(chip, true, val);
-> +			return (ret < 0) ? ret : IIO_VAL_INT;
-> +		default:
-> +			break;
-return here and drop the one below.
-
-> +		}
-> +
-> +		return -EINVAL;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		for (i = 0; i < ARRAY_SIZE(isl76682_range_table); i++) {
-> +			if (chip->range != isl76682_range_table[i].range)
-> +				continue;
-> +
-> +			*val = 0;
-> +			switch (chan->type) {
-> +			case IIO_LIGHT:
-> +				*val2 = isl76682_range_table[i].als;
-> +				return IIO_VAL_INT_PLUS_MICRO;
-> +			case IIO_INTENSITY:
-> +				*val2 = isl76682_range_table[i].ir;
-> +				return IIO_VAL_INT_PLUS_MICRO;
-> +			default:
-> +				return -EINVAL;
-> +			}
-> +		}
-> +		return -EINVAL;
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		*val = 0;
-> +		*val2 = ISL76682_INT_TIME_US;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-> +static int isl76682_probe(struct i2c_client *client)
-> +{
-> +	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-
-For reason below, we should avoid accessing this directly.
-If you need the associated data later, then use the access functions that
-try the property.h accessors first and fallback to this only if this fails.
-That ends up much less fragile.
-
-> +	struct device *dev = &client->dev;
-> +	struct isl76682_chip *chip;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	chip = iio_priv(indio_dev);
-> +
-> +	mutex_init(&chip->lock);
-> +
-> +	chip->regmap = devm_regmap_init_i2c(client, &isl76682_regmap_config);
-> +	ret = PTR_ERR_OR_ZERO(chip->regmap);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Error initializing regmap\n");
-> +
-> +	chip->range = ISL76682_COMMAND_RANGE_LUX_1K;
-> +
-> +	ret = isl76682_clear_configure_reg(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(dev, isl76682_reset_action, chip);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->info = &isl76682_info;
-> +	indio_dev->channels = isl76682_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(isl76682_channels);
-> +	indio_dev->name = id->name;
-
-This tends to be fragile as drivers gain more entrees in the id and of table.
-So the name should always be retrieved from a chip_info structure.
-Given you don't need one of those yet, I'd prefer just having the string here
-directly. We've been bitten by this before so I get paranoid about it :)
-
-
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
+Best regards,
+-- 
+Marcus Folkesson <marcus.folkesson@gmail.com>
 
 

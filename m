@@ -1,38 +1,38 @@
-Return-Path: <linux-iio+bounces-347-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-348-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C06F87F8C15
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 16:35:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C220E7F8C29
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 16:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B241C20984
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 15:35:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C0ABB21097
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 15:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E6728E35;
-	Sat, 25 Nov 2023 15:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C8529408;
+	Sat, 25 Nov 2023 15:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfDFye/9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Debed8Vx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15EE20305;
-	Sat, 25 Nov 2023 15:35:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20148C433C7;
-	Sat, 25 Nov 2023 15:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E6BB65C;
+	Sat, 25 Nov 2023 15:50:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAEDC433C8;
+	Sat, 25 Nov 2023 15:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700926543;
-	bh=9XcsX/rqDUE/4rKkKOqkuc0WCIhP5kbJTDOZF+yyUdA=;
+	s=k20201202; t=1700927446;
+	bh=IMdjSRImTOsSj632Oy8vblfweC2HmmGiUhLrTQiSzSI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YfDFye/96iTRHnHeNU8ERa87yaX1BE1X8OKGpDaGtpH/vBdMyetR3HhPJiYJ9w0cW
-	 shnam6A6V5JY2ryE5t//mOE2an0DiUVmc9JKrmgQcnUyjUwr0MfWMaRoffY4OSPTu1
-	 IBhEgaplHK7KfIOEVUSUkrtFBoCRep02HN41QXwyrhBoyU5KTxHLwa+z5pkTjQQnPJ
-	 OUvSWD0mgsbZaU6laBOQO6eh636rsSPouTImiS0Z7Xgym2drr9qacRiebnyVKAeZVx
-	 BpoQrUR1P5Pd906CZkETmg1tY8CvquxV5OXIKqkEJZyKXjouyApjs20TRLCrkOvdHf
-	 y19Ket1nYSszg==
-Date: Sat, 25 Nov 2023 15:35:35 +0000
+	b=Debed8VxJmwqkFs3bQazCdvwV8ZnagzGwZO6SOGs/BnV71m+bJogDKl6a5H8twVT9
+	 /2bqHceXiRQa9cAtRLp8p4wOpN8ezoEmWv+1Qp3b1LXcyhPdsXod+a1P07udKGnDNh
+	 aV4PXJ0lCW4zDGzDj3k3WvToPqS9hHbBZzvW+7VcNyOJM4sG4K3kbyFAnP2/icg9/v
+	 5pKTlfAGPl64GqBmqaetfzon67Y19P4YyMAJ9s+AoyBDNUwQQ7amfNDRTZEARqQ2j/
+	 vllJZRWU8qTsXTuF7dEotw8VE4NGoXrwWeddQWEck6DzAxdSVQmJOBZWpXTfPcNFdA
+	 IoT0LDJ1mlPFw==
+Date: Sat, 25 Nov 2023 15:50:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Kim Seer Paller <kimseer.paller@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -40,12 +40,13 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
  <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
  <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v5 1/2] dt-bindings: iio: frequency: add admfm2000
-Message-ID: <20231125153535.08045a2e@jic23-huawei>
-In-Reply-To: <20231124105116.5764-1-kimseer.paller@analog.com>
+ <linux-kernel@vger.kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v5 2/2] iio: frequency: admfm2000: New driver
+Message-ID: <20231125155038.5278de39@jic23-huawei>
+In-Reply-To: <20231124105116.5764-2-kimseer.paller@analog.com>
 References: <20231124105116.5764-1-kimseer.paller@analog.com>
+	<20231124105116.5764-2-kimseer.paller@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +57,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Nov 2023 18:51:15 +0800
+On Fri, 24 Nov 2023 18:51:16 +0800
 Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
 > Dual microwave down converter module with input RF and LO frequency
@@ -65,151 +66,236 @@ Kim Seer Paller <kimseer.paller@analog.com> wrote:
 > for each down conversion path.
 > 
 > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
- 
-Hi,
+I've +CC Linus and Bartosz for the question of GPIOs under the channel child
+nodes in DT.
 
-Sorry I'm late to the party.
+Some background for them.  This device has two separate channels and each of them
+has a mirrored set of attentuation and configuration controls via arrays of GPIOS.
 
-Long term we might want to support cases where some of the pins are hard wired,
-but that can happen when someone comes along with such a board.
+Currently they are
+switch1-gpios, switch2-gpios etc.
 
-Only thing I wonder is if the gpios could be moved under the child nodes
-as I think they only apply to specific channels?  Would make the
-driver a little more complex but the binding cleaner.
+I suggested we might be able to move those into the existing channel child nodes
+that are used for describing other per channel stuff.
 
-Thanks Krzysztof for all your reviews btw
-(in general, rather than just this!)
+      channel@0 {
+        reg = <0>;
+        adi,mode = <1>;
+	switch-gpios = <&gpio 1 GPIO_ACTIVE_LOW>,
+                       <&gpio 2 GPIO_ACTIVE_HIGH>
 
-Follow on comments inline...
+	attenuation-gpios = <&gpio 17 GPIO_ACTIVE_LOW>,
+                            <&gpio 22 GPIO_ACTIVE_LOW>,
+                            <&gpio 23 GPIO_ACTIVE_LOW>,
+                            <&gpio 24 GPIO_ACTIVE_LOW>,
+                            <&gpio 25 GPIO_ACTIVE_LOW>;
+      };
+
+I think there are suitable interfaces to do this in the GPIO firmware handling code
+but wanted your opinion on whether it is worth the effort.
+
+Relevant code is towards the end.
+
+A few trivial other comments. In general this looks very clean to me.
+
+Thanks,
+
+Jonathan
+
+> ---
+> V4 -> V5: Added missing return -ENODEV in setup function. Reordered variable
+> 	  declarations in probe function.
+> V1 -> V4: No changes.
+> 
+>  MAINTAINERS                       |   1 +
+>  drivers/iio/frequency/Kconfig     |  10 +
+>  drivers/iio/frequency/Makefile    |   1 +
+>  drivers/iio/frequency/admfm2000.c | 310 ++++++++++++++++++++++++++++++
+>  4 files changed, 322 insertions(+)
+>  create mode 100644 drivers/iio/frequency/admfm2000.c
+> 
+..
+
+> +
+> +static int admfm2000_mode(struct iio_dev *indio_dev, u32 reg, u32 mode)
+> +{
+> +	struct admfm2000_state *st = iio_priv(indio_dev);
+> +	DECLARE_BITMAP(values, 2);
+> +
+> +	switch (mode) {
+> +	case ADMFM2000_MIXER_MODE:
+> +		values[0] = (reg == 0) ? 1 : 2;
+> +		gpiod_set_array_value_cansleep(st->sw_ch[reg]->ndescs,
+> +					       st->sw_ch[reg]->desc,
+> +					       NULL, values);
+> +		break;
+> +	case ADMFM2000_DIRECT_IF_MODE:
+> +		values[0] = (reg == 0) ? 2 : 1;
+> +		gpiod_set_array_value_cansleep(st->sw_ch[reg]->ndescs,
+> +					       st->sw_ch[reg]->desc,
+> +					       NULL, values);
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+
+I'd return in the good paths above as nothing useful to do down here.
+
+> +}
+
+> +
+> +static int admfm2000_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, int val,
+> +			     int val2, long mask)
+> +{
+> +	struct admfm2000_state *st = iio_priv(indio_dev);
+> +	int gain, ret;
+> +
+> +	if (val < 0)
+> +		gain = (val * 1000) - (val2 / 1000);
+> +	else
+> +		gain = (val * 1000) + (val2 / 1000);
+> +
+> +	if (gain > ADMF20000_MAX_GAIN || gain < ADMF20000_MIN_GAIN)
+> +		return -EINVAL;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		mutex_lock(&st->lock);
+guard(mutex)(&st->lock); 
+would tidy this up a tiny bit by allow a direct return.
+You will need to add {} around the whole case statement though.
+
+> +		st->gain[chan->channel] = ~((abs(gain) / 1000) & 0x1F);
+> +
+> +		ret = admfm2000_attenuation(indio_dev, chan->channel,
+> +					    st->gain[chan->channel]);
+> +
+> +		mutex_unlock(&st->lock);
+> +		if (ret)
+> +			return ret;
+return here.
+
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+
+...
+
+> +static int admfm2000_channel_config(struct admfm2000_state *st,
+> +				    struct iio_dev *indio_dev)
+> +{
+> +	struct platform_device *pdev = to_platform_device(indio_dev->dev.parent);
+> +	struct device *dev = &pdev->dev;
+> +	struct fwnode_handle *child;
+> +	u32 reg, mode;
+> +	int ret;
+> +
+> +	device_for_each_child_node(dev, child) {
+
+If the below handling of gpios suggestion works, that would become per channel
+and move in here.
+
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to get reg property\n");
+> +		}
+> +
+> +		if (reg >= indio_dev->num_channels) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, -EINVAL, "reg bigger than: %d\n",
+> +					     indio_dev->num_channels);
+> +		}
+> +
+> +		ret = fwnode_property_read_u32(child, "adi,mode", &mode);
+> +		if (ret) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to get mode property\n");
+> +		}
+> +
+> +		if (mode >= 2) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, -EINVAL, "mode bigger than: 1\n");
+> +		}
+> +
+> +		ret = admfm2000_mode(indio_dev, reg, mode);
+> +		if (ret) {
+> +			fwnode_handle_put(child);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int admfm2000_setup(struct admfm2000_state *st,
+> +			   struct iio_dev *indio_dev)
+> +{
+> +	struct platform_device *pdev = to_platform_device(indio_dev->dev.parent);
+> +	struct device *dev = &pdev->dev;
+> +
+Looking at this and considering if we can move the description into the channel
+child fwnodes of the main one, the interfaces exposed are a bit limited, but I think
+we can do it with devm_fwnode_gpiod_get_index() or potentially adding similar for
+the array forms.
 
 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
-> new file mode 100644
-> index 000000000..037438737
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
-> @@ -0,0 +1,154 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +	st->sw_ch[0] = devm_gpiod_get_array(dev, "switch1", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->sw_ch[0]))
+> +		return dev_err_probe(dev, PTR_ERR(st->sw_ch[0]),
+> +				     "Failed to get gpios\n");
 > +
-> +title: ADMFM2000 Dual Microwave Down Converter
+> +	if (st->sw_ch[0]->ndescs != ADMF20000_MODE_GPIOS) {
+> +		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
+> +			      ADMF20000_MODE_GPIOS);
+> +		return -ENODEV;
+> +	}
 > +
-> +maintainers:
-> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +	st->sw_ch[1] = devm_gpiod_get_array(dev, "switch2", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->sw_ch[1]))
+> +		return dev_err_probe(dev, PTR_ERR(st->sw_ch[1]),
+> +				     "Failed to get gpios\n");
 > +
-> +description:
-> +  Dual microwave down converter module with input RF and LO frequency ranges
-> +  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
-> +  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each down
-> +  conversion path.
+> +	if (st->sw_ch[1]->ndescs != ADMF20000_MODE_GPIOS) {
+> +		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
+> +			      ADMF20000_MODE_GPIOS);
+> +		return -ENODEV;
+> +	}
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,admfm2000
+> +	st->dsa_gpios[0] = devm_gpiod_get_array(dev, "attenuation1",
+> +						GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->dsa_gpios[0]))
+> +		return dev_err_probe(dev, PTR_ERR(st->dsa_gpios[0]),
+> +				     "Failed to get gpios\n");
 > +
-> +  switch1-gpios:
-> +    items:
-> +      - description: B15 GPIO, when high (and B16 low) channel 1 is in
-> +          Direct IF mode.
-> +      - description: B16 GPIO, when high (and B15 low) channel 1 is in
-> +          Mixer mode.
+> +	if (st->dsa_gpios[0]->ndescs != ADMF20000_DSA_GPIOS) {
+> +		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
+> +			      ADMF20000_DSA_GPIOS);
+> +		return -ENODEV;
+> +	}
 > +
-> +  switch2-gpios:
-> +    items:
-> +      - description: K14 GPIO, when high (and L14 low) channel 2 is in
-> +          Mixer mode.
-> +      - description: L14 GPIO, when high (and K14 low) channel 2 is in
-> +          Direct IF mode.
+> +	st->dsa_gpios[1] = devm_gpiod_get_array(dev, "attenuation2",
+> +						GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->dsa_gpios[1]))
+> +		return dev_err_probe(dev, PTR_ERR(st->dsa_gpios[1]),
+> +				     "Failed to get gpios\n");
 > +
-> +  attenuation1-gpios:
-> +    description: |
-> +      Choice of attenuation:
-> +      D15 D14 C16 C15 C14
-I don't think there is a useful public data sheet, but normally I'd expect
-these to have friendly names rather than pin coords.
-chan0-att0, chan0-att1 or something like that.
-Hopefully with something like that we could combine the docs if we can push
-the GPIOs down into the child nodes.
-
-> +      1   1   1   1   1   0 dB
-> +      1   1   1   1   0   -1 dB
-> +      1   1   1   0   1   -2 dB
-> +      1   1   0   1   1   -4 dB
-> +      1   0   1   1   1   -8 dB
-> +      0   1   1   1   1   -16 dB
-> +      0   0   0   0   0   -31 dB
+> +	if (st->dsa_gpios[1]->ndescs != ADMF20000_DSA_GPIOS) {
+> +		dev_err_probe(dev, -ENODEV, "%d GPIOs needed to operate\n",
+> +			      ADMF20000_DSA_GPIOS);
+> +		return -ENODEV;
+> +	}
 > +
-> +    items:
-> +      - description: C14 GPIO
-> +      - description: C15 GPIO
-> +      - description: C16 GPIO
-> +      - description: D14 GPIO
-> +      - description: D15 GPIO
-> +
-> +  attenuation2-gpios:
-> +    description: |
-> +      Choice of attenuation:
-> +      M16 M15 M14 L16 L15
-> +      1   1   1   1   1   0 dB
-> +      1   1   1   1   0   -1 dB
-> +      1   1   1   0   1   -2 dB
-> +      1   1   0   1   1   -4 dB
-> +      1   0   1   1   1   -8 dB
-> +      0   1   1   1   1   -16 dB
-> +      0   0   0   0   0   -31 dB
-> +
-> +    items:
-> +      - description: L15 GPIO
-> +      - description: L16 GPIO
-> +      - description: M14 GPIO
-> +      - description: M15 GPIO
-> +      - description: M16 GPIO
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@[0-1]$":
-> +    type: object
-> +    description: Represents a channel of the device.
-> +
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description:
-> +          The channel number.
-> +        minimum: 0
-> +        maximum: 1
-> +
-> +      adi,mode:
-> +        description:
-> +          RF path selected for the channel.
-> +            0 - Direct IF mode
-> +            1 - Mixer mode
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1]
-> +
-> +    required:
-> +      - reg
-> +      - adi,mode
-> +
-> +required:
-> +  - compatible
-> +  - switch1-gpios
-> +  - switch2-gpios
-> +  - attenuation1-gpios
-> +  - attenuation2-gpios
-
-
+> +	return 0;
+> +}
 
 

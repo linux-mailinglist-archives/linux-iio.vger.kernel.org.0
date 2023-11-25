@@ -1,61 +1,54 @@
-Return-Path: <linux-iio+bounces-373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045D77F8E0B
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:36:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB27B7F8E2F
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64213B21065
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479B52814C0
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DC12FC35;
-	Sat, 25 Nov 2023 19:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734732FE15;
+	Sat, 25 Nov 2023 19:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcsR35Lu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MjBlglmb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF361EB57;
-	Sat, 25 Nov 2023 19:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E127C433C8;
-	Sat, 25 Nov 2023 19:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A93A2F845;
+	Sat, 25 Nov 2023 19:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155F0C433C9;
+	Sat, 25 Nov 2023 19:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700940954;
-	bh=CgC7BlUksevrTrZ5FGtBlt6wUUXeX3J6IePILPKYWNw=;
+	s=k20201202; t=1700941684;
+	bh=TG3FLWwBucstw2055o8skcJRkN+mDQJa4/2yE8D+7pI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rcsR35Lu1pBy/9WWNl9lbohy/2mJGh57DjWsiC5HLUmsLHdknyHAW5plcnS3iEwB+
-	 5CyTssgHMqnLeRDL6LU2kuij4sZUNyKEv8i5LQIAN+J8qHLtvradquAiZoFWpA3nYk
-	 hQJ1EMdDiZORZrOlnmqTVRbl1is7u9R0EJiLcVCpC6LDSxe9vPpWypKg9Kwstys5Bi
-	 olA/b1WLOZOIhkKM5VI264GQeo29ig54iY9OUalzN8Ts8LEJ4wJcG+o4URG8b84ixQ
-	 W2d5Y0CDRBz0ycpIpUo37+7prxY2Br7H580RFtoJt+XpgG6dA51PoYbAQwzUsPMicC
-	 ynlc4RdCEhZsQ==
-Date: Sat, 25 Nov 2023 19:35:37 +0000
+	b=MjBlglmbDTlUKLPBziVsBLkzEJNbJzuhJ1wrX3RYGh6wTdeJTRcHcVpRgYubQ3WAF
+	 XiP/hy8hpRrLGaP7beX7+JtQUDv/5ZfMdSUykTFq20iGV0jLr1ZSSGf4XEnlX70dys
+	 HhhzJBTL8fzxHSWnd8KMohWIUPIpmScAoZoUMI2bvAhCBV/OZHRpyT9nE5YVetM/5Y
+	 6NzOaXNhWmBtxtDZDrxviwLtJklzcPyiDlmXZblZUq1xubFo5wEbitln4yhNr/d6E7
+	 GI8O7xQU/D+5+fBcgv1uAR48U+gIaIhI8LsW53Ib98pIurc7DG+vvt+vgERTzazZdX
+	 qixJDWTnwbgYQ==
+Date: Sat, 25 Nov 2023 19:47:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Jishnu Prakash <quic_jprakash@quicinc.com>, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, agross@kernel.org,
- andersson@kernel.org, konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
- linus.walleij@linaro.org, linux-arm-msm@vger.kernel.org,
- andriy.shevchenko@linux.intel.com, quic_subbaram@quicinc.com,
- quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
- quic_kamalw@quicinc.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, marijn.suijten@somainline.org,
- lars@metafoo.de, luca@z3ntu.xyz, linux-iio@vger.kernel.org, lee@kernel.org,
- rafael@kernel.org, rui.zhang@intel.com, lukasz.luba@arm.com,
- cros-qcom-dts-watchers@chromium.org, sboyd@kernel.org,
- linux-pm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
- kernel@quicinc.com
-Subject: Re: [PATCH V2 0/3] iio: adc: Add support for QCOM SPMI PMIC5 Gen3
- ADC
-Message-ID: <20231125193537.631b098c@jic23-huawei>
-In-Reply-To: <CAA8EJpq+2cu4pyWRGm_DVQe7_6NJAssT=HWD6UieyXkAgncwMA@mail.gmail.com>
-References: <20231116032530.753192-1-quic_jprakash@quicinc.com>
-	<CAA8EJprJuiFq5UXc9weNr1hy2vW_10TaQweN_ZW5XW=3LKrgtA@mail.gmail.com>
-	<5a476b51-5916-74f8-0395-60d94f210aa0@quicinc.com>
-	<CAA8EJpq+2cu4pyWRGm_DVQe7_6NJAssT=HWD6UieyXkAgncwMA@mail.gmail.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ marius.cristea@microchip.com, lars@metafoo.de, robh+dt@kernel.org,
+ jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for
+ PAC193X
+Message-ID: <20231125194754.304523e6@jic23-huawei>
+In-Reply-To: <20231116-channel-variety-cc7c262924ad@squawk>
+References: <20231115134453.6656-1-marius.cristea@microchip.com>
+	<20231115134453.6656-2-marius.cristea@microchip.com>
+	<fedd4bcf-7892-4096-bcca-7ea72d39576f@linaro.org>
+	<20231116-channel-variety-cc7c262924ad@squawk>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,130 +59,206 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Nov 2023 08:58:03 +0200
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
+On Thu, 16 Nov 2023 18:21:33 +0000
+Conor Dooley <conor@kernel.org> wrote:
 
-> On Thu, 16 Nov 2023 at 08:30, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
-> >
-> > Hi Dmitry,
-> >
-> > On 11/16/2023 10:52 AM, Dmitry Baryshkov wrote:  
-> > > On Thu, 16 Nov 2023 at 05:26, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:  
-> > >> PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
-> > >> with all SW communication to ADC going through PMK8550 which
-> > >> communicates with other PMICs through PBS. The major difference is
-> > >> that the register interface used here is that of an SDAM present on
-> > >> PMK8550, rather than a dedicated ADC peripheral. There may be more than one
-> > >> SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
-> > >> be used for either immediate reads (same functionality as previous PMIC5 and
-> > >> PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
-> > >> Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
-> > >> combined into the same driver.
-> > >>
-> > >> Patches 1 adds bindings for ADC5 Gen3 peripheral.
-> > >>
-> > >> Patches 2 adds driver support for ADC5 Gen3.  
-> > > For some reason I don't see this patch in my inbox. Maybe it will
-> > > arrive later. Immediate response: please add
-> > > devm_thermal_add_hwmon_sysfs().  
-> >
-> >
-> > Yes, I'll check and add this in the next patch series, I'll wait for
-> > some more comments on the existing patches for now.
-> >
-> > I ran into some error after sending the first two mails (cover letter
-> > and patch 1), so I sent patches 2 and 3 separately after it, I think you
-> > may have received them separately.
-> >
-> >  
-> > >  
-> > >> Patch 3 is a cleanup, to move the QCOM ADC dt-bindings files from
-> > >> dt-bindings/iio to dt-bindings/iio/adc folder, as they are
-> > >> specifically for ADC devices. It also fixes all compilation errors
-> > >> with this change in driver and devicetree files and similar errors
-> > >> in documentation for dtbinding check.  
-> > > NAK. The kernel is expected to build and work after each commit.
-> > > Otherwise git-bisecting the kernel becomes impossible.
-> > > So, please rework your series in a way that there are no compilation
-> > > errors after any of the patches. The easiest way would be to rearrange
-> > > your patches in 3-1-2 order.  
-> >
-> >
-> > I think you may have misunderstood the meaning here, I had verified
-> > compilation works each time after applying each of the three patches in
-> > this series. It's not that this last patch fixes compilation errors
-> > caused by the first two, this is a completely separate patch which
-> > affects existing QCOM ADC code (driver and devicetree) including ADC5 Gen3.
-> >
-> >
-> > This patch does two things mainly:
-> >
-> > Move the ADC binding files from dt-bindings/iio folder to
-> > dt-bindings/iio/adc folder (this would naturally cause some errors in
-> > driver and devicetree code due to path update)
-> >
-> > Fix all compilation and dtbinding errors generated by the move
-> >
-> >
-> > I added this change at the end of the series as I was not completely
-> > sure if it could get picked, just wanted to make it easier to drop if
-> > that is the final decision.  
+> On Thu, Nov 16, 2023 at 04:01:43PM +0100, Krzysztof Kozlowski wrote:
+> > On 15/11/2023 14:44, marius.cristea@microchip.com wrote:  
+> > > From: Marius Cristea <marius.cristea@microchip.com>
+> > > 
+> > > This is the device tree schema for iio driver for
+> > > Microchip PAC193X series of Power Monitors with Accumulator.
+> > > 
+> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> > > ---
+> > >  .../bindings/iio/adc/microchip,pac1934.yaml   | 137 ++++++++++++++++++
+> > >  1 file changed, 137 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > new file mode 100644
+> > > index 000000000000..2609cb19c377
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> > > @@ -0,0 +1,137 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Microchip PAC1934 Power Monitors with Accumulator
+> > > +
+> > > +maintainers:
+> > > +  - Marius Cristea <marius.cristea@microchip.com>
+> > > +
+> > > +description: |
+> > > +  This device is part of the Microchip family of Power Monitors with Accumulator.
+> > > +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found here:
+> > > +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - microchip,pac1931
+> > > +      - microchip,pac1932
+> > > +      - microchip,pac1933
+> > > +      - microchip,pac1934
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  "#address-cells":
+> > > +    const: 1
+> > > +
+> > > +  "#size-cells":
+> > > +    const: 0
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  microchip,slow-io:
+> > > +    type: boolean
+> > > +    description: |
+> > > +      A GPIO used to trigger a change is sampling rate (lowering the chip power consumption).  
+> > 
+> > Use Linux coding style wrapping (as described in Linux Coding style). I
+> > am not going to tell you numbers because I want you to read the document
+> > first.
+> > 
+> > This is boolean, not GPIO. I don't understand. "A GPIO", so any GPIO or
+> > some specific? How is this property related to GPIO?
+> > 
+> >   
+> > > +      If configured in SLOW mode, if this pin is forced high, sampling rate is forced to eight  
+> > 
+> > This pin? This is boolean, not a GPIO. GPIOs are phandles.  
 > 
-> Ah, so patch 1 adds new files to <dt-bindings/iio/adc>, while
-> retaining old files in the old directory. I'd say, this is
-> counterintuitive.
-> Please reorder patches into 3-1-2 order. dt-binding changes anyway
-> should come first.
+> I said it on the previous version, but this really seems like it should
+> be something like "slow-io-gpios". I know Jonathan expressed some
+> concerns about having to deal with it on the operating system side (as
+> the pin is either an input & used for this slow-io control, or an output
+> and used as an interrupt) but that is, in my opinion, a problem for the
+> operating system & the binding should describe how the hardware works,
+> even if that is not convenient. With this sort of property, a GPIO hog
+> would be required to be set up (and the driver for that gpio controller
+> bound etc before the pac driver loads) for correction functionality if
+> this property was in the non-default state.
 
-Absolutely agree.  Refactors, cleanup etc should precede the new stuff
-in a series.  That way they can get picked up by anyone who wants to backport
-without having to first figure out if they want the new stuff.
+I'd forgotten the discussion completely ;)
+My main question was why bother with slow?  You can do it without the GPIO
+anyway as there is a register bit for it.
+
+I can conceive of various possible reasons, the evil one being that it's
+actually out of the host processors control. Is that what we care about here?
+If so it's nothing to do with a GPIO in the Linux sense at all and we can
+assume that it's not connected to an interrupt at the same time.
+
+We 'might' need a control for that case that says configure the device for
+an external entity to use the slow pin.
+
+It wouldn't be the first device to have that sort of thing, but normally they
+are sequencing pins that are wired up to some mechanical device or similar.
+
+
+> 
+> > > +      samples/second. When it is forced low, the sampling rate is 1024 samples/second unless
+> > > +      a different sample rate has been programmed.
+> > > +
+> > > +patternProperties:
+> > > +  "^channel@[1-4]+$":
+> > > +    type: object
+> > > +    $ref: adc.yaml
+> > > +    description: Represents the external channels which are connected to the ADC.
+> > > +
+> > > +    properties:
+> > > +      reg:
+> > > +        items:
+> > > +          minimum: 1
+> > > +          maximum: 4
+> > > +
+> > > +      shunt-resistor-micro-ohms:
+> > > +        description: |
+> > > +          Value in micro Ohms of the shunt resistor connected between
+> > > +          the SENSE+ and SENSE- inputs, across which the current is measured. Value
+> > > +          is needed to compute the scaling of the measured current.
+> > > +
+> > > +    required:
+> > > +      - reg
+> > > +      - shunt-resistor-micro-ohms
+> > > +
+> > > +    unevaluatedProperties: false
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - "#address-cells"
+> > > +  - "#size-cells"
+> > > +
+> > > +allOf:
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            const: interrupts  
+> > 
+> > 
+> > I don't understand what do you want to say here. I am also 100% sure you
+> > did not test it on a real case (maybe example passes but nothing more).  
+> 
+> As far as I understand, the same pin on the device is used for both an
+> output or an input depending on the configuration. As an input, it is
+> the "slow-io" control, and as an output it is an interrupt.
+> I think Marius is trying to convey that either this pin can be in
+> exclusively one state or another.
+> 
+> _However_ I am not sure that that is really the right thing to do - they
+> might well be mutually exclusive modes, but I think the decision can be
+> made at runtime, rather than at devicetree creation time. Say for
+> example the GPIO controller this is connected to is capable of acting as
+> an interrupt controller. Unless I am misunderstanding the runtime
+> configurability of this hardware, I think it is possible to actually
+> provide a "slow-io-gpios" and an interrupt property & let the operating
+> system decide at runtime which mode it wants to work in.
+
+I'll admit I've long forgotten what was going on here, but based just on
+this bit of text I agree. There is nothing 'stopping' us having a pin
+uses as either / or / both interrupt and gpio.
+
+It'll be a bit messy to support in the driver as IIRC there are some sanity
+checks that limit combinations on IRQs and output GPIOS.  Can't remember
+how bad the dance to navigate it safely is.
+
+First version I'd just say pick one option if both are provided and
+don't support configuring it at runtime.
 
 Jonathan
+ 
+
 
 > 
-> >
-> >
-> > Thanks,
-> >
-> > Jishnu
-> >
-> >  
-> > >
-> > >  
-> > >> Changes since v1:
-> > >> - Dropped patches 1-5 for changing 'ADC7' peripheral name to 'ADC5 Gen2'.
-> > >> - Addressed reviewer comments for binding and driver patches for ADC5 Gen3.
-> > >> - Combined patches 8-11 into a single patch as requested by reviewers to make
-> > >>    the change clearer and made all fixes required in same patch.
-> > >>
-> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    |    2 +-
-> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    |    2 +-
-> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    |    2 +-
-> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    |    0
-> > >>   .../iio/{ => adc}/qcom,spmi-vadc.h            |   81 ++
-> > >>   46 files changed, 1725 insertions(+), 61 deletions(-)
-> > >>   create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
-> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
-> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
-> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (100%)
-> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (77%)
-> > >>
-> > >> --
-> > >> 2.25.1
-> > >>  
-> > >
-> > > --
-> > > With best wishes
-> > > Dmitry  
+> I'm off travelling at the moment Marius, but I should be back in work on
+> Monday if you want to have a chat about it & explain a bit more to me?
 > 
+> Cheers,
+> Conor.
 > 
-> 
+> >   
+> > > +    then:
+> > > +      properties:
+> > > +        microchip,slow-io: false
+> > > +    else:
+> > > +      if:
+> > > +        properties:
+> > > +          compatible:
+> > > +            contains:
+> > > +              const: microchip,slow-io
+> > > +      then:
+> > > +        properties:
+> > > +          interrupts: false  
+> > 
+> > Best regards,
+> > Krzysztof
+> >   
 
 

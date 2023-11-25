@@ -1,50 +1,62 @@
-Return-Path: <linux-iio+bounces-371-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-372-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3674D7F8DF1
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:29:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F317F8E05
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9E328159D
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF59F281502
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D782F865;
-	Sat, 25 Nov 2023 19:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874642FC35;
+	Sat, 25 Nov 2023 19:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMay7EW+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0TKJUgq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A551EB3B
-	for <linux-iio@vger.kernel.org>; Sat, 25 Nov 2023 19:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9390C433C8;
-	Sat, 25 Nov 2023 19:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6A2F849;
+	Sat, 25 Nov 2023 19:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FDBC433C8;
+	Sat, 25 Nov 2023 19:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700940556;
-	bh=wnRXRAGuX2vqNrxepLLfxWBVjVl7h3q7QguFF9pzdsk=;
+	s=k20201202; t=1700940855;
+	bh=ErjCfl4uXkdScmDZgG34jOu3Ae6PwvX0QAhlDCF/QmA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CMay7EW+gjmUQa1C/JnH0mCFbV+upKUxR2TM1XfsOZa1aQZr0HF3Ut9/UL66wNSrS
-	 OvV5JICiOA9Q4Ti9LD2BCGCjJn9ZCz0euHvzNtJ3QoOqT0rARYMpTdUQWNDn8P8l0n
-	 22RWzyQOSCvtbiR/ssxGbMu2M2pXm4LNr1752UnRiebXjRrC0LaRsfj7VA+1w1RugF
-	 k2WSVSacbmUTmluV+fbPNjcXoc0XjYMRcsCeITAx6Y4F+782TqICjqx7Mga2idELVu
-	 5Q8GxmVjOu/DTSCYHesSjFPNHldCcnu2j0MAz5vdehCGrbaQu9lDd+Bc4IHOZtOzBS
-	 130HY5sBm3lkQ==
-Date: Sat, 25 Nov 2023 19:29:08 +0000
+	b=F0TKJUgqGIaoVdzZLpXtYi8tIvDIWpnmJYL0TIQTb3pnOec5C/I0n4mlLi2URZFzl
+	 t3JMaQV1nWYoeI6zKdjRIBAG3mcYHSDw7JT/0l+VdQFxb3w7AULO7hBuUImHhJ2/zP
+	 LcJvF6p4cyZHZDVZ8foGDPPCEQSYrTGNaPdGW5NrtDs3GLpvah5mbzNTovZjqHRxTt
+	 lbu5Z4czpHy/eb1yD+tk6RUVoVBOkWFIqIhYBiZfU7xvzH1yNTc5a4f0cn6jF/654F
+	 O+Ex4IBbZyngjuYmeeNyGZ2pcuj+oVsnNu7Dppk0Zy6Cn/gZmxTmZgIF8W8HFCDO1e
+	 pdWjGOgfVbxDw==
+Date: Sat, 25 Nov 2023 19:34:03 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
-Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
- "lars@metafoo.de" <lars@metafoo.de>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3] Added tilt interrupt support in inv_icm42600
-Message-ID: <20231125192908.4f10b458@jic23-huawei>
-In-Reply-To: <MAXPR01MB4118176054665C88E3C6FAE7EABFA@MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM>
-References: <20231117151446.49738-1-hiten.chauhan@siliconsignals.io>
-	<FR3P281MB17576C325FD416F14DCE4B7FCEB4A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<MAXPR01MB4118176054665C88E3C6FAE7EABFA@MAXPR01MB4118.INDPRD01.PROD.OUTLOOK.COM>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jishnu Prakash
+ <quic_jprakash@quicinc.com>, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, agross@kernel.org,
+ andersson@kernel.org, konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
+ linus.walleij@linaro.org, linux-arm-msm@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, quic_subbaram@quicinc.com,
+ quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
+ quic_kamalw@quicinc.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, marijn.suijten@somainline.org,
+ lars@metafoo.de, luca@z3ntu.xyz, linux-iio@vger.kernel.org, lee@kernel.org,
+ rafael@kernel.org, rui.zhang@intel.com, lukasz.luba@arm.com,
+ cros-qcom-dts-watchers@chromium.org, sboyd@kernel.org,
+ linux-pm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
+ kernel@quicinc.com
+Subject: Re: [PATCH V2 3/3] dt-bindings: iio/adc: Move QCOM ADC bindings to
+ iio/adc folder
+Message-ID: <20231125193403.77400aca@jic23-huawei>
+In-Reply-To: <CAA8EJprn7NfYAPGygus-Yxyu=kCiGYyEksVv9S3QkP5HNwVzVg@mail.gmail.com>
+References: <20231116032644.753370-1-quic_jprakash@quicinc.com>
+	<20231116032644.753370-2-quic_jprakash@quicinc.com>
+	<f7065032-206f-423e-bb03-0b808ff16868@linaro.org>
+	<CAA8EJprn7NfYAPGygus-Yxyu=kCiGYyEksVv9S3QkP5HNwVzVg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -52,337 +64,56 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 25 Nov 2023 07:05:50 +0000
-Hiten Chauhan <hiten.chauhan@siliconsignals.io> wrote:
+On Thu, 16 Nov 2023 17:27:53 +0200
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
 
-> Hello Jean,
->=20
-> Thanks for your support,
->=20
-> For the first issue can I use "struct iio_event_spec" for tilt interrupt =
-instead of a custom sysfs file?
-Yes - that will cover the configuration aspects.
-
-It should ultimately be reported via iio_push_event()
-which reports to userspace via a chardev. See the example code in tools/iio=
-/iio_event_monitor.c
+> On Thu, 16 Nov 2023 at 13:44, Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> >
+> > On 16/11/2023 04:26, Jishnu Prakash wrote:  
+> > > There are several files containing QCOM ADC macros for channel names
+> > > right now in the include/dt-bindings/iio folder. Since all of these
+> > > are specifically for adc, move the files to the
+> > > include/dt-bindings/iio/adc folder.
+> > >
+> > > Also update all affected devicetree and driver files to fix compilation
+> > > errors seen with this move and update documentation files to fix
+> > > dtbinding check errors for the same.
+> > >
+> > > Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml       | 4 ++--
+> > >  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 2 +-
+> > >  .../devicetree/bindings/thermal/qcom-spmi-adc-tm-hc.yaml  | 2 +-
+> > >  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml    | 6 +++---
+> > >  arch/arm64/boot/dts/qcom/pm2250.dtsi                      | 2 +-
+> > >  arch/arm64/boot/dts/qcom/pm6125.dtsi                      | 2 +-  
+> >
+> > NAK, bindings are always separate from the other changes.  
+> 
+> In this case I'd even try to appeal :-)
+> They are doing `git mv` and then fixing the failouts. I think this
+> should be fine.
+Agreed.  The only easy way around this would be to put some dummy headers
+that include the new ones in old locations temporary basis then delete them later.
+I'm fine with that if Kryzsztof prefers it that way.  Not too disruptive.
 
 Jonathan
 
->=20
-> In the second issue I have just disabled tilt related register so when I =
-turn tilt off other functionality on the accelerometer will work fine. can =
-you please cross-check?
->=20
-> Thanks & Regards,
-> Hiten Chauhan
-> ________________________________
-> From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> Sent: Monday, November 20, 2023 7:48 PM
-> To: Hiten Chauhan <hiten.chauhan@siliconsignals.io>; jic23@kernel.org <ji=
-c23@kernel.org>; lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.o=
-rg <linux-iio@vger.kernel.org>; linux-kernel@vger.kernel.org <linux-kernel@=
-vger.kernel.org>
-> Cc: kernel test robot <lkp@intel.com>
-> Subject: Re: [PATCH v3] Added tilt interrupt support in inv_icm42600
->=20
-> Hello Hiten,
->=20
-> thanks for your patch.
->=20
-> I see first a big issue at the root. Tilt event is something that should =
-be reported as an IIO event, not in a custom sysfs file. Jonathan can confi=
-rm this, but this is my understanding.
->=20
-> Second issue, there is no multiplexing between the tilt and normal data s=
-ampling. Meaning turning tilt off will stop the data output of the chip if =
-it was on. And turning data output off will stop tilt functionnality. All t=
-hese things have to be multiplexed together and chip power off/on must be c=
-entralized.
->=20
-> Thanks for your work.
->=20
-> Best regards,
-> JB
->=20
-> From: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
-> Sent: Friday, November 17, 2023 16:14
-> To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; jic23@kernel=
-.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.=
-kernel.org <linux-iio@vger.kernel.org>; linux-kernel@vger.kernel.org <linux=
--kernel@vger.kernel.org>
-> Cc: Hiten Chauhan <hiten.chauhan@siliconsignals.io>; kernel test robot <l=
-kp@intel.com>
-> Subject: [PATCH v3] Added tilt interrupt support in inv_icm42600
->=20
-> Description: Add new device attribute to enable and disable Tilt interrup=
-t from kernel user space Signed-off-by: Hiten Chauhan <hiten.=E2=80=8Achauh=
-an@=E2=80=8Asiliconsignals.=E2=80=8Aio> Reported-by: kernel test robot <lkp=
-@=E2=80=8Aintel.=E2=80=8Acom> Closes: https:=E2=80=8A//urldefense.=E2=80=8A=
-com/v3/__https:=E2=80=8A//lore.=E2=80=8Akernel.=E2=80=8Aorg/oe-kbuild-all/2=
-02311170235.=E2=80=8AHaVJnmWa-lkp@=E2=80=8Aintel.=E2=80=8Acom/__;!!FtrhtPsW=
-DhZ6tw!Abqqh_UwyEydZ0xeIy7YQwPWb_knCM2hsJJWavoAq3igeGccV4RZI87CTV__lZgfBjZy=
-tNesx5cUc_RXsP6mu9lmvUGZg_rGWg$[lore[.=E2=80=8A]kernel[.=E2=80=8A]org]
-> ZjQcmQRYFpfptBannerStart
-> This Message Is From an Untrusted Sender
-> You have not previously corresponded with this sender.
->=20
-> ZjQcmQRYFpfptBannerEnd
-> Description:
-> Add new device attribute to enable and disable
-> Tilt interrupt from kernel user space
->=20
-> Signed-off-by: Hiten Chauhan <hiten.chauhan@siliconsignals.io>
->=20
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://urldefense.com/v3/__https://lore.kernel.org/oe-kbuild-all=
-/202311170235.HaVJnmWa-lkp@intel.com/__;!!FtrhtPsWDhZ6tw!Abqqh_UwyEydZ0xeIy=
-7YQwPWb_knCM2hsJJWavoAq3igeGccV4RZI87CTV__lZgfBjZytNesx5cUc_RXsP6mu9lmvUGZg=
-_rGWg$[lore[.]kernel[.]org]
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h   |  24 ++++
->  .../iio/imu/inv_icm42600/inv_icm42600_accel.c | 129 ++++++++++++++++++
->  2 files changed, 153 insertions(+)
->=20
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/im=
-u/inv_icm42600/inv_icm42600.h
-> index 0e290c807b0f..39ed39e77deb 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -187,6 +187,8 @@ struct inv_icm42600_state {
->  #define INV_ICM42600_FIFO_CONFIG_STOP_ON_FULL           \
->                  FIELD_PREP(INV_ICM42600_FIFO_CONFIG_MASK, 2)
->=20
-> +#define INV_ICM42600_REG_MASK        GENMASK(7, 0)
-> +
->  /* all sensor data are 16 bits (2 registers wide) in big-endian */
->  #define INV_ICM42600_REG_TEMP_DATA                      0x001D
->  #define INV_ICM42600_REG_ACCEL_DATA_X                   0x001F
-> @@ -239,6 +241,7 @@ struct inv_icm42600_state {
->  #define INV_ICM42600_REG_PWR_MGMT0                      0x004E
->  #define INV_ICM42600_PWR_MGMT0_TEMP_DIS                 BIT(5)
->  #define INV_ICM42600_PWR_MGMT0_IDLE                     BIT(4)
-> +#define INV_ICM42600_PWR_ACCEL_MODE                    BIT(1)
->  #define INV_ICM42600_PWR_MGMT0_GYRO(_mode)              \
->                  FIELD_PREP(GENMASK(3, 2), (_mode))
->  #define INV_ICM42600_PWR_MGMT0_ACCEL(_mode)             \
-> @@ -306,6 +309,21 @@ struct inv_icm42600_state {
->  #define INV_ICM42600_WHOAMI_ICM42622                    0x46
->  #define INV_ICM42600_WHOAMI_ICM42631                    0x5C
->=20
-> +/* Register configs for tilt interrupt */
-> +#define INV_ICM42605_REG_APEX_CONFIG4                  0x4043
-> +#define INV_ICM42605_APEX_CONFIG4_MASK                 GENMASK(7, 0)
-> +
-> +#define INV_ICM42605_REG_APEX_CONFIG0                  0x0056
-> +#define INV_ICM42605_APEX_CONFIG0_TILT_ENABLE          BIT(4)
-> +#define INV_ICM42605_APEX_CONFIG0                      BIT(1)
-> +
-> +#define INV_ICM42605_REG_INTF_CONFIG1                   0x404D
-> +#define INV_ICM42605_INTF_CONFIG1_MASK                  GENMASK(5, 0)
-> +#define INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_EN      BIT(3)
-> +
-> +#define INV_ICM42605_REG_INT_STATUS3                   0x0038
-> +
-> +
->  /* User bank 1 (MSB 0x10) */
->  #define INV_ICM42600_REG_SENSOR_CONFIG0                 0x1003
->  #define INV_ICM42600_SENSOR_CONFIG0_ZG_DISABLE          BIT(5)
-> @@ -364,6 +382,8 @@ typedef int (*inv_icm42600_bus_setup)(struct inv_icm4=
-2600_state *);
->  extern const struct regmap_config inv_icm42600_regmap_config;
->  extern const struct dev_pm_ops inv_icm42600_pm_ops;
->=20
-> +extern uint8_t inv_icm42605_int_reg;
-> +
->  const struct iio_mount_matrix *
->  inv_icm42600_get_mount_matrix(const struct iio_dev *indio_dev,
->                                const struct iio_chan_spec *chan);
-> @@ -395,4 +415,8 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_ic=
-m42600_state *st);
->=20
->  int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev);
->=20
-> +int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st);
-> +
-> +int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st);
-> +
->  #endif
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/=
-iio/imu/inv_icm42600/inv_icm42600_accel.c
-> index b1e4fde27d25..311f6ea09e64 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> @@ -47,6 +47,8 @@
->                  .ext_info =3D _ext_info,                                =
-  \
->          }
->=20
-> +uint8_t inv_icm42605_int_reg;
-> +
->  enum inv_icm42600_accel_scan {
->          INV_ICM42600_ACCEL_SCAN_X,
->          INV_ICM42600_ACCEL_SCAN_Y,
-> @@ -60,6 +62,68 @@ static const struct iio_chan_spec_ext_info inv_icm4260=
-0_accel_ext_infos[] =3D {
->          {},
->  };
->=20
-> +static ssize_t tilt_interrupt_show(struct device *dev,
-> +                              struct device_attribute *attr, char *buf)
-> +{
-> +       struct inv_icm42600_state *st =3D dev_get_drvdata(dev);
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       ret =3D regmap_read(st->map, inv_icm42605_int_reg, &val);
-> +
-> +       if (ret !=3D 0)
-> +               return ret;
-> +
-> +       snprintf(buf, PAGE_SIZE, "Read reg %x value %x\n", inv_icm42605_i=
-nt_reg, val);
-> +
-> +       return strlen(buf);
-> +}
-> +
-> +static ssize_t tilt_interrupt_store(struct device *dev,
-> +               struct device_attribute *attr, const char *buf,
-> +               size_t count)
-> +{
-> +       struct inv_icm42600_state *st =3D dev_get_drvdata(dev);
-> +       int ret;
-> +       int value;
-> +
-> +       if (!st)
-> +               return -EINVAL;
-> +
-> +       if (kstrtoint(buf, 10, &value))
-> +               return -EINVAL;
-> +
-> +       inv_icm42605_int_reg =3D INV_ICM42605_REG_INT_STATUS3;
-> +
-> +       switch (value) {
-> +       case 1:
-> +               ret =3D inv_icm42605_generate_tilt_interrupt(st);
-> +               if (ret !=3D 0)
-> +                       return -EIO;
-> +               break;
-> +       case 0:
-> +               ret =3D inv_icm42605_disable_tilt_interrupt(st);
-> +               if (ret !=3D 0)
-> +                       return -EIO;
-> +               break;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +
-> +       return count;
-> +}
-> +
-> +static DEVICE_ATTR_RW(tilt_interrupt);
-> +
-> +static struct attribute *icm42605_attrs[] =3D {
-> +       &dev_attr_tilt_interrupt.attr,
-> +       NULL,
-> +};
-> +
-> +static const struct attribute_group icm42605_attrs_group =3D {
-> +       .attrs =3D icm42605_attrs,
-> +};
-> +
->  static const struct iio_chan_spec inv_icm42600_accel_channels[] =3D {
->          INV_ICM42600_ACCEL_CHAN(IIO_MOD_X, INV_ICM42600_ACCEL_SCAN_X,
->                                  inv_icm42600_accel_ext_infos),
-> @@ -702,6 +766,7 @@ static const struct iio_info inv_icm42600_accel_info =
-=3D {
->          .update_scan_mode =3D inv_icm42600_accel_update_scan_mode,
->          .hwfifo_set_watermark =3D inv_icm42600_accel_hwfifo_set_watermar=
-k,
->          .hwfifo_flush_to_buffer =3D inv_icm42600_accel_hwfifo_flush,
-> +       .attrs =3D &icm42605_attrs_group,
->  };
->=20
->  struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
-> @@ -791,3 +856,67 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *in=
-dio_dev)
->=20
->          return 0;
->  }
-> +
-> +int inv_icm42605_generate_tilt_interrupt(struct inv_icm42600_state *st)
-> +{
-> +       int ret;
-> +       int val;
-> +       char sleep =3D 10;
-> +
-> +       ret =3D regmap_update_bits(st->map, INV_ICM42605_REG_APEX_CONFIG4,
-> +                                INV_ICM42605_APEX_CONFIG4_MASK, 0);
-> +       if (ret)
-> +               return ret;
-> +
-> +       val =3D INV_ICM42600_PWR_ACCEL_MODE;
-> +       ret =3D regmap_write(st->map, INV_ICM42600_REG_PWR_MGMT0, val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       val =3D INV_ICM42605_APEX_CONFIG0;
-> +       ret =3D regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       val =3D INV_ICM42600_SIGNAL_PATH_RESET_DMP_MEM_RESET;
-> +       ret =3D regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET,=
- val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       msleep(sleep);
-> +
-> +       val =3D INV_ICM42600_SIGNAL_PATH_RESET_DMP_INIT_EN;
-> +       ret =3D regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET,=
- val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       val =3D INV_ICM42605_APEX_CONFIG0_TILT_ENABLE |
-> +             INV_ICM42605_APEX_CONFIG0;
-> +       ret =3D regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret =3D regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
-> +                                INV_ICM42605_INTF_CONFIG1_MASK,
-> +                                INV_ICM42605_INTF_CONFIG1_TILT_DET_INT1_=
-EN);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return 0;
-> +}
-> +
-> +int inv_icm42605_disable_tilt_interrupt(struct inv_icm42600_state *st)
-> +{
-> +       int ret;
-> +
-> +       ret =3D regmap_write(st->map, INV_ICM42605_REG_APEX_CONFIG0, 0);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret =3D regmap_update_bits(st->map, INV_ICM42605_REG_INTF_CONFIG1,
-> +                       INV_ICM42605_INTF_CONFIG1_MASK, 0);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return 0;
-> +}
->=20
-> base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
-> --
-> 2.25.1
->=20
+
+> 
+> >
+> > Please run scripts/checkpatch.pl and fix reported warnings. Some
+> > warnings can be ignored, but the code here looks like it needs a fix.
+> > Feel free to get in touch if the warning is not clear.
+> >
+> > Best regards,
+> > Krzysztof
+> >  
+> 
+> 
 
 

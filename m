@@ -1,58 +1,69 @@
-Return-Path: <linux-iio+bounces-376-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-377-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E717F8F00
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 21:42:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE57F8F22
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 21:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ACED1F20D49
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:42:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A019B21150
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE3A3064D;
-	Sat, 25 Nov 2023 20:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CBD30CFD;
+	Sat, 25 Nov 2023 20:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfzQ0yMX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3H6UDq7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF372D05C;
-	Sat, 25 Nov 2023 20:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136ADC433C8;
-	Sat, 25 Nov 2023 20:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660972D029;
+	Sat, 25 Nov 2023 20:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487CBC433C8;
+	Sat, 25 Nov 2023 20:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700944953;
-	bh=RCKh7CEgJRbwjF1zTzXL3b/DGu8rKyfQhOkRrFXfuJY=;
+	s=k20201202; t=1700945313;
+	bh=MP615DG3faCXFei6ez6/qbJ2Qn+AxlK3zXjwrEKNgcs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KfzQ0yMXPgS4CXPIk8vyu2sIjBxAQ36NwuJHkH/Qu0B9I2cFvJJlJnhgdfmLlesW5
-	 BGzRIas3XxFvxmdAVeVGimG0sGI3QoQrZxQYsz5EStOjHx8EEiakKT3MZtsSFQcy6h
-	 0BQlh32UikOQI6tW3N4nSCDz9jjo1W8NI3d+rsMu9ACTtluIJ2Me8HKMI1lQpifNC9
-	 z+SRoat++kI6RAYq8GT3+Pho9FD+v0UgHrkosIyNX9ofXTgH40tJ93exW9kK2PN8qQ
-	 X+LpmCURjRrjx9zcc6QALkeUTVqfyq/EEqCOz8DcYf86cwLpnPNxWwJlxvpQF0x8gq
-	 VbBp5SyZYqpmQ==
-Date: Sat, 25 Nov 2023 20:42:20 +0000
+	b=V3H6UDq7A3kCMLfHpZpSX7FXfzHuWMOtsplTH0sNtXsZgArz+P0U4eBCtxi3NSFFd
+	 /Qh78hVGqFA0WqXtaEMTLiv8fodY0nCNwQemnzy2nkPIc8A948DHrbP8ShAHXs9JEh
+	 DZSd65o2b/ffSmFfCaSmhQJlMgtpbBWoxv52RCHkCAWexYJeYwHrGLN9suMTTHOnuk
+	 DdSGqivh1nxdaSurglxzzB29rEdm+mzoC6D5xHsCr4gfSyRMDlvOZaKdKmw5u63wzf
+	 fjwHu1uh7qGvuEyyEExZqT+BueoGfafWluF3pHxDvInU7XHZpnYl45oF6XMQNbYQcP
+	 bHLD2kxsjKD7g==
+Date: Sat, 25 Nov 2023 20:48:14 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nia Espera <nespera@igalia.com>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>, Tony Luck
- <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Vinod
- Koul <vkoul@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, Rob <Me@orbit.sh>, Clayton Craft
- <clayton@igalia.com>, Caleb Connolly <caleb.connolly@linaro.org>, Luca
- Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 1/6] dt-bindings: iio: adc: qcom: Add Qualcomm
- smb139x
-Message-ID: <20231125204220.2e7621f9@jic23-huawei>
-In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
-	<20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Andi Shyti <andi.shyti@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, Ulf
+ Hansson <ulf.hansson@linaro.org>, Tomasz Figa <tomasz.figa@gmail.com>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
+ Alessandro Zummo <a.zummo@towertech.it>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaehoon
+ Chung <jh80.chung@samsung.com>, Sam Protsenko <semen.protsenko@linaro.org>,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+ alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 10/17] dt-bindings: iio: samsung,exynos-adc: add
+ specific compatibles for existing SoC
+Message-ID: <20231125204814.10fe16fa@jic23-huawei>
+In-Reply-To: <20231108104343.24192-11-krzysztof.kozlowski@linaro.org>
+References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+	<20231108104343.24192-11-krzysztof.kozlowski@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,69 +74,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 11 Nov 2023 23:07:39 +0100
-Nia Espera <nespera@igalia.com> wrote:
+On Wed,  8 Nov 2023 11:43:36 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> Bindings for a charger controller chip found on sm8350
+> Samsung Exynos SoC reuses several devices from older designs, thus
+> historically we kept the old (block's) compatible only.  This works fine
+> and there is no bug here, however guidelines expressed in
+> Documentation/devicetree/bindings/writing-bindings.rst state that:
+> 1. Compatibles should be specific.
+> 2. We should add new compatibles in case of bugs or features.
 > 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Hmm. this is going to clash badly with the header moves. I'll assume they
-will both eventually go through the qcom tree unless someone tells me otherwise.
-
+> Add compatibles specific to each SoC in front of all old-SoC-like
+> compatibles.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+> 
 > ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
->  include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
->  2 files changed, 22 insertions(+)
 > 
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..c0680d1285cf
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +
-> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#endif
-> diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> index 08adfe25964c..ef07ecd4d585 100644
-> --- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-> +++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> @@ -239,12 +239,15 @@
->  #define ADC7_GPIO3				0x0c
->  #define ADC7_GPIO4				0x0d
->  
-> +#define ADC7_SMB_TEMP				0x06
->  #define ADC7_CHG_TEMP				0x10
->  #define ADC7_USB_IN_V_16			0x11
->  #define ADC7_VDC_16				0x12
->  #define ADC7_CC1_ID				0x13
->  #define ADC7_VREF_BAT_THERM			0x15
->  #define ADC7_IIN_FB				0x17
-> +#define ADC7_ICHG_SMB				0x18
-> +#define ADC7_IIN_SMB				0x19
->  
->  /* 30k pull-up1 */
->  #define ADC7_AMUX_THM1_30K_PU			0x24
+> I propose to take the patch through Samsung SoC (me). See cover letter
+> for explanation.
+> ---
+>  .../bindings/iio/adc/samsung,exynos-adc.yaml  | 29 +++++++++++--------
+>  1 file changed, 17 insertions(+), 12 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> index 582d0a03b814..4e40f6bed5db 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> @@ -11,18 +11,23 @@ maintainers:
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - samsung,exynos-adc-v1                 # Exynos5250
+> -      - samsung,exynos-adc-v2
+> -      - samsung,exynos3250-adc
+> -      - samsung,exynos4212-adc                # Exynos4212 and Exynos4412
+> -      - samsung,exynos7-adc
+> -      - samsung,s3c2410-adc
+> -      - samsung,s3c2416-adc
+> -      - samsung,s3c2440-adc
+> -      - samsung,s3c2443-adc
+> -      - samsung,s3c6410-adc
+> -      - samsung,s5pv210-adc
+> +    oneOf:
+> +      - enum:
+> +          - samsung,exynos-adc-v1                 # Exynos5250
+> +          - samsung,exynos-adc-v2
+> +          - samsung,exynos3250-adc
+> +          - samsung,exynos4212-adc                # Exynos4212 and Exynos4412
+> +          - samsung,exynos7-adc
+> +          - samsung,s3c2410-adc
+> +          - samsung,s3c2416-adc
+> +          - samsung,s3c2440-adc
+> +          - samsung,s3c2443-adc
+> +          - samsung,s3c6410-adc
+> +          - samsung,s5pv210-adc
+> +      - items:
+> +          - enum:
+> +              - samsung,exynos5433-adc
+> +          - const: samsung,exynos7-adc
+>  
+>    reg:
+>      maxItems: 1
 
 

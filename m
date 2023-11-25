@@ -1,42 +1,41 @@
-Return-Path: <linux-iio+bounces-372-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-373-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F317F8E05
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:34:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045D77F8E0B
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 20:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF59F281502
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:34:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64213B21065
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 19:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874642FC35;
-	Sat, 25 Nov 2023 19:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DC12FC35;
+	Sat, 25 Nov 2023 19:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0TKJUgq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcsR35Lu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6A2F849;
-	Sat, 25 Nov 2023 19:34:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FDBC433C8;
-	Sat, 25 Nov 2023 19:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF361EB57;
+	Sat, 25 Nov 2023 19:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E127C433C8;
+	Sat, 25 Nov 2023 19:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700940855;
-	bh=ErjCfl4uXkdScmDZgG34jOu3Ae6PwvX0QAhlDCF/QmA=;
+	s=k20201202; t=1700940954;
+	bh=CgC7BlUksevrTrZ5FGtBlt6wUUXeX3J6IePILPKYWNw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F0TKJUgqGIaoVdzZLpXtYi8tIvDIWpnmJYL0TIQTb3pnOec5C/I0n4mlLi2URZFzl
-	 t3JMaQV1nWYoeI6zKdjRIBAG3mcYHSDw7JT/0l+VdQFxb3w7AULO7hBuUImHhJ2/zP
-	 LcJvF6p4cyZHZDVZ8foGDPPCEQSYrTGNaPdGW5NrtDs3GLpvah5mbzNTovZjqHRxTt
-	 lbu5Z4czpHy/eb1yD+tk6RUVoVBOkWFIqIhYBiZfU7xvzH1yNTc5a4f0cn6jF/654F
-	 O+Ex4IBbZyngjuYmeeNyGZ2pcuj+oVsnNu7Dppk0Zy6Cn/gZmxTmZgIF8W8HFCDO1e
-	 pdWjGOgfVbxDw==
-Date: Sat, 25 Nov 2023 19:34:03 +0000
+	b=rcsR35Lu1pBy/9WWNl9lbohy/2mJGh57DjWsiC5HLUmsLHdknyHAW5plcnS3iEwB+
+	 5CyTssgHMqnLeRDL6LU2kuij4sZUNyKEv8i5LQIAN+J8qHLtvradquAiZoFWpA3nYk
+	 hQJ1EMdDiZORZrOlnmqTVRbl1is7u9R0EJiLcVCpC6LDSxe9vPpWypKg9Kwstys5Bi
+	 olA/b1WLOZOIhkKM5VI264GQeo29ig54iY9OUalzN8Ts8LEJ4wJcG+o4URG8b84ixQ
+	 W2d5Y0CDRBz0ycpIpUo37+7prxY2Br7H580RFtoJt+XpgG6dA51PoYbAQwzUsPMicC
+	 ynlc4RdCEhZsQ==
+Date: Sat, 25 Nov 2023 19:35:37 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jishnu Prakash
- <quic_jprakash@quicinc.com>, robh+dt@kernel.org,
+Cc: Jishnu Prakash <quic_jprakash@quicinc.com>, robh+dt@kernel.org,
  krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, agross@kernel.org,
  andersson@kernel.org, konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
  linus.walleij@linaro.org, linux-arm-msm@vger.kernel.org,
@@ -49,14 +48,14 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jishnu Prakash
  cros-qcom-dts-watchers@chromium.org, sboyd@kernel.org,
  linux-pm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
  kernel@quicinc.com
-Subject: Re: [PATCH V2 3/3] dt-bindings: iio/adc: Move QCOM ADC bindings to
- iio/adc folder
-Message-ID: <20231125193403.77400aca@jic23-huawei>
-In-Reply-To: <CAA8EJprn7NfYAPGygus-Yxyu=kCiGYyEksVv9S3QkP5HNwVzVg@mail.gmail.com>
-References: <20231116032644.753370-1-quic_jprakash@quicinc.com>
-	<20231116032644.753370-2-quic_jprakash@quicinc.com>
-	<f7065032-206f-423e-bb03-0b808ff16868@linaro.org>
-	<CAA8EJprn7NfYAPGygus-Yxyu=kCiGYyEksVv9S3QkP5HNwVzVg@mail.gmail.com>
+Subject: Re: [PATCH V2 0/3] iio: adc: Add support for QCOM SPMI PMIC5 Gen3
+ ADC
+Message-ID: <20231125193537.631b098c@jic23-huawei>
+In-Reply-To: <CAA8EJpq+2cu4pyWRGm_DVQe7_6NJAssT=HWD6UieyXkAgncwMA@mail.gmail.com>
+References: <20231116032530.753192-1-quic_jprakash@quicinc.com>
+	<CAA8EJprJuiFq5UXc9weNr1hy2vW_10TaQweN_ZW5XW=3LKrgtA@mail.gmail.com>
+	<5a476b51-5916-74f8-0395-60d94f210aa0@quicinc.com>
+	<CAA8EJpq+2cu4pyWRGm_DVQe7_6NJAssT=HWD6UieyXkAgncwMA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,52 +66,129 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Nov 2023 17:27:53 +0200
+On Thu, 16 Nov 2023 08:58:03 +0200
 Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
 
-> On Thu, 16 Nov 2023 at 13:44, Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
+> On Thu, 16 Nov 2023 at 08:30, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
 > >
-> > On 16/11/2023 04:26, Jishnu Prakash wrote:  
-> > > There are several files containing QCOM ADC macros for channel names
-> > > right now in the include/dt-bindings/iio folder. Since all of these
-> > > are specifically for adc, move the files to the
-> > > include/dt-bindings/iio/adc folder.
-> > >
-> > > Also update all affected devicetree and driver files to fix compilation
-> > > errors seen with this move and update documentation files to fix
-> > > dtbinding check errors for the same.
-> > >
-> > > Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-> > > ---
-> > >  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml       | 4 ++--
-> > >  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 2 +-
-> > >  .../devicetree/bindings/thermal/qcom-spmi-adc-tm-hc.yaml  | 2 +-
-> > >  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml    | 6 +++---
-> > >  arch/arm64/boot/dts/qcom/pm2250.dtsi                      | 2 +-
-> > >  arch/arm64/boot/dts/qcom/pm6125.dtsi                      | 2 +-  
+> > Hi Dmitry,
 > >
-> > NAK, bindings are always separate from the other changes.  
+> > On 11/16/2023 10:52 AM, Dmitry Baryshkov wrote:  
+> > > On Thu, 16 Nov 2023 at 05:26, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:  
+> > >> PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
+> > >> with all SW communication to ADC going through PMK8550 which
+> > >> communicates with other PMICs through PBS. The major difference is
+> > >> that the register interface used here is that of an SDAM present on
+> > >> PMK8550, rather than a dedicated ADC peripheral. There may be more than one
+> > >> SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
+> > >> be used for either immediate reads (same functionality as previous PMIC5 and
+> > >> PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
+> > >> Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
+> > >> combined into the same driver.
+> > >>
+> > >> Patches 1 adds bindings for ADC5 Gen3 peripheral.
+> > >>
+> > >> Patches 2 adds driver support for ADC5 Gen3.  
+> > > For some reason I don't see this patch in my inbox. Maybe it will
+> > > arrive later. Immediate response: please add
+> > > devm_thermal_add_hwmon_sysfs().  
+> >
+> >
+> > Yes, I'll check and add this in the next patch series, I'll wait for
+> > some more comments on the existing patches for now.
+> >
+> > I ran into some error after sending the first two mails (cover letter
+> > and patch 1), so I sent patches 2 and 3 separately after it, I think you
+> > may have received them separately.
+> >
+> >  
+> > >  
+> > >> Patch 3 is a cleanup, to move the QCOM ADC dt-bindings files from
+> > >> dt-bindings/iio to dt-bindings/iio/adc folder, as they are
+> > >> specifically for ADC devices. It also fixes all compilation errors
+> > >> with this change in driver and devicetree files and similar errors
+> > >> in documentation for dtbinding check.  
+> > > NAK. The kernel is expected to build and work after each commit.
+> > > Otherwise git-bisecting the kernel becomes impossible.
+> > > So, please rework your series in a way that there are no compilation
+> > > errors after any of the patches. The easiest way would be to rearrange
+> > > your patches in 3-1-2 order.  
+> >
+> >
+> > I think you may have misunderstood the meaning here, I had verified
+> > compilation works each time after applying each of the three patches in
+> > this series. It's not that this last patch fixes compilation errors
+> > caused by the first two, this is a completely separate patch which
+> > affects existing QCOM ADC code (driver and devicetree) including ADC5 Gen3.
+> >
+> >
+> > This patch does two things mainly:
+> >
+> > Move the ADC binding files from dt-bindings/iio folder to
+> > dt-bindings/iio/adc folder (this would naturally cause some errors in
+> > driver and devicetree code due to path update)
+> >
+> > Fix all compilation and dtbinding errors generated by the move
+> >
+> >
+> > I added this change at the end of the series as I was not completely
+> > sure if it could get picked, just wanted to make it easier to drop if
+> > that is the final decision.  
 > 
-> In this case I'd even try to appeal :-)
-> They are doing `git mv` and then fixing the failouts. I think this
-> should be fine.
-Agreed.  The only easy way around this would be to put some dummy headers
-that include the new ones in old locations temporary basis then delete them later.
-I'm fine with that if Kryzsztof prefers it that way.  Not too disruptive.
+> Ah, so patch 1 adds new files to <dt-bindings/iio/adc>, while
+> retaining old files in the old directory. I'd say, this is
+> counterintuitive.
+> Please reorder patches into 3-1-2 order. dt-binding changes anyway
+> should come first.
+
+Absolutely agree.  Refactors, cleanup etc should precede the new stuff
+in a series.  That way they can get picked up by anyone who wants to backport
+without having to first figure out if they want the new stuff.
 
 Jonathan
 
-
 > 
 > >
-> > Please run scripts/checkpatch.pl and fix reported warnings. Some
-> > warnings can be ignored, but the code here looks like it needs a fix.
-> > Feel free to get in touch if the warning is not clear.
 > >
-> > Best regards,
-> > Krzysztof
+> > Thanks,
+> >
+> > Jishnu
+> >
 > >  
+> > >
+> > >  
+> > >> Changes since v1:
+> > >> - Dropped patches 1-5 for changing 'ADC7' peripheral name to 'ADC5 Gen2'.
+> > >> - Addressed reviewer comments for binding and driver patches for ADC5 Gen3.
+> > >> - Combined patches 8-11 into a single patch as requested by reviewers to make
+> > >>    the change clearer and made all fixes required in same patch.
+> > >>
+> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    |    2 +-
+> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    |    2 +-
+> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    |    2 +-
+> > >>   .../iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    |    0
+> > >>   .../iio/{ => adc}/qcom,spmi-vadc.h            |   81 ++
+> > >>   46 files changed, 1725 insertions(+), 61 deletions(-)
+> > >>   create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
+> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
+> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
+> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
+> > >>   create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (100%)
+> > >>   rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (77%)
+> > >>
+> > >> --
+> > >> 2.25.1
+> > >>  
+> > >
+> > > --
+> > > With best wishes
+> > > Dmitry  
+> 
 > 
 > 
 

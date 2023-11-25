@@ -1,178 +1,141 @@
-Return-Path: <linux-iio+bounces-330-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-331-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D947F8A4A
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:44:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD037F8A6A
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 12:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3010A1F20EF4
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 11:44:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D8A6B21222
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Nov 2023 11:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE71D516;
-	Sat, 25 Nov 2023 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B35AE560;
+	Sat, 25 Nov 2023 11:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VeaiDQGV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DW/8bsSP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119FE10F0
-	for <linux-iio@vger.kernel.org>; Sat, 25 Nov 2023 03:44:06 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-54b211b0296so434032a12.1
-        for <linux-iio@vger.kernel.org>; Sat, 25 Nov 2023 03:44:05 -0800 (PST)
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1B310E2;
+	Sat, 25 Nov 2023 03:57:00 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-a08e4352992so200601766b.1;
+        Sat, 25 Nov 2023 03:57:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700912644; x=1701517444; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SdNAHltyzZi3QxE+f9JHuh2c+iylf1qVw4CyLT75QG4=;
-        b=VeaiDQGV4YEKXn5e99F9Bmaq1sQjWIE0CUDJ8ag0+zYSsHNRiVUhIEXASu2XEFsYYj
-         iGUkIVqf7cBK+B2oRB0lr6KPG5K+/5Q+B/8uIzvwA+EMrBkXiwNHv7h3NkWRiLSVPkZp
-         5TdXFzp9sDdehi0OUQtn2aKnT3l2VVdkxN1GtqBqlkd9Z+gKaxCwfeXcSs0Xu4F1LLCK
-         Kg6su6fzInDZfr8jjgb3nvAygdIKRx18OV24gcog2OuUBhJZHwdN42uoJi8Kq0yuvP+M
-         DAiTIQQheOktcoeUgW2ZcSRNNEiWpxDU9AxqP8Var/a+kqeOoHcBd2G/pCS5pBntFTp5
-         vfUQ==
+        d=gmail.com; s=20230601; t=1700913418; x=1701518218; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ompf+2OoF8BHJ5J3VWaaBr54to0LIdPuwB41zRGN5Ew=;
+        b=DW/8bsSPqYXIE1vUSXQ2ujMIPKAnkH51X06pXrfokRXjo/SP4L+TGsKtJF2LYBUX8w
+         SNDS4llDUSptOj6lkYzR7Fv9ltgFL+EnPxigsbExOYxYaqDcDtG+uX2u/jUS/k/U0Ins
+         eCE24iirtnQooCW6qyqhNngACRfJN896JRzvSzQ3zjvemWpYr5A9PjV3w/ClPd9mEWpf
+         S+DOT7ElSeNE+SApH2D7i7XR4JGlvzPnMypQYLTMCz6zaNc17YGaDy6p5CbofHUaFX08
+         NwfR1UkUXO6F1q9igB2b4NPlqiZ1gN97cImyaQUT6wQru15dzbNaW6nxl9E19S8y6YoO
+         YAjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700912644; x=1701517444;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SdNAHltyzZi3QxE+f9JHuh2c+iylf1qVw4CyLT75QG4=;
-        b=LP9R85vo2rzhjK028hHLuElwCQdCmC0ANqNSbuAFwWPb3IiAjsLsKu/i0dSNEb6tc4
-         BoX+ATP4DUSC4pvhvq+EcSQb5wXMDplbaemmQU8UJt/hQmeH9oQ+v5V3xCtzrd5VvlFL
-         E4/qtxVPUGnq6YXIIes25SegaW5/UEw5sY12OR9zyLzEhcngwbm5GEIP98MHgIZEGJ0k
-         Jp0SXIcK3RAxCBuJVMj8owH3Ay65t7/hViYA8aVCug9zuA1U7aMucGasFRP19/0LU/YX
-         1THmPtghwuTUQX2h4q60FsarwvM/pSHUTrz4MYX9rruppOytBEOIZSMnhA8kTZ/M+hIc
-         FprQ==
-X-Gm-Message-State: AOJu0Yzl1xfJfhIuN4ZIywrrGhevzfBAAFHI9iF7CDNb64iRxJB+tYfB
-	7pauW3L1vW0xa22ivq2GGSiZH9Fh5jgwXJVYtAI=
-X-Google-Smtp-Source: AGHT+IGRoDr3JREkINLbE9HNbwdlPj1+NpZu2jqzyjmPzQQL01nxEYHIZx0D5Y7x//5w+SZr3YrOAA==
-X-Received: by 2002:a50:d0d6:0:b0:54b:5a6:d06d with SMTP id g22-20020a50d0d6000000b0054b05a6d06dmr3820138edf.5.1700912644518;
-        Sat, 25 Nov 2023 03:44:04 -0800 (PST)
-Received: from [192.168.201.100] (178235187180.dynamic-4-waw-k-2-3-0.vectranet.pl. [178.235.187.180])
-        by smtp.gmail.com with ESMTPSA id er21-20020a056402449500b0054b2040ea46sm663412edb.61.2023.11.25.03.44.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Nov 2023 03:44:04 -0800 (PST)
-Message-ID: <943431f4-6d68-4635-a8f9-710a0d535526@linaro.org>
-Date: Sat, 25 Nov 2023 12:44:01 +0100
+        d=1e100.net; s=20230601; t=1700913418; x=1701518218;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ompf+2OoF8BHJ5J3VWaaBr54to0LIdPuwB41zRGN5Ew=;
+        b=gCoCdjbjcYmUxtoX18xvazwQsJ82uczmFni062Lr1SyeZ+VxMrig0HZBUAkE+uSQGF
+         nDANY0sm7AUuNqNRkiTl72pW6ITSq+lU9o5yGeu583j+6Cj3fl8W8dsy6b2F8Qon4Joq
+         P56uI6UAoMmUGL5pZHDPBlARE//TMF1IswPl7aFz/nxif3ptWdfBE/zsHEqJH2U9ignN
+         yJJQWN1iaAinQPz4/2sxOwEpHMgchxXJDO0J+/dde+6vfojFyrjSe5llRwq6q+2OHYyj
+         Cnn814LLj9kKP4Ls3Vdsv16tvKl7uR0ksC9gokh45kQY0Z8F0hdEj+CJNatd5DUuCZVt
+         N02Q==
+X-Gm-Message-State: AOJu0Yx/tvSATVOrbtdpGuGQ5AxiNZ3tvLL4BVXWzxbaoLJAqgsF7TdM
+	VHflDG99CfKQtRGd3UM/7X8ubYttiYLtTg==
+X-Google-Smtp-Source: AGHT+IG8V+U/oUNdhKDvTKV66NneglcSu8tT5u8d4jKdseqIwXPLcV7GP/U9F1EGzlO9ClkIkZXl1w==
+X-Received: by 2002:a17:906:1da:b0:9be:466c:1824 with SMTP id 26-20020a17090601da00b009be466c1824mr4424311ejj.11.1700913418153;
+        Sat, 25 Nov 2023 03:56:58 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-3176-084d-819d-12bf.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:3176:84d:819d:12bf])
+        by smtp.gmail.com with ESMTPSA id r17-20020a170906a21100b009ae57888718sm3344349ejy.207.2023.11.25.03.56.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Nov 2023 03:56:57 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/3] iio: light: add support for VEML6075 UVA and UVB
+ light sensor
+Date: Sat, 25 Nov 2023 12:56:54 +0100
+Message-Id: <20231110-veml6075-v2-0-d04efbc8bf51@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] arm64: dts: qcom: sm8350-lemonade(p): New devices
-Content-Language: en-US
-To: Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Vinod Koul <vkoul@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, Rob <Me@orbit.sh>,
- Clayton Craft <clayton@igalia.com>,
- Caleb Connolly <caleb.connolly@linaro.org>,
- Luca Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
- <20231111-nia-sm8350-for-upstream-v4-6-3a638b02eea5@igalia.com>
- <d35b9250-eddb-4436-8daf-066ec84cf55f@linaro.org>
- <1e45a031-080d-4cbe-9741-182524227124@igalia.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <1e45a031-080d-4cbe-9741-182524227124@igalia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAbhYWUC/22NTQ7CIBBGr9KwFsMMRaMr72G6mOLYTkKpASWap
+ ncXu3b5Xr6fRWVOwlmdm0UlLpJljhVw1yg/UhxYy62yQoMWAIwuPIWDOTptERyiZ/J0UjXeU2b
+ dJ4p+rIX4CqHKR+K7vLf9a1d5lPyc02e7K/Czf5YLaKOta3uLrWNo6TJMJGHv50l167p+AcmuO
+ 0S1AAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1700913416; l=2267;
+ i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
+ bh=8qA1rB2jysMdnP4QbGebjf0iuxSJmGaYBpBZjDzcCXg=;
+ b=ZxpFNQuv5NQEw1dyG6cIZJCR3thWA32K5ZvNMSMFUXsVPEf2SKydE1nkcGvVrDcugmePHJwut
+ 47rjDDhiISPAxksDzOAMM17kYyd9hEWaQGS3ALkAJLH+XT8z522Llmd
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
-On 23.11.2023 18:05, Nia Espera wrote:
-> 
-> 
-> On 11/22/23 21:17, Konrad Dybcio wrote:
->>
->>
->> On 11/11/23 23:07, Nia Espera wrote:
->>> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
->>> mentioned in the cover letter for this patch series, but for
->>> accessibility also repeated here:
->>>
->>> - USB OTG
->>> - UFS
->>> - Framebuffer display
->>> - Touchscreen (for lemonade)
->>> - Power & volume down keys
->>> - Battery reading
->>> - Modem, IPA, and remoteproc bringup
->>>
->>> Steps to get booting:
->>>
->>> - Wipe dtbo partition
->>> - Flash vbmeta with disabled verity bit
->>> - Flash kernel and initfs to boot partition with CLI args pd_ignore_unused
->>> and clk_ignore_unused as v1 bootimg
->>> - Flash rootfs to some other partition (probably super or userdata)
->> Thanks for including this info here
->>
->>> +&pmk8350_vadc {
->>> +    pinctrl-names = "default";
->>> +    pinctrl-0 = <&gpio1_adc_default>, <&gpio3_adc_default>;
->>> +
->>> +    /* pmk8350-ref-gnd */
->> I fail to see the benefit in having this both here and in the label
-> 
-> Oops, removed.
-> 
->>> +    channel@0 {
->>> +        reg = <0x00>;
->>> +        qcom,pre-scaling = <1 1>;
->>> +        label = "pmk8350_ref_gnd";
->>> +    };
->>> +
->> [...]
->>
->>> +&tlmm {
->>> +    gpio-reserved-ranges = <52 8>;
->> Would you know what these are connected to?
->>
-> 
-> Judging from the line names on the hdk dtsi, 4 seem to be connected to the fingerprint (FP_SPI_*) and the other 4 are NFC-related (NFC_ESE_SPI_*). I can clarify this with a comment if necessary.
-Sounds very plausible, thanks!
+This series adds support for the Vishay VEML6075 ultraviolet sensor,
+which offers UVA and UVB measurement channels and I2C communication.
 
-Konrad
+The device bindings and a simple example are also provided.
+
+This driver has been tested with a Gravity VEML6075 UV Sensor Module in
+open air conditions.
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- General: swap patch order (bindings first).
+- iio core: add uva and uvb modifiers.
+- veml6075.c: use uva and uvb modifiers instead of extend_name
+- veml6075.c: remove redundant information from the description.
+- veml6075.c: inline device name.
+- veml6075.c: use read_avail() for available attributes.
+- veml6075.c: use guard(mutex) instead of lock/unlock().
+- veml6075.c: use regulator_get_enable() without _optional.
+- veml6075.c: register managed iio device and delete remove().
+- veml6075.c: remove remaining debug messages.
+- veml6075.c: error path cleanup (return type after val assignment).
+- veml6075.c: remove zero from i2c_device_id.
+- MAINTAINERS: fix bindings name.
+- vishay,veml6075.yaml: remove vdd-supply description and mark property
+  as true.
+- Link to v1: https://lore.kernel.org/r/20231110-veml6075-v1-0-354b3245e14a@gmail.com
+
+---
+Javier Carrasco (3):
+      iio: add modifiers for A and B ultraviolet light
+      dt-bindings: iio: light: add support for Vishay VEML6075
+      iio: light: add VEML6075 UVA and UVB light sensor driver
+
+ Documentation/ABI/testing/sysfs-bus-iio            |   7 +-
+ .../bindings/iio/light/vishay,veml6075.yaml        |  39 ++
+ MAINTAINERS                                        |   6 +
+ drivers/iio/industrialio-core.c                    |   2 +
+ drivers/iio/light/Kconfig                          |  11 +
+ drivers/iio/light/Makefile                         |   1 +
+ drivers/iio/light/veml6075.c                       | 486 +++++++++++++++++++++
+ include/uapi/linux/iio/types.h                     |   2 +
+ tools/iio/iio_event_monitor.c                      |   2 +
+ 9 files changed, 554 insertions(+), 2 deletions(-)
+---
+base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
+change-id: 20231110-veml6075-321522ceaca9
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 

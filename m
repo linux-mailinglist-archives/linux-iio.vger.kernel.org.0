@@ -1,128 +1,262 @@
-Return-Path: <linux-iio+bounces-390-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-391-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EB07F92EA
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 14:59:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2607F939B
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 17:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCA85B20CB0
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 13:59:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577BA1C20C24
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 16:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BFCD28C;
-	Sun, 26 Nov 2023 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49356D51C;
+	Sun, 26 Nov 2023 16:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AuOfy3uM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TPiKmWHw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0676EE4;
-	Sun, 26 Nov 2023 05:58:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701007138; x=1732543138;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SN94Lks4ftl2se1ieiieBfV6GGIAHmqi015IwlWk5JI=;
-  b=AuOfy3uMNI4WoYfYQNj2c9jg5owiMmVEYkFbsv/6ZujQQpPxxHHbJCBv
-   Ih6eujDhu5ab9QOnNm1FB969Q0id5ASpQYeaO3TUVsNjtlgoGoXy3hYB1
-   0oNX8zHJl2movZrb68ISUTC6MkGdGTLHozUHFzfBnnNbPfaAjX5pHy58Q
-   qmX68LG37qXKdt7ukC8K8ArIrA5iEbHbD36Sic+kpm6TqkIT37guPsmde
-   rC8LIejPCHBFjz5XRuR4b+6qdKi25pbADtNLXl4/9wABLDEXVrCqUAaQv
-   TVoj/gonkoCK3ikTeZsZemNl6rDKxeBHTNOfvMKefWWWWWiMnOJvmbLLk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="11264544"
-X-IronPort-AV: E=Sophos;i="6.04,228,1695711600"; 
-   d="scan'208";a="11264544"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2023 05:58:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="834091873"
-X-IronPort-AV: E=Sophos;i="6.04,228,1695711600"; 
-   d="scan'208";a="834091873"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 26 Nov 2023 05:58:53 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r7Fet-0005DL-2Y;
-	Sun, 26 Nov 2023 13:58:51 +0000
-Date: Sun, 26 Nov 2023 21:58:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v3 2/2] iio: pressure: driver for Honeywell HSC/SSC
- series pressure sensors
-Message-ID: <202311262123.aVuN3lZS-lkp@intel.com>
-References: <20231126102721.15322-1-petre.rodan@subdimension.ro>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C48BD270
+	for <linux-iio@vger.kernel.org>; Sun, 26 Nov 2023 16:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9C7C433C8;
+	Sun, 26 Nov 2023 16:01:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701014514;
+	bh=ojbTytmDrmvBpWToBOJDxQo1SDGxW+cyWawjA18EqUo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TPiKmWHwFq1+fCiMUADHi8EYlSLTCwhuZwzeo2tSvtp5udI5SU1wbXdEfPUSCbiRm
+	 zJTaVpVgm2YteiZxh7/QkPD7AzEaLdy0x1CNFns344zsxn+gA+Y/IVAg5TCfZ/z2mT
+	 ClXTlhlLGnsIBbyTULGTl+A9bWNSkacsLeMfHN7CL1zfo/AzV6APE+szm8A0dMMgXo
+	 0oiZUtJrbJ+1HpVy2mPl2FsrlmvSSpp1MHtLHHzV6p0PwerAfp2k2JWJaLhRIBghGM
+	 RNQnN8A5XhbZ0gloyzERmDRkejBd5pgr68E2r1MxmDQvLvTyB7SEdV87EAPlNvJ8Zb
+	 PvqDHx4f1F5dw==
+Date: Sun, 26 Nov 2023 16:01:47 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Crt Mori <cmo@melexis.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: temperature: mlx90635 MLX90635 IR Temperature
+ sensor
+Message-ID: <20231126160147.65636cc5@jic23-huawei>
+In-Reply-To: <CAKv63us6yi2qaGLi3UgT=pfQ7QnxyM02FreD-qHnzTnKGSkRFw@mail.gmail.com>
+References: <cover.1700648164.git.cmo@melexis.com>
+	<aa36393700ff783274894186366a152bb27e58ff.1700648165.git.cmo@melexis.com>
+	<20231125175318.25c0d6ea@jic23-huawei>
+	<CAKv63us6yi2qaGLi3UgT=pfQ7QnxyM02FreD-qHnzTnKGSkRFw@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231126102721.15322-1-petre.rodan@subdimension.ro>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Petre,
+On Sat, 25 Nov 2023 22:26:46 +0100
+Crt Mori <cmo@melexis.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Sat, 25 Nov 2023 at 18:53, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Wed, 22 Nov 2023 11:24:06 +0100
+> > Crt Mori <cmo@melexis.com> wrote:
+> >  
+> > > MLX90635 is an Infra Red contactless temperature sensor most suitable
+> > > for consumer applications where measured object temperature is in range
+> > > between -20 to 100 degrees Celsius. It has improved accuracy for
+> > > measurements within temperature range of human body and can operate in
+> > > ambient temperature range between -20 to 85 degrees Celsius.
+> > >
+> > > Driver provides simple power management possibility as it returns to
+> > > lowest possible power mode (Step sleep mode) in which temperature
+> > > measurements can still be performed, yet for continuous measuring it
+> > > switches to Continuous power mode where measurements constantly change
+> > > without triggering.
+> > >
+> > > Signed-off-by: Crt Mori<cmo@melexis.com>  
+> > Hi Crt,
+> >
+> > Very nice. A few minor bits inline.
+> >
+> > Note (as normal for me), I haven't sanity checked any calibration maths - just assuming
+> > you got that bit right as don't want to spend ages comparing datasheet maths to what
+> > you have coded up + I'm not sure I can get the datasheet anyway :)
+> >
+> > Jonathan
+> >  
+> Hi Jonathan,
+> Maths I have unit tests where I did floating point (which will be
+> released as embedded library same as for 90632) to integer conversion
+> and ensure that the delta is less then the error of the sensor. So
+> math I take full responsibility :)
+> 
+> Datasheet will be public probably in March, when hopefully the sensor
+> is already part of the main Android kernel as well. But your review is
+> anyway very valuable and detailed. Thanks for all the remarks - there
+> is just one discussion below I would love to complete for future
+> reference.
+> 
+> Best regards,
+> Crt
+> >> ...
+> > > +     if (ret < 0) {
+> > > +             dev_err(&data->client->dev, "Powering EEPROM failed\n");
+> > > +             return ret;
+> > > +     }
+> > > +     usleep_range(MLX90635_TIMING_EE_ACTIVE_MIN, MLX90635_TIMING_EE_ACTIVE_MAX);
+> > > +
+> > > +     regcache_mark_dirty(data->regmap);
+> > > +
+> > > +     ret = regcache_sync(data->regmap);
+> > > +     if (ret < 0) {
+> > > +             dev_err(&data->client->dev,
+> > > +                     "Failed to cache everything: %d\n", ret);
+> > > +             return ret;
+> > > +     }
+> > > +
+> > > +     ret = regcache_sync_region(data->regmap, MLX90635_EE_Ha, MLX90635_EE_Gb);  
+> >
+> > Why is this needed given you just synced the whole thing?
+> >  
+> 
+> Well, this is the discussion I wanted to have. I expected
+> regcache_sync to perform i2c read of all the read_regs defined in
+> regmap to get them to cache - but it didn't. Then I expected the same
+> from sync_region, but it didn't, so I manually read them below.
+> 
+> So discussion I want to have is: why would we regcache_sync, if no
+> reads are performed? 
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.7-rc2 next-20231124]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I think the intent is to minimise the reads from the device.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Petre-Rodan/iio-pressure-driver-for-Honeywell-HSC-SSC-series-pressure-sensors/20231126-182901
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20231126102721.15322-1-petre.rodan%40subdimension.ro
-patch subject: [PATCH v3 2/2] iio: pressure: driver for Honeywell HSC/SSC series pressure sensors
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20231126/202311262123.aVuN3lZS-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231126/202311262123.aVuN3lZS-lkp@intel.com/reproduce)
+If we look at the implmentation (which is probably the default here)
+you can see that it's only doing writes where non volatile registers are out
+of date. I don't think there are any reads from the device done.
+https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regcache.c#L310
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311262123.aVuN3lZS-lkp@intel.com/
+If you want to ensure the cache contains the correct values
+a read will need to be forced.
 
-All warnings (new ones prefixed by >>):
+> And second one is why would we return EBUSY for
+> volatile register range when cache_only is active?
 
->> drivers/iio/pressure/hsc030pa.c:48: warning: cannot understand function prototype: 'const struct hsc_func_spec hsc_func_spec[] = '
->> drivers/iio/pressure/hsc030pa.c:253: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-    * IIO ABI expects
+I'd say that's correct. We are in a state where any attempt to read a
+volatile register can't get the current correct value, so returning
+-EBUSY which basically says come back later is the correct
+behaviour.
+
+> 
+> Current driver implementation is very specific in bypassing all these,
+> so I am quite certain this regcache_sync_region here is not needed and
+> below regmap_async_complete as well, but I cannot be sure, since
+> regcache_sync doesn't really do the job I would expect it to do. I
+> looked into the code, but could not find the reason, why I do not see
+> any reads on oscilloscope and why I need to physically read registers
+> below, so that they are cached. 
+
+I agree the docs are a little vague, but looking at the code there
+aren't any reads, only writes to the device so I think this behaviour
+is by design.  The cache is considered correctly synced if an entry
+is simply not cached (valid I suppose as no wrong values cached).
+
+> regmap totally knows which registers
+> it should cache, but it does not at init, nor at regcache_sync
+> request. And if you remember in 90632 I had a similar remark, but
+> could not reproduce as EEPROM was readable in most powermodes (well
+> all used in driver), now I checked with scope and since I know this
+> chip does not allow EEPROM reading during the step sleep mode, so
+> everything was much easier to conclude.
+
+I think the key here is that the cache isn't really meant to provide
+access to values when the device is powered down; it is there to
+reduce bus traffic. Hence the last thing you normally want to do is
+read back all the values.  There is a way to get that to happen
+on init though.
+
+You want to hit this path:
+https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regcache.c#L183
+I think you set num_reg_defaults_raw = Number of registers, but don't provide any
+default values, so as to indicate they should be read from the device.
 
 
-vim +48 drivers/iio/pressure/hsc030pa.c
+> ...
+> > > +     mlx90635 = iio_priv(indio_dev);
+> > > +     i2c_set_clientdata(client, indio_dev);
+> > > +     mlx90635->client = client;
+> > > +     mlx90635->regmap = regmap;
+> > > +     mlx90635->powerstatus = MLX90635_PWR_STATUS_SLEEP_STEP;
+> > > +
+> > > +     mutex_init(&mlx90635->lock);
+> > > +     indio_dev->name = id->name;  
+> >
+> > Not keen on doing this as it can be fragile if id and of tables get out of sync
+> > or we are using backwards compatibles in dt bindings.
+> >
+> > Given only one part supported, just hard code the name for now.
+> >  
+> 
+> Can you elaborate? Because I have the same thing in 90632 and I would
+> fix there as well. I assumed this is for linking to dt, to ensure it
+> is defined there?
 
-    41	
-    42	/**
-    43	 * function A: 10% - 90% of 2^14
-    44	 * function B:  5% - 95% of 2^14
-    45	 * function C:  5% - 85% of 2^14
-    46	 * function F:  4% - 94% of 2^14
-    47	 */
-  > 48	static const struct hsc_func_spec hsc_func_spec[] = {
-    49		[HSC_FUNCTION_A] = {.output_min = 1638, .output_max = 14746},
-    50		[HSC_FUNCTION_B] = {.output_min =  819, .output_max = 15565},
-    51		[HSC_FUNCTION_C] = {.output_min =  819, .output_max = 13926},
-    52		[HSC_FUNCTION_F] = {.output_min =  655, .output_max = 15401},
-    53	};
-    54	
+Exactly, the dt table and the i2c_id one can end up out of sync - perhaps
+deliberately and when compatible = "device1", "device2" is used
+I'm not sure exactly which one will turn up in this id if the dt table
+only includes device2.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So rather than arguing that out and pinning down the expected behaviour
+we tend to avoid using id->name in new drivers.
+It's probably not broken to do so but lets make life easier for any
+future cases by not doing it.
+
+
+> 
+> > > +     indio_dev->modes = INDIO_DIRECT_MODE;
+> > > +     indio_dev->info = &mlx90635_info;
+> > > +     indio_dev->channels = mlx90635_channels;
+> > > +     indio_dev->num_channels = ARRAY_SIZE(mlx90635_channels);
+> > > +  
+> ...
+> >  
+> > > +     if (MLX90635_DSP_VERSION(dsp_version) == MLX90635_ID_DSPv1) {
+> > > +             dev_dbg(&client->dev,
+> > > +                     "Detected DSP v1 calibration %x\n", dsp_version);
+> > > +     } else if ((dsp_version & MLX90635_DSP_FIXED) == MLX90635_DSP_FIXED) {  
+> >
+> > FIELD_GET() for that bit then just check if it is 0 or 1
+> >  
+> > > +             dev_dbg(&client->dev,
+> > > +                     "Detected Unknown EEPROM calibration %lx\n", MLX90635_DSP_VERSION(dsp_version));
+> > > +     } else {
+> > > +             dev_err(&client->dev,
+> > > +                     "Wrong fixed top bit %lx (expected 0x8X0X)\n",
+> > > +                     dsp_version & MLX90635_DSP_FIXED);  
+> >
+> > I'd like to understand what breaks if this happens but we carry on anyway?
+> > I'd 'hope' that any future DSP version is backwards compatible or that there was some way to know if
+> > the difference between backwards compatible versions and ones that aren't.
+> >  
+> The top bit in high nibble is fixed to 1, to ensure that we have
+> endianness correct in the wild. We did the same later on in 90632
+> where we had plenty of trouble the way people read 16 bits. So if that
+> top bit is not there (bottom nibble has it hardcoded to 0), then for
+> certain we do not have the correct chip. And as for compatible DSP
+> versions: when we release incompatible one, I will upgrade the driver,
+> otherwise we have some more slack in the driver to keep on working,
+> because that was also lesson learnt from my side in 90632 as there are
+> compatible DSP versions possible and used, but we are still honest and
+> bump also the DSP version here.
+
+So there isn't a clear division between 'minor and major' version numbers
+as used in many similar cases? Minor can tick without a driver change as the
+interface only grows (nothing breaks), but major implies incompatible.
+
+Anyhow, sounds like you carry on with just a dbg print if an unexpected version
+seen. That's fine.
+
+
+Jonathan
+
+
 

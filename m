@@ -1,97 +1,163 @@
-Return-Path: <linux-iio+bounces-415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE4A7F95BA
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 23:18:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C162D7F979B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 03:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF86280D88
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Nov 2023 22:18:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 528F4B20A48
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 02:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D9D1428E;
-	Sun, 26 Nov 2023 22:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DE415CF;
+	Mon, 27 Nov 2023 02:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EZPuyjMV"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="GosD5zab"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DAA9F0;
-	Sun, 26 Nov 2023 14:17:58 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 98D4186F40;
-	Sun, 26 Nov 2023 23:17:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1701037076;
-	bh=WjKUdUadE75KuCF33+OZs4fr2JhweqKtmUzbN8Hxwnw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EZPuyjMVAuDJJzr8z3VXqNjR4AMygf7DOuB6HtFzCBcBLefqzvQU4KkXZet89L/4z
-	 dZ1Wtztb2/zp08g6jUbw3uVv0c2vIPU2P3vPeteA0dtFJxDV2pJnnerQhSEP9goBfV
-	 6pN/ooLPqlugqyaanzEAx5d6SavwAIIZexVBjuvrHlrpWbhVg9D8nbvgNjDLAzHHH5
-	 FOOdc+IqrOuir2ddVIOheoEsvIh7mZrRsvBmXH8FRAU3zkDGUkvZFEsHA7kPUpDaUJ
-	 lQBkDGcmLxi6oZptsnxaXf3uuglvEHMFJzPlplUq81MxdGjPNymRB9I7cC+DUn7+P9
-	 wT0uOfoFK0M0Q==
-Message-ID: <124ca1d8-5569-4c6c-8019-24e58dd8a5fc@denx.de>
-Date: Sun, 26 Nov 2023 23:17:55 +0100
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2054.outbound.protection.outlook.com [40.107.22.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 808C8A5
+	for <linux-iio@vger.kernel.org>; Sun, 26 Nov 2023 18:47:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hfJHuPLKUXR4x9INlHPAxJJspeH8G757wDJiOiX4nASG5dDPGOXUB2bpUYGUrUpkeXdDcd7JIr8IIyhY01UxaPM9aeMw4H9KJ4Zmt1Pt3lcQ8fN3zsIIzcxmIGJxiZ99q+iTfpik86S7DTslkFdU81j4jB80VvCb3pv+9JVooKGVgSlJvjlse3jgA0HTzKdM+k/pqEq1WUj/HuMDeOGO8DLWhDoWD3HSE7KnWCPsGZ19yFdIlIKTE82o1ApKGucjZZECCN5A7oGMeto5FVU7KoN9sEfKjXz75VQCkm/smSOtViXa/9spv4It4ueAWUaA2924gJt0w2KxhOD93eV7pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TLsCv22DUeoxrJzYVPhXIZSLuB305aJHESXQOU0zgNE=;
+ b=M8CLY+aQ0Vi5EA+0YCWAQIT8v42RFc/DmNLjiLBF1Fcc/89i0FOrc+E3FGiGqgaMkt0FMPM9zYjhhSZf/sCwKdlG/dMSoLgCFTZDrUZaCM7jAb4j79SWrm+Q+KwPuNTXDeZV5hitV0M4TNQsyi5LvRwspVA1nyng0BeYxfO0zeH15wZX3W/VZn67PTIolwgklAPAaoTQqPt0DDnZAAXbRb/HHKAC9Apoer3pnHw8vhROYluB0zDlblo0H4vQOQc2W3Ua8deSiFomGfCs6vMBnq1EcBxcNea9478CsHdcic1uAECO7GQOH2W4aERqibDeECaVHQHzAmsbXAMgSKrjhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TLsCv22DUeoxrJzYVPhXIZSLuB305aJHESXQOU0zgNE=;
+ b=GosD5zabe2loI9wI+j2hN1CcfVeejodClRkKCXa7dZd7wRgf/D6E0wMigTUaO3MWGcU5FLbYSzAtkVlMznRFGXVrVHBnPFtci6HCR4L5vuRIWJnRzRMWSCj/0pV5/qHJDms4XUVK0/3y1MNgmEpDc2FD8YDnyuo8KmTNbxVlTLM=
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com (2603:10a6:5:21::30) by
+ DB9PR04MB8186.eurprd04.prod.outlook.com (2603:10a6:10:25f::24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7046.16; Mon, 27 Nov 2023 02:47:31 +0000
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::c09:60ad:6ac5:d57f]) by DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::c09:60ad:6ac5:d57f%4]) with mapi id 15.20.7046.015; Mon, 27 Nov 2023
+ 02:47:31 +0000
+From: Bough Chen <haibo.chen@nxp.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: "lars@metafoo.de" <lars@metafoo.de>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: RE: [PATCH] iio: adc: imx93: add four channels for imx93 adc
+Thread-Topic: [PATCH] iio: adc: imx93: add four channels for imx93 adc
+Thread-Index: AQHaGFs8x9UZm3qCAEiN4Q2zzUGOo7CM02YAgACzntA=
+Date: Mon, 27 Nov 2023 02:47:31 +0000
+Message-ID:
+ <DB7PR04MB401023D016E11C44699310D090BDA@DB7PR04MB4010.eurprd04.prod.outlook.com>
+References: <20231116071026.611269-1-haibo.chen@nxp.com>
+ <20231126160312.2ef8a307@jic23-huawei>
+In-Reply-To: <20231126160312.2ef8a307@jic23-huawei>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB7PR04MB4010:EE_|DB9PR04MB8186:EE_
+x-ms-office365-filtering-correlation-id: c93cac4c-c2f6-431d-933c-08dbeef3339a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 2Js73a4dPPeBeFBcCk48h+bpCBw2hFyrYQzF3JsF/ayZPNKHwy6HsFN81z2t/PMM73/skYSzEKbmVDnR78dtHLEnHwofeWgPngcnpcX/EWUuVuiMaUr5V15u5g+yCCEm0OjbyEk9RjRdBv56oMDyr/PoG8v0dYQz18CB7vvSgK8ffZIcpN1JAcdkWKhj1gCr+duQgYzHeqvxeg2q+/MRokmgksPogcFGklfv0ucO0exujr+IEWoGWo/ffHe8pJJqWnI9o9NJKfjrpuRi9ULlp4X4xbXMMF2mhI9VLIQj3A9uDzTa3/Cy0fiAj9mJY4ji/afWFXpus1U6XiXszdGI9qLMZwTp6SGTHE9dbhG2zoyAZEfGqQPH8lguEojMQwbDYK8mquvNoDhNXgjYm8r6oJAIySd+VI4v6+hX/Hv/OfFMNsrc0lWXdJrD1RUgyCH5CznfaZWQaAGHSm/aA0e1lkX2++FIbbfTeyzs9fdfexKen/TVteN2NDlk8ikT4352TUHOvYxrRpiniKsR7qnl2P22Zwa2W/fjvE/CCKcNFbLs5k+clN6gxscdy3NrbJCdsKMkh/J63R0CJkQcT+rOieZ6WAOnffl3lOzvuBoudopIJrPHbyJSujKvdQtajdpK
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4010.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(366004)(346002)(136003)(376002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(55016003)(26005)(478600001)(6506007)(71200400001)(7696005)(9686003)(53546011)(38100700002)(38070700009)(122000001)(86362001)(33656002)(41300700001)(66946007)(5660300002)(76116006)(64756008)(66446008)(66556008)(54906003)(6916009)(66476007)(83380400001)(2906002)(316002)(52536014)(4326008)(8676002)(8936002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?STZyZUxMZ0xNbnJJV0xkSTgwdzRVYjRPU1dGSWExUXo1aWtyTHVCRytTQUtM?=
+ =?gb2312?B?UldTVEF3N2Z3bEVreFRpUS8xM0E4VVlTa2pwUWFGQTUzb04yYkVaSDZxeU5B?=
+ =?gb2312?B?SXkrdVRXQ2FlZ28rdlRSU1BOM05WN29JSERFM2tmU05uMlpjTlhjZS81Z2Jx?=
+ =?gb2312?B?a2hkMWtUdkVFNzAvZDgvald6NWFydVV3aHQzRThkVTBHWmIvT3ltOFZxTkpl?=
+ =?gb2312?B?QlJQT1llalNsODMrZWRPN290cFBBWjQ5OUwyMlJxQmloUkNuWnAwMTdoTU9x?=
+ =?gb2312?B?cTVMUTAyNGV4Nk9aL3BpajRNRkpsOTZuYUd5RnQ2dHBueEJMdllPTkVXNkJT?=
+ =?gb2312?B?dGFMQklMNStqYjFOa0R0Z2F6VmJWK2I0cEFxK2dTTmdoWGZyUVNsSElqVmEz?=
+ =?gb2312?B?a0lyUjhCYWpsbmMwZnpGTS9UUkwyVHJLdFJsU0wrazBSL2M2STI1dVkvQmZT?=
+ =?gb2312?B?cXEvMEgyOWhSemFYUmlOc2xFWEwwWTI1bVl2M3RNeGZpYjZqUUw5TjI4dzBw?=
+ =?gb2312?B?OWNtWmlxTDU5clBmTG9Ja3ZjdmJ0TU1IYVZ3QkN1a0VTSTg0Y1BtOWY5VnVi?=
+ =?gb2312?B?bEN5VEd3NlNraTNQR1pZT2x3bURha29jbFdkQVYyRXA4T3RKcjB1eHRjTGly?=
+ =?gb2312?B?VFplZThRRmhLcVRjcGhlck9hdzhMQXFVM1pDVm1oNnBDK1pkVVZqbEF5bmVG?=
+ =?gb2312?B?YXR2NzJYbWZZeVA0SEJsYlVMaTdyUHQ0dWYzKzVEMmdNNnFRL21keXNhTDBw?=
+ =?gb2312?B?RDE1SHhIVGxiWXQ0UDlYREZVWG80L091TUg4bjA1RHh4VDZIOEh1azE0TTVZ?=
+ =?gb2312?B?SnNkRVhzWExYS29jNUlRY0VmZ1lLU0d3VmFjS2tUbEdlWjJLbm9KL2NuVUhV?=
+ =?gb2312?B?Y0R4SW1yRjBSUXRvenlTY3FETmV0MStxRlg5KzNwdHZTQmg2eGdDb0lGdHNu?=
+ =?gb2312?B?bkpGTysvOTZmRytwR0lOUkEvN1dRVDdwc044VEVoSHpLVHBudkVVSjd1Unk1?=
+ =?gb2312?B?d1c2S1ZzYk0rOTBGSWVGVjhDSVV0Y09VOFpwS1dmeE1Eay9nTWpwa0JXZjFH?=
+ =?gb2312?B?c0ZlTDI0Z0tVREsySnMvQm43OENRWTA3YmdBUHF6dzhNV0lRT216V0w1NDBX?=
+ =?gb2312?B?RmFzU0Fhd1VNWGZFWGRpQXBiSW0zQkNTWDVrbzNXM2MvMEo2d01veUwreGwv?=
+ =?gb2312?B?bG1MYnJ4Y25zQzB1UVBvZXVZb3o1cks1QTBJWXFURC9qcHdUekNnTnYrUFg4?=
+ =?gb2312?B?OUlJTnp6bVp6ZGdLY0EvV3BEL0JhYXdaalFCSnBPS0d4QlZMNDFWL25QT2xu?=
+ =?gb2312?B?RHZ6elNFVEdlVzBKRllnS3VTMTJRZFJSOUxtb3krc3F6TExMWlZSamp3bHg3?=
+ =?gb2312?B?UlFHakJVcE1QS3lGMmtHV3NQVmt5NVp6UkszUEgrMEV0ME5IVmQ3Nnl5enhR?=
+ =?gb2312?B?STlUVlU3T0FxSERITWhoV2xGSGUvc1pPMU4zR1ppYVJ6VmdBc2xXcE4rMlFK?=
+ =?gb2312?B?Qm95TXB0OXJER2FiaHNxaGZROTZ5UVp4RHNVQWxIbGl3Q3dEWHMrcjdqL0pN?=
+ =?gb2312?B?WFRTYm9QS3k2NEFWejcyK010ampDUzlnZnBTbUdma0JQaE9OMlpIN3pHc1R2?=
+ =?gb2312?B?Njhpd0l6eFhNckdLS0I0SC9lVkorRzRDL1piRzZMQytCclFwYTFXbkhjNTAw?=
+ =?gb2312?B?K0I1TVdtSmVHaDFhbmswaElnN0ZmellPalhCV2dLVmNQMTZtQzA2SEFOZmY5?=
+ =?gb2312?B?T2hiTmxZUUd1QXJDZjI4eWlYMzU4Yk1MaEt3QXdvQ3lnd2VsRUIyQXY1ejFa?=
+ =?gb2312?B?Zk5IMUtQN1dsQW5QRGJ2OGNITWdXZWllM1JLVDUyMXhXZjRvUi81MXhycmhi?=
+ =?gb2312?B?aFFBZzV1NmVBcUdnVGV5bmxJYnJhdlBPQ0xScVZtcmRVVzFPQVhHNTVHRXh0?=
+ =?gb2312?B?YlJnUjJHeGRsWjM3S0xqSXp0SXZVQjVPWkFOcDJ6N25zU1h5S2E1MEJNeFZn?=
+ =?gb2312?B?SW9LTjMwYnliRVUxZDFrckFJTm1lUzVRTzdHUVFudFZ2Y0twN0F1U2xOL29Y?=
+ =?gb2312?B?d2JmRkxJeWlQWm5HamtkeVF1dmtQNElLRzIrd2NwNlMrZ0NtK2drODJRbzIx?=
+ =?gb2312?Q?z290=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] iio: light: isl76682: Add ISL76682 driver
-Content-Language: en-US
-To: "Dr.-Ing. Andre Werner" <andre.werner@systec-electronic.com>
-Cc: linux-iio@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
- Jonathan Cameron <jic23@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Naresh Solanki <naresh.solanki@9elements.com>,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Rob Herring <robh+dt@kernel.org>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-References: <20231125222738.97875-1-marex@denx.de>
- <20231125222738.97875-2-marex@denx.de>
- <907048010.848203.1701027206602.JavaMail.zimbra@systec-electronic.com>
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <907048010.848203.1701027206602.JavaMail.zimbra@systec-electronic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4010.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c93cac4c-c2f6-431d-933c-08dbeef3339a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2023 02:47:31.2729
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iV8Z6ySDaUGImJbLFTTYossrh4XJK4wBvXbsQuEjIcv92bxxc8FSZHdIGWy2N49Jm5fSMCaIRvZfd0Vt3IoqrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8186
 
-On 11/26/23 20:33, Dr.-Ing. Andre Werner wrote:
-
-[...]
-
-> +static int isl76682_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int val, int val2, long mask)
-> +{
-> +	struct isl76682_chip *chip = iio_priv(indio_dev);
-> +	int i;
-> +
-> +	if (chan->type != IIO_LIGHT && chan->type != IIO_INTENSITY)
-> +		return -EINVAL;
-> 
-> In my understanding, this is not necessary as you use that 'iio_chan_spec' to specify
-> the channels available at all. So there will be no other channel types created by the IIO environment, I think.
-
-That's a good point, I think we can drop it in this case and the next one.
-
-Jonathan , is there any reason you can think of why this shouldn't be 
-dropped ?
-
-I'll add it into V6, thanks.
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxq
+aWMyM0BrZXJuZWwub3JnPg0KPiBTZW50OiAyMDIzxOoxMdTCMjfI1SAwOjAzDQo+IFRvOiBCb3Vn
+aCBDaGVuIDxoYWliby5jaGVuQG54cC5jb20+DQo+IENjOiBsYXJzQG1ldGFmb28uZGU7IHNoYXdu
+Z3VvQGtlcm5lbC5vcmc7IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU7DQo+IGtlcm5lbEBwZW5ndXRy
+b25peC5kZTsgZmVzdGV2YW1AZ21haWwuY29tOyBkbC1saW51eC1pbXgNCj4gPGxpbnV4LWlteEBu
+eHAuY29tPjsgbGludXgtaWlvQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENI
+XSBpaW86IGFkYzogaW14OTM6IGFkZCBmb3VyIGNoYW5uZWxzIGZvciBpbXg5MyBhZGMNCj4gDQo+
+IE9uIFRodSwgMTYgTm92IDIwMjMgMTU6MTA6MjYgKzA4MDANCj4gaGFpYm8uY2hlbkBueHAuY29t
+IHdyb3RlOg0KPiANCj4gPiBGcm9tOiBIYWlibyBDaGVuIDxoYWliby5jaGVuQG54cC5jb20+DQo+
+ID4NCj4gPiBBY2NvcmRpbmcgdG8gdGhlIHNwZWMsIHRoaXMgQURDIHRvdGFsbHkgc3VwcG9ydCA4
+IGNoYW5uZWxzLg0KPiA+IGkuTVg5MyBjb250YWluIHRoaXMgQURDIHdpdGggNCBjaGFubmVscyBj
+b25uZWN0ZWQgdG8gcGlucyBpbiB0aGUNCj4gPiBwYWNrYWdlLiBpLk1YOTUgY29udGFpbiB0aGlz
+IEFEQyB3aXRoIDggY2hhbm5lbHMgY29ubmVjdGVkIHRvIHBpbnMgaW4NCj4gPiB0aGUgcGFja2Fn
+ZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEhhaWJvIENoZW4gPGhhaWJvLmNoZW5AbnhwLmNv
+bT4NCj4gU2hvdWxkIEkgdHJlYXQgdGhpcyBhcyBhIGZpeD8NCj4gDQo+IElmIHNvIGNvdWxkIHlv
+dSByZXBseSB3aXRoIGEgZml4ZXMgdGFnIHBsZWFzZQ0KDQpZZXMsIHBsZWFzZSBoZWxwIGFkZDoN
+CkZpeGVzOiA3ZDAyMjk2YWM4YjggKCJpaW86IGFkYzogYWRkIGlteDkzIGFkYyBzdXBwb3J0IikN
+Cg0KVGhhbmtzDQpIYWlibyBDaGVuDQo+IA0KPiBUaGFua3MsDQo+IA0KPiBKb25hdGhhbg0KPiAN
+Cj4gPiAtLS0NCj4gPiAgZHJpdmVycy9paW8vYWRjL2lteDkzX2FkYy5jIHwgNCArKysrDQo+ID4g
+IDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL2lpby9hZGMvaW14OTNfYWRjLmMgYi9kcml2ZXJzL2lpby9hZGMvaW14OTNfYWRjLmMN
+Cj4gPiBpbmRleCA5YmIxZTRiYTFhZWUuLjRjY2Y0ODE5ZjFmMSAxMDA2NDQNCj4gPiAtLS0gYS9k
+cml2ZXJzL2lpby9hZGMvaW14OTNfYWRjLmMNCj4gPiArKysgYi9kcml2ZXJzL2lpby9hZGMvaW14
+OTNfYWRjLmMNCj4gPiBAQCAtOTMsNiArOTMsMTAgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9f
+Y2hhbl9zcGVjDQo+IGlteDkzX2FkY19paW9fY2hhbm5lbHNbXSA9IHsNCj4gPiAgCUlNWDkzX0FE
+Q19DSEFOKDEpLA0KPiA+ICAJSU1YOTNfQURDX0NIQU4oMiksDQo+ID4gIAlJTVg5M19BRENfQ0hB
+TigzKSwNCj4gPiArCUlNWDkzX0FEQ19DSEFOKDQpLA0KPiA+ICsJSU1YOTNfQURDX0NIQU4oNSks
+DQo+ID4gKwlJTVg5M19BRENfQ0hBTig2KSwNCj4gPiArCUlNWDkzX0FEQ19DSEFOKDcpLA0KPiA+
+ICB9Ow0KPiA+DQo+ID4gIHN0YXRpYyB2b2lkIGlteDkzX2FkY19wb3dlcl9kb3duKHN0cnVjdCBp
+bXg5M19hZGMgKmFkYykNCg0K
 

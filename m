@@ -1,71 +1,89 @@
-Return-Path: <linux-iio+bounces-445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-446-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7DE7FAC10
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 21:53:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82CD7FAC82
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 22:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F7528150A
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 20:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35A55B21425
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 21:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2636B446DF;
-	Mon, 27 Nov 2023 20:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C29D4644A;
+	Mon, 27 Nov 2023 21:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="t5SQMCx3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D58CD4D;
-	Mon, 27 Nov 2023 12:53:05 -0800 (PST)
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6d7f665285aso2061255a34.1;
-        Mon, 27 Nov 2023 12:53:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701118384; x=1701723184;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vkEosB8E4SkXTgPuXYPrquLd200A9U4+Ar3MUq+vaC4=;
-        b=nR6SxiGKbcBB9rLazqlSnMVUv3SW4ySzR20LepPuJkaNLVYJQk1z2ThGo3K3TtSWM9
-         CIhl7Ep8S+rid23Lw+oRuTHrzAhNa13JkitOULUXgPG6zUjvFsPGP087krmFyQFNnL1Q
-         2Jn+MO3DMUcLy8WZS9q1YqKwj9n5mB0IvnbbWElH7j6JlHf3GulTfX3egy0HZpIzewAe
-         oYbFdJ+cg3Nh08qAUyM2ceycSYLEPTqYIbntMxAwdconOVcEJVFy7VcyigqII8wUEMRs
-         TUWmdPuqQeH8i1Svc8M5+eckzWPm7l3IquuR6RJACVd5PpFQR1o+eNzu0Mfc7STd9hjB
-         ynwQ==
-X-Gm-Message-State: AOJu0YzHDr0hF2oImVU7gwVBafFrrAr1ZE8Kz1fj3oMIHqPlWb6GIj6d
-	t3LG/vA4dWz3O2MAWC72jK/rhRzM/g==
-X-Google-Smtp-Source: AGHT+IFqyrD9yiyTTCw6iDLy8Ry50gTDAtxgWGh9Ic18f869OJfSTY9HowoVDP8gn31mlH4Hetd3Lg==
-X-Received: by 2002:a05:6870:d85:b0:1ef:781a:1f2e with SMTP id mj5-20020a0568700d8500b001ef781a1f2emr6293506oab.1.1701118384666;
-        Mon, 27 Nov 2023 12:53:04 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z19-20020a056870515300b001efce0658e6sm2505038oak.39.2023.11.27.12.53.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Nov 2023 12:53:04 -0800 (PST)
-Received: (nullmailer pid 3369512 invoked by uid 1000);
-	Mon, 27 Nov 2023 20:53:02 -0000
-Date: Mon, 27 Nov 2023 14:53:02 -0600
-From: Rob Herring <robh@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: paul.cercueil@analog.com, Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/7] dt-bindings: iio: Add binding documentation for
- AD7091R-8
-Message-ID: <20231127205302.GA3354666-robh@kernel.org>
-References: <cover.1700751907.git.marcelo.schmitt1@gmail.com>
- <8ce972a3708f7789237c86c44e23cdcb23a35103.1700751907.git.marcelo.schmitt1@gmail.com>
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F43101;
+	Mon, 27 Nov 2023 13:25:18 -0800 (PST)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id AB04D8777D;
+	Mon, 27 Nov 2023 22:25:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1701120315;
+	bh=LegISOAZj/VTwj6ARkkB9OAlGrxp17UtyxUiTPjGYlE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=t5SQMCx3A6ona53IT5vZtfKVi1fqQT3ABwspsknnFQx00H/tU1CYy38TVhIZWcW8S
+	 83ks7rWZcdDMakATT2Kk1oK6MKYL5Fq0vLtpPbT6Y6lkFQvafqFqkberCYtxmu/V70
+	 C1HRd/YdWrUxrSasKOhikb9r4pqlhxWrz3t08HJOfqMqfvgZWo+mrIs+SDkMXagkXf
+	 G9nuBRgOkCHnND6gU7vxMhgEmR5fnSUP5/gZS1YXfkRherGHwm/V5TMnEgXrB4gCcO
+	 6v4SQ7axkcWudjG75/mCSchWbG+Emz1ruBVNN3fO6cacEJRV52QLivYZF35reTa/6T
+	 uW9QYJr3dbP3w==
+Message-ID: <d5c0cc28-693d-4797-aebf-e4c13b6c8267@denx.de>
+Date: Mon, 27 Nov 2023 21:52:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8ce972a3708f7789237c86c44e23cdcb23a35103.1700751907.git.marcelo.schmitt1@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] iio: light: isl76682: Add ISL76682 driver
+Content-Language: en-US
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, Matti Vaittinen <mazziesaccount@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Andre Werner <andre.werner@systec-electronic.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+ Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
+References: <20231125222738.97875-1-marex@denx.de>
+ <20231125222738.97875-2-marex@denx.de> <ZWTAEWRreMir7x_T@smile.fi.intel.com>
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <ZWTAEWRreMir7x_T@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Thu, Nov 23, 2023 at 01:42:21PM -0300, Marcelo Schmitt wrote:
-> Add device tree binding documentation for AD7091R-8.
+On 11/27/23 17:13, Andy Shevchenko wrote:
+> On Sat, Nov 25, 2023 at 11:26:23PM +0100, Marek Vasut wrote:
+>> The ISL76682 is very basic ALS which only supports ALS or IR mode
+>> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+>> other fancy functionality.
+> 
+> ...
+> 
+>> +	for (i = 0; i < ARRAY_SIZE(isl76682_range_table); i++) {
+>> +		if (chan->type == IIO_LIGHT && val2 != isl76682_range_table[i].als)
+>> +				continue;
+>> +		if (chan->type == IIO_INTENSITY && val2 != isl76682_range_table[i].ir)
+>> +				continue;
+> 
+> You forgot to drop indentation level for 'continue' lines.
 
-Drop 'binding documentation for ' from the subject. You already said 
-that with 'dt-bindings'.
-
-Rob
+I noticed that too and already fixed it in v6 .
 

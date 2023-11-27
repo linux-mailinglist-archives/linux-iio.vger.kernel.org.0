@@ -1,137 +1,124 @@
-Return-Path: <linux-iio+bounces-421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8267F9B74
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 09:14:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44F17F9CDB
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 10:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847441F20C77
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 08:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 137E52812D5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 09:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82158111B4;
-	Mon, 27 Nov 2023 08:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCC217734;
+	Mon, 27 Nov 2023 09:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjLj4Es8"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qrJijozY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358AB10785;
-	Mon, 27 Nov 2023 08:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9366C433C7;
-	Mon, 27 Nov 2023 08:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701072881;
-	bh=3qTRy2F6nIzhohgL6U9JKBvv0/WyY8i9YB8Pa1jwqoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HjLj4Es8Qcz0nTYQn5qvj64G45BJZTp09Oq/G8YT0WFtwaBlK4/9G/6sty4THEUQq
-	 17ABHg2kuSgGEqBkuDdykyrPL23ayOp112E8QAwGZQRu8ATu9Tni6Cmd9KjibhskGe
-	 EBYVsoX6S9VO1XziXK8idk+GeAx+L5ykVZ+qUNJDHLdWuq4LFQLwqgwuBpVk4xJZCS
-	 v83tYF5wpwBflqyROjIihArZG4RSYVa1zDJDbTWZ6rx1fU2LbDwEN0x3l5Kl9l7mv9
-	 SsWErUG8r0uDCzLug+efrQDwo944+KIqHfzgoPvX9aMt45ava8pradQ9oKKCHkSiT9
-	 Dsp9hjAdD3rKA==
-Date: Mon, 27 Nov 2023 08:14:32 +0000
-From: Lee Jones <lee@kernel.org>
-To: Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc: jic23@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
-	konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
-	dmitry.baryshkov@linaro.org, linus.walleij@linaro.org,
-	linux-arm-msm@vger.kernel.org, andriy.shevchenko@linux.intel.com,
-	quic_subbaram@quicinc.com, quic_collinsd@quicinc.com,
-	quic_amelende@quicinc.com, quic_kamalw@quicinc.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	marijn.suijten@somainline.org, lars@metafoo.de, luca@z3ntu.xyz,
-	linux-iio@vger.kernel.org, rafael@kernel.org, rui.zhang@intel.com,
-	lukasz.luba@arm.com, cros-qcom-dts-watchers@chromium.org,
-	sboyd@kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-msm-owner@vger.kernel.org, kernel@quicinc.com
-Subject: Re: [PATCH V2 3/3] dt-bindings: iio/adc: Move QCOM ADC bindings to
- iio/adc folder
-Message-ID: <20231127081432.GC1470173@google.com>
-References: <20231116032644.753370-1-quic_jprakash@quicinc.com>
- <20231116032644.753370-2-quic_jprakash@quicinc.com>
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEF712D;
+	Mon, 27 Nov 2023 01:41:18 -0800 (PST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3AR9eoS7115669;
+	Mon, 27 Nov 2023 03:40:50 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1701078050;
+	bh=pCY7DFG3/xlRNRpTV4E9IgPYvQLv9m8bh6SdbTCVMzU=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=qrJijozY4EaHxw4gRYDAWMHEkjPhU8ia4QDFiM2IAAS49+geRBHnsJ1ualldgIjf2
+	 4pLSLCuyYW6oCFRlii1SJme8GRLTIR2MKk2ndlrgeH/WZjG9QaKg/GH2Pk69ZttS5+
+	 /JP7r8nJmmp72r6CHA8P37zF8JRNU1Rrm0aREDeo=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3AR9eofU035872
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 27 Nov 2023 03:40:50 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 27
+ Nov 2023 03:40:49 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 27 Nov 2023 03:40:49 -0600
+Received: from [172.24.227.133] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+	by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3AR9ek0v123777;
+	Mon, 27 Nov 2023 03:40:46 -0600
+Message-ID: <53edd2e5-ffc3-4406-baac-3582edcdbf93@ti.com>
+Date: Mon, 27 Nov 2023 15:10:45 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231116032644.753370-2-quic_jprakash@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: adc: ti_am335x_adc: Fix return value check of
+ tiadc_request_dma()
+Content-Language: en-US
+To: Jonathan Cameron <jic23@kernel.org>, Wadim Egorov <w.egorov@phytec.de>
+CC: <lars@metafoo.de>, <robh@kernel.org>, <heiko@sntech.de>,
+        <peter.ujfalusi@ti.com>, <mugunthanvnm@ti.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <nm@ti.com>, <upstream@lists.phytec.de>
+References: <20230925134427.214556-1-w.egorov@phytec.de>
+ <20231005150917.2d0c833e@jic23-huawei>
+From: Bhavya Kapoor <b-kapoor@ti.com>
+In-Reply-To: <20231005150917.2d0c833e@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Thu, 16 Nov 2023, Jishnu Prakash wrote:
 
-> There are several files containing QCOM ADC macros for channel names
-> right now in the include/dt-bindings/iio folder. Since all of these
-> are specifically for adc, move the files to the
-> include/dt-bindings/iio/adc folder.
-> 
-> Also update all affected devicetree and driver files to fix compilation
-> errors seen with this move and update documentation files to fix
-> dtbinding check errors for the same.
-> 
-> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-> ---
->  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml       | 4 ++--
->  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 2 +-
+On 05/10/23 7:39 pm, Jonathan Cameron wrote:
+> On Mon, 25 Sep 2023 15:44:27 +0200
+> Wadim Egorov <w.egorov@phytec.de> wrote:
+>
+>> Fix wrong handling of a DMA request where the probing only failed
+>> if -EPROPE_DEFER was returned. Instead, let us fail if a non -ENODEV
+>> value is returned. This makes DMAs explicitly optional. Even if the
+>> DMA request is unsuccessfully, the ADC can still work properly.
+>> We do also handle the defer probe case by making use of dev_err_probe().
+>>
+>> Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
+>> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> +CC Bhavya,
+>
+> Could you take a look at this given you had comments on v1.
+>
+> Thanks,
+>
+> Jonathan
 
-Acked-by: Lee Jones <lee@kernel.org>
+Hi Jonathan, Patch Looks Good To Me and Should now work fine for every case.
 
->  .../devicetree/bindings/thermal/qcom-spmi-adc-tm-hc.yaml  | 2 +-
->  .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml    | 6 +++---
->  arch/arm64/boot/dts/qcom/pm2250.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm6125.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm6150.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm6150l.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pm660.dtsi                       | 2 +-
->  arch/arm64/boot/dts/qcom/pm660l.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm7250b.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pm8150.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm8150b.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pm8150l.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pm8916.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm8950.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm8953.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm8994.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pm8998.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pmi632.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/pmi8950.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi                 | 2 +-
->  arch/arm64/boot/dts/qcom/pmp8074.dtsi                     | 2 +-
->  arch/arm64/boot/dts/qcom/pms405.dtsi                      | 2 +-
->  arch/arm64/boot/dts/qcom/sc7280-idp.dts                   | 2 +-
->  arch/arm64/boot/dts/qcom/sc7280-idp.dtsi                  | 2 +-
->  arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi                | 4 ++--
->  arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi               | 2 +-
->  .../arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 6 +++---
->  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts         | 2 +-
->  arch/arm64/boot/dts/qcom/sm8450-hdk.dts                   | 8 ++++----
->  drivers/iio/adc/qcom-spmi-adc5-gen3.c                     | 2 +-
->  drivers/iio/adc/qcom-spmi-adc5.c                          | 2 +-
->  drivers/iio/adc/qcom-spmi-vadc.c                          | 2 +-
->  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h  | 2 +-
->  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h | 2 +-
->  .../dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h    | 2 +-
->  include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h | 2 +-
->  include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h | 2 +-
->  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    | 2 +-
->  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    | 2 +-
->  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    | 2 +-
->  .../dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    | 0
->  include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h        | 0
->  44 files changed, 51 insertions(+), 51 deletions(-)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (100%)
->  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (100%)
+Regards
 
--- 
-Lee Jones [李琼斯]
+~B-Kapoor
+
+>
+>> ---
+>> v2:
+>>    - Update description
+>>    - Drop line break after Fixes tag
+>>    - Move decision about optional DMA into probe/caller
+>> ---
+>>   drivers/iio/adc/ti_am335x_adc.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+>> index 8db7a01cb5fb..5f8795986995 100644
+>> --- a/drivers/iio/adc/ti_am335x_adc.c
+>> +++ b/drivers/iio/adc/ti_am335x_adc.c
+>> @@ -670,8 +670,10 @@ static int tiadc_probe(struct platform_device *pdev)
+>>   	platform_set_drvdata(pdev, indio_dev);
+>>   
+>>   	err = tiadc_request_dma(pdev, adc_dev);
+>> -	if (err && err == -EPROBE_DEFER)
+>> +	if (err && err != -ENODEV) {
+>> +		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
+>>   		goto err_dma;
+>> +	}
+>>   
+>>   	return 0;
+>>   
 

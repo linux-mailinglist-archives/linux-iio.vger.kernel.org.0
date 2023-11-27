@@ -1,157 +1,71 @@
-Return-Path: <linux-iio+bounces-444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6BB7FAA14
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 20:17:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7DE7FAC10
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 21:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CB591C20A6F
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 19:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F7528150A
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 20:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7A83DBBF;
-	Mon, 27 Nov 2023 19:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="un7CsDRU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2636B446DF;
+	Mon, 27 Nov 2023 20:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2FDD5D;
-	Mon, 27 Nov 2023 11:17:11 -0800 (PST)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 14222120015;
-	Mon, 27 Nov 2023 22:17:09 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 14222120015
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1701112629;
-	bh=SS1sGn/2cNOLsJ2sFe7Xteqkm0aQT+klhk6IpwzCwEI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=un7CsDRUCi8AaK8jc3jZ2ciDPYaqLnUc+FzF2ARR4YfQ/epABCzay1VEgGoNOe3Hu
-	 d7mfrog5fDbRRQzrxOu8+1K5NVF7+99sthStCLnG+KdwP0ZvQWQedjGd8ADcN1Gt2U
-	 NvvYSMsyFL5OriSEXT61QjmBzj1bCPwJCNXBunw/fINUoaU+41vDwyCKceXwqIMwIk
-	 Bu6F1bdq5ZYZVA2sraaDv9JoZZpuuiakbsh5PItRSa/aAS4Kv38xSDlJNbFZ3pnoMY
-	 VV6TdkmjzX55hjwKFCNjwyYIVjCg+Il85pBATXMQYDEftGqivMJ1n0ICfVjhmdj1xW
-	 rHFjVyJ97v6Ig==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Mon, 27 Nov 2023 22:17:08 +0300 (MSK)
-Received: from [192.168.1.127] (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 27 Nov 2023 22:17:07 +0300
-Message-ID: <ca18c346-94f3-4c4c-a540-57509b879b04@salutedevices.com>
-Date: Mon, 27 Nov 2023 22:17:33 +0300
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D58CD4D;
+	Mon, 27 Nov 2023 12:53:05 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6d7f665285aso2061255a34.1;
+        Mon, 27 Nov 2023 12:53:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701118384; x=1701723184;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vkEosB8E4SkXTgPuXYPrquLd200A9U4+Ar3MUq+vaC4=;
+        b=nR6SxiGKbcBB9rLazqlSnMVUv3SW4ySzR20LepPuJkaNLVYJQk1z2ThGo3K3TtSWM9
+         CIhl7Ep8S+rid23Lw+oRuTHrzAhNa13JkitOULUXgPG6zUjvFsPGP087krmFyQFNnL1Q
+         2Jn+MO3DMUcLy8WZS9q1YqKwj9n5mB0IvnbbWElH7j6JlHf3GulTfX3egy0HZpIzewAe
+         oYbFdJ+cg3Nh08qAUyM2ceycSYLEPTqYIbntMxAwdconOVcEJVFy7VcyigqII8wUEMRs
+         TUWmdPuqQeH8i1Svc8M5+eckzWPm7l3IquuR6RJACVd5PpFQR1o+eNzu0Mfc7STd9hjB
+         ynwQ==
+X-Gm-Message-State: AOJu0YzHDr0hF2oImVU7gwVBafFrrAr1ZE8Kz1fj3oMIHqPlWb6GIj6d
+	t3LG/vA4dWz3O2MAWC72jK/rhRzM/g==
+X-Google-Smtp-Source: AGHT+IFqyrD9yiyTTCw6iDLy8Ry50gTDAtxgWGh9Ic18f869OJfSTY9HowoVDP8gn31mlH4Hetd3Lg==
+X-Received: by 2002:a05:6870:d85:b0:1ef:781a:1f2e with SMTP id mj5-20020a0568700d8500b001ef781a1f2emr6293506oab.1.1701118384666;
+        Mon, 27 Nov 2023 12:53:04 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id z19-20020a056870515300b001efce0658e6sm2505038oak.39.2023.11.27.12.53.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 12:53:04 -0800 (PST)
+Received: (nullmailer pid 3369512 invoked by uid 1000);
+	Mon, 27 Nov 2023 20:53:02 -0000
+Date: Mon, 27 Nov 2023 14:53:02 -0600
+From: Rob Herring <robh@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: paul.cercueil@analog.com, Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/7] dt-bindings: iio: Add binding documentation for
+ AD7091R-8
+Message-ID: <20231127205302.GA3354666-robh@kernel.org>
+References: <cover.1700751907.git.marcelo.schmitt1@gmail.com>
+ <8ce972a3708f7789237c86c44e23cdcb23a35103.1700751907.git.marcelo.schmitt1@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] iio: adc: meson: add separate config for axg SoC
- family
-Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>
-CC: <lars@metafoo.de>, <neil.armstrong@linaro.org>, <khilman@baylibre.com>,
-	<jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
-	<andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
-	<u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-amlogic@lists.infradead.org>, <kernel@salutedevices.com>
-References: <20231122074741.154228-1-gnstark@salutedevices.com>
- <20231125172508.2a2242bf@jic23-huawei>
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <20231125172508.2a2242bf@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 181629 [Nov 27 2023]
-X-KSMG-AntiSpam-Version: 6.0.0.2
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1;salutedevices.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/11/27 17:21:00 #22554181
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ce972a3708f7789237c86c44e23cdcb23a35103.1700751907.git.marcelo.schmitt1@gmail.com>
 
-Hello Jonathan
+On Thu, Nov 23, 2023 at 01:42:21PM -0300, Marcelo Schmitt wrote:
+> Add device tree binding documentation for AD7091R-8.
 
-Thanks for the review.
+Drop 'binding documentation for ' from the subject. You already said 
+that with 'dt-bindings'.
 
-On 11/25/23 20:25, Jonathan Cameron wrote:
-> On Wed, 22 Nov 2023 10:47:41 +0300
-> George Stark <gnstark@salutedevices.com> wrote:
-> 
->> According to Amlogic custom kernels ADC of axg SoC family has
->> vref_select and requires this setting to work nominally and thus
->> needs a separate config.
->>
->> Signed-off-by: George Stark <gnstark@salutedevices.com>
->> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> 
-> Is this a fix?  If so, please provide a fixes tag.
-Actually yes, these changes could be done in the patch that introduced
-new configuration parameters.
-
-> Or is it aligning with the vendor kernels and we don't know if
-> it's strictly necessary or not?
-I do know it's necessary if we want kernel driver to be independent from 
-ADC initialization in vendor u-boot code. I have Amlogic a113x device 
-(axg family) and can provide test results w and w/o this patch.
-
-> 
->> ---
->>   drivers/iio/adc/meson_saradc.c | 16 +++++++++++++++-
->>   1 file changed, 15 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
->> index db280da9edbf..34555a85f131 100644
->> --- a/drivers/iio/adc/meson_saradc.c
->> +++ b/drivers/iio/adc/meson_saradc.c
->> @@ -1242,6 +1242,20 @@ static const struct meson_sar_adc_param meson_sar_adc_gxl_param = {
->>   	.cmv_select = 1,
->>   };
->>   
->> +static const struct meson_sar_adc_param meson_sar_adc_axg_param = {
->> +	.has_bl30_integration = true,
->> +	.clock_rate = 1200000,
->> +	.bandgap_reg = MESON_SAR_ADC_REG11,
->> +	.regmap_config = &meson_sar_adc_regmap_config_gxbb,
->> +	.resolution = 12,
->> +	.disable_ring_counter = 1,
->> +	.has_reg11 = true,
->> +	.vref_volatge = 1,
->> +	.has_vref_select = true,
->> +	.vref_select = VREF_VDDA,
->> +	.cmv_select = 1,
->> +};
->> +
->>   static const struct meson_sar_adc_param meson_sar_adc_g12a_param = {
->>   	.has_bl30_integration = false,
->>   	.clock_rate = 1200000,
->> @@ -1286,7 +1300,7 @@ static const struct meson_sar_adc_data meson_sar_adc_gxm_data = {
->>   };
->>   
->>   static const struct meson_sar_adc_data meson_sar_adc_axg_data = {
->> -	.param = &meson_sar_adc_gxl_param,
->> +	.param = &meson_sar_adc_axg_param,
->>   	.name = "meson-axg-saradc",
->>   };
->>   
-> 
-
--- 
-Best regards
-George
+Rob
 

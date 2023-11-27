@@ -1,44 +1,44 @@
-Return-Path: <linux-iio+bounces-431-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-430-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F617FA55A
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 16:55:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD527FA55C
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 16:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B12281747
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 15:55:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54FC0B210EC
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 15:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6034CE0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCA434CDE;
 	Mon, 27 Nov 2023 15:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SriQa6OJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KA+5cpyl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29164347AD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290DC3457D;
 	Mon, 27 Nov 2023 15:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B2A02C433C8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BA65CC433C9;
 	Mon, 27 Nov 2023 15:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1701100540;
-	bh=2dwPEiIKh1vP1LKJt7FEPcploNyGC3+4S6+K4B/naJw=;
+	bh=nr6I60+Ybh8j/RB6wm/XTGHNHpMDeabpoOKt6I7wF7k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SriQa6OJMdXkuvV8O8hUuUMYMUOGYPzqJQkmYcSC0Hqj3AXsNdPlt0zAq2YwEdFkS
-	 7PXJ7v2dou60iwk2A2n+0gu0Dz/YI+H1Ztyczx+dF2sV1vXdFMC1EMTQvEZHDss59E
-	 fV1Gb8rypaftEyh2435FBKKpe/4A+8B98b/UI1RqP+godvouM4r36Q7K7LrtB8hL82
-	 QXgy5DDyAaFwx7WtUi2ZhRq06RNVfTB5L6ydBqGW3zvZ9z/BYw+FtC9Kx808QvUwfQ
-	 oe770C2y1xmeP/B5S06NiqEFwaCNdsYpOMMKNMUN2ypO3EA7ctvN0UgEfGkbtT1P2p
-	 ea5Ha1Z7EQgpA==
+	b=KA+5cpylVtTlBKIh3V5XrNh9rCKCF05gT6AAArCWB6Mv53p8ljrLahI3LRYGcuIh8
+	 Acp+AGaY6gVnhHHJtH75W6FIFCpA4k3YaMdbrOkntbA/NUFy1VoJYajW+X0/sowBc7
+	 3O9c+pbrco6+9pX8euep1ALceik/o/OfL9qd1mz7UIOzgPyy1XWK8tIk1SNK7snTfV
+	 ONpGIQ2UEdDf9199xGe327DOyk+3qMUI9mk4PpuyKZcOQKyDBbLJmjqgEncYI/k8WN
+	 aGe32dxhRiwI5foVjoMcGmZ66YLEWqak+mKLnaQhIADIJmPYA6AfcB+XXbee6VMrvp
+	 9gEp7ahbb0t7g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 969DAC0755A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3330C07E97;
 	Mon, 27 Nov 2023 15:55:40 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 27 Nov 2023 16:55:34 +0100
-Subject: [PATCH 1/2] dt-bindings: adi,ad5791.yaml: Add support for
- controlling RBUF
+Date: Mon, 27 Nov 2023 16:55:35 +0100
+Subject: [PATCH 2/2] iio: dac: ad5791: Add support for controlling RBUF via
+ devicetree
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231127-ad5791-michael-stuff-v1-1-04167b3edc56@analog.com>
+Message-Id: <20231127-ad5791-michael-stuff-v1-2-04167b3edc56@analog.com>
 References: <20231127-ad5791-michael-stuff-v1-0-04167b3edc56@analog.com>
 In-Reply-To: <20231127-ad5791-michael-stuff-v1-0-04167b3edc56@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -58,11 +58,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Conor Dooley <conor+dt@kernel.org>, 
  Michael Hennerich <michael.hennerich@analog.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701100539; l=917;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701100539; l=1575;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=0oarBF+t5l1h1kCQzFI2KDQV3L8snvDLRqcv7MsxVLA=;
- b=yOBKk0YqB2bxsTHK2s/2IGCZKAEIOMEAIb3uoyxh1efS7ryT+NoBuWnMKNtXYUCyiKDGk/6cm
- NNL4gGKa5a/A9VaMcG3d0iAiyoglAqFeBZGtLWkOMMH04Qx1RNJR040
+ bh=V60ayX58Xp4oAs8NlC1uKeQ7LGPvuaHa+/Zm9B0Kn5A=;
+ b=+lvFhDi3dz4Zjoy+gfF6jAx15RVdJzTmTyoGM4/y+g47gGI4uQXyrrSVhfUD63LCuoXgeevMI
+ Peh1v1bDO7WCOtxCMMJgMDLviDkccef5D+7VQcpinEe2h62xBE1hTSf
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -78,25 +78,43 @@ gain of two configuration.
 Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/dac/ad5791.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-index 3a84739736f6..c81285d84db7 100644
---- a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-@@ -26,6 +26,11 @@ properties:
-   vdd-supply: true
-   vss-supply: true
+diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
+index a4167454da81..75b549827e15 100644
+--- a/drivers/iio/dac/ad5791.c
++++ b/drivers/iio/dac/ad5791.c
+@@ -345,6 +345,7 @@ static int ad5791_probe(struct spi_device *spi)
+ 	struct iio_dev *indio_dev;
+ 	struct ad5791_state *st;
+ 	int ret, pos_voltage_uv = 0, neg_voltage_uv = 0;
++	bool use_rbuf_gain2;
  
-+  adi,rbuf-gain2-en:
-+    description: Specify to allow an external amplifier to be connected in a
-+      gain of two configuration.
-+    type: boolean
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+ 	if (!indio_dev)
+@@ -379,6 +380,12 @@ static int ad5791_probe(struct spi_device *spi)
+ 	st->pwr_down = true;
+ 	st->spi = spi;
+ 
++	if (pdata)
++		use_rbuf_gain2 = pdata->use_rbuf_gain2;
++	else
++		use_rbuf_gain2 = device_property_read_bool(&spi->dev,
++							   "adi,rbuf-gain2-en");
 +
- required:
-   - compatible
-   - reg
+ 	if (!IS_ERR(st->reg_vss) && !IS_ERR(st->reg_vdd)) {
+ 		st->vref_mv = (pos_voltage_uv + neg_voltage_uv) / 1000;
+ 		st->vref_neg_mv = neg_voltage_uv / 1000;
+@@ -398,7 +405,7 @@ static int ad5791_probe(struct spi_device *spi)
+ 
+ 
+ 	st->ctrl = AD5761_CTRL_LINCOMP(st->chip_info->get_lin_comp(st->vref_mv))
+-		  | ((pdata && pdata->use_rbuf_gain2) ? 0 : AD5791_CTRL_RBUF) |
++		  | (use_rbuf_gain2 ? 0 : AD5791_CTRL_RBUF) |
+ 		  AD5791_CTRL_BIN2SC;
+ 
+ 	ret = ad5791_spi_write(st, AD5791_ADDR_CTRL, st->ctrl |
 
 -- 
 2.43.0

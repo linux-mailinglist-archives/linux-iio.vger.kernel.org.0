@@ -1,61 +1,151 @@
-Return-Path: <linux-iio+bounces-436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-437-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8170C7FA806
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 18:33:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD437FA813
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 18:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32381C20CDD
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 17:33:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB28328185F
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 17:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D3639FDC;
-	Mon, 27 Nov 2023 17:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956D139FDC;
+	Mon, 27 Nov 2023 17:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXI7RxKK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vzgs4/Hs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD5726AC3;
-	Mon, 27 Nov 2023 17:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F028CC433C7;
-	Mon, 27 Nov 2023 17:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701106377;
-	bh=BgbaDnMC2tbzXy23qRFkhrncnNLb4XGkV4S41F/p7Yo=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=DXI7RxKKeHC0GXYGmZOGMuRiMzmNk9RZRAk9d6TgCRObIqhjmUKxd7gpN9k7M15C6
-	 BPzw40RPJFMcJeMtdcbsa0yuQTewyQVevXDa88g95ZwmFlqabn9uk2nkWA26ALdEOz
-	 QSrvkAgaJVIHtFw3E1X4kpmAUQMdy+l9Qvui2ArtIPxgcc/6WEv8lRAXbUHD0E2gIc
-	 aXRSzPbd+ltAAmFemcwCSxQJsj5kH1BChAxnwpKAta+d3AUMERGy55J6Jl8pdQcyME
-	 JF3FG4ZxnUykx2HLRGmqbPeWFlt8V9xyPNUUnt/WN62CPMKOLuo+ercwqq3n4VfIhR
-	 vnWXMyo3dhZfQ==
-Message-ID: <b711a36c58455deeef5e1caa6669f546.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC0790;
+	Mon, 27 Nov 2023 09:34:32 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-409299277bbso33236945e9.2;
+        Mon, 27 Nov 2023 09:34:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701106470; x=1701711270; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aMR2AzaNP6dtsYlxVMl7E7nXSabAWLa9DNxxIFd59k4=;
+        b=Vzgs4/HsCi11zqtuks/HmeMR/5wuGdvsUder6xTkdlEpF6yYKIRD0ZJKaU7kIVc4KC
+         dlO9GODwGJP9HCaV5GQws/bPwFHpSsOxFNfNvrqi2f5dKQyU2IK/nJkVvshfR6aWnTXy
+         MOy7qfgBdXM0bPrWJoIGUDGKYoJGg729EPGAZlnuWimpi6Il31NIqIgYv51+ulqktiBo
+         vwNH1D5DkodtiyM1C54aAMW/6JX7wBnWkBa41vdODjOmzcfTmeydLd7+KA3e8V7yyKZD
+         sExrKfX1SFKL/3zBZIOAMcTHFfVRbJNlVu0PSBDUnWjIsbljCIjG8xiPl8bv6AhU8AkC
+         FUag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701106470; x=1701711270;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aMR2AzaNP6dtsYlxVMl7E7nXSabAWLa9DNxxIFd59k4=;
+        b=CsvxMX5ektRUr1ZGRjDAKvO+62PMfZGb+NrmNI85L/P5Lr5oaSu/FHkVe2RDlSDJu9
+         umbWWMcPxtbGbfgEsZL4/AK+9Z9kHyCbZMXviYFycb0+quouR3HptnY+djTmp17Kj7Ah
+         C2DB8ueyfEc4pu9kuF3UHlzqU7AOtP9osJNAL1i8yNPb6baJru7ScExK+fRR8Xwtx2wF
+         dBz/sMYa13gzNxmc310qybXXXd0xbMuGgNu8SKbPrzmSK9eUfmmYKRR9OrxqnQaImHNh
+         BJ/AX4V8L71NCWgRglsMxlSeFGnDGGa4pIa1WYX9uXh1LW6RYmgvmdl6lfsrUVrKAdQf
+         Iaeg==
+X-Gm-Message-State: AOJu0YxecfbQJBYDJcnUMnS4S2dGDzI0rZ5XK/EQcUjNvgYz6C0F+Ogo
+	bxQN2l/jvLDN9fvHRyzoJ+s=
+X-Google-Smtp-Source: AGHT+IG3cENoOyM1tLbWu17mI0hNJOKfLtmjDf/rLwg1+1jpowY4BpyUdoKvDh7hnCmB+C+OZRyNww==
+X-Received: by 2002:a05:600c:1989:b0:408:3f87:cba with SMTP id t9-20020a05600c198900b004083f870cbamr8743868wmq.39.1701106470453;
+        Mon, 27 Nov 2023 09:34:30 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-aa01-5533-a7bc-788c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:aa01:5533:a7bc:788c])
+        by smtp.gmail.com with ESMTPSA id je19-20020a05600c1f9300b004083729fc14sm15139626wmb.20.2023.11.27.09.34.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 09:34:30 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v3 0/3] iio: light: add support for VEML6075 UVA and UVB
+ light sensor
+Date: Mon, 27 Nov 2023 18:34:27 +0100
+Message-Id: <20231110-veml6075-v3-0-6ee46775b422@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20231124092121.16866-1-krzysztof.kozlowski@linaro.org>
-References: <20231124092121.16866-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] dt-bindings: correct white-spaces in examples
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org
-Date: Mon, 27 Nov 2023 09:32:54 -0800
-User-Agent: alot/0.10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACPTZGUC/3WNzQ7CIBAGX8VwFsMu4N/J9zAegG5bEkoNKNE0f
+ XdpTx70OF92ZieWKXnK7LyZWKLisx9jBbndMNeb2BH3TWWGAiUACF5oCHtx0FwiaERHxpkTq+f
+ WZOI2mej6KsRnCHW8J2r9a+1fb5V7nx9jeq/vCizrj3IBLrjUykpUmkCZSzcYH3ZuHNgSKfhPx
+ Co2QlFr3dG2Gr7FeZ4/9scZxe4AAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701106468; l=2761;
+ i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
+ bh=OMwY/jKvDu8C3jplLlM5jK7D4g8rurvRZ9c6ohzQ9oU=;
+ b=YeVlqLGNl4FGKDS94OC/YyuQEU/QpF3QUqaPskq+WieSahVQ7/g032rEuR6kdBMDn/3rjLNE3
+ VLhFWF/+8w4C2P9hWkI1i3s5D5q/LpiirfuXN49TGLWEC6Hv6dFd3Hf
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
-Quoting Krzysztof Kozlowski (2023-11-24 01:21:21)
-> Use only one and exactly one space around '=3D' in DTS example.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> ---
+This series adds support for the Vishay VEML6075 ultraviolet sensor,
+which offers UVA and UVB measurement channels and I2C communication.
 
-Acked-by: Stephen Boyd <sboyd@kernel.org>
+The device bindings and a simple example are also provided.
+
+This driver has been tested with a Gravity VEML6075 UV Sensor Module in
+open air conditions.
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v3:
+- veml6075.c: use MICRO instead of 1000000LL (add linux/units.h).
+- veml6075.c: improve lock description.
+- veml6075.c: remove unnecessary i2c_get_client_data() from the probe
+  function.
+- veml6075.c: remove shutdown function and do the bit update inline.
+- veml6075.c: improve return path in read/write_raw().
+- veml6075.c: remove -ENODEV return check for regulator_get_enable().
+- Link to v2: https://lore.kernel.org/r/20231110-veml6075-v2-0-d04efbc8bf51@gmail.com
+
+Changes in v2:
+- General: swap patch order (bindings first).
+- iio core: add uva and uvb modifiers.
+- veml6075.c: use uva and uvb modifiers instead of extend_name
+- veml6075.c: remove redundant information from the description.
+- veml6075.c: inline device name.
+- veml6075.c: use read_avail() for available attributes.
+- veml6075.c: use guard(mutex) instead of lock/unlock().
+- veml6075.c: use regulator_get_enable() without _optional.
+- veml6075.c: register managed iio device and delete remove().
+- veml6075.c: remove remaining debug messages.
+- veml6075.c: error path cleanup (return type after val assignment).
+- veml6075.c: remove zero from i2c_device_id.
+- MAINTAINERS: fix bindings name.
+- vishay,veml6075.yaml: remove vdd-supply description and mark property
+  as true.
+- Link to v1: https://lore.kernel.org/r/20231110-veml6075-v1-0-354b3245e14a@gmail.com
+
+---
+Javier Carrasco (3):
+      iio: add modifiers for A and B ultraviolet light
+      dt-bindings: iio: light: add support for Vishay VEML6075
+      iio: light: add VEML6075 UVA and UVB light sensor driver
+
+ Documentation/ABI/testing/sysfs-bus-iio            |   7 +-
+ .../bindings/iio/light/vishay,veml6075.yaml        |  39 ++
+ MAINTAINERS                                        |   6 +
+ drivers/iio/industrialio-core.c                    |   2 +
+ drivers/iio/light/Kconfig                          |  11 +
+ drivers/iio/light/Makefile                         |   1 +
+ drivers/iio/light/veml6075.c                       | 474 +++++++++++++++++++++
+ include/uapi/linux/iio/types.h                     |   2 +
+ tools/iio/iio_event_monitor.c                      |   2 +
+ 9 files changed, 542 insertions(+), 2 deletions(-)
+---
+base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
+change-id: 20231110-veml6075-321522ceaca9
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 

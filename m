@@ -1,162 +1,151 @@
-Return-Path: <linux-iio+bounces-460-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-461-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97347FBB2A
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 14:16:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA2A7FBCC7
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 15:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 171411C210C1
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 13:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ECA1B21961
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 14:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4286A56B94;
-	Tue, 28 Nov 2023 13:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67104F8BF;
+	Tue, 28 Nov 2023 14:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buo4niLj"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="pner+R5Z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1895E1739;
-	Tue, 28 Nov 2023 05:16:27 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50baa2a278bso4282346e87.0;
-        Tue, 28 Nov 2023 05:16:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701177385; x=1701782185; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3WsLCDEyC18KZR6i8uibTKhqQD0u+XbO+WP+uHOq1+o=;
-        b=buo4niLjMTZIhnNsBd1m13U6K2R5ORRrEo6LJyj9Xw+JB3snTIzcTHosDlMXuaZRMB
-         mpaPUDsL/405QdentRIs393XFj/edXYbzkf4xkOKIpo71ENC+Lo7p/m+wpC+MTrC3YY+
-         IVkfGBuKNPHvK7Fj8ezjDrvsfyGJ2/k86kCxkl1vACYONZLt1ttEKyyzlZ+sLotEpeCx
-         KAoTep4kk1LyBn3SvdmOryrU9t8ebq/pO1KBw9hNspm/03za29yrCwJYIhsnADD73Qj+
-         mjLeGkDto1Gkp53+4Ap0xkOrkXoj5+q8MNxPQPK7uTSNzWNHncGrkl3gNCMGNorum6QE
-         1yRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701177385; x=1701782185;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3WsLCDEyC18KZR6i8uibTKhqQD0u+XbO+WP+uHOq1+o=;
-        b=gQWubDCy8x1hkqgtckFyy96OvbxG7Eg0MOSHuFVRZREQwQUYyfqTplPOHe9zY1aAiN
-         YYw3vKtjC3oB2ZaYPjLOKgRfgJf2DnUq9NOxt6IhmpveVN3jksNkwqigiInL2uMi3To0
-         kE1XQXqGpydKAAxN4Fjt0HfCnUraa7BpsP/bGkQAPdzwjmb+o1bniG703z7BNy6Rd5vk
-         SKk7DMC4A/+kM3NMygbRwKaQaGw5hrSjERDCB7NS/r+Z9+jFlowIZJqNEjh66J7z513u
-         4ki+VmuxGJkcowqVxB9eF0JizINQZwasl3dBIQZTvDixzd5dQt0CV4bEbXGiXVD3GlWN
-         jxig==
-X-Gm-Message-State: AOJu0YyaJMcmerQChaono/fL8CJbLGrxejFDxQXAE5VdadwpTfr4KpU7
-	pGzEgfZ2GjyWFaL9MoDuF4Y=
-X-Google-Smtp-Source: AGHT+IGOb6aknLuNLSjtnN2PPRiE8h1x0pOPEE61cEr8/EOwB61Cl4xSx3poefLtsRPypE87M1+2iQ==
-X-Received: by 2002:a05:6512:11eb:b0:509:4bb5:ff96 with SMTP id p11-20020a05651211eb00b005094bb5ff96mr8014024lfs.59.1701177384822;
-        Tue, 28 Nov 2023 05:16:24 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f8:1500::2? (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
-        by smtp.gmail.com with ESMTPSA id be36-20020a056512252400b0050b9bcd437esm1832444lfb.183.2023.11.28.05.16.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Nov 2023 05:16:24 -0800 (PST)
-Message-ID: <fabd0693-34c3-49c1-8680-17f6f8b9453a@gmail.com>
-Date: Tue, 28 Nov 2023 15:16:23 +0200
+Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4281702;
+	Tue, 28 Nov 2023 06:32:09 -0800 (PST)
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id E682828EE6F;
+	Tue, 28 Nov 2023 14:32:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1701181928;
+	bh=R7gI18pL+5FP+C77LHDW4m+kGE5GKSW9p/MbTSMPxI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=pner+R5ZzBoF4d9Im0tnCFaHXFemE3NLZugvt6BTLBsbq+nEmE+d8OWHqYX6etZtR
+	 I0uyGZv6XPkDpb+sLwoq/J/d1I0a2BbaM0rcreOYouaxG3pKaeBs/rXriI5X74FKnL
+	 +hHYIUY9db+j06v8q0rGNGM4uxyLyOKoI+3yjtCk=
+Date: Tue, 28 Nov 2023 16:32:06 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v3 2/2] iio: pressure: driver for Honeywell HSC/SSC
+ series pressure sensors
+Message-ID: <ZWX55o_-WT5BQlo-@sunspire>
+References: <20231126102721.15322-1-petre.rodan@subdimension.ro>
+ <20231126183334.625d2d8b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helpers: Round gains and scales
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
- <20231126172607.379c9d79@jic23-huawei>
- <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
- <1fe658cd-bdd5-4afd-8564-d0dcf9eab4ab@gmail.com>
-In-Reply-To: <1fe658cd-bdd5-4afd-8564-d0dcf9eab4ab@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231126183334.625d2d8b@jic23-huawei>
 
-On 11/28/23 13:56, Matti Vaittinen wrote:
-> On 11/27/23 09:48, Matti Vaittinen wrote:
->> On 11/26/23 19:26, Jonathan Cameron wrote:
->>> On Tue, 31 Oct 2023 11:50:46 +0200
->>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>
->>>> The GTS helpers do flooring of scale when calculating available scales.
->>>> This results available-scales to be reported smaller than they should
->>>> when the division in scale computation resulted remainder greater than
->>>> half of the divider. (decimal part of result > 0.5)
->>>>
->>>> Furthermore, when gains are computed based on scale, the gain resulting
->>>> from the scale computation is also floored. As a consequence the
->>>> floored scales reported by available scales may not match the gains 
->>>> that
->>>> can be set.
->>>>
->>>> The related discussion can be found from:
->>>> https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
->>>>
->>>> Do rounding when computing scales and gains.
->>>>
->>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>
 
-...
+Hello!
 
->>>> +    if ((u64)scale32 == scale)
->>>> +        return iio_gts_get_gain_32(full, scale32);
->>>> +
->>>>       if (U64_MAX - full < scale) {
->>>>           /* Risk of overflow */
->>>> -        if (full - scale < scale)
->>>> +        if (full - scale / 2 < scale)
->>>>               return 1;
->>>>           full -= scale;
->>>>           tmp++;
->>>>       }
->>>> -    while (full > scale * (u64)tmp)
->>>> +    half_div = scale >> 2;
->>>
->>> Why divide by 4?  Looks like classic issue with using shifts for 
->>> division
->>> causing confusion.
->>
->> Yes. Looks like a brainfart to me. I need to fire-up my tests and 
->> revise this (and the check you asked about above). It seems to take a 
->> while from me to wrap my head around this again...
->>
->> Thanks for pointing this out!
->>
->>>
->>>> +
->>>> +    while (full + half_div >= scale * (u64)tmp)
->>>>           tmp++;
+On Sun, Nov 26, 2023 at 06:33:34PM +0000, Jonathan Cameron wrote:
+> On Sun, 26 Nov 2023 12:27:17 +0200
+> Petre Rodan <petre.rodan@subdimension.ro> wrote:
 > 
-> Oh. This is a problem. Adding half_div to full here can cause the scale 
-> * (u64)tmp to overflow. The overflow-prevention above only ensures full 
-> is smaller than the U64_MAX - scale. Here we should ensure full + 
-> half_div is less than U64_MAX - scale to ensure the loop always stops.
+> > Adds driver for digital Honeywell TruStability HSC and SSC series
+> > pressure and temperature sensors. 
+>
+> Hi Petre
 > 
-> All in all, this is horrible. Just ran a quick and dirty test on my 
-> laptop, and using 0xFFFF FFFF FFFF FFFF as full and 0x1 0000 0000 as 
-> scale (without the half_div addition) ran this loop for several seconds.
+> A quick end of day review.
 > 
-> Sigh. My brains jammed. I know this can not be an unique problem. I am 
-> sure there exists a better solution somewhere - any pointers would be 
-> appreciated :)
+> Jonathan
+
+welcome back.
+amazing how you were able to review so many code sets in one day.
+thank you for your input.
+
+> > +#define     HSC_PRESSURE_TRIPLET_LEN  6
 > 
+> Can you make this length based on something like a structure length, or number
+> of registers?  That would make it self documenting which is always nice to have.
 
-And as a reply to myself - is there something wrong with using the 
-div64_u64()? Sorry for the noise...
+I added a comment in V4, this length is simply based on the string used by
+honeywell to differentiate these chips based on their pressura range, 
+measurement unit and sensor type. see the first column in Table 8, 9, 10 in [1]
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+[1] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+> > +struct hsc_data {
+> > +	void *client;
+> > +	const struct hsc_chip_data *chip;
+> > +	struct mutex lock;
+> > +	int (*xfer)(struct hsc_data *data);
+> > +	bool is_valid;
+> > +	u8 buffer[HSC_REG_MEASUREMENT_RD_SIZE];
+> 
+> This is used for SPI transfers so should be DMA safe. It's not currently.
+> Look at how IIO_DMA_MINALIGN is used in other drivers to ensure there is
+> no unsafe sharing of cachelines.
+> 
+> On some architectures this is fixed by the stuff that bounces all small transfers
+> but I don't think that is universal yet.  If you want more info find the talk
+> by Wolfram Sang from a few years ago an ELCE on I2C DMA safe buffers.
+
+that was a nice rabbit hole, thanks for the pointer.
+
+now, based on [2] I will skip explicit i2c dma-related code since my requests
+are 4 bytes long. according to the document, any i2c xfer below 8bytes is not
+worth the overhead.
+
+[2] https://www.kernel.org/doc/html/latest/i2c/dma-considerations.html
+
+> > +static int hsc_spi_probe(struct spi_device *spi)
+> > +{
+> > +	struct iio_dev *indio_dev;
+> > +	struct hsc_data *hsc;
+> > +	struct device *dev = &spi->dev;
+> > +
+> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*hsc));
+> > +	if (!indio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	hsc = iio_priv(indio_dev);
+> > +	hsc->xfer = hsc_spi_xfer;
+> 
+> Also, pass the callback and spi->dev into hsc probe. Easy to use
+> a container_of() to get back to the struct spi_device *spi
+
+I'd rather simply pass along the client struct.
+
+> > +	hsc->client = spi;
+> > +
+> > +	return hsc_probe(indio_dev, &spi->dev, spi_get_device_id(spi)->name,
+> > +			 spi_get_device_id(spi)->driver_data);
+> Don't use anything form spi_get_device_id()
+> 
+> Name is a fixed string currently so pass that directly.
+> For driver data, there isn't any yet but if there were use
+> spi_get_device_match_data() and make sure to provide the data in all the
+> id tables.  That function will search the firmware ones first then call
+> back to the spi specific varient.
+
+along the way driver_data became redundant, so it was removed from the function
+prototype.
+
+best regards,
+peter
 
 

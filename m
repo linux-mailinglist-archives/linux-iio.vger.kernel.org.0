@@ -1,262 +1,224 @@
-Return-Path: <linux-iio+bounces-457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7838B7FB9C2
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 12:57:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D117FBA52
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 13:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DA5FB21D94
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 11:57:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39191C21442
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 12:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C244F89C;
-	Tue, 28 Nov 2023 11:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771C9405CE;
+	Tue, 28 Nov 2023 12:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dBl+v7AS"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Hv9JhTAV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2D0C94;
-	Tue, 28 Nov 2023 03:57:00 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-50bbd9cf923so483745e87.1;
-        Tue, 28 Nov 2023 03:57:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701172619; x=1701777419; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zpP02LYqj14oZTHZilHtJSOBxsPPRRjqKrdzV+LYYCc=;
-        b=dBl+v7ASlJlSgV+aGlOWVGkKWKDEi+yr96s+/EO95c9uB7h/d9nPH648f5chBUj+LW
-         Ee4knOALxpmPigtrMql4jVMTtbmJ83Z3BS0QLqJS9xKJCKVlHyqs8cehmtqYfFzlUEnK
-         Kykxl3UD7IDBw2mzgu76dwCKJ9F1I+vf5xtcORPPOawqqM5LV0fdzOe/GO/t0Tzh2iMc
-         8yFwIEL6XArhdlOEyfggX2rZHEv572Mte6JlcHM2M/MeizLjbrNxVr+yD/GIxipsvQs3
-         c8FhGyWhrKF5zzYPUuzq2rH+b3RJGt5gGlL9yTc4iCoey8N8h/RfNbVWn7b2t/44IzNh
-         tU1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701172619; x=1701777419;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zpP02LYqj14oZTHZilHtJSOBxsPPRRjqKrdzV+LYYCc=;
-        b=KokQILhVPbsc1LACGg51Zb8l0LnOsT3R+UwmliNiCWtu5HEcSWmJbL55abtp72hOEN
-         13+dNX5A0ofRM9GrjzCnpxPwExcubF3y+oTiE1gsXnIE1oHTMJ8kssnDmPg9YicxVn3T
-         iT8+6JrFfsBtp2rPOQ+mAilxDSIEVZLo0bdslEzUW5Vyet0bK48blDXy0sJc3t13Udwk
-         XMqa5fIUjykv3RhKAbdLg8LF2WXuJNig3PBT5Jjqs39Mjt6YGXnTMnZm+eJHQBozjHaY
-         owdNdG5o0go4k8PF+7aa33F5OGC0Akp4vdGGfcCRoLOHA9HqOXRygPossCEGTtBfKzTP
-         mVVA==
-X-Gm-Message-State: AOJu0Yx62ZV1NBqEiN80oPoOuONC/fBQ/hW88U/kIwXqINw/EkdKupCt
-	aEkgIR4HOX+6o7A/brDH58g=
-X-Google-Smtp-Source: AGHT+IHiwkfhyY0N4x0mkv2b7U5SzU/Yw7nwfrygid5pSd+ZBCMI1JYgpfv9A0NkPbooGUBuRiGwnA==
-X-Received: by 2002:a05:6512:280c:b0:503:3808:389a with SMTP id cf12-20020a056512280c00b005033808389amr13592502lfb.11.1701172618964;
-        Tue, 28 Nov 2023 03:56:58 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f8:1500::2? (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
-        by smtp.gmail.com with ESMTPSA id p17-20020a056512329100b005032ebff21asm28709lfe.279.2023.11.28.03.56.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Nov 2023 03:56:57 -0800 (PST)
-Message-ID: <1fe658cd-bdd5-4afd-8564-d0dcf9eab4ab@gmail.com>
-Date: Tue, 28 Nov 2023 13:56:57 +0200
+Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CADDD51;
+	Tue, 28 Nov 2023 04:40:55 -0800 (PST)
+Received: from localhost.localdomain (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 9429E28EE6F;
+	Tue, 28 Nov 2023 12:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1701175253;
+	bh=445nBh8jeISJn7/7ca4zeuuwAqc9EBuV/Atp2i/lZQo=;
+	h=From:To:Cc:Subject:Date;
+	b=Hv9JhTAVO0ZZm5bYNfeD673dplGPD9JonGSv0SIGFw+BXLOIy+LjbHAbasQgC/RCK
+	 /U1AdQ2K+CAFoqV+ju5T9p+82Ditz8yyqmO/G+jDiasXFBjZGHTQukksOeOAAFE6bp
+	 jWjyqR2oXV+JjsZ3ViEVlI50pdCiued3nm/BZmg0=
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v4 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
+Date: Tue, 28 Nov 2023 14:40:37 +0200
+Message-ID: <20231128124042.22744-1-petre.rodan@subdimension.ro>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helpers: Round gains and scales
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
- <20231126172607.379c9d79@jic23-huawei>
- <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
-In-Reply-To: <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11/27/23 09:48, Matti Vaittinen wrote:
-> On 11/26/23 19:26, Jonathan Cameron wrote:
->> On Tue, 31 Oct 2023 11:50:46 +0200
->> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>
->>> The GTS helpers do flooring of scale when calculating available scales.
->>> This results available-scales to be reported smaller than they should
->>> when the division in scale computation resulted remainder greater than
->>> half of the divider. (decimal part of result > 0.5)
->>>
->>> Furthermore, when gains are computed based on scale, the gain resulting
->>> from the scale computation is also floored. As a consequence the
->>> floored scales reported by available scales may not match the gains that
->>> can be set.
->>>
->>> The related discussion can be found from:
->>> https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
->>>
->>> Do rounding when computing scales and gains.
->>>
->>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>
->> Hi Matti,
->>
->> A few questions inline about the maths.
-> 
-> I appreciate the questions :) Thanks!
->>
->>>
->>> ---
->>> Subjahit, is there any chance you test this patch with your driver? Can
->>> you drop the:
->>>     if (val2 % 10)
->>>         val2 += 1;
->>> from scale setting and do you see written and read scales matching?
->>>
->>> I did run a few Kunit tests on this change - but I'm still a bit jumpy
->>> on it... Reviewing/testing is highly appreciated!
->>>
->>> Just in case someone is interested in seeing the Kunit tests, they're
->>> somewhat unpolished & crude and can emit noisy debug prints - but can
->>> anyways be found from:
->>> https://github.com/M-Vaittinen/linux/commits/iio-gts-helpers-test-v6.6
->>>
->>> ---
->>>   drivers/iio/industrialio-gts-helper.c | 58 +++++++++++++++++++++++----
->>>   1 file changed, 50 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/drivers/iio/industrialio-gts-helper.c 
->>> b/drivers/iio/industrialio-gts-helper.c
->>> index 7653261d2dc2..7dc144ac10c8 100644
->>> --- a/drivers/iio/industrialio-gts-helper.c
->>> +++ b/drivers/iio/industrialio-gts-helper.c
->>> @@ -18,6 +18,32 @@
->>>   #include <linux/iio/iio-gts-helper.h>
->>>   #include <linux/iio/types.h>
->>> +static int iio_gts_get_gain_32(u64 full, unsigned int scale)
->>> +{
->>> +    unsigned int full32 = (unsigned int) full;
->>> +    unsigned int rem;
->>> +    int result;
->>> +
->>> +    if (full == (u64)full32) {
->>> +        unsigned int rem;
->>> +
->>> +        result = full32 / scale;
->>> +        rem = full32 - scale * result;
->>> +        if (rem >= scale / 2)
->>> +            result++;
->>> +
->>> +        return result;
->>> +    }
->>> +
->>> +    rem = do_div(full, scale);
->>
->> As below, can we just add scale/2 to full in the do_div?
-> 
-> The rationale for doing is it in this way is to prevent (theoretical?) 
-> overflow when adding scale/2 to full. Maybe this warrants adding a comment?
-> 
->>
->>> +    if ((u64)rem >= scale / 2)
->>> +        result = full + 1;
->>> +    else
->>> +        result = full;
->>> +
->>> +    return result;
->>> +}
->>> +
->>>   /**
->>>    * iio_gts_get_gain - Convert scale to total gain
->>>    *
->>> @@ -28,30 +54,42 @@
->>>    *        scale is 64 100 000 000.
->>>    * @scale:    Linearized scale to compute the gain for.
->>>    *
->>> - * Return:    (floored) gain corresponding to the scale. -EINVAL if 
->>> scale
->>> + * Return:    (rounded) gain corresponding to the scale. -EINVAL if 
->>> scale
->>>    *        is invalid.
->>>    */
->>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>   {
->>> -    u64 full = max;
->>> +    u64 full = max, half_div;
->>> +    unsigned int scale32 = (unsigned int) scale;
->>>       int tmp = 1;
->>> -    if (scale > full || !scale)
->>> +    if (scale / 2 > full || !scale)
->>
->> Seems odd. Why are we checking scale / 2 here?
-> 
-> I am pretty sure I have been thinking of rounding 0.5 to 1.
-> 
->>
->>>           return -EINVAL;
->>> +    /*
->>> +     * The loop-based implementation below will potentially run _long_
->>> +     * if we have a small scale and large 'max' - which may be 
->>> needed when
->>> +     * GTS is used for channels returning specific units. Luckily we 
->>> can
->>> +     * avoid the loop when scale is small and fits in 32 bits.
->>> +     */
->>> +    if ((u64)scale32 == scale)
->>> +        return iio_gts_get_gain_32(full, scale32);
->>> +
->>>       if (U64_MAX - full < scale) {
->>>           /* Risk of overflow */
->>> -        if (full - scale < scale)
->>> +        if (full - scale / 2 < scale)
->>>               return 1;
->>>           full -= scale;
->>>           tmp++;
->>>       }
->>> -    while (full > scale * (u64)tmp)
->>> +    half_div = scale >> 2;
->>
->> Why divide by 4?  Looks like classic issue with using shifts for division
->> causing confusion.
-> 
-> Yes. Looks like a brainfart to me. I need to fire-up my tests and revise 
-> this (and the check you asked about above). It seems to take a while 
-> from me to wrap my head around this again...
-> 
-> Thanks for pointing this out!
-> 
->>
->>> +
->>> +    while (full + half_div >= scale * (u64)tmp)
->>>           tmp++;
+Adds binding for digital Honeywell TruStability HSC and SSC series
+pressure and temperature sensors. 
+Communication is one way. The sensor only requires 4 bytes worth of
+clock pulses on both i2c and spi in order to push the data out.
+The i2c address is hardcoded and depends on the part number.
+There is no additional GPIO control.
 
-Oh. This is a problem. Adding half_div to full here can cause the scale 
-* (u64)tmp to overflow. The overflow-prevention above only ensures full 
-is smaller than the U64_MAX - scale. Here we should ensure full + 
-half_div is less than U64_MAX - scale to ensure the loop always stops.
+Datasheet:
+https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf [HSC]
+Datasheet:
+https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf [SSC]
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+---
+V2: - fix yaml struct
+    - cleanup based on Krzysztof's review
+V3: - rename range_str -> honeywell,pressure-triplet to define the string
+       containing the pressure range, measurement unit and type
+    - honeywell,pmax-pascal becomes uint32
+V4: - added enum to honeywell,transfer-function
+---
+ .../iio/pressure/honeywell,hsc030pa.yaml      | 134 ++++++++++++++++++
+ 1 file changed, 134 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
 
-All in all, this is horrible. Just ran a quick and dirty test on my 
-laptop, and using 0xFFFF FFFF FFFF FFFF as full and 0x1 0000 0000 as 
-scale (without the half_div addition) ran this loop for several seconds.
-
-Sigh. My brains jammed. I know this can not be an unique problem. I am 
-sure there exists a better solution somewhere - any pointers would be 
-appreciated :)
-
->>> -    return tmp;
->>> +    return tmp - 1;
->>>   }
->>>   /**
-
-Yours,
-	-- Matti
-
+diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+new file mode 100644
+index 000000000000..418fb1d2eefd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+@@ -0,0 +1,134 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/honeywell,hsc030pa.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Honeywell TruStability HSC and SSC pressure sensor series
++
++description: |
++  support for Honeywell TruStability HSC and SSC digital pressure sensor
++  series.
++
++  These sensors have either an I2C, an SPI or an analog interface. Only the
++  digital versions are supported by this driver.
++
++  There are 118 models with different pressure ranges available in each family.
++  The vendor calls them "HSC series" and "SSC series". All of them have an
++  identical programming model but differ in pressure range, unit and transfer
++  function.
++
++  To support different models one needs to specify the pressure range as well
++  as the transfer function. Pressure range can either be provided via
++  pressure-triplet (directly extracted from the part number) or in case it's
++  a custom chip via numerical range limits converted to pascals.
++
++  The transfer function defines the ranges of raw conversion values delivered
++  by the sensor. pmin-pascal and pmax-pascal corespond to the minimum and
++  maximum pressure that can be measured.
++
++  Please note that in case of an SPI-based sensor, the clock signal should not
++  exceed 800kHz and the MOSI signal is not required.
++
++  Specifications about the devices can be found at:
++  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
++  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
++
++maintainers:
++  - Petre Rodan <petre.rodan@subdimension.ro>
++
++properties:
++  compatible:
++    const: honeywell,hsc030pa
++
++  reg:
++    maxItems: 1
++
++  honeywell,transfer-function:
++    description: |
++      Transfer function which defines the range of valid values delivered by
++      the sensor.
++      0 - A, 10% to 90% of 2^14
++      1 - B, 5% to 95% of 2^14
++      2 - C, 5% to 85% of 2^14
++      3 - F, 4% to 94% of 2^14
++    enum: [0, 1, 2, 3]
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  honeywell,pressure-triplet:
++    description: |
++      Case-sensitive five character string that defines pressure range, unit
++      and type as part of the device nomenclature. In the unlikely case of a
++      custom chip, set to "NA" and provide pmin-pascal and pmax-pascal.
++    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
++           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
++           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
++           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
++           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
++           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
++           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
++           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
++           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
++           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
++           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
++           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
++           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
++           150PG, NA]
++    $ref: /schemas/types.yaml#/definitions/string
++
++  honeywell,pmin-pascal:
++    description: |
++      Minimum pressure value the sensor can measure in pascal.
++      To be specified only if honeywell,pressure-triplet is set to "NA".
++    $ref: /schemas/types.yaml#/definitions/int32
++
++  honeywell,pmax-pascal:
++    description: |
++      Maximum pressure value the sensor can measure in pascal.
++      To be specified only if honeywell,pressure-triplet is set to "NA".
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  vdd-supply:
++    description:
++      Provide VDD power to the sensor (either 3.3V or 5V depending on the chip)
++
++  spi-max-frequency:
++    maximum: 800000
++
++required:
++  - compatible
++  - reg
++  - honeywell,transfer-function
++  - honeywell,pressure-triplet
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pressure@28 {
++            compatible = "honeywell,hsc030pa";
++            reg = <0x28>;
++            honeywell,transfer-function = <0>;
++            honeywell,pressure-triplet = "030PA";
++        };
++    };
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pressure@0 {
++            compatible = "honeywell,hsc030pa";
++            reg = <0>;
++            spi-max-frequency = <800000>;
++            honeywell,transfer-function = <0>;
++            honeywell,pressure-triplet = "NA";
++            honeywell,pmin-pascal = <0>;
++            honeywell,pmax-pascal = <200000>;
++        };
++    };
++...
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.41.0
 
 

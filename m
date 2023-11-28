@@ -1,147 +1,113 @@
-Return-Path: <linux-iio+bounces-451-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-453-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4B87FB6BD
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 11:08:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44E87FB8D1
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 12:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A07DC1C2104D
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 10:08:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34613B21967
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 11:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805374D120;
-	Tue, 28 Nov 2023 10:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7554649F92;
+	Tue, 28 Nov 2023 11:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODxDpQPd"
+	dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b="W2Trhb0J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FFCDC;
-	Tue, 28 Nov 2023 02:08:20 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-3316d3d11e1so2997260f8f.0;
-        Tue, 28 Nov 2023 02:08:20 -0800 (PST)
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06DA1B4
+	for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 03:02:12 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a02cc476581so716061966b.2
+        for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 03:02:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701166099; x=1701770899; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Gu7D9Uuj/glFG5Vgj83Kr5LBLOtxorZnx9Itlbl/pPw=;
-        b=ODxDpQPdo3sScs8p6rTS+lua4EZ+WFB76TFx6dbHfHMizZQCDzptbXGvSjcIU3qkba
-         n9a1KuyaTBNDCsKQ6ggupIsMBI+2mFnb5AhrLvKX3/lPOw/I0OxMUPvRmwFksCPASKf2
-         g2S7pcXjQ9mlvhYvWjsaB17uhNXA1Rlc4mhi70ela91+SKv/+0ADLv+cx+W9Rkipaubf
-         /BFvvBVg6QGtT5bD94RnRq2EBTZwdw63iroXjCluYOp9Q6xdcyW0K9j3BCjPsq9W7iof
-         pZ19di6wjL57TX6zHMlHeY7GFAbuEbFmUtunpuBo6UYn9/Wxj6vnBZiuZUJjPSVgn7rr
-         AXaA==
+        d=melexis.com; s=google; t=1701169331; x=1701774131; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tlZ7iRVbsbRidcAsAmtD7uKZxC1LTM8QUx5hPAqk8yg=;
+        b=W2Trhb0JSVRC4Id5dnhE6AaKDRq/+PwC2mTMKfTcKwLmc8/W99ODvGQ4A+JrHZwZxs
+         LSx/d+M/mjiM/QSwDQCeFYOywRW5ODXqeWAXzEqYFhp6iuzas5lUUCzZYM6eIJIb0Uoh
+         2ssG1fib4MVVtq7S6eXqW1u9IQgLykrMw7LrxreACwxIKT46zdaIeawdqsUajkEPobwB
+         nxq0QSAjef1FONMUKZJecjnXNvCs7kGGgzCmEPVQg69QYmBJFHKz+xg9XStKCGOjnUeG
+         OXBRtjyz08Z8rJUxwKl/NQj7kHJyLXnxMRjIJKRQQstkR+sZSzEsrKFQdomwJmm6wXlt
+         xd2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701166099; x=1701770899;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gu7D9Uuj/glFG5Vgj83Kr5LBLOtxorZnx9Itlbl/pPw=;
-        b=drafL066ssnjnThhB7MTvirvDpfy16tTISpfFoNSSkIka2wmMFlnKja8nWnabwUJ9+
-         Ug5OVk+VV4ufrgM6+WLboP09sQ01JrSWGS1e+gjf2fRZtyW2jDNQ+M0Thjjkz+RykgyR
-         opHqOI4oHNwTxoG+Ne6ulM24U6+vqlAaMQwgiy9igRXCKd9VZk55rrMcC+1NoMzTS1l7
-         jtYOiMUf0dnFNUrCaJJ6YMlaSeqsJyH2y7Lr8teB459H87WxIsafXP4uxSavhQceOyWb
-         Hui4irGwwKuUTGZe+O9hX0g+o9gh9VM91g0G0CI07xEtQNAiLHYyFYYQ3LZUZxL24kwH
-         jNTQ==
-X-Gm-Message-State: AOJu0YwvULv4QLuoHA1Vc1eDLktfV1qk6YotthTaJjKOjRhY9IF2s94H
-	WyklzPZyq03qdQ9tTO7t8GOjAdffnLLNpnHLS4k=
-X-Google-Smtp-Source: AGHT+IFsTFnl36sn7+8Kbkeeldpmgaauq5/JCu5VnUlgtSl4PXfWEvXOZYH71RYHUN2wjJ8w5MBySw==
-X-Received: by 2002:a5d:4946:0:b0:332:e3ad:4273 with SMTP id r6-20020a5d4946000000b00332e3ad4273mr16406169wrs.2.1701166098563;
-        Tue, 28 Nov 2023 02:08:18 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:4423:d503:bf11:e8c6? (p200300f6ef1b20004423d503bf11e8c6.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:4423:d503:bf11:e8c6])
-        by smtp.gmail.com with ESMTPSA id o14-20020a5d4a8e000000b00332e073f12bsm14448715wrq.19.2023.11.28.02.08.18
+        d=1e100.net; s=20230601; t=1701169331; x=1701774131;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tlZ7iRVbsbRidcAsAmtD7uKZxC1LTM8QUx5hPAqk8yg=;
+        b=Q+oPYz/StM7wOWIR2W6/1Gwq0oEqHfcAvm+sXOYeD3VmRqKxm66AUKm3+ZGCX7rNxU
+         Pns2tS5IW19F9wwtxpbJhxkZhEv/E5AGmCSz2jwYU9BaCz7IfX0xxXIEjKNPAT5//odb
+         I2hPP14nNPCgU04V6p1RP9Zwc/e/wJAfNghvbv+XEuk8x534FBD30feCRIUVNGoFWtk1
+         Oza91ppl3EV/LYepdsIDNNX1yivkJDz9DXoRA0UgwiEsJIVePoEvLLRlTDLlQfsQbb1x
+         3oCTmUQLqcSVrOOYriZWC+aWzMeO3uL2OjO5zOoX9M/82/1uJ9gcriw8KbGpkrm9eZdi
+         gOLw==
+X-Gm-Message-State: AOJu0YyF5GjOZf650D65fNRyEbPGa7X3A6fJ0VZz7gDcS9tmfOkLlMkW
+	d4/P8Qih3CAwqWlVFYFzjIleYb1tOjhLOX/WwTU=
+X-Google-Smtp-Source: AGHT+IFUj+xpwnpY3qS1pNq5O+DvIQpTB85bW2X9Y3htbbDBUWs40lSNUrXAQgbY77iHKyKck0o3ow==
+X-Received: by 2002:a17:906:209e:b0:a0a:f9af:c159 with SMTP id 30-20020a170906209e00b00a0af9afc159mr8796679ejq.25.1701169331054;
+        Tue, 28 Nov 2023 03:02:11 -0800 (PST)
+Received: from localhost.localdomain (d54C3956F.access.telenet.be. [84.195.149.111])
+        by smtp.gmail.com with ESMTPSA id h25-20020a170906111900b00a0435148ed7sm6784897eja.17.2023.11.28.03.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 02:08:18 -0800 (PST)
-Message-ID: <5ad34779b6ad50f7f00c99f27e171f34628cebe0.camel@gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: adi,ad5791.yaml: Add support for
- controlling RBUF
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- nuno.sa@analog.com,  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>
-Date: Tue, 28 Nov 2023 11:11:18 +0100
-In-Reply-To: <30a74f59-6230-48d5-a872-a9bee0cc5b4f@linaro.org>
-References: <20231127-ad5791-michael-stuff-v1-0-04167b3edc56@analog.com>
-	 <20231127-ad5791-michael-stuff-v1-1-04167b3edc56@analog.com>
-	 <30a74f59-6230-48d5-a872-a9bee0cc5b4f@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 
+        Tue, 28 Nov 2023 03:02:10 -0800 (PST)
+From: Crt Mori <cmo@melexis.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Andrew Hepp <andrew.hepp@ahepp.dev>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Crt Mori <cmo@melexis.com>
+Subject: [PATCH v2 0/2] iio: temperature: mlx90635 Driver for MLX90635 IR temperature sensor
+Date: Tue, 28 Nov 2023 11:59:22 +0100
+Message-Id: <cover.1701168726.git.cmo@melexis.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2023-11-28 at 10:33 +0100, Krzysztof Kozlowski wrote:
-> On 27/11/2023 16:55, Nuno Sa via B4 Relay wrote:
-> > From: Michael Hennerich <michael.hennerich@analog.com>
-> >=20
->=20
-> Subject: drop ".yaml"
+Hi everybody,
 
-Will do...
+There is a new contactless sensor in Melexis portfolio. MLX90635 is just
+1.8x1.8mm in size, but with factory calibration offers instant usage
+in every project. It offers wide refresh rate range that is configurable
+between 100ms and 4s.
 
->=20
-> > This patch adds support for an external amplifier to be connected in a
->=20
-> Please do not use "This commit/patch", but imperative mood. See longer
-> explanation here:
-> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/sub=
-mitting-patches.rst#L95
+Driver currently provides temperature calculations, power management and
+changes to the refresh rate. Since sensor is aimed towards the consumer
+market there is really low number of EEPROM write cycles available, so
+driver changes refresh rate only in run time registers to avoid writing
+to EEPROM. Reading EEPROM is not available in Sleep Step mode, so I am
+using caching at the driver initialization to ensure that measurements
+can still be taken in Sleep Step mode.
 
-ack...
+Changes v1 -> v2:
+  - dt-bindings are now enum according to the comments from
+    Krzysztof Kozlowski
+  - expand the path recipient list for the patches using
+    get_maintainers.pl
+  - driver cache and probe (and some style) adjusted according to
+    comments from Jonathan Cameron
+  - improve DSP version detection (make it clearer)
 
->=20
-> > gain of two configuration.
-> >=20
-> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 5 +++=
-++
-> > =C2=A01 file changed, 5 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-> > b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-> > index 3a84739736f6..c81285d84db7 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
-> > @@ -26,6 +26,11 @@ properties:
-> > =C2=A0=C2=A0 vdd-supply: true
-> > =C2=A0=C2=A0 vss-supply: true
-> > =C2=A0
-> > +=C2=A0 adi,rbuf-gain2-en:
-> > +=C2=A0=C2=A0=C2=A0 description: Specify to allow an external amplifier=
- to be connected in
-> > a
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gain of two configuration.
->=20
-> I don't understand this. Without this property external amplifier is not
-> allowed to be connected? This sounds like some policy, but should rather
-> focus on hardware.
->=20
+Crt Mori (2):
+  iio: temperature: mlx90635 MLX90635 IR Temperature sensor
+  dt-bindings: iio: temperature: add MLX90635 device
 
-Well, this really translates in a different configuration in the device. If=
- this
-is set then the device is configured to allow an external amplifier to be
-connected in a gain of two configuration which depends on the HW setup you =
-want
-the chip to be.
+ .../iio/temperature/melexis,mlx90632.yaml     |   19 +-
+ MAINTAINERS                                   |    7 +
+ drivers/iio/temperature/Kconfig               |   12 +
+ drivers/iio/temperature/Makefile              |    1 +
+ drivers/iio/temperature/mlx90635.c            | 1071 +++++++++++++++++
+ 5 files changed, 1108 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/temperature/mlx90635.c
 
-The description already states pretty much what the datasheet says. So whil=
-e I
-understand it's a fair question from you (you don't have the time to check =
-all
-datasheets for reviews you do), I'm not sure there's much more to add into =
-the
-description of the property.
-
-- Nuno S=C3=A1
+-- 
+2.40.1
 
 

@@ -1,151 +1,108 @@
-Return-Path: <linux-iio+bounces-461-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-462-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA2A7FBCC7
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 15:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340287FBE11
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 16:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ECA1B21961
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 14:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96BA1B215DC
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 15:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67104F8BF;
-	Tue, 28 Nov 2023 14:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="pner+R5Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA2D5D4AB;
+	Tue, 28 Nov 2023 15:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4281702;
-	Tue, 28 Nov 2023 06:32:09 -0800 (PST)
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id E682828EE6F;
-	Tue, 28 Nov 2023 14:32:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1701181928;
-	bh=R7gI18pL+5FP+C77LHDW4m+kGE5GKSW9p/MbTSMPxI0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=pner+R5ZzBoF4d9Im0tnCFaHXFemE3NLZugvt6BTLBsbq+nEmE+d8OWHqYX6etZtR
-	 I0uyGZv6XPkDpb+sLwoq/J/d1I0a2BbaM0rcreOYouaxG3pKaeBs/rXriI5X74FKnL
-	 +hHYIUY9db+j06v8q0rGNGM4uxyLyOKoI+3yjtCk=
-Date: Tue, 28 Nov 2023 16:32:06 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v3 2/2] iio: pressure: driver for Honeywell HSC/SSC
- series pressure sensors
-Message-ID: <ZWX55o_-WT5BQlo-@sunspire>
-References: <20231126102721.15322-1-petre.rodan@subdimension.ro>
- <20231126183334.625d2d8b@jic23-huawei>
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F480D64;
+	Tue, 28 Nov 2023 07:23:57 -0800 (PST)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3ASAX3FJ014074;
+	Tue, 28 Nov 2023 10:23:37 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ukeq73ue3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 10:23:36 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3ASFNZ0E049261
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 28 Nov 2023 10:23:35 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 28 Nov
+ 2023 10:23:34 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 28 Nov 2023 10:23:34 -0500
+Received: from [127.0.0.1] ([10.44.3.56])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3ASFNMDa003945;
+	Tue, 28 Nov 2023 10:23:25 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH v2 0/2] iio: dac: ad5791: Add support for controlling RBUF
+ via devicetree
+Date: Tue, 28 Nov 2023 16:26:07 +0100
+Message-ID: <20231128-ad5791-michael-stuff-v2-0-541bb1c9dc43@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231126183334.625d2d8b@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAI8GZmUC/x2MSQqAMAwAvyI5G7DRtuhXxIPYVANutCqC+HeLx
+ 2GYeSByEI7QZA8EviTKtiagPINh6teRUVxioIJKpchi77StFS6SNM8Yj9N71Ma4QRsqK2chpXt
+ gL/e/bbv3/QD1P2IBZgAAAA==
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof
+ Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701185184; l=590;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=WWqmeH8LuG5AGqaMDpjoNlNr8UExQhh5w1wnJ8553cU=;
+ b=SOcx3a2dDjH8GVYJ4oDkg5tTM69oUOPtb+C6Uu66AL2a4QoBVIA1jYHNFUvNbqYT2vfs1VDPo
+ eeAvzY6oEDUBSjpEBCKWSgViNrREnS2c/mz4+QHbZeDlaioDEhg4XkZ
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: Knh4wgad3j6LfD25yLSDNq29BD-m9bd0
+X-Proofpoint-GUID: Knh4wgad3j6LfD25yLSDNq29BD-m9bd0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_16,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=343 adultscore=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311060001 definitions=main-2311280122
 
+Simple series to add support for an external amplifier to be connected
+in again of two configuration.
 
-Hello!
+v2:
+ * removed .yaml suffix from commit title;
+ * Don't use commit/patch in commit message.
 
-On Sun, Nov 26, 2023 at 06:33:34PM +0000, Jonathan Cameron wrote:
-> On Sun, 26 Nov 2023 12:27:17 +0200
-> Petre Rodan <petre.rodan@subdimension.ro> wrote:
-> 
-> > Adds driver for digital Honeywell TruStability HSC and SSC series
-> > pressure and temperature sensors. 
->
-> Hi Petre
-> 
-> A quick end of day review.
-> 
-> Jonathan
+---
+Michael Hennerich (2):
+      dt-bindings: adi,ad5791: Add support for controlling RBUF
+      iio: dac: ad5791: Add support for controlling RBUF via devicetree
 
-welcome back.
-amazing how you were able to review so many code sets in one day.
-thank you for your input.
+ Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 5 +++++
+ drivers/iio/dac/ad5791.c                                  | 9 ++++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-> > +#define     HSC_PRESSURE_TRIPLET_LEN  6
-> 
-> Can you make this length based on something like a structure length, or number
-> of registers?  That would make it self documenting which is always nice to have.
-
-I added a comment in V4, this length is simply based on the string used by
-honeywell to differentiate these chips based on their pressura range, 
-measurement unit and sensor type. see the first column in Table 8, 9, 10 in [1]
-
-[1] https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
-
-> > +struct hsc_data {
-> > +	void *client;
-> > +	const struct hsc_chip_data *chip;
-> > +	struct mutex lock;
-> > +	int (*xfer)(struct hsc_data *data);
-> > +	bool is_valid;
-> > +	u8 buffer[HSC_REG_MEASUREMENT_RD_SIZE];
-> 
-> This is used for SPI transfers so should be DMA safe. It's not currently.
-> Look at how IIO_DMA_MINALIGN is used in other drivers to ensure there is
-> no unsafe sharing of cachelines.
-> 
-> On some architectures this is fixed by the stuff that bounces all small transfers
-> but I don't think that is universal yet.  If you want more info find the talk
-> by Wolfram Sang from a few years ago an ELCE on I2C DMA safe buffers.
-
-that was a nice rabbit hole, thanks for the pointer.
-
-now, based on [2] I will skip explicit i2c dma-related code since my requests
-are 4 bytes long. according to the document, any i2c xfer below 8bytes is not
-worth the overhead.
-
-[2] https://www.kernel.org/doc/html/latest/i2c/dma-considerations.html
-
-> > +static int hsc_spi_probe(struct spi_device *spi)
-> > +{
-> > +	struct iio_dev *indio_dev;
-> > +	struct hsc_data *hsc;
-> > +	struct device *dev = &spi->dev;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*hsc));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	hsc = iio_priv(indio_dev);
-> > +	hsc->xfer = hsc_spi_xfer;
-> 
-> Also, pass the callback and spi->dev into hsc probe. Easy to use
-> a container_of() to get back to the struct spi_device *spi
-
-I'd rather simply pass along the client struct.
-
-> > +	hsc->client = spi;
-> > +
-> > +	return hsc_probe(indio_dev, &spi->dev, spi_get_device_id(spi)->name,
-> > +			 spi_get_device_id(spi)->driver_data);
-> Don't use anything form spi_get_device_id()
-> 
-> Name is a fixed string currently so pass that directly.
-> For driver data, there isn't any yet but if there were use
-> spi_get_device_match_data() and make sure to provide the data in all the
-> id tables.  That function will search the firmware ones first then call
-> back to the spi specific varient.
-
-along the way driver_data became redundant, so it was removed from the function
-prototype.
-
-best regards,
-peter
+Thanks!
+- Nuno Sá
 
 

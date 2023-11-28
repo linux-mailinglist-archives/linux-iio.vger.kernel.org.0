@@ -1,113 +1,105 @@
-Return-Path: <linux-iio+bounces-471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374C87FC9EF
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 23:51:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CE97FCA0B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 23:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6906C1C20FE5
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 22:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43593282E31
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 22:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFCF495C5;
-	Tue, 28 Nov 2023 22:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E8650259;
+	Tue, 28 Nov 2023 22:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V2pl/21G"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tZGFT/Hb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE9619B0;
-	Tue, 28 Nov 2023 14:51:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701211869; x=1732747869;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ztBJ4WMhhTqyzABcnjcpzEitF6N0C+6gJOSX759StWI=;
-  b=V2pl/21GqrQiB6Qb3P+vUbIj8qqsbPp9gZEYxiCFY+Dg3da/YRKilaQ/
-   XjCc/yMrfwyiNPPWSphqrzllYgSkc77zK9vrymSswP+6PPHaAUdQ2SY3D
-   k9ku4fyv/TZxSB75tqOy+ogejXx42fodysi3F5yV/69K3AK4z5mNg6U+x
-   vQy2+XwH1CIXN3vaRSszlcSA4RMSl1DaGLnCH261X+iBr/rHePDlrZtWO
-   oAJkGZXudTPmBAzY6pUIqPJzfA+AiuEePF5/3De4YJUIFkeqxv1MGr8kS
-   ifRE82TLlY8Pd1CLWDXGYrifMBZ/s6hS/CNSO9xdgwt1ga3i6FfWBbr7F
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="6304146"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="6304146"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 14:51:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="839215213"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="839215213"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 28 Nov 2023 14:51:05 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r86v1-0008Dw-0R;
-	Tue, 28 Nov 2023 22:51:03 +0000
-Date: Wed, 29 Nov 2023 06:50:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
-Message-ID: <202311290346.3SedpbhM-lkp@intel.com>
-References: <20231128124042.22744-1-petre.rodan@subdimension.ro>
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49CC1A5
+	for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 14:56:35 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50aaaf6e58fso9165425e87.2
+        for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 14:56:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701212194; x=1701816994; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3xuLFYcf0TNvhnaNMn05DlMPThucmO+PUnWnxmCggZI=;
+        b=tZGFT/HbWTpHlL75cnWG0tt0A1z3WRQZ/iZFFMk35F/smV9VEHedJ5mruvYrsLjVE7
+         9OaWddlsWpuYLtn/TA4/VYcmU0hEf6stJ6GSeJjFwvtH9VQdpRc/OFemWcGHl6OlHIdW
+         VCktzHCfrB+kDYPwLJmmMwUdKZaU99YWvAYr/0KqIYJgZsrSpjJfX7CZjRgwsRD3v4n7
+         p5Yu2tMvdQfh3eoq+zzG4qYrtRzek2KykG/2eJ6pyB/rV7kG71/VVqfiwr1dmkax3SHN
+         R1AjFzmyETgqXlmrJxNG3tiNDdYz1iSEfQ0vMGVEIS6FS7vOUWVvfDJi17jOu5oSIXYt
+         8OTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701212194; x=1701816994;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3xuLFYcf0TNvhnaNMn05DlMPThucmO+PUnWnxmCggZI=;
+        b=U7EO5G90uVtzTv0NfwnMcXlVrex0dtNSZHf/w6kss9Iy0vlHwixgKffN9XEYlUfrxB
+         CXgAcysZQHdVDQCpLFYsSiIxikxe8XV6GsSeXrX13xt20eu2eS0YapmzB4BVsNn7NFFu
+         ecnmI53ZiQfz0t38shE9Jpr9sHX6cYpr11Jbo8SU21W3L7nc/P9ErZ85hbYsfWDb5Xeh
+         vNLj7j6/p7w9o5VYwSEostw824tDJ2FN/eWc3SgzCANmypecSazWP24zHIuKvZbngSfK
+         7xRD//30qXKtwlXxq+Tu694IbWfoOVeZDrjYpdEy+yPoW3Bhxa3elUZB5VBHaYLj0hoR
+         dTAA==
+X-Gm-Message-State: AOJu0YywMQMLDqrEGjhVpB6kVmYqeXJiKhafXH/ssXV56RM/CygccipU
+	dsIe97HEy5mMp1nizbyB57Mu6g==
+X-Google-Smtp-Source: AGHT+IHsR0VwQA4IHasXgAGq/EHOQVJtBo8gaHlxH/zBpSKVYWB8W7dA5ok7G4m3yTpFtwdPU9zyvA==
+X-Received: by 2002:ac2:4acc:0:b0:50b:c062:92e1 with SMTP id m12-20020ac24acc000000b0050bc06292e1mr1513725lfp.6.1701212194002;
+        Tue, 28 Nov 2023 14:56:34 -0800 (PST)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id z20-20020a056512309400b0050aa9cfc238sm1963698lfd.89.2023.11.28.14.56.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Nov 2023 14:56:33 -0800 (PST)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 28 Nov 2023 23:56:32 +0100
+Subject: [PATCH] iio: proximity: irsd200: Drop unused include
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231128124042.22744-1-petre.rodan@subdimension.ro>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231128-descriptors-iio-v1-1-da1e94755db6@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAB9wZmUC/x3MQQqAIBBA0avErBNSw6KrRAvTqWaTMhMRSHdPW
+ r7F/wUEmVBgagow3iSUzgrdNhAOf+6oKFaD6YzV2owqogSmfCUWRZSUGzpnPK69swPUKjNu9Pz
+ HeXnfD9ntx/FhAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Waqar Hameed <waqar.hameed@axis.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.4
 
-Hi Petre,
+The driver includes the legacy GPIO header <linux/gpio.h> but doesn't
+use any symbols from it. Drop it.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/iio/proximity/irsd200.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.7-rc3 next-20231128]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+diff --git a/drivers/iio/proximity/irsd200.c b/drivers/iio/proximity/irsd200.c
+index bdff91f6b1a3..323ac6dac90e 100644
+--- a/drivers/iio/proximity/irsd200.c
++++ b/drivers/iio/proximity/irsd200.c
+@@ -7,7 +7,6 @@
+ 
+ #include <asm/unaligned.h>
+ #include <linux/bitfield.h>
+-#include <linux/gpio.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Petre-Rodan/iio-pressure-driver-for-Honeywell-HSC-SSC-series-pressure-sensors/20231128-204804
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20231128124042.22744-1-petre.rodan%40subdimension.ro
-patch subject: [PATCH v4 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20231129/202311290346.3SedpbhM-lkp@intel.com/reproduce)
+---
+base-commit: 05b5bdf18a6ba2dd9db82b6296d4edd6465b6210
+change-id: 20231128-descriptors-iio-67062aeb4637
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311290346.3SedpbhM-lkp@intel.com/
-
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml: properties:honeywell,pmin-pascal: '$ref' should not be valid under {'const': '$ref'}
-   	hint: Standard unit suffix properties don't need a type $ref
-   	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
->> Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml: properties:honeywell,pmax-pascal: '$ref' should not be valid under {'const': '$ref'}
-   	hint: Standard unit suffix properties don't need a type $ref
-   	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-   Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml: properties:honeywell,pmin-pascal: '$ref' should not be valid under {'const': '$ref'}
-   	hint: Standard unit suffix properties don't need a type $ref
-   	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-   Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml: properties:honeywell,pmax-pascal: '$ref' should not be valid under {'const': '$ref'}
-   	hint: Standard unit suffix properties don't need a type $ref
-   	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Linus Walleij <linus.walleij@linaro.org>
+
 

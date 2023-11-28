@@ -1,138 +1,193 @@
-Return-Path: <linux-iio+bounces-467-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-468-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BCB7FC08E
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 18:49:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491D97FC0CD
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 18:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605E11F20F60
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 17:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA401C20E59
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 17:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE4739AFC;
-	Tue, 28 Nov 2023 17:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i6b5JWm/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2F3539B;
+	Tue, 28 Nov 2023 17:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFBC93;
-	Tue, 28 Nov 2023 09:49:34 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-a03a900956dso2375566b.1;
-        Tue, 28 Nov 2023 09:49:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701193772; x=1701798572; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2Q6ar52kT12/oSOUgsQunGkK9992ePoRC0ssPbZWDgw=;
-        b=i6b5JWm/Osc81en8u5MDun6d2WX3T2lgYcXr6EDNsslp3MsrN9UGO1lIuwIsO8uelE
-         p7Ye+IxD1z8eu+soCqNKCvxuiMg8DllwymR/KoOEKthKXtgoLUaBz2EkJzUncZEgPqFL
-         Sl39VY27IQ2XgIsnnv5bBiV3NTmtWd22L6x+vDxo25aqiZ/dJiKEQjHIx8DLvZ1GOJL0
-         E0BI49DiZI7AczT8S3AbawIwwQ3LFiZg4c6AAtvQw9pQ63NPrCVpj4Qp4tP9PG8+mSg4
-         BW92EwaV8iwL+5vZsnTx7LFjyRcjZq/MTgzCBKw7Wg1PkCPsS416mBpjXwM/yqiHoGTN
-         iQ2A==
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796413C28;
+	Tue, 28 Nov 2023 09:56:02 -0800 (PST)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-58d08497aa1so3477340eaf.0;
+        Tue, 28 Nov 2023 09:56:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701193772; x=1701798572;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Q6ar52kT12/oSOUgsQunGkK9992ePoRC0ssPbZWDgw=;
-        b=HSCHEJ9tx9fP3ac938yQCRyALwwkzSgU0NA2XKhLkTPBVT3SLcKA2SbDQdCiDA3ElQ
-         J6+1QM5AWhrwExibRUh94ftYAxKvkuWiqSTx+zCP25csTHSYn6Wl1MrWH3vT8Fus4w3q
-         I/d6URFXxgD8O3EU+pqxuMsF5TEyjahKkqBaN9jsrXL4gjKUD7B1ABiaXZO1blaWMm03
-         VYFK4x3mz0mkuQAcxy8HV9KEYEonaw/EiSfw3jw9qoZ04X/EoXy9YobU32SAWL++n5JW
-         ZIQtYZlesTy9mhmt1n9HztfNMSd0FOnE6JKa7KoEHYwe9NA1ldHsEbTUPwZ+g88AvhvB
-         uXCw==
-X-Gm-Message-State: AOJu0YyaouNdzjWolwYz7jj15SqcjG2MMD4Fv1ZHSLwK/6dsL6J+y662
-	coBwelqbex2xOQwHLA83h/8=
-X-Google-Smtp-Source: AGHT+IFegfjLsT1XNjq4u1dJkNE5gSVojRjltbsyE47RsYa/oKV+OirEmiPZK9QlSr1+eKKQQmVk8w==
-X-Received: by 2002:a17:906:f811:b0:a0f:1882:d5e with SMTP id kh17-20020a170906f81100b00a0f18820d5emr5384410ejb.37.1701193772296;
-        Tue, 28 Nov 2023 09:49:32 -0800 (PST)
-Received: from localhost (p200300e41f0fa600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f0f:a600:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id cm26-20020a0564020c9a00b0054ae75dcd6bsm5742280edb.95.2023.11.28.09.49.30
+        d=1e100.net; s=20230601; t=1701194161; x=1701798961;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bs6R+1ViXv8isxXJHVhn7+t7Vqy/2+C/xsvsAMtl13I=;
+        b=DTVL5+yBwKjBChKlkrtLEKIegWld25ljRNpaGhHg7/TTvb8teaYXvYwjp6tOjswtLL
+         mHBGFJarGdMiu1/z717icp/g+1aLwlXF7uTd+MCRHBg+mMLuUnr3bcMrssnlI7lLFq+H
+         HiXCfur+ChuOoWtWCTPGAdzOH6vXohSfCSNahJJEJdSng+kqfEVIAOz4Khx6nZhgNV0I
+         6A7+toiRFZ4JLrAUn+gevzO+Y82XOv/rTmLLBAP/03+aiPz7PR7pA5Nf8DlFaidVtWJP
+         QKqOPbdTjl6Ey1s/3/o4w5/jQ8kZ4pyMglt1ZsDtYLrzfzlLAFTksrwxME34tNwPhbh9
+         ncxw==
+X-Gm-Message-State: AOJu0YxMkVwWCajNyHbsQZHgBjVRa6L2SfmPF16inE5Enf293Kf2fdFl
+	VE0/of4e9/GMy8TYNUTzIg==
+X-Google-Smtp-Source: AGHT+IGeg4re/q79qKMf1UiFl5udVI93xS3FHFxcA69DyiZXx7kQI5xJS90+UM5KshM+NJalD6QD5w==
+X-Received: by 2002:a05:6820:22a9:b0:581:ed38:5506 with SMTP id ck41-20020a05682022a900b00581ed385506mr17626203oob.4.1701194161096;
+        Tue, 28 Nov 2023 09:56:01 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id 124-20020a4a1782000000b0058d304dfc45sm1838862ooe.20.2023.11.28.09.55.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 09:49:30 -0800 (PST)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Lee Jones <lee@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Alessandro Zummo <a.zummo@towertech.it>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	linux-rtc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: (subset) [PATCH 00/17] dt-bindings: samsung: add specific compatibles for existing SoC
-Date: Tue, 28 Nov 2023 18:49:23 +0100
-Message-ID: <170119374454.445690.515311393756577368.b4-ty@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
-References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+        Tue, 28 Nov 2023 09:56:00 -0800 (PST)
+Received: (nullmailer pid 3563944 invoked by uid 1000);
+	Tue, 28 Nov 2023 17:55:59 -0000
+Date: Tue, 28 Nov 2023 11:55:59 -0600
+From: Rob Herring <robh@kernel.org>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linux-kernel-mentees@lists.linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
+Message-ID: <20231128175559.GA3560351-robh@kernel.org>
+References: <20231128124042.22744-1-petre.rodan@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231128124042.22744-1-petre.rodan@subdimension.ro>
 
-
-On Wed, 08 Nov 2023 11:43:26 +0100, Krzysztof Kozlowski wrote:
-> Merging
-> =======
-> I propose to take entire patchset through my tree (Samsung SoC), because:
-> 1. Next cycle two new SoCs will be coming (Google GS101 and ExynosAutov920), so
->    they will touch the same lines in some of the DT bindings (not all, though).
->    It is reasonable for me to take the bindings for the new SoCs, to have clean
->    `make dtbs_check` on the new DTS.
-> 2. Having it together helps me to have clean `make dtbs_check` within my tree
->    on the existing DTS.
-> 3. No drivers are affected by this change.
-> 4. I plan to do the same for Tesla FSD and Exynos ARM32 SoCs, thus expect
->    follow up patchsets.
+On Tue, Nov 28, 2023 at 02:40:37PM +0200, Petre Rodan wrote:
+> Adds binding for digital Honeywell TruStability HSC and SSC series
+> pressure and temperature sensors. 
+> Communication is one way. The sensor only requires 4 bytes worth of
+> clock pulses on both i2c and spi in order to push the data out.
+> The i2c address is hardcoded and depends on the part number.
+> There is no additional GPIO control.
 > 
-> [...]
+> Datasheet:
+> https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf [HSC]
+> Datasheet:
+> https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf [SSC]
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> ---
+> V2: - fix yaml struct
+>     - cleanup based on Krzysztof's review
+> V3: - rename range_str -> honeywell,pressure-triplet to define the string
+>        containing the pressure range, measurement unit and type
+>     - honeywell,pmax-pascal becomes uint32
+> V4: - added enum to honeywell,transfer-function
+> ---
+>  .../iio/pressure/honeywell,hsc030pa.yaml      | 134 ++++++++++++++++++
+>  1 file changed, 134 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> new file mode 100644
+> index 000000000000..418fb1d2eefd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> @@ -0,0 +1,134 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,hsc030pa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell TruStability HSC and SSC pressure sensor series
+> +
+> +description: |
+> +  support for Honeywell TruStability HSC and SSC digital pressure sensor
+> +  series.
+> +
+> +  These sensors have either an I2C, an SPI or an analog interface. Only the
+> +  digital versions are supported by this driver.
+> +
+> +  There are 118 models with different pressure ranges available in each family.
+> +  The vendor calls them "HSC series" and "SSC series". All of them have an
+> +  identical programming model but differ in pressure range, unit and transfer
+> +  function.
+> +
+> +  To support different models one needs to specify the pressure range as well
+> +  as the transfer function. Pressure range can either be provided via
+> +  pressure-triplet (directly extracted from the part number) or in case it's
+> +  a custom chip via numerical range limits converted to pascals.
+> +
+> +  The transfer function defines the ranges of raw conversion values delivered
+> +  by the sensor. pmin-pascal and pmax-pascal corespond to the minimum and
+> +  maximum pressure that can be measured.
+> +
+> +  Please note that in case of an SPI-based sensor, the clock signal should not
+> +  exceed 800kHz and the MOSI signal is not required.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
+> +  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
+> +
+> +maintainers:
+> +  - Petre Rodan <petre.rodan@subdimension.ro>
+> +
+> +properties:
+> +  compatible:
+> +    const: honeywell,hsc030pa
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  honeywell,transfer-function:
+> +    description: |
+> +      Transfer function which defines the range of valid values delivered by
+> +      the sensor.
+> +      0 - A, 10% to 90% of 2^14
+> +      1 - B, 5% to 95% of 2^14
+> +      2 - C, 5% to 85% of 2^14
+> +      3 - F, 4% to 94% of 2^14
+> +    enum: [0, 1, 2, 3]
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  honeywell,pressure-triplet:
+> +    description: |
+> +      Case-sensitive five character string that defines pressure range, unit
+> +      and type as part of the device nomenclature. In the unlikely case of a
+> +      custom chip, set to "NA" and provide pmin-pascal and pmax-pascal.
+> +    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
+> +           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
+> +           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
+> +           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
+> +           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
+> +           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
+> +           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
+> +           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
+> +           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
+> +           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
+> +           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
+> +           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
+> +           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
+> +           150PG, NA]
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +
+> +  honeywell,pmin-pascal:
+> +    description: |
+> +      Minimum pressure value the sensor can measure in pascal.
+> +      To be specified only if honeywell,pressure-triplet is set to "NA".
 
-Applied, thanks!
+This constraint can be expressed as:
 
-[12/17] dt-bindings: pwm: samsung: add specific compatibles for existing SoC
-        commit: 5d67b8f81b9d598599366214e3b2eb5f84003c9f
+dependentSchemas:
+  honeywell,pmin-pascal:
+    properties:
+      honeywell,pressure-triplet:
+        const: NA
 
-Best regards,
--- 
-Thierry Reding <thierry.reding@gmail.com>
+And similar for honeywell,pmax-pascal
+
+> +    $ref: /schemas/types.yaml#/definitions/int32
+> +
+> +  honeywell,pmax-pascal:
+> +    description: |
+> +      Maximum pressure value the sensor can measure in pascal.
+> +      To be specified only if honeywell,pressure-triplet is set to "NA".
+> +    $ref: /schemas/types.yaml#/definitions/uint32
 

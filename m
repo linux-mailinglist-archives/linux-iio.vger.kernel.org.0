@@ -1,132 +1,164 @@
-Return-Path: <linux-iio+bounces-449-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-450-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E997FAEBE
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 00:56:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F029B7FB5E5
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 10:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B142F281687
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Nov 2023 23:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D66E1C20E78
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Nov 2023 09:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B9849F7E;
-	Mon, 27 Nov 2023 23:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71719495DE;
+	Tue, 28 Nov 2023 09:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="UK7vCiWo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RUyJKoLW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02593E4;
-	Mon, 27 Nov 2023 15:56:09 -0800 (PST)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id DDD26120015;
-	Tue, 28 Nov 2023 02:56:06 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru DDD26120015
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1701129366;
-	bh=CJtUvORyiS7SGX4uAfp8J1IHEbYRh5RzK5Kl1l27Yd8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=UK7vCiWoyNz2a19lk9i/BpUUH9gFRhIb0HaKI+xnW8LrOqhU+fohNsLI4bkJ7JYJM
-	 W+3Lcm1a/1ovHOhPFaBlNiRQg/PvGLbW0YwmvE7AmvRXvlGNrc1VzuogNJ6GzwLc+0
-	 5B7dA4Cb+FH2CtTKczK7pwEcTJUrAyBoF19gfRV+CEQCIck3XDXtYrhrXXQ3Oh4uQC
-	 86XTLEl1o1bMv+KxlYJiL6Kyzaa2afvTS+iLhgz1QwCOfjHIXVV9HRrkacf9B/axF2
-	 oPYZ9qK0djKPiLv66XlGNtyw7s8EW/q8jo9nF5WYDlorKzxwbUPQeMtwbDn13eTVR1
-	 W6t+oFsU5LaQQ==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Tue, 28 Nov 2023 02:56:06 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 28 Nov 2023 02:56:06 +0300
-From: George Stark <gnstark@salutedevices.com>
-To: <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-	<khilman@baylibre.com>, <jbrunet@baylibre.com>,
-	<martin.blumenstingl@googlemail.com>, <andriy.shevchenko@linux.intel.com>,
-	<nuno.sa@analog.com>, <u.kleine-koenig@pengutronix.de>,
-	<gnstark@salutedevices.com>
-CC: <linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-	<kernel@salutedevices.com>
-Subject: [PATCH v3 1/1] iio: adc: meson: add separate config for axg SoC family
-Date: Tue, 28 Nov 2023 02:55:58 +0300
-Message-ID: <20231127235558.71995-1-gnstark@salutedevices.com>
-X-Mailer: git-send-email 2.42.0
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CAE3A5
+	for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 01:33:34 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-54b0310f536so6882563a12.0
+        for <linux-iio@vger.kernel.org>; Tue, 28 Nov 2023 01:33:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701164013; x=1701768813; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=okFSkWuWQL3WzsaPSpoB+y2m96LmGU+28yaf1MmYak0=;
+        b=RUyJKoLWfcsts2QoyAXBKJnHDGA8Yz+yXqg0j2/Yaf64gw+X6StGCseMKeSlFyq1hs
+         OtOevSwvSg9oasryjvTwTl3xh7zKllyEIw7377jKSHWGFCmb7BmfsrWyHISNxPA882lf
+         IIBWi3Bq7J0chlK4NTkj6kmqNa79cxkB1kZwHkmY9fQYgD/CJ9U5vIflm9g8yeXEzNW7
+         3aUWYCw8SxjA41/kt0oPc1E7puwLErNFKZDD2/7CG7evGClgItmU14hB9UeEaRDzaBM9
+         PcOI4nINX+c+/bdhldfLdPB/9pDy+xAP7KSrvheURZ9xa5YWtyjsYf53Kew2PLg5gCaI
+         Fl1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701164013; x=1701768813;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=okFSkWuWQL3WzsaPSpoB+y2m96LmGU+28yaf1MmYak0=;
+        b=TaOBE7bFFIA/G284ltTljKkHzAduB2YjgVmvmH4QVtAPhELruYGxIs6Ym1sqjRflWa
+         MSNkgX1sX8uttFENNxM+khEivNfr/V86dfpkDpBKeX/Z7pkieBGqrz2Vbsd4Np9ToOKm
+         zMzz1sPLjYeIS5juwx1Nqu2YtGn3bJvdUCdfjnAO0Tn7mTvWsK6QlrsnzTjYHSepr0wI
+         U8DyYu34eRy+L+z4bveOQlZQT1s4qyMYyWbV5bbNaTVEtH3MMdGqRwxAZO1hzTLqq6nf
+         yGzGAZT62hbndBGmcdfLvZ1UzJ+wTV3zk+LrGHRYcCqFTGFZlnEJfLcw3LvjKWWwZn7+
+         KqCQ==
+X-Gm-Message-State: AOJu0YwezVfrBr91i/+za+yz12WDckQPijAy/P7dkC9fuav0jFGIX81y
+	+HucdBR33UAYJVIYD1N5wnZbuA==
+X-Google-Smtp-Source: AGHT+IER1AQX/mb49xKQgyq1HdeACbfKkTd4oIHdEH/94iH/4oSPUbKvweyWEmFy1LWDOBHVUwtvew==
+X-Received: by 2002:aa7:c045:0:b0:54b:5007:9a12 with SMTP id k5-20020aa7c045000000b0054b50079a12mr5882371edo.10.1701164012791;
+        Tue, 28 Nov 2023 01:33:32 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.223.109])
+        by smtp.gmail.com with ESMTPSA id x1-20020aa7d381000000b00548ab1abc75sm6239824edq.51.2023.11.28.01.33.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Nov 2023 01:33:32 -0800 (PST)
+Message-ID: <30a74f59-6230-48d5-a872-a9bee0cc5b4f@linaro.org>
+Date: Tue, 28 Nov 2023 10:33:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 181630 [Nov 27 2023]
-X-KSMG-AntiSpam-Version: 6.0.0.2
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2;127.0.0.199:7.1.2;salutedevices.com:7.1.1;p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/11/27 21:09:00 #22555279
-X-KSMG-AntiVirus-Status: Clean, skipped
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: adi,ad5791.yaml: Add support for
+ controlling RBUF
+Content-Language: en-US
+To: nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+References: <20231127-ad5791-michael-stuff-v1-0-04167b3edc56@analog.com>
+ <20231127-ad5791-michael-stuff-v1-1-04167b3edc56@analog.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231127-ad5791-michael-stuff-v1-1-04167b3edc56@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-According to Amlogic custom kernels ADC of axg SoC family has
-vref_select and requires this setting to work nominally and thus
-needs a separate config.
+On 27/11/2023 16:55, Nuno Sa via B4 Relay wrote:
+> From: Michael Hennerich <michael.hennerich@analog.com>
+> 
 
-Fixes: 90c6241860bf ("iio: adc: meson: init voltage control bits")
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
----
- drivers/iio/adc/meson_saradc.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Subject: drop ".yaml"
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index db280da9edbf..34555a85f131 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -1242,6 +1242,20 @@ static const struct meson_sar_adc_param meson_sar_adc_gxl_param = {
- 	.cmv_select = 1,
- };
- 
-+static const struct meson_sar_adc_param meson_sar_adc_axg_param = {
-+	.has_bl30_integration = true,
-+	.clock_rate = 1200000,
-+	.bandgap_reg = MESON_SAR_ADC_REG11,
-+	.regmap_config = &meson_sar_adc_regmap_config_gxbb,
-+	.resolution = 12,
-+	.disable_ring_counter = 1,
-+	.has_reg11 = true,
-+	.vref_volatge = 1,
-+	.has_vref_select = true,
-+	.vref_select = VREF_VDDA,
-+	.cmv_select = 1,
-+};
-+
- static const struct meson_sar_adc_param meson_sar_adc_g12a_param = {
- 	.has_bl30_integration = false,
- 	.clock_rate = 1200000,
-@@ -1286,7 +1300,7 @@ static const struct meson_sar_adc_data meson_sar_adc_gxm_data = {
- };
- 
- static const struct meson_sar_adc_data meson_sar_adc_axg_data = {
--	.param = &meson_sar_adc_gxl_param,
-+	.param = &meson_sar_adc_axg_param,
- 	.name = "meson-axg-saradc",
- };
- 
--- 
-2.38.4
+> This patch adds support for an external amplifier to be connected in a
+
+Please do not use "This commit/patch", but imperative mood. See longer
+explanation here:
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+
+> gain of two configuration.
+> 
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> index 3a84739736f6..c81285d84db7 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> @@ -26,6 +26,11 @@ properties:
+>    vdd-supply: true
+>    vss-supply: true
+>  
+> +  adi,rbuf-gain2-en:
+> +    description: Specify to allow an external amplifier to be connected in a
+> +      gain of two configuration.
+
+I don't understand this. Without this property external amplifier is not
+allowed to be connected? This sounds like some policy, but should rather
+focus on hardware.
+
+Best regards,
+Krzysztof
 
 

@@ -1,123 +1,136 @@
-Return-Path: <linux-iio+bounces-488-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-489-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0B57FD777
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 14:05:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E848D7FD8AC
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 14:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 294F01C20C17
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 13:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8545C282E02
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 13:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AABE1E502;
-	Wed, 29 Nov 2023 13:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB16210EC;
+	Wed, 29 Nov 2023 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLu42g5S"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="FNI4lN1j"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76DC1DFE9;
-	Wed, 29 Nov 2023 13:05:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4C358C433CA;
-	Wed, 29 Nov 2023 13:05:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701263128;
-	bh=nr6I60+Ybh8j/RB6wm/XTGHNHpMDeabpoOKt6I7wF7k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kLu42g5SOSuJnnT2wBr+E4ov2dyAzoe5BgvcxowGhZ2qoE8Ja7JuY3xdAR+dkHj97
-	 FCA7DsoYIn7QazBENctWp6ky9hjW5XjCI9t5cllz/96pu9hdAugFei/RSFSX9W3EF6
-	 OLoprml8NwrqnTi5+GiCX3wlwz9ywjf/RofJoS1UJSskKFPb2GcSIOgDZ73EEbDTOX
-	 NGHsI5SI7RRQoYMN1AoBYLsNzJqpRq6yy0stdhJLx2gQUQPwari60JV9/AQUrSj+Py
-	 lqBTHMsR39gCAUUL3+6j7d0dJ88NlM/XvvD4rsl8ZPKFTvicME0UQ9BmLU9R+kp6eJ
-	 VWyJ0dxTGQksw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C885C07E98;
-	Wed, 29 Nov 2023 13:05:28 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Wed, 29 Nov 2023 14:03:53 +0100
-Subject: [PATCH v3 2/2] iio: dac: ad5791: Add support for controlling RBUF
- via devicetree
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C28B7CE;
+	Wed, 29 Nov 2023 05:51:57 -0800 (PST)
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 69B1828EE6F;
+	Wed, 29 Nov 2023 13:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1701265915;
+	bh=uvNPKH/HkMehqSkicatMT25AWwf9jXqH853dzUzJVoA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FNI4lN1jDG9U/Ou85SXKAxLh+wUsuBGK+zDp14jamvc8hzBWfFBVGCLwH+dQfK3QM
+	 w48RmsNERSN3A4drgjPrKsZqebogbEp1XiEUOaA07kgr1KW0O4aRHhNYOrvWNY5tsJ
+	 ctbLeJN9J+m2SyWBLmXOrAUVA5Ikn/wlVv0WKxMY=
+Date: Wed, 29 Nov 2023 15:51:54 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v5 2/2] iio: pressure: driver for Honeywell HSC/SSC
+ series pressure sensors
+Message-ID: <ZWdB-vU2MAptRk8d@sunspire>
+References: <20231129070452.1521-1-petre.rodan@subdimension.ro>
+ <ZWcUPkzfGqxYsysp@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231129-ad5791-michael-stuff-v3-2-48e192b00909@analog.com>
-References: <20231129-ad5791-michael-stuff-v3-0-48e192b00909@analog.com>
-In-Reply-To: <20231129-ad5791-michael-stuff-v3-0-48e192b00909@analog.com>
-To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701263126; l=1575;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=V60ayX58Xp4oAs8NlC1uKeQ7LGPvuaHa+/Zm9B0Kn5A=;
- b=ufZVj/adYMkr7AgruJ5YgTvck+QD00d9QfRjuhHhfDzBIF3EzzsE/Q0GpfDhWfggsEQIQ12G0
- leoyFyCzUbOBYdiQhIbD04300vJxGGRObSWrdpCXCkkmpoBLDw16O2m
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZWcUPkzfGqxYsysp@smile.fi.intel.com>
 
-From: Michael Hennerich <michael.hennerich@analog.com>
 
-This patch adds support for an external amplifier to be connected in a
-gain of two configuration.
+Hello,
 
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/dac/ad5791.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+thank you for the code review.
 
-diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
-index a4167454da81..75b549827e15 100644
---- a/drivers/iio/dac/ad5791.c
-+++ b/drivers/iio/dac/ad5791.c
-@@ -345,6 +345,7 @@ static int ad5791_probe(struct spi_device *spi)
- 	struct iio_dev *indio_dev;
- 	struct ad5791_state *st;
- 	int ret, pos_voltage_uv = 0, neg_voltage_uv = 0;
-+	bool use_rbuf_gain2;
- 
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
- 	if (!indio_dev)
-@@ -379,6 +380,12 @@ static int ad5791_probe(struct spi_device *spi)
- 	st->pwr_down = true;
- 	st->spi = spi;
- 
-+	if (pdata)
-+		use_rbuf_gain2 = pdata->use_rbuf_gain2;
-+	else
-+		use_rbuf_gain2 = device_property_read_bool(&spi->dev,
-+							   "adi,rbuf-gain2-en");
-+
- 	if (!IS_ERR(st->reg_vss) && !IS_ERR(st->reg_vdd)) {
- 		st->vref_mv = (pos_voltage_uv + neg_voltage_uv) / 1000;
- 		st->vref_neg_mv = neg_voltage_uv / 1000;
-@@ -398,7 +405,7 @@ static int ad5791_probe(struct spi_device *spi)
- 
- 
- 	st->ctrl = AD5761_CTRL_LINCOMP(st->chip_info->get_lin_comp(st->vref_mv))
--		  | ((pdata && pdata->use_rbuf_gain2) ? 0 : AD5791_CTRL_RBUF) |
-+		  | (use_rbuf_gain2 ? 0 : AD5791_CTRL_RBUF) |
- 		  AD5791_CTRL_BIN2SC;
- 
- 	ret = ad5791_spi_write(st, AD5791_ADDR_CTRL, st->ctrl |
+On Wed, Nov 29, 2023 at 12:36:46PM +0200, Andy Shevchenko wrote:
+> On Wed, Nov 29, 2023 at 09:04:49AM +0200, Petre Rodan wrote:
+> ...
+> 
+> > +		for (index = 0; index < ARRAY_SIZE(hsc_range_config); index++) {
+> > +			if (strncmp(hsc_range_config[index].triplet,
+> > +				    triplet,
+> > +				    HSC_PRESSURE_TRIPLET_LEN - 1) == 0) {
+> > +				hsc->pmin = hsc_range_config[index].pmin;
+> > +				hsc->pmax = hsc_range_config[index].pmax;
+> > +				found = 1;
+> > +				break;
+> > +			}
+> > +		}
+> > +		if (hsc->pmin == hsc->pmax || !found)
+> > +			return dev_err_probe(dev, -EINVAL,
+> > +				"honeywell,pressure-triplet is invalid\n");
+> 
+> This one is important. I think I told already twice that this is NIH
+> device_property_match_property_string(). Please, use this API directly.
+
+let me see if we are on the same frequency.
+
+you told me to use match_string/sysfs_match_string.
+using any of those assume having the strings in an array, which means I have to
+ clutter the code with 242 extra lines in order to split up hsc_range_config:
+
+enum hsc_variants {
+    HSC001BA = 0,
+    HSC1_6BA = 1,
+    [ .. 115 lines skipped ]
+    HSC150PG = 117,
+}
+
+static const char * const hsc_triplet_variants[] = {
+	[HSC001BA] = "001BA",
+	[HSC1_6BA] = "1.6BA",
+	[ .. 115 lines skipped ]
+	[HSC150PG] = "150PG",
+};
+
+and change my structure to
+
+static const struct hsc_range_config hsc_range_config[] = {
+	[HSC001BA] = { .pmin = 0, .pmax = 100000 },
+	[ .. 117 lines skipped ]
+};
+
+just to have the privilege of using match_string() on hsc_triplet_variants.
+now, which is worse for maintenance? a handful of lines of code that do a
+loop of strncmp or the clutter depicted above?
+
+I can go either way, but I want to make sure you see where this leads.
+
+> > +#ifndef _HSC030PA_H
+> > +#define _HSC030PA_H
+> 
+> > +#include <linux/mutex.h>
+> 
+> > +#include <linux/property.h>
+> 
+> Is not used here.
+
+ok.
+since we are here, can you please tell me how is mutex.h used outside of hsc030pa.c where it was included previously?
+
+cheers,
+peter
 
 -- 
-2.43.0
-
+petre rodan
 

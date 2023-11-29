@@ -1,101 +1,118 @@
-Return-Path: <linux-iio+bounces-492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CBB7FD918
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 15:17:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE1C7FD925
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 15:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 049BE282F6C
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 14:17:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B3C2B21319
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Nov 2023 14:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F8C3033E;
-	Wed, 29 Nov 2023 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593B730659;
+	Wed, 29 Nov 2023 14:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HUNl8vMT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usQAeTpp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E82AF;
-	Wed, 29 Nov 2023 06:17:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701267425; x=1732803425;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bhjXUMgXeV40oruQhYztJWCViluwOW0nwAoxxNUPFrw=;
-  b=HUNl8vMTV3IZ194T+u9vY4wD5vGTgocJltBtWlLWGeVj7yHkwb8W6iSp
-   OPLwbHS3K3MEskLNYF7qSM+CY1XwC2nUaCoEqqOf0sjUTVNP9H63w3Zqg
-   90eVq0nIK8XsRpoawziBHfZYnkXslB/oXy4jvqIZeOWbMqXvidbPpjiZj
-   tZeR0WYMfichk8ksd9cYSkjSY5SF11ZTOtGJhLeyb2TNzubKhMybaiXTN
-   k9XqvHJL0ZGfXZUjU7+jg+9Y7EaSd5nsttjLu9is9cEf5CEaYlePF96ef
-   H/uB1JN449c8Qpy0NF5kZ5f1e/wPQbL8jCNY8PCfv9LOYGfBci6SSnDP8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10909"; a="459665555"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="459665555"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 06:17:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10909"; a="745272986"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="745272986"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 06:17:02 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1r8LN5-00000000SV2-0AMp;
-	Wed, 29 Nov 2023 16:16:59 +0200
-Date: Wed, 29 Nov 2023 16:16:58 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v5 2/2] iio: pressure: driver for Honeywell HSC/SSC
- series pressure sensors
-Message-ID: <ZWdH2rNSmj_jisuv@smile.fi.intel.com>
-References: <20231129070452.1521-1-petre.rodan@subdimension.ro>
- <ZWcUPkzfGqxYsysp@smile.fi.intel.com>
- <ZWdB-vU2MAptRk8d@sunspire>
- <ZWdHYsWN-RWr75T6@smile.fi.intel.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5DC2FE2D;
+	Wed, 29 Nov 2023 14:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD0BC433C8;
+	Wed, 29 Nov 2023 14:20:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701267645;
+	bh=ilqRE+p2fOw9a0JlFxXvmLieJ549kSYDkFaGPRRW8oQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=usQAeTppBB5TlyqxaUvm+41VSl5IEzYDcwModnXtK+ilMiYYiZNMrGCbjgRdZXH/p
+	 7dbuv2jwzNtp5Du9YUsXip+eBl0GMPECNrAzKSBpNPdrJYpApOeTO4Yk6eYGfiCG5Z
+	 U5F4XF3VeQXjWf3HSVlVEs4AdNgM6M0FS1acS3in6ezgGKlmMHXPUcU+DJsbfJufr6
+	 TzeJkANcn3GU2M7GZiXB8s1i73Lx36tezfKVwFBWdIYfixNZTpARyWIZ4XoMoy8ixh
+	 3I84Uyv8YYD3+0pUHFFXCaKPdBuTF30Tu7TxB8uOBSzdACibLuOQpvE0nzEdwkoAHZ
+	 HLnyY+98+UN1w==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-50bbfad8758so2243772e87.3;
+        Wed, 29 Nov 2023 06:20:45 -0800 (PST)
+X-Gm-Message-State: AOJu0YxMIn8A116RYvHh6I4XaAKjyUuECqakwDgeOn8TAJ8A8/2dV8sV
+	MIDEqIAfYuuLBOmvXHsfROXWxVpAelh5QPMTDw==
+X-Google-Smtp-Source: AGHT+IGQ6dT1phTdaBB2cnieLq1FHpCwg9+LMFYxy4gEJXci5LIhzhHGeiWIcYiUZnTGssn08SW/cPnCLwYi8FMKZP4=
+X-Received: by 2002:a05:6512:114d:b0:509:4599:12d9 with SMTP id
+ m13-20020a056512114d00b00509459912d9mr16626681lfg.6.1701267643713; Wed, 29
+ Nov 2023 06:20:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWdHYsWN-RWr75T6@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20231129111041.26782-1-krzysztof.kozlowski@linaro.org>
+ <170126087595.1991744.9053853140300681368.robh@kernel.org> <3df72c05-7b79-4804-a220-5e342d6e5dd2@linaro.org>
+In-Reply-To: <3df72c05-7b79-4804-a220-5e342d6e5dd2@linaro.org>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 29 Nov 2023 08:20:31 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKhAX0vQ6LPN9ZfO4R44HZ3qrfb0oN9A9jo9+Jd2ePFLw@mail.gmail.com>
+Message-ID: <CAL_JsqKhAX0vQ6LPN9ZfO4R44HZ3qrfb0oN9A9jo9+Jd2ePFLw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: iio: honeywell,mprls0025pa: drop ref from
+ pressure properties
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	Andreas Klinger <ak@it-klinger.de>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 29, 2023 at 04:14:59PM +0200, Andy Shevchenko wrote:
-> On Wed, Nov 29, 2023 at 03:51:54PM +0200, Petre Rodan wrote:
-> > On Wed, Nov 29, 2023 at 12:36:46PM +0200, Andy Shevchenko wrote:
-> > > On Wed, Nov 29, 2023 at 09:04:49AM +0200, Petre Rodan wrote:
+On Wed, Nov 29, 2023 at 6:29=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 29/11/2023 13:27, Rob Herring wrote:
+> >
+> > On Wed, 29 Nov 2023 12:10:41 +0100, Krzysztof Kozlowski wrote:
+> >> The dtschema treats now properties with '-pascal' suffix as standard o=
+ne
+> >> and already defines $ref for them, thus the $ref should be dropped fro=
+m
+> >> the bindings.
+> >>
+> >> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> >>
+> >> ---
+> >>
+> >> dtschema change was merged:
+> >> https://github.com/devicetree-org/dt-schema/commit/2a1708dcf4ff0b25c4e=
+c46304d6d6cc655c3e635
+> >> but not yet released as new dtschema version.
+> >>
+> >> This change should be applied once new dtschema version is released or
+> >> Rob says otherwise.
+> >> ---
+> >>  .../devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml | 2 -=
+-
+> >>  1 file changed, 2 deletions(-)
+> >>
+> >
+> > My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_chec=
+k'
+> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> >
+> > yamllint warnings/errors:
+> >
+> > dtschema/dtc warnings/errors:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings=
+/iio/pressure/honeywell,mprls0025pa.yaml: honeywell,pmin-pascal: missing ty=
+pe definition
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings=
+/iio/pressure/honeywell,mprls0025pa.yaml: honeywell,pmax-pascal: missing ty=
+pe definition
+> >
+>
+> That's expected, depends on the dtschema change.
 
-...
+Well, it wasn't because dtschema version used is git tree. However,
+the CI job was using master rather than main branch. master falls
+behind when I use the web interface... Now fixed the CI job to use
+main.
 
-> > just to have the privilege of using match_string() on hsc_triplet_variants.
-> > now, which is worse for maintenance? a handful of lines of code that do a
-> > loop of strncmp or the clutter depicted above?
-> > 
-> > I can go either way, but I want to make sure you see where this leads.
-> 
-> That's the suggestion, yes.
-
-Btw, if you have any idea how to make a generic API that suits your and
-similar cases, I'm all ears!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Rob
 

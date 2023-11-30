@@ -1,132 +1,175 @@
-Return-Path: <linux-iio+bounces-515-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-516-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B1A7FFAB8
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 20:04:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3A67FFDB9
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 22:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F49D1F20FE0
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 19:04:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99FE92816E0
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 21:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA5463CE;
-	Thu, 30 Nov 2023 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7B05A0EE;
+	Thu, 30 Nov 2023 21:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="leOgRIqP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2iOGjZfC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9EDD48;
-	Thu, 30 Nov 2023 11:04:28 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-40b27726369so12003815e9.0;
-        Thu, 30 Nov 2023 11:04:28 -0800 (PST)
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562531B4
+	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 13:41:14 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c9d4afb7dfso9286401fa.1
+        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 13:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701371067; x=1701975867; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yFS2mMw973pSI8BG0Q2Fj2fFOzp0k4cYQrI7sefIoXk=;
-        b=leOgRIqPesVgzzmJOpPgKGY/BirvC6shbqC5BaCgnZCIjdParTKHDyuDfYbu5qbM7w
-         awIM9b4rwpcs7gZjw4RTOKvQwl6ZeB0Tr3yfA9pahvKdrLy3eoxX0JjYESRisSL+XZbL
-         ApuUCYu3uIQxglsD8GuOEQCyZ5PbyNxTkE4B5qMJIiV98RH/eIoiQr01Mw1ubOB5jTuI
-         htOHez7DH1sZob5JLhRI7McRErM2c7356/To69FrvrNWMw4+D0MN2FiFqrqZejKjltEp
-         bmDGTbdg8aswJ3MjuYwpRK97KTTUXsQDszLsSaIAWcHu5qUBnezO2hVKGqIks3wUz076
-         LYaw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701380472; x=1701985272; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fd0YG7g3wby74JcgoZTxtodoh2Ma9koAtjIfAtnBqJI=;
+        b=2iOGjZfCoTX61S0IzTF8HAWGZHbpH0IEYWbQivxvA/ZxP+xHIYwH0+DikksWbd5mzO
+         AcK7xKSkEV8TZrCTG8vTH0Wd7tHM4NPxasAf4ufnqlWHc8vS+ktj5e4GXaAkYQfhY+zt
+         xITrQcSELi2udH6Ynwvm0HZo7hvuWM9GcO4lWKdei+1+NHrgTsT7eQCGF31XOUzbxFdE
+         9xaGtK4JxeWWNxpPDDHEagDv/7RBYlF5TQ/4xGVHRvgufZ1OUEAYjKckeFgg/0oNKyZh
+         Zk3mGJb7etbEBhn8vewD+Kp+g8s5loU58gUO5Bh6oreuQ/On7ERHcvPLkp7HewOpZbci
+         GgCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701371067; x=1701975867;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yFS2mMw973pSI8BG0Q2Fj2fFOzp0k4cYQrI7sefIoXk=;
-        b=BHvTZJLQz4gYB3str1bX76KH2O83ObFyLQKpYBpbN10sjCB5rxtnMw8pySbOWLPQbQ
-         l/WzyBlQchLsX+PkI3dsP9u/861H9Hv+PSpUsyoqD46zuXVJgAzTeORTfZq4bAT8+FZQ
-         N3HzGX+WrC1rD3w2ffemK9IucB4ISocOemB74GOU08UMzijY0r5NHbsBH9Zk4sITM9U/
-         Bi12uSQ1Q2p5XNBJXLt2YZQcN0BhQgxy5C32fhbMn4E5sPBStci7XtAsLnB2Z6zVvEde
-         OXrPgkYuVJh3rJ77MZd6NSp3v+fZ9zT+lFyu4D+FmQLKV7fTfVOzJR6HhK712WWO8c/v
-         LPQg==
-X-Gm-Message-State: AOJu0YwNA66LWdwPhM0IZJXef0Fuf3c2Vxek5QiprxYr2Ssp9oqK0WGl
-	9y714Oy/PAuGno/JkJ8FbQQbFybCa5pKPA==
-X-Google-Smtp-Source: AGHT+IHsB5HM+Z8dYqYemNcQHZF/+wl58n+9mBj6UY1neJYvfCN+EXCWLGlqNNMxSdk+h2bkmtn/Dw==
-X-Received: by 2002:adf:e88c:0:b0:333:2fd2:68ee with SMTP id d12-20020adfe88c000000b003332fd268eemr29371wrm.129.1701370746322;
-        Thu, 30 Nov 2023 10:59:06 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:eb78:8143:ae31:3a3f? (2a02-8389-41cf-e200-eb78-8143-ae31-3a3f.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:eb78:8143:ae31:3a3f])
-        by smtp.gmail.com with ESMTPSA id q6-20020adff506000000b0032f7fab0712sm2217925wro.52.2023.11.30.10.59.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Nov 2023 10:59:05 -0800 (PST)
-Message-ID: <570ea978-4ffc-48fa-92df-463f84610a5f@gmail.com>
-Date: Thu, 30 Nov 2023 19:59:03 +0100
+        d=1e100.net; s=20230601; t=1701380472; x=1701985272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fd0YG7g3wby74JcgoZTxtodoh2Ma9koAtjIfAtnBqJI=;
+        b=RiVu+tnH/VC1NvYVStVVaQQE/3Q2GGllDCNb0d6kZz/mQAkvgriTdlpbq7o7tPRxbw
+         8YgWRuxXWQkbasZewkG/z0kzjawr3P5kleePAbnTfmo9lX41LbJYKHIrw1esrydlqjAK
+         IE/DD/lFbmbaBcEWK4/utaB/3tKZzEYo0x664nadbHs4qrTJLbaB8oNeyRoyjr4e79PX
+         xBNu75++CtMySpJTSKyLRI1lU3EVVhC4Y+kPyhKvsfUzvUO+alfmK4iezr8YrHS5iO9P
+         jeneXOhibEqpEzIGC9Z/Q13/EBfWZdp/CvjJU5axikMR7b5ifTb6VNKyqO/MJvzw7Cma
+         Ztyw==
+X-Gm-Message-State: AOJu0Yy3qiniNA3EP7t2V/ikVbw/oPGXr3W1CkWsN3ccabHLc6wdzN+k
+	u8UZ/vEcfSRPoxCceOQHj0MfglvcgttuRDS3zb9ujw==
+X-Google-Smtp-Source: AGHT+IHOqy3zd2l2wLsrbsS+OGAQHC++9ntml8mSoabCouZoB5MU3hbrors/4KLRm6nsBU9nM5qo4UP0iLwzR7fLM1w=
+X-Received: by 2002:a2e:9ec1:0:b0:2c9:d872:abdf with SMTP id
+ h1-20020a2e9ec1000000b002c9d872abdfmr87880ljk.93.1701380472434; Thu, 30 Nov
+ 2023 13:41:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] iio: humidity: Add driver for ti HDC302x humidity
- sensors
-To: Jonathan Cameron <jic23@kernel.org>, 579lpy@gmail.com
-Cc: lars@metafoo.de, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20231125102221.2795-1-579lpy@gmail.com>
- <20231125145208.01194d91@jic23-huawei>
-Content-Language: en-US
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20231125145208.01194d91@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com> <20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com>
+In-Reply-To: <20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 30 Nov 2023 15:41:01 -0600
+Message-ID: <CAMknhBGCqnzCp6vQ+59Z-SybScvbtU7aWdAD6KnP1e6=q60gVQ@mail.gmail.com>
+Subject: Re: [PATCH 04/12] iio: adc: ad9467: fix reset gpio handling
+To: nuno.sa@analog.com
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+<devnull+nuno.sa.analog.com@kernel.org> wrote:
+>
+> From: Nuno Sa <nuno.sa@analog.com>
+>
+> The reset gpio was being requested with GPIOD_OUT_LOW which means, not
+> asserted. Then it was being asserted but never de-asserted which means
+> the devices was left in reset. Fix it by de-asserting the gpio.
 
-On 25.11.23 15:52, Jonathan Cameron wrote:
->> +
->> +static const struct iio_chan_spec hdc3020_channels[] = {
->> +	{
->> +		.type = IIO_TEMP,
-> 
-> There is only one temp channel so I'd like to see the peaks added to this
-> one as well.  Can be done if we add a new bit of ABI for the min value
-> seen.
-> 
-> Whilst naming .index = 0, .channel = 0 is different from this case
-> the ABI and all userspace software should treat them the same hence this
-> is an ambiguous channel specification.
-> 
->> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->> +		BIT(IIO_CHAN_INFO_SCALE),
->> +	},
->> +	{
->> +		/* For minimum value during measurement */
-> 
-> Please add some docs for this - preferably in patch description
-> or cover letter if it is too long for there. You are using the ABI in a fashion
-> not previously considered.
-> 
-> I don't think it is a good solution.  Perhaps keeping IIO_CHAN_INFO_PEAK
-> as assumed to be maximum, we could add a new IIO_CHAN_INFO_TROUGH
-> perhaps?  Hopefully the scale applies to both peak and trough so we
-> don't need separate attributes.
-> 
-If only IIO_CHAN_INFO_TROUGH is added without an additional _SCALE, in
-this particular case you end up having the following sysfs entries:
+It could be helpful to update the devicetree bindings to state the
+expected active-high or active-low setting for this gpio so it is
+clear which state means asserted.
 
-in_humidityrelative_peak_raw
-in_humidityrelative_peak_scale
-in_temp_peak_raw
-in_temp_peak_scale
-in_humidityrelative_trough_raw
-in_temp_trough_raw
+>
+> While at it, moved the handling to it's own function and dropped
+> 'reset_gpio' from the 'struct ad9467_state' as we only need it during
+> probe. On top of that, refactored things so that we now request the gpio
+> asserted (i.e in reset) and then de-assert it.
+>
+> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  drivers/iio/adc/ad9467.c | 33 ++++++++++++++++++++-------------
+>  1 file changed, 20 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> index 39eccc28debe..368ea57be117 100644
+> --- a/drivers/iio/adc/ad9467.c
+> +++ b/drivers/iio/adc/ad9467.c
+> @@ -121,7 +121,6 @@ struct ad9467_state {
+>         unsigned int                    output_mode;
+>
+>         struct gpio_desc                *pwrdown_gpio;
+> -       struct gpio_desc                *reset_gpio;
+>  };
+>
+>  static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
+> @@ -378,6 +377,23 @@ static int ad9467_preenable_setup(struct adi_axi_adc=
+_conv *conv)
+>         return ad9467_outputmode_set(st->spi, st->output_mode);
+>  }
+>
+> +static int ad9467_reset(struct device *dev)
+> +{
+> +       struct gpio_desc *gpio;
+> +
+> +       gpio =3D devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> +       if (IS_ERR(gpio))
+> +               return PTR_ERR(gpio);
+> +       if (!gpio)
+> +               return 0;
 
-I just would like to know if documenting the trough attribute in a way
-that it is clear that the peak_scale applies for it as well is better
-than adding a TROUGH_SCALE. We would save the additional attribute, but
-at first sight it is not that obvious (it makes sense that the scale is
-the same for both peaks, but the names are not so consistent anymore).
+can be done in one test instead of 2:
 
-I suppose that often the raw and peak scales are also the same, but
-there are indeed two separate attributes. On the other hand I don't know
-if the additional attribute would imply bigger issues (maintenance,
-documentation, etc) than just adding the line, so I leave the question open.
+if (IS_ERR_OR_NULL(gpio))
+        return PTR_ERR_OR_ZERO(gpio);
 
-Thank you and best regards,
-Javier Carrasco
+> +
+> +       fsleep(1);
+> +       gpiod_direction_output(gpio, 0);
+> +       fsleep(10);
+
+Previous version was 10 milliseconds instead of 10 microseconds. Was
+this change intentional? If yes, it should be mentioned it in the
+commit message.
+
+> +
+> +       return 0;
+> +}
+> +
+>  static int ad9467_probe(struct spi_device *spi)
+>  {
+>         const struct ad9467_chip_info *info;
+> @@ -408,18 +424,9 @@ static int ad9467_probe(struct spi_device *spi)
+>         if (IS_ERR(st->pwrdown_gpio))
+>                 return PTR_ERR(st->pwrdown_gpio);
+>
+> -       st->reset_gpio =3D devm_gpiod_get_optional(&spi->dev, "reset",
+> -                                                GPIOD_OUT_LOW);
+> -       if (IS_ERR(st->reset_gpio))
+> -               return PTR_ERR(st->reset_gpio);
+> -
+> -       if (st->reset_gpio) {
+> -               udelay(1);
+> -               ret =3D gpiod_direction_output(st->reset_gpio, 1);
+> -               if (ret)
+> -                       return ret;
+> -               mdelay(10);
+> -       }
+> +       ret =3D ad9467_reset(&spi->dev);
+> +       if (ret)
+> +               return ret;
+>
+>         conv->chip_info =3D &info->axi_adc_info;
+>
+>
+> --
+> 2.42.1
+>
+>
 

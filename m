@@ -1,137 +1,194 @@
-Return-Path: <linux-iio+bounces-506-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-507-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039087FF035
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 14:33:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 779A07FF400
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 16:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BC1281FEF
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 13:33:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE9428197C
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 15:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9FE47A6C;
-	Thu, 30 Nov 2023 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863EC53808;
+	Thu, 30 Nov 2023 15:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i10DJW9T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWTJmj6g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB8ED6C;
-	Thu, 30 Nov 2023 05:33:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701351189; x=1732887189;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Y9xAE4jnRRyfj1G4wW1Lotwm4gpNjAn2zAYETZeXOaw=;
-  b=i10DJW9TSl22/CNbIINoSGvsnU1vKerow5s1ScjGckrYdV2tx7CrJXUS
-   +1JEpa7xToNyIhRRMCvM0kYmzhYcN5c1Ax2hEcLx6ew49vDgglb7G+g2z
-   D1QFEE7V1L8B0vNaOmlHB5K36n9PamfSvAmqmtYTKoCpYFMK6EVfiRgVx
-   PQpx7+MyqbFcnXU7shVZhatDfOu+CQOKKbkMx6DaPG8tWVHrvrlRfWJf0
-   YR8NEvytO/5m/6kU58oizP5hQiYf4avDDINGBRbOTNsdnpdkwzmQA3ILZ
-   sPkv8MNjDdxSC/RWoDWB6unuG+CgO2UA6QQEDp6RTnHHMNWOEwBOeW+Y+
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="424472104"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; 
-   d="scan'208";a="424472104"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2023 05:33:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="769309024"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; 
-   d="scan'208";a="769309024"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2023 05:33:06 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1r8hA7-00000000hwz-003K;
-	Thu, 30 Nov 2023 15:33:03 +0200
-Date: Thu, 30 Nov 2023 15:33:02 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v6 2/2] iio: pressure: driver for Honeywell HSC/SSC series
-Message-ID: <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
-References: <20231129170425.3562-1-petre.rodan@subdimension.ro>
- <20231129170425.3562-2-petre.rodan@subdimension.ro>
- <ZWdzz7VzCW5ctend@smile.fi.intel.com>
- <ZWeNNMfqKquDYI9X@sunspire>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC7F2208A;
+	Thu, 30 Nov 2023 15:53:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE8DC433C8;
+	Thu, 30 Nov 2023 15:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701359612;
+	bh=HrIeUu7V7smPbz53czTMhVOKIhnJX6FObsHMqEgNuww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KWTJmj6guoUZxaxt6RIJl4h1DsBIWv/7g3q4qKBMb15RXr7Fs2wvfEKnOK6rG16nX
+	 45OdwoH02duq0uGWs4bJbWEbkn8b8uzmW2JBSlzD6PR7V0Aa0o4BcJfbzkNI78j/FT
+	 cdfn/nZ2ARojwYf1WZp4ntPp3BEbjki/RMmFrqLL4em0VcmrE5P+5nvoFZpJr96uay
+	 oVrbrQ5PqGT8qFz1JX+VGFNsgks2ojGh9/pZC+cnKGaostTf9zZS5xpMK33ptqx4Vr
+	 8Ky45g5pqU2uS6pd5Zjx7EZbgwXCQhdNxJs/77t8TVniEHmU2Bfk0J4hlErV5Ap1sg
+	 SugTdBq1JUJ4g==
+Date: Thu, 30 Nov 2023 15:53:27 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	marius.cristea@microchip.com, lars@metafoo.de, robh+dt@kernel.org,
+	jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for PAC193X
+Message-ID: <20231130-obedient-pointer-6b4470a85c63@spud>
+References: <20231115134453.6656-1-marius.cristea@microchip.com>
+ <20231115134453.6656-2-marius.cristea@microchip.com>
+ <fedd4bcf-7892-4096-bcca-7ea72d39576f@linaro.org>
+ <20231116-channel-variety-cc7c262924ad@squawk>
+ <20231125194754.304523e6@jic23-huawei>
+ <20231126-nineteen-clumsy-701ac4145ba8@spud>
+ <20231126160438.01ff57d7@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="oP7sV86AVSwt1W+s"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZWeNNMfqKquDYI9X@sunspire>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-
-On Wed, Nov 29, 2023 at 09:12:52PM +0200, Petre Rodan wrote:
-> On Wed, Nov 29, 2023 at 07:24:31PM +0200, Andy Shevchenko wrote:
-> > On Wed, Nov 29, 2023 at 07:04:12PM +0200, Petre Rodan wrote:
-
-...
-
-> > > v6: modifications based on Andy's review
-> > >     - use str_has_prefix(), match_string() instead of strncmp()
-> > 
-> > And why not using the respective property API for that case where
-> > match_string() is used?
-> 
-> I'm lost again.
-> 
-> 437:  ret = device_property_read_string(dev, "honeywell,pressure-triplet",
-> 					&triplet);
-> [..]
-> 455:	ret = match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
-> 						triplet);
-> 		if (ret < 0)
-> 			return dev_err_probe(dev, -EINVAL,
-> 				"honeywell,pressure-triplet is invalid\n");
-> 
-> 		hsc->pmin = hsc_range_config[ret].pmin;
-> 		hsc->pmax = hsc_range_config[ret].pmax;
-> 
-> triplet is got via device_property_read_string(), is there some other property
-> function I should be using?
-
-I think I mentioned that API, but for your convenience
-device_property_match_property_string().
-
-...
-
-> > > +	tmp = div_s64(((s64)(hsc->pmax - hsc->pmin)) * MICRO,
-> > > +		      hsc->outmax - hsc->outmin);
-> > > +	hsc->p_scale = div_s64_rem(tmp, NANO, &hsc->p_scale_dec);
-> > > +	tmp = div_s64(((s64)hsc->pmin * (s64)(hsc->outmax - hsc->outmin)) *
-> > > +		      MICRO, hsc->pmax - hsc->pmin);
-> > 
-> > Why not put MICRO on the previous line?
-> 
-> oh well, from the review I understood you were asking for the replacement of
-> NANO with MICRO on the previous instruction and it did not make much sense (
-> units are in pascal and we need a kilopascal output to userland)
-> 
-> now I understood it's an indentation request. however moving MICRO will cross
-> the 80 column rule. but if there will be yet another modification request
-> I'll move it.
-
-I understand that it breaks the 80 character rule, but my point is to have
-consistency between two divisions (see quoted context) along with the logical
-split — line split on argument list split.
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <20231126160438.01ff57d7@jic23-huawei>
 
 
+--oP7sV86AVSwt1W+s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Nov 26, 2023 at 04:04:38PM +0000, Jonathan Cameron wrote:
+> On Sun, 26 Nov 2023 11:24:56 +0000
+> Conor Dooley <conor@kernel.org> wrote:
+> > On Sat, Nov 25, 2023 at 07:47:54PM +0000, Jonathan Cameron wrote:
+> > > On Thu, 16 Nov 2023 18:21:33 +0000
+> > > Conor Dooley <conor@kernel.org> wrote: =20
+> > > > On Thu, Nov 16, 2023 at 04:01:43PM +0100, Krzysztof Kozlowski wrote=
+: =20
+> > > > > On 15/11/2023 14:44, marius.cristea@microchip.com wrote:   =20
+> > > > > > From: Marius Cristea <marius.cristea@microchip.com> =20
+> > > > > > +patternProperties:
+> > > > > > +  "^channel@[1-4]+$":
+> > > > > > +    type: object
+> > > > > > +    $ref: adc.yaml
+> > > > > > +    description: Represents the external channels which are co=
+nnected to the ADC.
+> > > > > > +
+> > > > > > +    properties:
+> > > > > > +      reg:
+> > > > > > +        items:
+> > > > > > +          minimum: 1
+> > > > > > +          maximum: 4
+> > > > > > +
+> > > > > > +      shunt-resistor-micro-ohms:
+> > > > > > +        description: |
+> > > > > > +          Value in micro Ohms of the shunt resistor connected =
+between
+> > > > > > +          the SENSE+ and SENSE- inputs, across which the curre=
+nt is measured. Value
+> > > > > > +          is needed to compute the scaling of the measured cur=
+rent.
+> > > > > > +
+> > > > > > +    required:
+> > > > > > +      - reg
+> > > > > > +      - shunt-resistor-micro-ohms
+> > > > > > +
+> > > > > > +    unevaluatedProperties: false
+> > > > > > +
+> > > > > > +required:
+> > > > > > +  - compatible
+> > > > > > +  - reg
+> > > > > > +  - "#address-cells"
+> > > > > > +  - "#size-cells"
+> > > > > > +
+> > > > > > +allOf:
+> > > > > > +  - if:
+> > > > > > +      properties:
+> > > > > > +        compatible:
+> > > > > > +          contains:
+> > > > > > +            const: interrupts   =20
+> > > > >=20
+> > > > >=20
+> > > > > I don't understand what do you want to say here. I am also 100% s=
+ure you
+> > > > > did not test it on a real case (maybe example passes but nothing =
+more).   =20
+> > > >=20
+> > > > As far as I understand, the same pin on the device is used for both=
+ an
+> > > > output or an input depending on the configuration. As an input, it =
+is
+> > > > the "slow-io" control, and as an output it is an interrupt.
+> > > > I think Marius is trying to convey that either this pin can be in
+> > > > exclusively one state or another.
+> > > >=20
+> > > > _However_ I am not sure that that is really the right thing to do -=
+ they
+> > > > might well be mutually exclusive modes, but I think the decision ca=
+n be
+> > > > made at runtime, rather than at devicetree creation time. Say for
+> > > > example the GPIO controller this is connected to is capable of acti=
+ng as
+> > > > an interrupt controller. Unless I am misunderstanding the runtime
+> > > > configurability of this hardware, I think it is possible to actually
+> > > > provide a "slow-io-gpios" and an interrupt property & let the opera=
+ting
+> > > > system decide at runtime which mode it wants to work in. =20
+> > >=20
+> > > I'll admit I've long forgotten what was going on here, but based just=
+ on
+> > > this bit of text I agree. There is nothing 'stopping' us having a pin
+> > > uses as either / or / both interrupt and gpio.
+> > >=20
+> > > It'll be a bit messy to support in the driver as IIRC there are some =
+sanity
+> > > checks that limit combinations on IRQs and output GPIOS.  Can't remem=
+ber
+> > > how bad the dance to navigate it safely is.
+> > >=20
+> > > First version I'd just say pick one option if both are provided and
+> > > don't support configuring it at runtime. =20
+> >=20
+> > Just to be clear, you are suggesting having the
+> > "microchip,slow-io-gpios" and "interrupts" properties in the binding,
+> > but the driver will just (for example) put that pin into alert mode
+> > always & leave it there?
+>=20
+> Yes.
+>=20
+> > If that is what you are suggesting, that seems pragmatic to me.
+>=20
+> If a use case to do something else comes along later, then we can
+> be smarter, but I'd like to keep it simple initially at least.
+
+Sounds good to me, thanks Jonathan. Seems like a good compromise of
+depicting the hardware accurately and not overcomplicating the driver
+implementation.
+
+Marius, I completely forgot to get in touch with you about this - give
+me a shout on teams if there's anything outstanding that I can help you
+with.
+
+--oP7sV86AVSwt1W+s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWiv9wAKCRB4tDGHoIJi
+0uHzAPwLRSFe3lyznjBdX2nugpHz1wH9XkPMsIfMCDZMgNeUhQD/QIvnrIRYkwXk
+T9Reuc+W3+2ww8eTAHVikTkLYDMDvQ8=
+=fi+Q
+-----END PGP SIGNATURE-----
+
+--oP7sV86AVSwt1W+s--
 

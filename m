@@ -1,67 +1,67 @@
-Return-Path: <linux-iio+bounces-518-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-519-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B8E7FFDF5
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 22:51:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28FC7FFF76
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 00:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01A151C20BE2
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 21:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFD961C20E5B
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 23:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF044A998;
-	Thu, 30 Nov 2023 21:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3B159538;
+	Thu, 30 Nov 2023 23:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wPqbnp5q"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Rgrl6LR8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0851704
-	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 13:50:58 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c9bd3ec4f6so17962091fa.2
-        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 13:50:58 -0800 (PST)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8365910E2
+	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:30:53 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c9ccf36b25so14844041fa.3
+        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701381057; x=1701985857; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701387052; x=1701991852; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aANyBr2T0t8LeKYSkonqHHH3ddTbNb3vuWdQ0g12q+Q=;
-        b=wPqbnp5qRtfp082LnkkE85atm3ai15hClOrgxH6TPBNETyZNCpcH/qjtLUfN7cQKtI
-         bMTA0rqlEolb32uyNkz1HxvbutaB6wTKhJCOGnzKhRi4UewsaSh/QM/8sAHq38spLDzT
-         KLoSUBpSmdV1eJgKTqeAz1Gzps830CBLFa2rMRRgDk/rjfINktB0nKMr8Gx8uRM72f/4
-         BukNYUQV/kZJRv8+XUYZ/GR3DkLp/+QQZymLbG/bWxIxe/gJSguC/9/mr6WVJO34LClf
-         G8h6xe7nP6ufrCRt3DWIoG52TC7gVCNhPKji9sTmZXB9szz4BnJjER6fF2GPRjdSFCzc
-         ID4A==
+        bh=OlkZfLy7XjVfeJnSAyVxLt4mO60J3JeK1Ayu4OTnn6g=;
+        b=Rgrl6LR8zpZCooUNieWI3jD+Rfv1Qqm1fKKdaI+Q65R5bv8wc/EGFsuqmC5XorZokG
+         er3Z1FJotq5XRS7Se/Gp/lgN+5yeZBHsMDLMiv4BL+n+3d9EYeLgsoq9aVytJ99v10QX
+         COPyEAl0XrA1eLOSXWGlg//9n7FWb04XrQRxNfAENxOsrlX6de6I4mHFLBGmeM7Ye8BR
+         7hsRPTGCwbmtbaxV+NpETD+76G8MxJojeIg+zx2uFqYEiGOOK+HI5u2115y/33nNMRec
+         gOBhu5QNuCrR40bHEjqQA7G5yUN24QI958vVcfBH0H07gpIstst4Ky0fNbSjRtr0u+Sc
+         KNhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701381057; x=1701985857;
+        d=1e100.net; s=20230601; t=1701387052; x=1701991852;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aANyBr2T0t8LeKYSkonqHHH3ddTbNb3vuWdQ0g12q+Q=;
-        b=xEirNurZ5TIHG7m3QVYiLEGlJe51NAmOX6Lb3sSozKwpTG5lKqJ7gBkuRfKDm8Vqfu
-         53izv6BtU3wNIBeJgzZkfCEnLs1nyff7A2Zox3iFb1PeA4rs0l6wGcnDJi07lnFxn241
-         kP3HpGbC+RMlTx7Cwg+7AZUy2marzg8j8OJG3oAJaESXUv20dQ+cGbp3OosQgwn1fg7A
-         LOmHtQ6vZxkc/fH05BLXRGjB3xBaxEmfsUjny8zaaqFkyalhPGFUmpahidaiygsZp59U
-         8cfvYNaVir+du2Jkmh1QsteAzOfeLizBY7cVObMcE3nZlFpB5iPPXqu1y3zPn3FU/r5M
-         0y8w==
-X-Gm-Message-State: AOJu0YxIC/KwYF8CN+6VN6Hs+rQ5GIGCx4tfFAFeau8JvqfvCmvvGyNF
-	AFWEvM3CLrx7lbtCjF6pOZvUyAoS7zUGa7ZwvLJT6aLR0zfi9NGb
-X-Google-Smtp-Source: AGHT+IGTreSyOMteX5Yn0pCJXOJ23n2w1uz7JmQUqmbNcKkrGMdUipIFSV2GkcHhgdqYisB6JJKbOnVn4oDTwdlFnHo=
-X-Received: by 2002:a2e:8503:0:b0:2c9:bacc:1285 with SMTP id
- j3-20020a2e8503000000b002c9bacc1285mr117766lji.47.1701381056908; Thu, 30 Nov
- 2023 13:50:56 -0800 (PST)
+        bh=OlkZfLy7XjVfeJnSAyVxLt4mO60J3JeK1Ayu4OTnn6g=;
+        b=dAFsjSoH3tls6fa/RC8Rxa5m6ibUYv2swjDEgF+jXXHZdVka5vLX1xoISummfKIlgV
+         H+9w7G7kg7pSIJHctZluFgnqOcoQkJog4i1uc80IQPk3mx/vNGzAyrg1EVC/WwAG8p8u
+         +mZ6yp2m26rkehQEiiLiDNbV58EeBisrJtDNn7tHActvZJzB74XwHX3TP2MkzEOhjRya
+         e/UYHJWGXsrsKQY0KdHnH4eFKI9qxi2gOHjpOJFYmvEUWuv4nY7K0nAtNPT7PmRbfLlH
+         MWSYwseVtdJgQl7SRuUjoOs6/Tra3oXyOpWA97DUxMuZQaSYh3zYDYluetU0NoVPM52X
+         qJrg==
+X-Gm-Message-State: AOJu0YzRfvqoN/aNaj/KHv4MeebEgNsxky87a1uIY/TnrbM5FH29SOFA
+	ivmTIiWjkRUYO5R2IwSBKfVLpimvgMiovLSfMS0Vcg==
+X-Google-Smtp-Source: AGHT+IEXF8b8i2d8gUX/7XGbKeBhO5y4FoKURpNKXdVwOiELp1ycsJ9gIbh2TFOn8p7a8iYvPuGv0h95Jl3CjKO9auA=
+X-Received: by 2002:a2e:6e14:0:b0:2c9:d862:c66b with SMTP id
+ j20-20020a2e6e14000000b002c9d862c66bmr192908ljc.88.1701387051792; Thu, 30 Nov
+ 2023 15:30:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com> <20231121-dev-iio-backend-v1-6-6a3d542eba35@analog.com>
-In-Reply-To: <20231121-dev-iio-backend-v1-6-6a3d542eba35@analog.com>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com> <20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com>
+In-Reply-To: <20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 30 Nov 2023 15:50:46 -0600
-Message-ID: <CAMknhBHsFS5p-_250WRmkH2za+QPV6WyKNfgD-E1W8=HV3W3fg@mail.gmail.com>
-Subject: Re: [PATCH 06/12] iio: adc: ad9467: add mutex to struct ad9467_state
+Date: Thu, 30 Nov 2023 17:30:40 -0600
+Message-ID: <CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
+Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
 To: nuno.sa@analog.com
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>, 
@@ -77,65 +77,171 @@ On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
 >
 > From: Nuno Sa <nuno.sa@analog.com>
 >
-> When calling ad9467_set_scale(), multiple calls to ad9467_spi_write()
-> are done which means we need to properly protect the whole operation so
-> we are sure we will be in a sane state if two concurrent calls occur.
+> Convert the driver to use the new IIO backend framework. The device
+> functionality is expected to be the same (meaning no added or removed
+> features).
+
+Missing a devicetree bindings patch before this one?
+
 >
-> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+> Also note this patch effectively breaks ABI and that's needed so we can
+> properly support this device and add needed features making use of the
+> new IIO framework.
+
+Can you be more specific about what is actually breaking?
+
+>
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/adc/ad9467.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/Kconfig  |   2 +-
+>  drivers/iio/adc/ad9467.c | 256 +++++++++++++++++++++++++++++------------=
+------
+>  2 files changed, 157 insertions(+), 101 deletions(-)
 >
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 1e2b7a2c67c6..af56df63beff 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -275,7 +275,7 @@ config AD799X
+>  config AD9467
+>         tristate "Analog Devices AD9467 High Speed ADC driver"
+>         depends on SPI
+> -       depends on ADI_AXI_ADC
+> +       select IIO_BACKEND
+>         help
+>           Say yes here to build support for Analog Devices:
+>           * AD9467 16-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
 > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index 04474dbfa631..91821dee03b7 100644
+> index 5db5690ccee8..8b0402e73ace 100644
 > --- a/drivers/iio/adc/ad9467.c
 > +++ b/drivers/iio/adc/ad9467.c
-> @@ -4,7 +4,7 @@
->   *
->   * Copyright 2012-2020 Analog Devices Inc.
->   */
-> -
-> +#include <linux/cleanup.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
 
-Ah, the case of the misplaced header from the previous patch is solved. :-)
+<snip>
 
->  #include <linux/device.h>
-> @@ -122,6 +122,8 @@ struct ad9467_state {
->         unsigned int                    output_mode;
->
->         struct gpio_desc                *pwrdown_gpio;
-> +       /* protect against concurrent accesses to the device */
-> +       struct mutex                    lock;
->  };
->
->  static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
-> @@ -162,6 +164,7 @@ static int ad9467_reg_access(struct adi_axi_adc_conv =
-*conv, unsigned int reg,
+> +static int ad9467_buffer_get(struct iio_dev *indio_dev)
+
+perhaps a more descriptive name: ad9467_buffer_setup_optional?
+
+> +{
+> +       struct device *dev =3D indio_dev->dev.parent;
+> +       const char *dma_name;
+> +
+> +       if (!device_property_present(dev, "dmas"))
+> +               return 0;
+> +
+> +       if (device_property_read_string(dev, "dma-names", &dma_name))
+> +               dma_name =3D "rx";
+> +
+> +       return devm_iio_dmaengine_buffer_setup(dev, indio_dev, dma_name);
+
+The device tree bindings for "adi,ad9467" don't include dma properties
+(nor should they). Perhaps the DMA lookup should be a callback to the
+backend? Or something similar to the SPI Engine offload that we are
+working on?
+
+> +}
+> +
+>  static int ad9467_probe(struct spi_device *spi)
+>  {
+> -       const struct ad9467_chip_info *info;
+> -       struct adi_axi_adc_conv *conv;
+> +       struct iio_dev *indio_dev;
+>         struct ad9467_state *st;
+>         unsigned int id;
 >         int ret;
 >
->         if (!readval) {
-> +               guard(mutex)(&st->lock);
->                 ret =3D ad9467_spi_write(spi, reg, writeval);
->                 if (ret)
->                         return ret;
-> @@ -310,6 +313,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *=
-conv, int val, int val2)
->                 if (scale_val[0] !=3D val || scale_val[1] !=3D val2)
->                         continue;
+> -       info =3D spi_get_device_match_data(spi);
+> -       if (!info)
+> -               return -ENODEV;
+> -
+> -       conv =3D devm_adi_axi_adc_conv_register(&spi->dev, sizeof(*st));
+> -       if (IS_ERR(conv))
+> -               return PTR_ERR(conv);
+> +       indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
 >
-> +               guard(mutex)(&st->lock);
->                 ret =3D ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
->                                        info->scale_table[i][1]);
->                 if (ret < 0)
+> -       st =3D adi_axi_adc_conv_priv(conv);
+> +       st =3D iio_priv(indio_dev);
+>         st->spi =3D spi;
+>
+> +       st->info =3D spi_get_device_match_data(spi);
+> +       if (!st->info)
+> +               return -ENODEV;
+> +
+>         st->clk =3D devm_clk_get_enabled(&spi->dev, "adc-clk");
+>         if (IS_ERR(st->clk))
+>                 return PTR_ERR(st->clk);
+> @@ -476,29 +522,39 @@ static int ad9467_probe(struct spi_device *spi)
+>         if (ret)
+>                 return ret;
+>
+> -       conv->chip_info =3D &info->axi_adc_info;
+> -
+> -       ret =3D ad9467_scale_fill(conv);
+> +       ret =3D ad9467_scale_fill(st);
+>         if (ret)
+>                 return ret;
+>
+>         id =3D ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+> -       if (id !=3D conv->chip_info->id) {
+> +       if (id !=3D st->info->id) {
+>                 dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected =
+0x%X\n",
+> -                       id, conv->chip_info->id);
+> +                       id, st->info->id);
+>                 return -ENODEV;
+>         }
+>
+> -       conv->reg_access =3D ad9467_reg_access;
+> -       conv->write_raw =3D ad9467_write_raw;
+> -       conv->read_raw =3D ad9467_read_raw;
+> -       conv->read_avail =3D ad9467_read_avail;
+> -       conv->preenable_setup =3D ad9467_preenable_setup;
+> +       indio_dev->name =3D st->info->name;
+> +       indio_dev->channels =3D st->info->channels;
+> +       indio_dev->num_channels =3D st->info->num_channels;
+> +       indio_dev->info =3D &ad9467_info;
+> +
+> +       ret =3D ad9467_buffer_get(indio_dev);
+> +       if (ret)
+> +               return ret;
+>
+> -       st->output_mode =3D info->default_output_mode |
+> -                         AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
+> +       st->back =3D devm_iio_backend_get(&spi->dev, NULL);
+
+Based on the descriptions given of IIO frontend and backend, I was
+expecting this driver to be the backend since SPI is only used to
+configure the chip while the adi-axi-adc driver is the one determining
+the scan data format, providing the DMA (INDIO_BUFFER_HARDWARE), etc.
+
+Also, from a devicetree "describe the hardware" mindset, it doesn't
+seem like this chip (AD9467) should dictate a specific backend. I know
+it doesn't make sense practlically for this chip to not use DMA given
+the high sample rate, but why should the devicetree for this chip
+require it when there is nothing intrensic about this chip itself
+related to DMA?
+
+> +       if (IS_ERR(st->back))
+> +               return PTR_ERR(st->back);
+>
+> -       return 0;
+> +       ret =3D iio_backend_enable(st->back);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret =3D ad9467_setup(st);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>
+>  static const struct of_device_id ad9467_of_match[] =3D {
 >
 > --
 > 2.42.1
 >
 >
-
-Alternately, this could probably be solved with spi_bus_lock/unlock
-and spi_sync_locked rather than introducing a new mutex.
 

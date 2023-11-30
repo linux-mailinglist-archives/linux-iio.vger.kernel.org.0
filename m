@@ -1,40 +1,40 @@
-Return-Path: <linux-iio+bounces-510-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-509-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BC47FF7F3
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 18:17:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039077FF7EE
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 18:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0298BB2121C
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 17:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33DA01C20849
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91DC56755;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B445256751;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d/g5oOz2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYbxN6h/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6365556456;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6361156452;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137BAC433CB;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C9C433C8;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1701364613;
-	bh=NP5nEKKAbqzx7TvXe3SZBdwhS28a3lTCzwA7uNU8zG4=;
+	bh=KSdOCdB6xW/QIXdrCIh6E061B7HLNeGVfp8JXB/WYKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/g5oOz2xuqaGz9szs6S3Gitcw056NUkC39XnJcmxlvIVI/n+f7IUFgBXTvPB/wqA
-	 fDqkxRnyKPIyfEPYQFVswnTj5a91wOE5Qdm4OexMXpgco6pwUlKlz5E9zFxdSF1JpU
-	 aOy6W4GzWi8FOuS7OSRi1Qc1tGmdjE4l27Y8Y0FxRkzicHFZofLDTWHPL6TYdHqL/F
-	 zNEC2g1PdGL3ldp5UInOaA/mbd8886I7DrYsc37qYNhKH88IQfIdL3NnVwTOjE3cAh
-	 KKS+IGbHzgNJ5S4HSazLGs1GTgjGU3BEEwEImxW8dnz49wMmB5j/cIcsRiBgupS7LX
-	 DAfQ9/9jnBHFA==
+	b=lYbxN6h/8sjKS050DPNMu/CrbBSEIQsmUhC7bMZrlOAM0P9SJLvRzEKwssT7T70G8
+	 rfY4nYWSJORT8P6jzxdW+9Svfhs7gS10eb3B/76BbDXSiaLNQuRrGIP13QixL7tVKl
+	 x0vKoScxZtJmP++Cce4hNxG/wJUMlPdFGOoEm0iZy5LA6K6owfc4ODPfrjd9VKZjhy
+	 1HnbmwLDIKpz2I15IBIL8eVzFgsHbxp1n+ly/YMrbQeNP+Neu25vK7rdxo44A2Mtay
+	 gZjBD6CUYyqj2UUnJ4GjDufjkkoVDCOHyy2oP5ZnYO101giLowpPZWfvUmzH4FDLAz
+	 ZfNIjnEf3ze5w==
 Received: from johan by xi.lan with local (Exim 4.96.2)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1r8kfG-0003Cg-1L;
+	id 1r8kfG-0003Ci-1c;
 	Thu, 30 Nov 2023 18:17:26 +0100
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>
@@ -46,9 +46,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 1/6] dt-bindings: iio/adc: qcom,spmi-iadc: fix reg description
-Date: Thu, 30 Nov 2023 18:16:23 +0100
-Message-ID: <20231130171628.12257-2-johan+linaro@kernel.org>
+Subject: [PATCH 2/6] dt-bindings: iio/adc: qcom,spmi-iadc: fix example node name
+Date: Thu, 30 Nov 2023 18:16:24 +0100
+Message-ID: <20231130171628.12257-3-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231130171628.12257-1-johan+linaro@kernel.org>
 References: <20231130171628.12257-1-johan+linaro@kernel.org>
@@ -60,27 +60,28 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IADC register is just the base address in the SPMI PMIC and does not
-include any length.
+The IADC is a child of an SPMI PMIC, which in turn sits on an SPMI bus.
 
+Fixes: a4e6bf69418c ("dt-bindings:iio:adc:qcom,spmi-iadc: txt to yaml format conversion.")
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
-index 73def67fbe01..e0e0aa9d5d5b 100644
+index e0e0aa9d5d5b..16889d2d3575 100644
 --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
-@@ -25,7 +25,7 @@ properties:
-       - const: qcom,spmi-iadc
- 
-   reg:
--    description: IADC base address and length in the SPMI PMIC register map
-+    description: IADC base address in the SPMI PMIC register map
-     maxItems: 1
- 
-   qcom,external-resistor-micro-ohms:
+@@ -50,7 +50,8 @@ additionalProperties: false
+ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/irq.h>
+-    spmi {
++
++    pmic {
+         #address-cells = <1>;
+         #size-cells = <0>;
+         pmic_iadc: adc@3600 {
 -- 
 2.41.0
 

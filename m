@@ -1,67 +1,67 @@
-Return-Path: <linux-iio+bounces-520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92097FFF82
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 00:34:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD497FFFC1
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 00:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 162FEB20EE4
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 23:34:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34CBEB20F67
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 23:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA7A5954A;
-	Thu, 30 Nov 2023 23:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03475955E;
+	Thu, 30 Nov 2023 23:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gMGAQTSQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="P0w3vrmZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB8F10E2
-	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:34:11 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-50bb92811c0so1532733e87.1
-        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:34:11 -0800 (PST)
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9948A10DF
+	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:54:52 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c9b956c68cso15602901fa.1
+        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 15:54:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701387250; x=1701992050; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701388491; x=1701993291; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JQZO2smk9lB8IbFGyWpiiaWx+EoPvHvBmIDoExFNLfs=;
-        b=gMGAQTSQURSXc7mTg/GbOCnWsqHvSn1TrGiEwckP07HIHh20ORy9AHIBudW1KUhp11
-         rR4BCQBE/xnQ0qjlttSnOqbeAegxvEHNJS/Lc0nn/4Y+XNZwSzoaYG0VtSeQQWCaSar+
-         DHRmELFtGmVXwCVx2HdGP5D7nrOAeubgAe8fdH6oWu9NMdAlZOVQWed/YRo4QgchukBT
-         j1vWyRCvcRwvLVWpa8IqPqDK5x7Oi9YXbIhmV2tKZNkRCpXUkUnWtVfiB5DVqn5cwo0D
-         8f0PUQksZkbXwzXed8yG8FvoCipwhzRkTKJkU4iS0Cpe9wd2JrRdoQfkDn9P04Gzs4Jd
-         EhbQ==
+        bh=sGO8mAdrAqhDRxrlrd1/sOrvK17UXFpdyDtQDEFr48s=;
+        b=P0w3vrmZ/OBgZk9VnvkxG4/ZliZvrM8ERpyZfmVJKGBmM0tfKXgDxFmE5gH8Ht22Id
+         S3vGIHzsLFBxxfAuzBPmoPiSJN6XutpKQFsSnFA8F/TJLS8HKVFcQ+ObIOUlA7g2jaPs
+         MKEt2e59vzN9ezXrHBIXIz3PHN9rxLxs2wsxaZP4fXlpqv/PYHvOm+crQe5Y9wxQoFrd
+         Juyf3ayyw1z/ZgcXRTa2meWQPqkjrcgQbcMhIrz/vm4pBAL7yFlPy/V+Ae1rcJERCia6
+         mDSxhFMmCL5O+b1Ml3PfpzqgdGhEM9S0W+yiIMIZRHCRwCIg188JRqibz4A78+t2YG8H
+         +oUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701387250; x=1701992050;
+        d=1e100.net; s=20230601; t=1701388491; x=1701993291;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JQZO2smk9lB8IbFGyWpiiaWx+EoPvHvBmIDoExFNLfs=;
-        b=VCozckAaOf1LWwutHCSnU8Sv0Z1YnytBMtPR8ZkqLGbU+EF5JRiL+DUWvaqPBEtfEb
-         4rl42AgWa0KRM95vAu019jEm3KhV6lwrpl/G7GC3l4MtaRP6wZlRJaA9et7a/v7pW1Oq
-         C/9YUs6dAVznKX+f7Bsl4sNH/1Gm7NYVwP+bP5/MoaJNzjBgeSdZgD5S+BPtCg1D8MH4
-         mXXYMF4vjJWWRupxfkQ/Iw2wVjwnk9GYVnpplrNim158uBCdgF4EGmL4y3+JgBUfjNco
-         Iq7LVABFSIMKa1RlLgK+cmHPP0ZSaK/MX8Qppff02MSywR8+lVqzSvGqLfJbk48r1MDC
-         Y55g==
-X-Gm-Message-State: AOJu0YzNbN3xA6TSeGKHXtp8Cg0T0qW0EEgL/z2fY0A8hD1dBKrtYt1X
-	QmaTJrOBUWkI2VFlnEwy2ZZDixSSqWEXDOgv+CR3VA==
-X-Google-Smtp-Source: AGHT+IGdZffvtch0g6MlraHwYeW6Dn5ZPxtraT1CJGSOhr2L5QRrHtST+DhfAVRqaUY+thzmGSVaBDHnDo15+vMR1q0=
-X-Received: by 2002:a05:6512:b96:b0:50a:ae89:491f with SMTP id
- b22-20020a0565120b9600b0050aae89491fmr211943lfv.3.1701387249855; Thu, 30 Nov
- 2023 15:34:09 -0800 (PST)
+        bh=sGO8mAdrAqhDRxrlrd1/sOrvK17UXFpdyDtQDEFr48s=;
+        b=cGb+4aDru9Lv+8TJGOXmjNkF5MfrSrM/sukAMDLAu8DOVb2R+os4FEPyBi1PrbJK27
+         M2gutNSPCt0yP3B9NKWXzhWsaMhzezYe+yBnRKtjUx7AfNjw1Gn/x09NQwoqkJfo2jWl
+         KUuioKzDQSoSMRH1Wt6lui6nJV1n3r97VT+MA6XJ2u6Zh2jRkTWP3dsFaFAUfklljxV7
+         mh2dq32gMiJ4IjtQ7mwgyTdJg8wCn2Ay2Q+3N8H5pwhCa7ZvMiU90L/nvn1DcZN6PmH3
+         UDuex2iRtwPJm3Ae1TGofonIU2urDRlW6gc+195LbGkWZcrBkaccTzqFrkfUF8yTfuaa
+         XFAg==
+X-Gm-Message-State: AOJu0Ywk++j7dOClTXrgCejrTwc8LLjzHA2/xeVJZ0KAdwsEu1HzIG0H
+	VQKKZX0RK6iALSVkat2ypQocnf6Rep9TsH50s72CmQ==
+X-Google-Smtp-Source: AGHT+IEDwWrg5ORWAu7cojx2auj03EsJ4gxI7RF6HouCxhjtKTlwjmweO6WdaOgqE9ObA1y9cBqoCf7+CnqtwPLTmwg=
+X-Received: by 2002:a2e:5cc4:0:b0:2c9:c50c:a9c1 with SMTP id
+ q187-20020a2e5cc4000000b002c9c50ca9c1mr203763ljb.6.1701388490692; Thu, 30 Nov
+ 2023 15:54:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com> <20231121-dev-iio-backend-v1-12-6a3d542eba35@analog.com>
-In-Reply-To: <20231121-dev-iio-backend-v1-12-6a3d542eba35@analog.com>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
+In-Reply-To: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 30 Nov 2023 17:33:59 -0600
-Message-ID: <CAMknhBFk1SbcQeG_bxtKUhR_hF2R0cRrVAPFomL_TOS9eh8Kqw@mail.gmail.com>
-Subject: Re: [PATCH 12/12] iio: adc: adi-axi-adc: move to backend framework
+Date: Thu, 30 Nov 2023 17:54:39 -0600
+Message-ID: <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+Subject: Re: [PATCH 00/12] iio: add new backend framework
 To: nuno.sa@analog.com
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>, 
@@ -75,104 +75,34 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
 <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >
-> From: Nuno Sa <nuno.sa@analog.com>
+> Hi all,
 >
-> Move to the IIO backend framework. Devices supported by adi-axi-adc now
-> register themselves as backend devices.
+> This is a Framework to handle complex IIO aggregate devices.
 >
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  drivers/iio/adc/Kconfig       |   1 +
->  drivers/iio/adc/adi-axi-adc.c | 364 ++++++++----------------------------=
-------
->  2 files changed, 65 insertions(+), 300 deletions(-)
+> The typical architecture is to have one device as the frontend device whi=
+ch
+> can be "linked" against one or multiple backend devices. All the IIO and
+> userspace interface is expected to be registers/managed by the frontend
+> device which will callback into the backends when needed (to get/set
+> some configuration that it does not directly control).
 >
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index af56df63beff..cc42a3399c63 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -292,6 +292,7 @@ config ADI_AXI_ADC
->         select IIO_BUFFER
->         select IIO_BUFFER_HW_CONSUMER
->         select IIO_BUFFER_DMAENGINE
-> +       select IIO_BACKEND
->         depends on HAS_IOMEM
->         depends on OF
->         help
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.=
-c
-> index c247ff1541d2..b2ab2c119efa 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
+> The basic framework interface is pretty simple:
+>  - Backends should register themselves with @devm_iio_backend_register()
+>  - Frontend devices should get backends with @devm_iio_backend_get()
+>
+> (typical provider - consumer stuff)
+>
 
-<snip>
+The "typical provider - consumer stuff" seems pretty straight forward
+for finding and connecting two different devices, but the definition
+of what is a frontend and what is a backend seems a bit nebulous. It
+would be nice to seem some example devicetree to be able to get a
+better picture of how this will be used in practices (links to the the
+hardware docs for those examples would be nice too).
 
-> @@ -390,37 +166,23 @@ static int adi_axi_adc_probe(struct platform_device=
- *pdev)
->         if (ret)
->                 return ret;
->
-> -       if (cl->info->version > ver) {
-> +       if (*expected_ver > ver) {
->                 dev_err(&pdev->dev,
->                         "IP core version is too old. Expected %d.%.2d.%c,=
- Reported %d.%.2d.%c\n",
-> -                       ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
-> -                       ADI_AXI_PCORE_VER_MINOR(cl->info->version),
-> -                       ADI_AXI_PCORE_VER_PATCH(cl->info->version),
-> +                       ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
-> +                       ADI_AXI_PCORE_VER_MINOR(*expected_ver),
-> +                       ADI_AXI_PCORE_VER_PATCH(*expected_ver),
->                         ADI_AXI_PCORE_VER_MAJOR(ver),
->                         ADI_AXI_PCORE_VER_MINOR(ver),
->                         ADI_AXI_PCORE_VER_PATCH(ver));
->                 return -ENODEV;
->         }
->
-> -       indio_dev->info =3D &adi_axi_adc_info;
-> -       indio_dev->name =3D "adi-axi-adc";
-> -       indio_dev->modes =3D INDIO_DIRECT_MODE;
-> -       indio_dev->num_channels =3D conv->chip_info->num_channels;
-> -       indio_dev->channels =3D conv->chip_info->channels;
-> -
-> -       ret =3D adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
-> +       ret =3D devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generi=
-c, st);
->         if (ret)
->                 return ret;
->
-> -       ret =3D adi_axi_adc_setup_channels(&pdev->dev, st);
-> -       if (ret)
-> -               return ret;
-> -
-> -       ret =3D devm_iio_device_register(&pdev->dev, indio_dev);
-> -       if (ret)
-> -               return ret;
-> -
-> -       dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
-> +       dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
-
-Was this format change intentional? There are other places above where
-%c is still used.
-
->                  ADI_AXI_PCORE_VER_MAJOR(ver),
->                  ADI_AXI_PCORE_VER_MINOR(ver),
->                  ADI_AXI_PCORE_VER_PATCH(ver));
-> @@ -428,6 +190,8 @@ static int adi_axi_adc_probe(struct platform_device *=
-pdev)
->         return 0;
->  }
->
-> +static unsigned int adi_axi_adc_10_0_a_info =3D ADI_AXI_PCORE_VER(10, 0,=
- 'a');
-> +
->  /* Match table for of_platform binding */
->  static const struct of_device_id adi_axi_adc_of_match[] =3D {
->         { .compatible =3D "adi,axi-adc-10.0.a", .data =3D &adi_axi_adc_10=
-_0_a_info },
->
-> --
-> 2.42.1
->
->
+In addition to the backend ops given in this series, what are some
+other expected ops that could be added in the future? Do we need some
+kind of spec to say "I need a backend with feature X and feature Y" or
+"I need a backend with compatible string" rather than just "I need a
+generic backend"?
 

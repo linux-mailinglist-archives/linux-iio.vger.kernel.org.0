@@ -1,40 +1,40 @@
-Return-Path: <linux-iio+bounces-509-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039077FF7EE
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 18:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 259BB7FF7EB
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 18:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33DA01C20849
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 17:17:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5771A1C21007
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Nov 2023 17:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B445256751;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848C55646B;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYbxN6h/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdG7j/lI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6361156452;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F3E537FA;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C9C433C8;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11242C433C9;
 	Thu, 30 Nov 2023 17:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1701364613;
-	bh=KSdOCdB6xW/QIXdrCIh6E061B7HLNeGVfp8JXB/WYKA=;
+	bh=4MvuIkotlM5v0azTQRz27GQ7u2cpqGPTVAW6vocygAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYbxN6h/8sjKS050DPNMu/CrbBSEIQsmUhC7bMZrlOAM0P9SJLvRzEKwssT7T70G8
-	 rfY4nYWSJORT8P6jzxdW+9Svfhs7gS10eb3B/76BbDXSiaLNQuRrGIP13QixL7tVKl
-	 x0vKoScxZtJmP++Cce4hNxG/wJUMlPdFGOoEm0iZy5LA6K6owfc4ODPfrjd9VKZjhy
-	 1HnbmwLDIKpz2I15IBIL8eVzFgsHbxp1n+ly/YMrbQeNP+Neu25vK7rdxo44A2Mtay
-	 gZjBD6CUYyqj2UUnJ4GjDufjkkoVDCOHyy2oP5ZnYO101giLowpPZWfvUmzH4FDLAz
-	 ZfNIjnEf3ze5w==
+	b=RdG7j/lIAxBP7TZ8CJ1EyZJIdXgVdM05abTwVJ/edPcsRn59jedppdTJPM3i7bv6j
+	 U9THyxyINKw09aXL8XurqtVdLZuMg3r5D70aNkP5LeG2JQr1uV+zknK4FGf+lcXNyM
+	 qGIBp9LLGMTZ80l4nt6ml9S3KS6BVD1BZJd1vRhaIRrXYPBENDBBxIvre1Q+Tk2iau
+	 jeyU4MKBSUa2hz0CfSkWAa3A44zMH5LpvODbgzNMgq050fSwIZCIGnKGFRKuLjpKMW
+	 DXBYweJq6oVBx7bgQZ4JM5hFiGVZij0+tvH3bjk/0/2/bFike3rfFMcIsj1CCCbK+2
+	 UezkC/fgPX9Xw==
 Received: from johan by xi.lan with local (Exim 4.96.2)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1r8kfG-0003Ci-1c;
+	id 1r8kfG-0003Ck-1t;
 	Thu, 30 Nov 2023 18:17:26 +0100
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>
@@ -46,9 +46,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 2/6] dt-bindings: iio/adc: qcom,spmi-iadc: fix example node name
-Date: Thu, 30 Nov 2023 18:16:24 +0100
-Message-ID: <20231130171628.12257-3-johan+linaro@kernel.org>
+Subject: [PATCH 3/6] dt-bindings: iio/adc: qcom,spmi-iadc: clean up example
+Date: Thu, 30 Nov 2023 18:16:25 +0100
+Message-ID: <20231130171628.12257-4-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231130171628.12257-1-johan+linaro@kernel.org>
 References: <20231130171628.12257-1-johan+linaro@kernel.org>
@@ -60,28 +60,34 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IADC is a child of an SPMI PMIC, which in turn sits on an SPMI bus.
+Clean up the IADC example by adding a newline separator, dropping an
+unnecessary label and removing stray white space.
 
-Fixes: a4e6bf69418c ("dt-bindings:iio:adc:qcom,spmi-iadc: txt to yaml format conversion.")
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml          | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
-index e0e0aa9d5d5b..16889d2d3575 100644
+index 16889d2d3575..5ed893ef5c18 100644
 --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
-@@ -50,7 +50,8 @@ additionalProperties: false
- examples:
-   - |
-     #include <dt-bindings/interrupt-controller/irq.h>
--    spmi {
-+
-+    pmic {
+@@ -54,12 +54,13 @@ examples:
+     pmic {
          #address-cells = <1>;
          #size-cells = <0>;
-         pmic_iadc: adc@3600 {
+-        pmic_iadc: adc@3600 {
++
++        adc@3600 {
+             compatible = "qcom,pm8941-iadc", "qcom,spmi-iadc";
+             reg = <0x3600>;
+             interrupts = <0x0 0x36 0x0 IRQ_TYPE_EDGE_RISING>;
+             qcom,external-resistor-micro-ohms = <10000>;
+-            #io-channel-cells  = <1>;
++            #io-channel-cells = <1>;
+         };
+     };
+ ...
 -- 
 2.41.0
 

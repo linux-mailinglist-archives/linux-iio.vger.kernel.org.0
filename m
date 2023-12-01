@@ -1,45 +1,54 @@
-Return-Path: <linux-iio+bounces-535-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-536-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19E3801257
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 19:14:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC82180126E
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 19:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9A201C20D7A
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 18:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E52FB211A0
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 18:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7144F1EA;
-	Fri,  1 Dec 2023 18:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF77E4F206;
+	Fri,  1 Dec 2023 18:17:28 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED0C106;
-	Fri,  1 Dec 2023 10:14:35 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFD7194;
+	Fri,  1 Dec 2023 10:17:25 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Shh0t1H5Wz6813Y;
-	Sat,  2 Dec 2023 02:09:50 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Shh7j1n26z6K91p;
+	Sat,  2 Dec 2023 02:15:45 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 56646140135;
-	Sat,  2 Dec 2023 02:14:32 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6E79A1401E0;
+	Sat,  2 Dec 2023 02:17:23 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 1 Dec
- 2023 18:14:31 +0000
-Date: Fri, 1 Dec 2023 18:14:30 +0000
+ 2023 18:17:22 +0000
+Date: Fri, 1 Dec 2023 18:17:21 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <579lpy@gmail.com>,
-	<lars@metafoo.de>, <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-	<conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] iio: humidity: Add driver for ti HDC302x
- humidity sensors
-Message-ID: <20231201181430.00002634@Huawei.com>
-In-Reply-To: <570ea978-4ffc-48fa-92df-463f84610a5f@gmail.com>
-References: <20231125102221.2795-1-579lpy@gmail.com>
-	<20231125145208.01194d91@jic23-huawei>
-	<570ea978-4ffc-48fa-92df-463f84610a5f@gmail.com>
+To: Marek Vasut <marex@denx.de>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Andy
+ Shevchenko" <andriy.shevchenko@linux.intel.com>, Matti Vaittinen
+	<mazziesaccount@gmail.com>, Alexander Stein
+	<alexander.stein@ew.tq-group.com>, Andre Werner
+	<andre.werner@systec-electronic.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>, Guenter
+ Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
+	Naresh Solanki <naresh.solanki@9elements.com>, Patrick Rudolph
+	<patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, "Stefan
+ Windfeldt-Prytz" <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
+	<vincent@vtremblay.dev>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 2/2] iio: light: isl76682: Add ISL76682 driver
+Message-ID: <20231201181721.0000445c@Huawei.com>
+In-Reply-To: <9e73c450-2380-459a-9b41-a1b88f89548c@denx.de>
+References: <20231125222738.97875-1-marex@denx.de>
+	<20231125222738.97875-2-marex@denx.de>
+	<20231126181655.4e1040f9@jic23-huawei>
+	<9e73c450-2380-459a-9b41-a1b88f89548c@denx.de>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -53,80 +62,61 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, 30 Nov 2023 19:59:03 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Sun, 26 Nov 2023 23:09:36 +0100
+Marek Vasut <marex@denx.de> wrote:
 
-> Hi,
-> 
-> On 25.11.23 15:52, Jonathan Cameron wrote:
-> >> +
-> >> +static const struct iio_chan_spec hdc3020_channels[] = {
-> >> +	{
-> >> +		.type = IIO_TEMP,  
-> > 
-> > There is only one temp channel so I'd like to see the peaks added to this
-> > one as well.  Can be done if we add a new bit of ABI for the min value
-> > seen.
-> > 
-> > Whilst naming .index = 0, .channel = 0 is different from this case
-> > the ABI and all userspace software should treat them the same hence this
-> > is an ambiguous channel specification.
+> On 11/26/23 19:16, Jonathan Cameron wrote:
+> > On Sat, 25 Nov 2023 23:26:23 +0100
+> > Marek Vasut <marex@denx.de> wrote:
 > >   
-> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >> +		BIT(IIO_CHAN_INFO_SCALE),
-> >> +	},
-> >> +	{
-> >> +		/* For minimum value during measurement */  
+> >> The ISL76682 is very basic ALS which only supports ALS or IR mode
+> >> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+> >> other fancy functionality.
+> >>
+> >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >> Signed-off-by: Marek Vasut <marex@denx.de>  
 > > 
-> > Please add some docs for this - preferably in patch description
-> > or cover letter if it is too long for there. You are using the ABI in a fashion
-> > not previously considered.
+> > Hi Marek,
 > > 
-> > I don't think it is a good solution.  Perhaps keeping IIO_CHAN_INFO_PEAK
-> > as assumed to be maximum, we could add a new IIO_CHAN_INFO_TROUGH
-> > perhaps?  Hopefully the scale applies to both peak and trough so we
-> > don't need separate attributes.
+> > One last question + a comment in general. Act on that if you like.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
 > >   
-> If only IIO_CHAN_INFO_TROUGH is added without an additional _SCALE, in
-> this particular case you end up having the following sysfs entries:
+> >> +static int integration_time_available[] = { 0, ISL76682_INT_TIME_US };  
+> > 
+> > Why have an available attribute for a single value. Is it useful for anything?  
 > 
-> in_humidityrelative_peak_raw
-> in_humidityrelative_peak_scale
-> in_temp_peak_raw
-> in_temp_peak_scale
-> in_humidityrelative_trough_raw
-> in_temp_trough_raw
-> 
-> I just would like to know if documenting the trough attribute in a way
-> that it is clear that the peak_scale applies for it as well is better
-> than adding a TROUGH_SCALE. We would save the additional attribute, but
-> at first sight it is not that obvious (it makes sense that the scale is
-> the same for both peaks, but the names are not so consistent anymore).
+> To report it to userspace, iio-sensor-proxy uses that to control the ALS 
+> poll interval .
 
-Agreed this isn't that intuitive. 
+It should use integration_time, not the associated available attribute.
 
 > 
-> I suppose that often the raw and peak scales are also the same, but
-> there are indeed two separate attributes. On the other hand I don't know
-> if the additional attribute would imply bigger issues (maintenance,
-> documentation, etc) than just adding the line, so I leave the question open.
-
-I wonder if we should have the ABI state that peak_scale is only applicable
-it it overrides the _scale value.  Here I think they are the same anyway
-thus not providing peak_scale would leave us with a single attribute reflecting
-scale of _raw, _peak_raw and _trough_raw
-
-I think this is already the case in reality.  We have two users of the peak interface
-and only one of them provides peak_scale.  Hopefully hdc2010 is
-assuming _scale applies to it.
-
-So maybe this is just a documentation update and drop peak_scale from this
-driver.
-
-Jonathan
+> >> +static int isl76682_probe(struct i2c_client *client)
+> >> +{  
+> > 
+> > ...
+> >   
+> >> +	indio_dev->info = &isl76682_info;
+> >> +	indio_dev->channels = isl76682_channels;
+> >> +	indio_dev->num_channels = ARRAY_SIZE(isl76682_channels);
+> >> +	indio_dev->name = ISL76682_DRIVER_NAME;  
+> > Trivial but I'm not a fan of using defines in cases like this. It just makes
+> > me go find the define when I could see the string directly here.
+> > 
+> > In cases where matching or similar strictly requires the naming to be the same
+> > in various places a define is useful. In this case less so.
+> > 
+> > Anyhow, it's a very minor comment so never mind if you prefer to leave it
+> > as it stands.  
 > 
-> Thank you and best regards,
-> Javier Carrasco
+> I added it to V6 .
+> 
+> I'll wait for the integration time reply above and then send V6 .
 > 
 
 

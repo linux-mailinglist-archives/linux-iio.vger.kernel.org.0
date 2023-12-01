@@ -1,107 +1,146 @@
-Return-Path: <linux-iio+bounces-522-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CCC7FFFF4
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 01:12:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6695580060A
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 09:42:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6816FB212B4
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 00:12:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECEC1B210D7
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 08:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35A217CE;
-	Fri,  1 Dec 2023 00:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F1E1B269;
+	Fri,  1 Dec 2023 08:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EgkiEx+V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LY2nKbK2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0B9A10FF
-	for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 16:12:24 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c9bf8964c3so20326071fa.1
-        for <linux-iio@vger.kernel.org>; Thu, 30 Nov 2023 16:12:24 -0800 (PST)
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E57131;
+	Fri,  1 Dec 2023 00:41:56 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50bc743c7f7so2543814e87.3;
+        Fri, 01 Dec 2023 00:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701389543; x=1701994343; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+S6ZNm0KY70bzKBdaXHGr9e7p3t5vwxIYL3G+hCH9Y=;
-        b=EgkiEx+Vcd230vMg3k+g1khMK+c/37irFitUfftbLmkI4ENDgI9Hg11raTawsFLvBg
-         ThtPknKqohzR7RhnFKEi0fh8/BUGUhpO7meziEFNb+uNz4Mrifx8ZGIcNL9qtbONjUh0
-         MS07QKpp73AUuaD2UcQOp+uSSM+wKSXnh1JlYClAl7sFd/ZN1HSA5LX7WtZC1jv9xrpS
-         Ft2jse4sT+pgn/7jiIDv6JkhHsJoZWpyTbDOATsrGrR0OaibWQDkfQEURJRZUG1+piTX
-         Kd+WCKjx5d9+FlO9qX9O0speDuN7qjHmZrArsy6r3uViBuOE492X6gueHImwp+WHY1fq
-         Wh5Q==
+        d=gmail.com; s=20230601; t=1701420114; x=1702024914; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=M0Ll8PM6R+fMhWbSgXfCkmatPjtexOoM35q2s1+XB8Q=;
+        b=LY2nKbK2o2TN13NXUZ70AF6gVC30rAo8vlWw9EQALqMY+Pstt7UIBEMRJnVPtwadCf
+         dqe/m8FMysLwT4zs6fDR/mnHiQHYOmIPJ+NVyzkaXSZBAJ1a//igRjV+ktgbhSX+PZsV
+         vehDRV98Ts7P7QiPtyrwSMlLM9yj8B+4FhXUU95WFktZdBb6n7nsb4d0dCWz6FjkScC6
+         3qjU0X8zYIk/SnAJsf9cunYt2jKPujECtWFfDUnprM4F9g7N1G2iE7C8CGop8RuYfvsO
+         VHQfZz1kv1XZNto7GMWt/VdMlXKteLQBleiuXwfaAsm3d8LZVBA4Gv5PWWd/PwVUX1kX
+         x3Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701389543; x=1701994343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w+S6ZNm0KY70bzKBdaXHGr9e7p3t5vwxIYL3G+hCH9Y=;
-        b=RH+kbBUv4DXh9xdV9ZSH451mcUqCpKNGj4+ib+yUPfEYrmory2kySmFTlBNVLoxlD9
-         bF1nuB/fzANaZhwolwSYoIJd8ySAE1zFqL3wTjEd+yFuWBkN3RlL8XGfh3tyqYkVnUXA
-         0RCOBpWpeLLm8PF7NViOR0aMznEMy1ltx2Xen1UPQpCYoBJZpkNSAjpTuA9frqkqBdam
-         JjKf1b7UItwFbvVrdke+cEkSDD4o3g7w3ZB8QC2pbAZjNlvgjCuXnn3YEBfU+s7M7j6+
-         HypESB8EWIvtrrTJFJL3cZlRtOWGN07v0r+z+YfEmvUmmK7tWMyw4OIOveuhFNXjXntI
-         543Q==
-X-Gm-Message-State: AOJu0YyOdjK1xpq9UTj0p/tpKTJrYjPOBqGNQidW16LuEEikVAmAbVHr
-	T9qja055Ry615V5CNd+5RP6z79uE5cR5rZOUpG0gqA==
-X-Google-Smtp-Source: AGHT+IGsS1+sHRmFzKHBh3sQJBe24WgzbWubLmdDK9T41aJOvKZPFcBk2x+6D8vxIXt5dM/JwNd7Cmh+ItiUzD/BwPg=
-X-Received: by 2002:a05:651c:23a:b0:2c9:d862:c66f with SMTP id
- z26-20020a05651c023a00b002c9d862c66fmr217019ljn.92.1701389542959; Thu, 30 Nov
- 2023 16:12:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701420114; x=1702024914;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M0Ll8PM6R+fMhWbSgXfCkmatPjtexOoM35q2s1+XB8Q=;
+        b=atAc+hGGPUXATBDqAhlWmi+ndo/8Hci87ZZ++xrMhwQYHqlZgy0GL4EwT1BWslgnAf
+         zul41MPyeSlBdgEHNs4eIywRfjbiSccAStVbPlvfurldepXXNyVT1RoAg66743Z5s+Wu
+         BXZHoVhse0+L9WdfNI9t6SLkeVxMhIJt/r4t0P2ZHdVsgwMKlXuuRfNZ7hil5a5eOQdt
+         3T5VBGbXzscEDz1mTK8rIQnxAzxVLYdRzBygQCHIfDAa1D/0/2DZkF2VLfxjvoIg1mOz
+         NHLargQ8uM64M5t+wfye0c+8WuyleNcuCVNunbnTxH6a/bey5kfGJaE8E1Kaq4bMuEiZ
+         noDQ==
+X-Gm-Message-State: AOJu0YwpG/gbD+VntMhe4v4CP08e4abx17wdOKWS41OTOyx/ZV6tbrHk
+	pg7Fv9UNX5YVittym2TFd4M=
+X-Google-Smtp-Source: AGHT+IF0K0RFQAaOmMN/ds4GXvEqLt37rMcid31qfCGk+nL+I9t+V1O0HpkrY3DDZx2XEuw8iHpiYA==
+X-Received: by 2002:a19:5052:0:b0:50b:c0f7:d1a1 with SMTP id z18-20020a195052000000b0050bc0f7d1a1mr495038lfj.41.1701420114195;
+        Fri, 01 Dec 2023 00:41:54 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id fb13-20020a05600c520d00b0040b3e7569fcsm8256193wmb.11.2023.12.01.00.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 00:41:53 -0800 (PST)
+Message-ID: <0afd52940147b14db33d4712368c5dcc9ee90882.camel@gmail.com>
+Subject: Re: [PATCH 00/12] iio: add new backend framework
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>
+Date: Fri, 01 Dec 2023 09:41:53 +0100
+In-Reply-To: <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
+	 <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
- <20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com> <CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
-In-Reply-To: <CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 30 Nov 2023 18:12:12 -0600
-Message-ID: <CAMknhBEdXNkpEt-kXBez7zC0XGvo8AZ1G0Y9Y0XVr2EmpA_Qpw@mail.gmail.com>
-Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
-To: nuno.sa@analog.com
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 30, 2023 at 5:30=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
+On Thu, 2023-11-30 at 17:54 -0600, David Lechner wrote:
 > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> >=20
+> > Hi all,
+> >=20
+> > This is a Framework to handle complex IIO aggregate devices.
+> >=20
+> > The typical architecture is to have one device as the frontend device w=
+hich
+> > can be "linked" against one or multiple backend devices. All the IIO an=
+d
+> > userspace interface is expected to be registers/managed by the frontend
+> > device which will callback into the backends when needed (to get/set
+> > some configuration that it does not directly control).
+> >=20
+> > The basic framework interface is pretty simple:
+> > =C2=A0- Backends should register themselves with @devm_iio_backend_regi=
+ster()
+> > =C2=A0- Frontend devices should get backends with @devm_iio_backend_get=
+()
+> >=20
+> > (typical provider - consumer stuff)
+> >=20
+>=20
+> The "typical provider - consumer stuff" seems pretty straight forward
+> for finding and connecting two different devices, but the definition
+> of what is a frontend and what is a backend seems a bit nebulous. It
+> would be nice to seem some example devicetree to be able to get a
+> better picture of how this will be used in practices (links to the the
+> hardware docs for those examples would be nice too).
+>=20
+> In addition to the backend ops given in this series, what are some
+> other expected ops that could be added in the future? Do we need some
+> kind of spec to say "I need a backend with feature X and feature Y" or
+> "I need a backend with compatible string" rather than just "I need a
+> generic backend"?
 
-<snip>
+Bah, I know saw that I messed up in the cover letter. This was the link [1]=
+ I wanted
+to add. In there, you'll see the RFC patch which already has lots of info. =
+It also
+has a link to a previous discussion  had with Jonathan about this kind off
+arrangement.
 
-> > +       st->back =3D devm_iio_backend_get(&spi->dev, NULL);
->
-> Based on the descriptions given of IIO frontend and backend, I was
-> expecting this driver to be the backend since SPI is only used to
-> configure the chip while the adi-axi-adc driver is the one determining
-> the scan data format, providing the DMA (INDIO_BUFFER_HARDWARE), etc.
->
-> Also, from a devicetree "describe the hardware" mindset, it doesn't
-> seem like this chip (AD9467) should dictate a specific backend. I know
-> it doesn't make sense practlically for this chip to not use DMA given
-> the high sample rate, but why should the devicetree for this chip
-> require it when there is nothing intrensic about this chip itself
-> related to DMA?
->
+You already more or less figured the frontend + backend story in one of you=
+r replies.
+So, yes the data is received or transmitted (if we think DAC/DDS) by the ac=
+tual
+converter which makes sense to be seen as the frontend. This connects to an=
+other
+device capable of handling the high sample rate (typically a core in a FPGA=
+) of these
+converters. But this is ADI usecase, note that STM also wants to have somet=
+hing like
+this in order to link devices. Ah, and one of the things that Jonathan want=
+s to see
+is that only the frontend device exposes the IIO interface to userspace.
 
-Afterthought:
 
-Put another way, it seems like it would be much easier to say "I, the
-arbitrary frontend that actually handles the data from the LVDS
-outputs, need a backend that provides a SPI connection to an AD9467
-chip and takes care of turning on power supplies" than it is to say
-"I, the AD9467 chip frontend, need an arbitrary backend that handles
-reading data from the LVDS outputs in a very specific manner that is
-determined by the driver, not the hardware".
+
+
+[1]: https://lore.kernel.org/linux-iio/20230804145342.1600136-1-nuno.sa@ana=
+log.com/
+
+- Nuno S=C3=A1
 

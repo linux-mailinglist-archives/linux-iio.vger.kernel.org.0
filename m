@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72988010AE
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 18:02:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24AF8011FA
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 18:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42006B20DFB
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 17:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75F11B21293
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Dec 2023 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BF44D125;
-	Fri,  1 Dec 2023 17:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B934E636;
+	Fri,  1 Dec 2023 17:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="m4zBEm0Q"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ACT9a4GH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78CB1A8
-	for <linux-iio@vger.kernel.org>; Fri,  1 Dec 2023 09:02:08 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c9b5b774f0so29655951fa.3
-        for <linux-iio@vger.kernel.org>; Fri, 01 Dec 2023 09:02:08 -0800 (PST)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D15FE
+	for <linux-iio@vger.kernel.org>; Fri,  1 Dec 2023 09:44:58 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c9c4df1287so32324841fa.2
+        for <linux-iio@vger.kernel.org>; Fri, 01 Dec 2023 09:44:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701450127; x=1702054927; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701452697; x=1702057497; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DWTh4se+UruTw1n6D9cikBRfGAJlzspbt4OfaTxkr5o=;
-        b=m4zBEm0Q7+2iCo3wggfcXtWIUfDN7FFqjNVpC614RWEXUURjyE5cNwZ2ulSzsPnIqp
-         pnsluCY4yyKJr8Lm0dIG1zhmVd4aB/LYoB4guoG+v0+S2pjiv+5z90l8R4ipmtvXOLDf
-         /5O486evXfYNyWKc/3mU3WmiPOSknN7UqdlJTJ2yyE+bgpxOXc7ArTI3Ezy2k8RNFCvi
-         EOhWEVyKZIr68nsMedeIDCb+f/6m5ObdARn+liYUBq5qA8jnyKzaKP457R0fwyQhaVre
-         3KZVjqoGTtHSu0f87KUEvGU6REufwaMDeD5ctPSKrjhNGzouXKwsZTwnXRA3jnYajwhD
-         H8Lw==
+        bh=jt6YTmgmj7iHRCIb8aRUB98S7dTyKCu/pLm3UrF1Jr4=;
+        b=ACT9a4GHRYu1AHXugYO/YLKi3cSD6nsyIe4qIjpxkZKDfmU2LLyLJvkXkDJ9UhudoP
+         +OE31pxmarbiZjV/LUDubQ7PR+zVsRp4H1coAZ9fFAdZhip96moTUMSJAbhPWBWIWZi0
+         Za+ws1D+inXIhiCG1aMHisUe16TbeFdsvnyJzAiHnioXemP8exNOeOaERg6ZHbw8z8rT
+         UJCJGCfngeAZH6ApoiYQUeCFmGneUb9H+OqT6EoOUqn0vkCKgsnONWHpdZ2fbDkJ57V0
+         FGtbGwQd81XzAXCXLPoxJ7My7k7UwB33A8lZvBLLoj7sgkkW9e1mFnM//s0653qh79Gg
+         3UZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701450127; x=1702054927;
+        d=1e100.net; s=20230601; t=1701452697; x=1702057497;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DWTh4se+UruTw1n6D9cikBRfGAJlzspbt4OfaTxkr5o=;
-        b=fsYAZ/GNitdJMZKATeUNkrKbhNGLkFDMDo1gC/l/yKnP8JCi2YeLpLRFegg5MZEVKK
-         aZ2BQR3+QmbiXXpOE6b/G+syuH34ycI9B+ZiFTpC9lCzaJ3+tN51NevHoqx00DGbXGr0
-         6jIjpUuBixTf4qoQkZHYOXL4em6Olu+iKVhj+bB3oQnUWePSdGrQo3A2YW50c9YkfLbx
-         vOLB78JwIJMBenS7JfsZodKCqGDfwtGniwSjAXB2lIA3PNhZ7OAyS6kCTUYz5gJyDYDP
-         F2C+SDNkPRQnbQo0y0gw49iHAMHo2y5DsaTWav7XNaGgzPCTS12r8Vf1+iq+PnyrcvaV
-         qOgg==
-X-Gm-Message-State: AOJu0Yy46AmwrC4mgf+2QFx+Uj3jdonRMWMsu6S2MiYV7wj4zZfM6MHp
-	VOFE2Nj7fCRnIWRj/1tUFn58CLpNob/33DmgY+kDMw==
-X-Google-Smtp-Source: AGHT+IFzZhwCfRX+2zsNSp8Z0s3T+pMhyo8HmnS8o8v7ThxvW3SppTsn8thwCmoggkZ46Wv3+hYa15AKRWeebUC6O5k=
-X-Received: by 2002:a2e:95d4:0:b0:2c9:d874:4b75 with SMTP id
- y20-20020a2e95d4000000b002c9d8744b75mr860509ljh.101.1701450127003; Fri, 01
- Dec 2023 09:02:07 -0800 (PST)
+        bh=jt6YTmgmj7iHRCIb8aRUB98S7dTyKCu/pLm3UrF1Jr4=;
+        b=P3RIaJZ37eQrq0CdRXg9SyVM80VBl29sAmO9j+s+T1RFDeXYVu60Q5vSGS7LS8Jiwn
+         I0f9mGOHthi5BOylz4VtBZZhpJgVa7SN/FhbDSBujvo6PGpYxAH7d39wuYp5cNDY6yxU
+         h+sXCg/ZwHPy3U1Jsu08Vc5joFkiGXB7k+z+e04GtwdEGx6tR1uFkJSSt32VU3+7eMhL
+         IX8HeK6WNuw+vf4GZAZ1EBmTCbApZFIUd5CuWu49Um/CHHNDN2lfPCN38P5cWxrNw5y/
+         4fyIQocoYfpLK8kun+BBI8OIZT1TGmJOyhsL5pybrRwuVC4NcLKDIcz6uo3hnctjnriR
+         g1Eg==
+X-Gm-Message-State: AOJu0YyQITlz7wGlGpDVm8N43ppnW3Gio7jQN64DPQhDOZ4GjHur+1dp
+	t52jtI4Gb+X7kaYYcdrBOF366QNw/4QYxyfHWq/NQQ==
+X-Google-Smtp-Source: AGHT+IGAnn8shoJyJhphhMJF7rJzMphyv7oA+NPuxZS/0Ve6G4mWdVjon60SyeGQGgrMs9ZL043Zzi0e2H96pRaFoKk=
+X-Received: by 2002:a2e:9541:0:b0:2c9:cf5d:e156 with SMTP id
+ t1-20020a2e9541000000b002c9cf5de156mr1089131ljh.36.1701452696763; Fri, 01 Dec
+ 2023 09:44:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,13 +57,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
- <20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com> <CAMknhBGCqnzCp6vQ+59Z-SybScvbtU7aWdAD6KnP1e6=q60gVQ@mail.gmail.com>
- <d534c3323c32d4ed2aedae19a9f101be90ef0cc7.camel@gmail.com>
-In-Reply-To: <d534c3323c32d4ed2aedae19a9f101be90ef0cc7.camel@gmail.com>
+ <20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com> <CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
+ <026fa80d29054750937cd077b7f4f689de4e18f2.camel@gmail.com>
+In-Reply-To: <026fa80d29054750937cd077b7f4f689de4e18f2.camel@gmail.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 1 Dec 2023 11:01:55 -0600
-Message-ID: <CAMknhBGjm2ja9HOenOWi9O5Ao8qUg=gT=_Vz8CyxQ=pfNX2EJQ@mail.gmail.com>
-Subject: Re: [PATCH 04/12] iio: adc: ad9467: fix reset gpio handling
+Date: Fri, 1 Dec 2023 11:44:45 -0600
+Message-ID: <CAMknhBGKinZB==QHLazZ9ZkfALyj2N=rVfZfsOk22p6X9SZSrQ@mail.gmail.com>
+Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
 To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
 Cc: nuno.sa@analog.com, linux-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
@@ -75,39 +75,116 @@ Cc: nuno.sa@analog.com, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 1, 2023 at 2:47=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
+On Fri, Dec 1, 2023 at 3:08=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
  wrote:
 >
-> On Thu, 2023-11-30 at 15:41 -0600, David Lechner wrote:
+> On Thu, 2023-11-30 at 17:30 -0600, David Lechner wrote:
 > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
 > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
 > > >
 > > > From: Nuno Sa <nuno.sa@analog.com>
 > > >
-> > > The reset gpio was being requested with GPIOD_OUT_LOW which means, no=
-t
-> > > asserted. Then it was being asserted but never de-asserted which mean=
-s
-> > > the devices was left in reset. Fix it by de-asserting the gpio.
+> > > Convert the driver to use the new IIO backend framework. The device
+> > > functionality is expected to be the same (meaning no added or removed
+> > > features).
 > >
-> > It could be helpful to update the devicetree bindings to state the
-> > expected active-high or active-low setting for this gpio so it is
-> > clear which state means asserted.
+> > Missing a devicetree bindings patch before this one?
+> >
+> > >
+> > > Also note this patch effectively breaks ABI and that's needed so we c=
+an
+> > > properly support this device and add needed features making use of th=
+e
+> > > new IIO framework.
+> >
+> > Can you be more specific about what is actually breaking?
+> >
+> > >
+> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > ---
+> > >  drivers/iio/adc/Kconfig  |   2 +-
+> > >  drivers/iio/adc/ad9467.c | 256 +++++++++++++++++++++++++++++--------=
+----------
+> > >  2 files changed, 157 insertions(+), 101 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > > index 1e2b7a2c67c6..af56df63beff 100644
+> > > --- a/drivers/iio/adc/Kconfig
+> > > +++ b/drivers/iio/adc/Kconfig
+> > > @@ -275,7 +275,7 @@ config AD799X
+> > >  config AD9467
+> > >         tristate "Analog Devices AD9467 High Speed ADC driver"
+> > >         depends on SPI
+> > > -       depends on ADI_AXI_ADC
+> > > +       select IIO_BACKEND
+> > >         help
+> > >           Say yes here to build support for Analog Devices:
+> > >           * AD9467 16-Bit, 200 MSPS/250 MSPS Analog-to-Digital Conver=
+ter
+> > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> > > index 5db5690ccee8..8b0402e73ace 100644
+> > > --- a/drivers/iio/adc/ad9467.c
+> > > +++ b/drivers/iio/adc/ad9467.c
+> >
+> > <snip>
+> >
+> > > +static int ad9467_buffer_get(struct iio_dev *indio_dev)
+> >
+> > perhaps a more descriptive name: ad9467_buffer_setup_optional?
 > >
 >
-> You could state that the chip is active low but I don't see that change t=
-hat
-> important for now. Not sure if this is clear and maybe that's why your co=
-mment.
-> GPIOD_OUT_HIGH has nothing to do with active high or low. It just means, =
-"get me the
-> pin in the asserted state".
+> Hmm, no strong feeling. So yeah, can do as you suggest. Even though, now =
+that I'm
+> thinking, I'm not so sure if this is just some legacy thing we had in ADI=
+ tree. I
+> wonder if it actually makes sense for a device like with no buffering sup=
+port?!
+>
+> > > +{
+> > > +       struct device *dev =3D indio_dev->dev.parent;
+> > > +       const char *dma_name;
+> > > +
+> > > +       if (!device_property_present(dev, "dmas"))
+> > > +               return 0;
+> > > +
+> > > +       if (device_property_read_string(dev, "dma-names", &dma_name))
+> > > +               dma_name =3D "rx";
+> > > +
+> > > +       return devm_iio_dmaengine_buffer_setup(dev, indio_dev, dma_na=
+me);
+> >
+> > The device tree bindings for "adi,ad9467" don't include dma properties
+> > (nor should they). Perhaps the DMA lookup should be a callback to the
+> > backend? Or something similar to the SPI Engine offload that we are
+> > working on?
+> >
+>
+> Oh yes, I need to update the bindings. In the link I sent you we can see =
+my thoughts
+> on this. In theory, hardwarewise, it would actually make sense for the DM=
+A to be on
+> the backend device because that's where the connection is in HW. However,=
+ since we
+> want to have the IIO interface in the frontend, it would be hard to do th=
+at without
+> hacking devm_iio_dmaengine_buffer_setup(). I mean, lifetime wise it would=
+ be far from
+> wise to have the DMA buffer associated to a completely different device t=
+han the IIO
+> parent device. I mean, one way could just be export iio_dmaengine_buffer_=
+free() and
+> iio_dmaengine_buffer_alloc() so we can actually control the lifetime of t=
+he buffer
+> from the frontend device. If Jonathan is fine with this, I'm on board for=
+ it....
+>
+> - Nuno S=C3=A1
+> >
 >
 
-I would assume that this bug happened in the first place because
-someone forgot GPIOD_OUT_LOW in the devicetree when they were
-developing the driver. So this is why I suggested that updating the
-devicetree binding docs so that future users are less likely to make
-the same mistake. Currently, the bindings don't even have reset-gpios
-in the examples.
+I was planning on exporting iio_dmaengine_buffer_alloc() [1] for SPI
+Engine offload support, so I hope that is the right way to go. ;-)
+
+[1]: https://github.com/analogdevicesinc/linux/pull/2341/commits/71048ff83a=
+63e9d0a5ddb9ffa331871edd6bd2a5
 

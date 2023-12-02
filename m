@@ -1,91 +1,164 @@
-Return-Path: <linux-iio+bounces-551-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-552-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE874801DA9
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 17:06:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07DC801DB2
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 17:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12627281493
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 16:06:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CA9B1C2093A
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 16:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8771C291;
-	Sat,  2 Dec 2023 16:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAFD1C695;
+	Sat,  2 Dec 2023 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="ehks+CGb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0XjPTP4p"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3899D;
-	Sat,  2 Dec 2023 08:06:27 -0800 (PST)
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id C714028EE6F;
-	Sat,  2 Dec 2023 16:06:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1701533186;
-	bh=c3izzflbnvnQn9mjCeWPVgU2PPYA3ayk9O3r2CAxXv0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ehks+CGbwv0HvlAuZ+sK1gITTW0vqSbQgBld22yXaTw+YjPb5kPz+p3Tfftalwv8s
-	 0I+EALbISNyjTrK4GX2du0dV0o1BLwcFf7Hk1IMPoIlQ1u4en9GfWhrBhTIBo5rio5
-	 cDjUuSNPCKylXqnLAKrFZ6JhAW6ke09bwgajsOHI=
-Date: Sat, 2 Dec 2023 18:06:24 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v6 2/2] iio: pressure: driver for Honeywell HSC/SSC series
-Message-ID: <ZWtWAPcJTNrD9wgv@sunspire>
-References: <20231129170425.3562-1-petre.rodan@subdimension.ro>
- <20231129170425.3562-2-petre.rodan@subdimension.ro>
- <ZWdzz7VzCW5ctend@smile.fi.intel.com>
- <ZWeNNMfqKquDYI9X@sunspire>
- <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECFE3A2
+	for <linux-iio@vger.kernel.org>; Sat,  2 Dec 2023 08:17:05 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c9f84533beso1462671fa.1
+        for <linux-iio@vger.kernel.org>; Sat, 02 Dec 2023 08:17:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701533824; x=1702138624; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bzfMNFR2RcSekMCUUDcS+18RzZyh3kK2Ah+a6XkE5FM=;
+        b=0XjPTP4pd6+7E/av628bNSI4Gfb2LQZynyKQLfSrqt17roQJi+y1LY3Xe1+IEjtQ/U
+         FEkEB7yyRDivxWzjBn61i9m5/giGeDJYGhkHx75RiUPFmrDOqNrmK6v6Y3/nsAFv8BQA
+         5CnuXwm+Lkvddw05W2xRK23sMX4o/3WnpVtBFpEmSIyAe+qn6y4HSx9rU13WE+sB5tu/
+         Ij8p3Mxu/aU54DNz/fL5G6WcRfwhO6HGaOsh+w+lBYECmskTtlhEE51P/DGiSeNZBcTD
+         k884/3st1xlA/0yAgYc3SIMnJqaDLxZt6sS63rahIOLf4LIICIxJ+7gF0kprf2hOzYME
+         YvuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701533824; x=1702138624;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bzfMNFR2RcSekMCUUDcS+18RzZyh3kK2Ah+a6XkE5FM=;
+        b=nKTKmbBdwh2Yp5pJFTvnVzvQeqsWtCH8jg4u0HSjOzVKbvM7nFjESC5RMyxZrJ2cme
+         VbHZXTwPBWrTwB76NE0e2FoTfbd+ASqUHgYVf0/a1XTGYOUbEc5jaJGTq+PkZIsytlK9
+         +4a8x3HUUiQyaA9KQzhb2MIwYDTmOU+bY0k/boR8xJi3thTwdsE1iL8zMx/gXhr1W5aq
+         p2cLZQHprySKdRf5E3L0odVKmF8CRi6fCqSiW4bM3ZxrTMZ0d98COfNMZJtCHCSnzDWx
+         +rKTGnq1z37rcOWm9jr+aIg97tktdXmyxqyOnzLbCjQIumEz3aeccSp3otgPLoJjmfIZ
+         iYHQ==
+X-Gm-Message-State: AOJu0YzeZ9jMtcREh45KpypwBXjlzRnjQjuzvAcL+YqL2Ys51HHqmHG+
+	hp12BvgObUB5+n3prX9LzLwKBzHq9P7jKrJwozafkg==
+X-Google-Smtp-Source: AGHT+IHGc/Y0RKfa/ls3Hcoi5FIbQXzLBBlP/80GqZ+xoMdLm0vsByPjMl928t2d7+fiT/tfo40b9KZE0xsq8VSY/Cc=
+X-Received: by 2002:a2e:8ed4:0:b0:2c9:d874:6eec with SMTP id
+ e20-20020a2e8ed4000000b002c9d8746eecmr1736546ljl.73.1701533823967; Sat, 02
+ Dec 2023 08:17:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
+ <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+ <CAMknhBEcEJ01nO0p5_vy4jVBVTL_rhEk+pvBpXdMtaDurc-05A@mail.gmail.com> <369a72dd34c0bc457620b88594a975d96aa85a22.camel@gmail.com>
+In-Reply-To: <369a72dd34c0bc457620b88594a975d96aa85a22.camel@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Sat, 2 Dec 2023 10:16:52 -0600
+Message-ID: <CAMknhBEg+cFrm9kQh1G+8nxGPCFsBaca3rnLEnXZ1h=XDS1aeQ@mail.gmail.com>
+Subject: Re: [PATCH 00/12] iio: add new backend framework
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: nuno.sa@analog.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
+	Olivier MOYSAN <olivier.moysan@foss.st.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Dec 2, 2023 at 3:37=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
+ wrote:
+>
+> On Fri, 2023-12-01 at 21:53 -0600, David Lechner wrote:
+> > On Thu, Nov 30, 2023 at 5:54=E2=80=AFPM David Lechner <dlechner@baylibr=
+e.com> wrote:
+> > >
+> > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> > > >
+> > > > Hi all,
+> > > >
+> > > > This is a Framework to handle complex IIO aggregate devices.
+> > > >
+> > > > The typical architecture is to have one device as the frontend devi=
+ce which
+> > > > can be "linked" against one or multiple backend devices. All the II=
+O and
+> > > > userspace interface is expected to be registers/managed by the fron=
+tend
+> > > > device which will callback into the backends when needed (to get/se=
+t
+> > > > some configuration that it does not directly control).
+> > > >
+> > > > The basic framework interface is pretty simple:
+> > > >  - Backends should register themselves with @devm_iio_backend_regis=
+ter()
+> > > >  - Frontend devices should get backends with @devm_iio_backend_get(=
+)
+> > > >
+> > > > (typical provider - consumer stuff)
+> > > >
+> > >
+> > > The "typical provider - consumer stuff" seems pretty straight forward
+> > > for finding and connecting two different devices, but the definition
+> > > of what is a frontend and what is a backend seems a bit nebulous. It
+> > > would be nice to seem some example devicetree to be able to get a
+> > > better picture of how this will be used in practices (links to the th=
+e
+> > > hardware docs for those examples would be nice too).
+> > >
+> >
+> > Fulfilling my own request here...
+> >
+> > Since AD9467 is being use as the example first user of the IIO offload =
+framework
+> > I did a deep dive into how it is actually being used. It looks like thi=
+s:
+> >
+>
+> This is not an offload framework... I think somehow you're connecting thi=
+s to the
+> spi_engine offload and these are two completely different things. Maybe t=
+hey can
+> intersect at some point but as of now, I don't see any benefit in doing i=
+t. The goal
+> of this patchseries is to have a simple and generic framework so we can c=
+onnect IIO
+> devices (frontends) to a backend device having kind of an IIO aggregate d=
+evice so to
+> say. Moreover, we just want to have the ad9467 driver in the same state i=
+t was before
+> to keep things simple. I'm already fixing some things but I don't want ex=
+tend that
+> too much as the primary goal is to have the framework in. Cleanups can co=
+me
+> afterwards.
+>
+> That said, is fine to have this kind of discussion but I honestly think y=
+ou're over
+> engineering the whole thing. Maybe you're already too ahead of me :), but=
+ where we
+> stand right now, I don't see any reason for anything so complicated as th=
+e below.
+> Also note this should be simple and generic. As I already said, this is n=
+ot supposed
+> to be an ADI only thing and STM also wants to make use of this infrastruc=
+ture. But
+> see below some of my comments on why I think it's too much...
 
-hello,
+This is a very fair point. I do have a tendency to overthink things. :-)
 
-On Thu, Nov 30, 2023 at 03:33:02PM +0200, Andy Shevchenko wrote:
-> On Wed, Nov 29, 2023 at 09:12:52PM +0200, Petre Rodan wrote:
-> > On Wed, Nov 29, 2023 at 07:24:31PM +0200, Andy Shevchenko wrote:
-> > 
-> > 437:  ret = device_property_read_string(dev, "honeywell,pressure-triplet",
-> > 					&triplet);
-> > [..]
-> > 455:	ret = match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
-> > 						triplet);
-> > 		if (ret < 0)
-> > 			return dev_err_probe(dev, -EINVAL,
-> > 				"honeywell,pressure-triplet is invalid\n");
-> > 
-> > 		hsc->pmin = hsc_range_config[ret].pmin;
-> > 		hsc->pmax = hsc_range_config[ret].pmax;
-> > 
-> > triplet is got via device_property_read_string(), is there some other property
-> > function I should be using?
-> 
-> I think I mentioned that API, but for your convenience
-> device_property_match_property_string().
-
-one of us is not sync-ed with 6.7.0-rc3 :)
-
-cheers,
-peter
+At the very least, being able to see the schematic of how it all fits
+together filled in the holes of my understanding and now everything
+you are doing in this series makes sense to me. And I totally agree
+with keeping it simpler is better.
 

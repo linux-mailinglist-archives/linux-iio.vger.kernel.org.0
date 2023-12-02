@@ -1,182 +1,491 @@
-Return-Path: <linux-iio+bounces-540-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-541-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706C8801895
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 01:06:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 832CB801A48
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 04:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15EC1C20C4C
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 00:06:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1149F1F21146
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Dec 2023 03:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AB410FA;
-	Sat,  2 Dec 2023 00:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694F98BF9;
+	Sat,  2 Dec 2023 03:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="YmzY+eyT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="C6hdin+C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6941FE3;
-	Fri,  1 Dec 2023 16:04:54 -0800 (PST)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 7660E120027;
-	Sat,  2 Dec 2023 03:04:50 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 7660E120027
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1701475490;
-	bh=rswht4tp6bVZEwPQC/eJeMDlDm0anK7iby4EiMgmWvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=YmzY+eyTx9f4+oXHhAnywRc481Fu31AWnX+fspgxf9ZHVaRE03r+41QyeSZQVqar4
-	 zdUmtIO4WJABaLL9dfFAN7/eFXZRs6Nxw4yKeWPo5+u8S3Ho2/GM7i0M0KZKHD6tmn
-	 KP2IKfyKhaGVNSeuGCMIHH0CNc9VpRgxypPFmlVzg2vsarW8cStpQzaqaY1V2Vgm4Y
-	 CZutHsoQRKSPBov3vFnth4Z3GPzdi6C5tHV55+JrUk+RAHwwsCIXusIhU10agxMZiq
-	 Spc9rNbD6J0MolcHIDmTvAhK0CO8GoXh94ZCWjNzxbD/Mp/1+TQ1iNYsT5JGXRoGMD
-	 lHg8kmL6l6y6A==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Sat,  2 Dec 2023 03:04:50 +0300 (MSK)
-Received: from [192.168.1.127] (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sat, 2 Dec 2023 03:04:49 +0300
-Message-ID: <2cd319fe-f1f8-4855-badb-cf7dd1f6160a@salutedevices.com>
-Date: Sat, 2 Dec 2023 03:05:13 +0300
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3029C10D0
+	for <linux-iio@vger.kernel.org>; Fri,  1 Dec 2023 19:53:51 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2c9cb021d5bso32774171fa.0
+        for <linux-iio@vger.kernel.org>; Fri, 01 Dec 2023 19:53:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701489229; x=1702094029; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/X6pUB+0bQ56apBOdWN+1k7Q5/pfK+fu02ztx2gfwRI=;
+        b=C6hdin+CUZ/dIZwrFSBeqAr0Olde15EpHb9MKSGNfjDJhDbgk2AQ/x5crr4QTKvLli
+         jsqFrEQJ+HfJ9f5WQomDyhklhi7Sq1fsV7ZeapYxdaM+s6wwV/tVl4zjx4N9TiVlArtu
+         2swKMcN6BGpKjNswGlZM1NBMxm9N2hn9muOiqgY3pZmIsD8qxMzG58Jj1hXucNntmTyD
+         fshjVHyyuNOTCuFeYv3O1yKy6pefJUusPWJxycGNubrlvhLA3VnJqaYTHGWBPphLs6/3
+         qnnzgYy88mNDDxaGKW+xT3tdSwy4362LDsjevPEI4YVBhvVCpi/hXMSbj+vGS2m5vqCR
+         uTQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701489229; x=1702094029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/X6pUB+0bQ56apBOdWN+1k7Q5/pfK+fu02ztx2gfwRI=;
+        b=nQ5PCj4juyU39HIOBJcs1JZzUp5pgkrZH6xBZc8UWywMnKsPp+eeliZwDbdVkKFVLx
+         M2O4rCIR84hn8kC0jtHX8QIbgaB2sIRsOfbc+nH1P4IUNsWiW4rFao3q2Ei9luclnOzj
+         ZPinkCEjL7NfdwaKVZt5KwSZz8Uuz40q4Z4pHt0u24pU0K4zsYlA+L4zV439kUl2rEKb
+         n+b7FZ+ZG12RzCb4od8P7NkoWa2pdnh4flF5hHVrdgbE+kICStLTdgoc6upk3l5/hcWG
+         mn+GnJs5J8i5gJpRER/jUWcoRBWPiBj5Fsxo56PROCq1rz48C98QPwI1z72qrB1Xq5XQ
+         kijQ==
+X-Gm-Message-State: AOJu0YzwMdNaMBhc458zBqvRtd7V1Pb6Q35mP1LvOa9KhyFI2Q+WfCeS
+	BjbWBRRcfTo3eCM4IuhFRFVbDer5sm7JHSIES5uc4w==
+X-Google-Smtp-Source: AGHT+IHcabjOBJboo9/eAZ4gwHUN0UetxZ94RCEeqfp7HwrBwMkkoF8Z5uOglGL7srWnPeLju8p2oc4wWg2KmtnjBJQ=
+X-Received: by 2002:a2e:9ec1:0:b0:2c9:d872:abdf with SMTP id
+ h1-20020a2e9ec1000000b002c9d872abdfmr1118242ljk.93.1701489229229; Fri, 01 Dec
+ 2023 19:53:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] iio: adc: meson: add separate config for axg SoC
- family
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
-	<neil.armstrong@linaro.org>, <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-	<martin.blumenstingl@googlemail.com>, <andriy.shevchenko@linux.intel.com>,
-	<nuno.sa@analog.com>, <u.kleine-koenig@pengutronix.de>,
-	<linux-iio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-	<kernel@salutedevices.com>
-References: <20231122074741.154228-1-gnstark@salutedevices.com>
- <20231125172508.2a2242bf@jic23-huawei>
- <ca18c346-94f3-4c4c-a540-57509b879b04@salutedevices.com>
- <20231201180811.00002783@Huawei.com>
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <20231201180811.00002783@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 181777 [Dec 01 2023]
-X-KSMG-AntiSpam-Version: 6.0.0.2
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;100.64.160.123:7.1.2;lore.kernel.org:7.1.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2023/12/01 22:50:00
-X-KSMG-LinksScanning: Clean, bases: 2023/12/01 23:54:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/12/01 22:03:00 #22603897
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com> <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+In-Reply-To: <CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 1 Dec 2023 21:53:38 -0600
+Message-ID: <CAMknhBEcEJ01nO0p5_vy4jVBVTL_rhEk+pvBpXdMtaDurc-05A@mail.gmail.com>
+Subject: Re: [PATCH 00/12] iio: add new backend framework
+To: nuno.sa@analog.com
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Jonathan
+On Thu, Nov 30, 2023 at 5:54=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+>
+> On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> >
+> > Hi all,
+> >
+> > This is a Framework to handle complex IIO aggregate devices.
+> >
+> > The typical architecture is to have one device as the frontend device w=
+hich
+> > can be "linked" against one or multiple backend devices. All the IIO an=
+d
+> > userspace interface is expected to be registers/managed by the frontend
+> > device which will callback into the backends when needed (to get/set
+> > some configuration that it does not directly control).
+> >
+> > The basic framework interface is pretty simple:
+> >  - Backends should register themselves with @devm_iio_backend_register(=
+)
+> >  - Frontend devices should get backends with @devm_iio_backend_get()
+> >
+> > (typical provider - consumer stuff)
+> >
+>
+> The "typical provider - consumer stuff" seems pretty straight forward
+> for finding and connecting two different devices, but the definition
+> of what is a frontend and what is a backend seems a bit nebulous. It
+> would be nice to seem some example devicetree to be able to get a
+> better picture of how this will be used in practices (links to the the
+> hardware docs for those examples would be nice too).
+>
 
-On 12/1/23 21:08, Jonathan Cameron wrote:
-> On Mon, 27 Nov 2023 22:17:33 +0300
-> George Stark <gnstark@salutedevices.com> wrote:
-> 
->> Hello Jonathan
->>
->> Thanks for the review.
->>
->> On 11/25/23 20:25, Jonathan Cameron wrote:
->>> On Wed, 22 Nov 2023 10:47:41 +0300
->>> George Stark <gnstark@salutedevices.com> wrote:
->>>    
->>>> According to Amlogic custom kernels ADC of axg SoC family has
->>>> vref_select and requires this setting to work nominally and thus
->>>> needs a separate config.
->>>>
->>>> Signed-off-by: George Stark <gnstark@salutedevices.com>
->>>> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
->>>
->>> Is this a fix?  If so, please provide a fixes tag.
->> Actually yes, these changes could be done in the patch that introduced
->> new configuration parameters.
->>
->>> Or is it aligning with the vendor kernels and we don't know if
->>> it's strictly necessary or not?
->> I do know it's necessary if we want kernel driver to be independent from
->> ADC initialization in vendor u-boot code. I have Amlogic a113x device
->> (axg family) and can provide test results w and w/o this patch.
-> 
-> Definitely best to not rely on firmware.
-> 
-> So send a Fixes tag for this and I'll apply it as a fix
-> (you get to figure out which patch it fixed :)
+Fulfilling my own request here...
 
-The patch is ready :)
+Since AD9467 is being use as the example first user of the IIO offload fram=
+ework
+I did a deep dive into how it is actually being used. It looks like this:
 
-https://lore.kernel.org/lkml/20231127235558.71995-1-gnstark@salutedevices.com/
+---------------------------------------------------------------------------=
+-
+Hardware
+---------------------------------------------------------------------------=
+-
+
+AD9467
+------
+
+High-speed ADC that uses SPI for configuration and LVDS for data capture.
+
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.=
+pdf
+
+Pins:
+
+    Supplies:
+    - AVDD1 (1.8V analog supply)
+    - AVDD2 (3.3V analog supply)
+    - AVDD3 (1.8V analog supply)
+    - SPIVDD (1.8V or 3.3V SPI supply)
+    - DRVDD (1.8V digital output driver supply)
+    - XVREF (optional reference voltage)
+
+    SPI:
+    - CSB
+    - SDIO
+    - SCLK
+
+    Analog input:
+    - VIN+/VIN-
+
+    Clock input:
+    - CLK+/CLK-
+
+    Digital output:
+    - Dn-/Dn+ (parallel digital output)
+    - DCO+/DCO- (data clock output)
+    - OR+/OR- (out of range output)
 
 
-> 
-> Jonathan
-> 
->>
->>>    
->>>> ---
->>>>    drivers/iio/adc/meson_saradc.c | 16 +++++++++++++++-
->>>>    1 file changed, 15 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
->>>> index db280da9edbf..34555a85f131 100644
->>>> --- a/drivers/iio/adc/meson_saradc.c
->>>> +++ b/drivers/iio/adc/meson_saradc.c
->>>> @@ -1242,6 +1242,20 @@ static const struct meson_sar_adc_param meson_sar_adc_gxl_param = {
->>>>    	.cmv_select = 1,
->>>>    };
->>>>    
->>>> +static const struct meson_sar_adc_param meson_sar_adc_axg_param = {
->>>> +	.has_bl30_integration = true,
->>>> +	.clock_rate = 1200000,
->>>> +	.bandgap_reg = MESON_SAR_ADC_REG11,
->>>> +	.regmap_config = &meson_sar_adc_regmap_config_gxbb,
->>>> +	.resolution = 12,
->>>> +	.disable_ring_counter = 1,
->>>> +	.has_reg11 = true,
->>>> +	.vref_volatge = 1,
->>>> +	.has_vref_select = true,
->>>> +	.vref_select = VREF_VDDA,
->>>> +	.cmv_select = 1,
->>>> +};
->>>> +
->>>>    static const struct meson_sar_adc_param meson_sar_adc_g12a_param = {
->>>>    	.has_bl30_integration = false,
->>>>    	.clock_rate = 1200000,
->>>> @@ -1286,7 +1300,7 @@ static const struct meson_sar_adc_data meson_sar_adc_gxm_data = {
->>>>    };
->>>>    
->>>>    static const struct meson_sar_adc_data meson_sar_adc_axg_data = {
->>>> -	.param = &meson_sar_adc_gxl_param,
->>>> +	.param = &meson_sar_adc_axg_param,
->>>>    	.name = "meson-axg-saradc",
->>>>    };
->>>>      
->>>    
->>
-> 
+ADI AXI ADC
+-----------
 
--- 
-Best regards
-George
+FPGA IP core for interfacing an ADC device with a high speed serial (JESD20=
+4B)
+or source synchronous parallel interface (LVDS/CMOS).
+
+https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+
+Interfaces:
+
+    LVDS:
+    - rx_clk_in_[p|n]   clock input
+    - rx_data_in_[p|n]  parallel data input
+    - rx_frame_in_[p|n] frame input signal (optional/device specific)
+    - rx_or_in_[p|n]    over range input (optional/device specific)
+
+    Write FIFO:
+    - see link for details, this consists of multiple signals that connect =
+to a
+      "sink module"
+
+    MMIO:
+    - memory mapped registers (detailed in link)
+
+
+"sink module"
+-------------
+
+FPGA IP core for piping a data stream to DMA.
+
+https://wiki.analog.com/resources/fpga/docs/util_var_fifo
+
+Interfaces:
+
+    Data Input:
+    - data_in           Data to be stored
+    - data_in_valid     Valid for the input data
+
+    Data Output:
+    - data_out          Data forwarded to the DMA
+    - data_out_valid    Valid for the output data
+
+    There are additional interfaces but they probably don't concern devicet=
+ree
+    since software doesn't interact with them (AFAIK).
+
+
+Schematic
+---------
+
++----------------------------+    +---------------+    +-------------------=
++
+| SOC/FPGA                   |    | ADC           |    | Signal generator  =
+|
+|                            |    |               |    |                   =
+|
+|  +--------------------+    |    |       VIN+/- xxxxxxxx VOUT+/-          =
+|
+|  | SPI                |    |    |               |    |                   =
+|
+|  |               SDIO ------------ SDIO         |    +-------------------=
++
+|  |               SCLK ------------ SCLK         |
+|  |                 CS ------------ CSB          |    +-------------------=
++
+|  |                    |    |    |               |    | External clock    =
+|
+|  +--------------------+    |    |               |    |                   =
+|
+|  | AXI ADC            |    |    |      CLK+/- xxxxxxxxx CLKOUT+/-        =
+|
+|  |                    |    |    |               |    |                   =
+|
+|  |  rx_data_in_[p|n] xxxxxxxxxxxxx Dn+/-        |    +-------------------=
++
+|  |   rx_clk_in_[p|n] xxxxxxxxxxxxx DCO+/DCO-    |
+|  |    rx_or_in_[p|n] xxxxxxxxxxxxx OR+/-        |    +-------------------=
++
+|  |                    |    |    |               |    | Power supplies    =
+|
+|  |        Write FIFO =3D=3D=3D#  |    |               |    |             =
+      |
+|  +--------------------+ H  |    |        AVDD1 --------- 1.8V            =
+|
+|  | "sink module"      | H  |    |        AVDD2 --------- 2.2V            =
+|
+|  |                    | H  |    |        AVDD3 --------- 1.8V            =
+|
+|  |        Data Input =3D=3D=3D#  |    |       SPIVDD --------- 3.3V      =
+      |
+|  |                    |    |    |        DRVDD --------- 1.8V            =
+|
+|  |       Data Output =3D=3D=3D#  |    |        XVREF --------- 1.2V      =
+      |
+|  +--------------------+ H  |    |               |    |                   =
+|
+|  | DMA controller     | H  |    +---------------+    +-------------------=
++
+|  |                    | H  |
+|  |         channel 0 =3D=3D=3D#  |
+|  |                    |    |
+|  +--------------------+    |
+|                            |
++----------------------------+
+
+---------------------------------------------------------------------------=
+-
+Devicetree
+---------------------------------------------------------------------------=
+-
+
+Current situation:
+
+&soc: {
+    spi {
+        ...
+
+        spi_adc: adc@0 {
+            compatible =3D "adi,ad9467";
+            reg =3D <0>;
+            clocks =3D <&adc_clk>;
+            clock-names =3D "adc-clk";
+        };
+    };
+
+    fpga {
+        ...
+
+        /* IIO device is associated with this node. */
+        axi-adc@44a00000 {
+            compatible =3D "adi,axi-adc-10.0.a";
+            reg =3D <0x44a00000 0x10000>;
+            /* Not sure dmas belong here since it is a property of the
+             * "sink module" which is separate from AXI ADC module. */
+            dmas =3D <&rx_dma 0>;
+            dma-names =3D "rx";
+
+            adi,adc-dev =3D <&spi_adc>;
+        };
+    };
+};
+
+---
+
+Proposed IIO backend framework (inferred from v1 patches):
+
+&soc: {
+    spi {
+        ...
+
+        /* IIO device is associated with this node. */
+        adc@0 {
+            compatible =3D "adi,ad9467";
+            reg =3D <0>;
+            clocks =3D <&adc_clk>;
+            clock-names =3D "adc-clk";
+            /* As discussed already, this isn't really the right place for
+             * dmas either. */
+            dmas =3D <&rx_dma 0>;
+            dma-names =3D "rx";
+
+            io-backends =3D <&axi_adc>;
+        };
+    };
+
+    fpga {
+        ...
+
+        axi_adc: axi-adc@44a00000 {
+            compatible =3D "adi,axi-adc-10.0.a";
+            reg =3D <0x44a00000 0x10000>;
+        };
+    };
+};
+
+---
+
+Composite device?
+
+/* IIO device is associated with this node. */
+adc {
+    compatible =3D "adi,ad9467";
+
+    io-backends =3D <&adc_spi_backend>, <&adc_lvds_backend>;
+
+    clocks =3D <&adc_clk>;
+    clock-names =3D "adc-clk";
+
+    xvref-supply =3D <&ref_voltage>;
+    avdd1-supply =3D <&regulator_1_8V>;
+    avdd2-supply =3D <&regulator_3_3V>;
+    avdd3-supply =3D <&regulator_1_8V>;
+};
+
+&soc: {
+    spi {
+        ...
+
+        /* This node describes only the SPI aspects of the ADC chip */
+        adc_spi_backend: adc@0 {
+            compatible =3D "adi,ad9467-spi-io-backend";
+            reg =3D <0>;
+
+            spi-3wire;
+            spi-max-frequency =3D <25000000>;
+
+            spivdd-supply =3D <&regulator_1_8V>;
+        };
+    };
+
+    fpga {
+        ...
+
+        /* This node is an LVDS bus, analogous to a SPI bus or I2C bus */
+        axi-adc@44a00000 {
+            compatible =3D "adi,axi-adc-10.0.a";
+            reg =3D <0x44a00000 0x10000>;
+
+            ...
+
+            /* This node describes all sink modules that are connected to
+             * the AXI ADC controller through the FPGA fabric. */
+            sink-modules {
+                ...
+
+                /* This node describes the FIFO to DMA sink module used by
+                 * our ADC. */
+                adc_dma: module@0 {
+                    compatible =3D "adi,dma-fifo-1.0.a";
+                    reg =3D <0>;
+
+                    dmas =3D <&rx_dma 0>;
+                    dma-names =3D "rx";
+                };
+            };
+
+            /* Then we describe what is connected to each channel of the
+             * controller (reg =3D=3D channel number). */
+
+            /* This node describes only the digital output (LVDS) aspects o=
+f
+            * the ADC chip */
+            adc_lvds_backend: adc@0 {
+                compatible =3D "adi,ad9467-lvds-io-backend";
+                reg =3D <0>;
+
+                drvdd-supply =3D <&regulator_1_8V>;
+
+                /* This is a LVDS bus peripheral property that can only be =
+used
+                 * with peripheral nodes that are children of a compatible =
+=3D
+                 * "adi,axi-adc-10.0.a" node. This works exactly like the
+                 * controller-specific SPI bus peripheral properties, e.g.
+                 * like samsung,spi-peripheral-props.yaml. */
+                adi,sink-modules =3D <&adc_dma>;
+            }
+        };
+    };
+};
+
+
+---------------------------------------------------------------------------=
+-
+Discussion
+---------------------------------------------------------------------------=
+-
+
+After reviewing the existing device tree bindings, it appears the current
+adi,ad9467.yaml is incomplete. It lacks the supplies and even though the
+example shows that it is a child of a spi node, it is missing a reference t=
+o
+/schemas/spi/spi-peripheral-props.yaml# and spi properties like spi-3wire
+and spi-max-frequency. It also misses a description of what is connected to
+the digital output, but that I think that is the main thing we are trying t=
+o
+solve here - if it belongs there or somewhere else.
+
+Having read more about the AXI ADC IP block, it seems to me like it should =
+just
+be considered an LVDS bus controller with generic bindings similar to how w=
+e
+have SPI and I2C buses.
+
+Following that line of thought, if the compatible =3D "adi,axi-adc-10.0.a" =
+node
+is a bus node, then logically, the ADC device node should be a child node o=
+f
+that LVDS bus node. But since the ADC is also a SPI device it also needs to
+be a child node of the SPI bus node. But is can't be a child of two differe=
+nt
+nodes, so where does it go?
+
+This is where the IIO backend framework can come in. We can create a "compo=
+site"
+device as seen in the example dts above. This is just a platform device (in
+Linux-speak) and it composes the two "io-backend" devices from the the two
+busses to create a logical iio/adc device.
+
+To solve the mystery of "where does the dmas property belong?", I have take=
+n
+a page out of the work I am preparing the AXI SPI Engine offload support [1=
+].
+(This hasn't been submitted to a mailing list yet because I'm still working
+on the driver, but the bindings are finished and I ran the idea by Rob on I=
+RC
+a while back who suggested doing it this way, so maybe it works here too?)
+
+[1]: https://github.com/analogdevicesinc/linux/pull/2341/commits/57bb199837=
+1f61f4144689136aba5dd6d16a2a66
+
+Since the "sink module" is really a separate IP block from the AXI ADC, it =
+gets
+its own node and compatible string. Since these "sink modules" are connecte=
+d to
+the AXI ADC, they get listed as child nodes, but we group them together und=
+er a
+single sink-modules node to separate them from the LVDS peripherals nodes. =
+Then
+they get associated with a peripheral with the adi,sink-modules property (a=
+lso
+see comment on that property in the example above).
+
+My "composite" device example evolved quite a bit as I was writing this but=
+ I'm
+pretty happy with where it ended up. I think adding child nodes to the axi-=
+adc
+node answers Nuno's concerns about how to keep a generic axi-adc binding wh=
+ile
+accounting for the fact that it changes slightly depending on what it is
+attached to. And having a separate platform device solves my questions abou=
+t
+the ambiguity of which should be the front end, the spi node or the axi-adc
+node. It turns out, perhaps the answer is neither.
 

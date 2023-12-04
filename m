@@ -1,39 +1,54 @@
-Return-Path: <linux-iio+bounces-612-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5DA803EE2
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 21:00:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96FB8040B4
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 22:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD941F21195
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 20:00:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804171F212A2
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 21:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8426033095;
-	Mon,  4 Dec 2023 19:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBA335F11;
+	Mon,  4 Dec 2023 21:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="MD8ZZlFK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CpG+rDlQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55EBC4;
-	Mon,  4 Dec 2023 11:59:52 -0800 (PST)
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 2EBD128EE6F;
-	Mon,  4 Dec 2023 19:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1701719991;
-	bh=+nDCKIJsNn3sdyyepy9COQh7EZ5oRjjTsJna287/22o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MD8ZZlFKvtWImQs7JJwrKccj+k60ADAYaEZ7WIw77iFiNWTb+l4QyeYz/AB9vjvI+
-	 c/yESpc6WACDK1juAlgg9Bo2IR8LlL0DDogJpo0htY0W6HGaUCQeD9Jz24/4/hVKZ+
-	 1ofZCbE9OELvU31DSTWaMS4Ly2deAvBofsl3Hsyk=
-Date: Mon, 4 Dec 2023 21:59:49 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9DF9AA;
+	Mon,  4 Dec 2023 13:06:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701723969; x=1733259969;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h6gP1NQbY4dX1qmROHunnGHZVaEKfBaVBQOc5gafk60=;
+  b=CpG+rDlQdoD8yB5t4Uyl3qMdpP0VOWPQR4oZ8VQZEM415og2iWJQVG61
+   FIDcBOf4a1WOZcH1sd0NFBDjkcKoIDfEarpzRPdtD+AAfwJZJSRt0LdpK
+   sDtdLjbU+BLj83WY+TPwwPLD779tEAj6v111dPwJHUOTrp7Dm9sIbwhVG
+   xsRmCPjZLVd5IJ7UdLz9c9u/nJyfNutJFuJ130e8AY70WV1HHC8ymVQjy
+   ZOdLGFdSWbHnECKAydeeFA1LBqBAki+NfHqjdqhYOUqeuKYOVdnmj3mce
+   IYRKG1KrXka2ofREIau9CDqUMfMThoYP6Ym9qBoQD6zRIUPBZjO16XpFt
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="866205"
+X-IronPort-AV: E=Sophos;i="6.04,250,1695711600"; 
+   d="scan'208";a="866205"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 13:06:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="914567672"
+X-IronPort-AV: E=Sophos;i="6.04,250,1695711600"; 
+   d="scan'208";a="914567672"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 13:06:06 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rAG8h-00000001su4-0hwj;
+	Mon, 04 Dec 2023 23:06:03 +0200
+Date: Mon, 4 Dec 2023 23:06:02 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -42,107 +57,121 @@ Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	Andreas Klinger <ak@it-klinger.de>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v6 2/2] iio: pressure: driver for Honeywell HSC/SSC series
-Message-ID: <ZW4vtQrmgUu29dP6@sunspire>
-References: <20231129170425.3562-1-petre.rodan@subdimension.ro>
- <20231129170425.3562-2-petre.rodan@subdimension.ro>
- <ZWdzz7VzCW5ctend@smile.fi.intel.com>
- <ZWeNNMfqKquDYI9X@sunspire>
- <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
- <ZWtWAPcJTNrD9wgv@sunspire>
- <ZW3Mvds9LFiK7aEz@smile.fi.intel.com>
+Subject: Re: [PATCH v7 2/2] iio: pressure: driver for Honeywell HSC/SSC series
+Message-ID: <ZW4_OoyKSZ3EBL2x@smile.fi.intel.com>
+References: <20231204194401.20891-1-petre.rodan@subdimension.ro>
+ <20231204194401.20891-2-petre.rodan@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0roFwDt5J5hwuJL+"
-Content-Disposition: inline
-In-Reply-To: <ZW3Mvds9LFiK7aEz@smile.fi.intel.com>
-
-
---0roFwDt5J5hwuJL+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20231204194401.20891-2-petre.rodan@subdimension.ro>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+On Mon, Dec 04, 2023 at 09:43:59PM +0200, Petre Rodan wrote:
+> Adds driver for digital Honeywell TruStability HSC and SSC series
+> pressure and temperature sensors.
+> Communication is one way. The sensor only requires 4 bytes worth of
+> clock pulses on both i2c and spi in order to push the data out.
+> The i2c address is hardcoded and depends on the part number.
+> There is no additional GPIO control.
+
+...
+
+> +static const char hsc_iio_dev_name[] = "hsc030pa";
+
+Useless, you can use it directly in the assignment.
+
+...
+
+> +enum hsc_variants {
+> +	HSC001BA = 0x0, HSC1_6BA = 0x1, HSC2_5BA = 0x2, HSC004BA = 0x3,
+> +	HSC006BA = 0x4, HSC010BA = 0x5, HSC1_6MD = 0x6, HSC2_5MD = 0x7,
+> +	HSC004MD = 0x8, HSC006MD = 0x9, HSC010MD = 0xa, HSC016MD = 0xb,
+> +	HSC025MD = 0xc, HSC040MD = 0xd, HSC060MD = 0xe, HSC100MD = 0xf,
+
+You can add leading 0 to make them aligned with the below.
+
+> +	HSC160MD = 0x10, HSC250MD = 0x11, HSC400MD = 0x12, HSC600MD = 0x13,
+> +	HSC001BD = 0x14, HSC1_6BD = 0x15, HSC2_5BD = 0x16, HSC004BD = 0x17,
+> +	HSC2_5MG = 0x18, HSC004MG = 0x19, HSC006MG = 0x1a, HSC010MG = 0x1b,
+> +	HSC016MG = 0x1c, HSC025MG = 0x1d, HSC040MG = 0x1e, HSC060MG = 0x1f,
+> +	HSC100MG = 0x20, HSC160MG = 0x21, HSC250MG = 0x22, HSC400MG = 0x23,
+> +	HSC600MG = 0x24, HSC001BG = 0x25, HSC1_6BG = 0x26, HSC2_5BG = 0x27,
+> +	HSC004BG = 0x28, HSC006BG = 0x29, HSC010BG = 0x2a, HSC100KA = 0x2b,
+> +	HSC160KA = 0x2c, HSC250KA = 0x2d, HSC400KA = 0x2e, HSC600KA = 0x2f,
+> +	HSC001GA = 0x30, HSC160LD = 0x31, HSC250LD = 0x32, HSC400LD = 0x33,
+> +	HSC600LD = 0x34, HSC001KD = 0x35, HSC1_6KD = 0x36, HSC2_5KD = 0x37,
+> +	HSC004KD = 0x38, HSC006KD = 0x39, HSC010KD = 0x3a, HSC016KD = 0x3b,
+> +	HSC025KD = 0x3c, HSC040KD = 0x3d, HSC060KD = 0x3e, HSC100KD = 0x3f,
+> +	HSC160KD = 0x40, HSC250KD = 0x41, HSC400KD = 0x42, HSC250LG = 0x43,
+> +	HSC400LG = 0x44, HSC600LG = 0x45, HSC001KG = 0x46, HSC1_6KG = 0x47,
+> +	HSC2_5KG = 0x48, HSC004KG = 0x49, HSC006KG = 0x4a, HSC010KG = 0x4b,
+> +	HSC016KG = 0x4c, HSC025KG = 0x4d, HSC040KG = 0x4e, HSC060KG = 0x4f,
+> +	HSC100KG = 0x50, HSC160KG = 0x51, HSC250KG = 0x52, HSC400KG = 0x53,
+> +	HSC600KG = 0x54, HSC001GG = 0x55, HSC015PA = 0x56, HSC030PA = 0x57,
+> +	HSC060PA = 0x58, HSC100PA = 0x59, HSC150PA = 0x5a, HSC0_5ND = 0x5b,
+> +	HSC001ND = 0x5c, HSC002ND = 0x5d, HSC004ND = 0x5e, HSC005ND = 0x5f,
+> +	HSC010ND = 0x60, HSC020ND = 0x61, HSC030ND = 0x62, HSC001PD = 0x63,
+> +	HSC005PD = 0x64, HSC015PD = 0x65, HSC030PD = 0x66, HSC060PD = 0x67,
+> +	HSC001NG = 0x68, HSC002NG = 0x69, HSC004NG = 0x6a, HSC005NG = 0x6b,
+> +	HSC010NG = 0x6c, HSC020NG = 0x6d, HSC030NG = 0x6e, HSC001PG = 0x6f,
+> +	HSC005PG = 0x70, HSC015PG = 0x71, HSC030PG = 0x72, HSC060PG = 0x73,
+> +	HSC100PG = 0x74, HSC150PG = 0x75, HSC_VARIANTS_MAX
+> +};
+
+...
+
+> +		return dev_err_probe(dev, ret,
+> +			"honeywell,transfer-function could not be read\n");
+
+Indentation?
+
+...
+
+> +		return dev_err_probe(dev, ret,
+> +			"honeywell,pressure-triplet could not be read\n");
+
+Ditto.
+
+...
+
+> +			return dev_err_probe(dev, ret,
+> +				"honeywell,pmin-pascal could not be read\n");
+
+Ditto.
+
+...
+
+> +			return dev_err_probe(dev, ret,
+> +				"honeywell,pmax-pascal could not be read\n");
+
+Ditto.
+
+...
+
+> +		ret = match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
+> +						triplet);
+> +		if (ret < 0)
+> +			return dev_err_probe(dev, -EINVAL,
+> +				"honeywell,pressure-triplet is invalid\n");
+
+Still you can use mentioned device property API.
+
+...
+
+> +		return dev_err_probe(dev, -EINVAL,
+> +			"pressure limits are invalid\n");
+
+Indentation?
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-hello,
-
-On Mon, Dec 04, 2023 at 02:57:33PM +0200, Andy Shevchenko wrote:
-> On Sat, Dec 02, 2023 at 06:06:24PM +0200, Petre Rodan wrote:
-> > On Thu, Nov 30, 2023 at 03:33:02PM +0200, Andy Shevchenko wrote:
-> > > On Wed, Nov 29, 2023 at 09:12:52PM +0200, Petre Rodan wrote:
-> > > > On Wed, Nov 29, 2023 at 07:24:31PM +0200, Andy Shevchenko wrote:
-> > > >=20
-> > > > 437:  ret =3D device_property_read_string(dev, "honeywell,pressure-=
-triplet",
-> > > > 					&triplet);
-> > > > [..]
-> > > > 455:	ret =3D match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
-> > > > 						triplet);
-> > > > 		if (ret < 0)
-> > > > 			return dev_err_probe(dev, -EINVAL,
-> > > > 				"honeywell,pressure-triplet is invalid\n");
-> > > >=20
-> > > > 		hsc->pmin =3D hsc_range_config[ret].pmin;
-> > > > 		hsc->pmax =3D hsc_range_config[ret].pmax;
-> > > >=20
-> > > > triplet is got via device_property_read_string(), is there some oth=
-er property
-> > > > function I should be using?
-> > >=20
-> > > I think I mentioned that API, but for your convenience
-> > > device_property_match_property_string().
-> >=20
-> > one of us is not sync-ed with 6.7.0-rc3 :)
->=20
-> No, one of us is not synced with subsystem "for-next", which in this case
-> is IIO "togreg" (IIRC) and it definitely has the above mentioned API.
-
-v7 still contains the match_string().
-that is the API available in -current (6.7.0-rcx), which is the version you
-asked me to use a few weeks back.
-
-whenever your new API call will be merged (6.8+ according to your email exc=
-hange
-with Jonathan) into -current I will provide a patch.
-
-best regards,
-peter
-
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
->=20
->=20
->=20
-
---=20
-petre rodan
-
---0roFwDt5J5hwuJL+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmVuL7UACgkQzyaZmYRO
-fzB4xxAAg4++c2EfVeyasAxqVyaxt0/cEt/RDdKBiDUwn4NyAhTdDWslAzGbTssB
-K1Kcp9IwHVjLJ59Rgni3z2jlTbMQmpxAfYdMYfCgK6C0LfcRVIqdW+E1DzrZMkJA
-dQ2folIi3VBciFDNm6uezx1mX5qtpUYL5jgkOdxwP62K4VrFUHPz1UmCxEbZFIZj
-9ZHnkZQnp+teHbKl/CI3LFpOerzN3IOOtqqeWoy1i+c/wERq2JsIDgVZUjcmHPaW
-rShXD1Zfc3tEApzb0oqiboxVOHM5iQTZUwngR7trZrPoJFd6gns4FPv1xRTx//fL
-unkhZM7nqk83OUxuWnGx0JMya/gBNUSe/JxTQCiqALLwjYt//ApsXkiZetkaGL8J
-m27ELfYtC0eLjRHYS1tNRs07EO0JRMZxuhKoc4YUMfAnp4EkzFYF7h3foxhnTZrH
-Wk3pT3wmAhr6YIeHSFetJfcXacFnqxvKTHPFzd3XgJFdMJMuO/UJdknYl1vSCqSM
-ZoVPKugLgiWvCdLxr8etH3vIqdsoMvYlpmGRI6xNSVYftg98UBsY2KBmGwApl1xt
-d260zwVVxB49DgsjSRL4zXsysciw+QdJI1MF5djEMblR34f/owfjeGybGhGn3MR6
-w09EzwEJkLiTanx8PxLKTCmWOblXtfFcPrfSy0YfVH6iJQHwsb8=
-=aQ99
------END PGP SIGNATURE-----
-
---0roFwDt5J5hwuJL+--
 

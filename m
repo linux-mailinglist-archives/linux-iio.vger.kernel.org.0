@@ -1,112 +1,100 @@
-Return-Path: <linux-iio+bounces-573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-574-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0238033A0
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:57:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85126803467
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF85B280FAB
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 12:57:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04DC9B20AD6
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6AA249ED;
-	Mon,  4 Dec 2023 12:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B7D24B3C;
+	Mon,  4 Dec 2023 13:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RfBguMuL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lusMszvt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53DAF109;
-	Mon,  4 Dec 2023 04:57:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701694660; x=1733230660;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7Cj0FSe2KITpAAhEvGgLmANZmxOhurePzJN16LUJB2M=;
-  b=RfBguMuLdBuuo3xYIkGcpAEVeGD+FAuIuKfU2OaErgIQiCmh1bIWuift
-   kjBiGs2EXMV2T6gV+02C/eKKSUZ+CRS0oP7Cpd3GdQU+XzGGujaCXe7vd
-   CJFNK1Aw8vYRjusvm6gNmuNezP38EhowWfOam1AmVkw4V6lsuXE600Qh6
-   SmQrOwgH1geSKhMxeUcVzRCNWx3rClINSGZUfNDY6DDdVz0G3xKQvjfyS
-   GDv9BzbzBcsfwTGmgpXrQcUuUDFKkHfURulrz0tVULARU4gxKkIxAbNRQ
-   zbUlnM9vdF1Sa0RnljcJWbk7xyflKjLOYXCZtNdu7HkP48v+LHYpY88uf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="384130171"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
-   d="scan'208";a="384130171"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 04:57:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="1017839179"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
-   d="scan'208";a="1017839179"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 04:57:37 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rA8Vx-00000001kkV-3MSm;
-	Mon, 04 Dec 2023 14:57:33 +0200
-Date: Mon, 4 Dec 2023 14:57:33 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v6 2/2] iio: pressure: driver for Honeywell HSC/SSC series
-Message-ID: <ZW3Mvds9LFiK7aEz@smile.fi.intel.com>
-References: <20231129170425.3562-1-petre.rodan@subdimension.ro>
- <20231129170425.3562-2-petre.rodan@subdimension.ro>
- <ZWdzz7VzCW5ctend@smile.fi.intel.com>
- <ZWeNNMfqKquDYI9X@sunspire>
- <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
- <ZWtWAPcJTNrD9wgv@sunspire>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BAE2207D;
+	Mon,  4 Dec 2023 13:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508F4C433C7;
+	Mon,  4 Dec 2023 13:21:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701696077;
+	bh=og9sXh9fou+NX+Bifv3X2abKGE4BOOuoOZUaxM9idpw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lusMszvt6XaQO9ZkC10D8tXjZBj+MgSBGuZYVve+u30P7IEzp3+xCQy/fHFAjiba9
+	 9Rdj53LnWPqR3m31fn39dErrJaEGTZICY78dFlCs+MzC495mXhCez8UuWf8JuieqSm
+	 ZxGOEi+o6UYQB3w3kDkbr97BJ/FWLeu2ovhvWXRKZ17QrzAc6C0IdGwu6YUpmVY0nq
+	 RqYUgTV9qW2ai2ZcEUafQrbnkankogCKORehXZo0rIYStMvZeifS2+gO86/+Bpfytc
+	 r+1rfpzO809o6zgDR4UgGeyC62B6KOBMBbAvMcT0+/Xy94TZXg2KrMWiUjwEoAvkaa
+	 Hoh2BKBGSGQFw==
+Date: Mon, 4 Dec 2023 13:21:07 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 0/2] iio: dac: ad5791: Add support for controlling
+ RBUF via devicetree
+Message-ID: <20231204132107.3fa75bcc@jic23-huawei>
+In-Reply-To: <20231129-ad5791-michael-stuff-v3-0-48e192b00909@analog.com>
+References: <20231129-ad5791-michael-stuff-v3-0-48e192b00909@analog.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWtWAPcJTNrD9wgv@sunspire>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 02, 2023 at 06:06:24PM +0200, Petre Rodan wrote:
-> On Thu, Nov 30, 2023 at 03:33:02PM +0200, Andy Shevchenko wrote:
-> > On Wed, Nov 29, 2023 at 09:12:52PM +0200, Petre Rodan wrote:
-> > > On Wed, Nov 29, 2023 at 07:24:31PM +0200, Andy Shevchenko wrote:
-> > > 
-> > > 437:  ret = device_property_read_string(dev, "honeywell,pressure-triplet",
-> > > 					&triplet);
-> > > [..]
-> > > 455:	ret = match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
-> > > 						triplet);
-> > > 		if (ret < 0)
-> > > 			return dev_err_probe(dev, -EINVAL,
-> > > 				"honeywell,pressure-triplet is invalid\n");
-> > > 
-> > > 		hsc->pmin = hsc_range_config[ret].pmin;
-> > > 		hsc->pmax = hsc_range_config[ret].pmax;
-> > > 
-> > > triplet is got via device_property_read_string(), is there some other property
-> > > function I should be using?
-> > 
-> > I think I mentioned that API, but for your convenience
-> > device_property_match_property_string().
-> 
-> one of us is not sync-ed with 6.7.0-rc3 :)
+On Wed, 29 Nov 2023 14:03:51 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-No, one of us is not synced with subsystem "for-next", which in this case
-is IIO "togreg" (IIRC) and it definitely has the above mentioned API.
+> Simple series to add support for an external amplifier to be connected
+> in again of two configuration.
+>=20
+> v2:
+>  * removed .yaml suffix from commit title;
+>  * Don't use commit/patch in commit message.
+>=20
+> v3:
+>  * Be more imperative in the commit message.
+Hi Nuno, Michael,
 
--- 
-With Best Regards,
-Andy Shevchenko
+I don't suppose you fancy also ripping out the platform data support as a f=
+ollow up
+series?  I doubt anyone cares about it any more and it would be nice to cle=
+an
+that up given you are making changes to the driver.
 
+Applied to the togreg branch of iio.git and pushed out as testing for all t=
+he normal
+reasons.
+
+Thanks,
+
+Jonathan
+
+>=20
+> ---
+> Michael Hennerich (2):
+>       dt-bindings: adi,ad5791: Add support for controlling RBUF
+>       iio: dac: ad5791: Add support for controlling RBUF via devicetree
+>=20
+>  Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 5 +++++
+>  drivers/iio/dac/ad5791.c                                  | 9 ++++++++-
+>  2 files changed, 13 insertions(+), 1 deletion(-)
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
 
 

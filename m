@@ -1,95 +1,169 @@
-Return-Path: <linux-iio+bounces-600-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-601-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454CE803A25
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:25:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D268803A97
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB16A28103D
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:25:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DAA41C20B2F
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B872E3F7;
-	Mon,  4 Dec 2023 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB8A2511D;
+	Mon,  4 Dec 2023 16:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+nkeW5S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m6lrwR/c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0485395;
-	Mon,  4 Dec 2023 16:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DE4C433C7;
-	Mon,  4 Dec 2023 16:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701707138;
-	bh=22m4bPVF4Ye6gvOYaIJnR7Fk6Wljx9n9u9W9CAkPDWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q+nkeW5SJMT0DXnux7lrwLAzeenRDdPDAHT7JIMJKB++yD3y/qq7ZSu57OhvXkx6i
-	 yG/Gg/OSFoHpAyvwm1kpI9M09FsMjPHfAzeg5xlyYwf8Pb98M4EWSPrhl6VQYMCXr8
-	 YKTAHFfFj7en6OZGEhPcDsvcW0N0ZWSqInQAlvinczmAgRMdTm/uNF4s+/coClQQVb
-	 uqIpNldcd6D5s5w0ILb4gY6t89lfeOivIhJxWAVzUTLJGrZDMUx54/bWR7jNnX5gHE
-	 ah2jnG+uZpO5xtdhOnIxtVNorQjWii1fYb8f4086L6+jpAZIbM2MfQo+OPiE0OCIyQ
-	 9rRTa0p7Ch83w==
-Date: Mon, 4 Dec 2023 16:25:34 +0000
-From: Conor Dooley <conor@kernel.org>
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B789A;
+	Mon,  4 Dec 2023 08:41:50 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3316a4bc37dso4392857f8f.2;
+        Mon, 04 Dec 2023 08:41:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701708109; x=1702312909; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6KJn9AsRhet3LPMYrxQkrFL4xXi1HWQlnhRfWLxXAos=;
+        b=m6lrwR/c9DqngHxTbixY+YNJLxMl0kjS8z6N0zWzZmTK2aeOvirReyrDNXFCIkoGKl
+         HcoM+6G0BL7SMpJNFmm8+F36uGiXJO666QuxI/AsNZQ2pRDvxbvoq1c03rr8HitmoADu
+         Ju4IuleYLBoZi/yokWAGIlTSHOvQAXpmBwjlcexawbDswnBQ72Nffdwi1VeZsn63UcIc
+         HlhkJxWkZmmO9JrEd5tOHFCpraDSLvPqnG7MlSsN3fKSGO3y4pxYga8ewrd3jj4/WcYT
+         OJEshNJVxITKcq6XHvnTwvpOv246S2dzbL4M0YDjqbm6uAwMRhMdFa/JO9FdGjyNaxgf
+         j9fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701708109; x=1702312909;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6KJn9AsRhet3LPMYrxQkrFL4xXi1HWQlnhRfWLxXAos=;
+        b=WrFgx0Fnmrc80QV23uIT6LPj0PreENUFVVkM+lfw1k64iQF7imslCPOaB0OFmZ4nQL
+         gK1yBhlVaeyjAM3YqE40ekoyE3LzmUWNmv11hICNeV9ptRskfzyjjxiQ3X6NpN8Suw7l
+         zgG8nRPqYmzDWL8HHApyrpEj/FfN+7obHVl6uPhk3In+UiRWZuKwpRHcJBD2z/LrN618
+         ELs3F15dXAEqTlDZ/HDzRHgutwCO+8Y3okkc6xtZLG03ref0nt4V5PvN1+OqM43Rfhhv
+         rSbuMnNbIFI4Zy7XFSueRMQ21HZXqSWbdzY/euqGlp+u2UyBgESSlrrHhGYv5laVg3di
+         nqYw==
+X-Gm-Message-State: AOJu0YyApnUBs4oLOZMjLHPrPyiiujUVcX05qa6fFwqRCYJ3GoQx4oco
+	hxl2FVEBSjGDKLwSxME3LvA=
+X-Google-Smtp-Source: AGHT+IGGQsZJ3eOLPq6l8Ehu4n5FPqXCh2VbaytPpR3qjhezSmcei/sWQ9i5KU8NMKyMFwH4pcjblA==
+X-Received: by 2002:a5d:40c4:0:b0:333:1ca5:7954 with SMTP id b4-20020a5d40c4000000b003331ca57954mr3089959wrq.69.1701708108943;
+        Mon, 04 Dec 2023 08:41:48 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id j28-20020adfb31c000000b003333d46a9e8sm6415350wrd.56.2023.12.04.08.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 08:41:48 -0800 (PST)
+Message-ID: <9b11a42d83dfe77215bafae1d116375ee2398ae6.camel@gmail.com>
+Subject: Re: [PATCH 04/12] iio: adc: ad9467: fix reset gpio handling
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] dt-bindings: iio/adc: qcom,spmi: fix up examples
-Message-ID: <20231204-exclude-tapioca-0db6d01640aa@spud>
-References: <20231130171628.12257-1-johan+linaro@kernel.org>
- <20231204132624.03733d50@jic23-huawei>
+Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>
+Date: Mon, 04 Dec 2023 17:41:48 +0100
+In-Reply-To: <20231204151514.4e2c8ada@jic23-huawei>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
+	 <20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com>
+	 <CAMknhBGCqnzCp6vQ+59Z-SybScvbtU7aWdAD6KnP1e6=q60gVQ@mail.gmail.com>
+	 <d534c3323c32d4ed2aedae19a9f101be90ef0cc7.camel@gmail.com>
+	 <CAMknhBGjm2ja9HOenOWi9O5Ao8qUg=gT=_Vz8CyxQ=pfNX2EJQ@mail.gmail.com>
+	 <3925cb4b6453644c889675c20329b3477a06fcd5.camel@gmail.com>
+	 <20231204151514.4e2c8ada@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="QAlgK3xkgS7NPjoc"
-Content-Disposition: inline
-In-Reply-To: <20231204132624.03733d50@jic23-huawei>
 
-
---QAlgK3xkgS7NPjoc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Dec 04, 2023 at 01:26:24PM +0000, Jonathan Cameron wrote:
-> On Thu, 30 Nov 2023 18:16:22 +0100
-> Johan Hovold <johan+linaro@kernel.org> wrote:
+On Mon, 2023-12-04 at 15:15 +0000, Jonathan Cameron wrote:
+> On Sat, 02 Dec 2023 09:36:47 +0100
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 >=20
-> > When reviewing the various SPMI PMIC bindings, I noticed that several
-> > examples were incorrect and misleading and could also use some cleanup.
+> > On Fri, 2023-12-01 at 11:01 -0600, David Lechner wrote:
+> > > On Fri, Dec 1, 2023 at 2:47=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmai=
+l.com> wrote:=C2=A0=20
+> > > >=20
+> > > > On Thu, 2023-11-30 at 15:41 -0600, David Lechner wrote:=C2=A0=20
+> > > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> > > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:=C2=A0=20
+> > > > > >=20
+> > > > > > From: Nuno Sa <nuno.sa@analog.com>
+> > > > > >=20
+> > > > > > The reset gpio was being requested with GPIOD_OUT_LOW which mea=
+ns, not
+> > > > > > asserted. Then it was being asserted but never de-asserted whic=
+h means
+> > > > > > the devices was left in reset. Fix it by de-asserting the gpio.=
+=C2=A0=20
+> > > > >=20
+> > > > > It could be helpful to update the devicetree bindings to state th=
+e
+> > > > > expected active-high or active-low setting for this gpio so it is
+> > > > > clear which state means asserted.
+> > > > > =C2=A0=20
+> > > >=20
+> > > > You could state that the chip is active low but I don't see that ch=
+ange that
+> > > > important for now. Not sure if this is clear and maybe that's why y=
+our
+> > > > comment.
+> > > > GPIOD_OUT_HIGH has nothing to do with active high or low. It just m=
+eans, "get
+> > > > me
+> > > > the
+> > > > pin in the asserted state".
+> > > > =C2=A0=20
+> > >=20
+> > > I would assume that this bug happened in the first place because
+> > > someone forgot GPIOD_OUT_LOW in the devicetree when they were
+> > > developing the driver. So this is why I suggested that updating the
+> > > devicetree binding docs so that future users are less likely to make
+> > > the same mistake. Currently, the bindings don't even have reset-gpios
+> > > in the examples.=C2=A0=20
 > >=20
-> > This series addresses the iio/adc ones.
+> > Hmm, I think you're missing the point... The bug has nothing to do with
+> > devicetree.
+> > This is what was happening:
+> >=20
+> > 1) We were calling devm_gpiod_get_optional() with GPIOD_OUT_LOW. What t=
+his means
+> > is
+> > that you get an output gpio deasserted. Hence the device is out of rese=
+t. And
+> > here is
+> > the important part... what you have in dts does not matter. If you have=
+ active
+> > low,
+> > it means the pin level will be 1. If you have high, the pin level is 0.=
+ And this
+> > is
+> > all handled by gpiolib for you.=20
+> >=20
+> > 2) Then, we called gpiod_direction_output(..., 1), which means set the =
+direction
+> > out
+> > (which is actually not needed since it was already done when getting th=
+e pin) and
+> > assert the pin. Hence, reset the device. And we were never de-asserting=
+ the pin
+> > so
+> > the device would be left in reset.
 >=20
-> All look fine to me.  Just waiting for the DT folk to have time to take a=
- look.
+> Functionally I believe David is correct.=C2=A0=C2=A0 Flipping the DT woul=
+d 'fix' this.
+> It's all down to a nreset vs reset pin description.
+>=20
 
-Yah, they all look grand to me.
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Ahh I see. Well would not really be a fix :)
 
-Cheers,
-Conor.
+- Nuno S=C3=A1
 
---QAlgK3xkgS7NPjoc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZW39fgAKCRB4tDGHoIJi
-0umlAP41S5c3TE7AyMWFkxiVYj3Wtq1YF0jUGFVVePxnMN6UrwEAyEmXc/dKoaEH
-tLiY8u7F9STaiyxQX1C5a1AURXuXqA8=
-=rPc4
------END PGP SIGNATURE-----
-
---QAlgK3xkgS7NPjoc--
 

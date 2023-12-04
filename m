@@ -1,49 +1,60 @@
-Return-Path: <linux-iio+bounces-584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2DC8036B1
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:30:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D9B8036E6
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D07D1F21220
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:30:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D14B281169
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D45228DDE;
-	Mon,  4 Dec 2023 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFBC28DC4;
+	Mon,  4 Dec 2023 14:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAlH3Fzs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBTHRZHS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0850628DC7
-	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 14:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050E9C433C9;
-	Mon,  4 Dec 2023 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D9322F07;
+	Mon,  4 Dec 2023 14:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CA4C433C8;
+	Mon,  4 Dec 2023 14:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701700213;
-	bh=HepIBbswm0o0MnzZYI6lwCIFtvyrLOz9z11GZNHwKRM=;
+	s=k20201202; t=1701700533;
+	bh=43kZFxboZ4YHoUC1LLSWMdjlMCmjRQLpNL6yIzCv1ok=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QAlH3FzsUajB717UJjf9ABVSjhXzI+8b2KEodA0K2Rb/EojIbi9e7YjJI50Z/aF1j
-	 TwaX+N9z/rHshQgTibQeCoYMSlzrsodnl9U4sR4UashJPKtZGXSRN/CXnHv0TOmFmi
-	 2UGkh73v/n230yIbqb68kvx49oW2KatoUvveoNF/or3FTG3kNUe4pTtMxn9z07HrjG
-	 cQZwlqvH2gtaoYAPfwge512bF6AZLE+cioKMbQYhJnCeh5RPkA5fng2regUjCFUoQm
-	 25H2G4qaKTGutrkcILlblUyJoYRjl1ChUsenV+fF2PFnyTwEcwDyQGVuyFhNxkbp9H
-	 uz0HQLRkV9xEQ==
-Date: Mon, 4 Dec 2023 14:30:05 +0000
+	b=MBTHRZHSVjsriGMLsBOOJy6+2Udr/gW1c78Zn2Nxh9AF1rmd9cp6kfCTrdQ+XGr0C
+	 knttF9rDe9zvGzkZo3z4RMkbd5o5nrjvb+Udr8peaH+VpBf4SGwZmSGrsuVUD4KNX3
+	 MGgZ1APITGNKjo/Y8RpidIPCjy1F3WOx3XtDXy1Dzj3wqVK8OYhXM//RhBD4CEc+LC
+	 c9YyU5DFxa8d3adpmRMMTvhGcUZK7qQtXnwejMla1X0qIDOL4jlzVDfNPTO/wmcJj6
+	 HyhMT7VBcSvTdPxfDLxhy4MGEeffovyrj94z2nnSNcQ5UaeSYKczjvLg80KIEIXGMX
+	 VCayo+Ji5hmIw==
+Date: Mon, 4 Dec 2023 14:35:21 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: gts-helpers: Round gains and scales
-Message-ID: <20231204143005.7a564326@jic23-huawei>
-In-Reply-To: <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
-References: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
-	<20231126172607.379c9d79@jic23-huawei>
-	<8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-iio@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Alexander Stein
+ <alexander.stein@ew.tq-group.com>, Andre Werner
+ <andre.werner@systec-electronic.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>,
+ Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ Naresh Solanki <naresh.solanki@9elements.com>, Patrick Rudolph
+ <patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, Stefan
+ Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
+ <vincent@vtremblay.dev>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: light: isl76682: Add ISL76682 driver
+Message-ID: <20231204143521.5ca0fc7e@jic23-huawei>
+In-Reply-To: <6e4ed42c-21be-469c-a8bb-57779ef24bf9@denx.de>
+References: <20231127212726.77707-1-marex@denx.de>
+	<20231127212726.77707-2-marex@denx.de>
+	<20231204112001.7dff7066@jic23-huawei>
+	<6e4ed42c-21be-469c-a8bb-57779ef24bf9@denx.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -54,207 +65,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Nov 2023 09:48:08 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 4 Dec 2023 12:23:06 +0100
+Marek Vasut <marex@denx.de> wrote:
 
-> On 11/26/23 19:26, Jonathan Cameron wrote:
-> > On Tue, 31 Oct 2023 11:50:46 +0200
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> On 12/4/23 12:20, Jonathan Cameron wrote:
+> > On Mon, 27 Nov 2023 22:26:53 +0100
+> > Marek Vasut <marex@denx.de> wrote:
 > >   
-> >> The GTS helpers do flooring of scale when calculating available scales.
-> >> This results available-scales to be reported smaller than they should
-> >> when the division in scale computation resulted remainder greater than
-> >> half of the divider. (decimal part of result > 0.5)
+> >> The ISL76682 is very basic ALS which only supports ALS or IR mode
+> >> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
+> >> other fancy functionality.
 > >>
-> >> Furthermore, when gains are computed based on scale, the gain resulting
-> >> from the scale computation is also floored. As a consequence the
-> >> floored scales reported by available scales may not match the gains that
-> >> can be set.
-> >>
-> >> The related discussion can be found from:
-> >> https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
-> >>
-> >> Do rounding when computing scales and gains.
-> >>
-> >> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >> Signed-off-by: Marek Vasut <marex@denx.de>  
+> > Hi Marek,
 > > 
-> > Hi Matti,
+> > Discussion around available on v5 made me look closer at that aspect.
+> > You are providing all the available entries in the callback but they
+> > shouldn't be exposed to actually read unless the *_available bitmap
+> > bits corresponding to them are set.
 > > 
-> > A few questions inline about the maths.  
-> 
-> I appreciate the questions :) Thanks!
-
-I found some emails hiding so late replies...
-> >   
-> >>
-> >> ---
-> >> Subjahit, is there any chance you test this patch with your driver? Can
-> >> you drop the:
-> >> 	if (val2 % 10)
-> >> 		val2 += 1;
-> >> from scale setting and do you see written and read scales matching?
-> >>
-> >> I did run a few Kunit tests on this change - but I'm still a bit jumpy
-> >> on it... Reviewing/testing is highly appreciated!
-> >>
-> >> Just in case someone is interested in seeing the Kunit tests, they're
-> >> somewhat unpolished & crude and can emit noisy debug prints - but can
-> >> anyways be found from:
-> >> https://github.com/M-Vaittinen/linux/commits/iio-gts-helpers-test-v6.6
-> >>
-> >> ---
-> >>   drivers/iio/industrialio-gts-helper.c | 58 +++++++++++++++++++++++----
-> >>   1 file changed, 50 insertions(+), 8 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> >> index 7653261d2dc2..7dc144ac10c8 100644
-> >> --- a/drivers/iio/industrialio-gts-helper.c
-> >> +++ b/drivers/iio/industrialio-gts-helper.c
-> >> @@ -18,6 +18,32 @@
-> >>   #include <linux/iio/iio-gts-helper.h>
-> >>   #include <linux/iio/types.h>
-> >>   
-> >> +static int iio_gts_get_gain_32(u64 full, unsigned int scale)
-> >> +{
-> >> +	unsigned int full32 = (unsigned int) full;
-> >> +	unsigned int rem;
-> >> +	int result;
-> >> +
-> >> +	if (full == (u64)full32) {
-> >> +		unsigned int rem;
-> >> +
-> >> +		result = full32 / scale;
-> >> +		rem = full32 - scale * result;
-> >> +		if (rem >= scale / 2)
-> >> +			result++;
-> >> +
-> >> +		return result;
-> >> +	}
-> >> +
-> >> +	rem = do_div(full, scale);  
+> > If you like I can just rip the unused code out whilst applying?
+> > Or if you'd prefer to send a v7 that's great too.
 > > 
-> > As below, can we just add scale/2 to full in the do_div?  
+> > Otherwise everything looks good to me.  
 > 
-> The rationale for doing is it in this way is to prevent (theoretical?) 
-> overflow when adding scale/2 to full. Maybe this warrants adding a comment?
+> Maybe just do that while applying and I'll test it right after to see 
+> whether something broke, that's probably fastest. Just let me know where 
+> this got applied. I have the device on my desk .
 
-Hmm. Chances are very low of hitting that.  I'd just go with adding scale/2
-before the div.  If you really want to worry about being right at the edge
-of available precision, then add a check for that.
+Diff is below.  Applied to the togreg branch of iio.git and initially pushed out
+as testing for normal reasons + for you to test.
 
-
-> 
-> >   
-> >> +	if ((u64)rem >= scale / 2)
-> >> +		result = full + 1;
-> >> +	else
-> >> +		result = full;
-> >> +
-> >> +	return result;
-> >> +}
-> >> +
-> >>   /**
-> >>    * iio_gts_get_gain - Convert scale to total gain
-> >>    *
-> >> @@ -28,30 +54,42 @@
-> >>    *		scale is 64 100 000 000.
-> >>    * @scale:	Linearized scale to compute the gain for.
-> >>    *
-> >> - * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
-> >> + * Return:	(rounded) gain corresponding to the scale. -EINVAL if scale
-> >>    *		is invalid.
-> >>    */
-> >>   static int iio_gts_get_gain(const u64 max, const u64 scale)
-> >>   {
-> >> -	u64 full = max;
-> >> +	u64 full = max, half_div;
-> >> +	unsigned int scale32 = (unsigned int) scale;
-> >>   	int tmp = 1;
-> >>   
-> >> -	if (scale > full || !scale)
-> >> +	if (scale / 2 > full || !scale)  
-> > 
-> > Seems odd. Why are we checking scale / 2 here?  
-> 
-> I am pretty sure I have been thinking of rounding 0.5 to 1.
-
-Not sure I follow - but maybe it'll be clear in v2.
-
-> >   
-> >> +
-> >> +	while (full + half_div >= scale * (u64)tmp)
-> >>   		tmp++;
-> >>   
-> >> -	return tmp;
-> >> +	return tmp - 1;
-> >>   }
-> >>   
-> >>   /**
-> >> @@ -133,6 +171,7 @@ static int iio_gts_linearize(int scale_whole, int scale_nano,
-> >>    * Convert the total gain value to scale. NOTE: This does not separate gain
-> >>    * generated by HW-gain or integration time. It is up to caller to decide what
-> >>    * part of the total gain is due to integration time and what due to HW-gain.
-> >> + * Computed gain is rounded to nearest integer.
-> >>    *
-> >>    * Return: 0 on success. Negative errno on failure.
-> >>    */
-> >> @@ -140,10 +179,13 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
-> >>   				int *scale_int, int *scale_nano)
-> >>   {
-> >>   	u64 tmp;
-> >> +	int rem;
-> >>   
-> >>   	tmp = gts->max_scale;
-> >>   
-> >> -	do_div(tmp, total_gain);
-> >> +	rem = do_div(tmp, total_gain);  
-> > 
-> > can we do usual trick of
-> > do_div(tmp + total_gain/2, total_gain)
-> > to get the same rounding effect?  
-> 
-> Only if we don't care about the case where tmp + total_gain/2 overflows.
-
-As above. The cases where that happens are pretty narrow.  I'd not worry about it
-or I'd check for that overflow.
-
-> 
-> >   
-> >> +	if (total_gain > 1 && rem >= total_gain / 2)
-> >> +		tmp += 1ULL;
-> >>   
-> >>   	return iio_gts_delinearize(tmp, NANO, scale_int, scale_nano);
-> >>   }
-> >> @@ -192,7 +234,7 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
-> >>   		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
-> >>   		     NULL);
-> >>   
-> >> -		/* Convert gains to scales */
-> >> +		/* Convert gains to scales. */  
-> > 
-> > Grumble - unrelated change.  
-> 
-> Yes. I'll drop this.
-> 
-> >   
-> >>   		for (j = 0; j < gts->num_hwgain; j++) {
-> >>   			ret = iio_gts_total_gain_to_scale(gts, gains[i][j],
-> >>   							  &scales[i][2 * j],
-> >>
-> >> base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa  
-> 
-> All in all, I am still not 100% sure if rounding is the right ambition. 
-> Do we cause hidden accuracy issues by doing the rounding under the hood? 
-> I feel I need bigger brains :)
-Don't we all!
+Thanks,
 
 Jonathan
 
-> 
-> Yours,
-> 	-- Matti
-> 
-> 
+
+diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
+index 15a68609985b..8605187bfb62 100644
+--- a/drivers/iio/light/isl76682.c
++++ b/drivers/iio/light/isl76682.c
+@@ -184,8 +184,6 @@ static int intensity_scale_available[] = {
+        0, 673000,
+ };
+ 
+-static int integration_time_available[] = { 0, ISL76682_INT_TIME_US };
+-
+ static int isl76682_read_avail(struct iio_dev *indio_dev,
+                               struct iio_chan_spec const *chan,
+                               const int **vals, int *type,
+@@ -207,11 +205,6 @@ static int isl76682_read_avail(struct iio_dev *indio_dev,
+                default:
+                        return -EINVAL;
+                }
+-       case IIO_CHAN_INFO_INT_TIME:
+-               *vals = integration_time_available;
+-               *length = ARRAY_SIZE(integration_time_available);
+-               *type = IIO_VAL_INT_PLUS_MICRO;
+-               return IIO_AVAIL_LIST;
+        default:
+                return -EINVAL;
+        }
+
+
 
 

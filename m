@@ -1,51 +1,53 @@
-Return-Path: <linux-iio+bounces-561-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-562-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59924802F73
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 10:58:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BAA802F8C
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 11:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B0A91C20998
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 09:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340B11F2118A
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 10:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FE81DFD6;
-	Mon,  4 Dec 2023 09:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0643E1EB37;
+	Mon,  4 Dec 2023 10:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFezLCDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCeo5emh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2471CA9F
-	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 09:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63470C433C8;
-	Mon,  4 Dec 2023 09:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83041EB2B;
+	Mon,  4 Dec 2023 10:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33789C433C7;
+	Mon,  4 Dec 2023 10:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701683895;
-	bh=ihh/zNt/BcEhlFzcMCrgtAmiDQFvuUe3HaR0qaOdUcI=;
+	s=k20201202; t=1701684327;
+	bh=TjbVpp0w/mr0UQlKAwP4FFpH3IWzsJ2Rxf+6614AKw4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IFezLCDkaGfv/RR45l2MLt4E9u5OK4wxAQXzH3klP9cNSksCluV1K0S6htiPbKinC
-	 AjSs/uyhOHQDDp2FDO2jxO4H41+JukFwtqYtRpyYGnS87ktNnfiURxcivCuIWxZ8lo
-	 W7dj83vPmkrXRC0I9saPzUOmV53XR/3uxBkSqKJrssPUNspM//kFuUSC2I4T/fqr9F
-	 N1EJX8aNXdbTi6nbNvMRrdnykMJa3X17kpH7BRwyOrAbMCFJN32UhbpOAP0ihsmRAk
-	 Sr2UmUluaqj9c0w1q4mvZ2QTdWalm74EIZTUPps5OVXe1DDh3mLveATzecHVRr19ZD
-	 n/nHLLO88Kalg==
-Date: Mon, 4 Dec 2023 09:58:07 +0000
+	b=LCeo5emhYBiylF4hn4+CLQjHs53oxcvqzN6JNW4byYOf8eYp9U98no67sD6bozjNo
+	 5bdXsgeseUO4kEa6zkVHbKkI7rsY8QbHAj+xI8C0NPgjGJHi4ARMKiNyZin6vzPSOM
+	 cQ/9IjtcLf82phzN1tyCG6IYmyF3rcMa6xpdNUBkzmFInDyF2ovoAwtdQbMS+PPPq+
+	 DFvxk2tG5Ll7GaA5StWiAF9g1W1PwG4tlKjfbHgu3PXVS8ZvzYtYpD2CYDRqKcWKt3
+	 EcAg9hyL+mAXykW5rC5IHjO8lSHVEU4sJqzb7kQz+H1zH61AyrFd+7KZuzKt3tDqA3
+	 ZEFenR3p1m8Dg==
+Date: Mon, 4 Dec 2023 10:05:17 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: "lars@metafoo.de" <lars@metafoo.de>, "shawnguo@kernel.org"
- <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
- <festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: imx93: add four channels for imx93 adc
-Message-ID: <20231204095807.492ae925@jic23-huawei>
-In-Reply-To: <DB7PR04MB401023D016E11C44699310D090BDA@DB7PR04MB4010.eurprd04.prod.outlook.com>
-References: <20231116071026.611269-1-haibo.chen@nxp.com>
-	<20231126160312.2ef8a307@jic23-huawei>
-	<DB7PR04MB401023D016E11C44699310D090BDA@DB7PR04MB4010.eurprd04.prod.outlook.com>
+To: Anshul Dalal <anshulusr@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ linux-kernel-mentees@lists.linuxfoundation.org, Shuah Khan
+ <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v2 2/2] iio: light: driver for Lite-On ltr390
+Message-ID: <20231204100517.30df720e@jic23-huawei>
+In-Reply-To: <f6ced6e9-65d2-4bbc-9792-473465bad547@gmail.com>
+References: <20231117074554.700970-1-anshulusr@gmail.com>
+	<20231117074554.700970-2-anshulusr@gmail.com>
+	<20231125140641.08284929@jic23-huawei>
+	<f6ced6e9-65d2-4bbc-9792-473465bad547@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -53,70 +55,85 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Nov 2023 02:47:31 +0000
-Bough Chen <haibo.chen@nxp.com> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: 2023=E5=B9=B411=E6=9C=8827=E6=97=A5 0:03
-> > To: Bough Chen <haibo.chen@nxp.com>
-> > Cc: lars@metafoo.de; shawnguo@kernel.org; s.hauer@pengutronix.de;
-> > kernel@pengutronix.de; festevam@gmail.com; dl-linux-imx
-> > <linux-imx@nxp.com>; linux-iio@vger.kernel.org
-> > Subject: Re: [PATCH] iio: adc: imx93: add four channels for imx93 adc
-> >=20
-> > On Thu, 16 Nov 2023 15:10:26 +0800
-> > haibo.chen@nxp.com wrote:
-> >  =20
-> > > From: Haibo Chen <haibo.chen@nxp.com>
-> > >
-> > > According to the spec, this ADC totally support 8 channels.
-> > > i.MX93 contain this ADC with 4 channels connected to pins in the
-> > > package. i.MX95 contain this ADC with 8 channels connected to pins in
-> > > the package.
-> > >
-> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com> =20
-> > Should I treat this as a fix?
-> >=20
-> > If so could you reply with a fixes tag please =20
->=20
-> Yes, please help add:
-> Fixes: 7d02296ac8b8 ("iio: adc: add imx93 adc support")
-Applied.  Thanks,
+> >> +struct ltr390_data {
+> >> +	struct regmap *regmap;
+> >> +	struct i2c_client *client;
+> >> +	struct mutex lock;  
+> > 
+> > All locks need a comment explaining the scope of data they protect.
+> > Note that regmap and the i2c bus will have their own locks by default
+> > so I'm not sure you need one here at all as I'm not seeing read modify write
+> > cycles or anything like that (I might be missing one though!)  
+> 
+> My goal with the mutex was to protect the sysfs though that might be
+> unnecessary.
+
+Ok.  So, there is nothing stopping multiple parallel sysfs accesses, but
+what you'll actually be protecting is either device or driver state, not
+sysfs as such.
+
+> 
+> >> +};
+> >> +
+> >> +static const struct regmap_config ltr390_regmap_config = {
+> >> +	.name = LTR390_DEVICE_NAME,
+> >> +	.reg_bits = 8,
+> >> +	.reg_stride = 1,
+> >> +	.val_bits = 8,
+> >> +};
+> >> +
+
+
+> >> +static int ltr390_probe(struct i2c_client *client)
+> >> +{
+> >> +	struct ltr390_data *data;
+> >> +	struct iio_dev *indio_dev;
+> >> +	int ret, part_number;
+> >> +
+> >> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> >> +	if (!indio_dev)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	data = iio_priv(indio_dev);
+> >> +
+> >> +	data->regmap = devm_regmap_init_i2c(client, &ltr390_regmap_config);
+> >> +	if (IS_ERR(data->regmap))
+> >> +		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),  
+> > There are quite a few &client->dev in here. I'd introduce
+> > struct device *dev = &client->dev;
+> > as a local variable then use that to shorten all those lines a little.
+> >   
+> >> +				     "regmap initialization failed\n");
+> >> +
+> >> +	data->client = client;
+> >> +	i2c_set_clientdata(client, indio_dev);  
+> > 
+> > Why set this? I don' think you are using it.
+> >   
+> 
+> It seems to be necessary for regmap to work properly, I tested without
+> it and I get an EREMOTEIO(121) when reading the part id.
+
+That's weird given regmap will have no understanding of an iio_dev.
+
+If you can do some more debugging on where that error is coming from
+in regmap that would be great.
+
+I suspect it's coming from down in the bus master which should not
+be touching this at all.  What is the i2c master in this case?
 
 Jonathan
 
->=20
-> Thanks
-> Haibo Chen
-> >=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >  =20
-> > > ---
-> > >  drivers/iio/adc/imx93_adc.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-> > > index 9bb1e4ba1aee..4ccf4819f1f1 100644
-> > > --- a/drivers/iio/adc/imx93_adc.c
-> > > +++ b/drivers/iio/adc/imx93_adc.c
-> > > @@ -93,6 +93,10 @@ static const struct iio_chan_spec =20
-> > imx93_adc_iio_channels[] =3D { =20
-> > >  	IMX93_ADC_CHAN(1),
-> > >  	IMX93_ADC_CHAN(2),
-> > >  	IMX93_ADC_CHAN(3),
-> > > +	IMX93_ADC_CHAN(4),
-> > > +	IMX93_ADC_CHAN(5),
-> > > +	IMX93_ADC_CHAN(6),
-> > > +	IMX93_ADC_CHAN(7),
-> > >  };
-> > >
-> > >  static void imx93_adc_power_down(struct imx93_adc *adc) =20
->=20
+
+> 
+> >> [..]  
+> 
+> Thanks for the review,
+> Best regards,
+> Anshul
 
 

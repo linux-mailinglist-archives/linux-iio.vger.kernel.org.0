@@ -1,56 +1,52 @@
-Return-Path: <linux-iio+bounces-587-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-588-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80094803871
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:15:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C31080388C
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:19:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ACDB2812AC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D25B1C20B65
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400782C197;
-	Mon,  4 Dec 2023 15:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880552C1A6;
+	Mon,  4 Dec 2023 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUQ/JInB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YousOfmM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24B92375B;
-	Mon,  4 Dec 2023 15:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FE8C433C7;
-	Mon,  4 Dec 2023 15:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445FA2C19C;
+	Mon,  4 Dec 2023 15:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5EFC433C8;
+	Mon,  4 Dec 2023 15:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701702923;
-	bh=BOM1EV4bba9ClKDdr+6k5WZ62Teyd2Rgs3hahYp9izU=;
+	s=k20201202; t=1701703160;
+	bh=5sEvSdS3ZKittuPMVcViM6IheLlMNVV6ts0oVk77otY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LUQ/JInBnw5u1yUBx5xwlGXP3zGOWSnHAHgjcjOFSt2LaTNvH/Wv1HGtE/A1I5xvG
-	 IPZolxBQTkEFTyh2zuOtZC1SqLsPRS6dhNeW+DQ0OXzdAxSozQx7bEoNyPgZkBD68z
-	 hjki1mfO12qJWC5nqLDwwztW6ippl+hpJvIXSEBlt0GHp/FhmpB+VIe9N1O7mp9BEV
-	 pek0XoAOUGO9VlpSWNvLWrNnlHuY5F2fhTuvdFhtpbFbdVCE9QZxdkkS3zV93eUgD9
-	 no6gIb5Km2xfKFp39bJqSfpOJVO0rRwPY4Q5Esyq5Bbn2dej/uybaU2mblNjKer9w7
-	 XjuCRgMGdQMvg==
-Date: Mon, 4 Dec 2023 15:15:14 +0000
+	b=YousOfmMHBUnvlRCr32wRy8FZAF1dTCiHuVIv7Kp2hghkRxjzn4MqQ2IV42kUi7mm
+	 O9QiotGnaRLRKMgVT9kSHYI+B0kNX5sGLb3YOcF/kzMaCF31Y2xt0yqhBWBqIRMDWq
+	 uq5Arw2zDAQiMqdZtJirTTKNWaFMN4ppVhJsgzYHfyspehGngnpOAabogB9WgdXQnn
+	 O0L+CzECjLKWu7s6MDvRCZY1fhRKbvtqjh7ujY9+PsMOHqFuWPemkJgn6KTSvMlH2b
+	 Yjqm/OreLE8I7rJN96gXBgSlgoMwvs2dcppvhwEqvWaOMXxt3EldipR0L6XUx4VriV
+	 gXJgWFPGyGguw==
+Date: Mon, 4 Dec 2023 15:19:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 04/12] iio: adc: ad9467: fix reset gpio handling
-Message-ID: <20231204151514.4e2c8ada@jic23-huawei>
-In-Reply-To: <3925cb4b6453644c889675c20329b3477a06fcd5.camel@gmail.com>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Olivier MOYSAN
+ <olivier.moysan@foss.st.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
+ Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 05/12] iio: adc: ad9467: don't ignore error codes
+Message-ID: <20231204151910.6ab1728f@jic23-huawei>
+In-Reply-To: <20231121-dev-iio-backend-v1-5-6a3d542eba35@analog.com>
 References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-	<20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com>
-	<CAMknhBGCqnzCp6vQ+59Z-SybScvbtU7aWdAD6KnP1e6=q60gVQ@mail.gmail.com>
-	<d534c3323c32d4ed2aedae19a9f101be90ef0cc7.camel@gmail.com>
-	<CAMknhBGjm2ja9HOenOWi9O5Ao8qUg=gT=_Vz8CyxQ=pfNX2EJQ@mail.gmail.com>
-	<3925cb4b6453644c889675c20329b3477a06fcd5.camel@gmail.com>
+	<20231121-dev-iio-backend-v1-5-6a3d542eba35@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,87 +54,103 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 02 Dec 2023 09:36:47 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Tue, 21 Nov 2023 11:20:18 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> On Fri, 2023-12-01 at 11:01 -0600, David Lechner wrote:
-> > On Fri, Dec 1, 2023 at 2:47=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.=
-com> wrote: =20
-> > >=20
-> > > On Thu, 2023-11-30 at 15:41 -0600, David Lechner wrote: =20
-> > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
-> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote: =20
-> > > > >=20
-> > > > > From: Nuno Sa <nuno.sa@analog.com>
-> > > > >=20
-> > > > > The reset gpio was being requested with GPIOD_OUT_LOW which means=
-, not
-> > > > > asserted. Then it was being asserted but never de-asserted which =
-means
-> > > > > the devices was left in reset. Fix it by de-asserting the gpio. =
-=20
-> > > >=20
-> > > > It could be helpful to update the devicetree bindings to state the
-> > > > expected active-high or active-low setting for this gpio so it is
-> > > > clear which state means asserted.
-> > > >  =20
-> > >=20
-> > > You could state that the chip is active low but I don't see that chan=
-ge that
-> > > important for now. Not sure if this is clear and maybe that's why you=
-r comment.
-> > > GPIOD_OUT_HIGH has nothing to do with active high or low. It just mea=
-ns, "get me
-> > > the
-> > > pin in the asserted state".
-> > >  =20
-> >=20
-> > I would assume that this bug happened in the first place because
-> > someone forgot GPIOD_OUT_LOW in the devicetree when they were
-> > developing the driver. So this is why I suggested that updating the
-> > devicetree binding docs so that future users are less likely to make
-> > the same mistake. Currently, the bindings don't even have reset-gpios
-> > in the examples. =20
->=20
-> Hmm, I think you're missing the point... The bug has nothing to do with d=
-evicetree.
-> This is what was happening:
->=20
-> 1) We were calling devm_gpiod_get_optional() with GPIOD_OUT_LOW. What thi=
-s means is
-> that you get an output gpio deasserted. Hence the device is out of reset.=
- And here is
-> the important part... what you have in dts does not matter. If you have a=
-ctive low,
-> it means the pin level will be 1. If you have high, the pin level is 0. A=
-nd this is
-> all handled by gpiolib for you.=20
->=20
-> 2) Then, we called gpiod_direction_output(..., 1), which means set the di=
-rection out
-> (which is actually not needed since it was already done when getting the =
-pin) and
-> assert the pin. Hence, reset the device. And we were never de-asserting t=
-he pin so
-> the device would be left in reset.
+> From: Nuno Sa <nuno.sa@analog.com>
+> 
+> Make sure functions that return errors are not ignored.
+> 
+> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  drivers/iio/adc/ad9467.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> index 368ea57be117..04474dbfa631 100644
+> --- a/drivers/iio/adc/ad9467.c
+> +++ b/drivers/iio/adc/ad9467.c
+> @@ -6,6 +6,7 @@
+>   */
+>  
+>  #include <linux/module.h>
+> +#include <linux/mutex.h>
+David noted this one...
 
-Functionally I believe David is correct.   Flipping the DT would 'fix' this.
-It's all down to a nreset vs reset pin description.
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/slab.h>
+> @@ -160,11 +161,12 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+>  	struct spi_device *spi = st->spi;
+>  	int ret;
+>  
+> -	if (readval == NULL) {
+> +	if (!readval) {
 
-In this case I guess it's defined a a 'not reset' on the datasheet which is=
- what
-is causing the confusion.  It's not uncommon for people to refer to a reset=
- when
-they mean a "not reset" with assumptions on polarity to match.
+Nothing wrong with tidying this up if the !readval syntax is more common
+in the driver, but it doesn't have anything to do with the fix, so not in this
+patch.
 
-Jonathan
+>  		ret = ad9467_spi_write(spi, reg, writeval);
+> -		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
+> -				 AN877_ADC_TRANSFER_SYNC);
+> -		return ret;
+> +		if (ret)
+> +			return ret;
+> +		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
+> +					AN877_ADC_TRANSFER_SYNC);
+>  	}
+>  
+>  	ret = ad9467_spi_read(spi, reg);
+> @@ -274,6 +276,8 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+>  	unsigned int i, vref_val;
+unsigned and you check it for < 0 ..
+
+>  
+>  	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
+> +	if (vref_val < 0)
+> +		return vref_val;
+
+int ret = ...
+
+	vref_val = ret & info1->vref_mask; 
+if not an error.
 
 
-
->=20
-> - Nuno S=C3=A1
+>  
+>  	vref_val &= info1->vref_mask;
+>  
+> @@ -296,6 +300,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+>  	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+>  	unsigned int scale_val[2];
+>  	unsigned int i;
+> +	int ret;
+>  
+>  	if (val != 0)
+>  		return -EINVAL;
+> @@ -305,11 +310,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+>  		if (scale_val[0] != val || scale_val[1] != val2)
+>  			continue;
+>  
+> -		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+> -				 info->scale_table[i][1]);
+> -		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+> -				 AN877_ADC_TRANSFER_SYNC);
+> -		return 0;
+> +		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+> +				       info->scale_table[i][1]);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+> +					AN877_ADC_TRANSFER_SYNC);
+>  	}
+>  
+>  	return -EINVAL;
+> 
 
 

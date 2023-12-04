@@ -1,158 +1,148 @@
-Return-Path: <linux-iio+bounces-611-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-612-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D64803EDC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 20:57:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5DA803EE2
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 21:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2C2281167
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 19:57:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD941F21195
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 20:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A471C33088;
-	Mon,  4 Dec 2023 19:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8426033095;
+	Mon,  4 Dec 2023 19:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b="fhmp8oun"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="MD8ZZlFK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E442AD2
-	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 11:57:15 -0800 (PST)
-Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-58cecfb4412so3320625eaf.3
-        for <linux-iio@vger.kernel.org>; Mon, 04 Dec 2023 11:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google; t=1701719835; x=1702324635; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBTfgpI7c2ac59dT9wiC8J/GPNEeE/8u5o5TG4ssEQ4=;
-        b=fhmp8ounvakzsyada1KC6PTtZwKjGMLx0HfFFzpB3k0J5DYAn4tTZYmuYo27TMfu6P
-         AC+sDKWTPHkSW6suXieYbQ7yM+1o3gCKpZUz4BmO9/wCrfNqLsvXb8js0hNdvDbqXH/R
-         P0guMe/VWq0OM37JM9rEyzwow4STHG/d9cl/FM5hypwUcRUeEbI91AEjmjc776eN2knv
-         vtlm5F3d0TtPTWQEqRlgVwAN8/Lw9WOJY07FTy65c6nRRhaZBu5zNtkbK7ZsjlTSZ545
-         qpWXIzjGPmNpuoOoV6DOQatQX8yO8HOervIKBBuGNrqPUFin0z6xGwdi/hLLA7BsVCJ8
-         t0/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701719835; x=1702324635;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SBTfgpI7c2ac59dT9wiC8J/GPNEeE/8u5o5TG4ssEQ4=;
-        b=eldRP6VLvkG79B7dv2I6KjQTfAv9s2MpvHMTeaeJK0YVozmmfC4AnEO6NATGLhWUaL
-         GM/rQJND53X0HB4gf02YN456Mh8frg1sPQa+GeRVoE70hu5fTMHnW80+e1cpjGM65EZ2
-         K7maYQdvVIS/0oQqjYEOvL0trlpI6JszXtVVEJ19Uo63/DZxtS+JBiJ8pX1r1AXNFJ1c
-         VI+HNyalfbQs6YjERe44jaSFKaoIQAcfLLAQpVwTv998kEwYlc9AJO3SFftUDIHdCi+7
-         TP+kinA1Zfh8VsrmXko6ezvW2Jlve1ovoOGhiNHcYyVG7nXDJ2ImC0ECjIddwJ9ZpDBi
-         JNEA==
-X-Gm-Message-State: AOJu0YwASZNLjDuZ6Oyg+1hsAcozSayBVlJ61K/HTFy5cQup/EAoWSHb
-	fEJuBKTWRfHthwocfrWt233anWSo4s68BYzxO9RubQ==
-X-Google-Smtp-Source: AGHT+IFOFahrQNa632EgBewrVs7SXeztT1nvDz+j8RxzpLp1TJG0AtGPq1vH8DB7jC4CehQb0sIPVHJSoNVZMFvqVIQ=
-X-Received: by 2002:a05:6870:568c:b0:1fb:75b:2fd6 with SMTP id
- p12-20020a056870568c00b001fb075b2fd6mr5131473oao.109.1701719835169; Mon, 04
- Dec 2023 11:57:15 -0800 (PST)
+Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55EBC4;
+	Mon,  4 Dec 2023 11:59:52 -0800 (PST)
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 2EBD128EE6F;
+	Mon,  4 Dec 2023 19:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1701719991;
+	bh=+nDCKIJsNn3sdyyepy9COQh7EZ5oRjjTsJna287/22o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MD8ZZlFKvtWImQs7JJwrKccj+k60ADAYaEZ7WIw77iFiNWTb+l4QyeYz/AB9vjvI+
+	 c/yESpc6WACDK1juAlgg9Bo2IR8LlL0DDogJpo0htY0W6HGaUCQeD9Jz24/4/hVKZ+
+	 1ofZCbE9OELvU31DSTWaMS4Ly2deAvBofsl3Hsyk=
+Date: Mon, 4 Dec 2023 21:59:49 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v6 2/2] iio: pressure: driver for Honeywell HSC/SSC series
+Message-ID: <ZW4vtQrmgUu29dP6@sunspire>
+References: <20231129170425.3562-1-petre.rodan@subdimension.ro>
+ <20231129170425.3562-2-petre.rodan@subdimension.ro>
+ <ZWdzz7VzCW5ctend@smile.fi.intel.com>
+ <ZWeNNMfqKquDYI9X@sunspire>
+ <ZWiPDlNJCbUAtIy8@smile.fi.intel.com>
+ <ZWtWAPcJTNrD9wgv@sunspire>
+ <ZW3Mvds9LFiK7aEz@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1701168726.git.cmo@melexis.com> <c9db99819adb0cdd602394b27f97a3b8fe081148.1701168726.git.cmo@melexis.com>
- <20231204142224.51f2ccdf@jic23-huawei> <CAKv63usxdfOviH=M6iUiNTtBFZVOseWUGz63Q-oJniBDFvTpSQ@mail.gmail.com>
- <20231204170623.0c0cd598@jic23-huawei>
-In-Reply-To: <20231204170623.0c0cd598@jic23-huawei>
-From: Crt Mori <cmo@melexis.com>
-Date: Mon, 4 Dec 2023 20:56:39 +0100
-Message-ID: <CAKv63uuBjkqffEzVsJcsMKK3wYoShJ0gNU_X+=KrU1zicTVdEw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: temperature: mlx90635 MLX90635 IR Temperature sensor
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andrew Hepp <andrew.hepp@ahepp.dev>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="0roFwDt5J5hwuJL+"
+Content-Disposition: inline
+In-Reply-To: <ZW3Mvds9LFiK7aEz@smile.fi.intel.com>
 
-On Mon, 4 Dec 2023 at 18:06, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Mon, 4 Dec 2023 16:34:30 +0100
-> Crt Mori <cmo@melexis.com> wrote:
->
-> > On Mon, 4 Dec 2023 at 15:22, Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-...
-> > While in Sleep Step mode, the EEPROM is powered down, but the cache
-> > buffers those values. Still when you try to write or read a volatile
-> > register (which should not be prevented by cache enabled as per my
-> > opinion, but code says differently) in that mode, it returns -EBUSY
-> > (as we discovered by code), so this kind of manipulation is needed to
-> > enable write and read operations from volatile registers.
->
-> So the cache trick is just meant for the eeprom?  Can you use two regmaps.
-> (I've seen similar done for devices with different ways of reading which
-> this 'kind of' corresponds to).
-> One to cover the eeprom and the other the registers that always work.
-> That should let you separately control if they are in caching state or
-> not.
-> Or just read the eeprom into a manually created cache on boot?
->
 
-It did not seem correct to create a manual cache, since regcache does
-this job. I tried two separated regmaps, but when I tried to
-initialize them I got into kernel panic/crash, so I could not get it
-working on same device. Do you have any device in mind I could
-template this against?
+--0roFwDt5J5hwuJL+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-...
-> > "invalid" data (shouldn't differ much, but I wanted to prevent that as
-> > it might be 0).
->
-> ok.  Just give a little bit more of that detail.  I'd not understood
-> intent is to ensure one trigger -> one measurement.
 
-OK.
-> >
-...
-> >
-> > Burst is from 90632 terminology (and our chip register map), but maybe
-> > more general would be "trigger_measurement"?
->
-> ok. But why only if in SLEEP_STEP?
->
+hello,
 
-Because in continuous mode (other mode used here) the measurement
-table is constantly updated, so trigger is not useful and would only
-slow down the reading. And I did not want to block the data retrieval
-when person wants to read the data fast.
+On Mon, Dec 04, 2023 at 02:57:33PM +0200, Andy Shevchenko wrote:
+> On Sat, Dec 02, 2023 at 06:06:24PM +0200, Petre Rodan wrote:
+> > On Thu, Nov 30, 2023 at 03:33:02PM +0200, Andy Shevchenko wrote:
+> > > On Wed, Nov 29, 2023 at 09:12:52PM +0200, Petre Rodan wrote:
+> > > > On Wed, Nov 29, 2023 at 07:24:31PM +0200, Andy Shevchenko wrote:
+> > > >=20
+> > > > 437:  ret =3D device_property_read_string(dev, "honeywell,pressure-=
+triplet",
+> > > > 					&triplet);
+> > > > [..]
+> > > > 455:	ret =3D match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
+> > > > 						triplet);
+> > > > 		if (ret < 0)
+> > > > 			return dev_err_probe(dev, -EINVAL,
+> > > > 				"honeywell,pressure-triplet is invalid\n");
+> > > >=20
+> > > > 		hsc->pmin =3D hsc_range_config[ret].pmin;
+> > > > 		hsc->pmax =3D hsc_range_config[ret].pmax;
+> > > >=20
+> > > > triplet is got via device_property_read_string(), is there some oth=
+er property
+> > > > function I should be using?
+> > >=20
+> > > I think I mentioned that API, but for your convenience
+> > > device_property_match_property_string().
+> >=20
+> > one of us is not sync-ed with 6.7.0-rc3 :)
+>=20
+> No, one of us is not synced with subsystem "for-next", which in this case
+> is IIO "togreg" (IIRC) and it definitely has the above mentioned API.
 
-> >
-> > > > +static int mlx90635_get_refresh_rate(struct mlx90635_data *data,
-> > > > +                                  unsigned int *refresh_rate)
-> > > > +{
-> > > > +     unsigned int reg;
-> > > > +     int ret;
-> > > > +
-> > > > +     if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
-> > > > +             regcache_cache_only(data->regmap, false);
-> > >
-> > > Definitely needs a comment on why this is needed in this case.
-> > >
-> >
-> > Here and below (where we turn it back to true?), but then I assume in
-> > all other instances as well? Maybe a more general comment in the
-> > sleep_step mode function?
->
-> If we keep this, then yes I think we need comments on these - even if
-> it's as simple as 'not accessing an eeprom register so we want to
-> talk to the device'.
+v7 still contains the match_string().
+that is the API available in -current (6.7.0-rcx), which is the version you
+asked me to use a few weeks back.
 
-OK, then this is an option if I cannot make two regmaps work.
+whenever your new API call will be merged (6.8+ according to your email exc=
+hange
+with Jonathan) into -current I will provide a patch.
 
-> >
-> > > > +
-...
-> > changed we should end up in correct state. I can wrap a mutex around
-> > though.
->
-> Assuming regcache_cache_only() isn't refcounted, you could end up with a
-> second copy of this racing through and accessing the data after the
-> first one turned the cache back on so the -EBUSY your mentioned.
->
+best regards,
+peter
 
-True. I will use mutex then for this action.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
+>=20
+>=20
+>=20
+
+--=20
+petre rodan
+
+--0roFwDt5J5hwuJL+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmVuL7UACgkQzyaZmYRO
+fzB4xxAAg4++c2EfVeyasAxqVyaxt0/cEt/RDdKBiDUwn4NyAhTdDWslAzGbTssB
+K1Kcp9IwHVjLJ59Rgni3z2jlTbMQmpxAfYdMYfCgK6C0LfcRVIqdW+E1DzrZMkJA
+dQ2folIi3VBciFDNm6uezx1mX5qtpUYL5jgkOdxwP62K4VrFUHPz1UmCxEbZFIZj
+9ZHnkZQnp+teHbKl/CI3LFpOerzN3IOOtqqeWoy1i+c/wERq2JsIDgVZUjcmHPaW
+rShXD1Zfc3tEApzb0oqiboxVOHM5iQTZUwngR7trZrPoJFd6gns4FPv1xRTx//fL
+unkhZM7nqk83OUxuWnGx0JMya/gBNUSe/JxTQCiqALLwjYt//ApsXkiZetkaGL8J
+m27ELfYtC0eLjRHYS1tNRs07EO0JRMZxuhKoc4YUMfAnp4EkzFYF7h3foxhnTZrH
+Wk3pT3wmAhr6YIeHSFetJfcXacFnqxvKTHPFzd3XgJFdMJMuO/UJdknYl1vSCqSM
+ZoVPKugLgiWvCdLxr8etH3vIqdsoMvYlpmGRI6xNSVYftg98UBsY2KBmGwApl1xt
+d260zwVVxB49DgsjSRL4zXsysciw+QdJI1MF5djEMblR34f/owfjeGybGhGn3MR6
+w09EzwEJkLiTanx8PxLKTCmWOblXtfFcPrfSy0YfVH6iJQHwsb8=
+=aQ99
+-----END PGP SIGNATURE-----
+
+--0roFwDt5J5hwuJL+--
 

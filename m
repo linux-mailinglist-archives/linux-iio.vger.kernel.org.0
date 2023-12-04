@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D67E8034B7
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:26:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934978034C9
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCBD7280FB8
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:26:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CBA21F2124A
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA673250F4;
-	Mon,  4 Dec 2023 13:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA69425112;
+	Mon,  4 Dec 2023 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vlc9Q3HV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyhnU/Jh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC5B24B38
-	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 13:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5524C433C7;
-	Mon,  4 Dec 2023 13:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4AE249ED;
+	Mon,  4 Dec 2023 13:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA0EC433C7;
+	Mon,  4 Dec 2023 13:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701696299;
-	bh=tQWq1wkdhLsJDO4sSOf69mI0MINSzIOOUbI44WzQSqA=;
+	s=k20201202; t=1701696393;
+	bh=+KG3xcZFmyTIbsERfnkP9uoq6hpeNKXxUGzii+pc5Zo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vlc9Q3HV3+TEhCYdYe8AJaXz0nB269R1+GwWfkLoXgIFUC1BPoaAkN9qwhKgGJexj
-	 di7aLvBq8N1vYH5rnLmbuQgb+3KDf31V+L3SAlzjCUx6IisUsYa4vJekkpT57hb7+r
-	 czwk7KdHksXMeUslwUja4jKb5P4Gt2cBv2O9/DGlVud6rhc63X3MZ2auUQVGtKuE+s
-	 caT/LUYoyfl6HCqJYlBFz2JIDGfoCZN/m1XN/fQw6wVOzZnmwdhHunxteY3tunO8fk
-	 MKYYEma6Ds3t0zmxYBe+XvDb6wavtaq48CyYn3/1RsD9wQjWTqchbSwPoiLy3ZilHG
-	 kkBosByvv5PQA==
-Date: Mon, 4 Dec 2023 13:24:51 +0000
+	b=MyhnU/JhrifVCtFAvZAaYK6Y9cw5Vffz3K+2EC9PP5lRzheWG2PAp4XgT2kLwsdth
+	 qYXPaixNhYL6tMgiJg2PZm9IN9rXzOK7DLy1Pa7gn+kcCZTeU7CMDC3y06FrduxrlJ
+	 Tw2BdGbxlPgbjXLP2ecMpyKHaAIb7SRbHGgaOoxb10e13M7g0aETR0KR+y6/EV3AlV
+	 imj55cWAPTTfDkUaReH3tVJiaLVmdUsO85vhrc5G6sxWQGanKlbS32pFs41KaSVmH9
+	 wLFi6CNym5n3Puk5H4LvFJYwPFMwKDCPFOSxt0piuHwjKpMIdiT+SxNlL3VAv3ovG6
+	 E2IJ2r99vayAQ==
+Date: Mon, 4 Dec 2023 13:26:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: proximity: irsd200: Drop unused include
-Message-ID: <20231204132451.4d1790e1@jic23-huawei>
-In-Reply-To: <pnd34woewec.fsf@axis.com>
-References: <20231128-descriptors-iio-v1-1-da1e94755db6@linaro.org>
-	<pnd34woewec.fsf@axis.com>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/6] dt-bindings: iio/adc: qcom,spmi: fix up examples
+Message-ID: <20231204132624.03733d50@jic23-huawei>
+In-Reply-To: <20231130171628.12257-1-johan+linaro@kernel.org>
+References: <20231130171628.12257-1-johan+linaro@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -53,17 +53,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Nov 2023 10:31:26 +0100
-Waqar Hameed <waqar.hameed@axis.com> wrote:
+On Thu, 30 Nov 2023 18:16:22 +0100
+Johan Hovold <johan+linaro@kernel.org> wrote:
 
-> On Tue, Nov 28, 2023 at 23:56 +0100 Linus Walleij <linus.walleij@linaro.org> wrote:
+> When reviewing the various SPMI PMIC bindings, I noticed that several
+> examples were incorrect and misleading and could also use some cleanup.
 > 
-> > The driver includes the legacy GPIO header <linux/gpio.h> but doesn't
-> > use any symbols from it. Drop it.
-> >
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>  
-> 
-> Reviewed-by: Waqar Hameed <waqar.hameed@axis.com>
+> This series addresses the iio/adc ones.
 
-Applied
+All look fine to me.  Just waiting for the DT folk to have time to take a look.
+> 
+> Johan
+> 
+> 
+> Johan Hovold (6):
+>   dt-bindings: iio/adc: qcom,spmi-iadc: fix reg description
+>   dt-bindings: iio/adc: qcom,spmi-iadc: fix example node name
+>   dt-bindings: iio/adc: qcom,spmi-iadc: clean up example
+>   dt-bindings: iio/adc: qcom,spmi-rradc: clean up example
+>   dt-bindings: iio/adc: qcom,spmi-vadc: fix example node names
+>   dt-bindings: iio/adc: qcom,spmi-vadc: clean up examples
+> 
+>  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml    | 10 ++++++----
+>  .../devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml   |  4 ++--
+>  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml    |  9 +++++----
+>  3 files changed, 13 insertions(+), 10 deletions(-)
+> 
+
 

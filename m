@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-603-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-604-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04904803AD7
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:51:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7DB803AFB
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3496280F98
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:51:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4681F211DC
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9DC2E417;
-	Mon,  4 Dec 2023 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33E02E41A;
+	Mon,  4 Dec 2023 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba7t9+j+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IywsxXmN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A465241FD;
-	Mon,  4 Dec 2023 16:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BDCC433C7;
-	Mon,  4 Dec 2023 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A043D2557C;
+	Mon,  4 Dec 2023 16:57:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CF0C433C7;
+	Mon,  4 Dec 2023 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701708700;
-	bh=fFXmEBT5AMl/e+v8v12kevHaf03zfjvJ1t3IxHwqbNU=;
+	s=k20201202; t=1701709042;
+	bh=JA7nhAup9DhpJ8fK0a5UXnLHxxlgRw9Qra34O3M0DLk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ba7t9+j+aC25aU7nX6xksyw/rfPPpMj8n/VfYLO3TpnArg0UAv+E45421nE8y0/MD
-	 X/gOjv+U2EF1gFDddOk4wwf1RH2PkfuK7S4A0l8V4DZOOM/QRmWZRuQKeIdMjPjZYq
-	 +48Nn6abrEeP3GxF0y2czaNjOvlsx+Ui2CNXmL9ztENe4cWVShNwgwUtcIvaZRd+C3
-	 XVe9xHXL0/5+Mzx3NiNSr+N8KWkW6mUYUAEP0ZT4EK+qFJsLUbcDyBSSap4l6FeqAV
-	 FWW4fvXp4I65VA03n8S1icgb0ke9JYVz+nBnRAdwp7ekbD+PKW0ugEa0hGxlwpX3FH
-	 lc0IBcv3zSBww==
-Date: Mon, 4 Dec 2023 16:51:29 +0000
+	b=IywsxXmNxf7EfN8QV1/tjNFauk1pAJS2Fvopu37F53svBUnGN1aLpLbTI4n25GtAk
+	 o5rJ3xFaYQR1WyIJ5oMX2r0dt86WEbsXw1epmbKVrpeCF26v2i0S3RdcEAWDF60CnU
+	 BUmC9C/TRCS1suPXC6Wf5dawBknoTPYYrYmy8oCg/AuVG2nD0Pt4FVw8nTq11dtXCk
+	 1vizr32+OhUsxpJCgBlXZAJV5mVwYdKTV8RKvVlrmt+ZoE83qPuMJHywUrO1y2q69L
+	 p74R/U0zhaO7yCLtDXc1GZII6lvKf3cn3vXqBcpBl2+cv5016NkayySOv3wsQshiTm
+	 J2s9ImCusIjew==
+Date: Mon, 4 Dec 2023 16:57:12 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno Sa via B4 Relay  <devnull+nuno.sa.analog.com@kernel.org>,
- nuno.sa@analog.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Olivier MOYSAN
- <olivier.moysan@foss.st.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
- Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 06/12] iio: adc: ad9467: add mutex to struct
- ad9467_state
-Message-ID: <20231204165129.130e189c@jic23-huawei>
-In-Reply-To: <69a7ca77055fc57cff6d6be95fb5796723171230.camel@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
+Message-ID: <20231204165712.73a8e7dd@jic23-huawei>
+In-Reply-To: <f0a65ba32a6e988ec5f99a3a02ab5414f28ff106.camel@gmail.com>
 References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-	<20231121-dev-iio-backend-v1-6-6a3d542eba35@analog.com>
-	<20231204152301.6c212539@jic23-huawei>
-	<69a7ca77055fc57cff6d6be95fb5796723171230.camel@gmail.com>
+	<20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com>
+	<CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
+	<026fa80d29054750937cd077b7f4f689de4e18f2.camel@gmail.com>
+	<20231204154810.3f2f3f83@jic23-huawei>
+	<f0a65ba32a6e988ec5f99a3a02ab5414f28ff106.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,70 +61,184 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 04 Dec 2023 17:10:01 +0100
+On Mon, 04 Dec 2023 17:23:12 +0100
 Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Mon, 2023-12-04 at 15:23 +0000, Jonathan Cameron wrote:
-> > On Tue, 21 Nov 2023 11:20:19 +0100
-> > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> On Mon, 2023-12-04 at 15:48 +0000, Jonathan Cameron wrote:
+> > On Fri, 01 Dec 2023 10:08:27 +0100
+> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 > >  =20
-> > > From: Nuno Sa <nuno.sa@analog.com>
+> > > On Thu, 2023-11-30 at 17:30 -0600, David Lechner wrote: =20
+> > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:=C2=A0  =20
+> > > > >=20
+> > > > > From: Nuno Sa <nuno.sa@analog.com>
+> > > > >=20
+> > > > > Convert the driver to use the new IIO backend framework. The devi=
+ce
+> > > > > functionality is expected to be the same (meaning no added or rem=
+oved
+> > > > > features).=C2=A0  =20
+> > > >=20
+> > > > Missing a devicetree bindings patch before this one?
+> > > > =C2=A0  =20
+> > > > >=20
+> > > > > Also note this patch effectively breaks ABI and that's needed so =
+we can
+> > > > > properly support this device and add needed features making use o=
+f the
+> > > > > new IIO framework.=C2=A0  =20
+> > > >=20
+> > > > Can you be more specific about what is actually breaking?
+> > > > =C2=A0  =20
+> > > > >=20
+> > > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > > > ---
+> > > > > =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 2 +-
+> > > > > =C2=A0drivers/iio/adc/ad9467.c | 256 ++++++++++++++++++++++++++++=
++----------------
+> > > > > --
+> > > > > =C2=A02 files changed, 157 insertions(+), 101 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > > > > index 1e2b7a2c67c6..af56df63beff 100644
+> > > > > --- a/drivers/iio/adc/Kconfig
+> > > > > +++ b/drivers/iio/adc/Kconfig
+> > > > > @@ -275,7 +275,7 @@ config AD799X
+> > > > > =C2=A0config AD9467
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Analog Devic=
+es AD9467 High Speed ADC driver"
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on SPI
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ADI_AXI_ADC
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select IIO_BACKEND
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Say yes he=
+re to build support for Analog Devices:
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * AD9467 1=
+6-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
+> > > > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> > > > > index 5db5690ccee8..8b0402e73ace 100644
+> > > > > --- a/drivers/iio/adc/ad9467.c
+> > > > > +++ b/drivers/iio/adc/ad9467.c=C2=A0  =20
+> > > >=20
+> > > > <snip>
+> > > > =C2=A0  =20
+> > > > > +static int ad9467_buffer_get(struct iio_dev *indio_dev)=C2=A0  =
+=20
+> > > >=20
+> > > > perhaps a more descriptive name: ad9467_buffer_setup_optional?
+> > > > =C2=A0  =20
 > > >=20
-> > > When calling ad9467_set_scale(), multiple calls to ad9467_spi_write()
-> > > are done which means we need to properly protect the whole operation =
-so
-> > > we are sure we will be in a sane state if two concurrent calls occur.
+> > > Hmm, no strong feeling. So yeah, can do as you suggest. Even though, =
+now that I'm
+> > > thinking, I'm not so sure if this is just some legacy thing we had in=
+ ADI tree. I
+> > > wonder if it actually makes sense for a device like with no buffering=
+ support?!
+> > > =C2=A0 =20
+> > > > > +{
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D indi=
+o_dev->dev.parent;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *dma_name;
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!device_property_presen=
+t(dev, "dmas"))
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return 0;
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (device_property_read_st=
+ring(dev, "dma-names", &dma_name))
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 dma_name =3D "rx";
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return devm_iio_dmaengine_b=
+uffer_setup(dev, indio_dev, dma_name);=C2=A0  =20
+> > > >=20
+> > > > The device tree bindings for "adi,ad9467" don't include dma propert=
+ies
+> > > > (nor should they). Perhaps the DMA lookup should be a callback to t=
+he
+> > > > backend? Or something similar to the SPI Engine offload that we are
+> > > > working on?
+> > > > =C2=A0  =20
 > > >=20
-> > > Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > ---
-> > > =C2=A0drivers/iio/adc/ad9467.c | 6 +++++-
-> > > =C2=A01 file changed, 5 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > > index 04474dbfa631..91821dee03b7 100644
-> > > --- a/drivers/iio/adc/ad9467.c
-> > > +++ b/drivers/iio/adc/ad9467.c
-> > > @@ -4,7 +4,7 @@
-> > > =C2=A0 *
-> > > =C2=A0 * Copyright 2012-2020 Analog Devices Inc.
-> > > =C2=A0 */
-> > > -
-> > > +#include <linux/cleanup.h>
-> > > =C2=A0#include <linux/module.h>
-> > > =C2=A0#include <linux/mutex.h>
-> > > =C2=A0#include <linux/device.h>
-> > > @@ -122,6 +122,8 @@ struct ad9467_state {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0output_mode;
-> > > =C2=A0
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct gpio_desc=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0*pwrdown_gpio;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* protect against concurr=
-ent accesses to the device */ =20
-> > Not very specific.=C2=A0 Concurrent access usually fine at granularity =
-of
-> > individual read/write as the bus locks protect it.=C2=A0 What state
-> > is actually being protected?=C2=A0 A shared buffer or some state that we
-> > need to ensure remains consistent between driver and device? =20
+> > > Oh yes, I need to update the bindings. In the link I sent you we can =
+see my
+> > > thoughts
+> > > on this. In theory, hardwarewise, it would actually make sense for th=
+e DMA to be
+> > > on
+> > > the backend device because that's where the connection is in HW. Howe=
+ver, since
+> > > we
+> > > want to have the IIO interface in the frontend, it would be hard to d=
+o that
+> > > without
+> > > hacking devm_iio_dmaengine_buffer_setup().=C2=A0I mean, lifetime wise=
+ it would be far
+> > > from
+> > > wise to have the DMA buffer associated to a completely different devi=
+ce than the
+> > > IIO
+> > > parent device. I mean, one way could just be export iio_dmaengine_buf=
+fer_free()
+> > > and
+> > > iio_dmaengine_buffer_alloc() so we can actually control the lifetime =
+of the
+> > > buffer
+> > > from the frontend device. If Jonathan is fine with this, I'm on board=
+ for it.... =20
+> >=20
+> > It is going to be fiddly but I'd kind of expect the front end to be usi=
+ng a more
+> > abstracted interface to tell the backend to start grabbing data.=C2=A0 =
+Maybe that ends
+> > up being so slim it's just these interfaces and it's not sensible to wr=
+ap it
+> > though.
+> >  =20
 >=20
-> At this point not any buffer/data... Just making sure things remain consi=
-stent
-> (typical case when you have multiple reads/writes to the device). That's =
-why a tried
-> to emphasize "accesses to the device". Maybe I should make it explicit I'=
-m speaking
-> about multiple reads/writes.
+> Likely I'm missing your point but the discussion here is where the DMA bu=
+ffer should
+> be allocated. In theory, in the backend (at least on ADI usecases - it's =
+the proper
+> representation of the HW) but as we have the iio device in the frontend, =
+it's more
+> appropriate to have the buffer there. Or at least to have a way to contro=
+l the buffer
+> lifetime from there...
 
-Talk about the data or state rather than the access to it.
-Something like
-'ensure consistent state obtained on multiple related accesses.'
-Or if it's RMW then say that.
+My instinct was put it in the backened and proxy / interfaces as necessary =
+but (based
+on my vague recollection of how this works) at times these DMA buffers are =
+handed off
+to userspace which is a front end problem rather than the hardware.  So I g=
+uess it's
+a question of who logically creates them?  Then as  you say provide the con=
+trols for
+the other part to mess with their lifetimes or at least ensure the stick ar=
+ound whilst
+it expects them to.
+
+>=20
+> On the our usecases, it's not like we tell the backend to grab data, we j=
+ust use the
+> normal .update_scan_mode() to enable/disable the channels in the backend =
+so when we
+> enable the buffer (and the frontend starts receiving and sending data via=
+ the serial
+> interface) the data paths are enabaled/disabled accordingly. Bah, yeah, i=
+n a way is
+> another wording for "grab" or "grab not" :)
+
+Yup. It's not as easily separated as simple always on analog only front end=
+s. Someone
+drives the clock ultimately and that could be either end in theory at least.
+
+What fun.
+
+J
 >=20
 > - Nuno S=C3=A1
-> >  =20
->=20
 
 

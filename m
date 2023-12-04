@@ -1,56 +1,51 @@
-Return-Path: <linux-iio+bounces-604-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-605-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7DB803AFB
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:57:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2A7803B1C
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 18:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4681F211DC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:57:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EDC280FB7
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33E02E41A;
-	Mon,  4 Dec 2023 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3990D2E62E;
+	Mon,  4 Dec 2023 17:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IywsxXmN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOGewpoE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A043D2557C;
-	Mon,  4 Dec 2023 16:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CF0C433C7;
-	Mon,  4 Dec 2023 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF741171D9
+	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 17:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF7C433C7;
+	Mon,  4 Dec 2023 17:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701709042;
-	bh=JA7nhAup9DhpJ8fK0a5UXnLHxxlgRw9Qra34O3M0DLk=;
+	s=k20201202; t=1701709590;
+	bh=yl7UEtwYIXWMb3aLTxITDLeUle/USlV/2Z6boVe2hB8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IywsxXmNxf7EfN8QV1/tjNFauk1pAJS2Fvopu37F53svBUnGN1aLpLbTI4n25GtAk
-	 o5rJ3xFaYQR1WyIJ5oMX2r0dt86WEbsXw1epmbKVrpeCF26v2i0S3RdcEAWDF60CnU
-	 BUmC9C/TRCS1suPXC6Wf5dawBknoTPYYrYmy8oCg/AuVG2nD0Pt4FVw8nTq11dtXCk
-	 1vizr32+OhUsxpJCgBlXZAJV5mVwYdKTV8RKvVlrmt+ZoE83qPuMJHywUrO1y2q69L
-	 p74R/U0zhaO7yCLtDXc1GZII6lvKf3cn3vXqBcpBl2+cv5016NkayySOv3wsQshiTm
-	 J2s9ImCusIjew==
-Date: Mon, 4 Dec 2023 16:57:12 +0000
+	b=sOGewpoEIzTFye2f4SvUDNjy+MF+Qk4QE+8JRduwLlhDi6ORo5PnBxN4nXL3iFag8
+	 Xp7Wm4kwGYD2PP+odkSIz9Ph7/YBbZla0zlpCpInNK5AZf7A0DJWtW7YgrGhmCN54W
+	 5crHOeWalZgBVEMZrXMOZI+x8rfD5r8y8L4SWSEyULP8hPrCloxz31M/zMoY+FRLaX
+	 sBjwR+l46eMwMAmPN4gRWtUvaGpqI/OSSj0KgSBG19P49kZ881L9qSfjv5dj0h6l+O
+	 X5eHiSxfc6JwQhG7Ncx1sA2ws3nUIZF6EeTHmSg1ju3QhzAd+2bZmQLkHLaqsESYyL
+	 sAuYMewu6dsXg==
+Date: Mon, 4 Dec 2023 17:06:23 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
-Message-ID: <20231204165712.73a8e7dd@jic23-huawei>
-In-Reply-To: <f0a65ba32a6e988ec5f99a3a02ab5414f28ff106.camel@gmail.com>
-References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-	<20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com>
-	<CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
-	<026fa80d29054750937cd077b7f4f689de4e18f2.camel@gmail.com>
-	<20231204154810.3f2f3f83@jic23-huawei>
-	<f0a65ba32a6e988ec5f99a3a02ab5414f28ff106.camel@gmail.com>
+To: Crt Mori <cmo@melexis.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Andrew Hepp
+ <andrew.hepp@ahepp.dev>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: temperature: mlx90635 MLX90635 IR
+ Temperature sensor
+Message-ID: <20231204170623.0c0cd598@jic23-huawei>
+In-Reply-To: <CAKv63usxdfOviH=M6iUiNTtBFZVOseWUGz63Q-oJniBDFvTpSQ@mail.gmail.com>
+References: <cover.1701168726.git.cmo@melexis.com>
+	<c9db99819adb0cdd602394b27f97a3b8fe081148.1701168726.git.cmo@melexis.com>
+	<20231204142224.51f2ccdf@jic23-huawei>
+	<CAKv63usxdfOviH=M6iUiNTtBFZVOseWUGz63Q-oJniBDFvTpSQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,187 +53,194 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 04 Dec 2023 17:23:12 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 4 Dec 2023 16:34:30 +0100
+Crt Mori <cmo@melexis.com> wrote:
 
-> On Mon, 2023-12-04 at 15:48 +0000, Jonathan Cameron wrote:
-> > On Fri, 01 Dec 2023 10:08:27 +0100
-> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> >  =20
-> > > On Thu, 2023-11-30 at 17:30 -0600, David Lechner wrote: =20
-> > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
-> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:=C2=A0  =20
-> > > > >=20
-> > > > > From: Nuno Sa <nuno.sa@analog.com>
-> > > > >=20
-> > > > > Convert the driver to use the new IIO backend framework. The devi=
-ce
-> > > > > functionality is expected to be the same (meaning no added or rem=
-oved
-> > > > > features).=C2=A0  =20
-> > > >=20
-> > > > Missing a devicetree bindings patch before this one?
-> > > > =C2=A0  =20
-> > > > >=20
-> > > > > Also note this patch effectively breaks ABI and that's needed so =
-we can
-> > > > > properly support this device and add needed features making use o=
-f the
-> > > > > new IIO framework.=C2=A0  =20
-> > > >=20
-> > > > Can you be more specific about what is actually breaking?
-> > > > =C2=A0  =20
-> > > > >=20
-> > > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > > > ---
-> > > > > =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 2 +-
-> > > > > =C2=A0drivers/iio/adc/ad9467.c | 256 ++++++++++++++++++++++++++++=
-+----------------
-> > > > > --
-> > > > > =C2=A02 files changed, 157 insertions(+), 101 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > > > > index 1e2b7a2c67c6..af56df63beff 100644
-> > > > > --- a/drivers/iio/adc/Kconfig
-> > > > > +++ b/drivers/iio/adc/Kconfig
-> > > > > @@ -275,7 +275,7 @@ config AD799X
-> > > > > =C2=A0config AD9467
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Analog Devic=
-es AD9467 High Speed ADC driver"
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on SPI
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ADI_AXI_ADC
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select IIO_BACKEND
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Say yes he=
-re to build support for Analog Devices:
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * AD9467 1=
-6-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
-> > > > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > > > > index 5db5690ccee8..8b0402e73ace 100644
-> > > > > --- a/drivers/iio/adc/ad9467.c
-> > > > > +++ b/drivers/iio/adc/ad9467.c=C2=A0  =20
-> > > >=20
-> > > > <snip>
-> > > > =C2=A0  =20
-> > > > > +static int ad9467_buffer_get(struct iio_dev *indio_dev)=C2=A0  =
-=20
-> > > >=20
-> > > > perhaps a more descriptive name: ad9467_buffer_setup_optional?
-> > > > =C2=A0  =20
-> > >=20
-> > > Hmm, no strong feeling. So yeah, can do as you suggest. Even though, =
-now that I'm
-> > > thinking, I'm not so sure if this is just some legacy thing we had in=
- ADI tree. I
-> > > wonder if it actually makes sense for a device like with no buffering=
- support?!
-> > > =C2=A0 =20
-> > > > > +{
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D indi=
-o_dev->dev.parent;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *dma_name;
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!device_property_presen=
-t(dev, "dmas"))
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 return 0;
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (device_property_read_st=
-ring(dev, "dma-names", &dma_name))
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 dma_name =3D "rx";
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return devm_iio_dmaengine_b=
-uffer_setup(dev, indio_dev, dma_name);=C2=A0  =20
-> > > >=20
-> > > > The device tree bindings for "adi,ad9467" don't include dma propert=
-ies
-> > > > (nor should they). Perhaps the DMA lookup should be a callback to t=
-he
-> > > > backend? Or something similar to the SPI Engine offload that we are
-> > > > working on?
-> > > > =C2=A0  =20
-> > >=20
-> > > Oh yes, I need to update the bindings. In the link I sent you we can =
-see my
-> > > thoughts
-> > > on this. In theory, hardwarewise, it would actually make sense for th=
-e DMA to be
-> > > on
-> > > the backend device because that's where the connection is in HW. Howe=
-ver, since
-> > > we
-> > > want to have the IIO interface in the frontend, it would be hard to d=
-o that
-> > > without
-> > > hacking devm_iio_dmaengine_buffer_setup().=C2=A0I mean, lifetime wise=
- it would be far
-> > > from
-> > > wise to have the DMA buffer associated to a completely different devi=
-ce than the
-> > > IIO
-> > > parent device. I mean, one way could just be export iio_dmaengine_buf=
-fer_free()
-> > > and
-> > > iio_dmaengine_buffer_alloc() so we can actually control the lifetime =
-of the
-> > > buffer
-> > > from the frontend device. If Jonathan is fine with this, I'm on board=
- for it.... =20
-> >=20
-> > It is going to be fiddly but I'd kind of expect the front end to be usi=
-ng a more
-> > abstracted interface to tell the backend to start grabbing data.=C2=A0 =
-Maybe that ends
-> > up being so slim it's just these interfaces and it's not sensible to wr=
-ap it
-> > though.
-> >  =20
->=20
-> Likely I'm missing your point but the discussion here is where the DMA bu=
-ffer should
-> be allocated. In theory, in the backend (at least on ADI usecases - it's =
-the proper
-> representation of the HW) but as we have the iio device in the frontend, =
-it's more
-> appropriate to have the buffer there. Or at least to have a way to contro=
-l the buffer
-> lifetime from there...
+> On Mon, 4 Dec 2023 at 15:22, Jonathan Cameron <jic23@kernel.org> wrote:
+> >  
+> ...
+> > > switches to Continuous power mode where measurements constantly change
+> > > without triggering.
+> > >
+> > > Signed-off-by: Crt Mori<cmo@melexis.com>  
+> >
+> > Hi Crt,
+> >
+> > I don't understand some of the regcache_cache_only() manipulation in here.
+> > If I understand the aim correctly it is to allow us to write settings whilst
+> > powered down (in sleep_step) that will then by synced to the device when it enters
+> > continuous mode?
+> >
+> > If so, I'd expect to only see manipulation of whether the caching is or or
+> > not at places where we transition state.  You currently have them in various
+> > other place. In some cases I scan see it's to allow a temporary change of
+> > state, but it's not obvious.  So perhaps a comment ever time you manually
+> > tweak whether writes hit the device or just stick in the regacache.
+> > That comment can explain why each of them is needed.
+> >
+> > A few other comments inline,
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> 
+> While in Sleep Step mode, the EEPROM is powered down, but the cache
+> buffers those values. Still when you try to write or read a volatile
+> register (which should not be prevented by cache enabled as per my
+> opinion, but code says differently) in that mode, it returns -EBUSY
+> (as we discovered by code), so this kind of manipulation is needed to
+> enable write and read operations from volatile registers.
 
-My instinct was put it in the backened and proxy / interfaces as necessary =
-but (based
-on my vague recollection of how this works) at times these DMA buffers are =
-handed off
-to userspace which is a front end problem rather than the hardware.  So I g=
-uess it's
-a question of who logically creates them?  Then as  you say provide the con=
-trols for
-the other part to mess with their lifetimes or at least ensure the stick ar=
-ound whilst
-it expects them to.
+So the cache trick is just meant for the eeprom?  Can you use two regmaps.
+(I've seen similar done for devices with different ways of reading which
+this 'kind of' corresponds to).
+One to cover the eeprom and the other the registers that always work.
+That should let you separately control if they are in caching state or
+not.
+Or just read the eeprom into a manually created cache on boot?
 
->=20
-> On the our usecases, it's not like we tell the backend to grab data, we j=
-ust use the
-> normal .update_scan_mode() to enable/disable the channels in the backend =
-so when we
-> enable the buffer (and the frontend starts receiving and sending data via=
- the serial
-> interface) the data paths are enabaled/disabled accordingly. Bah, yeah, i=
-n a way is
-> another wording for "grab" or "grab not" :)
+> And you need
+> to trigger the measurement (burst mode) in that state, but since you
+> cannot read EEPROM, yet still need its values to calculate the final
+> temperature, the cache is used for this case. There is nothing to
+> re-cache when we get back as all registers I read/write to are marked
+> as volatile, so they would not be cached anyway..  
+> 
+> Thanks for the review - I still have some questions below (and explanation,
+> but not sure where to put those).
+> 
+> > > diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile  
+> ...
+> > > + * @lock: Internal mutex for multiple reads for single measurement  
+> >
+> > Multiple reads shouldn't be a problem, unless someone else can do something
+> > destructive in between.  Perhaps a little more detail on why multiple reads matter?
+> >  
+> 
+> You trigger device to perform measurement in Sleep Step mode, so to
+> ensure both object and ambient temperature reads are from the same
+> triggered measurement, the mutex needs to be held. If for example in
+> between you would retrigger the measurement, then you would operate on
+> "invalid" data (shouldn't differ much, but I wanted to prevent that as
+> it might be 0).
 
-Yup. It's not as easily separated as simple always on analog only front end=
-s. Someone
-drives the clock ultimately and that could be either end in theory at least.
+ok.  Just give a little bit more of that detail.  I'd not understood
+intent is to ensure one trigger -> one measurement.
+> 
+> > > + * @regmap: Regmap of the device
+> > > + * @emissivity: Object emissivity from 0 to 1000 where 1000 = 1.
+> > > + * @regulator: Regulator of the device
+> > > + * @powerstatus: Current POWER status of the device
+> > > + * @interaction_ts: Timestamp of the last temperature read that is used
+> > > + *               for power management in jiffies
+> > > + */  
+> ...
+> > > +     mutex_lock(&data->lock);
+> > > +     if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP) {
+> > > +             regcache_cache_only(data->regmap, false);
+> > > +             ret = mlx90635_perform_measurement_burst(data);  
+> >
+> > Why is a burst needed here?  Perhaps a comment?
+> >  
+> 
+> Burst is from 90632 terminology (and our chip register map), but maybe
+> more general would be "trigger_measurement"?
 
-What fun.
+ok. But why only if in SLEEP_STEP?
 
-J
->=20
-> - Nuno S=C3=A1
+> 
+> > > +static int mlx90635_get_refresh_rate(struct mlx90635_data *data,
+> > > +                                  unsigned int *refresh_rate)
+> > > +{
+> > > +     unsigned int reg;
+> > > +     int ret;
+> > > +
+> > > +     if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
+> > > +             regcache_cache_only(data->regmap, false);  
+> >
+> > Definitely needs a comment on why this is needed in this case.
+> >  
+> 
+> Here and below (where we turn it back to true?), but then I assume in
+> all other instances as well? Maybe a more general comment in the
+> sleep_step mode function?
+
+If we keep this, then yes I think we need comments on these - even if
+it's as simple as 'not accessing an eeprom register so we want to
+talk to the device'.
+> 
+> > > +
+> > > +     ret = regmap_read(data->regmap, MLX90635_REG_CTRL1, &reg);
+> > > +     if (ret < 0)
+> > > +             return ret;
+> > > +
+> > > +     if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
+> > > +             regcache_cache_only(data->regmap, true);
+> > > +
+> > > +     *refresh_rate = FIELD_GET(MLX90635_CTRL1_REFRESH_RATE_MASK, reg);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static const struct {
+> > > +     int val;
+> > > +     int val2;
+> > > +} mlx90635_freqs[] = {
+> > > +     {0, 200000},  
+> > Prefer spaces after { and before }  
+> 
+> ok.
+> 
+> > > +     {0, 500000},
+> > > +     {0, 900000},
+> > > +     {1, 700000},
+> > > +     {3, 0},
+> > > +     {4, 800000},
+> > > +     {6, 900000},
+> > > +     {8, 900000}
+> > > +};  
+> ...
+> > > +             if (i == ARRAY_SIZE(mlx90635_freqs))
+> > > +                     return -EINVAL;
+> > > +
+> > > +             if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
+> > > +                     regcache_cache_only(data->regmap, false);  
+> >
+> > So here you want the rate to get through even though we otherwise have the
+> > device powered down?  Is that because some registers are safe for writes
+> > and not others?  If so you may need some locking to stop a race where you
+> > turn on writes here and someone else writes.
+> >  
+> 
+> Yes, exactly the case. Read/Write into registers (REG_) is possible in
+> all modes, but read of EEPROM is not (to save power the EEPROM is
+> turned off). I do not see how write race would get us into trouble
+> here since it is only 1, and as long as chip powerstatus is not
+> changed we should end up in correct state. I can wrap a mutex around
+> though.
+
+Assuming regcache_cache_only() isn't refcounted, you could end up with a
+second copy of this racing through and accessing the data after the
+first one turned the cache back on so the -EBUSY your mentioned.
+
+> 
+> 
+> 
+> > > +
+> > > +             ret = regmap_write_bits(data->regmap, MLX90635_REG_CTRL1,
+> > > +                                     MLX90635_CTRL1_REFRESH_RATE_MASK, i);
+> > > +
+> > > +             if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
+> > > +                     regcache_cache_only(data->regmap, true);
+> > > +             return ret;
+> > > +     default:
+> > > +             return -EINVAL;
+> > > +     }
+> > > +}  
+> >  
 
 

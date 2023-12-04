@@ -1,51 +1,48 @@
-Return-Path: <linux-iio+bounces-575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F58803471
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:23:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D67E8034B7
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE077B20A99
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCBD7280FB8
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 13:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FA024B41;
-	Mon,  4 Dec 2023 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA673250F4;
+	Mon,  4 Dec 2023 13:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJs1P8Qd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vlc9Q3HV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E727D24B38;
-	Mon,  4 Dec 2023 13:23:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1285BC433C7;
-	Mon,  4 Dec 2023 13:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC5B24B38
+	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 13:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5524C433C7;
+	Mon,  4 Dec 2023 13:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701696216;
-	bh=ek3ANT87AWqPR1Eca9OZQtmPMVo5VRMPorN42gdYvgY=;
+	s=k20201202; t=1701696299;
+	bh=tQWq1wkdhLsJDO4sSOf69mI0MINSzIOOUbI44WzQSqA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AJs1P8QdLhwxhurk24vb8kK4mxKFCklvfs+/zuUF4DXHatRF3YJgx0ZchAXpYEjNz
-	 EuYCkY2kQPoYoDmbMOCXxzsB3h2MRgnkvN9skNHMwLDqYL4bzfwsuVCzHjoZMQ4zta
-	 Gpnmrng3JciT7HY/s8+FAbyCWCkdHjntdre9726t7QtijJAhMpJT0CFDm7cpUZdK1k
-	 TSm+5+bdNA16U6UZg1cOFK1Hyx/AJ8hBjjVOEcHKwm2LpUrMaq+WyX1RSPvxMXfbmR
-	 fAsAiZsnMZTh6OApYM0BtuNZvEhBjELSLRH/ow6Ia9x3ITVFvkjCDe2nBP6JugC9JY
-	 GAlBSp6/x+qig==
-Date: Mon, 4 Dec 2023 13:23:27 +0000
+	b=Vlc9Q3HV3+TEhCYdYe8AJaXz0nB269R1+GwWfkLoXgIFUC1BPoaAkN9qwhKgGJexj
+	 di7aLvBq8N1vYH5rnLmbuQgb+3KDf31V+L3SAlzjCUx6IisUsYa4vJekkpT57hb7+r
+	 czwk7KdHksXMeUslwUja4jKb5P4Gt2cBv2O9/DGlVud6rhc63X3MZ2auUQVGtKuE+s
+	 caT/LUYoyfl6HCqJYlBFz2JIDGfoCZN/m1XN/fQw6wVOzZnmwdhHunxteY3tunO8fk
+	 MKYYEma6Ds3t0zmxYBe+XvDb6wavtaq48CyYn3/1RsD9wQjWTqchbSwPoiLy3ZilHG
+	 kkBosByvv5PQA==
+Date: Mon, 4 Dec 2023 13:24:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Tony Lindgren <tony@atomide.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio/adc: ti,palmas-gpadc: Drop incomplete
- example
-Message-ID: <20231204132327.227588d8@jic23-huawei>
-In-Reply-To: <87771c1f-17fd-4895-aafc-4fe0c38a59ee@linaro.org>
-References: <20231128214803.3975542-1-robh@kernel.org>
-	<87771c1f-17fd-4895-aafc-4fe0c38a59ee@linaro.org>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: proximity: irsd200: Drop unused include
+Message-ID: <20231204132451.4d1790e1@jic23-huawei>
+In-Reply-To: <pnd34woewec.fsf@axis.com>
+References: <20231128-descriptors-iio-v1-1-da1e94755db6@linaro.org>
+	<pnd34woewec.fsf@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,31 +53,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Nov 2023 09:30:23 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Wed, 29 Nov 2023 10:31:26 +0100
+Waqar Hameed <waqar.hameed@axis.com> wrote:
 
-> On 28/11/2023 22:48, Rob Herring wrote:
-> > The example for the TI Palmas ADC is incomplete as the binding is the
-> > full PMIC, not just the sub-functions. It is preferred for MFD examples
-> > to be complete in the top-level MFD device binding rather than piecemeal
-> > in each sub-function binding.
-> > 
-> > This also fixes an undocumented (by schema) compatible warning for
-> > '"ti,twl6035-pmic", "ti,palmas-pmic"'.
-> > 
-> > Signed-off-by: Rob Herring <robh@kernel.org>
-> > ---  
+> On Tue, Nov 28, 2023 at 23:56 +0100 Linus Walleij <linus.walleij@linaro.org> wrote:
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > The driver includes the legacy GPIO header <linux/gpio.h> but doesn't
+> > use any symbols from it. Drop it.
+> >
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>  
 > 
-> Best regards,
-> Krzysztof
-> 
+> Reviewed-by: Waqar Hameed <waqar.hameed@axis.com>
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons.
-
-Thanks,
-
-Jonathan
+Applied
 

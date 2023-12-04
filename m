@@ -1,55 +1,56 @@
-Return-Path: <linux-iio+bounces-586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13B2803772
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:49:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80094803871
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593C0B20B85
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ACDB2812AC
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C464E28364;
-	Mon,  4 Dec 2023 14:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400782C197;
+	Mon,  4 Dec 2023 15:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mP1NKR8W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUQ/JInB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8678F288D7;
-	Mon,  4 Dec 2023 14:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD35C433C7;
-	Mon,  4 Dec 2023 14:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24B92375B;
+	Mon,  4 Dec 2023 15:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FE8C433C7;
+	Mon,  4 Dec 2023 15:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701701376;
-	bh=+rfhQvthjBio9vKPuOuZeZLKHbgV1eAS2Q4KP5aiGdw=;
+	s=k20201202; t=1701702923;
+	bh=BOM1EV4bba9ClKDdr+6k5WZ62Teyd2Rgs3hahYp9izU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mP1NKR8WcwA+hcZQ6uKxxCQEnsh3wuXEAjUr52iqagkAxstbdi8MnYIviiDX0Y+tN
-	 FAPnWwLPDVJE6/0x0dRz9DUEl35GqLq3/BvMWTQVFeh5qzzKYvLbxBF1R3JMlUe3PU
-	 2nsB5bDfcVu21DcHS+eV/VKlsW8o0uV1iBc/aGRlav7o8NTlluBw0MSsCZ74fa77KM
-	 jKEZtDLPH05I7H0Ftn58M5hS95djYVZyJDt2jHdD9ys8e/JZKNf9iruGYWzWGKItg2
-	 UwGjVHVbq8TkFWccMc1HBnxtFvIjF8+yWhL4VHfjn7w2d/XNpAv+2Uq6QSFtYlBOZZ
-	 AQ5/hYhWUpxiQ==
-Date: Mon, 4 Dec 2023 14:49:25 +0000
+	b=LUQ/JInBnw5u1yUBx5xwlGXP3zGOWSnHAHgjcjOFSt2LaTNvH/Wv1HGtE/A1I5xvG
+	 IPZolxBQTkEFTyh2zuOtZC1SqLsPRS6dhNeW+DQ0OXzdAxSozQx7bEoNyPgZkBD68z
+	 hjki1mfO12qJWC5nqLDwwztW6ippl+hpJvIXSEBlt0GHp/FhmpB+VIe9N1O7mp9BEV
+	 pek0XoAOUGO9VlpSWNvLWrNnlHuY5F2fhTuvdFhtpbFbdVCE9QZxdkkS3zV93eUgD9
+	 no6gIb5Km2xfKFp39bJqSfpOJVO0rRwPY4Q5Esyq5Bbn2dej/uybaU2mblNjKer9w7
+	 XjuCRgMGdQMvg==
+Date: Mon, 4 Dec 2023 15:15:14 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, nuno.sa@analog.com,
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org, Olivier MOYSAN <olivier.moysan@foss.st.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
  <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
  <frowand.list@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
  Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 00/12] iio: add new backend framework
-Message-ID: <20231204144925.4fe9922f@jic23-huawei>
-In-Reply-To: <CAMknhBEg+cFrm9kQh1G+8nxGPCFsBaca3rnLEnXZ1h=XDS1aeQ@mail.gmail.com>
+Subject: Re: [PATCH 04/12] iio: adc: ad9467: fix reset gpio handling
+Message-ID: <20231204151514.4e2c8ada@jic23-huawei>
+In-Reply-To: <3925cb4b6453644c889675c20329b3477a06fcd5.camel@gmail.com>
 References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-	<CAMknhBH0pF_+z_JqWGscELBmAEDyxLAtgQ-j3=6P2MeFXnzhWQ@mail.gmail.com>
-	<CAMknhBEcEJ01nO0p5_vy4jVBVTL_rhEk+pvBpXdMtaDurc-05A@mail.gmail.com>
-	<369a72dd34c0bc457620b88594a975d96aa85a22.camel@gmail.com>
-	<CAMknhBEg+cFrm9kQh1G+8nxGPCFsBaca3rnLEnXZ1h=XDS1aeQ@mail.gmail.com>
+	<20231121-dev-iio-backend-v1-4-6a3d542eba35@analog.com>
+	<CAMknhBGCqnzCp6vQ+59Z-SybScvbtU7aWdAD6KnP1e6=q60gVQ@mail.gmail.com>
+	<d534c3323c32d4ed2aedae19a9f101be90ef0cc7.camel@gmail.com>
+	<CAMknhBGjm2ja9HOenOWi9O5Ao8qUg=gT=_Vz8CyxQ=pfNX2EJQ@mail.gmail.com>
+	<3925cb4b6453644c889675c20329b3477a06fcd5.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,107 +61,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2 Dec 2023 10:16:52 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 02 Dec 2023 09:36:47 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Sat, Dec 2, 2023 at 3:37=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.co=
-m> wrote:
-> >
-> > On Fri, 2023-12-01 at 21:53 -0600, David Lechner wrote: =20
-> > > On Thu, Nov 30, 2023 at 5:54=E2=80=AFPM David Lechner <dlechner@bayli=
-bre.com> wrote: =20
-> > > >
+> On Fri, 2023-12-01 at 11:01 -0600, David Lechner wrote:
+> > On Fri, Dec 1, 2023 at 2:47=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.=
+com> wrote: =20
+> > >=20
+> > > On Thu, 2023-11-30 at 15:41 -0600, David Lechner wrote: =20
 > > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
 > > > > <devnull+nuno.sa.analog.com@kernel.org> wrote: =20
-> > > > >
-> > > > > Hi all,
-> > > > >
-> > > > > This is a Framework to handle complex IIO aggregate devices.
-> > > > >
-> > > > > The typical architecture is to have one device as the frontend de=
-vice which
-> > > > > can be "linked" against one or multiple backend devices. All the =
-IIO and
-> > > > > userspace interface is expected to be registers/managed by the fr=
-ontend
-> > > > > device which will callback into the backends when needed (to get/=
-set
-> > > > > some configuration that it does not directly control).
-> > > > >
-> > > > > The basic framework interface is pretty simple:
-> > > > >  - Backends should register themselves with @devm_iio_backend_reg=
-ister()
-> > > > >  - Frontend devices should get backends with @devm_iio_backend_ge=
-t()
-> > > > >
-> > > > > (typical provider - consumer stuff)
-> > > > > =20
-> > > >
-> > > > The "typical provider - consumer stuff" seems pretty straight forwa=
-rd
-> > > > for finding and connecting two different devices, but the definition
-> > > > of what is a frontend and what is a backend seems a bit nebulous. It
-> > > > would be nice to seem some example devicetree to be able to get a
-> > > > better picture of how this will be used in practices (links to the =
-the
-> > > > hardware docs for those examples would be nice too).
-> > > > =20
-> > >
-> > > Fulfilling my own request here...
-> > >
-> > > Since AD9467 is being use as the example first user of the IIO offloa=
-d framework
-> > > I did a deep dive into how it is actually being used. It looks like t=
-his:
-> > > =20
-> >
-> > This is not an offload framework... I think somehow you're connecting t=
-his to the
-> > spi_engine offload and these are two completely different things. Maybe=
- they can
-> > intersect at some point but as of now, I don't see any benefit in doing=
- it. The goal
-> > of this patchseries is to have a simple and generic framework so we can=
- connect IIO
-> > devices (frontends) to a backend device having kind of an IIO aggregate=
- device so to
-> > say. Moreover, we just want to have the ad9467 driver in the same state=
- it was before
-> > to keep things simple. I'm already fixing some things but I don't want =
-extend that
-> > too much as the primary goal is to have the framework in. Cleanups can =
-come
-> > afterwards.
-> >
-> > That said, is fine to have this kind of discussion but I honestly think=
- you're over
-> > engineering the whole thing. Maybe you're already too ahead of me :), b=
-ut where we
-> > stand right now, I don't see any reason for anything so complicated as =
-the below.
-> > Also note this should be simple and generic. As I already said, this is=
- not supposed
-> > to be an ADI only thing and STM also wants to make use of this infrastr=
-ucture. But
-> > see below some of my comments on why I think it's too much... =20
+> > > > >=20
+> > > > > From: Nuno Sa <nuno.sa@analog.com>
+> > > > >=20
+> > > > > The reset gpio was being requested with GPIOD_OUT_LOW which means=
+, not
+> > > > > asserted. Then it was being asserted but never de-asserted which =
+means
+> > > > > the devices was left in reset. Fix it by de-asserting the gpio. =
+=20
+> > > >=20
+> > > > It could be helpful to update the devicetree bindings to state the
+> > > > expected active-high or active-low setting for this gpio so it is
+> > > > clear which state means asserted.
+> > > >  =20
+> > >=20
+> > > You could state that the chip is active low but I don't see that chan=
+ge that
+> > > important for now. Not sure if this is clear and maybe that's why you=
+r comment.
+> > > GPIOD_OUT_HIGH has nothing to do with active high or low. It just mea=
+ns, "get me
+> > > the
+> > > pin in the asserted state".
+> > >  =20
+> >=20
+> > I would assume that this bug happened in the first place because
+> > someone forgot GPIOD_OUT_LOW in the devicetree when they were
+> > developing the driver. So this is why I suggested that updating the
+> > devicetree binding docs so that future users are less likely to make
+> > the same mistake. Currently, the bindings don't even have reset-gpios
+> > in the examples. =20
 >=20
-> This is a very fair point. I do have a tendency to overthink things. :-)
+> Hmm, I think you're missing the point... The bug has nothing to do with d=
+evicetree.
+> This is what was happening:
 >=20
-> At the very least, being able to see the schematic of how it all fits
-> together filled in the holes of my understanding and now everything
-> you are doing in this series makes sense to me. And I totally agree
-> with keeping it simpler is better.
+> 1) We were calling devm_gpiod_get_optional() with GPIOD_OUT_LOW. What thi=
+s means is
+> that you get an output gpio deasserted. Hence the device is out of reset.=
+ And here is
+> the important part... what you have in dts does not matter. If you have a=
+ctive low,
+> it means the pin level will be 1. If you have high, the pin level is 0. A=
+nd this is
+> all handled by gpiolib for you.=20
+>=20
+> 2) Then, we called gpiod_direction_output(..., 1), which means set the di=
+rection out
+> (which is actually not needed since it was already done when getting the =
+pin) and
+> assert the pin. Hence, reset the device. And we were never de-asserting t=
+he pin so
+> the device would be left in reset.
 
-Interesting discussion. One key thing it has highlighted for me is that
-even the simpler proposal that Nuno has put forward deserves some
-more documentation!  Preferably with some asci art - though maybe not as co=
-mplex
-as David's pretty picture.  I keep forgetting which is the backend and which
-is the front end for this discussion which isn't helping me get my head
-around it.
+Functionally I believe David is correct.   Flipping the DT would 'fix' this.
+It's all down to a nreset vs reset pin description.
+
+In this case I guess it's defined a a 'not reset' on the datasheet which is=
+ what
+is causing the confusion.  It's not uncommon for people to refer to a reset=
+ when
+they mean a "not reset" with assumptions on polarity to match.
 
 Jonathan
 
 
+
+>=20
+> - Nuno S=C3=A1
 
 

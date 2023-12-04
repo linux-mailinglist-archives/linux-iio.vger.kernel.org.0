@@ -1,38 +1,38 @@
-Return-Path: <linux-iio+bounces-558-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-559-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EFE802EF2
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 10:42:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B112D802F04
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 10:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90A031F21070
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 09:42:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 682BE280B85
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 09:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AABC1C6B0;
-	Mon,  4 Dec 2023 09:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F173E1CAAD;
+	Mon,  4 Dec 2023 09:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyUwmHe4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ew4y8eVq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A98168B6;
-	Mon,  4 Dec 2023 09:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8994FC433C8;
-	Mon,  4 Dec 2023 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14981C6A5;
+	Mon,  4 Dec 2023 09:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B8CC433C7;
+	Mon,  4 Dec 2023 09:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701682926;
-	bh=XrenbCCTdGXlEOxkDWc34E9QbP9g/lZxyxwOkJJWXeg=;
+	s=k20201202; t=1701683024;
+	bh=OgG54f7CW3gUgc2H+TO5dUHN3X3mqI/wAR/hHnHXcRY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZyUwmHe4oVNmRXSWmRDb3GxHNO03t017k9iIewJS6AzZJ7VNkLiWXpJPsYK6+KAsy
-	 KGr4x66lKRC3oABCMIxYSagV6JgqfJxD15eO84RDUNpxgj9IMfADLKO0P4VZ/md3Z0
-	 uwiavKyB6CA4eZB8a7rICcocLAQLIyeX5jxJXkMvvKTSxfO6NIS4lufcXrN0h/d3D9
-	 3/XRmIbBF6buFGqzyPEvgAImVbW9wuOWAawXMSZwjDg0mNrRSzL10HINLTubAAlf65
-	 Q5Y8/ZPEdbpDi/uDRfllkGDMHRnGwp31hEfB+4SsPiehWsxTyiQOPs9dXTzI9Q0OHK
-	 JL2vwMweCNWJg==
-Date: Mon, 4 Dec 2023 09:41:57 +0000
+	b=Ew4y8eVqcEl6gudf6nE7lvLKPOPeLa1WqJFLrtpinSb/2YSoIs0JM14Be1SxoBGsN
+	 5L45mRaftVc9PdKcHkLImd885PcRIcKGXVT+AUKnfN2OFzsVBPebEvVxorRoPaXtZi
+	 sSAE8fPSkN/F5jlm7Up2z3Z3jCK27VLaRNSt7fjvLvvempIufzktK4MEWNX5BhPoS5
+	 x6zG3FbAIjDlrNwD6BMLbIGHWh9tCXRgUqV1aV0xez6n8fLX5KTg0qlZ/zbmODJEOj
+	 LF0ZojqVIv5AX6g9J8bUgKhoS6NHeXV5x3IOjlJpdnEeWQS0kbSsdsta1pMCeig8Tk
+	 uUZ1Ntg4TwK+w==
+Date: Mon, 4 Dec 2023 09:43:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: <Marius.Cristea@microchip.com>
 Cc: <conor@kernel.org>, <robh+dt@kernel.org>, <conor+dt@kernel.org>,
@@ -41,15 +41,15 @@ Cc: <conor@kernel.org>, <robh+dt@kernel.org>, <conor+dt@kernel.org>,
  <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding dt-bindings for
  PAC193X
-Message-ID: <20231204094157.775f604e@jic23-huawei>
-In-Reply-To: <1fb7d32772cb5e76a5f1fd6b8f3b32754f8a9395.camel@microchip.com>
+Message-ID: <20231204094335.21800f38@jic23-huawei>
+In-Reply-To: <7974eb280202c551eb66000c8c26276080ad7da2.camel@microchip.com>
 References: <20231025134404.131485-1-marius.cristea@microchip.com>
 	<20231025134404.131485-2-marius.cristea@microchip.com>
 	<20231025-cheddar-tucking-b2ea777ed4f9@spud>
 	<937af3ec4012c6ec1d66285660d8c56dcf356703.camel@microchip.com>
 	<20231026-perkiness-financial-55313e297230@spud>
 	<20231027152625.44b26d80@jic23-huawei>
-	<1fb7d32772cb5e76a5f1fd6b8f3b32754f8a9395.camel@microchip.com>
+	<7974eb280202c551eb66000c8c26276080ad7da2.camel@microchip.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,10 +60,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 7 Nov 2023 08:55:48 +0000
+On Fri, 10 Nov 2023 16:27:54 +0000
 <Marius.Cristea@microchip.com> wrote:
 
-> Hi
+> Hi Jonathan,
 >=20
 > On Fri, 2023-10-27 at 15:26 +0100, Jonathan Cameron wrote:
 > > EXTERNAL EMAIL: Do not click links or open attachments unless you
@@ -82,12 +82,34 @@ On Tue, 7 Nov 2023 08:55:48 +0000
 > > > > > On Wed, Oct 25, 2023 at 04:44:03PM +0300,
 > > > > > marius.cristea@microchip.com=C2=A0wrote: =20
 > > > > > > From: Marius Cristea <marius.cristea@microchip.com>
-> > > > > >=20
-> > > > > > This is the device tree schema for iio driver for
-> > > > > > Microchip PAC193X series of Power Monitors with Accumulator.
-> > > > > >=20
 > > > > > >  =20
-> ......
+> .................
+> > > > > > +$id:
+> > > > > > http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > +
+> > > > > > +title: Microchip PAC1934 Power Monitors with Accumulator
+> > > > > > +
+> > > > > > +maintainers:
+> > > > > > +=C2=A0 - Marius Cristea <marius.cristea@microchip.com>
+> > > > > > +
+> > > > > > +description: |
+> > > > > > +=C2=A0 Bindings for the Microchip family of Power Monitors with
+> > > > > > Accumulator.
+> > > > > > +=C2=A0 The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934
+> > > > > > can be
+> > > > > > found here:
+> > > > > > +
+> > > > > > https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/=
+ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> > > > > > +
+> > > > > > +properties:
+> > > > > > +=C2=A0 compatible:
+> > > > > > +=C2=A0=C2=A0=C2=A0 enum:
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - microchip,pac1931
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - microchip,pac1932
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - microchip,pac1933
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - microchip,pac1934
 > > > > > > +
 > > > > > > +=C2=A0 reg:
 > > > > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
@@ -200,44 +222,27 @@ n programmed. =20
 > > to
 > > always do that.
 > > Thus making this pin useable only as an optional interrupt.
-> >=20
-> > If someone hard wires it to high or low that is harmless if we aren't
-> > letting it control anything.
 > >  =20
 >=20
-> Here I was trying to define/describe 3 possible situations:
-> - 1) the pin is not used at all, so it doesn't matter if it's connected
-> somewhere
->=20
-> - 2) the pin is user configured as "interrupt" and it's connected to
-> the interrupt controller (this case is not supported in the driver
-> right now)
->=20
-> - 3) the pin is user configured as "SLOW" (this case is not supported
-> in the driver right now). That means it should be connected to a GPIO
-> pin. This function (SLOW control) will automatically change the PAC
-> internal sampling frequency to lower the PAC internal power
-> consumption. For example, the PAC could be configured to a sample rate
-> of 1024 samples/s (it will consume maximum current). Using the SLOW
-> control, the chip will internally change to 8 samples/s but the math
-> internally will "behave" as the 1024 samples/s but at a much lower
-> power consumption. It's very useful in case the system wants to lower
-> power consumption (we still need to measure battery power consumption
-> even if the system is put into a low power state). PAC internal power
-> consumption is proportional to the number of channels used and also the
-> sampling frequency.
+> I was thinking to have something like interrupt or an equivalent to
+> "powerdown-gpios", "richtek,mute-enable", "shutdown-gpios", "mute-
+> gpios", "gain-gpios". I think the driver should know (from the Device
+> Tree) if the pin is routed to a gpio and it could be used as "SLOW"/low
+> power.
+If we assume the slow pin is always connected to the host CPU then
+simply providing the interrupt and the gpio definition is sufficient.
+A comment will do to say they are the same physical pin.
 
-So far so good, but how does 3 differ from just setting the chip to sample
-at 8 samples/s, which I believe we can do from software?
-
-Anyhow, for a DT binding, provide both gpio and interrupt as optional
-and the driver can make up it's mind on what to do if both are provided.
+Things get messier if we assume that slow control is coming from something
+external to the world Linux knows about.  That tends to be when we need
+things like mute-enable
 
 Jonathan
 
 >=20
->=20
->=20
+> > If someone hard wires it to high or low that is harmless if we aren't
+> > letting it control anything.
+> >  =20
 > > >  =20
 > > > > The system could work fine without this pin. The driver doesn't
 > > > > use
@@ -246,8 +251,8 @@ Jonathan
 > > > Cheers,
 > > > Conor. =20
 > >  =20
->=20
 > Thanks,
 > Marius
+>=20
 
 

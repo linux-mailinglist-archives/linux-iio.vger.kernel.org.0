@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F568039C5
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:10:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A971A8039E5
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 17:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E30628112A
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:10:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559091F21245
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 16:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0522D62E;
-	Mon,  4 Dec 2023 16:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BE62D63A;
+	Mon,  4 Dec 2023 16:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kh5LUkE8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gep/beJZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7D6E95;
-	Mon,  4 Dec 2023 08:10:04 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50bf3efe2cbso1503881e87.2;
-        Mon, 04 Dec 2023 08:10:04 -0800 (PST)
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D71AB9;
+	Mon,  4 Dec 2023 08:15:50 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40c0a0d068bso12968245e9.3;
+        Mon, 04 Dec 2023 08:15:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701706203; x=1702311003; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701706548; x=1702311348; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=sXEOTOPt4KaksZ2Jf2sfO5Vl3iy+KKQQtD8/P41+pGw=;
-        b=Kh5LUkE8YqnjGFJxe89IBCMf7pJZOhCxfkTX43GoIhry2vghgxm1PgqJLl6QplI4Ro
-         KGmeLot6ItieAYeOVzU+a72iDdEqpOJI/E2MZCiHAALDBYwny/taOTl11m7kiGIOdVFU
-         39wFJCo57B7lrUrFfHzRzAgAtM5ITLkDAyov+kfK1thyA/oQhH68J9oirr1nH9jVJVqk
-         jz0L1QnUcJ/SFcC5xgP3SPiQIDlR9e3fERSdTL0615qzbqftFGFtp4mHk5BuXfTzAhB4
-         dfKEvkIFlAOibpYo0qUn2trKIRuWMdvcOq6L1SJSdUz0e5ZGgVUAYslF/kWR2AFiVOHk
-         UWUg==
+        bh=FSQGhYW0bY66ZvocdwYpg6HVOl8T1zzGGaHQNQEHYQw=;
+        b=gep/beJZh8/0CpGTZq9VIqTzFtZtdpkUgirDdFVhoUnxXQCG4oQgbOtAiYbXprzKbD
+         ctEPyNMk5yXRa7HCfmsqwhARLpesQpQE3UvxqNPgL5ArmgYiO9NE/6sjGImbKX6s4ngY
+         uXaBV4GEqEjldgO7bM81avLeqZIifxexrPfp9ffaD9uTJpW3bOMd9I6phpO/Zdau/Kbs
+         y/Ehp7FSK6GkFN+8bmpNfmUvMjxPsPYR97O1lGdWsjvor0PT780UAf9TonXDrz9p5ppy
+         o8MVAj5PvNHg4J4oPpbFY5Aeq5WUhrLc79Ln3dts7pRsZcOIErMywmwFOA4LM/rwiy5s
+         Vc+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701706203; x=1702311003;
+        d=1e100.net; s=20230601; t=1701706548; x=1702311348;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=sXEOTOPt4KaksZ2Jf2sfO5Vl3iy+KKQQtD8/P41+pGw=;
-        b=pDWwGdu2M/XgZbPk/jVGpG7SOHNi1oJwtKgIifOTgLuVUZtWAuHmjzFub+EINeYjiI
-         gq7aylMV7fChkTiJr9IaIFOf+NH9RBKarVBSRh0vOojDawpkj7c0YMHDzHUoiIwnxYt6
-         GyygEUnmD3tp927zy5rKpnn3TV3OXJMzyn5gRMKcBfcZawdS9tQsC5UfokLbR8nVmpH2
-         mfx5ipIaGsDX2Bz4R3k0TvAKbZ6b5W8w7bw+nEwDy6qYdLxEPhDWjruef23KdKeL3Kj1
-         9Fj1LPi2O+64o0Lmy4CT779LIKgjM+KPA9O5sqCUyaIjtV+WwHv52aQqVYjosaCU9Mo2
-         wR6g==
-X-Gm-Message-State: AOJu0YyS/D1pXtwI2TekagGFsJ7jRoJSbxf0iSCOihe4hUkjYih6v5qC
-	MLHeaCWXY1yyK6eN4e7+ndw=
-X-Google-Smtp-Source: AGHT+IGrgSTLeQgZNtNCnwebWfodvyf80a3JECT6ZZpgKiAz9YVmobqovZ1KD/dkW1dsBBl3lfBa/Q==
-X-Received: by 2002:a19:380d:0:b0:50b:f110:20c with SMTP id f13-20020a19380d000000b0050bf110020cmr558107lfa.217.1701706202672;
-        Mon, 04 Dec 2023 08:10:02 -0800 (PST)
+        bh=FSQGhYW0bY66ZvocdwYpg6HVOl8T1zzGGaHQNQEHYQw=;
+        b=IcbANF4L5OY3Vzi/7gnHZEFJMNNitRuvmliPQ5PGKmacf1gyVcoGQENnzpodFj+q/m
+         UMMl4cg7PjVVZh6B1I1QlFK0pLb1O3HoYuMA3U3alDq19LJ6QjOREfND4S7FmT18m30a
+         2cO74YGICwz4NXZ9cDla3t8qY9CM5/FWURVcTkNsEYnC2oeFY07daLGzyCBXfPbc0jxJ
+         Ee5llnUjduNjwFdHXopN/o6fCQ8S/c8WbfdpVGsnJ6+tH1asCNtPzI4ly/eqLUVTaQap
+         y1xl5GB57CNiyg2omPfEzuoJestUAIBTvNZB7Ns1pMjLeaMRBvSkBoqIwF5uM0BK1YS2
+         +wtw==
+X-Gm-Message-State: AOJu0YzGxFC083GoVky+MsriLrZ+ximD0RI+Z42Mrd7glZ6l2qmrMqYm
+	r7Gn2fJOxShwcvIKIJBVY6mzW3/Hq7njtpL8oDs=
+X-Google-Smtp-Source: AGHT+IFCLef+MGGwqb5ZAEG7DSBNXfIILNOv0fP9FLHKiqMc3ojxTjqD/l+uXV57yX0c9CNb6Aj8fA==
+X-Received: by 2002:a05:600c:470a:b0:3f5:fff8:d4f3 with SMTP id v10-20020a05600c470a00b003f5fff8d4f3mr3613370wmo.7.1701706547930;
+        Mon, 04 Dec 2023 08:15:47 -0800 (PST)
 Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id p8-20020a5d59a8000000b003333ed23356sm6067577wrr.4.2023.12.04.08.10.02
+        by smtp.gmail.com with ESMTPSA id x16-20020adfec10000000b003333beb564asm6615666wrn.5.2023.12.04.08.15.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 08:10:02 -0800 (PST)
-Message-ID: <69a7ca77055fc57cff6d6be95fb5796723171230.camel@gmail.com>
-Subject: Re: [PATCH 06/12] iio: adc: ad9467: add mutex to struct ad9467_state
+        Mon, 04 Dec 2023 08:15:47 -0800 (PST)
+Message-ID: <3d03874e6426fa0bc94929262acc4d40e2d93d46.camel@gmail.com>
+Subject: Re: [PATCH 11/12] iio: adc: adi-axi-adc: convert to regmap
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
 	 <devnull+nuno.sa.analog.com@kernel.org>
@@ -65,11 +65,11 @@ Cc: nuno.sa@analog.com, linux-kernel@vger.kernel.org,
  Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
  Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  <Michael.Hennerich@analog.com>
-Date: Mon, 04 Dec 2023 17:10:01 +0100
-In-Reply-To: <20231204152301.6c212539@jic23-huawei>
+Date: Mon, 04 Dec 2023 17:15:47 +0100
+In-Reply-To: <20231204155158.411b4bbd@jic23-huawei>
 References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
-	 <20231121-dev-iio-backend-v1-6-6a3d542eba35@analog.com>
-	 <20231204152301.6c212539@jic23-huawei>
+	 <20231121-dev-iio-backend-v1-11-6a3d542eba35@analog.com>
+	 <20231204155158.411b4bbd@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -80,58 +80,23 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Mon, 2023-12-04 at 15:23 +0000, Jonathan Cameron wrote:
-> On Tue, 21 Nov 2023 11:20:19 +0100
+On Mon, 2023-12-04 at 15:51 +0000, Jonathan Cameron wrote:
+> On Tue, 21 Nov 2023 11:20:24 +0100
 > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >=20
 > > From: Nuno Sa <nuno.sa@analog.com>
 > >=20
-> > When calling ad9467_set_scale(), multiple calls to ad9467_spi_write()
-> > are done which means we need to properly protect the whole operation so
-> > we are sure we will be in a sane state if two concurrent calls occur.
+> > Use MMIO regmap interface. It makes things easier for manipulating bits=
+.
 > >=20
-> > Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
 > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/adc/ad9467.c | 6 +++++-
-> > =C2=A01 file changed, 5 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > index 04474dbfa631..91821dee03b7 100644
-> > --- a/drivers/iio/adc/ad9467.c
-> > +++ b/drivers/iio/adc/ad9467.c
-> > @@ -4,7 +4,7 @@
-> > =C2=A0 *
-> > =C2=A0 * Copyright 2012-2020 Analog Devices Inc.
-> > =C2=A0 */
-> > -
-> > +#include <linux/cleanup.h>
-> > =C2=A0#include <linux/module.h>
-> > =C2=A0#include <linux/mutex.h>
-> > =C2=A0#include <linux/device.h>
-> > @@ -122,6 +122,8 @@ struct ad9467_state {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0output_mode;
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct gpio_desc=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0*pwrdown_gpio;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* protect against concurren=
-t accesses to the device */
-> Not very specific.=C2=A0 Concurrent access usually fine at granularity of
-> individual read/write as the bus locks protect it.=C2=A0 What state
-> is actually being protected?=C2=A0 A shared buffer or some state that we
-> need to ensure remains consistent between driver and device?
+> Perhaps put this in the precursor set as well. Looks fine to me and will =
+just
+> be noise in the main discussion.
+>=20
 
-At this point not any buffer/data... Just making sure things remain consist=
-ent
-(typical case when you have multiple reads/writes to the device). That's wh=
-y a tried
-to emphasize "accesses to the device". Maybe I should make it explicit I'm =
-speaking
-about multiple reads/writes.
+will do...
+
 
 - Nuno S=C3=A1
->=20
 

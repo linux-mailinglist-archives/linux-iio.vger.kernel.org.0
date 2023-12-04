@@ -1,159 +1,259 @@
-Return-Path: <linux-iio+bounces-554-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-555-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9018022B5
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Dec 2023 12:24:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACA0802DAB
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 09:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE1E81C20918
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Dec 2023 11:24:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D702B20ACD
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 08:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A14947F;
-	Sun,  3 Dec 2023 11:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81AA10A0C;
+	Mon,  4 Dec 2023 08:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Os2huNSn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iy5hv7ea"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8021E9461;
-	Sun,  3 Dec 2023 11:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CD3C433C7;
-	Sun,  3 Dec 2023 11:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701602675;
-	bh=+hli562zk5dYtpGn2rXW8IygBpXXsf4LYyXt8bwX9bU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Os2huNSnaTDA7CdOUExN3Wa+xKx51n8bWFYxm8eA4gj0wytV/c0WPB6H57qGpiunV
-	 IGIL+3iWZwS+iFfByNCZ2BYUvdkh1/ULbjDpL2+Y+IjfZbM9EGEAyxvTHxH7A2fwxB
-	 Dtxue4iTcEw0BB1IUhPoVFJTq79bOKdAqANc5sul1Qlqt9hvpoqlrYOEElotWE60n/
-	 SBdJMGQRnkJF2fqJFpLq/1PGaSeDpBoEO86kaIOPMTZk/MJB0lwrcPntivqrAGrbMh
-	 4Xm/wLJVsmnxT6Cf3sxoZoi2XNZKfaR6tivXRGiidDicxnibhZIH/tmi0W3h39GIH6
-	 YHJ2SlnFznMLQ==
-Date: Sun, 3 Dec 2023 11:24:31 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Abdel Alkuor <alkuor@gmail.com>
-Cc: jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-	lars@metafoo.de, conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: Add AMS AS6200
-Message-ID: <20231203-wrecking-sneer-d34f19c39f04@spud>
-References: <20231202041651.719963-1-alkuor@gmail.com>
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232FE101;
+	Mon,  4 Dec 2023 00:56:43 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40838915cecso42811805e9.2;
+        Mon, 04 Dec 2023 00:56:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701680201; x=1702285001; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Of7anv7twHrm1GM3ZZhVMaGN+HHiOJ/eAtPCQmGTSs0=;
+        b=Iy5hv7eallZTRdH46F5fYyzddJi4DoXAMu/OIimPycQsSxlObzDawdwWNcw9jqRPjS
+         fvET0vsDGGCpznl/QwKWsCNcdookUNF9RcRpyeg8mYXaBsVN2jsCeWulbR6qlD1AMYhu
+         BKJV4Aso1Az5x4O48yddUojVJDnlupsC5zCFScpVvlj5n8HRVgCfCgE2L7PrU9x3fwrh
+         dGc3H6vdcAQLNPIwxzyzARr53zOCIo+JZCkG/HZ1yyL9QrvBrLqw6qFbvGD/NzEoTD/i
+         zihV/T8dQiDyh0n+XSKsZpAFqJKmdoL6cssbnd2Rrxayaa7fsPmdeEdqFgoSDCQo+OsH
+         ilKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701680201; x=1702285001;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Of7anv7twHrm1GM3ZZhVMaGN+HHiOJ/eAtPCQmGTSs0=;
+        b=Ab96FsTxn7TrfQT0BN0ccAa/rDC1QTqGIXz3XE2eknPTgMMvtw964sVGejoZbM5KVz
+         DCBUK5jq88mlZuby7w67tuYLbXX9Ya5GTfaIfEadAfdIBkmMbNTIw97c/ArKHBaaa+Mw
+         XAj/1hi38dRtCFAzYnaqaMdmlGELmORO4Ibwn598QsB6BPTUtGszM+QVbvaxsh2CosuC
+         FMjevTeoZnwwJ7ChIW018o2E2Uqyui/ptNdZd+p7EgvCS6+PZG/JUetFdCxf6JZ4AY4m
+         p00kDnd+Wi7w5tn8KXUhpieAqncFNRZS5d9D95R82MmApEcic8HpSgJeImsLrl9Tq2BE
+         gu3A==
+X-Gm-Message-State: AOJu0Ywp+1itkcFa5ltgNLxAi3DI0ArVYPQzvqzp/zO2uFL+KzCqX6Xm
+	cvD6SGRcofQUE1D1kc72lEg=
+X-Google-Smtp-Source: AGHT+IH104Kfc26vBVXIOBFr05Rw0BdMZYUoKpw8Kvl5Igdx7+N3fC51XzESQVN54zvANJYQ7L8QKg==
+X-Received: by 2002:a05:600c:450d:b0:409:5a92:4718 with SMTP id t13-20020a05600c450d00b004095a924718mr1840488wmo.36.1701680201175;
+        Mon, 04 Dec 2023 00:56:41 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id g18-20020a5d6992000000b003333abf3edfsm5786866wru.47.2023.12.04.00.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 00:56:40 -0800 (PST)
+Message-ID: <a8ef2e4ee00eae38d16baad8e124a68c069dd2e3.camel@gmail.com>
+Subject: Re: [PATCH 10/12] iio: adc: ad9467: convert to backend framework
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: nuno.sa@analog.com, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Olivier MOYSAN
+ <olivier.moysan@foss.st.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>, Rob
+ Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>
+Date: Mon, 04 Dec 2023 09:56:40 +0100
+In-Reply-To: <863114fa44cda4ca58e17a47191f0388df39cc80.camel@gmail.com>
+References: <20231121-dev-iio-backend-v1-0-6a3d542eba35@analog.com>
+	 <20231121-dev-iio-backend-v1-10-6a3d542eba35@analog.com>
+	 <CAMknhBFbLju8UQJ7Uz85kHKrbK4mzt=wTRdnp40+PwWCJa5dsA@mail.gmail.com>
+	 <026fa80d29054750937cd077b7f4f689de4e18f2.camel@gmail.com>
+	 <CAMknhBGKinZB==QHLazZ9ZkfALyj2N=rVfZfsOk22p6X9SZSrQ@mail.gmail.com>
+	 <863114fa44cda4ca58e17a47191f0388df39cc80.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VO1eO5mEsXF2CF0y"
-Content-Disposition: inline
-In-Reply-To: <20231202041651.719963-1-alkuor@gmail.com>
 
-
---VO1eO5mEsXF2CF0y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Dec 01, 2023 at 11:16:50PM -0500, Abdel Alkuor wrote:
-> as6200 is high accuracy temperature sensor of -/+ 0.4C degree
-
-Is +/- 0.4 degrees really "high accuracy"?
-
-> with a range between -40C to 125C degrees
+On Sat, 2023-12-02 at 09:46 +0100, Nuno S=C3=A1 wrote:
+> On Fri, 2023-12-01 at 11:44 -0600, David Lechner wrote:
+> > On Fri, Dec 1, 2023 at 3:08=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.=
+com> wrote:
+> > >=20
+> > > On Thu, 2023-11-30 at 17:30 -0600, David Lechner wrote:
+> > > > On Tue, Nov 21, 2023 at 4:17=E2=80=AFAM Nuno Sa via B4 Relay
+> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> > > > >=20
+> > > > > From: Nuno Sa <nuno.sa@analog.com>
+> > > > >=20
+> > > > > Convert the driver to use the new IIO backend framework. The devi=
+ce
+> > > > > functionality is expected to be the same (meaning no added or rem=
+oved
+> > > > > features).
+> > > >=20
+> > > > Missing a devicetree bindings patch before this one?
+> > > >=20
+> > > > >=20
+> > > > > Also note this patch effectively breaks ABI and that's needed so =
+we can
+> > > > > properly support this device and add needed features making use o=
+f the
+> > > > > new IIO framework.
+> > > >=20
+> > > > Can you be more specific about what is actually breaking?
+> > > >=20
+> > > > >=20
+> > > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > > > ---
+> > > > > =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 2 +-
+> > > > > =C2=A0drivers/iio/adc/ad9467.c | 256 ++++++++++++++++++++++++++++=
++--------------
+> > > > > --
+> > > > > --
+> > > > > =C2=A02 files changed, 157 insertions(+), 101 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > > > > index 1e2b7a2c67c6..af56df63beff 100644
+> > > > > --- a/drivers/iio/adc/Kconfig
+> > > > > +++ b/drivers/iio/adc/Kconfig
+> > > > > @@ -275,7 +275,7 @@ config AD799X
+> > > > > =C2=A0config AD9467
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Analog Devic=
+es AD9467 High Speed ADC driver"
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on SPI
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ADI_AXI_ADC
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select IIO_BACKEND
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Say yes he=
+re to build support for Analog Devices:
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * AD9467 1=
+6-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
+> > > > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> > > > > index 5db5690ccee8..8b0402e73ace 100644
+> > > > > --- a/drivers/iio/adc/ad9467.c
+> > > > > +++ b/drivers/iio/adc/ad9467.c
+> > > >=20
+> > > > <snip>
+> > > >=20
+> > > > > +static int ad9467_buffer_get(struct iio_dev *indio_dev)
+> > > >=20
+> > > > perhaps a more descriptive name: ad9467_buffer_setup_optional?
+> > > >=20
+> > >=20
+> > > Hmm, no strong feeling. So yeah, can do as you suggest. Even though, =
+now that
+> > > I'm
+> > > thinking, I'm not so sure if this is just some legacy thing we had in=
+ ADI tree.
+> > > I
+> > > wonder if it actually makes sense for a device like with no buffering=
+ support?!
+> > >=20
+> > > > > +{
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D indi=
+o_dev->dev.parent;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *dma_name;
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!device_property_presen=
+t(dev, "dmas"))
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return 0;
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (device_property_read_st=
+ring(dev, "dma-names", &dma_name))
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 dma_name =3D "rx";
+> > > > > +
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return devm_iio_dmaengine_b=
+uffer_setup(dev, indio_dev, dma_name);
+> > > >=20
+> > > > The device tree bindings for "adi,ad9467" don't include dma propert=
+ies
+> > > > (nor should they). Perhaps the DMA lookup should be a callback to t=
+he
+> > > > backend? Or something similar to the SPI Engine offload that we are
+> > > > working on?
+> > > >=20
+> > >=20
+> > > Oh yes, I need to update the bindings. In the link I sent you we can =
+see my
+> > > thoughts
+> > > on this. In theory, hardwarewise, it would actually make sense for th=
+e DMA to
+> > > be
+> > > on
+> > > the backend device because that's where the connection is in HW. Howe=
+ver, since
+> > > we
+> > > want to have the IIO interface in the frontend, it would be hard to d=
+o that
+> > > without
+> > > hacking devm_iio_dmaengine_buffer_setup(). I mean, lifetime wise it w=
+ould be
+> > > far
+> > > from
+> > > wise to have the DMA buffer associated to a completely different devi=
+ce than
+> > > the
+> > > IIO
+> > > parent device. I mean, one way could just be export iio_dmaengine_buf=
+fer_free()
+> > > and
+> > > iio_dmaengine_buffer_alloc() so we can actually control the lifetime =
+of the
+> > > buffer
+> > > from the frontend device. If Jonathan is fine with this, I'm on board=
+ for
+> > > it....
+> > >=20
+> > > - Nuno S=C3=A1
+> > > >=20
+> > >=20
+> >=20
+> > I was planning on exporting iio_dmaengine_buffer_alloc() [1] for SPI
+> > Engine offload support, so I hope that is the right way to go. ;-)
+> >=20
+> > [1]:
+> > https://github.com/analogdevicesinc/linux/pull/2341/commits/71048ff83a6=
+3e9d0a5ddb9ffa331871edd6bd2a5
 >=20
-> Signed-off-by: Abdel Alkuor <alkuor@gmail.com>
-> ---
-> Changes in v2:
->   - Add vdd-supply
+> I don't really want to extend much on this since this is still out of tre=
+e code so
+> I'm not sure we should be discussing it much in here. But there a couple =
+of
+> concerns
+> already I'm seeing:
 >=20
->  .../bindings/iio/temperature/ams,as6200.yaml  | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/ams=
-,as6200.yaml
+> * AFAIU, you export the function so you can use it in your pwm trigger. A=
+nd you
+> don't
+> want to attach the buffer to a device. That looks very questionable. If y=
+ou don't
+> attach to a device, how do you have the userspace interface working on th=
+at buffer?
+> How can you fetch samples from it? Also hiding the buffer allocation in p=
+ure
+> trigger
+> device is at the very least questionable. But the point is, in the end of=
+ the day,
+> the buffer should belong to a device.
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/ams,as6200=
-=2Eyaml b/Documentation/devicetree/bindings/iio/temperature/ams,as6200.yaml
-> new file mode 100644
-> index 000000000000..a1817795cdca
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/ams,as6200.yaml
-> @@ -0,0 +1,49 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/ams,as6200.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: AMS AS6200 Temperature Sensor
-> +
-> +maintainers:
-> +  - Abdel Alkuor <alkuor@gmail.com>
-> +
-> +description: |
+> * Your PWM trigger seems to be highly focused on the spi_engine offload f=
+eature.
+> You
 
-Please add the text from your commit message (although perhaps dropping
-the "high accuracy" section) here.
+OTOH, it also seems there are some stm focused triggers. So maybe we can al=
+so have
+something more oriented to spi_engine...
 
-Otherwise, this looks okay to me.
+- Nuno S=C3=A1
 
-Thanks,
-Conor.
-
-> +  https://ams.com/documents/20143/36005/AS6200_DS000449_4-00.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: ams,as6200
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        temperature-sensor@48 {
-> +            compatible =3D "ams,as6200";
-> +            reg =3D <0x48>;
-> +            vdd-supply =3D <&vdd>;
-> +            interrupt-parent =3D <&gpio1>;
-> +            interrupts =3D <17 IRQ_TYPE_EDGE_BOTH>;
-> +        };
-> +    };
-> +...
-> --=20
-> 2.34.1
->=20
-
---VO1eO5mEsXF2CF0y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWxlbwAKCRB4tDGHoIJi
-0vpyAQCfmd+i6NPXT2jdvO2gdFD/qBee+EWn0M4wbPRYUWeBFwEAiu4RIcctDI90
-G7b23mXguq1l0mFtK5hAdkZjABenWAU=
-=0u24
------END PGP SIGNATURE-----
-
---VO1eO5mEsXF2CF0y--
 

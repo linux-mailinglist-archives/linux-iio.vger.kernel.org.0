@@ -1,57 +1,49 @@
-Return-Path: <linux-iio+bounces-583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1976803679
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:24:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2DC8036B1
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 15:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91981B209B9
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:24:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D07D1F21220
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Dec 2023 14:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6491028DB1;
-	Mon,  4 Dec 2023 14:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D45228DDE;
+	Mon,  4 Dec 2023 14:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gto9Wb2/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAlH3Fzs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1296A249ED;
-	Mon,  4 Dec 2023 14:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E86C433C7;
-	Mon,  4 Dec 2023 14:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0850628DC7
+	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 14:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050E9C433C9;
+	Mon,  4 Dec 2023 14:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701699882;
-	bh=FxyTNV2BSZCdnXrn/+nzGXNlT8yOZRDQS3uQJjiW47g=;
+	s=k20201202; t=1701700213;
+	bh=HepIBbswm0o0MnzZYI6lwCIFtvyrLOz9z11GZNHwKRM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Gto9Wb2/vIUEXslxtUHhJczyFiYNjrM8cQ4dvpD07pgWzYI5onF4rEYmXUofK0qaz
-	 SU5yaVKSoSetKprNtUIR0gbnHjceiKiD7Vh9qYwXOmy0R9IpYk3KISn1alMye9WU3W
-	 BpRVtv2FyUGvuGfA7eh5Dr8DtP5pJHxiej0iOQ0paiO/5ha29M/CrrOB5+/4llzHB6
-	 9WlJ/aLAvCzT1JOJMadkpuPzZFpa7wSOndZwnJuAGLz4luOpH38AJcE89R/nY/1k6s
-	 EaI7d40iiH1blx/dSqKFX85drBOs6hFKRNIYa2+C3iYO4V5ZugcaNh99SvyCgn8Tle
-	 kmx1XTuCDJnWw==
-Date: Mon, 4 Dec 2023 14:24:29 +0000
+	b=QAlH3FzsUajB717UJjf9ABVSjhXzI+8b2KEodA0K2Rb/EojIbi9e7YjJI50Z/aF1j
+	 TwaX+N9z/rHshQgTibQeCoYMSlzrsodnl9U4sR4UashJPKtZGXSRN/CXnHv0TOmFmi
+	 2UGkh73v/n230yIbqb68kvx49oW2KatoUvveoNF/or3FTG3kNUe4pTtMxn9z07HrjG
+	 cQZwlqvH2gtaoYAPfwge512bF6AZLE+cioKMbQYhJnCeh5RPkA5fng2regUjCFUoQm
+	 25H2G4qaKTGutrkcILlblUyJoYRjl1ChUsenV+fF2PFnyTwEcwDyQGVuyFhNxkbp9H
+	 uz0HQLRkV9xEQ==
+Date: Mon, 4 Dec 2023 14:30:05 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nia Espera <nespera@igalia.com>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>, Tony Luck
- <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Vinod
- Koul <vkoul@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, Rob <Me@orbit.sh>, Clayton Craft
- <clayton@igalia.com>, Caleb Connolly <caleb.connolly@linaro.org>, Luca
- Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 1/6] dt-bindings: iio: adc: add smb139x
-Message-ID: <20231204142429.5691e85c@jic23-huawei>
-In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-1-18a024b5c74c@igalia.com>
-References: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
-	<20231108-nia-sm8350-for-upstream-v3-1-18a024b5c74c@igalia.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: gts-helpers: Round gains and scales
+Message-ID: <20231204143005.7a564326@jic23-huawei>
+In-Reply-To: <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
+References: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
+	<20231126172607.379c9d79@jic23-huawei>
+	<8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,64 +54,207 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 08 Nov 2023 18:50:25 +0100
-Nia Espera <nespera@igalia.com> wrote:
+On Mon, 27 Nov 2023 09:48:08 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Bindings for a charger controller chip found on sm8350
+> On 11/26/23 19:26, Jonathan Cameron wrote:
+> > On Tue, 31 Oct 2023 11:50:46 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> The GTS helpers do flooring of scale when calculating available scales.
+> >> This results available-scales to be reported smaller than they should
+> >> when the division in scale computation resulted remainder greater than
+> >> half of the divider. (decimal part of result > 0.5)
+> >>
+> >> Furthermore, when gains are computed based on scale, the gain resulting
+> >> from the scale computation is also floored. As a consequence the
+> >> floored scales reported by available scales may not match the gains that
+> >> can be set.
+> >>
+> >> The related discussion can be found from:
+> >> https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
+> >>
+> >> Do rounding when computing scales and gains.
+> >>
+> >> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> > 
+> > Hi Matti,
+> > 
+> > A few questions inline about the maths.  
 > 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> I appreciate the questions :) Thanks!
 
-> ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
->  include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
->  2 files changed, 22 insertions(+)
+I found some emails hiding so late replies...
+> >   
+> >>
+> >> ---
+> >> Subjahit, is there any chance you test this patch with your driver? Can
+> >> you drop the:
+> >> 	if (val2 % 10)
+> >> 		val2 += 1;
+> >> from scale setting and do you see written and read scales matching?
+> >>
+> >> I did run a few Kunit tests on this change - but I'm still a bit jumpy
+> >> on it... Reviewing/testing is highly appreciated!
+> >>
+> >> Just in case someone is interested in seeing the Kunit tests, they're
+> >> somewhat unpolished & crude and can emit noisy debug prints - but can
+> >> anyways be found from:
+> >> https://github.com/M-Vaittinen/linux/commits/iio-gts-helpers-test-v6.6
+> >>
+> >> ---
+> >>   drivers/iio/industrialio-gts-helper.c | 58 +++++++++++++++++++++++----
+> >>   1 file changed, 50 insertions(+), 8 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> >> index 7653261d2dc2..7dc144ac10c8 100644
+> >> --- a/drivers/iio/industrialio-gts-helper.c
+> >> +++ b/drivers/iio/industrialio-gts-helper.c
+> >> @@ -18,6 +18,32 @@
+> >>   #include <linux/iio/iio-gts-helper.h>
+> >>   #include <linux/iio/types.h>
+> >>   
+> >> +static int iio_gts_get_gain_32(u64 full, unsigned int scale)
+> >> +{
+> >> +	unsigned int full32 = (unsigned int) full;
+> >> +	unsigned int rem;
+> >> +	int result;
+> >> +
+> >> +	if (full == (u64)full32) {
+> >> +		unsigned int rem;
+> >> +
+> >> +		result = full32 / scale;
+> >> +		rem = full32 - scale * result;
+> >> +		if (rem >= scale / 2)
+> >> +			result++;
+> >> +
+> >> +		return result;
+> >> +	}
+> >> +
+> >> +	rem = do_div(full, scale);  
+> > 
+> > As below, can we just add scale/2 to full in the do_div?  
 > 
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..c0680d1285cf
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +
-> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#endif
-> diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> index 08adfe25964c..ef07ecd4d585 100644
-> --- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-> +++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> @@ -239,12 +239,15 @@
->  #define ADC7_GPIO3				0x0c
->  #define ADC7_GPIO4				0x0d
->  
-> +#define ADC7_SMB_TEMP				0x06
->  #define ADC7_CHG_TEMP				0x10
->  #define ADC7_USB_IN_V_16			0x11
->  #define ADC7_VDC_16				0x12
->  #define ADC7_CC1_ID				0x13
->  #define ADC7_VREF_BAT_THERM			0x15
->  #define ADC7_IIN_FB				0x17
-> +#define ADC7_ICHG_SMB				0x18
-> +#define ADC7_IIN_SMB				0x19
->  
->  /* 30k pull-up1 */
->  #define ADC7_AMUX_THM1_30K_PU			0x24
+> The rationale for doing is it in this way is to prevent (theoretical?) 
+> overflow when adding scale/2 to full. Maybe this warrants adding a comment?
+
+Hmm. Chances are very low of hitting that.  I'd just go with adding scale/2
+before the div.  If you really want to worry about being right at the edge
+of available precision, then add a check for that.
+
+
+> 
+> >   
+> >> +	if ((u64)rem >= scale / 2)
+> >> +		result = full + 1;
+> >> +	else
+> >> +		result = full;
+> >> +
+> >> +	return result;
+> >> +}
+> >> +
+> >>   /**
+> >>    * iio_gts_get_gain - Convert scale to total gain
+> >>    *
+> >> @@ -28,30 +54,42 @@
+> >>    *		scale is 64 100 000 000.
+> >>    * @scale:	Linearized scale to compute the gain for.
+> >>    *
+> >> - * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
+> >> + * Return:	(rounded) gain corresponding to the scale. -EINVAL if scale
+> >>    *		is invalid.
+> >>    */
+> >>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+> >>   {
+> >> -	u64 full = max;
+> >> +	u64 full = max, half_div;
+> >> +	unsigned int scale32 = (unsigned int) scale;
+> >>   	int tmp = 1;
+> >>   
+> >> -	if (scale > full || !scale)
+> >> +	if (scale / 2 > full || !scale)  
+> > 
+> > Seems odd. Why are we checking scale / 2 here?  
+> 
+> I am pretty sure I have been thinking of rounding 0.5 to 1.
+
+Not sure I follow - but maybe it'll be clear in v2.
+
+> >   
+> >> +
+> >> +	while (full + half_div >= scale * (u64)tmp)
+> >>   		tmp++;
+> >>   
+> >> -	return tmp;
+> >> +	return tmp - 1;
+> >>   }
+> >>   
+> >>   /**
+> >> @@ -133,6 +171,7 @@ static int iio_gts_linearize(int scale_whole, int scale_nano,
+> >>    * Convert the total gain value to scale. NOTE: This does not separate gain
+> >>    * generated by HW-gain or integration time. It is up to caller to decide what
+> >>    * part of the total gain is due to integration time and what due to HW-gain.
+> >> + * Computed gain is rounded to nearest integer.
+> >>    *
+> >>    * Return: 0 on success. Negative errno on failure.
+> >>    */
+> >> @@ -140,10 +179,13 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
+> >>   				int *scale_int, int *scale_nano)
+> >>   {
+> >>   	u64 tmp;
+> >> +	int rem;
+> >>   
+> >>   	tmp = gts->max_scale;
+> >>   
+> >> -	do_div(tmp, total_gain);
+> >> +	rem = do_div(tmp, total_gain);  
+> > 
+> > can we do usual trick of
+> > do_div(tmp + total_gain/2, total_gain)
+> > to get the same rounding effect?  
+> 
+> Only if we don't care about the case where tmp + total_gain/2 overflows.
+
+As above. The cases where that happens are pretty narrow.  I'd not worry about it
+or I'd check for that overflow.
+
+> 
+> >   
+> >> +	if (total_gain > 1 && rem >= total_gain / 2)
+> >> +		tmp += 1ULL;
+> >>   
+> >>   	return iio_gts_delinearize(tmp, NANO, scale_int, scale_nano);
+> >>   }
+> >> @@ -192,7 +234,7 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+> >>   		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
+> >>   		     NULL);
+> >>   
+> >> -		/* Convert gains to scales */
+> >> +		/* Convert gains to scales. */  
+> > 
+> > Grumble - unrelated change.  
+> 
+> Yes. I'll drop this.
+> 
+> >   
+> >>   		for (j = 0; j < gts->num_hwgain; j++) {
+> >>   			ret = iio_gts_total_gain_to_scale(gts, gains[i][j],
+> >>   							  &scales[i][2 * j],
+> >>
+> >> base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa  
+> 
+> All in all, I am still not 100% sure if rounding is the right ambition. 
+> Do we cause hidden accuracy issues by doing the rounding under the hood? 
+> I feel I need bigger brains :)
+Don't we all!
+
+Jonathan
+
+> 
+> Yours,
+> 	-- Matti
+> 
 > 
 
 

@@ -1,249 +1,181 @@
-Return-Path: <linux-iio+bounces-629-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-630-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD328051BB
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 12:12:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582C280544A
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 13:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD021F214BB
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 11:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7E3281860
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 12:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EB955792;
-	Tue,  5 Dec 2023 11:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2665C903;
+	Tue,  5 Dec 2023 12:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PbNfbgvO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VfFvdOgq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1E2135;
-	Tue,  5 Dec 2023 03:12:13 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50c0f13ea11so55005e87.3;
-        Tue, 05 Dec 2023 03:12:13 -0800 (PST)
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C801A5;
+	Tue,  5 Dec 2023 04:36:09 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40c09dfd82aso31063675e9.0;
+        Tue, 05 Dec 2023 04:36:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701774732; x=1702379532; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dU9vuAjHJvI8A2/DORsX8Wd9bQM+NwPY4Oo/b6BqT2E=;
-        b=PbNfbgvOyMbglJYSutF+2hZJa16KJDEnURkefgZlDLWqzRqonaYnyFMtarbmD+9/te
-         lIDP2uWa1jayNjNl5f0AQqm2Tb7JnByjEynna3yEd9O2p8sN2KHUOFwuSzB0emT4fLrP
-         CPpYHNGwxSRoymFIUifDQp1lqcMjfNzSRYvY9q0mD07XpIooElI86ChJD+5/0BgNZSvp
-         AlMgGjuMeo+GKWpPWTY1MCq10dD32gTbkReOQ7ZFTPkppVIAyiJyIG8zwWdxxFstBiR2
-         NItPIDle93tDbnb3h4ikrf7SzqLdLW5/ooTDeuUlG3+xvz4P2/FRFVEeX7bVdBUf6uez
-         rnxg==
+        d=gmail.com; s=20230601; t=1701779768; x=1702384568; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vi/+U1S70zCpRCmtolwQMMJpjEnLtDmB7aIF6AJ1vQ4=;
+        b=VfFvdOgq00qRsq2xMcSXTxyqeNGdDJ4MXA7bx8Lncy8x4MH6a4ZkaHW9uG2miWHLBz
+         SJO1zcZCj+ejBfp2ijjBwDMhdZfkn07Zse5u1tdpIYli4mJul83mbChpmo6wLridTU6V
+         lDoZaGfMeYDC0jfGOUvhLxRMzpBMHxHf6hk7gI/hWNtr7rmBepxe3kt0k2RQQU8JKrSP
+         +juKAwkUFIEru4q1t2QEJ5vgiORWFOqXuikJARSr1KftCJL2Mf5+X8QWOr4FcPq3Kibd
+         su/m5ds+2LMEOdXpzWp620ef1iBXBi9KUkMUPGqFEAS4+0XtepApqcFqqONBG+WaCkI1
+         cbiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701774732; x=1702379532;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dU9vuAjHJvI8A2/DORsX8Wd9bQM+NwPY4Oo/b6BqT2E=;
-        b=vHIaIJih9VUp4T/z+747HelteGtxjotpHvV+VjbOfriBXE1PQa/ZMREqAMZcE62KaL
-         yCdO3vw58dIGR2hRpgaI/KAbjR1RwWajlvZaiJRy1dtl0LEvO8S0Amj3tRaAO7SKHlJ+
-         6/rCpl8T2XgoJ3YZLG8/b9HJ3bx5PLyurBYY66VdWcOgIxAQUky/9mXTmleOCP4fdf4C
-         EiBd4K4Sw9I4/dg5ck8q+v5NJc4yfZdrBYxg9+AbA9AwIZgSHqqdBITR5L3sMNyZQGeS
-         dBc4Wwn5scgrd6fwqUl2czoZxK8qdo5QrMDng/OTNE6A15grw5bGu/RaRIarMFIkVisG
-         KbJw==
-X-Gm-Message-State: AOJu0YxyLyqaY3w3O7uIFbWmX/I3NaPIBLf1KsvCUM96NrmB/S8bpBT1
-	M8bKglGUijk4CQlT6hhPuc8=
-X-Google-Smtp-Source: AGHT+IFdkglMKykZ6zar0e9cQ+0KPOF95EoZIFI/xK9scL5Wmpo23Juc/hd4b2l6GYaaPkDeXHUf/w==
-X-Received: by 2002:a05:6512:3da1:b0:50b:ec8c:6697 with SMTP id k33-20020a0565123da100b0050bec8c6697mr2431877lfv.128.1701774731871;
-        Tue, 05 Dec 2023 03:12:11 -0800 (PST)
-Received: from [192.168.20.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id v26-20020a19741a000000b0050beeea07f3sm849377lfe.4.2023.12.05.03.12.10
+        d=1e100.net; s=20230601; t=1701779768; x=1702384568;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vi/+U1S70zCpRCmtolwQMMJpjEnLtDmB7aIF6AJ1vQ4=;
+        b=AH0l64I/0OV8tm5OLHi724nq7uub2NVc3rtQCLEs0XnJXiCr4KD/cgZbUWiTbr80Cr
+         rWli7rhPf7mizG3/gQimvoYFWNSQi766nMWC47FdturbmniMjp+Nm/7dmMfKIHPhUMgm
+         fYPDg1tTnoSmVH24+cYj9pujgvTFpGV4Nk5w5cxLM90RHyWV0e7OriPHzE+JRw3lSyRH
+         0qBN0TxCBEVhDFRQiuqsJRi7zVynY63yHrCzSm3H6I7px68COXk9Ujy7tU/iNZixqQd4
+         ZqsYkjHieCReFL+aTbi5wle5hckT5K5OccK1PokHUbPjYZG7aQ0OZzSBHK0jHaCtZvkc
+         kCXg==
+X-Gm-Message-State: AOJu0YzFeUYPG6/K0+VPLPudXbHqSNLonSQ0TQcycLWHOfL+pDh5m/r9
+	slTlwjsYba45AEVUVEu7lsY=
+X-Google-Smtp-Source: AGHT+IFRXDtzFmX4tYMMU5n5XaYJrLQWKmuFyEOl3CF2puX317iplwOttL32TpsSZhFHKXsaDUn0Zw==
+X-Received: by 2002:a05:600c:3007:b0:40b:5e21:dd2c with SMTP id j7-20020a05600c300700b0040b5e21dd2cmr431012wmh.90.1701779767917;
+        Tue, 05 Dec 2023 04:36:07 -0800 (PST)
+Received: from orome.fritz.box (p200300e41f0fa600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f0f:a600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id i21-20020a170906251500b009ff1997ce86sm6715307ejb.149.2023.12.05.04.36.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 03:12:11 -0800 (PST)
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Tue, 05 Dec 2023 12:16:33 +0100
-Subject: [PATCH v3] iio: adc: mcp3911: simplify code with guard macro
+        Tue, 05 Dec 2023 04:36:07 -0800 (PST)
+Date: Tue, 5 Dec 2023 13:36:05 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: (subset) [PATCH 00/17] dt-bindings: samsung: add specific
+ compatibles for existing SoC
+Message-ID: <ZW8ZNZ_FJSV8fq-U@orome.fritz.box>
+References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
+ <170119374454.445690.515311393756577368.b4-ty@gmail.com>
+ <20231128205841.al23ra5s34rn3muj@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231205-mcp3911-guard-v3-1-df83e956d1e9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJAGb2UC/3XMSwrCMBSF4a2UjI303rRp48h9iIOQpO0F+yDRo
- JTs3bSjIjg8B75/ZcF5coFdipV5FynQPOUhTgUzg556x8nmzbBEAYA1H80iFADvX9pb3kpZK3B
- oVNWwbBbvOnrvvds974HCc/afPR9he/+VInDg2FStBalFJ7prP2p6nM08sq0U8aibX41Zq0qiF
- KU1GtxRp5S+oMInR+gAAAA=
-To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Marcus Folkesson <marcus.folkesson@gmail.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4249;
- i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=jTOz9DHoo4Sk4PrMlQzy+BgB6hsFZ0TTG9UTUY6JaQ0=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBlbwaYtd5Snqu1q1Mo8JK/DlKZs/J7P5BxABgYP
- 8+Spgtl2pSJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZW8GmAAKCRCIgE5vWV1S
- MhmMEADfnsKwIAis5LZomhgQnTO2KKZmQ1i8meyvRoynARwj1LA8oZHa/+YXGoxKD7uQmx51+yD
- E5TiTnszjqUN8oygcLA0eauB6KL5Jk2pxJEvtoCOsYZkONmHRZ5ojWufVMI+QOgez8t3CgyhzHg
- xH76lLfnT9dwTRReGPkUZqFH+BSIxYLZtWqfUddGIvhzo3ifnOaPTo0fQZUH7oEO3E+mQD+As6j
- 2Hq4FmwZO46IbJx8Lxn9XWMe0z7f1yMnE0eUL2lSJIu4vncimvYcdsPWS9k5rBt/YAgCPiUXRnZ
- ecq9pbnSyN3R3IMnfAX1RkRj8ytr56NTxtCnJq1Q3nrRsk5uOJeaIXKlLCNxiREQ6iD7DD3Zzn1
- xcvIreu5XqAtIyVXoDni/mgYAD9JzWU/0xoGTwJVFKSO42y6k+0ZVfamVkndWgpiibmt9VT/tPl
- yPwSHCQ4V9IX0ieVvPhN3/G8yMUwJ7XicKv8JV7QCK2/WJcbknHpbPJtLJTPNrSk6lmPjx3m2o3
- T/yWD06YLn57tJ5Oat18SQ5EBx5Sz5dfAVrXT0O0XU9lbn04XRNYfSyYLyFinM7qul/6ARZ/sYo
- 5peVZGcdKGeolLqDCNW1EPDG0Wg8Rn4t6/w4+vP+nRTVJcn69tIvuHyHXzTzToMnC2suvVr4Flg
- rKILaim+IiX4N5w==
-X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
- fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Tgq7dxd4jwke8dPo"
+Content-Disposition: inline
+In-Reply-To: <20231128205841.al23ra5s34rn3muj@pengutronix.de>
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-Use the guard(mutex) macro for handle mutex lock/unlocks.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
-Changes in v3:
-- Return early in good paths as well
-- Rebase against master
-- Link to v2: https://lore.kernel.org/r/20231127-mcp3911-guard-v2-1-9462630dca1e@gmail.com
+--Tgq7dxd4jwke8dPo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Changes in v2:
-- Return directly instead of goto label
-- Link to v1: https://lore.kernel.org/r/20231125-mcp3911-guard-v1-1-2748d16a3f3f@gmail.com
----
- drivers/iio/adc/mcp3911.c | 47 +++++++++++++++--------------------------------
- 1 file changed, 15 insertions(+), 32 deletions(-)
+On Tue, Nov 28, 2023 at 09:58:41PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> On Tue, Nov 28, 2023 at 06:49:23PM +0100, Thierry Reding wrote:
+> >=20
+> > On Wed, 08 Nov 2023 11:43:26 +0100, Krzysztof Kozlowski wrote:
+> > > Merging
+> > > =3D=3D=3D=3D=3D=3D=3D
+> > > I propose to take entire patchset through my tree (Samsung SoC), beca=
+use:
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>=20
+> > > 1. Next cycle two new SoCs will be coming (Google GS101 and ExynosAut=
+ov920), so
+> > >    they will touch the same lines in some of the DT bindings (not all=
+, though).
+> > >    It is reasonable for me to take the bindings for the new SoCs, to =
+have clean
+> > >    `make dtbs_check` on the new DTS.
+> > > 2. Having it together helps me to have clean `make dtbs_check` within=
+ my tree
+> > >    on the existing DTS.
+> > > 3. No drivers are affected by this change.
+> > > 4. I plan to do the same for Tesla FSD and Exynos ARM32 SoCs, thus ex=
+pect
+> > >    follow up patchsets.
+> > >=20
+> > > [...]
+> >=20
+> > Applied, thanks!
+> >=20
+> > [12/17] dt-bindings: pwm: samsung: add specific compatibles for existin=
+g SoC
+> >         commit: 5d67b8f81b9d598599366214e3b2eb5f84003c9f
+>=20
+> You didn't honor (or even comment) Krzysztof's proposal to take the
+> whole patchset via his tree (marked above). Was there some off-list
+> agreement?
 
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index d864558bc087..f4822ecece89 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -7,6 +7,7 @@
-  */
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-@@ -318,44 +319,34 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
- 	struct mcp3911 *adc = iio_priv(indio_dev);
- 	int ret = -EINVAL;
- 
--	mutex_lock(&adc->lock);
-+	guard(mutex)(&adc->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		ret = mcp3911_read(adc,
- 				   MCP3911_CHANNEL(channel->channel), val, 3);
- 		if (ret)
--			goto out;
-+			return ret;
- 
- 		*val = sign_extend32(*val, 23);
--
--		ret = IIO_VAL_INT;
-+		return IIO_VAL_INT;
- 		break;
- 
- 	case IIO_CHAN_INFO_OFFSET:
--
- 		ret = adc->chip->get_offset(adc, channel->channel, val);
--		if (ret)
--			goto out;
--
--		ret = IIO_VAL_INT;
-+		return (ret) ? ret : IIO_VAL_INT;
- 		break;
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
- 		ret = adc->chip->get_osr(adc, val);
--		if (ret)
--			goto out;
--
--		ret = IIO_VAL_INT;
-+		return (ret) ? ret : IIO_VAL_INT;
- 		break;
- 
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
- 		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
--		ret = IIO_VAL_INT_PLUS_NANO;
-+		return IIO_VAL_INT_PLUS_NANO;
- 		break;
- 	}
- 
--out:
--	mutex_unlock(&adc->lock);
- 	return ret;
- }
- 
-@@ -364,9 +355,8 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 			     int val2, long mask)
- {
- 	struct mcp3911 *adc = iio_priv(indio_dev);
--	int ret = -EINVAL;
- 
--	mutex_lock(&adc->lock);
-+	guard(mutex)(&adc->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
- 		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-@@ -374,32 +364,26 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 			    val2 == mcp3911_scale_table[i][1]) {
- 
- 				adc->gain[channel->channel] = BIT(i);
--				ret = adc->chip->set_scale(adc, channel->channel, i);
-+				return adc->chip->set_scale(adc, channel->channel, i);
- 			}
- 		}
- 		break;
- 	case IIO_CHAN_INFO_OFFSET:
--		if (val2 != 0) {
--			ret = -EINVAL;
--			goto out;
--		}
-+		if (val2 != 0)
-+			return -EINVAL;
- 
--		ret = adc->chip->set_offset(adc, channel->channel, val);
-+		return adc->chip->set_offset(adc, channel->channel, val);
- 		break;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
- 		for (int i = 0; i < ARRAY_SIZE(mcp3911_osr_table); i++) {
- 			if (val == mcp3911_osr_table[i]) {
--				ret = adc->chip->set_osr(adc, i);
--				break;
-+				return adc->chip->set_osr(adc, i);
- 			}
- 		}
- 		break;
- 	}
--
--out:
--	mutex_unlock(&adc->lock);
--	return ret;
-+	return -EINVAL;
- }
- 
- static int mcp3911_calc_scale_table(struct mcp3911 *adc)
-@@ -532,7 +516,7 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
- 	int i = 0;
- 	int ret;
- 
--	mutex_lock(&adc->lock);
-+	guard(mutex)(&adc->lock);
- 	adc->tx_buf = MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr);
- 	ret = spi_sync_transfer(adc->spi, xfer, ARRAY_SIZE(xfer));
- 	if (ret < 0) {
-@@ -549,7 +533,6 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
- 	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
- 					   iio_get_time_ns(indio_dev));
- out:
--	mutex_unlock(&adc->lock);
- 	iio_trigger_notify_done(indio_dev->trig);
- 
- 	return IRQ_HANDLED;
+I had read all that and then looking at patchwork saw that you had
+marked all other patches in the series as "handled-elsewhere" and only
+this one was left as "new", so I assumed that, well, everything else was
+handled elsewhere and I was supposed to pick this one up...
 
----
-base-commit: 33cc938e65a98f1d29d0a18403dbbee050dcad9a
-change-id: 20231125-mcp3911-guard-866591e2c947
+I'll drop this one.
 
-Best regards,
--- 
-Marcus Folkesson <marcus.folkesson@gmail.com>
+Thierry
 
+--Tgq7dxd4jwke8dPo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmVvGTUACgkQ3SOs138+
+s6FxSg/9GYBUdx6f/ahQ2fBXUlTXv4ykvHBiRJGfUuGbx8MJaPoRIbAl2gcTnwnB
+fRuGMlQD0DbWYLVejy/wzASn//gvqYVp3sjPDSKFuFoUMSVNRBAJJy+DmdHcb7ia
+ZnhU2k/meHpKnCP8Y3im5k1MEbiexQ8OShzyVx8ARU/Y4BXrj2SfODDI/KGVYFa9
+Wfv2b1eoatUBHcDzYbjxow+qyza8E9Ym2b06HRhzQOotMSxLdBF5z1KP/29i4IWj
+WGwsIEbPMmM4rLFmQ45IRWz7GwZL8Fh3afeaUijl2cytKINUgBSkvqPsQPx25FdO
+xKMJHxcPjtERjnHorOGLNpotMNldbw2VRtQDD57QcqqqDBagcqpHfXwsOfuyK6v/
+r9p9gAFCFjF/bpQlKZdwLZ/+khDrkH+UH3cR0OBq/mN1Sb4JcSKbLwv8pGE/F+v6
+NXrlp9Xwx/gIyrRL6yijGCW50TXnE06/w4NDhHwi0tdio//f1BhQTWWYVKOArw0B
+Dpsrq/yDC2xJ7afiBdfKs+nTFuujmcTS1OguA5v+Ww/8a8Bp5bsBJj5p2GkbJa/3
+dChdDhsGy9As2KbUN2WYE+VIYUudcMiXbB8oKf+/kxhgwhSNgP+nirXkV422hKQs
+0w+Dee6JI0kKyL3S8AjiEW3ZmbKqJpV30pgyRVUlSIXRjoljdzA=
+=cbqG
+-----END PGP SIGNATURE-----
+
+--Tgq7dxd4jwke8dPo--
 

@@ -1,184 +1,249 @@
-Return-Path: <linux-iio+bounces-628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7440804D64
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 10:16:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD328051BB
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 12:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A3C128159A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 09:16:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD021F214BB
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 11:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4540E3E47E;
-	Tue,  5 Dec 2023 09:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EB955792;
+	Tue,  5 Dec 2023 11:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HZXSl2Um"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PbNfbgvO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D91185
-	for <linux-iio@vger.kernel.org>; Tue,  5 Dec 2023 01:16:27 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50bfd3a5b54so1824959e87.3
-        for <linux-iio@vger.kernel.org>; Tue, 05 Dec 2023 01:16:27 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1E2135;
+	Tue,  5 Dec 2023 03:12:13 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50c0f13ea11so55005e87.3;
+        Tue, 05 Dec 2023 03:12:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701767786; x=1702372586; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OeEvgoAVw1dp1aM0OWfOemCjE5CEVoVWIKGJuAU8k5U=;
-        b=HZXSl2Um5jrhy96n+kQw3MKZMZPXcQB51M2gfqXTOJ1DOTyt7wdhQGEnhif6vCwNpU
-         RqPsOa3MbjDhYbOwYbGnbnuXRLJcyvJ4IAkpbIqSyN4V9U6KdlOGza/N9CEIo+T0EBZE
-         nmSWyCdJoVTYHZZfEnHXTH0gPPAPqwLGYBeHelWD/tObh5E2zT6Hvsbfdq0VpblvYhcm
-         VTsybofXEkUqQ4qAGVT0t2xds/XKG4ivsdtwz43RR87kXP4As4sC76bgHmoqabAmXDWA
-         wKf7jAbLpX4u/3qcD3gWBiBWY2NQNwg64Mh8LboOae16lkdrd2P9Svy4TLc7tYAWTSuy
-         uHvw==
+        d=gmail.com; s=20230601; t=1701774732; x=1702379532; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dU9vuAjHJvI8A2/DORsX8Wd9bQM+NwPY4Oo/b6BqT2E=;
+        b=PbNfbgvOyMbglJYSutF+2hZJa16KJDEnURkefgZlDLWqzRqonaYnyFMtarbmD+9/te
+         lIDP2uWa1jayNjNl5f0AQqm2Tb7JnByjEynna3yEd9O2p8sN2KHUOFwuSzB0emT4fLrP
+         CPpYHNGwxSRoymFIUifDQp1lqcMjfNzSRYvY9q0mD07XpIooElI86ChJD+5/0BgNZSvp
+         AlMgGjuMeo+GKWpPWTY1MCq10dD32gTbkReOQ7ZFTPkppVIAyiJyIG8zwWdxxFstBiR2
+         NItPIDle93tDbnb3h4ikrf7SzqLdLW5/ooTDeuUlG3+xvz4P2/FRFVEeX7bVdBUf6uez
+         rnxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701767786; x=1702372586;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OeEvgoAVw1dp1aM0OWfOemCjE5CEVoVWIKGJuAU8k5U=;
-        b=wq+GmziE+XH1e3F9Hf7w3h7KX0RpBtp3fXaNERKeDq6Q/s7oHl8atui7+0CWLfG5ih
-         qO/89TvX+ZbtFjaii44b2Xgyy7q9ctogCigDz3XUdOiDTRrViX37MCz8R51c1ktHbPcZ
-         7K5Ni7dClgtaL2PgrHisOt8Z4BTfxyiErnQZ+QqNUv9XiP/deDxzEVlcfGlcoystqzod
-         WbEwoMJZ1TsO61pteo8DgtpVY21IxDwSFOOp7XxDjP7fRzwi/uJcJ7j6gOxJu9EYb27a
-         1F9wMwEKXXIDaIRu3O444MCq6EwGGkHmQ0Oj58BiSLJ10PdnBDgbi4QV6JGjHKnZ2fo2
-         1tjA==
-X-Gm-Message-State: AOJu0YyOsXWYoe270zh8ru7duhroGBRd2dvCQw5TnwyloEQ7X7GtQf70
-	knzge31BhwOsx9iiYIBF6OwtvA==
-X-Google-Smtp-Source: AGHT+IFl+InzAht9wjGX3VbUVhsxqPXeTdzVpokOhMfKZ33B+RdV7sB9qjW4A5xQmHAw5a98muxprw==
-X-Received: by 2002:a05:6512:128b:b0:50b:f303:56cd with SMTP id u11-20020a056512128b00b0050bf30356cdmr2070360lfs.15.1701767786021;
-        Tue, 05 Dec 2023 01:16:26 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id f3-20020a056402068300b0054c0264a7fasm799997edy.64.2023.12.05.01.16.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Dec 2023 01:16:25 -0800 (PST)
-Message-ID: <369dfa0c-315d-47a9-81fc-c166c9632bac@linaro.org>
-Date: Tue, 5 Dec 2023 10:16:22 +0100
+        d=1e100.net; s=20230601; t=1701774732; x=1702379532;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dU9vuAjHJvI8A2/DORsX8Wd9bQM+NwPY4Oo/b6BqT2E=;
+        b=vHIaIJih9VUp4T/z+747HelteGtxjotpHvV+VjbOfriBXE1PQa/ZMREqAMZcE62KaL
+         yCdO3vw58dIGR2hRpgaI/KAbjR1RwWajlvZaiJRy1dtl0LEvO8S0Amj3tRaAO7SKHlJ+
+         6/rCpl8T2XgoJ3YZLG8/b9HJ3bx5PLyurBYY66VdWcOgIxAQUky/9mXTmleOCP4fdf4C
+         EiBd4K4Sw9I4/dg5ck8q+v5NJc4yfZdrBYxg9+AbA9AwIZgSHqqdBITR5L3sMNyZQGeS
+         dBc4Wwn5scgrd6fwqUl2czoZxK8qdo5QrMDng/OTNE6A15grw5bGu/RaRIarMFIkVisG
+         KbJw==
+X-Gm-Message-State: AOJu0YxyLyqaY3w3O7uIFbWmX/I3NaPIBLf1KsvCUM96NrmB/S8bpBT1
+	M8bKglGUijk4CQlT6hhPuc8=
+X-Google-Smtp-Source: AGHT+IFdkglMKykZ6zar0e9cQ+0KPOF95EoZIFI/xK9scL5Wmpo23Juc/hd4b2l6GYaaPkDeXHUf/w==
+X-Received: by 2002:a05:6512:3da1:b0:50b:ec8c:6697 with SMTP id k33-20020a0565123da100b0050bec8c6697mr2431877lfv.128.1701774731871;
+        Tue, 05 Dec 2023 03:12:11 -0800 (PST)
+Received: from [192.168.20.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
+        by smtp.gmail.com with ESMTPSA id v26-20020a19741a000000b0050beeea07f3sm849377lfe.4.2023.12.05.03.12.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Dec 2023 03:12:11 -0800 (PST)
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+Date: Tue, 05 Dec 2023 12:16:33 +0100
+Subject: [PATCH v3] iio: adc: mcp3911: simplify code with guard macro
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH 00/17] dt-bindings: samsung: add specific
- compatibles for existing SoC
-Content-Language: en-US
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Thierry Reding <thierry.reding@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Tomasz Figa <tomasz.figa@gmail.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Alessandro Zummo <a.zummo@towertech.it>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaehoon Chung <jh80.chung@samsung.com>,
- Sam Protsenko <semen.protsenko@linaro.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
- linux-serial@vger.kernel.org, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org
-References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
- <170119374454.445690.515311393756577368.b4-ty@gmail.com>
- <20231128205841.al23ra5s34rn3muj@pengutronix.de>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231128205841.al23ra5s34rn3muj@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231205-mcp3911-guard-v3-1-df83e956d1e9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJAGb2UC/3XMSwrCMBSF4a2UjI303rRp48h9iIOQpO0F+yDRo
+ JTs3bSjIjg8B75/ZcF5coFdipV5FynQPOUhTgUzg556x8nmzbBEAYA1H80iFADvX9pb3kpZK3B
+ oVNWwbBbvOnrvvds974HCc/afPR9he/+VInDg2FStBalFJ7prP2p6nM08sq0U8aibX41Zq0qiF
+ KU1GtxRp5S+oMInR+gAAAA=
+To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Marcus Folkesson <marcus.folkesson@gmail.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4249;
+ i=marcus.folkesson@gmail.com; h=from:subject:message-id;
+ bh=jTOz9DHoo4Sk4PrMlQzy+BgB6hsFZ0TTG9UTUY6JaQ0=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBlbwaYtd5Snqu1q1Mo8JK/DlKZs/J7P5BxABgYP
+ 8+Spgtl2pSJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZW8GmAAKCRCIgE5vWV1S
+ MhmMEADfnsKwIAis5LZomhgQnTO2KKZmQ1i8meyvRoynARwj1LA8oZHa/+YXGoxKD7uQmx51+yD
+ E5TiTnszjqUN8oygcLA0eauB6KL5Jk2pxJEvtoCOsYZkONmHRZ5ojWufVMI+QOgez8t3CgyhzHg
+ xH76lLfnT9dwTRReGPkUZqFH+BSIxYLZtWqfUddGIvhzo3ifnOaPTo0fQZUH7oEO3E+mQD+As6j
+ 2Hq4FmwZO46IbJx8Lxn9XWMe0z7f1yMnE0eUL2lSJIu4vncimvYcdsPWS9k5rBt/YAgCPiUXRnZ
+ ecq9pbnSyN3R3IMnfAX1RkRj8ytr56NTxtCnJq1Q3nrRsk5uOJeaIXKlLCNxiREQ6iD7DD3Zzn1
+ xcvIreu5XqAtIyVXoDni/mgYAD9JzWU/0xoGTwJVFKSO42y6k+0ZVfamVkndWgpiibmt9VT/tPl
+ yPwSHCQ4V9IX0ieVvPhN3/G8yMUwJ7XicKv8JV7QCK2/WJcbknHpbPJtLJTPNrSk6lmPjx3m2o3
+ T/yWD06YLn57tJ5Oat18SQ5EBx5Sz5dfAVrXT0O0XU9lbn04XRNYfSyYLyFinM7qul/6ARZ/sYo
+ 5peVZGcdKGeolLqDCNW1EPDG0Wg8Rn4t6/w4+vP+nRTVJcn69tIvuHyHXzTzToMnC2suvVr4Flg
+ rKILaim+IiX4N5w==
+X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
+ fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-On 28/11/2023 21:58, Uwe Kleine-König wrote:
-> On Tue, Nov 28, 2023 at 06:49:23PM +0100, Thierry Reding wrote:
->>
->> On Wed, 08 Nov 2023 11:43:26 +0100, Krzysztof Kozlowski wrote:
->>> Merging
->>> =======
->>> I propose to take entire patchset through my tree (Samsung SoC), because:
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
->>> 1. Next cycle two new SoCs will be coming (Google GS101 and ExynosAutov920), so
->>>    they will touch the same lines in some of the DT bindings (not all, though).
->>>    It is reasonable for me to take the bindings for the new SoCs, to have clean
->>>    `make dtbs_check` on the new DTS.
->>> 2. Having it together helps me to have clean `make dtbs_check` within my tree
->>>    on the existing DTS.
->>> 3. No drivers are affected by this change.
->>> 4. I plan to do the same for Tesla FSD and Exynos ARM32 SoCs, thus expect
->>>    follow up patchsets.
->>>
->>> [...]
->>
->> Applied, thanks!
->>
->> [12/17] dt-bindings: pwm: samsung: add specific compatibles for existing SoC
->>         commit: 5d67b8f81b9d598599366214e3b2eb5f84003c9f
-> 
-> You didn't honor (or even comment) Krzysztof's proposal to take the
-> whole patchset via his tree (marked above). Was there some off-list
-> agreement?
-> 
+Use the guard(mutex) macro for handle mutex lock/unlocks.
 
-It was also written in the PWM patch itself (under changelog ---) and
-expressed with my "applied" response when I took everything. I am
-sending now another set, also touching PWM.
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+Changes in v3:
+- Return early in good paths as well
+- Rebase against master
+- Link to v2: https://lore.kernel.org/r/20231127-mcp3911-guard-v2-1-9462630dca1e@gmail.com
+
+Changes in v2:
+- Return directly instead of goto label
+- Link to v1: https://lore.kernel.org/r/20231125-mcp3911-guard-v1-1-2748d16a3f3f@gmail.com
+---
+ drivers/iio/adc/mcp3911.c | 47 +++++++++++++++--------------------------------
+ 1 file changed, 15 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index d864558bc087..f4822ecece89 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -7,6 +7,7 @@
+  */
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+@@ -318,44 +319,34 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 	struct mcp3911 *adc = iio_priv(indio_dev);
+ 	int ret = -EINVAL;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		ret = mcp3911_read(adc,
+ 				   MCP3911_CHANNEL(channel->channel), val, 3);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 
+ 		*val = sign_extend32(*val, 23);
+-
+-		ret = IIO_VAL_INT;
++		return IIO_VAL_INT;
+ 		break;
+ 
+ 	case IIO_CHAN_INFO_OFFSET:
+-
+ 		ret = adc->chip->get_offset(adc, channel->channel, val);
+-		if (ret)
+-			goto out;
+-
+-		ret = IIO_VAL_INT;
++		return (ret) ? ret : IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ 		ret = adc->chip->get_osr(adc, val);
+-		if (ret)
+-			goto out;
+-
+-		ret = IIO_VAL_INT;
++		return (ret) ? ret : IIO_VAL_INT;
+ 		break;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
+ 		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
+-		ret = IIO_VAL_INT_PLUS_NANO;
++		return IIO_VAL_INT_PLUS_NANO;
+ 		break;
+ 	}
+ 
+-out:
+-	mutex_unlock(&adc->lock);
+ 	return ret;
+ }
+ 
+@@ -364,9 +355,8 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 			     int val2, long mask)
+ {
+ 	struct mcp3911 *adc = iio_priv(indio_dev);
+-	int ret = -EINVAL;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SCALE:
+ 		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
+@@ -374,32 +364,26 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 			    val2 == mcp3911_scale_table[i][1]) {
+ 
+ 				adc->gain[channel->channel] = BIT(i);
+-				ret = adc->chip->set_scale(adc, channel->channel, i);
++				return adc->chip->set_scale(adc, channel->channel, i);
+ 			}
+ 		}
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		if (val2 != 0) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (val2 != 0)
++			return -EINVAL;
+ 
+-		ret = adc->chip->set_offset(adc, channel->channel, val);
++		return adc->chip->set_offset(adc, channel->channel, val);
+ 		break;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ 		for (int i = 0; i < ARRAY_SIZE(mcp3911_osr_table); i++) {
+ 			if (val == mcp3911_osr_table[i]) {
+-				ret = adc->chip->set_osr(adc, i);
+-				break;
++				return adc->chip->set_osr(adc, i);
+ 			}
+ 		}
+ 		break;
+ 	}
+-
+-out:
+-	mutex_unlock(&adc->lock);
+-	return ret;
++	return -EINVAL;
+ }
+ 
+ static int mcp3911_calc_scale_table(struct mcp3911 *adc)
+@@ -532,7 +516,7 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+ 	int i = 0;
+ 	int ret;
+ 
+-	mutex_lock(&adc->lock);
++	guard(mutex)(&adc->lock);
+ 	adc->tx_buf = MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr);
+ 	ret = spi_sync_transfer(adc->spi, xfer, ARRAY_SIZE(xfer));
+ 	if (ret < 0) {
+@@ -549,7 +533,6 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
+ 					   iio_get_time_ns(indio_dev));
+ out:
+-	mutex_unlock(&adc->lock);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
+
+---
+base-commit: 33cc938e65a98f1d29d0a18403dbbee050dcad9a
+change-id: 20231125-mcp3911-guard-866591e2c947
 
 Best regards,
-Krzysztof
+-- 
+Marcus Folkesson <marcus.folkesson@gmail.com>
 
 

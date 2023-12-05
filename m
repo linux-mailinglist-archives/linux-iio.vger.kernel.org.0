@@ -1,98 +1,67 @@
-Return-Path: <linux-iio+bounces-630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582C280544A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 13:36:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F98980555F
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 14:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7E3281860
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 12:36:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9631C20D9D
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 13:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2665C903;
-	Tue,  5 Dec 2023 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D765359E5A;
+	Tue,  5 Dec 2023 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VfFvdOgq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6MUHoGg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C801A5;
-	Tue,  5 Dec 2023 04:36:09 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40c09dfd82aso31063675e9.0;
-        Tue, 05 Dec 2023 04:36:09 -0800 (PST)
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF90D7;
+	Tue,  5 Dec 2023 05:02:14 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c9f62447c2so28574411fa.0;
+        Tue, 05 Dec 2023 05:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701779768; x=1702384568; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vi/+U1S70zCpRCmtolwQMMJpjEnLtDmB7aIF6AJ1vQ4=;
-        b=VfFvdOgq00qRsq2xMcSXTxyqeNGdDJ4MXA7bx8Lncy8x4MH6a4ZkaHW9uG2miWHLBz
-         SJO1zcZCj+ejBfp2ijjBwDMhdZfkn07Zse5u1tdpIYli4mJul83mbChpmo6wLridTU6V
-         lDoZaGfMeYDC0jfGOUvhLxRMzpBMHxHf6hk7gI/hWNtr7rmBepxe3kt0k2RQQU8JKrSP
-         +juKAwkUFIEru4q1t2QEJ5vgiORWFOqXuikJARSr1KftCJL2Mf5+X8QWOr4FcPq3Kibd
-         su/m5ds+2LMEOdXpzWp620ef1iBXBi9KUkMUPGqFEAS4+0XtepApqcFqqONBG+WaCkI1
-         cbiQ==
+        d=gmail.com; s=20230601; t=1701781333; x=1702386133; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wVkkONZNfkX/iqB+XjK9GHA8D0k5JMrE6DojR60eqaY=;
+        b=D6MUHoGgJ/6SI9+AoORI8jqnKO0a7qeRmgw6djvw03qTewZZ4n6syf6F6yZc2Kkf0K
+         AU9DiEhaz2/ZCzwpr3QPwiXL7+Jyv/mS393B4nwmrdliTUGODNq2RraufOTe7mVun/9H
+         172nG+607I1bXUvPskn027N/IeEeTNBaptb0XR7migdOajUe0A4oh2QNcXmDcz75P29w
+         dNGNF3PQPP4lp3RMwOdE25XqK4fC7k6WLOAHs8tl12t8pBV3psbLLNbYYRCVPz74LqtV
+         1RS7BI4EY73IkhIuHdgoRedoMoR5bzLw7VCLkd750qZIAwXMdi/YoIcF90oeC8eZfQ20
+         5Vxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701779768; x=1702384568;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vi/+U1S70zCpRCmtolwQMMJpjEnLtDmB7aIF6AJ1vQ4=;
-        b=AH0l64I/0OV8tm5OLHi724nq7uub2NVc3rtQCLEs0XnJXiCr4KD/cgZbUWiTbr80Cr
-         rWli7rhPf7mizG3/gQimvoYFWNSQi766nMWC47FdturbmniMjp+Nm/7dmMfKIHPhUMgm
-         fYPDg1tTnoSmVH24+cYj9pujgvTFpGV4Nk5w5cxLM90RHyWV0e7OriPHzE+JRw3lSyRH
-         0qBN0TxCBEVhDFRQiuqsJRi7zVynY63yHrCzSm3H6I7px68COXk9Ujy7tU/iNZixqQd4
-         ZqsYkjHieCReFL+aTbi5wle5hckT5K5OccK1PokHUbPjYZG7aQ0OZzSBHK0jHaCtZvkc
-         kCXg==
-X-Gm-Message-State: AOJu0YzFeUYPG6/K0+VPLPudXbHqSNLonSQ0TQcycLWHOfL+pDh5m/r9
-	slTlwjsYba45AEVUVEu7lsY=
-X-Google-Smtp-Source: AGHT+IFRXDtzFmX4tYMMU5n5XaYJrLQWKmuFyEOl3CF2puX317iplwOttL32TpsSZhFHKXsaDUn0Zw==
-X-Received: by 2002:a05:600c:3007:b0:40b:5e21:dd2c with SMTP id j7-20020a05600c300700b0040b5e21dd2cmr431012wmh.90.1701779767917;
-        Tue, 05 Dec 2023 04:36:07 -0800 (PST)
-Received: from orome.fritz.box (p200300e41f0fa600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f0f:a600:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id i21-20020a170906251500b009ff1997ce86sm6715307ejb.149.2023.12.05.04.36.06
+        d=1e100.net; s=20230601; t=1701781333; x=1702386133;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wVkkONZNfkX/iqB+XjK9GHA8D0k5JMrE6DojR60eqaY=;
+        b=HVzO6HbICG81Cux2KVAf3XYLHSzkJ/fGJqoqG6QSYvllr4BKCL7/CJ3SacdQz/m+p+
+         AhDwDPxB0/uKlIJF5AwR0pfuXCcnLKnM8244T0fPZcsG9la/X7GmdpmmkWPD+KTYtIxQ
+         IcTbdWiRUMpjptIcDMrW9bAHCb89sws3z9F8BcYhK6Cqr7PqMKRVU1GALg89GbV+nFkq
+         zQ3yuzV9cBpibkPtAmkQ+zijtADHM+aUnmJgT7QZwalu1gQc9+GikFp0WmR0BziyYhyg
+         Nggjyml9dF535wrmlRjxjRezhXh0oXpAmKlaLisMblrtoSzYFQamzYreK0Wz/hqErwF0
+         MZnA==
+X-Gm-Message-State: AOJu0Ywr/IaGbVdPE0nZsyVFn3bHuxvIC+7ESWwlKH9f+rt9i+nEb00j
+	IKvLNfm9LwZN+ETF0GU2wao=
+X-Google-Smtp-Source: AGHT+IFIucVq/Ad+FCHssDPbCMwr4B9Zz+8RCfmeVFjlA7QUKRwCAc/TaISJtgr2H0CzQ9O+7oS1Ow==
+X-Received: by 2002:a2e:6a12:0:b0:2c9:e3ad:1f32 with SMTP id f18-20020a2e6a12000000b002c9e3ad1f32mr870027ljc.6.1701781332351;
+        Tue, 05 Dec 2023 05:02:12 -0800 (PST)
+Received: from dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
+        by smtp.gmail.com with ESMTPSA id u18-20020a2eb812000000b002ca0090a933sm801384ljo.10.2023.12.05.05.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 04:36:07 -0800 (PST)
-Date: Tue, 5 Dec 2023 13:36:05 +0100
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: (subset) [PATCH 00/17] dt-bindings: samsung: add specific
- compatibles for existing SoC
-Message-ID: <ZW8ZNZ_FJSV8fq-U@orome.fritz.box>
-References: <20231108104343.24192-1-krzysztof.kozlowski@linaro.org>
- <170119374454.445690.515311393756577368.b4-ty@gmail.com>
- <20231128205841.al23ra5s34rn3muj@pengutronix.de>
+        Tue, 05 Dec 2023 05:02:11 -0800 (PST)
+Date: Tue, 5 Dec 2023 15:02:02 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Subject: [PATCH v2] iio: gts-helpers: Round gains and scales
+Message-ID: <37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,82 +69,174 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Tgq7dxd4jwke8dPo"
+	protocol="application/pgp-signature"; boundary="uXiljCFbixsG9fSe"
 Content-Disposition: inline
-In-Reply-To: <20231128205841.al23ra5s34rn3muj@pengutronix.de>
-User-Agent: Mutt/2.2.12 (2023-09-09)
 
 
---Tgq7dxd4jwke8dPo
-Content-Type: text/plain; charset=utf-8
+--uXiljCFbixsG9fSe
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 28, 2023 at 09:58:41PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Tue, Nov 28, 2023 at 06:49:23PM +0100, Thierry Reding wrote:
-> >=20
-> > On Wed, 08 Nov 2023 11:43:26 +0100, Krzysztof Kozlowski wrote:
-> > > Merging
-> > > =3D=3D=3D=3D=3D=3D=3D
-> > > I propose to take entire patchset through my tree (Samsung SoC), beca=
-use:
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->=20
-> > > 1. Next cycle two new SoCs will be coming (Google GS101 and ExynosAut=
-ov920), so
-> > >    they will touch the same lines in some of the DT bindings (not all=
-, though).
-> > >    It is reasonable for me to take the bindings for the new SoCs, to =
-have clean
-> > >    `make dtbs_check` on the new DTS.
-> > > 2. Having it together helps me to have clean `make dtbs_check` within=
- my tree
-> > >    on the existing DTS.
-> > > 3. No drivers are affected by this change.
-> > > 4. I plan to do the same for Tesla FSD and Exynos ARM32 SoCs, thus ex=
-pect
-> > >    follow up patchsets.
-> > >=20
-> > > [...]
-> >=20
-> > Applied, thanks!
-> >=20
-> > [12/17] dt-bindings: pwm: samsung: add specific compatibles for existin=
-g SoC
-> >         commit: 5d67b8f81b9d598599366214e3b2eb5f84003c9f
->=20
-> You didn't honor (or even comment) Krzysztof's proposal to take the
-> whole patchset via his tree (marked above). Was there some off-list
-> agreement?
+The GTS helpers do flooring of scale when calculating available scales.
+This results available-scales to be reported smaller than they should
+when the division in scale computation resulted remainder greater than
+half of the divider. (decimal part of result > 0.5)
 
-I had read all that and then looking at patchwork saw that you had
-marked all other patches in the series as "handled-elsewhere" and only
-this one was left as "new", so I assumed that, well, everything else was
-handled elsewhere and I was supposed to pick this one up...
+Furthermore, when gains are computed based on scale, the gain resulting
+=66rom the scale computation is also floored. As a consequence the
+floored scales reported by available scales may not match the gains that
+can be set.
 
-I'll drop this one.
+Finally, the loop-based implementation of the 64-bit division which is
+used by GTS-helpers may be running for a _very long_ time. This patch
+does also replace this implementation by a well-known variant of a 64-bit
+division div64_u64().
 
-Thierry
+The related discussion can be found from:
+https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
 
---Tgq7dxd4jwke8dPo
+Do rounding when computing scales and gains.
+
+Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+---
+
+Revision history:
+v1 =3D> v2:
+- fix rounding in iio_gts_get_gain()
+  The iio_gts_get_gain() is accidentally doing >> 2 when it attempts to
+  divide by 2. Fix this.
+- use proper 64bit division div64_u64() instead of a loop and extra 32bit
+  function
+- Fix iio_gts_total_gain_to_scale() documentation as it's not computing
+  gain.
+- Add a comment on rounding logic in iio_gts_total_gain_to_scale(). It's
+  fair to point out Jonathan questioned the rounding logic and suggested
+  using the more of a "de-facto" method of adding divider / 2 to value
+  being divided, and checking for overflow. The proper handling of the
+  overflow however resulted even more confusing code (in my  subjective
+  opinion) than the (more) straightforward approach of checking the size
+  of the reminder and adding +1 to result when needed.
+
+Subjahit, is there any chance you test this patch with your driver? Can
+you drop the:
+	if (val2 % 10)
+		val2 +=3D 1;
+=66rom scale setting and do you see written and read scales matching?
+
+I did run a few Kunit tests on this change - but I'm still a bit jumpy
+on it... Reviewing/testing is highly appreciated!
+---
+ drivers/iio/industrialio-gts-helper.c | 31 +++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
+io-gts-helper.c
+index 7653261d2dc2..19091193e430 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -7,6 +7,7 @@
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/export.h>
++#include <linux/math64.h>
+ #include <linux/minmax.h>
+ #include <linux/module.h>
+ #include <linux/overflow.h>
+@@ -28,28 +29,32 @@
+  *		scale is 64 100 000 000.
+  * @scale:	Linearized scale to compute the gain for.
+  *
+- * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
++ * Return:	(rounded) gain corresponding to the scale. -EINVAL if scale
+  *		is invalid.
+  */
+ static int iio_gts_get_gain(const u64 max, const u64 scale)
+ {
+-	u64 full =3D max;
+-	int tmp =3D 1;
++	u64 full =3D max, half_div;
++	int tmp =3D 0;
+=20
+ 	if (scale > full || !scale)
+ 		return -EINVAL;
+=20
+-	if (U64_MAX - full < scale) {
+-		/* Risk of overflow */
+-		if (full - scale < scale)
++	half_div =3D scale >> 1;
++
++	if (U64_MAX - full < half_div) {
++		/*
++		 * Would overflow when adding half_div to full. Hence we need
++		 * to subtract scale from full if full is big enough.
++		 */
++		if (full - scale <=3D half_div)
+ 			return 1;
+=20
+ 		full -=3D scale;
+ 		tmp++;
+ 	}
+=20
+-	while (full > scale * (u64)tmp)
+-		tmp++;
++	tmp +=3D div64_u64(full + half_div, scale);
+=20
+ 	return tmp;
+ }
+@@ -140,10 +145,18 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, =
+int total_gain,
+ 				int *scale_int, int *scale_nano)
+ {
+ 	u64 tmp;
++	int rem;
+=20
+ 	tmp =3D gts->max_scale;
+=20
+-	do_div(tmp, total_gain);
++	rem =3D do_div(tmp, total_gain);
++
++	/*
++	 * Round up if remainder is equal to or greater than the half of
++	 * the divider.
++	 */
++	if (total_gain > 1 && rem >=3D total_gain / 2)
++		tmp +=3D 1ULL;
+=20
+ 	return iio_gts_delinearize(tmp, NANO, scale_int, scale_nano);
+ }
+--=20
+2.41.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--uXiljCFbixsG9fSe
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmVvGTUACgkQ3SOs138+
-s6FxSg/9GYBUdx6f/ahQ2fBXUlTXv4ykvHBiRJGfUuGbx8MJaPoRIbAl2gcTnwnB
-fRuGMlQD0DbWYLVejy/wzASn//gvqYVp3sjPDSKFuFoUMSVNRBAJJy+DmdHcb7ia
-ZnhU2k/meHpKnCP8Y3im5k1MEbiexQ8OShzyVx8ARU/Y4BXrj2SfODDI/KGVYFa9
-Wfv2b1eoatUBHcDzYbjxow+qyza8E9Ym2b06HRhzQOotMSxLdBF5z1KP/29i4IWj
-WGwsIEbPMmM4rLFmQ45IRWz7GwZL8Fh3afeaUijl2cytKINUgBSkvqPsQPx25FdO
-xKMJHxcPjtERjnHorOGLNpotMNldbw2VRtQDD57QcqqqDBagcqpHfXwsOfuyK6v/
-r9p9gAFCFjF/bpQlKZdwLZ/+khDrkH+UH3cR0OBq/mN1Sb4JcSKbLwv8pGE/F+v6
-NXrlp9Xwx/gIyrRL6yijGCW50TXnE06/w4NDhHwi0tdio//f1BhQTWWYVKOArw0B
-Dpsrq/yDC2xJ7afiBdfKs+nTFuujmcTS1OguA5v+Ww/8a8Bp5bsBJj5p2GkbJa/3
-dChdDhsGy9As2KbUN2WYE+VIYUudcMiXbB8oKf+/kxhgwhSNgP+nirXkV422hKQs
-0w+Dee6JI0kKyL3S8AjiEW3ZmbKqJpV30pgyRVUlSIXRjoljdzA=
-=cbqG
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmVvH0QACgkQeFA3/03a
+ocX5bAf9Ea3Yt5k5zn+vkUK7WoFgugWa6icJZvdv0LOZPhOzCTJqzX6LAJ2fKlvv
++hZRY/MHXYoXtU9fXwA+lUWqYBSD4TX8ley4DUsoZL2xrwW1OyopXUUFGmMZd05U
+UIGjXDtKPV7DILzAIY+RLOP1LrlIWNxqVnRSDiPup4ztVxrParmIIcG1oRee9Dcm
+iAAlfdiRbKpoy+TPqUg2+BDCwwHjPyydYcAJY+yVLWUpadJsXrGWREVEXtEEk2c7
+Cjt/FaaxN4FErN3sh8rMw9tlrLA3x5+/dKOF2l1RzFB4v/zieYrCeIXCM5ZA9vuE
+nZwi5L2qhRpfCSLY8cLxB5byTnH1Cw==
+=yk1E
 -----END PGP SIGNATURE-----
 
---Tgq7dxd4jwke8dPo--
+--uXiljCFbixsG9fSe--
 

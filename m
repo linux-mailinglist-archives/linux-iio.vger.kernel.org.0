@@ -1,126 +1,463 @@
-Return-Path: <linux-iio+bounces-620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76EC804431
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 02:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04825804488
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 03:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14CA11C20C02
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 01:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A97A1C20BBB
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 02:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C805317F1;
-	Tue,  5 Dec 2023 01:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF0E46AF;
+	Tue,  5 Dec 2023 02:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="nDYd7mEi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBj3tR3j"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C5EB4;
-	Mon,  4 Dec 2023 17:43:33 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 55E50870B7;
-	Tue,  5 Dec 2023 02:43:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1701740612;
-	bh=WtPjUVf5j3WC4+8LX7w7DclZoF+g78ryXngm3BZJZVk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nDYd7mEi/0+Z0RbhV3XhsVpj9SfeMOChKEW4HLNIuWySz5XUEcRXXbLgiRxbjKg35
-	 fIVTdo8TNluP9Rot6PdTXj6CoRDKBgCKwXvsuZoei3R53a0pYGdjqelpvAW+msEMUb
-	 fzFrwYdovij0VdtXyT9vCnYgrx66K2D/ZQdwIs5a9RpPPiL5C4RPtso90OuBJVR4O1
-	 3RqUBfjIjTb+7RnYnEfwIwgSeXRGNTO6akU2bpej74Bl+PSjB0WbCCfO++NEvXbLYI
-	 MQpft9QuQh3EW5uDmuPpbHdtCeXPki6wG5+jtvlEbs2I5yPnVHebT1o+29XGEvlJR3
-	 798LyeTl6VU/A==
-Message-ID: <0ae6466f-479a-476a-adf4-3bd099235eda@denx.de>
-Date: Tue, 5 Dec 2023 02:43:30 +0100
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FC4107;
+	Mon,  4 Dec 2023 18:16:46 -0800 (PST)
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-77dd4532a60so361784185a.2;
+        Mon, 04 Dec 2023 18:16:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701742606; x=1702347406; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YJvYfpdx4Dv3ZMACoLttg384q/B4GTiS77MM47VJumU=;
+        b=kBj3tR3jkiKMzwnIJyXNJTw4z4KkhKP7sIGSDcCEoqVR7COvVX1Pm9xr6VGPHzXl40
+         F6pymsJ4xNN+TbQCwZDdxd8ADR+xA6RIC84H5kAH1mQ+Nm0s0QuOIbIBbwukB8mIRgHX
+         N7e78Gpv+pWmT9Lhopc4nRnV447MMj9m9YsERRNznGDbvCbUjMtzqb4kLr347rVJG9CJ
+         R3rNRzEfp/paWKrC/pVyTpuiTL6HYW3EjCWms7Zg2aB3hNcQphPxUh08Vblk+WZbZugh
+         zVhzbwPuEniv3rQBVgm9L6MPdL646gGFVtDaLkbXOkSzP3ReWJUfwlz7tdDPvwDGlvim
+         syCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701742606; x=1702347406;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YJvYfpdx4Dv3ZMACoLttg384q/B4GTiS77MM47VJumU=;
+        b=j3qyadCFpYsmWpfuJRAgW5AaD1cpqILiFNqixD/MJBQf9IYVNtLqvn0vflzCOl9pLq
+         6eFJj/QBn3v9mttAQ8f61zuzFqD/Avbrr1t0m5oZzue+Lqmt2p4+6F2eCO+I1JKCpyGL
+         pl9Tt8YZf12GL3n4xG3DZ9lezh9wCmAsT0wcJ6EdC7ZGfFG/iM0zEFcj5y+YL9hbwU2z
+         WIqSO9IA2H4wke5PmZPrt9uTRWxTdcXasOFRwXAod60GzW8BvsJHE9f966EQXQnQ4JbC
+         BG4eas3YPadfGewGET7SwVsnrX64EPkP3e7eSQPONY8CPdLkPw2bqhgtBwt3n0T7+4u2
+         nRXQ==
+X-Gm-Message-State: AOJu0YxuuVa7cgAf7zJQ+HX6xdaXb1KvQ018WXxf9nFRMSHrsww8gM2i
+	84ouJWRE1x1Y+bCtejuBV4XPMmvOeRu4SA==
+X-Google-Smtp-Source: AGHT+IH9YVBqotP2NLDIK98VWhd2qevLzXqU3eb0dmV5lWwjUcw9OnX5FhsTapTzZ8BeOor0nBabsw==
+X-Received: by 2002:a05:620a:1206:b0:77f:878:b58 with SMTP id u6-20020a05620a120600b0077f08780b58mr535341qkj.153.1701742605606;
+        Mon, 04 Dec 2023 18:16:45 -0800 (PST)
+Received: from abdel ([174.95.13.129])
+        by smtp.gmail.com with ESMTPSA id k13-20020a05620a07ed00b0077d61831eb2sm4716435qkk.40.2023.12.04.18.16.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 18:16:45 -0800 (PST)
+Date: Mon, 4 Dec 2023 21:16:34 -0500
+From: Abdel Alkuor <alkuor@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org, lars@metafoo.de,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: temperature: Add support for AMS AS6200
+Message-ID: <ZW6IArKhx4KvxyTD@abdel>
+References: <20231202041651.719963-1-alkuor@gmail.com>
+ <20231202041651.719963-2-alkuor@gmail.com>
+ <20231204135014.15ea47b6@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] iio: light: isl76682: Add ISL76682 driver
-Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Andre Werner <andre.werner@systec-electronic.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Naresh Solanki <naresh.solanki@9elements.com>,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Rob Herring <robh+dt@kernel.org>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-References: <20231127212726.77707-1-marex@denx.de>
- <20231127212726.77707-2-marex@denx.de> <20231204112941.770e22cb@jic23-huawei>
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20231204112941.770e22cb@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231204135014.15ea47b6@jic23-huawei>
 
-On 12/4/23 12:29, Jonathan Cameron wrote:
-> On Mon, 27 Nov 2023 22:26:53 +0100
-> Marek Vasut <marex@denx.de> wrote:
+On Mon, Dec 04, 2023 at 01:50:14PM +0000, Jonathan Cameron wrote:
+> On Fri,  1 Dec 2023 23:16:51 -0500
+> Abdel Alkuor <alkuor@gmail.com> wrote:
 > 
->> The ISL76682 is very basic ALS which only supports ALS or IR mode
->> in four ranges, 1k/4k/16k/64k LUX. There is no IRQ support or any
->> other fancy functionality.
->>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> Signed-off-by: Marek Vasut <marex@denx.de>
+> > as6200 is a high accuracy temperature sensor of 0.0625C with a range
+> > between -40 to 125 Celsius degrees.
+> > 
+> > The driver implements the alert trigger event in comparator mode where
+> > consecutive faults are converted into periods, high/low temperature
+> > thresholds require to be above/below the set limit for n seconds for
+> > the alert to be triggered/cleared. The alert is only cleared when the
+> > current temperature is below the low temperature threshold for n seconds.
+> > 
+> > The driver supports the following:
+> > - show available sampling frequencey
+> > - read/write sampling frequency
+> > - read raw temperature
+> > - read scaling factor
+> > - read/write temperature period that needs to be met for low/high
+> >   temperature thresholds to trigger an alert
+> > - show available temperature period thresholds
+> > - buffer trigger
+> > - temperature alert event trigger
 > 
-> There is a additional question on what scale means for
-> an IR channel.  There aren't any well defined units (as it depends
-> on the sensitivity curve) so in general we avoid providing scale
-> for intensity readings.
+> Hi Abdel,
 > 
-> The datasheet has a vague go at working around this problem by
-> using counts relative to IR measurement in daylight which would
-> measure 210 LUX.  (via faking that with a 850nm green led??)
-> 
-> That's far from a standard..
-> 
-> We do have precedence of scale applied to intensity channels
-> so I guess the ship has sailed.
-> 
-> Perhaps we should just add an explicit not to the ABI docs
-> to cover that changing the scale in these sensors will result
-> in the counts changing, but multiplying raw by scale isn't going
-> to give any sensible units.
-> 
-> So probably not a thing to fix in this series, but to address
-> separately.
+> A few comments inline. Looking good in general.
+>
+Hi Jonathon,
 
-Is something like this what you have in mind ?
+Thank you for your time. I have a couple _silly_ questions about the tag
+and returning from if else. Other than that, your comments will be addressed
+in v3.
+> > 
+> > Datasheet: https://ams.com/documents/20143/36005/AS6200_DS000449_4-00.pdf
+> > 
+> 
+> No blank line here.  Tags block (and Datasheet is a tag) never has blank lines
+> as that breaks some existing tooling.
+> 
+Understood. 
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio 
-b/Documentation/ABI/testing/sysfs-bus-iio
-index 0eadc08c3a139..584607f560d02 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -618,7 +618,9 @@ KernelVersion:      2.6.35
-  Contact:       linux-iio@vger.kernel.org
-  Description:
-                 If a discrete set of scale values is available, they
--               are listed in this attribute.
-+               are listed in this attribute. Unlike illumination,
-+               multiplying intensity by intensity_scale does not
-+               yield value with any standardized unit .
+P.S. when running checkpatch.pl on this patch, I get the following warning:
 
-  What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
-  What:          /sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain
+WARNING: Unknown link reference 'Datasheet:', use 'Link:' or 'Closes:' instead
 
+should I use Link instead?
+> > Signed-off-by: Abdel Alkuor <alkuor@gmail.com>
+> >  
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_filter_notch_center_frequency
+> > diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+> > index ed384f33e0c7..a0ffbc77e623 100644
+> > --- a/drivers/iio/temperature/Kconfig
+> > +++ b/drivers/iio/temperature/Kconfig
+> > @@ -4,6 +4,17 @@
+> >  #
+> >  menu "Temperature sensors"
+> >  
+> > +config AS6200
+> > +       tristate "AS6200 temperature sensor"
+> > +       depends on I2C
+> > +       select REGMAP_I2C
+> > +       help
+> > +         If you say yes here you get support for AS6200
+> > +         temperature sensor chip connected via I2C.
+> > +
+> > +         This driver can also be built as a module.  If so, the module
+> > +         will be called as6200.
+> > +
+> >  config IQS620AT_TEMP
+> >  	tristate "Azoteq IQS620AT temperature sensor"
+> >  	depends on MFD_IQS62X || COMPILE_TEST
+> > @@ -157,5 +168,4 @@ config MAX31865
+> >  
+> >  	  This driver can also be build as a module. If so, the module
+> >  	  will be called max31865.
+> > -
+> Stray change.
+>
+Ops, I fixed it locally and forgot to regenerate a patch after. Will be fixed
+in v3
+> >  endmenu
+> 
+> > diff --git a/drivers/iio/temperature/as6200.c b/drivers/iio/temperature/as6200.c
+> > new file mode 100644
+> > index 000000000000..7fcc785871d8
+> > --- /dev/null
+> > +++ b/drivers/iio/temperature/as6200.c
+> > @@ -0,0 +1,493 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Driver for AMS AS6200 Temperature sensor
+> > + *
+> > + * Author: Abdel Alkuor <alkuor@gmail.com>
+> > + */
+> > +
+> > +#include <linux/bitfield.h>
+> > +#include <linux/device.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/kstrtox.h>
+> > +#include <linux/module.h>
+> > +#include <linux/regmap.h>
+> > +
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/events.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +
+> > +#define AS6200_TVAL_REG		0x0
+> > +#define AS6200_CONFIG_REG	0x1
+> > +#define AS6200_TLOW_REG		0x2
+> > +#define AS6200_THIGH_REG	0x3
+> > +
+> > +#define AS6200_CONFIG_AL	BIT(5)
+> > +#define AS6200_CONFIG_CR	GENMASK(7, 6)
+> > +#define AS6200_CONFIG_SM	BIT(8)
+> > +#define AS6200_CONFIG_IM	BIT(9)
+> > +#define AS6200_CONFIG_POL	BIT(10)
+> > +#define AS6200_CONFIG_CF	GENMASK(12, 11)
+> > +
+> > +#define AS6200_TEMP_MASK	GENMASK(15, 4)
+> > +
+> > +struct as6200 {
+> > +	struct regmap *regmap;
+> > +	struct mutex lock; /* Prevent concurrent temp fault processing */
+> 
+> Why does it matter? What might cause such processing?
+> 
+Good point. I had a misunderstanding how the interrupts work and I did
+some reading and realized that the interrupt is disabled until the
+buttom half of the interrupt is completed as oneshot type is used.
+I'll remove it in v3.
+> > +};
+> > +
+> > +static const int as6200_samp_freq[4][2] = {
+> > +	{ 0, 250000 },
+> > +	{ 1, 0 },
+> > +	{ 4, 0 },
+> > +	{ 8, 0 }
+> > +};
+> > +
+> > +/* Consective faults converted to period */
+> > +static const int as6200_temp_thresh_periods[4][4][2] = {
+> > +	{ { 4, 0 }, { 8, 0 }, { 16, 0 }, { 24, 0 } },
+> > +	{ { 1, 0 }, { 2, 0 }, { 4, 0 }, { 6, 0 } },
+> > +	{ { 0, 250000 }, { 0, 500000 }, { 1, 0 }, { 2, 0} },
+> > +	{ { 0, 125000 }, { 0, 250000 }, { 0, 500000 }, { 0, 750000 } }
+> 
+> I'd suggest naming the first column at least (which is CR I think?)
+> 
+> So define an enum and 
+> enum {
+> 	AS6200_CR_0_25HZ = 0,
+> 	AS6200_CR_1HZ = 1,
+> 	AS6200_CR_4HZ = 2,
+> 	AS6200_CR_8HZ = 3,
+> };
+> And use that for the samp freq entries above, so that they clearly relate
+> to the rows of this arram
+> 	[AS6200_CR_0_25HZ] = { { 4, 0 }, { 8, 0 }, { 16, 0 }, { 24, 0 } },
+> You could take it further and use an enum for CF as well.
+> 
+> 	[AS6200_CR_0_25HZ] = {
+> 		[AS6200_CF_1] = { 4, 0 },
+> 		[AS6200_CF_2] = { 8, 0 },
+> 		[AS6200_CF_4] = { 16, 0 },
+> 		[AS6200_CF_6] = { 24, 0 },
+> 	},
+> 	[AS6200_CR_1_HZ] = {
+> 		[AS6200_CF_1] = { 1, 0 },
+> 		[AS6200_CF_2] = { 2, 0 },
+> 	...	
+> 	}
+> 	etc which makes it clear where all the numbers come.
+> 
+> > +};
+>
+Good suggestion. I'll fix it in v3.
+> 
+> > +static int as6200_read_event_value(struct iio_dev *indio_dev,
+> > +				   const struct iio_chan_spec *chan,
+> > +				   enum iio_event_type type,
+> > +				   enum iio_event_direction dir,
+> > +				   enum iio_event_info info,
+> > +				   int *val, int *val2)
+> > +{
+> > +	struct as6200 *as = iio_priv(indio_dev);
+> > +	unsigned int reg;
+> > +	unsigned int tmp;
+> > +	int ret;
+> > +	u8 cf;
+> > +	u8 cr;
+> > +
+> > +	switch (dir) {
+> > +	case IIO_EV_DIR_FALLING:
+> > +		reg = AS6200_TLOW_REG;
+> > +		break;
+> > +	case IIO_EV_DIR_RISING:
+> > +		reg = AS6200_THIGH_REG;
+> > +		break;
+> > +	case IIO_EV_DIR_EITHER:
+> > +		reg = AS6200_CONFIG_REG;
+> > +		break;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	ret = regmap_read(as->regmap, reg, &tmp);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (info == IIO_EV_INFO_VALUE) {
+> > +		*val = sign_extend32(FIELD_GET(AS6200_TEMP_MASK, tmp), 11);
+> > +		ret = IIO_VAL_INT;
+> return here.
+> 
+> > +	} else {
+> > +		cf = FIELD_GET(AS6200_CONFIG_CF, tmp);
+> > +		cr = FIELD_GET(AS6200_CONFIG_CR, tmp);
+> > +		*val = as6200_temp_thresh_periods[cr][cf][0];
+> > +		*val2 = as6200_temp_thresh_periods[cr][cf][1];
+> > +		ret = IIO_VAL_INT_PLUS_MICRO;
+> 
+> and here.  If there is nothing more to be done, it simplifies the code
+> flow being read to just return as quick as possible.
+>
+I did it as you mentioned, and when running check_patch.pl, it gives back a
+warning that else is not needed here because of the return in the if
+statement. So I opted into using ret instead, should I remove the else or ignore
+the warning?
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> 
+> > +static irqreturn_t as6200_event_handler(int irq, void *private)
+> > +{
+> > +	struct iio_dev *indio_dev = private;
+> > +	struct as6200 *as = iio_priv(indio_dev);
+> > +	unsigned int alert;
+> > +	enum iio_event_direction dir;
+> > +	int ret;
+> > +
+> > +	guard(mutex)(&as->lock);
+> What data are we protecting here?
+> 
+No data actually. As I mentioned prior, will be dropped in v3.
+> > +
+> > +	ret = regmap_read(as->regmap, AS6200_CONFIG_REG, &alert);
+> > +	if (ret)
+> > +		return IRQ_NONE;
+> > +
+> > +	alert = FIELD_GET(AS6200_CONFIG_AL, alert);
+> > +
+> > +	dir = alert ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
+> > +
+> > +	iio_push_event(indio_dev,
+> > +		       IIO_EVENT_CODE(IIO_TEMP, 0, 0,
+> > +				      dir,
+> > +				      IIO_EV_TYPE_THRESH,
+> > +				      0, 0, 0),
+> > +		       iio_get_time_ns(indio_dev));
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> > +static irqreturn_t as6200_trigger_handler(int irq, void *private)
+> > +{
+> > +	struct iio_poll_func *pf = private;
+> > +	struct iio_dev *indio_dev = pf->indio_dev;
+> > +	struct as6200 *as = iio_priv(indio_dev);
+> > +	int ret;
+> > +	u8 data[16];
+> 
+> I'd make this much more explicit and make sure you zero it to avoid leaking
+> data.
+> 
+> 	struct data {
+> 		u8 channel;
+> 		s64 timestamp __aligned(8);
+> 	};
+> 
+> 	memset(&data, 0, sizeof(data)); /* Ensures the holes are zero filled */
+>
+My system 1 thinking got me here as I tested it and all holes
+were set to 0. Will be fixed in v3.
+> Also, avoid the casting mess and read into a local variable that is an unsigned int
+> and copy it to the struct data if no error.
+> > +
+> > +	ret = regmap_read(as->regmap, AS6200_TVAL_REG, (unsigned int *)data);
+> > +	if (!ret)
+> Whilst it's more lines, greatly prefer to see error paths out of line and good
+> paths inline (so no if (!ret))
+> 
+> 	if (ret)
+> 		goto done;
+> 
+> 	iio_push...
+> 
+> done:
+> 	...
+> 
+> May seem silly but when reviewing a lot of code, keeping things looking "normal"
+> is a great benefit!
+>
+Makes sense. Will be fixed in v3.
+> > +		iio_push_to_buffers_with_timestamp(indio_dev, data,
+> > +						   iio_get_time_ns(indio_dev));
+> > +
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> 
+> ...
+> 
+> > +
+> > +static int __maybe_unused as6200_suspend(struct device *dev)
+> > +{
+> > +	struct i2c_client *client = to_i2c_client(dev);
+> > +	struct as6200 *as = iio_priv(i2c_get_clientdata(client));
+> > +
+> > +	if (client->irq)
+> > +		disable_irq(client->irq);
+> > +
+> > +	return regmap_update_bits(as->regmap, AS6200_CONFIG_REG,
+> > +				  AS6200_CONFIG_SM, AS6200_CONFIG_SM);
+> > +}
+> > +
+> > +static int __maybe_unused as6200_resume(struct device *dev)
+> > +{
+> > +	struct i2c_client *client = to_i2c_client(dev);
+> > +	struct as6200 *as = iio_priv(i2c_get_clientdata(client));
+> > +
+> > +	if (client->irq)
+> > +		enable_irq(client->irq);
+> 
+> I would normally expect suspend and resume to be mirror images. If that doesn't
+> make sense for some reason and we do need to do the irq handling
+> before the register write in both cases then add a comment.
+No reason. Will be fixed in v3.
+> 
+> > +
+> > +	return regmap_update_bits(as->regmap, AS6200_CONFIG_REG,
+> > +				  AS6200_CONFIG_SM, 0);
+> > +}
+> > +
+> > +static const struct dev_pm_ops as6200_pm_ops = {
+> 
+> DEFINE_SIMPLE_DEV_PM_OPS()
+>
+Will be fixed in v3.
+> 
+> > +	SET_SYSTEM_SLEEP_PM_OPS(as6200_suspend, as6200_resume)
+> > +};
+> > +
+> > +static const struct i2c_device_id as6200_id_table[] = {
+> > +	{ "as6200" },
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(i2c, as6200_id_table);
+> > +
+> > +static const struct of_device_id as6200_of_match[] = {
+> > +	{ .compatible = "ams,as6200" },
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, as6200_of_match);
+> > +
+> > +static struct i2c_driver as6200_driver = {
+> > +	.driver = {
+> > +		.name = "as6200",
+> > +		.pm = pm_sleep_ptr(&as6200_pm_ops),
+> > +		.of_match_table = as6200_of_match,
+> > +	},
+> > +	.probe = as6200_probe,
+> > +	.id_table = as6200_id_table,
+> > +};
+> > +module_i2c_driver(as6200_driver);
+> > +
+> > +MODULE_AUTHOR("Abdel Alkuor <alkuor@gmail.com");
+> > +MODULE_DESCRIPTION("AMS AS6200 Temperature Sensor");
+> > +MODULE_LICENSE("GPL");
+> 
 

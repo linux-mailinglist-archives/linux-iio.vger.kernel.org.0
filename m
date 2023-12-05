@@ -1,107 +1,242 @@
-Return-Path: <linux-iio+bounces-636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6966680585A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41048058AF
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A2CF1C210D7
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 15:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3F62823A5
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 15:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AAB68E8D;
-	Tue,  5 Dec 2023 15:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8A5F1C9;
+	Tue,  5 Dec 2023 15:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNjWugS1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8D1BA;
-	Tue,  5 Dec 2023 07:16:55 -0800 (PST)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6d8d28e4bbeso1878116a34.3;
-        Tue, 05 Dec 2023 07:16:55 -0800 (PST)
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E97122;
+	Tue,  5 Dec 2023 07:29:11 -0800 (PST)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-67ab5e015aaso19514296d6.0;
+        Tue, 05 Dec 2023 07:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701790151; x=1702394951; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kIYKGYeqEa37hnkKOr+7YP8jImIF+a10I7pn6sOwr9E=;
+        b=dNjWugS1ERo11GXtamz/7egmeRM7rQOTBf/VvnYIGSDkTSkNv0xUGI7/xnbsRFi71J
+         9znzx0uIa1M0RjE6ckkkK+4SsAf8dsrsY464R/OrQkgcg0DVPdUTVdOXegxp7qWwg7NN
+         kYxHvgubtAUrqwnkM2JgCwwWn12ACW1OmGqyeLM2A4SgzYkuYDrzOHSpgtQlINy2GsEj
+         38iRWKU0H5w7++gpRVEq4LA/UHeNVLY7VCUEKlpMI7AKuS85aEv3UkwTGnpqq/lhhRk5
+         ct0PnqckBVAxJVH7Zw0+B/GCKBhozEqKdQRpkGcunBQwhhkUW+Zt4n5JewvAxKWnrjYv
+         a3KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701789414; x=1702394214;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PIL2R5QWcyrDJIIlZYpvgWP7i5DDM3sfGQ6GQVJmqyE=;
-        b=wnuY7JIcN4LZuwOOMM1JkiZcNOVPGx8rBhnLmI0Z54jC3VH9FB+n7wtEJE+T7qHc3c
-         lC3nxo3m7db0tp/eZsxDDPc7zPTfBMqlxDNz5aFdIZfz7lPMKEupbIwodkciC52w6AMX
-         xM5dqdPmNUQgz5oSR9sDLhrx836KDhXSimGiOFmuUM+kUS6hsePt8JQZ/IyGdMg0JD4k
-         uQOPNqTvsQrEe6mcJdM5cQl1GXZJXnehE8Z4VIcp6fyELdAXy7mZR6SftP6eRQVHRYRt
-         C4Jz2uWjZ+1tv2YnZMLPKMo6PEhJLPakqwMbchpE/ULOkrOYwoMwRXDyvnGSEnlMybFJ
-         Eq/A==
-X-Gm-Message-State: AOJu0Yxnu5I3izaBe1G4IYU4/wNtHd8UGaY99AdDW8N+LEdkB3yr87uT
-	PyQ5SlcDyuIf6uu4j5jmWg==
-X-Google-Smtp-Source: AGHT+IEhOsKceKiNrJehVdlZj58kZKlSDVOmPMSaw8HpLasVjTg3PdH3MbioSc00+OCdV1KBAtZBvA==
-X-Received: by 2002:a05:6830:43a8:b0:6bd:152f:9918 with SMTP id s40-20020a05683043a800b006bd152f9918mr6197492otv.14.1701789412544;
-        Tue, 05 Dec 2023 07:16:52 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o11-20020a0568301c4b00b006d87c7497e7sm1454992otg.1.2023.12.05.07.16.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 07:16:51 -0800 (PST)
-Received: (nullmailer pid 3083183 invoked by uid 1000);
-	Tue, 05 Dec 2023 15:16:50 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1701790151; x=1702394951;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kIYKGYeqEa37hnkKOr+7YP8jImIF+a10I7pn6sOwr9E=;
+        b=K/wRtA5IJ65f8kZumY1SO/jQ+KGsXm7B+NwyitxgtZm64uQYqzb90dRD0YZ83mXbLY
+         gLnBAXTvkTDOvgA7yhNhJPzXTe/1YEIJXMN6A1dT4H+cxzF9LkhAi5TaPNr9udiHMUTW
+         rWTNwrdskUIVfvhhtMN3hVO0vuBaGMGHHFp7ntkorcItDrGvAHm7jyc++25CCQPas2D+
+         48pFXfro7RFDN33WD5L4aflwS6MiO5CP5dkU7Z/4ZyBUnbtwQX0oBqFNMll4qFH0jqsv
+         6N/0iifmH1RyCkzN7qd+YLMYWin91sxjhwJV4Tm+Oxjtbbb8qiuuAulgzINS2qIL3jOn
+         qSzQ==
+X-Gm-Message-State: AOJu0YxS0RXqm/v5nyyurfP3Xkx+6eq68uHKhFo2m8yaY6t5lqBoII/o
+	u2Jwz/BiygopTCQekNsI4Nj5WKAc2mZKxPFL+xc=
+X-Google-Smtp-Source: AGHT+IFP2cXT9WCBVw22m/b3SLYzL/Q+YfaMu4Zah6NkpXTbDv/9NQTg66OiyNUFfmmtLAA5a1BXMW6tzTy8MvgWBmQ=
+X-Received: by 2002:a05:6214:1803:b0:67a:656d:72e2 with SMTP id
+ o3-20020a056214180300b0067a656d72e2mr1305611qvw.4.1701790150933; Tue, 05 Dec
+ 2023 07:29:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
+References: <20231205134223.17335-1-mitrutzceclan@gmail.com> <20231205134223.17335-2-mitrutzceclan@gmail.com>
+In-Reply-To: <20231205134223.17335-2-mitrutzceclan@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 5 Dec 2023 17:28:34 +0200
+Message-ID: <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
 To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: devicetree@vger.kernel.org, ChiaEn Wu <chiaen_wu@richtek.com>, linux-kernel@vger.kernel.org, Ceclan Dumitru <dumitru.ceclan@analog.com>, Jonathan Cameron <jic23@kernel.org>, andy@kernel.org, linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>, Conor Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org, Mike Looijmans <mike.looijmans@topic.nl>, linus.walleij@linaro.org, Niklas Schnelle <schnelle@linux.ibm.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Rob Herring <robh+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, brgl@bgdev.pl, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, =?utf-8?q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, Arnd Bergmann <arnd@arndb.de>, Haibo Chen <haibo.chen@nxp.com>, Michael Walle <michael@walle.cc>
-In-Reply-To: <20231205134223.17335-1-mitrutzceclan@gmail.com>
-References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
-Message-Id: <170178941047.3083151.15161174214123068689.robh@kernel.org>
-Subject: Re: [PATCH v7 1/2] dt-bindings: adc: add AD7173
-Date: Tue, 05 Dec 2023 09:16:50 -0600
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
+	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On Tue, 05 Dec 2023 15:42:20 +0200, Dumitru Ceclan wrote:
+On Tue, Dec 5, 2023 at 3:46=E2=80=AFPM Dumitru Ceclan <mitrutzceclan@gmail.=
+com> wrote:
+>
 > The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
-> 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
->  .../bindings/iio/adc/adi,ad7173.yaml          | 170 ++++++++++++++++++
->  1 file changed, 170 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> 
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+...
 
-yamllint warnings/errors:
+> +config AD7173
+> +       tristate "Analog Devices AD7173 driver"
+> +       depends on SPI_MASTER
+> +       select AD_SIGMA_DELTA
+> +       select GPIO_REGMAP if GPIOLIB
+> +       select REGMAP_SPI if GPIOLIB
+> +       help
+> +         Say yes here to build support for Analog Devices AD7173 and sim=
+ilar ADC
+> +         Currently supported models:
+> +          - AD7172-2,
+> +          - AD7173-8,
+> +          - AD7175-2,
+> +          - AD7176-2
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml: properties:required: ['compatible', 'reg', 'interrupts'] is not of type 'object', 'boolean'
-	from schema $id: http://json-schema.org/draft-07/schema#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml: properties: 'required' should not be valid under {'$ref': '#/definitions/json-schema-prop-names'}
-	hint: A json-schema keyword was found instead of a DT property name.
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml: properties:required: ['compatible', 'reg', 'interrupts'] is not of type 'object', 'boolean'
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
+Drop commas (sorry if I was not clear enough).
 
-doc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231205134223.17335-1-mitrutzceclan@gmail.com
+> +#include <linux/array_size.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bitmap.h>
+> +#include <linux/container_of.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+> +#include <linux/gpio/driver.h>
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+This...
 
-pip3 install dtschema --upgrade
+> +#include <linux/idr.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+> +#include <linux/gpio/regmap.h>
 
+...and this are too far from each other. I believe you should count on G or=
+der.
+
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/slab.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/types.h>
+> +#include <linux/units.h>
+
+...
+
+> +#define AD7173_GPO12_DATA(x)   BIT(x)
+
+x + 0 ?
+
+> +#define AD7173_GPO23_DATA(x)   BIT(x + 4)
+> +#define AD7173_GPO_DATA(x)     (x < 2 ? AD7173_GPO12_DATA(x) : AD7173_GP=
+O23_DATA(x))
+
+...
+
+> +               dev_warn(&st->sd.spi->dev,
+
+Here...
+
+> +                        "Unexpected device id: 0x%04X, expected: 0x%04X\=
+n",
+> +                        id, st->info->id);
+> +
+> +       st->adc_mode |=3D AD7173_ADC_MODE_SING_CYC;
+> +       st->interface_mode =3D 0x0;
+> +
+> +       st->config_usage_counter =3D 0;
+> +       st->config_cnts =3D devm_kcalloc(indio_dev->dev.parent,
+
+...and here are different pointers in use, can you unify to use the
+physical device pointer (as per above) here as well?
+
+> +                                      st->info->num_configs, sizeof(u64)=
+,
+> +                                      GFP_KERNEL);
+> +       if (!st->config_cnts)
+> +               return -ENOMEM;
+
+...
+
+> +       case IIO_CHAN_INFO_SCALE:
+> +               if (chan->type =3D=3D IIO_TEMP) {
+> +                       *val =3D 250000000;
+
+MEGA?
+
+> +                       *val2 =3D 800273203; /* (2^24 * 477) / 10 */
+
+Why not write it as is:
+
+                       *val2 =3D (BIT(24) * 477) / 10;
+
+?
+
+It will be more robust as we don't expect compiler to give different
+results here
+
+> +                       return IIO_VAL_FRACTIONAL;
+> +               } else {
+> +                       *val =3D ad7173_get_ref_voltage_milli(st, ch->cfg=
+.ref_sel);
+> +                       *val2 =3D chan->scan_type.realbits - !!(ch->cfg.b=
+ipolar);
+> +                       return IIO_VAL_FRACTIONAL_LOG2;
+> +               }
+
+...
+
+> +       /* If a regulator is not available, it will be set to a dummy reg=
+ulator.
+> +        * Each channel reference is checked with regulator_get_voltage()=
+ before
+> +        *  setting attributes so if any channel uses a dummy supply the =
+driver
+> +        *  probe will fail.
+> +        */
+
+/*
+ * Multi-line comments should follow this style. Find the
+ * difference.
+ */
+
+...
+
+> +               ref_label =3D ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT=
+_REF];
+> +
+> +               fwnode_property_read_string(child, "adi,reference-select"=
+,
+> +                                           &ref_label);
+> +               ref_sel =3D match_string(ad7173_ref_sel_str,
+> +                                      ARRAY_SIZE(ad7173_ref_sel_str), re=
+f_label);
+> +               if (ref_sel < 0) {
+
+Can we use fwnode_property_match_property_string()?
+
+> +                       fwnode_handle_put(child);
+> +                       return dev_err_probe(dev, -EINVAL,
+> +                                            "Invalid channel reference n=
+ame %s\n",
+> +                                            ref_label);
+> +               }
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

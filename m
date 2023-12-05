@@ -1,103 +1,179 @@
-Return-Path: <linux-iio+bounces-640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-642-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1416B805992
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 17:12:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 994A48059EE
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 17:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0A61F21766
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:12:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 421301F21820
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9031663DF1;
-	Tue,  5 Dec 2023 16:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A205675B9;
+	Tue,  5 Dec 2023 16:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzFuhvk+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAk9M7Em"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3A418D;
-	Tue,  5 Dec 2023 08:12:23 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2ca0c36f5beso25493601fa.1;
-        Tue, 05 Dec 2023 08:12:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701792741; x=1702397541; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oezG7B8/HBZJztf0xXD9ra4YKdN/gDOchCXNN5JSFq8=;
-        b=NzFuhvk+WKJnutOVFHFT9+H498k4umcFVehNOtyFT/lhZHG/7TtOYOq8rsJaelqfYB
-         gazvdR1HuQPvrgNUVUijNqzS7UqYGqr6RzYGzOd2ZP0H5N2x0zvfAYnuAZVS2tKoAM4j
-         QVuZDZGmzu8wFo0XVhZkhZ6/tJnjk8zZkowaEHYYiAVbRbHagVGWP8Z6NvjjZHWktKuh
-         b+ra9u3C22Fv11F7+pMwQ7P9JY56DEurG+QKp58uhk2rCHqK4NbU+w8SFeNvts1OyMD/
-         vVm7Oudc8+e0P1gu84UUYFkUHRLHAgV09m/utgopdJPOVcQPi/Y2EuIPpmloiEeimfrB
-         t7PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701792741; x=1702397541;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oezG7B8/HBZJztf0xXD9ra4YKdN/gDOchCXNN5JSFq8=;
-        b=jvR7gKzcWJxACpw+OLaU2nAEdoV1jVHqQokfcfJc1KUTDy7qT8QZmaKK5GMgSqyPN0
-         BTHRxPMVtYXkHK3VV441ksM6gKA4BgMRHDoO68y5ur4pbtCmjFAPPGjhYuMqaQzhPy+U
-         CqbwQxhomFPvmXn5kSZfDsfJ/gGP2VGC7InyeP5ilL8R3sUxqod4visSLtilnduLwxav
-         BsAV/TYx0ZMkcPqRxZq2vrCFKXqnh5URdG1ywOzWx8gKH3pd36s9jlISWoWoW6QTRc+P
-         Z6JLSvENjNpcFMG7FVNPLXnc/ld31T2ZJ7tIW+jDjxnQ5ob0KPnzblZlWzFyf+8wyDoI
-         PyvQ==
-X-Gm-Message-State: AOJu0Yw7gV2DCk5aEs+P1CxEM7+9gVfDFUCQrSTSXYL3hayMUeuxTzd/
-	KBTA2uaAqNkwjkUh41X9wHQ=
-X-Google-Smtp-Source: AGHT+IE+E63/vH1+CDZdYaMKf9tMjr/DP8SgkKAVZfgkjMkBsNNqjOC6VpIyjWm6X65QSEGY45uloQ==
-X-Received: by 2002:a2e:9782:0:b0:2c9:f1c6:e20d with SMTP id y2-20020a2e9782000000b002c9f1c6e20dmr2119970lji.49.1701792741330;
-        Tue, 05 Dec 2023 08:12:21 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id gv11-20020a170906f10b00b009de11bcbbcasm6982621ejb.175.2023.12.05.08.12.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Dec 2023 08:12:20 -0800 (PST)
-Message-ID: <e72085fd-3203-4166-afab-73707d27d174@gmail.com>
-Date: Tue, 5 Dec 2023 18:12:18 +0200
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F61675AF;
+	Tue,  5 Dec 2023 16:25:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F1EC433C8;
+	Tue,  5 Dec 2023 16:25:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701793549;
+	bh=l+yMCO/2N3ShBBsyZVkdZcF1uzW3j1QSS3UJ2FkcKQ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sAk9M7Em7oE9ofYmyvxJZwMQ0oYdN/PKTB6VLJobCr+mwd8A3pFKZ4OpB5mf5jA4S
+	 lEfuu+E2+vduEx/OWDxvu8/NQLOqhle9nRvHCj8Q0Pb6S1cmtpNAHQ1SHQeBCYomRW
+	 koBITEzhdXcRj+FYKm06eNOO+o2yw5p60foAxVwVyMPkcOWFtmTM4jIMll0fMDfDP5
+	 MellRCj8GZ6PwA8NYIPOy1N19MAj0Gjqva9UpPC47Z3LgbFdAMLWZnMrrIIllt0s5w
+	 F1ozMR/6uCaMEqI+VETarD3cQbvq9uqqCHe/UEcL7UC6WAPixyZuVfFWxtHrqh+Lt2
+	 YpmZb3ScDo4SA==
+Date: Tue, 5 Dec 2023 16:25:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] dt-bindings: adc: add AD7173
+Message-ID: <20231205-jockey-chance-bc324d8809f9@spud>
+References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
- <20231205134223.17335-2-mitrutzceclan@gmail.com>
- <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
-Content-Language: en-US
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="/ZchycVY0o6z6yFD"
+Content-Disposition: inline
+In-Reply-To: <20231205134223.17335-1-mitrutzceclan@gmail.com>
 
 
+--/ZchycVY0o6z6yFD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 12/5/23 17:28, Andy Shevchenko wrote:
->> +               ref_label = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT_REF];
->> +
->> +               fwnode_property_read_string(child, "adi,reference-select",
->> +                                           &ref_label);
->> +               ref_sel = match_string(ad7173_ref_sel_str,
->> +                                      ARRAY_SIZE(ad7173_ref_sel_str), ref_label);
->> +               if (ref_sel < 0) {
-> Can we use fwnode_property_match_property_string()?
+On Tue, Dec 05, 2023 at 03:42:20PM +0200, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
+>=20
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 170 ++++++++++++++++++
+>  1 file changed, 170 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.=
+yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> new file mode 100644
+> index 000000000000..087820a0cf48
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> @@ -0,0 +1,170 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2023 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD7173 ADC
+> +
+> +maintainers:
+> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> +
+> +description: |
+> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported=
+ chips:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7173-8.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7176-2.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7172-2
+> +      - adi,ad7173-8
+> +      - adi,ad7175-2
+> +      - adi,ad7176-2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  refin-supply:
+> +    description: external reference supply, can be used as reference for=
+ conversion.
+> +
+> +  refin2-supply:
+> +    description: external reference supply, can be used as reference for=
+ conversion.
+> +
+> +  avdd-supply:
+> +    description: avdd supply, can be used as reference for conversion.
+> +
 
-fwnode_property_match_string() searches a given string in a device-tree
-string array and returns the index. I do not think that this function
-fits here as the DT attribute is a single string.
+> +  required:
+> +    - compatible
+> +    - reg
+> +    - interrupts
+
+This is at the wrong level of indent (as Rob's bot pointed out) and
+should come after patternProperties too.
+
+Otherwise, this looks okay to me.
+Thanks,
+Conor.
+
+--/ZchycVY0o6z6yFD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZW9PBgAKCRB4tDGHoIJi
+0hQJAQDLS/cTqT9ORoSbrXbQtoH978ZVY0+xnOhJDyqmEZK4cwD+M62KCeuB5Kh5
+1/k1EQxuWA7Di4h3IlK2+MsqyRfAKwQ=
+=F1ne
+-----END PGP SIGNATURE-----
+
+--/ZchycVY0o6z6yFD--
 

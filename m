@@ -1,242 +1,107 @@
-Return-Path: <linux-iio+bounces-637-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-638-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41048058AF
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:29:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A518480592D
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 16:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3F62823A5
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 15:29:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5336B20F29
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 15:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8A5F1C9;
-	Tue,  5 Dec 2023 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FB268EBB;
+	Tue,  5 Dec 2023 15:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNjWugS1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LZYJE74i"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E97122;
-	Tue,  5 Dec 2023 07:29:11 -0800 (PST)
-Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-67ab5e015aaso19514296d6.0;
-        Tue, 05 Dec 2023 07:29:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701790151; x=1702394951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kIYKGYeqEa37hnkKOr+7YP8jImIF+a10I7pn6sOwr9E=;
-        b=dNjWugS1ERo11GXtamz/7egmeRM7rQOTBf/VvnYIGSDkTSkNv0xUGI7/xnbsRFi71J
-         9znzx0uIa1M0RjE6ckkkK+4SsAf8dsrsY464R/OrQkgcg0DVPdUTVdOXegxp7qWwg7NN
-         kYxHvgubtAUrqwnkM2JgCwwWn12ACW1OmGqyeLM2A4SgzYkuYDrzOHSpgtQlINy2GsEj
-         38iRWKU0H5w7++gpRVEq4LA/UHeNVLY7VCUEKlpMI7AKuS85aEv3UkwTGnpqq/lhhRk5
-         ct0PnqckBVAxJVH7Zw0+B/GCKBhozEqKdQRpkGcunBQwhhkUW+Zt4n5JewvAxKWnrjYv
-         a3KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701790151; x=1702394951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kIYKGYeqEa37hnkKOr+7YP8jImIF+a10I7pn6sOwr9E=;
-        b=K/wRtA5IJ65f8kZumY1SO/jQ+KGsXm7B+NwyitxgtZm64uQYqzb90dRD0YZ83mXbLY
-         gLnBAXTvkTDOvgA7yhNhJPzXTe/1YEIJXMN6A1dT4H+cxzF9LkhAi5TaPNr9udiHMUTW
-         rWTNwrdskUIVfvhhtMN3hVO0vuBaGMGHHFp7ntkorcItDrGvAHm7jyc++25CCQPas2D+
-         48pFXfro7RFDN33WD5L4aflwS6MiO5CP5dkU7Z/4ZyBUnbtwQX0oBqFNMll4qFH0jqsv
-         6N/0iifmH1RyCkzN7qd+YLMYWin91sxjhwJV4Tm+Oxjtbbb8qiuuAulgzINS2qIL3jOn
-         qSzQ==
-X-Gm-Message-State: AOJu0YxS0RXqm/v5nyyurfP3Xkx+6eq68uHKhFo2m8yaY6t5lqBoII/o
-	u2Jwz/BiygopTCQekNsI4Nj5WKAc2mZKxPFL+xc=
-X-Google-Smtp-Source: AGHT+IFP2cXT9WCBVw22m/b3SLYzL/Q+YfaMu4Zah6NkpXTbDv/9NQTg66OiyNUFfmmtLAA5a1BXMW6tzTy8MvgWBmQ=
-X-Received: by 2002:a05:6214:1803:b0:67a:656d:72e2 with SMTP id
- o3-20020a056214180300b0067a656d72e2mr1305611qvw.4.1701790150933; Tue, 05 Dec
- 2023 07:29:10 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0661F194;
+	Tue,  5 Dec 2023 07:54:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701791692; x=1733327692;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Qz2x4Irj/nbMAhPFLu+qAvZ6QslY2QGofqktzf7KUEs=;
+  b=LZYJE74iOzDHFcYDRS8rQmaxYF1Y0eXhnErmIHotRp0tCJDTd8qXDtcp
+   Ct3RmRidklagWD7Y4LvWVPnqjxnyYpvBy3/4THmRZ363ukH1gaYnxa7X5
+   I9y7FR8TYEteKDhud/x/SRYCjTTeaj1TRkBzzA1DonPPyZoqgGZ93aAoK
+   yobHXTKjwBoVI8W11KlVizwWpsK0uAyCdi0A+mocLint6Vtnxz9qG3C8U
+   VJLE5Chb0DwoTQNhdvdw1GuHcGFqu19xmVXbnoAoNln31gwbanXXhAyWY
+   kKZcRsXwb988bDrIB3IH4alTR/9ozC10TdMDtMbQhdPEyeerdqx2u53xd
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="7259334"
+X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
+   d="scan'208";a="7259334"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 07:54:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="861786051"
+X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
+   d="scan'208";a="861786051"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 07:54:46 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rAXkw-000000024qO-2eyL;
+	Tue, 05 Dec 2023 17:54:42 +0200
+Date: Tue, 5 Dec 2023 17:54:42 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Marek Vasut <marex@denx.de>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	Vincent Tremblay <vincent@vtremblay.dev>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: light: isl76682: Add ISL76682 driver
+Message-ID: <ZW9Hwm5LnPGl4Ird@smile.fi.intel.com>
+References: <20231127212726.77707-1-marex@denx.de>
+ <20231127212726.77707-2-marex@denx.de>
+ <20231204112941.770e22cb@jic23-huawei>
+ <0ae6466f-479a-476a-adf4-3bd099235eda@denx.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205134223.17335-1-mitrutzceclan@gmail.com> <20231205134223.17335-2-mitrutzceclan@gmail.com>
-In-Reply-To: <20231205134223.17335-2-mitrutzceclan@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 5 Dec 2023 17:28:34 +0200
-Message-ID: <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
-	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ae6466f-479a-476a-adf4-3bd099235eda@denx.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Dec 5, 2023 at 3:46=E2=80=AFPM Dumitru Ceclan <mitrutzceclan@gmail.=
-com> wrote:
->
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
+On Tue, Dec 05, 2023 at 02:43:30AM +0100, Marek Vasut wrote:
+> On 12/4/23 12:29, Jonathan Cameron wrote:
+> > On Mon, 27 Nov 2023 22:26:53 +0100
+> > Marek Vasut <marex@denx.de> wrote:
 
 ...
 
-> +config AD7173
-> +       tristate "Analog Devices AD7173 driver"
-> +       depends on SPI_MASTER
-> +       select AD_SIGMA_DELTA
-> +       select GPIO_REGMAP if GPIOLIB
-> +       select REGMAP_SPI if GPIOLIB
-> +       help
-> +         Say yes here to build support for Analog Devices AD7173 and sim=
-ilar ADC
-> +         Currently supported models:
-> +          - AD7172-2,
-> +          - AD7173-8,
-> +          - AD7175-2,
-> +          - AD7176-2
+>                 If a discrete set of scale values is available, they
+> -               are listed in this attribute.
+> +               are listed in this attribute. Unlike illumination,
+> +               multiplying intensity by intensity_scale does not
+> +               yield value with any standardized unit .
 
-Drop commas (sorry if I was not clear enough).
+(Do not forget to drop extra space)
 
-
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bitmap.h>
-> +#include <linux/container_of.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-
-> +#include <linux/gpio/driver.h>
-
-This...
-
-> +#include <linux/idr.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/property.h>
-> +#include <linux/regmap.h>
-
-> +#include <linux/gpio/regmap.h>
-
-...and this are too far from each other. I believe you should count on G or=
-der.
-
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/slab.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/types.h>
-> +#include <linux/units.h>
-
-...
-
-> +#define AD7173_GPO12_DATA(x)   BIT(x)
-
-x + 0 ?
-
-> +#define AD7173_GPO23_DATA(x)   BIT(x + 4)
-> +#define AD7173_GPO_DATA(x)     (x < 2 ? AD7173_GPO12_DATA(x) : AD7173_GP=
-O23_DATA(x))
-
-...
-
-> +               dev_warn(&st->sd.spi->dev,
-
-Here...
-
-> +                        "Unexpected device id: 0x%04X, expected: 0x%04X\=
-n",
-> +                        id, st->info->id);
-> +
-> +       st->adc_mode |=3D AD7173_ADC_MODE_SING_CYC;
-> +       st->interface_mode =3D 0x0;
-> +
-> +       st->config_usage_counter =3D 0;
-> +       st->config_cnts =3D devm_kcalloc(indio_dev->dev.parent,
-
-...and here are different pointers in use, can you unify to use the
-physical device pointer (as per above) here as well?
-
-> +                                      st->info->num_configs, sizeof(u64)=
-,
-> +                                      GFP_KERNEL);
-> +       if (!st->config_cnts)
-> +               return -ENOMEM;
-
-...
-
-> +       case IIO_CHAN_INFO_SCALE:
-> +               if (chan->type =3D=3D IIO_TEMP) {
-> +                       *val =3D 250000000;
-
-MEGA?
-
-> +                       *val2 =3D 800273203; /* (2^24 * 477) / 10 */
-
-Why not write it as is:
-
-                       *val2 =3D (BIT(24) * 477) / 10;
-
-?
-
-It will be more robust as we don't expect compiler to give different
-results here
-
-> +                       return IIO_VAL_FRACTIONAL;
-> +               } else {
-> +                       *val =3D ad7173_get_ref_voltage_milli(st, ch->cfg=
-.ref_sel);
-> +                       *val2 =3D chan->scan_type.realbits - !!(ch->cfg.b=
-ipolar);
-> +                       return IIO_VAL_FRACTIONAL_LOG2;
-> +               }
-
-...
-
-> +       /* If a regulator is not available, it will be set to a dummy reg=
-ulator.
-> +        * Each channel reference is checked with regulator_get_voltage()=
- before
-> +        *  setting attributes so if any channel uses a dummy supply the =
-driver
-> +        *  probe will fail.
-> +        */
-
-/*
- * Multi-line comments should follow this style. Find the
- * difference.
- */
-
-...
-
-> +               ref_label =3D ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT=
-_REF];
-> +
-> +               fwnode_property_read_string(child, "adi,reference-select"=
-,
-> +                                           &ref_label);
-> +               ref_sel =3D match_string(ad7173_ref_sel_str,
-> +                                      ARRAY_SIZE(ad7173_ref_sel_str), re=
-f_label);
-> +               if (ref_sel < 0) {
-
-Can we use fwnode_property_match_property_string()?
-
-> +                       fwnode_handle_put(child);
-> +                       return dev_err_probe(dev, -EINVAL,
-> +                                            "Invalid channel reference n=
-ame %s\n",
-> +                                            ref_label);
-> +               }
-
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 

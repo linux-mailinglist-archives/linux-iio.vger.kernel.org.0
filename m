@@ -1,241 +1,110 @@
-Return-Path: <linux-iio+bounces-651-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-653-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8AE805AB7
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 18:06:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA5A805B06
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 18:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4591C282299
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 17:06:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371A3281B24
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 17:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B5B692B3;
-	Tue,  5 Dec 2023 17:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5dYQ9zl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDFD692BA;
+	Tue,  5 Dec 2023 17:18:24 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871C8692A2
-	for <linux-iio@vger.kernel.org>; Tue,  5 Dec 2023 17:06:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2A91AC433B6;
-	Tue,  5 Dec 2023 17:06:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701796006;
-	bh=oSeujLaFf8i2ZG9xK+nIVBz3hziiflDh2ViXEFLzGHo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=O5dYQ9zluX1seYnKR9ntpyu/IdXbuloDxA1T+5hk2lLX0ADg2Qi9DN8Jhvy4BFXcV
-	 ltz9+YWH6NckuZAzgh6uptoJSm9r8XD5WtnDSbv+lYxPVJNnw4TT2nS3Oxmqtv4+qX
-	 BLHUTrdJRcIl6R1zLO6yAszg6J86JrllErjU7i+pwhGuFqU5fwD52EyqwUybLGL5ea
-	 /7BbTE/r/Je2rVo+UygnFSfQqpaRdt59h24xzLa2Pahqaxpdez0OncMA30HoEBxwDS
-	 l1bBc9+BOwvE3ONL/dg65baxtwqxv9ZULEHTfqEYfzPEOiyVbqvtqbiF4aHJu7P+mD
-	 UoY1A771tiGFw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18DE0C10F09;
-	Tue,  5 Dec 2023 17:06:46 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 05 Dec 2023 18:06:48 +0100
-Subject: [PATCH 8/8] iio: adc: adi-axi-adc: convert to regmap
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194E9C0;
+	Tue,  5 Dec 2023 09:18:22 -0800 (PST)
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="425085150"
+X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
+   d="scan'208";a="425085150"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 09:18:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="841545261"
+X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
+   d="scan'208";a="841545261"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 09:18:16 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1rAZ3k-000000026Ns-2qE0;
+	Tue, 05 Dec 2023 19:18:12 +0200
+Date: Tue, 5 Dec 2023 19:18:12 +0200
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Ceclan Dumitru <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <ZW9bVDLZl4-QLIbg@smile.fi.intel.com>
+References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
+ <20231205134223.17335-2-mitrutzceclan@gmail.com>
+ <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
+ <e72085fd-3203-4166-afab-73707d27d174@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231205-iio-backend-prep-v1-8-7c9bc18d612b@analog.com>
-References: <20231205-iio-backend-prep-v1-0-7c9bc18d612b@analog.com>
-In-Reply-To: <20231205-iio-backend-prep-v1-0-7c9bc18d612b@analog.com>
-To: linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701796004; l=4779;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=pXYTHlTNV0lEKqQpwgzCRwzdqvuOQxn+WxE6GekCLjY=;
- b=Xi31l1QZs6q4LaGqTXlAxo6t1vAzB3KErDwZU8OuKdW+DfAtkJeUSR227iTJmTxdNMlTdo3Dg
- ypm6VmShTShA3bbhjBv6BbJTeXyUbWT78Vl06Jgx9q7H1nslI85NHXM
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e72085fd-3203-4166-afab-73707d27d174@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Tue, Dec 05, 2023 at 06:12:18PM +0200, Ceclan Dumitru wrote:
+> On 12/5/23 17:28, Andy Shevchenko wrote:
+> >> +               ref_label = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT_REF];
+> >> +
+> >> +               fwnode_property_read_string(child, "adi,reference-select",
+> >> +                                           &ref_label);
+> >> +               ref_sel = match_string(ad7173_ref_sel_str,
+> >> +                                      ARRAY_SIZE(ad7173_ref_sel_str), ref_label);
+> >> +               if (ref_sel < 0) {
+> > Can we use fwnode_property_match_property_string()?
+> 
+> fwnode_property_match_string() searches a given string in a device-tree
+> string array and returns the index. I do not think that this function
+> fits here as the DT attribute is a single string.
 
-Use MMIO regmap interface. It makes things easier for manipulating bits.
+I'm not talking about that. I mentioned different API call.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/adc/adi-axi-adc.c | 85 ++++++++++++++++++++++++++-----------------
- 1 file changed, 52 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index ae83ada7f9f2..c247ff1541d2 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -14,6 +14,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
-+#include <linux/regmap.h>
- #include <linux/slab.h>
- 
- #include <linux/iio/iio.h>
-@@ -62,7 +63,7 @@ struct adi_axi_adc_state {
- 	struct mutex				lock;
- 
- 	struct adi_axi_adc_client		*client;
--	void __iomem				*regs;
-+	struct regmap				*regmap;
- };
- 
- struct adi_axi_adc_client {
-@@ -90,19 +91,6 @@ void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
- }
- EXPORT_SYMBOL_NS_GPL(adi_axi_adc_conv_priv, IIO_ADI_AXI);
- 
--static void adi_axi_adc_write(struct adi_axi_adc_state *st,
--			      unsigned int reg,
--			      unsigned int val)
--{
--	iowrite32(val, st->regs + reg);
--}
--
--static unsigned int adi_axi_adc_read(struct adi_axi_adc_state *st,
--				     unsigned int reg)
--{
--	return ioread32(st->regs + reg);
--}
--
- static int adi_axi_adc_config_dma_buffer(struct device *dev,
- 					 struct iio_dev *indio_dev)
- {
-@@ -163,17 +151,20 @@ static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
- {
- 	struct adi_axi_adc_state *st = iio_priv(indio_dev);
- 	struct adi_axi_adc_conv *conv = &st->client->conv;
--	unsigned int i, ctrl;
-+	unsigned int i;
-+	int ret;
- 
- 	for (i = 0; i < conv->chip_info->num_channels; i++) {
--		ctrl = adi_axi_adc_read(st, ADI_AXI_REG_CHAN_CTRL(i));
--
- 		if (test_bit(i, scan_mask))
--			ctrl |= ADI_AXI_REG_CHAN_CTRL_ENABLE;
-+			ret = regmap_set_bits(st->regmap,
-+					      ADI_AXI_REG_CHAN_CTRL(i),
-+					      ADI_AXI_REG_CHAN_CTRL_ENABLE);
- 		else
--			ctrl &= ~ADI_AXI_REG_CHAN_CTRL_ENABLE;
--
--		adi_axi_adc_write(st, ADI_AXI_REG_CHAN_CTRL(i), ctrl);
-+			ret = regmap_clear_bits(st->regmap,
-+						ADI_AXI_REG_CHAN_CTRL(i),
-+						ADI_AXI_REG_CHAN_CTRL_ENABLE);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return 0;
-@@ -310,21 +301,32 @@ static int adi_axi_adc_setup_channels(struct device *dev,
- 	}
- 
- 	for (i = 0; i < conv->chip_info->num_channels; i++) {
--		adi_axi_adc_write(st, ADI_AXI_REG_CHAN_CTRL(i),
--				  ADI_AXI_REG_CHAN_CTRL_DEFAULTS);
-+		ret = regmap_write(st->regmap, ADI_AXI_REG_CHAN_CTRL(i),
-+				   ADI_AXI_REG_CHAN_CTRL_DEFAULTS);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return 0;
- }
- 
--static void axi_adc_reset(struct adi_axi_adc_state *st)
-+static int axi_adc_reset(struct adi_axi_adc_state *st)
- {
--	adi_axi_adc_write(st, ADI_AXI_REG_RSTN, 0);
-+	int ret;
-+
-+	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
-+	if (ret)
-+		return ret;
-+
- 	mdelay(10);
--	adi_axi_adc_write(st, ADI_AXI_REG_RSTN, ADI_AXI_REG_RSTN_MMCM_RSTN);
-+	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN,
-+			   ADI_AXI_REG_RSTN_MMCM_RSTN);
-+	if (ret)
-+		return ret;
-+
- 	mdelay(10);
--	adi_axi_adc_write(st, ADI_AXI_REG_RSTN,
--			  ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
-+	return regmap_write(st->regmap, ADI_AXI_REG_RSTN,
-+			    ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
- }
- 
- static void adi_axi_adc_cleanup(void *data)
-@@ -335,12 +337,20 @@ static void adi_axi_adc_cleanup(void *data)
- 	module_put(cl->dev->driver->owner);
- }
- 
-+static const struct regmap_config axi_adc_regmap_config = {
-+	.val_bits = 32,
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.max_register = 0x0800,
-+};
-+
- static int adi_axi_adc_probe(struct platform_device *pdev)
- {
- 	struct adi_axi_adc_conv *conv;
- 	struct iio_dev *indio_dev;
- 	struct adi_axi_adc_client *cl;
- 	struct adi_axi_adc_state *st;
-+	void __iomem *base;
- 	unsigned int ver;
- 	int ret;
- 
-@@ -361,15 +371,24 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	cl->state = st;
- 	mutex_init(&st->lock);
- 
--	st->regs = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(st->regs))
--		return PTR_ERR(st->regs);
-+	base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	st->regmap = devm_regmap_init_mmio(&pdev->dev, base,
-+					   &axi_adc_regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return PTR_ERR(st->regmap);
- 
- 	conv = &st->client->conv;
- 
--	axi_adc_reset(st);
-+	ret = axi_adc_reset(st);
-+	if (ret)
-+		return ret;
- 
--	ver = adi_axi_adc_read(st, ADI_AXI_REG_VERSION);
-+	ret = regmap_read(st->regmap, ADI_AXI_REG_VERSION, &ver);
-+	if (ret)
-+		return ret;
- 
- 	if (cl->info->version > ver) {
- 		dev_err(&pdev->dev,
+/**
+ * fwnode_property_match_property_string - find a property string value in an array and return index
+ * @fwnode: Firmware node to get the property of
+ * @propname: Name of the property holding the string value
+ * @array: String array to search in
+ * @n: Size of the @array
+ *
+ * Find a property string value in a given @array and if it is found return
+ * the index back.
+ *
+ * Return: index, starting from %0, if the string value was found in the @array (success),
+ *         %-ENOENT when the string value was not found in the @array,
+ *         %-EINVAL if given arguments are not valid,
+ *         %-ENODATA if the property does not have a value,
+ *         %-EPROTO or %-EILSEQ if the property is not a string,
+ *         %-ENXIO if no suitable firmware interface is present.
+ */
 
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-623-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-624-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392BA804AEF
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 08:11:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E34D804B0E
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 08:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B5B1F214E1
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 07:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF367281639
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 07:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCC915EBC;
-	Tue,  5 Dec 2023 07:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE6C168CD;
+	Tue,  5 Dec 2023 07:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HRhRdLdn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="leRYyA/F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4CA120;
-	Mon,  4 Dec 2023 23:11:03 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2c9fc0b84d0so27758081fa.0;
-        Mon, 04 Dec 2023 23:11:03 -0800 (PST)
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C60B111
+	for <linux-iio@vger.kernel.org>; Mon,  4 Dec 2023 23:21:05 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c9f7fe6623so29163231fa.3
+        for <linux-iio@vger.kernel.org>; Mon, 04 Dec 2023 23:21:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701760262; x=1702365062; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701760863; x=1702365663; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=J33kj97x2pqjNJ1vDzC7sdv8NjUfYByLnvuzd7wzUHI=;
-        b=HRhRdLdnkfXRzkMnrscgEHTqNLN16yiFkOr+awlsqupmmYmI/xy5dLVDIbVZvoKsqs
-         FyNPOMPQhtQcur/fHUMfjpOHwpLBTZkF2M+QB5tdCgYwkdZh9mKvWsE06ngQaT2sd7zE
-         9sNZJwBqQrMdnvmtXrVugJcrKQz0xktOUliPxCrspo3Xkf3AYMsqsDi30+EvuRWXWU4s
-         jv0c5v0x+GwezQ7hCip3GS5agBdoUhu7/652l7TrY4fW6q44CYaHnyIFbkzSlTvt9rVv
-         cdwDtOC7246zSDl64qj1tfRBilloILJ5RbeVpXCUFieq7nESx+GwdUQRDyDHa8PE5xUZ
-         MqVA==
+        bh=GAFOw1ZYfyFzZPlMQaMrshgLwtTPLz3BabU4hC7j1aY=;
+        b=leRYyA/F+gtJTq/D9LA1AitlzXEqWhpvMX1Gk4bV0Igf+nb4sha4ms9o+eqR1pXZdK
+         pDfLNRe+9HxrkDcl0U99MC0cIb5f+FytrPiMNOWT7wnnde1y+0YWrqXZLhhrjk683iwK
+         DJ8CVGbssoga29s1xZyTKZjLwsvaFwZhAgk7s9pH9VgOR9BKnXdGZZodJW0I6wS/I5H/
+         gPbf6l5QgOt7648dE7tYKbkz/oxBHIH2wxHwqg2Lj9X3CMvZVF/z2qwp2bfd93s02ao0
+         1pTtsOHY4eMZCDxkke/5xyiJPPNoqypERMGCaFAA/TnOjbBpoebSZVz5LTbwfRTnm/m9
+         oLBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701760262; x=1702365062;
+        d=1e100.net; s=20230601; t=1701760863; x=1702365663;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J33kj97x2pqjNJ1vDzC7sdv8NjUfYByLnvuzd7wzUHI=;
-        b=fBR0/sMZNSeImqmRmMkdOkgvOrkYfwqSzqMHSgGdJMdUiIYP7Nbo5cQ6V7KU+WDKVX
-         zUM6f9ktIkvlAZRcjSa3xpEs19l8xi0UM/C7qHCBQhPiHsHM3gFw3dnwp5DgqS0EybwR
-         FIFGn3reNc3nOtuH/G38Oh+jfmibiN99Vt+6FfNaDqhQywCEqiYQZuC/GiUNuePGaRzU
-         wuErWKMklhGj31up+WiDia8731iTVsyCsqeuGZtq8xMhxA+AWa+sd9uo906fi106i5se
-         LM0oesHWC45KahojFlNDxlMULnqKcVOQlbNKVAL6y5kHIwUn+GlG3CKLR/hSwncU9Vjx
-         Bikg==
-X-Gm-Message-State: AOJu0YzO3gRkUB36Fa8tWS+c5rz8q9N03WiuKLX9xEGyu5CfZODbywln
-	0CCjO5GqkFXR3kwyNmIG77U=
-X-Google-Smtp-Source: AGHT+IGlt201D+jggBtsDfnYTMdcEZMbyhxFNQQ+jUqi1f6EzN7auu/+d/VjPnPr9Y4vQSRhadq/4w==
-X-Received: by 2002:a2e:9b14:0:b0:2ca:1ea:4b20 with SMTP id u20-20020a2e9b14000000b002ca01ea4b20mr1390091lji.8.1701760261279;
-        Mon, 04 Dec 2023 23:11:01 -0800 (PST)
+        bh=GAFOw1ZYfyFzZPlMQaMrshgLwtTPLz3BabU4hC7j1aY=;
+        b=qJbEjVz7X8zDIqdrupvhWTLv+ufDm8XdPhhCvS10IQJ1hvsZv6DKhoYPf0tM8NgQwc
+         mjovzt4sHTx8Aj+YFJej1GwCMjSPfUXFEbrNu/rXSlfChSQOI1784VoZRKDiZVhglJMU
+         GhBNCglQvvx4j3kbCCN5cFBUXdkcy5kYCf7qqFXtUdRe1oaYigGR5dKbGwqjeeo/aNmB
+         b11WAw7DjeSdVBMMuyR0MRW1zXy51b2TIx35heoTXKExFDAo3+A2Hkd/fmMwks/YEuqX
+         8+ZBvKqCuQ7eQfFlpXxWlG2O3GamwpMHu3NZOXcpL8dvasuLYkb8tb1KjJ/jgaT8lcWy
+         eiKQ==
+X-Gm-Message-State: AOJu0YzHdjj4QCx5VGHkHf2xp3nmMp77hHwess6GnWDryeEsx9NOTzOm
+	QB+YYMydzwnKbsgv6nfHDvs=
+X-Google-Smtp-Source: AGHT+IF0q+u1mPqaSXq9QwBoULTgu0HK5ebUa3xzj0ijYDyUyUng/tQrhB0pUVpVZR7VTMf2uKWv5w==
+X-Received: by 2002:a2e:8397:0:b0:2c9:f68f:685e with SMTP id x23-20020a2e8397000000b002c9f68f685emr1293958ljg.79.1701760863208;
+        Mon, 04 Dec 2023 23:21:03 -0800 (PST)
 Received: from ?IPV6:2001:14ba:16f8:1500::2? (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
-        by smtp.gmail.com with ESMTPSA id a5-20020a2eb545000000b002c9f90021ebsm791589ljn.29.2023.12.04.23.11.00
+        by smtp.gmail.com with ESMTPSA id o5-20020a05651c050500b002ca0abab79bsm407378ljp.4.2023.12.04.23.21.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 23:11:00 -0800 (PST)
-Message-ID: <c6088472-e68f-42a5-8c8b-1fd065e9f524@gmail.com>
-Date: Tue, 5 Dec 2023 09:10:59 +0200
+        Mon, 04 Dec 2023 23:21:02 -0800 (PST)
+Message-ID: <26aa7753-c597-4e5d-afd3-a407e5605335@gmail.com>
+Date: Tue, 5 Dec 2023 09:21:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,223 +62,48 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helpers: Round gains and scales
+Subject: Re: [PATCH] iio: light: isl76682: Space consistency
 Content-Language: en-US, en-GB
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZUDN9n8iXoNwzifQ@dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi>
- <20231126172607.379c9d79@jic23-huawei>
- <8934d9ec-e969-4662-b220-9fb1cbeca7b2@gmail.com>
- <20231204143005.7a564326@jic23-huawei>
+To: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+References: <20231205012246.104503-1-marex@denx.de>
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20231204143005.7a564326@jic23-huawei>
+In-Reply-To: <20231205012246.104503-1-marex@denx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/4/23 16:30, Jonathan Cameron wrote:
-> On Mon, 27 Nov 2023 09:48:08 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 12/5/23 03:22, Marek Vasut wrote:
+> Add missing space between { } to be consistent with the other { } .
+> No functional change.
 > 
->> On 11/26/23 19:26, Jonathan Cameron wrote:
->>> On Tue, 31 Oct 2023 11:50:46 +0200
->>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>    
->>>> The GTS helpers do flooring of scale when calculating available scales.
->>>> This results available-scales to be reported smaller than they should
->>>> when the division in scale computation resulted remainder greater than
->>>> half of the divider. (decimal part of result > 0.5)
->>>>
->>>> Furthermore, when gains are computed based on scale, the gain resulting
->>>> from the scale computation is also floored. As a consequence the
->>>> floored scales reported by available scales may not match the gains that
->>>> can be set.
->>>>
->>>> The related discussion can be found from:
->>>> https://lore.kernel.org/all/84d7c283-e8e5-4c98-835c-fe3f6ff94f4b@gmail.com/
->>>>
->>>> Do rounding when computing scales and gains.
->>>>
->>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>
->>> Hi Matti,
->>>
->>> A few questions inline about the maths.
->>
->> I appreciate the questions :) Thanks!
+> Signed-off-by: Marek Vasut <marex@denx.de>
+
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+> ---
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> Cc: linux-iio@vger.kernel.org
+> ---
+>   drivers/iio/light/isl76682.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I found some emails hiding so late replies...
-
-Better late than never :)
-
-To tell the truth, delays have been Ok. I think Subhajit has not needed 
-this urgently and the darkness of the winter in Finland has hindered my 
-energy and activity to very low levels.
-
->>>> ---
->>>> Subjahit, is there any chance you test this patch with your driver? Can
->>>> you drop the:
->>>> 	if (val2 % 10)
->>>> 		val2 += 1;
->>>> from scale setting and do you see written and read scales matching?
->>>>
->>>> I did run a few Kunit tests on this change - but I'm still a bit jumpy
->>>> on it... Reviewing/testing is highly appreciated!
->>>>
->>>> Just in case someone is interested in seeing the Kunit tests, they're
->>>> somewhat unpolished & crude and can emit noisy debug prints - but can
->>>> anyways be found from:
->>>> https://github.com/M-Vaittinen/linux/commits/iio-gts-helpers-test-v6.6
->>>>
->>>> ---
->>>>    drivers/iio/industrialio-gts-helper.c | 58 +++++++++++++++++++++++----
->>>>    1 file changed, 50 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->>>> index 7653261d2dc2..7dc144ac10c8 100644
->>>> --- a/drivers/iio/industrialio-gts-helper.c
->>>> +++ b/drivers/iio/industrialio-gts-helper.c
->>>> @@ -18,6 +18,32 @@
->>>>    #include <linux/iio/iio-gts-helper.h>
->>>>    #include <linux/iio/types.h>
->>>>    
->>>> +static int iio_gts_get_gain_32(u64 full, unsigned int scale)
->>>> +{
->>>> +	unsigned int full32 = (unsigned int) full;
->>>> +	unsigned int rem;
->>>> +	int result;
->>>> +
->>>> +	if (full == (u64)full32) {
->>>> +		unsigned int rem;
->>>> +
->>>> +		result = full32 / scale;
->>>> +		rem = full32 - scale * result;
->>>> +		if (rem >= scale / 2)
->>>> +			result++;
->>>> +
->>>> +		return result;
->>>> +	}
->>>> +
->>>> +	rem = do_div(full, scale);
->>>
->>> As below, can we just add scale/2 to full in the do_div?
->>
->> The rationale for doing is it in this way is to prevent (theoretical?)
->> overflow when adding scale/2 to full. Maybe this warrants adding a comment?
-> 
-> Hmm. Chances are very low of hitting that.  I'd just go with adding scale/2
-> before the div.  If you really want to worry about being right at the edge
-> of available precision, then add a check for that.
-
-I think the v2 will ditch this function.
->>>> +	if ((u64)rem >= scale / 2)
->>>> +		result = full + 1;
->>>> +	else
->>>> +		result = full;
->>>> +
->>>> +	return result;
->>>> +}
->>>> +
->>>>    /**
->>>>     * iio_gts_get_gain - Convert scale to total gain
->>>>     *
->>>> @@ -28,30 +54,42 @@
->>>>     *		scale is 64 100 000 000.
->>>>     * @scale:	Linearized scale to compute the gain for.
->>>>     *
->>>> - * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
->>>> + * Return:	(rounded) gain corresponding to the scale. -EINVAL if scale
->>>>     *		is invalid.
->>>>     */
->>>>    static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>>    {
->>>> -	u64 full = max;
->>>> +	u64 full = max, half_div;
->>>> +	unsigned int scale32 = (unsigned int) scale;
->>>>    	int tmp = 1;
->>>>    
->>>> -	if (scale > full || !scale)
->>>> +	if (scale / 2 > full || !scale)
->>>
->>> Seems odd. Why are we checking scale / 2 here?
->>
->> I am pretty sure I have been thinking of rounding 0.5 to 1.
-> 
-> Not sure I follow - but maybe it'll be clear in v2.
-
-Basically, when scale is greater than max, the division yields values 
-smaller than 1. So, when we do rounding, everything equal to or greater 
-than 0.5 and smaller than 1 should be rounded upwards. Eg, purely from 
-computational perspective, when the "full" is half of the scale, 
-division returns 0.5. Thus the check.
-
-But I think your question is very much a valid one. By design the driver 
-gives the max value - and I think that scale exceeding this maximum can 
-indeed be considered to be invalid. Not that I feel 100% certain on that 
-Today :)
-
-> 
->>>    
->>>> +
->>>> +	while (full + half_div >= scale * (u64)tmp)
->>>>    		tmp++;
->>>>    
->>>> -	return tmp;
->>>> +	return tmp - 1;
->>>>    }
->>>>    
->>>>    /**
->>>> @@ -133,6 +171,7 @@ static int iio_gts_linearize(int scale_whole, int scale_nano,
->>>>     * Convert the total gain value to scale. NOTE: This does not separate gain
->>>>     * generated by HW-gain or integration time. It is up to caller to decide what
->>>>     * part of the total gain is due to integration time and what due to HW-gain.
->>>> + * Computed gain is rounded to nearest integer.
->>>>     *
->>>>     * Return: 0 on success. Negative errno on failure.
->>>>     */
->>>> @@ -140,10 +179,13 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
->>>>    				int *scale_int, int *scale_nano)
->>>>    {
->>>>    	u64 tmp;
->>>> +	int rem;
->>>>    
->>>>    	tmp = gts->max_scale;
->>>>    
->>>> -	do_div(tmp, total_gain);
->>>> +	rem = do_div(tmp, total_gain);
->>>
->>> can we do usual trick of
->>> do_div(tmp + total_gain/2, total_gain)
->>> to get the same rounding effect?
->>
->> Only if we don't care about the case where tmp + total_gain/2 overflows.
-> 
-> As above. The cases where that happens are pretty narrow.  I'd not worry about it
-> or I'd check for that overflow.
-
-part of me says you're right while part of me screams that
-1) a _division_ causing overflow is against all that is well and good.
-2) if we can cope with the overflow, then we should cope with it.
-
-I am very much undecided what is the best approach here. I'll see how 
-much clarity there is in the v2 code, what comments can do and then I'll 
-throw it for you to judge :)
-
->>
->> All in all, I am still not 100% sure if rounding is the right ambition.
->> Do we cause hidden accuracy issues by doing the rounding under the hood?
->> I feel I need bigger brains :)
-> Don't we all!
-
-Well, luckily the software development can be seen as an iterative 
-process :)
-
-Yours,
-	-- Matti
-
+> diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
+> index 15a68609985b6..a17970fb3758e 100644
+> --- a/drivers/iio/light/isl76682.c
+> +++ b/drivers/iio/light/isl76682.c
+> @@ -328,7 +328,7 @@ static int isl76682_probe(struct i2c_client *client)
+>   
+>   static const struct i2c_device_id isl76682_id[] = {
+>   	{ "isl76682" },
+> -	{}
+> +	{ }
+>   };
+>   MODULE_DEVICE_TABLE(i2c, isl76682_id);
+>   
 
 -- 
 Matti Vaittinen

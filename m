@@ -1,110 +1,91 @@
-Return-Path: <linux-iio+bounces-653-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-654-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA5A805B06
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 18:18:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C895A806005
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 22:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371A3281B24
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 17:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 714891F2173E
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 21:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDFD692BA;
-	Tue,  5 Dec 2023 17:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074616AB97;
+	Tue,  5 Dec 2023 21:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hZ6TuF4k"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194E9C0;
-	Tue,  5 Dec 2023 09:18:22 -0800 (PST)
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="425085150"
-X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
-   d="scan'208";a="425085150"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 09:18:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="841545261"
-X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
-   d="scan'208";a="841545261"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 09:18:16 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andy.shevchenko@gmail.com>)
-	id 1rAZ3k-000000026Ns-2qE0;
-	Tue, 05 Dec 2023 19:18:12 +0200
-Date: Tue, 5 Dec 2023 19:18:12 +0200
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
-	ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <ZW9bVDLZl4-QLIbg@smile.fi.intel.com>
-References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
- <20231205134223.17335-2-mitrutzceclan@gmail.com>
- <CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
- <e72085fd-3203-4166-afab-73707d27d174@gmail.com>
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554BD18F;
+	Tue,  5 Dec 2023 13:02:36 -0800 (PST)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 174CF870DE;
+	Tue,  5 Dec 2023 22:02:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1701810154;
+	bh=f+N2Yu7AIHQddi497s2W5pp+WWb2A6s6ckPENX6+zcU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hZ6TuF4k9gPudiU82Tr0x83+v+Nv/Sx7rejRG4TjO3njQagWh2AjqGUFNQ2X1cmN9
+	 cQiDqM71epHBTvTAQR73riP+D41IareubPtZbiMNN5J+Eh04jztcZ1koNgn1mVl5jA
+	 OubeaDdlwJEilZCKx3NH4WTkCjXvMFYgvVOfkov9LYhzmL7qMAenw9FCcNRUm6UcxP
+	 3Eckt4RTBHpAQDGQ+A+zyoSSYtqfUP9WnOKfN0cca21BqrPHhILkigtvRr8xRjzJtn
+	 IjD4/fKkEy8rxzcdjFLkVODWcgspXOPq9dcDdbiLvylRpRhxAkJvP+XOAf9oSldbZj
+	 AptGcaLZ0RP4Q==
+Message-ID: <62015c87-cc24-4ab6-9c91-605926f1c572@denx.de>
+Date: Tue, 5 Dec 2023 22:02:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e72085fd-3203-4166-afab-73707d27d174@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] iio: light: isl76682: Add ISL76682 driver
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Andre Werner <andre.werner@systec-electronic.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+ Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
+References: <20231127212726.77707-1-marex@denx.de>
+ <20231127212726.77707-2-marex@denx.de> <20231204112941.770e22cb@jic23-huawei>
+ <0ae6466f-479a-476a-adf4-3bd099235eda@denx.de>
+ <ZW9Hwm5LnPGl4Ird@smile.fi.intel.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <ZW9Hwm5LnPGl4Ird@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Tue, Dec 05, 2023 at 06:12:18PM +0200, Ceclan Dumitru wrote:
-> On 12/5/23 17:28, Andy Shevchenko wrote:
-> >> +               ref_label = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT_REF];
-> >> +
-> >> +               fwnode_property_read_string(child, "adi,reference-select",
-> >> +                                           &ref_label);
-> >> +               ref_sel = match_string(ad7173_ref_sel_str,
-> >> +                                      ARRAY_SIZE(ad7173_ref_sel_str), ref_label);
-> >> +               if (ref_sel < 0) {
-> > Can we use fwnode_property_match_property_string()?
+On 12/5/23 16:54, Andy Shevchenko wrote:
+> On Tue, Dec 05, 2023 at 02:43:30AM +0100, Marek Vasut wrote:
+>> On 12/4/23 12:29, Jonathan Cameron wrote:
+>>> On Mon, 27 Nov 2023 22:26:53 +0100
+>>> Marek Vasut <marex@denx.de> wrote:
 > 
-> fwnode_property_match_string() searches a given string in a device-tree
-> string array and returns the index. I do not think that this function
-> fits here as the DT attribute is a single string.
+> ...
+> 
+>>                  If a discrete set of scale values is available, they
+>> -               are listed in this attribute.
+>> +               are listed in this attribute. Unlike illumination,
+>> +               multiplying intensity by intensity_scale does not
+>> +               yield value with any standardized unit .
+> 
+> (Do not forget to drop extra space)
 
-I'm not talking about that. I mentioned different API call.
-
-/**
- * fwnode_property_match_property_string - find a property string value in an array and return index
- * @fwnode: Firmware node to get the property of
- * @propname: Name of the property holding the string value
- * @array: String array to search in
- * @n: Size of the @array
- *
- * Find a property string value in a given @array and if it is found return
- * the index back.
- *
- * Return: index, starting from %0, if the string value was found in the @array (success),
- *         %-ENOENT when the string value was not found in the @array,
- *         %-EINVAL if given arguments are not valid,
- *         %-ENODATA if the property does not have a value,
- *         %-EPROTO or %-EILSEQ if the property is not a string,
- *         %-ENXIO if no suitable firmware interface is present.
- */
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Which extra space ?
 

@@ -1,53 +1,50 @@
-Return-Path: <linux-iio+bounces-674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-675-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D69C8076A6
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 18:33:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A598076BB
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 18:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E72B281F71
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 17:33:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC601F211F3
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 17:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA36A005;
-	Wed,  6 Dec 2023 17:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23D46A01E;
+	Wed,  6 Dec 2023 17:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W58MNNTI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eR0IQyF+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A92364B2
-	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 17:32:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68788C433C8;
-	Wed,  6 Dec 2023 17:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC52364B2;
+	Wed,  6 Dec 2023 17:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C073BC433C8;
+	Wed,  6 Dec 2023 17:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701883976;
-	bh=XEf6tIDOSMPHN/MSARI80obGogkE99GvYNfgujy4bHI=;
+	s=k20201202; t=1701884226;
+	bh=RwGl1RcbRMFQzj6CBreX5lxtcFVvuIjpzUngRG0hqos=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W58MNNTIrWqXAVyrXcuSgrRioprROjVZ1gnyAlVTMR+oAz51Sw3z1yxDxfhlVuO9Z
-	 Wxykyc+RerDlupvdQWC10OELAMzqOhIvXJzdyskjZqNG4bDsbHTfdmGWjTwMqHzkTu
-	 taeU3SbnzPW8JD5A2/ipbc9bO5znelpN2dO3TIjGZnKZ7jcSldf4TKB1DHsIncpt5Y
-	 TdQUPFiP0BsjQ3te/SEcDHiR2tkMDfWUuxH8qhbpM2NNg5Isa2mW1yPy0F/5L7W+kG
-	 X5JFPrgVt7mnM3NWLGJ1gvKOPvy4sqQop/W/4dy7xSKXMRQvXQEV57fQRyYRhmH9Pt
-	 fm97nMHyYv6tQ==
-Date: Wed, 6 Dec 2023 17:32:48 +0000
+	b=eR0IQyF+WPhSu4l5rp7kF48UTVIGmAiTFX/GMhnMPr0B0/ZVqF++kGvQNdoDpe+as
+	 zBJQw36pOwMnt9UxEvj74ihTS9/HKIhX1RIlEnF/TYlmqmDPXqtWmn68iYoYW2XL+w
+	 CvF6iT4uJmozZrYFNjHZc6IcH+t0PqmEl8A2hc+IPcLoINiAmobLlS/8+TOc7ZL7PW
+	 SWwf6qcGPKUNI+GKVDwsxdcew8exJFK4HP+qmiOteQRomkA0RYU3hSrqaamwrK4SrN
+	 DYWZ7b6bPIyIc4cNzl634W55cdqpIlKeYB1xBJfPNOF2VE10OCDoMHcbhqj4K97uXZ
+	 BHMccci2Ama6g==
+Date: Wed, 6 Dec 2023 17:36:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Crt Mori <cmo@melexis.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andrew Hepp
- <andrew.hepp@ahepp.dev>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: temperature: mlx90635 MLX90635 IR
- Temperature sensor
-Message-ID: <20231206173248.7eb5a4a8@jic23-huawei>
-In-Reply-To: <CAKv63uuBjkqffEzVsJcsMKK3wYoShJ0gNU_X+=KrU1zicTVdEw@mail.gmail.com>
-References: <cover.1701168726.git.cmo@melexis.com>
-	<c9db99819adb0cdd602394b27f97a3b8fe081148.1701168726.git.cmo@melexis.com>
-	<20231204142224.51f2ccdf@jic23-huawei>
-	<CAKv63usxdfOviH=M6iUiNTtBFZVOseWUGz63Q-oJniBDFvTpSQ@mail.gmail.com>
-	<20231204170623.0c0cd598@jic23-huawei>
-	<CAKv63uuBjkqffEzVsJcsMKK3wYoShJ0gNU_X+=KrU1zicTVdEw@mail.gmail.com>
+To: Abdel Alkuor <alkuor@gmail.com>
+Cc: krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org, lars@metafoo.de,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: temperature: Add support for AMS AS6200
+Message-ID: <20231206173658.57b00a49@jic23-huawei>
+In-Reply-To: <ZW6IArKhx4KvxyTD@abdel>
+References: <20231202041651.719963-1-alkuor@gmail.com>
+	<20231202041651.719963-2-alkuor@gmail.com>
+	<20231204135014.15ea47b6@jic23-huawei>
+	<ZW6IArKhx4KvxyTD@abdel>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,108 +55,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 4 Dec 2023 20:56:39 +0100
-Crt Mori <cmo@melexis.com> wrote:
+On Mon, 4 Dec 2023 21:16:34 -0500
+Abdel Alkuor <alkuor@gmail.com> wrote:
 
-> On Mon, 4 Dec 2023 at 18:06, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Mon, 4 Dec 2023 16:34:30 +0100
-> > Crt Mori <cmo@melexis.com> wrote:
+> On Mon, Dec 04, 2023 at 01:50:14PM +0000, Jonathan Cameron wrote:
+> > On Fri,  1 Dec 2023 23:16:51 -0500
+> > Abdel Alkuor <alkuor@gmail.com> wrote:
+> >   
+> > > as6200 is a high accuracy temperature sensor of 0.0625C with a range
+> > > between -40 to 125 Celsius degrees.
+> > > 
+> > > The driver implements the alert trigger event in comparator mode where
+> > > consecutive faults are converted into periods, high/low temperature
+> > > thresholds require to be above/below the set limit for n seconds for
+> > > the alert to be triggered/cleared. The alert is only cleared when the
+> > > current temperature is below the low temperature threshold for n seconds.
+> > > 
+> > > The driver supports the following:
+> > > - show available sampling frequencey
+> > > - read/write sampling frequency
+> > > - read raw temperature
+> > > - read scaling factor
+> > > - read/write temperature period that needs to be met for low/high
+> > >   temperature thresholds to trigger an alert
+> > > - show available temperature period thresholds
+> > > - buffer trigger
+> > > - temperature alert event trigger  
+> > 
+> > Hi Abdel,
+> > 
+> > A few comments inline. Looking good in general.
 > >  
-> > > On Mon, 4 Dec 2023 at 15:22, Jonathan Cameron <jic23@kernel.org> wrote:  
-> > > >  
-> ...
-> > > While in Sleep Step mode, the EEPROM is powered down, but the cache
-> > > buffers those values. Still when you try to write or read a volatile
-> > > register (which should not be prevented by cache enabled as per my
-> > > opinion, but code says differently) in that mode, it returns -EBUSY
-> > > (as we discovered by code), so this kind of manipulation is needed to
-> > > enable write and read operations from volatile registers.  
-> >
-> > So the cache trick is just meant for the eeprom?  Can you use two regmaps.
-> > (I've seen similar done for devices with different ways of reading which
-> > this 'kind of' corresponds to).
-> > One to cover the eeprom and the other the registers that always work.
-> > That should let you separately control if they are in caching state or
-> > not.
-> > Or just read the eeprom into a manually created cache on boot?
+> Hi Jonathon,
+> 
+> Thank you for your time. I have a couple _silly_ questions about the tag
+> and returning from if else. Other than that, your comments will be addressed
+> in v3.
+> > > 
+> > > Datasheet: https://ams.com/documents/20143/36005/AS6200_DS000449_4-00.pdf
+> > >   
+> > 
+> > No blank line here.  Tags block (and Datasheet is a tag) never has blank lines
+> > as that breaks some existing tooling.
+> >   
+> Understood. 
+> 
+> P.S. when running checkpatch.pl on this patch, I get the following warning:
+> 
+> WARNING: Unknown link reference 'Datasheet:', use 'Link:' or 'Closes:' instead
+> 
+> should I use Link instead?
+
+Nah. Just ignore checkpatch. :)
+
+Also, if just accepting a comment, no need to say so.  Assumption of reviewer
+is that if you keep quiet on a particular comment you will have it fixed in next
+version.  Crop out that section of the email and only keep the bits that
+you want the reviewer to see your comments on.
+
+Hopefully I've cropped it appropriately!
+
+> > > Signed-off-by: Abdel Alkuor <alkuor@gmail.com>
+> > > +	if (info == IIO_EV_INFO_VALUE) {
+> > > +		*val = sign_extend32(FIELD_GET(AS6200_TEMP_MASK, tmp), 11);
+> > > +		ret = IIO_VAL_INT;  
+> > return here.
+> >   
+> > > +	} else {
+> > > +		cf = FIELD_GET(AS6200_CONFIG_CF, tmp);
+> > > +		cr = FIELD_GET(AS6200_CONFIG_CR, tmp);
+> > > +		*val = as6200_temp_thresh_periods[cr][cf][0];
+> > > +		*val2 = as6200_temp_thresh_periods[cr][cf][1];
+> > > +		ret = IIO_VAL_INT_PLUS_MICRO;  
+> > 
+> > and here.  If there is nothing more to be done, it simplifies the code
+> > flow being read to just return as quick as possible.
 > >  
-> 
-> It did not seem correct to create a manual cache, since regcache does
-> this job. I tried two separated regmaps, but when I tried to
-> initialize them I got into kernel panic/crash, so I could not get it
-> working on same device. Do you have any device in mind I could
-> template this against?
+> I did it as you mentioned, and when running check_patch.pl, it gives back a
+> warning that else is not needed here because of the return in the if
+> statement. So I opted into using ret instead, should I remove the else or ignore
+> the warning?
 
-I'm not sure which device I was thinking of, but grepping and looking for
-likely targets got me
-https://elixir.bootlin.com/linux/latest/source/drivers/mfd/madera-spi.c#L90
-which registers one regmap for 32bit registers and one for 16 bit registers
-as the devices have two non overlapping ranges.
+Dropping the else is fine or take the view it's wrong and ignore it.
+Checkpatch is providing hints and suggestions on where to double check.
+There is no requirement to accept it's suggestions if you feel the
+code ends up less readable.
 
-Not sure why it would crash (as opposed to one trampling on the other) but
-maybe there is something tied more tightly to the device than I think.
-
-> 
-> ...
-> > > "invalid" data (shouldn't differ much, but I wanted to prevent that as
-> > > it might be 0).  
-> >
-> > ok.  Just give a little bit more of that detail.  I'd not understood
-> > intent is to ensure one trigger -> one measurement.  
-> 
-> OK.
-> > >  
-> ...
-> > >
-> > > Burst is from 90632 terminology (and our chip register map), but maybe
-> > > more general would be "trigger_measurement"?  
-> >
-> > ok. But why only if in SLEEP_STEP?
-> >  
-> 
-> Because in continuous mode (other mode used here) the measurement
-> table is constantly updated, so trigger is not useful and would only
-> slow down the reading. And I did not want to block the data retrieval
-> when person wants to read the data fast.
-
-Fair enough - add a comment so reader can easily follow that.
-
-> 
-> > >  
-> > > > > +static int mlx90635_get_refresh_rate(struct mlx90635_data *data,
-> > > > > +                                  unsigned int *refresh_rate)
-> > > > > +{
-> > > > > +     unsigned int reg;
-> > > > > +     int ret;
-> > > > > +
-> > > > > +     if (data->powerstatus == MLX90635_PWR_STATUS_SLEEP_STEP)
-> > > > > +             regcache_cache_only(data->regmap, false);  
-> > > >
-> > > > Definitely needs a comment on why this is needed in this case.
-> > > >  
-> > >
-> > > Here and below (where we turn it back to true?), but then I assume in
-> > > all other instances as well? Maybe a more general comment in the
-> > > sleep_step mode function?  
-> >
-> > If we keep this, then yes I think we need comments on these - even if
-> > it's as simple as 'not accessing an eeprom register so we want to
-> > talk to the device'.  
-> 
-> OK, then this is an option if I cannot make two regmaps work.
-> 
-> > >  
-> > > > > +  
-> ...
-> > > changed we should end up in correct state. I can wrap a mutex around
-> > > though.  
-> >
-> > Assuming regcache_cache_only() isn't refcounted, you could end up with a
-> > second copy of this racing through and accessing the data after the
-> > first one turned the cache back on so the -EBUSY your mentioned.
-> >  
-> 
-> True. I will use mutex then for this action.
-
+> > > +	}
+> > > +
+> > > +	return ret;
 

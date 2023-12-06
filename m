@@ -1,200 +1,118 @@
-Return-Path: <linux-iio+bounces-686-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-687-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08BF8077B2
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 19:42:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DB48079CC
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 21:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4E82821BC
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 18:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F9C1F2193D
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 20:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E1141874;
-	Wed,  6 Dec 2023 18:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D213441852;
+	Wed,  6 Dec 2023 20:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oVX1bmez"
+	dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b="oC5W4j+y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11019D40
-	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 10:42:09 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40c2308faedso1158535e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 06 Dec 2023 10:42:08 -0800 (PST)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91101C7
+	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 12:49:22 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a1db6816177so24239566b.0
+        for <linux-iio@vger.kernel.org>; Wed, 06 Dec 2023 12:49:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701888127; x=1702492927; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VzeJ6XwirV2k7HJ4J6NHGgSQp6vEqG9SdErK5BEFGLQ=;
-        b=oVX1bmezOVzMWl0gDRaJHrbry4QRfjMZDoBPaB7EtATM4s6/RuP4xmJYzE+SjBtlko
-         Otew4rXKaV0vEJk1RO0LJbEcks7/6gZ21WNu7cn5fbpZPFTfcZkxnzc4sKuTiMx1QbbX
-         Xv4q/R1ZipG5TkJICkOiNW9/Ejb3j6h5HT9hpr3OD0rtiyTh8LREIcXFNCyRD8LfZyuH
-         SmbXPx++8/yGJRSuV5H0/A0KC8Eo1yaxFb+1UoXy5ioWeLPA+D5/oeW1amcQMxCYVY68
-         6ok6GNYOstanWGRC7O1JFNAlN/nJ37LFu7RM6dAzLikRj4+G8lbf/7eowWXfWNIgKR25
-         R/3A==
+        d=melexis.com; s=google; t=1701895761; x=1702500561; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wUeyqX/7tinAhfhJl7JN2l+NlOEIPq4fW0+aMdie9nM=;
+        b=oC5W4j+y/855dGadXgaofL/sNSSiTxRS8A6uIM0PCLuSkSzCljnKsnp/TTF4/BcmbH
+         cxsODrOidXpTQpIHsrpHrzLs/BSZkcOb6+BLtJhu0uxdwLV6w6ZLO34Rd5lio4cuhKcz
+         gkSaF0tXh15d/Rgogi3RyKhoVPjddsWf93bidFWhUxaWwtD+uSKXJ7LU81DjO3dKSA5U
+         sT15Wsk/wDONm37hnDnOBlD2b2fiTL0wunQTskp5ZVseBlWxP29cNRmT0uZuLIxJO+JQ
+         4tJpI0uFK9yPq8+N7Skowjh1vBd2X7wiZU5mzhAxe+FS2nM9JekFDgc8+6dq6CgXfa6s
+         iPNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701888127; x=1702492927;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VzeJ6XwirV2k7HJ4J6NHGgSQp6vEqG9SdErK5BEFGLQ=;
-        b=f8pUQZnH5uM+P4QCVYtddN+rwqwLXGFQnf9GlAITviOuMTDSVJGy6MZvHhPZ4ZMBA3
-         RXhzf52I5+s9388Gc8ZH7f4usvQE6D5+pr3m+ZNu0s/UyVO38hVUWTZavBBErG9xSFnx
-         zxudmRl++prtQ4fTVzVo+zApef5ZxRVfVqe/kKaicfzMaP3COXWLBfmO2jEYb46ZJHCo
-         rTDTkIxIBv0/xNivwpnTCUdcuLgOVxunVMTfztifXytwpZ+Uda2NCDXq6RQMrtUigdro
-         qZ0zySE9KIH4+V46LivTQ6mhn7WvRFAkEeRUyDzNCSVh8tgj/8mxWaKi1M4pMubWFEmR
-         nUDw==
-X-Gm-Message-State: AOJu0YwvhhBjUAuMCK4GBNamNo2QTaJSpXGEDJ6gD6xYeom/pffub4Um
-	KlP7UveyAyymU7B/v+zDLhBFIVfX6dQm/lSnM94=
-X-Google-Smtp-Source: AGHT+IFN1GaltS99IEHl3S2aVcQn637GUwUeeuKE7VlU09FVROPOoPtHusQR1gcsfdJsS3Z9CNxkQg==
-X-Received: by 2002:a05:600c:4712:b0:40b:5e21:d349 with SMTP id v18-20020a05600c471200b0040b5e21d349mr946578wmo.82.1701888127480;
-        Wed, 06 Dec 2023 10:42:07 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id kj9-20020a170907764900b00a1d61183006sm277582ejc.83.2023.12.06.10.42.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Dec 2023 10:42:07 -0800 (PST)
-Message-ID: <ae0758f3-ccc5-49a2-a37a-42925f4b0944@linaro.org>
-Date: Wed, 6 Dec 2023 19:42:05 +0100
+        d=1e100.net; s=20230601; t=1701895761; x=1702500561;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wUeyqX/7tinAhfhJl7JN2l+NlOEIPq4fW0+aMdie9nM=;
+        b=Iot32sO0zg0uuqRSJlOOaBDw2tijtEhimPLI3GeWmDNyqjn7ctONBUuBMw6AbmUqua
+         y/xpdWlKRp1sEdFghi5QLXO73MgjpctUSrNHosQJuVrVhwYveRjYE4ff77mnV7iq+ugA
+         Qa5dSek4kOBYBypK21d1Mqzo2nFaaPZg95r4jiOMr60vkmdCKq4Jq9Qc87WvuD5Ex6e2
+         XRrYu8C6Kzmb6/qVFLKzoQwE3w8pS0PGMqkV7/cCWmKEy62JhI11rE08/7quizmyesLj
+         G5S3AnGNFcvI7tmZUOqRrh0IN6DR1B0dRDWSrGGSZs69dTWXRlvbnYHk+YixOnRz3Fda
+         QXCA==
+X-Gm-Message-State: AOJu0Yx0gkm6UF1nNiTa92zozlHXFVp2CHzEQ0AJrqpZY6YXmnpNLd8w
+	WruN5WcO5DdLtJzftnBqqH8+bXGOtGr3PDmG5kU=
+X-Google-Smtp-Source: AGHT+IHlcNnemycI/ZiRuvOl+ZQP/ecAZmabJ8q5ZVQmffJnZ4GvA64G4q3YbfZxNRFJsoEz2rTRQA==
+X-Received: by 2002:a17:907:7157:b0:a1c:5257:bfaa with SMTP id zs23-20020a170907715700b00a1c5257bfaamr522612ejb.50.1701895761032;
+        Wed, 06 Dec 2023 12:49:21 -0800 (PST)
+Received: from localhost.localdomain (d54c3956f.access.telenet.be. [84.195.149.111])
+        by smtp.gmail.com with ESMTPSA id gx16-20020a170906f1d000b00a1dc4307ec5sm380267ejb.199.2023.12.06.12.49.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Dec 2023 12:49:20 -0800 (PST)
+From: Crt Mori <cmo@melexis.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Andrew Hepp <andrew.hepp@ahepp.dev>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Crt Mori <cmo@melexis.com>
+Subject: [PATCH v3 0/2] iio: temperature: mlx90635 Driver for MLX90635 IR temperature sensor
+Date: Wed,  6 Dec 2023 21:42:55 +0100
+Message-Id: <cover.1701872051.git.cmo@melexis.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/4] iio: humidity: Add TI HDC302x support
-Content-Language: en-US
-To: Li peiyu <579lpy@gmail.com>, jic23@kernel.org
-Cc: javier.carrasco.cruz@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20231206134655.559474-1-579lpy@gmail.com>
- <20231206135148.559564-1-579lpy@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231206135148.559564-1-579lpy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 06/12/2023 14:51, Li peiyu wrote:
-> Add device tree bindings for HDC3020/HDC3021/HDC3022 humidity and
-> temperature sensors.
+Hi everybody,
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
+There is a new contactless sensor in Melexis portfolio. MLX90635 is just
+1.8x1.8mm in size, but with factory calibration offers instant usage
+in every project. It offers wide refresh rate range that is configurable
+between 100ms and 4s.
 
-> 
-> Signed-off-by: Li peiyu <579lpy@gmail.com>
-> ---
+Driver currently provides temperature calculations, power management and
+changes to the refresh rate. Since sensor is aimed towards the consumer
+market there is really low number of EEPROM write cycles available, so
+driver changes refresh rate only in run time registers to avoid writing
+to EEPROM. Reading EEPROM is not available in Sleep Step mode, so I am
+using caching at the driver initialization to ensure that measurements
+can still be taken in Sleep Step mode.
 
-Where is the changelog? It was here.
+Changes v2 -> v3:
 
-This patch looks worse than it was before.
+  - add separate regmap for eeprom to make caching more obvious
+  - fix some style comments from Jonathan Cameron
 
+Changes v1 -> v2:
+  - dt-bindings are now enum according to the comments from
+    Krzysztof Kozlowski
+  - expand the path recipient list for the patches using
+    get_maintainers.pl
+  - driver cache and probe (and some style) adjusted according to
+    comments from Jonathan Cameron
+  - improve DSP version detection (make it clearer)
 
->  .../bindings/iio/humidity/ti,hdc3020.yaml     | 55 +++++++++++++++++++
->  1 file changed, 55 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> new file mode 100644
-> index 000000000000..f04b09fdca5e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> @@ -0,0 +1,55 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/humidity/ti,hdc3020.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: HDC3020/HDC3021/HDC3022 humidity and temperature iio sensors
-> +
-> +maintainers:
-> +  - Li peiyu <579lpy@gmail.com>
-> +  - Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> +
-> +description:
-> +  https://www.ti.com/lit/ds/symlink/hdc3020.pdf
-> +
-> +  The HDC302x is an integrated capacitive based relative humidity (RH)
-> +  and temperature sensor.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - ti,hdc3021
-> +              - ti,hdc3022
-> +          - const: ti,hdc3020
-> +      - items:
+Crt Mori (2):
+  iio: temperature: mlx90635 MLX90635 IR Temperature sensor
+  dt-bindings: iio: temperature: add MLX90635 device
 
-Drop items
+ .../iio/temperature/melexis,mlx90632.yaml     |   19 +-
+ MAINTAINERS                                   |    7 +
+ drivers/iio/temperature/Kconfig               |   12 +
+ drivers/iio/temperature/Makefile              |    1 +
+ drivers/iio/temperature/mlx90635.c            | 1097 +++++++++++++++++
+ 5 files changed, 1134 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/temperature/mlx90635.c
 
-> +          - const: ti,hdc3020
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-
-How did you respond to Jonathan's feedback?
-
-
-Best regards,
-Krzysztof
+-- 
+2.40.1
 
 

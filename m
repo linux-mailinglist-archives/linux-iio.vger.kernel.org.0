@@ -1,93 +1,103 @@
-Return-Path: <linux-iio+bounces-656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3E78062C2
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 00:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ABE806F61
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 13:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCBDE2820DD
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Dec 2023 23:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B32DF281CAF
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 12:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D750E405FE;
-	Tue,  5 Dec 2023 23:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04A8358B7;
+	Wed,  6 Dec 2023 12:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kSbyj5x5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3uL9brN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AD01B1;
-	Tue,  5 Dec 2023 15:11:40 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 4165686D10;
-	Wed,  6 Dec 2023 00:11:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1701817897;
-	bh=89Pwr4A+LObOBTtUkWIj1tmP5pCkLj29nfLDYovVCdQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kSbyj5x5CQ3m1HecmzdFLs+WeSCilRaSbaagFD9+JEEOraX02VVJiW3BUum5Ew9td
-	 cpONxXaoY8KZx5Uv9M7ydpNUu9fvuwEobvV8pgDz1YttzBSNdJocXujDiJ3QlpRQ8n
-	 ApcO8SseCARN5NQVAAjg9MAoU7sHlv1VtF56e12IaRKlzNoZTC2Aqm8LV1BkOPk6fN
-	 UbMAeLn6QKRTWIQ3R/Js1te9ewt/YRv6LFCWLTAQr5woWPRGxyB/6XaYfOyYROzrYc
-	 BRD5CuM74l4Xe+HWUjhL//U63oSqwB1+MpRA0yqzbuHWSHGk1gs9Ey20KBzDXciuWf
-	 RTbcx2WL+hpXw==
-Message-ID: <5eabd094-45bc-4adb-ab25-1b76352c1115@denx.de>
-Date: Wed, 6 Dec 2023 00:11:35 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FE62D043
+	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 12:02:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3392FC433CA
+	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 12:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701864137;
+	bh=IdiLllMqRzSZjTa/4ywBwa0u4XlLNZKRzVSx594uodE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=p3uL9brNFi5woFLa/HjjZVIYrowbw+z8gSSPqysAmwbEKEGku3UIWFVWL/YiZtX1e
+	 cUM+GuMydPsVzB9jGSv9cYAgJgbgcVBKcyAQXgzqwgvWsTScbcOkKJVGKovTfMDBFS
+	 KCSM4zLnkvLEvKHZA7wkivNNWhx4zooJpR1vj2D4986WjhBlLjdty3xvHrLlXt2qb3
+	 nc0uCEaAtGhcav7WFPp/QB5gtPNQL8ogqBxmO0fi4IuzUMaO20pv5oKSQPz4Klwd6q
+	 THNxj8dQpBP9zuLWAY4ors3nqdv3B4L0XL/K9RWxfrNnwq5qynaCMghzzg/kyYZcyB
+	 JdCwRKE33Eocg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 18C6BC4332E; Wed,  6 Dec 2023 12:02:17 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218223] Ambient light sensor on Framework 13 AMD laptop stops
+ working in Linux 6.7
+Date: Wed, 06 Dec 2023 12:02:16 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: bagasdotme@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-218223-217253-G5281gV7wc@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218223-217253@https.bugzilla.kernel.org/>
+References: <bug-218223-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] iio: light: isl76682: Add ISL76682 driver
-Content-Language: en-US
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Andre Werner <andre.werner@systec-electronic.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@denx.de>, Guenter Roeck <linux@roeck-us.net>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Naresh Solanki <naresh.solanki@9elements.com>,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Rob Herring <robh+dt@kernel.org>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- Vincent Tremblay <vincent@vtremblay.dev>, devicetree@vger.kernel.org
-References: <20231127212726.77707-1-marex@denx.de>
- <20231127212726.77707-2-marex@denx.de> <20231204112941.770e22cb@jic23-huawei>
- <0ae6466f-479a-476a-adf4-3bd099235eda@denx.de>
- <ZW9Hwm5LnPGl4Ird@smile.fi.intel.com>
- <62015c87-cc24-4ab6-9c91-605926f1c572@denx.de>
- <ZW-c44H84hZPNWl-@smile.fi.intel.com>
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <ZW-c44H84hZPNWl-@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 12/5/23 22:57, Andy Shevchenko wrote:
-> On Tue, Dec 05, 2023 at 10:02:32PM +0100, Marek Vasut wrote:
->> On 12/5/23 16:54, Andy Shevchenko wrote:
->>> On Tue, Dec 05, 2023 at 02:43:30AM +0100, Marek Vasut wrote:
-> 
-> ...
-> 
->>> ...unit .
->>>
->>> (Do not forget to drop extra space)
->>
->> Which extra space ?
-> 
-> Like in your question :-)
-> (I left the only relevant context, easy to notice.)
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
 
-Added, thanks.
+Bagas Sanjaya (bagasdotme@gmail.com) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |bagasdotme@gmail.com
+
+--- Comment #1 from Bagas Sanjaya (bagasdotme@gmail.com) ---
+(In reply to Michael Marley from comment #0)
+> The ambient light sensor on the Framework 13 worked properly with Linux 6=
+.6.
+> With 6.7 (currently tested with -rc4), the driver fails to load with:
+>=20
+> hid_sensor_als HID-SENSOR-200041.1.auto: failed to setup attributes
+> hid_sensor_als: probe of HID-SENSOR-200041.1.auto failed with error -1
+>=20
+> If I revert 286d528bf0fae9f334fba857825b9701df1675b2,
+> 5f05285df691b1e82108eead7165feae238c95ef, and
+> ee3710f39f9d0ae5137a866138d005fe1ad18132, it starts working again.
+>=20
+> This has also been reported in the Framework forums at
+> https://community.frame.work/t/tracking-auto-brightness-aka-ambient-light-
+> sensor-in-linux-details/16746.
+
+What is full dmesg log?
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

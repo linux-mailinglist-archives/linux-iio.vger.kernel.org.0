@@ -1,53 +1,59 @@
-Return-Path: <linux-iio+bounces-678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-679-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D3B8076DF
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 18:46:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C762F8076E9
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 18:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405D31F211A3
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 17:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78F911F212AD
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Dec 2023 17:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6316AB92;
-	Wed,  6 Dec 2023 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953AD6ABBC;
+	Wed,  6 Dec 2023 17:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFqQOeDx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPSyVPjn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7894F1F3
-	for <linux-iio@vger.kernel.org>; Wed,  6 Dec 2023 17:46:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026DFC433C8;
-	Wed,  6 Dec 2023 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452BC6A004;
+	Wed,  6 Dec 2023 17:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C504C433C7;
+	Wed,  6 Dec 2023 17:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701884768;
-	bh=f2thWcW62IXUOrbPqO5jq+mUatO667MclBvkg0ftvMw=;
+	s=k20201202; t=1701884910;
+	bh=b+oE6WsHAnybfoP/OnxbwTMatDU+zF/XLbHsR/CzzPg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DFqQOeDxOragNgCWaFB6fa/ZCUeDo5jmoU1N3o+euH/x/dJRnbGN2Dh947WoRMkcs
-	 /8vTxrMuMnU1i0jggbiaweErVewwBVFafutVmrUkeGA79VysLZHGTCqqUwZSand9Id
-	 P286oQYjgY9ncbftP7gKexfXpcyozXEK501VzUGOXW8GGSOgMTrcLziO1Tpk1jqieM
-	 wYVgyZl83Rvd38DSfChLMVXpet5nxAyRnU+DZ5uwNFjwDl2NbCZ2ZrloMIvObrhEzp
-	 PstIjHRDwzbwlpmj+NcnMZBMO7kVyN5imz2VUVNOrVh+l8aEqjQpOnMldvYYKDcBYW
-	 qCKNGvsZ/5pLg==
-Date: Wed, 6 Dec 2023 17:45:58 +0000
+	b=DPSyVPjn+clKvT2z6WZzk3hL6nRgad2xpb/ZK4qhPoA0rRfFFTmK/PwBscyB9/GGI
+	 Lk28pcZ5K9zcqfLY+Y6/qbS/y/gnm29uMvwdr+50JMtRK2IMZ/RWSml3ByNiYs4rOV
+	 VwU+0vVMKXtKfBYId7Mx/cHkagMcExZrQG2/bn22btiRSo+rgNs8D7IGdkpWFXS35H
+	 Nn5FXqfzHolu7igyMSyYCyqXCvQLuz9vLCJ5IdYL7aS/ljsJwwgDKD5r43MEE26Ztk
+	 q+9UeKFiy4cLyjlk48+B6lPcARiUN7joF1QuGIdEE2VehctlPiydE9bmwf2XrH6X2u
+	 W0SoSDdMpIKhg==
+Date: Wed, 6 Dec 2023 17:48:17 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Angel
- Iglesias <ang.iglesiasg@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andreas Klinger <ak@it-klinger.de>, Rob Herring
- <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v7 2/2] iio: pressure: driver for Honeywell HSC/SSC
- series
-Message-ID: <20231206174558.27f72d37@jic23-huawei>
-In-Reply-To: <ZW4_OoyKSZ3EBL2x@smile.fi.intel.com>
-References: <20231204194401.20891-1-petre.rodan@subdimension.ro>
-	<20231204194401.20891-2-petre.rodan@subdimension.ro>
-	<ZW4_OoyKSZ3EBL2x@smile.fi.intel.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Ceclan Dumitru <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
+ brgl@bgdev.pl, linux-gpio@vger.kernel.org, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
+ <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
+ =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>, Mike Looijmans
+ <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <20231206174817.2bc4f39f@jic23-huawei>
+In-Reply-To: <ZW9bVDLZl4-QLIbg@smile.fi.intel.com>
+References: <20231205134223.17335-1-mitrutzceclan@gmail.com>
+	<20231205134223.17335-2-mitrutzceclan@gmail.com>
+	<CAHp75VeKhR5y4AB=L5VVSrm=13Ruw7e86m+K9m9t-LZg5puDow@mail.gmail.com>
+	<e72085fd-3203-4166-afab-73707d27d174@gmail.com>
+	<ZW9bVDLZl4-QLIbg@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,29 +64,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Tue, 5 Dec 2023 19:18:12 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> > +		ret = match_string(hsc_triplet_variants, HSC_VARIANTS_MAX,
-> > +						triplet);
-> > +		if (ret < 0)
-> > +			return dev_err_probe(dev, -EINVAL,
-> > +				"honeywell,pressure-triplet is invalid\n");  
+> On Tue, Dec 05, 2023 at 06:12:18PM +0200, Ceclan Dumitru wrote:
+> > On 12/5/23 17:28, Andy Shevchenko wrote:  
+> > >> +               ref_label = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT_REF];
+> > >> +
+> > >> +               fwnode_property_read_string(child, "adi,reference-select",
+> > >> +                                           &ref_label);
+> > >> +               ref_sel = match_string(ad7173_ref_sel_str,
+> > >> +                                      ARRAY_SIZE(ad7173_ref_sel_str), ref_label);
+> > >> +               if (ref_sel < 0) {  
+> > > Can we use fwnode_property_match_property_string()?  
+> > 
+> > fwnode_property_match_string() searches a given string in a device-tree
+> > string array and returns the index. I do not think that this function
+> > fits here as the DT attribute is a single string.  
 > 
-> Still you can use mentioned device property API.
+> I'm not talking about that. I mentioned different API call.
 > 
-
-This is one of the rare cases where basing on iio/togreg is
-sensible because you do want a feature that only exists there today.
-Just state that you have done so in the cover letter.
+> /**
+>  * fwnode_property_match_property_string - find a property string value in an array and return index
+>  * @fwnode: Firmware node to get the property of
+>  * @propname: Name of the property holding the string value
+>  * @array: String array to search in
+>  * @n: Size of the @array
+>  *
+>  * Find a property string value in a given @array and if it is found return
+>  * the index back.
+>  *
+>  * Return: index, starting from %0, if the string value was found in the @array (success),
+>  *         %-ENOENT when the string value was not found in the @array,
+>  *         %-EINVAL if given arguments are not valid,
+>  *         %-ENODATA if the property does not have a value,
+>  *         %-EPROTO or %-EILSEQ if the property is not a string,
+>  *         %-ENXIO if no suitable firmware interface is present.
+>  */
+> 
+Which is in the togreg branch of iio.git (was a patch from Andy that I've queued up)
 
 Jonathan
 
-
-> ...
-> 
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +			"pressure limits are invalid\n");  
-> 
-> Indentation?
-> 
 
 

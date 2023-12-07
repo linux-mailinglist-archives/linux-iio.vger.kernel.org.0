@@ -1,102 +1,239 @@
-Return-Path: <linux-iio+bounces-718-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-719-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27120808B6A
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 16:06:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9DB808DBE
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 17:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC63DB20E18
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 15:06:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 068EE2820DB
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 16:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C451E44395;
-	Thu,  7 Dec 2023 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652047F46;
+	Thu,  7 Dec 2023 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FgTQXwvW"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="pdufaVZe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BDD91719
-	for <linux-iio@vger.kernel.org>; Thu,  7 Dec 2023 07:05:57 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2ca2573d132so10690841fa.0
-        for <linux-iio@vger.kernel.org>; Thu, 07 Dec 2023 07:05:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701961556; x=1702566356; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=50wXkgxhwd7VVmaWItypX7buhSjm3DOhX6j7yctjfj0=;
-        b=FgTQXwvWgOkOb+XnUO8F7ebzTfoYVpygk/DCq1H6DLE6OSZHGGEMQiHY+U3HjSwmAk
-         e+ReqtFwxzGqJcVrMRKJGqWaVRrjOu0bsDndjdLKZ3YV+mBAK51Ua2Et8sQTsKo3RQLE
-         FfufyTykwPVF0sbajz3JRI/nzBIeqlBwQYgbqVMofoAhQLtvXt0HYZlbPtyv3YoL7mHI
-         y2ajcCUCbAj0YXJGKMkDD4a/oq2PKSIKyhOHps58Nn+s037sIn1k9HERVSJjnt1giAl1
-         xIUrL2yddcwhTI3OgxGOvTXCTkBlYHFUtCbLADGRyEVBu2Iig0ek7I9399g1MzPqbD4I
-         V12A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701961556; x=1702566356;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=50wXkgxhwd7VVmaWItypX7buhSjm3DOhX6j7yctjfj0=;
-        b=lZCnvQGFg9Tq7psWjeY3E0A0NVJVVkVg/MbB0jdTEXf9CqWBEYnM/kJ7FY4Z0X6u6S
-         WjEeRATuj1tw3Zw8gYnrlGE/w1/Pa9vIL9v1Fb3OhoEZV5t6YALKdnAOQG/luaeL0iNy
-         wOFgwccE3dW/UeBzGeJ8FfziHbdQHZzmuW3b5aBkLt5AWHEgD2HDKJASKk0WbA7OTQzA
-         FQDS4ThVCiH+fY9RNWQOs9jd8WytFU6yE1N5BCFl/Yzwp3yAHquJnc3EYy9dZQGsY2eW
-         SKg5E4QNFUyQ4oZ1J2riCCHUAXKht0Y5tb3EWHnYnwCaTPAzZOIjQ9MKrrnDSlGi5uqT
-         180g==
-X-Gm-Message-State: AOJu0YzTQRYkvjeLAUisbeUogdyASBiKWm4sA1xD5mg2a95efaiVjIx7
-	w4MR5CR8WJ5j1M+oQTKnJXANWUYr1F/2w2WuTr4thQ==
-X-Google-Smtp-Source: AGHT+IEtKGO1yIab3lvfo6J7IHc9cEdvzxFKzgdCy7hRWL9U+Jldi6OQhrIneigiTax1TWBDYvt6iTGW+cnqiHueJdg=
-X-Received: by 2002:a2e:b781:0:b0:2ca:1b6:61cc with SMTP id
- n1-20020a2eb781000000b002ca01b661ccmr1539368ljo.100.1701961555147; Thu, 07
- Dec 2023 07:05:55 -0800 (PST)
+Received: from mail.subdimension.ro (unknown [IPv6:2a01:7e01:e001:1d1::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6877110D1;
+	Thu,  7 Dec 2023 08:47:41 -0800 (PST)
+Received: from localhost.localdomain (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 96D1428EE6F;
+	Thu,  7 Dec 2023 16:47:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1701967659;
+	bh=Gtb+0owkXFeYs1nFwSaAIZKUGamCMAfqYYJIbP08rDg=;
+	h=From:To:Cc:Subject:Date;
+	b=pdufaVZepOM0QlVtfe3TlmudNasU2eiAHvZypW2DIsJ+5OdramSdzMKWLc5jd0tg8
+	 X7YfdBk0Nefp6eMYcWBUd0f95gh5e96Un0c7I8b9BsaR07UXn/5ta8NMzKWrW8tCZp
+	 nn1G0TiSdw2ImubD9IZum2dSeYpd0uHMaHU8ldbo=
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v8 1/2] dt-bindings: iio: pressure: add honeywell,hsc030
+Date: Thu,  7 Dec 2023 18:46:28 +0200
+Message-ID: <20231207164634.11998-1-petre.rodan@subdimension.ro>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231207-iio-backend-prep-v2-0-a4a33bc4d70e@analog.com> <20231207-iio-backend-prep-v2-4-a4a33bc4d70e@analog.com>
-In-Reply-To: <20231207-iio-backend-prep-v2-4-a4a33bc4d70e@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 7 Dec 2023 09:05:44 -0600
-Message-ID: <CAMknhBGZzgs_EBZL8oPsF+JqKJS968XmAxZ9=TZ=g9-k6RLGGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/8] iio: adc: ad9467: fix scale setting
-To: nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 7, 2023 at 6:39=E2=80=AFAM Nuno Sa via B4 Relay
-<devnull+nuno.sa.analog.com@kernel.org> wrote:
->
-> From: Nuno Sa <nuno.sa@analog.com>
->
-> When reading in_voltage_scale we can get something like:
->
-> root@analog:/sys/bus/iio/devices/iio:device2# cat in_voltage_scale
-> 0.038146
->
-> However, when reading the available options:
->
-> root@analog:/sys/bus/iio/devices/iio:device2# cat
-> in_voltage_scale_available
-> 2000.000000 2100.000006 2200.000007 2300.000008 2400.000009 2500.000010
->
-> which does not make sense. Moreover, when trying to set a new scale we
-> get an error because there's no call to __ad9467_get_scale() to give us
-> values as given when reading in_voltage_scale. Fix it by computing the
-> available scales during probe and properly pass the list when
-> .read_available() is called.
->
-> While at it, change to use .read_available() from iio_info. Also note
-> that to properly fix this, adi-axi-adc.c has to be changed accordingly.
->
-> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
+Adds binding for digital Honeywell TruStability HSC and SSC series
+pressure and temperature sensors.
+Communication is one way. The sensor only requires 4 bytes worth of
+clock pulses on both i2c and spi in order to push the data out.
+The i2c address is hardcoded and depends on the part number.
+There is no additional GPIO control.
+driver is based on iio/togreg
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Datasheet:
+https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf [HSC]
+Datasheet:
+https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf [SSC]
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+---
+v2: - fix yaml struct
+    - cleanup based on Krzysztof's review
+v3: - rename range_str -> honeywell,pressure-triplet to define the string
+       containing the pressure range, measurement unit and type
+    - honeywell,pmax-pascal becomes uint32
+v4: - added enum to honeywell,transfer-function
+v5: - removed pmin-pascal, pmax-pascal $ref
+    - added pmin-pascal, pmax-pascal constraints
+v6: - no change
+v7: - no change
+v8: - no change, driver is now based on iio/togreg
+---
+ .../iio/pressure/honeywell,hsc030pa.yaml      | 142 ++++++++++++++++++
+ 1 file changed, 142 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+new file mode 100644
+index 000000000000..65a24ed67b3c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+@@ -0,0 +1,142 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/honeywell,hsc030pa.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Honeywell TruStability HSC and SSC pressure sensor series
++
++description: |
++  support for Honeywell TruStability HSC and SSC digital pressure sensor
++  series.
++
++  These sensors have either an I2C, an SPI or an analog interface. Only the
++  digital versions are supported by this driver.
++
++  There are 118 models with different pressure ranges available in each family.
++  The vendor calls them "HSC series" and "SSC series". All of them have an
++  identical programming model but differ in pressure range, unit and transfer
++  function.
++
++  To support different models one needs to specify the pressure range as well
++  as the transfer function. Pressure range can either be provided via
++  pressure-triplet (directly extracted from the part number) or in case it's
++  a custom chip via numerical range limits converted to pascals.
++
++  The transfer function defines the ranges of raw conversion values delivered
++  by the sensor. pmin-pascal and pmax-pascal corespond to the minimum and
++  maximum pressure that can be measured.
++
++  Please note that in case of an SPI-based sensor, the clock signal should not
++  exceed 800kHz and the MOSI signal is not required.
++
++  Specifications about the devices can be found at:
++  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-hsc-series/documents/sps-siot-trustability-hsc-series-high-accuracy-board-mount-pressure-sensors-50099148-a-en-ciid-151133.pdf
++  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/trustability-ssc-series/documents/sps-siot-trustability-ssc-series-standard-accuracy-board-mount-pressure-sensors-50099533-a-en-ciid-151134.pdf
++
++maintainers:
++  - Petre Rodan <petre.rodan@subdimension.ro>
++
++properties:
++  compatible:
++    const: honeywell,hsc030pa
++
++  reg:
++    maxItems: 1
++
++  honeywell,transfer-function:
++    description: |
++      Transfer function which defines the range of valid values delivered by
++      the sensor.
++      0 - A, 10% to 90% of 2^14
++      1 - B, 5% to 95% of 2^14
++      2 - C, 5% to 85% of 2^14
++      3 - F, 4% to 94% of 2^14
++    enum: [0, 1, 2, 3]
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  honeywell,pressure-triplet:
++    description: |
++      Case-sensitive five character string that defines pressure range, unit
++      and type as part of the device nomenclature. In the unlikely case of a
++      custom chip, set to "NA" and provide pmin-pascal and pmax-pascal.
++    enum: [001BA, 1.6BA, 2.5BA, 004BA, 006BA, 010BA, 1.6MD, 2.5MD, 004MD,
++           006MD, 010MD, 016MD, 025MD, 040MD, 060MD, 100MD, 160MD, 250MD,
++           400MD, 600MD, 001BD, 1.6BD, 2.5BD, 004BD, 2.5MG, 004MG, 006MG,
++           010MG, 016MG, 025MG, 040MG, 060MG, 100MG, 160MG, 250MG, 400MG,
++           600MG, 001BG, 1.6BG, 2.5BG, 004BG, 006BG, 010BG, 100KA, 160KA,
++           250KA, 400KA, 600KA, 001GA, 160LD, 250LD, 400LD, 600LD, 001KD,
++           1.6KD, 2.5KD, 004KD, 006KD, 010KD, 016KD, 025KD, 040KD, 060KD,
++           100KD, 160KD, 250KD, 400KD, 250LG, 400LG, 600LG, 001KG, 1.6KG,
++           2.5KG, 004KG, 006KG, 010KG, 016KG, 025KG, 040KG, 060KG, 100KG,
++           160KG, 250KG, 400KG, 600KG, 001GG, 015PA, 030PA, 060PA, 100PA,
++           150PA, 0.5ND, 001ND, 002ND, 004ND, 005ND, 010ND, 020ND, 030ND,
++           001PD, 005PD, 015PD, 030PD, 060PD, 001NG, 002NG, 004NG, 005NG,
++           010NG, 020NG, 030NG, 001PG, 005PG, 015PG, 030PG, 060PG, 100PG,
++           150PG, NA]
++    $ref: /schemas/types.yaml#/definitions/string
++
++  honeywell,pmin-pascal:
++    description: |
++      Minimum pressure value the sensor can measure in pascal.
++      To be specified only if honeywell,pressure-triplet is set to "NA".
++
++  honeywell,pmax-pascal:
++    description: |
++      Maximum pressure value the sensor can measure in pascal.
++      To be specified only if honeywell,pressure-triplet is set to "NA".
++
++  vdd-supply:
++    description:
++      Provide VDD power to the sensor (either 3.3V or 5V depending on the chip)
++
++  spi-max-frequency:
++    maximum: 800000
++
++required:
++  - compatible
++  - reg
++  - honeywell,transfer-function
++  - honeywell,pressure-triplet
++
++additionalProperties: false
++
++dependentSchemas:
++  honeywell,pmin-pascal:
++    properties:
++      honeywell,pressure-triplet:
++        const: NA
++  honeywell,pmax-pascal:
++    properties:
++      honeywell,pressure-triplet:
++        const: NA
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pressure@28 {
++            compatible = "honeywell,hsc030pa";
++            reg = <0x28>;
++            honeywell,transfer-function = <0>;
++            honeywell,pressure-triplet = "030PA";
++        };
++    };
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pressure@0 {
++            compatible = "honeywell,hsc030pa";
++            reg = <0>;
++            spi-max-frequency = <800000>;
++            honeywell,transfer-function = <0>;
++            honeywell,pressure-triplet = "NA";
++            honeywell,pmin-pascal = <0>;
++            honeywell,pmax-pascal = <200000>;
++        };
++    };
++...
+-- 
+2.41.0
+
 

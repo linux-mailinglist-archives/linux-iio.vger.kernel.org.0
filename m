@@ -1,29 +1,29 @@
-Return-Path: <linux-iio+bounces-737-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-736-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7808090FE
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 20:06:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02238090E6
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 19:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467571C208B2
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 19:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7211F214B2
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 18:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14A54EB42;
-	Thu,  7 Dec 2023 19:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6674D588;
+	Thu,  7 Dec 2023 18:58:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B0910DC;
-	Thu,  7 Dec 2023 11:06:04 -0800 (PST)
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C679B401F9;
-	Thu,  7 Dec 2023 18:56:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf17.hostedemail.com (Postfix) with ESMTPA id 3B73B1A;
-	Thu,  7 Dec 2023 18:56:18 +0000 (UTC)
-Message-ID: <c2138d24bcaec664e9239e6e1bade6116db04027.camel@perches.com>
-Subject: Re: [PATCH v3 01/13] scripts: checkpatch: Add __aligned to the list
- of attribute notes
+X-Greylist: delayed 142 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Dec 2023 10:58:47 PST
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C00610F9;
+	Thu,  7 Dec 2023 10:58:47 -0800 (PST)
+Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 410A9801F7;
+	Thu,  7 Dec 2023 18:58:44 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf15.hostedemail.com (Postfix) with ESMTPA id A25171A;
+	Thu,  7 Dec 2023 18:58:39 +0000 (UTC)
+Message-ID: <26ceceaec7dfe109b43c8677f74d91c5c893ac60.camel@perches.com>
+Subject: Re: [PATCH v3 13/13] MAINTAINERS: Add MAINTAINERS entry for AD7091R
 From: Joe Perches <joe@perches.com>
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com, 
  dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com, paul.cercueil@analog.com,
@@ -32,10 +32,10 @@ To: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
   dan.carpenter@linaro.org, marcelo.schmitt1@gmail.com
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Date: Thu, 07 Dec 2023 10:56:17 -0800
-In-Reply-To: <e8d5343a0a6b5d976873d3896ad9ab0c88505c6d.1701971344.git.marcelo.schmitt1@gmail.com>
+Date: Thu, 07 Dec 2023 10:58:38 -0800
+In-Reply-To: <b55d378dd8b6dbe787a83b5a0a1f3f05b2530eab.1701971344.git.marcelo.schmitt1@gmail.com>
 References: <cover.1701971344.git.marcelo.schmitt1@gmail.com>
-	 <e8d5343a0a6b5d976873d3896ad9ab0c88505c6d.1701971344.git.marcelo.schmitt1@gmail.com>
+	 <b55d378dd8b6dbe787a83b5a0a1f3f05b2530eab.1701971344.git.marcelo.schmitt1@gmail.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -45,53 +45,43 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 3B73B1A
-X-Rspamd-Server: rspamout02
-X-Stat-Signature: uc1ruosambyhhk1jej9gqi9e1oaeh155
+X-Stat-Signature: kxqmrhecpbp8rrfygtoxcukpefw3woyr
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: A25171A
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX188AVrchA8Q6aSf2ubwLQwytSUKZZesA8Q=
-X-HE-Tag: 1701975378-987312
-X-HE-Meta: U2FsdGVkX1+CjSoSgA4ZE8tPllT47ZdAoJmXNslwU/RdfB9ysc18qu5HDv/6UxcleLmTGK/xkn9Crk4a0B67WkHfmt5oOKGXXZandu+E/HzSP+oWthr6rm6yzoYJmAA7i5VALJXVA3n4Y36OKkM62KcwWVxY4XGB6CeA9rYvioQ1Gl6DVSBzE8NuJGpwpv74aCXVlhLG0WnOdaU5RE8Kqwz2ja6pUMPtmiGEB2xR6/EOLrBPmq/zTGR5nqcJh6DYGk1/Iv7YN85Ep1EuFNhKNfPeZ9kZgiEqWOP/3OC7YR5LfPStgN5p1Rpq+gvkEg+5CbJINLb08STI2YpAOkWEv7WNHylca8Hiyg3x4z2SgBS+tvm0qIoZgggs5kBujoLD
+X-Session-ID: U2FsdGVkX1/3NwuE18cfhVHEcK6vs+EyQ+1MnrtfxDk=
+X-HE-Tag: 1701975519-182943
+X-HE-Meta: U2FsdGVkX18+J42L2hwAsDCsmGB+Rg7Bix3MeDWX7Teb+C69tUX9anU45klsBarWWpuCDaqa747aFttNZ/nmfuXaZYXW/nQc+WvHWmSbZXEPRlebaODfW/DOG/9W6kohoy0NTvClAebSUky/V1JA1ob1AJsbJX5dMd9BWTberEvPqGuZZqwrhhjqIOiuveXhAYr2UMjRwoYd4zsj15zNvap/9vtoVhD0VsdZYNQaSZchmV6YYuicTpVkYSLGfY2Z6TR4p3O1IeRf3ah7bCjDjTdtdH3E29D6IqWvF2CJgeDgnLFS0TrSX7ZefB5lLNFTisvliB08PCml9EPYXWMjY1KHSRGCu1aBqeSYP8JPe1aapzTjsre2pk8U4ePtfY6HcO/acMZ4T/XoVK+xxfH3PFouclB9MJIP/wjJkW43i5XMoktSt6nJsg/AH+NLGBxG
 
-On Thu, 2023-12-07 at 15:37 -0300, Marcelo Schmitt wrote:
-> Checkpatch presumes attributes marked with __aligned(alignment) are part
-> of a function declaration and throws a warning stating that those
-> compiler attributes should have an identifier name which is not correct.
-> Add __aligned compiler attributes to the list of attribute notes
-> so they don't cause warnings anymore.
->=20
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> The patch that would trigger the mentioned checkpatch warning in this ser=
-ies is
-> patch number 12 (iio: adc: Add support for AD7091R-8).
->=20
->  scripts/checkpatch.pl | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 25fdb7fda112..e6773ae0ad08 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -512,6 +512,7 @@ our $Attribute	=3D qr{
->  			__ro_after_init|
->  			__kprobes|
->  			$InitAttribute|
-> +			__aligned|
+On Thu, 2023-12-07 at 15:43 -0300, Marcelo Schmitt wrote:
+> The driver for AD7091R was added in
+> ca693001: iio: adc: Add support for AD7091R5 ADC
+> but no MAINTAINERS file entry was added for it since then.
+> Add a proper MAINTAINERS file entry for the AD7091R driver.
+[]
+> diff --git a/MAINTAINERS b/MAINTAINERS
+[]
+> @@ -1126,6 +1126,18 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4=
+130
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+>  F:	drivers/iio/adc/ad4130.c
+> =20
+> +ANALOG DEVICES INC AD7091R DRIVER
+> +M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	http://ez.analog.com/community/linux-device-drivers
+> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r5.yaml
+> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> +F:	drivers/iio/adc/drivers/iio/adc/ad7091r-base.c
+> +F:	drivers/iio/adc/drivers/iio/adc/ad7091r-base.h
+> +F:	drivers/iio/adc/drivers/iio/adc/ad7091r5.c
+> +F:	drivers/iio/adc/drivers/iio/adc/ad7091r8.c
 
-__aligned takes an argument so I think there needs
-to have something like the use of __alloc_size below
-this addition
-	__alloc_size\s*\(\s*\d+\s*(?:,\s*\d+\s*)?\)
+Maybe use wildcards?
 
-maybe
+F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+F:	drivers/iio/adc/drivers/iio/adc/ad7091r*
 
-			__aligned\s*\([^\)]*\)
-
-though even that would work well with most uses it
-would not work with things like
-
-drivers/crypto/inside-secure/safexcel_hash.c:   u8 cache[HASH_CACHE_SIZE] _=
-_aligned(sizeof(u32));
 
 

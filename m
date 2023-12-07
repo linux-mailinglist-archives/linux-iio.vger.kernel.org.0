@@ -1,257 +1,415 @@
-Return-Path: <linux-iio+bounces-699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD9A807DE0
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 02:25:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C4B808052
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 06:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CC191C20C30
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 01:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F611F211B7
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Dec 2023 05:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA78136B;
-	Thu,  7 Dec 2023 01:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1550D11CAC;
+	Thu,  7 Dec 2023 05:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eWeLSCjk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pb71r+Cr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7B830E7;
-	Wed,  6 Dec 2023 17:23:53 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBA7DE;
+	Wed,  6 Dec 2023 21:42:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701912232; x=1733448232;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=haxRevXN/RxJvUHVAi69/QMEeMdiAMug75ZxQ4vmF6o=;
-  b=eWeLSCjkUGVuw9SoJlRq97E9b/YuFiak38nPQ+hzwmwdBKQFhfX7JFYi
-   K8McFimtd3Y2I5Ab+vkDOEt64ScvDF1COzMSnhicCI0daPv8HhaT1TS+J
-   XtuPbjYGVOmep+MW8Q8UV2+pvuND4yCpg7egh8Hmo2PGtP9Glj2v0+qT+
-   UPiJm2MRApRq+DjWBSf0R3qGlNamvaHzZGOQhe8A3oYriMRsgvQ/87pTH
-   tNZyxEufA0rKPL9S0ZCP9vzI98I2+pE7jfx3Iqq1s4l1kPGAb5wf0Lpao
-   sHhWHjeWXo3J95zc7onWAQBcOEEBJTgHeharo0s6fOyd+W6F/XVQhk7/H
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="391326002"
+  t=1701927723; x=1733463723;
+  h=date:from:to:cc:subject:message-id;
+  bh=uKfMX7B7AelUiYi9YjjS3dGRw+Gxe2MWxWgi3QPMihQ=;
+  b=Pb71r+CrdpfpvxZjW9u8ukpVYnr5+XIeNSv5dWTMwJqFIhu6uCFu5cJW
+   P4jndM7P1am0u+74iLJRa82WJq3lK636W1WWcBSfAn3LMZgecxYG9SHSw
+   3TLDT8H49AMN71PKrwcFJI9oi+9HoKJ+RaPdnEBrJytm4HvCWz3O1BxuQ
+   ZrsGXaDrp56xOAHyz8R/rRwYabi3Ui2bg/G5YdcSERr3SASzRG1V5NbU4
+   V/yDFHzEc2CYtSsCuiH6ARvTAf0vciufBAPazlM4d+S59uvDRAJRSyyC8
+   taG2mpBEHXV7FOvydjCfrOiFzfIPt9Y3xTSu324y9+KonwWHrizqXMG7J
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="7537557"
 X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="391326002"
+   d="scan'208";a="7537557"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 17:22:33 -0800
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 21:42:02 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="894943613"
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="895013884"
 X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="894943613"
+   d="scan'208";a="895013884"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 06 Dec 2023 17:22:28 -0800
+  by orsmga004.jf.intel.com with ESMTP; 06 Dec 2023 21:41:56 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rB35s-000BfC-14;
-	Thu, 07 Dec 2023 01:22:25 +0000
-Date: Thu, 7 Dec 2023 09:22:08 +0800
+	id 1rB78z-000Btc-2F;
+	Thu, 07 Dec 2023 05:41:53 +0000
+Date: Thu, 07 Dec 2023 13:41:02 +0800
 From: kernel test robot <lkp@intel.com>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linus.walleij@linaro.org, brgl@bgdev.pl,
-	andy@kernel.org, linux-gpio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>
-Subject: Re: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <202312070921.XWcr7wUd-lkp@intel.com>
-References: <20231205134223.17335-2-mitrutzceclan@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ amd-gfx@lists.freedesktop.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, linux-block@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
+ netdev@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: [linux-next:master] BUILD REGRESSION
+ 577a4ee0b96fb043c9cf4a533c550ff587e526cf
+Message-ID: <202312071357.ypE0yrPf-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205134223.17335-2-mitrutzceclan@gmail.com>
 
-Hi Dumitru,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 577a4ee0b96fb043c9cf4a533c550ff587e526cf  Add linux-next specific files for 20231206
 
-kernel test robot noticed the following build warnings:
+Error/Warning reports:
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.7-rc4 next-20231206]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+https://lore.kernel.org/oe-kbuild-all/202312061337.WNVSk0AL-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202312061837.tbKWaozM-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202312062242.RFPPozG9-lkp@intel.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dumitru-Ceclan/iio-adc-ad7173-add-AD7173-driver/20231205-214833
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20231205134223.17335-2-mitrutzceclan%40gmail.com
-patch subject: [PATCH v7 2/2] iio: adc: ad7173: add AD7173 driver
-config: m68k-randconfig-r071-20231207 (https://download.01.org/0day-ci/archive/20231207/202312070921.XWcr7wUd-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20231207/202312070921.XWcr7wUd-lkp@intel.com/reproduce)
+Error/Warning: (recently discovered and may have been fixed)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312070921.XWcr7wUd-lkp@intel.com/
+/tmp/cco4BMDv.s:387: Error: selected processor does not support requested special purpose register -- `mrs r1,cpsr'
+drivers/perf/riscv_pmu_sbi.c:1008:19: error: incompatible function pointer types initializing 'proc_handler *' (aka 'int (*)(const struct ctl_table *, int, void *, unsigned long *, long long *)') with an expression of type 'int (struct ctl_table *, int, void *, size_t *, loff_t *)' (aka 'int (struct ctl_table *, int, void *, unsigned long *, long long *)') [-Wincompatible-function-pointer-types]
 
-smatch warnings:
-drivers/iio/adc/ad7173.c:833 ad7173_fw_parse_channel_config() warn: unsigned 'ref_sel' is never less than zero.
+Error/Warning ids grouped by kconfigs:
 
-vim +/ref_sel +833 drivers/iio/adc/ad7173.c
+gcc_recent_errors
+|-- alpha-randconfig-r132-20231206
+|   |-- arch-alpha-mm-fault.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|   |-- drivers-atm-fore200e.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-int-usertype-b-got-restricted-__le32-usertype
+|   |-- drivers-iio-imu-bmi323-bmi323_i2c.c:sparse:sparse:symbol-bmi323_i2c_regmap_config-was-not-declared.-Should-it-be-static
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- arm-allyesconfig
+|   `-- qcom_stats.c:(.text):undefined-reference-to-__aeabi_uldivmod
+|-- arm-randconfig-r016-20220626
+|   `-- :Error:selected-processor-does-not-support-requested-special-purpose-register-mrs-r1-cpsr
+|-- csky-randconfig-r122-20231206
+|   |-- arch-csky-kernel-vdso-vgettimeofday.c:sparse:sparse:function-__vdso_clock_gettime-with-external-linkage-has-definition
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- microblaze-randconfig-r121-20231206
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- mips-allyesconfig
+|   `-- qcom_stats.c:(.text.qcom_ddr_stats_show):undefined-reference-to-__udivdi3
+|-- mips-randconfig-r123-20231206
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- parisc-randconfig-r113-20231206
+|   |-- drivers-iio-imu-bmi323-bmi323_i2c.c:sparse:sparse:symbol-bmi323_i2c_regmap_config-was-not-declared.-Should-it-be-static
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-opcode-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-owner-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-type-got-int
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- sh-randconfig-m031-20230727
+|   `-- standard-input:Error:unknown-pseudo-op:cfi_def_cfa_regist
+|-- sh-randconfig-r112-20231206
+|   |-- arch-sh-kernel-crash_dump.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-const-addr-got-void-noderef-__iomem
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-opcode-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-owner-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-type-got-int
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- sparc-allmodconfig
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc-allnoconfig
+|   |-- arch-sparc-mm-leon_mm.c:warning:variable-paddrbase-set-but-not-used
+|   `-- arch-sparc-mm-srmmu.c:warning:variable-clear-set-but-not-used
+|-- sparc-defconfig
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   |-- arch-sparc-mm-leon_mm.c:warning:variable-paddrbase-set-but-not-used
+|   `-- arch-sparc-mm-srmmu.c:warning:variable-clear-set-but-not-used
+|-- sparc-randconfig-001-20231206
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   |-- arch-sparc-mm-leon_mm.c:warning:variable-paddrbase-set-but-not-used
+|   `-- arch-sparc-mm-srmmu.c:warning:variable-clear-set-but-not-used
+|-- sparc-randconfig-002-20231206
+|   |-- arch-sparc-mm-leon_mm.c:warning:variable-paddrbase-set-but-not-used
+|   `-- arch-sparc-mm-srmmu.c:warning:variable-clear-set-but-not-used
+|-- sparc-randconfig-r061-20231206
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-allmodconfig
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-allyesconfig
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-defconfig
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-randconfig-001-20231206
+|   |-- arch-sparc-kernel-module.c:warning:variable-strtab-set-but-not-used
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-randconfig-002-20231206
+|   `-- arch-sparc-mm-init_64.c:warning:variable-hv_pgsz_idx-set-but-not-used
+|-- sparc64-randconfig-r133-20231206
+|   |-- drivers-infiniband-hw-vmw_pvrdma-pvrdma.h:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-int-usertype-l-got-restricted-__le32-usertype
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- x86_64-randconfig-121-20231206
+|   |-- drivers-gpu-drm-amd-amdgpu-..-amdkfd-kfd_process.c:sparse:sparse:incompatible-types-in-comparison-expression-(different-address-spaces):
+|   |-- drivers-gpu-drm-amd-amdgpu-..-amdkfd-kfd_process.c:sparse:struct-dma_fence
+|   |-- drivers-gpu-drm-amd-amdgpu-..-amdkfd-kfd_process.c:sparse:struct-dma_fence-noderef-__rcu
+|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_amdkfd_gpuvm.c:sparse:sparse:incompatible-types-in-comparison-expression-(different-address-spaces):
+|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_amdkfd_gpuvm.c:sparse:struct-dma_fence
+|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_amdkfd_gpuvm.c:sparse:struct-dma_fence-noderef-__rcu
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-opcode-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-owner-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-type-got-int
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+`-- x86_64-randconfig-122-20231206
+    `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+clang_recent_errors
+|-- arm64-allmodconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- arm64-allyesconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- arm64-randconfig-003-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- arm64-randconfig-004-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- hexagon-allmodconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- hexagon-allyesconfig
+|   |-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
+|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
+|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
+|-- hexagon-randconfig-002-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- i386-allmodconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- i386-allyesconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- i386-randconfig-061-20231206
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-opcode-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-owner-got-int
+|   |-- drivers-soc-qcom-pmic_pdcharger_ulog.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-restricted-__le32-usertype-type-got-int
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- i386-randconfig-141-20231206
+|   |-- block-bdev.c-bdev_open_by_dev()-warn:possible-memory-leak-of-handle
+|   |-- drivers-hwtracing-stm-core.c-stm_register_device()-error:double-free-of-stm
+|   |-- lib-zstd-common-bits.h-ZSTD_countLeadingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-common-bits.h-ZSTD_countTrailingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-compress-..-common-bits.h-ZSTD_countLeadingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-compress-..-common-bits.h-ZSTD_countLeadingZeros64()-warn:inconsistent-indenting
+|   |-- lib-zstd-compress-..-common-bits.h-ZSTD_countTrailingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-compress-..-common-bits.h-ZSTD_countTrailingZeros64()-warn:inconsistent-indenting
+|   |-- lib-zstd-decompress-..-common-bits.h-ZSTD_countLeadingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-decompress-..-common-bits.h-ZSTD_countTrailingZeros32()-warn:inconsistent-indenting
+|   |-- lib-zstd-decompress-..-common-bits.h-ZSTD_countTrailingZeros64()-warn:inconsistent-indenting
+|   `-- mm-slub.c-__put_partials()-error:calling-spin_unlock_irqrestore()-with-bogus-flags
+|-- powerpc-allmodconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- powerpc-allyesconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- powerpc-randconfig-r064-20231206
+|   `-- drivers-leds-leds-sun50i-a100.c:error:call-to-__compiletime_assert_NNN-declared-with-error-attribute:FIELD_PREP:value-too-large-for-the-field
+|-- powerpc64-randconfig-002-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- powerpc64-randconfig-003-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- riscv-randconfig-001-20231206
+|   `-- drivers-perf-riscv_pmu_sbi.c:error:incompatible-function-pointer-types-initializing-proc_handler-(aka-int-(-)(const-struct-ctl_table-int-void-unsigned-long-long-long-)-)-with-an-expression-of-type-int
+|-- riscv-randconfig-002-20231206
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|-- s390-randconfig-r111-20231206
+|   |-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+|   `-- lib-zstd-compress-zstd_fast.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
+|-- x86_64-allmodconfig
+|   `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
+`-- x86_64-allyesconfig
+    `-- drivers-leds-leds-max5970.c:warning:variable-num_leds-set-but-not-used
 
-   735	
-   736	static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
-   737	{
-   738		struct ad7173_channel *channels_st_priv_arr, *chan_st_priv;
-   739		struct ad7173_state *st = iio_priv(indio_dev);
-   740		struct device *dev = indio_dev->dev.parent;
-   741		struct iio_chan_spec *chan_arr, *chan;
-   742		struct fwnode_handle *child;
-   743		unsigned int ain[2], chan_index = 0;
-   744		unsigned int num_channels;
-   745		const char *ref_label;
-   746		u32 ref_sel;
-   747		int ret;
-   748	
-   749		st->regulators[0].supply = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_EXT_REF];
-   750		st->regulators[1].supply = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_EXT_REF2];
-   751		st->regulators[2].supply = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_AVDD1_AVSS];
-   752	
-   753		/* If a regulator is not available, it will be set to a dummy regulator.
-   754		 * Each channel reference is checked with regulator_get_voltage() before
-   755		 *  setting attributes so if any channel uses a dummy supply the driver
-   756		 *  probe will fail.
-   757		 */
-   758		ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(st->regulators),
-   759					      st->regulators);
-   760		if (ret)
-   761			return dev_err_probe(dev, ret, "Failed to get regulators\n");
-   762	
-   763		ret = regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
-   764		if (ret)
-   765			return dev_err_probe(dev, ret, "Failed to enable regulators\n");
-   766	
-   767		ret = devm_add_action_or_reset(dev, ad7173_disable_regulators, st);
-   768		if (ret)
-   769			return dev_err_probe(dev, ret,
-   770					     "Failed to add regulators disable action\n");
-   771	
-   772		num_channels = device_get_child_node_count(dev);
-   773	
-   774		if (st->info->has_temp)
-   775			num_channels++;
-   776	
-   777		if (num_channels == 0)
-   778			return dev_err_probe(dev, -EINVAL, "No channels specified\n");
-   779		st->num_channels = num_channels;
-   780	
-   781		chan_arr = devm_kcalloc(dev, sizeof(*chan_arr), num_channels, GFP_KERNEL);
-   782		if (!chan_arr)
-   783			return -ENOMEM;
-   784	
-   785		channels_st_priv_arr = devm_kcalloc(dev, num_channels,
-   786						    sizeof(*channels_st_priv_arr),
-   787						    GFP_KERNEL);
-   788		if (!channels_st_priv_arr)
-   789			return -ENOMEM;
-   790	
-   791		indio_dev->channels = chan_arr;
-   792		indio_dev->num_channels = num_channels;
-   793		st->channels = channels_st_priv_arr;
-   794	
-   795		if (st->info->has_temp) {
-   796			chan_arr[chan_index] = ad7173_temp_iio_channel_template;
-   797			chan_st_priv = &channels_st_priv_arr[chan_index];
-   798			chan_st_priv->ain =
-   799				AD7173_CH_ADDRESS(chan_arr[chan_index].channel, chan_arr[chan_index].channel2);
-   800			chan_st_priv->cfg.bipolar = false;
-   801			chan_st_priv->cfg.input_buf = true;
-   802			chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-   803			st->adc_mode |= AD7173_ADC_MODE_REF_EN;
-   804	
-   805			chan_index++;
-   806		}
-   807	
-   808		device_for_each_child_node(dev, child) {
-   809			chan = &chan_arr[chan_index];
-   810			chan_st_priv = &channels_st_priv_arr[chan_index];
-   811			ret = fwnode_property_read_u32_array(child, "diff-channels",
-   812							     ain, ARRAY_SIZE(ain));
-   813			if (ret) {
-   814				fwnode_handle_put(child);
-   815				return ret;
-   816			}
-   817	
-   818			if (ain[0] >= st->info->num_inputs ||
-   819			    ain[1] >= st->info->num_inputs) {
-   820				fwnode_handle_put(child);
-   821				return dev_err_probe(dev, -EINVAL,
-   822						     "Input pin number out of range for pair (%d %d).\n",
-   823						     ain[0], ain[1]);
-   824			}
-   825	
-   826			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-   827			ref_label = ad7173_ref_sel_str[AD7173_SETUP_REF_SEL_INT_REF];
-   828	
-   829			fwnode_property_read_string(child, "adi,reference-select",
-   830						    &ref_label);
-   831			ref_sel = match_string(ad7173_ref_sel_str,
-   832					       ARRAY_SIZE(ad7173_ref_sel_str), ref_label);
- > 833			if (ref_sel < 0) {
-   834				fwnode_handle_put(child);
-   835				return dev_err_probe(dev, -EINVAL,
-   836						     "Invalid channel reference name %s\n",
-   837						     ref_label);
-   838			}
-   839	
-   840			if (ref_sel == AD7173_SETUP_REF_SEL_EXT_REF2 &&
-   841			    st->info->id != AD7173_ID) {
-   842				fwnode_handle_put(child);
-   843				return dev_err_probe(dev, -EINVAL, "External reference 2 is only available on ad7173-8\n");
-   844			}
-   845	
-   846			ret = ad7173_get_ref_voltage_milli(st, ref_sel);
-   847			if (ret < 0) {
-   848				fwnode_handle_put(child);
-   849				return dev_err_probe(dev, ret,
-   850						     "Cannot use reference %u\n", ref_sel);
-   851			}
-   852			if (ref_sel == AD7173_SETUP_REF_SEL_INT_REF)
-   853				st->adc_mode |= AD7173_ADC_MODE_REF_EN;
-   854			chan_st_priv->cfg.ref_sel = ref_sel;
-   855	
-   856			*chan = ad7173_channel_template;
-   857			chan->address = chan_index;
-   858			chan->scan_index = chan_index;
-   859			chan->channel = ain[0];
-   860			chan->channel2 = ain[1];
-   861			chan->differential = true;
-   862	
-   863			chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
-   864			chan_st_priv->chan_reg = chan_index;
-   865			chan_st_priv->cfg.input_buf = true;
-   866			chan_st_priv->cfg.odr = 0;
-   867	
-   868			chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
-   869			if (chan_st_priv->cfg.bipolar)
-   870				chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OFFSET);
-   871	
-   872			chan_index++;
-   873		}
-   874	
-   875		return 0;
-   876	}
-   877	
+elapsed time: 1467m
+
+configs tested: 176
+configs skipped: 3
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                         haps_hs_defconfig   gcc  
+arc                   randconfig-001-20231206   gcc  
+arc                   randconfig-002-20231206   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                          pxa910_defconfig   gcc  
+arm                   randconfig-001-20231206   clang
+arm                   randconfig-002-20231206   clang
+arm                   randconfig-003-20231206   clang
+arm                   randconfig-004-20231206   clang
+arm                           spitz_defconfig   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20231206   clang
+arm64                 randconfig-002-20231206   clang
+arm64                 randconfig-003-20231206   clang
+arm64                 randconfig-004-20231206   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20231206   gcc  
+csky                  randconfig-002-20231206   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20231206   clang
+hexagon               randconfig-002-20231206   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20231206   clang
+i386         buildonly-randconfig-002-20231206   clang
+i386         buildonly-randconfig-003-20231206   clang
+i386         buildonly-randconfig-004-20231206   clang
+i386         buildonly-randconfig-005-20231206   clang
+i386         buildonly-randconfig-006-20231206   clang
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231206   clang
+i386                  randconfig-002-20231206   clang
+i386                  randconfig-003-20231206   clang
+i386                  randconfig-004-20231206   clang
+i386                  randconfig-005-20231206   clang
+i386                  randconfig-006-20231206   clang
+i386                  randconfig-011-20231206   gcc  
+i386                  randconfig-012-20231206   gcc  
+i386                  randconfig-013-20231206   gcc  
+i386                  randconfig-014-20231206   gcc  
+i386                  randconfig-015-20231206   gcc  
+i386                  randconfig-016-20231206   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231206   gcc  
+loongarch             randconfig-002-20231206   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          hp300_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                           mtx1_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20231206   gcc  
+nios2                 randconfig-002-20231206   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20231206   gcc  
+parisc                randconfig-002-20231206   gcc  
+parisc64                            defconfig   gcc  
+powerpc                     akebono_defconfig   clang
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                 canyonlands_defconfig   gcc  
+powerpc               randconfig-001-20231206   clang
+powerpc               randconfig-003-20231206   clang
+powerpc                     tqm5200_defconfig   clang
+powerpc                     tqm8548_defconfig   gcc  
+powerpc64             randconfig-001-20231206   clang
+powerpc64             randconfig-002-20231206   clang
+powerpc64             randconfig-003-20231206   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231206   clang
+riscv                 randconfig-002-20231206   clang
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231206   gcc  
+s390                  randconfig-002-20231206   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                        edosk7705_defconfig   gcc  
+sh                        edosk7760_defconfig   gcc  
+sh                          lboxre2_defconfig   gcc  
+sh                    randconfig-001-20231206   gcc  
+sh                    randconfig-002-20231206   gcc  
+sh                          rsk7269_defconfig   gcc  
+sh                            shmin_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20231206   gcc  
+sparc64               randconfig-002-20231206   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20231206   clang
+um                    randconfig-002-20231206   clang
+um                           x86_64_defconfig   gcc  
+x86_64                           alldefconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20231206   clang
+x86_64       buildonly-randconfig-002-20231206   clang
+x86_64       buildonly-randconfig-003-20231206   clang
+x86_64       buildonly-randconfig-004-20231206   clang
+x86_64       buildonly-randconfig-005-20231206   clang
+x86_64       buildonly-randconfig-006-20231206   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231206   gcc  
+x86_64                randconfig-002-20231206   gcc  
+x86_64                randconfig-003-20231206   gcc  
+x86_64                randconfig-004-20231206   gcc  
+x86_64                randconfig-005-20231206   gcc  
+x86_64                randconfig-006-20231206   gcc  
+x86_64                randconfig-011-20231206   clang
+x86_64                randconfig-012-20231206   clang
+x86_64                randconfig-013-20231206   clang
+x86_64                randconfig-014-20231206   clang
+x86_64                randconfig-015-20231206   clang
+x86_64                randconfig-016-20231206   clang
+x86_64                randconfig-071-20231206   clang
+x86_64                randconfig-072-20231206   clang
+x86_64                randconfig-073-20231206   clang
+x86_64                randconfig-074-20231206   clang
+x86_64                randconfig-075-20231206   clang
+x86_64                randconfig-076-20231206   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20231206   gcc  
+xtensa                randconfig-002-20231206   gcc  
 
 -- 
 0-DAY CI Kernel Test Service

@@ -1,125 +1,268 @@
-Return-Path: <linux-iio+bounces-750-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-751-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC46180A336
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 13:28:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE8D80A470
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 14:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE58D1C20A13
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 12:28:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69809B20CBF
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 13:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AE01C694;
-	Fri,  8 Dec 2023 12:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ED51CFAB;
+	Fri,  8 Dec 2023 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aVnVUqtW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+AX6YN3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB0C1985;
-	Fri,  8 Dec 2023 04:28:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702038513; x=1733574513;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=If8qLm6cpoDJFIWwu0cUf4BU9e2+2LBt0MRWIQsNk9c=;
-  b=aVnVUqtWrHrDi44OxrYcgZWTiguHAt2kYxGxMqomIIvXVWctorisx/EV
-   OxaqkvesBZDcfwtbd0jfZEHZCkuo7vfE0wsDwUk9mH+xxFCR5iCqoUHd6
-   hpTjrpvVtNGrrxL7umLzfsJjiA4uk7t6iNftGCb71Ut8UXnyLyV1UdDhG
-   0MHJL8r8umivHv9ocyPEVOXFBZEHq0G053jLpuxc408YuZSVXX4uXS6YW
-   +zVWOMPw0PWaKWd3RVwOaGoPimTwBRtR4HHqMr6PfuULNEjQ3Tmv9Loam
-   JF4hcgKQyYeNJJacv3WXkqQ2S7lhiiVYZUacqOPeOzWE+Kn3TUl8jPI1l
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="391569982"
-X-IronPort-AV: E=Sophos;i="6.04,260,1695711600"; 
-   d="scan'208";a="391569982"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2023 04:28:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="775776705"
-X-IronPort-AV: E=Sophos;i="6.04,260,1695711600"; 
-   d="scan'208";a="775776705"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 08 Dec 2023 04:28:29 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rBZxs-000Dio-1b;
-	Fri, 08 Dec 2023 12:28:20 +0000
-Date: Fri, 8 Dec 2023 20:28:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D86F10F8;
+	Fri,  8 Dec 2023 05:28:39 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-7b3b78e6729so89370439f.0;
+        Fri, 08 Dec 2023 05:28:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702042118; x=1702646918; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=twc1QPu9ihF+Hs8YdcNs0/iSwASAhLQkShb/tyRpK1Q=;
+        b=C+AX6YN3Hz15fOgz/Cn50BHrojEEO7ku5f7t9zE4o+gBd1FuFYHDFb+FiaY0CcMcMf
+         lqcsbfoakyQvrdSj+iwS+AXJg3oqtdMJWxRosgduRpYsBV3kx2Psv7oSTEEotCyLRz1+
+         rTWA0Nv0T6m7iC2SBeR83eGCW6RcEpkUjc2KmcoJ7gEcaVTgohYmonxMXsjHheXsFESd
+         NUtpwWLy1R6Lf4MY3u6D9S4WLgsy+8VHjPlMsiNfZGY5lukKjt1h5l8931SIz1zmDrW2
+         uMiu23VvPwiAuoHKqmucG4R9CTGU6b32OzPYqFNh7xLnQoe1098Qj+sxgoTnZLlwKvWz
+         U6Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702042118; x=1702646918;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=twc1QPu9ihF+Hs8YdcNs0/iSwASAhLQkShb/tyRpK1Q=;
+        b=K2Xax6yV4ealu9on//uSSvC+HU6l09t/B7/rlVhgrUHSvbEjVVn2aYcULQqDKu5c4B
+         Uqcl47FlICtWSmFL5PXZbNJeP+qxkAg4h5jmFPF+UuvSsKG/0Pe3GufrsLWSpCC5geMY
+         La+Nw47DBgF2ddMPkWxIAjT9pgQah9ItRL7GXj+ufzuf9aAnN7utYLkJRNoqEWu/vaC1
+         mX8TAqUHr/xBJNXkfe4qw859MpM7a7izpda2AWWnuyq2HDLaigMaASb/LtKjBEBqwTIt
+         RsFvHpnrQ0T0pMNP4ksDXGpwsfggEE12LBk7d0WT8X1eZVfWHQfv6MaoqofnWofQORhQ
+         GLWA==
+X-Gm-Message-State: AOJu0YzKROWkwVdYruGem0IVFFyWn+pLWXep0rX8KLROaWn4ScRXlnRK
+	1ZqYjejn77HenrQUvq54mgQ=
+X-Google-Smtp-Source: AGHT+IFdVj1sey6vpWlhbeoUAywRF5AgS3VAPlOF/5rHOPAWU3xxbZUtGZtJuEJqiXobe5chsf+VCw==
+X-Received: by 2002:a05:6e02:1beb:b0:35d:61b8:faad with SMTP id y11-20020a056e021beb00b0035d61b8faadmr177592ilv.27.1702042118396;
+        Fri, 08 Dec 2023 05:28:38 -0800 (PST)
+Received: from localhost ([2804:30c:95c:8600:5b2d:e35b:5f45:dc84])
+        by smtp.gmail.com with ESMTPSA id z5-20020aa78885000000b0064fd4a6b306sm1555675pfe.76.2023.12.08.05.28.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 05:28:37 -0800 (PST)
+Date: Fri, 8 Dec 2023 10:28:25 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
 	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
 	paul.cercueil@analog.com, Michael.Hennerich@analog.com,
 	lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
 	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	dan.carpenter@linaro.org, marcelo.schmitt1@gmail.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 6/13] iio: adc: ad7091r: Move chip init data to
- container struct
-Message-ID: <202312082022.IOtnLeck-lkp@intel.com>
-References: <f45d5dfde5fc2082ac1fcac18a4a3e9b4b941402.1701971344.git.marcelo.schmitt1@gmail.com>
+	dan.carpenter@linaro.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 10/13] dt-bindings: iio: Add AD7091R-8
+Message-ID: <ZXMZ-Y18SwIFEIgA@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1701971344.git.marcelo.schmitt1@gmail.com>
+ <53d55f3195b15bd8d47387e296036730ea270770.1701971344.git.marcelo.schmitt1@gmail.com>
+ <CAMknhBEFnTUm9FPK-74+GkJs2d80dS+Q9WeGTxd3Ajs-JJGcdA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f45d5dfde5fc2082ac1fcac18a4a3e9b4b941402.1701971344.git.marcelo.schmitt1@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMknhBEFnTUm9FPK-74+GkJs2d80dS+Q9WeGTxd3Ajs-JJGcdA@mail.gmail.com>
 
-Hi Marcelo,
+Hi David, thank you for your suggestions.
+Comments inline.
 
-kernel test robot noticed the following build errors:
+On 12/07, David Lechner wrote:
+> On Thu, Dec 7, 2023 at 12:42 PM Marcelo Schmitt
+> <marcelo.schmitt@analog.com> wrote:
+> >
+> > Add device tree documentation for AD7091R-8.
+> >
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7091r8.yaml        | 99 +++++++++++++++++++
+> >  1 file changed, 99 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> > new file mode 100644
+> > index 000000000000..02320778f225
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> > @@ -0,0 +1,99 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7091r8.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD7091R8 8-Channel 12-Bit ADC
+> > +
+> > +maintainers:
+> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > +
+> > +description: |
+> > +  Analog Devices AD7091R-8 8-Channel 12-Bit ADC
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7091R-2_7091R-4_7091R-8.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad7091r2
+> > +      - adi,ad7091r4
+> > +      - adi,ad7091r8
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> 
+> Missing other supplies? Like vdd-supply and vdrive-supply?
+> 
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.7-rc4 next-20231208]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I used the name that would work with ad7091r-base.c.
+If I'm not misinterpreting the datasheet, vdd-supply and vdrive-supply are
+for powering the ADC and setting SPI lanes logic level, respectively.
+They don't have any impact on ADC readings.
+By the way, should maybe I extend ad7091r5 dt doc instead of creating this
+new one?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/scripts-checkpatch-Add-__aligned-to-the-list-of-attribute-notes/20231208-063850
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/f45d5dfde5fc2082ac1fcac18a4a3e9b4b941402.1701971344.git.marcelo.schmitt1%40gmail.com
-patch subject: [PATCH v3 6/13] iio: adc: ad7091r: Move chip init data to container struct
-config: arm-randconfig-002-20231208 (https://download.01.org/0day-ci/archive/20231208/202312082022.IOtnLeck-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231208/202312082022.IOtnLeck-lkp@intel.com/reproduce)
+> > +  vref-supply: true
+> 
+> refin-supply might be a better name to match the datasheet pin name.
+> 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312082022.IOtnLeck-lkp@intel.com/
+Agree, though I guess changing the name now would break users of ad7091r5 if
+they happen to update the driver without updating their device tree.
 
-All errors (new ones prefixed by >>):
+> > +
+> > +  adi,conversion-start-gpios:
+> 
+> gpios usually don't get a vendor prefix do they?
+> 
+> convst-gpios could be a better name to match the pin name on the datasheet.
 
-   drivers/iio/adc/ad7091r5.c:30:3: error: field designator 'name' does not refer to any field in type 'const struct ad7091r_chip_info'
-           .name = "ad7091r-5",
-            ^
-   drivers/iio/adc/ad7091r5.c:37:3: error: field designator 'name' does not refer to any field in type 'const struct ad7091r_chip_info'
-           .name = "ad7091r-5",
-            ^
->> drivers/iio/adc/ad7091r5.c:59:14: error: initializer element is not a compile-time constant
-           .irq_info = ad7091r5_chip_info_irq,
-                       ^~~~~~~~~~~~~~~~~~~~~~
-   3 errors generated.
+Ack, will do for v4.
 
+> 
+> > +    description:
+> > +      GPIO connected to the CONVST pin.
+> > +      This logic input is used to initiate conversions on the analog
+> > +      input channels.
+> > +    maxItems: 1
+> > +
+> > +  reset-gpios:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> 
+> A description of what the interrupt is attached to (ALERT/BUSY/GPO0
+> pin) would be helpful.
+> 
 
-vim +59 drivers/iio/adc/ad7091r5.c
+Ack, will do for v4.
 
-    57	
-    58	static struct ad7091r_init_info ad7091r5_init_info = {
-  > 59		.irq_info = ad7091r5_chip_info_irq,
-    60		.info_no_irq = ad7091r5_chip_info_noirq,
-    61		.regmap_config = &ad7091r_regmap_config,
-    62		.ad7091r_regmap_init = &ad7091r5_regmap_init
-    63	};
-    64	
+> > +
+> > +patternProperties:
+> > +  "^channel@[0-7]$":
+> > +    $ref: adc.yaml
+> > +    type: object
+> > +    description: Represents the external channels which are connected to the ADC.
+> > +
+> > +    properties:
+> > +      reg:
+> > +        minimum: 0
+> > +        maximum: 7
+> 
+> Shouldn't this be:
+> 
+>         items:
+>           - minimum: 0
+>             maximum: 7
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ack
+
+> > +
+> > +    required:
+> > +      - reg
+> 
+> Missing `unevaluatedProperties: false` for channels?
+> 
+> Bigger picture: since no other properties besides `reg` are included
+> here, do we actually need channel nodes?
+> 
+
+The channel nodes are not used by the drivers so we can remove them if we want.
+I thought they would be required as documentation even if they were not used
+in drivers.
+Looks like they're not required so will remove them in v4.
+
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - adi,conversion-start-gpios
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +  # AD7091R-2 does not have ALERT/BUSY/GPO pin
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - adi,ad7091r4
+> > +              - adi,ad7091r8
+> > +    then:
+> > +      properties:
+> > +        interrupts: true
+> 
+> Interrupts is already true. Maybe better to only match chips without
+> interrupts and set false?
+> 
+
+Agree, that should simplify the constrain logic. Will do for v4.
+
+> > +    else:
+> > +      properties:
+> > +        interrupts: false
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        adc@0 {
+> > +                compatible = "adi,ad7091r8";
+> > +                reg = <0x0>;
+> > +                spi-max-frequency = <45454545>;
+> > +                vref-supply = <&adc_vref>;
+> > +                adi,conversion-start-gpios = <&gpio 25 GPIO_ACTIVE_LOW>;
+> > +                reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
+> > +                interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
+> > +                interrupt-parent = <&gpio>;
+> > +        };
+> > +    };
+> > +...
+> > --
+> > 2.42.0
+> >
+> >
 

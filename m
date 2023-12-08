@@ -1,43 +1,43 @@
-Return-Path: <linux-iio+bounces-757-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F69C80A70E
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 16:14:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF8280A70F
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 16:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39E3628194D
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 15:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FAB01C20E4F
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 15:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D6E3034B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CA030649;
 	Fri,  8 Dec 2023 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhkbZ8XL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1jfEzrF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8192375D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE3223769;
 	Fri,  8 Dec 2023 15:14:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E718C433C9;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 89DB6C433CC;
 	Fri,  8 Dec 2023 15:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1702048450;
-	bh=XWd29Bx/1zhG4PtnHJ4U/X7tJYkjXKd0pZlp34fkM/I=;
+	bh=OPRTb/XW+2zsH8AnZHeRHdEClBBBI7WQURvAeLFHUZo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XhkbZ8XL8WAEx3BKq4T08io0BqY5bnIcoKrpJSNKD/AKee12edXucyrcCEnLtjfbU
-	 4kz5yeuixubSYviSnNnYcPc0gn/MjYyZ3tEwVbHBqhSI8N9rsESocbykI/2Q0KgEF/
-	 EP5Qif2Dnb2qvls9sFWIYyptdBaWxfTXTvPYsiYs2RDgsbJ88PKsD1TCOr6QikFJq3
-	 AVAz/4CfLZ6Oo+kU3hF5g7FokTqyraQ1+zpP2w4FZzoTWxSFFm1t7WPQlZ27NzpGlP
-	 UzunEadzB95v4QH2DaFyxG7Ihsuar+QDUmOSt0swumiwYv9bpCaeG/u5Gn/nHtHGS2
-	 p1eiWj4PlhUpA==
+	b=F1jfEzrFSkc7ceo2U++T8vWBxNqcp7SDMPQEPrUJwJRYNM4w4tKUXQ91+uuAG+nad
+	 WKmoJ/91oF+CiucYuZ5KEt7pST7vj0nRs19U/FrXJBaLdVIWrABd7OCwOgGeASTKio
+	 65Xqv9IbPM2K8xv9Rr0HBxjMMyvc9xPPHs0jVMNmy+9t1fgV1OeD/jaqzlWcIvA6Zn
+	 1pOzAlGbLytqXQ3YhaOSsQhijF33UAI9F69bss5XVE3lyyRGw5hSpXdQXAhLnE7QZj
+	 uPIZQGeUsxhmNyN/u7rL5Jm+3dAy/tVDHF6jtY28mc7Jvt3efyOLlKKNNn4Fs7ZC+E
+	 rMUR3gURGQ/XA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6705DC46CA3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71839C10DC1;
 	Fri,  8 Dec 2023 15:14:10 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 08 Dec 2023 16:14:09 +0100
-Subject: [PATCH v2 2/8] dt-bindings: adc: axi-adc: deprecate 'adi,adc-dev'
+Date: Fri, 08 Dec 2023 16:14:10 +0100
+Subject: [PATCH v2 3/8] driver: core: allow modifying device_links flags
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -46,7 +46,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231208-dev-iio-backend-v2-2-5450951895e1@analog.com>
+Message-Id: <20231208-dev-iio-backend-v2-3-5450951895e1@analog.com>
 References: <20231208-dev-iio-backend-v2-0-5450951895e1@analog.com>
 In-Reply-To: <20231208-dev-iio-backend-v2-0-5450951895e1@analog.com>
 To: devicetree@vger.kernel.org, linux-iio@vger.kernel.org
@@ -58,11 +58,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1702048448; l=1094;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1702048448; l=1762;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=C0999kdXZfFVABxRP5fCA7vOPNscAFjvB6s0Z8D09gA=;
- b=zDjB/iYOjyvJ7QF1DU8YK6+7triYtNh7+cUHyCBceGsEVs5uERZNT61ndkHynca0weyJ22WQ7
- DZPXoFkQiGVDS7blablwvFkESTfLja4MB324FAt0Im9KpRepmc3WYjF
+ bh=NLZHAx7QEa2fUUjKTtfo6RESv2OQO0JG++qc/yxWC4M=;
+ b=ASOBUH495cPlwGqGxHPodgKqYv81aF+nGrtg6/d7TDTSOn8lqsHouzKLnCX2reyPDdZDNQmx3
+ ULN8adbHoSnBbiPSXjX8hhFAs8zfLET+ys5pqnP/tXGBAS/0dI+u50s
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -72,40 +72,48 @@ Reply-To: <nuno.sa@analog.com>
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-also remove it from being required.
+If a device_link is previously created (eg: via
+fw_devlink_create_devlink()) before the supplier + consumer are both
+present and bound to their respective drivers, there's no way to set
+DL_FLAG_AUTOREMOVE_CONSUMER anymore while one can still set
+DL_FLAG_AUTOREMOVE_SUPPLIER. Hence, rework the flags checks to allow
+for DL_FLAG_AUTOREMOVE_CONSUMER in the same way
+DL_FLAG_AUTOREMOVE_SUPPLIER is done.
+
+While at it, make sure that we are never left with
+DL_FLAG_AUTOPROBE_CONSUMER set together with one of
+DL_FLAG_AUTOREMOVE_CONSUMER or DL_FLAG_AUTOREMOVE_SUPPLIER.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/base/core.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-index 9996dd93f84b..835b40063343 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-@@ -39,12 +39,12 @@ properties:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description:
-       A reference to a the actual ADC to which this FPGA ADC interfaces to.
-+    deprecated: true
- 
- required:
-   - compatible
-   - dmas
-   - reg
--  - adi,adc-dev
- 
- additionalProperties: false
- 
-@@ -55,7 +55,5 @@ examples:
-         reg = <0x44a00000 0x10000>;
-         dmas = <&rx_dma 0>;
-         dma-names = "rx";
--
--        adi,adc-dev = <&spi_adc>;
-     };
- ...
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 67ba592afc77..fdbb5abc75d5 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -807,11 +807,15 @@ struct device_link *device_link_add(struct device *consumer,
+ 		 * update the existing link to stay around longer.
+ 		 */
+ 		if (flags & DL_FLAG_AUTOREMOVE_SUPPLIER) {
+-			if (link->flags & DL_FLAG_AUTOREMOVE_CONSUMER) {
+-				link->flags &= ~DL_FLAG_AUTOREMOVE_CONSUMER;
+-				link->flags |= DL_FLAG_AUTOREMOVE_SUPPLIER;
+-			}
+-		} else if (!(flags & DL_FLAG_AUTOREMOVE_CONSUMER)) {
++			link->flags &= ~DL_FLAG_AUTOREMOVE_CONSUMER;
++			link->flags &= ~DL_FLAG_AUTOPROBE_CONSUMER;
++			link->flags |= DL_FLAG_AUTOREMOVE_SUPPLIER;
++
++		} else if (flags & DL_FLAG_AUTOREMOVE_CONSUMER) {
++			link->flags &= ~DL_FLAG_AUTOREMOVE_SUPPLIER;
++			link->flags &= ~DL_FLAG_AUTOPROBE_CONSUMER;
++			link->flags |= DL_FLAG_AUTOREMOVE_CONSUMER;
++		} else {
+ 			link->flags &= ~(DL_FLAG_AUTOREMOVE_CONSUMER |
+ 					 DL_FLAG_AUTOREMOVE_SUPPLIER);
+ 		}
 
 -- 
 2.43.0

@@ -1,109 +1,153 @@
-Return-Path: <linux-iio+bounces-753-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-754-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C36380A4C3
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 14:50:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF72780A5DF
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 15:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C200B20C29
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 13:50:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DAA1F213EF
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 14:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EB31DA30;
-	Fri,  8 Dec 2023 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B591E4A9;
+	Fri,  8 Dec 2023 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="akAduOxG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="L++SddHB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C953F198C;
-	Fri,  8 Dec 2023 05:50:29 -0800 (PST)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6cec976b197so887986b3a.0;
-        Fri, 08 Dec 2023 05:50:29 -0800 (PST)
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7721F10C0
+	for <linux-iio@vger.kernel.org>; Fri,  8 Dec 2023 06:50:30 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ca0d14976aso27021661fa.2
+        for <linux-iio@vger.kernel.org>; Fri, 08 Dec 2023 06:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702043429; x=1702648229; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=w05jcvJbftuz+V4PIwlumxl68ycFODGUFJ//SIJMXoc=;
-        b=akAduOxGieGm14GFaa/A4ucqm7QvDyaQULiMFmh4yFOPUP3brtqVBuz27VcCSYXDF8
-         bI6ZGC6czjXfWCjnpGLgwqpqoJX3noUrkQLLHM8zq3yFbA2WJVADm06I40WDiXHEqWfl
-         S8eU/HGZePZSlgim66gvHu9cyIdViVB5JSEnCSXTSxC1rv4PYMc0PdyAAaLucmuzocUt
-         1ct4fp3HDh9WyxyIlXb4GpKkFerXZAVx2KbGLfAU6mCiGbeezPxU2Zz28CCNkh9BNbrE
-         Uj5s/JeNz8z0cmwm8p6btRYz5FaIAVKg2BL8MZoEU0Vz6tMKXK0LlwONvZPmUtRAgUoJ
-         7m6g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702047029; x=1702651829; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p1vCAo/0XghnYmheAcvJKeKXj1PDXUChqBaVuIxQEDk=;
+        b=L++SddHB53ds+BDyxsaCgrubvQa2iCP6jmnnUM20jJFeqUnEt0V9babowwqiEJ7M+m
+         4oXRahXSndOR0chVc4l5qV1/5KA8ZKwg5y/6H0zZrBItRv2q8qrAo1tpq+HDuCZQRwfA
+         kkOMh4IcaKVD1f5/XyCGn4iO3yMYqU9r6rH4UzCPv0CdTi2scs4hFu1nf1X6OFiR2hAm
+         oBi0D/zpRjmSlcaqy3jE0tDYVu1KNhHRvQVYLb2Xp8WEXkNdLZIpUVQx/XA2Tnb1kF7/
+         4WsrK5ezJrOcaL7wTe9s64u+yPTfWKjivjednOeku0/8sixZbTZPHzqJRIXr6S1bfMet
+         JV6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702043429; x=1702648229;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w05jcvJbftuz+V4PIwlumxl68ycFODGUFJ//SIJMXoc=;
-        b=p2ZFSbBggPI9uAafEWJpBOEuNgzGCP8dZHwvwZyeE8dTFVJTWM7fWUZpj6mk8axlTz
-         tE3IR7TJ0Rgvooqj3LTLNv1MIIa85tfJkj+Cm2bHuB8qRJKW6SqJD3bYIBZMDP4nW7Fq
-         ECq1cQqvCpYDYX64hOBJ3OziqzU06fm3JoEBVi6yz+FM1NkgsUs8NagggFvn+zwdBroe
-         VECMWSABK/Vx/xo7sfTrZiSAm/JOHw8Rf4a5wIaOjd6FvUnFpytALOf+4YPJyM63EX44
-         g7EFVAM53jrHmlC1uHekAzTiyhphN9U3s2rUNlceXpZ0M0AHWzT4N4UPZ39v3bVY7nGf
-         EXoQ==
-X-Gm-Message-State: AOJu0YxJBw7Z92CQjIhGe90H3zOfFFy/bR9SO+UsF2nWQJWEXbwO0EDq
-	2kX7RLGaD/d7ZzcvSB6uVas=
-X-Google-Smtp-Source: AGHT+IG6p9qYniWsOOxCuS7btrPvaasfWo06OhsJ23v6Z7ooK2KImNZUSYg6Z+ZXjnX1zG5bicXbEw==
-X-Received: by 2002:a05:6a20:3ca1:b0:190:55ed:c42 with SMTP id b33-20020a056a203ca100b0019055ed0c42mr39843pzj.63.1702043429043;
-        Fri, 08 Dec 2023 05:50:29 -0800 (PST)
-Received: from localhost ([2804:30c:95c:8600:5b2d:e35b:5f45:dc84])
-        by smtp.gmail.com with ESMTPSA id d3-20020a056a0010c300b006c0316485f9sm1583704pfu.64.2023.12.08.05.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 05:50:28 -0800 (PST)
-Date: Fri, 8 Dec 2023 10:50:15 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
-	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-	paul.cercueil@analog.com, Michael.Hennerich@analog.com,
-	lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	dan.carpenter@linaro.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/13] Add support for AD7091R-2/-4/-8
-Message-ID: <ZXMfFxEckIm_cFPJ@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1701971344.git.marcelo.schmitt1@gmail.com>
- <CAMknhBFPbAqp4-AQdmbp+VRW-Ksk1PxaLCG+3n=Zk4gyStqhgw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1702047029; x=1702651829;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p1vCAo/0XghnYmheAcvJKeKXj1PDXUChqBaVuIxQEDk=;
+        b=NUN1BQ5ZL/3mScOLycz5R/6V/X5PNmHQRZV+imBdYJwdwOhhqQ1vBRNqTAPSaj/u/F
+         oyS3oz8k5OGcXtmSpNRPX5m1dKjClNCWZxgtSvSKYiF7MOMziuzD+yTSiin13KraAqg6
+         cqdmn5nI0PAZJvf+YHc5LTnz2swtPzcHEGmLn1jRwR/jToY1CWVeEQFpxxqLTO1ahnAY
+         Pq5XkxpFcdv+SUSECF6g0Q6IXuEV3St9uRCyc+uVblvw0fen9/I2uwSjmkyIkF/CqdXa
+         HBjLL6VTW7NQv7JWGlnqMt3UOuHon4AiS5YW+ztlKQ4l4JrGAPqYT1IWM6uukTfIBCo4
+         5VQQ==
+X-Gm-Message-State: AOJu0YxvfqldoG81dADkgmHx07qT5/0++eoZaGK7UKkjwoWIl/OHoFqB
+	Fx1CefThfkOEPwbP6cNnjvuYneSmmZpSqaiQPzk21w==
+X-Google-Smtp-Source: AGHT+IF7XrHbo2zzPPfxnAYa+JlWU8BR5gIVI4S58FUUPJRXqcyKVeGHxAfQTma9B0lG/uCzmUYQrmEbcjxPBSW/Wuw=
+X-Received: by 2002:a2e:878d:0:b0:2ca:34d:f80a with SMTP id
+ n13-20020a2e878d000000b002ca034df80amr8350lji.64.1702047028634; Fri, 08 Dec
+ 2023 06:50:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMknhBFPbAqp4-AQdmbp+VRW-Ksk1PxaLCG+3n=Zk4gyStqhgw@mail.gmail.com>
+References: <cover.1701971344.git.marcelo.schmitt1@gmail.com>
+ <53d55f3195b15bd8d47387e296036730ea270770.1701971344.git.marcelo.schmitt1@gmail.com>
+ <CAMknhBEFnTUm9FPK-74+GkJs2d80dS+Q9WeGTxd3Ajs-JJGcdA@mail.gmail.com> <ZXMZ-Y18SwIFEIgA@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <ZXMZ-Y18SwIFEIgA@debian-BULLSEYE-live-builder-AMD64>
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 8 Dec 2023 08:50:17 -0600
+Message-ID: <CAMknhBHxmWTAR-F-92kFW8wbKPn2qnr7v2Sk2xUwA9AmONo+3w@mail.gmail.com>
+Subject: Re: [PATCH v3 10/13] dt-bindings: iio: Add AD7091R-8
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com, joe@perches.com, 
+	dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com, paul.cercueil@analog.com, 
+	Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	dan.carpenter@linaro.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/07, David Lechner wrote:
-> On Thu, Dec 7, 2023 at 12:36 PM Marcelo Schmitt
-> <marcelo.schmitt@analog.com> wrote:
+On Fri, Dec 8, 2023 at 7:28=E2=80=AFAM Marcelo Schmitt
+<marcelo.schmitt1@gmail.com> wrote:
+>
+> Hi David, thank you for your suggestions.
+> Comments inline.
+>
+> On 12/07, David Lechner wrote:
+> > On Thu, Dec 7, 2023 at 12:42=E2=80=AFPM Marcelo Schmitt
+> > <marcelo.schmitt@analog.com> wrote:
+> > >
+> > > Add device tree documentation for AD7091R-8.
+> > >
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > ---
+> > >  .../bindings/iio/adc/adi,ad7091r8.yaml        | 99 +++++++++++++++++=
+++
+> > >  1 file changed, 99 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7=
+091r8.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.y=
+aml b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> > > new file mode 100644
+> > > index 000000000000..02320778f225
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7091r8.yaml
+> > > @@ -0,0 +1,99 @@
+> > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7091r8.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Analog Devices AD7091R8 8-Channel 12-Bit ADC
+> > > +
+> > > +maintainers:
+> > > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > +
+> > > +description: |
+> > > +  Analog Devices AD7091R-8 8-Channel 12-Bit ADC
+> > > +  https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/AD7091R-2_7091R-4_7091R-8.pdf
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - adi,ad7091r2
+> > > +      - adi,ad7091r4
+> > > +      - adi,ad7091r8
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
 > >
-> > From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> > Missing other supplies? Like vdd-supply and vdrive-supply?
 > >
-[...]
-> >
-> > I see regmap's interface for reading device registers under /sys/kernel/debug/regmap/.
-> > I can read all registers but can't write to any of them unless I force define
-> > REGMAP_ALLOW_WRITE_DEBUGFS.
-> >
-> > When testing events for this driver I often write to device registers
-> > to set different rising/falling thresholds. I do something like this:
-> > # echo 0x17 0x100 > /sys/kernel/debug/iio/iio:device0/direct_reg_access
-> >
-> > I tried read/writing to files under iio:device events directory but always
-> > get segmentation fault. I must be forgetting to implement something.
-> > What am I missing?
-> >
-> 
-> It looks like event callbacks (.read_event_value and friends) are
-> missing from `static const struct iio_info ad7091r_info = { ... }`.
-> These callbacks aren't checked for NULL, e.g. in iio_ev_value_show(),
-> so that is likely where the segfault is happening.
+>
+> I used the name that would work with ad7091r-base.c.
+> If I'm not misinterpreting the datasheet, vdd-supply and vdrive-supply ar=
+e
+> for powering the ADC and setting SPI lanes logic level, respectively.
+> They don't have any impact on ADC readings.
 
-Hi David, thank you for pointing that out.
-Will implement those calls in v4.
+The guidelines [1] say that bindings should be complete even if the
+feature is not used. In the most recent bindings I have submitted,
+Jonathan specifically called out making sure all supplies were
+included in the bindings. So I would assume the same applies here.
+
+[1]: https://www.kernel.org/doc/html/latest/devicetree/bindings/writing-bin=
+dings.html
+
+> By the way, should maybe I extend ad7091r5 dt doc instead of creating thi=
+s
+> new one?
+
+If it is pin-compatible or 90% the same, then perhaps.
 

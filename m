@@ -1,103 +1,89 @@
-Return-Path: <linux-iio+bounces-742-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-743-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73848099C5
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 03:54:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0A3809D93
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 08:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7021628227B
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 02:54:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEA10B20AA2
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 07:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02562566E;
-	Fri,  8 Dec 2023 02:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLgN6X10"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5897107B5;
+	Fri,  8 Dec 2023 07:51:06 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1EB566A;
-	Fri,  8 Dec 2023 02:53:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D69C433AD;
-	Fri,  8 Dec 2023 02:53:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702004020;
-	bh=T9R9DEy6CjQhMtIY2Sx77MVq9hPTMMtAPfSMWQzuT1g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLgN6X10ITy7yj61Wp2W+N7Bc0uXH0RzEzpJwrpA+2bWJ+MzONdYO+0T4ngPPyeaC
-	 hILpyTRsDdjrSd4K/QsCSKLVy+2Vt5Wd9FQlbP0fKdMIuwIi7kAc97wwha6Bu2pHVj
-	 6H5IwMkZDMOQEDBTLfCFVhlgspnGIYE2ni39Haq2DXinWNzWYfp+vLY20gh22+T4f3
-	 9caLsT8PTCZHDCjzuBMm4xwkMOVGO4gUj4MFCJ79dcaD2zojCErAb/mELJ0L09Sc8B
-	 gu0tl3W4cOHgeQehpv/V/5IYcVeSXU/kgfQhYmKqDPtSUD3rma4EwSxM+gezHW3lzd
-	 oC4BPnp7WSfzQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
+X-Greylist: delayed 720 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Dec 2023 23:50:53 PST
+Received: from aliyun-sdnproxy-4.icoremail.net (aliyun-cloud.icoremail.net [47.90.73.12])
+	by lindbergh.monkeyblade.net (Postfix) with SMTP id EC81E172C
+	for <linux-iio@vger.kernel.org>; Thu,  7 Dec 2023 23:50:53 -0800 (PST)
+Received: from localhost.localdomain (unknown [10.190.70.178])
+	by mail-app2 (Coremail) with SMTP id by_KCgDX309jxnJlZVpeAA--.64232S4;
+	Fri, 08 Dec 2023 15:31:55 +0800 (CST)
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+To: dinghao.liu@zju.edu.cn
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Nia Espera <nespera@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
 	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Rob <Me@orbit.sh>,
-	Clayton Craft <clayton@igalia.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: (subset) [PATCH v4 0/6] support oneplus-lemonade(p) devices
-Date: Thu,  7 Dec 2023 18:57:44 -0800
-Message-ID: <170200426924.2871025.17125977730040809387.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
+Date: Fri,  8 Dec 2023 15:31:19 +0800
+Message-Id: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:by_KCgDX309jxnJlZVpeAA--.64232S4
+X-Coremail-Antispam: 1UD129KBjvdXoWrtFy8GF4DAry5XFyruw15Arb_yoWkGFg_ua
+	129r1rXr95ta1jgryagr1YqrW5C3yDKrs5u34xtF4SkFy2qFZ7XFWDXry5Jr17Ww47XF98
+	Z3y2grWxCa47WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb2xFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+	wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+	vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv
+	6cx26r4fKr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+	C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+	MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+	IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+	87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgEDBmVxlxRD3QAAsP
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
+When iio_device_register_sysfs_group() fails, we should
+free iio_dev_opaque->chan_attr_group.attrs to prevent
+potential memleak.
 
-On Sat, 11 Nov 2023 23:07:38 +0100, Nia Espera wrote:
-> Patch series adding support for oneplus-lemonade and oneplus-lemonadep
-> devices (OnePlus 9 & 9 Pro), along with a few needed fixups. Currently
-> working as of this series:
-> 
-> - USB OTG
-> - UFS
-> - Framebuffer display
-> - Touchscreen (for lemonade)
-> - Power & volume down keys
-> - Battery reading
-> - Modem, IPA, and remoteproc bringup
-> 
-> [...]
+Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+---
+ drivers/iio/industrialio-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Applied, thanks!
-
-[1/6] dt-bindings: iio: adc: qcom: Add Qualcomm smb139x
-      commit: 7bf421f44549cd0bca32bd0b4cf6e4cfe5b4f865
-[2/6] arm64: dts: qcom: sm8350: Fix DMA0 address
-      commit: 01a9e9eb6cdbce175ddea3cbe1163daed6d54344
-[3/6] arm64: dts: qcom: pm8350k: Remove hanging whitespace
-      commit: e70537717146b380e18f0c92669d968af4acb8a7
-[4/6] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
-      commit: 54ee322f845c7f25fbf6e43e11147b6cae8eff56
-
-Best regards,
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index c77745b594bd..e6d3d07a4c83 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1581,10 +1581,13 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+ 	ret = iio_device_register_sysfs_group(indio_dev,
+ 					      &iio_dev_opaque->chan_attr_group);
+ 	if (ret)
+-		goto error_clear_attrs;
++		goto error_free_chan_attrs;
+ 
+ 	return 0;
+ 
++error_free_chan_attrs:
++	kfree(iio_dev_opaque->chan_attr_group.attrs);
++	iio_dev_opaque->chan_attr_group.attrs = NULL;
+ error_clear_attrs:
+ 	iio_free_chan_devattr_list(&iio_dev_opaque->channel_attr_list);
+ 
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.17.1
+
 

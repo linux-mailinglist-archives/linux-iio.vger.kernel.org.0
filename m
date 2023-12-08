@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-769-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C6F80AAF0
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 18:39:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC2C80AAFF
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 18:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6ADAB20ABF
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 17:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06C81C2095D
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Dec 2023 17:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3533B786;
-	Fri,  8 Dec 2023 17:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4BC3B2BF;
+	Fri,  8 Dec 2023 17:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RGgx0OQN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d/Z5EQ5h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F6B1738
-	for <linux-iio@vger.kernel.org>; Fri,  8 Dec 2023 09:39:33 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-40c2db2ee28so19532515e9.2
-        for <linux-iio@vger.kernel.org>; Fri, 08 Dec 2023 09:39:33 -0800 (PST)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8382C19A2
+	for <linux-iio@vger.kernel.org>; Fri,  8 Dec 2023 09:40:41 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40c38de1ee4so3262045e9.0
+        for <linux-iio@vger.kernel.org>; Fri, 08 Dec 2023 09:40:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702057172; x=1702661972; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702057240; x=1702662040; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pQDpiidnDaeTVBSUmlM+WmLTIl7ji6MGKGWh3saO5gQ=;
-        b=RGgx0OQNiWeKJSMpzKwDdxKj4yJ+G8j+f+Sgrr9fqp2st3tFs0kWof0t9qHEDKsVjY
-         WLU1odO7XdMpQ9bLI5XNwNR1UUcB10lBpu6IWj/zfklgny2zGMazU+JMQMiuDZ6HAzEd
-         ED6SF5DwIixLzYXwA/rNjD7bIlbJDcgiINKCqu/0ftCOrhW4qKrHARUA+W16Yh1WZJlp
-         HNaiUQ9yIe7k2zoA+eRaiTeG5Ty48wmBvWdIGJSL9jJBmGXSS7fs9nFzvSsBXpTcTDIz
-         OPv9rtZtU4+Dv7wTn9U51Et6GpQsUF79wK6OXeAyaAOEgXgyKt3fwB9JWTStqwOr36mo
-         beKQ==
+        bh=oNf690m6EHGUAGO9/ARDGUXkZacN48gEmwCVMqtE7nw=;
+        b=d/Z5EQ5hYoH23ERrWAz0k9pSht6xBsPDAh/PV6RSjL1oY8xJkBQC2XJUabneeCxppP
+         lqK1hQ8d2qpWjl+5NVDJZZpXJuBpIeZvQA8WqbRbH+83AAbpqGUi5XtX4Y4XtWvKrZt7
+         cFdnA6e5R16Le4llEjhSbzfhjFODpI7LaMLUaa9s892b0TxDq75lX+PRN/etPfRRmQyl
+         rnzQ9AO+iusyGPucQueAEYsB5Iy8/S9WFq6TRAaHFGGwC79FXzKzjwaYHiAZH6qfad0J
+         YZYt6Zv24bLvjMIA6OYUGKdr2MobVvyPDhGtmcy10gwLFzLtPkn106FCnBTW9xlm/AgC
+         DxAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702057172; x=1702661972;
+        d=1e100.net; s=20230601; t=1702057240; x=1702662040;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pQDpiidnDaeTVBSUmlM+WmLTIl7ji6MGKGWh3saO5gQ=;
-        b=dMjY44CVjhFg3M+puMAUgUkx5W8g3MfONB3zUN7jbv9v+XqdtQYhdZvhaJmXUQ79+9
-         BT7X87yjCDor8o9bzCUMN3YZFBMk/R47I3RQM7cJQ5YVd7Pgvq7axR7HHajXORAytNw2
-         mRBQEEthbUoklugGVeu4mxFUNXlbIGjtld410bCzBm/Uq2AQxThVsX2wyYU+JuDfXI9f
-         NxNO2ul941MxbdlVX2kG+OKXByHIkBzf94U+MrA+dobp0V/H4SAkWww+HQfko0stFyKt
-         ljs04pfJkMXp5ZiKpQWYlMqZD+izZtJrHrylOShHl66R3sEMH0fuH+s+PGrWNl+wGoGV
-         tobA==
-X-Gm-Message-State: AOJu0YxwlVyepLXg4nRwGT1RSVa3TYI0BfkV56EGLHVc5z61LXmcDsS6
-	d3irjXl/LO80Ff6/9Lu7xBfy5A==
-X-Google-Smtp-Source: AGHT+IEBNMKo9LTfkbo6EzE6r/kbin7Gr+L84XoJkGoNJRqvWgDVqH/c8N9EZX9l1MotEBw0Wosp9g==
-X-Received: by 2002:a05:600c:c8:b0:40b:5e59:ccaf with SMTP id u8-20020a05600c00c800b0040b5e59ccafmr195571wmm.144.1702057172125;
-        Fri, 08 Dec 2023 09:39:32 -0800 (PST)
+        bh=oNf690m6EHGUAGO9/ARDGUXkZacN48gEmwCVMqtE7nw=;
+        b=o7KGFJTLvD+a4pV1OTX6hZyTzkb2vElhGYiboFnX36XKig11di6moungzeoPiswfaD
+         vJWUYoBvf1FxGvIipYs8O493dCGt7nNJ4mzxCs1ErpTYQteWcuwoUMG3TI3dIu5EnpJa
+         EbyVW50IalwcOWSLMACv1VpW/E0oj8VnWG4Hv0qQNQmNVHX+93xI84g8eXXcxIYOziy/
+         92tGYwXm/wTc/y3BXx5pFGgGRedhV5c6F5Iqd3VYaejNfyOK86FlOiDfTUspxYMQXbWk
+         dO+wlzKZTY/2NPDor2GAW24ZvH8LUkP9h3NORFu1JVqgNMznaf4SsIci0i3UHewerUFt
+         wB7g==
+X-Gm-Message-State: AOJu0YzujHhF9f9YYjA5MiWtCjDSluN/tkad05JvdB4VLZ2phWDGkzwk
+	VZkVnn2mz/70YREDwpSF64+m2g==
+X-Google-Smtp-Source: AGHT+IG/4CCIzO87PnkkxDMb07D8NhaMK9ROSpjTQpYQyTpufI6ZGRXb/jb27+07oRj2rdrzxkmFOg==
+X-Received: by 2002:a05:600c:20d:b0:40c:3915:be5a with SMTP id 13-20020a05600c020d00b0040c3915be5amr202333wmi.118.1702057239872;
+        Fri, 08 Dec 2023 09:40:39 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id n21-20020a05600c4f9500b0040b36ad5413sm3424034wmq.46.2023.12.08.09.39.30
+        by smtp.gmail.com with ESMTPSA id n21-20020a05600c4f9500b0040b36ad5413sm3424034wmq.46.2023.12.08.09.40.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 09:39:31 -0800 (PST)
-Message-ID: <62c75eed-ed8d-4d51-b49d-9ed9c53162ed@linaro.org>
-Date: Fri, 8 Dec 2023 18:39:29 +0100
+        Fri, 08 Dec 2023 09:40:39 -0800 (PST)
+Message-ID: <82817908-1965-4d0a-bd2d-4785bfda45a7@linaro.org>
+Date: Fri, 8 Dec 2023 18:40:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,7 +62,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] dt-bindings: adc: axi-adc: deprecate 'adi,adc-dev'
+Subject: Re: [PATCH v2 1/8] dt-bindings: adc: ad9467: document io-backend
+ property
 Content-Language: en-US
 To: nuno.sa@analog.com, devicetree@vger.kernel.org, linux-iio@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -73,7 +74,7 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
 References: <20231208-dev-iio-backend-v2-0-5450951895e1@analog.com>
- <20231208-dev-iio-backend-v2-2-5450951895e1@analog.com>
+ <20231208-dev-iio-backend-v2-1-5450951895e1@analog.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -119,20 +120,40 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231208-dev-iio-backend-v2-2-5450951895e1@analog.com>
+In-Reply-To: <20231208-dev-iio-backend-v2-1-5450951895e1@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 08/12/2023 16:14, Nuno Sa via B4 Relay wrote:
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-> also remove it from being required.
+> Add a new property to reference IIO backend devices.
 
-Why did it become suddenly deprecated? Unfortunately the commit msg does
-not tell me more, except copying the code...
+This we can see. But why?
 
-If this is result of previous patch, then squash it.
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> index 7aa748d6b7a0..ae74249b4726 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> @@ -44,6 +44,10 @@ properties:
+>        Pin that controls the powerdown mode of the device.
+>      maxItems: 1
+>  
+> +  io-backends:
+> +    description: Phandle to the IIO backend device.
+
+Looks like standard property. Where is it defined? What is the meaning
+(your description does not tell me anything more than property name and
+its type)
+
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +
 
 Best regards,
 Krzysztof

@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-774-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-775-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9D980B3CC
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Dec 2023 11:55:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B1F80B3CF
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Dec 2023 11:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4781C20A55
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Dec 2023 10:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A81FE1F2119A
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Dec 2023 10:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A085313AC8;
-	Sat,  9 Dec 2023 10:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35213AD3;
+	Sat,  9 Dec 2023 10:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Inmjv7AE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Na8x32m/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082A5D1;
-	Sat,  9 Dec 2023 02:54:58 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id ca18e2360f4ac-7b6f2dd5633so131279739f.2;
-        Sat, 09 Dec 2023 02:54:58 -0800 (PST)
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356E1D1;
+	Sat,  9 Dec 2023 02:56:24 -0800 (PST)
+Received: by mail-pj1-x1041.google.com with SMTP id 98e67ed59e1d1-2886579d59fso2907233a91.1;
+        Sat, 09 Dec 2023 02:56:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702119297; x=1702724097; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702119383; x=1702724183; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lh2d4eIQQpeZhqaTpIu7fiK0w7WGTGpR/zV0sJF4iLA=;
-        b=Inmjv7AE7OgRB5oBXDD6eGE39F0ExaXNIP83rOJOUM6R9Y5P2DuY4b+xHIx/mmHjIa
-         7gE6JPT49n+mj5V1TTj3jzZnwNgrhMZnDvaa4XyyALnQD+pm7Wo2LvTnIw2NsG9MkL5w
-         E/qc4ugBxRsqyCwUG02HqSsd5XxXzuw69pFcRDMMLrIOkdzCOR1SbmBMCiNEJzrlbSv7
-         Hld8vYvpoekvBSw8r4aU3YJcHPsXgxSojd5kcN9s5jxQ5wa33n8SO94UrGY9HC0tAWjU
-         FZE4IF7hE805HVzOZyYJ2118VG2vphjfZz1ZQeVwVKaPgBxiIxvSZ5+BBbx/ImEODO4g
-         MBVQ==
+        bh=EQjKnUKr/6rWL0h9abnt4zIo/7TuTvgvuGycMSFLA9c=;
+        b=Na8x32m/LYhuoiHbrSYm65KQ2ZLixMwxDy70MMtBbrRlthXCt/I3+xjhZ9qxFLyB6J
+         Ts86wtHMl00TQYGHJSQHyzgiQZl/7mjDXKwdvSrcGEcxfH5Z1MgSAe8rgt3pCnCGNjud
+         zdLyGLz6Upb5Fk1jKqG/oqoGKWaa4khOOGCXQBxl6ju7hDTggvmfQEdrJXw41z298P0M
+         UqnTX7W+xgudDQF8rMPTNAylUbMV5qdq5ovF3FuFEoQo8kqPYL8gptllISoPSArr4BSj
+         a2Kv8z8gZOnoJrkyv1cJqeM8oIjXpV7CZjCISQJgM9Rm882v3gYLVZ8r44FcS6SAfEUU
+         3Tiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702119297; x=1702724097;
+        d=1e100.net; s=20230601; t=1702119383; x=1702724183;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lh2d4eIQQpeZhqaTpIu7fiK0w7WGTGpR/zV0sJF4iLA=;
-        b=XakYoNib2EtzZNZFlC0W1zOsJo9wTProzwJmvbaBqx8fASkH/UtnwK417/pBQ3FTbc
-         GuJrO2rxZgERmZGEFli1hf4AnQMne2q8PMBi9noItxsGvDDCFYTXZHQbcq2654scr0k8
-         ckew2qQ/WmR5txIBlCghQnZEKkNOERAVGdTn/FuKqHyCeND2f75J41994Q22xe38gy4T
-         qzYwmnTx7mDcmU34GP/kFgscAMmixPlcnl7+UEsjGIwku+0dTOL/MmSoKeBbSGn2rVx1
-         tALQOBG8AeLKtJ/BYnlJuKDoGdmQNtX1wH1AJaQVquxty7+AtHA5ERJ/NI3t27XKitEF
-         YUvA==
-X-Gm-Message-State: AOJu0YynM1me+5dQcfWrO1tk6q+X4PkP9JVXJVqxC10TGLiocGLxqF2J
-	A1ojZGL+Pb6gP0AgkbbDAwo=
-X-Google-Smtp-Source: AGHT+IEJwcZQCoa9FXfx3Kann2ldxbN3Zhs2QlzLomT5wp7oOXzIx2TN5X3LHs9oFR7tqR36BvGnXg==
-X-Received: by 2002:a05:6e02:144e:b0:35d:a484:3d3 with SMTP id p14-20020a056e02144e00b0035da48403d3mr2428594ilo.81.1702119297312;
-        Sat, 09 Dec 2023 02:54:57 -0800 (PST)
+        bh=EQjKnUKr/6rWL0h9abnt4zIo/7TuTvgvuGycMSFLA9c=;
+        b=kXgJYPcdhVTciyttW5BXJ5kM/Wi/siR80hdjoyYawgco2LXqXkIPqJG6msiTH2L652
+         65YzA5qjq6swWQ1vmxUXds/J81/RnHcY/G8dz8L93twgnWDuunS0b7mNGvEtvSPj5HgO
+         cxE5j9H+yvAJIBxf1YsWlVibDND74CGk+WV903onbp1jrrQXKAsje0Tj8oj/DuwSo1SX
+         l2Cml7SClmSM53WBVMCLL3QV5aK19uOERQRvFgDvKhyvQQvqHV4qEbMF/SSARmkorgGk
+         GQTk7A7/CLZsJKvcPaSV6K2d4Wo8vCuMXpcAJa3wMghf6WwcBSVVkP1/2nLhtA59YDSS
+         1HZw==
+X-Gm-Message-State: AOJu0Yyos9+ClDhRILzaSxB/QbkF+wS8AduYOVgjsqo9W/on2RcVEVhg
+	Wl7reengiwRnzcXMW7Iq+aY=
+X-Google-Smtp-Source: AGHT+IHTLsZFrCzNWQC/KcLVloMG2wD6jN4hlslCQM9FlqbedZjOXCkRLcJMwrwjOzWsN9IMs4ZKjw==
+X-Received: by 2002:a05:6a21:8195:b0:190:2941:7e1f with SMTP id pd21-20020a056a21819500b0019029417e1fmr1471542pzb.9.1702119383331;
+        Sat, 09 Dec 2023 02:56:23 -0800 (PST)
 Received: from dawn-virtual-machine.localdomain ([183.198.111.112])
-        by smtp.gmail.com with ESMTPSA id g192-20020a636bc9000000b0058901200bbbsm3012424pgc.40.2023.12.09.02.54.53
+        by smtp.gmail.com with ESMTPSA id gu25-20020a056a004e5900b006cbb58301basm3125586pfb.19.2023.12.09.02.56.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Dec 2023 02:54:56 -0800 (PST)
+        Sat, 09 Dec 2023 02:56:22 -0800 (PST)
 From: Li peiyu <579lpy@gmail.com>
 To: jic23@kernel.org
 Cc: javier.carrasco.cruz@gmail.com,
@@ -62,9 +62,9 @@ Cc: javier.carrasco.cruz@gmail.com,
 	conor+dt@kernel.org,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v5 1/4] iio: core: introduce trough info element for minimum values
-Date: Sat,  9 Dec 2023 18:54:47 +0800
-Message-Id: <20231209105447.3695-1-579lpy@gmail.com>
+Subject: [PATCH v5 2/4] iio: ABI: document temperature and humidity peak/trough raw attributes
+Date: Sat,  9 Dec 2023 18:56:11 +0800
+Message-Id: <20231209105611.3740-1-579lpy@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231209105217.3630-1-579lpy@gmail.com>
 References: <20231209105217.3630-1-579lpy@gmail.com>
@@ -78,48 +78,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-The IIO_CHAN_INFO_PEAK info element is used for maximum values and
-currently there is no equivalent for minimum values. Instead of
-overloading the existing peak info element, a new info element can
-be added.
+The in_temp_peak_raw attribute is already in use, but its documentation
+is still missing. The in_humidityrelative_raw must be documented for a
+new iio user that supports this attribute. Add temp and humidityrelative
+use cases.
+When at it, remove an extra blank space in the description.
 
-In principle there is no need to add a _TROUGH_SCALE element as the
-scale will be the same as the one required for INFO_PEAK, which in
-turn is sometimes omitted if a single scale for peaks and raw values
-is required.
-
-Add an IIO_CHAN_INFO_TROUGH info element for minimum values.
+For users that support minimum values, a new in_<type>_trough_raw
+attribute is required. Add this attribute and document the first uses of
+it for temp and humidityrelative types.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/industrialio-core.c | 1 +
- include/linux/iio/types.h       | 1 +
- 2 files changed, 2 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f6a123d397db..9a85752124dd 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -184,6 +184,7 @@ static const char * const iio_chan_info_postfix[] = {
- 	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
- 	[IIO_CHAN_INFO_CALIBAMBIENT] = "calibambient",
- 	[IIO_CHAN_INFO_ZEROPOINT] = "zeropoint",
-+	[IIO_CHAN_INFO_TROUGH] = "trough_raw",
- };
- /**
-  * iio_device_id() - query the unique ID for the device
-diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-index 117bde7d6ad7..d89982c98368 100644
---- a/include/linux/iio/types.h
-+++ b/include/linux/iio/types.h
-@@ -68,6 +68,7 @@ enum iio_chan_info_enum {
- 	IIO_CHAN_INFO_THERMOCOUPLE_TYPE,
- 	IIO_CHAN_INFO_CALIBAMBIENT,
- 	IIO_CHAN_INFO_ZEROPOINT,
-+	IIO_CHAN_INFO_TROUGH,
- };
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 0d3ec5fc45f2..9d937e29724b 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -362,10 +362,21 @@ Description:
+ What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_peak_raw
+ What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_peak_raw
+ What:		/sys/bus/iio/devices/iio:deviceX/in_accel_z_peak_raw
++What:		/sys/bus/iio/devices/iio:deviceX/in_humidityrelative_peak_raw
++What:		/sys/bus/iio/devices/iio:deviceX/in_temp_peak_raw
+ KernelVersion:	2.6.36
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+-		Highest value since some reset condition.  These
++		Highest value since some reset condition. These
++		attributes allow access to this and are otherwise
++		the direct equivalent of the <type>Y[_name]_raw attributes.
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_humidityrelative_trough_raw
++What:		/sys/bus/iio/devices/iio:deviceX/in_temp_trough_raw
++KernelVersion:	6.7
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Lowest value since some reset condition. These
+ 		attributes allow access to this and are otherwise
+ 		the direct equivalent of the <type>Y[_name]_raw attributes.
  
- #endif /* _IIO_TYPES_H_ */
 -- 
 2.34.1
 

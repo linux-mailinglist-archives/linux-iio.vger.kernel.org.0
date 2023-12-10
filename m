@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-792-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-793-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5678E80BA9E
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 13:16:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAF380BAA5
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 13:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10A96280D53
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 12:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44B7A1F20FEE
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 12:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB645C131;
-	Sun, 10 Dec 2023 12:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A078BE6E;
+	Sun, 10 Dec 2023 12:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJlbcfpx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g7pb7o+T"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A490BC130
-	for <linux-iio@vger.kernel.org>; Sun, 10 Dec 2023 12:16:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF45EC433C8;
-	Sun, 10 Dec 2023 12:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128998F4D;
+	Sun, 10 Dec 2023 12:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDD5C433C8;
+	Sun, 10 Dec 2023 12:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702210599;
-	bh=86Fb/TnZD6UZ4D6D/ON2+9C91eIICKisOjrDG7Nsb38=;
+	s=k20201202; t=1702210946;
+	bh=soHpppCx2/0tcuziKrSgy12+x/XFsaso6RhP5ZsXMGE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WJlbcfpxB+33Duifi28ytoTIWRIg4aSukwbAMIXaWrASDRlHvATPvQYn3kWGO0251
-	 p4eq9KCsXj+4qwLE1p+DKyEf5oB+X3f9fC+JwXVqEy3fvqlg/3mWFjWXSNXQC3hVAN
-	 QxVqnAY8wp+2R+LNOyl/8j5iyoRJvqe/L3AZarS4ZMvFKfi1PNJ4BK+mIOEiqvS6zI
-	 NhrqqJgXzsjZqERXoJ1nbaPsxQWEpw78rxpvrAXADS9y8ae0jNge/D/xSycJTlqM8W
-	 N/NzaK0bNAniXPIDqg5LzUt+mW94CV8H8doZBTYsxThnZfhktgRDHWdSXyJSOh/4Y6
-	 yARn9ck4xhnOw==
-Date: Sun, 10 Dec 2023 12:16:32 +0000
+	b=g7pb7o+TXb3k5qiipbQOoYvEPmYh4Nv7Y+N2wxjgjdXT8U+JIMUgKiLODex7rl9jv
+	 tNS2bupApGOy/Y6W1fi4d4RbletRkIp4bGLAaXr/djNWY+h64bGXB6411qYxwTI1Qn
+	 3VbjNjhTOgSjlEUJCdgK3K4lrlpa06s86pXXqIPeTonDijFqFFpIFUuK8olNHkggtP
+	 /5vLkrwPSxGtghhmYS8MNWWKPVgE4nG9/SCXD+ouwzeDS0B8KHZEnIwEfAKCrRFf7F
+	 vOU+jISiSDBoZvl3iETiFvOtsbXbdWmRQjHEjSHnNboEN0qtVNi9IMGHZbyfBGFaJf
+	 +Eiz2HedbvWdQ==
+Date: Sun, 10 Dec 2023 12:22:18 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Petre Rodan <petre.rodan@subdimension.ro>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Angel
- Iglesias <ang.iglesiasg@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andreas Klinger <ak@it-klinger.de>, Rob Herring
- <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v8 2/2] iio: pressure: driver for Honeywell HSC/SSC
- series
-Message-ID: <20231210121632.12ff9640@jic23-huawei>
-In-Reply-To: <ZXIPUphL8ZEYDQxk@smile.fi.intel.com>
-References: <20231207164634.11998-1-petre.rodan@subdimension.ro>
-	<20231207164634.11998-2-petre.rodan@subdimension.ro>
-	<ZXIPUphL8ZEYDQxk@smile.fi.intel.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <apw@canonical.com>, <joe@perches.com>, <dwaipayanray1@gmail.com>,
+ <lukas.bulwahn@gmail.com>, <paul.cercueil@analog.com>,
+ <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+ <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+ <dan.carpenter@linaro.org>, <marcelo.schmitt1@gmail.com>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 08/13] iio: adc: ad7091r: Enable internal vref if
+ external vref is not supplied
+Message-ID: <20231210122218.6c0c1d19@jic23-huawei>
+In-Reply-To: <0c71001f4c1eba169230caee6640661cec4b979b.1701971344.git.marcelo.schmitt1@gmail.com>
+References: <cover.1701971344.git.marcelo.schmitt1@gmail.com>
+	<0c71001f4c1eba169230caee6640661cec4b979b.1701971344.git.marcelo.schmitt1@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,32 +58,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 7 Dec 2023 20:30:42 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 7 Dec 2023 15:41:25 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-> On Thu, Dec 07, 2023 at 06:46:29PM +0200, Petre Rodan wrote:
-> > Adds driver for digital Honeywell TruStability HSC and SSC series
-> > pressure and temperature sensors.
-> > Communication is one way. The sensor only requires 4 bytes worth of
-> > clock pulses on both i2c and spi in order to push the data out.
-> > The i2c address is hardcoded and depends on the part number.
-> > There is no additional GPIO control.
-> > code is now based on iio/togreg  
+> The ADC needs a voltage reference to work correctly.
+> Enable AD7091R internal voltage reference if no external vref is
+> supplied.
 > 
-> There is room to improve, but I think it's good enough to be included and
-> amended later on if needed.
-That's almost always true :)
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  drivers/iio/adc/ad7091r-base.c | 9 ++++++---
+>  drivers/iio/adc/ad7091r-base.h | 1 +
+>  2 files changed, 7 insertions(+), 3 deletions(-)
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-Thanks
+> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+> index f2cb638b8d77..59a7ec44955d 100644
+> --- a/drivers/iio/adc/ad7091r-base.c
+> +++ b/drivers/iio/adc/ad7091r-base.c
+> @@ -215,10 +215,13 @@ int ad7091r_probe(struct device *dev, const char *name,
+>  	iio_dev->channels = st->chip_info->channels;
+>  
+>  	st->vref = devm_regulator_get_optional(dev, "vref");
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to poke at it and see if it can find anything we missed.
+This does not return NULL, only a valid regulator or an error code.
 
-Thanks,
+> -	if (IS_ERR(st->vref)) {
+> -		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+> -			return -EPROBE_DEFER;
+> +	if (IS_ERR_OR_NULL(st->vref)) {
 
-Jonathan
+You still need to explicitly handle deferal here.
+There might be a perfectly good regulator that just isn't ready yet and
+if that happens we want to try probing this driver again later rather
+than papering over it.
 
+
+> +		/* Enable internal vref */
+>  		st->vref = NULL;
+> +		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
+> +					 AD7091R_REG_CONF_INT_VREF, BIT(0));
+> +		if (ret)
+> +			return ret;
+>  	} else {
+>  		ret = regulator_enable(st->vref);
+>  		if (ret)
+> diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+> index 9546d0bf1da7..e153c2d7deb5 100644
+> --- a/drivers/iio/adc/ad7091r-base.h
+> +++ b/drivers/iio/adc/ad7091r-base.h
+> @@ -20,6 +20,7 @@
+>  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
+>  
+>  /* AD7091R_REG_CONF */
+> +#define AD7091R_REG_CONF_INT_VREF	BIT(0)
+>  #define AD7091R_REG_CONF_ALERT_EN	BIT(4)
+>  #define AD7091R_REG_CONF_AUTO		BIT(8)
+>  #define AD7091R_REG_CONF_CMD		BIT(10)
 
 

@@ -1,46 +1,47 @@
-Return-Path: <linux-iio+bounces-797-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-798-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B93280BAB6
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 13:37:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C8D80BB13
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 14:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6751C2091F
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 12:37:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51F7280E16
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 13:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B94BBE7E;
-	Sun, 10 Dec 2023 12:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F836C2D3;
+	Sun, 10 Dec 2023 13:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siLUPEh+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMDWKvtF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2568C15
-	for <linux-iio@vger.kernel.org>; Sun, 10 Dec 2023 12:37:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77346C433C7;
-	Sun, 10 Dec 2023 12:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BA76FBC
+	for <linux-iio@vger.kernel.org>; Sun, 10 Dec 2023 13:32:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47975C433C8;
+	Sun, 10 Dec 2023 13:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702211828;
-	bh=pRBeoq0i5wdIAoj64UnUDaiei1SKdwmcYgCs6WKw67s=;
+	s=k20201202; t=1702215154;
+	bh=648SWHIYNJDT/+aiucrXnkcL7Mil/8x5gJTHL49sKWY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=siLUPEh+g1d5hTqWbpQ0jYVZKFMXNeYUvAuGg3f2A+aw5FOgAZC3Amtf2qDAs+0KG
-	 nFMQPcMPCTNO3VcNjFpN2jCrdOdoe0SQ3gM3Gtjwmv/6o/HSOLy4R0k0pb797cxNw1
-	 Hh/kEaGHPy3XBDS5TPGIZD6iYKnizqVf3dnpMS/8rs16B3QFN73H+adkpY1j7rcveu
-	 xDaWJwggp9s/o3SA93bwdwu9xSrAzUXgXVntANdVvjvwf5+HUyOU1Vh+PEh/Sa26p8
-	 QnC73fxI0JHIc47R4ifPdP8WX4jHnla/8z3gGINU6jGKYRjne656/ZGyAsgJcayZ/P
-	 053jZCyjbaPQQ==
-Date: Sun, 10 Dec 2023 12:37:04 +0000
+	b=pMDWKvtF+c+gtQLFvWS7ZcoEriiLmbqJDSvCnPeAuqmNmIs6jVsQrCrFItuDo+o0u
+	 XKsWQeK2qjQInSI+oT9SGX2cLtX8onqoETF2EldZuU1uWUOgjP3UF3Uvb2ztp0VXvr
+	 qlVlrvRGYbtkzSR6q5N+s/0710ZAiGWs1KywxDmJK9XnWlFkMaPh4T1hI8uGj2OIWO
+	 DrQmxNzCxuAtMjk9z4H/nertu0v9pHWH952DH3W3rkkUoKWVeI6yFK/Fcq08gbQUrk
+	 puPyFEDILYjoqEHwz0Gdw8CFwo11Act6UIVgJ/1GMEW4f3jl7mBhqPF+VnE3Q6Fnsc
+	 jodWG3KoIWGxg==
+Date: Sun, 10 Dec 2023 13:32:28 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH] iio: light: isl76682: remove unreachable code
-Message-ID: <20231210123704.4be7087e@jic23-huawei>
-In-Reply-To: <20231208021715.32450-1-jiapeng.chong@linux.alibaba.com>
-References: <20231208021715.32450-1-jiapeng.chong@linux.alibaba.com>
+To: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Alexandru Ardelean
+ <alexandru.ardelean@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
+Message-ID: <20231210133228.5fd425ea@jic23-huawei>
+In-Reply-To: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
+References: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -51,38 +52,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  8 Dec 2023 10:17:15 +0800
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
+On Fri,  8 Dec 2023 15:31:19 +0800
+Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
 
-> The function isl76682_read_raw cannot execute return -EINVAL up to 145
-> lines, delete the invalid code.
+> When iio_device_register_sysfs_group() fails, we should
+> free iio_dev_opaque->chan_attr_group.attrs to prevent
+> potential memleak.
 > 
-> drivers/iio/light/isl76682.c:145 isl76682_read_raw() warn: ignoring unreachable code.
-> 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7698
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Applied.
+> Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Hi.
 
-Thanks,
+Looks good to me, but I'd like to leave this one on the list a little
+longer to see if anyone else has comments.
 
 Jonathan
 
 > ---
->  drivers/iio/light/isl76682.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/iio/industrialio-core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/light/isl76682.c b/drivers/iio/light/isl76682.c
-> index 0a7c3b09c3c0..cf6ddee44ffc 100644
-> --- a/drivers/iio/light/isl76682.c
-> +++ b/drivers/iio/light/isl76682.c
-> @@ -142,7 +142,6 @@ static int isl76682_read_raw(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> -		return -EINVAL;
->  	case IIO_CHAN_INFO_SCALE:
->  		for (i = 0; i < ARRAY_SIZE(isl76682_range_table); i++) {
->  			if (chip->range != isl76682_range_table[i].range)
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index c77745b594bd..e6d3d07a4c83 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1581,10 +1581,13 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+>  	ret = iio_device_register_sysfs_group(indio_dev,
+>  					      &iio_dev_opaque->chan_attr_group);
+>  	if (ret)
+> -		goto error_clear_attrs;
+> +		goto error_free_chan_attrs;
+>  
+>  	return 0;
+>  
+> +error_free_chan_attrs:
+> +	kfree(iio_dev_opaque->chan_attr_group.attrs);
+> +	iio_dev_opaque->chan_attr_group.attrs = NULL;
+>  error_clear_attrs:
+>  	iio_free_chan_devattr_list(&iio_dev_opaque->channel_attr_list);
+>  
 
 

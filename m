@@ -1,38 +1,38 @@
-Return-Path: <linux-iio+bounces-801-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-802-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EF380BB52
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 14:49:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE0780BB80
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 15:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAE3280E4A
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 13:49:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EC63280E0B
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Dec 2023 14:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7246911C9D;
-	Sun, 10 Dec 2023 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C15125C2;
+	Sun, 10 Dec 2023 14:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqVhAuj7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fvr1quLa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEBD11725;
-	Sun, 10 Dec 2023 13:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59B8C433C8;
-	Sun, 10 Dec 2023 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C61170D;
+	Sun, 10 Dec 2023 14:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB33C433C7;
+	Sun, 10 Dec 2023 14:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702216178;
-	bh=1XDcde1nT6h/mhKX1U8yI+hFvRKUQSwKWXMpIAW718Q=;
+	s=k20201202; t=1702216961;
+	bh=pLAIYZPXpRTMWD9790Kvx5fP2Dcl4IA+htrd+/ZzJbU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CqVhAuj7HtHzXxwYzJ8KKGtJY5m9gO88bSyziTt3Cd3WpB53sdy4YuC5/KI3HA4X+
-	 5ZUrgHB52fdsNzE9sdGyMIhqEmTMyIKRv/doimHOdlyCEjb2AOCiGhR1zsDJXV0JrP
-	 yD2dLL1rTtsdB9d1dA9XUsHRx5tTacSX6q8NrCelzsfsIB4LLYFNvdjwSxe55ytKz+
-	 6DDe1Kg2ZzjRqyfHTA4EYV+w7MFydplhYL8zeCMrZWZsJVQ/GhSlZGAD+eeBEG+nSl
-	 TrbeCwRCgyDKBrnJtYcwC6XBOnzhoRtKkPuqfEdcwOL/XuwvVgIM5GMgvoX3Zp3LrN
-	 1B9NCnJKqZcwg==
-Date: Sun, 10 Dec 2023 13:49:32 +0000
+	b=Fvr1quLaRvg6K2X3qJlgkDrHYKnsKjY8fg9g/4eI6/g6d5loLnzofvDm+Ddortt5v
+	 VBcX12ZmeRqEHPDKIJyuNoNEeBTLvspJATpLoXva+21elG9rJdtd7dEQ7Mo3QLP++t
+	 /L2Qpc/RZQ04mMVdBjuq7NTBZnDzvh62G7gSoml5g9kXgXZ2LOXYOGwqhbRZhq6Hsq
+	 dIJP/lo6ZcCcrmOHfTyk0CN4CLdNLqEii+aFOjYywtabnqg9D66vdC5Yvc+JsKIiy/
+	 7jMKT50upU/J/fYik3CTv6SFQEDrmM2YRThVvHHFK4GbYX+cI3bvOv+7zU0UlCoBxc
+	 vBx+3EQJrSSdA==
+Date: Sun, 10 Dec 2023 14:02:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Rob Herring
@@ -41,12 +41,12 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Rob Herring
  Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
  <nuno.sa@analog.com>, Alexandru Ardelean <alexandru.ardelean@analog.com>,
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add binding for AD7380 ADCs
-Message-ID: <20231210134932.0bb429f1@jic23-huawei>
-In-Reply-To: <20231208-ad7380-mainline-v1-1-2b33fe2f44ae@baylibre.com>
+ linux-kernel@vger.kernel.org, Stefan Popa <stefan.popa@analog.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad7380: new driver for AD7380 ADCs
+Message-ID: <20231210140235.43d2c6ea@jic23-huawei>
+In-Reply-To: <20231208-ad7380-mainline-v1-2-2b33fe2f44ae@baylibre.com>
 References: <20231208-ad7380-mainline-v1-0-2b33fe2f44ae@baylibre.com>
-	<20231208-ad7380-mainline-v1-1-2b33fe2f44ae@baylibre.com>
+	<20231208-ad7380-mainline-v1-2-2b33fe2f44ae@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,83 +57,236 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  8 Dec 2023 09:51:40 -0600
+On Fri,  8 Dec 2023 09:51:41 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> This adds a binding specification for the Analog Devices Inc. AD7380
-> family of ADCs.
+> This adds a new driver for the AD7380 family ADCs.
 > 
+> The driver currently implements basic support for the AD7380, AD7381,
+> AD7383, and AD7384 2-channel differential ADCs. Support for additional
+> single-ended and 4-channel chips that use the same register map as well
+> as additional features of the chip will be added in future patches.
+> 
+> Co-developed-by: Stefan Popa <stefan.popa@analog.com>
+> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Hi David,
 
-Comments inline.  A question for Mark Brown on the 2-wire bit..
-Do we have existing DT bindings for devices with parallel spi data
-outputs?
+Hi David / Stefan,
 
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 102 +++++++++++++++++++++
->  MAINTAINERS                                        |   9 ++
->  2 files changed, 111 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+A few minor things inline.  Other than that question following through
+from the bindings about 1-wire / 2-wire description it's all trivial
+and some might be considered my odd tastes :)
+Nice to see such a clean v1
+
+Jonathan
+
+
+> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
 > new file mode 100644
-> index 000000000000..e9a0b72cd9d3
+> index 000000000000..6a5ec59bd1fd
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> +++ b/drivers/iio/adc/ad7380.c
+
+> +struct ad7380_state {
+> +	const struct ad7380_chip_info *chip_info;
+> +	struct spi_device *spi;
+> +	struct regulator *vref;
+> +	struct regmap *regmap;
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the
+> +	 * transfer buffers to live in their own cache lines.
+> +	 * Make the buffer large enough for 2 16-bit samples and one 64-bit
+> +	 * aligned 64 bit timestamp.
+> +	 */
+> +	struct {
+> +		u16 raw[2];
+> +		s64 ts __aligned(8);
+> +	} scan_data __aligned(IIO_DMA_MINALIGN);
+> +	u16 tx[2];
+> +	u16 rx[2];
+> +};
+
 ...
 
 
-> +  * https://www.analog.com/en/products/ad7380.html
-> +  * https://www.analog.com/en/products/ad7381.html
-> +  * https://www.analog.com/en/products/ad7383.html
-> +  * https://www.analog.com/en/products/ad7384.html
 
-> +  adi,sdo-mode:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [ 1-wire, 2-wire ]
-> +    description:
-> +      In 1-wire mode, the SDOA pin acts as the sole data line and the SDOB/ALERT
-> +      pin acts as the ALERT interrupt signal. In 2-wire mode, data for input A
-> +      is read from SDOA and data for input B is read from SDOB/ALERT (and the
-> +      ALERT interrupt signal is not available).
+> +static irqreturn_t ad7380_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct ad7380_state *st = iio_priv(indio_dev);
+> +	struct spi_transfer xfer = {
+> +		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
+> +		.len = 4,
+> +		.rx_buf = &st->scan_data,
+I'd make it explicit you are reading into st->scan_data->raw rather than using
+the address of the containing structure. 
 
-This is fun...  If I understand correctly 2-wire requires two SPI buses (or a complex
-spi controller that does parallel serial channels).  What would description for that
-look like in DT and can we not establish what is wanted here from that bus description
-rather than an adi specific property?
+> +	};
+> +	int ret;
+> +
+> +	ret = spi_sync_transfer(st->spi, &xfer, 1);
+> +
+> +	if (ret == 0)
+I'm not keen on this pattern. It saves a bit of text but makes things slightly less
+obvious when compared to all the other error paths.
 
-Seems a bit like parallel-memories.
+	if (ret)
+		goto error;
 
-Mark, any insights into what we should do to describe this?
+	iio_push_to_buffers...
+
+error:
+	iio_trigger_notify_done...
+
+Is my preference.
+> +		iio_push_to_buffers_with_timestamp(indio_dev, &st->scan_data,
+> +						   pf->timestamp);
+> +
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int ad7380_read_direct(struct ad7380_state *st,
+> +			      struct iio_chan_spec const *chan, int *val)
+> +{
+> +	struct spi_transfer xfers[] = {
+> +		/* toggle CS (no data xfer) to trigger a conversion */
+> +		{
+> +			.speed_hz = AD7380_REG_WR_SPEED_HZ,
+> +			.bits_per_word = chan->scan_type.realbits,
+> +			.delay = {
+> +				.value = 190, /* t[CONVERT] */
+> +				.unit = SPI_DELAY_UNIT_NSECS,
+> +			},
+> +			.cs_change = 1,
+> +			.cs_change_delay = {
+> +				.value = 10, /* t[CSH] */
+> +				.unit = SPI_DELAY_UNIT_NSECS,
+> +			},
+> +		},
+> +		/* then read both channels */
+> +		{
+> +			.speed_hz = AD7380_REG_WR_SPEED_HZ,
+> +			.bits_per_word = chan->scan_type.realbits,
+> +			.rx_buf = &st->rx[0],
+> +			.len = 4,
+> +		},
+> +	};
+> +	int ret;
+> +
+> +	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+> +
+
+Trivial, but no blank line here. It's good to keep error check and
+the call in the same block.
+
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = sign_extend32(st->rx[chan->scan_index],
+> +			     chan->scan_type.realbits - 1);
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+
+...
 
 > +
-> +  vcc-supply:
-> +    description: A 3V to 3.6V supply that powers the chip.
+> +static int ad7380_init(struct ad7380_state *st)
+> +{
+> +	int ret;
 > +
-> +  vlogic-supply:
-> +    description:
-> +      A 1.65V to 3.6V supply for the logic pins.
+> +	/* perform hard reset */
+> +	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
+> +				 AD7380_CONFIG2_RESET,
+> +				 FIELD_PREP(AD7380_CONFIG2_RESET,
+> +					    AD7380_CONFIG2_RESET_HARD));
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +  refio-supply:
-> +    description:
-> +      A 2.5V to 3.3V supply for the external reference voltage. When omitted,
-> +      the internal 2.5V reference is used.
 > +
-> +  interrupts:
-> +    description:
-> +      When the device is using 1-wire mode, this property is used to optionally
-> +      specify the ALERT interrupt.
-> +    maxItems: 1
+Trivial: Single blank line
+
+> +	/* select internal or external reference voltage */
+> +	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
+> +				 AD7380_CONFIG1_REFSEL,
+> +				 FIELD_PREP(AD7380_CONFIG1_REFSEL, !!st->vref));
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - adi,sdo-mode
+> +	/* SPI 1-wire mode */
+> +	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
+> +				  AD7380_CONFIG2_SDO,
+> +				  FIELD_PREP(AD7380_CONFIG2_SDO, 1));
+> +}
+> +
+> +static void ad7380_release_regulator(void *p)
+> +{
+> +	struct regulator *reg = p;
 
-Could define a default of 1-wire?  Simplifies things a little in the bindings.
+The local variable doesn't really add anything over putting p
+in the regulator_disable() call.
 
-> +  - vcc-supply
-> +  - vlogic-supply
+> +
+> +	regulator_disable(reg);
+> +}
+> +
+> +static int ad7380_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct ad7380_state *st;
+> +	const char *str_val;
+> +	int ret;
+> +
+> +	ret = device_property_read_string(&spi->dev, "adi,sdo-mode", &str_val);
+> +	if (ret < 0)
+> +		return dev_err_probe(&spi->dev, ret,
+> +				     "Failed to read adi,sdo-mode property\n");
+> +
+> +	if (strcmp(str_val, "1-wire"))
+> +		return dev_err_probe(&spi->dev, -EINVAL,
+> +				     "Only 1-wire SDO is supported\n");
 
+Discussion on this binding in the dt-binding patch.
+As mentioned there, it feels like a place where a default would be sensible.
 
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->spi = spi;
+> +	st->chip_info = spi_get_device_match_data(spi);
+> +
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "refio");
+> +	if (IS_ERR(st->vref)) {
+> +		/*
+> +		 * If there is no REFIO supply, then it means that we are using
+> +		 * the internal 2.5V reference.
+> +		 */
+> +		if (PTR_ERR(st->vref) == -ENODEV)
+> +			st->vref = NULL;
+> +		else
+> +			return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
+> +					     "Failed to get refio regulator\n");
+> +	}
+> +
+> +	if (st->vref) {
+> +		ret = regulator_enable(st->vref);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7380_release_regulator,
+
+Naming wise maybe ad7380_disable_regulator is less misleading that release (which in
+my mind is the bit the unwind for devm_regulator_get_optional() is doing)
+
+> +					       st->vref);
+> +		if (ret)
+> +			return ret;
+> +	}
 

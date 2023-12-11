@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-816-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-817-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165D580C99A
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 13:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB9880C9BE
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 13:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4368281E88
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 12:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 671AE281D8A
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 12:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968223B29B;
-	Mon, 11 Dec 2023 12:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD3D3B2B4;
+	Mon, 11 Dec 2023 12:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPiAiuLx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mheZ+JDS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17819194;
-	Mon, 11 Dec 2023 04:22:37 -0800 (PST)
-Received: by mail-pl1-x641.google.com with SMTP id d9443c01a7336-1d0897e99e0so24342115ad.3;
-        Mon, 11 Dec 2023 04:22:37 -0800 (PST)
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563C01BE;
+	Mon, 11 Dec 2023 04:27:58 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id 41be03b00d2f7-5ca29c131ebso59554a12.0;
+        Mon, 11 Dec 2023 04:27:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702297356; x=1702902156; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IQcvSnsM7JavnmPF12NfssHoIsVHQjXItCQk6VIN4nQ=;
-        b=dPiAiuLx4laXNeDcu9kXZYQE5UFQ5fA+6/rVysXt+iGPdmPPi4u9WrI49lij4r7ztF
-         VV0XenvdSQrkT3e8AvuZXXOsxMdE3E70i7H5SqYap6WyxksMm6ZEDqmiUxguqVFybRQE
-         BbRlhPbDhh+JjhPjhq7sQY1KihTRcnlgBx+U/n/xXq06KFMpUsDSM88H05Vm8uJj+8oX
-         yqfLYOmk+1jDtu8C9Tke3TsZbV15lFrHPYIzZ2K9YmJnyKOPpCV2ZIfxa81/fnqlj7Gn
-         coN3eGKla3H98UyBFgcXHY1TEG+UG7ZVggghqfpA0yw8V8iFE5EPRPrtqSPhP+ft2pJX
-         Vdiw==
+        d=gmail.com; s=20230601; t=1702297677; x=1702902477; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lh2d4eIQQpeZhqaTpIu7fiK0w7WGTGpR/zV0sJF4iLA=;
+        b=mheZ+JDSfPxyfrUeBR/ZCpUThmxNTY1GBijL+IQH4SyQmZLz9S5rEBzTnQmzyQ20xO
+         KpbkpXNm4LYitYZfYnbmdzW/WNqQvT5vk5x7ERl3DHImThRLl8i/WPgN2frog9+mxzjv
+         bjO+VMFH0iFUSC7YxWOpszS4r0wtN9LC4vbLY0IEJJC1ZlfY1Wf5WA7EdgrS77h7MLtg
+         P9/S4kPgaj/PJlB7Y7EkpmmBJpnMnEjumNs6FEV50YiAgbtcY4WBD6h/hVa4JLWIu7IB
+         sWIoul0sOHqrfz6qGCzAKz0Nfn0cRCcD7LJVuEf9xkl7PIvCIFKqBPl04agYXrxSva6O
+         PHBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702297356; x=1702902156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IQcvSnsM7JavnmPF12NfssHoIsVHQjXItCQk6VIN4nQ=;
-        b=BZ8nVXZuoBZTh5DRuDI+KVqs2ykvoIljGhrQ6N83sUumPcIKbHfpfqbAPI5dJp0vYE
-         w4IGFm0KUb6EReS8n9xkv7klyGotssi4DoEw7AoOxvZADBxZK9koqF0kU7YVpyNB5RaM
-         ejMxSm9IEMeDNnvCEcm94r/KKvk0LY3/Z30YCkeHiFHq0pmX0ooMQn1vWEdw8gI619lQ
-         G73mKvRGsBx6On/pXQ2DGUXLcDAZCPTUJZlIySMSkY+s1j8WCkI5qVy0rz84GSxoYmQc
-         ZDGw2qA3gdXR38yqCaiuwVmBjNFf2+DYdDI8xwjIefPT4O1j7EjCmpfwME9CjZSYiqWm
-         PBNA==
-X-Gm-Message-State: AOJu0YzLfkU8XUEJfWXEj+PJUpe8kNmqxMrjHAme9jcclSlRvZHkxrR8
-	+fLG0E9mpzAH+6bIu6dmcxdpq84q7XAzWB+Y
-X-Google-Smtp-Source: AGHT+IGeVtrJ6el2C/T3eyYfdtyjBM1zxk7RCTju5WCHZQlolTyy8ERUrHvD/rnl2zQwLLa6EuK9Xg==
-X-Received: by 2002:a17:902:6b0a:b0:1ce:5f67:cfd3 with SMTP id o10-20020a1709026b0a00b001ce5f67cfd3mr2005190plk.18.1702297355707;
-        Mon, 11 Dec 2023 04:22:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702297677; x=1702902477;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lh2d4eIQQpeZhqaTpIu7fiK0w7WGTGpR/zV0sJF4iLA=;
+        b=YWYpLaUkOobZNA1ZCuqdcGE4/uzx3TulIti3EfgoRwP4WG1MxXHZNIhG//A/SNJ2s0
+         OCjhwO5K296NI0t8f6Xkk3UiqeGHWsV6aBbgE+IZHJzImtulXRJkgsCHw+fovCGu7KnQ
+         OuiXwjekECfSrhCrV6hvkpHIFYPesMPcZzcmjeP8XT+M1JvrXc3veZwrPmLRIzGcNZvV
+         cEzFahIHpkdkSCPFTr5uv4nFJfbNPiA/w9mBGY7Se45lUKImkWquMsrdpV/+igVcU4o6
+         0+vjZdJJ+9tddR+MKE5kU78redPS1QOGA8/3aQxsOkAVFiDqiOkgZN7N168PZzAQltpZ
+         Ze7Q==
+X-Gm-Message-State: AOJu0YxkHHLIyN3e2o1bmxR0RCL5JhqwXMjE4cOF6xv0sdoPVJsgyhVB
+	4YyCk8KN7TVdbpo3tLreuVmPJnfYhkVVgGG5
+X-Google-Smtp-Source: AGHT+IE1TEJ++VWCi9AftDuGLa6dUkkntlusw+w0FMs/RT6hY2YzCnxHcDlZcQ1gRnxhwHFnlHCVBw==
+X-Received: by 2002:a17:90a:d407:b0:27c:f309:f381 with SMTP id r7-20020a17090ad40700b0027cf309f381mr3117162pju.6.1702297677385;
+        Mon, 11 Dec 2023 04:27:57 -0800 (PST)
 Received: from dawn-virtual-machine.localdomain ([183.198.110.72])
-        by smtp.gmail.com with ESMTPSA id w13-20020a170902a70d00b001cf6453b237sm6494068plq.236.2023.12.11.04.22.30
+        by smtp.gmail.com with ESMTPSA id r11-20020a17090ad40b00b002868f5c2847sm6834746pju.7.2023.12.11.04.27.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 04:22:35 -0800 (PST)
+        Mon, 11 Dec 2023 04:27:56 -0800 (PST)
 From: Li peiyu <579lpy@gmail.com>
 To: jic23@kernel.org
 Cc: javier.carrasco.cruz@gmail.com,
@@ -61,12 +62,13 @@ Cc: javier.carrasco.cruz@gmail.com,
 	conor+dt@kernel.org,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Li peiyu <579lpy@gmail.com>
-Subject: [PATCH v6 0/4] iio: humidity: Add driver for ti HDC302x humidity sensors
-Date: Mon, 11 Dec 2023 20:22:01 +0800
-Message-Id: <20231211122201.9598-1-579lpy@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/4] iio: core: introduce trough info element for minimum values
+Date: Mon, 11 Dec 2023 20:27:47 +0800
+Message-Id: <20231211122747.9723-1-579lpy@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231211122201.9598-1-579lpy@gmail.com>
+References: <20231211122201.9598-1-579lpy@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,87 +77,51 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for HDC302x integrated capacitive based relative
-humidity (RH) and temperature sensor.
-This driver supports reading values, reading the maximum and
-minimum of values and controlling the integrated heater of
-the sensor.
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Signed-off-by: Li peiyu <579lpy@gmail.com>
+The IIO_CHAN_INFO_PEAK info element is used for maximum values and
+currently there is no equivalent for minimum values. Instead of
+overloading the existing peak info element, a new info element can
+be added.
+
+In principle there is no need to add a _TROUGH_SCALE element as the
+scale will be the same as the one required for INFO_PEAK, which in
+turn is sometimes omitted if a single scale for peaks and raw values
+is required.
+
+Add an IIO_CHAN_INFO_TROUGH info element for minimum values.
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-changes in v6:
-	sensor driver:
-	  - Drop offset for humidity channel.
-	  - Use put_unaligned_be16 to assign the 14-bit heater value.
-	  - Remove error message if devm_action_or_reset() fails.
-	  - Add eror message if devm_iio_device_register() fails.
-	dt-bindings:
-	  - remove items before "- const: ti,hdc3020".
-	  - add vdd-supply to required.
-changes in v5:
-	iio ABI:
-	  - Document _TROUGH as an info element.
-	sensor driver:
-	  - Correct heater enable/disable commands
-	  - Rearrang header files in alphabetical order.
-	  - Change .info_mask_separate to BIT(IIO_CHAN_INFO_RAW). 
-	  - Add details to mutex comment.
-	  - Add error handling for chan->type in read_raw call.
-	  - Remove error message for devm_iio_device_register.
-changes in v4:
-	iio core:
-	  - Add an IIO_CHAN_INFO_TROUGH modifier for minimum values.
-	iio ABI:
-	  - Document the new _TROUGH modifier.
-	sensor driver:
-	  - Add MAINTAINERS.
-	  - Use new IIO_CHAN_INFO_TROUGH modifier.
-	  - Support the complete heater range.
-	  - Remove measurement values from the data structure.
-	  - Use guard(mutex)(...), make the code simpler
-	  - Removed buffer mode and direct mode conversion code
-	  - Minor coding-style fixes.
-	dt-bindings:
-	  - removed unnecessary example
-	  - add vdd-supply to the example
-changes in v3:
-	sensor driver:
-	  - Removed the custom ABI
-	  - Give up calculating values in the driver
-	  - Use read_avail callback to get available parameters
-	  - Changed the scope of the lock to make the code more concise
-	  - Fixed the code format issue
-	dt-bindings:
-	  - Use a fallback compatible
-changes in v2:
-	sensor driver:
-	  - Added static modification to global variables
-	  - change the methord to read peak value
-	dt-bindings:
-	  - change the maintainers to me.
-	  - hdc3020,hdc3021,hdc3022 are compatible,I've changed the dirver.
-	  - change the node name to humidity-sensor.
+ drivers/iio/industrialio-core.c | 1 +
+ include/linux/iio/types.h       | 1 +
+ 2 files changed, 2 insertions(+)
 
----
-Javier Carrasco (2):
-      iio: core: introduce trough modifier for minimum values
-      iio: ABI: document temperature and humidity peak/trough raw attributes
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index f6a123d397db..9a85752124dd 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -184,6 +184,7 @@ static const char * const iio_chan_info_postfix[] = {
+ 	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
+ 	[IIO_CHAN_INFO_CALIBAMBIENT] = "calibambient",
+ 	[IIO_CHAN_INFO_ZEROPOINT] = "zeropoint",
++	[IIO_CHAN_INFO_TROUGH] = "trough_raw",
+ };
+ /**
+  * iio_device_id() - query the unique ID for the device
+diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+index 117bde7d6ad7..d89982c98368 100644
+--- a/include/linux/iio/types.h
++++ b/include/linux/iio/types.h
+@@ -68,6 +68,7 @@ enum iio_chan_info_enum {
+ 	IIO_CHAN_INFO_THERMOCOUPLE_TYPE,
+ 	IIO_CHAN_INFO_CALIBAMBIENT,
+ 	IIO_CHAN_INFO_ZEROPOINT,
++	IIO_CHAN_INFO_TROUGH,
+ };
+ 
+ #endif /* _IIO_TYPES_H_ */
+-- 
+2.34.1
 
-Li peiyu (2):
-      dt-bindings: iio: humidity: Add TI HDC302x support
-      iio: humidity: Add driver for TI HDC302x humidity sensors
-
- Documentation/ABI/testing/sysfs-bus-iio            |  13 +-
- .../bindings/iio/humidity/ti,hdc3020.yaml          |  55 +++
- MAINTAINERS                                        |   8 +
- drivers/iio/humidity/Kconfig                       |  12 +
- drivers/iio/humidity/Makefile                      |   1 +
- drivers/iio/humidity/hdc3020.c                     | 473 +++++++++++++++++++++
- drivers/iio/industrialio-core.c                    |   1 +
- include/linux/iio/types.h                          |   1 +
- 8 files changed, 563 insertions(+), 1 deletion(-)
- ---
-base-commit: 33cc938e65a98f1d29d0a18403dbbee050dcad9a
-
-Best regards,
 

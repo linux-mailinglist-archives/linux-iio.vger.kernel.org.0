@@ -1,127 +1,158 @@
-Return-Path: <linux-iio+bounces-826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2AD80D34A
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 18:09:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B4880D38A
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 18:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E35281ACD
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 17:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BB21C2141C
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Dec 2023 17:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C474D107;
-	Mon, 11 Dec 2023 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616BB4D58D;
+	Mon, 11 Dec 2023 17:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="RI1LWxR5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PP2VlYOp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116CEBD;
-	Mon, 11 Dec 2023 09:09:49 -0800 (PST)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BBCOhHn012101;
-	Mon, 11 Dec 2023 18:09:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=mBJKy1rd9gg9AQuGgxfNHb9qOFrFe4Ef73PNfhVbtc4=; b=RI
-	1LWxR52FFW4lDBc0VsEERBbgaHACkd7ysFmBnN3M+9f0f7LTO6DgeSIxN7rMB3Um
-	zHeXnfMbznFIsLtfDLy2KHfgaGec0J9mMuWvnSXoX9e+KJygSdRC4By+/T/6vpYo
-	14HJ1QUOhM7YJIj2EI78B6T8lzUgR0OcE9EDnZXDRPQ3HRJNKEpQX+Oq67OONhf9
-	RTNzdUXZyucR0yHc+J4Vdb5NWQF5Mh9Dpx+guu/Ij2ob8kZctsaV9e7eHcMec3ym
-	O08C0R2thMpbur0smAl1dVXb2Oz5koSp4kmCgCZK1O0eMUZ7k9bXlwrZNB8f7UJY
-	mbuuzwpJNongBHYhIYow==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uvg0gqnvd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 18:09:47 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 834FC10005C;
-	Mon, 11 Dec 2023 18:09:46 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7A7F929D80F;
-	Mon, 11 Dec 2023 18:09:46 +0100 (CET)
-Received: from [10.201.20.59] (10.201.20.59) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Dec
- 2023 18:09:45 +0100
-Message-ID: <81bbf2f7-6db2-47de-9761-0b196b5348d2@foss.st.com>
-Date: Mon, 11 Dec 2023 18:09:44 +0100
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EECEC4
+	for <linux-iio@vger.kernel.org>; Mon, 11 Dec 2023 09:19:16 -0800 (PST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5d05ff42db0so45370227b3.2
+        for <linux-iio@vger.kernel.org>; Mon, 11 Dec 2023 09:19:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702315155; x=1702919955; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJOibuG6vu5h39vC6LrzSpC8cKv0ovNojHLf3UcUYOs=;
+        b=PP2VlYOpY4zu95UBeyOyWADoTCcy0+hpqqdAjOq4QrR8SPevBm8QEMjUqLpPTEAV4C
+         Jqa3T3IvFrcmJjgb6LoP+yTD/A3uAjIRIQEcQyN97pDG+3xvGezxZbxS+w74IRsCCynB
+         aLbfE239Twi9uLADkycEu0XmG+T4UF1EQ837dCknAdh25aXeGm/TjphE7gE4KPzB5V4t
+         5IYeSL8vzIlnmXOgDD0w6Mr08KwAmKdQMJ8Swfklsczdd5pKE68gegIevHSBBzNAYvyO
+         doy1EbofNXHx2dvvLNpqKAOSNDWSYzk8Nkhr093L+f2xKjWd9A0DVT6UavhX2Fdk6mID
+         pVCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702315155; x=1702919955;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bJOibuG6vu5h39vC6LrzSpC8cKv0ovNojHLf3UcUYOs=;
+        b=USr94lMFu4E3LnWUmNoeTkQRx0+bcbJLyK/S/POzPo+2cmvus9H3OF2yVcd6ZrStu3
+         FgJsOxQpslzwgzR7Z36FH0Mb0V+h4vgEGAKdof+DnZveXD5FxuPfYV/1ijFm06Yrv9DI
+         nBqF09ghS9KcPv5kLLqBufVggTpDgSRu+AkFUqQWuv5Kmpol31Gf+/26rlaCbDuKCXWe
+         3mArcKEU3VLSSEu1hhpkK6dYoRcjY6ptv9kW7z+7JlLqXCMfxOtEtMbXVVncpzcBnw6f
+         bAA/JMBmEQZFketJexrM4J1ebyMBTf/CsbPKHzWvFv8efyqyqVQu0ooIawiPO1Vyhaqd
+         IN3w==
+X-Gm-Message-State: AOJu0Yw3HAS0JToQp/roc7SQbX8rJq0QeNjzFxiRWG18vrImQlC1hu8q
+	AfEaMMthT6bGHCp61y7O/lVt8wGhZz8erJeOgS4=
+X-Google-Smtp-Source: AGHT+IEN+r/n8bFmT9gt2y1wkBpK7QWHUW6PhQg7FVQRhsKR/QNz5faUQmkXhyYOv6/U5cLojeBmqg==
+X-Received: by 2002:a0d:f846:0:b0:5d7:1941:2c1b with SMTP id i67-20020a0df846000000b005d719412c1bmr3832075ywf.72.1702315155100;
+        Mon, 11 Dec 2023 09:19:15 -0800 (PST)
+Received: from ubuntu-server-vm-macos (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id gi3-20020a05690c424300b005df4992992esm2225483ywb.24.2023.12.11.09.19.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Dec 2023 09:19:14 -0800 (PST)
+Date: Mon, 11 Dec 2023 17:19:12 +0000
+From: William Breathitt Gray <william.gray@linaro.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] MAINTAINERS: add myself as counter watch events
+ tool maintainer
+Message-ID: <ZXdEkO5u/IDKEgaV@ubuntu-server-vm-macos>
+References: <20231206164726.418990-1-fabrice.gasnier@foss.st.com>
+ <20231206164726.418990-3-fabrice.gasnier@foss.st.com>
+ <ZXcx+94QW2pWDBxM@ubuntu-server-vm-macos>
+ <81bbf2f7-6db2-47de-9761-0b196b5348d2@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] MAINTAINERS: add myself as counter watch events
- tool maintainer
-Content-Language: en-US
-To: William Breathitt Gray <william.gray@linaro.org>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20231206164726.418990-1-fabrice.gasnier@foss.st.com>
- <20231206164726.418990-3-fabrice.gasnier@foss.st.com>
- <ZXcx+94QW2pWDBxM@ubuntu-server-vm-macos>
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <ZXcx+94QW2pWDBxM@ubuntu-server-vm-macos>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-11_07,2023-12-07_01,2023-05-22_02
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="DqZxG5w8JvyzHbBp"
+Content-Disposition: inline
+In-Reply-To: <81bbf2f7-6db2-47de-9761-0b196b5348d2@foss.st.com>
 
-On 12/11/23 16:59, William Breathitt Gray wrote:
-> On Wed, Dec 06, 2023 at 05:47:26PM +0100, Fabrice Gasnier wrote:
->> Add MAINTAINERS entry for the counter watch events tool. William has
->> been asking to add at least me as the point of contact for this utility.
->>
->> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
->> ---
->> Changes in v3: Add MAINTAINERS entry. This is a split of another patch
->> series[1].
->> [1] https://lore.kernel.org/lkml/20230922143920.3144249-1-fabrice.gasnier@foss.st.com/
->> ---
->>  MAINTAINERS | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index dd5de540ec0b..b8541ab7866a 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -5322,6 +5322,11 @@ F:	include/linux/counter.h
->>  F:	include/uapi/linux/counter.h
->>  F:	tools/counter/
->>  
->> +COUNTER WATCH EVENTS TOOL
->> +M:	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
->> +S:	Maintained
->> +F:	tools/counter/counter_watch_events.c
-> 
-> Add an L line as well for the linux-iio@vger.kernel.org address so
-> discussions get sent to our public mailing list.
 
-Hi William,
+--DqZxG5w8JvyzHbBp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I can add it, yes. But just to be sure, with current patch,
-get_maintainer.pl gives me:
+On Mon, Dec 11, 2023 at 06:09:44PM +0100, Fabrice Gasnier wrote:
+> On 12/11/23 16:59, William Breathitt Gray wrote:
+> > On Wed, Dec 06, 2023 at 05:47:26PM +0100, Fabrice Gasnier wrote:
+> >> Add MAINTAINERS entry for the counter watch events tool. William has
+> >> been asking to add at least me as the point of contact for this utilit=
+y.
+> >>
+> >> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> >> ---
+> >> Changes in v3: Add MAINTAINERS entry. This is a split of another patch
+> >> series[1].
+> >> [1] https://lore.kernel.org/lkml/20230922143920.3144249-1-fabrice.gasn=
+ier@foss.st.com/
+> >> ---
+> >>  MAINTAINERS | 5 +++++
+> >>  1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index dd5de540ec0b..b8541ab7866a 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -5322,6 +5322,11 @@ F:	include/linux/counter.h
+> >>  F:	include/uapi/linux/counter.h
+> >>  F:	tools/counter/
+> >> =20
+> >> +COUNTER WATCH EVENTS TOOL
+> >> +M:	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> >> +S:	Maintained
+> >> +F:	tools/counter/counter_watch_events.c
+> >=20
+> > Add an L line as well for the linux-iio@vger.kernel.org address so
+> > discussions get sent to our public mailing list.
+>=20
+> Hi William,
+>=20
+> I can add it, yes. But just to be sure, with current patch,
+> get_maintainer.pl gives me:
+>=20
+> ./scripts/get_maintainer.pl tools/counter/counter_watch_events.c
+> Fabrice Gasnier <fabrice.gasnier@foss.st.com> (maintainer:COUNTER WATCH
+> EVENTS TOOL)
+> William Breathitt Gray <william.gray@linaro.org> (maintainer:COUNTER
+> SUBSYSTEM)
+> linux-iio@vger.kernel.org (open list:COUNTER SUBSYSTEM)
+> linux-kernel@vger.kernel.org (open list)
+>=20
+> So is it really needed to add an L line ?
+>=20
+> Best Regards,
+> Fabrice
 
-./scripts/get_maintainer.pl tools/counter/counter_watch_events.c
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> (maintainer:COUNTER WATCH
-EVENTS TOOL)
-William Breathitt Gray <william.gray@linaro.org> (maintainer:COUNTER
-SUBSYSTEM)
-linux-iio@vger.kernel.org (open list:COUNTER SUBSYSTEM)
-linux-kernel@vger.kernel.org (open list)
+I think the get_maintainer.pl script tries its best to find a list when
+one isn't specified, so when it doesn't find a list under the COUNTER
+WATCH EVENTS TOOL entry, it finds the "tools/counter" directory
+specified under the COUNTER SUBSYSTEM entry and pulls in that list.
 
-So is it really needed to add an L line ?
+Although we end up with the same list, that level of indirection makes
+it somewhat ambiguous to a user whether that's the correct list to mail.
+So just to be proper and clear, we should provide an explicit L line so
+there is no confusion.
 
-Best Regards,
-Fabrice
+William Breathitt Gray
 
-> 
-> Thanks,
-> 
-> William Breathitt Gray
+--DqZxG5w8JvyzHbBp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZXdEkAAKCRC1SFbKvhIj
+K7IpAQCwOWCY90BHIn4sKetysj1BC1aPzwZTDdzLCYI+4tKFbAEArcPeysYkeWXY
+eqnjLqD+msPvPKVxDRMOLJZBn70lcQs=
+=GTfg
+-----END PGP SIGNATURE-----
+
+--DqZxG5w8JvyzHbBp--
 

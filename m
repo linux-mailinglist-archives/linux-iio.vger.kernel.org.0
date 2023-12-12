@@ -1,450 +1,318 @@
-Return-Path: <linux-iio+bounces-855-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-857-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312D380EFDE
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Dec 2023 16:17:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775F980F02F
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Dec 2023 16:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC7DB20DEC
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Dec 2023 15:17:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3CE1F2153C
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Dec 2023 15:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41297541D;
-	Tue, 12 Dec 2023 15:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0389576DC8;
+	Tue, 12 Dec 2023 15:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aYUyreq7"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="f8BmK2Oo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988F0CA;
-	Tue, 12 Dec 2023 07:16:54 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40b5155e154so67372105e9.3;
-        Tue, 12 Dec 2023 07:16:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702394213; x=1702999013; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Puomzrjt5SUW5WOIbHx2z4P43aqw9YO10Gcjn/mwTFU=;
-        b=aYUyreq7AnDYnOEQo002RNK4tVWnjMpElzIUUVrPIcnjmkuotJRkNcP270yn9cbrYZ
-         o4wh01ZSSs7f/Z8aBQpfI6YIS7tqpA9EzyxjueyReapnFoWMJbaESvOJvkyaFMaF1xvg
-         6PFteJMXl2N4pHCcGPzCN1viU2roH3myDW2K5Rsr4Mq+PXfr61Wobvh2ZPgeB3Ieeq0I
-         BcheSHkG3XswAlRAvPUVz2U8aqWRFHCwVGWakPqyVAPy1u4pzRv0aN8OJ9jlw74DXmmQ
-         90mI1nm43eEM5Swr/A7of2vOCy2K4AtLMY7mFthOMhgjyqNV+qP8jHpTKOPclzXLEiiU
-         saoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702394213; x=1702999013;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Puomzrjt5SUW5WOIbHx2z4P43aqw9YO10Gcjn/mwTFU=;
-        b=Uqwgy2wV2zl66HmNQKqXqVkgkQOvevOehGd4Wj8Qxi0vdFiMRKHl8dL2dwzE29t20P
-         tdCoPHHu8C2OiZkBsFdET+f/9pMZOTrid/jQOU6OckaXnZ+hO7OX+mSsFL6OH6pA7HTD
-         KiKtr0UxUux8PZxDQZpip4ig57l0vKJ0PLoJPKYx0zOr15uV7TOj53ssxB2WLLb+dedD
-         KbsVfLUUt9zA33H1wlHoGH87qtOu4OVul4KtquQM79W525LHV2hKKYoSPU2rTQMWqF9j
-         8zfXtM8hVpdaXw2mY32TTGEXDe0zfc4cpK517zYhF+yt7t6U4zn0tVVfclx1YCG0pLAq
-         y+lA==
-X-Gm-Message-State: AOJu0Yw1ziniMVqJmGNNQjtAWaie/GJ5anJmgmQbgH6esELjztFauQOR
-	3OTfa/LS49nOzeyd8pHKeAQ=
-X-Google-Smtp-Source: AGHT+IGlE0Fq6BbAEeOu6lKLZtxzcjQv99zNrO+z5y0JuNw3rcAs90ZaReQEUxtLM4cBKsDFaA379w==
-X-Received: by 2002:a05:600c:4f4d:b0:40b:5e4a:408a with SMTP id m13-20020a05600c4f4d00b0040b5e4a408amr2991203wmq.170.1702394212695;
-        Tue, 12 Dec 2023 07:16:52 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id g17-20020a05600c311100b0040c4535f1a2sm8960220wmo.39.2023.12.12.07.16.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 07:16:52 -0800 (PST)
-Message-ID: <c21634252fec82dadd27b1bff69b24d3384acf00.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad7380: new driver for AD7380 ADCs
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Cc: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, Alexandru Ardelean <alexandru.ardelean@analog.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org, Stefan Popa <stefan.popa@analog.com>
-Date: Tue, 12 Dec 2023 16:19:56 +0100
-In-Reply-To: <20231208-ad7380-mainline-v1-2-2b33fe2f44ae@baylibre.com>
-References: <20231208-ad7380-mainline-v1-0-2b33fe2f44ae@baylibre.com>
-	 <20231208-ad7380-mainline-v1-2-2b33fe2f44ae@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35FFAAA;
+	Tue, 12 Dec 2023 07:25:04 -0800 (PST)
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BCE3S83028254;
+	Tue, 12 Dec 2023 16:24:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=selector1; bh=zZC4kVj
+	UyP47s2vZbG8LISNvKRdLLG8zJkMgXXbJ01U=; b=f8BmK2OoVQvHV0XPvmLcXBM
+	CvTloENjsDAnQpYrx7lyWadytkkFlrPSDc+h+CMs6ADt7t/65jw409FvM/EyFrCk
+	SF09jDhVYkMW+ZdKaAN6kh5Bu67uNSnMNVQr28xd8+NNZLDHnoIkh5RVrAkJEUYH
+	6xQRe5T+tdn6+s3itfp1oxUZPIzuMMSqjhQ+otgKd+k4TXrhIZvCbuANL1LezbEU
+	Gd1LKLRnBT0h785dtNOl6qyx0+yILA5vYZQZp2fEuYchIdeqmvUr7TgVrYkkAjvs
+	XTfLg8UKsw12y82Z6lFmTcTI/5iVAf3peF7Kb6qRjJTTnPGAWbg9mbddjT/wYcA=
+	=
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uw42nhsmw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 16:24:06 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3EF3410005A;
+	Tue, 12 Dec 2023 16:24:03 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D874122F7B1;
+	Tue, 12 Dec 2023 16:24:03 +0100 (CET)
+Received: from localhost (10.252.7.20) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Dec
+ 2023 16:24:03 +0100
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+To: <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>, <lee@kernel.org>,
+        <will@kernel.org>, <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>, <lars@metafoo.de>, <rcsekar@samsung.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>
+CC: <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-media@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>,
+        Gatien Chevallier
+	<gatien.chevallier@foss.st.com>
+Subject: [PATCH v8 00/13] Introduce STM32 Firewall framework
+Date: Tue, 12 Dec 2023 16:23:43 +0100
+Message-ID: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-12_09,2023-12-12_01,2023-05-22_02
 
-Hi David,
+Introduce STM32 Firewall framework for STM32MP1x and STM32MP2x
+platforms. STM32MP1x(ETZPC) and STM32MP2x(RIFSC) Firewall controllers
+register to the framework to offer firewall services such as access
+granting.
 
-minor stuff from me...
+This series of patches is a new approach on the previous STM32 system
+bus, history is available here:
+https://lore.kernel.org/lkml/20230127164040.1047583/
 
-On Fri, 2023-12-08 at 09:51 -0600, David Lechner wrote:
-> This adds a new driver for the AD7380 family ADCs.
->=20
-> The driver currently implements basic support for the AD7380, AD7381,
-> AD7383, and AD7384 2-channel differential ADCs. Support for additional
-> single-ended and 4-channel chips that use the same register map as well
-> as additional features of the chip will be added in future patches.
->=20
-> Co-developed-by: Stefan Popa <stefan.popa@analog.com>
-> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0 16 ++
-> =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/adc/ad7380.c | 467
-> +++++++++++++++++++++++++++++++++++++++++++++++
-> =C2=A04 files changed, 485 insertions(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e2a998be5879..5a54620a31b8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -438,6 +438,7 @@ S:	Supported
-> =C2=A0W:=09
-> https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad=
-738x
-> =C2=A0W:	https://ez.analog.com/linux-software-drivers
-> =C2=A0F:	Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> +F:	drivers/iio/adc/ad7380.c
-> =C2=A0
-> =C2=A0AD7877 TOUCHSCREEN DRIVER
-> =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 35f9867da12c..cbfd626712e3 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -122,6 +122,22 @@ config AD7298
-> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the
-> =C2=A0	=C2=A0 module will be called ad7298.
-> =C2=A0
-> +config AD7380
-> +	tristate "Analog Devices AD7380 ADC driver"
-> +	depends on SPI_MASTER
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGER
-> +	select IIO_TRIGGERED_BUFFER
-> +	help
-> +	=C2=A0 AD7380 is a family of simultaneous sampling ADCs that share the
-> same
-> +	=C2=A0 SPI register map and have similar pinouts.
-> +
-> +	=C2=A0 Say yes here to build support for Analog Devices AD7380 ADC and
-> +	=C2=A0 similar chips.
-> +
-> +	=C2=A0 To compile this driver as a module, choose M here: the module wi=
-ll
-> be
-> +	=C2=A0 called ad7380.
-> +
-> =C2=A0config AD7476
-> =C2=A0	tristate "Analog Devices AD7476 1-channel ADCs driver and other
-> similar devices from AD and TI"
-> =C2=A0	depends on SPI
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index bee11d442af4..e046d8004f41 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -16,6 +16,7 @@ obj-$(CONFIG_AD7291) +=3D ad7291.o
-> =C2=A0obj-$(CONFIG_AD7292) +=3D ad7292.o
-> =C2=A0obj-$(CONFIG_AD7298) +=3D ad7298.o
-> =C2=A0obj-$(CONFIG_AD7923) +=3D ad7923.o
-> +obj-$(CONFIG_AD7476) +=3D ad7380.o
-> =C2=A0obj-$(CONFIG_AD7476) +=3D ad7476.o
-> =C2=A0obj-$(CONFIG_AD7606_IFACE_PARALLEL) +=3D ad7606_par.o
-> =C2=A0obj-$(CONFIG_AD7606_IFACE_SPI) +=3D ad7606_spi.o
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> new file mode 100644
-> index 000000000000..6a5ec59bd1fd
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -0,0 +1,467 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Analog Devices AD738x Simultaneous Sampling SAR ADCs
-> + *
-> + * Copyright 2017 Analog Devices Inc.
-> + * Copyright 2023 BayLibre, SAS
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/bitops.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/slab.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/sysfs.h>
-> +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +
->=20
+The need for such framework arises from the fact that there are now
+multiple hardware firewalls implemented across multiple products.
+Drivers are shared between different products, using the same code.
+When it comes to firewalls, the purpose mostly stays the same: Protect
+hardware resources. But the implementation differs, and there are
+multiple types of firewalls: peripheral, memory, ... 
 
-...
+Some hardware firewall controllers such as the RIFSC implemented on
+STM32MP2x platforms may require to take ownership of a resource before
+being able to use it, hence the requirement for firewall services to
+take/release the ownership of such resources.
 
-> +
-> +static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 u32 writeval, u32 *readval)
-> +{
-> +	struct ad7380_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret =3D iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
+On the other hand, hardware firewall configurations are becoming
+more and more complex. These mecanisms prevent platform crashes
+or other firewall-related incoveniences by denying access to some
+resources.
 
-potential controversial take: do we really need locking in here? regmap alr=
-eady
-has it's own lock (I think you're not disabling it) and if someone plays wi=
-th
-registers it shouldn't while buffering, well... This is a debug interface s=
-o I
-would probably not worry much. One could anyways for write stuff by going
-directly to regmap :)
+The stm32 firewall framework offers an API that is defined in
+firewall controllers drivers to best fit the specificity of each
+firewall.
 
-That said, fine to be as-is from my side (just wanted to take it out of my
-system :))...
+For every peripherals protected by either the ETZPC or the RIFSC, the
+firewall framework checks the firewall controlelr registers to see if
+the peripheral's access is granted to the Linux kernel. If not, the
+peripheral is configured as secure, the node is marked populated,
+so that the driver is not probed for that device.
 
-> +	if (readval)
-> +		ret =3D regmap_read(st->regmap, reg, readval);
-> +	else
-> +		ret =3D regmap_write(st->regmap, reg, writeval);
-> +
-> +	iio_device_release_direct_mode(indio_dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static irqreturn_t ad7380_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf =3D p;
-> +	struct iio_dev *indio_dev =3D pf->indio_dev;
-> +	struct ad7380_state *st =3D iio_priv(indio_dev);
-> +	struct spi_transfer xfer =3D {
-> +		.bits_per_word =3D st->chip_info-
-> >channels[0].scan_type.realbits,
-> +		.len =3D 4,
-> +		.rx_buf =3D &st->scan_data,
-> +	};
-> +	int ret;
-> +
-> +	ret =3D spi_sync_transfer(st->spi, &xfer, 1);
-> +
-> +	if (ret =3D=3D 0)
-> +		iio_push_to_buffers_with_timestamp(indio_dev, &st->scan_data,
-> +						=C2=A0=C2=A0 pf->timestamp);
-> +
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int ad7380_read_direct(struct ad7380_state *st,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int =
-*val)
-> +{
-> +	struct spi_transfer xfers[] =3D {
-> +		/* toggle CS (no data xfer) to trigger a conversion */
-> +		{
-> +			.speed_hz =3D AD7380_REG_WR_SPEED_HZ,
-> +			.bits_per_word =3D chan->scan_type.realbits,
-> +			.delay =3D {
-> +				.value =3D 190, /* t[CONVERT] */
-> +				.unit =3D SPI_DELAY_UNIT_NSECS,
-> +			},
-> +			.cs_change =3D 1,
-> +			.cs_change_delay =3D {
-> +				.value =3D 10, /* t[CSH] */
-> +				.unit =3D SPI_DELAY_UNIT_NSECS,
-> +			},
-> +		},
-> +		/* then read both channels */
-> +		{
-> +			.speed_hz =3D AD7380_REG_WR_SPEED_HZ,
-> +			.bits_per_word =3D chan->scan_type.realbits,
-> +			.rx_buf =3D &st->rx[0],
-> +			.len =3D 4,
-> +		},
-> +	};
-> +	int ret;
-> +
-> +	ret =3D spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val =3D sign_extend32(st->rx[chan->scan_index],
-> +			=C2=A0=C2=A0=C2=A0=C2=A0 chan->scan_type.realbits - 1);
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int ad7380_read_raw(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> +			=C2=A0=C2=A0 int *val, int *val2, long info)
-> +{
-> +	struct ad7380_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret =3D iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret =3D ad7380_read_direct(st, chan, val);
-> +		iio_device_release_direct_mode(indio_dev);
-> +
-> +		return ret;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (st->vref) {
-> +			ret =3D regulator_get_voltage(st->vref);
+The firewall framework relies on the access-controller device tree
+binding. It is used by peripherals to reference a domain access
+controller. In this case a firewall controller. The bus uses the ID
+referenced by the access-controller property to know where to look
+in the firewall to get the security configuration for the peripheral.
+This allows a device tree description rather than a hardcoded peripheral
+table in the bus driver.
 
-nit: I wonder how likely it is for vref to change at runtime...
+The STM32 ETZPC device is responsible for filtering accesses based on
+security level, or co-processor isolation for any resource connected
+to it.
 
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			*val =3D ret / 1000;
-> +		} else {
-> +			*val =3D AD7380_INTERNAL_REF_MV;
-> +		}
-> +
-> +		*val2 =3D chan->scan_type.realbits;
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static const struct iio_info ad7380_info =3D {
-> +	.read_raw =3D &ad7380_read_raw,
-> +	.debugfs_reg_access =3D &ad7380_debugfs_reg_access,
-> +};
-> +
-> +static int ad7380_init(struct ad7380_state *st)
-> +{
-> +	int ret;
-> +
-> +	/* perform hard reset */
-> +	ret =3D regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
-> +				 AD7380_CONFIG2_RESET,
-> +				 FIELD_PREP(AD7380_CONFIG2_RESET,
-> +					=C2=A0=C2=A0=C2=A0 AD7380_CONFIG2_RESET_HARD));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +
-> +	/* select internal or external reference voltage */
-> +	ret =3D regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-> +				 AD7380_CONFIG1_REFSEL,
-> +				 FIELD_PREP(AD7380_CONFIG1_REFSEL, !!st-
-> >vref));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* SPI 1-wire mode */
-> +	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
-> +				=C2=A0 AD7380_CONFIG2_SDO,
-> +				=C2=A0 FIELD_PREP(AD7380_CONFIG2_SDO, 1));
-> +}
-> +
-> +static void ad7380_release_regulator(void *p)
-> +{
-> +	struct regulator *reg =3D p;
-> +
-> +	regulator_disable(reg);
-> +}
-> +
-> +static int ad7380_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ad7380_state *st;
-> +	const char *str_val;
-> +	int ret;
-> +
-> +	ret =3D device_property_read_string(&spi->dev, "adi,sdo-mode",
-> &str_val);
-> +	if (ret < 0)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to read adi,sdo-mode
-> property\n");
-> +
-> +	if (strcmp(str_val, "1-wire"))
-> +		return dev_err_probe(&spi->dev, -EINVAL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Only 1-wire SDO is supported\n");
-> +
-> +	indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st =3D iio_priv(indio_dev);
-> +	st->spi =3D spi;
-> +	st->chip_info =3D spi_get_device_match_data(spi);
-> +
+The RIFSC is responsible for filtering accesses based on Compartment
+ID / security level / privilege level for any resource connected to
+it.
 
-if (!st->chip_info) ?
+STM32MP13/15/25 SoC device tree files are updated in this series to
+implement this mecanism.
 
-> +	st->vref =3D devm_regulator_get_optional(&spi->dev, "refio");
-> +	if (IS_ERR(st->vref)) {
-> +		/*
-> +		 * If there is no REFIO supply, then it means that we are
-> using
-> +		 * the internal 2.5V reference.
-> +		 */
-> +		if (PTR_ERR(st->vref) =3D=3D -ENODEV)
-> +			st->vref =3D NULL;
-> +		else
-> +			return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get refio
-> regulator\n");
-> +	}
-> +
-> +	if (st->vref) {
-> +		ret =3D regulator_enable(st->vref);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret =3D devm_add_action_or_reset(&spi->dev,
-> ad7380_release_regulator,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st->vref);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	st->regmap =3D devm_regmap_init(&spi->dev, NULL, st,
-> &ad7380_regmap_config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to allocate register map\n");
-> +
+Changes in V8:
+	- Add missing "simple-bus" compatible in STM32MP13/25 SoC
+	  device tree files for the ETZPC/RIFSC nodes
+	- Add missing dependency on OF for OF_DYNAMIC that is selected
+	  by STM32_FIREWALL
 
-Could we instead have a custom regmap_bus instead of bypass regmap with
-reg_read() and reg_write()?
-> +
-> +	indio_dev->channels =3D st->chip_info->channels;
-> +	indio_dev->num_channels =3D st->chip_info->num_channels;
-> +	indio_dev->dev.parent =3D &spi->dev;
+Changes in V7:
+	- Separate indentation changes from access-controllers changes
+	  in the device tree file commits
+	- Select OF_DYNAMIC when STM32_FIREWALL is set in order to use
+	  of_detach_node() in the firewall framework
+	- Handle previously non-present RNG and HASH nodes in the
+	  STM32MP13 device tree file
 
-no need to assign parent (the core does it for you)...
+Changes in V6:
+	- Rename access-controller to access-controllers
+	- Remove access-controller-provider
+	- Update device trees and other bindings accordingly
+	- Rework ETZPC/RIFSC bindings to define what access-controllers
+	  cells contain inside #access-controller-cells
+	- Some other minor fixes
 
-- Nuno S=C3=A1
+Changes in V5:
+	- Integrate and rework the "feature-domains" binding patch in
+	  this patchset. The binding is renamed to "access-controller"
+	- Rename every feature-domain* reference to access-control*
+	  ones
+	- Correct loop bug and missing select STM32_FIREWALL in 32-bit
+	  platform Kconfig
+	
+
+Changes in V4:
+	- Fix typo in commit message and YAML check errors in
+	  "dt-bindings: Document common device controller bindings"
+	  Note: This patch should be ignored as stated in the cover
+	  letter. I've done this to avoid errors on this series of
+	  patch
+	- Correct code syntax/style issues reported by Simon Horman
+	- Added Jonathan's tag for IIO on the treewide patch
+
+Changes in V3:
+
+	Change incorrect ordering for bindings commits leading
+	to an error while running
+	"make DT_CHECKER_FLAGS=-m dt_binding_check"
+
+Changes in V2:
+
+	generic:
+		- Add fw_devlink dependency for "feature-domains"
+		  property.
+
+	bindings:
+		- Corrected YAMLS errors highlighted by Rob's robot
+		- Firewall controllers YAMLs no longer define the
+		  maxItems for the "feature-domains" property
+		- Renamed st,stm32-rifsc.yaml to
+		  st,stm32mp25-rifsc.yaml
+		- Fix examples in YAML files
+		- Change feature-domains maxItems to 2 in firewall
+		  consumer files as there should not be more than
+		  2 entries for now
+		- Declare "feature-domain-names" as an optional
+		  property for firewall controllers child nodes.
+		- Add missing "feature-domains" property declaration
+		  in bosch,m_can.yaml and st,stm32-cryp.yaml files
+
+	firewall framework:
+		- Support multiple entries for "feature-domains"
+		  property
+		- Better handle the device-tree parsing using
+		  phandle+args APIs
+		- Remove "resource firewall" type
+		- Add a field for the name of the firewall entry
+		- Fix licenses
+	
+	RIFSC:
+		- Add controller name
+		- Driver is now a module_platform_driver
+		- Fix license
+
+	ETZPC:
+		- Add controller name
+		- Driver is now a module_platform_driver
+		- Fix license
+
+	Device trees:
+		- Fix rifsc node name
+		- Move the "ranges" property under the
+		  "feature-domains" one
+
+Gatien Chevallier (12):
+  dt-bindings: treewide: add access-controllers description
+  dt-bindings: bus: document RIFSC
+  dt-bindings: bus: document ETZPC
+  firewall: introduce stm32_firewall framework
+  of: property: fw_devlink: Add support for "access-controller"
+  bus: rifsc: introduce RIFSC firewall controller driver
+  arm64: dts: st: add RIFSC as an access controller for STM32MP25x
+    boards
+  bus: etzpc: introduce ETZPC firewall controller driver
+  ARM: dts: stm32: add ETZPC as a system bus for STM32MP15x boards
+  ARM: dts: stm32: put ETZPC as an access controller for STM32MP15x
+    boards
+  ARM: dts: stm32: add ETZPC as a system bus for STM32MP13x boards
+  ARM: dts: stm32: put ETZPC as an access controller for STM32MP13x
+    boards
+
+Oleksii Moisieiev (1):
+  dt-bindings: document generic access controllers
+
+ .../access-controllers.yaml                   |   84 +
+ .../bindings/bus/st,stm32-etzpc.yaml          |   87 +
+ .../bindings/bus/st,stm32mp25-rifsc.yaml      |   96 +
+ .../bindings/crypto/st,stm32-cryp.yaml        |    4 +
+ .../bindings/crypto/st,stm32-hash.yaml        |    4 +
+ .../devicetree/bindings/dma/st,stm32-dma.yaml |    4 +
+ .../bindings/dma/st,stm32-dmamux.yaml         |    4 +
+ .../devicetree/bindings/i2c/st,stm32-i2c.yaml |    4 +
+ .../bindings/iio/adc/st,stm32-adc.yaml        |    4 +
+ .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  |    4 +
+ .../bindings/iio/dac/st,stm32-dac.yaml        |    4 +
+ .../bindings/media/cec/st,stm32-cec.yaml      |    4 +
+ .../bindings/media/st,stm32-dcmi.yaml         |    4 +
+ .../memory-controllers/st,stm32-fmc2-ebi.yaml |    4 +
+ .../bindings/mfd/st,stm32-lptimer.yaml        |    4 +
+ .../bindings/mfd/st,stm32-timers.yaml         |    4 +
+ .../devicetree/bindings/mmc/arm,pl18x.yaml    |    4 +
+ .../bindings/net/can/bosch,m_can.yaml         |    4 +
+ .../devicetree/bindings/net/stm32-dwmac.yaml  |    4 +
+ .../bindings/phy/phy-stm32-usbphyc.yaml       |    4 +
+ .../bindings/regulator/st,stm32-vrefbuf.yaml  |    4 +
+ .../devicetree/bindings/rng/st,stm32-rng.yaml |    4 +
+ .../bindings/serial/st,stm32-uart.yaml        |    4 +
+ .../bindings/sound/st,stm32-i2s.yaml          |    4 +
+ .../bindings/sound/st,stm32-sai.yaml          |    4 +
+ .../bindings/sound/st,stm32-spdifrx.yaml      |    4 +
+ .../bindings/spi/st,stm32-qspi.yaml           |    4 +
+ .../devicetree/bindings/spi/st,stm32-spi.yaml |    4 +
+ .../devicetree/bindings/usb/dwc2.yaml         |    4 +
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/st/stm32mp131.dtsi          | 1063 ++++---
+ arch/arm/boot/dts/st/stm32mp133.dtsi          |   51 +-
+ arch/arm/boot/dts/st/stm32mp13xc.dtsi         |   19 +-
+ arch/arm/boot/dts/st/stm32mp13xf.dtsi         |   19 +-
+ arch/arm/boot/dts/st/stm32mp151.dtsi          | 2756 +++++++++--------
+ arch/arm/boot/dts/st/stm32mp153.dtsi          |   52 +-
+ arch/arm/boot/dts/st/stm32mp15xc.dtsi         |   19 +-
+ arch/arm/mach-stm32/Kconfig                   |    1 +
+ arch/arm64/Kconfig.platforms                  |    1 +
+ arch/arm64/boot/dts/st/stm32mp251.dtsi        |    7 +-
+ drivers/bus/Kconfig                           |   10 +
+ drivers/bus/Makefile                          |    1 +
+ drivers/bus/stm32_etzpc.c                     |  141 +
+ drivers/bus/stm32_firewall.c                  |  294 ++
+ drivers/bus/stm32_firewall.h                  |   83 +
+ drivers/bus/stm32_rifsc.c                     |  252 ++
+ drivers/of/property.c                         |    2 +
+ include/linux/bus/stm32_firewall_device.h     |  141 +
+ 48 files changed, 3352 insertions(+), 1938 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+ create mode 100644 Documentation/devicetree/bindings/bus/st,stm32-etzpc.yaml
+ create mode 100644 Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+ create mode 100644 drivers/bus/stm32_etzpc.c
+ create mode 100644 drivers/bus/stm32_firewall.c
+ create mode 100644 drivers/bus/stm32_firewall.h
+ create mode 100644 drivers/bus/stm32_rifsc.c
+ create mode 100644 include/linux/bus/stm32_firewall_device.h
+
+-- 
+2.25.1
 
 

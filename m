@@ -1,106 +1,101 @@
-Return-Path: <linux-iio+bounces-907-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B5E811B09
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 18:31:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664C0811BAC
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 18:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33FA728139D
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 17:31:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBA91F21594
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 17:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A468056B84;
-	Wed, 13 Dec 2023 17:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="XMKpDzII"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948E959B71;
+	Wed, 13 Dec 2023 17:55:59 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52ABF7;
-	Wed, 13 Dec 2023 09:31:29 -0800 (PST)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BDEqJel018485;
-	Wed, 13 Dec 2023 18:31:27 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=
-	selector1; bh=eIOMYrQgx6HJw4rVlOYwJZbbCq5P34bEkh/hrlQWeIs=; b=XM
-	KpDzIIebHdcupOssrpoVqLc7hi9T9LMKebwet/90J5t3iOsKhPMNnSkuZLYwOAXI
-	uBrF4txu+Zv28BC7GLIdnNG+U+b68rtnfuWK+klHbgxmwivIStp3VvD49bL2RqTO
-	8Gi9W+YBd+HeI1VjClT3QP3H03h0CJMlpNpC/0+E1CG/DR9bJV8/txCcMCby5nbr
-	JQejFHDLsiDLyDfwq25ZA6CMd7CMhT069jsTSr7wrpbHfozWNvsS6YlcLqPwXnBN
-	aY8ocIaVTgkmL4NjEseZ7tWskmYhPum+FxT4Elcje8SkIKC0+g2E6GliTqMNrpI8
-	WQ5AnNdnIK0IRO4Okh5Q==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uvehmhxxy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Dec 2023 18:31:27 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3315A100060;
-	Wed, 13 Dec 2023 18:31:26 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2B51126598D;
-	Wed, 13 Dec 2023 18:31:26 +0100 (CET)
-Received: from localhost (10.252.26.85) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 13 Dec
- 2023 18:31:25 +0100
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To: <william.gray@linaro.org>
-CC: <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 2/2] MAINTAINERS: add myself as counter watch events tool maintainer
-Date: Wed, 13 Dec 2023 18:31:17 +0100
-Message-ID: <20231213173117.4174511-3-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231213173117.4174511-1-fabrice.gasnier@foss.st.com>
-References: <20231213173117.4174511-1-fabrice.gasnier@foss.st.com>
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6FCD49;
+	Wed, 13 Dec 2023 09:55:38 -0800 (PST)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-58d08497aa1so4613524eaf.0;
+        Wed, 13 Dec 2023 09:55:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702490137; x=1703094937;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iQGtdcuwZQtYi+ph6QyuuJNxkINZNun39WyUzZSioII=;
+        b=fepmZoDprD3yvJQPMh5HjnfeGgNnSPM+RTYu3YbocEV5v4pxarGa0f1oQV07XPkabj
+         u3DZPEB24BBHXDv1Z56NKEY8dKBRI16f+KXYhPIDwY6148muWxzeNCLu43UUKbvVWD3W
+         Mb6OegYAdUsGgpaz7rIEjx2xDZyLbRrftOKx4JaMvOE4kjUnBY+6Uhlu6OvsKNood7qx
+         mUHaE7ZMcL+NB4Y7cXaFYc1QYBVBhaz3u8CyGFv/cSil3PQENdaVZ/ncW7RSmI5un/tM
+         Bzw9eJIYHwo1r2SPSO5DBxo6uNuTdT4GtLDXELRDMZjT8Ck2ga/q9oKonZZOe7pbHA2o
+         5gCw==
+X-Gm-Message-State: AOJu0YwZ6s+xvVHVPLne2+3vu0xqDSNIVh34QOIT0gVbPb3Z/1RzC0r2
+	rRjoLiNbtCVQrGLGJdkIPKMxK/C3BQ==
+X-Google-Smtp-Source: AGHT+IGrM0+7Hame/CwYfbqJzlDDo/dTHLNEVyFkVVHG6/yf2wP/8XRvaLTO2VSzJMHtG1hHNOfrzw==
+X-Received: by 2002:a05:6820:22a4:b0:590:16e7:d767 with SMTP id ck36-20020a05682022a400b0059016e7d767mr6252763oob.3.1702490137241;
+        Wed, 13 Dec 2023 09:55:37 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id v15-20020a05683011cf00b006ce2db9e6c4sm2854965otq.36.2023.12.13.09.55.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 09:55:36 -0800 (PST)
+Received: (nullmailer pid 1591681 invoked by uid 1000);
+	Wed, 13 Dec 2023 17:55:35 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-13_10,2023-12-13_01,2023-05-22_02
+From: Rob Herring <robh@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+In-Reply-To: <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
+References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+ <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
+Message-Id: <170249013568.1591665.1236116981497856652.robh@kernel.org>
+Subject: Re: [PATCH v3 1/8] dt-bindings: adc: ad9467: add new io-backend
+ property
+Date: Wed, 13 Dec 2023 11:55:35 -0600
 
-Add MAINTAINERS entry for the counter watch events tool. William has
-been asking to add at least me as the point of contact for this utility.
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
-Changes in v4: Explicitly add 'L' line to specify linux-iio mailing list
+On Wed, 13 Dec 2023 16:02:32 +0100, Nuno Sa wrote:
+> The ad9467 will make use of the new IIO backend framework which is a
+> provider - consumer interface where IIO backends provide services to
+> consumers. As such, and being this device a consumer,  add the new
+> generic io-backend property to the bindings.
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
 
-Changes in v3: Add MAINTAINERS entry. This is a split of another patch
-series[1].
-[1] https://lore.kernel.org/lkml/20230922143920.3144249-1-fabrice.gasnier@foss.st.com/
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dd5de540ec0b..e561d0b086ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5322,6 +5322,12 @@ F:	include/linux/counter.h
- F:	include/uapi/linux/counter.h
- F:	tools/counter/
- 
-+COUNTER WATCH EVENTS TOOL
-+M:	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	tools/counter/counter_watch_events.c
-+
- CP2615 I2C DRIVER
- M:	Bence Csókás <bence98@sch.bme.hu>
- S:	Maintained
--- 
-2.25.1
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml: io-backends: missing type definition
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

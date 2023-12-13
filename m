@@ -1,217 +1,96 @@
-Return-Path: <linux-iio+bounces-905-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-906-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F161E81192E
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 17:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C12811B07
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 18:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E30F1F21232
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 16:23:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9403B1F21921
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 17:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D5333CF1;
-	Wed, 13 Dec 2023 16:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDCE3307A;
+	Wed, 13 Dec 2023 17:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kq2WMYzG"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="TMNuGjk7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F73321B1;
-	Wed, 13 Dec 2023 16:23:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE61C433CA;
-	Wed, 13 Dec 2023 16:23:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702484627;
-	bh=XFSkcVLPkIh+/24c0S1bkj+e0UjVJVCIdZQ/7DuBXHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kq2WMYzG0Cksn/leFF/HBWvYW1ptopPBajj6mSVWswXhL8w+5UoXhWV5C2kFrblWY
-	 3f8JvxOJXj6P293FCK26KRbYf0CIpGgI7QdcsNTohxKCQKxIC5nVYTaSbEl3uBj/p7
-	 WDDltBGUsUGIt2vmrG0KIHTi4/qOM9sxUMA+fYFwr2Xgfr0Wb92ZU5AWGtb4mGH3dS
-	 7qnhPVJV+u8lorOfGGYB9eT6OyrIJJFTy9CLtc2ls/6wtPhZoaVF7gU3ZJ/Q5KDPUU
-	 KAsX6552wsIzfj/Noo0xB7/ulMgC5zZJK4HhT0Dgt96AROoYf5UQeI04LJhsENtQUb
-	 Pa2lnInOvHS7w==
-Date: Wed, 13 Dec 2023 16:23:43 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti-ads1298: Add driver
-Message-ID: <20231213-diffuser-disposal-ea21bbce8b64@spud>
-References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.618139b3-8cb2-4e4c-9283-9e3787c70105@emailsignatures365.codetwo.com>
- <20231213094722.31547-1-mike.looijmans@topic.nl>
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85A2F2;
+	Wed, 13 Dec 2023 09:31:29 -0800 (PST)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BDEtGLb015229;
+	Wed, 13 Dec 2023 18:31:27 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=selector1; bh=ngdp73d
+	AuDm5AN/748uVz+OSMkfWpN/pQEhJ8oclM3s=; b=TMNuGjk76NS32lDMVLYG+tV
+	iMece0whzUF0sMv6jI42DJcDe1TLPgwSzMUK1GZ+cl6w+Cox3JSDGyeGgI3Zp/gs
+	BMBKoTFrx/VTQrc+bsa9Y7TUcAD3dzek4ynsvf3P4sJaZbVme+bimTwvRmhBfOCR
+	SOlkKG9Fy+fKAGtTnF6d4zO9DvP4PrdqvDiYFaAksaUyFB4WDMbm7hxZe5oAZxXm
+	vGbws2zdFEMIlhEXkvqibTSS11pgKcBHgCkC5bRn8yBDVs9eJkwIW2P6EKeSGHDu
+	vZRPYDM4rVpAvotoiXAeiNcVBRH+YreYcLyKP/r/YiIHPDtYHb/ffCIGV7n4x6A=
+	=
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uvgf1snjv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Dec 2023 18:31:27 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DA334100057;
+	Wed, 13 Dec 2023 18:31:25 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B099026598C;
+	Wed, 13 Dec 2023 18:31:25 +0100 (CET)
+Received: from localhost (10.252.26.85) by SHFDAG1NODE2.st.com (10.75.129.70)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 13 Dec
+ 2023 18:31:24 +0100
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To: <william.gray@linaro.org>
+CC: <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 0/2] tools: counter: add counter_watch_events
+Date: Wed, 13 Dec 2023 18:31:15 +0100
+Message-ID: <20231213173117.4174511-1-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wheiXICN3N+7aHqO"
-Content-Disposition: inline
-In-Reply-To: <20231213094722.31547-1-mike.looijmans@topic.nl>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-13_10,2023-12-13_01,2023-05-22_02
 
+Introduces a new tool that can be used for testing. Also
+add MAINTAINERS entry as per William's recommendations.
 
---wheiXICN3N+7aHqO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changelog:
+Changes in V4:
+- Specify linux-iio mailing list in MAINTAINERS
+- Revisit error path and handling in counter_watch_events
 
-On Wed, Dec 13, 2023 at 10:47:21AM +0100, Mike Looijmans wrote:
-> Skeleton driver for the TI ADS1298 medical ADC. This device is
-> typically used for ECG and similar measurements. Supports data
-> acquisition at configurable scale and sampling frequency.
+Series split, e.g. V3:
+- This is a split of another series [1].
+[1] https://lore.kernel.org/lkml/20230922143920.3144249-1-fabrice.gasnier@foss.st.com/
 
-I think the commit subject and body here were accidentally copy-pasted
-=66rom the driver patch. Patches for bindings should avoid talking about
-drivers and focus on the harware (unless we are talking about LEDs or
-motors etc)
+Fabrice Gasnier (2):
+  tools/counter: add a flexible watch events tool
+  MAINTAINERS: add myself as counter watch events tool maintainer
 
->=20
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
->=20
-> ---
->=20
->  .../bindings/iio/adc/ti,ads1298.yaml          | 80 +++++++++++++++++++
->  1 file changed, 80 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1298.=
-yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml b/=
-Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
-> new file mode 100644
-> index 000000000000..7a160ba721eb
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads1298.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments' ads1298 medical ADC chips
-> +
-> +maintainers:
-> +  - Mike Looijmans <mike.looijmans@topic.nl>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,ads1298
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  avdd-supply:
-> +    description:
-> +      Analog power supply, voltage between AVDD and AVSS. When providing=
- a
-> +      symmetric +/- 2.5V, the regulator should report 5V.
-> +
-> +  vref-supply:
-> +    description:
-> +      Optional reference voltage. If omitted, internal reference is used,
-> +      depending on analog supply this is 2.4 or 4V.
+ MAINTAINERS                          |   6 +
+ tools/counter/Build                  |   1 +
+ tools/counter/Makefile               |  12 +-
+ tools/counter/counter_watch_events.c | 406 +++++++++++++++++++++++++++
+ 4 files changed, 423 insertions(+), 2 deletions(-)
+ create mode 100644 tools/counter/counter_watch_events.c
 
-It may be worth mentioning here what the conditions for the internal
-reference being 2.4 or 4 volts actually are.
+-- 
+2.25.1
 
-> +
-> +  clocks:
-> +    description: Optional 2.048 MHz external source clock on CLK pin
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: clk
-
-Since you have only one clock, having clock-names (especially with a
-name like "clk") is pointless IMO.
-
-Generally though, this patch looks good to me.
-
-Cheers,
-Conor.
-
-> +  interrupts:
-> +    description: Interrupt on DRDY pin, triggers on falling edge
-> +    maxItems: 1
-> +
-> +  label: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +  - interrupts
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        adc@1 {
-> +          reg =3D <1>;
-> +          compatible =3D "ti,ads1298";
-> +          label =3D "ads1298-1-ecg";
-> +          avdd-supply =3D <&reg_iso_5v_a>;
-> +          clock-names =3D "clk";
-> +          clocks =3D <&clk_ads1298>;
-> +          interrupt-parent =3D <&gpio0>;
-> +          interrupts =3D <78 IRQ_TYPE_EDGE_FALLING>;
-> +          spi-max-frequency =3D <20000000>;
-> +          spi-cpha;
-> +        };
-> +    };
-> +...
-> --=20
-> 2.34.1
->=20
->=20
-> Met vriendelijke groet / kind regards,
->=20
-> Mike Looijmans
-> System Expert
->=20
->=20
-> TOPIC Embedded Products B.V.
-> Materiaalweg 4, 5681 RJ Best
-> The Netherlands
->=20
-> T: +31 (0) 499 33 69 69
-> E: mike.looijmans@topic.nl
-> W: www.topic.nl
->=20
-> Please consider the environment before printing this e-mail
-
---wheiXICN3N+7aHqO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZXnajgAKCRB4tDGHoIJi
-0uX4AQDdQsLinMnKQNR0gruAlC6KO76Muuel5q+ksbfjERk0UwD+I7lYJD33yIjB
-9BRsIVetMvFlFztwVEH+OctNqIhFHQs=
-=aemH
------END PGP SIGNATURE-----
-
---wheiXICN3N+7aHqO--
 

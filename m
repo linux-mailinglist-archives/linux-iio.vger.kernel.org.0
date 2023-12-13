@@ -1,641 +1,218 @@
-Return-Path: <linux-iio+bounces-884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-885-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCF0810FB3
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 12:21:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BF98110E6
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 13:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52FDD28181E
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 11:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43DBB1F21216
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 12:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0491241F3;
-	Wed, 13 Dec 2023 11:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B4828E0A;
+	Wed, 13 Dec 2023 12:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jEUo05cY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nW+oJ4IK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD8EF5
-	for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 03:21:29 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-40c339d2b88so53230825e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 03:21:29 -0800 (PST)
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B130E4;
+	Wed, 13 Dec 2023 04:18:07 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-54cd8f5bb5cso8699048a12.1;
+        Wed, 13 Dec 2023 04:18:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702466488; x=1703071288; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X+J3VQ5AgIfkGX+EialdKLCs66BF3uuHwTixtHbvZ1Q=;
-        b=jEUo05cYnYn3pSW2wj4X93hM5dwmTChl0wU61gmUqfZ25ZkRL2l6QL8MTFKN4Nt4Xb
-         c1TQjAxtbyioByzPWY7bNAXehcbh6CBGiZMxJjcK+/n8s09pT8L4s1VtBO3bg3RSCIpI
-         wo2ewCnnXAxWDac31/+I35tTvg8zLl1UaKyDxlYbzawuqbeoN0CSKDQxGVmgDcejqnGP
-         mu6uI/3EzOWYaB95fR9GixstgI1VArsmzmj60k/iYf5g/9RY25BzSHkby9oGY4y5mLM4
-         H/aNnx/KiQCyWfJuDW+sQGVF+auO5UQJb6WQni3PJYJodayE1iMYCLSYh5a6EF5sTSY/
-         P6sQ==
+        d=gmail.com; s=20230601; t=1702469886; x=1703074686; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Fb1JaePVR0fJwILpc3yyM5yj78LV/m+momHnaokZdOw=;
+        b=nW+oJ4IKLIAavVsiI+jDSyw4uzGB5NFlO4x7O67Swnn/7m5upWLO4Z/4jCL7J0aAUE
+         yeBzejokzc4ZqK5tnGYqNWNQx+1U9tC6RtL+zOSETxB03OaLAdAgQ0JsoBce52tuZmgr
+         yTPCZTBczkWutYucEFnOI1aF7L+49ACYbutE5L+NlvH86w1KPATDqz9N/kHU9foa/zHi
+         juewqF5dhKUQ1OJIfx2hn09NHuBSnRn1HCxnlIu8ESh1amu285bPzeOezmceECjZT5so
+         Dm4cNzfcrKn1ZBfLSu+zm7kxqXTs34/+6BlE7PQLSZ429tqYe21sMwhn0v577UgPOvRa
+         KgiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702466488; x=1703071288;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X+J3VQ5AgIfkGX+EialdKLCs66BF3uuHwTixtHbvZ1Q=;
-        b=c9304DkjSKrSdiNV6xvV6g4UB+nXhFezqFVw8/Ok5yTK7AE7L1TDVVPCqqsc7jqgLV
-         NcP7yAW/g/fxqguiduYsjsLCjrkX+D7of1yxwL9sp6c5gUI7LD91ekkcOIbLkvv9o33J
-         cH0rwuQ/CHtH73eiyVNpvUefmldPuEG6mvQ3Tkyvhd4BGocz8EYJ3f7WnekVzR6TRxi/
-         yPlqYwIWhuz1C3jUCs9MCWyfquLJwTldHeMHVjxSZ2EnmN3EY3CF4/S49ucb/wzQuFJK
-         HFv87O332UGJkmzOJ4E4s2JnSnTN0m7GE/RCtXSebUTfbmwiMemcG+pnv/DnhJcLwWiq
-         cJ+Q==
-X-Gm-Message-State: AOJu0Yx3NEu/DRe3KB7G+ZQ0yZEu2W+IB7lMYZmVKyns9n+jb24VdR5M
-	ivw99ut4z7Ojw10YANAZAr8q0JeWZ6uOzzstHGvvWA==
-X-Google-Smtp-Source: AGHT+IGYmkVaa+wK/toz0y5IdhTZ3xypPkIM4MsJrYwTrYaUeKNsn8ikBKmYyTQXIH3MAH2xYbW85w==
-X-Received: by 2002:a05:600c:1c90:b0:401:b6f6:d8fd with SMTP id k16-20020a05600c1c9000b00401b6f6d8fdmr3634566wms.6.1702466487992;
-        Wed, 13 Dec 2023 03:21:27 -0800 (PST)
-Received: from localhost.localdomain (abordeaux-655-1-152-60.w90-5.abo.wanadoo.fr. [90.5.9.60])
-        by smtp.gmail.com with ESMTPSA id m29-20020a05600c3b1d00b0040b3515cdf8sm20097617wms.7.2023.12.13.03.21.27
+        d=1e100.net; s=20230601; t=1702469886; x=1703074686;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Fb1JaePVR0fJwILpc3yyM5yj78LV/m+momHnaokZdOw=;
+        b=e0GiDmXwqCYpYgjzIqqisWNCkoCRlTtR1bPFV8vAR3Yj04HjwTm2l7ZATQsjEKIEtB
+         ISP92M91kkzR4g3xSYZHAAD8i6N8aR2Mgka/QkqYUJQXtkD7rqRaEt/8jjHIzt2V5ziU
+         ZEVdZTJ97RlTzkuOmkfYGuc1jd2L3r1LoA5Z+qUWxrKFPFTDHnRVgZ0VD0c20g8H8SWT
+         Lw29TS/pO8xkbvjH2NMeGs5Yz/uO7z+O0UWilPqXj2CDiqtFItwj5h6uaI9ALsT7yWf/
+         N5LV4o4w6w6oVNjit9dEmNwv7CvcajsotHHNBZFJFF4WxkYwxXK/Uk6a4cw9pIuwI8wo
+         yfVQ==
+X-Gm-Message-State: AOJu0YxgkXQqlWjnjSBIzaRqOZZn4grwfieKqR92piezEfpD5SBW4XiT
+	ku8R4dhwnPSTiaGtZf4XUzurw+wpYpDznEeWsao=
+X-Google-Smtp-Source: AGHT+IEhn1hCL8EuZgyJadrvggj/oAgW1xC0wQwKvSuQX10q7CWwnVxDkFmpI5oE57s/CLUt+CwJnw==
+X-Received: by 2002:a17:906:2244:b0:a22:fc0f:9870 with SMTP id 4-20020a170906224400b00a22fc0f9870mr423888ejr.108.1702469885420;
+        Wed, 13 Dec 2023 04:18:05 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id uv8-20020a170907cf4800b00a1d232b39b9sm7601923ejc.184.2023.12.13.04.18.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 03:21:27 -0800 (PST)
-From: David Lechner <dlechner@baylibre.com>
-To: linux-iio@vger.kernel.org,
+        Wed, 13 Dec 2023 04:18:05 -0800 (PST)
+Message-ID: <5f7a1c60ccebe13ba6cdfa5d8f9632bc9b838137.camel@gmail.com>
+Subject: Re: [PATCH v2 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Stefan Popa <stefan.popa@analog.com>
-Subject: [PATCH v2 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
-Date: Wed, 13 Dec 2023 05:21:20 -0600
-Message-Id: <20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com>
+Cc: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	 <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Cameron
+	 <jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, Nuno
+	=?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+	 <broonie@kernel.org>, linux-kernel@vger.kernel.org, Stefan Popa
+	 <stefan.popa@analog.com>
+Date: Wed, 13 Dec 2023 13:18:04 +0100
+In-Reply-To: <20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
 References: <20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com>
+	 <20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
 
-This adds a new driver for the AD7380 family ADCs.
-
-The driver currently implements basic support for the AD7380, AD7381,
-AD7383, and AD7384 2-channel differential ADCs. Support for additional
-single-ended and 4-channel chips that use the same register map as well
-as additional features of the chip will be added in future patches.
-
-Co-developed-by: Stefan Popa <stefan.popa@analog.com>
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-
-v2 changes:
-- Fixed CONFIG_AD7380 in Makefile
-- rx_buf = st->scan_data.raw instead of rx_buf = &st->scan_data
-- Moved iio_push_to_buffers_with_timestamp() outside of if statement
-- Removed extra blank lines
-- Renamed regulator disable function
-- Dropped checking of adi,sdo-mode property (regardless of the actual
-	wiring, we can always use 1-wire mode)
-- Added available_scan_masks (we always sample two channels at the same time
-  so we need to let userspace know this)
-- Added check for missing driver match data
-
- MAINTAINERS              |   1 +
- drivers/iio/adc/Kconfig  |  16 ++
- drivers/iio/adc/Makefile |   1 +
- drivers/iio/adc/ad7380.c | 464 +++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 482 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e2a998be5879..5a54620a31b8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -438,6 +438,7 @@ S:	Supported
- W:	https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad738x
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-+F:	drivers/iio/adc/ad7380.c
- 
- AD7877 TOUCHSCREEN DRIVER
- M:	Michael Hennerich <michael.hennerich@analog.com>
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 35f9867da12c..cbfd626712e3 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -122,6 +122,22 @@ config AD7298
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ad7298.
- 
-+config AD7380
-+	tristate "Analog Devices AD7380 ADC driver"
-+	depends on SPI_MASTER
-+	select IIO_BUFFER
-+	select IIO_TRIGGER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  AD7380 is a family of simultaneous sampling ADCs that share the same
-+	  SPI register map and have similar pinouts.
-+
-+	  Say yes here to build support for Analog Devices AD7380 ADC and
-+	  similar chips.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ad7380.
-+
- config AD7476
- 	tristate "Analog Devices AD7476 1-channel ADCs driver and other similar devices from AD and TI"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index bee11d442af4..9c921c497655 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_AD7291) += ad7291.o
- obj-$(CONFIG_AD7292) += ad7292.o
- obj-$(CONFIG_AD7298) += ad7298.o
- obj-$(CONFIG_AD7923) += ad7923.o
-+obj-$(CONFIG_AD7380) += ad7380.o
- obj-$(CONFIG_AD7476) += ad7476.o
- obj-$(CONFIG_AD7606_IFACE_PARALLEL) += ad7606_par.o
- obj-$(CONFIG_AD7606_IFACE_SPI) += ad7606_spi.o
-diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-new file mode 100644
-index 000000000000..b8025b636b67
---- /dev/null
-+++ b/drivers/iio/adc/ad7380.c
-@@ -0,0 +1,464 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices AD738x Simultaneous Sampling SAR ADCs
-+ *
-+ * Copyright 2017 Analog Devices Inc.
-+ * Copyright 2023 BayLibre, SAS
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/cleanup.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/slab.h>
-+#include <linux/spi/spi.h>
-+#include <linux/sysfs.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+
-+/* 2.5V internal reference voltage */
-+#define AD7380_INTERNAL_REF_MV		2500
-+
-+/* reading and writing registers is more reliable at lower than max speed */
-+#define AD7380_REG_WR_SPEED_HZ		10000000
-+
-+#define AD7380_REG_WR			BIT(15)
-+#define AD7380_REG_REGADDR		GENMASK(14, 12)
-+#define AD7380_REG_DATA			GENMASK(11, 0)
-+
-+#define AD7380_REG_ADDR_NOP		0x0
-+#define AD7380_REG_ADDR_CONFIG1		0x1
-+#define AD7380_REG_ADDR_CONFIG2		0x2
-+#define AD7380_REG_ADDR_ALERT		0x3
-+#define AD7380_REG_ADDR_ALERT_LOW_TH	0x4
-+#define AD7380_REG_ADDR_ALERT_HIGH_TH	0x5
-+
-+#define AD7380_CONFIG1_OS_MODE		BIT(9)
-+#define AD7380_CONFIG1_OSR		GENMASK(8, 6)
-+#define AD7380_CONFIG1_CRC_W		BIT(5)
-+#define AD7380_CONFIG1_CRC_R		BIT(4)
-+#define AD7380_CONFIG1_ALERTEN		BIT(3)
-+#define AD7380_CONFIG1_RES		BIT(2)
-+#define AD7380_CONFIG1_REFSEL		BIT(1)
-+#define AD7380_CONFIG1_PMODE		BIT(0)
-+
-+#define AD7380_CONFIG2_SDO2		GENMASK(9, 8)
-+#define AD7380_CONFIG2_SDO		BIT(8)
-+#define AD7380_CONFIG2_RESET		GENMASK(7, 0)
-+
-+#define AD7380_CONFIG2_RESET_SOFT	0x3C
-+#define AD7380_CONFIG2_RESET_HARD	0xFF
-+
-+#define AD7380_ALERT_LOW_TH		GENMASK(11, 0)
-+#define AD7380_ALERT_HIGH_TH		GENMASK(11, 0)
-+
-+struct ad7380_chip_info {
-+	const char *name;
-+	const struct iio_chan_spec *channels;
-+	unsigned int num_channels;
-+};
-+
-+#define AD7380_DIFFERENTIAL_CHANNEL(index, bits) {		\
-+	.type = IIO_VOLTAGE,					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-+	.indexed = 1,						\
-+	.differential = 1,					\
-+	.channel = 2 * (index),					\
-+	.channel2 = 2 * (index) + 1,				\
-+	.scan_index = (index),					\
-+	.scan_type = {						\
-+		.sign = 's',					\
-+		.realbits = (bits),				\
-+		.storagebits = 16,				\
-+		.endianness = IIO_CPU,				\
-+	},							\
-+}
-+
-+#define DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(name, bits)	\
-+static const struct iio_chan_spec name[] = {			\
-+		AD7380_DIFFERENTIAL_CHANNEL(0, bits),		\
-+		AD7380_DIFFERENTIAL_CHANNEL(1, bits),		\
-+		IIO_CHAN_SOFT_TIMESTAMP(2),			\
-+}
-+
-+/* fully differential */
-+DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7380_channels, 16);
-+DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7381_channels, 14);
-+/* pseudo differential */
-+DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7383_channels, 16);
-+DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7384_channels, 14);
-+
-+/* Since this is simultaneous sampling, we don't allow individual channels. */
-+static const unsigned long ad7380_2_channel_scan_masks[] = {
-+	GENMASK(2, 0), /* both ADC channels and soft timestamp */
-+	GENMASK(1, 0), /* both ADC channels, no timestamp */
-+	0
-+};
-+
-+static const struct ad7380_chip_info ad7380_chip_info = {
-+	.name = "ad7380",
-+	.channels = ad7380_channels,
-+	.num_channels = ARRAY_SIZE(ad7380_channels),
-+};
-+
-+static const struct ad7380_chip_info ad7381_chip_info = {
-+	.name = "ad7381",
-+	.channels = ad7381_channels,
-+	.num_channels = ARRAY_SIZE(ad7381_channels),
-+};
-+
-+static const struct ad7380_chip_info ad7383_chip_info = {
-+	.name = "ad7383",
-+	.channels = ad7383_channels,
-+	.num_channels = ARRAY_SIZE(ad7383_channels),
-+};
-+
-+static const struct ad7380_chip_info ad7384_chip_info = {
-+	.name = "ad7384",
-+	.channels = ad7384_channels,
-+	.num_channels = ARRAY_SIZE(ad7384_channels),
-+};
-+
-+struct ad7380_state {
-+	const struct ad7380_chip_info *chip_info;
-+	struct spi_device *spi;
-+	struct regulator *vref;
-+	struct regmap *regmap;
-+	/*
-+	 * DMA (thus cache coherency maintenance) requires the
-+	 * transfer buffers to live in their own cache lines.
-+	 * Make the buffer large enough for 2 16-bit samples and one 64-bit
-+	 * aligned 64 bit timestamp.
-+	 */
-+	struct {
-+		u16 raw[2];
-+		s64 ts __aligned(8);
-+	} scan_data __aligned(IIO_DMA_MINALIGN);
-+	u16 tx[2];
-+	u16 rx[2];
-+};
-+
-+static int ad7380_regmap_reg_write(void *context, unsigned int reg,
-+				   unsigned int val)
-+{
-+	struct ad7380_state *st = context;
-+	struct spi_transfer xfer = {
-+		.speed_hz = AD7380_REG_WR_SPEED_HZ,
-+		.bits_per_word = 16,
-+		.len = 2,
-+		.tx_buf = &st->tx[0],
-+	};
-+
-+	st->tx[0] = FIELD_PREP(AD7380_REG_WR, 1) |
-+		    FIELD_PREP(AD7380_REG_REGADDR, reg) |
-+		    FIELD_PREP(AD7380_REG_DATA, val);
-+
-+	return spi_sync_transfer(st->spi, &xfer, 1);
-+}
-+
-+static int ad7380_regmap_reg_read(void *context, unsigned int reg,
-+				  unsigned int *val)
-+{
-+	struct ad7380_state *st = context;
-+	struct spi_transfer xfers[] = {
-+		{
-+			.speed_hz = AD7380_REG_WR_SPEED_HZ,
-+			.bits_per_word = 16,
-+			.len = 2,
-+			.tx_buf = &st->tx[0],
-+			.cs_change = 1,
-+			.cs_change_delay = {
-+				.value = 10, /* t[CSH] */
-+				.unit = SPI_DELAY_UNIT_NSECS,
-+			},
-+		}, {
-+			.speed_hz = AD7380_REG_WR_SPEED_HZ,
-+			.bits_per_word = 16,
-+			.len = 2,
-+			.rx_buf = &st->rx[0],
-+		},
-+	};
-+	int ret;
-+
-+	st->tx[0] = FIELD_PREP(AD7380_REG_WR, 0) |
-+		    FIELD_PREP(AD7380_REG_REGADDR, reg) |
-+		    FIELD_PREP(AD7380_REG_DATA, 0);
-+
-+	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = FIELD_GET(AD7380_REG_DATA, st->rx[0]);
-+
-+	return 0;
-+}
-+
-+const struct regmap_config ad7380_regmap_config = {
-+	.reg_bits = 3,
-+	.val_bits = 12,
-+	.reg_read = ad7380_regmap_reg_read,
-+	.reg_write = ad7380_regmap_reg_write,
-+	.max_register = AD7380_REG_ADDR_ALERT_HIGH_TH,
-+	.can_sleep = true,
-+};
-+
-+static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
-+				     u32 writeval, u32 *readval)
-+{
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = iio_device_claim_direct_mode(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	if (readval)
-+		ret = regmap_read(st->regmap, reg, readval);
-+	else
-+		ret = regmap_write(st->regmap, reg, writeval);
-+
-+	iio_device_release_direct_mode(indio_dev);
-+
-+	return ret;
-+}
-+
-+static irqreturn_t ad7380_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	struct spi_transfer xfer = {
-+		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
-+		.len = 4,
-+		.rx_buf = st->scan_data.raw,
-+	};
-+	int ret;
-+
-+	ret = spi_sync_transfer(st->spi, &xfer, 1);
-+	if (ret)
-+		goto out;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan_data,
-+					   pf->timestamp);
-+
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int ad7380_read_direct(struct ad7380_state *st,
-+			      struct iio_chan_spec const *chan, int *val)
-+{
-+	struct spi_transfer xfers[] = {
-+		/* toggle CS (no data xfer) to trigger a conversion */
-+		{
-+			.speed_hz = AD7380_REG_WR_SPEED_HZ,
-+			.bits_per_word = chan->scan_type.realbits,
-+			.delay = {
-+				.value = 190, /* t[CONVERT] */
-+				.unit = SPI_DELAY_UNIT_NSECS,
-+			},
-+			.cs_change = 1,
-+			.cs_change_delay = {
-+				.value = 10, /* t[CSH] */
-+				.unit = SPI_DELAY_UNIT_NSECS,
-+			},
-+		},
-+		/* then read both channels */
-+		{
-+			.speed_hz = AD7380_REG_WR_SPEED_HZ,
-+			.bits_per_word = chan->scan_type.realbits,
-+			.rx_buf = &st->rx[0],
-+			.len = 4,
-+		},
-+	};
-+	int ret;
-+
-+	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = sign_extend32(st->rx[chan->scan_index],
-+			     chan->scan_type.realbits - 1);
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int ad7380_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long info)
-+{
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		ret = ad7380_read_direct(st, chan, val);
-+		iio_device_release_direct_mode(indio_dev);
-+
-+		return ret;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (st->vref) {
-+			ret = regulator_get_voltage(st->vref);
-+			if (ret < 0)
-+				return ret;
-+
-+			*val = ret / 1000;
-+		} else {
-+			*val = AD7380_INTERNAL_REF_MV;
-+		}
-+
-+		*val2 = chan->scan_type.realbits;
-+
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static const struct iio_info ad7380_info = {
-+	.read_raw = &ad7380_read_raw,
-+	.debugfs_reg_access = &ad7380_debugfs_reg_access,
-+};
-+
-+static int ad7380_init(struct ad7380_state *st)
-+{
-+	int ret;
-+
-+	/* perform hard reset */
-+	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
-+				 AD7380_CONFIG2_RESET,
-+				 FIELD_PREP(AD7380_CONFIG2_RESET,
-+					    AD7380_CONFIG2_RESET_HARD));
-+	if (ret < 0)
-+		return ret;
-+
-+	/* select internal or external reference voltage */
-+	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-+				 AD7380_CONFIG1_REFSEL,
-+				 FIELD_PREP(AD7380_CONFIG1_REFSEL, !!st->vref));
-+	if (ret < 0)
-+		return ret;
-+
-+	/* SPI 1-wire mode */
-+	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
-+				  AD7380_CONFIG2_SDO,
-+				  FIELD_PREP(AD7380_CONFIG2_SDO, 1));
-+}
-+
-+static void ad7380_regulator_disable(void *p)
-+{
-+	regulator_disable(p);
-+}
-+
-+static int ad7380_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct ad7380_state *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+	st->spi = spi;
-+	st->chip_info = spi_get_device_match_data(spi);
-+	if (!st->chip_info)
-+		return dev_err_probe(&spi->dev, -EINVAL, "missing match data\n");
-+
-+	st->vref = devm_regulator_get_optional(&spi->dev, "refio");
-+	if (IS_ERR(st->vref)) {
-+		/*
-+		 * If there is no REFIO supply, then it means that we are using
-+		 * the internal 2.5V reference.
-+		 */
-+		if (PTR_ERR(st->vref) == -ENODEV)
-+			st->vref = NULL;
-+		else
-+			return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
-+					     "Failed to get refio regulator\n");
-+	}
-+
-+	if (st->vref) {
-+		ret = regulator_enable(st->vref);
-+		if (ret)
-+			return ret;
-+
-+		ret = devm_add_action_or_reset(&spi->dev, ad7380_regulator_disable,
-+					       st->vref);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	st->regmap = devm_regmap_init(&spi->dev, NULL, st, &ad7380_regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-+				     "failed to allocate register map\n");
-+
-+	indio_dev->channels = st->chip_info->channels;
-+	indio_dev->num_channels = st->chip_info->num_channels;
-+	indio_dev->dev.parent = &spi->dev;
-+	indio_dev->name = st->chip_info->name;
-+	indio_dev->info = &ad7380_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = ad7380_2_channel_scan_masks;
-+
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      ad7380_trigger_handler, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad7380_init(st);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct of_device_id ad7380_of_match_table[] = {
-+	{ .compatible = "adi,ad7380", .data = &ad7380_chip_info },
-+	{ .compatible = "adi,ad7381", .data = &ad7381_chip_info },
-+	{ .compatible = "adi,ad7383", .data = &ad7383_chip_info },
-+	{ .compatible = "adi,ad7384", .data = &ad7384_chip_info },
-+	{ }
-+};
-+
-+static const struct spi_device_id ad7380_id_table[] = {
-+	{ "ad7380", (kernel_ulong_t)&ad7380_chip_info },
-+	{ "ad7381", (kernel_ulong_t)&ad7381_chip_info },
-+	{ "ad7383", (kernel_ulong_t)&ad7383_chip_info },
-+	{ "ad7384", (kernel_ulong_t)&ad7384_chip_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ad7380_id_table);
-+
-+static struct spi_driver ad7380_driver = {
-+	.driver = {
-+		.name = "ad7380",
-+		.of_match_table = ad7380_of_match_table,
-+	},
-+	.probe = ad7380_probe,
-+	.id_table = ad7380_id_table,
-+};
-+module_spi_driver(ad7380_driver);
-+
-+MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices AD738x ADC driver");
-+MODULE_LICENSE("GPL");
-
--- 
-2.34.1
+T24gV2VkLCAyMDIzLTEyLTEzIGF0IDA1OjIxIC0wNjAwLCBEYXZpZCBMZWNobmVyIHdyb3RlOgo+
+IFRoaXMgYWRkcyBhIG5ldyBkcml2ZXIgZm9yIHRoZSBBRDczODAgZmFtaWx5IEFEQ3MuCj4gCj4g
+VGhlIGRyaXZlciBjdXJyZW50bHkgaW1wbGVtZW50cyBiYXNpYyBzdXBwb3J0IGZvciB0aGUgQUQ3
+MzgwLCBBRDczODEsCj4gQUQ3MzgzLCBhbmQgQUQ3Mzg0IDItY2hhbm5lbCBkaWZmZXJlbnRpYWwg
+QURDcy4gU3VwcG9ydCBmb3IgYWRkaXRpb25hbAo+IHNpbmdsZS1lbmRlZCBhbmQgNC1jaGFubmVs
+IGNoaXBzIHRoYXQgdXNlIHRoZSBzYW1lIHJlZ2lzdGVyIG1hcCBhcyB3ZWxsCj4gYXMgYWRkaXRp
+b25hbCBmZWF0dXJlcyBvZiB0aGUgY2hpcCB3aWxsIGJlIGFkZGVkIGluIGZ1dHVyZSBwYXRjaGVz
+Lgo+IAo+IENvLWRldmVsb3BlZC1ieTogU3RlZmFuIFBvcGEgPHN0ZWZhbi5wb3BhQGFuYWxvZy5j
+b20+Cj4gU2lnbmVkLW9mZi1ieTogU3RlZmFuIFBvcGEgPHN0ZWZhbi5wb3BhQGFuYWxvZy5jb20+
+Cj4gU2lnbmVkLW9mZi1ieTogRGF2aWQgTGVjaG5lciA8ZGxlY2huZXJAYmF5bGlicmUuY29tPgo+
+IC0tLQo+IAo+IHYyIGNoYW5nZXM6Cj4gLSBGaXhlZCBDT05GSUdfQUQ3MzgwIGluIE1ha2VmaWxl
+Cj4gLSByeF9idWYgPSBzdC0+c2Nhbl9kYXRhLnJhdyBpbnN0ZWFkIG9mIHJ4X2J1ZiA9ICZzdC0+
+c2Nhbl9kYXRhCj4gLSBNb3ZlZCBpaW9fcHVzaF90b19idWZmZXJzX3dpdGhfdGltZXN0YW1wKCkg
+b3V0c2lkZSBvZiBpZiBzdGF0ZW1lbnQKPiAtIFJlbW92ZWQgZXh0cmEgYmxhbmsgbGluZXMKPiAt
+IFJlbmFtZWQgcmVndWxhdG9yIGRpc2FibGUgZnVuY3Rpb24KPiAtIERyb3BwZWQgY2hlY2tpbmcg
+b2YgYWRpLHNkby1tb2RlIHByb3BlcnR5IChyZWdhcmRsZXNzIG9mIHRoZSBhY3R1YWwKPiDCoMKg
+wqDCoMKgwqDCoMKgd2lyaW5nLCB3ZSBjYW4gYWx3YXlzIHVzZSAxLXdpcmUgbW9kZSkKPiAtIEFk
+ZGVkIGF2YWlsYWJsZV9zY2FuX21hc2tzICh3ZSBhbHdheXMgc2FtcGxlIHR3byBjaGFubmVscyBh
+dCB0aGUgc2FtZSB0aW1lCj4gwqAgc28gd2UgbmVlZCB0byBsZXQgdXNlcnNwYWNlIGtub3cgdGhp
+cykKPiAtIEFkZGVkIGNoZWNrIGZvciBtaXNzaW5nIGRyaXZlciBtYXRjaCBkYXRhCj4gCj4gwqBN
+QUlOVEFJTkVSU8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEgKwo+IMKgZHJpdmVy
+cy9paW8vYWRjL0tjb25maWfCoCB8wqAgMTYgKysKPiDCoGRyaXZlcnMvaWlvL2FkYy9NYWtlZmls
+ZSB8wqDCoCAxICsKPiDCoGRyaXZlcnMvaWlvL2FkYy9hZDczODAuYyB8IDQ2NCArKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+IMKgNCBmaWxlcyBjaGFuZ2Vk
+LCA0ODIgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9NQUlOVEFJTkVSUyBiL01BSU5U
+QUlORVJTCj4gaW5kZXggZTJhOTk4YmU1ODc5Li41YTU0NjIwYTMxYjggMTAwNjQ0Cj4gLS0tIGEv
+TUFJTlRBSU5FUlMKPiArKysgYi9NQUlOVEFJTkVSUwo+IEBAIC00MzgsNiArNDM4LDcgQEAgUzrC
+oMKgU3VwcG9ydGVkCj4gwqBXOsKgwqDCoMKgwqAKPiBodHRwczovL3dpa2kuYW5hbG9nLmNvbS9y
+ZXNvdXJjZXMvdG9vbHMtc29mdHdhcmUvbGludXgtZHJpdmVycy9paW8tYWRjL2FkNzM4eAo+IMKg
+VzrCoMKgwqDCoMKgaHR0cHM6Ly9lei5hbmFsb2cuY29tL2xpbnV4LXNvZnR3YXJlLWRyaXZlcnMK
+PiDCoEY6wqDCoMKgwqDCoERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRj
+L2FkaSxhZDczODAueWFtbAo+ICtGOsKgwqDCoMKgwqBkcml2ZXJzL2lpby9hZGMvYWQ3MzgwLmMK
+PiDCoAo+IMKgQUQ3ODc3IFRPVUNIU0NSRUVOIERSSVZFUgo+IMKgTTrCoMKgwqDCoMKgTWljaGFl
+bCBIZW5uZXJpY2ggPG1pY2hhZWwuaGVubmVyaWNoQGFuYWxvZy5jb20+Cj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvaWlvL2FkYy9LY29uZmlnIGIvZHJpdmVycy9paW8vYWRjL0tjb25maWcKPiBpbmRl
+eCAzNWY5ODY3ZGExMmMuLmNiZmQ2MjY3MTJlMyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL2lpby9h
+ZGMvS2NvbmZpZwo+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9LY29uZmlnCj4gQEAgLTEyMiw2ICsx
+MjIsMjIgQEAgY29uZmlnIEFENzI5OAo+IMKgwqDCoMKgwqDCoMKgwqDCoCBUbyBjb21waWxlIHRo
+aXMgZHJpdmVyIGFzIGEgbW9kdWxlLCBjaG9vc2UgTSBoZXJlOiB0aGUKPiDCoMKgwqDCoMKgwqDC
+oMKgwqAgbW9kdWxlIHdpbGwgYmUgY2FsbGVkIGFkNzI5OC4KPiDCoAo+ICtjb25maWcgQUQ3Mzgw
+Cj4gK8KgwqDCoMKgwqDCoMKgdHJpc3RhdGUgIkFuYWxvZyBEZXZpY2VzIEFENzM4MCBBREMgZHJp
+dmVyIgo+ICvCoMKgwqDCoMKgwqDCoGRlcGVuZHMgb24gU1BJX01BU1RFUgo+ICvCoMKgwqDCoMKg
+wqDCoHNlbGVjdCBJSU9fQlVGRkVSCj4gK8KgwqDCoMKgwqDCoMKgc2VsZWN0IElJT19UUklHR0VS
+Cj4gK8KgwqDCoMKgwqDCoMKgc2VsZWN0IElJT19UUklHR0VSRURfQlVGRkVSCj4gK8KgwqDCoMKg
+wqDCoMKgaGVscAo+ICvCoMKgwqDCoMKgwqDCoMKgIEFENzM4MCBpcyBhIGZhbWlseSBvZiBzaW11
+bHRhbmVvdXMgc2FtcGxpbmcgQURDcyB0aGF0IHNoYXJlIHRoZSBzYW1lCj4gK8KgwqDCoMKgwqDC
+oMKgwqAgU1BJIHJlZ2lzdGVyIG1hcCBhbmQgaGF2ZSBzaW1pbGFyIHBpbm91dHMuCj4gKwo+ICvC
+oMKgwqDCoMKgwqDCoMKgIFNheSB5ZXMgaGVyZSB0byBidWlsZCBzdXBwb3J0IGZvciBBbmFsb2cg
+RGV2aWNlcyBBRDczODAgQURDIGFuZAo+ICvCoMKgwqDCoMKgwqDCoMKgIHNpbWlsYXIgY2hpcHMu
+Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgIFRvIGNvbXBpbGUgdGhpcyBkcml2ZXIgYXMgYSBtb2R1
+bGUsIGNob29zZSBNIGhlcmU6IHRoZSBtb2R1bGUgd2lsbCBiZQo+ICvCoMKgwqDCoMKgwqDCoMKg
+IGNhbGxlZCBhZDczODAuCj4gKwo+IMKgY29uZmlnIEFENzQ3Ngo+IMKgwqDCoMKgwqDCoMKgwqB0
+cmlzdGF0ZSAiQW5hbG9nIERldmljZXMgQUQ3NDc2IDEtY2hhbm5lbCBBRENzIGRyaXZlciBhbmQg
+b3RoZXIgc2ltaWxhcgo+IGRldmljZXMgZnJvbSBBRCBhbmQgVEkiCj4gwqDCoMKgwqDCoMKgwqDC
+oGRlcGVuZHMgb24gU1BJCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9NYWtlZmlsZSBi
+L2RyaXZlcnMvaWlvL2FkYy9NYWtlZmlsZQo+IGluZGV4IGJlZTExZDQ0MmFmNC4uOWM5MjFjNDk3
+NjU1IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaWlvL2FkYy9NYWtlZmlsZQo+ICsrKyBiL2RyaXZl
+cnMvaWlvL2FkYy9NYWtlZmlsZQo+IEBAIC0xNiw2ICsxNiw3IEBAIG9iai0kKENPTkZJR19BRDcy
+OTEpICs9IGFkNzI5MS5vCj4gwqBvYmotJChDT05GSUdfQUQ3MjkyKSArPSBhZDcyOTIubwo+IMKg
+b2JqLSQoQ09ORklHX0FENzI5OCkgKz0gYWQ3Mjk4Lm8KPiDCoG9iai0kKENPTkZJR19BRDc5MjMp
+ICs9IGFkNzkyMy5vCj4gK29iai0kKENPTkZJR19BRDczODApICs9IGFkNzM4MC5vCj4gwqBvYmot
+JChDT05GSUdfQUQ3NDc2KSArPSBhZDc0NzYubwo+IMKgb2JqLSQoQ09ORklHX0FENzYwNl9JRkFD
+RV9QQVJBTExFTCkgKz0gYWQ3NjA2X3Bhci5vCj4gwqBvYmotJChDT05GSUdfQUQ3NjA2X0lGQUNF
+X1NQSSkgKz0gYWQ3NjA2X3NwaS5vCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9hZDcz
+ODAuYyBiL2RyaXZlcnMvaWlvL2FkYy9hZDczODAuYwo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4g
+aW5kZXggMDAwMDAwMDAwMDAwLi5iODAyNWI2MzZiNjcKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIv
+ZHJpdmVycy9paW8vYWRjL2FkNzM4MC5jCj4gQEAgLTAsMCArMSw0NjQgQEAKPiArLy8gU1BEWC1M
+aWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQo+ICsvKgo+ICsgKiBBbmFsb2cgRGV2aWNl
+cyBBRDczOHggU2ltdWx0YW5lb3VzIFNhbXBsaW5nIFNBUiBBRENzCj4gKyAqCj4gKyAqIENvcHly
+aWdodCAyMDE3IEFuYWxvZyBEZXZpY2VzIEluYy4KPiArICogQ29weXJpZ2h0IDIwMjMgQmF5TGli
+cmUsIFNBUwo+ICsgKi8KPiArCj4gKyNpbmNsdWRlIDxsaW51eC9iaXRmaWVsZC5oPgo+ICsjaW5j
+bHVkZSA8bGludXgvYml0b3BzLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9jbGVhbnVwLmg+Cj4gKyNp
+bmNsdWRlIDxsaW51eC9kZXZpY2UuaD4KPiArI2luY2x1ZGUgPGxpbnV4L2Vyci5oPgo+ICsjaW5j
+bHVkZSA8bGludXgva2VybmVsLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4KPiArI2lu
+Y2x1ZGUgPGxpbnV4L3JlZ21hcC5oPgo+ICsjaW5jbHVkZSA8bGludXgvcmVndWxhdG9yL2NvbnN1
+bWVyLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9zbGFiLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9zcGkv
+c3BpLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9zeXNmcy5oPgo+ICsKPiArI2luY2x1ZGUgPGxpbnV4
+L2lpby9idWZmZXIuaD4KPiArI2luY2x1ZGUgPGxpbnV4L2lpby9paW8uaD4KPiArI2luY2x1ZGUg
+PGxpbnV4L2lpby9zeXNmcy5oPgo+ICsjaW5jbHVkZSA8bGludXgvaWlvL3RyaWdnZXJfY29uc3Vt
+ZXIuaD4KPiArI2luY2x1ZGUgPGxpbnV4L2lpby90cmlnZ2VyZWRfYnVmZmVyLmg+Cj4gKwoKLi4u
+Cgo+IAo+ICtzdGF0aWMgaW50IGFkNzM4MF9wcm9iZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQo+
+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGlpb19kZXYgKmluZGlvX2RldjsKPiArwqDCoMKg
+wqDCoMKgwqBzdHJ1Y3QgYWQ3MzgwX3N0YXRlICpzdDsKPiArwqDCoMKgwqDCoMKgwqBpbnQgcmV0
+Owo+ICsKPiArwqDCoMKgwqDCoMKgwqBpbmRpb19kZXYgPSBkZXZtX2lpb19kZXZpY2VfYWxsb2Mo
+JnNwaS0+ZGV2LCBzaXplb2YoKnN0KSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKCFpbmRpb19kZXYp
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAtRU5PTUVNOwo+ICsKPiAr
+wqDCoMKgwqDCoMKgwqBzdCA9IGlpb19wcml2KGluZGlvX2Rldik7Cj4gK8KgwqDCoMKgwqDCoMKg
+c3QtPnNwaSA9IHNwaTsKPiArwqDCoMKgwqDCoMKgwqBzdC0+Y2hpcF9pbmZvID0gc3BpX2dldF9k
+ZXZpY2VfbWF0Y2hfZGF0YShzcGkpOwo+ICvCoMKgwqDCoMKgwqDCoGlmICghc3QtPmNoaXBfaW5m
+bykKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGRldl9lcnJfcHJvYmUo
+JnNwaS0+ZGV2LCAtRUlOVkFMLCAibWlzc2luZyBtYXRjaCBkYXRhXG4iKTsKPiArCj4gK8KgwqDC
+oMKgwqDCoMKgc3QtPnZyZWYgPSBkZXZtX3JlZ3VsYXRvcl9nZXRfb3B0aW9uYWwoJnNwaS0+ZGV2
+LCAicmVmaW8iKTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoSVNfRVJSKHN0LT52cmVmKSkgewo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgKiBJZiB0aGVyZSBpcyBubyBSRUZJTyBzdXBwbHksIHRoZW4gaXQgbWVhbnMgdGhh
+dCB3ZSBhcmUgdXNpbmcKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogdGhlIGlu
+dGVybmFsIDIuNVYgcmVmZXJlbmNlLgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+Ki8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKFBUUl9FUlIoc3QtPnZyZWYp
+ID09IC1FTk9ERVYpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBzdC0+dnJlZiA9IE5VTEw7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVs
+c2UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVy
+biBkZXZfZXJyX3Byb2JlKCZzcGktPmRldiwgUFRSX0VSUihzdC0+dnJlZiksCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgICJGYWlsZWQgdG8gZ2V0IHJlZmlvIHJlZ3VsYXRvclxuIik7
+Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZiAoc3QtPnZyZWYpIHsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gcmVndWxhdG9yX2VuYWJsZShz
+dC0+dnJlZik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChyZXQpCj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+
+ICsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gZGV2bV9hZGRfYWN0aW9u
+X29yX3Jlc2V0KCZzcGktPmRldiwgYWQ3MzgwX3JlZ3VsYXRvcl9kaXNhYmxlLAo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3QtPnZyZWYpOwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpZiAocmV0KQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gKwo+ICvCoMKg
+wqDCoMKgwqDCoHN0LT5yZWdtYXAgPSBkZXZtX3JlZ21hcF9pbml0KCZzcGktPmRldiwgTlVMTCwg
+c3QsICZhZDczODBfcmVnbWFwX2NvbmZpZyk7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKElTX0VSUihz
+dC0+cmVnbWFwKSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGRldl9l
+cnJfcHJvYmUoJnNwaS0+ZGV2LCBQVFJfRVJSKHN0LT5yZWdtYXApLAo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ICJmYWlsZWQgdG8gYWxsb2NhdGUgcmVnaXN0ZXIgbWFwXG4iKTsKClN0aWxsIG5vdCB1c2luZyBh
+IHJlZ21hcF9idXMuLi4gWW91IGNvdWxkIGF0IGxlYXN0IGFyZ3VlIGluIHRoZSBsYXN0IHZlcnNp
+b24gd2h5CnlvdSdyZSBub3QgZG9pbmcgaXQgcmF0aGVyIHRoYW4gaWdub3JpbmcgdGhlIGNvbW1l
+bnQgOikuCgpJJ20gYXNraW5nIGZvciBpdCBiZWNhdXNlIGl0IGFscmVhZHkgaGFwcGVuZWQgKGlu
+IElJTykgdG8gbWUgYW5kIEkgd2FzIGFza2VkIGZvcgppbXBsZW1lbnRpbmcgdGhlIGJ1cy4gWW91
+IGFsc28gZ2FpbiB0aGluZ3MgbGlrZSByZWdtYXAgY29yZSBoYW5kbGluZyBlbmRpYW5pc20gYW5k
+CmZvcm1hdHRpbmcgdGhlIHdvcmsgYnVmZmVyIGZvciB5b3UgKGVnOiByZWdtYXBfYnVsa19yZWFk
+KCkgY291bGQgYmUgbW9yZSBlZmZpY2llbnQpLAoKPiArwqDCoMKgwqDCoMKgwqBpbmRpb19kZXYt
+PmNoYW5uZWxzID0gc3QtPmNoaXBfaW5mby0+Y2hhbm5lbHM7Cj4gK8KgwqDCoMKgwqDCoMKgaW5k
+aW9fZGV2LT5udW1fY2hhbm5lbHMgPSBzdC0+Y2hpcF9pbmZvLT5udW1fY2hhbm5lbHM7Cj4gK8Kg
+wqDCoMKgwqDCoMKgaW5kaW9fZGV2LT5kZXYucGFyZW50ID0gJnNwaS0+ZGV2OwoKc3RpbGwgbm90
+IGFkZHJlc3NlZC4uLgoKV2l0aCBhdCBsZWFzdCB0aGUgYWJvdmUgKGZvciB0aGUgcmVnbWFwX2J1
+cyBJJ2xsIGxlYXZlIHRoZSB1bHRpbWF0ZSBkZWNpc2lvbiB0bwpKb25hdGhhbiAtIG5vdCBhIGRl
+YWwgYnJlYWtlciBmb3IgbWUpOgoKUmV2aWV3ZWQtYnk6IE51bm8gU2EgPG51bm8uc2FAYW5hbG9n
+LmNvbT4KCgotIE51bm8gU8OhCgo=
 
 

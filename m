@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-890-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-891-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1545A811487
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 15:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12998811547
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 15:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB2B1C20F61
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 14:24:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E771C21155
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 14:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1170F2E852;
-	Wed, 13 Dec 2023 14:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3E42EB0A;
+	Wed, 13 Dec 2023 14:53:57 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAD94B9;
-	Wed, 13 Dec 2023 06:24:15 -0800 (PST)
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="8330526"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="8330526"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 06:24:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="897344794"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="897344794"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 06:24:10 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andy@kernel.org>)
-	id 1rDQ9e-00000005Xtn-0GjE;
-	Wed, 13 Dec 2023 16:24:06 +0200
-Date: Wed, 13 Dec 2023 16:24:05 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
-	ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <ZXm-hf8UQ3VEyP-2@smile.fi.intel.com>
-References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
- <20231212104451.22522-2-mitrutzceclan@gmail.com>
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C92EDD;
+	Wed, 13 Dec 2023 06:53:52 -0800 (PST)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6d7fa93afe9so5193932a34.2;
+        Wed, 13 Dec 2023 06:53:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702479232; x=1703084032;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C7eF1sr6RjgS4rFcgIiGFaIc2GmVoQDjgQdR45bMb7w=;
+        b=rrHgetc7PfISuyQitl4JMiEKbo9yYWv2TK6eO20Oy3HKedVedfO8cMRothvg/Pc/Zk
+         b64hBHREnUh9GogGEiqXMCGtzGBD5RMUiT1uHaHrk+1Fyw3ITIVDgqNuEB8db3IsBQmW
+         b2hjt4jw4TEr9AhrL0zpB5QQ+PAy8uM/BWnPq7ilWaC33aEFfdymCVJ6kxol9E0Oyv1J
+         Qj6mfHeaFcDM/O3r4xIf0SPoiYBioswFf+xJWUocmQzcN2eMMSWhy7KPXCtMlns2tCmv
+         Dv4yp0KYSvKi1qM+LJZ8b4cNMWgLM9WEN/ZIRYpXcQc01Y+Nsaw1b9AklL0UDRjr/2mE
+         sk2Q==
+X-Gm-Message-State: AOJu0Yz+FZlAvYdWD5E0PK8HbXl4ZSpdJU8rW6VG1yvR4UfsZUUEjgU3
+	s6GxdI0uw/KFOe5qX/9AnzlW+fSpWg==
+X-Google-Smtp-Source: AGHT+IHjJzuUOUOtUnsfLKwrky5w1ClJWBJ+R/A5M3/AIk8/vRzcUwGi1xuOCyrENkM3QBoI5z+p0Q==
+X-Received: by 2002:a9d:6284:0:b0:6d9:e2ee:3d23 with SMTP id x4-20020a9d6284000000b006d9e2ee3d23mr7076020otk.36.1702479231786;
+        Wed, 13 Dec 2023 06:53:51 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id x6-20020a4aea06000000b0059030f95ebfsm2977608ood.41.2023.12.13.06.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 06:53:51 -0800 (PST)
+Received: (nullmailer pid 1116961 invoked by uid 1000);
+	Wed, 13 Dec 2023 14:53:50 -0000
+Date: Wed, 13 Dec 2023 08:53:50 -0600
+From: Rob Herring <robh@kernel.org>
+To: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: spi-dac: Add driver for SPI shift
+ register DACs
+Message-ID: <20231213145350.GA1102482-robh@kernel.org>
+References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.3aa8b2c3-ac7e-4139-afe5-048730c85889@emailsignatures365.codetwo.com>
+ <20231213090910.25410-1-mike.looijmans@topic.nl>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,110 +58,134 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231212104451.22522-2-mitrutzceclan@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20231213090910.25410-1-mike.looijmans@topic.nl>
 
-On Tue, Dec 12, 2023 at 12:44:36PM +0200, Dumitru Ceclan wrote:
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
+On Wed, Dec 13, 2023 at 10:09:09AM +0100, Mike Looijmans wrote:
+> Add a driver for generic serial shift register DACs like TI DAC714.
 
-I do not see any major problem in the code,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+This is not a driver.
 
-Some nit-picks below, but it's fine if it get addressed later on. Up to you
-and Jonathan.
-
-...
-
-> +static const unsigned int ad7173_sinc5_data_rates[] = {
-> +	6211000, 6211000, 6211000, 6211000, 6211000, 6211000, 5181000, 4444000,
-> +	3115000, 2597000, 1007000, 503800,  381000,  200300,  100500,  59520,
-> +	49680,	 20010,	  16333,   10000,   5000,    2500,    1250,
-> +};
+> 
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+> 
+> ---
+> 
+>  .../devicetree/bindings/iio/dac/spidac.yaml   | 69 +++++++++++++++++++
+>  1 file changed, 69 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/spidac.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/spidac.yaml b/Documentation/devicetree/bindings/iio/dac/spidac.yaml
+> new file mode 100644
+> index 000000000000..be98da728594
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/spidac.yaml
+> @@ -0,0 +1,69 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/spidac.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +static const unsigned int ad7175_sinc5_data_rates[] = {
-> +	50000000, 41667000, 31250000, 27778000, 20833000, 17857000, 12500000,
-
-I would add a comment with offsets, like
-
-	... /* 0-6 */
-
-But better to make it power of two, like each 4 on one line or 8.
-
-> +	10000000, 5000000,  2500000,  1000000,	500000,	  397500,   200000,
-> +	100000,	  59920,    49960,    20000,	16666,	  10000,    5000,
-> +};
-
-Not that I insist, just consider readability of these tables.
-
-...
-
-> +		if (chan->type == IIO_TEMP) {
-> +			temp = ((u32)AD7173_VOLTAGE_INT_REF_uV) * MILLI;
-
-Hmm... Is the casting mandatory here?
-
-> +			temp /= AD7173_TEMP_SENSIIVITY_uV_per_C;
-> +			*val = temp;
-> +			*val2 = chan->scan_type.realbits;
-> +		} else {
-> +			*val = ad7173_get_ref_voltage_milli(st, ch->cfg.ref_sel);
-> +			*val2 = chan->scan_type.realbits - !!(ch->cfg.bipolar);
-> +		}
-
-...
-
-> +		if (chan->type == IIO_TEMP)
-> +			*val = -874379; //-milli_kelvin_to_millicelsius(0)/scale
-
-Hmm... Besides C99 comment format, can we actually use the mentioned API?
-In such a case the comment won't be needed and the value semantics is better
-to get.
-
-> +		else
-> +			*val = -BIT(chan->scan_type.realbits - 1);
-
-...
-
-> +static int ad7173_debug_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-> +				   unsigned int writeval, unsigned int *readval)
-> +{
-> +	struct ad7173_state *st = iio_priv(indio_dev);
-> +	u8 reg_size;
+> +title: Generic "shift register" SPI DAC
 > +
-> +	if (reg == 0)
-
-0 does not have its definition, does it?
-
-> +		reg_size = 1;
-> +	else if (reg == AD7173_REG_CRC || reg == AD7173_REG_DATA ||
-> +		 reg >= AD7173_REG_OFFSET(0))
-> +		reg_size = 3;
-> +	else
-> +		reg_size = 2;
+> +description:
+> +  Supports simple SPI "shift register" DACs, like TI's DAC714. These DACs have
+> +  no control registers or commands, they just use a clock and serial data to
+> +  shift in a raw DAC value. Multiple DACs can be daisy-chained together.
 > +
-> +	if (readval)
-> +		return ad_sd_read_reg(&st->sd, reg, reg_size, readval);
+> +maintainers:
+> +  - Mike Looijmans <mike.looijmans@topic.nl>
 > +
-> +	return ad_sd_write_reg(&st->sd, reg, reg_size, writeval);
-> +}
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - spi-dac
+> +      - ti,dac714
 
-...
+Why does TI chip need a specific compatible and others don't?
 
-> +	channels_st_priv_arr = devm_kcalloc(dev, num_channels,
-> +					    sizeof(*channels_st_priv_arr),
-> +					    GFP_KERNEL);
-> +	if (!channels_st_priv_arr)
-> +		return -ENOMEM;
+Are power supplies on these chips the same?
 
-The variable name can be made shorter and hence the above will take less LoCs.
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  ldac-gpios:
+> +    description:
+> +      LDAC pin to be used as a hardware trigger to update the DAC outputs. Not
+> +      needed when the DACs use the chip select to update their output.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Optional reset pin that resets all DACs.
+> +    maxItems: 1
+> +
+> +  num-channels:
+> +    description:
+> +      Number of channels (usually the number of DAC chips in series)
 
--- 
-With Best Regards,
-Andy Shevchenko
+usually? What other possible option is there? If something else, how is 
+the driver going to distinguish that?
 
+default: 1
 
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  bits-per-channel:
+
+Perhaps 'channel-bits' as -bits is a standard unit suffix.
+
+> +    description:
+> +       Number of bits for each DAC output.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+
+Constraints? I assume all DACs are much less than 2^32 bits. default?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+
+Don't you always need to know how many bits?
+
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dac@1 {
+> +            compatible = "spidac";
+> +            reg = <0x1>;
+> +            ldac-gpios = <&gpio 42 GPIO_ACTIVE_LOW>;
+> +        };
+> +    };
+> +...
+> -- 
+> 2.34.1
+> 
+> 
+> Met vriendelijke groet / kind regards,
+> 
+> Mike Looijmans
+> System Expert
+> 
+> 
+> TOPIC Embedded Products B.V.
+> Materiaalweg 4, 5681 RJ Best
+> The Netherlands
+> 
+> T: +31 (0) 499 33 69 69
+> E: mike.looijmans@topic.nl
+> W: www.topic.nl
+> 
+> Please consider the environment before printing this e-mail
 

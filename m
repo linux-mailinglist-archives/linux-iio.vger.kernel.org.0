@@ -1,138 +1,107 @@
-Return-Path: <linux-iio+bounces-910-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-911-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F6081242D
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 01:59:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3391E812C9B
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 11:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B3BF1F218A4
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 00:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12C01F21A84
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 10:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAFC63D;
-	Thu, 14 Dec 2023 00:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="H+HCa4Du"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65393BB23;
+	Thu, 14 Dec 2023 10:14:23 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B595106
-	for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 16:59:06 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2cc43f9e744so62991fa.2
-        for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 16:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1702515544; x=1703120344; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TLPQRFERPZKZe4sP96FP5UOkMogbBRWOBLXtIS+wgKA=;
-        b=H+HCa4Dum7Yqt6M+Vya5PNZ9+zhC6v6nSGCkjXiZNSJL8vobmRR9jQwjxW9HeiWm6H
-         SeWzH4GxlydbCrGFArGv7H1LSq0cu1QFXCQsoQ8RV8qH00V/rvt2NhGll4r2mMlY8KJV
-         khPbSsqL01hzPqoON5GpJEB1bXDyXt7eVLVB4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702515544; x=1703120344;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TLPQRFERPZKZe4sP96FP5UOkMogbBRWOBLXtIS+wgKA=;
-        b=dQ2rFWOjaSLbig1IZpbbpYzS+brAogqFciFqQCJJZiKM3wE8K64XFW3hQNywVDxU3p
-         QLQszqveTi7BEqRgswtgEYO5rUGVsWLKXbdU65RFezPG8OUkbDXr8W/lrmtn6QVew53V
-         d037lv3MmiQhORtqviKjCp3cr+Hh3DLh0IZs/+xMfHWnslFgE6YDnUh14tX2uyVCQS0K
-         N+CeYkzw1YiAzumTtvzMOj6+ghTYm5SOs93HWF+m0VhaxuZCtb5b4U/NXngJ44VofxT2
-         q5DpfrVokX+tpy1x2Y1KTQXZ8YQTCI6QOv8IItzNa0W5KDqmERCILmRfIb0GWHNMsubY
-         TSjQ==
-X-Gm-Message-State: AOJu0Yz6f/QBKV8j7s65UdTZJbOL4r0gMTMoDuILUtDyAhGzoJiGHila
-	w56MX/ElOXv3jlMO4YSB13eY1V2VWGQdUobIg1NBC4Ow2JFWiqOr
-X-Google-Smtp-Source: AGHT+IEunZGd9tNek4p895u1vSnibbU895Lddmz8b+pc8eZ7RAYfA5ccHN3CMRjZTHj2uRjOAKt0XYWsogRcyShRfeY=
-X-Received: by 2002:a2e:a4b8:0:b0:2cc:1d91:83fc with SMTP id
- g24-20020a2ea4b8000000b002cc1d9183fcmr2754449ljm.30.1702515544589; Wed, 13
- Dec 2023 16:59:04 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 13 Dec 2023 16:59:04 -0800
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081B0BD;
+	Thu, 14 Dec 2023 02:14:19 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrSpz4b1nz6J9fR;
+	Thu, 14 Dec 2023 18:13:15 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C39D61400CA;
+	Thu, 14 Dec 2023 18:14:17 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 14 Dec
+ 2023 10:14:17 +0000
+Date: Thu, 14 Dec 2023 10:14:15 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>, Michael Hennerich
+	<michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+	<broonie@kernel.org>, <linux-kernel@vger.kernel.org>, Stefan Popa
+	<stefan.popa@analog.com>
+Subject: Re: [PATCH v2 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
+Message-ID: <20231214101415.0000060c@Huawei.com>
+In-Reply-To: <20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
+References: <20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com>
+	<20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
-References: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Wed, 13 Dec 2023 16:59:04 -0800
-Message-ID: <CAE-0n50U47OKs50bOf91HoOayVJEj=H6P-cpyZ_46pX8CVZ4BQ@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: sx9324: avoid copying property strings
-To: Jonathan Cameron <jic23@kernel.org>, Justin Stitt <justinstitt@google.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Quoting Justin Stitt (2023-12-11 16:42:52)
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> index 438f9c9aba6e..e3bc30b57b19 100644
-> --- a/drivers/iio/proximity/sx9324.c
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -873,6 +873,32 @@ static int sx9324_init_compensation(struct iio_dev *indio_dev)
->                                         20000, 2000000);
->  }
->
-> +static u32 sx9324_parse_phase_prop(struct device *dev,
+On Wed, 13 Dec 2023 05:21:20 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-return u8? because that's the type of struct sx_common_reg_default::def.
+> This adds a new driver for the AD7380 family ADCs.
+> 
+> The driver currently implements basic support for the AD7380, AD7381,
+> AD7383, and AD7384 2-channel differential ADCs. Support for additional
+> single-ended and 4-channel chips that use the same register map as well
+> as additional features of the chip will be added in future patches.
+> 
+> Co-developed-by: Stefan Popa <stefan.popa@analog.com>
+> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-> +                                  struct sx_common_reg_default *reg_def,
-> +                                  int idx, const char *prop)
-> +{
-> +       unsigned int pin_defs[SX9324_NUM_PINS];
-> +       int count, ret, pin;
-> +       u8 default_def;
-> +       u32 raw = 0;
+Just one additional comment.  I 'might' sort both this an Nuno's comment
+if Mark is fine with the SPI and no on else has review comments.
+Feel free to send a v3 though if you like ;)
+
+
+> +/* fully differential */
+> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7380_channels, 16);
+> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7381_channels, 14);
+> +/* pseudo differential */
+> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7383_channels, 16);
+> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7384_channels, 14);
 > +
-> +       default_def = sx9324_default_regs[idx].def;
+> +/* Since this is simultaneous sampling, we don't allow individual channels. */
+> +static const unsigned long ad7380_2_channel_scan_masks[] = {
+> +	GENMASK(2, 0), /* both ADC channels and soft timestamp */
+> +	GENMASK(1, 0), /* both ADC channels, no timestamp */
 
-Do we need to do this? Isn't this reg_def->def?
+https://elixir.bootlin.com/linux/v6.7-rc5/source/include/linux/iio/iio.h#L567
+See the comment (added recently!)
 
-> +
-> +       count = device_property_count_u32(dev, prop);
-> +       if (count != ARRAY_SIZE(pin_defs))
-> +               return default_def;
+Also, if I remember how this works correctly there is no need to include
+the timestamp in the mask.  We do special handling for it to avoid having to double
+the number of provided masks.  The details being that it uses
+iio_scan_el_ts_store rather than iio_scan_el_Store.
 
-return reg_def->def?
+So as you have it I think you'll always end up with the first entry
+and that will include a bonus bit that isn't a problem as it will match
+anyway.
 
-> +       ret = device_property_read_u32_array(dev, prop, pin_defs,
-> +                                            ARRAY_SIZE(pin_defs));
-> +       if (ret)
-> +               return default_def;
+So just have the second entry and 0.
 
-return reg_def->def?
+Jonathan
 
-> +
-> +       for (pin = 0; pin < SX9324_NUM_PINS; pin++)
-> +               raw |= (pin_defs[pin] << (2 * pin)) &
-> +                      SX9324_REG_AFE_PH0_PIN_MASK(pin);
-> +
-> +       return raw;
-> +}
-> +
->  static const struct sx_common_reg_default *
->  sx9324_get_default_reg(struct device *dev, int idx,
->                        struct sx_common_reg_default *reg_def)
-> @@ -884,35 +910,30 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  #define SX9324_PIN_DEF "semtech,ph0-pin"
->  #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
->  #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-
-Can you send a followup to remove these defines?
-
-> -       unsigned int pin_defs[SX9324_NUM_PINS];
-> -       char prop[] = SX9324_PROXRAW_DEF;
-> +       const char *prop = SX9324_PROXRAW_DEF;
-
-This can be left unassigned now, right?
-
->         u32 start = 0, raw = 0, pos = 0;
-> -       int ret, count, ph, pin;
->         const char *res;
-> +       int ret;
+> +	0
+> +};
 

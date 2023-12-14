@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2EB813071
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:43:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C400B8130A8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139301F221E1
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:43:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A05E1C21986
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6874D4D13B;
-	Thu, 14 Dec 2023 12:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338F64E62B;
+	Thu, 14 Dec 2023 12:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuBkbk8X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R55KsC/N"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA9D11D;
-	Thu, 14 Dec 2023 04:43:13 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50bf2d9b3fdso10891313e87.3;
-        Thu, 14 Dec 2023 04:43:13 -0800 (PST)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7751BA6;
+	Thu, 14 Dec 2023 04:57:39 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a1db6c63028so935949866b.2;
+        Thu, 14 Dec 2023 04:57:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702557792; x=1703162592; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702558658; x=1703163458; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DLS5Sl/tcs7UdHUclsP8wzE7HsHwHptKsbrYJkJgZGU=;
-        b=GuBkbk8X//vN2MqB3QH9cyd69URtayCAMJI12a8HoECoWdRwrkDVsnAhZ+q/Is84Pr
-         bIrt+2dEmsP4wXyOZtRghQO77n7wK2foJsDpEdotyABrYNkPWO4iUvawl/slzmWrvm0q
-         6h1fksVXcrhD5U3VJAzTLpDnCtMCfLv+6eQILKWQnA2GhIMjlsrQR43NsTcxEcnYzmJ7
-         ketzu+CDgiTuM1rxANdo8HBqnArsvQFTGXOZTcbUwgpsS5Dc1WH5mDGxA6VtDnvSZWvB
-         p3tSBD3vv/Ui6zeZHfINakAFjeydfrv+7TtcEqdAKigJK3QY8PLlOjWzKb0V3liaGLJo
-         q+wA==
+        bh=g2GKWz1rRyCNwha7gGcRolq2RILUdPIiIt5FzDdvILQ=;
+        b=R55KsC/NDMFJnCucTbjK5g5o6ELzDY2jFcfTZR678xc3Cyqzv4YZEAfkohXIY2IU07
+         4dl4paNF15fmPy/hDhPj4ZT9E/ws8+OPCaaEZXSf745M3Mza6oET9Y+g0BvZub2aDCKH
+         lHVcwFLKwhyCwvdWLhDXy6mUPqgAe7lfRhv0ubP7boMtSjypehMixvZk41QdZXx2NyM/
+         RrI7cu6nbU3pT9XRYB/PtgZUKhsJg+O4JqxnSS1H9uloO3a794NcJJy3ijw+CpFR99tL
+         fvRd7A/zUqUO0zZCvA1kM/ZfLPRFL//PzPpphkn4gvi2h/VVWCi4WBOQDKAyhvvQeWZE
+         sQSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702557792; x=1703162592;
+        d=1e100.net; s=20230601; t=1702558658; x=1703163458;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DLS5Sl/tcs7UdHUclsP8wzE7HsHwHptKsbrYJkJgZGU=;
-        b=Uwxo0wK8cIOGJzAeyKbxAH+9irj8ryaxKdpKDaKPYYOEKqn6EVGS58YmAZgK2QgQgI
-         wgo909Zue0WQXIZppT5EsVlHJuS7sdNjpbqNA1lfmKL+/HKHfetECA3WmUWFUnCZQcnB
-         6xPEM6J1ubnVWCKxCs3gNStwzly/IAOY3Fjfr+epmbUaLEB9MEtxvNTq7gsjysVg4z8/
-         RIaOQs1uCXxyyUbbMtdulGpAKWujhDfu/nhhbmtbCtdqQ8E0wEkMRV8VHLzs3q768kSY
-         PfuaNTWgO7Pw9xGT7prr9dQdjawbxHsLsJidFXHLkkpB9UeD/H4sEALyVfopXPEAGSLa
-         XcKA==
-X-Gm-Message-State: AOJu0YzLrFjBrHEE4+yWpdGc3KW9zBjA4tpDwbuxRnft/M3tHd35FdH7
-	M5NXY3v0fMSiJCkRbMoYI3Q=
-X-Google-Smtp-Source: AGHT+IGua8eR59eAZWjpuEYJuoRA4g6iYT9xAqu1nYyVI+ph0ivN3XaLaaXUVKwY8kqqIGO1CcwTQA==
-X-Received: by 2002:a05:6512:238f:b0:50d:1a7f:f76 with SMTP id c15-20020a056512238f00b0050d1a7f0f76mr5708024lfv.65.1702557791782;
-        Thu, 14 Dec 2023 04:43:11 -0800 (PST)
+        bh=g2GKWz1rRyCNwha7gGcRolq2RILUdPIiIt5FzDdvILQ=;
+        b=fnXUPG4rDFyD+WBn32ix6SI74MeCIA64XP/p0HXV+lPPaNrNkMYKKigvQvLSrgan10
+         MNbXKTPo3YdP8gZiqPPs8p11Tvwi860UvQN6cN91+EMsj8oUE0SdwZB6j5Dg15KVNLF/
+         1krsZgZ1qo88P+JxiET/QX7UAh5o9KsNo0nUfOPW7LIffr1jpmWNp+8RPf3hcewuIRI2
+         5pr8jvlkydqj+9pqCx9VQ27meRr5TN6di+wabj3Xa+xG1HMpnU9e07DN0K5GMQ0992hK
+         yojN3OiqGXLHEB4lTfQdN3puUoUlTGN9DJNONA/VlLBdz9OhodWMxBs259ElAl0enwfS
+         Swmw==
+X-Gm-Message-State: AOJu0YyTmFIzCznmuAM9dzM5NctEhmlUlOFmuQXcXqXEZeTOfv0smpyU
+	EmHXAhpHTWNxtcV3CMLbtlU=
+X-Google-Smtp-Source: AGHT+IHtIY7rFcQC93tfnJBXkLGQRNbPQabINCfXb9w5tCgijrk98Ge2WRXokyVfdLbqczA2V1R56A==
+X-Received: by 2002:a17:906:4546:b0:a01:fc1b:8197 with SMTP id s6-20020a170906454600b00a01fc1b8197mr4262851ejq.62.1702558657491;
+        Thu, 14 Dec 2023 04:57:37 -0800 (PST)
 Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id vh2-20020a170907d38200b00a1be80a0b69sm9324342ejc.58.2023.12.14.04.43.10
+        by smtp.gmail.com with ESMTPSA id ub14-20020a170907c80e00b00a1da5d9a602sm9368347ejc.138.2023.12.14.04.57.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Dec 2023 04:43:11 -0800 (PST)
-Message-ID: <e4a9dde7-dca6-4862-bfb3-a93b879c9a1f@gmail.com>
-Date: Thu, 14 Dec 2023 14:43:09 +0200
+        Thu, 14 Dec 2023 04:57:36 -0800 (PST)
+Message-ID: <375bf803-a5d5-4778-938a-b8218b116375@gmail.com>
+Date: Thu, 14 Dec 2023 14:57:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,9 +62,9 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/2] dt-bindings: adc: add AD7173
+Subject: Re: [PATCH v8 2/2] iio: adc: ad7173: add AD7173 driver
 Content-Language: en-US
-To: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
  linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -78,123 +78,107 @@ Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
  Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
- <CAMknhBEfisaSbHhnnei=gT1HZvHNWHrJD3O2y4b_TikkH=v2Ag@mail.gmail.com>
+ <20231212104451.22522-2-mitrutzceclan@gmail.com>
+ <20231214123029.000002f1@Huawei.com>
 From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBEfisaSbHhnnei=gT1HZvHNWHrJD3O2y4b_TikkH=v2Ag@mail.gmail.com>
+In-Reply-To: <20231214123029.000002f1@Huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 12/12/23 17:09, David Lechner wrote:
-> On Tue, Dec 12, 2023 at 11:45 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
->>
+On 12/14/23 14:30, Jonathan Cameron wrote:
+> On Tue, 12 Dec 2023 12:44:36 +0200
+> Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+> 
 >> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
->> which can be used in high precision, low noise single channel applications
->> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
->> primarily for measurement of signals close to DC but also delivers
->> outstanding performance with input bandwidths out to ~10kHz.
+>> which can be used in high precision, low noise single channel
+>> applications or higher speed multiplexed applications. The Sigma-Delta
+>> ADC is intended primarily for measurement of signals close to DC but also
+>> delivers outstanding performance with input bandwidths out to ~10kHz.
+>>
+>> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
+>> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> Hi
 > 
-> As stated in [1], we should try to make complete bindings. I think
-> more could be done here to make this more complete. Most notably, the
-> gpio-controller binding is missing. Also maybe something is needed to
-> describe how the SYNC/ERROR pin is wired up since it can be an input
-> or an output with different functions?
+> Given it seems like you'll be doing a v9, one quick comment from me below.
 > 
-
-GPIO-controller:
-  '#gpio-cells':
-
-    const: 2
-
-
-  gpio-controller: true
-Like this, in properties?
-
-Sync can only be an output, Error is configurable. Are there any
-examples for how something like this is described?
-
-...
-
->> +  interrupts:
->> +    maxItems: 1
+> Jonathan
 > 
-> Shouldn't this be 2? The datasheet says there is a "Data Output Ready"
-> signal on the DOUT/RDY pin and an "Error Output" on the SYNC/ERROR
-> pin. Although I could see how RDY could be considered part of the SPI
-> bus. In any case, a description explaining what the interrupt is would
-> be useful.
+>> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+>> new file mode 100644
+>> index 000000000000..96918b24a10a
+>> --- /dev/null
+>> +++ b/drivers/iio/adc/ad7173.c
+>> @@ -0,0 +1,964 @@
+> ...
 > 
-
-I do not see how there could be 2 interrupts. DOUT/RDY is used as an
-interrupt when waiting for a conversion to finalize.
-
-Sync and Error are sepparate pins, Sync(if enabled) works only as an
-input that resets the modulator and the digital filter.
-
-Error can be configured as input, output or ERROR output (OR between all
-internal error sources).
-
-Would this be alright
-  interrupts:
-
-    description: Conversion completion interrupt.
-		 Pin is shared with SPI DOUT.
-    maxItems: 1
-
-...
-
+>> +static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+>> +{
+> 
+> ...
+> 
 >> +
->> +patternProperties:
->> +  "^channel@[0-9a-f]$":
->> +    type: object
->> +    $ref: adc.yaml
->> +    unevaluatedProperties: false
+>> +	if (st->info->has_temp) {
+>> +		chan_arr[chan_index] = ad7173_temp_iio_channel_template;
+>> +		chan_st_priv = &channels_st_priv_arr[chan_index];
+>> +		chan_st_priv->ain =
+>> +			AD7173_CH_ADDRESS(chan_arr[chan_index].channel, chan_arr[chan_index].channel2);
+>> +		chan_st_priv->cfg.bipolar = false;
+>> +		chan_st_priv->cfg.input_buf = true;
+>> +		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+>> +		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
 >> +
->> +    properties:
->> +      reg:
->> +        minimum: 0
->> +        maximum: 15
+>> +		chan_index++;
+>> +	}
 >> +
->> +      diff-channels:
->> +        items:
->> +          minimum: 0
->> +          maximum: 31
-> 
-> Do we need to add overrides to limit the maximums for each compatible string?
-> 
-
-Just to be sure, in the allOf section?
-If yes, is there any other more elegant method to obtain this behavior?
-
-...
-
+>> +	device_for_each_child_node(dev, child) {
+>> +		chan = &chan_arr[chan_index];
+>> +		chan_st_priv = &channels_st_priv_arr[chan_index];
+>> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
+>> +						     ain, ARRAY_SIZE(ain));
+>> +		if (ret) {
+>> +			fwnode_handle_put(child);
+>> +			return ret;
+>> +		}
 >> +
->> +    required:
->> +      - reg
->> +      - diff-channels
+>> +		if (ain[0] >= st->info->num_inputs ||
+>> +		    ain[1] >= st->info->num_inputs) {
+>> +			fwnode_handle_put(child);
+>> +			return dev_err_probe(dev, -EINVAL,
+>> +					     "Input pin number out of range for pair (%d %d).\n",
+>> +					     ain[0], ain[1]);
+>> +		}
+>> +
+>> +		ret = fwnode_property_match_property_string(child,
+>> +							    "adi,reference-select",
+>> +							    ad7173_ref_sel_str,
+>> +							    ARRAY_SIZE(ad7173_ref_sel_str));
+>> +
+>> +		if (ret < 0)
+>> +			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+>> +		else
+>> +			ref_sel = ret;
+> Simpler pattern for properties with a default is not to check the error code.
 > 
-> Individual analog inputs can be used as single-ended or in pairs as
-> differential, right? If so, diff-channels should not be required to
-> allow for single-ended use.
+> 		ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
 > 
-> And we would need to add something like a single-ended-channel
-> property to adc.yaml to allow mapping analog input pins to channels
-> similar to how diff-channels works, I think (I don't see anything like
-> that there already)?
+> 		fwnode_property_match_property_String(child, ...
 > 
-> So maybe something like:
-> 
-> oneOf:
->   - required:
->       single-ended-channel
->   - required:
->       diff-channels
-> 
-All channels must specify 2 analog input sources, there is no input
-source wired by default to AVSS.
+> so only if it succeeds is the value overridden.
 
-In my opinion, there is no need to specify channels as single-ended
-because that would require a property that specifies the input that is
-wired to AVSS.
+Where exactly would the value be overridden, the function does not have
+an argument passed for the found index. The function is written to
+return either the found index or a negative error.
+
+The proposed pattern would just ignore the returned index and would
+always leave ref_sel to default. Am I missing something?
+
+I can see in the thread where it was introduced that you proposed:
+"Looking at the usecases I wonder if it would be better to pass in
+
+an unsigned int *ret which is only updated on a match?"
+
+But on the iio togreg branch that was suggested I could the function on,
+it does not have that parameter.
 

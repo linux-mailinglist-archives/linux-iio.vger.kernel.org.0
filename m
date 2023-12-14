@@ -1,101 +1,138 @@
-Return-Path: <linux-iio+bounces-909-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-910-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664C0811BAC
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 18:57:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F6081242D
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 01:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBA91F21594
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Dec 2023 17:57:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B3BF1F218A4
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 00:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948E959B71;
-	Wed, 13 Dec 2023 17:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAFC63D;
+	Thu, 14 Dec 2023 00:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="H+HCa4Du"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6FCD49;
-	Wed, 13 Dec 2023 09:55:38 -0800 (PST)
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-58d08497aa1so4613524eaf.0;
-        Wed, 13 Dec 2023 09:55:38 -0800 (PST)
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B595106
+	for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 16:59:06 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2cc43f9e744so62991fa.2
+        for <linux-iio@vger.kernel.org>; Wed, 13 Dec 2023 16:59:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1702515544; x=1703120344; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TLPQRFERPZKZe4sP96FP5UOkMogbBRWOBLXtIS+wgKA=;
+        b=H+HCa4Dum7Yqt6M+Vya5PNZ9+zhC6v6nSGCkjXiZNSJL8vobmRR9jQwjxW9HeiWm6H
+         SeWzH4GxlydbCrGFArGv7H1LSq0cu1QFXCQsoQ8RV8qH00V/rvt2NhGll4r2mMlY8KJV
+         khPbSsqL01hzPqoON5GpJEB1bXDyXt7eVLVB4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702490137; x=1703094937;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iQGtdcuwZQtYi+ph6QyuuJNxkINZNun39WyUzZSioII=;
-        b=fepmZoDprD3yvJQPMh5HjnfeGgNnSPM+RTYu3YbocEV5v4pxarGa0f1oQV07XPkabj
-         u3DZPEB24BBHXDv1Z56NKEY8dKBRI16f+KXYhPIDwY6148muWxzeNCLu43UUKbvVWD3W
-         Mb6OegYAdUsGgpaz7rIEjx2xDZyLbRrftOKx4JaMvOE4kjUnBY+6Uhlu6OvsKNood7qx
-         mUHaE7ZMcL+NB4Y7cXaFYc1QYBVBhaz3u8CyGFv/cSil3PQENdaVZ/ncW7RSmI5un/tM
-         Bzw9eJIYHwo1r2SPSO5DBxo6uNuTdT4GtLDXELRDMZjT8Ck2ga/q9oKonZZOe7pbHA2o
-         5gCw==
-X-Gm-Message-State: AOJu0YwZ6s+xvVHVPLne2+3vu0xqDSNIVh34QOIT0gVbPb3Z/1RzC0r2
-	rRjoLiNbtCVQrGLGJdkIPKMxK/C3BQ==
-X-Google-Smtp-Source: AGHT+IGrM0+7Hame/CwYfbqJzlDDo/dTHLNEVyFkVVHG6/yf2wP/8XRvaLTO2VSzJMHtG1hHNOfrzw==
-X-Received: by 2002:a05:6820:22a4:b0:590:16e7:d767 with SMTP id ck36-20020a05682022a400b0059016e7d767mr6252763oob.3.1702490137241;
-        Wed, 13 Dec 2023 09:55:37 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id v15-20020a05683011cf00b006ce2db9e6c4sm2854965otq.36.2023.12.13.09.55.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 09:55:36 -0800 (PST)
-Received: (nullmailer pid 1591681 invoked by uid 1000);
-	Wed, 13 Dec 2023 17:55:35 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1702515544; x=1703120344;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TLPQRFERPZKZe4sP96FP5UOkMogbBRWOBLXtIS+wgKA=;
+        b=dQ2rFWOjaSLbig1IZpbbpYzS+brAogqFciFqQCJJZiKM3wE8K64XFW3hQNywVDxU3p
+         QLQszqveTi7BEqRgswtgEYO5rUGVsWLKXbdU65RFezPG8OUkbDXr8W/lrmtn6QVew53V
+         d037lv3MmiQhORtqviKjCp3cr+Hh3DLh0IZs/+xMfHWnslFgE6YDnUh14tX2uyVCQS0K
+         N+CeYkzw1YiAzumTtvzMOj6+ghTYm5SOs93HWF+m0VhaxuZCtb5b4U/NXngJ44VofxT2
+         q5DpfrVokX+tpy1x2Y1KTQXZ8YQTCI6QOv8IItzNa0W5KDqmERCILmRfIb0GWHNMsubY
+         TSjQ==
+X-Gm-Message-State: AOJu0Yz6f/QBKV8j7s65UdTZJbOL4r0gMTMoDuILUtDyAhGzoJiGHila
+	w56MX/ElOXv3jlMO4YSB13eY1V2VWGQdUobIg1NBC4Ow2JFWiqOr
+X-Google-Smtp-Source: AGHT+IEunZGd9tNek4p895u1vSnibbU895Lddmz8b+pc8eZ7RAYfA5ccHN3CMRjZTHj2uRjOAKt0XYWsogRcyShRfeY=
+X-Received: by 2002:a2e:a4b8:0:b0:2cc:1d91:83fc with SMTP id
+ g24-20020a2ea4b8000000b002cc1d9183fcmr2754449ljm.30.1702515544589; Wed, 13
+ Dec 2023 16:59:04 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 13 Dec 2023 16:59:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-In-Reply-To: <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
-References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
- <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
-Message-Id: <170249013568.1591665.1236116981497856652.robh@kernel.org>
-Subject: Re: [PATCH v3 1/8] dt-bindings: adc: ad9467: add new io-backend
- property
-Date: Wed, 13 Dec 2023 11:55:35 -0600
+In-Reply-To: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
+References: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date: Wed, 13 Dec 2023 16:59:04 -0800
+Message-ID: <CAE-0n50U47OKs50bOf91HoOayVJEj=H6P-cpyZ_46pX8CVZ4BQ@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: sx9324: avoid copying property strings
+To: Jonathan Cameron <jic23@kernel.org>, Justin Stitt <justinstitt@google.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Quoting Justin Stitt (2023-12-11 16:42:52)
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> index 438f9c9aba6e..e3bc30b57b19 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -873,6 +873,32 @@ static int sx9324_init_compensation(struct iio_dev *indio_dev)
+>                                         20000, 2000000);
+>  }
+>
+> +static u32 sx9324_parse_phase_prop(struct device *dev,
 
-On Wed, 13 Dec 2023 16:02:32 +0100, Nuno Sa wrote:
-> The ad9467 will make use of the new IIO backend framework which is a
-> provider - consumer interface where IIO backends provide services to
-> consumers. As such, and being this device a consumer,  add the new
-> generic io-backend property to the bindings.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+return u8? because that's the type of struct sx_common_reg_default::def.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> +                                  struct sx_common_reg_default *reg_def,
+> +                                  int idx, const char *prop)
+> +{
+> +       unsigned int pin_defs[SX9324_NUM_PINS];
+> +       int count, ret, pin;
+> +       u8 default_def;
+> +       u32 raw = 0;
+> +
+> +       default_def = sx9324_default_regs[idx].def;
 
-yamllint warnings/errors:
+Do we need to do this? Isn't this reg_def->def?
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml: io-backends: missing type definition
+> +
+> +       count = device_property_count_u32(dev, prop);
+> +       if (count != ARRAY_SIZE(pin_defs))
+> +               return default_def;
 
-doc reference errors (make refcheckdocs):
+return reg_def->def?
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com
+> +       ret = device_property_read_u32_array(dev, prop, pin_defs,
+> +                                            ARRAY_SIZE(pin_defs));
+> +       if (ret)
+> +               return default_def;
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+return reg_def->def?
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+> +
+> +       for (pin = 0; pin < SX9324_NUM_PINS; pin++)
+> +               raw |= (pin_defs[pin] << (2 * pin)) &
+> +                      SX9324_REG_AFE_PH0_PIN_MASK(pin);
+> +
+> +       return raw;
+> +}
+> +
+>  static const struct sx_common_reg_default *
+>  sx9324_get_default_reg(struct device *dev, int idx,
+>                        struct sx_common_reg_default *reg_def)
+> @@ -884,35 +910,30 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  #define SX9324_PIN_DEF "semtech,ph0-pin"
+>  #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
+>  #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
 
-pip3 install dtschema --upgrade
+Can you send a followup to remove these defines?
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+> -       unsigned int pin_defs[SX9324_NUM_PINS];
+> -       char prop[] = SX9324_PROXRAW_DEF;
+> +       const char *prop = SX9324_PROXRAW_DEF;
 
+This can be left unassigned now, right?
+
+>         u32 start = 0, raw = 0, pos = 0;
+> -       int ret, count, ph, pin;
+>         const char *res;
+> +       int ret;
 

@@ -1,325 +1,135 @@
-Return-Path: <linux-iio+bounces-917-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-918-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680F3812E87
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:27:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68701813002
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAF96B20F74
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 11:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA701C219EA
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F25D3FB3C;
-	Thu, 14 Dec 2023 11:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71114AF94;
+	Thu, 14 Dec 2023 12:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fu4TcqRs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7FAA7;
-	Thu, 14 Dec 2023 03:27:06 -0800 (PST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrVRj55ySz6K6Dg;
-	Thu, 14 Dec 2023 19:26:41 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 21EA01400C8;
-	Thu, 14 Dec 2023 19:27:04 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 14 Dec
- 2023 11:27:03 +0000
-Date: Thu, 14 Dec 2023 11:27:02 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-CC: <devicetree@vger.kernel.org>, <linux-iio@vger.kernel.org>, "Andrea
- Collamati" <andrea.collamati@gmail.com>, Angelo Dureghello
-	<angelo.dureghello@timesys.com>, Fabio Estevam <festevam@gmail.com>, Jonathan
- Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Lukas
- Bulwahn <lukas.bulwahn@gmail.com>, William Breathitt Gray
-	<william.gray@linaro.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: spi-dac: Add driver for SPI shift register
- DACs
-Message-ID: <20231214112702.00003bb8@Huawei.com>
-In-Reply-To: <20231213090910.25410-2-mike.looijmans@topic.nl>
-References: <20231213090910.25410-1-mike.looijmans@topic.nl>
-	<1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.23e530d1-f5da-4919-8889-d7109d21097b@emailsignatures365.codetwo.com>
-	<20231213090910.25410-2-mike.looijmans@topic.nl>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C56132;
+	Thu, 14 Dec 2023 04:27:08 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-54bf9a54fe3so11138065a12.3;
+        Thu, 14 Dec 2023 04:27:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702556827; x=1703161627; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ueEUnJf9vhjwrQfvpBg6AiET0LLFEjTRO5+ClpFgSGA=;
+        b=fu4TcqRsngh7GR++p6CS9uodJWxS7E622OXadsr6LfmqKbo+5am+63Jb45+Zu0pPBE
+         37ppUIMsLfABYStRFBLmsjiNHmBig+P/fwH0sS/NGSxtNM6lqXLTYBjp9VQko+/n2gxJ
+         RoiAkkx+u8SZseaNfXy72rFayrixcqp5+htZqjg5hSlAWmmHcAYbysgBYZc6b2rcF4pA
+         liPYW9dGzjE9B2itEKE35O6bDEW1MccvUYRY1Q0BxLZLFWwBIRqi6Sf6UUmyjuZEubMB
+         z2Vo/L+a89lv1Z/td2Gl9ieIimqrhyGIPTaxcHDOntRtot/ZLxjs6b8eq2AJODQ77vit
+         /KDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702556827; x=1703161627;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ueEUnJf9vhjwrQfvpBg6AiET0LLFEjTRO5+ClpFgSGA=;
+        b=AU930RRQlLjQ8VUVjzlNlHFgxsq2DQbeBoJavp6be9KMvXnNikCUy2d6bA8rdj7aNu
+         1HsXa9jR0xVP9Z81gF6PANcpni8CaFtdpR2GqvBGGLpBrEzWFFQ8u5j6G4ZB0ZTcael9
+         na9mzxpGh+5yvCZH/XbOVG8kLHE/C1ShIIfmOceOgjbONQ0N43v6VXml3A6f0mpybiIA
+         q/jO0WoJ7XIUQMpBDF4Dkh1u0kY5JXwVR2gB4m0F1LdDtmNtwHXQwpuCIbTYYHC5c6/R
+         jRw3esiU784TEyPbZ0woNJaYe6k0Fb8XdZKKT26+Kmn3PLy+V9p8e3H2TenuFs84/P6J
+         mdBg==
+X-Gm-Message-State: AOJu0YzlwiuDldU0hWT+sbkE+ZhSXqZTt+LdQnPihX2lfDIurDKw/nyS
+	hMbLShsVnTNmOgRCPDPzKI9l63dCcYO1EVwQ
+X-Google-Smtp-Source: AGHT+IF0Tmyn8Iks3LhYLvasc4ZT2QU2SDDlt4bwZaG+XPmfi7zsPESNLUUPTRaDQEevZ/LfngxtqA==
+X-Received: by 2002:a17:906:598b:b0:a19:a1ba:8cd3 with SMTP id m11-20020a170906598b00b00a19a1ba8cd3mr4006559ejs.113.1702556826965;
+        Thu, 14 Dec 2023 04:27:06 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id th19-20020a1709078e1300b00a1bda8db043sm9139820ejc.120.2023.12.14.04.27.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Dec 2023 04:27:06 -0800 (PST)
+Message-ID: <983df13c5da90bf36dbca1a4dd3a6fd7ffd340a6.camel@gmail.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: adc: ad9467: add new io-backend
+ property
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ devicetree@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org
+Date: Thu, 14 Dec 2023 13:27:05 +0100
+In-Reply-To: <170249013568.1591665.1236116981497856652.robh@kernel.org>
+References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+	 <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
+	 <170249013568.1591665.1236116981497856652.robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 13 Dec 2023 10:09:10 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Wed, 2023-12-13 at 11:55 -0600, Rob Herring wrote:
+>=20
+> On Wed, 13 Dec 2023 16:02:32 +0100, Nuno Sa wrote:
+> > The ad9467 will make use of the new IIO backend framework which is a
+> > provider - consumer interface where IIO backends provide services to
+> > consumers. As such, and being this device a consumer,=C2=A0 add the new
+> > generic io-backend property to the bindings.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++=
+++
+> > =C2=A01 file changed, 5 insertions(+)
+> >=20
+>=20
+> My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+>=20
+> yamllint warnings/errors:
+>=20
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-
+> ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml: io-ba=
+ckends:
+> missing type definition
+>=20
+> doc reference errors (make refcheckdocs):
+>=20
+> See
+> https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231213-d=
+ev-iio-backend-v3-1-bb9f12a5c6dc@analog.com
+>=20
+> The base for the series is generally the latest rc1. A different dependen=
+cy
+> should be noted in *this* patch.
+>=20
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>=20
+> pip3 install dtschema --upgrade
+>=20
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your sch=
+ema.
+>=20
 
-> Add a driver for generic serial shift register DACs like TI DAC714.
-> 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-> 
+This is kind of expected as the property is being proposed as a generic one=
+...
 
-Hi Mike,
-
-In general looks good but I think we are going to have enough device specific stuff
-here that we will want a compatible match.  Trying to push all the info to
-DT is going to get messy fast.  Just take scaling.  There are all sorts of fun
-things out there such as only use 3/4 of the reference voltage.
-
-Various comments inline.
-
-Jonathan
-
-> new file mode 100644
-> index 000000000000..0c0113d51604
-> --- /dev/null
-> +++ b/drivers/iio/dac/spi-dac.c
-> @@ -0,0 +1,212 @@
-
-
-> +
-> +static int spidac_cmd_single(struct spidac *priv,
-> +			     const struct iio_chan_spec *chan, int val)
-> +{
-> +	u8 *data = priv->data + chan->address;
-> +	unsigned int bytes = chan->scan_type.storagebits >> 3;
-> +	int ret;
-> +	unsigned int i;
-> +
-> +	/* Write big-endian value into data */
-> +	data += bytes - 1;
-> +	for (i = 0; i < bytes; i++, val >>= 8, data--)
-> +		*data = val & 0xff;
-> +
-> +	ret = spi_write(priv->spi, priv->data, priv->data_size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	gpiod_set_value(priv->loaddacs, 1);
-> +	udelay(1);
-
-Delay needs to come from somewhere.  Some devices will need longer.
-
-> +	gpiod_set_value(priv->loaddacs, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int spidac_decode(struct spidac *priv, const struct iio_chan_spec *chan)
-> +{
-> +	u8 *data = priv->data + chan->address;
-> +	unsigned int bytes = chan->scan_type.storagebits >> 3;
-> +	unsigned int i;
-> +	int val = 0;
-> +
-> +	/* Read big-endian value from data */
-
-Why assume it's big endian? In theory at least it might not be
-so I think this needs specific compatibles to be used.
-
-> +	for (i = 0; i < bytes; i++, data++)
-> +		val = (val << 8) | *data;
-> +
-> +	return val;
-> +}
-> +
-> +static int spidac_read_raw(struct iio_dev *iio_dev,
-> +			    const struct iio_chan_spec *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct spidac *priv;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		priv = iio_priv(iio_dev);
-> +
-> +		mutex_lock(&priv->lock);
-> +		*val = spidac_decode(priv, chan);
-> +		mutex_unlock(&priv->lock);
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 1;
-
-If it defaults to 0, don't bother providing it. 
-The actual scale here needs to come from somewhere - so I'd argue something
-is needed in the dt-binding to indicate that it's a reference regulator, or
-a fixed value or similar.  May need to use specific compatibles for that as the
-scaling relationships can be a bit odd.
-
-
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int spidac_write_raw(struct iio_dev *iio_dev,
-> +			     const struct iio_chan_spec *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct spidac *priv = iio_priv(iio_dev);
-> +	int ret;
-> +
-> +	if (mask != IIO_CHAN_INFO_RAW)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&priv->lock);
-> +	ret = spidac_cmd_single(priv, chan, val);
-> +	mutex_unlock(&priv->lock);
-
-	guard(mutex)(&priv->lock);
-	return spi_dac_cmd_single()...
-
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct iio_info spidac_info = {
-> +	.read_raw = spidac_read_raw,
-> +	.write_raw = spidac_write_raw,
-> +};
-> +
-> +static int spidac_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *iio_dev;
-> +	struct spidac *priv;
-> +	struct iio_chan_spec *channels;
-> +	struct gpio_desc *reset_gpio;
-> +	u32 num_channels;
-> +	u32 bits_per_channel;
-> +	u32 bytes_per_channel;
-> +	u32 i;
-> +
-> +	iio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*priv));
-> +	if (!iio_dev)
-> +		return -ENOMEM;
-> +
-> +	priv = iio_priv(iio_dev);
-> +	priv->loaddacs = devm_gpiod_get_optional(&spi->dev, "ldac",
-> +						 GPIOD_OUT_LOW);
-> +	if (IS_ERR(priv->loaddacs))
-> +		return PTR_ERR(priv->loaddacs);
-
-Use return dev_err_probe() for these as we want the debug info that
-stores for deferred probing cases.
-
-> +
-> +	reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
-> +					     GPIOD_OUT_HIGH);
-> +	if (IS_ERR(reset_gpio))
-> +		return PTR_ERR(reset_gpio);
-Same here.
-
-> +
-> +	priv->spi = spi;
-> +	spi_set_drvdata(spi, iio_dev);
-> +	num_channels = 1;
-> +	bits_per_channel = 16;
-> +
-> +	device_property_read_u32(&spi->dev, "num-channels", &num_channels);
-> +	device_property_read_u32(&spi->dev, "bits-per-channel",
-> +				 &bits_per_channel);
-> +	bytes_per_channel = DIV_ROUND_UP(bits_per_channel, 8);
-> +
-> +	channels = devm_kcalloc(&spi->dev, num_channels, sizeof(*channels),
-> +				GFP_KERNEL);
-> +	if (!channels)
-> +		return -ENOMEM;
-> +
-> +	priv->data_size = num_channels * bytes_per_channel;
-> +	priv->data = devm_kzalloc(&spi->dev, priv->data_size,
-> +				  GFP_KERNEL | GFP_DMA);
-
-As pointed out by Nuno, don't use GFP_DMA - its a historical artifact.
-
-> +	if (!priv->data)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < num_channels; i++) {
-> +		struct iio_chan_spec *chan = &channels[i];
-> +
-> +		chan->type = IIO_VOLTAGE;
-> +		chan->indexed = 1;
-> +		chan->output = 1;
-> +		chan->channel = i;
-> +		chan->address = i * bytes_per_channel;
-> +		chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-> +		chan->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE);
-> +		chan->scan_type.sign = 's';
-
-You aren't using it yet, so don't set it but we'd need information on this being a bipolar
-channel to set this as s.  Otherwise normal unipolar ADCs are going to be interpreted as
-negative by standard tooling.
-
-> +		chan->scan_type.realbits = bits_per_channel;
-> +		chan->scan_type.storagebits = bits_per_channel;
-
-Nuno observed this one.  Fine to have realbits reflect the actual bits per channel
-but storagebits is both only relevant if doing buffered storage and must be power of 2 (>= 8)
-
-> +	}
-> +
-> +	iio_dev->info = &spidac_info;
-> +	iio_dev->modes = INDIO_DIRECT_MODE;
-> +	iio_dev->channels = channels;
-> +	iio_dev->num_channels = num_channels;
-> +	iio_dev->name = spi_get_device_id(spi)->name;
-
-This is unfortunately possibly flaky when fallback compatibles get used.
-I'd just hard code it for now.
-
-> +
-> +	mutex_init(&priv->lock);
-> +
-> +	if (reset_gpio) {
-> +		udelay(1);
-> +		gpiod_set_value(reset_gpio, 0);
-> +	}
-> +
-> +	return devm_iio_device_register(&spi->dev, iio_dev);
-> +}
-> +
-> +static const struct spi_device_id spidac_id[] = {
-> +	{"spi-dac"},
-
-Nuno pointed out why you need dac714 here.
-
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(spi, spidac_id);
-> +
-> +static const struct of_device_id spidac_of_match[] = {
-> +	{ .compatible = "spi-dac" },
-> +	{ .compatible = "ti,dac714" },
-> +	{ },
-
-No comma on terminating entries. Also, consistent spacing for {}
-
-> +};
-> +MODULE_DEVICE_TABLE(of, spidac_of_match);
-> +
-> +static struct spi_driver spidac_driver = {
-> +	.driver = {
-> +		   .name = "spi-dac",
-> +		   .of_match_table = spidac_of_match,
-> +		   },
-Align closing brackets as 
-	},
-
-> +	.probe = spidac_probe,
-> +	.id_table = spidac_id,
-> +};
-> +module_spi_driver(spidac_driver);
-> +
-> +MODULE_AUTHOR("Mike Looijmans <mike.looijmans@topic.nl>");
-> +MODULE_DESCRIPTION("SPI shift register DAC driver");
-> +MODULE_LICENSE("GPL");
-
+- Nuno S=C3=A1
 

@@ -1,135 +1,140 @@
-Return-Path: <linux-iio+bounces-918-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-919-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68701813002
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:27:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E27E813029
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA701C219EA
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34759B2189F
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71114AF94;
-	Thu, 14 Dec 2023 12:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fu4TcqRs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988434AF94;
+	Thu, 14 Dec 2023 12:30:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C56132;
-	Thu, 14 Dec 2023 04:27:08 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-54bf9a54fe3so11138065a12.3;
-        Thu, 14 Dec 2023 04:27:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702556827; x=1703161627; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ueEUnJf9vhjwrQfvpBg6AiET0LLFEjTRO5+ClpFgSGA=;
-        b=fu4TcqRsngh7GR++p6CS9uodJWxS7E622OXadsr6LfmqKbo+5am+63Jb45+Zu0pPBE
-         37ppUIMsLfABYStRFBLmsjiNHmBig+P/fwH0sS/NGSxtNM6lqXLTYBjp9VQko+/n2gxJ
-         RoiAkkx+u8SZseaNfXy72rFayrixcqp5+htZqjg5hSlAWmmHcAYbysgBYZc6b2rcF4pA
-         liPYW9dGzjE9B2itEKE35O6bDEW1MccvUYRY1Q0BxLZLFWwBIRqi6Sf6UUmyjuZEubMB
-         z2Vo/L+a89lv1Z/td2Gl9ieIimqrhyGIPTaxcHDOntRtot/ZLxjs6b8eq2AJODQ77vit
-         /KDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702556827; x=1703161627;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ueEUnJf9vhjwrQfvpBg6AiET0LLFEjTRO5+ClpFgSGA=;
-        b=AU930RRQlLjQ8VUVjzlNlHFgxsq2DQbeBoJavp6be9KMvXnNikCUy2d6bA8rdj7aNu
-         1HsXa9jR0xVP9Z81gF6PANcpni8CaFtdpR2GqvBGGLpBrEzWFFQ8u5j6G4ZB0ZTcael9
-         na9mzxpGh+5yvCZH/XbOVG8kLHE/C1ShIIfmOceOgjbONQ0N43v6VXml3A6f0mpybiIA
-         q/jO0WoJ7XIUQMpBDF4Dkh1u0kY5JXwVR2gB4m0F1LdDtmNtwHXQwpuCIbTYYHC5c6/R
-         jRw3esiU784TEyPbZ0woNJaYe6k0Fb8XdZKKT26+Kmn3PLy+V9p8e3H2TenuFs84/P6J
-         mdBg==
-X-Gm-Message-State: AOJu0YzlwiuDldU0hWT+sbkE+ZhSXqZTt+LdQnPihX2lfDIurDKw/nyS
-	hMbLShsVnTNmOgRCPDPzKI9l63dCcYO1EVwQ
-X-Google-Smtp-Source: AGHT+IF0Tmyn8Iks3LhYLvasc4ZT2QU2SDDlt4bwZaG+XPmfi7zsPESNLUUPTRaDQEevZ/LfngxtqA==
-X-Received: by 2002:a17:906:598b:b0:a19:a1ba:8cd3 with SMTP id m11-20020a170906598b00b00a19a1ba8cd3mr4006559ejs.113.1702556826965;
-        Thu, 14 Dec 2023 04:27:06 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id th19-20020a1709078e1300b00a1bda8db043sm9139820ejc.120.2023.12.14.04.27.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Dec 2023 04:27:06 -0800 (PST)
-Message-ID: <983df13c5da90bf36dbca1a4dd3a6fd7ffd340a6.camel@gmail.com>
-Subject: Re: [PATCH v3 1/8] dt-bindings: adc: ad9467: add new io-backend
- property
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
-Cc: Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>,
-  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- devicetree@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org
-Date: Thu, 14 Dec 2023 13:27:05 +0100
-In-Reply-To: <170249013568.1591665.1236116981497856652.robh@kernel.org>
-References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
-	 <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
-	 <170249013568.1591665.1236116981497856652.robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29463125;
+	Thu, 14 Dec 2023 04:30:34 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrWrx5dZRz67G9n;
+	Thu, 14 Dec 2023 20:30:09 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4C1031400DD;
+	Thu, 14 Dec 2023 20:30:32 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 14 Dec
+ 2023 12:30:31 +0000
+Date: Thu, 14 Dec 2023 12:30:29 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+CC: <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <andy@kernel.org>,
+	<linux-gpio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Jonathan
+ Cameron" <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+	<conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, Andy Shevchenko
+	<andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
+	<chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
+ =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
+	<mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
+	<hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <20231214123029.000002f1@Huawei.com>
+In-Reply-To: <20231212104451.22522-2-mitrutzceclan@gmail.com>
+References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
+	<20231212104451.22522-2-mitrutzceclan@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 2023-12-13 at 11:55 -0600, Rob Herring wrote:
->=20
-> On Wed, 13 Dec 2023 16:02:32 +0100, Nuno Sa wrote:
-> > The ad9467 will make use of the new IIO backend framework which is a
-> > provider - consumer interface where IIO backends provide services to
-> > consumers. As such, and being this device a consumer,=C2=A0 add the new
-> > generic io-backend property to the bindings.
-> >=20
-> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++=
-++
-> > =C2=A01 file changed, 5 insertions(+)
-> >=20
->=20
-> My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
->=20
-> yamllint warnings/errors:
->=20
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-
-> ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml: io-ba=
-ckends:
-> missing type definition
->=20
-> doc reference errors (make refcheckdocs):
->=20
-> See
-> https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231213-d=
-ev-iio-backend-v3-1-bb9f12a5c6dc@analog.com
->=20
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->=20
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->=20
-> pip3 install dtschema --upgrade
->=20
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
->=20
+On Tue, 12 Dec 2023 12:44:36 +0200
+Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
 
-This is kind of expected as the property is being proposed as a generic one=
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
+> 
+> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Hi
+
+Given it seems like you'll be doing a v9, one quick comment from me below.
+
+Jonathan
+
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> new file mode 100644
+> index 000000000000..96918b24a10a
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -0,0 +1,964 @@
 ...
 
-- Nuno S=C3=A1
+> +static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+> +{
+
+...
+
+> +
+> +	if (st->info->has_temp) {
+> +		chan_arr[chan_index] = ad7173_temp_iio_channel_template;
+> +		chan_st_priv = &channels_st_priv_arr[chan_index];
+> +		chan_st_priv->ain =
+> +			AD7173_CH_ADDRESS(chan_arr[chan_index].channel, chan_arr[chan_index].channel2);
+> +		chan_st_priv->cfg.bipolar = false;
+> +		chan_st_priv->cfg.input_buf = true;
+> +		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+> +		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+> +
+> +		chan_index++;
+> +	}
+> +
+> +	device_for_each_child_node(dev, child) {
+> +		chan = &chan_arr[chan_index];
+> +		chan_st_priv = &channels_st_priv_arr[chan_index];
+> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
+> +						     ain, ARRAY_SIZE(ain));
+> +		if (ret) {
+> +			fwnode_handle_put(child);
+> +			return ret;
+> +		}
+> +
+> +		if (ain[0] >= st->info->num_inputs ||
+> +		    ain[1] >= st->info->num_inputs) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "Input pin number out of range for pair (%d %d).\n",
+> +					     ain[0], ain[1]);
+> +		}
+> +
+> +		ret = fwnode_property_match_property_string(child,
+> +							    "adi,reference-select",
+> +							    ad7173_ref_sel_str,
+> +							    ARRAY_SIZE(ad7173_ref_sel_str));
+> +
+> +		if (ret < 0)
+> +			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+> +		else
+> +			ref_sel = ret;
+Simpler pattern for properties with a default is not to check the error code.
+
+		ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+
+		fwnode_property_match_property_String(child, ...
+
+so only if it succeeds is the value overridden.
 

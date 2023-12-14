@@ -1,51 +1,49 @@
-Return-Path: <linux-iio+bounces-919-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-920-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E27E813029
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:30:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC059813041
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34759B2189F
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:30:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28F51C216E2
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988434AF94;
-	Thu, 14 Dec 2023 12:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8064A4B5CB;
+	Thu, 14 Dec 2023 12:36:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29463125;
-	Thu, 14 Dec 2023 04:30:34 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BEABA3;
+	Thu, 14 Dec 2023 04:36:17 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrWrx5dZRz67G9n;
-	Thu, 14 Dec 2023 20:30:09 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrWym6SLmz6JB0r;
+	Thu, 14 Dec 2023 20:35:12 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4C1031400DD;
-	Thu, 14 Dec 2023 20:30:32 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 4C4AD1400DD;
+	Thu, 14 Dec 2023 20:36:15 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 14 Dec
- 2023 12:30:31 +0000
-Date: Thu, 14 Dec 2023 12:30:29 +0000
+ 2023 12:36:14 +0000
+Date: Thu, 14 Dec 2023 12:36:13 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-CC: <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <andy@kernel.org>,
-	<linux-gpio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Jonathan
- Cameron" <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, Andy Shevchenko
-	<andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
-	<chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
- =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
-	<mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
-	<hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <20231214123029.000002f1@Huawei.com>
-In-Reply-To: <20231212104451.22522-2-mitrutzceclan@gmail.com>
-References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
-	<20231212104451.22522-2-mitrutzceclan@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>, Michael Hennerich
+	<michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+	<broonie@kernel.org>, <linux-kernel@vger.kernel.org>, Stefan Popa
+	<stefan.popa@analog.com>
+Subject: Re: [PATCH v2 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
+Message-ID: <20231214123613.00002b69@Huawei.com>
+In-Reply-To: <CAMknhBF9GtbOP_M2q8DrrMOePFOaQzGxqcS2P8OHjtGN-Z27Vg@mail.gmail.com>
+References: <20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com>
+	<20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
+	<20231214101415.0000060c@Huawei.com>
+	<CAMknhBF9GtbOP_M2q8DrrMOePFOaQzGxqcS2P8OHjtGN-Z27Vg@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -54,87 +52,96 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 12 Dec 2023 12:44:36 +0200
-Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+On Thu, 14 Dec 2023 11:33:51 +0100
+David Lechner <dlechner@baylibre.com> wrote:
 
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
-> 
-> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Hi
+> On Thu, Dec 14, 2023 at 11:14=E2=80=AFAM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Wed, 13 Dec 2023 05:21:20 -0600
+> > David Lechner <dlechner@baylibre.com> wrote:
+> > =20
+> > > This adds a new driver for the AD7380 family ADCs.
+> > >
+> > > The driver currently implements basic support for the AD7380, AD7381,
+> > > AD7383, and AD7384 2-channel differential ADCs. Support for additional
+> > > single-ended and 4-channel chips that use the same register map as we=
+ll
+> > > as additional features of the chip will be added in future patches.
+> > >
+> > > Co-developed-by: Stefan Popa <stefan.popa@analog.com>
+> > > Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+> > > Signed-off-by: David Lechner <dlechner@baylibre.com> =20
+> >
+> > Just one additional comment.  I 'might' sort both this an Nuno's comment
+> > if Mark is fine with the SPI and no on else has review comments.
+> > Feel free to send a v3 though if you like ;)
+> >
+> > =20
+> > > +/* fully differential */
+> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7380_channels, 16);
+> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7381_channels, 14);
+> > > +/* pseudo differential */
+> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7383_channels, 16);
+> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7384_channels, 14);
+> > > +
+> > > +/* Since this is simultaneous sampling, we don't allow individual ch=
+annels. */
+> > > +static const unsigned long ad7380_2_channel_scan_masks[] =3D {
+> > > +     GENMASK(2, 0), /* both ADC channels and soft timestamp */
+> > > +     GENMASK(1, 0), /* both ADC channels, no timestamp */ =20
+> >
+> > https://elixir.bootlin.com/linux/v6.7-rc5/source/include/linux/iio/iio.=
+h#L567
+> > See the comment (added recently!) =20
+>=20
+> I did see this comment but this is already sorted in order of
+> preference, so I'm not sure why you are calling it out. Just FYI, I
+> guess?
 
-Given it seems like you'll be doing a v9, one quick comment from me below.
+No. Order of preference would be turn on the minimal if that is enough.
+First item is the highest preference (if the requested channels are a subse=
+t of
+that we don't look any further).  Here that means we always stop on the fir=
+st
+entry and never look at the second.
+
+>=20
+> >
+> > Also, if I remember how this works correctly there is no need to include
+> > the timestamp in the mask.  We do special handling for it to avoid havi=
+ng to double
+> > the number of provided masks.  The details being that it uses
+> > iio_scan_el_ts_store rather than iio_scan_el_Store. =20
+>=20
+> Indeed. I've been working ahead on adding more features and noticed
+> this. So we will need to find a way to say that we the timestamp
+> should not be allowed under certain conditions. But that will be a
+> discussion for a later series.
+
+Interesting - you have cases where it's not valid at all?
+It sometimes becomes inaccurate because we are interpolating across
+data from a fifo, but I've not seen a case where we can't provide anything
+useful.  Ah well - as you say I'll wait for that later series!
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> new file mode 100644
-> index 000000000000..96918b24a10a
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad7173.c
-> @@ -0,0 +1,964 @@
-...
+>=20
+> >
+> > So as you have it I think you'll always end up with the first entry
+> > and that will include a bonus bit that isn't a problem as it will match
+> > anyway.
+> >
+> > So just have the second entry and 0.
+> >
+> > Jonathan
+> > =20
+> > > +     0
+> > > +}; =20
 
-> +static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
-> +{
-
-...
-
-> +
-> +	if (st->info->has_temp) {
-> +		chan_arr[chan_index] = ad7173_temp_iio_channel_template;
-> +		chan_st_priv = &channels_st_priv_arr[chan_index];
-> +		chan_st_priv->ain =
-> +			AD7173_CH_ADDRESS(chan_arr[chan_index].channel, chan_arr[chan_index].channel2);
-> +		chan_st_priv->cfg.bipolar = false;
-> +		chan_st_priv->cfg.input_buf = true;
-> +		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-> +		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
-> +
-> +		chan_index++;
-> +	}
-> +
-> +	device_for_each_child_node(dev, child) {
-> +		chan = &chan_arr[chan_index];
-> +		chan_st_priv = &channels_st_priv_arr[chan_index];
-> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
-> +						     ain, ARRAY_SIZE(ain));
-> +		if (ret) {
-> +			fwnode_handle_put(child);
-> +			return ret;
-> +		}
-> +
-> +		if (ain[0] >= st->info->num_inputs ||
-> +		    ain[1] >= st->info->num_inputs) {
-> +			fwnode_handle_put(child);
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "Input pin number out of range for pair (%d %d).\n",
-> +					     ain[0], ain[1]);
-> +		}
-> +
-> +		ret = fwnode_property_match_property_string(child,
-> +							    "adi,reference-select",
-> +							    ad7173_ref_sel_str,
-> +							    ARRAY_SIZE(ad7173_ref_sel_str));
-> +
-> +		if (ret < 0)
-> +			ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-> +		else
-> +			ref_sel = ret;
-Simpler pattern for properties with a default is not to check the error code.
-
-		ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-
-		fwnode_property_match_property_String(child, ...
-
-so only if it succeeds is the value overridden.
 

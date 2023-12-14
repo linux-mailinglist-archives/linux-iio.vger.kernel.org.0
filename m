@@ -1,147 +1,200 @@
-Return-Path: <linux-iio+bounces-920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC059813041
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:36:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2EB813071
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 13:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28F51C216E2
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:36:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139301F221E1
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 12:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8064A4B5CB;
-	Thu, 14 Dec 2023 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6874D4D13B;
+	Thu, 14 Dec 2023 12:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuBkbk8X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BEABA3;
-	Thu, 14 Dec 2023 04:36:17 -0800 (PST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SrWym6SLmz6JB0r;
-	Thu, 14 Dec 2023 20:35:12 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4C4AD1400DD;
-	Thu, 14 Dec 2023 20:36:15 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 14 Dec
- 2023 12:36:14 +0000
-Date: Thu, 14 Dec 2023 12:36:13 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: David Lechner <dlechner@baylibre.com>
-CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Rob Herring
-	<robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, Michael Hennerich
-	<michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
-	<broonie@kernel.org>, <linux-kernel@vger.kernel.org>, Stefan Popa
-	<stefan.popa@analog.com>
-Subject: Re: [PATCH v2 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
-Message-ID: <20231214123613.00002b69@Huawei.com>
-In-Reply-To: <CAMknhBF9GtbOP_M2q8DrrMOePFOaQzGxqcS2P8OHjtGN-Z27Vg@mail.gmail.com>
-References: <20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com>
-	<20231213-ad7380-mainline-v2-3-cd32150d84a3@baylibre.com>
-	<20231214101415.0000060c@Huawei.com>
-	<CAMknhBF9GtbOP_M2q8DrrMOePFOaQzGxqcS2P8OHjtGN-Z27Vg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA9D11D;
+	Thu, 14 Dec 2023 04:43:13 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50bf2d9b3fdso10891313e87.3;
+        Thu, 14 Dec 2023 04:43:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702557792; x=1703162592; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DLS5Sl/tcs7UdHUclsP8wzE7HsHwHptKsbrYJkJgZGU=;
+        b=GuBkbk8X//vN2MqB3QH9cyd69URtayCAMJI12a8HoECoWdRwrkDVsnAhZ+q/Is84Pr
+         bIrt+2dEmsP4wXyOZtRghQO77n7wK2foJsDpEdotyABrYNkPWO4iUvawl/slzmWrvm0q
+         6h1fksVXcrhD5U3VJAzTLpDnCtMCfLv+6eQILKWQnA2GhIMjlsrQR43NsTcxEcnYzmJ7
+         ketzu+CDgiTuM1rxANdo8HBqnArsvQFTGXOZTcbUwgpsS5Dc1WH5mDGxA6VtDnvSZWvB
+         p3tSBD3vv/Ui6zeZHfINakAFjeydfrv+7TtcEqdAKigJK3QY8PLlOjWzKb0V3liaGLJo
+         q+wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702557792; x=1703162592;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DLS5Sl/tcs7UdHUclsP8wzE7HsHwHptKsbrYJkJgZGU=;
+        b=Uwxo0wK8cIOGJzAeyKbxAH+9irj8ryaxKdpKDaKPYYOEKqn6EVGS58YmAZgK2QgQgI
+         wgo909Zue0WQXIZppT5EsVlHJuS7sdNjpbqNA1lfmKL+/HKHfetECA3WmUWFUnCZQcnB
+         6xPEM6J1ubnVWCKxCs3gNStwzly/IAOY3Fjfr+epmbUaLEB9MEtxvNTq7gsjysVg4z8/
+         RIaOQs1uCXxyyUbbMtdulGpAKWujhDfu/nhhbmtbCtdqQ8E0wEkMRV8VHLzs3q768kSY
+         PfuaNTWgO7Pw9xGT7prr9dQdjawbxHsLsJidFXHLkkpB9UeD/H4sEALyVfopXPEAGSLa
+         XcKA==
+X-Gm-Message-State: AOJu0YzLrFjBrHEE4+yWpdGc3KW9zBjA4tpDwbuxRnft/M3tHd35FdH7
+	M5NXY3v0fMSiJCkRbMoYI3Q=
+X-Google-Smtp-Source: AGHT+IGua8eR59eAZWjpuEYJuoRA4g6iYT9xAqu1nYyVI+ph0ivN3XaLaaXUVKwY8kqqIGO1CcwTQA==
+X-Received: by 2002:a05:6512:238f:b0:50d:1a7f:f76 with SMTP id c15-20020a056512238f00b0050d1a7f0f76mr5708024lfv.65.1702557791782;
+        Thu, 14 Dec 2023 04:43:11 -0800 (PST)
+Received: from [172.25.98.130] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id vh2-20020a170907d38200b00a1be80a0b69sm9324342ejc.58.2023.12.14.04.43.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Dec 2023 04:43:11 -0800 (PST)
+Message-ID: <e4a9dde7-dca6-4862-bfb3-a93b879c9a1f@gmail.com>
+Date: Thu, 14 Dec 2023 14:43:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/2] dt-bindings: adc: add AD7173
+Content-Language: en-US
+To: David Lechner <dlechner@baylibre.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
+ <CAMknhBEfisaSbHhnnei=gT1HZvHNWHrJD3O2y4b_TikkH=v2Ag@mail.gmail.com>
+From: Ceclan Dumitru <mitrutzceclan@gmail.com>
+In-Reply-To: <CAMknhBEfisaSbHhnnei=gT1HZvHNWHrJD3O2y4b_TikkH=v2Ag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 14 Dec 2023 11:33:51 +0100
-David Lechner <dlechner@baylibre.com> wrote:
 
-> On Thu, Dec 14, 2023 at 11:14=E2=80=AFAM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Wed, 13 Dec 2023 05:21:20 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
-> > > This adds a new driver for the AD7380 family ADCs.
-> > >
-> > > The driver currently implements basic support for the AD7380, AD7381,
-> > > AD7383, and AD7384 2-channel differential ADCs. Support for additional
-> > > single-ended and 4-channel chips that use the same register map as we=
-ll
-> > > as additional features of the chip will be added in future patches.
-> > >
-> > > Co-developed-by: Stefan Popa <stefan.popa@analog.com>
-> > > Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-> > > Signed-off-by: David Lechner <dlechner@baylibre.com> =20
-> >
-> > Just one additional comment.  I 'might' sort both this an Nuno's comment
-> > if Mark is fine with the SPI and no on else has review comments.
-> > Feel free to send a v3 though if you like ;)
-> >
-> > =20
-> > > +/* fully differential */
-> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7380_channels, 16);
-> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7381_channels, 14);
-> > > +/* pseudo differential */
-> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7383_channels, 16);
-> > > +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7384_channels, 14);
-> > > +
-> > > +/* Since this is simultaneous sampling, we don't allow individual ch=
-annels. */
-> > > +static const unsigned long ad7380_2_channel_scan_masks[] =3D {
-> > > +     GENMASK(2, 0), /* both ADC channels and soft timestamp */
-> > > +     GENMASK(1, 0), /* both ADC channels, no timestamp */ =20
-> >
-> > https://elixir.bootlin.com/linux/v6.7-rc5/source/include/linux/iio/iio.=
-h#L567
-> > See the comment (added recently!) =20
->=20
-> I did see this comment but this is already sorted in order of
-> preference, so I'm not sure why you are calling it out. Just FYI, I
-> guess?
 
-No. Order of preference would be turn on the minimal if that is enough.
-First item is the highest preference (if the requested channels are a subse=
-t of
-that we don't look any further).  Here that means we always stop on the fir=
-st
-entry and never look at the second.
+On 12/12/23 17:09, David Lechner wrote:
+> On Tue, Dec 12, 2023 at 11:45 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+>>
+>> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+>> which can be used in high precision, low noise single channel applications
+>> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+>> primarily for measurement of signals close to DC but also delivers
+>> outstanding performance with input bandwidths out to ~10kHz.
+> 
+> As stated in [1], we should try to make complete bindings. I think
+> more could be done here to make this more complete. Most notably, the
+> gpio-controller binding is missing. Also maybe something is needed to
+> describe how the SYNC/ERROR pin is wired up since it can be an input
+> or an output with different functions?
+> 
 
->=20
-> >
-> > Also, if I remember how this works correctly there is no need to include
-> > the timestamp in the mask.  We do special handling for it to avoid havi=
-ng to double
-> > the number of provided masks.  The details being that it uses
-> > iio_scan_el_ts_store rather than iio_scan_el_Store. =20
->=20
-> Indeed. I've been working ahead on adding more features and noticed
-> this. So we will need to find a way to say that we the timestamp
-> should not be allowed under certain conditions. But that will be a
-> discussion for a later series.
+GPIO-controller:
+  '#gpio-cells':
 
-Interesting - you have cases where it's not valid at all?
-It sometimes becomes inaccurate because we are interpolating across
-data from a fifo, but I've not seen a case where we can't provide anything
-useful.  Ah well - as you say I'll wait for that later series!
+    const: 2
 
-Jonathan
 
->=20
-> >
-> > So as you have it I think you'll always end up with the first entry
-> > and that will include a bonus bit that isn't a problem as it will match
-> > anyway.
-> >
-> > So just have the second entry and 0.
-> >
-> > Jonathan
-> > =20
-> > > +     0
-> > > +}; =20
+  gpio-controller: true
+Like this, in properties?
 
+Sync can only be an output, Error is configurable. Are there any
+examples for how something like this is described?
+
+...
+
+>> +  interrupts:
+>> +    maxItems: 1
+> 
+> Shouldn't this be 2? The datasheet says there is a "Data Output Ready"
+> signal on the DOUT/RDY pin and an "Error Output" on the SYNC/ERROR
+> pin. Although I could see how RDY could be considered part of the SPI
+> bus. In any case, a description explaining what the interrupt is would
+> be useful.
+> 
+
+I do not see how there could be 2 interrupts. DOUT/RDY is used as an
+interrupt when waiting for a conversion to finalize.
+
+Sync and Error are sepparate pins, Sync(if enabled) works only as an
+input that resets the modulator and the digital filter.
+
+Error can be configured as input, output or ERROR output (OR between all
+internal error sources).
+
+Would this be alright
+  interrupts:
+
+    description: Conversion completion interrupt.
+		 Pin is shared with SPI DOUT.
+    maxItems: 1
+
+...
+
+>> +
+>> +patternProperties:
+>> +  "^channel@[0-9a-f]$":
+>> +    type: object
+>> +    $ref: adc.yaml
+>> +    unevaluatedProperties: false
+>> +
+>> +    properties:
+>> +      reg:
+>> +        minimum: 0
+>> +        maximum: 15
+>> +
+>> +      diff-channels:
+>> +        items:
+>> +          minimum: 0
+>> +          maximum: 31
+> 
+> Do we need to add overrides to limit the maximums for each compatible string?
+> 
+
+Just to be sure, in the allOf section?
+If yes, is there any other more elegant method to obtain this behavior?
+
+...
+
+>> +
+>> +    required:
+>> +      - reg
+>> +      - diff-channels
+> 
+> Individual analog inputs can be used as single-ended or in pairs as
+> differential, right? If so, diff-channels should not be required to
+> allow for single-ended use.
+> 
+> And we would need to add something like a single-ended-channel
+> property to adc.yaml to allow mapping analog input pins to channels
+> similar to how diff-channels works, I think (I don't see anything like
+> that there already)?
+> 
+> So maybe something like:
+> 
+> oneOf:
+>   - required:
+>       single-ended-channel
+>   - required:
+>       diff-channels
+> 
+All channels must specify 2 analog input sources, there is no input
+source wired by default to AVSS.
+
+In my opinion, there is no need to specify channels as single-ended
+because that would require a property that specifies the input that is
+wired to AVSS.
 

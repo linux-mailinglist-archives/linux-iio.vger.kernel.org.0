@@ -1,119 +1,131 @@
-Return-Path: <linux-iio+bounces-923-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-924-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D040A8132BC
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 15:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 948E0813315
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 15:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70683B21513
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 14:16:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36DE6B21542
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 14:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492C059E31;
-	Thu, 14 Dec 2023 14:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F8F59E50;
+	Thu, 14 Dec 2023 14:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fv3UEZ7b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A534C9C;
-	Thu, 14 Dec 2023 06:16:02 -0800 (PST)
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3ba2dc0f6b7so991096b6e.2;
-        Thu, 14 Dec 2023 06:16:02 -0800 (PST)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B48A9C
+	for <linux-iio@vger.kernel.org>; Thu, 14 Dec 2023 06:29:00 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d069b1d127so48990945ad.0
+        for <linux-iio@vger.kernel.org>; Thu, 14 Dec 2023 06:29:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702564139; x=1703168939; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QkRidhTbj9PN2WMK244LM2MKDK+U9KtTG9k+99K5HCo=;
+        b=fv3UEZ7bsEaodLAJxJKNW7ff1oxqYhKh5XvR3PCH614fTZP6Y6o0TOjOjLAtZAexNf
+         KoMEt/AhHorWx7oyz302TkHMNY04XcuWVqLG2UiKqmbluWfgGvSCNAksHafxA2Gu95xQ
+         GmWBJiV/aFJnswx3s2F3qArdP6Ehuo209Opwqna6j4EF+h1VXh2fkLE3QcL946SrFjrI
+         Fx6+FFYhEdpfrcRBoHxVFKBkPvoL7bVRkg8DZdU31LZ0dNLE1a6hc9baRZ88g12K1DBj
+         GvxbUhgK6j++xloBVwD7XgZxdljIii47TSUxm5L8fc/VmhtavS7jEwj5r/u71ntlW89Y
+         Bocw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702563362; x=1703168162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HMTq5pMAaDOJYQEmGWHKZ8Rcvl+M1avRt4eHZ4R2vog=;
-        b=LQVBX+IUq4qsycadv4NHM2QvFsjms4/ymgV71sfW8FC1p3QquVbS32oI5MsNiT3+3+
-         FMPzwMaDptsB6A8gQXUGdStql+GM1z4v8RoUpov/XJLq2N3OR6mWSm4iVc6DiAzRhcgj
-         0bip0VzWudwbGOUsrTuf2vYvaALG2lPRhW5jnbtb4/Y/xg2P9G1vzs0eJoNRRYbWZTZs
-         cbiW9eBPkuA5Umf1S+IxNLkGqGpK+ik6nb+acoeJ/8v98oEAGrsEi6lyi2IdExP+rFOZ
-         yYX+Rp5prN4E/HeTCmZeBQj732lNjFahyqtVRYchHBgIjbidt1OhznlqHC5eDFaoFU0s
-         w5Ag==
-X-Gm-Message-State: AOJu0Yzkk81G5n+9R/uR1Lf98xJ2I/j09YQybK9lWGAi4yHNSYgh2D/q
-	NdHCKJybVvo62cxxn8QC6w==
-X-Google-Smtp-Source: AGHT+IFCKUZM61QqCWtOMvFPejA9INlIXYajdO7i5gIK1gxqeJCH0JI3HLFUbTt/gG1nITmzT25dGw==
-X-Received: by 2002:a05:6808:2201:b0:3b8:63aa:826f with SMTP id bd1-20020a056808220100b003b863aa826fmr14850983oib.25.1702563361881;
-        Thu, 14 Dec 2023 06:16:01 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id bq1-20020a05680823c100b003a7a34a4ed8sm3362994oib.33.2023.12.14.06.16.00
+        d=1e100.net; s=20230601; t=1702564139; x=1703168939;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QkRidhTbj9PN2WMK244LM2MKDK+U9KtTG9k+99K5HCo=;
+        b=QhYFB7bMnO9ti72g9CwpT+NMF8YXdlxrYo1WWaetwKGsoVuY+dlYobPaC8p/H0+ZIY
+         tThaKRX6pzM3hykLeDDYWPHfTRbCeEd75+kEu2R0IwNx4JxHfY9zxhWcLcerCcu5AqIX
+         qimVVnklzXtHRGYts8Jkd8b84uIclpMeLj8dJbmYoKpgnIT2kh0Oedune0kbfuM9wXR3
+         rkp/BJQ80uyUjZ6rVwI3FZbVKwMscYqwDaxCzinAgZM/1JxidqP5k0rDlRLpOyX8EORc
+         ZuAAYz8I5nLlTy7pBaMXa8HEd4jwn8hyxzkHYEOyXIjOzB4WrYtaDDG5WgT40FsjQFCY
+         1ZWA==
+X-Gm-Message-State: AOJu0YzjUQ20cSlQ1f0y8AqAbj5lxhFoRs9DVxazxPHDum/6ByEVuMkd
+	plrs7EbEoqY2NLh34Dm4tmyuxoT5jkItnkk4OgrLfaNp
+X-Google-Smtp-Source: AGHT+IGhFYGgaWQRA+cg8bglRhDhZlKf4HOlZ/sddlYpI+Kb0s6I1O69WyFD9RxfBoelvDpsW9Jt8g==
+X-Received: by 2002:a17:902:650b:b0:1d3:7643:b95a with SMTP id b11-20020a170902650b00b001d37643b95amr246320plk.64.1702564139421;
+        Thu, 14 Dec 2023 06:28:59 -0800 (PST)
+Received: from arch.localdomain ([152.69.227.198])
+        by smtp.gmail.com with ESMTPSA id 19-20020a170902ee5300b001d37bdc4934sm46339plo.110.2023.12.14.06.27.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Dec 2023 06:16:01 -0800 (PST)
-Received: (nullmailer pid 233694 invoked by uid 1000);
-	Thu, 14 Dec 2023 14:16:00 -0000
-Date: Thu, 14 Dec 2023 08:16:00 -0600
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v3 0/8] iio: add new backend framework
-Message-ID: <20231214141600.GA224419-robh@kernel.org>
-References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+        Thu, 14 Dec 2023 06:28:58 -0800 (PST)
+From: Jun Yan <jerrysteve1101@gmail.com>
+To: Jonathan.Cameron@huawei.com
+Cc: lars@metafoo.de,
+	Qing-wu.Li@leica-geosystems.com.cn,
+	linux-iio@vger.kernel.org,
+	Jun Yan <jerrysteve1101@gmail.com>
+Subject: [PATCH] iio: accel: bmi088: update comments and Kconfig
+Date: Thu, 14 Dec 2023 22:27:33 +0800
+Message-ID: <20231214142733.85910-1-jerrysteve1101@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 13, 2023 at 04:02:31PM +0100, Nuno Sa wrote:
-> v1:
->  https://lore.kernel.org/linux-iio/20231204144925.4fe9922f@jic23-huawei/T/#m222f5175273b81dbfe40b7f0daffcdc67d6cb8ff
-> 
-> v2:
->  https://lore.kernel.org/r/20231208-dev-iio-backend-v2-0-5450951895e1@analog.com
-> 
-> Changes in v3:
-> - Patch 1:
->  * Use proposed generic schema [1]. Also make it a required property;
->  * Improved the commit message.
-> - Patch 2:
->  * Improved commit message.
-> - Patch 4:
->  * Namespace all IIO DMAENGINE buffer exports;
->  * Removed unrelated new line removal change.
-> - Patch 5:
->  * Namespace all IIO backend exports.
-> - Patch 6:
->  * Set backend.h in alphabetical order;
->  * Import IIO backend namespace.
-> - Patch 7:
->  * Don't depend on OF in kbuild anymore;
->  * Import IIO backend namespace.
-> 
-> For the bindings patches, I tried not to enter into much details about
-> the IIO framework as I think specifics of the implementation don't care
-> from the bindings perspective. Hopefully the commit messages are good
-> enough.
-> 
-> I'm also aware that patch 1 is not backward compatible but we are
-> anyways doing it on the driver side (and on the driver the property is
-> indeed required). Anyways, just let me know if making the property
-> required is not acceptable (I'm fairly confident no one was using the
-> upstream version of the driver and so validating devicetrees for it). 
-> 
-> Keeping the block diagram in v3's cover so we don't have to follow links
-> to check the one of the typicals setups. 
-> 
->                                            -------------------------------------------------------
->  ------------------                        | -----------         ------------      -------  FPGA |
->  |     ADC        |------------------------| | AXI ADC |---------| DMA CORE |------| RAM |       |
->  | (Frontend/IIO) | Serial Data (eg: LVDS) | |(backend)|---------|          |------|     |       |
->  |                |------------------------| -----------         ------------      -------       |
->  ------------------                        -------------------------------------------------------
+update the comments and Kconfig file with more descriptive and
+accurate information about newly added device: BMI085, BMI090L.
 
-Why doesn't axi-adc just have an io-channels property to adc? It's the 
-opposite direction for the link, but it seems more logical to me that 
-axi-adc depends on adc rather than the other way around.
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+---
+ drivers/iio/accel/Kconfig             | 7 ++++---
+ drivers/iio/accel/bmi088-accel-core.c | 2 ++
+ drivers/iio/accel/bmi088-accel-spi.c  | 2 ++
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-And if there's another consumer in the chain, then a node could 
-certainly be both an io-channels consumer and producer.
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index f113dae59048..91adcac875a4 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -260,10 +260,11 @@ config BMI088_ACCEL
+ 	select REGMAP
+ 	select BMI088_ACCEL_SPI
+ 	help
+-	  Say yes here to build support for the Bosch BMI088 accelerometer.
++	  Say yes here to build support for the following Bosch accelerometers:
++	  BMI088, BMI085, BMI090L. Note that all of these are combo module that
++	  include both accelerometer and gyroscope.
+ 
+-	  This is a combo module with both accelerometer and gyroscope. This
+-	  driver only implements the accelerometer part, which has its own
++	  This driver only implements the accelerometer part, which has its own
+ 	  address and register map. BMG160 provides the gyroscope driver.
+ 
+ config BMI088_ACCEL_SPI
+diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
+index 84edcc78d796..4d989708e6c3 100644
+--- a/drivers/iio/accel/bmi088-accel-core.c
++++ b/drivers/iio/accel/bmi088-accel-core.c
+@@ -2,6 +2,8 @@
+ /*
+  * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
+  *  - BMI088
++ *  - BMI085
++ *  - BMI090L
+  *
+  * Copyright (c) 2018-2021, Topic Embedded Products
+  */
+diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
+index ee540edd8412..7b419a7b2478 100644
+--- a/drivers/iio/accel/bmi088-accel-spi.c
++++ b/drivers/iio/accel/bmi088-accel-spi.c
+@@ -2,6 +2,8 @@
+ /*
+  * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
+  *  - BMI088
++ *  - BMI085
++ *  - BMI090L
+  *
+  * Copyright (c) 2018-2020, Topic Embedded Products
+  */
+-- 
+2.43.0
 
-The architecture of the drivers seems odd to me. It looks similar to 
-making a phy driver handle all the state and protocol with the host 
-controller being a backend.
-
-Rob
 

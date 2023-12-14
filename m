@@ -1,473 +1,192 @@
-Return-Path: <linux-iio+bounces-929-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-930-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1999813724
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 18:02:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0323881372B
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 18:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A1CB281F99
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 17:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6651F21749
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 17:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F1563DCB;
-	Thu, 14 Dec 2023 17:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3575863DCA;
+	Thu, 14 Dec 2023 17:03:34 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 143E18E;
-	Thu, 14 Dec 2023 09:01:54 -0800 (PST)
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 8C3912144D;
-	Thu, 14 Dec 2023 18:01:51 +0100 (CET)
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-bluetooth@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	greybus-dev@lists.linaro.org,
-	linux-iio@vger.kernel.org,
-	netdev@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH v1] treewide, serdev: change receive_buf() return type to size_t
-Date: Thu, 14 Dec 2023 18:01:46 +0100
-Message-Id: <20231214170146.641783-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.25.1
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FAB28E;
+	Thu, 14 Dec 2023 09:03:30 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-58d956c8c38so5325506eaf.2;
+        Thu, 14 Dec 2023 09:03:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702573410; x=1703178210;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/qvXC0V/IaX6oFDIV8ZjMo7+59JzsGITQfrsI4ipBT4=;
+        b=aSIvsk2IawON7Yg0CI0leq1CTg0WPfhJED8i+PwbHhYK/MLQM/RUzQ+x9igppFlxVn
+         33xlrkPPjQLfLTW7eMC6TWUSAwsI40Y1pIp0TmKu1VTqyWEavkSiYCnzl2VBIgZjQhuy
+         gQNrKBjmLfI39gy41BjIFyVwzLHpfj7Bljp3AptXgc5fsa2tHkc2Rty453a159a2X3Go
+         DRekgEvNBusTZBNrZODPHelfIKsBFIaVLq8qmv0ggDeWt9BUsAMcF0eKqYywDVEJSU4y
+         ZTX5nfyde/HgO4Tk8rjiLfsa87UeY804mX08yxjZzPeUFnWWTQP+lGKuwHreks2LmskC
+         EZ4A==
+X-Gm-Message-State: AOJu0Yyqr9r+CEswy8yvlHwldWYewWsoajYs9ea1fBlR11Y4esSLw27X
+	b2HwsxcFXUGn7YD0gB4DxA==
+X-Google-Smtp-Source: AGHT+IEyHe0f0QD/eSgA+PZeFlz1x8D95y9PVo65kNNLu2rCkX9vB67IjW8PLveDqnfwYJJpbmBdrA==
+X-Received: by 2002:a05:6820:16a2:b0:58d:981e:bc5c with SMTP id bc34-20020a05682016a200b0058d981ebc5cmr7655733oob.7.1702573409724;
+        Thu, 14 Dec 2023 09:03:29 -0800 (PST)
+Received: from herring.priv ([2607:fb91:e6c7:a40:1c2d:b875:912d:c28])
+        by smtp.gmail.com with ESMTPSA id i29-20020a4a929d000000b0058a3c5d590bsm3567221ooh.7.2023.12.14.09.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Dec 2023 09:03:29 -0800 (PST)
+Received: (nullmailer pid 492444 invoked by uid 1000);
+	Thu, 14 Dec 2023 17:03:26 -0000
+Date: Thu, 14 Dec 2023 11:03:26 -0600
+From: Rob Herring <robh@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v3 0/8] iio: add new backend framework
+Message-ID: <20231214170326.GA458046-robh@kernel.org>
+References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+ <20231214141600.GA224419-robh@kernel.org>
+ <fa03e4138fe2c8c7e7f619e11f149701c39445e4.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <fa03e4138fe2c8c7e7f619e11f149701c39445e4.camel@gmail.com>
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Dec 14, 2023 at 05:05:20PM +0100, Nuno Sá wrote:
+> On Thu, 2023-12-14 at 08:16 -0600, Rob Herring wrote:
+> > On Wed, Dec 13, 2023 at 04:02:31PM +0100, Nuno Sa wrote:
+> > > v1:
+> > >  
+> > > https://lore.kernel.org/linux-iio/20231204144925.4fe9922f@jic23-huawei/T/#m222f517
+> > > 5273b81dbfe40b7f0daffcdc67d6cb8ff
+> > > 
+> > > v2:
+> > >  https://lore.kernel.org/r/20231208-dev-iio-backend-v2-0-5450951895e1@analog.com
+> > > 
+> > > Changes in v3:
+> > > - Patch 1:
+> > >  * Use proposed generic schema [1]. Also make it a required property;
+> > >  * Improved the commit message.
+> > > - Patch 2:
+> > >  * Improved commit message.
+> > > - Patch 4:
+> > >  * Namespace all IIO DMAENGINE buffer exports;
+> > >  * Removed unrelated new line removal change.
+> > > - Patch 5:
+> > >  * Namespace all IIO backend exports.
+> > > - Patch 6:
+> > >  * Set backend.h in alphabetical order;
+> > >  * Import IIO backend namespace.
+> > > - Patch 7:
+> > >  * Don't depend on OF in kbuild anymore;
+> > >  * Import IIO backend namespace.
+> > > 
+> > > For the bindings patches, I tried not to enter into much details about
+> > > the IIO framework as I think specifics of the implementation don't care
+> > > from the bindings perspective. Hopefully the commit messages are good
+> > > enough.
+> > > 
+> > > I'm also aware that patch 1 is not backward compatible but we are
+> > > anyways doing it on the driver side (and on the driver the property is
+> > > indeed required). Anyways, just let me know if making the property
+> > > required is not acceptable (I'm fairly confident no one was using the
+> > > upstream version of the driver and so validating devicetrees for it). 
+> > > 
+> > > Keeping the block diagram in v3's cover so we don't have to follow links
+> > > to check the one of the typicals setups. 
+> > > 
+> > >                                            --------------------------------------
+> > > -----------------
+> > >  ------------------                        | -----------         ------------
+> > >       -------  FPGA |
+> > >  |     ADC        |------------------------| | AXI ADC |---------| DMA CORE |----
+> > > --| RAM |       |
+> > >  | (Frontend/IIO) | Serial Data (eg: LVDS) | |(backend)|---------|          |----
+> > > --|     |       |
+> > >  |                |------------------------| -----------         ------------
+> > >       -------       |
+> > >  ------------------                        --------------------------------------
+> > > -----------------
+> > 
+> > Why doesn't axi-adc just have an io-channels property to adc? It's the 
+> > opposite direction for the link, but it seems more logical to me that 
+> > axi-adc depends on adc rather than the other way around.
+> > 
+> 
+> We are not interested on a single channel but on the complete device. >From the axi-
+> adc point of view, there's not much we could do with the adc channel. I mean, maybe
+> we could still do something but it would be far from ideal (see below).
 
-receive_buf() is called from ttyport_receive_buf() that expects values
-">= 0" from serdev_controller_receive_buf(), change its return type from
-ssize_t to size_t.
+Will this hold up for everyone? Could there be a backend device that 
+handles multiple ADCs? IOW, do you need #io-backend-cells? It's somewhat 
+better if we add that up front rather than later and have to treat 
+missing as 0 cells. It is also the only way to generically identify the 
+providers (well, there's also 'foo-controller' properties, but we've 
+gone away from those).
 
-Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-hello,
-patch is based on current linux next.
 
-It has an obvious problem, it touches files from multiple subsystem in a single
-patch that is complicated to review and eventually merge, just splitting this
-would however not work, it will break bisectability and the build.
+> The opposite direction is exactly what we had (look at patch 2) just with another
+> custom property. The problem with that is that we would then need a bidirectional
+> link (we would need to callback into the provider and the provider would need to
+> access the consumer) between consumers and providers and that would be far from
+> optimal. The bidirectional link would exist because if we want to support fundamental
+> things like LVDS/CMOS interface tuning we need to set/get settings from the axi-adc
+> core. And as Jonathan suggested, the real data is captured or sent on the converters
+> (ADC or DACs) and that is why we have the IIO device/interface in there and why we
+> call them "frontends". In ADI usecases, backends are these FPGA cores providing
+> "services" to the "real" high speed converters. To put it in another way, the real
+> converter is the one who knows how to use the axi-adc core and not the other way
+> around. That's also one of the reasons why it would be way more difficult to handle
+> things with the opposite link. That's how we have done it so far and the mess we have
+> out of tree is massive :sweat_smile: We ended up doing raw writes and reads on the
+> axi-adc MMIO registers from the converter driver just because we had to configure or
+> get something from the axi-adc device but the link was backwards.
 
-I am looking for advise on the best way to move forward.
+The direction (for the binding) doesn't really matter. It doesn't 
+dictate the direction in the OS. In the ad9467 driver, you can search 
+the DT for 'adi,adc-dev' and find the node which matches your node's 
+phandle. It's not exactly efficient, but you are doing it once. It would 
+also prevent the DT ABI break you are introducing.
 
-I see the following options:
- - keep it as it is
- - break it down with a patch with each subsystem, and squash before applying
-   from a single (tty?) subsystem
- - go for a multi stage approach, defining a new callback, move to it and in
-   the end remove the original one, likewise it was done for i2c lately
 
----
- drivers/bluetooth/btmtkuart.c              |  4 ++--
- drivers/bluetooth/btnxpuart.c              |  4 ++--
- drivers/bluetooth/hci_serdev.c             |  4 ++--
- drivers/gnss/core.c                        |  6 +++---
- drivers/gnss/serial.c                      |  4 ++--
- drivers/gnss/sirf.c                        |  6 +++---
- drivers/greybus/gb-beagleplay.c            |  6 +++---
- drivers/iio/chemical/pms7003.c             |  4 ++--
- drivers/iio/chemical/scd30_serial.c        |  4 ++--
- drivers/iio/chemical/sps30_serial.c        |  4 ++--
- drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
- drivers/mfd/rave-sp.c                      |  4 ++--
- drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
- drivers/nfc/pn533/uart.c                   |  4 ++--
- drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
- drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
- drivers/platform/surface/aggregator/core.c |  4 ++--
- drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
- include/linux/gnss.h                       |  4 ++--
- include/linux/serdev.h                     |  8 ++++----
- sound/drivers/serial-generic.c             |  4 ++--
- 21 files changed, 48 insertions(+), 50 deletions(-)
+> > And if there's another consumer in the chain, then a node could 
+> > certainly be both an io-channels consumer and producer.
+> > 
+> 
+> This should also be possible with this architecture. A node can be both a backend
+> (provider) and a consumer and we have an out of tree design that fits this (that I
+> surely want to upstream after the foundations are done).
+> 
+> > The architecture of the drivers seems odd to me. It looks similar to 
+> > making a phy driver handle all the state and protocol with the host 
+> > controller being a backend.
+> 
+> In this case, it's not really a controller. It's more like an extension of the device
+> because we need a way to handle the high sample rates this ADCs can do. Then we can
+> also do test tones with the backend which is useful for interface tuning (as
+> mentioned above).
+> 
+> To give you a bit more context, I'm adding the generic property because we will have
+> more users for it (from ADI - the next should be the axi-dac core) but STM is also
+> interested in this (likely the next user).
+> 
+> Hope this makes it a bit more clear...
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 3c84fcbda01a..e6bc4a73c9fc 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -383,8 +383,8 @@ static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 	}
- }
- 
--static ssize_t btmtkuart_receive_buf(struct serdev_device *serdev,
--				     const u8 *data, size_t count)
-+static size_t btmtkuart_receive_buf(struct serdev_device *serdev,
-+				    const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
- 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index 1d592ac413d1..056bef5b2919 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -1264,8 +1264,8 @@ static const struct h4_recv_pkt nxp_recv_pkts[] = {
- 	{ NXP_RECV_FW_REQ_V3,   .recv = nxp_recv_fw_req_v3 },
- };
- 
--static ssize_t btnxpuart_receive_buf(struct serdev_device *serdev,
--				     const u8 *data, size_t count)
-+static size_t btnxpuart_receive_buf(struct serdev_device *serdev,
-+				    const u8 *data, size_t count)
- {
- 	struct btnxpuart_dev *nxpdev = serdev_device_get_drvdata(serdev);
- 
-diff --git a/drivers/bluetooth/hci_serdev.c b/drivers/bluetooth/hci_serdev.c
-index 39c8b567da3c..a3c3beb2806d 100644
---- a/drivers/bluetooth/hci_serdev.c
-+++ b/drivers/bluetooth/hci_serdev.c
-@@ -271,8 +271,8 @@ static void hci_uart_write_wakeup(struct serdev_device *serdev)
-  *
-  * Return: number of processed bytes
-  */
--static ssize_t hci_uart_receive_buf(struct serdev_device *serdev,
--				    const u8 *data, size_t count)
-+static size_t hci_uart_receive_buf(struct serdev_device *serdev,
-+				   const u8 *data, size_t count)
- {
- 	struct hci_uart *hu = serdev_device_get_drvdata(serdev);
- 
-diff --git a/drivers/gnss/core.c b/drivers/gnss/core.c
-index 48f2ee0f78c4..9b8a0605ec76 100644
---- a/drivers/gnss/core.c
-+++ b/drivers/gnss/core.c
-@@ -317,10 +317,10 @@ EXPORT_SYMBOL_GPL(gnss_deregister_device);
-  *
-  * Must not be called for a closed device.
-  */
--int gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
--				size_t count)
-+size_t gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
-+		       size_t count)
- {
--	int ret;
-+	size_t ret;
- 
- 	ret = kfifo_in(&gdev->read_fifo, buf, count);
- 
-diff --git a/drivers/gnss/serial.c b/drivers/gnss/serial.c
-index baa956494e79..bf55aa2c1cf0 100644
---- a/drivers/gnss/serial.c
-+++ b/drivers/gnss/serial.c
-@@ -80,8 +80,8 @@ static const struct gnss_operations gnss_serial_gnss_ops = {
- 	.write_raw	= gnss_serial_write_raw,
- };
- 
--static ssize_t gnss_serial_receive_buf(struct serdev_device *serdev,
--				       const u8 *buf, size_t count)
-+static size_t gnss_serial_receive_buf(struct serdev_device *serdev,
-+				      const u8 *buf, size_t count)
- {
- 	struct gnss_serial *gserial = serdev_device_get_drvdata(serdev);
- 	struct gnss_device *gdev = gserial->gdev;
-diff --git a/drivers/gnss/sirf.c b/drivers/gnss/sirf.c
-index 6801a8fb2040..2aae3c02156d 100644
---- a/drivers/gnss/sirf.c
-+++ b/drivers/gnss/sirf.c
-@@ -160,12 +160,12 @@ static const struct gnss_operations sirf_gnss_ops = {
- 	.write_raw	= sirf_write_raw,
- };
- 
--static ssize_t sirf_receive_buf(struct serdev_device *serdev,
--				const u8 *buf, size_t count)
-+static size_t sirf_receive_buf(struct serdev_device *serdev,
-+			       const u8 *buf, size_t count)
- {
- 	struct sirf_data *data = serdev_device_get_drvdata(serdev);
- 	struct gnss_device *gdev = data->gdev;
--	int ret = 0;
-+	size_t ret = 0;
- 
- 	if (!data->wakeup && !data->active) {
- 		data->active = true;
-diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
-index 2da37ff92cf1..26c95efe2fff 100644
---- a/drivers/greybus/gb-beagleplay.c
-+++ b/drivers/greybus/gb-beagleplay.c
-@@ -257,7 +257,7 @@ static void hdlc_rx_frame(struct gb_beagleplay *bg)
- 	}
- }
- 
--static ssize_t hdlc_rx(struct gb_beagleplay *bg, const u8 *data, size_t count)
-+static size_t hdlc_rx(struct gb_beagleplay *bg, const u8 *data, size_t count)
- {
- 	size_t i;
- 	u8 c;
-@@ -317,8 +317,8 @@ static void hdlc_deinit(struct gb_beagleplay *bg)
- 	flush_work(&bg->tx_work);
- }
- 
--static ssize_t gb_tty_receive(struct serdev_device *sd, const u8 *data,
--			      size_t count)
-+static size_t gb_tty_receive(struct serdev_device *sd, const u8 *data,
-+			     size_t count)
- {
- 	struct gb_beagleplay *bg = serdev_device_get_drvdata(sd);
- 
-diff --git a/drivers/iio/chemical/pms7003.c b/drivers/iio/chemical/pms7003.c
-index b5cf15a515d2..43025866d5b7 100644
---- a/drivers/iio/chemical/pms7003.c
-+++ b/drivers/iio/chemical/pms7003.c
-@@ -211,8 +211,8 @@ static bool pms7003_frame_is_okay(struct pms7003_frame *frame)
- 	return checksum == pms7003_calc_checksum(frame);
- }
- 
--static ssize_t pms7003_receive_buf(struct serdev_device *serdev, const u8 *buf,
--				   size_t size)
-+static size_t pms7003_receive_buf(struct serdev_device *serdev, const u8 *buf,
-+				  size_t size)
- {
- 	struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
- 	struct pms7003_state *state = iio_priv(indio_dev);
-diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
-index a47654591e55..2adb76dbb020 100644
---- a/drivers/iio/chemical/scd30_serial.c
-+++ b/drivers/iio/chemical/scd30_serial.c
-@@ -174,8 +174,8 @@ static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd, u
- 	return 0;
- }
- 
--static ssize_t scd30_serdev_receive_buf(struct serdev_device *serdev,
--					const u8 *buf, size_t size)
-+static size_t scd30_serdev_receive_buf(struct serdev_device *serdev,
-+				       const u8 *buf, size_t size)
- {
- 	struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
- 	struct scd30_serdev_priv *priv;
-diff --git a/drivers/iio/chemical/sps30_serial.c b/drivers/iio/chemical/sps30_serial.c
-index 3afa89f8acc3..a6dfbe28c914 100644
---- a/drivers/iio/chemical/sps30_serial.c
-+++ b/drivers/iio/chemical/sps30_serial.c
-@@ -210,8 +210,8 @@ static int sps30_serial_command(struct sps30_state *state, unsigned char cmd,
- 	return rsp_size;
- }
- 
--static ssize_t sps30_serial_receive_buf(struct serdev_device *serdev,
--					const u8 *buf, size_t size)
-+static size_t sps30_serial_receive_buf(struct serdev_device *serdev,
-+				       const u8 *buf, size_t size)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
- 	struct sps30_serial_priv *priv;
-diff --git a/drivers/iio/imu/bno055/bno055_ser_core.c b/drivers/iio/imu/bno055/bno055_ser_core.c
-index 5677bdf4f846..694ff14a3aa2 100644
---- a/drivers/iio/imu/bno055/bno055_ser_core.c
-+++ b/drivers/iio/imu/bno055/bno055_ser_core.c
-@@ -378,8 +378,8 @@ static void bno055_ser_handle_rx(struct bno055_ser_priv *priv, int status)
-  * Also, we assume to RX one pkt per time (i.e. the HW doesn't send anything
-  * unless we require to AND we don't queue more than one request per time).
-  */
--static ssize_t bno055_ser_receive_buf(struct serdev_device *serdev,
--				      const u8 *buf, size_t size)
-+static size_t bno055_ser_receive_buf(struct serdev_device *serdev,
-+				     const u8 *buf, size_t size)
- {
- 	int status;
- 	struct bno055_ser_priv *priv = serdev_device_get_drvdata(serdev);
-diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-index b1229bb143ee..f517e59e1c01 100644
---- a/drivers/mfd/rave-sp.c
-+++ b/drivers/mfd/rave-sp.c
-@@ -471,8 +471,8 @@ static void rave_sp_receive_frame(struct rave_sp *sp,
- 		rave_sp_receive_reply(sp, data, length);
- }
- 
--static ssize_t rave_sp_receive_buf(struct serdev_device *serdev,
--				   const u8 *buf, size_t size)
-+static size_t rave_sp_receive_buf(struct serdev_device *serdev,
-+				  const u8 *buf, size_t size)
- {
- 	struct device *dev = &serdev->dev;
- 	struct rave_sp *sp = dev_get_drvdata(dev);
-diff --git a/drivers/net/ethernet/qualcomm/qca_uart.c b/drivers/net/ethernet/qualcomm/qca_uart.c
-index 223321897b96..20f50bde82ac 100644
---- a/drivers/net/ethernet/qualcomm/qca_uart.c
-+++ b/drivers/net/ethernet/qualcomm/qca_uart.c
-@@ -58,7 +58,7 @@ struct qcauart {
- 	unsigned char *tx_buffer;
- };
- 
--static ssize_t
-+static size_t
- qca_tty_receive(struct serdev_device *serdev, const u8 *data, size_t count)
- {
- 	struct qcauart *qca = serdev_device_get_drvdata(serdev);
-diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
-index 2eb5978bd79e..cfbbe0713317 100644
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -203,8 +203,8 @@ static int pn532_uart_rx_is_frame(struct sk_buff *skb)
- 	return 0;
- }
- 
--static ssize_t pn532_receive_buf(struct serdev_device *serdev,
--				 const u8 *data, size_t count)
-+static size_t pn532_receive_buf(struct serdev_device *serdev,
-+				const u8 *data, size_t count)
- {
- 	struct pn532_uart_phy *dev = serdev_device_get_drvdata(serdev);
- 	size_t i;
-diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
-index 456d3947116c..9c09c10c2a46 100644
---- a/drivers/nfc/s3fwrn5/uart.c
-+++ b/drivers/nfc/s3fwrn5/uart.c
-@@ -51,8 +51,8 @@ static const struct s3fwrn5_phy_ops uart_phy_ops = {
- 	.write = s3fwrn82_uart_write,
- };
- 
--static ssize_t s3fwrn82_uart_read(struct serdev_device *serdev,
--				  const u8 *data, size_t count)
-+static size_t s3fwrn82_uart_read(struct serdev_device *serdev,
-+				 const u8 *data, size_t count)
- {
- 	struct s3fwrn82_uart_phy *phy = serdev_device_get_drvdata(serdev);
- 	size_t i;
-diff --git a/drivers/platform/chrome/cros_ec_uart.c b/drivers/platform/chrome/cros_ec_uart.c
-index 68d80559fddc..8ea867c2a01a 100644
---- a/drivers/platform/chrome/cros_ec_uart.c
-+++ b/drivers/platform/chrome/cros_ec_uart.c
-@@ -81,8 +81,8 @@ struct cros_ec_uart {
- 	struct response_info response;
- };
- 
--static ssize_t cros_ec_uart_rx_bytes(struct serdev_device *serdev,
--				     const u8 *data, size_t count)
-+static size_t cros_ec_uart_rx_bytes(struct serdev_device *serdev,
-+				    const u8 *data, size_t count)
- {
- 	struct ec_host_response *host_response;
- 	struct cros_ec_device *ec_dev = serdev_device_get_drvdata(serdev);
-diff --git a/drivers/platform/surface/aggregator/core.c b/drivers/platform/surface/aggregator/core.c
-index 9591a28bc38a..ba550eaa06fc 100644
---- a/drivers/platform/surface/aggregator/core.c
-+++ b/drivers/platform/surface/aggregator/core.c
-@@ -227,8 +227,8 @@ EXPORT_SYMBOL_GPL(ssam_client_bind);
- 
- /* -- Glue layer (serdev_device -> ssam_controller). ------------------------ */
- 
--static ssize_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
--				size_t n)
-+static size_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
-+			       size_t n)
- {
- 	struct ssam_controller *ctrl;
- 	int ret;
-diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/serdev-ttyport.c
-index e94e090cf0a1..3d7ae7fa5018 100644
---- a/drivers/tty/serdev/serdev-ttyport.c
-+++ b/drivers/tty/serdev/serdev-ttyport.c
-@@ -27,19 +27,17 @@ static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp,
- {
- 	struct serdev_controller *ctrl = port->client_data;
- 	struct serport *serport = serdev_controller_get_drvdata(ctrl);
--	int ret;
-+	size_t ret;
- 
- 	if (!test_bit(SERPORT_ACTIVE, &serport->flags))
- 		return 0;
- 
- 	ret = serdev_controller_receive_buf(ctrl, cp, count);
- 
--	dev_WARN_ONCE(&ctrl->dev, ret < 0 || ret > count,
--				"receive_buf returns %d (count = %zu)\n",
-+	dev_WARN_ONCE(&ctrl->dev, ret > count,
-+				"receive_buf returns %zu (count = %zu)\n",
- 				ret, count);
--	if (ret < 0)
--		return 0;
--	else if (ret > count)
-+	if (ret > count)
- 		return count;
- 
- 	return ret;
-diff --git a/include/linux/gnss.h b/include/linux/gnss.h
-index 36968a0f33e8..9857c4029e65 100644
---- a/include/linux/gnss.h
-+++ b/include/linux/gnss.h
-@@ -60,8 +60,8 @@ void gnss_put_device(struct gnss_device *gdev);
- int gnss_register_device(struct gnss_device *gdev);
- void gnss_deregister_device(struct gnss_device *gdev);
- 
--int gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
--			size_t count);
-+size_t gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
-+		       size_t count);
- 
- static inline void gnss_set_drvdata(struct gnss_device *gdev, void *data)
- {
-diff --git a/include/linux/serdev.h b/include/linux/serdev.h
-index 3fab88ba265e..ff78efc1f60d 100644
---- a/include/linux/serdev.h
-+++ b/include/linux/serdev.h
-@@ -27,7 +27,7 @@ struct serdev_device;
-  *			not sleep.
-  */
- struct serdev_device_ops {
--	ssize_t (*receive_buf)(struct serdev_device *, const u8 *, size_t);
-+	size_t (*receive_buf)(struct serdev_device *, const u8 *, size_t);
- 	void (*write_wakeup)(struct serdev_device *);
- };
- 
-@@ -185,9 +185,9 @@ static inline void serdev_controller_write_wakeup(struct serdev_controller *ctrl
- 	serdev->ops->write_wakeup(serdev);
- }
- 
--static inline ssize_t serdev_controller_receive_buf(struct serdev_controller *ctrl,
--						    const u8 *data,
--						    size_t count)
-+static inline size_t serdev_controller_receive_buf(struct serdev_controller *ctrl,
-+						   const u8 *data,
-+						   size_t count)
- {
- 	struct serdev_device *serdev = ctrl->serdev;
- 
-diff --git a/sound/drivers/serial-generic.c b/sound/drivers/serial-generic.c
-index d6e5aafd697c..36409a56c675 100644
---- a/sound/drivers/serial-generic.c
-+++ b/sound/drivers/serial-generic.c
-@@ -100,8 +100,8 @@ static void snd_serial_generic_write_wakeup(struct serdev_device *serdev)
- 	snd_serial_generic_tx_wakeup(drvdata);
- }
- 
--static ssize_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
--					      const u8 *buf, size_t count)
-+static size_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
-+					     const u8 *buf, size_t count)
- {
- 	int ret;
- 	struct snd_serial_generic *drvdata = serdev_device_get_drvdata(serdev);
+Yes, thanks.
 
-base-commit: 11651f8cb2e88372d4ed523d909514dc9a613ea3
--- 
-2.25.1
+I generally ask for 2 users on new common bindings. I've accepted too 
+many only to have the 2nd user come in a month later and need additions. 
+An ack on the binding from the STM folks would be nice here. And 
+Jonathan too.
 
+Rob
 

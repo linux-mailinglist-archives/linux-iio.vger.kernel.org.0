@@ -1,81 +1,111 @@
-Return-Path: <linux-iio+bounces-962-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-964-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BA814DA3
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:54:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9AA814DEC
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113281F24EC2
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:54:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E21F4285C34
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F373EA6D;
-	Fri, 15 Dec 2023 16:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVMCCjng"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C5C3FB21;
+	Fri, 15 Dec 2023 17:07:49 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D23E49F
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5DA86C433C8
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702659255;
-	bh=qorUAmjTZdFMMvGDXO5fnnVaNjAcnUZJXfSLZlBZ0uQ=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=DVMCCjnglKLb9lEOMgu7zqC/m0reLlzsLDnKadHcT+Pi0wv0dK3qf0LqB04Jik/wE
-	 FonwLIIvmiYp1BzgefLGsWsW8qY9G3wprd+r19G4onGEKWI6TKM/zNCjC9+iPJ0XkP
-	 ZWqS4IdhchlFZQKV0cA80VQydJYxuiVZwCBmARTkONoLez+hxiZCh85DfzdPmujr4i
-	 kgV7LvFmPA24rQWZhMhjCCbqbjQKVc7msU8u/2A5bnpVnD/V6COAvsWvyBwb+WjuuV
-	 jicOYfZvlFYUbhaM11NrHlpeM2r+iawaCqYov/XPL2hS5Rv2Rxcr31E560cuwfTgYu
-	 LWT82d6ZiOTuA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 48D30C53BD1; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218223] Ambient light sensor on Framework 13 AMD laptop stops
- working in Linux 6.7
-Date: Fri, 15 Dec 2023 16:54:15 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@michaelmarley.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218223-217253-sQ6p4shjiU@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218223-217253@https.bugzilla.kernel.org/>
-References: <bug-218223-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437B63FE55;
+	Fri, 15 Dec 2023 17:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id ADB5C20640;
+	Fri, 15 Dec 2023 18:07:37 +0100 (CET)
+Date: Fri, 15 Dec 2023 18:07:33 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Johan Hovold <johan@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
+	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Alex Elder <elder@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
+ size_t
+Message-ID: <ZXyH1Zv3Pxd6S3ag@francesco-nb.int.toradex.com>
+References: <20231214170146.641783-1-francesco@dolcini.it>
+ <ZXxWX-Fw1InID2ax@hovoldconsulting.com>
+ <ZXxa7yzKzG6048vw@francesco-nb.int.toradex.com>
+ <ZXx8bCVyxJ9Ddvqm@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXx8bCVyxJ9Ddvqm@hovoldconsulting.com>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
+Hello Johan, Greg
 
---- Comment #4 from Michael Marley (michael@michaelmarley.com) ---
-With the patch, the light sensor is working again.  Thanks!
+On Fri, Dec 15, 2023 at 05:18:52PM +0100, Johan Hovold wrote:
+> On Fri, Dec 15, 2023 at 02:55:59PM +0100, Francesco Dolcini wrote:
+> > To me the change is correct, with that said probably this should have
+> > been explicitly mentioned in the commit message or a separate
+> > preparation patch.
+> 
+> It's a separate change and should not be hidden away in a tree-wide
+> change that goes through a different maintainer.
+> 
+> Please drop this change from this patch and resubmit it separately to me
+> if you want and I'll review when I have the time.
 
---=20
-You may reply to this email to add a comment.
+Fine, I agree.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+I see those options (let me know if you see other options I have not
+mentioned):
+
+1. I add this change (taking into account also intel ice) as a separate
+   patch in this series and you may just ack it and Greg could merge
+   together with the serdev one.
+2. I prepare an independent patch for the GNSS change and only once this
+   is merged I'll send a rebased v2 of this one.
+3. I update this patch without this GNSS API change, that mean I will
+   have to cast away the signed type from a few GNSS drivers.
+
+1 is my preferred option, 2 is fine, but it seems a little bit of overdoing,
+3 I would avoid, we are doing this cleanup to be a little bit more
+strongly typed and to prevent the kind of bugs that is the original trigger
+for this patch.
+
+What would you Greg and Johan prefer?
+
+
+> And when doing tree-wide changes, please try to follow the style of the
+> driver you are changing (e.g. do not introduce inconsistencies by
+> changing to open parenthesis alignment of continuation lines in code
+> that do not use it).
+
+ack, sorry about that, looking back at the archive is seems a recent
+pain point, also Jiri fell in this trap.
+
+Francesco
+
 

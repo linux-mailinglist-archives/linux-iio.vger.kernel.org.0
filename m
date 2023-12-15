@@ -1,95 +1,141 @@
-Return-Path: <linux-iio+bounces-955-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-956-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E89B814C84
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:09:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CD3814CD3
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D16791C23AAF
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 955EF283150
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6754A3BB36;
-	Fri, 15 Dec 2023 16:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3538E3BB34;
+	Fri, 15 Dec 2023 16:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rd4lvGHb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7dm0Ddl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309003BB35
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:09:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AFD6AC433C7
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E853BB25;
+	Fri, 15 Dec 2023 16:18:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FC0C433C7;
+	Fri, 15 Dec 2023 16:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702656563;
-	bh=S9ECmfK9HCqMC4itmhPQuL4vsADbm+mJ0MDegrim8FA=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=rd4lvGHbAVVa9tJJBMTZyhek9cKRjpR1D+KhBRQ7TdpIEmPD1s5Ygj+P4dUKdV9mT
-	 FNYS3lICqLCszPBXFsx2+fvnXHXDqdQL1uN8gmxx6gHlU+DsEksfTBH7g+VXum4+V0
-	 oNvefGShM+Ukq1BHCBT+u+RVcnbmaOUO3x5JN1lwAUZsK/Bb+y2rwQq07VBm7Yt14O
-	 3qSX8C6y1GPYPN/+v4XC3+h3B29IEvc6/YR5Ewx/Kqrg9P+KV3jiXCGNMxm/fWEl4J
-	 gjxNZWW7l8Lsi9qF/OInYes1WWzsA2TGShYWwANBAo/WXaDzNxuH3erWICSDaMs9wQ
-	 TCb8VQOyfrQBQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 905DDC53BC6; Fri, 15 Dec 2023 16:09:23 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218223] Ambient light sensor on Framework 13 AMD laptop stops
- working in Linux 6.7
-Date: Fri, 15 Dec 2023 16:09:23 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: srinivas.pandruvada@linux.intel.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc attachments.created
-Message-ID: <bug-218223-217253-FDhLmDAJ5C@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218223-217253@https.bugzilla.kernel.org/>
-References: <bug-218223-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1702657137;
+	bh=YlcNrdt+0bdBjEoeknJhdd+iUZGMaHxrfBZN/74+PSM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K7dm0Ddli65bXnpIe+H/ttDbslFE9q2kMgBadq97OkKtouXQIbEiyY2q9JXScuDsv
+	 C1TjFxiht6mfl4VICqLkzK7PUWl+CGRGnU6fYOYPcX8M4yYc9TnjF9ZXpkWsSySLmw
+	 CyyhNm54GFYsWjy2rItDi4vwFE9/ZhlLtsFlUG5+pOmeb3j63lrLaKJ7ABlRzd4YHf
+	 FIPEL5mBy+6x1p0RKnf9kDaMW13b61pXy/Df0JjpQnoeYrO6LSmIPopfjK9+e6we66
+	 XhmZW3p8qy6Nb89ngBM4O2Sk//rED3kWw0q23oLG3uetyunnmSGJbQZLPq0L+Kbm4x
+	 OaRnvmY/t7uxg==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rEAto-0000VW-1C;
+	Fri, 15 Dec 2023 17:18:52 +0100
+Date: Fri, 15 Dec 2023 17:18:52 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
+	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Alex Elder <elder@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
+ size_t
+Message-ID: <ZXx8bCVyxJ9Ddvqm@hovoldconsulting.com>
+References: <20231214170146.641783-1-francesco@dolcini.it>
+ <ZXxWX-Fw1InID2ax@hovoldconsulting.com>
+ <ZXxa7yzKzG6048vw@francesco-nb.int.toradex.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXxa7yzKzG6048vw@francesco-nb.int.toradex.com>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
+On Fri, Dec 15, 2023 at 02:55:59PM +0100, Francesco Dolcini wrote:
+> On Fri, Dec 15, 2023 at 02:36:31PM +0100, Johan Hovold wrote:
+> > On Thu, Dec 14, 2023 at 06:01:46PM +0100, Francesco Dolcini wrote:
+> > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > 
+> > > receive_buf() is called from ttyport_receive_buf() that expects values
+> > > ">= 0" from serdev_controller_receive_buf(), change its return type from
+> > > ssize_t to size_t.
 
-Srinivas Pandruvada (srinivas.pandruvada@linux.intel.com) changed:
+> > > -int gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
+> > > -				size_t count)
+> > > +size_t gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
+> > > +		       size_t count)
+> > >  {
+> > > -	int ret;
+> > > +	size_t ret;
+> > >  
+> > >  	ret = kfifo_in(&gdev->read_fifo, buf, count);
+> > >  
+> > 
+> > Why are you changing this function? This is part of the GNSS interface
+> > and has nothing to do with the rest of this patch.
+> 
+> good point, thanks for looking into that.
+> 
+> from my understanding kfifo_in() already return an unsigned, both
+> __kfifo_in and __kfifo_in_r return unsigned.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |srinivas.pandruvada@linux.i
-                   |                            |ntel.com
+Correct.
 
---- Comment #3 from Srinivas Pandruvada (srinivas.pandruvada@linux.intel.co=
-m) ---
-Created attachment 305607
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D305607&action=3Dedit
-Patch to fix this issue
+> With that said this is used by 3 drivers:
+> 
+> = drivers/gnss/sirf.c:
+> = drivers/gnss/serial.c:
+> 
+> The driver just use it into the actual receive_buf callback.
+> 
+> = drivers/gnss/usb.c
+> 
+> This driver does nothing with a negative return value (that is never the
+> less not possible), it just check that the whole buffer was inserted.
 
-Please try the attached patch. I also posted upstream. This issue broke ALS=
- on
-almost all Intel systems.
+That driver also knows it will never be negative.
 
---=20
-You may reply to this email to add a comment.
+And you forgot about
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+	drivers/net/ethernet/intel/ice/ice_gnss.c
+
+> To me the change is correct, with that said probably this should have
+> been explicitly mentioned in the commit message or a separate
+> preparation patch.
+
+It's a separate change and should not be hidden away in a tree-wide
+change that goes through a different maintainer.
+
+Please drop this change from this patch and resubmit it separately to me
+if you want and I'll review when I have the time.
+
+And when doing tree-wide changes, please try to follow the style of the
+driver you are changing (e.g. do not introduce inconsistencies by
+changing to open parenthesis alignment of continuation lines in code
+that do not use it).
+
+Johan
 

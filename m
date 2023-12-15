@@ -1,116 +1,160 @@
-Return-Path: <linux-iio+bounces-961-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-963-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE42814D1A
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:32:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D16814DBD
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF7921C23C65
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:32:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D553B225D8
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD823C6AC;
-	Fri, 15 Dec 2023 16:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236943EA88;
+	Fri, 15 Dec 2023 17:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u23Widco"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="UGfEXITT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67E3FE2C;
-	Fri, 15 Dec 2023 16:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD69C433C8;
-	Fri, 15 Dec 2023 16:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702657953;
-	bh=5xSZ6gC57XpMcrBYmJ5djtgBGtNosockr7ypfWQ/UoA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u23WidcobeXI8hJTBO02gH39xAVyMZg3S/gk8R3+oMsy1a46PrrJRqER62yDtrdtf
-	 1sP9G3jW6bt0TkUH+FVWaUXb2WUMuoifq5UkKLSL9Vihbw/4tLEgQtVy3f2vCcs/Dv
-	 wXTrDDgayoevbU8NQT5CXG0gCcWFBHIOSHMEoJhbkn1WLbj/H/Eu2Fuq4FA4d679tr
-	 0edO8rQox64QgmVeY5DX9u/1v/sBmf4kwA7Zaxt4jUW2eY9C5xbVFoGtvPd+mKK3Eo
-	 sfxBmvoKrJU1x51n4fbHg8VooER+eL425YDkyzu8lDJ1d7HJ/0OT8IaPHRNo28jX8y
-	 dWVhTFyyt4wKA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rEB6x-0000ZV-31;
-	Fri, 15 Dec 2023 17:32:28 +0100
-Date: Fri, 15 Dec 2023 17:32:27 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
-	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Alex Elder <elder@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
- size_t
-Message-ID: <ZXx_m1R0x7omubxE@hovoldconsulting.com>
-References: <20231214170146.641783-1-francesco@dolcini.it>
- <ZXxZzd1iBOCmnczH@hovoldconsulting.com>
- <ZXxbx+laQk35W56U@francesco-nb.int.toradex.com>
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303353EA78
+	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 17:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.18] ([92.140.202.140])
+	by smtp.orange.fr with ESMTPA
+	id EBR6rmv31emNIEBR6rInmB; Fri, 15 Dec 2023 17:53:17 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1702659197;
+	bh=yYjHwcm5ONKKp2t/E2nQ5jgkSu+ukJ4Ae0Z81VV/l5U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UGfEXITTxE+pPRmAIu4Gbf5iCKKwO9WC9yJDTyvNy1c8Trpi3n/Cod/yWv3CZLx0q
+	 AJ9N0QRSrW3JAN8Az4HbSI8H+WFAyOFgjdR0gbuVHiiul17M/98TmXDgIidX+z4zF/
+	 TP2t0gk7J/JKSUsoehFD+MMQsDwCgz/tNH0TzCoAiKzVxGz6ClX4wKa3iRINQEjgK4
+	 OudbrKVOcg58kNynTqM/Wy97jwahCKZapZHCn/LyqYct+orJM8NRM5ew+ndtvD4MRv
+	 8/rf6AuYeDSctx7feQC0fi0/Ob7Y1JyY+nct8hOpX+yitz4oklMvQAHutxVc4E+aZt
+	 /KPbT6UKIzqJQ==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 15 Dec 2023 17:53:17 +0100
+X-ME-IP: 92.140.202.140
+Message-ID: <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
+Date: Fri, 15 Dec 2023 17:53:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXxbx+laQk35W56U@francesco-nb.int.toradex.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
+To: dlechner@baylibre.com
+Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, lgirdwood@gmail.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, michael.hennerich@analog.com, nuno.sa@analog.com,
+ robh+dt@kernel.org, stefan.popa@analog.com
+References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
+ <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com>
+Content-Language: fr
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 15, 2023 at 02:59:35PM +0100, Francesco Dolcini wrote:
-> On Fri, Dec 15, 2023 at 02:51:09PM +0100, Johan Hovold wrote:
-> > On Thu, Dec 14, 2023 at 06:01:46PM +0100, Francesco Dolcini wrote:
-> > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > > 
-> > > receive_buf() is called from ttyport_receive_buf() that expects values
-> > > ">= 0" from serdev_controller_receive_buf(), change its return type from
-> > > ssize_t to size_t.
-
-> > >  drivers/bluetooth/btmtkuart.c              |  4 ++--
-> > >  drivers/bluetooth/btnxpuart.c              |  4 ++--
-
-> > > -static ssize_t btnxpuart_receive_buf(struct serdev_device *serdev,
-> > > -				     const u8 *data, size_t count)
-> > > +static size_t btnxpuart_receive_buf(struct serdev_device *serdev,
-> > > +				    const u8 *data, size_t count)
-> > >  {
-> > >  	struct btnxpuart_dev *nxpdev = serdev_device_get_drvdata(serdev);
-> > 
-> > A quick check of just the first two functions here shows that they can
-> > return negative values.
+Le 15/12/2023 à 11:32, David Lechner a écrit :
+> This adds a new driver for the AD7380 family ADCs.
 > 
-> This is already fixed. Patches are in next.
+> The driver currently implements basic support for the AD7380, AD7381,
+> AD7383, and AD7384 2-channel differential ADCs. Support for additional
+> single-ended and 4-channel chips that use the same register map as well
+> as additional features of the chip will be added in future patches.
 > 
-> There were 3 buggy user of this API.
->  - 1 patch was merged a few days ago in mainline
->  - 2 patches are in next, the maintainer decided to wait for the next merge window
-> 
-> commit 687d2de93b11 ("Bluetooth: btmtkuart: fix recv_buf() return value")
-> commit 7954bbcdd7ea ("Bluetooth: btnxpuart: fix recv_buf() return value")
-> commit c8820c92caf0 ("platform/surface: aggregator: fix recv_buf() return value")
+> Co-developed-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Reviewed-by: Nuno Sa <nuno.sa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: David Lechner <dlechner-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> ---
 
-Then why was that not mentioned in the patch (e.g. below the --- line)?
+...
 
-You are certainly not making it easy for reviewers, but good to see that
-you thought about this, and I see now when reviewing the mail archives
-that those bugs were the reason for this patch in the first place.
+> +static void ad7380_regulator_disable(void *p)
+> +{
+> +	regulator_disable(p);
+> +}
+> +
+> +static int ad7380_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct ad7380_state *st;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->spi = spi;
+> +	st->chip_info = spi_get_device_match_data(spi);
+> +	if (!st->chip_info)
+> +		return dev_err_probe(&spi->dev, -EINVAL, "missing match data\n");
+> +
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "refio");
 
-Johan
+Hi,
+
+devm_regulator_get_enable_optional()?
+to save some LoC below and ad7380_regulator_disable()
+
+CJ
+
+> +	if (IS_ERR(st->vref)) {
+> +		/*
+> +		 * If there is no REFIO supply, then it means that we are using
+> +		 * the internal 2.5V reference.
+> +		 */
+> +		if (PTR_ERR(st->vref) == -ENODEV)
+> +			st->vref = NULL;
+> +		else
+> +			return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
+> +					     "Failed to get refio regulator\n");
+> +	}
+> +
+> +	if (st->vref) {
+> +		ret = regulator_enable(st->vref);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7380_regulator_disable,
+> +					       st->vref);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	st->regmap = devm_regmap_init(&spi->dev, NULL, st, &ad7380_regmap_config);
+> +	if (IS_ERR(st->regmap))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
+> +				     "failed to allocate register map\n");
+> +
+> +	indio_dev->channels = st->chip_info->channels;
+> +	indio_dev->num_channels = st->chip_info->num_channels;
+> +	indio_dev->name = st->chip_info->name;
+> +	indio_dev->info = &ad7380_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->available_scan_masks = ad7380_2_channel_scan_masks;
+> +
+> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> +					      iio_pollfunc_store_time,
+> +					      ad7380_trigger_handler, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7380_init(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+
+...
+
 

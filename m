@@ -1,132 +1,167 @@
-Return-Path: <linux-iio+bounces-953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E231B814B9B
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:19:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDC6814C5C
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97FB61F24CEE
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 15:19:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2522B22894
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BF03716F;
-	Fri, 15 Dec 2023 15:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1178439FD3;
+	Fri, 15 Dec 2023 16:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EkTbs8Sv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C4336B10;
-	Fri, 15 Dec 2023 15:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-59052ab970eso805190eaf.1;
-        Fri, 15 Dec 2023 07:18:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702653523; x=1703258323;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Wx6tE9pQ+EepUECdpeIr7K3ALwmL7SjqzWxTPqRLfZI=;
-        b=VuhtT1m/FkmCKwUiVgZXeznSppjTKnqUbLYmYYCTv4ELhqWD7EXORvbxeRppO31e8d
-         vKEr2f6/BOryRAh0yrv7g/K46ENBxgBkbCFX5TP/u965lY61ygQDFTRudzI4YBzZhU95
-         iLEenH7wzzXPsHA+QhNcqguUjhPvLjfrqfL9rVcUvlKc07Dps6xn2R6GvblQsMeGwdV+
-         Tkhew3x5HqxdSo3kmgzxdrOlDCTTtMJBWOamMISZzPvovfRCLnOO83Px1M8fpoUC4GQT
-         f0UmJdxWM7ZhRRcKSaCP0Lwu7F3GgFkstXPc9ZDtZS+oYTgI/BW5iyEPiZ269YAitU+q
-         v+aw==
-X-Gm-Message-State: AOJu0YxA8loqqga0xFwQyGvg0iOcMD8GJW5IOUEJ/Peqg9N4x50x9JIO
-	4qif7m6c1BVnjVzHfckZ5g==
-X-Google-Smtp-Source: AGHT+IHjFeotZx/0jN0abAYahbn+a/d+puSMjYHpsS0vGkhglRT7juzY/+tJNJarXEhiwoEGbj3qJw==
-X-Received: by 2002:a05:6870:ec8b:b0:203:5ba2:895c with SMTP id eo11-20020a056870ec8b00b002035ba2895cmr891540oab.35.1702653522944;
-        Fri, 15 Dec 2023 07:18:42 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id lt14-20020a05687142ce00b00203297a24d7sm1393415oab.47.2023.12.15.07.18.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 07:18:42 -0800 (PST)
-Received: (nullmailer pid 3935630 invoked by uid 1000);
-	Fri, 15 Dec 2023 15:18:40 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E95F36AE0;
+	Fri, 15 Dec 2023 16:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702656142; x=1734192142;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T9RSzfQqw97u35cP02echEw6kn4/I1wBERkazpCYse0=;
+  b=EkTbs8SvvR7AaB51QsNZO88wzFpbWK5raXEw/acUXUV3+d3DjA1jgrk+
+   rmgNV49L3O87SFWyKtzk4qdGELRTCc//CjlAMp3aHWOv0AObN3OWqfaPJ
+   uJF5lsNU7AmFdAxnYdh5PZciJyOhH3EwPSlieYLRCxBYRBeKvCEidN7wO
+   o48T3FvxoqVgxp+8W/clSVr4nNd0oJ7iyWos+NldW8PcK0rPdTkL8ebZR
+   88b0gEpP72/eOOWXCtA91DzGst29IB0DgtnkBO0YjwvhX6VaKRks8KakH
+   tmxmneJ2X4zKUb4nHMu7aaxOF6UkwBjeWmRzm5FRkzCwVCrVvVSjEUJrK
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="13973685"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="13973685"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 08:02:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="948010121"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="948010121"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
+  by orsmga005.jf.intel.com with ESMTP; 15 Dec 2023 08:02:20 -0800
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: jikos@kernel.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	Basavaraj.Natikar@amd.com
+Cc: linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: light: hid-sensor-als: Avoid failure for chromaticity support
+Date: Fri, 15 Dec 2023 08:01:59 -0800
+Message-Id: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: Mike Looijmans <mike.looijmans@topic.nl>, Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, ChiaEn Wu <chiaen_wu@richtek.com>, andy@kernel.org, linus.walleij@linaro.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Michael Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, devicetree@vger.kernel.org, Niklas Schnelle <schnelle@linux.ibm.com>, brgl@bgdev.pl, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Arnd Bergmann <arnd@arndb.de>, =?utf-8?q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, Haibo Chen <haibo.chen@nxp.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-In-Reply-To: <20231215133512.28735-1-mitrutzceclan@gmail.com>
-References: <20231215133512.28735-1-mitrutzceclan@gmail.com>
-Message-Id: <170265352089.3935533.15346706462448721074.robh@kernel.org>
-Subject: Re: [PATCH v9 1/2] dt-bindings: adc: add AD7173
-Date: Fri, 15 Dec 2023 09:18:40 -0600
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+With the commit ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity
+support"), there is an assumption that the every HID ALS descriptor has
+support of usage ids for chromaticity support. If they are not present,
+probe fails for the driver . This breaks ALS functionality on majority of
+platforms.
 
-On Fri, 15 Dec 2023 15:34:57 +0200, Dumitru Ceclan wrote:
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
-> 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
-> V8->v9
->  - Add gpio-controller and "#gpio-cells" properties
->  - Add missing avdd2 and iovdd supplies
->  - Add string type to reference-select
-> V7->V8
->  - include missing fix from V6
-> V6->V7 <no changes>
-> V5->V6
->  - Moved global required property to proper placement
-> V4 -> V5
->  - Use string enum instead of integers for "adi,reference-select"
->  - Fix conditional checking in regards to compatible
-> V3 -> V4
->  - include supply attributes
->  - add channel attribute for selecting conversion reference
-> V2 -> V3
->  - remove redundant descriptions
->  - use referenced 'bipolar' property
->  - remove newlines from example
-> V1 -> V2 <no changes>
-> 
->  .../bindings/iio/adc/adi,ad7173.yaml          | 184 ++++++++++++++++++
->  1 file changed, 184 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> 
+It is possible that chromaticity usage ids are not present. When not
+present, restrict number of IIO channels to not include support for
+chromaticity and continue.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Fixes: ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity support")
+Reported-by: Thomas Weißschuh <thomas@t-8ch.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218223
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/iio/light/hid-sensor-als.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml: patternProperties:^channel@[0-9a-f]$:properties:adi,reference-select:type: 'string' is not one of ['boolean', 'object']
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml: patternProperties:^channel@[0-9a-f]$:properties:adi,reference-select:type: 'boolean' was expected
-	hint: A vendor boolean property can use "type: boolean"
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7173.example.dtb: adc@0: '#gpio-cells' is a dependency of 'gpio-controller'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231215133512.28735-1-mitrutzceclan@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
+index f17304b54468..9941b0b927c7 100644
+--- a/drivers/iio/light/hid-sensor-als.c
++++ b/drivers/iio/light/hid-sensor-als.c
+@@ -303,11 +303,14 @@ static int als_parse_report(struct platform_device *pdev,
+ 				struct hid_sensor_hub_device *hsdev,
+ 				struct iio_chan_spec *channels,
+ 				unsigned usage_id,
+-				struct als_state *st)
++				struct als_state *st,
++				int *max_channels)
+ {
+ 	int ret;
+ 	int i;
+ 
++	*max_channels = CHANNEL_SCAN_INDEX_MAX;
++
+ 	for (i = 0; i <= CHANNEL_SCAN_INDEX_ILLUM; ++i) {
+ 		ret = sensor_hub_input_get_attribute_info(hsdev,
+ 						HID_INPUT_REPORT,
+@@ -326,8 +329,12 @@ static int als_parse_report(struct platform_device *pdev,
+ 				usage_id,
+ 				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
+ 				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
+-	if (ret < 0)
+-		return ret;
++	if (ret < 0) {
++		*max_channels = CHANNEL_SCAN_INDEX_ILLUM;
++		ret = 0;
++		goto skip_color_chromaticity;
++	}
++
+ 	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
+ 				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
+ 
+@@ -354,6 +361,7 @@ static int als_parse_report(struct platform_device *pdev,
+ 			st->als[next_scan_index].report_id);
+ 	}
+ 
++skip_color_chromaticity:
+ 	st->scale_precision = hid_sensor_format_scale(usage_id,
+ 				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
+ 				&st->scale_pre_decml, &st->scale_post_decml);
+@@ -364,7 +372,7 @@ static int als_parse_report(struct platform_device *pdev,
+ /* Function to initialize the processing for usage id */
+ static int hid_als_probe(struct platform_device *pdev)
+ {
+-	int ret = 0;
++	int ret = 0, max_channels;
+ 	static const char *name = "als";
+ 	struct iio_dev *indio_dev;
+ 	struct als_state *als_state;
+@@ -398,15 +406,15 @@ static int hid_als_probe(struct platform_device *pdev)
+ 
+ 	ret = als_parse_report(pdev, hsdev,
+ 			       (struct iio_chan_spec *)indio_dev->channels,
+-			       hsdev->usage,
+-			       als_state);
++			       hsdev->usage, als_state, &max_channels);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to setup attributes\n");
+ 		return ret;
+ 	}
+ 
+-	indio_dev->num_channels =
+-				ARRAY_SIZE(als_channels);
++	/* +1 to include time stamp */
++	indio_dev->num_channels = max_channels + 1;
++
+ 	indio_dev->info = &als_info;
+ 	indio_dev->name = name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+-- 
+2.25.1
 
 

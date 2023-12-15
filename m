@@ -1,224 +1,195 @@
-Return-Path: <linux-iio+bounces-965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-966-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAE0814E88
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:26:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B5814EDF
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3774FB24252
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:26:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627571F240EC
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C0E82ED2;
-	Fri, 15 Dec 2023 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFC582EDF;
+	Fri, 15 Dec 2023 17:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="fwWY7QMm"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0b+fpO2r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0890A82EC9;
-	Fri, 15 Dec 2023 17:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BFEfQZm028431;
-	Fri, 15 Dec 2023 18:13:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=EmFNRv3LoVGaci59g9h+fN2FkreeIA99LXaRAwQkDis=; b=fw
-	WY7QMm9y2J9BqlZgw1Gjtb+o+dYxNk+k6LUcHD2rb6emZrVf8VKPuuCVpdYheO7e
-	+Am366SCNznJJ8AwW84KBgnd4IU9J9KAF5FS99iPkqDXveQo5MYzy4j1aUdhu0oJ
-	C+Fl5TncBsTXJRrK3pB+IEbsLL+RtNC7/oaxlrLZZcL4omd1Rh8GXoojLht/6mgH
-	r1r4wcZDi7HNxj5dWKNJcMyIsIjEqZFFZl30vdCluRgPvlf/C3HaB0q8I8cVyEEW
-	iEGG7j9eftlHB5c3kqLKpJyd8VhCTmjGArGaqp1Hp7wcSXLZPzJ32rquIgHKyfzk
-	x/0DMfPfilFvHpq9eBZg==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uvehmu8pg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Dec 2023 18:13:53 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1BE69100052;
-	Fri, 15 Dec 2023 18:13:53 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 11CD823BE1E;
-	Fri, 15 Dec 2023 18:13:53 +0100 (CET)
-Received: from [10.201.20.59] (10.201.20.59) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 15 Dec
- 2023 18:13:52 +0100
-Message-ID: <997c056e-c4e1-4bd8-9fcd-9f1b4bd45929@foss.st.com>
-Date: Fri, 15 Dec 2023 18:13:51 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB2630109
+	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 17:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2c9f85eff28so12660521fa.3
+        for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 09:31:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702661517; x=1703266317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=13gliIVcQbLU7hKnOSD6BJq01ueaRAAu4jm5L+NVTns=;
+        b=0b+fpO2rkETJEdiGFDBfneuXk59LoQQyQ3OsOBqPNdHwU4D67rH7OZWW1DU/EOzYNU
+         ly2Mb3bDAJ+m/zQ37+1iFUpxwodVL9zr5kRXaD0e1D7QNzZEay85FSTYouLFo7bbDjvj
+         AVJBD7pq1XT9twqiF5GsgYy1yhZvEbv0x8TxndhEvSoexLQzNN6okGpO9oRv5FzzjxBQ
+         3am0bk4jCIQ9Je7tA6o07osbp4ZS6xL2U1LGCO2vQ8ysq3Zf9ysZnjyb2tVMuk+Icn2I
+         kZxtFv8bBEYm7HujV4hXI1/1Gn6SQOjfhKRkquylMSWzBe++G66HVIPM0WXIZBq4NVWg
+         KjyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702661517; x=1703266317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=13gliIVcQbLU7hKnOSD6BJq01ueaRAAu4jm5L+NVTns=;
+        b=c3JQqzmbnnkXQgkf55mo0DmLPTq/0ytJgcG8J2LsBFzhT4lO6ca3pteXE2Nakv+R1P
+         pKYICTmtqqsohjdTjxcc5DbPpX4JMxW4HQRzP2zZCwqJVJJF1DntqrRLtxNj68rW4Mi2
+         JSGz6AJq/71Cj/UyVLwO1lHZFCXb+VMac/zZKDdawv2KhAReoWTyiMUFA3o16P2oGP4D
+         rJI1pVq27mOJCPIH0bz0eray0cGGkdiTd74fb6/a5Y83nHopUX4qUw7gaUsS1zuB4OaZ
+         O1Nzhx72+9Spbk8Mq7gJEk1wN0lpyBwuX38RS4BF0MjrL9c5VOxLuXzJULx8ka/NLj74
+         6++Q==
+X-Gm-Message-State: AOJu0YwmuxbKmy3yTbCsrJxKNJJNLCZ3aFeibcYloLXnnKs2iPUcgcJG
+	2LDCLXidUQyOzUqwcT1fsQLn6CLMcZN5sNtBEefeCw==
+X-Google-Smtp-Source: AGHT+IFxmmKUPom/holribS2VHUERs+Ifa/Hn3mwBjJChRW4DE+E8HwHzNK/uqopAZogvwI1KxYaH/zKVAEN73mIK7g=
+X-Received: by 2002:a05:651c:220b:b0:2cc:1c1f:a895 with SMTP id
+ y11-20020a05651c220b00b002cc1c1fa895mr5329917ljq.22.1702661517493; Fri, 15
+ Dec 2023 09:31:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] counter: stm32-timer-cnt: populate capture
- channels and check encoder
-Content-Language: en-US
-To: William Breathitt Gray <william.gray@linaro.org>
-CC: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
- <20230922143920.3144249-6-fabrice.gasnier@foss.st.com>
- <ZSnJR2yfYsBNHu/4@fedora>
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <ZSnJR2yfYsBNHu/4@fedora>
+References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
+ <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com> <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
+In-Reply-To: <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 15 Dec 2023 18:31:46 +0100
+Message-ID: <CAMknhBEPxYtZps2cFk0ZPckbcHenXJ_v4Dv+82ENg47J52gHxQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, lgirdwood@gmail.com, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, michael.hennerich@analog.com, nuno.sa@analog.com, 
+	robh+dt@kernel.org, stefan.popa@analog.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-15_10,2023-12-14_01,2023-05-22_02
+Content-Transfer-Encoding: quoted-printable
 
-On 10/14/23 00:48, William Breathitt Gray wrote:
-> On Fri, Sep 22, 2023 at 04:39:19PM +0200, Fabrice Gasnier wrote:
->> This is a precursor patch to support capture channels on all possible
->> channels and stm32 timer types. Original driver was intended to be used
->> only as quadrature encoder and simple counter on internal clock.
->>
->> So, add ch3 and ch4 definition. Also add a check on encoder capability,
->> so the driver may be probed for timer instances without encoder feature.
->> This way, all timers may be used as simple counter on internal clock,
->> starting from here.
-> 
-> Hi Fabrice,
-> 
-> Let's split the encoder capability probing code, detect number of
-> channels code, and channel introduction code to their own patches in
-> order to simplify things.
-> 
->> Encoder capability is retrieved by using the timer index (originally in
->> stm32-timer-trigger driver and dt-bindings). The need to keep backward
->> compatibility with existing device tree lead to parse aside trigger node.
->> Add diversity as STM32 timers with capture feature may have either 4, 2,
->> 1 or no cc (capture/compare) channels.
->>
->> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> 
-> I think this patch is more complicated than it needs to be.
-> 
->> @@ -400,13 +558,47 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
->>  	priv->clk = ddata->clk;
->>  	priv->max_arr = ddata->max_arr;
->>  
->> +	ret = stm32_timer_cnt_probe_encoder(pdev, priv);
->> +	if (ret)
->> +		return ret;
->> +
->> +	stm32_timer_cnt_detect_channels(pdev, priv);
->> +
->>  	counter->name = dev_name(dev);
->>  	counter->parent = dev;
->>  	counter->ops = &stm32_timer_cnt_ops;
->> -	counter->counts = &stm32_counts;
->>  	counter->num_counts = 1;
->> -	counter->signals = stm32_signals;
->> -	counter->num_signals = ARRAY_SIZE(stm32_signals);
-> 
-> Keep this the same.
-> 
->> +
->> +	/*
->> +	 * Handle diversity for stm32 timers features. For now encoder is found with
->> +	 * advanced timers or gp timers with 4 channels. Timers with less channels
->> +	 * doesn't support encoder.
->> +	 */
->> +	switch (priv->nchannels) {
->> +	case 4:
->> +		if (priv->has_encoder)
->> +			counter->counts = &stm32_counts_enc_4ch;
->> +		else
->> +			counter->counts = &stm32_counts_4ch;
->> +		counter->signals = stm32_signals;
->> +		counter->num_signals = ARRAY_SIZE(stm32_signals);
->> +		break;
->> +	case 2:
->> +		counter->counts = &stm32_counts_2ch;
->> +		counter->signals = stm32_signals;
->> +		counter->num_signals = 3; /* clock, ch1 and ch2 */
->> +		break;
->> +	case 1:
->> +		counter->counts = &stm32_counts_1ch;
->> +		counter->signals = stm32_signals;
->> +		counter->num_signals = 2; /* clock, ch1 */
->> +		break;
->> +	default:
->> +		counter->counts = &stm32_counts;
->> +		counter->signals = stm32_signals;
->> +		counter->num_signals = 1; /* clock */
->> +		break;
->> +	}
-> 
-> Rather than adjusting the number of counts and signals, keep the
-> configuration static and use a single stm32_counts array. The reason is
-> that in the Counter subsystem paradigm Signals do not necessary
-> correlate to specific hardware signals but are rather an abstract
-> representation of the device behavior at a high level. In other words, a
-> Synapse with an action mode set to COUNTER_SYNAPSE_ACTION_NONE can be
-> viewed as representing a Signal that does not affect the Count (i.e. in
-> this case equivalent to an unconnected line).
-> 
-> What you'll need to do instead is check priv->nchannels during
-> stm32_action_read and stm32_count_function_read calls in order to return
-> the correct synapse action and count function for the particular
-> channels configuration you have. In stm32_count_function_write you would
-> return an -EINVAL (maybe -EOPNOTSUPP would be better?) when the channels
-> configuration does not support a particular count function.
+On Fri, Dec 15, 2023 at 5:53=E2=80=AFPM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> Le 15/12/2023 =C3=A0 11:32, David Lechner a =C3=A9crit :
+> > This adds a new driver for the AD7380 family ADCs.
+> >
+> > The driver currently implements basic support for the AD7380, AD7381,
+> > AD7383, and AD7384 2-channel differential ADCs. Support for additional
+> > single-ended and 4-channel chips that use the same register map as well
+> > as additional features of the chip will be added in future patches.
+> >
+> > Co-developed-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public=
+.gmane.org>
+> > Signed-off-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.g=
+mane.org>
+> > Reviewed-by: Nuno Sa <nuno.sa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> > Signed-off-by: David Lechner <dlechner-rdvid1DuHRBWk0Htik3J/w@public.gm=
+ane.org>
+> > ---
+>
+> ...
+>
+> > +static void ad7380_regulator_disable(void *p)
+> > +{
+> > +     regulator_disable(p);
+> > +}
+> > +
+> > +static int ad7380_probe(struct spi_device *spi)
+> > +{
+> > +     struct iio_dev *indio_dev;
+> > +     struct ad7380_state *st;
+> > +     int ret;
+> > +
+> > +     indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> > +     if (!indio_dev)
+> > +             return -ENOMEM;
+> > +
+> > +     st =3D iio_priv(indio_dev);
+> > +     st->spi =3D spi;
+> > +     st->chip_info =3D spi_get_device_match_data(spi);
+> > +     if (!st->chip_info)
+> > +             return dev_err_probe(&spi->dev, -EINVAL, "missing match d=
+ata\n");
+> > +
+> > +     st->vref =3D devm_regulator_get_optional(&spi->dev, "refio");
+>
+> Hi,
+>
+> devm_regulator_get_enable_optional()?
+> to save some LoC below and ad7380_regulator_disable()
 
-Hi William,
+It would be nice if we could, but we need the pointer to the regulator
+to read the voltage of the regulator (it is the reference voltage for
+an ADC). So we can't use devm_regulator_get_enable_optional() because
+it only an int and not the pointer to the regulator.
 
-Sorry for the long delay to address your comments here. Many thanks for
-these guidelines.
-
-I'm preparing a v3, to address these. I'll probably send it soon, so we
-can start to review also the capture part of it. Still there are few
-things here I'm wondering about (as an anticipation task).
-
-Basically, removing all the diversity here means the most featured timer
-model will be represented here (with all possible signals).
-When I wrote the various configuration arrays, I'd have been tempted to
-allocate them dynamically upon probing to avoid having all these
-variants described as const arrays. This may have eased other signals
-additions later. But that's not the direction. So, this simplifies the
-description here, clearly, to describe the full-featured timer/counter,
-and handle the ("unconnected") variants by returning errors.
-
-I still have in mind the replacement of the last IIO_COUNT device [1]
-(not addressed in this series), e.g. in
-drivers/iio/trigger/stm32-timer-trigger.c. Here, there are
-"valids_table" that are used to cascade two timers (one timer output
-being the input to another timer). With this table currently, an IIO
-user knows the name of the signal it selects (then the driver looks up
-the 'valids' table to set SMCR / TS bits, e.g. trigger select). Each
-individual timer has a different input mapping, so called peripheral
-interconnect in STM32.
-What bothers me here is: with an abstracted full-featured timer, without
-any diversity on the signal names, I fear the userland has no clue on
-which signal would be used. Abstracting the timer this way would mean
-the user only knows it selects "Internal Trigger 0" for example, without
-knowing which internal signal in the SoC it has selected.
-
-Even if this is out of scope for this series, would you have some clue
-so I can anticipate it ? Or if we stick with abstract names? In which
-case the userland may need to be aware of the signals mapping (where
-currently in IIO_COUNT driver, the signal names are privided). I'd be
-glad to get some direction here.
-
-Please advise,
-Best Regards,
-Fabrice
-
-[1] https://lore.kernel.org/linux-arm-kernel/Y0vzlOmFrVCQVXMq@fedora/
-
-> 
-> William Breathitt Gray
+>
+> CJ
+>
+> > +     if (IS_ERR(st->vref)) {
+> > +             /*
+> > +              * If there is no REFIO supply, then it means that we are=
+ using
+> > +              * the internal 2.5V reference.
+> > +              */
+> > +             if (PTR_ERR(st->vref) =3D=3D -ENODEV)
+> > +                     st->vref =3D NULL;
+> > +             else
+> > +                     return dev_err_probe(&spi->dev, PTR_ERR(st->vref)=
+,
+> > +                                          "Failed to get refio regulat=
+or\n");
+> > +     }
+> > +
+> > +     if (st->vref) {
+> > +             ret =3D regulator_enable(st->vref);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             ret =3D devm_add_action_or_reset(&spi->dev, ad7380_regula=
+tor_disable,
+> > +                                            st->vref);
+> > +             if (ret)
+> > +                     return ret;
+> > +     }
+> > +
+> > +     st->regmap =3D devm_regmap_init(&spi->dev, NULL, st, &ad7380_regm=
+ap_config);
+> > +     if (IS_ERR(st->regmap))
+> > +             return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
+> > +                                  "failed to allocate register map\n")=
+;
+> > +
+> > +     indio_dev->channels =3D st->chip_info->channels;
+> > +     indio_dev->num_channels =3D st->chip_info->num_channels;
+> > +     indio_dev->name =3D st->chip_info->name;
+> > +     indio_dev->info =3D &ad7380_info;
+> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +     indio_dev->available_scan_masks =3D ad7380_2_channel_scan_masks;
+> > +
+> > +     ret =3D devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> > +                                           iio_pollfunc_store_time,
+> > +                                           ad7380_trigger_handler, NUL=
+L);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     ret =3D ad7380_init(st);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     return devm_iio_device_register(&spi->dev, indio_dev);
+> > +}
+>
+> ...
+>
 

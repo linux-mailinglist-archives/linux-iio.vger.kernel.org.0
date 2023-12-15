@@ -1,195 +1,173 @@
-Return-Path: <linux-iio+bounces-966-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-967-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B5814EDF
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:32:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4A8814EE4
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627571F240EC
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:32:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE241F2306C
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFC582EDF;
-	Fri, 15 Dec 2023 17:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070D582EC8;
+	Fri, 15 Dec 2023 17:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0b+fpO2r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AzUwk+aL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB2630109
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 17:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2c9f85eff28so12660521fa.3
-        for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 09:31:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702661517; x=1703266317; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=13gliIVcQbLU7hKnOSD6BJq01ueaRAAu4jm5L+NVTns=;
-        b=0b+fpO2rkETJEdiGFDBfneuXk59LoQQyQ3OsOBqPNdHwU4D67rH7OZWW1DU/EOzYNU
-         ly2Mb3bDAJ+m/zQ37+1iFUpxwodVL9zr5kRXaD0e1D7QNzZEay85FSTYouLFo7bbDjvj
-         AVJBD7pq1XT9twqiF5GsgYy1yhZvEbv0x8TxndhEvSoexLQzNN6okGpO9oRv5FzzjxBQ
-         3am0bk4jCIQ9Je7tA6o07osbp4ZS6xL2U1LGCO2vQ8ysq3Zf9ysZnjyb2tVMuk+Icn2I
-         kZxtFv8bBEYm7HujV4hXI1/1Gn6SQOjfhKRkquylMSWzBe++G66HVIPM0WXIZBq4NVWg
-         KjyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702661517; x=1703266317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=13gliIVcQbLU7hKnOSD6BJq01ueaRAAu4jm5L+NVTns=;
-        b=c3JQqzmbnnkXQgkf55mo0DmLPTq/0ytJgcG8J2LsBFzhT4lO6ca3pteXE2Nakv+R1P
-         pKYICTmtqqsohjdTjxcc5DbPpX4JMxW4HQRzP2zZCwqJVJJF1DntqrRLtxNj68rW4Mi2
-         JSGz6AJq/71Cj/UyVLwO1lHZFCXb+VMac/zZKDdawv2KhAReoWTyiMUFA3o16P2oGP4D
-         rJI1pVq27mOJCPIH0bz0eray0cGGkdiTd74fb6/a5Y83nHopUX4qUw7gaUsS1zuB4OaZ
-         O1Nzhx72+9Spbk8Mq7gJEk1wN0lpyBwuX38RS4BF0MjrL9c5VOxLuXzJULx8ka/NLj74
-         6++Q==
-X-Gm-Message-State: AOJu0YwmuxbKmy3yTbCsrJxKNJJNLCZ3aFeibcYloLXnnKs2iPUcgcJG
-	2LDCLXidUQyOzUqwcT1fsQLn6CLMcZN5sNtBEefeCw==
-X-Google-Smtp-Source: AGHT+IFxmmKUPom/holribS2VHUERs+Ifa/Hn3mwBjJChRW4DE+E8HwHzNK/uqopAZogvwI1KxYaH/zKVAEN73mIK7g=
-X-Received: by 2002:a05:651c:220b:b0:2cc:1c1f:a895 with SMTP id
- y11-20020a05651c220b00b002cc1c1fa895mr5329917ljq.22.1702661517493; Fri, 15
- Dec 2023 09:31:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E13C82ECA;
+	Fri, 15 Dec 2023 17:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702661598; x=1734197598;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=NwKPs1sHl/0sAHhRL2vq6ph7EZTS+u5I2ScffWuwONg=;
+  b=AzUwk+aLsJkSvh0fL6nLxoIFa8YRwvQPGrb2gEnSxZrpeGK1kMaKlcyb
+   BTcrueu+E6P5DmNOQ1LBFkNw3f/PWXkoORTp04K0jS9LO+BbyA/qzWwRP
+   xKnQ59dbzCHS9I4QHPhrUBEn6yQbsSevbYs2kPgLmR6Mv4kNSyOF5C/v7
+   13S/Pe7JAby2y+Q5+6AiESa88IRE/pH9kAHakb0yflKMzcs+mloXiS/9R
+   1JrtM8ddOAc2xttSwyhtSgAmib+gNz0ID8eSCryXOu2vkZDuUXeIu1mvk
+   ooeJ7X/0yFxMjQK+xld5knISzGfSxMeynxOm+MSILKtYOjrQAY6mvY6DX
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="461766241"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="461766241"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 09:33:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="751003690"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="751003690"
+Received: from skiddyam-mobl.amr.corp.intel.com (HELO [10.212.94.203]) ([10.212.94.203])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 09:33:15 -0800
+Message-ID: <0500bfe6e16fe01d34363f46ca7bbef79c5e8939.camel@linux.intel.com>
+Subject: Re: [PATCH v2 0/9] Support light color temperature and chromaticity
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>, Jonathan
+ Cameron <jic23@kernel.org>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+ <thomas@t-8ch.de>
+Cc: Basavaraj Natikar <Basavaraj.Natikar@amd.com>, jikos@kernel.org, 
+ benjamin.tissoires@redhat.com, lars@metafoo.de,
+ linux-input@vger.kernel.org,  linux-iio@vger.kernel.org
+Date: Fri, 15 Dec 2023 12:33:15 -0500
+In-Reply-To: <d3d6fe7a-d6e1-4ea6-a8f6-2430731691b2@leemhuis.info>
+References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
+	 <4441bd6b-01cd-4f26-bf85-bde2e1bf404e@t-8ch.de>
+	 <20231210110735.52f8dc53@jic23-huawei>
+	 <d3d6fe7a-d6e1-4ea6-a8f6-2430731691b2@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
- <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com> <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
-In-Reply-To: <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 15 Dec 2023 18:31:46 +0100
-Message-ID: <CAMknhBEPxYtZps2cFk0ZPckbcHenXJ_v4Dv+82ENg47J52gHxQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
-	jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, lgirdwood@gmail.com, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-spi@vger.kernel.org, michael.hennerich@analog.com, nuno.sa@analog.com, 
-	robh+dt@kernel.org, stefan.popa@analog.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 15, 2023 at 5:53=E2=80=AFPM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> Le 15/12/2023 =C3=A0 11:32, David Lechner a =C3=A9crit :
-> > This adds a new driver for the AD7380 family ADCs.
-> >
-> > The driver currently implements basic support for the AD7380, AD7381,
-> > AD7383, and AD7384 2-channel differential ADCs. Support for additional
-> > single-ended and 4-channel chips that use the same register map as well
-> > as additional features of the chip will be added in future patches.
-> >
-> > Co-developed-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public=
-.gmane.org>
-> > Signed-off-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.g=
-mane.org>
-> > Reviewed-by: Nuno Sa <nuno.sa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> > Signed-off-by: David Lechner <dlechner-rdvid1DuHRBWk0Htik3J/w@public.gm=
-ane.org>
-> > ---
->
-> ...
->
-> > +static void ad7380_regulator_disable(void *p)
-> > +{
-> > +     regulator_disable(p);
-> > +}
-> > +
-> > +static int ad7380_probe(struct spi_device *spi)
-> > +{
-> > +     struct iio_dev *indio_dev;
-> > +     struct ad7380_state *st;
-> > +     int ret;
-> > +
-> > +     indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> > +     if (!indio_dev)
-> > +             return -ENOMEM;
-> > +
-> > +     st =3D iio_priv(indio_dev);
-> > +     st->spi =3D spi;
-> > +     st->chip_info =3D spi_get_device_match_data(spi);
-> > +     if (!st->chip_info)
-> > +             return dev_err_probe(&spi->dev, -EINVAL, "missing match d=
-ata\n");
-> > +
-> > +     st->vref =3D devm_regulator_get_optional(&spi->dev, "refio");
->
-> Hi,
->
-> devm_regulator_get_enable_optional()?
-> to save some LoC below and ad7380_regulator_disable()
+On Fri, 2023-12-15 at 11:04 +0100, Linux regression tracking (Thorsten
+Leemhuis) wrote:
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
+>=20
+> Thomas, Jonathan, was any progress made to resolve below regression?
 
-It would be nice if we could, but we need the pointer to the regulator
-to read the voltage of the regulator (it is the reference voltage for
-an ADC). So we can't use devm_regulator_get_enable_optional() because
-it only an int and not the pointer to the regulator.
+A patch is posted
+https://patchwork.kernel.org/project/linux-iio/patch/20231215160159.648963-=
+1-srinivas.pandruvada@linux.intel.com/
 
->
-> CJ
->
-> > +     if (IS_ERR(st->vref)) {
-> > +             /*
-> > +              * If there is no REFIO supply, then it means that we are=
- using
-> > +              * the internal 2.5V reference.
-> > +              */
-> > +             if (PTR_ERR(st->vref) =3D=3D -ENODEV)
-> > +                     st->vref =3D NULL;
-> > +             else
-> > +                     return dev_err_probe(&spi->dev, PTR_ERR(st->vref)=
-,
-> > +                                          "Failed to get refio regulat=
-or\n");
-> > +     }
-> > +
-> > +     if (st->vref) {
-> > +             ret =3D regulator_enable(st->vref);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             ret =3D devm_add_action_or_reset(&spi->dev, ad7380_regula=
-tor_disable,
-> > +                                            st->vref);
-> > +             if (ret)
-> > +                     return ret;
-> > +     }
-> > +
-> > +     st->regmap =3D devm_regmap_init(&spi->dev, NULL, st, &ad7380_regm=
-ap_config);
-> > +     if (IS_ERR(st->regmap))
-> > +             return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-> > +                                  "failed to allocate register map\n")=
-;
-> > +
-> > +     indio_dev->channels =3D st->chip_info->channels;
-> > +     indio_dev->num_channels =3D st->chip_info->num_channels;
-> > +     indio_dev->name =3D st->chip_info->name;
-> > +     indio_dev->info =3D &ad7380_info;
-> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +     indio_dev->available_scan_masks =3D ad7380_2_channel_scan_masks;
-> > +
-> > +     ret =3D devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> > +                                           iio_pollfunc_store_time,
-> > +                                           ad7380_trigger_handler, NUL=
-L);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D ad7380_init(st);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return devm_iio_device_register(&spi->dev, indio_dev);
-> > +}
->
-> ...
->
+Thanks,
+Srinivas
+
+>=20
+> Side note: vormally I would not prod you at this time of the cycle,
+> but
+> with the festive season coming up I thought it would be wise to ask a
+> bit earlier for a status update.
+>=20
+> Ciao, Thorsten
+>=20
+> On 10.12.23 12:07, Jonathan Cameron wrote:
+> > On Thu, 7 Dec 2023 00:39:28 +0100
+> > Thomas Wei=C3=9Fschuh <thomas@t-8ch.de> wrote:
+> > > On 2023-09-19 13:40:45+0530, Basavaraj Natikar wrote:
+> > > > This series adds support for light color temperature and
+> > > > chromaticity.
+> > [...]
+> > > > Basavaraj Natikar (9):
+> > > > =C2=A0 iio: hid-sensor-als: Use channel index to support more hub
+> > > > attributes
+> > > > =C2=A0 iio: Add channel type light color temperature
+> > > > =C2=A0 iio: hid-sensor-als: Add light color temperature support
+> > > > =C2=A0 HID: amd_sfh: Add support for light color temperature
+> > > > =C2=A0 HID: amd_sfh: Add support for SFH1.1 light color temperature
+> > > > =C2=A0 iio: Add channel type for chromaticity
+> > > > =C2=A0 iio: hid-sensor-als: Add light chromaticity support
+> > > > =C2=A0 HID: amd_sfh: Add light chromaticity support
+> > > > =C2=A0 HID: amd_sfh: Add light chromaticity for SFH1.1=C2=A0=20
+> > >=20
+> > > This series is breaking probing of hid-sensor-als on Framework 13
+> > > AMD
+> > > laptops [0].
+> > > The problem is that the patches require hid-sensors-als sensors
+> > > to also
+> > > report chromaticity and color temparature which they don't.
+> > Gah.=C2=A0 Missed that in review.=C2=A0 Sorry about that and thanks for
+> > digging into
+> > this.
+> > >=20
+> > > When I remove the 'if (ret < 0) return ret;' checks in
+> > > als_parse_report() probing works and the illuminance/intensity
+> > > channels
+> > > that show up behave as expected.
+> > > Unfortunately this still leaves behind a bunch of unusable
+> > > channels.
+> > > A nice fix would be to have something like sysfs/hwmon
+> > > .is_visible()
+> > > callback but that's not supported by IIO.
+> >=20
+> > It's tricky to do because there is no simple association between
+> > what is registered as channels and the resulting attribute.=C2=A0 We
+> > could probably
+> > make it work, but not a simple thing to do.
+> >=20
+> > >=20
+> > > One aproach would be to detect the usable channels in
+> > > als_parse_report()
+> > > and then adapt the indio_dev->channels based on that information.
+> > >=20
+> > > [0] https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
+> >=20
+> > Agreed that adapting the channels is the way to go.
+> > Easiest option probably to set the relevant masks to 0 if the
+> > chromacity and
+> > temp channels aren't there + set their scan index values to -1.
+> > That 'should' suppress any attributes being created.
+> > Having a gap in scan indexes is common anyway so any userspace
+> > should cope
+> > with the timestamp being after a gap.
+> >=20
+> > Alternatives would be to rebuild the chan_spec array to not have
+> > the entries,
+> > or pass in and fill in two copies of the array, picking the
+> > relevant one only
+> > on discovering if the temp and chromacity channels are present.
+> >=20
+> > Jonathan
+> >=20
+> > >=20
+> > > #regzbot introduced: 5f05285df691b1e82108eead7165feae238c95ef
+> > > #regzbot monitor:
+> > > https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
+> > >=20
+> >=20
+> >=20
+> >=20
+
 

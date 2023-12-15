@@ -1,279 +1,106 @@
-Return-Path: <linux-iio+bounces-942-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FEB814853
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 13:43:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FB581492F
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 14:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EC9FB229E5
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 12:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8A7284477
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 13:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31992C6B1;
-	Fri, 15 Dec 2023 12:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E262EAE6;
+	Fri, 15 Dec 2023 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="UQU3CUJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Yo+W8pt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2088.outbound.protection.outlook.com [40.107.8.88])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9492D7A7;
-	Fri, 15 Dec 2023 12:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UQtRQbfnUhmrLLeZDiCMPzjKiJin+4CuPdGNalu0iopEC7Jf8xRd1Kf+xub/7A+/mk9Uw8jJPO2kZFwevh0tkfCknPvYjnXt6B0SLX5TxXpn0tniJwAChKbWjfo4Nk2AjS+EwC/UmfAD1FhWqrSnc/gGVbbGy3azEV+OgVMz6jVOKBU0y441cpl2jL5lBwQe0NwirQELkKzEcoFzxcadMswJs+KYMuwcWDa3YiqVDYOfR8bi461ephVPw9vLwd6Xpyi51XsVTEZdlQEdqZ0wsBjJTkZh+JrU1YMPq29e/pVW8iV5R7kHjK858xXZ1OYdt2ke47zDWG8B6vUaXB4KhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5UgEm6jGXUzmxCyOfqh+FEbc0eSkL1Nw/Y/sNtqWYjA=;
- b=FSxKoZPHEbob1uHsyJSy3E+HvD0oUkcbpkZBLX6vifgRfLITuDFlI3PgjcomuQPpceqgpwwUuOFWW7VG54agy4afdhWvlPCWJQfrHBSP5kNBA4/N2OBEI6Pp2qbOhl4Di72RrwOsw/7VhI5exbd2vQUeFSP4blTW2+Vv1NEjrNhqmIuaJ1Q+K9V1AE8WFhMs2qvIy71QC0ldLJd1r5VXgYyx//R53b16+bxjmzG5hTUux6motThuw7F4QUPCdbrj6Ie0GCuPQKBuEd+7PLVZVHjGnec+cA7uJqU18Rgnpi8pVTh1YDcTP5ch+hCdURdlhMSsleSYoTKMnqlkC9Si5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5UgEm6jGXUzmxCyOfqh+FEbc0eSkL1Nw/Y/sNtqWYjA=;
- b=UQU3CUJWt+BsAQjsJ4GMxigB8JDLdtWp1rYRftMfnBwH14V9Jw1XriQk4fX1499395ICMCtxG2HzKukkuyem8GfvDVqagxDQr0Vx3MjgR2gagA/0j94H6A2gGG4v4toMvWVPPrU6ITMUQtzQZcBOwiJTss3qnMR2khPTUlLgxJE=
-Received: from AM6PR0502CA0059.eurprd05.prod.outlook.com
- (2603:10a6:20b:56::36) by AS1PR02MB8003.eurprd02.prod.outlook.com
- (2603:10a6:20b:4d1::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Fri, 15 Dec
- 2023 12:43:18 +0000
-Received: from AMS0EPF000001A4.eurprd05.prod.outlook.com
- (2603:10a6:20b:56:cafe::3f) by AM6PR0502CA0059.outlook.office365.com
- (2603:10a6:20b:56::36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28 via Frontend
- Transport; Fri, 15 Dec 2023 12:43:18 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=axis.com;
-Received-SPF: Fail (protection.outlook.com: domain of axis.com does not
- designate 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com;
-Received: from mail.axis.com (195.60.68.100) by
- AMS0EPF000001A4.mail.protection.outlook.com (10.167.16.229) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Fri, 15 Dec 2023 12:43:17 +0000
-Received: from se-mail01w.axis.com (10.20.40.7) by se-mail02w.axis.com
- (10.20.40.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 15 Dec
- 2023 13:43:17 +0100
-Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail01w.axis.com
- (10.20.40.7) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
- Transport; Fri, 15 Dec 2023 13:43:17 +0100
-Received: from pc42775-2107.se.axis.com (pc42775-2107.se.axis.com [10.94.129.29])
-	by se-intmail01x.se.axis.com (Postfix) with ESMTP id 3A83C10035;
-	Fri, 15 Dec 2023 13:43:17 +0100 (CET)
-Received: by pc42775-2107.se.axis.com (Postfix, from userid 21033)
-	id 33A952FA7D1; Fri, 15 Dec 2023 13:43:17 +0100 (CET)
-From: =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-Date: Fri, 15 Dec 2023 13:43:05 +0100
-Subject: [PATCH 2/2] iio: light: vcnl4000: Add ps high definition for
- vcnl4040
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E6B2E842;
+	Fri, 15 Dec 2023 13:26:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AADC433C7;
+	Fri, 15 Dec 2023 13:26:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702646810;
+	bh=00ZkD0cu7HBjZVGkRek2lsYzXAxF35Yjjr+hicSHu5Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1Yo+W8ptX+67SOYAVONFRcrHI+q2aCFD7vEjWVSvPiznqrNEBN0RX7AuxQA8Fq9o3
+	 JJ3FNRJdXfsJ1lSkc+ATqb8/6/Ogg1HVpfhKJNCDv8PhCin6QqABrwy3PGC7WSyanW
+	 q3/sJsi8ph1KA5HU1TJgqgS1QPZxq8wiwlyCJz+Q=
+Date: Fri, 15 Dec 2023 14:26:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
+	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
+ size_t
+Message-ID: <2023121535-coveting-destruct-f567@gregkh>
+References: <20231214170146.641783-1-francesco@dolcini.it>
+ <ZXs94Mf1eOMCmGpT@francesco-nb.int.toradex.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20231212-vcnl4000-ps-hd-v1-2-1c62a95828c0@axis.com>
-References: <20231212-vcnl4000-ps-hd-v1-0-1c62a95828c0@axis.com>
-In-Reply-To: <20231212-vcnl4000-ps-hd-v1-0-1c62a95828c0@axis.com>
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kernel@axis.com>, =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1702644197; l=4875;
- i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
- bh=reQw6rieOSSDmthGg/ptStNM7AqQg+3POYVpmRVbC9Y=;
- b=h3k/+cK/LLd8JNNgMqbfIPnCuQ/rnpMr+QFVUZ/Wlt9rsmY08JPmtm19YfKb/z3cEivHOajml
- Ff9BOSaxk71CmX0CkL9M2/SoAI/Hx2usFBLJegjRWklwkK0Z4vkP8qS
-X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
- pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF000001A4:EE_|AS1PR02MB8003:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1b7effa-f846-4f97-66e9-08dbfd6b697f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	rpAkTTLNsOF8QiTJEljo4FkUxS4PCIbB/rvQh2w8eCf1zatSDfjwlM7HHTVnEoALshhRVXx2qs4lMwl1l+lX/DWJUzuBDwjBuLZ+uXhIuA1554s5kfGRANXQQkKIY14v9abRXts3y38j/IAPIyM781yFJfTWh2BONxYaIRXzSyQg4DLqAM0f/fsOcIuXJF8rQuT4fhN+xTAppC5AMP99wUae6UVCvxoj17PuDeqGEZI8tGl4NFN9XIPIlwQ6cdp3y3N2kYjdVHxSZhAJ14GpPOXiUSemvtMuPnSvZoj4a0pLKYHOV6qWSAQmF72zn5KMSE7ucxOpAo7KPLddIGTqPIjeutZK5BuK2oJ5iJn4yXeeq5mJnWcWoWqSCkrh+t74Mr//KFFY0jGihUHWaxCb+6F7C3LlQtZ3mOTzBStyGh1LIvpqFpdrSq383yibNXUc4GR03Xr5gv388WevzWxYgJnwX3AvFUttOu9RjX9jKkJlGK4kNg6VpwjxpT810Q963DMWl+tmxgyKyirXgixa68n7tG4obTCyUD72p3Ivy6nSJb+m1Hk04L3PyXaN16GrQC389bFThq17uLoWdMIRL4BL1ZP5vfIdWvLh0mFzBg+tZ2gV8jqBGpw8XhfCbPiPbzEIpRRi6CXjTSoZflACc0yNqkps4Tj1bZPy/hDj6VSLwfcgEQoMPKdLL3zzIW+yTRMQZhcWqmtYOlqcijgCuI3WyFHrfoFkiF/l+gfIOwhsZclQ+zVhsHK/oAGlqDZ2mQUkfyEdwHuOqCOug9gc3Q==
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(39860400002)(136003)(346002)(396003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(82310400011)(46966006)(40470700004)(36840700001)(6666004)(2616005)(6266002)(66574015)(336012)(26005)(107886003)(426003)(478600001)(83380400001)(86362001)(47076005)(8936002)(8676002)(4326008)(36860700001)(54906003)(70586007)(70206006)(316002)(42186006)(110136005)(40480700001)(5660300002)(36756003)(356005)(81166007)(82740400003)(41300700001)(40460700003)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 12:43:17.6029
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1b7effa-f846-4f97-66e9-08dbfd6b697f
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF000001A4.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR02MB8003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXs94Mf1eOMCmGpT@francesco-nb.int.toradex.com>
 
-The vcnl4040 proximity sensor defaults to 12 bit data resolution, but
-the chip also supports 16 bit data resolution, which is called proximity
-high definition (PS_HD).
+On Thu, Dec 14, 2023 at 06:39:44PM +0100, Francesco Dolcini wrote:
+> On Thu, Dec 14, 2023 at 06:01:46PM +0100, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > 
+> > receive_buf() is called from ttyport_receive_buf() that expects values
+> > ">= 0" from serdev_controller_receive_buf(), change its return type from
+> > ssize_t to size_t.
+> > 
+> > Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> > Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > ---
+> > hello,
+> > patch is based on current linux next.
+> > 
+> > It has an obvious problem, it touches files from multiple subsystem in a single
+> > patch that is complicated to review and eventually merge, just splitting this
+> > would however not work, it will break bisectability and the build.
+> > 
+> > I am looking for advise on the best way to move forward.
+> > 
+> > I see the following options:
+> >  - keep it as it is
+> >  - break it down with a patch with each subsystem, and squash before applying
+> >    from a single (tty?) subsystem
+> >  - go for a multi stage approach, defining a new callback, move to it and in
+> >    the end remove the original one, likewise it was done for i2c lately
+> 
+> whoops. I just noticed Greg applied commit 475fc6e2de6f ("tty: serdev:
+> convert to u8 and size_t") that touch the exact same files without much
+> of an issue.
+> 
+> Probably the "keep it as it is" is just the way to go.
 
-Add read/write attribute for proximity resolution, and read attribute
-for available proximity resolution values for the vcnl4040 chip.
+Yeah, looks good to me, now queued up, thanks!
 
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
----
- drivers/iio/light/vcnl4000.c | 87 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 85 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index fdf763a04b0b..2addff635b79 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -90,6 +90,7 @@
- #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
- #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
- #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
-+#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition */
- #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
- #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
- #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
-@@ -170,6 +171,11 @@ static const int vcnl4040_ps_calibbias_ua[][2] = {
- 	{0, 200000},
- };
- 
-+static const int vcnl4040_ps_resolutions[2] = {
-+	12,
-+	16
-+};
-+
- static const int vcnl4040_als_persistence[] = {1, 2, 4, 8};
- static const int vcnl4040_ps_persistence[] = {1, 2, 3, 4};
- static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
-@@ -880,6 +886,54 @@ static ssize_t vcnl4040_write_ps_calibbias(struct vcnl4000_data *data, int val)
- 	return ret;
- }
- 
-+static ssize_t vcnl4040_read_ps_resolution(struct vcnl4000_data *data, int *val, int *val2)
-+{
-+	int ret;
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = FIELD_GET(VCNL4040_PS_CONF2_PS_HD, ret);
-+	if (ret >= ARRAY_SIZE(vcnl4040_ps_resolutions))
-+		return -EINVAL;
-+
-+	*val = vcnl4040_ps_resolutions[ret];
-+	*val2 = 0;
-+
-+	return ret;
-+}
-+
-+static ssize_t vcnl4040_write_ps_resolution(struct vcnl4000_data *data, int val)
-+{
-+	unsigned int i;
-+	int ret;
-+	u16 regval;
-+
-+	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_resolutions); i++) {
-+		if (val == vcnl4040_ps_resolutions[i])
-+			break;
-+	}
-+
-+	if (i >= ARRAY_SIZE(vcnl4040_ps_resolutions))
-+		return -EINVAL;
-+
-+	mutex_lock(&data->vcnl4000_lock);
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	if (ret < 0)
-+		goto out_unlock;
-+
-+	regval = (ret & ~VCNL4040_PS_CONF2_PS_HD);
-+	regval |= FIELD_PREP(VCNL4040_PS_CONF2_PS_HD, i);
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
-+					regval);
-+
-+out_unlock:
-+	mutex_unlock(&data->vcnl4000_lock);
-+	return ret;
-+}
-+
- static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan,
- 				int *val, int *val2, long mask)
-@@ -950,6 +1004,16 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_RESOLUTION:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			ret = vcnl4040_read_ps_resolution(data, val, val2);
-+			if (ret < 0)
-+				return ret;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -987,6 +1051,13 @@ static int vcnl4040_write_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_RESOLUTION:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			return vcnl4040_write_ps_resolution(data, val);
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1035,6 +1106,16 @@ static int vcnl4040_read_avail(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_RESOLUTION:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			*vals = (int *)vcnl4040_ps_resolutions;
-+			*length = ARRAY_SIZE(vcnl4040_ps_resolutions);
-+			*type = IIO_VAL_INT;
-+			return IIO_AVAIL_LIST;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1808,10 +1889,12 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
--			BIT(IIO_CHAN_INFO_CALIBBIAS),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS) |
-+			BIT(IIO_CHAN_INFO_RESOLUTION),
- 		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
--			BIT(IIO_CHAN_INFO_CALIBBIAS),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS) |
-+			BIT(IIO_CHAN_INFO_RESOLUTION),
- 		.ext_info = vcnl4000_ext_info,
- 		.event_spec = vcnl4040_event_spec,
- 		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
-
--- 
-2.30.2
-
+greg k-h
 

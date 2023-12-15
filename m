@@ -1,33 +1,38 @@
-Return-Path: <linux-iio+bounces-950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F918149E6
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 15:02:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA0B814A20
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 15:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE26828481D
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 14:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6281C23321
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 14:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A2137144;
-	Fri, 15 Dec 2023 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F57F2FE3A;
+	Fri, 15 Dec 2023 14:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6hwq92X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45D734559;
-	Fri, 15 Dec 2023 13:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 402FB212A0;
-	Fri, 15 Dec 2023 14:59:37 +0100 (CET)
-Date: Fri, 15 Dec 2023 14:59:35 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ECC30641;
+	Fri, 15 Dec 2023 14:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A407C433C7;
+	Fri, 15 Dec 2023 14:11:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702649515;
+	bh=xcqVasPR7/6/BGkmp20d/mwFZY/qYeQV954kXhulne0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H6hwq92XJhZCx8YzkUspQ2BH8/Bmyvmss0bwdDEeI685r5m21J29uMKmzEeKRlHGf
+	 gFtB8lAkg2zQd+t/qN4A5hvSsaF9WE8iyeEfKkXx0TQFMfFJwajt9rs2jMLAA5UQ2Q
+	 ttSYSzrZbXILZ1muKg4Fnpy5jIEyvmZtvtb8oCHY=
+Date: Fri, 15 Dec 2023 15:11:53 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Johan Hovold <johan@kernel.org>
 Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
 	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
@@ -48,9 +53,9 @@ Cc: Francesco Dolcini <francesco@dolcini.it>,
 	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
 Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
  size_t
-Message-ID: <ZXxbx+laQk35W56U@francesco-nb.int.toradex.com>
+Message-ID: <2023121544-hastiness-unhinge-b8d3@gregkh>
 References: <20231214170146.641783-1-francesco@dolcini.it>
- <ZXxZzd1iBOCmnczH@hovoldconsulting.com>
+ <ZXxWX-Fw1InID2ax@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,9 +64,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZXxZzd1iBOCmnczH@hovoldconsulting.com>
+In-Reply-To: <ZXxWX-Fw1InID2ax@hovoldconsulting.com>
 
-On Fri, Dec 15, 2023 at 02:51:09PM +0100, Johan Hovold wrote:
+On Fri, Dec 15, 2023 at 02:36:31PM +0100, Johan Hovold wrote:
 > On Thu, Dec 14, 2023 at 06:01:46PM +0100, Francesco Dolcini wrote:
 > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > > 
@@ -73,102 +78,33 @@ On Fri, Dec 15, 2023 at 02:51:09PM +0100, Johan Hovold wrote:
 > > Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
 > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 > > ---
-> > hello,
-> > patch is based on current linux next.
-> > 
-> > It has an obvious problem, it touches files from multiple subsystem in a single
-> > patch that is complicated to review and eventually merge, just splitting this
-> > would however not work, it will break bisectability and the build.
-> > 
-> > I am looking for advise on the best way to move forward.
-> > 
-> > I see the following options:
-> >  - keep it as it is
-> >  - break it down with a patch with each subsystem, and squash before applying
-> >    from a single (tty?) subsystem
-> >  - go for a multi stage approach, defining a new callback, move to it and in
-> >    the end remove the original one, likewise it was done for i2c lately
-> > 
-> > ---
-> >  drivers/bluetooth/btmtkuart.c              |  4 ++--
-> >  drivers/bluetooth/btnxpuart.c              |  4 ++--
+> >  drivers/gnss/core.c                        |  6 +++---
+> >  drivers/gnss/serial.c                      |  4 ++--
+> >  drivers/gnss/sirf.c                        |  6 +++---
 > 
-> > diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-> > index 3c84fcbda01a..e6bc4a73c9fc 100644
-> > --- a/drivers/bluetooth/btmtkuart.c
-> > +++ b/drivers/bluetooth/btmtkuart.c
-> > @@ -383,8 +383,8 @@ static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-> >  	}
-> >  }
-> >  
-> > -static ssize_t btmtkuart_receive_buf(struct serdev_device *serdev,
-> > -				     const u8 *data, size_t count)
-> > +static size_t btmtkuart_receive_buf(struct serdev_device *serdev,
-> > +				    const u8 *data, size_t count)
+> > diff --git a/drivers/gnss/core.c b/drivers/gnss/core.c
+> > index 48f2ee0f78c4..9b8a0605ec76 100644
+> > --- a/drivers/gnss/core.c
+> > +++ b/drivers/gnss/core.c
+> > @@ -317,10 +317,10 @@ EXPORT_SYMBOL_GPL(gnss_deregister_device);
+> >   *
+> >   * Must not be called for a closed device.
+> >   */
+> > -int gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
+> > -				size_t count)
+> > +size_t gnss_insert_raw(struct gnss_device *gdev, const unsigned char *buf,
+> > +		       size_t count)
 > >  {
-> >  	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
-> >  
-> > diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-> > index 1d592ac413d1..056bef5b2919 100644
-> > --- a/drivers/bluetooth/btnxpuart.c
-> > +++ b/drivers/bluetooth/btnxpuart.c
-> > @@ -1264,8 +1264,8 @@ static const struct h4_recv_pkt nxp_recv_pkts[] = {
-> >  	{ NXP_RECV_FW_REQ_V3,   .recv = nxp_recv_fw_req_v3 },
-> >  };
-> >  
-> > -static ssize_t btnxpuart_receive_buf(struct serdev_device *serdev,
-> > -				     const u8 *data, size_t count)
-> > +static size_t btnxpuart_receive_buf(struct serdev_device *serdev,
-> > +				    const u8 *data, size_t count)
-> >  {
-> >  	struct btnxpuart_dev *nxpdev = serdev_device_get_drvdata(serdev);
-> 
-> A quick check of just the first two functions here shows that they can
-> return negative values.
-
-This is already fixed. Patches are in next.
-
-There were 3 buggy user of this API.
- - 1 patch was merged a few days ago in mainline
- - 2 patches are in next, the maintainer decided to wait for the next merge window
-
-commit 687d2de93b11 ("Bluetooth: btmtkuart: fix recv_buf() return value")
-commit 7954bbcdd7ea ("Bluetooth: btnxpuart: fix recv_buf() return value")
-commit c8820c92caf0 ("platform/surface: aggregator: fix recv_buf() return value")
-
-
-> 
-> > diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/serdev-ttyport.c
-> > index e94e090cf0a1..3d7ae7fa5018 100644
-> > --- a/drivers/tty/serdev/serdev-ttyport.c
-> > +++ b/drivers/tty/serdev/serdev-ttyport.c
-> > @@ -27,19 +27,17 @@ static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp,
-> >  {
-> >  	struct serdev_controller *ctrl = port->client_data;
-> >  	struct serport *serport = serdev_controller_get_drvdata(ctrl);
 > > -	int ret;
 > > +	size_t ret;
 > >  
-> >  	if (!test_bit(SERPORT_ACTIVE, &serport->flags))
-> >  		return 0;
+> >  	ret = kfifo_in(&gdev->read_fifo, buf, count);
 > >  
-> >  	ret = serdev_controller_receive_buf(ctrl, cp, count);
-> >  
-> > -	dev_WARN_ONCE(&ctrl->dev, ret < 0 || ret > count,
-> > -				"receive_buf returns %d (count = %zu)\n",
-> > +	dev_WARN_ONCE(&ctrl->dev, ret > count,
-> > +				"receive_buf returns %zu (count = %zu)\n",
-> >  				ret, count);
-> > -	if (ret < 0)
-> > -		return 0;
-> > -	else if (ret > count)
-> > +	if (ret > count)
-> >  		return count;
-> >  
-> >  	return ret;
 > 
-> So please do not apply this patch until the various implementations have
-> been fixed.
+> Why are you changing this function? This is part of the GNSS interface
+> and has nothing to do with the rest of this patch.
 > 
-> Johan
+> Greg, please drop this one again until this has been resolved.
+
+Now dropped, thanks.
 

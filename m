@@ -1,160 +1,81 @@
-Return-Path: <linux-iio+bounces-963-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-962-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D16814DBD
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 18:01:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BA814DA3
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D553B225D8
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:01:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113281F24EC2
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236943EA88;
-	Fri, 15 Dec 2023 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F373EA6D;
+	Fri, 15 Dec 2023 16:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="UGfEXITT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVMCCjng"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303353EA78
-	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 17:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.18] ([92.140.202.140])
-	by smtp.orange.fr with ESMTPA
-	id EBR6rmv31emNIEBR6rInmB; Fri, 15 Dec 2023 17:53:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1702659197;
-	bh=yYjHwcm5ONKKp2t/E2nQ5jgkSu+ukJ4Ae0Z81VV/l5U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UGfEXITTxE+pPRmAIu4Gbf5iCKKwO9WC9yJDTyvNy1c8Trpi3n/Cod/yWv3CZLx0q
-	 AJ9N0QRSrW3JAN8Az4HbSI8H+WFAyOFgjdR0gbuVHiiul17M/98TmXDgIidX+z4zF/
-	 TP2t0gk7J/JKSUsoehFD+MMQsDwCgz/tNH0TzCoAiKzVxGz6ClX4wKa3iRINQEjgK4
-	 OudbrKVOcg58kNynTqM/Wy97jwahCKZapZHCn/LyqYct+orJM8NRM5ew+ndtvD4MRv
-	 8/rf6AuYeDSctx7feQC0fi0/Ob7Y1JyY+nct8hOpX+yitz4oklMvQAHutxVc4E+aZt
-	 /KPbT6UKIzqJQ==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 15 Dec 2023 17:53:17 +0100
-X-ME-IP: 92.140.202.140
-Message-ID: <66e9fe7a-927b-465f-aafe-8aea0e5998a4@wanadoo.fr>
-Date: Fri, 15 Dec 2023 17:53:16 +0100
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D23E49F
+	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5DA86C433C8
+	for <linux-iio@vger.kernel.org>; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702659255;
+	bh=qorUAmjTZdFMMvGDXO5fnnVaNjAcnUZJXfSLZlBZ0uQ=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=DVMCCjnglKLb9lEOMgu7zqC/m0reLlzsLDnKadHcT+Pi0wv0dK3qf0LqB04Jik/wE
+	 FonwLIIvmiYp1BzgefLGsWsW8qY9G3wprd+r19G4onGEKWI6TKM/zNCjC9+iPJ0XkP
+	 ZWqS4IdhchlFZQKV0cA80VQydJYxuiVZwCBmARTkONoLez+hxiZCh85DfzdPmujr4i
+	 kgV7LvFmPA24rQWZhMhjCCbqbjQKVc7msU8u/2A5bnpVnD/V6COAvsWvyBwb+WjuuV
+	 jicOYfZvlFYUbhaM11NrHlpeM2r+iawaCqYov/XPL2hS5Rv2Rxcr31E560cuwfTgYu
+	 LWT82d6ZiOTuA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 48D30C53BD1; Fri, 15 Dec 2023 16:54:15 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218223] Ambient light sensor on Framework 13 AMD laptop stops
+ working in Linux 6.7
+Date: Fri, 15 Dec 2023 16:54:15 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: michael@michaelmarley.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218223-217253-sQ6p4shjiU@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218223-217253@https.bugzilla.kernel.org/>
+References: <bug-218223-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] iio: adc: ad7380: new driver for AD7380 ADCs
-To: dlechner@baylibre.com
-Cc: broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, lgirdwood@gmail.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, michael.hennerich@analog.com, nuno.sa@analog.com,
- robh+dt@kernel.org, stefan.popa@analog.com
-References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
- <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com>
-Content-Language: fr
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20231215-ad7380-mainline-v3-3-7a11ebf642b9@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Le 15/12/2023 à 11:32, David Lechner a écrit :
-> This adds a new driver for the AD7380 family ADCs.
-> 
-> The driver currently implements basic support for the AD7380, AD7381,
-> AD7383, and AD7384 2-channel differential ADCs. Support for additional
-> single-ended and 4-channel chips that use the same register map as well
-> as additional features of the chip will be added in future patches.
-> 
-> Co-developed-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Stefan Popa <stefan.popa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> Reviewed-by: Nuno Sa <nuno.sa-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: David Lechner <dlechner-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-> ---
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
 
-...
+--- Comment #4 from Michael Marley (michael@michaelmarley.com) ---
+With the patch, the light sensor is working again.  Thanks!
 
-> +static void ad7380_regulator_disable(void *p)
-> +{
-> +	regulator_disable(p);
-> +}
-> +
-> +static int ad7380_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ad7380_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st = iio_priv(indio_dev);
-> +	st->spi = spi;
-> +	st->chip_info = spi_get_device_match_data(spi);
-> +	if (!st->chip_info)
-> +		return dev_err_probe(&spi->dev, -EINVAL, "missing match data\n");
-> +
-> +	st->vref = devm_regulator_get_optional(&spi->dev, "refio");
+--=20
+You may reply to this email to add a comment.
 
-Hi,
-
-devm_regulator_get_enable_optional()?
-to save some LoC below and ad7380_regulator_disable()
-
-CJ
-
-> +	if (IS_ERR(st->vref)) {
-> +		/*
-> +		 * If there is no REFIO supply, then it means that we are using
-> +		 * the internal 2.5V reference.
-> +		 */
-> +		if (PTR_ERR(st->vref) == -ENODEV)
-> +			st->vref = NULL;
-> +		else
-> +			return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
-> +					     "Failed to get refio regulator\n");
-> +	}
-> +
-> +	if (st->vref) {
-> +		ret = regulator_enable(st->vref);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, ad7380_regulator_disable,
-> +					       st->vref);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	st->regmap = devm_regmap_init(&spi->dev, NULL, st, &ad7380_regmap_config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-> +				     "failed to allocate register map\n");
-> +
-> +	indio_dev->channels = st->chip_info->channels;
-> +	indio_dev->num_channels = st->chip_info->num_channels;
-> +	indio_dev->name = st->chip_info->name;
-> +	indio_dev->info = &ad7380_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->available_scan_masks = ad7380_2_channel_scan_masks;
-> +
-> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +					      iio_pollfunc_store_time,
-> +					      ad7380_trigger_handler, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ad7380_init(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-
-...
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

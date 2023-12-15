@@ -1,75 +1,121 @@
-Return-Path: <linux-iio+bounces-957-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6A5814CDC
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:20:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF75814CF7
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 17:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F0A282D7D
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:20:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 217E3B22CBE
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 16:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB00D3C062;
-	Fri, 15 Dec 2023 16:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CFD3C47B;
+	Fri, 15 Dec 2023 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="XnQLs3DJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9yGUt10"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA17381C8;
-	Fri, 15 Dec 2023 16:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=t-8ch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
-	t=1702657234; bh=gxIU+Cnud2j3bNARAoIX3HgvhIYjXRvzI1SwQ9YSFug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XnQLs3DJk/8GvBEHSCEaONRRri1iImcp2JcuA3XM2XBIc6Xz+GTX00I+ZlGIyYmXE
-	 +k/eelNYt3bph8Mmnfr1FugHH3LeLbjYWVapfKVOnpmK2EZloshTt1MiLg393eYSUn
-	 CqLW+LvMLunnQf7VeHExvdKJQ+AZwXQsTJkNc+5c=
-Date: Fri, 15 Dec 2023 17:20:32 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: jikos@kernel.org, jic23@kernel.org, lars@metafoo.de, 
-	Basavaraj.Natikar@amd.com, linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: hid-sensor-als: Avoid failure for
- chromaticity support
-Message-ID: <9be8369c-4e23-4fa0-bc26-b236de669c8c@t-8ch.de>
-References: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4783B3C062;
+	Fri, 15 Dec 2023 16:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d367e7092eso6697335ad.0;
+        Fri, 15 Dec 2023 08:25:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702657527; x=1703262327; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zDqL6HCL3y7lDRDTbr/lo7FN7BFLZEzd5vvB4zRQhig=;
+        b=G9yGUt10KGCg8rj6K/ZU0ApiP+osgxeOhN4TvFD4Eh5biTxkyW+DkaiDBeCtCjY7BH
+         XGrfEwl6jzMXhh+31q7KlP44GTQ+7XPpkFJQCXSk+X3zNAV52/LGOwfwWN1V3Y+cBqnE
+         5soloRPqKhsf8uPLy2hJx35Bf255cDeugWXYInGqsRaU547vAyx+i5XcrJWvwGSSt8G+
+         iUQYP35JXAR4FBLdf11Oz3ueb/c9jHla6kD0c8kn5uEvhXP57Yd3taM1vaNkPhVEMp7i
+         zPKLFWwQUXqJK/wuRTFkFk/Q5Fh35fFrcc1IB1OM4//Lx408NHzEGz6MstN1uL9gmpbl
+         bVzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702657527; x=1703262327;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zDqL6HCL3y7lDRDTbr/lo7FN7BFLZEzd5vvB4zRQhig=;
+        b=iQAhE9jOLRA5U5HBvUKs9eZ0FF/DA2gyf0w+sduRxFzwaue2OchLvIunjjVUNEbrrQ
+         +83w4V78XNFFp/fCGbx9kxx4vpzXDdPshy4haUn+/rOFRqsfTvRvp8ElKkZ5cvSqIwVT
+         tn0eHckInxhd5B0jyWy6aUfDvtsxNEST6J7nleTiFX6Zo7Kw/VRy8MwVga1cvmZrxzXj
+         rGJJLCEnuWEHiuIIh/21IG4VD2TgoUd02iZuL+BD7VSm92XMP4Xo5tkdr+3qD/KTJbwe
+         0EQRXuZ3Rx4fcFdAJc18P4u8ZQhGjkwOvZxL3AafvtjNUW6NdSIoWUveIA+Ubm4CkiG2
+         vDyQ==
+X-Gm-Message-State: AOJu0YxfGpBC+pR/U6YqcNp9ZVA870MuihT187GgwDPF/V/7rXd3KRkI
+	a3k7lK6vfVzGovz7n+PLutbKJKOGhwzyag==
+X-Google-Smtp-Source: AGHT+IFUiy1uTHVX+IrL5elmcxSqJ1xdj2AGz7K/ki+zmPEMSFag93XQQOi50O+2ajZwgDl0R2N9zg==
+X-Received: by 2002:a17:902:b948:b0:1d0:6ffd:e2eb with SMTP id h8-20020a170902b94800b001d06ffde2ebmr10020334pls.133.1702657527290;
+        Fri, 15 Dec 2023 08:25:27 -0800 (PST)
+Received: from localhost.localdomain ([2401:4900:581e:798e:871c:98db:5638:a4])
+        by smtp.gmail.com with ESMTPSA id s16-20020a170902989000b001bb750189desm14468665plp.255.2023.12.15.08.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Dec 2023 08:25:26 -0800 (PST)
+From: Anshul Dalal <anshulusr@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Anshul Dalal <anshulusr@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 1/3] dt-bindings: vendor-prefixes: add aosong
+Date: Fri, 15 Dec 2023 21:53:09 +0530
+Message-ID: <20231215162312.143568-1-anshulusr@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
 
-On 2023-12-15 08:01:59-0800, Srinivas Pandruvada wrote:
-> With the commit ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity
-> support"), there is an assumption that the every HID ALS descriptor has
-> support of usage ids for chromaticity support. If they are not present,
-> probe fails for the driver . This breaks ALS functionality on majority of
-> platforms.
-> 
-> It is possible that chromaticity usage ids are not present. When not
-> present, restrict number of IIO channels to not include support for
-> chromaticity and continue.
-> 
-> Fixes: ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity support")
-> Reported-by: Thomas Weißschuh <thomas@t-8ch.de>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218223
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/iio/light/hid-sensor-als.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
+Aosong Electronic Co., LTD. is a supplier for MEMS sensors such as AHT20
+temperature and humidity sensor under the brand name Asair
 
-Thanks!
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
+---
 
-Tested-by: Thomas Weißschuh <linux@weissschuh.net> # on Framework 13 AMD
+Changes for v5,4,3:
+- no updates
+
+Changes for v2:
+- Changed vendor prefix from asair to aosong
+
+Previous versions:
+v4: https://lore.kernel.org/lkml/20231125100139.193584-2-anshulusr@gmail.com/
+v3: https://lore.kernel.org/lkml/20231121095800.2180870-1-anshulusr@gmail.com/
+v2: https://lore.kernel.org/lkml/20231115125810.1394854-1-anshulusr@gmail.com/
+v1: https://lore.kernel.org/lkml/20231107173100.62715-1-anshulusr@gmail.com/
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 573578db9509..48d4ff635562 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -117,6 +117,8 @@ patternProperties:
+     description: Andes Technology Corporation
+   "^anvo,.*":
+     description: Anvo-Systems Dresden GmbH
++  "^aosong,.*":
++    description: Guangzhou Aosong Electronic Co., Ltd.
+   "^apm,.*":
+     description: Applied Micro Circuits Corporation (APM)
+   "^apple,.*":
+-- 
+2.43.0
+
 

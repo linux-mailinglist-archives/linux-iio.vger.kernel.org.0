@@ -1,116 +1,129 @@
-Return-Path: <linux-iio+bounces-933-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-934-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBC48138D7
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 18:40:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205AC8142F1
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 08:50:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDB21F21608
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Dec 2023 17:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 460AF1C20A0A
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Dec 2023 07:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4553675CC;
-	Thu, 14 Dec 2023 17:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18901094D;
+	Fri, 15 Dec 2023 07:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F7ayEIDH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5ACA7;
-	Thu, 14 Dec 2023 09:39:48 -0800 (PST)
-Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id BD29721454;
-	Thu, 14 Dec 2023 18:39:45 +0100 (CET)
-Date: Thu, 14 Dec 2023 18:39:44 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	linux-bluetooth@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	greybus-dev@lists.linaro.org, linux-iio@vger.kernel.org,
-	netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v1] treewide, serdev: change receive_buf() return type to
- size_t
-Message-ID: <ZXs94Mf1eOMCmGpT@francesco-nb.int.toradex.com>
-References: <20231214170146.641783-1-francesco@dolcini.it>
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3486107BD;
+	Fri, 15 Dec 2023 07:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a22f59c6ae6so47200466b.1;
+        Thu, 14 Dec 2023 23:49:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702626539; x=1703231339; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1FNDrj9UX9g1aWvgwvWexI55++xpGzhEI1jwvmfC1VU=;
+        b=F7ayEIDHWrL1fERkFEBlfUqw8s6d9M6RfGDqXlCFOYhRIxzRZnGRVlqY9qtFTtpbYL
+         DjAm3wqEStJIEWkRHQjJ/RHf8PQdkpIuRQ9DZ0xTTrki3AePkhFcFJn3UUSKrRQSjYRk
+         GetFauvEwjx9nnl/N9DDC8WzmWBn1ZtWUl28perTmqiB8DkE6IxyB6dQRuIuNBUiW1hY
+         pE2q6KKhjE0qzI3MIYgYcrqSWZguEfgv/3l5BrlhT8cxujqdgB4wsb6MjREkqTOZAyL+
+         ewtgpv7gVP9UBwBSMaEZuryDhpEAcXFKKFEeGiED2iH3XROgqtkui/lSdagXr4+JIfHk
+         7GxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702626539; x=1703231339;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1FNDrj9UX9g1aWvgwvWexI55++xpGzhEI1jwvmfC1VU=;
+        b=QKmbUiGNxV+kSn6ROQZbNuZcPxRS+DDT3xVc/MBshxTj9aEILT1CRMjorcTDJZqMCJ
+         tLHmyBnkZB4s0WdbJ8IDmimB5R3QGmS4e9NQHCoIPQ/spvJ7yHaXe0plVWdPxfHAsHsQ
+         g107feDOyhosrywTEqmQTGTzzr7j3kh8UY3Fuzv7rW0dLAPiPecL/TDti+pYfSF9Qvhh
+         NMczZjAb/MZ37TwWACK08iEZUrNhiQvTlEevSElF4UrRW3+fUdsF3zVZrTfP23nQmb4W
+         ZBNjh2TgnDB5Mc55WoX7CRnsXgoZ+B61Bj6RO0BoJeIc2qtARXfCGZjybSeOpMIxcwYH
+         6nag==
+X-Gm-Message-State: AOJu0YxIosz3FdeE28kl0Soqtdox1f+/9xHnuciPfa1VSwJpatdtB4L5
+	yJo9orl8vAlG6Sw3RBY912c=
+X-Google-Smtp-Source: AGHT+IHlKN6sQj44Z4W8JCHTq2chQ4DY+RM0aiPu/nz7rh4i4AVo0Ozv4I13GJrONt3ijaf5etEXRA==
+X-Received: by 2002:a17:907:cb2a:b0:a19:d40a:d266 with SMTP id um42-20020a170907cb2a00b00a19d40ad266mr2318282ejc.306.1702626539097;
+        Thu, 14 Dec 2023 23:48:59 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id tk7-20020a170907c28700b00a1d1ebc2206sm10454450ejc.72.2023.12.14.23.48.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Dec 2023 23:48:58 -0800 (PST)
+Message-ID: <4cefa6ee8770d5f5cced1ef45c0b99dbe1ed9109.camel@gmail.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: adc: ad9467: add new io-backend
+ property
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Jonathan
+ Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
+Date: Fri, 15 Dec 2023 08:52:02 +0100
+In-Reply-To: <20231214170510.GA492798-robh@kernel.org>
+References: <20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com>
+	 <20231213-dev-iio-backend-v3-1-bb9f12a5c6dc@analog.com>
+	 <20231214170510.GA492798-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231214170146.641783-1-francesco@dolcini.it>
 
-On Thu, Dec 14, 2023 at 06:01:46PM +0100, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> receive_buf() is called from ttyport_receive_buf() that expects values
-> ">= 0" from serdev_controller_receive_buf(), change its return type from
-> ssize_t to size_t.
-> 
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
-> hello,
-> patch is based on current linux next.
-> 
-> It has an obvious problem, it touches files from multiple subsystem in a single
-> patch that is complicated to review and eventually merge, just splitting this
-> would however not work, it will break bisectability and the build.
-> 
-> I am looking for advise on the best way to move forward.
-> 
-> I see the following options:
->  - keep it as it is
->  - break it down with a patch with each subsystem, and squash before applying
->    from a single (tty?) subsystem
->  - go for a multi stage approach, defining a new callback, move to it and in
->    the end remove the original one, likewise it was done for i2c lately
+On Thu, 2023-12-14 at 11:05 -0600, Rob Herring wrote:
+> On Wed, Dec 13, 2023 at 04:02:32PM +0100, Nuno Sa wrote:
+> > The ad9467 will make use of the new IIO backend framework which is a
+> > provider - consumer interface where IIO backends provide services to
+> > consumers. As such, and being this device a consumer,=C2=A0 add the new
+> > generic io-backend property to the bindings.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 5 +++=
+++
+> > =C2=A01 file changed, 5 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > index 7aa748d6b7a0..74e6827cbd47 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > @@ -44,6 +44,9 @@ properties:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Pin that controls the powerdown mo=
+de of the device.
+> > =C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > =C2=A0
+> > +=C2=A0 io-backends:
+> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > +
+> > =C2=A0=C2=A0 reset-gpios:
+> > =C2=A0=C2=A0=C2=A0=C2=A0 description:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Reset pin for the device.
+> > @@ -54,6 +57,7 @@ required:
+> > =C2=A0=C2=A0 - reg
+> > =C2=A0=C2=A0 - clocks
+> > =C2=A0=C2=A0 - clock-names
+> > +=C2=A0 - io-backends
+>=20
+> New required properties are an ABI break. Please justify this in the=20
+> commit message.
+>=20
 
-whoops. I just noticed Greg applied commit 475fc6e2de6f ("tty: serdev:
-convert to u8 and size_t") that touch the exact same files without much
-of an issue.
+Yeah, I know... I'll further comment on the cover and depending on the
+conclusion we get I'll justify it (or not if not needed) in the message.
 
-Probably the "keep it as it is" is just the way to go.
-
-> 
-> ---
->  drivers/bluetooth/btmtkuart.c              |  4 ++--
->  drivers/bluetooth/btnxpuart.c              |  4 ++--
->  drivers/bluetooth/hci_serdev.c             |  4 ++--
->  drivers/gnss/core.c                        |  6 +++---
->  drivers/gnss/serial.c                      |  4 ++--
->  drivers/gnss/sirf.c                        |  6 +++---
->  drivers/greybus/gb-beagleplay.c            |  6 +++---
->  drivers/iio/chemical/pms7003.c             |  4 ++--
->  drivers/iio/chemical/scd30_serial.c        |  4 ++--
->  drivers/iio/chemical/sps30_serial.c        |  4 ++--
->  drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
->  drivers/mfd/rave-sp.c                      |  4 ++--
->  drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
->  drivers/nfc/pn533/uart.c                   |  4 ++--
->  drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
->  drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
->  drivers/platform/surface/aggregator/core.c |  4 ++--
->  drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
->  include/linux/gnss.h                       |  4 ++--
->  include/linux/serdev.h                     |  8 ++++----
->  sound/drivers/serial-generic.c             |  4 ++--
->  21 files changed, 48 insertions(+), 50 deletions(-)
+- Nuno S=C3=A1
 

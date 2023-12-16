@@ -1,179 +1,156 @@
-Return-Path: <linux-iio+bounces-972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A0A815912
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Dec 2023 13:46:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD8F815AB0
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Dec 2023 18:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 051C5B2393C
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Dec 2023 12:46:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783AC285D63
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Dec 2023 17:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCE718ECC;
-	Sat, 16 Dec 2023 12:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B+ZYGiIj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5970030D15;
+	Sat, 16 Dec 2023 17:45:32 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2BA18EA6;
-	Sat, 16 Dec 2023 12:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3364c9ba749so1258090f8f.1;
-        Sat, 16 Dec 2023 04:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702730757; x=1703335557; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1H4hMNJCw/32Z+RZWpdrmp582opVHteiynBOAnY14+Y=;
-        b=B+ZYGiIjDMpUECTMQnlD+xleKAzubC/13ZGcpQAJFlGHIUI8VegQT4z2GODs2VGI/p
-         L4i4R8hr05AsO8EUgwl6R1VQfmaBNCTY4pIB2gsXYt6fO+OOWIDUSfuIlKSCJ7dfaKih
-         lmbv+lyr/wAKuWukSMlEleZfnHQt7TayZjuINj+t7/jThexf+crNZFGyqrlUFK/VZExG
-         rDZEugIj/ezx0cdEsBuuLLmYDUgI9zwvq0Kkfdx3r76+LUxHLpA1fWOpXlD2Jme9BKaI
-         hzKO/oHr8XrrybUTl6NmfIo7j6e3/5NSEEELuy9jUu12kXaUyZL1QvamEPQLmZm24XZJ
-         D5Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702730757; x=1703335557;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1H4hMNJCw/32Z+RZWpdrmp582opVHteiynBOAnY14+Y=;
-        b=exuDJBt2XOqXMTCi8WrZaVqG28ZdFbaSfyOfqxi/F7Z99NxNndhrzkLGebqHC9HYHQ
-         P/+ZUczGib8cscVjYce51WLM1VF9CrjJrWi5fmTlT1xubUc7zCB9JVUdVlGYKWFUKFoS
-         PKBLvV5M8aRcrRZLECXkBdcw4F70mCv9dLGIJDEEwKZbJUh4+Xfft3gqeb3Gvsa8/Bw1
-         KMVs6Cpyt7S31CA3vry7NF/dWK4dVq4Fbeh4dRAHYjjURCdJNilBqaktnbmpQMFFNy0s
-         3mvCdOfCEE+GLGB9Vh98ZqhJU7w50pqavg0w38e/r3AWR/6+UPyUoF0GOaURoP6p+pUs
-         Mmbg==
-X-Gm-Message-State: AOJu0YyvTTi+vLzRXntRVcHZMxdm8Icwd2XPbHv79PUj4jZQB97+rd3T
-	LH3kQNCuwDwTn1/UZv1H/ac4xSysMVE=
-X-Google-Smtp-Source: AGHT+IHMYHWJES6roXispGRb1UVzSUy2mCj2n9V5d+lGj61Xf1XEIiW0yHZbSqNk1xnabS0cdDUErA==
-X-Received: by 2002:adf:e841:0:b0:336:608f:91eb with SMTP id d1-20020adfe841000000b00336608f91ebmr126621wrn.95.1702730756677;
-        Sat, 16 Dec 2023 04:45:56 -0800 (PST)
-Received: from jekhomev ([46.251.53.180])
-        by smtp.gmail.com with ESMTPSA id vg14-20020a170907d30e00b00a1dcfd8f95csm11775051ejc.37.2023.12.16.04.45.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 04:45:56 -0800 (PST)
-Date: Sat, 16 Dec 2023 14:45:55 +0200
-From: Yauhen Kharuzhy <jekhor@gmail.com>
-To: linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Subject: Re: [PATCH] iio: hid-sensor-als: Don't stop probing at non-supported
- attribute
-Message-ID: <20231216124555.eyplwam45jdfazr3@jekhomev>
-References: <20231216114229.652020-1-jekhor@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B173F2C192;
+	Sat, 16 Dec 2023 17:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BGEYQka002174;
+	Sat, 16 Dec 2023 12:45:07 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3v1526spe1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Dec 2023 12:45:06 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 3BGHj5lw033801
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sat, 16 Dec 2023 12:45:05 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Sat, 16 Dec
+ 2023 12:45:04 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Sat, 16 Dec 2023 12:45:04 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3BGHikIr015700;
+	Sat, 16 Dec 2023 12:44:48 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <apw@canonical.com>, <joe@perches.com>, <dwaipayanray1@gmail.com>,
+        <lukas.bulwahn@gmail.com>, <paul.cercueil@analog.com>,
+        <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <dan.carpenter@linaro.org>,
+        <dlechner@baylibre.com>, <marcelo.schmitt1@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 00/15] Add support for AD7091R-2/-4/-8
+Date: Sat, 16 Dec 2023 14:44:43 -0300
+Message-ID: <cover.1702746240.git.marcelo.schmitt1@gmail.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231216114229.652020-1-jekhor@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: ZteL9u2eUe3dogRbUEce-DRqXKLVF4DJ
+X-Proofpoint-ORIG-GUID: ZteL9u2eUe3dogRbUEce-DRqXKLVF4DJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-02_01,2023-11-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 phishscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0 adultscore=0
+ clxscore=1011 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312160136
 
-On Sat, Dec 16, 2023 at 01:42:29PM +0200, Yauhen Kharuzhy wrote:
-> Some ambient light sensors don't support color temperature and
-> chromaticity attributes. The driver stops probing if it finds this.
-> 
-> To support sensors without of color temperature and chromaticity
-> attributes, just skip them at probing if they weren't found.
-> 
-> Tested at Lenovo Yogabook YB1-X91L tablet.
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-Hi, It seems that Srinivas Pandruvada has posted another patch fixing
-the same issue. So, drop my patch in favor of his one.
+----------------- Updates -----------------
 
-> 
-> Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
-> ---
->  drivers/iio/light/hid-sensor-als.c | 39 ++++++++++++++++++------------
->  1 file changed, 23 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-> index f17304b54468..b711bac3bb2b 100644
-> --- a/drivers/iio/light/hid-sensor-als.c
-> +++ b/drivers/iio/light/hid-sensor-als.c
-> @@ -314,8 +314,11 @@ static int als_parse_report(struct platform_device *pdev,
->  						usage_id,
->  						HID_USAGE_SENSOR_LIGHT_ILLUM,
->  						&st->als[i]);
-> -		if (ret < 0)
-> +		if (ret < 0) {
-> +			dev_err(&pdev->dev,
-> +				"Failed to setup Illuminance attribute\n");
->  			return ret;
-> +		}
->  		als_adjust_channel_bit_mask(channels, i, st->als[i].size);
->  
->  		dev_dbg(&pdev->dev, "als %x:%x\n", st->als[i].index,
-> @@ -326,14 +329,16 @@ static int als_parse_report(struct platform_device *pdev,
->  				usage_id,
->  				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
->  				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
-> -	if (ret < 0)
-> -		return ret;
-> -	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
-> -				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
-> +	if (!ret) {
-> +		dev_info(&pdev->dev, "Color temperature is supported\n");
-> +		als_adjust_channel_bit_mask(channels,
-> +			CHANNEL_SCAN_INDEX_COLOR_TEMP,
-> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
->  
-> -	dev_dbg(&pdev->dev, "als %x:%x\n",
-> -		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
-> -		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
-> +		dev_dbg(&pdev->dev, "als %x:%x\n",
-> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
-> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
-> +	}
->  
->  	for (i = 0; i < 2; i++) {
->  		int next_scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X + i;
-> @@ -342,23 +347,25 @@ static int als_parse_report(struct platform_device *pdev,
->  				HID_INPUT_REPORT, usage_id,
->  				HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X + i,
->  				&st->als[next_scan_index]);
-> -		if (ret < 0)
-> -			return ret;
-> -
-> -		als_adjust_channel_bit_mask(channels,
-> +		if (!ret) {
-> +			dev_info(&pdev->dev,
-> +				 "Light chromaticity %c is supported\n",
-> +				 i ? 'Y' : 'X');
-> +			als_adjust_channel_bit_mask(channels,
->  					CHANNEL_SCAN_INDEX_CHROMATICITY_X + i,
->  					st->als[next_scan_index].size);
->  
-> -		dev_dbg(&pdev->dev, "als %x:%x\n",
-> -			st->als[next_scan_index].index,
-> -			st->als[next_scan_index].report_id);
-> +			dev_dbg(&pdev->dev, "als %x:%x\n",
-> +				st->als[next_scan_index].index,
-> +				st->als[next_scan_index].report_id);
-> +		}
->  	}
->  
->  	st->scale_precision = hid_sensor_format_scale(usage_id,
->  				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
->  				&st->scale_pre_decml, &st->scale_post_decml);
->  
-> -	return ret;
-> +	return 0;
->  }
->  
->  /* Function to initialize the processing for usage id */
-> -- 
-> 2.43.0
-> 
+Applied changes suggested to the previous set.
+
+Change log v3 -> v4:
+- Patch 1: checkpatch patch
+  * Changed __aligned regex string.
+- Patch 2: alert handling fix
+  * Applied David's suggestion [1] to pass iio_dev on to IRQ thread handler.
+- Patches 6, 7, 9
+  * Removed ad7091r prefix from callback function names.
+- New Patch 7: Remove uneeded probe parameters
+  * Removed id->name and regmap from probe paramenters.
+- Patch 8 (now Patch 9): Enable internal vref
+  * Not expecting NULL return from regulator_get_optional() anymore;
+  * Reverted to previous probe defer handling.
+- Patch 10 (now Patch 11): dt doc
+  * Extending existing ad7091r5 dt doc instead of creating a new one;
+  * Added VDD and VDRIVE supplies to dt doc;
+  * Removed channel property from dt doc;
+  * Interrupt description, interrupt constraint check, example indentation improvements.
+- Patch 12 (now Patch 13): add ad7091r8 patch
+  * Neats to macros, gpio setups, and probe parameters.
+- Patch 13 (now Patch 14):
+  * Made use of wild cards in MAINTAINERS file.
+- New Patch (Patch 15): event configuration callbacks
+
+[1]: https://lore.kernel.org/linux-iio/CAMknhBHCYicEL_xhumBQMUm=HBVb=7dLrYsK8Zj2o7RodvMarw@mail.gmail.com/
+
+Thank you all for the help with this set,
+Marcelo
+
+----------------- Context -----------------
+
+This series adds support for AD7091R-2/-4/-8 ADCs which can do single shot
+or sequenced readings. Threshold events are also supported.
+Overall, AD7091R-2/-4/-8 are very similar to AD7091R-5 except they use SPI interface.
+
+Changes have been tested with raspberrypi and eval board on raspberrypi kernel
+6.7-rc3 from raspberrypi fork.
+Link: https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad7091r8
+
+Marcelo Schmitt (15):
+  scripts: checkpatch: Add __aligned to the list of attribute notes
+  iio: adc: ad7091r: Pass iio_dev to event handler
+  iio: adc: ad7091r: Set alert bit in config register
+  iio: adc: ad7091r: Align arguments to function call parenthesis
+  iio: adc: ad7091r: Move generic AD7091R code to base driver and header
+    file
+  iio: adc: ad7091r: Move chip init data to container struct
+  iio: adc: ad7091r: Remove unneeded probe parameters
+  iio: adc: ad7091r: Set device mode through chip_info callback
+  iio: adc: ad7091r: Enable internal vref if external vref is not
+    supplied
+  iio: adc: ad7091r: Add chip_info callback to get conversion result
+    channel
+  iio: adc: Split AD7091R-5 config symbol
+  dt-bindings: iio: Add AD7091R-8
+  iio: adc: Add support for AD7091R-8
+  MAINTAINERS: Add MAINTAINERS entry for AD7091R
+  iio: adc: ad7091r: Allow users to configure device events
+
+ .../bindings/iio/adc/adi,ad7091r5.yaml        |  82 +++++-
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  16 ++
+ drivers/iio/adc/Makefile                      |   4 +-
+ drivers/iio/adc/ad7091r-base.c                | 255 +++++++++++------
+ drivers/iio/adc/ad7091r-base.h                |  81 +++++-
+ drivers/iio/adc/ad7091r5.c                    | 120 ++++----
+ drivers/iio/adc/ad7091r8.c                    | 257 ++++++++++++++++++
+ scripts/checkpatch.pl                         |   1 +
+ 9 files changed, 682 insertions(+), 142 deletions(-)
+ create mode 100644 drivers/iio/adc/ad7091r8.c
 
 -- 
-Yauhen Kharuzhy
+2.42.0
+
 

@@ -1,57 +1,46 @@
-Return-Path: <linux-iio+bounces-1003-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1004-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F24815FA3
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 15:20:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CBB815FA5
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 15:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0CF1C21ECE
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:20:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 517D0281511
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F288344C65;
-	Sun, 17 Dec 2023 14:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D00B446C6;
+	Sun, 17 Dec 2023 14:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCPmTgEk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYgohpRj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02B44439A;
-	Sun, 17 Dec 2023 14:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC81C433C8;
-	Sun, 17 Dec 2023 14:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1144C65
+	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 14:23:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE2C433C8;
+	Sun, 17 Dec 2023 14:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702822824;
-	bh=0kS8S8R84nY5Gw3olTVvDdLp04UV9KJ0nbMM2OX300w=;
+	s=k20201202; t=1702822980;
+	bh=qOsrk6f4puRqwTxfERwejjowyuSp/mN36/2CtvGL0NU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VCPmTgEkC+sHkO1Iqbtw6NRbG/b9Gem6DxpLDQYzV4FvrmCHSth9JwkiVxYikjRFE
-	 I1IckCI3ZbDMYFVR0HPEfjTYC9k20jH7hyb7BhEtBN+OkFEfimlVUnM2CwbYSsFyMJ
-	 g6x7EtDu3pl29TJI1qoS/+QNWHK2lREPFjrpmCktdFoq3sQPHMO7Kox570RKm8tQSU
-	 KoN6uTRTbK2LRhtYTOO75GAmaQE0/wY4bXeBkH1metE6TfSW1HvY/lT8uxDKyybLiM
-	 DfvwpuiOupxxcsmkkTMkfTQUi9mL69tIcGRA0y+3QvH2q2ZpzIrL3pWeq3gWlDOze+
-	 oFk3t4/w76bzA==
-Date: Sun, 17 Dec 2023 14:20:05 +0000
+	b=PYgohpRjOGDrwDdflmpLW+oeBdOVWEcsQCRigbAKt9NX1yRS+N8qy/bTzbuSz3ExA
+	 /9L06Mz7S5VQ7rohC4wYiNvZ3rFPx3NGbkGuBsBR3miR8FenKhO588UNSUXCOlbRlz
+	 6QdQ8Owf7XmFX1wVr/s1ZEtRrKUAhbTXNmkgm48utt7/4j436oeo2uM/42cB+X836U
+	 V/LP0Vhfx/PJGlADtcIMggoMMBFDw7KSIsTAnAQf6KnnBawuGmy47gBxen1sDg6L6L
+	 SzFYl9jQyIrujeyX9PbduqSCyTfvfxD/yLAZFEBQqxeyW6Q2IfCY6Qy9Qmde549q/X
+	 l3pD7va3QIAfQ==
+Date: Sun, 17 Dec 2023 14:22:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Michael Walle <michael@walle.cc>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
- <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
- =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>, Mike Looijmans
- <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/2] iio: adc: ad7173: add AD7173 driver
-Message-ID: <20231217142005.5d776025@jic23-huawei>
-In-Reply-To: <20231215133512.28735-2-mitrutzceclan@gmail.com>
-References: <20231215133512.28735-1-mitrutzceclan@gmail.com>
-	<20231215133512.28735-2-mitrutzceclan@gmail.com>
+To: Jun Yan <jerrysteve1101@gmail.com>
+Cc: Jonathan.Cameron@huawei.com, lars@metafoo.de,
+ Qing-wu.Li@leica-geosystems.com.cn, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmi088: update comments and Kconfig
+Message-ID: <20231217142247.0accd7bf@jic23-huawei>
+In-Reply-To: <20231214142733.85910-1-jerrysteve1101@gmail.com>
+References: <20231214142733.85910-1-jerrysteve1101@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,22 +51,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Dec 2023 15:34:58 +0200
-Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+On Thu, 14 Dec 2023 22:27:33 +0800
+Jun Yan <jerrysteve1101@gmail.com> wrote:
 
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
+> update the comments and Kconfig file with more descriptive and
+> accurate information about newly added device: BMI085, BMI090L.
 > 
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Hi Jun Yan,
 
-LGTM.  If no other comments come in I'll pick this up once those
-DT issues Rob's bot pointed out are tidied up.
+Applied to the togreg branch of iio.git.
+
+Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/accel/Kconfig             | 7 ++++---
+>  drivers/iio/accel/bmi088-accel-core.c | 2 ++
+>  drivers/iio/accel/bmi088-accel-spi.c  | 2 ++
+>  3 files changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index f113dae59048..91adcac875a4 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -260,10 +260,11 @@ config BMI088_ACCEL
+>  	select REGMAP
+>  	select BMI088_ACCEL_SPI
+>  	help
+> -	  Say yes here to build support for the Bosch BMI088 accelerometer.
+> +	  Say yes here to build support for the following Bosch accelerometers:
+> +	  BMI088, BMI085, BMI090L. Note that all of these are combo module that
+> +	  include both accelerometer and gyroscope.
+>  
+> -	  This is a combo module with both accelerometer and gyroscope. This
+> -	  driver only implements the accelerometer part, which has its own
+> +	  This driver only implements the accelerometer part, which has its own
+>  	  address and register map. BMG160 provides the gyroscope driver.
+>  
+>  config BMI088_ACCEL_SPI
+> diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
+> index 84edcc78d796..4d989708e6c3 100644
+> --- a/drivers/iio/accel/bmi088-accel-core.c
+> +++ b/drivers/iio/accel/bmi088-accel-core.c
+> @@ -2,6 +2,8 @@
+>  /*
+>   * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
+>   *  - BMI088
+> + *  - BMI085
+> + *  - BMI090L
+>   *
+>   * Copyright (c) 2018-2021, Topic Embedded Products
+>   */
+> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
+> index ee540edd8412..7b419a7b2478 100644
+> --- a/drivers/iio/accel/bmi088-accel-spi.c
+> +++ b/drivers/iio/accel/bmi088-accel-spi.c
+> @@ -2,6 +2,8 @@
+>  /*
+>   * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
+>   *  - BMI088
+> + *  - BMI085
+> + *  - BMI090L
+>   *
+>   * Copyright (c) 2018-2020, Topic Embedded Products
+>   */
 
 

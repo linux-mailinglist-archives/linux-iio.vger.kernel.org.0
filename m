@@ -1,117 +1,177 @@
-Return-Path: <linux-iio+bounces-1017-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1018-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE1B816048
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 16:54:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393C2816057
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 17:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E6AF1F229CB
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 15:54:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2A071F21E3D
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 16:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A474545014;
-	Sun, 17 Dec 2023 15:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A245971;
+	Sun, 17 Dec 2023 16:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QjkEMszE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHz9YpYW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6377645966;
-	Sun, 17 Dec 2023 15:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBBBC433C8;
-	Sun, 17 Dec 2023 15:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702828466;
-	bh=tDPWvMV6+ju7SK93SQJWeIdlKhsA3hrB9iT5eFL+y9I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QjkEMszE9913b+/17syBSIP02B3s8+kgf2gHXqV9KR6Gm9xHz3YWqsAhcP7NP+iay
-	 VbGv9u8LHefcRk4ANJ1BqFgCjvEy9h54Eq/pXqj5XozOQRC4pnYO9FdmBlP9mUuOwk
-	 v5WTPC4CTzW71Tw0mXZear6WyYBdgEsLgmtLov5oor/qzhhtzDNl5GQZb1SsboNAIO
-	 CAXZXWOdp9ad34Pc233tyn3vFttjYuBWbL+2wQ48LIKZ6zm3rCIit5+XlXIIACMP7t
-	 scBTNr4y6edfU3CI9ZfSoHBacHHiqrQpfuonEAhG6QEhu6/JtW8xE4P7dhjUjrii0K
-	 0ysl848agY0tw==
-Date: Sun, 17 Dec 2023 15:54:09 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: <apw@canonical.com>, <joe@perches.com>, <dwaipayanray1@gmail.com>,
- <lukas.bulwahn@gmail.com>, <paul.cercueil@analog.com>,
- <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <robh+dt@kernel.org>,
- <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
- <dan.carpenter@linaro.org>, <dlechner@baylibre.com>,
- <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 15/15] iio: adc: ad7091r: Allow users to configure
- device events
-Message-ID: <20231217155409.4da6b795@jic23-huawei>
-In-Reply-To: <24a9f1bb721e66df65e36797b0c3fd2ca1f95227.1702746240.git.marcelo.schmitt1@gmail.com>
-References: <cover.1702746240.git.marcelo.schmitt1@gmail.com>
-	<24a9f1bb721e66df65e36797b0c3fd2ca1f95227.1702746240.git.marcelo.schmitt1@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B1245BE4;
+	Sun, 17 Dec 2023 16:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702829675; x=1734365675;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=WB4iKFQ6lflwL/cpKRo4oLwAL8X04AxUZMzKYtP8CDo=;
+  b=fHz9YpYWSQTLtOPpzbr2cuZlSKnMgkX6UOfb9ZCd2i9yU1ULNC60mYAq
+   xyunNyrn1hHlzuDYFa6/2Xx8+EjYg0TNMHmhcHBQwMQTyaN0PVYOxk9m8
+   /U9LCAlnKNA/HQ6IvNXpeHhOnGGoKx8hGbEbTqKtDIU2+R5tGyQz/tICa
+   UmBAJyou0Q85ftlXXTLB2nkRHrqMWWdDrWEDXunuuUlK89LSOmydJ+5lg
+   +r4/XfnxDvmxa+VOH5EqSLpSndWNCIMAIXQUhVG2m8P2fi4u/Qy0EEn5g
+   ysPALeiuX5yFobwBDT/h7mVAGCWOfaDo9nJlI1ceB/AL6qIM/EzonfmKQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="8779403"
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="8779403"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 08:14:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="23453885"
+Received: from spandruv-desk.jf.intel.com (HELO spandruv-desk.amr.corp.intel.com) ([10.54.75.14])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 08:14:33 -0800
+Message-ID: <4e3e6260d844215809696bb744baf0519a9c0af0.camel@linux.intel.com>
+Subject: Re: [PATCH] iio: light: hid-sensor-als: Avoid failure for
+ chromaticity support
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com, 
+	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+	 <thomas@t-8ch.de>, stable@vger.kernel.org
+Date: Sun, 17 Dec 2023 08:14:19 -0800
+In-Reply-To: <20231217143555.1f89ddaa@jic23-huawei>
+References: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+	 <20231217143555.1f89ddaa@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4 (3.44.4-3.fc36) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Sat, 16 Dec 2023 14:51:50 -0300
-Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
-
-> Implement event configuration callbacks allowing users to read/write
-> event thresholds and enable/disable event generation.
-> 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> This is from a review suggestion David made on v3 [1].
-> 
-> Is this the case for a Suggested-by tag?
-> 
-> [1]: https://lore.kernel.org/linux-iio/CAMknhBFPbAqp4-AQdmbp+VRW-Ksk1PxaLCG+3n=Zk4gyStqhgw@mail.gmail.com/#t
-> 
->  drivers/iio/adc/ad7091r-base.c | 117 +++++++++++++++++++++++++++++++--
->  1 file changed, 113 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> index 57355ca157a1..64e8baeff258 100644
-> --- a/drivers/iio/adc/ad7091r-base.c
-> +++ b/drivers/iio/adc/ad7091r-base.c
-> @@ -20,19 +20,18 @@ const struct iio_event_spec ad7091r_events[] = {
->  	{
->  		.type = IIO_EV_TYPE_THRESH,
->  		.dir = IIO_EV_DIR_RISING,
-> -		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-> -				 BIT(IIO_EV_INFO_ENABLE),
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-
-This is an ABI change.  So would need a really strong reason to make it...
-mind you - it seems like this has been broken until now anyway so this change
-may be fine.
-
-
->  	},
->  	{
->  		.type = IIO_EV_TYPE_THRESH,
->  		.dir = IIO_EV_DIR_FALLING,
-> -		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-> -				 BIT(IIO_EV_INFO_ENABLE),
-> +		.mask_separate = BIT(IIO_EV_INFO_VALUE),
->  	},
->  	{
->  		.type = IIO_EV_TYPE_THRESH,
->  		.dir = IIO_EV_DIR_EITHER,
->  		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
-> +		.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE),
-It's relatively unusual that you can't separate the two event directions with careful
-control of the thresholds.  So I think you can implement the existing ABI by
-just setting the thresholds to the either 0 or 2^12 - 1 as appropriate.
-The docs seem to say it must exceed the value, or fall below the min so these values
-should ensure it can't do either.
-
-You can then enable the event generate if one of them is set.
-
+T24gU3VuLCAyMDIzLTEyLTE3IGF0IDE0OjM1ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Ogo+IE9uIEZyaSwgMTUgRGVjIDIwMjMgMDg6MDE6NTkgLTA4MDAKPiBTcmluaXZhcyBQYW5kcnV2
+YWRhIDxzcmluaXZhcy5wYW5kcnV2YWRhQGxpbnV4LmludGVsLmNvbT4gd3JvdGU6Cj4gCj4gPiBX
+aXRoIHRoZSBjb21taXQgZWUzNzEwZjM5ZjlkICgiaWlvOiBoaWQtc2Vuc29yLWFsczogQWRkIGxp
+Z2h0Cj4gPiBjaHJvbWF0aWNpdHkKPiA+IHN1cHBvcnQiKSwgdGhlcmUgaXMgYW4gYXNzdW1wdGlv
+biB0aGF0IHRoZSBldmVyeSBISUQgQUxTIGRlc2NyaXB0b3IKPiA+IGhhcwo+ID4gc3VwcG9ydCBv
+ZiB1c2FnZSBpZHMgZm9yIGNocm9tYXRpY2l0eSBzdXBwb3J0LiBJZiB0aGV5IGFyZSBub3QKPiA+
+IHByZXNlbnQsCj4gPiBwcm9iZSBmYWlscyBmb3IgdGhlIGRyaXZlciAuIFRoaXMgYnJlYWtzIEFM
+UyBmdW5jdGlvbmFsaXR5IG9uCj4gPiBtYWpvcml0eSBvZgo+ID4gcGxhdGZvcm1zLgo+ID4gCj4g
+PiBJdCBpcyBwb3NzaWJsZSB0aGF0IGNocm9tYXRpY2l0eSB1c2FnZSBpZHMgYXJlIG5vdCBwcmVz
+ZW50LiBXaGVuCj4gPiBub3QKPiA+IHByZXNlbnQsIHJlc3RyaWN0IG51bWJlciBvZiBJSU8gY2hh
+bm5lbHMgdG8gbm90IGluY2x1ZGUgc3VwcG9ydCBmb3IKPiA+IGNocm9tYXRpY2l0eSBhbmQgY29u
+dGludWUuCj4gPiAKPiA+IEZpeGVzOiBlZTM3MTBmMzlmOWQgKCJpaW86IGhpZC1zZW5zb3ItYWxz
+OiBBZGQgbGlnaHQgY2hyb21hdGljaXR5Cj4gPiBzdXBwb3J0IikKPiA+IFJlcG9ydGVkLWJ5OiBU
+aG9tYXMgV2Vpw59zY2h1aCA8dGhvbWFzQHQtOGNoLmRlPgo+ID4gQ2xvc2VzOiBodHRwczovL2J1
+Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxODIyMwo+ID4gU2lnbmVkLW9mZi1i
+eTogU3Jpbml2YXMgUGFuZHJ1dmFkYQo+ID4gPHNyaW5pdmFzLnBhbmRydXZhZGFAbGludXguaW50
+ZWwuY29tPgo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiA+IC0tLQo+ID4gwqBkcml2
+ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jIHwgMjQgKysrKysrKysrKysrKysrKy0tLS0t
+LS0tCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygt
+KQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMu
+Ywo+ID4gYi9kcml2ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gPiBpbmRleCBmMTcz
+MDRiNTQ0NjguLjk5NDFiMGI5MjdjNyAxMDA2NDQKPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2xpZ2h0
+L2hpZC1zZW5zb3ItYWxzLmMKPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3It
+YWxzLmMKPiA+IEBAIC0zMDMsMTEgKzMwMywxNCBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBv
+cnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGhp
+ZF9zZW5zb3JfaHViX2RldmljZQo+ID4gKmhzZGV2LAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpaW9fY2hh
+bl9zcGVjICpjaGFubmVscywKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCB1c2FnZV9pZCwKPiA+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHN0cnVjdCBhbHNfc3RhdGUgKnN0KQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGFsc19zdGF0ZSAqc3QsCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpbnQgKm1heF9jaGFubmVscykKPiA+IMKgewo+ID4gwqDCoMKgwqDCoMKgwqDCoGlu
+dCByZXQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IGk7Cj4gPiDCoAo+ID4gK8KgwqDCoMKgwqDC
+oMKgKm1heF9jaGFubmVscyA9IENIQU5ORUxfU0NBTl9JTkRFWF9NQVg7Cj4gPiArCj4gPiDCoMKg
+wqDCoMKgwqDCoMKgZm9yIChpID0gMDsgaSA8PSBDSEFOTkVMX1NDQU5fSU5ERVhfSUxMVU07ICsr
+aSkgewo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPSBzZW5zb3JfaHVi
+X2lucHV0X2dldF9hdHRyaWJ1dGVfaW5mbyhoc2RldiwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoEhJRF9JTlBVVF9SRVBPUlQsCj4gPiBAQCAtMzI2LDggKzMyOSwx
+MiBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBvcnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZp
+Y2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2VfaWQsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgSElEX1VTQUdFX1NFTlNP
+Ul9MSUdIVF9DT0xPUl9URU1QRVIKPiA+IEFUVVJFLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCZzdC0KPiA+ID5hbHNb
+Q0hBTk5FTF9TQ0FOX0lOREVYX0NPTE9SX1RFTVBdKTsKPiA+IC3CoMKgwqDCoMKgwqDCoGlmIChy
+ZXQgPCAwKQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4g
+PiArwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCptYXhfY2hhbm5lbHMgPSBDSEFOTkVMX1NDQU5fSU5ERVhfSUxMVU07Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gMDsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBnb3RvIHNraXBfY29sb3JfY2hyb21hdGljaXR5Owo+ID4gK8KgwqDC
+oMKgwqDCoMKgfQo+ID4gKwo+ID4gwqDCoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5lbF9i
+aXRfbWFzayhjaGFubmVscywKPiA+IENIQU5ORUxfU0NBTl9JTkRFWF9DT0xPUl9URU1QLAo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHN0LQo+ID4gPmFsc1tDSEFOTkVMX1NDQU5fSU5ERVhfQ09MT1JfVEVNUF0uc2l6ZSk7
+Cj4gPiDCoAo+ID4gQEAgLTM1NCw2ICszNjEsNyBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBv
+cnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdC0+YWxzW25leHRfc2Nhbl9pbmRleF0u
+cmVwb3J0X2lkKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiDCoAo+ID4gK3NraXBfY29sb3Jf
+Y2hyb21hdGljaXR5Ogo+ID4gwqDCoMKgwqDCoMKgwqDCoHN0LT5zY2FsZV9wcmVjaXNpb24gPSBo
+aWRfc2Vuc29yX2Zvcm1hdF9zY2FsZSh1c2FnZV9pZCwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAmc3QtCj4gPiA+YWxz
+W0NIQU5ORUxfU0NBTl9JTkRFWF9JTlRFTlNJVFldLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCZzdC0+c2NhbGVfcHJl
+X2RlY21sLCAmc3QtCj4gPiA+c2NhbGVfcG9zdF9kZWNtbCk7Cj4gPiBAQCAtMzY0LDcgKzM3Miw3
+IEBAIHN0YXRpYyBpbnQgYWxzX3BhcnNlX3JlcG9ydChzdHJ1Y3QKPiA+IHBsYXRmb3JtX2Rldmlj
+ZSAqcGRldiwKPiA+IMKgLyogRnVuY3Rpb24gdG8gaW5pdGlhbGl6ZSB0aGUgcHJvY2Vzc2luZyBm
+b3IgdXNhZ2UgaWQgKi8KPiA+IMKgc3RhdGljIGludCBoaWRfYWxzX3Byb2JlKHN0cnVjdCBwbGF0
+Zm9ybV9kZXZpY2UgKnBkZXYpCj4gPiDCoHsKPiA+IC3CoMKgwqDCoMKgwqDCoGludCByZXQgPSAw
+Owo+ID4gK8KgwqDCoMKgwqDCoMKgaW50IHJldCA9IDAsIG1heF9jaGFubmVsczsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqBzdGF0aWMgY29uc3QgY2hhciAqbmFtZSA9ICJhbHMiOwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXY7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgc3Ry
+dWN0IGFsc19zdGF0ZSAqYWxzX3N0YXRlOwo+ID4gQEAgLTM5OCwxNSArNDA2LDE1IEBAIHN0YXRp
+YyBpbnQgaGlkX2Fsc19wcm9iZShzdHJ1Y3QKPiA+IHBsYXRmb3JtX2RldmljZSAqcGRldikKPiA+
+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gYWxzX3BhcnNlX3JlcG9ydChwZGV2LCBoc2Rl
+diwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCAoc3RydWN0IGlpb19jaGFuX3NwZWMgKilpbmRpb19kZXYtCj4gPiA+Y2hhbm5l
+bHMsCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBoc2Rldi0+dXNhZ2UsCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhbHNfc3RhdGUpOwo+ID4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaHNkZXYt
+PnVzYWdlLCBhbHNfc3RhdGUsCj4gPiAmbWF4X2NoYW5uZWxzKTsKPiA+IMKgwqDCoMKgwqDCoMKg
+wqBpZiAocmV0KSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRldl9lcnIo
+JnBkZXYtPmRldiwgImZhaWxlZCB0byBzZXR1cAo+ID4gYXR0cmlidXRlc1xuIik7Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4gPiDCoMKgwqDCoMKgwqDC
+oMKgfQo+ID4gwqAKPiA+IC3CoMKgwqDCoMKgwqDCoGluZGlvX2Rldi0+bnVtX2NoYW5uZWxzID0K
+PiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoEFSUkFZX1NJWkUoYWxzX2NoYW5uZWxzKTsKPiA+ICvCoMKgwqDCoMKgwqDCoC8q
+ICsxIHRvIGluY2x1ZGUgdGltZSBzdGFtcCAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgaW5kaW9fZGV2
+LT5udW1fY2hhbm5lbHMgPSBtYXhfY2hhbm5lbHMgKyAxOwo+IAo+IEluIHRoZSBjdXJyZW50IGFy
+cmF5IHRoZSB0aW1lc3RhbXAgY2hhbm5lbCBpc24ndCB0aGUgbmV4dCBvbmUsIHNvIGhvdwo+IGRv
+ZXMgdGhpcyB3b3JrPwo+IAo+IEkgdGhpbmsgd2UgZWl0aGVyIGhhdmUgdG8gZm9ybSB0aGUgY2hh
+bm5lbCBhcnJheSBkeW5hbWljYWxseSBvciBwaWNrCj4gYmV0d2Vlbgo+IG9uZSB0aGF0IGRvZXMg
+aGF2ZSB0aGUgY29sb3VyIGluZm8gYW5kIG9uZSB0aGF0IGRvZXNuJ3QgZm9yIHRoZQo+IG9yaWdp
+bmFsIGNhc2UuCj4gCllvdSBhcmUgcmlnaHQsIGxldCBtZSByZXN1Ym1pdC4KCgo+IEdpdmVuIHRp
+bWluZyB3ZSBtYXkganVzdCBuZWVkIHRvIHJldmVydCB0aGUgYnJva2VuIHBhdGNoIGFuZCByZXZp
+c2l0Cj4gdGhpcyBuZXh0Cj4gY3ljbGUuClRoaXMgaXMgYmV0dGVyLiBJIHdpbGwgc2VuZCBhIHJl
+dmVydC4KClRoYW5rcywKU3Jpbml2YXMKCgo+IAo+IEpvbmF0aGFuCj4gCj4gCj4gPiArCj4gPiDC
+oMKgwqDCoMKgwqDCoMKgaW5kaW9fZGV2LT5pbmZvID0gJmFsc19pbmZvOwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoGluZGlvX2Rldi0+bmFtZSA9IG5hbWU7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW5kaW9f
+ZGV2LT5tb2RlcyA9IElORElPX0RJUkVDVF9NT0RFOwo+IAoK
 
 

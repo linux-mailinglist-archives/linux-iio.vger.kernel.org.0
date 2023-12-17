@@ -1,49 +1,48 @@
-Return-Path: <linux-iio+bounces-995-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-996-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE80F815F5A
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:25:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B25D815F63
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26B71C20DA1
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:25:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330F82832B2
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7646544371;
-	Sun, 17 Dec 2023 13:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B064437D;
+	Sun, 17 Dec 2023 13:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwGAWtSw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwXn7Wsz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CA844369;
-	Sun, 17 Dec 2023 13:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261C9C433C8;
-	Sun, 17 Dec 2023 13:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1911643AB2;
+	Sun, 17 Dec 2023 13:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978FEC433CA;
+	Sun, 17 Dec 2023 13:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702819500;
-	bh=TU3V0XOIrapBSmbG7wJEKVU27RSZUFivlAPhn2ejiho=;
+	s=k20201202; t=1702819693;
+	bh=VKYxZmLJHrRUExvb6OD/oatGIk4PJt4i1hI6U0b9XWc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WwGAWtSwzp+kQ33anWPPbw4sp0k5GSc+B7foyxBmmzTDn+ejGRP95AwXeRJ8aMy5j
-	 5H1QIggxF76XNmex6sBrZ/ovgdJ+GozaNePV0sRO90+6SgNDfQqMKb/HhpkP8h6wys
-	 +bK9zS9XK0w+lX5jNaNXtmPitTf5LpxPSDHz3hRa/W5MVaRiQJai40lRtAu7DTKlRo
-	 aA6596234QCdxRp+BnPWKa2ogx7d4EXgRBESsPOKTj39jEkJ6MWJu2qmXuE/3xCsqN
-	 Xtv1I0EALe3T4KjKfWJtzUct9weHZxkgYuUjfp9XYijEgL9sCqB0lGePV5DxMIsUki
-	 V3Swj7REp0L6g==
-Date: Sun, 17 Dec 2023 13:24:47 +0000
+	b=UwXn7WszwCiXAwBiYF/59t7ZPi9popEe7VvyKdXGshzDP7oiefSoyeAHBo37ALRUK
+	 84Ef09r7feHWuLWUNe/gcBMhZAiaykYnEijYpe7Sgy0LIAOIC/2e4bmrstpQGWoivd
+	 p6aNX3Kuc6fgSwqT3+VOXPIftiOZfAn7T4R5Soe5MwuqgoCOflSaxXfy48G/IhiVoC
+	 4RWVMdKP7xX411dDLJmMn7j7dO3HqV7VwOFcwQ20t2OAKf9+UrIDSGdLotKSjNQL7W
+	 ovgfxjduOZfE3o9g0iPcoIndC6dU4Vevyn9J4uTJaYAhvck82QT5G+aTHzydsOTvPa
+	 6YXnZRjnXIJUA==
+Date: Sun, 17 Dec 2023 13:28:00 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Joe Perches <joe@perches.com>
-Cc: Justin Stitt <justinstitt@google.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Stephen Boyd <swboyd@chromium.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3] iio: sx9324: avoid copying property strings
-Message-ID: <20231217132447.269072df@jic23-huawei>
-In-Reply-To: <f03d372a282712dee8412e47aff9bb54f181efd9.camel@perches.com>
-References: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
-	<f03d372a282712dee8412e47aff9bb54f181efd9.camel@perches.com>
+To: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Alexandru Ardelean
+ <alexandru.ardelean@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
+Message-ID: <20231217132800.27e83a01@jic23-huawei>
+In-Reply-To: <20231210133228.5fd425ea@jic23-huawei>
+References: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
+	<20231210133228.5fd425ea@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -54,185 +53,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Dec 2023 22:30:12 -0800
-Joe Perches <joe@perches.com> wrote:
+On Sun, 10 Dec 2023 13:32:28 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Tue, 2023-12-12 at 00:42 +0000, Justin Stitt wrote:
-> > We're doing some needless string copies when trying to assign the proper
-> > `prop` string. We can make `prop` a const char* and simply assign to
-> > string literals.  
+> On Fri,  8 Dec 2023 15:31:19 +0800
+> Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
 > 
-> trivia:
+> > When iio_device_register_sysfs_group() fails, we should
+> > free iio_dev_opaque->chan_attr_group.attrs to prevent
+> > potential memleak.
+> > 
+> > Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+> > Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>  
+> Hi.
 > 
-> I would have updated it like this moving the
-> various declarations into the case blocks
-> where they are used and removing a few unused
-> #defines
-
-I'd definitely like to see those defines gone.
-Arguably an unrelated change as I guess they are left from a previous refactor
-of this code.
-
-Why prop to type renaming?  It's getting passed into calls where the parameter
-is propname so I'd understand renaming to that, but type just seems a bit random
-to me.  I do wonder if we are better off having some long lines and getting rid
-of the property naming local variables completely by just duplicating
-the device_property_read_u32() call and passing them in directly.
-
-Moving declarations more locally is a nice to have but I'll leave that up to Justin.
-
-Anyhow, both solutions look much better than the original so I'm fine either way
-(subject to responses to Stephen's review)
-
+> Looks good to me, but I'd like to leave this one on the list a little
+> longer to see if anyone else has comments.
 > 
-> ---
->  drivers/iio/proximity/sx9324.c | 69 +++++++++++++++++++++++++-----------------
->  1 file changed, 41 insertions(+), 28 deletions(-)
+Guess no comments!
+
+Applied to the fixes-togreg branch of iio.git.  I might not get another
+fixes request out far enough in advance of the merge window in which case
+this will go in around then instead.
+
+Also marked for stable
+
+Jonathan
+
+> Jonathan
 > 
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> index ac2ed2da21ccc..c50c1108a69cc 100644
-> --- a/drivers/iio/proximity/sx9324.c
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -877,17 +877,8 @@ static const struct sx_common_reg_default *
->  sx9324_get_default_reg(struct device *dev, int idx,
->  		       struct sx_common_reg_default *reg_def)
->  {
-> -	static const char * const sx9324_rints[] = { "lowest", "low", "high",
-> -		"highest" };
-> -	static const char * const sx9324_csidle[] = { "hi-z", "hi-z", "gnd",
-> -		"vdd" };
-> -#define SX9324_PIN_DEF "semtech,ph0-pin"
-> -#define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
-> -#define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-> -	unsigned int pin_defs[SX9324_NUM_PINS];
-> -	char prop[] = SX9324_PROXRAW_DEF;
-> -	u32 start = 0, raw = 0, pos = 0;
-> -	int ret, count, ph, pin;
-> +	u32 raw = 0;
-> +	int ret;
->  
->  	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
->  
-> @@ -896,7 +887,13 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  	case SX9324_REG_AFE_PH0:
->  	case SX9324_REG_AFE_PH1:
->  	case SX9324_REG_AFE_PH2:
-> -	case SX9324_REG_AFE_PH3:
-> +	case SX9324_REG_AFE_PH3: {
-> +		unsigned int pin_defs[SX9324_NUM_PINS];
-> +		int count;
-> +		int pin;
-> +		int ph;
-> +		char prop[32];
-> +
->  		ph = reg_def->reg - SX9324_REG_AFE_PH0;
->  		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
->  
-> @@ -913,7 +910,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  			       SX9324_REG_AFE_PH0_PIN_MASK(pin);
->  		reg_def->def = raw;
->  		break;
-> -	case SX9324_REG_AFE_CTRL0:
-> +	}
-> +	case SX9324_REG_AFE_CTRL0: {
-> +		static const char * const sx9324_csidle[] = {
-> +			"hi-z", "hi-z", "gnd", "vdd"
-> +		};
-> +		static const char * const sx9324_rints[] = {
-> +			"lowest", "low", "high", "highest"
-> +		};
-> +
->  		ret = device_property_match_property_string(dev, "semtech,cs-idle-sleep",
->  							    sx9324_csidle,
->  							    ARRAY_SIZE(sx9324_csidle));
-> @@ -930,16 +935,17 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  			reg_def->def |= ret << SX9324_REG_AFE_CTRL0_RINT_SHIFT;
->  		}
->  		break;
-> +	}
->  	case SX9324_REG_AFE_CTRL4:
-> -	case SX9324_REG_AFE_CTRL7:
-> +	case SX9324_REG_AFE_CTRL7: {
-> +		const char *type;
-> +
->  		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
-> -			strncpy(prop, "semtech,ph01-resolution",
-> -				ARRAY_SIZE(prop));
-> +			type = "semtech,ph01-resolution";
->  		else
-> -			strncpy(prop, "semtech,ph23-resolution",
-> -				ARRAY_SIZE(prop));
-> +			type = "semtech,ph23-resolution";
->  
-> -		ret = device_property_read_u32(dev, prop, &raw);
-> +		ret = device_property_read_u32(dev, type, &raw);
->  		if (ret)
->  			break;
->  
-> @@ -949,6 +955,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  		reg_def->def |= FIELD_PREP(SX9324_REG_AFE_CTRL4_RESOLUTION_MASK,
->  					   raw);
->  		break;
-> +	}
->  	case SX9324_REG_AFE_CTRL8:
->  		ret = device_property_read_u32(dev,
->  				"semtech,input-precharge-resistor-ohms",
-> @@ -982,17 +989,21 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  					   6 + raw * (raw + 3) / 2);
->  		break;
->  
-> -	case SX9324_REG_ADV_CTRL5:
-> +	case SX9324_REG_ADV_CTRL5: {
-> +		u32 start = 0;
-> +
->  		ret = device_property_read_u32(dev, "semtech,startup-sensor",
->  					       &start);
->  		if (ret)
->  			break;
-> -
->  		reg_def->def &= ~SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK;
->  		reg_def->def |= FIELD_PREP(SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK,
->  					   start);
->  		break;
-> -	case SX9324_REG_PROX_CTRL4:
-> +	}
-> +	case SX9324_REG_PROX_CTRL4: {
-> +		u32 pos = 0;
-> +
->  		ret = device_property_read_u32(dev, "semtech,avg-pos-strength",
->  					       &pos);
->  		if (ret)
-> @@ -1005,15 +1016,16 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  		reg_def->def |= FIELD_PREP(SX9324_REG_PROX_CTRL4_AVGPOSFILT_MASK,
->  					   raw);
->  		break;
-> +	}
->  	case SX9324_REG_PROX_CTRL0:
-> -	case SX9324_REG_PROX_CTRL1:
-> +	case SX9324_REG_PROX_CTRL1: {
-> +		const char *type;
-> +
->  		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
-> -			strncpy(prop, "semtech,ph01-proxraw-strength",
-> -				ARRAY_SIZE(prop));
-> +			type = "semtech,ph01-proxraw-strength";
->  		else
-> -			strncpy(prop, "semtech,ph23-proxraw-strength",
-> -				ARRAY_SIZE(prop));
-> -		ret = device_property_read_u32(dev, prop, &raw);
-> +			type = "semtech,ph23-proxraw-strength";
-> +		ret = device_property_read_u32(dev, type, &raw);
->  		if (ret)
->  			break;
->  
-> @@ -1022,6 +1034,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  					   raw);
->  		break;
->  	}
-> +	}
->  	return reg_def;
->  }
->  
+> > ---
+> >  drivers/iio/industrialio-core.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index c77745b594bd..e6d3d07a4c83 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1581,10 +1581,13 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+> >  	ret = iio_device_register_sysfs_group(indio_dev,
+> >  					      &iio_dev_opaque->chan_attr_group);
+> >  	if (ret)
+> > -		goto error_clear_attrs;
+> > +		goto error_free_chan_attrs;
+> >  
+> >  	return 0;
+> >  
+> > +error_free_chan_attrs:
+> > +	kfree(iio_dev_opaque->chan_attr_group.attrs);
+> > +	iio_dev_opaque->chan_attr_group.attrs = NULL;
+> >  error_clear_attrs:
+> >  	iio_free_chan_devattr_list(&iio_dev_opaque->channel_attr_list);
+> >    
 > 
 > 
 

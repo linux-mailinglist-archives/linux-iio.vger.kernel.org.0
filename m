@@ -1,115 +1,127 @@
-Return-Path: <linux-iio+bounces-992-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-993-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC703815F1E
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:00:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9AB815F23
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FFA9B21BC8
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:00:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3EF7282FE6
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04494315C;
-	Sun, 17 Dec 2023 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D69E43AD4;
+	Sun, 17 Dec 2023 13:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6+N/5b5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WdXcnoHj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805623308A;
-	Sun, 17 Dec 2023 13:00:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD61C433C7;
-	Sun, 17 Dec 2023 13:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702818047;
-	bh=ceURb/yin7nwojjm8+LwtekPtcFpkviBi0xv8iONU88=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U6+N/5b5iLgxIysBZAhqwbeBjRXfaIQjnbntFC88Cpc+wZ4nkU7YgVvFhKswURIHs
-	 hu7JOfmDiXGR+lLtm2U2Q4MbffLOH+4WFRLOIhqJDsUz5ZJPKSyWjXl370oRzpP/e8
-	 75gyoCqrqhHXjbgucBM5+5wfPoTCl+14axw6juMKHJGuJ4arvggF5qTQagSTUzfLTO
-	 6/iDzvbqaj+bzbwcPBs9Mf/5Kv/h9U0zmR1SihUohrXSq+pGY0zMS/HZy0kHUN/fy+
-	 Nv9c45/kp5Ql8JV+Jlvqlo78jlW//WbfGqQ3+ORCQhK/no2kxIvRVaqj62Alge0XuY
-	 GSipfc3xAu6Nw==
-Date: Sun, 17 Dec 2023 13:00:33 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gwendal Grignou <gwendal@chromium.org>
-Cc: Justin Stitt <justinstitt@google.com>, Stephen Boyd
- <swboyd@chromium.org>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2] iio: sx9324: avoid copying property strings
-Message-ID: <20231217130033.0b3a5ac6@jic23-huawei>
-In-Reply-To: <CAPUE2ut0gbSyzUQ+m=760kXeOqKoi+9OwaExXTSgg8S=bWhUvg@mail.gmail.com>
-References: <20231026-strncpy-drivers-iio-proximity-sx9324-c-v2-1-cee6e5db700c@google.com>
-	<20231028162638.5b477ded@jic23-huawei>
-	<CAE-0n51eAH1tcqXVeReavq0US-Th2qwC_s_uAzRKTpSG-kXuwA@mail.gmail.com>
-	<CAFhGd8p76R-oaPWR0G6wESe7kgM--2bzU88j2vz4QGy8wKNffg@mail.gmail.com>
-	<CAPUE2ut0gbSyzUQ+m=760kXeOqKoi+9OwaExXTSgg8S=bWhUvg@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3180042ABE;
+	Sun, 17 Dec 2023 13:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702818314; x=1734354314;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rW0OaEZOM0RJb9whCOu+rkdFO0Mr/JeW2UKgiI/uOks=;
+  b=WdXcnoHjvGMSzutbF0rET2uX9SLHUPop0slKme42FsWTNIAJ7wpWq2b2
+   zU1J969Oz7y0IRg9RB/ceDO/UIOvDMcZ0wZszLqnvCTfVgetSA9nGhNF9
+   8YpQyFG+vRzU8nAJdwBrOX1/x1EfCM7Pk6z3Fk4NidOgvy2LpfOKwbSw7
+   S4NX7mlEtpf/RCI/Y3uIgE0OXRh3EMhYXzruA2D/Hfyrht1wzFV1dJpDV
+   XcfjJnKQPJnH2c2zz6eKve6xKUGH4mdhYZ4VqPyHClqIQWM13jw+EmV7l
+   XSSbVwBRCNm4cR9deLWr6ZSASZWtNfqc3KY72PrtLMbLzRC7x9JBWm0jd
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10926"; a="374913936"
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="374913936"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 05:05:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10926"; a="918972931"
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="918972931"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 17 Dec 2023 05:05:09 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rEqpP-00033V-1n;
+	Sun, 17 Dec 2023 13:05:07 +0000
+Date: Sun, 17 Dec 2023 21:04:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
+	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
+	paul.cercueil@analog.com, Michael.Hennerich@analog.com,
+	lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	dan.carpenter@linaro.org, dlechner@baylibre.com,
+	marcelo.schmitt1@gmail.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 6/15] iio: adc: ad7091r: Move chip init data to
+ container struct
+Message-ID: <202312172006.b2fep1oG-lkp@intel.com>
+References: <9d1248860193b55e79640b2e64c21c66bd6645f9.1702746240.git.marcelo.schmitt1@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9d1248860193b55e79640b2e64c21c66bd6645f9.1702746240.git.marcelo.schmitt1@gmail.com>
 
-On Tue, 12 Dec 2023 15:51:04 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+Hi Marcelo,
 
-> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-Hi Gwendal
+kernel test robot noticed the following build errors:
 
-I'll ignore this tag given the email you've replied to says there is a diff=
-erent
-implementation. Please take a look at that version instead.
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.7-rc5 next-20231215]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Jonathan
+url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/scripts-checkpatch-Add-__aligned-to-the-list-of-attribute-notes/20231217-055420
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/9d1248860193b55e79640b2e64c21c66bd6645f9.1702746240.git.marcelo.schmitt1%40gmail.com
+patch subject: [PATCH v4 6/15] iio: adc: ad7091r: Move chip init data to container struct
+config: um-randconfig-r111-20231217 (https://download.01.org/0day-ci/archive/20231217/202312172006.b2fep1oG-lkp@intel.com/config)
+compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231217/202312172006.b2fep1oG-lkp@intel.com/reproduce)
 
->=20
-> On Mon, Dec 11, 2023 at 4:46=E2=80=AFPM Justin Stitt <justinstitt@google.=
-com> wrote:
-> >
-> > Hi,
-> >
-> > On Mon, Oct 30, 2023 at 2:44=E2=80=AFPM Stephen Boyd <swboyd@chromium.o=
-rg> wrote: =20
-> > >
-> > >
-> > > We need to free it in other places too, like if the count doesn't mat=
-ch.
-> > > It may be easier to extract this section and just have 4 string
-> > > literals.
-> > >
-> > >         switch (reg_def->reg) {
-> > >         case SX9324_REG_AFE_PH0:
-> > >                 reg_def =3D sx9324_parse_phase_prop(dev, reg_def, "se=
-mtech,ph0-pin");
-> > >                 break;
-> > >         case SX9324_REG_AFE_PH1:
-> > >                 reg_def =3D sx9324_parse_phase_prop(dev, reg_def, "se=
-mtech,ph1-pin");
-> > >                 break;
-> > >         case SX9324_REG_AFE_PH2:
-> > >                 reg_def =3D sx9324_parse_phase_prop(dev, reg_def, "se=
-mtech,ph2-pin");
-> > >                 break;
-> > >         case SX9324_REG_AFE_PH3:
-> > >                 reg_def =3D sx9324_parse_phase_prop(dev, reg_def, "se=
-mtech,ph3-pin");
-> > >                 break;
-> > > =20
-> >
-> > I've submitted v3 of this patch [1] trying out Stephen's idea. I'd
-> > appreciate feedback.
-> >
-> > [1]: https://lore.kernel.org/all/20231212-strncpy-drivers-iio-proximity=
--sx9324-c-v3-1-b8ae12fc8a5d@google.com/
-> >
-> > Thanks
-> > Justin =20
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312172006.b2fep1oG-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/adc/ad7091r5.c:59:14: error: initializer element is not constant
+     .irq_info = ad7091r5_chip_info_irq,
+                 ^~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/ad7091r5.c:59:14: note: (near initialization for 'ad7091r5_init_info.irq_info')
+   drivers/iio/adc/ad7091r5.c:60:17: error: initializer element is not constant
+     .info_no_irq = ad7091r5_chip_info_noirq,
+                    ^~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/ad7091r5.c:60:17: note: (near initialization for 'ad7091r5_init_info.info_no_irq')
+
+
+vim +59 drivers/iio/adc/ad7091r5.c
+
+    57	
+    58	static struct ad7091r_init_info ad7091r5_init_info = {
+  > 59		.irq_info = ad7091r5_chip_info_irq,
+    60		.info_no_irq = ad7091r5_chip_info_noirq,
+    61		.regmap_config = &ad7091r_regmap_config,
+    62		.init_adc_regmap = &ad7091r5_regmap_init
+    63	};
+    64	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

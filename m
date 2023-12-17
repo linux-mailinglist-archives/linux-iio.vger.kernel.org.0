@@ -1,55 +1,45 @@
-Return-Path: <linux-iio+bounces-1019-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1020-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D14816067
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 17:42:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F9881613D
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39102B21945
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 16:42:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BACA1F21431
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 17:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D3A45C03;
-	Sun, 17 Dec 2023 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896AA4642B;
+	Sun, 17 Dec 2023 17:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="gFDR1Tel"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ImsZgoQ4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAFC14266
-	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 16:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from pop-os.home ([92.140.202.140])
-	by smtp.orange.fr with ESMTPA
-	id EuD7r5CEpltw6EuD7r5Vo4; Sun, 17 Dec 2023 17:41:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1702831310;
-	bh=qZLyEZlQ9TBd/oPoWGgLrvvH3X2lVDoFqEcZrhT5j2A=;
-	h=From:To:Cc:Subject:Date;
-	b=gFDR1Tel9cmLkNoOvF6uv/bH4Pk7LxrArkaq3XmmGVtM15zEInb9n37wSfmPAYOQV
-	 kkXe8QLSKSs48gsIQy1BV+6nP+arP7eEaXtEoNFmP42juv51L9twrC1moOo6RUTRfs
-	 G6STODuIbU2+U/lV0bzujvYcUPLBZ3/7bqFIjZMlW0OQd+1fCQLCOPqDrThjr+CJe8
-	 l4ic3virzVzwJIzHEy8b3h8e+ljqyy45u+pJeJk4Qft5anbsDIPwRGSMXd7yzJnYPx
-	 f94s2tiH0MlPTI5suTu6qPI6TjSQEjg9pp0usjpXhcYLAbilelK2Wm4gSI9YDWtgT4
-	 rdjcyX9Ryfu3w==
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 17 Dec 2023 17:41:50 +0100
-X-ME-IP: 92.140.202.140
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: buffer: Use IIO_SEPARATE instead of a hard-coded 0
-Date: Sun, 17 Dec 2023 17:41:45 +0100
-Message-Id: <1d17f57423172fcb9d9797cfe7c8282f356049c2.1702831285.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C0A1DFD8
+	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 17:36:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C754C433C7;
+	Sun, 17 Dec 2023 17:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702834566;
+	bh=wfJJHB7Of9B/1EFXwXkuQS/KTK0P7pUkiV9KlWOEM5w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ImsZgoQ4rWRF0aWzaQqbxWdFygF+GmJbbulxuGLVuvgp1FMPFyVv/QthJ0gjMyagJ
+	 WW2gVXoSVITcfyCEJhmSxxwVfSvZzRRUL77FNGpwMSr3wrk7v5Ip1Rto9EJAXuybCh
+	 V1T0QYh/qbjEupXkEFZmsqkrmm14J2Gx2yiub7X7OozIr7CxMxHQT2djIXTuy0b0MT
+	 9p/GAxKs1J3ITGiNRYMmRlEF95aXoGnN2d2H8Y9M8dqu+4RUbGWekXrIqKYHu+xow/
+	 g2kwSFswZiRsWSy54KJ31DuSkUXzuzV8DkdL22RzHE4oOIl1c8GpdyTbQjha3dJVEh
+	 bZDLxGIud3vew==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH V2 00/10] IIO: Use the new cleanup.h magic
+Date: Sun, 17 Dec 2023 17:35:38 +0000
+Message-ID: <20231217173548.112701-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,50 +48,71 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use an explicit IIO_SEPARATE instead of 0 for the 'shared_by' parameter
-when calling __iio_add_chan_devattr().
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-For some reason, commit 3704432fb1fd ("iio: refactor info mask and ext_info
-attribute creation.") updated only 1 place out of 4.
-Update the remaining ones now.
+A lot of the advantages of the automated cleanup added for locks and similar
+are not that useful in IIO unless we also deal with the
+iio_device_claim_direct_mode() / iio_device_release_direct_mode()
+calls that prevent IIO device drivers from transitioning into buffered
+mode whilst calls are in flight + prevent sysfs reads and writes from
+interfering with buffered capture if it is enabled.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/iio/industrialio-buffer.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Relies on Peter Zilstra's conditional cleanup handling which is queued
+up for the merge window in the tip tree. This series is based on
+a merge of tip/master into iio/togreg.
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 09c41e9ccf87..b581a7e80566 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -616,7 +616,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
- 				     &iio_show_fixed_type,
- 				     NULL,
- 				     0,
--				     0,
-+				     IIO_SEPARATE,
- 				     &indio_dev->dev,
- 				     buffer,
- 				     &buffer->buffer_attr_list);
-@@ -629,7 +629,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
- 					     &iio_scan_el_show,
- 					     &iio_scan_el_store,
- 					     chan->scan_index,
--					     0,
-+					     IIO_SEPARATE,
- 					     &indio_dev->dev,
- 					     buffer,
- 					     &buffer->buffer_attr_list);
-@@ -639,7 +639,7 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
- 					     &iio_scan_el_ts_show,
- 					     &iio_scan_el_ts_store,
- 					     chan->scan_index,
--					     0,
-+					     IIO_SEPARATE,
- 					     &indio_dev->dev,
- 					     buffer,
- 					     &buffer->buffer_attr_list);
+All comments welcome. If this looks positive I'll make use of it in a
+lot more drivers, but hopefully these give an idea of how it will work.
+
+The need to always handle what happens after
+iio_device_claim_direct_scoped() {} is a little irritating but the
+compiler will warn if you don't do it and it's not obvious how to
+let the compiler know the magic loop (hidden in the cleanup.h macros)
+always runs once.  Example:
+
+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+		return 42;
+	}
+	/* Can't actually get here, but compiler moans if no return val */
+	return -EINVAL;
+}
+Assuming no show stoppers, I'll post a non RFC version next cycle and
+if I get sufficiently bored over the holidays it may include a few more
+users.
+
+Jonathan Cameron (10):
+  iio: locking: introduce __cleanup() based direct mode claiming
+    infrastructure
+  iio: dummy: Use automatic lock and direct mode cleanup.
+  iio: accel: adxl367: Use automated cleanup for locks and iio direct
+    mode.
+  iio: imu: bmi323: Use cleanup handling for
+    iio_device_claim_direct_mode()
+  iio: adc: max1363: Use automatic cleanup for locks and iio mode
+    claiming.
+  iio: proximity: sx9360: Use automated cleanup for locks and IIO mode
+    claiming.
+  iio: proximity: sx9324: Use automated cleanup for locks and IIO mode
+    claiming.
+  iio: proximity: sx9310: Use automated cleanup for locks and IIO mode
+    claiming.
+  iio: adc: ad4130: Use automatic cleanup of locks and direct mode.
+  iio: adc: ad7091r-base: Use auto cleanup of locks.
+
+ drivers/iio/accel/adxl367.c          | 261 +++++++++++----------------
+ drivers/iio/adc/ad4130.c             | 128 ++++++-------
+ drivers/iio/adc/ad7091r-base.c       |  25 +--
+ drivers/iio/adc/max1363.c            | 149 +++++++--------
+ drivers/iio/dummy/iio_simple_dummy.c | 189 ++++++++++---------
+ drivers/iio/imu/bmi323/bmi323_core.c |  53 ++----
+ drivers/iio/industrialio-core.c      |   4 +
+ drivers/iio/proximity/sx9310.c       | 114 ++++--------
+ drivers/iio/proximity/sx9324.c       | 107 ++++-------
+ drivers/iio/proximity/sx9360.c       | 111 ++++--------
+ include/linux/iio/iio.h              |  22 +++
+ 11 files changed, 481 insertions(+), 682 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
 

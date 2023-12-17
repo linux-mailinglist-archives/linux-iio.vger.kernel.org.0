@@ -1,61 +1,49 @@
-Return-Path: <linux-iio+bounces-994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337D3815F28
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE80F815F5A
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D4BC1C20FA3
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26B71C20DA1
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 13:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583B043AAB;
-	Sun, 17 Dec 2023 13:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7646544371;
+	Sun, 17 Dec 2023 13:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpP/TkpV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwGAWtSw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C28442ABB;
-	Sun, 17 Dec 2023 13:06:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B92C433C8;
-	Sun, 17 Dec 2023 13:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CA844369;
+	Sun, 17 Dec 2023 13:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261C9C433C8;
+	Sun, 17 Dec 2023 13:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702818391;
-	bh=PaD/icLcaY/GikbVtAiVwoSGKEx0fBa3zQ8gqKHvZnw=;
+	s=k20201202; t=1702819500;
+	bh=TU3V0XOIrapBSmbG7wJEKVU27RSZUFivlAPhn2ejiho=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EpP/TkpVVazLC39hYjGgYkKXH5ImVpGVVDyhA0AsUXdFtD6YsFohGpSlsoiXErC9D
-	 VhUqevuJh9S8nujaRrI/aUYQ19ZZvmdgjDM68ZmZ3glkuNrPTnf9EbKs6ZkIx8einX
-	 RJW2cqS27phpDDz8cwXzYGflqMlKsK7A9uiTJpcwwyoArxTrgtaRXvTisFkIaL7BbL
-	 MDA5qCSLmYvyD5yLl06ZshELSS6DL3fki8a9uNnvyewx62R8FfhVRRW98nuRZf4/Y6
-	 7U0c9rtqq7SYS7IxygF/8SbuXqYCMW4iflrvETBIPySrp8uO5DSDrz02lYhAKHCalV
-	 ts63pUst1TObw==
-Date: Sun, 17 Dec 2023 13:06:13 +0000
+	b=WwGAWtSwzp+kQ33anWPPbw4sp0k5GSc+B7foyxBmmzTDn+ejGRP95AwXeRJ8aMy5j
+	 5H1QIggxF76XNmex6sBrZ/ovgdJ+GozaNePV0sRO90+6SgNDfQqMKb/HhpkP8h6wys
+	 +bK9zS9XK0w+lX5jNaNXtmPitTf5LpxPSDHz3hRa/W5MVaRiQJai40lRtAu7DTKlRo
+	 aA6596234QCdxRp+BnPWKa2ogx7d4EXgRBESsPOKTj39jEkJ6MWJu2qmXuE/3xCsqN
+	 Xtv1I0EALe3T4KjKfWJtzUct9weHZxkgYuUjfp9XYijEgL9sCqB0lGePV5DxMIsUki
+	 V3Swj7REp0L6g==
+Date: Sun, 17 Dec 2023 13:24:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>, Andre Werner
- <andre.werner@systec-electronic.com>, devicetree@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org, Alexander Stein
- <alexander.stein@ew.tq-group.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Mark Brown <broonie@kernel.org>,
- Naresh Solanki <naresh.solanki@9elements.com>, Patrick Rudolph
- <patrick.rudolph@9elements.com>, Rob Herring <robh+dt@kernel.org>, Stefan
- Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>, Vincent Tremblay
- <vincent@vtremblay.dev>
-Subject: Re: [PATCH v4 2/2] iio: light: isl76682: Add ISL76682 driver
-Message-ID: <20231217130613.47bab03d@jic23-huawei>
-In-Reply-To: <dff1e2f9-c2a1-4262-b80b-ce0c144fdaf5@gmail.com>
-References: <20231121031043.327614-1-marex@denx.de>
-	<20231121031043.327614-2-marex@denx.de>
-	<8b865546-0e51-45ff-ab76-8189afaa9ad5@gmail.com>
-	<cd21c72f-d9ff-471d-a08d-9b67bf180950@denx.de>
-	<4a39aff2-bb1a-447c-8c33-8bfad06777e3@gmail.com>
-	<dff1e2f9-c2a1-4262-b80b-ce0c144fdaf5@gmail.com>
+To: Joe Perches <joe@perches.com>
+Cc: Justin Stitt <justinstitt@google.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Stephen Boyd <swboyd@chromium.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3] iio: sx9324: avoid copying property strings
+Message-ID: <20231217132447.269072df@jic23-huawei>
+In-Reply-To: <f03d372a282712dee8412e47aff9bb54f181efd9.camel@perches.com>
+References: <20231212-strncpy-drivers-iio-proximity-sx9324-c-v3-1-b8ae12fc8a5d@google.com>
+	<f03d372a282712dee8412e47aff9bb54f181efd9.camel@perches.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,261 +51,189 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Dec 2023 14:06:32 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 11 Dec 2023 22:30:12 -0800
+Joe Perches <joe@perches.com> wrote:
 
-> On 11/23/23 09:24, Matti Vaittinen wrote:
-> > On 11/23/23 02:26, Marek Vasut wrote: =20
-> >> On 11/22/23 13:17, Matti Vaittinen wrote: =20
-> >>> On 11/21/23 05:10, Marek Vasut wrote: =20
->=20
-> ..snip
->=20
-> >>> I like this table-based look-up for write (and read) of scales.=20
-> >>> Looking at this I see an analogy to some of the regulator stuff, like=
-=20
-> >>> for example the ramp-up values. What I do very much like in the=20
-> >>> regulator subsystem is the drivers/regulator/helpers.c
-> >>>
-> >>> I wonder if similar approach would be usable in IIO as well? I mean,=
-=20
-> >>> providing readily written iio_regmap_read/write_raw_<functionality>()=
-=20
-> >>> and iio_available_*() helpers for the simple devices where we just=20
-> >>> have value-register mapping? I mean, driver would just populate=20
-> >>> something like:
-> >>>
-> >>> struct iio_scale_desc {
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int *scale_val_table;
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int *scale_val2_table;
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int num_scales; =20
-> >>
-> >> You'd also need type here (fractional, int+micro, ...), right ? =20
-> >=20
-> > Well, my thinking was to go with baby-steps. Eg, start by supporting=20
-> > just int+micro - but yes. As I wrote below, this can be expanded by=20
-> > allowing specifying the type.
-> >  =20
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int scale_reg_addr;
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int scale_reg_mask;
-> >>> };
-> >>>
-> >>> and call helper like
-> >>> int iio_regmap_read_raw_scale(struct iio_dev *idev,
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_scale_desc *sd, int *val,
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int *val2)"
-> >>> provided by IIO framework.
-> >>>
-> >>> Similar helper for writing new scales and getting available scales.
-> >>>
-> >>> Later this could be expanded by allowing specifying the type of=20
-> >>> provided values (in the example case, IIO_VAL_INT_PLUS_x - but maybe=
-=20
-> >>> this would be extensible (and worth) to support also the other option=
-s?)
-> >>> =20
->=20
-> ... snip
->=20
-> >>
-> >> The only thing I would wonder about is, should such a thing go into=20
-> >> regmap so it can be reused cross-subsystem instead of making this iio=
-=20
-> >> specific ? =20
-> >=20
-> > I definitely think a relation "register value" <=3D> "item from a table=
-"=20
-> > is very much used also outside the IIO. So yes, a generic regmap helper=
-=20
-> > for doing write as a "look value from table and write corresponding=20
-> > value to a register" and "read value from register and return me a=20
-> > corresponding item from a table" would be very usable.
-> >=20
-> > There is a tradeoff when doing a generic one instead of making it=20
-> > targeted for IIO use. Supporting different types of data is likely to=20
-> > make the code a bit hairy. Also, the IIO way of having these IIO_VAL_*=
-=20
-> > flags does probably require IIO - specific wrappers in any case. =20
->=20
-> I had some spare time so drafted following:
->=20
-> +struct reg_val_table {
-> +       int *reg_vals;
-> +       int *vals;
-> +       int num_vals;
-> +};
->=20
-> ...
->=20
-> +/**
-> + * regtable_find_val - find a value matching register setting
-> + *
-> + * Search given table for value mathcing a register setting.
-> + *
-> + * @table:     Table from which the register setting - value pairs are
-> + *             searched.
-> + * @reg:       Register value for which the matching physical value is
-> + *             searched.
-> + * @val:       Pointer to location where the found value will be stored.
-> + *
-> + * returns:    0 on success, negative errno if table is invalid or match=
- is
-> + *             not found.
-> + */
-> +int regtable_find_val(const struct reg_val_table *table, int reg, int *v=
-al)
->=20
->=20
-> +/**
-> + * regtable_find_reg - find a register setting matching given value.
-> + *
-> + * Search given table for a register setting matching a value.
-> + *
-> + * @table:     Table from which the register setting - value pairs are
-> + *             searched.
-> + * @val:       Value for which the matching register setting is searched.
-> + * @reg:       Pointer to location where the found register value will be
-> + *             stored.
-> + *
-> + * returns:    0 on success, negative errno if table is invalid or match=
- is
-> + *             not found.
-> + */
-> +int regtable_find_reg(const struct reg_val_table *table, int val, int *r=
-eg)
->=20
->=20
-> +/**
-> + * regtable_find_greater_than_val - find the closest greater val and reg
-Maybe use rounding terminology rather than greater than?
+> On Tue, 2023-12-12 at 00:42 +0000, Justin Stitt wrote:
+> > We're doing some needless string copies when trying to assign the proper
+> > `prop` string. We can make `prop` a const char* and simply assign to
+> > string literals.  
+> 
+> trivia:
+> 
+> I would have updated it like this moving the
+> various declarations into the case blocks
+> where they are used and removing a few unused
+> #defines
 
-regtable_find_val_roundup()?
+I'd definitely like to see those defines gone.
+Arguably an unrelated change as I guess they are left from a previous refactor
+of this code.
 
-> + *
-> + * Search given table for the smallest value which is still greater than
-> + * the given value. Both the found value and corresponding register
-> + * setting are returned unless given pointers are NULL.
-> + *
-> + * @table:     Table from which the register setting - value pairs are
-> + *             searched.
-> + * @val_cmp:   Value to which the values stored in table are compared to.
-> + * @reg:       NULL or pointer to location where the matching register
-> + *             setting value will be stored.
-> + * @val:       NULL or pointer to location where the found value will be
-> + *             stored.
-> + *
-> + * returns:    0 on success, negative errno if table is invalid or match=
- is
-> + *             not found.
-> + */
-> +int regtable_find_greater_than_val(const struct reg_val_table *table,=20
-> int val_cmp,
-> +                                  int *reg, int *val)
->=20
->=20
+Why prop to type renaming?  It's getting passed into calls where the parameter
+is propname so I'd understand renaming to that, but type just seems a bit random
+to me.  I do wonder if we are better off having some long lines and getting rid
+of the property naming local variables completely by just duplicating
+the device_property_read_u32() call and passing them in directly.
 
-regtable_find_val_rounddown()?
+Moving declarations more locally is a nice to have but I'll leave that up to Justin.
 
-> +/**
-> + * regtable_find_smaller_than_val - find the closest smaller val and reg
-> + *
-> + * Search given table for the greatest value which is still smaller than
-> + * the given value. Both the found value and corresponding register
-> + * setting are returned unless given pointers are NULL.
-> + *
-> + * @table:     Table from which the register setting - value pairs are
-> + *             searched.
-> + * @val_cmp:   Value to which the values stored in table are compared to.
-> + * @reg:       NULL or pointer to location where the matching register
-> + *             setting value will be stored.
-> + * @val:       NULL or pointer to location where the found value will be
-> + *             stored.
-> + *
-> + * returns:    0 on success, negative errno if table is invalid or match=
- is
-> + *             not found.
-> + */
-> +int regtable_find_smaller_than_val(const struct reg_val_table *table,
-> +                                  int val_cmp, int *reg, int *val)
->=20
->=20
-> and
->=20
-> +struct regmap_regval_table {
-> +       const struct reg_val_table table;
-> +       int reg;
-> +       int mask;
-> +};
->=20
-> +/**
-> + * regmap_table_value_set - update register to match=20
-> human-understandable value
-> + * @map:       Register map
-> + * @table:     Table describing register-value, human-readable value=20
-> relation
-> + * value:      Human understandable value to configure in hardware.
-> + *
-> + * Return:     0 on success, negative errno on error.
-> + */
-> +int regmap_table_value_set(struct regmap *map,
-> +                          const struct regmap_regval_table *table, int=20
-> value)
->=20
->=20
-> +/**
-> + * regmap_table_value_get - return human-understandable configuration
-> + *
-> + * Reads hardware or regmap cache for current hardware configuration and
-> + * converts the read register value to human understandable entity.
-> + * @map:       Register map
-> + * @table:     Table describing register-value, human-readable value=20
-> relation
-> + * value:      Human understandable value to configure in hardware.
-> + *
-> + * Return:     0 on success, negative errno on error.
-> + */
-> +int regmap_table_value_get(struct regmap *map,
-> +                          const struct regmap_regval_table *table, int=20
-> *value)
->=20
->=20
-> (for anyone interested, whole thing + tests can be found from:
-> https://github.com/M-Vaittinen/linux/commits/regtable/
-> Just last 3 commits.)
->=20
-> I am however having difficulties in seeing how this could be utilized by=
-=20
-> IIO, which tends to rely on values being represented by two integers=20
-> (val and val2).
+Anyhow, both solutions look much better than the original so I'm fine either way
+(subject to responses to Stephen's review)
 
-Two integers and a type to make it harder still... IIO_VAL_INT_PLUS_MICRO e=
-tc
-though I guess that might not need representing as generally the caller
-would know what that was.  Fixed point (ish) is a pain, but not come up wit=
-h a better
-presentation yet :(
-
-
->=20
-> Any suggestions regarding this idea? I'm wondering if I should just=20
-> scrap this and try seeing if I can make an IIO-specific helper(s) - or=20
-> if someone sees this would bring additional value worth an proper RFC? I=
-=20
-> don't want to sen an RFC for people to properly review if this idea is=20
-> just plain stupid :)
-
-It seems useful in general but I guess it's a question of whether you can f=
-ind
-enough users to justify it.
-
->=20
-> Yours,
-> 	-- Matti
->=20
+> 
+> ---
+>  drivers/iio/proximity/sx9324.c | 69 +++++++++++++++++++++++++-----------------
+>  1 file changed, 41 insertions(+), 28 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> index ac2ed2da21ccc..c50c1108a69cc 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -877,17 +877,8 @@ static const struct sx_common_reg_default *
+>  sx9324_get_default_reg(struct device *dev, int idx,
+>  		       struct sx_common_reg_default *reg_def)
+>  {
+> -	static const char * const sx9324_rints[] = { "lowest", "low", "high",
+> -		"highest" };
+> -	static const char * const sx9324_csidle[] = { "hi-z", "hi-z", "gnd",
+> -		"vdd" };
+> -#define SX9324_PIN_DEF "semtech,ph0-pin"
+> -#define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
+> -#define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
+> -	unsigned int pin_defs[SX9324_NUM_PINS];
+> -	char prop[] = SX9324_PROXRAW_DEF;
+> -	u32 start = 0, raw = 0, pos = 0;
+> -	int ret, count, ph, pin;
+> +	u32 raw = 0;
+> +	int ret;
+>  
+>  	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
+>  
+> @@ -896,7 +887,13 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  	case SX9324_REG_AFE_PH0:
+>  	case SX9324_REG_AFE_PH1:
+>  	case SX9324_REG_AFE_PH2:
+> -	case SX9324_REG_AFE_PH3:
+> +	case SX9324_REG_AFE_PH3: {
+> +		unsigned int pin_defs[SX9324_NUM_PINS];
+> +		int count;
+> +		int pin;
+> +		int ph;
+> +		char prop[32];
+> +
+>  		ph = reg_def->reg - SX9324_REG_AFE_PH0;
+>  		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
+>  
+> @@ -913,7 +910,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  			       SX9324_REG_AFE_PH0_PIN_MASK(pin);
+>  		reg_def->def = raw;
+>  		break;
+> -	case SX9324_REG_AFE_CTRL0:
+> +	}
+> +	case SX9324_REG_AFE_CTRL0: {
+> +		static const char * const sx9324_csidle[] = {
+> +			"hi-z", "hi-z", "gnd", "vdd"
+> +		};
+> +		static const char * const sx9324_rints[] = {
+> +			"lowest", "low", "high", "highest"
+> +		};
+> +
+>  		ret = device_property_match_property_string(dev, "semtech,cs-idle-sleep",
+>  							    sx9324_csidle,
+>  							    ARRAY_SIZE(sx9324_csidle));
+> @@ -930,16 +935,17 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  			reg_def->def |= ret << SX9324_REG_AFE_CTRL0_RINT_SHIFT;
+>  		}
+>  		break;
+> +	}
+>  	case SX9324_REG_AFE_CTRL4:
+> -	case SX9324_REG_AFE_CTRL7:
+> +	case SX9324_REG_AFE_CTRL7: {
+> +		const char *type;
+> +
+>  		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
+> -			strncpy(prop, "semtech,ph01-resolution",
+> -				ARRAY_SIZE(prop));
+> +			type = "semtech,ph01-resolution";
+>  		else
+> -			strncpy(prop, "semtech,ph23-resolution",
+> -				ARRAY_SIZE(prop));
+> +			type = "semtech,ph23-resolution";
+>  
+> -		ret = device_property_read_u32(dev, prop, &raw);
+> +		ret = device_property_read_u32(dev, type, &raw);
+>  		if (ret)
+>  			break;
+>  
+> @@ -949,6 +955,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  		reg_def->def |= FIELD_PREP(SX9324_REG_AFE_CTRL4_RESOLUTION_MASK,
+>  					   raw);
+>  		break;
+> +	}
+>  	case SX9324_REG_AFE_CTRL8:
+>  		ret = device_property_read_u32(dev,
+>  				"semtech,input-precharge-resistor-ohms",
+> @@ -982,17 +989,21 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  					   6 + raw * (raw + 3) / 2);
+>  		break;
+>  
+> -	case SX9324_REG_ADV_CTRL5:
+> +	case SX9324_REG_ADV_CTRL5: {
+> +		u32 start = 0;
+> +
+>  		ret = device_property_read_u32(dev, "semtech,startup-sensor",
+>  					       &start);
+>  		if (ret)
+>  			break;
+> -
+>  		reg_def->def &= ~SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK;
+>  		reg_def->def |= FIELD_PREP(SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK,
+>  					   start);
+>  		break;
+> -	case SX9324_REG_PROX_CTRL4:
+> +	}
+> +	case SX9324_REG_PROX_CTRL4: {
+> +		u32 pos = 0;
+> +
+>  		ret = device_property_read_u32(dev, "semtech,avg-pos-strength",
+>  					       &pos);
+>  		if (ret)
+> @@ -1005,15 +1016,16 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  		reg_def->def |= FIELD_PREP(SX9324_REG_PROX_CTRL4_AVGPOSFILT_MASK,
+>  					   raw);
+>  		break;
+> +	}
+>  	case SX9324_REG_PROX_CTRL0:
+> -	case SX9324_REG_PROX_CTRL1:
+> +	case SX9324_REG_PROX_CTRL1: {
+> +		const char *type;
+> +
+>  		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
+> -			strncpy(prop, "semtech,ph01-proxraw-strength",
+> -				ARRAY_SIZE(prop));
+> +			type = "semtech,ph01-proxraw-strength";
+>  		else
+> -			strncpy(prop, "semtech,ph23-proxraw-strength",
+> -				ARRAY_SIZE(prop));
+> -		ret = device_property_read_u32(dev, prop, &raw);
+> +			type = "semtech,ph23-proxraw-strength";
+> +		ret = device_property_read_u32(dev, type, &raw);
+>  		if (ret)
+>  			break;
+>  
+> @@ -1022,6 +1034,7 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  					   raw);
+>  		break;
+>  	}
+> +	}
+>  	return reg_def;
+>  }
+>  
+> 
+> 
 
 

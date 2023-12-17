@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-1035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139678161A7
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 19:47:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFCD8161A9
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 19:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9CA282F6C
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:47:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3018C1F21E37
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF6647F61;
-	Sun, 17 Dec 2023 18:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB7447F43;
+	Sun, 17 Dec 2023 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srB8aVP2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ai2Qi7hw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B143B46445;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91A045BFB;
+	Sun, 17 Dec 2023 18:47:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE80C433C8;
 	Sun, 17 Dec 2023 18:47:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F37C433CA;
-	Sun, 17 Dec 2023 18:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702838840;
-	bh=ByQ1wz0BzDgc8cWxsG6CqiN3dkI10323kafU/vw5Pe8=;
+	s=k20201202; t=1702838843;
+	bh=tpyIiinfVf36Owr7X4Mhg3T4gpSPmzxIBlw+KoPBg7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srB8aVP2ws1RSho00PZuKnJ0Ubo9fue7bBBqE6D/LGB7BJiOUFea0HEPVIjUpWFdq
-	 bTkCF3ybatJ2yTi5YzCTrjO5rQ7hnq/iSunZ2U6gExxDxKNTKfjj9fcFXWkda7s05a
-	 XYoC6tRGT98ZtfuszWZ3H24kw+mUpadaiDhOdJUpR2mUwOgy4jbDHhL2yaduGFbmO8
-	 fdx37Z/EQvF9lrJ53lqWaDc0HuYvm5RhG0vPCnPq+yQB5R4yj/3vFzrpNWwfrmXKZH
-	 Zw9Wtm/mOF8JD482rnYfNwE/AqjniJVfHMcFnPL+9yqRpmF29oK0faSC+d0qiXWRJ5
-	 l8BFhPtX3QG/Q==
+	b=Ai2Qi7hwvn1Nv+Hwo0E4T/8fjaIOcwwq9KTehHZLycH554M22BJQlpg8I9IDQT2ov
+	 YtYpoDn93+CJJBsoAtr3v0x78w/1DO4XztT3kN8BKrwR9CFjMBEhemxenRB8WL73nT
+	 DYgipL99lwTvUe2O2XrCUxAHTYJkcDJihkmfTaXwwZOj2JxLBUyZjNWWeBf+jnSiVv
+	 cp1ICJl842DDAfXy5pczWuOqBzFfnlEJuF2R6MRFELkw0AV/LfgmWGnLerVNxYHeV/
+	 cAPvjEvL/qMdkQofiD2Rf3nHyWadIVLIPTYFWeZGSjs67t3jYjwn/7OYT4ZKEfsKgD
+	 EDhrYMSLIEP6A==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org
 Cc: Rob Herring <robh+dt@kernel.org>,
 	Frank Rowand <frowand.list@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 2/4] of: unittest: Use __free(device_node)
-Date: Sun, 17 Dec 2023 18:46:46 +0000
-Message-ID: <20231217184648.185236-3-jic23@kernel.org>
+Subject: [RFC PATCH 3/4] iio: adc: fsl-imx25-gcq: Use __free(device_node)
+Date: Sun, 17 Dec 2023 18:46:47 +0000
+Message-ID: <20231217184648.185236-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231217184648.185236-1-jic23@kernel.org>
 References: <20231217184648.185236-1-jic23@kernel.org>
@@ -54,49 +54,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A simple example of the utility of this autocleanup approach to
-handling of_node_put()
+Using automated cleanup reduces chance of an reference count leak
+and simplfies the code.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/of/unittest.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iio/adc/fsl-imx25-gcq.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index e9e90e96600e..b6d9edb831f0 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -233,27 +233,23 @@ static void __init of_unittest_dynamic(void)
- 
- static int __init of_unittest_check_node_linkage(struct device_node *np)
+diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+index 68c813de0605..e04f92d7a953 100644
+--- a/drivers/iio/adc/fsl-imx25-gcq.c
++++ b/drivers/iio/adc/fsl-imx25-gcq.c
+@@ -199,7 +199,7 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			       struct mx25_gcq_priv *priv)
  {
+ 	struct device_node *np = pdev->dev.of_node;
 -	struct device_node *child;
 +	struct device_node *child __free(device_node) = NULL;
- 	int count = 0, rc;
+ 	struct device *dev = &pdev->dev;
+ 	int ret, i;
  
- 	for_each_child_of_node(np, child) {
- 		if (child->parent != np) {
- 			pr_err("Child node %pOFn links to wrong parent %pOFn\n",
- 				 child, np);
--			rc = -EINVAL;
--			goto put_child;
-+			return -EINVAL;
+@@ -224,14 +224,12 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 		ret = of_property_read_u32(child, "reg", &reg);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to get reg property\n");
+-			of_node_put(child);
+ 			return ret;
  		}
  
- 		rc = of_unittest_check_node_linkage(child);
- 		if (rc < 0)
--			goto put_child;
-+			return rc;
- 		count += rc;
- 	}
+ 		if (reg >= MX25_NUM_CFGS) {
+ 			dev_err(dev,
+ 				"reg value is greater than the number of available configuration registers\n");
+-			of_node_put(child);
+ 			return -EINVAL;
+ 		}
  
- 	return count + 1;
--put_child:
--	of_node_put(child);
--	return rc;
- }
+@@ -243,10 +241,9 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 		case MX25_ADC_REFP_XP:
+ 		case MX25_ADC_REFP_YP:
+ 			ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
+-			if (ret) {
+-				of_node_put(child);
++			if (ret)
+ 				return ret;
+-			}
++
+ 			priv->channel_vref_mv[reg] =
+ 				regulator_get_voltage(priv->vref[refp]);
+ 			/* Conversion from uV to mV */
+@@ -257,7 +254,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			break;
+ 		default:
+ 			dev_err(dev, "Invalid positive reference %d\n", refp);
+-			of_node_put(child);
+ 			return -EINVAL;
+ 		}
  
- static void __init of_unittest_check_tree_linkage(void)
+@@ -270,12 +266,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 
+ 		if ((refp & MX25_ADCQ_CFG_REFP_MASK) != refp) {
+ 			dev_err(dev, "Invalid fsl,adc-refp property value\n");
+-			of_node_put(child);
+ 			return -EINVAL;
+ 		}
+ 		if ((refn & MX25_ADCQ_CFG_REFN_MASK) != refn) {
+ 			dev_err(dev, "Invalid fsl,adc-refn property value\n");
+-			of_node_put(child);
+ 			return -EINVAL;
+ 		}
+ 
 -- 
 2.43.0
 

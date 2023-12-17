@@ -1,184 +1,100 @@
-Return-Path: <linux-iio+bounces-1040-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1041-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6006F8161EF
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 21:07:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23D28163AB
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 00:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841E71C21110
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 20:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E511281ED9
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 23:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F7482FF;
-	Sun, 17 Dec 2023 20:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7624B144;
+	Sun, 17 Dec 2023 23:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UefXz/pT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JTDJxrRL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486DC481B9;
-	Sun, 17 Dec 2023 20:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702843636; x=1734379636;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ysVCu8D1IX+AkHLJxM3YJ5xRnguUxX+A14T9pX7RtKQ=;
-  b=UefXz/pT8PFZHhoFSqe+Odl7jplt5Y17kpMPw+V9rvUKcbCWfoujDi50
-   sWy6MzMYv3nLXlo6oGZldXtm+vAHhDA2resetaVPvDeV7jCSataG7sWk8
-   FtQD1aA1/RBeu3DqtIcQk4AGrJXgPwCan5dknEonY9UU+9MwjhY4WO7/L
-   ALUuGXzfDNxddw1QXKeYqnVDJnIicMeti6d1NPazJag+JvHZMq90m2NAX
-   Sk9uX6TjVNefFDpm/OxwrHpEO8kMvXll9A1vjMfbEx9ET10xfcOj/hNGZ
-   /FzXHiBSRjdCus95cA1k9d0TSeV73nKVxfuA2CrF7KQ58Rjcv5TClN58F
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="398214909"
-X-IronPort-AV: E=Sophos;i="6.04,284,1695711600"; 
-   d="scan'208";a="398214909"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 12:07:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="1022539231"
-X-IronPort-AV: E=Sophos;i="6.04,284,1695711600"; 
-   d="scan'208";a="1022539231"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by fmsmga006.fm.intel.com with ESMTP; 17 Dec 2023 12:07:14 -0800
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: jikos@kernel.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	Basavaraj.Natikar@amd.com
-Cc: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] Revert "iio: hid-sensor-als: Add light color temperature support"
-Date: Sun, 17 Dec 2023 12:07:03 -0800
-Message-Id: <20231217200703.719876-3-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231217200703.719876-1-srinivas.pandruvada@linux.intel.com>
-References: <20231217200703.719876-1-srinivas.pandruvada@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F374B126
+	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 23:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2cc6acf5e3dso6834621fa.1
+        for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 15:58:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702857531; x=1703462331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i1+Vj0GokQ0yb3WUs43FQOf34J3ULcfp6330hg5zyE4=;
+        b=JTDJxrRL4IkbIMdJDdbtmbR9u4t6lawUuDo6XwaNC3jMlyPueDc1rg02lUBw2JGeBM
+         kXQOuHbFnA8CFuj+vi7OrnhK8No+zHTKRODVlVdwTdS4Zg54KjTvy4rWWGi0FCmwVkE3
+         iB40FL1sewML9MhX25RdB84E1mKZffdczNSQLkIbtPN/56CmQ/+ISanidu08tplnz/vJ
+         TObLi6QiWGgpOCZI9dNFXcD/IzUNh/2xmoco0OtPB3+FMWnsOtqW1N6wZvxHx/mwYalm
+         kj6LjRCRjSp3Ir+dCB+RMygU7VEdKjuWG5KWgXGqdNOGWIgEUawilzOTyHr2B5t9pgTf
+         +EDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702857531; x=1703462331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i1+Vj0GokQ0yb3WUs43FQOf34J3ULcfp6330hg5zyE4=;
+        b=og9Ad0r91fkb37rrxJ+uuDDYsxZ8ubBvR21UvXeqzOujpoYtr1VWcNcgfZK9KAzyfs
+         uXINFRI7eXjlMHcU60QaM5bYCg7F4RBUnNSvlRvvD0z5oKC5p1PWp+ZblwNvpdeU43nb
+         x0S0mF4eo7HkU2ahrio6PwWBtFFth92GoGQx6zNteCfJBaZdPUaIFBu9GcbWGWB2NA9U
+         GAjFDNqUOVtkO96DfOBVODVJhq9nwQSxLdMxkrM6bzL0BwdwQ1/y7qsjNNSDe+p+a6GC
+         mxduSRooQoNF03kaneJLrfGqMLq2f/YUOvUQWTmtsWm5+ZpNvvE67f2uPrGMsZuqz1FV
+         WVbg==
+X-Gm-Message-State: AOJu0Yz3SIv854nk3aQiXPpa+8HVqzWF7ZbB+k6GGEf7lUvtkckweFKo
+	Im6sRayDQovsunrivLp5a9g5bUOmcLwoWcH8sl1PFQ==
+X-Google-Smtp-Source: AGHT+IGaz8CGfk95ssERrJrGdjHm0QmxcppryeIgG4vlgkwBEK9+C7hCrSc+bYPibQyK6FpM2xZFryUgEsAkt2Z82yQ=
+X-Received: by 2002:a2e:b0f9:0:b0:2cc:6a80:45e with SMTP id
+ h25-20020a2eb0f9000000b002cc6a80045emr317134ljl.90.1702857531079; Sun, 17 Dec
+ 2023 15:58:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <cover.1702746240.git.marcelo.schmitt1@gmail.com> <24a9f1bb721e66df65e36797b0c3fd2ca1f95227.1702746240.git.marcelo.schmitt1@gmail.com>
+In-Reply-To: <24a9f1bb721e66df65e36797b0c3fd2ca1f95227.1702746240.git.marcelo.schmitt1@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Sun, 17 Dec 2023 17:58:40 -0600
+Message-ID: <CAMknhBFQ9APUAMA8nEwTJ0nhARwcD=hCcAB9HKrQ8g9qANqveA@mail.gmail.com>
+Subject: Re: [PATCH v4 15/15] iio: adc: ad7091r: Allow users to configure
+ device events
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: apw@canonical.com, joe@perches.com, dwaipayanray1@gmail.com, 
+	lukas.bulwahn@gmail.com, paul.cercueil@analog.com, 
+	Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	dan.carpenter@linaro.org, marcelo.schmitt1@gmail.com, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 5f05285df691b1e82108eead7165feae238c95ef.
+On Sat, Dec 16, 2023 at 11:52=E2=80=AFAM Marcelo Schmitt
+<marcelo.schmitt@analog.com> wrote:
+>
+> Implement event configuration callbacks allowing users to read/write
+> event thresholds and enable/disable event generation.
+>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> This is from a review suggestion David made on v3 [1].
+>
+> Is this the case for a Suggested-by tag?
+>
+> [1]: https://lore.kernel.org/linux-iio/CAMknhBFPbAqp4-AQdmbp+VRW-Ksk1PxaL=
+CG+3n=3DZk4gyStqhgw@mail.gmail.com/#t
+>
 
-This commit assumes that every HID descriptor for ALS sensor has
-presence of usage id ID HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE.
-When the above usage id is absent,  driver probe fails. This breaks
-ALS sensor functionality on many platforms.
-
-Till we have a good solution, revert this commit.
-
-Reported-by: Thomas Weißschuh <thomas@t-8ch.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218223
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/light/hid-sensor-als.c | 37 ++----------------------------
- include/linux/hid-sensor-ids.h     |  1 -
- 2 files changed, 2 insertions(+), 36 deletions(-)
-
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index d44b3f30ae4a..5cd27f04b45e 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -14,9 +14,8 @@
- #include "../common/hid-sensors/hid-sensor-trigger.h"
- 
- enum {
--	CHANNEL_SCAN_INDEX_INTENSITY,
--	CHANNEL_SCAN_INDEX_ILLUM,
--	CHANNEL_SCAN_INDEX_COLOR_TEMP,
-+	CHANNEL_SCAN_INDEX_INTENSITY = 0,
-+	CHANNEL_SCAN_INDEX_ILLUM = 1,
- 	CHANNEL_SCAN_INDEX_MAX
- };
- 
-@@ -66,16 +65,6 @@ static const struct iio_chan_spec als_channels[] = {
- 		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
- 		.scan_index = CHANNEL_SCAN_INDEX_ILLUM,
- 	},
--	{
--		.type = IIO_COLORTEMP,
--		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
--		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
--		BIT(IIO_CHAN_INFO_SCALE) |
--		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
--		BIT(IIO_CHAN_INFO_HYSTERESIS) |
--		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
--		.scan_index = CHANNEL_SCAN_INDEX_COLOR_TEMP,
--	},
- 	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
- };
- 
-@@ -114,11 +103,6 @@ static int als_read_raw(struct iio_dev *indio_dev,
- 			min = als_state->als[chan->scan_index].logical_minimum;
- 			address = HID_USAGE_SENSOR_LIGHT_ILLUM;
- 			break;
--		case  CHANNEL_SCAN_INDEX_COLOR_TEMP:
--			report_id = als_state->als[chan->scan_index].report_id;
--			min = als_state->als[chan->scan_index].logical_minimum;
--			address = HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE;
--			break;
- 		default:
- 			report_id = -1;
- 			break;
-@@ -239,10 +223,6 @@ static int als_capture_sample(struct hid_sensor_hub_device *hsdev,
- 		als_state->scan.illum[CHANNEL_SCAN_INDEX_ILLUM] = sample_data;
- 		ret = 0;
- 		break;
--	case HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE:
--		als_state->scan.illum[CHANNEL_SCAN_INDEX_COLOR_TEMP] = sample_data;
--		ret = 0;
--		break;
- 	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
- 		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
- 								    *(s64 *)raw_data);
-@@ -278,19 +258,6 @@ static int als_parse_report(struct platform_device *pdev,
- 			st->als[i].report_id);
- 	}
- 
--	ret = sensor_hub_input_get_attribute_info(hsdev, HID_INPUT_REPORT,
--				usage_id,
--				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
--				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
--	if (ret < 0)
--		return ret;
--	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
--				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
--
--	dev_dbg(&pdev->dev, "als %x:%x\n",
--		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
--		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
--
- 	st->scale_precision = hid_sensor_format_scale(usage_id,
- 				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
- 				&st->scale_pre_decml, &st->scale_post_decml);
-diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
-index 8af4fb3e0254..13b1e65fbdcc 100644
---- a/include/linux/hid-sensor-ids.h
-+++ b/include/linux/hid-sensor-ids.h
-@@ -21,7 +21,6 @@
- #define HID_USAGE_SENSOR_ALS					0x200041
- #define HID_USAGE_SENSOR_DATA_LIGHT				0x2004d0
- #define HID_USAGE_SENSOR_LIGHT_ILLUM				0x2004d1
--#define HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE		0x2004d2
- 
- /* PROX (200011) */
- #define HID_USAGE_SENSOR_PROX                                   0x200011
--- 
-2.43.0
-
+I suppose it fits the definition of Suggested-by well enough and would
+be appreciated. Even more so on [PATCH v4 02/15] "iio: adc: ad7091r:
+Pass iio_dev to event handler".
 

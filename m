@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-1006-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1007-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EC6815FDC
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 15:36:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF4C815FE2
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 15:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC45F1F2233E
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 415F21F22A4D
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 14:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C990C36AF8;
-	Sun, 17 Dec 2023 14:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DA2B9AC;
+	Sun, 17 Dec 2023 14:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ER6anyDg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxvLuPbn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857341DFD7;
-	Sun, 17 Dec 2023 14:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF555C433C8;
-	Sun, 17 Dec 2023 14:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C8044397;
+	Sun, 17 Dec 2023 14:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E542BC433C7;
+	Sun, 17 Dec 2023 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702823770;
-	bh=ZJHYl2x/5sOZYR/DGxvRXI5eEW8wCSGNtFDh8x+V5bA=;
+	s=k20201202; t=1702824054;
+	bh=1khrOZaRj2KF8KpFgTKDYoPsimZYPVswOCKbdLmQpwY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ER6anyDg+jhiNEW1JfE8yrcTvOcyVAP0Abw8SQdsCjpjoqLLjgS5jMoiATdIloM46
-	 b/FhcviIxYDHyZntmQy5Qc70SgkXtcVdjUeCjFthZJaW0wtLse26fS7MoCrrhmf3Tc
-	 c1zs2CeJaoqfs/KY7ZYaHCyIRIn0riKBffgxuMh4gHwk+ILaKNGM30u7y5musRZRhn
-	 ThtSw78tFbwtYsdpqlZaLqPv44W/4lUMbm2zO0byt/gSz76j/23SB30K1C6VFyq7Jj
-	 WZGKqHkTyDzXB2FCd/+AAQ6Az06U9s66pD8rF/Onv5x/NaL5lruOo7Mfv2gOXCbyFT
-	 sldL/41dId8CA==
-Date: Sun, 17 Dec 2023 14:35:55 +0000
+	b=DxvLuPbnfJwoxdOrjelMj4pfEOqdqcEL3QYH5XTvsHporeriDbMto9pqg0zGdRP0B
+	 emnsRwtQ+r1jwYQYtxHb+Bp+IZG82pahORO/Tyx5Z2zUMg1qM9Mcrsp1mzMsHFttyy
+	 TMFvMOQEu1fg2Bp83ZFg2DLIblnXbEa91e9KG3iq5XVIVhwT6JTY328hSIlDvSQV/l
+	 rxbTVgKtB26cWZwjMzVIBKaYwjpk+L41SissU7MI8F6fGqTidkdSBV9NKKr7f3C+Ji
+	 19ykWo0ehINO0yYZ25+QBJcuCEO4gfC+Wv5JQns712jQiP0/CeQHRBxSLSYAwMqmdJ
+	 C5zFMc/RGdVHQ==
+Date: Sun, 17 Dec 2023 14:40:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com,
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <thomas@t-8ch.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: hid-sensor-als: Avoid failure for
- chromaticity support
-Message-ID: <20231217143555.1f89ddaa@jic23-huawei>
-In-Reply-To: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
-References: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+To: Yauhen Kharuzhy <jekhor@gmail.com>
+Cc: linux-input@vger.kernel.org, linux-iio@vger.kernel.org, Srinivas
+ Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, Basavaraj
+ Natikar <Basavaraj.Natikar@amd.com>
+Subject: Re: [PATCH] iio: hid-sensor-als: Don't stop probing at
+ non-supported attribute
+Message-ID: <20231217144039.5c971685@jic23-huawei>
+In-Reply-To: <20231216114229.652020-1-jekhor@gmail.com>
+References: <20231216114229.652020-1-jekhor@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -51,124 +51,116 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Dec 2023 08:01:59 -0800
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+On Sat, 16 Dec 2023 13:42:29 +0200
+Yauhen Kharuzhy <jekhor@gmail.com> wrote:
 
-> With the commit ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity
-> support"), there is an assumption that the every HID ALS descriptor has
-> support of usage ids for chromaticity support. If they are not present,
-> probe fails for the driver . This breaks ALS functionality on majority of
-> platforms.
->=20
-> It is possible that chromaticity usage ids are not present. When not
-> present, restrict number of IIO channels to not include support for
-> chromaticity and continue.
->=20
-> Fixes: ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity support=
-")
-> Reported-by: Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: stable@vger.kernel.org
+> Some ambient light sensors don't support color temperature and
+> chromaticity attributes. The driver stops probing if it finds this.
+> 
+> To support sensors without of color temperature and chromaticity
+> attributes, just skip them at probing if they weren't found.
+> 
+> Tested at Lenovo Yogabook YB1-X91L tablet.
+> 
+> Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+i reviewed this one as as well as Srinivas' as that had issues that need solving.
+
+This one just seems to half paper over the problem  It won't update the channels
+etc but the set of channels provided to userspace are still garbage.
+
+So better than before, but not fixing the issue fully.
+
+Jonathan
+
 > ---
->  drivers/iio/light/hid-sensor-als.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-s=
-ensor-als.c
-> index f17304b54468..9941b0b927c7 100644
+>  drivers/iio/light/hid-sensor-als.c | 39 ++++++++++++++++++------------
+>  1 file changed, 23 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
+> index f17304b54468..b711bac3bb2b 100644
 > --- a/drivers/iio/light/hid-sensor-als.c
 > +++ b/drivers/iio/light/hid-sensor-als.c
-> @@ -303,11 +303,14 @@ static int als_parse_report(struct platform_device =
-*pdev,
->  				struct hid_sensor_hub_device *hsdev,
->  				struct iio_chan_spec *channels,
->  				unsigned usage_id,
-> -				struct als_state *st)
-> +				struct als_state *st,
-> +				int *max_channels)
->  {
->  	int ret;
->  	int i;
-> =20
-> +	*max_channels =3D CHANNEL_SCAN_INDEX_MAX;
-> +
->  	for (i =3D 0; i <=3D CHANNEL_SCAN_INDEX_ILLUM; ++i) {
->  		ret =3D sensor_hub_input_get_attribute_info(hsdev,
->  						HID_INPUT_REPORT,
-> @@ -326,8 +329,12 @@ static int als_parse_report(struct platform_device *=
-pdev,
+> @@ -314,8 +314,11 @@ static int als_parse_report(struct platform_device *pdev,
+>  						usage_id,
+>  						HID_USAGE_SENSOR_LIGHT_ILLUM,
+>  						&st->als[i]);
+> -		if (ret < 0)
+> +		if (ret < 0) {
+> +			dev_err(&pdev->dev,
+> +				"Failed to setup Illuminance attribute\n");
+>  			return ret;
+> +		}
+
+Unrelated change. For a fix we should look to keep things minimal.
+
+>  		als_adjust_channel_bit_mask(channels, i, st->als[i].size);
+>  
+>  		dev_dbg(&pdev->dev, "als %x:%x\n", st->als[i].index,
+> @@ -326,14 +329,16 @@ static int als_parse_report(struct platform_device *pdev,
 >  				usage_id,
 >  				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
 >  				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
 > -	if (ret < 0)
 > -		return ret;
-> +	if (ret < 0) {
-> +		*max_channels =3D CHANNEL_SCAN_INDEX_ILLUM;
-> +		ret =3D 0;
-> +		goto skip_color_chromaticity;
+> -	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
+> -				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
+> +	if (!ret) {
+> +		dev_info(&pdev->dev, "Color temperature is supported\n");
+
+I'd argue we shouldn't print a message on this.
+Use the availability of channels after driver is probed to figure this out if
+needed. 
+
+> +		als_adjust_channel_bit_mask(channels,
+> +			CHANNEL_SCAN_INDEX_COLOR_TEMP,
+> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
+>  
+> -	dev_dbg(&pdev->dev, "als %x:%x\n",
+> -		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
+> -		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
+> +		dev_dbg(&pdev->dev, "als %x:%x\n",
+> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
+> +			st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
 > +	}
-> +
->  	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
->  				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
-> =20
-> @@ -354,6 +361,7 @@ static int als_parse_report(struct platform_device *p=
-dev,
->  			st->als[next_scan_index].report_id);
+>  
+>  	for (i = 0; i < 2; i++) {
+>  		int next_scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X + i;
+> @@ -342,23 +347,25 @@ static int als_parse_report(struct platform_device *pdev,
+>  				HID_INPUT_REPORT, usage_id,
+>  				HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X + i,
+>  				&st->als[next_scan_index]);
+> -		if (ret < 0)
+> -			return ret;
+> -
+> -		als_adjust_channel_bit_mask(channels,
+> +		if (!ret) {
+> +			dev_info(&pdev->dev,
+> +				 "Light chromaticity %c is supported\n",
+> +				 i ? 'Y' : 'X');
+> +			als_adjust_channel_bit_mask(channels,
+>  					CHANNEL_SCAN_INDEX_CHROMATICITY_X + i,
+>  					st->als[next_scan_index].size);
+>  
+> -		dev_dbg(&pdev->dev, "als %x:%x\n",
+> -			st->als[next_scan_index].index,
+> -			st->als[next_scan_index].report_id);
+> +			dev_dbg(&pdev->dev, "als %x:%x\n",
+> +				st->als[next_scan_index].index,
+> +				st->als[next_scan_index].report_id);
+> +		}
 >  	}
-> =20
-> +skip_color_chromaticity:
->  	st->scale_precision =3D hid_sensor_format_scale(usage_id,
+>  
+>  	st->scale_precision = hid_sensor_format_scale(usage_id,
 >  				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
 >  				&st->scale_pre_decml, &st->scale_post_decml);
-> @@ -364,7 +372,7 @@ static int als_parse_report(struct platform_device *p=
-dev,
+>  
+> -	return ret;
+> +	return 0;
+>  }
+>  
 >  /* Function to initialize the processing for usage id */
->  static int hid_als_probe(struct platform_device *pdev)
->  {
-> -	int ret =3D 0;
-> +	int ret =3D 0, max_channels;
->  	static const char *name =3D "als";
->  	struct iio_dev *indio_dev;
->  	struct als_state *als_state;
-> @@ -398,15 +406,15 @@ static int hid_als_probe(struct platform_device *pd=
-ev)
-> =20
->  	ret =3D als_parse_report(pdev, hsdev,
->  			       (struct iio_chan_spec *)indio_dev->channels,
-> -			       hsdev->usage,
-> -			       als_state);
-> +			       hsdev->usage, als_state, &max_channels);
->  	if (ret) {
->  		dev_err(&pdev->dev, "failed to setup attributes\n");
->  		return ret;
->  	}
-> =20
-> -	indio_dev->num_channels =3D
-> -				ARRAY_SIZE(als_channels);
-> +	/* +1 to include time stamp */
-> +	indio_dev->num_channels =3D max_channels + 1;
-
-In the current array the timestamp channel isn't the next one, so how does =
-this work?
-
-I think we either have to form the channel array dynamically or pick between
-one that does have the colour info and one that doesn't for the original ca=
-se.
-
-Given timing we may just need to revert the broken patch and revisit this n=
-ext
-cycle.
-
-Jonathan
-
-
-> +
->  	indio_dev->info =3D &als_info;
->  	indio_dev->name =3D name;
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
 
 

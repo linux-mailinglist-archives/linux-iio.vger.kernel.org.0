@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-1036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFCD8161A9
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 19:47:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00718161AB
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 19:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3018C1F21E37
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519151F21D9B
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB7447F43;
-	Sun, 17 Dec 2023 18:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C410047F63;
+	Sun, 17 Dec 2023 18:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ai2Qi7hw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxiOk5dS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91A045BFB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF1641A84;
+	Sun, 17 Dec 2023 18:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3E4C433C7;
 	Sun, 17 Dec 2023 18:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE80C433C8;
-	Sun, 17 Dec 2023 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702838843;
-	bh=tpyIiinfVf36Owr7X4Mhg3T4gpSPmzxIBlw+KoPBg7o=;
+	s=k20201202; t=1702838846;
+	bh=yP6evj5zceY7Ye61hXwY7pu/5SYa4vhY2oqK5+w0LMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai2Qi7hwvn1Nv+Hwo0E4T/8fjaIOcwwq9KTehHZLycH554M22BJQlpg8I9IDQT2ov
-	 YtYpoDn93+CJJBsoAtr3v0x78w/1DO4XztT3kN8BKrwR9CFjMBEhemxenRB8WL73nT
-	 DYgipL99lwTvUe2O2XrCUxAHTYJkcDJihkmfTaXwwZOj2JxLBUyZjNWWeBf+jnSiVv
-	 cp1ICJl842DDAfXy5pczWuOqBzFfnlEJuF2R6MRFELkw0AV/LfgmWGnLerVNxYHeV/
-	 cAPvjEvL/qMdkQofiD2Rf3nHyWadIVLIPTYFWeZGSjs67t3jYjwn/7OYT4ZKEfsKgD
-	 EDhrYMSLIEP6A==
+	b=cxiOk5dS6asXALo/hODL2as9vhZ9Iupkw0t0yZEVcLU1hdupnMg+BiYd3PlMZZLFf
+	 A6KQfP/FF4EDJKLcaRH9lWOiGdKCF3ApY6xW/rRi5uCE6bqpxNX4NwaFCmRxZ04C5/
+	 9ve7p9JX0EezEm0gA4Sq7dpEUm//B7NiROwu55oZZDhvfVSI6AaxWczUIHf46Aw48/
+	 JlNWLIbnTirCOiFlsxjRj2iwBibp97zgjgJWCzmKBcrrJNYR7HvMyvBneV4Q1cOmx3
+	 TcrTrPp3REToZgSbcjrpaHAkUYZ2ektYUweT3KkQ+RzBf46ileYXOZ3IwC5aurWA2V
+	 /CcgaJC7ce1zw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org
 Cc: Rob Herring <robh+dt@kernel.org>,
 	Frank Rowand <frowand.list@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 3/4] iio: adc: fsl-imx25-gcq: Use __free(device_node)
-Date: Sun, 17 Dec 2023 18:46:47 +0000
-Message-ID: <20231217184648.185236-4-jic23@kernel.org>
+Subject: [RFC PATCH 4/4] iio: adc: rcar-gyroadc: use __free(device_node)
+Date: Sun, 17 Dec 2023 18:46:48 +0000
+Message-ID: <20231217184648.185236-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231217184648.185236-1-jic23@kernel.org>
 References: <20231217184648.185236-1-jic23@kernel.org>
@@ -54,76 +54,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Using automated cleanup reduces chance of an reference count leak
-and simplfies the code.
+Using automated cleanup to replace of_node_put() handling allows for
+a simplfied flow by enabling direct returns on errors.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/fsl-imx25-gcq.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/iio/adc/rcar-gyroadc.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-index 68c813de0605..e04f92d7a953 100644
---- a/drivers/iio/adc/fsl-imx25-gcq.c
-+++ b/drivers/iio/adc/fsl-imx25-gcq.c
-@@ -199,7 +199,7 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
- 			       struct mx25_gcq_priv *priv)
- {
- 	struct device_node *np = pdev->dev.of_node;
+diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+index d524f2e8e927..9d6227b31724 100644
+--- a/drivers/iio/adc/rcar-gyroadc.c
++++ b/drivers/iio/adc/rcar-gyroadc.c
+@@ -318,7 +318,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 	struct rcar_gyroadc *priv = iio_priv(indio_dev);
+ 	struct device *dev = priv->dev;
+ 	struct device_node *np = dev->of_node;
 -	struct device_node *child;
 +	struct device_node *child __free(device_node) = NULL;
- 	struct device *dev = &pdev->dev;
- 	int ret, i;
- 
-@@ -224,14 +224,12 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
- 		ret = of_property_read_u32(child, "reg", &reg);
- 		if (ret) {
- 			dev_err(dev, "Failed to get reg property\n");
--			of_node_put(child);
- 			return ret;
- 		}
- 
- 		if (reg >= MX25_NUM_CFGS) {
- 			dev_err(dev,
- 				"reg value is greater than the number of available configuration registers\n");
--			of_node_put(child);
- 			return -EINVAL;
- 		}
- 
-@@ -243,10 +241,9 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
- 		case MX25_ADC_REFP_XP:
- 		case MX25_ADC_REFP_YP:
- 			ret = mx25_gcq_ext_regulator_setup(&pdev->dev, priv, refp);
--			if (ret) {
--				of_node_put(child);
-+			if (ret)
- 				return ret;
--			}
-+
- 			priv->channel_vref_mv[reg] =
- 				regulator_get_voltage(priv->vref[refp]);
- 			/* Conversion from uV to mV */
-@@ -257,7 +254,6 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 	struct regulator *vref;
+ 	unsigned int reg;
+ 	unsigned int adcmode = -1, childmode;
+@@ -352,7 +352,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 			num_channels = ARRAY_SIZE(rcar_gyroadc_iio_channels_3);
  			break;
  		default:
- 			dev_err(dev, "Invalid positive reference %d\n", refp);
--			of_node_put(child);
- 			return -EINVAL;
+-			goto err_e_inval;
++			return -EINVAL;
  		}
  
-@@ -270,12 +266,10 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 		/*
+@@ -369,7 +369,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 				dev_err(dev,
+ 					"Failed to get child reg property of ADC \"%pOFn\".\n",
+ 					child);
+-				goto err_of_node_put;
++				return ret;
+ 			}
  
- 		if ((refp & MX25_ADCQ_CFG_REFP_MASK) != refp) {
- 			dev_err(dev, "Invalid fsl,adc-refp property value\n");
--			of_node_put(child);
- 			return -EINVAL;
- 		}
- 		if ((refn & MX25_ADCQ_CFG_REFN_MASK) != refn) {
- 			dev_err(dev, "Invalid fsl,adc-refn property value\n");
--			of_node_put(child);
- 			return -EINVAL;
+ 			/* Channel number is too high. */
+@@ -377,7 +377,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 				dev_err(dev,
+ 					"Only %i channels supported with %pOFn, but reg = <%i>.\n",
+ 					num_channels, child, reg);
+-				goto err_e_inval;
++				return -EINVAL;
+ 			}
  		}
  
+@@ -386,7 +386,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 			dev_err(dev,
+ 				"Channel %i uses different ADC mode than the rest.\n",
+ 				reg);
+-			goto err_e_inval;
++			return -EINVAL;
+ 		}
+ 
+ 		/* Channel is valid, grab the regulator. */
+@@ -396,8 +396,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 		if (IS_ERR(vref)) {
+ 			dev_dbg(dev, "Channel %i 'vref' supply not connected.\n",
+ 				reg);
+-			ret = PTR_ERR(vref);
+-			goto err_of_node_put;
++			return PTR_ERR(vref);
+ 		}
+ 
+ 		priv->vref[reg] = vref;
+@@ -422,7 +421,6 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 		 * we can stop parsing here.
+ 		 */
+ 		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A) {
+-			of_node_put(child);
+ 			break;
+ 		}
+ 	}
+@@ -433,12 +431,6 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	return 0;
+-
+-err_e_inval:
+-	ret = -EINVAL;
+-err_of_node_put:
+-	of_node_put(child);
+-	return ret;
+ }
+ 
+ static void rcar_gyroadc_deinit_supplies(struct iio_dev *indio_dev)
 -- 
 2.43.0
 

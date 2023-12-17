@@ -1,44 +1,44 @@
-Return-Path: <linux-iio+bounces-1027-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1028-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A19816144
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:36:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19E0816145
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 18:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D58F11C21E19
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 17:36:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A8A281346
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Dec 2023 17:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02D11DFD8;
-	Sun, 17 Dec 2023 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF80646537;
+	Sun, 17 Dec 2023 17:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDNNuDze"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1q8WfMZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E0315B6
-	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 17:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DE0C433C9;
-	Sun, 17 Dec 2023 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75A646529
+	for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 17:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25ACC433C8;
+	Sun, 17 Dec 2023 17:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702834583;
-	bh=doOf2KGLh0b2QUSekfGJ4Te2LlamNxBesY/ENcEgILQ=;
+	s=k20201202; t=1702834585;
+	bh=AtXfAer1Jh1YALW92R8+uOmFheDRTlYo3rN9ybQmrO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDNNuDzeD7YBcSO9xwwZt+ezwjOz+4d5IG9SOJvDrHLzSm66dHaL+5d9j4lAsrDsU
-	 Q4/XYi9trvhBK19Mk0nes0uaVoRGvSnupV3k7PvUng94iofL6cUzGrkDpaq8IxJxYt
-	 InA+KSI4NBCW3SRDpV+VMk8rKiFViQ5vYLSZpJmSXuWHLqktV74rsthtlGYaoVInsi
-	 wmxhmRCZOF3HEvzDvczogl0jnJit7YrBs5nVyZY/xFtwDe99JzCkmTRfv5zz+YpPdV
-	 QVrXMTXve3XD0QXrsOuKhbSIjcYAE89yBl990V47+2pbsbNdBkXauB5PEK6q2bJ0Iq
-	 bpaGzZ3Cv2IkQ==
+	b=e1q8WfMZ0RlpXl/S4UQH0F/xePPauxQpHVTpvmyfNnNtpxJzwktn6GCu+15JplLbo
+	 FnzIzCW6Eg2PIneFPnDiUjywT4boUyIa6GSc227+dRHc/UcCdn3/iJVYoN5dIivXhX
+	 zhC7ERrYTth+fzu7qFzHSfyur1G+Rk4Unl7De7+C/bs0WkfdYAtayILAJii+9uWqwl
+	 6LGx/Zp7E0Eam3aztw0SeinEjOjJ7lTW8A7VC+V56WqpEOdV8OgCvbIEC5/y7/QO22
+	 QV//EHSSHoLoN7oeQfKstqeAy38ABbLE1dEzIql5SkRtfUuS0pASd0P7d2CHoUYJss
+	 ePxjwn+iQKP8g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 07/10] iio: proximity: sx9324: Use automated cleanup for locks and IIO mode claiming.
-Date: Sun, 17 Dec 2023 17:35:45 +0000
-Message-ID: <20231217173548.112701-8-jic23@kernel.org>
+Subject: [RFC PATCH 08/10] iio: proximity: sx9310: Use automated cleanup for locks and IIO mode claiming.
+Date: Sun, 17 Dec 2023 17:35:46 +0000
+Message-ID: <20231217173548.112701-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231217173548.112701-1-jic23@kernel.org>
 References: <20231217173548.112701-1-jic23@kernel.org>
@@ -57,18 +57,21 @@ of boilerplate.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/proximity/sx9324.c | 107 ++++++++++++---------------------
- 1 file changed, 38 insertions(+), 69 deletions(-)
+ drivers/iio/proximity/sx9310.c | 114 +++++++++++----------------------
+ 1 file changed, 39 insertions(+), 75 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-index ac2ed2da21cc..f737df36797f 100644
---- a/drivers/iio/proximity/sx9324.c
-+++ b/drivers/iio/proximity/sx9324.c
-@@ -429,25 +429,16 @@ static int sx9324_read_raw(struct iio_dev *indio_dev,
- 			   int *val, int *val2, long mask)
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index 0d230a0dff56..73e95b3e4770 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -337,28 +337,19 @@ static int sx9310_read_raw(struct iio_dev *indio_dev,
+ 			   int *val2, long mask)
  {
  	struct sx_common_data *data = iio_priv(indio_dev);
 -	int ret;
+ 
+ 	if (chan->type != IIO_PROXIMITY)
+ 		return -EINVAL;
  
  	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
@@ -87,195 +90,193 @@ index ac2ed2da21cc..f737df36797f 100644
 -		if (ret)
 -			return ret;
 -
--		ret = sx9324_read_gain(data, chan, val);
+-		ret = sx9310_read_gain(data, chan, val);
 -		iio_device_release_direct_mode(indio_dev);
 -		return ret;
 +		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
-+			return sx9324_read_gain(data, chan, val);
++			return sx9310_read_gain(data, chan, val);
 +		return -EINVAL;
  	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return sx9324_read_samp_freq(data, val, val2);
+ 		return sx9310_read_samp_freq(data, val, val2);
  	default:
-@@ -484,7 +475,7 @@ static int sx9324_read_avail(struct iio_dev *indio_dev,
- static int sx9324_set_samp_freq(struct sx_common_data *data,
- 				int val, int val2)
+@@ -546,12 +537,10 @@ static int sx9310_write_thresh(struct sx_common_data *data,
+ 		return -EINVAL;
+ 
+ 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, reg,
+-				 SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
+-	mutex_unlock(&data->mutex);
+ 
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, reg,
++				  SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
+ }
+ 
+ static int sx9310_write_hysteresis(struct sx_common_data *data,
+@@ -576,17 +565,14 @@ static int sx9310_write_hysteresis(struct sx_common_data *data,
+ 		return -EINVAL;
+ 
+ 	hyst = FIELD_PREP(SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
+-				 SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
+-	mutex_unlock(&data->mutex);
+ 
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
++				  SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
+ }
+ 
+ static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
+ {
+-	int ret;
+ 	unsigned int regval;
+ 
+ 	if (val > 0)
+@@ -596,18 +582,14 @@ static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
+ 
+ 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK, val);
+ 
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
+-				 SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
+-				 regval);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
++				  SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
++				  regval);
+ }
+ 
+ static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
+ {
+-	int ret;
+ 	unsigned int regval;
+ 
+ 	if (val > 0)
+@@ -617,13 +599,10 @@ static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
+ 
+ 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK, val);
+ 
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
+-				 SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
+-				 regval);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
++				  SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
++				  regval);
+ }
+ 
+ static int sx9310_write_event_val(struct iio_dev *indio_dev,
+@@ -658,7 +637,7 @@ static int sx9310_write_event_val(struct iio_dev *indio_dev,
+ 
+ static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
  {
 -	int i, ret;
 +	int i;
  
- 	for (i = 0; i < ARRAY_SIZE(sx9324_samp_freq_table); i++)
- 		if (val == sx9324_samp_freq_table[i].val &&
-@@ -494,15 +485,11 @@ static int sx9324_set_samp_freq(struct sx_common_data *data,
- 	if (i == ARRAY_SIZE(sx9324_samp_freq_table))
+ 	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
+ 		if (val == sx9310_samp_freq_table[i].val &&
+@@ -668,23 +647,17 @@ static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
+ 	if (i == ARRAY_SIZE(sx9310_samp_freq_table))
  		return -EINVAL;
  
 -	mutex_lock(&data->mutex);
 -
--	ret = regmap_update_bits(data->regmap,
--				 SX9324_REG_GNRL_CTRL0,
--				 SX9324_REG_GNRL_CTRL0_SCANPERIOD_MASK, i);
+-	ret = regmap_update_bits(
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(
+ 		data->regmap, SX9310_REG_PROX_CTRL0,
+ 		SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK,
+ 		FIELD_PREP(SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK, i));
 -
 -	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
+-
 -	return ret;
-+	return regmap_update_bits(data->regmap,
-+				  SX9324_REG_GNRL_CTRL0,
-+				  SX9324_REG_GNRL_CTRL0_SCANPERIOD_MASK, i);
  }
  
- static int sx9324_read_thresh(struct sx_common_data *data,
-@@ -623,7 +610,6 @@ static int sx9324_write_thresh(struct sx_common_data *data,
- 			       const struct iio_chan_spec *chan, int _val)
- {
- 	unsigned int reg, val = _val;
--	int ret;
- 
- 	reg = SX9324_REG_PROX_CTRL6 + chan->channel / 2;
- 
-@@ -633,11 +619,9 @@ static int sx9324_write_thresh(struct sx_common_data *data,
- 	if (val > 0xff)
- 		return -EINVAL;
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_write(data->regmap, reg, val);
--	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
--	return ret;
-+	return regmap_write(data->regmap, reg, val);
- }
- 
- static int sx9324_write_hysteresis(struct sx_common_data *data,
-@@ -662,18 +646,15 @@ static int sx9324_write_hysteresis(struct sx_common_data *data,
- 		return -EINVAL;
- 
- 	hyst = FIELD_PREP(SX9324_REG_PROX_CTRL5_HYST_MASK, hyst);
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
--				 SX9324_REG_PROX_CTRL5_HYST_MASK, hyst);
--	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
--	return ret;
-+	return regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
-+				  SX9324_REG_PROX_CTRL5_HYST_MASK, hyst);
- }
- 
- static int sx9324_write_far_debounce(struct sx_common_data *data, int _val)
- {
- 	unsigned int regval, val = _val;
--	int ret;
- 
- 	if (val > 0)
- 		val = ilog2(val);
-@@ -682,19 +663,16 @@ static int sx9324_write_far_debounce(struct sx_common_data *data, int _val)
- 
- 	regval = FIELD_PREP(SX9324_REG_PROX_CTRL5_FAR_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
--				 SX9324_REG_PROX_CTRL5_FAR_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
--	return ret;
-+	return regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
-+				  SX9324_REG_PROX_CTRL5_FAR_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9324_write_close_debounce(struct sx_common_data *data, int _val)
- {
- 	unsigned int regval, val = _val;
--	int ret;
- 
- 	if (val > 0)
- 		val = ilog2(val);
-@@ -703,13 +681,11 @@ static int sx9324_write_close_debounce(struct sx_common_data *data, int _val)
- 
- 	regval = FIELD_PREP(SX9324_REG_PROX_CTRL5_CLOSE_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
--				 SX9324_REG_PROX_CTRL5_CLOSE_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
--	return ret;
-+	return regmap_update_bits(data->regmap, SX9324_REG_PROX_CTRL5,
-+				  SX9324_REG_PROX_CTRL5_CLOSE_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9324_write_event_val(struct iio_dev *indio_dev,
-@@ -746,7 +722,6 @@ static int sx9324_write_gain(struct sx_common_data *data,
+ static int sx9310_write_gain(struct sx_common_data *data,
  			     const struct iio_chan_spec *chan, int val)
  {
- 	unsigned int gain, reg;
+ 	unsigned int gain, mask;
 -	int ret;
  
- 	reg = SX9324_REG_PROX_CTRL0 + chan->channel / 2;
+ 	gain = ilog2(val);
  
-@@ -756,13 +731,11 @@ static int sx9324_write_gain(struct sx_common_data *data,
- 
- 	gain = FIELD_PREP(SX9324_REG_PROX_CTRL0_GAIN_MASK, gain);
+@@ -703,12 +676,9 @@ static int sx9310_write_gain(struct sx_common_data *data,
+ 		return -EINVAL;
+ 	}
  
 -	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, reg,
--				 SX9324_REG_PROX_CTRL0_GAIN_MASK,
+-	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
 -				 gain);
 -	mutex_unlock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 
+-
 -	return ret;
-+	return regmap_update_bits(data->regmap, reg,
-+				  SX9324_REG_PROX_CTRL0_GAIN_MASK,
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
 +				  gain);
  }
  
- static int sx9324_write_raw(struct iio_dev *indio_dev,
-@@ -1081,21 +1054,17 @@ static int sx9324_suspend(struct device *dev)
+ static int sx9310_write_raw(struct iio_dev *indio_dev,
+@@ -969,22 +939,18 @@ static int sx9310_suspend(struct device *dev)
  
  	disable_irq_nosync(data->client->irq);
  
 -	mutex_lock(&data->mutex);
 +	guard(mutex)(&data->mutex);
- 	ret = regmap_read(data->regmap, SX9324_REG_GNRL_CTRL1, &regval);
-+	if (ret < 0)
+ 	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
+ 			  &data->suspend_ctrl);
+ 	if (ret)
+-		goto out;
 +		return ret;
  
- 	data->suspend_ctrl =
- 		FIELD_GET(SX9324_REG_GNRL_CTRL1_PHEN_MASK, regval);
- 
--	if (ret < 0)
+ 	ctrl0 = data->suspend_ctrl & ~SX9310_REG_PROX_CTRL0_SENSOREN_MASK;
+ 	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
+ 	if (ret)
 -		goto out;
- 
- 	/* Disable all phases, send the device to sleep. */
--	ret = regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1, 0);
 -
+-	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
++		return ret;
+ 
 -out:
 -	mutex_unlock(&data->mutex);
 -	return ret;
-+	return regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1, 0);
++	return regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
  }
  
- static int sx9324_resume(struct device *dev)
-@@ -1103,12 +1072,12 @@ static int sx9324_resume(struct device *dev)
+ static int sx9310_resume(struct device *dev)
+@@ -992,18 +958,16 @@ static int sx9310_resume(struct device *dev)
  	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
  	int ret;
  
 -	mutex_lock(&data->mutex);
--	ret = regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1,
--			   data->suspend_ctrl | SX9324_REG_GNRL_CTRL1_PAUSECTRL);
+-	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
+-	if (ret)
+-		goto out;
+-
+-	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
+-			   data->suspend_ctrl);
++	scoped_guard(mutex, &data->mutex) {
++		ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
++		if (ret)
++			return ret;
+ 
+-out:
 -	mutex_unlock(&data->mutex);
 -	if (ret)
 -		return ret;
-+	scoped_guard(mutex, &data->mutex) {
-+		ret = regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1,
-+				   data->suspend_ctrl | SX9324_REG_GNRL_CTRL1_PAUSECTRL);
++		ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
++				   data->suspend_ctrl);
 +		if (ret)
 +			return ret;
 +	}

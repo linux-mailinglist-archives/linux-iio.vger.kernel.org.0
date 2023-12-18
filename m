@@ -1,144 +1,182 @@
-Return-Path: <linux-iio+bounces-1063-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1064-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2802381791A
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 18:48:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE82C81794D
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 18:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE7AEB2334B
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 17:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C3B289070
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 17:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5277146E;
-	Mon, 18 Dec 2023 17:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="naM/PjGX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7EE5BFBC;
+	Mon, 18 Dec 2023 17:58:33 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7084A5D73B;
-	Mon, 18 Dec 2023 17:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d3ac28ae81so13783315ad.0;
-        Mon, 18 Dec 2023 09:42:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702921331; x=1703526131; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MGc3H1mZH6buwISmfip+JfxIDpEG4RSu3DvfL7xLHYM=;
-        b=naM/PjGXR+ZvuuwwNlrNflE4mn1iPSGtvi0kA6Pswm793wmWZm5PMI37LZwLW7Fm4A
-         tLOjwa0wl3JyLcpKOViFUry+TQEY/yg4QnJeQYKDRGUdinxhKSTGiFsw+H8W+QMzX3kI
-         Vi7ZOA3uJhFevYnyuMn/mZD7CsniUuaRw9RfdDqGOqQ5Zk+EFM1FJo1kTi2STd0QnK1r
-         8MK62oVw8jLSvsu6xhChBZC6QxtKztSVtOqTaI25Bl2wrCjqaVIj53UTkHRd4bwRbo3D
-         rTF8wx2/SDtHrMnX2ndDvkYDy3sFBwaKgespEKePPos6CoEaZamFNGDTOHiissDAzjfP
-         7GfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702921331; x=1703526131;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MGc3H1mZH6buwISmfip+JfxIDpEG4RSu3DvfL7xLHYM=;
-        b=HPzYHYsS/mQSaNMnnLhy6Px5C3z/hhDrwJROF+5wP0+zviML+zZ27cri1h2UWiRHc1
-         YffDwOqGZ48CrqqUNLlzjZjlh9+6iT8RqsVSUqFmwH1zYch0N6BY3RyI4ZZ5X1GtvYb6
-         hjUFvOiAkMBueca+IFqOhzIVLOcnsKxPpHdyKDypJWEZRHyUkZTGD48tl0pSsFuNaNMX
-         2jDYnCTVwp94Zahq3KqARxBduhFSmvA9Cdk3rxNlo8PH8KosHiDVtZtk+9Z/5Nukdzzq
-         MQnqWppLKz3KZTxJE+uq+S2itnFZIFt6nT2YHEPvZZKYsMIgGaVJiV1gxYdIqOy1OPwV
-         Jb6Q==
-X-Gm-Message-State: AOJu0YzY4eI3sVj0c0FnVoAwl2Uw65Xb7fNjDazDnTshUwqWYguhtIpH
-	eS+qqMpbCfnNfyg+gCg5hn8=
-X-Google-Smtp-Source: AGHT+IED5rEnW8aoqaiiA/2rqOwUboP7/NHnORKUO0aZalPEfPHyGBYCERMEgw6AFHRANrIrYLaoFg==
-X-Received: by 2002:a17:902:ab83:b0:1d0:6ffd:e2ef with SMTP id f3-20020a170902ab8300b001d06ffde2efmr15136709plr.137.1702921330684;
-        Mon, 18 Dec 2023 09:42:10 -0800 (PST)
-Received: from localhost ([2804:30c:160d:b800:be05:2c5b:24c0:12aa])
-        by smtp.gmail.com with ESMTPSA id a21-20020a1709027d9500b001cfed5524easm19233051plm.288.2023.12.18.09.42.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 09:42:10 -0800 (PST)
-Date: Mon, 18 Dec 2023 14:42:01 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
-	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-	paul.cercueil@analog.com, Michael.Hennerich@analog.com,
-	lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	dan.carpenter@linaro.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 09/15] iio: adc: ad7091r: Enable internal vref if
- external vref is not supplied
-Message-ID: <ZYCEaXAm53X_Vig-@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1702746240.git.marcelo.schmitt1@gmail.com>
- <ce92ae93b1c2e36b20a9881b145c8c2c85acb1dd.1702746240.git.marcelo.schmitt1@gmail.com>
- <CAMknhBF7Ab0FZCKYkSq8siDMPtX5VRRn04FS7XiYLtK-1TJa3A@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274535D735;
+	Mon, 18 Dec 2023 17:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8B8C433C7;
+	Mon, 18 Dec 2023 17:58:31 +0000 (UTC)
+Date: Mon, 18 Dec 2023 12:58:28 -0500
+From: William Breathitt Gray <william.gray@linaro.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: lee@kernel.org, alexandre.torgue@foss.st.com, linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] counter: stm32-timer-cnt: populate capture
+ channels and check encoder
+Message-ID: <ZYCIRHVVTDD_k0Wk@ishi>
+References: <20230922143920.3144249-1-fabrice.gasnier@foss.st.com>
+ <20230922143920.3144249-6-fabrice.gasnier@foss.st.com>
+ <ZSnJR2yfYsBNHu/4@fedora>
+ <997c056e-c4e1-4bd8-9fcd-9f1b4bd45929@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6hNcEl+RZUM6gQNw"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMknhBF7Ab0FZCKYkSq8siDMPtX5VRRn04FS7XiYLtK-1TJa3A@mail.gmail.com>
+In-Reply-To: <997c056e-c4e1-4bd8-9fcd-9f1b4bd45929@foss.st.com>
 
-On 12/17, David Lechner wrote:
-> On Sat, Dec 16, 2023 at 11:49 AM Marcelo Schmitt
-> <marcelo.schmitt@analog.com> wrote:
-> >
-> > The ADC needs a voltage reference to work correctly.
-> > Enable AD7091R internal voltage reference if no external vref is supplied.
-> >
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > ---
-> >  drivers/iio/adc/ad7091r-base.c | 7 +++++++
-> >  drivers/iio/adc/ad7091r-base.h | 1 +
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> > index aead72ef55b6..9d0b489966f5 100644
-> > --- a/drivers/iio/adc/ad7091r-base.c
-> > +++ b/drivers/iio/adc/ad7091r-base.c
-> > @@ -217,7 +217,14 @@ int ad7091r_probe(struct device *dev, const struct ad7091r_init_info *init_info,
-> >         if (IS_ERR(st->vref)) {
-> >                 if (PTR_ERR(st->vref) == -EPROBE_DEFER)
-> >                         return -EPROBE_DEFER;
-> > +
-> >                 st->vref = NULL;
-> > +               /* Enable internal vref */
-> > +               ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
-> > +                                        AD7091R_REG_CONF_INT_VREF, BIT(0));
-> 
-> Can we use regmap_set_bits() here to avoid the BIT(0)?
-> 
-> The same comment applies to other patches in this series.
 
-Looks good, will do.
+--6hNcEl+RZUM6gQNw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
+On Fri, Dec 15, 2023 at 06:13:51PM +0100, Fabrice Gasnier wrote:
+> >> +	/*
+> >> +	 * Handle diversity for stm32 timers features. For now encoder is fo=
+und with
+> >> +	 * advanced timers or gp timers with 4 channels. Timers with less ch=
+annels
+> >> +	 * doesn't support encoder.
+> >> +	 */
+> >> +	switch (priv->nchannels) {
+> >> +	case 4:
+> >> +		if (priv->has_encoder)
+> >> +			counter->counts =3D &stm32_counts_enc_4ch;
+> >> +		else
+> >> +			counter->counts =3D &stm32_counts_4ch;
+> >> +		counter->signals =3D stm32_signals;
+> >> +		counter->num_signals =3D ARRAY_SIZE(stm32_signals);
+> >> +		break;
+> >> +	case 2:
+> >> +		counter->counts =3D &stm32_counts_2ch;
+> >> +		counter->signals =3D stm32_signals;
+> >> +		counter->num_signals =3D 3; /* clock, ch1 and ch2 */
+> >> +		break;
+> >> +	case 1:
+> >> +		counter->counts =3D &stm32_counts_1ch;
+> >> +		counter->signals =3D stm32_signals;
+> >> +		counter->num_signals =3D 2; /* clock, ch1 */
+> >> +		break;
+> >> +	default:
+> >> +		counter->counts =3D &stm32_counts;
+> >> +		counter->signals =3D stm32_signals;
+> >> +		counter->num_signals =3D 1; /* clock */
+> >> +		break;
+> >> +	}
+> >=20
+> > Rather than adjusting the number of counts and signals, keep the
+> > configuration static and use a single stm32_counts array. The reason is
+> > that in the Counter subsystem paradigm Signals do not necessary
+> > correlate to specific hardware signals but are rather an abstract
+> > representation of the device behavior at a high level. In other words, a
+> > Synapse with an action mode set to COUNTER_SYNAPSE_ACTION_NONE can be
+> > viewed as representing a Signal that does not affect the Count (i.e. in
+> > this case equivalent to an unconnected line).
+> >=20
+> > What you'll need to do instead is check priv->nchannels during
+> > stm32_action_read and stm32_count_function_read calls in order to return
+> > the correct synapse action and count function for the particular
+> > channels configuration you have. In stm32_count_function_write you would
+> > return an -EINVAL (maybe -EOPNOTSUPP would be better?) when the channels
+> > configuration does not support a particular count function.
+>=20
+> Hi William,
+>=20
+> Sorry for the long delay to address your comments here. Many thanks for
+> these guidelines.
+>=20
+> I'm preparing a v3, to address these. I'll probably send it soon, so we
+> can start to review also the capture part of it. Still there are few
+> things here I'm wondering about (as an anticipation task).
+>=20
+> Basically, removing all the diversity here means the most featured timer
+> model will be represented here (with all possible signals).
+> When I wrote the various configuration arrays, I'd have been tempted to
+> allocate them dynamically upon probing to avoid having all these
+> variants described as const arrays. This may have eased other signals
+> additions later. But that's not the direction. So, this simplifies the
+> description here, clearly, to describe the full-featured timer/counter,
+> and handle the ("unconnected") variants by returning errors.
+>=20
+> I still have in mind the replacement of the last IIO_COUNT device [1]
+> (not addressed in this series), e.g. in
+> drivers/iio/trigger/stm32-timer-trigger.c. Here, there are
+> "valids_table" that are used to cascade two timers (one timer output
+> being the input to another timer). With this table currently, an IIO
+> user knows the name of the signal it selects (then the driver looks up
+> the 'valids' table to set SMCR / TS bits, e.g. trigger select). Each
+> individual timer has a different input mapping, so called peripheral
+> interconnect in STM32.
+> What bothers me here is: with an abstracted full-featured timer, without
+> any diversity on the signal names, I fear the userland has no clue on
+> which signal would be used. Abstracting the timer this way would mean
+> the user only knows it selects "Internal Trigger 0" for example, without
+> knowing which internal signal in the SoC it has selected.
+>=20
+> Even if this is out of scope for this series, would you have some clue
+> so I can anticipate it ? Or if we stick with abstract names? In which
+> case the userland may need to be aware of the signals mapping (where
+> currently in IIO_COUNT driver, the signal names are privided). I'd be
+> glad to get some direction here.
+>=20
+> Please advise,
+> Best Regards,
+> Fabrice
+>=20
+> [1] https://lore.kernel.org/linux-arm-kernel/Y0vzlOmFrVCQVXMq@fedora/
 
-> 
-> > +               if (ret)
-> > +                       return dev_err_probe(st->dev, ret,
-> > +                                            "Error on enable internal reference\n");
-> >         } else {
-> >                 ret = regulator_enable(st->vref);
-> >                 if (ret)
-> > diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-> > index 81b8a4bbb929..9cfb362a00a4 100644
-> > --- a/drivers/iio/adc/ad7091r-base.h
-> > +++ b/drivers/iio/adc/ad7091r-base.h
-> > @@ -20,6 +20,7 @@
-> >  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
-> >
-> >  /* AD7091R_REG_CONF */
-> > +#define AD7091R_REG_CONF_INT_VREF      BIT(0)
-> >  #define AD7091R_REG_CONF_ALERT_EN      BIT(4)
-> >  #define AD7091R_REG_CONF_AUTO          BIT(8)
-> >  #define AD7091R_REG_CONF_CMD           BIT(10)
-> > --
-> > 2.42.0
-> >
+Hi Fabrice,
+
+I took a look the stm32-timer-trigger.c file, but I'm having trouble
+understanding it well (probably the cascading is confusing me). If I
+understand the logic correctly, the user selects the trigger they want
+by the attribute's name which is compared via strncmp() against the
+'valids' table. It's possible we could dynamically configure the signal
+names, but keep the signal id static so the driver code won't need some
+many variations; alternatively, we could introduce a new signal
+extension attribute that could display the trigger name.
+
+Would you walk me through an example of using the stm32-timer-trigger
+IIO sysfs interface? I think that would help me understand how users
+currently interact with the triggers for that driver, and then maybe I
+can figure out an appropriate equivalent in the Counter paradigm for
+the migration. Right now, the timer cascade is confusing me so if I can
+grok it well, the right solution for this may come to me more easily.
+
+Thanks,
+
+William Breathitt Gray
+
+--6hNcEl+RZUM6gQNw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZYCIRAAKCRC1SFbKvhIj
+KzL0AQCBGPqG8kOluqjB/Yzuc6T3oT6VwNPErfSyZN8uvziqDQD9EI31uZSzpDLU
+hHMJkRMkV+Is306UT0QLqo+nFChRtgo=
+=wI3r
+-----END PGP SIGNATURE-----
+
+--6hNcEl+RZUM6gQNw--
 

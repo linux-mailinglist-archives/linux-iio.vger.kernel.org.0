@@ -1,138 +1,209 @@
-Return-Path: <linux-iio+bounces-1044-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1045-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DC58163D8
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 01:37:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 108DF8163EA
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 02:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 099281C21915
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 00:37:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06B228202B
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 01:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B951107;
-	Mon, 18 Dec 2023 00:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AA41FD7;
+	Mon, 18 Dec 2023 01:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="x5Eg/vyO"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IQO386vW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B21E1C04
-	for <linux-iio@vger.kernel.org>; Mon, 18 Dec 2023 00:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C7A1FAB
+	for <linux-iio@vger.kernel.org>; Mon, 18 Dec 2023 01:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2cc4e15605aso27412641fa.0
-        for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 16:36:47 -0800 (PST)
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2cc5e48779aso12971871fa.2
+        for <linux-iio@vger.kernel.org>; Sun, 17 Dec 2023 17:00:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702859805; x=1703464605; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1702861243; x=1703466043; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lYUBkOEorNXEv/35ooZwWw6D13yiKFfdtV8i+HwsJ9E=;
-        b=x5Eg/vyOElGVVa+8Lwf+Mvs3ff551DjSEFk7ZwXickDPFUdmpR1ga1+gUytvi04Ys1
-         7qk6b6QcVMg91Z/7Uy4259KWo0tEBa6LLnezEPyfJU93HvfUpksb+0M4XOssvZ8DXsoZ
-         ArMegj4RTCcbwlwfy1dRpz+8f5337pGo2kXLXyPkztE10+9ZdMRSTVymFGfko3zUeDvb
-         RiHj/3ZW3ROfrGGqkIPJQmGny+5JYneVe/oPDumphb4g0m1/bYlt24uMDbAczzhf23Jz
-         QqoXJSWVE6P5xqpuXeIhpvkp8c9k5t4X5cp1UOxVhcaJUJfwpKf/gadFKylxh8pXQKQy
-         Cktw==
+        bh=EYhM54+sMY2tBRKqpDaD5Gx2Jei7oYxE5mh0exAmkgk=;
+        b=IQO386vW6DGGmQQjD2LzYmJJorHBqdMYptvsqfBlulPsSD4whf+Ehh6k4Lz7KR9Ikj
+         MPik2LKqs2gJS1XZi78AjYOoCTUvlqGBEgC0PQhJ6u08OZ3yenbyTOySET7//857oytM
+         uwmSlKRi8wM1pUTEQlaJ0Kl6gCqzXG1YXCE1lf52muJ8kL+Q5prwwLovOQKLQNVOlgbF
+         0tZ/6w5X1fQFaSUXiSB1XAKK/Y9wiV5UqSH4+VN48PbzO74J3INS8DANQb77oaBSrpui
+         +u+534eXrPUwqJ3QJtiodPWK0732pXF1Qbw37b8nozGWHhPJ0cGEvdxzDMJCu0l5tQju
+         804A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702859805; x=1703464605;
+        d=1e100.net; s=20230601; t=1702861243; x=1703466043;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lYUBkOEorNXEv/35ooZwWw6D13yiKFfdtV8i+HwsJ9E=;
-        b=MDxr3MBuiQcVWbdQ3ZOGM22dNYEt9UM2Y9ZerD7D4lfp3sfzhbuGJrSqf9qKcMDZjy
-         IQjAcrWpj+xRPipNyyzSjKjh5+/xnNKb1WgMJWoGqo0bzWrleUKjvc/oBT3rbFUiPMTW
-         jIbt3ctG3onc1gus3RI+bYrIONY0kBDNxF8/8TFzdKbOUat2Z4pLctPHsBZPRl7epQLx
-         arHEM8pFFAjSVtCCX7hVjX9HR1bKCug4wzs6/s96c1zXyIaPqElQy1c7QCDKMjFBfoCU
-         LSy1G7qFs3y91sIq1bciBX2f088o5GyUb6Kga1iiZJMmG6rIEEuB2zPbzpmm9qC35LN/
-         dAiQ==
-X-Gm-Message-State: AOJu0YzpvmZqAhvS41wBWB3QXl7Kvo0gwk8NbFWKxWnWLn2kFgxS+sC6
-	z7n9uAAngNoZ1FBDCmvsSFJ4K6lpyLWc2KG1vAWaGA==
-X-Google-Smtp-Source: AGHT+IG5hzwsgx3reTV+ztHM9kZUXQnM7oCOIuPaQCTL1b9ez/lp4ihe6o232DrEmCPw0hI1HPfDgiWatygaGEBYb0k=
-X-Received: by 2002:a2e:b8c9:0:b0:2cb:2bd7:38fc with SMTP id
- s9-20020a2eb8c9000000b002cb2bd738fcmr7467947ljp.15.1702859805700; Sun, 17 Dec
- 2023 16:36:45 -0800 (PST)
+        bh=EYhM54+sMY2tBRKqpDaD5Gx2Jei7oYxE5mh0exAmkgk=;
+        b=JXHXhi2bqBu5J9X2CcU1YcG9vtiG3Hbjm3vgxokMg49YnT31azDaEKS1/jH4O+ORnb
+         A1dGOnUedYu/FuXguNTtMFyLdb7uHkw3KzrzEp3oyflk3B6E7AggsVatJ3LuhUEjBlDh
+         TDCDyVvQqiFWG+saygqFtakHtGPnaLxq5Xw2Xv+9LY1FNm4CEGbzegL3JdujrrdcwYLn
+         uPGfya2BQL1rWBeG8oCsmNW9gd3LkPq4V3iFNfNkpY0LIwl7kpWaIeb671FYrw7MFo6O
+         5nSCWw+oYmvEDCy5PC5qUDi9peIlI6C5+u7LXNL939yPfWZTN37y6+42DeNBZSaSFA2u
+         9Zbg==
+X-Gm-Message-State: AOJu0YwTSL8xib+2+vm9vzvHe3qOnR2bxHun7HH8ikq8fNnXkEuPoduM
+	WF8zoVmRe9WHqCT98cdWvtyh7o1ZGvqf4cqnp63Kxw==
+X-Google-Smtp-Source: AGHT+IGT+13egZruEA6UBIyNn6mhLZfwdbUiXunPJ5JYwT6M/cXeoLwloFIFi6Do8ovp2sRvdiDM906QH2fckik0l2c=
+X-Received: by 2002:a05:651c:2106:b0:2cc:1f36:2abe with SMTP id
+ a6-20020a05651c210600b002cc1f362abemr3032047ljq.92.1702861243536; Sun, 17 Dec
+ 2023 17:00:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1702746240.git.marcelo.schmitt1@gmail.com> <ce92ae93b1c2e36b20a9881b145c8c2c85acb1dd.1702746240.git.marcelo.schmitt1@gmail.com>
-In-Reply-To: <ce92ae93b1c2e36b20a9881b145c8c2c85acb1dd.1702746240.git.marcelo.schmitt1@gmail.com>
+References: <20231212104451.22522-1-mitrutzceclan@gmail.com>
+ <CAMknhBEfisaSbHhnnei=gT1HZvHNWHrJD3O2y4b_TikkH=v2Ag@mail.gmail.com>
+ <e4a9dde7-dca6-4862-bfb3-a93b879c9a1f@gmail.com> <CAMknhBFQ56SwMvOni6UDqvaq8t0iydHcggiL0biUeLQ6OV1ONA@mail.gmail.com>
+ <a1f60bf6-5fb6-4814-b3b5-799fb8ffb847@gmail.com> <20231217135007.3e5d959a@jic23-huawei>
+In-Reply-To: <20231217135007.3e5d959a@jic23-huawei>
 From: David Lechner <dlechner@baylibre.com>
-Date: Sun, 17 Dec 2023 18:36:34 -0600
-Message-ID: <CAMknhBF7Ab0FZCKYkSq8siDMPtX5VRRn04FS7XiYLtK-1TJa3A@mail.gmail.com>
-Subject: Re: [PATCH v4 09/15] iio: adc: ad7091r: Enable internal vref if
- external vref is not supplied
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: apw@canonical.com, joe@perches.com, dwaipayanray1@gmail.com, 
-	lukas.bulwahn@gmail.com, paul.cercueil@analog.com, 
-	Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	dan.carpenter@linaro.org, marcelo.schmitt1@gmail.com, 
+Date: Sun, 17 Dec 2023 19:00:32 -0600
+Message-ID: <CAMknhBEzM202_pu=yYcmuC2Tz1HNv2zC=iy77q09hryfcGQ=Zw@mail.gmail.com>
+Subject: Re: [PATCH v8 1/2] dt-bindings: adc: add AD7173
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Ceclan Dumitru <mitrutzceclan@gmail.com>, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	andy@kernel.org, linux-gpio@vger.kernel.org, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Michael Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
+	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 16, 2023 at 11:49=E2=80=AFAM Marcelo Schmitt
-<marcelo.schmitt@analog.com> wrote:
+On Sun, Dec 17, 2023 at 7:50=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> The ADC needs a voltage reference to work correctly.
-> Enable AD7091R internal voltage reference if no external vref is supplied=
-.
+> On Thu, 14 Dec 2023 19:03:28 +0200
+> Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
 >
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
->  drivers/iio/adc/ad7091r-base.c | 7 +++++++
->  drivers/iio/adc/ad7091r-base.h | 1 +
->  2 files changed, 8 insertions(+)
+> > On 12/14/23 18:12, David Lechner wrote:
+> > > On Thu, Dec 14, 2023 at 1:43=E2=80=AFPM Ceclan Dumitru <mitrutzceclan=
+@gmail.com> wrote:
+> > >> On 12/12/23 17:09, David Lechner wrote:
+> > >>> On Tue, Dec 12, 2023 at 11:45=E2=80=AFAM Dumitru Ceclan <mitrutzcec=
+lan@gmail.com> wrote:
+> >
+> > >> ...
+> > >>
+> > >>>> +  interrupts:
+> > >>>> +    maxItems: 1
+> > >>>
+> > >>> Shouldn't this be 2? The datasheet says there is a "Data Output Rea=
+dy"
+> > >>> signal on the DOUT/RDY pin and an "Error Output" on the SYNC/ERROR
+> > >>> pin. Although I could see how RDY could be considered part of the S=
+PI
+> > >>> bus. In any case, a description explaining what the interrupt is wo=
+uld
+> > >>> be useful.
+> > >>>
+> > >>
+> > >> I do not see how there could be 2 interrupts. DOUT/RDY is used as an
+> > >> interrupt when waiting for a conversion to finalize.
+> > >>
+> > >> Sync and Error are sepparate pins, Sync(if enabled) works only as an
+> > >> input that resets the modulator and the digital filter.
+> > >
+> > > I only looked at the AD7172-2 datasheet and pin 15 is labeled
+> > > SYNC/ERROR. Maybe they are separate pins on other chips?
+> >
+> > Yep, sorry, missed that. All other supported models have them separate.
 >
-> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-bas=
-e.c
-> index aead72ef55b6..9d0b489966f5 100644
-> --- a/drivers/iio/adc/ad7091r-base.c
-> +++ b/drivers/iio/adc/ad7091r-base.c
-> @@ -217,7 +217,14 @@ int ad7091r_probe(struct device *dev, const struct a=
-d7091r_init_info *init_info,
->         if (IS_ERR(st->vref)) {
->                 if (PTR_ERR(st->vref) =3D=3D -EPROBE_DEFER)
->                         return -EPROBE_DEFER;
-> +
->                 st->vref =3D NULL;
-> +               /* Enable internal vref */
-> +               ret =3D regmap_update_bits(st->map, AD7091R_REG_CONF,
-> +                                        AD7091R_REG_CONF_INT_VREF, BIT(0=
-));
+>
+> > >
+> > >>
+> > >> Error can be configured as input, output or ERROR output (OR between=
+ all
+> > >> internal error sources).
+> > >>
+> > >> Would this be alright
+> > >>   interrupts:
+> > >>
+> > >>     description: Conversion completion interrupt.
+> > >>                  Pin is shared with SPI DOUT.
+> > >>     maxItems: 1
+> > >
+> > > Since ERROR is an output, I would expect it to be an interrupt. The
+> > > RDY output, on the other hand, would be wired to a SPI controller wit=
+h
+> > > the SPI_READY feature (I use the Linux flag name here because I'm not
+> > > aware of a corresponding devicetree flag). So I don't think the RDY
+> > > signal would be an interrupt.
+> > >
+> >
+> > Error does not have the purpose to be an interrupt. The only interrupt
+> > used from this chip is the one from the DOUT/~RDY pin. Sure, it is wire=
+d
+> > to the SPI controller, but when you can't also receive interrupts on
+> > that very same CPU pin an issue arises. So that pin is also wired to
+> > another GPIO with interrupt support.
+>
+> You've lost me.  It's a pin that has a state change when an error conditi=
+on
+> occurs.  Why not an interrupt?  Doesn't matter that the driver doesn't
+> use this functionality. dt-bindings should be as comprehensive as possibl=
+e.
+> Given it's a multipurpose pin you'd also want to support it as a gpio to =
+be
+> complete alongside the other GPIOs.
+>
+> >
+> > This is the same way that ad4130.yaml is written for example (with the
+> > exception that ad4130 supports configuring where the interrupt is route=
+d).
+> >
+> > In regards to SPI_READY _BITUL(7) /* slave pulls low to pause */: the
+> > ad_sigma_delta framework (if it can be called that) is written to expec=
+t
+> > a pin interrupt, not to use SPI_READY controller feature.
+>
+> SPI_READY is supported by only a couple of controllers. I'm not even that
+> sure exactly how it is defined and whether that lines up with this usecas=
+e.
+> From some old asci art. https://lore.kernel.org/all/1456747459-8559-1-git=
+-send-email-linux@rempel-privat.de/
+>
+> Flow control: Ready Sequence
+> Master CS   |-----1\_______________________|
+> Slave  FC   |--------2\____________________|
+> DATA        |-----------3\_________________|
+>
+> So you set master and then wait for a flow control pin (the ready signal)=
+ before
+> you can actually talk to the device.
+>
+> Here we are indicating data is ready to be be read out.
+>
+> So I don't 'think' SPI_READY applies.
+>
+> Jonathan
+>
 
-Can we use regmap_set_bits() here to avoid the BIT(0)?
+I'm not arguing that SPI_READY applies in this particular case, but
+FWIW it does seem to me like...
 
-The same comment applies to other patches in this series.
-
-> +               if (ret)
-> +                       return dev_err_probe(st->dev, ret,
-> +                                            "Error on enable internal re=
-ference\n");
->         } else {
->                 ret =3D regulator_enable(st->vref);
->                 if (ret)
-> diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-bas=
-e.h
-> index 81b8a4bbb929..9cfb362a00a4 100644
-> --- a/drivers/iio/adc/ad7091r-base.h
-> +++ b/drivers/iio/adc/ad7091r-base.h
-> @@ -20,6 +20,7 @@
->  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
->
->  /* AD7091R_REG_CONF */
-> +#define AD7091R_REG_CONF_INT_VREF      BIT(0)
->  #define AD7091R_REG_CONF_ALERT_EN      BIT(4)
->  #define AD7091R_REG_CONF_AUTO          BIT(8)
->  #define AD7091R_REG_CONF_CMD           BIT(10)
-> --
-> 2.42.0
->
+1) SPI_READY could be implemented in any SPI driver using a GPIO
+interrupt (similar to how we already have GPIO CS)
+2) In cases where the SPI controller does have actual hardware support
+for SPI_READY and the ADC chip A) uses CS to trigger a conversion and
+B) has a "busy" signal that goes low when the conversion is complete,
+then the SPI_READY feature could be used to make reading sample data
+more efficient by avoiding any CPU intervention between CS assertion
+and starting the data xfer due to waiting for the conversion to
+complete either by waiting for an interrupt or sleeping for a fixed
+amount of time.
 

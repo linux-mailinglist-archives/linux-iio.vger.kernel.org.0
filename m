@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-1061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66C7817899
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 18:23:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68088178D9
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 18:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBAD41C2423B
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 17:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D9441F22F55
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 17:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A47D5BF9D;
-	Mon, 18 Dec 2023 17:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A425BF8C;
+	Mon, 18 Dec 2023 17:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hy4egaGl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fq3l9H8D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EF85A853;
-	Mon, 18 Dec 2023 17:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E7B125C8;
+	Mon, 18 Dec 2023 17:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d3d0faf262so4445475ad.3;
-        Mon, 18 Dec 2023 09:22:40 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6d6d48354ccso778053b3a.1;
+        Mon, 18 Dec 2023 09:35:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702920160; x=1703524960; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702920938; x=1703525738; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=swHb+bpKc/FOLBJk5aXyiAe2btdfPThbJHNtTqWonqM=;
-        b=hy4egaGld9dCL/hTvdaywVgNDkStp2w7uNvP4ZyVFRHAmFM2hCyJ2N0/SL52N8FBT+
-         pSfp0WhWYXlouEERjFYI5SJNbNRJGdmt+keAEsK3qrWAk7Fd3AvbeaLEaNokGRu+wOqa
-         a/vJ0WXLm7XMtDEQVPy9R8kLXPtoHry9GpYr8DWUy9wdAReF543C4G/pPXK/HljtosII
-         jiPQs0AaeKr63+hH85RANiwGRr+vOMFLrsRvbgOWEMLujp2pu6fpzWiwsb6/cMKZEeIr
-         ScoJbLbvTKtfxN+yhbpfXydHq7WdW/54uANOzb6hRvTDHZIYqXGysaGeimE+hE5dTrxH
-         a5Lg==
+        bh=9Zkd2xmVN0GgzkQe6vI9LUZBQ24OEQyIJfPs7VhXir0=;
+        b=fq3l9H8Dci85BeJ60b/zweONFhFR7wAy9qUbA97rJWXqd62/iZJIye1Ysti+bTp83c
+         BJP+oSJkBSDa6TO50hjvKN0qHRWM1L3BMgC3xKVKMuz1Sbc2bSBNHvun1P+L9Zzt0j+D
+         qqnBDhLjSlNHq+j1B2gggdGRK8Bx0ssBpR1Lgz+zl3W15D8lzfFDLIEF8Qj151WM8c//
+         0EfpbtObUHpZT3FmSS937pDW8+iYnSpBQtWq75Cx2+6YHiENflQKAbQfYs7JL6GLY8py
+         cyAsKG0yDRYi1Mv0470ABSyNEl3V6Bfxb18+cV35Y29tlViR2RhDMe+3kjIe4kzJH5hm
+         xmIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702920160; x=1703524960;
+        d=1e100.net; s=20230601; t=1702920938; x=1703525738;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=swHb+bpKc/FOLBJk5aXyiAe2btdfPThbJHNtTqWonqM=;
-        b=WNNfS2/lKp7w2xelqoLNxfQZkJOS5fLkXXNzHKJxVk62ZCpMxu1WFCkbgIAbCaHCAN
-         bfbpqXbncYCWfM5I3SvLHfJ303VL0SRJWEUxmtTnmaJDmTCqenMNwwteLfyRn0iji3dJ
-         NhkQqyifSGML7gmp7xWLwVtVnH4noYo4qoPdaf/SgHbAHq4EeCtIi7WuKKjr4HlK5I1G
-         8UdrJcLIew14cfSvplCkBQTxyaYsEVhBIWq71kMkBfzE311ykIrDVjJwJ8d1R1IAUES+
-         szB6YozT4FnMBn5s66aeaMTWD0wy/MK5ZVtn1nfOiiKMA6WxQ9JyqhD10mj7z6EUlI08
-         dCwA==
-X-Gm-Message-State: AOJu0YzEhmLXgfaCamVVCd+xE1SnUcQBvJpKy7xUWQ6KdVxtwT9skb2Y
-	7Z4DY/cQMLSHFULthZ4dGY4=
-X-Google-Smtp-Source: AGHT+IGvWH3ApaJT30GMBDHaC6sU9MaWSJy/od8idTY+qKQ9TlOjtXAFqD551F0KAIyGyU9ZR2TVkQ==
-X-Received: by 2002:a17:902:ab88:b0:1d3:9486:c222 with SMTP id f8-20020a170902ab8800b001d39486c222mr4719640plr.24.1702920160067;
-        Mon, 18 Dec 2023 09:22:40 -0800 (PST)
+        bh=9Zkd2xmVN0GgzkQe6vI9LUZBQ24OEQyIJfPs7VhXir0=;
+        b=FF4owpCNDJ3ciITNviU3C1BbNDHKUbAyIPa2mcpTAPcpmZUhhXDgBHmJnmZnl6Dav3
+         5h84gadYA/SOFYWY/p7QPb84Jzcwt3NC5HoOdbdBgi7b4LfUoKao/xnaiBvqZottQ3ee
+         KdMiDc5lTpFQX3bmgToO87JktfOIusuo41p34YfKPZ1x7VduwNlZwPdKGOPH40D61hu4
+         UELttqN+n3tpV4zV7qZCfOAsno6+2io3MUTBL2/l7DMPK7zorTXbIswlc14NhBMYSqzI
+         fHD/R5YlcmLv5WMSQXowftFYLuasZKHfWeruG7SAO1/YLyKxBuFanFr+HHIBaNOiNQI/
+         vkVg==
+X-Gm-Message-State: AOJu0YyZ4lFMkvCFYCrnJF4FtnuzfKxmzhem5kTmrBIinEhRc8yGZs1m
+	qJJuTJVseq8clikaG1Zhtgk=
+X-Google-Smtp-Source: AGHT+IGBh2KbFeynBsSsrsj/nflN9jiIRZ35BFoMgRGxjXJEEyYS3+YRmN8gWDEAKgbqupOviman8g==
+X-Received: by 2002:a05:6a00:2e20:b0:6d2:9679:841d with SMTP id fc32-20020a056a002e2000b006d29679841dmr1553945pfb.25.1702920937705;
+        Mon, 18 Dec 2023 09:35:37 -0800 (PST)
 Received: from localhost ([2804:30c:160d:b800:be05:2c5b:24c0:12aa])
-        by smtp.gmail.com with ESMTPSA id o12-20020a170902bccc00b001d072365b87sm19239452pls.106.2023.12.18.09.22.39
+        by smtp.gmail.com with ESMTPSA id g19-20020a056a00079300b006d4d8819343sm3016418pfu.73.2023.12.18.09.35.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 09:22:39 -0800 (PST)
-Date: Mon, 18 Dec 2023 14:22:31 -0300
+        Mon, 18 Dec 2023 09:35:37 -0800 (PST)
+Date: Mon, 18 Dec 2023 14:35:27 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
@@ -67,12 +67,12 @@ Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
 	dan.carpenter@linaro.org, dlechner@baylibre.com,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 03/15] iio: adc: ad7091r: Set alert bit in config
- register
-Message-ID: <ZYB_1ymQEhUbdSki@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH v4 09/15] iio: adc: ad7091r: Enable internal vref if
+ external vref is not supplied
+Message-ID: <ZYCC3z44hMzgQTa6@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1702746240.git.marcelo.schmitt1@gmail.com>
- <e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com>
- <20231217145557.36d6a738@jic23-huawei>
+ <ce92ae93b1c2e36b20a9881b145c8c2c85acb1dd.1702746240.git.marcelo.schmitt1@gmail.com>
+ <20231217154142.191ba69b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,75 +81,65 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231217145557.36d6a738@jic23-huawei>
+In-Reply-To: <20231217154142.191ba69b@jic23-huawei>
 
 On 12/17, Jonathan Cameron wrote:
-> On Sat, 16 Dec 2023 14:46:37 -0300
+> On Sat, 16 Dec 2023 14:49:07 -0300
 > Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 > 
-> > The ad7091r-base driver sets up an interrupt handler for firing events
-> > when inputs are either above or below a certain threshold.
-> > However, for the interrupt signal to come from the device it must be
-> > configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
-> > was not being done until now.
-> > Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
-> > bit in the configuration register.
+> > The ADC needs a voltage reference to work correctly.
+> > Enable AD7091R internal voltage reference if no external vref is supplied.
 > > 
 > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Hi Marcelo,
-> 
-> In V3 review I asked if this should have a fixes tag.  I've assumed for now
-> the answer is no and applied it without.  If you let me know fast enough
-> I can probably slip on in, but if not you may want to consider requesting
-> a backport after this is upstream.
+> This one sounds to me like it should have a fixes tag and be
+> much earlier in the set to perhaps simplify backports.
 
-The events for these devices would not work both because of the broken
-dereference fixed in patch 2 and the alert signal was not being enabled.
-Patch 2 fixed a null pointer dereference that would lead to an error in the
-kernel. This patch (on top of the previous one) makes the event generation
-actually work although it's not fixing any errors.
-I was hesitant in marking this one with a fixes tag too worrying I might be
-adding too many fixes tags for a feature that never worked.
-Anyway, looks like I should have added that so at least now I have learned something.
-Will see how to ask backports for the fixing patches once they get in mainline.
+Could be. If we stick to the fact that the dt-binding does not require a voltage
+regulator then this can be seen as a fix.
+Though, if users can provide an external reference this patch makes no
+difference them.
+I am using the internal reference for testing so having this one makes a
+difference for me.
 
-Thanks
-
-> 
-> Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-> to take a look at it.
-> 
-> Thanks,
 > 
 > Jonathan
 > 
 > > ---
-> >  drivers/iio/adc/ad7091r-base.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
+> >  drivers/iio/adc/ad7091r-base.c | 7 +++++++
+> >  drivers/iio/adc/ad7091r-base.h | 1 +
+> >  2 files changed, 8 insertions(+)
 > > 
 > > diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> > index 0e5d3d2e9c98..8aaa854f816f 100644
+> > index aead72ef55b6..9d0b489966f5 100644
 > > --- a/drivers/iio/adc/ad7091r-base.c
 > > +++ b/drivers/iio/adc/ad7091r-base.c
-> > @@ -28,6 +28,7 @@
-> >  #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
+> > @@ -217,7 +217,14 @@ int ad7091r_probe(struct device *dev, const struct ad7091r_init_info *init_info,
+> >  	if (IS_ERR(st->vref)) {
+> >  		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+> >  			return -EPROBE_DEFER;
+> > +
+> >  		st->vref = NULL;
+> > +		/* Enable internal vref */
+> > +		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
+> > +					 AD7091R_REG_CONF_INT_VREF, BIT(0));
+> > +		if (ret)
+> > +			return dev_err_probe(st->dev, ret,
+> > +					     "Error on enable internal reference\n");
+> >  	} else {
+> >  		ret = regulator_enable(st->vref);
+> >  		if (ret)
+> > diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+> > index 81b8a4bbb929..9cfb362a00a4 100644
+> > --- a/drivers/iio/adc/ad7091r-base.h
+> > +++ b/drivers/iio/adc/ad7091r-base.h
+> > @@ -20,6 +20,7 @@
+> >  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
 > >  
 > >  /* AD7091R_REG_CONF */
-> > +#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
-> >  #define AD7091R_REG_CONF_AUTO   BIT(8)
-> >  #define AD7091R_REG_CONF_CMD    BIT(10)
-> >  
-> > @@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
-> >  	iio_dev->channels = chip_info->channels;
-> >  
-> >  	if (irq) {
-> > +		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
-> > +					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
-> > +		if (ret)
-> > +			return ret;
-> > +
-> >  		ret = devm_request_threaded_irq(dev, irq, NULL,
-> >  				ad7091r_event_handler,
-> >  				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+> > +#define AD7091R_REG_CONF_INT_VREF	BIT(0)
+> >  #define AD7091R_REG_CONF_ALERT_EN	BIT(4)
+> >  #define AD7091R_REG_CONF_AUTO		BIT(8)
+> >  #define AD7091R_REG_CONF_CMD		BIT(10)
+> 
 > 
 

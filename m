@@ -1,59 +1,63 @@
-Return-Path: <linux-iio+bounces-1097-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1098-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE822818EF9
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 18:57:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752B781914D
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 21:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C986B25C39
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 17:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E08C41F25BF2
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 20:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33D23FB03;
-	Tue, 19 Dec 2023 17:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="J9fAlELL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FB639AC9;
+	Tue, 19 Dec 2023 20:26:07 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC72498AB;
-	Tue, 19 Dec 2023 17:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1703008226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6SosLHUfbvBusyQrjhEdH6qlujZTce4ql106/+fLWzw=;
-	b=J9fAlELLwr4u9tQx12Md08M19jXx7ynqeRbwh2bn3D4jBBjrFqmsfNIv7OLIFcqqSLmdeN
-	QC516M58Q7HMEZjPI/cYNl+yjV+mqFJMFElgpPlX/YGHL1beQenrhYuznSawwdxC2Tc7Iw
-	FPKphSbHxxtpXJYnuOdVN8jzVvyOL/0=
-From: Paul Cercueil <paul@crapouillou.net>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 8/8] Documentation: iio: Document high-speed DMABUF based API
-Date: Tue, 19 Dec 2023 18:50:09 +0100
-Message-ID: <20231219175009.65482-9-paul@crapouillou.net>
-In-Reply-To: <20231219175009.65482-1-paul@crapouillou.net>
-References: <20231219175009.65482-1-paul@crapouillou.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050E839AC5;
+	Tue, 19 Dec 2023 20:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BJI4OGc024805;
+	Tue, 19 Dec 2023 15:25:28 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3v3g4s8efk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Dec 2023 15:25:28 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3BJKPQsO034660
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 19 Dec 2023 15:25:26 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 19 Dec 2023 15:25:25 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 19 Dec 2023 15:25:25 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 19 Dec 2023 15:25:25 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3BJKP5B9029964;
+	Tue, 19 Dec 2023 15:25:07 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <apw@canonical.com>, <joe@perches.com>, <dwaipayanray1@gmail.com>,
+        <lukas.bulwahn@gmail.com>, <paul.cercueil@analog.com>,
+        <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <dan.carpenter@linaro.org>,
+        <dlechner@baylibre.com>, <marcelo.schmitt1@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v5 00/11] Add support for AD7091R-2/-4/-8
+Date: Tue, 19 Dec 2023 17:25:04 -0300
+Message-ID: <cover.1703013352.git.marcelo.schmitt1@gmail.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,104 +65,106 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam: Yes
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: O66u9oDmtLDVDQzxRqI-DTKy0UwNU27a
+X-Proofpoint-GUID: O66u9oDmtLDVDQzxRqI-DTKy0UwNU27a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-02_01,2023-11-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2312190151
 
-Document the new DMABUF based API.
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+----------------- Updates -----------------
 
----
-v2: - Explicitly state that the new interface is optional and is
-      not implemented by all drivers.
-    - The IOCTLs can now only be called on the buffer FD returned by
-      IIO_BUFFER_GET_FD_IOCTL.
-    - Move the page up a bit in the index since it is core stuff and not
-      driver-specific.
+Applied all suggestions. 
+Only submitting patches not applied on v4:
+Patches after ("Align arguments to function call parenthesis").
 
-v3: Update the documentation to reflect the new API.
+Change log v4 -> v5:
+- Patch 1: Event callbacks
+  * Moved to begin of the series to easy backport;
+  * Reverted to original event attributes;
+  * Reworked event configuration to do per direction per channel enable/disable;
+  * Improved commit message;
+  * Added fixes tag;
+  * Added Suggested-by tag.
+- Patch 2: Enable internal vref
+  * Added fixes tag and improved commit message;
+  * Now earlier in the series to easy backport;
+  * Used regmap_set_bits() to make code more neat.
+- Patch 3: Move generic AD7091R code
+  * event specs moved earlier in patch 1.
+- Patch 4: Move chip init data
+  * Renamed field to make initialization clearer: irq_info -> info_irq.
+  * Fixed ad7091r_init_info initialization by passing pointers to info structs;
+- Patch 10: Add ad7091r8 support
+  * Moved bitfield.h include to patch event callbacks patch;
+  * Dropped GPIO consumer include on ad7091r-base.h and added gpio_desc;
+  * Removed extra space before devm_gpiod_get_optional().
 
-v5: Use description lists for the documentation of the three new IOCTLs
-    instead of abusing subsections.
----
- Documentation/iio/dmabuf_api.rst | 54 ++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst      |  2 ++
- 2 files changed, 56 insertions(+)
- create mode 100644 Documentation/iio/dmabuf_api.rst
+So, since we are already fixing a few things here, maybe it's a good time to
+comment about the event ABI.
+I see the event config files under events directory appearing as
+in_voltage0_thresh_falling_value
+in_voltage0_thresh_rising_value
+in_voltage1_thresh_falling_value
+and so on.
+They don't have the `_raw` part of the name as documented in the IIO ABI [1].
+Not sure if that is how it's intended to be, the driver is still missing
+something, or maybe ABI is somehow outdated.
+Anyway, if that is also something to be fixed then let me know I'll have a look
+at it.
 
-diff --git a/Documentation/iio/dmabuf_api.rst b/Documentation/iio/dmabuf_api.rst
-new file mode 100644
-index 000000000000..1cd6cd51a582
---- /dev/null
-+++ b/Documentation/iio/dmabuf_api.rst
-@@ -0,0 +1,54 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===================================
-+High-speed DMABUF interface for IIO
-+===================================
-+
-+1. Overview
-+===========
-+
-+The Industrial I/O subsystem supports access to buffers through a
-+file-based interface, with read() and write() access calls through the
-+IIO device's dev node.
-+
-+It additionally supports a DMABUF based interface, where the userspace
-+can attach DMABUF objects (externally created) to a IIO buffer, and
-+subsequently use them for data transfers.
-+
-+A userspace application can then use this interface to share DMABUF
-+objects between several interfaces, allowing it to transfer data in a
-+zero-copy fashion, for instance between IIO and the USB stack.
-+
-+The userspace application can also memory-map the DMABUF objects, and
-+access the sample data directly. The advantage of doing this vs. the
-+read() interface is that it avoids an extra copy of the data between the
-+kernel and userspace. This is particularly useful for high-speed devices
-+which produce several megabytes or even gigabytes of data per second.
-+It does however increase the userspace-kernelspace synchronization
-+overhead, as the DMA_BUF_SYNC_START and DMA_BUF_SYNC_END IOCTLs have to
-+be used for data integrity.
-+
-+2. User API
-+===========
-+
-+As part of this interface, three new IOCTLs have been added. These three
-+IOCTLs have to be performed on the IIO buffer's file descriptor,
-+obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
-+
-+  ``IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)``
-+    Attach the DMABUF object, identified by its file descriptor, to the
-+    IIO buffer. Returns zero on success, and a negative errno value on
-+    error.
-+
-+  ``IIO_BUFFER_DMABUF_DETACH_IOCTL(int)``
-+    Detach the given DMABUF object, identified by its file descriptor,
-+    from the IIO buffer. Returns zero on success, and a negative errno
-+    value on error.
-+
-+    Note that closing the IIO buffer's file descriptor will
-+    automatically detach all previously attached DMABUF objects.
-+
-+  ``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *iio_dmabuf)``
-+    Enqueue a previously attached DMABUF object to the buffer queue.
-+    Enqueued DMABUFs will be read from (if output buffer) or written to
-+    (if input buffer) as long as the buffer is enabled.
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 1b7292c58cd0..3eae8fcb1938 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -9,6 +9,8 @@ Industrial I/O
- 
-    iio_configfs
- 
-+   dmabuf_api
-+
-    ep93xx_adc
- 
-    bno055
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/Documentation/ABI/testing/sysfs-bus-iio#n887
+
+Thanks,
+Marcelo
+
+----------------- Context -----------------
+
+This series adds support for AD7091R-2/-4/-8 ADCs which can do single shot
+or sequenced readings. Threshold events are also supported.
+Overall, AD7091R-2/-4/-8 are very similar to AD7091R-5 except they use SPI interface.
+
+Changes have been tested with raspberrypi and eval board on raspberrypi kernel
+6.7-rc3 from raspberrypi fork.
+Link: https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad7091r8
+
+
+Marcelo Schmitt (11):
+  iio: adc: ad7091r: Allow users to configure device events
+  iio: adc: ad7091r: Enable internal vref if external vref is not
+    supplied
+  iio: adc: ad7091r: Move generic AD7091R code to base driver and header
+    file
+  iio: adc: ad7091r: Move chip init data to container struct
+  iio: adc: ad7091r: Remove unneeded probe parameters
+  iio: adc: ad7091r: Set device mode through chip_info callback
+  iio: adc: ad7091r: Add chip_info callback to get conversion result
+    channel
+  iio: adc: Split AD7091R-5 config symbol
+  dt-bindings: iio: Add AD7091R-8
+  iio: adc: Add support for AD7091R-8
+  MAINTAINERS: Add MAINTAINERS entry for AD7091R
+
+ .../bindings/iio/adc/adi,ad7091r5.yaml        |  82 +++++-
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  16 ++
+ drivers/iio/adc/Makefile                      |   4 +-
+ drivers/iio/adc/ad7091r-base.c                | 269 +++++++++++------
+ drivers/iio/adc/ad7091r-base.h                |  83 +++++-
+ drivers/iio/adc/ad7091r5.c                    | 120 ++++----
+ drivers/iio/adc/ad7091r8.c                    | 272 ++++++++++++++++++
+ 8 files changed, 714 insertions(+), 140 deletions(-)
+ create mode 100644 drivers/iio/adc/ad7091r8.c
+
 -- 
-2.43.0
+2.42.0
 
 

@@ -1,118 +1,102 @@
-Return-Path: <linux-iio+bounces-1111-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1112-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286D2819469
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 00:15:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC01C81949B
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 00:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ACA51C2403E
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 23:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F5D41F21F3B
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 23:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892363D0C5;
-	Tue, 19 Dec 2023 23:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77483DB97;
+	Tue, 19 Dec 2023 23:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ONISxXJa"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iXgzLxqi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19E93EA7D;
-	Tue, 19 Dec 2023 23:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-50e281b149aso4601022e87.1;
-        Tue, 19 Dec 2023 15:15:11 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D6240BF7
+	for <linux-iio@vger.kernel.org>; Tue, 19 Dec 2023 23:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-50e2bd8c396so4377263e87.0
+        for <linux-iio@vger.kernel.org>; Tue, 19 Dec 2023 15:27:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703027709; x=1703632509; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uS+jo/cah5+bM2v33qxNfOnHr9iwo5Ai7zggbcCPXcY=;
-        b=ONISxXJaqpc0x39nqOHGyMOiaOa2zL/XOItiVhZqBG9cMOUSCTxt6LP/k7Smh4zim1
-         eI7m8zfpKJ7EjhKf6Rk0Az2UvZX1x0ZJMM91KDVtwlRuyyry70e+7KKmdTdjdpD6DZji
-         NzT3DPXtRNs5orFnk2M1YmCFlkcJyrOnvCP1wIlas+ISRzb59+OFqYVV5U59CD65Mr9B
-         p253wuLSMPmrEOniYNy1T9+FpQHZtgZlSzowrsG2KWWkOz4b6Dl46edTmSjnqDccnA6k
-         PSNht3WXBzM42sVqCKHIuVe3BsSBbmA6kTnzBXA8cBUYXdLtCJfC+Z1L84lFViLGMJM4
-         +jTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703027709; x=1703632509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1703028467; x=1703633267; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uS+jo/cah5+bM2v33qxNfOnHr9iwo5Ai7zggbcCPXcY=;
-        b=GkMMAKQwi8egUmz15xofwL7QoTg5Hsmjw7iGp4F5XIv4oP3yPVtarjnTlUHbjOzIx+
-         RvLGBF2N2eJUHnQ6rPjpi9QAWTgmu9qQZTcS7/nhtLQfQ0jIszVcv978qqs08BiBNXbG
-         KtjbPTQSK9dvhmYLcO6py8fPNRxX9YxI2rZrWS558bs0ff8dnUxrsA1ihQxQ0S1Iwwkp
-         kFtAVagvpb0mzzS4n+SVf+MaJMg4sNQkx/ZYivK+e/ORzaKfAma7TqjflTZq38HMRROb
-         XDXPdsx4HANJq0egoJhznOSyjoIF3va148tcEBFqMKt8guZ21ByJ2bOBwfDCh7hTzuYW
-         VC5w==
-X-Gm-Message-State: AOJu0YzSEvuTl+VXZfLE5kF5jOcyz5HGzHc2UNhHkugrP9p5pjNxNG/0
-	DqUEa/6HJxkr/LSZ+6xbo9C98XQO0tE=
-X-Google-Smtp-Source: AGHT+IFOzhD77cypKuovPHId5eRYIT5ovGCKQdgQe8QtFUgDqlE/In6u89k0WIuYI2Dd4haVwt/TCg==
-X-Received: by 2002:ac2:4ec6:0:b0:50e:35e2:a6ad with SMTP id p6-20020ac24ec6000000b0050e35e2a6admr2124077lfr.83.1703027708873;
-        Tue, 19 Dec 2023 15:15:08 -0800 (PST)
-Received: from localhost.localdomain ([46.251.53.180])
-        by smtp.gmail.com with ESMTPSA id fi8-20020a056402550800b005528001d5c6sm5657742edb.62.2023.12.19.15.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 15:15:08 -0800 (PST)
-From: Yauhen Kharuzhy <jekhor@gmail.com>
-To: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Cc: Daniel Thompson <daniel.thompson@linaro.org>,
-	linux-kernel@vger.kernel.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Yauhen Kharuzhy <jekhor@gmail.com>
-Subject: [PATCH] HID: sensor-hub: Enable hid core report processing for all devices
-Date: Wed, 20 Dec 2023 01:15:03 +0200
-Message-ID: <20231219231503.1506801-1-jekhor@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=wib2+T/twwwN/3BXe0yj7pCHfEZ8cIQ5+MZvHiZViLk=;
+        b=iXgzLxqiePhff7jKystdfcjwNzwYmsPy/Pk/gYPA27zSG9G2ScITsc+zl4iJfsr/8j
+         iF991C6eO9svijDDeqIYGaEyseTUoamip0QWjBcn+D5dOee0YIc4WGqvxxSqXpI+Hxby
+         jRYRV1JyUe9dV+xC8e5DrR/uekUVQmPriVjQg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703028467; x=1703633267;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wib2+T/twwwN/3BXe0yj7pCHfEZ8cIQ5+MZvHiZViLk=;
+        b=aUq/Piw79JOUSuoe2vhuh5+JlhFSWTV8KXMzyEtRKGB1iTXi93w058XYhHBKM+hb9u
+         aWwD2mOOKpriQbTHROjmLmqYnMUjrB/2eEm9V5QuUSoXqDtYxTWcIMUAsSKSDBHHkecW
+         n4Wl1yaSq85ST4NZtNus8EY8h0GijqrDRHfv950EE+9ukkkzbbCEbkhbVVB5PxYWTr79
+         WbL790c8qhsLwbfND9p9bszeMbbweZ22w38A6lOeJhcvAJuH2NgSM/cJ7j6++tDxTVes
+         RQkrmPn2022i2uzTmCtiAgW5qRlQIe1tunax5dtIYHHcEuU6jet9zoPeGUsB3KBEULSl
+         rVKg==
+X-Gm-Message-State: AOJu0YwYqD0mue1JGo8yg8j0xE6euAJqazsy4yT9MWNZlC6HL5UeEfpo
+	mNQedQG75qPuUKkV+eQt/mRE4ieYT0JddnYUThOyNDM+3h+Tujco
+X-Google-Smtp-Source: AGHT+IFBw5KCb5vU7xJ+p2XS9GXuGS9FPMpi3yVFSCqsm9B6ldHxBfroB02RYzx+7K3tU1KZsZQ1ww5PdMu7JffeLOA=
+X-Received: by 2002:a05:6512:102c:b0:50c:e98:1ded with SMTP id
+ r12-20020a056512102c00b0050c0e981dedmr7072856lfr.132.1703028467520; Tue, 19
+ Dec 2023 15:27:47 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 19 Dec 2023 15:27:47 -0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231219-strncpy-drivers-iio-proximity-sx9324-c-v4-1-d49ed29ee952@google.com>
+References: <20231219-strncpy-drivers-iio-proximity-sx9324-c-v4-1-d49ed29ee952@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date: Tue, 19 Dec 2023 15:27:46 -0800
+Message-ID: <CAE-0n515WA34B1ZJvz6dkvFiErmT0PL0K9bPWeV9JhkzXPxOGw@mail.gmail.com>
+Subject: Re: [PATCH v4] iio: sx9324: avoid copying property strings
+To: Jonathan Cameron <jic23@kernel.org>, Justin Stitt <justinstitt@google.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-After the commit 666cf30a589a ("HID: sensor-hub: Allow multi-function
-sensor devices") hub devices are claimed by hidraw driver in hid_connect().
-This causes stoppping of processing HID reports by hid core due to
-optimization.
+Quoting Justin Stitt (2023-12-19 13:34:15)
+> We're doing some needless string copies when trying to assign the proper
+> `prop` string. We can make `prop` a const char* and simply assign to
+> string literals.
+>
+> For the case where a format string is used, let's extract the parsing
+> logic out into sx9324_parse_phase_prop(). We no longer need to create
+> copies or allocate new memory.
+>
+> sx9324_parse_phase_prop() will simply return the default def value if it
+> fails.
+>
+> This also cleans up some deprecated strncpy() uses [1].
+>
+> Furthermore, let's clean up this code further by removing some unused
+> defines:
+> |  #define SX9324_PIN_DEF "semtech,ph0-pin"
+> |  #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
+> |  #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
+>
+> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> Link: https://github.com/KSPP/linux/issues/90
+> Cc: linux-hardening@vger.kernel.org
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
 
-In such case, the hid-sensor-custom driver cannot match a known custom
-sensor in hid_sensor_custom_get_known() because it try to check custom
-properties which weren't filled from the report because hid core didn't
-parsed it.
-
-As result, custom sensors like hinge angle sensor and LISS sensors
-don't work.
-
-Mark the sensor hub devices claimed by some driver to avoid hidraw-related
-optimizations.
-
-Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
----
- drivers/hid/hid-sensor-hub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
-index 2eba152e8b90..26e93a331a51 100644
---- a/drivers/hid/hid-sensor-hub.c
-+++ b/drivers/hid/hid-sensor-hub.c
-@@ -632,7 +632,7 @@ static int sensor_hub_probe(struct hid_device *hdev,
- 	}
- 	INIT_LIST_HEAD(&hdev->inputs);
- 
--	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
-+	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT | HID_CONNECT_DRIVER);
- 	if (ret) {
- 		hid_err(hdev, "hw start failed\n");
- 		return ret;
--- 
-2.43.0
-
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 

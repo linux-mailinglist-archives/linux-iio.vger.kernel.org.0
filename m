@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-1071-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1072-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231D78180B4
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 05:49:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5286A818145
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 07:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30932B245BF
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 04:49:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 799131C23418
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 06:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A95393;
-	Tue, 19 Dec 2023 04:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE2E6FAE;
+	Tue, 19 Dec 2023 06:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZKSA+UdZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P5dBtOsB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC63C134;
-	Tue, 19 Dec 2023 04:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2EEC132;
+	Tue, 19 Dec 2023 06:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702961384; x=1734497384;
+  t=1702965627; x=1734501627;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=u1PrKXJ5wdf/6ii9goqAcOzxorRlFg0fLsA9scgSD3s=;
-  b=ZKSA+UdZyUv5u7V0bnS2sY8sKSTHVj+mXnbwmYCit730WLtA6JcDg/kw
-   gjJl9mIhNzBDAca7WWAQbOBH2ON0GyuyC7Ix22ZOdnYMr5gR0UruzOB6S
-   iOqeMoHfVhYXI7Ej1hk2zvCY5ZkGDScCdfES0Z5zYEkmWcv6fIh4JhYKw
-   Bv6LETB1EByT9FFiMfyK0y50WCJvzA2u1O1+RnzHZeK0cVai5d3A5I9nf
-   Hyqxzzva84Ep/YE/uLwecX8oxXcsE+sxEDPjWL9b3V0M5TnGz3/FCNiUe
-   QP7gmSOcyFKKJjvGmLswuH/k+57BUq3JT8kWoqpXeb3w6VBaLiVyZvrXA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="2832774"
+  bh=BsACiejB7wz3shwOgu/STyqJwCYDRHhOdCqujC1vkq4=;
+  b=P5dBtOsBxKKpD5sP70/AbL36WKqew59C18thhjAQn/M3wgfq8MJT2txB
+   SvXov1qyku8+gsltYTluY4J/xFqsv8bJ5hrWF8Uwdf8/PcpdKE5RV78br
+   UFWEwCmKXYLziVmL+9AMaza7KiR+95c00/PkKDmfF1uGJ0aOp9ZsQy+th
+   2gHsMnlvAbHfSJQfvnJPirU9nRHq3n0/qYiG9bnVupQHuYXGeFmgn6QvQ
+   Wfr6NImw4vfEqscddOMR7PPWLKgaUzkVnX0MIEVczqlzLcV/R3zGtmn2n
+   gZxRXSNYv+rYxm17h7NMdZexBXzh5qLsLcRTndqu+EHxSUkUsgywo6hx6
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="392785553"
 X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
-   d="scan'208";a="2832774"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 20:49:44 -0800
+   d="scan'208";a="392785553"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 22:00:26 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="899224556"
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="769108678"
 X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
-   d="scan'208";a="899224556"
+   d="scan'208";a="769108678"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 18 Dec 2023 20:49:42 -0800
+  by orsmga007.jf.intel.com with ESMTP; 18 Dec 2023 22:00:24 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rFS2m-0004sH-0T;
-	Tue, 19 Dec 2023 04:49:39 +0000
-Date: Tue, 19 Dec 2023 12:48:39 +0800
+	id 1rFT9R-0004ux-2P;
+	Tue, 19 Dec 2023 06:00:21 +0000
+Date: Tue, 19 Dec 2023 14:00:13 +0800
 From: kernel test robot <lkp@intel.com>
 To: Jun Yan <jerrysteve1101@gmail.com>, Jonathan.Cameron@huawei.com
 Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de,
@@ -58,7 +58,7 @@ Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de,
 	linux-kernel@vger.kernel.org, Jun Yan <jerrysteve1101@gmail.com>
 Subject: Re: [PATCH] iio: accel: bmi088: add i2c support for bmi088 accel
  driver
-Message-ID: <202312191202.IFnDRQVb-lkp@intel.com>
+Message-ID: <202312191325.jfiyeL5F-lkp@intel.com>
 References: <20231218154045.219317-1-jerrysteve1101@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -84,21 +84,21 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Yan/iio-accel-bmi088-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
 patch link:    https://lore.kernel.org/r/20231218154045.219317-1-jerrysteve1101%40gmail.com
 patch subject: [PATCH] iio: accel: bmi088: add i2c support for bmi088 accel driver
-config: powerpc64-randconfig-r081-20231219 (https://download.01.org/0day-ci/archive/20231219/202312191202.IFnDRQVb-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231219/202312191202.IFnDRQVb-lkp@intel.com/reproduce)
+config: x86_64-randconfig-161-20231219 (https://download.01.org/0day-ci/archive/20231219/202312191325.jfiyeL5F-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231219/202312191325.jfiyeL5F-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312191202.IFnDRQVb-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312191325.jfiyeL5F-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/iio/accel/bmi088-accel-i2c.c:14:10: fatal error: linux/i2c/i2c.h: No such file or directory
-      14 | #include <linux/i2c/i2c.h>
-         |          ^~~~~~~~~~~~~~~~~
-   compilation terminated.
+>> drivers/iio/accel/bmi088-accel-i2c.c:14:10: fatal error: 'linux/i2c/i2c.h' file not found
+   #include <linux/i2c/i2c.h>
+            ^~~~~~~~~~~~~~~~~
+   1 error generated.
 
 
 vim +14 drivers/iio/accel/bmi088-accel-i2c.c

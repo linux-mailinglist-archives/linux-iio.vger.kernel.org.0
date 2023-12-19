@@ -1,58 +1,43 @@
-Return-Path: <linux-iio+bounces-1087-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1088-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445C9818B6D
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 16:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCE1818CEA
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 17:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446241C247DD
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 15:41:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1CC1C21FBB
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 16:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5A91CAA8;
-	Tue, 19 Dec 2023 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956F41F95F;
+	Tue, 19 Dec 2023 16:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PtMHchdS"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="KwMAAjV4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4840D3456C;
-	Tue, 19 Dec 2023 15:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703000492; x=1734536492;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UZ7LvyivSueEAM7MAiZ7KtzVMUOrn3bCVp4/8Q3XqY0=;
-  b=PtMHchdSroO3KSPwoy+wBmfLLxTB6f29QYFcNtg1SK5suTgukN4izx6i
-   XNFhnCarBQprQhCluAXxpSXj/gvZmv6tH/hOD68a5sbb/vz/syCgVDFko
-   tqs7piAJ3tVxgD+m0oEGYdlVqnDYeQZ/XJuLxxG/3HUbCf7AfyRRNm1OF
-   yXzuVyd3Pwvp24/7DiNG4s30RuQNNFXHVBZJo6FIeJ5ZNCRHWFzAVf1kD
-   LijlrzM20LRwBiTkAaA6XUTICnu/+lI/Ehd57W66JAMlL3poeB8zzXD3r
-   8adjulOStGMpQ3mjg11lPUOXyntGwtHEPfQfdVIozWQTBIRcKHCB0XkRa
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="380660571"
-X-IronPort-AV: E=Sophos;i="6.04,288,1695711600"; 
-   d="scan'208";a="380660571"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 07:41:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="949206515"
-X-IronPort-AV: E=Sophos;i="6.04,288,1695711600"; 
-   d="scan'208";a="949206515"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 07:41:29 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rFcDl-00000007Ibg-3TvI;
-	Tue, 19 Dec 2023 17:41:25 +0200
-Date: Tue, 19 Dec 2023 17:41:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3833456E;
+	Tue, 19 Dec 2023 16:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 26CC728B50B;
+	Tue, 19 Dec 2023 16:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1703004668;
+	bh=veNOinDTAb64HC+IDzgM+dbyIHOuQpU8BV5YLj+GHx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KwMAAjV407nb8RnrE+LhyXpGclMA6l6DOcdztvli/nBs1bed3i9DgGAgWX3SRm4xV
+	 1sK7lc2QWe4X98rdZM+LXzV1WNJ/it8XW2pUUyhcLGbjMaAZjQs+tkA9cWoqTyEsfK
+	 pXcX297cHbBhww88CYT8tu8htglH9elFZiQTOsnY=
+Date: Tue, 19 Dec 2023 18:51:06 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,55 +47,99 @@ Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Subject: Re: [PATCH 2/2] iio: pressure: change driver for Honeywell MPR series
-Message-ID: <ZYG5pZaDN11eht7A@smile.fi.intel.com>
+Message-ID: <ZYHJ-vkLEiN2sFxv@sunspire>
 References: <20231219130230.32584-1-petre.rodan@subdimension.ro>
  <20231219130230.32584-3-petre.rodan@subdimension.ro>
+ <ZYG5pZaDN11eht7A@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OdreSIYuALwCjV8t"
+Content-Disposition: inline
+In-Reply-To: <ZYG5pZaDN11eht7A@smile.fi.intel.com>
+
+
+--OdreSIYuALwCjV8t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231219130230.32584-3-petre.rodan@subdimension.ro>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 19, 2023 at 03:02:21PM +0200, Petre Rodan wrote:
-> ChangeLog
->  - rewrite flow so that driver can use either i2c or spi as communication bus
->  - add spi driver (tested on MPRLS0015PA0000SA)
->  - add pressure-triplet property that automatically sets pmin, pmax
->  - fix transfer-function enum typo based on previous review [1]
->  - fix interrupt example in binding file (FALLING -> RISING edge)
->  - indentation changes based on previous code reviews
->  - renamed mpr_read_pressure to mpr_read_conversion since the sensor is
->    supposed to also provide temperature measuremets
->    (but I think mine is broken since the raw temperature value is always
->    0x800000 - so temp reading not currently implemented)
+On Tue, Dec 19, 2023 at 05:41:25PM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 19, 2023 at 03:02:21PM +0200, Petre Rodan wrote:
+> > ChangeLog
+> >  - rewrite flow so that driver can use either i2c or spi as communicati=
+on bus
+> >  - add spi driver (tested on MPRLS0015PA0000SA)
+> >  - add pressure-triplet property that automatically sets pmin, pmax
+> >  - fix transfer-function enum typo based on previous review [1]
+> >  - fix interrupt example in binding file (FALLING -> RISING edge)
+> >  - indentation changes based on previous code reviews
+> >  - renamed mpr_read_pressure to mpr_read_conversion since the sensor is
+> >    supposed to also provide temperature measuremets
+> >    (but I think mine is broken since the raw temperature value is always
+> >    0x800000 - so temp reading not currently implemented)
+>=20
+> Changelog...
+>=20
+> > I've been told in the past that the use of mutexes is redundant in thes=
+e cases
+> > so please assess if the guard() from the driver code is required or sho=
+uld be
+> > removed.
+>=20
+> A comment...
+>=20
+> > patch uses device_property_match_property_string() from the 'togreg' br=
+anch
+>=20
+> Another comment...
+>=20
+> > [1]: https://lore.kernel.org/lkml/20231116-grudge-hankering-b7a71d831b9=
+3@squawk/T/
+>=20
+> Some Link: (should it be a tag?)...
 
-Changelog...
+it's a reference link that was pointed to within the text above.
+it emulates `lynx --dump foo.html`. designed for human reading, sorry if it
+broke some parsing script.
 
-> I've been told in the past that the use of mutexes is redundant in these cases
-> so please assess if the guard() from the driver code is required or should be
-> removed.
+> Where is the commit message? Or is this just an intermediate change
+> to show what will be in the next version? I'm confused.
 
-A comment...
+the commit message is between the end of the mail header and before the act=
+ual
+patch. the two comments were also placed for human interaction.
+they will be removed later on when we get close to acceptance and someone
+replies to them. and yes, the entire patch is full and self-contained in th=
+ese
+3 messages.
 
-> patch uses device_property_match_property_string() from the 'togreg' branch
+very best regards,
+peter
 
-Another comment...
+--OdreSIYuALwCjV8t
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> [1]: https://lore.kernel.org/lkml/20231116-grudge-hankering-b7a71d831b93@squawk/T/
+-----BEGIN PGP SIGNATURE-----
 
-Some Link: (should it be a tag?)...
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWByfYACgkQzyaZmYRO
+fzCo7Q/+LgL4tQSgwiqKEzmiqz8GK0zTJch094QCkyCLUrjCJtbiBzEi3IvT6bz6
+gOx2nO0H2ijjP1Rxxi7KWWCRzRMl82Oaf2ncj49uUjMrLBHFQmTVlsaJ4viCYUzU
+IMG+JajAWnZkpMh/h/Nw8N9833g/g59nD/CuxxzIR7LsIh4xxa9jkIchbWpAzylI
+pI3fP4HZapo0o/k9OOcF5ccOaS7jTpRCATqN3syDhT2fwq5T3lXIJyJ+V3gmgA08
+r61eW0T3am9Y4/J9CUZtdKEWqEXsRGO6tHTUEQVhpuw41SIJ/mUVyfK45Em2KoYa
+RRtPR3ra6KTFhi0UF7neMIzleVPd4vMU+dfKz6cuZTwf3e7KleN3tLbR0u+1TaYk
+dw9P/oAd9Kl+Yk7mT9lIT85J52lP0rqoBgv5kyrDWe4ApzfUCp7DV/q4HGa9uZ6v
+B/qnL0R+b4cyACRTDrAdP604O7NKaZalSb8jZifYmokq9zkEto8DCG+TgGRJOMzL
+kiVuk8DrflalpXlqeU3SxbC3e63W0Qnpz5AWwcUM5z34TZY7XyyXZ0qzJ7brYhfl
+9JI3y8pqIYDmzoi6j5LL504/CMlpeowAcK/VXhR3o1pm0DKtQ1TXKzFAmAsMC/5i
+wcL7IfJZ9/y9WqNXTGz7LzxJgvbZobf5vDqJR8GA3JNsRRK7Gak=
+=1KU9
+-----END PGP SIGNATURE-----
 
-Where is the commit message? Or is this just an intermediate change
-to show what will be in the next version? I'm confused.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--OdreSIYuALwCjV8t--
 

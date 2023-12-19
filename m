@@ -1,444 +1,326 @@
-Return-Path: <linux-iio+bounces-1078-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1079-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2B0818415
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 10:05:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D567581857D
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 11:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B59C1F23D5D
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 09:05:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34CCDB21A40
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 10:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FEB134A5;
-	Tue, 19 Dec 2023 09:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D7D14AA5;
+	Tue, 19 Dec 2023 10:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QxprlbE3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZTUtm5v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB0D13FE9;
-	Tue, 19 Dec 2023 09:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD1914F61;
+	Tue, 19 Dec 2023 10:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-28b09aeca73so2864902a91.1;
-        Tue, 19 Dec 2023 01:05:30 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-40d13e4f7abso26011855e9.2;
+        Tue, 19 Dec 2023 02:46:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702976729; x=1703581529; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2RLnTM9hjajMKJc80SIhIAZVDAf5ep5ng+fKQDIUZn0=;
-        b=QxprlbE3EfbvY4SWgibepJpvmSVHO9IOXJfvIIooNaPZKG0XeUY52aSoH+JCmxAqKJ
-         iMEESlohEIaR/CZSkwQjo66hWp2P09FUx9G6/geWZEiYJvfzkDaQQD1GlM4yrrQgszSo
-         972qoGT0Qot4Ze/wIrazDKpY4+3Pnf4orIUueh6+8bEfWioUJAwwmG3bn/bbllKLuTfb
-         1W2d35RcgV9OE3qlrbvTMYJ7B8cheZB4HePc1Qhr3RFDjM1HSOMrIaB6w910ti9J2PIH
-         FwifQvhrYtjQuOBYgVaPqStSOdtZJkLzM6ORUMsAX6qLfhvMTk3LZ74m5UrEhVzYswf1
-         pu0Q==
+        d=gmail.com; s=20230601; t=1702982795; x=1703587595; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Ejj+XmDiZPNI7Zwigx9aUrZADahAhBeoVbqDqfrS6w=;
+        b=fZTUtm5vE7L6DgoEhKCuqefygDxXofUjk+v2uEGaCpxES51UcY3d0GbZ3OKsKfq5Rf
+         52GURl3qzegeAyXK1v+Qc2Z5mB+p3c5Rqc5l3UwH7BGkdS7URt2kXwAHhKF+rXsHavEN
+         vKSIQ4gY2woiJA5MBlExIRqpvte69To/rCOVPjzjiXdAR5Pmgj+21xt0tBBmGMa0oDUP
+         OYHLXDeHG2f3XD95cD0n1fprkJ8SafcfqV43xbKU6h0bzVM/qKwThETSAN6rmsL0YN6B
+         D9cmSawx74bnVZBa3v8KgWKlynwl/yaZjPVtnklZoFPTCr3nXK/wcB4zf8x+YBZGhzUc
+         ir5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702976729; x=1703581529;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2RLnTM9hjajMKJc80SIhIAZVDAf5ep5ng+fKQDIUZn0=;
-        b=FxJHdQe8LA5WVNPNZAqzNHHy6Nub1CzEan/LdcIavtIZWYMWyQ6HNi6sfKssf46j6b
-         sm4GX57CsdltesZy+/qSuHsDbl1WW5qe7uI9cUB5jfERA8I9e1hBLz5R8PmfCH5M/sYc
-         DJp84RwBnsBBM3NIM//YR3JOU9rVCqLsNJN0vzC6gtl8iG9SRrywPWHsQDBMSZ5oi3nn
-         nGkFZ0GoNTmHCxQGnx9/82orYH+SIJZDDukyM6+lnX+nFV9CkwrPDIEmtOlSOExkr9Sq
-         P1jVCMIKIalPn86xKW45h5MB4uuJ9vaPDzvbjUBoEY/lpjtWF34mIDj6w3gHhM3mobRa
-         UYcw==
-X-Gm-Message-State: AOJu0YwCdGuItnl4KGb5vlQkdIM9Gh24ySgc7vVxqy3Z8CdxHM/g2TLZ
-	wAwW2TX4Ni7tCjIU6QMOGpWL5jXABsQkGLnx
-X-Google-Smtp-Source: AGHT+IFkYSThzHRmS+ABfRivKweFLWfSt7k8iCk93TjRMJ1uIzXqKP9fmwKO9VZIttBc2pAB8jYolQ==
-X-Received: by 2002:a17:90a:f98d:b0:28b:bc34:edb4 with SMTP id cq13-20020a17090af98d00b0028bbc34edb4mr750814pjb.10.1702976729011;
-        Tue, 19 Dec 2023 01:05:29 -0800 (PST)
-Received: from localhost.localdomain ([2401:4900:581e:798e:871c:98db:5638:a4])
-        by smtp.gmail.com with ESMTPSA id f4-20020a17090aec8400b0028bbd9872d5sm806776pjy.12.2023.12.19.01.05.23
+        d=1e100.net; s=20230601; t=1702982795; x=1703587595;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7Ejj+XmDiZPNI7Zwigx9aUrZADahAhBeoVbqDqfrS6w=;
+        b=Y1SzVbvMxx1Q91CyUB4GSo+qrh4MrxRKfiaMh7YqKl4MabRtH4783QMlug2wTjLIj8
+         5MgstQ8oo+6m49kVccr1cEWNey2hy64qdwjVaBz6lyEPiKfDG3DtYl46WwZ/JO4dOEc8
+         c9G8MJLE8t1FO6y73IutnTK1/MQpZmny1sgx8W2Hw3MP8CFKRwrcDI/NF16edvM9LC0Z
+         dEgdzP/oRxAF3fN6m7u91zo2x/yUIYCrV2xG5fF8klpy5DhsJjBXLep87MLYduVYhine
+         DL7MJv/JSnPZWEQ50xT9BHSYQ/CMAd4EqRv0IVQI/Et+kqdtvZCSiRqDBG7cZUJbe7cJ
+         d+Fg==
+X-Gm-Message-State: AOJu0Yxlqx+6r4/CXn3E6EBbA58tR7eHIjVPeY3XolXHZ0B+oSrAJ3rT
+	FfVsZKIINX3soVtHjFk0pHHT3J7x0Ro7LnkK710=
+X-Google-Smtp-Source: AGHT+IFQracZD3k/ijwNvenXuQq4FFqzBwonwm6n213AXpReHbpgZsFCc7/mwQQwQrQTeicbe/pniA==
+X-Received: by 2002:a05:600c:3093:b0:40c:2b93:6a08 with SMTP id g19-20020a05600c309300b0040c2b936a08mr9473060wmn.16.1702982794776;
+        Tue, 19 Dec 2023 02:46:34 -0800 (PST)
+Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id bh12-20020a05600c3d0c00b003fee6e170f9sm2277960wmb.45.2023.12.19.02.46.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 01:05:28 -0800 (PST)
-From: Anshul Dalal <anshulusr@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Anshul Dalal <anshulusr@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
+        Tue, 19 Dec 2023 02:46:34 -0800 (PST)
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+To: 
+Cc: linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	andy@kernel.org,
+	linux-gpio@vger.kernel.org,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v4 2/2] iio: dac: driver for MCP4821
-Date: Tue, 19 Dec 2023 14:32:51 +0530
-Message-ID: <20231219090252.818754-2-anshulusr@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231219090252.818754-1-anshulusr@gmail.com>
-References: <20231219090252.818754-1-anshulusr@gmail.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>
+Subject: [PATCH v10 1/2] dt-bindings: adc: add AD7173
+Date: Tue, 19 Dec 2023 12:46:12 +0200
+Message-ID: <20231219104631.28256-1-mitrutzceclan@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Adds driver for the MCP48xx series of DACs.
+The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+which can be used in high precision, low noise single channel applications
+or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+primarily for measurement of signals close to DC but also delivers
+outstanding performance with input bandwidths out to ~10kHz.
 
-Device uses a simplex SPI channel. To set the value of an output channel,
-a 16-bit data of following format must be written:
-
-Bit field | Description
-15 [MSB]  | Channel selection bit
-            0 -> Channel A
-            1 -> Channel B
-13        | Output Gain Selection bit
-            0 -> 2x Gain (Vref = 4.096V)
-            1 -> 1x Gain (Vref = 2.048V)
-12        | Output Shutdown Control bit
-            0 -> Shutdown the selected channel
-            1 -> Active mode operation
-11-0 [LSB]| DAC Input Data bits
-            Value's big endian representation is taken as input for the
-            selected DAC channel. For devices with a resolution of less
-            than 12-bits, only the x most significant bits are considered
-            where x is the resolution of the device.
-Reference: Page#22 [MCP48x2 Datasheet]
-
-Supported devices:
-  +---------+--------------+-------------+
-  | Device  |  Resolution  |   Channels  |
-  |---------|--------------|-------------|
-  | MCP4801 |     8-bit    |      1      |
-  | MCP4802 |     8-bit    |      2      |
-  | MCP4811 |    10-bit    |      1      |
-  | MCP4812 |    10-bit    |      2      |
-  | MCP4821 |    12-bit    |      1      |
-  | MCP4822 |    12-bit    |      2      |
-  +---------+--------------+-------------+
-
-Devices tested:
-  MCP4821 [12-bit single channel]
-  MCP4802 [8-bit dual channel]
-
-Tested on Raspberry Pi Zero 2W
-
-Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf #MCP48x1
-Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf #MCP48x2
-Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
-
+Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 ---
 
-Changes for v3,4:
-- no updates
+V9->V10
+ - Fix dt_binding_check type warning from adi,reference-select
+V8->v9
+ - Add gpio-controller and "#gpio-cells" properties
+ - Add missing avdd2 and iovdd supplies
+ - Add string type to reference-select
+V7->V8
+ - include missing fix from V6
+V6->V7 <no changes>
+V5->V6
+ - Moved global required property to proper placement
+V4 -> V5
+ - Use string enum instead of integers for "adi,reference-select"
+ - Fix conditional checking in regards to compatible
+V3 -> V4
+ - include supply attributes
+ - add channel attribute for selecting conversion reference
+V2 -> V3
+ - remove redundant descriptions
+ - use referenced 'bipolar' property
+ - remove newlines from example
+V1 -> V2 <no changes>
 
-Changes for v2:
-- Changed device ordering to numerical
-- Fixed ordering of headers
-- Added struct mcp4821_chip_info instead of relying on driver_data from
-  spi device ids
-- Use scoped_guards for all mutex locks
-- Changed write_val from __be16 to u16 in mcp4821_write_raw
-  Fixes sparse warning: incorrect type in assignment
+ .../bindings/iio/adc/adi,ad7173.yaml          | 184 ++++++++++++++++++
+ 1 file changed, 184 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 
-Previous versions:
-v3: https://lore.kernel.org/lkml/20231218164735.787199-2-anshulusr@gmail.com/
-v2: https://lore.kernel.org/lkml/20231217180836.584828-2-anshulusr@gmail.com/
-v1: https://lore.kernel.org/lkml/20231117073040.685860-2-anshulusr@gmail.com/
----
- MAINTAINERS               |   7 ++
- drivers/iio/dac/Kconfig   |  10 ++
- drivers/iio/dac/Makefile  |   1 +
- drivers/iio/dac/mcp4821.c | 228 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 246 insertions(+)
- create mode 100644 drivers/iio/dac/mcp4821.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 81d5fc0bba68..8d9274c33c6e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13029,6 +13029,13 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-potentiometer-mcp4531
- F:	drivers/iio/potentiometer/mcp4018.c
- F:	drivers/iio/potentiometer/mcp4531.c
- 
-+MCP4821 DAC DRIVER
-+M:	Anshul Dalal <anshulusr@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/dac/microchip,mcp4821.yaml
-+F:	drivers/iio/dac/mcp4821.c
-+
- MCR20A IEEE-802.15.4 RADIO DRIVER
- M:	Stefan Schmidt <stefan@datenfreihafen.org>
- L:	linux-wpan@vger.kernel.org
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 93b8be183de6..34eb40bb9529 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -400,6 +400,16 @@ config MCP4728
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called mcp4728.
- 
-+config MCP4821
-+	tristate "MCP4801/02/11/12/21/22 DAC driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build the driver for the Microchip MCP4801
-+	  MCP4802, MCP4811, MCP4812, MCP4821 and MCP4822 DAC devices.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called mcp4821.
-+
- config MCP4922
- 	tristate "MCP4902, MCP4912, MCP4922 DAC driver"
- 	depends on SPI
-diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-index 5b2bac900d5a..55bf89739d14 100644
---- a/drivers/iio/dac/Makefile
-+++ b/drivers/iio/dac/Makefile
-@@ -42,6 +42,7 @@ obj-$(CONFIG_MAX5522) += max5522.o
- obj-$(CONFIG_MAX5821) += max5821.o
- obj-$(CONFIG_MCP4725) += mcp4725.o
- obj-$(CONFIG_MCP4728) += mcp4728.o
-+obj-$(CONFIG_MCP4821) += mcp4821.o
- obj-$(CONFIG_MCP4922) += mcp4922.o
- obj-$(CONFIG_STM32_DAC_CORE) += stm32-dac-core.o
- obj-$(CONFIG_STM32_DAC) += stm32-dac.o
-diff --git a/drivers/iio/dac/mcp4821.c b/drivers/iio/dac/mcp4821.c
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 new file mode 100644
-index 000000000000..7384df71f702
+index 000000000000..8353dcd4e8f6
 --- /dev/null
-+++ b/drivers/iio/dac/mcp4821.c
-@@ -0,0 +1,228 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (C) 2023 Anshul Dalal <anshulusr@gmail.com>
-+ *
-+ * Driver for Microchip MCP4801, MCP4802, MCP4811, MCP4812, MCP4821 and MCP4822
-+ *
-+ * Based on the work of:
-+ *	Michael Welling (MCP4922 Driver)
-+ *
-+ * Datasheet:
-+ *	MCP48x1: https://ww1.microchip.com/downloads/en/DeviceDoc/22244B.pdf
-+ *	MCP48x2: https://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf
-+ *
-+ * TODO:
-+ *	- Configurable gain
-+ *	- Regulator control
-+ */
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+@@ -0,0 +1,184 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/spi/spi.h>
++title: Analog Devices AD7173 ADC
 +
-+#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
++maintainers:
++  - Ceclan Dumitru <dumitru.ceclan@analog.com>
 +
-+#include <asm/unaligned.h>
++description: |
++  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
 +
-+#define MCP4821_ACTIVE_MODE BIT(12)
-+#define MCP4802_SECOND_CHAN BIT(15)
++properties:
++  compatible:
++    enum:
++      - adi,ad7172-2
++      - adi,ad7173-8
++      - adi,ad7175-2
++      - adi,ad7176-2
 +
-+/* DAC uses an internal Voltage reference of 4.096V at a gain of 2x */
-+#define MCP4821_2X_GAIN_VREF_MV 4096
++  reg:
++    maxItems: 1
 +
-+enum mcp4821_supported_drvice_ids {
-+	ID_MCP4801,
-+	ID_MCP4802,
-+	ID_MCP4811,
-+	ID_MCP4812,
-+	ID_MCP4821,
-+	ID_MCP4822,
-+};
++  interrupts:
++    maxItems: 1
 +
-+struct mcp4821_state {
-+	struct spi_device *spi;
-+	// Protects dac_value
-+	struct mutex lock;
-+	u16 dac_value[2];
-+};
++  '#address-cells':
++    const: 1
 +
-+struct mcp4821_chip_info {
-+	const char *name;
-+	int num_channels;
-+	const struct iio_chan_spec channels[2];
-+};
++  '#size-cells':
++    const: 0
 +
-+#define MCP4821_CHAN(channel_id, resolution)                          \
-+	{                                                             \
-+		.type = IIO_VOLTAGE, .output = 1, .indexed = 1,       \
-+		.channel = (channel_id),                              \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),         \
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-+		.scan_type = {                                        \
-+			.sign = 'u',                                  \
-+			.realbits = (resolution),                     \
-+			.storagebits = 16,                            \
-+			.shift = 12 - (resolution),                   \
-+		},                                                    \
-+	}
++  spi-max-frequency:
++    maximum: 20000000
 +
-+static const struct mcp4821_chip_info mcp4821_chip_info_table[6] = {
-+	[ID_MCP4801] = {
-+			.name = "mcp4801",
-+			.num_channels = 1,
-+			.channels = { MCP4821_CHAN(0, 8) }
-+			},
-+	[ID_MCP4802] = {
-+			.name = "mcp4802",
-+			.num_channels = 2,
-+			.channels = { MCP4821_CHAN(0, 8),
-+				       MCP4821_CHAN(1, 8) }
-+			},
-+	[ID_MCP4811] = {
-+			.name = "mcp4811",
-+			.num_channels = 1,
-+			.channels = { MCP4821_CHAN(0, 10) }
-+			},
-+	[ID_MCP4812] = {
-+			.name = "mcp4812",
-+			.num_channels = 2,
-+			.channels = { MCP4821_CHAN(0, 10),
-+				       MCP4821_CHAN(1, 10) }
-+			},
-+	[ID_MCP4821] = {
-+			.name = "mcp4821",
-+			.num_channels = 1,
-+			.channels = { MCP4821_CHAN(0, 12) }
-+			},
-+	[ID_MCP4822] = {
-+			.name = "mcp4822",
-+			.num_channels = 2,
-+			.channels = { MCP4821_CHAN(0, 12),
-+				       MCP4821_CHAN(1, 12) }
-+			},
-+};
++  gpio-controller:
++    description: Marks the device node as a GPIO controller.
 +
-+static int mcp4821_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan, int *val,
-+			    int *val2, long mask)
-+{
-+	struct mcp4821_state *state;
++  "#gpio-cells":
++    const: 1
 +
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		state = iio_priv(indio_dev);
-+		scoped_guard(mutex, &state->lock)
-+			*val = state->dac_value[chan->channel];
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = MCP4821_2X_GAIN_VREF_MV;
-+		*val2 = chan->scan_type.realbits;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		return -EINVAL;
-+	}
-+}
++  refin-supply:
++    description: external reference supply, can be used as reference for conversion.
 +
-+static int mcp4821_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int val,
-+			     int val2, long mask)
-+{
-+	struct mcp4821_state *state;
-+	u16 write_val;
-+	__be16 write_buffer;
-+	int ret;
-+	bool is_value_valid = val >= 0 && val < BIT(chan->scan_type.realbits) &&
-+			      val2 == 0;
++  refin2-supply:
++    description: external reference supply, can be used as reference for conversion.
 +
-+	if (!is_value_valid)
-+		return -EINVAL;
-+	if (mask != IIO_CHAN_INFO_RAW)
-+		return -EINVAL;
++  avdd-supply:
++    description: avdd supply, can be used as reference for conversion.
 +
-+	state = iio_priv(indio_dev);
-+	write_val = MCP4821_ACTIVE_MODE | val << chan->scan_type.shift;
-+	if (chan->channel)
-+		write_val |= MCP4802_SECOND_CHAN;
-+	put_unaligned_be16(write_val, &write_buffer);
-+	ret = spi_write(state->spi, &write_buffer, sizeof(write_buffer));
-+	if (ret) {
-+		dev_err(&state->spi->dev, "Failed to write to device: %d", ret);
-+		return ret;
-+	}
++  avdd2-supply:
++    description: avdd2 supply, used as the input to the internal voltage regulator.
 +
-+	scoped_guard(mutex, &state->lock)
-+		state->dac_value[chan->channel] = val;
-+	return 0;
-+}
++  iovdd-supply:
++    description: iovdd supply, used for the chip digital interface.
 +
-+static const struct iio_info mcp4821_info = {
-+	.read_raw = &mcp4821_read_raw,
-+	.write_raw = &mcp4821_write_raw,
-+};
++patternProperties:
++  "^channel@[0-9a-f]$":
++    type: object
++    $ref: adc.yaml
++    unevaluatedProperties: false
 +
-+static int mcp4821_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct mcp4821_state *state;
-+	const struct mcp4821_chip_info *info;
++    properties:
++      reg:
++        minimum: 0
++        maximum: 15
 +
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
-+	if (indio_dev == NULL)
-+		return -ENOMEM;
++      diff-channels:
++        items:
++          minimum: 0
++          maximum: 31
 +
-+	state = iio_priv(indio_dev);
-+	state->spi = spi;
-+	mutex_init(&state->lock);
++      adi,reference-select:
++        description: |
++          Select the reference source to use when converting on
++          the specific channel. Valid values are:
++          refin      : REFIN(+)/REFIN(−).
++          refin2     : REFIN2(+)/REFIN2(−)
++          refout-avss: REFOUT/AVSS (Internal reference)
++          avdd       : AVDD
 +
-+	info = spi_get_device_match_data(spi);
-+	indio_dev->name = info->name;
-+	indio_dev->info = &mcp4821_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = info->channels;
-+	indio_dev->num_channels = info->num_channels;
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
++          External reference refin2 only available on ad7173-8.
++          If not specified, internal reference used.
++        $ref: /schemas/types.yaml#/definitions/string
++        enum:
++          - refin
++          - refin2
++          - refout-avss
++          - avdd
++        default: refout-avss
 +
-+#define MCP4821_COMPATIBLE(of_compatible, id)        \
-+	{                                            \
-+		.compatible = of_compatible,         \
-+		.data = &mcp4821_chip_info_table[id] \
-+	}
++    required:
++      - reg
++      - diff-channels
 +
-+static const struct of_device_id mcp4821_of_table[] = {
-+	MCP4821_COMPATIBLE("microchip,mcp4801", ID_MCP4801),
-+	MCP4821_COMPATIBLE("microchip,mcp4802", ID_MCP4802),
-+	MCP4821_COMPATIBLE("microchip,mcp4811", ID_MCP4811),
-+	MCP4821_COMPATIBLE("microchip,mcp4812", ID_MCP4812),
-+	MCP4821_COMPATIBLE("microchip,mcp4821", ID_MCP4821),
-+	MCP4821_COMPATIBLE("microchip,mcp4822", ID_MCP4822),
-+	{ /* Sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, mcp4821_of_table);
++required:
++  - compatible
++  - reg
++  - interrupts
 +
-+static const struct spi_device_id mcp4821_id_table[] = {
-+	{ "mcp4801", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4801]},
-+	{ "mcp4802", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4802]},
-+	{ "mcp4811", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4811]},
-+	{ "mcp4812", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4812]},
-+	{ "mcp4821", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4821]},
-+	{ "mcp4822", (kernel_ulong_t)&mcp4821_chip_info_table[ID_MCP4822]},
-+	{ /* Sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(spi, mcp4821_id_table);
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
-+static struct spi_driver mcp4821_driver = {
-+	.driver = {
-+		.name = "mcp4821",
-+		.of_match_table = mcp4821_of_table,
-+	},
-+	.probe = mcp4821_probe,
-+	.id_table = mcp4821_id_table,
-+};
-+module_spi_driver(mcp4821_driver);
++  - if:
++      properties:
++        compatible:
++          not:
++            contains:
++              const: adi,ad7173-8
++    then:
++      properties:
++        refin2-supply: false
++      patternProperties:
++        "^channel@[0-9a-f]$":
++          properties:
++            adi,reference-select:
++              enum:
++                - refin
++                - refout-avss
++                - avdd
 +
-+MODULE_AUTHOR("Anshul Dalal <anshulusr@gmail.com>");
-+MODULE_DESCRIPTION("Microchip MCP4821 DAC Driver");
-+MODULE_LICENSE("GPL");
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      adc@0 {
++        compatible = "adi,ad7173-8";
++        reg = <0>;
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++        interrupt-parent = <&gpio>;
++        spi-max-frequency = <5000000>;
++        gpio-controller;
++
++        refin-supply = <&dummy_regulator>;
++
++        channel@0 {
++          reg = <0>;
++          bipolar;
++          diff-channels = <0 1>;
++          adi,reference-select = "refin";
++        };
++
++        channel@1 {
++          reg = <1>;
++          diff-channels = <2 3>;
++        };
++
++        channel@2 {
++          reg = <2>;
++          bipolar;
++          diff-channels = <4 5>;
++        };
++
++        channel@3 {
++          reg = <3>;
++          bipolar;
++          diff-channels = <6 7>;
++        };
++
++        channel@4 {
++          reg = <4>;
++          diff-channels = <8 9>;
++          adi,reference-select = "avdd";
++        };
++      };
++    };
 -- 
-2.43.0
+2.42.0
 
 

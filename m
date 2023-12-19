@@ -1,218 +1,112 @@
-Return-Path: <linux-iio+bounces-1070-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1071-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877FA817BED
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 21:31:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 231D78180B4
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 05:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321E42822DD
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Dec 2023 20:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30932B245BF
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Dec 2023 04:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BF57347C;
-	Mon, 18 Dec 2023 20:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A95393;
+	Tue, 19 Dec 2023 04:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VfKE9U+K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZKSA+UdZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CED77348D;
-	Mon, 18 Dec 2023 20:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC63C134;
+	Tue, 19 Dec 2023 04:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702931441; x=1734467441;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=D/z1pNX0oVmvs23LZ0KScjYRgJYnFouhSUNo7dpC3TA=;
-  b=VfKE9U+KXfJTGHuR0FR0gv9nAOaiex49H2cfkKnJK87KOOClaBu14Nbk
-   goBtEwUVyo6QjXxM2HjfsTTbw/PBzU4Phh/Z94ghunRSJnD1KCsamhP3D
-   pMJ8ekTWIeztnlkKl0tptlstPWwdRVOPciTtz2ZFBp5LHctjZy9L7JEpq
-   +MNNvJsGHCWzIg8XBCLtsyBYE3rFqrIM3gX+dy20J8o/UWOfRJa0VBEe3
-   /xtSAnRR4K/t5NNMcK/DV6KvBAERR533nBklCvAklC6LHyAY9EhoTS4rG
-   bhTHRiBlBr9A28AiHhteoTSy7uERLfd9linosmlfDJcs56ejIOgt6zcSO
+  t=1702961384; x=1734497384;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=u1PrKXJ5wdf/6ii9goqAcOzxorRlFg0fLsA9scgSD3s=;
+  b=ZKSA+UdZyUv5u7V0bnS2sY8sKSTHVj+mXnbwmYCit730WLtA6JcDg/kw
+   gjJl9mIhNzBDAca7WWAQbOBH2ON0GyuyC7Ix22ZOdnYMr5gR0UruzOB6S
+   iOqeMoHfVhYXI7Ej1hk2zvCY5ZkGDScCdfES0Z5zYEkmWcv6fIh4JhYKw
+   Bv6LETB1EByT9FFiMfyK0y50WCJvzA2u1O1+RnzHZeK0cVai5d3A5I9nf
+   Hyqxzzva84Ep/YE/uLwecX8oxXcsE+sxEDPjWL9b3V0M5TnGz3/FCNiUe
+   QP7gmSOcyFKKJjvGmLswuH/k+57BUq3JT8kWoqpXeb3w6VBaLiVyZvrXA
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="395289757"
-X-IronPort-AV: E=Sophos;i="6.04,286,1695711600"; 
-   d="scan'208";a="395289757"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 12:30:37 -0800
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="2832774"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
+   d="scan'208";a="2832774"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 20:49:44 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="751879654"
-X-IronPort-AV: E=Sophos;i="6.04,286,1695711600"; 
-   d="scan'208";a="751879654"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by orsmga006.jf.intel.com with ESMTP; 18 Dec 2023 12:30:37 -0800
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: jikos@kernel.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	Basavaraj.Natikar@amd.com
-Cc: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v2 3/3] iio: hid-sensor-als: Add light chromaticity support
-Date: Mon, 18 Dec 2023 12:30:26 -0800
-Message-Id: <20231218203026.1156375-4-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231218203026.1156375-1-srinivas.pandruvada@linux.intel.com>
-References: <20231218203026.1156375-1-srinivas.pandruvada@linux.intel.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="899224556"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
+   d="scan'208";a="899224556"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 18 Dec 2023 20:49:42 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rFS2m-0004sH-0T;
+	Tue, 19 Dec 2023 04:49:39 +0000
+Date: Tue, 19 Dec 2023 12:48:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jun Yan <jerrysteve1101@gmail.com>, Jonathan.Cameron@huawei.com
+Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de,
+	Qing-wu.Li@leica-geosystems.com.cn, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jun Yan <jerrysteve1101@gmail.com>
+Subject: Re: [PATCH] iio: accel: bmi088: add i2c support for bmi088 accel
+ driver
+Message-ID: <202312191202.IFnDRQVb-lkp@intel.com>
+References: <20231218154045.219317-1-jerrysteve1101@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231218154045.219317-1-jerrysteve1101@gmail.com>
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Hi Jun,
 
-In most cases, ambient color sensors also support the x and y light
-colors, which represent the coordinates on the CIE 1931 chromaticity
-diagram. Thus, add light chromaticity x and y.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
-v2:
-Original patch from Basavaraj Natikar <Basavaraj.Natikar@amd.com> is
-modified to prevent failure when the new usage id is not found in the
-descriptor.
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.7-rc6 next-20231218]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
- drivers/iio/light/hid-sensor-als.c | 68 +++++++++++++++++++++++++++++-
- include/linux/hid-sensor-ids.h     |  3 ++
- 2 files changed, 70 insertions(+), 1 deletion(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Yan/iio-accel-bmi088-add-i2c-support-for-bmi088-accel-driver/20231218-235104
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20231218154045.219317-1-jerrysteve1101%40gmail.com
+patch subject: [PATCH] iio: accel: bmi088: add i2c support for bmi088 accel driver
+config: powerpc64-randconfig-r081-20231219 (https://download.01.org/0day-ci/archive/20231219/202312191202.IFnDRQVb-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231219/202312191202.IFnDRQVb-lkp@intel.com/reproduce)
 
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index 8d6beacc338a..6e2793fa515c 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -17,6 +17,8 @@ enum {
- 	CHANNEL_SCAN_INDEX_INTENSITY,
- 	CHANNEL_SCAN_INDEX_ILLUM,
- 	CHANNEL_SCAN_INDEX_COLOR_TEMP,
-+	CHANNEL_SCAN_INDEX_CHROMATICITY_X,
-+	CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
- 	CHANNEL_SCAN_INDEX_MAX
- };
- 
-@@ -76,6 +78,30 @@ static const struct iio_chan_spec als_channels[] = {
- 		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
- 		.scan_index = CHANNEL_SCAN_INDEX_COLOR_TEMP,
- 	},
-+	{
-+		.type = IIO_CHROMATICITY,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_X,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SCALE) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
-+		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X,
-+	},
-+	{
-+		.type = IIO_CHROMATICITY,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_Y,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SCALE) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
-+		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
-+	},
- 	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
- };
- 
-@@ -119,6 +145,16 @@ static int als_read_raw(struct iio_dev *indio_dev,
- 			min = als_state->als[chan->scan_index].logical_minimum;
- 			address = HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE;
- 			break;
-+		case  CHANNEL_SCAN_INDEX_CHROMATICITY_X:
-+			report_id = als_state->als[chan->scan_index].report_id;
-+			min = als_state->als[chan->scan_index].logical_minimum;
-+			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X;
-+			break;
-+		case  CHANNEL_SCAN_INDEX_CHROMATICITY_Y:
-+			report_id = als_state->als[chan->scan_index].report_id;
-+			min = als_state->als[chan->scan_index].logical_minimum;
-+			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y;
-+			break;
- 		default:
- 			report_id = -1;
- 			break;
-@@ -243,6 +279,14 @@ static int als_capture_sample(struct hid_sensor_hub_device *hsdev,
- 		als_state->scan.illum[CHANNEL_SCAN_INDEX_COLOR_TEMP] = sample_data;
- 		ret = 0;
- 		break;
-+	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X:
-+		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_X] = sample_data;
-+		ret = 0;
-+		break;
-+	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y:
-+		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_Y] = sample_data;
-+		ret = 0;
-+		break;
- 	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
- 		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
- 								    *(s64 *)raw_data);
-@@ -303,11 +347,33 @@ static int als_parse_report(struct platform_device *pdev,
- 		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
- 		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
- 
-+skip_temp_channel:
-+	for (i = 0; i < 2; i++) {
-+		int next_scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X + i;
-+
-+		ret = sensor_hub_input_get_attribute_info(hsdev,
-+				HID_INPUT_REPORT, usage_id,
-+				HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X + i,
-+				&st->als[next_scan_index]);
-+		if (ret < 0)
-+			goto skip_chromaticity_channel;
-+
-+		channels[index++] = als_channels[CHANNEL_SCAN_INDEX_CHROMATICITY_X + i];
-+
-+		als_adjust_channel_bit_mask(channels,
-+					CHANNEL_SCAN_INDEX_CHROMATICITY_X + i,
-+					st->als[next_scan_index].size);
-+
-+		dev_dbg(&pdev->dev, "als %x:%x\n",
-+			st->als[next_scan_index].index,
-+			st->als[next_scan_index].report_id);
-+	}
-+
- 	st->scale_precision = hid_sensor_format_scale(usage_id,
- 				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
- 				&st->scale_pre_decml, &st->scale_post_decml);
- 
--skip_temp_channel:
-+skip_chromaticity_channel:
- 	*channels_out = channels;
- 	*size_channels_out = index;
- 
-diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
-index 8af4fb3e0254..6730ee900ee1 100644
---- a/include/linux/hid-sensor-ids.h
-+++ b/include/linux/hid-sensor-ids.h
-@@ -22,6 +22,9 @@
- #define HID_USAGE_SENSOR_DATA_LIGHT				0x2004d0
- #define HID_USAGE_SENSOR_LIGHT_ILLUM				0x2004d1
- #define HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE		0x2004d2
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY			0x2004d3
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X			0x2004d4
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y			0x2004d5
- 
- /* PROX (200011) */
- #define HID_USAGE_SENSOR_PROX                                   0x200011
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312191202.IFnDRQVb-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/accel/bmi088-accel-i2c.c:14:10: fatal error: linux/i2c/i2c.h: No such file or directory
+      14 | #include <linux/i2c/i2c.h>
+         |          ^~~~~~~~~~~~~~~~~
+   compilation terminated.
+
+
+vim +14 drivers/iio/accel/bmi088-accel-i2c.c
+
+  > 14	#include <linux/i2c/i2c.h>
+    15	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

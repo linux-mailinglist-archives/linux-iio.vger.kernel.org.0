@@ -1,320 +1,461 @@
-Return-Path: <linux-iio+bounces-1143-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC0081A1C0
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:01:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2181A1BF
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04C01F237F4
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:01:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342941C2443B
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC8B3D995;
-	Wed, 20 Dec 2023 15:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2843D989;
+	Wed, 20 Dec 2023 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="ePcAbV5x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVpofYce"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7C1405D6;
-	Wed, 20 Dec 2023 15:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BKA44JO026222;
-	Wed, 20 Dec 2023 16:00:23 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	selector1; bh=VX1e1MqWUsqC3HC2njjApU0jyW7yAkL6duCodzEeM5Q=; b=eP
-	cAbV5xk+x3Qo7PibNPS/EaLbPsy+ycxKxli2tbC2A2N05VXoSMvsH577BvcGHBVw
-	WmKTJpAAvFE7m8wPJXpNNlR0RWJDwbdjwXXOFXpAsQEtUMB7XM7VXF67ylO5USG6
-	jR2Nr77V6kBeSxri7RlTLM7I/aR06+CQ2es6myuIDap8kXmneZVSLTNKcTf32mh6
-	jm3P6fBRzzSkGEKWH9wao+gUnnosz2SJ28qYNok3mUDcezVW8pVJ+48cMgisXYiw
-	8TbA9UStW4rqxxVahkvAH+eHmjBKJ5FZuY3p5c2Oi/Iixk13lFvZTtH1CULAZC9u
-	fW87KI2+LKPlL9FMrTyQ==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3v126m2j86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 16:00:23 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C5C85100057;
-	Wed, 20 Dec 2023 16:00:22 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B804321ADA0;
-	Wed, 20 Dec 2023 16:00:22 +0100 (CET)
-Received: from localhost (10.201.20.59) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 20 Dec
- 2023 16:00:21 +0100
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To: <william.gray@linaro.org>
-CC: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 10/10] counter: stm32-timer-cnt: add support for capture events
-Date: Wed, 20 Dec 2023 15:57:26 +0100
-Message-ID: <20231220145726.640627-11-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
-References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7369F3D981
+	for <linux-iio@vger.kernel.org>; Wed, 20 Dec 2023 15:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FEFC433C9;
+	Wed, 20 Dec 2023 15:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703084418;
+	bh=6pUkqVknauVkcHRpqrpZ25OnM0JL3kCIXsI/VB3nNWQ=;
+	h=Date:From:To:Subject:From;
+	b=WVpofYce0hP90OxcdZsfAB/7jD3V+vLLKH4K4fctnC5SQ+v5SJ1DhKas+TVu1FpEL
+	 SK/OgEbC+SVHmmafUxCdms5VaM2TKdccobREW028FLgJDno16X2FYTNgdibq5qla2W
+	 kJ304rPwfaBP9Ak4zBU/YeJ3OSV/Ms54j3LJlmWQlbbhpDWky0jR3etHTUVM9aRaYN
+	 Feag+zWpA6SA9kbynFh4n6/Sqw0plS8mmBtbzVF4Qcf2iBJTn30YO5uO4xy++lwfT8
+	 9B3TLTbK3idpny42YlxZOP2xVYclL1zQ/Ofvz4o1XnmWW4988VbZPll4x/lY+bUP4F
+	 kV/AP//Txr/fg==
+Date: Wed, 20 Dec 2023 15:00:07 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: First set of new device support etc for 6.8
+Message-ID: <20231220150007.200d5183@jic23-huawei>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-20_09,2023-12-20_01,2023-05-22_02
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add support for capture events. Captured counter value for each channel
-can be retrieved through CCRx register.
-STM32 timers can have up to 4 capture channels (on input channel 1 to
-channel 4), hence need to check the number of channels before reading
-the capture data.
-The capture configuration is hard-coded to capture signals on both edges
-(non-inverted). Interrupts are used to report events independently for
-each channel.
+The following changes since commit b85ea95d086471afb4ad062012a4d73cd328fa86:
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
-Changes in v3:
-- patch split from: "counter: stm32-timer-cnt: add support for events", to
-  focus on the capture events only here.
-- only get relevant interrupt line
----
- drivers/counter/stm32-timer-cnt.c | 134 +++++++++++++++++++++++++++++-
- 1 file changed, 131 insertions(+), 3 deletions(-)
+  Linux 6.7-rc1 (2023-11-12 16:19:07 -0800)
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index d13e4c427965..0b131ca71de6 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -263,6 +263,40 @@ static int stm32_count_prescaler_write(struct counter_device *counter,
- 	return regmap_write(priv->regmap, TIM_PSC, psc);
- }
- 
-+static int stm32_count_cap_read(struct counter_device *counter,
-+				struct counter_count *count,
-+				size_t ch, u64 *cap)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 ccrx;
-+
-+	if (ch >= priv->nchannels)
-+		return -EOPNOTSUPP;
-+
-+	switch (ch) {
-+	case 0:
-+		regmap_read(priv->regmap, TIM_CCR1, &ccrx);
-+		break;
-+	case 1:
-+		regmap_read(priv->regmap, TIM_CCR2, &ccrx);
-+		break;
-+	case 2:
-+		regmap_read(priv->regmap, TIM_CCR3, &ccrx);
-+		break;
-+	case 3:
-+		regmap_read(priv->regmap, TIM_CCR4, &ccrx);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(counter->parent, "CCR%zu: 0x%08x\n", ch + 1, ccrx);
-+
-+	*cap = ccrx;
-+
-+	return 0;
-+}
-+
- static int stm32_count_nb_ovf_read(struct counter_device *counter,
- 				   struct counter_count *count, u64 *val)
- {
-@@ -286,6 +320,8 @@ static int stm32_count_nb_ovf_write(struct counter_device *counter,
- 	return 0;
- }
- 
-+static DEFINE_COUNTER_ARRAY_CAPTURE(stm32_count_cap_array, 4);
-+
- static struct counter_comp stm32_count_ext[] = {
- 	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
- 	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-@@ -293,6 +329,7 @@ static struct counter_comp stm32_count_ext[] = {
- 			     stm32_count_ceiling_write),
- 	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
- 			       stm32_count_prescaler_write),
-+	COUNTER_COMP_ARRAY_CAPTURE(stm32_count_cap_read, NULL, stm32_count_cap_array),
- 	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
- };
- 
-@@ -351,11 +388,68 @@ static int stm32_action_read(struct counter_device *counter,
- 	}
- }
- 
-+struct stm32_count_cc_regs {
-+	u32 ccmr_reg;
-+	u32 ccmr_mask;
-+	u32 ccmr_bits;
-+	u32 ccer_bits;
-+};
-+
-+static const struct stm32_count_cc_regs stm32_cc[] = {
-+	{ TIM_CCMR1, TIM_CCMR_CC1S, TIM_CCMR_CC1S_TI1,
-+		TIM_CCER_CC1E | TIM_CCER_CC1P | TIM_CCER_CC1NP },
-+	{ TIM_CCMR1, TIM_CCMR_CC2S, TIM_CCMR_CC2S_TI2,
-+		TIM_CCER_CC2E | TIM_CCER_CC2P | TIM_CCER_CC2NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC3S, TIM_CCMR_CC3S_TI3,
-+		TIM_CCER_CC3E | TIM_CCER_CC3P | TIM_CCER_CC3NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC4S, TIM_CCMR_CC4S_TI4,
-+		TIM_CCER_CC4E | TIM_CCER_CC4P | TIM_CCER_CC4NP },
-+};
-+
-+static int stm32_count_capture_configure(struct counter_device *counter, unsigned int ch,
-+					 bool enable)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 ccmr, ccer, sr;
-+
-+	if (ch >= ARRAY_SIZE(stm32_cc) || ch >= priv->nchannels) {
-+		dev_err(counter->parent, "invalid ch: %d\n", ch);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * configure channel in input capture mode, map channel 1 on TI1, channel2 on TI2...
-+	 * Select both edges / non-inverted to trigger a capture.
-+	 */
-+	if (enable) {
-+		/* first clear possibly latched capture flag upon enabling */
-+		regmap_read(priv->regmap, TIM_CCER, &ccer);
-+		if (!(ccer & stm32_cc[ch].ccer_bits)) {
-+			sr = ~TIM_SR_CC_IF(ch);
-+			regmap_write(priv->regmap, TIM_SR, sr);
-+		}
-+		regmap_update_bits(priv->regmap, stm32_cc[ch].ccmr_reg, stm32_cc[ch].ccmr_mask,
-+				   stm32_cc[ch].ccmr_bits);
-+		regmap_set_bits(priv->regmap, TIM_CCER, stm32_cc[ch].ccer_bits);
-+	} else {
-+		regmap_clear_bits(priv->regmap, TIM_CCER, stm32_cc[ch].ccer_bits);
-+		regmap_clear_bits(priv->regmap, stm32_cc[ch].ccmr_reg, stm32_cc[ch].ccmr_mask);
-+	}
-+
-+	regmap_read(priv->regmap, stm32_cc[ch].ccmr_reg, &ccmr);
-+	regmap_read(priv->regmap, TIM_CCER, &ccer);
-+	dev_dbg(counter->parent, "%s(%s) ch%d 0x%08x 0x%08x\n", __func__, enable ? "ena" : "dis",
-+		ch, ccmr, ccer);
-+
-+	return 0;
-+}
-+
- static int stm32_count_events_configure(struct counter_device *counter)
- {
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	struct counter_event_node *event_node;
- 	u32 val, dier = 0;
-+	int i, ret;
- 
- 	list_for_each_entry(event_node, &counter->events_list, l) {
- 		switch (event_node->event) {
-@@ -366,6 +460,12 @@ static int stm32_count_events_configure(struct counter_device *counter)
- 				regmap_write(priv->regmap, TIM_SR, (u32)~TIM_SR_UIF);
- 			dier |= TIM_DIER_UIE;
- 			break;
-+		case COUNTER_EVENT_CAPTURE:
-+			ret = stm32_count_capture_configure(counter, event_node->channel, true);
-+			if (ret)
-+				return ret;
-+			dier |= TIM_DIER_CC_IE(event_node->channel);
-+			break;
- 		default:
- 			/* should never reach this path */
- 			return -EINVAL;
-@@ -374,6 +474,15 @@ static int stm32_count_events_configure(struct counter_device *counter)
- 
- 	regmap_write(priv->regmap, TIM_DIER, dier);
- 
-+	/* check for disabled capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (!(dier & TIM_DIER_CC_IE(i))) {
-+			ret = stm32_count_capture_configure(counter, i, false);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -387,6 +496,12 @@ static int stm32_count_watch_validate(struct counter_device *counter,
- 		return -EOPNOTSUPP;
- 
- 	switch (watch->event) {
-+	case COUNTER_EVENT_CAPTURE:
-+		if (watch->channel >= priv->nchannels) {
-+			dev_err(counter->parent, "Invalid channel %d\n", watch->channel);
-+			return -EINVAL;
-+		}
-+		return 0;
- 	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
- 		return 0;
- 	default:
-@@ -497,6 +612,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	u32 clr = GENMASK(31, 0); /* SR flags can be cleared by writing 0 (wr 1 has no effect) */
- 	u32 sr, dier;
-+	int i;
- 
- 	regmap_read(priv->regmap, TIM_SR, &sr);
- 	regmap_read(priv->regmap, TIM_DIER, &dier);
-@@ -504,7 +620,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 	 * Some status bits in SR don't match with the enable bits in DIER. Only take care of
- 	 * the possibly enabled bits in DIER (that matches in between SR and DIER).
- 	 */
--	dier &= TIM_DIER_UIE;
-+	dier &= (TIM_DIER_UIE | TIM_DIER_CC1IE | TIM_DIER_CC2IE | TIM_DIER_CC3IE | TIM_DIER_CC4IE);
- 	sr &= dier;
- 
- 	if (sr & TIM_SR_UIF) {
-@@ -515,6 +631,15 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 		clr &= ~TIM_SR_UIF;
- 	}
- 
-+	/* Check capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (sr & TIM_SR_CC_IF(i)) {
-+			counter_push_event(counter, COUNTER_EVENT_CAPTURE, i);
-+			clr &= ~TIM_SR_CC_IF(i);
-+			dev_dbg(counter->parent, "COUNTER_EVENT_CAPTURE, %d\n", i);
-+		}
-+	}
-+
- 	regmap_write(priv->regmap, TIM_SR, clr);
- 
- 	return IRQ_HANDLED;
-@@ -627,8 +752,11 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 		}
- 	} else {
- 		for (i = 0; i < priv->nr_irqs; i++) {
--			/* Only take care of update IRQ for overflow events */
--			if (i != STM32_TIMERS_IRQ_UP)
-+			/*
-+			 * Only take care of update IRQ for overflow events, and cc for
-+			 * capture events.
-+			 */
-+			if (i != STM32_TIMERS_IRQ_UP && i != STM32_TIMERS_IRQ_CC)
- 				continue;
- 
- 			ret = devm_request_irq(&pdev->dev, priv->irq[i], stm32_timer_cnt_isr,
--- 
-2.25.1
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.8a
+
+for you to fetch changes up to 2dfef50589aef3b9a2fa2190ae95b328fb664f89:
+
+  iio: adc: ad7091r: Align arguments to function call parenthesis (2023-12-17 14:56:45 +0000)
+
+----------------------------------------------------------------
+1st set of IIO new device support, features and cleanup for 6.8
+
+New device support
+------------------
+
+adi,hmc425a
+  * Add support for ADRF5740 attenuators.  Minor changes to driver needed
+    alongside new IDs.
+aosong,ags02ma
+  * New driver for this volatile organic compounds sensor.
+bosch,bmp280
+  * Add BMP390 (small amount of refactoring + ID)
+bosch,bmi323
+  * New driver to support the BMI323 6-axis IMU.
+honeywell,hsc030pa
+  * New driver supporting a huge number of SSC and HSC series pressure and
+    temperature sensors.
+isil,isl76682
+  * New driver for this simple Ambient Light sensor.
+liteon,ltr390
+  * New driver for this ambient and ultraviolet light sensor.
+maxim,max34408
+  * New driver to support the MAX34408 and MAX34409 current monitoring ADCs.
+melexis,mlx90635
+  * New driver for this Infrared contactless temperature sensor.
+mirochip,mcp9600
+  * New driver for this thermocouple EMF convertor.
+ti,hdc3020
+  * New driver for this integrated relative humidity and temperature
+    sensor.
+vishay,veml6075
+  * New driver for this UVA and UVB light sensor.
+
+General features
+----------------
+
+Device properties
+  * Add fwnode_property_match_property_string() helper to allow matching
+    single value property against an array of predefined strings.
+  * Use fwnode_property_string_array_count() inside
+    fwnode_property_match_string() instead of open coding the same.
+checkpatch.pl
+  * Add exclusion of __aligned() from a warning reducing false positives
+    on IIO drivers (and hopefully beyond)
+
+IIO Features
+------------
+
+core
+  * New light channel modifiers for UVA and UVB.
+  * Add IIO_CHAN_INFO_TROUGH as counterpart to IIO_CHAN_INFO_PEAK so that
+    we can support device that keep running track of the lowest value they
+    have seen in similar fashion to the existing peak tracking.
+adi,adis library
+  * Use spi cs inactive delay even when a burst reading is performed.
+    As it's now used every time, can centralize the handling in the SPI
+    setup code in the driver.
+adi,ad2s1210
+  * Support for fixed-mode to this resolver driver where the A0 and A1
+    pins are hard wired to config mode in which case position and config
+    must be read from appropriate config registers.
+  * Support reset GPIO if present.
+adi,ad5791
+  * Allow configuration of presence of external amplifier in DT binding.
+adi,adis16400
+  * Add spi-cs-inactive-delay-ns to bindings to allow it to be tweaked
+    if default delays are not quite enough for a specific board.
+adi,adis16475
+  * Add spi-cs-inactive-delay-ns to bindings to allow it to be tweaked
+    if default delays are not quite enough for a specific board.
+bosch,bmp280
+  * Enable multiple chip IDs per family of devices.
+rohm,bu27008
+  * Add an illuminance channel calculated from RGB and IR data.
+
+Cleanup
+-------
+
+Minor white space, typos and tidy up not explicitly called out.
+
+Core
+  * Check that the available_scan_masks array passed to the IIO core
+    by a driver is sensible by ensuring the entries are ordered so the
+    minimum number of channels is enabled in the earlier entries (as they
+    will be selected if sufficient for the requested channels).
+  * Document that the available_scan_masks infrastructure doesn't currently
+    handle masks that don't fit in a long int.
+  * Improve intensity documentation to reflect that there is no expectation
+    of sensible units (it's dependent on a frequency sensitivity curve)
+Various
+  * Use new device_property_match_property_string() to replace open coded
+    versions of the same thing.
+  * Fix a few MAINTAINERS filenames.
+  * i2c_get_match_data() and spi_get_device_match_data() pushed into
+    more drivers reducing boilerplate handling.
+  * Some unnecessary headers removed.
+  * ACPI_PTR() removals. It's rarely worth using this.
+adi,ad7091r (early part of a series adding device support - useful in
+  their own right)
+  * Pass iio_dev directly an event handler rather than relying
+    on broken use of dev_get_drvdata() as drvdata is never set in this driver.
+  * Make sure alert is turned on.
+adi,ad9467 (general driver fixing up as precursor to iio-backend proposal
+  which is under review for 6.9)
+  * Fix reset gpio handling to match expected polarity.
+  * Always handle error codes from spi_writes.
+  * Add a driver instance local mutex to avoid some races.
+  * Fix scale setting to align with available scale values.
+  * Split array of chip_info structures up into named individual elements.
+  * Convert to regmap.
+honeywell,mprls0025pa
+  * Drop now unnecessary type references in DT binding for properties in
+    pascals.
+invensense,mpu6050
+  * Don't eat a potentially useful return value from regmap_bulk_write()
+invensense,icm42600
+  * Use max macro to improve code readability and save a few lines.
+liteon,ltrf216a
+  * Improve prevision of light intensity.
+microchip,mcp3911
+  * Use cleanup.h magic.
+qcom,spmi*
+  * Fix wrong descriptions of SPMI reg fields in bindings.
+
+Other
+----
+
+mailmap
+  * Update for Matt Ranostay
+
+----------------------------------------------------------------
+Amit Dhingra (1):
+      MAINTAINERS: correct file entry IIO LIGHT SENSOR GAIN-TIME_SCALE HELPERS
+
+Ana-Maria Cusco (2):
+      dt-bindings: iio: hmc425a: add entry for ADRF5740 Attenuator
+      iio: amplifiers: hmc425a: add support for ADRF5740 Attenuator
+
+Andrew Hepp (2):
+      dt-bindings: iio: Add MCP9600 thermocouple EMF converter
+      iio: temperature: Add MCP9600 thermocouple EMF converter
+
+Andy Shevchenko (6):
+      device property: Use fwnode_property_string_array_count()
+      device property: Add fwnode_property_match_property_string()
+      iio: frequency: adf4377: Switch to device_property_match_property_string()
+      iio: frequency: admv1014: Switch to device_property_match_property_string()
+      iio: magnetometer: tmag5273: Switch to device_property_match_property_string()
+      iio: proximity: sx9324: Switch to device_property_match_property_string()
+
+Angel Iglesias (4):
+      iio: pressure: bmp280: Use spi_get_device_match_data()
+      iio: pressure: bmp280: Rearrange vars in reverse xmas tree order
+      iio: pressure: bmp280: Allow multiple chips id per family of devices
+      iio: pressure: bmp280: Add support for BMP390
+
+Anshul Dalal (5):
+      dt-bindings: iio: light: add ltr390
+      iio: light: driver for Lite-On ltr390
+      dt-bindings: vendor-prefixes: add aosong
+      dt-bindings: iio: chemical: add aosong,ags02ma
+      iio: chemical: add support for Aosong AGS02MA
+
+Biju Das (1):
+      iio: pressure: bmp280: Use i2c_get_match_data()
+
+Bragatheswaran Manickavel (1):
+      iio/imu: inv_icm42600: Use max() helper macros
+
+Colin Ian King (1):
+      iio: imu: Fix spelling mistake "accelrometer" -> "accelerometer"
+
+Crt Mori (2):
+      iio: temperature: mlx90635 MLX90635 IR Temperature sensor
+      dt-bindings: iio: temperature: add MLX90635 device
+
+David Lechner (2):
+      iio: resolver: ad2s1210: add support for adi,fixed-mode
+      iio: resolver: ad2s1210: add reset gpio support
+
+Ivan Mikhaylov (2):
+      dt-bindings: adc: provide max34408/9 device tree binding document
+      iio: adc: Add driver support for MAX34408/9
+
+Jagath Jog J (3):
+      dt-bindings: iio: imu: Add Bosch BMI323
+      iio: imu: Add driver for BMI323 IMU
+      iio: imu: bmi323: Make the local structures static
+
+Javier Carrasco (5):
+      iio: add modifiers for A and B ultraviolet light
+      dt-bindings: iio: light: add support for Vishay VEML6075
+      iio: light: add VEML6075 UVA and UVB light sensor driver
+      iio: core: introduce trough info element for minimum values
+      iio: ABI: document temperature and humidity peak/trough raw attributes
+
+Jiapeng Chong (1):
+      iio: light: isl76682: remove unreachable code
+
+Johan Hovold (6):
+      dt-bindings: iio/adc: qcom,spmi-iadc: fix reg description
+      dt-bindings: iio/adc: qcom,spmi-iadc: fix example node name
+      dt-bindings: iio/adc: qcom,spmi-iadc: clean up example
+      dt-bindings: iio/adc: qcom,spmi-rradc: clean up example
+      dt-bindings: iio/adc: qcom,spmi-vadc: fix example node names
+      dt-bindings: iio/adc: qcom,spmi-vadc: clean up examples
+
+Jonathan Cameron (1):
+      iio: light: pa1203001: Drop ACPI_PTR() protection.
+
+Jun Yan (1):
+      iio: accel: bmi088: update comments and Kconfig
+
+Krzysztof Kozlowski (1):
+      dt-bindings: iio: honeywell,mprls0025pa: drop ref from pressure properties
+
+Li peiyu (3):
+      iio: pressure: fix some word spelling errors
+      iio: humidity: Add driver for ti HDC302x humidity sensors
+      dt-bindings: iio: humidity: Add TI HDC302x support
+
+Linus Walleij (1):
+      iio: proximity: irsd200: Drop unused include
+
+Lukas Bulwahn (2):
+      MAINTAINERS: correct file entry in BOSCH SENSORTEC BMI323 IMU IIO DRIVER
+      MAINTAINERS: improve section MICROCHIP MCP3564 ADC DRIVER
+
+Marcelo Schmitt (4):
+      scripts: checkpatch: Add __aligned to the list of attribute notes
+      iio: adc: ad7091r: Pass iio_dev to event handler
+      iio: adc: ad7091r: Set alert bit in config register
+      iio: adc: ad7091r: Align arguments to function call parenthesis
+
+Marcus Folkesson (1):
+      iio: adc: mcp3911: simplify code with guard macro
+
+Marek Vasut (3):
+      dt-bindings: iio: light: isl76682: Document ISL76682
+      iio: light: isl76682: Add ISL76682 driver
+      doc: iio: Document intensity scale as poorly defined
+
+Matt Ranostay (1):
+      mailmap: Change email mapping from previous employers
+
+Matti Vaittinen (3):
+      iio: bu27008: Add illuminance channel
+      iio: sanity check available_scan_masks array
+      iio: buffer: document known issue
+
+Michael Hennerich (2):
+      dt-bindings: adi,ad5791: Add support for controlling RBUF
+      iio: dac: ad5791: Add support for controlling RBUF via devicetree
+
+Nuno Sa (8):
+      iio: adc: ad9467: fix reset gpio handling
+      iio: adc: ad9467: don't ignore error codes
+      iio: adc: ad9467: add mutex to struct ad9467_state
+      iio: adc: ad9467: fix scale setting
+      iio: adc: ad9467: use spi_get_device_match_data()
+      iio: adc: ad9467: use chip_info variables instead of array
+      iio: adc: ad9467: use the more common !val NULL check
+      iio: adc: adi-axi-adc: convert to regmap
+
+Petre Rodan (2):
+      dt-bindings: iio: pressure: add honeywell,hsc030
+      iio: pressure: driver for Honeywell HSC/SSC series
+
+Ramona Gradinariu (3):
+      iio: imu: adis: Use spi cs inactive delay
+      dt-bindings: adis16475: Add 'spi-cs-inactive-delay-ns' property
+      dt-bindings: adis16460: Add 'spi-cs-inactive-delay-ns' property
+
+Rob Herring (1):
+      dt-bindings: iio/adc: ti,palmas-gpadc: Drop incomplete example
+
+Shreeya Patel (1):
+      iio: light: ltrf216a: Return floating point values
+
+Su Hui (1):
+      iio: imu: inv_mpu6050: return callee's error code rather than -EINVAL
+
+ .mailmap                                           |    7 +-
+ Documentation/ABI/testing/sysfs-bus-iio            |   42 +-
+ .../bindings/iio/adc/maxim,max34408.yaml           |  139 ++
+ .../bindings/iio/adc/qcom,spmi-iadc.yaml           |   10 +-
+ .../bindings/iio/adc/qcom,spmi-rradc.yaml          |    4 +-
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml           |    9 +-
+ .../bindings/iio/adc/ti,palmas-gpadc.yaml          |   15 -
+ .../bindings/iio/amplifiers/adi,hmc425a.yaml       |    4 +
+ .../bindings/iio/chemical/aosong,ags02ma.yaml      |   47 +
+ .../devicetree/bindings/iio/dac/adi,ad5791.yaml    |    5 +
+ .../bindings/iio/humidity/ti,hdc3020.yaml          |   55 +
+ .../devicetree/bindings/iio/imu/adi,adis16460.yaml |    4 +
+ .../devicetree/bindings/iio/imu/adi,adis16475.yaml |    4 +
+ .../devicetree/bindings/iio/imu/bosch,bmi323.yaml  |   77 +
+ .../bindings/iio/light/liteon,ltr390.yaml          |   56 +
+ .../bindings/iio/light/vishay,veml6075.yaml        |   39 +
+ .../bindings/iio/pressure/honeywell,hsc030pa.yaml  |  142 ++
+ .../iio/pressure/honeywell,mprls0025pa.yaml        |    2 -
+ .../bindings/iio/temperature/melexis,mlx90632.yaml |   19 +-
+ .../iio/temperature/microchip,mcp9600.yaml         |   70 +
+ .../devicetree/bindings/trivial-devices.yaml       |    2 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
+ MAINTAINERS                                        |   56 +-
+ drivers/base/property.c                            |   37 +-
+ drivers/iio/accel/Kconfig                          |    7 +-
+ drivers/iio/accel/bmi088-accel-core.c              |    2 +
+ drivers/iio/accel/bmi088-accel-spi.c               |    2 +
+ drivers/iio/adc/Kconfig                            |   13 +-
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/ad7091r-base.c                     |   15 +-
+ drivers/iio/adc/ad9467.c                           |  207 +-
+ drivers/iio/adc/adi-axi-adc.c                      |  159 +-
+ drivers/iio/adc/max34408.c                         |  276 +++
+ drivers/iio/adc/mcp3911.c                          |   64 +-
+ drivers/iio/amplifiers/hmc425a.c                   |   23 +
+ drivers/iio/chemical/Kconfig                       |   11 +
+ drivers/iio/chemical/Makefile                      |    1 +
+ drivers/iio/chemical/ags02ma.c                     |  165 ++
+ drivers/iio/dac/ad5791.c                           |    9 +-
+ drivers/iio/frequency/adf4377.c                    |   16 +-
+ drivers/iio/frequency/admv1014.c                   |   31 +-
+ drivers/iio/humidity/hdc3020.c                     |  473 +++++
+ drivers/iio/imu/Kconfig                            |    1 +
+ drivers/iio/imu/Makefile                           |    1 +
+ drivers/iio/imu/adis.c                             |   18 +-
+ drivers/iio/imu/bmi323/Kconfig                     |   33 +
+ drivers/iio/imu/bmi323/Makefile                    |    7 +
+ drivers/iio/imu/bmi323/bmi323.h                    |  209 ++
+ drivers/iio/imu/bmi323/bmi323_core.c               | 2139 ++++++++++++++++++++
+ drivers/iio/imu/bmi323/bmi323_i2c.c                |  121 ++
+ drivers/iio/imu/bmi323/bmi323_spi.c                |   92 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  |    5 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |    5 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   |    5 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         |    9 +-
+ drivers/iio/industrialio-buffer.c                  |   16 +
+ drivers/iio/industrialio-core.c                    |   66 +
+ drivers/iio/light/Kconfig                          |   37 +
+ drivers/iio/light/Makefile                         |    3 +
+ drivers/iio/light/isl76682.c                       |  345 ++++
+ drivers/iio/light/ltr390.c                         |  196 ++
+ drivers/iio/light/ltrf216a.c                       |   10 +-
+ drivers/iio/light/pa12203001.c                     |    2 +-
+ drivers/iio/light/rohm-bu27008.c                   |  201 +-
+ drivers/iio/light/veml6075.c                       |  474 +++++
+ drivers/iio/magnetometer/tmag5273.c                |   10 +-
+ drivers/iio/pressure/Kconfig                       |   22 +
+ drivers/iio/pressure/Makefile                      |    3 +
+ drivers/iio/pressure/bmp280-core.c                 |   42 +-
+ drivers/iio/pressure/bmp280-i2c.c                  |    8 +-
+ drivers/iio/pressure/bmp280-spi.c                  |   10 +-
+ drivers/iio/pressure/bmp280.h                      |    6 +-
+ drivers/iio/pressure/hsc030pa.c                    |  494 +++++
+ drivers/iio/pressure/hsc030pa.h                    |   74 +
+ drivers/iio/pressure/hsc030pa_i2c.c                |   69 +
+ drivers/iio/pressure/hsc030pa_spi.c                |   61 +
+ drivers/iio/proximity/irsd200.c                    |    1 -
+ drivers/iio/proximity/sx9324.c                     |   24 +-
+ drivers/iio/resolver/ad2s1210.c                    |  162 +-
+ drivers/iio/temperature/Kconfig                    |   22 +
+ drivers/iio/temperature/Makefile                   |    2 +
+ drivers/iio/temperature/mcp9600.c                  |  139 ++
+ drivers/iio/temperature/mlx90635.c                 | 1097 ++++++++++
+ include/linux/iio/adc/adi-axi-adc.h                |    4 +
+ include/linux/iio/types.h                          |    1 +
+ include/linux/property.h                           |   12 +
+ include/uapi/linux/iio/types.h                     |    2 +
+ scripts/checkpatch.pl                              |    1 +
+ tools/iio/iio_event_monitor.c                      |    2 +
+ 89 files changed, 8176 insertions(+), 409 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max34408.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/aosong,ags02ma.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltr390.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+ create mode 100644 drivers/iio/adc/max34408.c
+ create mode 100644 drivers/iio/chemical/ags02ma.c
+ create mode 100644 drivers/iio/humidity/hdc3020.c
+ create mode 100644 drivers/iio/imu/bmi323/Kconfig
+ create mode 100644 drivers/iio/imu/bmi323/Makefile
+ create mode 100644 drivers/iio/imu/bmi323/bmi323.h
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_core.c
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_i2c.c
+ create mode 100644 drivers/iio/imu/bmi323/bmi323_spi.c
+ create mode 100644 drivers/iio/light/isl76682.c
+ create mode 100644 drivers/iio/light/ltr390.c
+ create mode 100644 drivers/iio/light/veml6075.c
+ create mode 100644 drivers/iio/pressure/hsc030pa.c
+ create mode 100644 drivers/iio/pressure/hsc030pa.h
+ create mode 100644 drivers/iio/pressure/hsc030pa_i2c.c
+ create mode 100644 drivers/iio/pressure/hsc030pa_spi.c
+ create mode 100644 drivers/iio/temperature/mcp9600.c
+ create mode 100644 drivers/iio/temperature/mlx90635.c
 

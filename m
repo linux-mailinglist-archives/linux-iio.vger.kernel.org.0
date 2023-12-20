@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-1157-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1155-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C5381A2AA
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:32:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8CD81A2A7
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341571F251FA
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:32:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86E42B263EA
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E9940C04;
-	Wed, 20 Dec 2023 15:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A23405CB;
+	Wed, 20 Dec 2023 15:31:51 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A133FE20;
-	Wed, 20 Dec 2023 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583463F8F5;
+	Wed, 20 Dec 2023 15:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BKFBbLW020663;
-	Wed, 20 Dec 2023 10:31:38 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3v42psr46g-1
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BKB8Rnp001694;
+	Wed, 20 Dec 2023 10:31:29 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3v3g4umkx2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 10:31:37 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3BKFVS3K005312
+	Wed, 20 Dec 2023 10:31:28 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 3BKFVRJg027497
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 20 Dec 2023 10:31:28 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 20 Dec 2023 10:31:27 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 20 Dec
- 2023 10:31:27 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ 2023 10:31:26 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
  Transport; Wed, 20 Dec 2023 10:31:26 -0500
 Received: from [127.0.0.1] ([10.44.3.57])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3BKFUxXC006998;
-	Wed, 20 Dec 2023 10:31:20 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3BKFUxXD006998;
+	Wed, 20 Dec 2023 10:31:22 -0500
 From: Nuno Sa <nuno.sa@analog.com>
-Date: Wed, 20 Dec 2023 16:34:10 +0100
-Subject: [PATCH v4 7/8] iio: adc: ad9467: convert to backend framework
+Date: Wed, 20 Dec 2023 16:34:11 +0100
+Subject: [PATCH v4 8/8] iio: adc: adi-axi-adc: move to backend framework
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20231220-iio-backend-v4-7-998e9148b692@analog.com>
+Message-ID: <20231220-iio-backend-v4-8-998e9148b692@analog.com>
 References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
 In-Reply-To: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
@@ -72,544 +72,628 @@ CC: Lars-Peter Clausen <lars@metafoo.de>,
         Olivier Moysan
 	<olivier.moysan@foss.st.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1703086446; l=16250;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1703086446; l=18512;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=NJK5h0BB+nnLQ1F17BwWXT+FKdcJH1Y3+0ebPgCII78=;
- b=e3e9McOch8HWvz1eEJPQNRj8BTx+H+OH2VoyogL2a11xxWxmvKIq1datwhEuZidAaviCmXTug
- DhXzzipGty9Cbbfm9kgeTdkETuYCjWa3/FYFzwgdcHy8pp3HSfrD1Fa
+ bh=m5AhOLdjoOL9krQoh00TXRIgBFb55eqvb4o2fjaKWeY=;
+ b=wPcoYjso792vlhUOMwVncWZ0yjVHGLVV6S446MZa3x3N9vQTj/XTPkCG09rcF1Gv7BntOzg5e
+ 6HIMyt1fjvBBouzJaUSZ1Qp5k95cSvZ7x19PqiyWWzE6w7YWqtGe0/q
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: Khey_189yA8CSjUFgcwLwS4rKibI9s5v
-X-Proofpoint-GUID: Khey_189yA8CSjUFgcwLwS4rKibI9s5v
+X-Proofpoint-ORIG-GUID: _yWEYBEbicyj07bRWk_rClT4dEIz-BhZ
+X-Proofpoint-GUID: _yWEYBEbicyj07bRWk_rClT4dEIz-BhZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-02_01,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=999 phishscore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312200111
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312200111
 
-Convert the driver to use the new IIO backend framework. The device
-functionality is expected to be the same (meaning no added or removed
-features).
-
-Also note this patch effectively breaks ABI and that's needed so we can
-properly support this device and add needed features making use of the
-new IIO framework.
+Move to the IIO backend framework. Devices supported by adi-axi-adc now
+register themselves as backend devices.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/Kconfig  |   2 +-
- drivers/iio/adc/ad9467.c | 282 ++++++++++++++++++++++++++++++-----------------
- 2 files changed, 182 insertions(+), 102 deletions(-)
+ drivers/iio/adc/Kconfig             |   2 +-
+ drivers/iio/adc/adi-axi-adc.c       | 380 +++++++++---------------------------
+ include/linux/iio/adc/adi-axi-adc.h |  68 -------
+ 3 files changed, 93 insertions(+), 357 deletions(-)
 
 diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 4eebd5161419..10e0e340cdae 100644
+index 10e0e340cdae..b64e0d442a19 100644
 --- a/drivers/iio/adc/Kconfig
 +++ b/drivers/iio/adc/Kconfig
-@@ -275,7 +275,7 @@ config AD799X
- config AD9467
- 	tristate "Analog Devices AD9467 High Speed ADC driver"
- 	depends on SPI
--	depends on ADI_AXI_ADC
+@@ -293,7 +293,7 @@ config ADI_AXI_ADC
+ 	select IIO_BUFFER_HW_CONSUMER
+ 	select IIO_BUFFER_DMAENGINE
+ 	select REGMAP_MMIO
+-	depends on OF
 +	select IIO_BACKEND
  	help
- 	  Say yes here to build support for Analog Devices:
- 	  * AD9467 16-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 6581fce4ba95..c9f48ac19cd2 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -17,13 +17,12 @@
- #include <linux/of.h>
+ 	  Say yes here to build support for Analog Devices Generic
+ 	  AXI ADC IP core. The IP core is used for interfacing with
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index 0f21d1d98b9f..741b53c25bb1 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -8,6 +8,7 @@
  
- 
-+#include <linux/iio/backend.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- 
+ #include <linux/bitfield.h>
  #include <linux/clk.h>
++#include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/delay.h>
+ #include <linux/module.h>
+@@ -17,13 +18,11 @@
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
  
+-#include <linux/iio/iio.h>
+-#include <linux/iio/sysfs.h>
+-#include <linux/iio/buffer.h>
+-#include <linux/iio/buffer-dmaengine.h>
+-
+ #include <linux/fpga/adi-axi-common.h>
 -#include <linux/iio/adc/adi-axi-adc.h>
--
++#include <linux/iio/backend.h>
++#include <linux/iio/buffer-dmaengine.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/iio.h>
+ 
  /*
-  * ADI High-Speed ADC common spi interface registers
-  * See Application-Note AN-877:
-@@ -102,15 +101,20 @@
- #define AD9467_REG_VREF_MASK		0x0F
+  * Register definitions:
+@@ -44,6 +43,7 @@
+ #define   ADI_AXI_REG_CHAN_CTRL_PN_SEL_OWR	BIT(10)
+ #define   ADI_AXI_REG_CHAN_CTRL_IQCOR_EN	BIT(9)
+ #define   ADI_AXI_REG_CHAN_CTRL_DCFILT_EN	BIT(8)
++#define   ADI_AXI_REG_CHAN_CTRL_FMT_MASK	GENMASK(6, 4)
+ #define   ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT	BIT(6)
+ #define   ADI_AXI_REG_CHAN_CTRL_FMT_TYPE	BIT(5)
+ #define   ADI_AXI_REG_CHAN_CTRL_FMT_EN		BIT(4)
+@@ -55,286 +55,100 @@
+ 	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
+ 	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
  
- struct ad9467_chip_info {
--	struct adi_axi_adc_chip_info	axi_adc_info;
--	unsigned int			default_output_mode;
--	unsigned int			vref_mask;
-+	const char		*name;
-+	unsigned int		id;
-+	const struct		iio_chan_spec *channels;
-+	unsigned int		num_channels;
-+	const unsigned int	(*scale_table)[2];
-+	int			num_scales;
-+	unsigned long		max_rate;
-+	unsigned int		default_output_mode;
-+	unsigned int		vref_mask;
- };
- 
--#define to_ad9467_chip_info(_info)	\
--	container_of(_info, struct ad9467_chip_info, axi_adc_info)
+-struct adi_axi_adc_core_info {
+-	unsigned int				version;
+-};
 -
- struct ad9467_state {
-+	const struct ad9467_chip_info	*info;
-+	struct iio_backend		*back;
- 	struct spi_device		*spi;
- 	struct clk			*clk;
- 	unsigned int			output_mode;
-@@ -151,10 +155,10 @@ static int ad9467_spi_write(struct spi_device *spi, unsigned int reg,
- 	return spi_write(spi, buf, ARRAY_SIZE(buf));
- }
- 
--static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
-+static int ad9467_reg_access(struct iio_dev *indio_dev, unsigned int reg,
- 			     unsigned int writeval, unsigned int *readval)
- {
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-+	struct ad9467_state *st = iio_priv(indio_dev);
- 	struct spi_device *spi = st->spi;
- 	int ret;
- 
-@@ -191,14 +195,13 @@ static const unsigned int ad9467_scale_table[][2] = {
- 	{2300, 8}, {2400, 9}, {2500, 10},
- };
- 
--static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
-+static void __ad9467_get_scale(struct ad9467_state *st, int index,
- 			       unsigned int *val, unsigned int *val2)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	const struct iio_chan_spec *chan = &info->channels[0];
-+	const struct iio_chan_spec *chan = &st->info->channels[0];
- 	unsigned int tmp;
- 
--	tmp = (info->scale_table[index][0] * 1000000ULL) >>
-+	tmp = (st->info->scale_table[index][0] * 1000000ULL) >>
- 			chan->scan_type.realbits;
- 	*val = tmp / 1000000;
- 	*val2 = tmp % 1000000;
-@@ -229,52 +232,43 @@ static const struct iio_chan_spec ad9467_channels[] = {
- };
- 
- static const struct ad9467_chip_info ad9467_chip_tbl = {
--	.axi_adc_info = {
--		.name = "ad9467",
--		.id = CHIPID_AD9467,
--		.max_rate = 250000000UL,
--		.scale_table = ad9467_scale_table,
--		.num_scales = ARRAY_SIZE(ad9467_scale_table),
--		.channels = ad9467_channels,
--		.num_channels = ARRAY_SIZE(ad9467_channels),
--	},
-+	.name = "ad9467",
-+	.id = CHIPID_AD9467,
-+	.max_rate = 250000000UL,
-+	.scale_table = ad9467_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9467_scale_table),
-+	.channels = ad9467_channels,
-+	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9467_REG_VREF_MASK,
- };
- 
- static const struct ad9467_chip_info ad9434_chip_tbl = {
--	.axi_adc_info = {
--		.name = "ad9434",
--		.id = CHIPID_AD9434,
--		.max_rate = 500000000UL,
--		.scale_table = ad9434_scale_table,
--		.num_scales = ARRAY_SIZE(ad9434_scale_table),
--		.channels = ad9434_channels,
--		.num_channels = ARRAY_SIZE(ad9434_channels),
--	},
-+	.name = "ad9434",
-+	.id = CHIPID_AD9434,
-+	.max_rate = 500000000UL,
-+	.scale_table = ad9434_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9434_scale_table),
-+	.channels = ad9434_channels,
-+	.num_channels = ARRAY_SIZE(ad9434_channels),
- 	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9434_REG_VREF_MASK,
- };
- 
- static const struct ad9467_chip_info ad9265_chip_tbl = {
--	.axi_adc_info = {
--		.name = "ad9265",
--		.id = CHIPID_AD9265,
--		.max_rate = 125000000UL,
--		.scale_table = ad9265_scale_table,
--		.num_scales = ARRAY_SIZE(ad9265_scale_table),
--		.channels = ad9467_channels,
--		.num_channels = ARRAY_SIZE(ad9467_channels),
--	},
-+	.name = "ad9265",
-+	.id = CHIPID_AD9265,
-+	.max_rate = 125000000UL,
-+	.scale_table = ad9265_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9265_scale_table),
-+	.channels = ad9467_channels,
-+	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9265_REG_VREF_MASK,
- };
- 
--static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
-+static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int i, vref_val;
- 	int ret;
- 
-@@ -282,25 +276,23 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
- 	if (ret < 0)
- 		return ret;
- 
--	vref_val = ret & info1->vref_mask;
-+	vref_val = ret & st->info->vref_mask;
- 
--	for (i = 0; i < info->num_scales; i++) {
--		if (vref_val == info->scale_table[i][1])
-+	for (i = 0; i < st->info->num_scales; i++) {
-+		if (vref_val == st->info->scale_table[i][1])
- 			break;
- 	}
- 
--	if (i == info->num_scales)
-+	if (i == st->info->num_scales)
- 		return -ERANGE;
- 
--	__ad9467_get_scale(conv, i, val, val2);
-+	__ad9467_get_scale(st, i, val, val2);
- 
- 	return IIO_VAL_INT_PLUS_MICRO;
- }
- 
--static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
-+static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int scale_val[2];
- 	unsigned int i;
- 	int ret;
-@@ -308,14 +300,14 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 	if (val != 0)
- 		return -EINVAL;
- 
--	for (i = 0; i < info->num_scales; i++) {
--		__ad9467_get_scale(conv, i, &scale_val[0], &scale_val[1]);
-+	for (i = 0; i < st->info->num_scales; i++) {
-+		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
- 		if (scale_val[0] != val || scale_val[1] != val2)
- 			continue;
- 
- 		guard(mutex)(&st->lock);
- 		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
--				       info->scale_table[i][1]);
-+				       st->info->scale_table[i][1]);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -326,15 +318,15 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 	return -EINVAL;
- }
- 
--static int ad9467_read_raw(struct adi_axi_adc_conv *conv,
-+static int ad9467_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2, long m)
- {
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-+	struct ad9467_state *st = iio_priv(indio_dev);
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_SCALE:
--		return ad9467_get_scale(conv, val, val2);
-+		return ad9467_get_scale(st, val, val2);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*val = clk_get_rate(st->clk);
- 
-@@ -344,20 +336,19 @@ static int ad9467_read_raw(struct adi_axi_adc_conv *conv,
- 	}
- }
- 
--static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
-+static int ad9467_write_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int val, int val2, long mask)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-+	struct ad9467_state *st = iio_priv(indio_dev);
- 	long r_clk;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		return ad9467_set_scale(conv, val, val2);
-+		return ad9467_set_scale(st, val, val2);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		r_clk = clk_round_rate(st->clk, val);
--		if (r_clk < 0 || r_clk > info->max_rate) {
-+		if (r_clk < 0 || r_clk > st->info->max_rate) {
- 			dev_warn(&st->spi->dev,
- 				 "Error setting ADC sample rate %ld", r_clk);
- 			return -EINVAL;
-@@ -369,26 +360,53 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
- 	}
- }
- 
--static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
-+static int ad9467_read_avail(struct iio_dev *indio_dev,
- 			     struct iio_chan_spec const *chan,
- 			     const int **vals, int *type, int *length,
- 			     long mask)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-+	struct ad9467_state *st = iio_priv(indio_dev);
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
- 		*vals = (const int *)st->scales;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
- 		/* Values are stored in a 2D matrix */
--		*length = info->num_scales * 2;
-+		*length = st->info->num_scales * 2;
- 		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
- }
- 
-+static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
-+				   const unsigned long *scan_mask)
-+{
-+	struct ad9467_state *st = iio_priv(indio_dev);
-+	unsigned int c;
-+	int ret;
-+
-+	for (c = 0; c < st->info->num_channels; c++) {
-+		if (test_bit(c, scan_mask))
-+			ret = iio_backend_chan_enable(st->back, c);
-+		else
-+			ret = iio_backend_chan_disable(st->back, c);
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct iio_info ad9467_info = {
-+	.read_raw = ad9467_read_raw,
-+	.write_raw = ad9467_write_raw,
-+	.update_scan_mode = ad9467_update_scan_mode,
-+	.debugfs_reg_access = ad9467_reg_access,
-+	.read_avail = ad9467_read_avail,
-+};
-+
- static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
- {
- 	int ret;
-@@ -401,19 +419,17 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
- 				AN877_ADC_TRANSFER_SYNC);
- }
- 
--static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
-+static int ad9467_scale_fill(struct ad9467_state *st)
- {
--	const struct adi_axi_adc_chip_info *info = conv->chip_info;
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int i, val1, val2;
- 
--	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
-+	st->scales = devm_kmalloc_array(&st->spi->dev, st->info->num_scales,
- 					sizeof(*st->scales), GFP_KERNEL);
- 	if (!st->scales)
- 		return -ENOMEM;
- 
--	for (i = 0; i < info->num_scales; i++) {
--		__ad9467_get_scale(conv, i, &val1, &val2);
-+	for (i = 0; i < st->info->num_scales; i++) {
-+		__ad9467_get_scale(st, i, &val1, &val2);
- 		st->scales[i][0] = val1;
- 		st->scales[i][1] = val2;
- 	}
-@@ -421,11 +437,27 @@ static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
- 	return 0;
- }
- 
--static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
-+static int ad9467_setup(struct ad9467_state *st)
- {
--	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-+	struct iio_backend_data_fmt data = {
-+		.sign_extend = true,
-+		.enable = true,
-+	};
-+	unsigned int c, mode;
-+	int ret;
-+
-+	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-+	ret = ad9467_outputmode_set(st->spi, mode);
-+	if (ret)
-+		return ret;
- 
--	return ad9467_outputmode_set(st->spi, st->output_mode);
-+	for (c = 0; c < st->info->num_channels; c++) {
-+		ret = iio_backend_data_format_set(st->back, c, &data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
- }
- 
- static int ad9467_reset(struct device *dev)
-@@ -443,25 +475,63 @@ static int ad9467_reset(struct device *dev)
- 	return 0;
- }
- 
-+static int ad9467_iio_backend_get(struct ad9467_state *st)
-+{
-+	struct device *dev = &st->spi->dev;
-+	struct device_node *__back;
-+
-+	st->back = devm_iio_backend_get_optional(&st->spi->dev, NULL);
-+	if (IS_ERR(st->back))
-+		return PTR_ERR(st->back);
-+	if (st->back)
-+		return 0;
-+	/*
-+	 * if we don't get the backend using the normal API's, use the legacy
-+	 * 'adi,adc-dev' property. So we get all nodes with that property, and
-+	 * look for the one pointing at us. Then we directly lookup that fwnode
-+	 * on the backend list of registered devices. This is done so we don't
-+	 * make io-backends mandatory which would break DT ABI.
-+	 */
-+	for_each_node_with_property(__back, "adi,adc-dev") {
-+		struct device_node *__me;
-+
-+		__me = of_parse_phandle(__back, "adi,adc-dev", 0);
-+		if (!__me)
-+			continue;
-+
-+		if (!device_match_of_node(dev, __me)) {
-+			of_node_put(__me);
-+			continue;
-+		}
-+
-+		of_node_put(__me);
-+		st->back = devm_iio_backend_get_from_fwnode_lookup(dev,
-+								   of_fwnode_handle(__back));
-+		of_node_put(__back);
-+		return PTR_ERR_OR_ZERO(st->back);
-+	}
-+
-+	return -ENODEV;
-+}
-+
- static int ad9467_probe(struct spi_device *spi)
- {
--	const struct ad9467_chip_info *info;
--	struct adi_axi_adc_conv *conv;
-+	struct iio_dev *indio_dev;
- 	struct ad9467_state *st;
- 	unsigned int id;
- 	int ret;
- 
--	info = spi_get_device_match_data(spi);
--	if (!info)
--		return -ENODEV;
+ struct adi_axi_adc_state {
+-	struct mutex				lock;
 -
--	conv = devm_adi_axi_adc_conv_register(&spi->dev, sizeof(*st));
--	if (IS_ERR(conv))
--		return PTR_ERR(conv);
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
- 
--	st = adi_axi_adc_conv_priv(conv);
-+	st = iio_priv(indio_dev);
- 	st->spi = spi;
- 
-+	st->info = spi_get_device_match_data(spi);
-+	if (!st->info)
-+		return -ENODEV;
-+
- 	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
- 	if (IS_ERR(st->clk))
- 		return PTR_ERR(st->clk);
-@@ -475,29 +545,39 @@ static int ad9467_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	conv->chip_info = &info->axi_adc_info;
+-	struct adi_axi_adc_client		*client;
+ 	struct regmap				*regmap;
+-};
 -
--	ret = ad9467_scale_fill(conv);
-+	ret = ad9467_scale_fill(st);
- 	if (ret)
- 		return ret;
+-struct adi_axi_adc_client {
+-	struct list_head			entry;
+-	struct adi_axi_adc_conv			conv;
+-	struct adi_axi_adc_state		*state;
+ 	struct device				*dev;
+-	const struct adi_axi_adc_core_info	*info;
+ };
  
- 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
--	if (id != conv->chip_info->id) {
-+	if (id != st->info->id) {
- 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
--			id, conv->chip_info->id);
-+			id, st->info->id);
- 		return -ENODEV;
- 	}
+-static LIST_HEAD(registered_clients);
+-static DEFINE_MUTEX(registered_clients_lock);
+-
+-static struct adi_axi_adc_client *conv_to_client(struct adi_axi_adc_conv *conv)
+-{
+-	return container_of(conv, struct adi_axi_adc_client, conv);
+-}
+-
+-void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
+-{
+-	struct adi_axi_adc_client *cl = conv_to_client(conv);
+-
+-	return (char *)cl + ALIGN(sizeof(struct adi_axi_adc_client),
+-				  IIO_DMA_MINALIGN);
+-}
+-EXPORT_SYMBOL_NS_GPL(adi_axi_adc_conv_priv, IIO_ADI_AXI);
+-
+-static int adi_axi_adc_config_dma_buffer(struct device *dev,
+-					 struct iio_dev *indio_dev)
+-{
+-	const char *dma_name;
+-
+-	if (!device_property_present(dev, "dmas"))
+-		return 0;
+-
+-	if (device_property_read_string(dev, "dma-names", &dma_name))
+-		dma_name = "rx";
+-
+-	return devm_iio_dmaengine_buffer_setup(indio_dev->dev.parent,
+-					       indio_dev, dma_name);
+-}
+-
+-static int adi_axi_adc_read_raw(struct iio_dev *indio_dev,
+-				struct iio_chan_spec const *chan,
+-				int *val, int *val2, long mask)
+-{
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	if (!conv->read_raw)
+-		return -EOPNOTSUPP;
+-
+-	return conv->read_raw(conv, chan, val, val2, mask);
+-}
+-
+-static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+-				 struct iio_chan_spec const *chan,
+-				 int val, int val2, long mask)
+-{
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	if (!conv->write_raw)
+-		return -EOPNOTSUPP;
+-
+-	return conv->write_raw(conv, chan, val, val2, mask);
+-}
+-
+-static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
+-				  struct iio_chan_spec const *chan,
+-				  const int **vals, int *type, int *length,
+-				  long mask)
++static int axi_adc_enable(struct iio_backend *back)
+ {
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	if (!conv->read_avail)
+-		return -EOPNOTSUPP;
+-
+-	return conv->read_avail(conv, chan, vals, type, length, mask);
+-}
+-
+-static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+-					const unsigned long *scan_mask)
+-{
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	unsigned int i;
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+ 	int ret;
  
--	conv->reg_access = ad9467_reg_access;
--	conv->write_raw = ad9467_write_raw;
--	conv->read_raw = ad9467_read_raw;
--	conv->read_avail = ad9467_read_avail;
--	conv->preenable_setup = ad9467_preenable_setup;
-+	indio_dev->name = st->info->name;
-+	indio_dev->channels = st->info->channels;
-+	indio_dev->num_channels = st->info->num_channels;
-+	indio_dev->info = &ad9467_info;
- 
--	st->output_mode = info->default_output_mode |
--			  AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-+	ret = ad9467_iio_backend_get(st);
+-	for (i = 0; i < conv->chip_info->num_channels; i++) {
+-		if (test_bit(i, scan_mask))
+-			ret = regmap_set_bits(st->regmap,
+-					      ADI_AXI_REG_CHAN_CTRL(i),
+-					      ADI_AXI_REG_CHAN_CTRL_ENABLE);
+-		else
+-			ret = regmap_clear_bits(st->regmap,
+-						ADI_AXI_REG_CHAN_CTRL(i),
+-						ADI_AXI_REG_CHAN_CTRL_ENABLE);
+-		if (ret)
+-			return ret;
+-	}
++	ret = regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
++			      ADI_AXI_REG_RSTN_MMCM_RSTN);
 +	if (ret)
 +		return ret;
  
 -	return 0;
-+	ret = devm_iio_backend_request_buffer(&spi->dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_backend_enable(st->back);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9467_setup(st);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
++	fsleep(10);
++	return regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
++			       ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
  }
  
- static const struct of_device_id ad9467_of_match[] = {
-@@ -529,4 +609,4 @@ module_spi_driver(ad9467_driver);
- MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
- MODULE_DESCRIPTION("Analog Devices AD9467 ADC driver");
+-static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct device *dev,
+-							  size_t sizeof_priv)
++static void axi_adc_disable(struct iio_backend *back)
+ {
+-	struct adi_axi_adc_client *cl;
+-	size_t alloc_size;
+-
+-	alloc_size = ALIGN(sizeof(struct adi_axi_adc_client), IIO_DMA_MINALIGN);
+-	if (sizeof_priv)
+-		alloc_size += ALIGN(sizeof_priv, IIO_DMA_MINALIGN);
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+ 
+-	cl = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!cl)
+-		return ERR_PTR(-ENOMEM);
+-
+-	mutex_lock(&registered_clients_lock);
+-
+-	cl->dev = get_device(dev);
+-
+-	list_add_tail(&cl->entry, &registered_clients);
+-
+-	mutex_unlock(&registered_clients_lock);
+-
+-	return &cl->conv;
++	regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
+ }
+ 
+-static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
++static int axi_adc_data_format_set(struct iio_backend *back, unsigned int chan,
++				   const struct iio_backend_data_fmt *data)
+ {
+-	struct adi_axi_adc_client *cl = conv_to_client(conv);
+-
+-	mutex_lock(&registered_clients_lock);
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	u32 val;
+ 
+-	list_del(&cl->entry);
+-	put_device(cl->dev);
++	if (!data->enable)
++		return regmap_clear_bits(st->regmap,
++					 ADI_AXI_REG_CHAN_CTRL(chan),
++					 ADI_AXI_REG_CHAN_CTRL_FMT_EN);
+ 
+-	mutex_unlock(&registered_clients_lock);
++	val = FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_EN, true);
++	if (data->sign_extend)
++		val |= FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT, true);
++	if (data->type == IIO_BACKEND_OFFSET_BINARY)
++		val |= FIELD_PREP(ADI_AXI_REG_CHAN_CTRL_FMT_TYPE, true);
+ 
+-	kfree(cl);
++	return regmap_update_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
++				  ADI_AXI_REG_CHAN_CTRL_FMT_MASK, val);
+ }
+ 
+-static void devm_adi_axi_adc_conv_release(void *conv)
++static int axi_adc_chan_enable(struct iio_backend *back, unsigned int chan)
+ {
+-	adi_axi_adc_conv_unregister(conv);
+-}
+-
+-struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+-							size_t sizeof_priv)
+-{
+-	struct adi_axi_adc_conv *conv;
+-	int ret;
+-
+-	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
+-	if (IS_ERR(conv))
+-		return conv;
+-
+-	ret = devm_add_action_or_reset(dev, devm_adi_axi_adc_conv_release,
+-				       conv);
+-	if (ret)
+-		return ERR_PTR(ret);
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+ 
+-	return conv;
++	return regmap_set_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
++			       ADI_AXI_REG_CHAN_CTRL_ENABLE);
+ }
+-EXPORT_SYMBOL_NS_GPL(devm_adi_axi_adc_conv_register, IIO_ADI_AXI);
+-
+-static const struct iio_info adi_axi_adc_info = {
+-	.read_raw = &adi_axi_adc_read_raw,
+-	.write_raw = &adi_axi_adc_write_raw,
+-	.update_scan_mode = &adi_axi_adc_update_scan_mode,
+-	.read_avail = &adi_axi_adc_read_avail,
+-};
+ 
+-static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
+-	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
+-};
+-
+-static struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
++static int axi_adc_chan_disable(struct iio_backend *back, unsigned int chan)
+ {
+-	const struct adi_axi_adc_core_info *info;
+-	struct adi_axi_adc_client *cl;
+-	struct device_node *cln;
+-
+-	info = of_device_get_match_data(dev);
+-	if (!info)
+-		return ERR_PTR(-ENODEV);
+-
+-	cln = of_parse_phandle(dev->of_node, "adi,adc-dev", 0);
+-	if (!cln) {
+-		dev_err(dev, "No 'adi,adc-dev' node defined\n");
+-		return ERR_PTR(-ENODEV);
+-	}
+-
+-	mutex_lock(&registered_clients_lock);
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+ 
+-	list_for_each_entry(cl, &registered_clients, entry) {
+-		if (!cl->dev)
+-			continue;
+-
+-		if (cl->dev->of_node != cln)
+-			continue;
+-
+-		if (!try_module_get(cl->dev->driver->owner)) {
+-			mutex_unlock(&registered_clients_lock);
+-			of_node_put(cln);
+-			return ERR_PTR(-ENODEV);
+-		}
+-
+-		get_device(cl->dev);
+-		cl->info = info;
+-		mutex_unlock(&registered_clients_lock);
+-		of_node_put(cln);
+-		return cl;
+-	}
+-
+-	mutex_unlock(&registered_clients_lock);
+-	of_node_put(cln);
+-
+-	return ERR_PTR(-EPROBE_DEFER);
++	return regmap_clear_bits(st->regmap, ADI_AXI_REG_CHAN_CTRL(chan),
++				 ADI_AXI_REG_CHAN_CTRL_ENABLE);
+ }
+ 
+-static int adi_axi_adc_setup_channels(struct device *dev,
+-				      struct adi_axi_adc_state *st)
++static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
++						 struct iio_dev *indio_dev)
+ {
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	int i, ret;
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	struct iio_buffer *buffer;
++	const char *dma_name;
++	int ret;
+ 
+-	if (conv->preenable_setup) {
+-		ret = conv->preenable_setup(conv);
+-		if (ret)
+-			return ret;
+-	}
++	if (device_property_read_string(st->dev, "dma-names", &dma_name))
++		dma_name = "rx";
+ 
+-	for (i = 0; i < conv->chip_info->num_channels; i++) {
+-		ret = regmap_write(st->regmap, ADI_AXI_REG_CHAN_CTRL(i),
+-				   ADI_AXI_REG_CHAN_CTRL_DEFAULTS);
+-		if (ret)
+-			return ret;
++	buffer = iio_dmaengine_buffer_alloc(st->dev, dma_name);
++	if (IS_ERR(buffer)) {
++		dev_err(st->dev, "Could not get DMA buffer, %ld\n",
++			PTR_ERR(buffer));
++		return ERR_CAST(buffer);
+ 	}
+ 
+-	return 0;
+-}
+-
+-static int axi_adc_reset(struct adi_axi_adc_state *st)
+-{
+-	int ret;
+-
+-	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
+-	if (ret)
+-		return ret;
+-
+-	mdelay(10);
+-	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN,
+-			   ADI_AXI_REG_RSTN_MMCM_RSTN);
++	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
++	ret = iio_device_attach_buffer(indio_dev, buffer);
+ 	if (ret)
+-		return ret;
++		return ERR_PTR(ret);
+ 
+-	mdelay(10);
+-	return regmap_write(st->regmap, ADI_AXI_REG_RSTN,
+-			    ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
++	return buffer;
+ }
+ 
+-static void adi_axi_adc_cleanup(void *data)
++static void axi_adc_free_buffer(struct iio_backend *back,
++				struct iio_buffer *buffer)
+ {
+-	struct adi_axi_adc_client *cl = data;
+-
+-	put_device(cl->dev);
+-	module_put(cl->dev->driver->owner);
++	iio_dmaengine_buffer_free(buffer);
+ }
+ 
+ static const struct regmap_config axi_adc_regmap_config = {
+@@ -344,45 +158,46 @@ static const struct regmap_config axi_adc_regmap_config = {
+ 	.max_register = 0x0800,
+ };
+ 
++static const struct iio_backend_ops adi_axi_adc_generic = {
++	.enable = axi_adc_enable,
++	.disable = axi_adc_disable,
++	.data_format_set = axi_adc_data_format_set,
++	.chan_enable = axi_adc_chan_enable,
++	.chan_disable = axi_adc_chan_disable,
++	.request_buffer = axi_adc_request_buffer,
++	.free_buffer = axi_adc_free_buffer,
++};
++
+ static int adi_axi_adc_probe(struct platform_device *pdev)
+ {
+-	struct adi_axi_adc_conv *conv;
+-	struct iio_dev *indio_dev;
+-	struct adi_axi_adc_client *cl;
+ 	struct adi_axi_adc_state *st;
+ 	void __iomem *base;
+-	unsigned int ver;
++	unsigned int ver, *expected_ver;
+ 	int ret;
+ 
+-	cl = adi_axi_adc_attach_client(&pdev->dev);
+-	if (IS_ERR(cl))
+-		return PTR_ERR(cl);
+-
+-	ret = devm_add_action_or_reset(&pdev->dev, adi_axi_adc_cleanup, cl);
+-	if (ret)
+-		return ret;
+-
+-	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
+-	if (indio_dev == NULL)
++	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
++	if (!st)
+ 		return -ENOMEM;
+ 
+-	st = iio_priv(indio_dev);
+-	st->client = cl;
+-	cl->state = st;
+-	mutex_init(&st->lock);
+-
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+ 
++	st->dev = &pdev->dev;
+ 	st->regmap = devm_regmap_init_mmio(&pdev->dev, base,
+ 					   &axi_adc_regmap_config);
+ 	if (IS_ERR(st->regmap))
+ 		return PTR_ERR(st->regmap);
+ 
+-	conv = &st->client->conv;
++	expected_ver = (unsigned int *)device_get_match_data(&pdev->dev);
++	if (!expected_ver)
++		return -ENODEV;
+ 
+-	ret = axi_adc_reset(st);
++	/*
++	 * Force disable the core. Up to the frontend to enable us. And we can
++	 * still read/write registers...
++	 */
++	ret = regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -390,37 +205,23 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (cl->info->version > ver) {
++	if (*expected_ver > ver) {
+ 		dev_err(&pdev->dev,
+ 			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+-			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
+-			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
+-			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
++			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
++			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
++			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
+ 			ADI_AXI_PCORE_VER_MAJOR(ver),
+ 			ADI_AXI_PCORE_VER_MINOR(ver),
+ 			ADI_AXI_PCORE_VER_PATCH(ver));
+ 		return -ENODEV;
+ 	}
+ 
+-	indio_dev->info = &adi_axi_adc_info;
+-	indio_dev->name = "adi-axi-adc";
+-	indio_dev->modes = INDIO_DIRECT_MODE;
+-	indio_dev->num_channels = conv->chip_info->num_channels;
+-	indio_dev->channels = conv->chip_info->channels;
+-
+-	ret = adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
++	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = adi_axi_adc_setup_channels(&pdev->dev, st);
+-	if (ret)
+-		return ret;
+-
+-	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
++	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
+ 		 ADI_AXI_PCORE_VER_MAJOR(ver),
+ 		 ADI_AXI_PCORE_VER_MINOR(ver),
+ 		 ADI_AXI_PCORE_VER_PATCH(ver));
+@@ -428,6 +229,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static unsigned int adi_axi_adc_10_0_a_info = ADI_AXI_PCORE_VER(10, 0, 'a');
++
+ /* Match table for of_platform binding */
+ static const struct of_device_id adi_axi_adc_of_match[] = {
+ 	{ .compatible = "adi,axi-adc-10.0.a", .data = &adi_axi_adc_10_0_a_info },
+@@ -448,3 +251,4 @@ MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices Generic AXI ADC IP core driver");
  MODULE_LICENSE("GPL v2");
--MODULE_IMPORT_NS(IIO_ADI_AXI);
+ MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
 +MODULE_IMPORT_NS(IIO_BACKEND);
+diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+deleted file mode 100644
+index b7904992d561..000000000000
+--- a/include/linux/iio/adc/adi-axi-adc.h
++++ /dev/null
+@@ -1,68 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Analog Devices Generic AXI ADC IP core driver/library
+- * Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+- *
+- * Copyright 2012-2020 Analog Devices Inc.
+- */
+-#ifndef __ADI_AXI_ADC_H__
+-#define __ADI_AXI_ADC_H__
+-
+-struct device;
+-struct iio_chan_spec;
+-
+-/**
+- * struct adi_axi_adc_chip_info - Chip specific information
+- * @name		Chip name
+- * @id			Chip ID (usually product ID)
+- * @channels		Channel specifications of type @struct iio_chan_spec
+- * @num_channels	Number of @channels
+- * @scale_table		Supported scales by the chip; tuples of 2 ints
+- * @num_scales		Number of scales in the table
+- * @max_rate		Maximum sampling rate supported by the device
+- */
+-struct adi_axi_adc_chip_info {
+-	const char			*name;
+-	unsigned int			id;
+-
+-	const struct iio_chan_spec	*channels;
+-	unsigned int			num_channels;
+-
+-	const unsigned int		(*scale_table)[2];
+-	int				num_scales;
+-
+-	unsigned long			max_rate;
+-};
+-
+-/**
+- * struct adi_axi_adc_conv - data of the ADC attached to the AXI ADC
+- * @chip_info		chip info details for the client ADC
+- * @preenable_setup	op to run in the client before enabling the AXI ADC
+- * @reg_access		IIO debugfs_reg_access hook for the client ADC
+- * @read_raw		IIO read_raw hook for the client ADC
+- * @write_raw		IIO write_raw hook for the client ADC
+- * @read_avail		IIO read_avail hook for the client ADC
+- */
+-struct adi_axi_adc_conv {
+-	const struct adi_axi_adc_chip_info		*chip_info;
+-
+-	int (*preenable_setup)(struct adi_axi_adc_conv *conv);
+-	int (*reg_access)(struct adi_axi_adc_conv *conv, unsigned int reg,
+-			  unsigned int writeval, unsigned int *readval);
+-	int (*read_raw)(struct adi_axi_adc_conv *conv,
+-			struct iio_chan_spec const *chan,
+-			int *val, int *val2, long mask);
+-	int (*write_raw)(struct adi_axi_adc_conv *conv,
+-			 struct iio_chan_spec const *chan,
+-			 int val, int val2, long mask);
+-	int (*read_avail)(struct adi_axi_adc_conv *conv,
+-			  struct iio_chan_spec const *chan,
+-			  const int **val, int *type, int *length, long mask);
+-};
+-
+-struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+-							size_t sizeof_priv);
+-
+-void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv);
+-
+-#endif
 
 -- 
 2.43.0

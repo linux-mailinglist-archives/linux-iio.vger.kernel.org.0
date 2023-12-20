@@ -1,52 +1,54 @@
-Return-Path: <linux-iio+bounces-1122-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1124-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F36881A093
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:02:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6479F81A0A5
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C981F28E22
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 14:02:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05238B22008
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 14:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A338D374CC;
-	Wed, 20 Dec 2023 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB9A38DDC;
+	Wed, 20 Dec 2023 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g48xcfpT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKG469aN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654538DFB;
-	Wed, 20 Dec 2023 14:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5329DC433C8;
-	Wed, 20 Dec 2023 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9140B381B2;
+	Wed, 20 Dec 2023 14:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3419BC433C9;
+	Wed, 20 Dec 2023 14:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703080855;
-	bh=bNV5JM7xKsAUYcwprUbMnZFixPmrpPJW8BKQqEz7XZg=;
+	s=k20201202; t=1703081069;
+	bh=rgiDGvgZVGtqWKKiBe9tiDZOroTq3u2y1PmyOEn9Hyc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g48xcfpTXR7nGcmBdsnnxLUiNeKnnH9QLO3KFWfI/bEgIKwmXeLjBq6KRZbAwUf6C
-	 9loCfgsGpF0O/FmcW0KEmg1vxRYz02Uru7UBoCdDnm3d6N6La0oSNAsHq8M3HJNaoy
-	 fUYozPI3zqu6Oc0lNwYbsRCglILuGnPu5K/4V+j3Hp7w/brbaU1E91IVVgl4QNectR
-	 wO18JAqX2wxINn2TurBjufFG+DyZrXY2AnTP+8eGM3SZLXNmLBRrO66/Sh9TJ8eVDB
-	 TpBb0n1zEN6CNMm621lUSwDJIcmpy2zVV0EVF/JAK5syO4SfkiY0zRFq20PM0z58Vs
-	 YkSy6RI44sFcw==
-Date: Wed, 20 Dec 2023 14:00:39 +0000
+	b=jKG469aNJKPh+zRF40g1uu1kxbQuLz+u0L/Ow08hvtl5RxvgW/fZEIIr+M9wqL7hH
+	 z2ui/DfwaAcu6IpWuDbw20jQqBkA2V2Q5uORzPikgTlvrUcfbaPvzoYbEHG6yqs0WZ
+	 R4LgPerYwLRMcPBwTI4jbY5u1IP0qC8J48E8ouTa+du7T4mFTj4d//DgxJGBuoPkGl
+	 wNJ3Y3JmHooODmoikIEzaXV+vF8YEf4F1IgsKfB//nJDuupmdSgtH7BIK9RJJcZWtz
+	 irGzQvOe/VwWrl1H2MoYn5JIAtsi/rf2VECzYspJGPozV/lFD4H6La8awOFJQojBKH
+	 oz8S9yOUTnOcg==
+Date: Wed, 20 Dec 2023 14:04:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Conor Dooley
- <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti-ads1298: Add driver
-Message-ID: <20231220140039.7b50f874@jic23-huawei>
-In-Reply-To: <02cbc31e-ec6e-4b3b-940d-da51567c197b@topic.nl>
-References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.618139b3-8cb2-4e4c-9283-9e3787c70105@emailsignatures365.codetwo.com>
-	<20231213094722.31547-1-mike.looijmans@topic.nl>
-	<20231214111107.00002fd8@Huawei.com>
-	<02cbc31e-ec6e-4b3b-940d-da51567c197b@topic.nl>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
+ joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
+ paul.cercueil@analog.com, Michael.Hennerich@analog.com, lars@metafoo.de,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ dan.carpenter@linaro.org, dlechner@baylibre.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 09/15] iio: adc: ad7091r: Enable internal vref if
+ external vref is not supplied
+Message-ID: <20231220140415.0143e8ca@jic23-huawei>
+In-Reply-To: <ZYCC3z44hMzgQTa6@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1702746240.git.marcelo.schmitt1@gmail.com>
+	<ce92ae93b1c2e36b20a9881b145c8c2c85acb1dd.1702746240.git.marcelo.schmitt1@gmail.com>
+	<20231217154142.191ba69b@jic23-huawei>
+	<ZYCC3z44hMzgQTa6@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,26 +59,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> > 
-> > Should probably also document the gpios as the binding should attempt to be as complete
-> > as possible independent of what the driver currently supports.
-> > 
-> > Lots of complex options for this device and the use of those pins, so maybe something
-> > that can be left for now - but the patch description should then mention that is intentional.  
-> 
-> The device has so many options for connecting stuff... It's indeed possible to 
-> (also) use it as a GPIO expander and as a clock source and more...
-> 
-> I'll put it in the patch description that the definition is incomplete by design.
-> 
-> The main reason I'm submitting is that this is about the third time I've 
-> written a driver for this chip, and I'm sure that other companies are writing 
-> their own as well. I'm hoping this will result in some joint effort to 
-> properly support it...
-> 
+On Mon, 18 Dec 2023 14:35:27 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-Fair enough. Incomplete bindings aren't ideal, but definitely better than no bindings
-in my view.
+> On 12/17, Jonathan Cameron wrote:
+> > On Sat, 16 Dec 2023 14:49:07 -0300
+> > Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> >   
+> > > The ADC needs a voltage reference to work correctly.
+> > > Enable AD7091R internal voltage reference if no external vref is supplied.
+> > > 
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>  
+> > This one sounds to me like it should have a fixes tag and be
+> > much earlier in the set to perhaps simplify backports.  
+> 
+> Could be. If we stick to the fact that the dt-binding does not require a voltage
+> regulator then this can be seen as a fix.
+> Though, if users can provide an external reference this patch makes no
+> difference them.
+> I am using the internal reference for testing so having this one makes a
+> difference for me.
+The binding has it as optional, though usually when not having an
+external reference leads to use of an internal one, we call it out
+in the description.  
+
+Meh, can backport it as a fix if anyone asks for it.
 
 Jonathan
+
+> 
+> > 
+> > Jonathan
+> >   
+> > > ---
+> > >  drivers/iio/adc/ad7091r-base.c | 7 +++++++
+> > >  drivers/iio/adc/ad7091r-base.h | 1 +
+> > >  2 files changed, 8 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+> > > index aead72ef55b6..9d0b489966f5 100644
+> > > --- a/drivers/iio/adc/ad7091r-base.c
+> > > +++ b/drivers/iio/adc/ad7091r-base.c
+> > > @@ -217,7 +217,14 @@ int ad7091r_probe(struct device *dev, const struct ad7091r_init_info *init_info,
+> > >  	if (IS_ERR(st->vref)) {
+> > >  		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+> > >  			return -EPROBE_DEFER;
+> > > +
+> > >  		st->vref = NULL;
+> > > +		/* Enable internal vref */
+> > > +		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
+> > > +					 AD7091R_REG_CONF_INT_VREF, BIT(0));
+> > > +		if (ret)
+> > > +			return dev_err_probe(st->dev, ret,
+> > > +					     "Error on enable internal reference\n");
+> > >  	} else {
+> > >  		ret = regulator_enable(st->vref);
+> > >  		if (ret)
+> > > diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+> > > index 81b8a4bbb929..9cfb362a00a4 100644
+> > > --- a/drivers/iio/adc/ad7091r-base.h
+> > > +++ b/drivers/iio/adc/ad7091r-base.h
+> > > @@ -20,6 +20,7 @@
+> > >  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
+> > >  
+> > >  /* AD7091R_REG_CONF */
+> > > +#define AD7091R_REG_CONF_INT_VREF	BIT(0)
+> > >  #define AD7091R_REG_CONF_ALERT_EN	BIT(4)
+> > >  #define AD7091R_REG_CONF_AUTO		BIT(8)
+> > >  #define AD7091R_REG_CONF_CMD		BIT(10)  
+> > 
+> >   
+
 

@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-1149-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1150-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908BD81A258
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC2D81A288
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 16:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E061C22404
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416051C20A32
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Dec 2023 15:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B213F8FA;
-	Wed, 20 Dec 2023 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13604175B;
+	Wed, 20 Dec 2023 15:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdfPOyqn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCu3/LnQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895F03D96A;
-	Wed, 20 Dec 2023 15:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404BDC433C7;
-	Wed, 20 Dec 2023 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB5B4185B;
+	Wed, 20 Dec 2023 15:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3DC433C8;
+	Wed, 20 Dec 2023 15:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703085900;
-	bh=X+u9nYdLYElrZ3zk8UbToNjqduUlCREvNkwwC45pkco=;
+	s=k20201202; t=1703086186;
+	bh=PqB9wZn+CQ7vDdo9UJOCCnwij/2Pm+D9zGbMiKMyoC0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RdfPOyqn4Fg3psJw91hTYOE4zRnb68Q/jDYIrVowqfeaiAHGzSD03PX7h/7tTOBuq
-	 88ttaLsDDdUu4Icqfqz2Q3czheb5s2EVNrR2g0ITClXARlC2hJk7ojo30MrfxqIDLy
-	 zl1ifv+0Iiw1DLKpxj00NreH7uIdFGaUM8zMtkDXEQe8lLzBAJps/ZRswUZGoCDW2Q
-	 iupEy057l/WJsH3TmPVRBteiXiZRBMPkSxV3iEt4tynuql9f4oq3Zo8f9WNqr5qzac
-	 5cYwuwl3EPgshmb7/WiCQjemXldIpwOYB1/fAWdz+GYQ/+3XNCPcW2lf+cYAZrHxqI
-	 1LXaj6eolGSmQ==
-Date: Wed, 20 Dec 2023 15:24:46 +0000
+	b=eCu3/LnQSsVLoCRaupS6ySewv9m5hzb3skYjdIQop8MoSQGmy+RG/cEGw22LXOOUR
+	 ZPxj96S2kDgno8aNjvzltkr5aLghzwjMB0ueyOvr6Z7Sk40RfMS+u7ncxd9HOo6B4O
+	 BK4VOcBvMKNWHJvAfO7lTU0yYqhWyB3Yx/7GyVx8AVs2uni5+U0CegAKEazz26aivk
+	 5eR85eNtljIT49uTePMQV3VDx3O+ZvGcplVNYD7pF3bFA5WgTTjBG1QLzvga6KElBK
+	 BbNFLNgKc89el85w5wv/jVbPHBLG0F0je7kl+LFl5SYzlPlwObhRK7VTJnG6hDjMya
+	 kD4zY9+8y+fxA==
+Date: Wed, 20 Dec 2023 15:29:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com,
  linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: hid-sensor-als: Allocate channels
- dynamically
-Message-ID: <20231220152446.18d220d2@jic23-huawei>
-In-Reply-To: <20231218203026.1156375-2-srinivas.pandruvada@linux.intel.com>
+Subject: Re: [PATCH v2 3/3] iio: hid-sensor-als: Add light chromaticity
+ support
+Message-ID: <20231220152932.1392a8c2@jic23-huawei>
+In-Reply-To: <20231218203026.1156375-4-srinivas.pandruvada@linux.intel.com>
 References: <20231218203026.1156375-1-srinivas.pandruvada@linux.intel.com>
-	<20231218203026.1156375-2-srinivas.pandruvada@linux.intel.com>
+	<20231218203026.1156375-4-srinivas.pandruvada@linux.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -54,158 +54,158 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 18 Dec 2023 12:30:24 -0800
+On Mon, 18 Dec 2023 12:30:26 -0800
 Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
 
-> Instead of assuming that every channel defined statically by
-> als_channels[] is present, allocate dynamically based on presence of the
-> respective usage id in the descriptor. This will allow to register ALS
-> with limited channel support. Append the timestamp as the last channel.
+> From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 > 
-> There is no intentional function changes done.
+> In most cases, ambient color sensors also support the x and y light
+> colors, which represent the coordinates on the CIE 1931 chromaticity
+> diagram. Thus, add light chromaticity x and y.
 > 
+> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 > Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Hi Srinivas,
-
-No huge rush on this as I'll not have the revert in my upstream now
-until after the merge window + may not have a chance for a second pull
-request anyway.
-
-A few comments inline,
+Is it not possible to unify the support to be a single pass over the
+channels array that just checks each one for availability and copies
+the channel in if is found?  Tweaked slightly to deal with
+the pair of chromaticity channels.
 
 Jonathan
 
 > ---
 > v2:
-> New change
+> Original patch from Basavaraj Natikar <Basavaraj.Natikar@amd.com> is
+> modified to prevent failure when the new usage id is not found in the
+> descriptor.
 > 
->  drivers/iio/light/hid-sensor-als.c | 57 ++++++++++++++++++------------
->  1 file changed, 35 insertions(+), 22 deletions(-)
+>  drivers/iio/light/hid-sensor-als.c | 68 +++++++++++++++++++++++++++++-
+>  include/linux/hid-sensor-ids.h     |  3 ++
+>  2 files changed, 70 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-> index 5cd27f04b45e..e57ad1946b56 100644
+> index 8d6beacc338a..6e2793fa515c 100644
 > --- a/drivers/iio/light/hid-sensor-als.c
 > +++ b/drivers/iio/light/hid-sensor-als.c
-> @@ -236,14 +236,21 @@ static int als_capture_sample(struct hid_sensor_hub_device *hsdev,
+> @@ -17,6 +17,8 @@ enum {
+>  	CHANNEL_SCAN_INDEX_INTENSITY,
+>  	CHANNEL_SCAN_INDEX_ILLUM,
+>  	CHANNEL_SCAN_INDEX_COLOR_TEMP,
+> +	CHANNEL_SCAN_INDEX_CHROMATICITY_X,
+> +	CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
+>  	CHANNEL_SCAN_INDEX_MAX
+>  };
 >  
->  /* Parse report which is specific to an usage id*/
->  static int als_parse_report(struct platform_device *pdev,
-> -				struct hid_sensor_hub_device *hsdev,
-> -				struct iio_chan_spec *channels,
-> -				unsigned usage_id,
-> -				struct als_state *st)
-> +			    struct hid_sensor_hub_device *hsdev,
-> +			    struct iio_chan_spec **channels_out,
-> +			    int *size_channels_out,
-> +			    unsigned int usage_id,
-> +			    struct als_state *st)
-
-Align with opening bracket.  Also, try in general to avoid white space changes
-when changing anything else.  It would be easier to see what actually changed
-here without that.
-
->  {
-> -	int ret;
-> +	struct iio_chan_spec *channels;
-> +	int ret, index = 0;
->  	int i;
+> @@ -76,6 +78,30 @@ static const struct iio_chan_spec als_channels[] = {
+>  		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
+>  		.scan_index = CHANNEL_SCAN_INDEX_COLOR_TEMP,
+>  	},
+> +	{
+> +		.type = IIO_CHROMATICITY,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_X,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
+> +		BIT(IIO_CHAN_INFO_SCALE) |
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> +		BIT(IIO_CHAN_INFO_HYSTERESIS) |
+> +		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
+> +		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X,
+> +	},
+> +	{
+> +		.type = IIO_CHROMATICITY,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_Y,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
+> +		BIT(IIO_CHAN_INFO_SCALE) |
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> +		BIT(IIO_CHAN_INFO_HYSTERESIS) |
+> +		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
+> +		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
+> +	},
+>  	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
+>  };
 >  
-> +	channels = devm_kcalloc(&pdev->dev, ARRAY_SIZE(als_channels),
-> +				sizeof(als_channels), GFP_KERNEL);
-
-Given it's a fixed size (which is fine even though you might not use it
-all), can you just make it part of the iio_priv() structure
-and avoid need for handling the allocation here?
-
-
-> +	if (!channels)
-> +		return -ENOMEM;
-> +
->  	for (i = 0; i <= CHANNEL_SCAN_INDEX_ILLUM; ++i) {
->  		ret = sensor_hub_input_get_attribute_info(hsdev,
->  						HID_INPUT_REPORT,
-> @@ -251,9 +258,11 @@ static int als_parse_report(struct platform_device *pdev,
->  						HID_USAGE_SENSOR_LIGHT_ILLUM,
->  						&st->als[i]);
->  		if (ret < 0)
-> -			return ret;
-> -		als_adjust_channel_bit_mask(channels, i, st->als[i].size);
+> @@ -119,6 +145,16 @@ static int als_read_raw(struct iio_dev *indio_dev,
+>  			min = als_state->als[chan->scan_index].logical_minimum;
+>  			address = HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE;
+>  			break;
+> +		case  CHANNEL_SCAN_INDEX_CHROMATICITY_X:
+> +			report_id = als_state->als[chan->scan_index].report_id;
+> +			min = als_state->als[chan->scan_index].logical_minimum;
+> +			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X;
 > +			break;
+> +		case  CHANNEL_SCAN_INDEX_CHROMATICITY_Y:
+> +			report_id = als_state->als[chan->scan_index].report_id;
+> +			min = als_state->als[chan->scan_index].logical_minimum;
+> +			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y;
+> +			break;
+>  		default:
+>  			report_id = -1;
+>  			break;
+> @@ -243,6 +279,14 @@ static int als_capture_sample(struct hid_sensor_hub_device *hsdev,
+>  		als_state->scan.illum[CHANNEL_SCAN_INDEX_COLOR_TEMP] = sample_data;
+>  		ret = 0;
+>  		break;
+> +	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X:
+> +		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_X] = sample_data;
+> +		ret = 0;
+> +		break;
+> +	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y:
+> +		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_Y] = sample_data;
+> +		ret = 0;
+> +		break;
+>  	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
+>  		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
+>  								    *(s64 *)raw_data);
+> @@ -303,11 +347,33 @@ static int als_parse_report(struct platform_device *pdev,
+>  		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].index,
+>  		st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].report_id);
 >  
-> +		channels[i] = als_channels[i];
-
-channels[index] = als_channels[i]? Might be gaps. What you currently have
-only works if the 'present channels' are all at the start.
-
-> +		als_adjust_channel_bit_mask(channels, i, st->als[i].size);
-
-Would use index not i.
-
-> +		++index;
->  		dev_dbg(&pdev->dev, "als %x:%x\n", st->als[i].index,
->  			st->als[i].report_id);
->  	}
-> @@ -262,17 +271,24 @@ static int als_parse_report(struct platform_device *pdev,
+> +skip_temp_channel:
+> +	for (i = 0; i < 2; i++) {
+> +		int next_scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X + i;
+> +
+> +		ret = sensor_hub_input_get_attribute_info(hsdev,
+> +				HID_INPUT_REPORT, usage_id,
+> +				HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X + i,
+> +				&st->als[next_scan_index]);
+> +		if (ret < 0)
+> +			goto skip_chromaticity_channel;
+> +
+> +		channels[index++] = als_channels[CHANNEL_SCAN_INDEX_CHROMATICITY_X + i];
+> +
+> +		als_adjust_channel_bit_mask(channels,
+> +					CHANNEL_SCAN_INDEX_CHROMATICITY_X + i,
+> +					st->als[next_scan_index].size);
+> +
+> +		dev_dbg(&pdev->dev, "als %x:%x\n",
+> +			st->als[next_scan_index].index,
+> +			st->als[next_scan_index].report_id);
+> +	}
+> +
+>  	st->scale_precision = hid_sensor_format_scale(usage_id,
 >  				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
 >  				&st->scale_pre_decml, &st->scale_post_decml);
 >  
-> -	return ret;
-> +	*channels_out = channels;
-> +	*size_channels_out = index;
-> +
-> +	if (!index)
-> +		ret = -ENODEV;
-> +
-> +	return 0;
->  }
+> -skip_temp_channel:
+> +skip_chromaticity_channel:
+>  	*channels_out = channels;
+>  	*size_channels_out = index;
 >  
->  /* Function to initialize the processing for usage id */
->  static int hid_als_probe(struct platform_device *pdev)
->  {
-> -	int ret = 0;
-> +	int ret = 0, max_channel_index;
->  	static const char *name = "als";
->  	struct iio_dev *indio_dev;
->  	struct als_state *als_state;
->  	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
-> +	struct iio_chan_spec *channels;
+> diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
+> index 8af4fb3e0254..6730ee900ee1 100644
+> --- a/include/linux/hid-sensor-ids.h
+> +++ b/include/linux/hid-sensor-ids.h
+> @@ -22,6 +22,9 @@
+>  #define HID_USAGE_SENSOR_DATA_LIGHT				0x2004d0
+>  #define HID_USAGE_SENSOR_LIGHT_ILLUM				0x2004d1
+>  #define HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE		0x2004d2
+> +#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY			0x2004d3
+> +#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X			0x2004d4
+> +#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y			0x2004d5
 >  
->  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct als_state));
->  	if (!indio_dev)
-> @@ -293,24 +309,21 @@ static int hid_als_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> -	indio_dev->channels = devm_kmemdup(&pdev->dev, als_channels,
-> -					   sizeof(als_channels), GFP_KERNEL);
-> -	if (!indio_dev->channels) {
-> -		dev_err(&pdev->dev, "failed to duplicate channels\n");
-> -		return -ENOMEM;
-> -	}
-> -
-> -	ret = als_parse_report(pdev, hsdev,
-> -			       (struct iio_chan_spec *)indio_dev->channels,
-> -			       hsdev->usage,
-> -			       als_state);
-> +	ret = als_parse_report(pdev, hsdev, &channels, &max_channel_index,
-> +			       hsdev->usage, als_state);
->  	if (ret) {
->  		dev_err(&pdev->dev, "failed to setup attributes\n");
->  		return ret;
->  	}
->  
-> -	indio_dev->num_channels =
-> -				ARRAY_SIZE(als_channels);
-> +	/* Add timestamp channel */
-> +	channels[max_channel_index] = als_channels[CHANNEL_SCAN_INDEX_TIMESTAMP];
-> +	channels[max_channel_index].scan_index = max_channel_index;
-> +
-> +	/* +1 for adding timestamp channel */
-> +	indio_dev->num_channels = max_channel_index + 1;
-> +
-> +	indio_dev->channels = channels;
->  	indio_dev->info = &als_info;
->  	indio_dev->name = name;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  /* PROX (200011) */
+>  #define HID_USAGE_SENSOR_PROX                                   0x200011
 
 

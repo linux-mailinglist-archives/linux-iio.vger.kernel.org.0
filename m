@@ -1,184 +1,163 @@
-Return-Path: <linux-iio+bounces-1192-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1193-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B73681BC1F
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:33:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 273B981BC63
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507841C23BC4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 16:33:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83152831AF
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 16:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B657D1DA58;
-	Thu, 21 Dec 2023 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B83158225;
+	Thu, 21 Dec 2023 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="N1gIBHrn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezcv0/ff"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2074.outbound.protection.outlook.com [40.107.6.74])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD231643D;
-	Thu, 21 Dec 2023 16:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=laxzwBURjshYdzgo6ZxIngFae1KK03jEkoLJeKv0L+lL304cZUtCbkHsMU+KDCcB05Mp/qhabm+ZteV90OCDoQHceajbsjvTU2OAKutuhVouTZ5raaxmxwC4sTKIO/RI2uSfisOmVKnt/gg+0duJZ40hIxxajMqRTUeXa9YIaj1L//1g9RQ1lxXA0bcxHu9UlJHpSq935o7MUvq6B/zV7Y2JaisNXSzJJGjJf4Gvv/yoyQkUVZw/wbQcbUQAJsg0pbj8y1iivXGa5M/Jtu6UGmw5OaJ4SBYVvmYpVrb74c6vzMlpz41Awpneg/ry6dFEgPQatoNrbq1MSOM4cMnpeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5gvtBNsbiB2AbYAW8pW3e6IcRrfTtQLJK7hRTAJpkn8=;
- b=Ngpv951Mh0N6YsG/CrWbfp9E+ThJH5kYWZuXPzJ3uSp4FGcpHMCzrsKGW5mCv7z+90BLrnYZHWSp3uFejGPfEgHOBRLDrbFCl1sB1fO9Wq7RFrkXz/iKowm5667lXGgp+lY8xoPgQlUGsViofsypEASlZ43rnC8Tvkaex0UOiKVc/IDTwe8EsCWaZPJLb0mZehOEeK8bGkVt/xxvsleiSeg0Qjp3zosaNU2BMPmtErwzxxQJuLPdDFjRB622Fmu6C2zRtJyKcTk+pfrVZQP6pgQcuKc0CEWSlW5p4bawXxbWrYBlUfBBn5asM0Y4q2LPW9Iq6KUeRk6lPSpVivNmDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5gvtBNsbiB2AbYAW8pW3e6IcRrfTtQLJK7hRTAJpkn8=;
- b=N1gIBHrnV0zz0CDdNqKvrX/Urs5CH5SUDAnFE7ZW2mMxigCU8isGAdlSsCIc8kFn4gQu/2wbhFoM9wGmRGmhEXYf2E/jJvLLOLwrXK/atzrDDhKMV6fqfC9kzrrAqnpLabMMYIX+wgg7Hq9/ammLXjbPugdiCH4Dq30gKWswzkM=
-Received: from AM0PR07CA0026.eurprd07.prod.outlook.com (2603:10a6:208:ac::39)
- by PA6PR02MB10459.eurprd02.prod.outlook.com (2603:10a6:102:3cc::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Thu, 21 Dec
- 2023 16:33:11 +0000
-Received: from AM4PEPF00025F9A.EURPRD83.prod.outlook.com
- (2603:10a6:208:ac:cafe::43) by AM0PR07CA0026.outlook.office365.com
- (2603:10a6:208:ac::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.20 via Frontend
- Transport; Thu, 21 Dec 2023 16:33:11 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=axis.com;
-Received-SPF: Fail (protection.outlook.com: domain of axis.com does not
- designate 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com;
-Received: from mail.axis.com (195.60.68.100) by
- AM4PEPF00025F9A.mail.protection.outlook.com (10.167.16.9) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.18 via Frontend Transport; Thu, 21 Dec 2023 16:33:11 +0000
-Received: from SE-MAIL21W.axis.com (10.20.40.16) by se-mail01w.axis.com
- (10.20.40.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 21 Dec
- 2023 17:33:11 +0100
-Received: from se-mail02w.axis.com (10.20.40.8) by SE-MAIL21W.axis.com
- (10.20.40.16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 21 Dec
- 2023 17:33:10 +0100
-Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail02w.axis.com
- (10.20.40.8) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
- Transport; Thu, 21 Dec 2023 17:33:10 +0100
-Received: from pc42775-2107.se.axis.com (pc42775-2107.se.axis.com [10.94.129.29])
-	by se-intmail01x.se.axis.com (Postfix) with ESMTP id EA543106FC;
-	Thu, 21 Dec 2023 17:33:10 +0100 (CET)
-Received: by pc42775-2107.se.axis.com (Postfix, from userid 21033)
-	id D2C6C2FA7D5; Thu, 21 Dec 2023 17:33:10 +0100 (CET)
-From: =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-Date: Thu, 21 Dec 2023 17:33:09 +0100
-Subject: [PATCH] iio: light: vcnl4000: Set ps high definition for 4040/4200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E51236084;
+	Thu, 21 Dec 2023 16:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE65C433C7;
+	Thu, 21 Dec 2023 16:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703177619;
+	bh=YEHi60Chmb/Do0a76SjVzKGF69FvK2G5bimg0PfKPek=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ezcv0/ff0i7eAr3JbjaRWYy0DnUJgupriW1a/CfeCtGxmKQ+0ylh9UWakpoc/9xZU
+	 Uxhr6R09oTlPAzbPr9GUX+f/SBLeQ/3LuRJEXdb1ajhUdWvSEo29kQ29nftL5UwMXV
+	 IDeGid0R40fCdOy55DEN9QX4PzIylC59vP1zM13GAdIlST37K+/woCCkS90vBaENNs
+	 3AV7XDthlSoTMq3H735/+XmdQQsFgcSYzmxn1M+X7SEKC4X1WLjnDvVWhY2RTsn59X
+	 UG8EdLSQZjXXVmfzxcC/44oivEhl87eWg+tn1VPcyto0dqHSLHZd2A4khY55pPx+we
+	 iL1l0Rq1IG5QA==
+Date: Thu, 21 Dec 2023 16:53:22 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <apw@canonical.com>, <joe@perches.com>, <dwaipayanray1@gmail.com>,
+ <lukas.bulwahn@gmail.com>, <paul.cercueil@analog.com>,
+ <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+ <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+ <dan.carpenter@linaro.org>, <dlechner@baylibre.com>,
+ <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 00/11] Add support for AD7091R-2/-4/-8
+Message-ID: <20231221165322.1d6ecfdc@jic23-huawei>
+In-Reply-To: <cover.1703013352.git.marcelo.schmitt1@gmail.com>
+References: <cover.1703013352.git.marcelo.schmitt1@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20231221-vcnl4000-ps-hd-v1-1-a024bfb28896@axis.com>
-X-B4-Tracking: v=1; b=H4sIAMRohGUC/x2N0QqDMAwAf0XyvEBbxcl+RfYQa2oDW5VkyED89
- 9U9HsdxBxirsMGjOUB5F5O1VPC3BmKmsjDKXBmCC60PweMey6tzzuFmmGcc+jZ1aUiR6Q41msg
- YJ6US85W9yT6sl9iUk3z/p/F5nj/oFyqgeQAAAA==
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kernel@axis.com>, =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1703176390; l=2213;
- i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
- bh=YfjuA39nKdg9iZSlK9r5X/Hn6DpToh4RHJ1CD+kZ3PA=;
- b=kUiDxUf3ZPeWg6mZ1otfM5IMb2m5RtK3Ym1ZZuApBfwQ9yjaJlvnrmfc59GaVxsrsDLz2x2Ai
- g1UsMv11zx4B4JPhFw08Nz7Xn/v+I4x3JvMYCjDzSfCixa2CXZZcIbc
-X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
- pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PEPF00025F9A:EE_|PA6PR02MB10459:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bf1728e-4f6a-476e-fc2b-08dc024285be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Nj4ytmpGxOITi1DhPoZf4eoEXUKwzKggZvoKaZexyf3J0Mge+cz54PlbdJbpUvXK4Tgt8mTZsAHQpObdiypeSGRMRB3nzECRlfDaBYh91GtT2AE+gAPQJzXNjQfb1v5+lcTgz5FnMbqkMtrylAr6T5ic9gaSw/iYauK14AX9KNs/Vq3WKE+d6qTNRhsEvDUd17NcAfybM0vdTGLXg9FQlzjO6hFk/spZ5KeERzrhQnssSe55U59QMB1bHWaoDb9aK2PCIBsNjdEoe+/8C//H5/OKFo18U4IAG6bJICXxY9etctUbFmMBLNBhoRqqT2kUho9UkCSTcwv3yEamzeN9ft89dqWOz2rFnNWqEaAnYNPbJvb1K+g1cRWMCI2GqMS8vkfps6STDSuX6DFL1j3KOA73Jq6rgyJQrzZSqJuFS/RzMWgpzvJSUQaODlQBS66RG5DlmjxEOMteKedB/XRNxuau1D63o6M2cnoqKL2qj7xWA7hFSIjeegB3vNknWZLWXdI+eT+RvlHTfyuTfCHl+ZPfm+2g7aEEIQqCbTE20KmiX7KYQiQMxSJIQkcD0h7ClXIrkLkHHHNn5AVPIoFdOrSWhCRZd8mNKRHkcHmpbC2gSVS0QfRyO560lQjNAHgjCIO7xuUykT0Z51iHxK+IboV2feX7xZTTfVZZVvZlU8wCjCc4K/IVRP0eM6wMahJcArL2MwKYR2gJd6pLXc748YLbM/N1gCdOAG0X0InkP96Yj5ANcNc7n4U8H7NMotqJqFOytiUKMabSSwO2uVKXVg==
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(396003)(346002)(136003)(230922051799003)(1800799012)(186009)(64100799003)(82310400011)(451199024)(46966006)(36840700001)(40470700004)(36860700001)(82740400003)(356005)(81166007)(36756003)(86362001)(40480700001)(40460700003)(107886003)(26005)(2616005)(478600001)(66574015)(426003)(336012)(4326008)(70586007)(70206006)(54906003)(6266002)(110136005)(316002)(47076005)(42186006)(83380400001)(8676002)(8936002)(41300700001)(5660300002)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Dec 2023 16:33:11.4438
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bf1728e-4f6a-476e-fc2b-08dc024285be
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00025F9A.EURPRD83.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR02MB10459
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
-resolution, but the chip also supports 16 bit data resolution, which is
-called proximity high definition (PS_HD).
+On Tue, 19 Dec 2023 17:25:04 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
-all data readings.
+> From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> 
+> ----------------- Updates -----------------
+> 
+> Applied all suggestions. 
+> Only submitting patches not applied on v4:
+> Patches after ("Align arguments to function call parenthesis").
+> 
+> Change log v4 -> v5:
+> - Patch 1: Event callbacks
+>   * Moved to begin of the series to easy backport;
+>   * Reverted to original event attributes;
+>   * Reworked event configuration to do per direction per channel enable/disable;
+>   * Improved commit message;
+>   * Added fixes tag;
+>   * Added Suggested-by tag.
+> - Patch 2: Enable internal vref
+>   * Added fixes tag and improved commit message;
+>   * Now earlier in the series to easy backport;
+>   * Used regmap_set_bits() to make code more neat.
+> - Patch 3: Move generic AD7091R code
+>   * event specs moved earlier in patch 1.
+> - Patch 4: Move chip init data
+>   * Renamed field to make initialization clearer: irq_info -> info_irq.
+>   * Fixed ad7091r_init_info initialization by passing pointers to info structs;
+> - Patch 10: Add ad7091r8 support
+>   * Moved bitfield.h include to patch event callbacks patch;
+>   * Dropped GPIO consumer include on ad7091r-base.h and added gpio_desc;
+>   * Removed extra space before devm_gpiod_get_optional().
+> 
+> So, since we are already fixing a few things here, maybe it's a good time to
+> comment about the event ABI.
+> I see the event config files under events directory appearing as
+> in_voltage0_thresh_falling_value
+> in_voltage0_thresh_rising_value
+> in_voltage1_thresh_falling_value
+> and so on.
+> They don't have the `_raw` part of the name as documented in the IIO ABI [1].
+> Not sure if that is how it's intended to be, the driver is still missing
+> something, or maybe ABI is somehow outdated.
 
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
----
- drivers/iio/light/vcnl4000.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I think the docs have always been wrong :(
+We always derived if these were raw or processed from matching channels (they
+are almost always raw because non linear mess in typically processed channels
+is hard to invert in order to program a register etc)
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index fdf763a04b0b..4846f3b698b5 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -90,6 +90,7 @@
- #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
- #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
- #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
-+#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition */
- #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
- #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
- #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
-@@ -345,6 +346,7 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
- static int vcnl4200_init(struct vcnl4000_data *data)
- {
- 	int ret, id;
-+	u16 regval;
- 
- 	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
- 	if (ret < 0)
-@@ -389,6 +391,17 @@ static int vcnl4200_init(struct vcnl4000_data *data)
- 	mutex_init(&data->vcnl4200_al.lock);
- 	mutex_init(&data->vcnl4200_ps.lock);
- 
-+	/* Use 16 bits proximity sensor readings */
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	if (ret >= 0) {
-+		regval = (ret | VCNL4040_PS_CONF2_PS_HD);
-+		ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
-+						regval);
-+	}
-+
-+	if (ret < 0)
-+		dev_info(&data->client->dev, "Default to 12 bits sensor data");
-+
- 	ret = data->chip_spec->set_power_state(data, true);
- 	if (ret < 0)
- 		return ret;
+> Anyway, if that is also something to be fixed then let me know I'll have a look
+> at it.
 
----
-base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
-change-id: 20231221-vcnl4000-ps-hd-863f4f8fcea7
+Great - just drop the _raw bit from the event documentation. I see it's a mixed bag
+with some channel types correctly not including it whilst others do :(
 
-Best regards,
--- 
-Mårten Lindahl <marten.lindahl@axis.com>
+Not sure why we've not picked up on that in reviews in the past.
+
+Jonathan
+
+> 
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/Documentation/ABI/testing/sysfs-bus-iio#n887
+> 
+> Thanks,
+> Marcelo
+> 
+> ----------------- Context -----------------
+> 
+> This series adds support for AD7091R-2/-4/-8 ADCs which can do single shot
+> or sequenced readings. Threshold events are also supported.
+> Overall, AD7091R-2/-4/-8 are very similar to AD7091R-5 except they use SPI interface.
+> 
+> Changes have been tested with raspberrypi and eval board on raspberrypi kernel
+> 6.7-rc3 from raspberrypi fork.
+> Link: https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad7091r8
+> 
+> 
+> Marcelo Schmitt (11):
+>   iio: adc: ad7091r: Allow users to configure device events
+>   iio: adc: ad7091r: Enable internal vref if external vref is not
+>     supplied
+>   iio: adc: ad7091r: Move generic AD7091R code to base driver and header
+>     file
+>   iio: adc: ad7091r: Move chip init data to container struct
+>   iio: adc: ad7091r: Remove unneeded probe parameters
+>   iio: adc: ad7091r: Set device mode through chip_info callback
+>   iio: adc: ad7091r: Add chip_info callback to get conversion result
+>     channel
+>   iio: adc: Split AD7091R-5 config symbol
+>   dt-bindings: iio: Add AD7091R-8
+>   iio: adc: Add support for AD7091R-8
+>   MAINTAINERS: Add MAINTAINERS entry for AD7091R
+> 
+>  .../bindings/iio/adc/adi,ad7091r5.yaml        |  82 +++++-
+>  MAINTAINERS                                   |   8 +
+>  drivers/iio/adc/Kconfig                       |  16 ++
+>  drivers/iio/adc/Makefile                      |   4 +-
+>  drivers/iio/adc/ad7091r-base.c                | 269 +++++++++++------
+>  drivers/iio/adc/ad7091r-base.h                |  83 +++++-
+>  drivers/iio/adc/ad7091r5.c                    | 120 ++++----
+>  drivers/iio/adc/ad7091r8.c                    | 272 ++++++++++++++++++
+>  8 files changed, 714 insertions(+), 140 deletions(-)
+>  create mode 100644 drivers/iio/adc/ad7091r8.c
+> 
 
 

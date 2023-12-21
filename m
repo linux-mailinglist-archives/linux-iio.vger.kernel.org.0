@@ -1,125 +1,198 @@
-Return-Path: <linux-iio+bounces-1201-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1202-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803E681BD2C
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:26:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C868D81BD3E
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 362EF1F2641F
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:26:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4297E1F23FC7
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A365627EC;
-	Thu, 21 Dec 2023 17:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160E36280A;
+	Thu, 21 Dec 2023 17:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OztrvJuO"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="acNZkVFs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from aposti.net (aposti.net [89.234.176.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F62627EF;
-	Thu, 21 Dec 2023 17:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C57C433C7;
-	Thu, 21 Dec 2023 17:25:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703179554;
-	bh=cu1KI7LxIe3SAdnTvkuGj2NNJW5ryZHm+ypva87tuTQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OztrvJuOuwDtWFcW/GrZanb2N+X6hGIjw8t7c8kxqN57xEFXffexCiZ1VTwsb6CPK
-	 WJpr/fOsIObiIvW8A0uB8qO3u8kHdshfhgAYknP1p1AsqfW4Jk3UlzNfxeBXWBtbKW
-	 jJRfAJmk7JzvGY+T/cofGMD6/cc2B6yAfL/a8OmRhNuRiKWB3j3YpQCZsVSsANmJLL
-	 7R2Gtk+iP8cSZmyZa/2nTct7MxkcDv+JhZBCR9r2IzfQx1Pnn/0a1N3bmnMJD8ojFD
-	 EQVeU5kiBAN5xFT/H4fhXWI3c6DfSLYxHj1J26K7gfaWZIdScV7hSsx9BVIUSFRRSl
-	 HGPZxz58xaE3Q==
-Date: Thu, 21 Dec 2023 17:25:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v4 2/8] dt-bindings: adc: axi-adc: deprecate
- 'adi,adc-dev'
-Message-ID: <20231221172538.6477b843@jic23-huawei>
-In-Reply-To: <20231220-iio-backend-v4-2-998e9148b692@analog.com>
-References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
-	<20231220-iio-backend-v4-2-998e9148b692@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD60259910;
+	Thu, 21 Dec 2023 17:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+	s=mail; t=1703179843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DZ4PrQLxhflKIlVIWbwazWBJRSGqQYYv2Vc8n+RNJtY=;
+	b=acNZkVFsDaV/tusjae2x+g1LihSsYjPG9R3ZwITPCLLKfsw1X7QUCkbrQTf+TB/mUl2dQD
+	+1uRw11JEXtQdRYNK6sa+Vcyzk+cxglApAh0azfnrMa+AbF7DbkuonHkfa5De2hjy0ksjb
+	dSGRXUCBfiVl7DulfQ0Ipa8elPFfam4=
+Message-ID: <2da3fb55384a222868f90562be9e1e2ca55ec1c3.camel@crapouillou.net>
+Subject: Re: [PATCH v5 7/8] iio: buffer-dmaengine: Support new DMABUF based
+ userspace API
+From: Paul Cercueil <paul@crapouillou.net>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
+ <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=
+ <christian.koenig@amd.com>, Vinod Koul <vkoul@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linaro-mm-sig@lists.linaro.org, Nuno =?ISO-8859-1?Q?S=E1?=
+ <noname.nuno@gmail.com>, Michael Hennerich <Michael.Hennerich@analog.com>
+Date: Thu, 21 Dec 2023 18:30:40 +0100
+In-Reply-To: <20231221161258.056f5ce4@jic23-huawei>
+References: <20231219175009.65482-1-paul@crapouillou.net>
+	 <20231219175009.65482-8-paul@crapouillou.net>
+	 <20231221161258.056f5ce4@jic23-huawei>
+Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
+ keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZMLQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5UzFZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtNz8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe+rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIPdlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7Urf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KFlBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFCqaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IW
+	YXndJO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN7062DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOtX0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEAAYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmcGu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2zMcLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2cLUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Dec 2023 16:34:05 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
+Hi Jonathan,
 
-> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-> also remove it from being required.
+Le jeudi 21 d=C3=A9cembre 2023 =C3=A0 16:12 +0000, Jonathan Cameron a =C3=
+=A9crit=C2=A0:
+> On Tue, 19 Dec 2023 18:50:08 +0100
+> Paul Cercueil <paul@crapouillou.net> wrote:
+>=20
+> > Use the functions provided by the buffer-dma core to implement the
+> > DMABUF userspace API in the buffer-dmaengine IIO buffer
+> > implementation.
+> >=20
+> > Since we want to be able to transfer an arbitrary number of bytes
+> > and
+> > not necesarily the full DMABUF, the associated scatterlist is
+> > converted
+> > to an array of DMA addresses + lengths, which is then passed to
+> > dmaengine_prep_slave_dma_array().
+> >=20
+> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> One question inline. Otherwise looks fine to me.
+>=20
+> J
+> >=20
+> > ---
+> > v3: Use the new dmaengine_prep_slave_dma_array(), and adapt the
+> > code to
+> > =C2=A0=C2=A0=C2=A0 work with the new functions introduced in industrial=
+io-buffer-
+> > dma.c.
+> >=20
+> > v5: - Use the new dmaengine_prep_slave_dma_vec().
+> > =C2=A0=C2=A0=C2=A0 - Restrict to input buffers, since output buffers ar=
+e not yet
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 supported by IIO buffers.
+> > ---
+> > =C2=A0.../buffer/industrialio-buffer-dmaengine.c=C2=A0=C2=A0=C2=A0 | 52
+> > ++++++++++++++++---
+> > =C2=A01 file changed, 46 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > index 5f85ba38e6f6..825d76a24a67 100644
+> > --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> > @@ -64,15 +64,51 @@ static int
+> > iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue
+> > *queue,
+> > =C2=A0	struct dmaengine_buffer *dmaengine_buffer =3D
+> > =C2=A0		iio_buffer_to_dmaengine_buffer(&queue->buffer);
+> > =C2=A0	struct dma_async_tx_descriptor *desc;
+> > +	unsigned int i, nents;
+> > +	struct scatterlist *sgl;
+> > +	struct dma_vec *vecs;
+> > +	size_t max_size;
+> > =C2=A0	dma_cookie_t cookie;
+> > +	size_t len_total;
+> > =C2=A0
+> > -	block->bytes_used =3D min(block->size, dmaengine_buffer-
+> > >max_size);
+> > -	block->bytes_used =3D round_down(block->bytes_used,
+> > -			dmaengine_buffer->align);
+> > +	if (queue->buffer.direction !=3D IIO_BUFFER_DIRECTION_IN) {
+> > +		/* We do not yet support output buffers. */
+> > +		return -EINVAL;
+> > +	}
+> > =C2=A0
+> > -	desc =3D dmaengine_prep_slave_single(dmaengine_buffer->chan,
+> > -		block->phys_addr, block->bytes_used,
+> > DMA_DEV_TO_MEM,
+> > -		DMA_PREP_INTERRUPT);
+> > +	if (block->sg_table) {
+> > +		sgl =3D block->sg_table->sgl;
+> > +		nents =3D sg_nents_for_len(sgl, block->bytes_used);
+>=20
+> Are we guaranteed the length in the sglist is enough?=C2=A0 If not this
+> can return an error code.
 
-With my 'specifications language' brain engaged (also know as pedantic)
-I think this is a 'should' not a 'must' case. You aren't breaking
-backwards compatibility just advising moving to the newer / better interface.
+The length of the sglist will always be enough, the
+iio_buffer_enqueue_dmabuf() function already checks that block-
+>bytes_used is equal or smaller than the size of the DMABUF.
 
+It is quite a few functions above in the call stack though, so I can
+handle the errors of sg_nents_for_len() here if you think makes sense.
 
-> 
-> The reason why it's being deprecated is because the axi-adc CORE is now
-> an IIO service provider hardware (IIO backends) for consumers to make use
-> of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
-> of consumer referencing other nodes/devices) and that proved to be wrong
-> and to not scale.
-> 
-> Now, IIO consumers of this hardware are expected to reference it using the
-> io-backends property.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> index 9996dd93f84b..835b40063343 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> @@ -39,12 +39,12 @@ properties:
->      $ref: /schemas/types.yaml#/definitions/phandle
->      description:
->        A reference to a the actual ADC to which this FPGA ADC interfaces to.
-> +    deprecated: true
->  
->  required:
->    - compatible
->    - dmas
->    - reg
-> -  - adi,adc-dev
+Cheers,
+-Paul
 
-Dropping it from required is fine, but do we have a new condition where one or the other
-should be required?  If so good to add the dt-binding magic to enforce that. Look
-for a oneOf combined with required. There are a few IIO examples of this either or
-type required. You may want to then enforce that both are not provided though I
-guess we perhaps don't care - the driver will just prioritise one approach over the other.
-
-Jonathan
-
-
->  
->  additionalProperties: false
->  
-> @@ -55,7 +55,5 @@ examples:
->          reg = <0x44a00000 0x10000>;
->          dmas = <&rx_dma 0>;
->          dma-names = "rx";
-> -
-> -        adi,adc-dev = <&spi_adc>;
->      };
->  ...
-> 
+> > +
+> > +		vecs =3D kmalloc_array(nents, sizeof(*vecs),
+> > GFP_KERNEL);
+> > +		if (!vecs)
+> > +			return -ENOMEM;
+> > +
+> > +		len_total =3D block->bytes_used;
+> > +
+> > +		for (i =3D 0; i < nents; i++) {
+> > +			vecs[i].addr =3D sg_dma_address(sgl);
+> > +			vecs[i].len =3D min(sg_dma_len(sgl),
+> > len_total);
+> > +			len_total -=3D vecs[i].len;
+> > +
+> > +			sgl =3D sg_next(sgl);
+> > +		}
+> > +
+> > +		desc =3D
+> > dmaengine_prep_slave_dma_vec(dmaengine_buffer->chan,
+> > +						=C2=A0=C2=A0=C2=A0 vecs, nents,
+> > DMA_DEV_TO_MEM,
+> > +						=C2=A0=C2=A0=C2=A0
+> > DMA_PREP_INTERRUPT);
+> > +		kfree(vecs);
+> > +	} else {
+> > +		max_size =3D min(block->size, dmaengine_buffer-
+> > >max_size);
+> > +		max_size =3D round_down(max_size, dmaengine_buffer-
+> > >align);
+> > +		block->bytes_used =3D max_size;
+> > +
+> > +		desc =3D
+> > dmaengine_prep_slave_single(dmaengine_buffer->chan,
+> > +						=C2=A0=C2=A0 block-
+> > >phys_addr,
+> > +						=C2=A0=C2=A0 block-
+> > >bytes_used,
+> > +						=C2=A0=C2=A0 DMA_DEV_TO_MEM,
+> > +						=C2=A0=C2=A0
+> > DMA_PREP_INTERRUPT);
+> > +	}
+> > =C2=A0	if (!desc)
+> > =C2=A0		return -ENOMEM;
+> > =C2=A0
+>=20
 
 

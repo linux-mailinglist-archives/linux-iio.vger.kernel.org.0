@@ -1,379 +1,187 @@
-Return-Path: <linux-iio+bounces-1204-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1205-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC7981BD82
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:45:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A8E81BD8B
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74BD1C2360D
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:44:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3811C236B4
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4210862814;
-	Thu, 21 Dec 2023 17:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DF7634E2;
+	Thu, 21 Dec 2023 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhLH7F06"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="phsb8dC5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBAFBA2F;
-	Thu, 21 Dec 2023 17:44:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA4CC433C8;
-	Thu, 21 Dec 2023 17:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703180693;
-	bh=BMIHeLuCeYwSHNOqRNr2btusBnP1gL+BuDzUPQ2zqJs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZhLH7F06LBAkWbWZHgFrICFKjJJS1sJPoYKS7/NxxANich6F24fsHeYj+6eEr/w+0
-	 8/ewzzR7yaBOFof0zyxQx6e7QMtrse4Er5d99kGFNmIffmpxuBkefedhF2ME/0dIgb
-	 eP0d/EEpZTvo8vspPc5nPkYwS2b32OBaVHJygB90eadWAZylpfgBEJxabncYnwkNmJ
-	 7WYZ3Ti+YVC6MqKHafpERZF98ftYR/8ziQZl9C399B/6lmGYa0dToujGpmXVNUs3Ou
-	 1FLAL0Qh1GNzS7SkOA6RRNDysZT2hTHU6yrrpDkqNSJ+Y54hlN+6oXMOOURagXkV+T
-	 yorMF3x7gaVQw==
-Date: Thu, 21 Dec 2023 17:44:37 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v4 6/8] iio: add the IIO backend framework
-Message-ID: <20231221174437.5935a5c3@jic23-huawei>
-In-Reply-To: <20231220-iio-backend-v4-6-998e9148b692@analog.com>
-References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
-	<20231220-iio-backend-v4-6-998e9148b692@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B008C62813
+	for <linux-iio@vger.kernel.org>; Thu, 21 Dec 2023 17:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-55322dbabf6so1185594a12.0
+        for <linux-iio@vger.kernel.org>; Thu, 21 Dec 2023 09:45:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1703180744; x=1703785544; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=87JjHG7Ygx63DeV9lA55wmy+CzjMNzulU/PMn3Hnu/0=;
+        b=phsb8dC5IJumh64U4lAYfvarDucbjHjm0pW4Y5o37Q1dKKUXXHnhbgihybeOJwvcpX
+         xaIUfbE1YuoCqkTWsd3D+QobqSwxajjiZ59wmflKca5Vec5xhRFC+MAbTz2lRDVcM1Po
+         rFw8CDJdCCpr3Apy4xzZc5SpKNpJ4NFal0bDiH+TWp8HJ4DtfPCe8wDjDfW9d1XzCbkP
+         QX91AkxX5rC7ebKJJJRzBjONxpIGLfjRJsapqzMOV2oTNgTPmDypmN9m+vjZg2xS/HLQ
+         acqfZFtE7ZpHKClV6TJ5HDAdShYAd2T4m9TLvn6mqMi9vKkVmVyP0tH3VtSaQXWY7erG
+         wl5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703180744; x=1703785544;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=87JjHG7Ygx63DeV9lA55wmy+CzjMNzulU/PMn3Hnu/0=;
+        b=P+s870IkYNoCclKJJw8hSR56Gh8VJgRf6B7uvwKmPeSlDjSPwIGYh3YOpoDhwJeqzs
+         OxwcL0KDuoO3dllytcTMwJLAuPNSsMIwNuox9Rgo766et4+iTsxFTls5vU0z9PVz0Dh3
+         v4TGtAL4Ps3usgwNbQyAq9dyMFd9HcmZDdQjdYPeYn1jQgTVL4XAsGWrCc9cgo7CBc44
+         UabmtZEkhtLY/oSuA0Y4AZbd09q8D9PlmAuhcUtX7W5TxSBQkR8KEsnkTmJeBNgijDZo
+         ALdDGox+sJlHHtdJi1JK/9nsosxqRI8WVAzj0xWxaaAA3hkhXubnVSgkrX7LkEVY6ZPV
+         5lXA==
+X-Gm-Message-State: AOJu0Yw7KE0drU7oDXOCh75fniP5pHYdOByYQ869Ve5k7x6eJrmN4DI6
+	tlvec5O3m4A9C4eJSMQ3xsCHoLEqY1bFjA==
+X-Google-Smtp-Source: AGHT+IHCI2BY9vNfuJN+tfrY/pGggHxcM+dtdm6Rhj6r3jOUarAQw6WZtGdc1WQ8pcjMivy3nlyh7Q==
+X-Received: by 2002:a17:906:81c6:b0:a23:499b:c72e with SMTP id e6-20020a17090681c600b00a23499bc72emr91526ejx.41.1703180744024;
+        Thu, 21 Dec 2023 09:45:44 -0800 (PST)
+Received: from [192.168.0.22] ([78.10.206.178])
+        by smtp.gmail.com with ESMTPSA id jt4-20020a170906dfc400b00a2369d8ca07sm1179891ejc.203.2023.12.21.09.45.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Dec 2023 09:45:43 -0800 (PST)
+Message-ID: <5b63afc1-3449-4231-b0f6-2b540237d725@linaro.org>
+Date: Thu, 21 Dec 2023 18:45:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
+Content-Language: en-US
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231220104810.3179-1-mitrutzceclan@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Dec 2023 16:34:09 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
-
-> This is a Framework to handle complex IIO aggregate devices.
+On 20/12/2023 11:48, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
 > 
-> The typical architecture is to have one device as the frontend device which
-> can be "linked" against one or multiple backend devices. All the IIO and
-> userspace interface is expected to be registers/managed by the frontend
-> device which will callback into the backends when needed (to get/set
-> some configuration that it does not directly control).
-> 
-> The basic framework interface is pretty simple:
->  - Backends should register themselves with @devm_iio_backend_register()
->  - Frontend devices should get backends with @devm_iio_backend_get()
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-
-A few minor comments, but seems good to me otherwise.
-
-Jonathan
-
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > ---
->  MAINTAINERS                        |   8 +
->  drivers/iio/Kconfig                |   5 +
->  drivers/iio/Makefile               |   1 +
->  drivers/iio/industrialio-backend.c | 456 +++++++++++++++++++++++++++++++++++++
->  include/linux/iio/backend.h        |  75 ++++++
->  5 files changed, 545 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3029841e92a8..df5f5b988926 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10334,6 +10334,14 @@ L:	linux-media@vger.kernel.org
->  S:	Maintained
->  F:	drivers/media/rc/iguanair.c
->  
-> +IIO BACKEND FRAMEWORK
-> +M:	Nuno Sa <nuno.sa@analog.com>
-> +R:	Olivier Moysan <olivier.moysan@foss.st.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +F:	drivers/iio/industrialio-backend.c
-> +F:	include/linux/iio/backend.h
-> +
->  IIO DIGITAL POTENTIOMETER DAC
->  M:	Peter Rosin <peda@axentia.se>
->  L:	linux-iio@vger.kernel.org
-> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-> index 52eb46ef84c1..451671112f73 100644
-> --- a/drivers/iio/Kconfig
-> +++ b/drivers/iio/Kconfig
-> @@ -71,6 +71,11 @@ config IIO_TRIGGERED_EVENT
->  	help
->  	  Provides helper functions for setting up triggered events.
->  
-> +config IIO_BACKEND
-> +	tristate
-> +	help
-> +	  Framework to handle complex IIO aggregate devices.
+> V10->V11
+>  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller'
+>  - Add description to #gpio-cells property
+> V9->V10
 
-Add some more description here. Not sure the current text will help
-anyone understand it :)
+None of your previous version were tested before sending, so I have
+really doubts that this version was.
 
-> +
->  source "drivers/iio/accel/Kconfig"
->  source "drivers/iio/adc/Kconfig"
->  source "drivers/iio/addac/Kconfig"
-> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-> index 9622347a1c1b..0ba0e1521ba4 100644
-> --- a/drivers/iio/Makefile
-> +++ b/drivers/iio/Makefile
-> @@ -13,6 +13,7 @@ obj-$(CONFIG_IIO_GTS_HELPER) += industrialio-gts-helper.o
->  obj-$(CONFIG_IIO_SW_DEVICE) += industrialio-sw-device.o
->  obj-$(CONFIG_IIO_SW_TRIGGER) += industrialio-sw-trigger.o
->  obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
-> +obj-$(CONFIG_IIO_BACKEND) += industrialio-backend.o
->  
->  obj-y += accel/
->  obj-y += adc/
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> new file mode 100644
-> index 000000000000..75a0a66003e1
-> --- /dev/null
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -0,0 +1,456 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Framework to handle complex IIO aggregate devices.
-> + *
-> + * The typical architecture is to have one device as the frontend device which
-> + * can be "linked" against one or multiple backend devices. All the IIO and
-> + * userspace interface is expected to be registers/managed by the frontend
-> + * device which will callback into the backends when needed (to get/set some
-> + * configuration that it does not directly control).
-> + *
-> + * The framework interface is pretty simple:
-> + *   - Backends should register themselves with @devm_iio_backend_register()
-> + *   - Frontend devices should get backends with @devm_iio_backend_get()
-> + *
-> + * Also to note that the primary target for this framework are converters like
-> + * ADC/DACs so @iio_backend_ops will have some operations typical of converter
-> + * devices. On top of that, this is "generic" for all IIO which means any kind
-> + * of device can make use of the framework. That said, If the @iio_backend_ops
-> + * struct begins to grow out of control, we can always refactor things so that
-> + * the industrialio-backend.c is only left with the really generic stuff. Then,
-> + * we can build on top of it depending on the needs.
-> + *
-> + * Copyright (C) 2023 Analog Devices Inc.
-> + */
-> +#define pr_fmt(fmt) "iio-backend: " fmt
-> +
-> +#include <linux/cleanup.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/list.h>
-> +#include <linux/lockdep.h>
-> +#include <linux/kref.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/property.h>
-> +#include <linux/slab.h>
-> +
-> +#include <linux/iio/backend.h>
-> +
-> +struct iio_backend {
-> +	struct list_head entry;
-> +	const struct iio_backend_ops *ops;
-> +	struct device *dev;
-> +	struct module *owner;
-> +	void *priv;
-> +	/*
-> +	 * mutex used to synchronize backend callback access with concurrent
-> +	 * calls to @iio_backend_unregister. The lock makes sure a device is
-> +	 * not unregistered while a callback is being run.
-> +	 */
-> +	struct mutex lock;
-> +	struct kref ref;
-> +};
-> +
+>  - Fix dt_binding_check type warning from adi,reference-select
+> V8->v9
 
 ...
 
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2023 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +static void iio_backend_release(void *arg)
-> +{
-> +	struct iio_backend *back = arg;
+> +title: Analog Devices AD7173 ADC
 > +
-> +	module_put(back->owner);
-> +	kref_put(&back->ref, iio_backend_free);
-> +}
+> +maintainers:
+> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
 > +
-> +static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
-> +{
-> +	struct device_link *link;
-> +	int ret;
-> +
-> +	kref_get(&back->ref);
-> +	if (!try_module_get(back->owner)) {
-> +		pr_err("%s: Cannot get module reference\n", dev_name(dev));
+> +description: |
+> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
 
-Why do you need the reference?  Good to add a comment on that here.
+If there is going to be resend:
+Drop "Bindings for" and instead describe shortly the hardware. Also wrap
+above according to Linux coding style, so at 80.
 
-> +		return -ENODEV;
-> +	}
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
 > +
-> +	ret = devm_add_action_or_reset(dev, iio_backend_release, back);
-> +	if (ret)
-> +		return ret;
-> +
-> +	link = device_link_add(dev, back->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
-> +	if (!link)
-> +		pr_warn("%s: Could not link to supplier(%s)\n", dev_name(dev),
-> +			dev_name(back->dev));
 
-Why is that not an error and we try to carry on?
-
-> +
-> +	pr_debug("%s: Found backend(%s) device\n", dev_name(dev),
-> +		 dev_name(back->dev));
-> +	return 0;
-> +}
-> +
-> +/**
-> + * devm_iio_backend_get - Get a backend device
-> + * @dev:	Device where to look for the backend.
-> + * @name:	Backend name.
-> + *
-> + * Get's the backend associated with @dev.
-> + *
-> + * RETURNS:
-> + * A backend pointer, negative error pointer otherwise.
-> + */
-> +struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
-> +{
-> +	struct fwnode_handle *fwnode;
-> +	struct iio_backend *back;
-> +	int index = 0, ret;
-> +
-> +	if (name) {
-> +		index = device_property_match_string(dev, "io-backends-names",
-> +						     name);
-> +		if (index < 0)
-> +			return ERR_PTR(index);
-> +	}
-> +
-> +	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
-> +	if (IS_ERR(fwnode)) {
-> +		/* not an error if optional */
-> +		pr_debug("%s: Cannot get Firmware reference\n", dev_name(dev));
-> +		return ERR_CAST(fwnode);
-> +	}
-> +
-> +	guard(mutex)(&iio_back_lock);
-> +	list_for_each_entry(back, &iio_back_list, entry) {
-> +		if (!device_match_fwnode(back->dev, fwnode))
-> +			continue;
-> +
-> +		fwnode_handle_put(fwnode);
-> +		ret = __devm_iio_backend_get(dev, back);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +
-> +		return back;
-> +	}
-> +
-> +	fwnode_handle_put(fwnode);
-
-FYI. I have a series doing auto cleanup of fwnode_handles in progress.
-Should get some time over the weekend to snd that out.  Aim is to avoid need
-to dance around manually freeing them (similar to the DT __free(device_node)
-series I posted the other day).
-
-> +	return ERR_PTR(-EPROBE_DEFER);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, IIO_BACKEND);
-> +
-> +/**
-> + * devm_iio_backend_get_optional - Get optional backend device
-> + * @dev:	Device where to look for the backend.
-> + * @name:	Backend name.
-> + *
-> + * Same as @devm_iio_backend_get() but return NULL if backend not found.
-> + *
-> + * RETURNS:
-> + * A backend pointer, negative error pointer otherwise or NULL if not found.
-> + */
-> +struct iio_backend *devm_iio_backend_get_optional(struct device *dev,
-> +						  const char *name)
-> +{
-> +	struct iio_backend *back;
-> +
-> +	back = devm_iio_backend_get(dev, name);
-> +	if (IS_ERR(back) && PTR_ERR(back) == -ENOENT)
-> +		return NULL;
-> +
-> +	return back;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get_optional, IIO_BACKEND);
-
-I'm not convinced the optional variant is worth while.  Could just choose
-a particular return value to mean that e.g. ERR_PTR(-ENOENT) and document
-it for the normal get.  Then have special handling in the drivers where
-you need backwards compatibility with a previous approach.
-
-I'd rather pay the complexity price in a couple of drivers than have
-to explain backends aren't typically optional for years to come.
+Rest looks good, so please tell did you test it?
 
 
-> +
-> +/**
-> + * devm_iio_backend_get_from_fwnode_lookup
-> + * @dev:	Device where to bind the backend lifetime.
-> + * @fwnode:	Firmware node of the backend device.
-> + *
-> + * It directly looks the backend device list for a device matching @fwnode.
-
-I would word this:
-Search the backend list for a device matchign &fwnode.
-
-> + * This API should not be used and it's only present for preventing the first
-> + * user of this framework to break it's DT ABI.
-
-You could stick a __ in front of the name to hopefully scare people away :)
-+ highlight something odd is going on to reviewers seeing this called in
-some future driver.
-Also I can we might convert other drivers that are doing similar things
-(dfsdm for example) and maybe this will be useful
-so __devm_iio_backend_get_from_fwnode_lookup() and
-"preventing breakage of old DT bindings".
-
-> + *
-> + * RETURNS:
-> + * A backend pointer, negative error pointer otherwise.
-> + */
-> +struct iio_backend *
-> +devm_iio_backend_get_from_fwnode_lookup(struct device *dev,
-> +					struct fwnode_handle *fwnode)
-> +{
-> +	struct iio_backend *back;
-> +	int ret;
-> +
-> +	guard(mutex)(&iio_back_lock);
-> +	list_for_each_entry(back, &iio_back_list, entry) {
-> +		if (!device_match_fwnode(back->dev, fwnode))
-> +			continue;
-> +
-> +		ret = __devm_iio_backend_get(dev, back);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +
-> +		return back;
-> +	}
-> +
-> +	return ERR_PTR(-EPROBE_DEFER);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get_from_fwnode_lookup, IIO_BACKEND);
-
+Best regards,
+Krzysztof
 
 

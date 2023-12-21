@@ -1,51 +1,53 @@
-Return-Path: <linux-iio+bounces-1177-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1178-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7601181B4A2
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 12:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76C181B4E7
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 12:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3330F28648B
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 11:04:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 732F32824A2
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 11:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4420C6AB9A;
-	Thu, 21 Dec 2023 11:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AA86BB5A;
+	Thu, 21 Dec 2023 11:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUoPh49m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzDgUtMI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015176BB29;
-	Thu, 21 Dec 2023 11:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B35C433C7;
-	Thu, 21 Dec 2023 11:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE34697A6;
+	Thu, 21 Dec 2023 11:28:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D01C433C8;
+	Thu, 21 Dec 2023 11:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703156672;
-	bh=TDLMCFaG9iF23iCXhZOU0JoIuuWfRNEqblfM8hy8xvs=;
+	s=k20201202; t=1703158138;
+	bh=bn5TsZbZFAMzqugkbLLCAXDLCBCCddsOuTyKJNmW4j0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EUoPh49m8aTvyeCHkfDHfKZrqlD/vPcrGAerxnsdXEcMdnehbZ3ZEedRcT1OtQ2J/
-	 hJRc3dC2F3YN3nyu2jmduA/FVttZ1TTXkHraK5E6+QdibhLxoKuA98BGE4VsVwJCCV
-	 qj1VT5X1K4Tq4yugwZRBHpi9q5FRsdaxYACIA/m+jdWCYe3wH9g7OCUcsto03Xryio
-	 Uz/ws5qB2TKkbDVBQZ9fK1ycCAsVvyepgD713pQ5nCYHsG0wjwoPR19xkWk80gsVc9
-	 SUr1+j24/QRRKO0orl6aDu4DFOcLKqm9u2/qNugYpjZuYKVR7d9/ZOlk4Mfz5Ybrvm
-	 jp4IMblXnLNdg==
-Date: Thu, 21 Dec 2023 11:04:17 +0000
+	b=XzDgUtMIiyHvWufYrnuorriuX6ec0aKd75XvN4bvVRUU8h7RRq//v3hQxVZeIn26t
+	 DUfgKuHgBaG/HJamZr9h39OxZ2rPlqxn7ZQqwV8EbzYwFCvU6c/vR6aRYx1pngrWtm
+	 beBI35fawoXFmrakG6xJcSGxsszgy8mcmHJ2+25ZF+yJ7maIwhGu3MA2UGW3o0nQpm
+	 aLdOCtkcZ/FwpFUOsjWQBplirFA+rE0UXR7Z3lfqSiubbMx7FCsZ+vgu9IiqlwgUST
+	 YXW3Wg0+Xnf+lU3O0oRcaCI6LSrpv75aXN2tKalbPE6Aoxqmo9R9hGBBcGr+Wbymf7
+	 sCwalRVuuimSg==
+Date: Thu, 21 Dec 2023 11:28:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: pressure: honeywell,mprls0025pa
-Message-ID: <20231221110417.0bd5b002@jic23-huawei>
-In-Reply-To: <ZYMjhfAbWfw9vUdd@sunspire>
-References: <20231219130230.32584-1-petre.rodan@subdimension.ro>
-	<20231219130230.32584-2-petre.rodan@subdimension.ro>
-	<20231220151645.16ada807@jic23-huawei>
-	<ZYMjhfAbWfw9vUdd@sunspire>
+To: Paul Cercueil <paul@crapouillou.net>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Vinod Koul <vkoul@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v5 1/8] iio: buffer-dma: Get rid of outgoing queue
+Message-ID: <20231221112841.1de85482@jic23-huawei>
+In-Reply-To: <20231219175009.65482-2-paul@crapouillou.net>
+References: <20231219175009.65482-1-paul@crapouillou.net>
+	<20231219175009.65482-2-paul@crapouillou.net>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,74 +58,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Dec 2023 19:25:25 +0200
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Tue, 19 Dec 2023 18:50:02 +0100
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-> hi Jonathan,
+> The buffer-dma code was using two queues, incoming and outgoing, to
+> manage the state of the blocks in use.
 > 
-> On Wed, Dec 20, 2023 at 03:16:45PM +0000, Jonathan Cameron wrote:
-> > On Tue, 19 Dec 2023 15:02:20 +0200
-> > Petre Rodan <petre.rodan@subdimension.ro> wrote:  
-> > >    honeywell,pmin-pascal:
-> > >      description:
-> > >        Minimum pressure value the sensor can measure in pascal.
-> > > +      To be specified only if honeywell,pressure-triplet is set to "NA".  
-> > That just added a backwards compatibility break.  It would be fine
-> > if there was a default: NA for honeywell,pressure-triplet or a check that either
-> > one or the other was supplied (which I'd prefer).  Thus old bindings will work
-> > and new ones also supported.  
+> While this totally works, it adds some complexity to the code,
+> especially since the code only manages 2 blocks. It is much easier to
+> just check each block's state manually, and keep a counter for the next
+> block to dequeue.
 > 
-> ok, I see your reasoning. but in this second scenario that you prefer how can we
-> propery define the 'required:' block? an equivalent to
+> Since the new DMABUF based API wouldn't use the outgoing queue anyway,
+> getting rid of it now makes the upcoming changes simpler.
 > 
-> required:
->   - compatible
->   - reg
->   - (honeywell,pmin-pascal && honeywell,pmax-pascal) || honeywell,pressure-triplet
->   - honeywell,transfer-function
+> With this change, the IIO_BLOCK_STATE_DEQUEUED is now useless, and can
+> be removed.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> 
 
-Yes, it would end up something like that.  There are exclusive or examples in tree.
-I think something like dac/adi,ad3552r.yaml
- should work.
+I've applied this in interests in reducing the outstanding set of patches
+and because it stands fine as on its own.
 
-oneOf:
-  - required:
-      - honeywell,pmin-pascal
-      - honeywell,pmax-pascal
-  - required:
-      - honeywell,pressure-triplet
-
-but you will want to try all the cases to make sure that works (my ability to
-figure these ones out is tricky).
-
-+ you ideally want to exclude them all being set which is fiddlier.
-
-Some similar examples but they are based on a value in the property. I'm not
-sure how you check for it just being defined.
-
-Something along lines of.
-
-allOf:
-  - if:
-      properties:
-        honeywell,pressure-triplet
-    then:
-      properties:
-        honeywell,pmin-pascal: false
-        honeywell,pmax-pascal: false
-
-Might work?  I always end up trawling the kernel to find a similar example for cases but
-can't find anything closer right now.
+Applied to the togreg branch of iio.git and pushed out as testing.
+Note this is now almost certainly 6.9 material given timing.
 
 Jonathan
-
-   
-
-
-
-> 
-> 
-> thanks,
-> peter
-
 

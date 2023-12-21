@@ -1,187 +1,152 @@
-Return-Path: <linux-iio+bounces-1205-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1206-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A8E81BD8B
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:45:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F57F81BD9B
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3811C236B4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:45:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED1B1F25AE6
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DF7634E2;
-	Thu, 21 Dec 2023 17:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22299634E6;
+	Thu, 21 Dec 2023 17:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="phsb8dC5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNYLadlx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B008C62813
-	for <linux-iio@vger.kernel.org>; Thu, 21 Dec 2023 17:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-55322dbabf6so1185594a12.0
-        for <linux-iio@vger.kernel.org>; Thu, 21 Dec 2023 09:45:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703180744; x=1703785544; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=87JjHG7Ygx63DeV9lA55wmy+CzjMNzulU/PMn3Hnu/0=;
-        b=phsb8dC5IJumh64U4lAYfvarDucbjHjm0pW4Y5o37Q1dKKUXXHnhbgihybeOJwvcpX
-         xaIUfbE1YuoCqkTWsd3D+QobqSwxajjiZ59wmflKca5Vec5xhRFC+MAbTz2lRDVcM1Po
-         rFw8CDJdCCpr3Apy4xzZc5SpKNpJ4NFal0bDiH+TWp8HJ4DtfPCe8wDjDfW9d1XzCbkP
-         QX91AkxX5rC7ebKJJJRzBjONxpIGLfjRJsapqzMOV2oTNgTPmDypmN9m+vjZg2xS/HLQ
-         acqfZFtE7ZpHKClV6TJ5HDAdShYAd2T4m9TLvn6mqMi9vKkVmVyP0tH3VtSaQXWY7erG
-         wl5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703180744; x=1703785544;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=87JjHG7Ygx63DeV9lA55wmy+CzjMNzulU/PMn3Hnu/0=;
-        b=P+s870IkYNoCclKJJw8hSR56Gh8VJgRf6B7uvwKmPeSlDjSPwIGYh3YOpoDhwJeqzs
-         OxwcL0KDuoO3dllytcTMwJLAuPNSsMIwNuox9Rgo766et4+iTsxFTls5vU0z9PVz0Dh3
-         v4TGtAL4Ps3usgwNbQyAq9dyMFd9HcmZDdQjdYPeYn1jQgTVL4XAsGWrCc9cgo7CBc44
-         UabmtZEkhtLY/oSuA0Y4AZbd09q8D9PlmAuhcUtX7W5TxSBQkR8KEsnkTmJeBNgijDZo
-         ALdDGox+sJlHHtdJi1JK/9nsosxqRI8WVAzj0xWxaaAA3hkhXubnVSgkrX7LkEVY6ZPV
-         5lXA==
-X-Gm-Message-State: AOJu0Yw7KE0drU7oDXOCh75fniP5pHYdOByYQ869Ve5k7x6eJrmN4DI6
-	tlvec5O3m4A9C4eJSMQ3xsCHoLEqY1bFjA==
-X-Google-Smtp-Source: AGHT+IHCI2BY9vNfuJN+tfrY/pGggHxcM+dtdm6Rhj6r3jOUarAQw6WZtGdc1WQ8pcjMivy3nlyh7Q==
-X-Received: by 2002:a17:906:81c6:b0:a23:499b:c72e with SMTP id e6-20020a17090681c600b00a23499bc72emr91526ejx.41.1703180744024;
-        Thu, 21 Dec 2023 09:45:44 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id jt4-20020a170906dfc400b00a2369d8ca07sm1179891ejc.203.2023.12.21.09.45.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Dec 2023 09:45:43 -0800 (PST)
-Message-ID: <5b63afc1-3449-4231-b0f6-2b540237d725@linaro.org>
-Date: Thu, 21 Dec 2023 18:45:41 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3D9BA2F;
+	Thu, 21 Dec 2023 17:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A227FC433C8;
+	Thu, 21 Dec 2023 17:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703181146;
+	bh=lyzByyIGtJtbvQNXSj6a4JRBMqzOy5OV7zShwLWFESA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PNYLadlx3HDnL6+8gp9DHHqBZbtRXTVtlvGpzBic8ktqW5eRZowkQnD9eOvRot157
+	 9b3h3pRmzx156HM1tEYsjIRKa6ERu1Z3mxijp8sT9N4CTxaSZdzwkjJe2F7B06agR2
+	 GGmqmnI8EcL0a8uzpcG2MEqxuBz2axr2fjWFMzYL+RCeYgTjt6bL2t9WWseQAlbMj9
+	 jQ7LywkTSOulEeIcPPw5c0KfH8/BwtqPC6UlOsmtKaib4FJOfFt3S2V9b38Iuh5i3I
+	 F4TVMKlfJgFON55737HPEF7xaFzFiUGn64B+ldkZeo5Jghe33Mt8w0J4CQkaEFe1RQ
+	 Eq24f93LV7/Kw==
+Date: Thu, 21 Dec 2023 17:52:09 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v4 7/8] iio: adc: ad9467: convert to backend framework
+Message-ID: <20231221175209.457664b5@jic23-huawei>
+In-Reply-To: <20231220-iio-backend-v4-7-998e9148b692@analog.com>
+References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
+	<20231220-iio-backend-v4-7-998e9148b692@analog.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
-Content-Language: en-US
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231220104810.3179-1-mitrutzceclan@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 20/12/2023 11:48, Dumitru Ceclan wrote:
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
+On Wed, 20 Dec 2023 16:34:10 +0100
+Nuno Sa <nuno.sa@analog.com> wrote:
+
+> Convert the driver to use the new IIO backend framework. The device
+> functionality is expected to be the same (meaning no added or removed
+> features).
 > 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
-> V10->V11
->  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller'
->  - Add description to #gpio-cells property
-> V9->V10
+> Also note this patch effectively breaks ABI and that's needed so we can
+> properly support this device and add needed features making use of the
+> new IIO framework.
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 
-None of your previous version were tested before sending, so I have
-really doubts that this version was.
+A few minor comments. Looks good to me.
 
->  - Fix dt_binding_check type warning from adi,reference-select
-> V8->v9
+Jonathan
 
-...
-
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
+> +				   const unsigned long *scan_mask)
+> +{
+> +	struct ad9467_state *st = iio_priv(indio_dev);
+> +	unsigned int c;
+> +	int ret;
 > +
-> +title: Analog Devices AD7173 ADC
+> +	for (c = 0; c < st->info->num_channels; c++) {
+> +		if (test_bit(c, scan_mask))
+> +			ret = iio_backend_chan_enable(st->back, c);
+> +		else
+> +			ret = iio_backend_chan_disable(st->back, c);
 > +
-> +maintainers:
-> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> +		if (ret)
+> +			return ret;
+> +	}
 > +
-> +description: |
-> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
+> +	return 0;
+> +}
 
-If there is going to be resend:
-Drop "Bindings for" and instead describe shortly the hardware. Also wrap
-above according to Linux coding style, so at 80.
-
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
+>  static int ad9467_reset(struct device *dev)
+> @@ -443,25 +475,63 @@ static int ad9467_reset(struct device *dev)
+>  	return 0;
+>  }
+>  
+> +static int ad9467_iio_backend_get(struct ad9467_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	struct device_node *__back;
 > +
+> +	st->back = devm_iio_backend_get_optional(&st->spi->dev, NULL);
+> +	if (IS_ERR(st->back))
+> +		return PTR_ERR(st->back);
 
-Rest looks good, so please tell did you test it?
+As per the comment on previous patch I'd just get it using the normal
+function and handle PTR_ERR(-ENOENT) here as meaning we need to
+try the old way.
 
+> +	if (st->back)
+> +		return 0;
+> +	/*
+> +	 * if we don't get the backend using the normal API's, use the legacy
+> +	 * 'adi,adc-dev' property. So we get all nodes with that property, and
+> +	 * look for the one pointing at us. Then we directly lookup that fwnode
+> +	 * on the backend list of registered devices. This is done so we don't
+> +	 * make io-backends mandatory which would break DT ABI.
+> +	 */
+> +	for_each_node_with_property(__back, "adi,adc-dev") {
+> +		struct device_node *__me;
+> +
+> +		__me = of_parse_phandle(__back, "adi,adc-dev", 0);
+> +		if (!__me)
+> +			continue;
+> +
+> +		if (!device_match_of_node(dev, __me)) {
+> +			of_node_put(__me);
+> +			continue;
+> +		}
+> +
+> +		of_node_put(__me);
+> +		st->back = devm_iio_backend_get_from_fwnode_lookup(dev,
+> +								   of_fwnode_handle(__back));
+> +		of_node_put(__back);
 
-Best regards,
-Krzysztof
+If it lands first the patch
+RFC PATCH 1/4] of: Add cleanup.h based autorelease via __free(device_node) markings.
+will get rid of this manual handling for you for both the continue and return.
+This will make a very nice example for that :)
+
+> +		return PTR_ERR_OR_ZERO(st->back);
+> +	}
+> +
+> +	return -ENODEV;
+> +}
 
 

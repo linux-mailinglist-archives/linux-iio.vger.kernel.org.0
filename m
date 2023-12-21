@@ -1,49 +1,48 @@
-Return-Path: <linux-iio+bounces-1213-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1214-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6901D81C0AE
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 23:01:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8EB81C12A
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 23:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 092881F228B9
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 22:01:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5B21C23FFF
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 22:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B6B77F17;
-	Thu, 21 Dec 2023 22:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C9E77F1C;
+	Thu, 21 Dec 2023 22:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2O8QXVK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7yOcu5z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EF058224;
-	Thu, 21 Dec 2023 22:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B2EC433C8;
-	Thu, 21 Dec 2023 22:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00A0539E0;
+	Thu, 21 Dec 2023 22:46:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B65C433C8;
+	Thu, 21 Dec 2023 22:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703196075;
-	bh=Mu966ENzqAzL5zVpXkX0okIrHoGjPvhJ8rqTFtXNsxY=;
+	s=k20201202; t=1703198807;
+	bh=KXvjFUiHX70HF64T8ILtJMgH6TV3lQn64cwiBFZ9nrA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2O8QXVKb3ZUGIFC0OpGxRRynfGqmj+gp7FTRV7NaqGkWM4IE05+Gqd4cUFQEQYL4
-	 wG8CTj9V0h17GQd4DGWTQ/ID88OjucDGd4K+yDcA/dII3YbqJZwo8/WEGbw+0/BCww
-	 uvzyeWwpnjNf8BE09DbyfTe4eatwQUCKS88qqoFVuq4Fb0xHA3dCIj/qvA6T9heVw1
-	 XMReR5iaSQzexSnB5wS2XhpBfBxtK/INvsJIBmzcaV4NgQ/FFgNRrpnmVxI9gmQ0P9
-	 68dzeUi++eubqSxVn0qTA5U4n6uBSTfo0lld+kP5+b9rRlCVwpuJxK42akZsycfsTr
-	 Hh/bbpwOTtWRw==
-Received: (nullmailer pid 166032 invoked by uid 1000);
-	Thu, 21 Dec 2023 22:01:11 -0000
-Date: Thu, 21 Dec 2023 16:01:11 -0600
+	b=k7yOcu5zSkSTSDfP4+8GgK8Db54OwRIF52yUr5HF9Cxb6BFEK7TSNRLG6oMY4gFzk
+	 WR/0wJvRdPpOMOQw2palzwQyZrZGO4ScT8eNpyqUfZvMnUBkN2LoGwU+4PQpPwUSJQ
+	 KRQBWN4zTQfGu67kXkhbgh1Oq9tn3a9iwK6gJxYUzwACHsfpXCFjlrJ2ILp8Pt/ux7
+	 uvuMyo9AGz1n7d3iwcZueL48K9ISAKF5/EjX3/H6leISfhIQTx+mHtx3reqvZV5Wpu
+	 vPFX751AZ8aCqX3Ib3USlQVZHFazFoGZ2cqhl1D2NqjkDLAStBsUHPx/xEG5KYJ1t9
+	 OSspJMbtcHP0g==
+Received: (nullmailer pid 227326 invoked by uid 1000);
+	Thu, 21 Dec 2023 22:46:45 -0000
+Date: Thu, 21 Dec 2023 16:46:45 -0600
 From: Rob Herring <robh@kernel.org>
-To: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Cc: mchehab@kernel.org, rcsekar@samsung.com, olivier.moysan@foss.st.com, Frank Rowand <frowand.list@gmail.com>, dmaengine@vger.kernel.org, linux-crypto@vger.kernel.org, jic23@kernel.org, lars@metafoo.de, mkl@pengutronix.de, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, davem@davemloft.net, conor+dt@kernel.org, fabrice.gasnier@foss.st.com, pabeni@redhat.com, linux-media@vger.kernel.org, catalin.marinas@arm.com, netdev@vger.kernel.org, Oleksii_Moisieiev@epam.com, linux-serial@vger.kernel.org, hugues.fruchet@foss.st.com, linux-usb@vger.kernel.org, linux-mmc@vger.kernel.org, arnd@kernel.org, linux-iio@vger.kernel.org, will@kernel.org, edumazet@google.com, linux-stm32@st-md-mailman.stormreply.com, krzysztof.kozlowski+dt@linaro.org, ulf.hansson@linaro.org, alexandre.torgue@foss.st.com, devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, herbert@gondor.apana.org.au, vkoul@kernel.org, robh+dt@kernel.org, kuba@kernel.org, wg@grandegger.com, lee@kernel.org, peng.fan@oss.nxp.com, 
- linux-phy@lists.infradead.org, arnaud.pouliquen@foss.st.com, gregkh@linuxfoundation.org, richardcochran@gmail.com, linux-arm-kernel@lists.infradead.org, andi.shyti@kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH v8 06/13] of: property: fw_devlink: Add support for
- "access-controller"
-Message-ID: <170319607084.165973.14576693798188042387.robh@kernel.org>
-References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
- <20231212152356.345703-7-gatien.chevallier@foss.st.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>, Frank Rowand <frowand.list@gmail.com>, linux-iio@vger.kernel.org, Michael Hennerich <Michael.Hennerich@analog.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/8] dt-bindings: adc: ad9467: add new io-backend
+ property
+Message-ID: <170319880465.227267.11932534810200819301.robh@kernel.org>
+References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
+ <20231220-iio-backend-v4-1-998e9148b692@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,28 +51,21 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231212152356.345703-7-gatien.chevallier@foss.st.com>
+In-Reply-To: <20231220-iio-backend-v4-1-998e9148b692@analog.com>
 
 
-On Tue, 12 Dec 2023 16:23:49 +0100, Gatien Chevallier wrote:
-> Allows tracking dependencies between devices and their access
-> controller.
+On Wed, 20 Dec 2023 16:34:04 +0100, Nuno Sa wrote:
+> The ad9467 will make use of the new IIO backend framework which is a
+> provider - consumer interface where IIO backends provide services to
+> consumers. As such, and being this device a consumer,  add the new
+> generic io-backend property to the bindings.
 > 
-> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
-> 
-> Changes in V6:
->     	- Renamed access-controller to access-controllers
-> 
-> Changes in V5:
-> 	- Rename feature-domain* to access-control*
-> 
-> Patch not present in V1
-> 
->  drivers/of/property.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 
 

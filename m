@@ -1,93 +1,119 @@
-Return-Path: <linux-iio+bounces-1209-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1210-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3B381BECE
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 20:08:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C911881C081
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 22:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BA4D1F23CCC
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 19:08:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BF941F22138
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 21:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F209E651AD;
-	Thu, 21 Dec 2023 19:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5A87765F;
+	Thu, 21 Dec 2023 21:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UM5fgkst"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grvlhMPd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A265C65198;
-	Thu, 21 Dec 2023 19:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-53fbf2c42bfso826009a12.3;
-        Thu, 21 Dec 2023 11:08:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703185705; x=1703790505; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=76+oyG2G1x0gT7TSaAnna8obnYpV1SthTcTntxCagtY=;
-        b=UM5fgkstvtcsonikn3MmV855Z6DkKkqgnExhSeG+34DQv9oI3ZduIEbAwOlr8ptXQa
-         vVdYDUhsRqk2optCunr3OXLiH/ONdwEvRc6T5+/g9RCR0OBKX+Qb7GEYG2IUEHedJ5CJ
-         mx5PgThZqK1qwYQPUhCwSoikOkZcfMQN42f+arVEHl2haquMwevqhSy3H++iIipw5EXw
-         cZNxfNfLPNdUY88BnvcU/8rgROLHIWdWmnytcn09d+GPoj9JKjwLyoVmjiuw0CJbeMsW
-         XwC8Ne6AlbTdZ7qdWuHAV698jHgYc7KN/+P0nTbK2z+jBuQKOvGH3Dg48BALw9UovuID
-         /qdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703185705; x=1703790505;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=76+oyG2G1x0gT7TSaAnna8obnYpV1SthTcTntxCagtY=;
-        b=r5bt5gB0c9uLIWM0Z4MexnbnPKjjHQ34IVPZBxYl8wCc1gLUtHfv8bA5+Huf41OTVX
-         6U84qvGixEMc4pMzumk0pVnYI79aJ5erSMPmsSUzW/Q/rfr6iWIPS5ZViu5eraml+Iyp
-         DtjK5FRpQB1SBS0oIuqi+Ngr0yRLq34kJdBGRN7GciqlB1FqWe/3U8zO1Et3KUnjk2r2
-         gkXzouTGS3CAde3fPTxeIjOyR/4vuiRR8GnhpjQZXhjSmbtaKXmYYw66DvrOmc4HHS6p
-         0obMP39HQ680BQzfgwnDfhlUI1nQmSuBf7fH47Zb3i4t9O8EMqg+VhQ4TRtoWrHONkiX
-         FInA==
-X-Gm-Message-State: AOJu0Ywo1gDeQyKgKSErkpAY6fV/fG28EXjrQrprszvbH2RIeCGPmnar
-	wZaMJolJDhjaZegXsg2JfG/mHbGrSl1tlQ==
-X-Google-Smtp-Source: AGHT+IF4zGZPazNZTfZ5miRc6/PEO7loJCDDGRSV2wmSChdY5PEy1bwjCkDj2S68lM164f2lBqSy0g==
-X-Received: by 2002:a17:902:e843:b0:1d3:eddf:6769 with SMTP id t3-20020a170902e84300b001d3eddf6769mr128289plg.92.1703185705576;
-        Thu, 21 Dec 2023 11:08:25 -0800 (PST)
-Received: from ?IPV6:2401:4900:5f1b:292f:dc7e:1579:ed7c:8f49? ([2401:4900:5f1b:292f:dc7e:1579:ed7c:8f49])
-        by smtp.gmail.com with ESMTPSA id u11-20020a17090282cb00b001d398889d4dsm1975467plz.127.2023.12.21.11.08.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Dec 2023 11:08:25 -0800 (PST)
-Message-ID: <1f84c8f4-0b21-4e6e-942c-1f987dd5f63e@gmail.com>
-Date: Fri, 22 Dec 2023 00:36:08 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C713A55E59;
+	Thu, 21 Dec 2023 21:51:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29B9C433C9;
+	Thu, 21 Dec 2023 21:51:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703195502;
+	bh=wVhTpALcMiNCntelNMpcmyS353uCxC0tr69XZxUeP7w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=grvlhMPdSPsEsMrM435z6Ee777r4kKrlEfU5VJO4IHAn4V7pnANe2YaPn9yqlGBHg
+	 U7IjIExcXlK1D9VjptD8QyQ+42pMJbqVtaZr9Lh6/W9NcKiHa/4Pi1lg/vqCN4EdnL
+	 6kO0lUSi+dNbPKTQgm7u7+8N5icMjEm+Xx0mdV8DwQ4PENu1D0ga/Kb1YDb+J4XM0f
+	 ANsuXOYE3cY800vWiRTMZq07yWnLPeaBKYK201IO8zMr9PmgVqaDHP5agM0fLCgIzx
+	 SLr/TsqKDLJRLArQCYcVOAdjwxzBrLiXnruS1js2v2YjfWlxH3LNi3VupaDmJHLxBr
+	 igbLYfklcAyjA==
+Received: (nullmailer pid 153686 invoked by uid 1000);
+	Thu, 21 Dec 2023 21:51:38 -0000
+Date: Thu, 21 Dec 2023 15:51:38 -0600
+From: Rob Herring <robh@kernel.org>
+To: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc: pabeni@redhat.com, netdev@vger.kernel.org, lars@metafoo.de,
+	linux-media@vger.kernel.org, hugues.fruchet@foss.st.com,
+	olivier.moysan@foss.st.com, lee@kernel.org,
+	alexandre.torgue@foss.st.com, catalin.marinas@arm.com,
+	peng.fan@oss.nxp.com, linux-mmc@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-serial@vger.kernel.org,
+	robh+dt@kernel.org, wg@grandegger.com, arnaud.pouliquen@foss.st.com,
+	alsa-devel@alsa-project.org, linux-iio@vger.kernel.org,
+	vkoul@kernel.org, conor+dt@kernel.org, mkl@pengutronix.de,
+	Frank Rowand <frowand.list@gmail.com>, linux-crypto@vger.kernel.org,
+	edumazet@google.com, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-i2c@vger.kernel.org,
+	Oleksii Moisieiev <oleksii_moisieiev@epam.com>, arnd@kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com, davem@davemloft.net,
+	krzysztof.kozlowski+dt@linaro.org, ulf.hansson@linaro.org,
+	will@kernel.org, rcsekar@samsung.com,
+	linux-arm-kernel@lists.infradea, d.org@web.codeaurora.org,
+	kuba@kernel.org, mchehab@kernel.org, gregkh@linuxfoundation.org,
+	jic23@kernel.org, devicetree@vger.kernel.org,
+	richardcochran@gmail.com, Oleksii_Moisieiev@epam.com,
+	andi.shyti@kernel.org, herbert@gondor.apana.org.au,
+	fabrice.gasnier@foss.st.com
+Subject: Re: [PATCH v8 01/13] dt-bindings: document generic access controllers
+Message-ID: <170319549389.153568.1692332156021513651.robh@kernel.org>
+References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+ <20231212152356.345703-2-gatien.chevallier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] dt-bindings: input: convert drv266x to json-schema
-Content-Language: en-US
-To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org
-References: <20231221181423.671432-1-anshulusr@gmail.com>
-From: Anshul Dalal <anshulusr@gmail.com>
-In-Reply-To: <20231221181423.671432-1-anshulusr@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231212152356.345703-2-gatien.chevallier@foss.st.com>
 
-I mistakenly submitted this patch to the iio subsystem and CC'd the no
-longer valid e-mail of Dan Murphy.
 
-Kindly refer to the patch below for further discussions:
+On Tue, 12 Dec 2023 16:23:44 +0100, Gatien Chevallier wrote:
+> From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
+> 
+> Introducing of the generic access controllers bindings for the
+> access controller provider and consumer devices. Those bindings are
+> intended to allow a better handling of accesses to resources in a
+> hardware architecture supporting several compartments.
+> 
+> This patch is based on [1]. It is integrated in this patchset as it
+> provides a use-case for it.
+> 
+> Diffs with [1]:
+> 	- Rename feature-domain* properties to access-control* to narrow
+> 	  down the scope of the binding
+> 	- YAML errors and typos corrected.
+> 	- Example updated
+> 	- Some rephrasing in the binding description
+> 
+> [1]: https://lore.kernel.org/lkml/0c0a82bb-18ae-d057-562b
+> 
+> Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> ---
+> 
+> Changes in V6:
+> 	- Renamed access-controller to access-controllers
+> 	- Example updated
+> 	- Removal of access-control-provider property
+> 
+> Changes in V5:
+> 	- Diffs with [1]
+> 	- Discarded the [IGNORE] tag as the patch is now part of the
+> 	  patchset
+> 
+>  .../access-controllers.yaml                   | 84 +++++++++++++++++++
+>  1 file changed, 84 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+> 
 
-https://lore.kernel.org/lkml/20231221183109.684325-1-anshulusr@gmail.com/
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-Apologies for any inconvenience,
-Anshul
 

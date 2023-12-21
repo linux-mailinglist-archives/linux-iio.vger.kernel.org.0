@@ -1,323 +1,201 @@
-Return-Path: <linux-iio+bounces-1207-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1208-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459FD81BDB5
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:57:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479F281BDFC
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 19:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85C46B2402B
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 17:57:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042B1289957
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Dec 2023 18:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6F8634F3;
-	Thu, 21 Dec 2023 17:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876586D6CB;
+	Thu, 21 Dec 2023 18:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="S0+YXFQN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gi6ls69n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396555E7B;
-	Thu, 21 Dec 2023 17:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1703181415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tW16GHCoszQpqU8oQ+WYfaEUemfkUyVapaAXPlGWyZc=;
-	b=S0+YXFQNlZOmKQI/q412vuw+c+sS1iiaBsZiv7j2MysLfOJWqD/9l2AVS+cPr0YJm9IJrP
-	RZwcd4vioTZVcY5dDpY8q4GoCUoGVCsjx3pJ2Zg3XF6NYeTGdBtjCv9TKnGaUJlCOI0sDB
-	iHwLhQGbXPaZnW2H3b7FNZxS7FAuKeE=
-Message-ID: <a303d86e82b1ac15a7ef16bef0fc77e03601f633.camel@crapouillou.net>
-Subject: Re: [PATCH v5 0/8] iio: new DMABUF based API, v5
-From: Paul Cercueil <paul@crapouillou.net>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
- <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Vinod Koul <vkoul@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linaro-mm-sig@lists.linaro.org, Nuno =?ISO-8859-1?Q?S=E1?=
- <noname.nuno@gmail.com>, Michael Hennerich <Michael.Hennerich@analog.com>
-Date: Thu, 21 Dec 2023 18:56:52 +0100
-In-Reply-To: <20231221163031.1a410905@jic23-huawei>
-References: <20231219175009.65482-1-paul@crapouillou.net>
-	 <20231221163031.1a410905@jic23-huawei>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZMLQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5UzFZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtNz8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe+rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIPdlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7Urf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KFlBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFCqaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IW
-	YXndJO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN7062DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOtX0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEAAYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmcGu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2zMcLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2cLUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C77634F7;
+	Thu, 21 Dec 2023 18:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d045097b4cso7842235ad.0;
+        Thu, 21 Dec 2023 10:17:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703182621; x=1703787421; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YkM0jC9/yHAO382d+ILawqQDBhBWk0KZJUHJnBoAQj8=;
+        b=gi6ls69nO9y16qL7Wl1OfZCf741VlbWSd5F0v/rUvh3/SaJ/r6JXrJDUbnKgIxB6t5
+         A4NRF6v+Ybg4282Q/f74XleVSwraG5JXi0z+3rWldD59myBIaP2YNJtMRNH6mp8kxRUB
+         KWRFGns+A4p8i8rg2VjLKQW2O/Y8uDLtMB0y89XfkHQO9pUdLEWs1gF58H9nRVh+/HQ9
+         CNIJBNlgpM8/PtARErKoI6QzDIIF/B7WZV2sYrGxf1cnBmDfgmuzXx1SNGE+aFSSEstz
+         Nh/RG2fQFcAH/+UvvfdCcd1y+FRvy5XajqRvKNWAo+4CZl36i1ekmhDvl+e5SatDygNU
+         171Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703182621; x=1703787421;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YkM0jC9/yHAO382d+ILawqQDBhBWk0KZJUHJnBoAQj8=;
+        b=mlp/UBT0Ztk24R7wyX/tIdC0yVNEn0LkAfQTbqICOpNar+NXtUmHAv5wDDz7HXkVxd
+         yTrRshAI1Dh5geup6SZeG1XK9FtVvMh2Q74FdIgou5cBn2equrlL8heo3dE2CkGFIFjb
+         xoNrn2O75DCkYWP0FhdyOfD/F2xNhLnsWushWWGOCJgfgs6XjnMpWvevfTHTmkTLL33R
+         HpkZEUqp/7Rs8QCnxAEAdZnJDC5Ar7tteA2raFyY2GJTnhYJoFCNuMs4GklfaENy+DTb
+         PLLk4UDLYuoDGZqGxmnrOaN4elbwX/6rbH8chQUpenAKs/x8vfGMQR9PQYgBnFl4RZHk
+         dsGQ==
+X-Gm-Message-State: AOJu0YyGud140mrctMn4c/7f8xSoLlrhEUsui+tRjQu/kdk5OpyH7ZsN
+	LTU/3Xz6UrYyd8aaTlnO3olSwjAKcRPmnQ==
+X-Google-Smtp-Source: AGHT+IGDgd2VOVIdT8TOMu96tItwZra5gdbxf1n9VZmBNR7FQBm3hI+DsGtXZ54F1fGp1RRi9U/DPw==
+X-Received: by 2002:a17:90a:f188:b0:28a:c3e2:3967 with SMTP id bv8-20020a17090af18800b0028ac3e23967mr134583pjb.30.1703182620849;
+        Thu, 21 Dec 2023 10:17:00 -0800 (PST)
+Received: from localhost.localdomain ([2401:4900:5f28:c37d:9ad0:e7ae:52c2:c31a])
+        by smtp.gmail.com with ESMTPSA id lt17-20020a17090b355100b0028b338470a0sm2121454pjb.3.2023.12.21.10.16.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 10:17:00 -0800 (PST)
+From: Anshul Dalal <anshulusr@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Anshul Dalal <anshulusr@gmail.com>,
+	Dan Murphy <dmurphy@ti.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org
+Subject: [PATCH v1] dt-bindings: input: convert drv266x to json-schema
+Date: Thu, 21 Dec 2023 23:44:22 +0530
+Message-ID: <20231221181423.671432-1-anshulusr@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+Convert devicetree binding documentation for ti drv2665 and drv2667
+haptics driver to json-schema. The previously two separate bindings have
+been merged into a single drv266x.yaml.
 
-Le jeudi 21 d=C3=A9cembre 2023 =C3=A0 16:30 +0000, Jonathan Cameron a =C3=
-=A9crit=C2=A0:
-> On Tue, 19 Dec 2023 18:50:01 +0100
-> Paul Cercueil <paul@crapouillou.net> wrote:
->=20
-> > [V4 was: "iio: Add buffer write() support"][1]
-> >=20
-> > Hi Jonathan,
-> >=20
-> Hi Paul,
->=20
-> > This is a respin of the V3 of my patchset that introduced a new
-> > interface based on DMABUF objects [2].
->=20
-> Great to see this moving forwards.
->=20
-> >=20
-> > The V4 was a split of the patchset, to attempt to upstream buffer
-> > write() support first. But since there is no current user upstream,
-> > it
-> > was not merged. This V5 is about doing the opposite, and contains
-> > the
-> > new DMABUF interface, without adding the buffer write() support. It
-> > can
-> > already be used with the upstream adi-axi-adc driver.
->=20
-> Seems like a sensible path in the short term.
->=20
-> >=20
-> > In user-space, Libiio uses it to transfer back and forth blocks of
-> > samples between the hardware and the applications, without having
-> > to
-> > copy the data.
-> >=20
-> > On a ZCU102 with a FMComms3 daughter board, running Libiio from the
-> > pcercuei/dev-new-dmabuf-api branch [3], compiled with
-> > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
-> > =C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
-> > =C2=A0 Throughput: 116 MiB/s
-> >=20
-> > Same hardware, with the DMABUF API (WITH_LOCAL_DMABUF_API=3DON):
-> > =C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
-> > =C2=A0 Throughput: 475 MiB/s
-> >=20
-> > This benchmark only measures the speed at which the data can be
-> > fetched
-> > to iio_rwdev's internal buffers, and does not actually try to read
-> > the
-> > data (e.g. to pipe it to stdout). It shows that fetching the data
-> > is
-> > more than 4x faster using the new interface.
-> >=20
-> > When actually reading the data, the performance difference isn't
-> > that
-> > impressive (maybe because in case of DMABUF the data is not in
-> > cache):
->=20
-> This needs a bit more investigation ideally. Perhaps perf counters
-> can be
-> used to establish that cache misses are the main different between
-> dropping it on the floor and actually reading the data.
-
-Yes, we'll work on it. The other big difference is that fileio uses
-dma_alloc_coherent() while the DMABUFs use non-coherent mappings. I
-guess coherent memory is faster for the typical access pattern (which
-is "read/write everything sequentially once").
-
-> >=20
-> > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
-> > =C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/zero
-> > status=3Dprogress
-> > =C2=A0 2446422528 bytes (2.4 GB, 2.3 GiB) copied, 22 s, 111 MB/s
-> >=20
-> > WITH_LOCAL_DMABUF_API=3DON:
-> > =C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/zero
-> > status=3Dprogress
-> > =C2=A0 2334388736 bytes (2.3 GB, 2.2 GiB) copied, 21 s, 114 MB/s
-> >=20
-> > One interesting thing to note is that fileio is (currently)
-> > actually
-> > faster than the DMABUF interface if you increase a lot the buffer
-> > size.
-> > My explanation is that the cache invalidation routine takes more
-> > and
-> > more time the bigger the DMABUF gets. This is because the DMABUF is
-> > backed by small-size pages, so a (e.g.) 64 MiB DMABUF is backed by
-> > up
-> > to 16 thousands pages, that have to be invalidated one by one. This
-> > can
-> > be addressed by using huge pages, but the udmabuf driver does not
-> > (yet)
-> > support creating DMABUFs backed by huge pages.
->=20
-> I'd imagine folios of reasonable size will help sort of a huge page
-> as then hopefully it will use the flush by va range instructions if
-> available.
->=20
-> >=20
-> > Anyway, the real benefits happen when the DMABUFs are either shared
-> > between IIO devices, or between the IIO subsystem and another
-> > filesystem. In that case, the DMABUFs are simply passed around
-> > drivers,
-> > without the data being copied at any moment.
-> >=20
-> > We use that feature to transfer samples from our transceivers to
-> > USB,
-> > using a DMABUF interface to FunctionFS [4].
-> >=20
-> > This drastically increases the throughput, to about 274 MiB/s over
-> > a
-> > USB3 link, vs. 127 MiB/s using IIO's fileio interface + write() to
-> > the
-> > FunctionFS endpoints, for a lower CPU usage (0.85 vs. 0.65 load
-> > avg.).
->=20
-> This is a nice example.=C2=A0 Where are you with getting the patch merged=
-?
-
-I'll send a new version (mostly a [RESEND]...) in the coming days. As
-you can see from the review on my last attempt, the main blocker is
-that nobody wants to merge a new interface if the rest of the kernel
-bits aren't upstream yet. Kind of a chicken-and-egg problem :)
-
-> Overall, this code looks fine to me, though there are some parts that
-> need review by other maintainers (e.g. Vinod for the dmaengine
-> callback)
-> and I'd like a 'looks fine' at least form those who know a lot more
-> about dmabuf than I do.
->=20
-> To actually make this useful sounds like either udmabuf needs some
-> perf
-> improvements, or there has to be an upstream case of sharing it
-> without
-> something else (e.g your functionfs patches).=C2=A0 So what do we need to
-> get in before the positive benefit becomes worth carrying this extra
-> complexity? (which isn't too bad so I'm fine with a small benefit and
-> promises of riches :)
-
-I think the FunctionFS DMABUF interface can be pushed as well for 5.9,
-in parallel of this one, as the feedback on the V1 was good. I might
-just need some help pushing it forward (kind of a "I merge it if you
-merge it" guarantee).
-
-Cheers,
--Paul
-
->=20
-> Jonathan
->=20
-> >=20
-> > Based on linux-next/next-20231219.
-> >=20
-> > Cheers,
-> > -Paul
-> >=20
-> > [1]
-> > https://lore.kernel.org/all/20230807112113.47157-1-paul@crapouillou.net=
-/
-> > [2]
-> > https://lore.kernel.org/all/20230403154800.215924-1-paul@crapouillou.ne=
-t/
-> > [3]
-> > https://github.com/analogdevicesinc/libiio/tree/pcercuei/dev-new-dmabuf=
--api
-> > [4]
-> > https://lore.kernel.org/all/20230322092118.9213-1-paul@crapouillou.net/
-> >=20
-> > ---
-> > Changelog:
-> > - [3/8]: Replace V3's dmaengine_prep_slave_dma_array() with a new
-> > =C2=A0 dmaengine_prep_slave_dma_vec(), which uses a new 'dma_vec'
-> > struct.
-> > =C2=A0 Note that at some point we will need to support cyclic transfers
-> > =C2=A0 using dmaengine_prep_slave_dma_vec(). Maybe with a new "flags"
-> > =C2=A0 parameter to the function?
-> >=20
-> > - [4/8]: Implement .device_prep_slave_dma_vec() instead of V3's
-> > =C2=A0 .device_prep_slave_dma_array().
-> >=20
-> > =C2=A0 @Vinod: this patch will cause a small conflict with my other
-> > =C2=A0 patchset adding scatter-gather support to the axi-dmac driver.
-> > =C2=A0 This patch adds a call to axi_dmac_alloc_desc(num_sgs), but the
-> > =C2=A0 prototype of this function changed in my other patchset - it
-> > would
-> > =C2=A0 have to be passed the "chan" variable. I don't know how you
-> > prefer it
-> > =C2=A0 to be resolved. Worst case scenario (and if @Jonathan is okay
-> > with
-> > =C2=A0 that) this one patch can be re-sent later, but it would make thi=
-s
-> > =C2=A0 patchset less "atomic".
-> >=20
-> > - [5/8]:
-> > =C2=A0 - Use dev_err() instead of pr_err()
-> > =C2=A0 - Inline to_iio_dma_fence()
-> > =C2=A0 - Add comment to explain why we unref twice when detaching dmabu=
-f
-> > =C2=A0 - Remove TODO comment. It is actually safe to free the file's
-> > =C2=A0=C2=A0=C2=A0 private data even when transfers are still pending b=
-ecause it
-> > =C2=A0=C2=A0=C2=A0 won't be accessed.
-> > =C2=A0 - Fix documentation of new fields in struct
-> > iio_buffer_access_funcs
-> > =C2=A0 - iio_dma_resv_lock() does not need to be exported, make it
-> > static
-> >=20
-> > - [7/8]:
-> > =C2=A0 - Use the new dmaengine_prep_slave_dma_vec().
-> > =C2=A0 - Restrict to input buffers, since output buffers are not yet
-> > =C2=A0=C2=A0=C2=A0 supported by IIO buffers.
-> >=20
-> > - [8/8]:
-> > =C2=A0 Use description lists for the documentation of the three new
-> > IOCTLs
-> > =C2=A0 instead of abusing subsections.
-> >=20
-> > ---
-> > Alexandru Ardelean (1):
-> > =C2=A0 iio: buffer-dma: split iio_dma_buffer_fileio_free() function
-> >=20
-> > Paul Cercueil (7):
-> > =C2=A0 iio: buffer-dma: Get rid of outgoing queue
-> > =C2=A0 dmaengine: Add API function dmaengine_prep_slave_dma_vec()
-> > =C2=A0 dmaengine: dma-axi-dmac: Implement device_prep_slave_dma_vec
-> > =C2=A0 iio: core: Add new DMABUF interface infrastructure
-> > =C2=A0 iio: buffer-dma: Enable support for DMABUFs
-> > =C2=A0 iio: buffer-dmaengine: Support new DMABUF based userspace API
-> > =C2=A0 Documentation: iio: Document high-speed DMABUF based API
-> >=20
-> > =C2=A0Documentation/iio/dmabuf_api.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 54 +++
-> > =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 2 +
-> > =C2=A0drivers/dma/dma-axi-dmac.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0 40 ++
-> > =C2=A0drivers/iio/buffer/industrialio-buffer-dma.c=C2=A0 | 242 ++++++++=
+Signed-off-by: Anshul Dalal <anshulusr@gmail.com>
 ---
-> > =C2=A0.../buffer/industrialio-buffer-dmaengine.c=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 52 ++-
-> > =C2=A0drivers/iio/industrialio-buffer.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 402
-> > ++++++++++++++++++
-> > =C2=A0include/linux/dmaengine.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 25 ++
-> > =C2=A0include/linux/iio/buffer-dma.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 33 +-
-> > =C2=A0include/linux/iio/buffer_impl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 26 ++
-> > =C2=A0include/uapi/linux/iio/buffer.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 22 +
-> > =C2=A010 files changed, 836 insertions(+), 62 deletions(-)
-> > =C2=A0create mode 100644 Documentation/iio/dmabuf_api.rst
-> >=20
->=20
+ .../devicetree/bindings/input/ti,drv2665.txt  | 17 -------
+ .../devicetree/bindings/input/ti,drv2667.txt  | 17 -------
+ .../devicetree/bindings/input/ti,drv266x.yaml | 50 +++++++++++++++++++
+ 3 files changed, 50 insertions(+), 34 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/input/ti,drv2665.txt
+ delete mode 100644 Documentation/devicetree/bindings/input/ti,drv2667.txt
+ create mode 100644 Documentation/devicetree/bindings/input/ti,drv266x.yaml
+
+diff --git a/Documentation/devicetree/bindings/input/ti,drv2665.txt b/Documentation/devicetree/bindings/input/ti,drv2665.txt
+deleted file mode 100644
+index 1ba97ac04305..000000000000
+--- a/Documentation/devicetree/bindings/input/ti,drv2665.txt
++++ /dev/null
+@@ -1,17 +0,0 @@
+-* Texas Instruments - drv2665 Haptics driver
+-
+-Required properties:
+-	- compatible - "ti,drv2665" - DRV2665
+-	- reg -  I2C slave address
+-	- vbat-supply - Required supply regulator
+-
+-Example:
+-
+-haptics: haptics@59 {
+-	compatible = "ti,drv2665";
+-	reg = <0x59>;
+-	vbat-supply = <&vbat>;
+-};
+-
+-For more product information please see the link below:
+-http://www.ti.com/product/drv2665
+diff --git a/Documentation/devicetree/bindings/input/ti,drv2667.txt b/Documentation/devicetree/bindings/input/ti,drv2667.txt
+deleted file mode 100644
+index 996382cf994a..000000000000
+--- a/Documentation/devicetree/bindings/input/ti,drv2667.txt
++++ /dev/null
+@@ -1,17 +0,0 @@
+-* Texas Instruments - drv2667 Haptics driver
+-
+-Required properties:
+-	- compatible - "ti,drv2667" - DRV2667
+-	- reg -  I2C slave address
+-	- vbat-supply - Required supply regulator
+-
+-Example:
+-
+-haptics: haptics@59 {
+-	compatible = "ti,drv2667";
+-	reg = <0x59>;
+-	vbat-supply = <&vbat>;
+-};
+-
+-For more product information please see the link below:
+-http://www.ti.com/product/drv2667
+diff --git a/Documentation/devicetree/bindings/input/ti,drv266x.yaml b/Documentation/devicetree/bindings/input/ti,drv266x.yaml
+new file mode 100644
+index 000000000000..da1818824373
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/ti,drv266x.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/ti,drv266x.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments - drv266x Haptics driver
++
++description: |
++  Product Page:
++    http://www.ti.com/product/drv2665
++    http://www.ti.com/product/drv2667
++
++maintainers:
++  - Anshul Dalal <anshulusr@gmail.com>
++
++properties:
++  compatible:
++    enum:
++      - ti,drv2665
++      - ti,drv2667
++
++  reg:
++    maxItems: 1
++
++  vbat-supply:
++    description: Required supply regulator
++
++required:
++  - compatible
++  - reg
++  - vbat-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        haptics@59 {
++            compatible = "ti,drv2667";
++            reg = <0x59>;
++            vbat-supply = <&vbat>;
++        };
++    };
+-- 
+2.43.0
 
 

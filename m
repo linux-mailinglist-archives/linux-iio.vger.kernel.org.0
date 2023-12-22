@@ -1,141 +1,181 @@
-Return-Path: <linux-iio+bounces-1223-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1224-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0B181CA45
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 13:50:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E898A81CAB1
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 14:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143E01F225E7
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 12:50:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DDC1C21FDC
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 13:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C68018C2E;
-	Fri, 22 Dec 2023 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B944F1A58E;
+	Fri, 22 Dec 2023 13:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LZ+z9xnr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Iqa5Kbw7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D644818624;
-	Fri, 22 Dec 2023 12:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d4006b251aso15984595ad.0;
-        Fri, 22 Dec 2023 04:49:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703249353; x=1703854153; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X8zZt4WN4jUldW1IhbtAqlFHddSRBTBboS3+40U4jk4=;
-        b=LZ+z9xnrqytr7i8Kby9aZm5nCNIcwl4BeNGuguIfACiug5HdMXOcWqBaoPfE7JkHBj
-         34MAa/8CH0Qj8uf0r/R0/zsZ/AarToVJyG3n/o2PqVv/ShGMZWhCo9W2b7Rd7VG0GEbi
-         TUBD0P5kERqWn3R+rPVAtlI0FWnPb6uEnUQwYc2GlqP/Pe80wp81jK+jRgXBU1dOCFFg
-         FmAx1aFYCrYkB+k0zFdpZymRCcYBcuesNIGs9PbTiNw4ST4/4nCqsaRDmhNJCA/2gSJH
-         srfyjXmtCrgGA/RIYDaMub3lPAxu7TMK6U6LPnqcWqvcKV8IUr20FhQxW7uok3kILjLl
-         1Mrg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8F21A28F
+	for <linux-iio@vger.kernel.org>; Fri, 22 Dec 2023 13:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703251706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zjtBwcyrS/xfG3xz11U3E0BKYyC+0OSUW6t3X3+SrTk=;
+	b=Iqa5Kbw7iiVID9SFpKTGXTiBDkEqqhmblqcrME66gUdtagNwMO8D/kgs9fFD7yhjPZZtK2
+	2eZxUsNcOxaJIsdUndYRZ4eq2gmODJknG79CRfggd88KKNOLQol8lqdLuQYrhln9xNO2eR
+	hBtY80/DWNOcXt9kqfVjVFeSP+mTxtY=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-XShY8HZWOu2a1weKN7JMBw-1; Fri, 22 Dec 2023 08:28:25 -0500
+X-MC-Unique: XShY8HZWOu2a1weKN7JMBw-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-553a7468be9so818842a12.2
+        for <linux-iio@vger.kernel.org>; Fri, 22 Dec 2023 05:28:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703249353; x=1703854153;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X8zZt4WN4jUldW1IhbtAqlFHddSRBTBboS3+40U4jk4=;
-        b=kt+d4y3fjQOzwi5SxpX786DBb1D48/E0yOlTgDsr90c3O7uvzHwB9HyBEjrP/ia0XM
-         3hbkZMgLTV1Xr47daP11rH16x1ebUpAw5VJLbRVPsP0GStaePyczEPvliVK00FAbAdfI
-         hxsE13vUv/g82zZx/RRR0/4mnxD4PUlgar2LOUwWXLAWFC2hdonCJGDMxqFYCiEqLViq
-         cf9Wk5jjfTpZ6TUEANBbko7wfedxnAsw26NXLcmCX5upti26fIGXaofhv2IqNanehpUz
-         pcarNAR+pc8vzZ+x7KdS28fV8Xi7fiUMMqG8aMIGQVbFY7MMaN0Mk7Em6DHq4RWQ73FK
-         PkWA==
-X-Gm-Message-State: AOJu0YwlB+uOc2dm7Nm7RcU+L51SjMVvybddW0X53CUfpI0rHuWcbgXl
-	4+DHOqIfJHsUkPTLun2cKok=
-X-Google-Smtp-Source: AGHT+IFShtK0BHRAkNgoyW6+jDiOQcTsJ4kBSQ80gkb0zqFcsvjyhatz11/c7kJJsY3p9mi5iVZrAw==
-X-Received: by 2002:a17:902:784c:b0:1d0:69dc:954e with SMTP id e12-20020a170902784c00b001d069dc954emr1122024pln.24.1703249353031;
-        Fri, 22 Dec 2023 04:49:13 -0800 (PST)
-Received: from localhost ([2804:30c:160d:b800:be05:2c5b:24c0:12aa])
-        by smtp.gmail.com with ESMTPSA id jk15-20020a170903330f00b001d1c96a0c63sm3388448plb.274.2023.12.22.04.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 04:49:12 -0800 (PST)
-Date: Fri, 22 Dec 2023 09:49:05 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
-	joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-	paul.cercueil@analog.com, Michael.Hennerich@analog.com,
-	lars@metafoo.de, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	dan.carpenter@linaro.org, dlechner@baylibre.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 11/11] MAINTAINERS: Add MAINTAINERS entry for AD7091R
-Message-ID: <ZYWFwVzQN4vU7FdG@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1703013352.git.marcelo.schmitt1@gmail.com>
- <4247e653354f8eb362264189db24c612d5e4e131.1703013352.git.marcelo.schmitt1@gmail.com>
- <20231221165947.6c64b2c5@jic23-huawei>
+        d=1e100.net; s=20230601; t=1703251704; x=1703856504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zjtBwcyrS/xfG3xz11U3E0BKYyC+0OSUW6t3X3+SrTk=;
+        b=UT4CnSL0o3UUQZL9D/PwMkD8I+0m/NG+mjt0e+iTLnW2oupjuFRFo7PI/MqdkCrMxV
+         iRebn4kWzq4hKN4Uj0VKwrFfnrNhiuDcJ5P2rdwuc6jDgdy4KidWYW0i+UdTlB7+FfJ+
+         D60q4wmGFZv/xEtrBRmPXOcC+n5iFmKSikZXL8rLqmiVfDUOFDi6EOInJSMvNB81kyA3
+         BrBkTFftD8cDqfDhKqr1axWRsNvdw/hcMsZoBc0qxDAIXPnyzTfRPF6yyUgzPmEXxq0G
+         /sBlCHslKckoxVRJaFVGssQL+hiQbjzz4FvJpgbFV/J6OEBmCcxud+Hng6jeUGN8A52/
+         eg1A==
+X-Gm-Message-State: AOJu0Yz4LMXiLeOL3QidprH3/hVK27rpc64QARBxKrVoH09xdvKTQ95n
+	IOBxOUOSxkfst9D1FsYpkydr2bMsuteX3Wt0fERbkYuzuEbrQ1qoSYF6uFDCRJ9/7rP5fKMS953
+	NLVdgxL826H/oG/oHxz6ahBphmwL0XrDKYKyCW8Px26U6
+X-Received: by 2002:aa7:c7d4:0:b0:553:451d:981 with SMTP id o20-20020aa7c7d4000000b00553451d0981mr611579eds.27.1703251704706;
+        Fri, 22 Dec 2023 05:28:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8dKAHszdWVmVU3P+KG67bHgG7OlsmCbL7vkqRTd451rgN60S1dg0/d1u9nbfcB9U9ZPw0e7teJrPTePkYpk8=
+X-Received: by 2002:aa7:c7d4:0:b0:553:451d:981 with SMTP id
+ o20-20020aa7c7d4000000b00553451d0981mr611573eds.27.1703251704410; Fri, 22 Dec
+ 2023 05:28:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231221165947.6c64b2c5@jic23-huawei>
+References: <20231219231503.1506801-1-jekhor@gmail.com> <20231220145229.020abe62@jic23-huawei>
+ <CAKWEGV50duj-TcKdQp1BtN_QgnBZyG0WgAqo8Y5UtCinqOAh_g@mail.gmail.com> <38313826939a468ff8c7eee24e2cf07e9eef6768.camel@linux.intel.com>
+In-Reply-To: <38313826939a468ff8c7eee24e2cf07e9eef6768.camel@linux.intel.com>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date: Fri, 22 Dec 2023 14:28:12 +0100
+Message-ID: <CAO-hwJ+RDnukVhL1=PirK=hU7gm2t73xsg=aDss0M9hj_CSuHA@mail.gmail.com>
+Subject: Re: [PATCH] HID: sensor-hub: Enable hid core report processing for
+ all devices
+To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Yauhen Kharuzhy <jekhor@gmail.com>, Jonathan Cameron <jic23@kernel.org>, linux-input@vger.kernel.org, 
+	linux-iio@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>, 
+	linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/21, Jonathan Cameron wrote:
-> On Tue, 19 Dec 2023 17:32:59 -0300
-> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
-> 
-> > The driver for AD7091R was added in
-> > ca693001: iio: adc: Add support for AD7091R5 ADC
-> > but no MAINTAINERS file entry was added for it since then.
-> > Add a proper MAINTAINERS file entry for the AD7091R driver.
-> > 
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Hi Marcelo
-> 
-> The series looks good to me now. However timing is a bit against
-> us because I won't squeeze in another pull request (unless the
-> kernel release is delayed for some and Linus strong hints at that
-> this weekend).
-> 
-> What I'll probably do with this series is pull out the first 2 patches
-> as fixes to go in either at the back end of the merge window or just
-> after, then pick the rest of the patches up for 6.9.
-> 
-> If I seem to have lost track of them in about the 2nd week of January,
-> feel free to poke me. 
-> 
-okay, sounds good.
-Also, will do the change to ABI doc in a separate patch so this set doesn't get
-blocked by the mistakes I will make on the ABI patch. :)
+On Fri, Dec 22, 2023 at 1:44=E2=80=AFPM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Wed, 2023-12-20 at 17:04 +0200, Yauhen Kharuzhy wrote:
+> > =D1=81=D1=80, 20 =D0=B4=D0=B5=D0=BA. 2023=E2=80=AF=D0=B3. =D0=B2 16:52,=
+ Jonathan Cameron <jic23@kernel.org>:
+> > >
+> > > On Wed, 20 Dec 2023 01:15:03 +0200
+> > > Yauhen Kharuzhy <jekhor@gmail.com> wrote:
+> > >
+> > > > After the commit 666cf30a589a ("HID: sensor-hub: Allow multi-
+> > > > function
+> > > > sensor devices") hub devices are claimed by hidraw driver in
+> > > > hid_connect().
+> > > > This causes stoppping of processing HID reports by hid core due
+> > > > to
+> > > > optimization.
+> > > >
+> > > > In such case, the hid-sensor-custom driver cannot match a known
+> > > > custom
+> > > > sensor in hid_sensor_custom_get_known() because it try to check
+> > > > custom
+> > > > properties which weren't filled from the report because hid core
+> > > > didn't
+> > > > parsed it.
+> > > >
+> > > > As result, custom sensors like hinge angle sensor and LISS
+> > > > sensors
+> > > > don't work.
+> > > >
+> > > > Mark the sensor hub devices claimed by some driver to avoid
+> > > > hidraw-related
+> > > > optimizations.
+> > > >
+> > > > Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+> > > Fixes tag?
+> >
+> > Fixes: 666cf30a589a ("HID: sensor-hub: Allow multi-function sensor
+> > devices")
+> >
+> This flag causes
+>                 hdev->claimed |=3D HID_CLAIMED_DRIVER;
+> I don't see the flag is used anywhere after this assignment in hid
+> core. Only two other drivers are setting this flag. We need Jiri's help
+> here why this is a special case.
 
-Thanks,
-Marcelo
+It's used in hid_report_raw_event()[0]:
+```
+    if (hid->claimed !=3D HID_CLAIMED_HIDRAW && report->maxfield) {
+        hid_process_report(hid, report, cdata, interrupt);
+        hdrv =3D hid->driver;
+        if (hdrv && hdrv->report)
+            hdrv->report(hid, report);
+    }
+```
 
-> Jonathan
-> > ---
-> >  MAINTAINERS | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 4eddc4212f2b..3473cfbac826 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -1126,6 +1126,14 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
-> >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-> >  F:	drivers/iio/adc/ad4130.c
-> >  
-> > +ANALOG DEVICES INC AD7091R DRIVER
-> > +M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > +L:	linux-iio@vger.kernel.org
-> > +S:	Supported
-> > +W:	http://ez.analog.com/community/linux-device-drivers
-> > +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
-> > +F:	drivers/iio/adc/drivers/iio/adc/ad7091r*
-> > +
-> >  ANALOG DEVICES INC AD7192 DRIVER
-> >  M:	Alexandru Tachici <alexandru.tachici@analog.com>
-> >  L:	linux-iio@vger.kernel.org
-> 
+The whole point of setting HID_CLAIMED_DRIVER is to have hid->claimed
+not equal to HID_CLAIMED_HIDRAW, in case we need the hid core
+processing.
+
+Cheers,
+Benjamin
+
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/drivers/hid/hid-core.c#n2015
+
+>
+> Thanks,
+> Srinivas
+>
+> > >
+> > > > ---
+> > > >  drivers/hid/hid-sensor-hub.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-
+> > > > sensor-hub.c
+> > > > index 2eba152e8b90..26e93a331a51 100644
+> > > > --- a/drivers/hid/hid-sensor-hub.c
+> > > > +++ b/drivers/hid/hid-sensor-hub.c
+> > > > @@ -632,7 +632,7 @@ static int sensor_hub_probe(struct hid_device
+> > > > *hdev,
+> > > >       }
+> > > >       INIT_LIST_HEAD(&hdev->inputs);
+> > > >
+> > > > -     ret =3D hid_hw_start(hdev, HID_CONNECT_DEFAULT);
+> > > > +     ret =3D hid_hw_start(hdev, HID_CONNECT_DEFAULT |
+> > > > HID_CONNECT_DRIVER);
+> > > >       if (ret) {
+> > > >               hid_err(hdev, "hw start failed\n");
+> > > >               return ret;
+> > >
+> >
+> >
+>
+
 

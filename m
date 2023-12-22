@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-1217-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1218-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E142481C6FE
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 09:58:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A203081C721
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 10:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110631C22107
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 08:58:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E48CB2346D
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 09:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF714D50B;
-	Fri, 22 Dec 2023 08:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B2CD530;
+	Fri, 22 Dec 2023 09:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFMgGrcA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gIrwDfNx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36931CA65;
-	Fri, 22 Dec 2023 08:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15ED51E;
+	Fri, 22 Dec 2023 09:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-40c2db2ee28so19932025e9.2;
-        Fri, 22 Dec 2023 00:58:30 -0800 (PST)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33666fb9318so1437864f8f.2;
+        Fri, 22 Dec 2023 01:07:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703235509; x=1703840309; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703236055; x=1703840855; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cI35bX0Nhe6pNuZytaRMQzlreBpUdOzZVZdkSiKR318=;
-        b=XFMgGrcAWhzJDMD0P2kapwOyfxCAHG5hbloyRcTb+gB9xpPdt7yYsESLWuIHCoYvhP
-         uAlIbA8NV1T/UkyJM41M3pcpsB7QSPBwDK7A1kuVXN23ZbpvcHOqureVPhBsOu6+8LwU
-         cGkAC/wHTxoEt4dYhsoNhDIynjKgvz7Fd7/krTLEJHfWEBqaFBC2QE4OQw4DOR3pcluV
-         PWGzDIbRkMviuVh96GCLW5dWBND2fMFmDL+cH+DRa0Ihtnjau1PkvnObDgkFBlK2EKz3
-         qBHVgZE+StZ97BnukzK0vaj4pCZH4mN0sD2+dQkqeJeMk7/U3xWJMoq7nsbtz0crXaYX
-         kZlA==
+        bh=CoXYLZZXsRfrRLR/vElKQjDEkbBG0uHrbhO1kZUdwjI=;
+        b=gIrwDfNxqWJQqQrtintS207646Qpn5jRwBwDM7EI183ARc5dehHTlCGUk27Bn3vjFz
+         SVEu15MrSkGKDYURmhkWwSQ0/rHF52UtyLkzFok2+4R3iccg1kTaqwojW5vx2dNqNJX0
+         hjC2FblqftJRyis1ukU2U1DHiVJIWZIpfuVlB5xvktGKxvY0+J+ri12JkPBEiGVRmjke
+         CWtPrwWSnHuc4eMs0YwmgltC8y9tVxvJXg6IQPaKUP3gGVL764oVLNxqxv8KcJI796yE
+         PxLHRiXEiU4jWOxIhuiVgdPLxDa65JJr7QdycM0iLmMKyfUrH7ERLbxwBbPO0KUC3Dq9
+         wckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703235509; x=1703840309;
+        d=1e100.net; s=20230601; t=1703236055; x=1703840855;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=cI35bX0Nhe6pNuZytaRMQzlreBpUdOzZVZdkSiKR318=;
-        b=RvtEsGW52bknRPLqK3pefibZVWPxKcGpJiGp/2vB/qspBz4XxA4wNSw3d14FFjwWZL
-         EtI0vFipAMw8WTT8oSkAlZbDUulS7BM3TptlR2N3OcO40zgqY45l6GniWckBa1I3UuJw
-         236gbVtnsE7InBF0RY7RHC7qSTnWQjf5R9gBv/rrEquh1TeeYBL1kcWHWD7RJus+0qkL
-         zW4xPR6+KRyJqFU4JBxweqC0kZn5fPn0l1wDyMVAngUTvDX342eODxlmjx4uvzkKp7C7
-         JivQ7p95zzalg31cvzXKlh5smzj2WXPkZZvkIhrKrLT397jLzUnssjg/VEMI9KuG0vTC
-         rRjw==
-X-Gm-Message-State: AOJu0Yx6iIFQdxGdiHsVokjNCkXsdu93rZBLPJ5w8IfmFGUtVeGQTaPA
-	4YimbV6aN6ZKrvQWm0dmD9IbhKl7fvTSm7YUNMY=
-X-Google-Smtp-Source: AGHT+IHxUXolvNOrzYP2sehmaGu4dpOV/paRm80lFYTwBFEv14pGkL6zMlGQe6zd/u5nBBYzi0u5pA==
-X-Received: by 2002:a05:600c:3d0f:b0:40d:43cf:275d with SMTP id bh15-20020a05600c3d0f00b0040d43cf275dmr535638wmb.95.1703235508788;
-        Fri, 22 Dec 2023 00:58:28 -0800 (PST)
+        bh=CoXYLZZXsRfrRLR/vElKQjDEkbBG0uHrbhO1kZUdwjI=;
+        b=EeKXmsKruvOuTkUB6Cxt1qokGiaFDD5AioIRRflj/TI/wjqmRwQH1nBF2jjCXAogB5
+         MpflGMhvG2O4b1Kznyfk113dMGcVrMIC8SwoYlf5GOgGqfWD0lWAfXiHEKMLJvL565YR
+         xXMDUVDW9RynJLFoC+qsVM0+Gjumyu+WXcMPg7Rhs0y/9t28YomCjZLtIFDKpeTLfscm
+         AXGdBF9dHMT//wEbPZRO8BYojHUDOf51XllAH9427eRnO8KKn7JjkSgbV8lBT58JTMFT
+         0Se5ZmwC3OM7UPOi5HrrXmZ9sTFDx4k32wgDPBOQrpTXuNN9WCpqiaaUhwWUGMSJhcE2
+         TKfQ==
+X-Gm-Message-State: AOJu0YycyTCKaqlyOSr2LNwRpQLPZc80cNQUGtjBH/obaSXDYhrRonD6
+	lW3+0PvpxRf6xPY6VVW81hCxj6li7jE8Mtg5WvQ=
+X-Google-Smtp-Source: AGHT+IFoVZhMYz1oDB0MvyLErIPElov49RB4uA6y8AXLGR7+83mY7bwvrW9/Ub7Jzl0rT/EgZymdSw==
+X-Received: by 2002:a05:600c:3d88:b0:40b:5e21:ec1f with SMTP id bi8-20020a05600c3d8800b0040b5e21ec1fmr552331wmb.81.1703236054425;
+        Fri, 22 Dec 2023 01:07:34 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:5877:261e:1d6d:8696? ([2001:818:ea8e:7f00:5877:261e:1d6d:8696])
-        by smtp.gmail.com with ESMTPSA id h7-20020a05600c350700b0040d2e37c06dsm6120316wmq.20.2023.12.22.00.58.27
+        by smtp.gmail.com with ESMTPSA id s21-20020a05600c45d500b0040c3953cda5sm14028665wmo.45.2023.12.22.01.07.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 00:58:28 -0800 (PST)
-Message-ID: <277071605eb355912972a30b07ecead7d70efe25.camel@gmail.com>
-Subject: Re: [PATCH v5 7/8] iio: buffer-dmaengine: Support new DMABUF based
- userspace API
+        Fri, 22 Dec 2023 01:07:34 -0800 (PST)
+Message-ID: <0412e07926d67490a66d0aac19ecca734ce54426.camel@gmail.com>
+Subject: Re: [PATCH v4 2/8] dt-bindings: adc: axi-adc: deprecate
+ 'adi,adc-dev'
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Corbet
-	 <corbet@lwn.net>, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, Christian
-	=?ISO-8859-1?Q?K=F6nig?=
-	 <christian.koenig@amd.com>, linaro-mm-sig@lists.linaro.org, Vinod Koul
-	 <vkoul@kernel.org>, dmaengine@vger.kernel.org, Sumit Semwal
-	 <sumit.semwal@linaro.org>, linux-media@vger.kernel.org
-Date: Fri, 22 Dec 2023 09:58:29 +0100
-In-Reply-To: <2da3fb55384a222868f90562be9e1e2ca55ec1c3.camel@crapouillou.net>
-References: <20231219175009.65482-1-paul@crapouillou.net>
-	 <20231219175009.65482-8-paul@crapouillou.net>
-	 <20231221161258.056f5ce4@jic23-huawei>
-	 <2da3fb55384a222868f90562be9e1e2ca55ec1c3.camel@crapouillou.net>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
+Date: Fri, 22 Dec 2023 10:07:34 +0100
+In-Reply-To: <20231221172538.6477b843@jic23-huawei>
+References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
+	 <20231220-iio-backend-v4-2-998e9148b692@analog.com>
+	 <20231221172538.6477b843@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -85,110 +84,88 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2023-12-21 at 18:30 +0100, Paul Cercueil wrote:
-> Hi Jonathan,
+On Thu, 2023-12-21 at 17:25 +0000, Jonathan Cameron wrote:
+> On Wed, 20 Dec 2023 16:34:05 +0100
+> Nuno Sa <nuno.sa@analog.com> wrote:
 >=20
-> Le jeudi 21 d=C3=A9cembre 2023 =C3=A0 16:12 +0000, Jonathan Cameron a =C3=
-=A9crit=C2=A0:
-> > On Tue, 19 Dec 2023 18:50:08 +0100
-> > Paul Cercueil <paul@crapouillou.net> wrote:
-> >=20
-> > > Use the functions provided by the buffer-dma core to implement the
-> > > DMABUF userspace API in the buffer-dmaengine IIO buffer
-> > > implementation.
-> > >=20
-> > > Since we want to be able to transfer an arbitrary number of bytes
-> > > and
-> > > not necesarily the full DMABUF, the associated scatterlist is
-> > > converted
-> > > to an array of DMA addresses + lengths, which is then passed to
-> > > dmaengine_prep_slave_dma_array().
-> > >=20
-> > > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > One question inline. Otherwise looks fine to me.
-> >=20
-> > J
-> > >=20
-> > > ---
-> > > v3: Use the new dmaengine_prep_slave_dma_array(), and adapt the
-> > > code to
-> > > =C2=A0=C2=A0=C2=A0 work with the new functions introduced in industri=
-alio-buffer-
-> > > dma.c.
-> > >=20
-> > > v5: - Use the new dmaengine_prep_slave_dma_vec().
-> > > =C2=A0=C2=A0=C2=A0 - Restrict to input buffers, since output buffers =
-are not yet
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 supported by IIO buffers.
-> > > ---
-> > > =C2=A0.../buffer/industrialio-buffer-dmaengine.c=C2=A0=C2=A0=C2=A0 | =
-52
-> > > ++++++++++++++++---
-> > > =C2=A01 file changed, 46 insertions(+), 6 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > > b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > > index 5f85ba38e6f6..825d76a24a67 100644
-> > > --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > > +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> > > @@ -64,15 +64,51 @@ static int
-> > > iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue
-> > > *queue,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct dmaengine_buff=
-er *dmaengine_buffer =3D
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0iio_buffer_to_dmaengine_buffer(&queue->buffer);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct dma_async_tx_d=
-escriptor *desc;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int i, nents;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct scatterlist *sgl;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct dma_vec *vecs;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0size_t max_size;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dma_cookie_t cookie;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0size_t len_total;
-> > > =C2=A0
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0block->bytes_used =3D min(=
-block->size, dmaengine_buffer-
-> > > > max_size);
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0block->bytes_used =3D roun=
-d_down(block->bytes_used,
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dma=
-engine_buffer->align);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (queue->buffer.directio=
-n !=3D IIO_BUFFER_DIRECTION_IN) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0/* We do not yet support output buffers. */
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return -EINVAL;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > > =C2=A0
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0desc =3D dmaengine_prep_sl=
-ave_single(dmaengine_buffer->chan,
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0block->phys_addr, block->bytes_used,
-> > > DMA_DEV_TO_MEM,
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0DMA_PREP_INTERRUPT);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (block->sg_table) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0sgl =3D block->sg_table->sgl;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0nents =3D sg_nents_for_len(sgl, block->bytes_used);
-> >=20
-> > Are we guaranteed the length in the sglist is enough?=C2=A0 If not this
-> > can return an error code.
+> > 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
+> > also remove it from being required.
 >=20
-> The length of the sglist will always be enough, the
-> iio_buffer_enqueue_dmabuf() function already checks that block-
-> > bytes_used is equal or smaller than the size of the DMABUF.
+> With my 'specifications language' brain engaged (also know as pedantic)
+> I think this is a 'should' not a 'must' case. You aren't breaking
+> backwards compatibility just advising moving to the newer / better interf=
+ace.
 >=20
-> It is quite a few functions above in the call stack though, so I can
-> handle the errors of sg_nents_for_len() here if you think makes sense.
 
-Maybe putting something like the above in a comment?
+Well, you surely know better than me as a native speaker :)
+
+>=20
+> >=20
+> > The reason why it's being deprecated is because the axi-adc CORE is now
+> > an IIO service provider hardware (IIO backends) for consumers to make u=
+se
+> > of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
+> > of consumer referencing other nodes/devices) and that proved to be wron=
+g
+> > and to not scale.
+> >=20
+> > Now, IIO consumers of this hardware are expected to reference it using =
+the
+> > io-backends property.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 4 +-=
+--
+> > =C2=A01 file changed, 1 insertion(+), 3 deletions(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> > b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> > index 9996dd93f84b..835b40063343 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> > @@ -39,12 +39,12 @@ properties:
+> > =C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/phandle
+> > =C2=A0=C2=A0=C2=A0=C2=A0 description:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 A reference to a the actual ADC to=
+ which this FPGA ADC interfaces to.
+> > +=C2=A0=C2=A0=C2=A0 deprecated: true
+> > =C2=A0
+> > =C2=A0required:
+> > =C2=A0=C2=A0 - compatible
+> > =C2=A0=C2=A0 - dmas
+> > =C2=A0=C2=A0 - reg
+> > -=C2=A0 - adi,adc-dev
+>=20
+> Dropping it from required is fine, but do we have a new condition where o=
+ne or the
+> other
+> should be required?=C2=A0 If so good to add the dt-binding magic to enfor=
+ce that. Look
+> for a oneOf combined with required. There are a few IIO examples of this =
+either or
+> type required. You may want to then enforce that both are not provided th=
+ough I
+> guess we perhaps don't care - the driver will just prioritise one approac=
+h over the
+> other.
+>=20
+
+Hmm, the thing is that io-backends is applied in the frontend device (so ot=
+her
+binding) and in here we should only have the adi,adc-dev which is now depre=
+cated so
+I'm not sure how that would look like?
+
+I think new users of the deprecated property are very unlikely unless they =
+choose to
+ignore the deprecated warning. As for old users (if they add the new one an=
+d don't
+remove this one, the new one will have priority). But I'm still confident t=
+here are
+no users of this out there :)
+
 
 - Nuno S=C3=A1
-
 
 

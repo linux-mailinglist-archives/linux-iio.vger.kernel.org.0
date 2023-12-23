@@ -1,127 +1,90 @@
-Return-Path: <linux-iio+bounces-1237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162E881D3F9
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 13:19:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12ADF81D40E
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 13:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05141F2241D
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 12:19:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31002837D0
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 12:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6D2D277;
-	Sat, 23 Dec 2023 12:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB91DD313;
+	Sat, 23 Dec 2023 12:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=ceggers@gmx.de header.b="mDR2ZasV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srbYoYpg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7B7D262;
-	Sat, 23 Dec 2023 12:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1703333931; x=1703938731; i=ceggers@gmx.de;
-	bh=VEzCJnVH1074VdVJy7kEb47npS8xcIImbieIfqQLWMU=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=mDR2ZasVlIU7gzWyWlIe1F7zTpV318wcf1yOcz6oXh0GkPLsquBpDySGcxanpfRN
-	 apPOIRbiUrKfRR6pq2fuOH213fjC1J+XvMHUUlDEzZiCFBF3vn/JEqm+H0k8EE8PP
-	 X4rOjjjcbVmcL+IyPVGpdvYu+1XnDRgu/tV0Coy3QOn2qT62lvkZt3ACVQbaHAlUV
-	 ww114CFv9ohmHfdbfmgR6in0lMML1OveYNi0JD0xUAeZ/iI9vG6ovP7T5iZyaKcdb
-	 jAF+u5DgJIcprDvjaO2WWvjSRKJ5poql5/OQ6F5iGkqq7dyI4XkAGiZBcjhXrQ30u
-	 l6mvAg7Ypc+YNB6fWw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from zbook-studio-g3.localnet ([46.183.103.8]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1Mwwdf-1r5WtO34n5-00yS8X; Sat, 23 Dec 2023 13:18:51 +0100
-From: Christian Eggers <ceggers@gmx.de>
-To: Christian Eggers <ceggers@arri.de>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: Re: [PATCH 0/2] iio: light: add support for AMS AS7331
-Date: Sat, 23 Dec 2023 13:18:42 +0100
-Message-ID: <5750063.DvuYhMxLoT@zbook-studio-g3>
-In-Reply-To: <20231220-as7331-v1-0-745b73c27703@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F531D52F;
+	Sat, 23 Dec 2023 12:49:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299A9C433CB;
+	Sat, 23 Dec 2023 12:49:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703335765;
+	bh=NhhSHGhmXm/1FOYx4JZTc0xBFK4D7PbuCyyVW6Zl5XQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=srbYoYpg/WiWm6FP7gsVwlrsz837jn5FQJmmWgEjEZ1TOBSAJgurQEr6uJXUq4nT/
+	 hXPNVaEHJ2KEx4GIW1aheN+Jn8ECeiFR3Zq2LIl4nWc7Cv4huMxxpFFoMtYvKj5nKu
+	 aYhCgA3eYFG1IF6Rj7dLyJKBoe8XyRUy64JTOphtH6vJrh8McN1+R4RCF3Qd+kftr9
+	 yABSqgDWl40eXXlOuiD3n8cGtD2nxLbUx7H0agKRbUYL6QfXo1vPnZkRZUjZH9VK4q
+	 W3FAJpciVGENwYl5GAD4majaS8BcciIvQHuZ5AnCE+aTB/mINoyTxNiF/uAAVga7LT
+	 QsU6RziDTvP/w==
+Date: Sat, 23 Dec 2023 12:49:20 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Christian Eggers <ceggers@arri.de>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: as73211: add support for
+ as7331
+Message-ID: <20231223-nucleus-taps-7ba9d371c84a@spud>
 References: <20231220-as7331-v1-0-745b73c27703@gmail.com>
+ <20231220-as7331-v1-1-745b73c27703@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="MOSQ+IDtmMJ7WSwL"
+Content-Disposition: inline
+In-Reply-To: <20231220-as7331-v1-1-745b73c27703@gmail.com>
+
+
+--MOSQ+IDtmMJ7WSwL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K1:auqFnmGoYgT6FHaZta38ZgyDweJqwORJaO/xbdXdtQ8vcN3suPd
- JomYrsxCaQHMPuRcwyprvh2fLAWv4K4tKViFtwwajO1Iojp6PkX5yRXJxF44XJNQZCRgm3K
- 1tx9NfKA46YbmmQZfugxaf+OsCxu7C74S2xVTZQD4bLZUv31XoPjjMjWWLqg6YXd+SoXgJy
- 6BmffpE+LK1GIQvMtJxmw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:u5q51As/go0=;d1nnuU8UUHrrFfstO5AiCkcpDqP
- u5h9cRAVJ8Sk0V2aO7C6Puz8r3NYP72ah/oIRXCSBQwic0dNktkcpMGJwo4fzfYKXHWwfwxRV
- e/Y24/C2PfgJEEEjmgqkgZ0O3XgMjgwzKkVhhW1H6tpVg57VjtMfNCHd/bEKE/utYylPWzYvK
- bjXqNJZtOLqS0EPjt75d4nvTnJCN+vBpJxcV6H4JOwGuef4SQj6uJSxFwEWBB/Lo2TWo+82GG
- 8K+fBz4guTC/olc8SJMGdw2FNsgFaNWbWBWhsLlAWtRUN7dRX3U9qiRJ3dY0ro+7x+PVVTFD4
- xivxcEXSbdYZednBIg44aOwddPYPmzcKUL7bVVsRm4QJWQgVgHIzWGszZlBb5pNh6WUA4Ud76
- 2OhvaamgBtJ0WaMPLoMiKf1DMkHdrbKyRxcv6VeoUPqn95H+gkq4moVnJM9wDqR6GKVMp8tT6
- hlIv1WbYrjgftYoPABma49zI2zGl/fArOGzAc44hUYPzool1J+PPv95R52FauPWVjpfReifiB
- tX0O4yTZul8XsVIKo1n2G4lC6UgfeBL5g6olIY7BLEIgVtJmxKrSCY2nZmR8hT6WSNpwtjy49
- vF6NtY73GtOMD2dtwISJ4pP9NN7KSob0MF3crAs44q3eTWyTu2z9iFVgrutqaPFG9iNi1uZlf
- TqoeRSQQmJ2W3DXn4wOckMumhELxmt9LhvNObofP7tdINU2/llAXgEsoaUVR7k0gS4wVK7EVy
- 8L8fb/4OR6YxG//TvYlWS4KtfRA5esZStDlEgRUWwMej+9i2pHm3ejF+Yt8txL7CaLY3dGzNk
- i/s5cEC1iCM5E+gTYYfdpxNKNOcc592I4z/MTLARG25Mkl9k2A5zf3XdCVsNUWFSFEFFvL4/D
- A0OBERLPW46AQ6x9RjjHz8cnD2rWvCIMC/t43rfnVGRKms6cl/i6TCTlwoojsEuzRzLZ5oABB
- EGhWdtemdxCak8/Pc77vZtPJ6m8RN5WxETC+cSqAXqoGc18b
 
-Am Samstag, 23. Dezember 2023, 11:46:12 CET schrieb Javier Carrasco:
-> The AMS AS7331 UV light sensor measures three ultraviolet bands (UVA,
-> UVB and UVC, also known as deep UV or DUV) as well as temperature.
->
-> This device is practically identical to the AMS AS73211 XYZ True Color
-> sensor that is already supported by the iio subsystem, except for the
-> photodiodes used to aquire the desired light wavelengths.
->
-> In order to reuse code and reduce maintenance load, this series extends
-> the AS73211 driver to support the AS7331 as well.
->
-> Note that the UVA and UVB light modifiers have not been merged into the
-> mainline kernel yet, but they are already available in Greg's char-misc
-> git tree which can be found at
-> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-> in the char-misc-next branch.
->
-> The original device AS73211 supported by the driver could only be tested
-> briefly due to the lack of hardware. Instead, the i2c-stub module has
-> been used to make sure that the driver registers the iio device properly
-> and the attributes exported to sysfs are correct. Some basic register
-> assignments reported the expected intensity scales and in principle
-> nothing else should have been affected by the modifications in the code.
-
-I still use the original AS73211, so I can offer testing with it. I am
-currently away, I'll do the tests on 2023-12-30 and report the result
-then.
-
->
+On Sat, Dec 23, 2023 at 11:46:13AM +0100, Javier Carrasco wrote:
+> This device has the same properties and I2C addresses as the as73211.
+> The only difference between them is the photodiodes they use internally,
+> which in this case is irrelevant for the bindings.
+>=20
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
-> Javier Carrasco (2):
->       dt-bindings: iio: light: as73211: add support for as7331
->       io: light: as73211: add support for as7331
->
->  .../devicetree/bindings/iio/light/ams,as73211.yaml |   7 +-
->  drivers/iio/light/Kconfig                          |   5 +-
->  drivers/iio/light/as73211.c                        | 146
-> +++++++++++++++++---- 3 files changed, 127 insertions(+), 31 deletions(-=
-)
-> ---
-> base-commit: e9215fcca2561b208c78359110ee4009b454f761
-> change-id: 20231220-as7331-88a25ceeb66d
->
-> Best regards,
 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
+Cheers,
+Conor.
 
+--MOSQ+IDtmMJ7WSwL
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZYbXPQAKCRB4tDGHoIJi
+0nr8AP47Rocj53EtEcbKvty78vpjqelINcySkbcixMVrYkqz8AD9EypPzD+i8WHk
+Ovq17Q8r7REOFc/NjD9v0vbbHt1XPAk=
+=Xx3z
+-----END PGP SIGNATURE-----
+
+--MOSQ+IDtmMJ7WSwL--
 

@@ -1,61 +1,104 @@
-Return-Path: <linux-iio+bounces-1239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C9D81D414
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 13:51:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A022481D661
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 20:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB09A1C20BBA
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 12:51:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A87281AEF
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 19:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D90D28B;
-	Sat, 23 Dec 2023 12:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58FD154A1;
+	Sat, 23 Dec 2023 19:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0kTLyt8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fh2PnoYN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABB0D2E3
-	for <linux-iio@vger.kernel.org>; Sat, 23 Dec 2023 12:51:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B00FC433C7;
-	Sat, 23 Dec 2023 12:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703335885;
-	bh=/lbiPYiuTKtJ5/H2kM3aGjiS4oW243QjxEzQI53sA1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n0kTLyt8Ir2Ub3LjJ/BLfbpLnXQzsO3llIoCqZ6PMx6rS7yMH5f2FHxMGS5c+C7QO
-	 ovYhFVPcTkkdYXJ68v9m+BqsFz4vUh4evIbe/WKeT+r8fc5BOViLevcPILSCaOBhee
-	 uqCxfN98rwnuTdECNpdp6NrOdKlaSXKwtj5voYnY=
-Date: Sat, 23 Dec 2023 13:51:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: William Breathitt Gray <william.gray@linaro.org>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [GIT PULL] First set of Counter updates for 6.8
-Message-ID: <2023122307-cassette-headscarf-529f@gregkh>
-References: <ZYWUDpW6nKfY5_Vs@ishi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B891D681;
+	Sat, 23 Dec 2023 19:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-550dd0e3304so3429942a12.1;
+        Sat, 23 Dec 2023 11:45:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703360755; x=1703965555; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ewT0As/HA/i0HnEBzeVFxgMh9tztpLDF7fJw+JJpgu0=;
+        b=fh2PnoYNXfkptMSntRokuuDOlaw+DOkC4dI29CZMb0QQQmpWGMb+ZVY3ZQp54cZX2j
+         Ub1rBFn0vab3EHWLsEm9AklpxsO4G6ePu+cIs2PSvUVF0uuFOUxe3n/ESIUINK4nDJr2
+         LvQEbjjoBEIW64Sf9BtYlmxGWfxWP1xjJ57FGHvuZ0D6GbGz3hCDdAuzwlnuIkXNAoN8
+         UZu5tFWRkbEwXCp1ZpWCJ6+30KFlybIu5vjaOcaVJRuJeMpEub6iVP+2KJq/Nf4lJ7ii
+         gOXHhG+oRzKzJMW0TgwaEky9ciIu336R0LiLyTRmpYqDQ/sGZneGAA3Bix9wH/PgutgW
+         utKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703360755; x=1703965555;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ewT0As/HA/i0HnEBzeVFxgMh9tztpLDF7fJw+JJpgu0=;
+        b=qm+HDLqO8gybA9s7qf+MpYsSUpf/4nuI6XVgh72hGWc2hNaVfqW0bWfD7mWeN+SAxm
+         6VrrwdklHH8KozJimjaqPS37sG7RdaiMbNWodZ2A+vOFtLpacsfpudjzGRGH6Om3qmnW
+         2S/mYpbdrxVWHVWG58TAzE0s6YUY6CeUAYoelSlp8DKBH6reX2TQV9763eAQ/1HywMLW
+         rFkpSEsNvC1CheL/5lFQ9/EENFzCOv3qliVTf4fAOQLjagFkSOfP0lqtmTi26EZsYIkq
+         q7ev8m/Rh7Kp9QPHuEvnh986v3rWA7LBoYFAgkHaUTC/+Nsgs/deGdCacfX0cg1Q/LKK
+         uxLg==
+X-Gm-Message-State: AOJu0YzIs9cpfaJ4TRpOYobST4AOm09Xxie4xvudb5cK21mzNfqVAgLf
+	GVIwWU/P+G2dTJxuNfPhfpP2/WB+Xri4Pq+q
+X-Google-Smtp-Source: AGHT+IF9gINu0zxxgZrKaZXha0Tu6DEmSlckmmBloQ3zgkxWR+hGaL91LoCX+tkwIDcltSI6Mh5gNQ==
+X-Received: by 2002:a05:6402:1603:b0:554:1431:a977 with SMTP id f3-20020a056402160300b005541431a977mr1810798edv.54.1703360755084;
+        Sat, 23 Dec 2023 11:45:55 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:6545:dd3c:de03:74c? (2a02-8389-41cf-e200-6545-dd3c-de03-074c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:6545:dd3c:de03:74c])
+        by smtp.gmail.com with ESMTPSA id o21-20020aa7dd55000000b005548bed07b0sm1094688edw.47.2023.12.23.11.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Dec 2023 11:45:54 -0800 (PST)
+Message-ID: <acb74002-31ee-4130-96e1-9ac497a15c2e@gmail.com>
+Date: Sat, 23 Dec 2023 20:45:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZYWUDpW6nKfY5_Vs@ishi>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] iio: light: add support for AMS AS7331
+To: Christian Eggers <ceggers@gmx.de>, Christian Eggers <ceggers@arri.de>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20231220-as7331-v1-0-745b73c27703@gmail.com>
+ <5750063.DvuYhMxLoT@zbook-studio-g3>
+Content-Language: en-US
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <5750063.DvuYhMxLoT@zbook-studio-g3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 22, 2023 at 08:50:06AM -0500, William Breathitt Gray wrote:
-> The following changes since commit a39b6ac3781d46ba18193c9dbb2110f31e9bffe9:
-> 
->   Linux 6.7-rc5 (2023-12-10 14:33:40 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-updates-for-6.8a
+Hi Christian,
 
-Pulled and pushed out, thanks.
+On 23.12.23 13:18, Christian Eggers wrote:> I still use the original
+AS73211, so I can offer testing with it. I am
+> currently away, I'll do the tests on 2023-12-30 and report the result
+> then.
+> 
+That would be great, thanks for your offer.
 
-greg k-h
+In principle my modifications should be transparent to the AS73211 and
+only the code to retrieve the scales has suffered significant
+modifications, which I could test with i2c tools.
+
+But none of my tests can compare to yours with real hardware, so I am
+looking forward to hearing from you again. Hopefully to hear that I did
+not cause any regression :)
+
+Best regards,
+Javier Carrasco
 

@@ -1,86 +1,80 @@
-Return-Path: <linux-iio+bounces-1231-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1232-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA4881D251
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 06:06:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF1A81D334
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 09:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C9C7B22525
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 05:06:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18D70B22092
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 08:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AA9469E;
-	Sat, 23 Dec 2023 05:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="4HZRhNiY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401818C07;
+	Sat, 23 Dec 2023 08:40:09 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DE820E8;
-	Sat, 23 Dec 2023 05:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=JyfgCRRufOn1EHv8GLn9qHB684YjM7cMDOWBxpHhTaU=; b=4HZRhNiYwJDsCwDZP4zObq3tYL
-	OLTcD2Mjd5eQzDYTLOIqAONP9NfUpputUWcmCp6Uw2mZQGakLep+mpJUTIjL/Fjo50blhvaA7UmtH
-	PWQkiDTtWaWGaFUBjRAmkEUNaeSJ/AmtjzPudFhVNJ4wxC9bNavZyPsiASKlkmaKXJ8gyiTqKwfgz
-	NMa6vn2gOrWAoRD+ZLya6DcdvV2fUsIfWaZ8VdkgRlD3fNQfwza5Ph7gfvhBLeSFzvILFpKsk85Mj
-	5SWqIM4E6sefDF2hzC1GDgCWL/3mfyz6wrKAZK8W/bOJNbTAzqUT41TxHAmmzpXg/LhLaNOLpobVy
-	c4ZmhXig==;
-Received: from [50.53.46.231] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rGuCz-007Oek-01;
-	Sat, 23 Dec 2023 05:05:57 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: linux/iio.h: fix Excess kernel-doc description warning
-Date: Fri, 22 Dec 2023 21:05:56 -0800
-Message-ID: <20231223050556.13948-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547278BEC;
+	Sat, 23 Dec 2023 08:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rGx9J-0005AO-V1; Sat, 23 Dec 2023 09:14:22 +0100
+Message-ID: <a59faf48-2a8a-41ce-8d59-b65a7cdfdf17@leemhuis.info>
+Date: Sat, 23 Dec 2023 09:14:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/9] Support light color temperature and chromaticity
+Content-Language: en-US, de-DE
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Cc: jikos@kernel.org, benjamin.tissoires@redhat.com, jic23@kernel.org,
+ lars@metafoo.de, srinivas.pandruvada@linux.intel.com,
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <20230919081054.2050714-1-Basavaraj.Natikar@amd.com>
+ <4441bd6b-01cd-4f26-bf85-bde2e1bf404e@t-8ch.de>
+From: "Linux regression tracking #update (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <4441bd6b-01cd-4f26-bf85-bde2e1bf404e@t-8ch.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1703320807;74558ded;
+X-HE-SMSGID: 1rGx9J-0005AO-V1
 
-Remove the @of_xlate: lines to prevent the kernel-doc warning:
+[TLDR: This mail in primarily relevant for Linux regression tracking. A
+change or fix related to the regression discussed in this thread was
+posted or applied, but it did not use a Closes: tag to point to the
+report, as Linus and the documentation call for. Things happen, no
+worries -- but now the regression tracking bot needs to be told manually
+about the fix. See link in footer if these mails annoy you.]
 
-include/linux/iio/iio.h:534: warning: Excess struct member 'of_xlate' description in 'iio_info'
+On 07.12.23 00:39, Thomas Weißschuh wrote:
+> On 2023-09-19 13:40:45+0530, Basavaraj Natikar wrote:
+> [...]
+> This series is breaking probing of hid-sensor-als on Framework 13 AMD
+> laptops [0].
+> [...]
+> #regzbot introduced: 5f05285df691b1e82108eead7165feae238c95ef
+> #regzbot monitor: https://bugzilla.kernel.org/show_bug.cgi?id=218223
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
----
- include/linux/iio/iio.h |    6 ------
- 1 file changed, 6 deletions(-)
+#regzbot fix: d4005431673929
+#regzbot ignore-activity
 
-diff -- a/include/linux/iio/iio.h b/include/linux/iio/iio.h
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -434,13 +434,7 @@ struct iio_trigger; /* forward declarati
-  * @update_scan_mode:	function to configure device and scan buffer when
-  *			channels have changed
-  * @debugfs_reg_access:	function to read or write register value of device
-- * @of_xlate:		function pointer to obtain channel specifier index.
-- *			When #iio-cells is greater than '0', the driver could
-- *			provide a custom of_xlate function that reads the
-- *			*args* and returns the appropriate index in registered
-- *			IIO channels array.
-  * @fwnode_xlate:	fwnode based function pointer to obtain channel specifier index.
-- *			Functionally the same as @of_xlate.
-  * @hwfifo_set_watermark: function pointer to set the current hardware
-  *			fifo watermark level; see hwfifo_* entries in
-  *			Documentation/ABI/testing/sysfs-bus-iio for details on
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
+
 

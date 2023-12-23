@@ -1,81 +1,78 @@
-Return-Path: <linux-iio+bounces-1229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D2481CE73
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 19:27:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A450681D24C
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 06:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 577511F22E9B
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Dec 2023 18:27:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF4B01C22534
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Dec 2023 05:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E322C1A9;
-	Fri, 22 Dec 2023 18:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2242F3222;
+	Sat, 23 Dec 2023 05:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAhYc/yL"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LEA2HSkF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E92C196;
-	Fri, 22 Dec 2023 18:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFBFC433C8;
-	Fri, 22 Dec 2023 18:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703269665;
-	bh=jBq9Spzdcu2O8tozQzt3qro+Hc8ZCBz9msYeevvGov4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=NAhYc/yL4nPXHaZxpww12ejmgPLYARUmsmPSjh0wE+OM9OYTseRA7ZjakcC0qb/HW
-	 +OxuSzRtIbeAXuPaNTpbf2HfyWwX7aKYnKMv9XYOyifOhmFDwzqP38XJceMk6uFFIj
-	 u+JCSa76kaHmUpn1ctMn1F8HzgO1BuBahXvONcdrJqCxx9O0UmIIfqffD4CEpspSYF
-	 Gb8zYibiQTXr1CRUgBydOvXWMWACWC5QwE2c8aEVnz06Gf/ZnIYlfhKDC+4YzaVfnZ
-	 wwi6WtTolgErLDgAAfoUQA1GtKJgFN8gdfWIF4wm0ROlAv8P3JDRCIJr6z+HYEPPE4
-	 t7umGkk8ZXDWg==
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
- Yauhen Kharuzhy <jekhor@gmail.com>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>, 
- linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
- Benjamin Tissoires <benjamin.tissoires@redhat.com>
-In-Reply-To: <20231219231503.1506801-1-jekhor@gmail.com>
-References: <20231219231503.1506801-1-jekhor@gmail.com>
-Subject: Re: [PATCH] HID: sensor-hub: Enable hid core report processing for
- all devices
-Message-Id: <170326966337.2018208.16515231674277786077.b4-ty@kernel.org>
-Date: Fri, 22 Dec 2023 19:27:43 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506938BE0;
+	Sat, 23 Dec 2023 05:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=KaEmTpHfBTShYhOTv7C/rpD+KFzSuDv6UtwePGIwHNU=; b=LEA2HSkFnfK9YLqle7dnJ4j8Wj
+	XaH2cav+DKN4mfRBc9HlU8SdN5i3Mr+5/7O7727wxef/IiK7uj2qLCxZk+FCWLs+grqrW67S0i4TS
+	OENMMCjQREew568lElOhnaWt3zgD93Uu8GyzRTxfFNV8Sj+wg2noR1edRP5ELTJ9WW1Xu65wemgof
+	1XB6nnSD8tMFZhWAJJ88AG6i+mqgxNlJRafmqaw6VTyGqTTIL4VbVDfoJrLHqga8NNsHtRQYFnkJS
+	4gqbJb6/R/DzTT6KVlvx4OImlP1RgCCsTo/qm2oCU4pP1HO7L/irCYRfEvR1twdfNH1XTZaIWYDR1
+	sP3VNqwg==;
+Received: from [50.53.46.231] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rGuCF-007OWO-2B;
+	Sat, 23 Dec 2023 05:05:11 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	William Breathitt Gray <william.gray@linaro.org>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] counter: linux/counter.h: fix Excess kernel-doc description warning
+Date: Fri, 22 Dec 2023 21:05:11 -0800
+Message-ID: <20231223050511.13849-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Wed, 20 Dec 2023 01:15:03 +0200, Yauhen Kharuzhy wrote:
-> After the commit 666cf30a589a ("HID: sensor-hub: Allow multi-function
-> sensor devices") hub devices are claimed by hidraw driver in hid_connect().
-> This causes stoppping of processing HID reports by hid core due to
-> optimization.
-> 
-> In such case, the hid-sensor-custom driver cannot match a known custom
-> sensor in hid_sensor_custom_get_known() because it try to check custom
-> properties which weren't filled from the report because hid core didn't
-> parsed it.
-> 
-> [...]
+Remove the @priv: line to prevent the kernel-doc warning:
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git (for-6.8/sensor-hub), thanks!
+include/linux/counter.h:400: warning: Excess struct member 'priv' description in 'counter_device'
 
-[1/1] HID: sensor-hub: Enable hid core report processing for all devices
-      https://git.kernel.org/hid/hid/c/8e2f79f41a5d
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: William Breathitt Gray <william.gray@linaro.org>
+Cc: linux-iio@vger.kernel.org
+---
+ include/linux/counter.h |    1 -
+ 1 file changed, 1 deletion(-)
 
-Cheers,
--- 
-Benjamin Tissoires <bentiss@kernel.org>
-
+diff -- a/include/linux/counter.h b/include/linux/counter.h
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -359,7 +359,6 @@ struct counter_ops {
+  * @num_counts:		number of Counts specified in @counts
+  * @ext:		optional array of Counter device extensions
+  * @num_ext:		number of Counter device extensions specified in @ext
+- * @priv:		optional private data supplied by driver
+  * @dev:		internal device structure
+  * @chrdev:		internal character device structure
+  * @events_list:	list of current watching Counter events
 

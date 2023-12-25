@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-1253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7878181E082
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Dec 2023 13:57:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D15181E0A2
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Dec 2023 14:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05BB51F220EF
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Dec 2023 12:57:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FFA11C219DB
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Dec 2023 13:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB20651C3D;
-	Mon, 25 Dec 2023 12:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF0D524D8;
+	Mon, 25 Dec 2023 12:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="arNMY6Vq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E3T0kla1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0897550275
-	for <linux-iio@vger.kernel.org>; Mon, 25 Dec 2023 12:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9256254BF5
+	for <linux-iio@vger.kernel.org>; Mon, 25 Dec 2023 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a236456fee1so447923466b.1
-        for <linux-iio@vger.kernel.org>; Mon, 25 Dec 2023 04:57:43 -0800 (PST)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a265d4f78bfso315698466b.0
+        for <linux-iio@vger.kernel.org>; Mon, 25 Dec 2023 04:59:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703509062; x=1704113862; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1703509185; x=1704113985; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2836GHVSMxD4pEMsvcSkpc9zsaMTJx5V60Hbz6IE2rg=;
-        b=arNMY6VqQKbyw3/Pn8j3DMRnPjH8PDZpirBWyqzqBMsrPIRhqiNNuLH/x6LN5C3es+
-         B1Llyx8TBYqJzJTua1vloYE1ObVGAjswWINP9L2mhxj08RDH8GCRS6IgRTgDKA8MbWXL
-         tTYrDI/CscfUeDm+wSrgWGQWackf44OZvFjbJKcFjugROaKp+cRPSaOkZW1EVjED5MNv
-         iFPxOx4xpdETK7zVuIZiacPjSEOadWHaGJJ0D/N6lldcLQj8In8wbEAn9wfBU2Ews2Az
-         O4nR+Lric38hY7TH0EeM2Y+8mmkw+mzqPBh0EznyfOdBYlz4FiJJ0k1UEG+wb2mTuxyL
-         ckoA==
+        bh=ZeUEoBjZhkWglQxeiv+2JgdHv+3Vm0351/gVSMlaOzI=;
+        b=E3T0kla1B+iYMOBPzZ1DzD3TyC0B+FueKiIMZaFBoE8luHTNKNd5toebS1HjuREmg9
+         tdo7mo8LPQ4AtHnVKbaf7aL8artwO4Qz2//Nf34m10mYUpVcNcKS63XErMCw/TkavQa8
+         ULYW5/jLOl4yQHoAjz1bUU8Nbp0lp+EsEGifZW08KtEqRbN3Rwq31Aq149VyvYCQHZL6
+         XSOou+TrjprR2NE9uUqs0peqhV+DtLZid4JG70MBaBUI4F8cPLpo8WbEUxHPysqReEZ9
+         GeBGue4paKAK6Kg8I0dTXz1UHwgrOjaF1u6GJPozGnsEhwCd2neIVBy2SGWY7L/RXDyi
+         g6ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703509062; x=1704113862;
+        d=1e100.net; s=20230601; t=1703509185; x=1704113985;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2836GHVSMxD4pEMsvcSkpc9zsaMTJx5V60Hbz6IE2rg=;
-        b=k6ESHYDveZpVE/C4aiZwCHAGfSXE5EyK4Ei+/YB20fjnIF4j5tZ6qo4UJ0K2A2n+UI
-         kmAeU8XnXs0aVaURVX37tO7Bm4FqDQuW796/h3A1KriAPUWXPjZifboAG0klcn+u4OcV
-         CfLFn7iO3GPGdfF16Ze+FefGUpmlZPo+OVSYUVlCkcJGUdbubePr3wKwcwdYGVclvtSR
-         m2vITDuLhs12Z18+N8siAs6vruW1S/bLfZFKlMOsfCZ2VMx0Nr0EHyAQMyspnpAbdrIB
-         SY/dfQbPIncYz/6uaCNouRKll15V1ExoxVUw7XV/Hp205QvAjy5XYdZ3TAIoe14nnpOw
-         7pHQ==
-X-Gm-Message-State: AOJu0YxiEEjalClgw/EBIAH9kcRh7meIq/CxK1G7wBdhSqVl5lbYhVIS
-	R9W/6hDsUcKRhohTPQu080dsXt/LEHdoBA==
-X-Google-Smtp-Source: AGHT+IF3g630AIr81g9cNDvz+AQCLGz/tKDwXjpQ2ROuD4l4fkq1lJln5pzdYNbmrAaSn/LXm9rvfw==
-X-Received: by 2002:a17:906:3406:b0:a23:55c6:8f23 with SMTP id c6-20020a170906340600b00a2355c68f23mr2401184ejb.129.1703509061911;
-        Mon, 25 Dec 2023 04:57:41 -0800 (PST)
+        bh=ZeUEoBjZhkWglQxeiv+2JgdHv+3Vm0351/gVSMlaOzI=;
+        b=BrQOnSku8odNNFNABr2PvKISOTFzUExsmTcrKTfEwe+lJ9qB4NIGq5y9aEu2RfJZsZ
+         zxd1L2bmB0mfqAULb/Dg7pnIVLrK3YLgCId5fuEXQS7bR5HKtQEbktGISauYEWg5pdn0
+         RDEAxwz2FuvSPRFEQD4EYu6fyOT3iTID4L4gdxtMh7ouTgqjIqH/WijrUVjedJthW9NS
+         q/acdejzxzKHSwFNz3e3rVYX/nxdln/CqpqlhZraFviwlX/7UVVx3uOQqKWzqeLK535K
+         AI7reJV5jGRpmy2XTR4nUlU4ekkEaIc7jqfWZDsizq4mYX39jmVqRMkikqLKbuEjIXDc
+         7N+w==
+X-Gm-Message-State: AOJu0Yx8gRoYUVvtgh5Bf64UAigBEjan9P8bebpdFaJD6+qzibKBFX96
+	zZ9DSX8utkDsNfZIGCYEvjGLJh+x9u+LdA==
+X-Google-Smtp-Source: AGHT+IH7VUB2PaYudISie6wl3QAKSHGxDXNG48RtsG2k+lVPmt0XkUD9mySP6AVKS8+YjLYdtzJMWQ==
+X-Received: by 2002:a17:906:1009:b0:a23:5a00:326 with SMTP id 9-20020a170906100900b00a235a000326mr3019449ejm.0.1703509184905;
+        Mon, 25 Dec 2023 04:59:44 -0800 (PST)
 Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id ge24-20020a170907909800b00a1c7b20e9e6sm4808930ejb.32.2023.12.25.04.57.39
+        by smtp.gmail.com with ESMTPSA id d21-20020a170906305500b00a2699b0fd49sm4803610ejd.86.2023.12.25.04.59.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Dec 2023 04:57:41 -0800 (PST)
-Message-ID: <49525adf-1540-4801-8cdf-be1c0fe640f6@linaro.org>
-Date: Mon, 25 Dec 2023 13:57:39 +0100
+        Mon, 25 Dec 2023 04:59:44 -0800 (PST)
+Message-ID: <b23a6b74-a568-4e11-8429-6344e10a9937@linaro.org>
+Date: Mon, 25 Dec 2023 13:59:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,8 +66,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/10] dt-bindings: iio: pressure:
- honeywell,mprls0025pa.yaml add pressure-triplet
+Subject: Re: [PATCH v2 03/10] dt-bindings: iio: pressure:
+ honeywell,mprls0025pa.yaml add spi bus
 Content-Language: en-US
 To: Petre Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -76,7 +76,7 @@ Cc: Andreas Klinger <ak@it-klinger.de>, Jonathan Cameron <jic23@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
 References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
- <20231224143500.10940-3-petre.rodan@subdimension.ro>
+ <20231224143500.10940-4-petre.rodan@subdimension.ro>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -122,127 +122,54 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231224143500.10940-3-petre.rodan@subdimension.ro>
+In-Reply-To: <20231224143500.10940-4-petre.rodan@subdimension.ro>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 24/12/2023 15:34, Petre Rodan wrote:
-> Change order of properties in order for the end user to de-prioritize
-> pmin-pascal and pmax-pascal which are superseded by pressure-triplet.
+> Add spi based example.
 > 
-> Add pressure-triplet property which automatically initializes
-> pmin-pascal and pmax-pascal inside the driver
+> Add spi-max-frequency property required by chip specifications.
 > 
-> Rework honeywell,pmXX-pascal requirements based on feedback from
-> Jonathan and Conor.
+> Add additional maintainer.
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 > ---
->  .../iio/pressure/honeywell,mprls0025pa.yaml   | 64 ++++++++++++++-----
->  1 file changed, 47 insertions(+), 17 deletions(-)
+>  .../iio/pressure/honeywell,mprls0025pa.yaml   | 26 +++++++++++++++++--
+>  1 file changed, 24 insertions(+), 2 deletions(-)
 > 
 > diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-> index 84ced4e5a7da..e4021306d187 100644
+> index e4021306d187..430496b047c7 100644
 > --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
 > +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-> @@ -19,14 +19,17 @@ description: |
+> @@ -8,12 +8,12 @@ title: Honeywell mprls0025pa pressure sensor
+> 
+>  maintainers:
+>    - Andreas Klinger <ak@it-klinger.de>
+> +  - Petre Rodan <petre.rodan@subdimension.ro>
+> 
+>  description: |
+>    Honeywell pressure sensor of model mprls0025pa.
+> 
+> -  This sensor has an I2C and SPI interface. Only the I2C interface is
+> -  implemented.
+> +  This sensor has an I2C and SPI interface. Both are supported.
+
+Instead drop that sentence. Current driver support should not matter for
+the bindings.
+
+> 
+>    There are many models with different pressure ranges available. The vendor
 >    calls them "mpr series". All of them have the identical programming model and
->    differ in the pressure range, unit and transfer function.
+> @@ -88,6 +88,9 @@ properties:
+>        Maximum pressure value the sensor can measure in pascal.
+>        To be specified only if honeywell,pressure-triplet is not set.
 > 
-> -  To support different models one need to specify the pressure range as well as
-> -  the transfer function. Pressure range needs to be converted from its unit to
-> +  To support different models one need to specify its pressure triplet as well
-> +  as the transfer function.
-> +
-> +  For custom models the pressure values can alternatively be specified manually.
-> +  The minimal range value stands for the minimum pressure and the maximum value
-> +  also for the maximum pressure with linear relation inside the range.
-> +  Pressure range needs to be converted from the datasheet specified unit to
->    pascal.
-> 
->    The transfer function defines the ranges of numerical values delivered by the
-> -  sensor. The minimal range value stands for the minimum pressure and the
-> -  maximum value also for the maximum pressure with linear relation inside the
-> -  range.
-> +  sensor.
-> 
->    Specifications about the devices can be found at:
->      https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/
-> @@ -54,14 +57,6 @@ properties:
->        If not present the device is not reset during the probe.
->      maxItems: 1
-> 
-> -  honeywell,pmin-pascal:
-> -    description:
-> -      Minimum pressure value the sensor can measure in pascal.
-> -
-> -  honeywell,pmax-pascal:
-> -    description:
-> -      Maximum pressure value the sensor can measure in pascal.
-> -
->    honeywell,transfer-function:
->      description: |
->        Transfer function which defines the range of valid values delivered by the
-> @@ -72,17 +67,52 @@ properties:
->      enum: [1, 2, 3]
->      $ref: /schemas/types.yaml#/definitions/uint32
-> 
-> +  honeywell,pressure-triplet:
+> +  spi-max-frequency:
+> +    maximum: 800000
 
-Why not putting it just before existing properties?
-
-> +    description: |
-> +      Case-sensitive five character string that defines pressure range, unit
-> +      and type as part of the device nomenclature. In the unlikely case of a
-> +      custom chip, unset and provide pmin-pascal and pmax-pascal instead.
-> +    enum: [0001BA, 01.6BA, 02.5BA, 0060MG, 0100MG, 0160MG, 0250MG, 0400MG,
-> +           0600MG, 0001BG, 01.6BG, 02.5BG, 0100KA, 0160KA, 0250KA, 0006KG,
-> +           0010KG, 0016KG, 0025KG, 0040KG, 0060KG, 0100KG, 0160KG, 0250KG,
-> +           0015PA, 0025PA, 0030PA, 0001PG, 0005PG, 0015PG, 0030PG, 0300YG]
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +
-> +  honeywell,pmin-pascal:
-> +    description:
-> +      Minimum pressure value the sensor can measure in pascal.
-> +      To be specified only if honeywell,pressure-triplet is not set.
-
-The last sentence is redundant - schema should enforce that.
-
-> +
-> +  honeywell,pmax-pascal:
-> +    description:
-> +      Maximum pressure value the sensor can measure in pascal.
-> +      To be specified only if honeywell,pressure-triplet is not set.
-> +
->    vdd-supply:
->      description: provide VDD power to the sensor.
-> 
->  required:
->    - compatible
->    - reg
-> -  - honeywell,pmin-pascal
-> -  - honeywell,pmax-pascal
->    - honeywell,transfer-function
->    - vdd-supply
-> 
-> +oneOf:
-> +  - required:
-> +      - honeywell,pmin-pascal
-> +      - honeywell,pmax-pascal
-> +  - required:
-> +      - honeywell,pressure-triplet
-> +
-> +allOf:
-> +  - if:
-> +      required:
-> +        - honeywell,pressure-triplet
-> +    then:
-> +      properties:
-> +        honeywell,pmin-pascal: false
-> +        honeywell,pmax-pascal: false
-
-This allOf is not needed.
+So you miss allOf: with $ref to spi props.
 
 Best regards,
 Krzysztof

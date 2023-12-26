@@ -1,54 +1,53 @@
-Return-Path: <linux-iio+bounces-1269-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1270-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0C181E816
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:38:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C0A81E823
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A145C1C20F09
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 15:38:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5001F21D7B
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 15:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC094F20F;
-	Tue, 26 Dec 2023 15:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFD44F210;
+	Tue, 26 Dec 2023 15:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YR2FPmQV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcbwyvX0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E750D4F207;
-	Tue, 26 Dec 2023 15:38:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BB8C433C7;
-	Tue, 26 Dec 2023 15:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04BC4F207;
+	Tue, 26 Dec 2023 15:45:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19656C433C8;
+	Tue, 26 Dec 2023 15:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703605082;
-	bh=mjuSKXBYLBTXrExGzU7ImcTp0tooyzuVATIRqErYFjc=;
+	s=k20201202; t=1703605519;
+	bh=NhmamG9+fHayVcbk79Rh5B4IaSWcmsGnW4aUZA8zJyU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YR2FPmQVEXPusZIXW7SWDAJHfCZpkjfL3RZo0Z+RHzcmIOCMr1fFMtXzY59YZi3aJ
-	 9/fJA6jFtN6DhzfysEU3V04JmfGUA7BlgtuTyBQHdK4Gtu+lDykw/eb8TAORwGD5qM
-	 pKMqUpUQXl7E7DEB08RD6naH3IhC9PXeh6nhXWF6TcVYcqRZKAD5amRPmNzFR+HARK
-	 b0bN5IBB4tKwZDZalmrftan7S3aOrVPUnN+3yd4B/1HtQisGlb/zr3KJ3QkKEI9C1p
-	 o0RnLTNQJIO/cM4k3QOabK33IUBf8mnsMul5ivPtReMtWJMUieSKv23mQ/Uw4RS3j5
-	 O7J9Ppj88oddg==
-Date: Tue, 26 Dec 2023 15:37:54 +0000
+	b=HcbwyvX0vsblx50SKZKV3SZKdVVYSi+MKE8TeMyF8gCLIzzcIjW1FkEqYr1G6X9NI
+	 DcmgAISjZGRszhQY9EXn+Hr74NNhV8eeLLdJkMIulAycK7btcah2yzVKqGKDEojqYv
+	 qGLE0wbhXY/NGDyiOsQh/Kk14pjYKlK4auEZRU6LeLE+1r3isiApFStPNwChYZpgLD
+	 D/Jxhcp15msfSE17epvZadmpJkFCNL/g9r4FfUBlCG0YLx67YQsxy/hFRnMxoXsrMM
+	 4vrfi444ZPgXJEZ3skv+e/flB2t7Az0SKjgqmUGtmMtayKj6w6EQnvuMKMDajkIuGI
+	 LFETtXEXjyzkw==
+Date: Tue, 26 Dec 2023 15:45:09 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Paul Cercueil <paul@crapouillou.net>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Vinod Koul <vkoul@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, Nuno =?UTF-8?B?U8Oh?=
- <noname.nuno@gmail.com>, Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v5 0/8] iio: new DMABUF based API, v5
-Message-ID: <20231226153754.6d5b2c5e@jic23-huawei>
-In-Reply-To: <a303d86e82b1ac15a7ef16bef0fc77e03601f633.camel@crapouillou.net>
-References: <20231219175009.65482-1-paul@crapouillou.net>
-	<20231221163031.1a410905@jic23-huawei>
-	<a303d86e82b1ac15a7ef16bef0fc77e03601f633.camel@crapouillou.net>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, apw@canonical.com,
+ joe@perches.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
+ paul.cercueil@analog.com, Michael.Hennerich@analog.com, lars@metafoo.de,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ dan.carpenter@linaro.org, dlechner@baylibre.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 11/11] MAINTAINERS: Add MAINTAINERS entry for AD7091R
+Message-ID: <20231226154509.450c5e40@jic23-huawei>
+In-Reply-To: <ZYWFwVzQN4vU7FdG@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1703013352.git.marcelo.schmitt1@gmail.com>
+	<4247e653354f8eb362264189db24c612d5e4e131.1703013352.git.marcelo.schmitt1@gmail.com>
+	<20231221165947.6c64b2c5@jic23-huawei>
+	<ZYWFwVzQN4vU7FdG@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,287 +55,77 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 21 Dec 2023 18:56:52 +0100
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Fri, 22 Dec 2023 09:49:05 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> Hi Jonathan,
->=20
-> Le jeudi 21 d=C3=A9cembre 2023 =C3=A0 16:30 +0000, Jonathan Cameron a =C3=
-=A9crit=C2=A0:
-> > On Tue, 19 Dec 2023 18:50:01 +0100
-> > Paul Cercueil <paul@crapouillou.net> wrote:
-> >  =20
-> > > [V4 was: "iio: Add buffer write() support"][1]
-> > >=20
-> > > Hi Jonathan,
-> > >  =20
-> > Hi Paul,
-> >  =20
-> > > This is a respin of the V3 of my patchset that introduced a new
-> > > interface based on DMABUF objects [2]. =20
-> >=20
-> > Great to see this moving forwards.
-> >  =20
-> > >=20
-> > > The V4 was a split of the patchset, to attempt to upstream buffer
-> > > write() support first. But since there is no current user upstream,
-> > > it
-> > > was not merged. This V5 is about doing the opposite, and contains
-> > > the
-> > > new DMABUF interface, without adding the buffer write() support. It
-> > > can
-> > > already be used with the upstream adi-axi-adc driver. =20
-> >=20
-> > Seems like a sensible path in the short term.
-> >  =20
-> > >=20
-> > > In user-space, Libiio uses it to transfer back and forth blocks of
-> > > samples between the hardware and the applications, without having
-> > > to
-> > > copy the data.
-> > >=20
-> > > On a ZCU102 with a FMComms3 daughter board, running Libiio from the
-> > > pcercuei/dev-new-dmabuf-api branch [3], compiled with
-> > > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
-> > > =C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
-> > > =C2=A0 Throughput: 116 MiB/s
-> > >=20
-> > > Same hardware, with the DMABUF API (WITH_LOCAL_DMABUF_API=3DON):
-> > > =C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
-> > > =C2=A0 Throughput: 475 MiB/s
-> > >=20
-> > > This benchmark only measures the speed at which the data can be
-> > > fetched
-> > > to iio_rwdev's internal buffers, and does not actually try to read
-> > > the
-> > > data (e.g. to pipe it to stdout). It shows that fetching the data
-> > > is
-> > > more than 4x faster using the new interface.
-> > >=20
-> > > When actually reading the data, the performance difference isn't
-> > > that
-> > > impressive (maybe because in case of DMABUF the data is not in
-> > > cache): =20
-> >=20
-> > This needs a bit more investigation ideally. Perhaps perf counters
-> > can be
-> > used to establish that cache misses are the main different between
-> > dropping it on the floor and actually reading the data. =20
->=20
-> Yes, we'll work on it. The other big difference is that fileio uses
-> dma_alloc_coherent() while the DMABUFs use non-coherent mappings. I
-> guess coherent memory is faster for the typical access pattern (which
-> is "read/write everything sequentially once").
+> On 12/21, Jonathan Cameron wrote:
+> > On Tue, 19 Dec 2023 17:32:59 -0300
+> > Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> >   
+> > > The driver for AD7091R was added in
+> > > ca693001: iio: adc: Add support for AD7091R5 ADC
+> > > but no MAINTAINERS file entry was added for it since then.
+> > > Add a proper MAINTAINERS file entry for the AD7091R driver.
+> > > 
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>  
+> > Hi Marcelo
+> > 
+> > The series looks good to me now. However timing is a bit against
+> > us because I won't squeeze in another pull request (unless the
+> > kernel release is delayed for some and Linus strong hints at that
+> > this weekend).
+> > 
+> > What I'll probably do with this series is pull out the first 2 patches
+> > as fixes to go in either at the back end of the merge window or just
+> > after, then pick the rest of the patches up for 6.9.
+> > 
+> > If I seem to have lost track of them in about the 2nd week of January,
+> > feel free to poke me. 
+> >   
+> okay, sounds good.
+Seems that Linus has confirmed he'll do an rc8. So I might get a final
+pull request in.  So with that in mind I've picked this whole series up.
 
-Long time since I last worked much with a platform that wasn't always
-IO coherent, so I've forgotten how all this works (all ends up as no-ops
-on platforms I tend to use these days!)  Good luck, I'll be interested
-to see what this turns out to be.
+Applied to the togreg branch of iio.git and pushed out as testing for
+0-day to take a quick look at it.
 
->=20
-> > >=20
-> > > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
-> > > =C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/zero
-> > > status=3Dprogress
-> > > =C2=A0 2446422528 bytes (2.4 GB, 2.3 GiB) copied, 22 s, 111 MB/s
-> > >=20
-> > > WITH_LOCAL_DMABUF_API=3DON:
-> > > =C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/zero
-> > > status=3Dprogress
-> > > =C2=A0 2334388736 bytes (2.3 GB, 2.2 GiB) copied, 21 s, 114 MB/s
-> > >=20
-> > > One interesting thing to note is that fileio is (currently)
-> > > actually
-> > > faster than the DMABUF interface if you increase a lot the buffer
-> > > size.
-> > > My explanation is that the cache invalidation routine takes more
-> > > and
-> > > more time the bigger the DMABUF gets. This is because the DMABUF is
-> > > backed by small-size pages, so a (e.g.) 64 MiB DMABUF is backed by
-> > > up
-> > > to 16 thousands pages, that have to be invalidated one by one. This
-> > > can
-> > > be addressed by using huge pages, but the udmabuf driver does not
-> > > (yet)
-> > > support creating DMABUFs backed by huge pages. =20
-> >=20
-> > I'd imagine folios of reasonable size will help sort of a huge page
-> > as then hopefully it will use the flush by va range instructions if
-> > available.
-> >  =20
-> > >=20
-> > > Anyway, the real benefits happen when the DMABUFs are either shared
-> > > between IIO devices, or between the IIO subsystem and another
-> > > filesystem. In that case, the DMABUFs are simply passed around
-> > > drivers,
-> > > without the data being copied at any moment.
-> > >=20
-> > > We use that feature to transfer samples from our transceivers to
-> > > USB,
-> > > using a DMABUF interface to FunctionFS [4].
-> > >=20
-> > > This drastically increases the throughput, to about 274 MiB/s over
-> > > a
-> > > USB3 link, vs. 127 MiB/s using IIO's fileio interface + write() to
-> > > the
-> > > FunctionFS endpoints, for a lower CPU usage (0.85 vs. 0.65 load
-> > > avg.). =20
-> >=20
-> > This is a nice example.=C2=A0 Where are you with getting the patch merg=
-ed? =20
->=20
-> I'll send a new version (mostly a [RESEND]...) in the coming days. As
-> you can see from the review on my last attempt, the main blocker is
-> that nobody wants to merge a new interface if the rest of the kernel
-> bits aren't upstream yet. Kind of a chicken-and-egg problem :)
->=20
-> > Overall, this code looks fine to me, though there are some parts that
-> > need review by other maintainers (e.g. Vinod for the dmaengine
-> > callback)
-> > and I'd like a 'looks fine' at least form those who know a lot more
-> > about dmabuf than I do.
-> >=20
-> > To actually make this useful sounds like either udmabuf needs some
-> > perf
-> > improvements, or there has to be an upstream case of sharing it
-> > without
-> > something else (e.g your functionfs patches).=C2=A0 So what do we need =
-to
-> > get in before the positive benefit becomes worth carrying this extra
-> > complexity? (which isn't too bad so I'm fine with a small benefit and
-> > promises of riches :) =20
->=20
-> I think the FunctionFS DMABUF interface can be pushed as well for 5.9,
-> in parallel of this one, as the feedback on the V1 was good. I might
-> just need some help pushing it forward (kind of a "I merge it if you
-> merge it" guarantee).
-
-Ok. If we get a 'fine by us' from DMABUF folk I'd be happy to make
-that commitment for the IIO parts.
+Thanks,
 
 Jonathan
 
->=20
-> Cheers,
-> -Paul
->=20
-> >=20
-> > Jonathan
-> >  =20
-> > >=20
-> > > Based on linux-next/next-20231219.
-> > >=20
-> > > Cheers,
-> > > -Paul
-> > >=20
-> > > [1]
-> > > https://lore.kernel.org/all/20230807112113.47157-1-paul@crapouillou.n=
-et/
-> > > [2]
-> > > https://lore.kernel.org/all/20230403154800.215924-1-paul@crapouillou.=
-net/
-> > > [3]
-> > > https://github.com/analogdevicesinc/libiio/tree/pcercuei/dev-new-dmab=
-uf-api
-> > > [4]
-> > > https://lore.kernel.org/all/20230322092118.9213-1-paul@crapouillou.ne=
-t/
-> > >=20
+> Also, will do the change to ABI doc in a separate patch so this set doesn't get
+> blocked by the mistakes I will make on the ABI patch. :)
+> 
+> Thanks,
+> Marcelo
+> 
+> > Jonathan  
 > > > ---
-> > > Changelog:
-> > > - [3/8]: Replace V3's dmaengine_prep_slave_dma_array() with a new
-> > > =C2=A0 dmaengine_prep_slave_dma_vec(), which uses a new 'dma_vec'
-> > > struct.
-> > > =C2=A0 Note that at some point we will need to support cyclic transfe=
-rs
-> > > =C2=A0 using dmaengine_prep_slave_dma_vec(). Maybe with a new "flags"
-> > > =C2=A0 parameter to the function?
-> > >=20
-> > > - [4/8]: Implement .device_prep_slave_dma_vec() instead of V3's
-> > > =C2=A0 .device_prep_slave_dma_array().
-> > >=20
-> > > =C2=A0 @Vinod: this patch will cause a small conflict with my other
-> > > =C2=A0 patchset adding scatter-gather support to the axi-dmac driver.
-> > > =C2=A0 This patch adds a call to axi_dmac_alloc_desc(num_sgs), but the
-> > > =C2=A0 prototype of this function changed in my other patchset - it
-> > > would
-> > > =C2=A0 have to be passed the "chan" variable. I don't know how you
-> > > prefer it
-> > > =C2=A0 to be resolved. Worst case scenario (and if @Jonathan is okay
-> > > with
-> > > =C2=A0 that) this one patch can be re-sent later, but it would make t=
-his
-> > > =C2=A0 patchset less "atomic".
-> > >=20
-> > > - [5/8]:
-> > > =C2=A0 - Use dev_err() instead of pr_err()
-> > > =C2=A0 - Inline to_iio_dma_fence()
-> > > =C2=A0 - Add comment to explain why we unref twice when detaching dma=
-buf
-> > > =C2=A0 - Remove TODO comment. It is actually safe to free the file's
-> > > =C2=A0=C2=A0=C2=A0 private data even when transfers are still pending=
- because it
-> > > =C2=A0=C2=A0=C2=A0 won't be accessed.
-> > > =C2=A0 - Fix documentation of new fields in struct
-> > > iio_buffer_access_funcs
-> > > =C2=A0 - iio_dma_resv_lock() does not need to be exported, make it
-> > > static
-> > >=20
-> > > - [7/8]:
-> > > =C2=A0 - Use the new dmaengine_prep_slave_dma_vec().
-> > > =C2=A0 - Restrict to input buffers, since output buffers are not yet
-> > > =C2=A0=C2=A0=C2=A0 supported by IIO buffers.
-> > >=20
-> > > - [8/8]:
-> > > =C2=A0 Use description lists for the documentation of the three new
-> > > IOCTLs
-> > > =C2=A0 instead of abusing subsections.
-> > >=20
-> > > ---
-> > > Alexandru Ardelean (1):
-> > > =C2=A0 iio: buffer-dma: split iio_dma_buffer_fileio_free() function
-> > >=20
-> > > Paul Cercueil (7):
-> > > =C2=A0 iio: buffer-dma: Get rid of outgoing queue
-> > > =C2=A0 dmaengine: Add API function dmaengine_prep_slave_dma_vec()
-> > > =C2=A0 dmaengine: dma-axi-dmac: Implement device_prep_slave_dma_vec
-> > > =C2=A0 iio: core: Add new DMABUF interface infrastructure
-> > > =C2=A0 iio: buffer-dma: Enable support for DMABUFs
-> > > =C2=A0 iio: buffer-dmaengine: Support new DMABUF based userspace API
-> > > =C2=A0 Documentation: iio: Document high-speed DMABUF based API
-> > >=20
-> > > =C2=A0Documentation/iio/dmabuf_api.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 54 +++
-> > > =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 2 +
-> > > =C2=A0drivers/dma/dma-axi-dmac.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 40 ++
-> > > =C2=A0drivers/iio/buffer/industrialio-buffer-dma.c=C2=A0 | 242 ++++++=
-++---
-> > > =C2=A0.../buffer/industrialio-buffer-dmaengine.c=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 52 ++-
-> > > =C2=A0drivers/iio/industrialio-buffer.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 402
-> > > ++++++++++++++++++
-> > > =C2=A0include/linux/dmaengine.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0 25 ++
-> > > =C2=A0include/linux/iio/buffer-dma.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 33 +-
-> > > =C2=A0include/linux/iio/buffer_impl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 26 ++
-> > > =C2=A0include/uapi/linux/iio/buffer.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 22 +
-> > > =C2=A010 files changed, 836 insertions(+), 62 deletions(-)
-> > > =C2=A0create mode 100644 Documentation/iio/dmabuf_api.rst
-> > >  =20
-> >  =20
->=20
->=20
+> > >  MAINTAINERS | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > > 
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 4eddc4212f2b..3473cfbac826 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -1126,6 +1126,14 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+> > >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+> > >  F:	drivers/iio/adc/ad4130.c
+> > >  
+> > > +ANALOG DEVICES INC AD7091R DRIVER
+> > > +M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > +L:	linux-iio@vger.kernel.org
+> > > +S:	Supported
+> > > +W:	http://ez.analog.com/community/linux-device-drivers
+> > > +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+> > > +F:	drivers/iio/adc/drivers/iio/adc/ad7091r*
+> > > +
+> > >  ANALOG DEVICES INC AD7192 DRIVER
+> > >  M:	Alexandru Tachici <alexandru.tachici@analog.com>
+> > >  L:	linux-iio@vger.kernel.org  
+> >   
 
 

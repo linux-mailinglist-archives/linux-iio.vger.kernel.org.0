@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-1262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2D181E63E
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 10:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2BEB81E676
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 10:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C06C1C213AF
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 09:18:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72921C21D40
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 09:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE7B4CE1C;
-	Tue, 26 Dec 2023 09:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CB44D11E;
+	Tue, 26 Dec 2023 09:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wyNTCM4K"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MUJmqpCi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814964CE0E
-	for <linux-iio@vger.kernel.org>; Tue, 26 Dec 2023 09:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D11A4D10D
+	for <linux-iio@vger.kernel.org>; Tue, 26 Dec 2023 09:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-554e4f8610aso1133293a12.1
-        for <linux-iio@vger.kernel.org>; Tue, 26 Dec 2023 01:18:50 -0800 (PST)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50e18689828so4257382e87.2
+        for <linux-iio@vger.kernel.org>; Tue, 26 Dec 2023 01:38:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703582329; x=1704187129; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1703583488; x=1704188288; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=N7CJGDVpwk2q4Bu189RvHi0uzgfTc1G3i6UZd7KlCTw=;
-        b=wyNTCM4KqZlhFmbNFTKgFfwkdrneEfTFsTFDuZqj8XvhvsUpaEZ3HNz3BQnki94VXQ
-         xm9gaapA0axeCdDMSbR1tNJ4iB5Pt5cZ20EZGWO8WV9MbDBKF0WQVqXPHwSEC9foNMY5
-         FcnVf3UQ+DAEodDz5Td4hKt+amaqXteASHHnL5WtXzD1EZ/O8JqII42YeiqCX/7Uk0/+
-         3W0lAlJKy3gJsx/42Bb3SEqHfX7rpBRfxQT8/zPCTl6WJbZZC2p5muCl4D+RqLZVkV1t
-         OLJh7FMKeuc+30bJ8yyAonpkdExxB8LgDP8ZHIRMBfisfhJ+/RoXTFPepSySA3rWJdph
-         YeaA==
+        bh=5cZiebTkFekri++mtky4VBNk7P2YVfvTzbdZIvExVRU=;
+        b=MUJmqpCi+mGXuA2k6fHTLzxxueyydzkN6rv8OL3KpDatr1e6KLCtHNuoNgCqatUGVi
+         lsJDnByqqrG+eIRRnY9oc94fW/V4vf/WQhuSRu34JdgGknIay6DMdym7Hax2UC+zhr3d
+         VkKC4MccLOpzsmBR22gWgSIR9SBOyCkCxuEdld00sLlEhUfmMifMOkNEf+9QCVvj9uMy
+         eyqfc7mgd45sK8i4vEdNw7DR+Gzrh5Gvptoo3A+ckRMO0aPTHV3xcQ/HuZ5K2dwVBM4q
+         u0gD9HgTkZND1qOYB/ahUVSHkcnh5oz0/g+XuME2/NqpStAbBij1Y1JfSWiE/VV3sa3h
+         mbUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703582329; x=1704187129;
+        d=1e100.net; s=20230601; t=1703583488; x=1704188288;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N7CJGDVpwk2q4Bu189RvHi0uzgfTc1G3i6UZd7KlCTw=;
-        b=P13TjjRZM42L2xdO33oiKouqMN3cJD1c4MwpfHAHGgeTQ8sC0xBH4BFkKHEWsRyED3
-         0+bSmd9sT32drghhzPCNwziSTkJdhYi6qqB/lpWp3nDNwYS7zmLjs5Iz0jMWkAi2GfO2
-         aZ+QGHYkemKaKETVSwbTEFVqVUHiOwJobZ6HLYSStazvBVGVaOIP0/7JVo+zuhLwUSUl
-         DKyV0onmTzNti938CJAmPqEvbGIBA/QlXlYpA4BtLeD0ZHIiw5IvUTzJBhJpKnB7mBEv
-         +Ma8x09QKaV/f93vJ2bhHWVFE38fTF+sx4NX6i/ck0UyJn43fw4BE93cDh2wrRt+xKLs
-         GczA==
-X-Gm-Message-State: AOJu0YynBk7c19W9raVg1rskr1QJ8umuWAZMGXSDIbIt4owqqddKRjuj
-	RXMUhvZ6bE+gP0Ppyylihxd9YUvVh5CGYg==
-X-Google-Smtp-Source: AGHT+IEX6ADtvaCu+2814O+QX4Sbk1wJd75iUaMo/9P8sQGS7RACdukmwlSR2wWlCXTfU9T4IdRGOQ==
-X-Received: by 2002:a50:8d1e:0:b0:554:49e2:c7a with SMTP id s30-20020a508d1e000000b0055449e20c7amr3856599eds.27.1703582328804;
-        Tue, 26 Dec 2023 01:18:48 -0800 (PST)
+        bh=5cZiebTkFekri++mtky4VBNk7P2YVfvTzbdZIvExVRU=;
+        b=izHY6cGIE5+IPI+JbjKOaEglEsKMdDAGXIW0T7noob7YVd1RyHtRImZe00g2470GQk
+         e8E1u+2P99M0sS/HO4wsJCZIMGW71LcrsWHNrepDh54W+mfWAojoSMgXIZ7Geo3TkLwz
+         c22nR9CqUSNlLsPNpGdHqilBnS833oHRmQCZ9OdOc0QOEHaAHhSiJjdMVcavHw+VaMjf
+         sR0VGO016pHDvqaTJqnP2dIfOA7z6fdGD2zuex5hnLXnXI3c1hxnzMtdOFW8f5Lbnwbp
+         GWet3ckeqgsxeDrpZypUJKrf4lhxh9e5UBKohdAejsqVv9Pb6AN648S/IkUHuvc1PGfm
+         ZxzQ==
+X-Gm-Message-State: AOJu0YyQq1McMKzMdzvVThwt7poNf3+PL4UEQTOEirDJkCrDtYMZIWO6
+	m5SNmOJuC4kv17+WEeyKbUB+Rlar2bnaDg==
+X-Google-Smtp-Source: AGHT+IGfVU0HhZvk8Mmz9MTxs3r5rD09VPnBFIrdd6PSbGdrmIv4odBHf4O51t+07ipoVB62sy2BEw==
+X-Received: by 2002:a05:6512:3767:b0:50e:644a:d384 with SMTP id z7-20020a056512376700b0050e644ad384mr2141825lft.129.1703583488672;
+        Tue, 26 Dec 2023 01:38:08 -0800 (PST)
 Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id 8-20020a0564021f4800b005545dffa0bdsm5127869edz.13.2023.12.26.01.18.47
+        by smtp.gmail.com with ESMTPSA id p2-20020a056402044200b005553a8bb61dsm72021edw.87.2023.12.26.01.38.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Dec 2023 01:18:48 -0800 (PST)
-Message-ID: <9715ed9d-7edf-430c-808c-00e7748bc59a@linaro.org>
-Date: Tue, 26 Dec 2023 10:18:47 +0100
+        Tue, 26 Dec 2023 01:38:08 -0800 (PST)
+Message-ID: <a672e883-08f5-4e52-85bf-f5537eef3e62@linaro.org>
+Date: Tue, 26 Dec 2023 10:38:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,18 +66,20 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: rtq6056: add support for the
- whole RTQ6056 family
+Subject: Re: [PATCH v2 03/10] dt-bindings: iio: pressure:
+ honeywell,mprls0025pa.yaml add spi bus
 Content-Language: en-US
-To: cy_huang@richtek.com, Jonathan Cameron <jic23@kernel.org>,
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <1703562468-29052-1-git-send-email-cy_huang@richtek.com>
- <1703562468-29052-2-git-send-email-cy_huang@richtek.com>
+References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
+ <20231224143500.10940-4-petre.rodan@subdimension.ro>
+ <b23a6b74-a568-4e11-8429-6344e10a9937@linaro.org> <ZYmcNySur-ZQryWc@sunspire>
+ <1b54a167-1c90-46b8-8a7b-a21f5d4655e7@linaro.org> <ZYnmJjUJjYZHxfUM@sunspire>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -123,36 +125,26 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <1703562468-29052-2-git-send-email-cy_huang@richtek.com>
+In-Reply-To: <ZYnmJjUJjYZHxfUM@sunspire>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 26/12/2023 04:47, cy_huang@richtek.com wrote:
-> From: ChiYuan Huang <cy_huang@richtek.com>
+On 25/12/2023 21:29, Petre Rodan wrote:
+>>> without a differentiation in the 'compatible' string I don't see how your request
+>>> can be implemented.
+>>
+>> You cannot have different compatibles. I did not propose it. I wrote
+>> nothing about compatible. I wrote about missing $ref in top-level for
+>> spi-peripheral-props. Where do you see anything about compatible?
 > 
-> Add compatible support for RTQ6053 and RTQ6059.
+> sorry, for one hot second I thought you want that property to be conditionally
+> defined, like
 > 
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> ---
->  .../devicetree/bindings/iio/adc/richtek,rtq6056.yaml         | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> allOf:
+>   - $ref: /schemas/spi/spi-peripheral-props.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> index 88e008629ea8..d1e1f36d1972 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> @@ -25,7 +25,10 @@ description: |
->  
->  properties:
->    compatible:
-> -    const: richtek,rtq6056
-> +    enum:
-> +      - richtek,rtq6053
-> +      - richtek,rtq6056
 
-Aren't these devices compatible? Your driver change says they are, so
-express compatibility with list here (and oneOf).
-
+Yes, this one.
 
 Best regards,
 Krzysztof

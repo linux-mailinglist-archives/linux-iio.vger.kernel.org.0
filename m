@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-1281-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1282-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD8A81E877
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 17:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A5C81E87C
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 17:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 252542831D0
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:35:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DF142831B6
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280644F206;
-	Tue, 26 Dec 2023 16:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993774F605;
+	Tue, 26 Dec 2023 16:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qU0afQX2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8s4Q5pW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CF84E62B;
-	Tue, 26 Dec 2023 16:35:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE6BC433C8;
-	Tue, 26 Dec 2023 16:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9254F1FC;
+	Tue, 26 Dec 2023 16:39:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9F6C433C7;
+	Tue, 26 Dec 2023 16:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703608526;
-	bh=eQYBKPZRfkap6n/EQtNAG9M1zkBqA9OiFJTqFAY3ArA=;
+	s=k20201202; t=1703608757;
+	bh=U/AR4wLwQTf7eqiS5GFn3+8pIrRcRjP/AN+Er7aV3o0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qU0afQX2PMLo95iQO9fa66xXjP/sQosCpZy+I4nl+iPs+ga2C0TQBcUM0/ohGlq/k
-	 Jy/efDmCJMK71LAJRulxFv2cZutOAIQs9D6p2w/CuMCsWmpeP2vjR3zTmSo22HBWUw
-	 PzRPIYLm7gbK5u670fPac03bsWVvpCTc72JRcNtINiAX4hdIAE/PTxG/UcdoQM24l4
-	 jsHH1ucT/lxVzTcaw5kwzdXK0X6r1ISFdjRVmjUKkKdh6tIkoEo99JigI0tCKX+4e+
-	 erCWjGUnbynpdXUMVw9n6Nfqo/Lu2yCUSdMywbTMtMoBAqkoksNg32SVXs3/615AQs
-	 km5cy71umj/ew==
-Date: Tue, 26 Dec 2023 16:35:18 +0000
+	b=H8s4Q5pW3psSYDICWfeN1fZWPVyH4bX2AebJtDedBOEcPnvLcfosu4Ps9rKB3oZ5r
+	 fP4GY3LZzPNR2nF6zkV6YnBCdiA/MEWNzvtH1EGcjT7oNshOxloGPazSZTyxNaR1GM
+	 VpnSlOnl7xY2gQtIMPFz3aiNnLpwikRDsqm/iFDFWd6G88WLaGKyuGpU7jykp0MRlp
+	 KP7ILevApKpMQhC6wGoxavLyKTIVXAd55KCgFXMcKQmSCIPoA5BLgsLSoYXWztmqgp
+	 U2Ju5kV6fQwVwHg82Gq+eZ8eicvpOViLeDfpGcQ05I7GJ3GJPFHHj9WBKb+unDF/i2
+	 yAG5bsyXuMNAw==
+Date: Tue, 26 Dec 2023 16:39:11 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Klinger
  <ak@it-klinger.de>, Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
  <andriy.shevchenko@linux.intel.com>, Angel Iglesias
  <ang.iglesiasg@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 05/10] iio: pressure: mprls0025pa.c fix error flag
- check
-Message-ID: <20231226163518.63a8690b@jic23-huawei>
-In-Reply-To: <20231224143500.10940-6-petre.rodan@subdimension.ro>
+Subject: Re: [PATCH v2 06/10] iio: pressure: mprls0025pa.c remove dangerous
+ defaults
+Message-ID: <20231226163911.35a4dba2@jic23-huawei>
+In-Reply-To: <20231224143500.10940-7-petre.rodan@subdimension.ro>
 References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
-	<20231224143500.10940-6-petre.rodan@subdimension.ro>
+	<20231224143500.10940-7-petre.rodan@subdimension.ro>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -55,66 +55,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 24 Dec 2023 16:34:50 +0200
+On Sun, 24 Dec 2023 16:34:51 +0200
 Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Take into account all 3 error flags while interacting with the sensor.
-> Based on the datasheet, in table 14 on page 14, the status byte
-> contains:
->     bit 5 busy flag - 1 if device is busy
->     bit 2 memory integrity/error flag - 1 if integrity test failed
->     bit 0 math saturation - 1 if internal math saturation has occurred
+> This driver supports 32*3 combinations of fixed ranges and transfer
+> functions, plus custom ranges.
+> 
+> So statistically a user has more than 99% chance that the provided
+> default configuration will generate invalid pressure readings if the
+> bindings are not initialized and the driver is instantiated via sysfs.
+
+I guess 99% is strong enough that it's unlikely we will break anyone so
+fair enough to drop this attempt to guess the values.
+
+> 
+> The current patch removes this loophole making sure the driver loads
+> only if the dt has been initialized.
+
+Drop the reference to DT. It's correctly using generic firmware accessors
+so should work fine with ACPI PRP0001 for example as well as DT.
+
+Usually we just refer to the need for firmware properties.
+There are lots of places they could be coming from.
+
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-I've not problem with the patch, but the 'fix' in the titles means this should
-have a fixes tag. I'm not sure that improving the resilience to device errors
-is something we count as a fix however.  Maybe more of a feature or improvement
-in which case don't say fix. 
-Also, drop the .c in the patch title to be inline with similar patches in IIO.
-
-Thanks,
-
-Jonathan
-
 > ---
->  drivers/iio/pressure/mprls0025pa.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/iio/pressure/mprls0025pa.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-> index e3f0de020a40..233cc1dc38ad 100644
+> index 233cc1dc38ad..63c46592956f 100644
 > --- a/drivers/iio/pressure/mprls0025pa.c
 > +++ b/drivers/iio/pressure/mprls0025pa.c
-> @@ -39,6 +39,8 @@
->  #define MPR_I2C_MEMORY	BIT(2)	/* integrity test passed */
->  #define MPR_I2C_MATH	BIT(0)	/* internal math saturation */
-> 
-> +#define MPR_I2C_ERR_FLAG  (MPR_I2C_BUSY | MPR_I2C_MEMORY | MPR_I2C_MATH)
-> +
->  /*
->   * support _RAW sysfs interface:
->   *
-> @@ -213,7 +215,7 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
->  					status);
->  				return status;
->  			}
-> -			if (!(status & MPR_I2C_BUSY))
-> +			if (!(status & MPR_I2C_ERR_FLAG))
->  				break;
->  		}
->  		if (i == nloops) {
-> @@ -233,7 +235,7 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
->  		return -EIO;
+> @@ -375,11 +375,8 @@ static int mpr_probe(struct i2c_client *client)
+>  				"honeywell,transfer-function %d invalid\n",
+>  								data->function);
+>  	} else {
+
+I'd prefer the condition flipped even though patch will be more noisy.
+
+	if (!dev_fwnode(dev))
+		return dev_err_probe()...
+
+	...
+
+As end result will be more readable.
+
+> -		/* when loaded as i2c device we need to use default values */
+> -		dev_notice(dev, "firmware node not found; using defaults\n");
+> -		data->pmin = 0;
+> -		data->pmax = 172369; /* 25 psi */
+> -		data->function = MPR_FUNCTION_A;
+> +		return dev_err_probe(dev, -EINVAL,
+> +				  "driver needs to be initialized in the dt\n");
 >  	}
 > 
-> -	if (buf[0] & MPR_I2C_BUSY) {
-> +	if (buf[0] & MPR_I2C_ERR_FLAG) {
->  		/*
->  		 * it should never be the case that status still indicates
->  		 * business
+>  	data->outmin = mpr_func_spec[data->function].output_min;
 > --
 > 2.41.0
-> 
 > 
 
 

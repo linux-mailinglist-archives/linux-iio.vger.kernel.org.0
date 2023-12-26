@@ -1,53 +1,51 @@
-Return-Path: <linux-iio+bounces-1277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6248581E859
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 17:25:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86AE81E862
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 17:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194541F227B3
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:25:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CED1F229C4
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Dec 2023 16:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1A74F5FC;
-	Tue, 26 Dec 2023 16:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BE34F60C;
+	Tue, 26 Dec 2023 16:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nh0tXZa9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvINvK0b"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81B44F5EF;
-	Tue, 26 Dec 2023 16:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D974FC433C7;
-	Tue, 26 Dec 2023 16:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523E64F210;
+	Tue, 26 Dec 2023 16:28:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729E7C433C7;
+	Tue, 26 Dec 2023 16:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703607898;
-	bh=hhRnMsLC6POZSHAl85RZB1z8ggwSk2IZQuSs9Nv91wo=;
+	s=k20201202; t=1703608126;
+	bh=iimik6+GodJ3JafppAMT+nEo+CcxGNnAOWT3dY/eaMU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nh0tXZa9pRyyE0rrGnldxUdlb5vATvUO7jMHbwBujWEaNKdKZNikUVC0dZlsr+pPY
-	 mPywS9y79fHNRl6m4YYI1O7y7mkDCRTcJZ/+WIil1KLmTQyqDxTWErmEbaRkA45wUf
-	 7sLvgC/RlQ/QvZWEzoknzObUQ7ex+i1riCoB5gpQ/Yi9lZfx8MMXPTL1L9EPVaShVq
-	 Hq9uCCWomru5wzJH66LOwx+xu8Y0v90qJ8zE6EmiDqVEaOq6jXh42IABWnUL1W4fdx
-	 M9gnt/SBmsKYpFD4mSbFlo2GaXtbC2MOiVuSJunJ/Qa/lFTh2QUC9jZgSGWXx5YvMs
-	 1dChYEy4+FU3A==
-Date: Tue, 26 Dec 2023 16:24:50 +0000
+	b=AvINvK0bwsQfgIlRgdZAuMeng6WmqYZCJ3FgvnppxWm+Rf2V0xWBCBnC3mccyVGaY
+	 pHhfgpWMmiq9prfN7A346UboQCXlVVZWWlPvWkoJVMA0QTqiTTVURfky4eV9TMrGhe
+	 BhApWQw77ksyaIwoxiNqGUDgVsFv/ifQyYn/jBcIB30MN2QhuNUl1yenffny7w13nx
+	 oahM1mfy/wh9o8m/JA6oF56JziweLGIsp7g7oxeItJCgUw90aQ7E5ubQOOlQn3FnNg
+	 8+HEYmkhHCmdx0zg7akCJMCUuSednUmLFk9EYrqIZJYukdoh1PzdsOg5P+TYHOrZYV
+	 rELMNsda1VRqQ==
+Date: Tue, 26 Dec 2023 16:28:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: cy_huang@richtek.com, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: rtq6056: add support for the
- whole RTQ6056 family
-Message-ID: <20231226162450.5437810a@jic23-huawei>
-In-Reply-To: <9715ed9d-7edf-430c-808c-00e7748bc59a@linaro.org>
-References: <1703562468-29052-1-git-send-email-cy_huang@richtek.com>
-	<1703562468-29052-2-git-send-email-cy_huang@richtek.com>
-	<9715ed9d-7edf-430c-808c-00e7748bc59a@linaro.org>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Subject: Re: [PATCH v2 01/10] dt-bindings: iio: pressure:
+ honeywell,mprls0025pa.yaml fix
+Message-ID: <20231226162839.5ceddc9e@jic23-huawei>
+In-Reply-To: <20231224143500.10940-2-petre.rodan@subdimension.ro>
+References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
+	<20231224143500.10940-2-petre.rodan@subdimension.ro>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,45 +56,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 26 Dec 2023 10:18:47 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Sun, 24 Dec 2023 16:34:46 +0200
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> On 26/12/2023 04:47, cy_huang@richtek.com wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
-> > 
-> > Add compatible support for RTQ6053 and RTQ6059.
-> > 
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> >  .../devicetree/bindings/iio/adc/richtek,rtq6056.yaml         | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> > index 88e008629ea8..d1e1f36d1972 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> > @@ -25,7 +25,10 @@ description: |
-> >  
-> >  properties:
-> >    compatible:
-> > -    const: richtek,rtq6056
-> > +    enum:
-> > +      - richtek,rtq6053
-> > +      - richtek,rtq6056  
+> Define enum inside the honeywell,transfer-function property block.
 > 
-> Aren't these devices compatible? Your driver change says they are, so
-> express compatibility with list here (and oneOf).
+> Set the correct irq edge in the example block.
+> Based on the datasheet, in table 13 on page 11:
+> "End-of-conversion indicator: This pin is set high when a measurement
+> and calculation have been completed and the data is ready to be
+> clocked out"
+> 
+> Add description on End-of-conversion interrupt.
+> 
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+What's the relationship between Andreas and this patch?
 
-I'm not seeing this thread on lore.kernel.org or in my local email. 
-Perhaps something went wrong?
+Petre seems to have sent it so either Andreas should have a Co-authored-by or
+should be the author... Or not there at all
+
+Thanks,
 
 Jonathan
 
-
+> ---
+>  .../bindings/iio/pressure/honeywell,mprls0025pa.yaml       | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> index d9e903fbfd99..84ced4e5a7da 100644
+> --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> @@ -42,6 +42,10 @@ properties:
+>      maxItems: 1
 > 
-> Best regards,
-> Krzysztof
+>    interrupts:
+> +    description:
+> +      Optional interrupt for indicating End-of-conversion.
+> +      If not present, the driver loops for a while until the received status
+> +      byte indicates correct measurement.
+>      maxItems: 1
+> 
+>    reset-gpios:
+> @@ -65,6 +69,7 @@ properties:
+>        1 - A, 10% to 90% of 2^24 (1677722 .. 15099494)
+>        2 - B, 2.5% to 22.5% of 2^24 (419430 .. 3774874)
+>        3 - C, 20% to 80% of 2^24 (3355443 .. 13421773)
+> +    enum: [1, 2, 3]
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> 
+>    vdd-supply:
+> @@ -93,7 +98,7 @@ examples:
+>              reg = <0x18>;
+>              reset-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
+>              interrupt-parent = <&gpio3>;
+> -            interrupts = <21 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupts = <21 IRQ_TYPE_EDGE_RISING>;
+>              honeywell,pmin-pascal = <0>;
+>              honeywell,pmax-pascal = <172369>;
+>              honeywell,transfer-function = <1>;
+> --
+> 2.41.0
 > 
 
 

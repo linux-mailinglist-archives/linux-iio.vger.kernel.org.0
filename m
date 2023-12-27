@@ -1,119 +1,123 @@
-Return-Path: <linux-iio+bounces-1290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4770381F07A
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 17:37:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB1381F0FD
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 18:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDEA6281A79
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 16:37:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 065151F2238E
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 17:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEAB1E533;
-	Wed, 27 Dec 2023 16:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C236C4653C;
+	Wed, 27 Dec 2023 17:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RGAUFLqX"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="jP1qtOMD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020691E50B;
-	Wed, 27 Dec 2023 16:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703695068; x=1735231068;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=C0xIy59+brcN4rsi5+PyliR2R7CN2ScjanmBgdR+p7E=;
-  b=RGAUFLqXug9061h8ap9wIpP/oJkQ/GbmlheRuazvXfWc5bkHisjiXpN3
-   mhgELp4MgdTND4i9Q5n2vWWoJTn/i1MnY393lro+xaidaAPrewPFPk128
-   sd95kbwxkzEz42jeC06s8y/ehjWLjTTc69dw+pvmsdyakIPJgyHYzhetv
-   sG/4axC/fGpBHrggVCXvW7Uq28C6r4hO9rmUUYcWj+qWBnM0e57AvDQeX
-   OthVnm9F2UblSSiwRNJwStLIH+j5DdocgJL2R+BqWIIPBDCske22yjpds
-   CeDea9W1/PY07q4ARrmPslPQ05ESOybdbZ5bd/SKSUeXnpoJZe0dhrf4Q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="381434300"
-X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="381434300"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 08:37:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="812568448"
-X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="812568448"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 08:37:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rIWud-00000009SsX-0lNv;
-	Wed, 27 Dec 2023 18:37:43 +0200
-Date: Wed, 27 Dec 2023 18:37:42 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFB146531;
+	Wed, 27 Dec 2023 17:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 86E8B28B50B;
+	Wed, 27 Dec 2023 17:39:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1703698769;
+	bh=Q3Jhggu2Cf9vToIuIzPhWolS9rBddXPT5f8JHgrhLgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jP1qtOMDXLABR0+FYgdQaI4wUueTQlUR5+ue3IhBGRXXB8p3TXk/HL4f67TMzk+Se
+	 k7n/ipheB/dNC5gtyjeScIV5z7zqHqqjc6LsJhlEaqD0kWFwTV07sWRxyrmB7c1iLO
+	 ZnC0BKcbRgJJEk1jL99wRpJEORHUAXNtb9sK7r2Q=
+Date: Wed, 27 Dec 2023 19:39:28 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andreas Klinger <ak@it-klinger.de>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Angel Iglesias <ang.iglesiasg@gmail.com>,
 	Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 08/10] iio: pressure: mprls0025pa.c refactor
-Message-ID: <ZYxS1o2lSlaJ6dG4@smile.fi.intel.com>
+Subject: Re: [PATCH v2 07/10] iio: pressure: mprls0025pa.c whitespace cleanup
+Message-ID: <ZYxhUJlAb63wRJE-@sunspire>
 References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
- <20231224143500.10940-9-petre.rodan@subdimension.ro>
- <20231226164922.6d7132c1@jic23-huawei>
- <ZYw1wbvYQqqCr5C2@sunspire>
+ <20231224143500.10940-8-petre.rodan@subdimension.ro>
+ <ZYxSERlEAfwWpqWP@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="9UdEwOF5KbXOTqo7"
+Content-Disposition: inline
+In-Reply-To: <ZYxSERlEAfwWpqWP@smile.fi.intel.com>
+
+
+--9UdEwOF5KbXOTqo7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZYw1wbvYQqqCr5C2@sunspire>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 27, 2023 at 04:33:37PM +0200, Petre Rodan wrote:
-> On Tue, Dec 26, 2023 at 04:49:22PM +0000, Jonathan Cameron wrote:
+On Wed, Dec 27, 2023 at 06:34:25PM +0200, Andy Shevchenko wrote:
+> On Sun, Dec 24, 2023 at 04:34:52PM +0200, Petre Rodan wrote:
+> > Fix indentation and whitespace in code that will not get refactored.
+> >=20
+> > Make URL inside comment copy-paste friendly.
+>=20
+> >  			return dev_err_probe(dev, ret,
+> > -				"honeywell,pmin-pascal could not be read\n");
+> > +				   "honeywell,pmin-pascal could not be read\n");
+>=20
+> As done elsewhere, here and in other similar places fix the indentation
+> by making first character on the latter line to be in the same column as
+> the first character after the opening parenthesis.
 
-,,,
+I triple-checked that I am following the max 80 column rule, the parenthesis
+rule and the 'do not split printk messages' rules in all my code in these 1=
+0 patches.
+precisely so I don't get feedback like this one.
+if the parenthesis rule makes the line longer then 80 chars I right-align to
+column 80 as seen above.
+that is what I understand from the latest coding style document and that is=
+ what
+I will follow.
 
-> > >  		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler,
-> > > -				IRQF_TRIGGER_RISING, client->name, data);
-> > > +				      IRQF_TRIGGER_RISING, dev_name(dev), data);
-> > 
-> > Even though you'll change it again here, would have been nice to have
-> > the alignment fixed in the earlier patch then the code update here.
-> 
-> I tried this, but due to the fact that the line has to be right-aligned to
-> column 80 we will still see a whitespace difference due to the length diff of
-> the name-related argument.
+in this particular case if I were to ignore the 80 column rule we would end=
+ up on
+column 90 if I were to follow your feedback (open parenthesis is at column =
+45
+and the error takes 45 chars more).
 
-You can split in the previous patch accordingly, so data comes to a new line.
-
-...
-
-> > > +#include <linux/iio/iio.h>
-> > 
-> > Why include this?  Can't see an IIO specific stuff in here.
-> 
-> tried to remove it and
-> 
->   CC [M]  mprls0025pa_i2c.o
-> mprls0025pa.h:89:63: error: 'IIO_DMA_MINALIGN' undeclared here (not in a function); did you mean 'ARCH_DMA_MINALIGN'?
->    89 |         u8          buffer[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
-
-> I guess it makes more sense to move it to the .h file, where buffer[] is defined.
-
-Yes, C-code and especially headers should follow IWYI principle. The real user
-of that definition is _the header_ file, and not C in this case.
+peter
 
 
--- 
-With Best Regards,
-Andy Shevchenko
+--9UdEwOF5KbXOTqo7
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWMYUwACgkQzyaZmYRO
+fzDlsw/6AxQVmVvwyqrKyaMsIwfXxZtjIVhHGrQgzvXJJ5DAEJCtRCnFNCx95Igx
+DXGqt0uyLZbhCtl7zi6oPrRKx8mtZPetQCNMJRn3fuYOwQd+yjJ35tMo7ZjAzWj+
+b+z1nPSvlGOW+TbyNy5xW3tGnR5t2BatKn/WaZlbf1CAhdwAYvXzKNkg2DLxCHBR
+P1hPWa3zaSr5c9vXewjpC56tgRx2CVbxxMusXZSm3Ertu45guHWGMP93rMhZPwUR
+GHRJUc39GdKQrIRl6RxVVq8r3Bprvgt7pIQ7oij4+xpXlfd4dVriCu270rHq6Poj
+cJ64F1TwkWA/P4SF/dnRsgRRxFatVDa9fQv462TCUjChe8/vla+1/4VKvoBiLgnC
+QHsHzbS7x2FWXonjZHHQlCbkSfzYlIpHv0vNg1wJ3ZqVFGz+T3fP/WQwDQo5TL+Z
+safXwZSWo/Vtet1000ADWr2r/gau3TS2eZKSXZ0NQMNgs2Q1ayst6id/f24qpTYy
+vyvAWLZCmqByLagz4l67fKky8VqnOoN/w7f6TH0u/FB2Vg/HTjfRr4qVvn6YQmtZ
+5fqOzbabVaAWdFBd0Aq7Yy1mDisDbxxPML190547u0f0dyDXj7FONewG6Zl9YhRN
+Mjc0uCxiJYZH+yQMeuUB8l3nuhRxSzsbifdsql5muS6ThjK6pto=
+=p8mw
+-----END PGP SIGNATURE-----
+
+--9UdEwOF5KbXOTqo7--
 

@@ -1,55 +1,54 @@
-Return-Path: <linux-iio+bounces-1285-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1286-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10EC81ECD4
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 08:11:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D9F81EF74
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 15:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E051F229B8
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 07:11:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 463502826A0
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 14:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E7653A1;
-	Wed, 27 Dec 2023 07:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27AB4502B;
+	Wed, 27 Dec 2023 14:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Eg5FFWge"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="RszUSlTc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5425396;
-	Wed, 27 Dec 2023 07:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F421245948;
+	Wed, 27 Dec 2023 14:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire (unknown [188.24.94.216])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 9294E28B50B;
-	Wed, 27 Dec 2023 07:11:37 +0000 (UTC)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id AC12F28B50B;
+	Wed, 27 Dec 2023 14:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1703661097;
-	bh=0+1mR3SJFAT7hYMdntnUn/RRP/aSEJx1NBjfSwTY9dU=;
+	s=skycaves; t=1703687618;
+	bh=nMlEOJ0m80IN9YaTBtl4QoQb2lTcrUVxOt1bWvxMAog=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Eg5FFWge373TwabCTwBl5+Qs+Q2pACHq8/pyIyngXkEmhqBLLmBBJp8Zr+lJjza48
-	 5UZ3dnZGQBsvRa/zykcJfXXpJfwSjWVHQ+0UPC4mV7Rmc64s/0rmzvzCOKox24QIgq
-	 WUpK6v9ax6TfxkKWCVu89mZx1A7nm4eB6nxoK7Ho=
-Date: Wed, 27 Dec 2023 09:11:35 +0200
+	b=RszUSlTcXRuK7P4nTNrIdnBCsYK/SdJut5rEKwJAcm/bvt/FFcI7v238xLzuFXiWL
+	 g/unPuzo7RdeUhWHwVspRufDPlCskTCEEhfaFGUc2jMTUZk0cvvHN4WKvauHZGSlcb
+	 UlQDf0AscwzEOg7Cfj736anQMeFBu9Q3umLq+KNU=
+Date: Wed, 27 Dec 2023 16:33:37 +0200
 From: Petre Rodan <petre.rodan@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andreas Klinger <ak@it-klinger.de>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v2 01/10] dt-bindings: iio: pressure:
- honeywell,mprls0025pa.yaml fix
-Message-ID: <ZYvOJ9tlO1fp_QBT@sunspire>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 08/10] iio: pressure: mprls0025pa.c refactor
+Message-ID: <ZYw1wbvYQqqCr5C2@sunspire>
 References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
- <20231224143500.10940-2-petre.rodan@subdimension.ro>
- <20231226162839.5ceddc9e@jic23-huawei>
+ <20231224143500.10940-9-petre.rodan@subdimension.ro>
+ <20231226164922.6d7132c1@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,93 +56,77 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gXDyfpoylppolFU2"
+	protocol="application/pgp-signature"; boundary="e0TuRtiQxORaMcZa"
 Content-Disposition: inline
-In-Reply-To: <20231226162839.5ceddc9e@jic23-huawei>
+In-Reply-To: <20231226164922.6d7132c1@jic23-huawei>
 
 
---gXDyfpoylppolFU2
+--e0TuRtiQxORaMcZa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 
-Hello Cameron,
+Hi Jonathan,
 
-On Tue, Dec 26, 2023 at 04:28:39PM +0000, Jonathan Cameron wrote:
-> On Sun, 24 Dec 2023 16:34:46 +0200
-> Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Tue, Dec 26, 2023 at 04:49:22PM +0000, Jonathan Cameron wrote:
+> >  	if (data->irq > 0) {
+> >  		ret =3D devm_request_irq(dev, data->irq, mpr_eoc_handler,
+> > -				IRQF_TRIGGER_RISING, client->name, data);
+> > +				      IRQF_TRIGGER_RISING, dev_name(dev), data);
 >=20
-> > Define enum inside the honeywell,transfer-function property block.
-> >=20
-> > Set the correct irq edge in the example block.
-> > Based on the datasheet, in table 13 on page 11:
-> > "End-of-conversion indicator: This pin is set high when a measurement
-> > and calculation have been completed and the data is ready to be
-> > clocked out"
-> >=20
-> > Add description on End-of-conversion interrupt.
-> >=20
-> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> What's the relationship between Andreas and this patch?
+> Even though you'll change it again here, would have been nice to have
+> the alignment fixed in the earlier patch then the code update here.
+
+I tried this, but due to the fact that the line has to be right-aligned to
+column 80 we will still see a whitespace difference due to the length diff =
+of
+the name-related argument.
+
+> > +++ b/drivers/iio/pressure/mprls0025pa_i2c.c
+> > +
+> > +#include <linux/iio/iio.h>
 >=20
-> Petre seems to have sent it so either Andreas should have a Co-authored-b=
-y or
-> should be the author... Or not there at all
+> Why include this?  Can't see an IIO specific stuff in here.
 
-Andreas has written this driver as it is in the mainline tree right now and=
- he
-is marked as a maintainer for it.
-A month back I told him about the enum off-by-one problem and also about my=
- plan
-of adding more features to the driver.
-He was happy to accept my code and once I sent v1 of this patch to the list=
- has
-asked to work together for the v2 you see here. This has helped with cleani=
-ng up
-the code. He requested the additional 'Signed-off-by' tag, but if you have =
-a more
-explicit one I will happily use it. 'Co-developed-by' it is.
+tried to remove it and
 
-He also owns an i2c version of the sensor so he was able to make sure that =
-the
-original half of the driver still works after my refactor, hence the 'Teste=
-d-by'
-tag in the last patch.
+  CC [M]  mprls0025pa_i2c.o
+mprls0025pa.h:89:63: error: 'IIO_DMA_MINALIGN' undeclared here (not in a fu=
+nction); did you mean 'ARCH_DMA_MINALIGN'?
+   89 |         u8          buffer[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_D=
+MA_MINALIGN);
 
-please tell me how do the 'fixes'/feature/improvement tags/keywords look li=
-ke?
-are these to be added on the subject line, or should they reside near my
-'Signed-off-by' inside the email body? I probably missed the documentation =
-where
-these are covered :)
+I guess it makes more sense to move it to the .h file, where buffer[] is de=
+fined.
 
-also, should I add a 'Reviewed-by:' you for 09/10 and 10/10 (the last two p=
-atches)?
+everything else will be fixed as per your feedback.
 
-best regards,
+thanks,
 peter
 
---gXDyfpoylppolFU2
+--=20
+petre rodan
+
+--e0TuRtiQxORaMcZa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWLzh8ACgkQzyaZmYRO
-fzBpxg//ekA/5x6UzTA8o9Ujo78/i0MRMxc5zWYkHfpJLuVweN6FNqIOSN9Ang3e
-qRkZT39HmeLL8FzxchjHr/tgUTaejMM6iltdsnKvukPxGzdkkSKfEqEka0KgbljO
-2CPy6UJEzUx5XSEONeL7no6nLHvTsjCPXE1W4UBPTIoIr5oNA5wuokW0VD3+lg+u
-DOXh2RFK/+oIp1HXnYpO+8q23dVBMFRZtuiJLqy83uUTlz7aeuCUG/7MYWPqOhSO
-cIH2CtYpX7MjUxGvqdbRDAY17wid4qJ3yOOD1+MDxe362Ldp93piwNT752ORuh/x
-UGNZ8B87v6iIdUimEtEcLWfsg+AP6xEJvXD+7gsG0lhazz90/36RHmSZcn/asgSD
-f1bBY6P8Iry0vgnqPQej0K/7OBDb0TuesHxuZ9oXDFAtAjuV+Xwcoq4swouPpO4Z
-cbxGPpyyTfkKtYJVwIo13pHY1g5JtxOfsWm2pBpatCxr0RDk2+zAkufUiZ6pbYTQ
-tsotCSfGt4+qvpBb87SMPEAsg6+MxoOV2r4DWCy3VgiNXaUGim0o2bLA2lNQX/q5
-RsA09oToLJ5fUdX+Lrc9oBqK4kHZL4A06jYwWMXhJTfp7NkwFjJ1S6MwVqfO202o
-JgiXoUibcQpLTYh1AV7GeXAW69zZKjdxy/CfG3ZzitSPbhwLXSM=
-=Otfh
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWMNb0ACgkQzyaZmYRO
+fzAqfxAAg/X+re8H1a+LxaiQf+e+JiiEVRO7dlbRJ7HLpwTk7K9yI1URwlQLKXfn
+sPUPhBTAjIc7A4Xox/lpO0NyKBHKVMTDAy3oBcINAlnn+5KmMdjKHdyI61Qloy/u
+ariah7GaV/4P4vOviB7+sQiL3VsdOmp6iw9VaJEeZIiLFEZBq1DSwqcIAK7GWiRP
+ZbNLX87toqArjNaU8uXJ4XK5Gg8VOdUBS0EpGOaV2pAzVBUgmWgJ3kWm5VT40RjX
+oQFo+0rXlYnZ5hYngP+j7HmPXFSv2fHBa/UJevm/JZBAz3Be/Oj6Uj2S+vBkT7QY
+xsWm342gOz+EzG9RTJ44peyrfWVo1LEc9jf0Yi616oVNo3QawOlVBDGrVe1olULf
+TGeuPaK+FYMEM3RS6aFytBsTeIS3llMMLo75GqkQE6XZkJ913gkk45RLt9i8W1YJ
+Qo6JxGQkvxMFOlng7QWudOvINixOVdT6rXgsHok6WJUE9GlZpV2fQWGFVc3e3DCg
+9uEnFS+cBbFJTnJEfjFgKcE4w6xHJwb5Fa1GOD/uGTHD+0NGhC4wqKGGj0yV1bUf
+v8DbfT0QQoUGGlqvbs/pJNW2NTlI/Q0mEmz803MI6DXpCiW1W7FqODXNdz+bFHVp
+q0BN13+Y/nUISPY/r0ErnuLamCVXwQTsbWUFkoyi89pnVyTKnY8=
+=xAMn
 -----END PGP SIGNATURE-----
 
---gXDyfpoylppolFU2--
+--e0TuRtiQxORaMcZa--
 

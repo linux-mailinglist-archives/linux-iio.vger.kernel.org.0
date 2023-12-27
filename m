@@ -1,131 +1,92 @@
-Return-Path: <linux-iio+bounces-1287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B21481EF77
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 15:36:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D713E81F06C
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 17:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04C1BB21D42
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 14:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92FC4281CDF
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Dec 2023 16:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0014503C;
-	Wed, 27 Dec 2023 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D28346433;
+	Wed, 27 Dec 2023 16:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="raWG1YZq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R5ppuGc3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDC84502C
-	for <linux-iio@vger.kernel.org>; Wed, 27 Dec 2023 14:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5e840338607so31828517b3.2
-        for <linux-iio@vger.kernel.org>; Wed, 27 Dec 2023 06:35:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703687759; x=1704292559; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3sUzh8dLo2xVJa594mpdwakY1EN41ZeqN8hITPjA6vk=;
-        b=raWG1YZqIaIFbRr9pcQd3SEcYI7NXn8SYR7b0PX6TnD4i2dR2pf2TJbbMP8AGIqPY1
-         06dVAzyFUa3Xsqw4gHojPze1npTEqEosOuDgeHBP+7WnyiIqGA/hzPFtbSZ9q70OJd5T
-         rBTbDTVWeikenlXkzDbNE2Xc1rOzTxOB/cer56yzgdaoWx/+HKIiQ0YOOLrQxpeQcwOI
-         n6jwg/3tTbu+9V/v3wIDfBKrPQ5VCDM+dKBimcJer2OwBmn58pViz0teP90mqVEn4Ozb
-         6Yp/W/LqzqjKXAnvlNMkVaY3zmzkZEdvawWDOXr/DrqdMyp2bcVEkaP6R2ibSN2Tw5sS
-         3mnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703687759; x=1704292559;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3sUzh8dLo2xVJa594mpdwakY1EN41ZeqN8hITPjA6vk=;
-        b=gDDIJiHxHLJYf3WQtziPFeM9cA4Fg6AXlK2v0cK4Ni8BGAuOTrA5OZB+JMShuksAjn
-         C0V3grZlUbFw6hmwZzMVeCAJQ87hcpPUJoe8b0m7e48YXUa2Cnl/Yobz0QqU6mqwmDTk
-         e3FXsNrSTtnzF7s/BbKA+4t4dTJZvhuiesdQmh0TQCARgI8u36Dv7Ab4qbA4C5emjYwt
-         IbUpRgvTxIHK3xC6N8Wa0MQTEIHnm5MOe6vg12ebzBr4cziE1GHmtmL6VIvr0c9vg33j
-         HTcgYmcYOXwTMSE6PzzmgmU3w5n9yxENaATBnZBZp8FMBojEEuvR4tRoO1C/9JZgOMaY
-         GCGg==
-X-Gm-Message-State: AOJu0Yw7gokNfDtwnM9SQLCou1Y/0Hp9Ws3pu+eIVp/XwCjrXwDe4f5b
-	HCog/dh+cwHsGxp/0R/0X+YNPpz5uV1LDe8NeDIAQzJmd5c=
-X-Google-Smtp-Source: AGHT+IFgMw36vaiIp9m15OxquHQUYTG4hNW25gHKfws/L1G7S6nm2rl47TLk6Vj/ES/wdialH0Qz9A==
-X-Received: by 2002:a25:e092:0:b0:dbc:b5cf:d600 with SMTP id x140-20020a25e092000000b00dbcb5cfd600mr2800421ybg.19.1703687757310;
-        Wed, 27 Dec 2023 06:35:57 -0800 (PST)
-Received: from ubuntu-server-vm-macos (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id t8-20020a25f608000000b00dbd4743a4d8sm5351768ybd.44.2023.12.27.06.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Dec 2023 06:35:56 -0800 (PST)
-Date: Wed, 27 Dec 2023 14:35:54 +0000
-From: William Breathitt Gray <william.gray@linaro.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] counter: linux/counter.h: fix Excess kernel-doc
- description warning
-Message-ID: <ZYw2SkkEzSW2C2gN@ubuntu-server-vm-macos>
-References: <20231223050511.13849-1-rdunlap@infradead.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E4946454;
+	Wed, 27 Dec 2023 16:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703694609; x=1735230609;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T4ZSeN9/8jL/yNrTDLrgwzo3w9DAS+9wlmLrwIMp3C8=;
+  b=R5ppuGc3pSt7+eXb0AvqqswsvTUXHtTrYn+AASV6kXtin6xejliGowjX
+   gSiGnZA4avEzQTo993vepEVhfOSvgVa9KKtt32JknW6kv3K+MtDWKld+5
+   LjGluUT29aP+RIACBQG4rZkbdCGWDcrPCvUIArQUWKLMgrBc6erncJ2fO
+   XdQF2zRb48fxc6lmvoYhel2C1x7aCGlPEqIonOwGooXW+dfCKJJxt/0ei
+   FWUVtvQUfM9hJr9wLbDFmhBb1zb+z3uV2coA3Uj3zVQRF7Qhsb9tQL3JX
+   Ny1yy/I/lxC1kjXvNEAGN7aPMlmEWiW0NI7TGD+BR7Z/TH/p80cWWRyrT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="3293578"
+X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
+   d="scan'208";a="3293578"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 08:30:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="951534508"
+X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
+   d="scan'208";a="951534508"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 08:30:04 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rIWnB-00000009Sn6-1TEW;
+	Wed, 27 Dec 2023 18:30:01 +0200
+Date: Wed, 27 Dec 2023 18:30:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andreas Klinger <ak@it-klinger.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 04/10] iio: pressure: mprls0025pa.c fix off-by-one enum
+Message-ID: <ZYxRCWFs0KdrkziG@smile.fi.intel.com>
+References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
+ <20231224143500.10940-5-petre.rodan@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OBG9AcguILqipDt3"
-Content-Disposition: inline
-In-Reply-To: <20231223050511.13849-1-rdunlap@infradead.org>
-
-
---OBG9AcguILqipDt3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20231224143500.10940-5-petre.rodan@subdimension.ro>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Dec 22, 2023 at 09:05:11PM -0800, Randy Dunlap wrote:
-> Remove the @priv: line to prevent the kernel-doc warning:
->=20
-> include/linux/counter.h:400: warning: Excess struct member 'priv' descrip=
-tion in 'counter_device'
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: William Breathitt Gray <william.gray@linaro.org>
-> Cc: linux-iio@vger.kernel.org
-> ---
->  include/linux/counter.h |    1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff -- a/include/linux/counter.h b/include/linux/counter.h
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -359,7 +359,6 @@ struct counter_ops {
->   * @num_counts:		number of Counts specified in @counts
->   * @ext:		optional array of Counter device extensions
->   * @num_ext:		number of Counter device extensions specified in @ext
-> - * @priv:		optional private data supplied by driver
->   * @dev:		internal device structure
->   * @chrdev:		internal character device structure
->   * @events_list:	list of current watching Counter events
+On Sun, Dec 24, 2023 at 04:34:49PM +0200, Petre Rodan wrote:
+> Fix off-by-one error in transfer-function property.
+> The honeywell,transfer-function property takes values between 1-3 so
+> make sure the proper enum gets used.
 
-Hi Randy,
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 
-Would you provide a Fixes tag for the commit that removed the 'priv'
-member so we can track when this warning appeared? You can respond with
-it to this thread and I'll add it in when I merge your patch.
+Submitter's SoB always goes last, this is written in Submitting Patches document.
 
-Thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-William Breathitt Gray
 
---OBG9AcguILqipDt3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZYw2SgAKCRC1SFbKvhIj
-K9tdAQC6IeH/7KLxgyGIA0/sH0woEVafZwDafkceRO3lbo6YSgEA1FIu5ocZl33X
-V64BqE9NSmm6eor9qJjfIMUr0/RaPgM=
-=V+0S
------END PGP SIGNATURE-----
-
---OBG9AcguILqipDt3--
 

@@ -1,112 +1,117 @@
-Return-Path: <linux-iio+bounces-1310-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1315-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D6481F933
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Dec 2023 15:47:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6253181FEA1
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Dec 2023 10:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBEFB285AEB
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Dec 2023 14:47:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6035EB22CC2
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Dec 2023 09:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DC1C8D2;
-	Thu, 28 Dec 2023 14:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C143611713;
+	Fri, 29 Dec 2023 09:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="fYzLmYvI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14646C8C2;
-	Thu, 28 Dec 2023 14:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CA2C433C7;
-	Thu, 28 Dec 2023 14:47:00 +0000 (UTC)
-Date: Thu, 28 Dec 2023 09:46:57 -0500
-From: William Breathitt Gray <william.gray@linaro.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] counter: linux/counter.h: fix Excess kernel-doc
- description warning
-Message-ID: <ZY2KYemBCrl7YwrP@ishi>
-References: <20231223050511.13849-1-rdunlap@infradead.org>
- <ZYw2SkkEzSW2C2gN@ubuntu-server-vm-macos>
- <d752d157-659b-4d05-90a9-ebbf19c07068@infradead.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C48810A01;
+	Fri, 29 Dec 2023 09:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from localhost.localdomain (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 5F8E828B50B;
+	Fri, 29 Dec 2023 09:25:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1703841905;
+	bh=Xii80BZilbcTZ+e6K1vQw1brFErvXXiWZ9Qzq2HxA+w=;
+	h=From:To:Cc:Subject:Date;
+	b=fYzLmYvIS4P8M71zP2/H6/5wEEy1ph5gOS2L0bmSsXeZ+Yw1fXfnCDNquRbncXpAf
+	 21p4D1eiIWEmQpdoeY7G7N22+WWqnj3COhbncmybPl1Ab5EtVHmrFLrrurpu6IxNRc
+	 HbJrBRfOIQuPSiDmJNcjnuLwIs0Wgu3EKQiXqQg4=
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andreas Klinger <ak@it-klinger.de>
+Subject: [PATCH v3 00/10] changes to mprls0025pa
+Date: Fri, 29 Dec 2023 11:24:28 +0200
+Message-ID: <20231229092445.30180-1-petre.rodan@subdimension.ro>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Cv3hjeTS7H5THrLU"
-Content-Disposition: inline
-In-Reply-To: <d752d157-659b-4d05-90a9-ebbf19c07068@infradead.org>
+Content-Transfer-Encoding: 8bit
 
+A number of fixes to the mprls0025pa driver:
+ - an off-by-one initially caused by a typo in the bindings file
+ - two error fields are never checked during sensor interaction
+ - unsafe initialization if the driver is instantiated via sysfs
+   and the bindings are missing
 
---Cv3hjeTS7H5THrLU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Quality of life changes:
+ - a refactor that adds a pressure-triplet property which initializes
+pmin-pascal and pmax-pascal just like in the hsc030pa driver.
+The user only needs to extract a short string from the chip name
+instead of looking up the chip in the datasheet, understand the
+nomenclature, extract the measurement range and then convert all units
+to pascals.
 
-On Wed, Dec 27, 2023 at 01:40:01PM -0800, Randy Dunlap wrote:
->=20
->=20
-> On 12/27/23 06:35, William Breathitt Gray wrote:
-> > On Fri, Dec 22, 2023 at 09:05:11PM -0800, Randy Dunlap wrote:
-> >> Remove the @priv: line to prevent the kernel-doc warning:
-> >>
-> >> include/linux/counter.h:400: warning: Excess struct member 'priv' desc=
-ription in 'counter_device'
-> >>
-> >> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> >> Cc: William Breathitt Gray <william.gray@linaro.org>
-> >> Cc: linux-iio@vger.kernel.org
-> >> ---
-> >>  include/linux/counter.h |    1 -
-> >>  1 file changed, 1 deletion(-)
-> >>
-> >> diff -- a/include/linux/counter.h b/include/linux/counter.h
-> >> --- a/include/linux/counter.h
-> >> +++ b/include/linux/counter.h
-> >> @@ -359,7 +359,6 @@ struct counter_ops {
-> >>   * @num_counts:		number of Counts specified in @counts
-> >>   * @ext:		optional array of Counter device extensions
-> >>   * @num_ext:		number of Counter device extensions specified in @ext
-> >> - * @priv:		optional private data supplied by driver
-> >>   * @dev:		internal device structure
-> >>   * @chrdev:		internal character device structure
-> >>   * @events_list:	list of current watching Counter events
-> >=20
-> > Hi Randy,
-> >=20
-> > Would you provide a Fixes tag for the commit that removed the 'priv'
-> > member so we can track when this warning appeared? You can respond with
-> > it to this thread and I'll add it in when I merge your patch.
->=20
-> Fixes: f2ee4759fb70 ("counter: remove old and now unused registration API=
-")
->=20
-> Thank you.
->=20
-> --=20
-> #Randy
+New feature:
+ - SPI compatibility for Honeywell MPR sensors that require it.
 
-Applied, thanks!
+Both binding and driver are backwards compatible.
+Tested in I2C and SPI modes with two different sensors.
+The refactor requires property function present in the togreg branch.
 
-[1/1] counter: linux/counter.h: fix Excess kernel-doc description warning
-      commit: 49ca40f8d6ceb76bff83713f79215d8e6252f045
+Datasheet: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+Co-developed-by: Andreas Klinger <ak@it-klinger.de>
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 
-William Breathitt Gray
+Petre Rodan (10):
+  dt-bindings: iio: pressure: honeywell,mprls0025pa.yaml improvements
+  dt-bindings: iio: pressure: honeywell,mprls0025pa.yaml add
+    pressure-triplet
+  dt-bindings: iio: pressure: honeywell,mprls0025pa.yaml add spi bus
+  iio: pressure: mprls0025pa fix off-by-one enum
+  iio: pressure: mprls0025pa improve driver error resilience
+  iio: pressure: mprls0025pa remove defaults
+  iio: pressure: mprls0025pa whitespace cleanup
+  iio: pressure: mprls0025pa refactor
+  iio: pressure: mprls0025pa add triplet property
+  iio: pressure: mprls0025pa add SPI driver
 
---Cv3hjeTS7H5THrLU
-Content-Type: application/pgp-signature; name="signature.asc"
+ .../iio/pressure/honeywell,mprls0025pa.yaml   |  98 ++++--
+ MAINTAINERS                                   |   3 +-
+ drivers/iio/pressure/Kconfig                  |  14 +-
+ drivers/iio/pressure/Makefile                 |   2 +
+ drivers/iio/pressure/mprls0025pa.c            | 313 +++++++++---------
+ drivers/iio/pressure/mprls0025pa.h            | 102 ++++++
+ drivers/iio/pressure/mprls0025pa_i2c.c        |  98 ++++++
+ drivers/iio/pressure/mprls0025pa_spi.c        |  89 +++++
+ 8 files changed, 542 insertions(+), 177 deletions(-)
+ create mode 100644 drivers/iio/pressure/mprls0025pa.h
+ create mode 100644 drivers/iio/pressure/mprls0025pa_i2c.c
+ create mode 100644 drivers/iio/pressure/mprls0025pa_spi.c
 
------BEGIN PGP SIGNATURE-----
+--
+2.41.0
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZY2KYQAKCRC1SFbKvhIj
-K8I3AP4mGbr+wtyRDo1GphV/Mqi26l7KwWRm5pnhhSCdo19tTQEAtJ8TKXYmZ4a8
-erikOulmMaHyp3q5WHk9hw9MJmKWlQ0=
-=kQuO
------END PGP SIGNATURE-----
-
---Cv3hjeTS7H5THrLU--
 

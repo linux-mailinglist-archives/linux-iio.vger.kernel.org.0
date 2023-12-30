@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-1323-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1324-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6E0820496
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Dec 2023 12:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0A782049D
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Dec 2023 12:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC3381C20E2C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Dec 2023 11:29:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 862681C20DFC
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Dec 2023 11:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C11D6FDC;
-	Sat, 30 Dec 2023 11:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7426FDC;
+	Sat, 30 Dec 2023 11:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpMv5QNJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8UwZWxi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D58B7488;
-	Sat, 30 Dec 2023 11:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA75C433C7;
-	Sat, 30 Dec 2023 11:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936D98BE7;
+	Sat, 30 Dec 2023 11:34:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9ADC433C7;
+	Sat, 30 Dec 2023 11:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703935740;
-	bh=ME7rmguraS+QpHkqvcm2mb6WLPZeSXv2g9gGYhHbKd4=;
+	s=k20201202; t=1703936040;
+	bh=e4zIj9WN1rHOoaFgv5qNtqov46wr61rNTXnZQylXXXg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BpMv5QNJkSEJvW9tGPoVnTR2P/7BBPeGd2MRE1q/3tqKOeuO3DIMvoyeFk9THxxla
-	 AqDpasD4j3SAO+H4A8qidvEryGKwlRjemoK4od6FzfOpvYHqXh3aJLq+A++UuVLBW/
-	 +7bt5ACb5KZYuCez/AYXlEMJZit5LQ/yt+YWHqoyqcTFBU9KLW1mvfcAHq+ymH/g7+
-	 4ZxOnfSudeveWRJziqNNztCWAC4NstynHPE5fxvatEo7gkRqGaqMWnUKNc977iwYmR
-	 RRUAa3xUX0ViGOrlFw+Dv7m+mAFetaL5AeGVfnFpgpHXF/OA+Ff8zQcoSco5dJwKie
-	 gqg9z7Ej0ByMQ==
-Date: Sat, 30 Dec 2023 11:28:52 +0000
+	b=O8UwZWxiI8abpS9S3Lbzp3CPK0eqfMjQb8MxCb4ajF5b2Lw/b81zF9pvi64laJn7h
+	 FQjvOzNMA9nRZgsoGmd+qKq7Hiz07IfoAtI7+igco24jicf+IDTtKIypIbPLufzxwB
+	 EEk46PwTcc6kMTIios4IdViifsNwTLZS/tX9h0JuDgzw0NyPASanMUPtc9YwiPYOPw
+	 bk6gBmqQgp3qakzg+tjBMbJaQYxpPShB8DJHCmNV3GwXl05cM6RIkeqTc/bKVSr3WE
+	 /K6My5E7LrgKED24TcamFDb6b7YiJEPA1FcbX9DfRk+ICfZDsnw0G3FP/XR37xMzH5
+	 AF8odw6CUHh6g==
+Date: Sat, 30 Dec 2023 11:33:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>
-Subject: Re: [PATCH v2 01/10] dt-bindings: iio: pressure:
- honeywell,mprls0025pa.yaml fix
-Message-ID: <20231230112852.2a9c3d64@jic23-huawei>
-In-Reply-To: <ZYvOJ9tlO1fp_QBT@sunspire>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Klinger
+ <ak@it-klinger.de>, Lars-Peter Clausen <lars@metafoo.de>, Angel Iglesias
+ <ang.iglesiasg@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 07/10] iio: pressure: mprls0025pa.c whitespace
+ cleanup
+Message-ID: <20231230113354.0abaa6c1@jic23-huawei>
+In-Reply-To: <ZYxhUJlAb63wRJE-@sunspire>
 References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
-	<20231224143500.10940-2-petre.rodan@subdimension.ro>
-	<20231226162839.5ceddc9e@jic23-huawei>
-	<ZYvOJ9tlO1fp_QBT@sunspire>
+	<20231224143500.10940-8-petre.rodan@subdimension.ro>
+	<ZYxSERlEAfwWpqWP@smile.fi.intel.com>
+	<ZYxhUJlAb63wRJE-@sunspire>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,74 +57,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 27 Dec 2023 09:11:35 +0200
+On Wed, 27 Dec 2023 19:39:28 +0200
 Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Hello Cameron,
-> 
-> On Tue, Dec 26, 2023 at 04:28:39PM +0000, Jonathan Cameron wrote:
-> > On Sun, 24 Dec 2023 16:34:46 +0200
-> > Petre Rodan <petre.rodan@subdimension.ro> wrote:
+> On Wed, Dec 27, 2023 at 06:34:25PM +0200, Andy Shevchenko wrote:
+> > On Sun, Dec 24, 2023 at 04:34:52PM +0200, Petre Rodan wrote:  
+> > > Fix indentation and whitespace in code that will not get refactored.
+> > > 
+> > > Make URL inside comment copy-paste friendly.  
 > >   
-> > > Define enum inside the honeywell,transfer-function property block.
-> > > 
-> > > Set the correct irq edge in the example block.
-> > > Based on the datasheet, in table 13 on page 11:
-> > > "End-of-conversion indicator: This pin is set high when a measurement
-> > > and calculation have been completed and the data is ready to be
-> > > clocked out"
-> > > 
-> > > Add description on End-of-conversion interrupt.
-> > > 
-> > > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > > Signed-off-by: Andreas Klinger <ak@it-klinger.de>  
-> > What's the relationship between Andreas and this patch?
+> > >  			return dev_err_probe(dev, ret,
+> > > -				"honeywell,pmin-pascal could not be read\n");
+> > > +				   "honeywell,pmin-pascal could not be read\n");  
 > > 
-> > Petre seems to have sent it so either Andreas should have a Co-authored-by or
-> > should be the author... Or not there at all  
+> > As done elsewhere, here and in other similar places fix the indentation
+> > by making first character on the latter line to be in the same column as
+> > the first character after the opening parenthesis.  
 > 
-> Andreas has written this driver as it is in the mainline tree right now and he
-> is marked as a maintainer for it.
-> A month back I told him about the enum off-by-one problem and also about my plan
-> of adding more features to the driver.
-> He was happy to accept my code and once I sent v1 of this patch to the list has
-> asked to work together for the v2 you see here. This has helped with cleaning up
-> the code. He requested the additional 'Signed-off-by' tag, but if you have a more
-> explicit one I will happily use it. 'Co-developed-by' it is.
+> I triple-checked that I am following the max 80 column rule, the parenthesis
+> rule and the 'do not split printk messages' rules in all my code in these 10 patches.
+> precisely so I don't get feedback like this one.
+> if the parenthesis rule makes the line longer then 80 chars I right-align to
+> column 80 as seen above.
 
-Yup, needs combination of Co-developed-by and a Sign off for this case as in
-effect both of you wrote the code.
+I'm not aware of (and can't immediately see) anything about right aligning to 80
+columns.  It's fine to align it less if line length is long but normally people
+go with aligning to one tab more than the start of the block.
 
+> that is what I understand from the latest coding style document and that is what
+> I will follow.
 > 
-> He also owns an i2c version of the sensor so he was able to make sure that the
-> original half of the driver still works after my refactor, hence the 'Tested-by'
-> tag in the last patch.
+> in this particular case if I were to ignore the 80 column rule we would end up on
+> column 90 if I were to follow your feedback (open parenthesis is at column 45
+> and the error takes 45 chars more).
 
-That's fine.
+It's fine to do this in the interests of readability.
 
-> 
-> please tell me how do the 'fixes'/feature/improvement tags/keywords look like?
-> are these to be added on the subject line, or should they reside near my
-> 'Signed-off-by' inside the email body? I probably missed the documentation where
-> these are covered :)
-See https://elixir.bootlin.com/linux/latest/source/Documentation/process/submitting-patches.rst
-for lots of detail.  The fixes tag has a particular format and goes in the main
-tag block. Lots of examples in tree so can just take a look at the git history for
-how to apply these rules in practice.
-
-> 
-> also, should I add a 'Reviewed-by:' you for 09/10 and 10/10 (the last two patches)?
-No. Tags should be explicitly given.  I tend not to give RB for stuff I'll pick up
-because they will have my SoB anyway as the person who applies the patches
-and that includes reviewing.
-
-In this case, Andreas asked for a tag to be included whereas I have not.
+People differ in opinion on what constitutes 'significant readability' and I'd
+be happy with either a shorter alignment (single tab more than line above)
+or going over 80 chars in this case.
 
 Jonathan
 
-
 > 
-> best regards,
 > peter
+> 
 
 

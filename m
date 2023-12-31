@@ -1,114 +1,197 @@
-Return-Path: <linux-iio+bounces-1330-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1331-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2527820BA3
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 15:57:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B310820C15
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 18:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6632CB2108F
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 14:57:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954291F2178F
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 17:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF95665;
-	Sun, 31 Dec 2023 14:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860C68F42;
+	Sun, 31 Dec 2023 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gh57j8zY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O7/eeO/1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431C16112;
-	Sun, 31 Dec 2023 14:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d4b650bc9cso1947895ad.0;
-        Sun, 31 Dec 2023 06:57:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704034627; x=1704639427; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fTz5TyGFzp4ZGQ+lOKRvj2KlDWSDsjrIEBja4htkNhg=;
-        b=Gh57j8zYkzIVg9urYyNHY19j5wXzZwnsOSOtGaLC0ZgO7qlOha5voIr2xvUND6UoYa
-         g7pAdSeBsvd346NmJi2KQ6O9WhY5kUFshiF+U7Qf6eLgtCRP6UEQ3o6jmO+lNeJxXT8x
-         SDPMgAlgG18cSC/f7Zodm3ajSOv3QJUiOb3OdFbr1pbNKClHamUEF8aeUD4IulFs6yr7
-         fNPE8pz+vrLIU7Yqg2g23ByoOTHnf0OKe/1GzdNTTYcreojySldf2ITd2Ars0QunOuDo
-         ivqtPM8cJMAvv08MHnLQwB56zPcRibwlrM4Gvmo1n4ygxw+tGRP3KmTltUAv5Qyio58a
-         DNXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704034627; x=1704639427;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fTz5TyGFzp4ZGQ+lOKRvj2KlDWSDsjrIEBja4htkNhg=;
-        b=AKOrek7jSkze6zUlyhhpNzaHQlRmonX41PpQ0X04EyVLadFHQKR9tPaOg/kE9Cvi9s
-         Ch2CY3oKJtVbYNfBhPy6I9TkvR9oOmkqO4Z1USDMCswS+cphtGcix3otiWrqXw+hXanQ
-         rEGr1mjWVjgRArLgr6VqJ53ezQBQyrbJOzLRqy9KJHmuAaotDDmlxzge4S/bsDXN/yeA
-         vt7ba8XbRi4vMHAc9tYghpmZEJXLOGylx+dNJP5K9z47uAUvhWb+HJHkDtc5LEuSd8j+
-         mrujo3rW/m8WHH9Zw8fcOrrVLx/h9+vuQlgLv3xHyZ/ySCwnCBYxlh3RMNRLufBQnez9
-         n3cQ==
-X-Gm-Message-State: AOJu0Yy+h4CzOB5mL3fe1u8GrCXXsimKf7jWn3j8cPyg5pXcpw0XESiS
-	Q5ABPV7R8q7FrX9Rcg9mXz+5txIdaZPOrw==
-X-Google-Smtp-Source: AGHT+IFpjDlcTRgrP8bt+8GIv5RObFRd/g2bE84fn78g+W591uHv/dU9aemwKo65bgNn+M8LaDexGw==
-X-Received: by 2002:a17:903:244d:b0:1d4:b017:a053 with SMTP id l13-20020a170903244d00b001d4b017a053mr2183914pls.116.1704034627330;
-        Sun, 31 Dec 2023 06:57:07 -0800 (PST)
-Received: from localhost.localdomain ([154.220.3.115])
-        by smtp.gmail.com with ESMTPSA id r4-20020a170902ea4400b001d3f285157dsm18704367plg.124.2023.12.31.06.57.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 31 Dec 2023 06:57:06 -0800 (PST)
-From: zhouzhouyi@gmail.com
-To: songqiang1304521@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "zhili.liu" <zhili.liu@ucas.com.cn>
-Subject: [PATCH v2] iio: magnetometer: rm3100: add boundary check for the value read from RM3100_REG_TMRC
-Date: Sun, 31 Dec 2023 22:56:44 +0800
-Message-Id: <1704034604-9846-1-git-send-email-zhouzhouyi@gmail.com>
-X-Mailer: git-send-email 1.7.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19828F49;
+	Sun, 31 Dec 2023 17:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BVGxaBV031759;
+	Sun, 31 Dec 2023 17:13:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=3o727j2
+	CmpWTJWaazrQ8DTM+khCuXjkt6WTrm0HG8zk=; b=O7/eeO/1rjM51qz2+V3JKTn
+	Bz1PxXsW0puUKuzXXQnTOdvi/1SPJ7L37dmJSzwqQdvPA+o+ReJmlDCwm05zlvkx
+	zEPI77uqKOl1w/nalRZu1mxPpOZGD568klgmEezeeQQMCeBpXPu8vnSGGdi3+qNo
+	zEBbDPB9gVIyVaqIYU/p7NLNlfICW4qSDkLzDs1MnYk9i1z4y7qitfazGEkxPYvP
+	Ffm0wtxg/c1KuiM+BLxgOw88cjmD8YTCjGhHIihdFkhw2nonFvwCJyyk8uE/x338
+	SkIPzsRWg/6I0Gs8nO/Zys449GasgXv7LW9alKICwWK/0xqyuXLolJe7B/P0VUA=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3va8js275q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 31 Dec 2023 17:13:06 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BVHD5Ni015556
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 31 Dec 2023 17:13:05 GMT
+Received: from hu-jprakash-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sun, 31 Dec 2023 09:12:53 -0800
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
+To: <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <andersson@kernel.org>, <konrad.dybcio@linaro.org>, <lee@kernel.org>,
+        <andriy.shevchenko@linux.intel.com>, <daniel.lezcano@linaro.org>,
+        <dmitry.baryshkov@linaro.org>
+CC: <quic_jprakash@quicinc.com>, <lars@metafoo.de>, <luca@z3ntu.xyz>,
+        <marijn.suijten@somainline.org>, <agross@kernel.org>,
+        <sboyd@kernel.org>, <rafael@kernel.org>, <rui.zhang@intel.com>,
+        <lukasz.luba@arm.com>, <linus.walleij@linaro.org>,
+        <quic_subbaram@quicinc.com>, <quic_collinsd@quicinc.com>,
+        <quic_amelende@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <kernel@quicinc.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-arm-msm-owner@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <cros-qcom-dts-watchers@chromium.org>
+Subject: [PATCH v3 0/3] iio: adc: Add support for QCOM SPMI PMIC5 Gen3 ADC
+Date: Sun, 31 Dec 2023 22:42:34 +0530
+Message-ID: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: E0tpdmncC4nqJKaUgF4AC7PX4LcfbsY8
+X-Proofpoint-ORIG-GUID: E0tpdmncC4nqJKaUgF4AC7PX4LcfbsY8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 mlxlogscore=871
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312310141
 
-From: "zhili.liu" <zhili.liu@ucas.com.cn>
+PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
+with all SW communication to ADC going through PMK8550 which
+communicates with other PMICs through PBS. The major difference is
+that the register interface used here is that of an SDAM present on
+PMK8550, rather than a dedicated ADC peripheral. There may be more than one
+SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
+be used for either immediate reads (same functionality as previous PMIC5 and
+PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
+Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
+combined into the same driver.
 
-Recently, we encounter kernel crash in function rm3100_common_probe
-caused by out of bound access of array rm3100_samp_rates (because of
-underlying hardware failures). Add boundary check to prevent out of
-bound access.
+Patch 1 is a cleanup, to move the QCOM ADC dt-bindings files from
+dt-bindings/iio to dt-bindings/iio/adc folder, as they are
+specifically for ADC devices. It also fixes all compilation errors
+with this change in driver and devicetree files and similar errors
+in documentation for dtbinding check.
 
-Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
----
-The format of the previous patch was a bit problematic,
-we are sending it again.
+Patch 2 adds bindings for ADC5 Gen3 peripheral.
 
-Sorry for the trouble.
+Patch 3 adds driver support for ADC5 Gen3.
 
-Thank you very much.
---
- drivers/iio/magnetometer/rm3100-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Changes since v2:
+- Reordered patches to keep cleanup change for ADC files first.
+- Moved ADC5 Gen3 documentation into a separate file
 
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index 69938204456f..fc50b6d4a334 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -586,6 +586,12 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
- 	ret = regmap_read(regmap, RM3100_REG_TMRC, &tmp);
- 	if (ret < 0)
- 		return ret;
-+
-+	if (tmp < RM3100_SAMP_NUM || tmp - RM3100_TMRC_OFFSET >= RM3100_SAMP_NUM) {
-+		dev_err(dev, "The value read from RM3100_REG_TMRC is invalid!\n");
-+		return -EINVAL;
-+	}
-+
- 	/* Initializing max wait time, which is double conversion time. */
- 	data->conversion_time = rm3100_samp_rates[tmp - RM3100_TMRC_OFFSET][2]
- 				* 2;
+Changes since v1:
+- Dropped patches 1-5 for changing 'ADC7' peripheral name to 'ADC5 Gen2'.
+- Addressed reviewer comments for binding and driver patches for ADC5 Gen3.
+- Combined patches 8-11 into a single patch as requested by reviewers to make
+  the change clearer and made all fixes required in same patch.
+
+Jishnu Prakash (3):
+  dt-bindings: iio/adc: Move QCOM ADC bindings to iio/adc folder
+  dt-bindings: iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+  iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+
+ .../bindings/iio/adc/qcom,spmi-adc5-gen3.yaml |  212 +++
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      |    4 +-
+ .../bindings/mfd/qcom,spmi-pmic.yaml          |    2 +-
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml |    2 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |    6 +-
+ arch/arm64/boot/dts/qcom/pm2250.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm6150.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm6150l.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |    2 +-
+ arch/arm64/boot/dts/qcom/pm660l.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm8150b.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pm8150l.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pm8916.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm8953.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm8994.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pm8998.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pmi632.dtsi          |    2 +-
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |    2 +-
+ arch/arm64/boot/dts/qcom/pmp8074.dtsi         |    2 +-
+ arch/arm64/boot/dts/qcom/pms405.dtsi          |    2 +-
+ .../boot/dts/qcom/qcm6490-fairphone-fp5.dts   |    4 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dts       |    2 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |    2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |    4 +-
+ arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi   |    2 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    |    6 +-
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |    2 +-
+ arch/arm64/boot/dts/qcom/sm8450-hdk.dts       |    8 +-
+ drivers/iio/adc/Kconfig                       |   25 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/qcom-spmi-adc5-gen3.c         | 1198 +++++++++++++++++
+ drivers/iio/adc/qcom-spmi-adc5.c              |    2 +-
+ drivers/iio/adc/qcom-spmi-vadc.c              |    2 +-
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550.h      |   50 +
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550b.h     |   89 ++
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h    |   22 +
+ .../iio/adc/qcom,spmi-adc5-gen3-pmk8550.h     |   56 +
+ .../iio/{ => adc}/qcom,spmi-adc7-pm7325.h     |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pm8350.h     |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    |    2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-smb139x.h    |    2 +-
+ .../iio/{ => adc}/qcom,spmi-vadc.h            |   81 ++
+ 50 files changed, 1785 insertions(+), 51 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-adc5-gen3.yaml
+ create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm7325.h (98%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (95%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-smb139x.h (93%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (77%)
+
 -- 
 2.25.1
 

@@ -1,61 +1,78 @@
-Return-Path: <linux-iio+bounces-1329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E2E820B72
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 14:29:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2527820BA3
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 15:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 255AC1F2174E
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 13:29:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6632CB2108F
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 14:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466554698;
-	Sun, 31 Dec 2023 13:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF95665;
+	Sun, 31 Dec 2023 14:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gh57j8zY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656B04418;
-	Sun, 31 Dec 2023 13:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ucas.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ucas.com.cn
-X-QQ-mid: bizesmtp72t1704029295tp77jwnr
-Received: from localhost ( [222.129.36.236])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 31 Dec 2023 21:28:13 +0800 (CST)
-X-QQ-SSF: 01400000000000E0Q000000A0000000
-X-QQ-FEAT: 4LPFn8ee8koCpu0RO5WhWZFMz3Uy8coMUXK3Fsz01rHjpcEfi5sk9UU9nt6yY
-	8MqBIL19uFs/8LH+wjAwsbHmoZ7ODSD/nLeIketFaKb3z3kvNHu+VQXFjEeLb71NdFUL+p9
-	EHNxJW0ETplCTTc4wbX6ul8lkhcQwOiNc66KfTSeihqTm/Hv4RCzxMmXBjT/YnltOmNxk1y
-	K6YLmBkroCDYacTd5LO4ZfkMfmpcOnoJFdQFyYPPcivg9G7HASTOZ59h78yn9GMMg6T4P+Y
-	It0nz/ymF1IuKuPO+fJccQKawfoGsqB4FzwdwxsOhK3EqLIFPKtmUupfP2VZfy0no5u0FG3
-	nOYSV/d+9nWNgjkJDGIU9HiGmbaIQ==
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 13934946956939124387
-Date: Sun, 31 Dec 2023 21:28:17 +0800
-From: "zhili.liu" <zhili.liu@ucas.com.cn>
-To: songqiang1304521@gmail.com, jic23@kernel.org, lars@metafoo.de
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] drivers/iio/magnetometer/rm3100-core.c:add boundary
- check for the value read from RM3100_REG_TMRC
-Message-ID: <60D6AC11DAAB99DB+20231231132817.GA130@LAPTOP-9C7JTT8O.localdomain>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431C16112;
+	Sun, 31 Dec 2023 14:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d4b650bc9cso1947895ad.0;
+        Sun, 31 Dec 2023 06:57:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704034627; x=1704639427; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fTz5TyGFzp4ZGQ+lOKRvj2KlDWSDsjrIEBja4htkNhg=;
+        b=Gh57j8zYkzIVg9urYyNHY19j5wXzZwnsOSOtGaLC0ZgO7qlOha5voIr2xvUND6UoYa
+         g7pAdSeBsvd346NmJi2KQ6O9WhY5kUFshiF+U7Qf6eLgtCRP6UEQ3o6jmO+lNeJxXT8x
+         SDPMgAlgG18cSC/f7Zodm3ajSOv3QJUiOb3OdFbr1pbNKClHamUEF8aeUD4IulFs6yr7
+         fNPE8pz+vrLIU7Yqg2g23ByoOTHnf0OKe/1GzdNTTYcreojySldf2ITd2Ars0QunOuDo
+         ivqtPM8cJMAvv08MHnLQwB56zPcRibwlrM4Gvmo1n4ygxw+tGRP3KmTltUAv5Qyio58a
+         DNXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704034627; x=1704639427;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fTz5TyGFzp4ZGQ+lOKRvj2KlDWSDsjrIEBja4htkNhg=;
+        b=AKOrek7jSkze6zUlyhhpNzaHQlRmonX41PpQ0X04EyVLadFHQKR9tPaOg/kE9Cvi9s
+         Ch2CY3oKJtVbYNfBhPy6I9TkvR9oOmkqO4Z1USDMCswS+cphtGcix3otiWrqXw+hXanQ
+         rEGr1mjWVjgRArLgr6VqJ53ezQBQyrbJOzLRqy9KJHmuAaotDDmlxzge4S/bsDXN/yeA
+         vt7ba8XbRi4vMHAc9tYghpmZEJXLOGylx+dNJP5K9z47uAUvhWb+HJHkDtc5LEuSd8j+
+         mrujo3rW/m8WHH9Zw8fcOrrVLx/h9+vuQlgLv3xHyZ/ySCwnCBYxlh3RMNRLufBQnez9
+         n3cQ==
+X-Gm-Message-State: AOJu0Yy+h4CzOB5mL3fe1u8GrCXXsimKf7jWn3j8cPyg5pXcpw0XESiS
+	Q5ABPV7R8q7FrX9Rcg9mXz+5txIdaZPOrw==
+X-Google-Smtp-Source: AGHT+IFpjDlcTRgrP8bt+8GIv5RObFRd/g2bE84fn78g+W591uHv/dU9aemwKo65bgNn+M8LaDexGw==
+X-Received: by 2002:a17:903:244d:b0:1d4:b017:a053 with SMTP id l13-20020a170903244d00b001d4b017a053mr2183914pls.116.1704034627330;
+        Sun, 31 Dec 2023 06:57:07 -0800 (PST)
+Received: from localhost.localdomain ([154.220.3.115])
+        by smtp.gmail.com with ESMTPSA id r4-20020a170902ea4400b001d3f285157dsm18704367plg.124.2023.12.31.06.57.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 31 Dec 2023 06:57:06 -0800 (PST)
+From: zhouzhouyi@gmail.com
+To: songqiang1304521@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "zhili.liu" <zhili.liu@ucas.com.cn>
+Subject: [PATCH v2] iio: magnetometer: rm3100: add boundary check for the value read from RM3100_REG_TMRC
+Date: Sun, 31 Dec 2023 22:56:44 +0800
+Message-Id: <1704034604-9846-1-git-send-email-zhouzhouyi@gmail.com>
+X-Mailer: git-send-email 1.7.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:ucas.com.cn:qybglogicsvrsz:qybglogicsvrsz4a-0
 
-From d985bd979df3f1c4327e1374f1af953a1024de33 Mon Sep 17 00:00:00 2001
 From: "zhili.liu" <zhili.liu@ucas.com.cn>
-Date: Fri, 29 Dec 2023 19:52:40 +0800
-Subject: [PATCH] iio: magnetometer: rm3100: add boundary check for the value
- read from RM3100_REG_TMRC
 
 Recently, we encounter kernel crash in function rm3100_common_probe
 caused by out of bound access of array rm3100_samp_rates (because of
@@ -65,6 +82,13 @@ bound access.
 Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
 Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
 ---
+The format of the previous patch was a bit problematic,
+we are sending it again.
+
+Sorry for the trouble.
+
+Thank you very much.
+--
  drivers/iio/magnetometer/rm3100-core.c | 6 ++++++
  1 file changed, 6 insertions(+)
 

@@ -1,45 +1,44 @@
-Return-Path: <linux-iio+bounces-1339-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1340-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EBF820C83
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 19:35:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE15820C84
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 19:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CC5A1C20982
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 18:35:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F4451F21BB9
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Dec 2023 18:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C341946F;
-	Sun, 31 Dec 2023 18:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D849470;
+	Sun, 31 Dec 2023 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aH8vLqph"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSJ/nJ72"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA47E944D
-	for <linux-iio@vger.kernel.org>; Sun, 31 Dec 2023 18:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1002CC433C8;
-	Sun, 31 Dec 2023 18:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60324944D
+	for <linux-iio@vger.kernel.org>; Sun, 31 Dec 2023 18:35:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E75C433C9;
+	Sun, 31 Dec 2023 18:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704047725;
-	bh=XssyMWi+Rf4taKkSYeRbmsKuH49r35AwXsSxnagho28=;
+	s=k20201202; t=1704047726;
+	bh=5DipDRJ9SjxNVEu8yeOLsiEkzWBhgemvmWE2TkWJW2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aH8vLqph0wXWLvuyxY32+HNUBDBg++hFE9YAgG0k+32ZRXAfzxsAsV78FqXZXP+Ip
-	 6K17bQNbHss9v4/EUUadnrzbFKI70Q9QT7lyEd+Ou/GHIdESfMAMivGDYPJ6MnKTyu
-	 F4IDdlJdLfvT8Cs+BLNEemRDnTar+hRkKePComUS2qTnnl/M14JVsG1leHOf+78blL
-	 xYUNLrJu5HeJ/OHHgHO2rl2tQFRrN7RZ2vVFi/TLtgkNxY13wKS7Lultsx/Ti+mWrM
-	 Jk3B8c98S4N+DTNtn1KTnbvz57AZk32rd8gkIPZzHjXO2op7Gmjwy0mRh+5S3jjkID
-	 UVn2Rpc5frwuw==
+	b=OSJ/nJ72d+7Wp540wXYSBRa93Suw5EKBFKaY71Ov/eoslzQIVwjO4ntV1XCtsNJ2c
+	 zUDurevCZJ9NNsAZphHWjPNsqiAHha8tDN/Y31xn/ikzpNytQy74tz/TpiKm5wfqHM
+	 qVCJlqxVo9e8d020lAK7pUPTRO25TB+7gj9w1VHrKHWtiqtwYYCYkKmOQyOnNA3547
+	 SjWzhvHysu0Ouv1JLLg5fAP4cXQq2cUvXITeNMlcfVWQx/hWkkUXWLdhALE7JkN3In
+	 JkDH8OFg5tisHfI4VlQdAFuUm4UA7yAUdOseh3+8CWuUS46Z6166fgdonkkMvu5FaZ
+	 e0JvY22fCyR5Q==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 02/24] iio: accel: kxcjk-1013: Move acpi_device_id table under ifdef CONFIG_ACPI
-Date: Sun, 31 Dec 2023 18:34:52 +0000
-Message-ID: <20231231183514.566609-3-jic23@kernel.org>
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 03/24] iio: accel: mma9551: Drop ACPI_PTR() usage
+Date: Sun, 31 Dec 2023 18:34:53 +0000
+Message-ID: <20231231183514.566609-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231231183514.566609-1-jic23@kernel.org>
 References: <20231231183514.566609-1-jic23@kernel.org>
@@ -53,68 +52,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This avoids a build warning due to the use of ACPI_PTR().
-Given the driver already has APCI specific code under CONFIG_ACPI move
-the table rather than removing the ACPI_PTR() call as we already
-have the complexity of CONFIG_ACPI.
+Avoiding unused variable warnings when using this macro adds
+complexity that in simple cases like this one is not justified
+for the small saving in data.
+
+Whilst here tidy up a trivial bit of unusual indentation.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/iio/accel/kxcjk-1013.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/iio/accel/mma9551.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index 894709286b0c..7f084f73da84 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -422,6 +422,23 @@ static int kiox010a_dsm(struct device *dev, int fn_index)
- 	ACPI_FREE(obj);
- 	return 0;
- }
-+
-+static const struct acpi_device_id kx_acpi_match[] = {
-+	{"KXCJ1013", KXCJK1013},
-+	{"KXCJ1008", KXCJ91008},
-+	{"KXCJ9000", KXCJ91008},
-+	{"KIOX0008", KXCJ91008},
-+	{"KIOX0009", KXTJ21009},
-+	{"KIOX000A", KXCJ91008},
-+	{"KIOX010A", KXCJ91008}, /* KXCJ91008 in the display of a yoga 2-in-1 */
-+	{"KIOX020A", KXCJ91008}, /* KXCJ91008 in the base of a yoga 2-in-1 */
-+	{"KXTJ1009", KXTJ21009},
-+	{"KXJ2109",  KXTJ21009},
-+	{"SMO8500",  KXCJ91008},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(acpi, kx_acpi_match);
-+
- #endif
- 
- static int kxcjk1013_set_mode(struct kxcjk1013_data *data,
-@@ -1687,22 +1704,6 @@ static const struct dev_pm_ops kxcjk1013_pm_ops = {
- 			   kxcjk1013_runtime_resume, NULL)
- };
- 
--static const struct acpi_device_id kx_acpi_match[] = {
--	{"KXCJ1013", KXCJK1013},
--	{"KXCJ1008", KXCJ91008},
--	{"KXCJ9000", KXCJ91008},
--	{"KIOX0008", KXCJ91008},
--	{"KIOX0009", KXTJ21009},
--	{"KIOX000A", KXCJ91008},
--	{"KIOX010A", KXCJ91008}, /* KXCJ91008 in the display of a yoga 2-in-1 */
--	{"KIOX020A", KXCJ91008}, /* KXCJ91008 in the base of a yoga 2-in-1 */
--	{"KXTJ1009", KXTJ21009},
--	{"KXJ2109",  KXTJ21009},
--	{"SMO8500",  KXCJ91008},
--	{ },
--};
--MODULE_DEVICE_TABLE(acpi, kx_acpi_match);
--
- static const struct i2c_device_id kxcjk1013_id[] = {
- 	{"kxcjk1013", KXCJK1013},
- 	{"kxcj91008", KXCJ91008},
+diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
+index d823f2edc6d4..083c08f65baf 100644
+--- a/drivers/iio/accel/mma9551.c
++++ b/drivers/iio/accel/mma9551.c
+@@ -604,9 +604,9 @@ MODULE_DEVICE_TABLE(i2c, mma9551_id);
+ static struct i2c_driver mma9551_driver = {
+ 	.driver = {
+ 		   .name = MMA9551_DRV_NAME,
+-		   .acpi_match_table = ACPI_PTR(mma9551_acpi_match),
++		   .acpi_match_table = mma9551_acpi_match,
+ 		   .pm = pm_ptr(&mma9551_pm_ops),
+-		   },
++	},
+ 	.probe = mma9551_probe,
+ 	.remove = mma9551_remove,
+ 	.id_table = mma9551_id,
 -- 
 2.43.0
 

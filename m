@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BC18214A8
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 18:27:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572BB8214A9
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 18:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B1F281D51
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 17:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05F32281A0F
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 17:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4420A7484;
-	Mon,  1 Jan 2024 17:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FA08828;
+	Mon,  1 Jan 2024 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDEVmXt7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="la6OXOmJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0388BEA;
-	Mon,  1 Jan 2024 17:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27B2C433CD;
-	Mon,  1 Jan 2024 17:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4FF8BE5;
+	Mon,  1 Jan 2024 17:27:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74330C433CC;
+	Mon,  1 Jan 2024 17:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704130016;
-	bh=XhmZrqz6FVo7Im9712sd5TE93erFrXegh2LKQfoag6s=;
+	s=k20201202; t=1704130024;
+	bh=ozsSYFV5e7XdTlhrbVWP9N6auZ3btR7QaCsF8q/QKuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDEVmXt7bguP4UJ3dRk028QfF57QWf8Rsxelnhujd71JUAqpmdsHUOX2jzo3Sv/Va
-	 9L7yoYIyvS/XVS+SRKbVgfS+67yZViRJA/EHOly6cDrCySxKEdsqGjAH+zPqoo1fHZ
-	 6rp5HdPEOqN6WS9sHokLdL6BXyFKIDhr9UNMbuJOAEAAb+TpqxEtfQVeaLy+SXZQr1
-	 JOUeUCjqwv5Yf07qGdNPAucZla2/BZfdkIF/WVGYDCpF4eWfGVybYJ10Aio2WRwvxk
-	 YEbbEmxtXq5diFPEQJ2lbV1bgBwLALZxB5nUH58yTiWrEPqyavxcPYR8mzn3SFB/Eu
-	 V6sAEz916jx5w==
+	b=la6OXOmJ++eQfSzCgr2m9KkFhKRBQeZN3N1lDs/rTCTEFayMAOptpu5ioltCGC460
+	 GIcUeyDD0MepP4k7u3bBdj0eM6V+BerwAjgVqoQmbbDEOe2B6SL2+vs55CL2iiuExL
+	 RQHOFj+qgsqLxjqBSzchircTiqyynBuEtSsFo74tvpmikOoKQiCaiC0LWVdrTkC0Rp
+	 y4iUi9Ia4hI05cVHcC+pX6Kdg5x+QGihBpVNMechbLWqw68j+RRK8rMSOTGOSdwpWt
+	 MVIwMbSnvCiyVSrEzHQ28ZUG2xDFbyfgcjErET3pJE4tLeSshGTdvBrROQdEBp2ait
+	 7NA7uWMfq4qow==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 04/13] iio: adc: qcom-spmi-adc5: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Mon,  1 Jan 2024 17:26:02 +0000
-Message-ID: <20240101172611.694830-5-jic23@kernel.org>
+Subject: [RFC PATCH 05/13] iio: adc: rzg2l_adc: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Mon,  1 Jan 2024 17:26:03 +0000
+Message-ID: <20240101172611.694830-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240101172611.694830-1-jic23@kernel.org>
 References: <20240101172611.694830-1-jic23@kernel.org>
@@ -79,44 +79,43 @@ loop no fwnode_handle reference will be held and the child pointer
 will be NULL thus making the automatically run fwnode_handle_put() a
 noop.
 
-A slightly less convincing usecase than many as all the failure paths
-are wrapped up in a call to a per fwnode_handle utility function.
-The complexity in that function is sufficient that it makes sense to
-factor it out even if it this new auto cleanup would enable simpler
-returns if the code was inline at the call site. Hence I've left it alone.
-
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>
+Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
- drivers/iio/adc/qcom-spmi-adc5.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/adc/rzg2l_adc.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index b6b612d733ff..36d3912d36df 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -825,7 +825,7 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
- 	const struct adc5_channels *adc_chan;
- 	struct iio_chan_spec *iio_chan;
- 	struct adc5_channel_prop prop, *chan_props;
--	struct fwnode_handle *child;
-+	struct fwnode_handle *child __free(fwnode_handle) = NULL;
- 	unsigned int index = 0;
- 	int ret;
- 
-@@ -851,10 +851,8 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
- 
- 	device_for_each_child_node(adc->dev, child) {
- 		ret = adc5_get_fw_channel_data(adc, &prop, child, adc->data);
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index 0921ff2d9b3a..08af54824f25 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -302,7 +302,7 @@ static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
+ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l_adc *adc)
+ {
+ 	struct iio_chan_spec *chan_array;
+-	struct fwnode_handle *fwnode;
++	struct fwnode_handle *fwnode __free(fwnode_handle) = NULL;
+ 	struct rzg2l_adc_data *data;
+ 	unsigned int channel;
+ 	int num_channels;
+@@ -332,15 +332,11 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
+ 	i = 0;
+ 	device_for_each_child_node(&pdev->dev, fwnode) {
+ 		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
 -		if (ret) {
--			fwnode_handle_put(child);
+-			fwnode_handle_put(fwnode);
 +		if (ret)
  			return ret;
 -		}
  
- 		prop.scale_fn_type =
- 			adc->data->adc_chans[prop.channel].scale_fn_type;
+-		if (channel >= RZG2L_ADC_MAX_CHANNELS) {
+-			fwnode_handle_put(fwnode);
++		if (channel >= RZG2L_ADC_MAX_CHANNELS)
+ 			return -EINVAL;
+-		}
+ 
+ 		chan_array[i].type = IIO_VOLTAGE;
+ 		chan_array[i].indexed = 1;
 -- 
 2.43.0
 

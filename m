@@ -1,132 +1,155 @@
-Return-Path: <linux-iio+bounces-1368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0797F821442
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 16:42:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1778214A1
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 18:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1501C20B13
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 15:42:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0667DB210C3
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jan 2024 17:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009A46107;
-	Mon,  1 Jan 2024 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5280B6FD7;
+	Mon,  1 Jan 2024 17:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VlbWbjqG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRVat1xW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA9DBA32
-	for <linux-iio@vger.kernel.org>; Mon,  1 Jan 2024 15:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC6BC433C7;
-	Mon,  1 Jan 2024 15:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3E66FAF;
+	Mon,  1 Jan 2024 17:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC83C433C7;
+	Mon,  1 Jan 2024 17:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704123726;
-	bh=Cb7xRpbz6LtHKtKvTE4xGva0rKgVrpr4eV2Gp8wZDd0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VlbWbjqGmMAlcivYdafSORiUPfGpV0yUzoEvJUIcNDRjB407puqhas+GC4Y/GT9h9
-	 E+aN4MBzpsJhu7ULK7gqsnYuEPqtjcf5xeWPWWYF/YF8FrXbAR69cVMd8kBMgVpbf6
-	 j0XeV5kXLjNnQB/uDVcciH0pH3Qk26ivJWL5PkiKd1wg0qzGKYmoeAWnBcLJWmy2bi
-	 hUaAn+7Bkh7JQyvjdB2YaGuKpHCpRQOLmjEIqsbmtzgH59nkGKvUX/Y9beDsVVzDlE
-	 bbSmhckJpDs+0tD+2o8Va+ZhksxMoX2hIuJlE8lUhsNuWrLy4C6rBrKR/syE49vEQo
-	 pOuqxOMZu5TDA==
-Date: Mon, 1 Jan 2024 15:42:00 +0000
+	s=k20201202; t=1704129987;
+	bh=NojOBF8KejmCGbJn+3upOovqjyQ7bILC6z97ixwOBts=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dRVat1xWXPF7aDjj+CZQQ8wXWH3KvhkWP4aEp5Mu8d/VTRxeSZNRKtiv8KDHK15hP
+	 QwL0y25EYjtFijQaVLZoIiC6QLFi3RkQBEwf3CLL9v39/91V5f31/W8LXSv+LaW2GA
+	 bjIX4/ZulL99jcLevCV+oR37V8rMmD7nwd3/v3zev9F3/xaGLYrLtX439a53nmXpeB
+	 DKemsL7rMHwGC2VL4le/36tZxAQB0j9H/B3ntKS3Dc0oQJOtJHOo8MnZM2bIOzjWLq
+	 /0cIbDxQbetaJ13zTlbXGw6WDR7PjKpkq6ru6QlUJmu7/PZvt+3zTvxxpEZXTp3/0I
+	 1VqmvhbQSRRcg==
 From: Jonathan Cameron <jic23@kernel.org>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: da280: Simplify id-matching
-Message-ID: <20240101154200.28f32bd5@jic23-huawei>
-In-Reply-To: <20240101133234.10310-1-hdegoede@redhat.com>
-References: <20240101133234.10310-1-hdegoede@redhat.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+To: linux-iio@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
+Date: Mon,  1 Jan 2024 17:25:58 +0000
+Message-ID: <20240101172611.694830-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon,  1 Jan 2024 14:32:34 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> da280_match_acpi_device() is a DIY version of acpi_device_get_match_data(),
-> so it can be dropped.
-> 
-> And things can be simplified further by using i2c_get_match_data() which
-> will also check i2c_client_id style ids.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+RFC mainly because it's untested. I have none of the relevant hardware and
+haven't yet emulated the firmware descriptions to test this.
+I have tested the device tree only version:
+https://lore.kernel.org/linux-iio/20231217184648.185236-1-jic23@kernel.org/
+which is very similar.
 
-Hi Hans and happy new year,
+Failing to release the references on early exit from loops over child nodes
+and similar are a fairly common source of bugs. The need to explicitly
+release the references via fwnode_handle_put() also complicate the code.
 
-This runs into a slightly nasty corner case (which can't actually happen because
-we know it will match) of a NULL return on failure to match which ends up
-being the first enum entry whereas we should probably return an error.
+The first patch enables
 
-My preferred cleanup would be to make both id tables point to a set of structs
-that encode the device differences as data rather than ids.
+	struct fwnode_handle *child __free(fwnode_handle) = NULL;
 
-struct da280_chip_info {
-	const char *name;
-	int num_channels;
+	device_for_each_child_node(dev, child) {
+		if (err)
+			/*
+			 * Previously needed a fwnode_handle_put() here,
+			 * will now be called automatically as well leave
+			 * the scope within which the cleanup is registered
+			 */
+			return err;
+	}
+
+/*
+ * fwnode_handle_put() no automatically called here - but child == NULL so
+ * that call is a noop
+ */
 }
 
-or something along those lines.  Then we can rely on the generic lookup function
-without taking care about the 0 value.
+As can be seen by the examples from IIO that follow this can save
+a reasonable amount of complexity and boiler plate code, often enabling
+additional cleanups in related code such as use of
+return dev_err_probe().
 
-Jonathan
+Jonathan Cameron (13):
+  device property: Add cleanup.h based fwnode_handle_put() scope based
+    cleanup.
+  iio: adc: max11410: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: mcp3564: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: qcom-spmi-adc5: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: rzg2l_adc: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: stm32: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: ti-ads1015: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: ti-ads131e08: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: addac: ad74413r: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ad3552: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ad5770r: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ltc2688: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: temp: ltc2983: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
 
+ drivers/iio/adc/max11410.c        | 26 ++++--------
+ drivers/iio/adc/mcp3564.c         | 15 ++++---
+ drivers/iio/adc/qcom-spmi-adc5.c  |  6 +--
+ drivers/iio/adc/rzg2l_adc.c       | 10 ++---
+ drivers/iio/adc/stm32-adc.c       | 62 +++++++++++----------------
+ drivers/iio/adc/ti-ads1015.c      |  4 +-
+ drivers/iio/adc/ti-ads131e08.c    | 12 ++----
+ drivers/iio/addac/ad74413r.c      |  9 +---
+ drivers/iio/dac/ad3552r.c         | 50 +++++++++-------------
+ drivers/iio/dac/ad5770r.c         | 18 +++-----
+ drivers/iio/dac/ltc2688.c         | 23 +++-------
+ drivers/iio/temperature/ltc2983.c | 70 ++++++++++---------------------
+ include/linux/property.h          |  2 +
+ 13 files changed, 104 insertions(+), 203 deletions(-)
 
-> ---
->  drivers/iio/accel/da280.c | 18 +-----------------
->  1 file changed, 1 insertion(+), 17 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-> index 572bfe9694b0..e4cd4b3a28ab 100644
-> --- a/drivers/iio/accel/da280.c
-> +++ b/drivers/iio/accel/da280.c
-> @@ -89,17 +89,6 @@ static const struct iio_info da280_info = {
->  	.read_raw	= da280_read_raw,
->  };
->  
-> -static enum da280_chipset da280_match_acpi_device(struct device *dev)
-> -{
-> -	const struct acpi_device_id *id;
-> -
-> -	id = acpi_match_device(dev->driver->acpi_match_table, dev);
-> -	if (!id)
-> -		return -EINVAL;
-> -
-> -	return (enum da280_chipset) id->driver_data;
-> -}
-> -
->  static void da280_disable(void *client)
->  {
->  	da280_enable(client, false);
-> @@ -107,7 +96,6 @@ static void da280_disable(void *client)
->  
->  static int da280_probe(struct i2c_client *client)
->  {
-> -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
->  	int ret;
->  	struct iio_dev *indio_dev;
->  	struct da280_data *data;
-> @@ -128,11 +116,7 @@ static int da280_probe(struct i2c_client *client)
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = da280_channels;
->  
-> -	if (ACPI_HANDLE(&client->dev)) {
-> -		chip = da280_match_acpi_device(&client->dev);
-> -	} else {
-> -		chip = id->driver_data;
-> -	}
-> +	chip = (uintptr_t)i2c_get_match_data(client);
->  
->  	if (chip == da217) {
->  		indio_dev->name = "da217";
+-- 
+2.43.0
 
 

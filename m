@@ -1,160 +1,123 @@
-Return-Path: <linux-iio+bounces-1401-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1402-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016E98224A8
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jan 2024 23:22:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D9E82263E
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jan 2024 02:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7495F2840A3
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jan 2024 22:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6AC01C21BF7
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jan 2024 01:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D5F1772D;
-	Tue,  2 Jan 2024 22:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rl0TtHe0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD9A81C;
+	Wed,  3 Jan 2024 01:05:29 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9ED171BA;
-	Tue,  2 Jan 2024 22:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6d9ac5bd128so2475813b3a.0;
-        Tue, 02 Jan 2024 14:21:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704234117; x=1704838917; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e31awxvnUFU2mzL1bStxukrBXES4Vp8ekijyPrTWOWY=;
-        b=Rl0TtHe06kkTcmVCV9mQKpAMeESgJL9FtPq5CzhQPgFQUvv1gbaU8uccg4OtMdR6mI
-         VfRX7StpWxF8va5/2fPQh1LKFBgRsiR009J1uqf95uEhDghS4OZHk8bDqJKBJ2AISz5S
-         6GBR+wyVaoLAuGlf0QE8A3oKMt0rLS50Sxgiizt1wi60LhmNN2h93JD+HxNd5rWF35uN
-         vEEwlGYizSBhkij8JvyenvfocdT8n4NQYq2pCVahPHSaEyO4/DZLOvhksXeMf8f2yTSz
-         j0bTtKwxCLY7pFtP1AiQAfmT45Hb4+sXptRUC/gKjBv9HVYvRAWBmHlukyAL/Rd0674f
-         PNVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704234117; x=1704838917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e31awxvnUFU2mzL1bStxukrBXES4Vp8ekijyPrTWOWY=;
-        b=nm4d+2s17uPDO1twkQpvmuL5TAPgOVj0tEb1DS6CRrzcUpOM7A/uxACYGQ5EwMr9rp
-         l8kPs3A8erZLmIIjRrNTImu7VPnrSKL1wxy9e4rjtHvC7uB1QifP97+m7ML6myP7nSzh
-         ukYdK5+CAdzrr1e4G5Y4dUIu055BPO2BQSe7VBDS/6J84Tp2/GoC4cr+lHgX8ObcAb/5
-         QqFQ3Ja+IFGZZdNoxFC4jsgygmrjF6t6p0PJfjKgyhdEPimjqG9I72puOW2/12S9pNFc
-         bRMbnlqyKY9zbtWPsC72VA5g4SqL3ApZ/fMWitHGmO7vCRlVN0GMkxhGVW9hGTFWWlBU
-         WvuQ==
-X-Gm-Message-State: AOJu0YzVhxxW1LYg89nsDXyU8dg62E8YMzl2D3m/JsjBmYxzWHZNZ+IB
-	scrS37Za1jypXXFPWqDyasBvRt/IaI4zdg7TRJM96n3NnSJFMg==
-X-Google-Smtp-Source: AGHT+IF4q554b9sLQVLtVZ08bE6rxFhxwopWzqxMSE3grwFwt2Kc5KyI/G+0Qjk7LBoyfe8cXL6WefeuxRmg9a+xtXQ=
-X-Received: by 2002:a05:6a20:f9f:b0:18f:97c:8263 with SMTP id
- ga31-20020a056a200f9f00b0018f097c8263mr6190446pzb.109.1704234117108; Tue, 02
- Jan 2024 14:21:57 -0800 (PST)
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AD91848;
+	Wed,  3 Jan 2024 01:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+Received: from 192.168.10.47
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(636810:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Wed, 03 Jan 2024 09:04:52 +0800 (CST)
+Received: from ex3.rt.l (192.168.10.46) by ex4.rt.l (192.168.10.47) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.27; Wed, 3 Jan
+ 2024 09:04:52 +0800
+Received: from linuxcarl2.richtek.com (192.168.10.154) by ex3.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1258.27 via Frontend
+ Transport; Wed, 3 Jan 2024 09:04:52 +0800
+Date: Wed, 3 Jan 2024 09:04:52 +0800
+From: ChiYuan Huang <cy_huang@richtek.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+	<conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+	<robh+dt@kernel.org>, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: adc: rtq6056: Add support for the whole
+ RTQ6056 family
+Message-ID: <20240103010452.GA6655@linuxcarl2.richtek.com>
+References: <cover.1703762557.git.cy_huang@richtek.com>
+ <74db15583a9a68701dbff5a1a967c0d987d6dfb6.1703762557.git.cy_huang@richtek.com>
+ <20231230120347.0816bd09@jic23-huawei>
+ <20240102083042.GA13611@linuxcarl2.richtek.com>
+ <20240102193642.0d6d2007@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1704157631-3814-1-git-send-email-zhouzhouyi@gmail.com> <20240102194209.39dac963@jic23-huawei>
-In-Reply-To: <20240102194209.39dac963@jic23-huawei>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Wed, 3 Jan 2024 06:21:46 +0800
-Message-ID: <CAABZP2y1ptNm2KMQ7tGttMgFFCMPS0=CjyfxYJkR8P1thEWA9Q@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: magnetometer: rm3100: add boundary check for the
- value read from RM3100_REG_TMRC
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: songqiang1304521@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "zhili.liu" <zhili.liu@ucas.com.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240102193642.0d6d2007@jic23-huawei>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Wed, Jan 3, 2024 at 3:42=E2=80=AFAM Jonathan Cameron <jic23@kernel.org> =
-wrote:
->
-> On Tue,  2 Jan 2024 09:07:11 +0800
-> zhouzhouyi@gmail.com wrote:
->
-> > From: "zhili.liu" <zhili.liu@ucas.com.cn>
-> >
-> > Recently, we encounter kernel crash in function rm3100_common_probe
-> > caused by out of bound access of array rm3100_samp_rates (because of
-> > underlying hardware failures). Add boundary check to prevent out of
-> > bound access.
-> >
-> > Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3=
-100")
-> Fixes is a formal tag so needs to be part of the main tags block
-> (i.e. No blank line here!)
->
-> I'll fix that whilst applying.
-Thank you for helping us modify the patch, I learned a lot during this
-process, thanks
->
-> >
-> > Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-> > Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
-> > ---
-> >  drivers/iio/magnetometer/rm3100-core.c | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magne=
-tometer/rm3100-core.c
-> > index 69938204456f..12c2e3b0aeb6 100644
-> > --- a/drivers/iio/magnetometer/rm3100-core.c
-> > +++ b/drivers/iio/magnetometer/rm3100-core.c
-> > @@ -530,6 +530,7 @@ int rm3100_common_probe(struct device *dev, struct =
-regmap *regmap, int irq)
-> >       struct rm3100_data *data;
-> >       unsigned int tmp;
-> >       int ret;
-> > +     int samp_rate_index;
-> >
-> >       indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
-> >       if (!indio_dev)
-> > @@ -586,8 +587,14 @@ int rm3100_common_probe(struct device *dev, struct=
- regmap *regmap, int irq)
-> >       ret =3D regmap_read(regmap, RM3100_REG_TMRC, &tmp);
-> >       if (ret < 0)
-> >               return ret;
-> > +
-> > +     samp_rate_index =3D tmp - RM3100_TMRC_OFFSET;
-> > +     if (samp_rate_index < 0 || samp_rate_index >=3D  RM3100_SAMP_NUM)=
- {
-> > +             dev_err(dev, "The value read from RM3100_REG_TMRC is inva=
-lid!\n");
-> > +             return -EINVAL;
-> > +     }
-> >       /* Initializing max wait time, which is double conversion time. *=
-/
-> > -     data->conversion_time =3D rm3100_samp_rates[tmp - RM3100_TMRC_OFF=
-SET][2]
-> > +     data->conversion_time =3D rm3100_samp_rates[samp_rate_index][2]
-> >                               * 2;
-> I've rewrapped this to be on one line whilst applying. Make sure to check=
- for
-> side effects like this when updating code.  If we don't tidy it up at the=
- time
-> we end up with gradually worse formatting over a long period!
-Thank you for fixing that for us.
->
-> Applied to the fixes-togreg branch of iio.git and marked for stable.
-I saw the commit on the fixes-togreg branch of iio.git, exciting!
-I learned a lot from it ;-)
+On Tue, Jan 02, 2024 at 07:36:42PM +0000, Jonathan Cameron wrote:
+> On Tue, 2 Jan 2024 16:30:42 +0800
+> ChiYuan Huang <cy_huang@richtek.com> wrote:
+> 
+> > Hi, Johathan:
+> > 
+> > Most comments are good and will be fixed in next revision.
+> > 
+> > Still one comment I cannot make sure.
+> > 
+> > Please see the comment that's below yours.
+> > 	
+> Hi ChiYuan,
+> 
+> It's good practice to crop away all the parts where the discussion is finished.
+> Makes it easier for people to find the bit you want discussion to continue on!
+> 
+> I've done so in this reply.
+> 
+> ...
+> > > > +
+> > > >  enum {
+> > > >  	RTQ6056_CH_VSHUNT = 0,
+> > > >  	RTQ6056_CH_VBUS,
+> > > > @@ -50,16 +60,29 @@ enum {
+> > > >  enum {
+> > > >  	F_OPMODE = 0,
+> > > >  	F_VSHUNTCT,
+> > > > +	F_SADC = F_VSHUNTCT,  
+> > > 
+> > > If the devices have different register fields, better to have different enums
+> > > for them as well as that should result in less confusing code.
+> > >   
+> > Actually, this is all the same register, just the control naming difference.
+> > If not to define the new eum, I can remain to use the same field to handle rtq6059 part.
+> 
+> If the bits in the register control the same thing across both parts then
+> add a comment alongside the enum to make that clear. 
+> 
+> Given the naming that seems very unlikely.  PGA and AVG would eman
+> very different things to me for starters (oversampling vs a programmble
+> gain amplifier on the front end)
+> 
+I'm also thinking how to write this difference like as comments or a seperate enum.
+But if to define a new enum, many function about the regfield controls must be seperated
+for 6056 and 6059.
+> > >   
+> > > >  	F_VBUSCT,
+> > > > +	F_BADC = F_VBUSCT,
+> > > >  	F_AVG,
+> > > > +	F_PGA = F_AVG,
+> > > >  	F_RESET,
+> > > >  	F_MAX_FIELDS
+> > > >  };
 
-Thanks again
-Thanks,
-Zhouyi
->
-> Thanks,
->
-> Jonathan
->
-> >
-> >       /* Cycle count values may not be what we want. */
->
+What if to keep the original coding, just to rename the different part like as below
+F_SADC -> F_RTQ6059_SDAC
+F_BADC -> F_RTQ6059_BADC
+F_PGA -> F_RTQ6059_PGA
+
+At least, the nameing already shows the difference between 6056 and 6059.
+Only these three parts are different, others are the same like as F_OPMODE, F_RESET.
+
 

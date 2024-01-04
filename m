@@ -1,169 +1,105 @@
-Return-Path: <linux-iio+bounces-1417-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1418-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9E823EBB
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 10:35:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D70D823F47
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 11:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA021F250E1
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 09:35:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF9051C2123F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 10:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B47208B4;
-	Thu,  4 Jan 2024 09:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF0520B15;
+	Thu,  4 Jan 2024 10:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLr3iUu+"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="hWfltW6+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2729208D5;
-	Thu,  4 Jan 2024 09:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2cca5d81826so4127461fa.2;
-        Thu, 04 Jan 2024 01:34:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704360888; x=1704965688; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wwPJBvFUuJ82VNrrULxCE0KnzFUUxsKXN3QUl2P63Vk=;
-        b=MLr3iUu+IgjnqFmbzwK5uEGRvNfetWt0CuYJr9CWkqdMqovJWeXUE+gtki7wX9BGPm
-         acxrPA+PLfJ+av/T/IY7BU/2TSHq0Ow+z82JZWtDooN82A7weX0vywDqs7Y11BYMFQkh
-         EjrTz6+dy95sC1uHbJibAKaJDCyWEmFQN0enauZVJEPCta8jLgtQDKRzKggTm+6DOPOD
-         d7hNVnxe74jH5BhxYrH12atBMxzdGfusHfL7T4DlQvUxrOdE4Q+3YqwbKdts6GwwQp1q
-         7aGG9ps7iCQz8maXBQEFGDWarjMKBkXQTQhUgqA+iSWuRZORt0mkhbiQC8W+JhQjnFHW
-         Ro0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704360888; x=1704965688;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wwPJBvFUuJ82VNrrULxCE0KnzFUUxsKXN3QUl2P63Vk=;
-        b=A2HnVciNDJwywSQEbvcK2eiQ3UR4S8rTGhihCMP9hIB7DAWl9jy+RSiryd53iy3Akm
-         EG6N4hCRkx4PcsTTt/r1J8Jb6EIYNu+87QMONHM8+ZcSRzUsIZP9sY3HnnqlpwMQbV5o
-         DOMaQq53xuuAugAqZ7v3OjxMhCJqTXfmJ5q/J2cSIJbBXJKo7RAsCcQLyMRfaWmp4Y35
-         R9ttZVlsn9gG/BK7UqNCCBa/pvLD260iUObdjMzNM04HROzQsykl/5rgaYNDmFT6mlCq
-         3YsU0ZzAwXvnwxKF17MOYG6ojGogF8EkQC3+Htolytc6L9mjtKPTeOAg4TgWwQ8uIL0f
-         EPGQ==
-X-Gm-Message-State: AOJu0YwtTUAcVbuUfeM2bLOvwZyhKE03fblodKbuGIVNaisJIxriBXHv
-	Uy5Vo4MY7NS0PdSuhr4oFKM=
-X-Google-Smtp-Source: AGHT+IG+EjNeEQH8XAZ58l6P7Y1N2m9ZQ6s2V/eWis8olnOxfoxwbrN3hnVFPLdz1HHGTZ8CWByd7w==
-X-Received: by 2002:a2e:a405:0:b0:2cc:a253:a4a4 with SMTP id p5-20020a2ea405000000b002cca253a4a4mr201837ljn.21.1704360887340;
-        Thu, 04 Jan 2024 01:34:47 -0800 (PST)
-Received: from dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::7])
-        by smtp.gmail.com with ESMTPSA id g14-20020a2e9cce000000b002ccbc2a0d43sm4998488ljj.47.2024.01.04.01.34.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 01:34:46 -0800 (PST)
-Date: Thu, 4 Jan 2024 11:34:28 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: gts-helper: Fix division loop
-Message-ID: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC71020B02;
+	Thu,  4 Jan 2024 10:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from localhost.localdomain (unknown [188.24.94.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 9758F28B53B;
+	Thu,  4 Jan 2024 10:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1704363188;
+	bh=j+qznhwVfcrCXO97E0Jld5V71MZIo0m6mSOS1YPgQZY=;
+	h=From:To:Cc:Subject:Date;
+	b=hWfltW6+nBoLPlzOFWVPtgMG0gPu8GhbhV1vBgU8mzf+hQqhE3xn8SRdPIp31I3DJ
+	 cwYoV39J6/fLpULvNP2QJQ2qSRj4M63xCjm0gOaGRaAf0AkvOGfbElQIOd8ldQ8KaA
+	 oYkTuVvB46Fqvh8u+OxKh1od7uUKl2X+/07M9CJs=
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 0/1] tools: iio: fix iio_generic_buffer
+Date: Thu,  4 Jan 2024 12:12:44 +0200
+Message-ID: <20240104101253.25896-1-petre.rodan@subdimension.ro>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZBhXKsBwY+mTdV5C"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+While executing tools/iio_generic_buffer i was getting this fault:
 
---ZBhXKsBwY+mTdV5C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+beagle /usr/src/linux/tools/iio # ./iio_generic_buffer -a -c 10 -N 0 -T 0
+iio device number being used is 0
+iio trigger number being used is 0
+Auto-channels selected but some channels are already activated in sysfs
+Proceeding without activating any channels
+/sys/bus/iio/devices/iio:device0 mytmr
+Floating point exception
 
-The loop based 64bit division may run for a long time when dividend is a
-lot bigger than the divider. Replace the division loop by the
-div64_u64() which implementation may be significantly faster.
+The FPE was generated due to a modulo zero in size_from_channelarray()
+(all channels[].bytes were zero because channels[] were never populated).
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
----
+The root of the cause is the seekdir() function within
+build_channel_array().
 
-I've implemented also a fixup series for supporting rounding of
-gains/scales:
-https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.17017=
-80964.git.mazziesaccount@gmail.com/
+On my system I can observe a clear difference between these two functions:
 
-That series does also remove the offending loop.
+    seekdir(dp, 0);
+    printf("location = %lu\n", telldir(dp)); // location == 4294967295
 
-We don't currently have any in-tree users of GTS helpers which would
-need the rounding support so pushing the rounding is not urgent (and I
-haven't heard of Subjahit whose driver required the rounding). Hence, we
-may want to only take this loop fix in for now (?) and reconsider
-rounding when someone need that.
+    rewinddir(dp);
+    printf("location = %lu\n", telldir(dp)); // location == 1
 
-Jonathan, what's your take on this?
+The attached patch fixed the bug for me.
 
- drivers/iio/industrialio-gts-helper.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+I'm using a BeagleBone Black devboard with an up-to-date stable branch
+Gentoo Linux OS on top of it.
 
-diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
-io-gts-helper.c
-index 7653261d2dc2..abcab2d38589 100644
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -34,7 +34,7 @@
- static int iio_gts_get_gain(const u64 max, const u64 scale)
- {
- 	u64 full =3D max;
--	int tmp =3D 1;
-+	int tmp =3D 0;
-=20
- 	if (scale > full || !scale)
- 		return -EINVAL;
-@@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const u64 scal=
-e)
- 		tmp++;
- 	}
-=20
--	while (full > scale * (u64)tmp)
--		tmp++;
-+	tmp +=3D div64_u64(full, scale);
-=20
- 	return tmp;
- }
+CHOST:  armv7a-unknown-linux-gnueabihf
+kernel: mainline 6.7.0-rc6
+glibc:  2.37-r7:2.2::gentoo  USE="caps gd multiarch ssp static-libs -audit
+    -cet -compile-locales -crypt -custom-cflags -doc -hash-sysv-compat
+    -headers-only -multilib -multilib-bootstrap -nscd -perl -profile
+    (-selinux) -stack-realign -suid -systemd -systemtap -test -vanilla"
+    (+ contains Gentoo specific patches)
 
-base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
---=20
+Fixes: <e58537ccce733> ("staging: iio: update example application.")
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+
+Petre Rodan (1):
+  tools: iio: fix iio_generic_buffer
+
+ tools/iio/iio_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--
 2.41.0
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---ZBhXKsBwY+mTdV5C
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmWWe5QACgkQeFA3/03a
-ocVoKwf+JqwM+uOPd3l+ECkvm1GhHX2OsknGaOa2lMTHeXBlDRKhYvR5694Z7eSj
-XLsmOLS1WIwmrffFpprksh7DXTXfQp9pwLIjmh8BFjP/dCkBowBMw/O8E74Cpe3b
-gHU77BC09IAYlKNeS2fQBbrVlVSzkb8mma1MmISvs4pNaV+4DmdTWSoYn2n1mqcS
-s0DCjDOW3dXOrU57TtfJma9M3SGIalXLhj8DUqZji4zHTO+u7w0aPF7iJuiHnYUF
-tWNS5f6rZ+JGa4Fph/T0LFXblQ85v7yGdubrU5cITRf8vvSFP+wQlBusWTd+oqMx
-Fwh+rKlRQnhMo7P6SuZCau3HW+kSDA==
-=4zw1
------END PGP SIGNATURE-----
-
---ZBhXKsBwY+mTdV5C--
 

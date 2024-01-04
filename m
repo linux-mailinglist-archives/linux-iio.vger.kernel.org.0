@@ -1,143 +1,98 @@
-Return-Path: <linux-iio+bounces-1413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1415-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584D9823D69
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 09:26:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB40823E1D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 10:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364F51C21250
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 08:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF7B1F24E73
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 09:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F1620315;
-	Thu,  4 Jan 2024 08:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kh+gOPN5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8603920339;
+	Thu,  4 Jan 2024 09:04:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457A2030F
-	for <linux-iio@vger.kernel.org>; Thu,  4 Jan 2024 08:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-556c3f0d6c5so314659a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 04 Jan 2024 00:26:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704356811; x=1704961611; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b7RxQmxaVfwOl/15K/996OH1O1JfJ5AQ6oHrstmdX98=;
-        b=kh+gOPN5FLvSDaK76l1clutI/8GfiMD82IRmFzVx/iRfDrmAjcD/DpGaxiREDZwqmD
-         GUG2CAWi63vl5cgglUdJBAegQlQFbvonUDlJlR2QYSb6O2HdRfoy339YRuMVqPF9MAYe
-         wj20DnaKgtgZWq2NHKFhzclA+ockz9HuqDHba7Sq5z3cgmBERs2SC6TopLBZOO/TIVU2
-         DkNvk3hxUC0VhJxSb2oAAATnhn/E4/ioAmrNCU7FKbW6NSQlUypUNhKPkKOxpJMEhth+
-         UI4WWe5eSsUgUSHWCPMaU30lvNI096iH+OkmpwWtDPyPK3V1XQQJ0f/g/ZCUbkwrvRMG
-         VwGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704356811; x=1704961611;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7RxQmxaVfwOl/15K/996OH1O1JfJ5AQ6oHrstmdX98=;
-        b=O/SuA56kR7p9hig97fg4OIWMhOaPKK4JT0jCyV4Bu59QdIOSOI7giBtT+vfAyxbaSI
-         1qrt08zgMaupBDMzpjo6sCxZkl6FFQDzMCOUtaKUTNf+rFARXJhzatKSH8QJGGx3cYCr
-         mwtkXwL2YQec0/AZxxwYn35k64IA5ka4llkpBem5JWs54KwhK8kyNFOqdYwR+aCFAxaq
-         64dLb26k9yfcMRwZ+FmmsBaIaJ7kZxHvLp1wnSear4hzZyjvbK4iYra7EtF0uDz2Ex7C
-         ZGsWbXZ/FV0PbS8V2AtFUlQh5s8C4NBHdEEmLEb0aDGYQXdaWC27U56xS3Z0dbeMHmw8
-         TRGA==
-X-Gm-Message-State: AOJu0YxKn5e0ftIsgZLt/fpMVXPQMSBfIxNr//yakLaODbcdN+5+N6BO
-	6JXzE+O7UoUezRtxb2UyAyh0NUD4JHALWw==
-X-Google-Smtp-Source: AGHT+IEuKsoBk2p4lEUlaZnu5AA116LK5Gq6xR1sl8aFEoA69+YGivyuPIGirchm9pk9uK/ZgwYe9g==
-X-Received: by 2002:a17:906:6dca:b0:a28:c476:3b16 with SMTP id j10-20020a1709066dca00b00a28c4763b16mr77860ejt.61.1704356811195;
-        Thu, 04 Jan 2024 00:26:51 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id ka23-20020a170907921700b00a1e04f24df1sm1396790ejb.223.2024.01.04.00.26.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 00:26:50 -0800 (PST)
-Message-ID: <ac8788fc-02c4-486d-b9c7-500aca6cc5e4@linaro.org>
-Date: Thu, 4 Jan 2024 09:26:49 +0100
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54831EA95;
+	Thu,  4 Jan 2024 09:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+Received: from 192.168.10.47
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(636814:1:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Thu, 04 Jan 2024 17:03:32 +0800 (CST)
+Received: from ex4.rt.l (192.168.10.47) by ex4.rt.l (192.168.10.47) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.27; Thu, 4 Jan
+ 2024 17:03:32 +0800
+Received: from linuxcarl2.richtek.com (192.168.10.154) by ex4.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1258.27 via Frontend
+ Transport; Thu, 4 Jan 2024 17:03:32 +0800
+From: <cy_huang@richtek.com>
+To: Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+	ChiYuan Huang <cy_huang@richtek.com>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 0/2] RTQ6056: Add compatible for the same chip family
+Date: Thu, 4 Jan 2024 17:03:29 +0800
+Message-ID: <cover.1704357933.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/10] dt-bindings: iio: pressure:
- honeywell,mprls0025pa.yaml add spi bus
-Content-Language: en-US
-To: Petre Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Andreas Klinger <ak@it-klinger.de>
-References: <20231229092445.30180-1-petre.rodan@subdimension.ro>
- <20231229092445.30180-4-petre.rodan@subdimension.ro>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231229092445.30180-4-petre.rodan@subdimension.ro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 29/12/2023 10:24, Petre Rodan wrote:
-> Add spi based example.
-> 
-> Add spi-max-frequency property required by chip specifications.
-> 
-> Add additional maintainer.
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+RTQ6053 and RTQ6059 are the same RTQ6056 family.
+The differences are listed below
+- RTQ6053
+  Only change chip package type
+- RTQ6059
+  1. Enlarge the shunt voltage sensing range
+  2. Shrink the pinout for VBUS sense pin
+  3. Due to 1, the scale value is also changed
 
-Best regards,
-Krzysztof
+Since v4:
+- Remove the unused chip type enum
+- Directly return in switch case of read_channel function
+- Refine in write_raw switch case for IIO_CHAN_INFO_SAMP_FREQ
+  If sample frequency is fixed, return invalid and break switch case
+- Use devdata->num_channels to replace the predefined constant
+- Change the rtq6059 difference part for the control bitfield name from
+  the general 'F_xxx' to 'F_RTQ6059_xxx'
+- Fix rtq6059 average sample variable store problem in 'set_average' function
+
+Since v3:
+- Add Reviewed-by tag in binding document patch
+- Resotre the enum for control field.
+- Put all the predefined datas/callbacks in dev_data.
+- Remove the unused 'rtq6059_info'.
+- Change 'default_conv_time' to 'default_conv_time_us'.
+- Move the comment for default config above the dev_data setting line.
+
+Since v2:
+- Refine the description of 'compatible' property
+
+ChiYuan Huang (2):
+  dt-bindings: iio: adc: rtq6056: add support for the whole RTQ6056
+    family
+  iio: adc: rtq6056: Add support for the whole RTQ6056 family
+
+ .../bindings/iio/adc/richtek,rtq6056.yaml     |   9 +-
+ drivers/iio/adc/rtq6056.c                     | 275 ++++++++++++++++--
+ 2 files changed, 263 insertions(+), 21 deletions(-)
+
+
+base-commit: 610a9b8f49fbcf1100716370d3b5f6f884a2835a
+-- 
+2.34.1
 
 

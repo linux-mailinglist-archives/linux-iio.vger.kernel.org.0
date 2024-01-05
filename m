@@ -1,70 +1,56 @@
-Return-Path: <linux-iio+bounces-1422-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1423-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119E68245AA
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 17:03:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4001824FAB
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jan 2024 09:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB7B1B22CB5
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jan 2024 16:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AF411F220E1
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jan 2024 08:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79589249F5;
-	Thu,  4 Jan 2024 16:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B1B21356;
+	Fri,  5 Jan 2024 08:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="anRx5x4o"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="tT6cNXeG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF462250F5
-	for <linux-iio@vger.kernel.org>; Thu,  4 Jan 2024 16:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704384179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=557GDbKk13LSTc98qnADprKqlTFOMRKf8G++jol3Ovw=;
-	b=anRx5x4oqEJRwjWA0rfxyx4FGgdUKlvfDe8zaNEBdj6K7ifociQK8mtF9tG1e1IByrhbEH
-	SenxhUToGb8Gn6iB/ClVc0WF1rl+OAfYXqMq4HZJt0P1hF2s3qDmRtNGWENAyFbt/v9VXz
-	TAQoIJcdlvX+tJ/u8dRUSzS+Nqiz0xQ=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-SQJ6E8-tOt-dhHvCjGoM3A-1; Thu, 04 Jan 2024 11:02:58 -0500
-X-MC-Unique: SQJ6E8-tOt-dhHvCjGoM3A-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a2888d63b80so30641366b.0
-        for <linux-iio@vger.kernel.org>; Thu, 04 Jan 2024 08:02:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704384177; x=1704988977;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=557GDbKk13LSTc98qnADprKqlTFOMRKf8G++jol3Ovw=;
-        b=JfYe7qFbOZeowF1XR4VpnufUwG5a8508fkNFi9NQIzVuPa4gGEx4zyTT0dHjsLSdNR
-         XtuzNYKbBg39ZShSyjO1B4clyCPbC8rqr9ljiIAnT313IyhSrfN8wgsX7rT4X7qyvp9Y
-         aA3q5cc42WJim/xgL5WBTnKHY4mXB2GmE+L+mUXZnC4ylCyujGLhKa9P9ngfvMIt4kJE
-         RTwvZc4FEjh8p5x7p09KSG7XQ/32kNI1nNo/oyjVuyp6A20aZvlKBWusV1KS6XxHCvRF
-         80mI63j5cdJ0CvDdQYA4Vew01sx5xnUpfTsE5JgmJRdr1tYWIkwWuFQlUZk+6/QJmgtl
-         2jXA==
-X-Gm-Message-State: AOJu0Yx2jz9Z0zQTIJJZ0R/v7L9M6GfN8Xh7uS0hk15+zsL+FFYFz8gL
-	x+Utd9XUuqIS3cmDjutltW88gRQfoggVUsqkUie4aSdbCRyq2un7pvg4dIWac0eLlp8RgASWS49
-	9wwg1DCKA31hVhTiADIcE/s8+PyeI
-X-Received: by 2002:a17:906:3755:b0:a28:dc82:cde0 with SMTP id e21-20020a170906375500b00a28dc82cde0mr394370ejc.137.1704384177071;
-        Thu, 04 Jan 2024 08:02:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH9O+ZiJx3F++Eb5kIMI3oNPCBCHKKTYlXj5nwIX15zv7c2AZmMnGV4tXvmS4PlATL0CHAadw==
-X-Received: by 2002:a17:906:3755:b0:a28:dc82:cde0 with SMTP id e21-20020a170906375500b00a28dc82cde0mr394361ejc.137.1704384176681;
-        Thu, 04 Jan 2024 08:02:56 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id gi16-20020a1709070c9000b00a19b7362dcfsm13932610ejc.139.2024.01.04.08.02.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 08:02:56 -0800 (PST)
-Message-ID: <6b770383-aff0-486b-a476-855f51eb480c@redhat.com>
-Date: Thu, 4 Jan 2024 17:02:55 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABA20DC8;
+	Fri,  5 Jan 2024 08:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 4052tkx3028984;
+	Fri, 5 Jan 2024 09:19:56 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=gxrbGKGX0buop+PvuAmG2IkLu4G/QjEo0CpiUPjSvQ4=; b=tT
+	6cNXeGAKaJftgTWYQ4btXPz25NJkoN6rwQ97Z+A70hxVGPC2EACwY9KlFCdwin7x
+	T0eGIn7cyZvSTfTKL9FDgLEXwhSfQvbd3x/0RqhDxui/1vUCSEUHuwwZr9vaSZe9
+	VdlGf5MOsb+NyVQ6ko42YO9d1nlPanGwO/RF/J4coZ/A/Hk91SlDoU+TcPWpChjc
+	VMqXebLXrELMYSyaqHnkwRK2oyoxdP/Ov8ew4yZ4CDuu4GeqUPTeGL0AxMTR94Qn
+	lXgr3Z1OrXzqkGP1ijFxHO1uxSOuRA4iapRhe6ZvvoZRpbUBJFP4zW8Cc7oNPSVD
+	QPxxMGTmlyF9GBQaTcIw==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ve9dss0v4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Jan 2024 09:19:56 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 086FC10002A;
+	Fri,  5 Jan 2024 09:19:52 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C8B17210587;
+	Fri,  5 Jan 2024 09:19:52 +0100 (CET)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 5 Jan
+ 2024 09:19:50 +0100
+Message-ID: <9b66bc71-08de-43bd-b7e1-4e7c9defd400@foss.st.com>
+Date: Fri, 5 Jan 2024 09:19:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,162 +58,128 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: da280: Simplify id-matching
-Content-Language: en-US, nl
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-References: <20240104160152.304100-1-hdegoede@redhat.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20240104160152.304100-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v8 03/13] dt-bindings: bus: document RIFSC
+To: Rob Herring <robh@kernel.org>
+CC: <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>, <lars@metafoo.de>, <rcsekar@samsung.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-medi.a@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>
+References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+ <20231212152356.345703-4-gatien.chevallier@foss.st.com>
+ <20231221215316.GA155023-robh@kernel.org>
+Content-Language: en-US
+From: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <20231221215316.GA155023-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-05_04,2024-01-05_01,2023-05-22_02
 
-Note his is v2, I forgot to pass -v2 when git format-patch(ing) this (sorry).
+Hi Rob,
 
-Regards,
-
-Hans
-
-On 1/4/24 17:01, Hans de Goede wrote:
-> da280_match_acpi_device() is a DIY version of acpi_device_get_match_data(),
-> so it can be dropped.
+On 12/21/23 22:53, Rob Herring wrote:
+> On Tue, Dec 12, 2023 at 04:23:46PM +0100, Gatien Chevallier wrote:
+>> Document RIFSC (RIF security controller). RIFSC is a firewall controller
+>> composed of different kinds of hardware resources.
+>>
+>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>> ---
+>>
+>> Changes in V6:
+>> 	- Renamed access-controller to access-controllers
+>> 	- Removal of access-control-provider property
+>> 	- Removal of access-controller and access-controller-names
+>> 	  declaration in the patternProperties field. Add
+>> 	  additionalProperties: true in this field.
+>>
+>> Changes in V5:
+>> 	- Renamed feature-domain* to access-control*
+>>
+>> Changes in V2:
+>> 	- Corrected errors highlighted by Rob's robot
+>> 	- No longer define the maxItems for the "feature-domains"
+>> 	  property
+>> 	- Fix example (node name, status)
+>> 	- Declare "feature-domain-names" as an optional
+>> 	  property for child nodes
+>> 	- Fix description of "feature-domains" property
+>>
+>>   .../bindings/bus/st,stm32mp25-rifsc.yaml      | 96 +++++++++++++++++++
+>>   1 file changed, 96 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>> new file mode 100644
+>> index 000000000000..95aa7f04c739
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>> @@ -0,0 +1,96 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/bus/st,stm32mp25-rifsc.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: STM32 Resource isolation framework security controller
+>> +
+>> +maintainers:
+>> +  - Gatien Chevallier <gatien.chevallier@foss.st.com>
+>> +
+>> +description: |
+>> +  Resource isolation framework (RIF) is a comprehensive set of hardware blocks
+>> +  designed to enforce and manage isolation of STM32 hardware resources like
+>> +  memory and peripherals.
+>> +
+>> +  The RIFSC (RIF security controller) is composed of three sets of registers,
+>> +  each managing a specific set of hardware resources:
+>> +    - RISC registers associated with RISUP logic (resource isolation device unit
+>> +      for peripherals), assign all non-RIF aware peripherals to zero, one or
+>> +      any security domains (secure, privilege, compartment).
+>> +    - RIMC registers: associated with RIMU logic (resource isolation master
+>> +      unit), assign all non RIF-aware bus master to one security domain by
+>> +      setting secure, privileged and compartment information on the system bus.
+>> +      Alternatively, the RISUP logic controlling the device port access to a
+>> +      peripheral can assign target bus attributes to this peripheral master port
+>> +      (supported attribute: CID).
+>> +    - RISC registers associated with RISAL logic (resource isolation device unit
+>> +      for address space - Lite version), assign address space subregions to one
+>> +      security domains (secure, privilege, compartment).
+>> +
+>> +properties:
+>> +  compatible:
+>> +    contains:
+>> +      const: st,stm32mp25-rifsc
 > 
-> And things can be simplified further by using i2c_get_match_data() which
-> will also check i2c_client_id style ids.
+> This needs to be exact and include 'simple-bus'. You'll need a custom
+> 'select' with the above to avoid matching all other 'simple-bus' cases.
 > 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> - Add a new da280_match_data struct to hold the name + num_channels and
->   use that instead of the da280_chipset enum
-> - Error check i2c_get_match_data() returning NULL
+> With that,
 > 
-> Handle i2c_get_match_data() returning NULL on missing match-data
-> ---
->  drivers/iio/accel/da280.c | 64 +++++++++++++++------------------------
->  1 file changed, 25 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-> index 572bfe9694b0..756e2ea7c056 100644
-> --- a/drivers/iio/accel/da280.c
-> +++ b/drivers/iio/accel/da280.c
-> @@ -23,8 +23,6 @@
->  #define DA280_MODE_ENABLE		0x1e
->  #define DA280_MODE_DISABLE		0x9e
->  
-> -enum da280_chipset { da217, da226, da280 };
-> -
->  /*
->   * a value of + or -4096 corresponds to + or - 1G
->   * scale = 9.81 / 4096 = 0.002395019
-> @@ -47,6 +45,11 @@ static const struct iio_chan_spec da280_channels[] = {
->  	DA280_CHANNEL(DA280_REG_ACC_Z_LSB, Z),
->  };
->  
-> +struct da280_match_data {
-> +	const char *name;
-> +	int num_channels;
-> +};
-> +
->  struct da280_data {
->  	struct i2c_client *client;
->  };
-> @@ -89,17 +92,6 @@ static const struct iio_info da280_info = {
->  	.read_raw	= da280_read_raw,
->  };
->  
-> -static enum da280_chipset da280_match_acpi_device(struct device *dev)
-> -{
-> -	const struct acpi_device_id *id;
-> -
-> -	id = acpi_match_device(dev->driver->acpi_match_table, dev);
-> -	if (!id)
-> -		return -EINVAL;
-> -
-> -	return (enum da280_chipset) id->driver_data;
-> -}
-> -
->  static void da280_disable(void *client)
->  {
->  	da280_enable(client, false);
-> @@ -107,16 +99,21 @@ static void da280_disable(void *client)
->  
->  static int da280_probe(struct i2c_client *client)
->  {
-> -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> -	int ret;
-> +	const struct da280_match_data *match_data;
->  	struct iio_dev *indio_dev;
->  	struct da280_data *data;
-> -	enum da280_chipset chip;
-> +	int ret;
->  
->  	ret = i2c_smbus_read_byte_data(client, DA280_REG_CHIP_ID);
->  	if (ret != DA280_CHIP_ID)
->  		return (ret < 0) ? ret : -ENODEV;
->  
-> +	match_data = i2c_get_match_data(client);
-> +	if (!match_data) {
-> +		dev_err(&client->dev, "Error match-data not set\n");
-> +		return -EINVAL;
-> +	}
-> +
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
->  		return -ENOMEM;
-> @@ -127,23 +124,8 @@ static int da280_probe(struct i2c_client *client)
->  	indio_dev->info = &da280_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = da280_channels;
-> -
-> -	if (ACPI_HANDLE(&client->dev)) {
-> -		chip = da280_match_acpi_device(&client->dev);
-> -	} else {
-> -		chip = id->driver_data;
-> -	}
-> -
-> -	if (chip == da217) {
-> -		indio_dev->name = "da217";
-> -		indio_dev->num_channels = 3;
-> -	} else if (chip == da226) {
-> -		indio_dev->name = "da226";
-> -		indio_dev->num_channels = 2;
-> -	} else {
-> -		indio_dev->name = "da280";
-> -		indio_dev->num_channels = 3;
-> -	}
-> +	indio_dev->num_channels = match_data->num_channels;
-> +	indio_dev->name = match_data->name;
->  
->  	ret = da280_enable(client, true);
->  	if (ret < 0)
-> @@ -168,17 +150,21 @@ static int da280_resume(struct device *dev)
->  
->  static DEFINE_SIMPLE_DEV_PM_OPS(da280_pm_ops, da280_suspend, da280_resume);
->  
-> +static const struct da280_match_data da217_match_data = { "da217", 3 };
-> +static const struct da280_match_data da226_match_data = { "da226", 2 };
-> +static const struct da280_match_data da280_match_data = { "da280", 3 };
-> +
->  static const struct acpi_device_id da280_acpi_match[] = {
-> -	{"NSA2513", da217},
-> -	{"MIRAACC", da280},
-> -	{},
-> +	{ "NSA2513", (kernel_ulong_t)&da217_match_data },
-> +	{ "MIRAACC", (kernel_ulong_t)&da280_match_data },
-> +	{}
->  };
->  MODULE_DEVICE_TABLE(acpi, da280_acpi_match);
->  
->  static const struct i2c_device_id da280_i2c_id[] = {
-> -	{ "da217", da217 },
-> -	{ "da226", da226 },
-> -	{ "da280", da280 },
-> +	{ "da217", (kernel_ulong_t)&da217_match_data },
-> +	{ "da226", (kernel_ulong_t)&da226_match_data },
-> +	{ "da280", (kernel_ulong_t)&da280_match_data },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(i2c, da280_i2c_id);
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
+Thank you for the review,
+I'll update this for the next version whilst applying your tag
+
+Gatien
 

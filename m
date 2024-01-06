@@ -1,118 +1,109 @@
-Return-Path: <linux-iio+bounces-1444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E926A826046
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:57:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A89082602B
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44FA1C214E0
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB5CE283804
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD4F79FD;
-	Sat,  6 Jan 2024 15:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0228475;
+	Sat,  6 Jan 2024 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VBeZ2aNn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fcoAXPst"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8157BE6C;
-	Sat,  6 Jan 2024 15:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704556651; x=1736092651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RYiHRSIy4ECeUqhqLoDwUgsvxBw0ZlfnTroVhUsj69c=;
-  b=VBeZ2aNnUrVEpnWbXmIUb8nvf75l/hCbEIE7/a70QcY0t6MYi3cgWrbO
-   BzNIpe4X5se6Umi3uJVlgY1xgK+I0JeDCQC7kY2uc8Dx2rD5VP4Kcr2sn
-   fA5BpeRROCOMvNd5IbU/my/k4GHAJcArDFfB1/hVogncqRel0ZG1H+Eiy
-   zYVuwyzXZFO+MdFNUoBovPGnnmEujqwR21YiamJgNpK94SUFTyUjotOw2
-   W3PqBG3vy9H4af/nSqW7LaYJdsg0axC+5rruFtVTFbIjeGBNdKL4HTNJ/
-   pSe3uZ0/c/LAubBkmEM7Yer/afEcKkgzDm7JQis0lsjgtxIR599kssl+b
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="401445610"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="401445610"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:57:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="781015441"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="781015441"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:57:28 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rM8cv-0000000BwQY-2Yxb;
-	Sat, 06 Jan 2024 17:30:21 +0200
-Date: Sat, 6 Jan 2024 17:30:21 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Klinger <ak@it-klinger.de>,
-	Jonathan Cameron <jic23@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257CFC2C7;
+	Sat,  6 Jan 2024 15:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40d5a41143fso5617075e9.3;
+        Sat, 06 Jan 2024 07:32:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704555123; x=1705159923; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DF824uCnaiGc2FSUzvMoqf5PsqvATqJrmBhYo2JITb0=;
+        b=fcoAXPst/fZh33zUWAKmKeqmhfEaKk7uHFUa2DeH9sqD/r3FMxUouIVbqxIYLziNm4
+         V9BGAL3vJBD5KpiYgSRo6IrwxQkAbep7EdTJk6+FX9VgyYdCyDP/ON6UMdYvluCKZftw
+         wAWQwBXLoOW3R+t33TtAawvdJ43bUbaYWy3vn+tho9/iYwadpoi7cgLX7EaoJrxxGA5q
+         3tD9bxZd0FwYIvukWV6fVzh2QXyCOmII412vUl3c8d/vkyjD1WoPXe+zaiER/ySTuT01
+         Q1n60Nqyx/1uxbKIq1yW4mkYzOrqg/YfsQT/VeWV4gMvWup6FbThQGB7zvg5xm9g8C93
+         fzOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704555123; x=1705159923;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DF824uCnaiGc2FSUzvMoqf5PsqvATqJrmBhYo2JITb0=;
+        b=hnlFxU0lV4sOhP3RtJPSoZjwYNAERf5E271Gb07OjKENK1aPt+cnGsJ2g3LtHPu3Uh
+         mXFyIX7ziaGoiuRDHVygNdibhJskY4UzHqJn+4Vo9CfXzko4fBMQPu7AjRBg0MINT9rS
+         pokw498WQcJQX0MJ/vpotW7haavLk4Cgee8Tgd9DVDll1XiRzdwU4CRMqkqiuwE0IBZs
+         p0VozJlCdlyveIRRZa9kAaSs3SNcThuPJGc8kIZhPt4wtnfpYpwOyOZP+AzE+cDNoIAz
+         +pxj1jfqNPolEa+MGemKWMYoLzGLQaTX3tgOhXK0hbxMgPe+0447MYce/ONOR7cSpJtD
+         37CQ==
+X-Gm-Message-State: AOJu0Yxvw94JL8I+AKXwPET7u42Gy0hH2j5HPGSJCwbKcq3vWQZZFEue
+	Zw3R0nCsW/imZ5i5s5spx/uamQ3UT51xlA==
+X-Google-Smtp-Source: AGHT+IGVSyhZpT89vDc93D2+XViO6lhhdOuR9fXaaZlNwaNxIYg1xJ/EnTlo7jlVKu0Uv8LrWzQrdw==
+X-Received: by 2002:a05:600c:6987:b0:40e:3caa:f308 with SMTP id fp7-20020a05600c698700b0040e3caaf308mr605650wmb.56.1704555123228;
+        Sat, 06 Jan 2024 07:32:03 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id g8-20020a05600c310800b0040e42391a12sm690204wmo.13.2024.01.06.07.32.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 07:32:02 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 10/10] iio: pressure: mprls0025pa add SPI driver
-Message-ID: <ZZlyDT0J4n1_YXh4@smile.fi.intel.com>
-References: <20231229092445.30180-1-petre.rodan@subdimension.ro>
- <20231229092445.30180-11-petre.rodan@subdimension.ro>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	linux-iio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: invensense: remove redundant initialization of variable period
+Date: Sat,  6 Jan 2024 15:32:02 +0000
+Message-Id: <20240106153202.54861-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231229092445.30180-11-petre.rodan@subdimension.ro>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 29, 2023 at 11:24:38AM +0200, Petre Rodan wrote:
-> Add SPI component of the driver.
+The variable period is being initialized with a value that is never
+read, it is being re-assigned a new value later on before it is read.
+The initialization is redundant and can be removed.
 
-> Tested with mprls0015pa0000sa in spi mode on BeagleBone Black on
-> slightly patched 6.7.0-rc6 mainline.
+Cleans up clang scan build warning:
+Value stored to 'period' during its initialization is never
+read [deadcode.DeadStores]
 
-> Tested with mprls0025pa in i2c mode on BeagleBone Black with togreg
-> branch on
-> git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
-> (tag: iio-for-6.8a)
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I believe these paragraphs can be moved to the patch submission comments from
-the commit message...
-
-> Tested-by: Andreas Klinger <ak@it-klinger.de>
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> ---
-> v2 -> v3 removed iio.h include line
-
-...somewhere here.
-
-...
-
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/stddef.h>
-
-Basically here we need additionally these ones:
-
-device.h
-errno.h
-types.h
-
-(I haven't checked i2c counterpart for the similarities).
-
+diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+index 03823ee57f59..3b0f9598a7c7 100644
+--- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
++++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+@@ -126,7 +126,7 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+ 	struct inv_sensors_timestamp_interval *it;
+ 	int64_t delta, interval;
+ 	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
+-	uint32_t period = ts->period;
++	uint32_t period;
+ 	bool valid = false;
+ 
+ 	if (fifo_nb == 0)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 
 

@@ -1,70 +1,83 @@
-Return-Path: <linux-iio+bounces-1438-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DFB825FBE
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:03:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87F882600E
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A201F224DA
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 14:03:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 068951C218E6
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1F7483;
-	Sat,  6 Jan 2024 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F264E79FB;
+	Sat,  6 Jan 2024 15:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzi1mMo6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LgnaQ/pW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69DE7469;
-	Sat,  6 Jan 2024 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD7079E2;
+	Sat,  6 Jan 2024 15:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704549804; x=1736085804;
+  t=1704554224; x=1736090224;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=9ogaUlkTNyQ8yFeIfvapqG67agMRheSqoW502ha8cXQ=;
-  b=gzi1mMo6N/Yi3FTS0b4s4qfGKnsmTrDMJM4501Qu0UlgjKQpV4EYD+3s
-   MLw1JnTZPKOi+213CRRtGvpgB1+SSKrmCpWQf0Mji+XlDkerWDKU0OnvL
-   vJMhQRApUntKVVNfg6LVEjfyjPvokSdD6dwArs0JSFIFZIPV6AW2QCuRH
-   d52lcV5DRI1lGq85aUwZvCLmu0uI8QU+pjCZ07DQY4MaC0pFTKRJg3+sw
-   UPS/HijQB4f2vQ1TZ0qylpKoclr79tf9ZgAY65kRQp2iUDpMpOul2uBum
-   OkVtOZlp1iCwO9rIcd1y/cMa8cG11fFhrWoa07nIjv/v11Mn/+jeRnvNq
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="11012917"
+  bh=WV9Md1sc6jmvJkWb3qwI49IMLJFPQvQcYg3O0AoBWkQ=;
+  b=LgnaQ/pW+8pN+KdjzG5jGRnwacUoEZ4gTkxVBrH9oO4p2wC3c4wZ5ZgZ
+   53UgL91CwM9NgOz8H1LoXoQOvh4SkvgHs+PBL/HubnEc3ajZNiAjlLw/l
+   /Ic9Jj2eqnaLtmG9vlomftjYk725tprPl1nLtvQ0g74Vb4L7HqUP0UzyH
+   fXL+rW0eZ6diipJPdvlP6mzUu5+C0eOoo3ZUOFoUAXZZagGGUXYPhsf5v
+   Q5GkEsaFiaHXkaa+F4iLkn9MhEXLT4DSCY7rRJIIziIEH5LiRvd39KvI5
+   TTMAKxE51VZhMvG+Nc91rXu8A88AbetMnfBL9LO3Qtu5bVRUf+dNNHaey
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="4430682"
 X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="11012917"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 06:03:24 -0800
+   d="scan'208";a="4430682"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:17:03 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="846811425"
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="1028017042"
 X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="846811425"
+   d="scan'208";a="1028017042"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 06:03:21 -0800
+  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:16:57 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rM7Gg-0000000BvJ5-1RCR;
-	Sat, 06 Jan 2024 16:03:18 +0200
-Date: Sat, 6 Jan 2024 16:03:17 +0200
+	id 1rM8Pt-0000000BwFw-2Y5T;
+	Sat, 06 Jan 2024 17:16:53 +0200
+Date: Sat, 6 Jan 2024 17:16:53 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Klinger <ak@it-klinger.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 07/10] iio: pressure: mprls0025pa.c whitespace cleanup
-Message-ID: <ZZldpV13HaRUrQBU@smile.fi.intel.com>
-References: <20231224143500.10940-1-petre.rodan@subdimension.ro>
- <20231224143500.10940-8-petre.rodan@subdimension.ro>
- <ZYxSERlEAfwWpqWP@smile.fi.intel.com>
- <ZYxhUJlAb63wRJE-@sunspire>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RFC PATCH 01/13] device property: Add cleanup.h based
+ fwnode_handle_put() scope based cleanup.
+Message-ID: <ZZlu5fTW27Tx3drB@smile.fi.intel.com>
+References: <20240101172611.694830-1-jic23@kernel.org>
+ <20240101172611.694830-2-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,38 +86,46 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZYxhUJlAb63wRJE-@sunspire>
+In-Reply-To: <20240101172611.694830-2-jic23@kernel.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Dec 27, 2023 at 07:39:28PM +0200, Petre Rodan wrote:
-> On Wed, Dec 27, 2023 at 06:34:25PM +0200, Andy Shevchenko wrote:
-> > On Sun, Dec 24, 2023 at 04:34:52PM +0200, Petre Rodan wrote:
-> > > Fix indentation and whitespace in code that will not get refactored.
-> > > 
-> > > Make URL inside comment copy-paste friendly.
-> > 
-> > >  			return dev_err_probe(dev, ret,
-> > > -				"honeywell,pmin-pascal could not be read\n");
-> > > +				   "honeywell,pmin-pascal could not be read\n");
-> > 
-> > As done elsewhere, here and in other similar places fix the indentation
-> > by making first character on the latter line to be in the same column as
-> > the first character after the opening parenthesis.
+On Mon, Jan 01, 2024 at 05:25:59PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> I triple-checked that I am following the max 80 column rule, the parenthesis
-> rule and the 'do not split printk messages' rules in all my code in these 10 patches.
-> precisely so I don't get feedback like this one.
-> if the parenthesis rule makes the line longer then 80 chars I right-align to
-> column 80 as seen above.
-> that is what I understand from the latest coding style document and that is what
-> I will follow.
+> This allows the following
 > 
-> in this particular case if I were to ignore the 80 column rule we would end up on
-> column 90 if I were to follow your feedback (open parenthesis is at column 45
-> and the error takes 45 chars more).
+> struct fwnode_handle *child __free(kfree) = NULL;
+> 
+> device_for_each_child_node(dev, child) {
+> 	if (false)
+> 		return -EINVAL;
+> }
+> 
+> without the fwnode_handle_put() call which tends to complicate early
+> exits from such loops and lead to resource leak bugs.
+> 
+> Can also be used where the fwnode_handle was obtained from a call
+> such as fwnode_find_reference() as it will safely do nothing if
+> IS_ERR() is true.
 
-checkpatch has got an exceptional rule _not_ to warn on the long string
-literals for 10+ years. It had happened much earlier than 100 relaxation one.
+...
+
+>  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+>  void fwnode_handle_put(struct fwnode_handle *fwnode);
+> +DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_T))
+
+In GPIO we have something similar and PeterZ explained there why if (_T) is
+important, hence this should be
+
+DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (_T) fwnode_handle_put(_T))
+
+or even
+
+DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
+
+as we accept in many calls an error pointer as unset / undefined firmware node
+handle.
+
 
 -- 
 With Best Regards,

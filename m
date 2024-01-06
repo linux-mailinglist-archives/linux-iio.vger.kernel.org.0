@@ -1,136 +1,106 @@
-Return-Path: <linux-iio+bounces-1442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1440-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507DF82601B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:25:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272BF826015
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C0DEB22CFB
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:25:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5FA31F235E4
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBAD79F9;
-	Sat,  6 Jan 2024 15:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4110679FF;
+	Sat,  6 Jan 2024 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FcqwQi6q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aw7KdWLh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B3F8C1D;
-	Sat,  6 Jan 2024 15:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704554708; x=1736090708;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uchMTwyNWsn3FIvlNecAOL81jzA+hn5613XxiosJYxA=;
-  b=FcqwQi6qJCfs5GHPfPhXC+WJ+sKjqI+q5qAQ7Mib3nySa+1LbaFWUK0J
-   2E3wFEO3FtkSWyBLEjtd9uTZRg9y7XR01+IRWD2NOfCvnPVTL5h/bezXF
-   yGxFZXsoxnakequCBcrUNnTiokUNHF+iyD0n+jb57aft9Mx4mNYkzftkz
-   yeFTQYj3aLhyIvZWlcGxw4xB7HpH048D7lqhRSzzv1q/pKYe6CAQVwZ6Z
-   AzYV+gaQGJAiB06UnQlZklDV0oRkilrK3tIA+Mi0NvdCzuhTsE4a+RWkt
-   ilUsw+ZiDLgWjBA86QZRPNykmBNsj4S6UQsNZyySbYWFGWU1Ky2/Hj7uh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="461961914"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="461961914"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:25:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="871478208"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="871478208"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 07:25:03 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rM8Rz-0000000BwHY-1tMh;
-	Sat, 06 Jan 2024 17:19:03 +0200
-Date: Sat, 6 Jan 2024 17:19:03 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 00/13] device property / IIO: Use cleanup.h magic for
- fwnode_handle_put() handling.
-Message-ID: <ZZlvZ_9_72nyKEU1@smile.fi.intel.com>
-References: <20240101172611.694830-1-jic23@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B138D8474;
+	Sat,  6 Jan 2024 15:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40d604b4b30so7892075e9.1;
+        Sat, 06 Jan 2024 07:22:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704554573; x=1705159373; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e3fDW402aU63JvYRAhJVsl7yZwjVojyYxUJdrbQ3u2U=;
+        b=Aw7KdWLhi3zkykGKgxKlrIUZLI0rRHHPVGV0Fg0O4QjF/YZX8NnwIljcRw3rteqo7+
+         hdvbVat5xG2mIZdcoJO2slvlI6AfxSfPRB/SpTk/HeMbduIqPc4DSGsGnrclF6sW/Q5y
+         S31M2DMLFFmSma1LNGATDnnOlYR0dBhZiE8TcWlFLc3RKzSVqID81IjriDZyn6e0AXsV
+         agVWZQ6NCL4hcWN9rBwXRMBNbn+eGHQVjIseeFOz4ggDrvBL9z7rCRbeyuZyEc0St+ag
+         /riEaYsSEqaM4zGhFrodCX3+K7tBAq0G74+a11dfaZFbmzMnVKZuF3eCWwIsGu0P7aer
+         LXJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704554573; x=1705159373;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e3fDW402aU63JvYRAhJVsl7yZwjVojyYxUJdrbQ3u2U=;
+        b=Z2QBkPxqZSnA5+TBf7IaHhRuEQWqVlVaYNS1i0NrZI2kVST24CZ99q0wA2yYYuS0Ge
+         mI4IcY6QlqEgaPpA3nwQE1Ps/5AjdGf7T2y3TI9v1fSADpoyc1ai30rVab+PFCkZFYWN
+         UYK7+Y7Zdyz8WkTA10bWSZnG96XhzXsLp77Iykfbzoh8SsQMnPWWgZGYAXjlpY8dGNrm
+         Kz4QePQ91JFrloj4Pz9COF49tQhMfwrO10u32j505UaxIKYp6p4ZUtjVO808dFd7hE20
+         kfxRLkaAdQGeBSCrSI+fLGAazqsCUOS71uUJDOMHpucmLt6dqlk5EUsZD0sBaACAvXnp
+         kFKA==
+X-Gm-Message-State: AOJu0YzV1w5VUS0B5vY1yIJU4Bg5J2E3NGWM0fXDlYUaXGIg1CQzdVkZ
+	ByJXqo6Z86qdeRvpn/fUsFM=
+X-Google-Smtp-Source: AGHT+IHfBHIgmYFZp/QnQeyDYv4aaxU4VKiNAoREFpNt4fOpSFsAJ9lRnVVBi3gTZ3O35EG/PF9hsw==
+X-Received: by 2002:a05:600c:8a4:b0:40d:5b0d:cebe with SMTP id l36-20020a05600c08a400b0040d5b0dcebemr563929wmp.39.1704554572850;
+        Sat, 06 Jan 2024 07:22:52 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id w5-20020a05600c474500b0040e34835a58sm4948321wmo.22.2024.01.06.07.22.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 07:22:52 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Lechner <david@lechnology.com>,
+	linux-iio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: adc: ti-ads7950: remove redundant assignment to variable ret
+Date: Sat,  6 Jan 2024 15:22:51 +0000
+Message-Id: <20240106152251.54617-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240101172611.694830-1-jic23@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 01, 2024 at 05:25:58PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> RFC mainly because it's untested. I have none of the relevant hardware and
-> haven't yet emulated the firmware descriptions to test this.
-> I have tested the device tree only version:
-> https://lore.kernel.org/linux-iio/20231217184648.185236-1-jic23@kernel.org/
-> which is very similar.
-> 
-> Failing to release the references on early exit from loops over child nodes
-> and similar are a fairly common source of bugs. The need to explicitly
-> release the references via fwnode_handle_put() also complicate the code.
-> 
-> The first patch enables
-> 
-> 	struct fwnode_handle *child __free(fwnode_handle) = NULL;
-> 
-> 	device_for_each_child_node(dev, child) {
-> 		if (err)
-> 			/*
-> 			 * Previously needed a fwnode_handle_put() here,
-> 			 * will now be called automatically as well leave
-> 			 * the scope within which the cleanup is registered
-> 			 */
-> 			return err;
-> 	}
-> 
-> /*
->  * fwnode_handle_put() no automatically called here - but child == NULL so
->  * that call is a noop
->  */
-> }
-> 
-> As can be seen by the examples from IIO that follow this can save
-> a reasonable amount of complexity and boiler plate code, often enabling
-> additional cleanups in related code such as use of
-> return dev_err_probe().
+Variable ret is being assigned a value that is never read, the variable
+is being re-assigned again a few statements later. Remove it.
 
-Important comment on the first patch, otherwise LGTM.
+Cleans up clang scan build warning:
+warning: Value stored to 'ret' is never read [deadcode.DeadStores]
 
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/adc/ti-ads7950.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
+index 263fc3a1b87e..f975de059ba0 100644
+--- a/drivers/iio/adc/ti-ads7950.c
++++ b/drivers/iio/adc/ti-ads7950.c
+@@ -441,8 +441,6 @@ static int ti_ads7950_get(struct gpio_chip *chip, unsigned int offset)
+ 	if (ret)
+ 		goto out;
+ 
+-	ret = ((st->single_rx >> 12) & BIT(offset)) ? 1 : 0;
+-
+ 	/* Revert back to original settings */
+ 	st->cmd_settings_bitmask &= ~TI_ADS7950_CR_GPIO_DATA;
+ 	st->single_tx = TI_ADS7950_MAN_CMD_SETTINGS(st);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 
 

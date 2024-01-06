@@ -1,107 +1,105 @@
-Return-Path: <linux-iio+bounces-1446-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1447-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B482982607D
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 17:08:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BC68260EF
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 18:49:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B03283EC5
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:08:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DA2BB21C35
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 17:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B5179D7;
-	Sat,  6 Jan 2024 16:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83AFC2D9;
+	Sat,  6 Jan 2024 17:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyVVyCqT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFRQNNBv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC30C134;
-	Sat,  6 Jan 2024 16:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704557281; x=1736093281;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Vqb1BuBpq6ps1wxzqF4mNcJIhHMSXlmXzWIUyPgEXOc=;
-  b=TyVVyCqTgxDq1rHkoIaELojADZ8CXLOSqlBcSgges4EWl+ScOSMM5b1t
-   f0lU2CjCmpBjrtdBbB8tDuC4SbvPkMiroAiC/+l8mez5VEvcJ+edeVX0Z
-   sJAZMtArwyYstx9+5Ehc8bA1UH98Oxa3Bl2g/8VP2fE0Vks9Q7+B4y0fx
-   BLU1vj919FRcsXGZ2AYS4oxjBV2Y2QvbBK7TA+puGdV84mtnwWqaMlUhh
-   QLc0UgwZfhmevj9T8ZCdT/5Wvr+UHZIxyi9j0cE4C09O2PXHp7OYFNjyo
-   ej9DlOx36OcMXy9q/ptlWl3NXZx9ACwJTFe63iey8Z8ZSfVEzkzND9tIJ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="388118834"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="388118834"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 08:08:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="784460887"
-X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
-   d="scan'208";a="784460887"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 08:07:58 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rM9DH-0000000Bwqt-1dlC;
-	Sat, 06 Jan 2024 18:07:55 +0200
-Date: Sat, 6 Jan 2024 18:07:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Klinger <ak@it-klinger.de>,
-	Jonathan Cameron <jic23@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B525C8C2;
+	Sat,  6 Jan 2024 17:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-783148737d5so45395485a.2;
+        Sat, 06 Jan 2024 09:49:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704563378; x=1705168178; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VZSWVN0PX0qipG2eeREqz27T7a+T8ixFO0e0uD2k7ds=;
+        b=LFRQNNBv3yKsM+vQiwKJLwgLrvpjsYRzV8b5LnXQFDsmumDVk+O6bo0HkEPKaa93Er
+         ZJWBs5TkNs0pmFeG0nvyR0mjCAfiGEMu+NS7bSCsTsxteU1GbX/6lgjTtQzum1noCVNY
+         OPchu49zYVEia15c6jYtXz2v7S9ItRaJvdLf/l/o6xkxp3FAGXwtEh5WdJH2uH9mIp74
+         qEacWJi5DQr9R4CcQQH19BZ70oHtxy/6AeNpF+n5TWFytmUa0iMAIOEFzsrqLdqapjHk
+         lvSVNAm19WgDk95V4fH1aS34Q3wU/EMmAdvmDYuagza9/zCpNiEuLJqEDqAscyy0R+bj
+         73AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704563378; x=1705168178;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VZSWVN0PX0qipG2eeREqz27T7a+T8ixFO0e0uD2k7ds=;
+        b=ImgOrHNHbGYBhaWtN7FV3Cc28fwRhi7iHW66tTrcHW0bRuKEjV8GtoUQ8gsTnMZMau
+         hfy3C4A8e88S5NUx8jhfLrS/xdC7ePUwj3eErCy/2LLLDB6Mmtc3eDEWU6EJyrigyQ9P
+         ApvH6hxrHhJP0LCDaPvv/NBmcJjmMSLrcPqMnjqeWPgBteeljZveJLBHJMN7mjfjLQju
+         JUCk1+SCBvxT2699ovOwjC5GklOzgO1OG7uX9AB15JJKKs0kPDi91nHlOPfmlkZ4n/4o
+         eaQam8i4ya3zvBsJK3ma5LkskCRhIFn2e0bv/HeWyewsaEvp3Xbtv9+W0eUzIZtNbOLl
+         I8Zg==
+X-Gm-Message-State: AOJu0YyS26WL3gOAK7+Hr/0VXTEOShjgmEfhRrrM+VwCwO32s4CFjjDN
+	v1Jsib+v1ixRu59aSSuqywk=
+X-Google-Smtp-Source: AGHT+IFZYT+nBzHpJnIS8y+SKJAUcvpWotPQbuKdyZKbNGqcUMJugMO3mMse0WpiuoWwba1Fv0zMXQ==
+X-Received: by 2002:a05:620a:1207:b0:783:12e4:2c1c with SMTP id u7-20020a05620a120700b0078312e42c1cmr1135156qkj.72.1704563378282;
+        Sat, 06 Jan 2024 09:49:38 -0800 (PST)
+Received: from system76-pc.lan (pool-108-53-73-136.nwrknj.fios.verizon.net. [108.53.73.136])
+        by smtp.gmail.com with ESMTPSA id t7-20020a05620a450700b00781b8f4c89asm1453328qkp.43.2024.01.06.09.49.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 09:49:38 -0800 (PST)
+From: Mohammed Billoo <mab.kernel@gmail.com>
+To: mab.kernel@gmail.com
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 10/10] iio: pressure: mprls0025pa add SPI driver
-Message-ID: <ZZl628UdGQ_Bu2jy@smile.fi.intel.com>
-References: <20231229092445.30180-1-petre.rodan@subdimension.ro>
- <20231229092445.30180-11-petre.rodan@subdimension.ro>
- <ZZlyDT0J4n1_YXh4@smile.fi.intel.com>
- <ZZl5rBPOKwvxZAAx@sunspire>
+	Marek Vasut <marex@denx.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ti-ads1015: Use correct pga upper bound
+Date: Sat,  6 Jan 2024 12:48:35 -0500
+Message-Id: <20240106174836.1086714-1-mab.kernel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZZl5rBPOKwvxZAAx@sunspire>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jan 06, 2024 at 06:02:52PM +0200, Petre Rodan wrote:
-> On Sat, Jan 06, 2024 at 05:30:21PM +0200, Andy Shevchenko wrote:
-> > On Fri, Dec 29, 2023 at 11:24:38AM +0200, Petre Rodan wrote:
-> > > Add SPI component of the driver.
+The devicetree binding and datasheets (for both the ADS1015 and
+ADS1115) show that the PGA index should have a maximum value of 5,
+and not 6.
 
-> > > +#include <linux/mod_devicetable.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/spi/spi.h>
-> > > +#include <linux/stddef.h>
-> > 
-> > Basically here we need additionally these ones:
-> > 
-> > device.h
-> > errno.h
-> > types.h
-> 
-> ok, I'll add errno.h. the other two are in the shared .h file.
+Signed-off-by: Mohammed Billoo <mab.kernel@gmail.com>
+---
+ drivers/iio/adc/ti-ads1015.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, but it's better to follow IWYI principle. Generally speaking
-there is no guarantee that above will be _always_ the case.
-
-Anyway, I leave this to Jonathan.
-
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 6799ea49dbc7..6ae967e4d8fa 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -925,7 +925,7 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 
+ 		if (!fwnode_property_read_u32(node, "ti,gain", &pval)) {
+ 			pga = pval;
+-			if (pga > 6) {
++			if (pga > 5) {
+ 				dev_err(dev, "invalid gain on %pfw\n", node);
+ 				fwnode_handle_put(node);
+ 				return -EINVAL;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 

@@ -1,43 +1,58 @@
-Return-Path: <linux-iio+bounces-1445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1446-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF0F826060
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 17:04:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B482982607D
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 17:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63F951C21982
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B03283EC5
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jan 2024 16:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53765C15F;
-	Sat,  6 Jan 2024 16:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B5179D7;
+	Sat,  6 Jan 2024 16:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="W4KlRPNK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyVVyCqT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E144FF516;
-	Sat,  6 Jan 2024 16:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 3D16728B53B;
-	Sat,  6 Jan 2024 16:02:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1704556974;
-	bh=Cm940zKVyu6a9aez1H379JbaXjqxCkC1bSHDLSDNWZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W4KlRPNK6dqWpx+TR7mH+uYK5BgMn/lM9v7TO9syhA3mH4/I+em6EbPmbfBh1oxpN
-	 n3kExN2INgg1tovd2GR34YbhOiepDDUDjfr9MyyaLGRqR13DGlX+RXI6Tw/6kht68p
-	 Yxyljco9lHrzC31FTwSUEHxjIS4pKhOOfdl0ktoY=
-Date: Sat, 6 Jan 2024 18:02:52 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC30C134;
+	Sat,  6 Jan 2024 16:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704557281; x=1736093281;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Vqb1BuBpq6ps1wxzqF4mNcJIhHMSXlmXzWIUyPgEXOc=;
+  b=TyVVyCqTgxDq1rHkoIaELojADZ8CXLOSqlBcSgges4EWl+ScOSMM5b1t
+   f0lU2CjCmpBjrtdBbB8tDuC4SbvPkMiroAiC/+l8mez5VEvcJ+edeVX0Z
+   sJAZMtArwyYstx9+5Ehc8bA1UH98Oxa3Bl2g/8VP2fE0Vks9Q7+B4y0fx
+   BLU1vj919FRcsXGZ2AYS4oxjBV2Y2QvbBK7TA+puGdV84mtnwWqaMlUhh
+   QLc0UgwZfhmevj9T8ZCdT/5Wvr+UHZIxyi9j0cE4C09O2PXHp7OYFNjyo
+   ej9DlOx36OcMXy9q/ptlWl3NXZx9ACwJTFe63iey8Z8ZSfVEzkzND9tIJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="388118834"
+X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
+   d="scan'208";a="388118834"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 08:08:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="784460887"
+X-IronPort-AV: E=Sophos;i="6.04,337,1695711600"; 
+   d="scan'208";a="784460887"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 08:07:58 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rM9DH-0000000Bwqt-1dlC;
+	Sat, 06 Jan 2024 18:07:55 +0200
+Date: Sat, 6 Jan 2024 18:07:55 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Andreas Klinger <ak@it-klinger.de>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -45,101 +60,48 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Angel Iglesias <ang.iglesiasg@gmail.com>,
 	Matti Vaittinen <mazziesaccount@gmail.com>
 Subject: Re: [PATCH v3 10/10] iio: pressure: mprls0025pa add SPI driver
-Message-ID: <ZZl5rBPOKwvxZAAx@sunspire>
+Message-ID: <ZZl628UdGQ_Bu2jy@smile.fi.intel.com>
 References: <20231229092445.30180-1-petre.rodan@subdimension.ro>
  <20231229092445.30180-11-petre.rodan@subdimension.ro>
  <ZZlyDT0J4n1_YXh4@smile.fi.intel.com>
+ <ZZl5rBPOKwvxZAAx@sunspire>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GAFEAXN8xuUBlkzd"
-Content-Disposition: inline
-In-Reply-To: <ZZlyDT0J4n1_YXh4@smile.fi.intel.com>
-
-
---GAFEAXN8xuUBlkzd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZZl5rBPOKwvxZAAx@sunspire>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+On Sat, Jan 06, 2024 at 06:02:52PM +0200, Petre Rodan wrote:
+> On Sat, Jan 06, 2024 at 05:30:21PM +0200, Andy Shevchenko wrote:
+> > On Fri, Dec 29, 2023 at 11:24:38AM +0200, Petre Rodan wrote:
+> > > Add SPI component of the driver.
+
+> > > +#include <linux/mod_devicetable.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/spi/spi.h>
+> > > +#include <linux/stddef.h>
+> > 
+> > Basically here we need additionally these ones:
+> > 
+> > device.h
+> > errno.h
+> > types.h
+> 
+> ok, I'll add errno.h. the other two are in the shared .h file.
+
+Yes, but it's better to follow IWYI principle. Generally speaking
+there is no guarantee that above will be _always_ the case.
+
+Anyway, I leave this to Jonathan.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-hello Andy,
-
-On Sat, Jan 06, 2024 at 05:30:21PM +0200, Andy Shevchenko wrote:
-> On Fri, Dec 29, 2023 at 11:24:38AM +0200, Petre Rodan wrote:
-> > Add SPI component of the driver.
->=20
-> > Tested with mprls0015pa0000sa in spi mode on BeagleBone Black on
-> > slightly patched 6.7.0-rc6 mainline.
->=20
-> > Tested with mprls0025pa in i2c mode on BeagleBone Black with togreg
-> > branch on
-> > git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
-> > (tag: iio-for-6.8a)
->=20
-> I believe these paragraphs can be moved to the patch submission comments =
-=66rom
-> the commit message...
->=20
-> > Tested-by: Andreas Klinger <ak@it-klinger.de>
-> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > ---
-> > v2 -> v3 removed iio.h include line
->=20
-> ...somewhere here.
->=20
-> ...
->=20
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/spi/spi.h>
-> > +#include <linux/stddef.h>
->=20
-> Basically here we need additionally these ones:
->=20
-> device.h
-> errno.h
-> types.h
-
-ok, I'll add errno.h. the other two are in the shared .h file.
-
-cheers,
-peter
-
-> (I haven't checked i2c counterpart for the similarities).
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
->=20
->=20
-
---=20
-petre rodan
-
---GAFEAXN8xuUBlkzd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWZeagACgkQzyaZmYRO
-fzA8tA/8CuTLOuHDKpjZ86++xEJoWwzqi22ttcVBzdZIfdmAKgZNGmCzBczvJG4I
-uiPlhyI7MilWFYfjWx1uPRV3nkDc2iMOxNBwM9JzAE0kryEo3azaRfox2SnmkGVn
-cFfV4b3O8UY+fqNGNEFu5bLoeztSnyYokstYUd8qoI3S0L1KTvpbkAUIa+aOionv
-QIYvP1tadfogwWg4yYBiLDevJsB7VjdyYfVXHKca8EP8ubQC5xH0Tf2P+AaY8Hsl
-VJXR2pGwy7CscpwpQm4K9T6IS2Xtuyzvmfz7I9nEuiS2obqFm6Gpk4+WS++gnQg9
-lntd93DQFTPRVQbGCpoUZZ9/T/o9oWsB3yT14jRhFyaVngbzZugDya2Pq+uTs8ZW
-fwieiYeZbybYCQOw0SHCQ06qdzTsWxHxkCuNmmL9/Q7CR6nwdSSPTZpzcocWvaBW
-DFoGsHp2jWEfaovjW1Np5QeDUqhwPFC2J2+ydCfxs+Cxl9G/1ujOvLELSDEay3WH
-IrAgPuPkrubg3AAwc84sb2kLIDjKlQwJlQ5+i3ea4KYfuR4cGB2YLcebXlZfECAe
-7rehc4EiGCpR9VMrc57N8Or4dPqasfO3BHOqyKcqWeHJz7ITyRuCAXu4If4wIFuW
-Gd+s/ov/RqFXv4F89RBgtyCkQvutJx5Ph4av+IrQTzJeMbuw3FA=
-=xmDc
------END PGP SIGNATURE-----
-
---GAFEAXN8xuUBlkzd--
 

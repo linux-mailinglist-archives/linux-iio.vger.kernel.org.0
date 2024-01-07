@@ -1,48 +1,51 @@
-Return-Path: <linux-iio+bounces-1456-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1457-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C709826504
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:15:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC96882650C
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3FE1F22FE1
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:15:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F253B21392
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA34513ADF;
-	Sun,  7 Jan 2024 16:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEE413AE4;
+	Sun,  7 Jan 2024 16:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSyoz73S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqFx6g7I"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5B013AD7;
-	Sun,  7 Jan 2024 16:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45396C433C8;
-	Sun,  7 Jan 2024 16:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B7F13AD5;
+	Sun,  7 Jan 2024 16:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A02C433C8;
+	Sun,  7 Jan 2024 16:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704644132;
-	bh=Wf6eDvpDPRtyWdVAPf7HspHXkbuiVLW+r7ivHe1tA6M=;
+	s=k20201202; t=1704644397;
+	bh=uIAD5Kp2kfFIl9FoggQDWcZuqpMzhfaqIRSk/vA2DQM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oSyoz73S+7PGDNDs7wkI1Y65vcK1rqqXt9g3YjMfz6VIJQOu7gyfy7Zynkf6I/hE1
-	 BmrYRRtr+eRKGS22FUaWaWq8FTH2F6ybUDCZielg5Z7hLZpQWBQbAntKTRpwrQUs6n
-	 zjo3oHVwwrgsN7vgykCXQTqEjNmAVvj+pIvNrmizGuZM7AcoEiabybv2P0TOHsmXfN
-	 qTyOKXbF53YXhJP645pHFIQHhIumTVRCQ/iqkbCN11OU/rdvGEGRBxPv4vmWGB19lR
-	 jYrEj4dK57fIe4F5bsybSur5Qw4mMWmCU8R5xgKE4oYp2/3Fd5NQ2sQs+e6gVsGW0t
-	 d1PUhQ6sp7mUw==
-Date: Sun, 7 Jan 2024 16:15:24 +0000
+	b=ZqFx6g7ImUgF+nkjBx9CrvDhk+3HY7beJOk1JAw5Kb9KYcl5sIoIiil23pNiWFIzE
+	 H5ZYXTaENWD3s4Uw170hu52T+13Zeeanp2+wBT7DQR25FhAzFzovEQ4EdBuiKcJ0Xa
+	 /RhA7Jel5bjtL+7TszdlfUvkHaW+uWLH28EjLNloNXAcAa+4NFNE5XosVe754Yyx+C
+	 piZIiaGdfBRsXukEtf9LZmdDM4p2OyudONueEz/4iPfAxtFsRJC893biNgAP/hlpjb
+	 yJdCutBCKdCv5it4noOCIsPjQxlvh/giq3Pq00HVigTVlLp4GRBEW61dRyz0FvSl/8
+	 ZmJNeztyA8pIQ==
+Date: Sun, 7 Jan 2024 16:19:49 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mohammed Billoo <mab.kernel@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Marek Vasut <marex@denx.de>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>, Biju Das
- <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads1015: Use correct pga upper bound
-Message-ID: <20240107161524.7dc72a3f@jic23-huawei>
-In-Reply-To: <20240106174836.1086714-1-mab.kernel@gmail.com>
-References: <20240106174836.1086714-1-mab.kernel@gmail.com>
+To: <cy_huang@richtek.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+ <robh+dt@kernel.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] iio: adc: rtq6056: Add support for the whole
+ RTQ6056 family
+Message-ID: <20240107161949.04ec0011@jic23-huawei>
+In-Reply-To: <2980b67de00bae1fc25004188e8aabf53073d940.1704357933.git.cy_huang@richtek.com>
+References: <cover.1704357933.git.cy_huang@richtek.com>
+	<2980b67de00bae1fc25004188e8aabf53073d940.1704357933.git.cy_huang@richtek.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -53,45 +56,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  6 Jan 2024 12:48:35 -0500
-Mohammed Billoo <mab.kernel@gmail.com> wrote:
+On Thu, 4 Jan 2024 17:03:31 +0800
+<cy_huang@richtek.com> wrote:
 
-> The devicetree binding and datasheets (for both the ADS1015 and
-> ADS1115) show that the PGA index should have a maximum value of 5,
-> and not 6.
+> From: ChiYuan Huang <cy_huang@richtek.com>
 > 
-> Signed-off-by: Mohammed Billoo <mab.kernel@gmail.com>
+> RTQ6053 and RTQ6059 are the same series of RTQ6056.
+> 
+> The respective differences with RTQ6056 are listed below
+> RTQ6053
+> - chip package type
+> 
+> RTQ6059
+> - Reduce the pinout for vbus sensing pin
+> - Some internal ADC scaling change
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Hi. 
 
-Hi Mohammed,
-
-Seems correct, but I'm curious - did you see an actual problem with
-setting the value to 6?  From my reading of the ads1115 datasheet
-6 and 7 should be functionally identical to 5.
-
-Anyhow, good to clean it up anyway so applied to the togreg branch of
-iio.git but that tree will be rebased on rc1 once available so for
-now I'll just push it as testing for 0-day to get started on testing it.
+One last follow on comment based on v4 changes to the enum naming.
+I think you missed one place they should be updated - the reg_field
+definitions.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ti-ads1015.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> index 6799ea49dbc7..6ae967e4d8fa 100644
-> --- a/drivers/iio/adc/ti-ads1015.c
-> +++ b/drivers/iio/adc/ti-ads1015.c
-> @@ -925,7 +925,7 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+
 >  
->  		if (!fwnode_property_read_u32(node, "ti,gain", &pval)) {
->  			pga = pval;
-> -			if (pga > 6) {
-> +			if (pga > 5) {
->  				dev_err(dev, "invalid gain on %pfw\n", node);
->  				fwnode_handle_put(node);
->  				return -EINVAL;
+> +/*
+> + * The enum is to present the 0x00 CONFIG RG bitfield for the 16bit RG value
+> + * field value order from LSB to MSB
+> + * RTQ6053/6 is OPMODE->VSHUNTCT->VBUSCT->AVG->RESET
+> + * RTQ6059 is OPMODE->SADC->BADC->PGA->RESET
+> + */
+>  enum {
+>  	F_OPMODE = 0,
+>  	F_VSHUNTCT,
+> +	F_RTQ6059_SADC = F_VSHUNTCT,
+>  	F_VBUSCT,
+> +	F_RTQ6059_BADC = F_VBUSCT,
+>  	F_AVG,
+> +	F_RTQ6059_PGA = F_AVG,
+>  	F_RESET,
+>  	F_MAX_FIELDS
+>  };
+
+>  
+> +static const struct reg_field rtq6059_reg_fields[F_MAX_FIELDS] = {
+> +	[F_OPMODE] = REG_FIELD(RTQ6056_REG_CONFIG, 0, 2),
+> +	[F_VSHUNTCT] = REG_FIELD(RTQ6056_REG_CONFIG, 3, 6),
+> +	[F_VBUSCT] = REG_FIELD(RTQ6056_REG_CONFIG, 7, 10),
+> +	[F_AVG]	= REG_FIELD(RTQ6056_REG_CONFIG, 11, 12),
+> +	[F_RESET] = REG_FIELD(RTQ6056_REG_CONFIG, 15, 15),
+
+Given these are the rtq6059 regfield definitions should they not be
+using the new enum names?
+
+> +};
+> +
 
 

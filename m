@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-1453-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1454-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A562F8264DE
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:02:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B98264E6
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342B31F214D8
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:02:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D7DC1F2150C
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1504313AC7;
-	Sun,  7 Jan 2024 16:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6477013ACA;
+	Sun,  7 Jan 2024 16:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMEuaZSP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyQLmV3f"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87BE13AC0;
-	Sun,  7 Jan 2024 16:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5A9C433C7;
-	Sun,  7 Jan 2024 16:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2678E13AC7;
+	Sun,  7 Jan 2024 16:07:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC203C433C8;
+	Sun,  7 Jan 2024 16:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704643358;
-	bh=AgdzebLM5cK9tMR3KyEkXQ/+QTHVfgE2gK9SSe5ys1Q=;
+	s=k20201202; t=1704643661;
+	bh=irwiB0glJqtkW5oESCUx2inVytpmIwtrLKY8B2VSb7U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eMEuaZSPUQm0ZR1Qt5SToxGIMZcNTEbCM+QNSkJLM5gKqwcYDQaqRJos5xHdDJkkS
-	 9ByhjhHiuly2X6dS4AnADhP7hlDrfPPn3f70ljNVZSg2RitIcJaDo/01qCFmVvBLhI
-	 nieDyKA/DOgrLawIuL2kRR5FIWIjWb0Ear/TVrmqmcSNWqk14mFGOZGDbpKXSOLdon
-	 4SnceSGSywhLbqIQNci3QaS5h6w3TogY4Bx89kisbvDPMLrROGmlZekC7UWsz4Baem
-	 IAvvm0c9fByABPcmhKstgJe7J8ReQJSdLJNMoZKi9KsxzD/ETL/FzZTaMOfE/411nc
-	 iMsucXAkDnB9w==
-Date: Sun, 7 Jan 2024 16:02:32 +0000
+	b=lyQLmV3fl2YZWdk+11aDymPdtPvyIECQmIjD3cct2tyigiLrV+ZJYslhW46z6o6CM
+	 JFjSKGvnSHwCpKoO+SpWMODGqM0nLA479N9H0e4p3sfCdFfg5Gp94iqT3NuLmZHnb5
+	 z9hbf6x0ioRke7ZVI9psr5vnCtTZI5xvdKSbmrWp7VienhV1VcRbgvQ7FTNpNHLJ/d
+	 ywm/RVObu0u6tQ+KXyWuFPYzEzmUbejYwx3QOuCNHThlvU5urMO6nwgWNfkpCoX+zX
+	 oxfdzGz1XphUo2pHuVqhhS+/UALoEzHX03C7YvDQRTKsXLujGWTijFR9KN+mD2wVFg
+	 AtQt8VsXqPYYw==
+Date: Sun, 7 Jan 2024 16:07:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <david@lechnology.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org,
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, linux-iio@vger.kernel.org,
  kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] iio: adc: ti-ads7950: remove redundant assignment
- to variable ret
-Message-ID: <20240107160232.4cdbae62@jic23-huawei>
-In-Reply-To: <e0f58f77-1dd0-4def-84ec-eded4b7d2092@lechnology.com>
-References: <20240106152251.54617-1-colin.i.king@gmail.com>
-	<e0f58f77-1dd0-4def-84ec-eded4b7d2092@lechnology.com>
+Subject: Re: [PATCH][next] iio: invensense: remove redundant initialization
+ of variable period
+Message-ID: <20240107160736.14f3ae1d@jic23-huawei>
+In-Reply-To: <20240106153202.54861-1-colin.i.king@gmail.com>
+References: <20240106153202.54861-1-colin.i.king@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -54,40 +54,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 6 Jan 2024 12:14:22 -0600
-David Lechner <david@lechnology.com> wrote:
+On Sat,  6 Jan 2024 15:32:02 +0000
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-> On 1/6/24 9:22 AM, Colin Ian King wrote:
-> > Variable ret is being assigned a value that is never read, the variable
-> > is being re-assigned again a few statements later. Remove it.
-> > 
-> > Cleans up clang scan build warning:
-> > warning: Value stored to 'ret' is never read [deadcode.DeadStores]
-> > 
-> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> > ---
-> >   drivers/iio/adc/ti-ads7950.c | 2 --
-> >   1 file changed, 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
-> > index 263fc3a1b87e..f975de059ba0 100644
-> > --- a/drivers/iio/adc/ti-ads7950.c
-> > +++ b/drivers/iio/adc/ti-ads7950.c
-> > @@ -441,8 +441,6 @@ static int ti_ads7950_get(struct gpio_chip *chip, unsigned int offset)
-> >   	if (ret)
-> >   		goto out;
-> >   
-> > -	ret = ((st->single_rx >> 12) & BIT(offset)) ? 1 : 0;
-> > -
-> >   	/* Revert back to original settings */
-> >   	st->cmd_settings_bitmask &= ~TI_ADS7950_CR_GPIO_DATA;
-> >   	st->single_tx = TI_ADS7950_MAN_CMD_SETTINGS(st);  
+> The variable period is being initialized with a value that is never
+> read, it is being re-assigned a new value later on before it is read.
+> The initialization is redundant and can be removed.
 > 
-> This does not look like the correct fix. This is the intended return value of the function in the case of no errors. So we probably need to introduce a new variable instead so that it doesn't get written over.
+> Cleans up clang scan build warning:
+> Value stored to 'period' during its initialization is never
+> read [deadcode.DeadStores]
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Hi Colin,
 
-Agreed.  Needs to stash that in another local variable and return that value
-if ret == 0.
+I definitely want input from someone who can test this.
+There is direct use of ts->period as well as the local
+variable that is indeed overwritten as you've noted.
+Feels like naming needs some work and perhaps reduce the scope of
+the period local variable so it's obvious it was only intended
+for more local use than it currently looks like.
 
-J
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> index 03823ee57f59..3b0f9598a7c7 100644
+> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> @@ -126,7 +126,7 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+>  	struct inv_sensors_timestamp_interval *it;
+>  	int64_t delta, interval;
+>  	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
+> -	uint32_t period = ts->period;
+> +	uint32_t period;
+>  	bool valid = false;
+>  
+>  	if (fifo_nb == 0)
 
 

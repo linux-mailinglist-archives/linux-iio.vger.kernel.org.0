@@ -1,111 +1,116 @@
-Return-Path: <linux-iio+bounces-1467-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1468-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B18826601
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 22:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B24826618
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 22:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2738281A2B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 21:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30FE281AC8
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 21:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EAC1171C;
-	Sun,  7 Jan 2024 21:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE5011C80;
+	Sun,  7 Jan 2024 21:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="dL1qdgrE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPvA+OiD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7A411703
-	for <linux-iio@vger.kernel.org>; Sun,  7 Jan 2024 21:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rasmusvillemoes.dk
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-557a615887cso436559a12.1
-        for <linux-iio@vger.kernel.org>; Sun, 07 Jan 2024 13:05:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1704661535; x=1705266335; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k+ZVVcANjcAGMgQl/7I9HIpGBWAjEsO4AcNMvo6L5oU=;
-        b=dL1qdgrEK5euJjGRM8m3sCxOEWxISAp5I4xR9jPQ+S6CaRZ3/mLgJ3YQffdnwJjJZx
-         Oz8d8PvL0olpdxkxvpKWozttUnNZ7XH/4lQaXoLjz2Ebo9ki3qHbF+176yZovj1GAZpU
-         BWxWaB34lP8t6rjwL07ZokuVwh+q7iQDeTpmM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704661535; x=1705266335;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k+ZVVcANjcAGMgQl/7I9HIpGBWAjEsO4AcNMvo6L5oU=;
-        b=UiOFlJRlogs7zT5qQ2n2KdcT2nRk+PgO0t+I+NveQsOiBGBXtOCngEUAW6/BFBdKpu
-         3hyrpWUA9F2mF0XT/SThu6w6f1gIKevgGlMyMR0jEqOahg2JaOJINa9FkL00a3FUV5Cu
-         o9rsdna9BIXmQESOa5WHkRlWTVzrNVCP51cjT9B02E7ftsFwwYnuAMejCdTGiheHmUXs
-         /s+cm7jaWqRu634D1TbKREPJoD99NXJEXmlx6sruwE8Pvsp7UgE+yd78/+BhcfXP6R60
-         gqFCeZzLH/CYvrTcUMLwDwuFEsUupG6mvNE/OiY3slcsRmTSE7zjUo6fPHfivDDZxCv6
-         +QUg==
-X-Gm-Message-State: AOJu0Yx+2773Suk6T54jXBqDm8DNKVnvaWmdLSg4Ry33rnqo7l/SaINb
-	Ok/gU9e10Tr1KJAMi8fdKlYRPUi9h6WZIg==
-X-Google-Smtp-Source: AGHT+IEi0FM91KAwrQs/JVBQdTw5nI1ZI3dxXbk+HuUef9f5gXuSFa++IYxAchveJoy3p7lBQxsXvg==
-X-Received: by 2002:a50:d543:0:b0:557:b309:9266 with SMTP id f3-20020a50d543000000b00557b3099266mr237782edj.39.1704661535577;
-        Sun, 07 Jan 2024 13:05:35 -0800 (PST)
-Received: from [192.168.1.28] (77.33.185.10.dhcp.fibianet.dk. [77.33.185.10])
-        by smtp.gmail.com with ESMTPSA id s12-20020a056402164c00b005532a337d51sm3554021edx.44.2024.01.07.13.05.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Jan 2024 13:05:35 -0800 (PST)
-Message-ID: <4b6f283d-48b9-4702-81dc-003a2dcfc3f1@rasmusvillemoes.dk>
-Date: Sun, 7 Jan 2024 22:05:35 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18A01171F;
+	Sun,  7 Jan 2024 21:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152F2C433C8;
+	Sun,  7 Jan 2024 21:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704662826;
+	bh=aBmge42Re3CaD2B3sL9kHBYYzLg5qbRP+fss6SIm1vE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PPvA+OiDFhYQ+cI7jhyBzzV2Kcq6SlxLq0AysKvsBVc+t8DLgjpYH4AwwLON8u8Te
+	 zjr3AkqX0/k57qyHPfXb7gprRCbJgQayyQ18iCHka6rKWvgc+qSaKabhwGVBfsdYq1
+	 7erbgT2rnOlJe4zf3FA5zGAkIe56VDZG0xzfydyeAMfbcgvHySSAkNRvJoVKOqfK8Q
+	 NvMzEwS9whTwLha876tLcySWTkeelOIhmUICTaEU3UC6GYGKIx0TofWYcgVwHztpHV
+	 dFFubxov4QhIftjlBMCfo2yO3wqKl73goJG+p0PJs3PnCUj9YcAc4nl3olXQorMgCM
+	 6lDrsHf3ynjLQ==
+Date: Sun, 7 Jan 2024 21:26:59 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: spi: add spi-rx-bus-channels
+ peripheral property
+Message-ID: <f431e418-0b7c-4362-be26-9d2f03e0de07@sirena.org.uk>
+References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
+ <20231215-ad7380-mainline-v3-1-7a11ebf642b9@baylibre.com>
+ <20240107164356.3e8df266@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/13] device property: Add cleanup.h based
- fwnode_handle_put() scope based cleanup.
-To: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-References: <20240101172611.694830-1-jic23@kernel.org>
- <20240101172611.694830-2-jic23@kernel.org>
- <ZZlu5fTW27Tx3drB@smile.fi.intel.com>
- <305F62D9-8410-4F2F-9411-5A7395192789@jic23.retrosnub.co.uk>
-Content-Language: en-US, da
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-In-Reply-To: <305F62D9-8410-4F2F-9411-5A7395192789@jic23.retrosnub.co.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Fv0DJ3jRqIS10aZI"
+Content-Disposition: inline
+In-Reply-To: <20240107164356.3e8df266@jic23-huawei>
+X-Cookie: Love means nothing to a tennis player.
 
-On 06/01/2024 18.53, Jonathan Cameron wrote:
-> 
-> ething similar and PeterZ explained there why if (_T) is
->> important, hence this should be
-> 
-> I can't find the reference unfortunately. 
-> 
->>
->> DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (_T) fwnode_handle_put(_T))
->>
->> or even
->>
->> DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
->>
->> as we accept in many calls an error pointer as unset / undefined firmware node
->> handle.
-> 
-> The function called has a protection for null
->  and error inputs so I'm not sure why extra protection
-> is needed?
 
-IIRC, it's for code generation, avoiding emitting the call to the
-cleanup function on the code paths where the compiler knows the argument
-is NULL. And on the other return paths, the compiler most likely knows
-the value is non-NULL, so the conditional is elided (but of course not
-the put call). Read ERR_OR_NULL as appropriate.
+--Fv0DJ3jRqIS10aZI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Rasmus
+On Sun, Jan 07, 2024 at 04:43:56PM +0000, Jonathan Cameron wrote:
+> David Lechner <dlechner@baylibre.com> wrote:
 
+> > This adds a new spi-rx-bus-channels property to the generic spi
+> > peripheral property bindings. This property is used to describe
+> > devices that have parallel data output channels.
+
+> > This property is different from spi-rx-bus-width in that the latter
+> > means that we are reading multiple bits of a single word at one time
+> > while the former means that we are reading single bits of multiple words
+> > at the same time.
+
+> Mark, could you take a look at this SPI binding change when you have time?
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+> I don't want to apply it without your view on whether this makes sense
+> from a general SPI point of view as we all hate maintaining bindings
+> if they turn out to not be sufficiently future looking etc and we need
+> to deprecate them in favour of something else.
+
+This makes no sense to me without a corresponding change in the SPI core
+and possibly controller support, though I guess you could do data
+manging to rewrite from a normal parallel SPI to this for a pure
+software implementation.  I also see nothing in the driver that even
+attempts to parse this so I can't see how it could possibly work.
+
+--Fv0DJ3jRqIS10aZI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWbFyMACgkQJNaLcl1U
+h9AzYgf+Mbh0jgcqo96lL6XLC32m37OlYdd9fUKv0+KUOEXnZaUQ7qSCxWmhGgAP
+A2b1ghi/zUK7TsqVz8j+942keDay/MqUYOsrRMXpYpgELqWDlkLCh9TN/lpAbXJB
+q6dSJ7LnzJPH27JocTjnOFv16EILR/8974m14laHlQ49Rqr4egzfRNDHgfTyOFci
+DIsEp7kGIM3Xt1WeQzYlvxpDPeD4pRmlZBO6/zS9w77c4d+UXugNB/s1P/C5YNRK
+8l9iTvCtcTjkgFuznUQZIqfYYZYLC00jcpt/MsDCLz+bY4lHQTsoZMuvdpAjMspW
+SzABJV2fJNW1ZG1pWTy3YNc54Em1IA==
+=jAw8
+-----END PGP SIGNATURE-----
+
+--Fv0DJ3jRqIS10aZI--
 

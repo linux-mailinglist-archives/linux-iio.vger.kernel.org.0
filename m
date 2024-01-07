@@ -1,53 +1,49 @@
-Return-Path: <linux-iio+bounces-1462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCF682652B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:44:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA81582652F
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 17:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E666F28219B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D23FA1C2158B
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jan 2024 16:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A12113AC8;
-	Sun,  7 Jan 2024 16:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34A7134D3;
+	Sun,  7 Jan 2024 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYjoohRE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAVct8Xs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1726F13ADE;
-	Sun,  7 Jan 2024 16:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6E1C433C8;
-	Sun,  7 Jan 2024 16:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892DA13AD5;
+	Sun,  7 Jan 2024 16:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74DEC433C7;
+	Sun,  7 Jan 2024 16:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704645846;
-	bh=yNuz58aVKzYmHclOZSz1fw5Rc9L0KgXBqimMwdOlpUk=;
+	s=k20201202; t=1704646622;
+	bh=Z0uNUVuSLs33xkvslTQdw0NlujUpAvgVIaSRUWAsZMw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KYjoohREaK0YSvHr3ECAzknIg8vFcNYObH2tLXzm6mx0i37QXMPrOCCybDv1aN0Z3
-	 U84nhFjdVNZzhd1Aa8neNg9SE7ynhCy0S7IsCpqnPI/8herlXN2DMCXQPZwHzXc6gi
-	 v7oDRftEYjLLSAEtLH7yzgZFG5ZGmoY755pXfXXg+qqHSmRez+pf0MjQC6dPLmGEqV
-	 Ib1TBRJCGcHr4ZjzNgtlCNAhuDWBfbyGP0XwFYzBGENfvrC1cAN2omwe2SuDmiXYv+
-	 mEb834deSX3yKNdsvrYyEgLb+Jvam7Y6jcJag0zgMwxsK/DmMktfuMdmCpQYASQZ8/
-	 k//qs42hwV95Q==
-Date: Sun, 7 Jan 2024 16:43:56 +0000
+	b=fAVct8XsW0EtsBGBAN2jamiTJRHnwotP6jjnSdGZhmp2u+Izil84JOQ+5hprQiXcL
+	 Smi1eusR68TpeQ/2dwSWnJkQ88yndk05E/INHPrvBjqyfUbnf3ycj0O5RheucrNT54
+	 7sYhONgqQMMBrNKk9vBO/dWCIaZ4L5lGJN5Tz8YME5YRal+ut1sXiW9N7kgdZRRbjS
+	 +jI1X8lnF4gfkdboUKBGpHhPvI1haDql+LUphEBK8899aB5Uzb8MLERQ2HLw6N8q4m
+	 W8XjFMBokwGXNzbA6MXp+pQKBpqM4IkkhVE94yTGeYrI5YxmKuZTGLbvLLGAmm42ln
+	 pBkqjRz9yYTJQ==
+Date: Sun, 7 Jan 2024 16:56:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: spi: add spi-rx-bus-channels
- peripheral property
-Message-ID: <20240107164356.3e8df266@jic23-huawei>
-In-Reply-To: <20231215-ad7380-mainline-v3-1-7a11ebf642b9@baylibre.com>
-References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
-	<20231215-ad7380-mainline-v3-1-7a11ebf642b9@baylibre.com>
+To: Jun Yan <jerrysteve1101@gmail.com>
+Cc: Jonathan.Cameron@huawei.com, lars@metafoo.de,
+ Qing-wu.Li@leica-geosystems.com.cn, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>, Mike
+ Looijmans <mike.looijmans@topic.nl>
+Subject: Re: [PATCH v2] iio: accel: bmi088: add i2c support for bmi088 accel
+ driver
+Message-ID: <20240107165654.0b343ebd@jic23-huawei>
+In-Reply-To: <20231219150440.264033-1-jerrysteve1101@gmail.com>
+References: <20231219150440.264033-1-jerrysteve1101@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,62 +54,194 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Dec 2023 04:32:02 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, 19 Dec 2023 23:04:40 +0800
+Jun Yan <jerrysteve1101@gmail.com> wrote:
 
-> This adds a new spi-rx-bus-channels property to the generic spi
-> peripheral property bindings. This property is used to describe
-> devices that have parallel data output channels.
+> The BMI088, BMI085 and BMI090L accelerometer also support
+> I2C protocol, so let's add the missing I2C support.
 > 
-> This property is different from spi-rx-bus-width in that the latter
-> means that we are reading multiple bits of a single word at one time
-> while the former means that we are reading single bits of multiple words
-> at the same time.
+> The I2C interface of the {BMI085,BMI088,BMI090L} is compatible with
+> the I2C Specification UM10204 Rev. 03 (19 June 2007), available at
+> http://www.nxp.com. The {BMI085,BMI088,BMI090L} supports I2C standard
+> mode and fast mode, only 7-bit address mode is supported.[1][2][3]
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
+> [1]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi085-ds001.pdf
+> [2]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf
+> [3]: https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/4807/BST-BMI090L-DS000-00.pdf
+Prefer to have these in the tags block (so no blank line before the sign off) as
 > 
-> The rest of this series is ready to merge, so just looking for an ack from
-> Mark on this one.
+Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi085-ds001.pdf
+Datasheet: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf
+Datasheet: https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/4807/BST-BMI090L-DS000-00.pdf
+> Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202312191325.jfiyeL5F-lkp@intel.com/
+These two tags don't belong here.  They are only appropriate for a stand alone fix patch for
+code that has already gone upstream.
 
-Mark, could you take a look at this SPI binding change when you have time?
+It's good to reflect the useful responses of 0-day but do it in the changes block, not up here.
 
-I don't want to apply it without your view on whether this makes sense
-from a general SPI point of view as we all hate maintaining bindings
-if they turn out to not be sufficiently future looking etc and we need
-to deprecate them in favour of something else.
+Please take a look at the git log for a driver and include recent contributors.
+This is a fairly new driver, so likely Mike will still be active for example.
+(no problem if it turns out his address bounces and hence you've not included him
+ - I'll find out shortly ;)
+
+Otherwise, only real comment is on some whitespace + an extra include I'd like to see.
+
+Given the changes are so minor, I'll make them whilst applying.
+Applied to the togreg branch of iio.git but I will be rebasing that on rc1 in a few weeks
+time.  So in meantime only pushed out as testing.
 
 Thanks,
 
 Jonathan
 
 > 
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml        | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> ---
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 15938f81fdce..1c8e71c18234 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -67,6 +67,18 @@ properties:
->      enum: [0, 1, 2, 4, 8]
->      default: 1
+> Changes in  v2:
+> - fix compile error
+> - Link to v1: https://lore.kernel.org/linux-iio/20231218154045.219317-1-jerrysteve1101@gmail.com/
+> - build-tested on linux-next
+> 
+> ---
+> ---
+>  drivers/iio/accel/Kconfig            |  8 +++-
+>  drivers/iio/accel/Makefile           |  1 +
+>  drivers/iio/accel/bmi088-accel-i2c.c | 69 ++++++++++++++++++++++++++++
+>  3 files changed, 76 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/iio/accel/bmi088-accel-i2c.c
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index 91adcac875a4..dc92cf599acb 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -254,11 +254,11 @@ config BMC150_ACCEL_SPI
 >  
-> +  spi-rx-bus-channels:
-> +    description:
-> +      The number of parallel channels for read transfers. The difference between
-> +      this and spi-rx-bus-width is that a value N for spi-rx-bus-channels means
-> +      the SPI bus is receiving one bit each of N different words at the same
-> +      time whereas a value M for spi-rx-bus-width means that the bus is
-> +      receiving M bits of a single word at the same time. It is also possible to
-> +      use both properties at the same time, meaning the bus is receiving M bits
-> +      of N different words at the same time.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    default: 1
+>  config BMI088_ACCEL
+>  	tristate "Bosch BMI088 Accelerometer Driver"
+> -	depends on SPI
+>  	select IIO_BUFFER
+>  	select IIO_TRIGGERED_BUFFER
+>  	select REGMAP
+> -	select BMI088_ACCEL_SPI
+> +	select BMI088_ACCEL_SPI if SPI
+> +	select BMI088_ACCEL_I2C if I2C
+>  	help
+>  	  Say yes here to build support for the following Bosch accelerometers:
+>  	  BMI088, BMI085, BMI090L. Note that all of these are combo module that
+> @@ -267,6 +267,10 @@ config BMI088_ACCEL
+>  	  This driver only implements the accelerometer part, which has its own
+>  	  address and register map. BMG160 provides the gyroscope driver.
+>  
+> +config BMI088_ACCEL_I2C
+> +	tristate
+> +	select REGMAP_I2C
 > +
->    spi-rx-delay-us:
->      description:
->        Delay, in microseconds, after a read transfer.
-> 
+>  config BMI088_ACCEL_SPI
+>  	tristate
+>  	select REGMAP_SPI
+> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+> index 311ead9c3ef1..db90532ba24a 100644
+> --- a/drivers/iio/accel/Makefile
+> +++ b/drivers/iio/accel/Makefile
+> @@ -30,6 +30,7 @@ obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
+>  obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
+>  obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
+>  obj-$(CONFIG_BMI088_ACCEL) += bmi088-accel-core.o
+> +obj-$(CONFIG_BMI088_ACCEL_I2C) += bmi088-accel-i2c.o
+>  obj-$(CONFIG_BMI088_ACCEL_SPI) += bmi088-accel-spi.o
+>  obj-$(CONFIG_DA280)	+= da280.o
+>  obj-$(CONFIG_DA311)	+= da311.o
+> diff --git a/drivers/iio/accel/bmi088-accel-i2c.c b/drivers/iio/accel/bmi088-accel-i2c.c
+> new file mode 100644
+> index 000000000000..642dc2607943
+> --- /dev/null
+> +++ b/drivers/iio/accel/bmi088-accel-i2c.c
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
+> + *  - BMI088
+> + *  - BMI085
+> + *  - BMI090L
+> + *
+> + * Copyright 2023 Jun Yan <jerrysteve1101@gmail.com>
+> + */
+> +
+#include <linux/mod_devicetable.h> 
+
+for the various id tables (missing from the spi driver)
+
+In general we try to include what is used in a given file
+directly. There are exceptions to that though so don't take it too strongly
+as advice.
+
+
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/slab.h>
+> +#include <linux/i2c.h>
+> +
+> +#include "bmi088-accel.h"
+> +
+> +static int bmi088_accel_probe(struct i2c_client *i2c)
+> +{
+> +	struct regmap *regmap;
+> +	const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
+> +
+> +	regmap = devm_regmap_init_i2c(i2c, &bmi088_regmap_conf);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(&i2c->dev, "Failed to initialize i2c regmap\n");
+> +		return PTR_ERR(regmap);
+> +	}
+> +
+> +	return bmi088_accel_core_probe(&i2c->dev, regmap, i2c->irq,
+> +					id->driver_data);
+> +}
+> +
+> +static void bmi088_accel_remove(struct i2c_client *i2c)
+> +{
+> +	bmi088_accel_core_remove(&i2c->dev);
+> +}
+> +
+> +static const struct of_device_id bmi088_of_match[] = {
+> +	{ .compatible = "bosch,bmi085-accel" },
+> +	{ .compatible = "bosch,bmi088-accel" },
+> +	{ .compatible = "bosch,bmi090l-accel" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, bmi088_of_match);
+> +
+> +static const struct i2c_device_id bmi088_accel_id[] = {
+> +	{"bmi085-accel",  BOSCH_BMI085},
+> +	{"bmi088-accel",  BOSCH_BMI088},
+> +	{"bmi090l-accel", BOSCH_BMI090L},
+
+Prefer spaces after { and before }
+(though I can see the spi driver doesn't do this either!)
+
+
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, bmi088_accel_id);
+> +
+> +static struct i2c_driver bmi088_accel_driver = {
+> +	.driver = {
+> +		.name	= "bmi088_accel_i2c",
+> +		.pm	= pm_ptr(&bmi088_accel_pm_ops),
+> +		.of_match_table = bmi088_of_match,
+> +	},
+> +	.probe		= bmi088_accel_probe,
+> +	.remove		= bmi088_accel_remove,
+> +	.id_table	= bmi088_accel_id,
+> +};
+> +module_i2c_driver(bmi088_accel_driver);
+> +
+> +MODULE_AUTHOR("Jun Yan <jerrysteve1101@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("BMI088 accelerometer driver (I2C)");
+> +MODULE_IMPORT_NS(IIO_BMI088);
 
 

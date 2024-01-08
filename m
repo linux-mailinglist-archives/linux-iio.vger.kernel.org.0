@@ -1,71 +1,72 @@
-Return-Path: <linux-iio+bounces-1493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C5F8275B1
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 17:47:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8ED8275B6
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 17:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82EF41F23AEF
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 16:47:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B20AC283F24
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 16:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E169D5381B;
-	Mon,  8 Jan 2024 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9BD53E25;
+	Mon,  8 Jan 2024 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oXN78cDh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QyDu/ekc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFB654BD4
-	for <linux-iio@vger.kernel.org>; Mon,  8 Jan 2024 16:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED08D53E21
+	for <linux-iio@vger.kernel.org>; Mon,  8 Jan 2024 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-46788b25f95so258773137.0
-        for <linux-iio@vger.kernel.org>; Mon, 08 Jan 2024 08:46:40 -0800 (PST)
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4b7b28211beso355586e0c.3
+        for <linux-iio@vger.kernel.org>; Mon, 08 Jan 2024 08:48:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704732400; x=1705337200; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704732494; x=1705337294; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v86cSdeLVN4Eor53KHOEZU66rYPCIfEGIjL+hEGlyNA=;
-        b=oXN78cDhjWFi1yzkX9VsJPJGNH0wQmSE0IVXkSPYDplZbzwTrLXXXiCOd5Hu0a8wyL
-         iXM7lFI8AsD3Vn5Ya6uMsbZ77uxgSnjtEj/+NbsZ4s8aXAOVsxBtY/pBbDYXTNUs7lgz
-         497JCLauoUdSTiE9FVzTortuHd3bnXcCyV7ChSJOie9wZfaP0AgXUxEVZnxJaVqQchDx
-         UYhn/HJSU2mtqOMlxtlzCB1IEe2zgbriKbto1X+UYPxk5IN/6a2f3mqzR2pZAZpw50N0
-         56b+PP28NladRUOZhAShkgTGC2KAANs1ApwQZqMQjcqmqoICmrLYy/Csd8T/AEc4k2Xd
-         3AsQ==
+        bh=TxF270K+sexJ/eLc9N8yPVgplaxBJJ/k6+fU5vbUs84=;
+        b=QyDu/ekcK/axVJCqLjqw63WIZZ4gM0BEMtiGUbtXseoHDE8e/7fWzPZ+wf29vfZiEF
+         iFU9m3mGFwJtbMgcZs8LH4tXiPIedj02k8cpkKDSliIxKcH5fn7WeXL9ozdpPMbhHJeO
+         OuI9osekGpKdA5M8hwW8Kjo9bjMC3/iGqr/2qKlZJClC/0ONeAIF34bYCICPa2I6JCiq
+         cAlnPbGN5DeyS7DIpXvwLBI2LMmFt6pmePw8zg/hod4eCMGpNGAFO3gyNRTxVjvob98B
+         K/h8YZF6OQiBgqFmSmr/aC56P9/lM3vWV5+Q0JB76k1GLg2P8gpQJxScif/e0WzeCfdJ
+         Hn4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704732400; x=1705337200;
+        d=1e100.net; s=20230601; t=1704732494; x=1705337294;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v86cSdeLVN4Eor53KHOEZU66rYPCIfEGIjL+hEGlyNA=;
-        b=tCbRx3P+Ws3ZIOvQZHZlxw7pUkE/E8rK8w9dh1KEbRPmEO8KFfs0KusP3AzIbyi3dE
-         ZYAORPQs+1mlFzPNjFJqrJNBWsQuf7mE7r3LryyH64YXI0UWQtyQYD+olwzvvY9ac1/4
-         fgH6NrP9JfWmmDH6ZsvZQEvj/jzaL4jr7BojVtrLG4EGvw9YmPPzwVL6slkVAczl6xdp
-         pbeGFMoEzGLThRQZes2xIYynCQ+qTT8QM8U4SbLIsyTaeELKJK0dX3SzJmhLj7I+quJR
-         FZZcKqUhJ/gHwrA5cYX6gheOMs0JqJOkQIvu4yYlzGb5aXUjWbyp4pomM+RU+NgcXGHe
-         2hTA==
-X-Gm-Message-State: AOJu0YymrOAkEoqT5bZli/OqXX45ky/q8uNmQWgp/+A1A6xupXL/xND6
-	lzIOYpD1FrMVeYFyuYDxQHRaYnxpqrXUGQ==
-X-Google-Smtp-Source: AGHT+IFDHtN0shChS/FabzBprTpMRYYx1/bf2NeDqz0LAzczeUWPYsOkVksyLMdiy/L1EaVaq6GIxA==
-X-Received: by 2002:a67:e687:0:b0:467:a189:2f51 with SMTP id hv7-20020a67e687000000b00467a1892f51mr1623827vsb.66.1704732399907;
-        Mon, 08 Jan 2024 08:46:39 -0800 (PST)
+        bh=TxF270K+sexJ/eLc9N8yPVgplaxBJJ/k6+fU5vbUs84=;
+        b=UeBl64mmKRUrqzO/Gjwydt7/hufBcyLBcQiSa3GtPxREdjlKn2Gh67cWwPW0w8y378
+         eg9yDKCzFdrbWjTJpqVx6bVGjwvILF2ZFhtjCbRbxwKPixpUrGco9TuXtuAgLO/0rG1y
+         qS6gh8Jg+ceyeSXjg2fERewEkGd5zW61lZORM2VJitsXV7g/4ByyuWM73SIPQ6IFI1yq
+         RCa4ro3oRqHVwxz5G0ePQxYWgHkNQR/rHzaxAtEGz3NRDIPvvvzrFLDfzj+Je8CO4mjj
+         ZRySxYtGWYYXk+eldnsh2Z1dAMf4W+gGb8WqDgUQlLKx156ekmQl3Svfdkn7Qzxwr+8s
+         7nAA==
+X-Gm-Message-State: AOJu0Yxyh+kKtK/FrSMN/kWRQXZ/TsH1jbQvCskHz8EU+3gO95smqIWv
+	5bXsfw8kuC3NtB7Z3KASMpMbeVphpDRILw==
+X-Google-Smtp-Source: AGHT+IFnw3iDIzHmdSbsEwn7wuu3C3WEjdB3EjbZeioFoqdMp0jSYH5m3FcMGDqp4NpvTo1r11M+/A==
+X-Received: by 2002:ac5:cbc9:0:b0:4b7:209d:4b2e with SMTP id h9-20020ac5cbc9000000b004b7209d4b2emr1311471vkn.22.1704732493947;
+        Mon, 08 Jan 2024 08:48:13 -0800 (PST)
 Received: from ubuntu-server-vm-macos (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id hx6-20020a67e786000000b00467be2e0fa1sm26884vsb.25.2024.01.08.08.46.38
+        by smtp.gmail.com with ESMTPSA id k11-20020a056122210b00b004b723e0ea8fsm27109vkd.9.2024.01.08.08.48.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 08:46:39 -0800 (PST)
-Date: Mon, 8 Jan 2024 16:46:37 +0000
+        Mon, 08 Jan 2024 08:48:13 -0800 (PST)
+Date: Mon, 8 Jan 2024 16:48:11 +0000
 From: William Breathitt Gray <william.gray@linaro.org>
 To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 Cc: lee@kernel.org, alexandre.torgue@foss.st.com, linux-iio@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 04/10] counter: stm32-timer-cnt: introduce clock signal
-Message-ID: <ZZwm7ZyrL7vFn0Xd@ubuntu-server-vm-macos>
+Subject: Re: [PATCH v3 05/10] counter: stm32-timer-cnt: add counter prescaler
+ extension
+Message-ID: <ZZwnSwh2oFby+0p0@ubuntu-server-vm-macos>
 References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
- <20231220145726.640627-5-fabrice.gasnier@foss.st.com>
+ <20231220145726.640627-6-fabrice.gasnier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,76 +74,38 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FfZYnz6NI7seIHjE"
+	protocol="application/pgp-signature"; boundary="4h1HqCgsu7cQ8iVi"
 Content-Disposition: inline
-In-Reply-To: <20231220145726.640627-5-fabrice.gasnier@foss.st.com>
+In-Reply-To: <20231220145726.640627-6-fabrice.gasnier@foss.st.com>
 
 
---FfZYnz6NI7seIHjE
+--4h1HqCgsu7cQ8iVi
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 20, 2023 at 03:57:20PM +0100, Fabrice Gasnier wrote:
-> Introduce the internal clock signal, used to count when in simple rising
-> function. Also add the "frequency" extension to the clock signal.
->=20
-> With this patch, signal action reports a consistent state when "increase"
-> function is used, and the counting frequency:
->     $ echo increase > function
->     $ grep -H "" signal*_action
->     signal0_action:none
->     signal1_action:none
->     signal2_action:rising edge
->     $ echo 1 > enable
->     $ cat count
->     25425
->     $ cat count
->     44439
->     $ cat ../signal2/frequency
->     208877930
+On Wed, Dec 20, 2023 at 03:57:21PM +0100, Fabrice Gasnier wrote:
+> There's a prescaler in between the selected input signal used for
+> counting (CK_PSC), and the counter input (CK_CNT).
+> So add the "prescaler" extension to the counter.
 >=20
 > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> ---
+> Changes in v3:
+> - New patch split from "counter: stm32-timer-cnt: introduce clock signal"
 
 Reviewed-by: William Breathitt Gray <william.gray@linaro.org>
 
-The code is all right, but some minor suggestions below.
-
-> +static struct counter_comp stm32_count_clock_ext[] =3D {
-> +	COUNTER_COMP_SIGNAL_U64("frequency", stm32_count_clk_get_freq, NULL),
-
-It might be worth introducing a new COUNTER_COMP_FREQUENCY() macro now
-that we have a second driver with the 'frequency' extension
-(ti-ecap-capture also has 'frequency'). But it's up to you if you want
-to add a precursor patch to this series, or I'll introduce it separately
-myself in a independent patch.
-
-> @@ -287,7 +321,13 @@ static struct counter_signal stm32_signals[] =3D {
->  	{
->  		.id =3D STM32_CH2_SIG,
->  		.name =3D "Channel 2"
-> -	}
-> +	},
-> +	{
-> +		.id =3D STM32_CLOCK_SIG,
-> +		.name =3D "Clock Signal",
-
-The word "Signal" feels unnecessary to me when both the sysfs path and
-data structure will have 'signal' already. Do you think "Clock" by
-itself is clear enough?
-
-William Breathitt Gray
-
---FfZYnz6NI7seIHjE
+--4h1HqCgsu7cQ8iVi
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZZwm7QAKCRC1SFbKvhIj
-K9HkAP9p5tjj9d7bEok5P8rHe8XAO3QFNKaXaaEcdc+BJgMHqAEA2FngXSvqxRzd
-DSkZbpLR+ErJlXMCYj6LMcwcTUqC2Qk=
-=D0v2
+iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZZwnSwAKCRC1SFbKvhIj
+K9RaAP9IqRLPnpdLYchE7O5E/UqKIxSSeo6jMBIU80OM+m3J/AD9Gok/LU2WQLEP
++9wSu6cs8f5l8Q6eWhM+ZMzI5V42bQQ=
+=OgJB
 -----END PGP SIGNATURE-----
 
---FfZYnz6NI7seIHjE--
+--4h1HqCgsu7cQ8iVi--
 

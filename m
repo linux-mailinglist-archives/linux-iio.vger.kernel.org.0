@@ -1,107 +1,117 @@
-Return-Path: <linux-iio+bounces-1491-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1492-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A139582754E
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 17:35:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0B3827581
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 17:39:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45795B22D4F
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 16:35:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654B41C21D27
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 16:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838B652F8E;
-	Mon,  8 Jan 2024 16:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23F15381E;
+	Mon,  8 Jan 2024 16:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dSDcafJg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RAsDkXb2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E956E13FFC
-	for <linux-iio@vger.kernel.org>; Mon,  8 Jan 2024 16:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-7cc0d31fd85so461075241.1
-        for <linux-iio@vger.kernel.org>; Mon, 08 Jan 2024 08:34:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704731697; x=1705336497; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aaeb09tWE1K+nwOrTBr/Ka6fbm31sgc04gxFPmYXCe4=;
-        b=dSDcafJgdh6UvHr8xZ/7oaLibyPvUBDAsV4FJRLYtaWkabgBNhU2CL1mDzdbz5fcRM
-         qTXC36McWHrFo3yKwl0Cd5ElStW4bY3pozacHH30Em0PwHjMghonkWn73D+JIGiSYFYh
-         oooL3++lTkfY07HRFv+Sbe4TOyFsumDg7xQLGDD4aqQyEREjJabkAFxEKRv4CU42PbuU
-         F9EeSR+l1D4aSq8PtRjC2/ebUHlb35evngb5+GEqflWIYYOEhK2ZX3KgnojPZngNXK8M
-         YWvgiROyVEzuIbHrY+34eYq+vvgH8hHjXiaQ18AYaWGd7qRLtSWLbEmRo3HW61q9WAgg
-         OHLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704731697; x=1705336497;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Aaeb09tWE1K+nwOrTBr/Ka6fbm31sgc04gxFPmYXCe4=;
-        b=RAg2q2Ea4m8gQ4FxqsjmeCCBfi8I4yEEGPbYS+sRZEIJE8v+x19fCqf1I65kZEO11z
-         yO0n2pBF8csfoNhjv4acgV3202rL5HbgNa8B/vDp7eNQ/gbvntqL9IxaU2WRvHrr6nMt
-         qzYrFfyWq7eBo7TEsmZqb52ZO0/oGCA3EUjgYgk0nDeU1M/vt9V2Irskxhj8drXSvwWw
-         e4dkDDbNzsHnhBPWwo0nrxiRXSGXXJWOmNMaSfLbO+nVyvCJWjQU2ynGfQhcno0B1mTa
-         LNGGxexHrlA32EFZ3+nqkjHOn9TbJQaG0i2kF2Sq0vm6LXZu0AbcuzZ5JocolPkUmYpG
-         qmZg==
-X-Gm-Message-State: AOJu0Yx+H58uYaOrdBvuMYfyNonS7zjc12Em6AJ/k08GOAkeG4rSl0S9
-	7v8cUaAI3XOxr7E9E9z8QFEDBiFkoAyemA==
-X-Google-Smtp-Source: AGHT+IGQ0arLRW2+JcH6xmHwAlc+Cv6QrAiA3W02JuecyXKxM31mvSYE9QkoJVTjcNvoa88gdfyFQg==
-X-Received: by 2002:a05:6102:4b87:b0:467:1786:6144 with SMTP id ic7-20020a0561024b8700b0046717866144mr2027372vsb.30.1704731696796;
-        Mon, 08 Jan 2024 08:34:56 -0800 (PST)
-Received: from ubuntu-server-vm-macos (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id i18-20020ab03752000000b007cd2ad6e1e0sm14811uat.38.2024.01.08.08.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 08:34:56 -0800 (PST)
-Date: Mon, 8 Jan 2024 16:34:54 +0000
-From: William Breathitt Gray <william.gray@linaro.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: lee@kernel.org, alexandre.torgue@foss.st.com, linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 03/10] counter: stm32-timer-cnt: adopt signal
- definitions
-Message-ID: <ZZwkLhQZsL9RPuWt@ubuntu-server-vm-macos>
-References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
- <20231220145726.640627-4-fabrice.gasnier@foss.st.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9101C53E0E;
+	Mon,  8 Jan 2024 16:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762C6C433CA;
+	Mon,  8 Jan 2024 16:39:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704731989;
+	bh=WRRwon4PVmDG/l6aLGYcezJd/68kTN2xCzT69w586Lc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RAsDkXb2VGhIOqDStXfvW48EGmwqels0l+LE79zWEUsRmPLnugWtYRed+cl59CVqk
+	 aj53+YnCwLooHXiwEJZgEqFGmPurf6fsFtnfx+w9FCeL3lRbC6oRFKYgPix92WHao+
+	 bL6X9AEpqa9zvuS9TqspjICHPRMXdNQfPMhzaTNDKf/2l4bzORldPZ9eWquD0KqNny
+	 gF+jV4Ofph7eAEIPIQhQABwR7QRrwIXEQUkVsuDS/fr+vpzLI7+QeKpZb4iz/ucRDz
+	 +xPGKkrtqdZ7duR1wT7kaFz4QAaOmSVoTEXUeRRVe764ooyJSVXRy6JEw0KyPWl6p5
+	 OBrN+TWNR9r1Q==
+Date: Mon, 8 Jan 2024 16:39:43 +0000
+From: Mark Brown <broonie@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: spi: add spi-rx-bus-channels
+ peripheral property
+Message-ID: <0a774bc6-3bf9-4b5f-92e0-8bd673e71a33@sirena.org.uk>
+References: <20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com>
+ <20231215-ad7380-mainline-v3-1-7a11ebf642b9@baylibre.com>
+ <20240107164356.3e8df266@jic23-huawei>
+ <f431e418-0b7c-4362-be26-9d2f03e0de07@sirena.org.uk>
+ <CAMknhBE7eUMzcD0bdymrhL2Lw3FubB3aHDWmJFD7YnaGNYmQ9w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2A3cd3ictZgfwlWr"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="u+JU4o7NHBmCIXTJ"
 Content-Disposition: inline
-In-Reply-To: <20231220145726.640627-4-fabrice.gasnier@foss.st.com>
+In-Reply-To: <CAMknhBE7eUMzcD0bdymrhL2Lw3FubB3aHDWmJFD7YnaGNYmQ9w@mail.gmail.com>
+X-Cookie: Best if used before date on carton.
 
 
---2A3cd3ictZgfwlWr
-Content-Type: text/plain; charset=us-ascii
+--u+JU4o7NHBmCIXTJ
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 20, 2023 at 03:57:19PM +0100, Fabrice Gasnier wrote:
-> Adopt signals definitions to ease later signals additions.
-> There are no intended functional changes here.
->=20
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+On Sun, Jan 07, 2024 at 05:02:56PM -0600, David Lechner wrote:
+> On Sun, Jan 7, 2024 at 3:27=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
+ote:
 
-Reviewed-by: William Breathitt Gray <william.gray@linaro.org>
+> > This makes no sense to me without a corresponding change in the SPI core
+> > and possibly controller support, though I guess you could do data
+> > manging to rewrite from a normal parallel SPI to this for a pure
+> > software implementation.  I also see nothing in the driver that even
+> > attempts to parse this so I can't see how it could possibly work.
 
---2A3cd3ictZgfwlWr
+> We currently don't have a controller that supports this. This is just
+> an attempt to make a complete binding for a peripheral according to
+> [2] which says:
+
+=2E..
+
+> So, will DT maintainers accept an incomplete binding for the
+> peripheral? Or will you reconsider this without SPI core support if I
+> can explain it better? It doesn't seem like a reasonable request to
+> expect us to spend time developing software that we don't need at this
+> time just to get a complete DT binding accepted for a feature that
+> isn't being used.
+
+I don't think it's sensible to try to make a binding for this without
+having actually tried to put a system together that uses it and made
+sure that everything is joined up properly, the thing about complete
+bindings is more for things that are handle turning than for things that
+are substantial new features in subsystems.
+
+--u+JU4o7NHBmCIXTJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZZwkLgAKCRC1SFbKvhIj
-K/5VAP9dNxQRO/rMnLCWzROjUOk/Yef+aY3rTJDWSCLMEphZ+gD/b4LhAHIbnPCY
-PxZZZd7COd6FDzoCqPsZKQ4NM47JYw8=
-=hX0c
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWcJU4ACgkQJNaLcl1U
+h9Akcwf+LnM/YReIz8ea8jNfDh/aUjd3WeAf793LWvZngTl6tK5wbq6MoHG+hGrj
+uwKfEGuTBsS/n5bLvUK6iFrGu3/WYS+UbhCG4degznRAbjZid3OjNq0v8zMNtFg7
+3ma1b6WIisCoxPs4LaL8WpMP6hznUxJJZFgCoo1+MxuieAk9G1PkLVFg0bP9HHgn
+K5Gig5w9SGcZcTEklHMuz3BxQ0gWXZ45j4aFJ0UgRWONWp5OPP3gfo5DSsLzQUX+
+pQdqI1dhcZgVbFx59jgKiWOSz/HI5MqdS8922kDyZefGRp5q1K6XvtFyIQqy7mPi
+brGA99MHSpYjAYbRD6U7d2mrfMTaXg==
+=/gEc
 -----END PGP SIGNATURE-----
 
---2A3cd3ictZgfwlWr--
+--u+JU4o7NHBmCIXTJ--
 

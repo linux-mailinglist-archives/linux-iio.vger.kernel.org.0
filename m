@@ -1,117 +1,115 @@
-Return-Path: <linux-iio+bounces-1511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1510-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2862C82893C
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 16:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B488287B9
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 15:05:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91F4287FAF
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 15:47:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403BA286960
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 14:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BB739FF5;
-	Tue,  9 Jan 2024 15:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038FC3986F;
+	Tue,  9 Jan 2024 14:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mLmdk8uF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE8B3A1AA
-	for <linux-iio@vger.kernel.org>; Tue,  9 Jan 2024 15:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 409CVHX6024827;
-	Tue, 9 Jan 2024 09:00:19 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3vfmjshs9q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jan 2024 09:00:19 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 409E0HY2013519
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 9 Jan 2024 09:00:17 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 9 Jan 2024
- 09:00:16 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 9 Jan 2024 09:00:16 -0500
-Received: from [127.0.0.1] ([10.44.3.56])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 409E09lG018844;
-	Tue, 9 Jan 2024 09:00:12 -0500
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Tue, 9 Jan 2024 15:03:16 +0100
-Subject: [PATCH] iio: buffer-dmaengine: make use of the 'struct device *'
- argument
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C193987D;
+	Tue,  9 Jan 2024 14:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-557dcb0f870so1795632a12.2;
+        Tue, 09 Jan 2024 06:04:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704809087; x=1705413887; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FdF2es8VoiWkBREAs6JkFDoqFW7mv98jnDs4otx1ldo=;
+        b=mLmdk8uFRGWvD0OoaYlt5vmUBwZyi6Y8B9YwgPAXCYl5j3QvnyOGJx4+L4O5vAPCzA
+         rZP+6qxue61fKuxmAlpd7QdOxaZyV8MmyDujIXRyLXuX7iQ45t18RmSanjSesFtWdske
+         rswqrM/otF19WIm/0vk9s6RTUDcnb9GmZ/qrNPKNbG3UKuEGqCBWAWV2gy9fcMkm2zUa
+         fAFe5R+2AE7Rsk4DjKztlB/0XR1HQrBe1c3YYKEAH5izh1y7U5Lg9eR5DcMe9b1lNcZC
+         6gvyCRORU5ly/kW5CNapQyQrNLQDiYO3FFf980PK1maXH4ytUqEVBtx3p6toc/rKJtvY
+         epbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704809087; x=1705413887;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FdF2es8VoiWkBREAs6JkFDoqFW7mv98jnDs4otx1ldo=;
+        b=NmuV5ZuAEyeEsKE8HfxZcMsl7an85CIDAAR0owxKaC2V6fRVwfX5k3zyZjBitq15Ch
+         +1hIIjbBFXnsM++ch3exph35PticVzpZN9TWhiujTc5VYcmDg5Apj+dqSX/8eJmPGeyO
+         nzHuPloxC/aLY7K8mrpAp1tzOHcozdQ//Wyz5fNJv9OUPguSCIYv77lxgwucfOf8fgKY
+         BabxhKwUBnSUvutC0TzOfit7YLRxYkz4Xdb8dHefOJ1oaoFy/tdTI1VJ1ra63+Y0Q/Xd
+         IIkonfB7ZRJbwPqmRajyojx0rBjZnDaVNu28Ifb3gofRegWi8wxbYgbKXkKmxpBYO4sG
+         0QOQ==
+X-Gm-Message-State: AOJu0YyV0fb2hjUtDkDobfPCcBPwLORBR8xf89dMrym9p4RhhX+JPhKa
+	uiZutvGNAq75mGcUE/YJ3Mw=
+X-Google-Smtp-Source: AGHT+IHd/g6WN1znIUWVeU4eMncW0xXeTck1c84wqrrPeMBepd3FexOtg5oPHn/iR+FeQNKSGp+/ug==
+X-Received: by 2002:a50:d516:0:b0:556:68ad:b511 with SMTP id u22-20020a50d516000000b0055668adb511mr3275958edi.16.1704809087293;
+        Tue, 09 Jan 2024 06:04:47 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id b2-20020a056402138200b00554d6b46a3dsm989200edv.46.2024.01.09.06.04.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jan 2024 06:04:47 -0800 (PST)
+Message-ID: <d927b0b761eb7105d2193d9dca48f2c6df8868b7.camel@gmail.com>
+Subject: Re: [PATCH] iio: core: use INDIO_ALL_BUFFER_MODES in
+ iio_buffer_enabled()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 09 Jan 2024 15:07:57 +0100
+In-Reply-To: <20240108200647.3916681-1-dlechner@baylibre.com>
+References: <20240108200647.3916681-1-dlechner@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20240109-dmaengine_use_device-v1-1-1cbdb7fe9f29@analog.com>
-X-B4-Tracking: v=1; b=H4sIACNSnWUC/x3MSwqAIBRG4a3EHSdo79pKhIT+1h1koRRBtPek4
- Rl856GIwIg0ZA8FXBx59ylUnpFZZ79AsE1NhSwqqWQv7DbDL+yhzwhtEzEQXV061Tcwbeco0SP
- A8f1vx+l9PzD7XvhmAAAA
-To: <linux-iio@vger.kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1704809001; l=1185;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=PibrZKOCAB7SkXP4dStaSKhGzGRQovyrwT7RdDOYVoE=;
- b=18qr5xUg1ptP3lhVnEORUDtD/DYPZ7YU9bSlmJ9R44ZWQ2PCaooaiU/YQbVzqE7b10v8Ac3Z7
- XJZHLlZi0RnDA5hzoGngPT50etH9xPpZuZNHqbEj/yuP5fh7DZ2DvFV
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: LZzGag1FigIc9CvlApbIwzgUxSk0nTGA
-X-Proofpoint-GUID: LZzGag1FigIc9CvlApbIwzgUxSk0nTGA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-02_01,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 mlxlogscore=846 adultscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2401090115
 
-Respect the @dev argument in devm_iio_dmaengine_buffer_setup() and bind the
-IIO DMA buffer lifetime to that device.
+On Mon, 2024-01-08 at 14:06 -0600, David Lechner wrote:
+> This replaces use of individual buffer mode flags with
+> INDIO_ALL_BUFFER_MODES in the iio_buffer_enabled() function.
+>=20
+> This simplifies the code and makes it robust in case of the addition of
+> new buffer modes.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
 
-For the only user of this function, the IIO parent device is the
-struct device being passed to the API so no real fix in here (just
-consistency with other IIO APIs).
+LGTM,
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index 5f85ba38e6f6..45fe7d0d42ee 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -279,8 +279,7 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
- {
- 	struct iio_buffer *buffer;
- 
--	buffer = devm_iio_dmaengine_buffer_alloc(indio_dev->dev.parent,
--						 channel);
-+	buffer = devm_iio_dmaengine_buffer_alloc(dev, channel);
- 	if (IS_ERR(buffer))
- 		return PTR_ERR(buffer);
- 
-
----
-base-commit: 3f4525f924e21d4f532517b17a20ffa5df7c0db7
-change-id: 20240109-dmaengine_use_device-853f196ec78f
---
-
-Thanks!
-- Nuno Sá
+> =C2=A0drivers/iio/industrialio-core.c | 4 +---
+> =C2=A01 file changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+ore.c
+> index c77745b594bd..8855d377d710 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -210,9 +210,7 @@ bool iio_buffer_enabled(struct iio_dev *indio_dev)
+> =C2=A0{
+> =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_=
+dev);
+> =C2=A0
+> -	return iio_dev_opaque->currentmode &
+> -	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (INDIO_BUFFER_HARDWARE | INDIO_BUF=
+FER_SOFTWARE |
+> -		INDIO_BUFFER_TRIGGERED);
+> +	return iio_dev_opaque->currentmode & INDIO_ALL_BUFFER_MODES;
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_GPL(iio_buffer_enabled);
+> =C2=A0
 
 

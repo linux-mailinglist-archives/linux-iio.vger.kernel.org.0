@@ -1,115 +1,120 @@
-Return-Path: <linux-iio+bounces-1510-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B488287B9
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 15:05:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F39828B94
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 18:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403BA286960
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 14:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490681C210CC
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 17:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038FC3986F;
-	Tue,  9 Jan 2024 14:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACF43B79C;
+	Tue,  9 Jan 2024 17:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mLmdk8uF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FyN5zZvd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C193987D;
-	Tue,  9 Jan 2024 14:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-557dcb0f870so1795632a12.2;
-        Tue, 09 Jan 2024 06:04:49 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7A638DF8
+	for <linux-iio@vger.kernel.org>; Tue,  9 Jan 2024 17:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ccae380df2so35467701fa.1
+        for <linux-iio@vger.kernel.org>; Tue, 09 Jan 2024 09:56:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704809087; x=1705413887; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FdF2es8VoiWkBREAs6JkFDoqFW7mv98jnDs4otx1ldo=;
-        b=mLmdk8uFRGWvD0OoaYlt5vmUBwZyi6Y8B9YwgPAXCYl5j3QvnyOGJx4+L4O5vAPCzA
-         rZP+6qxue61fKuxmAlpd7QdOxaZyV8MmyDujIXRyLXuX7iQ45t18RmSanjSesFtWdske
-         rswqrM/otF19WIm/0vk9s6RTUDcnb9GmZ/qrNPKNbG3UKuEGqCBWAWV2gy9fcMkm2zUa
-         fAFe5R+2AE7Rsk4DjKztlB/0XR1HQrBe1c3YYKEAH5izh1y7U5Lg9eR5DcMe9b1lNcZC
-         6gvyCRORU5ly/kW5CNapQyQrNLQDiYO3FFf980PK1maXH4ytUqEVBtx3p6toc/rKJtvY
-         epbg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704823018; x=1705427818; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ir7X5a3V1krP85f23EP+v6GSCmGNRbcVfuSwLprNqFc=;
+        b=FyN5zZvdKpSf7UjdCJeCu9pkEZIgpZqa5cVJnwiVbyR0KmIIMpR2psn+m9rdw3gvsA
+         4jlZkdeEowXysPrcXobo4rhxD7X1hgvffG6cGoYX7WF3wJVVNl30B1OsnundZmfoGsDC
+         AF9z7djC8TiZaSuOX+MfRkoj4DxSrnMttOUIKJ8XSUFAa6zfzZDLuxieBjyLHAnDlQGX
+         aa06QMFHHD2WeV2c+ym5wuQZK9W/IMmgMdKk6C5+8hcJsFJ9bDFd4LAYMS0/og5HsUIq
+         R6Ri7kL5ThyrCzoCnVcA32f/+DDttyaZ/4+6SiAvcscyMo24W6emR6x4Q7zxOn/rNr5i
+         pyLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704809087; x=1705413887;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FdF2es8VoiWkBREAs6JkFDoqFW7mv98jnDs4otx1ldo=;
-        b=NmuV5ZuAEyeEsKE8HfxZcMsl7an85CIDAAR0owxKaC2V6fRVwfX5k3zyZjBitq15Ch
-         +1hIIjbBFXnsM++ch3exph35PticVzpZN9TWhiujTc5VYcmDg5Apj+dqSX/8eJmPGeyO
-         nzHuPloxC/aLY7K8mrpAp1tzOHcozdQ//Wyz5fNJv9OUPguSCIYv77lxgwucfOf8fgKY
-         BabxhKwUBnSUvutC0TzOfit7YLRxYkz4Xdb8dHefOJ1oaoFy/tdTI1VJ1ra63+Y0Q/Xd
-         IIkonfB7ZRJbwPqmRajyojx0rBjZnDaVNu28Ifb3gofRegWi8wxbYgbKXkKmxpBYO4sG
-         0QOQ==
-X-Gm-Message-State: AOJu0YyV0fb2hjUtDkDobfPCcBPwLORBR8xf89dMrym9p4RhhX+JPhKa
-	uiZutvGNAq75mGcUE/YJ3Mw=
-X-Google-Smtp-Source: AGHT+IHd/g6WN1znIUWVeU4eMncW0xXeTck1c84wqrrPeMBepd3FexOtg5oPHn/iR+FeQNKSGp+/ug==
-X-Received: by 2002:a50:d516:0:b0:556:68ad:b511 with SMTP id u22-20020a50d516000000b0055668adb511mr3275958edi.16.1704809087293;
-        Tue, 09 Jan 2024 06:04:47 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id b2-20020a056402138200b00554d6b46a3dsm989200edv.46.2024.01.09.06.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jan 2024 06:04:47 -0800 (PST)
-Message-ID: <d927b0b761eb7105d2193d9dca48f2c6df8868b7.camel@gmail.com>
-Subject: Re: [PATCH] iio: core: use INDIO_ALL_BUFFER_MODES in
- iio_buffer_enabled()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 09 Jan 2024 15:07:57 +0100
-In-Reply-To: <20240108200647.3916681-1-dlechner@baylibre.com>
-References: <20240108200647.3916681-1-dlechner@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+        d=1e100.net; s=20230601; t=1704823018; x=1705427818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ir7X5a3V1krP85f23EP+v6GSCmGNRbcVfuSwLprNqFc=;
+        b=qRfIpbk7OsGdYYng/Tqo1Br7aNcAJ8x9zmgjsP+dNcZrwfW+udP+wi2YheuxZOfUTR
+         pP+bEQ8iKXVk47N0nmzU+yq0XsUyvb0hVTsx+U8uBrGaSt9TyJwl5SiCa5T1NheQdxOu
+         VCvpCMMedS+UL7bVp/9MGFrL+6eM+BZs51owyc2V4f56ZThA6qwErsW2rd6NMqFaV1ca
+         LO8w5iAI9Xa9vkkDD2QoypQN4d/dgb04mzoHaFEwRtfzpPR2lSWe/GAldvc/Pibyg5hZ
+         fCf4m/r8Xj9+BJ4ag4f4C8fy9WatMtUAdjFb5xrB9PeSe7pFmNgxHDTwLokVM8fDvsbK
+         ShBg==
+X-Gm-Message-State: AOJu0Yz0uyYnaOhO55nzViEompkJD9iVxcIGjtJq1roDzLCV+TBDy7Tp
+	aJLwjXEDVF6WrLD9WlinzFyC18v0dMJnEFo9f+O+rAhzDf3uZZuC/HwELoxe
+X-Google-Smtp-Source: AGHT+IH7ZZOoIpO/4InB8njqMgI4oRwNszPhjfX/Amw/XzbuLsQRFWEL0mT/kboiYAYqlHaJltlT9lnTIfzuRBGiRYw=
+X-Received: by 2002:a2e:8ed7:0:b0:2cc:e9e1:e6a6 with SMTP id
+ e23-20020a2e8ed7000000b002cce9e1e6a6mr2700972ljl.92.1704823018085; Tue, 09
+ Jan 2024 09:56:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240109-dmaengine_use_device-v1-1-1cbdb7fe9f29@analog.com>
+In-Reply-To: <20240109-dmaengine_use_device-v1-1-1cbdb7fe9f29@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 9 Jan 2024 11:56:47 -0600
+Message-ID: <CAMknhBFUeAvtXorP+H_1Yqj4nJyqrPoqnAae5FOBvLCZ9SNVBQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: buffer-dmaengine: make use of the 'struct device *' argument
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2024-01-08 at 14:06 -0600, David Lechner wrote:
-> This replaces use of individual buffer mode flags with
-> INDIO_ALL_BUFFER_MODES in the iio_buffer_enabled() function.
->=20
-> This simplifies the code and makes it robust in case of the addition of
-> new buffer modes.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+On Tue, Jan 9, 2024 at 9:47=E2=80=AFAM Nuno Sa <nuno.sa@analog.com> wrote:
+>
+> Respect the @dev argument in devm_iio_dmaengine_buffer_setup() and bind t=
+he
+> IIO DMA buffer lifetime to that device.
+>
+> For the only user of this function, the IIO parent device is the
+> struct device being passed to the API so no real fix in here (just
+> consistency with other IIO APIs).
+>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers=
+/iio/buffer/industrialio-buffer-dmaengine.c
+> index 5f85ba38e6f6..45fe7d0d42ee 100644
+> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+> @@ -279,8 +279,7 @@ int devm_iio_dmaengine_buffer_setup(struct device *de=
+v,
+>  {
+>         struct iio_buffer *buffer;
+>
+> -       buffer =3D devm_iio_dmaengine_buffer_alloc(indio_dev->dev.parent,
+> -                                                channel);
+> +       buffer =3D devm_iio_dmaengine_buffer_alloc(dev, channel);
+>         if (IS_ERR(buffer))
+>                 return PTR_ERR(buffer);
+>
+>
+> ---
+> base-commit: 3f4525f924e21d4f532517b17a20ffa5df7c0db7
+> change-id: 20240109-dmaengine_use_device-853f196ec78f
+> --
+>
+> Thanks!
+> - Nuno S=C3=A1
+>
+>
 
-LGTM,
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+I noticed this too but didn't get around to fixing it yet. ;-)
 
-> =C2=A0drivers/iio/industrialio-core.c | 4 +---
-> =C2=A01 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
-ore.c
-> index c77745b594bd..8855d377d710 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -210,9 +210,7 @@ bool iio_buffer_enabled(struct iio_dev *indio_dev)
-> =C2=A0{
-> =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_=
-dev);
-> =C2=A0
-> -	return iio_dev_opaque->currentmode &
-> -	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (INDIO_BUFFER_HARDWARE | INDIO_BUF=
-FER_SOFTWARE |
-> -		INDIO_BUFFER_TRIGGERED);
-> +	return iio_dev_opaque->currentmode & INDIO_ALL_BUFFER_MODES;
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(iio_buffer_enabled);
-> =C2=A0
-
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 

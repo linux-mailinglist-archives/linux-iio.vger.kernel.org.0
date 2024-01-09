@@ -1,201 +1,97 @@
-Return-Path: <linux-iio+bounces-1506-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1507-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37337827A7F
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 23:09:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E515B827D21
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 03:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F601F23BFF
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jan 2024 22:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F9285A36
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jan 2024 02:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BD85645B;
-	Mon,  8 Jan 2024 22:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC3328FE;
+	Tue,  9 Jan 2024 02:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FiNY4zh4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+ak6Tt9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0085C56458
-	for <linux-iio@vger.kernel.org>; Mon,  8 Jan 2024 22:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4b739b29686so1387899e0c.0
-        for <linux-iio@vger.kernel.org>; Mon, 08 Jan 2024 14:09:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704751779; x=1705356579; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zPwL0VIADWvObusNS4Aap9j3lSZsmdqtr+hhZskgl0M=;
-        b=FiNY4zh45Wb22FNH7vlPypDwgurJvV3rZv+3rppt5QVdyBGK/f0W6W6VQHlykCwAxj
-         TrlL0wWDdg3kI8flLQovZnVb95wzc8dZsGlKcj1pYnKyHXW9lyYC1qVxU4G5S6yCdjfz
-         HKxPE+TJEysExZcVLG3nvdTgMxWAIbzuK0UW4dmkxpZVwid3HLXwWEbE90dZAVS5znmI
-         sVwY35TIz6l0a/0EL6CLNdyrEzTqkBgVEe0l7zSAGpIt3f3g9xVctLtdbbtJah9Af4I7
-         8+4WrNJV3/YDrkNjqi4VgSQQ2kx3XW0BXvUSuP0QhiUMq1I2GQaedB9+4AKshpNiVvQf
-         bdpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704751779; x=1705356579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zPwL0VIADWvObusNS4Aap9j3lSZsmdqtr+hhZskgl0M=;
-        b=O9hp6Mi3iLyibZ7MFh86TQPhCsT6a82RHc4ZCG+kKvrbB1lTqGP6T0NGKwsQ4FXfkh
-         24R51r/SK69LYpJC/uNdi9RUU+LxH8ZwsIIvET3uPGWfXq6SgerUqbrsXSCn14vyctog
-         E4brI4op57JR+0VHz11pIoj1jD6r/50amZ4TkkHAfmIszjf8JBdmHJ0/U1rUXhiuXmp+
-         SMGlv3Wj2qCWvp8A6imxyKYUj1UQRoZBAdmTgfT4Uq1aGCxAScWA9hDlnb6xsNtmqx5+
-         bCy186rVx0nnipBH7vJOHdr8AVQS4EVUA216qt+G/1UMnZPlKbhHfe3EKoSl87ZY85X5
-         QRvw==
-X-Gm-Message-State: AOJu0YzIdSmqYwU3ZCjhC+k6HXCNLhiX3JDKHE7VttHOx73R+7x0plU9
-	vDz5UTsF01rF5KWPddFIPbTQDllozMa3Uw==
-X-Google-Smtp-Source: AGHT+IE6hTwFu+QRXDhnPkTMqdy0XSYmsMHuM7fSO/yZXKcRDQzPFDoRFNo79VfhiJlWDzMOLsuoMw==
-X-Received: by 2002:a05:6122:10e4:b0:4b6:c780:ac90 with SMTP id m4-20020a05612210e400b004b6c780ac90mr334731vko.0.1704751778736;
-        Mon, 08 Jan 2024 14:09:38 -0800 (PST)
-Received: from ubuntu-server-vm-macos (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id em8-20020a056122380800b004b6d2b7109esm81131vkb.46.2024.01.08.14.07.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 14:08:07 -0800 (PST)
-Date: Mon, 8 Jan 2024 22:07:09 +0000
-From: William Breathitt Gray <william.gray@linaro.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: lee@kernel.org, alexandre.torgue@foss.st.com, linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 10/10] counter: stm32-timer-cnt: add support for
- capture events
-Message-ID: <ZZxyDbYC9oHNKcGF@ubuntu-server-vm-macos>
-References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
- <20231220145726.640627-11-fabrice.gasnier@foss.st.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC816D6CA;
+	Tue,  9 Jan 2024 02:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32DAC433C7;
+	Tue,  9 Jan 2024 02:58:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704769138;
+	bh=8amxIQKYmOday6JZe0yAPbJIK5lyapq17OeQeMOSzvs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L+ak6Tt9iThu3wRNZuHVzFZTxiqpL2KxLNg0JN0Na9mETYZGIH7s6307mINx1am7b
+	 h0TC+k/oZPUylITVu7jeROPhIJwgF55BVzlCPPddBADvVIIZVQQviGjUg+BNPJCPXX
+	 IpzqoXrCCNSYSBwqO5BlvosHhisHIpa58mRAJODGz1e49gZFB6DxxX2uFMMSevYiYh
+	 o3DDgv3nRNEfvV7arvYTxSNbSm4XSlnR6C+ykeakjvjiSmp4B883IzlZ/xHQe+bJ0X
+	 pcOZIKHWjf15gPORZXirXemRJix4M1QYcnwSV8ItiYYw1jzem2MKaxzLoOHcQwJ0aQ
+	 jFSZsSeZjcHiw==
+Received: (nullmailer pid 2446730 invoked by uid 1000);
+	Tue, 09 Jan 2024 02:58:56 -0000
+Date: Mon, 8 Jan 2024 19:58:56 -0700
+From: Rob Herring <robh@kernel.org>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linux-iio@vger.kernel.org, brgl@bgdev.pl, Ceclan Dumitru <dumitru.ceclan@analog.com>, linus.walleij@linaro.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>, ChiaEn Wu <chiaen_wu@richtek.com>, linux-gpio@vger.kernel.org, Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Rob Herring <robh+dt@kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, andy@kernel.org, Mike Looijmans <mike.looijmans@topic.nl>, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, devicetree@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>, Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
+Message-ID: <170476913621.2446678.11123586043221028423.robh@kernel.org>
+References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WiW47Lt2gdjHTFQC"
-Content-Disposition: inline
-In-Reply-To: <20231220145726.640627-11-fabrice.gasnier@foss.st.com>
-
-
---WiW47Lt2gdjHTFQC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20231220104810.3179-1-mitrutzceclan@gmail.com>
 
-On Wed, Dec 20, 2023 at 03:57:26PM +0100, Fabrice Gasnier wrote:
-> +	/*
-> +	 * configure channel in input capture mode, map channel 1 on TI1, chann=
-el2 on TI2...
-> +	 * Select both edges / non-inverted to trigger a capture.
-> +	 */
 
-I suggest defining a new local variable 'cc' to point to stm32_cc[ch]. I
-think that's make the code look nicer here to avoid all the array index
-syntax every time you access stm32_cc[ch].
+On Wed, 20 Dec 2023 12:48:04 +0200, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
+> 
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
+> V10->V11
+>  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller'
+>  - Add description to #gpio-cells property
+> V9->V10
+>  - Fix dt_binding_check type warning from adi,reference-select
+> V8->v9
+>  - Add gpio-controller and "#gpio-cells" properties
+>  - Add missing avdd2 and iovdd supplies
+>  - Add string type to reference-select
+> V7->V8
+>  - include missing fix from V6
+> V6->V7 <no changes>
+> V5->V6
+>  - Moved global required property to proper placement
+> V4 -> V5
+>  - Use string enum instead of integers for "adi,reference-select"
+>  - Fix conditional checking in regards to compatible
+> V3 -> V4
+>  - include supply attributes
+>  - add channel attribute for selecting conversion reference
+> V2 -> V3
+>  - remove redundant descriptions
+>  - use referenced 'bipolar' property
+>  - remove newlines from example
+> V1 -> V2 <no changes>
+> 
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 188 ++++++++++++++++++
+>  1 file changed, 188 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> 
 
-> +	if (enable) {
-> +		/* first clear possibly latched capture flag upon enabling */
-> +		regmap_read(priv->regmap, TIM_CCER, &ccer);
-> +		if (!(ccer & stm32_cc[ch].ccer_bits)) {
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-Try regmap_test_bits() here instead of using regmap_read().
-
-> +			sr =3D ~TIM_SR_CC_IF(ch);
-> +			regmap_write(priv->regmap, TIM_SR, sr);
-
-Eliminate 'sr' by regmap_write(priv->regmap, TIM_SR, ~TIM_SR_CC_IF(ch)).
-
-> @@ -366,6 +460,12 @@ static int stm32_count_events_configure(struct count=
-er_device *counter)
->  				regmap_write(priv->regmap, TIM_SR, (u32)~TIM_SR_UIF);
->  			dier |=3D TIM_DIER_UIE;
->  			break;
-> +		case COUNTER_EVENT_CAPTURE:
-> +			ret =3D stm32_count_capture_configure(counter, event_node->channel, t=
-rue);
-> +			if (ret)
-> +				return ret;
-> +			dier |=3D TIM_DIER_CC_IE(event_node->channel);
-
-Ah, now I understand why the previous patch OR'd TIM_DIER_UIE to dier.
-Apologies for the noise.
-
-> @@ -374,6 +474,15 @@ static int stm32_count_events_configure(struct count=
-er_device *counter)
-> =20
->  	regmap_write(priv->regmap, TIM_DIER, dier);
-> =20
-> +	/* check for disabled capture events */
-> +	for (i =3D 0 ; i < priv->nchannels; i++) {
-> +		if (!(dier & TIM_DIER_CC_IE(i))) {
-> +			ret =3D stm32_count_capture_configure(counter, i, false);
-> +			if (ret)
-> +				return ret;
-> +		}
-
-Would for_each_clear_bitrange() in linux/find.h work for this loop?
-
-> @@ -504,7 +620,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void =
-*ptr)
->  	 * Some status bits in SR don't match with the enable bits in DIER. Onl=
-y take care of
->  	 * the possibly enabled bits in DIER (that matches in between SR and DI=
-ER).
->  	 */
-> -	dier &=3D TIM_DIER_UIE;
-> +	dier &=3D (TIM_DIER_UIE | TIM_DIER_CC1IE | TIM_DIER_CC2IE | TIM_DIER_CC=
-3IE | TIM_DIER_CC4IE);
-
-Again, sorry for the noise on the previous patch; this makes sense now.
-
-> @@ -515,6 +631,15 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void=
- *ptr)
->  		clr &=3D ~TIM_SR_UIF;
->  	}
-> =20
-> +	/* Check capture events */
-> +	for (i =3D 0 ; i < priv->nchannels; i++) {
-> +		if (sr & TIM_SR_CC_IF(i)) {
-
-Would for_each_set_bitrange() in linux/find.h work for this loop?
-
-> +			counter_push_event(counter, COUNTER_EVENT_CAPTURE, i);
-> +			clr &=3D ~TIM_SR_CC_IF(i);
-
-Perhaps u32p_replace_bits(&clr, 0, TIM_SR_CC_IF(i)) is clearer here.
-
-> @@ -627,8 +752,11 @@ static int stm32_timer_cnt_probe(struct platform_dev=
-ice *pdev)
->  		}
->  	} else {
->  		for (i =3D 0; i < priv->nr_irqs; i++) {
-> -			/* Only take care of update IRQ for overflow events */
-> -			if (i !=3D STM32_TIMERS_IRQ_UP)
-> +			/*
-> +			 * Only take care of update IRQ for overflow events, and cc for
-> +			 * capture events.
-> +			 */
-> +			if (i !=3D STM32_TIMERS_IRQ_UP && i !=3D STM32_TIMERS_IRQ_CC)
->  				continue;
-
-Okay, I see now why you have this check. This should be fine as it'll
-makes adding support in the future for the other IRQs a less invasive
-change.
-
-William Breathitt Gray
-
---WiW47Lt2gdjHTFQC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZZxyDQAKCRC1SFbKvhIj
-Ky5wAP4gGBh3+vNrHgCFcl/2xnX9onULDns/GxDSAl/SYUHaxQD/UlBRNYjuTlpn
-mQy4bZaGfms5hT09QoJcBuaniegpLQg=
-=2KS6
------END PGP SIGNATURE-----
-
---WiW47Lt2gdjHTFQC--
 

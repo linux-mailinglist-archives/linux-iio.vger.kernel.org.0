@@ -1,55 +1,48 @@
-Return-Path: <linux-iio+bounces-1520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61075829615
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 10:17:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0AA82963F
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 10:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E47411F25583
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 09:17:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CEA1F25B25
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 09:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C673D567;
-	Wed, 10 Jan 2024 09:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C93E496;
+	Wed, 10 Jan 2024 09:24:04 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C573C490;
-	Wed, 10 Jan 2024 09:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B12210B;
+	Wed, 10 Jan 2024 09:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T92FD12DTz689J2;
-	Wed, 10 Jan 2024 17:14:56 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T92Nh0wG2z6K8yL;
+	Wed, 10 Jan 2024 17:21:24 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1AB6B140DFC;
-	Wed, 10 Jan 2024 17:16:30 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id BED65140DEC;
+	Wed, 10 Jan 2024 17:23:44 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 10 Jan
- 2024 09:16:09 +0000
-Date: Wed, 10 Jan 2024 09:16:08 +0000
+ 2024 09:23:41 +0000
+Date: Wed, 10 Jan 2024 09:23:40 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter Clausen
-	<lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, "Rob
- Herring" <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
-	<olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v4 6/8] iio: add the IIO backend framework
-Message-ID: <20240110091608.00003bfc@Huawei.com>
-In-Reply-To: <8085910199d4b653edb61c51fc80a503ee50131d.camel@gmail.com>
-References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
-	<20231220-iio-backend-v4-6-998e9148b692@analog.com>
-	<20231221174437.5935a5c3@jic23-huawei>
-	<f7df488b33c89ce7078c39a87ba1108fac5a10bd.camel@gmail.com>
-	<20231226155904.043fee13@jic23-huawei>
-	<8085910199d4b653edb61c51fc80a503ee50131d.camel@gmail.com>
+To: =?ISO-8859-1?Q?M=E5rten?= Lindahl <martenli@axis.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel@axis.com>
+Subject: Re: [PATCH] iio: light: vcnl4000: Set ps high definition for
+ 4040/4200
+Message-ID: <20240110092340.00003540@Huawei.com>
+In-Reply-To: <58319706-dbc5-4ee9-b894-cecbbd23fc1b@axis.com>
+References: <20231221-vcnl4000-ps-hd-v1-1-a024bfb28896@axis.com>
+	<20231226161934.52c8d801@jic23-huawei>
+	<58319706-dbc5-4ee9-b894-cecbbd23fc1b@axis.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -63,140 +56,126 @@ Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 09 Jan 2024 13:15:54 +0100
-Nuno S=E1 <noname.nuno@gmail.com> wrote:
+On Tue, 9 Jan 2024 19:25:25 +0100
+M=E5rten Lindahl <martenli@axis.com> wrote:
 
-> On Tue, 2023-12-26 at 15:59 +0000, Jonathan Cameron wrote:
-> >  =20
-> > > > > +
-> > > > > +=A0=A0=A0=A0=A0=A0=A0ret =3D devm_add_action_or_reset(dev, iio_b=
-ackend_release, back);
-> > > > > +=A0=A0=A0=A0=A0=A0=A0if (ret)
-> > > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return ret;
-> > > > > +
-> > > > > +=A0=A0=A0=A0=A0=A0=A0link =3D device_link_add(dev, back->dev,
-> > > > > DL_FLAG_AUTOREMOVE_CONSUMER);
-> > > > > +=A0=A0=A0=A0=A0=A0=A0if (!link)
-> > > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0pr_warn("%s: Could =
-not link to supplier(%s)\n",
-> > > > > dev_name(dev),
-> > > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0dev_name(back->dev));=A0  =20
-> > > >=20
-> > > > Why is that not an error and we try to carry on?=A0  =20
-> > >=20
-> > > I guess having the links are not really mandatory for the whole thing=
- to
-> > > work (more
-> > > like a nice to have). That's also how this is handled in another subs=
-ystems
-> > > so I
-> > > figured it would be fine.
-> > >=20
-> > > But since you are speaking about this... After you pointing me to Bar=
-tosz's
-> > > talk and
-> > > sawing it (as stuff like this is mentioned), I started to question th=
-is. The
-> > > goal
-> > > with the above comment is that if you remove the backend, all the con=
-sumers
-> > > are
-> > > automatically removed (unbound). Just not sure if that's what we alwa=
-ys want
-> > > (and we
-> > > are already handling the situation where a backend goes away with -EN=
-ODEV)
-> > > as some
-> > > frontends could still be useful without the backend (I guess that cou=
-ld be
-> > > plausible). I think for now we don't really have such usecases so the=
- links
-> > > can make
-> > > sense (and we can figure something like optionally creating these lin=
-ks if
-> > > we ever
-> > > need too) but having your inputs on this will definitely be valuable.=
- =20
-> >=20
-> > I'm not keen on both trying to make everything tear down cleanly AND ma=
-king
-> > sure
-> > it all works even if we don't. That just adds two code paths to test wh=
-en
-> > either
-> > should be sufficient on its own.=A0 I don't really mind which.=A0 Barto=
-sz's stuff =20
+> On 12/26/23 17:19, Jonathan Cameron wrote:
+> > On Thu, 21 Dec 2023 17:33:09 +0100
+> > M=E5rten Lindahl<marten.lindahl@axis.com>  wrote:
+> > =20
+> >> The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
+> >> resolution, but the chip also supports 16 bit data resolution, which is
+> >> called proximity high definition (PS_HD).
+> >>
+> >> Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
+> >> all data readings.
+> >>
+> >> Signed-off-by: M=E5rten Lindahl<marten.lindahl@axis.com> =20
+> Hi Jonathan!
+> > Hmm. Was about to apply this and had a nasty thought.  Whilst proximity=
+ isn't
+> > 'scaled' as such because there is no absolute scale applied, I assume t=
+his change
+> > divides the effective scale (so what someone may be applying in userspa=
+ce) by 16?
+> >
+> > So this might cause someone a visible userspace regression?
+> >
+> > If so we may have to report it IIO_VAL_FRACTIONAL with the bottom set t=
+o 16
+> > so we end up with a suitable fixed point value from sysfs.
+> >
+> > Jonathan =20
 >=20
-> Agreed...
+> Yes, your assumption is correct. And I found that this can easily pass=20
+> unnoticed, at least on our HW. To get full 16 bit data width the sensor=20
+> needs higher proximity integration time, current, and sample rate, or=20
+> else it will give a raw output very close to the 12 bit steps with a=20
+> maximum around 4150 compared to 12 bit max 4095. With our HW only few=20
+> would notice the difference.
 >=20
-> > is nice, but it may not be the right solution here.  =20
->=20
-> There's pros and cons on both options...=A0
->=20
-> For the device links the cons I see is that it depends on patch 3 for it =
-to work
-> (or some other approach if the one in that patch is not good) - not reall=
-y a
-> real con though :). The biggest concern is (possible) future uses where w=
-e end
-> up with cases where removing a backend is not really a "deal breaker". I =
-could
-> think of frontends that have multiple backends (one per data path) and re=
-moving
-> one backend would not tear the whole thing down (we would just have one n=
-on
-> functional data paths/port where the others are still ok).
+> Increasing integration time/current/sample rate is already supported=20
+> from sysfs, and to get the proper scaling I can use the=20
+> IIO_VAL_FRACTIONAL as you suggest, but then I also need to set these=20
+> higher values from the beginning (where PS_HD is set) or else sysfs=20
+> in_proximity_raw will give output "259.375000000" for 4150, instead of=20
+> "4095.937500000" for 65535. If not, userspace will have to change the=20
+> values manually before first read can be done.
 
-I wouldn't waste time catering to such set ups.  If the whole thing gets
-torn down because one element went away that should be fine.
-To do anything else I'd want to see a real world use case.
+Ok. Then I think we are fine.
 
 >=20
-> Olivier, for STM usecases, do we always need the backend? I mean, does it=
- make
-> sense to always remove/unbind the frontend in case the backend is unbound?
->=20
-> Maybe some of your usecases already "forces" us with a decision.=20
->=20
-> The biggest pro I see is code simplicity. If we can assume the frontend c=
-an
-> never exist in case one of the backends is gone, we can:
->=20
->  * get rid of the sync mutex;
->  * get rid of the kref and bind the backend object lifetime to the backend
-> device (using devm_kzalloc() instead of kzalloc + refcount.
->=20
-> Basically, we would not need to care about syncing the backend existence =
-with
-> accessing it...
-> To sum up, the device_links approach tends to be similar (not identical) =
-to the
-> previous approach using the component API.
->=20
-> The biggest pro I see in Bartosz's stuff is flexibility. So it should jus=
-t work
-> in whatever future usecases we might have. I fear that going the device_l=
-inks
-> road we might end up needing this stuff anyways.
+> Regarding the changed output format, is it ok to change it from "4095"=20
+> to "4095.937500000", without making users upset?
 
-I'm keen on it if it simplifies code or becomes the dominant paradigm for s=
-uch
-things in the kernel (so becomes what people expect).  That isn't true yet
-and I doubt it will be particularly soon.  If things head that way we can
-revisit as it would enable things that currently we don't support - nothing
-should break.
+Should be fine.  Generic userspace code already has to deal with
+fixed point values (treating them as if they were fp) as other drivers will
+produce this anyway.   We 'might' break a flakey script, but this is
+in the category of hoping no one notices!
 
 Jonathan
 
-
 >=20
-> Obviously, the biggest con is code complexity (not that bad though) as we=
- always
-> need to properly sync any backend callback.
+> Kind regards
 >=20
-> - Nuno S=E1
-> >  =20
+> M=E5rten
+>=20
+> >> ---
+> >>   drivers/iio/light/vcnl4000.c | 13 +++++++++++++
+> >>   1 file changed, 13 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000=
+.c
+> >> index fdf763a04b0b..4846f3b698b5 100644
+> >> --- a/drivers/iio/light/vcnl4000.c
+> >> +++ b/drivers/iio/light/vcnl4000.c
+> >> @@ -90,6 +90,7 @@
+> >>   #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
+> >>   #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integrati=
+on time */
+> >>   #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt =
+persistence setting */
+> >> +#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition=
+ */
+> >>   #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrup=
+t mode */
+> >>   #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi puls=
+e number */
+> >>   #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
+> >> @@ -345,6 +346,7 @@ static int vcnl4200_set_power_state(struct vcnl400=
+0_data *data, bool on)
+> >>   static int vcnl4200_init(struct vcnl4000_data *data)
+> >>   {
+> >>   	int ret, id;
+> >> +	u16 regval;
+> >>  =20
+> >>   	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
+> >>   	if (ret < 0)
+> >> @@ -389,6 +391,17 @@ static int vcnl4200_init(struct vcnl4000_data *da=
+ta)
+> >>   	mutex_init(&data->vcnl4200_al.lock);
+> >>   	mutex_init(&data->vcnl4200_ps.lock);
+> >>  =20
+> >> +	/* Use 16 bits proximity sensor readings */
+> >> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> >> +	if (ret >=3D 0) {
+> >> +		regval =3D (ret | VCNL4040_PS_CONF2_PS_HD);
+> >> +		ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
+> >> +						regval);
+> >> +	}
+> >> +
+> >> +	if (ret < 0)
+> >> +		dev_info(&data->client->dev, "Default to 12 bits sensor data");
+> >> +
+> >>   	ret =3D data->chip_spec->set_power_state(data, true);
+> >>   	if (ret < 0)
+> >>   		return ret;
+> >>
+> >> ---
+> >> base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+> >> change-id: 20231221-vcnl4000-ps-hd-863f4f8fcea7
+> >>
+> >> Best regards, =20
 >=20
 
 

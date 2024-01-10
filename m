@@ -1,182 +1,143 @@
-Return-Path: <linux-iio+bounces-1561-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1562-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C6282A2D5
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 21:51:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784A882A33D
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 22:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78E901F21C9D
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 20:51:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AA9F1C25CBA
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 21:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8E151027;
-	Wed, 10 Jan 2024 20:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760744F610;
+	Wed, 10 Jan 2024 21:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KQptysEg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c82lIG0a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502FC51012
-	for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 20:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3368ac0f74dso3300067f8f.0
-        for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 12:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704919717; x=1705524517; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R1M7ps4WkHmNkGZ5ie9/GgPQiwPprEwmBMC0OtQiSIE=;
-        b=KQptysEg6FRvwy4NrwrXC0EqaMoyt5t3dLV3+40MyOrqzJ6g3w535Ym8ucPUsrFmL8
-         ho5kuBORycW/+Gkk5Y/+alc1xZeo5l27qtK6xPeFIaptfegPoYr5JwED900DANs0qHCg
-         V4Qo13bNxKYf7IsTq/0FEHHx3HxtucrFAyaeroO8YcaCOZpCCpBgYGEhvXKbWgmYdsWW
-         qsGmLm5ZG00hVyFuwe+XxGeYB9OhXAzEY9MgwzA4icFNaBBe33/85vq0+GqcIjs3V5Di
-         zSFrsVW55oq3B9QuClzZws2d9IneAxF1vZb5bUsdu4qRo74eYDF+9sAD0xAsO35w4LP6
-         gUlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704919717; x=1705524517;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R1M7ps4WkHmNkGZ5ie9/GgPQiwPprEwmBMC0OtQiSIE=;
-        b=L90VDPj1gOuR9VOieD8E3201p27pDjsKhdy+sb3/K2xd9fSluE5lzDFY/A5ty6BlGO
-         LwFgYsZOgMTUsRMJrvfCjOXFcmkAcyBH3+KCaJTWPyPwHP9r13fxXxjtm26JY680YgEF
-         U3GJU0WQ4iL2QiLNzWl3v1+xqM7uaiw/EXc2pL9++07s6+L9U3iypDQXe60Ujj4YG/YO
-         kOUXNKWsBN1DsTIXnxyKc7iWwdAtcR7gM7xzT2XFztavOkw4wJ1NvzWYygnJgMFYrmk+
-         7m4TgEv0qNs+6D67wTVbKNWnpznGvD5hUK7w9jONNbSp/YiCXoE0FNq1ZonQ+VZpBLZa
-         NJ5w==
-X-Gm-Message-State: AOJu0YzThg7kXL8uTyNGo+Q53n3HHvvuIVFegsFFFQqQf53CBsk7KDu9
-	JYcfN+1LR/DhHss+kHvcqy2Kd9GtdfQ/tqQFPOOu64S/fb0=
-X-Google-Smtp-Source: AGHT+IFFBFLsGgbs9TNQvPPt+398YFKa222APcbfnqPfNgMc1s2czccJJiiPIanyznR2wN82QXE/eQ==
-X-Received: by 2002:a05:6000:885:b0:337:3f72:3dd5 with SMTP id cs5-20020a056000088500b003373f723dd5mr41314wrb.32.1704919717656;
-        Wed, 10 Jan 2024 12:48:37 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id k14-20020a5d6e8e000000b003366c058509sm5659636wrz.23.2024.01.10.12.48.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jan 2024 12:48:36 -0800 (PST)
-Message-ID: <bc37f7d8-c43f-4751-9216-fc95f439b2f6@linaro.org>
-Date: Wed, 10 Jan 2024 21:48:34 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253274F5FA;
+	Wed, 10 Jan 2024 21:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06175C433C7;
+	Wed, 10 Jan 2024 21:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704921931;
+	bh=3C5WR76W5kbSoAjJb2xbYfw3mBaMSnsnkbKc1nq/il0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=c82lIG0ast6+R/k3mcOb81ehqGD5ghGGAUET00ZwgfXIoKt5DIbDRUsiW9YNIQba3
+	 e74LXV+mJZBFqtcp/syKfcMHoy7P2ZJXOtGjs6jQ4AGfCCYJkVwGdukJkqWu/q1yg4
+	 54Tov4w87pe+sXdJYHBnV470VTwznFf+aI2xUmQcJiaTwTdE7RumUNqSANJBYcfiAw
+	 90759UGovYTB9FsZMb3fjaTP72qCPEd4e6b0dOJl3YxpKPOXZHU6j9XaifSVjbBbrM
+	 AaIfWHeCdv96ejdZcz8GOD33LI2tvG97XukxgJfCePRQYbEoHuBLvhVgVXnEcyadDG
+	 vbBFYvkHpkVfQ==
+Received: (nullmailer pid 2648565 invoked by uid 1000);
+	Wed, 10 Jan 2024 21:25:28 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] dt-bindings: iio: pressure: honeywell,hsc030pa.yaml
- add sleep-mode
-Content-Language: en-US
-To: Petre Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
- <20240110172306.31273-3-petre.rodan@subdimension.ro>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240110172306.31273-3-petre.rodan@subdimension.ro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Rob Herring <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Michael Hennerich <michael.hennerich@analog.com>, devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Thierry Reding <thierry.reding@gmail.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, Mark Brown <broonie@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+In-Reply-To: <20240109-axi-spi-engine-series-3-v1-11-e42c6a986580@baylibre.com>
+References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
+ <20240109-axi-spi-engine-series-3-v1-11-e42c6a986580@baylibre.com>
+Message-Id: <170492192827.2648172.5496531414858882853.robh@kernel.org>
+Subject: Re: [PATCH 11/13] dt-bindings: iio: offload: add binding for
+ PWM/DMA triggered buffer
+Date: Wed, 10 Jan 2024 15:25:28 -0600
 
-On 10/01/2024 18:22, Petre Rodan wrote:
-> Add sleep-mode property present in some custom chips.
+
+On Wed, 10 Jan 2024 13:49:52 -0600, David Lechner wrote:
+> This adds a new binding for a PWM trigger and DMA data output connected
+> to an SPI controller offload instance.
 > 
-> This flag activates a special wakeup sequence prior to conversion.
-> 
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
->  .../bindings/iio/pressure/honeywell,hsc030pa.yaml      | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> index 89977b9f01cf..350da1d6991b 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> @@ -86,6 +86,15 @@ properties:
->        Maximum pressure value the sensor can measure in pascal.
->        To be specified only if honeywell,pressure-triplet is set to "NA".
-> 
-> +  honeywell,sleep-mode:
-
-"Sleep mode" naming suggests there are choices, like mode foo and mode
-bar. Probably you want something like "sleep-between-measurements" or
-something matching how does it work.
-
-
-> +    description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +      'Sleep Mode' is a special factory set mode of the chip that allows the
-> +      sensor to power down between measurements. It is implemented only on
-> +      special request, and it is an attribute not present in the HSC/SSC series
-> +      nomenclature.
-> +      Set in order to enable the special wakeup sequence prior to conversion.
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +
->    vdd-supply:
->      description:
->        Provide VDD power to the sensor (either 3.3V or 5V depending on the chip)
-> @@ -140,6 +149,7 @@ examples:
->              honeywell,pressure-triplet = "NA";
->              honeywell,pmin-pascal = <0>;
->              honeywell,pmax-pascal = <200000>;
-> +            //honeywell,sleep-mode;
-
-Drop comment.
-
-> 2.41.0
+>  .../adi,spi-offload-pwm-trigger-dma-buffer.yaml    | 59 ++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
 > 
 
-Best regards,
-Krzysztof
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.yaml:
+Error in referenced schema matching $id: http://devicetree.org/schemas/spi/adi,axi-spi-engine.yaml
+Documentation/devicetree/bindings/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.example.dts:22.22-32.15: Warning (spi_bus_reg): /example-0/spi/offloads: missing or empty reg property
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 966, in resolve_fragment
+    document = document[part]
+               ~~~~~~~~^^^^^^
+TypeError: 'bool' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-validate", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 144, in main
+    sg.check_dtb(filename)
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 89, in check_dtb
+    self.check_subtree(dt, subtree, False, "/", "/", filename)
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 82, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 82, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 82, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+  [Previous line repeated 1 more time]
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 77, in check_subtree
+    self.check_node(tree, subtree, disabled, nodename, fullname, filename)
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/dtb_validate.py", line 33, in check_node
+    for error in self.validator.iter_errors(node, filter=match_schema_file):
+  File "/usr/local/lib/python3.11/dist-packages/dtschema/validator.py", line 405, in iter_errors
+    for error in self.DtValidator(sch,
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 288, in iter_errors
+    for error in errors:
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/_validators.py", line 414, in if_
+    yield from validator.descend(instance, then, schema_path="then")
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 305, in descend
+    for error in self.evolve(schema=schema).iter_errors(instance):
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 288, in iter_errors
+    for error in errors:
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/_validators.py", line 294, in ref
+    scope, resolved = validator.resolver.resolve(ref)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 898, in resolve
+    return url, self._remote_cache(url)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 916, in resolve_from_url
+    return self.resolve_fragment(document, fragment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/jsonschema/validators.py", line 968, in resolve_fragment
+    raise exceptions.RefResolutionError(
+jsonschema.exceptions.RefResolutionError: Unresolvable JSON pointer: '$defs/offload'
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240109-axi-spi-engine-series-3-v1-11-e42c6a986580@baylibre.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

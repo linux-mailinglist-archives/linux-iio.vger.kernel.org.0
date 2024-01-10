@@ -1,181 +1,148 @@
-Return-Path: <linux-iio+bounces-1521-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1522-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0AA82963F
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 10:24:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFED8296E7
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 11:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CEA1F25B25
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 09:24:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4603B24D5B
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 10:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C93E496;
-	Wed, 10 Jan 2024 09:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4133F8F0;
+	Wed, 10 Jan 2024 10:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SwI3ofdf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B12210B;
-	Wed, 10 Jan 2024 09:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T92Nh0wG2z6K8yL;
-	Wed, 10 Jan 2024 17:21:24 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id BED65140DEC;
-	Wed, 10 Jan 2024 17:23:44 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 10 Jan
- 2024 09:23:41 +0000
-Date: Wed, 10 Jan 2024 09:23:40 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: =?ISO-8859-1?Q?M=E5rten?= Lindahl <martenli@axis.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kernel@axis.com>
-Subject: Re: [PATCH] iio: light: vcnl4000: Set ps high definition for
- 4040/4200
-Message-ID: <20240110092340.00003540@Huawei.com>
-In-Reply-To: <58319706-dbc5-4ee9-b894-cecbbd23fc1b@axis.com>
-References: <20231221-vcnl4000-ps-hd-v1-1-a024bfb28896@axis.com>
-	<20231226161934.52c8d801@jic23-huawei>
-	<58319706-dbc5-4ee9-b894-cecbbd23fc1b@axis.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437503F8D1;
+	Wed, 10 Jan 2024 10:07:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50e7abe4be4so5045576e87.2;
+        Wed, 10 Jan 2024 02:07:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704881248; x=1705486048; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SR6M2098v0XZKYvDuASrOI/XGr4kL2jFyhf8PM2BbNw=;
+        b=SwI3ofdfwcJ/FDheRATOXy/Jn+zyxHrxdrevkHr9WGTaql9k9DUkbt+n+8Iq1I3XoQ
+         F/4QTQFQKdawCQcVenL+TWTpdMj5610LlL0PW1Z1r9cQVWrPl1pwJBlV7J0quoZaIcaN
+         Had7a4h5yLn+BcK/31ln1WZrzahLVQ0zYVMhtt/62ii97eY4P2vs1v0rKIt/XAluFjWV
+         BnrLLh8VV5CsTw058eJ7I5BcUsGGfH4jAc6wh8eRoDxpcAlka9MT2woi+4UqUe8q9Rw8
+         JIxSlz+SDxcJlZCbjwc5O0MQs22JY1RtFIRVsoU1L/bt/OpKNmaCDH2QqaPw7eo7HLam
+         GLjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704881248; x=1705486048;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SR6M2098v0XZKYvDuASrOI/XGr4kL2jFyhf8PM2BbNw=;
+        b=BYNws01s+999Ce0sIoVbk9GsjP2pLGzV5qHaU+ChJpHwZ1rOyK/4S8o+avwimwyonS
+         t0gfKcHyydJvitn2u/ixm3otqz4JkxWz3ZlB2Hhmm6mtgEBXwoep3EKKTvSiShT8x7iD
+         MMp1ZzX2egvZSEO0QfZtxdXbOE6fOa9oo1CIauWgn91unI2WF7QQxK9dVmUzsEpqWch5
+         pIfkwRsD7che01FFTLPWQnx4CUOwgyXfvl8WK4h6J5BnJTTmNxnhFT4bzVwTf7yg3lPT
+         lXyypFS8WpcpdFzgxwDpq5jDHAXdrEo/rq2Zt5RjyFF5RWTtFIVHTgvAwwIn9Yyxt1LV
+         VczA==
+X-Gm-Message-State: AOJu0Yx9UYrDEQiTuvOWBesN5Gow/Et7O4jtXDc9k832dP2vI+efqBdy
+	ecueY9mluJs2EMVGMeBkIysHMgiyuPA=
+X-Google-Smtp-Source: AGHT+IGRzpOjx7vBzDQr3le3sMnRtt4uyNGxurLvy98yPfdzRhOgihZNG95mn6VhJ5ZTJkdGylDAtw==
+X-Received: by 2002:a05:6512:3f16:b0:50e:51fa:1d3b with SMTP id y22-20020a0565123f1600b0050e51fa1d3bmr407331lfa.93.1704881247980;
+        Wed, 10 Jan 2024 02:07:27 -0800 (PST)
+Received: from drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
+        by smtp.gmail.com with ESMTPSA id h41-20020a0565123ca900b0050e7fe37a29sm614232lfv.200.2024.01.10.02.07.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jan 2024 02:07:26 -0800 (PST)
+Date: Wed, 10 Jan 2024 12:07:08 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH 0/3] KUnit tests for the IIO GTS helpers
+Message-ID: <cover.1704881096.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="doWc2m8A9KjyRIVC"
+Content-Disposition: inline
+
+
+--doWc2m8A9KjyRIVC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 9 Jan 2024 19:25:25 +0100
-M=E5rten Lindahl <martenli@axis.com> wrote:
+Add some KUnit tests for the IIO GTS helpers.
 
-> On 12/26/23 17:19, Jonathan Cameron wrote:
-> > On Thu, 21 Dec 2023 17:33:09 +0100
-> > M=E5rten Lindahl<marten.lindahl@axis.com>  wrote:
-> > =20
-> >> The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
-> >> resolution, but the chip also supports 16 bit data resolution, which is
-> >> called proximity high definition (PS_HD).
-> >>
-> >> Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
-> >> all data readings.
-> >>
-> >> Signed-off-by: M=E5rten Lindahl<marten.lindahl@axis.com> =20
-> Hi Jonathan!
-> > Hmm. Was about to apply this and had a nasty thought.  Whilst proximity=
- isn't
-> > 'scaled' as such because there is no absolute scale applied, I assume t=
-his change
-> > divides the effective scale (so what someone may be applying in userspa=
-ce) by 16?
-> >
-> > So this might cause someone a visible userspace regression?
-> >
-> > If so we may have to report it IIO_VAL_FRACTIONAL with the bottom set t=
-o 16
-> > so we end up with a suitable fixed point value from sysfs.
-> >
-> > Jonathan =20
->=20
-> Yes, your assumption is correct. And I found that this can easily pass=20
-> unnoticed, at least on our HW. To get full 16 bit data width the sensor=20
-> needs higher proximity integration time, current, and sample rate, or=20
-> else it will give a raw output very close to the 12 bit steps with a=20
-> maximum around 4150 compared to 12 bit max 4095. With our HW only few=20
-> would notice the difference.
->=20
-> Increasing integration time/current/sample rate is already supported=20
-> from sysfs, and to get the proper scaling I can use the=20
-> IIO_VAL_FRACTIONAL as you suggest, but then I also need to set these=20
-> higher values from the beginning (where PS_HD is set) or else sysfs=20
-> in_proximity_raw will give output "259.375000000" for 4150, instead of=20
-> "4095.937500000" for 65535. If not, userspace will have to change the=20
-> values manually before first read can be done.
+These tests were originally part of the BU27034 ALS sensor driver series.
+https://lore.kernel.org/all/cover.1679915278.git.mazziesaccount@gmail.com/
 
-Ok. Then I think we are fine.
+Merging the tests was postponed because we lacked of a good generic way
+of creating tests devices for testing the devm managed interfaces. Now we
+have kunit_device APIs being merged (seems like they'll be part of the
+v6.8-rc1) so precondition for merging these tests are (being) met.
 
->=20
-> Regarding the changed output format, is it ok to change it from "4095"=20
-> to "4095.937500000", without making users upset?
+The series is based on
+commit ab27740f7665 ("Merge tag 'linux_kselftest-next-6.8-rc1' of git://git=
+=2Ekernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest")
+in Linus' tree.
 
-Should be fine.  Generic userspace code already has to deal with
-fixed point values (treating them as if they were fp) as other drivers will
-produce this anyway.   We 'might' break a flakey script, but this is
-in the category of hoping no one notices!
+I can rebase and resend when v6.8-rc1 is out if needed.
 
-Jonathan
+Matti Vaittinen (3):
+  iio: gts-helper: Fix division loop
+  iio: test: test gain-time-scale helpers
+  MAINTAINERS: add IIO GTS tests
 
->=20
-> Kind regards
->=20
-> M=E5rten
->=20
-> >> ---
-> >>   drivers/iio/light/vcnl4000.c | 13 +++++++++++++
-> >>   1 file changed, 13 insertions(+)
-> >>
-> >> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000=
-.c
-> >> index fdf763a04b0b..4846f3b698b5 100644
-> >> --- a/drivers/iio/light/vcnl4000.c
-> >> +++ b/drivers/iio/light/vcnl4000.c
-> >> @@ -90,6 +90,7 @@
-> >>   #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
-> >>   #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integrati=
-on time */
-> >>   #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt =
-persistence setting */
-> >> +#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition=
- */
-> >>   #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrup=
-t mode */
-> >>   #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi puls=
-e number */
-> >>   #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
-> >> @@ -345,6 +346,7 @@ static int vcnl4200_set_power_state(struct vcnl400=
-0_data *data, bool on)
-> >>   static int vcnl4200_init(struct vcnl4000_data *data)
-> >>   {
-> >>   	int ret, id;
-> >> +	u16 regval;
-> >>  =20
-> >>   	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
-> >>   	if (ret < 0)
-> >> @@ -389,6 +391,17 @@ static int vcnl4200_init(struct vcnl4000_data *da=
-ta)
-> >>   	mutex_init(&data->vcnl4200_al.lock);
-> >>   	mutex_init(&data->vcnl4200_ps.lock);
-> >>  =20
-> >> +	/* Use 16 bits proximity sensor readings */
-> >> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-> >> +	if (ret >=3D 0) {
-> >> +		regval =3D (ret | VCNL4040_PS_CONF2_PS_HD);
-> >> +		ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
-> >> +						regval);
-> >> +	}
-> >> +
-> >> +	if (ret < 0)
-> >> +		dev_info(&data->client->dev, "Default to 12 bits sensor data");
-> >> +
-> >>   	ret =3D data->chip_spec->set_power_state(data, true);
-> >>   	if (ret < 0)
-> >>   		return ret;
-> >>
-> >> ---
-> >> base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
-> >> change-id: 20231221-vcnl4000-ps-hd-863f4f8fcea7
-> >>
-> >> Best regards, =20
->=20
+ MAINTAINERS                           |   1 +
+ drivers/iio/industrialio-gts-helper.c |   5 +-
+ drivers/iio/test/Kconfig              |  14 +
+ drivers/iio/test/Makefile             |   1 +
+ drivers/iio/test/iio-test-gts.c       | 517 ++++++++++++++++++++++++++
+ 5 files changed, 535 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/iio/test/iio-test-gts.c
 
+
+base-commit: ab27740f76654ed58dd32ac0ba0031c18a6dea3b
+--=20
+2.43.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--doWc2m8A9KjyRIVC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmWebEYACgkQeFA3/03a
+ocWIsggAvk3U6xNGSi3Nc9yQXaMjcgzBys/Wp55CWVnmB+lZrXkHzdXueRwVuvU9
+wDo/vvT3xOCMe8wbgYgqa8lBvDgG5mtHyJPxmiDeshso8kF7jjyGcX8XEk+IQAzJ
+wGl53sAXKor43awwkmbm04YffbZPMtsXWVBGzBX1ePb3Qu///sGUu3z4zrl1rs48
+o+OeXPxdPSNGuUmd/39LTCk8kFkxtZANuX0aGfTLDfArbrFZVcBkalTtdMF9AzcL
+e0myy76JEPKeBLlprM3mMJo7VCShR4fb923VVV1wOvgaU50+QFb3wk86OWiMHniE
+2PiXqeSaK0AdPmbYVUHNQrizQT5yBw==
+=zMqG
+-----END PGP SIGNATURE-----
+
+--doWc2m8A9KjyRIVC--
 

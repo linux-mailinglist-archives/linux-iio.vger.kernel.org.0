@@ -1,257 +1,241 @@
-Return-Path: <linux-iio+bounces-1526-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1527-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E508297B0
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 11:34:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3EC829AC7
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 13:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7880728D721
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 10:34:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 531ADB25B8A
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 12:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D63FE36;
-	Wed, 10 Jan 2024 10:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C24D48787;
+	Wed, 10 Jan 2024 12:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDMST5d7"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="ocMAh/a9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2079.outbound.protection.outlook.com [40.107.21.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894DD41205;
-	Wed, 10 Jan 2024 10:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a29058bb2ceso427866266b.0;
-        Wed, 10 Jan 2024 02:34:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704882853; x=1705487653; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nbrpO+Uk7Iw8WCp3ZB9C1pV0XeCBbgefW9dI7e67LUo=;
-        b=QDMST5d7FmsQ46okG/wIdIGuMMRlLIyR0so0C6U5R4qvWnFEBc6kMTg8kmQyTpYtCP
-         Fg16WqjCe2cKz710G+1Hs1iEjzST9nio1d1A5yJO1uGEHmhiZgiuvu2kgX0JbnB5NGPC
-         +E2Yq2i72U5ogM6NveT4A7WjaKADXtnMWfbhx0oLe8AEUxnmjimfyU3K7umTqHIGh6YR
-         3TmWnuJYqn7DhtDCzGlzmtsHViCqly1xeYA0sUXzyDzy8C4NZf0MiW4PanshaJJc4i+Q
-         gqd+IE4LG4NeGvyizS6SPTZavMqVGfyNDQRChqhySHSLr/C380cwtq8dl//jR5hwbc2e
-         xchg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704882853; x=1705487653;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nbrpO+Uk7Iw8WCp3ZB9C1pV0XeCBbgefW9dI7e67LUo=;
-        b=D9aHwvzLBHfaPZK8CQpv+rs+m8h6M+ChAFlS6NEA9Th4Qp19s65xNhU6m8vs7NKl3G
-         g3bKCcr2cViyZZX3hWeo2JwyKNmEJ3FXfKpEwsUBggqsW30kk4piFE5ti9bkhRbcbfl2
-         t77K8uzv94fnswD/dNAZvkuQbgN2Hkewu8lqmphM9s4Fw7aMEmdlClEUFwVEYmYMU9jC
-         QV3YIX5zR0CdRjIgg9kThKfy6WPKQ37AZvKcZJGSCv4NyirDprnxdZ+EIeGs+8QS30It
-         tsctrPZjXvULCzCJ6PEyBm6TyvFPohfrZ8vw/EdsXsFwXFw7trMTLSeKjExSXfW5+96z
-         ojlg==
-X-Gm-Message-State: AOJu0Yzj3vuaSbWfwgB+GqCMwJKkyIlg4m27loPcVwNbjd3o+e9ne2i5
-	KlqcaSpTv+bdBU6+nAU/2KAcH3So2yBmpN27Nog=
-X-Google-Smtp-Source: AGHT+IEr8VQmfkTYE7ST2zYWV4LeGK2QYdWY+ys2Gl7x6m0VZhZ+++Cnz87Z1jNlLR5EAhKG8otzbA==
-X-Received: by 2002:a17:906:da8a:b0:a23:7576:3552 with SMTP id xh10-20020a170906da8a00b00a2375763552mr408536ejb.45.1704882852496;
-        Wed, 10 Jan 2024 02:34:12 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id kx6-20020a170907774600b00a2699a54888sm1939147ejc.64.2024.01.10.02.34.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 02:34:12 -0800 (PST)
-Message-ID: <a16a2241d93696002e718b9e353bc9f798063ce8.camel@gmail.com>
-Subject: Re: [PATCH v4 6/8] iio: add the IIO backend framework
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>
-Date: Wed, 10 Jan 2024 11:37:23 +0100
-In-Reply-To: <20240110091608.00003bfc@Huawei.com>
-References: <20231220-iio-backend-v4-0-998e9148b692@analog.com>
-	 <20231220-iio-backend-v4-6-998e9148b692@analog.com>
-	 <20231221174437.5935a5c3@jic23-huawei>
-	 <f7df488b33c89ce7078c39a87ba1108fac5a10bd.camel@gmail.com>
-	 <20231226155904.043fee13@jic23-huawei>
-	 <8085910199d4b653edb61c51fc80a503ee50131d.camel@gmail.com>
-	 <20240110091608.00003bfc@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A548781;
+	Wed, 10 Jan 2024 12:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DFOyVq03gFtMWMRTiWQxqIFkR2VL8wu/1djPpYb51ow0UKczCG+SvkuHChhoXvXx8aaBPQcLUUhgyRpN00fZqZnnpYJDlwhkPsTws5k/AJ3+r2BfD4Fn5iScGUBJ6gMy5ByX/fryh8hUDzgV3YZWbyUzzLcibTnio11pFYGqU6M5gOewkfws1G5l10pVUbf1PJHQ4grkbiwrvUxa5uuo1E8m0la3OgEAlI0uSmEvWBD0r65da05YqDkG+1fdNxRYPRI13XYVZytA4FQxHVVYIl9jKpZynrjKq+XAvVicyNWPZ85y9Lx+a4/ziDGy5nmsw2WW/vIywoYyofir9JfSHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4Elo8zqBmIJ+ywlz5i189I/WJHjwT7a2hGCTg/rZxK8=;
+ b=oacJfjjH0gdYyMnY0N1Ym/MM/JE34ZQWY+oO5S8JP9sXLDDvHvcEur6OqlVwHMmWZWiF5Q77LzE17qP0EoQwLe03GcGUpMmTMQKNtMPwJgVOVR62ryLLqkwhyRKb0Lhs0Ljjj+hYrhVzGRwWLuAapqhW9gr6Z+N291s/vk8jtIZaR2wxm9U/GJvF83m3ZnDUKaD/b6rshFlb4rP2U/gfd0HZgo1ZzbUza+gB/KQVGR4gq/rvpHCYUK+QSmi7ElsXKVqVmV77d0lNoie/F4xk6HqSR22uU4G6AqhU3+GPDpcp2ia9bgcQ43Qh9xz2v/ksJWYPWv9los78OIK+RyJ/yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=axis.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Elo8zqBmIJ+ywlz5i189I/WJHjwT7a2hGCTg/rZxK8=;
+ b=ocMAh/a9tB8iMriirKYq+T9kqwDL5sU5mIODRZH9B3ccFM6+NH+nwLqy68WO+OCdRIqetwyImSR6gujD1zfz68WCCplEgoYmgvBfEPLsMqUM8bsIk9L0lW/tvpSHOvuHAqv8JM7m2sP9vlqiDEZlZZA7RU3l0fo0IOVYQD02ydc=
+Received: from AM5PR04CA0020.eurprd04.prod.outlook.com (2603:10a6:206:1::33)
+ by AS4PR02MB8622.eurprd02.prod.outlook.com (2603:10a6:20b:58a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Wed, 10 Jan
+ 2024 12:58:15 +0000
+Received: from AM4PEPF00025F9A.EURPRD83.prod.outlook.com
+ (2603:10a6:206:1:cafe::dd) by AM5PR04CA0020.outlook.office365.com
+ (2603:10a6:206:1::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.17 via Frontend
+ Transport; Wed, 10 Jan 2024 12:58:15 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 195.60.68.100)
+ smtp.mailfrom=axis.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=axis.com;
+Received-SPF: Fail (protection.outlook.com: domain of axis.com does not
+ designate 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=195.60.68.100; helo=mail.axis.com;
+Received: from mail.axis.com (195.60.68.100) by
+ AM4PEPF00025F9A.mail.protection.outlook.com (10.167.16.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7202.4 via Frontend Transport; Wed, 10 Jan 2024 12:58:15 +0000
+Received: from se-mail01w.axis.com (10.20.40.7) by se-mail02w.axis.com
+ (10.20.40.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 10 Jan
+ 2024 13:58:14 +0100
+Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail01w.axis.com
+ (10.20.40.7) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
+ Transport; Wed, 10 Jan 2024 13:58:14 +0100
+Received: from pc42775-2107.se.axis.com (pc42775-2107.se.axis.com [10.94.129.29])
+	by se-intmail01x.se.axis.com (Postfix) with ESMTP id A955511D24;
+	Wed, 10 Jan 2024 13:58:14 +0100 (CET)
+Received: by pc42775-2107.se.axis.com (Postfix, from userid 21033)
+	id A3B224C7785; Wed, 10 Jan 2024 13:58:14 +0100 (CET)
+From: =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+Date: Wed, 10 Jan 2024 13:58:07 +0100
+Subject: [PATCH v2] iio: light: vcnl4000: Set ps high definition for
+ 4040/4200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20231221-vcnl4000-ps-hd-v2-1-1b6790d30ae6@axis.com>
+X-B4-Tracking: v=1; b=H4sIAF6UnmUC/3WNwQ6DIBAFf8Vw7jaAxNKe+h+NB8ClkFQ0rCE2x
+ n8veu9x3stkNkaYIxJ7NBvLWCLFKVWQl4a5YNIbIQ6VmeSyFVIKKC59FOccZoIwgO5ar7z2Ds2
+ NVckaQrDZJBcObTS0YD6OOaOP61l69ZVDpGXK3zNcxLH+bRQBAgyXynortb53T7NGurppZP2+7
+ z8hgGt6xAAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel@axis.com>, =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704891494; l=4297;
+ i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
+ bh=yr7qlYWAqhYFjg/56U/db5OwF3uobYAE+wF/94bJd8U=;
+ b=RFj3y6XObK2DlzvcBbEmTe03n3iteydBMdkU5911Q/MjklaXNoBBBaCZki32gEMYrFFUEWOB0
+ lelwXEkLgrKCBMCb7NtYNYjJ620Obe5uYn0A+2JSKdH9hiQYDeMqvoy
+X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
+ pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00025F9A:EE_|AS4PR02MB8622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76c9d967-9449-407a-880d-08dc11dbcf2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	xUv5e32jDM9GVrpRVPB9Yn7GmCT+RPhT7u8x+IgZVESN0vE5QofQlrur/rf0Xlrxp6GGXD4S4E44gGUztZehfSg9TdujOHD/FWNhlWCqIfLIwGyIrlqBXf0eo0x0bfaSxECv9tvLuW/3cQlG4l8ZP29+quMBFY4+v1VOqTKeFmnhW2zT8yfvkj4w1x6Gv9Qh3pkNvHedn/H8TmkyuCUz9DiW9x7NdmgUpC7g5wx750EuI2Y2iIw7eDXa6q8zrJG0PXGcP/lO0KUqxi5ONwhSHbGJmRqHWsdoUOsYKzRHyA09gYqBvXMgAQA7DrBV1pSFlj5n781WPqwLdBxWBOkLFDI6ZFulPgHy15XU1NWt5UB62KsmIAY8TZFWdIxsDTMHAbnhYjnKxMrsLRgcemZKvRCevkUhdXBMAmyuOD5XuOHRqWog7mtDjX45qJ7qJSWcbJud9A4iaTOL+3rXSigxseAXudYomGfSFsEtd6EEYGNLDCnyC1u4HdijU9SBqiaK7U47tY9oa9k56/vB7c2miRtLhXwaJNpFV68S07dnj72Z45G9WXdMZHuoAwqmniZ3nF6m9hosWYgFOMHRzTZZMOuh2H0qkVvdXmScjIseVnYOfmIatgmIvB42Py+SSTPqjvaSR9EC73b7hGNIMbasUeWZaVAKNvMFa9Ic8KT+zm7h4Kn4te+MOfTyomdhD7KUH09bBrQIDtAXnxZnijN3eSF8YqTZ5v8flWvWP6E4c9JG23A6MFORUxVK90q+e/+9
+X-Forefront-Antispam-Report:
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(396003)(39860400002)(346002)(136003)(230922051799003)(1800799012)(451199024)(82310400011)(186009)(64100799003)(46966006)(36840700001)(40470700004)(82740400003)(81166007)(356005)(36756003)(40460700003)(40480700001)(86362001)(6266002)(26005)(426003)(66574015)(336012)(107886003)(2616005)(42186006)(316002)(4326008)(54906003)(110136005)(8676002)(478600001)(6666004)(966005)(8936002)(36860700001)(70206006)(70586007)(47076005)(83380400001)(41300700001)(5660300002)(2906002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2024 12:58:15.0767
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76c9d967-9449-407a-880d-08dc11dbcf2c
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00025F9A.EURPRD83.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR02MB8622
 
-On Wed, 2024-01-10 at 09:16 +0000, Jonathan Cameron wrote:
-> On Tue, 09 Jan 2024 13:15:54 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Tue, 2023-12-26 at 15:59 +0000, Jonathan Cameron wrote:
-> > > =C2=A0=20
-> > > > > > +
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D devm_add_act=
-ion_or_reset(dev, iio_backend_release,
-> > > > > > back);
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret)
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
-> > > > > > +
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0link =3D device_link=
-_add(dev, back->dev,
-> > > > > > DL_FLAG_AUTOREMOVE_CONSUMER);
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!link)
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pr_warn("%s: Could not link to supplier(%s)\n=
-",
-> > > > > > dev_name(dev),
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0dev_name(back->dev));=C2=A0=C2=A0=C2=A0=20
-> > > > >=20
-> > > > > Why is that not an error and we try to carry on?=C2=A0=C2=A0=C2=
-=A0=20
-> > > >=20
-> > > > I guess having the links are not really mandatory for the whole thi=
-ng to
-> > > > work (more
-> > > > like a nice to have). That's also how this is handled in another
-> > > > subsystems
-> > > > so I
-> > > > figured it would be fine.
-> > > >=20
-> > > > But since you are speaking about this... After you pointing me to
-> > > > Bartosz's
-> > > > talk and
-> > > > sawing it (as stuff like this is mentioned), I started to question =
-this.
-> > > > The
-> > > > goal
-> > > > with the above comment is that if you remove the backend, all the
-> > > > consumers
-> > > > are
-> > > > automatically removed (unbound). Just not sure if that's what we al=
-ways
-> > > > want
-> > > > (and we
-> > > > are already handling the situation where a backend goes away with -
-> > > > ENODEV)
-> > > > as some
-> > > > frontends could still be useful without the backend (I guess that c=
-ould
-> > > > be
-> > > > plausible). I think for now we don't really have such usecases so t=
-he
-> > > > links
-> > > > can make
-> > > > sense (and we can figure something like optionally creating these l=
-inks
-> > > > if
-> > > > we ever
-> > > > need too) but having your inputs on this will definitely be valuabl=
-e.=C2=A0=20
-> > >=20
-> > > I'm not keen on both trying to make everything tear down cleanly AND
-> > > making
-> > > sure
-> > > it all works even if we don't. That just adds two code paths to test =
-when
-> > > either
-> > > should be sufficient on its own.=C2=A0 I don't really mind which.=C2=
-=A0 Bartosz's
-> > > stuff=C2=A0=20
-> >=20
-> > Agreed...
-> >=20
-> > > is nice, but it may not be the right solution here.=C2=A0=C2=A0=20
-> >=20
-> > There's pros and cons on both options...=C2=A0
-> >=20
-> > For the device links the cons I see is that it depends on patch 3 for i=
-t to
-> > work
-> > (or some other approach if the one in that patch is not good) - not rea=
-lly a
-> > real con though :). The biggest concern is (possible) future uses where=
- we
-> > end
-> > up with cases where removing a backend is not really a "deal breaker". =
-I
-> > could
-> > think of frontends that have multiple backends (one per data path) and
-> > removing
-> > one backend would not tear the whole thing down (we would just have one=
- non
-> > functional data paths/port where the others are still ok).
->=20
-> I wouldn't waste time catering to such set ups.=C2=A0 If the whole thing =
-gets
-> torn down because one element went away that should be fine.
-> To do anything else I'd want to see a real world use case.
+The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
+resolution, but the chip also supports 16 bit data resolution, which is
+called proximity high definition (PS_HD).
 
-Fair enough...
+Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
+all data readings. Please note that in order to preserve the 12 bit
+integer part of the in_proximity_raw output, the format is changed from
+integer to fixed point.
 
->=20
-> >=20
-> > Olivier, for STM usecases, do we always need the backend? I mean, does =
-it
-> > make
-> > sense to always remove/unbind the frontend in case the backend is unbou=
-nd?
-> >=20
-> > Maybe some of your usecases already "forces" us with a decision.=20
-> >=20
-> > The biggest pro I see is code simplicity. If we can assume the frontend=
- can
-> > never exist in case one of the backends is gone, we can:
-> >=20
-> > =C2=A0* get rid of the sync mutex;
-> > =C2=A0* get rid of the kref and bind the backend object lifetime to the=
- backend
-> > device (using devm_kzalloc() instead of kzalloc + refcount.
-> >=20
-> > Basically, we would not need to care about syncing the backend existenc=
-e
-> > with
-> > accessing it...
-> > To sum up, the device_links approach tends to be similar (not identical=
-) to
-> > the
-> > previous approach using the component API.
-> >=20
-> > The biggest pro I see in Bartosz's stuff is flexibility. So it should j=
-ust
-> > work
-> > in whatever future usecases we might have. I fear that going the
-> > device_links
-> > road we might end up needing this stuff anyways.
->=20
-> I'm keen on it if it simplifies code or becomes the dominant paradigm for=
- such
-> things in the kernel (so becomes what people expect).=C2=A0 That isn't tr=
-ue yet
-> and I doubt it will be particularly soon.=C2=A0 If things head that way w=
-e can
-> revisit as it would enable things that currently we don't support - nothi=
-ng
-> should break.
->=20
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+---
+Changes in v2:
+- Update registers for sample rate to align it with 16 bit sensor readings.
+- Change sysfs output from IIO_VAL_INT to IIO_VAL_FRACTIONAL and scale by 16.
+- Link to v1: https://lore.kernel.org/r/20231221-vcnl4000-ps-hd-v1-1-a024bfb28896@axis.com
+---
+ drivers/iio/light/vcnl4000.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
-Well, If I'm not missing anything, simpler code would be with device_links =
-so I
-guess that's your preferred approach for now :). Also fine by me as this is=
- an
-in kernel interface so we easily revisit it.
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index fdf763a04b0b..a078c573131e 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -90,6 +90,7 @@
+ #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
+ #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
+ #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
++#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition */
+ #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
+ #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
+ #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
+@@ -114,6 +115,13 @@
+ #define VCNL4010_INT_DRDY \
+ 	(BIT(VCNL4010_INT_PROXIMITY) | BIT(VCNL4010_INT_ALS))
+ 
++#define VCNL4040_CONF3_PS_MPS_16BITS	3	/* 8 multi pulses */
++#define VCNL4040_CONF3_PS_LED_I_16BITS	3	/* 120 mA */
++
++#define VCNL4040_CONF3_PS_SAMPLE_16BITS \
++	(FIELD_PREP(VCNL4040_PS_CONF3_MPS, VCNL4040_CONF3_PS_MPS_16BITS) | \
++	 FIELD_PREP(VCNL4040_PS_MS_LED_I, VCNL4040_CONF3_PS_LED_I_16BITS))
++
+ static const int vcnl4010_prox_sampling_frequency[][2] = {
+ 	{1, 950000},
+ 	{3, 906250},
+@@ -195,6 +203,7 @@ struct vcnl4000_data {
+ 	enum vcnl4000_device_ids id;
+ 	int rev;
+ 	int al_scale;
++	int ps_scale;
+ 	u8 ps_int;		/* proximity interrupt mode */
+ 	u8 als_int;		/* ambient light interrupt mode*/
+ 	const struct vcnl4000_chip_spec *chip_spec;
+@@ -345,6 +354,7 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+ static int vcnl4200_init(struct vcnl4000_data *data)
+ {
+ 	int ret, id;
++	u16 regval;
+ 
+ 	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
+ 	if (ret < 0)
+@@ -386,9 +396,36 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+ 		break;
+ 	}
+ 	data->al_scale = data->chip_spec->ulux_step;
++	data->ps_scale = 16;
+ 	mutex_init(&data->vcnl4200_al.lock);
+ 	mutex_init(&data->vcnl4200_ps.lock);
+ 
++	/* Use 16 bits proximity sensor readings */
++	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
++	if (ret >= 0) {
++		regval = (ret | VCNL4040_PS_CONF2_PS_HD);
++		ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
++						regval);
++	}
++
++	if (ret < 0) {
++		dev_info(&data->client->dev, "Default to 12 bits sensor data");
++		data->ps_scale = 1;
++		goto out;
++	}
++
++	/* Align proximity sensor sample rate to 16 bits data width */
++	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
++	if (ret >= 0) {
++		regval = (ret | VCNL4040_CONF3_PS_SAMPLE_16BITS);
++		ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
++						regval);
++	}
++
++	if (ret < 0)
++		dev_warn(&data->client->dev, "Sample rate may not be accurate");
++
++out:
+ 	ret = data->chip_spec->set_power_state(data, true);
+ 	if (ret < 0)
+ 		return ret;
+@@ -901,8 +938,9 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+ 			break;
+ 		case IIO_PROXIMITY:
+ 			ret = data->chip_spec->measure_proximity(data, val);
++			*val2 = data->ps_scale;
+ 			if (!ret)
+-				ret = IIO_VAL_INT;
++				ret = IIO_VAL_FRACTIONAL;
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
 
-I'll just wait a bit more (before sending v5) to see if Olivier has any
-foreseeable usecase where device_links would be an issue.
+---
+base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+change-id: 20231221-vcnl4000-ps-hd-863f4f8fcea7
 
-- Nuno S=C3=A1
-
+Best regards,
+-- 
+Mårten Lindahl <marten.lindahl@axis.com>
 
 

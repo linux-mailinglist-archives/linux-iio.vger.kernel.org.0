@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-1544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED62482A13B
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 20:51:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615EE82A147
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 20:51:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 934632839E3
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 19:51:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704301C22800
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jan 2024 19:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6374E1D4;
-	Wed, 10 Jan 2024 19:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B0D4EB24;
+	Wed, 10 Jan 2024 19:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uRW3y8ic"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yKV/+Qfr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E792D4E1D8
-	for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 19:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68A94EB23
+	for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 19:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5986cb7bb61so1488974eaf.2
-        for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 11:51:10 -0800 (PST)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-58e256505f7so2394548eaf.3
+        for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 11:51:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916270; x=1705521070; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916271; x=1705521071; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FHagqwNMpxV+ArB//eIyw4qGareX65jGuTeaGwQAWsQ=;
-        b=uRW3y8icnWgWb6xtSearcTxgGNwi5i4a22I88Zu+ouS9ndBNBfMSoIodQ3U1XYGxp6
-         o0ZT84iWXAlnVB3vGQ9vb0yvZ/WbIxUT2lHSZ7Fzp/TA/47a11u2rZj5yu6tIfGD4hJ8
-         YZgg3R+zejFSJOzxsnvA7cEMxRLF52v368L/7CodKkmjnpGldI20uMQh6MxXK3XXKa1B
-         H1zGFbeU47coAZT6pz5CcncQCNaABtkYGF0/p/US4IJemJgTUuQbKl+G/4ePazRSDLx9
-         ZjRmUCZSHfsI0wCH3+VcYmzXM3bAT1TyvIZCb72O/XGEIhxgiclzueTD6MsOHBlw0DpS
-         IVmg==
+        bh=8tQFXGB0UBE3yQVmYcImKXXjk/ehD/gF98AYs7jrXzE=;
+        b=yKV/+Qfriqeu0qBj16IXEt1rSLw90lnlhjOy+tyC7v7TdhP6uGBuPEMCUXuy1c4O7t
+         avMDDkMYaHi7r3eppgI2HoVRyNAxiTYvpiisrGng2hZn609pSm9uAgau+o0nDORZYyRF
+         S7wrVb3HuSBn9M4f41ZLCyXDvAMNwS/bZz7rkfhFi0cBecwBe8GMG+PnCG4yV7bUUbDc
+         Ao0Mz4cbNDXxNtB/sp/GBvFVqhBqNVJEX+E4dAwSxlI3qJwx9X2jbEroAcAGoVgsP7xa
+         yaP2LVm/b9zkPJ9n/zYrm6TZ2OUzZBl1jPuIKCYquxUU5+taZlpjjC3jlL72wx4FYUiz
+         1mCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704916270; x=1705521070;
+        d=1e100.net; s=20230601; t=1704916271; x=1705521071;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FHagqwNMpxV+ArB//eIyw4qGareX65jGuTeaGwQAWsQ=;
-        b=h++/XcOJgbqU9SJgNyeBgCU6TjsRN0tWf8EcIluY4qhcVGQjZAXetifeuux2wFYxM+
-         PQG4/9BnFOjKXDG6dH+IbVbu9IcGGlj7Ae5Y8F9ICx4BMv6MG+50pxi2cg4FOslZcOaT
-         l0Z0y64zboHfo9+TN8feTXFbqV628Pzrcq/nC5EOmdHx+DUQA8B5vMlg+QPZ7WJeIT/v
-         7VdEripMghvLBYQ0PwQR0ZwHtw2sMVdjvHxhQUxA8siNtcekqAP6J3Xw14osNhMd8LPB
-         HDpL/5l680i7d2DNP1UUCwPNnEEwxIoOcPB50DB3uRxyXeUHyvNcyR97bs0BqjwHK0/n
-         DCCw==
-X-Gm-Message-State: AOJu0Yy3GLUCaCcafqKhO+87yEp6K/SOcMwu4oCOufnxLj1nJS19/9cY
-	Vprj76YNlzv6gv+MJk4qP4tZ+S0cNQ92Gg==
-X-Google-Smtp-Source: AGHT+IFz2vHsP2VCChuXJsq+dXZdcNh9nCjfnHY2y1NETdUBAZFsR2IUd2+i849e6W9zmWjqlmEvCg==
-X-Received: by 2002:a4a:1781:0:b0:598:6ed0:4015 with SMTP id 123-20020a4a1781000000b005986ed04015mr106322ooe.3.1704916270068;
+        bh=8tQFXGB0UBE3yQVmYcImKXXjk/ehD/gF98AYs7jrXzE=;
+        b=MxbFs4e6iuQieYF+DYWMNhbCPxYgYS/QlMXScQzXB1PxUCntJWzM0Vh+sk4FxYZE94
+         yUKcgsLTnqsReYFMB2yvafbfagxO95TVNDMVFmgZjLtpqVKeSc+H5Le2JhzGbrbLR9dQ
+         cJ0W1y6FjCpmT3tqEYYwfNfhUM40U0bR4EfJ/OPGlfmp/1mqJ1njB1jLo/YtN67T7RYC
+         cpgIqLTfLCySa9einlv4wVixXDiAiEKgrpOgFF53igK5IGjoRRDf91bC/kh4S/uDxJ5Y
+         JOkK3kBYCUGN6fvSA0eGTBS/iAQ7Dprwb+sjksBhfpToa8YSnkKISOex96HX17YmaH66
+         CQjg==
+X-Gm-Message-State: AOJu0YxQHCNLSuq982qzp/83amEoprNWEnRmX8AsrgoSy0mplpFxOmQc
+	6XGqNdMIlvcFypfG9tWXDGyMLJuZ1OkDgA==
+X-Google-Smtp-Source: AGHT+IGLTZ7rbIwDjuwU/b4aEWgy3uOE14zbEekH51p0401rK+4z9X/59v8/8YDpPt2l2qc30H7TDg==
+X-Received: by 2002:a05:6820:2382:b0:591:acf8:d08f with SMTP id co2-20020a056820238200b00591acf8d08fmr140554oob.11.1704916270980;
         Wed, 10 Jan 2024 11:51:10 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.08
+        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 11:51:09 -0800 (PST)
+        Wed, 10 Jan 2024 11:51:10 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -76,9 +76,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-doc@vger.kernel.org,
 	linux-pwm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 01/13] spi: add core support for controllers with offload capabilities
-Date: Wed, 10 Jan 2024 13:49:42 -0600
-Message-ID: <20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
+Subject: [PATCH 02/13] scripts: dtc: checks: don't warn on SPI non-peripheral child nodes
+Date: Wed, 10 Jan 2024 13:49:43 -0600
+Message-ID: <20240109-axi-spi-engine-series-3-v1-2-e42c6a986580@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
 References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
@@ -92,252 +92,55 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-This adds a feature for specialized SPI controllers that can record
-a series of SPI transfers, including tx data, cs assertions, delays,
-etc. and then play them back using a hardware trigger without CPU
-intervention.
+According to the spi-controller.yaml bindings, SPI peripheral child
+nodes match the pattern "^.*@[0-9a-f]+$".
 
-The intended use case for this is with the AXI SPI Engine to capture
-data from ADCs at high rates (MSPS) with a stable sample period.
+A SPI controller binding may require a child object node that is not a
+peripheral. For example, the adi,axi-spi-engine binding requires an
+"offloads" child node that is not a peripheral but rather a part of the
+controller itself.
 
-Most of the implementation is controller-specific and will be handled by
-drivers that implement the offload_ops callbacks. The API follows a
-prepare/enable pattern that should be familiar to users of the clk
-subsystem.
+By checking for '@' in the node name, we can avoids a warnings like:
 
-Consumers of this API will make calls similar to this:
+    Warning (spi_bus_reg): /example-0/spi@44a00000/offloads: missing or empty reg property
 
-    /* in probe() */
-    offload = spi_offload_get(spi, 0);
-    ...
+for a binding like:
 
-    /* in some setup function */
-    ret = spi_offload_prepare(offload, xfers, ARRAY_SIZE(xfers));
-    ...
+    spi {
+        ...
 
-    /* in some enable function */
-    ret = spi_offload_enable(offload);
-    ...
+        offloads {
+            offload@0 {
+                ...
+            };
+            ...
+        };
 
-    /* in corresponding disable function */
-    spi_offload_disable(offload);
-    ...
-
-    /* in corresponding teardown function */
-    spi_offload_unprepare(offload);
-    ...
+        peripheral@0 {
+            ...
+        };
+    };
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/spi/spi.c       |  39 +++++++++++++++
- include/linux/spi/spi.h | 123 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 162 insertions(+)
+ scripts/dtc/checks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a4b8c07c5951..f1d66b5d5491 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3057,6 +3057,13 @@ static int spi_controller_check_ops(struct spi_controller *ctlr)
- 		}
- 	}
+diff --git a/scripts/dtc/checks.c b/scripts/dtc/checks.c
+index 9f31d2607182..5af68642f231 100644
+--- a/scripts/dtc/checks.c
++++ b/scripts/dtc/checks.c
+@@ -1144,6 +1144,10 @@ static void check_spi_bus_reg(struct check *c, struct dt_info *dti, struct node
+ 	if (!node->parent || (node->parent->bus != &spi_bus))
+ 		return;
  
-+	if (ctlr->offload_ops && !(ctlr->offload_ops->get &&
-+				   ctlr->offload_ops->prepare &&
-+				   ctlr->offload_ops->unprepare &&
-+				   ctlr->offload_ops->enable &&
-+				   ctlr->offload_ops->disable))
-+		return -EINVAL;
++	/* only nodes with '@' in name are SPI devices */
++	if (!strchr(unitname, '@'))
++		return;
 +
- 	return 0;
- }
+ 	if (get_property(node->parent, "spi-slave"))
+ 		return;
  
-@@ -4448,6 +4455,38 @@ int spi_write_then_read(struct spi_device *spi,
- }
- EXPORT_SYMBOL_GPL(spi_write_then_read);
- 
-+/**
-+ * spi_offload_prepare - prepare offload hardware for a transfer
-+ * @offload:	The offload instance.
-+ * @spi:	The spi device to use for the transfers.
-+ * @xfers:	The transfers to be executed.
-+ * @num_xfers:	The number of transfers.
-+ *
-+ * Records a series of transfers to be executed later by the offload hardware
-+ * trigger.
-+ *
-+ * Return: 0 on success, else a negative error code.
-+ */
-+int spi_offload_prepare(struct spi_offload *offload, struct spi_device *spi,
-+			struct spi_transfer *xfers, unsigned int num_xfers)
-+{
-+	struct spi_controller *ctlr = offload->controller;
-+	struct spi_message msg;
-+	int ret;
-+
-+	spi_message_init_with_transfers(&msg, xfers, num_xfers);
-+
-+	ret = __spi_validate(spi, &msg);
-+	if (ret)
-+		return ret;
-+
-+	msg.spi = spi;
-+	ret = ctlr->offload_ops->prepare(offload, &msg);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(spi_offload_prepare);
-+
- /*-------------------------------------------------------------------------*/
- 
- #if IS_ENABLED(CONFIG_OF_DYNAMIC)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 5d65a6273dcf..f116dfc1d52c 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -28,6 +28,8 @@ struct spi_transfer;
- struct spi_controller_mem_ops;
- struct spi_controller_mem_caps;
- struct spi_message;
-+struct spi_controller_offload_ops;
-+struct spi_offload;
- 
- /*
-  * INTERFACES between SPI master-side drivers and SPI slave protocol handlers,
-@@ -713,6 +715,9 @@ struct spi_controller {
- 	const struct spi_controller_mem_ops *mem_ops;
- 	const struct spi_controller_mem_caps *mem_caps;
- 
-+	/* Operations for controllers with offload support. */
-+	const struct spi_controller_offload_ops *offload_ops;
-+
- 	/* GPIO chip select */
- 	struct gpio_desc	**cs_gpiods;
- 	bool			use_gpio_descriptors;
-@@ -1505,6 +1510,124 @@ static inline ssize_t spi_w8r16be(struct spi_device *spi, u8 cmd)
- 
- /*---------------------------------------------------------------------------*/
- 
-+/*
-+ * Offloading support.
-+ *
-+ * Some SPI controllers support offloading of SPI transfers. Essentially,
-+ * this allows the SPI controller to record SPI transfers and then play them
-+ * back later via a hardware trigger.
-+ */
-+
-+/**
-+ * SPI_OFFLOAD_RX - placeholder for indicating read transfers for offloads
-+ *
-+ * Assign xfer->rx_buf to this value for any read transfer passed to
-+ * spi_offload_prepare(). This will act as a flag to indicate to the offload
-+ * that it should do something with the data read during this transfer. What
-+ * that something can be is determined by the specific hardware, e.g. it could
-+ * be piped to DMA or a DSP, etc.
-+ */
-+#define SPI_OFFLOAD_RX_SENTINEL ((void *)1)
-+
-+/**
-+ * struct spi_controller_offload_ops - callbacks for offload support
-+ *
-+ * Drivers for hardware with offload support need to implement all of these
-+ * callbacks.
-+ */
-+struct spi_controller_offload_ops {
-+	/**
-+	 * @get: Callback to get the offload assigned to the given SPI device.
-+	 * Index is an index in the offloads array fwnode property of the device.
-+	 * Implementations must return the pointer to the device or a negative
-+	 * error code (return -ENODEV rather than NULL if no matching device).
-+	 */
-+	struct spi_offload *(*get)(struct spi_device *spi, unsigned int index);
-+	/**
-+	 * @prepare: Callback to prepare the offload for the given SPI message.
-+	 * @msg and any of its members (including any xfer->tx_buf) is not
-+	 * guaranteed to be valid beyond the lifetime of this call.
-+	 */
-+	int (*prepare)(struct spi_offload *offload, struct spi_message *msg);
-+	/**
-+	 * @unprepare: Callback to release any resources used by prepare().
-+	 */
-+	void (*unprepare)(struct spi_offload *offload);
-+	/**
-+	 * @enable: Callback to enable the offload.
-+	 */
-+	int (*enable)(struct spi_offload *offload);
-+	/**
-+	 * @disable: Callback to disable the offload.
-+	 */
-+	void (*disable)(struct spi_offload *offload);
-+};
-+
-+/** struct spi_offload - offload handle */
-+struct spi_offload {
-+	/** @controller: The associated SPI controller. */
-+	struct spi_controller *controller;
-+	/** @dev: The device associated with the offload instance. */
-+	struct device *dev;
-+	/** @priv: Private instance data used by the SPI controller. */
-+	void *priv;
-+};
-+
-+/**
-+ * spi_offload_get - gets an offload assigned to the given SPI device
-+ * @spi: SPI device.
-+ * @index: Index of the offload in the SPI device's fwnode int array.
-+ *
-+ * The lifetime of the returned offload is tied to the struct spi_controller
-+ * instance. Since @spi owns a reference to the controller, most consumers
-+ * should not have to do anything extra. But if the offload is passed somewhere
-+ * outside of the control of the SPI device driver, then an additional reference
-+ * to the controller must be made.
-+ *
-+ * Return: Pointer to the offload handle or negative error code.
-+ */
-+static inline struct spi_offload *spi_offload_get(struct spi_device *spi,
-+						  unsigned int index)
-+{
-+	if (!spi->controller->offload_ops)
-+		return ERR_PTR(-EOPNOTSUPP);
-+
-+	return spi->controller->offload_ops->get(spi, index);
-+}
-+
-+int spi_offload_prepare(struct spi_offload *offload, struct spi_device *spi,
-+			struct spi_transfer *xfers, unsigned int num_xfers);
-+
-+/**
-+ * spi_offload_unprepare - releases any resources used by spi_offload_prepare()
-+ * @offload: The offload instance.
-+ */
-+static inline void spi_offload_unprepare(struct spi_offload *offload)
-+{
-+	offload->controller->offload_ops->unprepare(offload);
-+}
-+
-+/**
-+ * spi_offload_enable - enables the offload
-+ * @offload: The offload instance.
-+ * Return: 0 on success or negative error code.
-+ */
-+static inline int spi_offload_enable(struct spi_offload *offload)
-+{
-+	return offload->controller->offload_ops->enable(offload);
-+}
-+
-+/**
-+ * spi_offload_disable - disables the offload
-+ * @offload: The offload instance.
-+ */
-+static inline void spi_offload_disable(struct spi_offload *offload)
-+{
-+	offload->controller->offload_ops->disable(offload);
-+}
-+
-+/*---------------------------------------------------------------------------*/
-+
- /*
-  * INTERFACE between board init code and SPI infrastructure.
-  *
 
 -- 
 2.43.0

@@ -1,55 +1,53 @@
-Return-Path: <linux-iio+bounces-1585-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1586-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C36B82B2FF
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 17:33:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D1282B322
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 17:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DE3A1F2171C
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 16:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00E21F2880F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 16:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280B94F8BC;
-	Thu, 11 Jan 2024 16:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B55025B;
+	Thu, 11 Jan 2024 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HtX9kBJ2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9/uIyZs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9AD51000;
-	Thu, 11 Jan 2024 16:33:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C6EC433F1;
-	Thu, 11 Jan 2024 16:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B0451C20;
+	Thu, 11 Jan 2024 16:38:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9951FC433F1;
+	Thu, 11 Jan 2024 16:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704990787;
-	bh=cBOEHJ4jz+911gd0H8RzE2SvkvqohyMtgT/JyoRoh4I=;
+	s=k20201202; t=1704991094;
+	bh=vensfg+J8SVeMtgMS00rhZLlyAuI1umQrZCMNdiRlvg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HtX9kBJ2RSIaZ5ApbfyL+BVDfVPnIICVdVWIvT3ELBc6rohF8c68fWZffaqmk1e21
-	 m1f1XHU3TOoLQJUySrZ3+AiibNy3MiERrRcR5TJhzAhbGBqZJPRuS3sXjlMy6q7kMF
-	 Jeegz3p4QclI2UQecnwkIaumwMWFuNI3elKOqlaO0ubg/54TY7fjZonfFuEUsTHsd9
-	 QYfX8U5MDLMa/gMxlJKM0wAsJ6LDnEisFZHSfGVPQdcpjLYXgGhRMGZU2gQ1UfoBQW
-	 acCJmwEWl5e3ltqrGilZXn7AKYIokzifF0+ZpaFZMX6j0UAED9buN1GUg9g2IEqcud
-	 DmYzMVcgBoJlQ==
-Date: Thu, 11 Jan 2024 16:33:03 +0000
+	b=l9/uIyZsGEUhndieBsQ/eDDcI5W7RBsuJ14bm+6RfSmbLiJcMqKpPkHa14Mn7yeon
+	 kMOD2Htw/sJb13OHZGg89RSTUxxPL1s+YxjRfQidKEZIUbsjvlOofa5b0pK+JFGwCO
+	 efSZwXL6p5sp10554Ra/TAmCKobHsb1q43Xn488o+MIe4l9yBCwmVbIzc2reHfHx4Y
+	 bmVh72wHP+OvccNYSZNwEzhckWQesmskTX74C8ORajPTWRxynIBnKfBqHy1kBTxXhL
+	 8u5Q3HqOnu5ijUpc1kfbSZUKB2lHJbMMdq06nQvfP7zjGJZ0j53LRKJjTZBtwt5xlZ
+	 UtkOmEA9EXpyg==
+Date: Thu, 11 Jan 2024 16:38:09 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: hmc425a: add conditional GPIO
- array size constraints
-Message-ID: <20240111-numerate-aqueduct-9eaaa4dfc572@spud>
-References: <20240110153757.5754-1-mitrutzceclan@gmail.com>
- <20240110153757.5754-2-mitrutzceclan@gmail.com>
- <20240110-unfitting-squander-b1d71c185bb7@spud>
- <478d9445-96aa-44b3-b598-8f7d7716dbba@gmail.com>
- <20240111-suitcase-collage-889fa8404ab2@spud>
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: Add binding for AD7380 ADCs
+Message-ID: <20240111-whoever-contrite-d53acf2d8449@spud>
+References: <20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com>
+ <20240110-ad7380-mainline-v4-1-93a1d96b50fa@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,92 +55,49 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="SLcpOGUKLjHDM79r"
+	protocol="application/pgp-signature"; boundary="GswiscgIN4jIlUpQ"
 Content-Disposition: inline
-In-Reply-To: <20240111-suitcase-collage-889fa8404ab2@spud>
+In-Reply-To: <20240110-ad7380-mainline-v4-1-93a1d96b50fa@baylibre.com>
 
 
---SLcpOGUKLjHDM79r
+--GswiscgIN4jIlUpQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 11, 2024 at 04:31:40PM +0000, Conor Dooley wrote:
-> On Thu, Jan 11, 2024 at 10:17:58AM +0200, Ceclan Dumitru wrote:
-> >=20
-> >=20
-> > On 1/10/24 18:17, Conor Dooley wrote:
-> > > On Wed, Jan 10, 2024 at 05:37:09PM +0200, Dumitru Ceclan wrote:...
-> > >>    ctrl-gpios:
-> > >>      description:
-> > >> -      Must contain an array of 6 GPIO specifiers, referring to the =
-GPIO pins
-> > >> -      connected to the control pins V1-V6.
-> > >> -    minItems: 6
-> > >> +      Must contain an array of GPIO specifiers, referring to the GP=
-IO pins
-> > >> +      connected to the control pins.
-> > >> +        ADRF5740  - 4 GPIO connected to D2-D5
-> > >> +        HMC540S   - 4 GPIO connected to V1-V4
-> > >> +        HMC425A   - 6 GPIO connected to V1-V6
-> > >> +    minItems: 1
-> > >>      maxItems: 6
-> > >> =20
-> > >> +allOf:
-> > >> +  - if:
-> > >> +      properties:
-> > >> +        compatible:
-> > >> +          contains:
-> > >> +            const: adi,hmc425a
-> > >> +    then:
-> > >> +      properties:
-> > >> +        ctrl-gpios:
-> > >> +          minItems: 6
-> > >=20
-> > >> +          maxItems: 6
-> > >=20
-> > > This one should not be needed, it's already set by constraints on the
-> > > property above.
-> > >=20
-> >=20
-> > No, not needed, just inspired from:
-> >  /bindings/clock/samsung,exynos7-clock.yaml
-> >=20
-> > Specifically, the top constraints:
-> >   clocks:
-> >=20
-> >     minItems: 1
-> >=20
-> >     maxItems: 13
-> >=20
-> > One of the conditional constraints:
-> >   clocks:
-> >=20
-> >     minItems: 13
-> >=20
-> >     maxItems: 13
-> >=20
-> >=20
-> > I would only have two arguments for this staying here:
-> >  - It stays consistent with other cases
-> >  - In the case a new device with more than 6 GPIOs is added, this would
-> > need to be put back in
+On Wed, Jan 10, 2024 at 02:28:40PM -0600, David Lechner wrote:
+> This adds a binding specification for the Analog Devices Inc. AD7380
+> family of ADCs.
 >=20
-> Okay.
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>=20
+> As discussed in [1], the proposed spi-rx-bus-channels property is a compl=
+ex
+> new SPI core feature, so it was nacked for now on the grounds that it sho=
+uld
+> be accepted without the corresponding SPI core changes. I dropped the Rev=
+iewed-by
+> since no DT maintainers responded on that thread.
 
-Sorry, that's probably super unclear. I meant it's okay to leave it.
+I think that's reasonable. Better to wait and do something correct when
+the problme is understood than rush into something. You can re-add
 
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
---SLcpOGUKLjHDM79r
+Cheers,
+Conor.
+
+--GswiscgIN4jIlUpQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZaAYPgAKCRB4tDGHoIJi
-0jalAQCPzckyn2TpzYdmBZKa/c3mDGk156cx45W8rNKZyQr3awD8Chazl9EKk0I2
-8pWYm0pVfUobXV74ZFjqNmRG9pqKMQQ=
-=3NAy
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZaAZcQAKCRB4tDGHoIJi
+0h3EAQC2bokNeJPvLOwEhcZQrLSKNCfMaRNUzPMNHHA1GLscXgEA+9Ke6AXl/FwA
+8ku3yrzsKK+nUZ3Bk2dSeNyAcPr4Zg0=
+=JgeG
 -----END PGP SIGNATURE-----
 
---SLcpOGUKLjHDM79r--
+--GswiscgIN4jIlUpQ--
 

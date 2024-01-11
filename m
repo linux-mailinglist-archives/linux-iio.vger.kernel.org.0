@@ -1,146 +1,112 @@
-Return-Path: <linux-iio+bounces-1577-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1578-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00CD82AAE0
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 10:28:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1553D82AF0E
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 14:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90C7E2845C8
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 09:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8911F222A5
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 13:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EEE10A38;
-	Thu, 11 Jan 2024 09:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E30C15E97;
+	Thu, 11 Jan 2024 13:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lGZloLFT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/hWEI5E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C407411C85;
-	Thu, 11 Jan 2024 09:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2cd17a979bcso57344311fa.0;
-        Thu, 11 Jan 2024 01:28:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704965284; x=1705570084; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sf6VBUtsDqW13HEBWxXrEjwH5/MBLlUs1U/ZJvZMatA=;
-        b=lGZloLFTZDUV36+2mYEzCVaZ4B4yw1DyyxgJ7LEVVsFLUOSaT+dCn9zRqCOycv+oGk
-         ZyFouRV/l5dRdTraCEemijlkybhiKjMJJUf0fJ9ylzvwadJhHPDcynDL4F9yyl/qYHLR
-         8J54uV3zzrGPHHSwV6Ft8VlqwXvWMIUwaiHR8FlAiPr3czU6X5wtAKXI00RMPajV2Rz/
-         8mZA2EDzIwrS9UbQL/W66b9iVZrQe5Bu1p1JaNygOuspu+xHjUhju1narayNa8CJhDHL
-         qlhk3kVqxXaEKXS9gN2lxOfadprgvy/cfwAEN3kqg41drb03Zr64xPozNwxC96UJQLsx
-         76QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704965284; x=1705570084;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sf6VBUtsDqW13HEBWxXrEjwH5/MBLlUs1U/ZJvZMatA=;
-        b=grSiZ7J1eFyFK4CdBWjUoWYUvBevUV469ibvjEK0cq1NdHr02AaIByVO3G/730qUYO
-         GUlpQsp2jtGq+L+z1fFXbQCBwcCqIWld7dgHsG9YJ2WWJSIZBUz/52pqHkXCGtb3jIIu
-         wv404RWKUkPdMaTjKGHJBwBowg4n330HUCGesd9uHGk0v91nfzojHG0MJLkT0HhCaS7f
-         Davcbl2uWV+8o7XaC9k5I5QZSd1AJsO7K0+hGZIeFIV+XOWfnl+jtTH0NtwjRxFX07nG
-         ZxLmxwzImUS08cttRhrAKrG8RLuMvdWRMXUGYqtiqlo/I0+xs4bRZZQ5cVPsZFeYetZ9
-         6Eeg==
-X-Gm-Message-State: AOJu0Yxi9giT48TsMWpGOPpidOW1NQp4R4hLBNpbOhl230Oam91isBZC
-	1mAsWWz5sSXyS2/3i2p4WbQ=
-X-Google-Smtp-Source: AGHT+IGHqmiX56xgaRdznksFbY34dhZM1Wo+zbmAdkiJ4fw2/vjUMX0b5qweYiWo+2S3241dOg+0cA==
-X-Received: by 2002:a2e:9848:0:b0:2cc:3e6d:8dcb with SMTP id e8-20020a2e9848000000b002cc3e6d8dcbmr106629ljj.104.1704965283355;
-        Thu, 11 Jan 2024 01:28:03 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id c1-20020a5d4f01000000b003377be178a5sm699950wru.78.2024.01.11.01.28.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 01:28:03 -0800 (PST)
-Message-ID: <00c5f84a4bc5a4e3423f401af7b4f374c930407d.camel@gmail.com>
-Subject: Re: [PATCH 12/13] iio: offload: add new PWM triggered DMA buffer
- driver
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>,  Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Frank Rowand
- <frowand.list@gmail.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Jonathan
- Corbet <corbet@lwn.net>,  linux-spi@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Date: Thu, 11 Jan 2024 10:31:15 +0100
-In-Reply-To: <20240109-axi-spi-engine-series-3-v1-12-e42c6a986580@baylibre.com>
-References: 
-	<20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
-	 <20240109-axi-spi-engine-series-3-v1-12-e42c6a986580@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE52915AFD;
+	Thu, 11 Jan 2024 13:00:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A51C433C7;
+	Thu, 11 Jan 2024 13:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704978049;
+	bh=PPK6b4HMONAjOLQhJy+dcD8B/FlzQW7e7QMEXCQPqAY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p/hWEI5EyL2at+hrBZ2ezeBb4JDwY5hc0eaiyuNYU1pX7lRUtqhzgLoMbCwvXZf4Y
+	 1QAXhXrgYkbAlB/jTyNBGjJqM6DoblonT3pMN8NYVhXeAQASD7J/X4Yb0W5H77IXok
+	 6uuOYDDDkO8eJxju/nvNeKFMp9R2teZVf6a4/AX/IDHjoqzZVQ4lMMrDWZjuzFR/ho
+	 uwuoFl644z2MCnUH5yjJRxNnIGs7VAYHLl33XuvMAYTNSMXnIxoNFXZcZGktjLFU8t
+	 jGaXmBPA3J6PU5GpWL+Y5HrfudXReXHNUQArlOXan4vnZNefvz1nchk7ujJjMP+Tn9
+	 kKg4U/QjeLZvA==
+Date: Thu, 11 Jan 2024 13:00:42 +0000
+From: Mark Brown <broonie@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 05/13] spi: axi-spi-engine: add SPI offload support
+Message-ID: <d19dac5c-eef6-4543-9eee-787262c0f52c@sirena.org.uk>
+References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
+ <20240109-axi-spi-engine-series-3-v1-5-e42c6a986580@baylibre.com>
+ <a94d7aae-3d5c-4204-83f6-5374c3166f58@sirena.org.uk>
+ <CAMknhBEEC4F2_hpJ_405bfrb3KNkAYpjDoJbnmOFXodp8yLACg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="48Qe3jNucI2DGcEY"
+Content-Disposition: inline
+In-Reply-To: <CAMknhBEEC4F2_hpJ_405bfrb3KNkAYpjDoJbnmOFXodp8yLACg@mail.gmail.com>
+X-Cookie: Does the name Pavlov ring a bell?
 
-On Wed, 2024-01-10 at 13:49 -0600, David Lechner wrote:
-> This adds a new driver for handling SPI offloading using a PWM as the
-> trigger and DMA for the received data. This will be used by ADCs in
-> conjunction with SPI controllers with offloading support to be able
-> to sample at high rates without CPU intervention.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> =C2=A0drivers/iio/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 1 +
-> =C2=A0drivers/iio/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 =
-1 +
-> =C2=A0.../iio/buffer/industrialio-hw-triggered-buffer.c=C2=A0 |=C2=A0=C2=
-=A0 1 +
-> =C2=A0drivers/iio/offload/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 21 ++
-> =C2=A0drivers/iio/offload/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
-> =C2=A0drivers/iio/offload/iio-pwm-triggered-dma-buffer.c | 212
-> +++++++++++++++++++++
-> =C2=A06 files changed, 238 insertions(+)
->=20
-> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-> index 52eb46ef84c1..56738282d82f 100644
-> --- a/drivers/iio/Kconfig
-> +++ b/drivers/iio/Kconfig
-> @@ -90,6 +90,7 @@ source "drivers/iio/imu/Kconfig"
-> =C2=A0source "drivers/iio/light/Kconfig"
-> =C2=A0source "drivers/iio/magnetometer/Kconfig"
-> =C2=A0source "drivers/iio/multiplexer/Kconfig"
-> +source "drivers/iio/offload/Kconfig"
 
-The offload stuff is something very particular to a spi controller feature.=
- Not
-sure if having this as a generic thing makes sense at this point.
+--48Qe3jNucI2DGcEY
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-IMO, the IIO way of looking at the offload engine is as an HW triggered cor=
-e for
-capturing data. Hence, I would support the whole thing as an HW triggered
-buffer. And, if we are really going the path of having the offload core as =
-a
-platform device, we could have different compatibles for each pair of trigg=
-er +
-data_capture (or explicit dt properties).
+On Wed, Jan 10, 2024 at 04:31:25PM -0600, David Lechner wrote:
+> On Wed, Jan 10, 2024 at 3:39=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
+rote:
 
-Just my 2 cents...
+> > Glancing through here I'm not seeing anything here that handles DMA
+> > mapping, given that the controller will clearly be doing DMA here that
+> > seems surprising.
 
-- Nuno S=C3=A1
+> In the use case implemented in this series, the RX data is going to
+> DMA, but in general, that doesn't have to be the case. In theory, it
+> could get piped directly to a DSP or something like that. So I left
+> the RX DMA part out of the SPI controller and implemented as a
+> separate device in "iio: offload: add new PWM triggered DMA buffer
+> driver". The SPI controller itself isn't aware that it is connected to
+> DMA (i.e. there are no registers that have to be poked to enable DMA
+> or anything like that).
 
+If there's a buffer being assigned to the device (or removed from the
+device) it needs mapping, this will ensure the device is allowed to
+access it if there's IOMMUs involved, and that there's no pending cache
+operations which could corrupt data.
+
+--48Qe3jNucI2DGcEY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWf5noACgkQJNaLcl1U
+h9CuKAf/RDosGN2d/f46OnxM+Ws4AH7ATVJNv3+gKUg32xfJT7BjuqncA+1bQ/hS
+cPrZ9A2vf4/n4/+HpsHS1X6REC/rSB0o5u67E7NLYOnJANnmHlATYELNc825KSbc
+ZQTP2fS3CvilSRdIpZWUJv4eaJb++n5tCdiLDvdkPn9kb4If0iBdPCL4rqSOJ+1s
+8QXhb479acdwTTC/CtW+ozWaMASBy9p+UGpyqJ5QWOur0HjJzcdWk2LJnwhupRb/
+4KM9S+a9xXm2zhvSt2OZw+4gE/BDqqdLbGEr+Oyxpkz/kPkXEUEyDemoIuG5qpbK
+snNWOyM2Gd+VVlwlvJCdeQGfxyL/OA==
+=ufYN
+-----END PGP SIGNATURE-----
+
+--48Qe3jNucI2DGcEY--
 

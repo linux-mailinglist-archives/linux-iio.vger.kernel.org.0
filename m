@@ -1,122 +1,143 @@
-Return-Path: <linux-iio+bounces-1583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BBC82B1F4
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 16:41:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A26E82B2FD
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 17:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 010481C23C10
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 15:41:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA9C7B27511
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 16:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273B04CE01;
-	Thu, 11 Jan 2024 15:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2734F8BC;
+	Thu, 11 Jan 2024 16:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7XPIjZS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qVCo7t3H"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C294D127;
-	Thu, 11 Jan 2024 15:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6B0C433F1;
-	Thu, 11 Jan 2024 15:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44B14F8A0;
+	Thu, 11 Jan 2024 16:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE11C433C7;
+	Thu, 11 Jan 2024 16:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704987677;
-	bh=ec2MWNR95rQrBx7ChqqY0NN4ZsZmpqqTnoX9MBjREsM=;
+	s=k20201202; t=1704990705;
+	bh=U1X2QWSXEg//IKtKtRyY+42Ctp17xlrN2XZx68DSDoQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h7XPIjZSKqSBL24Lqm1sxksD7sbgJUHj0zdYTdKP+A8dtMoUGOVY0DJQu2C+KXZZt
-	 Clrv4pUaATGXam4fXMuVYD2DyQdsqiy1lRXVa6qb9ba+UlNgOZNz/Ov0FWIQILIsY7
-	 eQ0QmR+OspwwivEyPQFKbJxHfrUX+guQDvnsnrWc2R5VUhIoCdaJQuNZley+WKurMa
-	 yOlhlmLmf6KoMDOK9kv+TV5exUGqWnHjU2xxdqKj6JsX7qNGz/XFMvlbCYogDV3uJd
-	 e/lUJ181P5eAWUOq37ofn5iSjY1zUNlD+BIVjjePOdQvkkDFv7uDQDnaLUkKx8g5Re
-	 zHKQDdO+aZFoQ==
-Date: Thu, 11 Jan 2024 15:41:09 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>,
+	b=qVCo7t3H64sRsursu9ArdrG/SaPfjjLJiEYI6egm5VvdcdoSPKfPCg5d+rbuqSQbR
+	 NIyBExP9bXGwS1tTubW0NUCAaPHjUxNvC67ZHZCsQvxQs870NuIdCJK0sguAu/HODp
+	 bLQLeniaLjn6yg2Vph7JNq/vvbBD+TqpYfFdcYev7J6l0xByTJ5nmKwFw+nYExT+aB
+	 5wWbVfQb+C5rcTmdxm2OxXNjOJy/kc/EIUGlIdfFHMiaiFUoPKRDu+v0mKQHpq9/w6
+	 66D+4aBle1VlvFsCdFgdbBrsElbybxBzIbEDvCrpWyREdnnAwyD21K151NLa6YatCi
+	 r1MbK4TBzqGyg==
+Date: Thu, 11 Jan 2024 16:31:40 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Ceclan Dumitru <mitrutzceclan@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/13] spi: add core support for controllers with offload
- capabilities
-Message-ID: <ee19aa9e-cb51-41fb-a980-e3df579b5d35@sirena.org.uk>
-References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
- <20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
- <0c0b1954825dc174cab48060e96ddadadc18aefd.camel@gmail.com>
- <aae36622-4e05-4f16-9460-d7614fd599aa@sirena.org.uk>
- <5b62d742fa789e9860781b6f5f1fda4f583b0e5b.camel@gmail.com>
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: hmc425a: add conditional GPIO
+ array size constraints
+Message-ID: <20240111-suitcase-collage-889fa8404ab2@spud>
+References: <20240110153757.5754-1-mitrutzceclan@gmail.com>
+ <20240110153757.5754-2-mitrutzceclan@gmail.com>
+ <20240110-unfitting-squander-b1d71c185bb7@spud>
+ <478d9445-96aa-44b3-b598-8f7d7716dbba@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5fy9KoLsuSv9gV8C"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="T/gFBDvK/h08vZL+"
 Content-Disposition: inline
-In-Reply-To: <5b62d742fa789e9860781b6f5f1fda4f583b0e5b.camel@gmail.com>
-X-Cookie: Does the name Pavlov ring a bell?
+In-Reply-To: <478d9445-96aa-44b3-b598-8f7d7716dbba@gmail.com>
 
 
---5fy9KoLsuSv9gV8C
-Content-Type: text/plain; charset=iso-8859-1
+--T/gFBDvK/h08vZL+
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 11, 2024 at 03:11:32PM +0100, Nuno S=E1 wrote:
-> On Thu, 2024-01-11 at 13:33 +0000, Mark Brown wrote:
+On Thu, Jan 11, 2024 at 10:17:58AM +0200, Ceclan Dumitru wrote:
+>=20
+>=20
+> On 1/10/24 18:17, Conor Dooley wrote:
+> > On Wed, Jan 10, 2024 at 05:37:09PM +0200, Dumitru Ceclan wrote:...
+> >>    ctrl-gpios:
+> >>      description:
+> >> -      Must contain an array of 6 GPIO specifiers, referring to the GP=
+IO pins
+> >> -      connected to the control pins V1-V6.
+> >> -    minItems: 6
+> >> +      Must contain an array of GPIO specifiers, referring to the GPIO=
+ pins
+> >> +      connected to the control pins.
+> >> +        ADRF5740  - 4 GPIO connected to D2-D5
+> >> +        HMC540S   - 4 GPIO connected to V1-V4
+> >> +        HMC425A   - 6 GPIO connected to V1-V6
+> >> +    minItems: 1
+> >>      maxItems: 6
+> >> =20
+> >> +allOf:
+> >> +  - if:
+> >> +      properties:
+> >> +        compatible:
+> >> +          contains:
+> >> +            const: adi,hmc425a
+> >> +    then:
+> >> +      properties:
+> >> +        ctrl-gpios:
+> >> +          minItems: 6
+> >=20
+> >> +          maxItems: 6
+> >=20
+> > This one should not be needed, it's already set by constraints on the
+> > property above.
+> >=20
+>=20
+> No, not needed, just inspired from:
+>  /bindings/clock/samsung,exynos7-clock.yaml
+>=20
+> Specifically, the top constraints:
+>   clocks:
+>=20
+>     minItems: 1
+>=20
+>     maxItems: 13
+>=20
+> One of the conditional constraints:
+>   clocks:
+>=20
+>     minItems: 13
+>=20
+>     maxItems: 13
+>=20
+>=20
+> I would only have two arguments for this staying here:
+>  - It stays consistent with other cases
+>  - In the case a new device with more than 6 GPIOs is added, this would
+> need to be put back in
 
-> > I tend to agree that we shouldn't be exposing this to SPI device drivers
-> > however we will want to keep track of if the unit is busy, and designing
-> > it to cope with multiple offloads does seem like sensible future
-> > proofing.=A0 There's also the possibility that one engine might be able=
- to
+Okay.
 
-> Fair enough. But wouldn't a simple DT integer property (handled by the sp=
-i core)
-> to identify the offload index be easier for SPI device drivers? We could =
-still
-> have dedicated interfaces for checking if the unit is busy or not... The =
-point
-> is that we would not need an explicit get() from SPI drivers.
-
-It feels like we'd need a get/release operation of some kind for mutual
-exclusion, it's not just the discovery it's also figuring out if the
-hardware is in use at a given moment.
-
-> I'm of course assuming that one spi device can only be connected to one e=
-ngine
-> which seems reasonable to me.
-
-I can see someone implementing this with for example the microcontroller
-cores a lot of SoCs have in which case all bets are off.
-
---5fy9KoLsuSv9gV8C
+--T/gFBDvK/h08vZL+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWgDBUACgkQJNaLcl1U
-h9Cg3gf+NhvfHRGy0X1W6CWSGPIFhafoskakda+cHtUJRILWspChnBvvbTC/LIDg
-zJTlReSwlIUo4jgarKzB/9ly9DI72xoojbI6CTabmAP/ALZVN+oGg9y9N2wuO6Fb
-9Y5t2BPK6Inlb5DV1rhhqTmQBiYaFku6IcNAOO2dMKCTQ3ZSE+xpxNjC9RcAF4DZ
-Lad9xm6xr2kZ7wRVIzkBJm1dWE+HXWK8EYbp8IgM9nqAhTAx6Qu4mL8WtQD3u3d1
-FWvQmmjnlX9Kqcm6AX7sLTWVX/vdjRKiHsDZOMw7zpVXjUl+NReshASo76HiP3RY
-z/mLbFwPQlW2omxzDC+0oThIFe8gEQ==
-=32pw
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZaAX7AAKCRB4tDGHoIJi
+0ru8AQCdBU5wVGAEWO/zsKHdUGmfoPuB9Zz97glaVc3CR4U+UgEApoGcVfC+1Ta7
+DEGHEfg/LLqoQLprkP33lsaWkNIUTwQ=
+=xcFx
 -----END PGP SIGNATURE-----
 
---5fy9KoLsuSv9gV8C--
+--T/gFBDvK/h08vZL+--
 

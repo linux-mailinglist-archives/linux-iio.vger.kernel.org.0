@@ -1,87 +1,61 @@
-Return-Path: <linux-iio+bounces-1574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4318982AA95
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 10:11:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3171A82AAB4
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 10:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53C31F233BC
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 09:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01F928492C
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 09:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525E2101FA;
-	Thu, 11 Jan 2024 09:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB32410A0D;
+	Thu, 11 Jan 2024 09:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heWpginE"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="CEFOLMD0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from aposti.net (aposti.net [89.234.176.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE8AD291;
-	Thu, 11 Jan 2024 09:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40e60e13703so2591445e9.0;
-        Thu, 11 Jan 2024 01:11:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704964266; x=1705569066; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=58H3B21puKPucFrgZrCCs4UrdvBkL+jeM2Mpg7ywRvc=;
-        b=heWpginEoTaue2cw4AFKxoqn+1s5klWNgpIzpc3ZpRzmHBP5b6iwoOOk+w04OrfIC7
-         xUEz014CLBc8rksDwPT8CNjw0EPnW+oSrSWy2fTklbY5sibD1ExleD2lu/tCFyE7cRen
-         iLV+9YTszyT1770c+WaVD2ZuN1o7ayh4lHpjgvNOfnsz48Fp5bw+7n8KtM1qckX3LF2V
-         wSUV0LifXmvwcLssN7hShY0dj9B6AlOs3rf+iXz+ts1UHuPb76hTTP9f5PdKdbDHq83Y
-         5gi12sZylstf0J3U3179R/nlc01iwAbuKAEDpdQ8Ce+uGFnFwH73nUFBkpHhWRI9xDDD
-         HRdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704964266; x=1705569066;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=58H3B21puKPucFrgZrCCs4UrdvBkL+jeM2Mpg7ywRvc=;
-        b=m46Zv0gSe1deAIjyOrkHV4A5J9ihqP6fPSRQuRX4XI7L8IE66ll1ANx48H5C7sF/zX
-         SbxG9OJgQNqsfPWsi25VX+s75bcaEO6rNXX4WQ5H4+LiJScDIDkP5+aT5iq5nZOh5A3m
-         wbM5kDaTCWlHIe4W0Foxn/jiRKbAtFhPwUKgt2l9kt/8+AtBU82Zf34QD9rqdtYh5TAf
-         QdyjwPgovpKu3flCQIjwmrIFiKewB+iGL17P659+VpzdRN42oO5SggLWEWAJ7MAaM6k7
-         I7Mc+6PttnWRJODhqtYC2Dt7Q+IkKfi6kRiweMHn6wXjRKuo4wT6WToCzOdzrN+Lix2/
-         BIDg==
-X-Gm-Message-State: AOJu0YxQflsj9ym6KQm0PSODlY+BlA3XD9VNuWdMyd2p6cAsaZx4A45e
-	zj66lnbtcyYVHTW+UgGCkGQ=
-X-Google-Smtp-Source: AGHT+IE1tP3ziJ71aNWf7nd5bjIvUPih/2iLsXlWGYDp+UdvA8FDX5JyJaWF4HkNkgCLLNfW5toheA==
-X-Received: by 2002:a05:600c:444c:b0:40e:498b:dd35 with SMTP id v12-20020a05600c444c00b0040e498bdd35mr207291wmn.26.1704964265350;
-        Thu, 11 Jan 2024 01:11:05 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id p12-20020a05600c430c00b0040e596320bfsm1151028wme.0.2024.01.11.01.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 01:11:05 -0800 (PST)
-Message-ID: <4c15f3f2d54363698d13a9c5b50a82684e143afd.camel@gmail.com>
-Subject: Re: [PATCH 04/13] spi: dt-bindings: adi,axi-spi-engine: add offload
- bindings
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  Frank Rowand
- <frowand.list@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Jonathan
- Corbet <corbet@lwn.net>,  linux-spi@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Date: Thu, 11 Jan 2024 10:14:16 +0100
-In-Reply-To: <CAMknhBGwb+9Eo5ghG+Zk3BpMuMZfQxAAwGEGUMspcJzHzKWyXA@mail.gmail.com>
-References: 
-	<20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
-	 <20240109-axi-spi-engine-series-3-v1-4-e42c6a986580@baylibre.com>
-	 <20240110231456.GB2854345-robh@kernel.org>
-	 <CAMknhBGwb+9Eo5ghG+Zk3BpMuMZfQxAAwGEGUMspcJzHzKWyXA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B064610785;
+	Thu, 11 Jan 2024 09:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+	s=mail; t=1704964809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i85I9qJAb3wZcaqLgsPWI4OP+dyAoL/KQON9HMLs0z4=;
+	b=CEFOLMD0/goCi5Tjo0eqNPg8Uu7pcSd9SHh04IYigVZlgj0pUBa3ReUKoX8N8VVrsn7E/v
+	6fcStl2ns9HITdn1n+GT8YYcBjbJttwSbp1MPRJMMtcSpU3X3+wWdcjCa/rOAE3WB3jFSN
+	zFwA+ACqCA23Fc9JlMV2qJEaYD79KaA=
+Message-ID: <bbd6e9d6f239efee8886e08f3c3493fc968e53ce.camel@crapouillou.net>
+Subject: Re: [PATCH v5 0/8] iio: new DMABUF based API, v5
+From: Paul Cercueil <paul@crapouillou.net>
+To: Andrew Davis <afd@ti.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen
+	 <lars@metafoo.de>, Sumit Semwal <sumit.semwal@linaro.org>, Christian
+	=?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>, Vinod Koul <vkoul@kernel.org>, Jonathan Corbet
+	 <corbet@lwn.net>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ linux-doc@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linaro-mm-sig@lists.linaro.org, Nuno =?ISO-8859-1?Q?S=E1?=
+ <noname.nuno@gmail.com>, dmaengine@vger.kernel.org,
+ linux-media@vger.kernel.org
+Date: Thu, 11 Jan 2024 10:20:06 +0100
+In-Reply-To: <6ec8c7c4-588a-48b5-b0c5-56ca5216a757@ti.com>
+References: <20231219175009.65482-1-paul@crapouillou.net>
+	 <6ec8c7c4-588a-48b5-b0c5-56ca5216a757@ti.com>
+Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
+ keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZMLQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5UzFZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtNz8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe+rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIPdlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7Urf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KFlBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFCqaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IW
+	YXndJO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN7062DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOtX0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEAAYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmcGu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2zMcLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2cLUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,69 +63,248 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2024-01-10 at 18:06 -0600, David Lechner wrote:
-> On Wed, Jan 10, 2024 at 5:15=E2=80=AFPM Rob Herring <robh@kernel.org> wro=
-te:
-> >=20
-> > On Wed, Jan 10, 2024 at 01:49:45PM -0600, David Lechner wrote:
-> > > The ADI AXI SPI Engine driver supports offloading SPI transfers to
-> > > hardware. This is essentially a feature that allows recording an
-> > > arbitrary sequence of SPI transfers and then playing them back with
-> > > no CPU intervention via a hardware trigger.
-> > >=20
-> > > This adds the bindings for this feature. Each SPI Engine instance
-> > > can have from 0 to 32 offload instances. Each offload instance has a
-> > > trigger input and a data stream output. As an example, this could be
-> > > used with an ADC SPI peripheral. In this case the trigger is connecte=
-d
-> > > to a PWM/clock to determine the sampling rate for the ADC and the out=
-put
-> > > stream is connected to a DMA channel to pipe the sample data to memor=
-y.
-> > >=20
-> > > SPI peripherals act as consumers of the offload instances. Typically,
-> > > one SPI peripheral will be connected to one offload instance. But to
-> > > make the bindings future-proof, the property is an array.
-> >=20
-> > Is there some sort of arbitration between multiple offload engines on
-> > the same chip select? If not, I don't see how it would work.
->=20
-> There is only one SPI engine driving the SPI controller, so if two
-> offloads are triggered at the same time, they will be executed
-> serially.
->=20
-> >=20
-> > I think this whole thing could be simplified down to just 3
-> > SPI controller properties: pwms, dmas, and adi,offload-cs-map. Each
-> > property is has entries equal the number of offload engines. The last
-> > one maps an offload engine to a SPI chip-select.
->=20
-> Offloads could be connected to virtually anything, not just pwms and
-> dmas, so making pwms and dmas controller properties doesn't seem right
-> to me. What if we have one that uses a gpio trigger or clock trigger?
-> Or what if we have one where the output goes to a DSP instead of DMA?
-> This is why I made offload@ nodes with a compatible property - to
-> describe what is actually connected to each offload instance since it
-> could be an unlimited range of different things.
->=20
+Hi Andrew,
 
-Yeah, again, that is conceptually correct but I'm just not sure if the extr=
-a
-complexity pays off. The peripheral device connected to the offload should =
-know
-what trigger + data path it has. So I don't really think that horrible to h=
-ave
-the properties in the peripheral device. And there's not much that boilerpl=
-ate
-code anyways (at least in ADI usecases). And, as already said, for the trig=
-gers
-we might be able to have something generic but for the dmas (or whatever el=
-se)
-would be more tricky. In IIO case, setting up an IIO DMA buffer, is one API=
- call
-- so not much repetition in it...
-
-- Nuno S=C3=A1
+Le lundi 08 janvier 2024 =C3=A0 15:12 -0600, Andrew Davis a =C3=A9crit=C2=
+=A0:
+> On 12/19/23 11:50 AM, Paul Cercueil wrote:
+> > [V4 was: "iio: Add buffer write() support"][1]
+> >=20
+> > Hi Jonathan,
+> >=20
+> > This is a respin of the V3 of my patchset that introduced a new
+> > interface based on DMABUF objects [2].
+> >=20
+> > The V4 was a split of the patchset, to attempt to upstream buffer
+> > write() support first. But since there is no current user upstream,
+> > it
+> > was not merged. This V5 is about doing the opposite, and contains
+> > the
+> > new DMABUF interface, without adding the buffer write() support. It
+> > can
+> > already be used with the upstream adi-axi-adc driver.
+> >=20
+> > In user-space, Libiio uses it to transfer back and forth blocks of
+> > samples between the hardware and the applications, without having
+> > to
+> > copy the data.
+> >=20
+> > On a ZCU102 with a FMComms3 daughter board, running Libiio from the
+> > pcercuei/dev-new-dmabuf-api branch [3], compiled with
+> > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
+> > =C2=A0=C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
+> > =C2=A0=C2=A0 Throughput: 116 MiB/s
+> >=20
+> > Same hardware, with the DMABUF API (WITH_LOCAL_DMABUF_API=3DON):
+> > =C2=A0=C2=A0 sudo utils/iio_rwdev -b 4096 -B cf-ad9361-lpc
+> > =C2=A0=C2=A0 Throughput: 475 MiB/s
+> >=20
+> > This benchmark only measures the speed at which the data can be
+> > fetched
+> > to iio_rwdev's internal buffers, and does not actually try to read
+> > the
+> > data (e.g. to pipe it to stdout). It shows that fetching the data
+> > is
+> > more than 4x faster using the new interface.
+> >=20
+> > When actually reading the data, the performance difference isn't
+> > that
+> > impressive (maybe because in case of DMABUF the data is not in
+> > cache):
+> >=20
+> > WITH_LOCAL_DMABUF_API=3DOFF (so that it uses fileio):
+> > =C2=A0=C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/=
+zero
+> > status=3Dprogress
+> > =C2=A0=C2=A0 2446422528 bytes (2.4 GB, 2.3 GiB) copied, 22 s, 111 MB/s
+> >=20
+> > WITH_LOCAL_DMABUF_API=3DON:
+> > =C2=A0=C2=A0 sudo utils/iio_rwdev -b 4096 cf-ad9361-lpc | dd of=3D/dev/=
+zero
+> > status=3Dprogress
+> > =C2=A0=C2=A0 2334388736 bytes (2.3 GB, 2.2 GiB) copied, 21 s, 114 MB/s
+> >=20
+> > One interesting thing to note is that fileio is (currently)
+> > actually
+> > faster than the DMABUF interface if you increase a lot the buffer
+> > size.
+> > My explanation is that the cache invalidation routine takes more
+> > and
+> > more time the bigger the DMABUF gets. This is because the DMABUF is
+> > backed by small-size pages, so a (e.g.) 64 MiB DMABUF is backed by
+> > up
+> > to 16 thousands pages, that have to be invalidated one by one. This
+> > can
+> > be addressed by using huge pages, but the udmabuf driver does not
+> > (yet)
+> > support creating DMABUFs backed by huge pages.
+> >=20
 >=20
+> Have you tried DMABUFs created using the DMABUF System heap exporter?
+> (drivers/dma-buf/heaps/system_heap.c) It should be able to handle
+> larger allocation better here, and if you don't have any active
+> mmaps or vmaps then it can skip CPU-side coherency maintenance
+> (useful for device to device transfers).
+
+I didn't know about it!
+
+But udmabuf also allows you to skip CPU-side coherency maintenance,
+since DMABUFs have two ioctls to start/finish CPU access anyway.
+
+> Allocating DMABUFs out of user pages has a bunch of other issues you
+> might run into also. I'd argue udmabuf is now completely superseded
+> by DMABUF system heaps. Try it out :)
+
+I'm curious, what other issues?
+
+The good thing about udmabuf is that the memory is backed by pages, so
+we can use MSG_ZEROCOPY on sockets to transfer the mmapped data over
+the network (having a DMABUF interface to the network stack would be
+better, but I'm not opening that can of worms).
+
+> Andrew
+
+Cheers,
+-Paul
+
+> > Anyway, the real benefits happen when the DMABUFs are either shared
+> > between IIO devices, or between the IIO subsystem and another
+> > filesystem. In that case, the DMABUFs are simply passed around
+> > drivers,
+> > without the data being copied at any moment.
+> >=20
+> > We use that feature to transfer samples from our transceivers to
+> > USB,
+> > using a DMABUF interface to FunctionFS [4].
+> >=20
+> > This drastically increases the throughput, to about 274 MiB/s over
+> > a
+> > USB3 link, vs. 127 MiB/s using IIO's fileio interface + write() to
+> > the
+> > FunctionFS endpoints, for a lower CPU usage (0.85 vs. 0.65 load
+> > avg.).
+> >=20
+> > Based on linux-next/next-20231219.
+> >=20
+> > Cheers,
+> > -Paul
+> >=20
+> > [1]
+> > https://lore.kernel.org/all/20230807112113.47157-1-paul@crapouillou.net=
+/
+> > [2]
+> > https://lore.kernel.org/all/20230403154800.215924-1-paul@crapouillou.ne=
+t/
+> > [3]
+> > https://github.com/analogdevicesinc/libiio/tree/pcercuei/dev-new-dmabuf=
+-api
+> > [4]
+> > https://lore.kernel.org/all/20230322092118.9213-1-paul@crapouillou.net/
+> >=20
+> > ---
+> > Changelog:
+> > - [3/8]: Replace V3's dmaengine_prep_slave_dma_array() with a new
+> > =C2=A0=C2=A0 dmaengine_prep_slave_dma_vec(), which uses a new 'dma_vec'
+> > struct.
+> > =C2=A0=C2=A0 Note that at some point we will need to support cyclic tra=
+nsfers
+> > =C2=A0=C2=A0 using dmaengine_prep_slave_dma_vec(). Maybe with a new "fl=
+ags"
+> > =C2=A0=C2=A0 parameter to the function?
+> >=20
+> > - [4/8]: Implement .device_prep_slave_dma_vec() instead of V3's
+> > =C2=A0=C2=A0 .device_prep_slave_dma_array().
+> >=20
+> > =C2=A0=C2=A0 @Vinod: this patch will cause a small conflict with my oth=
+er
+> > =C2=A0=C2=A0 patchset adding scatter-gather support to the axi-dmac dri=
+ver.
+> > =C2=A0=C2=A0 This patch adds a call to axi_dmac_alloc_desc(num_sgs), bu=
+t the
+> > =C2=A0=C2=A0 prototype of this function changed in my other patchset - =
+it
+> > would
+> > =C2=A0=C2=A0 have to be passed the "chan" variable. I don't know how yo=
+u
+> > prefer it
+> > =C2=A0=C2=A0 to be resolved. Worst case scenario (and if @Jonathan is o=
+kay
+> > with
+> > =C2=A0=C2=A0 that) this one patch can be re-sent later, but it would ma=
+ke
+> > this
+> > =C2=A0=C2=A0 patchset less "atomic".
+> >=20
+> > - [5/8]:
+> > =C2=A0=C2=A0 - Use dev_err() instead of pr_err()
+> > =C2=A0=C2=A0 - Inline to_iio_dma_fence()
+> > =C2=A0=C2=A0 - Add comment to explain why we unref twice when detaching
+> > dmabuf
+> > =C2=A0=C2=A0 - Remove TODO comment. It is actually safe to free the fil=
+e's
+> > =C2=A0=C2=A0=C2=A0=C2=A0 private data even when transfers are still pen=
+ding because it
+> > =C2=A0=C2=A0=C2=A0=C2=A0 won't be accessed.
+> > =C2=A0=C2=A0 - Fix documentation of new fields in struct
+> > iio_buffer_access_funcs
+> > =C2=A0=C2=A0 - iio_dma_resv_lock() does not need to be exported, make i=
+t
+> > static
+> >=20
+> > - [7/8]:
+> > =C2=A0=C2=A0 - Use the new dmaengine_prep_slave_dma_vec().
+> > =C2=A0=C2=A0 - Restrict to input buffers, since output buffers are not =
+yet
+> > =C2=A0=C2=A0=C2=A0=C2=A0 supported by IIO buffers.
+> >=20
+> > - [8/8]:
+> > =C2=A0=C2=A0 Use description lists for the documentation of the three n=
+ew
+> > IOCTLs
+> > =C2=A0=C2=A0 instead of abusing subsections.
+> >=20
+> > ---
+> > Alexandru Ardelean (1):
+> > =C2=A0=C2=A0 iio: buffer-dma: split iio_dma_buffer_fileio_free() functi=
+on
+> >=20
+> > Paul Cercueil (7):
+> > =C2=A0=C2=A0 iio: buffer-dma: Get rid of outgoing queue
+> > =C2=A0=C2=A0 dmaengine: Add API function dmaengine_prep_slave_dma_vec()
+> > =C2=A0=C2=A0 dmaengine: dma-axi-dmac: Implement device_prep_slave_dma_v=
+ec
+> > =C2=A0=C2=A0 iio: core: Add new DMABUF interface infrastructure
+> > =C2=A0=C2=A0 iio: buffer-dma: Enable support for DMABUFs
+> > =C2=A0=C2=A0 iio: buffer-dmaengine: Support new DMABUF based userspace =
+API
+> > =C2=A0=C2=A0 Documentation: iio: Document high-speed DMABUF based API
+> >=20
+> > =C2=A0 Documentation/iio/dmabuf_api.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 54 +++
+> > =C2=A0 Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0=C2=A0 2 +
+> > =C2=A0 drivers/dma/dma-axi-dmac.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 40 ++
+> > =C2=A0 drivers/iio/buffer/industrialio-buffer-dma.c=C2=A0 | 242 +++++++=
++---
+> > =C2=A0 .../buffer/industrialio-buffer-dmaengine.c=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 52 ++-
+> > =C2=A0 drivers/iio/industrialio-buffer.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 402
+> > ++++++++++++++++++
+> > =C2=A0 include/linux/dmaengine.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 25 ++
+> > =C2=A0 include/linux/iio/buffer-dma.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 33 +-
+> > =C2=A0 include/linux/iio/buffer_impl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 26 ++
+> > =C2=A0 include/uapi/linux/iio/buffer.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 22 +
+> > =C2=A0 10 files changed, 836 insertions(+), 62 deletions(-)
+> > =C2=A0 create mode 100644 Documentation/iio/dmabuf_api.rst
+> >=20
 
 

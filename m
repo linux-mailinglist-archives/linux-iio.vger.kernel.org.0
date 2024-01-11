@@ -1,297 +1,143 @@
-Return-Path: <linux-iio+bounces-1570-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1571-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304F582A52C
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 01:07:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459A782A8E5
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 09:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6BF283685
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 00:07:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCBFAB225DC
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 08:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7E519B;
-	Thu, 11 Jan 2024 00:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C9CDDDD;
+	Thu, 11 Jan 2024 08:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tNBLgFhX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jO9X2qPz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF7F170
-	for <linux-iio@vger.kernel.org>; Thu, 11 Jan 2024 00:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2cd65f803b7so30102021fa.1
-        for <linux-iio@vger.kernel.org>; Wed, 10 Jan 2024 16:07:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6750DDA7;
+	Thu, 11 Jan 2024 08:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40e60c01112so2055065e9.3;
+        Thu, 11 Jan 2024 00:18:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704931631; x=1705536431; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cqlDI/EsbVlvlAFWwYJOMeL8Cf3uO7bR44ZqtCnNXAU=;
-        b=tNBLgFhXzgqb26XyfzARzAwDH7A4+CaxX8T8FBDBIA3GvBqhBbNcypbwl6ERKUiZJp
-         r/tQvxnqiyvPpfUg3uR4t0adAyZF/qu76b8DUbqM7RmIuB8kxTFUi/5c67ZpoGremEpj
-         6wE+9gCPFDBbXjjXGH8vAQJhj2sc7ljIpRyenjbO1lHEq+XiMO22gn6OKsbL1qjlm/RE
-         6uoKc7gjvomORZggPtNoCPcDiJRZ66psXuUQPgfQMhZBdPAMgQC8u4Pfqq07BFMeBNRY
-         kf5mwyZRq72NguvclrHoyeCjR1VWoswECw+WX+n0aqhiZ1Rz0x3hSlwN/uS3qejEZFgw
-         YFTg==
+        d=gmail.com; s=20230601; t=1704961081; x=1705565881; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5rwQfo+ZJaEC5dJSMpIgccTGi76fIiQqAqibwMmXhHI=;
+        b=jO9X2qPzzKT26eWkbHdg8X71zHSDYg4ZbGqsJA5IUEhn7VVAmhUAHlLKQ5CFWVZUF7
+         mgDQVX4M23+eflaKNnuj0vFoxmkZQjbhkR2JFvzEwGPk6AVDxEwUu+dCJTKX92xzEn0/
+         IRuR8Lhyn+OjyGAyAFbi0Xoqy0eMvUSmD9ZPZp9nGQAFyo67tqQYfZi5XO4czyYSgQ90
+         M1iqIRAwqKgPJJ8HQfUKBctJXiPJCoFGeYNAK4LY8aK4Mnj+MqAHcgu/uxio0M4Z48xz
+         /CXVNizcuU1/KcupenIzLP27x5N6t9418+kTpoGjdOUqSwDdprtig/WJXEB5662N9uv0
+         ng7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704931631; x=1705536431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cqlDI/EsbVlvlAFWwYJOMeL8Cf3uO7bR44ZqtCnNXAU=;
-        b=PHDRGnFZK7TAO7/W3JnFb5AHeiJ0qiolrv7dXoPlsIlTJHinPJ9+K2gaeQlQrOGL6k
-         Pv2PGCPMhojh77DBNyzoRHdYhCdpfK29U2r0vGJSBkAIiR+2A71eGFSNvyYQYnUoCur9
-         IqdA71SBW7LT/4W8FAGZLg4T/6AiPj7QChuzSmA2NFPtUf3pLOaE9k9JYnh1hF2G7L0b
-         8KGRehOj9dfhtFEihc+psqjeL6lE4lp4f2UjmoBDUYBhUCEMDv+I4WjiJjqGCnb0SwGW
-         OC8XVAmbwiSa2R5GaGaIlEBG4u1B8gS4sHa/nJjI/j6XbVZDjI+eR8uKZTlV+qEw/17R
-         RW5g==
-X-Gm-Message-State: AOJu0Yyn0v3L65CZ+8W7Jtm5Mbfom7w0m8B3mDBGZcpPCufnSiQF1b4Q
-	HHVcOghox4VsfPZfQNMu8aO5Z+NTeurlDsssuvZep7npfskBjQ==
-X-Google-Smtp-Source: AGHT+IF0Mh9RnhzVsC6wF2uQpMFTKctMQ6eNiIrfvgn7uo6xcil5arq2Ah4/SpxNERpEy9uAqdy/mnWErErugXYS1XA=
-X-Received: by 2002:a2e:9989:0:b0:2cd:8070:7f5a with SMTP id
- w9-20020a2e9989000000b002cd80707f5amr142642lji.17.1704931630450; Wed, 10 Jan
- 2024 16:07:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704961081; x=1705565881;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5rwQfo+ZJaEC5dJSMpIgccTGi76fIiQqAqibwMmXhHI=;
+        b=GRcQ5OHlKjKZj0T8RoJoKiQcgfggI2gyCfgX3e7y+a/S/kAzuoeRRisYbuYY2WL+t9
+         qQB0ai+iuGPtyIYVeUi/5BDGWPqcyHc+BgMBZwWgMKvyYt/lNfwLCDtjIzgoWpvd3efJ
+         Xa6y4ADsgqsJ8c+fl2gcOLxV4Dgq741kBp5lEKP4sOWj/3BwjeJjxTGXbuS+nywEs4Ho
+         3qj1bXXTvPaNqfpSk3WrYv9m4qaEyKxbnDTjlyRQhjmWTu0trvuOEU7TPHGJE91kVaKR
+         l+mTuQm97HiccluvAZB49YbnS3TQJn5FzUJ5F/zbmJ/vaKlIQydkibT0Sa963iq4haro
+         sv1A==
+X-Gm-Message-State: AOJu0Yw6Hm8dSUzBe12C/Ucr9w2DxHGdKI8kryg94TOTbf74zN3QrOI8
+	WJia3dMdXgq+0P3EXAI3myg=
+X-Google-Smtp-Source: AGHT+IHt/J3AVkSY28dINSArDDnQZqWP8Fj1RL8pSvDrJVbP0V7ClIf6ITN06YHaylgCtNAb15yqgA==
+X-Received: by 2002:a05:600c:34c5:b0:40e:4e14:45bc with SMTP id d5-20020a05600c34c500b0040e4e1445bcmr184476wmq.13.1704961080551;
+        Thu, 11 Jan 2024 00:18:00 -0800 (PST)
+Received: from [172.25.98.130] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id b8-20020a05600c4e0800b0040e60dd364dsm768626wmq.14.2024.01.11.00.17.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jan 2024 00:18:00 -0800 (PST)
+Message-ID: <478d9445-96aa-44b3-b598-8f7d7716dbba@gmail.com>
+Date: Thu, 11 Jan 2024 10:17:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
- <20240109-axi-spi-engine-series-3-v1-4-e42c6a986580@baylibre.com> <20240110231456.GB2854345-robh@kernel.org>
-In-Reply-To: <20240110231456.GB2854345-robh@kernel.org>
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 10 Jan 2024 18:06:59 -0600
-Message-ID: <CAMknhBGwb+9Eo5ghG+Zk3BpMuMZfQxAAwGEGUMspcJzHzKWyXA@mail.gmail.com>
-Subject: Re: [PATCH 04/13] spi: dt-bindings: adi,axi-spi-engine: add offload bindings
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Frank Rowand <frowand.list@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: hmc425a: add conditional GPIO
+ array size constraints
+To: Conor Dooley <conor@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron
+ <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>
+References: <20240110153757.5754-1-mitrutzceclan@gmail.com>
+ <20240110153757.5754-2-mitrutzceclan@gmail.com>
+ <20240110-unfitting-squander-b1d71c185bb7@spud>
+Content-Language: en-US
+From: Ceclan Dumitru <mitrutzceclan@gmail.com>
+In-Reply-To: <20240110-unfitting-squander-b1d71c185bb7@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 10, 2024 at 5:15=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Wed, Jan 10, 2024 at 01:49:45PM -0600, David Lechner wrote:
-> > The ADI AXI SPI Engine driver supports offloading SPI transfers to
-> > hardware. This is essentially a feature that allows recording an
-> > arbitrary sequence of SPI transfers and then playing them back with
-> > no CPU intervention via a hardware trigger.
-> >
-> > This adds the bindings for this feature. Each SPI Engine instance
-> > can have from 0 to 32 offload instances. Each offload instance has a
-> > trigger input and a data stream output. As an example, this could be
-> > used with an ADC SPI peripheral. In this case the trigger is connected
-> > to a PWM/clock to determine the sampling rate for the ADC and the outpu=
-t
-> > stream is connected to a DMA channel to pipe the sample data to memory.
-> >
-> > SPI peripherals act as consumers of the offload instances. Typically,
-> > one SPI peripheral will be connected to one offload instance. But to
-> > make the bindings future-proof, the property is an array.
->
-> Is there some sort of arbitration between multiple offload engines on
-> the same chip select? If not, I don't see how it would work.
 
-There is only one SPI engine driving the SPI controller, so if two
-offloads are triggered at the same time, they will be executed
-serially.
 
->
-> I think this whole thing could be simplified down to just 3
-> SPI controller properties: pwms, dmas, and adi,offload-cs-map. Each
-> property is has entries equal the number of offload engines. The last
-> one maps an offload engine to a SPI chip-select.
+On 1/10/24 18:17, Conor Dooley wrote:
+> On Wed, Jan 10, 2024 at 05:37:09PM +0200, Dumitru Ceclan wrote:...
+>>    ctrl-gpios:
+>>      description:
+>> -      Must contain an array of 6 GPIO specifiers, referring to the GPIO pins
+>> -      connected to the control pins V1-V6.
+>> -    minItems: 6
+>> +      Must contain an array of GPIO specifiers, referring to the GPIO pins
+>> +      connected to the control pins.
+>> +        ADRF5740  - 4 GPIO connected to D2-D5
+>> +        HMC540S   - 4 GPIO connected to V1-V4
+>> +        HMC425A   - 6 GPIO connected to V1-V6
+>> +    minItems: 1
+>>      maxItems: 6
+>>  
+>> +allOf:
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: adi,hmc425a
+>> +    then:
+>> +      properties:
+>> +        ctrl-gpios:
+>> +          minItems: 6
+> 
+>> +          maxItems: 6
+> 
+> This one should not be needed, it's already set by constraints on the
+> property above.
+> 
 
-Offloads could be connected to virtually anything, not just pwms and
-dmas, so making pwms and dmas controller properties doesn't seem right
-to me. What if we have one that uses a gpio trigger or clock trigger?
-Or what if we have one where the output goes to a DSP instead of DMA?
-This is why I made offload@ nodes with a compatible property - to
-describe what is actually connected to each offload instance since it
-could be an unlimited range of different things.
+No, not needed, just inspired from:
+ /bindings/clock/samsung,exynos7-clock.yaml
 
->
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
-> >  .../spi/adi,axi-spi-engine-peripheral-props.yaml   | 24 +++++++++++
-> >  .../bindings/spi/adi,axi-spi-engine.yaml           | 49 ++++++++++++++=
-+++++++-
-> >  .../bindings/spi/spi-peripheral-props.yaml         |  1 +
-> >  3 files changed, 73 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine-p=
-eripheral-props.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-en=
-gine-peripheral-props.yaml
-> > new file mode 100644
-> > index 000000000000..19b685fc3b39
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine-peripher=
-al-props.yaml
-> > @@ -0,0 +1,24 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/spi/adi,axi-spi-engine-peripheral-p=
-rops.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Peripheral properties for Analog Devices AXI SPI Engine Control=
-ler
-> > +
-> > +maintainers:
-> > +  - Michael Hennerich <Michael.Hennerich@analog.com>
-> > +  - Nuno S=C3=A1 <nuno.sa@analog.com>
-> > +
-> > +properties:
-> > +  adi,offloads:
-> > +    description:
-> > +      List of AXI SPI Engine offload instances assigned to this periph=
-eral.
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    maxItems: 32
-> > +    items:
-> > +      items:
-> > +        - minimum: 0
-> > +          maximum: 31
->
-> This defines a matrix. You want:
->
-> minItems: 1
-> maxItems: 32
-> items:
->   maximum: 31
->
-> (0 is already the min).
+Specifically, the top constraints:
+  clocks:
 
-thanks
+    minItems: 1
 
->
-> > +
-> > +additionalProperties: true
-> > diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.y=
-aml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-> > index d48faa42d025..69f3261bab47 100644
-> > --- a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-> > +++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-> > @@ -21,6 +21,23 @@ maintainers:
-> >  allOf:
-> >    - $ref: /schemas/spi/spi-controller.yaml#
-> >
-> > +$defs:
-> > +  offload:
-> > +    description:
-> > +      Describes the connections of the trigger input and the data outp=
-ut stream
-> > +      of one or more offload instances.
-> > +
-> > +    properties:
-> > +      reg:
-> > +        description:
-> > +          Index of the offload instance.
-> > +        items:
-> > +          - minimum: 0
-> > +            maximum: 31
-> > +
-> > +    required:
-> > +      - reg
-> > +
-> >  properties:
-> >    compatible:
-> >      const: adi,axi-spi-engine-1.00.a
-> > @@ -41,6 +58,22 @@ properties:
-> >        - const: s_axi_aclk
-> >        - const: spi_clk
-> >
-> > +  offloads:
-> > +    type: object
-> > +    description: Zero or more offloads supported by the controller.
-> > +
-> > +    properties:
-> > +      "#address-cells":
-> > +        const: 1
-> > +
-> > +      "#size-cells":
-> > +        const: 0
-> > +
-> > +    patternProperties:
-> > +      "^offload@[0-8a-f]+$":
-> > +        type: object
-> > +        $ref: '#/$defs/offload'
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > @@ -62,5 +95,19 @@ examples:
-> >          #address-cells =3D <1>;
-> >          #size-cells =3D <0>;
-> >
-> > -        /* SPI devices */
-> > +        offloads {
-> > +            #address-cells =3D <1>;
-> > +            #size-cells =3D <0>;
-> > +
-> > +            offload@0 {
-> > +                compatible =3D "adi,example-offload";
->
-> No fake examples please. This should give you a warning.
+    maxItems: 13
 
-Ack.
+One of the conditional constraints:
+  clocks:
 
-FYI, unknown compatibles don't currently give a warning.
+    minItems: 13
 
-$ dt-validate --version
-2023.12.dev6+gfb80ec4
-$ make dt_binding_check
-DT_SCHEMA_FILES=3DDocumentation/devicetree/bindings/spi/adi,axi-spi-engine.=
-yaml
-ARCH=3Darm KBUILD_OUTPUT=3D\$HOME/build-area/ad7944-mainline
-make[1]: Entering directory
-'/home/david/work/linux/OME/build-area/ad7944-mainline'
-  DTEX    Documentation/devicetree/bindings/spi/adi,axi-spi-engine.example.=
-dts
-  DTC_CHK Documentation/devicetree/bindings/spi/adi,axi-spi-engine.example.=
-dtb
-make[1]: Leaving directory
-'/home/david/work/linux/OME/build-area/ad7944-mainline'
+    maxItems: 13
 
->
-> > +                reg =3D <0>;
-> > +            };
-> > +        };
-> > +
-> > +        adc@0 {
-> > +            compatible =3D "adi,example-adc";
-> > +            reg =3D <0>;
-> > +            adi,offloads =3D <0>;
-> > +        };
-> >      };
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props=
-.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > index 1c8e71c18234..7beb5a3798a5 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > @@ -132,6 +132,7 @@ properties:
-> >
-> >  # The controller specific properties go here.
-> >  allOf:
-> > +  - $ref: adi,axi-spi-engine-peripheral-props.yaml#
-> >    - $ref: arm,pl022-peripheral-props.yaml#
-> >    - $ref: cdns,qspi-nor-peripheral-props.yaml#
-> >    - $ref: samsung,spi-peripheral-props.yaml#
-> >
-> > --
-> > 2.43.0
-> >
+
+I would only have two arguments for this staying here:
+ - It stays consistent with other cases
+ - In the case a new device with more than 6 GPIOs is added, this would
+need to be put back in
 

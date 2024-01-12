@@ -1,140 +1,155 @@
-Return-Path: <linux-iio+bounces-1621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628A682C4D3
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 18:39:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CD082C641
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 21:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E91D1C22386
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 17:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 164601F26116
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 20:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF73E2263D;
-	Fri, 12 Jan 2024 17:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A4168DE;
+	Fri, 12 Jan 2024 20:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1pgyGpfI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8640922634;
-	Fri, 12 Jan 2024 17:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TBTJ53gg0z6K5kq;
-	Sat, 13 Jan 2024 01:37:25 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id E0D0B140A36;
-	Sat, 13 Jan 2024 01:39:21 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 12 Jan
- 2024 17:39:21 +0000
-Date: Fri, 12 Jan 2024 17:39:20 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-CC: <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Michael
- Hennerich" <Michael.Hennerich@analog.com>, Jonathan Cameron
-	<jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
-	<olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v5 8/8] iio: adc: adi-axi-adc: move to backend framework
-Message-ID: <20240112173920.000014c6@Huawei.com>
-In-Reply-To: <20240112-iio-backend-v5-8-bdecad041ab4@analog.com>
-References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
-	<20240112-iio-backend-v5-8-bdecad041ab4@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF4F168C9
+	for <linux-iio@vger.kernel.org>; Fri, 12 Jan 2024 20:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ccbc328744so83647871fa.3
+        for <linux-iio@vger.kernel.org>; Fri, 12 Jan 2024 12:09:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1705090163; x=1705694963; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KODDiTlCYJz8VsTSh5FfV19+LAJgiCFhCmKp66prebs=;
+        b=1pgyGpfIAUmtnVrgG2GiS1Bcof5zE5Ypo1c3vuQAugjD8jxG2OHBuff3dtj+ym2LH0
+         FyP5ZZQlcse7lt4saVLhFZJnH20xpgYueXwZRK49kgnypWa8l+DNsKR8rLntNZWmtm50
+         1vCV7vhpCi6J2vBeOIV5HevYJ7O6yLbLpUBa4QHyOaCFwZqjOHMOEd/xH5TtvwKBYdyy
+         5chv0NuZ2RvA/o7RxNiyUpRS33VLb5WRuWqAZJgmkrdVYWta5/d1v27v7KGJsTdZ50Tn
+         t43+45eMxxreA8nIsx+tkvVAER788TIkVyNrz5pvRncAJXBlH1e7znPk9fzwTwt+BVCh
+         zMog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705090163; x=1705694963;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KODDiTlCYJz8VsTSh5FfV19+LAJgiCFhCmKp66prebs=;
+        b=MSSMKoadyfWKpDQyjW7Cy2KmcqRe5eLa0yJYgT/UsI7rC5/DY1Atan1c7g33kMX1a5
+         q5JLfl8F081R9shqapl4+Q7Xy9wtaNfI1XLw5z77CgfN2UOsRoIUdhe8zSzrK5YnuksP
+         d6KbbD9xHwIr7XvFdpRpRnJxZ9b6NhHKcbqktCmZ4ZArSTMP1x1GthLjJXGuY6SExxpR
+         KD158Rxk9KvYq0BFsJpMrz7SJUm1ZwHR0lMvQCQ9zPXPkF/lqL8NQb0DqQboq6PsGHI6
+         KT1bMbkuju5N1TBqeQI282cJ08yBLiou2TLWSINc0cxdFIsRiSn3Xk2PBpnOSfib48V+
+         7SOw==
+X-Gm-Message-State: AOJu0YzXjyZqsnOvXwWC9sq2EMEduMMXBFuhkK41XU6b066o1Kn8Hb0K
+	OEKFytcK1tCws2geCjiWczqk+70oFsgCiyD3wqJurVQZ3QMBHQ==
+X-Google-Smtp-Source: AGHT+IGEuMOKDSkYS95xvat9jZtpVVIWQ7N5qewHjvbrG746DxH65fTxGieC8qJkBQ+ThV+voOiRxrp6c9DBjmLGD8c=
+X-Received: by 2002:a2e:7813:0:b0:2cd:85b9:5815 with SMTP id
+ t19-20020a2e7813000000b002cd85b95815mr890369ljc.42.1705090162684; Fri, 12 Jan
+ 2024 12:09:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
+ <20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
+ <2c74aad9-3cb9-4222-8072-e72120c2658e@sirena.org.uk> <CAMknhBGMRed9vDrDAuPJ5DnEe6MyHzd0VBebp5OaLX2Q+AyhMQ@mail.gmail.com>
+ <CAMknhBE-1Khe9J-n5WQnH=mFnN0ukiq7=F-SEOU6J-2_u-R0bw@mail.gmail.com>
+In-Reply-To: <CAMknhBE-1Khe9J-n5WQnH=mFnN0ukiq7=F-SEOU6J-2_u-R0bw@mail.gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 12 Jan 2024 14:09:11 -0600
+Message-ID: <CAMknhBGzOFnMnpt7B8iHd9VwWA-_zFVdiswDUAheovrHXyAv=Q@mail.gmail.com>
+Subject: Re: [PATCH 01/13] spi: add core support for controllers with offload capabilities
+To: Mark Brown <broonie@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Frank Rowand <frowand.list@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Jander <david@protonic.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 12 Jan 2024 17:40:22 +0100
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Thu, Jan 11, 2024 at 3:32=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+>
+> On Thu, Jan 11, 2024 at 2:54=E2=80=AFPM David Lechner <dlechner@baylibre.=
+com> wrote:
+> >
+> > On Wed, Jan 10, 2024 at 3:36=E2=80=AFPM Mark Brown <broonie@kernel.org>=
+ wrote:
+> > >
+> > > On Wed, Jan 10, 2024 at 01:49:42PM -0600, David Lechner wrote:
+> > > > This adds a feature for specialized SPI controllers that can record
+> > > > a series of SPI transfers, including tx data, cs assertions, delays=
+,
+> > > > etc. and then play them back using a hardware trigger without CPU
+> > > > intervention.
+> > >
+> > > > The intended use case for this is with the AXI SPI Engine to captur=
+e
+> > > > data from ADCs at high rates (MSPS) with a stable sample period.
+> > >
+> > > > Most of the implementation is controller-specific and will be handl=
+ed by
+> > > > drivers that implement the offload_ops callbacks. The API follows a
+> > > > prepare/enable pattern that should be familiar to users of the clk
+> > > > subsystem.
+> > >
+> > > This is a lot to do in one go, and I think it's a bit too off on the
+> > > side and unintegrated with the core.  There's two very high level bit=
+s
+> > > here, there's the pre-cooking a message for offloading to be executed=
+ by
+> > > a hardware engine and there's the bit where that's triggered by some
+> > > hardwar event rather than by software.
+> > >
+> > > There was a bunch of discussion of the former case with David Jander
+> >
+> > I found [1] which appears to be the conversation you are referring to.
+> > Is that all or is there more that I missed?
+> >
+> > [1]: https://lore.kernel.org/linux-spi/20220512163445.6dcca126@erd992/
+> >
+> > > (CCed) a while back when he was doing all the work he did on optimisi=
+ng
+> > > the core for uncontended uses, the thinking there was to have a
+> > > spi_prepare_message() (or similar) API that drivers could call and th=
+en
+> > > reuse the same transfer repeatedly, and even without any interface fo=
+r
+> > > client drivers it's likely that we'd be able to take advantage of it =
+in
+> > > the core for multi-transfer messages.  I'd be surprised if there were=
+n't
+> > > wins when the message goes over the DMA copybreak size.  A much wider
+> > > range of hardware would be able to do this bit, for example David's c=
+ase
+> > > was a Raspberry Pi using the DMA controller to write into the SPI
+>
+> For those, following along, it looks like the RPi business was
+> actually a 2013 discussion with Martin Sperl [2]. Both this and [1]
+> discuss proposed spi_prepare_message() APIs.
+>
+> [2]: https://lore.kernel.org/linux-spi/CACRpkdb4mn_Hxg=3D3tuBu89n6eyJ082E=
+ETkwtNbzZDFZYTHbVVg@mail.gmail.com/T/#u
 
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> Move to the IIO backend framework. Devices supported by adi-axi-adc now
-> register themselves as backend devices.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+I found one more. A patch from Martin with the basic proposed API but
+not much in the way of implementation. It looks like this is where the
+idea fizzled out.
 
-A few quick drive by comments whist I wait for a build to finish...
-
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index 0f21d1d98b9f..741b53c25bb1 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -8,6 +8,7 @@
->>  static int adi_axi_adc_probe(struct platform_device *pdev)
->  {
-...
-
-> @@ -390,37 +205,23 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	if (cl->info->version > ver) {
-> +	if (*expected_ver > ver) {
->  		dev_err(&pdev->dev,
->  			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-
-Format doesn't match with later.
-
-> -			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
-> -			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
-> -			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
-> +			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
-> +			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
-> +			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
->  			ADI_AXI_PCORE_VER_MAJOR(ver),
->  			ADI_AXI_PCORE_VER_MINOR(ver),
->  			ADI_AXI_PCORE_VER_PATCH(ver));
->  		return -ENODEV;
->  	}
->  
-> -	indio_dev->info = &adi_axi_adc_info;
-> -	indio_dev->name = "adi-axi-adc";
-> -	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	indio_dev->num_channels = conv->chip_info->num_channels;
-> -	indio_dev->channels = conv->chip_info->channels;
-> -
-> -	ret = adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
-> +	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
->  	if (ret)
->  		return ret;
->  
-> -	ret = adi_axi_adc_setup_channels(&pdev->dev, st);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
-> +	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
-I'd rip this (I think) unrelated change out to reduce noise in here somewhat.
-I'm curious though as it's still %c above.
-
-
->  		 ADI_AXI_PCORE_VER_MAJOR(ver),
->  		 ADI_AXI_PCORE_VER_MINOR(ver),
->  		 ADI_AXI_PCORE_VER_PATCH(ver));
-> @@ -428,6 +229,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	return 0;
->  }
-
-
-
+https://lore.kernel.org/linux-spi/0C7D5B1E-E561-4F52-BEA8-572EB0CA26A6@mart=
+in.sperl.org/
 

@@ -1,111 +1,104 @@
-Return-Path: <linux-iio+bounces-1593-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1594-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E493582B6F4
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 23:03:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E77682B8FA
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 02:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85CBFB23CC2
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jan 2024 22:03:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7471B1C24109
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 01:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D735821A;
-	Thu, 11 Jan 2024 22:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7265A4C;
+	Fri, 12 Jan 2024 01:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQETrqDh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLDZHvua"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A495E5820D;
-	Thu, 11 Jan 2024 22:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFF0C43399;
-	Thu, 11 Jan 2024 22:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705010619;
-	bh=jN9g+MnTl+CuJ+/RvoYQJ0TAQWXECkq+Sx15c1NcM4c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qQETrqDh5M/ns6SFVKQSqUS42/kaxrvLrN8y2KF4vmyBIt1pOK66I2YZUfAYK80P8
-	 4Ri50DkUoL/qQqqxRtTxh//fxrXSmxd6IeORDZTRpD+5lOl30hO4EOa1CuXOdJkvQN
-	 Uq195P7kItZ4h6nIyqPHGLxZeeXqeJ2JaIyouph2k3r5XEpWduk873MXI5NoTpcEnu
-	 CJm4XunD/djKIX/nD2nOWLWQWO+OsS9Re8qxJq6b+dL8gwEgOylQ70EF4eIf0FmIO7
-	 ixNZdO550n/YmEFVIUR9uMIXHi0KeodQGv+tmV2UhkgiM4KlpAk36iUBaSaKp1qMzG
-	 cJ1WiUt/sMT8w==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2cd5b467209so52432941fa.3;
-        Thu, 11 Jan 2024 14:03:39 -0800 (PST)
-X-Gm-Message-State: AOJu0YwOZI+pKy/8XYCpN0XHjHhQKZL0tobFaDe/TeeUQIVFhtzbDBgS
-	TaAzzC/7tVv21dDuVVgq772QTuUv0CN3DTNDqg==
-X-Google-Smtp-Source: AGHT+IGqQEJRlx5vqZKnSFNrc+k4aJn7Nwqxw+vCHtTG57ACO6acRmhTsCZusCpdLBlZG73fSAeQv2CiH9ue0nIZVs4=
-X-Received: by 2002:a2e:9e97:0:b0:2cc:610d:ca6 with SMTP id
- f23-20020a2e9e97000000b002cc610d0ca6mr198479ljk.81.1705010617334; Thu, 11 Jan
- 2024 14:03:37 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59083EA6;
+	Fri, 12 Jan 2024 01:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-28bc870c540so4917983a91.2;
+        Thu, 11 Jan 2024 17:09:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705021785; x=1705626585; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbnbqtGC+LwPJy3OhQOf+bnBND4N5hTC5bevzjMn7M8=;
+        b=XLDZHvuan0wj0aefv/Nu4b7EeMXsO8zkVPi3ojeyYdN7G58eLqWLwDcFkUTpbrzDvh
+         bYymo1qtH8mSIgcTegStPU7axNAlA11zzBxqVDKf6VP6Pi8NZimsf2NF7pjDSo6iNqs/
+         fzQfdfBbZqxFFBlIKtPqFi5P4cAx93rc5FQcaZ4BcbU70Gw1skV9rAPpDKhxDFgXy81F
+         rFUioAJ5VT8s/WAsfiwdNxdKarlSps975yXTZeDwCPVptNRgJbtD1K+GiK/PrnRUx3KU
+         7puBmVAfKFMFJCdWXYCv9PhjLuqTiHOB03JjCYd0JNmg7h4aSUMkOkv6uLQbcWEvLKC5
+         fnwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705021785; x=1705626585;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gbnbqtGC+LwPJy3OhQOf+bnBND4N5hTC5bevzjMn7M8=;
+        b=ckFitgq1G6vGbLREa8X0p2TeC8jg6zcuRZ416eoQy+dU1F/ICPQu04JIFIvRpGOqns
+         jdnqfp+Eh7o4iKANTZwq6gzl/FopfRQ6B2fJjOftug37AjVW8zJhe5eW/j22NC6cxxwn
+         vnujVZWav+7K8IZQzrfVKS3mqoDtGn4L1AXBBFuEsE0R+ZPOw/EYlfyuSYUpHYiCllh3
+         iw0jonv16JmQRzENoKVFyKuHOB97i4ODKQhiK3exStk/qXBfWq9wC9MwLnUhaldG97M9
+         Ir+4yRS2XvJikIOqLtGnVFEBnMLoHLhX3M96FspbTyVBRkXeRMgqNbYs/a7wk09ROP+4
+         PlsQ==
+X-Gm-Message-State: AOJu0YytG/ZYRgalWIMl/2WT2GeHGrzgzzJ89rmIpk9pL3QfaTLXYU4E
+	sCc8plMXNYt1zKRF2LtmT7I=
+X-Google-Smtp-Source: AGHT+IHWgleMhDkfikwrRIqFaW2HT2Q8E4dtrtFV9uwKWr3KD82C/4m0Ekkxr8BwjDCcw/HnqU0S1Q==
+X-Received: by 2002:a17:90a:c004:b0:28d:a54b:6951 with SMTP id p4-20020a17090ac00400b0028da54b6951mr680831pjt.16.1705021784655;
+        Thu, 11 Jan 2024 17:09:44 -0800 (PST)
+Received: from localhost ([2804:30c:924:6f00:42e7:f3b7:14b8:1cbe])
+        by smtp.gmail.com with ESMTPSA id f14-20020a17090aec8e00b0028e0a0445e8sm84189pjy.17.2024.01.11.17.09.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jan 2024 17:09:43 -0800 (PST)
+Date: Thu, 11 Jan 2024 22:09:43 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Amit Dhingra <mechanicalamit@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: correct file entry for AD7091R
+Message-ID: <ZaCRV6Qw1KlIFt3I@debian-BULLSEYE-live-builder-AMD64>
+References: <CAO=gReEUr4B+E2mQsSrncHf41f0A915SuoWgA522_2Ts-dZbSg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com> <20240109-axi-spi-engine-series-3-v1-2-e42c6a986580@baylibre.com>
-In-Reply-To: <20240109-axi-spi-engine-series-3-v1-2-e42c6a986580@baylibre.com>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Thu, 11 Jan 2024 16:03:24 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJPRwDbQDAg0nqb2VRT3K3qWPWhQo_jsu20f7RcgSgdsg@mail.gmail.com>
-Message-ID: <CAL_JsqJPRwDbQDAg0nqb2VRT3K3qWPWhQo_jsu20f7RcgSgdsg@mail.gmail.com>
-Subject: Re: [PATCH 02/13] scripts: dtc: checks: don't warn on SPI
- non-peripheral child nodes
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Frank Rowand <frowand.list@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAO=gReEUr4B+E2mQsSrncHf41f0A915SuoWgA522_2Ts-dZbSg@mail.gmail.com>
 
-On Wed, Jan 10, 2024 at 1:51=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> According to the spi-controller.yaml bindings, SPI peripheral child
-> nodes match the pattern "^.*@[0-9a-f]+$".
->
-> A SPI controller binding may require a child object node that is not a
-> peripheral. For example, the adi,axi-spi-engine binding requires an
-> "offloads" child node that is not a peripheral but rather a part of the
-> controller itself.
->
-> By checking for '@' in the node name, we can avoids a warnings like:
->
->     Warning (spi_bus_reg): /example-0/spi@44a00000/offloads: missing or e=
-mpty reg property
->
-> for a binding like:
->
->     spi {
->         ...
->
->         offloads {
->             offload@0 {
->                 ...
->             };
->             ...
->         };
->
->         peripheral@0 {
->             ...
->         };
->     };
->
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+On 01/06, Amit Dhingra wrote:
+> File entry has driver/iio/adc two times. Fix the file entry
+> 
+> Found by ./scripts/get_maintainer.pl --self-test=patterns
+> 
+
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+
+> Signed-off-by: Amit Dhingra <mechanicalamit@gmail.com>
 > ---
->  scripts/dtc/checks.c | 4 ++++
->  1 file changed, 4 insertions(+)
+[...]
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 35147477e8e4..ff61be50e82e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1128,7 +1128,7 @@ L:	linux-iio@vger.kernel.org
+>  S:	Supported
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+> -F:	drivers/iio/adc/drivers/iio/adc/ad7091r*
+> +F:	drivers/iio/adc/ad7091r*
+> 
+Oops, must have accidentaly bumped the paste key at some point.
 
-Check the commit history. We don't take changes to kernel's dtc copy.
-They must go upstream first.
-
-Rob
+Thanks,
+Marcelo
 

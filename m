@@ -1,45 +1,51 @@
-Return-Path: <linux-iio+bounces-1619-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1620-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4697482C480
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 18:14:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0D082C4CA
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 18:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40CC286B7C
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 17:14:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EDD4B21BC7
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 17:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BC322603;
-	Fri, 12 Jan 2024 17:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DCA22634;
+	Fri, 12 Jan 2024 17:33:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1497917C83;
-	Fri, 12 Jan 2024 17:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35AA175A3;
+	Fri, 12 Jan 2024 17:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TBSkn3kDJz6K5sk;
-	Sat, 13 Jan 2024 01:12:01 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TBT8s0qvjz6J9SV;
+	Sat, 13 Jan 2024 01:31:09 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id CB7D9140B2A;
-	Sat, 13 Jan 2024 01:13:57 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 18D6D140B2A;
+	Sat, 13 Jan 2024 01:33:35 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 12 Jan
- 2024 17:13:57 +0000
-Date: Fri, 12 Jan 2024 17:13:56 +0000
+ 2024 17:33:34 +0000
+Date: Fri, 12 Jan 2024 17:33:33 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 6/6] iio: pressure: hsc030pa add sleep mode
-Message-ID: <20240112171356.00003e88@Huawei.com>
-In-Reply-To: <20240110172306.31273-7-petre.rodan@subdimension.ro>
-References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
-	<20240110172306.31273-7-petre.rodan@subdimension.ro>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+CC: <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Michael
+ Hennerich" <Michael.Hennerich@analog.com>, Jonathan Cameron
+	<jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
+	<olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v5 7/8] iio: adc: ad9467: convert to backend framework
+Message-ID: <20240112173333.00002ed1@Huawei.com>
+In-Reply-To: <20240112-iio-backend-v5-7-bdecad041ab4@analog.com>
+References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
+	<20240112-iio-backend-v5-7-bdecad041ab4@analog.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -48,170 +54,320 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 10 Jan 2024 19:22:41 +0200
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Fri, 12 Jan 2024 17:40:21 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> Some custom chips from this series require a wakeup sequence before the
-> measurement cycle is started.
->=20
-> Quote from the product datasheet:
-> "Optional sleep mode available upon special request."
->=20
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> ---
->  drivers/iio/pressure/hsc030pa.c     |  4 ++++
->  drivers/iio/pressure/hsc030pa.h     |  4 ++++
->  drivers/iio/pressure/hsc030pa_i2c.c | 19 +++++++++++++++++
->  drivers/iio/pressure/hsc030pa_spi.c | 32 +++++++++++++++++++++++++++--
->  4 files changed, 57 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/pressure/hsc030pa.c b/drivers/iio/pressure/hsc03=
-0pa.c
-> index 3faa0fd42201..9e66fd561801 100644
-> --- a/drivers/iio/pressure/hsc030pa.c
-> +++ b/drivers/iio/pressure/hsc030pa.c
-> @@ -501,6 +501,10 @@ int hsc_common_probe(struct device *dev, hsc_recv_fn=
- recv)
->  		return dev_err_probe(dev, -EINVAL,
->  				     "pressure limits are invalid\n");
->=20
-> +	ret =3D device_property_read_bool(dev, "honeywell,sleep-mode");
-> +	if (ret)
-> +		hsc->capabilities |=3D HSC_CAP_SLEEP;
-	if (device_property_read_bool())
-		hsc->cap...
+> From: Nuno Sa <nuno.sa@analog.com>
+> 
+> Convert the driver to use the new IIO backend framework. The device
+> functionality is expected to be the same (meaning no added or removed
+> features).
+> 
+> Also note this patch effectively breaks ABI and that's needed so we can
+> properly support this device and add needed features making use of the
+> new IIO framework.
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 
-The return value is not an int so it's inappropriate to stash it in ret.
+Hi Nuno,
 
-> +
->  	ret =3D devm_regulator_get_enable(dev, "vdd");
->  	if (ret)
->  		return dev_err_probe(dev, ret, "can't get vdd supply\n");
-> diff --git a/drivers/iio/pressure/hsc030pa.h b/drivers/iio/pressure/hsc03=
-0pa.h
-> index 6c635c42d85d..4e356944d67d 100644
-> --- a/drivers/iio/pressure/hsc030pa.h
-> +++ b/drivers/iio/pressure/hsc030pa.h
-> @@ -15,6 +15,8 @@
->  #define HSC_REG_MEASUREMENT_RD_SIZE 4
->  #define HSC_RESP_TIME_MS            2
->=20
-> +#define HSC_CAP_SLEEP               0x1
-> +
->  struct device;
->=20
->  struct iio_chan_spec;
-> @@ -29,6 +31,7 @@ typedef int (*hsc_recv_fn)(struct hsc_data *);
->   * struct hsc_data
->   * @dev: current device structure
->   * @chip: structure containing chip's channel properties
-> + * @capabilities: chip specific attributes
->   * @recv_cb: function that implements the chip reads
->   * @is_valid: true if last transfer has been validated
->   * @pmin: minimum measurable pressure limit
-> @@ -45,6 +48,7 @@ typedef int (*hsc_recv_fn)(struct hsc_data *);
->  struct hsc_data {
->  	struct device *dev;
->  	const struct hsc_chip_data *chip;
-> +	u32 capabilities;
->  	hsc_recv_fn recv_cb;
->  	bool is_valid;
->  	s32 pmin;
-> diff --git a/drivers/iio/pressure/hsc030pa_i2c.c b/drivers/iio/pressure/h=
-sc030pa_i2c.c
-> index b3fd230e71da..62bdae272012 100644
-> --- a/drivers/iio/pressure/hsc030pa_i2c.c
-> +++ b/drivers/iio/pressure/hsc030pa_i2c.c
-> @@ -24,8 +24,27 @@ static int hsc_i2c_recv(struct hsc_data *data)
+Some trivial stuff in here (not I reviewed in reverse so might make more
+sense read that way).  Mostly little changes that will reduce what
+appears to be going on in this patch to the minimum possible
+
+
+>  
+> -static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+> +static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 >  {
->  	struct i2c_client *client =3D to_i2c_client(data->dev);
->  	struct i2c_msg msg;
-> +	u8 buf;
+> -	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+
+Keep an info variable around in here as well.
+
+> -	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+>  	unsigned int i, vref_val;
 >  	int ret;
->=20
-> +	if (data->capabilities & HSC_CAP_SLEEP) {
-> +		/*
-> +		 * Send the Full Measurement Request (FMR) command on the CS
-> +		 * line in order to wake up the sensor as per
-> +		 * "Sleep Mode for Use with Honeywell Digital Pressure Sensors"
-> +		 * technical note (consult the datasheet link in the header).
-> +		 *
-> +		 * These specifications require a dummy packet comprised only by
-> +		 * a single byte that contains the 7bit slave address and the
-> +		 * READ bit followed by a STOP.
-> +		 * Because the i2c API does not allow packets without a payload,
-> +		 * the driver sends two bytes in this implementation.
-> +		 */
-> +		ret =3D i2c_master_recv(client, &buf, 1);
-> +		if (ret < 0)
+>  
+> @@ -282,25 +276,23 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	vref_val = ret & info1->vref_mask;
+> +	vref_val = ret & st->info->vref_mask;
+>  
+> -	for (i = 0; i < info->num_scales; i++) {
+> -		if (vref_val == info->scale_table[i][1])
+> +	for (i = 0; i < st->info->num_scales; i++) {
+> +		if (vref_val == st->info->scale_table[i][1])
+>  			break;
+>  	}
+>  
+> -	if (i == info->num_scales)
+> +	if (i == st->info->num_scales)
+>  		return -ERANGE;
+>  
+> -	__ad9467_get_scale(conv, i, val, val2);
+> +	__ad9467_get_scale(st, i, val, val2);
+>  
+>  	return IIO_VAL_INT_PLUS_MICRO;
+>  }
+>  
+> -static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+> +static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
+>  {
+> -	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+
+Definitely good to keep local info variable here.
+
+>  	unsigned int scale_val[2];
+>  	unsigned int i;
+>  	int ret;
+> @@ -308,14 +300,14 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+>  	if (val != 0)
+>  		return -EINVAL;
+>  
+> -	for (i = 0; i < info->num_scales; i++) {
+> -		__ad9467_get_scale(conv, i, &scale_val[0], &scale_val[1]);
+> +	for (i = 0; i < st->info->num_scales; i++) {
+> +		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
+>  		if (scale_val[0] != val || scale_val[1] != val2)
+>  			continue;
+>  
+>  		guard(mutex)(&st->lock);
+>  		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+> -				       info->scale_table[i][1]);
+> +				       st->info->scale_table[i][1]);
+>  		if (ret < 0)
+>  			return ret;
+>  
+
+>  }
+>  
+> -static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+> +static int ad9467_write_raw(struct iio_dev *indio_dev,
+>  			    struct iio_chan_spec const *chan,
+>  			    int val, int val2, long mask)
+>  {
+> -	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+> +	struct ad9467_state *st = iio_priv(indio_dev);
+Even here I'd keep a local info variable as it's harmless and
+reduces what is changed in this patch.
+
+>  	long r_clk;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> -		return ad9467_set_scale(conv, val, val2);
+> +		return ad9467_set_scale(st, val, val2);
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		r_clk = clk_round_rate(st->clk, val);
+> -		if (r_clk < 0 || r_clk > info->max_rate) {
+> +		if (r_clk < 0 || r_clk > st->info->max_rate) {
+>  			dev_warn(&st->spi->dev,
+>  				 "Error setting ADC sample rate %ld", r_clk);
+>  			return -EINVAL;
+> @@ -369,26 +360,53 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+>  	}
+>  }
+>  
+> -static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
+> +static int ad9467_read_avail(struct iio_dev *indio_dev,
+>  			     struct iio_chan_spec const *chan,
+>  			     const int **vals, int *type, int *length,
+>  			     long mask)
+>  {
+> -	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+> +	struct ad9467_state *st = iio_priv(indio_dev);
+As below, I'd keep the local info variable to reduce scope of changes
+to the minimum.
+
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+>  		*vals = (const int *)st->scales;
+>  		*type = IIO_VAL_INT_PLUS_MICRO;
+>  		/* Values are stored in a 2D matrix */
+> -		*length = info->num_scales * 2;
+> +		*length = st->info->num_scales * 2;
+>  		return IIO_AVAIL_LIST;
+>  	default:
+>  		return -EINVAL;
+>  	}
+>  }
+>  
+
+> +
+>  static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+>  {
+>  	int ret;
+> @@ -401,19 +419,17 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+>  				AN877_ADC_TRANSFER_SYNC);
+>  }
+>  
+> -static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
+> +static int ad9467_scale_fill(struct ad9467_state *st)
+>  {
+> -	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+>  	unsigned int i, val1, val2;
+	const struct adi_axi_adc_chip_info *info = st->info;
+I think...
+
+Makes this patch more minimal which is nice and it's not a bad change
+in it's own right..
+
+Same with some other cases changed by this patch.
+
+>  
+> -	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
+> +	st->scales = devm_kmalloc_array(&st->spi->dev, st->info->num_scales,
+>  					sizeof(*st->scales), GFP_KERNEL);
+>  	if (!st->scales)
+>  		return -ENOMEM;
+>  
+> -	for (i = 0; i < info->num_scales; i++) {
+> -		__ad9467_get_scale(conv, i, &val1, &val2);
+> +	for (i = 0; i < st->info->num_scales; i++) {
+> +		__ad9467_get_scale(st, i, &val1, &val2);
+>  		st->scales[i][0] = val1;
+>  		st->scales[i][1] = val2;
+>  	}
+> @@ -421,11 +437,27 @@ static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
+>  	return 0;
+>  }
+>  
+> -static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+> +static int ad9467_setup(struct ad9467_state *st)
+>  {
+> -	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+> +	struct iio_backend_data_fmt data = {
+> +		.sign_extend = true,
+> +		.enable = true,
+> +	};
+> +	unsigned int c, mode;
+> +	int ret;
+> +
+> +	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
+
+Bit of a long line. Perhaps break it after the |
+
+> +	ret = ad9467_outputmode_set(st->spi, mode);
+> +	if (ret)
+> +		return ret;
+>  
+> -	return ad9467_outputmode_set(st->spi, st->output_mode);
+> +	for (c = 0; c < st->info->num_channels; c++) {
+> +		ret = iio_backend_data_format_set(st->back, c, &data);
+> +		if (ret)
 > +			return ret;
 > +	}
 > +
->  	msleep_interruptible(HSC_RESP_TIME_MS);
->=20
->  	msg.addr =3D client->addr;
-> diff --git a/drivers/iio/pressure/hsc030pa_spi.c b/drivers/iio/pressure/h=
-sc030pa_spi.c
-> index 737197eddff0..1c139cdfe856 100644
-> --- a/drivers/iio/pressure/hsc030pa_spi.c
-> +++ b/drivers/iio/pressure/hsc030pa_spi.c
-> @@ -25,12 +25,40 @@ static int hsc_spi_recv(struct hsc_data *data)
->  	struct spi_device *spi =3D to_spi_device(data->dev);
->  	struct spi_transfer xfer =3D {
->  		.tx_buf =3D NULL,
-> -		.rx_buf =3D data->buffer,
-> -		.len =3D HSC_REG_MEASUREMENT_RD_SIZE,
-> +		.rx_buf =3D NULL,
-> +		.len =3D 0,
->  	};
-> +	u16 orig_cs_setup_value;
-> +	u8 orig_cs_setup_unit;
-> +
-> +	if (data->capabilities & HSC_CAP_SLEEP) {
-> +		/*
-> +		 * Send the Full Measurement Request (FMR) command on the CS
-> +		 * line in order to wake up the sensor as per
-> +		 * "Sleep Mode for Use with Honeywell Digital Pressure Sensors"
-> +		 * technical note (consult the datasheet link in the header).
-> +		 *
-> +		 * These specifications require the CS line to be held asserted
-> +		 * for at least 8=B5s without any payload being generated.
-> +		 */
-> +		orig_cs_setup_value =3D spi->cs_setup.value;
-> +		orig_cs_setup_unit =3D spi->cs_setup.unit;
-> +		spi->cs_setup.value =3D 8;
-> +		spi->cs_setup.unit =3D SPI_DELAY_UNIT_USECS;
-> +		/*
-> +		 * Send a dummy 0-size packet so that CS gets toggled.
-> +		 * Trying to manually call spi->controller->set_cs() instead
-> +		 * does not work as expected during the second call.
-> +		 */
-
-Do you have a reference that says the CS must be toggled on 0 length transf=
-er?
-If that's not specified in the SPI core somewhere then you will need to send
-something...
-
-> +		spi_sync_transfer(spi, &xfer, 1);
-> +		spi->cs_setup.value =3D orig_cs_setup_value;
-> +		spi->cs_setup.unit =3D orig_cs_setup_unit;
-> +	}
->=20
->  	msleep_interruptible(HSC_RESP_TIME_MS);
->=20
-> +	xfer.rx_buf =3D data->buffer;
-> +	xfer.len =3D HSC_REG_MEASUREMENT_RD_SIZE;
->  	return spi_sync_transfer(spi, &xfer, 1);
+> +	return 0;
 >  }
->=20
-> --
-> 2.41.0
->=20
->=20
+>  
+>  static int ad9467_reset(struct device *dev)
+> @@ -443,25 +475,64 @@ static int ad9467_reset(struct device *dev)
+>  	return 0;
+>  }
+>  
+> +static int ad9467_iio_backend_get(struct ad9467_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	struct device_node *__back;
+> +
+> +	st->back = devm_iio_backend_get(&st->spi->dev, NULL);
+> +	/* If not found, don't error out as we might have legacy DT property */
+> +	if (IS_ERR(st->back) && PTR_ERR(st->back) != -ENOENT)
+> +		return PTR_ERR(st->back);
+> +	if (!IS_ERR(st->back))
+> +		return 0;
+Why not do this one first? I know I normally moan about having error handlers
+out of line, but in this case the good is out of line whatever.
+
+	if (!IS_ERR(st->back)
+		return 0;
+
+	if (PTR_ERR(st->back) != ENOENT)
+		return PTR_ERR(st->back);
+
+	...
+
+
+> +	/*
+> +	 * if we don't get the backend using the normal API's, use the legacy
+> +	 * 'adi,adc-dev' property. So we get all nodes with that property, and
+> +	 * look for the one pointing at us. Then we directly lookup that fwnode
+> +	 * on the backend list of registered devices. This is done so we don't
+> +	 * make io-backends mandatory which would break DT ABI.
+> +	 */
+> +	for_each_node_with_property(__back, "adi,adc-dev") {
+> +		struct device_node *__me;
+> +
+> +		__me = of_parse_phandle(__back, "adi,adc-dev", 0);
+> +		if (!__me)
+> +			continue;
+> +
+> +		if (!device_match_of_node(dev, __me)) {
+> +			of_node_put(__me);
+> +			continue;
+> +		}
+> +
+> +		of_node_put(__me);
+> +		st->back = __devm_iio_backend_get_from_fwnode_lookup(dev,
+> +								     of_fwnode_handle(__back));
+> +		of_node_put(__back);
+> +		return PTR_ERR_OR_ZERO(st->back);
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+> +
+>  static int ad9467_probe(struct spi_device *spi)
+>  {
+>
+
+>  
+> -	st->output_mode = info->default_output_mode |
+> -			  AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
+> +	ret = ad9467_iio_backend_get(st);
+> +	if (ret)
+> +		return ret;
+>  
+> -	return 0;
+> +	ret = devm_iio_backend_request_buffer(&spi->dev, st->back, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = iio_backend_enable(st->back);
+> +	if (ret)
+> +		return ret;
+
+I'm curious there is no iio_backend_disable() to be done in the exit path?
+
+> +
+> +	ret = ad9467_setup(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>  
+>  static const struct of_device_id ad9467_of_match[] = {
+> @@ -529,4 +610,4 @@ module_spi_driver(ad9467_driver);
+>  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+>  MODULE_DESCRIPTION("Analog Devices AD9467 ADC driver");
+>  MODULE_LICENSE("GPL v2");
+> -MODULE_IMPORT_NS(IIO_ADI_AXI);
+> +MODULE_IMPORT_NS(IIO_BACKEND);
+> 
 
 

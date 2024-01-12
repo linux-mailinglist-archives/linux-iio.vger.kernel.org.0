@@ -1,155 +1,116 @@
-Return-Path: <linux-iio+bounces-1622-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1623-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CD082C641
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 21:10:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B9A82C66B
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 21:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 164601F26116
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 20:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD4251F233ED
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 20:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A4168DE;
-	Fri, 12 Jan 2024 20:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D54F168C1;
+	Fri, 12 Jan 2024 20:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1pgyGpfI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6q5j4nD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF4F168C9
-	for <linux-iio@vger.kernel.org>; Fri, 12 Jan 2024 20:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ccbc328744so83647871fa.3
-        for <linux-iio@vger.kernel.org>; Fri, 12 Jan 2024 12:09:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1705090163; x=1705694963; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KODDiTlCYJz8VsTSh5FfV19+LAJgiCFhCmKp66prebs=;
-        b=1pgyGpfIAUmtnVrgG2GiS1Bcof5zE5Ypo1c3vuQAugjD8jxG2OHBuff3dtj+ym2LH0
-         FyP5ZZQlcse7lt4saVLhFZJnH20xpgYueXwZRK49kgnypWa8l+DNsKR8rLntNZWmtm50
-         1vCV7vhpCi6J2vBeOIV5HevYJ7O6yLbLpUBa4QHyOaCFwZqjOHMOEd/xH5TtvwKBYdyy
-         5chv0NuZ2RvA/o7RxNiyUpRS33VLb5WRuWqAZJgmkrdVYWta5/d1v27v7KGJsTdZ50Tn
-         t43+45eMxxreA8nIsx+tkvVAER788TIkVyNrz5pvRncAJXBlH1e7znPk9fzwTwt+BVCh
-         zMog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705090163; x=1705694963;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KODDiTlCYJz8VsTSh5FfV19+LAJgiCFhCmKp66prebs=;
-        b=MSSMKoadyfWKpDQyjW7Cy2KmcqRe5eLa0yJYgT/UsI7rC5/DY1Atan1c7g33kMX1a5
-         q5JLfl8F081R9shqapl4+Q7Xy9wtaNfI1XLw5z77CgfN2UOsRoIUdhe8zSzrK5YnuksP
-         d6KbbD9xHwIr7XvFdpRpRnJxZ9b6NhHKcbqktCmZ4ZArSTMP1x1GthLjJXGuY6SExxpR
-         KD158Rxk9KvYq0BFsJpMrz7SJUm1ZwHR0lMvQCQ9zPXPkF/lqL8NQb0DqQboq6PsGHI6
-         KT1bMbkuju5N1TBqeQI282cJ08yBLiou2TLWSINc0cxdFIsRiSn3Xk2PBpnOSfib48V+
-         7SOw==
-X-Gm-Message-State: AOJu0YzXjyZqsnOvXwWC9sq2EMEduMMXBFuhkK41XU6b066o1Kn8Hb0K
-	OEKFytcK1tCws2geCjiWczqk+70oFsgCiyD3wqJurVQZ3QMBHQ==
-X-Google-Smtp-Source: AGHT+IGEuMOKDSkYS95xvat9jZtpVVIWQ7N5qewHjvbrG746DxH65fTxGieC8qJkBQ+ThV+voOiRxrp6c9DBjmLGD8c=
-X-Received: by 2002:a2e:7813:0:b0:2cd:85b9:5815 with SMTP id
- t19-20020a2e7813000000b002cd85b95815mr890369ljc.42.1705090162684; Fri, 12 Jan
- 2024 12:09:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108E715ACF;
+	Fri, 12 Jan 2024 20:42:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514EBC43390;
+	Fri, 12 Jan 2024 20:42:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705092160;
+	bh=tPZgZxHydhuYbfNQ7WW8vBIWYVhDQ4GMJXS3txxKGyw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=S6q5j4nDJ2oYTGHjupcGhJGsFlVcg0+XF8+xsTRW2kUY0ZdarPx7vEfvtJLnt8+te
+	 hTHs4c0xYJ5GySAiBgetlrG3sNiXGTlQVo02PLesyDSlwYHTBHzx6GskhM2A8TQef9
+	 RvVEqZ8cwhbEy0iDRfP9Bibpv9z5J58YUw794eztVnhSuP7dB/Vqft2G/hbVyrx3TA
+	 6w3f2MesAF2MM6ZAvwpZ0I/+xC3O2QqrkvJCGTStwr5wflOwIXVGzkDVVV9zghrNSD
+	 5kj+Ny+dctq1DAtF62CX7JQsyLIzsZw2oKBIVtf+C1ihL3a1tvuiSFK7JzhZT79zgX
+	 MKJc7gBZRWHDg==
+Date: Fri, 12 Jan 2024 14:42:39 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
- <20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
- <2c74aad9-3cb9-4222-8072-e72120c2658e@sirena.org.uk> <CAMknhBGMRed9vDrDAuPJ5DnEe6MyHzd0VBebp5OaLX2Q+AyhMQ@mail.gmail.com>
- <CAMknhBE-1Khe9J-n5WQnH=mFnN0ukiq7=F-SEOU6J-2_u-R0bw@mail.gmail.com>
-In-Reply-To: <CAMknhBE-1Khe9J-n5WQnH=mFnN0ukiq7=F-SEOU6J-2_u-R0bw@mail.gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 12 Jan 2024 14:09:11 -0600
-Message-ID: <CAMknhBGzOFnMnpt7B8iHd9VwWA-_zFVdiswDUAheovrHXyAv=Q@mail.gmail.com>
-Subject: Re: [PATCH 01/13] spi: add core support for controllers with offload capabilities
-To: Mark Brown <broonie@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Frank Rowand <frowand.list@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Jander <david@protonic.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Rob Herring <robh@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Olivier Moysan <olivier.moysan@foss.st.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Frank Rowand <frowand.list@gmail.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>
+In-Reply-To: <20240112-iio-backend-v5-2-bdecad041ab4@analog.com>
+References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
+ <20240112-iio-backend-v5-2-bdecad041ab4@analog.com>
+Message-Id: <170509215851.3477727.2303747175739152195.robh@kernel.org>
+Subject: Re: [PATCH v5 2/8] dt-bindings: adc: axi-adc: update bindings for
+ backend framework
 
-On Thu, Jan 11, 2024 at 3:32=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> On Thu, Jan 11, 2024 at 2:54=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
-> >
-> > On Wed, Jan 10, 2024 at 3:36=E2=80=AFPM Mark Brown <broonie@kernel.org>=
- wrote:
-> > >
-> > > On Wed, Jan 10, 2024 at 01:49:42PM -0600, David Lechner wrote:
-> > > > This adds a feature for specialized SPI controllers that can record
-> > > > a series of SPI transfers, including tx data, cs assertions, delays=
-,
-> > > > etc. and then play them back using a hardware trigger without CPU
-> > > > intervention.
-> > >
-> > > > The intended use case for this is with the AXI SPI Engine to captur=
-e
-> > > > data from ADCs at high rates (MSPS) with a stable sample period.
-> > >
-> > > > Most of the implementation is controller-specific and will be handl=
-ed by
-> > > > drivers that implement the offload_ops callbacks. The API follows a
-> > > > prepare/enable pattern that should be familiar to users of the clk
-> > > > subsystem.
-> > >
-> > > This is a lot to do in one go, and I think it's a bit too off on the
-> > > side and unintegrated with the core.  There's two very high level bit=
-s
-> > > here, there's the pre-cooking a message for offloading to be executed=
- by
-> > > a hardware engine and there's the bit where that's triggered by some
-> > > hardwar event rather than by software.
-> > >
-> > > There was a bunch of discussion of the former case with David Jander
-> >
-> > I found [1] which appears to be the conversation you are referring to.
-> > Is that all or is there more that I missed?
-> >
-> > [1]: https://lore.kernel.org/linux-spi/20220512163445.6dcca126@erd992/
-> >
-> > > (CCed) a while back when he was doing all the work he did on optimisi=
-ng
-> > > the core for uncontended uses, the thinking there was to have a
-> > > spi_prepare_message() (or similar) API that drivers could call and th=
-en
-> > > reuse the same transfer repeatedly, and even without any interface fo=
-r
-> > > client drivers it's likely that we'd be able to take advantage of it =
-in
-> > > the core for multi-transfer messages.  I'd be surprised if there were=
-n't
-> > > wins when the message goes over the DMA copybreak size.  A much wider
-> > > range of hardware would be able to do this bit, for example David's c=
-ase
-> > > was a Raspberry Pi using the DMA controller to write into the SPI
->
-> For those, following along, it looks like the RPi business was
-> actually a 2013 discussion with Martin Sperl [2]. Both this and [1]
-> discuss proposed spi_prepare_message() APIs.
->
-> [2]: https://lore.kernel.org/linux-spi/CACRpkdb4mn_Hxg=3D3tuBu89n6eyJ082E=
-ETkwtNbzZDFZYTHbVVg@mail.gmail.com/T/#u
 
-I found one more. A patch from Martin with the basic proposed API but
-not much in the way of implementation. It looks like this is where the
-idea fizzled out.
+On Fri, 12 Jan 2024 17:40:16 +0100, Nuno Sa wrote:
+> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
+> also remove it from being required.
+> 
+> The reason why it's being deprecated is because the axi-adc CORE is now
+> an IIO service provider hardware (IIO backends) for consumers to make use
+> of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
+> of consumer referencing other nodes/devices) and that proved to be wrong
+> and to not scale.
+> 
+> Now, IIO consumers of this hardware are expected to reference it using the
+> io-backends property. Hence, the new '#io-backend-cells' is being added
+> so the device is easily identified as a provider.
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
 
-https://lore.kernel.org/linux-spi/0C7D5B1E-E561-4F52-BEA8-572EB0CA26A6@mart=
-in.sperl.org/
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: [error] syntax error: could not find expected ':' (syntax)
+
+dtschema/dtc warnings/errors:
+make[2]: *** Deleting file 'Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts'
+Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
+make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts] Error 1
+make[2]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml: ignoring, error parsing file
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1424: dt_binding_check] Error 2
+make: *** [Makefile:234: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240112-iio-backend-v5-2-bdecad041ab4@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

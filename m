@@ -1,188 +1,132 @@
-Return-Path: <linux-iio+bounces-1597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DBC82BBC7
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 08:30:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7630F82BCA9
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 10:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 040DAB22D00
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 07:30:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 678971C250CA
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 09:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B535C919;
-	Fri, 12 Jan 2024 07:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661A755786;
+	Fri, 12 Jan 2024 09:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="f+wBvDm1"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="RWiNGh+S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5ED5C8FD;
-	Fri, 12 Jan 2024 07:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire (unknown [188.24.94.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 7260728B531;
-	Fri, 12 Jan 2024 07:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1705044632;
-	bh=6Jm6c1mv+a3OF1N6sRuMkjN/1Cyes5vuHDzFuEGKHaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f+wBvDm1BomRuQJLr0eYgoYkPcFNhPLxl60od+6e+JGPA6LjsJHjWrKqXpztxwW7j
-	 q23f/I6j89d9hmEms4g/7sGVNUx8ucAf/hGRXPKJg0Wl+u/lXfteckzZdnFdmN5LIn
-	 h0Wy5yBovDJPT3ZeuUl8gXoI/prepLkgdFKubL8c=
-Date: Fri, 12 Jan 2024 09:30:30 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH 2/6] dt-bindings: iio: pressure: honeywell,hsc030pa.yaml
- add sleep-mode
-Message-ID: <ZaDqlmXJD6if1xK7@sunspire>
-References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
- <20240110172306.31273-3-petre.rodan@subdimension.ro>
- <bc37f7d8-c43f-4751-9216-fc95f439b2f6@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A507456B63
+	for <linux-iio@vger.kernel.org>; Fri, 12 Jan 2024 09:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=xxLKZfR9ym3NvYaTuybR8pXKjRLGsluBabcSdUsoEsA=;
+	b=RWiNGh+SiP6oLepQrpQjzq3eyHcLtAafx5MtVsKMs41YlrxI7ZDYzsTEha7a/lscDptg/p8X4EdNG
+	 9hQHbb2LuE7Uk1+KOJb52iF4rkGv8v+U7irlFstAzWwblSFHHr2kpCLv5LttCQbC8I/DuV8lypwLrh
+	 ukPzt5VNY2e2ta05CYqQUJAH0lh4v4mRXfhbqHUzUwUEsaL5xOd6FZht0tZo7804cM4GnZ8H4fkHME
+	 9tjzvQNDu11r7Dk167wVVYPb2lT9z6zget+3lO/HDjuihwGjq7rM4uTW1V/4ij56Th+HnhrF5tgdI+
+	 3RE2mITMqmCDX8kcE8XPiaFC3Rp4+mw==
+X-MSG-ID: 7eeba78f-b129-11ee-ba53-0050568164d1
+Date: Fri, 12 Jan 2024 10:03:47 +0100
+From: David Jander <david@protonic.nl>
+To: Mark Brown <broonie@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Frank Rowand <frowand.list@gmail.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>,
+ linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/13] spi: add core support for controllers with
+ offload capabilities
+Message-ID: <20240112100347.548298e9@erd003.prtnl>
+In-Reply-To: <829ac770-1955-45b7-9033-6ed60ffdf77e@sirena.org.uk>
+References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
+	<20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
+	<2c74aad9-3cb9-4222-8072-e72120c2658e@sirena.org.uk>
+	<CAMknhBGMRed9vDrDAuPJ5DnEe6MyHzd0VBebp5OaLX2Q+AyhMQ@mail.gmail.com>
+	<CAMknhBE-1Khe9J-n5WQnH=mFnN0ukiq7=F-SEOU6J-2_u-R0bw@mail.gmail.com>
+	<829ac770-1955-45b7-9033-6ed60ffdf77e@sirena.org.uk>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LTw4fbEjyL1VypdH"
-Content-Disposition: inline
-In-Reply-To: <bc37f7d8-c43f-4751-9216-fc95f439b2f6@linaro.org>
-
-
---LTw4fbEjyL1VypdH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
-Hello Krzysztof,
+Hi Mark, David,
 
-On Wed, Jan 10, 2024 at 09:48:34PM +0100, Krzysztof Kozlowski wrote:
-> On 10/01/2024 18:22, Petre Rodan wrote:
-> > Add sleep-mode property present in some custom chips.
-> >=20
-> > This flag activates a special wakeup sequence prior to conversion.
-> >=20
-> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > ---
-> >  .../bindings/iio/pressure/honeywell,hsc030pa.yaml      | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,h=
-sc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc=
-030pa.yaml
-> > index 89977b9f01cf..350da1d6991b 100644
-> > --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa=
-=2Eyaml
-> > +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa=
-=2Eyaml
-> > @@ -86,6 +86,15 @@ properties:
-> >        Maximum pressure value the sensor can measure in pascal.
-> >        To be specified only if honeywell,pressure-triplet is set to "NA=
-".
-> >=20
-> > +  honeywell,sleep-mode:
->=20
-> "Sleep mode" naming suggests there are choices, like mode foo and mode
-> bar. Probably you want something like "sleep-between-measurements" or
-> something matching how does it work.
+Thanks for CC'ing me. Been reading the discussion so far.
 
-"sleep mode" is the terminology used by Honeywell and it defines a chip cap=
-ability.
-it is present in the HSC/SSC and ABP series of ICs.
+On Thu, 11 Jan 2024 21:49:53 +0000
+Mark Brown <broonie@kernel.org> wrote:
 
-other such options (capabilities) include temperature output in the ABP ser=
-ies.
+> On Thu, Jan 11, 2024 at 03:32:54PM -0600, David Lechner wrote:
+> > On Thu, Jan 11, 2024 at 2:54=E2=80=AFPM David Lechner <dlechner@baylibr=
+e.com> wrote: =20
+>=20
+> > > > (CCed) a while back when he was doing all the work he did on optimi=
+sing
+> > > > the core for uncontended uses, the thinking there was to have a
+> > > > spi_prepare_message() (or similar) API that drivers could call and =
+then
+> > > > reuse the same transfer repeatedly, and even without any interface =
+for
+> > > > client drivers it's likely that we'd be able to take advantage of i=
+t in
+> > > > the core for multi-transfer messages.  I'd be surprised if there we=
+ren't
+> > > > wins when the message goes over the DMA copybreak size.  A much wid=
+er
+> > > > range of hardware would be able to do this bit, for example David's=
+ case
+> > > > was a Raspberry Pi using the DMA controller to write into the SPI =
+=20
+>=20
+> > For those, following along, it looks like the RPi business was
+> > actually a 2013 discussion with Martin Sperl [2]. Both this and [1]
+> > discuss proposed spi_prepare_message() APIs. =20
+>=20
+> > [2]: https://lore.kernel.org/linux-spi/CACRpkdb4mn_Hxg=3D3tuBu89n6eyJ08=
+2EETkwtNbzZDFZYTHbVVg@mail.gmail.com/T/#u =20
+>=20
+> Oh, yes - sorry, I'd misremembered which optimisation effort it was
+> associated with.  Apologies.
 
-the action the driver needs to perform if this option is present is to prov=
-ide a
-wake-up sequence before reading out the conversions.
+Yes. It was Martin Sperl who proposed this on a Rpi. I mentioned something
+similar toward the end of my 2nd email reply in that thread [1]. That might
+have triggered the confusion.
+As for my interests, I am all for devising ways to make the SPI subsystem m=
+ore
+suitable for optimized high-performance use-cases. In that regard, I think
+re-usable messages (spi_prepare_message()) can be useful. More capable
+hardware can enable very powerful use-cases for SPI, and it would be cool if
+the spi subsystem had the needed infrastructure to support those. As for
+hardware-triggers, I still need to wrap my head around how to have a
+universally usable API that works nice for the first use-case that comes al=
+ong
+and also doesn't screw up the next use-case that might follow. Keep me post=
+ed.
 
-now regarding a rename of this property, I would vote to leave it as is - f=
-or the
-users to have a 1:1 equivalence of terms between the driver and the datashe=
-et.
+[1] https://lore.kernel.org/linux-spi/20220513144645.2d16475c@erd992/
 
-I say that because for instance in circuit design when a part symbol and
-footprint is drawn based on a datasheet it is recommended to keep the same =
-pin
-notations and the same block diagram as in the datasheet, precisely for thi=
-s 1:1
-equivalence, so there is no uncertainty for the end-user.
-
-cheers,
-peter
-
->=20
-> > +    description: |
->=20
-> Do not need '|' unless you need to preserve formatting.
->=20
-> > +      'Sleep Mode' is a special factory set mode of the chip that allo=
-ws the
-> > +      sensor to power down between measurements. It is implemented onl=
-y on
-> > +      special request, and it is an attribute not present in the HSC/S=
-SC series
-> > +      nomenclature.
-> > +      Set in order to enable the special wakeup sequence prior to conv=
-ersion.
-> > +    $ref: /schemas/types.yaml#/definitions/flag
-> > +
-> >    vdd-supply:
-> >      description:
-> >        Provide VDD power to the sensor (either 3.3V or 5V depending on =
-the chip)
-> > @@ -140,6 +149,7 @@ examples:
-> >              honeywell,pressure-triplet =3D "NA";
-> >              honeywell,pmin-pascal =3D <0>;
-> >              honeywell,pmax-pascal =3D <200000>;
-> > +            //honeywell,sleep-mode;
->=20
-> Drop comment.
->=20
-> > 2.41.0
-> >=20
->=20
-> Best regards,
-> Krzysztof
->=20
+Best regards,
 
 --=20
-petre rodan
-
---LTw4fbEjyL1VypdH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWg6o8ACgkQzyaZmYRO
-fzAg3g/8DsMXh3IKMM913xGGBa4Ntx7fvQ9JfUQb9xgKM5mKqEw5hV7Cnqp/vxGT
-dC2gG2X8wtzWRMqZ9cGxrvkBXt2AZ50o3c6v+EdAM84Caqb1283j1Leq3ccuIE3d
-diGQTbczspbRg5Z5z0h9pEbIkeVvHQyC2t3v+wYf1JcYkSQ7jfDTQHIcj+5Ak2ma
-MgaADJ7MeQOeXjQOseSycJB/x9+lVp6BXxuTCGf7V3o8mnCdTHlCl0U2Tkntlj/+
-PMj8p8pCplgNn8lRnrGUdUrxuwEfg+AY+rFOb5mLEkA+amZoNj/bK2w0wQ+Ry2S3
-/YZapuuWIha2+hxKoViRMFDC5VIM1taRVO1bHQKtPYZTfpRZUIwY+Am81cJgRp6l
-XbmCqF4RQyZZbpqCkfKriDSOWtmq45aejcmsw84YfVxDYP00Vfw0avAb2gOl6Jwj
-ZHtfZNh2/H9W9+ZhRwSItRVflvYg/XM9dcz5chZJHMtvf3Fd/lq7pe0/rSfRZWCq
-r0mf+/V5VEgm11RADaRyLpEMdg+tBXfteBZoMSXKgxHG7RC47SDRA7b7wlyAkQTx
-uaEjGSKPFFxPiCCAVjFM+vkqvyecyznMOTiQjIKfQK4AwOCGUG2If49JdZiuOhDf
-u+2E/yz08Z+6FHQNUdZmd9KJuvDm7ZaKcsL4Fbf3joXOIcwBKYA=
-=bErR
------END PGP SIGNATURE-----
-
---LTw4fbEjyL1VypdH--
+David Jander
+Protonic Holland.
 

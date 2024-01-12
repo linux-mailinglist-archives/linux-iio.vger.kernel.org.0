@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-1618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AF182C44D
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 18:09:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4697482C480
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 18:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F2B1F21096
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 17:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40CC286B7C
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jan 2024 17:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5341A5683;
-	Fri, 12 Jan 2024 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BC322603;
+	Fri, 12 Jan 2024 17:14:03 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FCA17C78;
-	Fri, 12 Jan 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1497917C83;
+	Fri, 12 Jan 2024 17:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TBSdY1Rxcz6K5sT;
-	Sat, 13 Jan 2024 01:07:29 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TBSkn3kDJz6K5sk;
+	Sat, 13 Jan 2024 01:12:01 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 84D8D140B2A;
-	Sat, 13 Jan 2024 01:09:25 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id CB7D9140B2A;
+	Sat, 13 Jan 2024 01:13:57 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 12 Jan
- 2024 17:09:25 +0000
-Date: Fri, 12 Jan 2024 17:09:24 +0000
+ 2024 17:13:57 +0000
+Date: Fri, 12 Jan 2024 17:13:56 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
  Cameron" <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 5/6] iio: pressure: hsc030pa add triggered buffer
-Message-ID: <20240112170924.000040af@Huawei.com>
-In-Reply-To: <20240110172306.31273-6-petre.rodan@subdimension.ro>
+Subject: Re: [PATCH 6/6] iio: pressure: hsc030pa add sleep mode
+Message-ID: <20240112171356.00003e88@Huawei.com>
+In-Reply-To: <20240110172306.31273-7-petre.rodan@subdimension.ro>
 References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
-	<20240110172306.31273-6-petre.rodan@subdimension.ro>
+	<20240110172306.31273-7-petre.rodan@subdimension.ro>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -48,145 +48,170 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 10 Jan 2024 19:22:40 +0200
+On Wed, 10 Jan 2024 19:22:41 +0200
 Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Add triggered buffer feature.
-> 
+> Some custom chips from this series require a wakeup sequence before the
+> measurement cycle is started.
+>=20
+> Quote from the product datasheet:
+> "Optional sleep mode available upon special request."
+>=20
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Hi Petre,
-
-A few minor things inline. + you almost certainly need some Kconfig
-changes to ensure buffered support is built for the IIO core.
-
 > ---
->  drivers/iio/pressure/hsc030pa.c | 42 +++++++++++++++++++++++++++++++++
->  drivers/iio/pressure/hsc030pa.h |  2 +-
->  2 files changed, 43 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/pressure/hsc030pa.c b/drivers/iio/pressure/hsc030pa.c
-> index 7e3f74d53b47..3faa0fd42201 100644
+>  drivers/iio/pressure/hsc030pa.c     |  4 ++++
+>  drivers/iio/pressure/hsc030pa.h     |  4 ++++
+>  drivers/iio/pressure/hsc030pa_i2c.c | 19 +++++++++++++++++
+>  drivers/iio/pressure/hsc030pa_spi.c | 32 +++++++++++++++++++++++++++--
+>  4 files changed, 57 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/pressure/hsc030pa.c b/drivers/iio/pressure/hsc03=
+0pa.c
+> index 3faa0fd42201..9e66fd561801 100644
 > --- a/drivers/iio/pressure/hsc030pa.c
 > +++ b/drivers/iio/pressure/hsc030pa.c
-> @@ -22,8 +22,11 @@
->  #include <linux/types.h>
->  #include <linux/units.h>
-> 
-> +#include <linux/iio/buffer.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> 
->  #include <asm/unaligned.h>
-> 
-> @@ -297,6 +300,23 @@ static int hsc_get_measurement(struct hsc_data *data)
->  	return 0;
->  }
-> 
-> +static irqreturn_t hsc_trigger_handler(int irq, void *private)
-> +{
-> +	struct iio_poll_func *pf = private;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct hsc_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = hsc_get_measurement(data);
-> +	if (!ret) {
-Prefer error handling out of line + no {} for single statements
-
-	if (ret)
-		goto error;
-
-	iio_push...
-
-error:
-	iio_trigger...
-
-> +		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
-> +						   iio_get_time_ns(indio_dev));
-> +	}
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
->  /*
->   * IIO ABI expects
->   * value = (conv + offset) * scale
-> @@ -382,13 +402,30 @@ static const struct iio_chan_spec hsc_channels[] = {
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.scan_index = 0,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 14,
-> +			.storagebits = 16,
-> +			.shift = 0,
-
-No need to specify shift if it's zero. That's considered the obvious default
-and C will ensure it's set to 0 anyway.
-
-> +			.endianness = IIO_BE,
-> +		},
->  	},
->  	{
->  		.type = IIO_TEMP,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.scan_index = 1,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 11,
-> +			.storagebits = 16,
-> +			.shift = 5,
-> +			.endianness = IIO_BE,
-> +		},
->  	},
-> +	IIO_CHAN_SOFT_TIMESTAMP(2),
->  };
-> 
->  static const struct iio_info hsc_info = {
-> @@ -485,6 +522,11 @@ int hsc_common_probe(struct device *dev, hsc_recv_fn recv)
->  	indio_dev->channels = hsc->chip->channels;
->  	indio_dev->num_channels = hsc->chip->num_channels;
-> 
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> +					      hsc_trigger_handler, NULL);
+> @@ -501,6 +501,10 @@ int hsc_common_probe(struct device *dev, hsc_recv_fn=
+ recv)
+>  		return dev_err_probe(dev, -EINVAL,
+>  				     "pressure limits are invalid\n");
+>=20
+> +	ret =3D device_property_read_bool(dev, "honeywell,sleep-mode");
 > +	if (ret)
-> +		return ret;
+> +		hsc->capabilities |=3D HSC_CAP_SLEEP;
+	if (device_property_read_bool())
+		hsc->cap...
+
+The return value is not an int so it's inappropriate to stash it in ret.
+
 > +
->  	return devm_iio_device_register(dev, indio_dev);
->  }
->  EXPORT_SYMBOL_NS(hsc_common_probe, IIO_HONEYWELL_HSC030PA);
-> diff --git a/drivers/iio/pressure/hsc030pa.h b/drivers/iio/pressure/hsc030pa.h
-> index 56dc8e88194b..6c635c42d85d 100644
+>  	ret =3D devm_regulator_get_enable(dev, "vdd");
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "can't get vdd supply\n");
+> diff --git a/drivers/iio/pressure/hsc030pa.h b/drivers/iio/pressure/hsc03=
+0pa.h
+> index 6c635c42d85d..4e356944d67d 100644
 > --- a/drivers/iio/pressure/hsc030pa.h
 > +++ b/drivers/iio/pressure/hsc030pa.h
-> @@ -56,7 +56,7 @@ struct hsc_data {
->  	s32 p_scale_dec;
->  	s64 p_offset;
->  	s32 p_offset_dec;
-> -	u8 buffer[HSC_REG_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
-> +	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
+> @@ -15,6 +15,8 @@
+>  #define HSC_REG_MEASUREMENT_RD_SIZE 4
+>  #define HSC_RESP_TIME_MS            2
+>=20
+> +#define HSC_CAP_SLEEP               0x1
+> +
+>  struct device;
+>=20
+>  struct iio_chan_spec;
+> @@ -29,6 +31,7 @@ typedef int (*hsc_recv_fn)(struct hsc_data *);
+>   * struct hsc_data
+>   * @dev: current device structure
+>   * @chip: structure containing chip's channel properties
+> + * @capabilities: chip specific attributes
+>   * @recv_cb: function that implements the chip reads
+>   * @is_valid: true if last transfer has been validated
+>   * @pmin: minimum measurable pressure limit
+> @@ -45,6 +48,7 @@ typedef int (*hsc_recv_fn)(struct hsc_data *);
+>  struct hsc_data {
+>  	struct device *dev;
+>  	const struct hsc_chip_data *chip;
+> +	u32 capabilities;
+>  	hsc_recv_fn recv_cb;
+>  	bool is_valid;
+>  	s32 pmin;
+> diff --git a/drivers/iio/pressure/hsc030pa_i2c.c b/drivers/iio/pressure/h=
+sc030pa_i2c.c
+> index b3fd230e71da..62bdae272012 100644
+> --- a/drivers/iio/pressure/hsc030pa_i2c.c
+> +++ b/drivers/iio/pressure/hsc030pa_i2c.c
+> @@ -24,8 +24,27 @@ static int hsc_i2c_recv(struct hsc_data *data)
+>  {
+>  	struct i2c_client *client =3D to_i2c_client(data->dev);
+>  	struct i2c_msg msg;
+> +	u8 buf;
+>  	int ret;
+>=20
+> +	if (data->capabilities & HSC_CAP_SLEEP) {
+> +		/*
+> +		 * Send the Full Measurement Request (FMR) command on the CS
+> +		 * line in order to wake up the sensor as per
+> +		 * "Sleep Mode for Use with Honeywell Digital Pressure Sensors"
+> +		 * technical note (consult the datasheet link in the header).
+> +		 *
+> +		 * These specifications require a dummy packet comprised only by
+> +		 * a single byte that contains the 7bit slave address and the
+> +		 * READ bit followed by a STOP.
+> +		 * Because the i2c API does not allow packets without a payload,
+> +		 * the driver sends two bytes in this implementation.
+> +		 */
+> +		ret =3D i2c_master_recv(client, &buf, 1);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+>  	msleep_interruptible(HSC_RESP_TIME_MS);
+>=20
+>  	msg.addr =3D client->addr;
+> diff --git a/drivers/iio/pressure/hsc030pa_spi.c b/drivers/iio/pressure/h=
+sc030pa_spi.c
+> index 737197eddff0..1c139cdfe856 100644
+> --- a/drivers/iio/pressure/hsc030pa_spi.c
+> +++ b/drivers/iio/pressure/hsc030pa_spi.c
+> @@ -25,12 +25,40 @@ static int hsc_spi_recv(struct hsc_data *data)
+>  	struct spi_device *spi =3D to_spi_device(data->dev);
+>  	struct spi_transfer xfer =3D {
+>  		.tx_buf =3D NULL,
+> -		.rx_buf =3D data->buffer,
+> -		.len =3D HSC_REG_MEASUREMENT_RD_SIZE,
+> +		.rx_buf =3D NULL,
+> +		.len =3D 0,
+>  	};
+> +	u16 orig_cs_setup_value;
+> +	u8 orig_cs_setup_unit;
+> +
+> +	if (data->capabilities & HSC_CAP_SLEEP) {
+> +		/*
+> +		 * Send the Full Measurement Request (FMR) command on the CS
+> +		 * line in order to wake up the sensor as per
+> +		 * "Sleep Mode for Use with Honeywell Digital Pressure Sensors"
+> +		 * technical note (consult the datasheet link in the header).
+> +		 *
+> +		 * These specifications require the CS line to be held asserted
+> +		 * for at least 8=B5s without any payload being generated.
+> +		 */
+> +		orig_cs_setup_value =3D spi->cs_setup.value;
+> +		orig_cs_setup_unit =3D spi->cs_setup.unit;
+> +		spi->cs_setup.value =3D 8;
+> +		spi->cs_setup.unit =3D SPI_DELAY_UNIT_USECS;
+> +		/*
+> +		 * Send a dummy 0-size packet so that CS gets toggled.
+> +		 * Trying to manually call spi->controller->set_cs() instead
+> +		 * does not work as expected during the second call.
+> +		 */
 
-Justify that size.  Normal trick is to use a suitable structure definition with
-the channels and a timestamp s64 with force alignment (To deal with te annoying 
-x86 32bit alignment)
+Do you have a reference that says the CS must be toggled on 0 length transf=
+er?
+If that's not specified in the SPI core somewhere then you will need to send
+something...
 
->  };
-> 
->  struct hsc_chip_data {
+> +		spi_sync_transfer(spi, &xfer, 1);
+> +		spi->cs_setup.value =3D orig_cs_setup_value;
+> +		spi->cs_setup.unit =3D orig_cs_setup_unit;
+> +	}
+>=20
+>  	msleep_interruptible(HSC_RESP_TIME_MS);
+>=20
+> +	xfer.rx_buf =3D data->buffer;
+> +	xfer.len =3D HSC_REG_MEASUREMENT_RD_SIZE;
+>  	return spi_sync_transfer(spi, &xfer, 1);
+>  }
+>=20
 > --
 > 2.41.0
-> 
-> 
+>=20
+>=20
 
 

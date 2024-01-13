@@ -1,46 +1,48 @@
-Return-Path: <linux-iio+bounces-1628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8FA82CD70
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:19:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0475882CD72
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784E71F225FF
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 15:19:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC210B20E1A
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 15:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62B15CB;
-	Sat, 13 Jan 2024 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66B115CB;
+	Sat, 13 Jan 2024 15:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxNE8PlW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WizAQhfL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E722DEBB;
-	Sat, 13 Jan 2024 15:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED11C433C7;
-	Sat, 13 Jan 2024 15:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAB015C8;
+	Sat, 13 Jan 2024 15:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF633C433F1;
+	Sat, 13 Jan 2024 15:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705159173;
-	bh=vX58YZjenHiTJxtX2xEHIR6mIG6Zrsa+Iez23OxTdYQ=;
+	s=k20201202; t=1705159414;
+	bh=pKcx3wTCQYng+Kv7vvezxSHDwuPxEoWM17nLr50fmSY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hxNE8PlWdaMQ+h0z1BW/rJFuaHHcWOXuAYK0ApWFH3ZXaa50jiMnU9BWvFb7VL0W6
-	 nXwtZ0of5I153SdWFROj1PsSXRC+KNINlFgaGfexdky1wWWiB1FBSPMT1wbN7YJMga
-	 diR1DMQZ/EdEDruwKGke73ZibkCUegQ77y7EL0ZHNRgU1JoQpqTDs90Uo+Ri+AjYbG
-	 xIL0/JilNQX/jOJu/2XoapGCqiLLyx+rKIXTEL6Lh5xr8FwtrTz2U+AMUYlMKbsZdS
-	 1K/GLQDsufrVKpMeln9ryW/YLUlz9JqQbZDOCxGNCM3FczfIFTQFm7ML7LGJ97yBqD
-	 L07s381i7Bs8A==
-Date: Sat, 13 Jan 2024 15:19:28 +0000
+	b=WizAQhfLBVQzV48MKcpKgYwxYuk9nvP9OGKZNwdP6CXjfkd9Jfpx0oniSilyAty9n
+	 tpiPpt3CwtrVBnFYtUtgrg7KRzQuRrZmNB8EJHoQdH+HFzA+YY+gebPyBfaO8V6amM
+	 2gO5CeFS09XYM+zKvSqLotFXjw+F4iV8li3sskKnB+lqWKPXybc8UbE5DGsHKGERna
+	 3bFH4Rwu3B1cuyMe/sYQYBhzkmyXBxBDiKL8f+ycbWHRmImFYv5lK6cr8D6xdNgiwF
+	 xH2WMYkRsLzAGNQR7PbJytyxgrq9o5GpTcK48xM2PZXa/bfFwYRkl/s2qb5O7pDgsw
+	 k5Sl6lsbqeHOQ==
+Date: Sat, 13 Jan 2024 15:23:29 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 1/1] tools: iio: replace seekdir() in iio_generic_buffer
-Message-ID: <20240113151928.0857a93a@jic23-huawei>
-In-Reply-To: <20240108103224.3986-1-petre.rodan@subdimension.ro>
-References: <20240108103224.3986-1-petre.rodan@subdimension.ro>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Amit Dhingra <mechanicalamit@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: correct file entry for AD7091R
+Message-ID: <20240113152329.61db1b79@jic23-huawei>
+In-Reply-To: <ZaCRV6Qw1KlIFt3I@debian-BULLSEYE-live-builder-AMD64>
+References: <CAO=gReEUr4B+E2mQsSrncHf41f0A915SuoWgA522_2Ts-dZbSg@mail.gmail.com>
+	<ZaCRV6Qw1KlIFt3I@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -51,50 +53,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  8 Jan 2024 12:32:20 +0200
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Thu, 11 Jan 2024 22:09:43 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
+> On 01/06, Amit Dhingra wrote:
+> > File entry has driver/iio/adc two times. Fix the file entry
+> > 
+> > Found by ./scripts/get_maintainer.pl --self-test=patterns
+> >   
 > 
-> One of the glibc patches that stable Gentoo is using causes an improper
-> directory stream positioning bug on 32bit arm. That in turn ends up as a
-> floating point exception in iio_generic_buffer.
-> 
-> The attached patch provides a fix by using an equivalent function which
-> should not cause trouble for other distros.
-> 
-> https://sourceware.org/bugzilla/show_bug.cgi?id=31212
-> 
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-I tweaked the description a tiny bit to say it's also easier to reason about
-in general.
-
-Applied to the togreg branch of iio.git and pushed out as tesing for 0-day
-to probably ignore it.
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Applied to the togreg branch of iio.git.  I'm not rushing this in as
+a fix so it can wait for the next merge window.
 
 Thanks,
 
 Jonathan
-
-> ---
->  tools/iio/iio_utils.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-> index 6a00a6eecaef..c5c5082cb24e 100644
-> --- a/tools/iio/iio_utils.c
-> +++ b/tools/iio/iio_utils.c
-> @@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
->  		goto error_close_dir;
->  	}
+> > Signed-off-by: Amit Dhingra <mechanicalamit@gmail.com>
+> > ---  
+> [...]
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 35147477e8e4..ff61be50e82e 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -1128,7 +1128,7 @@ L:	linux-iio@vger.kernel.org
+> >  S:	Supported
+> >  W:	http://ez.analog.com/community/linux-device-drivers
+> >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+> > -F:	drivers/iio/adc/drivers/iio/adc/ad7091r*
+> > +F:	drivers/iio/adc/ad7091r*
+> >   
+> Oops, must have accidentaly bumped the paste key at some point.
 > 
-> -	seekdir(dp, 0);
-> +	rewinddir(dp);
->  	while (ent = readdir(dp), ent) {
->  		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
->  			   "_en") == 0) {
-> --
-> 2.41.0
-> 
+> Thanks,
+> Marcelo
 
 

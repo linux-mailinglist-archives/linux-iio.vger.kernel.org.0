@@ -1,51 +1,46 @@
-Return-Path: <linux-iio+bounces-1639-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1640-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F8882CDAD
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 17:14:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223EC82CDBD
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 17:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D4628419B
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378BF1C20F9C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B7F23C6;
-	Sat, 13 Jan 2024 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8943C2D;
+	Sat, 13 Jan 2024 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4I8vf2C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mq1CvpJD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122EF4A23;
-	Sat, 13 Jan 2024 16:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E502AC433F1;
-	Sat, 13 Jan 2024 16:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E15A3FDB;
+	Sat, 13 Jan 2024 16:26:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DF5C433C7;
+	Sat, 13 Jan 2024 16:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705162449;
-	bh=ov4r1pQnCWGD4LZgwtdWh6NQsa71tmBhiJJ4tREobgM=;
+	s=k20201202; t=1705163176;
+	bh=faSWsUlIKQgmxLiSOdVQbwBE0dKKRlGfgL2TWtQf0vY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g4I8vf2CTbAdtMRpUFjQQ6vuicVXlfJhDTbvoJfaSEZu4B8RpKY7fvu5mYjmHx2gy
-	 OizC5XgkuvR3/UVktGrwVMPTm/RwlcXYyF6l5MmI7wM664xrUnhAs8ai/UxRJSMinM
-	 1hu9T9zUb2p3byQhB7JM5pPgfISob3667hsLezD9kbq8qqGdJVuVNVTzQ7ejB5zt/y
-	 e+UBj93iORkyUMGZNxMbuTCugYhu3YC/MNAgU+N3X2MWDXU1sBQFiY/Abm7Xecpyq2
-	 RAWP0s+kyzpSRaP6osnVt74Ndp15d+seaT3qpB04jknr0TdoEJUdlSESrVgWgTmLo2
-	 qrj0rHlov2W1Q==
-Date: Sat, 13 Jan 2024 16:14:03 +0000
+	b=mq1CvpJDlFCzPCgK+YICMMfHhsZfHYJLobqPZpeL7A3GPqHTa6JFh8Esnyw3Y7QrF
+	 /NBIGQX/olpIXCtjI+Jhk73cSIvNe5kE1DqCivHYMT/Ti4N2qQvKTrQ2C30ikVqQaR
+	 GMvOqyBgfcTlcICK5V+mwBtAiU1T4WxLll+CrWvtOIaPFbS2cvpmoSjURVmF2evwQL
+	 n7CvPUuDusg9LWtmOSo8erAFZjK25vU5/tVNXDb5bGNCNgVR8lDbh1AVapFOe9aKRO
+	 sXt9WmnS/bcYgjevYsOmotrY1zXV43Z3K4HxNMf9dXvTzvlo+qcmaYAB8FNtmA9lHd
+	 ISmhTkmqCAJyg==
+Date: Sat, 13 Jan 2024 16:26:09 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Rob Herring
- <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, linux-kernel@vger.kernel.org, Stefan Popa
- <stefan.popa@analog.com>
-Subject: Re: [PATCH v4 0/2] iio: adc: add new ad7380 driver
-Message-ID: <20240113161403.4654db9d@jic23-huawei>
-In-Reply-To: <20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com>
-References: <20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Andrea Merello <andrea.merello@iit.it>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: bno055: serdev requires REGMAP
+Message-ID: <20240113162609.3e950ae8@jic23-huawei>
+In-Reply-To: <20240110185611.19723-1-rdunlap@infradead.org>
+References: <20240110185611.19723-1-rdunlap@infradead.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,37 +51,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Jan 2024 14:28:39 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, 10 Jan 2024 10:56:11 -0800
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-> This series is adding a new driver for the Analog Devices Inc. AD7380,
-> AD7381, AD7383, and AD7384 ADCs. These chips are part of a family of
-> simultaneous sampling SAR ADCs.
+> There are a ton of build errors when REGMAP is not set, so select
+> REGMAP to fix all of them.
 > 
-> One quirk of these chips is that since they are simultaneous sampling,
-> they have multiple SPI data output lines that allow transferring two
-> data words (one for each input channel) at the same time. So a new
-> generic devicetree binding is added to describe this sort of SPI bus
-> configuration.
+> Examples (not all of them):
 > 
-> To keep things simple, the initial driver implementation only supports
-> the 2-channel differential chips listed above. There are also 4-channel
-> differential chips and 4-channel single-ended chips in the family that
-> can be added later.
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
+>   495 | static struct regmap_bus bno055_ser_regmap_bus = {
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
+>   496 |         .write = bno055_ser_write_reg,
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
+>   497 |         .read = bno055_ser_read_reg,
+> ../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
+>   532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+>   532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
+> ../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
+> ../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
+>   495 | static struct regmap_bus bno055_ser_regmap_bus = {
 > 
-> Furthermore, the driver is just implementing basic support for capturing
-> data. Additional features like interrupts, CRC, etc. can be added later.
-> 
-> Also, FYI, this driver will also be used as the base for an upcoming
-> series adding AXI SPI Engine offload support for these chips along with
-> [1].
-> 
-> This work is being done by BayLibre and on behalf of Analog Devices Inc.
-> hence the maintainers are @analog.com.
-> 
-> [1]: https://lore.kernel.org/linux-spi/20231204-axi-spi-engine-series-2-v1-0-063672323fce@baylibre.com/
-Series applied to the togreg branch of iio.git though that is only pushed
-out as testing for now as I'll be rebasing it on rc1 once available.
+> Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Andrea Merello <andrea.merello@iit.it>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: linux-iio@vger.kernel.org
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
+Thanks,
 Jonathan
+
+> ---
+>  drivers/iio/imu/bno055/Kconfig |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff -- a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
+> --- a/drivers/iio/imu/bno055/Kconfig
+> +++ b/drivers/iio/imu/bno055/Kconfig
+> @@ -8,6 +8,7 @@ config BOSCH_BNO055
+>  config BOSCH_BNO055_SERIAL
+>  	tristate "Bosch BNO055 attached via UART"
+>  	depends on SERIAL_DEV_BUS
+> +	select REGMAP
+>  	select BOSCH_BNO055
+>  	help
+>  	  Enable this to support Bosch BNO055 IMUs attached via UART.
+
 

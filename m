@@ -1,46 +1,52 @@
-Return-Path: <linux-iio+bounces-1640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1641-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223EC82CDBD
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 17:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDEC82CDE7
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 18:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378BF1C20F9C
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC0D1F2228F
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 17:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8943C2D;
-	Sat, 13 Jan 2024 16:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6015227;
+	Sat, 13 Jan 2024 17:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mq1CvpJD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7fbicXh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E15A3FDB;
-	Sat, 13 Jan 2024 16:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DF5C433C7;
-	Sat, 13 Jan 2024 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915C95223;
+	Sat, 13 Jan 2024 17:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52831C433F1;
+	Sat, 13 Jan 2024 17:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705163176;
-	bh=faSWsUlIKQgmxLiSOdVQbwBE0dKKRlGfgL2TWtQf0vY=;
+	s=k20201202; t=1705166542;
+	bh=w+xQUE9BpQOiqBSKyEmQx0VOMX/yj6HPQlUxGJJ2xkc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mq1CvpJDlFCzPCgK+YICMMfHhsZfHYJLobqPZpeL7A3GPqHTa6JFh8Esnyw3Y7QrF
-	 /NBIGQX/olpIXCtjI+Jhk73cSIvNe5kE1DqCivHYMT/Ti4N2qQvKTrQ2C30ikVqQaR
-	 GMvOqyBgfcTlcICK5V+mwBtAiU1T4WxLll+CrWvtOIaPFbS2cvpmoSjURVmF2evwQL
-	 n7CvPUuDusg9LWtmOSo8erAFZjK25vU5/tVNXDb5bGNCNgVR8lDbh1AVapFOe9aKRO
-	 sXt9WmnS/bcYgjevYsOmotrY1zXV43Z3K4HxNMf9dXvTzvlo+qcmaYAB8FNtmA9lHd
-	 ISmhTkmqCAJyg==
-Date: Sat, 13 Jan 2024 16:26:09 +0000
+	b=q7fbicXhCZf+ttB9pYafLxfV5n0V8sVgoNJyRfH2m8h07gIwBS1sQsEgKjMxkF3OQ
+	 oaLkQaBQHjaO3US510r+NLlZyMpon6IP9L0VhdbcQTm/d9YFfxLJhO/d3LIY60QSHI
+	 b/mAdw/xHqTZ3pbDxRRN0/t1wkHO+DNAp4tsYYqSUCnqnm026wTAempBtdqpF0pyYG
+	 5nt3PRmxEOZRS0wvdMY6rtCOECkw19dSRmFGreUtpcQisQAm4px+jN4smwq2jVVgH9
+	 jNtH3mk5wuEZNXAc4m+i3SJZLEwuBlpFTJ9p+xYcrXCP11KyPj/uoRQExB4gp7H2hb
+	 AToh4nSk0jIDw==
+Date: Sat, 13 Jan 2024 17:22:08 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Andrea Merello <andrea.merello@iit.it>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: bno055: serdev requires REGMAP
-Message-ID: <20240113162609.3e950ae8@jic23-huawei>
-In-Reply-To: <20240110185611.19723-1-rdunlap@infradead.org>
-References: <20240110185611.19723-1-rdunlap@infradead.org>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v5 6/8] iio: add the IIO backend framework
+Message-ID: <20240113172208.6c4cfdbb@jic23-huawei>
+In-Reply-To: <20240112-iio-backend-v5-6-bdecad041ab4@analog.com>
+References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
+	<20240112-iio-backend-v5-6-bdecad041ab4@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -51,54 +57,188 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Jan 2024 10:56:11 -0800
-Randy Dunlap <rdunlap@infradead.org> wrote:
+On Fri, 12 Jan 2024 17:40:20 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> There are a ton of build errors when REGMAP is not set, so select
-> REGMAP to fix all of them.
+> From: Nuno Sa <nuno.sa@analog.com>
 > 
-> Examples (not all of them):
+> This is a Framework to handle complex IIO aggregate devices.
 > 
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
->   495 | static struct regmap_bus bno055_ser_regmap_bus = {
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
->   496 |         .write = bno055_ser_write_reg,
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
->   497 |         .read = bno055_ser_read_reg,
-> ../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
->   532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
->   532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-> ../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
-> ../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
->   495 | static struct regmap_bus bno055_ser_regmap_bus = {
+> The typical architecture is to have one device as the frontend device which
+> can be "linked" against one or multiple backend devices. All the IIO and
+> userspace interface is expected to be registers/managed by the frontend
+> device which will callback into the backends when needed (to get/set
+> some configuration that it does not directly control).
 > 
-> Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Andrea Merello <andrea.merello@iit.it>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: linux-iio@vger.kernel.org
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> The basic framework interface is pretty simple:
+>  - Backends should register themselves with @devm_iio_backend_register()
+>  - Frontend devices should get backends with @devm_iio_backend_get()
+> 
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 
-Thanks,
-Jonathan
+A few minor comments inline.
 
-> ---
->  drivers/iio/imu/bno055/Kconfig |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff -- a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
-> --- a/drivers/iio/imu/bno055/Kconfig
-> +++ b/drivers/iio/imu/bno055/Kconfig
-> @@ -8,6 +8,7 @@ config BOSCH_BNO055
->  config BOSCH_BNO055_SERIAL
->  	tristate "Bosch BNO055 attached via UART"
->  	depends on SERIAL_DEV_BUS
-> +	select REGMAP
->  	select BOSCH_BNO055
->  	help
->  	  Enable this to support Bosch BNO055 IMUs attached via UART.
+...
+
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> new file mode 100644
+> index 000000000000..994bc68c2679
+> --- /dev/null
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -0,0 +1,411 @@
+
+...
+
+> +
+> +/*
+> + * Helper struct for requesting buffers. Allows for multiple buffers per
+> + * backend.
+Only seems to be used to ensure we have all the data needed to free it...
+So comment seems less than obviously connected to that.
+> + */
+> +struct iio_backend_buffer_pair {
+> +	struct iio_backend *back;
+> +	struct iio_buffer *buffer;
+> +};
+> +
+
+> +/**
+> + * iio_backend_chan_enable - Enable a backend channel.
+> + * @back:	Backend device.
+> + * @chan:	Channel number.
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan)
+> +{
+> +	return iio_backend_op_call(back, chan_enable, chan);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_chan_enable, IIO_BACKEND);
+> +
+> +/**
+> + * iio_backend_chan_disable - Disable a backend channel.
+> + * @back:	Backend device.
+> + * @chan:	Channel number.
+Would be good to be consistent on . or not.
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_chan_disable(struct iio_backend *back, unsigned int chan)
+> +{
+> +	return iio_backend_op_call(back, chan_disable, chan);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_chan_disable, IIO_BACKEND);
+> +
+> +/**
+> + * iio_backend_chan_enable - Enable the backend.
+> + * @back:	Backend device
+
+
+
+...
+
+
+> +/**
+> + * devm_iio_backend_get_from_fwnode_lookup
+
+Not valid kernel doc + name is wrong.  Make sure you run
+the kernel-doc script over this and fix any errors or warnings
+reported.
+
+> + * @dev:	Device where to bind the backend lifetime.
+> + * @fwnode:	Firmware node of the backend device.
+> + *
+> + * Search the backend list for a device matching @fwnode.
+> + * This API should not be used and it's only present for preventing the first
+> + * user of this framework to break it's DT ABI.
+> + *
+> + * RETURNS:
+> + * A backend pointer, negative error pointer otherwise.
+> + */
+> +struct iio_backend *
+> +__devm_iio_backend_get_from_fwnode_lookup(struct device *dev,
+> +					  struct fwnode_handle *fwnode)
+> +{
+> +	struct iio_backend *back;
+> +	int ret;
+> +
+> +	guard(mutex)(&iio_back_lock);
+> +	list_for_each_entry(back, &iio_back_list, entry) {
+> +		if (!device_match_fwnode(back->dev, fwnode))
+> +			continue;
+> +
+> +		ret = __devm_iio_backend_get(dev, back);
+> +		if (ret)
+> +			return ERR_PTR(ret);
+> +
+> +		return back;
+> +	}
+> +
+> +	return ERR_PTR(-EPROBE_DEFER);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(__devm_iio_backend_get_from_fwnode_lookup, IIO_BACKEND);
+>
+
+
+> +/**
+> + * devm_iio_backend_register - Register a new backend device
+> + * @dev:	Backend device being registered.
+> + * @ops:	Backend ops
+> + * @priv:	Device private data.
+> + *
+> + * @ops and @priv are both mandatory. Not providing them results in -EINVAL.
+
+It's unusual to 'insist' on the private data.
+Whilst it's highly likely it will always be there from a core point of view
+we don't mind it being NULL.  This is different from the ops as we want
+to be able to call those without checking they are there.
+
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int devm_iio_backend_register(struct device *dev,
+> +			      const struct iio_backend_ops *ops, void *priv)
+> +{
+> +	struct iio_backend *back;
+> +
+> +	if (!ops || !priv) {
+
+> +		pr_err("%s: No backend ops or private data given\n",
+> +		       dev_name(dev));
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * Through device_links, we guarantee that a frontend device cannot be
+> +	 * bound/exist if the backend driver is not around. Hence, we can bind
+> +	 * the backend object lifetime with the device being passed since
+> +	 * removing it will torn the frontend down.
+
+"will have torn" or "will tear the"
+
+> +	 */
+> +	back = devm_kzalloc(dev, sizeof(*back), GFP_KERNEL);
+> +	if (!back)
+> +		return -ENOMEM;
+> +
+> +	back->ops = ops;
+> +	back->owner = dev->driver->owner;
+> +	back->dev = dev;
+> +	back->priv = priv;
+> +	mutex_lock(&iio_back_lock);
+> +	list_add(&back->entry, &iio_back_list);
+> +	mutex_unlock(&iio_back_lock);
+> +
+> +	return devm_add_action_or_reset(dev, iio_backend_unregister, back);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(devm_iio_backend_register, IIO_BACKEND);
+> +
+> +MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
+> +MODULE_DESCRIPTION("Framework to handle complex IIO aggregate devices");
+> +MODULE_LICENSE("GPL");
+
 
 

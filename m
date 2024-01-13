@@ -1,51 +1,46 @@
-Return-Path: <linux-iio+bounces-1627-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1628-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D95282CD6A
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:16:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8FA82CD70
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 16:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE851C214B9
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 15:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784E71F225FF
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jan 2024 15:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D14B139B;
-	Sat, 13 Jan 2024 15:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62B15CB;
+	Sat, 13 Jan 2024 15:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hbhhtt8o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxNE8PlW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDCE136A;
-	Sat, 13 Jan 2024 15:15:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0D8C433C7;
-	Sat, 13 Jan 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E722DEBB;
+	Sat, 13 Jan 2024 15:19:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED11C433C7;
+	Sat, 13 Jan 2024 15:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705158955;
-	bh=gi7MLkfj49jWwmlYtMReK8oYZtLf7aFm+9eg8JZZ/6o=;
+	s=k20201202; t=1705159173;
+	bh=vX58YZjenHiTJxtX2xEHIR6mIG6Zrsa+Iez23OxTdYQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Hbhhtt8oHn9r0LCm2XOzjNQWqZk4/PVY9xB40qPCKV7qVzcuYngvfOro+l0fQP84i
-	 OPos3yjOpeQRI0LwVE6AFGOVRDdLa2/78xWsB80esbUh2eFbMDoATl5x3L+XpECcle
-	 /FOVvyW3JF4ff2VF9J88a3FEbKRYEsu4HDW6TIL+gptWHiyoQeoDr9ZDMo9kqfMs1F
-	 o0joNQQaLbXTAetjOQ/dzt3X4GglBjXBmAwSRbGl4hYN2p7ChqFSiNfmeLcMBLKplD
-	 v1KofWhaEGp7Ls/p6geWQLb1Uq6zBXyymaVtYYS8+4qd1cW73q4XkK1Aipf5ckHt0e
-	 A3O7uPM+rahfg==
-Date: Sat, 13 Jan 2024 15:15:49 +0000
+	b=hxNE8PlWdaMQ+h0z1BW/rJFuaHHcWOXuAYK0ApWFH3ZXaa50jiMnU9BWvFb7VL0W6
+	 nXwtZ0of5I153SdWFROj1PsSXRC+KNINlFgaGfexdky1wWWiB1FBSPMT1wbN7YJMga
+	 diR1DMQZ/EdEDruwKGke73ZibkCUegQ77y7EL0ZHNRgU1JoQpqTDs90Uo+Ri+AjYbG
+	 xIL0/JilNQX/jOJu/2XoapGCqiLLyx+rKIXTEL6Lh5xr8FwtrTz2U+AMUYlMKbsZdS
+	 1K/GLQDsufrVKpMeln9ryW/YLUlz9JqQbZDOCxGNCM3FczfIFTQFm7ML7LGJ97yBqD
+	 L07s381i7Bs8A==
+Date: Sat, 13 Jan 2024 15:19:28 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Christian Eggers <ceggers@arri.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] iio: light: as73211: add support for as7331
-Message-ID: <20240113151549.2be0463e@jic23-huawei>
-In-Reply-To: <4555448.LvFx2qVVIh@n95hx1g2>
-References: <20240103-as7331-v2-0-6f0ad05e0482@gmail.com>
-	<20240103-as7331-v2-3-6f0ad05e0482@gmail.com>
-	<4555448.LvFx2qVVIh@n95hx1g2>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 1/1] tools: iio: replace seekdir() in iio_generic_buffer
+Message-ID: <20240113151928.0857a93a@jic23-huawei>
+In-Reply-To: <20240108103224.3986-1-petre.rodan@subdimension.ro>
+References: <20240108103224.3986-1-petre.rodan@subdimension.ro>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,28 +51,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> > +struct as73211_data;
-> > +
-> > +/**
-> > + * struct spec_dev_data - device-specific data
-> > + * @intensity_scale:  Function to retrieve intensity scale values.
-> > + * @channel:          Device channels.
-> > + * @num_channels:     Number of channels of the device.
-> > + */
-> > +struct spec_dev_data {  
+On Mon,  8 Jan 2024 12:32:20 +0200
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
+
+> Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
 > 
-> I would call it as73211_spec_dev_data (is the C++ One Definition Rule relevant for
-> the kernel?)
+> One of the glibc patches that stable Gentoo is using causes an improper
+> directory stream positioning bug on 32bit arm. That in turn ends up as a
+> floating point exception in iio_generic_buffer.
 > 
-> > +	int (*intensity_scale)(struct as73211_data *data, int chan, int *val, int *val2);
-> > +	struct iio_chan_spec const *channel;  
-> s/channel/channels/
+> The attached patch provides a fix by using an equivalent function which
+> should not cause trouble for other distros.
 > 
-> > +	int num_channels;
-> > +};
-Both good suggestions so I've applied them both and pushed out a new version of
-the togreg tree.
+> https://sourceware.org/bugzilla/show_bug.cgi?id=31212
+> 
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+I tweaked the description a tiny bit to say it's also easier to reason about
+in general.
+
+Applied to the togreg branch of iio.git and pushed out as tesing for 0-day
+to probably ignore it.
 
 Thanks,
+
 Jonathan
+
+> ---
+>  tools/iio/iio_utils.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+> index 6a00a6eecaef..c5c5082cb24e 100644
+> --- a/tools/iio/iio_utils.c
+> +++ b/tools/iio/iio_utils.c
+> @@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+>  		goto error_close_dir;
+>  	}
+> 
+> -	seekdir(dp, 0);
+> +	rewinddir(dp);
+>  	while (ent = readdir(dp), ent) {
+>  		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
+>  			   "_en") == 0) {
+> --
+> 2.41.0
+> 
+
 

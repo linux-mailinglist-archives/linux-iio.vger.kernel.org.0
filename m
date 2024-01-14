@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1662-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1663-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E7082D1B1
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CCF82D1B3
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FD7281F77
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78AEBB21221
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32CE6FD8;
-	Sun, 14 Jan 2024 17:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132D4747A;
+	Sun, 14 Jan 2024 17:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7OPfXHL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0rRQTcE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896357472;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1F679DB;
+	Sun, 14 Jan 2024 17:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B51BC433C7;
 	Sun, 14 Jan 2024 17:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB017C43390;
-	Sun, 14 Jan 2024 17:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705252894;
-	bh=Xck5I1hYjTLAEfCDEfFC6mPWv+xN4t0mw2SUHT7GTaI=;
+	s=k20201202; t=1705252899;
+	bh=4zh9/4F6fmtvl9cxLEHeu+OT6eosb1NjKDCeK0qyyJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7OPfXHLujKyqjNZfAOKUsfhni0naubAbMp3pGysfIBYL6f3PutBMd3jJxdv4vHAF
-	 6L4uNTNB28GX8Y1qStEiIi/7PL0H07+ijvqWwUCAfT22cE0mK2eubPnCHwjDGmgsqe
-	 hV52BnTKvcpbLJjGjJWTiztPdl8YJtmaC7+uwdtZqKFGq4qoo4RWSHGwF2S+YiuQGg
-	 4rP8iXuEc/pK9g6k2sOiqerUvStLzDUAhRPtESnn6MHs9nGN5Ut4NipQO/OM80ep+S
-	 wrAiziIWhVX3urK99FhopXyrfUdyxwssw1wE4KEErwn9OQjgTDlhcA0apeoOsOV/aF
-	 69B3gAeYNxF0A==
+	b=O0rRQTcEPvuvcxErZf8zQQGzDHKBRVqhBKkvMV41eg9ktZMS8OYTaMpuROdJM0tzl
+	 ++cadBXqF56SLJ11tJ2LuKHaz5UFKfDl6fMdxH5NsKYijQ1gfpNWUpOUxsHcl5JcZM
+	 ZzBV4aWeTJzIjmc++U+9Fs+LsSzRBK9MfpeICofb6eu54Ah5e0JsKsGFyqnLDorG2A
+	 pA0AMxS9ysJ3LjZWzdZL+oTzTevr2IwS7LS8lsUKvXBjmMHWN1zvOVpa0Pzp5BkCzM
+	 864evP1B7SzygUrj5Kr9aajOtxHGh0jjNkW1RxV/Qm8V8ax23nU7zOMlZdgXE4MJsO
+	 MUSyHrnb7FIlw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 11/13] iio: dac: ad5770r: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sun, 14 Jan 2024 17:20:07 +0000
-Message-ID: <20240114172009.179893-12-jic23@kernel.org>
+Subject: [PATCH 12/13] iio: dac: ltc2688: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Sun, 14 Jan 2024 17:20:08 +0000
+Message-ID: <20240114172009.179893-13-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114172009.179893-1-jic23@kernel.org>
 References: <20240114172009.179893-1-jic23@kernel.org>
@@ -83,58 +83,89 @@ noop.
 Cc: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/dac/ad5770r.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/iio/dac/ltc2688.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-index f66d67402e43..782a04406576 100644
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -515,7 +515,7 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
+diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
+index fc8eb53c65be..e8add3636af9 100644
+--- a/drivers/iio/dac/ltc2688.c
++++ b/drivers/iio/dac/ltc2688.c
+@@ -746,7 +746,7 @@ static int ltc2688_span_lookup(const struct ltc2688_state *st, int min, int max)
+ static int ltc2688_channel_config(struct ltc2688_state *st)
  {
- 	int ret, tmp[2], min, max;
- 	unsigned int num;
+ 	struct device *dev = &st->spi->dev;
 -	struct fwnode_handle *child;
 +	struct fwnode_handle *child __free(fwnode_handle) = NULL;
+ 	u32 reg, clk_input, val, tmp[2];
+ 	int ret, span;
  
- 	num = device_get_child_node_count(&st->spi->dev);
- 	if (num != AD5770R_MAX_CHANNELS)
-@@ -524,30 +524,24 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
- 	device_for_each_child_node(&st->spi->dev, child) {
- 		ret = fwnode_property_read_u32(child, "reg", &num);
- 		if (ret)
--			goto err_child_out;
--		if (num >= AD5770R_MAX_CHANNELS) {
--			ret = -EINVAL;
--			goto err_child_out;
+@@ -754,18 +754,14 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
+ 		struct ltc2688_chan *chan;
+ 
+ 		ret = fwnode_property_read_u32(child, "reg", &reg);
+-		if (ret) {
+-			fwnode_handle_put(child);
++		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 					     "Failed to get reg property\n");
 -		}
-+			return ret;
-+		if (num >= AD5770R_MAX_CHANNELS)
-+			return -EINVAL;
  
- 		ret = fwnode_property_read_u32_array(child,
- 						     "adi,range-microamp",
- 						     tmp, 2);
- 		if (ret)
--			goto err_child_out;
-+			return ret;
+-		if (reg >= LTC2688_DAC_CHANNELS) {
+-			fwnode_handle_put(child);
++		if (reg >= LTC2688_DAC_CHANNELS)
+ 			return dev_err_probe(dev, -EINVAL,
+ 					     "reg bigger than: %d\n",
+ 					     LTC2688_DAC_CHANNELS);
+-		}
  
- 		min = tmp[0] / 1000;
- 		max = tmp[1] / 1000;
- 		ret = ad5770r_store_output_range(st, min, max, num);
- 		if (ret)
--			goto err_child_out;
-+			return ret;
+ 		val = 0;
+ 		chan = &st->channels[reg];
+@@ -786,12 +782,10 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
+ 		if (!ret) {
+ 			span = ltc2688_span_lookup(st, (int)tmp[0] / 1000,
+ 						   tmp[1] / 1000);
+-			if (span < 0) {
+-				fwnode_handle_put(child);
++			if (span < 0)
+ 				return dev_err_probe(dev, -EINVAL,
+ 						     "output range not valid:[%d %d]\n",
+ 						     tmp[0], tmp[1]);
+-			}
+ 
+ 			val |= FIELD_PREP(LTC2688_CH_SPAN_MSK, span);
+ 		}
+@@ -800,17 +794,14 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
+ 					       &clk_input);
+ 		if (!ret) {
+ 			if (clk_input >= LTC2688_CH_TGP_MAX) {
+-				fwnode_handle_put(child);
+ 				return dev_err_probe(dev, -EINVAL,
+ 						     "toggle-dither-input inv value(%d)\n",
+ 						     clk_input);
+ 			}
+ 
+ 			ret = ltc2688_tgp_clk_setup(st, chan, child, clk_input);
+-			if (ret) {
+-				fwnode_handle_put(child);
++			if (ret)
+ 				return ret;
+-			}
+ 
+ 			/*
+ 			 * 0 means software toggle which is the default mode.
+@@ -844,11 +835,9 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
+ 
+ 		ret = regmap_write(st->regmap, LTC2688_CMD_CH_SETTING(reg),
+ 				   val);
+-		if (ret) {
+-			fwnode_handle_put(child);
++		if (ret)
+ 			return dev_err_probe(dev, -EINVAL,
+ 					     "failed to set chan settings\n");
+-		}
  	}
  
  	return 0;
--
--err_child_out:
--	fwnode_handle_put(child);
--	return ret;
- }
- 
- static int ad5770r_init(struct ad5770r_state *st)
 -- 
 2.43.0
 

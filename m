@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1657-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1658-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B2182D1A6
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81FC82D1AA
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35525B2117F
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2166CB21168
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7C163C3;
-	Sun, 14 Jan 2024 17:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A6D63BF;
+	Sun, 14 Jan 2024 17:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOnYjyFH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGMaHnMj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958EA63AF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0B26AA6;
+	Sun, 14 Jan 2024 17:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF2AC433C7;
 	Sun, 14 Jan 2024 17:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C32C43399;
-	Sun, 14 Jan 2024 17:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705252866;
-	bh=1yT5DzuGpfQRKcuTIavUoAx3zdwBWyzClw+jmh1R7io=;
+	s=k20201202; t=1705252871;
+	bh=vdePzhBx0RGC98TujogxrD1IJhQR1sBrDbStR0jyBPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOnYjyFHRl/X66g/snAFDxeMLqq5dNoNOUR+ZvfDGtsRYkQjcsCtleBuqPRrlh6xh
-	 3qs+ktROjj/j3iX8VlwNVyVX1V79uVXErofQ1Xp+pIWAlyco3BG/AckAqMDe+GrVSP
-	 z/8Cg6swIZTj42Wn25VtzHqveHj8ttjXmd0zKm4zZdczyne8xlRoeXPXtTX4/JJwt7
-	 wKooBMzSvwD0G0oAoD9yp9uWn0cixhym02jqoBQL0At6AI6PErOlmjyqgDpBgcb2Mb
-	 joyVG9Cm+uYBxAabYafyXyq5cvhtxK30UnoUvoKo8XrgeyCipSJd3kJXnjD3pH9sr8
-	 NCm6EvwMKHjKw==
+	b=gGMaHnMjUaFpU/4rJVDTzW7mdIp3CJgfzuIwr9lF+S4eDkxEChhPhEWp4+wpU8zSX
+	 bRAMPYxpTKwbOgBDUHbEIPM/u9AL4THrV66q7FNs5w5L6lgq0svj2w42iVdjQhGzeU
+	 TVbqmW+2muJx5Ppm2terDJTwDV/xIsptdrD73dz5pOSDIHct5uVyYtwA7H0CrtljE0
+	 g7Vf1ze+R/V2EfaOi44BYyv+ZBM1w0uujY7dLJbXt14CVyZie1LVBwla15AX85W9Po
+	 pq5NB2Kw83VfYCEpKQ/haxkp82Lv/QzuzrCC0tXXom8gtmCYBlj2zOYdr5T28CInFs
+	 9q2/UBWoNEsng==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 06/13] iio: adc: stm32: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sun, 14 Jan 2024 17:20:02 +0000
-Message-ID: <20240114172009.179893-7-jic23@kernel.org>
+Subject: [PATCH 07/13] iio: adc: ti-ads1015: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Sun, 14 Jan 2024 17:20:03 +0000
+Message-ID: <20240114172009.179893-8-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114172009.179893-1-jic23@kernel.org>
 References: <20240114172009.179893-1-jic23@kernel.org>
@@ -79,130 +79,41 @@ loop no fwnode_handle reference will be held and the child pointer
 will be NULL thus making the automatically run fwnode_handle_put() a
 noop.
 
-Note this includes a probably fix as in one path an error message was
-printed with ret == 0.
-
-Took advantage of dev_err_probe() to futher simplify things given no
-longer a need for the goto err.
-
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Marek Vasut <marex@denx.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/stm32-adc.c | 62 ++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 38 deletions(-)
+ drivers/iio/adc/ti-ads1015.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index b5d3c9cea5c4..c2306aeb5641 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2187,7 +2187,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 				       struct iio_chan_spec *channels)
- {
- 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
--	struct fwnode_handle *child;
-+	struct fwnode_handle *child __free(fwnode_handle) = NULL;
- 	const char *name;
- 	int val, scan_index = 0, ret;
- 	bool differential;
-@@ -2195,50 +2195,43 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 6ae967e4d8fa..b3a8a5b2c013 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -902,7 +902,7 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+ 	struct ads1015_data *data = iio_priv(indio_dev);
+ 	struct device *dev = &client->dev;
+-	struct fwnode_handle *node;
++	struct fwnode_handle *node __free(fwnode_handle) = NULL;
+ 	int i = -1;
  
- 	device_for_each_child_node(&indio_dev->dev, child) {
- 		ret = fwnode_property_read_u32(child, "reg", &val);
--		if (ret) {
--			dev_err(&indio_dev->dev, "Missing channel index %d\n", ret);
--			goto err;
--		}
-+		if (ret)
-+			return dev_err_probe(&indio_dev->dev, ret,
-+					     "Missing channel index\n");
- 
- 		ret = fwnode_property_read_string(child, "label", &name);
- 		/* label is optional */
- 		if (!ret) {
--			if (strlen(name) >= STM32_ADC_CH_SZ) {
--				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
--					name, STM32_ADC_CH_SZ);
--				ret = -EINVAL;
--				goto err;
--			}
-+			if (strlen(name) >= STM32_ADC_CH_SZ)
-+				return dev_err_probe(&indio_dev->dev, -EINVAL,
-+						     "Label %s exceeds %d characters\n",
-+						     name, STM32_ADC_CH_SZ);
-+
- 			strscpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
- 			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
- 			if (ret == -ENOENT)
- 				continue;
- 			else if (ret)
--				goto err;
--		} else if (ret != -EINVAL) {
--			dev_err(&indio_dev->dev, "Invalid label %d\n", ret);
--			goto err;
--		}
-+				return ret;
-+		} else if (ret != -EINVAL)
-+			return dev_err_probe(&indio_dev->dev, ret, "Invalid label\n");
- 
--		if (val >= adc_info->max_channels) {
--			dev_err(&indio_dev->dev, "Invalid channel %d\n", val);
--			ret = -EINVAL;
--			goto err;
--		}
-+		if (val >= adc_info->max_channels)
-+			return dev_err_probe(&indio_dev->dev, -EINVAL,
-+					     "Invalid channel %d\n", val);
- 
- 		differential = false;
- 		ret = fwnode_property_read_u32_array(child, "diff-channels", vin, 2);
- 		/* diff-channels is optional */
- 		if (!ret) {
- 			differential = true;
--			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
--				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
--					vin[0], vin[1]);
--				goto err;
--			}
-+			if (vin[0] != val || vin[1] >= adc_info->max_channels)
-+				return dev_err_probe(&indio_dev->dev, -EINVAL,
-+						     "Invalid channel in%d-in%d\n",
-+						     vin[0], vin[1]);
- 		} else if (ret != -EINVAL) {
--			dev_err(&indio_dev->dev, "Invalid diff-channels property %d\n", ret);
--			goto err;
-+			return dev_err_probe(&indio_dev->dev, ret,
-+					     "Invalid diff-channels property\n");
+ 	device_for_each_child_node(dev, node) {
+@@ -927,7 +927,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 			pga = pval;
+ 			if (pga > 5) {
+ 				dev_err(dev, "invalid gain on %pfw\n", node);
+-				fwnode_handle_put(node);
+ 				return -EINVAL;
+ 			}
  		}
- 
- 		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
-@@ -2247,11 +2240,9 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 		val = 0;
- 		ret = fwnode_property_read_u32(child, "st,min-sample-time-ns", &val);
- 		/* st,min-sample-time-ns is optional */
--		if (ret && ret != -EINVAL) {
--			dev_err(&indio_dev->dev, "Invalid st,min-sample-time-ns property %d\n",
--				ret);
--			goto err;
--		}
-+		if (ret && ret != -EINVAL)
-+			return dev_err_probe(&indio_dev->dev, ret,
-+					     "Invalid st,min-sample-time-ns property\n");
- 
- 		stm32_adc_smpr_init(adc, channels[scan_index].channel, val);
- 		if (differential)
-@@ -2261,11 +2252,6 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 	}
- 
- 	return scan_index;
--
--err:
--	fwnode_handle_put(child);
--
--	return ret;
- }
- 
- static int stm32_adc_chan_fw_init(struct iio_dev *indio_dev, bool timestamping)
+@@ -936,7 +935,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 			data_rate = pval;
+ 			if (data_rate > 7) {
+ 				dev_err(dev, "invalid data_rate on %pfw\n", node);
+-				fwnode_handle_put(node);
+ 				return -EINVAL;
+ 			}
+ 		}
 -- 
 2.43.0
 

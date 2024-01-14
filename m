@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1659-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1660-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EE182D1A9
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B96082D1AD
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFA3281F6F
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271E71C20A0A
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8AA6FB3;
-	Sun, 14 Jan 2024 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C4B6AB9;
+	Sun, 14 Jan 2024 17:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcpNDBgS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyrY0fSv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719FD63C3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C56B7472;
+	Sun, 14 Jan 2024 17:21:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62716C433C7;
 	Sun, 14 Jan 2024 17:21:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CC7C433B2;
-	Sun, 14 Jan 2024 17:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705252876;
-	bh=aVcb4ydd3weWRq0CYn4WPfllX15y8xMJTA1t0fWXu2o=;
+	s=k20201202; t=1705252882;
+	bh=NBRWPxAsv0p1+ik3CPg3McHiDTSVOihxBd46Tt4L1gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcpNDBgS+g6kgnJVbDa399UdZZCXzdGuamGh1KxRrTm44/aSlojwy9/ZwVNGuGBqy
-	 RJlpSkXbU0gK16GzW9G1d7+tYd4KF/t2oH63Iytj//UArtKWrf5eM9qwioeCvbQ0tK
-	 +MvfPHydQ1HCd6GxfZgeHMuS3nW+6y0GTBlAogaCsFHhDyIeEnQRDc3aVm3aETw1cd
-	 L/3irBPI/gqIqOSj3i8Yfkg7i8f21QKzr7GZ0mEMW4fOn5Cf0SxpV6VEEajnRnc6RP
-	 tigFaH7zxwtpXk+UOWIjTCsPEfyAVxku2Pvn2rSZ1uc2pVZVCf7vSQjCn5DFOnr17h
-	 +6MoocqdJaIDQ==
+	b=AyrY0fSvXSmFEfHH7s6M5En1E7DlTOGfPpH9c2EdKIoWLd1I6Qrk5frPgkH4xyfYg
+	 nUMXapvqPogwI5rnfsRrxvz4jX5zx8OMFvgSCrcLD7NR7sz/PNJlD8ucNBrZS04eFq
+	 UIPz606nVL566NDoZs0j2cNnfbIbEd3Aw2i6h7AOuId33cG+rnpWuDlaMVGyQXKWua
+	 LmjOg5GosrHbnsML8M+feoDj7SfssRf4yQ4Bi+M+gDpiszGv2BEnPOsnrokoHo3/Tz
+	 cAEAJ5sceltgCckDFJEFdRtaX6ikBHtLI7C6N8J6/ePj4FRgImtEiiVO645QLqIEVU
+	 ld0V2h7R9W1EQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/13] iio: adc: ti-ads131e08: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sun, 14 Jan 2024 17:20:04 +0000
-Message-ID: <20240114172009.179893-9-jic23@kernel.org>
+Subject: [PATCH 09/13] iio: addac: ad74413r: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Sun, 14 Jan 2024 17:20:05 +0000
+Message-ID: <20240114172009.179893-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114172009.179893-1-jic23@kernel.org>
 References: <20240114172009.179893-1-jic23@kernel.org>
@@ -74,68 +74,45 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 This use of the new cleanup.h scope based freeing infrastructure allows
 us to exit directly from error conditions within the
-device_for_each_child_node(dev, child) loop. On normal exit from that
-loop no fwnode_handle reference will be held and the child pointer
-will be NULL thus making the automatically run fwnode_handle_put() a
-noop.
+fwnode_for_each_available_child_node(dev, child) loop. On normal exit
+from that loop no fwnode_handle reference will be held and the child
+pointer will be NULL thus making the automatically run
+fwnode_handle_put() a noop.
 
-Cc: Tomislav Denis <tomislav.denis@avl.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti-ads131e08.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/iio/addac/ad74413r.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-index fcfc46254313..fb1ab0b9a9db 100644
---- a/drivers/iio/adc/ti-ads131e08.c
-+++ b/drivers/iio/adc/ti-ads131e08.c
-@@ -694,7 +694,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 	struct ads131e08_channel_config *channel_config;
- 	struct device *dev = &st->spi->dev;
- 	struct iio_chan_spec *channels;
--	struct fwnode_handle *node;
-+	struct fwnode_handle *node __free(fwnode_handle) = NULL;
- 	unsigned int channel, tmp;
- 	int num_channels, i, ret;
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index 7af3e4b8fe3b..ec9a466e118d 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -1255,21 +1255,16 @@ static int ad74413r_parse_channel_config(struct iio_dev *indio_dev,
+ static int ad74413r_parse_channel_configs(struct iio_dev *indio_dev)
+ {
+ 	struct ad74413r_state *st = iio_priv(indio_dev);
+-	struct fwnode_handle *channel_node = NULL;
++	struct fwnode_handle *channel_node __free(fwnode_handle) = NULL;
+ 	int ret;
  
-@@ -739,7 +739,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 	device_for_each_child_node(dev, node) {
- 		ret = fwnode_property_read_u32(node, "reg", &channel);
+ 	fwnode_for_each_available_child_node(dev_fwnode(st->dev), channel_node) {
+ 		ret = ad74413r_parse_channel_config(indio_dev, channel_node);
  		if (ret)
--			goto err_child_out;
+-			goto put_channel_node;
 +			return ret;
- 
- 		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
- 		if (ret) {
-@@ -747,7 +747,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 		} else {
- 			ret = ads131e08_pga_gain_to_field_value(st, tmp);
- 			if (ret < 0)
--				goto err_child_out;
-+				return ret;
- 
- 			channel_config[i].pga_gain = tmp;
- 		}
-@@ -758,7 +758,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 		} else {
- 			ret = ads131e08_validate_channel_mux(st, tmp);
- 			if (ret)
--				goto err_child_out;
-+				return ret;
- 
- 			channel_config[i].mux = tmp;
- 		}
-@@ -784,10 +784,6 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 	st->channel_config = channel_config;
+ 	}
  
  	return 0;
 -
--err_child_out:
--	fwnode_handle_put(node);
+-put_channel_node:
+-	fwnode_handle_put(channel_node);
+-
 -	return ret;
  }
  
- static void ads131e08_regulator_disable(void *data)
+ static int ad74413r_setup_channels(struct iio_dev *indio_dev)
 -- 
 2.43.0
 

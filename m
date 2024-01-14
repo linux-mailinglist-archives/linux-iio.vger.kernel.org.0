@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1658-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1659-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81FC82D1AA
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EE182D1A9
 	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2166CB21168
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFA3281F6F
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A6D63BF;
-	Sun, 14 Jan 2024 17:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8AA6FB3;
+	Sun, 14 Jan 2024 17:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGMaHnMj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcpNDBgS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0B26AA6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719FD63C3;
+	Sun, 14 Jan 2024 17:21:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CC7C433B2;
 	Sun, 14 Jan 2024 17:21:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF2AC433C7;
-	Sun, 14 Jan 2024 17:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705252871;
-	bh=vdePzhBx0RGC98TujogxrD1IJhQR1sBrDbStR0jyBPk=;
+	s=k20201202; t=1705252876;
+	bh=aVcb4ydd3weWRq0CYn4WPfllX15y8xMJTA1t0fWXu2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGMaHnMjUaFpU/4rJVDTzW7mdIp3CJgfzuIwr9lF+S4eDkxEChhPhEWp4+wpU8zSX
-	 bRAMPYxpTKwbOgBDUHbEIPM/u9AL4THrV66q7FNs5w5L6lgq0svj2w42iVdjQhGzeU
-	 TVbqmW+2muJx5Ppm2terDJTwDV/xIsptdrD73dz5pOSDIHct5uVyYtwA7H0CrtljE0
-	 g7Vf1ze+R/V2EfaOi44BYyv+ZBM1w0uujY7dLJbXt14CVyZie1LVBwla15AX85W9Po
-	 pq5NB2Kw83VfYCEpKQ/haxkp82Lv/QzuzrCC0tXXom8gtmCYBlj2zOYdr5T28CInFs
-	 9q2/UBWoNEsng==
+	b=YcpNDBgS+g6kgnJVbDa399UdZZCXzdGuamGh1KxRrTm44/aSlojwy9/ZwVNGuGBqy
+	 RJlpSkXbU0gK16GzW9G1d7+tYd4KF/t2oH63Iytj//UArtKWrf5eM9qwioeCvbQ0tK
+	 +MvfPHydQ1HCd6GxfZgeHMuS3nW+6y0GTBlAogaCsFHhDyIeEnQRDc3aVm3aETw1cd
+	 L/3irBPI/gqIqOSj3i8Yfkg7i8f21QKzr7GZ0mEMW4fOn5Cf0SxpV6VEEajnRnc6RP
+	 tigFaH7zxwtpXk+UOWIjTCsPEfyAVxku2Pvn2rSZ1uc2pVZVCf7vSQjCn5DFOnr17h
+	 +6MoocqdJaIDQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 07/13] iio: adc: ti-ads1015: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sun, 14 Jan 2024 17:20:03 +0000
-Message-ID: <20240114172009.179893-8-jic23@kernel.org>
+Subject: [PATCH 08/13] iio: adc: ti-ads131e08: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Sun, 14 Jan 2024 17:20:04 +0000
+Message-ID: <20240114172009.179893-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114172009.179893-1-jic23@kernel.org>
 References: <20240114172009.179893-1-jic23@kernel.org>
@@ -79,41 +79,63 @@ loop no fwnode_handle reference will be held and the child pointer
 will be NULL thus making the automatically run fwnode_handle_put() a
 noop.
 
-Cc: Marek Vasut <marex@denx.de>
+Cc: Tomislav Denis <tomislav.denis@avl.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti-ads1015.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iio/adc/ti-ads131e08.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 6ae967e4d8fa..b3a8a5b2c013 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -902,7 +902,7 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ads1015_data *data = iio_priv(indio_dev);
- 	struct device *dev = &client->dev;
+diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
+index fcfc46254313..fb1ab0b9a9db 100644
+--- a/drivers/iio/adc/ti-ads131e08.c
++++ b/drivers/iio/adc/ti-ads131e08.c
+@@ -694,7 +694,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 	struct ads131e08_channel_config *channel_config;
+ 	struct device *dev = &st->spi->dev;
+ 	struct iio_chan_spec *channels;
 -	struct fwnode_handle *node;
 +	struct fwnode_handle *node __free(fwnode_handle) = NULL;
- 	int i = -1;
+ 	unsigned int channel, tmp;
+ 	int num_channels, i, ret;
  
+@@ -739,7 +739,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
  	device_for_each_child_node(dev, node) {
-@@ -927,7 +927,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			pga = pval;
- 			if (pga > 5) {
- 				dev_err(dev, "invalid gain on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
+ 		ret = fwnode_property_read_u32(node, "reg", &channel);
+ 		if (ret)
+-			goto err_child_out;
++			return ret;
+ 
+ 		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
+ 		if (ret) {
+@@ -747,7 +747,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 		} else {
+ 			ret = ads131e08_pga_gain_to_field_value(st, tmp);
+ 			if (ret < 0)
+-				goto err_child_out;
++				return ret;
+ 
+ 			channel_config[i].pga_gain = tmp;
  		}
-@@ -936,7 +935,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			data_rate = pval;
- 			if (data_rate > 7) {
- 				dev_err(dev, "invalid data_rate on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
+@@ -758,7 +758,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 		} else {
+ 			ret = ads131e08_validate_channel_mux(st, tmp);
+ 			if (ret)
+-				goto err_child_out;
++				return ret;
+ 
+ 			channel_config[i].mux = tmp;
  		}
+@@ -784,10 +784,6 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 	st->channel_config = channel_config;
+ 
+ 	return 0;
+-
+-err_child_out:
+-	fwnode_handle_put(node);
+-	return ret;
+ }
+ 
+ static void ads131e08_regulator_disable(void *data)
 -- 
 2.43.0
 

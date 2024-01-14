@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-1653-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1654-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2464482D19F
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:20:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294A482D1A1
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 18:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A37A9B2131B
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:20:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFB91F21573
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 17:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74CB6121;
-	Sun, 14 Jan 2024 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A186121;
+	Sun, 14 Jan 2024 17:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJioTmU0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0VkFooh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3BC5CAF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2D3610E;
+	Sun, 14 Jan 2024 17:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB88C43394;
 	Sun, 14 Jan 2024 17:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0442C433F1;
-	Sun, 14 Jan 2024 17:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705252843;
-	bh=ATl4u3pDvKXvL9z2YSqj4DakIodEysQp3h5Mu+OZUqk=;
+	s=k20201202; t=1705252849;
+	bh=0ycor7XirfjQHUF3fBYASHC6G79GNLLrlazmeQ/51Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJioTmU0w5LkFyEWoOSmWO9arroctTWwhYwaQQbrGMZF9jQSLQMSRwfniwVEkppAg
-	 EKqYHDAZ0Regkrvsv0rboh9Np/khOUSvxmTrG6ysEno4T5mHAc55ZaqKTjSXSZxzeZ
-	 /xEFAR3hwGZZ8kjkLarNDCsHgfPIKLbQSNDp+lV25NaqcWzhnvl8UR34955MVbe1kA
-	 gYozp+8+zL3Evnr6m9pL8dhrNi4R0RCOSI2I/U07w8d+8/Wo4nsCvu62UW5tBGncq/
-	 poQ+gRvlM0lAAYrOYZsqPh9cYmMBmWekDX2OmDuC1q9csp9Aacb4bVkm3HXb79TH2g
-	 Qfyo1B6A1R4tQ==
+	b=a0VkFoohGRtHuuxXn7onH4jFYzwFoiuz77AhK8i2bDAaciTZkraHUuFxGeLUmJGOl
+	 qtVg8kw9at+cUmyZwTOJ5vUlyNzUDdJAAhcXp+qpQL3hHXhbEqQpb3+iQU93t0bR23
+	 eZTmXgt1aXbQJG6IgO+YOBSXzBdf5SnTCS+OoRMIAxEGNZzxlZUvB/e55dZiZ3yLhG
+	 SVEWnBqZqMx9yeBpx5M0SLdKlZFrRXafF8h8Bni/qFrDvbh2US68kyH7P3FIqWW4cX
+	 e5/Kx4uysVt3JtZON/icppgfv51Rp695b9sPGPAm7vEGnDcjlzUXlccuI2GAdg5533
+	 UnI1Wm+Lim08Q==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -56,9 +56,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 02/13] iio: adc: max11410: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sun, 14 Jan 2024 17:19:58 +0000
-Message-ID: <20240114172009.179893-3-jic23@kernel.org>
+Subject: [PATCH 03/13] iio: adc: mcp3564: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
+Date: Sun, 14 Jan 2024 17:19:59 +0000
+Message-ID: <20240114172009.179893-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240114172009.179893-1-jic23@kernel.org>
 References: <20240114172009.179893-1-jic23@kernel.org>
@@ -68,104 +68,74 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 This use of the new cleanup.h scope based freeing infrastructure allows
 us to exit directly from error conditions within the
-device_for_each_child_node(dev, child) loop.  On normal exit from that
+device_for_each_child_node(dev, child) loop. On normal exit from that
 loop no fwnode_handle reference will be held and the child pointer
 will be NULL thus making the automatically run fwnode_handle_put() a
-noop whereas it will release the reference held on early breaking or
-returning from within the loop.
+noop whereas it will release the reference held on early break or
+return from the loop.
 
-Cc: Nuno Sá <nuno.sa@analog.com>
-Cc: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+Return a little earlier in some error paths to avoid performing
+pointless activity. Likely motivation for doing this previously was
+to avoid repeating the fwnode_handle_put() calls.
+
+Cc: Marius Cristea <marius.cristea@microchip.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/max11410.c | 26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/iio/adc/mcp3564.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
-index 6af829349b4e..790a95474bb9 100644
---- a/drivers/iio/adc/max11410.c
-+++ b/drivers/iio/adc/max11410.c
-@@ -696,7 +696,7 @@ static int max11410_parse_channels(struct max11410_state *st,
- 	struct device *dev = &st->spi_dev->dev;
- 	struct max11410_channel_config *cfg;
+diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+index e3f1de5fcc5a..9a1029c93fb2 100644
+--- a/drivers/iio/adc/mcp3564.c
++++ b/drivers/iio/adc/mcp3564.c
+@@ -998,7 +998,7 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 	struct mcp3564_state *adc = iio_priv(indio_dev);
+ 	struct device *dev = &adc->spi->dev;
  	struct iio_chan_spec *channels;
 -	struct fwnode_handle *child;
 +	struct fwnode_handle *child __free(fwnode_handle) = NULL;
- 	u32 reference, sig_path;
- 	const char *node_name;
- 	u32 inputs[2], scale;
-@@ -735,47 +735,37 @@ static int max11410_parse_channels(struct max11410_state *st,
- 			inputs[1] = 0;
+ 	struct iio_chan_spec chanspec = mcp3564_channel_template;
+ 	struct iio_chan_spec temp_chanspec = mcp3564_temp_channel_template;
+ 	struct iio_chan_spec burnout_chanspec = mcp3564_burnout_channel_template;
+@@ -1033,26 +1033,25 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 							     "diff-channels",
+ 							     inputs,
+ 							     ARRAY_SIZE(inputs));
++			if (ret)
++				return ret;
++
+ 			chanspec.differential = 1;
+ 		} else {
+ 			ret = fwnode_property_read_u32(child, "reg", &inputs[0]);
++			if (ret)
++				return ret;
+ 
  			chanspec.differential = 0;
+ 			inputs[1] = MCP3564_AGND;
  		}
 -		if (ret) {
 -			fwnode_handle_put(child);
-+		if (ret)
- 			return ret;
+-			return ret;
 -		}
  
- 		if (inputs[0] > MAX11410_CHANNEL_INDEX_MAX ||
--		    inputs[1] > MAX11410_CHANNEL_INDEX_MAX) {
+ 		if (inputs[0] > MCP3564_INTERNAL_VCM ||
+-		    inputs[1] > MCP3564_INTERNAL_VCM) {
 -			fwnode_handle_put(child);
-+		    inputs[1] > MAX11410_CHANNEL_INDEX_MAX)
++		    inputs[1] > MCP3564_INTERNAL_VCM)
  			return dev_err_probe(&indio_dev->dev, -EINVAL,
- 					     "Invalid channel index for %s, should be less than %d\n",
- 					     node_name,
- 					     MAX11410_CHANNEL_INDEX_MAX + 1);
--		}
- 
- 		cfg = &st->channels[chan_idx];
- 
- 		reference = MAX11410_REFSEL_AVDD_AGND;
- 		fwnode_property_read_u32(child, "adi,reference", &reference);
--		if (reference > MAX11410_REFSEL_MAX) {
--			fwnode_handle_put(child);
-+		if (reference > MAX11410_REFSEL_MAX)
- 			return dev_err_probe(&indio_dev->dev, -EINVAL,
- 					     "Invalid adi,reference value for %s, should be less than %d.\n",
- 					     node_name, MAX11410_REFSEL_MAX + 1);
--		}
- 
- 		if (!max11410_get_vrefp(st, reference) ||
--		    (!max11410_get_vrefn(st, reference) && reference <= 2)) {
--			fwnode_handle_put(child);
-+		    (!max11410_get_vrefn(st, reference) && reference <= 2))
- 			return dev_err_probe(&indio_dev->dev, -EINVAL,
- 					     "Invalid VREF configuration for %s, either specify corresponding VREF regulators or change adi,reference property.\n",
+ 					     "Channel index > %d, for %s\n",
+ 					     MCP3564_INTERNAL_VCM + 1,
  					     node_name);
 -		}
  
- 		sig_path = MAX11410_PGA_SIG_PATH_BUFFERED;
- 		fwnode_property_read_u32(child, "adi,input-mode", &sig_path);
--		if (sig_path > MAX11410_SIG_PATH_MAX) {
--			fwnode_handle_put(child);
-+		if (sig_path > MAX11410_SIG_PATH_MAX)
- 			return dev_err_probe(&indio_dev->dev, -EINVAL,
- 					     "Invalid adi,input-mode value for %s, should be less than %d.\n",
- 					     node_name, MAX11410_SIG_PATH_MAX + 1);
--		}
- 
- 		fwnode_property_read_u32(child, "settling-time-us",
- 					 &cfg->settling_time_us);
-@@ -793,10 +783,8 @@ static int max11410_parse_channels(struct max11410_state *st,
- 			cfg->scale_avail = devm_kcalloc(dev, MAX11410_SCALE_AVAIL_SIZE * 2,
- 							sizeof(*cfg->scale_avail),
- 							GFP_KERNEL);
--			if (!cfg->scale_avail) {
--				fwnode_handle_put(child);
-+			if (!cfg->scale_avail)
- 				return -ENOMEM;
--			}
- 
- 			scale = max11410_get_scale(st, *cfg);
- 			for (i = 0; i < MAX11410_SCALE_AVAIL_SIZE; i++) {
+ 		chanspec.address = (inputs[0] << 4) | inputs[1];
+ 		chanspec.channel = inputs[0];
 -- 
 2.43.0
 

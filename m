@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-1670-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1671-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE40582D6A9
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 11:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787C582D6C5
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 11:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA61281467
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 10:05:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F571282511
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 10:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11778F4E9;
-	Mon, 15 Jan 2024 10:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61524101C6;
+	Mon, 15 Jan 2024 10:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gIeqM286"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyiukfBN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3251FE579;
-	Mon, 15 Jan 2024 10:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEBCF9E5;
+	Mon, 15 Jan 2024 10:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e7065b7bdso14868045e9.3;
-        Mon, 15 Jan 2024 02:05:30 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40e80046275so804725e9.2;
+        Mon, 15 Jan 2024 02:06:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705313129; x=1705917929; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1705313211; x=1705918011; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vFMc7j2kW/EmR5j9xazq9ZZP8xcBhns8tWgRjbApPD8=;
-        b=gIeqM286EePlCwwjkCJ15zX4LDglNUVgCGwbQUEO9UkrbQsPmG4oHGcngcK2vbcBbT
-         3u9as5/X8qY6u4gHanH2izNtQfJh16f8cgu4bzPSNptGn1IKdN1vjvRHRQ6fqyzYtprJ
-         n4UI0BpXNxOr/XTwlaMYaFT1UOqwW/ODHX8DfB9BshXabWU2VQK3nd6Iqo3lu8Xh+5QM
-         GOr4gwELcylYoGmleUv0uVjk+TSfuCUMvnMBVZ3Uk4GGyxNXrutX+zLuevKTS9GqOQQa
-         bTupQTT3kq6xgIMUTCZPjXrX1oxC4+oG8Ne9xj181AYu8r9OwfQ1DUiPZ735gsPz6Vqu
-         d9eA==
+        bh=7jI9wVPYlReOrSFt8sdfuSK2FupjmRCjgJqBjTi+2Q8=;
+        b=lyiukfBNj4YATF1b/1Fjf+ujdkenJ5+45xSLvKsICAVgwbbsiAyHSyKIKcy0pvvDIR
+         NrQ4zJKqtPJuu82eg38CKotA7kgJdSt/ybC8qhC/TkGytjk6Fh1HW801YyShTjqWlvo2
+         cSsDjCF2dI0YwzJwEpLfnub99O2NJ+9BULt07uIHM1ZmohFdLZ6dTjNQccg9Cbqd8MhU
+         +zY3ZspSsGk4pJag1soRIkz7tLFXsZKruIB06NktJGAIHtVVoCy0Ox6LSWa6TV1pUsnK
+         bZuLbw+AwKMBLiQLfFxOwImLhzpPFICi5RbO5PhGiGTLCO0cLCX4wEuFIVBE1fpLkhht
+         a/5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705313129; x=1705917929;
+        d=1e100.net; s=20230601; t=1705313211; x=1705918011;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vFMc7j2kW/EmR5j9xazq9ZZP8xcBhns8tWgRjbApPD8=;
-        b=StSZ21bi0BXJnUj42Z38Qj+jeILjvAV2sS2Ue/bo/915+gtFnO7mwTOwWqs3jXXByp
-         PLUx82M/k5ApmRJ/h8Zokw1Lj57YTUD/Enz26J26vtS42TsSVs3spI/D/DLLJNFlxLp4
-         l+XuzQEIqbJ6sfoL72b6CGQsCmqOjjuNfe3lINqqJJ1AYSeUMfUVa14NLAP7C7qvUsnM
-         Y2Th13jijTyF5zG6SCHFjOZ6LHQ1EtFhDrnU+ICIScQO1wgO2FNjAymSZnYJQ6nkMQq3
-         +vJQtbWc8lpT01cRf/vVi9VJYISWwxs5QZxAlS3jGxEY66nvjFlapacjTApGK8Iz1jss
-         Wjlg==
-X-Gm-Message-State: AOJu0YxuDU+nOszq/V8eEX+QBcN5JAt4jFd2p40tAG4Or04O8sFc87Kh
-	dA6qsP3DYkXIdj4vd1XBwVM=
-X-Google-Smtp-Source: AGHT+IH1FkjAOh3RlCwB3wJxmfd8cgvu4OEKpj4LBcJ1YEkoZ/0uD1+hwZkIQvjjobJzLjVvQy9Rxg==
-X-Received: by 2002:a7b:cb05:0:b0:40e:4944:9a97 with SMTP id u5-20020a7bcb05000000b0040e49449a97mr1872629wmj.96.1705313128810;
-        Mon, 15 Jan 2024 02:05:28 -0800 (PST)
+        bh=7jI9wVPYlReOrSFt8sdfuSK2FupjmRCjgJqBjTi+2Q8=;
+        b=rSxcX+HfreWn77l19cXeBPXNieTFrKB2/ddko/s0r/bgaYwBUXXeiFSThRut1CIjta
+         nM8D3cVwpmnmTSntiRdoJeH/GrWY+Yrcwkx2op65TiyXp4XNgbIVejJJyUisengFNO8o
+         bjkIsqU0hsfyfjBMBy585swj1g9bQcmIpMCRd6qnduB+hxncXa1fXRvh6p5uib5TFkkw
+         Ec/HprwXmlM4U3Rlb6BLdTbh7kQ+vwPBShq9gzjx7VUUYPfGvBnXENt35PoO70Gb4hQF
+         VRsY0kEKbWSYEKRfA/fm+ZubbblyM7adT9SZFi3xVoONVZy8pyIcSxBnfRawA2I/mx5T
+         NCGQ==
+X-Gm-Message-State: AOJu0Yy9N8BxORTu+rkmYirXNLdmPAR+s6Uiv+Uj1kGRToG5jVKi+/bZ
+	mQarINDrC2ae/KhkX/d+tKE=
+X-Google-Smtp-Source: AGHT+IF3pE4wrAd1LXA3jpyQTNIrf62DSNabks5Z9mNM6HNtoEoRROl4bouy4RW99QGrgG3wAZl3+A==
+X-Received: by 2002:a7b:cc8c:0:b0:40e:6cf9:506e with SMTP id p12-20020a7bcc8c000000b0040e6cf9506emr1905934wma.96.1705313210462;
+        Mon, 15 Jan 2024 02:06:50 -0800 (PST)
 Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b0040c6d559490sm15357548wmq.3.2024.01.15.02.05.27
+        by smtp.gmail.com with ESMTPSA id bg23-20020a05600c3c9700b0040d91fa270fsm15455681wmb.36.2024.01.15.02.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 02:05:28 -0800 (PST)
-Message-ID: <0a7f38984f45531b1e08b20ea1d8532e1e78bf73.camel@gmail.com>
-Subject: Re: [PATCH v5 7/8] iio: adc: ad9467: convert to backend framework
+        Mon, 15 Jan 2024 02:06:50 -0800 (PST)
+Message-ID: <ca413e5adb8bca8f18a0387af9676a4b40c538e3.camel@gmail.com>
+Subject: Re: [PATCH v5 8/8] iio: adc: adi-axi-adc: move to backend framework
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Nuno Sa via B4 Relay
 	 <devnull+nuno.sa.analog.com@kernel.org>
@@ -70,11 +70,11 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
  <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
  <olivier.moysan@foss.st.com>
-Date: Mon, 15 Jan 2024 11:08:40 +0100
-In-Reply-To: <20240112173333.00002ed1@Huawei.com>
+Date: Mon, 15 Jan 2024 11:10:02 +0100
+In-Reply-To: <20240112173920.000014c6@Huawei.com>
 References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
-	 <20240112-iio-backend-v5-7-bdecad041ab4@analog.com>
-	 <20240112173333.00002ed1@Huawei.com>
+	 <20240112-iio-backend-v5-8-bdecad041ab4@analog.com>
+	 <20240112173920.000014c6@Huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.3 
@@ -85,223 +85,86 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Fri, 2024-01-12 at 17:33 +0000, Jonathan Cameron wrote:
-> On Fri, 12 Jan 2024 17:40:21 +0100
+On Fri, 2024-01-12 at 17:39 +0000, Jonathan Cameron wrote:
+> On Fri, 12 Jan 2024 17:40:22 +0100
 > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >=20
 > > From: Nuno Sa <nuno.sa@analog.com>
 > >=20
-> > Convert the driver to use the new IIO backend framework. The device
-> > functionality is expected to be the same (meaning no added or removed
-> > features).
-> >=20
-> > Also note this patch effectively breaks ABI and that's needed so we can
-> > properly support this device and add needed features making use of the
-> > new IIO framework.
+> > Move to the IIO backend framework. Devices supported by adi-axi-adc now
+> > register themselves as backend devices.
 > >=20
 > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 >=20
-> Hi Nuno,
+> A few quick drive by comments whist I wait for a build to finish...
 >=20
-> Some trivial stuff in here (not I reviewed in reverse so might make more
-> sense read that way).=C2=A0 Mostly little changes that will reduce what
-> appears to be going on in this patch to the minimum possible
->=20
->=20
-> > +
-> > =C2=A0static int ad9467_outputmode_set(struct spi_device *spi, unsigned=
- int mode)
+> > diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-ad=
+c.c
+> > index 0f21d1d98b9f..741b53c25bb1 100644
+> > --- a/drivers/iio/adc/adi-axi-adc.c
+> > +++ b/drivers/iio/adc/adi-axi-adc.c
+> > @@ -8,6 +8,7 @@
+> > > =C2=A0static int adi_axi_adc_probe(struct platform_device *pdev)
 > > =C2=A0{
-> > =C2=A0	int ret;
-> > @@ -401,19 +419,17 @@ static int ad9467_outputmode_set(struct spi_devic=
-e
-> > *spi, unsigned int mode)
-> > =C2=A0				AN877_ADC_TRANSFER_SYNC);
-> > =C2=A0}
-> > =C2=A0
-> > -static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
-> > +static int ad9467_scale_fill(struct ad9467_state *st)
-> > =C2=A0{
-> > -	const struct adi_axi_adc_chip_info *info =3D conv->chip_info;
-> > -	struct ad9467_state *st =3D adi_axi_adc_conv_priv(conv);
-> > =C2=A0	unsigned int i, val1, val2;
-> 	const struct adi_axi_adc_chip_info *info =3D st->info;
-> I think...
+> ...
 >=20
-> Makes this patch more minimal which is nice and it's not a bad change
-> in it's own right..
->=20
-> Same with some other cases changed by this patch.
-
-Alright, will do it in all the places you pointed out...
-
->=20
+> > @@ -390,37 +205,23 @@ static int adi_axi_adc_probe(struct platform_devi=
+ce
+> > *pdev)
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
 > > =C2=A0
-> > -	st->scales =3D devm_kmalloc_array(&st->spi->dev, info->num_scales,
-> > +	st->scales =3D devm_kmalloc_array(&st->spi->dev, st->info-
-> > >num_scales,
-> > =C2=A0					sizeof(*st->scales), GFP_KERNEL);
-> > =C2=A0	if (!st->scales)
-> > =C2=A0		return -ENOMEM;
-> > =C2=A0
-> > -	for (i =3D 0; i < info->num_scales; i++) {
-> > -		__ad9467_get_scale(conv, i, &val1, &val2);
-> > +	for (i =3D 0; i < st->info->num_scales; i++) {
-> > +		__ad9467_get_scale(st, i, &val1, &val2);
-> > =C2=A0		st->scales[i][0] =3D val1;
-> > =C2=A0		st->scales[i][1] =3D val2;
+> > -	if (cl->info->version > ver) {
+> > +	if (*expected_ver > ver) {
+> > =C2=A0		dev_err(&pdev->dev,
+> > =C2=A0			"IP core version is too old. Expected %d.%.2d.%c,
+> > Reported %d.%.2d.%c\n",
+>=20
+> Format doesn't match with later.
+>=20
+> > -			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
+> > -			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
+> > -			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
+> > +			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
+> > +			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
+> > +			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
+> > =C2=A0			ADI_AXI_PCORE_VER_MAJOR(ver),
+> > =C2=A0			ADI_AXI_PCORE_VER_MINOR(ver),
+> > =C2=A0			ADI_AXI_PCORE_VER_PATCH(ver));
+> > =C2=A0		return -ENODEV;
 > > =C2=A0	}
-> > @@ -421,11 +437,27 @@ static int ad9467_scale_fill(struct adi_axi_adc_c=
-onv
-> > *conv)
-> > =C2=A0	return 0;
-> > =C2=A0}
 > > =C2=A0
-> > -static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
-> > +static int ad9467_setup(struct ad9467_state *st)
-> > =C2=A0{
-> > -	struct ad9467_state *st =3D adi_axi_adc_conv_priv(conv);
-> > +	struct iio_backend_data_fmt data =3D {
-> > +		.sign_extend =3D true,
-> > +		.enable =3D true,
-> > +	};
-> > +	unsigned int c, mode;
-> > +	int ret;
-> > +
-> > +	mode =3D st->info->default_output_mode |
-> > AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
->=20
-> Bit of a long line. Perhaps break it after the |
+> > -	indio_dev->info =3D &adi_axi_adc_info;
+> > -	indio_dev->name =3D "adi-axi-adc";
+> > -	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > -	indio_dev->num_channels =3D conv->chip_info->num_channels;
+> > -	indio_dev->channels =3D conv->chip_info->channels;
+> > -
+> > -	ret =3D adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
+> > +	ret =3D devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic,
+> > st);
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
+> > =C2=A0
+> > -	ret =3D adi_axi_adc_setup_channels(&pdev->dev, st);
+> > -	if (ret)
+> > -		return ret;
+> > -
+> > -	ret =3D devm_iio_device_register(&pdev->dev, indio_dev);
+> > -	if (ret)
+> > -		return ret;
+> > -
+> > -	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
+> > +	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
+> I'd rip this (I think) unrelated change out to reduce noise in here somew=
+hat.
+> I'm curious though as it's still %c above.
 
-One of those cases where I think going beyond the 80 limit col helps
-readability. But I can break the line if that's your preference.
-=20
->=20
-> > +	ret =3D ad9467_outputmode_set(st->spi, mode);
-> > +	if (ret)
-> > +		return ret;
-> > =C2=A0
-> > -	return ad9467_outputmode_set(st->spi, st->output_mode);
-> > +	for (c =3D 0; c < st->info->num_channels; c++) {
-> > +		ret =3D iio_backend_data_format_set(st->back, c, &data);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	return 0;
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static int ad9467_reset(struct device *dev)
-> > @@ -443,25 +475,64 @@ static int ad9467_reset(struct device *dev)
-> > =C2=A0	return 0;
-> > =C2=A0}
-> > =C2=A0
-> > +static int ad9467_iio_backend_get(struct ad9467_state *st)
-> > +{
-> > +	struct device *dev =3D &st->spi->dev;
-> > +	struct device_node *__back;
-> > +
-> > +	st->back =3D devm_iio_backend_get(&st->spi->dev, NULL);
-> > +	/* If not found, don't error out as we might have legacy DT
-> > property */
-> > +	if (IS_ERR(st->back) && PTR_ERR(st->back) !=3D -ENOENT)
-> > +		return PTR_ERR(st->back);
-> > +	if (!IS_ERR(st->back))
-> > +		return 0;
-> Why not do this one first? I know I normally moan about having error hand=
-lers
-> out of line, but in this case the good is out of line whatever.
->=20
-> 	if (!IS_ERR(st->back)
-> 		return 0;
->=20
-> 	if (PTR_ERR(st->back) !=3D ENOENT)
-> 		return PTR_ERR(st->back);
->=20
-> 	...
-
-Yeah, really because I wanted to have the error condition checked first. Bu=
-t I
-agree in this particular case it makes the code simpler by not doing it tha=
-t
-way.
-
->=20
->=20
-> > +	/*
-> > +	 * if we don't get the backend using the normal API's, use the
-> > legacy
-> > +	 * 'adi,adc-dev' property. So we get all nodes with that property,
-> > and
-> > +	 * look for the one pointing at us. Then we directly lookup that
-> > fwnode
-> > +	 * on the backend list of registered devices. This is done so we
-> > don't
-> > +	 * make io-backends mandatory which would break DT ABI.
-> > +	 */
-> > +	for_each_node_with_property(__back, "adi,adc-dev") {
-> > +		struct device_node *__me;
-> > +
-> > +		__me =3D of_parse_phandle(__back, "adi,adc-dev", 0);
-> > +		if (!__me)
-> > +			continue;
-> > +
-> > +		if (!device_match_of_node(dev, __me)) {
-> > +			of_node_put(__me);
-> > +			continue;
-> > +		}
-> > +
-> > +		of_node_put(__me);
-> > +		st->back =3D __devm_iio_backend_get_from_fwnode_lookup(dev,
-> > +								=C2=A0=C2=A0=C2=A0=C2=A0
-> > of_fwnode_handle(__back));
-> > +		of_node_put(__back);
-> > +		return PTR_ERR_OR_ZERO(st->back);
-> > +	}
-> > +
-> > +	return -ENODEV;
-> > +}
-> > +
-> > =C2=A0static int ad9467_probe(struct spi_device *spi)
-> > =C2=A0{
-> >=20
->=20
-> > =C2=A0
-> > -	st->output_mode =3D info->default_output_mode |
-> > -			=C2=A0 AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-> > +	ret =3D ad9467_iio_backend_get(st);
-> > +	if (ret)
-> > +		return ret;
-> > =C2=A0
-> > -	return 0;
-> > +	ret =3D devm_iio_backend_request_buffer(&spi->dev, st->back,
-> > indio_dev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D iio_backend_enable(st->back);
-> > +	if (ret)
-> > +		return ret;
->=20
-> I'm curious there is no iio_backend_disable() to be done in the exit path=
-?
->=20
-
-Ehehe something I have in my mind, yes. I'm just not disabling the core bec=
-ause
-it was the same with the previous approach. My goal was to have (more or le=
-ss)
-the same state before vs after introducing the backend. I was thinking in a=
-dding
-a devm_iio_backend_enable() as a follow up patch and use it in here (or act=
-ually
-use it for the first axi-dac/dds user as that one will be come from a "clea=
-n"
-state).
-
-If you prefer I can already turn iio_backend_enable() ->
-devm_iio_backend_enable() and use it in this patch.
+Oh, just forgot about the above %c... Yeah, the %c format gives a crappy ou=
+tput.
+That's why I changed it :)
 
 - Nuno S=C3=A1
->=20
+
+
 

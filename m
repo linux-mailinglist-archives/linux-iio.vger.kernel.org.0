@@ -1,159 +1,125 @@
-Return-Path: <linux-iio+bounces-1679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033FF82D95D
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 14:01:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B5F82DA15
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 14:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B1EB2147D
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 13:01:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A460C1C215AB
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 13:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262F11643E;
-	Mon, 15 Jan 2024 13:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D48171AF;
+	Mon, 15 Jan 2024 13:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPh2GCt2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gkj39+VR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD3D15AF9;
-	Mon, 15 Jan 2024 13:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EE171A5;
+	Mon, 15 Jan 2024 13:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50e5a9bcec9so10580675e87.3;
-        Mon, 15 Jan 2024 05:01:35 -0800 (PST)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3367a304091so7644600f8f.3;
+        Mon, 15 Jan 2024 05:30:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705323693; x=1705928493; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=m+5+Wznx7Rlg/3OxfhTEbZdgMDExRp4/plSS+QMv9OQ=;
-        b=TPh2GCt28yKYDHlphc2jUFn90IuGcsLjgv865gxkNqr6bK0QscuSP0k8exEfggYvpk
-         h5wtsdHeGT4eC/VFO7XHSpxmnm0qx/l23lntAhFsnkD+qJR8Lj7ciw3IcgaGqBw2TKwK
-         ud1h5oREkQoxQYvv+4bszRXCDqGAJgmKCUHRvVZuXgi72ETMS50vkbOtp4f6sFdBCtIe
-         YkLMcHX8zbK6eK6mIYoBS8x3BSOxUwVrV0EWKZf7hRkiXWOyblu7n7wkJ1pZzQNxgzHn
-         AuItm9Ojc2tdA65RyqpfdrEl9p5cJULy7wJ+lxP1YvdMTygyAv87DSuga0htoZCk3AMr
-         JXEw==
+        d=gmail.com; s=20230601; t=1705325427; x=1705930227; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xXAyTkPgi/LVAuSe9DIKDZ0plA+MwiDw05+7Nb+Yhrs=;
+        b=Gkj39+VR16LQRbrxd9n8WaJYGYC/IBbkchMrwOvkyO/uGANwNd7RTnsKA8UKMdwjps
+         NvJAt3wezyq7aYf4V5Kx0NM4eXScBU0fAtM1b4Y1U68nv6QAq29KMkpB4eCjorYDVAHw
+         KAZFPQbr93jXvLNHCAyxAcv7opa+hV8/lWqVlFOGVLL5+A8Jb0BHyv1LANgh2QsQ/DXk
+         uSBInn3F2oB2C/TFiaeEX3ZegqafApucsbZysVKzrHWgAi4A5wrhk0XInDmoxKvc9LwJ
+         9g7xM/c9htJVbR7mhTUpZfGk+nU9/A8v9kRedO2W9xIa5Y3a8C/s4LZA8oHPQHY+0J0O
+         92RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705323693; x=1705928493;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m+5+Wznx7Rlg/3OxfhTEbZdgMDExRp4/plSS+QMv9OQ=;
-        b=eZHrNa7rLGa7mXUjce8WZY5mfdHvhfC2I+Yi8LB5RCbsrTTYnEQG0oC5jJ8oV37QWz
-         Y+9zIwuWzwiQm9IcN5LygGtQq9J0pUYRL+UmKs4NCalf61uWAzI98yfENGvIw1kmPABv
-         3CCaXYAaBJJr5Db26dWdRj8ZKBLNMUVGRQQkLEtSG6uGilv+t4YwVY3Ba/hBsTAn1e0n
-         dC02wr8kaLakBVpvQk1V+zatvaVKI6ARSIdCmk2nCDtuasYwErlMsr9ZcVkgKlBisW3c
-         xzX0VjRGdF4kxuW8NeudIZB1eVUqTGhO1qScRBoQBjHvUP8eu93S/ZgXW5rfO3dHHvpP
-         EBVg==
-X-Gm-Message-State: AOJu0Yw5EPETCvQEhflCmDKLmnNKqZqT/SO40Iti6tf0IPfo+Eqwj+UZ
-	qpyUjT1W5pBb5KH/bs5beYYms+CLciM=
-X-Google-Smtp-Source: AGHT+IFEs/BZBKo6tHlk+fqfeBt9LJdKrbOX987CA39O7ePmrigBLwcqHzHR9oQ1sMTjXlPWT5eVhg==
-X-Received: by 2002:a05:6512:3fb:b0:50e:7b2c:9013 with SMTP id n27-20020a05651203fb00b0050e7b2c9013mr2299243lfq.132.1705323692864;
-        Mon, 15 Jan 2024 05:01:32 -0800 (PST)
-Received: from ?IPV6:2001:14ba:7426:df00::3? (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
-        by smtp.gmail.com with ESMTPSA id 28-20020ac2483c000000b0050e7740b871sm1447973lft.159.2024.01.15.05.01.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jan 2024 05:01:32 -0800 (PST)
-Message-ID: <ff962e6a-5e2b-4a72-9043-80b8fc218642@gmail.com>
-Date: Mon, 15 Jan 2024 15:01:32 +0200
+        d=1e100.net; s=20230601; t=1705325427; x=1705930227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xXAyTkPgi/LVAuSe9DIKDZ0plA+MwiDw05+7Nb+Yhrs=;
+        b=PzpoGjAjJKRugK18lyufrhVVUPPSvBSmms6QZl7N27zmgD8ailgHUjZ/qSdo3O97c9
+         iDFcKqsvlEMduATGAQbteIb8/3OhaNHgFlzw0qB3fQRIqVgNzibWbqTRSNya8JtGOozv
+         XVBKeLbFw0Dgz8SKsN++BDXxjABEkl/ry8U29HWQz2STyiV9680Aq1ivsF/fODraIWjp
+         qK/1gu8rymEaJtO7PLt0JdpV7dUwZw4PVF7XVVgEvrLXY9n4n98ohHDch8WF6T3hZ6Tw
+         4HrtDbkJNHPqCrarUAWfYpZsoXYpXi4A6ngWxztznKd1769+OTLasvgZrWZsWK224Yu1
+         rVfg==
+X-Gm-Message-State: AOJu0Yxhc6hBe5XR1VeKeNZ0CrUxVUTMtGLcwFNmu1r3E8i8bQ+h6wSs
+	1zSEwdgHNpGu4ZPilxFXRjM=
+X-Google-Smtp-Source: AGHT+IF9VcIyikkkiy5A7Z1NhhlPnCldtAtbeM5PatT8545LTWaGQ9Ih3D8V9+gsX+fSUeCCu0mZJg==
+X-Received: by 2002:a5d:6b8e:0:b0:337:6529:431f with SMTP id n14-20020a5d6b8e000000b003376529431fmr2105840wrx.3.1705325426688;
+        Mon, 15 Jan 2024 05:30:26 -0800 (PST)
+Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id i6-20020adfb646000000b003378d89737fsm11566669wre.46.2024.01.15.05.30.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jan 2024 05:30:26 -0800 (PST)
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+To: 
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>
+Subject: [PATCH v3 0/5] Add support for LTC6373
+Date: Mon, 15 Jan 2024 15:30:13 +0200
+Message-ID: <20240115133023.3465-1-mitrutzceclan@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] iio: test: test gain-time-scale helpers
-Content-Language: en-US, en-GB
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <cover.1704881096.git.mazziesaccount@gmail.com>
- <6b839dd533fd93b75c2e6f6a8f2286233d4901fb.1704881096.git.mazziesaccount@gmail.com>
- <20240113161229.48d63b54@jic23-huawei>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240113161229.48d63b54@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 1/13/24 18:12, Jonathan Cameron wrote:
-> On Wed, 10 Jan 2024 12:12:55 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Some light sensors can adjust both the HW-gain and integration time.
->> There are cases where adjusting the integration time has similar impact
->> to the scale of the reported values as gain setting has.
->>
->> IIO users do typically expect to handle scale by a single writable 'scale'
->> entry. Driver should then adjust the gain/time accordingly.
->>
->> It however is difficult for a driver to know whether it should change
->> gain or integration time to meet the requested scale. Usually it is
->> preferred to have longer integration time which usually improves
->> accuracy, but there may be use-cases where long measurement times can be
->> an issue. Thus it can be preferable to allow also changing the
->> integration time - but mitigate the scale impact by also changing the gain
->> underneath. Eg, if integration time change doubles the measured values,
->> the driver can reduce the HW-gain to half.
->>
->> The theory of the computations of gain-time-scale is simple. However,
->> some people (undersigned) got that implemented wrong for more than once.
->> Hence some gain-time-scale helpers were introduced.
->>
->> Add some simple tests to verify the most hairy functions.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>
+This patch series adds support for the LTC6373 Instrumentation Amplifier within
+the existing HMC425A driver.
 
-...
+The LTC6373 is a silicon, 3-bit Fully-Differential digital instrumentation
+amplifier that supports the following programmable gains (Vout/Vin):
+ G = 0.25, 0.5, 1, 2, 4, 8, 16 + Shutdown.
+The programmable interface consists of 3 digitally controled inputs.
 
->> +static void test_iio_gts_chk_scales_all(struct kunit *test, struct iio_gts *gts,
->> +					const int *vals, int len)
->> +{
->> +	static const int gains[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512,
->> +				    1024, 2048, 4096, 4096 * 2, 4096 * 4,
->> +				    4096 * 8};
->> +
->> +	int expected[ARRAY_SIZE(gains) * 2];
->> +	int i, ret;
->> +	int exp_len = ARRAY_SIZE(gains) * 2;
-> 
-> Use this for expected[*] just above?
+V2->V3
+ - Use return instead of break in *_gain_dB_to_code()
+ - Add new line before return in *_code_to_gain_dB()
+ - Match parameter alignment for added _powerdown functions
+ - Add precursor patch for using pointers in the match table
+ - Add chip_info attributes: has_powerdown and powerdown_val
+ - Change probe logic to use has_powerdown for default powerdown state
+ - Added 'Fixes' tag to commit message of 'add conditional GPIO array...' 
+V1->V2
+ Driver:
+ - Fix chip info table indent
+ - Remove enable attribute
+ - Add ext_info powerdown attribute
+ - Enable by default powerdown attribute
+ - Set default gain after disabling powerdown to min value
+ Binding:
+ - Fix conditional checking of GPIO array size for LTC6373
+ - Add precursor commit for correctly checking gpio size depending upon compatible
 
-Doing:
-const int exp_len = ARRAY_SIZE(gains) * 2;
-int expected[exp_len];
+Dumitru Ceclan (5):
+  dt-bindings: iio: hmc425a: add conditional GPIO array size constraints
+  dt-bindings: iio: hmc425a: add entry for LTC6373
+  iio: amplifiers: hmc425a: move conversion logic
+  iio: amplifiers: hmc425a: use pointers in match table
+  iio: amplifiers: hmc425a: add support for LTC6373 Instrumentation
+    Amplifier
 
-gives me:
-warning: ISO C90 forbids variable length array ‘expected’ [-Wvla]
-
-I could drop the whole exp_len variable, but I prefer test code which is 
-as obvious as it gets if any of the checks fails. For me the check:
-
->> +	KUNIT_EXPECT_EQ(test, exp_len, len);
->> +	if (len != exp_len)
->> +		return;
-
-is (very slightly) more obvious than:
-	KUNIT_EXPECT_EQ(test, ARRAY_SIZE(gains) * 2, len);
-	if (len != ARRAY_SIZE(gains) * 2)
-		return;
-
-I guess I'll leave this one as it is. Just kick me in v2 if I 
-misunderstood you :)
-
-Yours,
-	-- Matti
+ .../bindings/iio/amplifiers/adi,hmc425a.yaml  |  47 +++-
+ drivers/iio/amplifiers/hmc425a.c              | 253 +++++++++++++-----
+ 2 files changed, 236 insertions(+), 64 deletions(-)
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.42.0
 
 

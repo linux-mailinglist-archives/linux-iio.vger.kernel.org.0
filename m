@@ -1,96 +1,224 @@
-Return-Path: <linux-iio+bounces-1693-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1694-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A549A82DD03
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 17:09:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D0682DD0E
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 17:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44D951F2330B
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 16:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E9771C2183A
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 16:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79C11799E;
-	Mon, 15 Jan 2024 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0899A179AE;
+	Mon, 15 Jan 2024 16:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrTxj9h8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F31617C70;
-	Mon, 15 Jan 2024 16:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TDH721359z6J6jV;
-	Tue, 16 Jan 2024 00:05:50 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 29ABF1400CD;
-	Tue, 16 Jan 2024 00:07:56 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 15 Jan
- 2024 16:07:55 +0000
-Date: Mon, 15 Jan 2024 16:07:54 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>,
-	<nuno.sa@analog.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
-	<jic23@kernel.org>, "Rob Herring" <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
-	<olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v5 7/8] iio: adc: ad9467: convert to backend framework
-Message-ID: <20240115160754.00002cc9@Huawei.com>
-In-Reply-To: <0a7f38984f45531b1e08b20ea1d8532e1e78bf73.camel@gmail.com>
-References: <20240112-iio-backend-v5-0-bdecad041ab4@analog.com>
-	<20240112-iio-backend-v5-7-bdecad041ab4@analog.com>
-	<20240112173333.00002ed1@Huawei.com>
-	<0a7f38984f45531b1e08b20ea1d8532e1e78bf73.camel@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA0017BA1;
+	Mon, 15 Jan 2024 16:10:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C89C433C7;
+	Mon, 15 Jan 2024 16:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705335020;
+	bh=w/OftDh4haN2MUyHJodrZDqK6lQj9eUZRQeCxQ/l7Ac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PrTxj9h8iv3oUVYDlsDMw6ziBXPwyLBfz1FBQFz1heG31SYFyJOeUEjqZT04R/kQT
+	 oyP2cP8Ir19etl5iRIbATXbSLxSUonr0Y7EftVyljpVF426h+dauRzy2AUqa9JLUlL
+	 uvxgUU+4mUiLMQj3LvXtY9avfeK/nAR2Pt0CQRQSuUIygt2LQPNVoX+QnuzrZ56tlb
+	 zrJKICdYsb1Wxa05xvMMfs7XJ3MC5JmF8zm4h+4fNBlWsiFVnDGZdc4Um7jvBBkJmi
+	 F6duLj91sviOzFqpwdxWAeIwKoK3Vh4JXmzWqpbY/X8EPQfOpeKOKOjsbTqulHqEfC
+	 M0JSUGFpvTK2A==
+Date: Mon, 15 Jan 2024 16:10:13 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: adc: ad7173: add support for additional
+ models
+Message-ID: <20240115-praising-disdain-d81d4ce69194@spud>
+References: <20240115135416.10595-1-mitrutzceclan@gmail.com>
+ <20240115135416.10595-2-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="sV1oz/EzmBq1F27T"
+Content-Disposition: inline
+In-Reply-To: <20240115135416.10595-2-mitrutzceclan@gmail.com>
+
+
+--sV1oz/EzmBq1F27T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-> > > +		return ret;
-> > > +
-> > > +	ret =3D iio_backend_enable(st->back);
-> > > +	if (ret)
-> > > +		return ret; =20
-> >=20
-> > I'm curious there is no iio_backend_disable() to be done in the exit pa=
-th?
-> >  =20
+On Mon, Jan 15, 2024 at 03:53:04PM +0200, Dumitru Ceclan wrote:
+> Add support for: AD7172-2, AD7175-8, AD7177-2
+> Add hardware description of the AD771X family instead of "Bindings for"
+> AD7172-4 does not feature an internal reference, check for ext-ref
 >=20
-> Ehehe something I have in my mind, yes. I'm just not disabling the core b=
-ecause
-> it was the same with the previous approach. My goal was to have (more or =
-less)
-> the same state before vs after introducing the backend. I was thinking in=
- adding
-> a devm_iio_backend_enable() as a follow up patch and use it in here (or a=
-ctually
-> use it for the first axi-dac/dds user as that one will be come from a "cl=
-ean"
-> state).
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 50 +++++++++++++++++--
+>  1 file changed, 46 insertions(+), 4 deletions(-)
 >=20
-> If you prefer I can already turn iio_backend_enable() ->
-> devm_iio_backend_enable() and use it in this patch.
-Might be cleaner to do that.  Or add a big fat comment here to say it'll get
-cleaned up in a follow up patch.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> index 7c8caef76528..6d4b26e43144 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> @@ -11,19 +11,33 @@ maintainers:
+>    - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> =20
+>  description: |
+> -  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported=
+ chips:
+> +  Analog Devices AD717X ADC's:
+> +  The AD717x family offer a complete integrated Sigma-Delta ADC solution=
+ which
+> +  can be used in high precision, low noise single channel applications
+> +  (Life Science measurements) or higher speed multiplexed applications
+> +  (Factory Automation PLC Input modules). The Sigma-Delta ADC is intended
+> +  primarily for measurement of signals close to DC but also delivers out=
+standing
+> +  performance with input bandwidths out to ~10kHz.
+> +
+> +  Datasheets for supported chips:
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7172-4.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7173-8.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7175-8.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7176-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7177-2.pdf
+> =20
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,ad7172-2
+> +      - adi,ad7172-4
+>        - adi,ad7173-8
+>        - adi,ad7175-2
+> +      - adi,ad7175-8
+>        - adi,ad7176-2
+> +      - adi,ad7177-2
+> =20
+>    reg:
+>      maxItems: 1
+> @@ -89,8 +103,10 @@ patternProperties:
+>            refout-avss: REFOUT/AVSS (Internal reference)
+>            avdd       : AVDD
+> =20
+> -          External reference refin2 only available on ad7173-8.
+> -          If not specified, internal reference used.
+> +          External reference refin2 only available on ad7173-8 and ad717=
+2-4.
+> +          Internal reference refout-avss not available on ad7172-4.
+> +
+> +          If not specified, internal reference used (if available).
+>          $ref: /schemas/types.yaml#/definitions/string
+>          enum:
+>            - refin
+> @@ -111,12 +127,15 @@ required:
+>  allOf:
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> =20
+> +  # Only ad7172-4 and ad7173-8 support refin2
+>    - if:
+>        properties:
+>          compatible:
+>            not:
+>              contains:
+> -              const: adi,ad7173-8
+> +              anyOf:
+> +                - const: adi,ad7172-4
+> +                - const: adi,ad7173-8
+>      then:
+>        properties:
+>          refin2-supply: false
+> @@ -129,6 +148,29 @@ allOf:
+>                  - refout-avss
+>                  - avdd
+> =20
+> +  # Model ad7172-4 does not support internal reference
+> +  #  mandatory to have an external reference
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: adi,ad7172-4
+> +    then:
+> +      patternProperties:
+> +        "^channel@[0-9a-f]$":
+> +          properties:
+> +            adi,reference-select:
+> +              enum:
+> +                - refin
+> +                - refin2
+> +                - avdd
+> +              default: false
 
->=20
-> - Nuno S=E1
-> >  =20
+The default shouldn't be needed here since the property is required.
 
+> +          required:
+> +            - adi,reference-select
+> +      oneOf:
+> +        - required: [refin2-supply]
+> +        - required: [refin-supply]
+
+I'm a little curious - the enum allows avdd but you are requiring one of
+these two references to be set. Is one required if avdd is used as the
+reference?
+
+Thanks,
+Conor.
+
+> +
+>  unevaluatedProperties: false
+> =20
+>  examples:
+> --=20
+> 2.42.0
+>=20
+
+--sV1oz/EzmBq1F27T
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZaVY5QAKCRB4tDGHoIJi
+0g7lAQCHDDAXjWK+zjzjnxHJR7BmkaEep2iUVKmmYQAuU3Z6twEAgeAYhyvVcXaM
+9H46UOZvwaIiwAfWx07mC2comwosZAM=
+=tR9x
+-----END PGP SIGNATURE-----
+
+--sV1oz/EzmBq1F27T--
 

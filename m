@@ -1,374 +1,242 @@
-Return-Path: <linux-iio+bounces-1677-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1678-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B505282D751
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 11:27:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A0582D885
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 12:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AD0B1F2219B
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 10:27:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE5FC1C216AA
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 11:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3B51B805;
-	Mon, 15 Jan 2024 10:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A09E2C68A;
+	Mon, 15 Jan 2024 11:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJPK8MGp"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="rSIBlR+3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2053.outbound.protection.outlook.com [40.107.8.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64422BAFB;
-	Mon, 15 Jan 2024 10:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d3e416f303so31280035ad.0;
-        Mon, 15 Jan 2024 02:26:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705314411; x=1705919211; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GXIv0fOPKjRpa8NR0+rh/yu678BAVx86+SltTsqGkas=;
-        b=MJPK8MGpPBIuX9bVEqCdFy0f9j40Ehmcsp+DpVBffoBiMw44rTG7KQZ2wPDobuM8yz
-         dhkN9jBvQEJoDaOeiyF8WvWSDc/GwJFG2pQommZYOOfcGnwouMShCCHfCu2W18XCINzT
-         Top4Za8bpKK1M4jIgktiUO5gPuZk6QQTuYA8idc9oTfxWY24QoX47lHH6JZXbrzLYSuh
-         x+n8qMHXob4yRH5oGtaRRztqocasIRlPR5KBqy1TKyHuVcv768h1TDCSpT692FiY+gtP
-         3E7zLipHTLSWC7aKl/lvsxsQ60m4abnNjQDFiBu9PTk2yDC+ixBRhDF4E/JBsIIJqqFE
-         SFIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705314411; x=1705919211;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GXIv0fOPKjRpa8NR0+rh/yu678BAVx86+SltTsqGkas=;
-        b=umncRphLzowEXEG0YlzbFgHiVs9P6NOtCre4/zFt6kcMM6gfkyl35En0q7kHz2ktnQ
-         Vl3f0nJgKxABBg163dB4NjqPkk5vn+QAWnfmNmEjmLdojzc5mntyMRabNJtvcqmTrcoZ
-         QtMknmNDmk8pBerhClCYhuGzIlvFVPGwiqxlC/sHvrIc0TkiOY7KoD/GQGl3gEtsV2l4
-         BSV80CDCsErtq+ycgBKQQDMuxlgI5OsUtT5sPNLiHYMxDmtuGGkE1lKnSVkrPBKmBi+w
-         kB9eQT2J4+dBkypaG1P5hC/co7a8I9zTIbq7Jccr6tju9ZLRh8EQYqV6UEpBTjZl2728
-         QXLA==
-X-Gm-Message-State: AOJu0YxiDqhEvX6ODdJ2Sf+VRZ0Ertix8y3W5Vy9YmSy2gQH/wbKFLXX
-	3TlzrMv3KtKSKyUM1zxYWpo=
-X-Google-Smtp-Source: AGHT+IHuhqF0aUwZLrw+QxjGgFGvpkq8X4OWWsGp63dz4iCshTAPW4IWUCF93y2mWLLi3DiLbSZF6w==
-X-Received: by 2002:a17:902:654a:b0:1d5:693a:8904 with SMTP id d10-20020a170902654a00b001d5693a8904mr2421543pln.5.1705314410796;
-        Mon, 15 Jan 2024 02:26:50 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id kt13-20020a170903088d00b001d49607f8b5sm7330839plb.34.2024.01.15.02.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 02:26:50 -0800 (PST)
-Message-ID: <6c2715f597a7005765429196630cafb7f4279d25.camel@gmail.com>
-Subject: Re: [PATCH 13/13] iio: temp: ltc2983: Use __free(fwnode_handle) to
- replace fwnode_handle_put() calls
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, "Rafael
- J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
- Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>
-Cc: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
- Olivier Moysan <olivier.moysan@foss.st.com>,  Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Mon, 15 Jan 2024 11:29:57 +0100
-In-Reply-To: <20240114172009.179893-14-jic23@kernel.org>
-References: <20240114172009.179893-1-jic23@kernel.org>
-	 <20240114172009.179893-14-jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7111E2C689;
+	Mon, 15 Jan 2024 11:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aHohSjpvz+s9HbYYXJPDHYWUYe2nEf6OwZAxcx0rdERwNaHBFwHZ3H5arTYX/+0VfTe/+xsZxLVyhl/9o5HMm3WUBFYtjI5Nhx0G1A3SfwHDut2tZK7N52zI6+aHe0Xe2i7NoKSU/dqiKVBalSIfMOMY6+9WRow4FNA70TjVqKly9PKNfzjCOJO7dcd0LQPQHfjAFynfMTTjNhBHIofEeiy7Nsk0graB8fIYoge/LWm9yvvZfVzinYTIcFn8nrz7TN2SkUF5fwGQNabcOAad9o4LHmN+7Je33kXM6FGr4P1Qf/NcfGxOn9uzGkYqfrfF5HW1fSkv5Aqe2CqPVGFIPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JgVM7JRmmtXtqZ6V4DdUPPFf0LDy81n7E68xlBOSVQg=;
+ b=MPU17mZj12NPxVnqB202hhiBBLgWm5n/HMjyOVaKGHEcpxJHiqcvZRaAG0sHkp2ieIycd0izuRkPSpH3nUCLe+kMVatXebtW6o14EP/zBHt1tNT72Kt2WUdiAlQeK1BlYuPhg1sT1TqrQ1QiQLVqh8Eum6TVfqlghb0R6W59PZvVqwm90QGGaMtCAsO1ZP44ehb2wiWmtNa89A+m63GQ4ESujJ0VvQYhcHXrhI7eZry5X6E0ZQyoXdQabNCTubMe27llKhwZYCPpMOFbfERHbfkijS0mwnX0aIwUa0piKCHYCNOmzmZfEUPmmnbJPRu3oimOon8YGwe0fWXJ2enJLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=axis.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JgVM7JRmmtXtqZ6V4DdUPPFf0LDy81n7E68xlBOSVQg=;
+ b=rSIBlR+3O8ZZBX7FtphjQIXHOOdNGVd/TXkDgyayoVmfRImpVI6siR2Gha3gYnCs7jsJ/ZL/hfiS5EbXLAdMpoyBqrJpd86ZCPWv+LPFKb0vVmVIbB9DOkedt3ddQIRSp1IptWA54h62GjQ6fI4QlxXMuKlyEU3R11twNSBUqIg=
+Received: from AS9PR0301CA0060.eurprd03.prod.outlook.com
+ (2603:10a6:20b:469::18) by AS8PR02MB6582.eurprd02.prod.outlook.com
+ (2603:10a6:20b:23b::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.23; Mon, 15 Jan
+ 2024 11:44:42 +0000
+Received: from AMS0EPF000001A1.eurprd05.prod.outlook.com
+ (2603:10a6:20b:469:cafe::3e) by AS9PR0301CA0060.outlook.office365.com
+ (2603:10a6:20b:469::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.23 via Frontend
+ Transport; Mon, 15 Jan 2024 11:44:41 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 195.60.68.100)
+ smtp.mailfrom=axis.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=axis.com;
+Received-SPF: Fail (protection.outlook.com: domain of axis.com does not
+ designate 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=195.60.68.100; helo=mail.axis.com;
+Received: from mail.axis.com (195.60.68.100) by
+ AMS0EPF000001A1.mail.protection.outlook.com (10.167.16.231) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7202.16 via Frontend Transport; Mon, 15 Jan 2024 11:44:41 +0000
+Received: from se-mail01w.axis.com (10.20.40.7) by se-mail01w.axis.com
+ (10.20.40.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 15 Jan
+ 2024 12:44:41 +0100
+Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail01w.axis.com
+ (10.20.40.7) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
+ Transport; Mon, 15 Jan 2024 12:44:41 +0100
+Received: from pc42775-2107.se.axis.com (pc42775-2107.se.axis.com [10.94.129.29])
+	by se-intmail01x.se.axis.com (Postfix) with ESMTP id 5F2E212253;
+	Mon, 15 Jan 2024 12:44:41 +0100 (CET)
+Received: by pc42775-2107.se.axis.com (Postfix, from userid 21033)
+	id 4FA9E305E83; Mon, 15 Jan 2024 12:44:41 +0100 (CET)
+From: =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+Date: Mon, 15 Jan 2024 12:44:36 +0100
+Subject: [PATCH v3] iio: light: vcnl4000: Set ps high definition for
+ 4040/4200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20231221-vcnl4000-ps-hd-v3-1-6dcc889372be@axis.com>
+X-B4-Tracking: v=1; b=H4sIAKMapWUC/32NzQ7CIBAGX8VwFsNP01JPvofxsNBFSCxtoCE1T
+ d9d6MmLHmc3881GEkaPiVxPG4mYffJTKCDPJ2IchCdSPxQmggnJheA0m/BqGGN0TtQNVLXSNlZ
+ Zg9CRImlISHWEYFzVRkgLxvqYI1q/HqX7o7DzaZni+whnXq8/G5lTToGJRlstlOrbG6w+Xcw0k
+ rqUxX9bFJvrtuvZIBngt73v+wdETSTGAgEAAA==
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel@axis.com>, =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705319081; l=4326;
+ i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
+ bh=xGUucvlIatyjRrDJE1pzdqErfXfNxgimwy9OhXFjGHg=;
+ b=fvmNik2AbQ9Y+h2RY5XFPjVcGi/FCgahpQxLnM06ODHoLScxBT+Uefu8KHW01v2GwuAsH3wBM
+ EG1bQbPofpUCVtrAuQuaRunSPj7LPLUkJo/TlT9JCTj5Mkjs19RczMf
+X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
+ pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A1:EE_|AS8PR02MB6582:EE_
+X-MS-Office365-Filtering-Correlation-Id: f09d0e0e-7239-49e2-31f2-08dc15bf5cb0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	TyuuZpiERr5NFF/8ytEp5oZmVSkcupMax5JTJNRV/oMg60Fv+3MMVjpKxuK7sI4QwkF7DMRXDoAI6lotUsOklW3L6SOK1eAH1Dd3R3MarNTv9+7gNDVVeG4ksfWPrdF0r2EzMh4vJnGph6seSCs0/wlra3XqqspyPeT9Y+tJgi9/po5496GfswyQvwJ23REyvfB8Zm74B0VQPpPEic/KQRaiEZ9sl/NWc244+uWFg7Qv03FsgTe2IwF9xWdNeD95AQKcYnvCUfQwX0ccVPG+zp7g/BrOXzVnnEvpNKoEOsAfPZkYvQBcKwy4iNsWOK3VLHmt6BAVoKgLJR59ZsrGYrp6aSsGtJ2cO+5wX6V2J8W8RarQuQ6voMfIZw5AeXHYdOzf2uZatLq+etS94/22Y2XpcwDiqF5aim6k5IWP40EgZjR9mlEnnzpWknaySOaNJtuxhuKnQ5qUjGf3sQMI+Ub2YCzZTrVnFxtuD8+mI8pqhWAfS2Nld2piKeaS0D4524/barW9Wt44/r+eKZpOHdl6Vw6aun/kzJ5fTrTiL1HmZ8gf70p5rxT7manQyBBQF77zyfp0GIVOCI2NKbsI2Vih5ARAou8Yvs4lVY+FSA2+8Kor0R8MemIZmp+efmMitfapf6EK9SSNkfqAVOyvbIsJd7OokTtJY+VWrjZvzVwwYEaBBsdodDDiP03LbA1FmIL6yHHfmuu+dZeF8Lejb3v72FUnJZGgAq2W4QZ+4sIlez6b4AKgjMIwX2kDJ0X+
+X-Forefront-Antispam-Report:
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(136003)(396003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(82310400011)(46966006)(36840700001)(40470700004)(81166007)(356005)(82740400003)(36756003)(40460700003)(40480700001)(86362001)(26005)(426003)(336012)(6266002)(66574015)(83380400001)(36860700001)(41300700001)(42186006)(316002)(110136005)(70206006)(70586007)(54906003)(107886003)(2616005)(47076005)(966005)(478600001)(5660300002)(2906002)(4326008)(6666004)(8936002)(8676002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2024 11:44:41.7443
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f09d0e0e-7239-49e2-31f2-08dc15bf5cb0
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A1.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB6582
 
-On Sun, 2024-01-14 at 17:20 +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> This use of the new cleanup.h scope based freeing infrastructure allows
-> us to exit directly from error conditions and in the good path with
-> the reference obtained from fwnode_find_reference() (which may be an erro=
-r
-> pointer) automatically released.
->=20
-> Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
+resolution, but the chip also supports 16 bit data resolution, which is
+called proximity high definition (PS_HD).
 
-I guess this one could also benefit from using dev_err_probe(). Anyways:
+Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
+all data readings. Please note that in order to preserve the 12 bit
+integer part of the in_proximity_raw output, the format is changed from
+integer to fixed point.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
-I might also be able to test this one...
-
-> =C2=A0drivers/iio/temperature/ltc2983.c | 70 ++++++++++------------------=
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
 ---
-> =C2=A01 file changed, 21 insertions(+), 49 deletions(-)
->=20
-> diff --git a/drivers/iio/temperature/ltc2983.c
-> b/drivers/iio/temperature/ltc2983.c
-> index fcb96c44d954..4357364e611e 100644
-> --- a/drivers/iio/temperature/ltc2983.c
-> +++ b/drivers/iio/temperature/ltc2983.c
-> @@ -656,7 +656,7 @@ ltc2983_thermocouple_new(const struct fwnode_handle
-> *child, struct ltc2983_data
-> =C2=A0			 const struct ltc2983_sensor *sensor)
-> =C2=A0{
-> =C2=A0	struct ltc2983_thermocouple *thermo;
-> -	struct fwnode_handle *ref;
-> +	struct fwnode_handle *ref __free(fwnode_handle) =3D NULL;
-> =C2=A0	u32 oc_current;
-> =C2=A0	int ret;
-> =C2=A0
-> @@ -714,7 +714,7 @@ ltc2983_thermocouple_new(const struct fwnode_handle
-> *child, struct ltc2983_data
-> =C2=A0			 * the error right away.
-> =C2=A0			 */
-> =C2=A0			dev_err(&st->spi->dev, "Property reg must be
-> given\n");
-> -			goto fail;
-> +			return ERR_PTR(ret);
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> @@ -725,22 +725,15 @@ ltc2983_thermocouple_new(const struct fwnode_handle
-> *child, struct ltc2983_data
-> =C2=A0		thermo->custom =3D __ltc2983_custom_sensor_new(st, child,
-> =C2=A0							=C2=A0=C2=A0=C2=A0=C2=A0 propname, false,
-> =C2=A0							=C2=A0=C2=A0=C2=A0=C2=A0 16384, true);
-> -		if (IS_ERR(thermo->custom)) {
-> -			ret =3D PTR_ERR(thermo->custom);
-> -			goto fail;
-> -		}
-> +		if (IS_ERR(thermo->custom))
-> +			return ERR_CAST(thermo->custom);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	/* set common parameters */
-> =C2=A0	thermo->sensor.fault_handler =3D ltc2983_thermocouple_fault_handle=
-r;
-> =C2=A0	thermo->sensor.assign_chan =3D ltc2983_thermocouple_assign_chan;
-> =C2=A0
-> -	fwnode_handle_put(ref);
-> =C2=A0	return &thermo->sensor;
-> -
-> -fail:
-> -	fwnode_handle_put(ref);
-> -	return ERR_PTR(ret);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static struct ltc2983_sensor *
-> @@ -750,7 +743,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, st=
-ruct
-> ltc2983_data *st,
-> =C2=A0	struct ltc2983_rtd *rtd;
-> =C2=A0	int ret =3D 0;
-> =C2=A0	struct device *dev =3D &st->spi->dev;
-> -	struct fwnode_handle *ref;
-> +	struct fwnode_handle *ref __free(fwnode_handle) =3D NULL;
-> =C2=A0	u32 excitation_current =3D 0, n_wires =3D 0;
-> =C2=A0
-> =C2=A0	rtd =3D devm_kzalloc(dev, sizeof(*rtd), GFP_KERNEL);
-> @@ -766,7 +759,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, st=
-ruct
-> ltc2983_data *st,
-> =C2=A0	ret =3D fwnode_property_read_u32(ref, "reg", &rtd->r_sense_chan);
-> =C2=A0	if (ret) {
-> =C2=A0		dev_err(dev, "Property reg must be given\n");
-> -		goto fail;
-> +		return ERR_PTR(ret);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	ret =3D fwnode_property_read_u32(child, "adi,number-of-wires",
-> &n_wires);
-> @@ -787,8 +780,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, st=
-ruct
-> ltc2983_data *st,
-> =C2=A0			break;
-> =C2=A0		default:
-> =C2=A0			dev_err(dev, "Invalid number of wires:%u\n",
-> n_wires);
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> @@ -798,8 +790,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, st=
-ruct
-> ltc2983_data *st,
-> =C2=A0			if (n_wires =3D=3D 2 || n_wires =3D=3D 3) {
-> =C2=A0				dev_err(dev,
-> =C2=A0					"Rotation not allowed for 2/3 Wire
-> RTDs");
-> -				ret =3D -EINVAL;
-> -				goto fail;
-> +				return ERR_PTR(-EINVAL);
-> =C2=A0			}
-> =C2=A0			rtd->sensor_config |=3D LTC2983_RTD_C_ROTATE(1);
-> =C2=A0		} else {
-> @@ -829,16 +820,14 @@ ltc2983_rtd_new(const struct fwnode_handle *child,
-> struct ltc2983_data *st,
-> =C2=A0				"Invalid rsense chann:%d to use in kelvin
-> rsense",
-> =C2=A0				rtd->r_sense_chan);
-> =C2=A0
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0
-> =C2=A0		if (sensor->chan < min || sensor->chan > max) {
-> =C2=A0			dev_err(dev, "Invalid chann:%d for the rtd config",
-> =C2=A0				sensor->chan);
-> =C2=A0
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0	} else {
-> =C2=A0		/* same as differential case */
-> @@ -846,8 +835,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, st=
-ruct
-> ltc2983_data *st,
-> =C2=A0			dev_err(&st->spi->dev,
-> =C2=A0				"Invalid chann:%d for RTD", sensor->chan);
-> =C2=A0
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> @@ -856,10 +844,8 @@ ltc2983_rtd_new(const struct fwnode_handle *child, s=
-truct
-> ltc2983_data *st,
-> =C2=A0		rtd->custom =3D __ltc2983_custom_sensor_new(st, child,
-> =C2=A0							=C2=A0 "adi,custom-rtd",
-> =C2=A0							=C2=A0 false, 2048,
-> false);
-> -		if (IS_ERR(rtd->custom)) {
-> -			ret =3D PTR_ERR(rtd->custom);
-> -			goto fail;
-> -		}
-> +		if (IS_ERR(rtd->custom))
-> +			return ERR_CAST(rtd->custom);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	/* set common parameters */
-> @@ -901,18 +887,13 @@ ltc2983_rtd_new(const struct fwnode_handle *child,
-> struct ltc2983_data *st,
-> =C2=A0			dev_err(&st->spi->dev,
-> =C2=A0				"Invalid value for excitation current(%u)",
-> =C2=A0				excitation_current);
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	fwnode_property_read_u32(child, "adi,rtd-curve", &rtd->rtd_curve);
-> =C2=A0
-> -	fwnode_handle_put(ref);
-> =C2=A0	return &rtd->sensor;
-> -fail:
-> -	fwnode_handle_put(ref);
-> -	return ERR_PTR(ret);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static struct ltc2983_sensor *
-> @@ -921,7 +902,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *ch=
-ild,
-> struct ltc2983_data *s
-> =C2=A0{
-> =C2=A0	struct ltc2983_thermistor *thermistor;
-> =C2=A0	struct device *dev =3D &st->spi->dev;
-> -	struct fwnode_handle *ref;
-> +	struct fwnode_handle *ref __free(fwnode_handle) =3D NULL;
-> =C2=A0	u32 excitation_current =3D 0;
-> =C2=A0	int ret =3D 0;
-> =C2=A0
-> @@ -938,7 +919,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *ch=
-ild,
-> struct ltc2983_data *s
-> =C2=A0	ret =3D fwnode_property_read_u32(ref, "reg", &thermistor-
-> >r_sense_chan);
-> =C2=A0	if (ret) {
-> =C2=A0		dev_err(dev, "rsense channel must be configured...\n");
-> -		goto fail;
-> +		return ERR_PTR(ret);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	if (fwnode_property_read_bool(child, "adi,single-ended")) {
-> @@ -958,8 +939,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *ch=
-ild,
-> struct ltc2983_data *s
-> =C2=A0		dev_err(&st->spi->dev,
-> =C2=A0			"Invalid chann:%d for differential thermistor",
-> =C2=A0			sensor->chan);
-> -		ret =3D -EINVAL;
-> -		goto fail;
-> +		return ERR_PTR(-EINVAL);
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	/* check custom sensor */
-> @@ -978,10 +958,8 @@ ltc2983_thermistor_new(const struct fwnode_handle *c=
-hild,
-> struct ltc2983_data *s
-> =C2=A0								 propname,
-> =C2=A0								 steinhart,
-> =C2=A0								 64, false);
-> -		if (IS_ERR(thermistor->custom)) {
-> -			ret =3D PTR_ERR(thermistor->custom);
-> -			goto fail;
-> -		}
-> +		if (IS_ERR(thermistor->custom))
-> +			return ERR_CAST(thermistor->custom);
-> =C2=A0	}
-> =C2=A0	/* set common parameters */
-> =C2=A0	thermistor->sensor.fault_handler =3D ltc2983_common_fault_handler;
-> @@ -1005,8 +983,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *c=
-hild,
-> struct ltc2983_data *s
-> =C2=A0			=C2=A0=C2=A0=C2=A0 LTC2983_SENSOR_THERMISTOR_STEINHART) {
-> =C2=A0				dev_err(&st->spi->dev,
-> =C2=A0					"Auto Range not allowed for custom
-> sensors\n");
-> -				ret =3D -EINVAL;
-> -				goto fail;
-> +				return ERR_PTR(-EINVAL);
-> =C2=A0			}
-> =C2=A0			thermistor->excitation_current =3D 0x0c;
-> =C2=A0			break;
-> @@ -1047,16 +1024,11 @@ ltc2983_thermistor_new(const struct fwnode_handle
-> *child, struct ltc2983_data *s
-> =C2=A0			dev_err(&st->spi->dev,
-> =C2=A0				"Invalid value for excitation current(%u)",
-> =C2=A0				excitation_current);
-> -			ret =3D -EINVAL;
-> -			goto fail;
-> +			return ERR_PTR(-EINVAL);
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> -	fwnode_handle_put(ref);
-> =C2=A0	return &thermistor->sensor;
-> -fail:
-> -	fwnode_handle_put(ref);
-> -	return ERR_PTR(ret);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static struct ltc2983_sensor *
+Changes in v3:
+- Abort probe if register accesses fail.
+- Remove unnecessary brackets.
+- Link to v2: https://lore.kernel.org/r/20231221-vcnl4000-ps-hd-v2-1-1b6790d30ae6@axis.com
+
+Changes in v2:
+- Update registers for sample rate to align it with 16 bit sensor readings.
+- Change sysfs output from IIO_VAL_INT to IIO_VAL_FRACTIONAL and scale by 16.
+- Link to v1: https://lore.kernel.org/r/20231221-vcnl4000-ps-hd-v1-1-a024bfb28896@axis.com
+---
+ drivers/iio/light/vcnl4000.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index fdf763a04b0b..4e3641ff2ed4 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -90,6 +90,7 @@
+ #define VCNL4040_PS_CONF1_PS_SHUTDOWN	BIT(0)
+ #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
+ #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
++#define VCNL4040_PS_CONF2_PS_HD		BIT(11)	/* Proximity high definition */
+ #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
+ #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
+ #define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
+@@ -114,6 +115,13 @@
+ #define VCNL4010_INT_DRDY \
+ 	(BIT(VCNL4010_INT_PROXIMITY) | BIT(VCNL4010_INT_ALS))
+ 
++#define VCNL4040_CONF3_PS_MPS_16BITS	3	/* 8 multi pulses */
++#define VCNL4040_CONF3_PS_LED_I_16BITS	3	/* 120 mA */
++
++#define VCNL4040_CONF3_PS_SAMPLE_16BITS \
++	(FIELD_PREP(VCNL4040_PS_CONF3_MPS, VCNL4040_CONF3_PS_MPS_16BITS) | \
++	 FIELD_PREP(VCNL4040_PS_MS_LED_I, VCNL4040_CONF3_PS_LED_I_16BITS))
++
+ static const int vcnl4010_prox_sampling_frequency[][2] = {
+ 	{1, 950000},
+ 	{3, 906250},
+@@ -195,6 +203,7 @@ struct vcnl4000_data {
+ 	enum vcnl4000_device_ids id;
+ 	int rev;
+ 	int al_scale;
++	int ps_scale;
+ 	u8 ps_int;		/* proximity interrupt mode */
+ 	u8 als_int;		/* ambient light interrupt mode*/
+ 	const struct vcnl4000_chip_spec *chip_spec;
+@@ -345,6 +354,7 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+ static int vcnl4200_init(struct vcnl4000_data *data)
+ {
+ 	int ret, id;
++	u16 regval;
+ 
+ 	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
+ 	if (ret < 0)
+@@ -386,9 +396,32 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+ 		break;
+ 	}
+ 	data->al_scale = data->chip_spec->ulux_step;
++	data->ps_scale = 16;
+ 	mutex_init(&data->vcnl4200_al.lock);
+ 	mutex_init(&data->vcnl4200_ps.lock);
+ 
++	/* Use 16 bits proximity sensor readings */
++	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
++	if (ret < 0)
++		return ret;
++
++	regval = ret | VCNL4040_PS_CONF2_PS_HD;
++	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
++					regval);
++	if (ret < 0)
++		return ret;
++
++	/* Align proximity sensor sample rate to 16 bits data width */
++	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
++	if (ret < 0)
++		return ret;
++
++	regval = ret | VCNL4040_CONF3_PS_SAMPLE_16BITS;
++	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
++					regval);
++	if (ret < 0)
++		return ret;
++
+ 	ret = data->chip_spec->set_power_state(data, true);
+ 	if (ret < 0)
+ 		return ret;
+@@ -901,8 +934,9 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+ 			break;
+ 		case IIO_PROXIMITY:
+ 			ret = data->chip_spec->measure_proximity(data, val);
++			*val2 = data->ps_scale;
+ 			if (!ret)
+-				ret = IIO_VAL_INT;
++				ret = IIO_VAL_FRACTIONAL;
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
+
+---
+base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+change-id: 20231221-vcnl4000-ps-hd-863f4f8fcea7
+
+Best regards,
+-- 
+Mårten Lindahl <marten.lindahl@axis.com>
 
 

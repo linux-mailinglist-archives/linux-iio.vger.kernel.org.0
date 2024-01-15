@@ -1,148 +1,145 @@
-Return-Path: <linux-iio+bounces-1695-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1696-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A7682DD11
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 17:10:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CD282E0F8
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 20:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80351F23F47
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 16:10:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E72F2835BB
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 19:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EEC179AE;
-	Mon, 15 Jan 2024 16:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E8618E29;
+	Mon, 15 Jan 2024 19:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmlVty6C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BDA17BA4;
-	Mon, 15 Jan 2024 16:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TDH9R1xYwz67pnj;
-	Tue, 16 Jan 2024 00:07:55 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id D1F801400CD;
-	Tue, 16 Jan 2024 00:10:29 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 15 Jan
- 2024 16:10:29 +0000
-Date: Mon, 15 Jan 2024 16:10:28 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Matti Vaittinen
-	<matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	<linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/3] iio: test: test gain-time-scale helpers
-Message-ID: <20240115161028.0000771b@Huawei.com>
-In-Reply-To: <ff962e6a-5e2b-4a72-9043-80b8fc218642@gmail.com>
-References: <cover.1704881096.git.mazziesaccount@gmail.com>
-	<6b839dd533fd93b75c2e6f6a8f2286233d4901fb.1704881096.git.mazziesaccount@gmail.com>
-	<20240113161229.48d63b54@jic23-huawei>
-	<ff962e6a-5e2b-4a72-9043-80b8fc218642@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F031318AE1;
+	Mon, 15 Jan 2024 19:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a2cea0563cbso452801766b.3;
+        Mon, 15 Jan 2024 11:52:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705348377; x=1705953177; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LiOJcOVnNa84I0LF7FtDQ1PT4mJ9d6sq/73epamT79s=;
+        b=PmlVty6CzPfdnTKxPY8HgIRq4HkYv+gJhGeggEBpXbwhGNnSwWwSJj/HYUXLym/gL0
+         81fFZfYaWobpO1qomvJzCZL0kArGQx8coydggjkh8X4xbNz64qQjTzV7q+8teyMT1JiM
+         lwiU88PY/KjabWyWPfXgfRivvfLU19cUuvMDd3ZaZwLQtrMRtyPsoE/BLBEOWOZiQQdH
+         cUwdh8dCvIgph3+iGyo4ZpSyKePKgHXGPaOGEutdV6quVNlOiSrLao3mKoTDRX1JOl0N
+         UjcXUUWxViBD6Wg+xSfcb36QW9GpbF3ReTcwIB9//xHg2ToUROjadPmkgEtxXKENojc+
+         pLag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705348377; x=1705953177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LiOJcOVnNa84I0LF7FtDQ1PT4mJ9d6sq/73epamT79s=;
+        b=kHCYrvi0If9sdznE/cq3htEJ4HjIEclWwqgE0NH9b7aDSRncgS38oyl2xAiqLOmWTx
+         mDNyakoVGcLwo+xaaMw/t34KvS4tXg0huYOIOLLmtj2SGauc2weXuxjmz9y+vcj+GNQC
+         yOkLJtM0HwAj7BjWa7a8SE35JV99EV2muo91hFWx4QsuRzhKBUWljQz7OFDzCgM2nc4f
+         5i2bn9bazK3Zb7oxqpfMmKukDWE3QJlfuK60JRGmr35MaBWMHzkUDURrFqMwk634DoHa
+         90X3pl6YFgqGtnih28elnwR1/tw/9dSNUGV/2KvdOV578yuwZ7tfQxAuHhFMVifTIkjB
+         weAQ==
+X-Gm-Message-State: AOJu0YznQD5fBGy/HrbATP5XEnr8Tcf+fB8gWILCO6eq33wI/W9ywCuR
+	GUAaayqCKvWis98AXlDUfCmCIXjrquc9r8dgddk=
+X-Google-Smtp-Source: AGHT+IEk0k1PWQ9K9x0DxDo2CKRbYP9mI+6PRp8A8zglB+pp2PHGeJ0oZ4ZLwgOi1fu9kntLigDyjhm9Gv/+704FHLY=
+X-Received: by 2002:a17:907:10c7:b0:a2d:c839:e1e8 with SMTP id
+ rv7-20020a17090710c700b00a2dc839e1e8mr1251268ejb.28.1705348377010; Mon, 15
+ Jan 2024 11:52:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240115135416.10595-1-mitrutzceclan@gmail.com> <20240115135416.10595-3-mitrutzceclan@gmail.com>
+In-Reply-To: <20240115135416.10595-3-mitrutzceclan@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 15 Jan 2024 21:52:20 +0200
+Message-ID: <CAHp75VcjcgnLkQWim1AVnyeRGFwwKpaWSCvrmqdv41Lx87hMKw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad7173: add support for additional models
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
+	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, 15 Jan 2024 15:01:32 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, Jan 15, 2024 at 3:54=E2=80=AFPM Dumitru Ceclan <mitrutzceclan@gmail=
+.com> wrote:
+>
+> Add support for Analog Devices AD7172-2, AD7175-8, AD7177-2
 
-> On 1/13/24 18:12, Jonathan Cameron wrote:
-> > On Wed, 10 Jan 2024 12:12:55 +0200
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >  =20
-> >> Some light sensors can adjust both the HW-gain and integration time.
-> >> There are cases where adjusting the integration time has similar impact
-> >> to the scale of the reported values as gain setting has.
-> >>
-> >> IIO users do typically expect to handle scale by a single writable 'sc=
-ale'
-> >> entry. Driver should then adjust the gain/time accordingly.
-> >>
-> >> It however is difficult for a driver to know whether it should change
-> >> gain or integration time to meet the requested scale. Usually it is
-> >> preferred to have longer integration time which usually improves
-> >> accuracy, but there may be use-cases where long measurement times can =
-be
-> >> an issue. Thus it can be preferable to allow also changing the
-> >> integration time - but mitigate the scale impact by also changing the =
-gain
-> >> underneath. Eg, if integration time change doubles the measured values,
-> >> the driver can reduce the HW-gain to half.
-> >>
-> >> The theory of the computations of gain-time-scale is simple. However,
-> >> some people (undersigned) got that implemented wrong for more than onc=
-e.
-> >> Hence some gain-time-scale helpers were introduced.
-> >>
-> >> Add some simple tests to verify the most hairy functions.
-> >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >> =20
->=20
-> ...
->=20
-> >> +static void test_iio_gts_chk_scales_all(struct kunit *test, struct ii=
-o_gts *gts,
-> >> +					const int *vals, int len)
-> >> +{
-> >> +	static const int gains[] =3D {1, 2, 4, 8, 16, 32, 64, 128, 256, 512,
-> >> +				    1024, 2048, 4096, 4096 * 2, 4096 * 4,
-> >> +				    4096 * 8};
-> >> +
-> >> +	int expected[ARRAY_SIZE(gains) * 2];
-> >> +	int i, ret;
-> >> +	int exp_len =3D ARRAY_SIZE(gains) * 2; =20
-> >=20
-> > Use this for expected[*] just above? =20
->=20
-> Doing:
-> const int exp_len =3D ARRAY_SIZE(gains) * 2;
-> int expected[exp_len];
->=20
-> gives me:
-> warning: ISO C90 forbids variable length array =E2=80=98expected=E2=80=99=
- [-Wvla]
+Missing period.
 
-Huh.  That's a compiler being impressively stupid :(
+...
 
-Just leave it as it is - maybe add a comment to so no one tries to tidy this
-up in future.
+> + * AD717X family SPI ADC driver
 
->=20
-> I could drop the whole exp_len variable, but I prefer test code which is=
-=20
-> as obvious as it gets if any of the checks fails. For me the check:
->=20
-> >> +	KUNIT_EXPECT_EQ(test, exp_len, len);
-> >> +	if (len !=3D exp_len)
-> >> +		return; =20
->=20
-> is (very slightly) more obvious than:
-> 	KUNIT_EXPECT_EQ(test, ARRAY_SIZE(gains) * 2, len);
-> 	if (len !=3D ARRAY_SIZE(gains) * 2)
-> 		return;
->=20
-> I guess I'll leave this one as it is. Just kick me in v2 if I=20
-> misunderstood you :)
+X --> x
 
-yeah, leave it be. Annoying but such is life.
+...
 
->=20
-> Yours,
-> 	-- Matti
->=20
+> + * Suported devices:
 
+Supported
+
+...
+
+> + *  AD7172-2 AD7172-4 AD7173-8 AD7175-2 AD7175-8 AD7176-2 AD7177-2
+
+Too long and no good delimiter (like comma), can you reformat this list?
+
+...
+
+> +#define AD7172_2_ID                    0x00d0
+> +#define AD7172_4_ID                    0x2050
+>  #define AD7173_ID                      0x30d0
+> +#define AD7175_2_ID                    0x0cd0
+> +#define AD7175_8_ID                    0x3cd0
+>  #define AD7176_ID                      0x0c90
+> +#define AD7177_ID                      0x4fd0
+
+Why not order by the ID value?
+
+...
+
+> +               //AD7177-2 has the filter values [0-6] marked as reserved
+> +               // datasheet page 58
+
+Be consistent with the type of comments. Either all C++ style or C.
+Also missing space in the first line.
+
+...
+
+> +               if (ref_sel =3D=3D AD7173_SETUP_REF_SEL_INT_REF &&
+> +                   st->info->id =3D=3D AD7172_2_ID){
+
+Missing space.
+
+> +                       fwnode_handle_put(child);
+> +                       return dev_err_probe(dev, -EINVAL, "Internal refe=
+rence is not available on ad7172-2\n");
+> +               }
+
+Not sure if Jonathan makes his series in for fwnode handle RAII.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

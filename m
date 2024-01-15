@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-1667-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1668-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BFE82D209
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 21:04:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BB682D598
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 10:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF7B1C20A1F
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jan 2024 20:04:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308171C213E4
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jan 2024 09:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFC010A32;
-	Sun, 14 Jan 2024 20:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCDDC12F;
+	Mon, 15 Jan 2024 09:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePGXnL/D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DeFc+TNw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C558D1640B;
-	Sun, 14 Jan 2024 20:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C29E541;
+	Mon, 15 Jan 2024 09:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-50eac018059so9977143e87.0;
-        Sun, 14 Jan 2024 12:04:16 -0800 (PST)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-50e7b51b0ceso8490246e87.1;
+        Mon, 15 Jan 2024 01:13:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705262655; x=1705867455; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1705310026; x=1705914826; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1M8TnteeflGvZ6cvygRfCUgIwPLJ+AIgzs8KqJCXdg4=;
-        b=ePGXnL/DTRZnOCEow+iLh6xmQfk3bqzVWRVSDQjZPbt3iPIfuSOQQlTl6Kpmf0CAP0
-         RsxegdLDhNiwESojT0olQs4j2jklg5e8L2ghy93NtMRk3UJ/dn9+Cxqc9q5t7VrAHxXF
-         LA5TtIwbv1x5GZiOm1agY1C7IirFeWIWNZwamcfTCK5QO7jf5pCglPtnKuNWhXPd8KGH
-         kZD5TY/94I7vobcKzUV/Pfj4VMGXHqCMq7d4DLsfUu8h4mmLzmOGJALckBvxET5tbLuT
-         MKt0MHGf87PLSC6T4rixj8Iz9ZSOARVxic6k2FVsHBbb9wufekqOTq2EniBbt00N880j
-         yZRA==
+        bh=cy9fwNlwVc+gx5v4xgTuuLAslWCEht9JixYFler0ihI=;
+        b=DeFc+TNw55rLVjHJi4e5acW32/YHLUk5yvxkGIhdXuUvjkK2iuhVXT7LzNlVhhuVeL
+         8VpYby66oTbzrMghl4xN/Mvkz2EU04H5Y/2X2YAgKaTHrvl6wDuIkLooIMNVpAIoMB1P
+         R2VwqAuT70ZFWclJoHjzSDFfQ+xOSad5IpXNpjMFFJsW+Ahi2Fu+yO5kmmYPptqeVTnm
+         jsJu2IbdbDopI/oLG3+Ne/u7m+/u2v7lcZfsPr3ZMELCP3GakuiXannGll9lAaCfCKVi
+         3bX3KzfxwBRQ3i6e4k+3kwnBUtQE7LfY/aH8vL71C6Q1RZD/RqkbcZwJTJ4qbmuwVsNp
+         Vaig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705262655; x=1705867455;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1705310026; x=1705914826;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1M8TnteeflGvZ6cvygRfCUgIwPLJ+AIgzs8KqJCXdg4=;
-        b=Z1O8HvA1eDFeKhXxMXKLF+6l/lsAzc6mUNDf9gRRuIvSAtLFvFodKJJCgHyMThQM7F
-         bsSDieOO9YtBq9w7luSkcq5ECbvKeoF3c2du1Li2TlVBFpf+I5nLiNSIo4DibUdIga+d
-         KYe47+gjeZ7vnW8rDF/8ppsqvGjnfpyipIiRhz3Il02XC9gyIZExDTUmNwTkwSTrNoQO
-         vDtFMWKLIA7pyzy6SpOsuJGKft/ocfLBEyjAZcGhvVBvAGs0g3B2DnY1ujGDbaV/5oaw
-         z/hJuCz406/XZxEHg9/0GLWYJ6BAbpZ/pjBHSgPVQHTDCpbYEMxLPwcv9EgzpCdrZgi3
-         nNBw==
-X-Gm-Message-State: AOJu0Yy/pS5bk29TbPeTyjmDO7I7C2F5g8mDuiUlyVymnh/2MzXN2QA4
-	a5toLnmYjKjZEcISw+27YjozrQVFr8wZ2w==
-X-Google-Smtp-Source: AGHT+IGkfOIZ8AVDwrJ3tiwAvZND/IC123Qo5/HJeTyhG0YWZvGHJ+zfFrj5/AiOSJAZV8MOyELKXw==
-X-Received: by 2002:ac2:4249:0:b0:50e:378b:5187 with SMTP id m9-20020ac24249000000b0050e378b5187mr2083619lfl.41.1705262654407;
-        Sun, 14 Jan 2024 12:04:14 -0800 (PST)
-Received: from [192.168.1.99] ([151.62.194.53])
-        by smtp.gmail.com with ESMTPSA id t10-20020a170906178a00b00a28ba0c3821sm4421996eje.101.2024.01.14.12.04.13
+        bh=cy9fwNlwVc+gx5v4xgTuuLAslWCEht9JixYFler0ihI=;
+        b=IPCv8YGOktS8VAS+CaEO4YSW4Piyzl3CxSbT2z0HCrOLIr3u5wdfUwUWgLZI/SKsFe
+         Z5UqiSmmtUFnAz+r3CjsA5gCgApgaoUYh8nmOW/qmbGp/XoF4lkpC+sJfuH2HiLUMTDp
+         +8Un7hHqfpoJUccCjQzf6chzQJjGwO1kNkerWJVF8/Z73N3OBDotEeL9hXGilFv5Wj0a
+         Nf4sV3whBgitSczuosahQv7kZy55K2+K0zo7HF5fnnh8ESCqNvQjJSJndQ7KJdURgm45
+         mZlhoEVp8iLsLMvhVb/3ETND7YooPKeZN1hM6+9CKWOegYiStihDoK64mt5+5WwhSXJ5
+         ycSA==
+X-Gm-Message-State: AOJu0Yxr6nEsl0ouoRkgfPmao8wWHYQxHh12tRpMSMpjY10Ml3D/Z/G2
+	MfTGLOQc2OYeGIyrnTmJIhc=
+X-Google-Smtp-Source: AGHT+IFVkAtsa7jY4e2HLECu8EaZkrrIuhIak/fnYBbMc0kw2BKoj/V/JALf1m9wVYgJw8E72cjsfA==
+X-Received: by 2002:a05:6512:60e:b0:50e:74f3:c320 with SMTP id b14-20020a056512060e00b0050e74f3c320mr3212853lfe.21.1705310026274;
+        Mon, 15 Jan 2024 01:13:46 -0800 (PST)
+Received: from ?IPV6:2001:14ba:7426:df00::3? (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
+        by smtp.gmail.com with ESMTPSA id t24-20020ac24c18000000b0050e78aa4b30sm1422245lfq.42.2024.01.15.01.13.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Jan 2024 12:04:14 -0800 (PST)
-Message-ID: <053a5c27-68fd-41b1-8b40-783dfb83d488@gmail.com>
-Date: Sun, 14 Jan 2024 21:04:12 +0100
+        Mon, 15 Jan 2024 01:13:45 -0800 (PST)
+Message-ID: <1d735a95-e5bd-4891-bb44-335958e1f045@gmail.com>
+Date: Mon, 15 Jan 2024 11:13:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,142 +66,71 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: iio: iio-trig-hrtimer bug on suspend/resume when used with bmi160
- and bmi323
+Subject: Re: [PATCH 2/3] iio: test: test gain-time-scale helpers
+Content-Language: en-US, en-GB
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jagath Jog J <jagathjog1996@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-References: <31d7f7aa-e834-4fd0-a66a-e0ff528425dc@gmail.com>
- <20240113174351.47a20239@jic23-huawei>
-Content-Language: en-US, en-US-large
-From: Denis Benato <benato.denis96@gmail.com>
-In-Reply-To: <20240113174351.47a20239@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <cover.1704881096.git.mazziesaccount@gmail.com>
+ <6b839dd533fd93b75c2e6f6a8f2286233d4901fb.1704881096.git.mazziesaccount@gmail.com>
+ <20240113161229.48d63b54@jic23-huawei>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240113161229.48d63b54@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 1/13/24 18:46, Jonathan Cameron wrote:
-> On Wed, 10 Jan 2024 23:35:01 +0100
-> Denis Benato <benato.denis96@gmail.com> wrote:
+On 1/13/24 18:12, Jonathan Cameron wrote:
+> On Wed, 10 Jan 2024 12:12:55 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> Hello,
+>> Some light sensors can adjust both the HW-gain and integration time.
+>> There are cases where adjusting the integration time has similar impact
+>> to the scale of the reported values as gain setting has.
 >>
->> With this mail I am submitting bug report that is probably related to
->> iio-trig-hrtimer but there is also the possibility for it to be
->> specific to bmi160 and bmi323.
+>> IIO users do typically expect to handle scale by a single writable 'scale'
+>> entry. Driver should then adjust the gain/time accordingly.
 >>
->> The described problem have been reproduced on my handheld PC (Asus
->> RC71L) and in another handheld PC with two different gyroscope
->> drivers: bmi323 (backported by me on v6.7, on RC71L) and bmi160.
+>> It however is difficult for a driver to know whether it should change
+>> gain or integration time to meet the requested scale. Usually it is
+>> preferred to have longer integration time which usually improves
+>> accuracy, but there may be use-cases where long measurement times can be
+>> an issue. Thus it can be preferable to allow also changing the
+>> integration time - but mitigate the scale impact by also changing the gain
+>> underneath. Eg, if integration time change doubles the measured values,
+>> the driver can reduce the HW-gain to half.
 >>
->> My target hardware (RC71L that yeld to this discovery) has a bmi323
->> chip that does not have any interrupt pins reaching the CPU, yet I
->> need to fetch periodically data from said device, therefore I used
->> iio-trig-hrtimer: created a trigger, set the device and trigger
->> sampling frequencies, bound the trigger to the device and enabled
->> buffer: data is being read and available over /dev/iio:device0.
+>> The theory of the computations of gain-time-scale is simple. However,
+>> some people (undersigned) got that implemented wrong for more than once.
+>> Hence some gain-time-scale helpers were introduced.
 >>
->> While in this state if I suspend my handheld I receive (from dmesg)
->> the warning reported below and at resume data is not coming out of
->> the iio device and the hrtimer appears to not be working. If I create
->> a new trigger and bind the new trigger to said iio device and
->> re-enable buffer data does come out of /dev/iio:device0 once more,
->> until the next sleep.
+>> Add some simple tests to verify the most hairy functions.
 >>
->> Since this is important to me I have taken the time to look at both
->> drivers and iio-trig-hrtimer and I have identified three possible
->> reasons:
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 >>
->> 1) iio-trig-hrtimer won't work after suspend regardless of how it is
->> used (this is what I believe is the cause)
-> me too.
-who and how should investigate this issue? Would putting a kprintf in the hrtimer callback be enough to check?
+> Hi Matti,
+> 
+> All seems reasonable to me. Some trivial formatting things inline
+> + I'm not planning to check the maths as you are the expert in all of
+> this so I'll just trust you!
 
+Well, all checking is always welcome. Still, I kind of understand that 
+you won't verify everything you see... Oh, and thanks for the trust. :)
 
-Just to make sure I understood correctly: is this a separate issue from the warning I receive or are those linked?
-> 
->> 2) iio-trig-hrtimer is stopped by the -ESHTDOWN returned by the
->> function printing "Transfer while suspended", however that stack
->> trace does not include function calls related to iio-trig-hrtimer and
->> this seems less plausible 3) bmi160 and bmi323 appears to be similar
->> and maybe are sharing a common bug with suspend (this is also why I
->> have maintainers of those drivers in the recipient list)
->>
->> Thanks for your time, patience and understanding,
-> 
-> Hi Denis,
-> 
-> I suspect this is the legacy of the platform I used to test the hrtimer
-> and similar triggers on never had working suspend and resume (we ripped
-> support for that board out of the kernel a while back now...)
-> Hence those paths were never tested by me and others may not have cared
-> about this particular case.
-> 
-> Anyhow, so I think what is going on is fairly simple.
-> 
-> There is no way for a driver to indicate to a trigger provided by a separate
-> module / hardware device that it should stop triggering data capture.
-> The driver in question doesn't block data capture when suspended, which
-> would be easy enough to add but doesn't feel like the right solution.
-> 
-> So my initial thought is that we should add suspend and resume callbacks to
-> iio_trigger_ops and call them manually from iio device drivers in their
-> suspend and resume callbacks.  These would simply pause whatever the
-> trigger source was so that no attempts are made to trigger the use of
-> the device when it is suspended.
-> 
-> It gets a little messy though as triggers can be shared between
-> multiple devices so we'd need to reference count suspend and resume
-> for the trigger to make sure we only resume once all consumers of
-> the trigger have said they are ready to cope with triggers again.
-> 
-> As mentioned, the alternative would be to block the triggers at ingress
-> to the bmi323 and bmi160 drivers.  There may be a helpful pm flag that could
-> be used but if not, then setting an is_suspended flag under the data->mutex
-> to avoid races. and reading it in the trigger_handler to decide whether
-> to talk to the device should work.
-I was thinking of doing this too, but I don't know if adding a mutex to frequently invoked functions is going to introduce some timing problems and so I was waiting for some comments on that matter. If nothing bad is expected I can surely try it.
-> 
-> I'd kind of like the generic solution of actually letting the trigger
-> know, but not sure how much work it would turn out to be.  Either way there
-> are a lot of drivers to fix this problem in as in theory most triggers can
-> be used with most drivers that support buffered data capture.
-> There may also be fun corners where a hardware trigger from one IIO
-> device A is being used by another B and the suspend timing is such that B
-> finishing with the trigger results in A taking an action (in the try_reenable
-> callback) that could result in bus traffic.
-> That one is going to be much more fiddly to handle than the simpler case
-> you have run into.
-Since more and more handheld PCs are coming and provided many vendors such as asus tends to improve what they did built on previous generations I think a general solution would be desirable.
+> Also if this fails you get to pick up the pieces :)
 
-Plus there are handheld PCs that does not yet have a driver (bmi270) or are using an existing one and it would be very difficult to fix it in every of them as of now, in the future I fear it will become almost impossible or extremely time consuming as market expands.
-> 
-> Thanks for the detailed bug report btw.   To get it fixed a few
-> questions:
-> 1) Are you happy to test proposed fixes?
-> 2) Do you want to have a go at fixing it yourself? (I'd suggest trying
->    the fix in the bmi323 driver first rather than looking at the other 
->    solution)
->    If we eventually implement the more general version, then a bmi323
->    additional protection against this problem would not be a problem.
-> 
-> Clearly I'd like the answers to be yes to both questions, but up to you!
-> 
-> Jonathan
-> 
-> 
-Hello Jonathan and thank you kindly for you answer,
+This sure helps to trust ;)
 
-I am very interested in the iio ecosystem as in those aforementioned handheld PCs the gyroscope plays the role as a mouse so it's a pretty important input device.
+As for things you commented - Thanks! I'll fix them and respin.
 
-I am writing to lkml not just as a single developer, but as part of a larger community in this matter: this means we will be able to test any solution and in more than just one hardware.
+Yours,
+	-- Matti
 
-To answers your questions:
-1) yes, we all will be very happy to
-2) as I am very busy right now I might be unable to do that immediately, but I will surely do it if one general solution cannot be found or is impractical.
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-As of my limited knowledge the number of drivers now existing that are affected are 2, and the number of drivers that will be affected, once the driver is written, will be at least 3.
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-Thank you very much for your answer,
-Denis
 

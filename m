@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-1710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B729982F18A
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 16:31:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8230082F196
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 16:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC8381C23608
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 15:31:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA8D28318D
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 15:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CC51C2A6;
-	Tue, 16 Jan 2024 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639AC1C298;
+	Tue, 16 Jan 2024 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I3nKi4lL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LaWfGwwX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDD71C6B3
-	for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 15:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A11CA88
+	for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 15:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so1200591666b.2
-        for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 07:30:55 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-556c3f0d6c5so12161267a12.2
+        for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 07:31:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705419053; x=1706023853; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705419117; x=1706023917; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=EbzIVaYaEJ5SWavDcHCxKGfea/F5k+gN6HpNmraJ9/Y=;
-        b=I3nKi4lL2JDxmzJYxGKi6e8Z9cgcEFNbqg5vZwB76THZlMXO0UZ5dmypzcCC0eYQvj
-         BmhaVIHx2eH5s/mhjvfzQqTLMjbUEgL/QCdy0HJCz7blSka1JTx8nymoe/po3ymlFSJB
-         ToL0flzmqmtWSrWQTXIqDTZnquAi+FTB6K21A4rUYLC/+aRc/iCN8IqFhV57Gm7+gRtk
-         JLq0w1KWZkfnvPSwZzNw6DF2smYaeSNnMwEIOKrrxQx/qiuDUdMA6LEjeMN049AeIShX
-         iJiuJqlI8bYNOrZ+BRkKbblfL2QHitVF491ZQNRkJCz1ChthRIeCsZ6xpb4lmu9RDl34
-         oPqw==
+        bh=RRqh4IdEntOv7DoUtgbTz4JUfgL7oZgBjoCKT5NDl1E=;
+        b=LaWfGwwXpfBW6trIxvjEzmo5yXbop5/RY/oYvJb52Qc0/65dMzrlR/FXaLV3aF0WOw
+         Zc0eLp+CEtcKQ9+ph9Div4KSv21K/jvb2ZIn0/E4LrjTFq/2eIIx8WmVa21kIlGrvADw
+         SwpFQUkS+aqQGzXgKGQiftcsl/dSzJnuxEaMMWXTTHbO9RDIInbkTgGL/hlYCMWJVNYS
+         WHX7wvPW/5KEjYzc66r6xijpE4QtBcp3xV8NzUwmTbj2SvuVmFMHHiUpT2zBdMPQd1yb
+         F7ILpdg4Pf9oeyiS0ZCN0NMkJ0zq50HnM8VM+khlKGOivcwFpOFjUqVOKFgyDt7wnNz6
+         Pkpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705419053; x=1706023853;
+        d=1e100.net; s=20230601; t=1705419117; x=1706023917;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EbzIVaYaEJ5SWavDcHCxKGfea/F5k+gN6HpNmraJ9/Y=;
-        b=iXbqGAWjI1PNwnJFT98NGOnaidEICoypl1uVjW2228enlLiYbyGunbVT0YTlqZfd8D
-         d5sM2GfHQJWqj2NCUq2SXtPVoO+7mcMF2gxB22t+TzV9uK/PKVqJNUVwBiGvH9QUWi1c
-         TGSFNZUUerhs24WZg839TzckDLba7B1iTPO+b0Nay3bfaIg0kKO0SMWC1vZ200IGJWpc
-         KwaH8ZpMIePWVhOJiiuhUDBu5OVPkYm6xnMSx9nBMbkkbe5pZDFtKKNp8nlW4oxkvjT2
-         X9x5DD15FULIoLC2goXGrqbhNpYyEXAVhS4FJskjmQUpqD8Qy5Da0WJtD1UY5F8UsuXD
-         BxXQ==
-X-Gm-Message-State: AOJu0YxmYNKjUXHHGDqRZ2Np7aCBIP0+uL96twUKo+qaa0/mTULtOLTn
-	DnIGFLWu+7AWXt42HxnKGGUObfmzmnlzc+2dCuJrD808TMs=
-X-Google-Smtp-Source: AGHT+IEy2Wv8uv7pwg1lEUjw5aZ2TXHN+V8rUUEmTOgZIXH0NKvsp9UN3D0q7SWEiyehqzH88DEcwg==
-X-Received: by 2002:a17:906:f0d3:b0:a28:d16d:5aab with SMTP id dk19-20020a170906f0d300b00a28d16d5aabmr2507615ejb.157.1705419053616;
-        Tue, 16 Jan 2024 07:30:53 -0800 (PST)
+        bh=RRqh4IdEntOv7DoUtgbTz4JUfgL7oZgBjoCKT5NDl1E=;
+        b=bcOf1MQ00eq1ci2aT18ZWiQG/R/WXlHvb/kFhDOiGGr8kDMOARXoA9g1GtovEGche1
+         b4PUZcYpUH6A+JIa6mYfv9SjorfRaSXrOTPLs6xjFkgLLJvQ63iW7jyqvcj8toLikMP+
+         /KGYqequhh3JFuIWiio9Aety9ZrblriiwQXVOMYdBOUntUaTKxIKgRlBbTgmJ4/0VWA7
+         rHIGnY64d7Vp/linv65az2G0M1uv7Wz95ESm63sA/hQ8xbs28jnS7IA4cm6LBTUVJiSu
+         yPKz5to9RqBnZ/zpf1BvaIn1o1YqbAUmV28ucTyhvgG5wvMUz9aPtic03YNwV/eGV28A
+         a4ug==
+X-Gm-Message-State: AOJu0YyGUTObQNVjbdFw90LMJBSTTp2aam4rfVW2O4mPlu9adwMcXqvN
+	QuhC3yBVD5HNQWdDPj8JoPmn68aCGdGrHA==
+X-Google-Smtp-Source: AGHT+IElLbvQmBpQVCdY5tQvzZF1UiWwnDYStbM5qGN8w2/n7VediI4AW804hO642g7R65eQzSi0Qg==
+X-Received: by 2002:a17:906:615:b0:a2c:8872:60d4 with SMTP id s21-20020a170906061500b00a2c887260d4mr2582801ejb.22.1705419116767;
+        Tue, 16 Jan 2024 07:31:56 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id qo11-20020a170907874b00b00a2ce46a27besm5078908ejc.190.2024.01.16.07.30.52
+        by smtp.gmail.com with ESMTPSA id qo11-20020a170907874b00b00a2ce46a27besm5078908ejc.190.2024.01.16.07.31.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 07:30:53 -0800 (PST)
-Message-ID: <fd8a8f09-7661-42c2-ace6-0a0e4845184d@linaro.org>
-Date: Tue, 16 Jan 2024 16:30:51 +0100
+        Tue, 16 Jan 2024 07:31:56 -0800 (PST)
+Message-ID: <4eab426b-f654-4e10-9ffa-5b34016565fb@linaro.org>
+Date: Tue, 16 Jan 2024 16:31:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,7 +66,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
 Content-Language: en-US
 To: Petar Stoykov <pd.pstoykov@gmail.com>, linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
@@ -76,7 +76,7 @@ Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
-References: <CADFWO8HOb4zY7rPsCxWe2nvrzd8FjVNw0k8=8s4yB7C_BwS0ig@mail.gmail.com>
+References: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -122,270 +122,81 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CADFWO8HOb4zY7rPsCxWe2nvrzd8FjVNw0k8=8s4yB7C_BwS0ig@mail.gmail.com>
+In-Reply-To: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 16/01/2024 16:24, Petar Stoykov wrote:
-> Sensirion SDP500 is a digital differential pressure sensor. The sensor is
-> accessed over I2C.
+> Sensirion SDP500 is a digital differential pressure sensor. It provides
+> a digital I2C output. Add devicetree bindings requiring the compatible
+> string and I2C slave address (reg).
 > 
+> Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
+> ---
+>  .../bindings/iio/pressure/sdp500.yaml         | 38 +++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
 
->      tristate "STMicroelectronics pressure sensor Driver"
->      depends on (I2C || SPI_MASTER) && SYSFS
-> diff --git a/drivers/iio/pressure/Makefile b/drivers/iio/pressure/Makefile
-> index 436aec7e65f3..489ef7b7befa 100644
-> --- a/drivers/iio/pressure/Makefile
-> +++ b/drivers/iio/pressure/Makefile
-> @@ -25,6 +25,7 @@ obj-$(CONFIG_MS5611) += ms5611_core.o
->  obj-$(CONFIG_MS5611_I2C) += ms5611_i2c.o
->  obj-$(CONFIG_MS5611_SPI) += ms5611_spi.o
->  obj-$(CONFIG_MS5637) += ms5637.o
-> +obj-$(CONFIG_SDP500) += sdp500.o
->  obj-$(CONFIG_IIO_ST_PRESS) += st_pressure.o
->  st_pressure-y := st_pressure_core.o
->  st_pressure-$(CONFIG_IIO_BUFFER) += st_pressure_buffer.o
-> diff --git a/drivers/iio/pressure/sdp500.c b/drivers/iio/pressure/sdp500.c
+Filename like compatible.
+
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
 > new file mode 100644
-> index 000000000000..bc492ef3ef3e
+> index 000000000000..af01ec7e3802
 > --- /dev/null
-> +++ b/drivers/iio/pressure/sdp500.c
-> @@ -0,0 +1,201 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
+> +++ b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> @@ -0,0 +1,38 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#define SDP500_CRC8_POLYNOMIAL  0x31   // x8 + x5 + x4 + 1 (normalized to 0x31)
-> +#define SDP500_READ_SIZE        3
+> +title: sdp500/sdp510 pressure sensor with I2C bus interface
 > +
-> +#define SDP500_SCALE_FACTOR 60
+> +maintainers:
+> +  - Petar Stoykov <pd.pstoykov@gmail.com>
 > +
-> +#define SDP500_I2C_START_MEAS 0xF1
-> +
-> +#define sdp500_err(idev, fmt, ...)                    \
-> +    dev_err(idev->dev.parent, fmt "\n", ##__VA_ARGS__)
+> +description: |
 
-Nope, drop
+Do not need '|' unless you need to preserve formatting.
 
+> +  Pressure sensor from Sensirion with I2C bus interface.
+> +  There is no software difference between sdp500 and sdp510.
 > +
-> +#define sdp500_dbg(idev, fmt, ...)                    \
-> +    dev_dbg(idev->dev.parent, fmt "\n", ##__VA_ARGS__)
+> +properties:
+> +  compatible:
+> +    const: sensirion,sdp500
 > +
-> +#define sdp500_info(idev, fmt, ...)                    \
-> +    dev_info(idev->dev.parent, fmt "\n", ##__VA_ARGS__)
 
-Drop all three.
+No resources? No interrupts? No power supply or any pins? No even
+iio-cells? This looks incomplete.
 
+> +  reg:
+> +    maxItems: 1
 > +
-> +struct sdp500_data {
-> +    struct device *dev;
-> +};
+> +required:
+> +  - compatible
+> +  - reg
 > +
-> +uint8_t calculate_crc8(uint8_t *data, uint32_t len, uint8_t poly)
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c3 {
 
-Why this is not static?
+i2c {
 
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      sdp500@40 {
 
-> +{
-> +    uint8_t    count = 0;
-> +    uint8_t    value = 0;
-> +    uint8_t    temp = 0;
-
-Weird indentation.
-
-You should not implement your own CRC functions. Don't we have CRC8 in
-the kernel?
-
-> +
-> +    while (len--) {
-> +        temp = *(data);
-> +        data++;
-> +        value ^= temp;
-> +        for (count = 0; count < BITS_PER_BYTE; count++) {
-> +            if (value & 0x80)
-> +                value = (value << 1) ^ poly;
-> +            else
-> +                value = value << 1;
-> +        }
-> +    }
-> +
-> +    return value;
-> +}
-> +
-> +static int sdp500_xfer(struct sdp500_data *data, u8 *txbuf, size_t txsize,
-> +              u8 *rxbuf, size_t rxsize, const struct iio_dev *indio_dev)
-> +{
-> +    struct i2c_client *client = to_i2c_client(data->dev);
-> +    int ret;
-> +
-> +    ret = i2c_master_send(client, txbuf, txsize);
-> +    if (ret < 0) {
-> +        sdp500_err(indio_dev, "Failed to send data");
-> +        return ret;
-> +    }
-> +    if (ret != txsize) {
-> +        sdp500_err(indio_dev, "Data is sent wrongly");
-> +        return -EIO;
-> +    }
-> +
-> +    if (!rxsize)
-> +        return 0;
-> +
-> +    ret = i2c_master_recv(client, rxbuf, rxsize);
-> +    if (ret < 0) {
-> +        sdp500_err(indio_dev, "Failed to receive data");
-> +        return ret;
-> +    }
-> +    if (ret != rxsize) {
-> +        sdp500_err(indio_dev, "Data is received wrongly");
-> +        return -EIO;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static int sdp500_start_measurement(struct sdp500_data *data, const
-> struct iio_dev *indio_dev)
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
 
-Your patchset is corrupted.
-
-> +{
-> +    u8 txbuf = SDP500_I2C_START_MEAS;
-> +
-> +    return sdp500_xfer(data, &txbuf, 1, NULL, 0, indio_dev);
-> +}
-> +
-> +static const struct iio_chan_spec sdp500_channels[] = {
-> +    {
-> +        .type = IIO_PRESSURE,
-> +        .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +    },
-> +};
-> +
-> +static int sdp500_read_raw(struct iio_dev *indio_dev,
-> +              struct iio_chan_spec const *chan,
-> +              int *val, int *val2, long mask)
-> +{
-> +    int ret = -EINVAL;
-> +    u8 rxbuf[SDP500_READ_SIZE];
-> +    u8 rec_crc, calculated_crc;
-> +    s16 dec_value;
-> +    struct sdp500_data *data = iio_priv(indio_dev);
-> +
-> +    switch (mask) {
-> +    case IIO_CHAN_INFO_PROCESSED:
-> +        sdp500_xfer(data, NULL, 0, rxbuf, SDP500_READ_SIZE, indio_dev);
-> +        rec_crc = rxbuf[2];
-> +        calculated_crc = calculate_crc8(rxbuf, SDP500_READ_SIZE - 1,
-> +                        SDP500_CRC8_POLYNOMIAL);
-> +        if (rec_crc != calculated_crc) {
-> +            sdp500_err(indio_dev, "calculated crc = 0x%.2X but
-> received 0x%.2X",
-> +                calculated_crc, rec_crc);
-
-Your patchset is corrupted.
-
-> +            return -EIO;
-> +        }
-> +
-> +        dec_value = ((rxbuf[0] << 8) & 0xFF00) | rxbuf[1];
-> +        sdp500_dbg(indio_dev, "dec value = %d", dec_value);
-> +
-> +        *val = dec_value;
-> +        *val2 = SDP500_SCALE_FACTOR;
-> +        ret = IIO_VAL_FRACTIONAL;
-> +        break;
-> +    }
-> +    return ret;
-> +}
-> +
-> +static const struct iio_info sdp500_info = {
-> +    .read_raw = &sdp500_read_raw,
-> +};
-> +
-> +static int sdp500_probe(struct i2c_client *client)
-> +{
-> +    struct iio_dev *indio_dev;
-> +    struct sdp500_data *data;
-> +    struct device *dev = &client->dev;
-> +    int ret;
-> +
-> +    indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +    if (!indio_dev) {
-> +        dev_err(dev->parent, "Failed to allocate iio device\n");
-
-No printing on ENOMEM. Run coccinelle/coccicheck on your patchset. There
-is no code in kernel doing this, so please take existing code as base
-for your driver, instead of upstreaming ancient out-of-tree poor code.
-
-> +        return -ENOMEM;
-> +    }
-> +
-> +    i2c_set_clientdata(client, indio_dev);
-> +
-> +    data = iio_priv(indio_dev);
-> +    data->dev = dev;
-> +
-> +    indio_dev->dev.parent = dev;
-> +    indio_dev->name = client->name;
-> +    indio_dev->channels = sdp500_channels;
-> +    indio_dev->info = &sdp500_info;
-> +    indio_dev->modes = INDIO_DIRECT_MODE;
-> +    indio_dev->num_channels = ARRAY_SIZE(sdp500_channels);
-> +
-> +    ret = sdp500_start_measurement(data, indio_dev);
-> +    if (ret) {
-> +        sdp500_err(indio_dev, "Failed to start measurement");
-
-You must use dev_err, not own print methods.
-
-> +        return ret;
-> +    }
-> +
-> +    ret = iio_device_register(indio_dev);
-
-Why not devm?
-
-> +    if (ret < 0) {
-> +        sdp500_err(indio_dev, "Failed to register indio_dev");
-
-dev_err
-
-> +        return ret;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static const struct i2c_device_id sdp500_id[] = {
-> +    { "sdp500" },
-> +    { },
-> +};
-> +MODULE_DEVICE_TABLE(i2c, sdp500_id);
-> +
-> +static void sdp500_remove(struct i2c_client *client)
-> +{
-> +    struct iio_dev *indio_dev = dev_get_drvdata(&client->dev);
-> +
-> +    iio_device_unregister(indio_dev);
-> +}
-> +
-> +static const struct of_device_id sdp500_of_match[] = {
-> +    { .compatible = "sensirion,sdp500" },
-> +    { }
-> +};
-> +MODULE_DEVICE_TABLE(of, sdp500_of_match);
-> +
-> +static struct i2c_driver sdp500_driver = {
-> +    .driver = {
-> +        .name    = "sensirion,sdp500",
-> +        .of_match_table = sdp500_of_match,
-> +    },
-> +    .probe        = sdp500_probe,
-> +    .remove        = sdp500_remove,
-
-Some random wrapping here..
 
 Best regards,
 Krzysztof

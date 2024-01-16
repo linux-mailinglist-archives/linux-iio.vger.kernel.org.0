@@ -1,64 +1,65 @@
-Return-Path: <linux-iio+bounces-1711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1712-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8230082F196
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 16:32:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A5882F1D9
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 16:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA8D28318D
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 15:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 024301C23642
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jan 2024 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639AC1C298;
-	Tue, 16 Jan 2024 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB7C1C691;
+	Tue, 16 Jan 2024 15:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LaWfGwwX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="W+thR5h9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A11CA88
-	for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 15:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401631C68F
+	for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-556c3f0d6c5so12161267a12.2
-        for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 07:31:58 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5578485fc0eso9270813a12.1
+        for <linux-iio@vger.kernel.org>; Tue, 16 Jan 2024 07:50:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705419117; x=1706023917; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RRqh4IdEntOv7DoUtgbTz4JUfgL7oZgBjoCKT5NDl1E=;
-        b=LaWfGwwXpfBW6trIxvjEzmo5yXbop5/RY/oYvJb52Qc0/65dMzrlR/FXaLV3aF0WOw
-         Zc0eLp+CEtcKQ9+ph9Div4KSv21K/jvb2ZIn0/E4LrjTFq/2eIIx8WmVa21kIlGrvADw
-         SwpFQUkS+aqQGzXgKGQiftcsl/dSzJnuxEaMMWXTTHbO9RDIInbkTgGL/hlYCMWJVNYS
-         WHX7wvPW/5KEjYzc66r6xijpE4QtBcp3xV8NzUwmTbj2SvuVmFMHHiUpT2zBdMPQd1yb
-         F7ILpdg4Pf9oeyiS0ZCN0NMkJ0zq50HnM8VM+khlKGOivcwFpOFjUqVOKFgyDt7wnNz6
-         Pkpw==
+        d=linaro.org; s=google; t=1705420237; x=1706025037; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9fj5lq6WLox3RxjS6VLyZoS1TJDfe/9L/a0d/uRsoK8=;
+        b=W+thR5h9caAfKbl+/kNjBeLtP8cspHTVwwI5aUp7ScrKxAifo2UOU9Q0St/13ffx9J
+         DIiHvvdQ+zu/Im6EptpxkbB8bd7NXDOO/veKqFBwU4/lAcKVEv5x/RQAnA4vz4hroaon
+         HUGVnsgDexSUiui+r49zUQf3Nvp61iDjhkN54vb2ulsg5zmUcp4xW1Pi2Gf/QpVJPsa5
+         9LT0pz/ZSlU6IeDTChv3zD4BdbCOTC6Cz1B4DI3fkb9kgDu4MaCvRbxVUZRKPrNCI/F0
+         og7zCeMpyEHdQ4GVy8rBJdCr9mIeofQVFn8NNMtgb7qRvEPC3qo8TYnPf1Wf3T8r2Omf
+         rchA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705419117; x=1706023917;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RRqh4IdEntOv7DoUtgbTz4JUfgL7oZgBjoCKT5NDl1E=;
-        b=bcOf1MQ00eq1ci2aT18ZWiQG/R/WXlHvb/kFhDOiGGr8kDMOARXoA9g1GtovEGche1
-         b4PUZcYpUH6A+JIa6mYfv9SjorfRaSXrOTPLs6xjFkgLLJvQ63iW7jyqvcj8toLikMP+
-         /KGYqequhh3JFuIWiio9Aety9ZrblriiwQXVOMYdBOUntUaTKxIKgRlBbTgmJ4/0VWA7
-         rHIGnY64d7Vp/linv65az2G0M1uv7Wz95ESm63sA/hQ8xbs28jnS7IA4cm6LBTUVJiSu
-         yPKz5to9RqBnZ/zpf1BvaIn1o1YqbAUmV28ucTyhvgG5wvMUz9aPtic03YNwV/eGV28A
-         a4ug==
-X-Gm-Message-State: AOJu0YyGUTObQNVjbdFw90LMJBSTTp2aam4rfVW2O4mPlu9adwMcXqvN
-	QuhC3yBVD5HNQWdDPj8JoPmn68aCGdGrHA==
-X-Google-Smtp-Source: AGHT+IElLbvQmBpQVCdY5tQvzZF1UiWwnDYStbM5qGN8w2/n7VediI4AW804hO642g7R65eQzSi0Qg==
-X-Received: by 2002:a17:906:615:b0:a2c:8872:60d4 with SMTP id s21-20020a170906061500b00a2c887260d4mr2582801ejb.22.1705419116767;
-        Tue, 16 Jan 2024 07:31:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705420237; x=1706025037;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9fj5lq6WLox3RxjS6VLyZoS1TJDfe/9L/a0d/uRsoK8=;
+        b=cEIQBj+zqHC6Z0N8OXEgTEvcHy7HE7pRw7K5ftVRUUaWX8fMt+0qx+UxqU1aI1KPu8
+         vK7EFav+Y6/v5Y/QZ+xV+rbrI3a2/ilIXJTi7hqvCtReMPUSNVaPOQlqjnSVw8sSui+C
+         Pr9jhrj6Am6YkZwB06Gy9l9CovJ5aUjFnHD2zJjPGHhvJdylhiCRXUFpZkyibAadCm7z
+         VeZza/Hb1BybhsoQ+SVpZXUpTej7i/2Mlk/WNwW0RC3LURnFjjssWbbflK/7lcrtpskO
+         GigZ2x+I5IFCt3+IHsQgCZg35eh88eo0dqo4o+ji1lXX6D7gM/SFL1fpy9M2F54JoQgU
+         PGDg==
+X-Gm-Message-State: AOJu0YyB+o+TFOZ7+5vOZNPVZy3W0FgoBRqCzhlFc63yib02oqQp7LXs
+	SpCxtSn8BCcxIEsn2b1EmY6Fbn7gkstOcw==
+X-Google-Smtp-Source: AGHT+IEYuVSvF/JKexN7Ir4q8goD9uz1mF37OGXaoJOKP5GnOYSE90nyS5BLB9IfbXZ8CyKoRsL86w==
+X-Received: by 2002:aa7:c899:0:b0:558:e349:a0a7 with SMTP id p25-20020aa7c899000000b00558e349a0a7mr3599165eds.61.1705420237493;
+        Tue, 16 Jan 2024 07:50:37 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id qo11-20020a170907874b00b00a2ce46a27besm5078908ejc.190.2024.01.16.07.31.55
+        by smtp.gmail.com with ESMTPSA id fi13-20020a056402550d00b005578b816f20sm6781154edb.29.2024.01.16.07.50.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 07:31:56 -0800 (PST)
-Message-ID: <4eab426b-f654-4e10-9ffa-5b34016565fb@linaro.org>
-Date: Tue, 16 Jan 2024 16:31:55 +0100
+        Tue, 16 Jan 2024 07:50:37 -0800 (PST)
+Message-ID: <cc861718-d6d0-4ebe-8f75-8c2534d89557@linaro.org>
+Date: Tue, 16 Jan 2024 16:50:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,8 +67,9 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+Subject: Re: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Petar Stoykov <pd.pstoykov@gmail.com>, linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
  <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
@@ -76,8 +78,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
-References: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <CADFWO8HOb4zY7rPsCxWe2nvrzd8FjVNw0k8=8s4yB7C_BwS0ig@mail.gmail.com>
+ <fd8a8f09-7661-42c2-ace6-0a0e4845184d@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -122,81 +124,23 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
+In-Reply-To: <fd8a8f09-7661-42c2-ace6-0a0e4845184d@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/01/2024 16:24, Petar Stoykov wrote:
-> Sensirion SDP500 is a digital differential pressure sensor. It provides
-> a digital I2C output. Add devicetree bindings requiring the compatible
-> string and I2C slave address (reg).
+On 16/01/2024 16:30, Krzysztof Kozlowski wrote:
+>> +
+>> +static struct i2c_driver sdp500_driver = {
+>> +    .driver = {
+>> +        .name    = "sensirion,sdp500",
+>> +        .of_match_table = sdp500_of_match,
+>> +    },
+>> +    .probe        = sdp500_probe,
+>> +    .remove        = sdp500_remove,
 > 
-> Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-> ---
->  .../bindings/iio/pressure/sdp500.yaml         | 38 +++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> Some random wrapping here..
 
-Filename like compatible.
-
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> new file mode 100644
-> index 000000000000..af01ec7e3802
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> @@ -0,0 +1,38 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: sdp500/sdp510 pressure sensor with I2C bus interface
-> +
-> +maintainers:
-> +  - Petar Stoykov <pd.pstoykov@gmail.com>
-> +
-> +description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +  Pressure sensor from Sensirion with I2C bus interface.
-> +  There is no software difference between sdp500 and sdp510.
-> +
-> +properties:
-> +  compatible:
-> +    const: sensirion,sdp500
-> +
-
-No resources? No interrupts? No power supply or any pins? No even
-iio-cells? This looks incomplete.
-
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c3 {
-
-i2c {
-
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      sdp500@40 {
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-
+I meant: indentation before =.
 
 Best regards,
 Krzysztof

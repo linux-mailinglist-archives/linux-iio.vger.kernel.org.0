@@ -1,147 +1,147 @@
-Return-Path: <linux-iio+bounces-1738-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1739-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19183830BE3
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 18:27:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63D5830D72
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 20:47:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BABAB21D36
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 17:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50E652881EB
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 19:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCC722616;
-	Wed, 17 Jan 2024 17:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D7B249F9;
+	Wed, 17 Jan 2024 19:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VS0NoPUe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONWT1AeX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827DE21A0E;
-	Wed, 17 Jan 2024 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1530249E6;
+	Wed, 17 Jan 2024 19:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705512431; cv=none; b=ExG+0sIim9KNv3z3VT2SlYXz86H3PmR3xEvixJxLcQPoAHt0qf8kNyTtLc7EyIw0tw6BZ1J5JljpjxPTnMkAwpf2sh4lSQFT4LDD6r6+nU4KRxXQIXuyhxAwtsZ8n2G4+7TaUguy0Pr4QcaO8XPeADg/DhECgN9jszSotAWpvBQ=
+	t=1705520866; cv=none; b=pi6x60KFXS8SZ4oE/ix2+WKZ/iDMWe4lHX8sOyiuo6vSVPj2fvHvSn2Ytca2xeUvtRuvIZJIAUp5oShccpD0D658AZkEJTU4A0LJNOlzX8mCdZ0ryOrHrUs1uW8THTXFqqixWM94+1DPoLB4hQueieLW3+6p5y4fFikKgzR8ujs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705512431; c=relaxed/simple;
-	bh=5ln0JSCawXlnQqAUJkhfBzdwM60rMwxyLrmki/QtvDY=;
+	s=arc-20240116; t=1705520866; c=relaxed/simple;
+	bh=KX+tkWw26QcXxBlLrnie/0Q22kLhSDPAxk4r/KQ9zB4=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=CjKzbLBQDzc969BkM++7wJRUv7Z4ed8PIL7iOmw/lINCoGKdicTP/XgOl2h7l9PVSNIy0NbUR3dojOvbjlxAx88PcgedmJLo8OQ71hzcDLpRQV9Y6/PJ//lHBeTB5krNu13xstsoTZtIf6QlBaQ4pdts11dKGg5O/F0f6PxF5Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VS0NoPUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DADAC433F1;
-	Wed, 17 Jan 2024 17:27:10 +0000 (UTC)
+	 Content-Transfer-Encoding:In-Reply-To; b=VvekptHgj3CaxrFPJ/o1e+2t3emh1NE3m9596codeXXy465yuAMZu907S8UldDMwGm4VVB7Zwm+MYVnzNd8F2pOzFJ9BvluusGjGHmUfohcpWPYICPWfktLuX8YvqV9vfjK2Ehbs1uZ0+oqVqqWUz5o/rx3vwJ3FlfIb7eE6tfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONWT1AeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D44C433F1;
+	Wed, 17 Jan 2024 19:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705512430;
-	bh=5ln0JSCawXlnQqAUJkhfBzdwM60rMwxyLrmki/QtvDY=;
+	s=k20201202; t=1705520866;
+	bh=KX+tkWw26QcXxBlLrnie/0Q22kLhSDPAxk4r/KQ9zB4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VS0NoPUe5k3R2OET7/Gj/lnEIIFDv1nQlr34WWzXQsxDFAg9xYE2HTZKNBspRIVdf
-	 CHW7KrM+uqKm1JKnxlm0O/pLYlWboQWu5aaZINqhC4Ux+BMavfjdcEqzd0FDBwkism
-	 bMDnwfr/AzvW4Gb6mJmGK2moxSj5d4a++TpdbDjPCInT4Shq7sWWyx/KzefcdjxxDy
-	 vllnrYT4XzjsTBx8U6+mv/MVLxw9fg2YF02mDlHdq4gDlemoVj9hidLh/w3mfe1qmi
-	 RaOsTq8sAkZSy2CfOcBrtsVefspAjR3y3tw8FyiIyk3WcGD0ZGVrRqynV/VyTNRvKF
-	 +zI6Z0Z56a6lQ==
-Date: Wed, 17 Jan 2024 11:27:08 -0600
+	b=ONWT1AeXyp9b82CSeMjj9J5oxIzYexEkEfyY698/s9WbSU6yBzIITQJAYIsIQ1jiq
+	 a0no/MSjnENHLVYZWSIeb428fLmXYeXveYUlkViOpNi6CTTpC4L3HaVW5nFNHQIlEf
+	 4RoB8FjmNrJfAOehgsoHD9pdGMmssdV/rIi0ObL3B1/83BfFeHXyk0P2oJE18kRB59
+	 kCx13E8UV2xT1DiBR+eRpvuK12DPEMtbT+Lm24k2PgQCGOjh1RNtsYPP0YZ7fCN4Uy
+	 FOYQIZY1UUTPqlHxucvXxavDf6q0VyzVFqGqWgFNSf99wPcomncqaX7ok6ucIxQXh2
+	 oANh5EU41JstQ==
+Date: Wed, 17 Jan 2024 13:47:43 -0600
 From: Rob Herring <robh@kernel.org>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Petre Rodan <petre.rodan@subdimension.ro>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH 2/6] dt-bindings: iio: pressure: honeywell,hsc030pa.yaml
- add sleep-mode
-Message-ID: <20240117172708.GA2695411-robh@kernel.org>
-References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
- <20240110172306.31273-3-petre.rodan@subdimension.ro>
- <bc37f7d8-c43f-4751-9216-fc95f439b2f6@linaro.org>
- <ZaDqlmXJD6if1xK7@sunspire>
- <20240116173023.GA139792-robh@kernel.org>
- <20240117165001.00003046@Huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Sumera Priyadarsini <sylphrenadin@gmail.com>
+Subject: Re: [PATCH 2/4] of: unittest: Use __free(device_node)
+Message-ID: <20240117194743.GA2888190-robh@kernel.org>
+References: <20240114165358.119916-1-jic23@kernel.org>
+ <20240114165358.119916-3-jic23@kernel.org>
+ <CAL_Jsq+vsXgBYtj66NG+3eZM-9gGw4QkU-bpn+JprAmG+UWmTQ@mail.gmail.com>
+ <20240117170144.00004a43@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240117165001.00003046@Huawei.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240117170144.00004a43@Huawei.com>
 
-On Wed, Jan 17, 2024 at 04:50:01PM +0000, Jonathan Cameron wrote:
-> On Tue, 16 Jan 2024 11:30:23 -0600
+On Wed, Jan 17, 2024 at 05:01:44PM +0000, Jonathan Cameron wrote:
+> On Tue, 16 Jan 2024 12:26:49 -0600
 > Rob Herring <robh@kernel.org> wrote:
 > 
-> > On Fri, Jan 12, 2024 at 09:30:30AM +0200, Petre Rodan wrote:
-> > > 
-> > > Hello Krzysztof,
-> > > 
-> > > On Wed, Jan 10, 2024 at 09:48:34PM +0100, Krzysztof Kozlowski wrote:  
-> > > > On 10/01/2024 18:22, Petre Rodan wrote:  
-> > > > > Add sleep-mode property present in some custom chips.
-> > > > > 
-> > > > > This flag activates a special wakeup sequence prior to conversion.
-> > > > > 
-> > > > > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > > > > ---
-> > > > >  .../bindings/iio/pressure/honeywell,hsc030pa.yaml      | 10 ++++++++++
-> > > > >  1 file changed, 10 insertions(+)
-> > > > > 
-> > > > > diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> > > > > index 89977b9f01cf..350da1d6991b 100644
-> > > > > --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-> > > > > @@ -86,6 +86,15 @@ properties:
-> > > > >        Maximum pressure value the sensor can measure in pascal.
-> > > > >        To be specified only if honeywell,pressure-triplet is set to "NA".
-> > > > > 
-> > > > > +  honeywell,sleep-mode:  
-> > > > 
-> > > > "Sleep mode" naming suggests there are choices, like mode foo and mode
-> > > > bar. Probably you want something like "sleep-between-measurements" or
-> > > > something matching how does it work.  
-> > > 
-> > > "sleep mode" is the terminology used by Honeywell and it defines a chip capability.
-> > > it is present in the HSC/SSC and ABP series of ICs.
-> > > 
-> > > other such options (capabilities) include temperature output in the ABP series.
-> > > 
-> > > the action the driver needs to perform if this option is present is to provide a
-> > > wake-up sequence before reading out the conversions.
-> > > 
-> > > now regarding a rename of this property, I would vote to leave it as is - for the
-> > > users to have a 1:1 equivalence of terms between the driver and the datasheet.
-> > > 
-> > > I say that because for instance in circuit design when a part symbol and
-> > > footprint is drawn based on a datasheet it is recommended to keep the same pin
-> > > notations and the same block diagram as in the datasheet, precisely for this 1:1
-> > > equivalence, so there is no uncertainty for the end-user.  
+> > On Sun, Jan 14, 2024 at 10:54 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > A simple example of the utility of this autocleanup approach to
+> > > handling of_node_put()
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  drivers/of/unittest.c | 10 +++-------
+> > >  1 file changed, 3 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+> > > index e9e90e96600e..b6d9edb831f0 100644
+> > > --- a/drivers/of/unittest.c
+> > > +++ b/drivers/of/unittest.c
+> > > @@ -233,27 +233,23 @@ static void __init of_unittest_dynamic(void)
+> > >
+> > >  static int __init of_unittest_check_node_linkage(struct device_node *np)
+> > >  {
+> > > -       struct device_node *child;
+> > > +       struct device_node *child __free(device_node) = NULL;  
 > > 
-> > At least add a '-en' suffix so it is clear this property enables the 
-> > mode. We have both flavors (enables and disables). 
-> > 
-> > Low power modes between samples is pretty common on these devices. We 
-> > should consider if this should be a common property. Jonathan?
+> > In another thread[1], it seems that initializing to NULL is bad form
+> > according to the chief penguin. But as this is a refcounted pointer
+> > rather than an allocation, IDK?
 > 
-> Normally it's a controllable things so we make it dependent on userspace
-> interaction (runtime-pm or whether buffered capture is enabled).
-> Policy thing so not appropriate in DT.
-> 
-> Here it's different because it's a particular device variant that must work in this
-> fashion. Other device variants don't support it at all.
-> 
-> If it weren't for the obscene number of variants this would normally be
-> derived from the compatible rather than being in DT at all.
-> 
-> So it's odd and I don't think appropriate for a common property.
+> I'm not sure the argument applies here. My understanding is it's not
+> really about the = NULL, but more about where the __free(device_node) is.
+> The ordering of that cleanup wrt to other similar clean up is to do it
+> in reverse order of declaration and in some cases that might cause trouble.
 
-All good details missing from the description and commit msg. Given 
-that, I retract my suggestion to use '-en' as it not a case of enabling 
-the feature. Probably worth just keeping the name as-is than discussing 
-further.
+Rereading Linus' reply again, I think it is more that you see how 
+something is freed right where it is allocated, and the way to do that 
+is the allocation and declaration are together.
+
+> Here, the only way we could ensure the allocation was done at the right
+> point and we didn't have that __free before it was set, would be to add
+> variants of for_each_child_of_node() etc that did something like
+> 
+> #define for_each_child_of_node_scoped(parent, child) \
+
+Note that you don't need child here except to define the name of child. 
+Otherwise, the variable name you need for the loop is implicit. OTOH, 
+defining a name which has no type defined anywhere in the user function 
+isn't great for readability either.
+
+WRT the whole renaming, it might be better to keep 'scoped' in the name 
+so that it is obvious how child needs to be handled. Or is the compiler 
+smart enough to catch any case of doing it wrong?
+
+> 	for (struct device_node *child __free(device_node) = \
+> 	       of_get_next_child(parent, NULL); \
+>              child != NULL; \
+> 	     child = of_get_next_child(parent, child))
+> 
+> So that the child variable doesn't exist at all outside of the scope
+> of the loop.
+> 
+> I thought about proposing that style of solution but it felt more invasive
+> than a simple __free() annotation.  I don't mind going that way though
+> if you prefer it.
+
+My only preference currently is to not get yelled at. :)
+
+> Alternative is just to make sure the struct device_node * is always
+> declared just before the for loop and not bother setting it to NULL
+> (which is pointless anyway - it just felt fragile to not do so!)
+
+Would the compiler know to avoid invoking __free if exiting before the 
+variable is set?
 
 Rob
 

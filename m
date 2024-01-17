@@ -1,142 +1,194 @@
-Return-Path: <linux-iio+bounces-1732-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1733-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3396B83069F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 14:08:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E89F830B51
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 17:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 640731C22ECE
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 13:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD32E1F2BDD6
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B5C1EB40;
-	Wed, 17 Jan 2024 13:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A763225DD;
+	Wed, 17 Jan 2024 16:37:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B131EB38
-	for <linux-iio@vger.kernel.org>; Wed, 17 Jan 2024 13:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D230F225DC;
+	Wed, 17 Jan 2024 16:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705496886; cv=none; b=oJQM+4STu00z6ubV2q+DM1+zBW95myu0/HnFBx6n8Zsm6ZTvlTo8lVBoZ3aLwlH+nUTUIfNLFHHqDpNd1I/qpf3YmvhfB2EjhRvjGpYnNiXYR/dFCmaDXlR4+hdeKjm27zglgAECwpci1X8hHLVuWqpsAVW9xhivqc8h9lYdQ54=
+	t=1705509461; cv=none; b=k9af4V0jGTTCyXH/sP07hWibvhoQOPMrAktbzrWb9y2MpBDZyCSsYjU99libZqX7nvy29OOQfr5021Tmj7jLI7AK5HW0frD1kGOolpbhC7QXq8OfpHRA4RRVpugnPR6ccvicy/QUHU1D5tsScN66GkFKeg6n3BHiK3xL2vG9aLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705496886; c=relaxed/simple;
-	bh=BVuuhLDo707JKOt+bdBwqZ6OPflzJFQ/eolM0xVT4H0=;
-	h=Received:Received:Received:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-ADIRuleOP-NewSCL:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=aSCyglIp1Qq2cBTtYkauSKnPEHQ0y+34Ork/AoOih8v3gs3uJZmhKFVi9qo1ech7cZu5Hd3LJPppG4vk1sjjft5+WRRCNzQy5sryJBWcHpTpA7d0I0Ncg0honm712G9TZQ4A6Zg41vqImBzPhUuZYAdGTCG6GV6pfDvQ+acs2jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40H8JtTO018977;
-	Wed, 17 Jan 2024 08:07:52 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3vpb9mgxr8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jan 2024 08:07:51 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 40HD7olA032887
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 17 Jan 2024 08:07:50 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 17 Jan
- 2024 08:07:49 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 17 Jan 2024 08:07:49 -0500
-Received: from [127.0.0.1] ([10.44.3.50])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40HD7ZCm030917;
-	Wed, 17 Jan 2024 08:07:41 -0500
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Wed, 17 Jan 2024 14:10:51 +0100
-Subject: [PATCH 3/3] iio: imu: adis16480: make use of
- irq_get_trigger_type()
+	s=arc-20240116; t=1705509461; c=relaxed/simple;
+	bh=pl8tjrmKOS5lUY6LjsQDjtwjBq2zjZttjuXZvCOf3I0=;
+	h=Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 In-Reply-To:References:Organization:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy; b=R9vCEEe5DyJE6i+lkbFLUDwS3rV83AnFF6T2EKgfLek83EahOalJZntWuLS7CkVovD1p6qzme0lE26WgWxZkuDF71X3bLwYDAH7iR1Y0qi03/arE/LmMM/PVEEY39jEQSvyjQ68d8TSN4MYjU3pgLeVauYf98h2QjveeA2aoJlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TFWgX6NMqz6J9bQ;
+	Thu, 18 Jan 2024 00:34:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 37BE2140AA7;
+	Thu, 18 Jan 2024 00:37:29 +0800 (CST)
+Received: from localhost (10.48.153.213) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 17 Jan
+ 2024 16:37:28 +0000
+Date: Wed, 17 Jan 2024 16:37:25 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ceclan Dumitru <mitrutzceclan@gmail.com>
+CC: David Lechner <dlechner@baylibre.com>, <linus.walleij@linaro.org>,
+	<brgl@bgdev.pl>, <andy@kernel.org>, <linux-gpio@vger.kernel.org>, "Lars-Peter
+ Clausen" <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>, Andy Shevchenko
+	<andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
+	<chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
+ =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
+	<mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
+	<hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
+Message-ID: <20240117163725.00003981@Huawei.com>
+In-Reply-To: <18c239af-71ee-49d8-878e-e1770c3e2d46@gmail.com>
+References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
+	<CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
+	<20240116163003.0000039d@Huawei.com>
+	<18c239af-71ee-49d8-878e-e1770c3e2d46@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240117-adis-improv-v1-3-7f90e9fad200@analog.com>
-References: <20240117-adis-improv-v1-0-7f90e9fad200@analog.com>
-In-Reply-To: <20240117-adis-improv-v1-0-7f90e9fad200@analog.com>
-To: <linux-iio@vger.kernel.org>
-CC: Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705497049; l=1496;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=BVuuhLDo707JKOt+bdBwqZ6OPflzJFQ/eolM0xVT4H0=;
- b=GE3x8ciebOYIQlKi5vP+jjln85ujBMmIMD9s7kf80gERjmjOcP8FaXOLgAG8AQBoLXYzC7VYC
- 7/kBqbPF0vNBSojRHg8roz8tYOiw2aSQHYYvyP2+pTUkS8F99kOGOBL
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: iTJwkcfoNhjoy-KJ5CQA9sObNoKAUDCC
-X-Proofpoint-ORIG-GUID: iTJwkcfoNhjoy-KJ5CQA9sObNoKAUDCC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-17_07,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- adultscore=0 mlxlogscore=738 priorityscore=1501 impostorscore=0
- spamscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401170094
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-There's no need to call both irq_get_irq_data() and
-irqd_get_trigger_type() as we already have an helper for that. This
-allows for code simplification.
+On Wed, 17 Jan 2024 14:43:21 +0200
+Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/imu/adis16480.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+> On 1/16/24 18:30, Jonathan Cameron wrote:
+> > On Mon, 15 Jan 2024 15:53:39 -0600
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >  =20
+> >> On Wed, Dec 20, 2023 at 4:48=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@=
+gmail.com> wrote: =20
+>=20
+> ...
+>=20
+> >> Sorry for the late reply as I see this has been applied already but...=
+ =20
+> > We have plenty of time.  Rather than dropping the ad7173 from my tree,
+> > I'd prefer to see additional patches on top to tidy up whatever
+> > makes sense from David's feedback.
+> >  =20
+> Alright then.
+>=20
+> ...
+>=20
+> >>
+> >> As discussed in v8 [1] it is not clear what signal this is. Based on
+> >> that discussion, I'm assuming the RDY signal, but how would bindings
+> >> consumers know that without a description since it is not the only
+> >> digital output signal of the chip? And why the ERROR signal was
+> >> omitted here was never addressed AFAICT.
+> >>
+> >> [1]: https://lore.kernel.org/linux-iio/20231217135007.3e5d959a@jic23-h=
+uawei/ =20
+> >=20
+> > I'd forgotten about that.  Adding interrupt-names would be the easiest
+> > way to resolve this.
+> >  =20
+>=20
+> I'll add this, but my curiosity for the long run is: How should
+> differences between what bindings include and what drivers support
+> should be managed and documented?
 
-diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-index fe520194a837..b40a55bba30c 100644
---- a/drivers/iio/imu/adis16480.c
-+++ b/drivers/iio/imu/adis16480.c
-@@ -1246,18 +1246,11 @@ static int adis16480_config_irq_pin(struct adis16480 *st)
- {
- 	struct device *dev = &st->adis.spi->dev;
- 	struct fwnode_handle *fwnode = dev_fwnode(dev);
--	struct irq_data *desc;
- 	enum adis16480_int_pin pin;
- 	unsigned int irq_type;
- 	uint16_t val;
- 	int i, irq = 0;
- 
--	desc = irq_get_irq_data(st->adis.spi->irq);
--	if (!desc) {
--		dev_err(dev, "Could not find IRQ %d\n", irq);
--		return -EINVAL;
--	}
--
- 	/* Disable data ready since the default after reset is on */
- 	val = ADIS16480_DRDY_EN(0);
- 
-@@ -1285,7 +1278,7 @@ static int adis16480_config_irq_pin(struct adis16480 *st)
- 	 * configured as positive or negative, corresponding to
- 	 * IRQ_TYPE_EDGE_RISING or IRQ_TYPE_EDGE_FALLING respectively.
- 	 */
--	irq_type = irqd_get_trigger_type(desc);
-+	irq_type = irq_get_trigger_type(st->adis.spi->irq);
- 	if (irq_type == IRQ_TYPE_EDGE_RISING) { /* Default */
- 		val |= ADIS16480_DRDY_POL(1);
- 	} else if (irq_type == IRQ_TYPE_EDGE_FALLING) {
+Drivers almost always support a subset of functionality of the device.
+This isn't much different.  The driver 'should' use interrupt-names
+but it doesn't need to support all the things that the binding says should
+be in there.
 
--- 
-2.43.0
+Sometimes we document things in a driver, but there isn't any obligation to
+do so and those docs are often out of date.
+
+>=20
+> ...
+>=20
+> >>> +
+> >>> +  refin-supply:
+> >>> +    description: external reference supply, can be used as reference=
+ for conversion.   =20
+> >>
+> >> If I'm understanding correctly, this represents both voltage inputs
+> >> REF+ and REF-, correct? The datasheet says "Reference Input Negative
+> >> Terminal. REF=E2=88=92 can span from AVSS to AVDD1 =E2=88=92 1 V". It =
+seems like they
+> >> should be separate supplies in case REF- is non-zero. Otherwise, how
+> >> can we know what voltage it is? (same comment applies to refin2.) =20
+> >=20
+> > Agreed, in this case these are directly used as references (we recently
+> > had another driver that could take a wide range of negative and positive
+> > inputs but in that case an internal reference was generated that didn't
+> > made it not matter exactly what was being supplied.  Not true here thou=
+gh!
+> >  =20
+> Wouldn't it be alright to specify that the voltage specified here should
+> be the actual difference (REF+)-(REF-)?
+
+How do you establish the offset to apply to single ended channels if you do=
+n't
+know the value of REF- (relative to local ground)?
+
+So no - as the device supports single ended channels the difference isn't
+enough information.  It would probably be fine to do as you say if it
+were a device with only differential channels where all that matters is
+the scaling.
+
+>=20
+> ...
+>=20
+> >>> +required:
+> >>> +  - compatible
+> >>> +  - reg
+> >>> +  - interrupts   =20
+> >>
+> >> Why are interrupts required? What if the pin is not connected?
+> >> =20
+> > Ah. I clearly failed to review this one closely enough.
+> >=20
+> > Absolutely agree that interrupts should never be required.
+> > No need for the driver to work if they aren't, but the binding
+> > shouldn't require them!
+> >=20
+> > Jonathan
+> >  =20
+>=20
+> To make sure that I understand, the driver will not probe without
+> interrupts, but it is alright to make then optional in the bindings?
+
+Yes - it is fine for a driver to only support a subset of functionality
+and fail to probe if that subset isn't what the hardware enables.
+
+>=20
+> This is in the case that someone will want to use this binding and
+> implement reading with polling?
+
+Yes.
+
+J
 
 

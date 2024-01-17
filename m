@@ -1,318 +1,123 @@
-Return-Path: <linux-iio+bounces-1728-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1730-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF01F830619
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 13:52:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF2483069C
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 14:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6980E1F25B7F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 12:52:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C2C287E5A
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 13:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA8B20322;
-	Wed, 17 Jan 2024 12:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnPW4ZHB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E858C1EB36;
+	Wed, 17 Jan 2024 13:08:04 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3078C200A6;
-	Wed, 17 Jan 2024 12:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856AB1EB2B
+	for <linux-iio@vger.kernel.org>; Wed, 17 Jan 2024 13:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705495901; cv=none; b=WKJQziRUH073/4dLZsMdWYEL220Fh76EA8LkVGb0aTZDcRyU64j8o2T+OKJSG6bPPCe6GE5xpd3vCAUQrEzR7zmObHR2k6ymuWG4DUw4/0q7OZgtIfzj0E3/DjXD8s7QZk5AvhvLku2LM0j5laZyC1nLd3mW7/4mdO+Os2sd76I=
+	t=1705496884; cv=none; b=hYebg7tIuUg6bfsBsPi+IRFshEziWMz0c/BvLAYuSDYVkCPIhf1D22JNBzqjMDDwyzaq7W0n+BKsEZNzB4ENZDhb9eVtNMuupnxSfLVl2BdvhaNc/3i7yfQfD4RQeG78y9bIHHgntvBYdaxlllIXb6XYxnBUK6d3zCJoogSPSbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705495901; c=relaxed/simple;
-	bh=xXLlIP7osWnXSX7nf/88IxxEVdS3vDPA432NiT+QTnM=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding; b=WBJYAitzpeIK64lAJ1tXUE875MjTjqp/rnd3+5R0ZNgYlvlRY1JbQLB6OfqA8q8DJNHYG1UBYCqu1ovbCZX/xx8So4kTizKNPfnaQGsLr0luZ6/HQr+kOmxfdbUKc1i5+0uloGUl8OGJM2Fssj8mqVnKyFAcH67lMSv+5+ooaU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnPW4ZHB; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-557dcb0f870so10928181a12.2;
-        Wed, 17 Jan 2024 04:51:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705495898; x=1706100698; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X/bvLckPY/B6iV2JgYPRYCAJR1OfXTgLpwfT8b63pic=;
-        b=SnPW4ZHBDHYVBEH40lGEU8f8+ii8sjrEbrYfufUV0B+U/oLPkDtBjYRnIZ9PKP2itc
-         OsETXdxZhL543Wo/ioOL4zYrCXY7PY3ADJlmGIcbGESHZCFJxYqfggUHnkfVNulbP/1A
-         FCi1wr4DNZhvM7V2tFg7Jk0uN+NotRExRMHzoZulhA3+uAd5LETfK1M+0nIqT0EHpr0+
-         rKbYKhU1scNyqse0U7of9zTCMTxilq+v8laFItKbpuj2c6dzlL+6GGByFUxc0+Y3NUun
-         ToMvAefYGRWTKyCyuwHtUL/0W5CvUbh9CVNDbwBsHGbaGgyeQuR/CQJfHX8S82B7p1J1
-         yOgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705495898; x=1706100698;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X/bvLckPY/B6iV2JgYPRYCAJR1OfXTgLpwfT8b63pic=;
-        b=dvd9GeIgTk5tTZHmiUFSa/R94HDyuptDpW8xAHb2FeHdzdT+7EsZgo2EDQkNFz5SzH
-         LpFXR5DUTRpWLeUXPLz/HOWYc/wkem1BYnC7zX6lUQsVKoN/locLT5TC5DV9tLm1AlEh
-         Vw0cxzBT4yh81Oc9YbDsYRQUZjnNhfdbleXBrXCC7dyvYiAm7xZI9oNTM3Rm6+dnWmG+
-         iWhHFyFV2L1o+8rl2fk8+XWm002ieVqH8qtvZeCJ1NJb7LcQ2Aa+zFEwyNfz2gPMvWVN
-         qk7f3iZboAvlt5DVeXz2UZ69Foyih+N/yDKEqbk3FwbmOpRSNqClMyDIDfUpXtj5wgN9
-         tG5g==
-X-Gm-Message-State: AOJu0Yx/WbcAK1gWgkgipI4Qo5nzaoHNCkde0NyA/9Cj4EPlqkCbwbRa
-	M5d3Cq+0IkKW6XgN2dyeDNM=
-X-Google-Smtp-Source: AGHT+IHzcBZTFl7/R4qH13jyO+4HXHx+ZcDfvAqmcfLITq5pCz36dHkbFJlw8S61Cf3tHls37k3nhw==
-X-Received: by 2002:a17:906:6a12:b0:a2b:1a20:e634 with SMTP id qw18-20020a1709066a1200b00a2b1a20e634mr5226175ejc.11.1705495898408;
-        Wed, 17 Jan 2024 04:51:38 -0800 (PST)
-Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id t13-20020a17090616cd00b00a2ea45637desm1277247ejd.112.2024.01.17.04.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jan 2024 04:51:38 -0800 (PST)
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
-To: 
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>
-Subject: [PATCH v4 5/5] iio: amplifiers: hmc425a: add support for LTC6373 Instrumentation Amplifier
-Date: Wed, 17 Jan 2024 14:51:14 +0200
-Message-ID: <20240117125124.8326-6-mitrutzceclan@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240117125124.8326-1-mitrutzceclan@gmail.com>
-References: <20240117125124.8326-1-mitrutzceclan@gmail.com>
+	s=arc-20240116; t=1705496884; c=relaxed/simple;
+	bh=KPZSUGWf+IqIb2W9Qv0Gh2YhDQ1fqyiDABaPa0ogpEY=;
+	h=Received:Received:Received:Received:Received:Received:From:
+	 Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:To:CC:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-ADIRuleOP-NewSCL:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=AjkKpfVQe2oDWDXtNxpR3qEojwJEQ/RgQ3tUkZZeD6HIV1foOPN1H3D78re/dDldaqLCeck43Zk4AF85VJ4inCO+Fp1VJTrQlmVfijsmgyttY94v1R+tUwBuVfwM3c+7cYdTFsNBXEffY2t9biNLRPPHQNK6cGecgLv6u50IXr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40H9r6Ix016278;
+	Wed, 17 Jan 2024 08:07:50 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3vnm166q3x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jan 2024 08:07:50 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 40HD7m3T032879
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 17 Jan 2024 08:07:48 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 17 Jan
+ 2024 08:07:47 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 17 Jan 2024 08:07:47 -0500
+Received: from [127.0.0.1] ([10.44.3.50])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40HD7ZCj030917;
+	Wed, 17 Jan 2024 08:07:37 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH 0/3] iio: imu: adis: misc fixes/improvements
+Date: Wed, 17 Jan 2024 14:10:48 +0100
+Message-ID: <20240117-adis-improv-v1-0-7f90e9fad200@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANjRp2UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ0Nz3cSUzGLdzNyCovwyXUuTNEsjCzML48SkRCWgjoKi1LTMCrBp0bG
+ 1tQCcio0dXQAAAA==
+To: <linux-iio@vger.kernel.org>
+CC: Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen
+	<lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705497049; l=817;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=KPZSUGWf+IqIb2W9Qv0Gh2YhDQ1fqyiDABaPa0ogpEY=;
+ b=36kFCnMZxm6Hn3Kq/eH2I+g63UPQM6rvcnhdA33C744ngiTwuVirZkNwAiHiZty2q0CGRSmGR
+ g44TVmwlfYdCPinlLnr9YfGXvv/1jK9U5Ap2/E7By0iUXj4z0Ez0ZS3
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: Rvige4t1nreuMbdiXBuO1wY7RelJERU3
+X-Proofpoint-ORIG-GUID: Rvige4t1nreuMbdiXBuO1wY7RelJERU3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-17_07,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ malwarescore=0 clxscore=1015 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=444 phishscore=0 priorityscore=1501
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401170094
 
-This adds support for LTC6373 36 V Fully-Differential Programmable-Gain
-Instrumentation Amplifier with 25 pA Input Bias Current.
-The user can program the gain to one of seven available settings through
-a 3-bit parallel interface (A2 to A0).
+The first patch is for ensuring proper alignment for the sigma_delta
+buffers so they can be safely used in DMA context. I'm adding a fixes tag
+on it but the deal is the same as in the sigma_delta series.
 
-Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+The following patches are just about code simplification (no functional
+change intended).
+ 
+
 ---
- drivers/iio/amplifiers/hmc425a.c | 118 +++++++++++++++++++++++++++++--
- 1 file changed, 114 insertions(+), 4 deletions(-)
+Nuno Sa (3):
+      iio: imu: adis: ensure proper DMA alignment
+      iio: imu: adis16475: make use of irq_get_trigger_type()
+      iio: imu: adis16480: make use of irq_get_trigger_type()
 
-diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
-index b116b54e4206..e7f425677fd3 100644
---- a/drivers/iio/amplifiers/hmc425a.c
-+++ b/drivers/iio/amplifiers/hmc425a.c
-@@ -2,9 +2,10 @@
- /*
-  * HMC425A and similar Gain Amplifiers
-  *
-- * Copyright 2020 Analog Devices Inc.
-+ * Copyright 2020, 2023 Analog Devices Inc.
-  */
- 
-+#include <linux/bits.h>
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -20,10 +21,24 @@
- #include <linux/regulator/consumer.h>
- #include <linux/sysfs.h>
- 
-+/*
-+ * The LTC6373 amplifier supports configuring gain using GPIO's with the following
-+ *  values (OUTPUT_V / INPUT_V): 0(shutdown), 0.25, 0.5, 1, 2, 4, 8, 16
-+ *
-+ * Except for the shutdown value, all can be converted to dB using 20 * log10(x)
-+ * From here, it is observed that all values are multiples of the '2' gain setting,
-+ *  with the correspondent of 6.020dB.
-+ */
-+#define LTC6373_CONVERSION_CONSTANT	6020
-+#define LTC6373_MIN_GAIN_CODE		0x6
-+#define LTC6373_CONVERSION_MASK		GENMASK(2, 0)
-+#define LTC6373_SHUTDOWN		GENMASK(2, 0)
-+
- enum hmc425a_type {
- 	ID_HMC425A,
- 	ID_HMC540S,
--	ID_ADRF5740
-+	ID_ADRF5740,
-+	ID_LTC6373,
- };
- 
- struct hmc425a_chip_info {
-@@ -34,6 +49,8 @@ struct hmc425a_chip_info {
- 	int				gain_min;
- 	int				gain_max;
- 	int				default_gain;
-+	int				powerdown_val;
-+	bool				has_powerdown;
- };
- 
- struct hmc425a_state {
-@@ -42,6 +59,7 @@ struct hmc425a_state {
- 	struct				gpio_descs *gpios;
- 	enum				hmc425a_type type;
- 	u32				gain;
-+	bool				powerdown;
- };
- 
- static int hmc425a_write(struct iio_dev *indio_dev, u32 value)
-@@ -80,6 +98,17 @@ static int hmc425a_gain_dB_to_code(struct hmc425a_state *st, int val, int val2,
- 		temp = (abs(gain) / 2000) & 0xF;
- 		*code = temp & BIT(3) ? temp | BIT(2) : temp;
- 		return 0;
-+	case ID_LTC6373:
-+		if (st->powerdown)
-+			return -EPERM;
-+
-+		/* add half of the value for rounding */
-+		temp = LTC6373_CONVERSION_CONSTANT / 2;
-+		if (val < 0)
-+			temp *= -1;
-+		*code = ~((gain + temp) / LTC6373_CONVERSION_CONSTANT + 3)
-+			& LTC6373_CONVERSION_MASK;
-+		return 0;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -101,6 +130,12 @@ static int hmc425a_code_to_gain_dB(struct hmc425a_state *st, int *val, int *val2
- 		code = code & BIT(3) ? code & ~BIT(2) : code;
- 		gain = code * -2000;
- 		break;
-+	case ID_LTC6373:
-+		if (st->powerdown)
-+			return -EPERM;
-+		gain = ((~code & LTC6373_CONVERSION_MASK) - 3) *
-+		       LTC6373_CONVERSION_CONSTANT;
-+		break;
- 	}
- 
- 	*val = gain / 1000;
-@@ -174,6 +209,48 @@ static const struct iio_info hmc425a_info = {
- 	.write_raw_get_fmt = &hmc425a_write_raw_get_fmt,
- };
- 
-+static ssize_t ltc6373_read_powerdown(struct iio_dev *indio_dev,
-+				      uintptr_t private,
-+				      const struct iio_chan_spec *chan,
-+				      char *buf)
-+{
-+	struct hmc425a_state *st = iio_priv(indio_dev);
-+
-+	return sysfs_emit(buf, "%d\n", st->powerdown);
-+}
-+
-+static ssize_t ltc6373_write_powerdown(struct iio_dev *indio_dev,
-+				       uintptr_t private,
-+				       const struct iio_chan_spec *chan,
-+				       const char *buf,
-+				       size_t len)
-+{
-+	struct hmc425a_state *st = iio_priv(indio_dev);
-+	bool powerdown;
-+	int code, ret;
-+
-+	ret = kstrtobool(buf, &powerdown);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&st->lock);
-+	st->powerdown = powerdown;
-+	code = (powerdown) ? LTC6373_SHUTDOWN : st->gain;
-+	ret = hmc425a_write(indio_dev, code);
-+	mutex_unlock(&st->lock);
-+	return len;
-+}
-+
-+static const struct iio_chan_spec_ext_info ltc6373_ext_info[] = {
-+	{
-+		.name = "powerdown",
-+		.read = ltc6373_read_powerdown,
-+		.write = ltc6373_write_powerdown,
-+		.shared = IIO_SEPARATE,
-+	},
-+	{},
-+};
-+
- #define HMC425A_CHAN(_channel)						\
- {									\
- 	.type = IIO_VOLTAGE,						\
-@@ -183,10 +260,24 @@ static const struct iio_info hmc425a_info = {
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
- }
- 
-+#define LTC6373_CHAN(_channel)						\
-+{									\
-+	.type = IIO_VOLTAGE,						\
-+	.output = 1,							\
-+	.indexed = 1,							\
-+	.channel = _channel,						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
-+	.ext_info = ltc6373_ext_info,					\
-+}
-+
- static const struct iio_chan_spec hmc425a_channels[] = {
- 	HMC425A_CHAN(0),
- };
- 
-+static const struct iio_chan_spec ltc6373_channels[] = {
-+	LTC6373_CHAN(0),
-+};
-+
- static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
- 	[ID_HMC425A] = {
- 		.name = "hmc425a",
-@@ -215,6 +306,18 @@ static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
- 		.gain_max = 0,
- 		.default_gain = 0xF, /* set default gain -22.0db*/
- 	},
-+	[ID_LTC6373] = {
-+		.name = "ltc6373",
-+		.channels = ltc6373_channels,
-+		.num_channels = ARRAY_SIZE(ltc6373_channels),
-+		.num_gpios = 3,
-+		.gain_min = -12041, /* gain setting x0.25*/
-+		.gain_max = 24082,  /* gain setting x16  */
-+		.default_gain = LTC6373_MIN_GAIN_CODE,
-+		.powerdown_val = LTC6373_SHUTDOWN,
-+		.has_powerdown = true,
-+	},
-+
- };
- 
- /* Match table for of_platform binding */
-@@ -225,6 +328,8 @@ static const struct of_device_id hmc425a_of_match[] = {
- 	  .data = &hmc425a_chip_info_tbl[ID_HMC540S]},
- 	{ .compatible = "adi,adrf5740",
- 	  .data = &hmc425a_chip_info_tbl[ID_ADRF5740]},
-+	{ .compatible = "adi,ltc6373",
-+	  .data = &hmc425a_chip_info_tbl[ID_LTC6373]},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, hmc425a_of_match);
-@@ -270,8 +375,13 @@ static int hmc425a_probe(struct platform_device *pdev)
- 	indio_dev->info = &hmc425a_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	/* Set default gain */
--	hmc425a_write(indio_dev, st->gain);
-+	if (st->chip_info->has_powerdown) {
-+		st->powerdown = true;
-+		hmc425a_write(indio_dev, st->chip_info->powerdown_val);
-+	} else {
-+		/* Set default gain */
-+		hmc425a_write(indio_dev, st->gain);
-+	}
- 
- 	return devm_iio_device_register(&pdev->dev, indio_dev);
- }
--- 
-2.42.0
+ drivers/iio/imu/adis16475.c  | 8 +-------
+ drivers/iio/imu/adis16480.c  | 9 +--------
+ include/linux/iio/imu/adis.h | 3 ++-
+ 3 files changed, 4 insertions(+), 16 deletions(-)
+---
+base-commit: 801590b27bfbdb6721f85e2c3af70e627e52c8d5
+change-id: 20240117-adis-improv-94f928683aba
+--
+
+Thanks!
+- Nuno Sá
 
 

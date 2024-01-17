@@ -1,153 +1,135 @@
-Return-Path: <linux-iio+bounces-1718-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1719-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D442083054D
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 13:30:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33226830585
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 13:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87E951F26153
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 12:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C66311F25B51
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 12:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FA41DFF2;
-	Wed, 17 Jan 2024 12:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B+sLHDON"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99D91DFDE;
+	Wed, 17 Jan 2024 12:38:31 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91A323C;
-	Wed, 17 Jan 2024 12:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FFA1CD2D
+	for <linux-iio@vger.kernel.org>; Wed, 17 Jan 2024 12:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705494638; cv=none; b=B9UxzMhyeHI08UI2yWTfC/i46TIETW8qrPYtQsZ3/Yq+ABbeV58n3IUQcZX28iBSLb0hm2Tz0iogc2NiKxJF23wQcY2ZCEZPjM7GHKM1BNhucbk4cH88aJLiv0wfEjhzliajN9waVe0WWev+VoTbVFP7arjhpd83YntPdC+WoAc=
+	t=1705495111; cv=none; b=tKLA6FHseTdXev0dtHBh98CP3tJv5usr6NyloNUMbKp1G+7r+ex7visV/z0SLudp2KeWU4fp7MVHfNZvmFYBsTkFB/y5BBalzNq8FkmOz/g6oSBphFy/5LRrd/1Q+XQnDZyqtYGxGLUumAjF8uvnZG9cWTHg54VF8wCeaPULFBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705494638; c=relaxed/simple;
-	bh=k2YP41gfhRCO6Pvy0If05vh6BGXqT8zcyYOAEPetgsU=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=oNEE4/OrXWJy1Z6sZqbeM829hQcuJ7+QBGq0E0wqPj6sx4YClkONBpOA5WYfDHkKmy2qM50NE7Sun7Cpb6Z9n75+CDL8X5TM0T56IN8jSMmg0BMd8SLjLLeMEnC8T9210i0eZMfA8Nnnv2xf8aW11FCcGIiSwVvo6PsvKVXT0fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B+sLHDON; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-559b3ee02adso2009643a12.3;
-        Wed, 17 Jan 2024 04:30:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705494635; x=1706099435; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4J0XnTedaZDRNfe7OrgwwHqKIo+SD8ns4luWlHiIYi8=;
-        b=B+sLHDON6tv6Gyp3mQZbOcaYcOkXkyLykNwFLIXcbhMt+fW9F7+FWNKahMzBSJ7b7b
-         bcEtFiXobBltkoKcC3YKe13mp/TBhIBPk4XzwxchJMZgZ1nq8nGsYUEj9IxO8Hv7Tr5P
-         fcaNW/6fRJxEpVFD40vHOwdWnCnZjGqUF8S5Nlci/gMcVx85Du6FqK5UnkX1O3ZBu4VV
-         c83JkPrPp30tq4L9DPZL6baQS1WXWYByxYMPQgpvR5FH6uuej4y11Xd3twKa/Eo8wnDA
-         b/xMSBpFZBl+3P8QZN4RNkaVO5QbqEkpkgrrZaFqc3ah6ks/wU4uuNmd2OiMrwlP+bKq
-         LlSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705494635; x=1706099435;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4J0XnTedaZDRNfe7OrgwwHqKIo+SD8ns4luWlHiIYi8=;
-        b=qCC0iLrAtgqDN4gYyn89Z0ZdS2P+sinPL5K1Knni/mDJJgwPQ2FuNeg8V8FQ2S3Xwh
-         3CNwCS8rzQMUHasNgKZTvMtx76Y7LX2RNOdgJstYcCmVnVHscR5CAgvQXpshdC4e2+uN
-         4Wp3KVkfUrEJFv5VpJ0y9EtdKu7YnQ/Fj4owTxMoBALStisVjb2xiShNBDcIOTxxXaFu
-         J6MKBOmA1SJAEFSIYuhk8Wrm+lYLcn8HfXrDz9owPhKAJVVExHXCqx2Q6Dqzx8VzYL2O
-         1zrqp54wp6dOzfAxZY7/osCGSJMzO6++HDBf8WELG1cqSJaqi59OHD2LndNZdaWzRDTL
-         wHHw==
-X-Gm-Message-State: AOJu0YxSo1L59vloxa4+iCasZXn2sBEnFl8Oc3Se7IGx6qTR86N52Ufl
-	0szXBhm/oSxqxZHwiAm0XvM=
-X-Google-Smtp-Source: AGHT+IEpphXh8E9XIoChTO0OUusrPbDVBwCCh661wALpZ8tu8wuuo1wyWOdbUGa5FZomlx++15LQrg==
-X-Received: by 2002:a17:906:480d:b0:a2e:98f4:c695 with SMTP id w13-20020a170906480d00b00a2e98f4c695mr745720ejq.81.1705494635278;
-        Wed, 17 Jan 2024 04:30:35 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id gq26-20020a170906e25a00b00a2d5dc7f4c3sm4979968ejb.223.2024.01.17.04.30.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jan 2024 04:30:34 -0800 (PST)
-Message-ID: <38dcb8cc-5d16-41f2-845b-5c97cb691cb7@gmail.com>
-Date: Wed, 17 Jan 2024 14:30:33 +0200
+	s=arc-20240116; t=1705495111; c=relaxed/simple;
+	bh=jceYsI/9Jl2Iq55S3KWYXSC33Zm3Gn0yFh3qtCc1qjk=;
+	h=Received:Received:Received:Received:Received:Received:From:
+	 Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:To:CC:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-ADIRuleOP-NewSCL:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=Y/Be6N2R5Gg5jquiJuG5k5/KdCWwlhytAamdx6A1WUIi9KgBT0sPHldKLuFCglbYt1JqlP4z2TYyM5LMeEXyhubMzSq8lcOZWtaBMXroe80W7q0dBN2Y8XZbfZ14xKwTEHNgF7TlrAaOoRo2vcuHSqAFPpay5GPNp+xKTXr2Jlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40H8JXJA018298;
+	Wed, 17 Jan 2024 07:38:10 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3vpb9mgu22-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jan 2024 07:38:10 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 40HCc8Wc030398
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 17 Jan 2024 07:38:08 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 17 Jan
+ 2024 07:38:07 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 17 Jan 2024 07:38:07 -0500
+Received: from [127.0.0.1] ([10.44.3.50])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40HCbu0w023809;
+	Wed, 17 Jan 2024 07:37:58 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH 0/2] iio: adc: ad_sigma_delta: misc fixes/improvements
+Date: Wed, 17 Jan 2024 13:41:02 +0100
+Message-ID: <20240117-dev_sigma_delta_no_irq_flags-v1-0-db39261592cf@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
-Content-Language: en-US
-To: David Lechner <dlechner@baylibre.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
- <CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAN7Kp2UC/x3MUQrCMAwA0KuMfFtow4q4qwwJwWY1MDttRhHG7
+ m7x8/28A0yqisE0HFClqelWOsJlgMeTSxanqRvQ4+hDiC5JI9P8Ykqy7kxlI60fWlbO5nDEeL1
+ FQfYeevGusuj338/38/wBe2wuVG4AAAA=
+To: <linux-iio@vger.kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Renato
+ Lui Geh <renatogeh@gmail.com>,
+        Fabrizio Lamarque <fl.scratchpad@gmail.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705495270; l=1315;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=jceYsI/9Jl2Iq55S3KWYXSC33Zm3Gn0yFh3qtCc1qjk=;
+ b=VdYZWjk032/zzTMSYMIwC4/hbUxJghXITUpZ4lLGcrXMUgiCPffUSSdR9uuNJBoiZaAMecyO4
+ FNeRvi57vH5AXwyjnMkVwFEMcvhsh4IpYzC3UZQ3tL3S0wdBCskyRsH
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: yGeT_eIS-6sWOuTlJMOrQTpiz7axeATQ
+X-Proofpoint-ORIG-GUID: yGeT_eIS-6sWOuTlJMOrQTpiz7axeATQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-17_06,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=642 priorityscore=1501 impostorscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401170090
 
+The first patch is for ensuring proper alignment for the sigma_delta
+buffers so they can be safely used in DMA context. I'm adding a fixes tag
+on it but I'm not sure if there's any urgency in backporting it so up to
+you Jonathan :).
 
+The second patch is about allowing the IRQ trigger type to be specified
+in firmware.
 
-On 1/15/24 23:53, David Lechner wrote:
-> On Wed, Dec 20, 2023 at 4:48 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+The sigma delta ADCs have a fun history around this as they initially
+forced the IRQF_TRIGGER_LOW flag and then changed to IRQF_TRIGGER_FALLING
+as that is what is stated in the datasheet. However, as seen in [1], in
+some platforms we can verify that IRQF_TRIGGER_LOW is the one flag that
+makes things work.
 
-...
-> 
-> According to the timing diagram in the datasheet, SCLK is high during
-> idle, so don't we need `spi-cpol: true` here?
-> 
-> Likewise, data is valid on the trailing SCLK edge, so don't we need
-> `spi-cpha: true` here?
-> 
-> 
-V1 Rob Herring suggested that if device is not configurable, driver
-should set the spi mode
->> +  gpio-controller:
->> +    description: Marks the device node as a GPIO controller.
->> +
->> +  "#gpio-cells":
->> +    const: 2
->> +    description:
->> +      The first cell is the GPIO number and the second cell specifies
->> +      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
->> +
->> +  refin-supply:
->> +    description: external reference supply, can be used as reference for conversion.
-> 
-> If I'm understanding correctly, this represents both voltage inputs
-> REF+ and REF-, correct? The datasheet says "Reference Input Negative
-> Terminal. REF− can span from AVSS to AVDD1 − 1 V". It seems like they
-> should be separate supplies in case REF- is non-zero. Otherwise, how
-> can we know what voltage it is? (same comment applies to refin2.)
-> Yes, but in that case, the value of the referenced supply should reflect
-that and be equal to (REF+)-(REF-). I'll add to the description this.
+Apart from the above, and as seen in similar patches, respecting the
+firmware configuration is what makes sense. 
 
-...
+[1]: https://lore.kernel.org/all/CAPJMGm4GaSjD6bdqMwCr2EVZGenWzT-nCCf3BMRaD1TSfAabpA@mail.gmail.com/
 
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
-> 
-> Why are interrupts required? What if the pin is not connected?
-> 
-From the datasheet, the reading of the conversions seem to be only
-interrupt based: "As soon as the next conversion is complete,
-the data register is updated; therefore, the period in which to
-read the conversion is limited." this paragraph suggests to me that
-interrupts are required
+---
+Nuno Sa (2):
+      iio: adc: ad_sigma_delta: ensure proper DMA alignment
+      iio: adc: ad_sigma_delta: allow overwriting the IRQ flags
+
+ drivers/iio/adc/ad_sigma_delta.c       | 7 ++++++-
+ include/linux/iio/adc/ad_sigma_delta.h | 4 +++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+---
+base-commit: 801590b27bfbdb6721f85e2c3af70e627e52c8d5
+change-id: 20240115-dev_sigma_delta_no_irq_flags-2425795e2a00
+--
+
+Thanks!
+- Nuno Sá
+
 

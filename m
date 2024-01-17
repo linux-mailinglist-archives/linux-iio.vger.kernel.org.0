@@ -1,68 +1,64 @@
-Return-Path: <linux-iio+bounces-1734-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1735-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D892830B66
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 17:46:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEBA830B73
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 17:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50E6AB23E1A
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 16:46:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE381F21395
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 16:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3108224E1;
-	Wed, 17 Jan 2024 16:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34577224DC;
+	Wed, 17 Jan 2024 16:50:10 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2244D1E875;
-	Wed, 17 Jan 2024 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED551E863;
+	Wed, 17 Jan 2024 16:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705509975; cv=none; b=HSC+ky2qollMJwJdREFA8GwioLdtWlr6zFWPdo3Z0EZ+mWZKuqb6Wgfbo+uQ9jHRcdjPtQ+2x3iEVeFJ+qSRQdhaxtlxvyskGDI7wBw3zHFDBWvg8jhO+pCsmnC2DhqiwdkwfqvA1k+gtrn8QCerpSL8AlHu4h5KQ6cZ8RGeg3A=
+	t=1705510210; cv=none; b=DkST+sKnK8eeIIqVB9iqT9mi9M/l/7NHk5y2Ciufe6AGX5KUOxjfBNHPNWJuR9MGq6EIiYbAtzjx2nhaQi7b90nuOvA366N4uvokRBDdkoWaZ1iuih18SklzS7IjOhMKQy9VbJDfWMu+z5k7l/bOfHtPXpJFHOZppiaxPbShheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705509975; c=relaxed/simple;
-	bh=MuVgMtEj7P8JEJRpwYW+9iwfv2YqraUTBmEdptScHGw=;
+	s=arc-20240116; t=1705510210; c=relaxed/simple;
+	bh=9UwbAjBITZpX2+JqWcLCFrn2uFADUodbLwB5n/JYW1c=;
 	h=Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
 	 In-Reply-To:References:Organization:X-Mailer:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy; b=J257Zkl2zvO4mHIB4dLWqtLbgBhkr3nwLJC+tnTZmruI991UZcWsTI5NdmGVl9H22aI+tE7iOyH8gKXQFxMxQpfZrecLz6tDfDcNle7tDzMKZHZwH3cE/Q+5nIonvYT2sMN8ng74ygU5KUtrnCZ41+BRymQhkXlNhLIxd3SMLPU=
+	 X-ClientProxiedBy; b=tC1hx9hsS9z/EmYoqZ0dHHgW5FA4h7PNHyDRg62ulsyobWfjLforeBC0PFAZ/pKC/Sq1sjmyzBNdfat7kJ2jgeSEmnksQHsWWHcuFx0G7ZLJsN9TxGm3jbdgEcOHllVPu16Mb/zkx2E+RRcuMUWPN8UPRMiqsyHKwS5NPMdDILY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TFWsS1HWpz6K8s5;
-	Thu, 18 Jan 2024 00:43:24 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TFWyc0RKnz6K6M1;
+	Thu, 18 Jan 2024 00:47:52 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 911101408F9;
-	Thu, 18 Jan 2024 00:46:10 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 833D8140AA7;
+	Thu, 18 Jan 2024 00:50:04 +0800 (CST)
 Received: from localhost (10.48.153.213) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 17 Jan
- 2024 16:46:09 +0000
-Date: Wed, 17 Jan 2024 16:46:08 +0000
+ 2024 16:50:04 +0000
+Date: Wed, 17 Jan 2024 16:50:01 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-CC: David Lechner <dlechner@baylibre.com>, <linus.walleij@linaro.org>,
-	<brgl@bgdev.pl>, <andy@kernel.org>, <linux-gpio@vger.kernel.org>, "Lars-Peter
- Clausen" <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, Rob Herring
-	<robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>, Andy Shevchenko
-	<andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
-	<chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
- =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
-	<mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
-	<hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
-Message-ID: <20240117164608.00004dd0@Huawei.com>
-In-Reply-To: <38dcb8cc-5d16-41f2-845b-5c97cb691cb7@gmail.com>
-References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
-	<CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
-	<38dcb8cc-5d16-41f2-845b-5c97cb691cb7@gmail.com>
+To: Rob Herring <robh@kernel.org>
+CC: Petre Rodan <petre.rodan@subdimension.ro>, Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Jonathan
+ Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+	<conor+dt@kernel.org>
+Subject: Re: [PATCH 2/6] dt-bindings: iio: pressure: honeywell,hsc030pa.yaml
+ add sleep-mode
+Message-ID: <20240117165001.00003046@Huawei.com>
+In-Reply-To: <20240116173023.GA139792-robh@kernel.org>
+References: <20240110172306.31273-1-petre.rodan@subdimension.ro>
+	<20240110172306.31273-3-petre.rodan@subdimension.ro>
+	<bc37f7d8-c43f-4751-9216-fc95f439b2f6@linaro.org>
+	<ZaDqlmXJD6if1xK7@sunspire>
+	<20240116173023.GA139792-robh@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -71,84 +67,81 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 17 Jan 2024 14:30:33 +0200
-Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
+On Tue, 16 Jan 2024 11:30:23 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On 1/15/24 23:53, David Lechner wrote:
-> > On Wed, Dec 20, 2023 at 4:48=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@g=
-mail.com> wrote: =20
->=20
-> ...
-> >=20
-> > According to the timing diagram in the datasheet, SCLK is high during
-> > idle, so don't we need `spi-cpol: true` here?
-> >=20
-> > Likewise, data is valid on the trailing SCLK edge, so don't we need
-> > `spi-cpha: true` here?
-> >=20
-> >  =20
-> V1 Rob Herring suggested that if device is not configurable, driver
-> should set the spi mode
+> On Fri, Jan 12, 2024 at 09:30:30AM +0200, Petre Rodan wrote:
+> > 
+> > Hello Krzysztof,
+> > 
+> > On Wed, Jan 10, 2024 at 09:48:34PM +0100, Krzysztof Kozlowski wrote:  
+> > > On 10/01/2024 18:22, Petre Rodan wrote:  
+> > > > Add sleep-mode property present in some custom chips.
+> > > > 
+> > > > This flag activates a special wakeup sequence prior to conversion.
+> > > > 
+> > > > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> > > > ---
+> > > >  .../bindings/iio/pressure/honeywell,hsc030pa.yaml      | 10 ++++++++++
+> > > >  1 file changed, 10 insertions(+)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> > > > index 89977b9f01cf..350da1d6991b 100644
+> > > > --- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> > > > +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+> > > > @@ -86,6 +86,15 @@ properties:
+> > > >        Maximum pressure value the sensor can measure in pascal.
+> > > >        To be specified only if honeywell,pressure-triplet is set to "NA".
+> > > > 
+> > > > +  honeywell,sleep-mode:  
+> > > 
+> > > "Sleep mode" naming suggests there are choices, like mode foo and mode
+> > > bar. Probably you want something like "sleep-between-measurements" or
+> > > something matching how does it work.  
+> > 
+> > "sleep mode" is the terminology used by Honeywell and it defines a chip capability.
+> > it is present in the HSC/SSC and ABP series of ICs.
+> > 
+> > other such options (capabilities) include temperature output in the ABP series.
+> > 
+> > the action the driver needs to perform if this option is present is to provide a
+> > wake-up sequence before reading out the conversions.
+> > 
+> > now regarding a rename of this property, I would vote to leave it as is - for the
+> > users to have a 1:1 equivalence of terms between the driver and the datasheet.
+> > 
+> > I say that because for instance in circuit design when a part symbol and
+> > footprint is drawn based on a datasheet it is recommended to keep the same pin
+> > notations and the same block diagram as in the datasheet, precisely for this 1:1
+> > equivalence, so there is no uncertainty for the end-user.  
+> 
+> At least add a '-en' suffix so it is clear this property enables the 
+> mode. We have both flavors (enables and disables). 
+> 
+> Low power modes between samples is pretty common on these devices. We 
+> should consider if this should be a common property. Jonathan?
 
-I'm not sure on that given it's fairly common to do evil things with
-Not Gates to implement cheap level converters.  That tends to break
-doing this entirely in driver.
+Normally it's a controllable things so we make it dependent on userspace
+interaction (runtime-pm or whether buffered capture is enabled).
+Policy thing so not appropriate in DT.
 
-However, I'm fine with whatever the current convention on this is.
-We can always deal with inverters when hardware turns up that is
-doing that.
+Here it's different because it's a particular device variant that must work in this
+fashion. Other device variants don't support it at all.
 
-> >> +  gpio-controller:
-> >> +    description: Marks the device node as a GPIO controller.
-> >> +
-> >> +  "#gpio-cells":
-> >> +    const: 2
-> >> +    description:
-> >> +      The first cell is the GPIO number and the second cell specifies
-> >> +      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
-> >> +
-> >> +  refin-supply:
-> >> +    description: external reference supply, can be used as reference =
-for conversion. =20
-> >=20
-> > If I'm understanding correctly, this represents both voltage inputs
-> > REF+ and REF-, correct? The datasheet says "Reference Input Negative
-> > Terminal. REF=E2=88=92 can span from AVSS to AVDD1 =E2=88=92 1 V". It s=
-eems like they
-> > should be separate supplies in case REF- is non-zero. Otherwise, how
-> > can we know what voltage it is? (same comment applies to refin2.)
-> > Yes, but in that case, the value of the referenced supply should reflec=
-t =20
-> that and be equal to (REF+)-(REF-). I'll add to the description this.
+If it weren't for the obscene number of variants this would normally be
+derived from the compatible rather than being in DT at all.
 
-See other thread - I don't think that works for single ended where we should
-probably provide an offset.
->=20
-> ...
->=20
-> >> +required:
-> >> +  - compatible
-> >> +  - reg
-> >> +  - interrupts =20
-> >=20
-> > Why are interrupts required? What if the pin is not connected?
-> >  =20
-> From the datasheet, the reading of the conversions seem to be only
-> interrupt based: "As soon as the next conversion is complete,
-> the data register is updated; therefore, the period in which to
-> read the conversion is limited." this paragraph suggests to me that
-> interrupts are required
+So it's odd and I don't think appropriate for a common property.
 
-Nasty.  However, a valid use case would be to use a single channel
-at a time, which case that statement doesn't matter.  We have other
-devices that only support onehot channel sequencing - that would work
-here.
+Jonathan
 
->=20
+> 
+> Rob
+> 
 
 

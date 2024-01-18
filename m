@@ -1,164 +1,131 @@
-Return-Path: <linux-iio+bounces-1741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70D1831442
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 09:12:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C010483153F
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 09:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337711F225A4
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 08:12:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C821C210A7
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 08:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EEE1173E;
-	Thu, 18 Jan 2024 08:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjfkNm9v"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472A3125D3;
+	Thu, 18 Jan 2024 08:59:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720001170A;
-	Thu, 18 Jan 2024 08:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F91B65B;
+	Thu, 18 Jan 2024 08:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705565452; cv=none; b=CPrRObrQ+D/clRnJYJeQmSracfFClvHKdvhZ0wFuJwNjvC6ljG1l7eUYh/VRJbXxA+5rw5OcnFCt3clgLllpXkf05hOcTYYSzPWCm3PvVqB+hFVWAb4gLtLtYY2IL1EgMSFtCPPyYU0eQvYmjnoTnN0buu1fhBWm2X3uCCIjoOs=
+	t=1705568381; cv=none; b=bprWKvzMN9YkufhJfjboOUXbVD4QoLwAYbw3ShERWlR53UpW5NEWt6Xy+//R2JzyD0qnJZmttEmgwynnNUED96KUTD5f+l3oLPQhjWwey3QNK+JEP1LA+TQtW3jWq+4tuZTSfbMWw/jmib3YsVGj5l5CYIMDvW7hN73TRPdTNog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705565452; c=relaxed/simple;
-	bh=ok5rxjWhE2d4d91QscThfDxkehsNlfCTZpi60NZLj+s=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=nFKiYOiAJ8e6AT5hMzfic4F1dfAsSv1EEB6lDClfM66EXsIgxULh1ptBvp9VRLqFWvw8CutX2t/xlLYFh8/9+KvoDSnrZB1k0e5UKtc2QZf6EGyRxcopsIox1aHUhKZb1EI56r9LzWCGgF/txYmrWByPrCTTK7PZYNHpkQFsf9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjfkNm9v; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55a0294893eso439792a12.3;
-        Thu, 18 Jan 2024 00:10:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705565448; x=1706170248; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8D9GrCN6KCy/inIyivjsUBv8glt8HtDAWFkt4pSTRR4=;
-        b=jjfkNm9v3BrmDTdbrH/kB0yQKNNa+6AqoZkVHWXrqM4bDZ6XWV6NtC2GY8D88vpHjB
-         N7fRCqOnLkwdJ1RmNYkMAAi7BbqbdH+enus/pu6GPe0mco/J/BHwSFwhxr3pblW2fNYG
-         PojSrNDkX+nXTsPn7n7EB2gc43+efCENDJctWRyWS2ZfxT/iRyveDvz292s4LhP1Rnpp
-         F4PUioQ+5sMnW06k23iJx7cSAdbQgMb3/JlUe4HJVplYpucudk/i3K8wFsqACbPIem3O
-         H3prW3HZva86XtWZM8Td/0Lu4bPOqqVpmTSnjykHUYLypOlpowp59NzuJYGxGZSUT5kV
-         RAng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705565448; x=1706170248;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8D9GrCN6KCy/inIyivjsUBv8glt8HtDAWFkt4pSTRR4=;
-        b=D88LMX/E1pu+IPTd95XWK34/pxq4TRPA9OMkfp+isugloZlnhEjf9+EPNqm3QXHZ/+
-         PFn8blcy0R6UUp+Vx70y+aO0eAEUiyFKFiv9ET5xjrrPBixzS3srDoEtcyJrVBKjfxn+
-         sD/VfsaC95kVyDxZyUYOd6szYuPpvqVHV15tQXDeqmWmg70K3Dq6x6GD+ZG2i6LHk9Bg
-         MDJtW252OxXqB9MvC61E5+pJssHBnCdxGMpZwMiPMHi7KADoAAOTjRM/KGtBrT+MGyXX
-         1M5siNk/oX9ujEGxCJxnjj74Zoy2wQyMku0MBcHDKEb+f+ndiszK/FZPgP20Ml+j3z2c
-         uIcw==
-X-Gm-Message-State: AOJu0Yz5Vix0lq8BLwnmsSz1vumVIXWtjKS1t707qsd6NBO+TsSY2b4r
-	YZC4pVp2T/HQsLAY2JE2OZkVu172qpAitr/Q+k21oL3PlENqmEPPvcmibeqzY8OUMw==
-X-Google-Smtp-Source: AGHT+IGLvo4wbg35gUjDK5QGjm+OOMU9mJXTgGBGSZAwutp91RLeltfNpn3vC0BeSxl1FDH4Z7C3LA==
-X-Received: by 2002:a17:906:c78e:b0:a29:4267:ac9 with SMTP id cw14-20020a170906c78e00b00a2942670ac9mr258926ejb.52.1705565448311;
-        Thu, 18 Jan 2024 00:10:48 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id bt22-20020a170906b15600b00a2c32c5f484sm8752674ejb.209.2024.01.18.00.10.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 00:10:47 -0800 (PST)
-Message-ID: <cf48e196-a569-4287-93b7-b5f06c34d6f6@gmail.com>
-Date: Thu, 18 Jan 2024 10:10:46 +0200
+	s=arc-20240116; t=1705568381; c=relaxed/simple;
+	bh=Z+ME5VN8rrkjD60UPCiD8moWnYbIJ6eP398m8HGXerw=;
+	h=Received:Received:Received:Received:Received:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-ADIRuleOP-NewSCL:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=LfqlfrYGnA26QnhmFD2wSKHOM7SwHPoTj3GkBqmjiQarZ2fd+OnsC74drmooTiHqHRMfxzkSpSfE6DxCa23HoOuQ8rqm6B3zaO36ZvLwapwvxKQ7m0MvGYVQmVnMd0ISMjvmFFUXVelDhNHlX8yyGeqSLofs197eaw9tKlRPW3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40I6geAh016278;
+	Thu, 18 Jan 2024 03:59:24 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3vnm16b3bs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 03:59:23 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 40I8xMXv001124
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 18 Jan 2024 03:59:22 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 18 Jan 2024 03:59:21 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 18 Jan 2024 03:59:19 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 18 Jan 2024 03:59:19 -0500
+Received: from kim-VirtualBox.ad.analog.com (KPALLER2-L03.ad.analog.com [10.116.242.67])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40I8x0RB005188;
+	Thu, 18 Jan 2024 03:59:03 -0500
+From: Kim Seer Paller <kimseer.paller@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, "Crt
+ Mori" <cmo@melexis.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Bartosz
+ Golaszewski" <brgl@bgdev.pl>,
+        Kim Seer Paller <kimseer.paller@analog.com>
+Subject: [PATCH v6 0/2] Changes to admfm2000 driver
+Date: Thu, 18 Jan 2024 16:58:54 +0800
+Message-ID: <20240118085856.70758-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: David Lechner <dlechner@baylibre.com>, linus.walleij@linaro.org,
- brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
- <CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
- <20240116163003.0000039d@Huawei.com>
- <18c239af-71ee-49d8-878e-e1770c3e2d46@gmail.com>
- <20240117163725.00003981@Huawei.com>
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <20240117163725.00003981@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: C2pnlf4GNyYDzD2eZppyi8hDQ9Hvl6wQ
+X-Proofpoint-ORIG-GUID: C2pnlf4GNyYDzD2eZppyi8hDQ9Hvl6wQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-18_04,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ malwarescore=0 clxscore=1011 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401180063
+
+Hi all,
+
+Apologies for taking a long time to follow up on this series. I took some time to
+test and try out the suggested changes. As for the major change in the bindings
+and driver, the array of switch and attenuation GPIOs were moved under child nodes
+utilizing the devm_fwnode_gpiod_get_index() for GPIO parsing.
+
+I have just an inquiry regarding the difficulty of implementing the use of
+guard(mutex)(&st->lock) for my current controller. Is it okay to simply use the
+mutex_lock function instead?
+
+Best regards,
+Kim Seer Paller
+
+Kim Seer Paller (2):
+  dt-bindings: iio: frequency: add admfm2000
+  iio: frequency: admfm2000: New driver
+
+ .../bindings/iio/frequency/adi,admfm2000.yaml | 129 ++++++++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/frequency/Kconfig                 |  10 +
+ drivers/iio/frequency/Makefile                |   1 +
+ drivers/iio/frequency/admfm2000.c             | 307 ++++++++++++++++++
+ 5 files changed, 455 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+ create mode 100644 drivers/iio/frequency/admfm2000.c
 
 
+base-commit: 296455ade1fdcf5f8f8c033201633b60946c589a
+-- 
+2.34.1
 
-On 1/17/24 18:37, Jonathan Cameron wrote:
-> On Wed, 17 Jan 2024 14:43:21 +0200
-> Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
->> On 1/16/24 18:30, Jonathan Cameron wrote:
->>> On Mon, 15 Jan 2024 15:53:39 -0600
->>> David Lechner <dlechner@baylibre.com> wrote:
->>>> On Wed, Dec 20, 2023 at 4:48 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:  
-
-...
-
->>>>> +
->>>>> +  refin-supply:
->>>>> +    description: external reference supply, can be used as reference for conversion.    
->>>> If I'm understanding correctly, this represents both voltage inputs
->>>> REF+ and REF-, correct? The datasheet says "Reference Input Negative
->>>> Terminal. REF− can span from AVSS to AVDD1 − 1 V". It seems like they
->>>> should be separate supplies in case REF- is non-zero. Otherwise, how
->>>> can we know what voltage it is? (same comment applies to refin2.)  
->>> Agreed, in this case these are directly used as references (we recently
->>> had another driver that could take a wide range of negative and positive
->>> inputs but in that case an internal reference was generated that didn't
->>> made it not matter exactly what was being supplied.  Not true here though!
->>>   
->> Wouldn't it be alright to specify that the voltage specified here should
->> be the actual difference (REF+)-(REF-)?
-> How do you establish the offset to apply to single ended channels if you don't
-> know the value of REF- (relative to local ground)?
-> 
-> So no - as the device supports single ended channels the difference isn't
-> enough information.  It would probably be fine to do as you say if it
-> were a device with only differential channels where all that matters is
-> the scaling.
-
-	I suppose that you are referring to the first page presentation: "Cross
-point multiplexer; 8 full differential or 16 single-ended channels". I
-consider this to be a bit misleading as all channels are actually fully
-differential (must select positive and negative source, AVSS is not one
-of them).
-
-
-	Even more, the datasheet specifies that when using "single-ended"
-inputs you need to select which of the pins is the common one and
-connect it to the desired GND (be it AVSS, REF-):
-
-"Because there is a cross point mux, the user can set any of the analog
-inputs as the common pin. An example of such a scenario is to connect
-the AIN16 pin to AVSS or to the REFOUT voltage (that is, AVSS +
-2.5 V)" (ad7173-8 page 27)
-
-	For me this is 100% the case that this is a fully differential ADC in
-which the datasheet presents a way to use it single-ended. Let's say
-that we are using EXT_REF, and REF- is non zero. If someone connects
-AVSS to the desired common pin, the ADC will still measure correctly the
-difference of voltage between AIN_POS and AIN_NEG and compare it to the
-EXT_REF.
 

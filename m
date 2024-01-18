@@ -1,73 +1,63 @@
-Return-Path: <linux-iio+bounces-1750-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1751-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1547831D35
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 17:06:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA46831D3D
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 17:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AE6D284EBD
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 16:06:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE971F2423C
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 16:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D028E02;
-	Thu, 18 Jan 2024 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC30D28E0D;
+	Thu, 18 Jan 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LE5Ha2Bs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOOwysb2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4396E1DDC6;
-	Thu, 18 Jan 2024 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7120D2C18F;
+	Thu, 18 Jan 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705593996; cv=none; b=Jxv5oqlfmyU/g9IqPS3q062VluoBjxaJAKT3asTSwoV/KMgHuPjA8iA720Dtdqc4mLqK/iHdWfOJAjxNndBoYhJxBit3i06IDbg25kd9aizcYVmbG9qXByW2oWymaTGglOEgVF7wJ2iR3Tl1yWrxV6sGTOZaSQD1dm9AT7/Qyn0=
+	t=1705594193; cv=none; b=P2Xnmy0PWtuPAZi2spYaeMG4w1z+0504hZ6QYQYVlC+CywSrz15UkHX9Clv+96g0pZSSqTwGI480Zv63jQuDcuNSQEitlLnMGkphYaq1+Zus3gUtt1LlDy+inXk5sQxg93UDjI937Q88sv7R1w4b2+uV6cI9rV5m+ACcBcCLWKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705593996; c=relaxed/simple;
-	bh=nwQHxPOUjjJ4GuHl5raPFPdhRyG6WMAS+hUTdTAaVbc=;
+	s=arc-20240116; t=1705594193; c=relaxed/simple;
+	bh=MhRgs4SfId0IliF1C6eg+0vnzN3x0xDMakUJ9MxoW+U=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=FkWQ/wHEW861/TrLJZ/+6CJzlkNGHt4sttt3yEF4SIY5DPRLsOqdGYsrAn8mk2sw8PwXlpnHXQp3v9Z/GQaSIU7yYJhynokH+TPrjAMvO/YE8j6KzpbksSgDLYtZdZVgpCclcTtfmRIIa84zbsTlN1S0uQwxzD82/OdY+EJwq/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LE5Ha2Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4A8C433C7;
-	Thu, 18 Jan 2024 16:06:31 +0000 (UTC)
+	 In-Reply-To; b=YwcsdmamPZPVCAyTB7FEhzwYObfktm7uiGrpIFY/bYVuCAAdDLRsjsyLFal7+ceKagQXlIKiKOwQBXEtrUa/b4s6kBb/qmp5kxAOhO1XKhQHZqs2x5hu4Ty7sK8NpLhsHGX+8AffnQ0In75j1zgofUt32YjrUYkmEsbyWboH+fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOOwysb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472AEC433F1;
+	Thu, 18 Jan 2024 16:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705593996;
-	bh=nwQHxPOUjjJ4GuHl5raPFPdhRyG6WMAS+hUTdTAaVbc=;
+	s=k20201202; t=1705594193;
+	bh=MhRgs4SfId0IliF1C6eg+0vnzN3x0xDMakUJ9MxoW+U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LE5Ha2BsPxxze+LhYr0lZKir5QBO605DNQjCo24g0V/iwQihBexhy9Xiq1pWT2+82
-	 uTSjWJ8arM1v0+28qwRvDPTyMth8TTQCUVFlVzmElMDEZKW381K4Hj75TXe2klD2FM
-	 nIMIlSs+VAQmftzDh1Ej0gxGrxamfnatYh6NLhM3DPEm3zdjistuZWg+j5FhLhqL3B
-	 NYUJ2jDQRmg9Ue2KbJfYxJWKzZMd9YksQybou8srF0x6Iyrpa/wXajCnL5pC/CmVRs
-	 /IQEpSqrn9KpyuKGo88+F2fqOVwN7RpEiEb+0QYgUpLlVKIX4jN2bxzIPgWSgPvnPX
-	 Uhbg3mAm900eA==
-Date: Thu, 18 Jan 2024 16:06:29 +0000
+	b=NOOwysb2saJ3EFaZXFxosNe9UNtVudcOvkatUxZo2Yg8vaqhHUtK/9tyVcFy1UEB7
+	 8ouvns+SVlkqj5JW/fkEFsMu+oAuXKM1duNgSBdY/6pqqFHRJtyh5Ll6k6aYhrt6OS
+	 xvnuZpCM4OlvW+eEZ4RwQGtN+zxu4/lU8ej8CqF0pwUvwXAmu6aFaGc0cWwEYPeGSz
+	 hSxaxzXKm8QSKLtf9zLQlMztOG1FOxiza5lgvxCPem/j5ilDD509LODn7+EVMsaZV3
+	 LxMTTFN21gdQv9C0nlPwjv9Z059wXehasApwVqouWT6G9Sd0qNkp1HbNaXm4m2p7Ng
+	 fJ4+HvnBrf2hA==
+Date: Thu, 18 Jan 2024 16:09:47 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
-Message-ID: <20240118-freebase-uptake-ec5fdf786d20@spud>
-References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
- <20240118-lunar-anthem-31bf3b9b351d@spud>
- <b96d5bfc-cc38-44c7-a88f-e7ac5e4eb71d@gmail.com>
+	Conor Dooley <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
+Message-ID: <20240118-steadily-coauthor-de8275118901@spud>
+References: <20240118085856.70758-1-kimseer.paller@analog.com>
+ <20240118085856.70758-2-kimseer.paller@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,101 +65,123 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LOsWyA9HATo5sHZY"
+	protocol="application/pgp-signature"; boundary="L+4Loj8oukG31gb2"
 Content-Disposition: inline
-In-Reply-To: <b96d5bfc-cc38-44c7-a88f-e7ac5e4eb71d@gmail.com>
+In-Reply-To: <20240118085856.70758-2-kimseer.paller@analog.com>
 
 
---LOsWyA9HATo5sHZY
+--L+4Loj8oukG31gb2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 18, 2024 at 05:51:20PM +0200, Ceclan Dumitru wrote:
+Hey,
+
+On Thu, Jan 18, 2024 at 04:58:55PM +0800, Kim Seer Paller wrote:
+> Dual microwave down converter module with input RF and LO frequency
+> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+> for each down conversion path.
 >=20
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
+> V5 -> V6: Moved array of switch and attenuation GPIOs to the channel node.
+>           Changed pin coords with friendly names. Removed Reviewed-by tag.
+> V4 -> V5: Added Reviewed-by tag.
+> V3 -> V4: Updated the description of the properties with multiple entries=
+ and
+>           defined the order.
+> V2 -> V3: Adjusted indentation to resolve wrong indentation warning.=20
+>           Changed node name to converter. Updated the descriptions to cla=
+rify
+>           the properties.
+> V1 -> V2: Removed '|' after description. Specified the pins connected to
+>           the GPIOs. Added additionalProperties: false. Changed node name=
+ to gpio.
+>           Aligned < syntax with the previous syntax in the examples.
 >=20
-> On 1/18/24 17:23, Conor Dooley wrote:
-> > On Thu, Jan 18, 2024 at 02:49:22PM +0200, Dumitru Ceclan wrote:
+>  .../bindings/iio/frequency/adi,admfm2000.yaml | 129 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 136 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,a=
+dmfm2000.yaml
 >=20
-> ...
->=20
-> >> +  adi,clock-select:
-> >> +    description: |
-> >> +      Select the ADC clock source. Valid values are:
-> >> +      int         : Internal oscillator
-> >> +      int-out     : Internal oscillator with output on XTAL2 pin
-> >> +      ext-clk     : External clock input on XTAL2 pin
-> >> +      xtal        : External crystal on XTAL1 and XTAL2 pins
-> >> +
-> >> +    $ref: /schemas/types.yaml#/definitions/string
-> >> +    enum:
-> >> +      - int
-> >> +      - int-out
-> >> +      - ext-clk
-> >> +      - xtal
-> >> +    default: int
-> > I am not a fan of properties like this one, that in my view reimplement
-> > things that are supported by the regular clocks properties. I've got
-> > some questions for you so I can understand whether or not this custom
-> > property is required.
-> >=20
-> > Whether or not the ext-clk or xtal is used is known based on
-> > clock-names - why is the custom property required to determine that?
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm200=
+0.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> new file mode 100644
+> index 000000000000..6f2c91c38666
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> @@ -0,0 +1,129 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2023 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADMFM2000 Dual Microwave Down Converter
+> +
+> +maintainers:
+> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +
+> +description:
+> +  Dual microwave down converter module with input RF and LO frequency ra=
+nges
+> +  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
+> +  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each=
+ down
+> +  conversion path.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admfm2000
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@[0-1]$":
+> +    type: object
+> +    description: Represents a channel of the device.
+> +
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description:
+> +          The channel number.
+> +        minimum: 0
+> +        maximum: 1
+> +
+> +      adi,mode:
+> +        description:
+> +          RF path selected for the channel.
+> +            0 - Direct IF mode
+> +            1 - Mixer mode
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [0, 1]
 
-> > If neither of those clocks are present, then the internal clock would be
-> > used. Choosing to use the internal clock if an external one is provided
-> > sounds to me like a software policy decision made by the operating
-> > system.
->=20
-> If there was no int-out, sure. I considered that the choice between int
-> and int-out could be made here. So better for driver to choose int/int-ou=
-t?
-
-This part of my comments was specifically about choosing between use of
-the internal clock when ext-clk or xtal are provided, which I think
-excludes the possibility of using int-out, since the XTAL2 pin is an
-input.
-
-There's 3 situations:
-- no external clock provided
-- ext-clk provided
-- xtal provided
-
-For the former, you know you're in that state when no "clocks" property
-is present. The latter two you can differentiate based on "clock-names".
-
-Choosing to use the internal clock if an external clock is provided
-seems to be a software policy decision, unless I am mistaken.
-
-> >=20
-> > Finally, if the ADC has a clock output, why can that not be represented
-> > by making the ADC a clock-controller?
-> >=20
->=20
-> Was not familiar with this/did not cross my mind. So if xtal/ext-clk is
-> present, the driver should detect it and disable the option for clock
-> output? (Common pin XTAL2)
-
-Yeah, if those clocks are provided you would not register as a clock
-controller. If there is a user of the output clock, it should have its
-own "clocks" property that references the ADC's output.
-
-Your dt-binding could also make clocks/clock-names & clock-controller
-mutually exclusive.
+How come this is an enum, rather than a boolean property such as
+"adi,mixer-mode"?
 
 Cheers,
 Conor.
 
---LOsWyA9HATo5sHZY
+--L+4Loj8oukG31gb2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZalMhAAKCRB4tDGHoIJi
-0u1GAQDLF9wUQ+s0LZcpRfaCXxjuTn+bnIp1+ISbdg+ShIwu1QEAozUJEcnwITnj
-abuVUXJ5gSOUB5wZwS7hYPBOxPhpngA=
-=nOWF
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZalNSwAKCRB4tDGHoIJi
+0qUEAP4wbPpsMMqtWJOb6/QiW0MysXXQK+sUEvHTlHRvuvRArwD/ZLMdTg0x8lnf
+WkfJ4ASDBBU6gUzxhaCqkRYPQxWwkQs=
+=GfIu
 -----END PGP SIGNATURE-----
 
---LOsWyA9HATo5sHZY--
+--L+4Loj8oukG31gb2--
 

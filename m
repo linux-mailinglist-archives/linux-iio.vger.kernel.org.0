@@ -1,142 +1,222 @@
-Return-Path: <linux-iio+bounces-1751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA46831D3D
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 17:10:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254008321B1
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 23:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE971F2423C
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 16:10:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BB3B24473
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 22:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC30D28E0D;
-	Thu, 18 Jan 2024 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595C51EB36;
+	Thu, 18 Jan 2024 22:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOOwysb2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a8V+KQTy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7120D2C18F;
-	Thu, 18 Jan 2024 16:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCD31EA77
+	for <linux-iio@vger.kernel.org>; Thu, 18 Jan 2024 22:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705594193; cv=none; b=P2Xnmy0PWtuPAZi2spYaeMG4w1z+0504hZ6QYQYVlC+CywSrz15UkHX9Clv+96g0pZSSqTwGI480Zv63jQuDcuNSQEitlLnMGkphYaq1+Zus3gUtt1LlDy+inXk5sQxg93UDjI937Q88sv7R1w4b2+uV6cI9rV5m+ACcBcCLWKU=
+	t=1705617784; cv=none; b=URSr6xtop2WHHa/JmPhPOdU0cELmgtobZLc18sldIWYX8YhTRxjK/6UdbNv6kJDixzOw/eMWWGiewoglflhUEE72D1B/U2AySLCbQ9OdbfYY0vbM9lyMnqk014pN/6mhSkbD8thF6NuZfAlhAXKshRY7YKwGrJO3JP2FMP/m3Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705594193; c=relaxed/simple;
-	bh=MhRgs4SfId0IliF1C6eg+0vnzN3x0xDMakUJ9MxoW+U=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=YwcsdmamPZPVCAyTB7FEhzwYObfktm7uiGrpIFY/bYVuCAAdDLRsjsyLFal7+ceKagQXlIKiKOwQBXEtrUa/b4s6kBb/qmp5kxAOhO1XKhQHZqs2x5hu4Ty7sK8NpLhsHGX+8AffnQ0In75j1zgofUt32YjrUYkmEsbyWboH+fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOOwysb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472AEC433F1;
-	Thu, 18 Jan 2024 16:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705594193;
-	bh=MhRgs4SfId0IliF1C6eg+0vnzN3x0xDMakUJ9MxoW+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NOOwysb2saJ3EFaZXFxosNe9UNtVudcOvkatUxZo2Yg8vaqhHUtK/9tyVcFy1UEB7
-	 8ouvns+SVlkqj5JW/fkEFsMu+oAuXKM1duNgSBdY/6pqqFHRJtyh5Ll6k6aYhrt6OS
-	 xvnuZpCM4OlvW+eEZ4RwQGtN+zxu4/lU8ej8CqF0pwUvwXAmu6aFaGc0cWwEYPeGSz
-	 hSxaxzXKm8QSKLtf9zLQlMztOG1FOxiza5lgvxCPem/j5ilDD509LODn7+EVMsaZV3
-	 LxMTTFN21gdQv9C0nlPwjv9Z059wXehasApwVqouWT6G9Sd0qNkp1HbNaXm4m2p7Ng
-	 fJ4+HvnBrf2hA==
-Date: Thu, 18 Jan 2024 16:09:47 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
-Message-ID: <20240118-steadily-coauthor-de8275118901@spud>
-References: <20240118085856.70758-1-kimseer.paller@analog.com>
- <20240118085856.70758-2-kimseer.paller@analog.com>
+	s=arc-20240116; t=1705617784; c=relaxed/simple;
+	bh=+1qKA2IP4vtwr2qgRdA4RfnQ7Z2Up8JMUN1h2ytfNpg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y2/ZhWgKRkBmv4ov+ZFMQCyBfW3e6xXf5blfekalwxS3DbMjEVqQzZVx2/rX75zn3XHE4D6PXKsWyeSBti58x/4PAPvkq5K1v/qUN0Oa6HMFPgkEsk2F/8Zyo6qBvmWbiliuf+20+YAfX1645sJx6bAI8Kahsgllv67PMesPtsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a8V+KQTy; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2cca8eb0509so2387711fa.3
+        for <linux-iio@vger.kernel.org>; Thu, 18 Jan 2024 14:43:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1705617778; x=1706222578; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S2OucYUMdApd6L43qg3jvqTNIxk03x2uwjfK2c63Pxo=;
+        b=a8V+KQTyfIPD1zKSZEHMOlSnj0xACASJxNCiB2mtgHaP0efm8bsanedkMQ80vu4qxI
+         bFJH7yOGD26Q+L7sQqKRSVbnWBDzvPVJ596bWFKW1y98jwpAJsgU+KQvzFB7t2AffXpH
+         GzuoP5s3kyZnLCLM7OzmtxjG6U3yxVj0RvKvGrX6iQaqX2qtgTBrARklCtrraC9ksfCO
+         Iy2/l+F5gVilBneOwz2+GZdUuSq46krD3uE5KG3mTbJjfqBE4RlinBYuxTsA/brFj0dA
+         6LTZp53gQKCJTwaaHAnWvsF/MDUqdFeEn/V0nNckTR5cDIbyQhwaiVxTorgKOxiIzl9O
+         acNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705617778; x=1706222578;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S2OucYUMdApd6L43qg3jvqTNIxk03x2uwjfK2c63Pxo=;
+        b=QMSmNV/GpErI/4qByfsGbxV1Ej2aZVQCw+B0v8arQ7y7er5sCdH0VwxeSs3w5H2Od7
+         Gcicn3oyiam81u9ERBrjtILDJ+CGqtWXs2VC22YvSONeVzltsiVVU54bDI1D27wr81vC
+         UW4e7DDLMRmNDdldy4Dw19dH49teixZQndkPg+r+hjEIAZ5QldUI8TZmg/Z4NdP7btlj
+         x8dle0cm8489xXdKzu1PmkqyHJBUYkmeORLUAPc3gwnf4vEuenPWLhNDfnMy6B3x24lL
+         mEYMalqALuNBWUqtd2vWnVAWssTN8ZM7ia6X6cO/yaL0PiEdqqpiugXhyO8cN+nS+Sno
+         mqpQ==
+X-Gm-Message-State: AOJu0YxlBmqF5OEodV3yYVcG5CpwG1O476+72xNl4031QqarTXk+/QP1
+	0iACi4zTz63ZgVk24LcE0ws6oe0rSbBcd/AcKC2sv2Rfj9SIGEQHAOUT1s2vspawM48PGFjm0xn
+	WRhTj8+gLeyGQDOocmlx9fmAibhLm7paO9ZZGvg==
+X-Google-Smtp-Source: AGHT+IE/0Kja/Yg1yBuySMn66AdspOWr0ARCiQ3WB9sSkWlaul5RnQsnaih5GsFZXdTaueRcVpq+OSsYZeHEUE/mZ+M=
+X-Received: by 2002:a2e:888b:0:b0:2cc:e9d9:8293 with SMTP id
+ k11-20020a2e888b000000b002cce9d98293mr847082lji.31.1705617778025; Thu, 18 Jan
+ 2024 14:42:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="L+4Loj8oukG31gb2"
-Content-Disposition: inline
-In-Reply-To: <20240118085856.70758-2-kimseer.paller@analog.com>
-
-
---L+4Loj8oukG31gb2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+In-Reply-To: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 18 Jan 2024 16:42:47 -0600
+Message-ID: <CAMknhBEmye4UvLtR_3M2VMoGOAJ7tm1Rpy7rThsojzNcpMu6vA@mail.gmail.com>
+Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Michael Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
+	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hey,
-
-On Thu, Jan 18, 2024 at 04:58:55PM +0800, Kim Seer Paller wrote:
-> Dual microwave down converter module with input RF and LO frequency
-> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
-> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
-> for each down conversion path.
->=20
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+On Thu, Jan 18, 2024 at 6:50=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@gmail=
+.com> wrote:
+>
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel application=
+s
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
+>
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > ---
-> V5 -> V6: Moved array of switch and attenuation GPIOs to the channel node.
->           Changed pin coords with friendly names. Removed Reviewed-by tag.
-> V4 -> V5: Added Reviewed-by tag.
-> V3 -> V4: Updated the description of the properties with multiple entries=
- and
->           defined the order.
-> V2 -> V3: Adjusted indentation to resolve wrong indentation warning.=20
->           Changed node name to converter. Updated the descriptions to cla=
-rify
->           the properties.
-> V1 -> V2: Removed '|' after description. Specified the pins connected to
->           the GPIOs. Added additionalProperties: false. Changed node name=
- to gpio.
->           Aligned < syntax with the previous syntax in the examples.
->=20
->  .../bindings/iio/frequency/adi,admfm2000.yaml | 129 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 136 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,a=
-dmfm2000.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm200=
-0.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+>
+> V11->V12
+>  - Drop "binding", describe hardware in binding description
+>  - Rename refin and refin2 to vref and vref2
+>  - Add better description to external references to better show that the =
+voltage
+>     value that needs to be specified is the difference between the positi=
+ve and
+>     negative reference pins
+>  - Add optional clocks properties
+>  - Add optional adi,clock-select property
+>  - Add option for second interrupt, error
+>  - Add description to interrupts
+> V10->V11
+>  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller=
+'
+>  - Add description to #gpio-cells property
+> V9->V10
+>  - Fix dt_binding_check type warning from adi,reference-select
+> V8->v9
+>  - Add gpio-controller and "#gpio-cells" properties
+>  - Add missing avdd2 and iovdd supplies
+>  - Add string type to reference-select
+> V7->V8
+>  - include missing fix from V6
+> V6->V7 <no changes>
+> V5->V6
+>  - Moved global required property to proper placement
+> V4 -> V5
+>  - Use string enum instead of integers for "adi,reference-select"
+>  - Fix conditional checking in regards to compatible
+> V3 -> V4
+>  - include supply attributes
+>  - add channel attribute for selecting conversion reference
+> V2 -> V3
+>  - remove redundant descriptions
+>  - use referenced 'bipolar' property
+>  - remove newlines from example
+> V1 -> V2 <no changes>
+>
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 242 ++++++++++++++++++
+>  1 file changed, 242 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.=
+yaml
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 > new file mode 100644
-> index 000000000000..6f2c91c38666
+> index 000000000000..4d0870cc014c
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
-> @@ -0,0 +1,129 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> @@ -0,0 +1,242 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +# Copyright 2023 Analog Devices Inc.
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: ADMFM2000 Dual Microwave Down Converter
+> +title: Analog Devices AD7173 ADC
 > +
 > +maintainers:
-> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
 > +
-> +description:
-> +  Dual microwave down converter module with input RF and LO frequency ra=
-nges
-> +  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
-> +  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each=
- down
-> +  conversion path.
+> +description: |
+> +  Analog Devices AD717x ADC's:
+> +  The AD717x family offer a complete integrated Sigma-Delta ADC solution=
+ which
+> +  can be used in high precision, low noise single channel applications
+> +  (Life Science measurements) or higher speed multiplexed applications
+> +  (Factory Automation PLC Input modules). The Sigma-Delta ADC is intende=
+d
+> +  primarily for measurement of signals close to DC but also delivers
+> +  outstanding performance with input bandwidths out to ~10kHz.
+> +
+> +  Datasheets for supported chips:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7173-8.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD7176-2.pdf
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - adi,admfm2000
+> +      - adi,ad7172-2
+> +      - adi,ad7173-8
+> +      - adi,ad7175-2
+> +      - adi,ad7176-2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    description: |
+> +      Ready interrupt: multiplexed with SPI data out. While SPI CS is lo=
+w,
+> +      can be used to indicate the completion of a conversion.
+> +
+> +      Error: The three error bits in the status register (ADC_ERROR, CRC=
+_ERROR,
+> +      and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin. T=
+herefore,
+> +      the ERROR pin indicates that an error has occurred.
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    items:
+> +      - const: rdy
+> +      - const: err
 > +
 > +  '#address-cells':
 > +    const: 1
@@ -144,44 +224,210 @@ nges
 > +  '#size-cells':
 > +    const: 0
 > +
-> +patternProperties:
-> +  "^channel@[0-1]$":
-> +    type: object
-> +    description: Represents a channel of the device.
+> +  spi-max-frequency:
+> +    maximum: 20000000
 > +
-> +    additionalProperties: false
+> +  gpio-controller:
+> +    description: Marks the device node as a GPIO controller.
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +    description:
+> +      The first cell is the GPIO number and the second cell specifies
+> +      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
+> +
+> +  vref-supply:
+> +    description: |
+> +      Differential external reference supply used for conversion. The re=
+ference
+> +      voltage (Vref) specified here must be the voltage difference betwe=
+en the
+> +      REF+ and REF- pins: Vref =3D (REF+) - (REF-).
+> +
+> +  vref2-supply:
+> +    description: |
+> +      Differential external reference supply used for conversion. The re=
+ference
+> +      voltage (Vref2) specified here must be the voltage difference betw=
+een the
+> +      REF2+ and REF2- pins: Vref2 =3D (REF2+) - (REF2-).
+> +
+> +  avdd-supply:
+> +    description: avdd supply, can be used as reference for conversion.
+
+I think it would be helpful to have a description similar to
+vref-supply here. This is the voltage between AVDD and AVSS. So in
+both cases AVDD=3D5V, AVSS=3D0V and AVDD=3D+2.5V, AVSS=3D-2.5V, this supply
+should report 5V.
+
+> +
+> +  avdd2-supply:
+> +    description: avdd2 supply, used as the input to the internal voltage=
+ regulator.
+
+This supply is also referenced to AVSS.
+
+> +
+> +  iovdd-supply:
+> +    description: iovdd supply, used for the chip digital interface.
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: |
+> +      Optional external clock source. Can include one clock source: exte=
+rnal
+> +      clock or external crystal.
+> +
+> +  clock-names:
+> +    enum:
+> +      - ext-clk
+> +      - xtal
+> +
+> +  adi,clock-select:
+> +    description: |
+> +      Select the ADC clock source. Valid values are:
+> +      int         : Internal oscillator
+> +      int-out     : Internal oscillator with output on XTAL2 pin
+> +      ext-clk     : External clock input on XTAL2 pin
+> +      xtal        : External crystal on XTAL1 and XTAL2 pins
+> +
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum:
+> +      - int
+> +      - int-out
+> +      - ext-clk
+> +      - xtal
+> +    default: int
+> +
+> +patternProperties:
+> +  "^channel@[0-9a-f]$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
 > +
 > +    properties:
 > +      reg:
-> +        description:
-> +          The channel number.
 > +        minimum: 0
-> +        maximum: 1
+> +        maximum: 15
 > +
-> +      adi,mode:
-> +        description:
-> +          RF path selected for the channel.
-> +            0 - Direct IF mode
-> +            1 - Mixer mode
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1]
+> +      diff-channels:
+> +        items:
+> +          minimum: 0
+> +          maximum: 31
+> +
+> +      adi,reference-select:
+> +        description: |
+> +          Select the reference source to use when converting on
+> +          the specific channel. Valid values are:
+> +          vref       : REF+  /REF=E2=88=92
+> +          vref2      : REF2+ /REF2=E2=88=92
+> +          refout-avss: REFOUT/AVSS (Internal reference)
+> +          avdd       : AVDD
 
-How come this is an enum, rather than a boolean property such as
-"adi,mixer-mode"?
+Could write this as AVDD/AVSS to be consistent with the other 3 options.
 
-Cheers,
-Conor.
+(Or if this is really AVDD to 0V, we may need to reconsider some of
+our other decisions.)
 
---L+4Loj8oukG31gb2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZalNSwAKCRB4tDGHoIJi
-0qUEAP4wbPpsMMqtWJOb6/QiW0MysXXQK+sUEvHTlHRvuvRArwD/ZLMdTg0x8lnf
-WkfJ4ASDBBU6gUzxhaCqkRYPQxWwkQs=
-=GfIu
------END PGP SIGNATURE-----
-
---L+4Loj8oukG31gb2--
+> +
+> +          External reference ref2 only available on ad7173-8.
+> +          If not specified, internal reference used.
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        enum:
+> +          - vref
+> +          - vref2
+> +          - refout-avss
+> +          - avdd
+> +        default: refout-avss
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              const: adi,ad7173-8
+> +    then:
+> +      properties:
+> +        vref2-supply: false
+> +      patternProperties:
+> +        "^channel@[0-9a-f]$":
+> +          properties:
+> +            adi,reference-select:
+> +              enum:
+> +                - vref
+> +                - refout-avss
+> +                - avdd
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      adc@0 {
+> +        compatible =3D "adi,ad7173-8";
+> +        reg =3D <0>;
+> +
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
+> +        interrupt-names =3D "rdy";
+> +        interrupt-parent =3D <&gpio>;
+> +        spi-max-frequency =3D <5000000>;
+> +        gpio-controller;
+> +        #gpio-cells =3D <2>;
+> +
+> +        vref-supply =3D <&dummy_regulator>;
+> +
+> +        channel@0 {
+> +          reg =3D <0>;
+> +          bipolar;
+> +          diff-channels =3D <0 1>;
+> +          adi,reference-select =3D "vref";
+> +        };
+> +
+> +        channel@1 {
+> +          reg =3D <1>;
+> +          diff-channels =3D <2 3>;
+> +        };
+> +
+> +        channel@2 {
+> +          reg =3D <2>;
+> +          bipolar;
+> +          diff-channels =3D <4 5>;
+> +        };
+> +
+> +        channel@3 {
+> +          reg =3D <3>;
+> +          bipolar;
+> +          diff-channels =3D <6 7>;
+> +        };
+> +
+> +        channel@4 {
+> +          reg =3D <4>;
+> +          diff-channels =3D <8 9>;
+> +          adi,reference-select =3D "avdd";
+> +        };
+> +      };
+> +    };
+> --
+> 2.42.0
+>
 

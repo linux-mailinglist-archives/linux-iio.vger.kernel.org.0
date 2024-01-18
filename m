@@ -1,200 +1,164 @@
-Return-Path: <linux-iio+bounces-1740-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1741-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FC2830DCE
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 21:14:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70D1831442
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 09:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16A52B22D05
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jan 2024 20:14:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337711F225A4
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 08:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744F624B24;
-	Wed, 17 Jan 2024 20:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EEE1173E;
+	Thu, 18 Jan 2024 08:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjfkNm9v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0D322EF5;
-	Wed, 17 Jan 2024 20:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720001170A;
+	Thu, 18 Jan 2024 08:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705522446; cv=none; b=ULmwcFPJ0IzzEYSSK2DR1t24t81B4J/Muio3l6OkeWYKEx7HJ30EWs2pArHPdLNe673wBzvN6VIilMpw1GAgRMul37FGlSoVCYO2U00dxVuPJoZjJl3La2nQolYhU4hNxmM9Qf4fWP5Hx4oN5W7zPqFDumJnahiKTOB6duDknpA=
+	t=1705565452; cv=none; b=CPrRObrQ+D/clRnJYJeQmSracfFClvHKdvhZ0wFuJwNjvC6ljG1l7eUYh/VRJbXxA+5rw5OcnFCt3clgLllpXkf05hOcTYYSzPWCm3PvVqB+hFVWAb4gLtLtYY2IL1EgMSFtCPPyYU0eQvYmjnoTnN0buu1fhBWm2X3uCCIjoOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705522446; c=relaxed/simple;
-	bh=GpvNvnhLXozc6WP27ixII0ay/K2GATUmfZ0U1gFMPFI=;
-	h=Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy; b=PlLxf3CIDRheffO0f5qWZdAhTbnolNpX/cs6SIyXIJXlmPQwSyEBvLpzhTtK0kPoasK+rpxlPKUvBI1zwnbQRHgnZ0j72hT18T41ryLU86+FrBVTFYLhX2YFv2Q0USBnPCbccdr607ofB0oJy0tWOccwlfNq5Y0r2aUk/794CPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TFcTF4ySbz6K8sR;
-	Thu, 18 Jan 2024 04:11:13 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5CD96140CF4;
-	Thu, 18 Jan 2024 04:14:00 +0800 (CST)
-Received: from localhost (10.48.153.213) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 17 Jan
- 2024 20:13:59 +0000
-Date: Wed, 17 Jan 2024 20:13:56 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Rob Herring <robh@kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, "Julia
- Lawall" <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>, Peter Zijlstra
-	<peterz@infradead.org>
-Subject: Re: [PATCH 2/4] of: unittest: Use __free(device_node)
-Message-ID: <20240117201356.00007535@Huawei.com>
-In-Reply-To: <20240117194743.GA2888190-robh@kernel.org>
-References: <20240114165358.119916-1-jic23@kernel.org>
-	<20240114165358.119916-3-jic23@kernel.org>
-	<CAL_Jsq+vsXgBYtj66NG+3eZM-9gGw4QkU-bpn+JprAmG+UWmTQ@mail.gmail.com>
-	<20240117170144.00004a43@Huawei.com>
-	<20240117194743.GA2888190-robh@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1705565452; c=relaxed/simple;
+	bh=ok5rxjWhE2d4d91QscThfDxkehsNlfCTZpi60NZLj+s=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
+	 To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=nFKiYOiAJ8e6AT5hMzfic4F1dfAsSv1EEB6lDClfM66EXsIgxULh1ptBvp9VRLqFWvw8CutX2t/xlLYFh8/9+KvoDSnrZB1k0e5UKtc2QZf6EGyRxcopsIox1aHUhKZb1EI56r9LzWCGgF/txYmrWByPrCTTK7PZYNHpkQFsf9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjfkNm9v; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55a0294893eso439792a12.3;
+        Thu, 18 Jan 2024 00:10:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705565448; x=1706170248; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8D9GrCN6KCy/inIyivjsUBv8glt8HtDAWFkt4pSTRR4=;
+        b=jjfkNm9v3BrmDTdbrH/kB0yQKNNa+6AqoZkVHWXrqM4bDZ6XWV6NtC2GY8D88vpHjB
+         N7fRCqOnLkwdJ1RmNYkMAAi7BbqbdH+enus/pu6GPe0mco/J/BHwSFwhxr3pblW2fNYG
+         PojSrNDkX+nXTsPn7n7EB2gc43+efCENDJctWRyWS2ZfxT/iRyveDvz292s4LhP1Rnpp
+         F4PUioQ+5sMnW06k23iJx7cSAdbQgMb3/JlUe4HJVplYpucudk/i3K8wFsqACbPIem3O
+         H3prW3HZva86XtWZM8Td/0Lu4bPOqqVpmTSnjykHUYLypOlpowp59NzuJYGxGZSUT5kV
+         RAng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705565448; x=1706170248;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8D9GrCN6KCy/inIyivjsUBv8glt8HtDAWFkt4pSTRR4=;
+        b=D88LMX/E1pu+IPTd95XWK34/pxq4TRPA9OMkfp+isugloZlnhEjf9+EPNqm3QXHZ/+
+         PFn8blcy0R6UUp+Vx70y+aO0eAEUiyFKFiv9ET5xjrrPBixzS3srDoEtcyJrVBKjfxn+
+         sD/VfsaC95kVyDxZyUYOd6szYuPpvqVHV15tQXDeqmWmg70K3Dq6x6GD+ZG2i6LHk9Bg
+         MDJtW252OxXqB9MvC61E5+pJssHBnCdxGMpZwMiPMHi7KADoAAOTjRM/KGtBrT+MGyXX
+         1M5siNk/oX9ujEGxCJxnjj74Zoy2wQyMku0MBcHDKEb+f+ndiszK/FZPgP20Ml+j3z2c
+         uIcw==
+X-Gm-Message-State: AOJu0Yz5Vix0lq8BLwnmsSz1vumVIXWtjKS1t707qsd6NBO+TsSY2b4r
+	YZC4pVp2T/HQsLAY2JE2OZkVu172qpAitr/Q+k21oL3PlENqmEPPvcmibeqzY8OUMw==
+X-Google-Smtp-Source: AGHT+IGLvo4wbg35gUjDK5QGjm+OOMU9mJXTgGBGSZAwutp91RLeltfNpn3vC0BeSxl1FDH4Z7C3LA==
+X-Received: by 2002:a17:906:c78e:b0:a29:4267:ac9 with SMTP id cw14-20020a170906c78e00b00a2942670ac9mr258926ejb.52.1705565448311;
+        Thu, 18 Jan 2024 00:10:48 -0800 (PST)
+Received: from [172.25.98.130] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id bt22-20020a170906b15600b00a2c32c5f484sm8752674ejb.209.2024.01.18.00.10.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jan 2024 00:10:47 -0800 (PST)
+Message-ID: <cf48e196-a569-4287-93b7-b5f06c34d6f6@gmail.com>
+Date: Thu, 18 Jan 2024 10:10:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/2] dt-bindings: adc: add AD7173
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: David Lechner <dlechner@baylibre.com>, linus.walleij@linaro.org,
+ brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231220104810.3179-1-mitrutzceclan@gmail.com>
+ <CAMknhBELp3NQEHE16gHhC96bttoafQOGxx3a_dLZn9o2Ru7y9g@mail.gmail.com>
+ <20240116163003.0000039d@Huawei.com>
+ <18c239af-71ee-49d8-878e-e1770c3e2d46@gmail.com>
+ <20240117163725.00003981@Huawei.com>
+From: Ceclan Dumitru <mitrutzceclan@gmail.com>
+In-Reply-To: <20240117163725.00003981@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 17 Jan 2024 13:47:43 -0600
-Rob Herring <robh@kernel.org> wrote:
 
-> On Wed, Jan 17, 2024 at 05:01:44PM +0000, Jonathan Cameron wrote:
-> > On Tue, 16 Jan 2024 12:26:49 -0600
-> > Rob Herring <robh@kernel.org> wrote:
-> >  =20
-> > > On Sun, Jan 14, 2024 at 10:54=E2=80=AFAM Jonathan Cameron <jic23@kern=
-el.org> wrote: =20
-> > > >
-> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >
-> > > > A simple example of the utility of this autocleanup approach to
-> > > > handling of_node_put()
-> > > >
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > ---
-> > > >  drivers/of/unittest.c | 10 +++-------
-> > > >  1 file changed, 3 insertions(+), 7 deletions(-)
-> > > >
-> > > > diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-> > > > index e9e90e96600e..b6d9edb831f0 100644
-> > > > --- a/drivers/of/unittest.c
-> > > > +++ b/drivers/of/unittest.c
-> > > > @@ -233,27 +233,23 @@ static void __init of_unittest_dynamic(void)
-> > > >
-> > > >  static int __init of_unittest_check_node_linkage(struct device_nod=
-e *np)
-> > > >  {
-> > > > -       struct device_node *child;
-> > > > +       struct device_node *child __free(device_node) =3D NULL;   =
-=20
-> > >=20
-> > > In another thread[1], it seems that initializing to NULL is bad form
-> > > according to the chief penguin. But as this is a refcounted pointer
-> > > rather than an allocation, IDK? =20
-> >=20
-> > I'm not sure the argument applies here. My understanding is it's not
-> > really about the =3D NULL, but more about where the __free(device_node)=
- is.
-> > The ordering of that cleanup wrt to other similar clean up is to do it
-> > in reverse order of declaration and in some cases that might cause trou=
-ble. =20
->=20
-> Rereading Linus' reply again, I think it is more that you see how=20
-> something is freed right where it is allocated, and the way to do that=20
-> is the allocation and declaration are together.
 
-Ok.  Maybe both issues surfaced in different threads.  Both are valid points
-I've seen made about this stuff.
+On 1/17/24 18:37, Jonathan Cameron wrote:
+> On Wed, 17 Jan 2024 14:43:21 +0200
+> Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
+>> On 1/16/24 18:30, Jonathan Cameron wrote:
+>>> On Mon, 15 Jan 2024 15:53:39 -0600
+>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>> On Wed, Dec 20, 2023 at 4:48 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:  
 
->=20
-> > Here, the only way we could ensure the allocation was done at the right
-> > point and we didn't have that __free before it was set, would be to add
-> > variants of for_each_child_of_node() etc that did something like
-> >=20
-> > #define for_each_child_of_node_scoped(parent, child) \ =20
->=20
-> Note that you don't need child here except to define the name of child.=20
-> Otherwise, the variable name you need for the loop is implicit.
+...
 
-Agreed.
+>>>>> +
+>>>>> +  refin-supply:
+>>>>> +    description: external reference supply, can be used as reference for conversion.    
+>>>> If I'm understanding correctly, this represents both voltage inputs
+>>>> REF+ and REF-, correct? The datasheet says "Reference Input Negative
+>>>> Terminal. REF− can span from AVSS to AVDD1 − 1 V". It seems like they
+>>>> should be separate supplies in case REF- is non-zero. Otherwise, how
+>>>> can we know what voltage it is? (same comment applies to refin2.)  
+>>> Agreed, in this case these are directly used as references (we recently
+>>> had another driver that could take a wide range of negative and positive
+>>> inputs but in that case an internal reference was generated that didn't
+>>> made it not matter exactly what was being supplied.  Not true here though!
+>>>   
+>> Wouldn't it be alright to specify that the voltage specified here should
+>> be the actual difference (REF+)-(REF-)?
+> How do you establish the offset to apply to single ended channels if you don't
+> know the value of REF- (relative to local ground)?
+> 
+> So no - as the device supports single ended channels the difference isn't
+> enough information.  It would probably be fine to do as you say if it
+> were a device with only differential channels where all that matters is
+> the scaling.
 
-> OTOH,=20
-> defining a name which has no type defined anywhere in the user function=20
-> isn't great for readability either.
+	I suppose that you are referring to the first page presentation: "Cross
+point multiplexer; 8 full differential or 16 single-ended channels". I
+consider this to be a bit misleading as all channels are actually fully
+differential (must select positive and negative source, AVSS is not one
+of them).
 
-Agreed it's not great to have the type missing, but I couldn't
-think of a better option. So I think if we want these toys and to not
-have it as a 2 part statement that's what we get.
 
->=20
-> WRT the whole renaming, it might be better to keep 'scoped' in the name=20
-> so that it is obvious how child needs to be handled. Or is the compiler=20
-> smart enough to catch any case of doing it wrong?
+	Even more, the datasheet specifies that when using "single-ended"
+inputs you need to select which of the pins is the common one and
+connect it to the desired GND (be it AVSS, REF-):
 
-I'm not sure we have variable name shadowing detection turned on.
-If that was on we should see a warning on someone not realizing there
-is a local scoped version.  I'm fine with keeping the name.
->=20
-> > 	for (struct device_node *child __free(device_node) =3D \
-> > 	       of_get_next_child(parent, NULL); \
-> >              child !=3D NULL; \
-> > 	     child =3D of_get_next_child(parent, child))
-> >=20
-> > So that the child variable doesn't exist at all outside of the scope
-> > of the loop.
-> >=20
-> > I thought about proposing that style of solution but it felt more invas=
-ive
-> > than a simple __free() annotation.  I don't mind going that way though
-> > if you prefer it. =20
->=20
-> My only preference currently is to not get yelled at. :)
+"Because there is a cross point mux, the user can set any of the analog
+inputs as the common pin. An example of such a scenario is to connect
+the AIN16 pin to AVSS or to the REFOUT voltage (that is, AVSS +
+2.5 V)" (ad7173-8 page 27)
 
-Always nice ;)
-
->=20
-> > Alternative is just to make sure the struct device_node * is always
-> > declared just before the for loop and not bother setting it to NULL
-> > (which is pointless anyway - it just felt fragile to not do so!) =20
->=20
-> Would the compiler know to avoid invoking __free if exiting before the=20
-> variable is set?
-
-If it's declared just before the loop, there wouldn't be such a path
-as the init condition of the loop sets it to a valid handle or NULL.
-
-I looked at about the first half (alphabetical order) of the 127 files
-with for_each_child_of_node().
-
-Vast majority are easily converted.  I think I counted 4 possible bugs
-that need a closer look and a bunch were care would be needed (typically
-steal the pointer for a return).
-
-Happy to do a small set of them and see what it looks like if you think
-that is a promising direction to try?
-
-+CC Peter Zijlstra as person most likely to have seen similar discussions
-or provide input based on his own cleanup.h conversions.
-
-Jonathan
-
->=20
-> Rob
->=20
-
+	For me this is 100% the case that this is a fully differential ADC in
+which the datasheet presents a way to use it single-ended. Let's say
+that we are using EXT_REF, and REF- is non zero. If someone connects
+AVSS to the desired common pin, the ADC will still measure correctly the
+difference of voltage between AIN_POS and AIN_NEG and compare it to the
+EXT_REF.
 

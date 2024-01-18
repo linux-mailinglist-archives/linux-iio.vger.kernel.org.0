@@ -1,270 +1,149 @@
-Return-Path: <linux-iio+bounces-1748-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1749-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B6E831C70
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 16:27:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C207831CD0
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 16:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0D21F2A5FA
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 15:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25338284136
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 15:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DFD28DDA;
-	Thu, 18 Jan 2024 15:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E79286B1;
+	Thu, 18 Jan 2024 15:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbZCw9yz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IOmWctDI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7443C28E02;
-	Thu, 18 Jan 2024 15:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3FE28DA6;
+	Thu, 18 Jan 2024 15:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705591428; cv=none; b=EIzs4qqwDtGDl4htCKIPL/A+NEnr44+a0Xi+g6GpMHCuncaCmQz8KCFj2508CxwvZ5SUadBg0wugTJ5L2cPcM17ZgxDtbWcc3rQLgqaT2FV3r9JQTl7A/8QOwLjDG/lE/PQC51k7hs0qDLbkeQuFydxxfuA75Q30umI2zSeEovA=
+	t=1705593085; cv=none; b=rV62zmQVZm2cJnuYZRHlwlezklokMFavmiNTUYYr8QGptI40Ybe116TQlpE7/DhWQu0fTLNwmjRXYrsXteJ4qZQqiD7GYx7J3T8KHlmT0XvARFBgkyvyJ268YxUHCjVGC7PnxEEE0l8HSrxV1hTl2k5C7El4WE2LJbEgxcnAv18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705591428; c=relaxed/simple;
-	bh=KASNTV/73GzaB0PKuboKWVlAogExlMDgY90JHnOzYrM=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=SLeAgGP3P1aeM0ZKoark+gsGKoFQKxKoo+D+IMm31Hq4bb6HlOrXgvmy690yhfPHzuUKWcJViJg1Dp67j5MmcbeodVujRlx600fv+fRszZOXAUaOokWSfssdjntIexpxz3vcHCCofxOUaCeR7k8VSeYSaEABmKrKZrGAEUM+vGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbZCw9yz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F10FC4AF4F;
-	Thu, 18 Jan 2024 15:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705591427;
-	bh=KASNTV/73GzaB0PKuboKWVlAogExlMDgY90JHnOzYrM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nbZCw9yzH4nZbzJavYpRd8uRU3LjmAhpkMZeZiSbV+7N4D4P3L5D+LTwOINvAVsqY
-	 xzS1elzzeonKtBbsSfpOcpm2A2BHP73aq4ZhJuzQG/G67TQBCPoJ0awGd4v+xHk6GN
-	 SDMoGvp8mhafsCLt3ICcyiW8sn0GsEfzNfvzAgPkx4+ZnjMNxPzQb+Q+64RmQVatRl
-	 04KR0B2W2r+njzgHXfmh6D7ZOL0WdlNf+eDFnlkHksyVN1jS72QY3nRQo8KLLF4Q2L
-	 /UBkyxHxE1K9hgRmgSqV0rPtEHc4R0OiN25iMqY3RQE29c2gKYSAmqIq+Hoq7yzHhb
-	 AhscvGuJp+i1w==
-Date: Thu, 18 Jan 2024 15:23:40 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
-Message-ID: <20240118-lunar-anthem-31bf3b9b351d@spud>
-References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+	s=arc-20240116; t=1705593085; c=relaxed/simple;
+	bh=oWpi2JrQuUZLZromKslwlBpZlFwq2927wlFJpoDKjrg=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=BcJT7aLrmu5R8RI/+2CoBm7YDUAfa9uIWpWAC2JvO8P4bwGFK2LBoyq/GKtEsOX4s8CBP8iLYoQfsk1tJiYSdG6Gm9xuYYanfnCH+r206Askyf7iuxIKTF3k9M7MU9qsP5X+JTHDEzvVEsthhdEB4gX1J7p/fU4pwdoYTSGJjG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IOmWctDI; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a2cea0563cbso984317166b.3;
+        Thu, 18 Jan 2024 07:51:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705593082; x=1706197882; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d9f+L4gOO/9O6aBb0rArE0lflDdOky7Q24Fs1sGyzzw=;
+        b=IOmWctDILRfXqcaWr79cjiPHqKAu8+HBqYKY7ibowws7B3nU4akeYfpZbiawB7QY3q
+         1wxPRmNE3b8aAd+ic8kVO3Km5HEx7iMKFzTME+dwAP2PsVAAhFsHOho2eBJ+D9azS2fk
+         D47iRRwGZwVylyYIUQPRIiFdNrp6xo2lcS7P2B/2ZqNldDEHTg2UGEzXTff8Ha/z7J5F
+         7ji8cXOW2+6fD6ot2LsZMQZUfBi6+vLd5OsopKsmgs41WZZMK7hvUjTB+uVAsvCSgSls
+         1U5srS6vFitCmYND9eWNmaetjOS0hv9S5cbtVLBfWoFQ463jISoyecwqjBAxUr5sh9gJ
+         gJuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705593082; x=1706197882;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d9f+L4gOO/9O6aBb0rArE0lflDdOky7Q24Fs1sGyzzw=;
+        b=DhoIbm/azJ1YQ6PvgcWnymTpM9BNdS1lZnQqNdzCY8ggn+2yJhEOVEZmiHZhe7A1Hj
+         WQPr5QDvI6KuOuM9YLamthbvuRrBLkEfAceTvvwGqwC7vqXHcPPM1WIR2ECjO8F3a5pF
+         /YVh8FVwGNuV11fOZc1mjFU3iRpnvtNWwXiu3J5MBQIa9CxUTpkFQAg7VOEWtrbD6pbf
+         Untg/keJ6NqvP9Bd1EfwgTC5hC5nSFqmsHv9div6FVa55IUB+ZhO+jj1LE5vgX/CTIl7
+         uhz8ZvJfp297NuIZgzUknGhGspV+fBLZv1OZrgIFQZq6S7wbVNsZvIwRVc6e9AyFu+rG
+         nU9Q==
+X-Gm-Message-State: AOJu0Yws1ytVyheZV9nOxFQTXb9031I6OMbT53gb+t+2mjUFvAj5QmPf
+	u9vX5h0sL9dcbANM5QA4gwFUox2Ul0UDm1CQopr/+eOIsPyVhy9D
+X-Google-Smtp-Source: AGHT+IFNOGUSHmhkyBC95bCQG2EUFZpsiNRgUFypRFhQKu1gmfIqRGPzYONGSYDJqQ194/mYvb+Tgw==
+X-Received: by 2002:a17:907:3f08:b0:a29:105:4dd4 with SMTP id hq8-20020a1709073f0800b00a2901054dd4mr770790ejc.13.1705593082175;
+        Thu, 18 Jan 2024 07:51:22 -0800 (PST)
+Received: from [172.25.98.130] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id a4-20020a170906244400b00a2a0fa29cc7sm9205834ejb.47.2024.01.18.07.51.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jan 2024 07:51:21 -0800 (PST)
+Message-ID: <b96d5bfc-cc38-44c7-a88f-e7ac5e4eb71d@gmail.com>
+Date: Thu, 18 Jan 2024 17:51:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yMMWItM1KHJdpK4s"
-Content-Disposition: inline
-In-Reply-To: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
+To: Conor Dooley <conor@kernel.org>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+ <20240118-lunar-anthem-31bf3b9b351d@spud>
+Content-Language: en-US
+From: Ceclan Dumitru <mitrutzceclan@gmail.com>
+In-Reply-To: <20240118-lunar-anthem-31bf3b9b351d@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---yMMWItM1KHJdpK4s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 18, 2024 at 02:49:22PM +0200, Dumitru Ceclan wrote:
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
->=20
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
->=20
-> V11->V12
->  - Drop "binding", describe hardware in binding description
->  - Rename refin and refin2 to vref and vref2
->  - Add better description to external references to better show that the =
-voltage
->     value that needs to be specified is the difference between the positi=
-ve and
->     negative reference pins
->  - Add optional clocks properties
->  - Add optional adi,clock-select property
->  - Add option for second interrupt, error
->  - Add description to interrupts
-> V10->V11
->  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller'
->  - Add description to #gpio-cells property
-> V9->V10
->  - Fix dt_binding_check type warning from adi,reference-select
-> V8->v9
->  - Add gpio-controller and "#gpio-cells" properties
->  - Add missing avdd2 and iovdd supplies
->  - Add string type to reference-select
-> V7->V8
->  - include missing fix from V6
-> V6->V7 <no changes>
-> V5->V6
->  - Moved global required property to proper placement
-> V4 -> V5
->  - Use string enum instead of integers for "adi,reference-select"
->  - Fix conditional checking in regards to compatible
-> V3 -> V4
->  - include supply attributes
->  - add channel attribute for selecting conversion reference
-> V2 -> V3
->  - remove redundant descriptions
->  - use referenced 'bipolar' property
->  - remove newlines from example
-> V1 -> V2 <no changes>
->=20
->  .../bindings/iio/adc/adi,ad7173.yaml          | 242 ++++++++++++++++++
->  1 file changed, 242 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.=
-yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> new file mode 100644
-> index 000000000000..4d0870cc014c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> @@ -0,0 +1,242 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD7173 ADC
-> +
-> +maintainers:
-> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD717x ADC's:
-> +  The AD717x family offer a complete integrated Sigma-Delta ADC solution=
- which
-> +  can be used in high precision, low noise single channel applications
-> +  (Life Science measurements) or higher speed multiplexed applications
-> +  (Factory Automation PLC Input modules). The Sigma-Delta ADC is intended
-> +  primarily for measurement of signals close to DC but also delivers
-> +  outstanding performance with input bandwidths out to ~10kHz.
-> +
-> +  Datasheets for supported chips:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7173-8.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7176-2.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7172-2
-> +      - adi,ad7173-8
-> +      - adi,ad7175-2
-> +      - adi,ad7176-2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    description: |
-> +      Ready interrupt: multiplexed with SPI data out. While SPI CS is lo=
-w,
-> +      can be used to indicate the completion of a conversion.
-> +
-> +      Error: The three error bits in the status register (ADC_ERROR, CRC=
-_ERROR,
-> +      and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin. T=
-herefore,
-> +      the ERROR pin indicates that an error has occurred.
+On 1/18/24 17:23, Conor Dooley wrote:
+> On Thu, Jan 18, 2024 at 02:49:22PM +0200, Dumitru Ceclan wrote:
 
-Instead of having a single description like this, you can create an
-items list with two descriptions, one for each interrupt.
+...
 
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    items:
-> +      - const: rdy
-> +      - const: err
+>> +  adi,clock-select:
+>> +    description: |
+>> +      Select the ADC clock source. Valid values are:
+>> +      int         : Internal oscillator
+>> +      int-out     : Internal oscillator with output on XTAL2 pin
+>> +      ext-clk     : External clock input on XTAL2 pin
+>> +      xtal        : External crystal on XTAL1 and XTAL2 pins
+>> +
+>> +    $ref: /schemas/types.yaml#/definitions/string
+>> +    enum:
+>> +      - int
+>> +      - int-out
+>> +      - ext-clk
+>> +      - xtal
+>> +    default: int
+> I am not a fan of properties like this one, that in my view reimplement
+> things that are supported by the regular clocks properties. I've got
+> some questions for you so I can understand whether or not this custom
+> property is required.
+> 
+> Whether or not the ext-clk or xtal is used is known based on
+> clock-names - why is the custom property required to determine that?
+> If neither of those clocks are present, then the internal clock would be
+> used. Choosing to use the internal clock if an external one is provided
+> sounds to me like a software policy decision made by the operating
+> system.
 
-> +  clocks:
-> +    maxItems: 1
-> +    description: |
-> +      Optional external clock source. Can include one clock source: exte=
-rnal
-> +      clock or external crystal.
-> +
-> +  clock-names:
-> +    enum:
-> +      - ext-clk
-> +      - xtal
-> +
-> +  adi,clock-select:
-> +    description: |
-> +      Select the ADC clock source. Valid values are:
-> +      int         : Internal oscillator
-> +      int-out     : Internal oscillator with output on XTAL2 pin
-> +      ext-clk     : External clock input on XTAL2 pin
-> +      xtal        : External crystal on XTAL1 and XTAL2 pins
-> +
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum:
-> +      - int
-> +      - int-out
-> +      - ext-clk
-> +      - xtal
-> +    default: int
+If there was no int-out, sure. I considered that the choice between int
+and int-out could be made here. So better for driver to choose int/int-out?
 
-I am not a fan of properties like this one, that in my view reimplement
-things that are supported by the regular clocks properties. I've got
-some questions for you so I can understand whether or not this custom
-property is required.
+> 
+> Finally, if the ADC has a clock output, why can that not be represented
+> by making the ADC a clock-controller?
+> 
 
-Whether or not the ext-clk or xtal is used is known based on
-clock-names - why is the custom property required to determine that?
-If neither of those clocks are present, then the internal clock would be
-used. Choosing to use the internal clock if an external one is provided
-sounds to me like a software policy decision made by the operating
-system.
-
-Finally, if the ADC has a clock output, why can that not be represented
-by making the ADC a clock-controller?
-
-Cheers,
-Conor.
-
---yMMWItM1KHJdpK4s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZalCfAAKCRB4tDGHoIJi
-0hhaAQDvo/bgLVu6oS5llw2h3h8XAlAL+bAjiwHrVL59UOfrNgEA/h5vAOs0/5Qe
-NRAsWXVr6TqGMTKa//I5pxMUFyi4FwY=
-=6PyI
------END PGP SIGNATURE-----
-
---yMMWItM1KHJdpK4s--
+Was not familiar with this/did not cross my mind. So if xtal/ext-clk is
+present, the driver should detect it and disable the option for clock
+output? (Common pin XTAL2)
 

@@ -1,433 +1,317 @@
-Return-Path: <linux-iio+bounces-1752-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1753-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254008321B1
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 23:43:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8638C8322A4
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 01:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BB3B24473
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jan 2024 22:43:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35CDB237D5
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 00:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595C51EB36;
-	Thu, 18 Jan 2024 22:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC71645;
+	Fri, 19 Jan 2024 00:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a8V+KQTy"
+	dkim=pass (1024-bit key) header.d=analog.onmicrosoft.com header.i=@analog.onmicrosoft.com header.b="6eLo6hVR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCD31EA77
-	for <linux-iio@vger.kernel.org>; Thu, 18 Jan 2024 22:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705617784; cv=none; b=URSr6xtop2WHHa/JmPhPOdU0cELmgtobZLc18sldIWYX8YhTRxjK/6UdbNv6kJDixzOw/eMWWGiewoglflhUEE72D1B/U2AySLCbQ9OdbfYY0vbM9lyMnqk014pN/6mhSkbD8thF6NuZfAlhAXKshRY7YKwGrJO3JP2FMP/m3Jo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705617784; c=relaxed/simple;
-	bh=+1qKA2IP4vtwr2qgRdA4RfnQ7Z2Up8JMUN1h2ytfNpg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y2/ZhWgKRkBmv4ov+ZFMQCyBfW3e6xXf5blfekalwxS3DbMjEVqQzZVx2/rX75zn3XHE4D6PXKsWyeSBti58x/4PAPvkq5K1v/qUN0Oa6HMFPgkEsk2F/8Zyo6qBvmWbiliuf+20+YAfX1645sJx6bAI8Kahsgllv67PMesPtsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a8V+KQTy; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2cca8eb0509so2387711fa.3
-        for <linux-iio@vger.kernel.org>; Thu, 18 Jan 2024 14:43:00 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45EE4A02;
+	Fri, 19 Jan 2024 00:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705624243; cv=fail; b=mbb8DbIQCWhaAvpdF7HjfjbVqwfVybzdUDz05Dl/2gLverM/b6+lD0fGzZPJ66orHVt0aVgTKHErd8pRAzHFZmBxJn2zgk2hl025v32Opa334YjQNFS5XedBHP4hjxD5spp57lWDBKUJNBpH7kqfPGtB8cXJJ9mPPDO7Yw6OR1Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705624243; c=relaxed/simple;
+	bh=NTprG18zteXaXhg3r0C2RriGE5tbgSPLsPxxT4lFop4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lM+wCMKkulA2pjx3Nbx99ZH9zJuB/w6IYaRQVbvYOkKJlyNQ0h0prnS2djzi67OQOtzy7U+FOWoJtOXN5lcqqsrpEh9z8sfbBNLuanPrrptwkaY4imqqfFSWNMsDCsy2AK4MligWgTZIP2u4IE7YlbIIRoAfMltHGRHzaojn1kg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (1024-bit key) header.d=analog.onmicrosoft.com header.i=@analog.onmicrosoft.com header.b=6eLo6hVR; arc=fail smtp.client-ip=148.163.139.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40IIrZpa003418;
+	Thu, 18 Jan 2024 19:30:12 -0500
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3vkr17pnr4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 19:30:12 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TuXbc/ZVA30165MxLJCtHZ6RHhJhgcpbwl5msGV5VjRzQN8pspTcaINScxStzZSxJJH7UjftG0EjIG0jS8mbCDkC7ltBhnW1FJLWiZIpr0i+yxC+sUjy+UUBDgi2HDsn+VkMUXa7dd8uQQWrrT5ZFd1+4H42Y3HQyPfQnAI5w69QyQztNTOHGC61B7WLXmSAp2HZYc/MtQaIHjQNj7vdOX7PVecSXw4bU92WcKcBcIYn2YCz9d9hPK2GUURbDcJv3SwSHwbi9543ruVENa43ImYFqldtLiozMmtpDI0IIZjt3jWrhI2OkwGCj7ljq/wkejub10q/Hx1asPJ8Tp1jrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/L1M33DrvP02YBLEvkyxF9sNJtACkZOhbOIsBRZUAz4=;
+ b=fNLbdabZosMlHG15gLPgfyUktGHCCeBmVzfgLImmGkU5+u0eNQK4V7d+Ar9RV++NeTjSHk7r6tmru2fRIT/ohHAmlBMoxlIh2DHo+hvEF8o23W4ozh/EJvDxN6DyQtq4VkLobGQW0FErZ+0X4+ThXlnUF9KdaAJk0jcfgwWt9xOosxJ948H3jIMH81IqT7r06FDCTmzloI5VNMaRWllarKo1zX6mMsI9e2XX0XULIFgg+Sq2q95tr4PFLjukuogMAf0LgmPeCLl7VkTvWgPUPoCo/Q2tF2AGAlLofJ08TIxPZ/vYWW7vQ8PmMQOAroXGu0on6yexbXwYeyaI1Wzv+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1705617778; x=1706222578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S2OucYUMdApd6L43qg3jvqTNIxk03x2uwjfK2c63Pxo=;
-        b=a8V+KQTyfIPD1zKSZEHMOlSnj0xACASJxNCiB2mtgHaP0efm8bsanedkMQ80vu4qxI
-         bFJH7yOGD26Q+L7sQqKRSVbnWBDzvPVJ596bWFKW1y98jwpAJsgU+KQvzFB7t2AffXpH
-         GzuoP5s3kyZnLCLM7OzmtxjG6U3yxVj0RvKvGrX6iQaqX2qtgTBrARklCtrraC9ksfCO
-         Iy2/l+F5gVilBneOwz2+GZdUuSq46krD3uE5KG3mTbJjfqBE4RlinBYuxTsA/brFj0dA
-         6LTZp53gQKCJTwaaHAnWvsF/MDUqdFeEn/V0nNckTR5cDIbyQhwaiVxTorgKOxiIzl9O
-         acNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705617778; x=1706222578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S2OucYUMdApd6L43qg3jvqTNIxk03x2uwjfK2c63Pxo=;
-        b=QMSmNV/GpErI/4qByfsGbxV1Ej2aZVQCw+B0v8arQ7y7er5sCdH0VwxeSs3w5H2Od7
-         Gcicn3oyiam81u9ERBrjtILDJ+CGqtWXs2VC22YvSONeVzltsiVVU54bDI1D27wr81vC
-         UW4e7DDLMRmNDdldy4Dw19dH49teixZQndkPg+r+hjEIAZ5QldUI8TZmg/Z4NdP7btlj
-         x8dle0cm8489xXdKzu1PmkqyHJBUYkmeORLUAPc3gwnf4vEuenPWLhNDfnMy6B3x24lL
-         mEYMalqALuNBWUqtd2vWnVAWssTN8ZM7ia6X6cO/yaL0PiEdqqpiugXhyO8cN+nS+Sno
-         mqpQ==
-X-Gm-Message-State: AOJu0YxlBmqF5OEodV3yYVcG5CpwG1O476+72xNl4031QqarTXk+/QP1
-	0iACi4zTz63ZgVk24LcE0ws6oe0rSbBcd/AcKC2sv2Rfj9SIGEQHAOUT1s2vspawM48PGFjm0xn
-	WRhTj8+gLeyGQDOocmlx9fmAibhLm7paO9ZZGvg==
-X-Google-Smtp-Source: AGHT+IE/0Kja/Yg1yBuySMn66AdspOWr0ARCiQ3WB9sSkWlaul5RnQsnaih5GsFZXdTaueRcVpq+OSsYZeHEUE/mZ+M=
-X-Received: by 2002:a2e:888b:0:b0:2cc:e9d9:8293 with SMTP id
- k11-20020a2e888b000000b002cce9d98293mr847082lji.31.1705617778025; Thu, 18 Jan
- 2024 14:42:58 -0800 (PST)
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/L1M33DrvP02YBLEvkyxF9sNJtACkZOhbOIsBRZUAz4=;
+ b=6eLo6hVRjdjHGRW5pg1WtDmiB0C5I8/hwFKFOEz+yPy/HLueTwlcXxkWBZNVKPvgDrPWeSG+0dvWFRXKvFho34H8ddtGGSAav6DLIb+lBY6w/lMMR6VfYNCV80JajUC+8HS1sdzPYWH0+Rm+fdZ1eatsHvdsVpZJ/fMRInOcELU=
+Received: from PH0PR03MB7141.namprd03.prod.outlook.com (2603:10b6:510:296::20)
+ by SA1PR03MB6434.namprd03.prod.outlook.com (2603:10b6:806:1c1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24; Fri, 19 Jan
+ 2024 00:30:09 +0000
+Received: from PH0PR03MB7141.namprd03.prod.outlook.com
+ ([fe80::ad49:e4d6:441b:28cb]) by PH0PR03MB7141.namprd03.prod.outlook.com
+ ([fe80::ad49:e4d6:441b:28cb%5]) with mapi id 15.20.7202.024; Fri, 19 Jan 2024
+ 00:30:09 +0000
+From: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+To: Conor Dooley <conor@kernel.org>
+CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jonathan
+ Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich,
+ Michael" <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
+        Linus Walleij
+	<linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: RE: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
+Thread-Topic: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
+Thread-Index: AQHaSeyhcow0swT57keZetZEWhgOabDfvaqAgACHJ3A=
+Date: Fri, 19 Jan 2024 00:30:09 +0000
+Message-ID: 
+ <PH0PR03MB71410860593D3C7253B200FCF9702@PH0PR03MB7141.namprd03.prod.outlook.com>
+References: <20240118085856.70758-1-kimseer.paller@analog.com>
+ <20240118085856.70758-2-kimseer.paller@analog.com>
+ <20240118-steadily-coauthor-de8275118901@spud>
+In-Reply-To: <20240118-steadily-coauthor-de8275118901@spud>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: 
+ =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcjJc?=
+ =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
+ =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy1lNTJkY2U4My1iNjYxLTExZWUtYWFjZC0xNDc1?=
+ =?us-ascii?Q?NWIzNWRkYzhcYW1lLXRlc3RcZTUyZGNlODUtYjY2MS0xMWVlLWFhY2QtMTQ3?=
+ =?us-ascii?Q?NTViMzVkZGM4Ym9keS50eHQiIHN6PSI4ODg0IiB0PSIxMzM1MDA5NzgwNzg2?=
+ =?us-ascii?Q?Mjg3MDMiIGg9ImVjei9KZTJ6NTlCRG01bnRZblU3UUZqR1NDVT0iIGlkPSIi?=
+ =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
+ =?us-ascii?Q?QmZPNHVuYmtyYUFaa2VFSWozOWYzMm1SNFFpUGYxL2ZZREFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFFQUFRQUJBQUFBbEdUR1ZnQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
+ =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
+ =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
+ =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
+ =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
+ =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
+ =?us-ascii?Q?dGE+?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR03MB7141:EE_|SA1PR03MB6434:EE_
+x-ms-office365-filtering-correlation-id: d2acf857-12d7-4476-1d4b-08dc1885cb11
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ IAAILzuOyBB23zbcEaMEVQpdfh6GFE8QE4ejiIrsvuWzr36SKC74tHc9h+iArFJVg+vyMW9FwVT1JoeEhhCUTHVPjnX2C7+DTNORSpoDKKyxw0kzl8OYuWuYUvYSnoeCyH6RP8w5glTPEDQOXJjl5fDKTqtPn365LlWK9S6sSRI3Hy2VnPg/Vmyd5jrbSnE/6pyw8JX+pC1areocBgGDA4pLPfpn8t+CXBOdUAYpcRMCy9ePr/q7WbuRwrT8ocGbi9H96wwbJxtP15svoI5CQk4dX4aTvSGsELV6zWm6fHjSvlu65P6xq6s4O0+HCNMj7qm28fHNu1o5yt///CNSUsxeMj98I1yZIZ+2IGG6Zak7uBYSWBu8VjsqsJOGTWdhokim7KN/ecP739/G2N8Vnnwn2Fm2nrvZU33Q6pO9m8qgyJaGKbJCnamtGNMy4y9qdNEnZu0s/ltQ0BBc/VGNOwZJsDAIVhRkOd91rWxFR2l+WnRDLwoZJnwjO1M2djsZTQ6TyoLKzH5jZqzlyUmZnlMeSXTTBrl4tE1swPMf7tiNGqysGqteAhHfZB/aNPbhscs3xMWcAtoKvcQpX0DbSkyF+AaWTA1532NQ8l855EwU9thW4n50D+igqdV7TKTDV2x5+jOJ474gmx44ZgT41Q==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB7141.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(366004)(136003)(396003)(230922051799003)(230173577357003)(230273577357003)(186009)(1800799012)(451199024)(64100799003)(122000001)(66946007)(66476007)(66446008)(8676002)(76116006)(4326008)(8936002)(54906003)(66556008)(64756008)(966005)(478600001)(38100700002)(26005)(6506007)(71200400001)(7696005)(9686003)(55016003)(52536014)(316002)(6916009)(86362001)(53546011)(83380400001)(33656002)(38070700009)(7416002)(2906002)(5660300002)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?us-ascii?Q?+7j8FAqLfnxmAiI0zq83y8L9xMnyyfepHZyfQnhfkB2Pf347m7nXKIxeezcu?=
+ =?us-ascii?Q?mYkvk9InxXWfWkblKEQk5EI6tCRhwMJqBG4BkFsWxRT9WYpH/NtIUn9vle5H?=
+ =?us-ascii?Q?kK3Wlev0+zIN5/S269nuAil7VCnYG4LIhGOH8FPo5hneEtYRblY88AfW2DI9?=
+ =?us-ascii?Q?CRWsEtJA4poRi4ML6xTiJWeohhVbOZ2T5GCw8lyFmbfdG8aS0vm26WC+l183?=
+ =?us-ascii?Q?EmqjLBrCfeFWyQ6EoXepC0Lnw5M9TPQez4sZspnVg/+rd6psciML23zZmiGm?=
+ =?us-ascii?Q?/fI/V+LzqeFMtLwnJqFuNK1io+KcOZdqvEadjMFUxw1YdrDxEFIp5SgJccGd?=
+ =?us-ascii?Q?AGBXE9eH2K3Nui1o3qt7r7kMUxHu+42B2PPuePlAAbqtJLYNn6q6xI8WrI3l?=
+ =?us-ascii?Q?vP8Buy+Sv/RsfsdJ6mj0AG+Eoqy/+MuPTRh9SYAc60sy8NXT0kwkUv2e9BSO?=
+ =?us-ascii?Q?GNdXijN9U872u73k4HPkwTFRFzgAP7phxjan+iDo9LUcWrmfrs5LOQ8pN37h?=
+ =?us-ascii?Q?KG9pLRsyTfPPULmkCypxV35WDLvKaRABjcaQCLD3PKx/Sy702FNnf7JDPyYc?=
+ =?us-ascii?Q?eHwOCMVSwq+zkZCq5NC3tuFA8VUdtrw0HG1UHC6tOyiv0a98/1a/Vfz7MfgN?=
+ =?us-ascii?Q?lIANelvp+vCxdxJ/y3VECZSu/XRFyIdOZW7JiDscIa+gfwxpqFc2z15QU2wE?=
+ =?us-ascii?Q?UpqZ3aIc7notzsc+VCNCvPH1KTcSqxrWL0frxCK4lRqB7hVmiT6IZVUZslqV?=
+ =?us-ascii?Q?TjUi/EOI5HqkqRBhL/JMKEnoHK1/yGuMrPVuidEvJweXLxwWmKfKYjK2EykY?=
+ =?us-ascii?Q?emDkKA0Msubj6fyPL6e4osmJcX+sESw2S6w5FiRuOK7mgGmz1IeVhAQxom40?=
+ =?us-ascii?Q?3Vzp88MItYBZ9sUbMW9kR3ObhrdWI20zRzEbf6Zvry9ozp0sNq5FZxRNFNyy?=
+ =?us-ascii?Q?dDAQonRXWKJqO9K7sGcyONb//XJ62hYlNsok4hTDn1VzdqCXUDL3/m7jyMxZ?=
+ =?us-ascii?Q?H1uBAzqEwK8HwHYSx2QQcEeF8OjLeGC3mb210W5ai0Y9SczqvCsErgk5RA4g?=
+ =?us-ascii?Q?+piDG6CF5i2VGMUOOiMsym8YDFnKuShQ+3bw6b+CL9MzCzSwv/aPOhNTJ6j+?=
+ =?us-ascii?Q?6j1YYdKQda0yhbNOxuwY14iP8uvN3IPyjTg9Kyi2ApL0S6P9H4Ih6rMb0RCY?=
+ =?us-ascii?Q?0iAx4P4wHz9pjqkSBxkrS/0euk2JCTPeyz/k5T5UPg9dB5JEz4Y17XaocIrp?=
+ =?us-ascii?Q?NfEyKzluxT8YOFV+3ds53UXloxUyWzwpXfI6FAKOspoNFZuOIDNKU9XTZ+JY?=
+ =?us-ascii?Q?Tv3X2v56OnWbKfET6kHBTiLFZ9KXR35IMFXhBxFaU2ZQoLJlHrRzd+UtOjbJ?=
+ =?us-ascii?Q?jgYULTyVrpo1DtvGrvggVHwu2vncUsStPhhtBGpTNWPLQjhqPxbOKViRhx1s?=
+ =?us-ascii?Q?yo84s+cVUTjmYEGczs7qF6BiAheUtFK2whZsEEh1jVu3D6XtumqCXKLZy4Mc?=
+ =?us-ascii?Q?XTDAy5GAHCrXrSxnJzXVQosirW76f9IwTWvfdA5fgtxF5bA40YC3XFLYl3L1?=
+ =?us-ascii?Q?CdWqOTtpEQliY5/ps/eGZX0m78SLsbHskpdPpkYDDamv9sLMPY19dp33aUeU?=
+ =?us-ascii?Q?fA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
-In-Reply-To: <20240118125001.12809-1-mitrutzceclan@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 18 Jan 2024 16:42:47 -0600
-Message-ID: <CAMknhBEmye4UvLtR_3M2VMoGOAJ7tm1Rpy7rThsojzNcpMu6vA@mail.gmail.com>
-Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
-	Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB7141.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2acf857-12d7-4476-1d4b-08dc1885cb11
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jan 2024 00:30:09.6088
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Db0OV0k5D9mXrnVVW7WpMPjQpwteBhaCOlkySVukeZazli8bncj+lWxPrGVBhx9WDa+dTVqlAaob/UtWJ/wqAlQKye55xt2P6xFyXfovNsg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR03MB6434
+X-Proofpoint-GUID: LuEio_kkwe7yShR-_nd9QVBHrM5oW1cZ
+X-Proofpoint-ORIG-GUID: LuEio_kkwe7yShR-_nd9QVBHrM5oW1cZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-18_11,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 spamscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401190001
 
-On Thu, Jan 18, 2024 at 6:50=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@gmail=
-.com> wrote:
->
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel application=
-s
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
->
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
->
-> V11->V12
->  - Drop "binding", describe hardware in binding description
->  - Rename refin and refin2 to vref and vref2
->  - Add better description to external references to better show that the =
-voltage
->     value that needs to be specified is the difference between the positi=
-ve and
->     negative reference pins
->  - Add optional clocks properties
->  - Add optional adi,clock-select property
->  - Add option for second interrupt, error
->  - Add description to interrupts
-> V10->V11
->  - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller=
-'
->  - Add description to #gpio-cells property
-> V9->V10
->  - Fix dt_binding_check type warning from adi,reference-select
-> V8->v9
->  - Add gpio-controller and "#gpio-cells" properties
->  - Add missing avdd2 and iovdd supplies
->  - Add string type to reference-select
-> V7->V8
->  - include missing fix from V6
-> V6->V7 <no changes>
-> V5->V6
->  - Moved global required property to proper placement
-> V4 -> V5
->  - Use string enum instead of integers for "adi,reference-select"
->  - Fix conditional checking in regards to compatible
-> V3 -> V4
->  - include supply attributes
->  - add channel attribute for selecting conversion reference
-> V2 -> V3
->  - remove redundant descriptions
->  - use referenced 'bipolar' property
->  - remove newlines from example
-> V1 -> V2 <no changes>
->
->  .../bindings/iio/adc/adi,ad7173.yaml          | 242 ++++++++++++++++++
->  1 file changed, 242 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.=
-yaml
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> new file mode 100644
-> index 000000000000..4d0870cc014c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> @@ -0,0 +1,242 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD7173 ADC
-> +
-> +maintainers:
-> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD717x ADC's:
-> +  The AD717x family offer a complete integrated Sigma-Delta ADC solution=
- which
-> +  can be used in high precision, low noise single channel applications
-> +  (Life Science measurements) or higher speed multiplexed applications
-> +  (Factory Automation PLC Input modules). The Sigma-Delta ADC is intende=
-d
-> +  primarily for measurement of signals close to DC but also delivers
-> +  outstanding performance with input bandwidths out to ~10kHz.
-> +
-> +  Datasheets for supported chips:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7173-8.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7176-2.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7172-2
-> +      - adi,ad7173-8
-> +      - adi,ad7175-2
-> +      - adi,ad7176-2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    description: |
-> +      Ready interrupt: multiplexed with SPI data out. While SPI CS is lo=
-w,
-> +      can be used to indicate the completion of a conversion.
-> +
-> +      Error: The three error bits in the status register (ADC_ERROR, CRC=
-_ERROR,
-> +      and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin. T=
-herefore,
-> +      the ERROR pin indicates that an error has occurred.
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    items:
-> +      - const: rdy
-> +      - const: err
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  spi-max-frequency:
-> +    maximum: 20000000
-> +
-> +  gpio-controller:
-> +    description: Marks the device node as a GPIO controller.
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +    description:
-> +      The first cell is the GPIO number and the second cell specifies
-> +      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
-> +
-> +  vref-supply:
-> +    description: |
-> +      Differential external reference supply used for conversion. The re=
-ference
-> +      voltage (Vref) specified here must be the voltage difference betwe=
-en the
-> +      REF+ and REF- pins: Vref =3D (REF+) - (REF-).
-> +
-> +  vref2-supply:
-> +    description: |
-> +      Differential external reference supply used for conversion. The re=
-ference
-> +      voltage (Vref2) specified here must be the voltage difference betw=
-een the
-> +      REF2+ and REF2- pins: Vref2 =3D (REF2+) - (REF2-).
-> +
-> +  avdd-supply:
-> +    description: avdd supply, can be used as reference for conversion.
+> -----Original Message-----
+> From: Conor Dooley <conor@kernel.org>
+> Sent: Friday, January 19, 2024 12:10 AM
+> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>; Lars-Peter
+> Clausen <lars@metafoo.de>; Hennerich, Michael
+> <Michael.Hennerich@analog.com>; Rob Herring <robh+dt@kernel.org>;
+> Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
+> <conor+dt@kernel.org>; Crt Mori <cmo@melexis.com>; Linus Walleij
+> <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>
+> Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
+>=20
+> [External]
+>=20
+> Hey,
+>=20
+> On Thu, Jan 18, 2024 at 04:58:55PM +0800, Kim Seer Paller wrote:
+> > Dual microwave down converter module with input RF and LO frequency
+> > ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+> > 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+> > for each down conversion path.
+> >
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > ---
+> > V5 -> V6: Moved array of switch and attenuation GPIOs to the channel no=
+de.
+> >           Changed pin coords with friendly names. Removed Reviewed-by t=
+ag.
+> > V4 -> V5: Added Reviewed-by tag.
+> > V3 -> V4: Updated the description of the properties with multiple entri=
+es and
+> >           defined the order.
+> > V2 -> V3: Adjusted indentation to resolve wrong indentation warning.
+> >           Changed node name to converter. Updated the descriptions to c=
+larify
+> >           the properties.
+> > V1 -> V2: Removed '|' after description. Specified the pins connected t=
+o
+> >           the GPIOs. Added additionalProperties: false. Changed node na=
+me to
+> gpio.
+> >           Aligned < syntax with the previous syntax in the examples.
+> >
+> >  .../bindings/iio/frequency/adi,admfm2000.yaml | 129 ++++++++++++++++++
+> >  MAINTAINERS                                   |   7 +
+> >  2 files changed, 136 insertions(+)
+> >  create mode 100644
+> Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> >
+> > diff --git
+> a/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> > new file mode 100644
+> > index 000000000000..6f2c91c38666
+> > --- /dev/null
+> > +++
+> b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> > @@ -0,0 +1,129 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright 2023 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: ADMFM2000 Dual Microwave Down Converter
+> > +
+> > +maintainers:
+> > +  - Kim Seer Paller <kimseer.paller@analog.com>
+> > +
+> > +description:
+> > +  Dual microwave down converter module with input RF and LO frequency
+> ranges
+> > +  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GH=
+z.
+> > +  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for ea=
+ch down
+> > +  conversion path.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,admfm2000
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+> > +
+> > +patternProperties:
+> > +  "^channel@[0-1]$":
+> > +    type: object
+> > +    description: Represents a channel of the device.
+> > +
+> > +    additionalProperties: false
+> > +
+> > +    properties:
+> > +      reg:
+> > +        description:
+> > +          The channel number.
+> > +        minimum: 0
+> > +        maximum: 1
+> > +
+> > +      adi,mode:
+> > +        description:
+> > +          RF path selected for the channel.
+> > +            0 - Direct IF mode
+> > +            1 - Mixer mode
+> > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > +        enum: [0, 1]
+>=20
+> How come this is an enum, rather than a boolean property such as
+> "adi,mixer-mode"?
 
-I think it would be helpful to have a description similar to
-vref-supply here. This is the voltage between AVDD and AVSS. So in
-both cases AVDD=3D5V, AVSS=3D0V and AVDD=3D+2.5V, AVSS=3D-2.5V, this supply
-should report 5V.
+I used an enum, perhaps because it was easier to implement. However, this
+could be changed if a boolean property might be more suitable in this case.
+Is that the preferred option?
 
-> +
-> +  avdd2-supply:
-> +    description: avdd2 supply, used as the input to the internal voltage=
- regulator.
+Best regards,
+Kim Seer Paller
 
-This supply is also referenced to AVSS.
 
-> +
-> +  iovdd-supply:
-> +    description: iovdd supply, used for the chip digital interface.
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: |
-> +      Optional external clock source. Can include one clock source: exte=
-rnal
-> +      clock or external crystal.
-> +
-> +  clock-names:
-> +    enum:
-> +      - ext-clk
-> +      - xtal
-> +
-> +  adi,clock-select:
-> +    description: |
-> +      Select the ADC clock source. Valid values are:
-> +      int         : Internal oscillator
-> +      int-out     : Internal oscillator with output on XTAL2 pin
-> +      ext-clk     : External clock input on XTAL2 pin
-> +      xtal        : External crystal on XTAL1 and XTAL2 pins
-> +
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum:
-> +      - int
-> +      - int-out
-> +      - ext-clk
-> +      - xtal
-> +    default: int
-> +
-> +patternProperties:
-> +  "^channel@[0-9a-f]$":
-> +    type: object
-> +    $ref: adc.yaml
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        minimum: 0
-> +        maximum: 15
-> +
-> +      diff-channels:
-> +        items:
-> +          minimum: 0
-> +          maximum: 31
-> +
-> +      adi,reference-select:
-> +        description: |
-> +          Select the reference source to use when converting on
-> +          the specific channel. Valid values are:
-> +          vref       : REF+  /REF=E2=88=92
-> +          vref2      : REF2+ /REF2=E2=88=92
-> +          refout-avss: REFOUT/AVSS (Internal reference)
-> +          avdd       : AVDD
-
-Could write this as AVDD/AVSS to be consistent with the other 3 options.
-
-(Or if this is really AVDD to 0V, we may need to reconsider some of
-our other decisions.)
-
-> +
-> +          External reference ref2 only available on ad7173-8.
-> +          If not specified, internal reference used.
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        enum:
-> +          - vref
-> +          - vref2
-> +          - refout-avss
-> +          - avdd
-> +        default: refout-avss
-> +
-> +    required:
-> +      - reg
-> +      - diff-channels
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          not:
-> +            contains:
-> +              const: adi,ad7173-8
-> +    then:
-> +      properties:
-> +        vref2-supply: false
-> +      patternProperties:
-> +        "^channel@[0-9a-f]$":
-> +          properties:
-> +            adi,reference-select:
-> +              enum:
-> +                - vref
-> +                - refout-avss
-> +                - avdd
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      adc@0 {
-> +        compatible =3D "adi,ad7173-8";
-> +        reg =3D <0>;
-> +
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
-> +        interrupt-names =3D "rdy";
-> +        interrupt-parent =3D <&gpio>;
-> +        spi-max-frequency =3D <5000000>;
-> +        gpio-controller;
-> +        #gpio-cells =3D <2>;
-> +
-> +        vref-supply =3D <&dummy_regulator>;
-> +
-> +        channel@0 {
-> +          reg =3D <0>;
-> +          bipolar;
-> +          diff-channels =3D <0 1>;
-> +          adi,reference-select =3D "vref";
-> +        };
-> +
-> +        channel@1 {
-> +          reg =3D <1>;
-> +          diff-channels =3D <2 3>;
-> +        };
-> +
-> +        channel@2 {
-> +          reg =3D <2>;
-> +          bipolar;
-> +          diff-channels =3D <4 5>;
-> +        };
-> +
-> +        channel@3 {
-> +          reg =3D <3>;
-> +          bipolar;
-> +          diff-channels =3D <6 7>;
-> +        };
-> +
-> +        channel@4 {
-> +          reg =3D <4>;
-> +          diff-channels =3D <8 9>;
-> +          adi,reference-select =3D "avdd";
-> +        };
-> +      };
-> +    };
-> --
-> 2.42.0
->
 

@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-1762-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1761-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E0E832C9E
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B33E832CA0
 	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 17:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE7F71C2338B
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 16:01:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42BAB2852E1
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 16:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CF954F86;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FBC54F87;
 	Fri, 19 Jan 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bq9ffkOO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tz+I+sC4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27EA54BE1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27ADDF56;
 	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705680069; cv=none; b=XchVw4tTIYQQnJM9ObHiASh76u7kulv+b+67eQc34OXEo26oXOy9/vngzZgQquVkv9//vjjNVOO/RS/UrWRZy/BH3iCpgdCD+9B5FaE0ire67CZ3xN59YYkJ5M/QwDjBqbH+GdS9pSp7YkZ6UrsO8Wv128xQ97m4Y42CLv3cynU=
+	t=1705680069; cv=none; b=mTf6qZXmmRH/wUw5gOuluxHWMT74CWYfsFg3YUV0opg7gdhM947gyip9KA6xp5xc5h7TRnVoLakDbhIF1zqB7N+oOQO4i2OjoQEB8vqp7GKeWImr9N5O8COzhoY1YDzCa/n9xS9XX3gzIUdh9gicRxZi1wSWKMAbqHck44vwVmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705680069; c=relaxed/simple;
-	bh=Gyh97/yhmBY6SBtoSix+uXg8bS8pDPinzhK+HnPgz3g=;
+	bh=OPRTb/XW+2zsH8AnZHeRHdEClBBBI7WQURvAeLFHUZo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JoyTviATZUE2tYeLvoEeL+XlJYbHIWXTObWA70+G9bXxujL2Qt0BYPHa/gKnlFaNez1slLKix559aZa+ZuSn5shQzyVHDs85ZPBNeeQXsgG+BhI3ZZDvjGb+OnqV8CfOYynbaVMtdj+ZrgpCNquPWJUsvZy2ExqA2v98DI/dTUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bq9ffkOO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 787E1C433B2;
+	 In-Reply-To:To:Cc; b=qVlCtIKV5JJtgQ9ePmeJEPXosoSWCPrRlLsWwoVjdh7REVUgFz9ArW1YVGVe4nRQ27DPPDnmSrmYDo2LGEMUcJmT7jHRYWX/64faP6zast33yHVYCkFbrJ7Gxw9fFP2AsqlGB4VhxHIFSooJ8D84i/a3xaPH/8qfMk/uTvm1emg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tz+I+sC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E3EDC43394;
 	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1705680069;
-	bh=Gyh97/yhmBY6SBtoSix+uXg8bS8pDPinzhK+HnPgz3g=;
+	bh=OPRTb/XW+2zsH8AnZHeRHdEClBBBI7WQURvAeLFHUZo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bq9ffkOOVYK6Jmz+UdwF4VSLfFH+AYyUCQo+dlg1YqV3Ch7YSQsAQ12TircDKQHoj
-	 uzmQfpAB4XTrarPEI5NDElA1tvCAlqgA8vUcWKhaktmnq5EOlVZYULvMCyQ/XYujqI
-	 XNHfvus2RKQdCg4TCaEvgJd0W45O5fD+cRBr6jJ1OX9V359iDLY6JK8WZ0r7LUdjy0
-	 TMnHtRQgd/4y9Zi1wZE/MwTNDP7nM7RY562PwQ3/Xl/C2Muq2s4BcO9BFdNzOpKZ9G
-	 +49uO6zA1CD13hiiVQg6Z+LpaYMIjEVnQB/+j5T/EgHf8nvbOHihhyCBYrrIvr4rc2
-	 ptZo22QNEeROg==
+	b=Tz+I+sC4oVQoJ/DgES3M5nEomwaZV4FVgKb40miwX2tV/dFGEPU9o3q+WH59lBJKU
+	 StEfITkPVCkciMJPRP+csHVG0CV+NtfKfS3RDNJOn6CB5g79/NQ1Kb21sIQMQ1lCtU
+	 jTK+kWshjZPufSGpGx16x97lAcoYyVkzQW5M0aLY4t257QX/WylG2AzvsZ2AQO593Y
+	 wK3+WG4eW3Uv8gkyy2NewJtgNuGMNLEO15Vb4+zQx1D8Cv7Q9/uj22sNnYKgkzKb/5
+	 3KmpxPT40Ct7IbB58266bvp3h06iGQ9/+m69CpwtolBiNXBMEYGiOO9Pd1eAFgzBDc
+	 XShYYTwg29asw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 537C8C47DD3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61D13C47DD9;
 	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 19 Jan 2024 17:00:48 +0100
-Subject: [PATCH v6 2/8] dt-bindings: adc: axi-adc: update bindings for
- backend framework
+Date: Fri, 19 Jan 2024 17:00:49 +0100
+Subject: [PATCH v6 3/8] driver: core: allow modifying device_links flags
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240119-iio-backend-v6-2-189536c35a05@analog.com>
+Message-Id: <20240119-iio-backend-v6-3-189536c35a05@analog.com>
 References: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
 In-Reply-To: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -70,11 +69,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Frank Rowand <frowand.list@gmail.com>, 
  Olivier Moysan <olivier.moysan@foss.st.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705680065; l=1695;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705680065; l=1762;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=JfEb/bzY7KUbX0bS1qTJLEVqmnweeO1n+vRJXjAwpXk=;
- b=lDqzlyRNlKdPnsmGHz+0fTGx652cG0MjxO8WF0Zf1mLTeMXeYOnuXG4CcZt9zIoy3ziGs1+iv
- RGo6PeVKc5lBqIXmV77o/f/HB28nk5H8o+nSYCfgn/2CcT4IGk94o8Z
+ bh=NLZHAx7QEa2fUUjKTtfo6RESv2OQO0JG++qc/yxWC4M=;
+ b=eWpg0wm0ctUMFxKEi0QuhfrNYB6IveABxd5wnqdbFm0hIfu0qogKCmN2wXjJI1AxorYdqK+T0
+ XW6fzXmmOwpDf/wv4Lz6ZS3lvi4rdankHDPNYnweZzkDhqZJFDMRSTY
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -84,54 +83,48 @@ Reply-To: <nuno.sa@analog.com>
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-also remove it from being required.
+If a device_link is previously created (eg: via
+fw_devlink_create_devlink()) before the supplier + consumer are both
+present and bound to their respective drivers, there's no way to set
+DL_FLAG_AUTOREMOVE_CONSUMER anymore while one can still set
+DL_FLAG_AUTOREMOVE_SUPPLIER. Hence, rework the flags checks to allow
+for DL_FLAG_AUTOREMOVE_CONSUMER in the same way
+DL_FLAG_AUTOREMOVE_SUPPLIER is done.
 
-The reason why it's being deprecated is because the axi-adc CORE is now
-an IIO service provider hardware (IIO backends) for consumers to make use
-of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
-of consumer referencing other nodes/devices) and that proved to be wrong
-and to not scale.
-
-Now, IIO consumers of this hardware are expected to reference it using the
-io-backends property. Hence, the new '#io-backend-cells' is being added
-so the device is easily identified as a provider.
+While at it, make sure that we are never left with
+DL_FLAG_AUTOPROBE_CONSUMER set together with one of
+DL_FLAG_AUTOREMOVE_CONSUMER or DL_FLAG_AUTOREMOVE_SUPPLIER.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/base/core.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-index 9996dd93f84b..add10b22dcac 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-@@ -39,12 +39,15 @@ properties:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description:
-       A reference to a the actual ADC to which this FPGA ADC interfaces to.
-+    deprecated: true
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 67ba592afc77..fdbb5abc75d5 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -807,11 +807,15 @@ struct device_link *device_link_add(struct device *consumer,
+ 		 * update the existing link to stay around longer.
+ 		 */
+ 		if (flags & DL_FLAG_AUTOREMOVE_SUPPLIER) {
+-			if (link->flags & DL_FLAG_AUTOREMOVE_CONSUMER) {
+-				link->flags &= ~DL_FLAG_AUTOREMOVE_CONSUMER;
+-				link->flags |= DL_FLAG_AUTOREMOVE_SUPPLIER;
+-			}
+-		} else if (!(flags & DL_FLAG_AUTOREMOVE_CONSUMER)) {
++			link->flags &= ~DL_FLAG_AUTOREMOVE_CONSUMER;
++			link->flags &= ~DL_FLAG_AUTOPROBE_CONSUMER;
++			link->flags |= DL_FLAG_AUTOREMOVE_SUPPLIER;
 +
-+  '#io-backends-cells'
-+    const: 0
- 
- required:
-   - compatible
-   - dmas
-   - reg
--  - adi,adc-dev
- 
- additionalProperties: false
- 
-@@ -55,7 +58,6 @@ examples:
-         reg = <0x44a00000 0x10000>;
-         dmas = <&rx_dma 0>;
-         dma-names = "rx";
--
--        adi,adc-dev = <&spi_adc>;
-+        #io-backends-cells = <0>;
-     };
- ...
++		} else if (flags & DL_FLAG_AUTOREMOVE_CONSUMER) {
++			link->flags &= ~DL_FLAG_AUTOREMOVE_SUPPLIER;
++			link->flags &= ~DL_FLAG_AUTOPROBE_CONSUMER;
++			link->flags |= DL_FLAG_AUTOREMOVE_CONSUMER;
++		} else {
+ 			link->flags &= ~(DL_FLAG_AUTOREMOVE_CONSUMER |
+ 					 DL_FLAG_AUTOREMOVE_SUPPLIER);
+ 		}
 
 -- 
 2.43.0

@@ -1,283 +1,175 @@
-Return-Path: <linux-iio+bounces-1757-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1758-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1E0832675
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 10:21:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2748832949
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 12:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79969283820
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 09:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C34D1F24FB6
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 11:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D0624B5E;
-	Fri, 19 Jan 2024 09:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D2B4F1EF;
+	Fri, 19 Jan 2024 11:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dGUA64cr"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="a4JdEE+O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1003325776;
-	Fri, 19 Jan 2024 09:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA44944F
+	for <linux-iio@vger.kernel.org>; Fri, 19 Jan 2024 11:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705656083; cv=none; b=WAZ3jaZ9k1wwQKkiaxMzdh5IFdkLPUxwgaNykvNDhqjbafiRSMEvHMYRI1wXd9yIlIVy7HH2xOX2BKFGPlXa0BWYZuzz5QpOul7TXC3Wtz3icy3ZWVvURU+WnBeX7dk/du5X4zzSySq3/Ap0+RQDrrkuE7LhnsEhGCxoy+uG1rw=
+	t=1705665426; cv=none; b=GVSi645bYZxnZaJuhS1DSqUbHsSUZXYTDCh94YIH6L28L4x0qleuHviON+QZa+tZXtdwCGV94GtksEDahPoRs33L9Pk9ZRUcoXYEBqJIq2NaThXiIyZFslwfvolu7ykWh8Uyy1Bo880IgsGnTHGiBxM/gdF7noTitnR0k2TUZZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705656083; c=relaxed/simple;
-	bh=i2VqeG3gmGYPajLQMYJLxm8XaxAlr7ZJEGSi82iLtgY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qNdz/Y5s0pbOwqVu0mk4CO0nXsEpuUdnbZsytojjyrzMCH0YicJKvUDutccv94mv7sI3SPT0Axo0hHHIYA7pziDELdaXEdLCGSlsJ1BjNEHr+5+a5iReEJOeaMLf0RAq73h4jGEX61S8jkcW0mDhzGwejikgf6uN4gxyN2o6now=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dGUA64cr; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2dc7827a97so52103166b.2;
-        Fri, 19 Jan 2024 01:21:21 -0800 (PST)
+	s=arc-20240116; t=1705665426; c=relaxed/simple;
+	bh=fVuPsl7YWFUpEJh06zIUwD1ZtlwmU2Vm11++xGNKYP8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SQQ6EeLQT7LzoJmtAQqbZIZpzXS+I+2Isa59Zpp3AY29gMC0lDpna0S+NXpKaYOivDI7M5E/R7/1t/0pgyV1APeeJLGejIYRSRygVkAdA9GsE2c93niCgT7IovGiTxVcQUd/z/79yhdJBs4t1DXasAJx5jVUhr33AK8WbDDZrW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=a4JdEE+O; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-290449c30d4so380381a91.2
+        for <linux-iio@vger.kernel.org>; Fri, 19 Jan 2024 03:57:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705656080; x=1706260880; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i2VqeG3gmGYPajLQMYJLxm8XaxAlr7ZJEGSi82iLtgY=;
-        b=dGUA64cr6l4Kh6GhL7hLUK4CswxfVFNnY/OSECKJm3nUbGd5+BJPuI21qaYGJbGzDy
-         vyX6zpsKsbLCoRnoziEr8UWAj/030jJ29aOqMcFyr6OwJgh4c9b+1za+cg1Qbdv1TkS5
-         /y163RzHfmor+2IyiT8SsmLAMwBGp2u2kN8ZFBvU6CPUKlgrzboCcXNEiRnQFs8T2PYW
-         hwpS0is3M+y/AHXaKDgvLykEErZjr3RwOc83bBoWUfU2a86HjE2BZSa0mz1vDyI1nahx
-         qC6UayuYQMViVmDoM6DOSG37Ho7EZCnFSLHSGNFhyeqwdiFUnJ8GhdDZGyUgKY4yndzT
-         d1iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705656080; x=1706260880;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=tweaklogic.com; s=google; t=1705665423; x=1706270223; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=i2VqeG3gmGYPajLQMYJLxm8XaxAlr7ZJEGSi82iLtgY=;
-        b=U0nXwNXWwvwHdepfUwFKVa4fK7rscAN20rk+b9ATOpj5q+6YHdl78eqcnuCOvBtM6l
-         8gZNsZi16eUiNv4NX+U+eS0oDw8ZiGYs7M8nIetexk8FZyf32mG3QZpSASrwd2D64mBj
-         24wQrIrp+4iFkX84SSQ/6+wtJU0LCrEt7nwgYuY+BE2V6eAIXE2DHNwwx2847GqNKbI9
-         xxn4urHEX4xyWg232qXtlv5prLeVzoI8hpPWCdN7I1XolE0qN1aA5US6BknI6JBtjDsN
-         /3B9XPVBEHSXTm/XDSk7orVEuGsa/vtaWm8oTUN1SiPotBQY1xbGpxkcakXyelcjKKKG
-         3/7Q==
-X-Gm-Message-State: AOJu0YxJqGQUp2ArhthkZA+olncMH7TkKkJyCeVzljy1/DVL3wDsS6IW
-	bmuYs9SloTW366keZM+9Ib6rkraJPAlV81CnImN8RBmm4E9+LqpT
-X-Google-Smtp-Source: AGHT+IGD0HoXy5/ZvGbgpAcyjjdTFcSV557VS8QaspzayXqlKgR/s1NSdEXXuDWYmxRrGn6QopugYA==
-X-Received: by 2002:a17:907:cca1:b0:a26:6e89:d94c with SMTP id up33-20020a170907cca100b00a266e89d94cmr1044663ejc.152.1705656079828;
-        Fri, 19 Jan 2024 01:21:19 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id tk4-20020a170907c28400b00a2ce236ed71sm8627050ejc.43.2024.01.19.01.21.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jan 2024 01:21:19 -0800 (PST)
-Message-ID: <dd3051170bc9724ca7e2884344dee3bc7b8f0a85.camel@gmail.com>
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2000
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: "Paller, Kim Seer" <KimSeer.Paller@analog.com>, Conor Dooley
- <conor@kernel.org>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>,  "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, "Hennerich, Michael"
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>, Linus Walleij
- <linus.walleij@linaro.org>,  Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 19 Jan 2024 10:21:18 +0100
-In-Reply-To: <20240119-squad-unflawed-934627f0e394@wendy>
-References: <20240118085856.70758-1-kimseer.paller@analog.com>
-	 <20240118085856.70758-2-kimseer.paller@analog.com>
-	 <20240118-steadily-coauthor-de8275118901@spud>
-	 <PH0PR03MB71410860593D3C7253B200FCF9702@PH0PR03MB7141.namprd03.prod.outlook.com>
-	 <0f32caa9a11305333f1f18b97c97d775f4a5bb9a.camel@gmail.com>
-	 <20240119-squad-unflawed-934627f0e394@wendy>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+        bh=lux3UVQlOyKwmTBEJ+0A8e/kL23oNu9FD/5hw0zpRlM=;
+        b=a4JdEE+OYWzztlQn8ani1jluHRS29verXO9HMovFKZVHdNeKqK6wwyEbzspLAalZzd
+         WFwpXe9SpVyAThmG4phKTrb+vn3EgfrDFjLSPPOfWHaNfeH8Q1nSykmkBr60sWa+/rBi
+         +CssUjhqPlnK9gKI6h4J+ihiaYaYglqqBIee4JX34+K3fPYg+iKgSQM4e7RS/hYN6LMK
+         quBNCfH/mrMZPmSFkXr2+uTVi2IjrE1ZQYqYQ1lU92t3bpnZEjQxy52ZouIjIWvDyMx4
+         59y1tsppLP1pMjpS6Bbzbm+90NKxrwFY+mQGrllQnKOwhnaWZ20wWTaXw//lb5pAPUhs
+         tuWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705665423; x=1706270223;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lux3UVQlOyKwmTBEJ+0A8e/kL23oNu9FD/5hw0zpRlM=;
+        b=DZSs/LV/hoclWPMjFiJ/DHb+QI+HV4wcEeQixVosZrrsuF2QyacZ4HptOKegkeX+L6
+         8ffz6hkJsw/58UV8vv6lizoIT3v3O/EJOy9AjI82eoZbPOaIJkr+8Kev9mcM/TzBmmWi
+         23zIHlFf/3dMDdUKqXOXACYW70z0h+dr2q7WRVNF4nOmEvO6v8mpD4AlHFnc9RfrOvGL
+         AWhPhOncbfbjheXNZ+lcx8r390dD92tBlJ63T+f1h5WNA8s7q4cO9UWQHWA0D8tfC0V9
+         V4wRxZl5+yGHfOc37R7nRf6pWGnOONS0nYE6t27jAcOVnPb0mSBAWrQv1IRinlINTni2
+         +0cA==
+X-Gm-Message-State: AOJu0YzsoR3/ulfiqBSxPZ5tCZ5tuknLm1A4H5mAuzSqzA7PA4aFzdxX
+	3sk8AHOzApOB++WYTXnozu3/iLtp9ESrSbvoYnlDcBg+cXSiM2EEQMBzU3hCalA=
+X-Google-Smtp-Source: AGHT+IGEOi+n2nE8jX+7woP4kzEbqceg+eVMp8pOXvm0yamZFKU/n5y16oj5HPGCF91gF/9E98j/XA==
+X-Received: by 2002:a17:90a:fb89:b0:28d:bd12:1812 with SMTP id cp9-20020a17090afb8900b0028dbd121812mr1861942pjb.48.1705665423128;
+        Fri, 19 Jan 2024 03:57:03 -0800 (PST)
+Received: from ?IPV6:2403:580d:82f4:0:179a:c38f:18a2:7cdb? (2403-580d-82f4-0-179a-c38f-18a2-7cdb.ip6.aussiebb.net. [2403:580d:82f4:0:179a:c38f:18a2:7cdb])
+        by smtp.gmail.com with ESMTPSA id sr15-20020a17090b4e8f00b002904cbe8dc9sm1406054pjb.1.2024.01.19.03.57.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jan 2024 03:57:02 -0800 (PST)
+Message-ID: <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+Date: Fri, 19 Jan 2024 22:26:58 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: gts-helper: Fix division loop
+To: Jonathan Cameron <jic23@kernel.org>,
+ Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20240107162253.66c1f0f1@jic23-huawei>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20240107162253.66c1f0f1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2024-01-19 at 08:31 +0000, Conor Dooley wrote:
-> On Fri, Jan 19, 2024 at 09:20:01AM +0100, Nuno S=C3=A1 wrote:
-> > Hi Kim,
-> >=20
-> > On Fri, 2024-01-19 at 00:30 +0000, Paller, Kim Seer wrote:
-> > > > -----Original Message-----
-> > > > From: Conor Dooley <conor@kernel.org>
-> > > > Sent: Friday, January 19, 2024 12:10 AM
-> > > > To: Paller, Kim Seer <KimSeer.Paller@analog.com>
-> > > > Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> > > > kernel@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>; Lars-P=
-eter
-> > > > Clausen <lars@metafoo.de>; Hennerich, Michael
-> > > > <Michael.Hennerich@analog.com>; Rob Herring <robh+dt@kernel.org>;
-> > > > Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dool=
-ey
-> > > > <conor+dt@kernel.org>; Crt Mori <cmo@melexis.com>; Linus Walleij
-> > > > <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>
-> > > > Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: add admfm2=
-000
-> > > >=20
-> > > > [External]
-> > > >=20
-> > > > Hey,
-> > > >=20
-> > > > On Thu, Jan 18, 2024 at 04:58:55PM +0800, Kim Seer Paller wrote:
-> > > > > Dual microwave down converter module with input RF and LO frequen=
-cy
-> > > > > ranges from 0.5 to 32 GHz and an output IF frequency range from 0=
-.1 to
-> > > > > 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplif=
-ier
-> > > > > for each down conversion path.
-> > > > >=20
-> > > > > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> > > > > ---
-> > > > > V5 -> V6: Moved array of switch and attenuation GPIOs to the chan=
-nel node.
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Changed pi=
-n coords with friendly names. Removed Reviewed-by tag.
-> > > > > V4 -> V5: Added Reviewed-by tag.
-> > > > > V3 -> V4: Updated the description of the properties with multiple=
- entries
-> > > > > and
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 defined th=
-e order.
-> > > > > V2 -> V3: Adjusted indentation to resolve wrong indentation warni=
-ng.
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Changed no=
-de name to converter. Updated the descriptions to
-> > > > > clarify
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the proper=
-ties.
-> > > > > V1 -> V2: Removed '|' after description. Specified the pins conne=
-cted to
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the GPIOs.=
- Added additionalProperties: false. Changed node name
-> > > > > to
-> > > > gpio.
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Aligned < =
-syntax with the previous syntax in the examples.
-> > > > >=20
-> > > > > =C2=A0.../bindings/iio/frequency/adi,admfm2000.yaml | 129 +++++++=
-+++++++++++
-> > > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0=C2=A0 7 +
-> > > > > =C2=A02 files changed, 136 insertions(+)
-> > > > > =C2=A0create mode 100644
-> > > > Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
-> > > > >=20
-> > > > > diff --git
-> > > > a/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yam=
-l
-> > > > b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yam=
-l
-> > > > > new file mode 100644
-> > > > > index 000000000000..6f2c91c38666
-> > > > > --- /dev/null
-> > > > > +++
-> > > > b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yam=
-l
-> > > > > @@ -0,0 +1,129 @@
-> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > > +# Copyright 2023 Analog Devices Inc.
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.y=
-aml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: ADMFM2000 Dual Microwave Down Converter
-> > > > > +
-> > > > > +maintainers:
-> > > > > +=C2=A0 - Kim Seer Paller <kimseer.paller@analog.com>
-> > > > > +
-> > > > > +description:
-> > > > > +=C2=A0 Dual microwave down converter module with input RF and LO=
- frequency
-> > > > ranges
-> > > > > +=C2=A0 from 0.5 to 32 GHz and an output IF frequency range from =
-0.1 to 8 GHz.
-> > > > > +=C2=A0 It consists of a LNA, mixer, IF filter, DSA, and IF ampli=
-fier for each
-> > > > > down
-> > > > > +=C2=A0 conversion path.
-> > > > > +
-> > > > > +properties:
-> > > > > +=C2=A0 compatible:
-> > > > > +=C2=A0=C2=A0=C2=A0 enum:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,admfm2000
-> > > > > +
-> > > > > +=C2=A0 '#address-cells':
-> > > > > +=C2=A0=C2=A0=C2=A0 const: 1
-> > > > > +
-> > > > > +=C2=A0 '#size-cells':
-> > > > > +=C2=A0=C2=A0=C2=A0 const: 0
-> > > > > +
-> > > > > +patternProperties:
-> > > > > +=C2=A0 "^channel@[0-1]$":
-> > > > > +=C2=A0=C2=A0=C2=A0 type: object
-> > > > > +=C2=A0=C2=A0=C2=A0 description: Represents a channel of the devi=
-ce.
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0 additionalProperties: false
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0 properties:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 The chann=
-el number.
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 minimum: 0
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maximum: 1
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adi,mode:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 RF path s=
-elected for the channel.
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 0 - Direct IF mode
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 1 - Mixer mode
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.=
-yaml#/definitions/uint32
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum: [0, 1]
-> > > >=20
-> > > > How come this is an enum, rather than a boolean property such as
-> > > > "adi,mixer-mode"?
-> > >=20
-> > > I used an enum, perhaps because it was easier to implement. However, =
-this
-> > > could be changed if a boolean property might be more suitable in this=
- case.
-> > > Is that the preferred option?
-> > >=20
-> >=20
-> > Hmmm, How is the enum easier than a boolean property :)? I guess the de=
-vice has a
-> > default mode. So, if it is Direct IF mode you have 'adi,mixer-mode' to =
-enable
-> > that
-> > mode and that's it. So the code is pretty much just:
-> >=20
-> > if (device_property_read_bool()) {
->=20
-> device_property_present() is preferred I think.
->=20
+On 8/1/24 02:52, Jonathan Cameron wrote:
+> On Thu, 4 Jan 2024 11:34:28 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The loop based 64bit division may run for a long time when dividend is a
+>> lot bigger than the divider. Replace the division loop by the
+>> div64_u64() which implementation may be significantly faster.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+> 
+> Hmm. Fix or not perf improvement?  I'm going to take the middle ground
+> and leave the fixes tag, but not rush this in.
+> 
+> So applied to the togreg branch of iio.git and for now just pushed out
+> as testing for 0-day etc to take a look before I rebase that tree after
+> rc1.
+> 
+> 
+> 
+>> ---
+>>
+>> I've implemented also a fixup series for supporting rounding of
+>> gains/scales:
+>> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
+>>
+>> That series does also remove the offending loop.
+>>
+>> We don't currently have any in-tree users of GTS helpers which would
+>> need the rounding support so pushing the rounding is not urgent (and I
+>> haven't heard of Subjahit whose driver required the rounding). Hence, we
+>> may want to only take this loop fix in for now (?) and reconsider
+>> rounding when someone need that.
+>>
+>> Jonathan, what's your take on this?
+> Agreed - let us wait for the rounding to have a user, but makes sense
+> to tidy this corner up in the meantime.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>>
+>>   drivers/iio/industrialio-gts-helper.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+>> index 7653261d2dc2..abcab2d38589 100644
+>> --- a/drivers/iio/industrialio-gts-helper.c
+>> +++ b/drivers/iio/industrialio-gts-helper.c
+>> @@ -34,7 +34,7 @@
+>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>   {
+>>   	u64 full = max;
+>> -	int tmp = 1;
+>> +	int tmp = 0;
+>>   
+>>   	if (scale > full || !scale)
+>>   		return -EINVAL;
+>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>   		tmp++;
+>>   	}
+>>   
+>> -	while (full > scale * (u64)tmp)
+>> -		tmp++;
+>> +	tmp += div64_u64(full, scale);
+>>   
+>>   	return tmp;
+>>   }
+>>
+>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
+> 
+> 
+Hi Matti,
 
-Hmm, don't want to start an argument but I'm not sure either :). I would ar=
-gue that
-device_property_read_bool() has more users (according to git grep - and if =
-I did not
-mess the grep) and it pretty much wraps device_property_present(). So, if t=
-here was
-no value in it's "meaning" we would/should stop using it and eventually dro=
-p it...
-Anyways, not really a big deal.
+Your fix works beautifully with the latest version of apds9306 driver which I am working on.
+All available scale values can be set without any errors. Thank you.
 
-- Nuno S=C3=A1
-> >=20
+Moving to a new city with a new full time job with the assumption of getting more time
+for my list of opensource projects and contributions proved to be utterly wrong!
 
+Regards,
+Subhajit Ghosh
 

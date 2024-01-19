@@ -1,175 +1,170 @@
-Return-Path: <linux-iio+bounces-1758-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2748832949
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 12:57:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4B4832C9F
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 17:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C34D1F24FB6
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 11:57:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9502DB232DE
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jan 2024 16:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D2B4F1EF;
-	Fri, 19 Jan 2024 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67954BFC;
+	Fri, 19 Jan 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="a4JdEE+O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+1Aa7Be"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA44944F
-	for <linux-iio@vger.kernel.org>; Fri, 19 Jan 2024 11:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA1D54BE7;
+	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705665426; cv=none; b=GVSi645bYZxnZaJuhS1DSqUbHsSUZXYTDCh94YIH6L28L4x0qleuHviON+QZa+tZXtdwCGV94GtksEDahPoRs33L9Pk9ZRUcoXYEBqJIq2NaThXiIyZFslwfvolu7ykWh8Uyy1Bo880IgsGnTHGiBxM/gdF7noTitnR0k2TUZZA=
+	t=1705680069; cv=none; b=UIVQZB9C0r1YbmmCrlgPrFjrtAqPGXzLVTJk39I4n9KpmwvgV31X/D3MPHshsz1uCXlLKIHhNwN2qc3/RJrdUso/6AgaeNqD47B+sKN8tkmE0JkrGdMO5iHV1XmrxdQLhD89USI0XObstgcFujWe4IMJ1s+UqV8Mqkx57xaPHgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705665426; c=relaxed/simple;
-	bh=fVuPsl7YWFUpEJh06zIUwD1ZtlwmU2Vm11++xGNKYP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQQ6EeLQT7LzoJmtAQqbZIZpzXS+I+2Isa59Zpp3AY29gMC0lDpna0S+NXpKaYOivDI7M5E/R7/1t/0pgyV1APeeJLGejIYRSRygVkAdA9GsE2c93niCgT7IovGiTxVcQUd/z/79yhdJBs4t1DXasAJx5jVUhr33AK8WbDDZrW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=a4JdEE+O; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-290449c30d4so380381a91.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Jan 2024 03:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1705665423; x=1706270223; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lux3UVQlOyKwmTBEJ+0A8e/kL23oNu9FD/5hw0zpRlM=;
-        b=a4JdEE+OYWzztlQn8ani1jluHRS29verXO9HMovFKZVHdNeKqK6wwyEbzspLAalZzd
-         WFwpXe9SpVyAThmG4phKTrb+vn3EgfrDFjLSPPOfWHaNfeH8Q1nSykmkBr60sWa+/rBi
-         +CssUjhqPlnK9gKI6h4J+ihiaYaYglqqBIee4JX34+K3fPYg+iKgSQM4e7RS/hYN6LMK
-         quBNCfH/mrMZPmSFkXr2+uTVi2IjrE1ZQYqYQ1lU92t3bpnZEjQxy52ZouIjIWvDyMx4
-         59y1tsppLP1pMjpS6Bbzbm+90NKxrwFY+mQGrllQnKOwhnaWZ20wWTaXw//lb5pAPUhs
-         tuWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705665423; x=1706270223;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lux3UVQlOyKwmTBEJ+0A8e/kL23oNu9FD/5hw0zpRlM=;
-        b=DZSs/LV/hoclWPMjFiJ/DHb+QI+HV4wcEeQixVosZrrsuF2QyacZ4HptOKegkeX+L6
-         8ffz6hkJsw/58UV8vv6lizoIT3v3O/EJOy9AjI82eoZbPOaIJkr+8Kev9mcM/TzBmmWi
-         23zIHlFf/3dMDdUKqXOXACYW70z0h+dr2q7WRVNF4nOmEvO6v8mpD4AlHFnc9RfrOvGL
-         AWhPhOncbfbjheXNZ+lcx8r390dD92tBlJ63T+f1h5WNA8s7q4cO9UWQHWA0D8tfC0V9
-         V4wRxZl5+yGHfOc37R7nRf6pWGnOONS0nYE6t27jAcOVnPb0mSBAWrQv1IRinlINTni2
-         +0cA==
-X-Gm-Message-State: AOJu0YzsoR3/ulfiqBSxPZ5tCZ5tuknLm1A4H5mAuzSqzA7PA4aFzdxX
-	3sk8AHOzApOB++WYTXnozu3/iLtp9ESrSbvoYnlDcBg+cXSiM2EEQMBzU3hCalA=
-X-Google-Smtp-Source: AGHT+IGEOi+n2nE8jX+7woP4kzEbqceg+eVMp8pOXvm0yamZFKU/n5y16oj5HPGCF91gF/9E98j/XA==
-X-Received: by 2002:a17:90a:fb89:b0:28d:bd12:1812 with SMTP id cp9-20020a17090afb8900b0028dbd121812mr1861942pjb.48.1705665423128;
-        Fri, 19 Jan 2024 03:57:03 -0800 (PST)
-Received: from ?IPV6:2403:580d:82f4:0:179a:c38f:18a2:7cdb? (2403-580d-82f4-0-179a-c38f-18a2-7cdb.ip6.aussiebb.net. [2403:580d:82f4:0:179a:c38f:18a2:7cdb])
-        by smtp.gmail.com with ESMTPSA id sr15-20020a17090b4e8f00b002904cbe8dc9sm1406054pjb.1.2024.01.19.03.57.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jan 2024 03:57:02 -0800 (PST)
-Message-ID: <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
-Date: Fri, 19 Jan 2024 22:26:58 +1030
+	s=arc-20240116; t=1705680069; c=relaxed/simple;
+	bh=uIFqdrZKiQUadDSjlozNQF7wYQuFBvh1vrmvuN8UHqA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q9rVoRinH9hVXrkGXKSfVce01B11vGHkWHay5FSibW2lT8Hdu3Xhai/WxRp/4Za4DHezp6Qj4rHivjCMZWnL45gcg+lGpM3m6ISlvC8qG9pH87XUo6QiZnMMLsxgSTU5ZfvP9DgIcEoowDT2Vw07ul8suieV0THLBkB+fWHFNxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+1Aa7Be; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4E81BC433F1;
+	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705680069;
+	bh=uIFqdrZKiQUadDSjlozNQF7wYQuFBvh1vrmvuN8UHqA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=m+1Aa7BebUGcX0WoxwalhqcA/1bvu9BpT53CWzE3mBPUHGH4q1INvxsHuaEViLVTE
+	 GRlAACJLFr5bp2+Wb+a9HD1VGEtIgaJpJxGnKvAhszpg5olwD0ADgH5EseqCAbFz7Z
+	 LzgvEWdqcdyEd6iaO+1vgVxOwYeVf5Qur7YW44AE2e1sKwi2MSF/JfHef0PLiGzlbn
+	 t/jfzc+cfQZzPkteCjqMQpiCNx3YPT/AcFAYqzu6nAdbO0VHS3mTfZQH7W0+MSqfhu
+	 a6cmB4Ziko6bkUHoNsJuYLd9PGneJyLZQJDX/Zsx35vRD8jPM4Erp55mcZxacpcQTB
+	 oBo/YoJi/N9ww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 368B6C4725D;
+	Fri, 19 Jan 2024 16:01:09 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v6 0/8] iio: add new backend framework
+Date: Fri, 19 Jan 2024 17:00:46 +0100
+Message-Id: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helper: Fix division loop
-To: Jonathan Cameron <jic23@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20240107162253.66c1f0f1@jic23-huawei>
-Content-Language: en-US
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <20240107162253.66c1f0f1@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAK6cqmUC/1XMQQ7CIBCF4as0rMUApbW48h7GxQBjO1HBUEM0T
+ e8ubXTR5XvJ/01sxEQ4smM1sYSZRoqhjHZXMTdA6JGTL5spoWqppOFEkVtwNwyeQ+2dhBYO0HS
+ sFM+EV3qv2vlS9kDjK6bPime9vD9HiY2TNRfcmA6N1J1tjTpBgHvs9y4+2ALl5h9rIaXaxk2Jr
+ UcHXmgJVm/ieZ6/8WKVAOQAAAA=
+To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Frank Rowand <frowand.list@gmail.com>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, Rob Herring <robh@kernel.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705680065; l=3841;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=uIFqdrZKiQUadDSjlozNQF7wYQuFBvh1vrmvuN8UHqA=;
+ b=t6xc0+HapkXPl5DUb9pMlOlge9UeuFpW5fpe+MIVPenTyJbsDuUzPlcQbMBQGatBiztkLpBVN
+ WUfgt7WPiEWAo3vgB0r4asA9N8th8BspIYrXvdbyyjbp10/797MQ2ML
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received:
+ by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: <nuno.sa@analog.com>
 
-On 8/1/24 02:52, Jonathan Cameron wrote:
-> On Thu, 4 Jan 2024 11:34:28 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> The loop based 64bit division may run for a long time when dividend is a
->> lot bigger than the divider. Replace the division loop by the
->> div64_u64() which implementation may be significantly faster.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-> 
-> Hmm. Fix or not perf improvement?  I'm going to take the middle ground
-> and leave the fixes tag, but not rush this in.
-> 
-> So applied to the togreg branch of iio.git and for now just pushed out
-> as testing for 0-day etc to take a look before I rebase that tree after
-> rc1.
-> 
-> 
-> 
->> ---
->>
->> I've implemented also a fixup series for supporting rounding of
->> gains/scales:
->> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
->>
->> That series does also remove the offending loop.
->>
->> We don't currently have any in-tree users of GTS helpers which would
->> need the rounding support so pushing the rounding is not urgent (and I
->> haven't heard of Subjahit whose driver required the rounding). Hence, we
->> may want to only take this loop fix in for now (?) and reconsider
->> rounding when someone need that.
->>
->> Jonathan, what's your take on this?
-> Agreed - let us wait for the rounding to have a user, but makes sense
-> to tidy this corner up in the meantime.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->>
->>   drivers/iio/industrialio-gts-helper.c | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->> index 7653261d2dc2..abcab2d38589 100644
->> --- a/drivers/iio/industrialio-gts-helper.c
->> +++ b/drivers/iio/industrialio-gts-helper.c
->> @@ -34,7 +34,7 @@
->>   static int iio_gts_get_gain(const u64 max, const u64 scale)
->>   {
->>   	u64 full = max;
->> -	int tmp = 1;
->> +	int tmp = 0;
->>   
->>   	if (scale > full || !scale)
->>   		return -EINVAL;
->> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const u64 scale)
->>   		tmp++;
->>   	}
->>   
->> -	while (full > scale * (u64)tmp)
->> -		tmp++;
->> +	tmp += div64_u64(full, scale);
->>   
->>   	return tmp;
->>   }
->>
->> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
-> 
-> 
-Hi Matti,
+v1:
+ https://lore.kernel.org/linux-iio/20231204144925.4fe9922f@jic23-huawei/T/#m222f5175273b81dbfe40b7f0daffcdc67d6cb8ff
 
-Your fix works beautifully with the latest version of apds9306 driver which I am working on.
-All available scale values can be set without any errors. Thank you.
+v2:
+ https://lore.kernel.org/r/20231208-dev-iio-backend-v2-0-5450951895e1@analog.com
 
-Moving to a new city with a new full time job with the assumption of getting more time
-for my list of opensource projects and contributions proved to be utterly wrong!
+v3:
+ https://lore.kernel.org/linux-iio/20231213-dev-iio-backend-v3-0-bb9f12a5c6dc@analog.com/
 
-Regards,
-Subhajit Ghosh
+v4:
+ https://lore.kernel.org/r/20231220-iio-backend-v4-0-998e9148b692@analog.com
+
+v5:
+ https://lore.kernel.org/r/20240112-iio-backend-v5-0-bdecad041ab4@analog.com
+
+Changes in v6:
+ - Patch 2
+  * Add '#io-backends-cells' property to the example dts.
+ - Patch 6
+  * Improve comment on struct iio_backend_buffer_pair;
+  * Be consistent with dots in kernel-docs. So dots only exist now in
+    description and return. Also be consistent on device managed APIs
+    subject and @dev description;
+  * Added devm_iio_backend_enable() and hence (and for now)
+    iio_backend_disable is static;
+  * Fixed __devm_iio_backend_get_from_fwnode_lookup() kernel-doc;
+  * Improved english in devm_iio_backend_register() comment;
+  * Don't make private data mandatory;
+ - Patch 7
+  * Use local ad9467_chip_info *info variable;
+  * Improve error handling for optional devm_iio_backend_get();
+  * Make use of devm_iio_backend_enable().
+ - Patch 8
+  * Also change string format in version error path.
+
+Not that big of change in this version (more small things). The most
+noticeable is perhaps the introduction of devm_iio_backend_enable().
+
+Keeping the block diagram  so we don't have to follow links
+to check one of the typical setups.
+
+                                           -------------------------------------------------------
+ ------------------                        | -----------         ------------      -------  FPGA |
+ |     ADC        |------------------------| | AXI ADC |---------| DMA CORE |------| RAM |       |
+ | (Frontend/IIO) | Serial Data (eg: LVDS) | |(backend)|---------|          |------|     |       |
+ |                |------------------------| -----------         ------------      -------       |
+ ------------------                        -------------------------------------------------------
+
+---
+Nuno Sa (7):
+      dt-bindings: adc: ad9467: add new io-backend property
+      dt-bindings: adc: axi-adc: update bindings for backend framework
+      driver: core: allow modifying device_links flags
+      iio: buffer-dmaengine: export buffer alloc and free functions
+      iio: add the IIO backend framework
+      iio: adc: ad9467: convert to backend framework
+      iio: adc: adi-axi-adc: move to backend framework
+
+Olivier Moysan (1):
+      of: property: add device link support for io-backends
+
+ .../devicetree/bindings/iio/adc/adi,ad9467.yaml    |   4 +
+ .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   8 +-
+ MAINTAINERS                                        |   8 +
+ drivers/base/core.c                                |  14 +-
+ drivers/iio/Kconfig                                |   9 +
+ drivers/iio/Makefile                               |   1 +
+ drivers/iio/adc/Kconfig                            |   4 +-
+ drivers/iio/adc/ad9467.c                           | 272 +++++++++-----
+ drivers/iio/adc/adi-axi-adc.c                      | 383 +++++--------------
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |   8 +-
+ drivers/iio/industrialio-backend.c                 | 412 +++++++++++++++++++++
+ drivers/of/property.c                              |   2 +
+ include/linux/iio/adc/adi-axi-adc.h                |  68 ----
+ include/linux/iio/backend.h                        |  72 ++++
+ include/linux/iio/buffer-dmaengine.h               |   3 +
+ 15 files changed, 806 insertions(+), 462 deletions(-)
+---
+base-commit: 801590b27bfbdb6721f85e2c3af70e627e52c8d5
+change-id: 20231219-iio-backend-a3dc1a6a7a58
+--
+
+Thanks!
+- Nuno Sá
+
 

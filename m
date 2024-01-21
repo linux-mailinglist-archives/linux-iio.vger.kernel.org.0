@@ -1,127 +1,119 @@
-Return-Path: <linux-iio+bounces-1781-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824B58355DC
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 13:57:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596C48355F9
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 14:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4A871C219C3
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 12:56:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D721DB22DB6
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 13:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9DB374C9;
-	Sun, 21 Jan 2024 12:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C66374C3;
+	Sun, 21 Jan 2024 13:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iLnJaiiR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILrkPXEz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08E3714C;
-	Sun, 21 Jan 2024 12:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F937160;
+	Sun, 21 Jan 2024 13:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705841802; cv=none; b=B9VjdIvinCsJEV2CokidbTwQBKjPkvLKDmLH6FrMjyYn0J6QM4AwPFJokxDJTqvAfHdLfFRG1/lyiPMymxjQnhsCJScHorOKc0tGWU7wtkDg3BGmsvi2SepbLMPWyOECT+jtMTOgbxVE5H0X156Tnyi5199Lb7hxKTYWHUXU93w=
+	t=1705845088; cv=none; b=KahHLmlN4xZuMDTYNBcL9RIXoIJm+l9cIGdxXJZKw46lMLYg4Gyx8qy7TwGqvw3HIb2DBAoVQ1J2V+AOLhbATKfGWpDxwKGPblF5CikHFfaIgTD7EwDsf75Ni3UwjYODyyiBe4okGwHcrm53FW38eifT8zyEz+gji6RrEkPtR8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705841802; c=relaxed/simple;
-	bh=MFggLcNb6FnJrDnaHyePScPjFRJI9rDwfH1smuryGOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IT4R6yM6BR0qN+/ZhZe6Ke3iI4zfvzWGEPc3ZDtCtooedqa33HMousfqGCOFvRdQLPZgAKtJIjTYoC8BZENysYmNieSaRnEFhEVv29AB4yVfhTaazwGxJvSN163u+PYwwJRXOIpcOxbCXRgqInLPXh/4cdXEWQP1xSIfI3/DtIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iLnJaiiR; arc=none smtp.client-ip=192.55.52.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705841801; x=1737377801;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MFggLcNb6FnJrDnaHyePScPjFRJI9rDwfH1smuryGOk=;
-  b=iLnJaiiRmIhyDDCleVG7b8ssVVRutUbiFfgfd/SG/ZNIgjTnKaMr1nss
-   GK7vUeRQXpcPZjuwVlkE2FzJBU9r4Bkh4aGOTLxDsobrgZZNc6UzWyYTr
-   ZApZRT9+cvgjQSXC9717wxpmpEypztyvPjEWDfKSwmdDM9UDILza7tsxD
-   AqFCUR2mK/e2nW6ZbCuEUWdY0WtMnEalfjK3uF8NLzqAnulp2V9lZeUMP
-   ehvDX1N0Qgsz3igAEBS87ulg7W7tC4pg/XqcZRjK2ZcEgmtBrn1OArOVj
-   5p+JM6n0PJ8KQDYYWz/WXsRGapklzp9KO9R1xkZRC2xScB0JEWOJhVOns
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="398185464"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="398185464"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="875746374"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="875746374"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:36 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rRXJn-0000000Fcoe-0D1r;
-	Sun, 21 Jan 2024 14:52:55 +0200
-Date: Sun, 21 Jan 2024 14:52:54 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: subhajit.ghosh@tweaklogic.com, anshulusr@gmail.com, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, javier.carrasco.cruz@gmail.com,
-	jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	lars@metafoo.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, marex@denx.de, matt@ranostay.sg,
-	mazziesaccount@gmail.com, robh+dt@kernel.org,
-	stefan.windfeldt-prytz@axis.com
-Subject: Re: [PATCH v5 3/3] iio: light: Add support for APDS9306 Light Sensor
-Message-ID: <Za0TpiKjDD27Vh_x@smile.fi.intel.com>
-References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
- <20240121051735.32246-4-subhajit.ghosh@tweaklogic.com>
- <8a7f03b6-caca-4fbb-8093-0ba87bd2e850@wanadoo.fr>
+	s=arc-20240116; t=1705845088; c=relaxed/simple;
+	bh=RRuaQ9+UZxnjRq0EzIx5cXmNFrlQNvdxgFQYuMRugDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZCZs0e09+kuuDNBYhik4pv3/R34zd1zgzS1H+zvb245GHV0GyQ/98EJ8VvBkCteZETw77cEIrLmUmcIfkYkflEmh6vbPnB3WrK48SNDa+Ka17MrwHCdxiA5FOzkEcKthwKnz6hU/6Q7IzU65pBAIafml3PfSRwY1zQE/dJXkEIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILrkPXEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A399CC433C7;
+	Sun, 21 Jan 2024 13:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705845087;
+	bh=RRuaQ9+UZxnjRq0EzIx5cXmNFrlQNvdxgFQYuMRugDs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ILrkPXEzoDn/HWJ+Tq1WzkeGUP3ZFCNJMPxvH7UdJzBRLl22nalPQkgg96npJZo/z
+	 BYt6Y5xPNg6EqQOUqzTU2fUDwOv3Anlhi5GX9xpHCh0Tx7yNsYIEjovBP6B90/Jlmb
+	 mpx+Ymtxw0LgE2fzdb2lYmSUacHN0LoyEb8FzjtOF+hMn5BQKDnxXEzdGWq75WRMeR
+	 3A+v5T+yOTKb1wT45ZTM0lBmzHiRF9OUQkauvoYssnjU8ZGP0wSbsG62eGwUjte1ft
+	 N7D9ixepEe26qB0BjC7hQgA3CwQW6aWDMb5s1Q1Jn5GSSGGtLcBYb78pDtI6JH7ETI
+	 zZAEkB9PTrvIg==
+Date: Sun, 21 Jan 2024 13:51:14 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 3/4] iio: humidity: Add driver for ti HDC302x
+ humidity sensors
+Message-ID: <20240121135114.5f2aa0cf@jic23-huawei>
+In-Reply-To: <b349fd4a-c7e3-44f8-9908-2abe24bbd69e@gmail.com>
+References: <20231211122201.9598-1-579lpy@gmail.com>
+	<20231211122940.9791-1-579lpy@gmail.com>
+	<d9a84e5b-9e23-4aa9-8e58-0bb9f2b224d7@metafoo.de>
+	<b349fd4a-c7e3-44f8-9908-2abe24bbd69e@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8a7f03b6-caca-4fbb-8093-0ba87bd2e850@wanadoo.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 21, 2024 at 10:22:50AM +0100, Christophe JAILLET wrote:
-> Le 21/01/2024 à 06:17, Subhajit Ghosh a écrit :
+On Sat, 20 Jan 2024 17:14:21 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-...
+> On 20.01.24 05:17, Lars-Peter Clausen wrote:
+> > On 12/11/23 04:29, Li peiyu wrote: =20
+> >> Add support for HDC302x integrated capacitive based relative
+> >> humidity (RH) and temperature sensor.
+> >> This driver supports reading values, reading the maximum and
+> >> minimum of values and controlling the integrated heater of
+> >> the sensor.
+> >>
+> >> Co-developed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> >> Signed-off-by: Li peiyu <579lpy@gmail.com>
+> >> ---
+> >> =C2=A0 MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 8 +
+> >> =C2=A0 drivers/iio/humidity/Kconfig=C2=A0=C2=A0 |=C2=A0 12 +
+> >> =C2=A0 drivers/iio/humidity/Makefile=C2=A0 |=C2=A0=C2=A0 1 +
+> >> =C2=A0 drivers/iio/humidity/hdc3020.c | 473 ++++++++++++++++++++++++++=
++++++++ =20
+> > I was just trying to use this driver. Somehow the Makefile and Kconfig
+> > changes were lost when the patch was applied to the IIO tree.
+> >=20
+> >  =20
+> Apparently only the driver code was added. The new entry in the
+> MAINTAINERS file is also missing.
+>=20
+> Best regards,
+> Javier Carrasco
 
-> > +#define APDS9306_ALS_THRES_VAL_MAX	(BIT(20) - 1)
-> > +#define APDS9306_ALS_THRES_VAR_VAL_MAX	(BIT(3) - 1)
-> > +#define APDS9306_ALS_PERSIST_VAL_MAX	(BIT(4) - 1)
-> 
-> Nit: GENMASK()?
+Gah, I clearly messed up. My guess is a messy merge that went wrong..
 
-I think no, these are plain numbers given in the form of BIT(x) - 1 to show the
-HW limit on the values (in bits).
+Anyhow, I'll post a patch to put this back in a few mins and pick it direct=
+ly
+given it's just putting in the missing stuff from this patch.
 
-...
+That will be on the fixes-togreg branch of iio.git shortly.
 
-> > +	intg_time = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
-> > +	if (intg_time < 0)
-> > +		delay = apds9306_repeat_rate_period[repeat_rate_idx];
-> 
-> 'delay' is always overwritten by the line below.
+Extra tags etc are fine, but I'm keen to get this into linux-next at least
+quickly so we get some testing before I send a fixes pull request (probably
+next weekend).
 
-Seems like entire conditional here is not needed as it's implied in the max().
-And max() should take both signed or unsigned types, different types might have
-a side effect.
+Sorry for the mess up!
 
-> > +	/*
-> > +	 * Whichever is greater - integration time period or
-> > +	 * sampling period.
-> > +	 */
-> > +	delay = max(intg_time,
-> > +		    apds9306_repeat_rate_period[repeat_rate_idx]);
+Jonathan
 
--- 
-With Best Regards,
-Andy Shevchenko
 
 
 

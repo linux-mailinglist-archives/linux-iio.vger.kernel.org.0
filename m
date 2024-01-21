@@ -1,137 +1,123 @@
-Return-Path: <linux-iio+bounces-1780-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1781-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F17C8355A6
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 13:29:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824B58355DC
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 13:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AB2281FE2
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 12:29:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4A871C219C3
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 12:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB9836B02;
-	Sun, 21 Jan 2024 12:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9DB374C9;
+	Sun, 21 Jan 2024 12:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BuBTEzBx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iLnJaiiR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B9236AF2;
-	Sun, 21 Jan 2024 12:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08E3714C;
+	Sun, 21 Jan 2024 12:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705840141; cv=none; b=QuqH/gGRaKnGIrOk7EyfXSgKUWd/p/CEZ6DMUkuKvPBzg+/y5j2drjAUoAHqd3zzKK9Ae+kwyVqV1tWgbTySxDwA5UB+buByvwDcMd04h0uXlqmj/8a3Q59xfe/bB744lGIj2WDbJtbU13bMwlPCl9dusGTN2mbLCQcuBkYx7lA=
+	t=1705841802; cv=none; b=B9VjdIvinCsJEV2CokidbTwQBKjPkvLKDmLH6FrMjyYn0J6QM4AwPFJokxDJTqvAfHdLfFRG1/lyiPMymxjQnhsCJScHorOKc0tGWU7wtkDg3BGmsvi2SepbLMPWyOECT+jtMTOgbxVE5H0X156Tnyi5199Lb7hxKTYWHUXU93w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705840141; c=relaxed/simple;
-	bh=Y6ol/RDZQ2ez7fxRFYvFa1Ns5wBcgPZcyyD8Gbgkfo0=;
+	s=arc-20240116; t=1705841802; c=relaxed/simple;
+	bh=MFggLcNb6FnJrDnaHyePScPjFRJI9rDwfH1smuryGOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tRyoZs8lf7pveVgo+iymDRGcvd+zSQSN4InMUzuMGgoYTDHVIBqBLsplULzS5rdrSKRTnPJQ58FJl0B+YdTQI7SfK9LVjGP1VluNxJzGR8m/YuyAXV6neB72eWQOjjMsQQc/pFc34HQp1sQTNPVKwXnKs8QnzIC2MPhOx2ixSx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BuBTEzBx; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=IT4R6yM6BR0qN+/ZhZe6Ke3iI4zfvzWGEPc3ZDtCtooedqa33HMousfqGCOFvRdQLPZgAKtJIjTYoC8BZENysYmNieSaRnEFhEVv29AB4yVfhTaazwGxJvSN163u+PYwwJRXOIpcOxbCXRgqInLPXh/4cdXEWQP1xSIfI3/DtIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iLnJaiiR; arc=none smtp.client-ip=192.55.52.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705840140; x=1737376140;
+  t=1705841801; x=1737377801;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Y6ol/RDZQ2ez7fxRFYvFa1Ns5wBcgPZcyyD8Gbgkfo0=;
-  b=BuBTEzBxA6YzjUFGpG8WjOg7P6aTgt6L4pJFeLNkGUlJ62XXNqfYYWMH
-   SJ8RSFMiwtEQ9iRQz0pIuhQZyse/cU/8IJ7Ruj+auXSS9BLqnjAloEtfQ
-   bIMt3QXF7eBa+idh1KJcYFGN39LGGqx+ZqNlxle2kEsJ4oWI4nr3dfVJD
-   XIRORjDcUhhdyEsr4L0xpaukvv5W4E8B58W7jbXzqhD2CAfePrgQIAGnp
-   +SmarRtNvt0KpQDlnBzBrA/NpTCXqqTFqN3hoiXBoHi45QFUCfgeqVmoD
-   J/V2Oka5/OzYc5kV0lDMtlvYwLLISEOOCs27/XUTcgae6w5B4qdYuldh6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="7785771"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=MFggLcNb6FnJrDnaHyePScPjFRJI9rDwfH1smuryGOk=;
+  b=iLnJaiiRmIhyDDCleVG7b8ssVVRutUbiFfgfd/SG/ZNIgjTnKaMr1nss
+   GK7vUeRQXpcPZjuwVlkE2FzJBU9r4Bkh4aGOTLxDsobrgZZNc6UzWyYTr
+   ZApZRT9+cvgjQSXC9717wxpmpEypztyvPjEWDfKSwmdDM9UDILza7tsxD
+   AqFCUR2mK/e2nW6ZbCuEUWdY0WtMnEalfjK3uF8NLzqAnulp2V9lZeUMP
+   ehvDX1N0Qgsz3igAEBS87ulg7W7tC4pg/XqcZRjK2ZcEgmtBrn1OArOVj
+   5p+JM6n0PJ8KQDYYWz/WXsRGapklzp9KO9R1xkZRC2xScB0JEWOJhVOns
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="398185464"
 X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="7785771"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:28:59 -0800
+   d="scan'208";a="398185464"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="958501216"
+X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="875746374"
 X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="958501216"
+   d="scan'208";a="875746374"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:28:52 -0800
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:36 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rRWwS-0000000FcGE-0aPg;
-	Sun, 21 Jan 2024 14:28:48 +0200
-Date: Sun, 21 Jan 2024 14:28:47 +0200
+	id 1rRXJn-0000000Fcoe-0D1r;
+	Sun, 21 Jan 2024 14:52:55 +0200
+Date: Sun, 21 Jan 2024 14:52:54 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 01/13] device property: Add cleanup.h based
- fwnode_handle_put() scope based cleanup.
-Message-ID: <Za0N_5Hp2s-uwOoM@smile.fi.intel.com>
-References: <20240114172009.179893-1-jic23@kernel.org>
- <20240114172009.179893-2-jic23@kernel.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: subhajit.ghosh@tweaklogic.com, anshulusr@gmail.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, javier.carrasco.cruz@gmail.com,
+	jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, marex@denx.de, matt@ranostay.sg,
+	mazziesaccount@gmail.com, robh+dt@kernel.org,
+	stefan.windfeldt-prytz@axis.com
+Subject: Re: [PATCH v5 3/3] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <Za0TpiKjDD27Vh_x@smile.fi.intel.com>
+References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
+ <20240121051735.32246-4-subhajit.ghosh@tweaklogic.com>
+ <8a7f03b6-caca-4fbb-8093-0ba87bd2e850@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240114172009.179893-2-jic23@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8a7f03b6-caca-4fbb-8093-0ba87bd2e850@wanadoo.fr>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Jan 14, 2024 at 05:19:57PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> This allows the following
-> 
-> struct fwnode_handle *child __free(kfree) = NULL;
-> 
-> device_for_each_child_node(dev, child) {
-> 	if (false)
-> 		return -EINVAL;
-> }
-> 
-> without the fwnode_handle_put() call which tends to complicate early
-> exits from such loops and lead to resource leak bugs.
-> 
-> Can also be used where the fwnode_handle was obtained from a call
-> such as fwnode_find_reference() as it will safely do nothing if
-> IS_ERR() is true.
+On Sun, Jan 21, 2024 at 10:22:50AM +0100, Christophe JAILLET wrote:
+> Le 21/01/2024 à 06:17, Subhajit Ghosh a écrit :
 
 ...
 
->  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
->  void fwnode_handle_put(struct fwnode_handle *fwnode);
+> > +#define APDS9306_ALS_THRES_VAL_MAX	(BIT(20) - 1)
+> > +#define APDS9306_ALS_THRES_VAR_VAL_MAX	(BIT(3) - 1)
+> > +#define APDS9306_ALS_PERSIST_VAL_MAX	(BIT(4) - 1)
+> 
+> Nit: GENMASK()?
 
-I would add a blank line here
+I think no, these are plain numbers given in the form of BIT(x) - 1 to show the
+HW limit on the values (in bits).
 
-> +DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
-> +	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
->  
->  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
->  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+...
 
-With the above,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > +	intg_time = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
+> > +	if (intg_time < 0)
+> > +		delay = apds9306_repeat_rate_period[repeat_rate_idx];
+> 
+> 'delay' is always overwritten by the line below.
+
+Seems like entire conditional here is not needed as it's implied in the max().
+And max() should take both signed or unsigned types, different types might have
+a side effect.
+
+> > +	/*
+> > +	 * Whichever is greater - integration time period or
+> > +	 * sampling period.
+> > +	 */
+> > +	delay = max(intg_time,
+> > +		    apds9306_repeat_rate_period[repeat_rate_idx]);
 
 -- 
 With Best Regards,

@@ -1,57 +1,62 @@
-Return-Path: <linux-iio+bounces-1792-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1793-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46B3835694
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:15:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECFD835697
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7BA1C21075
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:15:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05711C21129
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC71437705;
-	Sun, 21 Jan 2024 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677B63770C;
+	Sun, 21 Jan 2024 16:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gh7PvQ48"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAqYLZtP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D78614F7F
-	for <linux-iio@vger.kernel.org>; Sun, 21 Jan 2024 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDDB37704;
+	Sun, 21 Jan 2024 16:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705853736; cv=none; b=ROli6LAleiirCrRs+NOAqSmO3+L3g2wzEYMXxpDQ7y1makqzuqb0k4IhlZ1vscAHzE4PyArWsu7bKtHqUCpcgqFjzsWkczK8w0ArMWrWjcmac9S7MzdbBGQLz8DnLZQTJY7os7H8OGk/pUTIQFPfsQAS9VGeHhR+BUiV/ota/0g=
+	t=1705853852; cv=none; b=ENSmXFRQbOsvdPQH1+FrT7Qa1/MZE8pbyNG7E7XVGU404JHYEwo6A4ps2o3bjtkq+2PxgwPK2Q1ed0atc3NXodqNozTTAg3zPoaDqvHSIsYKqbmKtzIlgQMuS+opIkUTrTW9FhBB/zWeA8wMK66+yCX4xV0diZQyFl3tR8oGPGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705853736; c=relaxed/simple;
-	bh=04TxS7FUUhFBEp7E+n6kVvAVh5f7GSiNnRRQ/z+B/qI=;
+	s=arc-20240116; t=1705853852; c=relaxed/simple;
+	bh=iUfq0MblOYTJ4Xg1o/EOPCx1dTOon9m9lKdqAKdduVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VOLu4N1XTkBBgIgrDpwcPO6ZpWxCg6dZD9DCeCMG60Kq3M05C2Q+1jKz0cx2+J/bWp7Eh/GPJLrjKe606nOUptgade9gOc57ZcgromdwiJjVGxZpRSlplhwbocGZ+lZ8e7c3hpNgcKN2N7YCRsTKBb94JfMYgGvzsEaw/kOZVWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gh7PvQ48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EFBC433F1;
-	Sun, 21 Jan 2024 16:15:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lV4/BiWoHo0kEm+kTnxWqTAxCD7EBo7RsqxiLQsmKnHWSVEjtM6t39aYreYZ5qb/vMI9xfVtjy+3mk9JjSmbCsg8z+YRVziGntRlxAYDY9GVUEI4P6V02B4J4Cvzp8MBbpRze65cQXFMFPRZv1znDOCbUUQ5LGSR6Q9mrdwjwh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAqYLZtP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312F2C433F1;
+	Sun, 21 Jan 2024 16:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705853735;
-	bh=04TxS7FUUhFBEp7E+n6kVvAVh5f7GSiNnRRQ/z+B/qI=;
+	s=k20201202; t=1705853851;
+	bh=iUfq0MblOYTJ4Xg1o/EOPCx1dTOon9m9lKdqAKdduVU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gh7PvQ48+yo4A3Ch7QrgvQIo7to4ZeYH05LyF/KNofbPYBH6ZtxbqJBb5JvvjYeXV
-	 WcFvRFCbTbljVTfpU6A0op+TmRDdfuuospMX/FeJ7nqfjkwie3a4KdPHSzDbPJFFpx
-	 DPKVtWAE3RenXdn1BbTOclSPHDBGq8clxaAdcQ4xa1M+PWg+jQ2ftA5qAY5PWAWz7m
-	 0rGuOeiAc1NHwJH5jNIJ1w7is7F7TbjjW+msXktRxolPlrtkO2SD8RIS0fs75LiYKJ
-	 +rPdPoAnNXbHx6MAvD0LoaQ3j3THWEaOOmjbtN32++JpyJYhYnlNP4MpSHN+uLBu+4
-	 iMVsvTHYeEhHQ==
-Date: Sun, 21 Jan 2024 16:15:23 +0000
+	b=uAqYLZtP8sR2EZcaOV2Dt7xxVatLrvMCG0HC4OHUWVU5mlAHcCvFPs8GOAova8sme
+	 B4ko53SEDdVychlpJkRSm6MfFgf8ngJfSZOD9R3hcAhBnFVwWSb+iydLOYAw5gGzco
+	 GuBcM3FW82lN2rW+a/a5E9LKq7PVeNdALdNq0D5jIv4hDcJgewtPSGyUp92LZ5g5df
+	 jS8ED/N7LWBui4a4YQcGP5Z0ALIffPVimE96niYaBBrdq03a2M7UmxxTKTmyII53AU
+	 9j7zQCb8zR3U4pK8Bsv009Y1VMGXKX7ccg4dk3E0DDrCmXcgIJixVrEkFcxtAWpW40
+	 V7VIkq3sOPxqw==
+Date: Sun, 21 Jan 2024 16:17:18 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: <linux-iio@vger.kernel.org>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 3/3] iio: imu: adis16480: make use of
- irq_get_trigger_type()
-Message-ID: <20240121161523.629f5e78@jic23-huawei>
-In-Reply-To: <20240117-adis-improv-v1-3-7f90e9fad200@analog.com>
-References: <20240117-adis-improv-v1-0-7f90e9fad200@analog.com>
-	<20240117-adis-improv-v1-3-7f90e9fad200@analog.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Petar Stoykov
+ <pd.pstoykov@gmail.com>, <linux-iio@vger.kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Angel Iglesias
+ <ang.iglesiasg@gmail.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+Message-ID: <20240121161718.32ffcb38@jic23-huawei>
+In-Reply-To: <20240116163713.00006bf3@Huawei.com>
+References: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
+	<4eab426b-f654-4e10-9ffa-5b34016565fb@linaro.org>
+	<20240116163713.00006bf3@Huawei.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,57 +67,108 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jan 2024 14:10:51 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Tue, 16 Jan 2024 16:37:13 +0000
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> There's no need to call both irq_get_irq_data() and
-> irqd_get_trigger_type() as we already have an helper for that. This
-> allows for code simplification.
+> On Tue, 16 Jan 2024 16:31:55 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Applied 2 and 3 to the togreg branch of iio.git and pushed out as testing until
-I can rebase it on rc1.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/imu/adis16480.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
+> > On 16/01/2024 16:24, Petar Stoykov wrote:  
+> > > Sensirion SDP500 is a digital differential pressure sensor. It provides
+> > > a digital I2C output. Add devicetree bindings requiring the compatible
+> > > string and I2C slave address (reg).
+> > > 
+> > > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
+> > > ---
+> > >  .../bindings/iio/pressure/sdp500.yaml         | 38 +++++++++++++++++++
+> > >  1 file changed, 38 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/sdp500.yaml    
+> > 
+> > Filename like compatible.
+> >   
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> > > b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> > > new file mode 100644
+> > > index 000000000000..af01ec7e3802
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+> > > @@ -0,0 +1,38 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: sdp500/sdp510 pressure sensor with I2C bus interface
+> > > +
+> > > +maintainers:
+> > > +  - Petar Stoykov <pd.pstoykov@gmail.com>
+> > > +
+> > > +description: |    
+> > 
+> > Do not need '|' unless you need to preserve formatting.
+> >   
+> > > +  Pressure sensor from Sensirion with I2C bus interface.
+> > > +  There is no software difference between sdp500 and sdp510.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: sensirion,sdp500
+> > > +    
+> > 
+> > No resources? No interrupts? No power supply or any pins? No even
+> > iio-cells? This looks incomplete.  
 > 
-> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-> index fe520194a837..b40a55bba30c 100644
-> --- a/drivers/iio/imu/adis16480.c
-> +++ b/drivers/iio/imu/adis16480.c
-> @@ -1246,18 +1246,11 @@ static int adis16480_config_irq_pin(struct adis16480 *st)
->  {
->  	struct device *dev = &st->adis.spi->dev;
->  	struct fwnode_handle *fwnode = dev_fwnode(dev);
-> -	struct irq_data *desc;
->  	enum adis16480_int_pin pin;
->  	unsigned int irq_type;
->  	uint16_t val;
->  	int i, irq = 0;
->  
-> -	desc = irq_get_irq_data(st->adis.spi->irq);
-> -	if (!desc) {
-> -		dev_err(dev, "Could not find IRQ %d\n", irq);
-> -		return -EINVAL;
-> -	}
-> -
->  	/* Disable data ready since the default after reset is on */
->  	val = ADIS16480_DRDY_EN(0);
->  
-> @@ -1285,7 +1278,7 @@ static int adis16480_config_irq_pin(struct adis16480 *st)
->  	 * configured as positive or negative, corresponding to
->  	 * IRQ_TYPE_EDGE_RISING or IRQ_TYPE_EDGE_FALLING respectively.
->  	 */
-> -	irq_type = irqd_get_trigger_type(desc);
-> +	irq_type = irq_get_trigger_type(st->adis.spi->irq);
->  	if (irq_type == IRQ_TYPE_EDGE_RISING) { /* Default */
->  		val |= ADIS16480_DRDY_POL(1);
->  	} else if (irq_type == IRQ_TYPE_EDGE_FALLING) {
+> For a pressure sensors, io-channel-cells (which I guess you me you
+Gah. Gibberish.
+
+which I guess you mean...
+
+thanks,
+
+J
+> mean) would be a new thing. We've never yet had a consumer of this
+> data type...  Not necessarily a bad thing to have as one can
+> conceive of one, but none of the current pressure sensor bindings
+> have that.
+> 
+> vdd-supply though definitely wants to be in here and required
+> given device is unlikely to work without power!
+> 
+> Jonathan
+> 
+> 
+> >   
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    i2c3 {    
+> > 
+> > i2c {
+> >   
+> > > +      #address-cells = <1>;
+> > > +      #size-cells = <0>;
+> > > +      sdp500@40 {    
+> > 
+> > Node names should be generic. See also an explanation and list of
+> > examples (not exhaustive) in DT specification:
+> > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> > 
+> > 
+> > 
+> > Best regards,
+> > Krzysztof
+> > 
+> >   
 > 
 
 

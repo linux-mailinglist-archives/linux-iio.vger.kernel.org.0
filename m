@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-1788-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1789-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9984A835679
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:42:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DB7835680
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51ADC2812B4
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 15:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28B351F217F5
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F174381C7;
-	Sun, 21 Jan 2024 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59A0376F8;
+	Sun, 21 Jan 2024 15:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA0tpgjL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQWPmWOR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AE938391;
-	Sun, 21 Jan 2024 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEAA376E2;
+	Sun, 21 Jan 2024 15:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705851694; cv=none; b=MlxTvYC8IqHVQiqRvNDpwB873vZSMC+FpK+rqKp0sEdA+ulH+TbYQZo/vaeTSEtnO0pAVbfQtsL89Nk+hk/O7Bsx4eiZZxU2BWhN4MfYVkzR5MJfvYEcXsWsRsWEXzBPCsxIk/NFKXwBPWQ7in/WQN0k+n+oGzQaQki4avOKR1Y=
+	t=1705852260; cv=none; b=lEW1tZ87Ceym1e2neV/hCb/pGUM7a4VhE7yfz+2Jvd//HV4QCLzTl7zPCgn0KaUxdD7ECFV+ZRV4AQz9CKc2gv0MHC/V77YfScAZIChRyhB/Q0fMOgmdxukLeixD21w1h1Ub7+h/zhD6xFtLYN1wp5WUiP/VCR0Frx0aMOn0aJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705851694; c=relaxed/simple;
-	bh=j+llwv0+BWawFUWk0sHZ0w+WckOFi7ovlWd7fHU8QTs=;
+	s=arc-20240116; t=1705852260; c=relaxed/simple;
+	bh=m7HC1AJf4lC007wsALDSYwzESPJy1H9H/qWpdRD1HeQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bJjtFeUEP38ZCyCP68ASNTX89MqLKWps3JqRTtt9cScpioAre64MNx5KWxyaNil8oWG71KInmg7Q4nXDUirLxAuUId9a0cMuCvl+hVIywGMdmZwKjWJLFGW4neMtRbO1iWSMrIJwvBVUboW5hcV72joivFZ8goclXW9VVRXeLxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA0tpgjL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2BDC433C7;
-	Sun, 21 Jan 2024 15:41:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=afB42G9kym8tzvadIPGdbtiw7C5p9G1spfmRYjIZC6nunvapZI/uBKpfeVjKtJ5PkyVX4ak1zdZymEaZ7IhTlbvz0Bnvo25iHIxU8NWZCb2abpfNAU5UoGyXsT/bixn3DjHM0wCTAo1JhdBzUbYeYs7AR1tEmF49olSaRCUUVP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQWPmWOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3BEC433C7;
+	Sun, 21 Jan 2024 15:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705851693;
-	bh=j+llwv0+BWawFUWk0sHZ0w+WckOFi7ovlWd7fHU8QTs=;
+	s=k20201202; t=1705852259;
+	bh=m7HC1AJf4lC007wsALDSYwzESPJy1H9H/qWpdRD1HeQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SA0tpgjL4kc2w/jC5DjEML6+dvuDSvPa3zcUrtzFkLl4H+0QQrkqiyHmYJU1OmJUT
-	 wmKLe8nSbbpHPCam9zg0Hw98jz/FRPYUyE8IDXcDq3TQlAt8A+F7GfhBkRdJkLknUR
-	 lPdcUApZ6d1yNWekeCpWJqlta0Q2QcODt7U0eslBjnjgygCQijamRpfECXKdHpt8h8
-	 yBGqhC9qz1kEEf5mxfaO99EknfarKa7f9qyFSrzg4Pi/YS/OCRrT9IMTRt8Nf43Nve
-	 nA3q1U53YWyqoCUKcTaku5kks3LLYVR+PxKfGxT0rk1bmXbZSnB8QziSMmfoO2ND32
-	 TF0/n/YaenTtg==
-Date: Sun, 21 Jan 2024 15:41:18 +0000
+	b=KQWPmWORh39g0L5LGb7nbuomiZVA678SA6uaElGVr2QbTpyEj0lZ6T2uBF+wdiKUm
+	 zjateRZIyx4x5yT4s06XqvXm+oWTR9tIkSSRuLMI0kOkJjl5VIlrb6zudwL5X2QJUn
+	 cg+UipVg9zEUDjy3A5/xFOTE3SKkdGJK5pMnRfrehE4qpB06ZrzGqNLOorCTook0ng
+	 qFWpnjfEo74IppYZHI9kVPUwET6GgLj20eD10jULi3F/xKptKEedn3Sf8AajRb1jne
+	 WUebZpEuya303UoILZI72nzH0U5HWpC4oneJlJx0TDQpGd54i+T1PgdnQLXpEy4oYv
+	 V/fuY6RHs19Hw==
+Date: Sun, 21 Jan 2024 15:50:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Ceclan Dumitru <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
- brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, Andy Shevchenko
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Michael Walle <michael@walle.cc>, Andy Shevchenko
  <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
  <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
  =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>, Mike Looijmans
@@ -56,13 +56,11 @@ Cc: Ceclan Dumitru <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
  <hvilleneuve@dimonoff.com>, David Lechner <dlechner@baylibre.com>, Ceclan
  Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
-Message-ID: <20240121154118.389e4e87@jic23-huawei>
-In-Reply-To: <20240118-freebase-uptake-ec5fdf786d20@spud>
+Subject: Re: [PATCH v12 2/2] iio: adc: ad7173: add AD7173 driver
+Message-ID: <20240121155041.3fc1a85d@jic23-huawei>
+In-Reply-To: <20240118125001.12809-2-mitrutzceclan@gmail.com>
 References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
-	<20240118-lunar-anthem-31bf3b9b351d@spud>
-	<b96d5bfc-cc38-44c7-a88f-e7ac5e4eb71d@gmail.com>
-	<20240118-freebase-uptake-ec5fdf786d20@spud>
+	<20240118125001.12809-2-mitrutzceclan@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,98 +71,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Jan 2024 16:06:29 +0000
-Conor Dooley <conor@kernel.org> wrote:
+On Thu, 18 Jan 2024 14:49:23 +0200
+Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
 
-> On Thu, Jan 18, 2024 at 05:51:20PM +0200, Ceclan Dumitru wrote:
-> > 
-> > 
-> > On 1/18/24 17:23, Conor Dooley wrote:  
-> > > On Thu, Jan 18, 2024 at 02:49:22PM +0200, Dumitru Ceclan wrote:  
-> > 
-> > ...
-> >   
-> > >> +  adi,clock-select:
-> > >> +    description: |
-> > >> +      Select the ADC clock source. Valid values are:
-> > >> +      int         : Internal oscillator
-> > >> +      int-out     : Internal oscillator with output on XTAL2 pin
-> > >> +      ext-clk     : External clock input on XTAL2 pin
-> > >> +      xtal        : External crystal on XTAL1 and XTAL2 pins
-> > >> +
-> > >> +    $ref: /schemas/types.yaml#/definitions/string
-> > >> +    enum:
-> > >> +      - int
-> > >> +      - int-out
-> > >> +      - ext-clk
-> > >> +      - xtal
-> > >> +    default: int  
-> > > I am not a fan of properties like this one, that in my view reimplement
-> > > things that are supported by the regular clocks properties. I've got
-> > > some questions for you so I can understand whether or not this custom
-> > > property is required.
-> > > 
-> > > Whether or not the ext-clk or xtal is used is known based on
-> > > clock-names - why is the custom property required to determine that?  
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
 > 
-> > > If neither of those clocks are present, then the internal clock would be
-> > > used. Choosing to use the internal clock if an external one is provided
-> > > sounds to me like a software policy decision made by the operating
-> > > system.  
-> > 
-> > If there was no int-out, sure. I considered that the choice between int
-> > and int-out could be made here. So better for driver to choose int/int-out?  
-> 
-> This part of my comments was specifically about choosing between use of
-> the internal clock when ext-clk or xtal are provided, which I think
-> excludes the possibility of using int-out, since the XTAL2 pin is an
-> input.
-> 
-> There's 3 situations:
-> - no external clock provided
-> - ext-clk provided
-> - xtal provided
-> 
-> For the former, you know you're in that state when no "clocks" property
-> is present. The latter two you can differentiate based on "clock-names".
-> 
-> Choosing to use the internal clock if an external clock is provided
-> seems to be a software policy decision, unless I am mistaken.
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-Agreed, though it rarely makes sense as if someone put down a precision
-clock they normally wanted you to use it!
-
-So as a general rule we don't both providing policy controls beyond if
-there is extra hardware (external clock source) then use that.
-
-If someone has a good reason to want to do something else then we can
-probably figure out a reasonable way to control it.
+One comment following through from adding the named irq support to the
+binding.  The driver needs to check that it has the right one
+as perhaps only the error one is wired, or it is the first one specified
+in the binding.
 
 
-> 
-> > > 
-> > > Finally, if the ADC has a clock output, why can that not be represented
-> > > by making the ADC a clock-controller?
-> > >   
-> > 
-> > Was not familiar with this/did not cross my mind. So if xtal/ext-clk is
-> > present, the driver should detect it and disable the option for clock
-> > output? (Common pin XTAL2)  
-> 
-> Yeah, if those clocks are provided you would not register as a clock
-> controller. If there is a user of the output clock, it should have its
-> own "clocks" property that references the ADC's output.
-> 
-> Your dt-binding could also make clocks/clock-names & clock-controller
-> mutually exclusive.
+> +static int ad7173_probe(struct spi_device *spi)
+> +{
+> +	struct device *dev = &spi->dev;
+> +	struct ad7173_state *st;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->info = spi_get_device_match_data(spi);
+> +	if (!st->info)
+> +		return -ENODEV;
+> +
+> +	ida_init(&st->cfg_slots_status);
+> +	ret = devm_add_action_or_reset(dev, ad7173_ida_destroy, st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->name = st->info->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->info = &ad7173_info;
+> +
+> +	spi->mode = SPI_MODE_3;
+> +
+> +	ad7173_sigma_delta_info.num_slots = st->info->num_configs;
+> +	ret = ad_sd_init(&st->sd, indio_dev, spi, &ad7173_sigma_delta_info);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7173_fw_parse_channel_config(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_ad_sd_setup_buffer_and_trigger(dev, indio_dev);
 
-That would indeed be the nicest solution.  How this has been done
-in drivers has somewhat 'evolved' over time, but this is the nicest
-option from point of view of standard bindings and clarity over what
-is going on.
+If the error interrupt is provided either first, or as the only interrupt
+this is going to use the wrong one.
 
-> 
-> Cheers,
-> Conor.
+Probably need to have a variant of that which takes an explicit irq so that
+figuring out which irq is relevant becomes a driver problem rather than the
+library having a go based on spi->irq.
 
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7173_setup(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (IS_ENABLED(CONFIG_GPIOLIB))
+> +		return ad7173_gpio_init(st);
+> +
+> +	return 0;
+> +}
 

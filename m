@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-1798-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1799-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDFB8356B1
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:41:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0ED78356BA
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124581F21A53
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17EC01C213F4
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544F9376E2;
-	Sun, 21 Jan 2024 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9457A376F1;
+	Sun, 21 Jan 2024 16:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDsQ32Go"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JEopUBpl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8AD34CD5;
-	Sun, 21 Jan 2024 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54597374ED;
+	Sun, 21 Jan 2024 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705855299; cv=none; b=JjBDpCXk6/BYlPHZmZv2HAIPmSZ/IkrPrubMPUvwATLD6rCxXPDH3bWvF8mL9M57o1vNn4AaA6J0eEwMijvutyXuvAfu1UFTOhXNdTCYJDCuyDhBfLQnlxKncJJMl5zThRmlhC5wtfJjIj7io+BPekNNAG4IWXy7765wv1xFV0A=
+	t=1705855776; cv=none; b=CdrXJMZoF5ttNxPAt79g+mWQJ8KA/rmVaTCsnAh3n2BviEnbRBHpAlOmTJ8fqW9syfV3pSueBb9YjfaisDunJIDKMTpRpirTMiVCbu93ZYyKgIqbw7O/ZXVl/D6CByhIrBuF5lBy8c8CGlNLZfehxiJ5tHgz6bNf/Kl52as9KHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705855299; c=relaxed/simple;
-	bh=51UlQqphSgXsPSJFl8/Rx05VZDKMVQU2uJ0P+iHg1FQ=;
+	s=arc-20240116; t=1705855776; c=relaxed/simple;
+	bh=JmZ81xo1EjAKmyGPoYlZ1X+tYcmrfrJJnpf0SJRKbvg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZVksqcY9P+9t8gOXgunHPCsIC2bJ813KjSqE6eS5Burpl08TUJSv3+yjI7HjkFvTax1nEGnWCtYaA0BMlV9hIwEQVrADsce4o19W/mYaOChTfwWrs3cm1wyVByU3gwEafN1GWVjFC5/FG1DLFx63q6zWoN1HC7K+oO22C4F41Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDsQ32Go; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB35C433C7;
-	Sun, 21 Jan 2024 16:41:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y1+zM5rwkgcWU5TZHRJlXmeJ661cmbzXjIrW6NrE79hFHD6fbkg3liS+TGnCzcMKHDzQdAKFCkC1KTCOxv5egsRnN/4SdlUcPDHHaBdMKzpzN20CmGT6d6jVqfo9mAampKNmf3KKBQtWRdddpHPbRaXHMIxSaqumLM7Ls3C3dNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JEopUBpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F9DC433C7;
+	Sun, 21 Jan 2024 16:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705855298;
-	bh=51UlQqphSgXsPSJFl8/Rx05VZDKMVQU2uJ0P+iHg1FQ=;
+	s=k20201202; t=1705855775;
+	bh=JmZ81xo1EjAKmyGPoYlZ1X+tYcmrfrJJnpf0SJRKbvg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HDsQ32GoN42KL6wglqQl+WgBmDJQyBdvAcTk6X6jDY5YhOPS8tv5OLD/c3sNkM3jC
-	 P18uOBmI73k5sIN++GkQzNw35AzG4qPzsfqOExSDryYwWujp/bJ1jWHxSOIighw1sz
-	 oC+EIVVtURl5lclzPSIobI1yd60VVw2i38ROjYynbdvuY4fgkJSA8fka+vBH9q0RNN
-	 hIPSyAw7MUVY7U1hJS0IO5pY5TtOezVkIFEn6NYQ7LXHCwaJcZXY7Rgcc622v3sqtp
-	 gSjPmhRSJ15twM9TlEgbQ0G5Yf05NSsMp+wgsixmz3y2y+BzU8BAjjns4DZt9+F7nZ
-	 u/5LWsoXfurNQ==
-Date: Sun, 21 Jan 2024 16:41:21 +0000
+	b=JEopUBpl6aaFQKVvllFfze/RMkBrJ5edM9zTAnr76VFpalCdaf1iThKrMSD7oMdez
+	 nruSFnh5Zy7gYOFWJ92OuxI0gjlACP0LsHdtMwpA33XKK+94BGt6337pycpy9svQ/k
+	 /5cXbNu6ZmWZcJQ1wfR5qCFvGTAX2PIvi+NftJ2VjRsHUhDtsGBdWq+thvKzbNfSUC
+	 AJ3hjIJQwW7bVMeEjHBrhXVlLlB8mUAaCljEvRFY3A3W2puTWK4pVJ9ecCFXw9v8eA
+	 CffKYY3EwDkx4Ka4FOCO69vtqul6JKcyXIjm8xkku0sfvQ1i+3yqsmHUmOArKr8WtS
+	 ve8ZsZjI0jj3w==
+Date: Sun, 21 Jan 2024 16:49:17 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: =?UTF-8?B?TcOlcnRlbg==?= Lindahl <marten.lindahl@axis.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v3] iio: light: vcnl4000: Set ps high definition for
- 4040/4200
-Message-ID: <20240121164121.159aea5e@jic23-huawei>
-In-Reply-To: <20231221-vcnl4000-ps-hd-v3-1-6dcc889372be@axis.com>
-References: <20231221-vcnl4000-ps-hd-v3-1-6dcc889372be@axis.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: add IIO GTS tests
+Message-ID: <20240121164901.6a4707ff@jic23-huawei>
+In-Reply-To: <52c66fe2798192529738ac2ab98a27230a6ad8cd.1705328293.git.mazziesaccount@gmail.com>
+References: <cover.1705328293.git.mazziesaccount@gmail.com>
+	<52c66fe2798192529738ac2ab98a27230a6ad8cd.1705328293.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,26 +58,48 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Jan 2024 12:44:36 +0100
-M=C3=A5rten Lindahl <marten.lindahl@axis.com> wrote:
+On Mon, 15 Jan 2024 16:26:33 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The vcnl4040/vcnl4200 proximity sensor defaults to 12 bit data
-> resolution, but the chip also supports 16 bit data resolution, which is
-> called proximity high definition (PS_HD).
->=20
-> Make the vcnl4040/vcnl4200 proximity sensor use the high definition for
-> all data readings. Please note that in order to preserve the 12 bit
-> integer part of the in_proximity_raw output, the format is changed from
-> integer to fixed point.
->=20
-> Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
-Applied to the togreg branch of iio.git and initially pushed out as testing
-for 0-day to see if it can find anything we missed.
+> Add undersigned as a maintainer for IIO GTS helper's KUnit tests.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+> ---
+> This may or may not conflict with the filename fix here:
+> https://lore.kernel.org/all/CAO=gReFVhp7QK_XZRBO5vbv6fmFb4BdsZeQPSzWvuiz9UeQekA@mail.gmail.com/
+> 
+> Conflict should be very trivial so I didn't wait for the above fix to
+> get in IIO tree. I can rebase and resend if this appears to be a problem
+> though.
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 40c754b4c39c..05c13e0f8c4d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10310,6 +10310,7 @@ L:	linux-iio@vger.kernel.org
+>  S:	Maintained
+>  F:	drivers/iio/light/gain-time-scale-helper.c
+>  F:	drivers/iio/light/gain-time-scale-helper.h
+> +F:	drivers/iio/test/iio-test-gts.c
+This needed a manual merge as you pointed out.
+
+Otherwise all lgtm and applied to the togreg branch of iio.git.
+
+It's on an odd base as the moment though so I'll rebase on rc1 once available.
 
 Thanks,
 
 Jonathan
+
+>  
+>  IIO MULTIPLEXER
+>  M:	Peter Rosin <peda@axentia.se>
+
 

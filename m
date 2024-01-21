@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-1793-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1794-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECFD835697
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:17:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279B683569E
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 17:19:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05711C21129
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:17:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA9AB22A4D
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 16:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677B63770C;
-	Sun, 21 Jan 2024 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A250A37710;
+	Sun, 21 Jan 2024 16:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAqYLZtP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sbf8Nw/6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDDB37704;
-	Sun, 21 Jan 2024 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64289381A1
+	for <linux-iio@vger.kernel.org>; Sun, 21 Jan 2024 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705853852; cv=none; b=ENSmXFRQbOsvdPQH1+FrT7Qa1/MZE8pbyNG7E7XVGU404JHYEwo6A4ps2o3bjtkq+2PxgwPK2Q1ed0atc3NXodqNozTTAg3zPoaDqvHSIsYKqbmKtzIlgQMuS+opIkUTrTW9FhBB/zWeA8wMK66+yCX4xV0diZQyFl3tR8oGPGo=
+	t=1705853986; cv=none; b=LN7XFL3jz4JOpFtIFOHX7HgaEb8nOYvvipmlYzgtQb6OG6Y2afGAx3gKPCofxlVWASEVaUdsNbjVjl9arvmbeO2/q4kKLWaIpQZanIP5R4GwJMmYmZ3w2C9xMdwzw8uVv+POcOG04J/kCEUsutbmNakqasbytXw47nU1WmNxWEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705853852; c=relaxed/simple;
-	bh=iUfq0MblOYTJ4Xg1o/EOPCx1dTOon9m9lKdqAKdduVU=;
+	s=arc-20240116; t=1705853986; c=relaxed/simple;
+	bh=jz1lf0ncYa+FQhRo9d99sLKHP7qJ79EPxtSCceoo2D0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lV4/BiWoHo0kEm+kTnxWqTAxCD7EBo7RsqxiLQsmKnHWSVEjtM6t39aYreYZ5qb/vMI9xfVtjy+3mk9JjSmbCsg8z+YRVziGntRlxAYDY9GVUEI4P6V02B4J4Cvzp8MBbpRze65cQXFMFPRZv1znDOCbUUQ5LGSR6Q9mrdwjwh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAqYLZtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312F2C433F1;
-	Sun, 21 Jan 2024 16:17:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LWb/COeNUZI8FxkL+htFyTVyIS+yoI9tm9E+rWZY7V2oBqSmRg1xfqZE7lujoQC6cQVMH4dxxH/oPcFzwFCN8C1r9h08HVQTYaHV5T1XiP+uhht9MRdxWC6hFruke5i9CY6DYTm2o0lgYRNy+JtMZUvdJ9BlZcqG3/rYh0G0KB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sbf8Nw/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6773C433C7;
+	Sun, 21 Jan 2024 16:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705853851;
-	bh=iUfq0MblOYTJ4Xg1o/EOPCx1dTOon9m9lKdqAKdduVU=;
+	s=k20201202; t=1705853985;
+	bh=jz1lf0ncYa+FQhRo9d99sLKHP7qJ79EPxtSCceoo2D0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uAqYLZtP8sR2EZcaOV2Dt7xxVatLrvMCG0HC4OHUWVU5mlAHcCvFPs8GOAova8sme
-	 B4ko53SEDdVychlpJkRSm6MfFgf8ngJfSZOD9R3hcAhBnFVwWSb+iydLOYAw5gGzco
-	 GuBcM3FW82lN2rW+a/a5E9LKq7PVeNdALdNq0D5jIv4hDcJgewtPSGyUp92LZ5g5df
-	 jS8ED/N7LWBui4a4YQcGP5Z0ALIffPVimE96niYaBBrdq03a2M7UmxxTKTmyII53AU
-	 9j7zQCb8zR3U4pK8Bsv009Y1VMGXKX7ccg4dk3E0DDrCmXcgIJixVrEkFcxtAWpW40
-	 V7VIkq3sOPxqw==
-Date: Sun, 21 Jan 2024 16:17:18 +0000
+	b=Sbf8Nw/6jD+tT1oLCrsElgoHkiC7P9FnG6VVKDMYgKYupywdKAA+dckbSR4vgzblW
+	 ijRGNl5pXbrPp7/0dA6/Igx3eZfkPYcSAD/VFMrnu6a66flOxvjtdnpWSgy9KFlhBx
+	 R2ZSGIWlKh0/kBoDBVDBmOzupu6F/1BSVcYWze8obP/eZ9tf6OLoDuEGC1zihZOqul
+	 xfa6OAVDjD08qK864AlP/TFlS4MzH6H1LBjhIdGLc/TELgctd8E3Wqa9bWAD4StCeY
+	 /MUY3p9VEVd8divr+1SDFdMcgqvDYaVMzbPXM1kVj0S251NzcUurkZcdAi+S4YkBQY
+	 WyBynlzslXaJA==
+Date: Sun, 21 Jan 2024 16:19:34 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Petar Stoykov
- <pd.pstoykov@gmail.com>, <linux-iio@vger.kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Angel Iglesias
- <ang.iglesiasg@gmail.com>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
-Message-ID: <20240121161718.32ffcb38@jic23-huawei>
-In-Reply-To: <20240116163713.00006bf3@Huawei.com>
-References: <CADFWO8EomrhEgtC+i9ikkcDU1c05kx-8kjrS4usAv-TRKxif+w@mail.gmail.com>
-	<4eab426b-f654-4e10-9ffa-5b34016565fb@linaro.org>
-	<20240116163713.00006bf3@Huawei.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, "Renato Lui Geh"
+ <renatogeh@gmail.com>, Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Subject: Re: [PATCH 1/2] iio: adc: ad_sigma_delta: ensure proper DMA
+ alignment
+Message-ID: <20240121161934.4d71ebab@jic23-huawei>
+In-Reply-To: <20240117-dev_sigma_delta_no_irq_flags-v1-1-db39261592cf@analog.com>
+References: <20240117-dev_sigma_delta_no_irq_flags-v1-0-db39261592cf@analog.com>
+	<20240117-dev_sigma_delta_no_irq_flags-v1-1-db39261592cf@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,108 +63,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Jan 2024 16:37:13 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Wed, 17 Jan 2024 13:41:03 +0100
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> On Tue, 16 Jan 2024 16:31:55 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> Aligning the buffer to the L1 cache is not sufficient in some platforms
+> as they might have larger cacheline sizes for caches after L1 and thus,
+> we can't guarantee DMA safety.
 > 
-> > On 16/01/2024 16:24, Petar Stoykov wrote:  
-> > > Sensirion SDP500 is a digital differential pressure sensor. It provides
-> > > a digital I2C output. Add devicetree bindings requiring the compatible
-> > > string and I2C slave address (reg).
-> > > 
-> > > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-> > > ---
-> > >  .../bindings/iio/pressure/sdp500.yaml         | 38 +++++++++++++++++++
-> > >  1 file changed, 38 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/sdp500.yaml    
-> > 
-> > Filename like compatible.
-> >   
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> > > b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> > > new file mode 100644
-> > > index 000000000000..af01ec7e3802
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-> > > @@ -0,0 +1,38 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: sdp500/sdp510 pressure sensor with I2C bus interface
-> > > +
-> > > +maintainers:
-> > > +  - Petar Stoykov <pd.pstoykov@gmail.com>
-> > > +
-> > > +description: |    
-> > 
-> > Do not need '|' unless you need to preserve formatting.
-> >   
-> > > +  Pressure sensor from Sensirion with I2C bus interface.
-> > > +  There is no software difference between sdp500 and sdp510.
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    const: sensirion,sdp500
-> > > +    
-> > 
-> > No resources? No interrupts? No power supply or any pins? No even
-> > iio-cells? This looks incomplete.  
+> That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
+> for the sigma_delta ADCs.
 > 
-> For a pressure sensors, io-channel-cells (which I guess you me you
-Gah. Gibberish.
+> [1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
+> Fixes: 0fb6ee8d0b5e ("iio: ad_sigma_delta: Don't put SPI transfer buffer on the stack")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-which I guess you mean...
+Thanks,
 
-thanks,
+Jonathan
 
-J
-> mean) would be a new thing. We've never yet had a consumer of this
-> data type...  Not necessarily a bad thing to have as one can
-> conceive of one, but none of the current pressure sensor bindings
-> have that.
+> ---
+>  include/linux/iio/adc/ad_sigma_delta.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> vdd-supply though definitely wants to be in here and required
-> given device is unlikely to work without power!
-> 
-> Jonathan
-> 
-> 
-> >   
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    i2c3 {    
-> > 
-> > i2c {
-> >   
-> > > +      #address-cells = <1>;
-> > > +      #size-cells = <0>;
-> > > +      sdp500@40 {    
-> > 
-> > Node names should be generic. See also an explanation and list of
-> > examples (not exhaustive) in DT specification:
-> > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-> > 
-> > 
-> > 
-> > Best regards,
-> > Krzysztof
-> > 
-> >   
+> diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+> index 7852f6c9a714..719cf9cc6e1a 100644
+> --- a/include/linux/iio/adc/ad_sigma_delta.h
+> +++ b/include/linux/iio/adc/ad_sigma_delta.h
+> @@ -8,6 +8,8 @@
+>  #ifndef __AD_SIGMA_DELTA_H__
+>  #define __AD_SIGMA_DELTA_H__
+>  
+> +#include <linux/iio/iio.h>
+> +
+>  enum ad_sigma_delta_mode {
+>  	AD_SD_MODE_CONTINUOUS = 0,
+>  	AD_SD_MODE_SINGLE = 1,
+> @@ -99,7 +101,7 @@ struct ad_sigma_delta {
+>  	 * 'rx_buf' is up to 32 bits per sample + 64 bit timestamp,
+>  	 * rounded to 16 bytes to take into account padding.
+>  	 */
+> -	uint8_t				tx_buf[4] ____cacheline_aligned;
+> +	uint8_t				tx_buf[4] __aligned(IIO_DMA_MINALIGN);
+>  	uint8_t				rx_buf[16] __aligned(8);
+>  };
+>  
 > 
 
 

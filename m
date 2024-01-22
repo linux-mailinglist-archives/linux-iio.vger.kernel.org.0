@@ -1,121 +1,290 @@
-Return-Path: <linux-iio+bounces-1820-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1821-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668C5835D9A
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BAE835E6F
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAAFAB269A2
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:05:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0929CB22D2B
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4EF38386;
-	Mon, 22 Jan 2024 09:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C9739AE4;
+	Mon, 22 Jan 2024 09:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ycAF07x9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSIKnsBC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3B317BD3
-	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 09:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996A03A1A7;
+	Mon, 22 Jan 2024 09:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705914302; cv=none; b=O3Vf3tIou0eyLOQCbt+U9CsZ7K3hp2EkHmWutRQWpaja79WT4HOOJzP37+H5YjPm/PoaqtUYjYjk4G4o7feg1QCta/WfuUvDem5ZJH42yW8IjW50IrhtEBqqTmVcXCEXLPamOVSsGESuQDTthGXzE55W7bOB5vfae8dT+V4Jtn8=
+	t=1705916672; cv=none; b=WOQ2Qb7o0MsXzvkifQewkgO+2IMfeZFgIjqW0b5rDDh9OF7QJzD4/5ovw4dJPgY6UgbZ021h6cbqqiCykCOPQs0aUyRRZ0ykX+ORYEpBOZXHD1DQxhB2mNkd/y0neicNwlbBJttDu1S2BGwhSEc4QPBzaEX47tQtsmQErfI1pko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705914302; c=relaxed/simple;
-	bh=QyE/8NyXVr3Tfr/ZnpAh7fZ33WpIHCb+Y8Yv2pKaXMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U+XTCyKeljgxao0MJlUVNgZfSaYdsMmONV3la0Oguj6Qk/ANxx8ngJiyCcUOeG2/oNxxvuIp9Qv7ihj0qEBSwI56veUn712fqZ5ALbQD5g+7qOz2Srt9zXb1N61B6Z1pZJ8AbZt5vvTM0vSpKvDVDUKV86soCs6KzT8+UPN3Wk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ycAF07x9; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4b7480a80ceso2351661e0c.0
-        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 01:05:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705914300; x=1706519100; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WvVYPG2wkBtcA1rgHmS9eb7auIL+LdUcG6OcQuzbBzo=;
-        b=ycAF07x9vaCIWQDRYKziJigjQYhQfFzeSpPxTQDcv8VH5f6EAAJs6qJcDV+tSthMo9
-         nJ0AfIZNQssU0ml1jpUBDwHOBjI/arxZ0AxRYpeQf77gRsVLkFCxlK/skFsf9zFVSEoX
-         p0kItXGDbzhzKteomOvntwp06hgp5S++wYtQgfYyxF8iJw3G50ISFOFONgMZF810XcZr
-         kHQgXsaaACN12mc12WVg3BrTe/tgQOgFWR2ozYSDE/jSjkXHRWfT+r22lbvs9/ZIXHkS
-         5lsYLsSU/u0wW84TaL968KiGp+XRfoVMdUUeMnhiIW8DoihyxRDzCUm761p7OM65sCzH
-         T68w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705914300; x=1706519100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WvVYPG2wkBtcA1rgHmS9eb7auIL+LdUcG6OcQuzbBzo=;
-        b=FD6+BwQ6jHafVPyKhoWkCL7OloXAuEI9IDkIvf0vD32apjWKj4XuGf6Rkguof+Kpc0
-         oJOATar0LWkU2V88rSh3dweLWe3pf1sz+mMi1ADdJgrGrViePxP8Zv/RCzLACpwsFwLZ
-         jOllKvUJotjwauiE67lD/qgrjUEMtGNrwJiAl9Yy70DMZzZLDi1X+DIRFw7nRL3bnTZA
-         nmfd4IG9Zk+ALpZtNZEKZvPlvHbmlJ/kf0a2XCp+QMLMLc8DEyBhfdFclpXLqdiCrXrg
-         VmvjSKZzAzwW5J9qH/mQxROReyPGYexGA8reQlen5+gNWSyPtezGjHFHQWczgE/vLdYX
-         Wm4A==
-X-Gm-Message-State: AOJu0Yw0rOroG/GkFanS2n9WHoburzPdANdyLCq023XDrY8hLzdskG0o
-	Z1AxKczDzeLS50Hl1uKCfjzxjLJiRJ7Vt94qOn+VTyLJNQhPyk0v7+t2hGoqZEVi5/YxyTpLg6I
-	W260T73hpi3az/chNHMEifeDu5U5wnH8hZgLAbw==
-X-Google-Smtp-Source: AGHT+IHheS7NWJx+J+HYh4sCUPZZ/z2Hrr+vRuda49Q2v1TUQj+dqawrZbQpWmcGgwV6TakV/unBeLmjvEhCwMRjikc=
-X-Received: by 2002:a05:6122:2785:b0:4b6:d49f:c218 with SMTP id
- el5-20020a056122278500b004b6d49fc218mr2349856vkb.17.1705914299751; Mon, 22
- Jan 2024 01:04:59 -0800 (PST)
+	s=arc-20240116; t=1705916672; c=relaxed/simple;
+	bh=GY6PcmbIF9Qpqroe0TsnpiA3WkmL1RQflcaVlhKawjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vc9IYQ6G/f+UsfqzCRwVCLcjRq4gi2go41Wq2GkEpi1XCAFFk5QeiNGnUAra8GD1TIHwUuKfvbyh4gCHnPPXYCS1beNu9dZCzGRgKapjMKQHxJiaW6sh0wnoW+SPTpFLpMO4Nd83z0f81ipmMYx3DOmGt3eFnmVYh6Qsb5RLw50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSIKnsBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31EC43394;
+	Mon, 22 Jan 2024 09:44:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705916672;
+	bh=GY6PcmbIF9Qpqroe0TsnpiA3WkmL1RQflcaVlhKawjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YSIKnsBC6To/LxdrtsvvyRhyZLag8inXq4kjp/1CGvM/xmUZ3hPFUYKgt3xSFji5P
+	 sla7RIsjwi3FQjm8Zt8kXVYLO68TXIr3eL60+8maoETczAeYK/z6CjmlZS7IfZQ0wJ
+	 b0ZWzeN+e6rSMOotVhnrYpCGFNSoCaox3ImLvrHM67E3TUPIWTkdYBSpIBMXKxEyzw
+	 Xw1ROns0JJW0goJ1yT7brddSw4tBuFUarJp7WwzMqmX341h3hIjBbPrNHKfwHQiNCu
+	 ci21KaTeWMKSucBGc4eq5qTAdV5r6BSNwTi5/kt/2/Xe7ZTzUNE1RddVlCGwUH8vB8
+	 6QqKbyWPwOdzA==
+Date: Mon, 22 Jan 2024 09:44:26 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Subject: Re: [PATCH v7 1/2] dt-bindings: iio: frequency: add admfm2000
+Message-ID: <20240122-legible-fossil-25349ef9ad6c@spud>
+References: <20240122090228.28363-1-kimseer.paller@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240121055005.20042-1-rdunlap@infradead.org>
-In-Reply-To: <20240121055005.20042-1-rdunlap@infradead.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 22 Jan 2024 10:04:48 +0100
-Message-ID: <CAMRc=Mdj=nN0cHpVpV2cckS=z9vr_ZW4tNX7yS_1V-caLYiPsA@mail.gmail.com>
-Subject: Re: [PATCH] iio: dummy_evgen: remove Excess kernel-doc comments
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="DdGHYOPWa0l7wFu5"
+Content-Disposition: inline
+In-Reply-To: <20240122090228.28363-1-kimseer.paller@analog.com>
+
+
+--DdGHYOPWa0l7wFu5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 21, 2024 at 6:50=E2=80=AFAM Randy Dunlap <rdunlap@infradead.org=
-> wrote:
->
-> Drop kernel-doc comments for struct fields that were removed to
-> prevent kernel-doc warnings:
->
-> iio_dummy_evgen.c:43: warning: Excess struct member 'irq_sim' description=
- in 'iio_dummy_eventgen'
-> iio_dummy_evgen.c:43: warning: Excess struct member 'base' description in=
- 'iio_dummy_eventgen'
->
-> Fixes: 337cbeb2c13e ("genirq/irq_sim: Simplify the API")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: linux-iio@vger.kernel.org
+On Mon, Jan 22, 2024 at 05:02:27PM +0800, Kim Seer Paller wrote:
+> Dual microwave down converter module with input RF and LO frequency
+> ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+> 8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+> for each down conversion path.
+>=20
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 > ---
->  drivers/iio/dummy/iio_dummy_evgen.c |    2 --
->  1 file changed, 2 deletions(-)
->
-> diff -- a/drivers/iio/dummy/iio_dummy_evgen.c b/drivers/iio/dummy/iio_dum=
-my_evgen.c
-> --- a/drivers/iio/dummy/iio_dummy_evgen.c
-> +++ b/drivers/iio/dummy/iio_dummy_evgen.c
-> @@ -31,8 +31,6 @@
->   * @regs: irq regs we are faking
->   * @lock: protect the evgen state
->   * @inuse: mask of which irqs are connected
-> - * @irq_sim: interrupt simulator
-> - * @base: base of irq range
->   * @irq_sim_domain: irq simulator domain
->   */
->  struct iio_dummy_eventgen {
+> V6 -> V7: Changed RF path mode property to boolean.
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+In the process, the description went from attempting to explain what the
+property did to the perfunctory "enable mixer mode". Can you please add
+an adequate description of the property that covers what happens when
+the property is omitted and what "mixer mode" actually does?
+
+> V5 -> V6: Moved array of switch and attenuation GPIOs to the channel node.
+>           Changed pin coords with friendly names. Removed Reviewed-by tag.
+> V4 -> V5: Added Reviewed-by tag.
+> V3 -> V4: Updated the description of the properties with multiple entries=
+ and
+>           defined the order.
+> V2 -> V3: Adjusted indentation to resolve wrong indentation warning.=20
+>           Changed node name to converter. Updated the descriptions to cla=
+rify
+>           the properties.
+> V1 -> V2: Removed '|' after description. Specified the pins connected to
+>           the GPIOs. Added additionalProperties: false. Changed node name=
+ to gpio.
+>           Aligned < syntax with the previous syntax in the examples.
+>=20
+>  .../bindings/iio/frequency/adi,admfm2000.yaml | 124 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 131 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,a=
+dmfm2000.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm200=
+0.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> new file mode 100644
+> index 000000000000..9e716f59d678
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> @@ -0,0 +1,124 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2024 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADMFM2000 Dual Microwave Down Converter
+> +
+> +maintainers:
+> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +
+> +description:
+> +  Dual microwave down converter module with input RF and LO frequency ra=
+nges
+> +  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
+> +  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each=
+ down
+> +  conversion path.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admfm2000
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@[0-1]$":
+> +    type: object
+> +    description: Represents a channel of the device.
+> +
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description:
+> +          The channel number.
+> +        minimum: 0
+> +        maximum: 1
+> +
+> +      adi,mixer-mode:
+> +        description:
+> +          Enable mixer mode.
+> +        type: boolean
+> +
+> +      switch-gpios:
+> +        description: |
+> +          GPIOs to select the RF path for the channel.
+> +          SW-CH1   CTRL-A   CTRL-B
+> +          SW-CH2   CTRL-A   CTRL-B    CH1 Status        CH2 Status
+> +                   1        0         Direct IF mode    Mixer mode
+> +                   0        1         Mixer mode        Direct IF mode
+
+I cannot make sense of this table you have here, the double header row
+you have going on is hard to follow. There's also no mention here of
+what happens when both GPIOs are 0 or both GPIO are 1. Are these
+configurations permitted?
+
+Thanks,
+Conor
+
+> +        items:
+> +          - description: SW-CH-CTRL-A GPIO
+> +          - description: SW-CH-CTRL-B GPIO
+> +
+> +      attenuation-gpios:
+> +        description: |
+> +          Choice of attenuation:
+> +          DSA-V4  DSA-V3  DSA-V2  DSA-V1  DSA-V0
+> +          1       1       1       1       1        0 dB
+> +          1       1       1       1       0        -1 dB
+> +          1       1       1       0       1        -2 dB
+> +          1       1       0       1       1        -4 dB
+> +          1       0       1       1       1        -8 dB
+> +          0       1       1       1       1        -16 dB
+> +          0       0       0       0       0        -31 dB
+> +
+> +        items:
+> +          - description: DSA-V0 GPIO
+> +          - description: DSA-V1 GPIO
+> +          - description: DSA-V2 GPIO
+> +          - description: DSA-V3 GPIO
+> +          - description: DSA-V4 GPIO
+> +
+> +    required:
+> +      - reg
+> +      - switch-gpios
+> +      - attenuation-gpios
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    converter {
+> +      compatible =3D "adi,admfm2000";
+> +
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      channel@0 {
+> +        reg =3D <0>;
+> +        switch-gpios =3D <&gpio 1 GPIO_ACTIVE_LOW>,
+> +                       <&gpio 2 GPIO_ACTIVE_HIGH>;
+> +
+> +        attenuation-gpios =3D <&gpio 17 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 22 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 23 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 24 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 25 GPIO_ACTIVE_LOW>;
+> +      };
+> +
+> +      channel@1 {
+> +        reg =3D <1>;
+> +        adi,mixer-mode;
+> +        switch-gpios =3D <&gpio 3 GPIO_ACTIVE_LOW>,
+> +                       <&gpio 4 GPIO_ACTIVE_HIGH>;
+> +
+> +        attenuation-gpios =3D <&gpio 0 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 5 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 6 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 16 GPIO_ACTIVE_LOW>,
+> +                            <&gpio 26 GPIO_ACTIVE_LOW>;
+> +      };
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8d1052fa6a69..1f7cd2e848de 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1267,6 +1267,13 @@ W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
+>  F:	drivers/hwmon/adm1177.c
+> =20
+> +ANALOG DEVICES INC ADMFM2000 DRIVER
+> +M:	Kim Seer Paller <kimseer.paller@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+> +
+>  ANALOG DEVICES INC ADMV1013 DRIVER
+>  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+>  L:	linux-iio@vger.kernel.org
+>=20
+> base-commit: 32f764943a21c1af01016bbcd43605220c076262
+> --=20
+> 2.34.1
+>=20
+
+--DdGHYOPWa0l7wFu5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa44+gAKCRB4tDGHoIJi
+0qisAPwMwctZVDw9EdQ92qtmhR06/ekIInIZXwJnSRJqBk6CBwEA5o1YOH31YODB
+F0KjOJ2VekhBXxINzjV3lW0nBfCGBQo=
+=JMs7
+-----END PGP SIGNATURE-----
+
+--DdGHYOPWa0l7wFu5--
 

@@ -1,124 +1,198 @@
-Return-Path: <linux-iio+bounces-1810-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1811-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94ADC83573B
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 19:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDC8835B3D
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 07:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C76541C20A80
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jan 2024 18:20:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610271C21074
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 06:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDD7381DA;
-	Sun, 21 Jan 2024 18:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CACA66;
+	Mon, 22 Jan 2024 06:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1gy25Je"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A1E38380;
-	Sun, 21 Jan 2024 18:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CFFC8FD;
+	Mon, 22 Jan 2024 06:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705861223; cv=none; b=WMxm0qXsKlPvHkexHUuEuRrKqE75qPzgdwr54tzMR8g116q9lQYQbe3yySnDsB471OLjQ053gzewvcHrjEDz3C7ffDq95z9u6dZ4wYbPX2bUPEFxHI4G6gpObF82VSDa4eC+4CjMVLdsmx2YQCDqGw1cS1q4jSueKEWFyTdDKMU=
+	t=1705906255; cv=none; b=RRrIGH5yPSjhEGeybR+BbqX8Vj0EH/WcBctwFAYP3AbdHj9m3lmq/Rb+82K6KBYx1PPMGFVshjW8N34NudU7XXlG4q4EeewJCmKT1xnhwbqiHL4fKzt6ObEwiRdKhuMR8t4vMwDoRVNKYclXkdfOoOmTvZiQcWYsJqUCL980JH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705861223; c=relaxed/simple;
-	bh=WvNOMjwWrXowVuGeUoVHXTocMC9fsQ9/LstdJJfS44g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aMbzn7X+KoUPGIG0LD7FHC9TBG9x/3tN28Bffc1bi9IHqxrfv6FVkVEyW7mqDeja3ORUFOJ7THGCffwKURWdplNCme5AlFMDbtu8t9n5hrrVOHdycyNQ//UvP1zLlggfystu7250s2txIA4SPp99si93LBPSbPT0ETW40YPVGHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id A31B0100DCEF4;
-	Sun, 21 Jan 2024 19:20:12 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 7408B2C4F32; Sun, 21 Jan 2024 19:20:12 +0100 (CET)
-Date: Sun, 21 Jan 2024 19:20:12 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 01/13] device property: Add cleanup.h based
- fwnode_handle_put() scope based cleanup.
-Message-ID: <20240121182012.GG7075@wunner.de>
-References: <20240114172009.179893-1-jic23@kernel.org>
- <20240114172009.179893-2-jic23@kernel.org>
- <20240121180603.GA13937@wunner.de>
+	s=arc-20240116; t=1705906255; c=relaxed/simple;
+	bh=Ht+ghLd9qWXBMuExQZSOUYSlEhQGLmOqr3q1wB2EdGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T0Hg0MsjraGso226Dbk9oI0CzJIMg1EcNvFSBCCUqU+caC1Uvp2XHjnpGJg+7wMojb7CgWKyRhlsj1smk4FDF/S/ydKZvcdymvJkjUJBSkkvsdRtkaLNCUMQ5rMvDeGXtA2Q6u0z+3rfYsUvP4rsSxydSYM2rA2Ii10OUHlXW/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1gy25Je; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2cca5d81826so32378061fa.2;
+        Sun, 21 Jan 2024 22:50:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705906252; x=1706511052; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M5fz13Ad4HCdkTb+naupdkUwXzh9ES8pqhqbkx5imjA=;
+        b=G1gy25JeM3TkNkwk29oLXU0/bTZPQAOFVF4VkELIU3ZFQteCcLrCn15INr/Bi1oU6N
+         gNkEOr7gr9gL/ZFcMEKBBwo2U4AYfWDdzhnLRfMgHU3VzmdDQon9OzC36q6j1F/ap0Qd
+         /+ufdmS8ddNIMOWIgHJVB+GJP3A/+h+2Dm3KjjyNwzfqjuC6iwDpjSbdDBY9b7I74zrM
+         jIgy/A2DZycnoGVEXaYA7vX2u7UD1CokxzQWK7AWS5GI/4LoSI750CLikj/QnQHf3sRp
+         6ZqNQEvE9jy29Lx+0lN4Yshgqo9x8rRBrxNIF83nPzKJZZksmMRcwRDIRW0zxzjgIOpw
+         OIhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705906252; x=1706511052;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M5fz13Ad4HCdkTb+naupdkUwXzh9ES8pqhqbkx5imjA=;
+        b=a+DXAoGaQb/+0hLVW2UPSZB2u7NDDhX3aPllkrI7nt1p114+tBu24x/j0urAnzok3t
+         mT2q0hfcVYx4TWcZkSsdYWYkinIpQFqm1EkVeS7a10GmzD25QG42xb6XPVveuxoD9tVj
+         +4qCKa1+2UYDA5LF6nyYYcixbB+rKa2busyyW7jxwzu7XPNCVoxdpZDvA62RREHKiHy1
+         hrCJa9SOxUD1yrIxu7Wh7okUytGIm+WV7pkuBjmQOSoNutq2uNMNicLiybvT/p2nFMzI
+         JYJQo2WcHqlnBzdF9N//CIaR/OegM1wbGx4dykl6VZ+prV19MObiMcTy+dJGEEiVl/pB
+         egJQ==
+X-Gm-Message-State: AOJu0YwZfqsMXacAj5TR35kHp+nKiM8gksAZc5KNz5VXmHDLqNvf876O
+	2CXLQEHejTMA9Vt0lPGTvfIIvns3/Y5vz1j8ucRttK0/Z6efpRpj
+X-Google-Smtp-Source: AGHT+IGxWWyo12l8q5kHSWTxtI4fT+UM26hwXK+UFhdyd02E53rTlHz7C1mhx3eAV2YOhkZBeULBbg==
+X-Received: by 2002:a2e:3004:0:b0:2cd:7830:5796 with SMTP id w4-20020a2e3004000000b002cd78305796mr1533664ljw.5.1705906251500;
+        Sun, 21 Jan 2024 22:50:51 -0800 (PST)
+Received: from ?IPV6:2001:14ba:7426:df00::3? (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
+        by smtp.gmail.com with ESMTPSA id m21-20020a2e9115000000b002cd32d4722asm3265769ljg.61.2024.01.21.22.50.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 21 Jan 2024 22:50:50 -0800 (PST)
+Message-ID: <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+Date: Mon, 22 Jan 2024 08:50:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240121180603.GA13937@wunner.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: gts-helper: Fix division loop
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20240107162253.66c1f0f1@jic23-huawei>
+ <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+Content-Language: en-US, en-GB
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 21, 2024 at 07:06:03PM +0100, Lukas Wunner wrote:
-> On Sun, Jan 14, 2024 at 05:19:57PM +0000, Jonathan Cameron wrote:
-> > v1: Thanks to Andy for reviewing the RFC.
-> >     Add check for if (!IS_ERR_OR_NULL(_T)) to allow the compiler to optimize
-> >     cases where it knows the passed in parameter is NULL or an error pointer.
+On 1/19/24 13:56, Subhajit Ghosh wrote:
+> On 8/1/24 02:52, Jonathan Cameron wrote:
+>> On Thu, 4 Jan 2024 11:34:28 +0200
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>>> The loop based 64bit division may run for a long time when dividend is a
+>>> lot bigger than the divider. Replace the division loop by the
+>>> div64_u64() which implementation may be significantly faster.
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+>>
+>> Hmm. Fix or not perf improvement?  I'm going to take the middle ground
+>> and leave the fixes tag, but not rush this in.
+>>
+>> So applied to the togreg branch of iio.git and for now just pushed out
+>> as testing for 0-day etc to take a look before I rebase that tree after
+>> rc1.
+>>
+>>
+>>
+>>> ---
+>>>
+>>> I've implemented also a fixup series for supporting rounding of
+>>> gains/scales:
+>>> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
+>>>
+>>> That series does also remove the offending loop.
+>>>
+>>> We don't currently have any in-tree users of GTS helpers which would
+>>> need the rounding support so pushing the rounding is not urgent (and I
+>>> haven't heard of Subjahit whose driver required the rounding). Hence, we
+>>> may want to only take this loop fix in for now (?) and reconsider
+>>> rounding when someone need that.
+>>>
+>>> Jonathan, what's your take on this?
+>> Agreed - let us wait for the rounding to have a user, but makes sense
+>> to tidy this corner up in the meantime.
+>>
+>> Thanks,
+>>
+>> Jonathan
+>>
+>>>
+>>>   drivers/iio/industrialio-gts-helper.c | 5 ++---
+>>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/industrialio-gts-helper.c 
+>>> b/drivers/iio/industrialio-gts-helper.c
+>>> index 7653261d2dc2..abcab2d38589 100644
+>>> --- a/drivers/iio/industrialio-gts-helper.c
+>>> +++ b/drivers/iio/industrialio-gts-helper.c
+>>> @@ -34,7 +34,7 @@
+>>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>>   {
+>>>       u64 full = max;
+>>> -    int tmp = 1;
+>>> +    int tmp = 0;
+>>>       if (scale > full || !scale)
+>>>           return -EINVAL;
+>>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const 
+>>> u64 scale)
+>>>           tmp++;
+>>>       }
+>>> -    while (full > scale * (u64)tmp)
+>>> -        tmp++;
+>>> +    tmp += div64_u64(full, scale);
+>>>       return tmp;
+>>>   }
+>>>
+>>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
+>>
+>>
+> Hi Matti,
 > 
-> Heads-up:  Using IS_ERR_OR_NULL() in DEFINE_FREE() macros bloats
-> the code with additional IS_ERR() checks and NULL pointer checks.
-> 
-> See the detailed explanation in this patch which adds a DEFINE_FREE()
-> macro for x509_free_certificate():
-> 
-> https://lore.kernel.org/all/70ecd3904a70d2b92f8f1e04365a2b9ce66fac25.1705857475.git.lukas@wunner.de/
-> 
-> I'm wondering if a solution might be to stop returning IS_ERR()
-> from "constructors" such as x509_cert_parse() and instead assign
-> the created "object" (x509_certificate) to a call-by-reference
-> pointer and return an integer.  If the returned integer is not 0,
-> inhibit "destruction" of the "object" with no_free_ptr().
+> Your fix works beautifully with the latest version of apds9306 driver 
+> which I am working on.
+> All available scale values can be set without any errors. Thank you.
 
-Another idea would be to use a call-by-reference pointer and check
-the pointer instead of the return code.
+Thanks for testing Subhajit! Just to ensure we have no miscommunication 
+- did you test just this division fix, or the rounding fix here:
+https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
 
-E.g.:
+> Moving to a new city with a new full time job with the assumption of 
+> getting more time
+> for my list of opensource projects and contributions proved to be 
+> utterly wrong!
 
-DEFINE_FREE(x509_free_certificate, struct x509_certificate *,
-	    if (_T) x509_free_certificate(_T))
+Well, I can't blame you :) Being in a new work at new city sounds like 
+you have a lot on your plate right now. Give it half a year and things 
+will stabilize though :) Oh, and falsely assuming that "when XXX, I will 
+have the time to do YYY" - been there done that :)
 
-...
+Good luck on the new work and city!
 
-	struct x509_certificate __free(x509_free_certificate) = NULL;
-	int ret;
+Yours,
+	-- Matti
 
-	ret = x509_cert_parse(&cert, buf, len);
-	if (!cert)
-		return ret;
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
 

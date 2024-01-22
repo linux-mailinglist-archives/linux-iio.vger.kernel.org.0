@@ -1,198 +1,126 @@
-Return-Path: <linux-iio+bounces-1811-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1812-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDC8835B3D
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 07:51:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3127835C8C
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610271C21074
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 06:51:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C5DE28499F
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 08:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CACA66;
-	Mon, 22 Jan 2024 06:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D22620DE9;
+	Mon, 22 Jan 2024 08:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1gy25Je"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L0Iqzx6C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CFFC8FD;
-	Mon, 22 Jan 2024 06:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6954C210E0
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 08:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705906255; cv=none; b=RRrIGH5yPSjhEGeybR+BbqX8Vj0EH/WcBctwFAYP3AbdHj9m3lmq/Rb+82K6KBYx1PPMGFVshjW8N34NudU7XXlG4q4EeewJCmKT1xnhwbqiHL4fKzt6ObEwiRdKhuMR8t4vMwDoRVNKYclXkdfOoOmTvZiQcWYsJqUCL980JH8=
+	t=1705912091; cv=none; b=qdvUtOtbhdugUODehw23f3AAFMpNzARQc596bRJv/36bIQsQOqZkmcE1ZQCqxaqB/OPJgRWWkw6smWThOhEcHn8r3VjZk+8vhp5KzIXfZRiKBZMYb7Qu7isP7VbvldGdNrtMgPRmhqIKZdfi0LHzwSpFq6YSLfHlXWofD0zQBNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705906255; c=relaxed/simple;
-	bh=Ht+ghLd9qWXBMuExQZSOUYSlEhQGLmOqr3q1wB2EdGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T0Hg0MsjraGso226Dbk9oI0CzJIMg1EcNvFSBCCUqU+caC1Uvp2XHjnpGJg+7wMojb7CgWKyRhlsj1smk4FDF/S/ydKZvcdymvJkjUJBSkkvsdRtkaLNCUMQ5rMvDeGXtA2Q6u0z+3rfYsUvP4rsSxydSYM2rA2Ii10OUHlXW/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1gy25Je; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1705912091; c=relaxed/simple;
+	bh=7zNqROIFQb6WNmlturPGczGFWRN0VVwckMgMvf1xmbU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pu1b/uszBxOJqZcRfCzYpDMX+byE/cp2W+fOeOc+nv3ke7jz8sAQde5ABG6lwRzbWVqdrbPqxEqqpIgQMrSon6ftI40VUltY+ogLzKD/DQlQTcSgyeVTTHLW0rtavHsh5v5IdSz6Ek+2IhZ/0CKo+7ObPcCGEBBh5VcK015o3L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L0Iqzx6C; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2cca5d81826so32378061fa.2;
-        Sun, 21 Jan 2024 22:50:53 -0800 (PST)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a271a28aeb4so291791966b.2
+        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 00:28:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705906252; x=1706511052; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M5fz13Ad4HCdkTb+naupdkUwXzh9ES8pqhqbkx5imjA=;
-        b=G1gy25JeM3TkNkwk29oLXU0/bTZPQAOFVF4VkELIU3ZFQteCcLrCn15INr/Bi1oU6N
-         gNkEOr7gr9gL/ZFcMEKBBwo2U4AYfWDdzhnLRfMgHU3VzmdDQon9OzC36q6j1F/ap0Qd
-         /+ufdmS8ddNIMOWIgHJVB+GJP3A/+h+2Dm3KjjyNwzfqjuC6iwDpjSbdDBY9b7I74zrM
-         jIgy/A2DZycnoGVEXaYA7vX2u7UD1CokxzQWK7AWS5GI/4LoSI750CLikj/QnQHf3sRp
-         6ZqNQEvE9jy29Lx+0lN4Yshgqo9x8rRBrxNIF83nPzKJZZksmMRcwRDIRW0zxzjgIOpw
-         OIhQ==
+        d=gmail.com; s=20230601; t=1705912087; x=1706516887; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NBSizC4FZ24bmdBvCQ/z4W6HGmLsK50c+jr9mAmn/LI=;
+        b=L0Iqzx6CcHr8CYA7jFc8noZVhk94PD73FQ3usWUDOab+SrpEWwxWffWHVGb4q6/lnZ
+         lzKcTxn75kn5HhpE+OOzmTIp03o6Xp01mNYGzrZKRBAMtzq2ZFjD+5ZXjphD1xPFQN57
+         lK+p8QzLI16lt20JZpxpYHycaWgKig8b22yRVXxvnA1iYaEZPFekvCefY5tl7ooirPxa
+         cNgERyMWkMFvQlGI0qG/d9ehPiQleMx1uxDO4cfnz1d+BCAZALguUeU+mW0/0RgmghYi
+         u9mYRFxtFQw99KCQJplNyk91fPXgiNObTWNTE7St9h2qjO19fjwqb46KJgp/sHD7MevC
+         9TBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705906252; x=1706511052;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5fz13Ad4HCdkTb+naupdkUwXzh9ES8pqhqbkx5imjA=;
-        b=a+DXAoGaQb/+0hLVW2UPSZB2u7NDDhX3aPllkrI7nt1p114+tBu24x/j0urAnzok3t
-         mT2q0hfcVYx4TWcZkSsdYWYkinIpQFqm1EkVeS7a10GmzD25QG42xb6XPVveuxoD9tVj
-         +4qCKa1+2UYDA5LF6nyYYcixbB+rKa2busyyW7jxwzu7XPNCVoxdpZDvA62RREHKiHy1
-         hrCJa9SOxUD1yrIxu7Wh7okUytGIm+WV7pkuBjmQOSoNutq2uNMNicLiybvT/p2nFMzI
-         JYJQo2WcHqlnBzdF9N//CIaR/OegM1wbGx4dykl6VZ+prV19MObiMcTy+dJGEEiVl/pB
-         egJQ==
-X-Gm-Message-State: AOJu0YwZfqsMXacAj5TR35kHp+nKiM8gksAZc5KNz5VXmHDLqNvf876O
-	2CXLQEHejTMA9Vt0lPGTvfIIvns3/Y5vz1j8ucRttK0/Z6efpRpj
-X-Google-Smtp-Source: AGHT+IGxWWyo12l8q5kHSWTxtI4fT+UM26hwXK+UFhdyd02E53rTlHz7C1mhx3eAV2YOhkZBeULBbg==
-X-Received: by 2002:a2e:3004:0:b0:2cd:7830:5796 with SMTP id w4-20020a2e3004000000b002cd78305796mr1533664ljw.5.1705906251500;
-        Sun, 21 Jan 2024 22:50:51 -0800 (PST)
-Received: from ?IPV6:2001:14ba:7426:df00::3? (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
-        by smtp.gmail.com with ESMTPSA id m21-20020a2e9115000000b002cd32d4722asm3265769ljg.61.2024.01.21.22.50.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Jan 2024 22:50:50 -0800 (PST)
-Message-ID: <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
-Date: Mon, 22 Jan 2024 08:50:44 +0200
+        d=1e100.net; s=20230601; t=1705912087; x=1706516887;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NBSizC4FZ24bmdBvCQ/z4W6HGmLsK50c+jr9mAmn/LI=;
+        b=QwSImh8B+7WL1FOUMueiN6+nj42gqJlTQ7xB/6EKiOYzI2P8KeQC0CfGzLVDtOP/98
+         fHrhBi4D2Vq8i8RnpHuXjg4iRRgnMKtSpggZ32lI80kvgGWEP7uX3kswQ4WLJyRqPsba
+         51x16J3iWMcRo3rMQYXIs7rr1MoEfrtBO10Y6flYzJSPtwQjebAmY65HIvQKzTZVE3dr
+         gRojmH1UZ6vciHvY5yzjDbBmG/EvsfrN7LIVRkwksJk1slbGgj0yH36wGDlkU9yEfLVr
+         +gltq0nIyNfbPskQVU+UTub67/jqVMviouWTbxI7Lp/HPHqWY0yy1X38h1hJno+eAtit
+         cU4g==
+X-Gm-Message-State: AOJu0YxT/Kqsigj/HjFxJbJtf4CnYVuK80Yeb5ehrJdhlJAw7XkNsUyF
+	Yg86XM7Jv98tEFo5MtT4VV5l1hfO+WlZOv1/zxT2ofsIwkkYcDuG
+X-Google-Smtp-Source: AGHT+IGfc5MyUD3fYyYbofwVYVRz9WAKfu/UXX2/smUHu1F+0N+F7sdUyjk40cSYsEQ/I9zkFhpfGQ==
+X-Received: by 2002:a17:906:448b:b0:a2b:6db2:b8da with SMTP id y11-20020a170906448b00b00a2b6db2b8damr1671634ejo.32.1705912087103;
+        Mon, 22 Jan 2024 00:28:07 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id c13-20020a170906170d00b00a2c047c6847sm13108363eje.113.2024.01.22.00.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 00:28:06 -0800 (PST)
+Message-ID: <9fe5ab946da1ad2385dc02f5abd8a2fa58c0ac20.camel@gmail.com>
+Subject: Re: [PATCH 1/3] iio: imu: adis: ensure proper DMA alignment
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Michael Hennerich
+ <Michael.Hennerich@analog.com>,  Lars-Peter Clausen <lars@metafoo.de>
+Date: Mon, 22 Jan 2024 09:28:06 +0100
+In-Reply-To: <20240121161201.1d5c5e7f@jic23-huawei>
+References: <20240117-adis-improv-v1-0-7f90e9fad200@analog.com>
+	 <20240117-adis-improv-v1-1-7f90e9fad200@analog.com>
+	 <20240121161201.1d5c5e7f@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helper: Fix division loop
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20240107162253.66c1f0f1@jic23-huawei>
- <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 1/19/24 13:56, Subhajit Ghosh wrote:
-> On 8/1/24 02:52, Jonathan Cameron wrote:
->> On Thu, 4 Jan 2024 11:34:28 +0200
->> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>
->>> The loop based 64bit division may run for a long time when dividend is a
->>> lot bigger than the divider. Replace the division loop by the
->>> div64_u64() which implementation may be significantly faster.
->>>
->>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>
->> Hmm. Fix or not perf improvement?  I'm going to take the middle ground
->> and leave the fixes tag, but not rush this in.
->>
->> So applied to the togreg branch of iio.git and for now just pushed out
->> as testing for 0-day etc to take a look before I rebase that tree after
->> rc1.
->>
->>
->>
->>> ---
->>>
->>> I've implemented also a fixup series for supporting rounding of
->>> gains/scales:
->>> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
->>>
->>> That series does also remove the offending loop.
->>>
->>> We don't currently have any in-tree users of GTS helpers which would
->>> need the rounding support so pushing the rounding is not urgent (and I
->>> haven't heard of Subjahit whose driver required the rounding). Hence, we
->>> may want to only take this loop fix in for now (?) and reconsider
->>> rounding when someone need that.
->>>
->>> Jonathan, what's your take on this?
->> Agreed - let us wait for the rounding to have a user, but makes sense
->> to tidy this corner up in the meantime.
->>
->> Thanks,
->>
->> Jonathan
->>
->>>
->>>   drivers/iio/industrialio-gts-helper.c | 5 ++---
->>>   1 file changed, 2 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/iio/industrialio-gts-helper.c 
->>> b/drivers/iio/industrialio-gts-helper.c
->>> index 7653261d2dc2..abcab2d38589 100644
->>> --- a/drivers/iio/industrialio-gts-helper.c
->>> +++ b/drivers/iio/industrialio-gts-helper.c
->>> @@ -34,7 +34,7 @@
->>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>   {
->>>       u64 full = max;
->>> -    int tmp = 1;
->>> +    int tmp = 0;
->>>       if (scale > full || !scale)
->>>           return -EINVAL;
->>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const 
->>> u64 scale)
->>>           tmp++;
->>>       }
->>> -    while (full > scale * (u64)tmp)
->>> -        tmp++;
->>> +    tmp += div64_u64(full, scale);
->>>       return tmp;
->>>   }
->>>
->>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
->>
->>
-> Hi Matti,
-> 
-> Your fix works beautifully with the latest version of apds9306 driver 
-> which I am working on.
-> All available scale values can be set without any errors. Thank you.
+On Sun, 2024-01-21 at 16:12 +0000, Jonathan Cameron wrote:
+> On Wed, 17 Jan 2024 14:10:49 +0100
+> Nuno Sa <nuno.sa@analog.com> wrote:
+>=20
+> > Aligning the buffer to the L1 cache is not sufficient in some platforms
+> > as they might have larger cacheline sizes for caches after L1 and thus,
+> > we can't guarantee DMA safety.
+> >=20
+> > That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the =
+same
+> > for the sigma_delta ADCs.
+> >=20
+> > [1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@ke=
+rnel.org/
+> >=20
+> > Fixes: ccd2b52f4ac6 ("staging:iio: Add common ADIS library")
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> Guess I didn't look in the main headers :(
+>=20
 
-Thanks for testing Subhajit! Just to ensure we have no miscommunication 
-- did you test just this division fix, or the rounding fix here:
-https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
+Not many users anyways. Doing a git grep shows:
 
-> Moving to a new city with a new full time job with the assumption of 
-> getting more time
-> for my list of opensource projects and contributions proved to be 
-> utterly wrong!
+git grep "____cacheline_aligned" include/linux/iio/
 
-Well, I can't blame you :) Being in a new work at new city sounds like 
-you have a lot on your plate right now. Give it half a year and things 
-will stabilize though :) Oh, and falsely assuming that "when XXX, I will 
-have the time to do YYY" - been there done that :)
+include/linux/iio/adc/ad_sigma_delta.h:102:     uint8_t                    =
+     tx_buf[4] ____cacheline_aligned;
+include/linux/iio/common/st_sensors.h:261:      char buffer_data[ST_SENSORS=
+_MAX_BUFFER_SIZE] ____cacheline_aligned;
+include/linux/iio/imu/adis.h:134:       u8                      tx[10]____c=
+acheline_aligned;
 
-Good luck on the new work and city!
+So we are only missing the st header. I can send patch for it later today.
 
-Yours,
-	-- Matti
+- Nuno S=C3=A1
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
 
 

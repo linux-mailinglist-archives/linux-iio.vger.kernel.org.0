@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-1826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3335835F0E
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 11:06:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F08D835F1D
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 11:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022921C231F0
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:06:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2842E2882F5
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E46339FF7;
-	Mon, 22 Jan 2024 10:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF943A1D6;
+	Mon, 22 Jan 2024 10:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="I3B1Yr6z"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="OfRjt8QW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FCC39FE9
-	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 10:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FC23A1DA
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 10:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705917848; cv=none; b=lpTs8TwB2naNFNSrFLi2sO1DxwiXNF+OXErQQAAAYbYRvY/JJ4rTmUg0u7RAc67vXHCwYMFvDVXyY177UHYa+5NtLmVlIhpRkG0GDhPt7JwuNwKcFw0BGArSnuQbsYctyc+QZPjxKnDlBJ3UQ7xEqYgvx6BhFAzP69b8KMTLjlE=
+	t=1705918062; cv=none; b=YFjyoNhWh7LF79YV8P9TJo2S2inFiHldXm4l0equfpkP/SfVIEhEWXqAyKaxLKiFA5I+6s3cYMoTF2+BVFoVJcY1xno3/JrO7gdkD5hzVuvS9Y7zThIWUlZnBDEBPMFk85YlcsFYXj2V/5tlKc5DdcOXf4cFeF6SI7x+o/YlPbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705917848; c=relaxed/simple;
-	bh=M8pszskSh+59GT3YDDj2kTESCkFAakxa2ZaO1j5Q8Pg=;
+	s=arc-20240116; t=1705918062; c=relaxed/simple;
+	bh=7hfseNti4KOg7rK9baauGbMNt7pApk4b65kBVK61lRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GfzMQ43of+BfpTcRuCsVwyAB0JGLPDVzuhxhecR7+1UPNaswzXg/FjoC2cS3RDjq9GfTi5Yp0QIb3Q2WJbOUGWox+w+2QehPuO1GcfMDWXTH3GacLZsQPm0iiHN/ETquG+tV4ff23SHe8dMwROkNnONmtYBknMHrdERAkfVMmDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=I3B1Yr6z; arc=none smtp.client-ip=209.85.215.181
+	 In-Reply-To:Content-Type; b=RsHtgrWeceWMDSXozcZn/ue5eFv0cvwWpI71iygmL7vNK8yeUi4FotQYgYos48x+jRJ+bPgEJig7DJKBIFDBz2m6DDl+cYWsNgisWOyezpQa3oyE67lvpuyRMLQwbK+5GPxlLz/khnBhwinynl9YR2qEvFeabWBoFaA2tIXv9Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=OfRjt8QW; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso1161963a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 02:04:06 -0800 (PST)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6db9e52bbccso1392159b3a.3
+        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 02:07:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1705917846; x=1706522646; darn=vger.kernel.org;
+        d=tweaklogic.com; s=google; t=1705918060; x=1706522860; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ni6n5pqeZznTel6GtkjfHQ44EXROGMS+h3Fg1e6uKRc=;
-        b=I3B1Yr6znb0vi9wz6wOHqDEKrWZP4rkZCZrZSss4+GiNn+XV4XipHkyIbOIA9Bn3zL
-         i8MfXuHCIfKW0DtoovkckjFYvFDsxEf4bOOhPwi6OtcRMSvBtiVp0RibjWkXecDK+Xjz
-         OxoeEDryvbw9LfBdgOfJpHG/KJbxfqB/yBUtDLDuGIdTzB1tHziZCB3/EItXa6db5eTW
-         5IwA1/HW0HV3Nf0OoZS2f7FRCwdmtuoh1L6/tfGM6tukbf1PueulY867b38NKdADcqR9
-         ojkTBqlnbXgSisnPc3blTR0AboVe4fSrISKq38IBosCLr17mRu/XQjun8zPBjXtnNjc1
-         gjkw==
+        bh=7SZ6TVtvqO7xS+FN5Shbzs8pDYcUTB61xRBtZe0By+M=;
+        b=OfRjt8QWrGSQCDS9EbbbtG+FrNaVTL6vPTnUtshkgbUB19HjnZEumH4sKuKYnaN1Zx
+         FsLKoKGueE/+xeL9S0a/cGimMfbRuPbC/wnRry43IaV1n9NxGSfhnyJkMLEueO1q+z59
+         CmNev0L+hFeNv9F3GW+7LBImF9OY5yVBZmshcXSecGloHjovUvtrAzyKomeEDinJ6h3n
+         HrEK9glHVQLoQsZd4JJzoq6nr5uiOsY9rar0li+QnkYMILC/v82Rp/9XkqKuIftvIu13
+         6QY6vADYa8GXc9M5LKyNY8fDS21KwImF6NozidqSiSf5LdtGiPilsBELp8DcUMFNHtIS
+         Tekw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705917846; x=1706522646;
+        d=1e100.net; s=20230601; t=1705918060; x=1706522860;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ni6n5pqeZznTel6GtkjfHQ44EXROGMS+h3Fg1e6uKRc=;
-        b=MM98GSVtmNd+HBFWb4O/mwBafUbhrKe1VIFzj8rQSGkF9wJyxk816zxdes0d8QSFtx
-         A9kiHBEP9j2y6hzFrZzMeN/RoDtz4nXHLQD4FDb6lRXdrbPuMJA64hRZ64ZqVhIl4cT6
-         BCSs+j2MEDGckb8C/yiT0KUl26Jr9490+cqaBQdd3myUXAEKSpbqcaSt2oN2RdfCeTg9
-         R/cdMHeLPeJKF4f8FcmXqcZjaYiyJytZ34WiDUDChNtQqUAtO0g7ApIH43Dm3+86+1t+
-         q216+OifBLMwYHgnNdIIngH++VZjrgNtg7ChG1zXv78bd2KHzjhpHiw2BpUBAXVfgTow
-         +akA==
-X-Gm-Message-State: AOJu0YzLIexzrfsuawuECDLyDIaQInJ9ah1IylXRZm5D1tW/AmFt/q9I
-	0ls6fRlZBKZwPuDtxNmnoPQFCgs7fQlRwsYgYKVZKQr908E7a06Pl39iJlOPF2U=
-X-Google-Smtp-Source: AGHT+IFWhdobP+x4boZi7f4u5ncKwhvFSizCjj2v4j7C2QB2eYDiA0ptZEh6KxLq9DgxXVQGvcYSPQ==
-X-Received: by 2002:a05:6a20:9388:b0:199:b189:eb93 with SMTP id x8-20020a056a20938800b00199b189eb93mr1581609pzh.100.1705917846321;
-        Mon, 22 Jan 2024 02:04:06 -0800 (PST)
+        bh=7SZ6TVtvqO7xS+FN5Shbzs8pDYcUTB61xRBtZe0By+M=;
+        b=G7gOkgtpE4ukMgwnHtO7eDAMw557RPiZ1AUOSvCFl+yPHjZwbofQG0yp7MNsPnAI/9
+         Tjc4M0Fc22wgWjt55XHTJFP/LkXXOZuFpEUfkSgZVlTd/xwSc0z9GPoQNBafn9+3WzbN
+         D0kZayIBi+gEiT6fzNMXs+jI7nvK6dMbP9ocy+IFXdRYY5yDV6X0iHeD3mm0FIQ2qd6y
+         UPLJRsuv442HgwM8EOcQtpyHEO9NOpasanHiiw7yDXaGzgy2EAiUEbaqo4BEINlfVXUL
+         q85ewrEjsqkPcdxPlMTrNceNLpNiJwTyX4cXQSdT/GCv5uJ59H9GmDOP16+J6OzyN9gX
+         cfsA==
+X-Gm-Message-State: AOJu0YyLnGOQgCrD4uCf9R6FSfXw2d1UKzVirhj6rXwjLCZ20r7OHUhB
+	THcUGf3WNyXMnhJC3if6QZfni5YNuuJGHvIHHi9riLYRfayvDsR0bM9QiOQqkBs=
+X-Google-Smtp-Source: AGHT+IFOmDwDqyifPwJRFILel0xXFOZg55zuqJ0ufInqRPYJxdwGgQjTGWuazVH1pqkRIehl9L8Msw==
+X-Received: by 2002:a17:903:1251:b0:1d7:657:8ab1 with SMTP id u17-20020a170903125100b001d706578ab1mr1864860plh.76.1705918060314;
+        Mon, 22 Jan 2024 02:07:40 -0800 (PST)
 Received: from [192.168.20.11] ([180.150.112.156])
-        by smtp.gmail.com with ESMTPSA id d11-20020a17090b004b00b0028cef021d45sm9304508pjt.17.2024.01.22.02.04.01
+        by smtp.gmail.com with ESMTPSA id w14-20020a170902a70e00b001d75c26e857sm811322plq.288.2024.01.22.02.07.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 02:04:05 -0800 (PST)
-Message-ID: <4031ee3e-9db5-4e36-8833-2f7fd6fad3ca@tweaklogic.com>
-Date: Mon, 22 Jan 2024 20:33:58 +1030
+        Mon, 22 Jan 2024 02:07:39 -0800 (PST)
+Message-ID: <478fc1b0-aba4-4f36-bdb6-bf5fc7eb8609@tweaklogic.com>
+Date: Mon, 22 Jan 2024 20:37:32 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,59 +77,62 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 2/3] dt-bindings: iio: light: Avago APDS9306
 Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>,
  Matti Vaittinen <mazziesaccount@gmail.com>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Matt Ranostay <matt@ranostay.sg>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Matt Ranostay <matt@ranostay.sg>,
  Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
  <20240121051735.32246-3-subhajit.ghosh@tweaklogic.com>
- <20240121153655.5f734180@jic23-huawei>
+ <a317aeaf-6b4c-43c9-b5d6-78d93ba6f9af@linaro.org>
 From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <20240121153655.5f734180@jic23-huawei>
+In-Reply-To: <a317aeaf-6b4c-43c9-b5d6-78d93ba6f9af@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22/1/24 02:06, Jonathan Cameron wrote:
-> On Sun, 21 Jan 2024 15:47:33 +1030
-> Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
-> 
+On 22/1/24 20:21, Krzysztof Kozlowski wrote:
+> On 21/01/2024 06:17, Subhajit Ghosh wrote:
 >> Adding device tree support for APDS9306 Ambient Light Sensor.
 >> Updating datasheet hyperlinks.
 >> Adding interrupt definition macro and header file.
-> 
-> This is an unrelated change, so should probably be in a separate patch.
-Understood.
-> 
 >> Adding vdd-supply property.
 > 
-> This one is reasonable to have in same patch as the new device addition
-> as, whilst I assume it's valid for the existing devices, you are adding it
-> to incorporate something that device also has.
-> Could also be a separate precursor patch.
+> Why? Do other devices have it?
+Are you referring to vdd-supply? No, I guess, haven't checked actually.
+If other devices don't have, can you suggest the best way to handle that?
 > 
->>
-
+> 
+>>   required:
+>> @@ -33,6 +37,8 @@ required:
 >>   
->>   description: |
->> -  Datasheet: https://www.avagotech.com/docs/AV02-1077EN
->> -  Datasheet: https://www.avagotech.com/docs/AV02-4191EN
->> +  Datasheet: https://docs.broadcom.com/doc/AV02-1077EN
->> +  Datasheet: https://docs.broadcom.com/doc/AV02-4191EN
->> +  Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
+>>   examples:
+>>     - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +
+>>       i2c {
+>>           #address-cells = <1>;
+>>           #size-cells = <0>;
+>> @@ -41,7 +47,8 @@ examples:
+>>               compatible = "avago,apds9300";
+>>               reg = <0x39>;
+>>               interrupt-parent = <&gpio2>;
+>> -            interrupts = <29 8>;
+>> +            interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
 > 
-> Old links seem to still work, so why the change?
-My bad. I will revert to keep things simple. No reason, just thought of updating.
-
-Thanks for the review.
-
+> Separate change.
+Understood.
+> 
+> Best regards,
+> Krzysztof
+> 
 Regards,
 Subhajit Ghosh
 

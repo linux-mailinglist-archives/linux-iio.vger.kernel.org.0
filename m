@@ -1,66 +1,74 @@
-Return-Path: <linux-iio+bounces-1847-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1848-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601E9836F18
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:09:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B634837007
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1470C28C21D
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:09:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 736B2B32501
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1B956B9B;
-	Mon, 22 Jan 2024 17:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C85A48CF9;
+	Mon, 22 Jan 2024 17:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8QhUiIs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AABn7R/x"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BBA3FB36;
-	Mon, 22 Jan 2024 17:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B291B48CF0;
+	Mon, 22 Jan 2024 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705944930; cv=none; b=oN/0Dyu+SJtg+3bq4/7ROEfOOTkuDj+MKA4JPkiA6PtkGTyXiZdMzaDv0/fdtYmvQV6omWuDF5phujBPRqdzeB4ph8WtJBQUbqGqqMRX0phaACeNGrNzricar7oHZb4s8GQtdzX1paJgcP9fIDbCC/A7davcti+jfGpVDIeQn28=
+	t=1705945731; cv=none; b=t1U9g1Cm9sEGRJqIDUN8x0Cmhn/3SZuGTtm1ljSqVI6ABQ6YlRUOKlwn9IKnHZcoGEgJNxgg0LICiUXSa0EtE4hGJfZv2+gGs8oz17m7t/iAhoESneeFJUW4D1vkKkDrcHFWoykcTTHWPbf3APwda3GttMLUB8ENqyxqxML6WGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705944930; c=relaxed/simple;
-	bh=XfQM0Oq8bhchKaV3+vsc5joKpUAvSeJRZhoVmelAvR0=;
+	s=arc-20240116; t=1705945731; c=relaxed/simple;
+	bh=hgeoLm3uwg0td5z993vUSVC7oy/nuqOImO96wn1PMjM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c1G1IH0K2dQtPKxeyXus5Fq+/G6TTeiAR27/BDrk/VnkHn2gW869Tis+WE/JdctKq6GwSTYG5NZaIzkKbSKAANbXH9RQtE9To8jCZWKW0kSkJvsIUcyg4zEcw5QxIDmcweIul06Oa5wDZzVoRjwbnrdrNyTygmxx55GCZ/rZvb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8QhUiIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A599EC433F1;
-	Mon, 22 Jan 2024 17:35:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=g11LGkm83H2wPnHdnRn8Ybwh8+6ehFT1RG+S9GkzNzS0UUhSNw5WF5cAUUjvcpI4T04I1Teuj/dm7oQyJQuYomS2qAbXVPB0TyNAn/qawXu7sEER0AJVt+0tP15Yz/sz3mEdpIPBYJ45UY2tWMVeBycvXTWmmS9NuudOCfzsyjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AABn7R/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBAFC433F1;
+	Mon, 22 Jan 2024 17:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705944930;
-	bh=XfQM0Oq8bhchKaV3+vsc5joKpUAvSeJRZhoVmelAvR0=;
+	s=k20201202; t=1705945731;
+	bh=hgeoLm3uwg0td5z993vUSVC7oy/nuqOImO96wn1PMjM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W8QhUiIsbnGzfIxc6KFXpmIaDt3BUwNKWwmu0bYNI4ZHXrIN9FdllQuxQDUOpLkUO
-	 Lh/1oHxgfXg3Vs6ej9AxQwA5Bf1FqP3rg4zPq7Alk9NpK2WvnwGqB7P2nNgwBp3Cuu
-	 5wMpQQe5uJZGgM1kUtuvRJAxEOlcOFGBwWQqC2EpCQWpjUPwJKvkCfK2gnL+sIZxzR
-	 fRZdcuEIoWHeGZ9NW8qNtH/ubZIgFetySsKWr0AgSpOzFicCeKhyJuTYIFIyO6qGHE
-	 3+95CO3njR9+Zhy/bTD/gWvWwgPcwpeL+aj4THbNA/UbgkmlU/rTQd5HB1Y+EVZkE3
-	 dDcfXYQuVaaRg==
-Date: Mon, 22 Jan 2024 17:35:24 +0000
+	b=AABn7R/xM+sFo+KOU71jD3AWD77zQjvu96pxhT5YNoFsNI2JSJ70u/Be0vLKHGpf1
+	 VJSWfBH1Zf8ywdwmrrARCuKdJ8xHzzfgyqZFM3ABE7Bljf4XaAnzOLVIrrkwUNRI6e
+	 HnxuRqO1KjIYQVzwWxxC74P9IilqhKbfDl93Dmb2XyRW3jeyw4ZZbbpZfx7+FaES3l
+	 1uWr2lKi1C+lXKVcSacKYWQouKrVjTZCkoR820fJB0gFHuQLWVHYAEV/bcD78k2ynP
+	 KLlxgoMSmRshS4OxEdXFZjytfjILIZi8BDWWl00ufIzzE8FG6v94RjdvriP3cZpnR0
+	 Ff5XTEdUd8h9g==
+Date: Mon, 22 Jan 2024 17:48:44 +0000
 From: Conor Dooley <conor@kernel.org>
-To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Ceclan Dumitru <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
+	brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Crt Mori <cmo@melexis.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Subject: Re: [PATCH v7 1/2] dt-bindings: iio: frequency: add admfm2000
-Message-ID: <20240122-postbox-slimy-248a2e521896@spud>
-References: <20240122090228.28363-1-kimseer.paller@analog.com>
- <20240122-legible-fossil-25349ef9ad6c@spud>
- <PH0PR03MB7141A46C8DD0041775CD0E96F9752@PH0PR03MB7141.namprd03.prod.outlook.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 1/2] dt-bindings: adc: add AD7173
+Message-ID: <20240122-bloating-dyslexic-cbc0258c898a@spud>
+References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
+ <20240118-lunar-anthem-31bf3b9b351d@spud>
+ <b96d5bfc-cc38-44c7-a88f-e7ac5e4eb71d@gmail.com>
+ <20240118-freebase-uptake-ec5fdf786d20@spud>
+ <20240121154118.389e4e87@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -68,81 +76,128 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MCbfwdcDBzV4nvA+"
+	protocol="application/pgp-signature"; boundary="dlghW/7VOeuyh/eL"
 Content-Disposition: inline
-In-Reply-To: <PH0PR03MB7141A46C8DD0041775CD0E96F9752@PH0PR03MB7141.namprd03.prod.outlook.com>
+In-Reply-To: <20240121154118.389e4e87@jic23-huawei>
 
 
---MCbfwdcDBzV4nvA+
+--dlghW/7VOeuyh/eL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 22, 2024 at 11:06:08AM +0000, Paller, Kim Seer wrote:
-> > > +      adi,mixer-mode:
-> > > +        description:
-> > > +          Enable mixer mode.
-> > > +        type: boolean
-> > > +
-> > > +      switch-gpios:
-> > > +        description: |
-> > > +          GPIOs to select the RF path for the channel.
-> > > +          SW-CH1   CTRL-A   CTRL-B
-> > > +          SW-CH2   CTRL-A   CTRL-B    CH1 Status        CH2 Status
-> > > +                   1        0         Direct IF mode    Mixer mode
-> > > +                   0        1         Mixer mode        Direct IF mo=
-de
+On Sun, Jan 21, 2024 at 03:41:18PM +0000, Jonathan Cameron wrote:
+> On Thu, 18 Jan 2024 16:06:29 +0000
+> Conor Dooley <conor@kernel.org> wrote:
+> > On Thu, Jan 18, 2024 at 05:51:20PM +0200, Ceclan Dumitru wrote:
+> > > On 1/18/24 17:23, Conor Dooley wrote: =20
+> > > > On Thu, Jan 18, 2024 at 02:49:22PM +0200, Dumitru Ceclan wrote: =20
+> > > >> +  adi,clock-select:
+> > > >> +    description: |
+> > > >> +      Select the ADC clock source. Valid values are:
+> > > >> +      int         : Internal oscillator
+> > > >> +      int-out     : Internal oscillator with output on XTAL2 pin
+> > > >> +      ext-clk     : External clock input on XTAL2 pin
+> > > >> +      xtal        : External crystal on XTAL1 and XTAL2 pins
+> > > >> +
+> > > >> +    $ref: /schemas/types.yaml#/definitions/string
+> > > >> +    enum:
+> > > >> +      - int
+> > > >> +      - int-out
+> > > >> +      - ext-clk
+> > > >> +      - xtal
+> > > >> +    default: int =20
+> > > > I am not a fan of properties like this one, that in my view reimple=
+ment
+> > > > things that are supported by the regular clocks properties. I've got
+> > > > some questions for you so I can understand whether or not this cust=
+om
+> > > > property is required.
+> > > >=20
+> > > > Whether or not the ext-clk or xtal is used is known based on
+> > > > clock-names - why is the custom property required to determine that=
+? =20
 > >=20
-> > I cannot make sense of this table you have here, the double header row =
-you
-> > have going on is hard to follow. There's also no mention here of what h=
-appens
-> > when both GPIOs are 0 or both GPIO are 1. Are these configurations perm=
-itted?
+> > > > If neither of those clocks are present, then the internal clock wou=
+ld be
+> > > > used. Choosing to use the internal clock if an external one is prov=
+ided
+> > > > sounds to me like a software policy decision made by the operating
+> > > > system. =20
+> > >=20
+> > > If there was no int-out, sure. I considered that the choice between i=
+nt
+> > > and int-out could be made here. So better for driver to choose int/in=
+t-out? =20
+> >=20
+> > This part of my comments was specifically about choosing between use of
+> > the internal clock when ext-clk or xtal are provided, which I think
+> > excludes the possibility of using int-out, since the XTAL2 pin is an
+> > input.
+> >=20
+> > There's 3 situations:
+> > - no external clock provided
+> > - ext-clk provided
+> > - xtal provided
+> >=20
+> > For the former, you know you're in that state when no "clocks" property
+> > is present. The latter two you can differentiate based on "clock-names".
+> >=20
+> > Choosing to use the internal clock if an external clock is provided
+> > seems to be a software policy decision, unless I am mistaken.
 >=20
-> I also feel that it's quite hard to understand without the gridlines. In =
-the preliminary
-> datasheet, it's a switch control table, and I'm trying to replicate the w=
-ay it is presented.
+> Agreed, though it rarely makes sense as if someone put down a precision
+> clock they normally wanted you to use it!
 >=20
-> On the table, each channel has control pins (CTRL-A and CTRL-B). For a mi=
-xer mode
-> configuration on channel 1, CTRL-A GPIO should be 0, and CTRL-B GPIO shou=
-ld be 1.
-> It's not permitted when both GPIOs are 0 or both GPIOs are 1. The state f=
-or the GPIO
-> should strictly follow the truth table.
+> So as a general rule we don't both providing policy controls beyond if
+> there is extra hardware (external clock source) then use that.
 >=20
-> I'm considering making it much easier to understand by creating two separ=
-ate tables for
-> each channel, just like the example below. Or is it preferred if it could=
- be discussed in=20
-> a sort of paragraph form?
->=20
-> SW-CH1   CTRL-A   CTRL-B    CH1 Status            CH2 Status
-> 	   1              0              Direct IF mode     Mixer
->=20
-> SW-CH2   CTRL-A   CTRL-B    CH1 Status            CH2 Status
->           	    0            1               Direct IF mode     Mixer
+> If someone has a good reason to want to do something else then we can
+> probably figure out a reasonable way to control it.
 
-I think it would be sufficient to cut down the original table to
-something like:
- CTRL-A   CTRL-B    CH1 Status        CH2 Status
- 1        0         Direct IF mode    Mixer mode
- 0        1         Mixer mode        Direct IF mode
+Yah, I figured there'd be few situations, outside of maybe debugging
+hardware issues, where that internal clock is more desirable to use.
 
-And state that the configurations where A =3D=3D B are not permitted.
+> > > > Finally, if the ADC has a clock output, why can that not be represe=
+nted
+> > > > by making the ADC a clock-controller?
+> > > >  =20
+> > >=20
+> > > Was not familiar with this/did not cross my mind. So if xtal/ext-clk =
+is
+> > > present, the driver should detect it and disable the option for clock
+> > > output? (Common pin XTAL2) =20
+> >=20
+> > Yeah, if those clocks are provided you would not register as a clock
+> > controller. If there is a user of the output clock, it should have its
+> > own "clocks" property that references the ADC's output.
+> >=20
+> > Your dt-binding could also make clocks/clock-names & clock-controller
+> > mutually exclusive.
+>=20
+> That would indeed be the nicest solution.  How this has been done
+> in drivers has somewhat 'evolved' over time, but this is the nicest
+> option from point of view of standard bindings and clarity over what
+> is going on.
 
---MCbfwdcDBzV4nvA+
+Yeah, I know that this has not really been normal thing to do in some
+corners of the kernel (ethernet PHYs in particular I think have been
+rolling their own clock controller stuff) and I've been trying to push
+back on these kinds of things for new devices.
+
+Thanks,
+Conor.
+
+--dlghW/7VOeuyh/eL
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa6nXAAKCRB4tDGHoIJi
-0gftAP40Y10Z/PEZG3hrDgMfGcEP2C/NdkdxryZWr/keJTMJ6gEAhZHQWc5ETow6
-nk4YRriQIquAgLUZulArlOI5DOOyWw4=
-=ZKhg
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa6qfAAKCRB4tDGHoIJi
+0vMQAQCkGjF6Fel/gAV0+3hyoOgjeGJlUQke4fQTA7TAyHhtgAD8D09ND39sB4Fl
+GkrIpXdiwl4J3kvcv2KuxONa90Pj3QY=
+=LJJG
 -----END PGP SIGNATURE-----
 
---MCbfwdcDBzV4nvA+--
+--dlghW/7VOeuyh/eL--
 

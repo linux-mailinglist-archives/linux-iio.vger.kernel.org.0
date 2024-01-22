@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-1825-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1826-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CDB835EF3
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 11:02:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3335835F0E
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 11:06:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9752D1C21C1F
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022921C231F0
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8FE39FE8;
-	Mon, 22 Jan 2024 10:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E46339FF7;
+	Mon, 22 Jan 2024 10:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hFtMbXEl"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="I3B1Yr6z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8642839FD9;
-	Mon, 22 Jan 2024 10:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FCC39FE9
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 10:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705917762; cv=none; b=R+DBXnLNdIUSOB46ipNoUF7QNSSuS7fLLYVPuVsvLCWwuREHWlwjXDqJgkp5lzTKeIxB9JL7H1+DIycUQUVxCs1m7eahFz8hlIjJZQKzbTYYh60MwVl0PWmhV/DfUone42WDFoXiglF0PqbFG1UHG+h6op3HGfPn0NqnCqejSc4=
+	t=1705917848; cv=none; b=lpTs8TwB2naNFNSrFLi2sO1DxwiXNF+OXErQQAAAYbYRvY/JJ4rTmUg0u7RAc67vXHCwYMFvDVXyY177UHYa+5NtLmVlIhpRkG0GDhPt7JwuNwKcFw0BGArSnuQbsYctyc+QZPjxKnDlBJ3UQ7xEqYgvx6BhFAzP69b8KMTLjlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705917762; c=relaxed/simple;
-	bh=UH0mdAbH8q5JrDsA2LzVVD1Mcxs8cBxlGirxEvwPeAg=;
+	s=arc-20240116; t=1705917848; c=relaxed/simple;
+	bh=M8pszskSh+59GT3YDDj2kTESCkFAakxa2ZaO1j5Q8Pg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rgU4Wqrx80A12r3l9mggnUk9AwB/vaxmSOOc6dSZLDRSqw6sNFonoruI+NQM7TG8GdGAoscqP+66hGrNX76iKbpSJKsmpZ97+3aZiXbchVJ2dY7d+ZpF8PyDswC92iDM8mN3mrqkCDF78QLwyb6SS6xLAcHFNj0h3pNmvmNldqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hFtMbXEl; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e913e3f03so38052965e9.3;
-        Mon, 22 Jan 2024 02:02:40 -0800 (PST)
+	 In-Reply-To:Content-Type; b=GfzMQ43of+BfpTcRuCsVwyAB0JGLPDVzuhxhecR7+1UPNaswzXg/FjoC2cS3RDjq9GfTi5Yp0QIb3Q2WJbOUGWox+w+2QehPuO1GcfMDWXTH3GacLZsQPm0iiHN/ETquG+tV4ff23SHe8dMwROkNnONmtYBknMHrdERAkfVMmDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=I3B1Yr6z; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso1161963a12.2
+        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 02:04:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705917759; x=1706522559; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=tweaklogic.com; s=google; t=1705917846; x=1706522646; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NIKwavFbvvA1J3UDsxgakKoE4Y+95NujtFu74c8W3GQ=;
-        b=hFtMbXEl+9f0CIhL/Qa6Pxd0+uq0054OAa/FW/xOfrk8idhnMN4DE/gE+YCDip/hvJ
-         wbdvisOT5BJnednVjdhw+H7drDQs99flaMT6mnn/BZY33zEeb38ZQoEdGkEUclaq97Mp
-         i++k5NekZMP0vcX2P3fqgHZFQKRDDBP20or5CTALUktOO1md5RfoBYJ14a70DKwF+URj
-         kh2uw4USRDayXlyYC2eWmRtvBp5h1Qd7TT+ypSfAZW4SOYXjPSFcnKE2I3ih2TjOXhHQ
-         CuRWrFrsCVtJ/Pn4BwGsyHMj7lDOCv8KMz1ykAFxsgKiSYkHlmnIRNS30RxyZDw7a60p
-         jH4w==
+        bh=ni6n5pqeZznTel6GtkjfHQ44EXROGMS+h3Fg1e6uKRc=;
+        b=I3B1Yr6znb0vi9wz6wOHqDEKrWZP4rkZCZrZSss4+GiNn+XV4XipHkyIbOIA9Bn3zL
+         i8MfXuHCIfKW0DtoovkckjFYvFDsxEf4bOOhPwi6OtcRMSvBtiVp0RibjWkXecDK+Xjz
+         OxoeEDryvbw9LfBdgOfJpHG/KJbxfqB/yBUtDLDuGIdTzB1tHziZCB3/EItXa6db5eTW
+         5IwA1/HW0HV3Nf0OoZS2f7FRCwdmtuoh1L6/tfGM6tukbf1PueulY867b38NKdADcqR9
+         ojkTBqlnbXgSisnPc3blTR0AboVe4fSrISKq38IBosCLr17mRu/XQjun8zPBjXtnNjc1
+         gjkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705917759; x=1706522559;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1705917846; x=1706522646;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NIKwavFbvvA1J3UDsxgakKoE4Y+95NujtFu74c8W3GQ=;
-        b=UT8hCjDLWyjw0IyitsfoeXf8rhhhMFv68gVpMO8GPN/Z57i2TI0KVf4Ooo1GKVlCfl
-         3OEOb41Ee1FOiydnq9g6bD3+ipVw0AYFAunwSxzkOnSItUQhcter+X2MA6ZaAWtxHK92
-         fnOpCPRTfJ2FEwz9VrXTTVTpxF4VKz13qHgnvZB2K8wC4pw6gs/TpheMM0vluNWXt6Ne
-         /hMFtzu+afCOkCxg13QjyK1+2oCmOsO6XbvyUjaZIFPms0Xb4EX9jaUbbGPum+Tsa7Gg
-         PnDjLVZGUyFWNyUuwpb5sOVGEA38OYETKYQLycMr3u+y7/HRcMCkP0wT211gdhETt68U
-         sYOA==
-X-Gm-Message-State: AOJu0YxZD/z4jMoBPawHQIBz/+3F0WcENnd/gwlUS3sKWK2KYQ2CmsHx
-	kYMOX6mP9VB2u2S4fvF5079Gazr5S6nqa0jW0kBtYkSXe7SBr1pr
-X-Google-Smtp-Source: AGHT+IGeyqBOITq8jREpyuTUcxtpiIv0d34MO0QtTVuRNkHPEAXvAHfiSpk4u7R8nGVDsWBOQ04NCg==
-X-Received: by 2002:a05:600c:3ca3:b0:40d:8fe1:2f7d with SMTP id bg35-20020a05600c3ca300b0040d8fe12f7dmr2228289wmb.4.1705917758360;
-        Mon, 22 Jan 2024 02:02:38 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id j7-20020a05600c190700b0040e52cac976sm41891825wmq.29.2024.01.22.02.02.36
+        bh=ni6n5pqeZznTel6GtkjfHQ44EXROGMS+h3Fg1e6uKRc=;
+        b=MM98GSVtmNd+HBFWb4O/mwBafUbhrKe1VIFzj8rQSGkF9wJyxk816zxdes0d8QSFtx
+         A9kiHBEP9j2y6hzFrZzMeN/RoDtz4nXHLQD4FDb6lRXdrbPuMJA64hRZ64ZqVhIl4cT6
+         BCSs+j2MEDGckb8C/yiT0KUl26Jr9490+cqaBQdd3myUXAEKSpbqcaSt2oN2RdfCeTg9
+         R/cdMHeLPeJKF4f8FcmXqcZjaYiyJytZ34WiDUDChNtQqUAtO0g7ApIH43Dm3+86+1t+
+         q216+OifBLMwYHgnNdIIngH++VZjrgNtg7ChG1zXv78bd2KHzjhpHiw2BpUBAXVfgTow
+         +akA==
+X-Gm-Message-State: AOJu0YzLIexzrfsuawuECDLyDIaQInJ9ah1IylXRZm5D1tW/AmFt/q9I
+	0ls6fRlZBKZwPuDtxNmnoPQFCgs7fQlRwsYgYKVZKQr908E7a06Pl39iJlOPF2U=
+X-Google-Smtp-Source: AGHT+IFWhdobP+x4boZi7f4u5ncKwhvFSizCjj2v4j7C2QB2eYDiA0ptZEh6KxLq9DgxXVQGvcYSPQ==
+X-Received: by 2002:a05:6a20:9388:b0:199:b189:eb93 with SMTP id x8-20020a056a20938800b00199b189eb93mr1581609pzh.100.1705917846321;
+        Mon, 22 Jan 2024 02:04:06 -0800 (PST)
+Received: from [192.168.20.11] ([180.150.112.156])
+        by smtp.gmail.com with ESMTPSA id d11-20020a17090b004b00b0028cef021d45sm9304508pjt.17.2024.01.22.02.04.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 02:02:37 -0800 (PST)
-Message-ID: <57ea42b3-106b-4361-8d07-4e1656bf6e58@gmail.com>
-Date: Mon, 22 Jan 2024 12:02:35 +0200
+        Mon, 22 Jan 2024 02:04:05 -0800 (PST)
+Message-ID: <4031ee3e-9db5-4e36-8833-2f7fd6fad3ca@tweaklogic.com>
+Date: Mon, 22 Jan 2024 20:33:58 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,48 +75,62 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/2] iio: adc: ad7173: add AD7173 driver
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- David Lechner <dlechner@baylibre.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240118125001.12809-1-mitrutzceclan@gmail.com>
- <20240118125001.12809-2-mitrutzceclan@gmail.com>
- <20240121155041.3fc1a85d@jic23-huawei>
+Subject: Re: [PATCH v5 2/3] dt-bindings: iio: light: Avago APDS9306
 Content-Language: en-US
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <20240121155041.3fc1a85d@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Matt Ranostay <matt@ranostay.sg>,
+ Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
+ <20240121051735.32246-3-subhajit.ghosh@tweaklogic.com>
+ <20240121153655.5f734180@jic23-huawei>
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20240121153655.5f734180@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 1/21/24 17:50, Jonathan Cameron wrote:
->> +	ret = devm_ad_sd_setup_buffer_and_trigger(dev, indio_dev);
-> If the error interrupt is provided either first, or as the only interrupt
-> this is going to use the wrong one.
+On 22/1/24 02:06, Jonathan Cameron wrote:
+> On Sun, 21 Jan 2024 15:47:33 +1030
+> Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 > 
-> Probably need to have a variant of that which takes an explicit irq so that
-> figuring out which irq is relevant becomes a driver problem rather than the
-> library having a go based on spi->irq.
+>> Adding device tree support for APDS9306 Ambient Light Sensor.
+>> Updating datasheet hyperlinks.
+>> Adding interrupt definition macro and header file.
+> 
+> This is an unrelated change, so should probably be in a separate patch.
+Understood.
+> 
+>> Adding vdd-supply property.
+> 
+> This one is reasonable to have in same patch as the new device addition
+> as, whilst I assume it's valid for the existing devices, you are adding it
+> to incorporate something that device also has.
+> Could also be a separate precursor patch.
+> 
+>>
 
-Would it be acceptable to check if spi->irq interrupt number is equal to
-fwnode_irq_get_byname(dev_fwnode(dev), "rdy")?
+>>   
+>>   description: |
+>> -  Datasheet: https://www.avagotech.com/docs/AV02-1077EN
+>> -  Datasheet: https://www.avagotech.com/docs/AV02-4191EN
+>> +  Datasheet: https://docs.broadcom.com/doc/AV02-1077EN
+>> +  Datasheet: https://docs.broadcom.com/doc/AV02-4191EN
+>> +  Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
+> 
+> Old links seem to still work, so why the change?
+My bad. I will revert to keep things simple. No reason, just thought of updating.
 
-If not, a message could be passed that specifies either that "rdy" is
-needed or that it must be placed first.
+Thanks for the review.
 
+Regards,
+Subhajit Ghosh
 
-Another alternative would be adding irq to ad_sigma_delta_info so a
-driver could specify the desired interrupt to be used for conversions.
 

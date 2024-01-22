@@ -1,259 +1,159 @@
-Return-Path: <linux-iio+bounces-1852-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1853-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5428370A8
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:48:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EF08370F3
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F51A1C28402
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:48:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C3401F2E221
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2332640C02;
-	Mon, 22 Jan 2024 18:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1713B481C6;
+	Mon, 22 Jan 2024 18:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFH6ERSa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8fifh16"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00213E474;
-	Mon, 22 Jan 2024 18:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935E73DBAB;
+	Mon, 22 Jan 2024 18:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705947312; cv=none; b=ox3NRb0LSUwJo308mZ6SVAp4VDGTADYU65DoMSL9fUNPPL4KSvdAyqvhuEb24MOjqxwbuvymAq4WcQX67SxWyEHINecTjCwcNTcOEJDYAjHt4FhhSC+0GWY5Fl6yekdo+OHMzZAgcJ69IO0kFf2TFmchJRQRuReTVdxC+2N9hL4=
+	t=1705947523; cv=none; b=qEZOgSEFJXjaKNxE87CRy/SkohIrSozxB91koJUj/XpLifCa9QMcALm56DkXKhwv380yANeyGj7lOSRK4sZmKP9xO0/fzJ9TiYdDt2Q+Phr+HN0Pdg4X1ivbQh5/TUvYo4MatvjREfibdBghksCD1Fh7GSsg+kxRrnRNdL5Z38A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705947312; c=relaxed/simple;
-	bh=5C6exGsza/X9DUjMWBVUbMQ8kIAdM/dB4GnTMkspNvg=;
+	s=arc-20240116; t=1705947523; c=relaxed/simple;
+	bh=McOauSyMQNxtPZ0g7TEpEiNFuLd+iPYfNexDMsX/FI0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ABdTO+hevpqrU46SddQBuAnx/RVNeUysT7JsdgK3j+k3uq1wbR/u55iJ1zgP6dPXZCCdA/odbhbjlj6RQZwXQGbUoMjQqeRFlAn8KdSj16vjFfFkzOfwwhTG29x+GbuR8qb2pkIPaSI4gwT9Eg3qy72Uvoa5libcA3PI1y2cNnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFH6ERSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7914C433F1;
-	Mon, 22 Jan 2024 18:15:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lvbDUZPsH/VZPN2Ia6l7KpBEVdMu4clKpDNnOLPhtVK7ErD96AHrvD0zeM0V2YbtEKNYJ+nL4byKWBd2RKU/zjTKs2c7aljVoIHBFGo6hWSGSkRA32YrysgZJ/Vrt5g3lidz61ffXph01lv+ExR3uRTpHf0bm+Q918mGcPRxn88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8fifh16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84691C433F1;
+	Mon, 22 Jan 2024 18:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705947312;
-	bh=5C6exGsza/X9DUjMWBVUbMQ8kIAdM/dB4GnTMkspNvg=;
+	s=k20201202; t=1705947523;
+	bh=McOauSyMQNxtPZ0g7TEpEiNFuLd+iPYfNexDMsX/FI0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JFH6ERSazTj7JSLmqipaSOie1Xtw42+N/ydXvMtTYFTdI/xdEmwl8spUQrD9xEteI
-	 sJbHLiw+QOjxZU5e4ldpPhlW7guyekXTNG/U2KFDuhwUqTSoiMCAjsB1oNMenhqwG3
-	 vxAJVbKuQPkxuclBO7fm1OmmcpMAUmSB72t68Y9DpEJ/rIQrvggqjGDAR71AxjbN5W
-	 yn45wlO9Zcjv4p2RhIkV+FmCfp1I1T7qgPKngZGfM4QtJ+r5fQqbWOCPiEWz6OALVh
-	 e+wgfqn9Vr2LbO/XqpfJf0JNrl3ETT6/5usALK9UfgSatJMVABZVYyOD0GYgJ81RGA
-	 Dv8QWnwfvLxAw==
-Date: Mon, 22 Jan 2024 18:15:07 +0000
-From: Conor Dooley <conor@kernel.org>
-To: marius.cristea@microchip.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-	jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: adding support for PAC193X
-Message-ID: <20240122-fernlike-resolute-b16772806147@spud>
-References: <20240122084712.11507-1-marius.cristea@microchip.com>
- <20240122084712.11507-2-marius.cristea@microchip.com>
+	b=c8fifh16cqrlBPFhmdK0/1YCmVp+FCQJRM3mcc61e8B54POXfNtNHCezXLI06U+BW
+	 2HyC31K2GKN8pqxyPoe5eH43Wr1IvzJ4qYvgVKrZ28cOHRapgl4U0tO7nRd1Hg96Gu
+	 /I85mPr8fKbNlof8bDAKADfRcHtOpPxmy3YbesJ0DqFFZ2OTYAI+xKJ3khkG5PRPqb
+	 IkZ7Lha5tDCBsHZjVT1Pc0QMwPbNJ0JMPGxW7jUMjEknv7bvXLCARAShkNA8Yp5eXw
+	 Jxu0Ft8Uip4jzu6W9VwfTzuvxciZJpio1DrdN7XFmAH69ub0PysqfBMv84es2fWtex
+	 o4y4YVecDwVTQ==
+Date: Mon, 22 Jan 2024 18:18:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: kernel@pengutronix.de, Moritz Fischer <mdf@kernel.org>,
+	Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>, linux-fpga@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+	Rayyan Ansari <rayyan@ansari.sh>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Martin Tuma <martin.tuma@digiteqautomotive.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, Sergey Kozlov <serjk@netup.ru>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	linux-mmc@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Amit Kumar Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
+	linux-mtd@lists.infradead.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, Viresh Kumar <vireshk@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+	greybus-dev@lists.linaro.org, Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-integrity@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-usb@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>,
+	libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>, James Clark <james.clark@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 00/33] spi: get rid of some legacy macros
+Message-ID: <e62cdf7f-ce58-4f46-a0a0-25ce9fb271b1@sirena.org.uk>
+References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qi0TL78qGZaNp8GQ"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="T+I3YsJdHvT4lja9"
 Content-Disposition: inline
-In-Reply-To: <20240122084712.11507-2-marius.cristea@microchip.com>
+In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
+X-Cookie: Nice guys don't finish nice.
 
 
---qi0TL78qGZaNp8GQ
-Content-Type: text/plain; charset=us-ascii
+--T+I3YsJdHvT4lja9
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hey Marius,
+On Mon, Jan 22, 2024 at 07:06:55PM +0100, Uwe Kleine-K=F6nig wrote:
 
-On Mon, Jan 22, 2024 at 10:47:11AM +0200, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> This is the device tree schema for iio driver for
-> Microchip PAC193X series of Power Monitors with Accumulator.
->=20
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> Note that Jonathan Cameron has already applied patch 3 to his tree, it
+> didn't appear in a public tree though yet. I still included it here to
+> make the kernel build bots happy.
 
-I like how this is looking now. I have two minor comments that if you
-resend for some other reason you could change, but otherwise:
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+It's also going to be needed for buildability of the end of the series.
 
-> ---
->  .../bindings/iio/adc/microchip,pac1934.yaml   | 120 ++++++++++++++++++
->  1 file changed, 120 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,p=
-ac1934.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.=
-yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> new file mode 100644
-> index 000000000000..cd9cb2a71566
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
-> @@ -0,0 +1,120 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip PAC1934 Power Monitors with Accumulator
-> +
-> +maintainers:
-> +  - Marius Cristea <marius.cristea@microchip.com>
-> +
-> +description: |
-> +  This device is part of the Microchip family of Power Monitors with
-> +  Accumulator.
-> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found h=
-ere:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produ=
-ctDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,pac1931
-> +      - microchip,pac1932
-> +      - microchip,pac1933
-> +      - microchip,pac1934
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  slow-io-gpios:
-> +    description: |
-
-This...
-
-> +      A GPIO used to trigger a change is sampling rate (lowering the chi=
-p power
-> +      consumption). If configured in SLOW mode, if this pin is forced hi=
-gh,
-> +      sampling rate is forced to eight samples/second. When it is forced=
- low,
-> +      the sampling rate is 1024 samples/second unless a different sample=
- rate
-> +      has been programmed.
-> +
-> +patternProperties:
-> +  "^channel@[1-4]+$":
-> +    type: object
-> +    $ref: adc.yaml
-> +    description: |
-
-=2E..and this...
-
-> +        Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        items:
-> +          minimum: 1
-> +          maximum: 4
-> +
-> +      shunt-resistor-micro-ohms:
-> +        description: |
-
-=2E..and this | are not needed here as you have no formatting to preserve.
-
-> +          Value in micro Ohms of the shunt resistor connected between
-> +          the SENSE+ and SENSE- inputs, across which the current is meas=
-ured.
-> +          Value is needed to compute the scaling of the measured current.
-> +
-> +    required:
-> +      - reg
-> +      - shunt-resistor-micro-ohms
-> +
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        pac193x: power-monitor@10 {
-
-This "pac193x" label is not used and should be removed.
-
-Thanks,
-Conor.
-
-> +            compatible =3D "microchip,pac1934";
-> +            reg =3D <0x10>;
-> +
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <0>;
-> +
-> +            channel@1 {
-> +                reg =3D <0x1>;
-> +                shunt-resistor-micro-ohms =3D <24900000>;
-> +                label =3D "CPU";
-> +            };
-> +
-> +            channel@2 {
-> +                reg =3D <0x2>;
-> +                shunt-resistor-micro-ohms =3D <49900000>;
-> +                label =3D "GPU";
-> +            };
-> +
-> +            channel@3 {
-> +                reg =3D <0x3>;
-> +                shunt-resistor-micro-ohms =3D <75000000>;
-> +                label =3D "MEM";
-> +                bipolar;
-> +            };
-> +
-> +            channel@4 {
-> +                reg =3D <0x4>;
-> +                shunt-resistor-micro-ohms =3D <100000000>;
-> +                label =3D "NET";
-> +                bipolar;
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> --=20
-> 2.34.1
->=20
-
---qi0TL78qGZaNp8GQ
+--T+I3YsJdHvT4lja9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa6wqwAKCRB4tDGHoIJi
-0q6hAP0QD1uLecPK8JtF9dahFAlvXtAIK2MF/bEG/+d2xCVPwAD+NitieK6tvevt
-VhVPZLPjU6FN4abGu0j2yODLo75rmQg=
-=CcoM
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWusW0ACgkQJNaLcl1U
+h9AR1Af8DbPI9TFuBXKEh4BM61G07z/XXFesQgMYJFn7hnO/3qPq0DB2udfdH+HR
+WrEFwWfImJcLCzV8lyZSjyQS8FeUMRbP7r99FeoYIb8amMJfpQIN7gD1IJ+OzZGL
+9PhsdsnLY3FgKjHbQCA6B6TnEDwI/0zpTfNjtElcXbWRB+V9uqBR/i8Uk02ngrKd
+MFM4BWy/tlEQvi0AQcylB9znY58FISMxd4ww1jeW0euV6Do4c1U3/9N+ivg6WNfs
+rKxD/BMTdGNcwlR3dWzHBLLYk3YAMLSi8p37kFSHwDGoHFtHCuUNPhA4RsVlbb9P
+SyEM0rudlzp/uFBuKSBT2nWslCLfjA==
+=Dr9Y
 -----END PGP SIGNATURE-----
 
---qi0TL78qGZaNp8GQ--
+--T+I3YsJdHvT4lja9--
 

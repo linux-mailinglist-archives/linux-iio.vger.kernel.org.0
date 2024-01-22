@@ -1,158 +1,259 @@
-Return-Path: <linux-iio+bounces-1850-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1852-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61022837034
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5428370A8
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93BF11C295A0
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F51A1C28402
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCD060BBA;
-	Mon, 22 Jan 2024 18:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2332640C02;
+	Mon, 22 Jan 2024 18:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFH6ERSa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A48D605DA
-	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 18:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00213E474;
+	Mon, 22 Jan 2024 18:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946909; cv=none; b=chZJDuWKVSCgCyVEm74Uz0YFV0ULbZAC/Nqy/rwHKfBwM+FBgieRCUmEI0rzPFL76j1mVO3DL+NdLsslimFZ9J9uwsWpSTbixPjDvvRzdHXQsn9wfFRjfZTtZOxUiW3VFp98Heah7z/Z8VL3Jpmn6SdViOwmmvpoh9vXq+ypg6E=
+	t=1705947312; cv=none; b=ox3NRb0LSUwJo308mZ6SVAp4VDGTADYU65DoMSL9fUNPPL4KSvdAyqvhuEb24MOjqxwbuvymAq4WcQX67SxWyEHINecTjCwcNTcOEJDYAjHt4FhhSC+0GWY5Fl6yekdo+OHMzZAgcJ69IO0kFf2TFmchJRQRuReTVdxC+2N9hL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946909; c=relaxed/simple;
-	bh=UNWg1cWkWl9ngD6vxLDzpVtm8ne2cP1Z0jV0US+oPSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oGLF+3UONEutH6hE3zTvZZ2H/WGoE3eIVUbPEE/32M2Y9+rocDSkR+BuHtti0owiibS/MECMMzcHt287MRzr2KfdqWfenaHBjbiSf0bPEpGEQco+JxrXbfs6V7ldaH5DZBLwFtMe0tJq8bPsWN6HPd5QjLeReOXiyKcCc1byJps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiU-0001lT-Bf; Mon, 22 Jan 2024 19:08:14 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiT-001ePN-9U; Mon, 22 Jan 2024 19:08:13 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiT-005Zwv-0g;
-	Mon, 22 Jan 2024 19:08:13 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: kernel@pengutronix.de,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH v2 03/33] iio: adc: ad_sigma_delta: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:06:58 +0100
-Message-ID:  <d876d507cd392fbf69cb282c6c7bbbb24b516da0.1705944943.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
+	s=arc-20240116; t=1705947312; c=relaxed/simple;
+	bh=5C6exGsza/X9DUjMWBVUbMQ8kIAdM/dB4GnTMkspNvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ABdTO+hevpqrU46SddQBuAnx/RVNeUysT7JsdgK3j+k3uq1wbR/u55iJ1zgP6dPXZCCdA/odbhbjlj6RQZwXQGbUoMjQqeRFlAn8KdSj16vjFfFkzOfwwhTG29x+GbuR8qb2pkIPaSI4gwT9Eg3qy72Uvoa5libcA3PI1y2cNnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFH6ERSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7914C433F1;
+	Mon, 22 Jan 2024 18:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705947312;
+	bh=5C6exGsza/X9DUjMWBVUbMQ8kIAdM/dB4GnTMkspNvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JFH6ERSazTj7JSLmqipaSOie1Xtw42+N/ydXvMtTYFTdI/xdEmwl8spUQrD9xEteI
+	 sJbHLiw+QOjxZU5e4ldpPhlW7guyekXTNG/U2KFDuhwUqTSoiMCAjsB1oNMenhqwG3
+	 vxAJVbKuQPkxuclBO7fm1OmmcpMAUmSB72t68Y9DpEJ/rIQrvggqjGDAR71AxjbN5W
+	 yn45wlO9Zcjv4p2RhIkV+FmCfp1I1T7qgPKngZGfM4QtJ+r5fQqbWOCPiEWz6OALVh
+	 e+wgfqn9Vr2LbO/XqpfJf0JNrl3ETT6/5usALK9UfgSatJMVABZVYyOD0GYgJ81RGA
+	 Dv8QWnwfvLxAw==
+Date: Mon, 22 Jan 2024 18:15:07 +0000
+From: Conor Dooley <conor@kernel.org>
+To: marius.cristea@microchip.com
+Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+	jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: adding support for PAC193X
+Message-ID: <20240122-fernlike-resolute-b16772806147@spud>
+References: <20240122084712.11507-1-marius.cristea@microchip.com>
+ <20240122084712.11507-2-marius.cristea@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2933; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=UNWg1cWkWl9ngD6vxLDzpVtm8ne2cP1Z0jV0US+oPSg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7GzszQ0ByRSkTozFRdJW7WsTgTOZTKv0czF RAwPm0D6G6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uxgAKCRCPgPtYfRL+ TqktB/9Hz9L3lVXeE/q8wrqbKWxY+tdEVpjbSfGSm0jn4GeEH9OdonfHIGDYhc09+HqvS8zHo1j Kk2zB3izM6KI5gd8WXt8D4phkFo7vGxb0cRuBs31kLzBlX6w+HatKbl2ANB/AAJ0U/X+1yp8olf BHQl/19Y55XaSddiJWQW9sXXRtXvPoYjdvTH8fLvPHcZw9/8Z9c5E2Up6p5PnYQ3JJhpB9tW+oY NRfmHtdKTzM7Fqx/O+3F8jdlkQerONgUorHAb4Pi3NtSix/QgrNr59NqIsBMHtTxqgupOLWYxvA PK+CcTd/1AyTI6ItXfPzhDjVYyafk2zrBONGhPH4NGVGZ1b9
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qi0TL78qGZaNp8GQ"
+Content-Disposition: inline
+In-Reply-To: <20240122084712.11507-2-marius.cristea@microchip.com>
 
-In commit 8caab75fd2c2 ("spi: Generalize SPI "master" to "controller"")
-some functions and struct members were renamed. To not break all drivers
-compatibility macros were provided.
 
-To be able to remove these compatibility macros push the renaming into
-this driver.
+--qi0TL78qGZaNp8GQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/iio/adc/ad_sigma_delta.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Hey Marius,
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 7e2192870743..55442eddf57c 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -212,7 +212,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	if (ret)
- 		return ret;
- 
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
-@@ -235,7 +235,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	sigma_delta->keep_cs_asserted = false;
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
- 	sigma_delta->bus_locked = false;
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 
- 	return ret;
- }
-@@ -287,7 +287,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
- 
- 	ad_sigma_delta_set_channel(sigma_delta, chan->address);
- 
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
-@@ -322,7 +322,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
- 	sigma_delta->keep_cs_asserted = false;
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
- 	sigma_delta->bus_locked = false;
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 	iio_device_release_direct_mode(indio_dev);
- 
- 	if (ret)
-@@ -387,7 +387,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 
- 	sigma_delta->samples_buf = samples_buf;
- 
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 
-@@ -401,7 +401,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 	return 0;
- 
- err_unlock:
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 
- 	return ret;
- }
-@@ -426,7 +426,7 @@ static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
- 
- 	ad_sigma_delta_disable_all(sigma_delta);
- 	sigma_delta->bus_locked = false;
--	return spi_bus_unlock(sigma_delta->spi->master);
-+	return spi_bus_unlock(sigma_delta->spi->controller);
- }
- 
- static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
--- 
-2.43.0
+On Mon, Jan 22, 2024 at 10:47:11AM +0200, marius.cristea@microchip.com wrot=
+e:
+> From: Marius Cristea <marius.cristea@microchip.com>
+>=20
+> This is the device tree schema for iio driver for
+> Microchip PAC193X series of Power Monitors with Accumulator.
+>=20
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 
+I like how this is looking now. I have two minor comments that if you
+resend for some other reason you could change, but otherwise:
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+> ---
+>  .../bindings/iio/adc/microchip,pac1934.yaml   | 120 ++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,p=
+ac1934.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.=
+yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> new file mode 100644
+> index 000000000000..cd9cb2a71566
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+> @@ -0,0 +1,120 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1934.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip PAC1934 Power Monitors with Accumulator
+> +
+> +maintainers:
+> +  - Marius Cristea <marius.cristea@microchip.com>
+> +
+> +description: |
+> +  This device is part of the Microchip family of Power Monitors with
+> +  Accumulator.
+> +  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found h=
+ere:
+> +    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Produ=
+ctDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,pac1931
+> +      - microchip,pac1932
+> +      - microchip,pac1933
+> +      - microchip,pac1934
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  slow-io-gpios:
+> +    description: |
+
+This...
+
+> +      A GPIO used to trigger a change is sampling rate (lowering the chi=
+p power
+> +      consumption). If configured in SLOW mode, if this pin is forced hi=
+gh,
+> +      sampling rate is forced to eight samples/second. When it is forced=
+ low,
+> +      the sampling rate is 1024 samples/second unless a different sample=
+ rate
+> +      has been programmed.
+> +
+> +patternProperties:
+> +  "^channel@[1-4]+$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    description: |
+
+=2E..and this...
+
+> +        Represents the external channels which are connected to the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        items:
+> +          minimum: 1
+> +          maximum: 4
+> +
+> +      shunt-resistor-micro-ohms:
+> +        description: |
+
+=2E..and this | are not needed here as you have no formatting to preserve.
+
+> +          Value in micro Ohms of the shunt resistor connected between
+> +          the SENSE+ and SENSE- inputs, across which the current is meas=
+ured.
+> +          Value is needed to compute the scaling of the measured current.
+> +
+> +    required:
+> +      - reg
+> +      - shunt-resistor-micro-ohms
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        pac193x: power-monitor@10 {
+
+This "pac193x" label is not used and should be removed.
+
+Thanks,
+Conor.
+
+> +            compatible =3D "microchip,pac1934";
+> +            reg =3D <0x10>;
+> +
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +
+> +            channel@1 {
+> +                reg =3D <0x1>;
+> +                shunt-resistor-micro-ohms =3D <24900000>;
+> +                label =3D "CPU";
+> +            };
+> +
+> +            channel@2 {
+> +                reg =3D <0x2>;
+> +                shunt-resistor-micro-ohms =3D <49900000>;
+> +                label =3D "GPU";
+> +            };
+> +
+> +            channel@3 {
+> +                reg =3D <0x3>;
+> +                shunt-resistor-micro-ohms =3D <75000000>;
+> +                label =3D "MEM";
+> +                bipolar;
+> +            };
+> +
+> +            channel@4 {
+> +                reg =3D <0x4>;
+> +                shunt-resistor-micro-ohms =3D <100000000>;
+> +                label =3D "NET";
+> +                bipolar;
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> --=20
+> 2.34.1
+>=20
+
+--qi0TL78qGZaNp8GQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa6wqwAKCRB4tDGHoIJi
+0q6hAP0QD1uLecPK8JtF9dahFAlvXtAIK2MF/bEG/+d2xCVPwAD+NitieK6tvevt
+VhVPZLPjU6FN4abGu0j2yODLo75rmQg=
+=CcoM
+-----END PGP SIGNATURE-----
+
+--qi0TL78qGZaNp8GQ--
 

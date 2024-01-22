@@ -1,105 +1,62 @@
-Return-Path: <linux-iio+bounces-1857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08155837270
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 20:24:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600DE83727F
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 20:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B264D287F92
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:24:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E9381C28A43
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5F73FB25;
-	Mon, 22 Jan 2024 19:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913503E489;
+	Mon, 22 Jan 2024 19:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om7TXwRG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sq77Rc9L"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7593DBA8;
-	Mon, 22 Jan 2024 19:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1B33E46B;
+	Mon, 22 Jan 2024 19:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705951456; cv=none; b=aEVbdbEvWIgB0P5IdQPrpxmWMzSsTq7ACAjO2j/Cz75McxizM2qQnQv/ogaoItKnb8rW+mJJ6t8Oa4T4JWKYcQ2A9Ei4OzHn23U3FMhSj4oCvxQGfK6rzwrIwkjGudL163Psb9F0Lqlx56PDZe6CSor75y4T/rsvfHpBwnyOfHQ=
+	t=1705951500; cv=none; b=nnHcoX4NsiyQus6MaZd18ukrC6KFc06xkTPyFzKScLXVUfGPOFCqpQykbGZPpDunSZF8Qahvgm65mvn9J6P1tUd+5vS3RY3ymV1YJ/aNi02nXHdA0Pe3Fx4RePUYO2modDWDLQpG2fScGySWw56t311lAmaBS3eu7vChdCzpVQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705951456; c=relaxed/simple;
-	bh=MEXKZHQkB/IyiyQVHXrZDxlLURiVSiUhivYGVZLcqn0=;
+	s=arc-20240116; t=1705951500; c=relaxed/simple;
+	bh=JYKYjdR3PhfkGGl4WpEt0paoSAx0mC1cwvCa8aHljrM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ByF9IqdSPil69Mjoli42+D+gwIqFYP0nX0IAnXzNPfou4dpGCGkrz7Bk1kF4Y5NMh3kTZjLtiw06ICf1ucgjdrXg8EvY9vDhT6ATr3u8beJUzY2KeKQPBSrU+osP4oH5FyEvz5gyACdq6sSRuCYGaff3q85qQ2tYEtCfqEH75Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om7TXwRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBDEC433C7;
-	Mon, 22 Jan 2024 19:23:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jG1I0hIVTpSO6GwyGVH5Xu5MNlaJrKUW3u8NEcp5iAY5UcahI12Pd3vCEJvrlNVDhPI9zRx8rCy3yhw9bneuPCXyydKidEv+X2NWm2oTYEELuChJmMF7LEqLWV371TM42gtdFZvEN8oa501wDRM72In8W9jh3h7pYchgsGJlngc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sq77Rc9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B59C433C7;
+	Mon, 22 Jan 2024 19:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705951455;
-	bh=MEXKZHQkB/IyiyQVHXrZDxlLURiVSiUhivYGVZLcqn0=;
+	s=k20201202; t=1705951500;
+	bh=JYKYjdR3PhfkGGl4WpEt0paoSAx0mC1cwvCa8aHljrM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Om7TXwRG+RLb91NjkMlGtbBbQYrAGinHi8YBBuORygdejt7BZ+vQd9Bqs0sBl/BxP
-	 VCw1yjmez+FHyuigs8WrRG3xG5dxGPTpaOT2qYeFl6QHLeQijLl0kkOlguh3EaCef5
-	 +AkOU52pnihuLtq9XxoisJbYHmdBJ7MWGdIGbaT+Hqd1d3bAs/JdGsBZD+YdEjOqeP
-	 eiYtqYfgWpXt9iSL4haLcS9baDm6slcDBeeq4Pri4phWer/ACYdMdlNEE7R3pgjieo
-	 tFpdEkRwqJLtm9GAX85YeLj+l6gbxcnR7JUDJE+8uHr22Geysx+TUOYD6M7QtotXaK
-	 eSyrD1CGdOh3w==
-Date: Mon, 22 Jan 2024 19:23:43 +0000
+	b=sq77Rc9LmdqBXqDJFH8QIME6KdXvbY4SrZPTCej6kdS5rszRS+XOQmNGe1AQTl2aP
+	 dkMCNW6G0+xRYkoaRiEYmFsiuG3zHCHu4jpWjmRreW7MPPFp0OYiw+ZzL+GbpOLopO
+	 4Dwi1cjbL23NXg9oMQjnmOPnAZCKuNdg2GsFhRDTVbiAhdw4w/xg3g+sroQhALgOzB
+	 mQtlYCZjnniyRClmeYvyi2DKAnJ3SeKaiORJCjlVtfcTeFT0Q9Q1ACopFmsYBsrr1I
+	 tz65qWJ11H4tF8pqL9UjaMRFgkHEIIgO0BD3tElGVa0vIS5RKTbEHqGsQn6NTZhOiL
+	 8So9/r7vb6GLA==
+Date: Mon, 22 Jan 2024 19:24:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- kernel@pengutronix.de, Moritz Fischer <mdf@kernel.org>, Wu Hao
- <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>, Tom Rix
- <trix@redhat.com>, linux-fpga@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alexander Aring <alex.aring@gmail.com>,
- Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal
- <miquel.raynal@bootlin.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Dmitry
- Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org, Ulf
- Hansson <ulf.hansson@linaro.org>, Rayyan Ansari <rayyan@ansari.sh>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Martin Tuma
- <martin.tuma@digiteqautomotive.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, linux-media@vger.kernel.org, Sergey Kozlov
- <serjk@netup.ru>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Yang Yingliang <yangyingliang@huawei.com>,
- linux-mmc@vger.kernel.org, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, Heiko
- Stuebner <heiko@sntech.de>, Michal Simek <michal.simek@amd.com>, Amit Kumar
- Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
- linux-mtd@lists.infradead.org, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Pali =?UTF-8?B?Um9ow6Fy?= <pali@kernel.org>,
- Simon Horman <horms@kernel.org>, Ronald Wahl <ronald.wahl@raritan.com>,
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Guenter Roeck <groeck@chromium.org>, chrome-platform@lists.linux.dev, Max
- Filippov <jcmvbkbc@gmail.com>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Bjorn Andersson
- <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- linux-arm-msm@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-mediatek@lists.infradead.org, Thomas Zimmermann
- <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, Amit
- Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, Viresh Kumar <vireshk@kernel.org>, Rui
- Miguel Silva <rmfrfs@gmail.com>, Johan Hovold <johan@kernel.org>, Alex
- Elder <elder@kernel.org>, greybus-dev@lists.linaro.org, Peter Huewe
- <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, linux-integrity@vger.kernel.org, Herve Codina
- <herve.codina@bootlin.com>, Alan Stern <stern@rowland.harvard.edu>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, linux-usb@vger.kernel.org, Helge Deller
- <deller@gmx.de>, Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>,
- libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org, Jonathan
- Corbet <corbet@lwn.net>, James Clark <james.clark@arm.com>, Bjorn Helgaas
- <bhelgaas@google.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 00/33] spi: get rid of some legacy macros
-Message-ID: <20240122192343.148a0b6d@jic23-huawei>
-In-Reply-To: <e62cdf7f-ce58-4f46-a0a0-25ce9fb271b1@sirena.org.uk>
-References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
-	<e62cdf7f-ce58-4f46-a0a0-25ce9fb271b1@sirena.org.uk>
+To: David Laight <David.Laight@ACULAB.COM>
+Cc: 'Matti Vaittinen' <mazziesaccount@gmail.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: gts-helper: Fix division loop
+Message-ID: <20240122192448.1493ccf7@jic23-huawei>
+In-Reply-To: <2985a200057c4648817094cf747fca35@AcuMS.aculab.com>
+References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+	<20240107162253.66c1f0f1@jic23-huawei>
+	<a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+	<717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+	<2985a200057c4648817094cf747fca35@AcuMS.aculab.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -110,24 +67,152 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 22 Jan 2024 18:18:22 +0000
-Mark Brown <broonie@kernel.org> wrote:
+On Mon, 22 Jan 2024 16:27:13 +0000
+David Laight <David.Laight@ACULAB.COM> wrote:
 
-> On Mon, Jan 22, 2024 at 07:06:55PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> From: Matti Vaittinen
+> > Sent: 22 January 2024 06:51
+> >=20
+> > On 1/19/24 13:56, Subhajit Ghosh wrote: =20
+> > > On 8/1/24 02:52, Jonathan Cameron wrote: =20
+> > >> On Thu, 4 Jan 2024 11:34:28 +0200
+> > >> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > >> =20
+> > >>> The loop based 64bit division may run for a long time when dividend=
+ is a
+> > >>> lot bigger than the divider. Replace the division loop by the
+> > >>> div64_u64() which implementation may be significantly faster.
+> > >>>
+> > >>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > >>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers") =20
+> > >>
+> > >> Hmm. Fix or not perf improvement?=C2=A0 I'm going to take the middle=
+ ground
+> > >> and leave the fixes tag, but not rush this in.
+> > >>
+> > >> So applied to the togreg branch of iio.git and for now just pushed o=
+ut
+> > >> as testing for 0-day etc to take a look before I rebase that tree af=
+ter
+> > >> rc1.
+> > >>
+> > >>
+> > >> =20
+> > >>> ---
+> > >>>
+> > >>> I've implemented also a fixup series for supporting rounding of
+> > >>> gains/scales:
+> > >>> =20
+> > https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1=
+701780964.git.mazziesaccount@gm
+> > ail.com/ =20
+> > >>>
+> > >>> That series does also remove the offending loop.
+> > >>>
+> > >>> We don't currently have any in-tree users of GTS helpers which would
+> > >>> need the rounding support so pushing the rounding is not urgent (an=
+d I
+> > >>> haven't heard of Subjahit whose driver required the rounding). Henc=
+e, we
+> > >>> may want to only take this loop fix in for now (?) and reconsider
+> > >>> rounding when someone need that. =20
 >=20
-> > Note that Jonathan Cameron has already applied patch 3 to his tree, it
-> > didn't appear in a public tree though yet. I still included it here to
-> > make the kernel build bots happy. =20
+> Why did I look as this crappy code :-)
+> I think the change breaks the rounding.
+> For 'normal' values I think you just want:
+> 	return 1 + (max - 1)/scale.
 >=20
-> It's also going to be needed for buildability of the end of the series.
+> The 'avoid overflow' test isn't needed if you subtract 1 from max.
+> (Rather than return (max + scale - 1)/scale; where the add can overflow.
+> But you do need something to return 1 (or error) if max is zero.
+>=20
+> 	David
+Too late for my brain to process this, so with an abundance
+of caution I've dropped it for now (I'm going to push out as hopefully not
+rebasing in a few mins)
 
-Ah.  I thought intent was to split this across all the different trees
-then do the final patch only after they were all gone?
+J
 
-I'm fine with it going all in one go if people prefer that.
+>=20
+> > >>>
+> > >>> Jonathan, what's your take on this? =20
+> > >> Agreed - let us wait for the rounding to have a user, but makes sense
+> > >> to tidy this corner up in the meantime.
+> > >>
+> > >> Thanks,
+> > >>
+> > >> Jonathan
+> > >> =20
+> > >>>
+> > >>> =C2=A0 drivers/iio/industrialio-gts-helper.c | 5 ++---
+> > >>> =C2=A0 1 file changed, 2 insertions(+), 3 deletions(-)
+> > >>>
+> > >>> diff --git a/drivers/iio/industrialio-gts-helper.c
+> > >>> b/drivers/iio/industrialio-gts-helper.c
+> > >>> index 7653261d2dc2..abcab2d38589 100644
+> > >>> --- a/drivers/iio/industrialio-gts-helper.c
+> > >>> +++ b/drivers/iio/industrialio-gts-helper.c
+> > >>> @@ -34,7 +34,7 @@
+> > >>> =C2=A0 static int iio_gts_get_gain(const u64 max, const u64 scale)
+> > >>> =C2=A0 {
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 full =3D max;
+> > >>> -=C2=A0=C2=A0=C2=A0 int tmp =3D 1;
+> > >>> +=C2=A0=C2=A0=C2=A0 int tmp =3D 0;
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (scale > full || !scale)
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINV=
+AL;
+> > >>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const
+> > >>> u64 scale)
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tmp++;
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > >>> -=C2=A0=C2=A0=C2=A0 while (full > scale * (u64)tmp)
+> > >>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tmp++;
+> > >>> +=C2=A0=C2=A0=C2=A0 tmp +=3D div64_u64(full, scale);
+> > >>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return tmp;
+> > >>> =C2=A0 }
+> > >>>
+> > >>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab =20
+> > >>
+> > >> =20
+> > > Hi Matti,
+> > >
+> > > Your fix works beautifully with the latest version of apds9306 driver
+> > > which I am working on.
+> > > All available scale values can be set without any errors. Thank you. =
+=20
+> >=20
+> > Thanks for testing Subhajit! Just to ensure we have no miscommunication
+> > - did you test just this division fix, or the rounding fix here:
+> > https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1=
+701780964.git.mazziesaccount@gm
+> > ail.com/
+> >  =20
+> > > Moving to a new city with a new full time job with the assumption of
+> > > getting more time
+> > > for my list of opensource projects and contributions proved to be
+> > > utterly wrong! =20
+> >=20
+> > Well, I can't blame you :) Being in a new work at new city sounds like
+> > you have a lot on your plate right now. Give it half a year and things
+> > will stabilize though :) Oh, and falsely assuming that "when XXX, I will
+> > have the time to do YYY" - been there done that :)
+> >=20
+> > Good luck on the new work and city!
+> >=20
+> > Yours,
+> > 	-- Matti
+> >=20
+> > --
+> > Matti Vaittinen
+> > Linux kernel developer at ROHM Semiconductors
+> > Oulu Finland
+> >=20
+> > ~~ When things go utterly wrong vim users can always type :help! ~~
+> >  =20
+>=20
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
+ 1PT, UK
+> Registration No: 1397386 (Wales)
 
-My tree will be out in a few mins. Was just waiting to rebase on rc1
-which I've just done.
-
-Jonathan
 

@@ -1,157 +1,114 @@
-Return-Path: <linux-iio+bounces-1841-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1842-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C74D836764
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 16:14:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7BE836C35
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 17:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B39CB2A05B
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 15:09:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4C871F26538
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 16:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD04C4CB4D;
-	Mon, 22 Jan 2024 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42204779E;
+	Mon, 22 Jan 2024 15:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlN4ARmw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E9qlLw84"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CBC4CB52;
-	Mon, 22 Jan 2024 14:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931FC3D97D;
+	Mon, 22 Jan 2024 15:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935457; cv=none; b=lkHedZo21EuzqWMgu3bhwq4LSry0lIMxB2w0erVmeVjb4LRQ4kobwWPmGxxUsAegzr3npfg1CK2JaeZW6cCMaQ8f1usCU0ZVVh6HYsut78eFULKc+EyxrUuXjNYuZkFgULjIm/0LYLqo/Y5d7JMegrraK/cEBjWzOYnPpnP0PF4=
+	t=1705937679; cv=none; b=ZxkIYTqGu+ScETOCyVEQWH0KhWdbc9KxIq8wM7X3uXuPQxKYoCLcYFkg/a7EpPkpUiyz0qmK9DrcUZ/oy3yYTES43w5TptX3qWtmRyWMY7zXP2RpOJfVY/dCjLE8Ep45qrWxk2q2tQmYjXwmjZAI7+3ZV6p8zafClFgmZo5Ytco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935457; c=relaxed/simple;
-	bh=spHEdjlAJz6awq3PIydFaK3ccnZgwJ1aPu6BJP9NIPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rHNm8nkbs2DpagxbL/jHaPXXhMv31ZE0/X2DjEbHXcDOeeSeyvvug5VD0vTKT4z0F1n+NjllkxzrntCoJEsE+YdnXvNwxR94lzXXvZ6D8SkZZ9nXGiQiGLL8mCPS18Yxsg/m+zf/dgiorG02tlveVrUYZavdm/KP4Dl/C5jSxiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlN4ARmw; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso2400433a12.3;
-        Mon, 22 Jan 2024 06:57:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705935455; x=1706540255; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=KmZWPYJBSOkWieoqR8/ANidiao8Ik7FDtETaXiuMJHY=;
-        b=WlN4ARmw4x9a0w55nuZU8lcIfSSq+PTxSqvRQOuicO7dCvuiAcwrCiGbHo95zzjYaS
-         VLRUk2n3AFEqQWcKtIysWfux4e+uExEcY2o1keoW9Zlrg+9gSiD9B3UmtJnH4bu8z/pd
-         NnbJncRxqz6nHWw9kCbIS7qwfs5Q0qJK3zK0+YCEgMoOE1V1cto0FA4lbctWXBBx7Z/5
-         +RyivQwckmkHdOcDOazrojxEugUeN+zHfZ6nJtnsfaXApbQGwkkNmk4by7eb9oanQTRL
-         /ldLRUb/vCYYv8OCtyqeBS2h/PGYv7r1KllGc7f/2Hb7N9sIACssTlw6ggCO1WOMFxfF
-         TxUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705935455; x=1706540255;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KmZWPYJBSOkWieoqR8/ANidiao8Ik7FDtETaXiuMJHY=;
-        b=diN/YKcNpQqXlzRikItTjFzAvDo7tIYoHH9PFO8tIWYjwgHIBy87TZNHs4bYTJSqzC
-         +0esL6F+vHt5aGSf6y5f3v+wPVWwCkYarpqhGr4zEQl9nxj0gdrPgeaphfm3E2Vn+zzX
-         4AZLW4sDHZL7EWEqBLP2SBt5E3ipAxLx4lenzn5LiuKZcHaCCgR4ZUVBBGtDPyihebkU
-         8+a/zUYKWXOoQfrc6dNoObfyf9pTlHMeZpmRlrak49KPUY62tgrNJ+LOjtePeLDsAFKN
-         Gqqc7E8uzKGTfvIWjn1rwekX7fx2HqCchrgJ5jsXxWPrILRae38EQJD358tXLMu8p2wd
-         6Iqw==
-X-Gm-Message-State: AOJu0Yw3b78nXf1aORQ30hPpItklRi6NhdsPpV4jpmXwzL3yPBPnmOlL
-	e3S6sG02oNmqfITVNVTCsqepH9V2pkjfIJChvszW/UdZK5s7u+PRVNxoRFbA
-X-Google-Smtp-Source: AGHT+IE4n7mW9RShOa0e76OB/+/OmswiUn3ZFEYmE59BNA3dsPajEXEommWuByO46cxNLBdaDQF8uA==
-X-Received: by 2002:a17:90b:3782:b0:28f:f2b3:67a9 with SMTP id mz2-20020a17090b378200b0028ff2b367a9mr1825694pjb.77.1705935455266;
-        Mon, 22 Jan 2024 06:57:35 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id sn8-20020a17090b2e8800b0028afdb88d08sm9732358pjb.23.2024.01.22.06.57.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 06:57:34 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b7dbd5fa-b300-4d6d-b3fc-8cb8e90eefa3@roeck-us.net>
-Date: Mon, 22 Jan 2024 06:57:32 -0800
+	s=arc-20240116; t=1705937679; c=relaxed/simple;
+	bh=VS2uVYY8cOrzn8MUQBmfTEcxP+2D9pJdzyJ5unOsIgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A3P9KiZtb54pAVWKMyUj93MxMVsxVHx89S/EBLl4Ig5A4r2q4wXMhn2wHx6XFjkkN15aKMXrbvuVYopZJ9VFYTIs+F99ZBlAStPIkv95x1yV/MMb4GKLCc2YQaj/9xQGuXjU/y4otuez5xmZXpsm3z79WXquRrr5886b9H0Bevk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E9qlLw84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4977C433F1;
+	Mon, 22 Jan 2024 15:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705937678;
+	bh=VS2uVYY8cOrzn8MUQBmfTEcxP+2D9pJdzyJ5unOsIgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E9qlLw846MWmaqT4eDHC9kp9lmSTkwUE5RyTFlMt/qdvv74X9QBSvxDztxHFAzO0D
+	 85hR07zPIFCB/IHRgLtv1YnW6StxovbUrYHTnfB2ssCfN1eTZwJptcwKFyEK0GGBVb
+	 nt+XDuEM7vVAS68penmo4Rm43TXn650nEPHt9viSQn7sRp0BDpwZ1xw1/9cBadYm4J
+	 naWqVD52qLxy+p+vlvggIDsNDKlJQhLrVJ7wObkCo8gTh1cYFtR3LG/jNTZvIrCYVq
+	 KiYEA+tnUpixe0/6aParqHu83enqHZOdgEZmD/laBrSbXGGdWDXCHIXnivKus5mmCS
+	 Xnt8PA6HLY0CQ==
+Date: Mon, 22 Jan 2024 09:34:36 -0600
+From: Rob Herring <robh@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Nuno Sa <nuno.sa@analog.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Frank Rowand <frowand.list@gmail.com>, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v6 2/8] dt-bindings: adc: axi-adc: update bindings for
+ backend framework
+Message-ID: <20240122153436.GA601827-robh@kernel.org>
+References: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
+ <20240119-iio-backend-v6-2-189536c35a05@analog.com>
+ <170568455347.599801.4301742729712962299.robh@kernel.org>
+ <20240121171720.47b61298@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] adding support for Microchip PAC193X Power Monitor
-Content-Language: en-US
-To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
- robh+dt@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Cc: krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240122084712.11507-1-marius.cristea@microchip.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240122084712.11507-1-marius.cristea@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240121171720.47b61298@jic23-huawei>
 
-On 1/22/24 00:47, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
+On Sun, Jan 21, 2024 at 05:17:20PM +0000, Jonathan Cameron wrote:
+> On Fri, 19 Jan 2024 11:15:56 -0600
+> Rob Herring <robh@kernel.org> wrote:
 > 
-> Adding support for Microchip PAC193X series of Power Monitor with
-> Accumulator chip family. This driver covers the following part numbers:
->   - PAC1931, PAC1932, PAC1933 and PAC1934
-> 
->    This device is at the boundary between IIO and HWMON (if you are
-> looking just at the "shunt resistors, vsense, power, energy"). The
-> device also has ADC internally that can measure voltages (up to 4
-> channels) and also currents (up to 4 channels). The current is measured as
-> voltage across the shunt_resistor.
-> 
->    I have started with a simple driver (this one that is more appropriate to be
-> a HWMON) and willing to add more functionality later (like data buffering that
+> > On Fri, 19 Jan 2024 17:00:48 +0100, Nuno Sa wrote:
+> > > 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
+> > > also remove it from being required.
+> > > 
+> > > The reason why it's being deprecated is because the axi-adc CORE is now
+> > > an IIO service provider hardware (IIO backends) for consumers to make use
+> > > of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
+> > > of consumer referencing other nodes/devices) and that proved to be wrong
+> > > and to not scale.
+> > > 
+> > > Now, IIO consumers of this hardware are expected to reference it using the
+> > > io-backends property. Hence, the new '#io-backend-cells' is being added
+> > > so the device is easily identified as a provider.
+> > > 
+> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
+> > >  1 file changed, 5 insertions(+), 3 deletions(-)
+> > >   
+> > 
+> > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> > 
+> > yamllint warnings/errors:
+> > ./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: [error] syntax error: could not find expected ':' (syntax)
+> If this is all that comes up for v6, I can fix it up whilst applying.
 
-Not sure I understand what you are trying to say here. This is obviously an iio
-driver, not a hwmon driver. Any hwmon related concern is irrelevant.
+I would not recommend that unless you run the DT checks. This is a YAML 
+error which is just the first thing that has to be valid. After that, we 
+check against the DT meta-schema. Then we check all the examples 
+(because any example could use any schema).
 
-Guenter
+Though, it looks like the above is the only issue.
 
+Reviewed-by: Rob Herring <robh@kernel.org>
+
+Rob
 

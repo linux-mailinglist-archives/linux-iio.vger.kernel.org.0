@@ -1,144 +1,164 @@
-Return-Path: <linux-iio+bounces-1814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1817-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660DC835CBF
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:36:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65C1835D46
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBBFF1F22E4E
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 08:36:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC684B2792C
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 08:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910602134B;
-	Mon, 22 Jan 2024 08:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A0A3A1BC;
+	Mon, 22 Jan 2024 08:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXewoDdD"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PbdD3Z0z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64B4210E7;
-	Mon, 22 Jan 2024 08:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFEF38F8F;
+	Mon, 22 Jan 2024 08:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705912578; cv=none; b=XSzfciXFPHmsP5mC0ET1atH596gPu+FkO9CJorg4j1pefBlkFxHvFhxOHkxt/+QRqotxnD3ULqbrsshrvj9ag2Kg3zWWQ9O+R+cVPi1ipvbBi37cVNd0F/Q0oVCV4PV7LImgV3erQLLx0lSSM3M20EBiFyCSHtL6+wHhMQDgedk=
+	t=1705913307; cv=none; b=SaRdFkMcrxF92WaJcrHOmwNEQ7NWeVwPm+iKmRg/xoP8g48VSKNxDfzhI3aH/rByTy2/kBUg/K6T1A3JSFYXtE1YTLy4obdclZs1qBedheqjErJveEdU+VplkpM7bHfEXvq/0/iXEYP1oZg0B6cQIZ3SNStKj+T06EYnWqrAyk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705912578; c=relaxed/simple;
-	bh=8abXrOW9OtCSzgvOHlTfXeL9SEhOUDbJ2S7X6RhtUYE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OXAaeyGzWacw1M6oYn4fC7safoVX8gOlOUcXDANVFUz/UEseoXdgZBkqWn9mWJNKUmlHkGHQ8qQoycscFfNJ3JsXdCWLMlhFpC0ybdzoOSjN3ZrxzSqxeQ2ZecOluQd9V17KauOfn7YSTy7grftPdE93uD/YQPDY0ad1Myu2hH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXewoDdD; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a3046221b0eso56289566b.1;
-        Mon, 22 Jan 2024 00:36:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705912575; x=1706517375; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8abXrOW9OtCSzgvOHlTfXeL9SEhOUDbJ2S7X6RhtUYE=;
-        b=cXewoDdDujcI0wcL2ezy+1vt9MYc8+DM0jaS3lny6MRXJC8GHTCA7STvEfj/Nx4Ai5
-         5m54dI2d4J4tzPB1pcoVI3QSTQMlyNEmNKxl2YUlN0EPcLUjWprZEXolg+cYZ5b3LCOF
-         3HNEY/t9i+0pu0DUBXWjGGItDWeaRsqcnROed8Wxu/PGjhj6uwTpUxn6Q25YIkhE0FeG
-         tAJ53eghcy67uQrQjqhdQd7Xlm4GgVE58jaUH6mvyJ38upt6zH+SrVb+5VuAiuHgBfsd
-         3wUsTbdeApwnfA8Z4VIsU7FDIpqKU0XNtHy1yWPEWbGu+RTeV06tOGTCERV6/vwS40/1
-         48QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705912575; x=1706517375;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8abXrOW9OtCSzgvOHlTfXeL9SEhOUDbJ2S7X6RhtUYE=;
-        b=fsdmo+lNBjHKnIPOJDuNRLt03tpv0ahN1RIYlgfK/60NqlMOx/vc1P57kzos6SZBix
-         5fozkNPYdHxiYahvvNJWT2IuQcdFu1Zwx0+pY2jDCJ+gy0g82qPxMwlawFVgUmuUBMJ2
-         LfXMXlbmrXoeFsv2m4t6bXSwfZIdriA8eDS0uausybXAoQOxxpVg2loI1nzjMmJLmvVW
-         +zNgCmJUNot+95Dy2mH9MWzCoY4G3GUNTD/hJtAS4mBjFQpm3lQOEjZ74aLPlHU54WjX
-         /xD1TsF48wAJzQuJikbeRYriMvaDv7eDZGRoUBKJaeVTjCI1tdHBY+NkeuLHJYtVinec
-         qAiQ==
-X-Gm-Message-State: AOJu0Yy75HyatvvNDVHKDaYOiWQGZB5001vPW/DITQI6tNd78+bPYzh/
-	3TL/9ki6SBNeIVha6UspqphSwSZMacof4rCJRZQwJhKAZg7t1S/O
-X-Google-Smtp-Source: AGHT+IGFZqVoZsfk2AHP2Lxo/G6S8n4W2oDGjqsfk/vGCAJX4a3S7flpYQEdWOnjZOp5InAHqHBhzw==
-X-Received: by 2002:a17:907:c088:b0:a2f:c367:7699 with SMTP id st8-20020a170907c08800b00a2fc3677699mr1684771ejc.24.1705912574452;
-        Mon, 22 Jan 2024 00:36:14 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id t15-20020a17090605cf00b00a28aa4871c7sm13004569ejt.205.2024.01.22.00.36.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 00:36:14 -0800 (PST)
-Message-ID: <a0e01566ef2317ba35931526c4496723839be5c2.camel@gmail.com>
-Subject: Re: [PATCH v6 0/8] iio: add new backend framework
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
-	 <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Rob
- Herring <robh@kernel.org>
-Date: Mon, 22 Jan 2024 09:36:13 +0100
-In-Reply-To: <20240121175724.76ff9be3@jic23-huawei>
-References: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
-	 <20240121175724.76ff9be3@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1705913307; c=relaxed/simple;
+	bh=WYvUJM6Lln/O7kMg7YLdb6gXjy+H8J71CclA1VdAyD8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kwVY7stdxYXdssnFfEbU/BrrR6Nq5nHBdKu3Byx0ZKfry1jiB4eTHfMn3mdv8+V5RdlYtFOoI1yZ8SZCS6AA3gduKvO94mCZaOEnXBh669ZT8pc7X1kc5Y/sfpkyOdHkC9DPbjXoPsVLkzJsQNKdoo9Uv62oc+/2+ytCwEbsZW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PbdD3Z0z; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1705913305; x=1737449305;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WYvUJM6Lln/O7kMg7YLdb6gXjy+H8J71CclA1VdAyD8=;
+  b=PbdD3Z0zZyqZPssJ1jRGUp97yERSto0Td81xnc+CujYHf/y/4XdEruqC
+   E3hX38B2sidv5Y/FtUI954CdAZYJpCB/gCvf4/ldtpLUAUrlN1Yhm6JK5
+   rqp8983Hr71VEyKs8jZYygswKr4QyK53An3R6Lf9iu/Es/doHYnEdIfR7
+   BpWOohAmIfHI+IK584kVAOgac6wTMbxxCuNd7m2hVT09+m2QqFDU3GTc6
+   BBFNai0+fAL5tfSybnr2oa+kZxA8YkvzJ7jg7V0l3gNHr6UhL1IuL9ww6
+   2JEXWghXl8Q5bD10BZPUgbZ1UTMLhKsbJ9+erZwJrkEX1ysLr1t06DU/I
+   g==;
+X-CSE-ConnectionGUID: 4ytLpERVSI+Hb+Gl/SsgFQ==
+X-CSE-MsgGUID: Bvw4fyzxTSmyLuJ1xX4WYw==
+X-IronPort-AV: E=Sophos;i="6.05,211,1701154800"; 
+   d="scan'208";a="15087208"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Jan 2024 01:48:24 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 22 Jan 2024 01:47:18 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 22 Jan 2024 01:47:15 -0700
+From: <marius.cristea@microchip.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+	<jdelvare@suse.com>, <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>
+CC: <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <marius.cristea@microchip.com>
+Subject: [PATCH v4 0/2] adding support for Microchip PAC193X Power Monitor
+Date: Mon, 22 Jan 2024 10:47:10 +0200
+Message-ID: <20240122084712.11507-1-marius.cristea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sun, 2024-01-21 at 17:57 +0000, Jonathan Cameron wrote:
-> On Fri, 19 Jan 2024 17:00:46 +0100
-> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
->=20
-> > Changes in v6:
-> > =C2=A0- Patch 2
-> > =C2=A0 * Add '#io-backends-cells' property to the example dts.
-> > =C2=A0- Patch 6
-> > =C2=A0 * Improve comment on struct iio_backend_buffer_pair;
-> > =C2=A0 * Be consistent with dots in kernel-docs. So dots only exist now=
- in
-> > =C2=A0=C2=A0=C2=A0 description and return. Also be consistent on device=
- managed APIs
-> > =C2=A0=C2=A0=C2=A0 subject and @dev description;
-> > =C2=A0 * Added devm_iio_backend_enable() and hence (and for now)
-> > =C2=A0=C2=A0=C2=A0 iio_backend_disable is static;
-> > =C2=A0 * Fixed __devm_iio_backend_get_from_fwnode_lookup() kernel-doc;
-> > =C2=A0 * Improved english in devm_iio_backend_register() comment;
-> > =C2=A0 * Don't make private data mandatory;
-> > =C2=A0- Patch 7
-> > =C2=A0 * Use local ad9467_chip_info *info variable;
-> > =C2=A0 * Improve error handling for optional devm_iio_backend_get();
-> > =C2=A0 * Make use of devm_iio_backend_enable().
-> > =C2=A0- Patch 8
-> > =C2=A0 * Also change string format in version error path.
-> Hi Nuno,
->=20
-> Other than wanting a few acks (one for 2nd DT patch with the fix and one
-> for the device link changes) this looks good to me.
->=20
-> Ideally of course I'd like to see the second user if that happens to be
-> available in the first few weeks of this cycle, but I don't propose to ho=
-ld
-> this indefinitely to wait for additional users as the framework seems log=
-ical
-> and it's all in kernel anyway so we can probably change whatever is neede=
-d
-> later without too much trouble.
->=20
+From: Marius Cristea <marius.cristea@microchip.com>
 
-Alright. I plan to start working on the next user already this week so let'=
-s see how
-it goes.
+Adding support for Microchip PAC193X series of Power Monitor with
+Accumulator chip family. This driver covers the following part numbers:
+ - PAC1931, PAC1932, PAC1933 and PAC1934
 
-- Nuno S=C3=A1
+  This device is at the boundary between IIO and HWMON (if you are
+looking just at the "shunt resistors, vsense, power, energy"). The
+device also has ADC internally that can measure voltages (up to 4
+channels) and also currents (up to 4 channels). The current is measured as
+voltage across the shunt_resistor.
 
->=20
+  I have started with a simple driver (this one that is more appropriate to be
+a HWMON) and willing to add more functionality later (like data buffering that
+is quite important for example if someone wants to profile power consumption
+of the processor itself, or a peripheral device, or a battery, this kind of
+functionality was requested by our customers).
+
+
+Differences related to previous patch:
+v4:
+  - remove the "reset_accumulators" proprietary attribute
+  - add enable/disable for energy channels
+  - remove "reset_accumulators" attribute
+  - remove unused/redundant defines
+  - rename variable to be more relevant into a certain context
+  - make "storagebits" naturally aligned power of 2
+  - fix coding style issues
+  - use to_iio_dev_attr to access address field in the IIO_DEVICE_ATTR()
+  - remove unnecesarry "break" from switch case
+  - remove double increment and initialization of a variable
+  - use address as index in IIO_DEVICE_ATTR
+  - properly handle memory allocation failure
+
+v3:
+- this version was sent also to HWMON list
+- fix review comments:
+  - drop redundant description from device tree bindings
+  - reorder "patternProperties:" to follow "properties:" in device tree bindings
+  - update comments to proper describe code
+  - use numbers instead of defines for clarity in some part of the code
+  - use the new "guard(mutex)"
+  - use "clamp()" instead of duplicating code
+  - remove extra layer of checking in some switch cases
+  - use "i2c_get_match_data()"
+  - replace while with for loops for the code to look cleaner
+  - reverse the logic to reduce indent.
+  - add comment related to channels numbering
+  - remove memory duplicate when creating dynamic channels
+  - add "devm_add_action_or_reset" to handle the "cancel_delayed_work_sync"
+  - remove "pac1934_remove()" function
+
+v2:
+- fix review comments:
+  - change the device tree bindings
+  - use label property
+  - fix coding style issues
+  - remove unused headers
+  - use get_unaligned_bexx instead of own functions
+  - change to use a system work queue
+  - use probe_new instead of old probe
+
+v1:
+- first version committed to review
+
+Marius Cristea (2):
+  dt-bindings: iio: adc: adding support for PAC193X
+  iio: adc: adding support for PAC193x
+
+ .../ABI/testing/sysfs-bus-iio-adc-pac1934     |    9 +
+ .../bindings/iio/adc/microchip,pac1934.yaml   |  120 ++
+ MAINTAINERS                                   |    7 +
+ drivers/iio/adc/Kconfig                       |   12 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/pac1934.c                     | 1646 +++++++++++++++++
+ 6 files changed, 1795 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-pac1934
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+ create mode 100644 drivers/iio/adc/pac1934.c
+
+
+base-commit: b1a1eaf6183697b77f7243780a25f35c7c0c8bdf
+-- 
+2.34.1
+
 

@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-1823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC8D835EBB
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:53:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EEE835ED3
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 10:58:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FB481C22D70
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:53:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0760E2858C1
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 09:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A83A8EA;
-	Mon, 22 Jan 2024 09:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6DF39FE2;
+	Mon, 22 Jan 2024 09:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xtHzITrl"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="M9Ez7rlP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC723A8ED
-	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 09:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F53639FC4
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 09:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705917112; cv=none; b=iUsl1vj+SvpEnnPkA7vWKUwulw+camP+p0Zo03w9Qlf9+G/29mgisSeQ99NS3RyFpHx/TFiwifeDcZZmaWXttkm4N8QTWKSkWnFJJOCN5OW7zngUBuoOJVJPHoIoTGbX+NF9HHLjt8Bx7TTkK7f7YI8uSKjlp/g5FRU2zblf1lA=
+	t=1705917511; cv=none; b=cttlVDknAMhczcVJYTQ/zrn4egWh6thEcjeVDPUTza6iwe3Ymdv7zYuWbMzoz9fs04qbSF9HIWfTjFamxT5w/rZVrXw2gisOQ1PmEepIMro1d0GUkyo6TTW/asZUih5GLgiXUhLkg3YivZC+Z4k147xwkj1y80f+5avyPHZX3wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705917112; c=relaxed/simple;
-	bh=Dt85nPm96fugx5youeGfuTvKOl0JANjuyaJNhZkOZ+M=;
+	s=arc-20240116; t=1705917511; c=relaxed/simple;
+	bh=gELjH+KX0/rA4qx7//5Nome4OCqmT9IxOo93luUA218=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BhScpiqA0zsiZL0isVB2UYuyERYwKp7MYJ2WdFcJDI/goGLQpcu55wpBf2/rD1IMrlKU9plq0Qb2LoiJFgd3LAt2HmR30BXIdqm3c4Cu+CeSyleKH5arYsY6xvecVOcKxasd5wyzurGZfJF/NDYdKdw/ih2fRz8CJWoO/s9IkP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xtHzITrl; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-55c2cf644f3so1036482a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 01:51:49 -0800 (PST)
+	 In-Reply-To:Content-Type; b=dpYrR1DvYx9Bocka+9SCrUrUr7bWA4aeo2yWHXn5Q0kTdbTn6dI0yunu/WpRKqPNFcr8EQLf5EVyZvNui0A1VIO8lMtjOLa73u86TflP3ZoSzLZ3+SkZKzwVbctZ+2aJ/CXeKtPPN7zS2htNcNNh3N0ZExBF2K8lFImXT2Oko+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=M9Ez7rlP; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d7431e702dso3090545ad.1
+        for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 01:58:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705917108; x=1706521908; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=tweaklogic.com; s=google; t=1705917508; x=1706522308; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AlgNoictcO+bwBORG2Y+Qbz1X/sEYHk8iaZVlJrHwm8=;
-        b=xtHzITrlDuPBXmbhfD9m0g5SFnxOp1xdubbb/lGs8VDlhWU5Ip9OE4MKaLLHYSQo5w
-         ugg5ENsMIajsjbPe6ivpSvrJCmmzh/jW9ANB0gFd4/Bbim230GJoHFASZhswRxxDiRo2
-         8ZOfH2DoPPNUYFP1k90MGqJucYNActLODSPHE6+z8Io//gH4OUFTKSSRT/LVopwxvwW8
-         OENmdWInGaPjdnq5ysXyEnq4Tt9b8qNjLle1qHJzQuL1gbXMBW0fBOiY2/IT6gv7EAKH
-         9t40KzDDsRnoL+mZ3O1Q+RsMcqrvCldTeiCboUFVw7MclXhMLTeBI8n1GSNQ6SuT50d3
-         uHnA==
+        bh=Ar0+/R5zg7/etbhMp1vh5sjI6Zb7oH6GKFRH8tUiMSQ=;
+        b=M9Ez7rlPtoHYoxGO3MBzkbopA2rifgQrNPYd2MLnXEUjni/9O9okAdOgeEEXnB1HFC
+         teEq/PGnPX7E0CyFM5yZmO4WuxKxNjyhCM5yvu84KXPzIOjJp5yU4R8fdF8smK095V29
+         oVQQs/v4VvH1dKcFrB8HzCvtxFTJSLxDjc2kNIMY2SwCqEtMp3QUlrFQPeWcLFcpI3t4
+         jvrN/A8dNXsmwQ3M6AoZ5NrOIi3Pg+e8/UY8kpRGSRj+RlEEFSBazRA1j2Zj9hRvVynD
+         AsmrgMjrnZQSckVY8hmyAbDxQKO0R6J4mijjs8rPsh1s8VC478U8o4o71ijOAbNJJn19
+         ACXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705917108; x=1706521908;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1705917508; x=1706522308;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AlgNoictcO+bwBORG2Y+Qbz1X/sEYHk8iaZVlJrHwm8=;
-        b=AGtveppp4OkUYuTjme8yGkKN4paiwHhHpVJe4nwyZ7b93uMWujgaVJV+7dSq3nXl8U
-         PUFSdayBPEgVpVyxC4JW56kT8sB0ybhLP+Jp8aFQW9Tb51k6dVpgOZyEyfVR6c70xLmo
-         SHi88+ojetYau2x2uxwZfwhAm9yrw2TyNYYoIZFPVl0/QzbpkE0l0nLfSoj02PztX3EV
-         o1BhMQDzCa7Cf4YAld7m7iNyZOACjZohDJHgQESvp9St9/4MokR/CxpOCp5J3t42eDTk
-         L2wtcZiEwsyvUJMj7+MzjRZVjLIeEZf/LbgtG2jJDO7fZz+YkdZK5wiVxbG3KSXhiWip
-         uL9Q==
-X-Gm-Message-State: AOJu0YxW+h2rX+ID0XocjWfPmJXYuOqIue0VN1P94s4U182iuGShsu/i
-	VPWmHBAhofHMzwXg5PVxYuD0D/K6po9n++7bZFFmLLlURN3ls71ABu40IIZ/4vo=
-X-Google-Smtp-Source: AGHT+IGa9PDqwqLN8j4B8vVfTwYPLTqgDdHT04NN0wsnmGgU29jEtR5krnGWqwU0QO1KrT0cn69wrw==
-X-Received: by 2002:a05:6402:2694:b0:55c:57bd:c780 with SMTP id w20-20020a056402269400b0055c57bdc780mr248011edd.27.1705917108100;
-        Mon, 22 Jan 2024 01:51:48 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id es18-20020a056402381200b00554b1d1a934sm13998472edb.27.2024.01.22.01.51.46
+        bh=Ar0+/R5zg7/etbhMp1vh5sjI6Zb7oH6GKFRH8tUiMSQ=;
+        b=ZlSQC5g/m3Xw1sK+4uRIkuVjRJZUkI6k1o4xgE//29XBmfbr5yD4quhImM+9GmDZx3
+         tJNZBqV0IpFNy+vpked0weySdc+U1nkV+j54nXsc1Gw9e947RwP002h1c8JjD0VKr4SK
+         Gc5CisSceLpCxkA/1ojx+CgZBv7de2t1i6Rn87jHGpcceXlDWCwZdhNFpWxWXnOT4VK4
+         7HmtnL4d8p0hAiKNjQh+FBrXDxNnIrfdxjEUnOTnVwrlC6stthdKiCwV0Z3RzK7uL7xx
+         0b49/StJeTuGGhYgsVtP2e9w/StKsmBqJjMFNdKwHRNHANQdIIJgzj9H6LAbLjP78Qh2
+         kijw==
+X-Gm-Message-State: AOJu0YwC09of4gEEn7ptCndFnaaYmz0hFvvvEF4owx1m4eOL6vbZImkU
+	K5S+4B6IxdHKoARhht5+k6GSaBCdye8nbXoGxbSBjGjtJfnJFp5ewCN/YfCRElg=
+X-Google-Smtp-Source: AGHT+IHKENnHYqVAboNe6UKYbPrLe/qUracm76Q0elN96Cw/1VSOUCEjcWH3HSRF/EA0sR1/aZNq7g==
+X-Received: by 2002:a17:903:2287:b0:1d7:584c:d1e9 with SMTP id b7-20020a170903228700b001d7584cd1e9mr553307plh.73.1705917507748;
+        Mon, 22 Jan 2024 01:58:27 -0800 (PST)
+Received: from [192.168.20.11] ([180.150.112.156])
+        by smtp.gmail.com with ESMTPSA id h4-20020a170902f7c400b001d70953f166sm6591501plw.155.2024.01.22.01.58.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 01:51:47 -0800 (PST)
-Message-ID: <a317aeaf-6b4c-43c9-b5d6-78d93ba6f9af@linaro.org>
-Date: Mon, 22 Jan 2024 10:51:46 +0100
+        Mon, 22 Jan 2024 01:58:27 -0800 (PST)
+Message-ID: <3742308c-d063-4179-a4cb-80db021ede46@tweaklogic.com>
+Date: Mon, 22 Jan 2024 20:28:22 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,101 +75,116 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] dt-bindings: iio: light: Avago APDS9306
-Content-Language: en-US
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Matt Ranostay <matt@ranostay.sg>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Re: [PATCH] iio: gts-helper: Fix division loop
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
- <20240121051735.32246-3-subhajit.ghosh@tweaklogic.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240121051735.32246-3-subhajit.ghosh@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20240107162253.66c1f0f1@jic23-huawei>
+ <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+ <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 21/01/2024 06:17, Subhajit Ghosh wrote:
-> Adding device tree support for APDS9306 Ambient Light Sensor.
-> Updating datasheet hyperlinks.
-> Adding interrupt definition macro and header file.
-> Adding vdd-supply property.
+On 22/1/24 17:20, Matti Vaittinen wrote:
+> On 1/19/24 13:56, Subhajit Ghosh wrote:
+>> On 8/1/24 02:52, Jonathan Cameron wrote:
+>>> On Thu, 4 Jan 2024 11:34:28 +0200
+>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>>
+>>>> The loop based 64bit division may run for a long time when dividend is a
+>>>> lot bigger than the divider. Replace the division loop by the
+>>>> div64_u64() which implementation may be significantly faster.
+>>>>
+>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+>>>
+>>> Hmm. Fix or not perf improvement?  I'm going to take the middle ground
+>>> and leave the fixes tag, but not rush this in.
+>>>
+>>> So applied to the togreg branch of iio.git and for now just pushed out
+>>> as testing for 0-day etc to take a look before I rebase that tree after
+>>> rc1.
+>>>
+>>>
+>>>
+>>>> ---
+>>>>
+>>>> I've implemented also a fixup series for supporting rounding of
+>>>> gains/scales:
+>>>> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
+>>>>
+>>>> That series does also remove the offending loop.
+>>>>
+>>>> We don't currently have any in-tree users of GTS helpers which would
+>>>> need the rounding support so pushing the rounding is not urgent (and I
+>>>> haven't heard of Subjahit whose driver required the rounding). Hence, we
+>>>> may want to only take this loop fix in for now (?) and reconsider
+>>>> rounding when someone need that.
+>>>>
+>>>> Jonathan, what's your take on this?
+>>> Agreed - let us wait for the rounding to have a user, but makes sense
+>>> to tidy this corner up in the meantime.
+>>>
+>>> Thanks,
+>>>
+>>> Jonathan
+>>>
+>>>>
+>>>>   drivers/iio/industrialio-gts-helper.c | 5 ++---
+>>>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+>>>> index 7653261d2dc2..abcab2d38589 100644
+>>>> --- a/drivers/iio/industrialio-gts-helper.c
+>>>> +++ b/drivers/iio/industrialio-gts-helper.c
+>>>> @@ -34,7 +34,7 @@
+>>>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>>>   {
+>>>>       u64 full = max;
+>>>> -    int tmp = 1;
+>>>> +    int tmp = 0;
+>>>>       if (scale > full || !scale)
+>>>>           return -EINVAL;
+>>>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>>>           tmp++;
+>>>>       }
+>>>> -    while (full > scale * (u64)tmp)
+>>>> -        tmp++;
+>>>> +    tmp += div64_u64(full, scale);
+>>>>       return tmp;
+>>>>   }
+>>>>
+>>>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
+>>>
+>>>
+>> Hi Matti,
+>>
+>> Your fix works beautifully with the latest version of apds9306 driver which I am working on.
+>> All available scale values can be set without any errors. Thank you.
+> 
+> Thanks for testing Subhajit! Just to ensure we have no miscommunication - did you test just this division fix, or the rounding fix here:
+> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
+You are most welcome. I did not check the above rounding fix pointed out by the link. I will be happy to check it and let you know by the end of this month.
+I checked this division fix.
 
-Why? Do other devices have it?
-
-
->  required:
-> @@ -33,6 +37,8 @@ required:
->  
->  examples:
->    - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
->      i2c {
->          #address-cells = <1>;
->          #size-cells = <0>;
-> @@ -41,7 +47,8 @@ examples:
->              compatible = "avago,apds9300";
->              reg = <0x39>;
->              interrupt-parent = <&gpio2>;
-> -            interrupts = <29 8>;
-> +            interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-
-Separate change.
-
-Best regards,
-Krzysztof
-
+> 
+>> Moving to a new city with a new full time job with the assumption of getting more time
+>> for my list of opensource projects and contributions proved to be utterly wrong!
+> 
+> Well, I can't blame you :) Being in a new work at new city sounds like you have a lot on your plate right now. Give it half a year and things will stabilize though :) Oh, and falsely assuming that "when XXX, I will have the time to do YYY" - been there done that :)
+> 
+> Good luck on the new work and city!
+Thank you Matti.
+> 
+> Yours,
+>      -- Matti
+> 
+Regards,
+Subhajit Ghosh
 

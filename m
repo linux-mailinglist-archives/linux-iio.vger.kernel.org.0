@@ -1,152 +1,155 @@
-Return-Path: <linux-iio+bounces-1844-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1845-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB3A836CA4
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:13:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACC7836D25
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 18:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DAD91C2532B
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 17:13:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C27F1C26BF2
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 17:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E249D62A02;
-	Mon, 22 Jan 2024 16:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ighTOgn5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A562454F88;
+	Mon, 22 Jan 2024 16:27:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E19629FC;
-	Mon, 22 Jan 2024 16:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C143FB13
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jan 2024 16:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705939321; cv=none; b=B2tBCWHf8qGs/Yozrra4RJUznYM2qCROjNPW9FLkMOxA45sBueYBXta2/Swy4EvSAFs4e6j/fObN/jeyn6pGK48wJ+8vwLB7QVtgHqMLPYDPpENZpMN3TqV8m3BkdKpa7Zoqb5VTq8iICmYreZKEje7vhYerax6zlgpoKQUxMUU=
+	t=1705940870; cv=none; b=gREsdd+MTGpNOJWgYifoudPzfb2Oc5hcPu2OBEYfrk5wtX95KN7ID6ma2HJlWAKHhuoxrtYkQN77Nh1thk5nowQ7A/c2LjRTuslYcqOl+kn+gN7Ua/tHpj6SfywRCT0UaEr34bykNdmoa4cJo9GhWJxHkkhnv7Nqa8l6ZEr/vq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705939321; c=relaxed/simple;
-	bh=fB4hCCEFRfqdFSuceI9EmlUzYOLltu5OB2IYDnk8/Mo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MW+FzA6hZnhxTLBYW3AUEjT4p96FQX5oNnUQ9OI8pZzbDRlBgYPZThz9N/iKX2qfNDORhI+D9rO0AkzuMPk8Bpmw1UjFcKW/uKkAe3b915ac+ihfMDnMx0WAqnIYMy7gL9tl2L9Xm2Xnp2cXRk6sLbShIs7ib3AhrbIpZ8Yd5Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ighTOgn5; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a2f22bfb4e6so325378366b.0;
-        Mon, 22 Jan 2024 08:01:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705939318; x=1706544118; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fB4hCCEFRfqdFSuceI9EmlUzYOLltu5OB2IYDnk8/Mo=;
-        b=ighTOgn5tB7ejx3gLray1Ld8yvM91496AAaNy+6PRMokCGE7IgMmM+9veNgVIJSw7X
-         lncom/kxkS99fHMPIAQ+5c54ISrBnOM0a4+5w9DWBbqa9aD5ozu9/hU9ew9leUl0I2id
-         L0ccP7wsA5pJb2MGHZJmPhmLFDsHjzZK2PR2j4TzrCfYgWTk8p7/vAVNGGAEA5Zg/uts
-         991jdDSoQrugiofd+i/1+vnASSFyoT4IV3IXG5K/b4r+z+lDs4GBxX3WvBDKYbFne3kS
-         95Xniq0XE3RJPJRqgtn1/xx7b9SScxChCYAaR+tEv6gac+chz1zH9OlqGgsQ98vJ0wVq
-         tYXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705939318; x=1706544118;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fB4hCCEFRfqdFSuceI9EmlUzYOLltu5OB2IYDnk8/Mo=;
-        b=VrXPqcumgfk3PHYTFcJyEWwewQX3e38RCL10KNvVoQs7VfAMypia/TQyadKxoeIdL3
-         cOqO5ssqzCBdUDyKHpJGXcmX4BKpmzJziNUAvx+lPOUgYWy+G050SuNMT4R1p1FMVbq1
-         O6rqxWXsuotp/O42/+R/5oB0XNbBb0RCj//duF4qf1yQfPtLXNzawi9sraKsizZQSAVw
-         YQEkA2LKpRc9Y8N4cR8iHjfd912tCJjL0eIV9E9rn0055NcWSEI0gNQZMyxug7aaQwS8
-         iqfCSNBsBieaWpk8rpw8jRP0/a+MiZf8NUUM/4zFoiIxBSma6oBvrmTnWwLGWXAiDavJ
-         y1Uw==
-X-Gm-Message-State: AOJu0YwYw+vPO3OxSF2T0wLJbqywwRF7dEYgTOwT1mJJF0pLXfcoO3fz
-	hToWgM0EwFJ+LFoHcULgpNp13hsK/kxqWoK0petsROZK0w2cnBNx
-X-Google-Smtp-Source: AGHT+IGmtbUb7I0SxeN7awPnbdPnq/+DoV6AI4BG6yQs58SQH9sgfmmhcdPXNqDOvT2G6J1nZJvWyw==
-X-Received: by 2002:a17:906:ae8d:b0:a30:461f:b424 with SMTP id md13-20020a170906ae8d00b00a30461fb424mr1027374ejb.136.1705939317985;
-        Mon, 22 Jan 2024 08:01:57 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id d15-20020a170906c20f00b00a2ae7fb3fc6sm13598699ejz.93.2024.01.22.08.01.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 08:01:57 -0800 (PST)
-Message-ID: <a9e31bf39a04426fead96ffdb086c8c4b92fedd9.camel@gmail.com>
-Subject: Re: [PATCH v6 1/8] dt-bindings: adc: ad9467: add new io-backend
- property
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,  Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Olivier Moysan
- <olivier.moysan@foss.st.com>,  devicetree@vger.kernel.org
-Date: Mon, 22 Jan 2024 17:01:57 +0100
-In-Reply-To: <20240122153735.GB601827-robh@kernel.org>
-References: <20240119-iio-backend-v6-0-189536c35a05@analog.com>
-	 <20240119-iio-backend-v6-1-189536c35a05@analog.com>
-	 <170568455280.599772.1565973986432310014.robh@kernel.org>
-	 <20240122153735.GB601827-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1705940870; c=relaxed/simple;
+	bh=SGx6S/BHwytQoYDW7ZdHlY+dJ2xWWmtc/jLlMLPhOhk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=lBYGxNkHAoPtnMW1qkiuBx/Am5flXeCREXjUXPjCtXEK+NKPEq0d1tJDzrEpSTwGCJPz6yEDQyqHw9Q15uqYz2j4O2XnrjAaqzS21hq9fWBfzoxES5YXQCyD0ZYm0d6UNhFCKfVVb3YNOrbK2MEk1ThPjTfi/isOZUjwnf0+PAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-210-MDhQu3aqNn262JcA0dFe3A-1; Mon, 22 Jan 2024 16:27:40 +0000
+X-MC-Unique: MDhQu3aqNn262JcA0dFe3A-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 22 Jan
+ 2024 16:27:13 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 22 Jan 2024 16:27:13 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Matti Vaittinen' <mazziesaccount@gmail.com>, Subhajit Ghosh
+	<subhajit.ghosh@tweaklogic.com>, Jonathan Cameron <jic23@kernel.org>
+CC: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+	<lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] iio: gts-helper: Fix division loop
+Thread-Topic: [PATCH] iio: gts-helper: Fix division loop
+Thread-Index: AQHaTP9Sjp+SE1amN0CPIjdungerhrDmBFew
+Date: Mon, 22 Jan 2024 16:27:13 +0000
+Message-ID: <2985a200057c4648817094cf747fca35@AcuMS.aculab.com>
+References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
+ <20240107162253.66c1f0f1@jic23-huawei>
+ <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
+ <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+In-Reply-To: <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Mon, 2024-01-22 at 09:37 -0600, Rob Herring wrote:
-> On Fri, Jan 19, 2024 at 11:15:54AM -0600, Rob Herring wrote:
-> >=20
-> > On Fri, 19 Jan 2024 17:00:47 +0100, Nuno Sa wrote:
-> > > The ad9467 will make use of the new IIO backend framework which is a
-> > > provider - consumer interface where IIO backends provide services to
-> > > consumers. As such, and being this device a consumer,=C2=A0 add the n=
-ew
-> > > generic io-backend property to the bindings.
-> > >=20
-> > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > ---
-> > > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 4 +=
-+++
-> > > =C2=A01 file changed, 4 insertions(+)
-> > >=20
-> >=20
-> > My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_chec=
-k'
-> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> >=20
-> > yamllint warnings/errors:
-> >=20
-> > dtschema/dtc warnings/errors:
-> > /builds/robherring/dt-review-
-> > ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml: io-=
-backends:
-> > missing type definition
->=20
-> Are you going to update the GH PR so I can apply adding io-backends?
->=20
->=20
-
-Yes, I can do that. I was thinking you preferred to have the second user so=
- I was
-planning in updating only after sending out that series (or Olivier if he e=
-nds up
-sending his series first).
-
-Olivier already gave his ack in [1], but I guess you would also like Jonath=
-an's ack
-on that PULL right?
-
-Jonathan,
-would that be something you can do? The pull is in [2]... Maybe give your
-comments/review in there if any.
-
-
-[2]: https://github.com/devicetree-org/dt-schema/pull/120
-[1]: https://lore.kernel.org/linux-iio/4b1ffdc4-edce-4a69-a30b-45c29741dc2c=
-@foss.st.com/
-
-- Nuno S=C3=A1
+RnJvbTogTWF0dGkgVmFpdHRpbmVuDQo+IFNlbnQ6IDIyIEphbnVhcnkgMjAyNCAwNjo1MQ0KPiAN
+Cj4gT24gMS8xOS8yNCAxMzo1NiwgU3ViaGFqaXQgR2hvc2ggd3JvdGU6DQo+ID4gT24gOC8xLzI0
+IDAyOjUyLCBKb25hdGhhbiBDYW1lcm9uIHdyb3RlOg0KPiA+PiBPbiBUaHUsIDQgSmFuIDIwMjQg
+MTE6MzQ6MjggKzAyMDANCj4gPj4gTWF0dGkgVmFpdHRpbmVuIDxtYXp6aWVzYWNjb3VudEBnbWFp
+bC5jb20+IHdyb3RlOg0KPiA+Pg0KPiA+Pj4gVGhlIGxvb3AgYmFzZWQgNjRiaXQgZGl2aXNpb24g
+bWF5IHJ1biBmb3IgYSBsb25nIHRpbWUgd2hlbiBkaXZpZGVuZCBpcyBhDQo+ID4+PiBsb3QgYmln
+Z2VyIHRoYW4gdGhlIGRpdmlkZXIuIFJlcGxhY2UgdGhlIGRpdmlzaW9uIGxvb3AgYnkgdGhlDQo+
+ID4+PiBkaXY2NF91NjQoKSB3aGljaCBpbXBsZW1lbnRhdGlvbiBtYXkgYmUgc2lnbmlmaWNhbnRs
+eSBmYXN0ZXIuDQo+ID4+Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogTWF0dGkgVmFpdHRpbmVuIDxt
+YXp6aWVzYWNjb3VudEBnbWFpbC5jb20+DQo+ID4+PiBGaXhlczogMzg0MTZjMjhlMTY4ICgiaWlv
+OiBsaWdodDogQWRkIGdhaW4tdGltZS1zY2FsZSBoZWxwZXJzIikNCj4gPj4NCj4gPj4gSG1tLiBG
+aXggb3Igbm90IHBlcmYgaW1wcm92ZW1lbnQ/wqAgSSdtIGdvaW5nIHRvIHRha2UgdGhlIG1pZGRs
+ZSBncm91bmQNCj4gPj4gYW5kIGxlYXZlIHRoZSBmaXhlcyB0YWcsIGJ1dCBub3QgcnVzaCB0aGlz
+IGluLg0KPiA+Pg0KPiA+PiBTbyBhcHBsaWVkIHRvIHRoZSB0b2dyZWcgYnJhbmNoIG9mIGlpby5n
+aXQgYW5kIGZvciBub3cganVzdCBwdXNoZWQgb3V0DQo+ID4+IGFzIHRlc3RpbmcgZm9yIDAtZGF5
+IGV0YyB0byB0YWtlIGEgbG9vayBiZWZvcmUgSSByZWJhc2UgdGhhdCB0cmVlIGFmdGVyDQo+ID4+
+IHJjMS4NCj4gPj4NCj4gPj4NCj4gPj4NCj4gPj4+IC0tLQ0KPiA+Pj4NCj4gPj4+IEkndmUgaW1w
+bGVtZW50ZWQgYWxzbyBhIGZpeHVwIHNlcmllcyBmb3Igc3VwcG9ydGluZyByb3VuZGluZyBvZg0K
+PiA+Pj4gZ2FpbnMvc2NhbGVzOg0KPiA+Pj4NCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGtt
+bC8zN2QzYWExOTNlNjk1NzczNTNkMzE0ZTk0NDYzYTA4ZDQ4OGRkZDhkLjE3MDE3ODA5NjQuZ2l0
+Lm1henppZXNhY2NvdW50QGdtDQo+IGFpbC5jb20vDQo+ID4+Pg0KPiA+Pj4gVGhhdCBzZXJpZXMg
+ZG9lcyBhbHNvIHJlbW92ZSB0aGUgb2ZmZW5kaW5nIGxvb3AuDQo+ID4+Pg0KPiA+Pj4gV2UgZG9u
+J3QgY3VycmVudGx5IGhhdmUgYW55IGluLXRyZWUgdXNlcnMgb2YgR1RTIGhlbHBlcnMgd2hpY2gg
+d291bGQNCj4gPj4+IG5lZWQgdGhlIHJvdW5kaW5nIHN1cHBvcnQgc28gcHVzaGluZyB0aGUgcm91
+bmRpbmcgaXMgbm90IHVyZ2VudCAoYW5kIEkNCj4gPj4+IGhhdmVuJ3QgaGVhcmQgb2YgU3ViamFo
+aXQgd2hvc2UgZHJpdmVyIHJlcXVpcmVkIHRoZSByb3VuZGluZykuIEhlbmNlLCB3ZQ0KPiA+Pj4g
+bWF5IHdhbnQgdG8gb25seSB0YWtlIHRoaXMgbG9vcCBmaXggaW4gZm9yIG5vdyAoPykgYW5kIHJl
+Y29uc2lkZXINCj4gPj4+IHJvdW5kaW5nIHdoZW4gc29tZW9uZSBuZWVkIHRoYXQuDQoNCldoeSBk
+aWQgSSBsb29rIGFzIHRoaXMgY3JhcHB5IGNvZGUgOi0pDQpJIHRoaW5rIHRoZSBjaGFuZ2UgYnJl
+YWtzIHRoZSByb3VuZGluZy4NCkZvciAnbm9ybWFsJyB2YWx1ZXMgSSB0aGluayB5b3UganVzdCB3
+YW50Og0KCXJldHVybiAxICsgKG1heCAtIDEpL3NjYWxlLg0KDQpUaGUgJ2F2b2lkIG92ZXJmbG93
+JyB0ZXN0IGlzbid0IG5lZWRlZCBpZiB5b3Ugc3VidHJhY3QgMSBmcm9tIG1heC4NCihSYXRoZXIg
+dGhhbiByZXR1cm4gKG1heCArIHNjYWxlIC0gMSkvc2NhbGU7IHdoZXJlIHRoZSBhZGQgY2FuIG92
+ZXJmbG93Lg0KQnV0IHlvdSBkbyBuZWVkIHNvbWV0aGluZyB0byByZXR1cm4gMSAob3IgZXJyb3Ip
+IGlmIG1heCBpcyB6ZXJvLg0KDQoJRGF2aWQNCg0KPiA+Pj4NCj4gPj4+IEpvbmF0aGFuLCB3aGF0
+J3MgeW91ciB0YWtlIG9uIHRoaXM/DQo+ID4+IEFncmVlZCAtIGxldCB1cyB3YWl0IGZvciB0aGUg
+cm91bmRpbmcgdG8gaGF2ZSBhIHVzZXIsIGJ1dCBtYWtlcyBzZW5zZQ0KPiA+PiB0byB0aWR5IHRo
+aXMgY29ybmVyIHVwIGluIHRoZSBtZWFudGltZS4NCj4gPj4NCj4gPj4gVGhhbmtzLA0KPiA+Pg0K
+PiA+PiBKb25hdGhhbg0KPiA+Pg0KPiA+Pj4NCj4gPj4+IMKgIGRyaXZlcnMvaWlvL2luZHVzdHJp
+YWxpby1ndHMtaGVscGVyLmMgfCA1ICsrLS0tDQo+ID4+PiDCoCAxIGZpbGUgY2hhbmdlZCwgMiBp
+bnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiA+Pj4NCj4gPj4+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL2lpby9pbmR1c3RyaWFsaW8tZ3RzLWhlbHBlci5jDQo+ID4+PiBiL2RyaXZlcnMvaWlv
+L2luZHVzdHJpYWxpby1ndHMtaGVscGVyLmMNCj4gPj4+IGluZGV4IDc2NTMyNjFkMmRjMi4uYWJj
+YWIyZDM4NTg5IDEwMDY0NA0KPiA+Pj4gLS0tIGEvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWd0
+cy1oZWxwZXIuYw0KPiA+Pj4gKysrIGIvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWd0cy1oZWxw
+ZXIuYw0KPiA+Pj4gQEAgLTM0LDcgKzM0LDcgQEANCj4gPj4+IMKgIHN0YXRpYyBpbnQgaWlvX2d0
+c19nZXRfZ2Fpbihjb25zdCB1NjQgbWF4LCBjb25zdCB1NjQgc2NhbGUpDQo+ID4+PiDCoCB7DQo+
+ID4+PiDCoMKgwqDCoMKgIHU2NCBmdWxsID0gbWF4Ow0KPiA+Pj4gLcKgwqDCoCBpbnQgdG1wID0g
+MTsNCj4gPj4+ICvCoMKgwqAgaW50IHRtcCA9IDA7DQo+ID4+PiDCoMKgwqDCoMKgIGlmIChzY2Fs
+ZSA+IGZ1bGwgfHwgIXNjYWxlKQ0KPiA+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUlO
+VkFMOw0KPiA+Pj4gQEAgLTQ4LDggKzQ4LDcgQEAgc3RhdGljIGludCBpaW9fZ3RzX2dldF9nYWlu
+KGNvbnN0IHU2NCBtYXgsIGNvbnN0DQo+ID4+PiB1NjQgc2NhbGUpDQo+ID4+PiDCoMKgwqDCoMKg
+wqDCoMKgwqAgdG1wKys7DQo+ID4+PiDCoMKgwqDCoMKgIH0NCj4gPj4+IC3CoMKgwqAgd2hpbGUg
+KGZ1bGwgPiBzY2FsZSAqICh1NjQpdG1wKQ0KPiA+Pj4gLcKgwqDCoMKgwqDCoMKgIHRtcCsrOw0K
+PiA+Pj4gK8KgwqDCoCB0bXAgKz0gZGl2NjRfdTY0KGZ1bGwsIHNjYWxlKTsNCj4gPj4+IMKgwqDC
+oMKgwqAgcmV0dXJuIHRtcDsNCj4gPj4+IMKgIH0NCj4gPj4+DQo+ID4+PiBiYXNlLWNvbW1pdDog
+MmNjMTRmNTJhZWI3OGNlM2YyOTY3N2MyZGUxZjA2YzBlOTE0NzFhYg0KPiA+Pg0KPiA+Pg0KPiA+
+IEhpIE1hdHRpLA0KPiA+DQo+ID4gWW91ciBmaXggd29ya3MgYmVhdXRpZnVsbHkgd2l0aCB0aGUg
+bGF0ZXN0IHZlcnNpb24gb2YgYXBkczkzMDYgZHJpdmVyDQo+ID4gd2hpY2ggSSBhbSB3b3JraW5n
+IG9uLg0KPiA+IEFsbCBhdmFpbGFibGUgc2NhbGUgdmFsdWVzIGNhbiBiZSBzZXQgd2l0aG91dCBh
+bnkgZXJyb3JzLiBUaGFuayB5b3UuDQo+IA0KPiBUaGFua3MgZm9yIHRlc3RpbmcgU3ViaGFqaXQh
+IEp1c3QgdG8gZW5zdXJlIHdlIGhhdmUgbm8gbWlzY29tbXVuaWNhdGlvbg0KPiAtIGRpZCB5b3Ug
+dGVzdCBqdXN0IHRoaXMgZGl2aXNpb24gZml4LCBvciB0aGUgcm91bmRpbmcgZml4IGhlcmU6DQo+
+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMzdkM2FhMTkzZTY5NTc3MzUzZDMxNGU5NDQ2
+M2EwOGQ0ODhkZGQ4ZC4xNzAxNzgwOTY0LmdpdC5tYXp6aWVzYWNjb3VudEBnbQ0KPiBhaWwuY29t
+Lw0KPiANCj4gPiBNb3ZpbmcgdG8gYSBuZXcgY2l0eSB3aXRoIGEgbmV3IGZ1bGwgdGltZSBqb2Ig
+d2l0aCB0aGUgYXNzdW1wdGlvbiBvZg0KPiA+IGdldHRpbmcgbW9yZSB0aW1lDQo+ID4gZm9yIG15
+IGxpc3Qgb2Ygb3BlbnNvdXJjZSBwcm9qZWN0cyBhbmQgY29udHJpYnV0aW9ucyBwcm92ZWQgdG8g
+YmUNCj4gPiB1dHRlcmx5IHdyb25nIQ0KPiANCj4gV2VsbCwgSSBjYW4ndCBibGFtZSB5b3UgOikg
+QmVpbmcgaW4gYSBuZXcgd29yayBhdCBuZXcgY2l0eSBzb3VuZHMgbGlrZQ0KPiB5b3UgaGF2ZSBh
+IGxvdCBvbiB5b3VyIHBsYXRlIHJpZ2h0IG5vdy4gR2l2ZSBpdCBoYWxmIGEgeWVhciBhbmQgdGhp
+bmdzDQo+IHdpbGwgc3RhYmlsaXplIHRob3VnaCA6KSBPaCwgYW5kIGZhbHNlbHkgYXNzdW1pbmcg
+dGhhdCAid2hlbiBYWFgsIEkgd2lsbA0KPiBoYXZlIHRoZSB0aW1lIHRvIGRvIFlZWSIgLSBiZWVu
+IHRoZXJlIGRvbmUgdGhhdCA6KQ0KPiANCj4gR29vZCBsdWNrIG9uIHRoZSBuZXcgd29yayBhbmQg
+Y2l0eSENCj4gDQo+IFlvdXJzLA0KPiAJLS0gTWF0dGkNCj4gDQo+IC0tDQo+IE1hdHRpIFZhaXR0
+aW5lbg0KPiBMaW51eCBrZXJuZWwgZGV2ZWxvcGVyIGF0IFJPSE0gU2VtaWNvbmR1Y3RvcnMNCj4g
+T3VsdSBGaW5sYW5kDQo+IA0KPiB+fiBXaGVuIHRoaW5ncyBnbyB1dHRlcmx5IHdyb25nIHZpbSB1
+c2VycyBjYW4gYWx3YXlzIHR5cGUgOmhlbHAhIH5+DQo+IA0KDQotDQpSZWdpc3RlcmVkIEFkZHJl
+c3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsx
+IDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
 

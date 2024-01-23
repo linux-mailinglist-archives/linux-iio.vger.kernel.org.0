@@ -1,100 +1,276 @@
-Return-Path: <linux-iio+bounces-1859-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1860-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3FF8372BB
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 20:38:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209E8838895
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 09:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DD41B274B3
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jan 2024 19:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A454A1F2614E
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 08:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393AA3F8C4;
-	Mon, 22 Jan 2024 19:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBQE1dku"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2537656466;
+	Tue, 23 Jan 2024 08:11:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E259C3D553;
-	Mon, 22 Jan 2024 19:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE6E55E6E;
+	Tue, 23 Jan 2024 08:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705951738; cv=none; b=MLImWd52MicpNQwFWkESXrSfe9K+3C2p4NU/YyiYnaXqMkyxl6qHEFspUoR1VNRTRF8ySOv2xXH+jN2DCevvxr6lOOomCuK7m3yvWFTzX25NVyPXDp8eaa5E3yvJWuko95XTlu+CARKnqDaEzmkAH92h3y/Uqv/Wr7YYlpZjFpY=
+	t=1705997510; cv=none; b=b5QawRif9Brsmx7mquhIeiquqAKq47DCHcxDD2RsH/8Zi2MCu62KkwUQns5vUGKLecB+YfBuHFC4IWp7MtBasYiaqn4pW5+GiEZBWR2yGo57xkd7LIk7WoluhBn62bgBXLG9q9yW3bT4SQKM5x3aDHikHyBXxrOaJYDspWN6BaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705951738; c=relaxed/simple;
-	bh=afe/agwweDEq5hliJJTGqCqDN6ZjHnZaGXWvzUFYsU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sn9X3eswyKfIDJgVnkCGzcJxm5JojVD8XM/lKR0OvC62MvBgRf/Z8ybG2xJt2Sm0KAHrv4DPbF+TCzN0uhiok62X/vJtDh05BBvkVyNMJaX+LLqwBQOJPxT/rDvdexzbvB16xyzxB9wzRK3l5vYGU97AGOq23PLYrgI3EYZia88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBQE1dku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB792C43394;
-	Mon, 22 Jan 2024 19:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705951737;
-	bh=afe/agwweDEq5hliJJTGqCqDN6ZjHnZaGXWvzUFYsU4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SBQE1dkuhEfL93TcJEEBBJ8/xouUb6xnNbHHPRX4FZpR4wORc6+Hxhwufl4uXyG9N
-	 ujO909y+zv4YV89rXPmNeoC4xFjVhav9s5WneBYLNaof0vne1fiYX0rITrjJtcl+JP
-	 ivaU+jwxkBOdBuHH5v3P3pgAd0Q1Yb+1KlSY8gqx2spd01xM1GJoQGQRwznIcfilWb
-	 Bbfrw18WipbGdoTzVwQnY/FPDTAlbxDof+tn7lG5ZOPODSUIwR/itpsqYMtvoJAEsF
-	 Yd3wHjPLZgE4QxkzF302iwZ5Ixk1ApA1Ep1c+EkNKGipVyFAR6Pnrm3vQR6kEgYIgq
-	 u0ykUxtrKq9wA==
-Date: Mon, 22 Jan 2024 19:28:44 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: marius.cristea@microchip.com, lars@metafoo.de, robh+dt@kernel.org,
- jdelvare@suse.com, linux-hwmon@vger.kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] adding support for Microchip PAC193X Power
- Monitor
-Message-ID: <20240122192844.61b370ef@jic23-huawei>
-In-Reply-To: <b7dbd5fa-b300-4d6d-b3fc-8cb8e90eefa3@roeck-us.net>
-References: <20240122084712.11507-1-marius.cristea@microchip.com>
-	<b7dbd5fa-b300-4d6d-b3fc-8cb8e90eefa3@roeck-us.net>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1705997510; c=relaxed/simple;
+	bh=6/kVm0yG/eE7ipjEeC5gkP2B7Iq4UW3KGm4j/qJJrIU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HC0NFsDO56l2T6errtWaY7aECuL7Z2i03ad3JuYB3oYb0idVsSBEl0Z08aSaFZUBkiSClZRD1CBReeZHn5QihAgD66vXiUqnVfcSeDmcNlhTzvEVHKJy8+9SAdCFp+KIPK8ZEq7Xc0qKztWLJ7w3e/iOo6+Tlm5z7oj0jRiHy8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40N65qlo028616;
+	Tue, 23 Jan 2024 03:11:30 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3vt7vtrdx7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jan 2024 03:11:29 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 40N8BSpk023436
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 23 Jan 2024 03:11:28 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 23 Jan
+ 2024 03:11:27 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 23 Jan 2024 03:11:27 -0500
+Received: from kim-VirtualBox.ad.analog.com (KPALLER2-L03.ad.analog.com [10.117.220.34])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40N8BAa4032262;
+	Tue, 23 Jan 2024 03:11:12 -0500
+From: Kim Seer Paller <kimseer.paller@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Crt
+ Mori <cmo@melexis.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz
+ Golaszewski <brgl@bgdev.pl>,
+        =?UTF-8?q?Nuno=20S=C3=A1?=
+	<noname.nuno@gmail.com>,
+        Kim Seer Paller <kimseer.paller@analog.com>
+Subject: [PATCH v8 1/2] dt-bindings: iio: frequency: add admfm2000
+Date: Tue, 23 Jan 2024 16:10:58 +0800
+Message-ID: <20240123081059.5746-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 0yzmBBGuVTTdrzfCc3p9xge881JsOp2l
+X-Proofpoint-ORIG-GUID: 0yzmBBGuVTTdrzfCc3p9xge881JsOp2l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-23_02,2024-01-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ phishscore=0 suspectscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401230058
 
-On Mon, 22 Jan 2024 06:57:32 -0800
-Guenter Roeck <linux@roeck-us.net> wrote:
+Dual microwave down converter module with input RF and LO frequency
+ranges from 0.5 to 32 GHz and an output IF frequency range from 0.1 to
+8 GHz. It consists of a LNA, mixer, IF filter, DSA, and IF amplifier
+for each down conversion path.
 
-> On 1/22/24 00:47, marius.cristea@microchip.com wrote:
-> > From: Marius Cristea <marius.cristea@microchip.com>
-> > 
-> > Adding support for Microchip PAC193X series of Power Monitor with
-> > Accumulator chip family. This driver covers the following part numbers:
-> >   - PAC1931, PAC1932, PAC1933 and PAC1934
-> > 
-> >    This device is at the boundary between IIO and HWMON (if you are
-> > looking just at the "shunt resistors, vsense, power, energy"). The
-> > device also has ADC internally that can measure voltages (up to 4
-> > channels) and also currents (up to 4 channels). The current is measured as
-> > voltage across the shunt_resistor.
-> > 
-> >    I have started with a simple driver (this one that is more appropriate to be
-> > a HWMON) and willing to add more functionality later (like data buffering that  
-> 
-> Not sure I understand what you are trying to say here. This is obviously an iio
-> driver, not a hwmon driver. Any hwmon related concern is irrelevant.
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+---
+V7 -> V8: Added adequate description for mixer mode property. Modified description
+          for switch gpio property.
+V6 -> V7: Changed RF path mode property to boolean.
+V5 -> V6: Moved array of switch and attenuation GPIOs to the channel node.
+          Changed pin coords with friendly names. Removed Reviewed-by tag.
+V4 -> V5: Added Reviewed-by tag.
+V3 -> V4: Updated the description of the properties with multiple entries and
+          defined the order.
+V2 -> V3: Adjusted indentation to resolve wrong indentation warning. 
+          Changed node name to converter. Updated the descriptions to clarify
+          the properties.
+V1 -> V2: Removed '|' after description. Specified the pins connected to
+          the GPIOs. Added additionalProperties: false. Changed node name to gpio.
+          Aligned < syntax with the previous syntax in the examples.
 
-It's a left over comment / attempt to summarise the discussion of whether IIO
-or HWMON was a better home for a driver for this device.  Based on current
-feature set that's not an obvious decision, but there are other planned features
-that fit better in IIO.
+ .../bindings/iio/frequency/adi,admfm2000.yaml | 127 ++++++++++++++++++
+ MAINTAINERS                                   |   7 +
+ 2 files changed, 134 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
 
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+new file mode 100644
+index 000000000000..2bcf4bbc12e4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
+@@ -0,0 +1,127 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2024 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admfm2000.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADMFM2000 Dual Microwave Down Converter
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description:
++  Dual microwave down converter module with input RF and LO frequency ranges
++  from 0.5 to 32 GHz and an output IF frequency range from 0.1 to 8 GHz.
++  It consists of a LNA, mixer, IF filter, DSA, and IF amplifier for each down
++  conversion path.
++
++properties:
++  compatible:
++    enum:
++      - adi,admfm2000
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++patternProperties:
++  "^channel@[0-1]$":
++    type: object
++    description: Represents a channel of the device.
++
++    additionalProperties: false
++
++    properties:
++      reg:
++        description:
++          The channel number.
++        minimum: 0
++        maximum: 1
++
++      adi,mixer-mode:
++        description:
++          Enable mixer mode for the channel. It downconverts RF between 5 GHz
++          and 32 GHz to IF between 0.5 GHz and 8 GHz. If not present, the channel
++          is in direct IF mode which bypasses the mixer and downconverts RF
++          between 2 GHz and 8 GHz to IF between 0.5 GHz and 8 GHz.
++        type: boolean
++
++      switch-gpios:
++        description: |
++          GPIOs to select the RF path for the channel. The same state of CTRL-A
++          and CTRL-B GPIOs is not permitted.
++          CTRL-A   CTRL-B    CH1 Status        CH2 Status
++          1        0         Direct IF mode    Mixer mode
++          0        1         Mixer mode        Direct IF mode
++
++        items:
++          - description: CTRL-A GPIO
++          - description: CTRL-B GPIO
++
++      attenuation-gpios:
++        description: |
++          Choice of attenuation:
++          DSA-V4  DSA-V3  DSA-V2  DSA-V1  DSA-V0
++          1       1       1       1       1        0 dB
++          1       1       1       1       0        -1 dB
++          1       1       1       0       1        -2 dB
++          1       1       0       1       1        -4 dB
++          1       0       1       1       1        -8 dB
++          0       1       1       1       1        -16 dB
++          0       0       0       0       0        -31 dB
++
++        items:
++          - description: DSA-V0 GPIO
++          - description: DSA-V1 GPIO
++          - description: DSA-V2 GPIO
++          - description: DSA-V3 GPIO
++          - description: DSA-V4 GPIO
++
++    required:
++      - reg
++      - switch-gpios
++      - attenuation-gpios
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    converter {
++      compatible = "adi,admfm2000";
++
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      channel@0 {
++        reg = <0>;
++        switch-gpios = <&gpio 1 GPIO_ACTIVE_LOW>,
++                       <&gpio 2 GPIO_ACTIVE_HIGH>;
++
++        attenuation-gpios = <&gpio 17 GPIO_ACTIVE_LOW>,
++                            <&gpio 22 GPIO_ACTIVE_LOW>,
++                            <&gpio 23 GPIO_ACTIVE_LOW>,
++                            <&gpio 24 GPIO_ACTIVE_LOW>,
++                            <&gpio 25 GPIO_ACTIVE_LOW>;
++      };
++
++      channel@1 {
++        reg = <1>;
++        adi,mixer-mode;
++        switch-gpios = <&gpio 3 GPIO_ACTIVE_LOW>,
++                       <&gpio 4 GPIO_ACTIVE_HIGH>;
++
++        attenuation-gpios = <&gpio 0 GPIO_ACTIVE_LOW>,
++                            <&gpio 5 GPIO_ACTIVE_LOW>,
++                            <&gpio 6 GPIO_ACTIVE_LOW>,
++                            <&gpio 16 GPIO_ACTIVE_LOW>,
++                            <&gpio 26 GPIO_ACTIVE_LOW>;
++      };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8d1052fa6a69..1f7cd2e848de 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1267,6 +1267,13 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
+ F:	drivers/hwmon/adm1177.c
+ 
++ANALOG DEVICES INC ADMFM2000 DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/frequency/adi,admfm2000.yaml
++
+ ANALOG DEVICES INC ADMV1013 DRIVER
+ M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+ L:	linux-iio@vger.kernel.org
 
-> 
-> Guenter
-> 
+base-commit: 7ed2632ec7d72e926b9e8bcc9ad1bb0cd37274bf
+-- 
+2.34.1
 
 

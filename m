@@ -1,88 +1,95 @@
-Return-Path: <linux-iio+bounces-1873-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1874-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA6283918B
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 15:39:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D71E8391E3
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 16:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE09B1C27248
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 14:39:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8A042877F6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 15:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09F1495CC;
-	Tue, 23 Jan 2024 14:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="NaXfEi4h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAF95FB80;
+	Tue, 23 Jan 2024 15:01:07 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18512E5F;
-	Tue, 23 Jan 2024 14:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013C512E5F;
+	Tue, 23 Jan 2024 15:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706020744; cv=none; b=LBJnNMqpC6QDPC4LqJ5ToKu072jIwZZeWWLtGkVujsW1r6QdwIlRQdcfBUas6vpqQZyVbekwT8BPXYav5vwt+on99io4MPHPL6aWYG49NmngaY8+7gZyVBApckBxN7E4Cq1llCzzV1hBCp6BJJnCMnfzEvgXQQP+thxZhfy5Nzc=
+	t=1706022067; cv=none; b=SqL5c8OOmUG3ylZhEQOpyNhVovXqd04DVRuJr3ahGu7ZWwAA5QcSgQms+Fi1cNQnSaltE9eeW+qPZokfzltLHQG5lFRBKg1A8rvQZDtUsHmbcS1NgBIUfzdOAdO7LS5V4ltsPOWaiOC+0wCF/4D/LYoW2s+iWzBM4xmk9TNrIu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706020744; c=relaxed/simple;
-	bh=K6zg6vTCzrzTf1j6vmjQm/wVXkYSEHPStAwuKV9vcXM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ks88iDBdxACBSPUH8/7QU+g5ttXHm7UIOGM8goiZJGW4h7alwO1y+2mxDBQqpPs9W5xwcxO9XLlMK+ta/5pycQFbOk1YFWY5cPUw9+DpGhhi1KGRpgZWiH43DahgnDJP/E308nSpNxdn4NvudKZ1D2sQGfmmFFa6NDXTW1nXhrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=NaXfEi4h; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-Received: from localhost (c-98-53-138-11.hsd1.co.comcast.net [98.53.138.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id AB4C64A2;
-	Tue, 23 Jan 2024 14:39:01 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net AB4C64A2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1706020741; bh=xhekjE4E+jF0d+dUTemSZHRd8Hc34nR/x1C+V1iVp3M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NaXfEi4hV/rjpmbTbBmC38fJh7E+r4XxjxZ98rDuDSQeuFrSV1mlGN2Mo2iN3heku
-	 NKRcBXljfgBH0kPmij393qvXu6RPrRkteunV8T9bsvipFp9R1Xj0mLtVtGe9MVZjpr
-	 Lb+SQm4iyZf8MKChccqv1b60iTlSvlsn8n/Ha2SMLlp3lz5+BCvwxuifCApV9rn7cI
-	 LIZE6YEgfILwPJ5qtdAd97wNo1plwowgtB+6KnAoIyhy6HCdVl7z+gYA7yQNVRw04y
-	 kLAv3i78bRo8izxjVd314b6xbZkhOb2VPosLjYH/kC3rcEscQe7z1WVdk+4cDHt+2r
-	 IR7zCaOZSAbeg==
-From: Jonathan Corbet <corbet@lwn.net>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, jic23@kernel.org,
- nuno.sa@analog.com, linux-iio@vger.kernel.org
-Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: Re: [PATCH 0/1] adis16475 driver documentation
-In-Reply-To: <20240123104548.136201-1-ramona.gradinariu@analog.com>
-References: <20240123104548.136201-1-ramona.gradinariu@analog.com>
-Date: Tue, 23 Jan 2024 07:39:00 -0700
-Message-ID: <87le8gm7wb.fsf@meer.lwn.net>
+	s=arc-20240116; t=1706022067; c=relaxed/simple;
+	bh=/MsziIglCIDGc7KNRv3OZC6yMBTB7pz8eWfBrdDgNLg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sRdJMjQELjT6NZG5LQT7hH2JKSSO9yrW9Q77uuadN+CJz4HdXhDwY7gaP2IWpCFcSdwZWfMphXZ9Vp3Cc2umnSIsLtlM9ER4qpgkjw+pqP5lNpqpJS6Ys2x223XfHLW18dlU+O060NlymfY+5orlVS4k/gvQjkTHHASqXAi26t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40NBYs2N028599;
+	Tue, 23 Jan 2024 10:00:52 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3vt7vtst89-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jan 2024 10:00:50 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 40NF0nmr007952
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 23 Jan 2024 10:00:49 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 23 Jan
+ 2024 10:00:48 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 23 Jan 2024 10:00:48 -0500
+Received: from rbolboac.ad.analog.com ([10.48.65.122])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40NF0bWK030140;
+	Tue, 23 Jan 2024 10:00:40 -0500
+From: Ramona Gradinariu <ramona.gradinariu@analog.com>
+To: <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
+        <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>
+CC: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH v2 0/1] adis16475 driver documentation
+Date: Tue, 23 Jan 2024 17:00:28 +0200
+Message-ID: <20240123150029.465443-1-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: cBXMB59GvgB-cB5sanpn70KbcXaYfhiE
+X-Proofpoint-ORIG-GUID: cBXMB59GvgB-cB5sanpn70KbcXaYfhiE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-23_08,2024-01-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=731 phishscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2311290000 definitions=main-2401230109
 
-Ramona Gradinariu <ramona.gradinariu@analog.com> writes:
+Add documentation for adis16475 driver which describes
+the driver device files and shows how the user may use the
+ABI for various scenarios (configuration, measurement, etc.).
 
-> Add documentation for adis16475 driver which describes
-> the driver device files and shows how the user may use the
-> ABI for various scenarios (configuration, measurement, etc.).
->
-> Ramona Gradinariu (1):
->   docs: iio: add documentation for adis16475 driver
->
->  Documentation/iio/adis16475.rst | 327 ++++++++++++++++++++++++++++++++
->  1 file changed, 327 insertions(+)
->  create mode 100644 Documentation/iio/adis16475.rst
+Ramona Gradinariu (1):
+  docs: iio: add documentation for adis16475 driver
 
-Thanks for working to improve our documentation!
+ Documentation/iio/adis16475.rst | 327 ++++++++++++++++++++++++++++++++
+ Documentation/iio/index.rst     |   2 +
+ 2 files changed, 329 insertions(+)
+ create mode 100644 Documentation/iio/adis16475.rst
 
-You do, however, need to add this new file to the index.rst file in that
-directory or it won't be pulled into the documentation build.
+--
+2.34.1
 
-Thanks,
-
-jon
 

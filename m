@@ -1,216 +1,174 @@
-Return-Path: <linux-iio+bounces-1868-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1869-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCA2838CA9
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 11:56:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247BB8390DB
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 15:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B261C23E0A
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 10:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D491F2A33B
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 14:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7F05C8FC;
-	Tue, 23 Jan 2024 10:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489DA5FB86;
+	Tue, 23 Jan 2024 14:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFkKkEQ0"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="grcZOfGb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4965D734;
-	Tue, 23 Jan 2024 10:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707995F876;
+	Tue, 23 Jan 2024 14:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706007373; cv=none; b=EqYwWxzjAUu0mDKhdX96Ef5A/5K6FjQl2m0z5eIB89/ecCPihi23md9Qp1YmqUw71bAwUgAFMrnriVlPDc3t8sPyXW30AmK0PFqPUXPPB02jFFbrGQup4zit72yfC9RmMi+xBUhQWktY/0efv2zrIkaVe8zJhaYa1O13Cd/JxyA=
+	t=1706018979; cv=none; b=MQiXwhcUmIuJhCbOUpchOXi4ttpFKPeEeduudxM+lDjcq2Evf+HIFpP8OrV+Q7YabgDpUQxk56QSnt9+7hS/3qR7erKEGVAATmG9E0Zl8FLm6kp2mepmzHeYklcv98KDbEz5dWzw+qo/U6DIzLyXTIQJKfDT8Lw+Tnu3eKM2biY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706007373; c=relaxed/simple;
-	bh=ceNZyQnw5MfNKY7ol+8loKL6T7W+qmaLFSAoNYuZb/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HiWqed/DYB7b9HSNwZpxfbvOsEJaaMZw5NDDVJM6P9v/ffSTRp2jzgbvkKT9h9HJzKX+NTd0pzzWqGKRNvhW+D55cURQnj1HS4GOccJSmlb+JIttszxtP9H7qjLj65jPLoDNaYvCqkat+/9SIgGRN7znESWQbJDg71QmEuVqRDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFkKkEQ0; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3046221b0eso181540166b.1;
-        Tue, 23 Jan 2024 02:56:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706007370; x=1706612170; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6tlLSS4uHxJanusoNf1Dgdn3rrBHfEaOAbo9C0XDTag=;
-        b=HFkKkEQ0p6EJPKIk1/bw3GdlBxeXzIdXSrdyYBOoDyITHqutiRyS1Uxe8UTFyjo82x
-         aHML/qXsAPxqkgVqeOgPpT3b02znD9gckFB9SOfG+tMVJTlwfhC85ohiG7ZPllvmS6Gs
-         xpMouAE2TpeuPGYn1oShd/zcY8m2mh21cAm1+cLRg3PmSNOnxRDwGm3OrT2ssIfrYgT1
-         TfuEJlLj8rJcf9IBw1PBuYd3e2jb7sJtX6o7kCEdZslkjHhj844l3+XH+9fbeVHx+iZf
-         XWp5lYEcpsuQtpkFmsV1kqXyrn5QrEdjK+RR6L775AQ1THj5YV0M5ZAFu2tM/+lCRz+s
-         SdAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706007370; x=1706612170;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6tlLSS4uHxJanusoNf1Dgdn3rrBHfEaOAbo9C0XDTag=;
-        b=k7x1FEkK1xA5Va4ymrjlwIAz3EugyadhLCIXGrZLbZoeXFY5UNQlik7Y/SPXwg/sS7
-         PtMMQVnxSZzZ9Elx/g8y/54NMzQl4qoB2Vu2bKvfxvCd1mMAM1mIauhZV5KIXVXh/4xK
-         EKaby8g/Or+pz+b11nLvsUO/7lpiiLf/4Ms7/4s31eRDih9pUA4QHRK2A+TExZ3BmOL8
-         Bm2N07KLN9iD/8cVVWPiovBOBGZCo7vJhhW+b/K6C5owITAsfvFpAJ2B5RYjvTiw/rky
-         U4cMgsAH9MWi8SXa5OA/QPF2Cp9KbpWV07w0kjXoGJsd3xgV5+Ra4QRc3ein4gJQA3zS
-         08og==
-X-Gm-Message-State: AOJu0Yyv6evkPd7MNqiOeNf9u6NPdLUGC8XtPl0rws4iUiY3T0uYiSKz
-	6d9SkE/8hRP1TzjLIQM+GXlGHym3Y58tuL842sXREq6w9Uh0PRTU
-X-Google-Smtp-Source: AGHT+IFsyvYoZeGb9rFcrlOPx+vcyDFERpKpiYZiZFjQO1K1vvj568spOVwIv8n2IVqSFIADL87xGg==
-X-Received: by 2002:a17:906:3c4b:b0:a30:dc63:a617 with SMTP id i11-20020a1709063c4b00b00a30dc63a617mr207832ejg.105.1706007369619;
-        Tue, 23 Jan 2024 02:56:09 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:b1db:193d:1c75:4008? (2a02-8389-41cf-e200-b1db-193d-1c75-4008.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b1db:193d:1c75:4008])
-        by smtp.gmail.com with ESMTPSA id ti8-20020a170907c20800b00a2da4738882sm10809376ejc.131.2024.01.23.02.56.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 02:56:09 -0800 (PST)
-Message-ID: <efdfb611-5ba4-4cd6-a7f0-bd96259cf1a6@gmail.com>
-Date: Tue, 23 Jan 2024 11:56:07 +0100
+	s=arc-20240116; t=1706018979; c=relaxed/simple;
+	bh=sLTwqP6WOMgR7XzrnZkXzjHudMd77AdlbaqN5zI3ijY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OmjSCFfCDytfh6uIKA5mMBSitofqNzAet8YYlJeeYmhZou+7+iCB4D6Lo2qIZKIkfdaJbPIb27cqmz/GYpwBJZNsutTOT9xPdWMdu8FrImeZUnIPMxbsSkRBw+ro7xtHCp5FRwcEUMhgjzEAFKnySBdJBCTTq4rinGuV0M2eEWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=grcZOfGb; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 40NE9JiH008636;
+	Tue, 23 Jan 2024 08:09:19 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1706018959;
+	bh=Uufh4LvwbcbKCe08o0Fuz8M3j4+oEw0vRnDhHEVz7kg=;
+	h=From:To:CC:Subject:Date;
+	b=grcZOfGbSp2KvxaMyvuZ79xSFHRVR3zLX3SmMgqxlxVjgI3ovF4L/YiYb9mP6wCRj
+	 c7VFJ8ebdWov5jBVjvDfqWEZIpOsRrjtyK903XXyi38+3kYi5sPTcu8QTUWuRXFyYa
+	 xDe7PVeE0PsusebGNCObqGSkoE8S6PERp6nT7rfc=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 40NE9JpE003059
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 23 Jan 2024 08:09:19 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 23
+ Jan 2024 08:09:19 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 23 Jan 2024 08:09:19 -0600
+Received: from lelvsmtp6.itg.ti.com ([10.249.42.149])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 40NE9Iur034990;
+	Tue, 23 Jan 2024 08:09:19 -0600
+From: Andrew Davis <afd@ti.com>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Andrew Davis
+	<afd@ti.com>
+Subject: [PATCH 1/4] iio: health: afe4403: Use devm action helper for regulator disable
+Date: Tue, 23 Jan 2024 08:09:15 -0600
+Message-ID: <20240123140918.215818-1-afd@ti.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "iio: add modifiers for A and B ultraviolet light"
-Content-Language: en-US
-To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240123104305.10881-1-paul@crapouillou.net>
- <0bd3319f-7d63-485b-9b44-d6858c045b37@gmail.com>
- <a6f79ec0025e1862ba170c6a535447dd09e7dfad.camel@crapouillou.net>
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <a6f79ec0025e1862ba170c6a535447dd09e7dfad.camel@crapouillou.net>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
+Use a device lifecycle managed action for regulator disable function.
+This helps prevent mistakes like unregistering out of order in cleanup
+functions and forgetting to unregister on error paths.
 
+Signed-off-by: Andrew Davis <afd@ti.com>
+---
+ drivers/iio/health/afe4403.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-On 23.01.24 11:55, Paul Cercueil wrote:
-> Hi Javier,
-> 
-> Le mardi 23 janvier 2024 à 11:51 +0100, Javier Carrasco a écrit :
->> On 23.01.24 11:43, Paul Cercueil wrote:
->>> This reverts
->>> b89710bd215e ("iio: add modifiers for A and B ultraviolet light")
->>>
->>> Enum iio_modifer is *ABI*, you can't just decide to change all the
->>> values from one version to another, otherwise you break userspace.
->>> The new entries should have been added to the end of the enum.
->>>
->>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>> ---
->>>  Documentation/ABI/testing/sysfs-bus-iio | 7 ++-----
->>>  drivers/iio/industrialio-core.c         | 2 --
->>>  include/uapi/linux/iio/types.h          | 2 --
->>>  tools/iio/iio_event_monitor.c           | 2 --
->>>  4 files changed, 2 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio
->>> b/Documentation/ABI/testing/sysfs-bus-iio
->>> index 2e6d5ebfd3c7..7937bb4a4a68 100644
->>> --- a/Documentation/ABI/testing/sysfs-bus-iio
->>> +++ b/Documentation/ABI/testing/sysfs-bus-iio
->>> @@ -1587,8 +1587,6 @@
->>> What:		/sys/.../iio:deviceX/in_intensityY_raw
->>>  What:		/sys/.../iio:deviceX/in_intensityY_ir_raw
->>>  What:		/sys/.../iio:deviceX/in_intensityY_both_raw
->>>  What:		/sys/.../iio:deviceX/in_intensityY_uv_raw
->>> -What:		/sys/.../iio:deviceX/in_intensityY_uva_raw
->>> -What:		/sys/.../iio:deviceX/in_intensityY_uvb_raw
->>>  What:		/sys/.../iio:deviceX/in_intensityY_duv_raw
->>>  KernelVersion:	3.4
->>>  Contact:	linux-iio@vger.kernel.org
->>> @@ -1597,9 +1595,8 @@ Description:
->>>  		that measurements contain visible and infrared
->>> light
->>>  		components or just infrared light, respectively.
->>> Modifier
->>>  		uv indicates that measurements contain ultraviolet
->>> light
->>> -		components. Modifiers uva, uvb and duv indicate
->>> that
->>> -		measurements contain A, B or deep (C) ultraviolet
->>> light
->>> -		components respectively.
->>> +		components. Modifier duv indicates that
->>> measurements
->>> +		contain deep ultraviolet light components.
->>>  
->>>  What:		/sys/.../iio:deviceX/in_uvindex_input
->>>  KernelVersion:	4.6
->>> diff --git a/drivers/iio/industrialio-core.c
->>> b/drivers/iio/industrialio-core.c
->>> index 9a85752124dd..bce09d325142 100644
->>> --- a/drivers/iio/industrialio-core.c
->>> +++ b/drivers/iio/industrialio-core.c
->>> @@ -117,8 +117,6 @@ static const char * const iio_modifier_names[]
->>> = {
->>>  	[IIO_MOD_LIGHT_GREEN] = "green",
->>>  	[IIO_MOD_LIGHT_BLUE] = "blue",
->>>  	[IIO_MOD_LIGHT_UV] = "uv",
->>> -	[IIO_MOD_LIGHT_UVA] = "uva",
->>> -	[IIO_MOD_LIGHT_UVB] = "uvb",
->>>  	[IIO_MOD_LIGHT_DUV] = "duv",
->>>  	[IIO_MOD_QUATERNION] = "quaternion",
->>>  	[IIO_MOD_TEMP_AMBIENT] = "ambient",
->>> diff --git a/include/uapi/linux/iio/types.h
->>> b/include/uapi/linux/iio/types.h
->>> index 5060963707b1..9c2ffdcd6623 100644
->>> --- a/include/uapi/linux/iio/types.h
->>> +++ b/include/uapi/linux/iio/types.h
->>> @@ -91,8 +91,6 @@ enum iio_modifier {
->>>  	IIO_MOD_CO2,
->>>  	IIO_MOD_VOC,
->>>  	IIO_MOD_LIGHT_UV,
->>> -	IIO_MOD_LIGHT_UVA,
->>> -	IIO_MOD_LIGHT_UVB,
->>>  	IIO_MOD_LIGHT_DUV,
->>>  	IIO_MOD_PM1,
->>>  	IIO_MOD_PM2P5,
->>> diff --git a/tools/iio/iio_event_monitor.c
->>> b/tools/iio/iio_event_monitor.c
->>> index 8073c9e4fe46..2eaaa7123b04 100644
->>> --- a/tools/iio/iio_event_monitor.c
->>> +++ b/tools/iio/iio_event_monitor.c
->>> @@ -105,8 +105,6 @@ static const char * const iio_modifier_names[]
->>> = {
->>>  	[IIO_MOD_LIGHT_GREEN] = "green",
->>>  	[IIO_MOD_LIGHT_BLUE] = "blue",
->>>  	[IIO_MOD_LIGHT_UV] = "uv",
->>> -	[IIO_MOD_LIGHT_UVA] = "uva",
->>> -	[IIO_MOD_LIGHT_UVB] = "uvb",
->>>  	[IIO_MOD_LIGHT_DUV] = "duv",
->>>  	[IIO_MOD_QUATERNION] = "quaternion",
->>>  	[IIO_MOD_TEMP_AMBIENT] = "ambient",
->> Oops, sorry about that. You are right, I will send a new patch with
->> the
->> new elements at the end of the enum. This patch should be applied to
->> get
->> things right again, though.
-> 
-> Np.
-> 
-> I notice now that we can't really apply the revert as the veml6075
-> driver is already using these enum values - so applying it would result
-> in build errors.
-> 
-> Can you just move these entries to the end of the enum in your new
-> patch?
-> 
->>
->> Thanks and best regards,
->> Javier Carrasco
-> 
-> Cheers,
-> -Paul
-Sure, I will do it right now.
+diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
+index df3bc5c3d3786..9e9d6de2a7c83 100644
+--- a/drivers/iio/health/afe4403.c
++++ b/drivers/iio/health/afe4403.c
+@@ -346,6 +346,13 @@ static irqreturn_t afe4403_trigger_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
+ }
+ 
++static void afe4403_regulator_disable(void *data)
++{
++	struct regulator *regulator = data;
++
++	regulator_disable(regulator);
++}
++
+ #define AFE4403_TIMING_PAIRS			\
+ 	{ AFE440X_LED2STC,	0x000050 },	\
+ 	{ AFE440X_LED2ENDC,	0x0003e7 },	\
+@@ -495,19 +502,24 @@ static int afe4403_probe(struct spi_device *spi)
+ 		dev_err(afe->dev, "Unable to enable regulator\n");
+ 		return ret;
+ 	}
++	ret = devm_add_action_or_reset(afe->dev, afe4403_regulator_disable, afe->regulator);
++	if (ret) {
++		dev_err(afe->dev, "Unable to add regulator disable action\n");
++		return ret;
++	}
+ 
+ 	ret = regmap_write(afe->regmap, AFE440X_CONTROL0,
+ 			   AFE440X_CONTROL0_SW_RESET);
+ 	if (ret) {
+ 		dev_err(afe->dev, "Unable to reset device\n");
+-		goto err_disable_reg;
++		return ret;
+ 	}
+ 
+ 	ret = regmap_multi_reg_write(afe->regmap, afe4403_reg_sequences,
+ 				     ARRAY_SIZE(afe4403_reg_sequences));
+ 	if (ret) {
+ 		dev_err(afe->dev, "Unable to set register defaults\n");
+-		goto err_disable_reg;
++		return ret;
+ 	}
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+@@ -523,8 +535,7 @@ static int afe4403_probe(struct spi_device *spi)
+ 						   iio_device_id(indio_dev));
+ 		if (!afe->trig) {
+ 			dev_err(afe->dev, "Unable to allocate IIO trigger\n");
+-			ret = -ENOMEM;
+-			goto err_disable_reg;
++			return -ENOMEM;
+ 		}
+ 
+ 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+@@ -532,7 +543,7 @@ static int afe4403_probe(struct spi_device *spi)
+ 		ret = iio_trigger_register(afe->trig);
+ 		if (ret) {
+ 			dev_err(afe->dev, "Unable to register IIO trigger\n");
+-			goto err_disable_reg;
++			return ret;
+ 		}
+ 
+ 		ret = devm_request_threaded_irq(afe->dev, afe->irq,
+@@ -566,8 +577,6 @@ static int afe4403_probe(struct spi_device *spi)
+ err_trig:
+ 	if (afe->irq > 0)
+ 		iio_trigger_unregister(afe->trig);
+-err_disable_reg:
+-	regulator_disable(afe->regulator);
+ 
+ 	return ret;
+ }
+@@ -584,10 +593,6 @@ static void afe4403_remove(struct spi_device *spi)
+ 
+ 	if (afe->irq > 0)
+ 		iio_trigger_unregister(afe->trig);
+-
+-	ret = regulator_disable(afe->regulator);
+-	if (ret)
+-		dev_warn(afe->dev, "Unable to disable regulator\n");
+ }
+ 
+ static const struct spi_device_id afe4403_ids[] = {
+-- 
+2.39.2
 
-Thank you again and best regards,
-Javier Carrasco
 

@@ -1,163 +1,88 @@
-Return-Path: <linux-iio+bounces-1872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BB18390E3
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 15:10:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA6283918B
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 15:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB831F2853C
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 14:10:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE09B1C27248
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 14:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6585F862;
-	Tue, 23 Jan 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09F1495CC;
+	Tue, 23 Jan 2024 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZaWtHge3"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="NaXfEi4h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604F55FDC8;
-	Tue, 23 Jan 2024 14:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18512E5F;
+	Tue, 23 Jan 2024 14:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706018987; cv=none; b=IGZQ1IV3ihIyC6m+wHFkyAvw4imSv/c8TBAtPgbzhNRG30EIJzc96lMCPQG0W/BsNHLVPZLRJm4eLFluZcIfSZ4HQqk81BPQTfgb7Fm7vhLPA/6pHNaqvK6b0tv9jI4gCuaY9etaMQc/nEHetcU0IfiomruMv0q5o8joEdQoZ38=
+	t=1706020744; cv=none; b=LBJnNMqpC6QDPC4LqJ5ToKu072jIwZZeWWLtGkVujsW1r6QdwIlRQdcfBUas6vpqQZyVbekwT8BPXYav5vwt+on99io4MPHPL6aWYG49NmngaY8+7gZyVBApckBxN7E4Cq1llCzzV1hBCp6BJJnCMnfzEvgXQQP+thxZhfy5Nzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706018987; c=relaxed/simple;
-	bh=ZVwSX8hBbcyG6jlkyackNQ9w5I8lTGDkQfMizsNkTEE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=deNv51MQKFuKL1eWzZZkmc9cyGDnREmPRLlrLsopvMtEc0bTv6seujG/xUr98NW69j/oqHOBUwIm+61GBtXI35r6mBt6trn2/gCMlcZHvF8kq6jjgZemmwFzjHZ+LMldTVNc93+quR8IZeeMlwOmr8eIVK3IJleaw3rrKOvstvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ZaWtHge3; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 40NE9KtK031523;
-	Tue, 23 Jan 2024 08:09:20 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1706018960;
-	bh=IIMacfmmzZD5CEfpZoAVBQCrv9WjJ7QV14EBtyNiVMc=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=ZaWtHge3VEVMACQrPxv4lbwYQ7DsTsfFV+CQBzp9B/qIrWVpkYA/n2yKu88VXjAX2
-	 AWAx6uvwV05DcwAOl9KGWL+UqJhiRJ4w8kckDAMtH2ULR4CltalIdp/EeYMheMtYRL
-	 a3Abage53/6CS8ZqPtoEDtENw16bl4dh7/1LqRqo=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 40NE9KV7113055
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 23 Jan 2024 08:09:20 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 23
- Jan 2024 08:09:20 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 23 Jan 2024 08:09:20 -0600
-Received: from lelvsmtp6.itg.ti.com ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 40NE9Iuu034990;
-	Tue, 23 Jan 2024 08:09:19 -0600
-From: Andrew Davis <afd@ti.com>
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Andrew Davis
-	<afd@ti.com>
-Subject: [PATCH 4/4] iio: health: afe4404: Use devm IIO helpers
-Date: Tue, 23 Jan 2024 08:09:18 -0600
-Message-ID: <20240123140918.215818-4-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240123140918.215818-1-afd@ti.com>
-References: <20240123140918.215818-1-afd@ti.com>
+	s=arc-20240116; t=1706020744; c=relaxed/simple;
+	bh=K6zg6vTCzrzTf1j6vmjQm/wVXkYSEHPStAwuKV9vcXM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ks88iDBdxACBSPUH8/7QU+g5ttXHm7UIOGM8goiZJGW4h7alwO1y+2mxDBQqpPs9W5xwcxO9XLlMK+ta/5pycQFbOk1YFWY5cPUw9+DpGhhi1KGRpgZWiH43DahgnDJP/E308nSpNxdn4NvudKZ1D2sQGfmmFFa6NDXTW1nXhrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=NaXfEi4h; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+Received: from localhost (c-98-53-138-11.hsd1.co.comcast.net [98.53.138.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id AB4C64A2;
+	Tue, 23 Jan 2024 14:39:01 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net AB4C64A2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1706020741; bh=xhekjE4E+jF0d+dUTemSZHRd8Hc34nR/x1C+V1iVp3M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NaXfEi4hV/rjpmbTbBmC38fJh7E+r4XxjxZ98rDuDSQeuFrSV1mlGN2Mo2iN3heku
+	 NKRcBXljfgBH0kPmij393qvXu6RPrRkteunV8T9bsvipFp9R1Xj0mLtVtGe9MVZjpr
+	 Lb+SQm4iyZf8MKChccqv1b60iTlSvlsn8n/Ha2SMLlp3lz5+BCvwxuifCApV9rn7cI
+	 LIZE6YEgfILwPJ5qtdAd97wNo1plwowgtB+6KnAoIyhy6HCdVl7z+gYA7yQNVRw04y
+	 kLAv3i78bRo8izxjVd314b6xbZkhOb2VPosLjYH/kC3rcEscQe7z1WVdk+4cDHt+2r
+	 IR7zCaOZSAbeg==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, jic23@kernel.org,
+ nuno.sa@analog.com, linux-iio@vger.kernel.org
+Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: Re: [PATCH 0/1] adis16475 driver documentation
+In-Reply-To: <20240123104548.136201-1-ramona.gradinariu@analog.com>
+References: <20240123104548.136201-1-ramona.gradinariu@analog.com>
+Date: Tue, 23 Jan 2024 07:39:00 -0700
+Message-ID: <87le8gm7wb.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Use a device lifecycle managed IIO helper functions. This helps prevent
-mistakes like unregistering and freeing out of order in cleanup functions
-and forgetting to unregister and free on error paths.
+Ramona Gradinariu <ramona.gradinariu@analog.com> writes:
 
-Signed-off-by: Andrew Davis <afd@ti.com>
----
- drivers/iio/health/afe4404.c | 36 +++++++-----------------------------
- 1 file changed, 7 insertions(+), 29 deletions(-)
+> Add documentation for adis16475 driver which describes
+> the driver device files and shows how the user may use the
+> ABI for various scenarios (configuration, measurement, etc.).
+>
+> Ramona Gradinariu (1):
+>   docs: iio: add documentation for adis16475 driver
+>
+>  Documentation/iio/adis16475.rst | 327 ++++++++++++++++++++++++++++++++
+>  1 file changed, 327 insertions(+)
+>  create mode 100644 Documentation/iio/adis16475.rst
 
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 75a513a92242c..7768b07ef7a6f 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -547,7 +547,7 @@ static int afe4404_probe(struct i2c_client *client)
- 
- 		iio_trigger_set_drvdata(afe->trig, indio_dev);
- 
--		ret = iio_trigger_register(afe->trig);
-+		ret = devm_iio_trigger_register(afe->dev, afe->trig);
- 		if (ret) {
- 			dev_err(afe->dev, "Unable to register IIO trigger\n");
- 			return ret;
-@@ -564,42 +564,21 @@ static int afe4404_probe(struct i2c_client *client)
- 		}
- 	}
- 
--	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
--					 afe4404_trigger_handler, NULL);
-+	ret = devm_iio_triggered_buffer_setup(afe->dev, indio_dev,
-+					      &iio_pollfunc_store_time,
-+					      afe4404_trigger_handler, NULL);
- 	if (ret) {
- 		dev_err(afe->dev, "Unable to setup buffer\n");
--		goto unregister_trigger;
-+		return ret;
- 	}
- 
--	ret = iio_device_register(indio_dev);
-+	ret = devm_iio_device_register(afe->dev, indio_dev);
- 	if (ret) {
- 		dev_err(afe->dev, "Unable to register IIO device\n");
--		goto unregister_triggered_buffer;
-+		return ret;
- 	}
- 
- 	return 0;
--
--unregister_triggered_buffer:
--	iio_triggered_buffer_cleanup(indio_dev);
--unregister_trigger:
--	if (afe->irq > 0)
--		iio_trigger_unregister(afe->trig);
--
--	return ret;
--}
--
--static void afe4404_remove(struct i2c_client *client)
--{
--	struct iio_dev *indio_dev = i2c_get_clientdata(client);
--	struct afe4404_data *afe = iio_priv(indio_dev);
--	int ret;
--
--	iio_device_unregister(indio_dev);
--
--	iio_triggered_buffer_cleanup(indio_dev);
--
--	if (afe->irq > 0)
--		iio_trigger_unregister(afe->trig);
- }
- 
- static const struct i2c_device_id afe4404_ids[] = {
-@@ -615,7 +594,6 @@ static struct i2c_driver afe4404_i2c_driver = {
- 		.pm = pm_sleep_ptr(&afe4404_pm_ops),
- 	},
- 	.probe = afe4404_probe,
--	.remove = afe4404_remove,
- 	.id_table = afe4404_ids,
- };
- module_i2c_driver(afe4404_i2c_driver);
--- 
-2.39.2
+Thanks for working to improve our documentation!
 
+You do, however, need to add this new file to the index.rst file in that
+directory or it won't be pulled into the documentation build.
+
+Thanks,
+
+jon
 

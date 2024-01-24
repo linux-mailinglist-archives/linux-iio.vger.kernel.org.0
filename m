@@ -1,126 +1,81 @@
-Return-Path: <linux-iio+bounces-1887-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1888-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A923C8394D9
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 17:37:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F43483A739
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 11:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D598288F44
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jan 2024 16:37:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182F61F241C9
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 10:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495EE7F7F0;
-	Tue, 23 Jan 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A7E19478;
+	Wed, 24 Jan 2024 10:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fw2TdTH0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDT4rjMM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D897F7E9;
-	Tue, 23 Jan 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49591AACD;
+	Wed, 24 Jan 2024 10:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706027808; cv=none; b=toT6lXGTSlEtuCa/UDQ09dR9TOAGd8ACi1meuwRotbmmOqwkcjJsdIet0f6DD5xkzPslqL0/K5AEDoTr/O3o5nOP2giGr8VVnUlIn965j86tIuC7rN+HlCcw2M74pmFVo9soY5JGYHjA6+iOC7d8XKXwiGS8Bz+PA/SidpwcWU4=
+	t=1706093561; cv=none; b=M8oll96KDSU9iC6LVMGC0I5a8F9cU6riyTkpOw6YUh23IDI3Fj/tYm4aDKoUh0JOfBVihO4EiaQweLJdiVIkY9EZ5JjvAbX+lHzhAWTNT4tmNW0oKKzFpr7XoKwHmtyGK7iCM5MEscIsJ5H3msFo2UWagMvPB1X3fbBb5zvxBes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706027808; c=relaxed/simple;
-	bh=uRS+6enMgBQXGAoRZRenW7XaHudEBWFNK50MuPjRaZE=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=XH+PvfHtYPO/86gDLLXKxeP6pwi0zj5a1CQU/vy+g0izp8WfaOSHmXyk9N5L8HTkTaPbkV4fMQNGcjn65stVLcIWMRXYKdx9oyeuX0fAj6H1MxguxFZCaxSFxelEFUQwAXdkNY31OOdKisPVog0kQD3eYsd59j7fhcJyJ5cisqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fw2TdTH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A545DC43394;
-	Tue, 23 Jan 2024 16:36:47 +0000 (UTC)
+	s=arc-20240116; t=1706093561; c=relaxed/simple;
+	bh=eR7GeRgNBr4xJVLEQ/ipltqfY9Fz19RYQrjwBuo9I9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PdlIyQfj4GiTBvrkbj+DqIRu202zJGHKajj6p1RdiSg6pDPKkKS6+22hcM7EkmH/Ycz48SsSeJMwXUBWuW3Z63nZIHz/198cjaqVsIyHEVk8xJGNA5cNCW55GLSxnQ4mhc8j6LLVg4iINOdw7cpI8hD5gO2oyFsV+bedOlycCtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDT4rjMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4C2C433F1;
+	Wed, 24 Jan 2024 10:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706027807;
-	bh=uRS+6enMgBQXGAoRZRenW7XaHudEBWFNK50MuPjRaZE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=fw2TdTH0mAW2onc6LCht6M1HQn6O29YoHhA7m8ABC0W7+qQMdx0iyy1MKmNWuMA2D
-	 vIavuNHiGiB9/UV8UrfLcjsLOYDWKqKL08kg70sWeqJOFBY79YTDz8UAF1YtGSJTLD
-	 yUJKo7rRhG6kQbpVQzFFiPklQiMwt2ugW12+ehxIpFcWFqEaNWuqbZ7F/djejjMEX0
-	 ybwFNvGh5iu0MVFLIWvZoTM/+O7AwGp3IdYvHXTSQSsoruns5s7ElNWSac3DNl++vv
-	 AcZbWXZqBh4aW2tVNTNLmV0d/6QurSOxIaXBRxcfw+a9cJzB5o3E2fcdc6gy4nbQBu
-	 NEAaQ4eXl309w==
-Date: Tue, 23 Jan 2024 10:36:46 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1706093561;
+	bh=eR7GeRgNBr4xJVLEQ/ipltqfY9Fz19RYQrjwBuo9I9w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RDT4rjMMoKbujnEhh+kdlfZa44CJStDgltV4cYZOA8AswD001L7E9wx0sqEnQTV1f
+	 asM80hgaZGNy2XyeYQ8PFFi5K8Ml897wVLpIZqqQbkpzeLYqJ0QvR7OKK/DTTVP+og
+	 tyuZH24bXME8cZvkOjTuSDgZq/WD4CE9vcCKWiMdATXgcGPqeEIGYYtYye7RwWScFW
+	 tLC2JqY+OJXqwOKp3S72k3Y+4I2FlyQrseVRd+GDtrR+Bir1flBLhzbzVv/W+sX/gv
+	 Kb9Pxi1/QnKOe8snJekNeTTuXhgJUN7YUR+45B8MftzmMNhdJKX44dhd1Am+CyvLsk
+	 4cQfvOj4MBOgg==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: jic23@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	lorenzo.bianconi@redhat.com,
+	devicetree@vger.kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org
+Subject: [PATCH 0/2] add support for ASM330LHHXG1
+Date: Wed, 24 Jan 2024 11:52:32 +0100
+Message-ID: <cover.1706093274.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org, 
- Olivier Moysan <olivier.moysan@foss.st.com>, 
- Frank Rowand <frowand.list@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
- Michael Hennerich <Michael.Hennerich@analog.com>
-In-Reply-To: <20240123-iio-backend-v7-3-1bff236b8693@analog.com>
-References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
- <20240123-iio-backend-v7-3-1bff236b8693@analog.com>
-Message-Id: <170602780540.972855.11472809528019876011.robh@kernel.org>
-Subject: Re: [PATCH v7 3/9] dt-bindings: adc: axi-adc: update bindings for
- backend framework
+Content-Transfer-Encoding: 8bit
 
+Add support for ASM330LHHXG1 IMU automotive mems sensor
+https://www.st.com/resource/en/datasheet/asm330lhhxg1.pdf
 
-On Tue, 23 Jan 2024 16:14:24 +0100, Nuno Sa wrote:
-> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-> also remove it from being required.
-> 
-> The reason why it's being deprecated is because the axi-adc CORE is now
-> an IIO service provider hardware (IIO backends) for consumers to make use
-> of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
-> of consumer referencing other nodes/devices) and that proved to be wrong
-> and to not scale.
-> 
-> Now, IIO consumers of this hardware are expected to reference it using the
-> io-backends property. Hence, the new '#io-backend-cells' is being added
-> so the device is easily identified as a provider.
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
+Lorenzo Bianconi (2):
+  iio: imu: st_lsm6dsx: add support to ASM330LHHXG1
+  dt-bindings: iio: imu: st_lsm6dsx: add asm330lhhxg1
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+ .../bindings/iio/imu/st,lsm6dsx.yaml          |  3 ++
+ drivers/iio/imu/st_lsm6dsx/Kconfig            |  4 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       | 48 ++++++++++---------
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  6 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c   |  5 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c   |  5 ++
+ 7 files changed, 46 insertions(+), 27 deletions(-)
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: [error] syntax error: could not find expected ':' (syntax)
-
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml: ignoring, error parsing file
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts'
-Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1428: dt_binding_check] Error 2
-make: *** [Makefile:240: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240123-iio-backend-v7-3-1bff236b8693@analog.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+-- 
+2.43.0
 
 

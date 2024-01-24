@@ -1,142 +1,247 @@
-Return-Path: <linux-iio+bounces-1897-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1898-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5168E83B2BC
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 21:03:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035C983B460
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 22:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850631C22F6A
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 20:03:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A471F22BA6
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 21:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6A01339AD;
-	Wed, 24 Jan 2024 20:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F539135419;
+	Wed, 24 Jan 2024 21:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIXWtyFH"
+	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="LPpd66cQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C6133985;
-	Wed, 24 Jan 2024 20:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08BD13540C
+	for <linux-iio@vger.kernel.org>; Wed, 24 Jan 2024 21:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706126562; cv=none; b=iF8NcSRmX5jYJfEKs2DSY3wb2nvf0BvuIrnHMxBn8K3c1G1gYmsKf6wwbrWx/SGKAxc1mLDlyaIDtOT8FgiUVOj6p4O59UwZdAarm+Za7iscpku3F2yhWWc3c6Ql7zwPzewIvCAKsR9cdyBiJo1NO8gxVHryMUW0IO0Qr42y1yI=
+	t=1706133593; cv=none; b=h6YNY9xc+bTo6Wfp4bD8+dgPpYaAROjh7iVJxlPsJvUgTPfgUubORF82ejeKczNbbg0Ow4yuGskQpmIdfq+Iv9gwq5efHvbkUurb5O/ocf5eo05vwaz7CE0lEDcP/M/6iIYfGqK7ALfSed4DkXV7Vc+/1t4z2bNdbelRE3P9m+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706126562; c=relaxed/simple;
-	bh=jfXWrPM5ALhDnKgFnFkdz4CMio32hmCt3xWSsf12HKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C57I24B3iGHxq4RC1uR7Z4VOqayNXANOWtpZUKYn/jWdtALZMmthT64kMeDRf+r5j8VM4gqMsyADXVZqlj+XzBYowmN0G/oEOP7N4OPbfF32hOAuymA8mvoJUEPk/uZjeb5+EVmjchaXdsDD3LOKC9Sks3n+UKF5BI9SgTDN6uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIXWtyFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9C4C433F1;
-	Wed, 24 Jan 2024 20:02:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706126562;
-	bh=jfXWrPM5ALhDnKgFnFkdz4CMio32hmCt3xWSsf12HKU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TIXWtyFH5yxUa2sKS25qW3wOvsP8Ed2klnxIK0jQEvMXqnYVHZWCU0zqLjO7+ilCR
-	 JWdnVZmbglYShezSvqIcZWDN/Vh46HywERZIGBwdalc9QELX9rTL+upLtWfATkdWgT
-	 WOJSdLKuC7J9/6NYjh+DNGAalqkPr+gBHAK+jK1uAFFeeu8RJwLSBlu58kMYFUoEl1
-	 Yp7MPDfACwXPwjaV1u4/U968HoLm30T94Tl/mdr2QRYc4fOG1E9E30BuK8sKFpJ4U8
-	 n+9CHV5JSYN6y7zhCegxJ1IM+OVstyfug/6ZJ17Jvqz0l9lgm0LjUJl94LQR9K86D2
-	 ni5ld1wGOGq1w==
-Date: Wed, 24 Jan 2024 20:02:07 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- kernel@pengutronix.de, Moritz Fischer <mdf@kernel.org>, Wu Hao
- <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>, Tom Rix
- <trix@redhat.com>, linux-fpga@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alexander Aring <alex.aring@gmail.com>,
- Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal
- <miquel.raynal@bootlin.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Dmitry
- Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org, Ulf
- Hansson <ulf.hansson@linaro.org>, Rayyan Ansari <rayyan@ansari.sh>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Martin Tuma
- <martin.tuma@digiteqautomotive.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, linux-media@vger.kernel.org, Sergey Kozlov
- <serjk@netup.ru>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Yang Yingliang <yangyingliang@huawei.com>,
- linux-mmc@vger.kernel.org, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, Heiko
- Stuebner <heiko@sntech.de>, Michal Simek <michal.simek@amd.com>, Amit Kumar
- Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
- linux-mtd@lists.infradead.org, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Pali =?UTF-8?B?Um9ow6Fy?= <pali@kernel.org>,
- Simon Horman <horms@kernel.org>, Ronald Wahl <ronald.wahl@raritan.com>,
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Guenter Roeck <groeck@chromium.org>, chrome-platform@lists.linux.dev, Max
- Filippov <jcmvbkbc@gmail.com>, linux-arm-kernel@lists.infradead.org, Bjorn
- Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- linux-arm-msm@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-mediatek@lists.infradead.org, Thomas Zimmermann
- <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, Amit
- Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, Viresh Kumar <vireshk@kernel.org>, Rui
- Miguel Silva <rmfrfs@gmail.com>, Johan Hovold <johan@kernel.org>, Alex
- Elder <elder@kernel.org>, greybus-dev@lists.linaro.org, Peter Huewe
- <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, linux-integrity@vger.kernel.org, Herve Codina
- <herve.codina@bootlin.com>, Alan Stern <stern@rowland.harvard.edu>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, linux-usb@vger.kernel.org, Helge Deller
- <deller@gmx.de>, Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>,
- libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org, Jonathan
- Corbet <corbet@lwn.net>, James Clark <james.clark@arm.com>, Bjorn Helgaas
- <bhelgaas@google.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 00/33] spi: get rid of some legacy macros
-Message-ID: <20240124200207.7e02b501@jic23-huawei>
-In-Reply-To: <20240122192343.148a0b6d@jic23-huawei>
-References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
-	<e62cdf7f-ce58-4f46-a0a0-25ce9fb271b1@sirena.org.uk>
-	<20240122192343.148a0b6d@jic23-huawei>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1706133593; c=relaxed/simple;
+	bh=s8xgUZHP3eLVBnQf9Aaqkp79I1G4orO/ySB5HyZFbGE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BpRS0HtJhid6t5TJ/ARjEs3CwXTuqrSrlp2SStDcXjqvnnM1v5PLR4Cc1HFLA8TCIrdnN0kGNxzWwuRfN5JQCLg0OvGFS9ftw3y+AI9iOOLefTTALA5suhV/nLzBhlBu2FcJ3uvVczIUg/L7xKDq4vJza17Pu9Br7LIFqqdiaS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=LPpd66cQ; arc=none smtp.client-ip=209.85.166.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7bc332d3a8cso389734839f.2
+        for <linux-iio@vger.kernel.org>; Wed, 24 Jan 2024 13:59:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1706133590; x=1706738390; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5W3Zc4lw9OY5mCDTox2UyfPkd23B5LnUVm+szTHb4aA=;
+        b=LPpd66cQiH3I/nIN9CxxN48FIgGeWvshvkltzYLz50AYb6JCL2tFS0ho7S0e276Lv2
+         /Z1nnaOzwCTHml+FhamI6qsmcg8rkSywGQ9f28dDsg6Ivg6y6AZn9wFkGFzKZOTwwg9L
+         4Z71MwsGdbjl+vcjZZXQXNEQ+qzeTnJo7VI78=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706133590; x=1706738390;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5W3Zc4lw9OY5mCDTox2UyfPkd23B5LnUVm+szTHb4aA=;
+        b=aOU7gTIyM1Y6eo/oYxZYiQhn3V7D02O+7odw27rrFEd8dhRrGAf/r+d4hkWLYWXsxD
+         2rR4WznORgFsPaLcx5ylfCQ4NXXxtygMSpYe3aT90ZMVSzIcF0AqS5J5/5whzKthitkz
+         Mry1CVTVPuwUi9GARWi7U7srquVbKbDvdyXDmtZFhAgWAsJ4wged3KtRaExbtMntdUNh
+         z8cKeoEqT+ealgmVM6QdiSeBclsBGjdYM8MQkfK+7q+Qfh+k2MTpHpNR5YJbZZFD1INv
+         lmWGVmwror4sg/fIPvH3Apo+bPwLRXNo+HAmnfUrlo4M/AaJetOljcBe3rmLKQjjYE1Q
+         HFbg==
+X-Gm-Message-State: AOJu0Yyhlvxx/f2EOx9gQ4RJNUqRolCB3Q26k/1KHaFzjlcdPHRDgkmm
+	Jev3tNe2NS2+HFBWtcqqrPgW/OKAgV2CmfTqHkFBVcbN9+E5SLCFFU7Qb3WIHw==
+X-Google-Smtp-Source: AGHT+IFoErDfBnp90Aso6XiHus3HsXdUa1t+JDihc6T5l+sSuJErscvKMaONLo9iiGOiH+hMVMxlSA==
+X-Received: by 2002:a6b:e901:0:b0:7ba:8db3:2997 with SMTP id u1-20020a6be901000000b007ba8db32997mr140857iof.6.1706133589792;
+        Wed, 24 Jan 2024 13:59:49 -0800 (PST)
+Received: from [172.22.22.28] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
+        by smtp.googlemail.com with ESMTPSA id dq16-20020a0566384d1000b0046e025d9fefsm4228174jab.48.2024.01.24.13.59.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jan 2024 13:59:49 -0800 (PST)
+Message-ID: <51d07f81-45f4-4772-915f-ed5dac602a40@ieee.org>
+Date: Wed, 24 Jan 2024 15:59:46 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] treewide, serdev: change receive_buf() return type to
+ size_t
+To: Francesco Dolcini <francesco@dolcini.it>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
+ linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+ chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-sound@vger.kernel.org
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
+ Rob Herring <robh@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240122180551.34429-1-francesco@dolcini.it>
+Content-Language: en-US
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 22 Jan 2024 19:23:43 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On 1/22/24 12:05 PM, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> receive_buf() is called from ttyport_receive_buf() that expects values
+> ">= 0" from serdev_controller_receive_buf(), change its return type from
+> ssize_t to size_t.
+> 
+> The need for this clean-up was noticed while fixing a warning, see
+> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value").
+> Changing the callback prototype to return an unsigned seems the best way
+> to document the API and ensure that is properly used.
+> 
+> GNSS drivers implementation of serdev receive_buf() callback return
+> directly the return value of gnss_insert_raw(). gnss_insert_raw()
+> returns a signed int, however this is not an issue since the value
+> returned is always positive, because of the kfifo_in() implementation.
 
-> On Mon, 22 Jan 2024 18:18:22 +0000
-> Mark Brown <broonie@kernel.org> wrote:
->=20
-> > On Mon, Jan 22, 2024 at 07:06:55PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> >  =20
-> > > Note that Jonathan Cameron has already applied patch 3 to his tree, it
-> > > didn't appear in a public tree though yet. I still included it here to
-> > > make the kernel build bots happy.   =20
-> >=20
-> > It's also going to be needed for buildability of the end of the series.=
- =20
->=20
-> Ah.  I thought intent was to split this across all the different trees
-> then do the final patch only after they were all gone?
->=20
-> I'm fine with it going all in one go if people prefer that.
->=20
-> My tree will be out in a few mins. Was just waiting to rebase on rc1
-> which I've just done.
->=20
-> Jonathan
->=20
+Agreed.
 
-Dropped from my tree.
+> gnss_insert_raw() could be changed to return also an unsigned, however
+> this is not implemented here as request by the GNSS maintainer Johan
+> Hovold.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I was going to suggest this, and suggest changing the "ret" in
+gnss_insert_raw() to return size_t.  But to really do that right
+it would include some other changes as well.  Leaving it as an
+int as Johan suggests preserves correct behavior.
+
+One minor point below, plus a couple comments affirming that
+an int return value is OK because it's always non-negative.
+
+Reviewed-by: Alex Elder <elder@linaro.org>
+
+
+> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for-iio
+> ---
+> v1:
+>   - https://lore.kernel.org/all/20231214170146.641783-1-francesco@dolcini.it/
+> v2:
+>   - rebased on 6.8-rc1
+>   - add acked-by Jonathan
+>   - do not change gnss_insert_raw()
+>   - do not change the code style of the gnss code
+>   - commit message improvements, explain the reasons for doing only minimal
+>     changes on the GNSS part
+> ---
+>   drivers/bluetooth/btmtkuart.c              |  4 ++--
+>   drivers/bluetooth/btnxpuart.c              |  4 ++--
+>   drivers/bluetooth/hci_serdev.c             |  4 ++--
+>   drivers/gnss/serial.c                      |  2 +-
+>   drivers/gnss/sirf.c                        |  2 +-
+>   drivers/greybus/gb-beagleplay.c            |  6 +++---
+>   drivers/iio/chemical/pms7003.c             |  4 ++--
+>   drivers/iio/chemical/scd30_serial.c        |  4 ++--
+>   drivers/iio/chemical/sps30_serial.c        |  4 ++--
+>   drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
+>   drivers/mfd/rave-sp.c                      |  4 ++--
+>   drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
+>   drivers/nfc/pn533/uart.c                   |  4 ++--
+>   drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
+>   drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
+>   drivers/platform/surface/aggregator/core.c |  4 ++--
+>   drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
+>   include/linux/serdev.h                     |  8 ++++----
+>   sound/drivers/serial-generic.c             |  4 ++--
+>   19 files changed, 40 insertions(+), 42 deletions(-)
+> 
+
+. . .
+
+> diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
+> index 6ff84b2600c5..62a6613fb070 100644
+> --- a/drivers/mfd/rave-sp.c
+> +++ b/drivers/mfd/rave-sp.c
+> @@ -471,8 +471,8 @@ static void rave_sp_receive_frame(struct rave_sp *sp,
+>   		rave_sp_receive_reply(sp, data, length);
+>   }
+>   
+> -static ssize_t rave_sp_receive_buf(struct serdev_device *serdev,
+> -				   const u8 *buf, size_t size)
+> +static size_t rave_sp_receive_buf(struct serdev_device *serdev,
+> +				  const u8 *buf, size_t size)
+>   {
+>   	struct device *dev = &serdev->dev;
+>   	struct rave_sp *sp = dev_get_drvdata(dev);
+
+One return path in this function returns (src - buf), which is
+*almost* guaranteed to be positive.  The one case it wouldn't
+be is if the assignment of end wraps around, and that's not
+checked.
+
+I think it's fine, but... That seems theoretically possible.
+
+
+> diff --git a/drivers/net/ethernet/qualcomm/qca_uart.c b/drivers/net/ethernet/qualcomm/qca_uart.c
+> index 223321897b96..20f50bde82ac 100644
+
+. . .
+
+> diff --git a/drivers/platform/surface/aggregator/core.c b/drivers/platform/surface/aggregator/core.c
+> index 9591a28bc38a..ba550eaa06fc 100644
+> --- a/drivers/platform/surface/aggregator/core.c
+> +++ b/drivers/platform/surface/aggregator/core.c
+> @@ -227,8 +227,8 @@ EXPORT_SYMBOL_GPL(ssam_client_bind);
+>   
+>   /* -- Glue layer (serdev_device -> ssam_controller). ------------------------ */
+>   
+> -static ssize_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
+> -				size_t n)
+> +static size_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
+> +			       size_t n)
+>   {
+>   	struct ssam_controller *ctrl;
+>   	int ret;
+
+Here you the return value will be positive despite ret being
+a signed int.  So like the GNSS case, this is OK.
+
+> diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/serdev-ttyport.c
+> index e94e090cf0a1..3d7ae7fa5018 100644
+
+. . .
+
+> diff --git a/sound/drivers/serial-generic.c b/sound/drivers/serial-generic.c
+> index d6e5aafd697c..36409a56c675 100644
+> --- a/sound/drivers/serial-generic.c
+> +++ b/sound/drivers/serial-generic.c
+> @@ -100,8 +100,8 @@ static void snd_serial_generic_write_wakeup(struct serdev_device *serdev)
+>   	snd_serial_generic_tx_wakeup(drvdata);
+>   }
+>   
+> -static ssize_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
+> -					      const u8 *buf, size_t count)
+> +static size_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
+> +					     const u8 *buf, size_t count)
+>   {
+>   	int ret;
+>   	struct snd_serial_generic *drvdata = serdev_device_get_drvdata(serdev);
+
+Same thing here.
+
 

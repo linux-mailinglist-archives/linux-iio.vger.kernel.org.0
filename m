@@ -1,145 +1,149 @@
-Return-Path: <linux-iio+bounces-1894-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1895-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9CF83B049
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 18:45:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9849283B0ED
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 19:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13140B24429
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 17:32:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9E81C22F3C
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 18:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F6486AF1;
-	Wed, 24 Jan 2024 17:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFE212AADF;
+	Wed, 24 Jan 2024 18:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE8sMbvf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Br4mhTz3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5815D85C4B;
-	Wed, 24 Jan 2024 17:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C90F12A17A;
+	Wed, 24 Jan 2024 18:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706117458; cv=none; b=g2/Ec2tTrSNkWygH4MD5gwSuXvxi8bYscPTf/MEyb28zsErLI9B1qo0PowMVkwT31ZqfKBmKc3VRKbHn+QacGy17ZPUGbRZnQ6895AGCKhFkt6ii5cf1/9l51ntLlSAa3tqmLHRNutqqEcDHekTAmYK0nwDhodWGx5zciI0cDo4=
+	t=1706120420; cv=none; b=VDNsY7bzxSVBAjWZBbSI5fsSYXpsK9hUXk9X1caL0LwnGjLPHeV1c8S6d1HaumkF5TqIcMcPFoCj4hK8htQqvx8I1OnTub9DdUHfI8DvdNmV7KgIT9bAg5X+aeYBOpbWlwlKu72EX9VU5Ok7gDWslrQSVfD/3/vr64ckLkCVQsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706117458; c=relaxed/simple;
-	bh=NNDXRpvhIGTKBi9slZ/qWQEGn6Uj559Gpw2fxZO2A8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hpfhlR1qRxJB6kQ6fi3d6bQPohqrtiyF+cthEde/2U6mwHfmF+UwlDPj5SDfp6wV1EBVPK68UdS82RPYJYgsQP+NVrCfH4ajbPUVcbWEbYY3n/+ggoD5MZ+a2OHAqe4PImU+ytiICGPyuQ9etNR823YUOYVvL0WqQRyyUHdYHr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE8sMbvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2D0C433C7;
-	Wed, 24 Jan 2024 17:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706117457;
-	bh=NNDXRpvhIGTKBi9slZ/qWQEGn6Uj559Gpw2fxZO2A8A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TE8sMbvfIUEPS7l+FWWrLd9ucrffQrWpUeULzzDGbHOZntLPKHC9u7ekCFztLhU3U
-	 g9c/BN8CkGH0i32zPynRDSS6j46gbVDA6ioIe6yR345V3vEOlOOOrQK63M5gAF7wrU
-	 bDTC1oJaRecQ9F29HgZfYDFNvnxiLNzNXD19CPf8=
-Date: Wed, 24 Jan 2024 09:30:56 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	kernel@pengutronix.de, Moritz Fischer <mdf@kernel.org>,
-	Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, linux-fpga@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-input@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-	Rayyan Ansari <rayyan@ansari.sh>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Martin Tuma <martin.tuma@digiteqautomotive.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-media@vger.kernel.org, Sergey Kozlov <serjk@netup.ru>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	linux-mmc@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Amit Kumar Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
-	linux-mtd@lists.infradead.org,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	chrome-platform@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-mediatek@lists.infradead.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev, Viresh Kumar <vireshk@kernel.org>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-	greybus-dev@lists.linaro.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-integrity@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-usb@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>,
-	libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>, James Clark <james.clark@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 00/33] spi: get rid of some legacy macros
-Message-ID: <2024012439-machinist-amazingly-2d2c@gregkh>
-References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
- <2024012417-prissy-sworn-bc55@gregkh>
- <c1e38a30-5075-4d01-af24-ac684e77cf29@sirena.org.uk>
+	s=arc-20240116; t=1706120420; c=relaxed/simple;
+	bh=8i7hW/P7gRwZbg6eJhfWSHuYfwNb6fjxwXNOYa+zX2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uvbt8VOh2YMlU93dpHyDsHorJaND6nVPN7sVdVFF3QEvBGjfZGzNqa1wxVlHadVwURmoPNKBcShewV8t81J/hoIrTm8i8lJvdfAk+fT4KYT12tQJ9pnSdfVwNQRHzJKsS4jvGuFPpx73QsrlJ7bGCe3BAYmH/Us5Ew7xt8mEGlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Br4mhTz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D4C41679;
+	Wed, 24 Jan 2024 18:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706120419;
+	bh=8i7hW/P7gRwZbg6eJhfWSHuYfwNb6fjxwXNOYa+zX2M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Br4mhTz3ABsovsBh891iFtITCloETm7Xd3auyJ06H5OtOXYpmgIubWlxfBF2VAGmf
+	 OlGgldHJriEwX+TyBKeNai970ecogEG/P+gUzZX4GkxGns9Tk6eEXHb1JVxvu6/qbt
+	 skPzgvzkoqvZSI3fIk0qzZS1oVVsfORv8XNRdsm4o8jNjgkmRgXjCqeQuzGAQ/loQ0
+	 MNqC/og/U/JCX02ROA4VSt/31hoJJKyDJYB6eTiM5FtscPo50IXJxuwfPJcISYJ5Bo
+	 JVUzkTQyQJDT/DwPnh/6uJPHvZSstEkjmSaAd1oD/2eYSXBm+WQRf3GOuraJ/L6/c7
+	 dAa8p4/Z1vrVg==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2cf13c259f3so21609701fa.2;
+        Wed, 24 Jan 2024 10:20:19 -0800 (PST)
+X-Gm-Message-State: AOJu0Yxwpt606+LtDw54OIps+yrDeL+Duhbv0ZdkYRSgbE0kDoNurYaM
+	RRQVhBsZoRJHRy0yuNNyA0kCkqO7uUtAj6p6eoLQ0vZJz/tZFlQy1Y8PJsSjALFq6Y2v+oAYjAT
+	NdqZa/snRZCRp+bmrDS40Zs1R2g==
+X-Google-Smtp-Source: AGHT+IFQ7o9sj+x/bj/29pY9Rds1Cng62HUIvJOWJ1X7OlDRC8xWzyyEJAbOfVXOJaSePIJD48bw3TcKGaUGSzwtDq4=
+X-Received: by 2002:a05:6512:1295:b0:50e:ca83:887e with SMTP id
+ u21-20020a056512129500b0050eca83887emr2710515lfs.34.1706120417667; Wed, 24
+ Jan 2024 10:20:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1e38a30-5075-4d01-af24-ac684e77cf29@sirena.org.uk>
+References: <20240122180551.34429-1-francesco@dolcini.it>
+In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 24 Jan 2024 12:20:05 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKHjj5SfPTxhXUtmNh1nr1-eNKnL-Mmv-XdyONxgn9UVw@mail.gmail.com>
+Message-ID: <CAL_JsqKHjj5SfPTxhXUtmNh1nr1-eNKnL-Mmv-XdyONxgn9UVw@mail.gmail.com>
+Subject: Re: [PATCH v2] treewide, serdev: change receive_buf() return type to size_t
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	linux-bluetooth@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	greybus-dev@lists.linaro.org, linux-iio@vger.kernel.org, 
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, 
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org, 
+	linux-sound@vger.kernel.org, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+	Hans de Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 05:22:00PM +0000, Mark Brown wrote:
-> On Wed, Jan 24, 2024 at 09:13:49AM -0800, Greg Kroah-Hartman wrote:
-> > On Mon, Jan 22, 2024 at 07:06:55PM +0100, Uwe Kleine-König wrote:
-> 
-> > > Note that Jonathan Cameron has already applied patch 3 to his tree, it
-> > > didn't appear in a public tree though yet. I still included it here to
-> > > make the kernel build bots happy.
-> 
-> > Are we supposed to take the individual changes in our different
-> > subsystem trees, or do you want them all to go through the spi tree?
-> 
-> Given that the final patch removes the legacy interfaces I'm expecting
-> to take them via SPI.
+On Mon, Jan 22, 2024 at 12:06=E2=80=AFPM Francesco Dolcini <francesco@dolci=
+ni.it> wrote:
+>
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>
+> receive_buf() is called from ttyport_receive_buf() that expects values
+> ">=3D 0" from serdev_controller_receive_buf(), change its return type fro=
+m
+> ssize_t to size_t.
+>
+> The need for this clean-up was noticed while fixing a warning, see
+> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value")=
+.
+> Changing the callback prototype to return an unsigned seems the best way
+> to document the API and ensure that is properly used.
+>
+> GNSS drivers implementation of serdev receive_buf() callback return
+> directly the return value of gnss_insert_raw(). gnss_insert_raw()
+> returns a signed int, however this is not an issue since the value
+> returned is always positive, because of the kfifo_in() implementation.
+> gnss_insert_raw() could be changed to return also an unsigned, however
+> this is not implemented here as request by the GNSS maintainer Johan
+> Hovold.
+>
+> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@ke=
+rnel.org/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for-iio
+> ---
+> v1:
+>  - https://lore.kernel.org/all/20231214170146.641783-1-francesco@dolcini.=
+it/
+> v2:
+>  - rebased on 6.8-rc1
+>  - add acked-by Jonathan
+>  - do not change gnss_insert_raw()
+>  - do not change the code style of the gnss code
+>  - commit message improvements, explain the reasons for doing only minima=
+l
+>    changes on the GNSS part
+> ---
+>  drivers/bluetooth/btmtkuart.c              |  4 ++--
+>  drivers/bluetooth/btnxpuart.c              |  4 ++--
+>  drivers/bluetooth/hci_serdev.c             |  4 ++--
+>  drivers/gnss/serial.c                      |  2 +-
+>  drivers/gnss/sirf.c                        |  2 +-
+>  drivers/greybus/gb-beagleplay.c            |  6 +++---
+>  drivers/iio/chemical/pms7003.c             |  4 ++--
+>  drivers/iio/chemical/scd30_serial.c        |  4 ++--
+>  drivers/iio/chemical/sps30_serial.c        |  4 ++--
+>  drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
+>  drivers/mfd/rave-sp.c                      |  4 ++--
+>  drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
+>  drivers/nfc/pn533/uart.c                   |  4 ++--
+>  drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
+>  drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
+>  drivers/platform/surface/aggregator/core.c |  4 ++--
+>  drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
+>  include/linux/serdev.h                     |  8 ++++----
+>  sound/drivers/serial-generic.c             |  4 ++--
+>  19 files changed, 40 insertions(+), 42 deletions(-)
 
-Great, thanks, I'll go ack the subsystem patches that are relevent for
-me.
-
-greg k-h
+Reviewed-by: Rob Herring <robh@kernel.org>
 

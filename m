@@ -1,190 +1,178 @@
-Return-Path: <linux-iio+bounces-1912-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1913-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F3383C4A8
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 15:27:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B532983C6A6
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 16:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A1228C8C7
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 14:27:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6361B24A52
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 15:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805E9633EC;
-	Thu, 25 Jan 2024 14:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05A574E1E;
+	Thu, 25 Jan 2024 15:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7L0bqtm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GF9Nlara"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D20763500;
-	Thu, 25 Jan 2024 14:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F395174E0B;
+	Thu, 25 Jan 2024 15:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706192812; cv=none; b=SUo0qWXK/h1BcR0KCN5Nnk8HyH+Mmy4S1wfMAEAYcwcOrQkuv4pAAwLiVIULawSB5S+kNlqjouVZzmxQeXB9K2agVpJjf3YQOxOa+mzX+QH63Eqx+sex84SWvM/ZXVGfjqDTxO0LoJSftC3GEMgwfV2ZtRe4LDQgOCks0Vzdjy8=
+	t=1706196691; cv=none; b=ZIF5PXy4HDJrPu1tsA1SzXpm/IzJD3ECdtxUGCH1yfBNNy5JxrsE8IRjbRwnLQQ6jkxIbnlR8P6Slw5FJjiPs9qkxp0thfVaYaRKT2v4c3KTVinmmG6ZuBbly3ZovYYHtHPRVXiWotrHYHqgmV9atLQg5fmyJ2BIjNMvewrtuq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706192812; c=relaxed/simple;
-	bh=RWLKO/AtH0Uj+yL0MoMxKrixm64mWC7/e4QlFC0ewLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Vz0IgPqhlqfkV7eWmdQ7dr61hcpF3/9f+jj+fUMCZH6D8UTDexqUaLenGFSrwfpTrRNMAiiumMcqhWV87dZ+/WfeW0b/IYBiHQ06zlGB/ZxXVM6rBSXQx5geA5Q0eJC3pc+Moiuc0bHUzttlpTSt2tHbUzu+9irhFyxH6dwFB7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C7L0bqtm; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1706196691; c=relaxed/simple;
+	bh=zNfziP2hTMcLh6aM+pHvlEvv55LKnzBUgDLOFVAlOU8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TkrJC3EaY34vsGeGjsWVhWD7TjChSW2TUQ4jrJk6EwTxPu1Fce7Cr0EjRtBXl2qn80z/KOXHqE4+i1QmAv+XRfgO2Aa+T15h6AQzfESztP0nWAbX6WXT5kDcWPKywuTcPO/QIuNeIkVBRQKd9gv5PqOSuYNFdHueWsaYyncRQVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GF9Nlara; arc=none smtp.client-ip=209.85.166.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5102188d2aeso299658e87.2;
-        Thu, 25 Jan 2024 06:26:50 -0800 (PST)
+Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-7bc332d49f6so298732939f.1;
+        Thu, 25 Jan 2024 07:31:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706192808; x=1706797608; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7uD8uO6W0P3VobMqY6RhL29xNcpRHCUEHzBOg3bakiE=;
-        b=C7L0bqtmV3d+mhWj7mIFM5sgLs7tG8VOvbFyZJRmxV1e6hPSMQrufn8UdMJ4Wta2+v
-         8wJj+M9xayTOPPJU9rXKeZQuoJKpX1EQvrYWdHtavpRsrDUKdYgq9uhgctqPHjed3eE9
-         11a9TtH/frOOasN2ZLZ1+mWrmUyUT7I1p32clSdgdpv+lPGSDA9F8m/dAV/XUP8+pSV4
-         o3e1avGPSqmbEBGYBFlsnHdcob8OMxef86Fnek/DrZbXI/wdhHCnPur4vQXTrX9S8wzi
-         USN2xIZ8nXW0LNg6oM79T9jk2QdHAnDTT6l5NoH3AaN5p5VnNCjh9WdKJetpLD/inaZ1
-         uuNg==
+        d=gmail.com; s=20230601; t=1706196689; x=1706801489; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zNfziP2hTMcLh6aM+pHvlEvv55LKnzBUgDLOFVAlOU8=;
+        b=GF9NlaraAdXvAZ9JZ9M7Zx8xN0V+4kOdJmSCqQ3GBB03d3vlim4Dyme/q2uQ8yUM8M
+         k+cpOYvSg0TXsOuQij8/+2RFqqf3oY9Hg6qV6C7cLm60suDUyzUmqlCG8F7savB6sxLY
+         RUz2s4e4THrNpQSmLhDRv/R3zheXdW1iPIRyRu/ZdgFgLMCmGjd6kjAnQqWYva/ZRndg
+         WgdJE8/ATP4JXfyELcxabyASlEN09ZtY45gsyLskMIXpiLmpWGs0HrufKrxXgVbQEp4B
+         NgREzOlqEnDDlh/wKFGAnatUngTlT9ADM6cAgmZJrZwLg3JJ8B65sjropzN4U1jwou5q
+         eTQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706192808; x=1706797608;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7uD8uO6W0P3VobMqY6RhL29xNcpRHCUEHzBOg3bakiE=;
-        b=r2zPA2KNSaT59VcBIEL/ArFNm/+2xVS4QkdgLTMVcKD0RTul4KTDQOWfiHS/QoMuOp
-         1QF+WBLIWkM+UX9qmbKdlpzQ3ZAoGScIfpychklaZMZzrpDVqBXAar4Phubx8P3OxhzS
-         O1cvHBeMZChGexEk7zqCIRgPM7TMyX5TSkXpmYMXWfduYgYnK+e1C5h1Fvj/iF0KDfzl
-         aCF6sIbilbd4IiWOeMnQVH4GSe9Wx02r4IJenkcJtmNwIo0ELhFXff7aN+dff0TvR59O
-         Xxz/I/7wOa9m2LBjbbKvopyfsElXQwxb63727plF6KXMaHlc0X1e3C8CatDNKho49F9G
-         J0Cg==
-X-Gm-Message-State: AOJu0YzPId2B3TBGvYEpcFNV4pCw4U6TT38PDsWB0fIUAZnw+yKnLbrA
-	++BNOLwMmohOiAv7bJfM/O7ZaDebD61C45C4OvciBVf9d0h0FUsw
-X-Google-Smtp-Source: AGHT+IE70Kr7/28FNumUfqlwgzeLAEsaLtkhNZnxzEEvvYgApYoQ87mL33iHl2Ao38fAlDjKtBXN3A==
-X-Received: by 2002:ac2:5202:0:b0:50e:7555:1eb2 with SMTP id a2-20020ac25202000000b0050e75551eb2mr572160lfl.74.1706192808293;
-        Thu, 25 Jan 2024 06:26:48 -0800 (PST)
-Received: from drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi (drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:7426:df00::3])
-        by smtp.gmail.com with ESMTPSA id o1-20020ac24c41000000b0050ea7b615c3sm2871101lfk.230.2024.01.25.06.26.47
+        d=1e100.net; s=20230601; t=1706196689; x=1706801489;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zNfziP2hTMcLh6aM+pHvlEvv55LKnzBUgDLOFVAlOU8=;
+        b=ALMHKhQ2K+MU3GJx5CXEBrkOYkB5IaK7OvXDNYuhfx2SSiEMTpWHAOPqZg3l+tyuuC
+         aVb3gHqE5aIYXg4APnrFIalL0Hgy6PvhdGU1ViS0EFSIiO2ArJbrLVPrcvhMRjpRcoam
+         GjJDz8OLcnPToGfL5Ee/oSPclPgDeWVcLGzkMOO9s1t7dz7xaXTfYDprGfxfBVBwLn01
+         Vvx6SANuJGF4O0dl39trHS7w0lFHDU/J2tXOAVFXz4n8oV1lMoo1QtL2vWj1AahZshub
+         AZAipbY4ZdoPKsqqRzyLwXsJEJdlTWfTUn9Ihek9Kfx3tBg6AWNfpKSQqAaT5yEO9bXG
+         ZDyw==
+X-Gm-Message-State: AOJu0YxO7QaKFXYVaRCCVV03WoKUI78AnIeiCbWaDh8dOXnKtyJv1EFd
+	vLlhBgwXxNUYom7oASu7WUeBeU9Uqja0IwXFGB8EDefDIWpG4Lpa
+X-Google-Smtp-Source: AGHT+IFaMMCAySJNmc4SIUNhsQpytb5lAB5OFNA4trGP8SanswulaffQ4p8FI1RTJZMS9bbnd3UQEA==
+X-Received: by 2002:a6b:7d48:0:b0:7bf:8e8d:3412 with SMTP id d8-20020a6b7d48000000b007bf8e8d3412mr1612613ioq.20.1706196689021;
+        Thu, 25 Jan 2024 07:31:29 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id i9-20020a05663813c900b0046e760beffesm4675075jaj.19.2024.01.25.07.31.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 06:26:47 -0800 (PST)
-Date: Thu, 25 Jan 2024 16:26:40 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	David Laight <David.Laight@aculab.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: gts-helper: Fix division loop
-Message-ID: <ZbJvoM3NJd_Uh_s6@drtxq0yyyyyyyyyyyyybt-3.rev.dnainternet.fi>
+        Thu, 25 Jan 2024 07:31:28 -0800 (PST)
+Message-ID: <ef59aaa2a251e92d463d8983ab6eec459298c102.camel@gmail.com>
+Subject: Re: [PATCH v7 4/9] driver: core: allow modifying device_links flags
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Saravana Kannan <saravanak@google.com>, nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>,  Jonathan Cameron <jic23@kernel.org>, Rob
+ Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>
+Date: Thu, 25 Jan 2024 16:34:41 +0100
+In-Reply-To: <8eae083af481441d83df02a1880e2aedf99efdfb.camel@gmail.com>
+References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
+	 <20240123-iio-backend-v7-4-1bff236b8693@analog.com>
+	 <CAGETcx8_0ExTG4ASb9xK-uwmubMFDx44_wUf1h3VsO8w9jJApQ@mail.gmail.com>
+	 <8eae083af481441d83df02a1880e2aedf99efdfb.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="58OujoI1kgFawucR"
-Content-Disposition: inline
 
+On Thu, 2024-01-25 at 09:14 +0100, Nuno S=C3=A1 wrote:
+>=20
+> Hi Saravana,
+>=20
+> Thanks for your feedback,
+>=20
+> On Wed, 2024-01-24 at 19:21 -0800, Saravana Kannan wrote:
+> > On Tue, Jan 23, 2024 at 7:14=E2=80=AFAM Nuno Sa via B4 Relay
+> > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> > >=20
+> > > From: Nuno Sa <nuno.sa@analog.com>
+> > >=20
+> > > If a device_link is previously created (eg: via
+> > > fw_devlink_create_devlink()) before the supplier + consumer are both
+> > > present and bound to their respective drivers, there's no way to set
+> > > DL_FLAG_AUTOREMOVE_CONSUMER anymore while one can still set
+> > > DL_FLAG_AUTOREMOVE_SUPPLIER. Hence, rework the flags checks to allow
+> > > for DL_FLAG_AUTOREMOVE_CONSUMER in the same way
+> > > DL_FLAG_AUTOREMOVE_SUPPLIER is done.
+> >=20
+> > Curious, why do you want to set DL_FLAG_AUTOREMOVE_CONSUMER?
+> > Especially if fw_devlink already created the link? You are effectively
+> > trying to delete the link fw_devlink created if any of your devices
+> > unbind.
+> >=20
+>=20
+> Well, this is still useful in the modules case as the link will be relaxe=
+d
+> after
+> all devices are initialized and that will already clear AUTOPROBE_CONSUME=
+R
+> AFAIU. But, more importantly, if I'm not missing anything, in [1], fw_dev=
+links
+> will be dropped after the consumer + supplier are bound which means I
+> definitely
+> want to create a link between my consumer and supplier.=C2=A0
+>=20
 
---58OujoI1kgFawucR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ok, so to add a bit more on this, there are two cases:
 
-The loop based 64bit division may run for a long time when dividend is a
-lot bigger than the divider. Replace the division loop by the
-div64_u64() which implementation may be significantly faster.
+1) Both sup and con are modules and after boot up, the link is relaxed and =
+thus
+turned into a sync_state_only link. That means the link will be deleted any=
+ways
+and AUTOPROBE_CONSUMER is already cleared by the time we try to change the =
+link.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+2) The built-in case where the link is kept as created by fw_devlink and th=
+is
+patch effectively clears AUTOPROBE_CONSUMER.
 
----
-This change was earlier applied and reverted as it confusingly lacked of
-the removal of the overflow check (which is only needed when we do
-looping "while (full > scale * (u64)tmp)". As this loop got removed, the
-check got also obsolete and leaving it to the code caused some
-confusion.
+Given the above, not sure what's the best option. I can think of 4:
 
-So, I marked this as a v2, where v1 is the reverted change discussed
-here:
-https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.=
-rev.dnainternet.fi/
+1) Drop this patch and leave things as they are. DL_FLAG_AUTOREMOVE_CONSUME=
+R is
+pretty much ignored in my call but it will turn the link in a MANAGED one a=
+nd
+clear SYNC_STATE_ONLY. I could very well just pass 0 in the flags as
+DL_FLAG_AUTOREMOVE_CONSUMER is always ignored;
 
-Revision history:
-v1 =3D> v2:
- - Drop the obsolete overflow check
- - Rebased on top of the v6.8-rc1
+2) Rework this patch so we can still change an existing link to accept
+DL_FLAG_AUTOREMOVE_CONSUMER (in the modules case for example).
 
-iio: gts: loop fix fix
----
- drivers/iio/industrialio-gts-helper.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+However, instead of clearing AUTOPROBE_CONSUMER, I would add some checks so=
+ if
+flags have one of DL_FLAG_AUTOREMOVE_SUPPLIER or DL_FLAG_AUTOREMOVE_CONSUME=
+R and
+AUTOPROBE_CONSUMER is already set, we ignore them. In fact, right now, I th=
+ink
+one could pass DL_FLAG_AUTOREMOVE_SUPPLIER and link->flags ends ups with
+AUTOREMOVE_SUPPLIER | AUTOPROBE_CONSUMER which in theory is not allowed...
 
-diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
-io-gts-helper.c
-index 7653261d2dc2..b51eb6cb766f 100644
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -34,24 +34,11 @@
- static int iio_gts_get_gain(const u64 max, const u64 scale)
- {
- 	u64 full =3D max;
--	int tmp =3D 1;
-=20
- 	if (scale > full || !scale)
- 		return -EINVAL;
-=20
--	if (U64_MAX - full < scale) {
--		/* Risk of overflow */
--		if (full - scale < scale)
--			return 1;
--
--		full -=3D scale;
--		tmp++;
--	}
--
--	while (full > scale * (u64)tmp)
--		tmp++;
--
--	return tmp;
-+	return div64_u64(full, scale);
- }
-=20
- /**
+3) Keep it as-is... This one is likely a NACK as I'm getting the feeling th=
+at
+clearing stuff that might have been created by fw_devlinks is probably a no=
+-go.
 
-base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
---=20
-2.43.0
+Let me know your thoughts...
 
+- Nuno S=C3=A1
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---58OujoI1kgFawucR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmWyb5sACgkQeFA3/03a
-ocVdBQf6AmGWHNraNeG7q7msDYkGPGvzuKfJ0PUE8JDxvkfGj+7kjCBWLxTGZ0xP
-RuRiI6Rdus7H6qfmwOLVmzW+jGuWoTtpHU7xi4fkESyEwwUZVAzM/3p0EurevOIM
-wgbHQIZLkvtQY8uYNXy5bb7QZV2MYFwFUssdHSM+iYM7kWLt8e7xR4X3ZIoQy8cn
-8sTzxzz3cQG2ATlUJbFPL15Wsemt51p7C4To0x5UVRtsGNQk/av9jiKy8Rgad0Mf
-5yaPvw1UgcADcsA5XuQRu5nX77NZlMPIzySlQ4p62Jvstwu64qpylKzKo25eMGp6
-03tEDDohL190qLsnw0KM5q540VYLEA==
-=0E+9
------END PGP SIGNATURE-----
-
---58OujoI1kgFawucR--
 

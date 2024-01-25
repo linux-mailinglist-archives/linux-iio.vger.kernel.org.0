@@ -1,247 +1,129 @@
-Return-Path: <linux-iio+bounces-1898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035C983B460
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 22:59:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833C383B7B1
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 04:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A471F22BA6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jan 2024 21:59:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 247A61F25A0D
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 03:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F539135419;
-	Wed, 24 Jan 2024 21:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3659D1FB2;
+	Thu, 25 Jan 2024 03:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="LPpd66cQ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IewNUTOD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08BD13540C
-	for <linux-iio@vger.kernel.org>; Wed, 24 Jan 2024 21:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF356FB5
+	for <linux-iio@vger.kernel.org>; Thu, 25 Jan 2024 03:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706133593; cv=none; b=h6YNY9xc+bTo6Wfp4bD8+dgPpYaAROjh7iVJxlPsJvUgTPfgUubORF82ejeKczNbbg0Ow4yuGskQpmIdfq+Iv9gwq5efHvbkUurb5O/ocf5eo05vwaz7CE0lEDcP/M/6iIYfGqK7ALfSed4DkXV7Vc+/1t4z2bNdbelRE3P9m+o=
+	t=1706152526; cv=none; b=T6DutRE7RUkgmjDaFyYquDWjemGgW6LroXmyDdn1xszoiFqoA6xlNt7DOeV2kjohRf44T3/8KO16vI/MY/hqreChsXnTFaovgqL6kPWFQLL/hHBIQpoxu7mgWGhmErs87Wh1qgPQiX+mPwv05UlzUOpEtBCY36ChROIKA2TXDHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706133593; c=relaxed/simple;
-	bh=s8xgUZHP3eLVBnQf9Aaqkp79I1G4orO/ySB5HyZFbGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BpRS0HtJhid6t5TJ/ARjEs3CwXTuqrSrlp2SStDcXjqvnnM1v5PLR4Cc1HFLA8TCIrdnN0kGNxzWwuRfN5JQCLg0OvGFS9ftw3y+AI9iOOLefTTALA5suhV/nLzBhlBu2FcJ3uvVczIUg/L7xKDq4vJza17Pu9Br7LIFqqdiaS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=LPpd66cQ; arc=none smtp.client-ip=209.85.166.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7bc332d3a8cso389734839f.2
-        for <linux-iio@vger.kernel.org>; Wed, 24 Jan 2024 13:59:50 -0800 (PST)
+	s=arc-20240116; t=1706152526; c=relaxed/simple;
+	bh=CcLkLx7G606+mDmOuaZgobkEho3excv2jQhcaSBD6hM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OGj1KqfggRxAm0x6dUJN4TI7rK9soXiqtJatqW0rjz/KXLE7Zy6acmSeL9QwNhqYsMYWTZ0rhGsFKL+lcUSN2rmTz+unnQ1/3iLWLZ/06BZAFH1/hcThy+jsQPJR2Athw95ckLVI8J9VfaF07N2hPSnR/Oz6s+HMLwVpH4/OxFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IewNUTOD; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4298fa85baeso93121cf.1
+        for <linux-iio@vger.kernel.org>; Wed, 24 Jan 2024 19:15:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1706133590; x=1706738390; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5W3Zc4lw9OY5mCDTox2UyfPkd23B5LnUVm+szTHb4aA=;
-        b=LPpd66cQiH3I/nIN9CxxN48FIgGeWvshvkltzYLz50AYb6JCL2tFS0ho7S0e276Lv2
-         /Z1nnaOzwCTHml+FhamI6qsmcg8rkSywGQ9f28dDsg6Ivg6y6AZn9wFkGFzKZOTwwg9L
-         4Z71MwsGdbjl+vcjZZXQXNEQ+qzeTnJo7VI78=
+        d=google.com; s=20230601; t=1706152514; x=1706757314; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tirya9LR7PB46GxyzStnmaXKMwHffwTodjJrtEce0QQ=;
+        b=IewNUTODtq+M0kfPFKpmGQ0sb4ODPXKgHl7VsfThliqBbUxwHzGIyysZYHnhJbiVHe
+         VRkd+x+MqsMpNDbN6j5yqrCy+Nr6UsiTBqwEvu+D1w/kDFiPzb64kgNJ9u6uzP1pEOFa
+         Lx7hLNywK/LHQ+QRslW3xNfQHJgOzneigsVjRRmDoQpG2Z5I7UwGEMXyw2SRezd+/auk
+         DiJW9Iem74tMa/QTHFri/knyOuvzraa+w0dy7dbOU03+GDDuqeVfoqT6/CVi5xuItegD
+         e3nbAYlJu4H2PDUnorx+genmKSFeLdGq9M9mz0ZYEUzJFo7mvz4dDOuWJLac5ITiiyMQ
+         fl+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706133590; x=1706738390;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5W3Zc4lw9OY5mCDTox2UyfPkd23B5LnUVm+szTHb4aA=;
-        b=aOU7gTIyM1Y6eo/oYxZYiQhn3V7D02O+7odw27rrFEd8dhRrGAf/r+d4hkWLYWXsxD
-         2rR4WznORgFsPaLcx5ylfCQ4NXXxtygMSpYe3aT90ZMVSzIcF0AqS5J5/5whzKthitkz
-         Mry1CVTVPuwUi9GARWi7U7srquVbKbDvdyXDmtZFhAgWAsJ4wged3KtRaExbtMntdUNh
-         z8cKeoEqT+ealgmVM6QdiSeBclsBGjdYM8MQkfK+7q+Qfh+k2MTpHpNR5YJbZZFD1INv
-         lmWGVmwror4sg/fIPvH3Apo+bPwLRXNo+HAmnfUrlo4M/AaJetOljcBe3rmLKQjjYE1Q
-         HFbg==
-X-Gm-Message-State: AOJu0Yyhlvxx/f2EOx9gQ4RJNUqRolCB3Q26k/1KHaFzjlcdPHRDgkmm
-	Jev3tNe2NS2+HFBWtcqqrPgW/OKAgV2CmfTqHkFBVcbN9+E5SLCFFU7Qb3WIHw==
-X-Google-Smtp-Source: AGHT+IFoErDfBnp90Aso6XiHus3HsXdUa1t+JDihc6T5l+sSuJErscvKMaONLo9iiGOiH+hMVMxlSA==
-X-Received: by 2002:a6b:e901:0:b0:7ba:8db3:2997 with SMTP id u1-20020a6be901000000b007ba8db32997mr140857iof.6.1706133589792;
-        Wed, 24 Jan 2024 13:59:49 -0800 (PST)
-Received: from [172.22.22.28] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
-        by smtp.googlemail.com with ESMTPSA id dq16-20020a0566384d1000b0046e025d9fefsm4228174jab.48.2024.01.24.13.59.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jan 2024 13:59:49 -0800 (PST)
-Message-ID: <51d07f81-45f4-4772-915f-ed5dac602a40@ieee.org>
-Date: Wed, 24 Jan 2024 15:59:46 -0600
+        d=1e100.net; s=20230601; t=1706152514; x=1706757314;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tirya9LR7PB46GxyzStnmaXKMwHffwTodjJrtEce0QQ=;
+        b=ApCjnfyx6s9OEODilZO9tnr3gGZUIi4J37UznjzrvzSmM/aLNRDfPwn7Z1kloDfEoU
+         UUkzDMKWouKxlVMZivGiSxnzu80THfIKkDEkzFR5d4ZQNBvAsdcN7CPmZVGQYC7mjI/j
+         EaWN7IXQ2RZ50Xb72v5wrccet2qMvOOM3Z/F80UrMCF6dGJeWRa9Ljbws1gYvnFHIuJ+
+         dyzUg1eIbHXxGpiD3gUBJ28IIHhE3I8p3nMaiH3wfPqJfw/qQWpnvtgECOqA5k1DirDS
+         x7YYrtNnvwl++n9z56eo8xPSAl9qdvOLC+hGCaa5PQJP/Kycg/5omdJ1PqHK2P9kN2Gj
+         S9Gw==
+X-Gm-Message-State: AOJu0YyBkuVoeDGeA48z34+83hOKY9kCm35ARFpBTlUO9pcrUi1+Fs6t
+	WfzqnVg9vBNzmNtcODSgtAfhmdym5zXv4eDN0qMSpwcVEo2KxnT9+VzGguZDLvbYiOwd5a2qOOD
+	pXH/2cQ0e3sqdrkJgd+dqxouqNXICGXB/dHtl
+X-Google-Smtp-Source: AGHT+IHdjgyoV7XMRfnnM9cJyQ9JLXNsQTesEtcLcS2ciqzN0WAsY55qzs/5dqcu6MmnvuYdADgEkI/L5ryDo8oTV7c=
+X-Received: by 2002:a05:622a:4187:b0:429:d4e8:dd19 with SMTP id
+ cd7-20020a05622a418700b00429d4e8dd19mr94428qtb.17.1706152514104; Wed, 24 Jan
+ 2024 19:15:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] treewide, serdev: change receive_buf() return type to
- size_t
-To: Francesco Dolcini <francesco@dolcini.it>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
- linux-iio@vger.kernel.org, netdev@vger.kernel.org,
- chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-sound@vger.kernel.org
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Rob Herring <robh@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240122180551.34429-1-francesco@dolcini.it>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com> <20240123-iio-backend-v7-1-1bff236b8693@analog.com>
+In-Reply-To: <20240123-iio-backend-v7-1-1bff236b8693@analog.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Wed, 24 Jan 2024 19:14:35 -0800
+Message-ID: <CAGETcx_0wij8j5u7YRNPDgpPDkJoFq4AL7oRy0iFUELYTbc9Bg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/9] of: property: fix typo in io-channels
+To: nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/22/24 12:05 PM, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> receive_buf() is called from ttyport_receive_buf() that expects values
-> ">= 0" from serdev_controller_receive_buf(), change its return type from
-> ssize_t to size_t.
-> 
-> The need for this clean-up was noticed while fixing a warning, see
-> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value").
-> Changing the callback prototype to return an unsigned seems the best way
-> to document the API and ensure that is properly used.
-> 
-> GNSS drivers implementation of serdev receive_buf() callback return
-> directly the return value of gnss_insert_raw(). gnss_insert_raw()
-> returns a signed int, however this is not an issue since the value
-> returned is always positive, because of the kfifo_in() implementation.
+On Tue, Jan 23, 2024 at 7:14=E2=80=AFAM Nuno Sa via B4 Relay
+<devnull+nuno.sa.analog.com@kernel.org> wrote:
+>
+> From: Nuno Sa <nuno.sa@analog.com>
+>
+> The property is io-channels and not io-channel. This was effectively
+> preventing the devlink creation.
 
-Agreed.
+Thank you!
 
-> gnss_insert_raw() could be changed to return also an unsigned, however
-> this is not implemented here as request by the GNSS maintainer Johan
-> Hovold.
+Reviewed-by: Saravana Kannan <saravanak@google.com>
 
-I was going to suggest this, and suggest changing the "ret" in
-gnss_insert_raw() to return size_t.  But to really do that right
-it would include some other changes as well.  Leaving it as an
-int as Johan suggests preserves correct behavior.
-
-One minor point below, plus a couple comments affirming that
-an int return value is OK because it's always non-negative.
-
-Reviewed-by: Alex Elder <elder@linaro.org>
-
-
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for-iio
+>
+> Fixes: 8e12257dead7 ("of: property: Add device link support for iommus, m=
+boxes and io-channels")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
-> v1:
->   - https://lore.kernel.org/all/20231214170146.641783-1-francesco@dolcini.it/
-> v2:
->   - rebased on 6.8-rc1
->   - add acked-by Jonathan
->   - do not change gnss_insert_raw()
->   - do not change the code style of the gnss code
->   - commit message improvements, explain the reasons for doing only minimal
->     changes on the GNSS part
-> ---
->   drivers/bluetooth/btmtkuart.c              |  4 ++--
->   drivers/bluetooth/btnxpuart.c              |  4 ++--
->   drivers/bluetooth/hci_serdev.c             |  4 ++--
->   drivers/gnss/serial.c                      |  2 +-
->   drivers/gnss/sirf.c                        |  2 +-
->   drivers/greybus/gb-beagleplay.c            |  6 +++---
->   drivers/iio/chemical/pms7003.c             |  4 ++--
->   drivers/iio/chemical/scd30_serial.c        |  4 ++--
->   drivers/iio/chemical/sps30_serial.c        |  4 ++--
->   drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
->   drivers/mfd/rave-sp.c                      |  4 ++--
->   drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
->   drivers/nfc/pn533/uart.c                   |  4 ++--
->   drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
->   drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
->   drivers/platform/surface/aggregator/core.c |  4 ++--
->   drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
->   include/linux/serdev.h                     |  8 ++++----
->   sound/drivers/serial-generic.c             |  4 ++--
->   19 files changed, 40 insertions(+), 42 deletions(-)
-> 
-
-. . .
-
-> diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-> index 6ff84b2600c5..62a6613fb070 100644
-> --- a/drivers/mfd/rave-sp.c
-> +++ b/drivers/mfd/rave-sp.c
-> @@ -471,8 +471,8 @@ static void rave_sp_receive_frame(struct rave_sp *sp,
->   		rave_sp_receive_reply(sp, data, length);
->   }
->   
-> -static ssize_t rave_sp_receive_buf(struct serdev_device *serdev,
-> -				   const u8 *buf, size_t size)
-> +static size_t rave_sp_receive_buf(struct serdev_device *serdev,
-> +				  const u8 *buf, size_t size)
->   {
->   	struct device *dev = &serdev->dev;
->   	struct rave_sp *sp = dev_get_drvdata(dev);
-
-One return path in this function returns (src - buf), which is
-*almost* guaranteed to be positive.  The one case it wouldn't
-be is if the assignment of end wraps around, and that's not
-checked.
-
-I think it's fine, but... That seems theoretically possible.
-
-
-> diff --git a/drivers/net/ethernet/qualcomm/qca_uart.c b/drivers/net/ethernet/qualcomm/qca_uart.c
-> index 223321897b96..20f50bde82ac 100644
-
-. . .
-
-> diff --git a/drivers/platform/surface/aggregator/core.c b/drivers/platform/surface/aggregator/core.c
-> index 9591a28bc38a..ba550eaa06fc 100644
-> --- a/drivers/platform/surface/aggregator/core.c
-> +++ b/drivers/platform/surface/aggregator/core.c
-> @@ -227,8 +227,8 @@ EXPORT_SYMBOL_GPL(ssam_client_bind);
->   
->   /* -- Glue layer (serdev_device -> ssam_controller). ------------------------ */
->   
-> -static ssize_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
-> -				size_t n)
-> +static size_t ssam_receive_buf(struct serdev_device *dev, const u8 *buf,
-> +			       size_t n)
->   {
->   	struct ssam_controller *ctrl;
->   	int ret;
-
-Here you the return value will be positive despite ret being
-a signed int.  So like the GNSS case, this is OK.
-
-> diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/serdev-ttyport.c
-> index e94e090cf0a1..3d7ae7fa5018 100644
-
-. . .
-
-> diff --git a/sound/drivers/serial-generic.c b/sound/drivers/serial-generic.c
-> index d6e5aafd697c..36409a56c675 100644
-> --- a/sound/drivers/serial-generic.c
-> +++ b/sound/drivers/serial-generic.c
-> @@ -100,8 +100,8 @@ static void snd_serial_generic_write_wakeup(struct serdev_device *serdev)
->   	snd_serial_generic_tx_wakeup(drvdata);
->   }
->   
-> -static ssize_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
-> -					      const u8 *buf, size_t count)
-> +static size_t snd_serial_generic_receive_buf(struct serdev_device *serdev,
-> +					     const u8 *buf, size_t count)
->   {
->   	int ret;
->   	struct snd_serial_generic *drvdata = serdev_device_get_drvdata(serdev);
-
-Same thing here.
-
+>  drivers/of/property.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index 641a40cf5cf3..bbf0dee2fb9c 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -1244,7 +1244,7 @@ DEFINE_SIMPLE_PROP(clocks, "clocks", "#clock-cells"=
+)
+>  DEFINE_SIMPLE_PROP(interconnects, "interconnects", "#interconnect-cells"=
+)
+>  DEFINE_SIMPLE_PROP(iommus, "iommus", "#iommu-cells")
+>  DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
+> -DEFINE_SIMPLE_PROP(io_channels, "io-channel", "#io-channel-cells")
+> +DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
+>  DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
+>  DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
+>  DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells"=
+)
+>
+> --
+> 2.43.0
+>
 

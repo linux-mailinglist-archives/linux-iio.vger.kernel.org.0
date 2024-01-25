@@ -1,146 +1,125 @@
-Return-Path: <linux-iio+bounces-1908-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F75083BF28
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 11:42:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0617883C027
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 12:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3976228BAD4
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 10:42:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926E61F242A1
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 11:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFB5225A9;
-	Thu, 25 Jan 2024 10:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB894776A;
+	Thu, 25 Jan 2024 10:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+WC6q/p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pp3rJLDC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B3C2C68A;
-	Thu, 25 Jan 2024 10:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB3224B52;
+	Thu, 25 Jan 2024 10:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706179353; cv=none; b=nw81h/hgHNL90AU6RqcHY4DE3qbLeLM72nMH5i0q3G2ydnHTAcHxPT6fY0akjC9jkrQ/fthYBs/Yd6MZ2bitnzhAl60LnKnhsqvtFbIPFmcnVtAZZtuBD++8u4EvDrquNRpv0tcc8cb3tGj6gi5uD+zX+sQRNrn9UndRwklmnzQ=
+	t=1706179573; cv=none; b=IID5BxqVCqN8KUACmsBef6HNVA7I51igiG4rqB6tm+RnXDXBBwyE8qKBlY7LXAONG/LY0Artdj9uSpSS1Pf4fIM+JqVSpHZBk1wFBs3rNuSIqXAdC7koasc3GWenp/0v3BT9NCZ8jaZCqOu7V85tjnTDd6H657ZCDDY+DcwXB68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706179353; c=relaxed/simple;
-	bh=1/AQZg5NNw9HG13KiYI6HfNvwqZ4xcS6GaNad1Jmb/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sObF5GHc+SYeKQleyaV+2r+GlSNgaqOv9UMB/CT6fvKecMkzEoGKYSpK3BB2T42hIfWrQEh1nGO5FatnE1Qjb5kV1i6swH9LG/iRCkV/EP8W41yg4hqtQo39QSYzSV8SMIStHSNOfCKySUcXcFAsAskPo//+zaJOP58AdfPIZC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+WC6q/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A8EC433C7;
-	Thu, 25 Jan 2024 10:42:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706179353;
-	bh=1/AQZg5NNw9HG13KiYI6HfNvwqZ4xcS6GaNad1Jmb/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z+WC6q/pwbwzH6zhMdWS153JB6VUWqmZcSDN5fViUQMl+zNnFkr+L5iCIZC4Lmv2j
-	 bS4xt+Jc+fIKPiuc/kJRIJ6TAeALxfXs7+VoI8ancJ7e9QSMZf9u8wlf8juOT449Gm
-	 dGuxdVykXP+YbuK9da+3YP4AGDYrHkdmnPt65LdsuIx8gGLD4hTB/s1rjqbkVCKiUD
-	 oli8l8eXT1ku4I2e/jROQgRMNh1cOo8JM8FSB0c1qy9mR6qP4bCyS6fEZ4sW83WE4H
-	 dvME2O/MBNNvzFmFBAQf8Pqk3H35BFWj4WMW1H3tXE6hY7SpsHA0xe4mZ94kyccwIt
-	 HEVRnGIIo3ahQ==
-Date: Thu, 25 Jan 2024 10:42:23 +0000
-From: Lee Jones <lee@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
-	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2] treewide, serdev: change receive_buf() return type to
- size_t
-Message-ID: <20240125104223.GD74950@google.com>
-References: <20240122180551.34429-1-francesco@dolcini.it>
+	s=arc-20240116; t=1706179573; c=relaxed/simple;
+	bh=T4KbaGa4I3/ArUbnVuhotCp6UuXKBebXUkOu4YXAWTs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GdyYGkkYXYZzKW4VDalLGggwpsBdtvI7ZITqT7bQ1YA8oY/rgqtVjZRHVv71v5HgG5V6EwP0v7ZAFICQkNSTfKNMIBxFfy0pfKOO6RQkFEez3lCyYmlU5FOp8IsiGJ7OW+2wieNy4xau6dbN4NHg92RZQrwGE65uRE22nTiq8q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pp3rJLDC; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a30ed6dbdadso235604866b.1;
+        Thu, 25 Jan 2024 02:46:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706179570; x=1706784370; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GjMvfTbRqWbP5YBJ9OcGAqttPOoukFPvsBKHDlQzSEg=;
+        b=Pp3rJLDCz4tcHPiPbd660Fo4jShICMShJShfVlQz+8LlplFSTjiMQi3taYimIqpjPf
+         qK8jcwNH1qir6BaQhTw7H5m1hFOND1x4rAhKsMJIC6i4CXgMW2qEF7ezMTnJjo0Awp0b
+         23eNNTUwVbFmjytJNJVO/wrBB+2il0d0lihwhep30z/iBiENu5Wc3DHIU1m4DAXZPokZ
+         8750oQ/dOSmpsqDnqcg/g932VgR71+ZhQNIvb7liY41p+Rj83FZv6ERi2hGQB5wlIYSh
+         eg9mtF0x6lwnY7EspR6lHUM/hd0JQ1YGBJHsLqTx3nZiebCwukcx03TVCl0kDUQi2Ahp
+         jA6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706179570; x=1706784370;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GjMvfTbRqWbP5YBJ9OcGAqttPOoukFPvsBKHDlQzSEg=;
+        b=HNpXK2fzMdPjeOWHvTL5H6vzTfX6Zqk8BnX2iJ65bkPd6yJohu3aSyvMd0R36WFESb
+         xQX2jR5V5NnD5posK6L7Td/D+edOBUGtcT8i84ry4UVLWA7XnVTtfb7jJjKNXk0L5yfs
+         VbhEW69DT1/9vUbEtfW8KNLbsHcpFqHJxGXVTLH6UTEs/EHMu95AZvUg9nHxRrZZIhPq
+         9D4M5vVZQrFFj/DsclzZGmLZXpsUHot8P0X/o0VGgqzBzjnQp9Z0mgGSzZiFvBcd3v1e
+         e9sNvE8DyC4+7JNeQ97L8E9w/JqFeaGxe1kYE9Cq7ufOH4/IQ3NeNZ+arHM16ytSb/zh
+         7+VA==
+X-Gm-Message-State: AOJu0YxdZrYW7bcJ6FduIJSW2g6iSr0pApo94YGJvhEgR4D9if2HtMvC
+	AVxkPey+Vwv0LywM6oZVC4xTRSbNMSQtRudoHnGTdAQ+ecVrocDE
+X-Google-Smtp-Source: AGHT+IHsWSNyjDObd8W5fW6CkFUp4Chj6qYaZ1I1bunPgAEg7W36Q2pk60KYgFTt9nedMS/QRVowmA==
+X-Received: by 2002:a17:906:2797:b0:a30:cbc3:f46 with SMTP id j23-20020a170906279700b00a30cbc30f46mr409836ejc.56.1706179570242;
+        Thu, 25 Jan 2024 02:46:10 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id a21-20020a1709062b1500b00a2dbc664e2asm888960ejg.89.2024.01.25.02.46.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jan 2024 02:46:09 -0800 (PST)
+Message-ID: <0a98e54735cc2a97f393eef6b1cdaf27c946d10e.camel@gmail.com>
+Subject: Re: [PATCH] iio: humidity: hdc3020: fix temperature offset
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Li peiyu
+ <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 25 Jan 2024 11:49:25 +0100
+In-Reply-To: <20240125102641.3850938-1-dima.fedrau@gmail.com>
+References: <20240125102641.3850938-1-dima.fedrau@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
 
-On Mon, 22 Jan 2024, Francesco Dolcini wrote:
+Hi Dimitri,
 
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> receive_buf() is called from ttyport_receive_buf() that expects values
-> ">= 0" from serdev_controller_receive_buf(), change its return type from
-> ssize_t to size_t.
-> 
-> The need for this clean-up was noticed while fixing a warning, see
-> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value").
-> Changing the callback prototype to return an unsigned seems the best way
-> to document the API and ensure that is properly used.
-> 
-> GNSS drivers implementation of serdev receive_buf() callback return
-> directly the return value of gnss_insert_raw(). gnss_insert_raw()
-> returns a signed int, however this is not an issue since the value
-> returned is always positive, because of the kfifo_in() implementation.
-> gnss_insert_raw() could be changed to return also an unsigned, however
-> this is not implemented here as request by the GNSS maintainer Johan
-> Hovold.
-> 
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for-iio
+On Thu, 2024-01-25 at 11:26 +0100, Dimitri Fedrau wrote:
+> The temperature offset should be negative according to the datasheet.
+> Adding a minus to the existing offset results in correct temperature
+> calculations.
+>=20
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
 > ---
-> v1:
->  - https://lore.kernel.org/all/20231214170146.641783-1-francesco@dolcini.it/
-> v2:
->  - rebased on 6.8-rc1
->  - add acked-by Jonathan
->  - do not change gnss_insert_raw()
->  - do not change the code style of the gnss code
->  - commit message improvements, explain the reasons for doing only minimal
->    changes on the GNSS part
-> ---
->  drivers/bluetooth/btmtkuart.c              |  4 ++--
->  drivers/bluetooth/btnxpuart.c              |  4 ++--
->  drivers/bluetooth/hci_serdev.c             |  4 ++--
->  drivers/gnss/serial.c                      |  2 +-
->  drivers/gnss/sirf.c                        |  2 +-
->  drivers/greybus/gb-beagleplay.c            |  6 +++---
->  drivers/iio/chemical/pms7003.c             |  4 ++--
->  drivers/iio/chemical/scd30_serial.c        |  4 ++--
->  drivers/iio/chemical/sps30_serial.c        |  4 ++--
->  drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
 
->  drivers/mfd/rave-sp.c                      |  4 ++--
+This is a fix. You're missing a Fixes: tag in your commit message.
+git log --grep=3D"Fixes:" should give you some examples...
 
-Acked-by: Lee Jones <lee@kernel.org>
+With that, feel free to add:
 
->  drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
->  drivers/nfc/pn533/uart.c                   |  4 ++--
->  drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
->  drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
->  drivers/platform/surface/aggregator/core.c |  4 ++--
->  drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
->  include/linux/serdev.h                     |  8 ++++----
->  sound/drivers/serial-generic.c             |  4 ++--
->  19 files changed, 40 insertions(+), 42 deletions(-)
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
--- 
-Lee Jones [李琼斯]
+> =C2=A0drivers/iio/humidity/hdc3020.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc302=
+0.c
+> index 4e3311170725..ed70415512f6 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -322,7 +322,7 @@ static int hdc3020_read_raw(struct iio_dev *indio_dev=
+,
+> =C2=A0		if (chan->type !=3D IIO_TEMP)
+> =C2=A0			return -EINVAL;
+> =C2=A0
+> -		*val =3D 16852;
+> +		*val =3D -16852;
+> =C2=A0		return IIO_VAL_INT;
+> =C2=A0
+> =C2=A0	default:
+
 

@@ -1,113 +1,146 @@
-Return-Path: <linux-iio+bounces-1907-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1908-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8137683BEBA
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 11:29:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F75083BF28
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 11:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EB6BB294A9
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 10:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3976228BAD4
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jan 2024 10:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AA11CABA;
-	Thu, 25 Jan 2024 10:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFB5225A9;
+	Thu, 25 Jan 2024 10:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCE9+Nq6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+WC6q/p"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB41175BE;
-	Thu, 25 Jan 2024 10:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B3C2C68A;
+	Thu, 25 Jan 2024 10:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706178414; cv=none; b=c99mSdQSmZl+oEMvL8El4pqyL09OECICptsDuQjTx4qSJsVt4pAZ7306gsqa+csFdNlwcIFP+HvByeAD0W+O9HJLSkryGo/FRIWbaTcwq2DrCKXIDWlNQ9sLU2ZPYxQFPAqkpio+V4RhXoHmLnSQP2I1pT7ZuawDGm214nQqu2o=
+	t=1706179353; cv=none; b=nw81h/hgHNL90AU6RqcHY4DE3qbLeLM72nMH5i0q3G2ydnHTAcHxPT6fY0akjC9jkrQ/fthYBs/Yd6MZ2bitnzhAl60LnKnhsqvtFbIPFmcnVtAZZtuBD++8u4EvDrquNRpv0tcc8cb3tGj6gi5uD+zX+sQRNrn9UndRwklmnzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706178414; c=relaxed/simple;
-	bh=0E0Dmg/X9JFI1Y7lS4dhetCkdveIh8ajKY+1iLi3QU4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XP+um/a1c3lHGnnjgJtDPw+FYCHoDaV6jdl6/21wPCdOrLd9Iw4bTUbXvLv55Y/LxbJcjpzQdhUt6p1F8fXbGskxLcs9nBScTZjw8uCpFxIlkLvIHToS/DiIw/+awcvsfbhYqk45mtOAZdCsCOyXt5egjXw9UJxPgNwNn18FINQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCE9+Nq6; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5100fd7f71dso2345992e87.1;
-        Thu, 25 Jan 2024 02:26:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706178411; x=1706783211; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=srddleVoD/RGZ2ZusIx3j1Qeck2mamgxihSPrAiJLrQ=;
-        b=LCE9+Nq66UHCmh6uIagMd4VP6x37GDnO1AgfXxY5F+/8w0J9+bguPU2W/UmpKWzqKs
-         2VGADudxYnDzj9SD4VU9gFrdVqUVlQt/ueFLl0gaF2ebJblaykFuv9pD0VgipQLdTiIZ
-         D9X361In0H9iYezv07R46Bn8i50LlO4F/D4TvU8JSBAM5q7ZByeCUEzxHyx5wJisSKGO
-         3ylvxdLrhj8gUIBE2Sz793JDuHpFdq2xgSoLyvanjRDRGGETd0caQZrWD+jyHWOBPNnF
-         gvlSeqYODQFvALDKowdzKOTNGHgXsniLsTqc2KmvP6WmyrqRKMTJk7/JQnLLEZcs8yqM
-         aoFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706178411; x=1706783211;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=srddleVoD/RGZ2ZusIx3j1Qeck2mamgxihSPrAiJLrQ=;
-        b=OcsHi9NM1wvLuG5V4Ky69E/gt4SU9CV0iLUzoDQXhpC9645lgwc8GwZ3LDVGz6FoGx
-         pKbVtgm8aCNFnrrONzR5djF5WqyNTUGGTqZsasqjEUAcC2m97nyN/YoI7z5s1Td1TM2z
-         KCd7lKLTiqFEJ7TBWRqD6CBQCDIY2fJ8/Mj3Eyx/cPs3nYKaDeT1SbUwIWwD7pyRZq5F
-         0tCHlCAEs9Cmc5Y9uwkFnUBeP15vX/HjyWc4r6wwIulozIOZ/Q/PGAH4QXlQ3ZIl0RBV
-         7LvFE1EBEqaIZQGTuBPE7fm3GKtrsIFIvDrtu2LzFNCPZ8lERkwRXHx6pdiSIAwZEaKk
-         lGSg==
-X-Gm-Message-State: AOJu0YzettqhL9Ls/UnA1nCh5HQdPJtlod3TTPJkfuFY5NZw5AtTZBN+
-	qWa/qoXYwCNcAzDRzaDnDw/HEXltFnut+b+7Yi4VonlpOQlnItIY
-X-Google-Smtp-Source: AGHT+IFws4q6oOSgLHaQGbz2CrsBQhD9bLg4PqJpBhhxKRYtTN6JbqR4P7C6dMAF+gB3L7GSPxaKvQ==
-X-Received: by 2002:a05:6512:2303:b0:510:1840:336c with SMTP id o3-20020a056512230300b005101840336cmr464330lfu.52.1706178410969;
-        Thu, 25 Jan 2024 02:26:50 -0800 (PST)
-Received: from debian.fritz.box ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id vx10-20020a170907a78a00b00a3162e76a6csm723461ejc.215.2024.01.25.02.26.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 02:26:50 -0800 (PST)
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: 
-Cc: Dimitri Fedrau <dima.fedrau@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Li peiyu <579lpy@gmail.com>,
+	s=arc-20240116; t=1706179353; c=relaxed/simple;
+	bh=1/AQZg5NNw9HG13KiYI6HfNvwqZ4xcS6GaNad1Jmb/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sObF5GHc+SYeKQleyaV+2r+GlSNgaqOv9UMB/CT6fvKecMkzEoGKYSpK3BB2T42hIfWrQEh1nGO5FatnE1Qjb5kV1i6swH9LG/iRCkV/EP8W41yg4hqtQo39QSYzSV8SMIStHSNOfCKySUcXcFAsAskPo//+zaJOP58AdfPIZC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+WC6q/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A8EC433C7;
+	Thu, 25 Jan 2024 10:42:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706179353;
+	bh=1/AQZg5NNw9HG13KiYI6HfNvwqZ4xcS6GaNad1Jmb/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z+WC6q/pwbwzH6zhMdWS153JB6VUWqmZcSDN5fViUQMl+zNnFkr+L5iCIZC4Lmv2j
+	 bS4xt+Jc+fIKPiuc/kJRIJ6TAeALxfXs7+VoI8ancJ7e9QSMZf9u8wlf8juOT449Gm
+	 dGuxdVykXP+YbuK9da+3YP4AGDYrHkdmnPt65LdsuIx8gGLD4hTB/s1rjqbkVCKiUD
+	 oli8l8eXT1ku4I2e/jROQgRMNh1cOo8JM8FSB0c1qy9mR6qP4bCyS6fEZ4sW83WE4H
+	 dvME2O/MBNNvzFmFBAQf8Pqk3H35BFWj4WMW1H3tXE6hY7SpsHA0xe4mZ94kyccwIt
+	 HEVRnGIIo3ahQ==
+Date: Thu, 25 Jan 2024 10:42:23 +0000
+From: Lee Jones <lee@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, linux-bluetooth@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, greybus-dev@lists.linaro.org,
+	linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: humidity: hdc3020: fix temperature offset
-Date: Thu, 25 Jan 2024 11:26:41 +0100
-Message-Id: <20240125102641.3850938-1-dima.fedrau@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>, Rob Herring <robh@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2] treewide, serdev: change receive_buf() return type to
+ size_t
+Message-ID: <20240125104223.GD74950@google.com>
+References: <20240122180551.34429-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
 
-The temperature offset should be negative according to the datasheet.
-Adding a minus to the existing offset results in correct temperature
-calculations.
+On Mon, 22 Jan 2024, Francesco Dolcini wrote:
 
-Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
----
- drivers/iio/humidity/hdc3020.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> receive_buf() is called from ttyport_receive_buf() that expects values
+> ">= 0" from serdev_controller_receive_buf(), change its return type from
+> ssize_t to size_t.
+> 
+> The need for this clean-up was noticed while fixing a warning, see
+> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value").
+> Changing the callback prototype to return an unsigned seems the best way
+> to document the API and ensure that is properly used.
+> 
+> GNSS drivers implementation of serdev receive_buf() callback return
+> directly the return value of gnss_insert_raw(). gnss_insert_raw()
+> returns a signed int, however this is not an issue since the value
+> returned is always positive, because of the kfifo_in() implementation.
+> gnss_insert_raw() could be changed to return also an unsigned, however
+> this is not implemented here as request by the GNSS maintainer Johan
+> Hovold.
+> 
+> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for-iio
+> ---
+> v1:
+>  - https://lore.kernel.org/all/20231214170146.641783-1-francesco@dolcini.it/
+> v2:
+>  - rebased on 6.8-rc1
+>  - add acked-by Jonathan
+>  - do not change gnss_insert_raw()
+>  - do not change the code style of the gnss code
+>  - commit message improvements, explain the reasons for doing only minimal
+>    changes on the GNSS part
+> ---
+>  drivers/bluetooth/btmtkuart.c              |  4 ++--
+>  drivers/bluetooth/btnxpuart.c              |  4 ++--
+>  drivers/bluetooth/hci_serdev.c             |  4 ++--
+>  drivers/gnss/serial.c                      |  2 +-
+>  drivers/gnss/sirf.c                        |  2 +-
+>  drivers/greybus/gb-beagleplay.c            |  6 +++---
+>  drivers/iio/chemical/pms7003.c             |  4 ++--
+>  drivers/iio/chemical/scd30_serial.c        |  4 ++--
+>  drivers/iio/chemical/sps30_serial.c        |  4 ++--
+>  drivers/iio/imu/bno055/bno055_ser_core.c   |  4 ++--
 
-diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
-index 4e3311170725..ed70415512f6 100644
---- a/drivers/iio/humidity/hdc3020.c
-+++ b/drivers/iio/humidity/hdc3020.c
-@@ -322,7 +322,7 @@ static int hdc3020_read_raw(struct iio_dev *indio_dev,
- 		if (chan->type != IIO_TEMP)
- 			return -EINVAL;
- 
--		*val = 16852;
-+		*val = -16852;
- 		return IIO_VAL_INT;
- 
- 	default:
+>  drivers/mfd/rave-sp.c                      |  4 ++--
+
+Acked-by: Lee Jones <lee@kernel.org>
+
+>  drivers/net/ethernet/qualcomm/qca_uart.c   |  2 +-
+>  drivers/nfc/pn533/uart.c                   |  4 ++--
+>  drivers/nfc/s3fwrn5/uart.c                 |  4 ++--
+>  drivers/platform/chrome/cros_ec_uart.c     |  4 ++--
+>  drivers/platform/surface/aggregator/core.c |  4 ++--
+>  drivers/tty/serdev/serdev-ttyport.c        | 10 ++++------
+>  include/linux/serdev.h                     |  8 ++++----
+>  sound/drivers/serial-generic.c             |  4 ++--
+>  19 files changed, 40 insertions(+), 42 deletions(-)
+
 -- 
-2.39.2
-
+Lee Jones [李琼斯]
 

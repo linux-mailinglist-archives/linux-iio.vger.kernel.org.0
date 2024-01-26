@@ -1,133 +1,122 @@
-Return-Path: <linux-iio+bounces-1921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814C783D8BF
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 11:58:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0215083D9BC
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 12:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34EC81F2894E
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 10:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B431F24D4F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 11:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2316134A9;
-	Fri, 26 Jan 2024 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFD019BA6;
+	Fri, 26 Jan 2024 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Qqb/A1Sp"
+	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="bEHO79tw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89952EAE6;
-	Fri, 26 Jan 2024 10:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1FE1AACB
+	for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 11:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706266729; cv=none; b=U06S47q4xAhizQhzf+Ry1JJUueZLGL7mvPMRafC2v4qKQaT6TdyIrVj84YTvmlytl4aClHmtzRw3dTO3o1YoKINAZfx87k8OgSyXZbktzn1x72GVDV4tuTte0wORtqFV2994eP8n/xlU5N6v6NG7PXPyc8wwkB0pnFPUJGEesFs=
+	t=1706270121; cv=none; b=nYDLUpRXSGiTPk4qBvZGwVzIegjGWTzk4VtFBW3DGkeyP7PIJof8qJiPpH7hTFp9o2yBD6mAI+ghkYJn+lhDovlfAssJEXHehLUGjYoec142jxhTjR2lE7qKRgqg7+BZiS3HGgRs0XCX4SRCtyQpUCvbdXMr6TTNx1QFZBeFbC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706266729; c=relaxed/simple;
-	bh=3aiLAmH0RdcOP4o9+Z28MUU6iwYGmfnBmv49RlTdb8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sA3e3C8gDO2kJ8cFoGp2ceKhN+NUP6EsNnS1yKgwbFOE2MqT41u/c4pUlCm29YiFmt3nNWEKcjPcz7pQLkKYtUrSkMEvKnodzrqPmYjNNRW8vEay8PQKGPwb6N/WzejvT1Oti1xeUNvf9BCm1meGEq6u8uaCFJV+WhONil1X9c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=Qqb/A1Sp; arc=none smtp.client-ip=172.104.132.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire (unknown [188.24.80.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 0761C28B531;
-	Fri, 26 Jan 2024 10:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1706266725;
-	bh=3aiLAmH0RdcOP4o9+Z28MUU6iwYGmfnBmv49RlTdb8g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Qqb/A1Sp80ZO8Bj8vxbUHbeuypI8nzGATy11DJ5pmorbutNHtwlDj7cCzLEemsF+6
-	 8x50Z9Z25MR6BCCoa8xxWue1yTEnmXGhC+Jlzxc/GY0ZUj+ZQ4R9rnphobBGjXBCnp
-	 +wxwbHbTZujc3WoWmG0df3SDcIR01BQfbZctXWng=
-Date: Fri, 26 Jan 2024 12:58:43 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: marius.cristea@microchip.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-	jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	s=arc-20240116; t=1706270121; c=relaxed/simple;
+	bh=KvDW3oimirzaLZ+3LyQ7tjVmuNkF2WsoEwGt2Ec9I+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NMKqlAPT93k0K2oQNA6hR8uQNH1mpxHMR9h0KGGEMQn1I8m/r+qsWnGwgW+MTT22TGs9lzFx0E82+yFJrGrHhvQwT6z1PrzGSp+aZjrZE4+wYKlem8Lb+UlO+CRO4MO2v5DCukxBWI1OPFGNvQMpNA88eq330LfNX9btFGfaXHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=bEHO79tw; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e8d3b29f2so5381295e9.1
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 03:55:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1706270118; x=1706874918; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5YD1avWXiDmKVPhJNDv4Z+Ew3Vz4aGu7X+vQARwJOeU=;
+        b=bEHO79tw3TzVQ2l67Em3pJ1i2WQahpxukP6KAly1UgAx260fqefLl3M98Da/7ioDNF
+         XWKoB1dzLEVQX8XhRR5Y1ynSUPBqF0+v0ONgwFhf5e1mrEQfFRRSkcjiKxCyacQ0DsS5
+         PrYP5/pnX2ElLzFAruz0byazQKEU29EEM9PlNDPGTkf+g1zhUlrfiOtR0jVeDZLDyyOW
+         eHLNSNikLwUS2qLA9SflP7LcPdoDTqB4gL4jvLB2CAUwC6yyzZUP8rYR3jNNSmebcC1j
+         ZOlCGl9OO+199o2VGsLo0F/6X1ktu5HxJpeME+CPpZJsXIhFAiYzu62Coln5Az+pxbQi
+         uSzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706270118; x=1706874918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5YD1avWXiDmKVPhJNDv4Z+Ew3Vz4aGu7X+vQARwJOeU=;
+        b=WSH+ceJwApcGplkIlNx5kprLVwfKRPhKwZFHUsWpV/MttIxTnIXsPbrYKNpPMOPFtH
+         aO7vW78RAzpN69TAQmdvffg+PiPbZSq9JzQxxYcexkXKhuwFuj6rcslRe4EjkPkiOtKD
+         vdiiFOcUN+vraRjEgZJ/xbIEFL+IYa3hJKYYuW9O/phv8akht+R84miDR1VDlJeaqsNm
+         +FffBg0Ep6SGtdTwig1BXxjs1uITAPivvwNwssA0XwzFV3FBm0Pt4BAS9s5K3HzDaemh
+         FZamh29lSb60kWF+llye0j/cTIopbYdBfbmHRjpIPMrKd5kyFW1MfQnXzrwuzUGcHlQu
+         GdPw==
+X-Gm-Message-State: AOJu0Yx8sMyH/28xxIYGZSDf+k7JrFTfvune6HaFSQK+uZE1OiyZrHqL
+	nd9ZY+qptMkZnM2rh6OIBNILIOYwi8dfsCvcSLPa6s7rznjnMefIewAigFM4l7o=
+X-Google-Smtp-Source: AGHT+IECraYXk/gis2PyyZjpxoZQsQq+NsKnyjHm2H37sX1KMoJpc1j7bNxvr2bN1NJQpzQfiVhaCA==
+X-Received: by 2002:a05:600c:3548:b0:40e:d5c7:8355 with SMTP id i8-20020a05600c354800b0040ed5c78355mr466668wmq.131.1706270117801;
+        Fri, 26 Jan 2024 03:55:17 -0800 (PST)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id f11-20020a05600c154b00b0040ed434ef66sm3387424wmg.25.2024.01.26.03.55.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jan 2024 03:55:17 -0800 (PST)
+From: Naresh Solanki <naresh.solanki@9elements.com>
+To: Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: mazziesaccount@gmail.com,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: adc: adding support for PAC193x
-Message-ID: <ZbOQY3cs5emASvzs@sunspire>
-References: <20240122084712.11507-1-marius.cristea@microchip.com>
- <20240122084712.11507-3-marius.cristea@microchip.com>
+Subject: [PATCH] dt-bindings: iio: afe: voltage-divider: Add io-channel-cells
+Date: Fri, 26 Jan 2024 17:25:08 +0530
+Message-ID: <20240126115509.1459425-1-naresh.solanki@9elements.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="j6hFgdCDz3A6ajHc"
-Content-Disposition: inline
-In-Reply-To: <20240122084712.11507-3-marius.cristea@microchip.com>
+Content-Transfer-Encoding: 8bit
 
+Add #io-channel-cells expected by driver. i.e., below is the message
+seen in kernel log:
+OF: /iio-hwmon: could not get #io-channel-cells for /voltage_divider1
 
---j6hFgdCDz3A6ajHc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+TEST=Run below command & make sure there is no error:
+make DT_CHECKER_FLAGS=-m dt_binding_check -j1
 
+Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+---
+ Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Hello Marius,
+diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+index dddf97b50549..b4b5489ad98e 100644
+--- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
++++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+@@ -39,6 +39,9 @@ properties:
+     description: |
+       Channel node of a voltage io-channel.
+ 
++  '#io-channel-cells':
++    const: 1
++
+   output-ohms:
+     description:
+       Resistance Rout over which the output voltage is measured. See full-ohms.
 
-a quick static scan reported the following
+base-commit: ecb1b8288dc7ccbdcb3b9df005fa1c0e0c0388a7
+-- 
+2.42.0
 
-On Mon, Jan 22, 2024 at 10:47:12AM +0200, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> This is the iio driver for Microchip
-> PAC193X series of Power Monitor with Accumulator chip family.
-
-[..]
-> +	mutex_init(&info->lock);
-> +	ret =3D devm_add_action_or_reset(&client->dev, pac1934_mutex_destroy,
-> +				       &info->lock);
-> +
-> +	/*
-> +	 * do now any chip specific initialization (e.g. read/write
-> +	 * some registers), enable/disable certain channels, change the sampling
-> +	 * rate to the requested value
-> +	 */
-> +	ret =3D pac1934_chip_configure(info);
-> +	if (ret < 0)
-> +		return ret;
-
-the previous assignation of ret is never used, so either dead code or you m=
-ight
-have wanted to return early based on it's value.
-
-cheers,
-peter
-
---=20
-petre rodan
-
---j6hFgdCDz3A6ajHc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmWzkGMACgkQzyaZmYRO
-fzA8lQ/7BqVyUd2MTfT1Q7WdU8tEr0IO04T/8q8O4rLv4qn/euVY8f8zodmd916M
-aszgIBKbFQSRQgDeKDgV/k1mdozZjY650e70htkS+xyPfw4IK6GCEBkjSDDH4TDS
-f0csnQFL/CIUmriUxAA5BsEvtK1MFfOmOb3A326/rtFfM+B0dmcRTlTYFvrCp3EO
-NhO1C7UMfMclLbb6nHWs8Q+xPnjzH70JejXqL6QwOGHWvHiI/iJkT55mYuvBUdiE
-12zjuD9L8uqUWPCPAd7mpyFuKI3ilb6fwVx1nABwn+wi/m+snu4425wUDpACqofb
-Vk+MTtro82m9LjuElDYcDhRITVgj5CiRWI2X78n4h1ZfIbICVMXkNxSynce+56+X
-d6UpAKlpjoZWyBflcoudN9gEDYzc20rcZnQ/qQ5GbfoVyeM9+cOB1ymlAGR5zhWc
-wSiTnlzNEiFd4TzwXOO2aDXzwI6VJGnsXPFyyNWujn2zwFJrCK2ihZsb73jVjON6
-KYjJEtq2ZQ2qzkzESdY2AQrsnXGJBokPIJc50wMo7vzPRbEe+kancgNG1xgCeLdo
-rceiUmqOYGFVprkXw10Kh7IWZhFpSyQcAxj0gHikeYrIZkRgQf62hXjmBNieWCz5
-ZqqB4jLxNSV2FEMOKp7Bc1ONhqV8HNhjqaXewY3xya1ngPOZvYU=
-=lZiH
------END PGP SIGNATURE-----
-
---j6hFgdCDz3A6ajHc--
 

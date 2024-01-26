@@ -1,187 +1,200 @@
-Return-Path: <linux-iio+bounces-1931-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1932-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B809683E4ED
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 23:14:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A9F83E50F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 23:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42A2D1F22815
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 22:14:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B7C285D24
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 22:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976D22557D;
-	Fri, 26 Jan 2024 22:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD6433CF3;
+	Fri, 26 Jan 2024 22:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2v+5Osv"
+	dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b="QfYWpqkZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2095.outbound.protection.outlook.com [40.107.13.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462BD25573;
-	Fri, 26 Jan 2024 22:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706307248; cv=none; b=V3O94hGRATRh+OBxv5w4zHQsPvWdth7PZ1pn7FCMMr5vIU6rVwP9CrC8GznupHihglhBpdhQLpDwYu++KEM3lhPqHs7qinx1911p3NlmuKClPubCE6WSqN8h8Y43vlhx72tbJ8Z9TtNqP+XRllD5VJj6OMBGift9cBhZQEvAi3A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706307248; c=relaxed/simple;
-	bh=0b8lK1c7dQnFioNfIBpSdxAWV5NjN5Icq9TAOnp0CbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MIXlDyiDxDX+18V4VCYxNwCWKQwNeYzHXAU9poLkTOdAdbUxZT7N1MJ/nUdDYXusDi68OEovfgnaermTlcSIHmgkWKj34GoiFPJQOzZ3gG/egbIN5kaLf76gLK1bczWKsawk8mTvIfDu9NQN/9gR+gTrt7x9O0dGBYsq6UHdcg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2v+5Osv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1224C433F1;
-	Fri, 26 Jan 2024 22:14:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706307248;
-	bh=0b8lK1c7dQnFioNfIBpSdxAWV5NjN5Icq9TAOnp0CbI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n2v+5OsvdqgT3i4Kqm59IquUkMr2RwumpWqwYaQeU3u8MDlGdElaRznNLlJ2bM5BC
-	 DWAcMB7xbDv+X+8wlwPbVBiOOnonowk+oOOnuFwD9EYKkKKP9lmfzUIRrCNJevipRp
-	 Gm5CKc8LUeJcKlI55319rgTbhgXqGnwve0ZvDxHtZ8cGdFqOCZLP4VxqKWwi4CpynU
-	 SS4IZR7Vjlg9xw/A6cj0wl5iyCSNt4sFCXIwcuawXvm3YidLdeWyTvPciy3RNQOr9/
-	 bTBo6y1JpCEKAxGWxy2/hk8K+bZBqSJ4oennqOjIJLBCXwT0RvtBwrQjqrtES9Ze+W
-	 SzvoicC3tf6Pw==
-Date: Fri, 26 Jan 2024 22:14:03 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Naresh Solanki <naresh.solanki@9elements.com>
-Cc: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D3B45C0D;
+	Fri, 26 Jan 2024 22:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706307412; cv=fail; b=YJ0F93fraHZHAvdoFWExWwmxaA5zL0iOH86qwpKTRarw1PYrKeZSDt5hvVDg/bKPSDuPQElKZeQpPZLU60BDk8URKE1sIMSkBQkNIxFLd/9Vz9pwHWzlG6zB9IsMQzIkL/busAqq/sY5nPItKXB7PDdZA+0aEMKura1rmeW8a8A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706307412; c=relaxed/simple;
+	bh=EWOYSSyXraRdB3oMcgCuudrMGn9eWO/TPn0UO7oM+lA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QNEhS5dMx5oRGhCch+uFAOktYvVjzPHceCdEc9OrDdJa4y2nLKa/ZZI0t2J/CsDMRjvbIh4vAObntuq+nghQe0eUvHxmTc+WkqyPFHcKb7BwCAOLE3yiekUCjAnwX4vWuyTeRQi+AxEU3+bqpcALe+R27aueHnwYtvSU5Gv5zzM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se; spf=pass smtp.mailfrom=axentia.se; dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b=QfYWpqkZ; arc=fail smtp.client-ip=40.107.13.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axentia.se
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Xq9oLZ+RPYv6r3g19u7tQqu7yDOJad4HjkkfziETa85myF9E7v3eObP8E2GSNlQrE3gqpDkBmD8jJq6WKYF1FaB02JpePjuVy3xvyzNe/MyJgtbyJ++6gWaKG5sd/A4CBfYTbsccn9wTIr57rJI6tHE31Dnh456m1b3ZhXXn6rh5P9S2SRjnb0JvVM/+mG8oKhqz4D1zOh2/LF+62z4UpmGhQMwInhAcurFXN2b/ipAZhfFqF6LUh48WJgFkygFij0KXrQSC85xEOOv8KQvKJUkmJZ/+vRDi9tWw4GbJ0kRoic1SuJXhcocC+sYCKHb/hvI7DOUe/rtGP2cDCNoCTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ngLWFtXXwGElJTZF2lfIph9MqLkK0vNxO8lZvKSjjWw=;
+ b=PkGFOoat7uuTR04SXwKOHT8cHjz4MBtQW0K3JVCqBZXo8yor8bwgMHxs9AcE9seDHzd1/nw17mLFhclStenCbNm6Lq6KWJiVOXCUZG8jh9jqvH0wNbTRsdXVZ/sI3jSqfgeGOg4YOZw5912jhrhQHvAUSA6pON1I7B6p6jXDxwEALYqvIpzGBYqJ8AKXcxXETCoirRx4mLeL+cYjUem2+1M9CLVY54LTmoOHJQ1vdwILKBAJmFADcBGJv0oO4SfBYaZN37hEIRA8lM279eBcyLHmpbkRDt7fscuYJPAnEJbRN2ia+1SAd9eNfUxvx/AKiAGZAR5pkKnVIti321vSyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ngLWFtXXwGElJTZF2lfIph9MqLkK0vNxO8lZvKSjjWw=;
+ b=QfYWpqkZeThkM9rnLifHj8yBm+vKLiskuS27bMlVLk2jhEjvWpTCMHZ5++ksHV0QXQ9f2slsMmQy4+WdGLyroRodUb2ozUcQunW/fWf6Q2yGIiP4ddp+X50hKwgjA3bq6MNuzIv3SfnYY43sl59QTrBq+N/hh60s5kij0fToHuc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axentia.se;
+Received: from DU0PR02MB8500.eurprd02.prod.outlook.com (2603:10a6:10:3e3::8)
+ by AS2PR02MB8840.eurprd02.prod.outlook.com (2603:10a6:20b:554::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.26; Fri, 26 Jan
+ 2024 22:16:43 +0000
+Received: from DU0PR02MB8500.eurprd02.prod.outlook.com
+ ([fe80::4c56:a71b:d42d:11ba]) by DU0PR02MB8500.eurprd02.prod.outlook.com
+ ([fe80::4c56:a71b:d42d:11ba%3]) with mapi id 15.20.7228.027; Fri, 26 Jan 2024
+ 22:16:42 +0000
+Message-ID: <5cb6d599-fa9b-a003-6fd6-c07966e283db@axentia.se>
+Date: Fri, 26 Jan 2024 23:16:40 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
 Subject: Re: [PATCH] dt-bindings: iio: afe: voltage-divider: Add
  io-channel-cells
-Message-ID: <20240126-blaspheme-calculate-a4134dc1ed68@spud>
+Content-Language: sv-SE
+To: Conor Dooley <conor@kernel.org>,
+ Naresh Solanki <naresh.solanki@9elements.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 References: <20240126115509.1459425-1-naresh.solanki@9elements.com>
  <20240126-cinnamon-flatware-e042b5773f17@spud>
- <CABqG17hzZf2mme0v7hALhpd6-N3ZHqxdH-AhFg5eF9sbLSC2gw@mail.gmail.com>
- <20240126-scale-serrated-33686467d91b@spud>
- <CABqG17jp6YRGyTmNitz-xDdyhWOPgfT_XpXxw-OJLnXQ777vAA@mail.gmail.com>
+From: Peter Rosin <peda@axentia.se>
+In-Reply-To: <20240126-cinnamon-flatware-e042b5773f17@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GVYP280CA0009.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:fa::23) To DU0PR02MB8500.eurprd02.prod.outlook.com
+ (2603:10a6:10:3e3::8)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="51HTn85XAt3vYgRW"
-Content-Disposition: inline
-In-Reply-To: <CABqG17jp6YRGyTmNitz-xDdyhWOPgfT_XpXxw-OJLnXQ777vAA@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR02MB8500:EE_|AS2PR02MB8840:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92742699-3270-40a7-d6d7-08dc1ebc79cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	8e3pYx7+n6gX2VFD8yfFCmNNbEfgalc2yXSCzTRQ0XTZnuM5Z0kFCCJU5U0e046pS5ULdFwjqTsQcxGBMc09tQwWcMSnJiP1wCLy++PA80Y+7DdqO3+H4bUCtJnG2w40/9bMnkBWGkY9RTxG7WG3dTuMrRochCWfjFN0xxMk8Gd08y233OfSTFwGNHGEiL4mohpNUDVLvGld8e6tdCL+TP5PPf54UcUCPT9LzO39XDc7l16/KpKLtgJURC4vUhyQ6L8NNRWna856LRVgMBAdSFdYo+hd/g+f0TgnDgLNuPqkWCz+1N+Fc91/CJsAx8zH3yogo85/t8IfShwvCAOPjTZ13+7rmo1DTu1CenIpA3svs9njGex8SIRA1IYzBWnCHBznRFUfi4vMd/mppBG2iIvvZ0Smnz6QjZ62TjMPLpURaqiX7bTMaWT12P4t2eUUmCuD0wm25SktpjyHKrN0BGnVddNx53i7K/nTFK44bvCYF3sKY3JEa/UBUC9q2XkWd7UrI1s5ICoQ+a7AAFk1TA139BGq02/9wdfm7USkNSM/3penunddAG7C31rbR1IILLK+fw8y85T7VqjS/yGT586/w8yASEeZsNqoKXEkv5kXWKwCfFW3mSWtUcMUh69GaJVunl3HF8u5/jFyFvIRqQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB8500.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(396003)(39840400004)(376002)(346002)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(8936002)(8676002)(4326008)(2906002)(5660300002)(31696002)(7416002)(110136005)(86362001)(66476007)(54906003)(316002)(6486002)(66556008)(36756003)(66946007)(38100700002)(6506007)(83380400001)(6512007)(478600001)(2616005)(26005)(41300700001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MHlUeVJkUExRUkNoV0VORXBjQ0VLVUpMVWZHZG5KZVlleEpUT2hRd0dpei9C?=
+ =?utf-8?B?SGR4K3JaejlObFh6aWlkZHJqS1ZIbjlMSmF1a2N6L0ZBVzNKdGdEM0s0REkw?=
+ =?utf-8?B?MFV5Y1V5MXkyNXBGZGV4RGRidVBrSzdIaEpCSnFiUFVpMGpoZWh0ZzE2cjl4?=
+ =?utf-8?B?bDVPWjVOWkJRamRNMkNSeTZQVFMrV09sWlNMNEVOMTd5RTFHMEg1bWdqOW56?=
+ =?utf-8?B?a2dzNFNPZVBNZ0YzaUhFazIvcDdOU2w3bW50bTJGc1EzYmhVSjBVd2pEb2N6?=
+ =?utf-8?B?YUlBVmlidjQrelNhcU1iKzcxZTM4SDhRazI2R29ieWk1bkVOaXdKTGtjQjRT?=
+ =?utf-8?B?UUxETXBMeDJUd3kvM29kTzUvWjEwRmQwYjVoOHJ1WnlrN09wc1hTZGxlemhm?=
+ =?utf-8?B?R2o5RjR1S2tndVE0NFVSYVdWdzFhV0Z1N1V3bWllZm1SSWZ3cnBPaUNzeTJK?=
+ =?utf-8?B?N05wT0pEZkhMTWVTTXF3U0g1dDRJMmxvbmNaUi9rb2g3Y3RiejVVZGp3Sjd0?=
+ =?utf-8?B?THF0SmxrL21Id29YeVoyNzNNMGxYLzRtQ21XNzVJb3JBQjJwa2kzdlBMOWww?=
+ =?utf-8?B?TlpJdDBQdzJ1WnJOcytqTHkxWFJ0ME5HSGtBamlJcUVQaFg2SGk0UmNNcW9S?=
+ =?utf-8?B?VVZ2cDB6RFBuekY1WCtrOTRWWTJxVkxCc3ZWTUFFdWEvcndUQ0J0S3VQSzZ3?=
+ =?utf-8?B?ZVRGODB6cnllbldxQng3SS9VSlZHREFHSXJvdFREMkRvdUFrQTkvMzZTT3J4?=
+ =?utf-8?B?dW5xMkhKV0I1YkhNanpxa0d3M0V5eW8wWUw0eXZWZHNUa0U0NEUxSlloUU1E?=
+ =?utf-8?B?QzFMZFZVeHlyWXp2Sm4xdWtYNlpVbGptOUlOUVJkYmdjYXFDQk1CbkNNRzhn?=
+ =?utf-8?B?TEpBRkl6OVB4NmkrazVkdzdCWWg5VnhuUkNPTlB5dEpPQ3I0R3lLNzBDcEtH?=
+ =?utf-8?B?UEZ3Nlg0VWJ1U0NlMVRwQXpPTUtHdUNMVit2MTRzNEthTG54T3BtKzhjSzdR?=
+ =?utf-8?B?djlQS2k0WDlkRjZvUVlVMzMzMEdCZVErVVFLT0UzWHJ1K1Z0RW9jc3JSWjJ6?=
+ =?utf-8?B?UjdLZUdvaDNLU1FGb0ZjMUE2dVhzV05XZk5LRytJRE9lWHZvT28waDhjR1hw?=
+ =?utf-8?B?N20yczVwWGV2NElPaHFCdnRIclAxVTlYd2I5S0UwTTFhZGg3U3hhRlNBcmNx?=
+ =?utf-8?B?Z0tkT1JjRXZjTzhLR004RmM4NHlpRmtHT3U1dTA4MnhZUlFkZXFkZ0EweFA4?=
+ =?utf-8?B?dm9VY2dpUXRtaDhFaGVrbE1nMm1oMlNpbTBBRzVVV2MvM0d5bUN6SWpiWmF0?=
+ =?utf-8?B?eXByU1AzSW0wUGg5Uy82QzdVclhyNlcwbkY2YXBlVExLRjlSQUJ1elUxb1Uz?=
+ =?utf-8?B?NHZuYm10dG02WDNFZDY0ejFISXpERFgyOTdJamZ2YkJ6c0lxTmNLQ1JLWXh1?=
+ =?utf-8?B?Ui9WYXd1UnJUd1IwazFxS1FmdGZ6OFpkZEVWZEhvMUV3WkIzWm9DaEg4ZkxN?=
+ =?utf-8?B?U0VQY3RmYlJkTlpWSzNpZ09hdmVCSkZuVTdKdE15WVpjczVJZEZaNHo0ZkVC?=
+ =?utf-8?B?QTZZbkhqb3VMQW80MDhYMk1HSnBHYU5wOXUxMzZaSmNuamY0cmpETnc0ZGJL?=
+ =?utf-8?B?Z3loMkxLMkZpQ3FRT0F2MGFmd2l1N3kvYXA2Smk0Q3dta1YwR0pTdDBrQ2Qw?=
+ =?utf-8?B?bWI2Y3drWFBrbmpLck5RMW03OUNTTGZyQk0xczIzeFduRGd6cS82MlpZMFY5?=
+ =?utf-8?B?dDhWTW52dkcrK00xcVZNUGVXMWtScWZhWS9PSG5xNCt4M0Y4Y2lObDF3Nk9n?=
+ =?utf-8?B?Sm8zOWRsUmRJM2FTOGNIYkNmMXMvbENwK1lHMFhJQW1ScDZEaXJ6ZlVGRjFU?=
+ =?utf-8?B?SEw0ZGxvamN5Uk5jUFhWN3BSVHFwU3pNSyt0RXFPSHV2MmM5RjR5MjVQRWpq?=
+ =?utf-8?B?RkdtUCt4R0pRcEFYQTF1dnRDZkNVbTU3WU1qc25nQzhnOG5YRHZEbDJPbDli?=
+ =?utf-8?B?RGYvTlpYbzV1WkwxelRxc245bEVrclVsOWs3RWlyT3B3dG1tbDd0ZnhmdWpZ?=
+ =?utf-8?B?VUNyTTFzeGFIZnF6SkhXMGJaYk95Qng0ZTI0ZnZEaElkVW1jd3p6cFhFZnpo?=
+ =?utf-8?Q?JUEB2q8XpMGl3ul8G4OYPQZAC?=
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92742699-3270-40a7-d6d7-08dc1ebc79cf
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB8500.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2024 22:16:42.7935
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1/xY9TTFZURyu6XT60Ji3DPDN/cCG4fPebATV9cVy2CEkbsmBSiOKKGEP9JzP89t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR02MB8840
 
+Hi!
 
---51HTn85XAt3vYgRW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+2024-01-26 at 17:16, Conor Dooley wrote:
+> Hey,
+> 
+> On Fri, Jan 26, 2024 at 05:25:08PM +0530, Naresh Solanki wrote:
+>> Add #io-channel-cells expected by driver. i.e., below is the message
+>> seen in kernel log:
+>> OF: /iio-hwmon: could not get #io-channel-cells for /voltage_divider1
+>>
+> 
+>> TEST=Run below command & make sure there is no error:
+>> make DT_CHECKER_FLAGS=-m dt_binding_check -j1
+> 
+> This shouldn't be in the commit message.
+> 
+>>
+>> Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+>> ---
+>>  Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+>> index dddf97b50549..b4b5489ad98e 100644
+>> --- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+>> @@ -39,6 +39,9 @@ properties:
+>>      description: |
+>>        Channel node of a voltage io-channel.
+>>  
+>> +  '#io-channel-cells':
+>> +    const: 1
+> 
+> The example in this binding looks like the voltage-divider is intended
+> to be an "IIO consumer" but "#io-channels-cells" is an "IIO provider"
+> property.
+> 
+> Are you sure this is correct?
 
-On Fri, Jan 26, 2024 at 11:10:36PM +0530, Naresh Solanki wrote:
-> Hi Conor,
->=20
->=20
-> On Fri, 26 Jan 2024 at 22:22, Conor Dooley <conor@kernel.org> wrote:
-> >
-> > On Fri, Jan 26, 2024 at 09:55:20PM +0530, Naresh Solanki wrote:
-> > > On Fri, 26 Jan 2024 at 21:47, Conor Dooley <conor@kernel.org> wrote:
-> > > > On Fri, Jan 26, 2024 at 05:25:08PM +0530, Naresh Solanki wrote:
-> > > > > Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
-> > > > > ---
-> > > > >  Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml |=
- 3 +++
-> > > > >  1 file changed, 3 insertions(+)
-> > > > >
-> > > > > diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-di=
-vider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > > > index dddf97b50549..b4b5489ad98e 100644
-> > > > > --- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.y=
-aml
-> > > > > +++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.y=
-aml
-> > > > > @@ -39,6 +39,9 @@ properties:
-> > > > >      description: |
-> > > > >        Channel node of a voltage io-channel.
-> > > > >
-> > > > > +  '#io-channel-cells':
-> > > > > +    const: 1
-> > > >
-> > > > The example in this binding looks like the voltage-divider is inten=
-ded
-> > > > to be an "IIO consumer" but "#io-channels-cells" is an "IIO provide=
-r"
-> > > > property.
-> > > >
-> > > > Are you sure this is correct?
-> > > I'm not aware that #io-channels-cells is only for IIO provider.
-> >
-> > #foo-cells properties are always for resource providers
-> >
-> > > But I do get some kernel message as mention in commit messages
-> > > if this is specified in DT.
-> >
-> > Can you please share the DT in question? Or at least, the section that
-> > describes the IIO provider and consumer?
-> Below is link to complete DT:
-> https://github.com/torvalds/linux/commit/522bf7f2d6b085f69d4538535bfc1eb9=
-65632f54
+A voltage-divider is always an iio consumer. And like all iio things,
+you may access its output from user space (typically via libiio). At
+the same time a voltage-divider is optionally an iio provider for other
+in-kernel thingies, in which case you need to specify
+#io-channel-cells.
 
-If you're gonna link something that is in a vendor tree, you should link
-the actual vendor tree and not something that "does not belong to any
-branch on this repository, and may belong to a fork outside of the
-repository"!
+BTW, this is the case for for all bindings handled by the iio-rescale
+driver.
 
-I did look at what you have there and I think your dts is wrong.
-
-The iio-hwmon binding says:
-| description: >
-|   Bindings for hardware monitoring devices connected to ADC controllers
-|   supporting the Industrial I/O bindings.
-|=20
-|   io-channels:
-|     minItems: 1
-|     maxItems: 51 # Should be enough
-|     description: >
-|       List of phandles to ADC channels to read the monitoring values
-
-And then you have:
-|	iio-hwmon {
-|		compatible =3D "iio-hwmon";
-|		// Voltage sensors top to down
-|		io-channels =3D <&p12v_vd 0>, <&p5v_aux_vd 0>, <&p5v_bmc_aux_vd 0>, <&p3=
-v3_aux_vd 0>,
-|			<&p3v3_bmc_aux_vd 0>, <&p1v8_bmc_aux_vd 0>, <&adc1 4>, <&adc0 2>, <&adc=
-1 0>,
-|			<&p2V5_aux_vd 0>, <&p3v3_rtc_vd 0>;
-|	};
-|
-|	p12v_vd: voltage_divider1 {
-|		compatible =3D "voltage-divider";
-|		io-channels =3D <&adc1 3>;
-|		#io-channel-cells =3D <1>;
-|
-|		/* Scale the system voltage by 1127/127 to fit the ADC range.
-|		 * Use small nominator to prevent integer overflow.
-|		 */
-|		output-ohms =3D <15>;
-|		full-ohms =3D <133>;
-|	};
-
-A voltage divider is _not_ an ADC channel, so I don't know why you are
-treating it as one in the iio-hwmon entry. Can you explain this please?
-
-Thanks,
-Conor.
-
---51HTn85XAt3vYgRW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbQuqwAKCRB4tDGHoIJi
-0qjuAP9odQPk4Rld47KxMAhyjjvAY+H2UQ4tgEBdtSu82pnmHgD/YOowmNyiakzs
-BOEey09K7vzMOq+xY/EArtk2sMjdVQ8=
-=279c
------END PGP SIGNATURE-----
-
---51HTn85XAt3vYgRW--
+Cheers,
+Peter
 

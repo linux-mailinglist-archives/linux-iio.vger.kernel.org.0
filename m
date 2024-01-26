@@ -1,85 +1,83 @@
-Return-Path: <linux-iio+bounces-1922-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1923-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0215083D9BC
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 12:55:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9858083DB2F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 14:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B431F24D4F
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 11:55:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C6B1C2103F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 13:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFD019BA6;
-	Fri, 26 Jan 2024 11:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CA61BC32;
+	Fri, 26 Jan 2024 13:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="bEHO79tw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFshnpDA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1FE1AACB
-	for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 11:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61601BC2B;
+	Fri, 26 Jan 2024 13:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706270121; cv=none; b=nYDLUpRXSGiTPk4qBvZGwVzIegjGWTzk4VtFBW3DGkeyP7PIJof8qJiPpH7hTFp9o2yBD6mAI+ghkYJn+lhDovlfAssJEXHehLUGjYoec142jxhTjR2lE7qKRgqg7+BZiS3HGgRs0XCX4SRCtyQpUCvbdXMr6TTNx1QFZBeFbC8=
+	t=1706277154; cv=none; b=oRXDI3i0HwPT+Z0U2thkFeGxQ3pQR+WJKuQPuSIgB2RLCAD03YRTIWYEsE9LRKGkck8k7bx3SX8DvdPwQ0RrQaoLrYEraLDlJohyJ1CcbBl+ICZ9d1HDzbU7Z9RD0t5xtwjFPdpc0iTwdUlkVOxJCLBrNa9mw+2wLXbXKBRd2sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706270121; c=relaxed/simple;
-	bh=KvDW3oimirzaLZ+3LyQ7tjVmuNkF2WsoEwGt2Ec9I+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NMKqlAPT93k0K2oQNA6hR8uQNH1mpxHMR9h0KGGEMQn1I8m/r+qsWnGwgW+MTT22TGs9lzFx0E82+yFJrGrHhvQwT6z1PrzGSp+aZjrZE4+wYKlem8Lb+UlO+CRO4MO2v5DCukxBWI1OPFGNvQMpNA88eq330LfNX9btFGfaXHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=bEHO79tw; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e8d3b29f2so5381295e9.1
-        for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 03:55:19 -0800 (PST)
+	s=arc-20240116; t=1706277154; c=relaxed/simple;
+	bh=NJ2zvDpRugpkOrPns2BIpOKFHbVlIVZkrcOBbNNo1hk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ld53+jEbBLFtwvI4nxiAwWGtVrhowukeNpWMOR9XlH5sHx8l6jeIUyaxeTebOYxn9Tq+K1Kz320afCYsmmGsZWoWLthQwjNF6KMe94DBsS3F4akjRP6f5bB+S7CBAxGqVKPd4rKEijm+zFhdMQcMtf4enZA/NaGrDdgyWr2GiUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFshnpDA; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so197703a12.1;
+        Fri, 26 Jan 2024 05:52:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1706270118; x=1706874918; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1706277151; x=1706881951; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5YD1avWXiDmKVPhJNDv4Z+Ew3Vz4aGu7X+vQARwJOeU=;
-        b=bEHO79tw3TzVQ2l67Em3pJ1i2WQahpxukP6KAly1UgAx260fqefLl3M98Da/7ioDNF
-         XWKoB1dzLEVQX8XhRR5Y1ynSUPBqF0+v0ONgwFhf5e1mrEQfFRRSkcjiKxCyacQ0DsS5
-         PrYP5/pnX2ElLzFAruz0byazQKEU29EEM9PlNDPGTkf+g1zhUlrfiOtR0jVeDZLDyyOW
-         eHLNSNikLwUS2qLA9SflP7LcPdoDTqB4gL4jvLB2CAUwC6yyzZUP8rYR3jNNSmebcC1j
-         ZOlCGl9OO+199o2VGsLo0F/6X1ktu5HxJpeME+CPpZJsXIhFAiYzu62Coln5Az+pxbQi
-         uSzA==
+        bh=rM8zCIVBjxeUHvmSaQvqLI0p0Y8zROjJ9BiceQqTpqA=;
+        b=jFshnpDAkJH8bYk70sxbwrhumx70xWcLQlCPMUzqurtovPxPDtkET9w7xZ3eqbv5q+
+         XctgyuvBdY8zYe5WAOPDhzGxMsVVdwjSmbQdMbahcU/NRPmRbcQd/i2nKLPovDerY0+k
+         MfaZpdyFkfIEDQh1DwFvmqV4iMxGO4t3bLASQyFf9Z7jPhzy2VoKkHaNVOHdwJT7NivI
+         tXHgf2krnp2kovTZcPddW7WiOObfZONEal1jYNxOP8uaShtJJfebtgymNQy6eOfLsRYv
+         0+Znzf4m8oPtj+AEjv0niCmhc04TwZ1FUlSuFSKNnlkvpSREFhDR6FGC9zyfEoQ10oAr
+         n7Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706270118; x=1706874918;
+        d=1e100.net; s=20230601; t=1706277151; x=1706881951;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5YD1avWXiDmKVPhJNDv4Z+Ew3Vz4aGu7X+vQARwJOeU=;
-        b=WSH+ceJwApcGplkIlNx5kprLVwfKRPhKwZFHUsWpV/MttIxTnIXsPbrYKNpPMOPFtH
-         aO7vW78RAzpN69TAQmdvffg+PiPbZSq9JzQxxYcexkXKhuwFuj6rcslRe4EjkPkiOtKD
-         vdiiFOcUN+vraRjEgZJ/xbIEFL+IYa3hJKYYuW9O/phv8akht+R84miDR1VDlJeaqsNm
-         +FffBg0Ep6SGtdTwig1BXxjs1uITAPivvwNwssA0XwzFV3FBm0Pt4BAS9s5K3HzDaemh
-         FZamh29lSb60kWF+llye0j/cTIopbYdBfbmHRjpIPMrKd5kyFW1MfQnXzrwuzUGcHlQu
-         GdPw==
-X-Gm-Message-State: AOJu0Yx8sMyH/28xxIYGZSDf+k7JrFTfvune6HaFSQK+uZE1OiyZrHqL
-	nd9ZY+qptMkZnM2rh6OIBNILIOYwi8dfsCvcSLPa6s7rznjnMefIewAigFM4l7o=
-X-Google-Smtp-Source: AGHT+IECraYXk/gis2PyyZjpxoZQsQq+NsKnyjHm2H37sX1KMoJpc1j7bNxvr2bN1NJQpzQfiVhaCA==
-X-Received: by 2002:a05:600c:3548:b0:40e:d5c7:8355 with SMTP id i8-20020a05600c354800b0040ed5c78355mr466668wmq.131.1706270117801;
-        Fri, 26 Jan 2024 03:55:17 -0800 (PST)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id f11-20020a05600c154b00b0040ed434ef66sm3387424wmg.25.2024.01.26.03.55.16
+        bh=rM8zCIVBjxeUHvmSaQvqLI0p0Y8zROjJ9BiceQqTpqA=;
+        b=pC0OYu8+5WAHtgL5a+QPTwMEj1+otdYN/XnkIz4FHgrq04wAcboak/Z9ctG43FouGK
+         BXe1WhWifduGU7mIQFh8wmEP/ceaw+UqATNV8SjfVNQOqAWZ7eAXYZQTtmKbV/uwT5x+
+         So4nRZXpNQlbKQ/ofHk86ohLFwVgnbQULSk053Zbbv8WRHGv1YUukWnCQQbsCeDb6LvU
+         SohD2VaqBzUvxkdsCJP5W2qKd7csdcGCNnLZWAVNDTpdKv3aS23i4rLOdBBFhbRJFVa0
+         DruZ1/hPTQeOlH/MrJbDEJVdtMKdNp1qkOSjPkPJxjRlU69wUSdMYkdrg8251LwHL2Ne
+         QeOg==
+X-Gm-Message-State: AOJu0YwJTSatsZc9jQ6p1MqMvziJQ71TXLzXaKG4ydUD04N7lIznmvXL
+	E6qropPejQMI1DnuxzoM/hRRhfrnl+saxFDHVCVG1JqU5UMCwJv9
+X-Google-Smtp-Source: AGHT+IFPw83GR4tLxRryzpGA+/cOpSMPSFWnHVENe+DragFoiq0k4DgaivyQMTnXCNIwMn7cZH8o0A==
+X-Received: by 2002:a17:906:3b90:b0:a2f:db4e:c4c2 with SMTP id u16-20020a1709063b9000b00a2fdb4ec4c2mr509182ejf.67.1706277150688;
+        Fri, 26 Jan 2024 05:52:30 -0800 (PST)
+Received: from debian.fritz.box ([93.184.186.109])
+        by smtp.gmail.com with ESMTPSA id gx28-20020a1709068a5c00b00a349463a4e9sm650685ejc.187.2024.01.26.05.52.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 03:55:17 -0800 (PST)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Peter Rosin <peda@axentia.se>,
+        Fri, 26 Jan 2024 05:52:30 -0800 (PST)
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: 
+Cc: Dimitri Fedrau <dima.fedrau@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Li peiyu <579lpy@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: mazziesaccount@gmail.com,
-	Naresh Solanki <naresh.solanki@9elements.com>,
 	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: afe: voltage-divider: Add io-channel-cells
-Date: Fri, 26 Jan 2024 17:25:08 +0530
-Message-ID: <20240126115509.1459425-1-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
+Subject: [PATCH v2] iio: humidity: hdc3020: fix temperature offset
+Date: Fri, 26 Jan 2024 14:52:26 +0100
+Message-Id: <20240126135226.3977904-1-dima.fedrau@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,35 +86,34 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add #io-channel-cells expected by driver. i.e., below is the message
-seen in kernel log:
-OF: /iio-hwmon: could not get #io-channel-cells for /voltage_divider1
+The temperature offset should be negative according to the datasheet.
+Adding a minus to the existing offset results in correct temperature
+calculations.
 
-TEST=Run below command & make sure there is no error:
-make DT_CHECKER_FLAGS=-m dt_binding_check -j1
-
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+Fixes: <c9180b8e39be> ("iio: humidity: Add driver for ti HDC302x humidity sensors")
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in V2:
+- Added Fixes: tag
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-index dddf97b50549..b4b5489ad98e 100644
---- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-+++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-@@ -39,6 +39,9 @@ properties:
-     description: |
-       Channel node of a voltage io-channel.
+ drivers/iio/humidity/hdc3020.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+index 4e3311170725..ed70415512f6 100644
+--- a/drivers/iio/humidity/hdc3020.c
++++ b/drivers/iio/humidity/hdc3020.c
+@@ -322,7 +322,7 @@ static int hdc3020_read_raw(struct iio_dev *indio_dev,
+ 		if (chan->type != IIO_TEMP)
+ 			return -EINVAL;
  
-+  '#io-channel-cells':
-+    const: 1
-+
-   output-ohms:
-     description:
-       Resistance Rout over which the output voltage is measured. See full-ohms.
-
-base-commit: ecb1b8288dc7ccbdcb3b9df005fa1c0e0c0388a7
+-		*val = 16852;
++		*val = -16852;
+ 		return IIO_VAL_INT;
+ 
+ 	default:
 -- 
-2.42.0
+2.39.2
 
 

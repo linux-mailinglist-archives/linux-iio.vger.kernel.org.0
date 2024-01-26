@@ -1,161 +1,188 @@
-Return-Path: <linux-iio+bounces-1929-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1930-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C10B83E09D
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 18:41:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5143283E10F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 19:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A681C22A98
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 17:41:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCB7D1F261D7
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jan 2024 18:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AD5208D7;
-	Fri, 26 Jan 2024 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE7A208B4;
+	Fri, 26 Jan 2024 18:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="IfoXomhK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NJqWUt1I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB8F208A7
-	for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 17:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BB520DE1
+	for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 18:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706290850; cv=none; b=PNB3/p4Y1ktyPRI5+en3w3Gp1XYJMWgWBlZbmzHuL0mCoFhwQgMGwn9mENFLAXvb5IzLk/WmF3bKH+ycCCriXSMxFQvAlQ5XU+oMP3985QwJrC2Jf3mCg0cErKvHz1zbTRobw9md9W3PpPw9wej/ekHMZV8Y1LWNUgpSHQKvrRY=
+	t=1706292596; cv=none; b=kX3zn24ICwROPlkiHVwuvLpfyntoiiOhzKh8mHJFV8wyVYvV8F57btQL7rh/zOwEoq5uTy+7ysDd3tIC/RI6m7Qb7niietjF8qapjgVhYdp76vfg+NQ3JWrMyuBRC7IUqG8iKanbYtPcA0heYuVM8cxrqTj/n1Hr7PUDPyyY9JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706290850; c=relaxed/simple;
-	bh=LYAUFYI3PPskX/K+nNIULnwnwvRLyCKhmBoErZbeIEA=;
+	s=arc-20240116; t=1706292596; c=relaxed/simple;
+	bh=IApN5jeDzJFeUDMG9m9MSuW8aJpOPCcJcvFopWbIyTc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d5lRal1yMqBwj8PZ3tWIoU9+qWjt0OjlcVazGP4zzNuHY9kxIA3T4qN32ioU35nwhWlvI3XMwLiwrnkBmQ/KlTZkqGTOyhtNR+9XX/UUbtzxQ2M9/J2PjaaXWCk0jKQSpTwRmeH7Os4ujukgEb2E6TnchxMgcCFa6ZZcJMjWG9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=IfoXomhK; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6ddce722576so526809b3a.1
-        for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 09:40:48 -0800 (PST)
+	 To:Cc:Content-Type; b=A3WSo2Dd5FOqoLDTwW/4XgCXn3UbJ7Ocvjsm3AjzKW+MbROCEbFxwL2JD9xBe3I1KqL8vBf2hR/4o0WNy+1QO9vD0E0ImYMO9oKTn43JfI0tLD9VSrvBNo8Yq9Ies0nHZUSv7fm03/iCdG3qylgzceoW2Mwl1sbSPx32VKXZgtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NJqWUt1I; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-428405a0205so5241cf.1
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jan 2024 10:09:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1706290847; x=1706895647; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nW/G1leX3fQbY5zUt2hlw0gvCqeqoiW1Fa0PytKdtZg=;
-        b=IfoXomhKI9nWITFaj3yLc3TfO1vrHGAyjGDpvtIj1witwUaQ3bsEkYxeA0FXYewT0z
-         7f5CssJaQAxKG8JsgukzTMQ5RuUQh8xo5pZ5z6I6IBtvs2o7BeTpIUQINvgNBWII7uod
-         PqXD4ZLX1TCE4HLYp+PLARaDOWRlbC4LvMX0hdKD4h87v2arLUz9mxAJuW3yCFDv+llb
-         MaUyz2pMRsOaeSJpI9pRGZo9C+hq5EAfepa+FnE86y8HODOCUZiePoOwP8xs1/BbOwGN
-         R1zAzW30H/k+wdGMLy68VyBtRAknO4M+fVY0XP/gbsz2BpFQ2O8PhVUqCO0q7cO/D9yh
-         0lvA==
+        d=google.com; s=20230601; t=1706292593; x=1706897393; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IApN5jeDzJFeUDMG9m9MSuW8aJpOPCcJcvFopWbIyTc=;
+        b=NJqWUt1IAoy/KdHO4BcDS2OiX1HSYSBjZ54O18jURVEBz8fKru/2FKjeMzga82Ok9J
+         XQXhDFuLQf4w7zZMKBocl7ZkJZez7RoxVQjLC2EV98dK9n0abCgAuTeiF9zpR1yvpUAZ
+         BRr4WPt58SuHldnNiY0XAYgd/pPibMG/961izp1xl+3w98bQd92p3b1s411YD9cCrE0y
+         upTeC7NW91oWl8sVh009yCXvaDOpwuvAjCknnTtPHaXw2MZPOsoxggQTXzG9wBlfsueZ
+         FICAsHx5XaOWTnL3O/VEHeARYegh0e3p5Gqc0Imss0mR12aI6pf27D8lKYKuwQ63tq9E
+         i/Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706290847; x=1706895647;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nW/G1leX3fQbY5zUt2hlw0gvCqeqoiW1Fa0PytKdtZg=;
-        b=XBAdA0cSi/+ZI4cChUqXrzK6+DCj/2ITUh6mayhtUbfQypUqyfXrfeVa5DeT72kPBK
-         fhj2k7opZsPdHTI+XAeenqIc6V0uTV1VAzHsbvh/bMbl5BwyRe3VE7A1h9pBf+KrVBHP
-         kiZ8H51Ji5MQxe0qSm17BK0w5nXlGm7EFvDGOO3pnRioo8mRMgok4cf5hpY+JroszOq7
-         /R9o7tTCWyyD3lCX5fGrU+YdkY1f81DZsqxAZ5KW3zNTPeKzPNWT/L64b/92GwRWwvSY
-         lepgHAqDElYRm6RgYDIrNuC6KULeud+seI3qk+P88Ia4cfmzqD+s2OtvzDUmA33P4tBu
-         s+ag==
-X-Gm-Message-State: AOJu0YzzoCPGg+hDGsBlTgRTXnBdgceysX8dT1WKSH7LGZpJr1Hf1ZoH
-	cLAtTW4MPVIhg0Va/Bc++yXSF3yIz1k6tGVQqSmyhtrm9Erv56TBgiMrsCX+V3C/6iXw9vNwUnN
-	QKcqbV4qKg0dTJ+CALK9SGCfAMynhbqZzMbHKrQ==
-X-Google-Smtp-Source: AGHT+IEcSrQaMAvEaXVvHb7l4qcln7TODr9I1zAzX1B7RypHiTg+jJOTUgiHySRU59MmQB9TqZwYmHPyouHWF5zed9A=
-X-Received: by 2002:aa7:8886:0:b0:6db:de89:d0f1 with SMTP id
- z6-20020aa78886000000b006dbde89d0f1mr175972pfe.28.1706290847494; Fri, 26 Jan
- 2024 09:40:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706292593; x=1706897393;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IApN5jeDzJFeUDMG9m9MSuW8aJpOPCcJcvFopWbIyTc=;
+        b=Gt7i+rjETAzxidlyHNEs0LAlTmrrpuEU+NzCo5yqWsYin+5gE0ojT4dCOuYkTHHvvN
+         tbniFQ3it15QBthz/t2b9jqVKXdRaR8IgQICso0ae4MXsyfI6lVOJdpYuY9DnTGgC/uG
+         YLQkIiOKCchk3o+teUcfy8YU/SAfWOQK59IYdT75ji8oniEYoMkJuf/Dnt4NvXVtA6Nu
+         N2itc4XEQjjtyrgf6Sd68E1BshhQav4we9UZAZ6jRH1OegmUDfOzbY/YksTZfF3/NfnL
+         9CfUrNb4QE3da2Y+f8lpV83owIfW9qmUT/IxBqqL5HIvzBMMrCUqYW49Zjhmt5m0xub0
+         kBIQ==
+X-Gm-Message-State: AOJu0YwwIMfBS2edLSX5EGK9TM2/ouojhdYnfJRbZlWiSeDr1hBu8rPE
+	FPyBZrWLMnEwZO+VoNQRuFnEpnv5KvHSIdweNEIYWayvUcR74nxkWnjcS9URfD2FH2DMpOl/aop
+	WORrrv1xCgZMjK683Kcv2YKWy/IvBcRP5cR8/
+X-Google-Smtp-Source: AGHT+IHZyNsxPB0vf1l+a3JL0IxifsSg1TT1JukI6eVph+diAKXGvURUDfqHRQHz8xvr+w06DI7qli1x9UYLzckitd0=
+X-Received: by 2002:a05:622a:4c0f:b0:42a:2976:8a7a with SMTP id
+ ey15-20020a05622a4c0f00b0042a29768a7amr325741qtb.10.1706292593090; Fri, 26
+ Jan 2024 10:09:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240126115509.1459425-1-naresh.solanki@9elements.com>
- <20240126-cinnamon-flatware-e042b5773f17@spud> <CABqG17hzZf2mme0v7hALhpd6-N3ZHqxdH-AhFg5eF9sbLSC2gw@mail.gmail.com>
- <20240126-scale-serrated-33686467d91b@spud>
-In-Reply-To: <20240126-scale-serrated-33686467d91b@spud>
-From: Naresh Solanki <naresh.solanki@9elements.com>
-Date: Fri, 26 Jan 2024 23:10:36 +0530
-Message-ID: <CABqG17jp6YRGyTmNitz-xDdyhWOPgfT_XpXxw-OJLnXQ777vAA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: afe: voltage-divider: Add io-channel-cells
-To: Conor Dooley <conor@kernel.org>
-Cc: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
+ <20240123-iio-backend-v7-4-1bff236b8693@analog.com> <CAGETcx8_0ExTG4ASb9xK-uwmubMFDx44_wUf1h3VsO8w9jJApQ@mail.gmail.com>
+ <8eae083af481441d83df02a1880e2aedf99efdfb.camel@gmail.com>
+ <CAGETcx_ScsW4gKpAK01dHYxB3XGs-pRjJQMygbZUNAdxV6BqtA@mail.gmail.com>
+ <865346908c9b76d72741e6f319a4535459de1ea6.camel@gmail.com> <c459cc6766b741892cdf9de0b50832023eb4196d.camel@gmail.com>
+In-Reply-To: <c459cc6766b741892cdf9de0b50832023eb4196d.camel@gmail.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Fri, 26 Jan 2024 10:09:13 -0800
+Message-ID: <CAGETcx_TXTddsExr+7hq9VWY518Qoai_YQ9u1Jb3WPihAK5fqg@mail.gmail.com>
+Subject: Re: [PATCH v7 4/9] driver: core: allow modifying device_links flags
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	mazziesaccount@gmail.com, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Conor,
-
-
-On Fri, 26 Jan 2024 at 22:22, Conor Dooley <conor@kernel.org> wrote:
+On Fri, Jan 26, 2024 at 6:24=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
 >
-> On Fri, Jan 26, 2024 at 09:55:20PM +0530, Naresh Solanki wrote:
-> > On Fri, 26 Jan 2024 at 21:47, Conor Dooley <conor@kernel.org> wrote:
-> > > On Fri, Jan 26, 2024 at 05:25:08PM +0530, Naresh Solanki wrote:
-> > > > Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml | 3 +++
-> > > >  1 file changed, 3 insertions(+)
+> On Fri, 2024-01-26 at 09:13 +0100, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-01-25 at 16:50 -0800, Saravana Kannan wrote:
+> > > On Thu, Jan 25, 2024 at 12:11=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gm=
+ail.com> wrote:
 > > > >
-> > > > diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > > index dddf97b50549..b4b5489ad98e 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > > @@ -39,6 +39,9 @@ properties:
-> > > >      description: |
-> > > >        Channel node of a voltage io-channel.
 > > > >
-> > > > +  '#io-channel-cells':
-> > > > +    const: 1
+> > > > Hi Saravana,
+> > > >
+> > > > Thanks for your feedback,
+> > > >
+> > > > On Wed, 2024-01-24 at 19:21 -0800, Saravana Kannan wrote:
+> > > > > On Tue, Jan 23, 2024 at 7:14=E2=80=AFAM Nuno Sa via B4 Relay
+> > > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> > > > > >
+> > > > > > From: Nuno Sa <nuno.sa@analog.com>
+> > > > > >
+> > > > > > If a device_link is previously created (eg: via
+> > > > > > fw_devlink_create_devlink()) before the supplier + consumer are=
+ both
+> > > > > > present and bound to their respective drivers, there's no way t=
+o set
+> > > > > > DL_FLAG_AUTOREMOVE_CONSUMER anymore while one can still set
+> > > > > > DL_FLAG_AUTOREMOVE_SUPPLIER. Hence, rework the flags checks to =
+allow
+> > > > > > for DL_FLAG_AUTOREMOVE_CONSUMER in the same way
+> > > > > > DL_FLAG_AUTOREMOVE_SUPPLIER is done.
+> > > > >
+> > > > > Curious, why do you want to set DL_FLAG_AUTOREMOVE_CONSUMER?
+> > > > > Especially if fw_devlink already created the link? You are effect=
+ively
+> > > > > trying to delete the link fw_devlink created if any of your devic=
+es
+> > > > > unbind.
+> > > > >
+> > > >
+> > > > Well, this is still useful in the modules case as the link will be =
+relaxed
+> > > > after
+> > > > all devices are initialized and that will already clear AUTOPROBE_C=
+ONSUMER
+> > > > AFAIU. But, more importantly, if I'm not missing anything, in [1],
+> > > > fw_devlinks
+> > > > will be dropped after the consumer + supplier are bound which means=
+ I
+> > > > definitely
+> > > > want to create a link between my consumer and supplier.
+> > > >
+> > > > FWIW, I was misunderstanding things since I thought
+> > > > DL_FLAG_AUTOREMOVE_CONSUMER
+> > > > was needed to make sure the consumer is unbound before the supplier=
+. But
+> > > > for
+> > > > that I think I can even pass 0 in the flags as I only need the link=
+ to be
+> > > > MANAGED. Still, I think having DL_FLAG_AUTOREMOVE_CONSUMER makes se=
+nse.
 > > >
-> > > The example in this binding looks like the voltage-divider is intended
-> > > to be an "IIO consumer" but "#io-channels-cells" is an "IIO provider"
-> > > property.
+> > > As you noticed, your understanding of DL_FLAG_AUTOREMOVE_CONSUMER is
+> > > not correct. There's almost never a good reason to drop a device link=
+.
+> > > Even when a device/driver are unbound, we still want future probe
+> > > attempts to make use of the dependency info and block a device from
+> > > probing if the supplier hasn't probed.
 > > >
-> > > Are you sure this is correct?
-> > I'm not aware that #io-channels-cells is only for IIO provider.
->
-> #foo-cells properties are always for resource providers
->
-> > But I do get some kernel message as mention in commit messages
-> > if this is specified in DT.
->
-> Can you please share the DT in question? Or at least, the section that
-> describes the IIO provider and consumer?
-Below is link to complete DT:
-https://github.com/torvalds/linux/commit/522bf7f2d6b085f69d4538535bfc1eb965632f54
->
-> It should look like the example:
-I reference the below example previously but didn't help.
-If io-channel-cell isn't provided then there is print in kernel dmesg as:
-OF: /iio-hwmon: could not get #io-channel-cells for /voltage_divider1
+> >
+> > Yeah that makes sense and is making me thinking that I should change my=
+ call
+> > (in
+> > patch 7 to use the MANAGED flag instead of AUTOREMOVE_CONSUMER). Sure,
+> > AUTOREMOVE_CONSUMER won't matter most cases but if someone disables
+> > fw_devlinks
+> > then it matters.
 
-Thanks,
-Naresh
+I don't fully understand the patch series, but what exactly are you
+gaining by adding device links explicitly. I'd rather that every
+driver didn't explicitly create a device link. That's just a lot of
+useless code in most cases and we shouldn't have useless code lying
+around. If someone does fw_devlink=3Doff and you don't create a device
+link explicitly, what's the worst that's going to happen? Useless
+deferred probes? fw_devlink is really only there as a debug tool at
+this point -- I don't think you need to worry about people setting it
+to off/permissive.
+
+> >
 >
->     spi {
->         #address-cells = <1>;
->         #size-cells = <0>;
->         adc@0 {
->             compatible = "maxim,max1027";
->             reg = <0>;
->             #io-channel-cells = <1>;
->             interrupt-parent = <&gpio5>;
->             interrupts = <15 IRQ_TYPE_EDGE_RISING>;
->             spi-max-frequency = <1000000>;
->         };
->     };
->
->     sysv {
->         compatible = "voltage-divider";
->         io-channels = <&maxadc 1>;
->
->         /* Scale the system voltage by 22/222 to fit the ADC range. */
->         output-ohms = <22>;
->         full-ohms = <222>; /* 200 + 22 */
->     };
->
-> Thanks,
-> Conor.
+> Yeah, just realized MANAGED is not a valid flag one can pass to
+> device_link_add() :)
+
+If you don't pass the STATELESS flag, a link is assumed to be MANAGED.
+So, you can still create managed device links.
+
+-Saravana
 

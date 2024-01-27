@@ -1,165 +1,146 @@
-Return-Path: <linux-iio+bounces-1935-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1936-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5792383ECC9
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 12:03:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9067483ED3E
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 14:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0953A1F22C27
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 11:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3758B1F21D7F
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 13:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5717A1F61C;
-	Sat, 27 Jan 2024 11:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0542325603;
+	Sat, 27 Jan 2024 13:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBaJT/Kh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEw4f84s"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E861733D1;
-	Sat, 27 Jan 2024 11:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADC1200C0
+	for <linux-iio@vger.kernel.org>; Sat, 27 Jan 2024 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706353400; cv=none; b=LuBnqsNIq6MPxAxeBQ6jvLMHwOl5z6QJ5JdiUPf6D+jokhNQ+2Xkjt/3xUpL35mVm7FyGpb7QKMbW2VZXLX45dkMjoQQCK/+9xVVo5sJxZhgxtgs/j8KUrb4cDUWvCSCHGZAYOXaYpmpQj9j/8XFo2HyCx9AWy+ewtSOG4vxoKo=
+	t=1706361466; cv=none; b=F9VCp/X3eiIDacX6GXQ/1qs1X4ceOSqnGSkiUGs/eZLr9FvsXeX7mQIJSdDGQ1OeejDVX3tRCdJtXzNhAS77X51ComW7BMCVRefgbHnw6/JMGNF60l2z5kzPFY2gAVpcygZpYFnqEZ+ktVy2ogaq868ODooZ1CHfyBBJ0Q3fW2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706353400; c=relaxed/simple;
-	bh=yl0BYkYr0KJfRtCRnstJBk+fgnnqo4CtTb58KQ3ZRWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tnp+54EoB1olY+NUU9+F7ZXxibkwE4aaPpNI/BF/dlLPiozVxmd6AVCFqhGpm5p+aqZ4wDysCoOdiSPTWpxV2GfKLiULShrKukBr588md9PMQSpcqiddK0nYAPzHTb7m7C5Ab8i2SjT9edRvj+f9J9TdmAnxP/xVlZUp+cIa6as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBaJT/Kh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB96C433C7;
-	Sat, 27 Jan 2024 11:03:16 +0000 (UTC)
+	s=arc-20240116; t=1706361466; c=relaxed/simple;
+	bh=5dJ2hAHEuJo5lJEEVnIkgOcUcSaufelRfqKe5PR4S5s=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KhOJdkEXKcwQFpHSjXPyp/Xb6i08k79eW69aPCtIJkQXfA+TRG2aB25ddI6dJ7ZWvJ7IgSlJdRn8pM6pUU8jZSyn+iWGr4QL3mYN7uQI2UAKnxygrj5iuZiV3FbVQkklQNt86bIK045HUYi8aLhB4aTduMN7ZSl7vp6CbhMzb+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEw4f84s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4095CC433C7
+	for <linux-iio@vger.kernel.org>; Sat, 27 Jan 2024 13:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706353399;
-	bh=yl0BYkYr0KJfRtCRnstJBk+fgnnqo4CtTb58KQ3ZRWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GBaJT/KhcJ6pILu1JMtOlZjc5NcTWbd0oSooCHIVk9L0P/iRshrMcWSZeiC/COBgH
-	 BECj2c7HOvBf4xqqpP2Ew66F8UiOT/IR3T5JgtLfKL0xpsBjdir+9+aHK26+CVysrL
-	 rly6ECWJ/hYJHCooN7pGgajEs1TuYokQRuWZ2UdVREJ/n9yWutgUkvTsvydfV0FTK5
-	 AKpdoo1mgHvzUNhgkn7Vt6ILNZbcD++Ozyl6jqstOTwPkCBMGyOiacbKCaIl27SF8+
-	 ErHuG76n4O61hw9a8ofwtvfSbdntbDgLSwpTq1m0YX99X0UyDhIjCYmEVNTGT5KI7t
-	 YOSnAmUUoUNaA==
-Date: Sat, 27 Jan 2024 11:03:14 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Peter Rosin <peda@axentia.se>
-Cc: Naresh Solanki <naresh.solanki@9elements.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: afe: voltage-divider: Add
- io-channel-cells
-Message-ID: <20240127-hunting-wick-fc1eed1af6b1@spud>
-References: <20240126115509.1459425-1-naresh.solanki@9elements.com>
- <20240126-cinnamon-flatware-e042b5773f17@spud>
- <CABqG17hzZf2mme0v7hALhpd6-N3ZHqxdH-AhFg5eF9sbLSC2gw@mail.gmail.com>
- <20240126-scale-serrated-33686467d91b@spud>
- <CABqG17jp6YRGyTmNitz-xDdyhWOPgfT_XpXxw-OJLnXQ777vAA@mail.gmail.com>
- <20240126-blaspheme-calculate-a4134dc1ed68@spud>
- <536971eb-51f0-40e5-d025-7c4c1d683d49@axentia.se>
+	s=k20201202; t=1706361466;
+	bh=5dJ2hAHEuJo5lJEEVnIkgOcUcSaufelRfqKe5PR4S5s=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=SEw4f84sxEmARYXpLn4+rTVW7cn4EEw5hXeolk4gDpj6ZObO6Y4rzLecP3lELedRa
+	 Oqt/gmeX87n3f9bSMJV2CBCpjPhFHT44nc+zvAf1VUvMxv3iZKdDC5CMn21uEcofdQ
+	 n1BRw4HBkiKkF/cMn/2vbfe9ZETAFjmqpJZ028xO440FirGL7BdH9YRBBzrLe2Y48u
+	 PZzBr5INB3bDbJ2iSVE00iwsus30dLKr2gFz4wHGoczbGTS8De7DH6SlrWLz5JDrPU
+	 5Nq8MewdjGRDjZ+rwZrpCaCzJJsLFtFLHEYF1laCme2pf8jzALQc7kp8mOY8OvGFn8
+	 hLrSyj9ZywOrQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 205AAC4332E; Sat, 27 Jan 2024 13:17:46 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 214751] Lenovo Yoga Chromebook C630 i7 missing support for
+ sound, microphone, touchscreen and gyroscope
+Date: Sat, 27 Jan 2024 13:17:45 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: I2C
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: freedman.joshua@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-214751-217253-HyJWqkQEzi@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-214751-217253@https.bugzilla.kernel.org/>
+References: <bug-214751-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="PEKFPbYYOtLi9l3Q"
-Content-Disposition: inline
-In-Reply-To: <536971eb-51f0-40e5-d025-7c4c1d683d49@axentia.se>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D214751
 
---PEKFPbYYOtLi9l3Q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Josh (freedman.joshua@gmail.com) changed:
 
-On Sat, Jan 27, 2024 at 10:40:31AM +0100, Peter Rosin wrote:
->=20
->=20
-> 2024-01-26 at 23:14, Conor Dooley wrote:
-> > On Fri, Jan 26, 2024 at 11:10:36PM +0530, Naresh Solanki wrote:
->=20
-> > I did look at what you have there and I think your dts is wrong.
-> >=20
-> > The iio-hwmon binding says:
-> > | description: >
-> > |   Bindings for hardware monitoring devices connected to ADC controlle=
-rs
-> > |   supporting the Industrial I/O bindings.
-> > |=20
-> > |   io-channels:
-> > |     minItems: 1
-> > |     maxItems: 51 # Should be enough
-> > |     description: >
-> > |       List of phandles to ADC channels to read the monitoring values
-> >=20
-> > And then you have:
-> > |	iio-hwmon {
-> > |		compatible =3D "iio-hwmon";
-> > |		// Voltage sensors top to down
-> > |		io-channels =3D <&p12v_vd 0>, <&p5v_aux_vd 0>, <&p5v_bmc_aux_vd 0>, =
-<&p3v3_aux_vd 0>,
-> > |			<&p3v3_bmc_aux_vd 0>, <&p1v8_bmc_aux_vd 0>, <&adc1 4>, <&adc0 2>, <=
-&adc1 0>,
-> > |			<&p2V5_aux_vd 0>, <&p3v3_rtc_vd 0>;
-> > |	};
-> > |
-> > |	p12v_vd: voltage_divider1 {
-> > |		compatible =3D "voltage-divider";
-> > |		io-channels =3D <&adc1 3>;
-> > |		#io-channel-cells =3D <1>;
-> > |
-> > |		/* Scale the system voltage by 1127/127 to fit the ADC range.
-> > |		 * Use small nominator to prevent integer overflow.
-> > |		 */
-> > |		output-ohms =3D <15>;
-> > |		full-ohms =3D <133>;
-> > |	};
-> >=20
-> > A voltage divider is _not_ an ADC channel, so I don't know why you are
-> > treating it as one in the iio-hwmon entry. Can you explain this please?
->=20
-> This is the exact intent of the voltage divider (and the other bindings
-> handled by the iio-rescaler). The raw ADC reports the voltage at its inpu=
-t,
-> which is fine, but if there is an analog frontend in front of the ADC
-> such as a voltage divider the voltage at the ADC is not the interesting
-> property. You are likely to want the "real" voltage before the voltage
-> divider to better understand the value.
->=20
-> In this case it's much more interesting to see values such as 12.050V
-> which is presumably close to the nominal voltage (12V? guessing from
-> the node name) rather than some unscaled raw ADC voltage (in this
-> example it would be ~1.359V, which tells you rather little w/o rescaling
-> it first).
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |freedman.joshua@gmail.com
 
-Thanks for explaining it. Naresh, can you respin please with an
-explanation of why the property belongs in the binding please?
+--- Comment #5 from Josh (freedman.joshua@gmail.com) ---
+On opening of laptop during hibernation, everything restores and you can lo=
+gin,
+but sound never works.  I have to reboot.  9d71-LENOVO-CB-01-1-tplg.bin mig=
+ht
+be missing? as per dmesg?
 
-> It's all in the description of the binding...
+dmesg failed
+[87007.094848] snd_soc_skl 0000:00:1f.3: Transfer firmware failed-5
+[87007.096696] snd_soc_skl 0000:00:1f.3: PM: failed to resume: error -5
+[87007.413141] snd_soc_skl 0000:00:1f.3: ASoC: PRE_PMU: media0_in cpr 0 eve=
+nt
+failed: -110
+[87007.733394] snd_soc_skl 0000:00:1f.3: ASoC: PRE_PMU: codec0_out mo event
+failed: -110
+[87082.208709] snd_soc_skl 0000:00:1f.3: ASoC: POST_PMD: codec0_out mo event
+failed: -22
+[87082.208743] snd_soc_skl 0000:00:1f.3: ASoC: POST_PMD: media0_in cpr 0 ev=
+ent
+failed: -22
+[87135.219499] snd_soc_skl 0000:00:1f.3: ASoC: PRE_PMU: media0_in cpr 0 eve=
+nt
+failed: -110
+[87135.539506] snd_soc_skl 0000:00:1f.3: ASoC: PRE_PMU: codec0_out mo event
+failed: -110
+[87135.550200]  Analog HDA DSP: ASoC: trigger FE cmd: 1 failed: -32
+[87135.550224]  Analog HDA DSP: ASoC: trigger FE cmd: 0 failed: -32
+[87135.562979]  Analog HDA DSP: ASoC: trigger FE cmd: 1 failed: -32
+[87135.563000]  Analog HDA DSP: ASoC: trigge
 
-Obviously it was not sufficiently clear, it's not as if I didn't look at
-it...
+dmesg error
+[56950.019148] ath10k_pci 0000:6b:00.0:   device [168c:003e] error
+status/mask=3D00000081/00006000
+[87007.096696] snd_soc_skl 0000:00:1f.3: PM: failed to resume: error -5
+[87061.478614] pcieport 0000:00:1c.4: AER: Multiple Corrected error receive=
+d:
+0000:6b:00.0
+[87061.478716] ath10k_pci 0000:6b:00.0:   device [168c:003e] error
+status/mask=3D00000080/00006000
+[87135.550179] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.550215] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.562960] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.562991] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.584317] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.584352] snd_soc_skl 0000:00:1f.3: ASoC: error at soc_dai_trigger on
+hda-dsp-analog-dai: -32
+[87135.605942] snd_soc_skl 0000:00:1f.3: ASoC: err
 
-Cheers,
-Conor.
+--=20
+You may reply to this email to add a comment.
 
---PEKFPbYYOtLi9l3Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbTi8gAKCRB4tDGHoIJi
-0irBAQC/E6pH/v9G1cPxD4totgtOdP6R6un1YtOfN56hp58+AwEAt2eplZHFIOo4
-pnncaWC1QWLMPW8QQ0qV9zSenk8Tcws=
-=qI/n
------END PGP SIGNATURE-----
-
---PEKFPbYYOtLi9l3Q--
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

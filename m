@@ -1,59 +1,57 @@
-Return-Path: <linux-iio+bounces-1938-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1939-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE06B83ED83
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:38:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E352183ED8E
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94C521F229D4
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 14:38:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC7D284244
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 14:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EEC25629;
-	Sat, 27 Jan 2024 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56ACE286B2;
+	Sat, 27 Jan 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTAPYsyQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyQ7r8hm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B8D28DC3;
-	Sat, 27 Jan 2024 14:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E892563F;
+	Sat, 27 Jan 2024 14:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706366273; cv=none; b=DDzelmbtXFy/U9484yqyNlcCAYfrDUUn8CTFrYdawlQZUC6OeVuSqbxQh+4wmE7NehKf2y/zZWEkITbIiJoTE9JPJV1QCDQWIxSuFPf4Nr87MNhyHIP2j6Jtob/FUq1u7H6xiW4azEnwYj4qwpCIL+7TnmRtHrbqY0mzV07xHks=
+	t=1706366470; cv=none; b=LvP+IgMZFCLqBkU8Vbnxnbyks/CKTKu7D07avHIcIidem66v5446yBeXm7HjsmUHzdEFGyDHeLQ7rpc4QwqijyiwOJv8S5nu1izXzr4ulikVbkxahQ6RxzmsT19E1SJy3nBIHdXeXBkXIt3/ODAkorXoLqyM2oOHzO14/k9Fqls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706366273; c=relaxed/simple;
-	bh=mrSW6WQZjSTOgoOhWP22411NQ5SUJZsI+xs0bT6GJrw=;
+	s=arc-20240116; t=1706366470; c=relaxed/simple;
+	bh=dPSRqy8RtN+cIEqACSGMiHRGMly5SB33KCjhBJ4WK2M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YCOhxSOOmxFeCyJfbCVorgZsxa/Fl/bStM2Nx9FPwhmADJspiz5vTWq6bG6THPr19EyLd7dHIjgyjIP2SCMK5huabFsQEhrpLNqOmppDvoVDNB9uFVXWacD/jOeYL4XA7FLQ0fWHH1XsTVDcUHMpej7lrCJ0+ONsBnUyIdacuNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTAPYsyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF39C433A6;
-	Sat, 27 Jan 2024 14:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sky56SnaNP7A1l8kcd/oOQT4ACTVjQsGhLxBnSSiWuaG7sUCIn51tt35nSyDSU7fENXBQMN9mehpUS0DeOhswU9WiIna6bmV4DtdkDyd0iOGmg8crf9KayyJCrwzsUCB6RpfUA8rGJ/XwjgJM835p3BZi5n/HdKjWSnFfm+jhuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZyQ7r8hm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E2DC433C7;
+	Sat, 27 Jan 2024 14:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706366272;
-	bh=mrSW6WQZjSTOgoOhWP22411NQ5SUJZsI+xs0bT6GJrw=;
+	s=k20201202; t=1706366469;
+	bh=dPSRqy8RtN+cIEqACSGMiHRGMly5SB33KCjhBJ4WK2M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JTAPYsyQHS9EKjNZ2wEyeBDXYFkBjLgvPOHiqdC11yGFcxD3hqQ0etJLw8mk5eADb
-	 ecZ82DXvl1rrURtHFXGISTV1pFCdd5EMuxfOviyFmuW8TPFCn1VPcwBlFD+Dx8h8cF
-	 14jnTXbhT7ddXXtfEZEqJuAjAQ86UDeLG2VRLyEOlTdzFt81UpXlNkm27ZixNJD5iO
-	 N5EcZQqDTV4OhwSP5p0OKbUgRFZ+nEiK9vXb9J7WuuofXVTNlHAReKAkPvitha2wXj
-	 sahWMSNAHD3AxCvIY6LYKlnjwTk/HbKmexRhkKzbHUoC/GAR4p7dQdBGAOvqGvXpZP
-	 KMBF/AomaDR/w==
-Date: Sat, 27 Jan 2024 14:37:39 +0000
+	b=ZyQ7r8hmvv4oTnTw0kKT99IJodOgF2Nq54MAy0XdPOko6gBBznC2BC5N57lmaMnti
+	 UvT2AkH6rgnu9bOTMC2kgRDk6o8pVXT3JmXMlrxRZnkuxvAXiHwmF85hlVc9+1pBNe
+	 Q0EibKr1Wemm+fh/fEcOc3uPzZ7CZMYADM8dSZw3K++BrqPDTxL6FtZmdKQxEwaiJ1
+	 ilHdkPNqN+8bTPu31qTJQV56shF2/mw85VN1iz2tUbRhAavs5fIUVTblkq1OcEIa76
+	 lXSUdK7tXkg1twQWVO29LOilODWj3nNqEzydPIbS5TG9yGlDygFPrpdy0uiN3NiITz
+	 kOjKN3ANqyfsw==
+Date: Sat, 27 Jan 2024 14:40:55 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Javier Carrasco
+Cc: Nuno Sa <nuno.sa@analog.com>, Javier Carrasco
  <javier.carrasco.cruz@gmail.com>, Li peiyu <579lpy@gmail.com>, Lars-Peter
  Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: humidity: hdc3020: fix temperature offset
-Message-ID: <20240127143739.1848d64f@jic23-huawei>
-In-Reply-To: <20240125110853.GA3857099@debian>
-References: <20240125102641.3850938-1-dima.fedrau@gmail.com>
-	<0a98e54735cc2a97f393eef6b1cdaf27c946d10e.camel@gmail.com>
-	<20240125110853.GA3857099@debian>
+Subject: Re: [PATCH v2] iio: humidity: hdc3020: fix temperature offset
+Message-ID: <20240127144055.2e46c77d@jic23-huawei>
+In-Reply-To: <20240126135226.3977904-1-dima.fedrau@gmail.com>
+References: <20240126135226.3977904-1-dima.fedrau@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,62 +59,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 25 Jan 2024 12:08:53 +0100
+On Fri, 26 Jan 2024 14:52:26 +0100
 Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
 
-> Am Thu, Jan 25, 2024 at 11:49:25AM +0100 schrieb Nuno S=C3=A1:
-> > Hi Dimitri,
-> > =20
-> Hi Nuno,
->=20
-> > On Thu, 2024-01-25 at 11:26 +0100, Dimitri Fedrau wrote: =20
-> > > The temperature offset should be negative according to the datasheet.
-> > > Adding a minus to the existing offset results in correct temperature
-> > > calculations.
-> > >=20
-> > > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> > > --- =20
-> >=20
-> > This is a fix. You're missing a Fixes: tag in your commit message.
-> > git log --grep=3D"Fixes:" should give you some examples...
-> > =20
-> Will fix this and resend the patch. Thanks for your help.
-For future reference, you can just send the Fixes tag in a reply
-and the b4 tooling most maintainers now use will pick it up
-automatically.
+> The temperature offset should be negative according to the datasheet.
+> Adding a minus to the existing offset results in correct temperature
+> calculations.
+> 
+> Fixes: <c9180b8e39be> ("iio: humidity: Add driver for ti HDC302x humidity sensors")
 
-Thanks,
+<> are not part of the fixes tag syntax.  I guess you saw the
+one case of that which was in my tree earlier in the week and
+I've now fixed up?
+
+I've fixed it up here as well.
+
+Applied to the fixes-togreg branch of iio.git.
 
 Jonathan
 
->=20
-> Best regards,
-> Dimitri
-> > With that, feel free to add:
-> >=20
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> >  =20
-> > > =C2=A0drivers/iio/humidity/hdc3020.c | 2 +-
-> > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hd=
-c3020.c
-> > > index 4e3311170725..ed70415512f6 100644
-> > > --- a/drivers/iio/humidity/hdc3020.c
-> > > +++ b/drivers/iio/humidity/hdc3020.c
-> > > @@ -322,7 +322,7 @@ static int hdc3020_read_raw(struct iio_dev *indio=
-_dev,
-> > > =C2=A0		if (chan->type !=3D IIO_TEMP)
-> > > =C2=A0			return -EINVAL;
-> > > =C2=A0
-> > > -		*val =3D 16852;
-> > > +		*val =3D -16852;
-> > > =C2=A0		return IIO_VAL_INT;
-> > > =C2=A0
-> > > =C2=A0	default: =20
-> >  =20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> ---
+> Changes in V2:
+> - Added Fixes: tag
+> 
+>  drivers/iio/humidity/hdc3020.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+> index 4e3311170725..ed70415512f6 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -322,7 +322,7 @@ static int hdc3020_read_raw(struct iio_dev *indio_dev,
+>  		if (chan->type != IIO_TEMP)
+>  			return -EINVAL;
+>  
+> -		*val = 16852;
+> +		*val = -16852;
+>  		return IIO_VAL_INT;
+>  
+>  	default:
 
 

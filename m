@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-1946-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1947-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA6E83EDDE
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:21:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0B283EE00
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567431F21757
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0711C21523
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5191528DD3;
-	Sat, 27 Jan 2024 15:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED4528E02;
+	Sat, 27 Jan 2024 15:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGr2fchC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1qFzL5u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF6029D08;
-	Sat, 27 Jan 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245F328DAB;
+	Sat, 27 Jan 2024 15:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706368866; cv=none; b=K5A+rHwi4ryG2c0Yqm7zgRxM1t2d2aUDKARcwxCSFOD/LXovrVrsiEXgruURPajn5Fdz4pol7+hObrA1ZQbSn10Gn0AAYt/DKBMdUiMLDUAAAS6c41dvwJ680npPlEQh0YA7cHoAmk3nddwfptQ1n/xpMVM5MKYizgUTNEuyKv0=
+	t=1706369947; cv=none; b=l7Q5UQdkHieWO4IJzABhlH9IR7f58Ah+eY2ERLFdSTYCaEMrmz60DISai5AJndjfDRphco3k4E0Zws1Bc9jDtiZGo5CvzUy/BbCEELxXnQD8dI+vFepclOMH5hboJU6Rs3IJdkKbGK3HH8HG5WYt+/OIIOHwwV1SOm+WdfcziRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706368866; c=relaxed/simple;
-	bh=z0pu8Sga/qDq7lbfHrE53M/tvuGDdpv66kUE2iwHZ6A=;
+	s=arc-20240116; t=1706369947; c=relaxed/simple;
+	bh=lb9Uaffl5vXy1p3Zzot+RjOxBbBWyqOBeptq65PZiNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oh3p+QX8J5epWyWrWllx+sxuy3l5yhXOnJFTIVRUuvnYHyVjffxbuMYQ3oA4jk9nnMVHMjEg8BQ7kkspAd0zUMfpnsl/z97mEUdi3iiuMvMcRzw2NGFquhl+0UV8z1NFAXYQINEzcrMaIt2wg9nYpF5iA6ABtd/myTTSS8buuhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGr2fchC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC4AC433C7;
-	Sat, 27 Jan 2024 15:21:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ACLHfkhyTIRJRVBBlCBq5mMORl20vLqMeg3JKfLV0MSKNVGiaaIZdgwMAqTv3SzbYJBrEtSUmYqHL/54cobHA5L4XY2SrXaJ90LIcpAY2bv9OxsEWiCY+0PRbBZpArKvKHWRUafXNpLPlsDa9bpuPuB40Nn4z+MeZVndyRrnmQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1qFzL5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C60C433C7;
+	Sat, 27 Jan 2024 15:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706368865;
-	bh=z0pu8Sga/qDq7lbfHrE53M/tvuGDdpv66kUE2iwHZ6A=;
+	s=k20201202; t=1706369946;
+	bh=lb9Uaffl5vXy1p3Zzot+RjOxBbBWyqOBeptq65PZiNA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hGr2fchCLmpIGnkzdcLImquRSPrbmINqIw8eDw2AW22n/Zsv4wAP7be9r96NDspGP
-	 eS2gg8XeK7mtUFHZcH+ok2MsNp2x2y234gV1TGqkBCA12i6L/WCn7ZZRM0W1jaywOy
-	 Cyg7eYtXcBPp54XV/mEuPJFeMaNkGJ7OIZB+tTYr8rZdTLZxl7CE44jviJP9l4GzO/
-	 g6JLxJdTxUNiSwGiF9D4Ta3Ff2xJBhh9vDqNNJfPoPzAX9cZReUVxaCLp927NVHEoa
-	 tHH3lJ67VgfIno75z9uvOJ2eQ2fGqUvQrSGw6Hzf/Oiq7Is9UHkoLllF/j8fOEIZu4
-	 1476RfC/JsdUQ==
-Date: Sat, 27 Jan 2024 15:20:49 +0000
+	b=E1qFzL5utrew6nOuVychcFUAQGBdldyVcGQWW+eD75whSHhJFL8YucUYSB4SOEmjs
+	 Fa+wgP5OgCVF9SRmmzOwsR60qAnVQNNkPzXuilXRWuBsQVM7oIjrHV2/WI/KwGSbD6
+	 fSiLPHU5lAx4uF1EZSKtsnXX8gNZTHLHg6wzfFkPQ5UW3rutxH1PzgbPnOumryGd67
+	 ZPsThJLsnQZxp/SJxa+LBnQBjR0NEoILeq4bJEnWeN02qTBx7QUimijzVfHaAhrgb8
+	 /kc/09hsjyV0eFeRLHD8eSE1YMv2vOhVjebkeKgpJzLgorMPFc/FXDqpnGylLS75i6
+	 KH0LFpIyFxTDg==
+Date: Sat, 27 Jan 2024 15:38:53 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Saravana Kannan <saravanak@google.com>
-Subject: Re: [PATCH v7 9/9] iio: adc: adi-axi-adc: move to backend framework
-Message-ID: <20240127152049.22a8ce74@jic23-huawei>
-In-Reply-To: <20240123-iio-backend-v7-9-1bff236b8693@analog.com>
-References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
-	<20240123-iio-backend-v7-9-1bff236b8693@analog.com>
+To: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Cc: <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nuno.sa@analog.com>,
+ <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 1/1] docs: iio: add documentation for adis16475
+ driver
+Message-ID: <20240127153853.02d4f0d2@jic23-huawei>
+In-Reply-To: <20240123150029.465443-2-ramona.gradinariu@analog.com>
+References: <20240123150029.465443-1-ramona.gradinariu@analog.com>
+	<20240123150029.465443-2-ramona.gradinariu@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,72 +60,267 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 23 Jan 2024 16:14:30 +0100
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Tue, 23 Jan 2024 17:00:29 +0200
+Ramona Gradinariu <ramona.gradinariu@analog.com> wrote:
 
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> Move to the IIO backend framework. Devices supported by adi-axi-adc now
-> register themselves as backend devices.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-I'm still not getting the %d vs %c change..
+> Add documentation for adis16475 driver which describes
+> the driver device files and shows how the user may use the
+> ABI for various scenarios (configuration, measurement, etc.).
 
-Otherwise LGTM
+hi Ramona,
 
-> -	if (cl->info->version > ver) {
-> +	if (*expected_ver > ver) {
->  		dev_err(&pdev->dev,
-> -			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-> -			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
-> -			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
-> -			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
-> +			"IP core version is too old. Expected %d.%.2d.%d, Reported %d.%.2d.%c\n",
+I'm not against more documentation in the tree, but I'd like
+a little info in this patch description for why you feel this
+particular driver needs it?  Fine to argue they all do if that's
+the reasoning!
 
-If it's a valid change fine, but then I'd expect both %c to change.
-I'd also expect it to be in a separate patch with an explanation of why.
+To be useful I think we need some more detail on the raw data
+from the chardev readout and that perhaps belongs in some generic
+docs (fine to use this driver as an example).
 
-> +			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
-> +			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
-> +			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
->  			ADI_AXI_PCORE_VER_MAJOR(ver),
->  			ADI_AXI_PCORE_VER_MINOR(ver),
->  			ADI_AXI_PCORE_VER_PATCH(ver));
->  		return -ENODEV;
->  	}
->  
-> -	indio_dev->info = &adi_axi_adc_info;
-> -	indio_dev->name = "adi-axi-adc";
-> -	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	indio_dev->num_channels = conv->chip_info->num_channels;
-> -	indio_dev->channels = conv->chip_info->channels;
-> -
-> -	ret = adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
-> +	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
->  	if (ret)
->  		return ret;
->  
-> -	ret = adi_axi_adc_setup_channels(&pdev->dev, st);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
-> +	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%d) probed\n",
+Thanks,
 
-This should also be in that separate patch fixing up this formatting.
+Jonathan
 
->  		 ADI_AXI_PCORE_VER_MAJOR(ver),
->  		 ADI_AXI_PCORE_VER_MINOR(ver),
->  		 ADI_AXI_PCORE_VER_PATCH(ver));
-> @@ -428,6 +229,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	return 0;
->  }
+>=20
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> ---
+> changes in v2:
+>  - added adis16475 documentation file to iio index.rst file
+>  Documentation/iio/adis16475.rst | 327 ++++++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst     |   2 +
+>  2 files changed, 329 insertions(+)
+>  create mode 100644 Documentation/iio/adis16475.rst
+>=20
+> diff --git a/Documentation/iio/adis16475.rst b/Documentation/iio/adis1647=
+5.rst
+> new file mode 100644
+> index 000000000000..9af054f4af79
+> --- /dev/null
+> +++ b/Documentation/iio/adis16475.rst
+> @@ -0,0 +1,327 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +ADIS16475 driver
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +This driver supports Analog Device's IMUs on SPI bus.
+> +
+> +1. Supported devices
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +* `ADIS16465 <https://www.analog.com/ADIS16465>`_
+> +* `ADIS16467 <https://www.analog.com/ADIS16467>`_
+> +* `ADIS16470 <https://www.analog.com/ADIS16470>`_
+> +* `ADIS16475 <https://www.analog.com/ADIS16475>`_
+> +* `ADIS16477 <https://www.analog.com/ADIS16477>`_
+> +* `ADIS16500 <https://www.analog.com/ADIS16500>`_
+> +* `ADIS16505 <https://www.analog.com/ADIS16505>`_
+> +* `ADIS16507 <https://www.analog.com/ADIS16507>`_
+> +
+> +Each supported device is a precision, miniature microelectromechanical s=
+ystem
+> +(MEMS) inertial measurement unit (IMU) that includes a triaxial gyroscop=
+e and a
+> +triaxial accelerometer. Each inertial sensor in the IMU device combines =
+with
+> +signal conditioning that optimizes dynamic performance. The factory cali=
+bration
+> +characterizes each sensor for sensitivity, bias, alignment, linear accel=
+eration
+> +(gyroscope bias), and point of percussion (accelerometer location). As a=
+ result,
+> +each sensor has dynamic compensation formulas that provide accurate sens=
+or
+> +measurements over a broad set of conditions.
+> +
+> +2. Device attributes
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +Accelerometer, gyroscope measures are always provided. Furthermore, the =
+driver
+> +offers the capability to retrieve the delta angle and the delta velocity
+> +measurements computed by the device.
+> +
+> +The delta angle measurements represent a calculation of angular displace=
+ment
+> +between each sample update, while  the delta velocity measurements repre=
+sent a
+> +calculation of linear velocity change between each sample update.
+> +
+> +Finally, temperature data are provided which show a coarse measurement of
+> +the temperature inside of the IMU device. This data is most useful for
+> +monitoring relative changes in the thermal environment.
+> +
+> +The signal chain of each inertial sensor (accelerometers and
+
+Wrapping is inconsistent. Please tidy that up so that for all the normal te=
+xt you
+wrap at same line length - this paragraph seems 10 chars shorter than the p=
+revious
+one.
+
+> +gyroscopes) includes the application of unique correction
+> +formulas, which are derived from extensive characterization
+> +of bias, sensitivity, alignment, response to linear acceleration
+> +(gyroscopes), and point of percussion (accelerometer location)
+> +over a temperature range of =E2=88=9240=C2=B0C to +85=C2=B0C, for each A=
+DIS device.
+> +These correction formulas are not accessible, but users do have
+> +the opportunity to adjust the bias for each sensor individually
+> +through the calibbias attribute.
+> +
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| 3-Axis Accelerometer related device files | Description               =
+                               |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_scale                            | Scale for the acceleromete=
+r channels.                    |
+
+Probably good to add a sentence explaining where these files are - I'm gues=
+sing they are just the ones in the
+iio\:deviceX directory and not the sub-directories below that.
+
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_x_calibbias                      | Calibration offset for the=
+ X-axis accelerometer channel. |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| accel_calibbias_x                         | x-axis acceleration offset=
+ correction                    |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_x_raw                            | Raw X-axis accelerometer c=
+hannel value.                  |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| accel_calibbias_y                         | y-axis acceleration offset=
+ correction                    |
+
+no in_ prefix?
+
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_y_raw                            | Raw Y-axis accelerometer c=
+hannel value.                  |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_z_calibbias                      | Calibration offset for the=
+ Z-axis accelerometer channel. |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_accel_z_raw                            | Raw Z-axis accelerometer c=
+hannel value.                  |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_deltavelocity_scale                    | Scale for delta velocity c=
+hannels.                       |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_deltavelocity_x_raw                    | Raw X-axis delta velocity =
+channel value.                 |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_deltavelocity_y_raw                    | Raw Y-axis delta velocity =
+channel value.                 |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +| in_deltavelocity_z_raw                    | Raw Z-axis delta velocity =
+channel value.                 |
+> ++-------------------------------------------+---------------------------=
+-------------------------------+
+> +
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+> +| 3-Axis Gyroscope related device files | Description                   =
+                       |
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+> +| in_anglvel_scale                      | Scale for the gyroscope channe=
+ls.                    |
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+> +| in_anglvel_x_calibbias                | Calibration offset for the X-a=
+xis gyroscope channel. |
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+> +| anglvel_calibbias_x                   | x-axis gyroscope offset correc=
+tion                   |
+
+A before, I think there is a in_ prefix on all these.
+
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+> +| in_anglvel_x_raw                      | Raw X-axis gyroscope channel v=
+alue.                  |
+> ++---------------------------------------+-------------------------------=
+-----------------------+
+...
+
+
+> +Usage examples
+> +--------------
+> +
+> +Set trigger if not available:
+
+What do you mean by not available?
+
+
+> +Obtain buffered data:
+> +
+> +.. code-block:: bash
+> +
+> +        root:/sys/bus/iio/devices/iio:device0> hexdump /dev/iio\:device0
+> +        ...
+> +        0044760 3901 0000 ffff f9fe ffff 29ee 0100 f79b
+> +        0044770 3901 0000 ffff 98fe ffff 1aef 0100 439a
+> +        0044780 3901 0000 ffff b4fe ffff 32ef 0100 c199
+> +        0044790 3901 0000 ffff bdfe ffff 20ef 0100 5f9a
+> +        00447a0 3901 0000 ffff 37ff ffff 1eef 0100 389b
+> +        00447b0 3901 0000 ffff 7dff ffff 96ee 0100 5a9c
+> +        ...
+I'd use hexdump -C to list them byte wise - otherwise endian effects make
+this rather incomprehensible.
+
+Also if you want to list the raw data, good to explain what the various par=
+ts are
+and how that is derived from the info in scan_elements.
+That might be best done in a separate document though that is then referred=
+ to from
+here. I don't think we have such a userspace document, having long relied on
+people figuring it out from the example tools or using google to find talks=
+ various
+folk have given (or the ADI wiki which might have stuff on this?)
+
+
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> index 1b7292c58cd0..0087c0dafe59 100644
+> --- a/Documentation/iio/index.rst
+> +++ b/Documentation/iio/index.rst
+> @@ -12,3 +12,5 @@ Industrial I/O
+>     ep93xx_adc
+>=20
+>     bno055
+> +
+> +   adis16475
+
+Hmm. It's already in a random order but let's not make it worse to fix that=
+ up.
+Put this before the bno055.
+
+If you want to add some more formatting to this, say to add some section ti=
+tles and
+that would be great as a separate patch.
+
+> --
+> 2.34.1
+>=20
 
 

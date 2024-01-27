@@ -1,197 +1,123 @@
-Return-Path: <linux-iio+bounces-1955-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1956-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA6083EE31
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 17:04:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3926783EE35
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 17:06:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D562841AD
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:04:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B6DE1C20F3F
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC57C2C86A;
-	Sat, 27 Jan 2024 16:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570DD2942D;
+	Sat, 27 Jan 2024 16:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="kvDN6o1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tskV5rc0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E1C2942C;
-	Sat, 27 Jan 2024 16:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189A225764
+	for <linux-iio@vger.kernel.org>; Sat, 27 Jan 2024 16:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706371463; cv=none; b=VLs2Omsh0o4lVVoNx6kI+H38glOZEm19nH6fCHFDNBBVifQcgGdbmZJOOmXNjmvpEtTeh3Bvhu2rXv77Sbtk0W2uA716c3xyxXXH+iXPNjPZB/EEK3DSkov5lxYJzPsS9a1fLMyZR8MSxkVhL12o1aPla+xb7tmgW4OtrNIWNS0=
+	t=1706371574; cv=none; b=JU62oxlHEeFM4TVDu2VPpZm6LCyqbZfEPk8pT1dRNkiKexulVRquhEX0d5j3hGryWME5OUX24xJJlMeEao5nU9NgNWZXtfwBNI6MWsDKVxfakPvqS0htulGTGfgcU1D0Urkcie0DcXFpn5RKwQxJ+cahQB/o/Y3oD56/Nm47Rqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706371463; c=relaxed/simple;
-	bh=uNZlNH68NOdUs670gUg9HFrHubxtW5W3+AmCbfDPYuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJ6oHeto8cB2SRs9zi0q6nqsdIbFqUFUTuafSYfVoOnuur4WfvMIHs4KFV1BDOfhKL1eAk7sNe7+o16e9pqDLG2uurqjEpfSSCxlBrP9R6Tm8mAmyOp/eeKNxsAwfS1ye6PDviYGVVIxOvhYfuAns1cqTS2mWV57m0TybmiOOho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=kvDN6o1x; arc=none smtp.client-ip=172.104.132.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from localhost.localdomain (unknown [188.24.80.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id F262E293A97;
-	Sat, 27 Jan 2024 16:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1706371453;
-	bh=uNZlNH68NOdUs670gUg9HFrHubxtW5W3+AmCbfDPYuM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kvDN6o1xB6Wxq1AT7VFZbgxjX5ROejk/V6uzeRrvVQivZDZfpFEhC3jg1pb0bXnR5
-	 XV7FPaolSgR14vAT0sgeFOXWfAlKex1BVARPQF1ffJcInh/DDbFS6caoIyUAHQyFdH
-	 41UL6EBdeCqVNJWFN5dLJop+eh0+VwD1DMf6kyLY=
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 4/4] iio: pressure: hsc030pa add triggered buffer
-Date: Sat, 27 Jan 2024 18:03:58 +0200
-Message-ID: <20240127160405.19696-5-petre.rodan@subdimension.ro>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240127160405.19696-1-petre.rodan@subdimension.ro>
-References: <20240127160405.19696-1-petre.rodan@subdimension.ro>
+	s=arc-20240116; t=1706371574; c=relaxed/simple;
+	bh=tDtmMlU2Fw4Q5pW4HnVyIHwbrfUvIbCfiu2WeuH5K9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cEuIUiTaHGZeKdbLUr5GnRWo9JeE3njrjswCdGfXpoIQG84lCEFAsq4j5hJRdc68pStlI7CNsgEwJaKQVoWwkzaZpwoszo8zwhu1P6b3icP4htCRitoVpg2OpP6yVvJ1SNcC7rjzBUewyzDpw0aTe0b0W4FMTguLqiyLxXdHSfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tskV5rc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F386DC43141;
+	Sat, 27 Jan 2024 16:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706371573;
+	bh=tDtmMlU2Fw4Q5pW4HnVyIHwbrfUvIbCfiu2WeuH5K9s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tskV5rc03E1Ku3/MjcYZtPr7RE25lZ9NMQg+z1FJQ5QX1nq5JYD/kIlZxYDywj09G
+	 oZldn4smrFqQaqKM18Zbig93YEXwNltNdex4QICnGH4uumGtp/zrnoz88E7mpj29Ni
+	 fW9ynzwPw2JZOr1SVw+AXZ8pb/hFXrrrJnTWO+HQ7ZAC0uBui1WCmtNauO6V/kdRfT
+	 snzoT/8T4GyWpUJFtDgx2eIgzDcY5FMTKqtlLrP6Am1gPYi/Mk2veQVv3wb5M7jyvq
+	 dvKzFGTfVPWVudaTCJx3BT7QtbdWiOo9hM4XBAhdtINlQpJOcmougxQoqWsObtW6mv
+	 8Dt6TECwbDziA==
+Date: Sat, 27 Jan 2024 16:06:00 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Schiller <david.schiller@jku.at>
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <michael.hennerich@analog.com>
+Subject: Re: [PATCH] staging: iio: ad5933: fix type mismatch regression
+Message-ID: <20240127160600.3d76e013@jic23-huawei>
+In-Reply-To: <20240122134916.2137957-1-david.schiller@jku.at>
+References: <20240122134916.2137957-1-david.schiller@jku.at>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add triggered buffer feature.
+On Mon, 22 Jan 2024 14:49:17 +0100
+David Schiller <david.schiller@jku.at> wrote:
 
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
----
-v1 -> v2 add Kconfig select for IIO_*BUFFER
-         a few changes based on Jonathan's review
- drivers/iio/pressure/Kconfig    |  2 ++
- drivers/iio/pressure/hsc030pa.c | 47 +++++++++++++++++++++++++++++++++
- drivers/iio/pressure/hsc030pa.h |  4 +++
- 3 files changed, 53 insertions(+)
+> Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
+> warning") fixed a compiler warning, but introduced a bug that resulted
+> in one of the two 16 bit IIO channels always being zero (when both are
+> enabled).
 
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index 5da7931dc537..3ad38506028e 100644
---- a/drivers/iio/pressure/Kconfig
-+++ b/drivers/iio/pressure/Kconfig
-@@ -114,6 +114,8 @@ config HSC030PA
- 	depends on (I2C || SPI_MASTER)
- 	select HSC030PA_I2C if I2C
- 	select HSC030PA_SPI if SPI_MASTER
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say Y here to build support for the Honeywell TruStability
- 	  HSC and SSC pressure and temperature sensor series.
-diff --git a/drivers/iio/pressure/hsc030pa.c b/drivers/iio/pressure/hsc030pa.c
-index 7e3f74d53b47..f8bddcdf5056 100644
---- a/drivers/iio/pressure/hsc030pa.c
-+++ b/drivers/iio/pressure/hsc030pa.c
-@@ -22,8 +22,11 @@
- #include <linux/types.h>
- #include <linux/units.h>
- 
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #include <asm/unaligned.h>
- 
-@@ -297,6 +300,29 @@ static int hsc_get_measurement(struct hsc_data *data)
- 	return 0;
- }
- 
-+static irqreturn_t hsc_trigger_handler(int irq, void *private)
-+{
-+	struct iio_poll_func *pf = private;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct hsc_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = hsc_get_measurement(data);
-+	if (ret)
-+		goto error;
-+
-+	memcpy(&data->scan.chan[0], &data->buffer, 2);
-+	memcpy(&data->scan.chan[1], &data->buffer[2], 2);
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-+					   iio_get_time_ns(indio_dev));
-+
-+error:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- /*
-  * IIO ABI expects
-  * value = (conv + offset) * scale
-@@ -382,13 +408,29 @@ static const struct iio_chan_spec hsc_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 14,
-+			.storagebits = 16,
-+			.endianness = IIO_BE,
-+		},
- 	},
- 	{
- 		.type = IIO_TEMP,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 11,
-+			.storagebits = 16,
-+			.shift = 5,
-+			.endianness = IIO_BE,
-+		},
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
- };
- 
- static const struct iio_info hsc_info = {
-@@ -485,6 +527,11 @@ int hsc_common_probe(struct device *dev, hsc_recv_fn recv)
- 	indio_dev->channels = hsc->chip->channels;
- 	indio_dev->num_channels = hsc->chip->num_channels;
- 
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      hsc_trigger_handler, NULL);
-+	if (ret)
-+		return ret;
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_NS(hsc_common_probe, IIO_HONEYWELL_HSC030PA);
-diff --git a/drivers/iio/pressure/hsc030pa.h b/drivers/iio/pressure/hsc030pa.h
-index 56dc8e88194b..9b40f46f575f 100644
---- a/drivers/iio/pressure/hsc030pa.h
-+++ b/drivers/iio/pressure/hsc030pa.h
-@@ -56,6 +56,10 @@ struct hsc_data {
- 	s32 p_scale_dec;
- 	s64 p_offset;
- 	s32 p_offset_dec;
-+	struct {
-+		__be16 chan[2];
-+		s64 timestamp __aligned(8);
-+	} scan;
- 	u8 buffer[HSC_REG_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
- };
- 
--- 
-2.43.0
+> 
+> This is because int is 32 bits wide on most architectures and in the
+> case of a little-endian machine the two most significant bytes would
+> occupy the buffer for the second channel as 'val' is being passed as a
+> void pointer to 'iio_push_to_buffers()'.
+> 
+> Fix by defining 'val' as u16. Tested working on ARM64.
+> 
+> Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
+> Signed-off-by: David Schiller <david.schiller@jku.at>
+
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Note that if you happen to fancy doing some cleanup of this driver, it should
+just be returning them big endian (and describing the channels
+as such) which would simplify the code and remove the need for this
+temporary buffer.
+
+> ---
+> So apparently this has gone unnoticed for over eight years. It appears
+> that I'm one of only a handful of Linux people with access to AD5933:
+> https://lore.kernel.org/linux-iio/20230606113013.00000530@Huawei.com/
+
+I would love us to have emulation in place for devices like this but
+even if say roadtest lands upstream, it will be a while before we
+have enough tests in place to pick up this sort of error in a little used
+(as you've discovered) driver.
+
+Thanks,
+
+Jonathan
+
+
+
+> 
+>  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> index 793918e1c45f..b682d0f94b0b 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -608,7 +608,7 @@ static void ad5933_work(struct work_struct *work)
+>  		struct ad5933_state, work.work);
+>  	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
+>  	__be16 buf[2];
+> -	int val[2];
+> +	u16 val[2];
+>  	unsigned char status;
+>  	int ret;
+>  
 
 

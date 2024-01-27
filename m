@@ -1,126 +1,98 @@
-Return-Path: <linux-iio+bounces-1950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CD683EE1E
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:57:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6513183EE28
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 17:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45B2F1F225C4
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEA81F224EC
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F18A28E31;
-	Sat, 27 Jan 2024 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8B029437;
+	Sat, 27 Jan 2024 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KaRR1lNb"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="COIITEB8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFE3200D4
-	for <linux-iio@vger.kernel.org>; Sat, 27 Jan 2024 15:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A1C28E02;
+	Sat, 27 Jan 2024 16:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706371029; cv=none; b=FsR3osHu8N+VexDXQwsbgf/9xzvmCqPGzVlFjDAnVPpG8IUrVdC4LqyqjY2okGfvspWJTswAJmMgkJMeCVnHqoHlT2o8WanrX4rOtDlEu6sCSpieVOPySmO7zszlcl/E3ZKM6a5B7IyrYCdXXunlLEDm+MOdB4fCrRtujx9jzFg=
+	t=1706371461; cv=none; b=G+RLVxDnIVn0Zkx7/s+qpr4bB3+1FI8dnWXJ9H+U1/E+wiceDmzxeqkdF1L+dStq/a/h73KRYVfJoYSsEozzISJI2n/pB2LAcKeSeHLNjiMAxgoKDQEdIql2NrDzKkE6d1a/FACGWkYsuUiPEGWL2RZRYN3gJut2+idwNJeOh+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706371029; c=relaxed/simple;
-	bh=vOyF8001JXzpv+7Phzp56KKuYEX/PMw16aCM4ubVl8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C+zNksEji3s/FPjPU//kMWocDVHP2/p8P77FJF2SGHZZWAekHlV0e7ujMUTGnj9PM3jdRYNry66mXto5uF6kFLR9lQrbAzHhMBfSdIkch64um1QTV1eV2xpavre+QYfSPP3/nfBFW4EVAzLH6Vj+2KEQflIem/6YZjc1Zu+h0FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KaRR1lNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7C1C433F1;
-	Sat, 27 Jan 2024 15:57:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706371028;
-	bh=vOyF8001JXzpv+7Phzp56KKuYEX/PMw16aCM4ubVl8o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KaRR1lNbM5eP2+mEi9Pn488hLJg6Zus/9XFE+Ey+sw8StEU7YSRXLZtmazlLJ/Me0
-	 L1m+WQioADtQSxa7ffhuqLiWr6P8O1REqWJDBN2gFnCjwusEw5tfFQ9kFz0kuwh1u2
-	 SgFchqj4sEbhLz6JmEm2MvA2KEFk4NuOzuQoRbpAcaxti/j3hfwA3eZzwKB1c4ZVzW
-	 1GaUIhZQuSDrEqCb4TzUZ7jZQcndlJcbPKjsU2m0n6b4KD8CntsPffpuk/KKzQ0iRk
-	 rwLTtW55Hl6eV3IIFMFhXCN1g9iulxgCkSESVCFc5n5PxYEYoKmFw52KEkzki9e+RW
-	 rleppUoiwpelA==
-Date: Sat, 27 Jan 2024 15:56:55 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Denis Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH] iio: commom: st_sensors: ensure proper DMA alignment
-Message-ID: <20240127155655.6495b465@jic23-huawei>
-In-Reply-To: <20240122-dev_dma_safety_stm-v1-1-3a021614cbfb@analog.com>
-References: <20240122-dev_dma_safety_stm-v1-1-3a021614cbfb@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1706371461; c=relaxed/simple;
+	bh=LTtc/KGc3er11Li2smUvdjG1aLcglxo3OSttIx7IDpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlIOODYG8r2XTYD9cpJDaGBbVcUfHmsjgvSRQ/cB2ztPe0RIWBLE3TINpwpW07CJAJ5tXeN81I/NxhpDz0fghBhijvCv5KLTIN5NQ73OegEijLuHcVHSEnScSOt70PmjRjPCLiDIGv0QV9PI6i2AmXiQvujCvk7OeyYeDA8ctB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=COIITEB8; arc=none smtp.client-ip=172.104.132.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from localhost.localdomain (unknown [188.24.80.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id F079628F2BC;
+	Sat, 27 Jan 2024 16:04:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1706371452;
+	bh=LTtc/KGc3er11Li2smUvdjG1aLcglxo3OSttIx7IDpI=;
+	h=From:To:Cc:Subject:Date;
+	b=COIITEB8x+6MkFg/9rAcIUXu8R1EmER2zdVDa8IY3vKQa324tO+sxBv0r7rYNY4oG
+	 u2z+HUjyKsb7O8fX5707+pr3kQg3Fkae3vMk/A6cg/TL0SKTAVBtRsJtFElZQQAVKp
+	 +OgDkzYzPZyhkfHEBTZG9Kxe1z/g0exQaIBoBuIU=
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2 0/4] iio: pressure: hsc030pa: cleanup and triggered buffer
+Date: Sat, 27 Jan 2024 18:03:54 +0200
+Message-ID: <20240127160405.19696-1-petre.rodan@subdimension.ro>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 22 Jan 2024 15:15:41 +0100
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+This set of patches covers the following:
 
-> From: Nuno Sa <nuno.sa@analog.com>
->=20
-> Aligning the buffer to the L1 cache is not sufficient in some platforms
-> as they might have larger cacheline sizes for caches after L1 and thus,
-> we can't guarantee DMA safety.
->=20
-> That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the sa=
-me
-> for st_sensors common buffer.
->=20
-> [1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kern=
-el.org/
->=20
-> Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each bu=
-ffer enable")
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  include/linux/iio/common/st_sensors.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/co=
-mmon/st_sensors.h
-> index 607c3a89a647..a02652cf4862 100644
-> --- a/include/linux/iio/common/st_sensors.h
-> +++ b/include/linux/iio/common/st_sensors.h
-> @@ -258,7 +258,7 @@ struct st_sensor_data {
->  	bool hw_irq_trigger;
->  	s64 hw_timestamp;
-> =20
-> -	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
-> +	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN=
-);
-> =20
->  	struct mutex odr_lock;
-Hi Nuno.
+ - small cleanup
+ - mandatory 2ms delay between readings
+ - support for triggered buffer readings
 
-This is another problem.  There should be nothing after a DMA safe buffer e=
-mbedded
-in a structure like we do here.  We rely on C structure padding to ensure t=
-he
-rest of the __aligned(IIO_DMA_MINALIGN) region is unused and that doesn't w=
-ork
-if the buffer isn't the last element.
+The support for devices that have "sleep mode" factory option that was
+present in v1 of this patchset was removed, for a few reasons:
 
-My guess is we are safe to just reorder this before the buffer.
-Nuno, do you mind spinning a v2 that does that as well as the size change.
+ - a Honeywell employee told me that this chip variant is extremely
+    unlikely to be found in the wild, which also makes testing the
+    driver functionality impossible
+ - I found no reliable way of generating i2c/spi bus traffic with no
+    payload (toggle CS for SPI case, send i2c packet containing only
+    the address byte) that are required for the wakeup sequence.
 
-Jonathan
 
->  };
->=20
-> ---
-> base-commit: f9c0358aadcba16d04d139a5412b413eeee87afe
-> change-id: 20240122-dev_dma_safety_stm-c7016673f4ec
-> --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
+Petre Rodan (4):
+  dt-bindings: iio: pressure: honeywell,hsc030pa.yaml add spi props
+  iio: pressure: hsc030pa cleanup
+  iio: pressure: hsc030pa add mandatory delay
+  iio: pressure: hsc030pa add triggered buffer
+
+ .../iio/pressure/honeywell,hsc030pa.yaml      |  3 ++
+ drivers/iio/pressure/Kconfig                  |  2 +
+ drivers/iio/pressure/hsc030pa.c               | 49 ++++++++++++++++++-
+ drivers/iio/pressure/hsc030pa.h               |  7 +++
+ drivers/iio/pressure/hsc030pa_i2c.c           |  9 +++-
+ drivers/iio/pressure/hsc030pa_spi.c           |  7 ++-
+ 6 files changed, 73 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
 
 

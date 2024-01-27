@@ -1,57 +1,60 @@
-Return-Path: <linux-iio+bounces-1948-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1949-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1E683EE10
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:48:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2885983EE19
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:53:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4E1B283FC0
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:48:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12E04B20BA6
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 15:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD0128E31;
-	Sat, 27 Jan 2024 15:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594C728E34;
+	Sat, 27 Jan 2024 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mp4N5V47"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKFpN6ao"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6785728E0D;
-	Sat, 27 Jan 2024 15:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15470200D4;
+	Sat, 27 Jan 2024 15:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706370529; cv=none; b=QoD7vX2hiHGXd/xyJseNQbGaH/Fmn+L84NeMrRXwH/yiyG74TDMikCeAdqE+0Yrtv5EoYUvRxsysl2RFIW1XF1iWxFdA4s+X18EsRMRxxGfkni6OxW8yiLilgcQi58XDzq+wbBrcqoLwYGf1ivLUElOF2S+2JSr2ymwUgLLJCd4=
+	t=1706370782; cv=none; b=EkQ88Xro8aeWJS47ck4zKNcN6QG8oTCUPGSNLG3PmMOD+lCesGzx6ZqHxCrSsfqQSykcXu+6CUq0417FasW5HQgzHcvLv63U5d+u1UevkmjfF/ITQ2f8eF4/XiF2oJ6irsQAL4X8rpBZeTAfQH59t4pl6m4MgnKlNUJDbbKjb4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706370529; c=relaxed/simple;
-	bh=6CXq4Rt4QMBMD4/zjKHeRa1y6dixk2tNS4/vGYDiNrA=;
+	s=arc-20240116; t=1706370782; c=relaxed/simple;
+	bh=0YrSO1h696+GEJ50oswGfbDXeCj0z5bC7JdxE464cVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uqo4JyHMiX3Z/Q1d+KKk7I3lE1Liq6eei2WfPEnGGac6ALZbfycyX1pFb3goQCHgPF2jRB3R/4Kkc0vaS1Pxlb7t45/hNnGHZGCjmx/Pie5L2Da78PBV76X6T4KFMLt2Y6opJrhRl75eEz3aIV8n0LJ7F6yVHOCB2UbYNJTjPzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mp4N5V47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43DFC433F1;
-	Sat, 27 Jan 2024 15:48:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pZhlsl1v0kzdu9y0bptz3InGXUtKm0FUczWK7YETpWJVCYeqpdfFHiUr2UGIvUCvzJQShuwAJ4rDxClVQv9H1KPUh1YmKXOxNzuqkktTM6DWuXSBP08uoslyzX1PyI5RpESTAUvTC85kzk96hn680iucuzaJYJeeqvKkIhY9LiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKFpN6ao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD7CC433F1;
+	Sat, 27 Jan 2024 15:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706370528;
-	bh=6CXq4Rt4QMBMD4/zjKHeRa1y6dixk2tNS4/vGYDiNrA=;
+	s=k20201202; t=1706370781;
+	bh=0YrSO1h696+GEJ50oswGfbDXeCj0z5bC7JdxE464cVA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Mp4N5V47GiY9uNd4/P6igePZ+QY56uxETxFT04gUBd7WxrYZd6h5VGS+2mNqD4sZ/
-	 ga63x58+mkIt+Cd2OLcoeki8yUxyBX3RkKfMQ1zdOwLtyOHK7wtJHTNonZm2JMjle6
-	 eJpy5PVi1MBLpRJo6L/V6kqNxVN8Qbb+aY1pNzmw6oIx5bWEYu5gpE2H9TCUz3poC/
-	 cJWOvsIGM1+fDUfgds3+bDLxelIs4onFnhOrQa6FflXCogmL6b+58OemUllcViQNuW
-	 ipj45CWIUt7pXK7jH5yLVPrOfVCLWE453+e4xUd5c+8QTlhtRPX/KSQbBMAEs+gnT6
-	 n9RJXyPzRwXKQ==
-Date: Sat, 27 Jan 2024 15:48:36 +0000
+	b=IKFpN6aoFvHavI6MI29AP/Z3aGLqQypKa6O0orqOeV3LLDYV3FmwYuHxIhhB2Cnel
+	 B+TOGeVB9BFMGLHBfLNA9O0qMXoT7VkElO+ReBuQx/RC1n0Q/ppWRVFzYujsGtZEMr
+	 5/73PTeUV9BjJsMBU+3O7BbYo5XOJ7dBdYOtWhl5W042spPL9+dEK1r+WYFqrVUtq2
+	 qDEnCeIfSKE0SNkD3ieKy1i7OqdeJLeu8EC8NuDEkCwF6xLsj5Q29ToHMsek57MSxg
+	 rnZHOUq4Kgu34Tx7y38CwrAVDaM7oX6Z2sSwa12lX4/ZlPVBv2M9UDZhLBJc1IlS8k
+	 Z/h1fleyUL8zQ==
+Date: Sat, 27 Jan 2024 15:52:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andrew Davis <afd@ti.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
- =?UTF-8?B?Zw==?= <u.kleine-koenig@pengutronix.de>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/4] iio: health: afe4403: Use devm action helper for
- regulator disable
-Message-ID: <20240127154836.153127a3@jic23-huawei>
-In-Reply-To: <20240123140918.215818-1-afd@ti.com>
-References: <20240123140918.215818-1-afd@ti.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Paul Cercueil <paul@crapouillou.net>, Lars-Peter Clausen
+ <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "iio: add modifiers for A and B ultraviolet
+ light"
+Message-ID: <20240127155247.00f6aa3b@jic23-huawei>
+In-Reply-To: <efdfb611-5ba4-4cd6-a7f0-bd96259cf1a6@gmail.com>
+References: <20240123104305.10881-1-paul@crapouillou.net>
+	<0bd3319f-7d63-485b-9b44-d6858c045b37@gmail.com>
+	<a6f79ec0025e1862ba170c6a535447dd09e7dfad.camel@crapouillou.net>
+	<efdfb611-5ba4-4cd6-a7f0-bd96259cf1a6@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,22 +65,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 23 Jan 2024 08:09:15 -0600
-Andrew Davis <afd@ti.com> wrote:
-
-> Use a device lifecycle managed action for regulator disable function.
-> This helps prevent mistakes like unregistering out of order in cleanup
-> functions and forgetting to unregister on error paths.
+...
+> > Can you just move these entries to the end of the enum in your new
+> > patch?
+> >   
+> >>
+> >> Thanks and best regards,
+> >> Javier Carrasco  
+> > 
+> > Cheers,
+> > -Paul  
+> Sure, I will do it right now.
 > 
-> Signed-off-by: Andrew Davis <afd@ti.com>
-Hi Andrew,
+> Thank you again and best regards,
+> Javier Carrasco
 
-All applied.
+Hi Javier,
 
-You could make use of dev_err_probe() as well to save a few lines if
-you want to (as a follow up patch).
-
-Thanks,
+If you sent a v2, it didn't reach me or the list.
 
 Jonathan
+
+
 

@@ -1,58 +1,65 @@
-Return-Path: <linux-iio+bounces-1951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6513183EE28
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 17:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F7283EE2A
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 17:04:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEA81F224EC
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:04:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016CC1F226EB
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jan 2024 16:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8B029437;
-	Sat, 27 Jan 2024 16:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1F82C198;
+	Sat, 27 Jan 2024 16:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="COIITEB8"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Cd65x+KJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A1C28E02;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A5929425;
 	Sat, 27 Jan 2024 16:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706371461; cv=none; b=G+RLVxDnIVn0Zkx7/s+qpr4bB3+1FI8dnWXJ9H+U1/E+wiceDmzxeqkdF1L+dStq/a/h73KRYVfJoYSsEozzISJI2n/pB2LAcKeSeHLNjiMAxgoKDQEdIql2NrDzKkE6d1a/FACGWkYsuUiPEGWL2RZRYN3gJut2+idwNJeOh+U=
+	t=1706371462; cv=none; b=ZwLnY7THY1l1GvBWpslECJSvFjlNsoHS9uJvMjb13oIthHy/Ub99oBxsHf9+Bo28aiWuWXH5bULarctY85QX5qKPYNEfV8yTSmc4gsSXPp7d+lyoZKTJSXRNrdOrCVRUMLynK5lSBLPK9EIlUQgBOuvNyeYlVTzrux2Nr/XPcRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706371461; c=relaxed/simple;
-	bh=LTtc/KGc3er11Li2smUvdjG1aLcglxo3OSttIx7IDpI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlIOODYG8r2XTYD9cpJDaGBbVcUfHmsjgvSRQ/cB2ztPe0RIWBLE3TINpwpW07CJAJ5tXeN81I/NxhpDz0fghBhijvCv5KLTIN5NQ73OegEijLuHcVHSEnScSOt70PmjRjPCLiDIGv0QV9PI6i2AmXiQvujCvk7OeyYeDA8ctB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=COIITEB8; arc=none smtp.client-ip=172.104.132.142
+	s=arc-20240116; t=1706371462; c=relaxed/simple;
+	bh=rThLPG0oKPIY+R5SCgniLS4AOa/AbEm1BbmpT++4eoA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t2Mpx2pmv7XP/4VQk4ycED3rwx789qyCZyhAdx1gnyB5n26Z88e00N5eoRqr4D4qD22Hq3ixMnZE820Bp+Ke16wRIuJBngn4LozuKsIHzr91O01GjWFN+RyHYAS3e1l+NfQScZfEyymtJSV8Wsal95X8gRpg42hi9XxBVVAa4zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=Cd65x+KJ; arc=none smtp.client-ip=172.104.132.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from localhost.localdomain (unknown [188.24.80.170])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id F079628F2BC;
-	Sat, 27 Jan 2024 16:04:11 +0000 (UTC)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 365B4293A94;
+	Sat, 27 Jan 2024 16:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
 	s=skycaves; t=1706371452;
-	bh=LTtc/KGc3er11Li2smUvdjG1aLcglxo3OSttIx7IDpI=;
-	h=From:To:Cc:Subject:Date;
-	b=COIITEB8x+6MkFg/9rAcIUXu8R1EmER2zdVDa8IY3vKQa324tO+sxBv0r7rYNY4oG
-	 u2z+HUjyKsb7O8fX5707+pr3kQg3Fkae3vMk/A6cg/TL0SKTAVBtRsJtFElZQQAVKp
-	 +OgDkzYzPZyhkfHEBTZG9Kxe1z/g0exQaIBoBuIU=
+	bh=rThLPG0oKPIY+R5SCgniLS4AOa/AbEm1BbmpT++4eoA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Cd65x+KJigdUgolM9yGgHvd18F5uWnJQkw1b/oQB/HUPhr4Culgab6NpdCTq/nK95
+	 86UzlvQBZPQhPyzAmsBMSsV+zCQLMS1pz+TA1cnuk7Ami9p7SmDIG/exn1HIUcP8Dc
+	 ov2uVz+GGyq9TQJr0UfJGoM68TqmEQTzNXOrcVxI=
 From: Petre Rodan <petre.rodan@subdimension.ro>
 To: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Petre Rodan <petre.rodan@subdimension.ro>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 0/4] iio: pressure: hsc030pa: cleanup and triggered buffer
-Date: Sat, 27 Jan 2024 18:03:54 +0200
-Message-ID: <20240127160405.19696-1-petre.rodan@subdimension.ro>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: [PATCH v2 1/4] dt-bindings: iio: pressure: honeywell,hsc030pa.yaml add spi props
+Date: Sat, 27 Jan 2024 18:03:55 +0200
+Message-ID: <20240127160405.19696-2-petre.rodan@subdimension.ro>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240127160405.19696-1-petre.rodan@subdimension.ro>
+References: <20240127160405.19696-1-petre.rodan@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,37 +68,29 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This set of patches covers the following:
+Add spi-peripheral-props.yaml requirement needed by the
+spi-max-frequency property.
 
- - small cleanup
- - mandatory 2ms delay between readings
- - support for triggered buffer readings
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+---
+v2 -> v1 change the commit message based on Krzysztof's request
+ .../devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml   | 3 +++
+ 1 file changed, 3 insertions(+)
 
-The support for devices that have "sleep mode" factory option that was
-present in v1 of this patchset was removed, for a few reasons:
-
- - a Honeywell employee told me that this chip variant is extremely
-    unlikely to be found in the wild, which also makes testing the
-    driver functionality impossible
- - I found no reliable way of generating i2c/spi bus traffic with no
-    payload (toggle CS for SPI case, send i2c packet containing only
-    the address byte) that are required for the wakeup sequence.
-
-
-Petre Rodan (4):
-  dt-bindings: iio: pressure: honeywell,hsc030pa.yaml add spi props
-  iio: pressure: hsc030pa cleanup
-  iio: pressure: hsc030pa add mandatory delay
-  iio: pressure: hsc030pa add triggered buffer
-
- .../iio/pressure/honeywell,hsc030pa.yaml      |  3 ++
- drivers/iio/pressure/Kconfig                  |  2 +
- drivers/iio/pressure/hsc030pa.c               | 49 ++++++++++++++++++-
- drivers/iio/pressure/hsc030pa.h               |  7 +++
- drivers/iio/pressure/hsc030pa_i2c.c           |  9 +++-
- drivers/iio/pressure/hsc030pa_spi.c           |  7 ++-
- 6 files changed, 73 insertions(+), 4 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+index 65a24ed67b3c..89977b9f01cf 100644
+--- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
++++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
+@@ -99,6 +99,9 @@ required:
+   - honeywell,transfer-function
+   - honeywell,pressure-triplet
+ 
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml
++
+ additionalProperties: false
+ 
+ dependentSchemas:
 -- 
 2.43.0
 

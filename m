@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-1988-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1989-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4EE83F60E
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBDE83F60F
 	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BA91F22053
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EC4E1C22875
 	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD61024B39;
-	Sun, 28 Jan 2024 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEAC2377B;
+	Sun, 28 Jan 2024 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCpvEbZV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlPN6ioW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0A323757
-	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34701E508
+	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706454401; cv=none; b=HphS/xrFNYE2TQt5f9X9OLXd01nWtqc+CMWHD2Y0QHDUBPEZ3NAaSwcHM7wTAeLpUFTUs5A/CCT0f7qoNrZl/PuPuXJpxfQmqm5L6Gtob5Tsx6KVQdIDmbPBZhXkXbHJVPRyqXmBjoK8TDU20QiZ60v5qIf7kWY0l5HB2a+ui9o=
+	t=1706454403; cv=none; b=pIiUvAu2FCTLpWEr+Fz9OnnPCh/vrzx2Fm/vw16PmdE06f6GHy+U+K/5YPd5nmeVa8MVvpYuUha02WJVecM0/Ih1R3VyXstHa575rinbLMVOsGRQXSCDCWaM8HsrAt4YWumVG/qvy77ddPbo5+Ts33qhsCC6Es3iLo4HW3tYJwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706454401; c=relaxed/simple;
-	bh=Tyw9IgBVo8lfW/bCa8pQw4pHUsXzqR8Qcl3Mb+jAf8M=;
+	s=arc-20240116; t=1706454403; c=relaxed/simple;
+	bh=LCkx736IEt7vgq/IY4wkKQh/GgnNqIMt4E/k0LLs2rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXNTpPFRPTV3qNI8TXxgQiX9DQQPDfRTzmHoyVKef60Z6EbKTBjD2J3HTqn3CChhx3LpsZQUthVl5buewewjHvEv9jusoBesb6dpX5tQQjlrgku9NDRMfH7YOYBEShFP4rNsVpznAazUV0qlb5ZfNAYnqRD+DaHlUeG9MFlI+TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCpvEbZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDB0C433C7;
-	Sun, 28 Jan 2024 15:06:39 +0000 (UTC)
+	 MIME-Version; b=GL3J5QYvXCBnjlPMyyIKC8t9pKP9BT8sZQqTTCX2K6mRKWH7e8CBq+ZdO5ZMsTNboYDynEd41jC8zefjmuHfoSLB6OIHaOnOMmSbCvi95AZrvsKVwoXjUCiRsC7tIV6JOUSmOzqUogFYpNKqc5480mKfR/uuuFsu4DHVwF5qk6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlPN6ioW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAEEC43390;
+	Sun, 28 Jan 2024 15:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706454400;
-	bh=Tyw9IgBVo8lfW/bCa8pQw4pHUsXzqR8Qcl3Mb+jAf8M=;
+	s=k20201202; t=1706454402;
+	bh=LCkx736IEt7vgq/IY4wkKQh/GgnNqIMt4E/k0LLs2rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCpvEbZVl9wlhkayoppQYuA42P63nD5ZF5OgnEnjDOODCCWBF7arQYV9Un81my34/
-	 vV3LWp1aRxTEkq6K+FB5i1QbF4L3lkYKx+MGVaw9P8dUgRXYjc7jLm2Vi9qTIydabT
-	 sTdBOf6f79NKvThmwSZOVFSAD1LO0oYY0lqRW/nL9NjR+xrinur49wYzr4GmV+fB6n
-	 NDcfE+TB2BTK1CCi6y4svkUwD4jZMdbMmbvFUjXAuMbI/LzbUZH1Q/5Hi69mvWFwoZ
-	 KzgZgTZC6MkTVdqPLo71DPfIBLjiWXAVoDtADXGWI6DjicRlOA3hAdCv89k1sqwgJM
-	 CFj0GtroYqNRQ==
+	b=JlPN6ioWraZMId+8vwtFcA+dsLlfEwOe+ySCk3hsB4ugczddu6ZtYWeavWDpeg/wH
+	 YQhiob2OmX30o/5NGRAMXiS+KoaIb8sJe3r82CMMuVu1HuRPJFeu5yg8SNm1WnLp4W
+	 ysPJRqAKvPJWc403MLUCRVcJizmtfdxFcwGFG/2QF/RaIWvyOv94DW0SJbqr+cT2jQ
+	 w4E0igra9RHct2CeqA1vlL4f9uxrU1lUiV2x6Z6KwsX4GU4jiZRZtVibayx9ihzRTb
+	 V9YkawxGX+HWiWiu9qIVDF9K4oeLdjIivfmAYlOzsUJgBqt8hobwV+K+92UBcCRClo
+	 XsGPWI+zwLdhg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/10] iio: proximity: sx9310: Use automated cleanup for locks and IIO mode claiming.
-Date: Sun, 28 Jan 2024 15:05:35 +0000
-Message-ID: <20240128150537.44592-9-jic23@kernel.org>
+Subject: [PATCH 09/10] iio: adc: ad4130: Use automatic cleanup of locks and direct mode.
+Date: Sun, 28 Jan 2024 15:05:36 +0000
+Message-ID: <20240128150537.44592-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240128150537.44592-1-jic23@kernel.org>
 References: <20240128150537.44592-1-jic23@kernel.org>
@@ -62,241 +62,340 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This simplifies error handling paths and generallly removes a bunch
-of boilerplate.
+Reduces boilerplate and allows for simpler to follow direct returns.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
 Since RFC:
- - Use unreachable() to convince compiler of paths we can't get to rather
-   than adding pointless returns.
+ - Reduced scope of local variable.
+ - Used unreachable() to inform compiler some paths are never reached and
+   avoid need for missleading return -EINVAL; statements.
 ---
- drivers/iio/proximity/sx9310.c | 114 +++++++++++----------------------
- 1 file changed, 39 insertions(+), 75 deletions(-)
+ drivers/iio/adc/ad4130.c | 131 ++++++++++++++++-----------------------
+ 1 file changed, 52 insertions(+), 79 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index 0d230a0dff56..427c9343d6d1 100644
---- a/drivers/iio/proximity/sx9310.c
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -337,28 +337,19 @@ static int sx9310_read_raw(struct iio_dev *indio_dev,
- 			   int *val2, long mask)
- {
- 	struct sx_common_data *data = iio_priv(indio_dev);
--	int ret;
+diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
+index feb86fe6c422..53e19a863198 100644
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -887,9 +887,9 @@ static int ad4130_set_filter_mode(struct iio_dev *indio_dev,
+ 	unsigned int old_fs;
+ 	int ret = 0;
  
- 	if (chan->type != IIO_PROXIMITY)
- 		return -EINVAL;
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	if (setup_info->filter_mode == val)
+-		goto out;
++		return 0;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
--
--		ret = sx_common_read_proximity(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
--		return ret;
-+		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
-+			return sx_common_read_proximity(data, chan, val);
-+		unreachable();
- 	case IIO_CHAN_INFO_HARDWAREGAIN:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
--
--		ret = sx9310_read_gain(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
--		return ret;
-+		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
-+			return sx9310_read_gain(data, chan, val);
-+		unreachable();
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return sx9310_read_samp_freq(data, val, val2);
- 	default:
-@@ -546,12 +537,10 @@ static int sx9310_write_thresh(struct sx_common_data *data,
- 		return -EINVAL;
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, reg,
--				 SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
--	mutex_unlock(&data->mutex);
- 
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, reg,
-+				  SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
- }
- 
- static int sx9310_write_hysteresis(struct sx_common_data *data,
-@@ -576,17 +565,14 @@ static int sx9310_write_hysteresis(struct sx_common_data *data,
- 		return -EINVAL;
- 
- 	hyst = FIELD_PREP(SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
--	mutex_unlock(&data->mutex);
- 
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
- }
- 
- static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
- {
--	int ret;
- 	unsigned int regval;
- 
- 	if (val > 0)
-@@ -596,18 +582,14 @@ static int sx9310_write_far_debounce(struct sx_common_data *data, int val)
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
- {
--	int ret;
- 	unsigned int regval;
- 
- 	if (val > 0)
-@@ -617,13 +599,10 @@ static int sx9310_write_close_debounce(struct sx_common_data *data, int val)
- 
- 	regval = FIELD_PREP(SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK, val);
- 
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
--				 SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
--				 regval);
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
-+				  SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_MASK,
-+				  regval);
- }
- 
- static int sx9310_write_event_val(struct iio_dev *indio_dev,
-@@ -658,7 +637,7 @@ static int sx9310_write_event_val(struct iio_dev *indio_dev,
- 
- static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
- {
--	int i, ret;
-+	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
- 		if (val == sx9310_samp_freq_table[i].val &&
-@@ -668,23 +647,17 @@ static int sx9310_set_samp_freq(struct sx_common_data *data, int val, int val2)
- 	if (i == ARRAY_SIZE(sx9310_samp_freq_table))
- 		return -EINVAL;
- 
--	mutex_lock(&data->mutex);
--
--	ret = regmap_update_bits(
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(
- 		data->regmap, SX9310_REG_PROX_CTRL0,
- 		SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK,
- 		FIELD_PREP(SX9310_REG_PROX_CTRL0_SCANPERIOD_MASK, i));
--
--	mutex_unlock(&data->mutex);
--
--	return ret;
- }
- 
- static int sx9310_write_gain(struct sx_common_data *data,
- 			     const struct iio_chan_spec *chan, int val)
- {
- 	unsigned int gain, mask;
--	int ret;
- 
- 	gain = ilog2(val);
- 
-@@ -703,12 +676,9 @@ static int sx9310_write_gain(struct sx_common_data *data,
- 		return -EINVAL;
+ 	old_fs = setup_info->fs;
+ 	old_filter_mode = setup_info->filter_mode;
+@@ -911,12 +911,10 @@ static int ad4130_set_filter_mode(struct iio_dev *indio_dev,
+ 	if (ret) {
+ 		setup_info->fs = old_fs;
+ 		setup_info->filter_mode = old_filter_mode;
++		return ret;
  	}
  
--	mutex_lock(&data->mutex);
--	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
--				 gain);
--	mutex_unlock(&data->mutex);
+- out:
+-	mutex_unlock(&st->lock);
 -
 -	return ret;
-+	guard(mutex)(&data->mutex);
-+	return regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL3, mask,
-+				  gain);
++	return 0;
  }
  
- static int sx9310_write_raw(struct iio_dev *indio_dev,
-@@ -969,22 +939,18 @@ static int sx9310_suspend(struct device *dev)
+ static int ad4130_get_filter_mode(struct iio_dev *indio_dev,
+@@ -927,9 +925,8 @@ static int ad4130_get_filter_mode(struct iio_dev *indio_dev,
+ 	struct ad4130_setup_info *setup_info = &st->chans_info[channel].setup;
+ 	enum ad4130_filter_mode filter_mode;
  
- 	disable_irq_nosync(data->client->irq);
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	filter_mode = setup_info->filter_mode;
+-	mutex_unlock(&st->lock);
  
--	mutex_lock(&data->mutex);
-+	guard(mutex)(&data->mutex);
- 	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
- 			  &data->suspend_ctrl);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	ctrl0 = data->suspend_ctrl & ~SX9310_REG_PROX_CTRL0_SENSOREN_MASK;
- 	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
- 	if (ret)
--		goto out;
--
--	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
-+		return ret;
- 
--out:
--	mutex_unlock(&data->mutex);
--	return ret;
-+	return regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
+ 	return filter_mode;
  }
+@@ -971,7 +968,7 @@ static int ad4130_set_channel_pga(struct ad4130_state *st, unsigned int channel,
+ 	struct ad4130_chan_info *chan_info = &st->chans_info[channel];
+ 	struct ad4130_setup_info *setup_info = &chan_info->setup;
+ 	unsigned int pga, old_pga;
+-	int ret = 0;
++	int ret;
  
- static int sx9310_resume(struct device *dev)
-@@ -992,18 +958,16 @@ static int sx9310_resume(struct device *dev)
- 	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
- 	int ret;
+ 	for (pga = 0; pga < AD4130_MAX_PGA; pga++)
+ 		if (val == st->scale_tbls[setup_info->ref_sel][pga][0] &&
+@@ -981,21 +978,20 @@ static int ad4130_set_channel_pga(struct ad4130_state *st, unsigned int channel,
+ 	if (pga == AD4130_MAX_PGA)
+ 		return -EINVAL;
  
--	mutex_lock(&data->mutex);
--	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
--	if (ret)
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	if (pga == setup_info->pga)
 -		goto out;
--
--	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
--			   data->suspend_ctrl);
-+	scoped_guard(mutex, &data->mutex) {
-+		ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
-+		if (ret)
-+			return ret;
++		return 0;
  
--out:
--	mutex_unlock(&data->mutex);
+ 	old_pga = setup_info->pga;
+ 	setup_info->pga = pga;
+ 
+ 	ret = ad4130_write_channel_setup(st, channel, false);
 -	if (ret)
--		return ret;
-+		ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+				   data->suspend_ctrl);
-+		if (ret)
-+			return ret;
++	if (ret) {
+ 		setup_info->pga = old_pga;
++		return ret;
 +	}
  
- 	enable_irq(data->client->irq);
+-out:
+-	mutex_unlock(&st->lock);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int ad4130_set_channel_freq(struct ad4130_state *st,
+@@ -1004,26 +1000,25 @@ static int ad4130_set_channel_freq(struct ad4130_state *st,
+ 	struct ad4130_chan_info *chan_info = &st->chans_info[channel];
+ 	struct ad4130_setup_info *setup_info = &chan_info->setup;
+ 	unsigned int fs, old_fs;
+-	int ret = 0;
++	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	old_fs = setup_info->fs;
+ 
+ 	ad4130_freq_to_fs(setup_info->filter_mode, val, val2, &fs);
+ 
+ 	if (fs == setup_info->fs)
+-		goto out;
++		return 0;
+ 
+ 	setup_info->fs = fs;
+ 
+ 	ret = ad4130_write_channel_setup(st, channel, false);
+-	if (ret)
++	if (ret) {
+ 		setup_info->fs = old_fs;
++		return ret;
++	}
+ 
+-out:
+-	mutex_unlock(&st->lock);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int _ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
+@@ -1065,20 +1060,13 @@ static int _ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
+ static int ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
+ 			      int *val)
+ {
+-	struct ad4130_state *st = iio_priv(indio_dev);
+-	int ret;
+-
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		struct ad4130_state *st = iio_priv(indio_dev);
+ 
+-	mutex_lock(&st->lock);
+-	ret = _ad4130_read_sample(indio_dev, channel, val);
+-	mutex_unlock(&st->lock);
+-
+-	iio_device_release_direct_mode(indio_dev);
+-
+-	return ret;
++		guard(mutex)(&st->lock);
++		return _ad4130_read_sample(indio_dev, channel, val);
++	}
++	unreachable();
+ }
+ 
+ static int ad4130_read_raw(struct iio_dev *indio_dev,
+@@ -1092,24 +1080,24 @@ static int ad4130_read_raw(struct iio_dev *indio_dev,
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		return ad4130_read_sample(indio_dev, channel, val);
+-	case IIO_CHAN_INFO_SCALE:
+-		mutex_lock(&st->lock);
++	case IIO_CHAN_INFO_SCALE: {
++		guard(mutex)(&st->lock);
+ 		*val = st->scale_tbls[setup_info->ref_sel][setup_info->pga][0];
+ 		*val2 = st->scale_tbls[setup_info->ref_sel][setup_info->pga][1];
+-		mutex_unlock(&st->lock);
+ 
+ 		return IIO_VAL_INT_PLUS_NANO;
++	}
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		*val = st->bipolar ? -BIT(chan->scan_type.realbits - 1) : 0;
+ 
+ 		return IIO_VAL_INT;
+-	case IIO_CHAN_INFO_SAMP_FREQ:
+-		mutex_lock(&st->lock);
++	case IIO_CHAN_INFO_SAMP_FREQ: {
++		guard(mutex)(&st->lock);
+ 		ad4130_fs_to_freq(setup_info->filter_mode, setup_info->fs,
+ 				  val, val2);
+-		mutex_unlock(&st->lock);
+ 
+ 		return IIO_VAL_INT_PLUS_NANO;
++	}
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -1134,9 +1122,9 @@ static int ad4130_read_avail(struct iio_dev *indio_dev,
+ 
+ 		return IIO_AVAIL_LIST;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		mutex_lock(&st->lock);
+-		filter_config = &ad4130_filter_configs[setup_info->filter_mode];
+-		mutex_unlock(&st->lock);
++		scoped_guard(mutex, &st->lock) {
++			filter_config = &ad4130_filter_configs[setup_info->filter_mode];
++		}
+ 
+ 		*vals = (int *)filter_config->samp_freq_avail;
+ 		*length = filter_config->samp_freq_avail_len * 2;
+@@ -1197,21 +1185,18 @@ static int ad4130_update_scan_mode(struct iio_dev *indio_dev,
+ 	unsigned int val = 0;
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	for_each_set_bit(channel, scan_mask, indio_dev->num_channels) {
+ 		ret = ad4130_set_channel_enable(st, channel, true);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 
+ 		val++;
+ 	}
+ 
+ 	st->num_enabled_channels = val;
+ 
+-out:
+-	mutex_unlock(&st->lock);
+-
  	return 0;
+ }
+ 
+@@ -1232,22 +1217,19 @@ static int ad4130_set_fifo_watermark(struct iio_dev *indio_dev, unsigned int val
+ 		 */
+ 		eff = rounddown(AD4130_FIFO_SIZE, st->num_enabled_channels);
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = regmap_update_bits(st->regmap, AD4130_FIFO_CONTROL_REG,
+ 				 AD4130_FIFO_CONTROL_WM_MASK,
+ 				 FIELD_PREP(AD4130_FIFO_CONTROL_WM_MASK,
+ 					    ad4130_watermark_reg_val(eff)));
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	st->effective_watermark = eff;
+ 	st->watermark = val;
+ 
+-out:
+-	mutex_unlock(&st->lock);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct iio_info ad4130_info = {
+@@ -1265,26 +1247,21 @@ static int ad4130_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct ad4130_state *st = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = ad4130_set_watermark_interrupt_en(st, true);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = irq_set_irq_type(st->spi->irq, st->inv_irq_trigger);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = ad4130_set_fifo_mode(st, AD4130_FIFO_MODE_WM);
+ 	if (ret)
+-		goto out;
+-
+-	ret = ad4130_set_mode(st, AD4130_MODE_CONTINUOUS);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		return ret;
+ 
+-	return ret;
++	return ad4130_set_mode(st, AD4130_MODE_CONTINUOUS);
+ }
+ 
+ static int ad4130_buffer_predisable(struct iio_dev *indio_dev)
+@@ -1293,23 +1270,23 @@ static int ad4130_buffer_predisable(struct iio_dev *indio_dev)
+ 	unsigned int i;
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = ad4130_set_mode(st, AD4130_MODE_IDLE);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = irq_set_irq_type(st->spi->irq, st->irq_trigger);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = ad4130_set_fifo_mode(st, AD4130_FIFO_MODE_DISABLED);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = ad4130_set_watermark_interrupt_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	/*
+ 	 * update_scan_mode() is not called in the disable path, disable all
+@@ -1318,13 +1295,10 @@ static int ad4130_buffer_predisable(struct iio_dev *indio_dev)
+ 	for (i = 0; i < indio_dev->num_channels; i++) {
+ 		ret = ad4130_set_channel_enable(st, i, false);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 	}
+ 
+-out:
+-	mutex_unlock(&st->lock);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops ad4130_buffer_ops = {
+@@ -1338,9 +1312,8 @@ static ssize_t hwfifo_watermark_show(struct device *dev,
+ 	struct ad4130_state *st = iio_priv(dev_to_iio_dev(dev));
+ 	unsigned int val;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	val = st->watermark;
+-	mutex_unlock(&st->lock);
+ 
+ 	return sysfs_emit(buf, "%d\n", val);
+ }
 -- 
 2.43.0
 

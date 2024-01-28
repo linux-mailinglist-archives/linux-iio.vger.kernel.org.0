@@ -1,57 +1,64 @@
-Return-Path: <linux-iio+bounces-1990-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1991-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB9B83F610
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F1C83F63F
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 17:06:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE7D81C229BA
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94C91F2158B
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043042557A;
-	Sun, 28 Jan 2024 15:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBB12560C;
+	Sun, 28 Jan 2024 16:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KScWDada"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOv/TVYA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9717249E0
-	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9183725776;
+	Sun, 28 Jan 2024 16:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706454404; cv=none; b=Tej0ZIpnm9bOnuQhs9ziXfIOxZzVQVmfGA0lIiyglx75gIyRo0tgVb0tpkFbJ4ffTu1WxLDQuxpAO5FXuKLpQgJhvfzjadMgaGTDH1+lm4LMLrrZwe3eVa029C5yRR74n5WsFknrX3TN5xuL7ZwpFV0dem3mG2NHzoK9KEUHFkI=
+	t=1706457965; cv=none; b=EKqCsP6iItmanFBSftCGIT2XC2drT3WrHW0xGGJewoBjrSqTMPpYOzs7NqsWXfdEmUL0nVZcNce/LrvXnR5p7XDU6FbT3PsgyK8Zawslb9BU9A1o4x/ACKuSlabRLr7mHkwyE1zr0m5IuPzGGHVzfF/0kF48K5aRJ6Sm3xjhuug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706454404; c=relaxed/simple;
-	bh=HVoS3YxvEkDwt2oQNhZDXQ1CS1eObXSJ3K4jflM6Stg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbfwjxBSOfa3NlMMS8ISrBIrDC/yNkWZovNpmHVtFpPR8SdSpltNL7wt/O+tVSrfAXDrb82M8r4EY4u+hjRgAeCmNshckqxJZIhWmSp4/ONS2HIuf11o0NIPOV3os7abTaGAgBVN7S/EHZJq+zvV56GRlhjFkC8pqLnzDZ/3ios=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KScWDada; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C51CC43399;
-	Sun, 28 Jan 2024 15:06:43 +0000 (UTC)
+	s=arc-20240116; t=1706457965; c=relaxed/simple;
+	bh=3GDzuUKiMwdZAP8iDkQepKQ+kMUfYyqlwDoA8vWWVqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=scedoscDIuae0NgE/hWWYgRcGvZ3w8IQLfbhoU4ZwgEqdGTv09Y6nn51NAexT/I7m1iuYFuQDo4Y5KKaiCz+1FmrLMRkPziDtBi6fXEeo0Z/5fCJlbkOqE7jiegUQ7PL7ndtppQshUdwZiSpgM2uKNL0hldDfRyNTTD49zr8Ais=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOv/TVYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D413CC433F1;
+	Sun, 28 Jan 2024 16:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706454404;
-	bh=HVoS3YxvEkDwt2oQNhZDXQ1CS1eObXSJ3K4jflM6Stg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KScWDadaA4RXnqbiqlWUN/ZTdcdXU2R//D/gDNyKdP3a9Q7iLZOVdq4brcq6dNkEU
-	 B0VNFZ3QzuWBmroRpVKd+0H7fUJ464BuCnbWGIfX4ST0DWoC8YQcIVjo+056hpMeG8
-	 DpGq/Z93R2FLslHLokaTAGakn+Ws0h4X0EdrJ+qSuVwu4+0yQTK+O1PKTLIESafJ3B
-	 3EzZhC1AQgjWkU1rSRWik6xr57+koa+b9fAzKpjnt99V0iB5SxTLaRJXyRhO3fd9+g
-	 SSogohisrHcpLb8yY1yCmIm/qdtj9gyu4uwkFkVT6hDrV2F8H6zCyWQ5XShOukzFj9
-	 a0UYtisdgr/7w==
+	s=k20201202; t=1706457965;
+	bh=3GDzuUKiMwdZAP8iDkQepKQ+kMUfYyqlwDoA8vWWVqo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LOv/TVYABm88A+zQBBmx1irbneC/mGqL4WC9pEyJImhvZG7SdFg0XKCYdxTWg7f/l
+	 NK0C/RZf6ZDUzzBdJfGv8qrPtKuu/mNjzJxcUTdoqN2UxNsHNgYUxU2Pwa4pcxIWCv
+	 5x+ALNMsWFx4RMkQtLDBxhKQoso6KviBhemWpbLDI5Z94GgSwTCB1TU+DJrJRStlnV
+	 KWwtT2zN7v06qPxAAhoMSiUXg3UGfaFBEvbfo/9UGmBUVdQPHfEFvQbhDtf+YfGdaZ
+	 mQ4LkAFDi+0+pJjk9pcDkNtzmOZY0Qvt62Qdwgi290qvfhCENYCcUSwNhLS5I+kcWd
+	 IuPs8vaPp5Eqw==
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+To: linux-iio@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Sumera Priyadarsini <sylphrenadin@gmail.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 10/10] iio: adc: ad7091r-base: Use auto cleanup of locks.
-Date: Sun, 28 Jan 2024 15:05:37 +0000
-Message-ID: <20240128150537.44592-11-jic23@kernel.org>
+Subject: [RFC PATCH 0/5] of: automate of_node_put() - new approach to loops.
+Date: Sun, 28 Jan 2024 16:05:37 +0000
+Message-ID: <20240128160542.178315-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240128150537.44592-1-jic23@kernel.org>
-References: <20240128150537.44592-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,73 +69,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Done to reduce boilerplate and simplify code flow by allowing early
-returns with the lock automatically released.
++CC includes peopleinterested in property.h equivalents to minimize
+duplication of discussion.  Outcome of this discussion will affect:
+https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
+[PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/ad7091r-base.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+In discussion of previous approach with Rob Herring we talked about various
+ways to avoid a disconnect between the declaration of the __free(device_node)
+and the first non NULL assignment. Making this connection clear is useful for 2
+reasons:
+1) Avoids out of order cleanup with respect to other cleanup.h usage.
+2) Avoids disconnect between how cleanup is to be done and how the reference
+   was acquired in the first place.
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index f4255b91acfc..d6876259ad14 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -86,28 +86,25 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
- 	unsigned int read_val;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		if (st->mode != AD7091R_MODE_COMMAND) {
--			ret = -EBUSY;
--			goto unlock;
--		}
-+		if (st->mode != AD7091R_MODE_COMMAND)
-+			return -EBUSY;
- 
- 		ret = ad7091r_read_one(iio_dev, chan->channel, &read_val);
- 		if (ret)
--			goto unlock;
-+			return ret;
- 
- 		*val = read_val;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_SCALE:
- 		if (st->vref) {
- 			ret = regulator_get_voltage(st->vref);
- 			if (ret < 0)
--				goto unlock;
-+				return ret;
- 
- 			*val = ret / 1000;
- 		} else {
-@@ -115,17 +112,11 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
- 		}
- 
- 		*val2 = chan->scan_type.realbits;
--		ret = IIO_VAL_FRACTIONAL_LOG2;
--		break;
-+		return IIO_VAL_FRACTIONAL_LOG2;
- 
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
--
--unlock:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static int ad7091r_read_event_config(struct iio_dev *indio_dev,
+https://lore.kernel.org/all/20240117194743.GA2888190-robh@kernel.org/
+
+The options we discussed are:
+
+1) Ignore this issue and merge original set.
+
+2) Always put the declaration just before the for loop and don't set it NULL.
+
+{
+	int ret;
+
+	ret = ... and other fun code.
+
+	struct device_node *child __free(device_node);
+	for_each_child_of_node(np, child) {
+	}
+}
+
+This works but careful review is needed to ensure that this unusual pattern is
+followed.  We don't set it to NULL as the loop will do that anyway if there are
+no child nodes, or the loop finishes without an early break or return.
+
+3) Introduced the pointer to auto put device_node only within the
+   for loop scope.
+
++#define for_each_child_of_node_scoped(parent, child) \
++	for (struct device_node *child __free(device_node) =		\
++	     of_get_next_child(parent, NULL);				\
++	     child != NULL;						\
++	     child = of_get_next_available_child(parent, child))
++
+
+This series is presenting option 3.  I only implemented this loop out of
+all the similar ones and it is only compile tested.
+
+Disadvantage Rob raised is that it isn't obvious this macro will instantiate
+a struct device_node *child.  I can't see a way around that other than option 2
+above, but all suggestions welcome.  Note that if a conversion leaves an
+'external' struct device_node *child variable, in many cases the compiler
+will catch that as an unused variable. We don't currently run shaddow
+variable detection in normal kernel builds, but that could also be used
+to catch such bugs.
+
+All comments welcome.
+
+Jonathan Cameron (5):
+  of: Add cleanup.h based auto release via __free(device_node) markings.
+  of: Introduce for_each_child_of_node_scoped() to automate
+    of_node_put() handling
+  of: unittest: Use __free(device_node)
+  iio: adc: fsl-imx25-gcq: Use for_each_child_node_scoped()
+  iio: adc: rcar-gyroadc: use for_each_child_node_scoped()
+
+ drivers/iio/adc/fsl-imx25-gcq.c | 13 +++----------
+ drivers/iio/adc/rcar-gyroadc.c  | 21 ++++++---------------
+ drivers/of/unittest.c           | 11 +++--------
+ include/linux/of.h              |  8 ++++++++
+ 4 files changed, 20 insertions(+), 33 deletions(-)
+
 -- 
 2.43.0
 

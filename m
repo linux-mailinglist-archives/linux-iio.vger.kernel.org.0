@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-1981-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1982-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EE883F605
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D6783F608
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6AF21C227FD
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CE341F22131
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BEF23748;
-	Sun, 28 Jan 2024 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F9824B39;
+	Sun, 28 Jan 2024 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbvfsxtE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwjvBeIC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB94B22F17
-	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0D249E0
+	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706454389; cv=none; b=gYpdkZQobyH5o/iFzASQd3steTXcyEa6U9C3hA3mvS98Ht11gQINHWZdg9alw2iNjRPNh6Q1xw0glFQeD20DkMdmAsvUN+GZQI+LrKDyYBkxxbN3LNvnwGpz6lmkpJ3a2jwc4C+btCXnUbOGPQ4zffn4GqnMdMGrFtRDoATljVc=
+	t=1706454391; cv=none; b=tCXlvoMP5bOu7rwuolModDks7GizwU5Az60fDuJaQaUK3sNCAaDTPgCGfN2KNZBYVm4VAXsNr1uMRf+qidK7Y7JeFLmaU/dsVlyoUBFPXHGToldebQnwjqMvz97r9u7L8oNAntfaaFZDC/WI+8NR3/5YPvJeXD3qCoTlopTpJGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706454389; c=relaxed/simple;
-	bh=hjNOW+p0aQP2NeShdLjPEdtvJrwWqInAgQH8JRBSqPQ=;
+	s=arc-20240116; t=1706454391; c=relaxed/simple;
+	bh=6CPqUyum2zElftouZAXwLsMpESWjiO9AypwSaSdSw90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4O0aO4mZcauH9JEU7Mj7gHL4LdX6QydAIkWu8uZNgcKpK7/W1svZUhKRe3hFJARAwcPcHN//BMp849hmOREOTYdUPXlf7IbmnbWVxm8Kt8MeBH1hZOFgRHjljrb0XCtH7icji1JN7izoq8TFC3TeK9d40K8gCm6O8wHAjrw7x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbvfsxtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA03AC43390;
-	Sun, 28 Jan 2024 15:06:27 +0000 (UTC)
+	 MIME-Version; b=ajdl5oUqr2/jyDL46eJTXMaMqz44ETfMKp4mbhY9FYmG1E6RVV+RybGKgbnk9jBRg2FJUuZpdy2F7uABrVJy9Zb6Dv8uyUV8EQFWe0j75weHQYByzgJjHTDVm7kAdvRvVzjZSMOZoELxIrhbyJ0EiPc6pPA5icrw51MklKc+E0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwjvBeIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4827C43399;
+	Sun, 28 Jan 2024 15:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706454389;
-	bh=hjNOW+p0aQP2NeShdLjPEdtvJrwWqInAgQH8JRBSqPQ=;
+	s=k20201202; t=1706454391;
+	bh=6CPqUyum2zElftouZAXwLsMpESWjiO9AypwSaSdSw90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbvfsxtEq7v+vIh0RxOU5+emBnv/AOu5x/Z6NOF7I1o6Us10oN7NG3XG0x9EsN8p9
-	 PLJrK5CBi/4rf46PUEzsG/Sx5emFQVPkFx7PlIBw31sJK1f+1J8qt7Vlt+NF5rMNqd
-	 8YWPDdpgPXKvHodWow9YW5TEWRldQQ5WK7DqsfGYoxBzGoK9OeU8FQlgEG1lf7r5VF
-	 RBK4mv+99zv3jQxrRL0cJkhR7TrH2HLTxdvWz7WWst0HyI2xlJlgDdQ8VDpmQAsKeN
-	 qjBpasYDKcAz5bWU78euok0+lWBH2CKy6m80LlsS4y2rsTltiS77Zaraa/FfoGtcOJ
-	 wHvp7niLxirqA==
+	b=RwjvBeICHpDXb53L/YS6lMXvdUzW6g1dR/zHKxAloMoUndXK0QgGJgAbzCtiOkkSu
+	 UsoKCqpNquVN5M1lm1zxgn+HGyYLrV1qcGyEjmRMMwmHp+JKtX99y+yKpgwQdkRUu2
+	 uZxAEgtUn7UdHyZyXezWVLvRe+uVFd8Sh8/B+gx+W59tL5whuoX5uGqlcLoiDEJt91
+	 OfUvP7yo77JraSB16wvdOFKWKWLIIQnLoJbpFBMha/Z3Ux31OwKJytpUSLJeuLpaFf
+	 9VCNe99Mbut+jJGp8mfB4qdUCy4gnACE4I3dX/YY+SiI6FgHk1x/uMBfuOBegQkdN6
+	 XxgIfZFpHGWSQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 01/10] iio: locking: introduce __cleanup() based direct mode claiming infrastructure
-Date: Sun, 28 Jan 2024 15:05:28 +0000
-Message-ID: <20240128150537.44592-2-jic23@kernel.org>
+Subject: [PATCH 02/10] iio: dummy: Use automatic lock and direct mode cleanup.
+Date: Sun, 28 Jan 2024 15:05:29 +0000
+Message-ID: <20240128150537.44592-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240128150537.44592-1-jic23@kernel.org>
 References: <20240128150537.44592-1-jic23@kernel.org>
@@ -62,71 +62,304 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Allows use of:
+Given we now have iio_device_claim_direct_scoped() to perform automatic
+releasing of direct mode at exit from the scope that follows it, this can
+be used in conjunction with guard(mutex) etc remove a lot of special case
+handling.
 
-       iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-       }
-
-to automatically call iio_device_release_direct_mode() based on scope.
-Typically seen in combination with local device specific locks which
-are already have automated cleanup options via guard(mutex)(&st->lock)
-and scoped_guard(). Using both together allows most error handling to
-be automated.
+Note that in this particular example code, there is no real reason you can't
+read channels via sysfs at the same time as filling the software buffer.
+To make it look more like a real driver constrain raw and processed
+channel reads from occurring whilst the buffer is in use.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
 Since RFC:
- - Drop the IS_ERR() protection in iio_device_release_direct_mode()
-   as nothing in this new infrastructure results in this function
-   being passed an error pointer.
- - Add some blank lines to make the header slightly easier to read.
----
- include/linux/iio/iio.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+- Dropped a stale comment about a local variable that existed
+  in an earlier version of this patch before the new scoped_guard_cond()
+  infrastructure was added.
+- Use unreachable() to convince the compiler we can't get to code
+  at end of the pattern.
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index c5b36d2c1e73..28e78af3614b 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -9,6 +9,7 @@
+	iio_device_claim_direct_scoped(return -EBUSY, iio_dev) {
+		return 0;
+	}
+	unreacahable();
+---
+ drivers/iio/dummy/iio_simple_dummy.c | 182 +++++++++++++--------------
+ 1 file changed, 88 insertions(+), 94 deletions(-)
+
+diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
+index c24f609c2ade..d6ef556698fb 100644
+--- a/drivers/iio/dummy/iio_simple_dummy.c
++++ b/drivers/iio/dummy/iio_simple_dummy.c
+@@ -283,65 +283,63 @@ static int iio_dummy_read_raw(struct iio_dev *indio_dev,
+ 			      long mask)
+ {
+ 	struct iio_dummy_state *st = iio_priv(indio_dev);
+-	int ret = -EINVAL;
  
- #include <linux/device.h>
- #include <linux/cdev.h>
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/iio/types.h>
- /* IIO TODO LIST */
-@@ -638,6 +639,30 @@ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
- int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
- int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
- void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+-	mutex_lock(&st->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW: /* magic value - channel value read */
+-		switch (chan->type) {
+-		case IIO_VOLTAGE:
+-			if (chan->output) {
+-				/* Set integer part to cached value */
+-				*val = st->dac_val;
+-				ret = IIO_VAL_INT;
+-			} else if (chan->differential) {
+-				if (chan->channel == 1)
+-					*val = st->differential_adc_val[0];
+-				else
+-					*val = st->differential_adc_val[1];
+-				ret = IIO_VAL_INT;
+-			} else {
+-				*val = st->single_ended_adc_val;
+-				ret = IIO_VAL_INT;
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			guard(mutex)(&st->lock);
++			switch (chan->type) {
++			case IIO_VOLTAGE:
++				if (chan->output) {
++					/* Set integer part to cached value */
++					*val = st->dac_val;
++					return IIO_VAL_INT;
++				} else if (chan->differential) {
++					if (chan->channel == 1)
++						*val = st->differential_adc_val[0];
++					else
++						*val = st->differential_adc_val[1];
++					return IIO_VAL_INT;
++				} else {
++					*val = st->single_ended_adc_val;
++					return IIO_VAL_INT;
++				}
 +
-+/* This autocleanup logic is normally used via iio_claim_direct_scoped */
-+DEFINE_GUARD(iio_claim_direct, struct iio_dev *, iio_device_claim_direct_mode(_T),
-+	     iio_device_release_direct_mode(_T))
-+
-+DEFINE_GUARD_COND(iio_claim_direct, _try, ({
-+			struct iio_dev *dev;
-+			int d = iio_device_claim_direct_mode(_T);
-+
-+			if (d < 0)
-+				dev = NULL;
-+			else
-+				dev = _T;
-+			dev;
-+		}))
-+
-+/**
-+ * iio_device_claim_direct_scoped() - Scoped call to iio_device_claim_direct.
-+ * @fail: What to do on failure to claim device.
-+ * @iio_dev: Pointer to the IIO devices structure
-+ */
-+#define iio_device_claim_direct_scoped(fail, iio_dev) \
-+	scoped_cond_guard(iio_claim_direct_try, fail, iio_dev)
-+
- int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
- void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
++			case IIO_ACCEL:
++				*val = st->accel_val;
++				return IIO_VAL_INT;
++			default:
++				return -EINVAL;
+ 			}
+-			break;
+-		case IIO_ACCEL:
+-			*val = st->accel_val;
+-			ret = IIO_VAL_INT;
+-			break;
+-		default:
+-			break;
+ 		}
+-		break;
++		unreachable();
+ 	case IIO_CHAN_INFO_PROCESSED:
+-		switch (chan->type) {
+-		case IIO_STEPS:
+-			*val = st->steps;
+-			ret = IIO_VAL_INT;
+-			break;
+-		case IIO_ACTIVITY:
+-			switch (chan->channel2) {
+-			case IIO_MOD_RUNNING:
+-				*val = st->activity_running;
+-				ret = IIO_VAL_INT;
+-				break;
+-			case IIO_MOD_WALKING:
+-				*val = st->activity_walking;
+-				ret = IIO_VAL_INT;
+-				break;
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			guard(mutex)(&st->lock);
++			switch (chan->type) {
++			case IIO_STEPS:
++				*val = st->steps;
++				return IIO_VAL_INT;
++			case IIO_ACTIVITY:
++				switch (chan->channel2) {
++				case IIO_MOD_RUNNING:
++					*val = st->activity_running;
++					return IIO_VAL_INT;
++				case IIO_MOD_WALKING:
++					*val = st->activity_walking;
++					return IIO_VAL_INT;
++				default:
++					return -EINVAL;
++				}
+ 			default:
+-				break;
++				return -EINVAL;
+ 			}
+-			break;
+-		default:
+-			break;
+ 		}
+-		break;
++		unreachable();
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		/* only single ended adc -> 7 */
+ 		*val = 7;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+@@ -350,60 +348,57 @@ static int iio_dummy_read_raw(struct iio_dev *indio_dev,
+ 				/* only single ended adc -> 0.001333 */
+ 				*val = 0;
+ 				*val2 = 1333;
+-				ret = IIO_VAL_INT_PLUS_MICRO;
+-				break;
++				return IIO_VAL_INT_PLUS_MICRO;
+ 			case 1:
+ 				/* all differential adc -> 0.000001344 */
+ 				*val = 0;
+ 				*val2 = 1344;
+-				ret = IIO_VAL_INT_PLUS_NANO;
++				return IIO_VAL_INT_PLUS_NANO;
++			default:
++				return -EINVAL;
+ 			}
+-			break;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+-	case IIO_CHAN_INFO_CALIBBIAS:
++	case IIO_CHAN_INFO_CALIBBIAS: {
++		guard(mutex)(&st->lock);
+ 		/* only the acceleration axis - read from cache */
+ 		*val = st->accel_calibbias;
+-		ret = IIO_VAL_INT;
+-		break;
+-	case IIO_CHAN_INFO_CALIBSCALE:
++		return IIO_VAL_INT;
++	}
++	case IIO_CHAN_INFO_CALIBSCALE: {
++		guard(mutex)(&st->lock);
+ 		*val = st->accel_calibscale->val;
+ 		*val2 = st->accel_calibscale->val2;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
++	}
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		*val = 3;
+ 		*val2 = 33;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
+-	case IIO_CHAN_INFO_ENABLE:
++		return IIO_VAL_INT_PLUS_NANO;
++	case IIO_CHAN_INFO_ENABLE: {
++		guard(mutex)(&st->lock);
+ 		switch (chan->type) {
+ 		case IIO_STEPS:
+ 			*val = st->steps_enabled;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+-	case IIO_CHAN_INFO_CALIBHEIGHT:
++	}
++	case IIO_CHAN_INFO_CALIBHEIGHT: {
++		guard(mutex)(&st->lock);
+ 		switch (chan->type) {
+ 		case IIO_STEPS:
+ 			*val = st->height;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+-
++	}
+ 	default:
+-		break;
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&st->lock);
+-	return ret;
+ }
  
+ /**
+@@ -436,10 +431,10 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+ 			if (chan->output == 0)
+ 				return -EINVAL;
+ 
+-			/* Locking not required as writing single value */
+-			mutex_lock(&st->lock);
+-			st->dac_val = val;
+-			mutex_unlock(&st->lock);
++			scoped_guard(mutex, &st->lock) {
++				/* Locking not required as writing single value */
++				st->dac_val = val;
++			}
+ 			return 0;
+ 		default:
+ 			return -EINVAL;
+@@ -447,9 +442,9 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		switch (chan->type) {
+ 		case IIO_STEPS:
+-			mutex_lock(&st->lock);
+-			st->steps = val;
+-			mutex_unlock(&st->lock);
++			scoped_guard(mutex, &st->lock) {
++				st->steps = val;
++			}
+ 			return 0;
+ 		case IIO_ACTIVITY:
+ 			if (val < 0)
+@@ -470,30 +465,29 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+ 		default:
+ 			return -EINVAL;
+ 		}
+-	case IIO_CHAN_INFO_CALIBSCALE:
+-		mutex_lock(&st->lock);
++	case IIO_CHAN_INFO_CALIBSCALE: {
++		guard(mutex)(&st->lock);
+ 		/* Compare against table - hard matching here */
+ 		for (i = 0; i < ARRAY_SIZE(dummy_scales); i++)
+ 			if (val == dummy_scales[i].val &&
+ 			    val2 == dummy_scales[i].val2)
+ 				break;
+ 		if (i == ARRAY_SIZE(dummy_scales))
+-			ret = -EINVAL;
+-		else
+-			st->accel_calibscale = &dummy_scales[i];
+-		mutex_unlock(&st->lock);
++			return  -EINVAL;
++		st->accel_calibscale = &dummy_scales[i];
+ 		return ret;
++	}
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+-		mutex_lock(&st->lock);
+-		st->accel_calibbias = val;
+-		mutex_unlock(&st->lock);
++		scoped_guard(mutex, &st->lock) {
++			st->accel_calibbias = val;
++		}
+ 		return 0;
+ 	case IIO_CHAN_INFO_ENABLE:
+ 		switch (chan->type) {
+ 		case IIO_STEPS:
+-			mutex_lock(&st->lock);
+-			st->steps_enabled = val;
+-			mutex_unlock(&st->lock);
++			scoped_guard(mutex, &st->lock) {
++				st->steps_enabled = val;
++			}
+ 			return 0;
+ 		default:
+ 			return -EINVAL;
 -- 
 2.43.0
 

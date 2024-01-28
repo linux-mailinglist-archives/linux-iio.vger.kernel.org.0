@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-1977-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1978-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2727B83F5A4
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 14:42:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882B083F5A7
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 14:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6B9FB21C8B
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 13:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B5E81F22089
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 13:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0AB2375A;
-	Sun, 28 Jan 2024 13:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FC923761;
+	Sun, 28 Jan 2024 13:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qh+gAG+S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZ7ONpWb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD8423746;
-	Sun, 28 Jan 2024 13:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADD823757;
+	Sun, 28 Jan 2024 13:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706449330; cv=none; b=CCkD4M4kwDHb10ykxjtzzafRdRFBKkC+qdCS8L2LbwmFKUqKo4ZrLKdtchuOSkjSa4+t1UiqDbQDj3NGmcs6EXP1n/+goZZozYZXyaVHmFN8GKE9R0ZJwNjSci6oy6hkB2jVUXRKC9dbhkZC6yyMOUSDp7FrC+gnIqPMmIYtZdM=
+	t=1706449563; cv=none; b=jcxIIMOU8Opx15FwzEOBtvFwIHREUMk9xQaS8DNO6OfUL5gTGl3ArgG3xy7rsZodeK+hKvGWlTePofXioCXi6kEqCwGjYUDIZCCUQ546wEeoXFuGdiPvyJjZ5adEqFer447fLxXddwfKeuA5wRdLoqM4SpvCcTuAn3AmPruaDxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706449330; c=relaxed/simple;
-	bh=zoqzVmA6GSns3s2tk0r/sjhN7fyHiGxTng4Rr+3BZwY=;
+	s=arc-20240116; t=1706449563; c=relaxed/simple;
+	bh=Eif1EcPwIucAPMZzfTOF+bpnCervvybJ0jNtKXwpJeA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uhgf1bYEB1LveLqrI/GsGOlv40TtCbt2nWyfYF4DuZE8M5V/A82eLVsz0AaIo5dhLoAtTWJrD365lnooogHuGiFDmd/xCyxqHZ0ADDs4SZXIhdyDlbrx1x/HHGprqIT1RNAxf/zWqNK69dmXx6KJC6m7aOzRZXtV6cbQ174ajFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qh+gAG+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8D9C433C7;
-	Sun, 28 Jan 2024 13:41:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cYTPoUpzEG8loLEIDty3urRIBiwhED0j2EBLrCH9JA06x3HKZQ8pFQH0SkaOXzuElTBu1LJVjga9VQaqTFHXAbNv0SSkwDUuNAyGtQu92H17ivsyMgyMEY3wTT1Qs8lMFcTHTiC79v7PLQYO/EGzZPIztH9JjhghMksFX/doqcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZ7ONpWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DD0C433F1;
+	Sun, 28 Jan 2024 13:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706449328;
-	bh=zoqzVmA6GSns3s2tk0r/sjhN7fyHiGxTng4Rr+3BZwY=;
+	s=k20201202; t=1706449563;
+	bh=Eif1EcPwIucAPMZzfTOF+bpnCervvybJ0jNtKXwpJeA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qh+gAG+S9RQfu5h216l/VB2X7CdrrAAb5FDF2PGVNLWQ/LTCqwC2v6h+pHKXFJh9v
-	 WDCCUQ/Lh/+dJdaTd6S/S/HbsrorPr/QRRtP7LsEVdOVCN+HTB4a6u9tlbrqnhh1jK
-	 fHO682aEiE6FzA8mZUkMVq32xXRd3VCwLzQRcnC2mtdHU1dQivCm0FJe6maiwJiwMw
-	 gtwrKm9/ADuB04EgGl6uUeMvzRqlrhduyFKOvCl865xp0hHR4gLgeuR3G0k7fYaGLj
-	 3B1gUqjN0bB/EaqrAkqHexX7F7E09jh9Oz2U4lK+VZ7Bqwce5OJ2OrbZoGhAPv1s2X
-	 Q3fiI8Oi4fqBQ==
-Date: Sun, 28 Jan 2024 13:41:35 +0000
+	b=IZ7ONpWbVvT+3qjtRSmehjWOEEx9Pa9NPBzzYQvh+YKkXa4ApeW6zpg1ZKsibVfdq
+	 1Nqnwq7Z7e2wg6EuS5qbVtLdZhpkn64+wZYu5+tJoSDNeLorNPtsWCGIiLIYpgo7vW
+	 p9eH65Wy4MZTp0r+Q7gJCU54+x6jnb2/c+STleFAnYymWSA5IAqyfN4zgUPZHg++3m
+	 kvXXAvNIMeyjcZwRy2z8vjj/yTlWu++guBAuuosWaiIgwCU0Rbfl2IB9rVFhjL/yXv
+	 kTPAemQZH0jzfH/TKyPWWA9J0CYgjZxuvdpAPGvrI72knRVadcplQ7pFj+6luHfAhc
+	 NUZ3d0sd80W1w==
+Date: Sun, 28 Jan 2024 13:45:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH RESEND] iio: move LIGHT_UVA and LIGHT_UVB to the end of
- iio_modifier
-Message-ID: <20240128134057.075b23ae@jic23-huawei>
-In-Reply-To: <20240127200208.185815-1-javier.carrasco.cruz@gmail.com>
-References: <20240127200208.185815-1-javier.carrasco.cruz@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
+ devicetree@vger.kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org
+Subject: Re: [PATCH v2 3/3] dt-bindings: iio: imu: st_lsm6dsx: add
+ asm330lhhxg1
+Message-ID: <20240128134542.56e5a08d@jic23-huawei>
+In-Reply-To: <189b903e939e15d98d198db60e2ca0619b116870.1706441008.git.lorenzo@kernel.org>
+References: <cover.1706441008.git.lorenzo@kernel.org>
+	<189b903e939e15d98d198db60e2ca0619b116870.1706441008.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,51 +63,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 27 Jan 2024 21:02:08 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Sun, 28 Jan 2024 12:25:45 +0100
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> The new modifiers should have added to the end of the enum, so they do
-> not affect the existing entries.
+> Add device bindings for asm330lhhxg1 IMU sensor.
+> Use asm330lhhx as fallback device for asm330lhhxg1 since it implements
+> all the features currently supported by asm330lhhxg1.
+
+If there are no other changes, I can amend this text whilst applying.
+Something lie:
+
+The asm330lhhx supports a subset of the features and functionality
+provided by the asm330lhhxg1 via identical interfaces and so is a
+suitable fallback compatible.
+
+As normal for bindings we shouldn't talk about the driver though
+what we really care about here is that the driver will never support
+functionality for the fallback part that doesn't apply for the
+more advanced part (because there isn't any!)
+
 > 
-> No modifiers were added since then, so they can be moved safely to the
-> end of the list.
-> 
-> Move IIO_MOD_LIGHT_UVA and IIO_MOD_LIGHT_UVB to the end of iio_modifier.
-> 
-> Fixes: b89710bd215e ("iio: add modifiers for A and B ultraviolet light")
-> Suggested-by: Paul Cercueil <paul@crapouillou.net>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Thanks for the resend.
-
-Applied to the fixes-togreg branch of iio.git
-
-Jonathan
-
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
->  include/uapi/linux/iio/types.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> index 5060963707b1..f2e0b2d50e6b 100644
-> --- a/include/uapi/linux/iio/types.h
-> +++ b/include/uapi/linux/iio/types.h
-> @@ -91,8 +91,6 @@ enum iio_modifier {
->  	IIO_MOD_CO2,
->  	IIO_MOD_VOC,
->  	IIO_MOD_LIGHT_UV,
-> -	IIO_MOD_LIGHT_UVA,
-> -	IIO_MOD_LIGHT_UVB,
->  	IIO_MOD_LIGHT_DUV,
->  	IIO_MOD_PM1,
->  	IIO_MOD_PM2P5,
-> @@ -107,6 +105,8 @@ enum iio_modifier {
->  	IIO_MOD_PITCH,
->  	IIO_MOD_YAW,
->  	IIO_MOD_ROLL,
-> +	IIO_MOD_LIGHT_UVA,
-> +	IIO_MOD_LIGHT_UVB,
->  };
+> diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> index 28b667a9cb76..7ba3de66a2e1 100644
+> --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> @@ -49,6 +49,9 @@ properties:
+>        - items:
+>            - const: st,asm330lhb
+>            - const: st,asm330lhh
+> +      - items:
+> +          - const: st,asm330lhhxg1
+> +          - const: st,asm330lhhx
 >  
->  enum iio_event_type {
+>    reg:
+>      maxItems: 1
 
 

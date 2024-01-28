@@ -1,173 +1,145 @@
-Return-Path: <linux-iio+bounces-1997-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1998-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081C783F909
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 19:07:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284E083FA01
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 22:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6C35281423
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 18:07:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4AAB2175D
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 21:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D432E40A;
-	Sun, 28 Jan 2024 18:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0937B3BB5F;
+	Sun, 28 Jan 2024 21:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="AYCFLT/I"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rW3MjNl0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663523C68E;
-	Sun, 28 Jan 2024 18:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254573C689
+	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 21:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706465226; cv=none; b=EIR0FlTTo2NXXkFAro1szq1Ob/oeyyhIPZ51h8nM03EGMU5kVHV80YBpJe1hro1WFHzJ+UM0CAVxk0sjie7c3R03Y/PFGkAXV1OuTnmbg6XvZ1OKeaGVW6u5P+1dS4a8FfjzHPtz9FF08O1z1haaNWJJ2fPAltHSY8kNLDoo1r8=
+	t=1706476277; cv=none; b=k+f/Dld11fHQfEOS1KJPF7U5wzChFtC7/RtRmpKUYMgf+SHiaQU4YbRJ7NcJJJsJZF2sNsMBpkEiiFaoeRW00aeYOhdLm0mJ75PhFP5Z7CK7qs0gOEikLp5f/jxhHEdHV1f776Jb0AU9s6oN+7a2i21auF23PQ8kKPycysTm5PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706465226; c=relaxed/simple;
-	bh=RE/lIIXw1HUFiTUbURfk40Dz/JKqy6Y13D3dwiStEFs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=fRWv0kcIbEC2cpUyX2RS7LAsPHejLPM+/2lSSYz92DYAXOWujjlAqD5uhSD69SuEejkBvTz2m/xIkZc/B0CZqFVpzwo+XNQPzrr9qUsemcrcPbXH7dlOFuZSvChIIB8a7AZq7YvwzZfp/k7yGbXviy0QdJmwETtDF21M/yyu4FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=AYCFLT/I; arc=none smtp.client-ip=192.134.164.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+	s=arc-20240116; t=1706476277; c=relaxed/simple;
+	bh=s9i81gNuIuQa+DtBxXx7xqCUjIn23uFBzT9SThjsPGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NPWIScmyYNYUM0/qBEOv4Sv/EZSGlupCThB8YEy1KolvsfeI9oo7d/4590LxgE9JtuGS+WxB6x2Wa2XwEX2XCIOe2wIJudZvQQLc3/3Ssc8A1Tv4RKhAdiGzQxB/FLTo8FGKaKMCmoccMv+Ip6zwZBBeMZLgpd5T665tbPreXuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rW3MjNl0; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2cf3a04ea1cso26454561fa.2
+        for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 13:11:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=T8Fb/8aad+T46cz/f1A2BiH6WpbnashX2LTB/R/1lbQ=;
-  b=AYCFLT/IA0sLODwl7exVF9hcAqXLFNXTCadBo9hp7raSLLCJ8cmsh5M2
-   ALdFlljuZbaHCs2MK7Xl9pnpp/2fkhqfzSob97pjYPXXcLs79N4M6ASJR
-   t9ntiTdid8Cu66ApA2/98Llz91LwV/ny62i0uL+OPfd+K58pqbWrymqc/
-   8=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.05,220,1701126000"; 
-   d="scan'208";a="78039727"
-Received: from 231.85.89.92.rev.sfr.net (HELO hadrien) ([92.89.85.231])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 19:06:54 +0100
-Date: Sun, 28 Jan 2024 19:06:53 +0100 (CET)
-From: Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To: Jonathan Cameron <jic23@kernel.org>
-cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-    Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, 
-    Julia Lawall <Julia.Lawall@inria.fr>, 
-    Nicolas Palix <nicolas.palix@imag.fr>, 
-    Sumera Priyadarsini <sylphrenadin@gmail.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    linux-acpi@vger.kernel.org, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    =?ISO-8859-15?Q?Nuno_S=E1?= <nuno.sa@analog.com>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
- loops.
-In-Reply-To: <20240128160542.178315-1-jic23@kernel.org>
-Message-ID: <alpine.DEB.2.22.394.2401281903550.3119@hadrien>
-References: <20240128160542.178315-1-jic23@kernel.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1706476273; x=1707081073; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=peVh1mIiiiPwBDheeU6AKxoE9AuWZtwYKN/fPYN/I84=;
+        b=rW3MjNl0Wwy0ig7MCXKXjjL7MwZiCLcDLFewXBQRdjo/w2fpNPlwURiHBoon1TGaSU
+         L65ZSGnuEQBdBNQBfAah/EeFb0wnVHG+PDBXVHsOLk3xhDbeid2IGJlwIlMgXQdNEVLe
+         ETzZBdVTPUxMW/nVVGBETrkJV1oda4slxhkkE/UBxW/LHVhocA68RJ7Hr3BiA9km+uDK
+         LnJ1BTNYuG+4pv/7NaeHc+JhcdtO77hSxU7q0x3aG0bC7mS7G6+aVIJ4h1koCUigNcwV
+         PIgGSxY7Lrqwl6+Rv+AgiU2U29Opemv6oAPQ1VEx66xn9UvD1WHkwSjzWDo0yvFJnYDa
+         Lljg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706476273; x=1707081073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=peVh1mIiiiPwBDheeU6AKxoE9AuWZtwYKN/fPYN/I84=;
+        b=jRPPYyOqXqZkZ6hfz93V8rwsJ5MxGZgmw0et9Rq5/q56YJT7GZ2bdDypp4Q7yszmyg
+         sJNgyB6SagArD0aXYbM87z/kt5J+qQmpgw5fOlMeU+l5asVsxgaOi4RFWX+zhPKTz2FS
+         gx+W0s7aT9Y7CsrVpuBX2kJ5ZzAWkxoKxEcsUVWnVMkE+rXDmqVo/4jAM6QkLAgWR3tm
+         SSFfa5B33oVfaO8FoeKOr51Z7+EDCmdsOur0oi1BdZF4g+T8jCyPhvU12OTtzYE6IO4O
+         6TOHg+i6QM3NrHnH8HRkVrnZ0u6T5pTP5yL+QVh76L72U6r4sdvkj9bAeZk2JOL+P96A
+         lpEw==
+X-Gm-Message-State: AOJu0Yxkly4tfaLfJW0+IIaYGE+VkMcKHFnm6GDAGGqLL6MJxnSPzgXp
+	UJJ/hByNySHmsUiKT3PafB8VFnbrldv7CAylvN4q61ZBIIOEIUO/sVvpied79Yje+KuDx0UvuYS
+	45N256LtnvRyuC5KkZjfSals9AbLnFD65WlGWuw==
+X-Google-Smtp-Source: AGHT+IHIL30fwTfhVmLPDMbUlLjqFquvTBy4PT3bXPMF1NzbRVB5b0xREHv4i2/gEHQ1ifeP3yKYSTr4iSLmU6EmoDM=
+X-Received: by 2002:a2e:b282:0:b0:2cd:7830:5796 with SMTP id
+ 2-20020a2eb282000000b002cd78305796mr2470463ljx.5.1706476273004; Sun, 28 Jan
+ 2024 13:11:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20240128160542.178315-1-jic23@kernel.org> <20240128160542.178315-3-jic23@kernel.org>
+In-Reply-To: <20240128160542.178315-3-jic23@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
+Date: Sun, 28 Jan 2024 15:11:01 -0600
+Message-ID: <CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/5] of: Introduce for_each_child_of_node_scoped() to
+ automate of_node_put() handling
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, 
+	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Sun, 28 Jan 2024, Jonathan Cameron wrote:
-
+On Sun, Jan 28, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> +CC includes peopleinterested in property.h equivalents to minimize
-> duplication of discussion.  Outcome of this discussion will affect:
-> https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
-> [PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
+> To avoid issues with out of order cleanup, or ambiguity about when the
+> auto freed data is first instantiated, do it within the for loop definiti=
+on.
 >
-> In discussion of previous approach with Rob Herring we talked about various
-> ways to avoid a disconnect between the declaration of the __free(device_node)
-> and the first non NULL assignment. Making this connection clear is useful for 2
-> reasons:
-> 1) Avoids out of order cleanup with respect to other cleanup.h usage.
-> 2) Avoids disconnect between how cleanup is to be done and how the reference
->    was acquired in the first place.
+> The disadvantage is that the struct device_node *child variable creation
+> is not immediately obvious where this is used.
+> However, in many cases, if there is another definition of
+> struct device_node *child; the compiler / static analysers will notify us
+> that it is unused, or uninitialized.
 >
-> https://lore.kernel.org/all/20240117194743.GA2888190-robh@kernel.org/
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  include/linux/of.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> The options we discussed are:
->
-> 1) Ignore this issue and merge original set.
->
-> 2) Always put the declaration just before the for loop and don't set it NULL.
->
-> {
-> 	int ret;
->
-> 	ret = ... and other fun code.
->
-> 	struct device_node *child __free(device_node);
-> 	for_each_child_of_node(np, child) {
-> 	}
-> }
->
-> This works but careful review is needed to ensure that this unusual pattern is
-> followed.  We don't set it to NULL as the loop will do that anyway if there are
-> no child nodes, or the loop finishes without an early break or return.
->
-> 3) Introduced the pointer to auto put device_node only within the
->    for loop scope.
+> diff --git a/include/linux/of.h b/include/linux/of.h
+> index 50e882ee91da..f822226eac6d 100644
+> --- a/include/linux/of.h
+> +++ b/include/linux/of.h
+> @@ -1434,6 +1434,12 @@ static inline int of_property_read_s32(const struc=
+t device_node *np,
+>         for (child =3D of_get_next_available_child(parent, NULL); child !=
+=3D NULL; \
+>              child =3D of_get_next_available_child(parent, child))
 >
 > +#define for_each_child_of_node_scoped(parent, child) \
-> +	for (struct device_node *child __free(device_node) =		\
-> +	     of_get_next_child(parent, NULL);				\
-> +	     child != NULL;						\
-> +	     child = of_get_next_available_child(parent, child))
+> +       for (struct device_node *child __free(device_node) =3D           =
+ \
+> +            of_get_next_child(parent, NULL);                           \
+> +            child !=3D NULL;                                            =
+ \
+> +            child =3D of_get_next_available_child(parent, child))
+
+Doesn't this need to match the initializer (of_get_next_child)?
+Otherwise it seems like the first node could be a disabled node but no
+other disabled nodes would be included in the iteration.
+
+It seems like we would want two macros, one for each variation,
+analogous to for_each_child_of_node() and
+for_each_available_child_of_node().
+
+
 > +
->
-> This series is presenting option 3.  I only implemented this loop out of
-> all the similar ones and it is only compile tested.
->
-> Disadvantage Rob raised is that it isn't obvious this macro will instantiate
-> a struct device_node *child.  I can't see a way around that other than option 2
-> above, but all suggestions welcome.  Note that if a conversion leaves an
-> 'external' struct device_node *child variable, in many cases the compiler
-> will catch that as an unused variable. We don't currently run shaddow
-> variable detection in normal kernel builds, but that could also be used
-> to catch such bugs.
->
-> All comments welcome.
-
-It looks promising to get rid of a lot of clunky and error-prone
-error-handling code.
-
-I guess that
-
-for_each_child_of_node_scoped(parent, struct device_node *, child)
-
-would seem too verbose?
-
-There are a lot of opportunities for device_node loops, but also for some
-more obscure loops over other types.  And there are a lot of of_node_puts
-that could be eliminated independent of loops.
-
-julia
-
->
-> Jonathan Cameron (5):
->   of: Add cleanup.h based auto release via __free(device_node) markings.
->   of: Introduce for_each_child_of_node_scoped() to automate
->     of_node_put() handling
->   of: unittest: Use __free(device_node)
->   iio: adc: fsl-imx25-gcq: Use for_each_child_node_scoped()
->   iio: adc: rcar-gyroadc: use for_each_child_node_scoped()
->
->  drivers/iio/adc/fsl-imx25-gcq.c | 13 +++----------
->  drivers/iio/adc/rcar-gyroadc.c  | 21 ++++++---------------
->  drivers/of/unittest.c           | 11 +++--------
->  include/linux/of.h              |  8 ++++++++
->  4 files changed, 20 insertions(+), 33 deletions(-)
->
+>  #define for_each_of_cpu_node(cpu) \
+>         for (cpu =3D of_get_next_cpu_node(NULL); cpu !=3D NULL; \
+>              cpu =3D of_get_next_cpu_node(cpu))
 > --
 > 2.43.0
 >

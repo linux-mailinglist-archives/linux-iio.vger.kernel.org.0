@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-1982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D6783F608
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB13283F609
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CE341F22131
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 786951F22131
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F9824B39;
-	Sun, 28 Jan 2024 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963A425635;
+	Sun, 28 Jan 2024 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwjvBeIC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTtORXnS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0D249E0
-	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D1C1E50B
+	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706454391; cv=none; b=tCXlvoMP5bOu7rwuolModDks7GizwU5Az60fDuJaQaUK3sNCAaDTPgCGfN2KNZBYVm4VAXsNr1uMRf+qidK7Y7JeFLmaU/dsVlyoUBFPXHGToldebQnwjqMvz97r9u7L8oNAntfaaFZDC/WI+8NR3/5YPvJeXD3qCoTlopTpJGE=
+	t=1706454393; cv=none; b=N09noSmAdvEsJ3EwJl5NmCTVpAB8GY+CGMhkkYtxMK0Zu0MKacGZj6HAqxeannjnAjBp/l2fQ82EQCiyDzYOMJTEokYqSZzG/2jXE7d7xb3ooUfOq/UdaljxuXQrSt5YTtiL8W+7UClDesq46PoDDNkNOd5dTdu3m/BJaYV7esQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706454391; c=relaxed/simple;
-	bh=6CPqUyum2zElftouZAXwLsMpESWjiO9AypwSaSdSw90=;
+	s=arc-20240116; t=1706454393; c=relaxed/simple;
+	bh=LCv+peUUd9JySMVnbLKVjhQzHRf8Ft+WYjujrjVAJFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajdl5oUqr2/jyDL46eJTXMaMqz44ETfMKp4mbhY9FYmG1E6RVV+RybGKgbnk9jBRg2FJUuZpdy2F7uABrVJy9Zb6Dv8uyUV8EQFWe0j75weHQYByzgJjHTDVm7kAdvRvVzjZSMOZoELxIrhbyJ0EiPc6pPA5icrw51MklKc+E0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwjvBeIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4827C43399;
-	Sun, 28 Jan 2024 15:06:29 +0000 (UTC)
+	 MIME-Version; b=ncwiQ7LFtE7rhnQqHuAibELjentLDrqy0NF5VjAHsNNbSMDCTwkkvpmlYi+DXOePXzi2xF4dY44GyCOtbP13O6vTz7X2tYaHtR2Tfa/r2ErSAQZiJWOukc8osdzIlscWQI9uEgHP95N3FHsb2LkZWuLFIxUjcrPYs4kz5TICOSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTtORXnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF15CC433F1;
+	Sun, 28 Jan 2024 15:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706454391;
-	bh=6CPqUyum2zElftouZAXwLsMpESWjiO9AypwSaSdSw90=;
+	s=k20201202; t=1706454393;
+	bh=LCv+peUUd9JySMVnbLKVjhQzHRf8Ft+WYjujrjVAJFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwjvBeICHpDXb53L/YS6lMXvdUzW6g1dR/zHKxAloMoUndXK0QgGJgAbzCtiOkkSu
-	 UsoKCqpNquVN5M1lm1zxgn+HGyYLrV1qcGyEjmRMMwmHp+JKtX99y+yKpgwQdkRUu2
-	 uZxAEgtUn7UdHyZyXezWVLvRe+uVFd8Sh8/B+gx+W59tL5whuoX5uGqlcLoiDEJt91
-	 OfUvP7yo77JraSB16wvdOFKWKWLIIQnLoJbpFBMha/Z3Ux31OwKJytpUSLJeuLpaFf
-	 9VCNe99Mbut+jJGp8mfB4qdUCy4gnACE4I3dX/YY+SiI6FgHk1x/uMBfuOBegQkdN6
-	 XxgIfZFpHGWSQ==
+	b=fTtORXnSeUcUFU1Gpk+G0YId16Bba6Xrby2Ave/jEqoejyIDFD94jM9p+jwSEsWOA
+	 7yFqINbKUtmtBflwwrgBfj3SmBJxZONmJf9/AYkLmfVP59sb8Vyf/VpKkWLIXbfOUj
+	 W1mgG8SqH2RScqnIopTzBM7FVIc02M0pJy/HAfS2VzrjGP9OXj3hiwNil1tFXGrPLW
+	 8h3hajg/vrnyyJRvkWouxnDRZoIp0y2OtSUCXneRmWxmqketfcZj9xEMzK6yf+zVGl
+	 RpfZI2cAm3d3zMvU82+nsXbPozKSXEHOdjDzp3IFyRAQn2AchvxLfmme/qr+Pjkj05
+	 W/BwQmaM+HQag==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 02/10] iio: dummy: Use automatic lock and direct mode cleanup.
-Date: Sun, 28 Jan 2024 15:05:29 +0000
-Message-ID: <20240128150537.44592-3-jic23@kernel.org>
+Subject: [PATCH 03/10] iio: accel: adxl367: Use automated cleanup for locks and iio direct mode.
+Date: Sun, 28 Jan 2024 15:05:30 +0000
+Message-ID: <20240128150537.44592-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240128150537.44592-1-jic23@kernel.org>
 References: <20240128150537.44592-1-jic23@kernel.org>
@@ -62,304 +62,550 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Given we now have iio_device_claim_direct_scoped() to perform automatic
-releasing of direct mode at exit from the scope that follows it, this can
-be used in conjunction with guard(mutex) etc remove a lot of special case
-handling.
-
-Note that in this particular example code, there is no real reason you can't
-read channels via sysfs at the same time as filling the software buffer.
-To make it look more like a real driver constrain raw and processed
-channel reads from occurring whilst the buffer is in use.
+Switching to the iio_device_claim_direct_scoped() for state
+and to guard() based unlocking of mutexes simplifies error handling
+by allowing direct returns when an error is encountered.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
 Since RFC:
-- Dropped a stale comment about a local variable that existed
-  in an earlier version of this patch before the new scoped_guard_cond()
-  infrastructure was added.
-- Use unreachable() to convince the compiler we can't get to code
-  at end of the pattern.
+- Use unreachable() to stop complier moaning if we have
 
-	iio_device_claim_direct_scoped(return -EBUSY, iio_dev) {
+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
 		return 0;
 	}
-	unreacahable();
+	unreachable(); /* can't get here */
+- Update some code from earlier attempt to handle this that was left
+  behind from before iio_device_claim_direct_scoped()
+- Reduce scope of some local variables only used within
+  iio_device_claim_direct_scoped() blocks.
 ---
- drivers/iio/dummy/iio_simple_dummy.c | 182 +++++++++++++--------------
- 1 file changed, 88 insertions(+), 94 deletions(-)
+ drivers/iio/accel/adxl367.c | 297 ++++++++++++++----------------------
+ 1 file changed, 118 insertions(+), 179 deletions(-)
 
-diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
-index c24f609c2ade..d6ef556698fb 100644
---- a/drivers/iio/dummy/iio_simple_dummy.c
-+++ b/drivers/iio/dummy/iio_simple_dummy.c
-@@ -283,65 +283,63 @@ static int iio_dummy_read_raw(struct iio_dev *indio_dev,
- 			      long mask)
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index 90b7ae6d42b7..834ee6d63947 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -339,22 +339,17 @@ static int adxl367_set_act_threshold(struct adxl367_state *st,
  {
- 	struct iio_dummy_state *st = iio_priv(indio_dev);
--	int ret = -EINVAL;
+ 	int ret;
  
 -	mutex_lock(&st->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW: /* magic value - channel value read */
--		switch (chan->type) {
--		case IIO_VOLTAGE:
--			if (chan->output) {
--				/* Set integer part to cached value */
--				*val = st->dac_val;
--				ret = IIO_VAL_INT;
--			} else if (chan->differential) {
--				if (chan->channel == 1)
--					*val = st->differential_adc_val[0];
--				else
--					*val = st->differential_adc_val[1];
--				ret = IIO_VAL_INT;
--			} else {
--				*val = st->single_ended_adc_val;
--				ret = IIO_VAL_INT;
-+		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+			guard(mutex)(&st->lock);
-+			switch (chan->type) {
-+			case IIO_VOLTAGE:
-+				if (chan->output) {
-+					/* Set integer part to cached value */
-+					*val = st->dac_val;
-+					return IIO_VAL_INT;
-+				} else if (chan->differential) {
-+					if (chan->channel == 1)
-+						*val = st->differential_adc_val[0];
-+					else
-+						*val = st->differential_adc_val[1];
-+					return IIO_VAL_INT;
-+				} else {
-+					*val = st->single_ended_adc_val;
-+					return IIO_VAL_INT;
-+				}
-+
-+			case IIO_ACCEL:
-+				*val = st->accel_val;
-+				return IIO_VAL_INT;
-+			default:
-+				return -EINVAL;
- 			}
--			break;
--		case IIO_ACCEL:
--			*val = st->accel_val;
--			ret = IIO_VAL_INT;
--			break;
--		default:
--			break;
- 		}
--		break;
-+		unreachable();
- 	case IIO_CHAN_INFO_PROCESSED:
--		switch (chan->type) {
--		case IIO_STEPS:
--			*val = st->steps;
--			ret = IIO_VAL_INT;
--			break;
--		case IIO_ACTIVITY:
--			switch (chan->channel2) {
--			case IIO_MOD_RUNNING:
--				*val = st->activity_running;
--				ret = IIO_VAL_INT;
--				break;
--			case IIO_MOD_WALKING:
--				*val = st->activity_walking;
--				ret = IIO_VAL_INT;
--				break;
-+		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+			guard(mutex)(&st->lock);
-+			switch (chan->type) {
-+			case IIO_STEPS:
-+				*val = st->steps;
-+				return IIO_VAL_INT;
-+			case IIO_ACTIVITY:
-+				switch (chan->channel2) {
-+				case IIO_MOD_RUNNING:
-+					*val = st->activity_running;
-+					return IIO_VAL_INT;
-+				case IIO_MOD_WALKING:
-+					*val = st->activity_walking;
-+					return IIO_VAL_INT;
-+				default:
-+					return -EINVAL;
-+				}
- 			default:
--				break;
-+				return -EINVAL;
- 			}
--			break;
--		default:
--			break;
- 		}
--		break;
-+		unreachable();
- 	case IIO_CHAN_INFO_OFFSET:
- 		/* only single ended adc -> 7 */
- 		*val = 7;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		switch (chan->type) {
- 		case IIO_VOLTAGE:
-@@ -350,60 +348,57 @@ static int iio_dummy_read_raw(struct iio_dev *indio_dev,
- 				/* only single ended adc -> 0.001333 */
- 				*val = 0;
- 				*val2 = 1333;
--				ret = IIO_VAL_INT_PLUS_MICRO;
--				break;
-+				return IIO_VAL_INT_PLUS_MICRO;
- 			case 1:
- 				/* all differential adc -> 0.000001344 */
- 				*val = 0;
- 				*val2 = 1344;
--				ret = IIO_VAL_INT_PLUS_NANO;
-+				return IIO_VAL_INT_PLUS_NANO;
-+			default:
-+				return -EINVAL;
- 			}
--			break;
- 		default:
--			break;
-+			return -EINVAL;
- 		}
--		break;
--	case IIO_CHAN_INFO_CALIBBIAS:
-+	case IIO_CHAN_INFO_CALIBBIAS: {
-+		guard(mutex)(&st->lock);
- 		/* only the acceleration axis - read from cache */
- 		*val = st->accel_calibbias;
--		ret = IIO_VAL_INT;
--		break;
--	case IIO_CHAN_INFO_CALIBSCALE:
-+		return IIO_VAL_INT;
-+	}
-+	case IIO_CHAN_INFO_CALIBSCALE: {
-+		guard(mutex)(&st->lock);
- 		*val = st->accel_calibscale->val;
- 		*val2 = st->accel_calibscale->val2;
--		ret = IIO_VAL_INT_PLUS_MICRO;
--		break;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*val = 3;
- 		*val2 = 33;
--		ret = IIO_VAL_INT_PLUS_NANO;
--		break;
--	case IIO_CHAN_INFO_ENABLE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_ENABLE: {
-+		guard(mutex)(&st->lock);
- 		switch (chan->type) {
- 		case IIO_STEPS:
- 			*val = st->steps_enabled;
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		default:
--			break;
-+			return -EINVAL;
- 		}
--		break;
--	case IIO_CHAN_INFO_CALIBHEIGHT:
-+	}
-+	case IIO_CHAN_INFO_CALIBHEIGHT: {
-+		guard(mutex)(&st->lock);
- 		switch (chan->type) {
- 		case IIO_STEPS:
- 			*val = st->height;
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		default:
--			break;
-+			return -EINVAL;
- 		}
--		break;
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = _adxl367_set_act_threshold(st, act, threshold);
+ 	if (ret)
+-		goto out;
 -
-+	}
- 	default:
--		break;
-+		return -EINVAL;
- 	}
+-	ret = adxl367_set_measure_en(st, true);
+-
+-out:
 -	mutex_unlock(&st->lock);
++		return ret;
+ 
 -	return ret;
++	return adxl367_set_measure_en(st, true);
  }
  
- /**
-@@ -436,10 +431,10 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
- 			if (chan->output == 0)
- 				return -EINVAL;
+ static int adxl367_set_act_proc_mode(struct adxl367_state *st,
+@@ -482,51 +477,45 @@ static int adxl367_set_fifo_watermark(struct adxl367_state *st,
+ static int adxl367_set_range(struct iio_dev *indio_dev,
+ 			     enum adxl367_range range)
+ {
+-	struct adxl367_state *st = iio_priv(indio_dev);
+-	int ret;
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		struct adxl367_state *st = iio_priv(indio_dev);
++		int ret;
  
--			/* Locking not required as writing single value */
--			mutex_lock(&st->lock);
--			st->dac_val = val;
--			mutex_unlock(&st->lock);
-+			scoped_guard(mutex, &st->lock) {
-+				/* Locking not required as writing single value */
-+				st->dac_val = val;
-+			}
- 			return 0;
- 		default:
- 			return -EINVAL;
-@@ -447,9 +442,9 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_PROCESSED:
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	mutex_lock(&st->lock);
+-
+-	ret = adxl367_set_measure_en(st, false);
+-	if (ret)
+-		goto out;
++		guard(mutex)(&st->lock);
+ 
+-	ret = regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
+-				 ADXL367_FILTER_CTL_RANGE_MASK,
+-				 FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
+-					    range));
+-	if (ret)
+-		goto out;
++		ret = adxl367_set_measure_en(st, false);
++		if (ret)
++			return ret;
+ 
+-	adxl367_scale_act_thresholds(st, st->range, range);
++		ret = regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
++					 ADXL367_FILTER_CTL_RANGE_MASK,
++					 FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
++						    range));
++		if (ret)
++			return ret;
+ 
+-	/* Activity thresholds depend on range */
+-	ret = _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
+-					 st->act_threshold);
+-	if (ret)
+-		goto out;
++		adxl367_scale_act_thresholds(st, st->range, range);
+ 
+-	ret = _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
+-					 st->inact_threshold);
+-	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
+-	if (ret)
+-		goto out;
++		/* Activity thresholds depend on range */
++		ret = _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
++						 st->act_threshold);
++		if (ret)
++			return ret;
+ 
+-	st->range = range;
++		ret = _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
++						 st->inact_threshold);
++		if (ret)
++			return ret;
+ 
+-out:
+-	mutex_unlock(&st->lock);
++		ret = adxl367_set_measure_en(st, true);
++		if (ret)
++			return ret;
+ 
+-	iio_device_release_direct_mode(indio_dev);
++		st->range = range;
+ 
+-	return ret;
++		return 0;
++	}
++	unreachable();
+ }
+ 
+ static int adxl367_time_ms_to_samples(struct adxl367_state *st, unsigned int ms)
+@@ -587,11 +576,11 @@ static int adxl367_set_act_time_ms(struct adxl367_state *st,
+ {
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	if (act == ADXL367_ACTIVITY)
+ 		ret = _adxl367_set_act_time_ms(st, ms);
+@@ -599,14 +588,9 @@ static int adxl367_set_act_time_ms(struct adxl367_state *st,
+ 		ret = _adxl367_set_inact_time_ms(st, ms);
+ 
+ 	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		return ret;
+ 
+-	return ret;
++	return adxl367_set_measure_en(st, true);
+ }
+ 
+ static int _adxl367_set_odr(struct adxl367_state *st, enum adxl367_odr odr)
+@@ -636,31 +620,23 @@ static int _adxl367_set_odr(struct adxl367_state *st, enum adxl367_odr odr)
+ 
+ static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_odr odr)
+ {
+-	struct adxl367_state *st = iio_priv(indio_dev);
+-	int ret;
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		struct adxl367_state *st = iio_priv(indio_dev);;
++		int ret;
+ 
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++		guard(mutex)(&st->lock);
+ 
+-	mutex_lock(&st->lock);
+-
+-	ret = adxl367_set_measure_en(st, false);
+-	if (ret)
+-		goto out;
+-
+-	ret = _adxl367_set_odr(st, odr);
+-	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		ret = adxl367_set_measure_en(st, false);
++		if (ret)
++			return ret;
+ 
+-	iio_device_release_direct_mode(indio_dev);
++		ret = _adxl367_set_odr(st, odr);
++		if (ret)
++			return ret;
+ 
+-	return ret;
++		return adxl367_set_measure_en(st, true);
++	}
++	unreachable();
+ }
+ 
+ static int adxl367_set_temp_adc_en(struct adxl367_state *st, unsigned int reg,
+@@ -749,36 +725,32 @@ static int adxl367_read_sample(struct iio_dev *indio_dev,
+ 			       struct iio_chan_spec const *chan,
+ 			       int *val)
+ {
+-	struct adxl367_state *st = iio_priv(indio_dev);
+-	u16 sample;
+-	int ret;
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		struct adxl367_state *st = iio_priv(indio_dev);
++		u16 sample;
++		int ret;
+ 
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++		guard(mutex)(&st->lock);
+ 
+-	mutex_lock(&st->lock);
+-
+-	ret = adxl367_set_temp_adc_reg_en(st, chan->address, true);
+-	if (ret)
+-		goto out;
+-
+-	ret = regmap_bulk_read(st->regmap, chan->address, &st->sample_buf,
+-			       sizeof(st->sample_buf));
+-	if (ret)
+-		goto out;
+-
+-	sample = FIELD_GET(ADXL367_DATA_MASK, be16_to_cpu(st->sample_buf));
+-	*val = sign_extend32(sample, chan->scan_type.realbits - 1);
++		ret = adxl367_set_temp_adc_reg_en(st, chan->address, true);
++		if (ret)
++			return ret;
+ 
+-	ret = adxl367_set_temp_adc_reg_en(st, chan->address, false);
++		ret = regmap_bulk_read(st->regmap, chan->address, &st->sample_buf,
++				       sizeof(st->sample_buf));
++		if (ret)
++			return ret;
+ 
+-out:
+-	mutex_unlock(&st->lock);
++		sample = FIELD_GET(ADXL367_DATA_MASK, be16_to_cpu(st->sample_buf));
++		*val = sign_extend32(sample, chan->scan_type.realbits - 1);
+ 
+-	iio_device_release_direct_mode(indio_dev);
++		ret = adxl367_set_temp_adc_reg_en(st, chan->address, false);
++		if (ret)
++			return ret;
+ 
+-	return ret ?: IIO_VAL_INT;
++		return IIO_VAL_INT;
++	}
++	unreachable();
+ }
+ 
+ static int adxl367_get_status(struct adxl367_state *st, u8 *status,
+@@ -886,12 +858,12 @@ static int adxl367_read_raw(struct iio_dev *indio_dev,
+ 		return adxl367_read_sample(indio_dev, chan, val);
+ 	case IIO_CHAN_INFO_SCALE:
  		switch (chan->type) {
- 		case IIO_STEPS:
+-		case IIO_ACCEL:
 -			mutex_lock(&st->lock);
--			st->steps = val;
++		case IIO_ACCEL: {
++			guard(mutex)(&st->lock);
+ 			*val = adxl367_range_scale_tbl[st->range][0];
+ 			*val2 = adxl367_range_scale_tbl[st->range][1];
 -			mutex_unlock(&st->lock);
-+			scoped_guard(mutex, &st->lock) {
-+				st->steps = val;
-+			}
- 			return 0;
- 		case IIO_ACTIVITY:
- 			if (val < 0)
-@@ -470,30 +465,29 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+ 			return IIO_VAL_INT_PLUS_NANO;
++		}
+ 		case IIO_TEMP:
+ 			*val = 1000;
+ 			*val2 = ADXL367_TEMP_PER_C;
+@@ -914,12 +886,12 @@ static int adxl367_read_raw(struct iio_dev *indio_dev,
  		default:
  			return -EINVAL;
  		}
--	case IIO_CHAN_INFO_CALIBSCALE:
+-	case IIO_CHAN_INFO_SAMP_FREQ:
 -		mutex_lock(&st->lock);
-+	case IIO_CHAN_INFO_CALIBSCALE: {
++	case IIO_CHAN_INFO_SAMP_FREQ: {
 +		guard(mutex)(&st->lock);
- 		/* Compare against table - hard matching here */
- 		for (i = 0; i < ARRAY_SIZE(dummy_scales); i++)
- 			if (val == dummy_scales[i].val &&
- 			    val2 == dummy_scales[i].val2)
- 				break;
- 		if (i == ARRAY_SIZE(dummy_scales))
--			ret = -EINVAL;
--		else
--			st->accel_calibscale = &dummy_scales[i];
+ 		*val = adxl367_samp_freq_tbl[st->odr][0];
+ 		*val2 = adxl367_samp_freq_tbl[st->odr][1];
 -		mutex_unlock(&st->lock);
-+			return  -EINVAL;
-+		st->accel_calibscale = &dummy_scales[i];
- 		return ret;
+ 		return IIO_VAL_INT_PLUS_MICRO;
 +	}
- 	case IIO_CHAN_INFO_CALIBBIAS:
--		mutex_lock(&st->lock);
--		st->accel_calibbias = val;
--		mutex_unlock(&st->lock);
-+		scoped_guard(mutex, &st->lock) {
-+			st->accel_calibbias = val;
-+		}
- 		return 0;
- 	case IIO_CHAN_INFO_ENABLE:
- 		switch (chan->type) {
- 		case IIO_STEPS:
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -1004,18 +976,15 @@ static int adxl367_read_event_value(struct iio_dev *indio_dev,
+ {
+ 	struct adxl367_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
+ 	switch (info) {
+ 	case IIO_EV_INFO_VALUE: {
+ 		switch (dir) {
+ 		case IIO_EV_DIR_RISING:
 -			mutex_lock(&st->lock);
--			st->steps_enabled = val;
+ 			*val = st->act_threshold;
 -			mutex_unlock(&st->lock);
-+			scoped_guard(mutex, &st->lock) {
-+				st->steps_enabled = val;
-+			}
- 			return 0;
+ 			return IIO_VAL_INT;
+ 		case IIO_EV_DIR_FALLING:
+-			mutex_lock(&st->lock);
+ 			*val = st->inact_threshold;
+-			mutex_unlock(&st->lock);
+ 			return IIO_VAL_INT;
  		default:
  			return -EINVAL;
+@@ -1024,15 +993,11 @@ static int adxl367_read_event_value(struct iio_dev *indio_dev,
+ 	case IIO_EV_INFO_PERIOD:
+ 		switch (dir) {
+ 		case IIO_EV_DIR_RISING:
+-			mutex_lock(&st->lock);
+ 			*val = st->act_time_ms;
+-			mutex_unlock(&st->lock);
+ 			*val2 = 1000;
+ 			return IIO_VAL_FRACTIONAL;
+ 		case IIO_EV_DIR_FALLING:
+-			mutex_lock(&st->lock);
+ 			*val = st->inact_time_ms;
+-			mutex_unlock(&st->lock);
+ 			*val2 = 1000;
+ 			return IIO_VAL_FRACTIONAL;
+ 		default:
+@@ -1110,9 +1075,7 @@ static int adxl367_write_event_config(struct iio_dev *indio_dev,
+ 				      enum iio_event_direction dir,
+ 				      int state)
+ {
+-	struct adxl367_state *st = iio_priv(indio_dev);
+ 	enum adxl367_activity_type act;
+-	int ret;
+ 
+ 	switch (dir) {
+ 	case IIO_EV_DIR_RISING:
+@@ -1125,33 +1088,28 @@ static int adxl367_write_event_config(struct iio_dev *indio_dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	mutex_lock(&st->lock);
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		struct adxl367_state *st = iio_priv(indio_dev);
++		int ret;
+ 
+-	ret = adxl367_set_measure_en(st, false);
+-	if (ret)
+-		goto out;
++		guard(mutex)(&st->lock);
+ 
+-	ret = adxl367_set_act_interrupt_en(st, act, state);
+-	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_act_en(st, act, state ? ADCL367_ACT_REF_ENABLED
+-						: ADXL367_ACT_DISABLED);
+-	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
++		ret = adxl367_set_measure_en(st, false);
++		if (ret)
++			return ret;
+ 
+-out:
+-	mutex_unlock(&st->lock);
++		ret = adxl367_set_act_interrupt_en(st, act, state);
++		if (ret)
++			return ret;
+ 
+-	iio_device_release_direct_mode(indio_dev);
++		ret = adxl367_set_act_en(st, act, state ? ADCL367_ACT_REF_ENABLED
++					 : ADXL367_ACT_DISABLED);
++		if (ret)
++			return ret;
+ 
+-	return ret;
++		return adxl367_set_measure_en(st, true);
++	}
++	unreachable();
+ }
+ 
+ static ssize_t adxl367_get_fifo_enabled(struct device *dev,
+@@ -1176,9 +1134,8 @@ static ssize_t adxl367_get_fifo_watermark(struct device *dev,
+ 	struct adxl367_state *st = iio_priv(dev_to_iio_dev(dev));
+ 	unsigned int fifo_watermark;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 	fifo_watermark = st->fifo_watermark;
+-	mutex_unlock(&st->lock);
+ 
+ 	return sysfs_emit(buf, "%d\n", fifo_watermark);
+ }
+@@ -1207,22 +1164,17 @@ static int adxl367_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ 	if (val > ADXL367_FIFO_MAX_WATERMARK)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_watermark(st, val);
+ 	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		return ret;
+ 
+-	return ret;
++	return adxl367_set_measure_en(st, true);
+ }
+ 
+ static bool adxl367_find_mask_fifo_format(const unsigned long *scan_mask,
+@@ -1253,27 +1205,24 @@ static int adxl367_update_scan_mode(struct iio_dev *indio_dev,
+ 	if (!adxl367_find_mask_fifo_format(active_scan_mask, &fifo_format))
+ 		return -EINVAL;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_format(st, fifo_format);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_measure_en(st, true);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	st->fifo_set_size = bitmap_weight(active_scan_mask,
+ 					  indio_dev->masklength);
+ 
+-out:
+-	mutex_unlock(&st->lock);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int adxl367_buffer_postenable(struct iio_dev *indio_dev)
+@@ -1281,31 +1230,26 @@ static int adxl367_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct adxl367_state *st = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_temp_adc_mask_en(st, indio_dev->active_scan_mask,
+ 					   true);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_watermark_interrupt_en(st, true);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_mode(st, ADXL367_FIFO_MODE_STREAM);
+ 	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_measure_en(st, true);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		return ret;
+ 
+-	return ret;
++	return adxl367_set_measure_en(st, true);
+ }
+ 
+ static int adxl367_buffer_predisable(struct iio_dev *indio_dev)
+@@ -1313,31 +1257,26 @@ static int adxl367_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct adxl367_state *st = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	mutex_lock(&st->lock);
++	guard(mutex)(&st->lock);
+ 
+ 	ret = adxl367_set_measure_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_mode(st, ADXL367_FIFO_MODE_DISABLED);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_fifo_watermark_interrupt_en(st, false);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	ret = adxl367_set_measure_en(st, true);
+ 	if (ret)
+-		goto out;
+-
+-	ret = adxl367_set_temp_adc_mask_en(st, indio_dev->active_scan_mask,
+-					   false);
+-
+-out:
+-	mutex_unlock(&st->lock);
++		return ret;
+ 
+-	return ret;
++	return adxl367_set_temp_adc_mask_en(st, indio_dev->active_scan_mask,
++					    false);
+ }
+ 
+ static const struct iio_buffer_setup_ops adxl367_buffer_ops = {
 -- 
 2.43.0
 

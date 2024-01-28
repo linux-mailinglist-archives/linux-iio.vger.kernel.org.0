@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-1985-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-1986-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312D283F60D
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFF883F60B
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 16:06:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84675B22828
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D4C28478C
 	for <lists+linux-iio@lfdr.de>; Sun, 28 Jan 2024 15:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EE725776;
-	Sun, 28 Jan 2024 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5AC23769;
+	Sun, 28 Jan 2024 15:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OflWPOl2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nw5ZCeRm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B33210EC
-	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E57222EE8
+	for <linux-iio@vger.kernel.org>; Sun, 28 Jan 2024 15:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706454397; cv=none; b=Yyb7+D86BEvjdpfEpxGDqzIWw/xRFHuUYAmeChcZ67AVkjc8TflK+oq0HtytHPw0mIUZRC6f3JesIsSj9kV/sq4Xx9wu4Uj73OP7hbqHfxWoKUDZQxTcpIIOXwTz9MBGtJdGt9hAsFBNn9Ohlz07N7MMWmIfrTZbnnohlTedVBk=
+	t=1706454398; cv=none; b=qR2Dpp+cnHUps1+UCu7zxOBX1NuKRTPOq+2OzHXGRMB0bxIJPl7u0jAt4LuL9HJ1xq94IZ2ESZydiHQFst9+K2vfBZVyQV6glP0BECAAPLpBSuDqevhL/72ojqAyEuxsCCIfdGLiGSMizmYDDK3zRdseVg+B1r2O8HoB+rpAgI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706454397; c=relaxed/simple;
-	bh=aoHPlvtdXcHqvSWdX2d+hx3h66EYSpAyWr/70czQIKk=;
+	s=arc-20240116; t=1706454398; c=relaxed/simple;
+	bh=EncyxZ2KugvNqvNoLDm0SgoeUxvI+n4WbtRdI/rptKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+gj4wWpewlVsP+zF4hBTaop6e5upW9nyTPSM9ueuCS7+FuEVgCFV8jZq7Gs+5z1ndbq1W8qNZEWRHuvK/UpgDU0FUKK0Dfqma06TjuJALIehMed7gop8Ts23n0EVaT/6jPtnfQaT9f/svhcB1J0upjd4CcqEyPFwCi7FTAPIF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OflWPOl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB5C43394;
-	Sun, 28 Jan 2024 15:06:35 +0000 (UTC)
+	 MIME-Version; b=PsfxMXueqmYtDd7TNP6f2MlS/dW7CLqGnr8TrimR8ysmc+EiiCD/KV/fjVi2AUrydgUdSC+6ShqffMJF2gmVoYfNadCIX3jzZvs0JbAWh9E/STbA4sPiuX6a6RNWbPbSElYCmvpW9fJFYE0IwOQQsXoOKTIrsUq8W8Fuuzj78RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nw5ZCeRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2150C433F1;
+	Sun, 28 Jan 2024 15:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706454396;
-	bh=aoHPlvtdXcHqvSWdX2d+hx3h66EYSpAyWr/70czQIKk=;
+	s=k20201202; t=1706454397;
+	bh=EncyxZ2KugvNqvNoLDm0SgoeUxvI+n4WbtRdI/rptKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OflWPOl2/ZkgbjEKC1Fea+oG4P+GC3A5H6a5JOH4KFOQaqHeV1coImFm+P1gVdoSB
-	 xaxtakoo8cnwLurP2tTwCXtI2zCXlxxGz3ZqKcrUGNLeswirO+y5q78iY+2htTq3vE
-	 zT5qB8eN/3OARH6i8Zj1SFXejU/HeVdTWXE79+pJeKZa94J1gF7T9nLfivVzuoaA+L
-	 cxbp5zmmqwdsfQ/DJ+GJ3XcKW+v8PiJTpoPz3BuNyS6f3VkwWh9LCdHseYqAU8gDPH
-	 WDFKrQZ3sk5hHcLGZlhN4NH8laJL7Fft9BHbKcAi/biHjcV87bgNivDkXYHcKRUc4J
-	 nUvN4yklT88vQ==
+	b=nw5ZCeRmQpR99+b1CiQi7WcCsGLMWVWe27C6gsl1D6GeQZOeaKRKdCuWKyqweJRnz
+	 hUj+4tCe1ZcuCa4peK2z04Y3Ii2iDgydOrUzCobkV7N2eq1V8KzFL/cc/4vS1HvB/+
+	 hNjckXjowbCMlvA1hxDQM8hCsUTb/HJ3LEOGyfaYMbrBtY10Lf6EqSTBvpQQTmKsob
+	 ypsTKrYq+wtwG4/ZnbAVyOf2knYxubDnQAAr/Gad+mDpW7jmeaDspFaBVKFKQJY3wC
+	 5FTXdAYcaLEan8OfbPs26yKj5snqrgzMyV0TMUvCbOaveTp6H8d9Brb4pcjKzVN+yQ
+	 47+B7ygJhNZNA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 05/10] iio: adc: max1363: Use automatic cleanup for locks and iio mode claiming.
-Date: Sun, 28 Jan 2024 15:05:32 +0000
-Message-ID: <20240128150537.44592-6-jic23@kernel.org>
+Subject: [PATCH 06/10] iio: proximity: sx9360: Use automated cleanup for locks and IIO mode claiming.
+Date: Sun, 28 Jan 2024 15:05:33 +0000
+Message-ID: <20240128150537.44592-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240128150537.44592-1-jic23@kernel.org>
 References: <20240128150537.44592-1-jic23@kernel.org>
@@ -62,238 +62,242 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This simplifies error return paths.
+This simplifies error handling paths and generallly removes a bunch
+of boilerplate.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 ---
-Since RFC:
-- Reduce scope of some local variables to within
-  iio_device_claim_direct_scoped() covered blocks.
-- Don't initialize ret in a few paths where it's never used without
-  being assigned.
-- Use unreachable in one case to make the code flow to return 0 more
-  obvious (only if claiming direct mode succeeds).
+Changes since RFC:
+ - use unreachable() to convince compiler we can't reach paths beyond
+	iio_device_claim_direct_scoped(return -EBUSY, iio_dev) {
+		return 0;
+	}
+	unreachable();
+- reduce scope of int ret in resume callback.
 ---
- drivers/iio/adc/max1363.c | 171 ++++++++++++++++++--------------------
- 1 file changed, 79 insertions(+), 92 deletions(-)
+ drivers/iio/proximity/sx9360.c | 115 +++++++++++----------------------
+ 1 file changed, 39 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index 7c2a98b8c3a9..8b5bc96cb9fb 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -357,62 +357,55 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
- 				    int *val,
- 				    long m)
+diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
+index 2c4e14a4fe9f..75a1c29f14eb 100644
+--- a/drivers/iio/proximity/sx9360.c
++++ b/drivers/iio/proximity/sx9360.c
+@@ -322,25 +322,16 @@ static int sx9360_read_raw(struct iio_dev *indio_dev,
+ 			   int *val, int *val2, long mask)
  {
--	int ret = 0;
--	s32 data;
--	u8 rxbuf[2];
--	struct max1363_state *st = iio_priv(indio_dev);
--	struct i2c_client *client = st->client;
--
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
--	mutex_lock(&st->lock);
--
--	/*
--	 * If monitor mode is enabled, the method for reading a single
--	 * channel will have to be rather different and has not yet
--	 * been implemented.
--	 *
--	 * Also, cannot read directly if buffered capture enabled.
--	 */
--	if (st->monitor_on) {
--		ret = -EBUSY;
--		goto error_ret;
--	}
--
--	/* Check to see if current scan mode is correct */
--	if (st->current_mode != &max1363_mode_table[chan->address]) {
--		/* Update scan mode if needed */
--		st->current_mode = &max1363_mode_table[chan->address];
--		ret = max1363_set_scan_mode(st);
--		if (ret < 0)
--			goto error_ret;
--	}
--	if (st->chip_info->bits != 8) {
--		/* Get reading */
--		data = st->recv(client, rxbuf, 2);
--		if (data < 0) {
--			ret = data;
--			goto error_ret;
-+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+		s32 data;
-+		u8 rxbuf[2];
-+		struct max1363_state *st = iio_priv(indio_dev);
-+		struct i2c_client *client = st->client;
-+
-+		guard(mutex)(&st->lock);
-+
-+		/*
-+		 * If monitor mode is enabled, the method for reading a single
-+		 * channel will have to be rather different and has not yet
-+		 * been implemented.
-+		 *
-+		 * Also, cannot read directly if buffered capture enabled.
-+		 */
-+		if (st->monitor_on)
-+			return -EBUSY;
-+
-+		/* Check to see if current scan mode is correct */
-+		if (st->current_mode != &max1363_mode_table[chan->address]) {
-+			int ret;
-+
-+			/* Update scan mode if needed */
-+			st->current_mode = &max1363_mode_table[chan->address];
-+			ret = max1363_set_scan_mode(st);
-+			if (ret < 0)
-+				return ret;
- 		}
--		data = (rxbuf[1] | rxbuf[0] << 8) &
--		  ((1 << st->chip_info->bits) - 1);
--	} else {
--		/* Get reading */
--		data = st->recv(client, rxbuf, 1);
--		if (data < 0) {
--			ret = data;
--			goto error_ret;
-+		if (st->chip_info->bits != 8) {
-+			/* Get reading */
-+			data = st->recv(client, rxbuf, 2);
-+			if (data < 0)
-+				return data;
-+
-+			data = (rxbuf[1] | rxbuf[0] << 8) &
-+				((1 << st->chip_info->bits) - 1);
-+		} else {
-+			/* Get reading */
-+			data = st->recv(client, rxbuf, 1);
-+			if (data < 0)
-+				return data;
-+
-+			data = rxbuf[0];
- 		}
--		data = rxbuf[0];
--	}
--	*val = data;
--
--error_ret:
--	mutex_unlock(&st->lock);
--	iio_device_release_direct_mode(indio_dev);
--	return ret;
-+		*val = data;
+ 	struct sx_common_data *data = iio_priv(indio_dev);
+-	int ret;
  
-+		return 0;
-+	}
-+	unreachable();
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
+-
+-		ret = sx_common_read_proximity(data, chan, val);
+-		iio_device_release_direct_mode(indio_dev);
+-		return ret;
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
++			return sx_common_read_proximity(data, chan, val);
++		unreachable();
+ 	case IIO_CHAN_INFO_HARDWAREGAIN:
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
+-
+-		ret = sx9360_read_gain(data, chan, val);
+-		iio_device_release_direct_mode(indio_dev);
+-		return ret;
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
++			return sx9360_read_gain(data, chan, val);
++		unreachable();
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return sx9360_read_samp_freq(data, val, val2);
+ 	default:
+@@ -387,19 +378,15 @@ static int sx9360_read_avail(struct iio_dev *indio_dev,
+ static int sx9360_set_samp_freq(struct sx_common_data *data,
+ 				int val, int val2)
+ {
+-	int ret, reg;
++	int reg;
+ 	__be16 buf;
+ 
+ 	reg = val * 8192 / SX9360_FOSC_HZ + val2 * 8192 / (SX9360_FOSC_MHZ);
+ 	buf = cpu_to_be16(reg);
+-	mutex_lock(&data->mutex);
+-
+-	ret = regmap_bulk_write(data->regmap, SX9360_REG_GNRL_CTRL1, &buf,
+-				sizeof(buf));
++	guard(mutex)(&data->mutex);
+ 
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	return regmap_bulk_write(data->regmap, SX9360_REG_GNRL_CTRL1, &buf,
++				 sizeof(buf));
  }
  
- static int max1363_read_raw(struct iio_dev *indio_dev,
-@@ -710,9 +703,8 @@ static ssize_t max1363_monitor_store_freq(struct device *dev,
- 	if (!found)
+ static int sx9360_read_thresh(struct sx_common_data *data, int *val)
+@@ -510,7 +497,6 @@ static int sx9360_read_event_val(struct iio_dev *indio_dev,
+ static int sx9360_write_thresh(struct sx_common_data *data, int _val)
+ {
+ 	unsigned int val = _val;
+-	int ret;
+ 
+ 	if (val >= 1)
+ 		val = int_sqrt(2 * val);
+@@ -518,11 +504,8 @@ static int sx9360_write_thresh(struct sx_common_data *data, int _val)
+ 	if (val > 0xff)
  		return -EINVAL;
  
--	mutex_lock(&st->lock);
--	st->monitor_speed = i;
--	mutex_unlock(&st->lock);
-+	scoped_guard(mutex, &st->lock)
-+		st->monitor_speed = i;
- 
- 	return 0;
+-	mutex_lock(&data->mutex);
+-	ret = regmap_write(data->regmap, SX9360_REG_PROX_CTRL5, val);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_write(data->regmap, SX9360_REG_PROX_CTRL5, val);
  }
-@@ -815,12 +807,11 @@ static int max1363_read_event_config(struct iio_dev *indio_dev,
- 	int val;
- 	int number = chan->channel;
  
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	if (dir == IIO_EV_DIR_FALLING)
- 		val = (1 << number) & st->mask_low;
- 	else
- 		val = (1 << number) & st->mask_high;
--	mutex_unlock(&st->lock);
+ static int sx9360_write_hysteresis(struct sx_common_data *data, int _val)
+@@ -546,18 +529,14 @@ static int sx9360_write_hysteresis(struct sx_common_data *data, int _val)
+ 		return -EINVAL;
  
- 	return val;
+ 	hyst = FIELD_PREP(SX9360_REG_PROX_CTRL4_HYST_MASK, hyst);
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
+-				 SX9360_REG_PROX_CTRL4_HYST_MASK, hyst);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
++				  SX9360_REG_PROX_CTRL4_HYST_MASK, hyst);
  }
-@@ -962,46 +953,42 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
- 	const struct iio_chan_spec *chan, enum iio_event_type type,
- 	enum iio_event_direction dir, int state)
+ 
+ static int sx9360_write_far_debounce(struct sx_common_data *data, int _val)
  {
--	int ret = 0;
- 	struct max1363_state *st = iio_priv(indio_dev);
--	u16 unifiedmask;
--	int number = chan->channel;
+ 	unsigned int regval, val = _val;
+-	int ret;
  
--	ret = iio_device_claim_direct_mode(indio_dev);
+ 	if (val > 0)
+ 		val = ilog2(val);
+@@ -566,19 +545,15 @@ static int sx9360_write_far_debounce(struct sx_common_data *data, int _val)
+ 
+ 	regval = FIELD_PREP(SX9360_REG_PROX_CTRL4_FAR_DEBOUNCE_MASK, val);
+ 
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
+-				 SX9360_REG_PROX_CTRL4_FAR_DEBOUNCE_MASK,
+-				 regval);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
++				  SX9360_REG_PROX_CTRL4_FAR_DEBOUNCE_MASK,
++				  regval);
+ }
+ 
+ static int sx9360_write_close_debounce(struct sx_common_data *data, int _val)
+ {
+ 	unsigned int regval, val = _val;
+-	int ret;
+ 
+ 	if (val > 0)
+ 		val = ilog2(val);
+@@ -587,13 +562,10 @@ static int sx9360_write_close_debounce(struct sx_common_data *data, int _val)
+ 
+ 	regval = FIELD_PREP(SX9360_REG_PROX_CTRL4_CLOSE_DEBOUNCE_MASK, val);
+ 
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
+-				 SX9360_REG_PROX_CTRL4_CLOSE_DEBOUNCE_MASK,
+-				 regval);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, SX9360_REG_PROX_CTRL4,
++				  SX9360_REG_PROX_CTRL4_CLOSE_DEBOUNCE_MASK,
++				  regval);
+ }
+ 
+ static int sx9360_write_event_val(struct iio_dev *indio_dev,
+@@ -630,19 +602,15 @@ static int sx9360_write_gain(struct sx_common_data *data,
+ 			     const struct iio_chan_spec *chan, int val)
+ {
+ 	unsigned int gain, reg;
+-	int ret;
+ 
+ 	gain = ilog2(val);
+ 	reg = SX9360_REG_PROX_CTRL0_PHR + chan->channel;
+ 	gain = FIELD_PREP(SX9360_REG_PROX_CTRL0_GAIN_MASK, gain);
+ 
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, reg,
+-				 SX9360_REG_PROX_CTRL0_GAIN_MASK,
+-				 gain);
+-	mutex_unlock(&data->mutex);
+-
+-	return ret;
++	guard(mutex)(&data->mutex);
++	return regmap_update_bits(data->regmap, reg,
++				  SX9360_REG_PROX_CTRL0_GAIN_MASK,
++				  gain);
+ }
+ 
+ static int sx9360_write_raw(struct iio_dev *indio_dev,
+@@ -827,36 +795,31 @@ static int sx9360_suspend(struct device *dev)
+ 
+ 	disable_irq_nosync(data->client->irq);
+ 
+-	mutex_lock(&data->mutex);
++	guard(mutex)(&data->mutex);
+ 	ret = regmap_read(data->regmap, SX9360_REG_GNRL_CTRL0, &regval);
++	if (ret < 0)
++		return ret;
+ 
+ 	data->suspend_ctrl =
+ 		FIELD_GET(SX9360_REG_GNRL_CTRL0_PHEN_MASK, regval);
+ 
+-	if (ret < 0)
+-		goto out;
+ 
+ 	/* Disable all phases, send the device to sleep. */
+-	ret = regmap_write(data->regmap, SX9360_REG_GNRL_CTRL0, 0);
+-
+-out:
+-	mutex_unlock(&data->mutex);
+-	return ret;
++	return regmap_write(data->regmap, SX9360_REG_GNRL_CTRL0, 0);
+ }
+ 
+ static int sx9360_resume(struct device *dev)
+ {
+ 	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
+-	int ret;
+-
+-	mutex_lock(&data->mutex);
+-	ret = regmap_update_bits(data->regmap, SX9360_REG_GNRL_CTRL0,
+-				 SX9360_REG_GNRL_CTRL0_PHEN_MASK,
+-				 data->suspend_ctrl);
+-	mutex_unlock(&data->mutex);
 -	if (ret)
 -		return ret;
--	mutex_lock(&st->lock);
--
--	unifiedmask = st->mask_low | st->mask_high;
--	if (dir == IIO_EV_DIR_FALLING) {
--
--		if (state == 0)
--			st->mask_low &= ~(1 << number);
--		else {
--			ret = __max1363_check_event_mask((1 << number),
--							 unifiedmask);
--			if (ret)
--				goto error_ret;
--			st->mask_low |= (1 << number);
--		}
--	} else {
--		if (state == 0)
--			st->mask_high &= ~(1 << number);
--		else {
--			ret = __max1363_check_event_mask((1 << number),
--							 unifiedmask);
--			if (ret)
--				goto error_ret;
--			st->mask_high |= (1 << number);
-+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+		int number = chan->channel;
-+		u16 unifiedmask;
-+		int ret;
-+
-+		guard(mutex)(&st->lock);
-+
-+		unifiedmask = st->mask_low | st->mask_high;
-+		if (dir == IIO_EV_DIR_FALLING) {
-+
-+			if (state == 0)
-+				st->mask_low &= ~(1 << number);
-+			else {
-+				ret = __max1363_check_event_mask((1 << number),
-+								 unifiedmask);
-+				if (ret)
-+					return ret;
-+				st->mask_low |= (1 << number);
-+			}
-+		} else {
-+			if (state == 0)
-+				st->mask_high &= ~(1 << number);
-+			else {
-+				ret = __max1363_check_event_mask((1 << number),
-+								 unifiedmask);
-+				if (ret)
-+					return ret;
-+				st->mask_high |= (1 << number);
-+			}
- 		}
- 	}
--
- 	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
--error_ret:
--	mutex_unlock(&st->lock);
--	iio_device_release_direct_mode(indio_dev);
  
--	return ret;
-+	return 0;
++	scoped_guard(mutex, &data->mutex) {
++		int ret = regmap_update_bits(data->regmap,
++					     SX9360_REG_GNRL_CTRL0,
++					     SX9360_REG_GNRL_CTRL0_PHEN_MASK,
++					     data->suspend_ctrl);
++		if (ret)
++			return ret;
++	}
+ 	enable_irq(data->client->irq);
+ 	return 0;
  }
- 
- /*
 -- 
 2.43.0
 

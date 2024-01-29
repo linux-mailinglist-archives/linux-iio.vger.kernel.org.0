@@ -1,64 +1,56 @@
-Return-Path: <linux-iio+bounces-2008-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2009-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F7C840405
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 12:45:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85C084040F
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 12:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 533BC1C22DD0
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 11:45:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63307283B62
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 11:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309835C8F4;
-	Mon, 29 Jan 2024 11:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D339F5C5E4;
+	Mon, 29 Jan 2024 11:46:28 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162C55BAD2;
-	Mon, 29 Jan 2024 11:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D705FEE5
+	for <linux-iio@vger.kernel.org>; Mon, 29 Jan 2024 11:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706528697; cv=none; b=FOrcd3fd1CY4dFVXbjxlzLKHNPmcKDBWeQUyVSlcyZz1FMwYEWzaWbS363ayBm9Krqu4s9l3jj0enRLL9wFKVFcrXITN9MYiiPjZU0s7KJro5dMF4OJqG/F6bsMAsoEJ1fax6xgBLNoVRZqyK/MKqIWsq/sqV/klKmt/FJUO/SU=
+	t=1706528788; cv=none; b=AZgQygo2Kxa6lByQunG52zsjD5TVeev/pfo1KTvUboaKFig1vTA53SjLFvA96+lBC4Ozo/o1H3AeJst5dCxgKO8VwGicYU1V36wCJcla5HjUw74MzV4sHBYTDc00uaxiO/LtW2C36S4I6axf2qYh2yZ3r6VLKq6ESYeXswakylQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706528697; c=relaxed/simple;
-	bh=7rIIlS6tYuaBa6fIid1E/uhSEnk5byE1WX/epsrjhMY=;
+	s=arc-20240116; t=1706528788; c=relaxed/simple;
+	bh=uKGk/7/o3HMB/VNsuUKF06VQy8sceZYcXte6dI33bDA=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ye0yyCjOG5QnQL3x7mBz9KLDsjlW4s0ZPtOOJBYssbB8OnmJpvLdy35apiblRbCI83aLnHUWU+sBfIb+aQ8xVeocAkmJwsrSw/xdNPjNiOMvNrgDkEJUL1CLSHm5ELLRogKBtbJZVgWincPC22DjTWkN9XG61p7iwm51mXoMllw=
+	 MIME-Version:Content-Type; b=Ca5rJxGffkS+DIpnGaQ7cWSC6zx8qGfOB/+o664p7S8Qqf57BSrSxcMKBmUamgGpnjaU6MOD/esH038AKjkG97XQ31c72xn6qDyI7L185xZzwJUt6XVezJNtbzXSQPTySK+s1AM4DhkDIgCtyjCYQcl5LqnxlFP2s0JA1s9WrRo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TNmbw0dSFz6K98m;
-	Mon, 29 Jan 2024 19:41:48 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TNmdg6W96z6K9B2;
+	Mon, 29 Jan 2024 19:43:19 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 25EE61400CD;
-	Mon, 29 Jan 2024 19:44:52 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 8D455140136;
+	Mon, 29 Jan 2024 19:46:23 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 29 Jan
- 2024 11:44:51 +0000
-Date: Mon, 29 Jan 2024 11:44:50 +0000
+ 2024 11:46:23 +0000
+Date: Mon, 29 Jan 2024 11:46:22 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Julia Lawall <julia.lawall@inria.fr>
-CC: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
-	<jic23@kernel.org>, <linux-iio@vger.kernel.org>, Rob Herring
-	<robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	<linux-kernel@vger.kernel.org>, Nicolas Palix <nicolas.palix@imag.fr>,
-	"Sumera Priyadarsini" <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [RFC PATCH 2/5] of: Introduce for_each_child_of_node_scoped()
- to automate of_node_put() handling
-Message-ID: <20240129114450.000061f6@Huawei.com>
-In-Reply-To: <alpine.DEB.2.22.394.2401290754250.3150@hadrien>
-References: <20240128160542.178315-1-jic23@kernel.org>
-	<20240128160542.178315-3-jic23@kernel.org>
-	<CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
-	<alpine.DEB.2.22.394.2401290754250.3150@hadrien>
+To: David Lechner <dlechner@baylibre.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>
+Subject: Re: [PATCH 02/10] iio: dummy: Use automatic lock and direct mode
+ cleanup.
+Message-ID: <20240129114622.00007e1c@Huawei.com>
+In-Reply-To: <CAMknhBFzuoQQDbfJjUkDd8udAkRzhsM_Vs-FyEmaAE_k6QXk3Q@mail.gmail.com>
+References: <20240128150537.44592-1-jic23@kernel.org>
+	<20240128150537.44592-3-jic23@kernel.org>
+	<CAMknhBFzuoQQDbfJjUkDd8udAkRzhsM_Vs-FyEmaAE_k6QXk3Q@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -67,88 +59,67 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, 29 Jan 2024 07:54:57 +0100 (CET)
-Julia Lawall <julia.lawall@inria.fr> wrote:
-
-> On Sun, 28 Jan 2024, David Lechner wrote:
->=20
-> > On Sun, Jan 28, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel=
-.org> wrote: =20
-> > >
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >
-> > > To avoid issues with out of order cleanup, or ambiguity about when the
-> > > auto freed data is first instantiated, do it within the for loop defi=
-nition.
-> > >
-> > > The disadvantage is that the struct device_node *child variable creat=
-ion
-> > > is not immediately obvious where this is used.
-> > > However, in many cases, if there is another definition of
-> > > struct device_node *child; the compiler / static analysers will notif=
-y us
-> > > that it is unused, or uninitialized.
-> > >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > >  include/linux/of.h | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > >
-> > > diff --git a/include/linux/of.h b/include/linux/of.h
-> > > index 50e882ee91da..f822226eac6d 100644
-> > > --- a/include/linux/of.h
-> > > +++ b/include/linux/of.h
-> > > @@ -1434,6 +1434,12 @@ static inline int of_property_read_s32(const s=
-truct device_node *np,
-> > >         for (child =3D of_get_next_available_child(parent, NULL); chi=
-ld !=3D NULL; \
-> > >              child =3D of_get_next_available_child(parent, child))
-> > >
-> > > +#define for_each_child_of_node_scoped(parent, child) \
-> > > +       for (struct device_node *child __free(device_node) =3D       =
-     \
-> > > +            of_get_next_child(parent, NULL);                        =
-   \
-> > > +            child !=3D NULL;                                        =
-     \
-> > > +            child =3D of_get_next_available_child(parent, child)) =20
+> > @@ -436,10 +431,10 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+> >                         if (chan->output == 0)
+> >                                 return -EINVAL;
 > >
-> > Doesn't this need to match the initializer (of_get_next_child)?
-> > Otherwise it seems like the first node could be a disabled node but no
-> > other disabled nodes would be included in the iteration.
-> >
-> > It seems like we would want two macros, one for each variation,
-> > analogous to for_each_child_of_node() and
-> > for_each_available_child_of_node(). =20
->=20
-> There are a bunch of iterators, and I guess a scoped version is needed for
-> each of them?
+> > -                       /* Locking not required as writing single value */
+> > -                       mutex_lock(&st->lock);
+> > -                       st->dac_val = val;
+> > -                       mutex_unlock(&st->lock);
+> > +                       scoped_guard(mutex, &st->lock) {
+> > +                               /* Locking not required as writing single value */
+> > +                               st->dac_val = val;
+> > +                       }
+> >                         return 0;
+> >                 default:
+> >                         return -EINVAL;
+> > @@ -447,9 +442,9 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+> >         case IIO_CHAN_INFO_PROCESSED:
+> >                 switch (chan->type) {
+> >                 case IIO_STEPS:
+> > -                       mutex_lock(&st->lock);
+> > -                       st->steps = val;
+> > -                       mutex_unlock(&st->lock);
+> > +                       scoped_guard(mutex, &st->lock) {
+> > +                               st->steps = val;
+> > +                       }
+> >                         return 0;
+> >                 case IIO_ACTIVITY:
+> >                         if (val < 0)
+> > @@ -470,30 +465,29 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
+> >                 default:
+> >                         return -EINVAL;
+> >                 }
+> > -       case IIO_CHAN_INFO_CALIBSCALE:
+> > -               mutex_lock(&st->lock);
+> > +       case IIO_CHAN_INFO_CALIBSCALE: {
+> > +               guard(mutex)(&st->lock);
+> >                 /* Compare against table - hard matching here */
+> >                 for (i = 0; i < ARRAY_SIZE(dummy_scales); i++)
+> >                         if (val == dummy_scales[i].val &&
+> >                             val2 == dummy_scales[i].val2)
+> >                                 break;
+> >                 if (i == ARRAY_SIZE(dummy_scales))
+> > -                       ret = -EINVAL;
+> > -               else
+> > -                       st->accel_calibscale = &dummy_scales[i];
+> > -               mutex_unlock(&st->lock);
+> > +                       return  -EINVAL;
+> > +               st->accel_calibscale = &dummy_scales[i];
+> >                 return ret;  
+> 
+> Can we change this to `return 0;` and get rid of the `ret = 0`
+> initialization at the beginning of the function?
 
-Yes. I just didn't want to add too much to the RFC. I'd want to
-convert a user of each as part of the patch set introducing the new
-loop definitions.
+Yes. That would make sense.
 
-Jonathan
-
->=20
-> julia
->=20
->=20
-> >
-> > =20
-> > > +
-> > >  #define for_each_of_cpu_node(cpu) \
-> > >         for (cpu =3D of_get_next_cpu_node(NULL); cpu !=3D NULL; \
-> > >              cpu =3D of_get_next_cpu_node(cpu))
-> > > --
-> > > 2.43.0
-> > >
-> > > =20
-> > =20
+> 
+> > +       }
 
 

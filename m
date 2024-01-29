@@ -1,70 +1,69 @@
-Return-Path: <linux-iio+bounces-2027-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2028-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48F4841113
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 18:45:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D55841115
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 18:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69BE4286DBA
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 17:45:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1284CB2550D
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 17:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1B276020;
-	Mon, 29 Jan 2024 17:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38F276039;
+	Mon, 29 Jan 2024 17:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JLZwfpAP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yy5o3rc5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2B96F083
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C63D6F085
 	for <linux-iio@vger.kernel.org>; Mon, 29 Jan 2024 17:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706550228; cv=none; b=ewK30zl58we3SJJ4bfgV6mDtkAqBqpHEBCyjM/1/hxTpVb7xh5Cvcnnbu6qKBC9NJQ5j2ggwTWaYySOyBY6oTAMXUdTxHwfP0SBWGoXkFj04ltgrVitURcU3rREGbQDBu2SjfrI1ol/9rdt6u2QpIDmqh6wzwrmOD0pwCLv8260=
+	t=1706550229; cv=none; b=oNVldJ5YPfy1aw5zUB0J/yN3RtfeOdwxOP38r+j3a5R1VDNTMOsuhLkdqCdI7BSvu6sVk1HJFIKNdJRppLv0NU/E1zIzd6XK9cd5hKIAg884vTr/hf0E0/Lzz5iMsqw4x893zKq5a4v2sQsneMDKU91PUQg63zFQwPt8LAB8hW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706550228; c=relaxed/simple;
-	bh=oZHqo1ucDWB9pyoSuojibAK6SA+XCVw1HAeO06tsAhI=;
+	s=arc-20240116; t=1706550229; c=relaxed/simple;
+	bh=ezxaAWnO3x5MlzXMVPde2b8Z5cmfO15kjRpRqQ8IuhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIfeYltYOQ1nlyywY+CZ2q0H5m0NFMfb8v0dzFbsrsz7Px//wq3ASmXq1k82jhsvozUh2yeNFH6vjyjis3UBYCZx7Ww2OEP+oPYr4d76bw4crio4tGhBRK8XF5KaHZAO5tlF5glfJn+Oab9X3E4JZWm1RZIu651l6OO/Tm6CDk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JLZwfpAP; arc=none smtp.client-ip=209.85.210.41
+	 MIME-Version; b=vAjU6KAQXl16IUsfUC6Z3SXTcUOQqlg7c0ba5ivChoaaCms7JmJU3gNKzQ6PhxX7MLdsuiSysMRD4D2hoWhmuH8gZeoT5J8mgLddQoVay7xkvIHdxA7yuQ0sZDUOZwXYXc88V8t/HmSldIvJxYrLwkKiDAQdLrH+ME7q6xVL1hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yy5o3rc5; arc=none smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e118da997cso1113641a34.3
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6e0af93fdaaso2711916a34.3
         for <linux-iio@vger.kernel.org>; Mon, 29 Jan 2024 09:43:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1706550224; x=1707155024; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1706550225; x=1707155025; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=adx5Y3cgX71ZvwEi/qb8yz5ApFtROFIqpevhH+PdrQ4=;
-        b=JLZwfpAPFpLY2cpYnKaGArBrxow7WREvTPinscspsQOy6M7aK8Nlvcx5MuxVMHfMiv
-         KunmJ4UQSj1Cy5GggXdCLthjHGmrCjaFj5pwBx4aJY4JCCBSStZo5JIJ3meyHvIU5V4n
-         9iyFWX+FL3eUe6L3VQrG/f3f5bERHVj0QpvkHbWihTSHMjPA9QWj1hYI6QWiw1S0AXsa
-         eqiI+UYe6FMv5eYRuoQoY26qc/UH+inmpKWYLLa6G0ikGXm44K6+YMtnSDxdHwRlPe9A
-         1vlQw46ob0OfbjGhRsuNlvhjE70Ef1ziH/ol6ktda4GhXVrXH7R5Y0LzaHCTpI4020D9
-         H6CA==
+        bh=Cn/LQOeTBFx9zDrBTCXy4pCuw6SR0x8diD/cv0ohb+c=;
+        b=yy5o3rc537NVtCklv0xRS8QgfjO+CRRC/TVNtNz7NmB3dlVBWgKx44vqYRYlp3/N/g
+         sxCiiIsX0Nel9fYWhfxEV3JqBrJOMYAcRCZtmKEXMSggpu0Dfm9SZUhcps+uhc9eZB95
+         Xj5VPBHkO0BzQQZ0eTIt6Thos54yH5I4KO5vZoZhdq9lTkmnCDxRVIpSgWvTW1Xv1494
+         taQ9xZ/9IZQlL12XZgApwYp2gE6IGqH5ZNQPAAb88BvwZWNzCsCw1AALHndUoP5It2bj
+         IoV26enEx1V/+0SBRKv/bDK1Gj1VgGN5JY6fv8X0495z5j1565/l1cRNWwSmqFMNOP+i
+         YrkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706550224; x=1707155024;
+        d=1e100.net; s=20230601; t=1706550225; x=1707155025;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=adx5Y3cgX71ZvwEi/qb8yz5ApFtROFIqpevhH+PdrQ4=;
-        b=ZFR3DHxCsZ76TLNC0tZYyS3nB4Ga5mAD5FPIHH4mAUpH4bv0HdWQ/NOOiSoLXZxoxz
-         P3IWRXbBga9nj8df2a65WYAUwaw+Fget7gdwcrCeXIGIbFY9wvcKUxAldYIkR7RmZbrT
-         t3V5AEoAqsLucnilwscLhiAgdZ1TkUcGz4X6b5rm+UauL1dDiRr7rMQ64sIzCv+xd4I3
-         CFveRuMIzbPVwAPjYoFa+WnRrdqPyHx4++SN1I0Mr6flppy/nTGVxuBvEMBed/0A7zch
-         gGWSqKrirDDng5IMzCB9rZ5SkXjiWVXzm8R9rzeZCuo6epHlCRe19cmDc5NLig/NIKRZ
-         Kemw==
-X-Gm-Message-State: AOJu0YyTf5cAI8i/Vb6zQmh/z3T4i2m13BrS69N6/9T333nnADPiLEwj
-	P8qnqo+nP9JWczDSh8LS056S6NOpXT1rQrIPIfqEi/xhg/x4v/9nlq5RBitOpguqKV9Ml370nQA
-	7
-X-Google-Smtp-Source: AGHT+IGQshWRbXn4ps1VaNtDU6whOzWZuqVKxJ/Ocqpa5Bduzty/1vDy7xXCYcG0GcBjf7fDw2nq+g==
-X-Received: by 2002:a9d:665a:0:b0:6e1:5dd:72af with SMTP id q26-20020a9d665a000000b006e105dd72afmr6735710otm.17.1706550224537;
-        Mon, 29 Jan 2024 09:43:44 -0800 (PST)
+        bh=Cn/LQOeTBFx9zDrBTCXy4pCuw6SR0x8diD/cv0ohb+c=;
+        b=wc7Yp1ZtuhduV0wGuH7abRlaywsxgTP6tZT8C6BF1xUwCujQqGysebs6KUiGstHsc0
+         vUcWmFChIz9xoQ524vjdamy4FyBG5JsJPUN56BQaClpxVYYg4lgy5XZcUCbPkD5UyY/N
+         rlr7tJlQJMCt6VJc+sqbGbOxsKQ5qRjtP4wtZ+3WTbOP2ZpiPCF9qJGSdf4SjY0LiUMs
+         1lELRNsNI4Xq6gstjp+Ce5SsfGiiCGpcKwkZaQOMuqXMrtpZeWy8bMI2RSlPcP2qD8Ul
+         lX0+W1T7dPMtwfctkAxHF0UepYF5IBI+FayC6UP2px/SQkGmPAot1HJuOyk9DsqdJVYQ
+         Hk6Q==
+X-Gm-Message-State: AOJu0Yxs2ImliKietMNMhRa88k50l8MUUXn95dQ4Ai5vs0w36mbwO9vS
+	S5gPJMEJAT8A14suIGZFrvuIjHjXCPUC2Z62cQEO/EnBQIY7RGKORMdiCCeZBqA=
+X-Google-Smtp-Source: AGHT+IGwnhAee+dC3VpUdH+kLyGQuggTaELH+MHdmM/0AybMffHiQouOgzEPS/xrKJCH8YihXNdfyw==
+X-Received: by 2002:a05:6830:2aaa:b0:6e1:377e:c421 with SMTP id s42-20020a0568302aaa00b006e1377ec421mr1355224otu.25.1706550225195;
+        Mon, 29 Jan 2024 09:43:45 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id p16-20020a9d6950000000b006e126e4b05esm661334oto.2.2024.01.29.09.43.43
+        by smtp.gmail.com with ESMTPSA id p16-20020a9d6950000000b006e126e4b05esm661334oto.2.2024.01.29.09.43.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 29 Jan 2024 09:43:44 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
@@ -75,9 +74,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	linux-kernel@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	kernel test robot <lkp@intel.com>
-Subject: [PATCH 1/2] iio: adc: ad7380: make ad7380_regmap_config static
-Date: Mon, 29 Jan 2024 11:41:49 -0600
-Message-ID: <20240129174150.655088-2-dlechner@baylibre.com>
+Subject: [PATCH 2/2] iio: adc: ad7380: don't use bool in FIELD_PREP
+Date: Mon, 29 Jan 2024 11:41:50 -0600
+Message-ID: <20240129174150.655088-3-dlechner@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129174150.655088-1-dlechner@baylibre.com>
 References: <20240129174150.655088-1-dlechner@baylibre.com>
@@ -89,33 +88,34 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ad7380_regmap_config is not used outside of ad7380.c, so make it static.
+Although this technically works, it is better to avoid using bool as
+a bit value.
 
 Fixes sparse warning:
 
-     drivers/iio/adc/ad7380.c:205:28: sparse: sparse: symbol
-     'ad7380_regmap_config' was not declared. Should it be static?
+     drivers/iio/adc/ad7380.c:353:34: sparse: sparse: dubious: x & !y
 
 Reported-by: kernel test robot <lkp@intel.com>
 Closes: https://lore.kernel.org/oe-kbuild-all/202401280629.5kknB57C-lkp@intel.com/
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad7380.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7380.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index 80712aaa9548..44b8b18ab213 100644
+index 44b8b18ab213..a4aa0db47720 100644
 --- a/drivers/iio/adc/ad7380.c
 +++ b/drivers/iio/adc/ad7380.c
-@@ -202,7 +202,7 @@ static int ad7380_regmap_reg_read(void *context, unsigned int reg,
- 	return 0;
- }
+@@ -350,7 +350,8 @@ static int ad7380_init(struct ad7380_state *st)
+ 	/* select internal or external reference voltage */
+ 	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
+ 				 AD7380_CONFIG1_REFSEL,
+-				 FIELD_PREP(AD7380_CONFIG1_REFSEL, !!st->vref));
++				 FIELD_PREP(AD7380_CONFIG1_REFSEL,
++					    st->vref : 1 : 0));
+ 	if (ret < 0)
+ 		return ret;
  
--const struct regmap_config ad7380_regmap_config = {
-+static const struct regmap_config ad7380_regmap_config = {
- 	.reg_bits = 3,
- 	.val_bits = 12,
- 	.reg_read = ad7380_regmap_reg_read,
 -- 
 2.43.0
 

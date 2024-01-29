@@ -1,59 +1,57 @@
-Return-Path: <linux-iio+bounces-2034-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2035-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE198413F4
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 20:58:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1408413F5
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 21:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C2D1F24C1B
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 19:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD073286411
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jan 2024 20:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DE76F097;
-	Mon, 29 Jan 2024 19:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FEE6F09C;
+	Mon, 29 Jan 2024 20:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMhksVn0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kl8smRR7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5151C48790
-	for <linux-iio@vger.kernel.org>; Mon, 29 Jan 2024 19:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56314179AB;
+	Mon, 29 Jan 2024 20:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706558305; cv=none; b=aw0pDaPczb1er2ZCiZincQAzCZ1Cu1HAorrymXQ2IbolSHndv/vuR/beELMdeZZhxqrVYBPnYgbWKC/QcHjxoDozaPPogAhPIPGRiw6AIBluYnAMnR6/2ysOeULvhXFDaHsSkqtFxVtbZlmQSE/VuF+o7mRKBBdNiIBpfx/iE6s=
+	t=1706558439; cv=none; b=AYxfOqgHez2UgxlaTWVNDzFnrvS+JyoNh9dC2mmEIuEe7mdiPcX9Eovdfe+w5ZxlWcg2RKyNmSTl9c7cxHyX7eNPQ/SQztBK7vok4EAYywWxNjBFdLgqsLi9bUZ1fJr3PlVH4rRRISH+3Dh9v/WTpJNf3BnGphVHQ5Guceo1xw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706558305; c=relaxed/simple;
-	bh=bMCNr8TdR9K7k6i61F3I2TKGeTKbMtMvIrNqpyTqBIo=;
+	s=arc-20240116; t=1706558439; c=relaxed/simple;
+	bh=C31f9kgHgCBHLfgf62xdSkCVJTlrGWi/a6jhdsgco0Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W5V0OT8OLqcMPc0w22Qy9qBJHtxeBcms1xzxkrLtKOojsxHO6ZW5ymFrHeNcvx8gbkBLhOPbZ6Ukd3WuoOuMu5rGHdSwLbuIVoLK9kit1WvxKulBJMkcM1Jj5j8WWZFrpp91yNP2vUoy0ZlTDoovGKTfhM/qUi5jC1Y6dQNzKl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMhksVn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87DC7C433C7;
-	Mon, 29 Jan 2024 19:58:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jb8SRgGUKOIISNQk5GKdMlfu49FDKFKaSVvIMKuvMRJbVHiUDY9F9qQPLBlqaByeaUYfBfzjD2mVirBoKa9OuQXQpx5iLq28HpMslOkOfoXFxXkgZdNKfQwpgEJ6opfzfUJq58gptlWObIVGrBLHqdMQik+wzcp1LEHpwTH0aTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kl8smRR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511FEC433C7;
+	Mon, 29 Jan 2024 20:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706558305;
-	bh=bMCNr8TdR9K7k6i61F3I2TKGeTKbMtMvIrNqpyTqBIo=;
+	s=k20201202; t=1706558438;
+	bh=C31f9kgHgCBHLfgf62xdSkCVJTlrGWi/a6jhdsgco0Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bMhksVn0CfM2Zguh7v0NjSdBiJ9o/NoHMI5Sg3aJQcjS/1opl0SnUJtBaRxHi3DZh
-	 8F5M+fSQCWz+9VkxGTvTSSw2WQSnySNyUK/nYkD7bD64dXQk8kxgtK/RnWP8Nk75sB
-	 ee/95CG+AzpLd9TSguPrjpRs9i7gWjZld8KKVZAxwI/V/NlPlb29aJtPVzAAuwiQBS
-	 h747Np8CN0SbIA9bsEhhYJLUVdLZt8lKyNh0Yl4qg3m0FtlOtbR/1dM17NimikswL/
-	 5WJ20MNqdlQJ2G1lQuFytMfH4ASQkaJmEurNWYbwAgRsPaMOoq6CRM5k8h8ynyYh3d
-	 KW0FMftjsN7VQ==
-Date: Mon, 29 Jan 2024 19:58:13 +0000
+	b=kl8smRR781c02QWcUKOMN5GkYs55RTgayDC+6RxWHQ6upbyDErDm7//rA8aKbkg5r
+	 dTcry8nsG5mE/OiZF8AM/X0xs0ziztsOWw0VK5BwOuUkv1x+GCaFkj4ZnKkHZZaxgU
+	 A6XvBNBVYRZ7sT9LX4Iy1+sp+BaJXa6ZanUkGwYJkEV1XqSnPRPw1qi0ROPzFCvAIo
+	 RGlzeQOnXp2mdcqTWTbijyqOkI+7g5Vd4CKS4kaly40vVLiOg8SGc8n6x+3GRJuW0R
+	 +EeVPqzxmicCC/ZR6XbDKx1Pa/oEUyslw3+NdxEzqQBpS30VeYwk2e6mJopW3EGAxs
+	 hzfAM3pUqjA9g==
+Date: Mon, 29 Jan 2024 20:00:27 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: David Lechner <dlechner@baylibre.com>, <linux-iio@vger.kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>
-Subject: Re: [PATCH 02/10] iio: dummy: Use automatic lock and direct mode
- cleanup.
-Message-ID: <20240129195813.34912f8c@jic23-huawei>
-In-Reply-To: <20240129114622.00007e1c@Huawei.com>
-References: <20240128150537.44592-1-jic23@kernel.org>
-	<20240128150537.44592-3-jic23@kernel.org>
-	<CAMknhBFzuoQQDbfJjUkDd8udAkRzhsM_Vs-FyEmaAE_k6QXk3Q@mail.gmail.com>
-	<20240129114622.00007e1c@Huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 1/2] iio: adc: ad7380: make ad7380_regmap_config static
+Message-ID: <20240129200027.5a0ee6bb@jic23-huawei>
+In-Reply-To: <20240129174150.655088-2-dlechner@baylibre.com>
+References: <20240129174150.655088-1-dlechner@baylibre.com>
+	<20240129174150.655088-2-dlechner@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,95 +62,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jan 2024 11:46:22 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Mon, 29 Jan 2024 11:41:49 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> > > @@ -436,10 +431,10 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
-> > >                         if (chan->output == 0)
-> > >                                 return -EINVAL;
-> > >
-> > > -                       /* Locking not required as writing single value */
-> > > -                       mutex_lock(&st->lock);
-> > > -                       st->dac_val = val;
-> > > -                       mutex_unlock(&st->lock);
-> > > +                       scoped_guard(mutex, &st->lock) {
-> > > +                               /* Locking not required as writing single value */
-> > > +                               st->dac_val = val;
-> > > +                       }
-> > >                         return 0;
-> > >                 default:
-> > >                         return -EINVAL;
-> > > @@ -447,9 +442,9 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
-> > >         case IIO_CHAN_INFO_PROCESSED:
-> > >                 switch (chan->type) {
-> > >                 case IIO_STEPS:
-> > > -                       mutex_lock(&st->lock);
-> > > -                       st->steps = val;
-> > > -                       mutex_unlock(&st->lock);
-> > > +                       scoped_guard(mutex, &st->lock) {
-> > > +                               st->steps = val;
-> > > +                       }
-> > >                         return 0;
-> > >                 case IIO_ACTIVITY:
-> > >                         if (val < 0)
-> > > @@ -470,30 +465,29 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
-> > >                 default:
-> > >                         return -EINVAL;
-> > >                 }
-> > > -       case IIO_CHAN_INFO_CALIBSCALE:
-> > > -               mutex_lock(&st->lock);
-> > > +       case IIO_CHAN_INFO_CALIBSCALE: {
-> > > +               guard(mutex)(&st->lock);
-> > >                 /* Compare against table - hard matching here */
-> > >                 for (i = 0; i < ARRAY_SIZE(dummy_scales); i++)
-> > >                         if (val == dummy_scales[i].val &&
-> > >                             val2 == dummy_scales[i].val2)
-> > >                                 break;
-> > >                 if (i == ARRAY_SIZE(dummy_scales))
-> > > -                       ret = -EINVAL;
-> > > -               else
-> > > -                       st->accel_calibscale = &dummy_scales[i];
-> > > -               mutex_unlock(&st->lock);
-> > > +                       return  -EINVAL;
-> > > +               st->accel_calibscale = &dummy_scales[i];
-> > >                 return ret;    
-> > 
-> > Can we change this to `return 0;` and get rid of the `ret = 0`
-> > initialization at the beginning of the function?  
+> ad7380_regmap_config is not used outside of ad7380.c, so make it static.
 > 
-> Yes. That would make sense.
-
-Given it's fairly trivial, I may not post it again but instead just
-tidy that up whilst applying.  Diff will also git rid of the bonus space
-in this block. oops.
-
-diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
-index d6ef556698fb..09efacaf8f78 100644
---- a/drivers/iio/dummy/iio_simple_dummy.c
-+++ b/drivers/iio/dummy/iio_simple_dummy.c
-@@ -421,7 +421,6 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
-                               long mask)
- {
-        int i;
--       int ret = 0;
-        struct iio_dummy_state *st = iio_priv(indio_dev);
- 
-        switch (mask) {
-@@ -473,9 +472,9 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
-                            val2 == dummy_scales[i].val2)
-                                break;
-                if (i == ARRAY_SIZE(dummy_scales))
--                       return  -EINVAL;
-+                       return -EINVAL;
-                st->accel_calibscale = &dummy_scales[i];
--               return ret;
-+               return 0;
-        }
-        case IIO_CHAN_INFO_CALIBBIAS:
-                scoped_guard(mutex, &st->lock) {
-
-> >   
-> > > +       }  
+> Fixes sparse warning:
 > 
+>      drivers/iio/adc/ad7380.c:205:28: sparse: sparse: symbol
+>      'ad7380_regmap_config' was not declared. Should it be static?
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202401280629.5kknB57C-lkp@intel.com/
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+
+I saw the report of this one and squished it in the original patch.
+
+The second one I decide was a false positive so could wait a bit longer.
+Still nice to get rid of that warning though.
+
+> ---
+>  drivers/iio/adc/ad7380.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+> index 80712aaa9548..44b8b18ab213 100644
+> --- a/drivers/iio/adc/ad7380.c
+> +++ b/drivers/iio/adc/ad7380.c
+> @@ -202,7 +202,7 @@ static int ad7380_regmap_reg_read(void *context, unsigned int reg,
+>  	return 0;
+>  }
+>  
+> -const struct regmap_config ad7380_regmap_config = {
+> +static const struct regmap_config ad7380_regmap_config = {
+>  	.reg_bits = 3,
+>  	.val_bits = 12,
+>  	.reg_read = ad7380_regmap_reg_read,
 
 

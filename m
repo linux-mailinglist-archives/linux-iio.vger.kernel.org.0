@@ -1,139 +1,166 @@
-Return-Path: <linux-iio+bounces-2052-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2053-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13868428F2
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 17:16:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8C4842A69
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 18:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F491F26708
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 16:16:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E52283BDE
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 17:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD4086AF0;
-	Tue, 30 Jan 2024 16:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE822128391;
+	Tue, 30 Jan 2024 17:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R895J5Nh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BA186AD7;
-	Tue, 30 Jan 2024 16:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A27E86ADC;
+	Tue, 30 Jan 2024 17:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706631408; cv=none; b=pQq+JPIexf6LWNvG2DLiJEO8e3aXPs/L2N+d2rF2nJKUiNCEP+8BHHExhGrT6D+QXYJYHMbr0JfNAHkjWdWzf6DWmCfzffMCDcfoGHsIYoD83cgayDFWoxV17INtTk7TZySfm95Cv6w3Y/zuYF7noTQokiwyyfPQ0ZkFfkMkJJA=
+	t=1706634346; cv=none; b=Ru2cwrc9rrb3S1PZwU7C+uzl30H/aW/OF1U+oJJRUP/uxHfrkk1iMxrZJTsSsDXXKolZqoXCN6JprVit00oSw4qs8qHxHbwPcdaDmtvY1FKKKbcSYPRq7bELEaswq+HQumI5mlFpWf0lbWnXtg2y0DISuqrfePvoAHa6SmJy0HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706631408; c=relaxed/simple;
-	bh=wzWjLx78n+gNpGvxKMNzh4geP7TmALFgETAt/zZgYXg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ueDzwRXsgEhAzZMkl/rl2a6UyzLZ6qpiROjQnMmhWL23Uwgcs/1sVfR4P7QrmAHLCcfRZ3pXOim1rmffh2nhOBpjJsXWBUZBCsEHSAcYEnC5gNfFNWUV/XRslMw1yej3YcNtFye/hWCbJCEJPjSxfl3fpKVijmE38X/Ob63YVEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TPVb26kBjz6K99D;
-	Wed, 31 Jan 2024 00:13:34 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 53ADF140C72;
-	Wed, 31 Jan 2024 00:16:40 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 30 Jan
- 2024 16:16:39 +0000
-Date: Tue, 30 Jan 2024 16:16:38 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Naresh Solanki <naresh.solanki@9elements.com>
-CC: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, <mazziesaccount@gmail.com>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: iio: afe: voltage-divider: Add
- io-channel-cells
-Message-ID: <20240130161638.00004cf6@Huawei.com>
-In-Reply-To: <CABqG17g70GDU3_DbJbEnu4-9a3aJBSFFXuYKBEG8MJpVfOjMGg@mail.gmail.com>
-References: <20240130111830.4016002-1-naresh.solanki@9elements.com>
-	<49bb7b5b-4186-83cc-7e1e-4892c7e8b6ef@axentia.se>
-	<CABqG17g70GDU3_DbJbEnu4-9a3aJBSFFXuYKBEG8MJpVfOjMGg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1706634346; c=relaxed/simple;
+	bh=QC4YtFfqL/ZkTH/AF/bNmRRbxvCTQxIQQ8bFBkTG4Qk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jplGLJ67nxHXKTztOmWM7Q+s8WM4IixcrCknMrXAMKA6Zc2yw8xZE8RReI41wDm9SDORzOTA3KvWAnNftXgEE9aJxN1jqZlk/w7HyhPn5grsjE5u45CzjNhzHVS5waMSw+9lPN79ct1D/BsUaeo9dUCIrMzfAGCOUmM5BqHBg0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R895J5Nh; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d50d0c98c3so42255105ad.1;
+        Tue, 30 Jan 2024 09:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706634344; x=1707239144; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y5wjSHabQXmyjK9UW/hisACzWIzHTQrBleOJJYviNOg=;
+        b=R895J5NhqqtkTKCuh5vxuddtlyYNRMnIImOS763RpVW7JltL7a33z0FVZqeXujxjYh
+         +ybUqGoF2srG4xtT+ejfs1oI5g/9RlUc2BBVCQdGg98Bmb1AzoL1hhrwyyDHaD2TwIx5
+         k8R2FiIKoo7A4YM1LYdIemkOO9kD0JsDaMk6kizQ3Kb6SV89Ee1NSrerBVSt7KW99XAB
+         ibdOatWKeyf6CTA2BvuBNFu4mHWiscGoZpzm2V4+azPEjqNayHi0ClfY6ysuobq12Ktx
+         H68lJVlyg9I7mY0wpmZCmxt1UeHp9m5aebS2JnBQdsbHxiS+0kQUJ56cpFNT+0bb0a39
+         y7jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706634344; x=1707239144;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y5wjSHabQXmyjK9UW/hisACzWIzHTQrBleOJJYviNOg=;
+        b=MKxP2Se+zyyfJIl2kzji68GQ0OKH4dxrnHrzuD0erTQ8eSLCCrrUT6l8n7c17YnOoK
+         KB8N0PIJRymaw0vQEtzAnsqjkbwaxN2TnZAYSwppGaXYcy74FjyjPCieJUoY0eaHkMJ5
+         nXfVkGMlMDwISr/FwQDIATsdL3cy9LY5n/xOlfaIAsz2bcjmUJ9D3I8TNrvqXoC60w1L
+         ULDEt0GLyaJIDruLZmEGmTqNsJ2vb8SRk38rdqgwueWYptuUP812IGajE98GIIAdI29O
+         Zxjd0s/QuA2jUYr0M3yB+X9vnJejTznIkduk6YdIJAmytNviTFccQRBTHxQeDgpHtw0r
+         tHaQ==
+X-Gm-Message-State: AOJu0YwaSpv0ZOW8tsuvMoRllq1zOmIcDzkGFGVdmMLLupSb/v6Fja6T
+	N527Fj6tIE6viBjowd117oaXsN5oL7hPiTyzyzVHxWANFk/1EHT/vC8rwdL8
+X-Google-Smtp-Source: AGHT+IF9h+ec4hX7PMv0DjY0NyVgQDYcJA6eGnLrAl4kCBW5eaciz/3qQQgvP4gvxy8PF7LEKafZQA==
+X-Received: by 2002:a17:90a:d80e:b0:28e:6dfd:ad6c with SMTP id a14-20020a17090ad80e00b0028e6dfdad6cmr2021565pjv.10.1706634343944;
+        Tue, 30 Jan 2024 09:05:43 -0800 (PST)
+Received: from octofox.hsd1.ca.comcast.net (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
+        by smtp.gmail.com with ESMTPSA id sm5-20020a17090b2e4500b0028ffea988a2sm8856830pjb.37.2024.01.30.09.05.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 09:05:43 -0800 (PST)
+From: Max Filippov <jcmvbkbc@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Cc: Jiri Olsa <jolsa@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Kent Gibson <warthog618@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] kbuild: tools: drop overridden CFLAGS from MAKEOVERRIDES
+Date: Tue, 30 Jan 2024 09:05:14 -0800
+Message-Id: <20240130170514.3640723-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Tue, 30 Jan 2024 17:18:53 +0530
-Naresh Solanki <naresh.solanki@9elements.com> wrote:
+Some Makefiles under tools/ use the 'override CFLAGS += ...' construct
+to add a few required options to CFLAGS passed by the user.
+Unfortunately that only works when user passes CFLAGS as an environment
+variable, i.e.
+  CFLAGS=... make ...
+and not in case when CFLAGS are passed as make command line arguments:
+  make ... CFLAGS=...
+It happens because in the latter case CFLAGS=... is recorded in the make
+variable MAKEOVERRIDES and this variable is passed in its original form
+to all $(MAKE) subcommands, taking precedence over modified CFLAGS value
+passed in the environment variable. E.g. this causes build failure for
+gpio and iio tools when the build is run with user CFLAGS because of
+missing _GNU_SOURCE definition needed for the asprintf().
 
-> Hi Peter,
-> 
-> 
-> On Tue, 30 Jan 2024 at 17:12, Peter Rosin <peda@axentia.se> wrote:
-> >
-> > Hi!
-> >
-> > 2024-01-30 at 12:18, Naresh Solanki wrote:  
-> > > voltage-divider is always an iio consumer at the same time it is
-> > > optionally an iio provider.
-> > > Hence add #io-channel-cells
-> > > Also update example.
-> > >
-> > > Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
-> > > ---
-> > >  .../bindings/iio/afe/voltage-divider.yaml          | 14 +++++++++++++-
-> > >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > index dddf97b50549..09f10d7c4e02 100644
-> > > --- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-> > > @@ -39,6 +39,13 @@ properties:
-> > >      description: |
-> > >        Channel node of a voltage io-channel.
-> > >
-> > > +  '#io-channel-cells':
-> > > +    description:
-> > > +      In addition to consuming the measurement services of an ADC,  
-> >
-> > It doesn't really need to be an ADC. Anything with a voltage output
-> > channel works (in theory). But sure, normally it would be an ADC...  
-> Ack
-> >  
-> > > +      the voltage divider can act as an provider of measurement  
-> >
-> > a provider  
-> Ack
-> 
-> Will update as:
->   '#io-channel-cells':
->     description:
->       In addition to consuming the measurement services of an a voltage output
+One way to fix it is by removing overridden variables from the
+MAKEOVERRIDES. Add macro 'drop-var-from-overrides' that removes a
+definition of a variable passed to it from the MAKEOVERRIDES and use it
+to fix CFLAGS passing for tools/gpio and tools/iio.
 
-That sounds like a DAC.  It's an input voltage to that device.
-Just go with voltage channel and rely on measurement services to make it clear what
-it is.
+Cc: stable@vger.kernel.org
+Fixes: 4ccc98a48958 ("tools gpio: Allow overriding CFLAGS")
+Fixes: 572974610273 ("tools iio: Override CFLAGS assignments")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ tools/gpio/Makefile            | 1 +
+ tools/iio/Makefile             | 1 +
+ tools/scripts/Makefile.include | 9 +++++++++
+ 3 files changed, 11 insertions(+)
 
->       channel the voltage divider can act as a provider of measurement
->       services to other devices.
->     const: 1
-> 
-> Regards,
-> Naresh
-> >
-> > Cheers,
-> > Peter
-> >  
-> > > +      services to other devices.
-> > > +    const: 1
-> > > +
-> > >    output-ohms:  
-> > ...  
-> 
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index d29c9c49e251..46fc38d51639 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -24,6 +24,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+ all: $(ALL_PROGRAMS)
+ 
+ export srctree OUTPUT CC LD CFLAGS
++$(call drop-var-from-overrides,CFLAGS)
+ include $(srctree)/tools/build/Makefile.include
+ 
+ #
+diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+index fa720f062229..04307588dd3f 100644
+--- a/tools/iio/Makefile
++++ b/tools/iio/Makefile
+@@ -20,6 +20,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+ all: $(ALL_PROGRAMS)
+ 
+ export srctree OUTPUT CC LD CFLAGS
++$(call drop-var-from-overrides,CFLAGS)
+ include $(srctree)/tools/build/Makefile.include
+ 
+ #
+diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
+index 6fba29f3222d..43e1fbb8329f 100644
+--- a/tools/scripts/Makefile.include
++++ b/tools/scripts/Makefile.include
+@@ -51,6 +51,15 @@ define allow-override
+     $(eval $(1) = $(2)))
+ endef
+ 
++# When a Makefile overrides a variable and exports it for the nested $(MAKE)
++# invocations to use its modified value, it must remove that variable definition
++# from the MAKEOVERRIDES variable, otherwise the original definition from the
++# MAKEOVERRIDES takes precedence over the exported value.
++drop-var-from-overrides = $(eval $(drop-var-from-overrides-code))
++define drop-var-from-overrides-code
++MAKEOVERRIDES := $(subst -escaped-space-,\ ,$(filter-out $(1)=%,$(subst \ ,-escaped-space-,$(MAKEOVERRIDES))))
++endef
++
+ ifneq ($(LLVM),)
+ ifneq ($(filter %/,$(LLVM)),)
+ LLVM_PREFIX := $(LLVM)
+-- 
+2.39.2
 
 

@@ -1,144 +1,237 @@
-Return-Path: <linux-iio+bounces-2047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCCF842435
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 12:57:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7A084257B
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 13:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4336A1C2240C
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 11:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167211F2E16E
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 12:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08778679EF;
-	Tue, 30 Jan 2024 11:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7FC6A32A;
+	Tue, 30 Jan 2024 12:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="Ro76OJuV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2lVvzO5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B23679E6
-	for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 11:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E01679F2
+	for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 12:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706615820; cv=none; b=HlXtlCAQSlCG40pU21tm9CbZ9BWwR2tsGxuBAjvFHrDIEqPzORBgFYFogthApG8+KkbAYdolgD43PDOWal2bh38UnZV0V54xCC54fRWdSv4/gcQXZ+RNV0EayWS4btllqOhXGWtZYsin6FOCM24oFo/ofhto15sJKADtc/sGqX8=
+	t=1706619031; cv=none; b=IAqYRAHQgKB77jYaJGDRvaczjuMIIvAQT2oryKXBIgv/QM9ZKurnxSEh2sEhPZzpwFK5aveobOgcjMkkmGc8RqQn+toe2P7+I8ENf2i6OAKNVM00yrm558OqyuVmKO0nK/BRdP1N28Qwq69Y1RmmGaZ5E1MLZIIuA4OrN/zquBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706615820; c=relaxed/simple;
-	bh=5BNuu1x/bXsqnfMaHPtVjp+t6R/LjBZtMNHFrzbKhFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AYGeNGtvoZ12aSkudJIMKbxnYYpWgRNYfihHZRyaPy7h4M3143JT99JS/uDJcmTCsQNUIuAViPy3NSqDN8SPUw4Jir5r5GX68ya6b4hEn3d+jF5OvmJizzhic3SEoX95Pk7PVIMkyq7kdvv0Lp36nCoQgixp3cUjMppTdiepplk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=Ro76OJuV; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-55790581457so4541996a12.3
-        for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 03:56:58 -0800 (PST)
+	s=arc-20240116; t=1706619031; c=relaxed/simple;
+	bh=TlR0lOLRWQHoO5iizUmY3xDDur6iPUaUaOYT0SP8nEk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NU0Q/o+bJKNTpzzJEnCBGsRWdvs3BjenNIBJ4fyYOID2ZeUmn4Znao9C8+Cevip9Wm7x2FbQfut2Skd8S4jE8lCNGnPOwHG2wKIoNQTEFhxsXkHHhD65+vzpB1mgRs4EIfdWqbzoKzQENV4xGDCAaRPkZ840+jPQQr0QgwJgs6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2lVvzO5; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40f033c2e30so4598975e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 04:50:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1706615817; x=1707220617; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3UEGIekdyazfqo3T299WapeO9DNQtaZe4LTOdPjlFiU=;
-        b=Ro76OJuVzL7y/JZv3h/GVERlwMXQI2C1KqybMRAn5ru8BbOG4gLzTuWjTTtbk0YIQ3
-         MDIA1BUWK3T7Ep35GxdQXvsJaYD2CL9qCvVhaPOgDpxadCLT5I3+FgV6yH3wPa2jVJqb
-         WzCwAzET2UmIzyZNRfVsAs+1iyYYaYZ8yhjv+KOCY2/yPDY9QheYCk2wXIhU6IiX6Ow9
-         hMfWbvY1MvyiJT+yz4tR+sQQsrTLWH/Gv8IfG6j9f9FmWGN5rY+RSdUZrufRfaFoB2Ve
-         rbZASFgS2GroqggKNugTBDGrkahJHHTEW+WjK6rbWTWTh6A8cgnr3Q3AguQhMojPEAsq
-         frlA==
+        d=gmail.com; s=20230601; t=1706619028; x=1707223828; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4p1a02uh1H5gfZsyP65odPOfYJ0BcQhvM7ZW6ePEWsw=;
+        b=A2lVvzO5RS/T0a3lTePHHk4x2lDh3tMXBjTaSafJH8MrzC5xB/+4sncSu8ogZRJXVT
+         zPLfrFsmxzMjGYaoJ6dmBhJ5JT6LEHxCeGEDZujqNW0spMJi01SuAvv6ykJqwEJX51fu
+         4XEMZ056Om4T1rdvCtTF+O9dfwDMCgTbXA8BRar9Kim9mDcgTElSuuXbGmnuVzVYnF9W
+         FOKB0CXI3Y9feNAetrBAcy7AMUqcX7WaYfKvixBgw3iOMcKnByGfhvJv4V3NymJ7yows
+         pNsKyNF0Mp2vIPdlb0O7EDkeyoOaAW3CJkGM3EWLl+E/fJpdlfgMvV+L6ouUWEUi9485
+         CGSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706615817; x=1707220617;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3UEGIekdyazfqo3T299WapeO9DNQtaZe4LTOdPjlFiU=;
-        b=xMTHkyLrKOffE+u8WaeItUL5ZS/ZNJsU7odNtx6zXy6+8sy9Lrbpv7d1JjV/27dl3R
-         rBb4BOsPvddyVznPEopATy8lgu74UveYLzp8AePxeJN/wEjvVjQEbGUb1Ige6H2b3gEG
-         xquygV5dvUWuQor6S4tWlu+x45INPpja2yH1g5uvV8ArIY5Vojy/HYX2zK2islswYWEz
-         2uwxknY1shWbrRpTY8LhCn+r1lBJSOLmTQIki3j66njwymJIQJsNg+HVIEyXhUlfSnij
-         H0wis1CuI3JLqN1XZlStERbJFb2+yAf1lkDlfgkNYxhszNeQ8akVQrQkYEnFB2Omx/ig
-         E6lA==
-X-Gm-Message-State: AOJu0YwwNE1fHJzqmwowYIRVpny8QVpvW1559OMSxCxWM7eQPvO3kvQN
-	HDsg58OYWKkmxgWz2qeNCvlcz9OERDXK//y881SxrIYsPRNvSiIRGqUUWlWhv3s=
-X-Google-Smtp-Source: AGHT+IHF2XMmAPc0QFgPB00blyrr9TU3ocIhSB9hQFLA8ZZADZtmjhdD61x8+AHygkJpvsIOw+nxsA==
-X-Received: by 2002:a17:906:b846:b0:a36:4cb1:da77 with SMTP id ga6-20020a170906b84600b00a364cb1da77mr6163ejb.4.1706615817020;
-        Tue, 30 Jan 2024 03:56:57 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUcaKChEB2aRD4siN6rXcukPfd3nJzIXUuUSm9rdm9/ggYWDvMvxsLIUWlF/DDOJ0d/MIvZ72c+1A2erHOcqgmqAn9cr60DqaVsoNxayeTimhKui/aOuVODf9YXUBsS3BhlRvTuHXBAXzsxbhc0RHby98kvle7PMCcsyZGCrcC6Nqq5Yk/FAyiJ2x0v80qrm7D5ZLYr81HKhABXsjXXVT+zGd4+2h2Cncl6Ic+S9aGIHiDBJ5UuVMJVxBAAAPqR7MP2aQVwQzpZrrkmI8bnCDDYcX6RtoJpYIyzm9nYr7AWT/XQUyleXjQVBUpuplF0WxYIwJWlg7jYr9ltWpc1RnnwHENfvqP/0gxN2f9JZRgKaw==
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id tl19-20020a170907c31300b00a352a99b974sm4201641ejc.167.2024.01.30.03.56.56
+        d=1e100.net; s=20230601; t=1706619028; x=1707223828;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4p1a02uh1H5gfZsyP65odPOfYJ0BcQhvM7ZW6ePEWsw=;
+        b=oM2WAFcN6RIjroWH5AE4YXeA9OrfGaj8A+Q+u37QIk20+Zc37U7LypaDbd0HRStwxj
+         f0pWAS50RBmiaYNSQyAvOiJld/iUEmuhr/mLu8chc7qOuRI/v3rF7FVz0x/KBF4UNP7G
+         9TnfHMXiQZqompUdoXNlghQkpUmULFh9pjXpsOrZBauanW22QP4WAowOBQdbSmRI7yRw
+         AbpkY7tjBOCR0xVfL1oEKH+hi8X+XVoL9BZhEWJg6SYEnNYCoXuHbRKLlT23Kzxk2uX8
+         eBKm8ylN8r8h2HvNN0wUUQS7DnyNH6iEm60HBkV2oMfp9rpFDjpqSXgMT3lkOHcRVgzK
+         zVMg==
+X-Gm-Message-State: AOJu0YwktsXdwykOZSw1KlG4w1iaDjVPNltUWh6dPSikg2zKWxkSAq4c
+	x7wiGJGn7Ux7rutTUb/jjsYLh14FA49yfDmF/iE0z0zbR5KYXZxA
+X-Google-Smtp-Source: AGHT+IFCLvPLC9rY+ddVRHzFMscyovzZ7uUqB0R/KyFnzjPWqEjfG27LmewQiXDPIraXjmaJ8E1sgg==
+X-Received: by 2002:a05:600c:5108:b0:40e:f5be:6c3f with SMTP id o8-20020a05600c510800b0040ef5be6c3fmr4639070wms.15.1706619027746;
+        Tue, 30 Jan 2024 04:50:27 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id c4-20020a05600c0a4400b0040e621feca9sm13098072wmq.17.2024.01.30.04.50.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 03:56:56 -0800 (PST)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: mazziesaccount@gmail.com,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] dt-bindings: iio: afe: voltage-divider: Add io-channel-cells
-Date: Tue, 30 Jan 2024 17:26:50 +0530
-Message-ID: <20240130115651.457800-1-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
+        Tue, 30 Jan 2024 04:50:24 -0800 (PST)
+Message-ID: <270d95aa0190520c443eaaa94c30b5d4d9c64389.camel@gmail.com>
+Subject: Re: [PATCH 03/10] iio: accel: adxl367: Use automated cleanup for
+ locks and iio direct mode.
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc: David Lechner <dlechner@baylibre.com>, Peter Zijlstra
+ <peterz@infradead.org>,  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date: Tue, 30 Jan 2024 13:53:39 +0100
+In-Reply-To: <20240128150537.44592-4-jic23@kernel.org>
+References: <20240128150537.44592-1-jic23@kernel.org>
+	 <20240128150537.44592-4-jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-voltage-divider is always an iio consumer at the same time it is
-optionally an iio provider.
-Hence add #io-channel-cells
-Also update example.
-
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+On Sun, 2024-01-28 at 15:05 +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> Switching to the iio_device_claim_direct_scoped() for state
+> and to guard() based unlocking of mutexes simplifies error handling
+> by allowing direct returns when an error is encountered.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> Since RFC:
+> - Use unreachable() to stop complier moaning if we have
+>=20
+> 	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> 		return 0;
+> 	}
+> 	unreachable(); /* can't get here */
+> - Update some code from earlier attempt to handle this that was left
+> =C2=A0 behind from before iio_device_claim_direct_scoped()
+> - Reduce scope of some local variables only used within
+> =C2=A0 iio_device_claim_direct_scoped() blocks.
+> ---
+> =C2=A0drivers/iio/accel/adxl367.c | 297 ++++++++++++++-------------------=
 ---
- .../bindings/iio/afe/voltage-divider.yaml          | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+> =C2=A01 file changed, 118 insertions(+), 179 deletions(-)
+>=20
+> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+> index 90b7ae6d42b7..834ee6d63947 100644
+> --- a/drivers/iio/accel/adxl367.c
+> +++ b/drivers/iio/accel/adxl367.c
+> @@ -339,22 +339,17 @@ static int adxl367_set_act_threshold(struct
+> adxl367_state *st,
+> =C2=A0{
+> =C2=A0	int ret;
+> =C2=A0
+> -	mutex_lock(&st->lock);
+> +	guard(mutex)(&st->lock);
+> =C2=A0
+> =C2=A0	ret =3D adxl367_set_measure_en(st, false);
+> =C2=A0	if (ret)
+> -		goto out;
+> +		return ret;
+> =C2=A0
+> =C2=A0	ret =3D _adxl367_set_act_threshold(st, act, threshold);
+> =C2=A0	if (ret)
+> -		goto out;
+> -
+> -	ret =3D adxl367_set_measure_en(st, true);
+> -
+> -out:
+> -	mutex_unlock(&st->lock);
+> +		return ret;
+> =C2=A0
+> -	return ret;
+> +	return adxl367_set_measure_en(st, true);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int adxl367_set_act_proc_mode(struct adxl367_state *st,
+> @@ -482,51 +477,45 @@ static int adxl367_set_fifo_watermark(struct
+> adxl367_state *st,
+> =C2=A0static int adxl367_set_range(struct iio_dev *indio_dev,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 enum adxl367_range range)
+> =C2=A0{
+> -	struct adxl367_state *st =3D iio_priv(indio_dev);
+> -	int ret;
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		struct adxl367_state *st =3D iio_priv(indio_dev);
+> +		int ret;
+> =C2=A0
+> -	ret =3D iio_device_claim_direct_mode(indio_dev);
+> -	if (ret)
+> -		return ret;
+> -
+> -	mutex_lock(&st->lock);
+> -
+> -	ret =3D adxl367_set_measure_en(st, false);
+> -	if (ret)
+> -		goto out;
+> +		guard(mutex)(&st->lock);
+> =C2=A0
+> -	ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
+> -				 ADXL367_FILTER_CTL_RANGE_MASK,
+> -				 FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
+> -					=C2=A0=C2=A0=C2=A0 range));
+> -	if (ret)
+> -		goto out;
+> +		ret =3D adxl367_set_measure_en(st, false);
+> +		if (ret)
+> +			return ret;
+> =C2=A0
+> -	adxl367_scale_act_thresholds(st, st->range, range);
+> +		ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
+> +					 ADXL367_FILTER_CTL_RANGE_MASK,
+> +				=09
+> FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
+> +						=C2=A0=C2=A0=C2=A0 range));
+> +		if (ret)
+> +			return ret;
+> =C2=A0
+> -	/* Activity thresholds depend on range */
+> -	ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
+> -					 st->act_threshold);
+> -	if (ret)
+> -		goto out;
+> +		adxl367_scale_act_thresholds(st, st->range, range);
+> =C2=A0
+> -	ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
+> -					 st->inact_threshold);
+> -	if (ret)
+> -		goto out;
+> -
+> -	ret =3D adxl367_set_measure_en(st, true);
+> -	if (ret)
+> -		goto out;
+> +		/* Activity thresholds depend on range */
+> +		ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
+> +						 st->act_threshold);
+> +		if (ret)
+> +			return ret;
+> =C2=A0
+> -	st->range =3D range;
+> +		ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
+> +						 st->inact_threshold);
+> +		if (ret)
+> +			return ret;
+> =C2=A0
+> -out:
+> -	mutex_unlock(&st->lock);
+> +		ret =3D adxl367_set_measure_en(st, true);
+> +		if (ret)
+> +			return ret;
+> =C2=A0
+> -	iio_device_release_direct_mode(indio_dev);
+> +		st->range =3D range;
+> =C2=A0
+> -	return ret;
+> +		return 0;
+> +	}
+> +	unreachable();
+> =C2=A0}
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-index dddf97b50549..98fec8548cc3 100644
---- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-+++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-@@ -39,6 +39,13 @@ properties:
-     description: |
-       Channel node of a voltage io-channel.
- 
-+  '#io-channel-cells':
-+    description:
-+      In addition to consuming the measurement services of a voltage output
-+      channel the voltage divider can act as a provider of measurement
-+      services to other devices.
-+    const: 1
-+
-   output-ohms:
-     description:
-       Resistance Rout over which the output voltage is measured. See full-ohms.
-@@ -75,12 +82,17 @@ examples:
-             spi-max-frequency = <1000000>;
-         };
-     };
--    sysv {
-+    p12v_vd: sysv {
-         compatible = "voltage-divider";
-         io-channels = <&maxadc 1>;
-+        #io-channel-cells = <1>;
- 
-         /* Scale the system voltage by 22/222 to fit the ADC range. */
-         output-ohms = <22>;
-         full-ohms = <222>; /* 200 + 22 */
-     };
-+    iio-hwmon {
-+        compatible = "iio-hwmon";
-+        io-channels = <&p12v_vd 0>;
-+    };
- ...
+I do agree this is irritating. Personally I would prefer to return 0 (or th=
+e
+last ret value) instead of the unusual unreachable() builtin. But that's me=
+ :)
 
-base-commit: 861c0981648f5b64c86fd028ee622096eb7af05a
--- 
-2.42.0
 
+- Nuno S=C3=A1
 

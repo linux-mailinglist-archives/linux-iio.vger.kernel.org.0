@@ -1,237 +1,184 @@
-Return-Path: <linux-iio+bounces-2048-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2049-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7A084257B
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 13:55:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A148425D5
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 14:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167211F2E16E
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 12:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CDB2291F15
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 13:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7FC6A32A;
-	Tue, 30 Jan 2024 12:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2lVvzO5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC386A35F;
+	Tue, 30 Jan 2024 13:10:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from queue02b.mail.zen.net.uk (queue02b.mail.zen.net.uk [212.23.3.237])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E01679F2
-	for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 12:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FA067749
+	for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 13:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.23.3.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706619031; cv=none; b=IAqYRAHQgKB77jYaJGDRvaczjuMIIvAQT2oryKXBIgv/QM9ZKurnxSEh2sEhPZzpwFK5aveobOgcjMkkmGc8RqQn+toe2P7+I8ENf2i6OAKNVM00yrm558OqyuVmKO0nK/BRdP1N28Qwq69Y1RmmGaZ5E1MLZIIuA4OrN/zquBE=
+	t=1706620216; cv=none; b=IS1zNLrKgUbsOVyjn9hTlVy9v5N4LMjGdTLPt/1kxBU7sYJudTjwMCz4/Vb6H7/nOwuJilPZhbLX1VoN2aaIUvCD5k6vSd4+pL7eJqd1+VHZ2wFEicl03fWaoGxgh3q1eGeqXR4VH9L6m+rtHQ+CswwX+d9o6HAiG+CLUW+zMOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706619031; c=relaxed/simple;
-	bh=TlR0lOLRWQHoO5iizUmY3xDDur6iPUaUaOYT0SP8nEk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NU0Q/o+bJKNTpzzJEnCBGsRWdvs3BjenNIBJ4fyYOID2ZeUmn4Znao9C8+Cevip9Wm7x2FbQfut2Skd8S4jE8lCNGnPOwHG2wKIoNQTEFhxsXkHHhD65+vzpB1mgRs4EIfdWqbzoKzQENV4xGDCAaRPkZ840+jPQQr0QgwJgs6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2lVvzO5; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40f033c2e30so4598975e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 04:50:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706619028; x=1707223828; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4p1a02uh1H5gfZsyP65odPOfYJ0BcQhvM7ZW6ePEWsw=;
-        b=A2lVvzO5RS/T0a3lTePHHk4x2lDh3tMXBjTaSafJH8MrzC5xB/+4sncSu8ogZRJXVT
-         zPLfrFsmxzMjGYaoJ6dmBhJ5JT6LEHxCeGEDZujqNW0spMJi01SuAvv6ykJqwEJX51fu
-         4XEMZ056Om4T1rdvCtTF+O9dfwDMCgTbXA8BRar9Kim9mDcgTElSuuXbGmnuVzVYnF9W
-         FOKB0CXI3Y9feNAetrBAcy7AMUqcX7WaYfKvixBgw3iOMcKnByGfhvJv4V3NymJ7yows
-         pNsKyNF0Mp2vIPdlb0O7EDkeyoOaAW3CJkGM3EWLl+E/fJpdlfgMvV+L6ouUWEUi9485
-         CGSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706619028; x=1707223828;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4p1a02uh1H5gfZsyP65odPOfYJ0BcQhvM7ZW6ePEWsw=;
-        b=oM2WAFcN6RIjroWH5AE4YXeA9OrfGaj8A+Q+u37QIk20+Zc37U7LypaDbd0HRStwxj
-         f0pWAS50RBmiaYNSQyAvOiJld/iUEmuhr/mLu8chc7qOuRI/v3rF7FVz0x/KBF4UNP7G
-         9TnfHMXiQZqompUdoXNlghQkpUmULFh9pjXpsOrZBauanW22QP4WAowOBQdbSmRI7yRw
-         AbpkY7tjBOCR0xVfL1oEKH+hi8X+XVoL9BZhEWJg6SYEnNYCoXuHbRKLlT23Kzxk2uX8
-         eBKm8ylN8r8h2HvNN0wUUQS7DnyNH6iEm60HBkV2oMfp9rpFDjpqSXgMT3lkOHcRVgzK
-         zVMg==
-X-Gm-Message-State: AOJu0YwktsXdwykOZSw1KlG4w1iaDjVPNltUWh6dPSikg2zKWxkSAq4c
-	x7wiGJGn7Ux7rutTUb/jjsYLh14FA49yfDmF/iE0z0zbR5KYXZxA
-X-Google-Smtp-Source: AGHT+IFCLvPLC9rY+ddVRHzFMscyovzZ7uUqB0R/KyFnzjPWqEjfG27LmewQiXDPIraXjmaJ8E1sgg==
-X-Received: by 2002:a05:600c:5108:b0:40e:f5be:6c3f with SMTP id o8-20020a05600c510800b0040ef5be6c3fmr4639070wms.15.1706619027746;
-        Tue, 30 Jan 2024 04:50:27 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id c4-20020a05600c0a4400b0040e621feca9sm13098072wmq.17.2024.01.30.04.50.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 04:50:24 -0800 (PST)
-Message-ID: <270d95aa0190520c443eaaa94c30b5d4d9c64389.camel@gmail.com>
-Subject: Re: [PATCH 03/10] iio: accel: adxl367: Use automated cleanup for
- locks and iio direct mode.
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>, Peter Zijlstra
- <peterz@infradead.org>,  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Tue, 30 Jan 2024 13:53:39 +0100
-In-Reply-To: <20240128150537.44592-4-jic23@kernel.org>
-References: <20240128150537.44592-1-jic23@kernel.org>
-	 <20240128150537.44592-4-jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1706620216; c=relaxed/simple;
+	bh=RtPXEZQIuS1mZ9KQ5LJ4TIBsMem/jnzOXA5XFFRzDIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=c57SThK+A+/dQR7/1nLobTM3JPJfN7XVOi6LJM8I8oCIUcjHIR8qqAj66KRbeQa/L8Li7rzXJlxEQ0uXzQMuNd6f31u538J9CXudtr1eNMRqmIbLTgt75FGXlmObN8Y0qw6OcmY0ordxMbf6ITJMjaKoNAChhL7D1HJviVIutnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=starlabs.systems; spf=fail smtp.mailfrom=starlabs.systems; arc=none smtp.client-ip=212.23.3.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=starlabs.systems
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=starlabs.systems
+Received: from [212.23.1.3] (helo=smarthost01b.sbp.mail.zen.net.uk)
+	by queue02b.mail.zen.net.uk with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <sean@starlabs.systems>)
+	id 1rUncX-003d2j-Q4
+	for linux-iio@vger.kernel.org;
+	Tue, 30 Jan 2024 12:53:47 +0000
+Received: from [51.148.147.4] (helo=starbook..)
+	by smarthost01b.sbp.mail.zen.net.uk with esmtp (Exim 4.95)
+	(envelope-from <sean@starlabs.systems>)
+	id 1rUncL-000RhB-66;
+	Tue, 30 Jan 2024 12:53:32 +0000
+From: Sean Rhodes <sean@starlabs.systems>
+To: linux-iio@vger.kernel.org
+Cc: Sean Rhodes <sean@starlabs.systems>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH] drivers/iio/accel/kxcjk-1013: Add support for retrieving the mount-matrix
+Date: Tue, 30 Jan 2024 12:53:20 +0000
+Message-Id: <77875d90b21d3065b533d89b620c143b29d141a0.1706619185.git.sean@starlabs.systems>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Originating-smarthost01b-IP: [51.148.147.4]
+Feedback-ID: 51.148.147.4
 
-On Sun, 2024-01-28 at 15:05 +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> Switching to the iio_device_claim_direct_scoped() for state
-> and to guard() based unlocking of mutexes simplifies error handling
-> by allowing direct returns when an error is encountered.
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> Since RFC:
-> - Use unreachable() to stop complier moaning if we have
->=20
-> 	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> 		return 0;
-> 	}
-> 	unreachable(); /* can't get here */
-> - Update some code from earlier attempt to handle this that was left
-> =C2=A0 behind from before iio_device_claim_direct_scoped()
-> - Reduce scope of some local variables only used within
-> =C2=A0 iio_device_claim_direct_scoped() blocks.
-> ---
-> =C2=A0drivers/iio/accel/adxl367.c | 297 ++++++++++++++-------------------=
+Add support for reading the "ROTM" method from APCI which contains
+the mount matrix.
+
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
 ---
-> =C2=A01 file changed, 118 insertions(+), 179 deletions(-)
->=20
-> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-> index 90b7ae6d42b7..834ee6d63947 100644
-> --- a/drivers/iio/accel/adxl367.c
-> +++ b/drivers/iio/accel/adxl367.c
-> @@ -339,22 +339,17 @@ static int adxl367_set_act_threshold(struct
-> adxl367_state *st,
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> -	mutex_lock(&st->lock);
-> +	guard(mutex)(&st->lock);
-> =C2=A0
-> =C2=A0	ret =3D adxl367_set_measure_en(st, false);
-> =C2=A0	if (ret)
-> -		goto out;
-> +		return ret;
-> =C2=A0
-> =C2=A0	ret =3D _adxl367_set_act_threshold(st, act, threshold);
-> =C2=A0	if (ret)
-> -		goto out;
-> -
-> -	ret =3D adxl367_set_measure_en(st, true);
-> -
-> -out:
-> -	mutex_unlock(&st->lock);
-> +		return ret;
-> =C2=A0
-> -	return ret;
-> +	return adxl367_set_measure_en(st, true);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int adxl367_set_act_proc_mode(struct adxl367_state *st,
-> @@ -482,51 +477,45 @@ static int adxl367_set_fifo_watermark(struct
-> adxl367_state *st,
-> =C2=A0static int adxl367_set_range(struct iio_dev *indio_dev,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 enum adxl367_range range)
-> =C2=A0{
-> -	struct adxl367_state *st =3D iio_priv(indio_dev);
-> -	int ret;
-> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> +		struct adxl367_state *st =3D iio_priv(indio_dev);
-> +		int ret;
-> =C2=A0
-> -	ret =3D iio_device_claim_direct_mode(indio_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	mutex_lock(&st->lock);
-> -
-> -	ret =3D adxl367_set_measure_en(st, false);
-> -	if (ret)
-> -		goto out;
-> +		guard(mutex)(&st->lock);
-> =C2=A0
-> -	ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
-> -				 ADXL367_FILTER_CTL_RANGE_MASK,
-> -				 FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
-> -					=C2=A0=C2=A0=C2=A0 range));
-> -	if (ret)
-> -		goto out;
-> +		ret =3D adxl367_set_measure_en(st, false);
-> +		if (ret)
-> +			return ret;
-> =C2=A0
-> -	adxl367_scale_act_thresholds(st, st->range, range);
-> +		ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
-> +					 ADXL367_FILTER_CTL_RANGE_MASK,
-> +				=09
-> FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
-> +						=C2=A0=C2=A0=C2=A0 range));
-> +		if (ret)
-> +			return ret;
-> =C2=A0
-> -	/* Activity thresholds depend on range */
-> -	ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
-> -					 st->act_threshold);
-> -	if (ret)
-> -		goto out;
-> +		adxl367_scale_act_thresholds(st, st->range, range);
-> =C2=A0
-> -	ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
-> -					 st->inact_threshold);
-> -	if (ret)
-> -		goto out;
-> -
-> -	ret =3D adxl367_set_measure_en(st, true);
-> -	if (ret)
-> -		goto out;
-> +		/* Activity thresholds depend on range */
-> +		ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
-> +						 st->act_threshold);
-> +		if (ret)
-> +			return ret;
-> =C2=A0
-> -	st->range =3D range;
-> +		ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
-> +						 st->inact_threshold);
-> +		if (ret)
-> +			return ret;
-> =C2=A0
-> -out:
-> -	mutex_unlock(&st->lock);
-> +		ret =3D adxl367_set_measure_en(st, true);
-> +		if (ret)
-> +			return ret;
-> =C2=A0
-> -	iio_device_release_direct_mode(indio_dev);
-> +		st->range =3D range;
-> =C2=A0
-> -	return ret;
-> +		return 0;
-> +	}
-> +	unreachable();
-> =C2=A0}
+ drivers/iio/accel/kxcjk-1013.c | 88 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 85 insertions(+), 3 deletions(-)
 
-I do agree this is irritating. Personally I would prefer to return 0 (or th=
-e
-last ret value) instead of the unusual unreachable() builtin. But that's me=
- :)
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index 894709286b0c..760bbd95b73c 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -619,6 +619,85 @@ static int kxcjk1013_set_power_state(struct kxcjk1013_data *data, bool on)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_ACPI
++/*
++ * Support for getting accelerometer information from KIOX000A ACPI nodes.
++ *
++ */
++static bool kxj_acpi_orientation(struct device *dev,
++				 struct iio_mount_matrix *orientation)
++{
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct acpi_device *adev = ACPI_COMPANION(dev);
++	char *name, *alt_name, *label, *str;
++	union acpi_object *obj, *elements;
++	acpi_status status;
++	int i, j, val[3];
++
++	if (acpi_has_method(adev->handle, "ROTM")) {
++		name = "ROTM";
++	} else {
++		return false;
++	}
++
++	status = acpi_evaluate_object(adev->handle, name, NULL, &buffer);
++	if (ACPI_FAILURE(status)) {
++		dev_warn(dev, "Failed to get ACPI mount matrix: %d\n", status);
++		return false;
++	}
++
++	obj = buffer.pointer;
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count != 3)
++		goto unknown_format;
++
++	elements = obj->package.elements;
++	for (i = 0; i < 3; i++) {
++		if (elements[i].type != ACPI_TYPE_STRING)
++			goto unknown_format;
++
++		str = elements[i].string.pointer;
++		if (sscanf(str, "%d %d %d", &val[0], &val[1], &val[2]) != 3)
++			goto unknown_format;
++
++		for (j = 0; j < 3; j++) {
++			switch (val[j]) {
++			case -1: str = "-1"; break;
++			case 0:  str = "0";  break;
++			case 1:  str = "1";  break;
++			default: goto unknown_format;
++			}
++			orientation->rotation[i * 3 + j] = str;
++		}
++	}
++
++	kfree(buffer.pointer);
++	return true;
++
++unknown_format:
++	dev_warn(dev, "Unknown ACPI mount matrix format, ignoring\n");
++	kfree(buffer.pointer);
++	return false;
++}
++
++static bool kxj1009_apply_acpi_orientation(struct device *dev,
++					  struct iio_mount_matrix *orientation)
++{
++	struct acpi_device *adev = ACPI_COMPANION(dev);
++
++	if (adev && acpi_dev_hid_uid_match(adev, "KIOX000A", NULL))
++		return kxj_acpi_orientation(dev, orientation);
++
++	return false;
++}
++#else
++static bool kxj1009_apply_acpi_orientation(struct device *dev,
++					  struct iio_mount_matrix *orientation)
++{
++	return false;
++}
++#endif
++
+ static int kxcjk1013_chip_update_thresholds(struct kxcjk1013_data *data)
+ {
+ 	int ret;
+@@ -1449,9 +1528,12 @@ static int kxcjk1013_probe(struct i2c_client *client)
+ 	} else {
+ 		data->active_high_intr = true; /* default polarity */
+ 
+-		ret = iio_read_mount_matrix(&client->dev, &data->orientation);
+-		if (ret)
+-			return ret;
++		if (!apply_kcj1009_acpi_orientation(&client->dev, &data->orientation)) {
++			ret = iio_read_mount_matrix(&client->dev, &data->orientation);
++			if (ret)
++				return ret;
++		}
++
+ 	}
+ 
+ 	ret = devm_regulator_bulk_get_enable(&client->dev,
+-- 
+2.40.1
 
-
-- Nuno S=C3=A1
 

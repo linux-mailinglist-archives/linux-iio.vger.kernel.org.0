@@ -1,151 +1,121 @@
-Return-Path: <linux-iio+bounces-2073-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2074-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE2F844546
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 17:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4330A844635
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 18:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89DFD28B130
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 16:57:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00389283B25
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 17:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45EA12CDB2;
-	Wed, 31 Jan 2024 16:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53CB12DD8C;
+	Wed, 31 Jan 2024 17:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nmve9pUU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVT80oq3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C612CD9D;
-	Wed, 31 Jan 2024 16:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE2012CDBE;
+	Wed, 31 Jan 2024 17:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706720087; cv=none; b=Im5l9SacKKjqrz7cNi7Sv51Tghh2b0AYX5fpo0UMwwV70ZijzAD+yfc50aBgLFzUpxaAQqUXLnyjVloKQrAn5pcXQx/xudY8l5mLfVqpmcOOnlSJmM9fO+8YAfOAEyQBMbdb/S4U3fk+tH23IBTC89NBuyebxuYZuiUjtSbu4m4=
+	t=1706722343; cv=none; b=X09A36qf4CKgJ3hmBuopxpdROux5HanseA+RPpCWGyKDfmPoPVwfORoSnfTx3KKR+pyeItet1qO4iVHbWHS95mTAVI1MckbCodCnvfqIdR9TlVm+G9VQ4+Z3Ja7oxufyTP93F2QCN0BVZbBYsI3DWlAf8et6U47is7xNApJgyDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706720087; c=relaxed/simple;
-	bh=e7PkgB7K0gx8CAPjTVUKMOvEqHbyafX+oBkcjQV6dys=;
+	s=arc-20240116; t=1706722343; c=relaxed/simple;
+	bh=ymf3IkwEYzaNvmvcgkzqSo+sRt3EeMMUaMZxfyXNPdo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ARHe509KVM9JXw8scBfFUs/AI/wcwU+/kjlT9nIhhdKa8j7DqfhTFFX2sJ5Mygd6oA6UsWcfRG5z8RWKbL+CAr/wXlMnOlHySY5Oev3jeQyGO0gKcf/WPIaITrZT+wePsfU4Wsbw6S0E8VUFXzGAwDwr97Iyq2PCtR77mV6wnLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nmve9pUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A395C433F1;
-	Wed, 31 Jan 2024 16:54:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AD/rD5UvfMpwfwfZnwaSTntZSIx2Ks0OSUsjuMV0zRGAlZlYshJwQiOjs/A5MxG5C12Bb6D0hh5fTfNxOME97F71vkmDjn6CVMlljDlAHpEJQWzMjR9cFm7Pc+x9JDsuBo4yGGnfAm1jz3PArBCq9w/sjcqvYFKIJUXchR2KHC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVT80oq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A44AC433F1;
+	Wed, 31 Jan 2024 17:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706720087;
-	bh=e7PkgB7K0gx8CAPjTVUKMOvEqHbyafX+oBkcjQV6dys=;
+	s=k20201202; t=1706722342;
+	bh=ymf3IkwEYzaNvmvcgkzqSo+sRt3EeMMUaMZxfyXNPdo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nmve9pUUOt196CcaU4YrJBEqco8cFcMpDhATzxHHFGUBeb+NRVrbaatX8PRY9P2Ri
-	 a72GGOr8swMe3/9YGP2C7ynYNXM3YtjprV7fg2zcqLiv8ZbI7AS/Gat+qn0VTM84lX
-	 sW0uTAp3pKw6YA91cokoNKsX+bspGqRgmZMH+viCzzb6VewaxLvhClbU/iKqbWGFEG
-	 5veXuTSAZi0pjjMSsQBMIYiIKQP817JFKr5UCxMGb1ZwHGDBioeocFw5MlzcAHUsA+
-	 EPOkzz4hr0nHkcNzhgd05rVWD/+s6VrsblUWPVhpu2xicRpeqKYQgpr1CcDdIHYSLo
-	 f4B4pQU5jYfsw==
-Date: Wed, 31 Jan 2024 16:54:42 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] dt-bindings: iio: afe: voltage-divider: Add
- io-channel-cells
-Message-ID: <20240131-stylized-defile-d8fe346ab197@spud>
-References: <20240130115651.457800-1-naresh.solanki@9elements.com>
- <1c855a34-8a0d-491e-bfd2-24635b41c86f@linaro.org>
- <20240131163516.000043df@Huawei.com>
+	b=tVT80oq3uTeYJVU/zGRS4qiVsS86cnIbVYJ1pz8VLCfuZy1Om9TnGzgo0sNQYU52u
+	 S5eG3SrBOK8lWwbK6kBVpIS+bZ4thdD22XamItOH2tzFcKYWfytUrRUIhjwC1yjMsM
+	 cnTBI4jb9+J/ur1CLq4JZqXj2h1jVP2eQgOFj0KkDPiJ0m5MnL3JH9a2mQi0+ynZMi
+	 iO5smISNLAApNXcLdwiY7xOKq+dgHKzLziLoHL0nxiwCBsf2oGnic+wvgo+L6I4imN
+	 RalRMnoJH4NttIZM8r4tn72+mpE0hSMmx73HaONbbKs7nC38sB+6g51+MQnOFFBqLe
+	 uHmtamfzblX+w==
+Date: Wed, 31 Jan 2024 11:32:20 -0600
+From: Rob Herring <robh@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, jic23@kernel.org,
+	linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
+	devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org
+Subject: Re: [PATCH v2 3/3] dt-bindings: iio: imu: st_lsm6dsx: add
+ asm330lhhxg1
+Message-ID: <20240131173220.GA1647997-robh@kernel.org>
+References: <cover.1706441008.git.lorenzo@kernel.org>
+ <189b903e939e15d98d198db60e2ca0619b116870.1706441008.git.lorenzo@kernel.org>
+ <51f4782f-09d8-448f-a693-e0c711bee18d@linaro.org>
+ <ZbeoczLjkGG8pogL@lore-desk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="h8APYS+PcgeCvIXI"
-Content-Disposition: inline
-In-Reply-To: <20240131163516.000043df@Huawei.com>
-
-
---h8APYS+PcgeCvIXI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZbeoczLjkGG8pogL@lore-desk>
 
-On Wed, Jan 31, 2024 at 04:35:16PM +0000, Jonathan Cameron wrote:
-> On Wed, 31 Jan 2024 09:29:59 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->=20
-> > On 30/01/2024 12:56, Naresh Solanki wrote:
-> > > voltage-divider is always an iio consumer at the same time it is
-> > > optionally an iio provider.
-> > > Hence add #io-channel-cells
-> > > Also update example.
-> > >  =20
-> >=20
-> > Fix
-> > wrapping
-> > and
-> > proper
-> > sentences. Each sentence finishes with full stop.
-> >=20
-> > ...
-> > >    output-ohms:
-> > >      description:
-> > >        Resistance Rout over which the output voltage is measured. See=
- full-ohms.
-> > > @@ -75,12 +82,17 @@ examples:
-> > >              spi-max-frequency =3D <1000000>;
-> > >          };
-> > >      };
-> > > -    sysv {
-> > > +    p12v_vd: sysv { =20
-> >=20
-> > No, drop label.
-> >=20
-> > >          compatible =3D "voltage-divider";
-> > >          io-channels =3D <&maxadc 1>;
-> > > +        #io-channel-cells =3D <1>;
-> > > =20
-> > >          /* Scale the system voltage by 22/222 to fit the ADC range. =
-*/
-> > >          output-ohms =3D <22>;
-> > >          full-ohms =3D <222>; /* 200 + 22 */
-> > >      };
-> > > +    iio-hwmon {
-> > > +        compatible =3D "iio-hwmon";
-> > > +        io-channels =3D <&p12v_vd 0>; =20
-> >=20
-> > The same question as for v2. Drop unrelated example.
->=20
-> Conor requested an example of the device acting as a consumer and a provi=
-der.
-> Might have meant in the patch description?
->=20
-> Conor?
+On Mon, Jan 29, 2024 at 02:30:27PM +0100, Lorenzo Bianconi wrote:
+> > On 28/01/2024 12:25, Lorenzo Bianconi wrote:
+> > > Add device bindings for asm330lhhxg1 IMU sensor.
+> > > Use asm330lhhx as fallback device for asm330lhhxg1 since it implements
+> > > all the features currently supported by asm330lhhxg1.
+> > > 
+> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > ---
+> > >  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > > index 28b667a9cb76..7ba3de66a2e1 100644
+> > > --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> > > @@ -49,6 +49,9 @@ properties:
+> > >        - items:
+> > >            - const: st,asm330lhb
+> > >            - const: st,asm330lhh
+> > > +      - items:
+> > > +          - const: st,asm330lhhxg1
+> > > +          - const: st,asm330lhhx
+> > 
+> > lhhx is compatible with st,lsm6dsr, so some explanation would be useful
+> > why it is not included here.
+> > 
+> > Best regards,
+> > Krzysztof
+> > 
+> 
+> Do you mean something like:
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> index 7ba3de66a2e1..92feba6e2427 100644
+> --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+> @@ -35,6 +35,7 @@ properties:
+>            - st,lsm6dsv
+>            - st,lsm6dso16is
+>        - items:
+> +          - const: st,asm330lhhxg1
+>            - const: st,asm330lhhx
+>            - const: st,lsm6dsr
 
-I wanted it in the property description to help with understanding when
-to use it. I don't think the extra example nodes actually help you
-understand what it is doing, only how to write one yourself once you
-know you need it.
+No, that's not right because you just changed the existing user.
 
-Thanks,
-Conor.
+You need to explain why "st,lsm6dsr" is not needed as a fallback or you 
+need your original change with "st,lsm6dsr" added on the end. (And group 
+it next to the original entry, not at the end.)
 
---h8APYS+PcgeCvIXI
-Content-Type: application/pgp-signature; name="signature.asc"
+The question to ask is whether software that only understands what 
+"st,lsm6dsr" is will work with this newer device.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbp7UQAKCRB4tDGHoIJi
-0qUKAP0Ww48y8Vpl0AK0ojq0GTFz+pnr+vWFetK6V8fbSyQ0YwEAg+sb0e5EXttx
-Yc5wqU6OG+ali+z2CNC/Op4kdAyPMAE=
-=i3bX
------END PGP SIGNATURE-----
-
---h8APYS+PcgeCvIXI--
+Rob
 

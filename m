@@ -1,86 +1,178 @@
-Return-Path: <linux-iio+bounces-2057-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2058-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B993842E44
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 21:54:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E058434CF
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 05:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F969B211D3
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jan 2024 20:54:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F283286839
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 04:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8D679DD6;
-	Tue, 30 Jan 2024 20:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB47816436;
+	Wed, 31 Jan 2024 04:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fh6flFfP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBkCTfS5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C98E5B1F6;
-	Tue, 30 Jan 2024 20:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F71E20DDA;
+	Wed, 31 Jan 2024 04:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706648071; cv=none; b=PuFpnaldIT1s96zZpLhXdUySIpPeEYBg1uR0z8Uc8rWjV09SlYt8SMWLrYCb3YzqH8HtuRFsdPq8vvhjI9ZCPK/t8MiQW1Y7LNQhogaBA2lXbI+XCJUfJANpQTYdCmcVOJSnhk6W19SDuYODPu1XttEcbrJLlTpwPB0Gmp20Eoo=
+	t=1706675120; cv=none; b=iqI7nvMTk7vRFJmaQ29X9/ZMxy3GdPWTx3lMhxbk/S40l78Aw5RG3sGZxRu6D+B+RcdKPsMIN0diAivaaPWgXfF9jTF0pWkKrHZjJDJZA/XA/guE/mbqesyDtNIIzNJzm+kl0B+PJqPAFHEx+Z1QaGaDrhDWppGhabHSN9VH21Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706648071; c=relaxed/simple;
-	bh=LwAkpfYAfzqJ9BPc+vvV+IDrTYcsO1fpV7GcW0e8K2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OWz/ZTUCs7VePZLYhNOJgFouqUF3vc6xCU+izpAMICgLH8fEsECOZuxIneeE2ptVGpRMgOop9xvmuylDJuC0sSwMsn8V5fpGMIO7+av18S2sictM8wiGG2TUmuSVcqBc8S97UcC9M5Wqeh1IvM021crlPI5cZV5U/tBwI9vzfy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fh6flFfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16020C433F1;
-	Tue, 30 Jan 2024 20:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706648070;
-	bh=LwAkpfYAfzqJ9BPc+vvV+IDrTYcsO1fpV7GcW0e8K2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fh6flFfPlA0PU7kv20yMU1fVq9G/daLSFEeiLS6oQp4MYkBI92SOsrOuX/2ZyMOF8
-	 V4p5k63MV5kFLeDHZL11m9eOEK5J1/nk+E4bHFIzv4VHIqrdMDzKI3l4MsHoJJrulf
-	 WwsETvl6gIv++tAK8/lwEDz39dKotvsZnYUhJ2H3AhbEPQ5lb42DKKw4P3qdQcFgH3
-	 xY/oYUdSzypwMaraMT5Bch4qqCZKowbtmL99GCCNkIiV4j6ILUrdY91Xg0PxDdlM9o
-	 9bVJ6q4+0N0ML9yDe7/G2zopYMguwEwGirIwoPRkitU8w94tb1zVzr3ZbPhmEIYWqy
-	 2JaQIPZLC5DAA==
-Date: Tue, 30 Jan 2024 14:54:28 -0600
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-	Saravana Kannan <saravanak@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1706675120; c=relaxed/simple;
+	bh=xMlVeUsFGxYNCpqcspWBNL05NuVM6y84tCrJBreSpAw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R8gH72pPo4RtnnJqZvScASIMIwMW8KRi98/zW1jkWTAAz3Pkyl0OmPXNrunAoPEBWKk2HDx1p03dXKQyvH/kDO4fIcZ61xtP8WjK/bU+YNUYtdSqwaEO4elaYRJYx8Wavpvn2xjty2fXmrysi1mSGD7ktTes6qUhwUjL+qk+ogI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBkCTfS5; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d8ddbac4fbso1686073a12.0;
+        Tue, 30 Jan 2024 20:25:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706675118; x=1707279918; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zha8wYy8WlcwDCuU60s5IZGwiNRJ0LRFCCEU2An/LwY=;
+        b=aBkCTfS5Bi959Su/buIrBA2WqVA8zgYLVxzY2m2bo0O+hg8gmW9mFaIt7tXqCkRc0G
+         Rq/gF3WWx1ghPkD7Yy+fB+8uymQGB9EAAh6cwTwLtldScawlpW0OwEN1tgdyPCPOxWM+
+         wfmFI0SBCRIuzanIj58sf39EdcSYfagRJDcF0KWKIFFbbgULMw/Ik8Q4FoLwGjoinC++
+         bvSpxWFYJ8RFl6Ncvn4gx+wxlfw39X9hW7FpSOdzWPwgONmrqQqL+zI7BOgZzXmUicXX
+         oSrOBl9Pbk6pXNVfSuDO5JF4WHjZH6vH5s2h4RZtqpP6ni77u0Il18us7kfIF9tbzOIQ
+         bz2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706675118; x=1707279918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zha8wYy8WlcwDCuU60s5IZGwiNRJ0LRFCCEU2An/LwY=;
+        b=BjINOOgKh2DLXDChcN4jZR9mVOIpysPaLZ7N2/VIFZUl1EZ0jD9nbTY/ixf5Qz+SJ5
+         p+9WlC6/w+E4KuFWafyrZg5SnFdLzOLy0MIDk4Ds70WSGdjlxl2e3qXqf9ckgkDt2iVQ
+         e9fxzGbZV+8JqMQxM64K65ZSpbauWrF/JyXpux8oz2uQG0UValDz5bCNYxRizae7zQxk
+         KlQljvZ2ezIx9g/ATl66g8oXfFinR+qFYrBHIjEaT02962mXQzGJYcOxnq1da0YfA6KQ
+         RsftaynGE99yKLUO5BGZLAi8y1xty1ODbe+XJpjZPt7VMQdOkOxzfV/B0PC65O7uyV7x
+         szaA==
+X-Gm-Message-State: AOJu0YwIt4R3eISe76mMfcv18/hXb5RYxd+1rTb62BMm+KgAUva5FKIV
+	4j2vIWbjmM/MVXsn7tUTSXsAABrkZOVmin1I8lyfAuXXUMNZ1GG9puh94LMr
+X-Google-Smtp-Source: AGHT+IEmq7aTNHaFqy1c69LxAZz5ni4bK7qs2bTnVnqPfhDZ2izJVKzmAPF/fjB+bbhF5gd40db/wQ==
+X-Received: by 2002:a05:6a20:1824:b0:19c:a2aa:67f8 with SMTP id bk36-20020a056a20182400b0019ca2aa67f8mr461436pzb.24.1706675117928;
+        Tue, 30 Jan 2024 20:25:17 -0800 (PST)
+Received: from octofox.hsd1.ca.comcast.net (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
+        by smtp.gmail.com with ESMTPSA id e13-20020a17090ac20d00b00290ffbe5ca3sm274867pjt.55.2024.01.30.20.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 20:25:17 -0800 (PST)
+From: Max Filippov <jcmvbkbc@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Cc: Jiri Olsa <jolsa@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Kent Gibson <warthog618@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v7 1/9] of: property: fix typo in io-channels
-Message-ID: <170664806394.2324419.17581898570868149558.robh@kernel.org>
-References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
- <20240123-iio-backend-v7-1-1bff236b8693@analog.com>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] kbuild: tools: drop overridden CFLAGS from MAKEOVERRIDES
+Date: Tue, 30 Jan 2024 20:25:09 -0800
+Message-Id: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240123-iio-backend-v7-1-1bff236b8693@analog.com>
+Content-Transfer-Encoding: 8bit
 
+Some Makefiles under tools/ use the 'override CFLAGS += ...' construct
+to add a few required options to CFLAGS passed by the user.
+Unfortunately that only works when user passes CFLAGS as an environment
+variable, i.e.
+  CFLAGS=... make ...
+and not in case when CFLAGS are passed as make command line arguments:
+  make ... CFLAGS=...
+It happens because in the latter case CFLAGS=... is recorded in the make
+variable MAKEOVERRIDES and this variable is passed in its original form
+to all $(MAKE) subcommands, taking precedence over modified CFLAGS value
+passed in the environment variable. E.g. this causes build failure for
+gpio and iio tools when the build is run with user CFLAGS because of
+missing _GNU_SOURCE definition needed for the asprintf().
 
-On Tue, 23 Jan 2024 16:14:22 +0100, Nuno Sa wrote:
-> The property is io-channels and not io-channel. This was effectively
-> preventing the devlink creation.
-> 
-> Fixes: 8e12257dead7 ("of: property: Add device link support for iommus, mboxes and io-channels")
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  drivers/of/property.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+One way to fix it is by removing overridden variables from the
+MAKEOVERRIDES. Add macro 'drop-var-from-overrides' that removes a
+definition of a variable passed to it from the MAKEOVERRIDES and use it
+to fix CFLAGS passing for tools/gpio and tools/iio.
 
-Applied, thanks!
+This implementation tries to be precise in string processing and handle
+variables with embedded spaces and backslashes correctly. To achieve
+that it replaces every '\\' sequence with '\-' to make sure that every
+'\' in the resulting string is an escape character. It then replaces
+every '\ ' sequence with '\_' to turn string values with embedded spaces
+into single words. After filtering the overridden variable definition
+out of the resulting string these two transformations are reversed.
+
+Cc: stable@vger.kernel.org
+Fixes: 4ccc98a48958 ("tools gpio: Allow overriding CFLAGS")
+Fixes: 572974610273 ("tools iio: Override CFLAGS assignments")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+Changes v1->v2:
+- make drop-var-from-overrides-code work correctly with arbitrary
+  variables, including thoses ending with '\'.
+
+ tools/gpio/Makefile            | 1 +
+ tools/iio/Makefile             | 1 +
+ tools/scripts/Makefile.include | 9 +++++++++
+ 3 files changed, 11 insertions(+)
+
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index d29c9c49e251..46fc38d51639 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -24,6 +24,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+ all: $(ALL_PROGRAMS)
+ 
+ export srctree OUTPUT CC LD CFLAGS
++$(call drop-var-from-overrides,CFLAGS)
+ include $(srctree)/tools/build/Makefile.include
+ 
+ #
+diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+index fa720f062229..04307588dd3f 100644
+--- a/tools/iio/Makefile
++++ b/tools/iio/Makefile
+@@ -20,6 +20,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
+ all: $(ALL_PROGRAMS)
+ 
+ export srctree OUTPUT CC LD CFLAGS
++$(call drop-var-from-overrides,CFLAGS)
+ include $(srctree)/tools/build/Makefile.include
+ 
+ #
+diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
+index 6fba29f3222d..0f68b95cf55c 100644
+--- a/tools/scripts/Makefile.include
++++ b/tools/scripts/Makefile.include
+@@ -51,6 +51,15 @@ define allow-override
+     $(eval $(1) = $(2)))
+ endef
+ 
++# When a Makefile overrides a variable and exports it for the nested $(MAKE)
++# invocations to use its modified value, it must remove that variable definition
++# from the MAKEOVERRIDES variable, otherwise the original definition from the
++# MAKEOVERRIDES takes precedence over the exported value.
++drop-var-from-overrides = $(eval $(drop-var-from-overrides-code))
++define drop-var-from-overrides-code
++MAKEOVERRIDES := $(subst \-,\\,$(subst \_,\ ,$(filter-out $(1)=%,$(subst \ ,\_,$(subst \\,\-,$(MAKEOVERRIDES))))))
++endef
++
+ ifneq ($(LLVM),)
+ ifneq ($(filter %/,$(LLVM)),)
+ LLVM_PREFIX := $(LLVM)
+-- 
+2.39.2
 
 

@@ -1,185 +1,116 @@
-Return-Path: <linux-iio+bounces-2061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9696D843916
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 09:30:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E294843A08
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 10:03:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A731F229B1
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 08:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A68C286B01
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 09:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D852A5D8E5;
-	Wed, 31 Jan 2024 08:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB7283CD0;
+	Wed, 31 Jan 2024 08:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TESHtNeB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYf42npV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD525BAF4
-	for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 08:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C30D83CC6;
+	Wed, 31 Jan 2024 08:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706689804; cv=none; b=vAjUbvX/U6GdyTYjNjGQ0HB7o0J9meZYQidtEVIlm5S7Koyy0PvKmSZNykdL4U3ahEkzRKl6ef1Q2+TOXfgH4YRUaMgOXBW6SvXGaTPN62+2aZyMQWL+ZBl1Wqow2qNDLnybw0uBqCPlD7GWewVxvFeVS33zE4hmxcnt4QjDqbw=
+	t=1706691133; cv=none; b=PDua9DOjNqLk3Rf5BaNgjmb51sPk1Tqp+vATq6GSEdLBsWwJgMRCA53ujajOrFICUrG4hVwdarb0XecIpaJQk+CygxsFok7k2MBrWGj7lvM4HD3f+s898hKA2/iJ5hocX3xBrqs0m/9eK7JXwjPEqCeCJmz3aaOtswCpZTNX3dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706689804; c=relaxed/simple;
-	bh=MMgAnois95dMQZI8y+adGDKSoodHSzQYOg5nGSvs3UA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FOYRZG7HKpJ4QwpMim19VmwE0UNR7wJ/tObsEeCAzH74sDzMpO5USwZHDQj7CElgp7q1Q+bpu+jI96A/20GmF1/76Uw51UYwyzZy/2fK9EG5qQqa2uPZZrBX0Neadm6ZAO0D4dTFG/UIvE13E+ZjwqVePmR+8UUDAabs2tBiRY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TESHtNeB; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-55f496d60e4so1913667a12.2
-        for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 00:30:02 -0800 (PST)
+	s=arc-20240116; t=1706691133; c=relaxed/simple;
+	bh=FTDfH4I2xOVSlwOEyIqiKd8K58r1M7EV8OEkwFEEbxw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SrrUYdILTfLfoSnt80e110Niz25Y2l/3QZSDLoqL2q70hRf9bfnNqyJ3Ony+j4L5WIW/c9vysKOiX1FqxxQpOYZUDNFSvABGi26y0ezDNi5Tok7q6QjDrNMKUJMgoqHz4XExwLS0PqFOwtXqulvAoZLZxBTVR5SNzW+ROEF/xkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYf42npV; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-33ae7ae9ec5so2022483f8f.0;
+        Wed, 31 Jan 2024 00:52:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706689801; x=1707294601; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ezcPCCIAe0fcA0KIIj48VIrjnao3+w50MLkr/bJwMCs=;
-        b=TESHtNeB8l7t8PrLEJEzVDwgS6MS5AHTuZBKEnUl9MOlTg4H9tFQjXbEddlj7Hrz7W
-         w5Ps4i1lfn3lIVnJqINKCeGNm3ySlJASdCBcuGSZDo5bQyd7jxyVCM3/q3yEDRcj06x1
-         6XkpEYIdFOKfzvSRmnO3DM8bx+0SZLQDhtf/mp0kKcETDO0AoaJGdOd5/ejCfog2D69W
-         G5XpWpVuVRkWtWr3Z96mBQzaSKZe9dv0+9xfC9xJfvRI9pw2TvNwSSKD3crV1GGRtMnK
-         LgL0L5Vr2p332mpYlDXxvSF1xaEB5qlcamQLwqjS5I+Soy65KaAtLPyfMXatwYOHraaw
-         UyFg==
+        d=gmail.com; s=20230601; t=1706691130; x=1707295930; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FTDfH4I2xOVSlwOEyIqiKd8K58r1M7EV8OEkwFEEbxw=;
+        b=FYf42npVdUOjEBIVzUzjoOeKamijJBkeejPBh1Pf5fOQiNMF3mxhK8GWDyLcbiA6iI
+         6/iGifquHw3T9KdonxjxDOOhTl5tYkzSNCQWM7DnjatwF54dnngLYqd1fEYwMUUQZU3t
+         3fQdatlU2BPPqO/V8BRFXsI377TgMOQN1mwZgWb8EjLL4fzCHYmzEHpjnsjFRMio03Dk
+         4mSfKNGPJ/nvdvSKRnRQbDjZSfgUT+yzZPjCFxgE7pw12k4hwdTA4DZioD2Gq+9pF5lF
+         cKjC/XB4GIF7mtX+u9i7Yo0IgQSM3hFJ66qT9+urLksrmoW/5BBA8bRlZLSUrZoXaLbx
+         79fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706689801; x=1707294601;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ezcPCCIAe0fcA0KIIj48VIrjnao3+w50MLkr/bJwMCs=;
-        b=feEUryY8PMqDMYAX8usNb6s+HMw1pxMektgvr/pNoPb9O25PKyJMWpNUaydk3idKjd
-         5qg44lLFb+I4QICqNkMKksfhz0LbLlFv6Lyv5GeW6yNLPjJP3dKh7S3Q2VOLEwGM2BQe
-         kDhXlm4d2Eodk8FmbeG2PFgbddSvuGz/ejya4/BPYC3gMFXfXcrNn9Y/kr0jPuQpaxkr
-         AX4aPA5rLcGMNMQ3vMd+9HCGptPZeCJlegCAsVWj4CqSYjXfSyumgkrX24PJLgFNscK1
-         rfRbq731q4+8eyunqr81vn8bOkCcgAIxQtEexLRbaY9nrZDA4eNGVR/nPCC3ARxjeTlw
-         1RCQ==
-X-Gm-Message-State: AOJu0Yx87Qoz+KJsvtzJSJtQDcHG6MRg8KWkFkCVG6GPRB7/j8FZZYEV
-	ehI7UT93JbUimBhAKItFl0/hgwjrQlOAGmT3cg+8D46EWw5ObPGlcSsm47Vdkec=
-X-Google-Smtp-Source: AGHT+IHJKU4f29LwgIJn6IbHoSiEI8ZefbDvhr8uqXmqOeWKXP1eA7yKFr+hrwRIERelJ5ZA4cMCmw==
-X-Received: by 2002:aa7:cfc1:0:b0:55e:f4fb:66f6 with SMTP id r1-20020aa7cfc1000000b0055ef4fb66f6mr488284edy.18.1706689801145;
-        Wed, 31 Jan 2024 00:30:01 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCV2m+Fm1nP2/pXHPXGW4Q5TO8+LaL1AnNfLipe7KKQ/ixqtg6pZUunT1EJGtbYLE3h6BUuKAOe3AAyUYwsoyHlG1XWXsaVPbZ6wSr8uuzwKZXQMctWS+WhJBxE7gn3+r6vUix64pcIP9td3eNvgJvrefdvNnXqsErP8HtDBb2APi5PJvclY4mPvEBHuAv8niK6xyzYHUcH6RaWpafAcCjbeqcMBTMHsbTaEDgE8ORMLDsyTHbsVbHgJu6H+8KiGIxpTLRCck6jrjJusNm1gAa5AHwbxwvrVw2M9gz3z50GKoeFCrnpTwiHi3ym3oeXIxXlyEg9J75OkgTVjT5n2Dx/InP5U
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id x6-20020a056402414600b0055d36e6f1a7sm5442819eda.82.2024.01.31.00.29.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 00:30:00 -0800 (PST)
-Message-ID: <1c855a34-8a0d-491e-bfd2-24635b41c86f@linaro.org>
-Date: Wed, 31 Jan 2024 09:29:59 +0100
+        d=1e100.net; s=20230601; t=1706691130; x=1707295930;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FTDfH4I2xOVSlwOEyIqiKd8K58r1M7EV8OEkwFEEbxw=;
+        b=L+PPNDZ7lVfvEnoFnkDilT6rY/KiIqijHh8dcq4MGIRUaMgD88CHOPt6OpSD55PZLY
+         g8PSdHgXi7kKyG1V0LeXo8QtUavLKTt7kMluCU+RIB9pd0WGAw2zrwjuEON46KHCOjrY
+         BzDrdEEhFu3wbpsgLDQz980Uph35GBaUEle1IBGYIZw7bK3t4iAXqfjtNSmHTxh1kuHQ
+         IlSfHhQBL3TBM+W4saDPq++luwwbJiNAJRpmp8En7Ip8pO9Q5xELil4L+YCdTrSSESyD
+         OiL0LRNWruMbAFpxhbTV/kOlji4mobyNgeSApLR6kDBO80cIQjziCh6jqb+1+EyvSD+d
+         K3Xg==
+X-Gm-Message-State: AOJu0YxZDTkmbdTeR2ihs6I5VF/BXA92O6D9pDXbisILpR38wLBOmUdA
+	Q0mFZlmwNfNeWi5gOp9lJndmV+0cq8dw78Ib7a5zhFxzdh725ivy
+X-Google-Smtp-Source: AGHT+IH5OPBlHelYF+NeFWrBZQMbR2Tp24V6rvqiRO/p1didxwohFOORT7Pg2Wfpty76vEFaYSwSEw==
+X-Received: by 2002:a5d:64e3:0:b0:337:68ab:617e with SMTP id g3-20020a5d64e3000000b0033768ab617emr858950wri.8.1706691129968;
+        Wed, 31 Jan 2024 00:52:09 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id t18-20020adfe112000000b0033ade19da41sm12073617wrz.76.2024.01.31.00.52.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jan 2024 00:52:09 -0800 (PST)
+Message-ID: <30f0aa03081bd98a1a989c508a24f23e049862f4.camel@gmail.com>
+Subject: Re: [PATCH v7 1/9] of: property: fix typo in io-channels
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Rob Herring <robh+dt@kernel.org>, 
+ devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  Jonathan Cameron <jic23@kernel.org>, Frank
+ Rowand <frowand.list@gmail.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Conor Dooley
+ <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 31 Jan 2024 09:55:26 +0100
+In-Reply-To: <170664806394.2324419.17581898570868149558.robh@kernel.org>
+References: <20240123-iio-backend-v7-0-1bff236b8693@analog.com>
+	 <20240123-iio-backend-v7-1-1bff236b8693@analog.com>
+	 <170664806394.2324419.17581898570868149558.robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] dt-bindings: iio: afe: voltage-divider: Add
- io-channel-cells
-Content-Language: en-US
-To: Naresh Solanki <naresh.solanki@9elements.com>,
- Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240130115651.457800-1-naresh.solanki@9elements.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240130115651.457800-1-naresh.solanki@9elements.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 30/01/2024 12:56, Naresh Solanki wrote:
-> voltage-divider is always an iio consumer at the same time it is
-> optionally an iio provider.
-> Hence add #io-channel-cells
-> Also update example.
-> 
+On Tue, 2024-01-30 at 14:54 -0600, Rob Herring wrote:
+>=20
+> On Tue, 23 Jan 2024 16:14:22 +0100, Nuno Sa wrote:
+> > The property is io-channels and not io-channel. This was effectively
+> > preventing the devlink creation.
+> >=20
+> > Fixes: 8e12257dead7 ("of: property: Add device link support for iommus,
+> > mboxes and io-channels")
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/of/property.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+>=20
+> Applied, thanks!
+>=20
 
-Fix
-wrapping
-and
-proper
-sentences. Each sentence finishes with full stop.
+Thanks Rob!
 
-...
->    output-ohms:
->      description:
->        Resistance Rout over which the output voltage is measured. See full-ohms.
-> @@ -75,12 +82,17 @@ examples:
->              spi-max-frequency = <1000000>;
->          };
->      };
-> -    sysv {
-> +    p12v_vd: sysv {
-
-No, drop label.
-
->          compatible = "voltage-divider";
->          io-channels = <&maxadc 1>;
-> +        #io-channel-cells = <1>;
->  
->          /* Scale the system voltage by 22/222 to fit the ADC range. */
->          output-ohms = <22>;
->          full-ohms = <222>; /* 200 + 22 */
->      };
-> +    iio-hwmon {
-> +        compatible = "iio-hwmon";
-> +        io-channels = <&p12v_vd 0>;
-
-The same question as for v2. Drop unrelated example.
-
-Also, remember about rule of posting only one version per day, so people
-actually have some chance to look at your patch.
-
-Best regards,
-Krzysztof
-
+- Nuno S=C3=A1
 

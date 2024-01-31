@@ -1,178 +1,157 @@
-Return-Path: <linux-iio+bounces-2058-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2059-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E058434CF
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 05:25:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAAE843860
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 08:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F283286839
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 04:25:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC6CF1C209AF
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 07:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB47816436;
-	Wed, 31 Jan 2024 04:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8985577C;
+	Wed, 31 Jan 2024 07:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBkCTfS5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q20cM80D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F71E20DDA;
-	Wed, 31 Jan 2024 04:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C855255C04
+	for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 07:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706675120; cv=none; b=iqI7nvMTk7vRFJmaQ29X9/ZMxy3GdPWTx3lMhxbk/S40l78Aw5RG3sGZxRu6D+B+RcdKPsMIN0diAivaaPWgXfF9jTF0pWkKrHZjJDJZA/XA/guE/mbqesyDtNIIzNJzm+kl0B+PJqPAFHEx+Z1QaGaDrhDWppGhabHSN9VH21Y=
+	t=1706687738; cv=none; b=P87pH2u1vHuopIkBQ/P5CIV+7FJc9mYbz9WbTnqlSjOAf7kymJTZSKnyXoEbqtnm3pTE6w4WZQIUQfNlPCiOCE5PYw6WgY7UgHEEh2c9+phQDgI0yWB8AcluBvRYKyskeyAfzw3B9MG+PVmgmtVP+VllQAfr7lDMewVrygCLbX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706675120; c=relaxed/simple;
-	bh=xMlVeUsFGxYNCpqcspWBNL05NuVM6y84tCrJBreSpAw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R8gH72pPo4RtnnJqZvScASIMIwMW8KRi98/zW1jkWTAAz3Pkyl0OmPXNrunAoPEBWKk2HDx1p03dXKQyvH/kDO4fIcZ61xtP8WjK/bU+YNUYtdSqwaEO4elaYRJYx8Wavpvn2xjty2fXmrysi1mSGD7ktTes6qUhwUjL+qk+ogI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBkCTfS5; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1706687738; c=relaxed/simple;
+	bh=eBREAVTcAzD4QhzjalmIwnXp1JHVI0WA2g2+J7AuhDY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BZuSFTTsrUODf4VC3TSh/CG/Rh4Ojn8iqzxELTqsQNtZpNM2Ab+R/cjSnGLIXKaQOvoje2GAXxmTS8kki2pJJvsiumhUgczcoiB1STAqiCpsNvE1y6Q+x7KK66djK736WGdhT0ccaSKL0Mzn+Us55k9IqDK3TTevYSSya7QZsDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q20cM80D; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d8ddbac4fbso1686073a12.0;
-        Tue, 30 Jan 2024 20:25:18 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40fb3e278adso3258335e9.2
+        for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 23:55:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706675118; x=1707279918; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zha8wYy8WlcwDCuU60s5IZGwiNRJ0LRFCCEU2An/LwY=;
-        b=aBkCTfS5Bi959Su/buIrBA2WqVA8zgYLVxzY2m2bo0O+hg8gmW9mFaIt7tXqCkRc0G
-         Rq/gF3WWx1ghPkD7Yy+fB+8uymQGB9EAAh6cwTwLtldScawlpW0OwEN1tgdyPCPOxWM+
-         wfmFI0SBCRIuzanIj58sf39EdcSYfagRJDcF0KWKIFFbbgULMw/Ik8Q4FoLwGjoinC++
-         bvSpxWFYJ8RFl6Ncvn4gx+wxlfw39X9hW7FpSOdzWPwgONmrqQqL+zI7BOgZzXmUicXX
-         oSrOBl9Pbk6pXNVfSuDO5JF4WHjZH6vH5s2h4RZtqpP6ni77u0Il18us7kfIF9tbzOIQ
-         bz2A==
+        d=gmail.com; s=20230601; t=1706687735; x=1707292535; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zYsaCefEnbXOxwpiHnf1fcE5dkyR+4eiL0KIZTyiQVA=;
+        b=Q20cM80DC1Q2Kbl6zOaQ0+KcV75o8LALHiWZaTl+jXbkzKNinafKUA6St7JGk22r+6
+         m+oebzqSnIJoPikRQ2/pVyYeBALng5DxchW3ISnIbLw9zhimmA6Px+9LMEVAx54Nk5Gg
+         R1KG1jLUg+JwUlNy4ukSdsC1/s0jRQ0FYE1V9I2InSvyL2phH5xxfEKbDIzouX9uhHf/
+         KiFdd2TBodO9Vr/ulWYexY+/pTA0s2UGxalIhmnH8S9u4NaDa0VBwclpjvme5JU5gHRP
+         o1BUXLHFYsPkWhoerKzbPtOwWZHAQVzYdHSCr+VE+hI64qm0oqn6s7efo16Iuezujs+Z
+         bvWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706675118; x=1707279918;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zha8wYy8WlcwDCuU60s5IZGwiNRJ0LRFCCEU2An/LwY=;
-        b=BjINOOgKh2DLXDChcN4jZR9mVOIpysPaLZ7N2/VIFZUl1EZ0jD9nbTY/ixf5Qz+SJ5
-         p+9WlC6/w+E4KuFWafyrZg5SnFdLzOLy0MIDk4Ds70WSGdjlxl2e3qXqf9ckgkDt2iVQ
-         e9fxzGbZV+8JqMQxM64K65ZSpbauWrF/JyXpux8oz2uQG0UValDz5bCNYxRizae7zQxk
-         KlQljvZ2ezIx9g/ATl66g8oXfFinR+qFYrBHIjEaT02962mXQzGJYcOxnq1da0YfA6KQ
-         RsftaynGE99yKLUO5BGZLAi8y1xty1ODbe+XJpjZPt7VMQdOkOxzfV/B0PC65O7uyV7x
-         szaA==
-X-Gm-Message-State: AOJu0YwIt4R3eISe76mMfcv18/hXb5RYxd+1rTb62BMm+KgAUva5FKIV
-	4j2vIWbjmM/MVXsn7tUTSXsAABrkZOVmin1I8lyfAuXXUMNZ1GG9puh94LMr
-X-Google-Smtp-Source: AGHT+IEmq7aTNHaFqy1c69LxAZz5ni4bK7qs2bTnVnqPfhDZ2izJVKzmAPF/fjB+bbhF5gd40db/wQ==
-X-Received: by 2002:a05:6a20:1824:b0:19c:a2aa:67f8 with SMTP id bk36-20020a056a20182400b0019ca2aa67f8mr461436pzb.24.1706675117928;
-        Tue, 30 Jan 2024 20:25:17 -0800 (PST)
-Received: from octofox.hsd1.ca.comcast.net (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
-        by smtp.gmail.com with ESMTPSA id e13-20020a17090ac20d00b00290ffbe5ca3sm274867pjt.55.2024.01.30.20.25.16
+        d=1e100.net; s=20230601; t=1706687735; x=1707292535;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zYsaCefEnbXOxwpiHnf1fcE5dkyR+4eiL0KIZTyiQVA=;
+        b=FAEUOOxp/vjN5zczjvhnIbGSHbOXnjkXv2bvF4N3lFHDuRmu+rajJp6r90o10PKKWY
+         mPApehYdUWAhu8SCEoc9MZe2vnc3GY2EmDsQsmPlVjIwMgkve83liol13MAenQp9FYmc
+         z8b0cvyBW3BYqDXv9Uum1B+p9uIZZ9TtYeu3CZgqU3XCEOyR8MHg95OlMmZsvOGLboCi
+         0CgXJZuSoVLOTiAfHICgTC7h61Kitc0M7xnPQCwsQ1HC1ifWuZsSIQHC1rdLs7YWbGK5
+         PuIiYVpumHP3w+VxIzs56rn/RnMNUlijlr2yFMMQP5n4VrejCjDzGe65ItEThy6x9mU9
+         9hyw==
+X-Gm-Message-State: AOJu0YwZcoBtTRoEMDvLVpNEcaLhJcW4D0QaCrXr4GQUGtnfa8IDl2Hr
+	Zo00Duj9hxMTIQTSpuNG3bIxaZCYfhTiM4A+zAwdMOjppl1K3vi/
+X-Google-Smtp-Source: AGHT+IEZ28iJg1kXpD8NPR00HqcDmuO6XsjrfAbKZGZX95mLQUdEQEC1JwF6Ddr2zVvUIT54yTMUwg==
+X-Received: by 2002:a05:600c:43c5:b0:40f:aabc:d508 with SMTP id f5-20020a05600c43c500b0040faabcd508mr694903wmn.10.1706687734681;
+        Tue, 30 Jan 2024 23:55:34 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id l18-20020a05600c1d1200b0040e89ade84bsm781481wms.4.2024.01.30.23.55.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 20:25:17 -0800 (PST)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Cc: Jiri Olsa <jolsa@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Kent Gibson <warthog618@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] kbuild: tools: drop overridden CFLAGS from MAKEOVERRIDES
-Date: Tue, 30 Jan 2024 20:25:09 -0800
-Message-Id: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Tue, 30 Jan 2024 23:55:34 -0800 (PST)
+Message-ID: <0b61fa64fe9a3f0569ceb160b1901ca50e24f548.camel@gmail.com>
+Subject: Re: [PATCH] iio: commom: st_sensors: ensure proper DMA alignment
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
+	 <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
+	 <lars@metafoo.de>, Denis Ciocca <denis.ciocca@st.com>
+Date: Wed, 31 Jan 2024 08:58:51 +0100
+In-Reply-To: <20240127155655.6495b465@jic23-huawei>
+References: <20240122-dev_dma_safety_stm-v1-1-3a021614cbfb@analog.com>
+	 <20240127155655.6495b465@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Some Makefiles under tools/ use the 'override CFLAGS += ...' construct
-to add a few required options to CFLAGS passed by the user.
-Unfortunately that only works when user passes CFLAGS as an environment
-variable, i.e.
-  CFLAGS=... make ...
-and not in case when CFLAGS are passed as make command line arguments:
-  make ... CFLAGS=...
-It happens because in the latter case CFLAGS=... is recorded in the make
-variable MAKEOVERRIDES and this variable is passed in its original form
-to all $(MAKE) subcommands, taking precedence over modified CFLAGS value
-passed in the environment variable. E.g. this causes build failure for
-gpio and iio tools when the build is run with user CFLAGS because of
-missing _GNU_SOURCE definition needed for the asprintf().
+On Sat, 2024-01-27 at 15:56 +0000, Jonathan Cameron wrote:
+> On Mon, 22 Jan 2024 15:15:41 +0100
+> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+>=20
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Aligning the buffer to the L1 cache is not sufficient in some platforms
+> > as they might have larger cacheline sizes for caches after L1 and thus,
+> > we can't guarantee DMA safety.
+> >=20
+> > That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the =
+same
+> > for st_sensors common buffer.
+> >=20
+> > [1]:
+> > https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.=
+org/
+> >=20
+> > Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each
+> > buffer enable")
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0include/linux/iio/common/st_sensors.h | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/include/linux/iio/common/st_sensors.h
+> > b/include/linux/iio/common/st_sensors.h
+> > index 607c3a89a647..a02652cf4862 100644
+> > --- a/include/linux/iio/common/st_sensors.h
+> > +++ b/include/linux/iio/common/st_sensors.h
+> > @@ -258,7 +258,7 @@ struct st_sensor_data {
+> > =C2=A0	bool hw_irq_trigger;
+> > =C2=A0	s64 hw_timestamp;
+> > =C2=A0
+> > -	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
+> > +	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE]
+> > __aligned(IIO_DMA_MINALIGN);
+> > =C2=A0
+> > =C2=A0	struct mutex odr_lock;
+> Hi Nuno.
+>=20
+> This is another problem.=C2=A0 There should be nothing after a DMA safe b=
+uffer
+> embedded
+> in a structure like we do here.=C2=A0 We rely on C structure padding to e=
+nsure the
+> rest of the __aligned(IIO_DMA_MINALIGN) region is unused and that doesn't=
+ work
+> if the buffer isn't the last element.
+>=20
+> My guess is we are safe to just reorder this before the buffer.
+> Nuno, do you mind spinning a v2 that does that as well as the size change=
+.
+>=20
 
-One way to fix it is by removing overridden variables from the
-MAKEOVERRIDES. Add macro 'drop-var-from-overrides' that removes a
-definition of a variable passed to it from the MAKEOVERRIDES and use it
-to fix CFLAGS passing for tools/gpio and tools/iio.
+Hi Jonathan,
 
-This implementation tries to be precise in string processing and handle
-variables with embedded spaces and backslashes correctly. To achieve
-that it replaces every '\\' sequence with '\-' to make sure that every
-'\' in the resulting string is an escape character. It then replaces
-every '\ ' sequence with '\_' to turn string values with embedded spaces
-into single words. After filtering the overridden variable definition
-out of the resulting string these two transformations are reversed.
+Somehow I failed to see your reply and was so focused on just having the pr=
+oper
+alignment that completely forgot the mutex after the buffer is obviously
+problematic. Good catch!
 
-Cc: stable@vger.kernel.org
-Fixes: 4ccc98a48958 ("tools gpio: Allow overriding CFLAGS")
-Fixes: 572974610273 ("tools iio: Override CFLAGS assignments")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
-Changes v1->v2:
-- make drop-var-from-overrides-code work correctly with arbitrary
-  variables, including thoses ending with '\'.
+Will spin a v2.
 
- tools/gpio/Makefile            | 1 +
- tools/iio/Makefile             | 1 +
- tools/scripts/Makefile.include | 9 +++++++++
- 3 files changed, 11 insertions(+)
+- Nuno S=C3=A1
 
-diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
-index d29c9c49e251..46fc38d51639 100644
---- a/tools/gpio/Makefile
-+++ b/tools/gpio/Makefile
-@@ -24,6 +24,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
- all: $(ALL_PROGRAMS)
- 
- export srctree OUTPUT CC LD CFLAGS
-+$(call drop-var-from-overrides,CFLAGS)
- include $(srctree)/tools/build/Makefile.include
- 
- #
-diff --git a/tools/iio/Makefile b/tools/iio/Makefile
-index fa720f062229..04307588dd3f 100644
---- a/tools/iio/Makefile
-+++ b/tools/iio/Makefile
-@@ -20,6 +20,7 @@ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
- all: $(ALL_PROGRAMS)
- 
- export srctree OUTPUT CC LD CFLAGS
-+$(call drop-var-from-overrides,CFLAGS)
- include $(srctree)/tools/build/Makefile.include
- 
- #
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index 6fba29f3222d..0f68b95cf55c 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -51,6 +51,15 @@ define allow-override
-     $(eval $(1) = $(2)))
- endef
- 
-+# When a Makefile overrides a variable and exports it for the nested $(MAKE)
-+# invocations to use its modified value, it must remove that variable definition
-+# from the MAKEOVERRIDES variable, otherwise the original definition from the
-+# MAKEOVERRIDES takes precedence over the exported value.
-+drop-var-from-overrides = $(eval $(drop-var-from-overrides-code))
-+define drop-var-from-overrides-code
-+MAKEOVERRIDES := $(subst \-,\\,$(subst \_,\ ,$(filter-out $(1)=%,$(subst \ ,\_,$(subst \\,\-,$(MAKEOVERRIDES))))))
-+endef
-+
- ifneq ($(LLVM),)
- ifneq ($(filter %/,$(LLVM)),)
- LLVM_PREFIX := $(LLVM)
--- 
-2.39.2
 
 

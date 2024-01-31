@@ -1,325 +1,574 @@
-Return-Path: <linux-iio+bounces-2068-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2069-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83288442B2
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 16:10:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18308443C8
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 17:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88A51C215CC
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 15:10:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7FD4B28AC1
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 16:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72D784A2E;
-	Wed, 31 Jan 2024 15:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151C612AACC;
+	Wed, 31 Jan 2024 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iRh9IE4f"
+	dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="LDe8KLox";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="r9PYnMK8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2089.outbound.protection.outlook.com [40.107.20.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3C484A26
-	for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 15:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706713825; cv=none; b=F2K+s3lj5N3hwI/OJ50iWjtmNXDKki61zGtsi2vmozclf2Lv0dc21Hi2TFWXK1P/FRuZhdQOjyLoA9T/Xm45DS4QcD92kmZCv4Y22C8lfix9fXPTLCdOuamvoABohz0kMife/vhTel7caiQ8QpEACN4aIjIU4lewNSI7LddT000=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706713825; c=relaxed/simple;
-	bh=0/iJefaAJf2oWDzCJ8UE6x+51GC/FK1SSjAUFOIrvlo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ZHtt0TdGOPrhBDzCGxokYbQSHQlwdMsu7kv4uyUWKxr9zBbnmrujNdj8dO/ADOKb09YY+EZoMUwne/VtyV0RQxGupZXbZBmeB1Vrv0eHWZH6uABE7DnSffzBsMTraf7slj0XIGhR6xKj3HWOugbUDXJxF9j2EQtxajHcq9umFSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iRh9IE4f; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-554fe147ddeso6277924a12.3
-        for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 07:10:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706713821; x=1707318621; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xyOjRtC/w0+EgkN822hXLBFVOn9Rntkyo6SO6+Co7k8=;
-        b=iRh9IE4fViInwJY+sa+X9OMDnxJoM9HTF/iVbyNBHp28VDbQoYC1prH03YIWTZRldn
-         kkIpYVK87cqof0aTJzB8GP4rqGdo9Nxhq/SO/OIDMVKhfhZYRxtWBKAA8Wsqi4WLOI/3
-         owF59w6z9VAvjzXkVPv4gq1PjQylZWP4ishwTmfKR/B0JXyCEbmz5YJc859SWx2qlBhf
-         FUaZYjVMiwFMgGU7ahI7zmkf1+jlxrfBUpi2N94jfN+QOd0R1b0yQ4Wc8eP/u05gUx6r
-         IQxH5+S9t1K9EKyOl15cA2Y2WIWR12mW+bS6rz11kORc4d6tjbHIziuMenVTkT9G2BCI
-         wSFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706713821; x=1707318621;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xyOjRtC/w0+EgkN822hXLBFVOn9Rntkyo6SO6+Co7k8=;
-        b=kaoRrYmBoXRLlCHm/E1tmQSRBIdluQrkWncyszaot4EMhksYdYhodsq1EMG+87qx1B
-         QPTXC4uZz1uwX+9leEc6/I+l7VeYtXcXFMpYlPJqoQjHEKZG1POwXR6Qb1EYhQ+ZA8Dy
-         S4DeRsQwFCAU46hyQrnkDfwFQoorUPnJ6CvXEElTKgVAaWO8LJBbDQb3KBuAEvBtkpFX
-         tssFA0iZVbTqgzCjlui9wUOy1MYw8r4G5+J+G90xC3GOxwPfWLJenk46Vyz7g2eRXBew
-         mXYZaS2sYV2SJodEbzWhOdkWyM0xBNdd9uw5db4iWcjb+sK6duwqsAmjHrnxSi+kQTLD
-         nTng==
-X-Gm-Message-State: AOJu0YzMCv0IzeAGxsUTZYSr+jTS3/+4jaYzr7E6Jo0+Th/4m1puM9xO
-	NguzEJ3msfomkIp3wrOiB0s4PT6kuwScFWW5m7B3D36Nrqf9GZ1o4ddzo2SgjKSpmjC5Cre4lyv
-	A2Iar81K7kdS9kPF4LvM3fxpI3W2cd50g35ThXDcyd0U=
-X-Google-Smtp-Source: AGHT+IFt9LWhYp48XU5YL4fTQmr3HcbeO7mEZaQFdql1/u4eLdW4F9TUpfzblxzV6o8X+FzQ7YNWH6V8WxwrrcvdzUM=
-X-Received: by 2002:a05:6402:4491:b0:55f:8c38:36a9 with SMTP id
- er17-20020a056402449100b0055f8c3836a9mr1590334edb.42.1706713821308; Wed, 31
- Jan 2024 07:10:21 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35C212A146;
+	Wed, 31 Jan 2024 16:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.89
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706717428; cv=fail; b=iKj7tXw3oGtueAeS6VRXpiW3GVgp84VSTWokTh+86ClrGZkr6+H40lY6de1zu/y25Xb814gbu8lP52ZSTz77ChRHtlT9ut/+si954/pd0IDPrnw+iXMhbKzL0942i3ldvfUDgRrkU48UGpFF3pOm4fX0/9R51AJugJLqU4PTcWY=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706717428; c=relaxed/simple;
+	bh=hV002eaK20w/QJTvW5h1PybOX0lyMDPyMSvgQyzznZQ=;
+	h=Message-ID:Date:From:Subject:To:CC:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XOcg2ZJ2OjAOryXD8Lv1YxmgAnge7fCaT7petjZHUdKWyQKTp+f1RiqIpRWJ9h/40ADoLFTYgCbsYuKt9eYv4UWBJhOqqVhOdpvYP1DjqJJEnjnUADORyDIxWLe5KWQIgZ5z5ppXpgeIgKI6yiwNotQW1GzJom2LDVYuYVHGepU=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl; spf=pass smtp.mailfrom=topic.nl; dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=LDe8KLox; dkim=fail (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=r9PYnMK8 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=topic.nl
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=fail;
+ b=cVHRMxUbVFchABBCccuqkSkvc7oUW4Zw1pgVIt/M3fao1EFeo9lHAijrrQPC284rwI76H8QHZPihieojDytrGtG/8P4WrUbycDJTCqan1gsX9/mbGDl8fvHWY1f1UJxYrkmfaMmKhB0f1kJCcU2TW9+EmBhPZ/70VF3jUjc0LyDl6CRKV9J3hG98+JlYtkFQ/n6GDiNlrah5zPkeRIRAolWVIfuZFx0Z1X1MinGJFtPBlm6WcQJVYL0ZZ9iOHAqcGtvVoUat4eh87nQVDcbMB8QLeC8plnLKDqr0NWgWOjzfmpwPyhXDarbypmivsmHHBhecN0ud9Ct5ZGG6uaFsPw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EO6bOE8hNuUbOJ6vl7KxCLHGWS4keveP6JfuH3b/WYM=;
+ b=SNdOekehmoOg74djVtXW4pCwfvLmjyQQpuYgkwShiU4+VQR3gq8GGtfMQrIE6NHxz9eIlRDj4pphNJbIJ+nyNkvMW3KNnlSXjEFcbYX7bASyLsKb2aqkUfE2Y4wNk2S2Uq/s/aqJvIdQ0LfdqypIALMd494MLpjG1D0gY8/Mkv0FQ/bjtMe4qWrEl1GYzDJQlKHAOBw1WEtfdBKa56A1ZUXX/zKTedEhA2pnZgO1A+tWKqTeJPXwzUo484rzz5xWgR78Dc8OXjQmDcIXv08xwmOloVYOQMU0tDnyX0ON21JxAeOVKlNfrDh59Jkwr+Ek8OZdo2/ymdKccmuPlpXY8A==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.93.157.195) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=topic.nl;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=topic.nl;
+ dkim=fail (signature did not verify) header.d=topic.nl; arc=fail (47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EO6bOE8hNuUbOJ6vl7KxCLHGWS4keveP6JfuH3b/WYM=;
+ b=LDe8KLox6cQUAJR30AZzeNYpm2r4drC8XpLc1a2TnYwqotdcPsXadqcwYXQA6M/pItWhENqwmXB0C9skFSwIWe6bpUZbkFkhdSK6kWgnqv+VwIYDGTIfAyv5qCk0xvwe71hC0L1MuyXzEeG5gl3RTBlb75Da39p1xEr3iHRhxlUSScGT+KmH3oFdLaQJiOY7PkvH8gajcs01fDMDFVV/bMPpNHGXjnCdek2HRISBjy/xBpDTr/TkcJLp4vaNbtnJrDVpPDtsoEe/QbV3kp9hDQv0mAijMeLme4EAmjHWgFegx0p2tAXvKMchcRPytdLdGKnq89dI3efdNlZa5b+IEA==
+Received: from AS9PR06CA0481.eurprd06.prod.outlook.com (2603:10a6:20b:49b::6)
+ by PAXPR04MB9666.eurprd04.prod.outlook.com (2603:10a6:102:241::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Wed, 31 Jan
+ 2024 16:10:20 +0000
+Received: from AMS0EPF000001A0.eurprd05.prod.outlook.com
+ (2603:10a6:20b:49b:cafe::55) by AS9PR06CA0481.outlook.office365.com
+ (2603:10a6:20b:49b::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.24 via Frontend
+ Transport; Wed, 31 Jan 2024 16:10:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.93.157.195)
+ smtp.mailfrom=topic.nl; dkim=fail (signature did not verify)
+ header.d=topic.nl;dmarc=pass action=none header.from=topic.nl;
+Received-SPF: Pass (protection.outlook.com: domain of topic.nl designates
+ 20.93.157.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.93.157.195; helo=westeu11-emailsignatures-cloud.codetwo.com;
+ pr=C
+Received: from westeu11-emailsignatures-cloud.codetwo.com (20.93.157.195) by
+ AMS0EPF000001A0.mail.protection.outlook.com (10.167.16.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7249.19 via Frontend Transport; Wed, 31 Jan 2024 16:10:19 +0000
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (104.47.17.169) by westeu11-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Wed, 31 Jan 2024 16:10:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jrI7Ydiz2GcwZekYYKEqzv6ItIe+0cczxMC8/xerHhF3Pdv0LJApxhLsUAm+a+hrX4ZexWvKBPAZ62zcdm6g/ws8OsTBCdJSVWbC6u6gtPpjW++QkU8B+/QqKw0fSusot52XIT5+KHLWw2yDh0nv+HiMqsqtH0t9YF+tzi7EkK5LnYsZ2TRIPpeBVT43KCfeVJ/XsNXHQHaazwhdWF9rq7QBU6AtnNvwqji1JvUJgKwwKJ5zZCsC7OCbfYlLHZKALKuNJryUJyBEMk0mTxRCjTT+Nxh9+RgOEePgJosIKKkhdSBxpMmOPU8nVIqa61hJlq1PiMIHFFFKFWSS0+a36w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4RIAwu/XNrzvfDTjy5w6BMZeWlwtSKP7GGEIFsEGWFA=;
+ b=TasscpGlXMURPqlBkjzemUN1V4V6GkU3VISN1wsjpnNsmhUZY8Lac+Pl8EiGHvDjc0EJ3Ul4BQZn0NXhxkBM21KF/PawvY16z5jIuXrcUi2L5GFyV6vEbDwi45Pga4AZife3kbWoYMAmN355X982I8jrmqZ8O/y26z8MSTGSaT6mg56BkKte7kQYTXfOAwLy+0spv0HAVba58aGuliQ7WAJiK0/0GUKvZKVCtb59FjemHW/RImeZRhdz6zSk01MuCfhxlNgRMI8IWV9LV/xZ+biHJ0QaMui4Go2lvqRMUijTmKHZuGheXySjL5EpLhd8/mxXkRQVr4YRU/eGaq6pKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=topic.nl; dmarc=pass action=none header.from=topic.nl;
+ dkim=pass header.d=topic.nl; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4RIAwu/XNrzvfDTjy5w6BMZeWlwtSKP7GGEIFsEGWFA=;
+ b=r9PYnMK87EmmpAlljWe2mwsFV7dbYqUrlqHE77AeOESqHNoh6PA6Rq4v3dW5aGxArBKklfd0WKgGUJwtuMbquAx+NXKZRyZYHH2nuE4zWCT3S7SgVyeixy5e4/hGw9TS5HSxeiKv0RQfcO+Z3BsOWU/NPVZzkd4gUeZSTWOxCZsta+zzYVoYMTFdkeQNJtvxe3nmgCysYshX33jnYvcWVtDm6EorQzU4jzgXtFWtdGZeZ5+/71QhfiuIip5m0HaD/0WdnyG3ij5F2GUecUDB6U/QoRn8xyqCucbr/U8Bnyd5m3JckPusUDu0GQv1aNkmqbUMvm5qeWnZFtGZNOu4xA==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com (2603:10a6:20b:42b::12)
+ by PA4PR04MB9461.eurprd04.prod.outlook.com (2603:10a6:102:2a9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Wed, 31 Jan
+ 2024 16:10:09 +0000
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd]) by AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd%6]) with mapi id 15.20.7228.029; Wed, 31 Jan 2024
+ 16:10:09 +0000
+Message-ID: <406d445a-3ce3-4253-8966-de2dac6f7c23@topic.nl>
+Date: Wed, 31 Jan 2024 17:10:08 +0100
+User-Agent: Mozilla Thunderbird
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Subject: Re: [PATCH 2/2] iio: adc: ti-ads1298: Add driver
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Lee Jones <lee@kernel.org>, =?UTF-8?Q?Leonard_G=C3=B6hrs?=
+ <l.goehrs@pengutronix.de>, Liam Beguin <liambeguin@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Maksim Kiselev <bigunclemax@gmail.com>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Mark Brown <broonie@kernel.org>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+References: <20231213094722.31547-1-mike.looijmans@topic.nl>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.27993507-256d-4b05-88df-c8643e7f1a68@emailsignatures365.codetwo.com>
+ <20231213094722.31547-2-mike.looijmans@topic.nl>
+ <ZXnF72wJCAeYWA8X@smile.fi.intel.com>
+Content-Language: en-US, nl
+Organization: Topic
+In-Reply-To: <ZXnF72wJCAeYWA8X@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: AS4P195CA0039.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:65a::15) To AS8PR04MB8644.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::12)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Nikita Mikhailevich <ermyril@gmail.com>
-Date: Wed, 31 Jan 2024 16:10:09 +0100
-Message-ID: <CAHoRnbRjtAOE0xKUUZh8zfALzGnLPCjrxUE15jJ_y7i1dQq+Uw@mail.gmail.com>
-Subject: iio: accel: mxc4005: new ACPI ID for the MXC6655 accelerometer?
-To: linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-TrafficTypeDiagnostic:
+	AS8PR04MB8644:EE_|PA4PR04MB9461:EE_|AMS0EPF000001A0:EE_|PAXPR04MB9666:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c0ecd58-9ffe-442e-e816-08dc22771f25
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ sjllLHO5ein/2+pBUwB9BmFE/fvVqxOpTchPJnh9yqC8b/GUFo0qNxGtNutJivZyfpZhJY4R2pBl7r2U9dyuVeAFL98KXylYrkF9A9Qzzht2h53swqv4XHPSlEzBgdfzi7VqOsk7KIHQ3bKAJ9ho3HqTKtkgti5hjXEsHpaPNRR9GKKdX16DSWLMZn3rKwCRyQssQ776jM4n8+bkwMzfCyI1UqVUHS9hGw3q4J2GdTVtSVzmdSs3ywNNE35tMiCtxx2fOnYpJKKzcMHr8SGyGlQYCriphWifRTZuhQ09IrvjC+9HkTu0iMBCk/SRz9zr1xIojKAVZFcrdJeRGDjldYTWouqd2M+fAoTeIjHD6n2mOB57dTDv/RTSBXA6pumfV84a5/2ENrQLsoQeAQ5NxIC7yhpkoqNSX1RkuCjr+FjjiY2jbprd8mI0F0m6HUEFtus7ZZMbKkzYUNPnF54pAGN+irCDv5Qdtc+X2mDj9l+M6PwiSEIoCV/6PQH1DA6IiEICyOYQiVQv3Auo/vts1glIxwuVx0mOTv4Amon3BnMZLTJrs51tQnby8jLFjudWcdQYk0WJya+ajWa+QFaXC1tL8vd2ri8InSo+is6qcDbhFru3edcVtJ7glbVLIY2AAJhYizaO3s/LVY7+HWWG3uF95zTKaYCZ/+I3BMnvoRo=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39840400004)(346002)(366004)(396003)(136003)(376002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(66476007)(31686004)(54906003)(66556008)(6486002)(66946007)(6512007)(44832011)(316002)(6916009)(478600001)(6506007)(8936002)(36916002)(52116002)(8676002)(53546011)(4326008)(2616005)(83380400001)(2906002)(5660300002)(26005)(7416002)(38100700002)(15974865002)(31696002)(86362001)(36756003)(41300700001)(38350700005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9461
+X-CodeTwo-MessageID: 8f8f5aa2-1a3e-4168-997a-98b8a660b1c9.20240131161019@westeu11-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS0EPF000001A0.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	50aa0624-6d02-4883-2f22-08dc227718b3
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	9v5dPsH+UhWMOLGBw0ZRcgHqcX/YhMzWLaEgK6G1Shc2p4rXknzn9vl0BDyuqw+SkCEcW/2cbUtKGykjK6zRiK2hBhHvI5Z9/EJjzaPeVedP2x5BX+hTnyIzmrPIOVPswV7xf9h1RL9cFgxyWMbn4VLNdlNnVeJMDSugy3FV2dIY9mEY8eVEjwvKhKl6y+dvPYi9Zyn4gpo9oDPLJxQ8H/JrxdLktVffPZa9j/+6HYrahKuh6KBPzFkt5r7KXkys/o6UoZSGByLRKI/7lAqEvhFVIR29A0j09jQapMdctoJO3I8249k8mvmoKby9hvaz23dfgOD1ONxzBzWT6TcZRFXGtc/jd0KVmrRzrj0+I3V+nXglCMGD6iVxhk/wYtAtbYscZhajhXWOt6ywoX2A+gk2ZAdmg+BViYN05fmRidr/eHFVfRDjLdLHLRtZr80GljgZN1TseYz2saNaTY8k/6jKCaoh87OuLE0jfvkNFY8QvSZ/AGfVil1vVhRXERW3DlukWh6TyywgnV6HsV4Nt2R6bvOnjpQupKswNI3scwn+jVVLDvCe6GOmpRRx2ytNBL68+TvoF5l24DmvTYWtBzPAEhcNSUaYQ2r8xfuhmGVu/YcQ0Gj+YZ1qI75OdHxmjc2B1QryQ9wVsDquWLe2D5qfPl8pen8CkKV11tlGjBYmsIWfLBeUS448MFtDpCtfSKs/MdTEJkDGirQAI3EWy9jOQ6JNLd2RwH+DjERibBkQiFlWncDkiR09pcD0l/DVg5qdXQ2OOSJtAbtR23b1Pg==
+X-Forefront-Antispam-Report:
+	CIP:20.93.157.195;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu11-emailsignatures-cloud.codetwo.com;PTR:westeu11-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230031)(4636009)(136003)(346002)(376002)(396003)(39840400004)(230922051799003)(1800799012)(451199024)(82310400011)(64100799003)(186009)(36840700001)(46966006)(83380400001)(26005)(336012)(2616005)(6512007)(478600001)(7636003)(7596003)(47076005)(36860700001)(4326008)(44832011)(8936002)(8676002)(5660300002)(6486002)(7416002)(2906002)(53546011)(6506007)(36916002)(54906003)(70206006)(70586007)(6916009)(316002)(41300700001)(356005)(86362001)(36756003)(15974865002)(31696002)(31686004)(40480700001)(43740500002)(18886075002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: topic.nl
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 16:10:19.8485
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c0ecd58-9ffe-442e-e816-08dc22771f25
+X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[20.93.157.195];Helo=[westeu11-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A0.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9666
 
-Hello!
+Hi Andy,
 
-I've got a laptop which has an MXC6655 accelerometer, but I couldn't
-get it up and running despite the driver being present in the kernel.
-When I was manually doing modprobe mxc4005 - nothing happened. Journal
-and dmesg don't have anything relevant in them.
-And if I was trying to run monitor-sensor and start iio-sensor-proxy,
-I was getting a following error:
-
-Failed to claim accelerometer:
-GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name :1.609
-was not provided by any .service files
-
-The device in /sys/bus/acpi/devices shows as MDA6655 instead of
-MXC6655, which led me to try applying the following changes, after
-which the device started working properly:
-
-Signed-off-by: Nikita Mikhailevich <ermyril@gmail.com>
----
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index 82e8d0b39..0928b6e13 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -472,6 +472,7 @@ static int mxc4005_probe(struct i2c_client *client)
- static const struct acpi_device_id mxc4005_acpi_match[] =3D {
-     {"MXC4005",    0},
-     {"MXC6655",    0},
-+    {"MDA6655",    0},
-     { },
- };
- MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
-@@ -479,6 +480,7 @@ MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
- static const struct of_device_id mxc4005_of_match[] =3D {
-     { .compatible =3D "memsic,mxc4005", },
-     { .compatible =3D "memsic,mxc6655", },
-+    { .compatible =3D "memsic,mda6655", },
-     { },
- };
- MODULE_DEVICE_TABLE(of, mxc4005_of_match);
-@@ -486,6 +488,7 @@ MODULE_DEVICE_TABLE(of, mxc4005_of_match);
- static const struct i2c_device_id mxc4005_id[] =3D {
-     {"mxc4005",    0},
-     {"mxc6655",    0},
-+    {"mda6655",     0},
-     { },
- };
- MODULE_DEVICE_TABLE(i2c, mxc4005_id);
----
-
-Please let me know what should my next steps be, is such patch legit
-and should be submitted properly, is there anything wrong with the
-code or are we able to mitigate the issue without changes in the
-kernel, using udev rules for example, and if so - should we? (that
-will leave such devices still broken by default)
-
-Thank you,
-Nikita Mikhailevich
+Took me a while to get back to this. Incorporated all of your comments,=20
+except that I seem to be unable to count characters. Most places, I have=20
+more than 80 characters in a line it I don't indent as I did. I'll try=20
+to improve my indents...
 
 
-The following are the debug commands that might be useful to
-understand the situation, they were taken before rebuilding the kernel
-with the patch above
+On 13-12-2023 15:55, Andy Shevchenko wrote:
+> On Wed, Dec 13, 2023 at 10:47:22AM +0100, Mike Looijmans wrote:
+>> Skeleton driver for the TI ADS1298 medical ADC. This device is
+>> typically used for ECG and similar measurements. Supports data
+>> acquisition at configurable scale and sampling frequency.
+> ...
+>
+>> +config TI_ADS1298
+>> +	tristate "Texas Instruments ADS1298"
+>> +	depends on SPI
+>> +	select IIO_BUFFER
+>> +	default y
+> Huh?!
+>
+>> +	help
+>> +	  If you say yes here you get support for Texas Instruments ADS1298
+>> +	  medical ADC chips
+>> +
+>> +	  This driver can also be built as a module. If so, the module will be
+>> +	  called ti-ads1298.
+> ...
+>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/clk.h>
+>> +#include <linux/err.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/device.h>
+>> +#include <linux/kernel.h>
+> Is it used as a proxy? (At least for array_size.h)
+> Please use real headers in such case.
+>
+>> +#include <linux/module.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/sysfs.h>
+>> +#include <linux/gpio/consumer.h>
+>> +#include <linux/regulator/consumer.h>
+>> +#include <linux/spi/spi.h>
+> This is interesting grouping, but okay, I understand the point.
+>
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/buffer.h>
+>> +#include <linux/iio/kfifo_buf.h>
+>> +#include <linux/iio/sysfs.h>
+> ...
+>
+>> +#define ADS1298_CLK_RATE	2048000
+> Units? _HZ ?
+>
+> ...
+>
+>> +/* Outputs status word and 8 samples of 24 bits each, plus the command =
+byte */
+> /* Outputs status word and 8 24-bit samples, plus the command byte */
+>
+> a bit shorter.
+>
+>> +#define ADS1298_SPI_RDATA_BUFFER_SIZE	((ADS1298_MAX_CHANNELS + 1) * 3 +=
+ 1)
+> ...
+>
+>> +#define ADS1298_CHAN(index)					\
+>> +{								\
+>> +	.type =3D IIO_VOLTAGE,					\
+>> +	.indexed =3D 1,						\
+>> +	.channel =3D index,					\
+>> +	.address =3D 3 * index + 4,				\
+> Hmm... does this 3 have a distinct definition?
+>
+>> +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |		\
+>> +			      BIT(IIO_CHAN_INFO_SCALE),		\
+> Can be written as below
+>
+> 	.info_mask_separate =3D					\
+> 		BIT(IIO_CHAN_INFO_RAW) |			\
+> 		BIT(IIO_CHAN_INFO_SCALE),			\
+>
+>> +	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
+>> +				   BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
+> 	.info_mask_shared_by_all =3D				\
+> 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |			\
+> 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+>
+>> +	.scan_index =3D index,					\
+>> +	.scan_type =3D {						\
+>> +		.sign =3D 's',					\
+>> +		.realbits =3D 24,					\
+>> +		.storagebits =3D 32,				\
+>> +		.endianness =3D IIO_BE,				\
+>> +	},							\
+>> +}
+> ...
+>
+>> +static int ads1298_write_cmd(struct ads1298_private *priv, u8 command)
+>> +{
+>> +	struct spi_transfer cmd_xfer =3D {
+>> +		.tx_buf =3D priv->cmd_buffer,
+>> +		.rx_buf =3D priv->cmd_buffer,
+>> +		.len =3D 1,
+> 		sizeof(command) ?
+>
+>> +		.speed_hz =3D ADS1298_SPI_BUS_SPEED_SLOW,
+>> +		.delay.value =3D 2,
+>> +		.delay.unit =3D SPI_DELAY_UNIT_USECS,
+> 		.delay =3D {
+> 			.value =3D ...
+> 			.unit =3D ...
+> 		},
+>
+>> +	};
+>> +	priv->cmd_buffer[0] =3D command;
+>> +
+>> +	return spi_sync_transfer(priv->spi, &cmd_xfer, 1);
+>> +}
+> ...
+>
+>> +	/* Cannot take longer than 40ms (250Hz) */
+>> +	ret =3D wait_for_completion_timeout(&priv->completion,
+>> +					  msecs_to_jiffies(50));
+> One line?
+>
+>> +	if (!ret)
+>> +		return -ETIMEDOUT;
+> ...
+>
+>> +	if (cfg & ADS1298_MASK_CONFIG1_HR)
+>> +		rate >>=3D 6; /* HR mode */
+>> +	else
+>> +		rate >>=3D 7; /* LP mode */
+> Are those magic numbers defined?
+>
+> ...
+>
+>> +	factor =3D (rate >> 6) / val;
+> Is it the same 6 semantically as above?
+>
+> ...
+>
+>> +	return IIO_VAL_FRACTIONAL_LOG2;
+>> +}
+>> +
+>> +
+> One blank line is enough.
+>
+>> +		*val =3D sign_extend32(get_unaligned_be24(
+>> +					priv->rx_buffer + chan->address), 23);
+> Strange indentation.
+>
+> 		*val =3D sign_extend32(get_unaligned_be24(priv->rx_buffer + chan->addre=
+ss),
+> 				     23);
 
-$ journalctl | grep -E "4005|6655"
-Jan 17 03:25:38 nixos systemd-modules-load[388]: Inserted module 'mxc4005'
-Jan 17 10:11:08 nixos systemd-modules-load[401]: Inserted module 'mxc4005'
-Jan 17 10:23:12 nixos systemd-modules-load[422]: Inserted module 'mxc4005'
-
-$ journalctl | grep -Ei "iio"
-Jan 21 06:00:22 nixos systemd[1]: Starting IIO Sensor Proxy service...
-Jan 21 06:00:22 nixos systemd[1]: Started IIO Sensor Proxy service.
-Jan 21 06:00:22 nixos systemd[1]: iio-sensor-proxy.service:
-Deactivated successfully.
-
-$ lsmod | grep 4005
-mxc4005                16384  0
-industrialio_triggered_buffer    12288  1 mxc4005
-industrialio          135168  3 industrialio_triggered_buffer,kfifo_buf,mxc=
-4005
-
-$ ls -al /sys/bus/acpi/devices | grep 6655
-lrwxrwxrwx 1 root root 0 Jan 24 22:57 MDA6655:00 ->
-../../../devices/LNXSYSTM:00/LNXSYBUS:00/MDA6655:00
-lrwxrwxrwx 1 root root 0 Jan 24 22:57 MXC6655:00 ->
-../../../devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6c/MXC6655:00
-lrwxrwxrwx 1 root root 0 Jan 24 22:57 MXC6655:01 ->
-../../../devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6e/MXC6655:01
-
-$ ls -al /sys/bus/i2c/devices/ | grep 6655
-lrwxrwxrwx 1 root root 0 Jan 24 23:23 i2c-MDA6655:00 ->
-../../../devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-2/i2c-MDA6655=
-:00
-
-$ cat /sys/bus/i2c/devices/i2c-MDA6655:00/modalias
-acpi:MDA6655:MDA6655:
-
-$ cat /sys/bus/acpi/devices/MDA6655:00/modalias
-acpi:MDA6655:MDA6655:
-
-$ udevadm info --export-db | grep iio
-  - empty output
-
-
-$ udevadm info --attribute-walk --path=3D/sys/bus/acpi/devices/MDA6655:00/
-
-  looking at device '/devices/LNXSYSTM:00/LNXSYBUS:00/MDA6655:00':
-    KERNEL=3D=3D"MDA6655:00"
-    SUBSYSTEM=3D=3D"acpi"
-    DRIVER=3D=3D""
-    ATTR{adr}=3D=3D"0x00000000"
-    ATTR{hid}=3D=3D"MDA6655"
-    ATTR{path}=3D=3D"\_SB_.ACMK"
-    ATTR{power/async}=3D=3D"disabled"
-    ATTR{power/control}=3D=3D"auto"
-    ATTR{power/runtime_active_kids}=3D=3D"0"
-    ATTR{power/runtime_active_time}=3D=3D"0"
-    ATTR{power/runtime_enabled}=3D=3D"disabled"
-    ATTR{power/runtime_status}=3D=3D"unsupported"
-    ATTR{power/runtime_suspended_time}=3D=3D"0"
-    ATTR{power/runtime_usage}=3D=3D"0"
-    ATTR{status}=3D=3D"15"
-    ATTR{uid}=3D=3D"1"
-
-  looking at parent device '/devices/LNXSYSTM:00/LNXSYBUS:00':
-    KERNELS=3D=3D"LNXSYBUS:00"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{hid}=3D=3D"LNXSYBUS"
-    ATTRS{path}=3D=3D"\_SB_"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
-
-  looking at parent device '/devices/LNXSYSTM:00':
-    KERNELS=3D=3D"LNXSYSTM:00"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{hid}=3D=3D"LNXSYSTM"
-    ATTRS{path}=3D=3D"\"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
-
-
-$ udevadm info --attribute-walk --path=3D/sys/bus/acpi/devices/MXC6655:00/
-
-  looking at device
-'/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6c/MXC6655:00':
-    KERNEL=3D=3D"MXC6655:00"
-    SUBSYSTEM=3D=3D"acpi"
-    DRIVER=3D=3D""
-    ATTR{adr}=3D=3D"0x00000000"
-    ATTR{adr}=3D=3D"0x00000000"
-    ATTR{hid}=3D=3D"MXC6655"
-    ATTR{path}=3D=3D"\_SB_.PC00.I2C0.ACMG"
-    ATTR{power/async}=3D=3D"disabled"
-    ATTR{power/control}=3D=3D"auto"
-    ATTR{power/runtime_active_kids}=3D=3D"0"
-    ATTR{power/runtime_active_time}=3D=3D"0"
-    ATTR{power/runtime_enabled}=3D=3D"disabled"
-    ATTR{power/runtime_status}=3D=3D"unsupported"
-    ATTR{power/runtime_suspended_time}=3D=3D"0"
-    ATTR{power/runtime_usage}=3D=3D"0"
-    ATTR{status}=3D=3D"0"
-    ATTR{uid}=3D=3D"1"
-
-  looking at parent device
-'/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6c':
-    KERNELS=3D=3D"device:6c"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{adr}=3D=3D"0x00150000"
-    ATTRS{path}=3D=3D"\_SB_.PC00.I2C0"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
-    ATTRS{power_state}=3D=3D"D3hot"
-
-  looking at parent device '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00':
-    KERNELS=3D=3D"PNP0A08:00"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{adr}=3D=3D"0x00000000"
-    ATTRS{hid}=3D=3D"PNP0A08"
-    ATTRS{path}=3D=3D"\_SB_.PC00"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
-    ATTRS{uid}=3D=3D"0"
-
-  looking at parent device '/devices/LNXSYSTM:00/LNXSYBUS:00':
-    KERNELS=3D=3D"LNXSYBUS:00"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{hid}=3D=3D"LNXSYBUS"
-    ATTRS{path}=3D=3D"\_SB_"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
-
-  looking at parent device '/devices/LNXSYSTM:00':
-    KERNELS=3D=3D"LNXSYSTM:00"
-    SUBSYSTEMS=3D=3D"acpi"
-    DRIVERS=3D=3D""
-    ATTRS{hid}=3D=3D"LNXSYSTM"
-    ATTRS{path}=3D=3D"\"
-    ATTRS{power/async}=3D=3D"disabled"
-    ATTRS{power/control}=3D=3D"auto"
-    ATTRS{power/runtime_active_kids}=3D=3D"0"
-    ATTRS{power/runtime_active_time}=3D=3D"0"
-    ATTRS{power/runtime_enabled}=3D=3D"disabled"
-    ATTRS{power/runtime_status}=3D=3D"unsupported"
-    ATTRS{power/runtime_suspended_time}=3D=3D"0"
-    ATTRS{power/runtime_usage}=3D=3D"0"
+Doesn't fit, first line is 83 characters by my count...
 
 
-$ cat /sys/class/dmi/id/modalias
-dmi:bvnAmericanMegatrendsInternational,LLC.:bvrDNN20V2.13:bd09/05/2023:br2.=
-13:efr0.15:svnCHUWIInnovationAndTechnology(ShenZhen)co.,Ltd:pnMiniBookX:pvr=
-Defaultstring:rvnDefaultstring:rnDefaultstring:rvrDefaultstring:cvnDefaults=
-tring:ct10:cvrDefaultstring:skuDefaultstring:
+> ...
+>
+>> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>> +		ret =3D regmap_read(priv->regmap, ADS1298_REG_CONFIG1, val);
+>> +		if (!ret) {
+> Why not using standard pattern?
+>
+> 		if (ret)
+> 			return ret;
+>
+> (see below)
+>
+>> +			ret =3D IIO_VAL_INT;
+>> +			*val =3D (16 << (*val & ADS1298_MASK_CONFIG1_DR));
+> Outer parentheses are redundant.
+>
+>> +		}
+>> +		break;
+> 		return IIO_VAL_INT;
+>
+>
+>> +	default:
+>> +		ret =3D -EINVAL;
+>> +		break;
+> return directly.
+>
+>> +	}
+>> +	return ret;
+> It will gone.
+>
+> ...
+>
+>> +static int ads1298_write_raw(struct iio_dev *indio_dev,
+>> +			     struct iio_chan_spec const *chan, int val,
+>> +			     int val2, long mask)
+>> +{
+>> +	struct ads1298_private *priv =3D iio_priv(indio_dev);
+>> +	int ret;
+> No need, just return directly.
+>
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_SAMP_FREQ:
+>> +		ret =3D ads1298_set_samp_freq(priv, val);
+>> +		break;
+>> +	default:
+>> +		ret =3D -EINVAL;
+>> +		break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+> ...
+>
+>> +static int ads1298_reg_access(struct iio_dev *indio_dev, unsigned int r=
+eg,
+>> +			      unsigned int writeval, unsigned int *readval)
+>> +{
+>> +	struct ads1298_private *priv =3D iio_priv(indio_dev);
+>> +	if (!readval)
+> Perhaps positive conditional?
+>
+> 	if (readval)
+> 		return readval;
+> 	return writeval;
+>
+>> +		return regmap_write(priv->regmap, reg, writeval);
+>> +
+>> +	return regmap_read(priv->regmap, reg, readval);
+>> +}
+> ...
+>
+>> +	/* Power down channels that aren't in use */
+>> +	for (i =3D 0; i < ADS1298_MAX_CHANNELS; i++) {
+>> +		regmap_update_bits(priv->regmap, ADS1298_REG_CHnSET(i),
+>> +				   ADS1298_MASK_CH_PD,
+>> +				   test_bit(i, scan_mask) ?
+>> +							0 : ADS1298_MASK_CH_PD);
+> Broken indentation.
+>
+>> +	}
+> ...
+>
+>> +static void ads1298_rdata_unmark_busy(struct ads1298_private *priv)
+>> +{
+>> +	unsigned long flags;
+>> +
+>> +	/* Notify we're no longer waiting for the SPI transfer to complete */
+>> +	spin_lock_irqsave(&priv->irq_busy_lock, flags);
+>> +	priv->rdata_xfer_busy =3D false;
+>> +	spin_unlock_irqrestore(&priv->irq_busy_lock, flags);
+> Perhaps switch to use guard()?
+> (And scoped_guard() where it makes sense.)
+>
+>> +}
+>> +		/* Transfer 24-bit value into 32-bit array */
+>> +		memcpy(bounce + 1, data, 3);
+> Hmm... Wouldn't get_unaligned_..24() work here better?
+>
+>> +		bounce +=3D 4;
+> If so, you can iterate over u32 members directly without this +=3D 4.
+>
+> ...
+>
+>> +static const char *ads1298_family_name(unsigned int id)
+>> +{
+>> +	switch (id & 0xe0) {
+> GENMASK() ?
+>
+>> +	case 0x80:
+>> +		return "ADS129x";
+>> +	case 0xc0:
+>> +		return "ADS129xR";
+> Can we have these all magics be defined?
+>
+>> +	default:
+>> +		return "(unknown)";
+>> +	}
+>> +}
+> ...
+>
+>> +	if ((val & 0x18) =3D=3D 0x10) {
+> Ditto.
+>
+>> +		dev_info(dev, "Found %s, %d channels\n",
+>> +			 ads1298_family_name(val),
+>> +			 4 + 2 * (val & 0x07));
+> Ditto for 0x07.
+>
+>> +	} else {
+>> +		dev_err(dev, "Unknown ID: 0x%x\n", val);
+>> +		return -ENODEV;
+>> +	}
+> ...
+>
+>> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*priv));
+>> +	if (indio_dev =3D=3D NULL)
+> We do !indio_dev in this case.
+>
+>> +		return -ENOMEM;
+> ...
+>
+>> +		ret =3D devm_add_action_or_reset(dev, ads1298_reg_disable,
+>> +					       priv->reg_vref);
+> One line?
+>
+>
+>> +		if (ret)
+>> +			return ret;
+> ...
+>
+>> +		return dev_err_probe(dev, PTR_ERR(priv->clk),
+>> +				     "Failed to get clk\n");
+> Ditto.
+>
+> ...
+>
+>> +		return dev_err_probe(dev, ret,
+>> +				     "Failed to enable avdd regulator\n");
+> Ditto.
+>
+> ...
+>
+>> +	ret =3D devm_add_action_or_reset(dev, ads1298_reg_disable,
+>> +				       priv->reg_avdd);
+> Ditto.
+>
+> ...
+>
+>> +	priv->regmap =3D devm_regmap_init(dev, NULL, priv,
+>> +					&ads1298_regmap_config);
+> Ditto.
+>
+> ...
+>
+>> +	/* Avoid giving all the same name, iio scope doesn't handle that well =
+*/
+> IIO
+>
+>> +	indio_dev->name =3D devm_kasprintf(dev, GFP_KERNEL, "%s@%s",
+>> +					 spi_get_device_id(spi)->name,
+>> +					 dev_name(dev));
+> No error check?
+>
+>> +	if (reset_gpio) {
+>> +		udelay(1); /* Minimum pulse width is 2 clocks at 2MHz */
+> How do you know it's 2MHz? Is it always the same on all platforms / setup=
+s?
+>
+>> +		gpiod_set_value(reset_gpio, 0);
+>> +	} else {
+>> +		ret =3D ads1298_write_cmd(priv, ADS1298_CMD_RESET);
+>> +		if (ret)
+>> +			return dev_err_probe(dev, ret, "RESET failed\n");
+>> +	}
+>> +	/* Wait 18 clock cycles for reset command to complete */
+> Ditto.
+>
+>> +	udelay(9);
+> ...
+>
+>> +	ret =3D devm_request_irq(&spi->dev, spi->irq, &ads1298_interrupt,
+> &spi->dev is different to dev?
+>
+>> +			       IRQF_TRIGGER_FALLING, indio_dev->name,
+>> +			       indio_dev);
+> ...
+>
+>> +	ret =3D devm_iio_kfifo_buffer_setup(&spi->dev, indio_dev,
+>> +					  &ads1298_setup_ops);
+> Ditto.
+>
+> ...
+>
+>> +static const struct spi_device_id ads1298_id[] =3D {
+>> +	{ "ads1298",  },
+> Inner comma is not needed.
+>
+>> +	{ }
+>> +};
+> ...
+>
+>> +static const struct of_device_id ads1298_of_table[] =3D {
+>> +	{ .compatible =3D "ti,ads1298" },
+>> +	{ },
+> Drop the comma in terminator entry.
+>
+>> +};
+
+
+--=20
+Mike Looijmans
+System Expert
+
+TOPIC Embedded Products B.V.
+Materiaalweg 4, 5681 RJ Best
+The Netherlands
+
+T: +31 (0) 499 33 69 69
+E: mike.looijmans@topic.nl
+W: www.topic.nl
+
+
+
 

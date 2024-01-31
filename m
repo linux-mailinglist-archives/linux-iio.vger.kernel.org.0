@@ -1,157 +1,171 @@
-Return-Path: <linux-iio+bounces-2059-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2060-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAAE843860
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 08:55:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B947984390F
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 09:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC6CF1C209AF
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 07:55:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCAB41C288B2
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jan 2024 08:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8985577C;
-	Wed, 31 Jan 2024 07:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB85D8E5;
+	Wed, 31 Jan 2024 08:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q20cM80D"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uH4HEhzV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C855255C04
-	for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 07:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BED60884
+	for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 08:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706687738; cv=none; b=P87pH2u1vHuopIkBQ/P5CIV+7FJc9mYbz9WbTnqlSjOAf7kymJTZSKnyXoEbqtnm3pTE6w4WZQIUQfNlPCiOCE5PYw6WgY7UgHEEh2c9+phQDgI0yWB8AcluBvRYKyskeyAfzw3B9MG+PVmgmtVP+VllQAfr7lDMewVrygCLbX8=
+	t=1706689718; cv=none; b=fBiLGlylQswb3IVuwEq3+eqNwe2+oeQgoOyThl0oQrbTyvM8ga4QIO5B8Zpbd/EuqZYlOBopT4whjpdKrMX3nroj+RXf0t/xFmxzxcVMiDKHwTWIqk5KthfLICOmnrT6ksYrn0kxC3Tr0+OPb+hNzidUYvUoMWiqcc4eCSsVAKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706687738; c=relaxed/simple;
-	bh=eBREAVTcAzD4QhzjalmIwnXp1JHVI0WA2g2+J7AuhDY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BZuSFTTsrUODf4VC3TSh/CG/Rh4Ojn8iqzxELTqsQNtZpNM2Ab+R/cjSnGLIXKaQOvoje2GAXxmTS8kki2pJJvsiumhUgczcoiB1STAqiCpsNvE1y6Q+x7KK66djK736WGdhT0ccaSKL0Mzn+Us55k9IqDK3TTevYSSya7QZsDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q20cM80D; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40fb3e278adso3258335e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 30 Jan 2024 23:55:36 -0800 (PST)
+	s=arc-20240116; t=1706689718; c=relaxed/simple;
+	bh=c+Kv8sbga+YbjZYYgQ1t9BiGDzbWYL9Z6XnubBbQkW0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mIr246/ckubyoWWSl5UvnrjOtzS56kx+yYur4o+bQHpq29RbepSlSLPr7uUG8BULbP6Yvl+QBGcTM+9Tdj+knDuifCJDae0LIi+TVybNao+uMnmpC0stCaFPzAs78gdcZhER1s7nJtKR4BAXtjKpvPRKkOnvSsa5mLQTnN+DHGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uH4HEhzV; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2cf4a22e10dso57758901fa.3
+        for <linux-iio@vger.kernel.org>; Wed, 31 Jan 2024 00:28:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706687735; x=1707292535; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zYsaCefEnbXOxwpiHnf1fcE5dkyR+4eiL0KIZTyiQVA=;
-        b=Q20cM80DC1Q2Kbl6zOaQ0+KcV75o8LALHiWZaTl+jXbkzKNinafKUA6St7JGk22r+6
-         m+oebzqSnIJoPikRQ2/pVyYeBALng5DxchW3ISnIbLw9zhimmA6Px+9LMEVAx54Nk5Gg
-         R1KG1jLUg+JwUlNy4ukSdsC1/s0jRQ0FYE1V9I2InSvyL2phH5xxfEKbDIzouX9uhHf/
-         KiFdd2TBodO9Vr/ulWYexY+/pTA0s2UGxalIhmnH8S9u4NaDa0VBwclpjvme5JU5gHRP
-         o1BUXLHFYsPkWhoerKzbPtOwWZHAQVzYdHSCr+VE+hI64qm0oqn6s7efo16Iuezujs+Z
-         bvWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706687735; x=1707292535;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=linaro.org; s=google; t=1706689714; x=1707294514; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=zYsaCefEnbXOxwpiHnf1fcE5dkyR+4eiL0KIZTyiQVA=;
-        b=FAEUOOxp/vjN5zczjvhnIbGSHbOXnjkXv2bvF4N3lFHDuRmu+rajJp6r90o10PKKWY
-         mPApehYdUWAhu8SCEoc9MZe2vnc3GY2EmDsQsmPlVjIwMgkve83liol13MAenQp9FYmc
-         z8b0cvyBW3BYqDXv9Uum1B+p9uIZZ9TtYeu3CZgqU3XCEOyR8MHg95OlMmZsvOGLboCi
-         0CgXJZuSoVLOTiAfHICgTC7h61Kitc0M7xnPQCwsQ1HC1ifWuZsSIQHC1rdLs7YWbGK5
-         PuIiYVpumHP3w+VxIzs56rn/RnMNUlijlr2yFMMQP5n4VrejCjDzGe65ItEThy6x9mU9
-         9hyw==
-X-Gm-Message-State: AOJu0YwZcoBtTRoEMDvLVpNEcaLhJcW4D0QaCrXr4GQUGtnfa8IDl2Hr
-	Zo00Duj9hxMTIQTSpuNG3bIxaZCYfhTiM4A+zAwdMOjppl1K3vi/
-X-Google-Smtp-Source: AGHT+IEZ28iJg1kXpD8NPR00HqcDmuO6XsjrfAbKZGZX95mLQUdEQEC1JwF6Ddr2zVvUIT54yTMUwg==
-X-Received: by 2002:a05:600c:43c5:b0:40f:aabc:d508 with SMTP id f5-20020a05600c43c500b0040faabcd508mr694903wmn.10.1706687734681;
-        Tue, 30 Jan 2024 23:55:34 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id l18-20020a05600c1d1200b0040e89ade84bsm781481wms.4.2024.01.30.23.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 23:55:34 -0800 (PST)
-Message-ID: <0b61fa64fe9a3f0569ceb160b1901ca50e24f548.camel@gmail.com>
-Subject: Re: [PATCH] iio: commom: st_sensors: ensure proper DMA alignment
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
-	 <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
-	 <lars@metafoo.de>, Denis Ciocca <denis.ciocca@st.com>
-Date: Wed, 31 Jan 2024 08:58:51 +0100
-In-Reply-To: <20240127155655.6495b465@jic23-huawei>
-References: <20240122-dev_dma_safety_stm-v1-1-3a021614cbfb@analog.com>
-	 <20240127155655.6495b465@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+        bh=XZ9Ax3DvOFZkCrDGw5CSdDQ0vnNvc+FywyGFKPLpCyk=;
+        b=uH4HEhzVQ/F6sZqThT01OpWDpYKaRG058W6dXoz/PNpR/Sbq4CaGdhz5hp0KjU2a40
+         ye+yWi5fkEkP+Dfu8g96cjJNxhAKdlckvgLmlHD/03nSr3O8Sq0Wuzz0aDV4lNPpuvRT
+         VdZnsKMP9at/5HddxNkNKDWOEdC0gux5HGLniwlAYbPCMJdLFKsWBwcpIeigm2+0YLMX
+         MjQ5hpTS+BfCZ09wluBF4EWMrcGSIz6lEu5KJHC8PoKKsL1+1f54ZaeVe48KfzaVRuPJ
+         +9WVDKn+yRY6SJRgZhhwTZsI54tYW3Mr8vR5DvbHKtj4I+JSJZ1ScnpiLChIB77BDn7j
+         W1dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706689714; x=1707294514;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XZ9Ax3DvOFZkCrDGw5CSdDQ0vnNvc+FywyGFKPLpCyk=;
+        b=V73NqexDE4ypI0GeIaaYq13BitSbKJECbH6U0Kvkrju7JedRv49KCbI7G0JiXFnJmv
+         MBXvwIsyexT4iJ91jNNb4C+7zB+6hgueu3rnfAohvu6Gv5yR3Y0/AtDfT+wJDqBAv4Rf
+         qYqj/kf76TqGJQxLH6aoDKulvcR8F6PEeC1Nsf0mvffWGgfQS2qTw4rREvt7XV3IFgWE
+         VsVyz3VPHfGIumBUj6MqWUo876PDlYnaA8OzWON0YcF7wYfX4c0DyRIdcafhff4CxgGk
+         4LipiTtl0dIMfLmmDqU3QE21nz9rISxTjxLWY/MgKj3IS6S000e6IX9MtF1y8xQ633ib
+         Rjqw==
+X-Gm-Message-State: AOJu0Yz+KQFxbLE/Ujtd2O6d7KKd8Bob0XXNvGOYdmR50NN3xJdk/Uwi
+	jgz/EqLsvnZnoEywQoiRWgQDKjy+o6Uq0zctlQ5lw1tN14BeEhfcMX5qltK4m8I=
+X-Google-Smtp-Source: AGHT+IFyx+9XmyvKse17thAVumr5Zq4dhkeW6r5samuyhmHBnAhmZ5TqavjeUZ+tL0d+GtO+jYS/Ww==
+X-Received: by 2002:a05:651c:200e:b0:2d0:4972:4c16 with SMTP id s14-20020a05651c200e00b002d049724c16mr615586ljo.5.1706689714566;
+        Wed, 31 Jan 2024 00:28:34 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWi7ZG1hNXnLV7zCpnDhFRO4z6RlmhO/t97yN3oiImeQoQbq7rGxqvK3WMlgpS96AaX5FnY6+mTHAy84JNtJDEiiOh1LJlObdpKRRqXt5zpFwq1W0XpKRlxYHHsSjQkxVIqVxttnZuY0P8HAcZqLKq3jL1n67H+E+jdEV6xo2tPGHEvSQGffccugLge4LmEy4OwXEdETO6OPZbouAUEiFIOxvdaJn4HzeqxZMRSBadJvQF0AKGhMu9TvFppZO4ZzVnFNOtrK+BxEEsUHAOO/QfDP3TCZtFNnT1tndh3jciYrlvEGMdU+d1LmrhtlfuafhE3a/eZdw+zwNIwmqCTwH7RmP4/
+Received: from [192.168.1.20] ([178.197.222.62])
+        by smtp.gmail.com with ESMTPSA id x6-20020a056402414600b0055d36e6f1a7sm5442819eda.82.2024.01.31.00.28.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jan 2024 00:28:33 -0800 (PST)
+Message-ID: <817499d3-13dd-4f06-883b-582bf94d1145@linaro.org>
+Date: Wed, 31 Jan 2024 09:28:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dt-bindings: iio: afe: voltage-divider: Add
+ io-channel-cells
+Content-Language: en-US
+To: Naresh Solanki <naresh.solanki@9elements.com>,
+ Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240130111830.4016002-1-naresh.solanki@9elements.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240130111830.4016002-1-naresh.solanki@9elements.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2024-01-27 at 15:56 +0000, Jonathan Cameron wrote:
-> On Mon, 22 Jan 2024 15:15:41 +0100
-> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
-> > From: Nuno Sa <nuno.sa@analog.com>
-> >=20
-> > Aligning the buffer to the L1 cache is not sufficient in some platforms
-> > as they might have larger cacheline sizes for caches after L1 and thus,
-> > we can't guarantee DMA safety.
-> >=20
-> > That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the =
-same
-> > for st_sensors common buffer.
-> >=20
-> > [1]:
-> > https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.=
-org/
-> >=20
-> > Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each
-> > buffer enable")
-> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0include/linux/iio/common/st_sensors.h | 2 +-
-> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/include/linux/iio/common/st_sensors.h
-> > b/include/linux/iio/common/st_sensors.h
-> > index 607c3a89a647..a02652cf4862 100644
-> > --- a/include/linux/iio/common/st_sensors.h
-> > +++ b/include/linux/iio/common/st_sensors.h
-> > @@ -258,7 +258,7 @@ struct st_sensor_data {
-> > =C2=A0	bool hw_irq_trigger;
-> > =C2=A0	s64 hw_timestamp;
-> > =C2=A0
-> > -	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
-> > +	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE]
-> > __aligned(IIO_DMA_MINALIGN);
-> > =C2=A0
-> > =C2=A0	struct mutex odr_lock;
-> Hi Nuno.
->=20
-> This is another problem.=C2=A0 There should be nothing after a DMA safe b=
-uffer
-> embedded
-> in a structure like we do here.=C2=A0 We rely on C structure padding to e=
-nsure the
-> rest of the __aligned(IIO_DMA_MINALIGN) region is unused and that doesn't=
- work
-> if the buffer isn't the last element.
->=20
-> My guess is we are safe to just reorder this before the buffer.
-> Nuno, do you mind spinning a v2 that does that as well as the size change=
-.
->=20
+On 30/01/2024 12:18, Naresh Solanki wrote:
+> voltage-divider is always an iio consumer at the same time it is
+> optionally an iio provider.
+> Hence add #io-channel-cells
+> Also update example.
 
-Hi Jonathan,
+>    output-ohms:
+>      description:
+>        Resistance Rout over which the output voltage is measured. See full-ohms.
+> @@ -75,12 +82,17 @@ examples:
+>              spi-max-frequency = <1000000>;
+>          };
+>      };
+> -    sysv {
+> +    p12v_vd: sysv {
+>          compatible = "voltage-divider";
+>          io-channels = <&maxadc 1>;
+> +        #io-channel-cells = <1>;
+>  
+>          /* Scale the system voltage by 22/222 to fit the ADC range. */
+>          output-ohms = <22>;
+>          full-ohms = <222>; /* 200 + 22 */
+>      };
+> +    iio-hwmon {
+> +        compatible = "iio-hwmon";
+> +        io-channels = <&p12v_vd 0>;
 
-Somehow I failed to see your reply and was so focused on just having the pr=
-oper
-alignment that completely forgot the mutex after the buffer is obviously
-problematic. Good catch!
+Why do you add unrelated example?
 
-Will spin a v2.
-
-- Nuno S=C3=A1
-
+Best regards,
+Krzysztof
 
 

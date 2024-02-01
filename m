@@ -1,119 +1,150 @@
-Return-Path: <linux-iio+bounces-2079-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2080-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7E88456C2
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 13:03:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10140845B19
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 16:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77AB01C2836B
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 12:03:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B931C1F2B508
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 15:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61C515D5C4;
-	Thu,  1 Feb 2024 12:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="embjLUcr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38A86215B;
+	Thu,  1 Feb 2024 15:17:09 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1AD4D9E7;
-	Thu,  1 Feb 2024 12:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5523E62141;
+	Thu,  1 Feb 2024 15:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706788996; cv=none; b=jiWiYuN7tNEbhIOFWkCMHYhnNq02Q6c5eaE389ZINv6IYyAnXu2aisTq9Qp5cRuXT2Ip6wj5nhjtWMBbSd1OHdcHw0TQuZqSQlHQha+9y1ydnswxtzEYF+GoAe2kKLWuhkXCGl2nxkXyGUAZjHFghmEh0yhYueCdzuEGJ1zyF+w=
+	t=1706800629; cv=none; b=ZFGBrWbl+2ba9lKrEXmtaMfks00Oi4F7WShfslRHDLgEdrE718opQ+h30FPr7o2uBxCaHzmeHeWkNfHPC4+hoM704CBrINLXy4VP6Ih7hSXm9likhU6f1pJ/cImVC26X8AUgVxQOPd1h5jLh/JtCC23vcWxWmd6JEJK1BXoswLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706788996; c=relaxed/simple;
-	bh=Dy6YfzeYz5+kG2DcPp827T0bxKzrA+4hsfyIKLG5kQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mUKmIuaPb3WJb+qOw0vkqWD7QxSNys+UdvTlohsD0/agxtJHJ9M7Yqc66lKLzCUQX7ccyIUqJ0ihrg+qbWtLWHMUsy/AlgeCNQ1avj9n8mRANezWujPeUViZDFYntatxUstmakTpWDl4PRQdjmgGZGZ3MGWS0LGp0mU4GDtVL3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=embjLUcr; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706788995; x=1738324995;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Dy6YfzeYz5+kG2DcPp827T0bxKzrA+4hsfyIKLG5kQc=;
-  b=embjLUcryl49odafBApUcwGPLIaToB2YGtPS7Gt+w60Wer8llTW4Wpx7
-   M+Ui2U5CWY833/5L8WkdiAOT2sYZYs56Y+mNfLAi3MAiEgxCP8WWyNQs9
-   Po9HBnOTHvLELJAcWgPNMUK/Pa/ic3ygggBmqMr2HbKgi1QvR0sq8IL/n
-   d0HeCZ/kFfj8aw3nb2fva7pMNuNeZ74ya/N3SpP7g6xH4EG3Sb/fDgpOf
-   4lr7Gh4YpLuXuzwfvny0EA74F0KjBvITtrBf6GOgKsrU1zpI7J7KgGatN
-   Y46na22lhQEbLCYGrN6ooXqhZMxr0OhqUgGMazBgwYjw0cPays1R51aDQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10531536"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="10531536"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="738410569"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="738410569"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:08 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rVVOb-00000000ots-0my3;
-	Thu, 01 Feb 2024 13:38:17 +0200
-Date: Thu, 1 Feb 2024 13:38:16 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Liam Beguin <liambeguin@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: ti-ads1298: Add driver
-Message-ID: <ZbuCqEWqpDadeF_v@smile.fi.intel.com>
-References: <20231213094722.31547-1-mike.looijmans@topic.nl>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.27993507-256d-4b05-88df-c8643e7f1a68@emailsignatures365.codetwo.com>
- <20231213094722.31547-2-mike.looijmans@topic.nl>
- <ZXnF72wJCAeYWA8X@smile.fi.intel.com>
- <406d445a-3ce3-4253-8966-de2dac6f7c23@topic.nl>
+	s=arc-20240116; t=1706800629; c=relaxed/simple;
+	bh=SQTRgcD+I6ibp2a9ZIUzFHD1oB/zY7oXL+TAzvzz0I0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EFezXi0l5TOj7WDhXz+UujN+0HWYzfdGU1s62LDmLQPoiNh/wcl0AqHoerBoOEgXcv+YsQciA8Th3CsADHq79uPswLd4NqmQD+hWPfKDAMqHIYEq0ICjmPGUyicTS6mP4ZM4OyH60vaKZ/ZUAowFCKiYHYEQJyFh40fbei9kVJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TQj8z1Wqlz6JB1P;
+	Thu,  1 Feb 2024 23:13:39 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 12A8E140DAF;
+	Thu,  1 Feb 2024 23:17:02 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 1 Feb
+ 2024 15:17:01 +0000
+Date: Thu, 1 Feb 2024 15:17:00 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Rob Herring <robh@kernel.org>
+CC: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+	<jic23@kernel.org>, <linux-iio@vger.kernel.org>, Frank Rowand
+	<frowand.list@gmail.com>, <linux-kernel@vger.kernel.org>, Julia Lawall
+	<Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, "Sumera
+ Priyadarsini" <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [RFC PATCH 2/5] of: Introduce for_each_child_of_node_scoped()
+ to automate of_node_put() handling
+Message-ID: <20240201151700.000038ee@Huawei.com>
+In-Reply-To: <20240131235148.GA2743404-robh@kernel.org>
+References: <20240128160542.178315-1-jic23@kernel.org>
+	<20240128160542.178315-3-jic23@kernel.org>
+	<CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
+	<20240131235148.GA2743404-robh@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <406d445a-3ce3-4253-8966-de2dac6f7c23@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Jan 31, 2024 at 05:10:08PM +0100, Mike Looijmans wrote:
-> On 13-12-2023 15:55, Andy Shevchenko wrote:
-> > On Wed, Dec 13, 2023 at 10:47:22AM +0100, Mike Looijmans wrote:
+On Wed, 31 Jan 2024 17:51:48 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-First of all, please remove unneeded context, don't make me waste time on doing
-that for you!
+> On Sun, Jan 28, 2024 at 03:11:01PM -0600, David Lechner wrote:
+> > On Sun, Jan 28, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel=
+.org> wrote: =20
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > To avoid issues with out of order cleanup, or ambiguity about when the
+> > > auto freed data is first instantiated, do it within the for loop defi=
+nition.
+> > >
+> > > The disadvantage is that the struct device_node *child variable creat=
+ion
+> > > is not immediately obvious where this is used.
+> > > However, in many cases, if there is another definition of
+> > > struct device_node *child; the compiler / static analysers will notif=
+y us
+> > > that it is unused, or uninitialized.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  include/linux/of.h | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > >
+> > > diff --git a/include/linux/of.h b/include/linux/of.h
+> > > index 50e882ee91da..f822226eac6d 100644
+> > > --- a/include/linux/of.h
+> > > +++ b/include/linux/of.h
+> > > @@ -1434,6 +1434,12 @@ static inline int of_property_read_s32(const s=
+truct device_node *np,
+> > >         for (child =3D of_get_next_available_child(parent, NULL); chi=
+ld !=3D NULL; \
+> > >              child =3D of_get_next_available_child(parent, child))
+> > >
+> > > +#define for_each_child_of_node_scoped(parent, child) \
+> > > +       for (struct device_node *child __free(device_node) =3D       =
+     \
+> > > +            of_get_next_child(parent, NULL);                        =
+   \
+> > > +            child !=3D NULL;                                        =
+     \
+> > > +            child =3D of_get_next_available_child(parent, child)) =20
+> >=20
+> > Doesn't this need to match the initializer (of_get_next_child)?
+> > Otherwise it seems like the first node could be a disabled node but no
+> > other disabled nodes would be included in the iteration.
+> >=20
+> > It seems like we would want two macros, one for each variation,
+> > analogous to for_each_child_of_node() and
+> > for_each_available_child_of_node(). =20
+>=20
+> Yes, but really I'd like these the other way around. 'available' should=20
+> be the default as disabled should really be the same as a node not=20
+> present except for a few cases where it is not.
+>=20
+> I bring it up only because if we're changing things then it is a=20
+> convenient time to change this. That's really a side issue to sorting=20
+> out how this new way should work.
 
-...
+Happy to push that forwards by not initially defining the non available ver=
+sion
+of this scoped form. So we will just have
 
-> > 		*val = sign_extend32(get_unaligned_be24(priv->rx_buffer + chan->address),
-> > 				     23);
-> 
-> Doesn't fit, first line is 83 characters by my count...
+for_each_avaiable_child_of_node_scoped()
 
-Is it a problem?
+Short and snappy it isn't but such is life.
 
+Jonathan
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+>=20
+> Rob
+>=20
 
 

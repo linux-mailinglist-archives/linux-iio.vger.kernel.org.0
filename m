@@ -1,81 +1,88 @@
-Return-Path: <linux-iio+bounces-2078-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2079-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5356A8456BF
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 13:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7E88456C2
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 13:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8682F1C27939
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 12:03:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77AB01C2836B
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Feb 2024 12:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799F815D5CC;
-	Thu,  1 Feb 2024 12:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61C515D5C4;
+	Thu,  1 Feb 2024 12:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PnSlo+3r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="embjLUcr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA7715B984;
-	Thu,  1 Feb 2024 12:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1AD4D9E7;
+	Thu,  1 Feb 2024 12:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706788987; cv=none; b=GdhUk8m+cyqyYmk5EUcaRcWwwKc3OCpqJYPsBUTou3dzY2SZINsP6mr1F7dGsI/iJdenlmf6pXxX2nscup2QctILg/a3DaEiMOPW7GytmFuSTinsXU0OiF8PrxAkM9IIP05/X59b8IaIZbmIMmiwAyhYPqVCYpW4SHSP4jC+KRQ=
+	t=1706788996; cv=none; b=jiWiYuN7tNEbhIOFWkCMHYhnNq02Q6c5eaE389ZINv6IYyAnXu2aisTq9Qp5cRuXT2Ip6wj5nhjtWMBbSd1OHdcHw0TQuZqSQlHQha+9y1ydnswxtzEYF+GoAe2kKLWuhkXCGl2nxkXyGUAZjHFghmEh0yhYueCdzuEGJ1zyF+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706788987; c=relaxed/simple;
-	bh=pJuSO9d6uzAqQ3VtPCr5pnKI1a/DU5bzRyIqtixtObA=;
+	s=arc-20240116; t=1706788996; c=relaxed/simple;
+	bh=Dy6YfzeYz5+kG2DcPp827T0bxKzrA+4hsfyIKLG5kQc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j6Pd8+DKPLhE532e9iHEvB2YCEXH5I+5cbQcwissGkDsNGTq9EThZ+pdAyXV6aT5K/tGdflMsOLNP3/7EZ9M9IjuHWFWDbiheLVnfxVqBUD9TLR8kC4r71sv5yYgg+w36V7tflZV1ebAAzDXXUwffmXjQGd/SGZLyKFR6R3lJ8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PnSlo+3r; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=mUKmIuaPb3WJb+qOw0vkqWD7QxSNys+UdvTlohsD0/agxtJHJ9M7Yqc66lKLzCUQX7ccyIUqJ0ihrg+qbWtLWHMUsy/AlgeCNQ1avj9n8mRANezWujPeUViZDFYntatxUstmakTpWDl4PRQdjmgGZGZ3MGWS0LGp0mU4GDtVL3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=embjLUcr; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706788986; x=1738324986;
+  t=1706788995; x=1738324995;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=pJuSO9d6uzAqQ3VtPCr5pnKI1a/DU5bzRyIqtixtObA=;
-  b=PnSlo+3redwfuu//uLdEuT0r9vJ7dVxtOcOkcz6TzSjtqYR7+A542oEh
-   xD5WbMPS2GWrAkLcMkr5O+l2a1K7F+tFpNHb8BnqjADDaF9MBWbKBiCsr
-   KLvUki1YwdDufleyKhvIKQLBXHHQdPfbyTcYPkjLPlRVqRfTOR7M0Aby7
-   EDGBQTQWIAi1szp7KJKFxh+FwN2EABNw1nRIiTZSKDuEMESgfNBOZ6xG0
-   yV2pru2bXR1mtOAM34QDET8nh/oAYhBseMFBW9f2b3jAAOYQcpbGFAa3K
-   14xJvwJ8GmWpaAUZqG2KMCTYou6FtwqMy8DsVoiyq0PNc7BxPd/j41val
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17409704"
+  bh=Dy6YfzeYz5+kG2DcPp827T0bxKzrA+4hsfyIKLG5kQc=;
+  b=embjLUcryl49odafBApUcwGPLIaToB2YGtPS7Gt+w60Wer8llTW4Wpx7
+   M+Ui2U5CWY833/5L8WkdiAOT2sYZYs56Y+mNfLAi3MAiEgxCP8WWyNQs9
+   Po9HBnOTHvLELJAcWgPNMUK/Pa/ic3ygggBmqMr2HbKgi1QvR0sq8IL/n
+   d0HeCZ/kFfj8aw3nb2fva7pMNuNeZ74ya/N3SpP7g6xH4EG3Sb/fDgpOf
+   4lr7Gh4YpLuXuzwfvny0EA74F0KjBvITtrBf6GOgKsrU1zpI7J7KgGatN
+   Y46na22lhQEbLCYGrN6ooXqhZMxr0OhqUgGMazBgwYjw0cPays1R51aDQ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10531536"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="17409704"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:05 -0800
+   d="scan'208";a="10531536"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="961902005"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="738410569"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="961902005"
+   d="scan'208";a="738410569"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:01 -0800
+  by orsmga003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:08 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rVV7Q-00000000ofZ-1VUT;
-	Thu, 01 Feb 2024 13:20:32 +0200
-Date: Thu, 1 Feb 2024 13:20:31 +0200
+	id 1rVVOb-00000000ots-0my3;
+	Thu, 01 Feb 2024 13:38:17 +0200
+Date: Thu, 1 Feb 2024 13:38:16 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nicolas Palix <nicolas.palix@imag.fr>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
- loops.
-Message-ID: <Zbt-fw8eUrQzBjX9@smile.fi.intel.com>
-References: <20240128160542.178315-1-jic23@kernel.org>
+To: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maksim Kiselev <bigunclemax@gmail.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <ZbuCqEWqpDadeF_v@smile.fi.intel.com>
+References: <20231213094722.31547-1-mike.looijmans@topic.nl>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.27993507-256d-4b05-88df-c8643e7f1a68@emailsignatures365.codetwo.com>
+ <20231213094722.31547-2-mike.looijmans@topic.nl>
+ <ZXnF72wJCAeYWA8X@smile.fi.intel.com>
+ <406d445a-3ce3-4253-8966-de2dac6f7c23@topic.nl>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,72 +91,25 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240128160542.178315-1-jic23@kernel.org>
+In-Reply-To: <406d445a-3ce3-4253-8966-de2dac6f7c23@topic.nl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Jan 28, 2024 at 04:05:37PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> +CC includes peopleinterested in property.h equivalents to minimize
-> duplication of discussion.  Outcome of this discussion will affect:
-> https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
-> [PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
-> 
-> In discussion of previous approach with Rob Herring we talked about various
-> ways to avoid a disconnect between the declaration of the __free(device_node)
-> and the first non NULL assignment. Making this connection clear is useful for 2
-> reasons:
-> 1) Avoids out of order cleanup with respect to other cleanup.h usage.
-> 2) Avoids disconnect between how cleanup is to be done and how the reference
->    was acquired in the first place.
-> 
-> https://lore.kernel.org/all/20240117194743.GA2888190-robh@kernel.org/
-> 
-> The options we discussed are:
-> 
-> 1) Ignore this issue and merge original set.
-> 
-> 2) Always put the declaration just before the for loop and don't set it NULL.
-> 
-> {
-> 	int ret;
-> 
-> 	ret = ... and other fun code.
-> 
-> 	struct device_node *child __free(device_node);
-> 	for_each_child_of_node(np, child) {
-> 	}
-> }
-> 
-> This works but careful review is needed to ensure that this unusual pattern is
-> followed.  We don't set it to NULL as the loop will do that anyway if there are
-> no child nodes, or the loop finishes without an early break or return.
-> 
-> 3) Introduced the pointer to auto put device_node only within the
->    for loop scope.
-> 
-> +#define for_each_child_of_node_scoped(parent, child) \
-> +	for (struct device_node *child __free(device_node) =		\
-> +	     of_get_next_child(parent, NULL);				\
-> +	     child != NULL;						\
+On Wed, Jan 31, 2024 at 05:10:08PM +0100, Mike Looijmans wrote:
+> On 13-12-2023 15:55, Andy Shevchenko wrote:
+> > On Wed, Dec 13, 2023 at 10:47:22AM +0100, Mike Looijmans wrote:
 
-Just
+First of all, please remove unneeded context, don't make me waste time on doing
+that for you!
 
-	     child;							\
+...
 
-> +	     child = of_get_next_available_child(parent, child))
-> +
+> > 		*val = sign_extend32(get_unaligned_be24(priv->rx_buffer + chan->address),
+> > 				     23);
 > 
-> This series is presenting option 3.  I only implemented this loop out of
-> all the similar ones and it is only compile tested.
-> 
-> Disadvantage Rob raised is that it isn't obvious this macro will instantiate
-> a struct device_node *child.  I can't see a way around that other than option 2
-> above, but all suggestions welcome.  Note that if a conversion leaves an
-> 'external' struct device_node *child variable, in many cases the compiler
-> will catch that as an unused variable. We don't currently run shaddow
-> variable detection in normal kernel builds, but that could also be used
-> to catch such bugs.
+> Doesn't fit, first line is 83 characters by my count...
+
+Is it a problem?
+
 
 -- 
 With Best Regards,

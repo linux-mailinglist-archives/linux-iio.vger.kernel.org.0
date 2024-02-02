@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-2100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2098-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E5E8472B6
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:10:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6673A8472B4
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF3F9B2631E
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB15297CB8
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF8D1468EF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A8C1468EA;
 	Fri,  2 Feb 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iiwUG8Qx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHNGAqPv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8233145B2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF720145B20;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706886594; cv=none; b=jSkdak3hz+HAEzVfYyt6MLId+ulfVFhxDi9bNnPmZL539iaVV53Tm8yKK3J0oWkXuofCLsnQC1SbkDTnd79worxNH9YnUu71WAQjCmqEIoSHlQB7QAUJzQPGzdsh7XPmOoW4vZuPt+TBh1bkCTLtFWUKyDu2i1kFj26SwrmEnXA=
+	t=1706886594; cv=none; b=NEOA06ff2q98oSh8KHZ/Qs+cjUtgJQetfUYEbQT/a41rQ01vMKw39XCAiGbhdZdE1WQfGdgowB6vHB23X/HtE32uSWVItvqRveC2iOTelsejSxqbKIyhKRf5V/2ISwDHAV9OPjPQ275bpyI+nqUi28+vzp880xujiyoocTyfRqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706886594; c=relaxed/simple;
-	bh=Ov4eYQWRF023uuAdWs7JubMLCVkLZZzGQjMyRWQ0t/c=;
+	bh=N/Pso/BbieWw060fs18k6zyn7B4ktSy/HUUIwsxGK1A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kO2g6U21fmsUehCcZnDolUPTkV1kEkEF5Uif2FC97lqtIzNlMrYXSIoiFnd7ptban2a50rn6ssvu8CBvMu3IqnRSBCVioIoXEiHLIaNK4fDm4+5O1MK+YUFr/gvZk9lvkL9taJ6RG4TT7zYilKacLbYPPGOPebWTw4BYEwiuV7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iiwUG8Qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38A7BC43609;
+	 In-Reply-To:To:Cc; b=SRuMkVTmGobN9eDJRwI1ynyKq3/Jn5wfkuEobzZGq/LWTQbvY77NiszmSt/IQWbb7avEeIvhN80sei+vbDxgNOhpotA55R8QB9zl9Y+KrOcj4K0EC3icXDaW4YIxeK6vzvtuHp6Te1afCPvYCkpB+fqjDDHsyAaFMdAfiOL+Lag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHNGAqPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 44EC9C41679;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1706886594;
-	bh=Ov4eYQWRF023uuAdWs7JubMLCVkLZZzGQjMyRWQ0t/c=;
+	bh=N/Pso/BbieWw060fs18k6zyn7B4ktSy/HUUIwsxGK1A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=iiwUG8QxDqBatxMFM1oRmf1pHvvELsUBMB82Z+mapgJ4UYprXVqGHnyKClkvTUufJ
-	 t/nFLtOkpZ7XTXrKKpkdjfqIzXgEMT1D3dGHQDMepMMOnR0QScmMGCxLVUIAE2V604
-	 012N/J1DGUW8TZA5UOmZ0q/mdO+5LDViE12uwN5fMN7gELzP/RjH22nq79EE/AXVMW
-	 fTcPOLNblQafrzr+E5V1mVkvo1xXp86Fj/XkMhlfJMbgqQbNrCk3thHyn0cmZTYEWw
-	 unIwLaEvVz0Q722d216lasi+qIoayQDMuWmKICu3/QfTx3YxpSfTAqijJMtq/642lu
-	 yOvum7jdxbsDg==
+	b=rHNGAqPvqLwn1WlTP//Uj3sM9RKGiYkMMuJksqwcf7PBgdCne1lIe7oeb/4qPp7xN
+	 uHFf+NMtjhelsDH1vm+PCAdaJEoTf/xPEKhAUTBjSb8GnUQh8YNQ8r99+S9pXmrE4I
+	 HC5dduBh5iZG3//j6zx2RZwZOo20sVsEW5aURMe2zE/WkmYyCLNKoJgkqIn/6uEcgF
+	 xhCatF+7Hz0qsiFEYwYhEUjHtBXgVxab9rEVDH+3dS6zsnEhPDHyDllCm3vpf6brsH
+	 PVafbYM29flLMJtAXEzGrYq8OgPEr1Bch41GdWIrYqJFOs2RFf6+b5h23YwOoJjn6c
+	 5Dzvc4iotqEqw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DF1CC4828F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28EA7C4829A;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 02 Feb 2024 16:08:36 +0100
-Subject: [PATCH v8 5/7] iio: add the IIO backend framework
+Date: Fri, 02 Feb 2024 16:08:37 +0100
+Subject: [PATCH v8 6/7] iio: adc: ad9467: convert to backend framework
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240202-iio-backend-v8-5-f65ee8c8203d@analog.com>
+Message-Id: <20240202-iio-backend-v8-6-f65ee8c8203d@analog.com>
 References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
 In-Reply-To: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -66,11 +66,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Conor Dooley <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
  Olivier Moysan <olivier.moysan@foss.st.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706886592; l=17909;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706886592; l=15981;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=bb+xU0rcI2MgjpfvWbh3PiaXUDyQeZukxcMl5CmMylo=;
- b=QErsg5Hu+TwBySOBxIMhvlXTUo3oqi3X3hA3nS8fUguHiaZ2jHpFOmA7B2TiXpSosapHFw38o
- ZGnzmbPOFjCDixNKeZUxJQW7E7L6bWYNdlwFHe4q6PIFiDmRe45RQjt
+ bh=t2QFRGWDmXZ5xC3nU/ZYidWEZZAs7a8Kge4MaMS5HqM=;
+ b=CH4Fn/Ij1cdlbARaCL7pSRAXxXnxt5+srpwDqeOYrsUrEcaFguoeJffwUIvcBfRtE24Xd2aaw
+ MoNMJl6Rb7dBNfGKkbDERMLlL4OrxXXceJWFAS7btPSBsBGakKoh/Av
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -80,574 +80,505 @@ Reply-To: <nuno.sa@analog.com>
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-This is a Framework to handle complex IIO aggregate devices.
+Convert the driver to use the new IIO backend framework. The device
+functionality is expected to be the same (meaning no added or removed
+features).
 
-The typical architecture is to have one device as the frontend device which
-can be "linked" against one or multiple backend devices. All the IIO and
-userspace interface is expected to be registers/managed by the frontend
-device which will callback into the backends when needed (to get/set
-some configuration that it does not directly control).
+Also note this patch effectively breaks ABI and that's needed so we can
+properly support this device and add needed features making use of the
+new IIO framework.
 
-The basic framework interface is pretty simple:
- - Backends should register themselves with @devm_iio_backend_register()
- - Frontend devices should get backends with @devm_iio_backend_get()
+Giving the lack of features (and devices supported) in the ad9467 driver
+compared with the ADI out of tree version, we don't expect any user of
+the upstream driver so no one should notice the ABI breakage. However,
+if someone is affected by this, ADI will happily support in transitioning
+to the backend framework.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- MAINTAINERS                        |   8 +
- drivers/iio/Kconfig                |   9 +
- drivers/iio/Makefile               |   1 +
- drivers/iio/industrialio-backend.c | 412 +++++++++++++++++++++++++++++++++++++
- include/linux/iio/backend.h        |  72 +++++++
- 5 files changed, 502 insertions(+)
+ drivers/iio/adc/Kconfig  |   2 +-
+ drivers/iio/adc/ad9467.c | 268 +++++++++++++++++++++++++++++++----------------
+ 2 files changed, 179 insertions(+), 91 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1e5dfd169a19..f59b46983d8b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10403,6 +10403,14 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/rc/iguanair.c
- 
-+IIO BACKEND FRAMEWORK
-+M:	Nuno Sa <nuno.sa@analog.com>
-+R:	Olivier Moysan <olivier.moysan@foss.st.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	drivers/iio/industrialio-backend.c
-+F:	include/linux/iio/backend.h
-+
- IIO DIGITAL POTENTIOMETER DAC
- M:	Peter Rosin <peda@axentia.se>
- L:	linux-iio@vger.kernel.org
-diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-index 52eb46ef84c1..9c351ffc7bed 100644
---- a/drivers/iio/Kconfig
-+++ b/drivers/iio/Kconfig
-@@ -71,6 +71,15 @@ config IIO_TRIGGERED_EVENT
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 59ae1d17b50d..61736dc21d2a 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -307,7 +307,7 @@ config AD799X
+ config AD9467
+ 	tristate "Analog Devices AD9467 High Speed ADC driver"
+ 	depends on SPI
+-	depends on ADI_AXI_ADC
++	select IIO_BACKEND
  	help
- 	  Provides helper functions for setting up triggered events.
+ 	  Say yes here to build support for Analog Devices:
+ 	  * AD9467 16-Bit, 200 MSPS/250 MSPS Analog-to-Digital Converter
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 6581fce4ba95..7072e7e59200 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -17,13 +17,12 @@
+ #include <linux/of.h>
  
-+config IIO_BACKEND
-+	tristate
-+	help
-+	  Framework to handle complex IIO aggregate devices. The typical
-+	  architecture that can make use of this framework is to have one
-+	  device as the frontend device which can be "linked" against one or
-+	  multiple backend devices. The framework then makes it easy to get
-+	  and control such backend devices.
-+
- source "drivers/iio/accel/Kconfig"
- source "drivers/iio/adc/Kconfig"
- source "drivers/iio/addac/Kconfig"
-diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-index 9622347a1c1b..0ba0e1521ba4 100644
---- a/drivers/iio/Makefile
-+++ b/drivers/iio/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_IIO_GTS_HELPER) += industrialio-gts-helper.o
- obj-$(CONFIG_IIO_SW_DEVICE) += industrialio-sw-device.o
- obj-$(CONFIG_IIO_SW_TRIGGER) += industrialio-sw-trigger.o
- obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
-+obj-$(CONFIG_IIO_BACKEND) += industrialio-backend.o
  
- obj-y += accel/
- obj-y += adc/
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-new file mode 100644
-index 000000000000..2cc0b4bba0a0
---- /dev/null
-+++ b/drivers/iio/industrialio-backend.c
-@@ -0,0 +1,412 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Framework to handle complex IIO aggregate devices.
-+ *
-+ * The typical architecture is to have one device as the frontend device which
-+ * can be "linked" against one or multiple backend devices. All the IIO and
-+ * userspace interface is expected to be registers/managed by the frontend
-+ * device which will callback into the backends when needed (to get/set some
-+ * configuration that it does not directly control).
-+ *
-+ * The framework interface is pretty simple:
-+ *   - Backends should register themselves with @devm_iio_backend_register()
-+ *   - Frontend devices should get backends with @devm_iio_backend_get()
-+ *
-+ * Also to note that the primary target for this framework are converters like
-+ * ADC/DACs so @iio_backend_ops will have some operations typical of converter
-+ * devices. On top of that, this is "generic" for all IIO which means any kind
-+ * of device can make use of the framework. That said, If the @iio_backend_ops
-+ * struct begins to grow out of control, we can always refactor things so that
-+ * the industrialio-backend.c is only left with the really generic stuff. Then,
-+ * we can build on top of it depending on the needs.
-+ *
-+ * Copyright (C) 2023 Analog Devices Inc.
-+ */
-+#define pr_fmt(fmt) "iio-backend: " fmt
-+
-+#include <linux/cleanup.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/list.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/property.h>
-+#include <linux/slab.h>
-+
 +#include <linux/iio/backend.h>
-+
-+struct iio_backend {
-+	struct list_head entry;
-+	const struct iio_backend_ops *ops;
-+	struct device *dev;
-+	struct module *owner;
-+	void *priv;
-+};
-+
-+/*
-+ * Helper struct for requesting buffers. This ensures that we have all data
-+ * that we need to free the buffer in a device managed action.
-+ */
-+struct iio_backend_buffer_pair {
-+	struct iio_backend *back;
-+	struct iio_buffer *buffer;
-+};
-+
-+static LIST_HEAD(iio_back_list);
-+static DEFINE_MUTEX(iio_back_lock);
-+
-+/*
-+ * Helper macros to call backend ops. Makes sure the option is supported
-+ */
-+#define iio_backend_check_op(back, op) ({ \
-+	struct iio_backend *____back = back;				\
-+	int ____ret = 0;						\
-+									\
-+	if (!____back->ops->op)						\
-+		____ret = -EOPNOTSUPP;					\
-+									\
-+	____ret;							\
-+})
-+
-+#define iio_backend_op_call(back, op, args...) ({		\
-+	struct iio_backend *__back = back;			\
-+	int __ret;						\
-+								\
-+	__ret = iio_backend_check_op(__back, op);		\
-+	if (!__ret)						\
-+		__ret = __back->ops->op(__back, ##args);	\
-+								\
-+	__ret;							\
-+})
-+
-+#define iio_backend_ptr_op_call(back, op, args...) ({		\
-+	struct iio_backend *__back = back;			\
-+	void *ptr_err;						\
-+	int __ret;						\
-+								\
-+	__ret = iio_backend_check_op(__back, op);		\
-+	if (__ret)						\
-+		ptr_err = ERR_PTR(__ret);			\
-+	else							\
-+		ptr_err = __back->ops->op(__back, ##args);	\
-+								\
-+	ptr_err;						\
-+})
-+
-+#define iio_backend_void_op_call(back, op, args...) {		\
-+	struct iio_backend *__back = back;			\
-+	int __ret;						\
-+								\
-+	__ret = iio_backend_check_op(__back, op);		\
-+	if (!__ret)						\
-+		__back->ops->op(__back, ##args);		\
-+}
-+
-+/**
-+ * iio_backend_chan_enable - Enable a backend channel
-+ * @back:	Backend device
-+ * @chan:	Channel number
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan)
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ 
+ #include <linux/clk.h>
+ 
+-#include <linux/iio/adc/adi-axi-adc.h>
+-
+ /*
+  * ADI High-Speed ADC common spi interface registers
+  * See Application-Note AN-877:
+@@ -102,15 +101,20 @@
+ #define AD9467_REG_VREF_MASK		0x0F
+ 
+ struct ad9467_chip_info {
+-	struct adi_axi_adc_chip_info	axi_adc_info;
+-	unsigned int			default_output_mode;
+-	unsigned int			vref_mask;
++	const char		*name;
++	unsigned int		id;
++	const struct		iio_chan_spec *channels;
++	unsigned int		num_channels;
++	const unsigned int	(*scale_table)[2];
++	int			num_scales;
++	unsigned long		max_rate;
++	unsigned int		default_output_mode;
++	unsigned int		vref_mask;
+ };
+ 
+-#define to_ad9467_chip_info(_info)	\
+-	container_of(_info, struct ad9467_chip_info, axi_adc_info)
+-
+ struct ad9467_state {
++	const struct ad9467_chip_info	*info;
++	struct iio_backend		*back;
+ 	struct spi_device		*spi;
+ 	struct clk			*clk;
+ 	unsigned int			output_mode;
+@@ -151,10 +155,10 @@ static int ad9467_spi_write(struct spi_device *spi, unsigned int reg,
+ 	return spi_write(spi, buf, ARRAY_SIZE(buf));
+ }
+ 
+-static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
++static int ad9467_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+ 			     unsigned int writeval, unsigned int *readval)
+ {
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	struct ad9467_state *st = iio_priv(indio_dev);
+ 	struct spi_device *spi = st->spi;
+ 	int ret;
+ 
+@@ -191,10 +195,10 @@ static const unsigned int ad9467_scale_table[][2] = {
+ 	{2300, 8}, {2400, 9}, {2500, 10},
+ };
+ 
+-static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
++static void __ad9467_get_scale(struct ad9467_state *st, int index,
+ 			       unsigned int *val, unsigned int *val2)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	const struct ad9467_chip_info *info = st->info;
+ 	const struct iio_chan_spec *chan = &info->channels[0];
+ 	unsigned int tmp;
+ 
+@@ -229,52 +233,44 @@ static const struct iio_chan_spec ad9467_channels[] = {
+ };
+ 
+ static const struct ad9467_chip_info ad9467_chip_tbl = {
+-	.axi_adc_info = {
+-		.name = "ad9467",
+-		.id = CHIPID_AD9467,
+-		.max_rate = 250000000UL,
+-		.scale_table = ad9467_scale_table,
+-		.num_scales = ARRAY_SIZE(ad9467_scale_table),
+-		.channels = ad9467_channels,
+-		.num_channels = ARRAY_SIZE(ad9467_channels),
+-	},
++	.name = "ad9467",
++	.id = CHIPID_AD9467,
++	.max_rate = 250000000UL,
++	.scale_table = ad9467_scale_table,
++	.num_scales = ARRAY_SIZE(ad9467_scale_table),
++	.channels = ad9467_channels,
++	.num_channels = ARRAY_SIZE(ad9467_channels),
+ 	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
+ 	.vref_mask = AD9467_REG_VREF_MASK,
+ };
+ 
+ static const struct ad9467_chip_info ad9434_chip_tbl = {
+-	.axi_adc_info = {
+-		.name = "ad9434",
+-		.id = CHIPID_AD9434,
+-		.max_rate = 500000000UL,
+-		.scale_table = ad9434_scale_table,
+-		.num_scales = ARRAY_SIZE(ad9434_scale_table),
+-		.channels = ad9434_channels,
+-		.num_channels = ARRAY_SIZE(ad9434_channels),
+-	},
++	.name = "ad9434",
++	.id = CHIPID_AD9434,
++	.max_rate = 500000000UL,
++	.scale_table = ad9434_scale_table,
++	.num_scales = ARRAY_SIZE(ad9434_scale_table),
++	.channels = ad9434_channels,
++	.num_channels = ARRAY_SIZE(ad9434_channels),
+ 	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
+ 	.vref_mask = AD9434_REG_VREF_MASK,
+ };
+ 
+ static const struct ad9467_chip_info ad9265_chip_tbl = {
+-	.axi_adc_info = {
+-		.name = "ad9265",
+-		.id = CHIPID_AD9265,
+-		.max_rate = 125000000UL,
+-		.scale_table = ad9265_scale_table,
+-		.num_scales = ARRAY_SIZE(ad9265_scale_table),
+-		.channels = ad9467_channels,
+-		.num_channels = ARRAY_SIZE(ad9467_channels),
+-	},
++	.name = "ad9265",
++	.id = CHIPID_AD9265,
++	.max_rate = 125000000UL,
++	.scale_table = ad9265_scale_table,
++	.num_scales = ARRAY_SIZE(ad9265_scale_table),
++	.channels = ad9467_channels,
++	.num_channels = ARRAY_SIZE(ad9467_channels),
+ 	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
+ 	.vref_mask = AD9265_REG_VREF_MASK,
+ };
+ 
+-static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
++static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+-	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	const struct ad9467_chip_info *info = st->info;
+ 	unsigned int i, vref_val;
+ 	int ret;
+ 
+@@ -282,7 +278,7 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	vref_val = ret & info1->vref_mask;
++	vref_val = ret & info->vref_mask;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+ 		if (vref_val == info->scale_table[i][1])
+@@ -292,15 +288,14 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+ 	if (i == info->num_scales)
+ 		return -ERANGE;
+ 
+-	__ad9467_get_scale(conv, i, val, val2);
++	__ad9467_get_scale(st, i, val, val2);
+ 
+ 	return IIO_VAL_INT_PLUS_MICRO;
+ }
+ 
+-static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
++static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	const struct ad9467_chip_info *info = st->info;
+ 	unsigned int scale_val[2];
+ 	unsigned int i;
+ 	int ret;
+@@ -309,7 +304,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+-		__ad9467_get_scale(conv, i, &scale_val[0], &scale_val[1]);
++		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
+ 		if (scale_val[0] != val || scale_val[1] != val2)
+ 			continue;
+ 
+@@ -326,15 +321,15 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 	return -EINVAL;
+ }
+ 
+-static int ad9467_read_raw(struct adi_axi_adc_conv *conv,
++static int ad9467_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val, int *val2, long m)
+ {
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	struct ad9467_state *st = iio_priv(indio_dev);
+ 
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_SCALE:
+-		return ad9467_get_scale(conv, val, val2);
++		return ad9467_get_scale(st, val, val2);
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		*val = clk_get_rate(st->clk);
+ 
+@@ -344,17 +339,17 @@ static int ad9467_read_raw(struct adi_axi_adc_conv *conv,
+ 	}
+ }
+ 
+-static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
++static int ad9467_write_raw(struct iio_dev *indio_dev,
+ 			    struct iio_chan_spec const *chan,
+ 			    int val, int val2, long mask)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	struct ad9467_state *st = iio_priv(indio_dev);
++	const struct ad9467_chip_info *info = st->info;
+ 	long r_clk;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SCALE:
+-		return ad9467_set_scale(conv, val, val2);
++		return ad9467_set_scale(st, val, val2);
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		r_clk = clk_round_rate(st->clk, val);
+ 		if (r_clk < 0 || r_clk > info->max_rate) {
+@@ -369,13 +364,13 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+ 	}
+ }
+ 
+-static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
++static int ad9467_read_avail(struct iio_dev *indio_dev,
+ 			     struct iio_chan_spec const *chan,
+ 			     const int **vals, int *type, int *length,
+ 			     long mask)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	struct ad9467_state *st = iio_priv(indio_dev);
++	const struct ad9467_chip_info *info = st->info;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SCALE:
+@@ -389,6 +384,34 @@ static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
+ 	}
+ }
+ 
++static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
++				   const unsigned long *scan_mask)
 +{
-+	return iio_backend_op_call(back, chan_enable, chan);
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_backend_chan_enable, IIO_BACKEND);
-+
-+/**
-+ * iio_backend_chan_disable - Disable a backend channel
-+ * @back:	Backend device
-+ * @chan:	Channel number
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int iio_backend_chan_disable(struct iio_backend *back, unsigned int chan)
-+{
-+	return iio_backend_op_call(back, chan_disable, chan);
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_backend_chan_disable, IIO_BACKEND);
-+
-+static void __iio_backend_disable(void *back)
-+{
-+	iio_backend_void_op_call(back, disable);
-+}
-+
-+/**
-+ * devm_iio_backend_enable - Device managed backend enable
-+ * @dev:	Consumer device for the backend
-+ * @back:	Backend device
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int devm_iio_backend_enable(struct device *dev, struct iio_backend *back)
-+{
++	struct ad9467_state *st = iio_priv(indio_dev);
++	unsigned int c;
 +	int ret;
 +
-+	ret = iio_backend_op_call(back, enable);
-+	if (ret)
-+		return ret;
++	for (c = 0; c < st->info->num_channels; c++) {
++		if (test_bit(c, scan_mask))
++			ret = iio_backend_chan_enable(st->back, c);
++		else
++			ret = iio_backend_chan_disable(st->back, c);
 +
-+	return devm_add_action_or_reset(dev, __iio_backend_disable, back);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_backend_enable, IIO_BACKEND);
-+
-+/**
-+ * iio_backend_data_format_set - Configure the channel data format
-+ * @back:	Backend device
-+ * @chan:	Channel number
-+ * @data:	Data format
-+ *
-+ * Properly configure a channel with respect to the expected data format. A
-+ * @struct iio_backend_data_fmt must be passed with the settings.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int iio_backend_data_format_set(struct iio_backend *back, unsigned int chan,
-+				const struct iio_backend_data_fmt *data)
-+{
-+	if (!data || data->type >= IIO_BACKEND_DATA_TYPE_MAX)
-+		return -EINVAL;
-+
-+	return iio_backend_op_call(back, data_format_set, chan, data);
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_backend_data_format_set, IIO_BACKEND);
-+
-+static void iio_backend_free_buffer(void *arg)
-+{
-+	struct iio_backend_buffer_pair *pair = arg;
-+
-+	iio_backend_void_op_call(pair->back, free_buffer, pair->buffer);
-+}
-+
-+/**
-+ * devm_iio_backend_request_buffer - Device managed buffer request
-+ * @dev:	Consumer device for the backend
-+ * @back:	Backend device
-+ * @indio_dev:	IIO device
-+ *
-+ * Request an IIO buffer from the backend. The type of the buffer (typically
-+ * INDIO_BUFFER_HARDWARE) is up to the backend to decide. This is because,
-+ * normally, the backend dictates what kind of buffering we can get.
-+ *
-+ * The backend .free_buffer() hooks is automatically called on @dev detach.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int devm_iio_backend_request_buffer(struct device *dev,
-+				    struct iio_backend *back,
-+				    struct iio_dev *indio_dev)
-+{
-+	struct iio_backend_buffer_pair *pair;
-+	struct iio_buffer *buffer;
-+
-+	buffer = iio_backend_ptr_op_call(back, request_buffer, indio_dev);
-+	if (IS_ERR(buffer))
-+		return PTR_ERR(buffer);
-+
-+	pair = devm_kzalloc(dev, sizeof(*pair), GFP_KERNEL);
-+	if (!pair)
-+		return -ENOMEM;
-+
-+	/* weak reference should be all what we need */
-+	pair->back = back;
-+	pair->buffer = buffer;
-+
-+	return devm_add_action_or_reset(dev, iio_backend_free_buffer, pair);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_backend_request_buffer, IIO_BACKEND);
-+
-+static void iio_backend_release(void *arg)
-+{
-+	struct iio_backend *back = arg;
-+
-+	module_put(back->owner);
-+}
-+
-+static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
-+{
-+	struct device_link *link;
-+	int ret;
-+
-+	/*
-+	 * Make sure the provider cannot be unloaded before the consumer module.
-+	 * Note that device_links would still guarantee that nothing is
-+	 * accessible (and breaks) but this makes it explicit that the consumer
-+	 * module must be also unloaded.
-+	 */
-+	if (!try_module_get(back->owner)) {
-+		pr_err("%s: Cannot get module reference\n", dev_name(dev));
-+		return -ENODEV;
++		if (ret)
++			return ret;
 +	}
-+
-+	ret = devm_add_action_or_reset(dev, iio_backend_release, back);
-+	if (ret)
-+		return ret;
-+
-+	link = device_link_add(dev, back->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
-+	if (!link) {
-+		pr_err("%s: Could not link to supplier(%s)\n", dev_name(dev),
-+		       dev_name(back->dev));
-+		return -EINVAL;
-+	}
-+
-+	pr_debug("%s: Found backend(%s) device\n", dev_name(dev),
-+		 dev_name(back->dev));
 +
 +	return 0;
 +}
 +
-+/**
-+ * devm_iio_backend_get - Device managed backend device get
-+ * @dev:	Consumer device for the backend
-+ * @name:	Backend name
-+ *
-+ * Get's the backend associated with @dev.
-+ *
-+ * RETURNS:
-+ * A backend pointer, negative error pointer otherwise.
-+ */
-+struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
-+{
-+	struct fwnode_handle *fwnode;
-+	struct iio_backend *back;
-+	int index = 0, ret;
++static const struct iio_info ad9467_info = {
++	.read_raw = ad9467_read_raw,
++	.write_raw = ad9467_write_raw,
++	.update_scan_mode = ad9467_update_scan_mode,
++	.debugfs_reg_access = ad9467_reg_access,
++	.read_avail = ad9467_read_avail,
++};
 +
-+	if (name) {
-+		index = device_property_match_string(dev, "io-backends-names",
-+						     name);
-+		if (index < 0)
-+			return ERR_PTR(index);
-+	}
-+
-+	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
-+	if (IS_ERR(fwnode)) {
-+		/* not an error if optional */
-+		pr_debug("%s: Cannot get Firmware reference\n", dev_name(dev));
-+		return ERR_CAST(fwnode);
-+	}
-+
-+	guard(mutex)(&iio_back_lock);
-+	list_for_each_entry(back, &iio_back_list, entry) {
-+		if (!device_match_fwnode(back->dev, fwnode))
-+			continue;
-+
-+		fwnode_handle_put(fwnode);
-+		ret = __devm_iio_backend_get(dev, back);
-+		if (ret)
-+			return ERR_PTR(ret);
-+
-+		return back;
-+	}
-+
-+	fwnode_handle_put(fwnode);
-+	return ERR_PTR(-EPROBE_DEFER);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, IIO_BACKEND);
-+
-+/**
-+ * __devm_iio_backend_get_from_fwnode_lookup - Device managed fwnode backend device get
-+ * @dev:	Consumer device for the backend
-+ * @fwnode:	Firmware node of the backend device
-+ *
-+ * Search the backend list for a device matching @fwnode.
-+ * This API should not be used and it's only present for preventing the first
-+ * user of this framework to break it's DT ABI.
-+ *
-+ * RETURNS:
-+ * A backend pointer, negative error pointer otherwise.
-+ */
-+struct iio_backend *
-+__devm_iio_backend_get_from_fwnode_lookup(struct device *dev,
-+					  struct fwnode_handle *fwnode)
-+{
-+	struct iio_backend *back;
+ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ {
+ 	int ret;
+@@ -401,10 +424,9 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
+ 
+-static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
++static int ad9467_scale_fill(struct ad9467_state *st)
+ {
+-	const struct adi_axi_adc_chip_info *info = conv->chip_info;
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	const struct ad9467_chip_info *info = st->info;
+ 	unsigned int i, val1, val2;
+ 
+ 	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
+@@ -413,7 +435,7 @@ static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+-		__ad9467_get_scale(conv, i, &val1, &val2);
++		__ad9467_get_scale(st, i, &val1, &val2);
+ 		st->scales[i][0] = val1;
+ 		st->scales[i][1] = val2;
+ 	}
+@@ -421,11 +443,27 @@ static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
+ 	return 0;
+ }
+ 
+-static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
++static int ad9467_setup(struct ad9467_state *st)
+ {
+-	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	struct iio_backend_data_fmt data = {
++		.sign_extend = true,
++		.enable = true,
++	};
++	unsigned int c, mode;
 +	int ret;
 +
-+	guard(mutex)(&iio_back_lock);
-+	list_for_each_entry(back, &iio_back_list, entry) {
-+		if (!device_match_fwnode(back->dev, fwnode))
-+			continue;
-+
-+		ret = __devm_iio_backend_get(dev, back);
++	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
++	ret = ad9467_outputmode_set(st->spi, mode);
++	if (ret)
++		return ret;
+ 
+-	return ad9467_outputmode_set(st->spi, st->output_mode);
++	for (c = 0; c < st->info->num_channels; c++) {
++		ret = iio_backend_data_format_set(st->back, c, &data);
 +		if (ret)
-+			return ERR_PTR(ret);
-+
-+		return back;
++			return ret;
 +	}
 +
-+	return ERR_PTR(-EPROBE_DEFER);
-+}
-+EXPORT_SYMBOL_NS_GPL(__devm_iio_backend_get_from_fwnode_lookup, IIO_BACKEND);
-+
-+/**
-+ * iio_backend_get_priv - Get driver private data
-+ * @back:	Backend device
-+ */
-+void *iio_backend_get_priv(const struct iio_backend *back)
++	return 0;
+ }
+ 
+ static int ad9467_reset(struct device *dev)
+@@ -443,25 +481,65 @@ static int ad9467_reset(struct device *dev)
+ 	return 0;
+ }
+ 
++static int ad9467_iio_backend_get(struct ad9467_state *st)
 +{
-+	return back->priv;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_backend_get_priv, IIO_BACKEND);
++	struct device *dev = &st->spi->dev;
++	struct device_node *__back;
 +
-+static void iio_backend_unregister(void *arg)
-+{
-+	struct iio_backend *back = arg;
-+
-+	mutex_lock(&iio_back_lock);
-+	list_del(&back->entry);
-+	mutex_unlock(&iio_back_lock);
-+}
-+
-+/**
-+ * devm_iio_backend_register - Device managed backend device register
-+ * @dev:	Backend device being registered
-+ * @ops:	Backend ops
-+ * @priv:	Device private data
-+ *
-+ * @ops is mandatory. Not providing it results in -EINVAL.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int devm_iio_backend_register(struct device *dev,
-+			      const struct iio_backend_ops *ops, void *priv)
-+{
-+	struct iio_backend *back;
-+
-+	if (!ops) {
-+		pr_err("%s: No backend ops given\n", dev_name(dev));
-+		return -EINVAL;
-+	}
++	st->back = devm_iio_backend_get(&st->spi->dev, NULL);
++	/* If not found, don't error out as we might have legacy DT property */
++	if (!IS_ERR(st->back))
++		return 0;
++	if (PTR_ERR(st->back) != -ENOENT)
++		return PTR_ERR(st->back);
 +
 +	/*
-+	 * Through device_links, we guarantee that a frontend device cannot be
-+	 * bound/exist if the backend driver is not around. Hence, we can bind
-+	 * the backend object lifetime with the device being passed since
-+	 * removing it will tear the frontend/consumer down.
++	 * if we don't get the backend using the normal API's, use the legacy
++	 * 'adi,adc-dev' property. So we get all nodes with that property, and
++	 * look for the one pointing at us. Then we directly lookup that fwnode
++	 * on the backend list of registered devices. This is done so we don't
++	 * make io-backends mandatory which would break DT ABI.
 +	 */
-+	back = devm_kzalloc(dev, sizeof(*back), GFP_KERNEL);
-+	if (!back)
-+		return -ENOMEM;
++	for_each_node_with_property(__back, "adi,adc-dev") {
++		struct device_node *__me;
 +
-+	back->ops = ops;
-+	back->owner = dev->driver->owner;
-+	back->dev = dev;
-+	back->priv = priv;
-+	mutex_lock(&iio_back_lock);
-+	list_add(&back->entry, &iio_back_list);
-+	mutex_unlock(&iio_back_lock);
++		__me = of_parse_phandle(__back, "adi,adc-dev", 0);
++		if (!__me)
++			continue;
 +
-+	return devm_add_action_or_reset(dev, iio_backend_unregister, back);
++		if (!device_match_of_node(dev, __me)) {
++			of_node_put(__me);
++			continue;
++		}
++
++		of_node_put(__me);
++		st->back = __devm_iio_backend_get_from_fwnode_lookup(dev,
++								     of_fwnode_handle(__back));
++		of_node_put(__back);
++		return PTR_ERR_OR_ZERO(st->back);
++	}
++
++	return -ENODEV;
 +}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_backend_register, IIO_BACKEND);
 +
-+MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("Framework to handle complex IIO aggregate devices");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-new file mode 100644
-index 000000000000..a6d79381866e
---- /dev/null
-+++ b/include/linux/iio/backend.h
-@@ -0,0 +1,72 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _IIO_BACKEND_H_
-+#define _IIO_BACKEND_H_
+ static int ad9467_probe(struct spi_device *spi)
+ {
+-	const struct ad9467_chip_info *info;
+-	struct adi_axi_adc_conv *conv;
++	struct iio_dev *indio_dev;
+ 	struct ad9467_state *st;
+ 	unsigned int id;
+ 	int ret;
+ 
+-	info = spi_get_device_match_data(spi);
+-	if (!info)
+-		return -ENODEV;
+-
+-	conv = devm_adi_axi_adc_conv_register(&spi->dev, sizeof(*st));
+-	if (IS_ERR(conv))
+-		return PTR_ERR(conv);
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
+ 
+-	st = adi_axi_adc_conv_priv(conv);
++	st = iio_priv(indio_dev);
+ 	st->spi = spi;
+ 
++	st->info = spi_get_device_match_data(spi);
++	if (!st->info)
++		return -ENODEV;
 +
-+#include <linux/types.h>
+ 	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
+ 	if (IS_ERR(st->clk))
+ 		return PTR_ERR(st->clk);
+@@ -475,29 +553,39 @@ static int ad9467_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+ 
+-	conv->chip_info = &info->axi_adc_info;
+-
+-	ret = ad9467_scale_fill(conv);
++	ret = ad9467_scale_fill(st);
+ 	if (ret)
+ 		return ret;
+ 
+ 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+-	if (id != conv->chip_info->id) {
++	if (id != st->info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+-			id, conv->chip_info->id);
++			id, st->info->id);
+ 		return -ENODEV;
+ 	}
+ 
+-	conv->reg_access = ad9467_reg_access;
+-	conv->write_raw = ad9467_write_raw;
+-	conv->read_raw = ad9467_read_raw;
+-	conv->read_avail = ad9467_read_avail;
+-	conv->preenable_setup = ad9467_preenable_setup;
++	indio_dev->name = st->info->name;
++	indio_dev->channels = st->info->channels;
++	indio_dev->num_channels = st->info->num_channels;
++	indio_dev->info = &ad9467_info;
+ 
+-	st->output_mode = info->default_output_mode |
+-			  AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
++	ret = ad9467_iio_backend_get(st);
++	if (ret)
++		return ret;
+ 
+-	return 0;
++	ret = devm_iio_backend_request_buffer(&spi->dev, st->back, indio_dev);
++	if (ret)
++		return ret;
 +
-+struct fwnode_handle;
-+struct iio_backend;
-+struct device;
-+struct iio_dev;
++	ret = devm_iio_backend_enable(&spi->dev, st->back);
++	if (ret)
++		return ret;
 +
-+enum iio_backend_data_type {
-+	IIO_BACKEND_TWOS_COMPLEMENT,
-+	IIO_BACKEND_OFFSET_BINARY,
-+	IIO_BACKEND_DATA_TYPE_MAX
-+};
++	ret = ad9467_setup(st);
++	if (ret)
++		return ret;
 +
-+/**
-+ * struct iio_backend_data_fmt - Backend data format
-+ * @type:		Data type.
-+ * @sign_extend:	Bool to tell if the data is sign extended.
-+ * @enable:		Enable/Disable the data format module. If disabled,
-+ *			not formatting will happen.
-+ */
-+struct iio_backend_data_fmt {
-+	enum iio_backend_data_type type;
-+	bool sign_extend;
-+	bool enable;
-+};
-+
-+/**
-+ * struct iio_backend_ops - operations structure for an iio_backend
-+ * @enable:		Enable backend.
-+ * @disable:		Disable backend.
-+ * @chan_enable:	Enable one channel.
-+ * @chan_disable:	Disable one channel.
-+ * @data_format_set:	Configure the data format for a specific channel.
-+ * @request_buffer:	Request an IIO buffer.
-+ * @free_buffer:	Free an IIO buffer.
-+ **/
-+struct iio_backend_ops {
-+	int (*enable)(struct iio_backend *back);
-+	void (*disable)(struct iio_backend *back);
-+	int (*chan_enable)(struct iio_backend *back, unsigned int chan);
-+	int (*chan_disable)(struct iio_backend *back, unsigned int chan);
-+	int (*data_format_set)(struct iio_backend *back, unsigned int chan,
-+			       const struct iio_backend_data_fmt *data);
-+	struct iio_buffer *(*request_buffer)(struct iio_backend *back,
-+					     struct iio_dev *indio_dev);
-+	void (*free_buffer)(struct iio_backend *back,
-+			    struct iio_buffer *buffer);
-+};
-+
-+int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
-+int iio_backend_chan_disable(struct iio_backend *back, unsigned int chan);
-+int devm_iio_backend_enable(struct device *dev, struct iio_backend *back);
-+int iio_backend_data_format_set(struct iio_backend *back, unsigned int chan,
-+				const struct iio_backend_data_fmt *data);
-+int devm_iio_backend_request_buffer(struct device *dev,
-+				    struct iio_backend *back,
-+				    struct iio_dev *indio_dev);
-+
-+void *iio_backend_get_priv(const struct iio_backend *conv);
-+struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name);
-+struct iio_backend *
-+__devm_iio_backend_get_from_fwnode_lookup(struct device *dev,
-+					  struct fwnode_handle *fwnode);
-+
-+int devm_iio_backend_register(struct device *dev,
-+			      const struct iio_backend_ops *ops, void *priv);
-+
-+#endif
++	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+ static const struct of_device_id ad9467_of_match[] = {
+@@ -529,4 +617,4 @@ module_spi_driver(ad9467_driver);
+ MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices AD9467 ADC driver");
+ MODULE_LICENSE("GPL v2");
+-MODULE_IMPORT_NS(IIO_ADI_AXI);
++MODULE_IMPORT_NS(IIO_BACKEND);
 
 -- 
 2.43.0

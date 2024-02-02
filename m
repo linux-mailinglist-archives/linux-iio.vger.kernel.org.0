@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-2091-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2092-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983F28471E9
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:29:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5B28471F6
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E06283A8A
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 14:29:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FFCCB24787
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 14:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA610140797;
-	Fri,  2 Feb 2024 14:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6327414535F;
+	Fri,  2 Feb 2024 14:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pLfoRWuy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HnccJTCB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8B017C77
-	for <linux-iio@vger.kernel.org>; Fri,  2 Feb 2024 14:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B2A145353;
+	Fri,  2 Feb 2024 14:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706884149; cv=none; b=iGcSV8aPybeBlbTPiF3B3QQW4aZCUmgMFest8V0nxZQ2F/oA+Xt5g1YWhbifxuaCapqxS8UC1ErFBjhXQKPf0xgm8W+DN85zl5PdVISPdx3FyNhctyGlTdv76WBGO7xf23aNIshaAqchBY5vH36e6pVyKs5Ld1v40S5ymv1NAzk=
+	t=1706884347; cv=none; b=R/4UimlynTb8NcbNDMpHO01XL2SoCHSvmn+ImIdfZcBi0HQ1UNm6Y1WhHlkLPpSqZTJj2X+x5WhxePdJxIbKpUf8j+EVKrmsfgYZ+7n6yj9g7iuH4xrU9J2tH4TT09oRMzkIKFFJSGchvGTtnwOR5RR8T9dsh3mTZC2qok8a1tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706884149; c=relaxed/simple;
-	bh=KmkEJoWpPZfJLl7ucyDRbsx1W5IuGT68hZZ84FvVKKs=;
+	s=arc-20240116; t=1706884347; c=relaxed/simple;
+	bh=aEyCAg5r7C7mGUU+wZa9a1AvTO9rjirBlH3sTiTaSn0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t9Vu537/8V43wUj/rCIDuxfoM9jd4XTsvgdlTx3EZIu01Yg86LPOemZTuNGAvO7MPlDVXxU+lHXm80GQs3r+utkpSVH8GqidRycwNL9pBahgYGK9SrtWQAEYLQY+p3NOVZ1+Genj6cFTNnCaLULVN/RWjuAb/1Vcf/yPNDrbhQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pLfoRWuy; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-55c2cf644f3so2737444a12.1
-        for <linux-iio@vger.kernel.org>; Fri, 02 Feb 2024 06:29:07 -0800 (PST)
+	 In-Reply-To:Content-Type; b=pSLJMqal7eiBp7oGOi67Hc8KRqjKz2lAPq8zm72QrtaEhLDpwu6x0EqjIFCSCGVdiGyS6PZxZ5k3KA/5KTjSxf5/z8m+qrBBErPKTX2wruoiSz+WOtTZ+1H5Ngjv0K64N5zyLjNxiauepXxJJ24IWGA/m3HKQRopLKejiXiFVTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HnccJTCB; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a370e63835cso80193966b.1;
+        Fri, 02 Feb 2024 06:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706884146; x=1707488946; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1706884336; x=1707489136; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dS+eJDChsP0VAsf3BNvnQXhDaUlqagLQtm6MOX5SrVE=;
-        b=pLfoRWuy5XBCuA+PJDgJXFeO7EYdAVFD1PaTOLMiJKY6cr+N4YUN3DW95WI2HCtWlH
-         I9Rv7wG/mlrAWw6Wb8mJnCP/kayz1lPUTz9PuUEMxAfHty2MX1RaOl03MHmP7kKyLEG9
-         l4N9QP/0eHQqLjERYByb8E4OGCL9dbOoUA2Fssd5fCFLd76hojo6YT8OWKjcbXLg1Fss
-         XY2LmtwhKVNYGzinvhz2kRS1O1tYzyv2ZsyyPpC8tiLTcR99tEK98P6QboylfPlE4sKc
-         Umok9bESGTgkGXqogY5poIkxQHdf5A4RjpaZJL61l1IM1Byr0JmxbdHAHMHIqPy+n2LP
-         SESg==
+        bh=/XFbEk8TjvWrH3OpqkG5Nm22jl0ZreNTnoVcouMOMeQ=;
+        b=HnccJTCB7ozWvQ5q6XwXEouFC7hW0b4/Z+sn+yUKfRLQn7xEw7+pSi0j1yYNuoLJqS
+         29MH9M7/oQuAkpqiGC6sOUXwRqQqsbQqAFQlwe7MywJifLHMPbzJ0tWS939mEyahPfL3
+         8Arab3AqdCosz6zAVURtJcpmeHWwHFjRkWIGCsN0NqHoOOTmamCwd+lhALz7fFVBESrr
+         i55jU8G3hpY8B0Wp0/zI/EBMFnn72j+bcIHCe5ILjpvKWZmgjsD7K89ceAbitBnkj59L
+         Bsn0VG7mKi+fvrnkTXBmQQCZ+Ngn1DW9j81lpj34HsMQoKAPd8RDI/WDzMaWK7vtkkJu
+         TaYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706884146; x=1707488946;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1706884336; x=1707489136;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dS+eJDChsP0VAsf3BNvnQXhDaUlqagLQtm6MOX5SrVE=;
-        b=Sa2GCmBIdlOUu956tj60xufAv4EkC0a5wtUwBfZh53XI55u1WoIsARMdOwAqulgEB6
-         BqR8TifGFxtUEle073wMu/VfxA7TjKlsnnesRdVtj5y6pIawMyCu7+DkP1LAqYrnfQWW
-         XalYzzGvX9PfdkhmtqM8ObZSlySnw7jNq4OpqP+aKQgRumJCxbcxPM5dIf0DgGmUx/Z7
-         wNNnZE5xY4+mzPOBGsL+n7y8CC4lQ/AfNI8mDrHWAbbV79J8XYmEZHiHButp6WInsuo9
-         j8afxuZc32GY9KJbxI63d11HFISmEtqOufgdT9QiAC0MRLffIbz7Ho91OIcgysqC4bmF
-         poEA==
-X-Gm-Message-State: AOJu0Ywv6qEDf8UyNP4AS2VqzJpSt4DkYd0lSIv4GbjSbmYVUkN51OIV
-	8ftX+yiW0hRAtJQVRH1TVQUB/byrnBhd/WgL/OPFKfdfXijq3EWnc+sl0ZRIoPQ=
-X-Google-Smtp-Source: AGHT+IF757oZyNsfZhRPBiYIla2L7JGHhUehBJ/XdiqfUTIIt0Pgj6JaMFa/vG7ie7BXq9/hZUo6ow==
-X-Received: by 2002:a50:8d57:0:b0:55f:2f0a:d959 with SMTP id t23-20020a508d57000000b0055f2f0ad959mr5475763edt.37.1706884145637;
-        Fri, 02 Feb 2024 06:29:05 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCX1e+rhYZBEFqu+sn8vJn5/aWHRoH6V+QjQoJOjH3xjLv4RqAlklmyGEYKivMUtWSnwbJRMytXepVMdOdr0czwDVPnBnpqIsKY6hJeoh9t+gQBQXF6gDhfsYA7n4UZcCVLArlq7NOKRKySQ4GLZ4pVdKVAhrugT90k4/8Ia/YfeDvazrGd9ur3w8zu6wYXimPpN0EKyanST7QGmZ746P63vyBibU0ctdtzRjD0krY8lJOHEL+7EKGUkifMGb2dWNtFSlZOXIpiochofOv502/LaObjUwj4gwUAfDsQuyjyrp7Lz2f2deIMsdtgNff77bvuI0Ivh6K4mQGZuKMbBifSTXLZBEc+Qbj9tO0ewzxbN+Mu92EoouYN1aaBIcF7FJcwGM639CntPi+9afw==
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id en12-20020a056402528c00b005598ec568dbsm850002edb.59.2024.02.02.06.29.04
+        bh=/XFbEk8TjvWrH3OpqkG5Nm22jl0ZreNTnoVcouMOMeQ=;
+        b=p4TbcBeNC3cf396wvGwjlLmzsStwu9SBF0uaIRJ7f2WuGN+IAmeYpCa8P0hOdpjwZj
+         zE8ncuGKk9tvCa1F8aCo+iCkDvFPVii+qikl446hsjbKgCF7AmLVIgewvFJYbFRDuw9e
+         GWIMlQrfVyU+xwQcZeew1HH4tejCcP7wjv/fLg1lcNvcR8Ll9iy1vTHRgdQP3UQwcqto
+         YPEtuLANDX2o5MRwKzDGIrbEPCspAEGmzN9wJZOwaKTMFKRdy2DHN0fRsK5uAGBwV+aT
+         9C8KBlZlms2nT9cpb9pWQqtJUWbj5fnKuzSTq21LjQ9hlD4r4v3n181WpUM15BjY94AE
+         1XyA==
+X-Gm-Message-State: AOJu0YyRirBhYZ6iqzWDZJdT59fTpWPFp3y5JTIfTOX94/sD0McCmAYC
+	xsvgWHAVbFyIpXzcEygLI+81X1EF30Cr4d6REveC6NBXVtIwSy2Z
+X-Google-Smtp-Source: AGHT+IE90c2PgiDGC1ohmOdD4Hq2fvODX53JZMl4Yes8Q1Pqg4ZO4D2dFkGCGV2u7q867spZtxNT3g==
+X-Received: by 2002:a17:906:f107:b0:a2d:52dc:1841 with SMTP id gv7-20020a170906f10700b00a2d52dc1841mr3956312ejb.18.1706884336128;
+        Fri, 02 Feb 2024 06:32:16 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWWMwX2rUnBTEWm4GD5TeeQVOz9SsTzA3cCLLc9C4Pw51Lvv+APyc1HN+F4OhADXF+Iu0ZiCuTS9CEFm9jgaUFP9dND+OKJuzMnSNVP6493qWkROD7l6plHBwQdKQGq4n51HQspY2yO78/hZ0qHzitYMAR7xL8kW1TDLV+HUDmGIxHHsnBTo7jwBM46cnp/IfRDvH0T8QYOloUcclYGBoP6KSJCkZ2hdMWLYhcqrNw7FBdwU6CMoQEf1uFC/c29idq1QXZOT7ku8aflHNYzx+IWcePRdL4yiQxdytGbJ/JZgZKjM4NWvS7pF84nbGVP16bx0eIPcb3AKHP/GYrAVFKBevkp7uxZpJT+M5GF+x1ihlxl0RWp3fqIQGH/U3UTzOYD5Rk7WvuPrUAWwL51nAp9LSCOLQ==
+Received: from [10.76.84.182] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id c3-20020a170906340300b00a35a659cab5sm944245ejb.179.2024.02.02.06.32.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Feb 2024 06:29:05 -0800 (PST)
-Message-ID: <ff3bfbd3-1347-4661-b2af-60951e0a8a83@linaro.org>
-Date: Fri, 2 Feb 2024 15:29:03 +0100
+        Fri, 02 Feb 2024 06:32:15 -0800 (PST)
+Message-ID: <8c7839a9-b1f1-4e58-b35e-afdc8503c90f@gmail.com>
+Date: Fri, 2 Feb 2024 16:32:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,157 +76,56 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7192: Add properties
+Subject: Re: [PATCH v2 4/4] iio: adc: ad7192: Add AD7194 support
 Content-Language: en-US
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
- Alisa-Dariana Roman <alisa.roman@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alisa-Dariana Roman <alisa.roman@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
  Alexandru Tachici <alexandru.tachici@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
+ Peter Zijlstra <peterz@infradead.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
 References: <20231114200533.137995-1-alisa.roman@analog.com>
- <20231114200533.137995-2-alisa.roman@analog.com>
- <c6ca5a25-2d41-4a46-95a5-eb994c4cf529@linaro.org>
- <09cc2ecb-b73f-495a-9196-dbb4899f4c85@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <09cc2ecb-b73f-495a-9196-dbb4899f4c85@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <20231114200533.137995-5-alisa.roman@analog.com>
+ <20231126163426.66e51114@jic23-huawei>
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+In-Reply-To: <20231126163426.66e51114@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 02/02/2024 15:14, Alisa-Dariana Roman wrote:
-> On 14.11.2023 22:29, Krzysztof Kozlowski wrote:
->> On 14/11/2023 21:05, Alisa-Dariana Roman wrote:
->>> Document properties used for clock configuration.
->>
->> Some background here is missing - otherwise it looks like you are adding
->> new properties...
->>
->>>
->>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
->>> ---
->>>   .../devicetree/bindings/iio/adc/adi,ad7192.yaml        | 10 ++++++++++
->>>   1 file changed, 10 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>> index 16def2985ab4..9b59d6eea368 100644
->>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>> @@ -80,6 +80,16 @@ properties:
->>>         and when chop is disabled.
->>>       type: boolean
->>>   
->>> +  adi,clock-xtal:
->>> +    description: |
->>> +      External crystal connected from MCLK1 to MCLK2.
->>
->> And this should be input clock.
->>
->>> +    type: boolean
->>> +
->>> +  adi,int-clock-output-enable:
->>> +    description: |
->>> +      Internal 4.92 MHz clock available on MCLK2 pin.
->>> +    type: boolean
->>
->> This should be clock-cells and clock provider.
->>
->> Unless you are just documenting already used interface which you do not
->> want to break...
->>
->>> +
->>>     bipolar:
->>>       description: see Documentation/devicetree/bindings/iio/adc/adc.yaml
->>>       type: boolean
->>
->> Best regards,
->> Krzysztof
->>
+On 26.11.2023 18:34, Jonathan Cameron wrote:
+> On Tue, 14 Nov 2023 22:05:33 +0200
+> Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 > 
-> Thank you very much for the feedback!
+>> Unlike the other AD719Xs, AD7194 has configurable differential
+>> channels. The default configuration for these channels can be changed
+>> from the devicetree.
+>>
+>> The default configuration is hardcoded in order to have a stable number
+>> of channels.
+>>
+>> Also modify config AD7192 description for better scaling.
+>>
+>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > 
-> If I understand correctly, there is already an input clock in the bindings:
-
-You tell me...
-
+> Not directly related to this patch (which looks fine to me)
+> but any idea why 3db_frequency_available is not using read_avail?
 > 
-> What I wanted to accomplish with this patch is to document these boolean 
-> properties (from the ad7192 driver code):
+> Seems sensible to convert it over given all the other cases are using that
+> and it will allow dropping at least some of the attributes infrastructure
+> for some devices.
 
-Please explain with clear words: do you mean that existing upstream
-Linux driver has it? I don't care about some out of tree drivers...
+Thank you very much for the feedback!
 
+I actually tried then to use read_avail for the 3db frequencies, but it 
+required a greater rework. If I remember correctly, the four possible 
+frequency choices need to be stored in the ad7192_state for it to work. 
+Should I add a patch with these changes?
 
-> ```
-> 	/* use internal clock */
-> 	if (!st->mclk) {
-> 		if (device_property_read_bool(dev, "adi,int-clock-output-enable"))
-> 			clock_sel = AD7192_CLK_INT_CO;
-> 	} else {
-> 		if (device_property_read_bool(dev, "adi,clock-xtal"))
-> 			clock_sel = AD7192_CLK_EXT_MCLK1_2;
-> 		else
-> 			clock_sel = AD7192_CLK_EXT_MCLK2;
-> 	}
-> ```
-> 
-> Please let me know how to proceed further!
-
-Please open the datasheet of your product and add properties matching
-the hardware, not driver.
-
-I don't know what to say more except the same - you want to enable clock
-provided from this device on some pin to some other devices? If yes,
-then this is clock-provider, so you clock-provider bindings I mentioned
-in my first reply.
-
-Best regards,
-Krzysztof
+Kind regards,
+Alisa-Dariana Roman
 
 

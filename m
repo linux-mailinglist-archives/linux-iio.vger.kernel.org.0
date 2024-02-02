@@ -1,223 +1,124 @@
-Return-Path: <linux-iio+bounces-2101-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2102-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827C08474B3
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 17:29:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8903B8474F0
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 17:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3570D1F2672E
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268D41F2B61F
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C916148304;
-	Fri,  2 Feb 2024 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A63148FF0;
+	Fri,  2 Feb 2024 16:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7Moz6Ig"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2hHkl1Y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5991474CD;
-	Fri,  2 Feb 2024 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A96148FEC;
+	Fri,  2 Feb 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706891353; cv=none; b=vC8SzVOjKtpLcTWUq7fkVhIQLuFqVNrW9rs/4CcfGPmfJHW7KKi1JrXGagCZTv3wa6pUYDiRHWNVH+9UhQriBmaeBnd8evlRZ66lpdxjRGi5o2U3WmVZmzvNAzdEVe4uqHvH5ffI5dQ/xPGuzBruM1+y3O/4b0BwezlCt8xzBmM=
+	t=1706891702; cv=none; b=t9HnQligZ5/5GYsnhzpLFxjHqQbtdPi7p0mYBO764EHrI6cMJGppaUQVmfzes7UdhcRYncPj/mBTfPMr7ecxbE4BbBXiPwAQSyupE4s40mqplz0ZGozypYp/kCFgeiYATbgXk0lDBs6pj9uUGM7FhptbyI/PMHzdSVlcL1vynO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706891353; c=relaxed/simple;
-	bh=98G9IePCbTbTJ4HmAf42k76x+JQnzIskPUOU0VvWz28=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smGhfozGGrrUTwZ8/kfBx6+jKwhOj74M7RpED1pOOZKNmf41HmuR349FUtw8FkO+FBlLqcpLuOqBdWdAIKqreEV5YeFt1Zu0PRsTdVRI0X7xnS0jctRdemq8Eo5aLpD06wKqGokJsdDGdXcuUS4smGxwONYa9iD9bwXAHT9iZIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7Moz6Ig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03C7C433C7;
-	Fri,  2 Feb 2024 16:29:10 +0000 (UTC)
+	s=arc-20240116; t=1706891702; c=relaxed/simple;
+	bh=4GJVsIqv5wIkN4FLeugZ/HuLT/8X2AhKe6NslRjR528=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=ToZ0yMBfqai50JZlArJDBC5y1qBCzJriGmb2495ZxIjRaVD7mV+MHHYIAcoGH1d4AR9ruUlM+pVhDFbu9aeLuh4nBL6j1u9p9BtotSd0zKFYkoh5Mg7x7vb4HYQJP9t0HAxUqTS+SZXsEiIESzkqPaCGVO80TEqpPIn3pFxIriM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2hHkl1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEB1C43394;
+	Fri,  2 Feb 2024 16:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706891352;
-	bh=98G9IePCbTbTJ4HmAf42k76x+JQnzIskPUOU0VvWz28=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M7Moz6IgEOutVwCFEPAm5gxKiPRgnp5oc6njZVdKPcjQjp/sZ1i3Sx6KFelNiB8Xd
-	 4YGBtSRUtYOymd1sRgHFOsTxyKJJIOle0Qu3KmQJg46UGlKTWlnEDviR54EPZA+hOu
-	 V8lmgINzJMmNgjV/kr8djOVT2pS0Knb8NzDoFWbtzqg0xFjFOxa4+FU/kJadRrpMx6
-	 gWIK/tPJSlriDfsaUviWheAAJnD+JzJwC946v8175fQZkqtAVsFbhYNJUZl8UVcXsU
-	 XD7wkZprKYE8ENabFM+UVnJpxl1wBc5F6n+jGIxeKYRx6J5Fo04+IDePKr7tyW6QTq
-	 wLFkYvqbqee5g==
-Date: Fri, 2 Feb 2024 16:29:08 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: ti-ads1298: Add bindings
-Message-ID: <20240202-lilly-dart-0968dbcc6b17@spud>
-References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.50455eb1-2ccc-4e6a-b8ed-0c142743ae03@emailsignatures365.codetwo.com>
- <20240202105901.925875-1-mike.looijmans@topic.nl>
+	s=k20201202; t=1706891701;
+	bh=4GJVsIqv5wIkN4FLeugZ/HuLT/8X2AhKe6NslRjR528=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=K2hHkl1YbFpglxh3m3P6KXINd9RM5k0DlZgeQGpqxX0t11lwOiXCbc5v0uYyK45Ar
+	 9aZnO1o10zBWatjpTn3dTOjdSwBK3FSbxqSQwSUH9FfHUdJxppZ+5JlwWkQ/mOK4G1
+	 8TtEFiO8qb9uCEkbPo/OPe91XIT9RnmjAjr8KmI3Z3TldUqI/tSMWKZqeQFk+wJ7as
+	 8515p/MnhGoD58/vKdhpc4m9aEOkV0hb6kbQHUUbiqZkbo7/mUYlkvT6pY9GhbH7oG
+	 YggDvL66zXg3ghDDlk00nNxITr9ce4kAW4NUv03iBjyY4qRAhJxBsTU9aYrBKnrkFh
+	 Xj7PoYcGcLEqA==
+Date: Fri, 02 Feb 2024 10:35:00 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="8aKFfDyEDP8k0FDZ"
-Content-Disposition: inline
-In-Reply-To: <20240202105901.925875-1-mike.looijmans@topic.nl>
+From: Rob Herring <robh@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>
+In-Reply-To: <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
+References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
+ <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
+Message-Id: <170689169936.226631.10918544906216773719.robh@kernel.org>
+Subject: Re: [PATCH v8 2/7] dt-bindings: adc: axi-adc: update bindings for
+ backend framework
 
 
---8aKFfDyEDP8k0FDZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Feb 02, 2024 at 11:59:00AM +0100, Mike Looijmans wrote:
-> Bindings for the TI ADS1298 medical ADC. This device is
-> typically used for ECG and similar measurements. Supports data
-> acquisition at configurable scale and sampling frequency.
->=20
-> The device has so many options for connecting stuff, at this
-> point the bindings aren't nearly complete but partial bindings
-> are better than no bindings at all.
-
-I'm inclined to agree, particularly given your comments on v1.
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
->=20
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
->=20
+On Fri, 02 Feb 2024 16:08:33 +0100, Nuno Sa wrote:
+> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
+> also remove it from being required.
+> 
+> The reason why it's being deprecated is because the axi-adc CORE is now
+> an IIO service provider hardware (IIO backends) for consumers to make use
+> of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
+> of consumer referencing other nodes/devices) and that proved to be wrong
+> and to not scale.
+> 
+> Now, IIO consumers of this hardware are expected to reference it using the
+> io-backends property. Hence, the new '#io-backend-cells' is being added
+> so the device is easily identified as a provider.
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->=20
-> Changes in v2:
-> Remove "clk" name
-> Add datasheet and "incomplete" note
->=20
->  .../bindings/iio/adc/ti,ads1298.yaml          | 80 +++++++++++++++++++
->  1 file changed, 80 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1298.=
-yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml b/=
-Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
-> new file mode 100644
-> index 000000000000..bf5a43a81d59
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads1298.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments' ads1298 medical ADC chips
-> +
-> +description: |
-> +  Datasheet at: https://www.ti.com/product/ADS1298
-> +  Bindings for this chip aren't complete.
-> +
-> +maintainers:
-> +  - Mike Looijmans <mike.looijmans@topic.nl>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,ads1298
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  avdd-supply:
-> +    description:
-> +      Analog power supply, voltage between AVDD and AVSS. When providing=
- a
-> +      symmetric +/- 2.5V, the regulator should report 5V.
-> +
-> +  vref-supply:
-> +    description:
-> +      Optional reference voltage. If omitted, internal reference is used,
-> +      which is 2.4V when analog supply is below 4.4V, 4V otherwise.
-> +
-> +  clocks:
-> +    description: Optional 2.048 MHz external source clock on CLK pin
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description: Interrupt on DRDY pin, triggers on falling edge
-> +    maxItems: 1
-> +
-> +  label: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +  - interrupts
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        adc@1 {
-> +          reg =3D <1>;
-> +          compatible =3D "ti,ads1298";
-> +          label =3D "ads1298-1-ecg";
-> +          avdd-supply =3D <&reg_iso_5v_a>;
-> +          clocks =3D <&clk_ads1298>;
-> +          interrupt-parent =3D <&gpio0>;
-> +          interrupts =3D <78 IRQ_TYPE_EDGE_FALLING>;
-> +          spi-max-frequency =3D <20000000>;
-> +          spi-cpha;
-> +        };
-> +    };
-> +...
-> --=20
-> 2.34.1
->=20
->=20
-> Met vriendelijke groet / kind regards,
->=20
-> Mike Looijmans
-> System Expert
->=20
->=20
-> TOPIC Embedded Products B.V.
-> Materiaalweg 4, 5681 RJ Best
-> The Netherlands
->=20
-> T: +31 (0) 499 33 69 69
-> E: mike.looijmans@topic.nl
-> W: www.topic.nl
->=20
-> Please consider the environment before printing this e-mail
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
 
---8aKFfDyEDP8k0FDZ
-Content-Type: application/pgp-signature; name="signature.asc"
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
------BEGIN PGP SIGNATURE-----
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: [error] syntax error: could not find expected ':' (syntax)
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZb0YVAAKCRB4tDGHoIJi
-0pgiAQDLmXCoilJP7jFxL0Q/yEzCgj/cMi+2Y6Z1OdtihVJ2xAEArqU2Y3pjTG6i
-QDgq4HpsV4D2j70ezmHDJ6mL15ipZAU=
-=ntYu
------END PGP SIGNATURE-----
+dtschema/dtc warnings/errors:
+make[2]: *** Deleting file 'Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts'
+Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
+make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts] Error 1
+make[2]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml: ignoring, error parsing file
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1428: dt_binding_check] Error 2
+make: *** [Makefile:240: __sub-make] Error 2
 
---8aKFfDyEDP8k0FDZ--
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240202-iio-backend-v8-2-f65ee8c8203d@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

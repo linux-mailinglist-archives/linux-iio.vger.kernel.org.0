@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-2094-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2097-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A348472AC
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:10:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96068472B1
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC076297CCC
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:10:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15E83B26BA6
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 15:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EE0145B29;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5634145B2D;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMP/WmKW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZCwgIIr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6D2145335;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7B514533E;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706886594; cv=none; b=swef0Yg8/prfWQdw6ZXJAJmfVBsL0jgOsRaNWRLE40cFoDeaAghrVT+RGMLTfkTW08ySzmzO7NgOJjIpvD7RDthD8XLJSffxcYAqFd5AdHK3MgSBUD83wwROhz1XpwFX4BW4DbyIhc3CDG6+oz6DP97qE6u4Mu9gZdqpLsMosPA=
+	t=1706886594; cv=none; b=Lc6w5/pxdy+tIX4sdTH1ndqmDY61UWrk4KxUgdqTLqrabfHZmvWAYb132eBXPU2inMX77+PojimdqZQW66Ld4MdQo41e1fIWfFcbJ4zRHCTBsqpSRqypiXNrKzWaoDcNfdrIxFtNdCEtEAHXeKZS0NN+t+mRGpZJII1OD61JRa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706886594; c=relaxed/simple;
-	bh=cRBsVA/gjcOt9pjoEuJIhQ39NaZaSPebkpAvtLwDKu0=;
+	bh=mM6TTDzmT8c9b+zSIXYzN5EneJISfMEUqOB2Clmh47Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CgNCkvHvOrCK7xkTWcdOwnktlsUvWaeRlbF0OtnSTbFJiWfdxZ0BitwJiz/5m82XGHZNZPg0rQTQDZoZg60FuZcz9ir/xos3eG528xV2hD9a7LdOvAxtQtrf54B2kiTuamX5c3D5niY7bEvEwFXn9fKMggKlBTBJy7LhoJcbUPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMP/WmKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 17F31C433C7;
+	 In-Reply-To:To:Cc; b=tqMP1ikgKr1/J38T+GCP3XSOpyRe9Yk9KgPVj4nLs++il8OFWSFSpulAJYEr5OKb/zbA3v9mjuvuo8SttnnZ6+oz6QMjYcE8wU65vvV2mOKALU36kQlABwQK8tuVdaK1e/KcfNB1OBD7qW9nOZSH1+WHLg4pqB75Ag+0kAdedy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZCwgIIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B256C43390;
 	Fri,  2 Feb 2024 15:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1706886594;
-	bh=cRBsVA/gjcOt9pjoEuJIhQ39NaZaSPebkpAvtLwDKu0=;
+	bh=mM6TTDzmT8c9b+zSIXYzN5EneJISfMEUqOB2Clmh47Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZMP/WmKWkVHoDA4SEzbQuHozY277U9i7LpFlRGHwcIi08t2EKIkkt0+lcFQaecDT0
-	 4aVZl8sYhZpgIG+rI97mN+4SL6LLpk8G0ngyWrBCUfNigIhPXokLifIXdEWMXrAJ/+
-	 WjAZojtuxM2OLQz+adFD6GV/C1eCw8Bp8Qlp6Mthc+AoiiaOtUC80Y9WWQh94YVG4D
-	 AfK2qXWTlC98y9I6dU2CIbyICEh9rBm+j1hUBFvTXj1UCoGBbwYuFskduAn28xcNr5
-	 o92nBFnkJVcC+JctCaGh9FBGEuFCR0dVyZvErN8Jvdxwgwka6Up+C+DnS2HavEISNI
-	 sBXltSB1abX1A==
+	b=gZCwgIIrKm8bw1FYJvRmSvRutrBTJRubq3tQAR2SGf+PvkWpTxE27vpRnLzm6cpU4
+	 Mfj4e5+KwI3qejL4SyuA1y1zdmrcSYe4jEubmNIkIFoAeBGElF3tkZWF0V+dO1winw
+	 egdazhpV2IETjfMigMDazN2NO3blQ5HIxePETRpmXY3J+lEUMVTXAez7ShlgFLsQWm
+	 RH8mMsViJ/eN/NT5aGirv5YGSpYxYiI7fi7tjMl3E41TxKXnhoExnTZDcRAmQWkXGa
+	 vC4hELK9ShMklrSYLbV3UlyvMPpYVxxB1j3txZWmDR427RWCpKC/2cjGwJTigUnK8U
+	 FGtYb70NhE5aw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E847DC48291;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3B5CC48295;
 	Fri,  2 Feb 2024 15:09:53 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 02 Feb 2024 16:08:32 +0100
-Subject: [PATCH v8 1/7] dt-bindings: adc: ad9467: add new io-backend
- property
+Date: Fri, 02 Feb 2024 16:08:33 +0100
+Subject: [PATCH v8 2/7] dt-bindings: adc: axi-adc: update bindings for
+ backend framework
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240202-iio-backend-v8-1-f65ee8c8203d@analog.com>
+Message-Id: <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
 References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
 In-Reply-To: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -67,11 +67,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Conor Dooley <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
  Olivier Moysan <olivier.moysan@foss.st.com>, Rob Herring <robh@kernel.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706886592; l=1193;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706886592; l=1739;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=u0BDfBpNIPqTnjAdSKSUmF2FUWY8hltyVdK2adeadi0=;
- b=kOcJcwzGqWd41o7nmQs+taYEO+t9y0Eg8n1MWdHv7hSuLA5+xudT1MXrtCMe+kR2j2yW1F9bM
- aisMyKc6BBCCTLsqTUVMmY5yXKqLJHa7orJ4sbbiKNe+grz/YCgG1vF
+ bh=araWL3MBWOdTthhIEzT+iX7Wos0rotGDe8HqcId2NUg=;
+ b=OFaluHTSBdAo3FZvY865OFIddk28bmx2W7H6blQTixDosaTQhwqIKXJqd4FmBInBKrMJTQ9x0
+ SvW+oC2uy4fBp+3BmQaEBpLontOc5sJ5nuCbFzV6KoshQdpPChBWSQq
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -81,37 +81,53 @@ Reply-To: <nuno.sa@analog.com>
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-The ad9467 will make use of the new IIO backend framework which is a
-provider - consumer interface where IIO backends provide services to
-consumers. As such, and being this device a consumer,  add the new
-generic io-backend property to the bindings.
+'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
+also remove it from being required.
+
+The reason why it's being deprecated is because the axi-adc CORE is now
+an IIO service provider hardware (IIO backends) for consumers to make use
+of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
+of consumer referencing other nodes/devices) and that proved to be wrong
+and to not scale.
+
+Now, IIO consumers of this hardware are expected to reference it using the
+io-backends property. Hence, the new '#io-backend-cells' is being added
+so the device is easily identified as a provider.
 
 Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-index 7aa748d6b7a0..eecd5fbab695 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-@@ -44,6 +44,9 @@ properties:
-       Pin that controls the powerdown mode of the device.
-     maxItems: 1
- 
-+  io-backends:
-+    maxItems: 1
-+
-   reset-gpios:
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+index 9996dd93f84b..add10b22dcac 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+@@ -39,12 +39,15 @@ properties:
+     $ref: /schemas/types.yaml#/definitions/phandle
      description:
-       Reset pin for the device.
-@@ -68,6 +71,7 @@ examples:
-             reg = <0>;
-             clocks = <&adc_clk>;
-             clock-names = "adc-clk";
-+            io-backends = <&iio_backend>;
-         };
+       A reference to a the actual ADC to which this FPGA ADC interfaces to.
++    deprecated: true
++
++  '#io-backends-cells'
++    const: 0
+ 
+ required:
+   - compatible
+   - dmas
+   - reg
+-  - adi,adc-dev
+ 
+ additionalProperties: false
+ 
+@@ -55,7 +58,6 @@ examples:
+         reg = <0x44a00000 0x10000>;
+         dmas = <&rx_dma 0>;
+         dma-names = "rx";
+-
+-        adi,adc-dev = <&spi_adc>;
++        #io-backends-cells = <0>;
      };
  ...
 

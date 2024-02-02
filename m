@@ -1,107 +1,112 @@
-Return-Path: <linux-iio+bounces-2104-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2105-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062008479D3
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 20:43:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28229847BB0
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 22:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 391061C24363
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 19:43:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92CDF1F27BC7
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 21:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE4280601;
-	Fri,  2 Feb 2024 19:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDD9839E8;
+	Fri,  2 Feb 2024 21:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ll9QuydX"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="D5Eod6TE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1DF80600;
-	Fri,  2 Feb 2024 19:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D3881752
+	for <linux-iio@vger.kernel.org>; Fri,  2 Feb 2024 21:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706902991; cv=none; b=ACjHIfASOoHFA3yKud2lg+5PnbIeofIMyCJLS9J5EVsIDBLyaaMq29q12lrYyctSyhOqiHPttOXbMG4RG07ChnHHLsMwEGtxd1zT2WUSJevqG2JCHG4DwEv5gbvoDG5uYjGDErTUW7HSWkEcM6+nAGG6VI3+A7r/oZEJ4OZAtbw=
+	t=1706909889; cv=none; b=rOTw3oxn7qpfvw305sz6FWI07f9mN339VGKWHnsUZHb6xaT9SoSzyRFAhdl5KWsgT1vgAOw4RqfK8yQA1VaJtxFaD0F9CiJUOtZMUmZFR2l8G7inP19/DL7r3QZViNPLzM2Qidkq40ytWtLLIY1F4yDgaaD+2GHhK4VtCjhI6MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706902991; c=relaxed/simple;
-	bh=cUcFLLlsjk7WbOgGfM+Zedf9W0MOG6p/9qlCVcXVn2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZ6Fhsp2UaQmBzDSu4Uu+GQoUUUxcUwoIMREd2eRkr0idyxythXOJnK1+51pr3YWh3UfGNrK7cOB3TVw0FJ92j4mr9GdEHk13Js3C1jmbM+qtebC7N5FgiG+flo2RqTE47SVBPcQrj/ZfaQIg5fQFHOPoFGThm2L0vo3aEI631I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ll9QuydX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3889AC433C7;
-	Fri,  2 Feb 2024 19:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706902990;
-	bh=cUcFLLlsjk7WbOgGfM+Zedf9W0MOG6p/9qlCVcXVn2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ll9QuydXNFX1RbAqrFbL1AGQgoApXwUbnU+TQqCYVfbdT3ZirVzg9pPgfvmDxNrhK
-	 w2h9Td1WUJYJZXkMbQUEX8i7zMscKiNugV/xB7IQDzwkH561aSbTqeUzpoPYL15ljz
-	 zDQ9aUUYW896QV75x7Cb2WkDo75dT6RHMmXkyOd0Brn1fbgIt6Kkgzi0nro8DoVdmY
-	 hdzpnCYFJGdzRRUmrIMMOgSRjLqOVjcNq1oR+0GkfyETwIKWwM7fAg8F2Oja/yZURz
-	 g5K09udZCVNX7xqiW3k2zPajjZZGYstrG/0wM7KcHSauQrOcL/6JNiKBHz0w+pcm8h
-	 r0AqBY1mSlvsA==
-Date: Fri, 2 Feb 2024 13:43:08 -0600
-From: Rob Herring <robh@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org,
-	lorenzo.bianconi@redhat.com, devicetree@vger.kernel.org,
-	krzysztof.kozlowski+dt@linaro.org
-Subject: Re: [PATCH v3 3/3] dt-bindings: iio: imu: st_lsm6dsx: add
- asm330lhhxg1
-Message-ID: <20240202194308.GA806128-robh@kernel.org>
-References: <cover.1706692153.git.lorenzo@kernel.org>
- <93160585e69e4531a981064817ccbb143a6a1f70.1706692153.git.lorenzo@kernel.org>
+	s=arc-20240116; t=1706909889; c=relaxed/simple;
+	bh=l4yBEaPM2iN7eZW+V6z8vwxu+0SiHLYw7zSuWZAIaaI=;
+	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ebV5ur6DnnSM4/xHcQUzLowC8ThQf+E2HWMTqk83vNBXHDztlpsy9Q0mzG1cPWbroC+w2NPlL/4YkXndEpgRGaqOLAOL7MREEXU65zmmVfaQhREGC4Z10Ok7Lcln4BA5JEZ/9aFTLeY4/XvMOdOlukTaUqLEYDegZm3ZX81wXSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=D5Eod6TE; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d070e2ba0bso26000741fa.1
+        for <linux-iio@vger.kernel.org>; Fri, 02 Feb 2024 13:38:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1706909885; x=1707514685; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lsomBTujcXZwChvimQjgCPTIq5/QQDBQdY15Zdim2x8=;
+        b=D5Eod6TEnTLnHEbeHR1CVGWug9eWQ8M4ky7UFCv6pwEc89UPTHNvInOnWPTELoxO69
+         pPpxHsyCZlLx76F/Ok0jyLevnSb0Z49u36zjDeUA3qMYkjYxT55pdCs2NoBOkvms9LWk
+         zQGLnwS+2nFOfOxsZiKhEURrpmG65c6XOop/g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706909885; x=1707514685;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lsomBTujcXZwChvimQjgCPTIq5/QQDBQdY15Zdim2x8=;
+        b=LVAJE0vj7UNt+3IHPeK77grAyXQ1jTASQ9xwrghlYzhqWHbbPt+LCKNsnO2ywAZrHh
+         kHZjSqfb4j+fn2QQ+uAFaKssTliw9JqTtYeqDEKj7oILe/hkcx5CjMUxC1EeV+8h2iMr
+         e7ZGV7Hi/35uyL8SrwLMnD1zXCkeQtQxbi5KcIsh6tTZK6jhUPfSwFuhHqRhSn2PAHjA
+         Oz1dPRfOyA6OMF28WNx/zFPochIi2w2WcA+MHFUhTDmmALh8gkm7MSKU7O55lak7/B6v
+         U30elTcML0vrXSzSBsvN3voRMk2zGmW3yv0skENNFrkrQXyygEGpKI+t2EtSRTEYCja7
+         SpFA==
+X-Gm-Message-State: AOJu0YxZw6fzG4db2ZMNDkWBYqUK7bjkU4rNTqjTJ+DaHm5SfB4zYzsi
+	FM+0jMKQ4tDD2zjTGV/nz0JETxx/5Q36H09xX5dMqz1XYkIxfbNHPLzGCe0yUFEVEZ/S/SZnAAd
+	LbPuBHKJllSpApmfE54ZU8cTxvsC9B2WP5j+H
+X-Google-Smtp-Source: AGHT+IHvfYyFfJ/R52vEVZbSRZ98QLR/0em/JjYcMxxy+2ZV0LfLeExVSgtkZoBvsF1omKzPLquVoYXeVi2DYmFj9yw=
+X-Received: by 2002:a05:651c:b22:b0:2d0:9a74:5e4a with SMTP id
+ b34-20020a05651c0b2200b002d09a745e4amr41079ljr.5.1706909884612; Fri, 02 Feb
+ 2024 13:38:04 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 2 Feb 2024 15:38:03 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93160585e69e4531a981064817ccbb143a6a1f70.1706692153.git.lorenzo@kernel.org>
+In-Reply-To: <20240201-strncpy-drivers-iio-proximity-sx9324-c-v5-1-78dde23553bc@google.com>
+References: <20240201-strncpy-drivers-iio-proximity-sx9324-c-v5-1-78dde23553bc@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date: Fri, 2 Feb 2024 15:38:03 -0600
+Message-ID: <CAE-0n5031k-5Gv+jFuWJekgPfHDw8yjUobqZr6+=UzgOEqOO4w@mail.gmail.com>
+Subject: Re: [PATCH v5] iio: sx9324: avoid copying property strings
+To: Jonathan Cameron <jic23@kernel.org>, Justin Stitt <justinstitt@google.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jan 31, 2024 at 10:11:31AM +0100, Lorenzo Bianconi wrote:
-> Add device bindings for asm330lhhxg1 IMU sensor.
-> The asm330lhhx supports a subset of the features and functionality
-> provided by the lsm6dsr via identical interfaces and so is a
-> suitable fallback compatible.
-
-A subset cannot fallback to a superset.
-
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Quoting Justin Stitt (2024-02-01 10:55:03)
+> We're doing some needless string copies when trying to assign the proper
+> `prop` string. We can make `prop` a const char* and simply assign to
+> string literals.
+>
+> For the case where a format string is used, let's extract the parsing
+> logic out into sx9324_parse_phase_prop(). We no longer need to create
+> copies or allocate new memory.
+>
+> sx9324_parse_phase_prop() will simply return the default def value if it
+> fails.
+>
+> This also cleans up some deprecated strncpy() uses [1].
+>
+> Furthermore, let's clean up this code further by removing some unused
+> defines:
+> |  #define SX9324_PIN_DEF "semtech,ph0-pin"
+> |  #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
+> |  #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
+>
+> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> Link: https://github.com/KSPP/linux/issues/90
+> Cc: linux-hardening@vger.kernel.org
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
 > ---
->  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> index 28b667a9cb76..316601b2da7a 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> @@ -49,6 +49,9 @@ properties:
->        - items:
->            - const: st,asm330lhb
->            - const: st,asm330lhh
-> +      - items:
-> +          - const: st,asm330lhhxg1
-> +          - const: st,lsm6dsr
 
-Assuming this is correct and the commit msg is wrong, can't this be 
-added to the existing entry?:
-
-items:
-  - enum:
-      - st,asm330lhhx
-      - st,asm330lhhxg1
-  - const: st,lsm6dsr
-
-
->  
->    reg:
->      maxItems: 1
-> -- 
-> 2.43.0
-> 
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 

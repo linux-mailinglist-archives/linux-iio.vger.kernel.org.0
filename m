@@ -1,124 +1,133 @@
-Return-Path: <linux-iio+bounces-2102-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2103-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8903B8474F0
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 17:36:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8E184762D
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 18:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268D41F2B61F
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 16:36:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2F841C21C80
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Feb 2024 17:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A63148FF0;
-	Fri,  2 Feb 2024 16:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3978714A4DC;
+	Fri,  2 Feb 2024 17:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2hHkl1Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3jbOXkN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A96148FEC;
-	Fri,  2 Feb 2024 16:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F7F14A0A5;
+	Fri,  2 Feb 2024 17:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706891702; cv=none; b=t9HnQligZ5/5GYsnhzpLFxjHqQbtdPi7p0mYBO764EHrI6cMJGppaUQVmfzes7UdhcRYncPj/mBTfPMr7ecxbE4BbBXiPwAQSyupE4s40mqplz0ZGozypYp/kCFgeiYATbgXk0lDBs6pj9uUGM7FhptbyI/PMHzdSVlcL1vynO8=
+	t=1706895170; cv=none; b=SkOJDRAqQzzrhxR67Lptm+2LlEIvXjRfy09F8+m/7LoXcMy6464ujMeLx3Z4zxMpO4QuH8SCOBvq9PQvzSujIIvbFEnMP3caV9c470gXzFCPQUjFB4OuTs4KNCSVsPuA7hIlWwwj6UPXrkIbfPkBbcU6TOkd+OBkrOjStlFdh3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706891702; c=relaxed/simple;
-	bh=4GJVsIqv5wIkN4FLeugZ/HuLT/8X2AhKe6NslRjR528=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=ToZ0yMBfqai50JZlArJDBC5y1qBCzJriGmb2495ZxIjRaVD7mV+MHHYIAcoGH1d4AR9ruUlM+pVhDFbu9aeLuh4nBL6j1u9p9BtotSd0zKFYkoh5Mg7x7vb4HYQJP9t0HAxUqTS+SZXsEiIESzkqPaCGVO80TEqpPIn3pFxIriM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2hHkl1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEB1C43394;
-	Fri,  2 Feb 2024 16:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706891701;
-	bh=4GJVsIqv5wIkN4FLeugZ/HuLT/8X2AhKe6NslRjR528=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=K2hHkl1YbFpglxh3m3P6KXINd9RM5k0DlZgeQGpqxX0t11lwOiXCbc5v0uYyK45Ar
-	 9aZnO1o10zBWatjpTn3dTOjdSwBK3FSbxqSQwSUH9FfHUdJxppZ+5JlwWkQ/mOK4G1
-	 8TtEFiO8qb9uCEkbPo/OPe91XIT9RnmjAjr8KmI3Z3TldUqI/tSMWKZqeQFk+wJ7as
-	 8515p/MnhGoD58/vKdhpc4m9aEOkV0hb6kbQHUUbiqZkbo7/mUYlkvT6pY9GhbH7oG
-	 YggDvL66zXg3ghDDlk00nNxITr9ce4kAW4NUv03iBjyY4qRAhJxBsTU9aYrBKnrkFh
-	 Xj7PoYcGcLEqA==
-Date: Fri, 02 Feb 2024 10:35:00 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1706895170; c=relaxed/simple;
+	bh=BzeGSQFv23RzxfnxCCVXJrwUwm5DgaTHVJ5SPJupBPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QlhRA+o4r2qjOt5Q3+AZYlB985ryljkl8pDsxza4tNHM7sGJrDHRCJyUijrpACWlp69I0BCq38eyZwKq9eAr3INfA0e6QIfInajQpvOJyAkAxBEGFuHHRwmCGGHUxx8hiOr4uIbJg9Es1kJZFUiympNK0Wsz9yL+P5hixfzPqk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3jbOXkN; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-42c0960382eso2125121cf.2;
+        Fri, 02 Feb 2024 09:32:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706895167; x=1707499967; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MZV5kKfu43pg+P1nwDSu3FuOWtizR/h4o6gwCwbwjx0=;
+        b=M3jbOXkNsdO8TCSCabw+nMRZrlGzAg9DsePuLa3KLotbB8uZ3cZFCLyUp/i3dufOfd
+         U3s57kcYqcJ6hQVRz5Fc9O56jGcBjzPh+GwUL9m94SQnaLkqbEuaz+rF3ZS8lFP5HO5a
+         AwCrhiOPeQnqzbX1J5ojvLvzu9UKvmWNAfynxoLSIO8DODN76AAAHBmnME1g8UXdvf6a
+         1bwvZtpYNKXM8OGxwmxP3fGPopm8tEHm3pregfCDVrrNH7oVwIgwFdyapyhtgvjbeKGz
+         VFFzMI11ccBuFyHloDZT9lOhXmI3+l0dagqjeQzwksQo8jvlCzeVAAh7CJlW5fKBvmfT
+         xwQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706895167; x=1707499967;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MZV5kKfu43pg+P1nwDSu3FuOWtizR/h4o6gwCwbwjx0=;
+        b=MkeBI+mumtC1nJWBh6DwPWvlJafDEMIdBWGU5sD4JHb4p2gtrLEiuT0UnkXXAT/Fl/
+         619ReTzIrGONXpJLrWTWAlsdjieyAlsXbndJLashwQNNnqnAQgyFH+BFoVwu5x/v2bHy
+         8Kzv9e1ihtc39xrxSLhJtnl52KFeyys2/AFcxHyntCQDQtyhQXGOcDBk4vF6tOnZipw6
+         lw9wSiTGPb2laWGrinOW3VVSZhG8AnbunTBSAhk2Nx0sAKVM2M2N2MkfFVVgNTIN3myD
+         qi00caCXReaX5aJ46BBmdAXIvM6dsgX1fAU+SYHzcJCv45fRjptuuqI/9XUWFXAl1RDY
+         YyTA==
+X-Gm-Message-State: AOJu0YyUISn3p0KdDzDAQkYOYCHoNBsFW1HmDQG8yBd7KB3zxCmS9nex
+	XrmEuHKX/mCPxD8o2FMvpdTZ0ixiQOdFDUt4L5xchGaEPupU0kyb
+X-Google-Smtp-Source: AGHT+IFVw807y6m6f3FbmT7i6pT8mjFZXnvSiS4/VfgCKVuaoL7QhTGaS0X35ZTSkOeIVqLoArpbew==
+X-Received: by 2002:ac8:5890:0:b0:42c:c7:ffe5 with SMTP id t16-20020ac85890000000b0042c00c7ffe5mr2836282qta.68.1706895166925;
+        Fri, 02 Feb 2024 09:32:46 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCX219F2y8peI5Q69R1Y+U1liVUJWjjCJsy/DuLn0zTq93lrH2hDuWmGCKJjgn/yP6MIz4mML3euTvsr3kxlkVMOpKCvJUEWW4inGk1W4v4KhHuymhivwEf+E2ME4iS1nslV9WbpGPPOBkF3ClCilwjWww==
+Received: from localhost.localdomain (i577B69E4.versanet.de. [87.123.105.228])
+        by smtp.gmail.com with ESMTPSA id cc22-20020a05622a411600b0042be0933c1csm1006890qtb.15.2024.02.02.09.32.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Feb 2024 09:32:46 -0800 (PST)
+From: Jesus Gonzalez <jesusmgh@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jesus Gonzalez <jesusmgh@gmail.com>
+Subject: [PATCH 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow binding on some devices
+Date: Fri,  2 Feb 2024 18:30:41 +0100
+Message-ID: <20240202173040.26806-2-jesusmgh@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org, 
- linux-iio@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Olivier Moysan <olivier.moysan@foss.st.com>
-In-Reply-To: <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
-References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
- <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
-Message-Id: <170689169936.226631.10918544906216773719.robh@kernel.org>
-Subject: Re: [PATCH v8 2/7] dt-bindings: adc: axi-adc: update bindings for
- backend framework
+Content-Transfer-Encoding: 8bit
+
+"10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and 
+probably others) in their ACPI table as the ID for the bmi160 IMU. This 
+means the bmi160_i2c driver won't bind to it, and the IMU is unavailable 
+to the user. Manufacturers have been approached on several occasions to 
+try getting a BIOS with a fixed ID, mostly without actual positive 
+results, and since affected devices are already a few years old, this is 
+not expected to change. This patch enables using the bmi160_i2c driver for 
+the bmi160 IMU on these devices.
+
+Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
+---
+A device-specific transformation matrix can then be provided in a second
+step through udev hwdb.
+
+This has been discussed before in 2021, see here:
+https://lore.kernel.org/lkml/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/
+
+Lenovo, as an example of a big manufacturer, is also using this ID:
+https://www.reddit.com/r/linux/comments/r6f9de/comment/hr8bdfs/?context=3
+
+At least some discussions with GPD took place on the GPD server Discord,
+for which I can provide proof on demand via screenshot (if not accessible
+directly).
+
+I have read the patch submission instructions and followed them to the
+best of my knowledge. Still, this is my first kernel patch submission,
+so I'd be glad if you could please point out any mistakes. Thank you!
 
 
-On Fri, 02 Feb 2024 16:08:33 +0100, Nuno Sa wrote:
-> 'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-> also remove it from being required.
-> 
-> The reason why it's being deprecated is because the axi-adc CORE is now
-> an IIO service provider hardware (IIO backends) for consumers to make use
-> of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
-> of consumer referencing other nodes/devices) and that proved to be wrong
-> and to not scale.
-> 
-> Now, IIO consumers of this hardware are expected to reference it using the
-> io-backends property. Hence, the new '#io-backend-cells' is being added
-> so the device is easily identified as a provider.
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
+ drivers/iio/imu/bmi160/bmi160_spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: [error] syntax error: could not find expected ':' (syntax)
-
-dtschema/dtc warnings/errors:
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts'
-Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-./Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml:45:5: could not find expected ':'
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml: ignoring, error parsing file
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1428: dt_binding_check] Error 2
-make: *** [Makefile:240: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240202-iio-backend-v8-2-f65ee8c8203d@analog.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi160/bmi160_spi.c
+index 8b573ea99af2..0874c37c6670 100644
+--- a/drivers/iio/imu/bmi160/bmi160_spi.c
++++ b/drivers/iio/imu/bmi160/bmi160_spi.c
+@@ -41,6 +41,7 @@ MODULE_DEVICE_TABLE(spi, bmi160_spi_id);
+ 
+ static const struct acpi_device_id bmi160_acpi_match[] = {
+ 	{"BMI0160", 0},
++	{"10EC5280", 0},
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, bmi160_acpi_match);
+-- 
+2.43.0
 
 

@@ -1,93 +1,105 @@
-Return-Path: <linux-iio+bounces-2116-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2117-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F9D848570
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 13:02:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7F68486C9
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 15:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AB501F2334A
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 12:02:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BDC7B274AA
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 14:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282515D903;
-	Sat,  3 Feb 2024 12:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA825D8E7;
+	Sat,  3 Feb 2024 14:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knE8k120"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fU9qkXYg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410715D911;
-	Sat,  3 Feb 2024 12:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338305DF2C;
+	Sat,  3 Feb 2024 14:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706961740; cv=none; b=FPF5yxxGsiEu3qTPImP60MPzPEqBIaYlzEKkQLWLeM8w3fVUgFQqIFwIJ1+lErlV/Pb0uTDDKBD7RtEacwh2KHm+g6DfV0vm36q+4BAz/9IC1yejFQM4pO56ZefjO1Ep03BmgQOIoh5Lmr7tGlkL6gzHDhBe/X5JhcktR4K1NVE=
+	t=1706971331; cv=none; b=El99AyExYjGN1LvCJ0NP6Yfb7O0bGDSDnLrvp6DIoL2McnCEbej4kdR6f+RtjTUfrpv7gqTVGf4/Omo7QFI2xWmjK//9pYMmHldPlnyfHgN5EEDCu0Jik+7JcD2PEZBcJsDj+jVeOkD+tfHF2WNR6xpRDSAtTNTgZM9FWNn2peY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706961740; c=relaxed/simple;
-	bh=amSLVYPBB36yYTqYB7NEfH9Md+g6aY8Bhknq0DhdMic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPYA+BZq29BX72+QDxDpDH2Hsy4YdEV8ClcaaBNv2zUy9uCe5YlhRkZssFlHjd3Csk/+fmGQ5qF1BMe/d5SqgQHXO0wzsDGehJqLl+gIJmeb8cZIn8FXE6OAbHMoqdNmBW14K3umnsrQGMTpZwR/nBISQDgaroS+G6SdCrzEkU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=knE8k120; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E99C433F1;
-	Sat,  3 Feb 2024 12:02:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706961739;
-	bh=amSLVYPBB36yYTqYB7NEfH9Md+g6aY8Bhknq0DhdMic=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knE8k120hdqARPGoQToKPU+0f39qvGGdQLSVOtl/sMuy2VCpwyHi56bPit+TRk4Fe
-	 VMBxwzIT0TEHr+nwjgar0oWeb4iIpNVLAbDcoORq5xY8IYI9HV2gOtcxylJqe1DuqB
-	 q4uxDuosXx7PIClbUSF3ME+vBc9c9/nTniD89c1C+FdWiXXMzFPNZez1fenIJglOl1
-	 M53KIxssjn5q+zSIVrwaAdhd2zxTcptBCFjInoobGN/7+5NqEYvTDMBG1G4lldG9EF
-	 XQwcT5eA+1HfhG0y7oCE91A4g94Bxlh+8ZS1AjRRJDo+HeHtWPB7cXlYwBLcrR0t0C
-	 wwfgWdYT6cWVg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	lorenzo.bianconi@redhat.com,
-	devicetree@vger.kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	robh@kernel.org
-Subject: [PATCH v4 3/3] dt-bindings: iio: imu: st_lsm6dsx: add asm330lhhxg1
-Date: Sat,  3 Feb 2024 13:01:38 +0100
-Message-ID: <942452ec9626bc1166501cec0fa88c369e28ec6f.1706961432.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1706961432.git.lorenzo@kernel.org>
-References: <cover.1706961432.git.lorenzo@kernel.org>
+	s=arc-20240116; t=1706971331; c=relaxed/simple;
+	bh=ZE56VVcczwQ2Bb2zqSQpmqinQSmuJZtbgm+CG8DIV4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NPc2PIRgjL0kp70PryEdWRI+NUBe/m91ggBsBzZLSEEgiBcEeMraiUSbycJc0uYkMKqob7LEuQOlsBUcpUIKiD0R7bvgp/GCKgTNVkAADP71cohTwBdTNjVvHzl36il0Fjxe1XBwiFoqp4z/IXW3MpyLMuX54bnna+n2spnVTkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fU9qkXYg; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a370315191dso191650166b.2;
+        Sat, 03 Feb 2024 06:42:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706971328; x=1707576128; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=r2tcDMWd5tAsjiTJCIBbSaN7CchAzH7Jv5tYEeWNeLo=;
+        b=fU9qkXYgMyqZqODpNCs2X1to+scQ1alOEGlpbQVcDlEX69FMkRUZYE6ri3HwH3lhWk
+         I3oYR/fHLJFQ/dorvXH+ogl/9FqN0KBq8GocQt69vKz7an+EyFKohdH7qfubZHCPycyq
+         qhcH1znXrUloUb0pUYGCNHvL4LgVp+beXJ53yFiKjZpNcJK25ZSZv3Q5Iu/J12yKhyhY
+         WvWNoVAPATaemf+Qlk9OBSiie6X7snr/Ny8SaMPx8Eu3CTtu3TIiO1b27JOtgEU6OoSL
+         FrGP9BfDhrz0K6TAnsWOWYvHGTxqb/sZSjM5vguXVavTfLunZRG7vVtokK5f4zB+xfy8
+         Pwdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706971328; x=1707576128;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r2tcDMWd5tAsjiTJCIBbSaN7CchAzH7Jv5tYEeWNeLo=;
+        b=XLVhp4wwGGgoMg7H/Dyqp/JeCZxw4W9tjLh6U8h233EpU5STzDIJxxTGBcYleyiKxC
+         swwmrKKvxZtsXTSGWZwmGryfiHy5Znl/2lVjsffM+vE6cDT5esF1XwGIPVim32laQuPD
+         scjOQiLPfcbIK8lMK7J/u3BgISAcJdU8tMUNhdK5rUPz3qWQ2x2hKen91vW8BLqeTAcy
+         pgH9vcG7zllVoyRSTuXd55Ikh4yfUFMnRWMpuAWamE09hoE999fz4a3+yz/TRW9XRVux
+         CrKlBZ0SbEdXPhOw5T5c3/crS0DdKM+RDQ/cHcTijfvEm1tmvoUOwndwhoiSu3M9JM/Y
+         5wsA==
+X-Gm-Message-State: AOJu0Ywsmip2qwD8fHi4OgidRG/U2LWrP9bEx20Zgnn8XrW1JrpIhB7n
+	qlpTRoYAMXIAhgBG1z96G6HK0q9SQi/10iM1T/ImwaU29TZLHqp4
+X-Google-Smtp-Source: AGHT+IGzcrYFKidH1EDzisryWm6XZ+8Ko0R6VvFGuKexkHpSjrgHig/lagCg//uz8I0Wd+jWLh3dEQ==
+X-Received: by 2002:a17:906:6c93:b0:a37:2f67:e78c with SMTP id s19-20020a1709066c9300b00a372f67e78cmr2179667ejr.63.1706971328231;
+        Sat, 03 Feb 2024 06:42:08 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUa/GHnVagfk0PbV/AUH/iZNOy3AJYN7avKCuBexcoxEussaAx/9rOfMP+pTrEWcRhHcVJtO7lsL5A+z58jBiKJFh3r+ICrRQs8Q5KCFNKzSyUiasFErmHxdLZo1pzxrclXeJFxL2oPK6fHGcx4Dbd/AU9r5JWltuKfI7shT4xCW6lGqAdH+rM+nxc=
+Received: from debian ([93.184.186.109])
+        by smtp.gmail.com with ESMTPSA id a20-20020a170906671400b00a34d0a865ecsm2036163ejp.163.2024.02.03.06.42.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Feb 2024 06:42:07 -0800 (PST)
+Date: Sat, 3 Feb 2024 15:42:05 +0100
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: humidity: hdc3020: add threshold events support
+Message-ID: <20240203144205.GA3727@debian>
+References: <20240203090530.53374-1-dima.fedrau@gmail.com>
+ <1eb2034f-b1ef-474d-91f6-c562a5768bfd@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1eb2034f-b1ef-474d-91f6-c562a5768bfd@gmail.com>
 
-Add device bindings for asm330lhhxg1 IMU sensor.
-The lsm6dsr supports the features and functionality provided by
-the asm330lhhxg1 via identical interfaces and so is a suitable
-fallback compatible.
+Am Sat, Feb 03, 2024 at 10:30:09AM +0100 schrieb Javier Carrasco:
+> Hi Dimitri,
+> 
+Hi Javier,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> > +	/* Supported temperature range is from –40 to 125 degree celsius */
+> Should that not be val < -40?
+yes, you are right. Will fix it.
+> > +	if (val < -45 || val > 125)
+> > +		return -EINVAL;
+> > +
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-index 28b667a9cb76..c48a96d17f51 100644
---- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-@@ -35,7 +35,9 @@ properties:
-           - st,lsm6dsv
-           - st,lsm6dso16is
-       - items:
--          - const: st,asm330lhhx
-+          - enum:
-+              - st,asm330lhhx
-+              - st,asm330lhhxg1
-           - const: st,lsm6dsr
-       - items:
-           - const: st,lsm6dstx
--- 
-2.43.0
-
+Best regards,
+Dimitri
 

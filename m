@@ -1,74 +1,53 @@
-Return-Path: <linux-iio+bounces-2109-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D29848500
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 10:30:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569B384851C
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 11:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4421B25ECF
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 09:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13EEF1F23B81
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 10:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6315CDD2;
-	Sat,  3 Feb 2024 09:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1365D720;
+	Sat,  3 Feb 2024 10:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VKwlrqHA"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="iM7eB28r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D00A5C8F8;
-	Sat,  3 Feb 2024 09:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433CC5C91E;
+	Sat,  3 Feb 2024 10:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706952615; cv=none; b=LXU97W16EE2six08SVwGP3trjWfzxiALG8Y+3msPt4zvwHvCn+82oVgBywlOhQ7mYzp8sl27eXqrjlIrrkYUcyEyp4GXw+z9CFcws2a+AIzxg2cbzSfkuXl8Y7idCoyiD4RvOcZCMUyTtWyDts/67qsi5F662CEmHRUNxc0Ao7o=
+	t=1706954834; cv=none; b=WSRM/gR6yLJUEHcHvsOA33SvpPJF05yUTqyhc1V9ITnO7OI+E50Psc4uAZxQ2brfOmW6Duqh0ds6yxMuccdM/MwsztkQrOHm8y/5/wok+0PiMQTofQWbVpnkzYrAZ9yImiBBXLXhef7mOmz4TXfK/X5VF3M6wgL8DOlnwaGHBq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706952615; c=relaxed/simple;
-	bh=lwmNZwfR57Tnsaytbu0NIRUNVyvznW1i3G7f0IE/lAw=;
+	s=arc-20240116; t=1706954834; c=relaxed/simple;
+	bh=YQvE7y0NHy8x4IJxViUtYas8Dp3o2T+eCwn5UkgB5Sg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BF5VqTY6zIn5aY8i1NyrR5NLaack9My+U405Bds+dD5OQs6G2djKwoynh0X53wn8ARwb/DruBSzavkHfwo0E7QarA0VShngseOyPeDA7tgFBN3b8fZLyc5+JlBBgffXqJBODLeQbD0tO3IIa8/v+Q5I7qAHPVI2hcG3QZM+pgcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VKwlrqHA; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51124e08565so4472585e87.3;
-        Sat, 03 Feb 2024 01:30:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706952612; x=1707557412; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fGkFAJoK8xGWEW0AsAlal/QM6gTn3oWaFYjX5q7lfkE=;
-        b=VKwlrqHApZ/LFTiQWhCt2MG0S/2IU44VNwTF9pEVsYPUIN+3silUGKeUr4D1QMQUPd
-         AtVTAkJaLU6kd/ChWUJBvTYocCzpeW96vFsU45UArowdSqTBaojlbtUPXxMV1PASjFPS
-         FDqsRmAq8zRhNv87yo1FsQNCCL/bPNS1TAFD2miKQZyJ2qc74Hlc2ZV8i0ymMTjuhDNe
-         bZowC77BefnYr5P7bcEe13HNz3rTCrnB5EPNrANf4kjAerLMhnnoM/IycYnRcRRea/HM
-         GpRf1kF9WZ44SAJyngXm2NzwSZnAI+Vy5fWb6kTIFxzCpT3Gz6hiG3reTK3W5B55O177
-         t4Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706952612; x=1707557412;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fGkFAJoK8xGWEW0AsAlal/QM6gTn3oWaFYjX5q7lfkE=;
-        b=RKAuwB/o+XOGuOuQ+O/IYwzJpGBFdiLPdPy3IfHZ40y0CM/uWhx/OH5Zd32nNO6I3Z
-         kE4SXbd9+WeLm4H2V2cjRbTmpQbe5icikrd/bZ5rIS6zuNWXpocw1xRkZNHrIsFrvVmC
-         THawkCrJtc6c5J96YlMWYvtmtmoShSya7j5R+Z2kCxNzeUUFntdlttRPql1BAovnz3uB
-         FfEK2+UvBpZR+IK/8LPBZMToYxnqk1iTPeUE8rHraqV4/LMX65PPPiQp8rYRd7enEBKY
-         qozGKGx3D24QeqZRZ9dMHxEmI+YDMp0JhswWFvZcRJfQRfBBEcV+RNp8jptAkP2E9n/9
-         7UWQ==
-X-Gm-Message-State: AOJu0YzHsqw8pkWjWchnjaIaIwQNW8dUSJFsIsxIMS64qZYcR20ZaLd7
-	GV+FVQj8vriVTpaw0QGbvjRTBFmp6IEY/qWSeAFPUVssZEwocGuS
-X-Google-Smtp-Source: AGHT+IGPkqmXW9327P9DfWvEfm/oZCofctTefm0GLGRTvU86EBvdis+10KIIOIA2MyGTsBUs0pIe5w==
-X-Received: by 2002:a05:6512:b8c:b0:511:3865:2dda with SMTP id b12-20020a0565120b8c00b0051138652ddamr2923695lfv.2.1706952611623;
-        Sat, 03 Feb 2024 01:30:11 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWji+LnEGtVJIELPuZw620lV8OFjKBmekg8NhHQfefCsLNraCXK9vgRirY++K2u2Q574yE5BtWqexHiG8zvjSwGHSLtrsnVOBT2ZxepOhmVZ9nkcz/we5zOOnJWAN/PabqkvCia8Gv2lXfTX3SMyW789krYyyg8CBQ0qhmob8nv2agc16q64iTI1BI=
-Received: from ?IPV6:2a02:8389:41cf:e200:62e5:c423:15b3:7608? (2a02-8389-41cf-e200-62e5-c423-15b3-7608.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:62e5:c423:15b3:7608])
-        by smtp.gmail.com with ESMTPSA id u2-20020aa7d882000000b0055ffe74e39dsm1120019edq.85.2024.02.03.01.30.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Feb 2024 01:30:11 -0800 (PST)
-Message-ID: <1eb2034f-b1ef-474d-91f6-c562a5768bfd@gmail.com>
-Date: Sat, 3 Feb 2024 10:30:09 +0100
+	 In-Reply-To:Content-Type; b=Wn9bEVNTumU1OsgXBsIbn2wS51avZH7+XFF3MwJDKiLLCdvljcDoJPYYTeUnBfNgOmj5UD4D7ivLvvZMSrlnY7QAqsc4fCA/TRaFPAYeAzq8sJ1lKVG9zk2brnjkFRiBRrGRSTSqZI9nj7cpdX508/TuJXl7VvmPpBFR14TkWcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=iM7eB28r; arc=none smtp.client-ip=80.12.242.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.18] ([92.140.202.140])
+	by smtp.orange.fr with ESMTPA
+	id WCn3r4y1Qn8K2WCn3rKyrj; Sat, 03 Feb 2024 10:58:25 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1706954305;
+	bh=53zy55g4yqyQ0+8fdEt1Lnm92Clz5kD41n0D2EGwMlY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iM7eB28rFWHTU7/83TflV0d3jSZwcEUI9pMm8BlF4EXuqXPWFOc5ga/yyaCxACEVH
+	 ASeL4T1eSFbEuoj6gupci1lDuX0635O9k28orVXMYkvkPMv01DKQl1mGO/mUfLE2pL
+	 W9Au43oZoVPPz9eyppVP/iheOVax6ZSl9TkVdLDoXZu2ZmTTgIXh3WTfRiMCIntGHw
+	 vFEm24RsN0FMZJnrpM2Q36aN05tIws3oRxF2gNZsTxDPmJWBB0PjnWa8HOXRglaDI6
+	 wunQ9LEVJlBMIuakndaj6XVTWNc8JNCVPOQxJoWxUTuBoqzEuc+eXoG64J/dHviWxS
+	 I15/bBxgbOLig==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 03 Feb 2024 10:58:25 +0100
+X-ME-IP: 92.140.202.140
+Message-ID: <236dc9db-8525-413e-a77b-54df198c86f5@wanadoo.fr>
+Date: Sat, 3 Feb 2024 10:58:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,20 +56,17 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] iio: humidity: hdc3020: add threshold events support
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
+To: dima.fedrau@gmail.com
+Cc: 579lpy@gmail.com, javier.carrasco.cruz@gmail.com, jic23@kernel.org,
+ lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240203090530.53374-1-dima.fedrau@gmail.com>
-Content-Language: en-US
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Content-Language: en-MW
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 In-Reply-To: <20240203090530.53374-1-dima.fedrau@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Dimitri,
-
-On 03.02.24 10:05, Dimitri Fedrau wrote:
+Le 03/02/2024 à 10:05, Dimitri Fedrau a écrit :
 > Add threshold events support for temperature and relative humidity. To
 > enable them the higher and lower threshold registers must be programmed
 > and the higher threshold must be greater then or equal to the lower
@@ -108,11 +84,42 @@ On 03.02.24 10:05, Dimitri Fedrau wrote:
 > a69eeaad093d "iio: humidity: hdc3020: fix temperature offset" in branch
 > fixes-togreg
 > 
-> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> Signed-off-by: Dimitri Fedrau <dima.fedrau-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
->  drivers/iio/humidity/hdc3020.c | 339 +++++++++++++++++++++++++++++++++
->  1 file changed, 339 insertions(+)
+>   drivers/iio/humidity/hdc3020.c | 339 +++++++++++++++++++++++++++++++++
+>   1 file changed, 339 insertions(+)
 > 
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+> index ed70415512f6..1cdff7af4ca8 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -16,16 +16,27 @@
+>   #include <linux/init.h>
+>   #include <linux/module.h>
+>   #include <linux/mutex.h>
+> +#include <linux/interrupt.h>
+
+Nit: alphabetical order could be kept
+
+>   
+>   #include <asm/unaligned.h>
+>   
+>   #include <linux/iio/iio.h>
+> +#include <linux/iio/events.h>
+
+Nit: same
+
+...
+
+>   
+> +static const u8 HDC3020_R_T_RH_THRESH_LOW[2] = { 0xE1, 0x02 };
+> +static const u8 HDC3020_R_R_RH_THRESH_LOW_CLR[2] = { 0xE1, 0x09 };
+
+I don't know what the R and T are for, but shoukld this be 
+HDC3020_R_T_RH_THRESH_LOW_CLR to match other adjacent line?
+
+> +static const u8 HDC3020_R_T_RH_THRESH_HIGH_CLR[2] = { 0xE1, 0x14 };
+> +static const u8 HDC3020_R_T_RH_THRESH_HIGH[2] = { 0xE1, 0x1F };
 
 ...
 
@@ -129,7 +136,6 @@ On 03.02.24 10:05, Dimitri Fedrau wrote:
 > +	int ret;
 > +
 > +	/* Supported temperature range is from –40 to 125 degree celsius */
-Should that not be val < -40?
 > +	if (val < -45 || val > 125)
 > +		return -EINVAL;
 > +
@@ -158,8 +164,18 @@ Should that not be val < -40?
 > +		/*
 > +		 * Store truncated temperature threshold into 9 LSBs while
 > +		 * keeping the old humidity threshold in the 7 MSBs.
-> +		 
+> +		 */
 > +		val = (((val + 45) * 65535 / 175) >> HDC3020_THRESH_TEMP_SHIFT);
+
+Why 175?
+If the span is -40/+120, I guess it should be 160 and if it is -45/+120, 
+165. No?
+
+Maybe something like:
+   #define MIN_TEMP -45 (or -40)
+   #define MAX_TEMP 120
+in order to avoid hard coded constant?
+
 > +		val &= HDC3020_THRESH_TEMP_MASK;
 > +		val |= (*thresh & HDC3020_THRESH_HUM_MASK);
 > +		break;
@@ -186,9 +202,7 @@ Should that not be val < -40?
 > +
 > +	return 0;
 > +}
-> +
-> 
 
-Best regards,
-Javier Carrasco
+CJ
+
 

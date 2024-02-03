@@ -1,121 +1,151 @@
-Return-Path: <linux-iio+bounces-2121-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2122-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BB3848757
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 17:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348F28488CF
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 21:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A845B1F240EB
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 16:08:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD1C1F237A2
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Feb 2024 20:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0AC5F56A;
-	Sat,  3 Feb 2024 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2E912B9A;
+	Sat,  3 Feb 2024 20:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QnYmcDof"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GN/4T/Rq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5415E5F54F;
-	Sat,  3 Feb 2024 16:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6811C8B;
+	Sat,  3 Feb 2024 20:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706976522; cv=none; b=ZhYfNPkiU7NeDEMQLzqlsWViR9x/VMLoh0CUQ07v/IGrjZ+ETpogh5obQWy5XRl3VHqTxwNMXEVfLUHI4a4B2/wtjDF0Gmi+Tn3IPM2k/ukes98ddxjqQPWqzGgAjX4XEoSlLVIQ9Uncmc1GYMgbklRJQRjGm4ViJRASSSAzhKU=
+	t=1706993264; cv=none; b=jlHohH7yfiqm1aODvTEoRzozoJHyHq1DQ7ES2BOcq9dVz2b+4SNndJB+s/+bk8J3g6DofQPr4y1npog3G2IG4G4mHLUVM2cxA/h4uk/6BMUqOIDNV7ie7I63ID0ZT2BZisuax44gcmHw1qfETMPElhTTUaUPmIWMGa7B90w/jjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706976522; c=relaxed/simple;
-	bh=TvfqkaY1z7E/EzEJYealS3QK6K6eb9XPzrgRJHOGDws=;
+	s=arc-20240116; t=1706993264; c=relaxed/simple;
+	bh=f2I8gWEzkwSZbGGlhrQHuwLADXjkshYxOtnScKHw11s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OafEAy5LI+mcYj0GR6jfdW+vLAzbyWPd9Ba6MlUVjH69K+Zw+3Qcv9m+lmugT956Suav0uqk19eDrq6v1M4XKprvZWnwJbUAyDlilZJVmZR4oCmA9/qYUsUYv9CBwn3xMDKsm2LlbZzKlFoufwLEJlYty3dtpbtZBA/Ari/7Ulc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QnYmcDof; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a350bfcc621so369408066b.0;
-        Sat, 03 Feb 2024 08:08:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706976519; x=1707581319; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yqxR1EvTMHsgAyMYGoVPWKfZjLT0ZE/JNwoz1peXESY=;
-        b=QnYmcDoftHqKZzNoPNwh2VkVR0jtM85MEE8DINca2l3LMcdxOG4b134q08xtRLVnHJ
-         +JnQDQaXZJ3gr8ungnS8nEaE+z2A9gn9wZElvGIAqBfPa4UXXhSviWqlGvy1C6ekPXkt
-         jxuNyFpuUWE2Bae7YoxFPDAV6ZMFLLJb6izevBLh/i0UPBK1r/oj+9wjqffHI8ofn2ER
-         H4bNzMl9QCU4X1obKiWB1Ape3KMK+DK27lUnec3l8Iya+669XGoHPwHjr2P/SR/ujFpk
-         enJQLFs/bKJWh8YaCja1a5IX2SCJEzm7IkeFW3jgW4kqsD2jQokSR3pyq4eDGPNrLOUm
-         0sMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706976519; x=1707581319;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yqxR1EvTMHsgAyMYGoVPWKfZjLT0ZE/JNwoz1peXESY=;
-        b=ZfvgOA80KUn0xbSv/DS6PxwG4JIKBl4sMl6CrJXUCBdLqRUh3NgqSWHIX/bLTkJpkn
-         +pKoGtFGRseU0Bblfy6rcCHGElwVBP9o1qms12IQ4Zi5Uf2AVeDCE6/WjMhJvFOYwQ62
-         Ko0fzRoHDCAPFursL4RpmoXIAWa2TLugT5DH1ePceG+0TAitaUckyXGLgtXhgB/qEB/N
-         LE6lZSJ4DMKeJZyIEGDMmI3H9q7PMeSrOi7xr3TvCVB2M8M5ktGF0Ap3SW0TVeAyjr0+
-         6N/G74VTwFvxZIpDnhrHu8oshKkU4+vbQVLbE7tP8cuomdgMnQ9e23a0GCvlCjDxObA4
-         jI/Q==
-X-Gm-Message-State: AOJu0YzVPpztst6lrj2nqs+rlH2WCNOO8p93bg3viADZT6mJMjvhsfzp
-	ORZoWj/10D9GNtP49Uq2F//6FAdCbW5YISu57IzKiYlnqqsrPdjw
-X-Google-Smtp-Source: AGHT+IEV7d2FsfRSLMK6a7dxjQNk/sLxnViRxBq5OTzJ2O7LLiHkXev+oosUiHbOyA2opP7IX/dtEA==
-X-Received: by 2002:a17:906:a90:b0:a36:7c3b:8489 with SMTP id y16-20020a1709060a9000b00a367c3b8489mr3918471ejf.42.1706976519228;
-        Sat, 03 Feb 2024 08:08:39 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUuHUp6KK7TLw+ODD5dqWW3j2sdAOJuk0nRArfTl1DCEeSfbYkeJAEyuR4JXQAgXI5LCNM4e5NycB9epZvUukXotFR29/IwESGGDLKTB6RbiSWZotfFi7ANVip5YtK2QvAAkvIEezBh2cyyoOfyapL9i4ZNtUXmp2BUvQwfl+oG1d5dmRKp+wU0Yb8=
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id hd34-20020a17090796a200b00a36f314daa6sm2132144ejc.46.2024.02.03.08.08.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Feb 2024 08:08:38 -0800 (PST)
-Date: Sat, 3 Feb 2024 17:08:36 +0100
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: humidity: hdc3020: add threshold events support
-Message-ID: <20240203160836.GA21281@debian>
-References: <20240203090530.53374-1-dima.fedrau@gmail.com>
- <1eb2034f-b1ef-474d-91f6-c562a5768bfd@gmail.com>
- <20240203144205.GA3727@debian>
- <871e7e7a-c987-4926-957e-5dfdb46d0740@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2ieEU5QHTImoDhGtfYNa29Wywi7gIvfmRQDOwqtEX7rQU3S70ZYCAa0Q37NDayfaw5QzJSdzRrwKGUDkcG+c0mOxfiuM6qN9KQ/GLWe4Kk9MBpW7RMnsPttj1gIs8KJjDm2MNRl4GAsJXdiHVc2GPNXG4wN40yX/1kkA+4unpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GN/4T/Rq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2F8C433F1;
+	Sat,  3 Feb 2024 20:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706993263;
+	bh=f2I8gWEzkwSZbGGlhrQHuwLADXjkshYxOtnScKHw11s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GN/4T/RqtAM5pPUfQihjK3Wa8sAV3pUsmPhYvA/cg2Mt2nro2ZyjanWbrJsFNV3X0
+	 z5BUbR+pQSMZAeHOP3sXKHIURcwPfLXvK10KTL7JVV6BMqAtJcWeBZZaUNH8BgEZwr
+	 WzCvc/4pSyEOOKjimaGiYIRPvzhm5cFZkClqVzDoxmb/PXTafnKB5XS5SvdpzINgmK
+	 q/IJVnPabe73UT5UmIzBjjFDfb7yi95qtdPjsD2ng69sNJ9Ox97m8liHEvjdKMoKE0
+	 QcQjfDe1BO9oUeMuwNyLPZn3s3kiyHosGSbJT7/8lpjlfsPnQ91fjVkcMwRyGM/tUl
+	 QPqwMl+qAzuzA==
+Date: Sat, 3 Feb 2024 21:47:39 +0100
+From: Wolfram Sang <wsa@kernel.org>
+To: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc: Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, alexandre.torgue@foss.st.com, vkoul@kernel.org,
+	jic23@kernel.org, olivier.moysan@foss.st.com,
+	arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
+	fabrice.gasnier@foss.st.com, andi.shyti@kernel.org,
+	ulf.hansson@linaro.org, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, hugues.fruchet@foss.st.com, lee@kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, arnd@kernel.org,
+	richardcochran@gmail.com, Frank Rowand <frowand.list@gmail.com>,
+	peng.fan@oss.nxp.com, lars@metafoo.de, rcsekar@samsung.com,
+	wg@grandegger.com, mkl@pengutronix.de, linux-crypto@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+	netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v8 02/13] dt-bindings: treewide: add access-controllers
+ description
+Message-ID: <Zb6ma9lHMu3SAe0U@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, alexandre.torgue@foss.st.com, vkoul@kernel.org,
+	jic23@kernel.org, olivier.moysan@foss.st.com,
+	arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
+	fabrice.gasnier@foss.st.com, andi.shyti@kernel.org,
+	ulf.hansson@linaro.org, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, hugues.fruchet@foss.st.com, lee@kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, arnd@kernel.org,
+	richardcochran@gmail.com, Frank Rowand <frowand.list@gmail.com>,
+	peng.fan@oss.nxp.com, lars@metafoo.de, rcsekar@samsung.com,
+	wg@grandegger.com, mkl@pengutronix.de, linux-crypto@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+	netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-usb@vger.kernel.org
+References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+ <20231212152356.345703-3-gatien.chevallier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VPm+VxExOC+V7OZ+"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <871e7e7a-c987-4926-957e-5dfdb46d0740@gmail.com>
+In-Reply-To: <20231212152356.345703-3-gatien.chevallier@foss.st.com>
 
-Am Sat, Feb 03, 2024 at 04:53:33PM +0100 schrieb Javier Carrasco:
-> On 03.02.24 15:42, Dimitri Fedrau wrote:
-> > Am Sat, Feb 03, 2024 at 10:30:09AM +0100 schrieb Javier Carrasco:
-> >> Hi Dimitri,
-> >>
-> > Hi Javier,
-> > 
-> >>> +	/* Supported temperature range is from –40 to 125 degree celsius */
-> >> Should that not be val < -40?
-> > yes, you are right. Will fix it.
-> >>> +	if (val < -45 || val > 125)
-> >>> +		return -EINVAL;
-> >>> +
-> > 
-> > Best regards,
-> > Dimitri
-> 
-> When at it, could you please rename the hdc3020_id variable you added to
-> the probe function? It shadows the i2c_device_id global variable (it is
-> not used in the probe function, but there is no need to use the exact
-> same name), and given that it is in the hdc3020_probe function,
-> mentioning the device name again is kind of redundant. Something like
-> just "id" or "dev_id" would suffice.
->
-Sure.
 
-Best regards,
-Dimitri
+--VPm+VxExOC+V7OZ+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Dec 12, 2023 at 04:23:45PM +0100, Gatien Chevallier wrote:
+> access-controllers is an optional property that allows a peripheral to
+> refer to one or more domain access controller(s).
+>=20
+> Description of this property is added to all peripheral binding files of
+> the peripheral under the STM32 firewall controller. It allows an accurate
+> representation of the hardware, where various peripherals are connected
+> to a firewall bus. The firewall can then check the peripheral accesses
+> before allowing its device to probe.
+>=20
+> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # for I2C
+
+
+--VPm+VxExOC+V7OZ+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmW+pmsACgkQFA3kzBSg
+KbY64RAAof4Gx7h4jhXu9UFvGgxDMB7nucJwU2vnrWAQqslpX78IIuHnDzQGSdx4
+YeqQnv3x5PquSqBz8x/rnE1ptR0LqnAgeJdEOQB0AAicQ+VFy75kPngr9dtiCJuf
+SrCwaIYQ13qIhhC6pa7HTEUSQN/KX6DVSffmeJmOJoHIqGa1L1ldEH5tujF71Plb
+q5ugpGi2Jkmb+UU5/EaXadNKZ5b3BSp/xWur8Eemy9Z4DqqoipzJRzSJHufFNZDR
+pRdNn14JQlzQ948vT+YdpGqPE6jrVpd48rygAjaXsPx3cVQx7ouU6tKPnFLjtgyp
+tb0R2ZIQNXVaQV36XLwhvv0qFqHEiY36q+GjYSEbMHbO1b0+zneKgmZXNSwCclEp
+WQ8DrD3UEKTXcDHmoRV5GVgzZyk7wmK8zq3jofTemYyfKhSvsmAiufzZCQLV/9GI
+ScuNib34aJrsiIXiD40DsFNcutPh2v+aBXQmtfpkA++3ZvY9aBQa5KeEqzrKPaa0
+AVXFtXPN4hnNkUzTogCTHEvL7dYtbi0h7W5fun3D5kOLdZuewR8vFAotIaDRG7tB
+S7AWJDu+x2RT2xAs2yJEfSHMwoBZRdq3nJVugmRDb+VELZmIDBdN4vwBRXfi+cHr
+ouzPgt76DcQhfF6JGRUhloWtVuWW3QRQ1uYMpWUrKztG+3WiqBU=
+=nMRV
+-----END PGP SIGNATURE-----
+
+--VPm+VxExOC+V7OZ+--
 

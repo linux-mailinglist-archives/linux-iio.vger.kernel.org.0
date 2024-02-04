@@ -1,265 +1,561 @@
-Return-Path: <linux-iio+bounces-2123-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2124-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0A1848BD9
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 08:30:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C0C848CE6
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 11:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB30B1F217F5
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 07:30:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079021C21ABA
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 10:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC338813;
-	Sun,  4 Feb 2024 07:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E220DFF;
+	Sun,  4 Feb 2024 10:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CWFJuZKT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJryjgu3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FA5B657;
-	Sun,  4 Feb 2024 07:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707031843; cv=fail; b=Qz1JgEGbG/2OqqCnd7lWb1ayAUjC1y+ISZ4CJNHh1sLgGBHxVKoPfBiZ2hPazRjh2YprO7pJweuRrXTU8+3xnv9IxS+QPwqXohmKnZoOqdYwE93Eek0COxXT/VGooghiemIlwVbdseZRIDFXBk5KyJAlp61otLu1tJeD13rUTwI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707031843; c=relaxed/simple;
-	bh=GTwAZNNrIuwbRJ2uLSMTeVGVysRcOo+NmhoPNP/7EWU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZqvykHElfgEaBEcqaphR6scUEpXXu0xMFUFubd3omjz1I18kt0sLnFy9BPznLRYf+FThVoXyUE4BhuD4MQiJWIyS+1V0Xd8MsIhije8YvoqJ+wDCZbbuJtSw58unLa+cCIZiXie/WXVDVY/Y4GqIEgC9eMbOzj1JAOoxCR0cqOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CWFJuZKT; arc=fail smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41441fFJ032641;
-	Sun, 4 Feb 2024 02:30:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	from:to:cc:subject:date:message-id:references:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=DKIM;
-	 bh=GTwAZNNrIuwbRJ2uLSMTeVGVysRcOo+NmhoPNP/7EWU=; b=CWFJuZKTKIRl
-	Z48XEu+jpiz6ikfyZVDaSGZuxYL71y+pOiF2mCpWGBWu3h2Dz3z2EdC+cI/YpAbK
-	MKcaEQNYg1DfYjrhBtrVFsLT0AquvL9sQc17/0xYeObhXubidhb6fRX+FZDVd7VI
-	8PT6G/u9W2Wa8G/pMtgwZpA2EHTBBVKok++of94GTL5JmrkgeMVs3CaqlcImZIgH
-	dh7/FGe9Bx2Qxt9y9O7fuz60Pf4+eq7iT1nrxlEkWubIJniLyuQgASj8T7Dqc3r1
-	dYKGk5XW9oXqPoxOKD/uGA1qMSynIh7AsP/fR+j5B2GY3UBZwfKTb4Uh3FRINb5X
-	x+AAYVb6rA==
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazlp17011008.outbound.protection.outlook.com [40.93.1.8])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3w236rga94-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 04 Feb 2024 02:30:10 -0500 (EST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MarcOVmOE6SVYyQw+Xj8ZxxEH0SGwG9MHPusgUsove4HrYJj4TP/xB7zhETaz87alC6oZK6wkEFykb5N5VerLl1VaRcDSj8Bnz0BsT5AXExqyTVkX/ZPwkzN1Cz6WkvqMMM9ngkiDkPJml7UzxTaGxHMDhx+vfUH6oNERI35ur3AN3l2OtfRq3QiA+NmdKf9PQ3oIlMvCMvsffZgzwcTDj3cYuEIsV+A9bkRIjfijV+7bi4MU2l1BaHWEIghY9Tm6/eH1Ru5vhsT4R00hhb8A1V/WGX3tjt+WrmdID6KaUBHVlPu1EKVdjrecqmoJr5PPqYD7fMFrQ6ffDo8+asNPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GTwAZNNrIuwbRJ2uLSMTeVGVysRcOo+NmhoPNP/7EWU=;
- b=Hpay7BsWtbGzGhQLa4Mg1JOO1HmjWYqY7GlSwvvLvzJwLeWSM59WsZDvn0OKcE0cCkDS8Rc9DDRge3/X2ambkD19HChwsIFVKIbOjkHEOzHTZHH96D5Joxt3lzb9Kp/7dD2uzCYdGFFX6oilcGQW9gIL7o+aJDLzqUXn+b4XbOnf3yz4UKrH9nBfwqWe2LHqdCrKVYk9D9p6WFkQKBcldCyDmtXdIY7UZ6iTWoUaPh767sBVun+XiNCJnG1A/CkZOyAXY+qZeZCY9OyKHm4QGDSNxhuFpMhde1xI4gOSDarWhndmWFDytli2Bosggntm0bXmWQlSJUPpKfq1RooecQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-Received: from SJ0PR03MB6778.namprd03.prod.outlook.com (2603:10b6:a03:40d::22)
- by DS0PR03MB7203.namprd03.prod.outlook.com (2603:10b6:8:117::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.33; Sun, 4 Feb
- 2024 07:30:06 +0000
-Received: from SJ0PR03MB6778.namprd03.prod.outlook.com
- ([fe80::1238:63d5:647e:4838]) by SJ0PR03MB6778.namprd03.prod.outlook.com
- ([fe80::1238:63d5:647e:4838%3]) with mapi id 15.20.7249.032; Sun, 4 Feb 2024
- 07:30:06 +0000
-From: "Sa, Nuno" <Nuno.Sa@analog.com>
-To: David Lechner <dlechner@baylibre.com>
-CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Olivier Moysan
-	<olivier.moysan@foss.st.com>,
-        Rob Herring <robh@kernel.org>
-Subject: RE: [PATCH v8 2/7] dt-bindings: adc: axi-adc: update bindings for
- backend framework
-Thread-Topic: [PATCH v8 2/7] dt-bindings: adc: axi-adc: update bindings for
- backend framework
-Thread-Index: AQHaVenpC6l/M54N0kqbjvrCJdDLILD3lGGAgAI2kRA=
-Date: Sun, 4 Feb 2024 07:30:05 +0000
-Message-ID: 
- <SJ0PR03MB677855546629FA8352AC2D4E99402@SJ0PR03MB6778.namprd03.prod.outlook.com>
-References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
- <20240202-iio-backend-v8-2-f65ee8c8203d@analog.com>
- <CAMknhBHx7U7goWMgygwOA0cpJoPfmCD=8gKZNoBvqcb0ptK0yw@mail.gmail.com>
-In-Reply-To: 
- <CAMknhBHx7U7goWMgygwOA0cpJoPfmCD=8gKZNoBvqcb0ptK0yw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: 
- =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE16WTFaRGMxTTJVdFl6TXlaaTB4TVdWbExXSTNPRGN0WW1ObU1UY3hZelEx?=
- =?utf-8?B?T0RneVhHRnRaUzEwWlhOMFhETTJOV1EzTlRRd0xXTXpNbVl0TVRGbFpTMWlO?=
- =?utf-8?B?emczTFdKalpqRTNNV00wTlRnNE1tSnZaSGt1ZEhoMElpQnplajBpTlRreE1D?=
- =?utf-8?B?SWdkRDBpTVRNek5URTFNRFUwTURRNE1qUXdNRFUxSWlCb1BTSTVlVTh6T0Vw?=
- =?utf-8?B?MWMzbFhPVWR6V1RWRGNsbEhTbTAxVmtKU2FrVTlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZGYjBOQlFVTXpXV0ppTkU4eFptRkJZelUwU2tOcVRsUk5NMVY2Ym1kclMw?=
- =?utf-8?B?MHhUWHBrVVVSQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkVZVUZSUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRV3hIVkVkV1owRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlFUMDlJaTgrUEM5dFpYUmhQZz09?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR03MB6778:EE_|DS0PR03MB7203:EE_
-x-ms-office365-filtering-correlation-id: e4577c9c-6b5c-46e9-bc83-08dc25531bd8
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- rSIB9cS7VdipWVIoRv4yDsGA5HCBKCbvdyYBhVzMCzWOT1MUMdnzDzk16GLP6tZwiwa2o9lYUYCf8igzpzP2rSsDdCOfYhfj7YF2KYI1GOPnNGzX+DGQGIInvZfL9ENj44J/87ImRkkCr/WckYRubzB/gsTo4SD03OGy0BCs0E/AGt0T/V2srEzmMXSAolYG2b+PPscVQO7lfGDIqCRJHx+XRNZPkjgd5pUUPKBXZpkOzYVEx472WkD6r7dqkrD04wCIDhp/GaCj2/CHVIGYIGJlqiqodCDUtn2mI9mfX2ilBVEw/IzzIMhnWapJAaGMb9h6qA74p8mZByVAgP7dqOqUbr4YfriE8AOFzD7QiurwrZSevwJZMkOt62KxIqisGthnV4TB9nVsyTFy2qWNhfFRUFLz5W2/Ujwhtbyp1smvQMzsEH9MW6FCFm7uVHApg9LQXlpsMIBUxOGuVDQ3UDRUBWGOjLYQNMhJ2W3BM5p4+rXYPQtLyA5W4IpK4r5WQl2TwscIHVnhHiH/cdh4UMbbAS2tDcs5Dg0onk2R1uLNwVst2BuN7cZrSUcn86Hr/E4LaZP/YyOwhUAADZyIQ6E7G+//CDTh0UZtAw6nighD4ZVZwIxTOgr3f1vyacl2
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6778.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(346002)(39860400002)(396003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(33656002)(52536014)(5660300002)(7416002)(15650500001)(2906002)(41300700001)(38070700009)(9686003)(26005)(83380400001)(478600001)(55016003)(86362001)(53546011)(7696005)(6506007)(71200400001)(38100700002)(122000001)(66476007)(66946007)(76116006)(66556008)(66446008)(6916009)(316002)(54906003)(8676002)(8936002)(4326008)(64756008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?utf-8?B?Tk5qaWsxeEM5eEVRNHNpa2pQSWpIamI3dDNEb0tqdWNOTTJkREkycGhqdGc3?=
- =?utf-8?B?V25BbzEvQ2NCaHBkNE5NMEhTMjZ6SHBBeXVTWWhBVTFxVkFQQmk1V005ako5?=
- =?utf-8?B?T1RSdUpNMnJZOFRwQmJVdHFTQjVUMXBDL0ZjZEhFSzJ4L0dFUGFEQVVhc3lS?=
- =?utf-8?B?WExMZTVQNUFQZDFvbVRQRUd4OVN2MHAwUGw0VHc0dWpVeUxyY3RQMG0rMEdl?=
- =?utf-8?B?TFlMMXh4K09vdHRvYWZSS2o3YVhtUjNsU01SSVhOeUtnc1Z5UnNVSVVsUlBV?=
- =?utf-8?B?MnZ2OW5LY0NORkRoSUJnN05WZWhITmMwR2RwRzNOM1NwbjhoL2h6cXVwY0hu?=
- =?utf-8?B?TE4rY1lqd1dEOE5yZTBnMGRJaXNwY3gybUxxRFdlM09WbGtVL3h4cHNQSSs3?=
- =?utf-8?B?dm9XL2xXZEhBUjZXY0VjclRHSkk5OFk4RHIySVZiUWwvNGZNSms2d3pzTWI4?=
- =?utf-8?B?VXJVOGxnbUhoSU5SYklDSmV6L2J3andob3JnbDZqWDJFZjVqcG9KSm9LeU5p?=
- =?utf-8?B?ODBQNWZnRTVrN2NaV050ZUtTdnVma0RZek5LU0ZHRjBuQ3ZpSldHb3dmb3c2?=
- =?utf-8?B?a2VlWDRBd05nNStPNks5WDdkTVN2azZkYzdRcnJLQlNFbVBhN1pLbGdCejBx?=
- =?utf-8?B?ZEFyZFBHK21WdmJwaHBOaVlKb3ppWHNvN0RzWEtBVHpXYWgwN2ZOMzFwV1pk?=
- =?utf-8?B?MHBFMEp0YVhrYVI2VG9GWGRmcjVoZFRiU28vTmJISC9lTVYyaExGM2VBSFd3?=
- =?utf-8?B?Y2NnZkFUV3hweWFlSjBxcVpsbW9BWTMyV2x5M2xMc2lsSkFmcFZnc0RJeUh5?=
- =?utf-8?B?MUd0RFhTYkdYRE1QbXVMaGd1MUdIZHFNSXU2Zys5S3ZJZkhZY1hja0VubFZw?=
- =?utf-8?B?eS9wY282dDhuY2tEMUJlaE13WTdTNlE2bWxpUU5JbW80c1hDazIzaVI4YUt0?=
- =?utf-8?B?Y3VvQ25naG5ZYjNSZFdBUFJTanNSdDd5b1ZkVVJWTzB5dlREM1c4TEJ3LzZy?=
- =?utf-8?B?MXNKWEplNmFEdEVIUG9QM0JkcG9IdGRpcC9haDF4VVFBT0pqZDVhRncxMlpQ?=
- =?utf-8?B?R3NqQTkzWGc1bjZXaExsS3FOR2pkZkRMRHVBejAwSWRCeUp5L294N21rODNu?=
- =?utf-8?B?YVU3ZFdsZkNQbUlmNEZWRmRscjN6NkVFRzJnWmxjVWs3blJxOXRIR0hMcCsz?=
- =?utf-8?B?WWliemNRSFp6N2FJMVNlRjRJU2lTMlpFSkVTNFJDWCt4V2VNMjJqTzZ3aU8r?=
- =?utf-8?B?d1JuUlhOZ3ZaY1VtQ2VyY0cwTUVNVUNvLzh5OWh1cFI3RTRoSXBIaCtmVGlM?=
- =?utf-8?B?ekNDUS9ORjdweTdrUG05SThvWGVnWjhzTmFOa3RVS25TNy9qbk5iQ1Q4WEJs?=
- =?utf-8?B?VDNjYjdHang2RjNMdWxZMVNXck9Qc0dqbXpBUTVjNmdiT0x4bHhRTVc4aFU0?=
- =?utf-8?B?N1Ivc05rM01tamp6MCtEbUc2bll0NW9ONTJBVlA0WDNSaVhRTjdIb1RyYkwr?=
- =?utf-8?B?RDlFVHJYU0Z6LzlRa1ZBd1BTT0lXWEdpeTlQTVhHRzVBbnBhbzd2dlIvQ2ZG?=
- =?utf-8?B?elJ2eDF5c3h4VlR6YTNRSDZ6NytDZWFXUXA3c0NLek1xMXc5RmF5RE51dWd3?=
- =?utf-8?B?UGV6Zi9DN2lrMG1tWnYyc1RIbUJDQjNwNnJrTUNLaXhwdkpnanRMTTY4cFJR?=
- =?utf-8?B?THhMQ2gyclcvMnIycnZOYVZXZE5udTJVZ21WV3Q5RFZLQ0duamIybDlJT1l2?=
- =?utf-8?B?eTVWUC83TUVsaXU1a0hYT0RXb2twZTVLaGV5cEl0ZDBZQkFlMFFSSi9GaVNI?=
- =?utf-8?B?eThzdHI3RElVV0UxeHJUUDAvZkM4RmlWSHp4ZCtTQS9CazA3eE40WnE1S0p4?=
- =?utf-8?B?ZFppdGsyMVorV3VxeUY2bWtPcGt1Z2ZhTkhwSVhWcFFiM3VjT3Bsdjh0aS8z?=
- =?utf-8?B?OURnQUNKRkt6bGs1Z1lucEhyRytBTHVhK093d0NoaUs3eEVPZlUybG1SNnBK?=
- =?utf-8?B?NmcvalBTa0txUjM0cFh3VG5wUDRaWmhGNGNTWHpFZlNpUHJaRkUrSGhhNHpC?=
- =?utf-8?B?YTFDdENvcHUrWlorQUs1eXljeUJWTmZJMFlqc1FVaUxqdDRFZVZNYkRnM0ly?=
- =?utf-8?Q?s5r4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956471B59B;
+	Sun,  4 Feb 2024 10:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707043045; cv=none; b=RBXSbFRqe7Kgw7gwTigx0Ny1SLGr9BwCCBV1ltLZVnSUtJlHO0wcziDSl0q4ZDEMqBB7CX30XqXEsEqtxyLUN3Umfb4aNzpCAPQAYSLwwzkVrR0VdSahzCZxg3j13CnXkqXhUDu5XDKtcERZOT+p9aZ5RPdRdnKtqjeTWyHGFvY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707043045; c=relaxed/simple;
+	bh=WB5Pz1kg//9u+ZslxoeU6g2+4RyW4MapvV9JhR2P6BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gqPIzGRJKlON+4c+bdsM4bdNddga3ih7M5wY0mBlfcwTx/PfH0qHYkuzkH2HPbmyT52JkQfGI38a8b9uf5MLef808zt0NIrfWE6PQKU9JTlHgw4Z1eTbHne5x2ipKkJUk6OF+0cK93zKgpnP/dDaQqaXqUl9sab8i2kjRPCtLVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJryjgu3; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a30f7c9574eso473492766b.0;
+        Sun, 04 Feb 2024 02:37:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707043042; x=1707647842; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bIC1+lrcS7R1KbRR4TD5y30tw/y4TTmSSk4RmS745uQ=;
+        b=aJryjgu3wfl2b0e3Lh623CliA4w5cugaXWSqYZq5vOhK6Ymy+mLknYOJk+eXuMV80t
+         s2MODleIesQPxfp4CR6JLfTEdkYK1URg3IRArDFYlkDtJ5B0anwz8pn2jMRiZWcaV0ma
+         FPTJWIMV6hDlmVA1YRZjmaVNIFDc0dpthhBBRjczN1Q+AktFVt3elYdO+lJ79NWtuM80
+         Il5Ziii0G0taEfD/tqkOB+8KvDxkTrdEPTHhxQXY1RMlWgvJ6bhVZtFh6utPZ9TK9EL/
+         gVAjdccHMIzRHwDNTvJze2QDKRjC6xOUcjZ1Z7VoPi9aosejjGDSplkQjQJ4TXl9m3XJ
+         vyTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707043042; x=1707647842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bIC1+lrcS7R1KbRR4TD5y30tw/y4TTmSSk4RmS745uQ=;
+        b=IU1EAhxv/k0dG9+VIsLU0XfI4KlNb/cbrkMJ2lFFAE48KrxZIkdqYhpkgTcVOpVfmd
+         kFoW2DqqVd6rCTEd0i5N3H9cOkcs7EJ/0amUuXhmMOatcXW7os8VES5od0nwNoNzgM+C
+         Dl1bX4jbCCnQhI/wsEgoAgWiQmF10I97zDSECLHBIieM4dbvEwbyfHRWK3s8dC+vDKJu
+         Ke8pRHTh9ew+0XuOWJxw6Z003DwgoURLaLnzCh5ace7ri+KLToZEuQlHJHHF1QQDrDB4
+         MfiKvvTnYZ6nP2bVrsd6X2pB6ti2Ys+8U+QQLG9Vzb5TKbhpskZLRdOJvgTdv5h7rVn5
+         xD6A==
+X-Gm-Message-State: AOJu0Yys6rdOxeHtE000YUeHhBUecReafkJTiZzPHJtcU0QJymdhsdgw
+	+JSM+3zBbLBv9XjfHVnda66DxciF2VPg/2KmrmBFCuIbB27+Prvc
+X-Google-Smtp-Source: AGHT+IEMWLBi7FARt0dFCImAfBDSjqOULB1iStDkomyemn1TYaO7XWcPbQLwQ0cSLnSSiXO9gofMxw==
+X-Received: by 2002:a17:906:314c:b0:a37:4765:658 with SMTP id e12-20020a170906314c00b00a3747650658mr2453651eje.34.1707043041283;
+        Sun, 04 Feb 2024 02:37:21 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVv9/gL7kPHp7QqlxZ4ajY0G2GBL8Gh+zi5u8r+iPRkN8QJmlNkUa2FVDGtqAPqbIGZPDtLRiulv7R2OVcm1SIIW+gd3iL7l8OWPysk2NYqJDk3Zk5PozI3eNLrh7tCHsA4jGIkUReK1WgYg3amlvxNg928P3wAPC9/AJlD4ZKPukAIbLyQx5UmI2GSZW4JfvPIVcsR0LZpzveegEKuH+OnJe4Lh+zRO3s9CGH1BgtmBxTAte1B79SuhZLSig==
+Received: from debian.fritz.box ([93.184.186.109])
+        by smtp.gmail.com with ESMTPSA id vq11-20020a170907a4cb00b00a36cc8c1bcbsm3005158ejc.173.2024.02.04.02.37.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Feb 2024 02:37:20 -0800 (PST)
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: 
+Cc: Dimitri Fedrau <dima.fedrau@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Li peiyu <579lpy@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: humidity: hdc3020: add threshold events support
+Date: Sun,  4 Feb 2024 11:37:10 +0100
+Message-Id: <20240204103710.19212-1-dima.fedrau@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6778.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4577c9c-6b5c-46e9-bc83-08dc25531bd8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Feb 2024 07:30:05.9188
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5I+mZOB7z0Nr/YbXTAsZ5ZjGQO4wqVR7rTVp+84w063mLXMAvsznQ5afd++zrc/Mmq0/oe/H4XrlL2p56s08hA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR03MB7203
-X-Proofpoint-GUID: ndQZTPQJaRK9d-wFJVWtm1bPLt207gx_
-X-Proofpoint-ORIG-GUID: ndQZTPQJaRK9d-wFJVWtm1bPLt207gx_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-04_05,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- adultscore=0 malwarescore=0 clxscore=1011 impostorscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=999 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402040055
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IERhdmlkIExlY2huZXIgPGRs
-ZWNobmVyQGJheWxpYnJlLmNvbT4NCj4gU2VudDogRnJpZGF5LCBGZWJydWFyeSAyLCAyMDI0IDEw
-OjM4IFBNDQo+IFRvOiBTYSwgTnVubyA8TnVuby5TYUBhbmFsb2cuY29tPg0KPiBDYzogbGludXgt
-aWlvQHZnZXIua2VybmVsLm9yZzsgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7IExhcnMtUGV0
-ZXIgQ2xhdXNlbg0KPiA8bGFyc0BtZXRhZm9vLmRlPjsgSGVubmVyaWNoLCBNaWNoYWVsIDxNaWNo
-YWVsLkhlbm5lcmljaEBhbmFsb2cuY29tPjsNCj4gSm9uYXRoYW4gQ2FtZXJvbiA8amljMjNAa2Vy
-bmVsLm9yZz47IFJvYiBIZXJyaW5nIDxyb2JoK2R0QGtlcm5lbC5vcmc+Ow0KPiBLcnp5c3p0b2Yg
-S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpK2R0QGxpbmFyby5vcmc+OyBDb25vciBEb29s
-ZXkNCj4gPGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBGcmFuayBSb3dhbmQgPGZyb3dhbmQubGlzdEBn
-bWFpbC5jb20+OyBPbGl2aWVyDQo+IE1veXNhbiA8b2xpdmllci5tb3lzYW5AZm9zcy5zdC5jb20+
-OyBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3JnPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY4
-IDIvN10gZHQtYmluZGluZ3M6IGFkYzogYXhpLWFkYzogdXBkYXRlIGJpbmRpbmdzIGZvciBiYWNr
-ZW5kDQo+IGZyYW1ld29yaw0KPiANCj4gDQo+IE9uIEZyaSwgRmViIDIsIDIwMjQgYXQgOToxMOKA
-r0FNIE51bm8gU2EgdmlhIEI0IFJlbGF5DQo+IDxkZXZudWxsK251bm8uc2EuYW5hbG9nLmNvbUBr
-ZXJuZWwub3JnPiB3cm90ZToNCj4gPg0KPiA+IEZyb206IE51bm8gU2EgPG51bm8uc2FAYW5hbG9n
-LmNvbT4NCj4gPg0KPiA+ICdhZGksYWRjLWRldicgaXMgbm93IGRlcHJlY2F0ZWQgYW5kIG11c3Qg
-bm90IGJlIHVzZWQgYW55bW9yZS4gSGVuY2UsDQo+ID4gYWxzbyByZW1vdmUgaXQgZnJvbSBiZWlu
-ZyByZXF1aXJlZC4NCj4gPg0KPiA+IFRoZSByZWFzb24gd2h5IGl0J3MgYmVpbmcgZGVwcmVjYXRl
-ZCBpcyBiZWNhdXNlIHRoZSBheGktYWRjIENPUkUgaXMgbm93DQo+ID4gYW4gSUlPIHNlcnZpY2Ug
-cHJvdmlkZXIgaGFyZHdhcmUgKElJTyBiYWNrZW5kcykgZm9yIGNvbnN1bWVycyB0byBtYWtlIHVz
-ZQ0KPiA+IG9mLiBCZWZvcmUsIHRoZSBsb2dpYyB3aXRoICdhZGksYWRjLWRldicgd2FzIHRoZSBv
-cHBvc2l0ZSAoaXQgd2FzIGtpbmQNCj4gPiBvZiBjb25zdW1lciByZWZlcmVuY2luZyBvdGhlciBu
-b2Rlcy9kZXZpY2VzKSBhbmQgdGhhdCBwcm92ZWQgdG8gYmUgd3JvbmcNCj4gPiBhbmQgdG8gbm90
-IHNjYWxlLg0KPiA+DQo+ID4gTm93LCBJSU8gY29uc3VtZXJzIG9mIHRoaXMgaGFyZHdhcmUgYXJl
-IGV4cGVjdGVkIHRvIHJlZmVyZW5jZSBpdCB1c2luZyB0aGUNCj4gPiBpby1iYWNrZW5kcyBwcm9w
-ZXJ0eS4gSGVuY2UsIHRoZSBuZXcgJyNpby1iYWNrZW5kLWNlbGxzJyBpcyBiZWluZyBhZGRlZA0K
-PiA+IHNvIHRoZSBkZXZpY2UgaXMgZWFzaWx5IGlkZW50aWZpZWQgYXMgYSBwcm92aWRlci4NCj4g
-Pg0KPiA+IFJldmlld2VkLWJ5OiBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3JnPg0KPiA+IFNp
-Z25lZC1vZmYtYnk6IE51bm8gU2EgPG51bm8uc2FAYW5hbG9nLmNvbT4NCj4gPiAtLS0NCj4gPiAg
-RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvYWRpLGF4aS1hZGMueWFt
-bCB8IDggKysrKystLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMyBk
-ZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRy
-ZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksYXhpLWFkYy55YW1sDQo+IGIvRG9jdW1lbnRhdGlvbi9k
-ZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvYWRpLGF4aS1hZGMueWFtbA0KPiA+IGluZGV4IDk5
-OTZkZDkzZjg0Yi4uYWRkMTBiMjJkY2FjIDEwMDY0NA0KPiA+IC0tLSBhL0RvY3VtZW50YXRpb24v
-ZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL2FkaSxheGktYWRjLnlhbWwNCj4gPiArKysgYi9E
-b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksYXhpLWFkYy55YW1s
-DQo+ID4gQEAgLTM5LDEyICszOSwxNSBAQCBwcm9wZXJ0aWVzOg0KPiA+ICAgICAgJHJlZjogL3Nj
-aGVtYXMvdHlwZXMueWFtbCMvZGVmaW5pdGlvbnMvcGhhbmRsZQ0KPiA+ICAgICAgZGVzY3JpcHRp
-b246DQo+ID4gICAgICAgIEEgcmVmZXJlbmNlIHRvIGEgdGhlIGFjdHVhbCBBREMgdG8gd2hpY2gg
-dGhpcyBGUEdBIEFEQyBpbnRlcmZhY2VzIHRvLg0KPiA+ICsgICAgZGVwcmVjYXRlZDogdHJ1ZQ0K
-PiA+ICsNCj4gPiArICAnI2lvLWJhY2tlbmRzLWNlbGxzJw0KPiANCj4gU3RpbGwgbWlzc2luZyB0
-aGUgOiBoZXJlLg0KDQpBaGggY3JhcCEhIEkgd2FzIHNvIGJsaW5kbHkgYXNzdW1pbmcgdGhlIGVy
-cm9yIHJlcG9ydCB3YXMgYmVjYXVzZSB0aGUgcHJvcGVydHkgY291bGQNCnN0aWxsIGJlIG1pc3Np
-bmcgaW4gdGhlIGNvcmUgc2NoZW1hcyB0aGF0IEkgZGlkIG5vdCBldmVuIHBhaWQgYXR0ZW50aW9u
-LiBUaGFua3MgZm9yIHRoaXMhDQoNCkJ1dCB3b3JzdCwgdGhlIHByb3BlcnR5IGlzIG5vdCBldmVu
-IGNvcnJlY3QuICNpby1iYWNrZW5kcy1jZWxscyAtPiAjaW8tYmFja2VuZC1jZWxscw0KQm90aCBo
-ZXJlIGFuZCBpbiB0aGUgZXhhbXBsZS4NCg0KSm9uYXRoYW4sIHNvcnJ5IGFib3V0IHRoaXMuLi4g
-TGV0IG1lIGtub3cgaWYgdGhpcyBpcyBzb21ldGhpbmcgeW91IGNhbiBmaXggb3IgaWYgeW91DQp3
-YW50IG1lIHRvIHNwaW4gYW5vdGhlciB2ZXJzaW9uLg0KDQotIE51bm8gU8OhDQoNCg==
+Add threshold events support for temperature and relative humidity. To
+enable them the higher and lower threshold registers must be programmed
+and the higher threshold must be greater then or equal to the lower
+threshold. Otherwise the event is disabled. Invalid hysteresis values
+are ignored by the device. There is no further configuration possible.
+
+Tested by setting thresholds/hysteresis and turning the heater on/off.
+Used iio_event_monitor in tools/iio to catch events while constantly
+displaying temperature and humidity values.
+Threshold and hysteresis values are cached in the driver, used i2c-tools
+to read the threshold and hysteresis values from the device and make
+sure cached values are consistent to values written to the device.
+
+Based on Fix:
+a69eeaad093d "iio: humidity: hdc3020: fix temperature offset" in branch
+fixes-togreg
+
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+---
+Changes in V2:
+  - Fix alphabetical order of includes(Christophe)
+  - Fix typo: change varibale name "HDC3020_R_R_RH_THRESH_LOW_CLR" to
+    HDC3020_R_T_RH_THRESH_LOW_CLR to match variable name pattern
+    (Christophe)
+  - Add constants HDC3020_MIN_TEMP and HDC3020_MAX_TEMP for min/max
+    threshold inputs (Christophe)
+  - Change HDC3020_MIN_TEMP to -40, as stated in the datasheet(Javier)
+  - Fix shadowing of global variable "hdc3020_id" in probe function,
+    rename variable in probe function to "dev_id"(Javier)
+---
+ drivers/iio/humidity/hdc3020.c | 342 +++++++++++++++++++++++++++++++++
+ 1 file changed, 342 insertions(+)
+
+diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+index ed70415512f6..80cfb343c92d 100644
+--- a/drivers/iio/humidity/hdc3020.c
++++ b/drivers/iio/humidity/hdc3020.c
+@@ -14,11 +14,13 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ 
+ #include <asm/unaligned.h>
+ 
++#include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ 
+ #define HDC3020_HEATER_CMD_MSB		0x30 /* shared by all heater commands */
+@@ -26,21 +28,47 @@
+ #define HDC3020_HEATER_DISABLE		0x66
+ #define HDC3020_HEATER_CONFIG		0x6E
+ 
++#define HDC3020_THRESH_TEMP_MASK	GENMASK(8, 0)
++#define HDC3020_THRESH_TEMP_SHIFT	7
++#define HDC3020_THRESH_HUM_MASK		GENMASK(15, 9)
++
++#define HDC3020_STATUS_T_LOW_ALERT	BIT(6)
++#define HDC3020_STATUS_T_HIGH_ALERT	BIT(7)
++#define HDC3020_STATUS_RH_LOW_ALERT	BIT(8)
++#define HDC3020_STATUS_RH_HIGH_ALERT	BIT(9)
++
+ #define HDC3020_READ_RETRY_TIMES	10
+ #define HDC3020_BUSY_DELAY_MS		10
+ 
+ #define HDC3020_CRC8_POLYNOMIAL		0x31
+ 
++#define HDC3020_MIN_TEMP		-40
++#define HDC3020_MAX_TEMP		125
++
+ static const u8 HDC3020_S_AUTO_10HZ_MOD0[2] = { 0x27, 0x37 };
+ 
++static const u8 HDC3020_S_STATUS[2] = { 0x30, 0x41 };
++
+ static const u8 HDC3020_EXIT_AUTO[2] = { 0x30, 0x93 };
+ 
++static const u8 HDC3020_S_T_RH_THRESH_LOW[2] = { 0x61, 0x00 };
++static const u8 HDC3020_S_T_RH_THRESH_LOW_CLR[2] = { 0x61, 0x0B };
++static const u8 HDC3020_S_T_RH_THRESH_HIGH_CLR[2] = { 0x61, 0x16 };
++static const u8 HDC3020_S_T_RH_THRESH_HIGH[2] = { 0x61, 0x1D };
++
+ static const u8 HDC3020_R_T_RH_AUTO[2] = { 0xE0, 0x00 };
+ static const u8 HDC3020_R_T_LOW_AUTO[2] = { 0xE0, 0x02 };
+ static const u8 HDC3020_R_T_HIGH_AUTO[2] = { 0xE0, 0x03 };
+ static const u8 HDC3020_R_RH_LOW_AUTO[2] = { 0xE0, 0x04 };
+ static const u8 HDC3020_R_RH_HIGH_AUTO[2] = { 0xE0, 0x05 };
+ 
++static const u8 HDC3020_R_T_RH_THRESH_LOW[2] = { 0xE1, 0x02 };
++static const u8 HDC3020_R_T_RH_THRESH_LOW_CLR[2] = { 0xE1, 0x09 };
++static const u8 HDC3020_R_T_RH_THRESH_HIGH_CLR[2] = { 0xE1, 0x14 };
++static const u8 HDC3020_R_T_RH_THRESH_HIGH[2] = { 0xE1, 0x1F };
++
++static const u8 HDC3020_R_STATUS[2] = { 0xF3, 0x2D };
++
+ struct hdc3020_data {
+ 	struct i2c_client *client;
+ 	/*
+@@ -50,22 +78,54 @@ struct hdc3020_data {
+ 	 * if the device does not respond).
+ 	 */
+ 	struct mutex lock;
++	/*
++	 * Temperature and humidity thresholds are packed together into a single
++	 * 16 bit value. Each threshold is represented by a truncated 16 bit
++	 * value. The 7 MSBs of a relative humidity threshold are concatenated
++	 * with the 9 MSBs of a temperature threshold, where the temperature
++	 * threshold resides in the 7 LSBs. Due to the truncated representation,
++	 * there is a resolution loss of 0.5 degree celsius in temperature and a
++	 * 1% resolution loss in relative humidity.
++	 */
++	u16 t_rh_thresh_low;
++	u16 t_rh_thresh_high;
++	u16 t_rh_thresh_low_clr;
++	u16 t_rh_thresh_high_clr;
+ };
+ 
+ static const int hdc3020_heater_vals[] = {0, 1, 0x3FFF};
+ 
++static const struct iio_event_spec hdc3020_t_rh_event[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++		BIT(IIO_EV_INFO_HYSTERESIS),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++		BIT(IIO_EV_INFO_HYSTERESIS),
++	},
++};
++
+ static const struct iio_chan_spec hdc3020_channels[] = {
+ 	{
+ 		.type = IIO_TEMP,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_PEAK) |
+ 		BIT(IIO_CHAN_INFO_TROUGH) | BIT(IIO_CHAN_INFO_OFFSET),
++		.event_spec = hdc3020_t_rh_event,
++		.num_event_specs = ARRAY_SIZE(hdc3020_t_rh_event),
+ 	},
+ 	{
+ 		.type = IIO_HUMIDITYRELATIVE,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_PEAK) |
+ 		BIT(IIO_CHAN_INFO_TROUGH),
++		.event_spec = hdc3020_t_rh_event,
++		.num_event_specs = ARRAY_SIZE(hdc3020_t_rh_event),
+ 	},
+ 	{
+ 		/*
+@@ -389,10 +449,241 @@ static int hdc3020_write_raw(struct iio_dev *indio_dev,
+ 	return -EINVAL;
+ }
+ 
++static int hdc3020_write_thresh(struct iio_dev *indio_dev,
++				const struct iio_chan_spec *chan,
++				enum iio_event_type type,
++				enum iio_event_direction dir,
++				enum iio_event_info info,
++				int val, int val2)
++{
++	struct hdc3020_data *data = iio_priv(indio_dev);
++	u16 *thresh;
++	u8 buf[5];
++	int ret;
++
++	/* Supported temperature range is from –40 to 125 degree celsius */
++	if (val < HDC3020_MIN_TEMP || val > HDC3020_MAX_TEMP)
++		return -EINVAL;
++
++	/* Select threshold and associated register */
++	if (info == IIO_EV_INFO_VALUE) {
++		if (dir == IIO_EV_DIR_RISING) {
++			thresh = &data->t_rh_thresh_high;
++			memcpy(buf, HDC3020_S_T_RH_THRESH_HIGH, 2);
++		} else {
++			thresh = &data->t_rh_thresh_low;
++			memcpy(buf, HDC3020_S_T_RH_THRESH_LOW, 2);
++		}
++	} else {
++		if (dir == IIO_EV_DIR_RISING) {
++			thresh = &data->t_rh_thresh_high_clr;
++			memcpy(buf, HDC3020_S_T_RH_THRESH_HIGH_CLR, 2);
++		} else {
++			thresh = &data->t_rh_thresh_low_clr;
++			memcpy(buf, HDC3020_S_T_RH_THRESH_LOW_CLR, 2);
++		}
++	}
++
++	guard(mutex)(&data->lock);
++	switch (chan->type) {
++	case IIO_TEMP:
++		/*
++		 * Store truncated temperature threshold into 9 LSBs while
++		 * keeping the old humidity threshold in the 7 MSBs.
++		 */
++		val = (((val + 45) * 65535 / 175) >> HDC3020_THRESH_TEMP_SHIFT);
++		val &= HDC3020_THRESH_TEMP_MASK;
++		val |= (*thresh & HDC3020_THRESH_HUM_MASK);
++		break;
++	case IIO_HUMIDITYRELATIVE:
++		/*
++		 * Store truncated humidity threshold into 7 MSBs while
++		 * keeping the old temperature threshold in the 9 LSBs.
++		 */
++		val = ((val * 65535 / 100) & HDC3020_THRESH_HUM_MASK);
++		val |= (*thresh & HDC3020_THRESH_TEMP_MASK);
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	put_unaligned_be16(val, &buf[2]);
++	buf[4] = crc8(hdc3020_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
++	ret = hdc3020_write_bytes(data, buf, 5);
++	if (ret)
++		return ret;
++
++	/* Update threshold */
++	*thresh = val;
++
++	return 0;
++}
++
++static int _hdc3020_read_thresh(struct hdc3020_data *data,
++				enum iio_event_info info,
++				enum iio_event_direction dir, u16 *thresh)
++{
++	u8 crc, buf[3];
++	const u8 *cmd;
++	int ret;
++
++	if (info == IIO_EV_INFO_VALUE) {
++		if (dir == IIO_EV_DIR_RISING)
++			cmd = HDC3020_R_T_RH_THRESH_HIGH;
++		else
++			cmd = HDC3020_R_T_RH_THRESH_LOW;
++	} else {
++		if (dir == IIO_EV_DIR_RISING)
++			cmd = HDC3020_R_T_RH_THRESH_HIGH_CLR;
++		else
++			cmd = HDC3020_R_T_RH_THRESH_LOW_CLR;
++	}
++
++	ret = hdc3020_read_bytes(data, cmd, buf, 3);
++	if (ret < 0)
++		return ret;
++
++	/* CRC check of the threshold */
++	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
++	if (crc != buf[2])
++		return -EINVAL;
++
++	*thresh = get_unaligned_be16(buf);
++
++	return 0;
++}
++
++static int hdc3020_read_thresh(struct iio_dev *indio_dev,
++			       const struct iio_chan_spec *chan,
++			       enum iio_event_type type,
++			       enum iio_event_direction dir,
++			       enum iio_event_info info,
++			       int *val, int *val2)
++{
++	struct hdc3020_data *data = iio_priv(indio_dev);
++	u16 *thresh;
++
++	/* Select threshold */
++	if (info == IIO_EV_INFO_VALUE) {
++		if (dir == IIO_EV_DIR_RISING)
++			thresh = &data->t_rh_thresh_high;
++		else
++			thresh = &data->t_rh_thresh_low;
++	} else {
++		if (dir == IIO_EV_DIR_RISING)
++			thresh = &data->t_rh_thresh_high_clr;
++		else
++			thresh = &data->t_rh_thresh_low_clr;
++	}
++
++	guard(mutex)(&data->lock);
++	switch (chan->type) {
++	case IIO_TEMP:
++		/* Get the truncated temperature threshold from 9 LSBs,
++		 * shift them and calculate the threshold according to the
++		 * formula in the datasheet.
++		 */
++		*val = ((*thresh) & HDC3020_THRESH_TEMP_MASK) <<
++			HDC3020_THRESH_TEMP_SHIFT;
++		*val = -2949075 + (175 * (*val));
++		*val2 = 65535;
++		break;
++	case IIO_HUMIDITYRELATIVE:
++		/* Get the truncated humidity threshold from 7 MSBs, and
++		 * calculate the threshold according to the formula in the
++		 * datasheet.
++		 */
++		*val = 100 * ((*thresh) & HDC3020_THRESH_HUM_MASK);
++		*val2 = 65535;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	return IIO_VAL_FRACTIONAL;
++}
++
++static int hdc3020_clear_status(struct hdc3020_data *data)
++{
++	return hdc3020_write_bytes(data, HDC3020_S_STATUS, 2);
++}
++
++static int hdc3020_read_status(struct hdc3020_data *data, u16 *stat)
++{
++	u8 crc, buf[3];
++	int ret;
++
++	ret = hdc3020_read_bytes(data, HDC3020_R_STATUS, buf, 3);
++	if (ret < 0)
++		return ret;
++
++	/* CRC check of the status */
++	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
++	if (crc != buf[2])
++		return -EINVAL;
++
++	*stat = get_unaligned_be16(buf);
++
++	return 0;
++}
++
++static irqreturn_t hdc3020_interrupt_handler(int irq, void *private)
++{
++	struct iio_dev *indio_dev = private;
++	struct hdc3020_data *data;
++	u16 stat;
++	int ret;
++
++	data = iio_priv(indio_dev);
++	ret = hdc3020_read_status(data, &stat);
++	if (ret)
++		return IRQ_NONE;
++
++	if (!(stat & (HDC3020_STATUS_T_HIGH_ALERT | HDC3020_STATUS_T_LOW_ALERT |
++		HDC3020_STATUS_RH_HIGH_ALERT | HDC3020_STATUS_RH_LOW_ALERT)))
++		return IRQ_NONE;
++
++	if (stat & HDC3020_STATUS_T_HIGH_ALERT)
++		iio_push_event(indio_dev,
++			       IIO_MOD_EVENT_CODE(IIO_TEMP, 0,
++						  IIO_NO_MOD,
++						  IIO_EV_TYPE_THRESH,
++						  IIO_EV_DIR_RISING),
++						  iio_get_time_ns(indio_dev));
++
++	if (stat & HDC3020_STATUS_T_LOW_ALERT)
++		iio_push_event(indio_dev,
++			       IIO_MOD_EVENT_CODE(IIO_TEMP, 0,
++						  IIO_NO_MOD,
++						  IIO_EV_TYPE_THRESH,
++						  IIO_EV_DIR_FALLING),
++						  iio_get_time_ns(indio_dev));
++
++	if (stat & HDC3020_STATUS_RH_HIGH_ALERT)
++		iio_push_event(indio_dev,
++			       IIO_MOD_EVENT_CODE(IIO_HUMIDITYRELATIVE, 0,
++						  IIO_NO_MOD,
++						  IIO_EV_TYPE_THRESH,
++						  IIO_EV_DIR_RISING),
++						  iio_get_time_ns(indio_dev));
++
++	if (stat & HDC3020_STATUS_RH_LOW_ALERT)
++		iio_push_event(indio_dev,
++			       IIO_MOD_EVENT_CODE(IIO_HUMIDITYRELATIVE, 0,
++						  IIO_NO_MOD,
++						  IIO_EV_TYPE_THRESH,
++						  IIO_EV_DIR_FALLING),
++						  iio_get_time_ns(indio_dev));
++
++	return IRQ_HANDLED;
++}
++
+ static const struct iio_info hdc3020_info = {
+ 	.read_raw = hdc3020_read_raw,
+ 	.write_raw = hdc3020_write_raw,
+ 	.read_avail = hdc3020_read_available,
++	.read_event_value = hdc3020_read_thresh,
++	.write_event_value = hdc3020_write_thresh,
+ };
+ 
+ static void hdc3020_stop(void *data)
+@@ -402,6 +693,7 @@ static void hdc3020_stop(void *data)
+ 
+ static int hdc3020_probe(struct i2c_client *client)
+ {
++	const struct i2c_device_id *dev_id;
+ 	struct iio_dev *indio_dev;
+ 	struct hdc3020_data *data;
+ 	int ret;
+@@ -413,6 +705,8 @@ static int hdc3020_probe(struct i2c_client *client)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
++	dev_id = i2c_client_get_device_id(client);
++
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
+ 	mutex_init(&data->lock);
+@@ -425,6 +719,54 @@ static int hdc3020_probe(struct i2c_client *client)
+ 	indio_dev->channels = hdc3020_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(hdc3020_channels);
+ 
++	/* Read out upper and lower thresholds and hysteresis, which can be the
++	 * default values or values programmed into non-volatile memory.
++	 */
++	ret = _hdc3020_read_thresh(data, IIO_EV_INFO_VALUE, IIO_EV_DIR_FALLING,
++				   &data->t_rh_thresh_low);
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "Unable to get low thresholds\n");
++
++	ret = _hdc3020_read_thresh(data, IIO_EV_INFO_VALUE, IIO_EV_DIR_RISING,
++				   &data->t_rh_thresh_high);
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "Unable to get high thresholds\n");
++
++	ret = _hdc3020_read_thresh(data, IIO_EV_INFO_HYSTERESIS,
++				   IIO_EV_DIR_FALLING,
++				   &data->t_rh_thresh_low_clr);
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "Unable to get low hysteresis\n");
++
++	ret = _hdc3020_read_thresh(data, IIO_EV_INFO_HYSTERESIS,
++				   IIO_EV_DIR_RISING,
++				   &data->t_rh_thresh_high_clr);
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "Unable to get high hysteresis\n");
++
++	if (client->irq) {
++		/* The alert output is activated by default upon power up, hardware
++		 * reset, and soft reset. Clear the status register before enabling
++		 * the interrupt.
++		 */
++		ret = hdc3020_clear_status(data);
++		if (ret)
++			return ret;
++
++		ret = devm_request_threaded_irq(&client->dev, client->irq,
++						NULL, hdc3020_interrupt_handler,
++						IRQF_TRIGGER_RISING |
++						IRQF_ONESHOT,
++						dev_id->name, indio_dev);
++		if (ret)
++			return dev_err_probe(&client->dev, ret,
++					     "Failed to request IRQ\n");
++	}
++
+ 	ret = hdc3020_write_bytes(data, HDC3020_S_AUTO_10HZ_MOD0, 2);
+ 	if (ret)
+ 		return dev_err_probe(&client->dev, ret,
+-- 
+2.39.2
+
 

@@ -1,138 +1,133 @@
-Return-Path: <linux-iio+bounces-2141-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB01848E32
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 14:49:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823BC848E3B
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB482B218A4
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 13:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B450A1C212CD
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 14:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AFA224D8;
-	Sun,  4 Feb 2024 13:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06584224EE;
+	Sun,  4 Feb 2024 14:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="KOG0LEdg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZG18/A7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F2522615
-	for <linux-iio@vger.kernel.org>; Sun,  4 Feb 2024 13:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78AE224DF;
+	Sun,  4 Feb 2024 14:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707054570; cv=none; b=AYAsRlOzvrOg0MkUxht168cu3UNmnXT+SMjXhB5gO/fOzkY3Qb650472+vIt0EnzId2po7mgdMwd8kskHUZMeMFfaICvP9IyUkVJQuzB7rSoYNruPhdEwDGFbSIBMiA5/lvqizJWz2gJszuE7azfIooNUvo+Iy/8xImj/D5r1bM=
+	t=1707055224; cv=none; b=mCka1B9KRP8aRC6NKAz/nbVIfEvGQ2jqb0K3Hlgw2BlkWOyg8PZPy8hIxOPnx1C3z1MzxRF4sX5VBBNNdpgQ8KsNp65snhxYh+0bFqRh5c3wIQ4ZlTqpKwf4ASTtqerYhKHe8thylqq24HrkyP5uCF8xu1XYuonYSuEzLgsfupA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707054570; c=relaxed/simple;
-	bh=DRjmmIS9cSTb7KVKTddvq0AK3KmXbEry8tF9wDr9F8g=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UB/Lx8dCCoFlgo5VO9ofP/D3Dr5HS0l+lw1Ls6Y/lVpNarukntqdHbudhEE1gYJb/g6blApG2wQO/hFHbDTxrIyB1V8Bn00j/TyRw11e38lTcCCEFW4HhMBNXfRTeP/uZdARuKPCxYiyBy2JBwDklAY8qvuzohLeSbmKl+p4o4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=KOG0LEdg; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d958e0d73dso17844335ad.1
-        for <linux-iio@vger.kernel.org>; Sun, 04 Feb 2024 05:49:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1707054568; x=1707659368; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DRjmmIS9cSTb7KVKTddvq0AK3KmXbEry8tF9wDr9F8g=;
-        b=KOG0LEdguqiIwe5o9AikfZBAqiewBBhTYL7pTZAoSVsGO3vca4jjYYccbNeALl8lqL
-         v77pHZabfNug5DedW3xubi6YHgF6bHuG0KHFNgleGtp0Lvt/lxEW9brCvp487ABC8rds
-         I7/jemwkFJQHAIDuQZpFl08q9nikV5HLIb+WyyeQHppEd4C/Bow90tt4PBUA27DsEhPU
-         ukzvQtKZlQtjd7WuC+PgPMM6vLeh5vBSJ2fZMqvpLvA5Egcz6hOGyeCi/KfTqD6sv1rS
-         MACqKZHiouaYTX79bfdE79q7ndlY4mzZG5vbrfFi6Mgo+uVzzu5VASWdn62tHJNOwtCp
-         YEDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707054568; x=1707659368;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DRjmmIS9cSTb7KVKTddvq0AK3KmXbEry8tF9wDr9F8g=;
-        b=QKBayfRnve0SsuqKUOu3ryDB15uwatENJZH9TgJQUHyVkEFXybgJQiUlBRTh/xS0rL
-         BDbO2HbrnKyiDbcOdgZ6TxLJqKD2Yxpiu/9D+S3hF9i3mEf05UsJ25KXuf1oQQnHPNQJ
-         1iMcFPb2OGm9XXGqm98NMNE6wZrL/8XuFAiGDzvnAeOuuZPqv4ec3yvtSJd1q9xjcJ1g
-         SNDqNJEH4uXU4UiyT043PlUcbdy5TEl9vvpAHldutyKTgJwgrdaxYizCsf2+VPeuSzxU
-         dHAqePnzUv4S+AdVDJlhpzSzVyecMeP/EaWdwEZ+1OD8N6rxqN3ssDV89SE5KqMgDF4l
-         xv9Q==
-X-Gm-Message-State: AOJu0YzkjLNO1HNQqAsK47/91d7Oyy2mtXm0DGPcPFZwqtMDBWxURqQL
-	9R6CRxxp42qnc7DckmQd9U/kBoYSLvhK2wwQ8EznEVRkDyp1w0u+sNyTF/ouhiQ=
-X-Google-Smtp-Source: AGHT+IHLEptOVFKMIX5GtWVWnVG92zR6eNJWaRfVs/d+UuI7of6DvQ/4iRmvqxtFxcb9EbJWDFjExw==
-X-Received: by 2002:a17:902:ceca:b0:1d9:ae31:83f1 with SMTP id d10-20020a170902ceca00b001d9ae3183f1mr851473plg.18.1707054567656;
-        Sun, 04 Feb 2024 05:49:27 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVO0Q3c+4wj8MFfmDAAwgW8pWg9wooi7XUxOniryudNEMlFE3jXm4XhySIp8NJphGz8wwBE64I+SJDp/TDYDmQ7N6kyu1q4nMdCgbdaLJTQBVpzVfxjMUbTSZzn/Y42GRdqXY/B7sHbfqQFs89P+j8E8U4WoHmxFWxz+hvU0vktKoHkSYR8kr830Is=
-Received: from [192.168.20.11] ([180.150.112.156])
-        by smtp.gmail.com with ESMTPSA id q23-20020a170902edd700b001d71ef6afe0sm4610503plk.103.2024.02.04.05.49.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Feb 2024 05:49:27 -0800 (PST)
-Message-ID: <9f94a3de-7f04-4ad8-9b98-9e6312cce589@tweaklogic.com>
-Date: Mon, 5 Feb 2024 00:19:14 +1030
+	s=arc-20240116; t=1707055224; c=relaxed/simple;
+	bh=+GbbwUe7Q/ClATrUhODZyGj8Pxv7kTwf0nLJ4c8so2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K48bVjbioR7zxtVOaVBvW+EUfMQBMjhw+V94ViYGrrQokH0RvjqtBOH0wB4g6xsIFQ3+1C0QFDiP4WLeR937dQS92TcDJq0386jhRzXa1vIc+HeaDcSv3o/4KwXanEgYoEFVXwGsb+nH8B1aF3ZwOIy3b13UfdP3SG5AkWj5r4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZG18/A7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDDC43390;
+	Sun,  4 Feb 2024 14:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707055224;
+	bh=+GbbwUe7Q/ClATrUhODZyGj8Pxv7kTwf0nLJ4c8so2Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kZG18/A7pATcoA7ozOqMJrduF5tXbE9xArqvMAIOJUTfOu//omK3EHrMvIi2WaA+b
+	 9OllZmyZsjRz3U5ALKGQZGCJUorupiVv3PxLBUJJGXTcdiSENbk5LGZuyQvtgW70tl
+	 O6+O4JBJ4T8vDteylY5clKCVQfodca/23VXKXPDk2h2edthKCPW7ihXPzLxfACJLPy
+	 QLrTuiowESJpIqQExq6zR74a6QxtwCBrRB0iVEyyCNcwFXXtM4xgx6lom01z/CtxLn
+	 MPUoqUMltP3TniYqfbBNm8XJQMzZRtOMxrVfzAhYOIk9fKxPb4DJZeyYaSsOLZ/t4f
+	 bFzI6kfE1hR2A==
+Date: Sun, 4 Feb 2024 14:00:10 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jesus Gonzalez <jesusmgh@gmail.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow
+ binding on some devices
+Message-ID: <20240204140010.7edaa782@jic23-huawei>
+In-Reply-To: <20240202173040.26806-2-jesusmgh@gmail.com>
+References: <20240202173040.26806-2-jesusmgh@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: gts-helper: Fix division loop
-Content-Language: en-US
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi>
- <20240107162253.66c1f0f1@jic23-huawei>
- <a41ef2c9-bd74-4b0e-afb7-12e198847609@tweaklogic.com>
- <717b7e70-5cf8-4671-8a6b-005eefd0535e@gmail.com>
- <3742308c-d063-4179-a4cb-80db021ede46@tweaklogic.com>
-In-Reply-To: <3742308c-d063-4179-a4cb-80db021ede46@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Matti,
->>>>>   drivers/iio/industrialio-gts-helper.c | 5 ++---
->>>>>   1 file changed, 2 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->>>>> index 7653261d2dc2..abcab2d38589 100644
->>>>> --- a/drivers/iio/industrialio-gts-helper.c
->>>>> +++ b/drivers/iio/industrialio-gts-helper.c
->>>>> @@ -34,7 +34,7 @@
->>>>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>>>   {
->>>>>       u64 full = max;
->>>>> -    int tmp = 1;
->>>>> +    int tmp = 0;
->>>>>       if (scale > full || !scale)
->>>>>           return -EINVAL;
->>>>> @@ -48,8 +48,7 @@ static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>>>           tmp++;
->>>>>       }
->>>>> -    while (full > scale * (u64)tmp)
->>>>> -        tmp++;
->>>>> +    tmp += div64_u64(full, scale);
->>>>>       return tmp;
->>>>>   }
->>>>>
->>>>> base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
->>>>
->>>>
->>> Hi Matti,
->>>
->>> Your fix works beautifully with the latest version of apds9306 driver which I am working on.
->>> All available scale values can be set without any errors. Thank you.
->>
->> Thanks for testing Subhajit! Just to ensure we have no miscommunication - did you test just this division fix, or the rounding fix here:
->> https://lore.kernel.org/lkml/37d3aa193e69577353d314e94463a08d488ddd8d.1701780964.git.mazziesaccount@gmail.com/
-> You are most welcome. I did not check the above rounding fix pointed out by the link. I will be happy to check it and let you know by the end of this month.
-> I checked this division fix.
-I tested the patch in the above link with adps9306 driver which I am working on and it seems to work well without any issues.
+On Fri,  2 Feb 2024 18:30:41 +0100
+Jesus Gonzalez <jesusmgh@gmail.com> wrote:
 
-Regards,
-Subhajit Ghosh
+> "10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and 
+> probably others) in their ACPI table as the ID for the bmi160 IMU. This 
+> means the bmi160_i2c driver won't bind to it, and the IMU is unavailable 
+> to the user. Manufacturers have been approached on several occasions to 
+> try getting a BIOS with a fixed ID, mostly without actual positive 
+> results, and since affected devices are already a few years old, this is 
+> not expected to change. This patch enables using the bmi160_i2c driver for 
+> the bmi160 IMU on these devices.
+Hi Jesus,
+
+https://lore.kernel.org/lkml/CAHp75Vct-AXnU7QQmdE7nyYZT-=n=p67COPLiiZTet7z7snL-g@mail.gmail.com/
+Lays out what Andy (and for that matter I) consider necessary for such
+a patch.
+
+In short, we want to see devices called out here - with a DSDT section.
++ a clear comment in the code.
+
+The big problem here is this tramples on Realtech's ID space. It's not just
+a made up code (incidentally the BMI0160 isn't valid either),
+it's a valid code but for an entirely different (PCI) device.
+
+So we need as much info as possible in the patch description and the driver
+itself to justify carrying this.   Tempting to add a firmware bug taint on
+it as well but that might scare people :)
+
+Jonathan
+
+
+> 
+> Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
+> ---
+> A device-specific transformation matrix can then be provided in a second
+> step through udev hwdb.
+> 
+> This has been discussed before in 2021, see here:
+> https://lore.kernel.org/lkml/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/
+> 
+> Lenovo, as an example of a big manufacturer, is also using this ID:
+> https://www.reddit.com/r/linux/comments/r6f9de/comment/hr8bdfs/?context=3
+> 
+> At least some discussions with GPD took place on the GPD server Discord,
+> for which I can provide proof on demand via screenshot (if not accessible
+> directly).
+> 
+> I have read the patch submission instructions and followed them to the
+> best of my knowledge. Still, this is my first kernel patch submission,
+> so I'd be glad if you could please point out any mistakes. Thank you!
+> 
+> 
+>  drivers/iio/imu/bmi160/bmi160_spi.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi160/bmi160_spi.c
+> index 8b573ea99af2..0874c37c6670 100644
+> --- a/drivers/iio/imu/bmi160/bmi160_spi.c
+> +++ b/drivers/iio/imu/bmi160/bmi160_spi.c
+> @@ -41,6 +41,7 @@ MODULE_DEVICE_TABLE(spi, bmi160_spi_id);
+>  
+>  static const struct acpi_device_id bmi160_acpi_match[] = {
+>  	{"BMI0160", 0},
+> +	{"10EC5280", 0},
+>  	{ },
+>  };
+>  MODULE_DEVICE_TABLE(acpi, bmi160_acpi_match);
 
 

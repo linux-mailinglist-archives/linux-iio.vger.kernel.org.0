@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-2150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2151-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E967848EC5
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:01:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED25848ECD
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C09CF1C21ECC
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8485A1F21B0D
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C3B22339;
-	Sun,  4 Feb 2024 15:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E96224D2;
+	Sun,  4 Feb 2024 15:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ui6jVwem"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMDiEiCo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654B2224E3
-	for <linux-iio@vger.kernel.org>; Sun,  4 Feb 2024 15:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3A8224E3;
+	Sun,  4 Feb 2024 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707058907; cv=none; b=hJk8OXZRvBX3QG+eroJyR5bnRamcAGvGhS/+2fDzXIzaQzxM98QQA73IhiDdUbgKmZe5+pkEAiNXzNIJqYku/lwpsIMRI0yrcEU45jdL6sId6q+EOCNlTrX/CaPHbBcJDzIsW1ii1+Sq1vy/6FfcbM1/Gas9NL6b23oWeMhao5I=
+	t=1707059338; cv=none; b=dSXsFCQAR939n75qL9tfwkudycDlMKK92tra5UCMsQC5cDCvbm7hCXNv465gLDm/8xc0aE7BH84WkxqevLvAVz9nbP2Z1FKbdhKR//XbLf9AVNTE9F5uHBUDkEsMcXzpqKLmTaAVErF+RzAq6ceVUQjEsdn1KkSk4sdXIds/nt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707058907; c=relaxed/simple;
-	bh=7qDRAB4TxkhmFoDiMqTZe8sj5t7wp99Y3ANS/rTKXCc=;
+	s=arc-20240116; t=1707059338; c=relaxed/simple;
+	bh=diWs3n7BcEuYEZpCWt4QRWyW21+UNJGnGq5SYsQ7F/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FlVfJlErY+/ENreHrLnnQ6psRkKURpoPntkShq4NJYUbxoryrDVrvLpQXB4oQ63ZltugdagIM66DtH3FdAsiuby29I7KJJgaXkwIXcJCxx2WBjBEXlTAE/1NwFvqR6Ku7WLtNfpoeN5y6JgnRkS1uCSWwPZOoxehLLTYrX7R1+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ui6jVwem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87929C433F1;
-	Sun,  4 Feb 2024 15:01:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D0d5552CJDnsPaW9NWZVS21IguIJcozWy0Vt/LZ7M6iomqNvK8XEOhEueUWYRvN2igkZMCO1g/EMn4CyrqS/eZ+53hTpExcKIucrAVt5m8r2ykNwKHeRD3SnxhVbQpi9sxTdYztGXmgwzEU1M4vGK2QHUbn3RpVR7VsT0PSSF9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMDiEiCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712F9C433C7;
+	Sun,  4 Feb 2024 15:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707058906;
-	bh=7qDRAB4TxkhmFoDiMqTZe8sj5t7wp99Y3ANS/rTKXCc=;
+	s=k20201202; t=1707059337;
+	bh=diWs3n7BcEuYEZpCWt4QRWyW21+UNJGnGq5SYsQ7F/M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ui6jVwem/K8GJtYdSkBEowfk7SZIcctknbGeWEuEuVU0goBi/clG0/fGGCRhEoiX+
-	 ge3xoJZ/cdjzGkrV8dpIeVTV07ZAyp8Sf9GPoms/yUFHTx54zn0YNzhH9/CRtVa8ql
-	 FEK1EE9Ncn7xglAjn7yeP1a7SY61jRt2hmjWlOqA+WqupzAJ0Npm1+fOjqtsHs74lu
-	 irljVRwOaTSZKdjxAcDYOTw5k3wwT8LcOv7Dre8eC5s8rRxjux9iZJyXy/x1rXhoBP
-	 6amey76ykgZIlGiTi44fvmnl4j6L9uckaKxjr48AOCxKwr2NWqtk/s1x1ZU8AKQbZo
-	 oVZukjT1QahuQ==
-Date: Sun, 4 Feb 2024 15:01:35 +0000
+	b=CMDiEiCoShhFWaDKBgKT3zcw8DLeWsPhdrEwqM8OV5nPqcRGY4Sas8LTHorAY9GOE
+	 1od/nEiNUobZGmSraGcd7naeGZesBdZHvVlHL/VvwWbK/0DR8Z4yIq5giSZKfL3JAr
+	 BE5Lw1HWn2BhAMabGwlkTuA9IvC0OhN77hcYpYhkxaWHaLz0TocbHy6ZG10Zzpua50
+	 +5gVWF757qcXYvgZyJLnNm1fbDa7DAJnvPVZ/FahYy+98oM/TTHs/FmmB1YFxAVwF/
+	 LzhyxG8dBnJ9GTQv9lcwDGKjy2o6hyClFvn7ztm3To5rOslG07QpbcH9Dfw56OHgdX
+	 WJByZlA4FhFiQ==
+Date: Sun, 4 Feb 2024 15:08:43 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Denis
- Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH v2] iio: commom: st_sensors: ensure proper DMA alignment
-Message-ID: <20240204150135.0fa5a808@jic23-huawei>
-In-Reply-To: <20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com>
-References: <20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com>
+To: Nikita Mikhailevich <ermyril@gmail.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: mxc4005: new ACPI ID for the MXC6655
+ accelerometer
+Message-ID: <20240204150843.79f76071@jic23-huawei>
+In-Reply-To: <20240201151848.1666245-1-ermyril@gmail.com>
+References: <20240201151848.1666245-1-ermyril@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,66 +57,50 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Jan 2024 10:16:47 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Thu,  1 Feb 2024 16:18:48 +0100
+Nikita Mikhailevich <ermyril@gmail.com> wrote:
 
-> Aligning the buffer to the L1 cache is not sufficient in some platforms
-> as they might have larger cacheline sizes for caches after L1 and thus,
-> we can't guarantee DMA safety.
->=20
-> That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the sa=
-me
-> for st_sensors common buffer.
->=20
-> While at it, moved the odr_lock before buffer_data as we definitely
-> don't want any other data to share a cacheline with the buffer.
->=20
-> [1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kern=
-el.org/
->=20
-> Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each bu=
-ffer enable")
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable. Thanks!
+> New ID was introduced by Chuwi on Minibook X 2023.
+
+So interestingly MDA is a valid PNP ID. But an old one from 1997 for
+Media4 Inc. 
+
+Let's hope they never used that device number in a way that will bite us.
+
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to play with it.
+
+Note that if anyone has a path to Chuwi to educate them on how to do
+ACPI ids correctly then feel free to pass it on!
+
+The MXC ones are also invalid btw - in that case there is no such PNP
+ID unless it's been very recently granted which seems unlikely.
 
 Jonathan
 
+> 
+> Signed-off-by: Nikita Mikhailevich <ermyril@gmail.com>
 > ---
-> Changes in v2:
->  * moved struct odr_lock before buffer_data.
-> ---
->  include/linux/iio/common/st_sensors.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/co=
-mmon/st_sensors.h
-> index 607c3a89a647..f9ae5cdd884f 100644
-> --- a/include/linux/iio/common/st_sensors.h
-> +++ b/include/linux/iio/common/st_sensors.h
-> @@ -258,9 +258,9 @@ struct st_sensor_data {
->  	bool hw_irq_trigger;
->  	s64 hw_timestamp;
-> =20
-> -	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
-> -
->  	struct mutex odr_lock;
-> +
-> +	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN=
-);
+>  drivers/iio/accel/mxc4005.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+> index 82e8d0b39..09764ef8b 100644
+> --- a/drivers/iio/accel/mxc4005.c
+> +++ b/drivers/iio/accel/mxc4005.c
+> @@ -472,6 +472,7 @@ static int mxc4005_probe(struct i2c_client *client)
+>  static const struct acpi_device_id mxc4005_acpi_match[] = {
+>  	{"MXC4005",	0},
+>  	{"MXC6655",	0},
+> +	{"MDA6655",	0},
+>  	{ },
 >  };
-> =20
->  #ifdef CONFIG_IIO_BUFFER
->=20
-> ---
-> base-commit: 1380d453434e276355458e712c743dd071ca1fa7
-> change-id: 20240131-dev_dma_safety_stm-7c09782d87ed
+>  MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
 > --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
+> 2.43.0
+> 
 
 

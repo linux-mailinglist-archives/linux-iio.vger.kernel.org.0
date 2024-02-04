@@ -1,206 +1,114 @@
-Return-Path: <linux-iio+bounces-2133-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2134-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B39848DED
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 14:04:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01667848DF4
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 14:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953C41C2214E
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 13:04:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78E8D1F2348A
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 13:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D21922EFD;
-	Sun,  4 Feb 2024 13:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4E224E3;
+	Sun,  4 Feb 2024 13:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fk4zosb9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQJMaGRR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF16225B2;
-	Sun,  4 Feb 2024 13:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E07D24B23;
+	Sun,  4 Feb 2024 13:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707051820; cv=none; b=bZSmK4j0lio1CZbkFU9Xm8vvM4aSWMnVVDbDh3/Pp/dGNLWzjXBmEwOSSHAyyK1OgFMBL6AZbePj9TLsIPsZfW0LzEMHvy4LS9y5daWtLZ2zVxzb5/qrm2zGJWqA/LY7ZMjLkIZjSNTGbclSXDx3AdIahjlGq6bLEyQGyERsYQ8=
+	t=1707051873; cv=none; b=ZJDIHh6j4HLZIk/OKOwcUEzxEq9L+0ts59u0xudMHBTxXBixSNLJ0t/zuKRC01cocyXiG7AL2/+qtkBn6jNODtn8pkbV2Xx0QEvhBdFJm3nNw3Cj73femOMY/LBLz0UNICGT5fJxeXuTV9RsNudrjDyJ1tieJqs2Uv1fj6V97Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707051820; c=relaxed/simple;
-	bh=o+MLxNwdYDEWL72WUVGfFqEKzezdCrwJjfIxUtiL0yE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z2c7XxhLAf1XbQKWHbZzp7/dJkM0dQIRPcxLFBVGEIUOL3udH4PpzJxC9M3ZHQU/PNIcj1TMJK/wv78j3hKkIZffSqMazb32NuZdPPeF/iCoI2F3xQ+khjjPnWYycvCiUW7/OtyUWjOHizA73+NI9VZjI2QV72UljvB1NwqbxCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fk4zosb9; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707051819; x=1738587819;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=o+MLxNwdYDEWL72WUVGfFqEKzezdCrwJjfIxUtiL0yE=;
-  b=Fk4zosb9jbxBCSkl+9ADtCMFzLQufmnqKZ9dQLIbRTkXfu5mCxE9yjYK
-   1s9R/hzLZLNL/95ekvnd5ncK/ek4jHZtTPfcuLM/3J8mQrFf7KmwKTk4y
-   16zH1Mi//QQ5TD5nz9LXb5OE2GRSauurWXuYl+CxcVZ9cpZ0d7ruMZ6li
-   xrPxYLUt904s0mYgGA1lBR2UzYkxs2RNwVoNW/ysuoU7P6k7Qm0prayuD
-   KOE77nwz9xaGE7M35mSYLxZhZQTKQ/8Wk2jPkzPAPu+YPz1NLwe42UE9T
-   h5sAtBU9aKnzKRo7H7p2BO8x9VxwCyVTObWn6hp5ixag31RYNSiTrBT3L
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="4283247"
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="4283247"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 05:03:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="37918239"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by orviesa001.jf.intel.com with ESMTP; 04 Feb 2024 05:03:34 -0800
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: jikos@kernel.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	Basavaraj.Natikar@amd.com
-Cc: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v4 4/4] iio: hid-sensor-als: Add light chromaticity support
-Date: Sun,  4 Feb 2024 05:03:32 -0800
-Message-Id: <20240204130332.2635760-5-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240204130332.2635760-1-srinivas.pandruvada@linux.intel.com>
-References: <20240204130332.2635760-1-srinivas.pandruvada@linux.intel.com>
+	s=arc-20240116; t=1707051873; c=relaxed/simple;
+	bh=rEOfohGClmor7V7cbTke00vd5PxmsX4kEU8atdcgq7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HpoXtYBYwbc1i+Qz3Uzixdk1HZIsnopR5X5dSvZ2kfT9uKxNj6QgXvvlx/dE2jkO9glOq4xDe2Lw4ANC3ho1V9ijX7jJy6aC+5BUGBzHeIX0zjcsBwtAzt8KnmymFFEbf1ShchE3n88PrsatPjaEAcLqpxbQEvLkVjH5zujcKws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQJMaGRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC48C433F1;
+	Sun,  4 Feb 2024 13:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707051872;
+	bh=rEOfohGClmor7V7cbTke00vd5PxmsX4kEU8atdcgq7w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sQJMaGRRQ7HAJ0g5HBB+orrjZKpP0RYm1LYi19aeE7Hs7JQwujmVSGPJZyrjJ2ado
+	 uE49A2aG1/1AXn6E1EEW/bFDQ+IBAsvn65z9GK1MM1oD7fDoQ8Sv1YbPNxnCp3GRhc
+	 O8FpLUIbi0ePcF32oEFEqvbSWljyhAguTZGy5dk3hEAxFlbogrAmzxPFawwG40q19n
+	 S4k7Tq9ot6xcyvXgWgh9jkonjOFg0vybv9dDv2H/cNs7mwSsqlUWyFprC5z1UBnq5p
+	 fS6J4ze5rVyhoc4GSHwt5GKkkq1j5bkcZV1aQkrGz4VD3Cgk+ELel+4lXYdlceKNnX
+	 ov8az4jzGyDBg==
+Date: Sun, 4 Feb 2024 13:04:15 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Alisa-Dariana Roman
+ <alisa.roman@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Alexandru Tachici
+ <alexandru.tachici@analog.com>, Peter Zijlstra <peterz@infradead.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>
+Subject: Re: [PATCH v2 4/4] iio: adc: ad7192: Add AD7194 support
+Message-ID: <20240204130415.56ca3c42@jic23-huawei>
+In-Reply-To: <8c7839a9-b1f1-4e58-b35e-afdc8503c90f@gmail.com>
+References: <20231114200533.137995-1-alisa.roman@analog.com>
+	<20231114200533.137995-5-alisa.roman@analog.com>
+	<20231126163426.66e51114@jic23-huawei>
+	<8c7839a9-b1f1-4e58-b35e-afdc8503c90f@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+On Fri, 2 Feb 2024 16:32:14 +0200
+Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 
-On some platforms, ambient color sensors also support the x and y light
-colors, which represent the coordinates on the CIE 1931 chromaticity
-diagram. Add light chromaticity x and y.
+> On 26.11.2023 18:34, Jonathan Cameron wrote:
+> > On Tue, 14 Nov 2023 22:05:33 +0200
+> > Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
+> >   
+> >> Unlike the other AD719Xs, AD7194 has configurable differential
+> >> channels. The default configuration for these channels can be changed
+> >> from the devicetree.
+> >>
+> >> The default configuration is hardcoded in order to have a stable number
+> >> of channels.
+> >>
+> >> Also modify config AD7192 description for better scaling.
+> >>
+> >> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>  
+> > 
+> > Not directly related to this patch (which looks fine to me)
+> > but any idea why 3db_frequency_available is not using read_avail?
+> > 
+> > Seems sensible to convert it over given all the other cases are using that
+> > and it will allow dropping at least some of the attributes infrastructure
+> > for some devices.  
+> 
+> Thank you very much for the feedback!
+> 
+> I actually tried then to use read_avail for the 3db frequencies, but it 
+> required a greater rework. If I remember correctly, the four possible 
+> frequency choices need to be stored in the ad7192_state for it to work. 
+> Should I add a patch with these changes?
+> 
+If will end up a tiny bit more complex than currently because of the need
+to stash them in an array rather than simply print the strings directly.
+But not a lot and should allow you to get rid of a small amount of other code.
 
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
-v4:
-  - Index is fixed for each channel instead of packing for absent channels
+Not urgent, but I think this would be a nice change in the longer term
 
-v3:
-Simplilified as no special processing is required in als_parse_report()
+Thanks,
 
-v2:
-Original patch from Basavaraj Natikar <Basavaraj.Natikar@amd.com> is
-modified to prevent failure when the new usage id is not found in the
-descriptor.
-
- drivers/iio/light/hid-sensor-als.c | 46 ++++++++++++++++++++++++++++++
- include/linux/hid-sensor-ids.h     |  3 ++
- 2 files changed, 49 insertions(+)
-
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index 0e9a25c51676..3c8f707c18cf 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -17,6 +17,8 @@ enum {
- 	CHANNEL_SCAN_INDEX_INTENSITY,
- 	CHANNEL_SCAN_INDEX_ILLUM,
- 	CHANNEL_SCAN_INDEX_COLOR_TEMP,
-+	CHANNEL_SCAN_INDEX_CHROMATICITY_X,
-+	CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
- 	CHANNEL_SCAN_INDEX_MAX
- };
- 
-@@ -44,6 +46,8 @@ static const u32 als_usage_ids[] = {
- 	HID_USAGE_SENSOR_LIGHT_ILLUM,
- 	HID_USAGE_SENSOR_LIGHT_ILLUM,
- 	HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
-+	HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X,
-+	HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y,
- };
- 
- static const u32 als_sensitivity_addresses[] = {
-@@ -85,6 +89,30 @@ static const struct iio_chan_spec als_channels[] = {
- 		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
- 		.scan_index = CHANNEL_SCAN_INDEX_COLOR_TEMP,
- 	},
-+	{
-+		.type = IIO_CHROMATICITY,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_X,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SCALE) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
-+		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_X,
-+	},
-+	{
-+		.type = IIO_CHROMATICITY,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_Y,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SCALE) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS) |
-+		BIT(IIO_CHAN_INFO_HYSTERESIS_RELATIVE),
-+		.scan_index = CHANNEL_SCAN_INDEX_CHROMATICITY_Y,
-+	},
- 	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
- };
- 
-@@ -130,6 +158,16 @@ static int als_read_raw(struct iio_dev *indio_dev,
- 			min = als_state->als[chan->scan_index].logical_minimum;
- 			address = HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE;
- 			break;
-+		case  CHANNEL_SCAN_INDEX_CHROMATICITY_X:
-+			report_id = als_state->als[chan->scan_index].report_id;
-+			min = als_state->als[chan->scan_index].logical_minimum;
-+			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X;
-+			break;
-+		case  CHANNEL_SCAN_INDEX_CHROMATICITY_Y:
-+			report_id = als_state->als[chan->scan_index].report_id;
-+			min = als_state->als[chan->scan_index].logical_minimum;
-+			address = HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y;
-+			break;
- 		default:
- 			report_id = -1;
- 			break;
-@@ -254,6 +292,14 @@ static int als_capture_sample(struct hid_sensor_hub_device *hsdev,
- 		als_state->scan.illum[CHANNEL_SCAN_INDEX_COLOR_TEMP] = sample_data;
- 		ret = 0;
- 		break;
-+	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X:
-+		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_X] = sample_data;
-+		ret = 0;
-+		break;
-+	case HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y:
-+		als_state->scan.illum[CHANNEL_SCAN_INDEX_CHROMATICITY_Y] = sample_data;
-+		ret = 0;
-+		break;
- 	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
- 		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
- 								    *(s64 *)raw_data);
-diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
-index 8af4fb3e0254..6730ee900ee1 100644
---- a/include/linux/hid-sensor-ids.h
-+++ b/include/linux/hid-sensor-ids.h
-@@ -22,6 +22,9 @@
- #define HID_USAGE_SENSOR_DATA_LIGHT				0x2004d0
- #define HID_USAGE_SENSOR_LIGHT_ILLUM				0x2004d1
- #define HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE		0x2004d2
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY			0x2004d3
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_X			0x2004d4
-+#define HID_USAGE_SENSOR_LIGHT_CHROMATICITY_Y			0x2004d5
- 
- /* PROX (200011) */
- #define HID_USAGE_SENSOR_PROX                                   0x200011
--- 
-2.43.0
+Jonathan
 
 

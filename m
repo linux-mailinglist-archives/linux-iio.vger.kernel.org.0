@@ -1,255 +1,264 @@
-Return-Path: <linux-iio+bounces-2155-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2156-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A552848F06
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:53:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6047848F08
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B289B22416
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:53:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E801B218B7
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A41422301;
-	Sun,  4 Feb 2024 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC19B2260C;
+	Sun,  4 Feb 2024 15:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kr2o/PQt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C429241E0
-	for <linux-iio@vger.kernel.org>; Sun,  4 Feb 2024 15:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E920224FB;
+	Sun,  4 Feb 2024 15:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707062008; cv=none; b=CQm1v0zDwoeIuzfODS4xCqsPAf9ev2URE0SwMowJ5+Sp5F3PPPzIVgF9EswTAfVfJOVDu8yK5lQHXZ7PESs3Kg3F5NZy3nVNifLA8DVhDhk20lpgHA9plMbCRwC0i0IwOlMm6L8OuWXyNS0Am9xG1AUUJ4k27xyCDQoakn0/OB8=
+	t=1707062078; cv=none; b=T0Z5ZoDtnSPUijSVd+SjHqe9H+qzsVqojOd3uhDo0h14fnN+SptVbIZHRystboq3Vs7xTJjhMEPj+tFd5BHY6GkJaQmof7hyh8J9IFM4poVkt8rQL/UlsIQzpiKItAE4+7WYGbT/ZOtF+Dlyl9xhcLZQ6cLL/Grkc7+hJkBxngI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707062008; c=relaxed/simple;
-	bh=wmK4ySri2WrQrOwSyCzeMO/QXjrOEztuK3gEmrdLlWo=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GK8b/42OwsljtKD7Eu2lOwQ65cv0XOkhbFdfn8znhEZnZHx2SmLyavSY2sn/zNrE4nWgzb0og0sNpy+fN2jFj7tO8+UUjHwcauT1x1vmy7XGYp7t701M9GpGVMMygG4fkdNKX7VdMU18typhAROmxJMEM384hae/aVIz8JDERew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-30.elisa-laajakaista.fi [88.113.26.30])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id 5e66bdbe-c375-11ee-abf4-005056bdd08f;
-	Sun, 04 Feb 2024 17:52:16 +0200 (EET)
-From: andy.shevchenko@gmail.com
-Date: Sun, 4 Feb 2024 17:52:15 +0200
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v8 5/7] iio: add the IIO backend framework
-Message-ID: <Zb-yr0u_a9-vE86t@surfacebook.localdomain>
-References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
- <20240202-iio-backend-v8-5-f65ee8c8203d@analog.com>
+	s=arc-20240116; t=1707062078; c=relaxed/simple;
+	bh=YKFk0fhw1yKmiLgnS6+duQR/LC6Nzpfu5Y1k0cwgcx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kp1OD8nkVjztFLYcKYKusrKzLHpplrqeuYlvy8QNkYQg8Z90e45dGe/7wOoCO0NUQQRC8Dk7g0vgKp8HEeTAciaFQh87QHKSUJbqo5JiaNuTaxrgHav0NtMgjOsvbUuTCQg/wNfkT4w8yPBttbOsbxr6PL86/1ckchDmN8hNc9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kr2o/PQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F468C433F1;
+	Sun,  4 Feb 2024 15:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707062078;
+	bh=YKFk0fhw1yKmiLgnS6+duQR/LC6Nzpfu5Y1k0cwgcx0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Kr2o/PQtO+6cKZ+/I+Z5dnrgYRXvoUE54ciPpbZEiH5dw9Ucfw4iX1rBKeGL05c1G
+	 twyQiP3ESA7m5FGOzApClwNbMIaLRShn7UP9J+NTaRSmYFFRcqd1c4f43hhiEqflP9
+	 PF0NEC3CR8g59QTWiuEGmEeLwrfDwX89MH+nlzak/BTrZcZsD0JKpIOydupNU6hIHQ
+	 Ztew9WJYhNjcA6+BYxDkJkBP5EirA7lOlFCFURgr2fENY4HDWB9N2YSw5gEpoSprE/
+	 qyrn0WKwNYEfVRswhBUV5ndUDqqZmw5Upn0CguluGQFUUwqD1dibZVCIU2zuJgn8Tw
+	 BOafPnxYnUcHQ==
+Date: Sun, 4 Feb 2024 15:54:22 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Liam Beguin <liambeguin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Maksim Kiselev <bigunclemax@gmail.com>, Marcus Folkesson
+ <marcus.folkesson@gmail.com>, Marius Cristea
+ <marius.cristea@microchip.com>, Mark Brown <broonie@kernel.org>, Niklas
+ Schnelle <schnelle@linux.ibm.com>, Okan Sahin <okan.sahin@analog.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <20240204155422.5ae03e4c@jic23-huawei>
+In-Reply-To: <20240202105901.925875-2-mike.looijmans@topic.nl>
+References: <20240202105901.925875-1-mike.looijmans@topic.nl>
+	<1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.6274d473-fd3f-439a-bf61-89eea8028afa@emailsignatures365.codetwo.com>
+	<20240202105901.925875-2-mike.looijmans@topic.nl>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240202-iio-backend-v8-5-f65ee8c8203d@analog.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Fri, Feb 02, 2024 at 04:08:36PM +0100, Nuno Sa kirjoitti:
-> This is a Framework to handle complex IIO aggregate devices.
+On Fri, 2 Feb 2024 11:59:01 +0100
+Mike Looijmans <mike.looijmans@topic.nl> wrote:
+
+> Skeleton driver for the TI ADS1298 medical ADC. This device is
+> typically used for ECG and similar measurements. Supports data
+> acquisition at configurable scale and sampling frequency.
 > 
-> The typical architecture is to have one device as the frontend device which
-> can be "linked" against one or multiple backend devices. All the IIO and
-> userspace interface is expected to be registers/managed by the frontend
-> device which will callback into the backends when needed (to get/set
-> some configuration that it does not directly control).
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
 > 
-> The basic framework interface is pretty simple:
->  - Backends should register themselves with @devm_iio_backend_register()
->  - Frontend devices should get backends with @devm_iio_backend_get()
+Hi Mike,
 
-...
+A few minor things I'd missed before.
 
-> + * Copyright (C) 2023 Analog Devices Inc.
+I'm still interested in why more standard interrupt handling isn't
+good enough here (see reply to v1 thread) but if we can't get to the bottom
+of that (or do figure it out and we can't fix it) then this doesn't look
+too bad so I'll accept the complex handling.
 
-2024 as well?
+J
 
-...
+> diff --git a/drivers/iio/adc/ti-ads1298.c b/drivers/iio/adc/ti-ads1298.c
+> new file mode 100644
+> index 000000000000..539598b9f3fa
+> --- /dev/null
+> +++ b/drivers/iio/adc/ti-ads1298.c
+> @@ -0,0 +1,769 @@
 
-> +#include <linux/cleanup.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/list.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/property.h>
-> +#include <linux/slab.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/kfifo_buf.h>
+> +#include <linux/iio/sysfs.h>
 
-Missing types.h and maybe more. (E.g., IIRC linux/err.h doesn't cover
-linux/errno.h for Linux internal error codes, >= 512.)
+I don't see any custom ABI, so shouldn't need this.
 
-...
+> +
+> +#include <asm/unaligned.h>
+> +
 
-> +int devm_iio_backend_request_buffer(struct device *dev,
-> +				    struct iio_backend *back,
-> +				    struct iio_dev *indio_dev)
+
+
+> +static int ads1298_reg_read(void *context, unsigned int reg, unsigned int *val)
 > +{
-> +	struct iio_backend_buffer_pair *pair;
-> +	struct iio_buffer *buffer;
-> +
-> +	buffer = iio_backend_ptr_op_call(back, request_buffer, indio_dev);
-> +	if (IS_ERR(buffer))
-> +		return PTR_ERR(buffer);
-> +
-> +	pair = devm_kzalloc(dev, sizeof(*pair), GFP_KERNEL);
-> +	if (!pair)
-> +		return -ENOMEM;
-
-Shouldn't we try memory allocation first? Otherwise seems to me like freeing
-buffer is missed here.
-
-> +	/* weak reference should be all what we need */
-> +	pair->back = back;
-> +	pair->buffer = buffer;
-> +
-> +	return devm_add_action_or_reset(dev, iio_backend_free_buffer, pair);
-> +}
-
-...
-
-> +static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
-> +{
-> +	struct device_link *link;
+> +	struct ads1298_private *priv = context;
+> +	struct spi_transfer reg_read_xfer = {
+> +		.tx_buf = priv->cmd_buffer,
+> +		.rx_buf = priv->cmd_buffer,
+> +		.len = 3,
+> +		.speed_hz = ADS1298_SPI_BUS_SPEED_SLOW,
+> +		.delay = {
+> +			.value = 2,
+> +			.unit = SPI_DELAY_UNIT_USECS,
+> +		},
+> +	};
 > +	int ret;
 > +
-> +	/*
-> +	 * Make sure the provider cannot be unloaded before the consumer module.
-> +	 * Note that device_links would still guarantee that nothing is
-> +	 * accessible (and breaks) but this makes it explicit that the consumer
-> +	 * module must be also unloaded.
-> +	 */
-> +	if (!try_module_get(back->owner)) {
-> +		pr_err("%s: Cannot get module reference\n", dev_name(dev));
+> +	priv->cmd_buffer[0] = ADS1298_CMD_RREG | reg;
+> +	priv->cmd_buffer[1] = 0x0;
 
-NIH dev_err(). If you want the prefix, define dev_fmt() (or how is it called?)
-as well.
+Why mix of hex and decimal? Doesn't matter but looks odd
 
-> +		return -ENODEV;
-> +	}
+
+> +	priv->cmd_buffer[2] = 0;
 > +
-> +	ret = devm_add_action_or_reset(dev, iio_backend_release, back);
+> +	ret = spi_sync_transfer(priv->spi, &reg_read_xfer, 1);
 > +	if (ret)
 > +		return ret;
 > +
-> +	link = device_link_add(dev, back->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
-> +	if (!link) {
-> +		pr_err("%s: Could not link to supplier(%s)\n", dev_name(dev),
-> +		       dev_name(back->dev));
-
-Ditto.
-
-> +		return -EINVAL;
-> +	}
+> +	*val = priv->cmd_buffer[2];
 > +
-> +	pr_debug("%s: Found backend(%s) device\n", dev_name(dev),
-> +		 dev_name(back->dev));
-
-Ditto (dev_dbg() here).
-
 > +	return 0;
 > +}
 
-...
-
-> +struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
-
-Same comments regarding pr_*() vs. dev_*().
-
-> +	struct fwnode_handle *fwnode;
-> +	struct iio_backend *back;
-
-> +	int index = 0, ret;
-
-Wouldn't be better to have it done differently and actually using int is not
-okay strictly speaking? It's unsigned in your case.
-
-	unsigned int index;
-	int ret;
-
-
-> +	if (name) {
-> +		index = device_property_match_string(dev, "io-backends-names",
-> +						     name);
-> +		if (index < 0)
-> +			return ERR_PTR(index);
-> +	}
-
-	if (name) {
-		ret = device_property_match_string(dev, "io-backends-names", name);
-		if (ret < 0)
-			return ERR_PTR(ret);
-		index = ret;
-	} else {
-		index = 0;
-	}
-
-> +	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
-> +	if (IS_ERR(fwnode)) {
-> +		/* not an error if optional */
-> +		pr_debug("%s: Cannot get Firmware reference\n", dev_name(dev));
-> +		return ERR_CAST(fwnode);
-> +	}
 > +
-> +	guard(mutex)(&iio_back_lock);
-> +	list_for_each_entry(back, &iio_back_list, entry) {
-> +		if (!device_match_fwnode(back->dev, fwnode))
-> +			continue;
-> +
-> +		fwnode_handle_put(fwnode);
-> +		ret = __devm_iio_backend_get(dev, back);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +
-> +		return back;
-> +	}
-> +
-> +	fwnode_handle_put(fwnode);
-> +	return ERR_PTR(-EPROBE_DEFER);
-> +}
-
-...
-
-> +static void iio_backend_unregister(void *arg)
+> +/* Called from SPI completion interrupt handler */
+> +static void ads1298_rdata_complete(void *context)
 > +{
-> +	struct iio_backend *back = arg;
+> +	struct iio_dev *indio_dev = context;
+> +	struct ads1298_private *priv = iio_priv(indio_dev);
+> +	int scan_index;
+> +	u32 *bounce = priv->bounce_buffer;
+> +
+> +	if (!iio_buffer_enabled(indio_dev)) {
 
-No guard() here, why?
+Good to add a comment here on why this can't race as we are holding
+the device in direct mode until after the completion.
 
-> +	mutex_lock(&iio_back_lock);
-> +	list_del(&back->entry);
-> +	mutex_unlock(&iio_back_lock);
+iio_buffer_enabled() checks tend to expose races so I prefer people
+to explicitly say why there isn't one.
+
+
+
+> +		/* Happens when running in single transfer mode */
+> +		ads1298_rdata_unmark_busy(priv);
+> +		complete(&priv->completion);
+> +		return;
+> +	}
+> +
+> +	/* Demux the channel data into our bounce buffer */
+> +	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
+> +			 indio_dev->masklength) {
+> +		const struct iio_chan_spec *scan_chan =
+> +					&indio_dev->channels[scan_index];
+> +		const u8 *data = priv->rx_buffer + scan_chan->address;
+> +
+> +		*bounce++ = get_unaligned_be24(data);
+> +	}
+> +
+> +	/* rx_buffer can be overwritten from this point on */
+> +	ads1298_rdata_release_busy_or_restart(priv);
+> +
+> +	iio_push_to_buffers(indio_dev, priv->bounce_buffer);
 > +}
 
-> +int devm_iio_backend_register(struct device *dev,
-> +			      const struct iio_backend_ops *ops, void *priv)
+> +
+> +static const char *ads1298_family_name(unsigned int id)
+> +{
+> +	switch (id & ADS1298_MASK_ID_FAMILY) {
+> +	case ADS1298_ID_FAMILY_ADS129X:
+> +		return "ADS129x";
+> +	case ADS1298_ID_FAMILY_ADS129XR:
+> +		return "ADS129xR";
+> +	default:
+> +		return "(unknown)";
+> +	}
+> +}
+> +
+> +static int ads1298_init(struct ads1298_private *priv)
+> +{
+> +	struct device *dev = &priv->spi->dev;
+> +	int ret;
+> +	unsigned int val;
+> +
+> +	/* Device initializes into RDATAC mode, which we don't want. */
+> +	ret = ads1298_write_cmd(priv, ADS1298_CMD_SDATAC);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(priv->regmap, ADS1298_REG_ID, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_info(dev, "Found %s, %u channels\n", ads1298_family_name(val),
+> +		 4 + 2 * (val & ADS1298_MASK_ID_CHANNELS));
+Noise for the log that is easy to figure out anyway (assuming successful
+probe) Make that dev_dbg()
 
-Use dev_err() et al.
+> +
+> +	/* Enable internal test signal, double amplitude, double frequency */
+> +	ret = regmap_write(priv->regmap, ADS1298_REG_CONFIG2,
+> +		ADS1298_MASK_CONFIG2_RESERVED |
+> +		ADS1298_MASK_CONFIG2_INT_TEST |
+> +		ADS1298_MASK_CONFIG2_TEST_AMP |
+> +		ADS1298_MASK_CONFIG2_TEST_FREQ_FAST);
+
+Unless lines are very long, parameters should align just after (
+
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	val = ADS1298_MASK_CONFIG3_RESERVED; /* Must write 1 always */
+> +	if (!priv->reg_vref) {
+> +		/* Enable internal reference */
+> +		val |= ADS1298_MASK_CONFIG3_PWR_REFBUF;
+> +		/* Use 4V VREF when power supply is at least 4.4V */
+> +		if (regulator_get_voltage(priv->reg_avdd) >= 4400000)
+> +			val |= ADS1298_MASK_CONFIG3_VREF_4V;
+> +	}
+> +	return regmap_write(priv->regmap, ADS1298_REG_CONFIG3, val);
+> +}
+> +
+> +static int ads1298_probe(struct spi_device *spi)
+> +{
 
 ...
 
-> +	mutex_lock(&iio_back_lock);
-> +	list_add(&back->entry, &iio_back_list);
-> +	mutex_unlock(&iio_back_lock);
+> +	ret = devm_request_irq(dev, spi->irq, &ads1298_interrupt,
+> +			       IRQF_TRIGGER_FALLING, indio_dev->name,
+I missed this before (and we've gotten it wrong a bunch of times in the past
+so plenty of bad examples to copy that we can't fix without possible
+regressions) but we generally now leave irq direction to the firmware description.
+People have an annoying habit of putting not gates and similar in the path
+to interrupt pins.  Fine to have the binding state the expected form though
+(as you do).  So basically not flags here.
 
-scoped_guard()?
+I'm still curious to understand more of where the delays that lead to
+needing to do this complex handling came from, but I guess it's not too bad
+if we can't get to the bottom of that so I'll take the driver anyway
+(after a little more time on list for others to review!)
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+> +			       indio_dev);
 
 

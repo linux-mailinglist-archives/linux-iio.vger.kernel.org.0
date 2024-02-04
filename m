@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-2149-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2150-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185A8848EC0
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:59:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E967848EC5
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0A928334D
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 14:59:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C09CF1C21ECC
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1329C2231F;
-	Sun,  4 Feb 2024 14:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C3B22339;
+	Sun,  4 Feb 2024 15:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5lDo4MO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ui6jVwem"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C050D224E0;
-	Sun,  4 Feb 2024 14:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654B2224E3
+	for <linux-iio@vger.kernel.org>; Sun,  4 Feb 2024 15:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707058786; cv=none; b=Na+e80rLHyzDWGtS99OxFtzkZsHnuHTt3WHq5TwJ9pQEYcQ8mVXyH2XfVP97pDLwI2z5leZ6BhJ0PfOZ4J8+sJq8tEiobqpTbVNbh5zI6i+//55PuI0UWwjBMbsamYwLExCTTJEGmJ72druXPv0Gd86g+waDa7V3mqYa4PybeIQ=
+	t=1707058907; cv=none; b=hJk8OXZRvBX3QG+eroJyR5bnRamcAGvGhS/+2fDzXIzaQzxM98QQA73IhiDdUbgKmZe5+pkEAiNXzNIJqYku/lwpsIMRI0yrcEU45jdL6sId6q+EOCNlTrX/CaPHbBcJDzIsW1ii1+Sq1vy/6FfcbM1/Gas9NL6b23oWeMhao5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707058786; c=relaxed/simple;
-	bh=iKV57ZwJnSgcOvpyOr8+0mwFjZveEEhVFBe7Z9YnJOM=;
+	s=arc-20240116; t=1707058907; c=relaxed/simple;
+	bh=7qDRAB4TxkhmFoDiMqTZe8sj5t7wp99Y3ANS/rTKXCc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T8+N1e5oDyxQeqQbTFLqwWfaVu0nMYL3ddd5twiiYs+EAPqz+YLe7xw8NZqj7MuL2s4SmelCYqeqsuBzZCkoCx0RcPVvsvND7xgOiDg1+pTbVOIxDsbYcC1bUgi96OpMyZQlxH6rI7gbT9cz/zEgLNk4ahBK0MuzAiOUlD4Fmpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5lDo4MO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A24C433C7;
-	Sun,  4 Feb 2024 14:59:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FlVfJlErY+/ENreHrLnnQ6psRkKURpoPntkShq4NJYUbxoryrDVrvLpQXB4oQ63ZltugdagIM66DtH3FdAsiuby29I7KJJgaXkwIXcJCxx2WBjBEXlTAE/1NwFvqR6Ku7WLtNfpoeN5y6JgnRkS1uCSWwPZOoxehLLTYrX7R1+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ui6jVwem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87929C433F1;
+	Sun,  4 Feb 2024 15:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707058786;
-	bh=iKV57ZwJnSgcOvpyOr8+0mwFjZveEEhVFBe7Z9YnJOM=;
+	s=k20201202; t=1707058906;
+	bh=7qDRAB4TxkhmFoDiMqTZe8sj5t7wp99Y3ANS/rTKXCc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=G5lDo4MO/TZ33GjTE7IfDWvATCumGX/HTQiULjpNNlj2PwfhWTl1FZqzzOafY+1r0
-	 5wmNpFpoyziUm78Lq3TF9rjecHaeAZ/WNvE0qumdOoSmy05YRK5En2XsbR9pKkQqHV
-	 x6qg0dpHKFsRWbJHt3qyuYMMnv4AVBRm37JEtcBjvOY1Yc2YXCTFRVNNJy+6IcOd32
-	 zcBVLNCw7zPmztBM+j9IxuHUTcscvAF0V+8A8xmYj1e9v8TOVeLVfWKlZZ2jAWWCht
-	 o2D/2wGbRFs8qRwPPQgY5vuoLTtLv8Ag0Lb1BocplAj4gsC41j6LxSFANnu4wxITqx
-	 ieMyQDqYOeWBg==
-Date: Sun, 4 Feb 2024 14:59:33 +0000
+	b=ui6jVwem/K8GJtYdSkBEowfk7SZIcctknbGeWEuEuVU0goBi/clG0/fGGCRhEoiX+
+	 ge3xoJZ/cdjzGkrV8dpIeVTV07ZAyp8Sf9GPoms/yUFHTx54zn0YNzhH9/CRtVa8ql
+	 FEK1EE9Ncn7xglAjn7yeP1a7SY61jRt2hmjWlOqA+WqupzAJ0Npm1+fOjqtsHs74lu
+	 irljVRwOaTSZKdjxAcDYOTw5k3wwT8LcOv7Dre8eC5s8rRxjux9iZJyXy/x1rXhoBP
+	 6amey76ykgZIlGiTi44fvmnl4j6L9uckaKxjr48AOCxKwr2NWqtk/s1x1ZU8AKQbZo
+	 oVZukjT1QahuQ==
+Date: Sun, 4 Feb 2024 15:01:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v8 0/7] iio: add new backend framework
-Message-ID: <20240204145933.6f29538c@jic23-huawei>
-In-Reply-To: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
-References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Denis
+ Ciocca <denis.ciocca@st.com>
+Subject: Re: [PATCH v2] iio: commom: st_sensors: ensure proper DMA alignment
+Message-ID: <20240204150135.0fa5a808@jic23-huawei>
+In-Reply-To: <20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com>
+References: <20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,119 +60,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 02 Feb 2024 16:08:31 +0100
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Wed, 31 Jan 2024 10:16:47 +0100
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> v1:
->  https://lore.kernel.org/linux-iio/20231204144925.4fe9922f@jic23-huawei/T=
-/#m222f5175273b81dbfe40b7f0daffcdc67d6cb8ff
+> Aligning the buffer to the L1 cache is not sufficient in some platforms
+> as they might have larger cacheline sizes for caches after L1 and thus,
+> we can't guarantee DMA safety.
 >=20
-> v2:
->  https://lore.kernel.org/r/20231208-dev-iio-backend-v2-0-5450951895e1@ana=
-log.com
->=20
-> v3:
->  https://lore.kernel.org/linux-iio/20231213-dev-iio-backend-v3-0-bb9f12a5=
-c6dc@analog.com/
->=20
-> v4:
->  https://lore.kernel.org/r/20231220-iio-backend-v4-0-998e9148b692@analog.=
-com
->=20
-> v5:
->  https://lore.kernel.org/r/20240112-iio-backend-v5-0-bdecad041ab4@analog.=
-com
->=20
-> v6:
->  https://lore.kernel.org/r/20240119-iio-backend-v6-0-189536c35a05@analog.=
-com
->=20
-> v7
->  https://lore.kernel.org/r/20240123-iio-backend-v7-0-1bff236b8693@analog.=
-com
->=20
-> Changes in v8:
->  - Dropped commit ("of: property: fix typo in io-channels") - applied
->    via DT tree. Also dropped commit
->    ("driver: core: allow modifying device_links flags") - did not made
->    sense.
->  - Patch 7
->   * Do not change the version string format during probe.
->=20
-> Jonathan, the series is based on next-20240202 since it already includes
-> the io-channels fix Rob applied in his tree. I guess it should land in rc=
-3 so
-> after you rebase, all patches should apply cleanly (if applying them of c=
-ourse
-> :)). Let me know if anything fails...
-
-Given that merge (between my tree and Rob's) is about as trivial as they co=
+> That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the sa=
 me
-I'll take the series now (rather than delaying) and rely on Stephen (for ne=
-xt)
-and Greg (once I send a pull request) to deal with it.
-
-It's the sort of merge that makes Linus grumpy if people rebase to avoid it!
-
-On that note, applied with those tweaks to the broken binding patch.
-
-Initially pushed out as testing to see if 0-day moans at us a lot about any=
-thing.
+> for st_sensors common buffer.
+>=20
+> While at it, moved the odr_lock before buffer_data as we definitely
+> don't want any other data to share a cacheline with the buffer.
+>=20
+> [1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kern=
+el.org/
+>=20
+> Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each bu=
+ffer enable")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable. Thanks!
 
 Jonathan
 
+> ---
+> Changes in v2:
+>  * moved struct odr_lock before buffer_data.
+> ---
+>  include/linux/iio/common/st_sensors.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> (also dropped the devlink Reviewers from the Cc list as that patch was
-> dropped).
->=20
-> Keeping the block diagram  so we don't have to follow links
-> to check one of the typical setups.
->=20
->                                            ------------------------------=
--------------------------
->  ------------------                        | -----------         --------=
-----      -------  FPGA |
->  |     ADC        |------------------------| | AXI ADC |---------| DMA CO=
-RE |------| RAM |       |
->  | (Frontend/IIO) | Serial Data (eg: LVDS) | |(backend)|---------|       =
-   |------|     |       |
->  |                |------------------------| -----------         --------=
-----      -------       |
->  ------------------                        ------------------------------=
--------------------------
+> diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/co=
+mmon/st_sensors.h
+> index 607c3a89a647..f9ae5cdd884f 100644
+> --- a/include/linux/iio/common/st_sensors.h
+> +++ b/include/linux/iio/common/st_sensors.h
+> @@ -258,9 +258,9 @@ struct st_sensor_data {
+>  	bool hw_irq_trigger;
+>  	s64 hw_timestamp;
+> =20
+> -	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
+> -
+>  	struct mutex odr_lock;
+> +
+> +	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN=
+);
+>  };
+> =20
+>  #ifdef CONFIG_IIO_BUFFER
 >=20
 > ---
-> Nuno Sa (6):
->       dt-bindings: adc: ad9467: add new io-backend property
->       dt-bindings: adc: axi-adc: update bindings for backend framework
->       iio: buffer-dmaengine: export buffer alloc and free functions
->       iio: add the IIO backend framework
->       iio: adc: ad9467: convert to backend framework
->       iio: adc: adi-axi-adc: move to backend framework
->=20
-> Olivier Moysan (1):
->       of: property: add device link support for io-backends
->=20
->  .../devicetree/bindings/iio/adc/adi,ad9467.yaml    |   4 +
->  .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   8 +-
->  MAINTAINERS                                        |   8 +
->  drivers/iio/Kconfig                                |   9 +
->  drivers/iio/Makefile                               |   1 +
->  drivers/iio/adc/Kconfig                            |   4 +-
->  drivers/iio/adc/ad9467.c                           | 268 +++++++++-----
->  drivers/iio/adc/adi-axi-adc.c                      | 379 +++++----------=
-----
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c |   8 +-
->  drivers/iio/industrialio-backend.c                 | 412 +++++++++++++++=
-++++++
->  drivers/of/property.c                              |   2 +
->  include/linux/iio/adc/adi-axi-adc.h                |  68 ----
->  include/linux/iio/backend.h                        |  72 ++++
->  include/linux/iio/buffer-dmaengine.h               |   3 +
->  14 files changed, 793 insertions(+), 453 deletions(-)
-> ---
-> base-commit: 076d56d74f17e625b3d63cf4743b3d7d02180379
-> change-id: 20231219-iio-backend-a3dc1a6a7a58
+> base-commit: 1380d453434e276355458e712c743dd071ca1fa7
+> change-id: 20240131-dev_dma_safety_stm-7c09782d87ed
 > --
 >=20
 > Thanks!

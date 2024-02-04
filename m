@@ -1,197 +1,139 @@
-Return-Path: <linux-iio+bounces-2159-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2160-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFAA848F18
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 17:02:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A74848F1B
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 17:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D3791C215E4
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:02:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6881F2208F
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 16:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7A2261B;
-	Sun,  4 Feb 2024 16:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6905222638;
+	Sun,  4 Feb 2024 16:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sh22fkNF"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="IlLJcWv1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5F022615;
-	Sun,  4 Feb 2024 16:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B023722615;
+	Sun,  4 Feb 2024 16:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707062513; cv=none; b=Iivpoi6b8Kynpu02TBw6P8lxyxGeAfYyUDoiDrQhpLYqck9CLq5Odvpilq+5CTVbMSh86mZV8XRBC+KOCsoi4zgmMdLIe5nZ97hc9QI3onfyLIm5HszH4n6XfY/13V5jM3VRchD3xr4KVYU3loevN4a/PsUfGcOEwWW/FMMRJKQ=
+	t=1707062523; cv=none; b=s32uywVJp//Y2QqKhkRACxQcpzzjVqzfIrvCodfjcI0QxQfYrn/WwZermL5AZ7dW5d2FA36KrX+9ubbdqwGUWU691y/MRUtqmOj99WgH2R+ZYSiFGURHfJSg7ZuBLg3SWMeXIYIuSz6fQwfIfcn37fSZCAblDNvWe0bWzpTxk74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707062513; c=relaxed/simple;
-	bh=5bs6AIj/VbQlAyffESBFSqyzlHKuzqTWKMvrD6Vd2bw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YzQVv0vS+Jda5zPZPRTaGhacLkTKUjHAfltSQ+5/aWrdy8pVB+uEvNupkr7hUSlqGPZhk0f0KxijJqPWTmC2Bv2ZQw4eYlYPvhq/zoQ3GHnbIegYCEL8mJMCdodPZhn/KElZRfkB0UTeNHmMmfKToqQk74yL6T/NzFAVfV/vmwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sh22fkNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6EEC433C7;
-	Sun,  4 Feb 2024 16:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707062512;
-	bh=5bs6AIj/VbQlAyffESBFSqyzlHKuzqTWKMvrD6Vd2bw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Sh22fkNF+lTGtEZI1VmP+a3zhI/PU6jBoGdbDCXKzsgMbyAhXQV1ehaeJXggx2xD4
-	 ZJpLmLhICCmYM6FcNQ3WSoUOxrVQdOv0aU4SuIa6zF4rIMQMnbN3srGgcTpIogJMoR
-	 gBhfhudeLftTTFmy+ZtoEX4lRaequaO8VIERVBykSKOeHsMzdg51dXmsgk3ljYrcEV
-	 2JbGX74eJoCIp+TWXlXvMHdfglQLWhtM2vjMhl3/W7M7pZn/tUQ6Zz2VT3BZojOXf9
-	 C0BFrIyZxgtwCtpSYXrLqkVhuROP6HrfuICwChORtAnbYe+02Rfn8pxA0i6odG/16+
-	 IfHAPE/MaOgng==
-Date: Sun, 4 Feb 2024 16:01:36 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v8 0/7] iio: add new backend framework
-Message-ID: <20240204160136.0faa3125@jic23-huawei>
-In-Reply-To: <20240204145933.6f29538c@jic23-huawei>
-References: <20240202-iio-backend-v8-0-f65ee8c8203d@analog.com>
-	<20240204145933.6f29538c@jic23-huawei>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707062523; c=relaxed/simple;
+	bh=RqP6QjR5oTC6j42WuoSoTTRBG6hJG83IUJl3HfLS4T8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aqWP1Y8dtyJMF/92AM873xry5v0qdjFLS8tuuSgNBGa1kgNL8jTr1VE7MQqzcq4FA0FYiQfLSGxYPFj+aY7J1Ape4b6cqMbcsNLmBWaqw+ENFalyUdBuOMqTFEa77b2ApIkA1kXDvoD60UvyB3ALzei2tPRC/puBNUIEKaOUM28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=fail (0-bit key) header.d=marliere.net header.i=@marliere.net header.b=IlLJcWv1 reason="key not found in DNS"; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d4d15ec7c5so3354874a12.1;
+        Sun, 04 Feb 2024 08:02:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707062521; x=1707667321;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:dkim-signature:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I6tux3yF+FHKohV0YPTE6voYVdRiZgTqWRcrEfWddH8=;
+        b=hvkiygz9jYnXQjjAWxcox5S6QiUtdzSyaZfOGN4DM3RxCXWAMIjhvLyPQ2iTd9OqVX
+         G7IvPfxi/eteLFn0D9SqUzD9+4Te6t+FoxOZU/3IfbwO55ThrXJ7psq+bX9h65ixBxPV
+         wymUNV9RBhc2fJKii8GEL9E3AvgrYYLdrpKGEAlsQE/8o7/Xr+i38fLBv/yXf5GbzfQG
+         p7zafDCIJqAS04Q0Wi5THGmY8FoHSLsWganPIpDYBl6xW/uva7Ewq6/5AQNIjxVQV4Yj
+         lCTzxSizVKb/p0ycgahATuDgm5sr06U/o0rzubpMz+UsfChf8QhrjijVu8R9W1LOF8K5
+         bknw==
+X-Gm-Message-State: AOJu0YzlR30NeFEGamNxzdI1PjM9dhfQY7oJgZHXOU0bLxwaOogM9BP3
+	vDFOzdxDCIgbunIwpSEIysZwe92gxLTSURyvUMtbHJC0Vmedu6aZ
+X-Google-Smtp-Source: AGHT+IGrEzNLrWh2A3+bwOZhlPVbVvN5QhQQ/i0u95LngB3psgTK/DGRVeYaitc0JrIEYHLQnrNEpQ==
+X-Received: by 2002:a17:90a:eb0d:b0:296:3a70:ad55 with SMTP id j13-20020a17090aeb0d00b002963a70ad55mr7820425pjz.34.1707062520975;
+        Sun, 04 Feb 2024 08:02:00 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVQerWtxHV4Aotuwy0a5CxNNFpSr0PieNwWzSGUvrHqFR2kSdrvJvvE/Mi+pxMYpbqYM56Lz9WrOZP18qpfmvCUZ7ISfS3vAM77x20yWtXlCz3zBmFOJTPeNbLnjFTV9bkCTc6v8kWnwQ==
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id x5-20020a170902ea8500b001d95224a53asm4732148plb.81.2024.02.04.08.02.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Feb 2024 08:02:00 -0800 (PST)
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2023; t=1707062519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I6tux3yF+FHKohV0YPTE6voYVdRiZgTqWRcrEfWddH8=;
+	b=IlLJcWv1PCy8f/pODEBKuI9VB3cCRmnm1J48jL/fFU7wj3XTmoYHY3u44WRekyXrC8Uwu1
+	ywzzd8MGT/1bye6X/z3KfX/yL2pme/dPbOPlU7RLxeL94yb3rA7+o8PNnIMfQOjCxftv0k
+	2AsvX9HI7/WRc+kK5K/ZQa7zEe53HDNBSFqlALZwJ/K9tMRCQ14bijK4+MFOwK5ILRfRJg
+	jrqpBSGlGhxbZiaNS6BvMlL+4J2ovZOt/TDYsiGSS8vR88wTtkaGlxjTAizTtl60Oy+Njq
+	jHhxfiIjn4t9MskV0ATyXxSFtPt3856v3ZyVt+1s86lAqSnWRu461qTYB2HVKw==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+Date: Sun, 04 Feb 2024 13:02:30 -0300
+Subject: [PATCH] counter: make counter_bus_type const
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240204-bus_cleanup-counter-v1-1-cef9dd719bdc@marliere.net>
+X-B4-Tracking: v=1; b=H4sIABW1v2UC/x2MQQqAIBAAvyJ7TlARgr4SEaZbLYSKZgTi35OY0
+ xxmKmRMhBkmViHhQ5mC7yIHBvY0/kBOrjsoobRQQvOt5NVeaHyJ3Ibib0x8RKOk0Z3NQS9jwp3
+ e/zovrX2tnX67ZQAAAA==
+To: William Breathitt Gray <william.gray@linaro.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Ricardo B. Marliere" <ricardo@marliere.net>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1131; i=ricardo@marliere.net;
+ h=from:subject:message-id; bh=RqP6QjR5oTC6j42WuoSoTTRBG6hJG83IUJl3HfLS4T8=;
+ b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlv7UVDoMMvRFdaUMmzfeNufqSOcFOACR6hZoo0
+ IdGsmiLamSJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZb+1FQAKCRDJC4p8Y4ZY
+ plT0EACgaeZeRKiYQY5DeJGs750z10UQ2poe6YzS852KuFNtlgsQH4OUGhcKX20h92MdDYzGwE1
+ 13vPR9vrTWxO0BCa7NQbCRpLWntRITDhSDp5pWkylKb4UOnyZaKfYiQlMEiwm9aXWRZdOenCj8w
+ 0yzZSxtu45Urgf87cf9fCbesK8MnjhVezP0BVAZrOq0j/1g0q6Jfrr4AKnQ1EI0DhY/GSj2bUH1
+ xfGqS+v1toJYzc0pdyoI2QWAvNPzK989/0B1svOyA4/9UDthHJPf6+0yI+HWB9ttG1JvMWqpnR1
+ 7yEKfFIDX7kt/0tpZQNUt+45R71RrjqEjauRYMOzkbJdA8hpza33zmPncdnBvIKObKbe/yKOBAK
+ JVboMNmCcafPq/8hHMGBghsbKXxRbIJgIWYJlNJjcjthQ7rEScgWwz1KAb6M9jIu2r4Mxuu7Lrl
+ xQ3/65sTHJ2l1gvRbt/87L7M4Ruf57WLLUqUiyVgP3Kj9SOOEFWXlXuaUfNg11t7DGdeBZCXZC1
+ kKGGUgCpyOtyBGIT5vAPmFHPB96JXFrLI+hjcIOk6vJ4Y3ICMxRhBEt3h/Cd5p6pzzgSOUsgKMQ
+ ZHNM+6CrBY9GiOZsDwzCGyj671tn8gi8O6iawXtCM7YYtv16/0hHCSBmOQEKAGGMLHSsAEB2aK6
+ DfWlmVWJLfQVsAA==
+X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
+ fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 
-On Sun, 4 Feb 2024 14:59:33 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+Now that the driver core can properly handle constant struct bus_type,
+move the counter_bus_type variable to be a constant structure as well,
+placing it into read-only memory which can not be modified at runtime.
 
-> On Fri, 02 Feb 2024 16:08:31 +0100
-> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
-> > v1:
-> >  https://lore.kernel.org/linux-iio/20231204144925.4fe9922f@jic23-huawei=
-/T/#m222f5175273b81dbfe40b7f0daffcdc67d6cb8ff
-> >=20
-> > v2:
-> >  https://lore.kernel.org/r/20231208-dev-iio-backend-v2-0-5450951895e1@a=
-nalog.com
-> >=20
-> > v3:
-> >  https://lore.kernel.org/linux-iio/20231213-dev-iio-backend-v3-0-bb9f12=
-a5c6dc@analog.com/
-> >=20
-> > v4:
-> >  https://lore.kernel.org/r/20231220-iio-backend-v4-0-998e9148b692@analo=
-g.com
-> >=20
-> > v5:
-> >  https://lore.kernel.org/r/20240112-iio-backend-v5-0-bdecad041ab4@analo=
-g.com
-> >=20
-> > v6:
-> >  https://lore.kernel.org/r/20240119-iio-backend-v6-0-189536c35a05@analo=
-g.com
-> >=20
-> > v7
-> >  https://lore.kernel.org/r/20240123-iio-backend-v7-0-1bff236b8693@analo=
-g.com
-> >=20
-> > Changes in v8:
-> >  - Dropped commit ("of: property: fix typo in io-channels") - applied
-> >    via DT tree. Also dropped commit
-> >    ("driver: core: allow modifying device_links flags") - did not made
-> >    sense.
-> >  - Patch 7
-> >   * Do not change the version string format during probe.
-> >=20
-> > Jonathan, the series is based on next-20240202 since it already includes
-> > the io-channels fix Rob applied in his tree. I guess it should land in =
-rc3 so
-> > after you rebase, all patches should apply cleanly (if applying them of=
- course
-> > :)). Let me know if anything fails... =20
->=20
-> Given that merge (between my tree and Rob's) is about as trivial as they =
-come
-> I'll take the series now (rather than delaying) and rely on Stephen (for =
-next)
-> and Greg (once I send a pull request) to deal with it.
->=20
-> It's the sort of merge that makes Linus grumpy if people rebase to avoid =
-it!
->=20
-> On that note, applied with those tweaks to the broken binding patch.
->=20
-> Initially pushed out as testing to see if 0-day moans at us a lot about a=
-nything.
-Dropped again as comments in from Andy crossed with this.
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+---
+ drivers/counter/counter-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Jonathan
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 09c77afb33ca..f6a939d51171 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -53,7 +53,7 @@ static struct device_type counter_device_type = {
+ 	.release = counter_device_release,
+ };
+ 
+-static struct bus_type counter_bus_type = {
++static const struct bus_type counter_bus_type = {
+ 	.name = "counter",
+ 	.dev_name = "counter",
+ };
 
->=20
-> Jonathan
->=20
-> >=20
-> > (also dropped the devlink Reviewers from the Cc list as that patch was
-> > dropped).
-> >=20
-> > Keeping the block diagram  so we don't have to follow links
-> > to check one of the typical setups.
-> >=20
-> >                                            ----------------------------=
----------------------------
-> >  ------------------                        | -----------         ------=
-------      -------  FPGA |
-> >  |     ADC        |------------------------| | AXI ADC |---------| DMA =
-CORE |------| RAM |       |
-> >  | (Frontend/IIO) | Serial Data (eg: LVDS) | |(backend)|---------|     =
-     |------|     |       |
-> >  |                |------------------------| -----------         ------=
-------      -------       |
-> >  ------------------                        ----------------------------=
----------------------------
-> >=20
-> > ---
-> > Nuno Sa (6):
-> >       dt-bindings: adc: ad9467: add new io-backend property
-> >       dt-bindings: adc: axi-adc: update bindings for backend framework
-> >       iio: buffer-dmaengine: export buffer alloc and free functions
-> >       iio: add the IIO backend framework
-> >       iio: adc: ad9467: convert to backend framework
-> >       iio: adc: adi-axi-adc: move to backend framework
-> >=20
-> > Olivier Moysan (1):
-> >       of: property: add device link support for io-backends
-> >=20
-> >  .../devicetree/bindings/iio/adc/adi,ad9467.yaml    |   4 +
-> >  .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   8 +-
-> >  MAINTAINERS                                        |   8 +
-> >  drivers/iio/Kconfig                                |   9 +
-> >  drivers/iio/Makefile                               |   1 +
-> >  drivers/iio/adc/Kconfig                            |   4 +-
-> >  drivers/iio/adc/ad9467.c                           | 268 +++++++++-----
-> >  drivers/iio/adc/adi-axi-adc.c                      | 379 +++++--------=
-------
-> >  drivers/iio/buffer/industrialio-buffer-dmaengine.c |   8 +-
-> >  drivers/iio/industrialio-backend.c                 | 412 +++++++++++++=
-++++++++
-> >  drivers/of/property.c                              |   2 +
-> >  include/linux/iio/adc/adi-axi-adc.h                |  68 ----
-> >  include/linux/iio/backend.h                        |  72 ++++
-> >  include/linux/iio/buffer-dmaengine.h               |   3 +
-> >  14 files changed, 793 insertions(+), 453 deletions(-)
-> > ---
-> > base-commit: 076d56d74f17e625b3d63cf4743b3d7d02180379
-> > change-id: 20231219-iio-backend-a3dc1a6a7a58
-> > --
-> >=20
-> > Thanks!
-> > - Nuno S=C3=A1
-> >  =20
->=20
->=20
+---
+base-commit: 0b3bbd8f9baf245ec77d86f6f5bc902105b4bfa9
+change-id: 20240204-bus_cleanup-counter-7ea21a4a4abd
+
+Best regards,
+-- 
+Ricardo B. Marliere <ricardo@marliere.net>
 
 

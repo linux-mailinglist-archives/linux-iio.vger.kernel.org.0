@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-2125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890E5848D1D
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 12:24:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8A3848D25
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 12:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0001F223B7
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 11:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 522C92837BD
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 11:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7FD22081;
-	Sun,  4 Feb 2024 11:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DA52232B;
+	Sun,  4 Feb 2024 11:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="aetaEVnA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUkxvh0t"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E0A21A14
-	for <linux-iio@vger.kernel.org>; Sun,  4 Feb 2024 11:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8053522098;
+	Sun,  4 Feb 2024 11:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707045847; cv=none; b=j+ajqHU89kMY7AUm2UMJcP0GfaDZlVCoTWvN9x3+YqTREKjZMwvhFdsErCQbjfba6i6dRMQ14G9zRsNA1vv80FgE/XWXVD0P/YCvVQAcIaOOxfJ4mhtasZ3vN0Jy81XRnBCW4mGANy03N6MNdv9wWx077tOMrbbP+mlHvkj/npg=
+	t=1707046020; cv=none; b=HJUe2sSSi9OwJa6OIsv560smrFA7cRnPf4OGo4wp7RapwSzMWoy0E3IggCjkP8dMxIvGIZZJc9BsBp5tiMEEzexCa1JGEPQhf/HD0rq/4Zf4MdljWjPwHqzXzShedwEGy34u/NCW5qaGQ/YuYsLg13VyDpXF/r6M0OjGlTl6yzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707045847; c=relaxed/simple;
-	bh=k69QHIy3c0whon+klg8whm71G1FLr9cHgQlsm81/6Cs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=nKFgipr3frMt+ipSFxciuoNME2sYP6ByhPBe2MSKaVKMhiBPfe+K9khPo+2TR6gEMRktUMVust21MMuTuZjzUorNdmxJd+3ILDTpjd/4rLii1LDOKHvVXsztM2LwUSRZcDKYk2Q+aV+HkrOQ4ATcg+lR7dDeLRxZoKUyqer07z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=aetaEVnA; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d72f71f222so28020205ad.1
-        for <linux-iio@vger.kernel.org>; Sun, 04 Feb 2024 03:24:05 -0800 (PST)
+	s=arc-20240116; t=1707046020; c=relaxed/simple;
+	bh=s/rRFhoHbxWmWjQ38N/sBZ3CQGHizWDvoGT9DkrcZ+E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b1lrHcFZKmDObyMz+yaQb6jfxN61ZUsTUGJq5v67Qco59//op2TdV57fsAMCHKznVwvPMNBhrRktjPZTDVkENlrPFmxA98+uvPnQGv/C+0RJrJOunKGsWMFvZTvdjzEiwmIX2M1cBQZEBwOcqhr/YYoD+ArDc1hl709lkAyXYCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUkxvh0t; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a3122b70439so467509166b.3;
+        Sun, 04 Feb 2024 03:26:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1707045845; x=1707650645; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1707046017; x=1707650817; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=upI2lQPR6KaovO+5qlL0SXpMm1vkdZfsRPpUfyY8fXA=;
-        b=aetaEVnAZJ4rGX5b0EZGky7sFnRVY+ocudF2UKMtXR3OmuwByRDMoVxbfXv2aaTNvz
-         dUHk/DD12zmNBUyI/DgWE0vKjMYxIs++LikquSXnDZ2fjASpgQpLSkvUnpW3yjTgfJOI
-         N8rthAj7b2qwSHsz1cpwmBpk+BUaSR71WvVZG2mMLp0Pmfz6cU+1rmlangkGU+7Ygube
-         zbOdoLk8pxb/mFfOCWt/6JdEI45a3Qk/FYs/JDckav1dqrW+Zau9hlMS183VgGxRbizI
-         ngqEXVP+d7Nv93ex1sfcIltM3Co+W/EuLIoiyJ+K7LwzvKduv6aJnCgMIg23XTfyDli4
-         d7gw==
+        bh=NHKAaoFRco1xyHqsX5oYKAyy8rLTvdJKQZ5uWsLPDP0=;
+        b=OUkxvh0trg3FCsxQPeOHwfOYfcw2lma3lVqAxpt+GG6LjTE++XAQsotPJ23oBZcbmV
+         cwQSw5pAcU2flJb2TdCOR7qhqBhd9rlw5oTRPUE+N12ozSEz7JBt18UY/aEXx4TIaK33
+         5EM/ETU7wvULr1UQ3uCuO1d9uc70Y7ctFBTgwmPH1GqoAjkfEA76onl3pN+4liDjrK7F
+         BSlKLMK339gCdF2fqlBWksChrNlYKhU2KWZ31m54aSU4lffAIMNz1Zfp9vMUS235wrJE
+         sYiVHTPCGCdNObFe8ce+/MRioEZU7wzuq0SPP9raHe33U2Ws+jeGx32fELba/X1/kRmw
+         YhLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707045845; x=1707650645;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1707046017; x=1707650817;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=upI2lQPR6KaovO+5qlL0SXpMm1vkdZfsRPpUfyY8fXA=;
-        b=KiMnTFvun7cVOOxk93HqWoG1nS1s7d7IUPgN5c12AwTAP5L4x8mwUgIQC/fMf0tQch
-         lFO7o/3qNRBXkjZTyoUkljkMVwC6k26BUSPoQxjzPwq0xYO0TxG9F9wwSkXKOWJW2gWs
-         Ud8ItVKDeDMB/36a0tdPzgdmeo7p6a36YrgXOcaPJv+eEvtl7VgMQOaHqGwr9dEr2Bou
-         2PE9QE3QIDeOsQIt/uqDPWmM91P7rUrXw/wV4grHqO+78eV+xc+JynGdbd9JGSFFGv7r
-         kR5YD5cC3Gv51s093a0FnvkFPpXzh4DA1+1AEFoExxkdJTKn2rAUA8Cl9JdIuaLsB4xS
-         FjRg==
-X-Gm-Message-State: AOJu0YxDrw1TKkhteR0M3p3sw/PVaei0F69US8b+iWwdcaL17qpvRGvk
-	VfouDbUPt2qLp4/1UiBnl/Oy5zm4qOT/Ag12/VAzpfvkj4OlCKymJeY45xGnaMo=
-X-Google-Smtp-Source: AGHT+IFmuQI7CLUnfrLJy6zZuHkYpuWiAiKS6MQ0sN/lLK0KrOwrZpD1Il4H1iwShEuZ0sd0RTAg5A==
-X-Received: by 2002:a17:903:246:b0:1d6:fe11:2642 with SMTP id j6-20020a170903024600b001d6fe112642mr8079997plh.27.1707045845020;
-        Sun, 04 Feb 2024 03:24:05 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXTqifKl9Icy6D6nzs6HH9xWta0N8HAOAPNzVjf4y5AEPT9WWRiVoKT4zQp1z4aj5xo86atTJ6ZNGv+UO0qsfG/gNS1bV69FnVVxW3w7TNYa4JePgTu6PiuZKSwOMv4IzyrOrJj/pcHIZdXdnt8/IK4Qu4nu8k6shSWcz3rE8I+Qz33JeVgKPGWNGCuE4GLICspOzaRjAPjbnJ1BO+/tQ1AI/r+/hikZ10I6WNaZgAvkjZoAgbV2VQyz127jXuy6+n/vlMwC1Kx7f2kVzephknyjV/8Em2e29J+Z0ANhT85oeZQchEptR7BGYthMFz/XTc29TAGe0RlgXc8UoQdm5iICrpr8Aor4qO9O1aERtO4GoC5Sf81FAVY0+pGL5Dl6KECfFaW0YckyRgzQq/p8/JRNJcWNQSSG/m+w3O/e9uCQICLLddxyS6H0bFXhW7/JfVu6Rnq1pjYwDzZ7qbEqTmcSF6CfQLK60pe6wq9N94P3JuN9SEFWf7j2evF1zjfi54j7yw=
-Received: from ?IPV6:2403:580d:82f4:0:1e3f:bc28:aa1:4e5b? (2403-580d-82f4-0-1e3f-bc28-aa1-4e5b.ip6.aussiebb.net. [2403:580d:82f4:0:1e3f:bc28:aa1:4e5b])
-        by smtp.gmail.com with ESMTPSA id u4-20020a170902e20400b001d90a67e10bsm4446733plb.109.2024.02.04.03.23.59
+        bh=NHKAaoFRco1xyHqsX5oYKAyy8rLTvdJKQZ5uWsLPDP0=;
+        b=qyeKveXaclPQOc+i/w/c0rzXUCu+huKmt5dRb/Dmg5YfLe+e3Gl3LDB8oE7R93rqrq
+         8CYoqryQzIFygxZWyQRetKy0SZPU/3lb/WF8Nb2MsPd5XtfpYdyfEY6W+fU9RaorzRd3
+         NBXBdHDIvnYaTjdGYE0cpmdZTIV2T8mcNzY+nPRl6rMB7aAwYstQukccyLOVgd1SoSLW
+         Zo1XKiYz3zzxzbJaCeWlkJN2Wcn3LHH+vm+U4GrfDFOmwkr4pQwDInXeFaGLX62CPGN+
+         mfSC5f7LvOx04z2CGNtWRoC5W2hDQN1P1mPye1abvcKufsmwY7HfW0zWj0kY5FOOXV9Q
+         h3nQ==
+X-Gm-Message-State: AOJu0Yyf5RW6xbTWmXXbdUgELO1U2MRRIDWzngSAL70ZA25aGlnuNQmc
+	1uFTjbmsNMEMjy5h/CmjjpEQgrAtZKDHqBRBHruyCU/kV77vUdYW
+X-Google-Smtp-Source: AGHT+IGO518xLSlLSiSmhJo6GuGfs1XjYuvgOUF8avrOe6PONxbewJ6ItPKTtYTEbg0mzvgv30eoXQ==
+X-Received: by 2002:a17:906:f811:b0:a35:50c7:8b41 with SMTP id kh17-20020a170906f81100b00a3550c78b41mr7602397ejb.72.1707046016452;
+        Sun, 04 Feb 2024 03:26:56 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCU4XkjkiZEqJdLlqFUXkVrka1INE/MCIsoQewjEO9AZ7C6g+Cm3YPf4VIuZ/ut7ryL9tG8KBpnO/LUz0idlN8JmY6046Y6/AqfZC+iY9c+7GXctP1/8YqUGJLp8wGO2dweycbS4RuS6u18HgrmvXHRIVqA9O7iVS8Ko16WdZd0i7t+V7KSPTgbK6Nk=
+Received: from ?IPV6:2a02:8389:41cf:e200:87b6:6450:71c5:6e1d? (2a02-8389-41cf-e200-87b6-6450-71c5-6e1d.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:87b6:6450:71c5:6e1d])
+        by smtp.gmail.com with ESMTPSA id oz35-20020a1709077da300b00a361c1375absm2998038ejc.133.2024.02.04.03.26.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Feb 2024 03:24:04 -0800 (PST)
-Message-ID: <fd404067-bc24-449c-94b4-f59a54c3f532@tweaklogic.com>
-Date: Sun, 4 Feb 2024 21:53:55 +1030
+        Sun, 04 Feb 2024 03:26:56 -0800 (PST)
+Message-ID: <194ed4ce-bb2e-404e-a716-ec2e9876c740@gmail.com>
+Date: Sun, 4 Feb 2024 12:26:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,92 +76,97 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] iio: light: Add support for APDS9306 Light Sensor
-Content-Language: en-US
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Matt Ranostay <matt@ranostay.sg>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Re: [PATCH v2] iio: humidity: hdc3020: add threshold events support
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20240121051735.32246-1-subhajit.ghosh@tweaklogic.com>
- <20240121051735.32246-4-subhajit.ghosh@tweaklogic.com>
- <20240121152332.6b15666a@jic23-huawei>
- <757a18b7-94f4-4d72-9917-5d8b1cd677f6@tweaklogic.com>
-In-Reply-To: <757a18b7-94f4-4d72-9917-5d8b1cd677f6@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20240204103710.19212-1-dima.fedrau@gmail.com>
+Content-Language: en-US
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240204103710.19212-1-dima.fedrau@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
->>
->>> +
->>> +static struct iio_event_spec apds9306_event_spec_als[] = {
->>> +    {
->>> +        .type = IIO_EV_TYPE_THRESH,
->>> +        .dir = IIO_EV_DIR_RISING,
->>> +        .mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
->>> +    }, {
->>> +        .type = IIO_EV_TYPE_THRESH,
->>> +        .dir = IIO_EV_DIR_FALLING,
->>> +        .mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
->>> +    }, {
->>> +        .type = IIO_EV_TYPE_THRESH,
->>> +        .mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
->>> +    }, {
->>> +        .type = IIO_EV_TYPE_THRESH_ADAPTIVE,
->>> +        .mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
->>> +            BIT(IIO_EV_INFO_ENABLE),
->>> +    }, {
->>> +        .mask_separate = BIT(IIO_EV_INFO_ENABLE),
->>
->> What's the intent of this final entry?
->> The type will default to IIO_EV_TYPE_THRESH anyway but if that
->> the intent you should specify it.   There isn't an 'obvious'
->> default for type in the same way there sort of is for dir
->> (as it's either direction).
-> Understood, let me experiment and see the ABI difference, if any and get back to you.
-> 
-This device has two channels - ALS and CLEAR. One interrupt enable option and
-one Channel selection option (Clear or ALS). According to our previous discussions:
-https://lore.kernel.org/all/20230415183543.6d5e3392@jic23-huawei/
-the event_spec was updated to have two interrupt enable attributes - one for CLEAR and
-one for ALS. (Intensity channel and Illuminance channel)
+Hi Dimitri,
 
-If I remove the final entry I am getting only one enable option (intensity channel):
-/sys/bus/iio/devices/iio:device0/
-|-- events
-|   |-- in_intensity_clear_thresh_either_en
-|   |-- thresh_adaptive_either_en
-|   |-- thresh_adaptive_either_value
-|   |-- thresh_adaptive_either_values_available
-|   |-- thresh_either_period
-|   |-- thresh_either_period_available
-|   |-- thresh_falling_value
-|   `-- thresh_rising_value
+On 04.02.24 11:37, Dimitri Fedrau wrote:
+>  
+> +static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				enum iio_event_type type,
+> +				enum iio_event_direction dir,
+> +				enum iio_event_info info,
+> +				int val, int val2)
+> +{
+> +	struct hdc3020_data *data = iio_priv(indio_dev);
+> +	u16 *thresh;
+> +	u8 buf[5];
+> +	int ret;
+> +
+I tested your patch right now and I noticed that you are only writing
+integer values, which means that for example 19.9999 turns into 18.9169.
+It seems that you are not using val2 (the decimal part).
 
-The last entry gives be the following event attributes, enable attributes for both
-intensity and illuminance channels:
-/sys/bus/iio/devices/iio:device0/
-|-- events
-|   |-- in_illuminance_thresh_either_en
-|   |-- in_intensity_clear_thresh_either_en
-|   |-- thresh_adaptive_either_en
-|   |-- thresh_adaptive_either_value
-|   |-- thresh_adaptive_either_values_available
-|   |-- thresh_either_period
-|   |-- thresh_either_period_available
-|   |-- thresh_falling_value
-|   `-- thresh_rising_value
+Is there any reason for that? The displayed thresholds are decimal, though.
+> +	/* Supported temperature range is from –40 to 125 degree celsius */
+> +	if (val < HDC3020_MIN_TEMP || val > HDC3020_MAX_TEMP)
+> +		return -EINVAL;
+> +
+> +	/* Select threshold and associated register */
+> +	if (info == IIO_EV_INFO_VALUE) {
+> +		if (dir == IIO_EV_DIR_RISING) {
+> +			thresh = &data->t_rh_thresh_high;
+> +			memcpy(buf, HDC3020_S_T_RH_THRESH_HIGH, 2);
+> +		} else {
+> +			thresh = &data->t_rh_thresh_low;
+> +			memcpy(buf, HDC3020_S_T_RH_THRESH_LOW, 2);
+> +		}
+> +	} else {
+> +		if (dir == IIO_EV_DIR_RISING) {
+> +			thresh = &data->t_rh_thresh_high_clr;
+> +			memcpy(buf, HDC3020_S_T_RH_THRESH_HIGH_CLR, 2);
+> +		} else {
+> +			thresh = &data->t_rh_thresh_low_clr;
+> +			memcpy(buf, HDC3020_S_T_RH_THRESH_LOW_CLR, 2);
+> +		}
+> +	}
+> +
+> +	guard(mutex)(&data->lock);
+> +	switch (chan->type) {
+> +	case IIO_TEMP:
+> +		/*
+> +		 * Store truncated temperature threshold into 9 LSBs while
+> +		 * keeping the old humidity threshold in the 7 MSBs.
+> +		 */
+> +		val = (((val + 45) * 65535 / 175) >> HDC3020_THRESH_TEMP_SHIFT);
+> +		val &= HDC3020_THRESH_TEMP_MASK;
+> +		val |= (*thresh & HDC3020_THRESH_HUM_MASK);
+> +		break;
+> +	case IIO_HUMIDITYRELATIVE:
+> +		/*
+> +		 * Store truncated humidity threshold into 7 MSBs while
+> +		 * keeping the old temperature threshold in the 9 LSBs.
+> +		 */
+> +		val = ((val * 65535 / 100) & HDC3020_THRESH_HUM_MASK);
+> +		val |= (*thresh & HDC3020_THRESH_TEMP_MASK);
+> +		break;
+> +	default:
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	put_unaligned_be16(val, &buf[2]);
+> +	buf[4] = crc8(hdc3020_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
+> +	ret = hdc3020_write_bytes(data, buf, 5);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Update threshold */
+> +	*thresh = val;
+> +
+> +	return 0;
+> +}
 
-Please let me know if this sounds ok to you.
-
-Regards,
-Subhajit Ghosh
+Best regards,
+Javier Carrasco
 

@@ -1,66 +1,69 @@
-Return-Path: <linux-iio+bounces-2171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989E484907E
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 21:52:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ACC849093
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 22:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0687282FF4
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 20:52:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B644B22228
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Feb 2024 21:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F4E25567;
-	Sun,  4 Feb 2024 20:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938892868D;
+	Sun,  4 Feb 2024 21:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeEj0npH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBPdy4/M"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543292C68D;
-	Sun,  4 Feb 2024 20:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4634F250ED;
+	Sun,  4 Feb 2024 21:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707079956; cv=none; b=hsm94HboDjqdl3sUo1jEu4pf5L83emZvbjGNVKjIMFH5yNrhbjBRa9Z8bMqP0nTz0eB0e6snpqEbm+cQyWNShAS8/Nz2WJ4vjBEDMAEyroCU23Rr9vWrysL1q08Foi+gAO8Q06uKGA60pFs3kGmM/x7W9Xb7inrXJ3rDnk4jo48=
+	t=1707080898; cv=none; b=FTWwEpDonrBj3fPkva6ABCU0Oc1xFaulBNd8u6R2BSYRvXcxq2+O585wzTQ8oQzvbIrG8JyrATMc24P5mri0dKm3ucimZXoFBQZ2opVnDTUKIPZBjtjiC2u4NypuRMMHbSgy13KiNkcvCdhPg2cImKGdwg/v7V1TtPftpthqvSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707079956; c=relaxed/simple;
-	bh=ya50yoX5xqEs3/3022ly56iuiaBZDrxjflZUDk9mR58=;
+	s=arc-20240116; t=1707080898; c=relaxed/simple;
+	bh=rfUupCgxNCK7zuJHjVaM0TpAXHJ+BQUJ+7gaQtxVHpk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J++/ezO4H7dSeeTFeMU1IFLI7tec9nRGdybtZA/OtTNlOiFxN1GUtF79tTpKFyAZrtNWNgHOQ6wWM1cAZeFaRboNQalAiQn2YulhWoXq/otcdrBPI/MO2Do3Sq0citWqd94vxCMTlb6pI+SEZA+YziVElxizl7g8iUpbTKH4wLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeEj0npH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F26BC433C7;
-	Sun,  4 Feb 2024 20:52:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nrI7Y/RFUry2gT0+mwXsFn8s5l3v4Hxik8+YDh9b6lOd0pVfHV1QFsflYSaiTClY/kEcTB1dhQ55D3gL1HqNOOE66xRwtxidX5nR5bHl6WaJ/eNYKhYxHzqVbJmVAaB6ohaJmZ/JBOm2V7Uw23nejXHTbE8FKk0H5iivpVcYiRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBPdy4/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45713C433F1;
+	Sun,  4 Feb 2024 21:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707079955;
-	bh=ya50yoX5xqEs3/3022ly56iuiaBZDrxjflZUDk9mR58=;
+	s=k20201202; t=1707080897;
+	bh=rfUupCgxNCK7zuJHjVaM0TpAXHJ+BQUJ+7gaQtxVHpk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KeEj0npHihRgoDLFmkIGkkYbFjz0fX1rphWJ/jIu/jjh4KDMw48CHCespKbu6+Eoy
-	 KTjMiJXLUVKQaKQP/6VefOegx24BOtRzy5sAcvfSjYTeByTve8/foFR+SKXlSBw+pc
-	 xOinHIygNvfTAO1MGyUtB98Gw+kcfTe+VJU9SI4ndIKZkdIrNmHQzTpGy18s5jTX57
-	 vpmAjwIRku0rgqyPTStx0YvlnxO0qxEUR4+JwE8GDZv/sehghCkUWAyJWmC/7Lr7pT
-	 RJIFzOeoA+6fsy6XQfJDHz9GEAky/LXnNGfevQYzqOXO6293z4KiKh02qhKAUfDezs
-	 iRwV580qdvipQ==
-Date: Sun, 4 Feb 2024 20:52:20 +0000
+	b=uBPdy4/MjPndRzU45guGaBqHAkICEchwbkTh4HiVQR4khMOikAwePSw4fqmGah3pA
+	 GGKqEuuQNiw3I6I/UihzpwzFOPCsclXFKoEvp8zgFWjWIbKWphnDonMI8beDQhZTtF
+	 m+zdqkESt7+cFJlM75ynBOgxgelUuOIn695lMnP832a9LopAwTKi0i03O+YUkf7Dvm
+	 Z7lOJ4Yt2m/DzRFf2oeQhaWKXBdRSaztO/CwmMDxxfYnF9k9Xkyk+Mn7A6JC/41Qw/
+	 tXIyBGm4+8atFYm8UW+0FfNoWU5+Y/eRWU6bWw4PlwdGy1SNqjrSKFkWirKKV+AuB8
+	 YaOYZ/7zA/fEA==
+Date: Sun, 4 Feb 2024 21:08:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall
- <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, Sumera
- Priyadarsini <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+To: Julia Lawall <julia.lawall@inria.fr>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Nicolas Palix
+ <nicolas.palix@imag.fr>, Sumera Priyadarsini <sylphrenadin@gmail.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  linux-acpi@vger.kernel.org, Andy Shevchenko
  <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 2/5] of: Introduce for_each_child_of_node_scoped()
- to automate of_node_put() handling
-Message-ID: <20240204203418.00464af4@jic23-huawei>
-In-Reply-To: <20240204195611.2bb6ff58@jic23-huawei>
+ <gregkh@linuxfoundation.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
+ loops.
+Message-ID: <20240204210804.0febf2fc@jic23-huawei>
+In-Reply-To: <alpine.DEB.2.22.394.2401312234250.3245@hadrien>
 References: <20240128160542.178315-1-jic23@kernel.org>
-	<20240128160542.178315-3-jic23@kernel.org>
-	<CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
-	<20240204195611.2bb6ff58@jic23-huawei>
+	<alpine.DEB.2.22.394.2401281903550.3119@hadrien>
+	<20240129114218.00003c34@Huawei.com>
+	<alpine.DEB.2.22.394.2401291455430.8649@hadrien>
+	<20240129195227.3c3adae1@jic23-huawei>
+	<alpine.DEB.2.22.394.2401292120260.32795@hadrien>
+	<20240130093854.00000acc@Huawei.com>
+	<alpine.DEB.2.22.394.2401312234250.3245@hadrien>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,89 +71,213 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 4 Feb 2024 19:56:11 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 31 Jan 2024 22:38:21 +0100 (CET)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
-> On Sun, 28 Jan 2024 15:11:01 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
->=20
-> > On Sun, Jan 28, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel=
-.org> wrote: =20
-> > >
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >
-> > > To avoid issues with out of order cleanup, or ambiguity about when the
-> > > auto freed data is first instantiated, do it within the for loop defi=
-nition.
-> > >
-> > > The disadvantage is that the struct device_node *child variable creat=
-ion
-> > > is not immediately obvious where this is used.
-> > > However, in many cases, if there is another definition of
-> > > struct device_node *child; the compiler / static analysers will notif=
-y us
-> > > that it is unused, or uninitialized.
-> > >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > >  include/linux/of.h | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > >
-> > > diff --git a/include/linux/of.h b/include/linux/of.h
-> > > index 50e882ee91da..f822226eac6d 100644
-> > > --- a/include/linux/of.h
-> > > +++ b/include/linux/of.h
-> > > @@ -1434,6 +1434,12 @@ static inline int of_property_read_s32(const s=
-truct device_node *np,
-> > >         for (child =3D of_get_next_available_child(parent, NULL); chi=
-ld !=3D NULL; \
-> > >              child =3D of_get_next_available_child(parent, child))
-> > >
-> > > +#define for_each_child_of_node_scoped(parent, child) \
-> > > +       for (struct device_node *child __free(device_node) =3D       =
-     \
-> > > +            of_get_next_child(parent, NULL);                        =
-   \
-> > > +            child !=3D NULL;                                        =
-     \
-> > > +            child =3D of_get_next_available_child(parent, child))   =
-=20
-> >=20
-> > Doesn't this need to match the initializer (of_get_next_child)?
-> > Otherwise it seems like the first node could be a disabled node but no
-> > other disabled nodes would be included in the iteration. =20
->=20
-> FwIW that was was entirely unintentional.  Not sure how it happened :(
-> Anyhow, now will be for_each_available_child_of_node_scoped() with the
-> right first call.
+> Here are some loop cases.  The semantic patch is as follows:
+> 
+> #spatch --allow-inconsistent-paths
+> 
+> @@
+> expression node;
+> identifier child;
+> symbol drop_me;
+> iterator name for_each_child_of_node;
+> @@
+> 
+> for_each_child_of_node(node,child) {
+>   ...
+> + of_node_put(drop_me, child);
+> }
+> 
+> @@
+> expression node;
+> identifier child;
+> symbol drop_me;
+> iterator name for_each_child_of_node, for_each_child_of_node_scoped;
+> identifier L;
+> @@
+> 
+> - struct device_node *child;
+>  ... when != child
+> -for_each_child_of_node
+> +for_each_child_of_node_scoped
+>   (node,child) {
+>    ... when strict
+> (
+> -   {
+> -   of_node_put(child);
+>     return ...;
+> -   }
+> |
+> -   {
+> -   of_node_put(child);
+>     goto L;
+> -   }
+> |
+> -   {
+> -   of_node_put(child);
+>     break;
+> -   }
+> |
+>     continue;
+> |
+> -   of_node_put(child);
+>     return ...;
+> |
+> -   of_node_put(child);
+>     break;
+> |
+> -  of_node_put(drop_me, child);
+> )
+> }
+>  ... when != child
+> 
+> @@
+> expression child;
+> @@
+> 
+> - of_node_put(drop_me, child);
+> 
+> -------------------------------
+> 
+> This is quite conservative, in that it requires the only use of the child
+> variable to be in a single for_each_child_of_node loop at top level.
+> 
+> The drop_me thing is a hack to be able to refer to the bottom of the loop
+> in the same way as of_node_puts in front of returns etc are referenced.
+> 
+> This works fine when multiple device_node variables are declared at once.
+> 
+> The result is below.
+> 
+Very nice!
 
-*sigh* Which I can't use for the unittest case (tests fail as a result
-as some nodes that need to be covered are not available) so both will need =
-to exist
-though we can hopefully review each change for whether the appropriate one
-is used afterwards (ignoring whether it was with the non scoped versions)
+One issue is that Rob is keen that we also take this opportunity to
+evaluate if the _available_ form is the more appropriate one.
+
+Given that access either no defined "status" in the child node or
+it being set to "okay" it is what should be used in the vast majority of
+cases.
+
+For reference, the property.h version only uses the available form.
+
+So I think we'll need some hand checking of each case but for vast majority
+it will be very straight forward.
+
+One question is whether it is worth the scoped loops in cases
+where there isn't a patch where we break out of or return from the loop
+before it finishes.  Do we put them in as a defensive measure?
+
+Sometimes we are going to want to combine this refactor with
+some of the ones your previous script caught in a single patch given
+it's roughly the same sort of change.
+
+
+> julia
+> 
+> diff -u -p a/drivers/of/unittest.c b/drivers/of/unittest.c
+> --- a/drivers/of/unittest.c
+> +++ b/drivers/of/unittest.c
+> @@ -2789,7 +2789,7 @@ static int unittest_i2c_mux_probe(struct
+>  	int i, nchans;
+>  	struct device *dev = &client->dev;
+>  	struct i2c_adapter *adap = client->adapter;
+> -	struct device_node *np = client->dev.of_node, *child;
+> +	struct device_node *np = client->dev.of_node;
+>  	struct i2c_mux_core *muxc;
+>  	u32 reg, max_reg;
+> 
+> @@ -2801,7 +2801,7 @@ static int unittest_i2c_mux_probe(struct
+>  	}
+> 
+>  	max_reg = (u32)-1;
+> -	for_each_child_of_node(np, child) {
+> +	for_each_child_of_node_scoped(np, child) {
+
+This was a case I left alone in the original series because the auto
+cleanup doesn't end up doing anything in any paths.
+
+>  		if (of_property_read_u32(child, "reg", &reg))
+>  			continue;
+>  		if (max_reg == (u32)-1 || reg > max_reg)
+>
+
+
+
+> diff -u -p a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
+> --- a/drivers/regulator/scmi-regulator.c
+> +++ b/drivers/regulator/scmi-regulator.c
+> @@ -297,7 +297,7 @@ static int process_scmi_regulator_of_nod
+>  static int scmi_regulator_probe(struct scmi_device *sdev)
+>  {
+>  	int d, ret, num_doms;
+> -	struct device_node *np, *child;
+> +	struct device_node *np;
+>  	const struct scmi_handle *handle = sdev->handle;
+>  	struct scmi_regulator_info *rinfo;
+>  	struct scmi_protocol_handle *ph;
+> @@ -341,13 +341,11 @@ static int scmi_regulator_probe(struct s
+>  	 */
+>  	of_node_get(handle->dev->of_node);
+>  	np = of_find_node_by_name(handle->dev->of_node, "regulators");
+> -	for_each_child_of_node(np, child) {
+> +	for_each_child_of_node_scoped(np, child) {
+>  		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
+>  		/* abort on any mem issue */
+> -		if (ret == -ENOMEM) {
+> -			of_node_put(child);
+> +		if (ret == -ENOMEM)
+>  			return ret;
+> -		}
+Current code leaks np in this path :(
+
+>  	}
+>  	of_node_put(np);
+>  	/*
+
+
+> diff -u -p a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
+> --- a/drivers/crypto/nx/nx-common-powernv.c
+> +++ b/drivers/crypto/nx/nx-common-powernv.c
+> @@ -907,7 +907,6 @@ static int __init nx_powernv_probe_vas(s
+>  {
+>  	int chip_id, vasid, ret = 0;
+>  	int ct_842 = 0, ct_gzip = 0;
+> -	struct device_node *dn;
+> 
+>  	chip_id = of_get_ibm_chip_id(pn);
+>  	if (chip_id < 0) {
+> @@ -921,7 +920,7 @@ static int __init nx_powernv_probe_vas(s
+>  		return -EINVAL;
+>  	}
+> 
+> -	for_each_child_of_node(pn, dn) {
+> +	for_each_child_of_node_scoped(pn, dn) {
+>  		ret = find_nx_device_tree(dn, chip_id, vasid, NX_CT_842,
+>  					"ibm,p9-nx-842", &ct_842);
+> 
+> @@ -929,10 +928,8 @@ static int __init nx_powernv_probe_vas(s
+>  			ret = find_nx_device_tree(dn, chip_id, vasid,
+>  				NX_CT_GZIP, "ibm,p9-nx-gzip", &ct_gzip);
+The handling in here is odd (buggy?). There is an of_node_put()
+in the failure path inside find_nx_device_tree() as well as out here.
+> 
+> -		if (ret) {
+> -			of_node_put(dn);
+> +		if (ret)
+>  			return ret;
+> -		}
+>  	}
+> 
+>  	if (!ct_842 || !ct_gzip) {
+
+I've glanced at a few of the others and some of them are hard.
+This refactor is fine, but the other device_node handling often
+is complex and I think fragile.  So definitely room for improvement!
 
 Jonathan
-
->=20
-> >=20
-> > It seems like we would want two macros, one for each variation,
-> > analogous to for_each_child_of_node() and
-> > for_each_available_child_of_node().
-> >=20
-> >  =20
-> > > +
-> > >  #define for_each_of_cpu_node(cpu) \
-> > >         for (cpu =3D of_get_next_cpu_node(NULL); cpu !=3D NULL; \
-> > >              cpu =3D of_get_next_cpu_node(cpu))
-> > > --
-> > > 2.43.0
-> > >
-> > >   =20
->=20
->=20
-
 

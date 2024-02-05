@@ -1,24 +1,24 @@
-Return-Path: <linux-iio+bounces-2215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2219-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3497084A4E5
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 21:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8849E84A4EA
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 21:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642DF1C24FE3
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 20:04:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3E7E1C23A4D
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 20:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D095E132C37;
-	Mon,  5 Feb 2024 19:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3039F16DC93;
+	Mon,  5 Feb 2024 19:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUT5Fz/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUT5Fz/x"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8300E16D52A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C593E16D55E;
 	Mon,  5 Feb 2024 19:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
@@ -29,8 +29,8 @@ ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To; b=lAVR2nnCaKsNd+o9MAMFDXba5Crr5J1UiMCqbAxcQC+Tkc7vjHwqukv22e7ARkH7COEBIkNH3ASIHMhUgjRQDAmACN6hDY3JGkPNRlINgzTfgj2yRjcJkOAKdIwXh6lYunc7hBwjfu0yCWFM5CDyY5Rn92HU/YjKqKcCsY9l0L4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=fail (0-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUT5Fz/x reason="key not found in DNS"; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0815EC41674;
-	Mon,  5 Feb 2024 19:04:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57222C433A6;
+	Mon,  5 Feb 2024 19:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1707159843;
 	bh=JHJpfUqaJyRZ4AI78rBIr1ZJeKJ3VKOnvFJCzFqVgZQ=;

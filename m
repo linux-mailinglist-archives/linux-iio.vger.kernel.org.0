@@ -1,60 +1,71 @@
-Return-Path: <linux-iio+bounces-2196-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2197-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84592849FC4
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:48:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3029484A050
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 18:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FE1EB20BA4
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 16:48:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0458B25C18
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7F33CF65;
-	Mon,  5 Feb 2024 16:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BBD446BC;
+	Mon,  5 Feb 2024 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="XS9v4CKu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQo/MQzH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB53A1C3;
-	Mon,  5 Feb 2024 16:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF713FB14;
+	Mon,  5 Feb 2024 17:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707151702; cv=none; b=POJbxcdYO85dfmOmPctM3A73CadGcRBqUUPlMfoRdhSeI0Jhx734eePrxymJpuJb7TV/7wCwy3pxJr+d5/6XFWAuJMJvf4+tRZb9MBHXpzVkQEwqOFsUS9lqbE6DR+wn9ZFNHmRkDp+ils3wCPC41nuuwlz3fWRtsSk+JULjlqY=
+	t=1707153088; cv=none; b=P68A57aOwtWGQsvylwgMOt5jVumkRoWBYh8ZDZA7anX+Ay1Oo0I/yBiHJocV5lh4g55p82LL61nt6/ClrRyo7/Bd4VovAWiNc/r5igwouuzctv44EeXdXUEk6JEDQ36yOhgUUwN29krNIMtPyoWezkYt6u0u72z5usGQJQU4Ypw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707151702; c=relaxed/simple;
-	bh=rypfT/kD5L+1VJyGe4VKW1ttuWQxYs5lhHHbn9d071s=;
+	s=arc-20240116; t=1707153088; c=relaxed/simple;
+	bh=xkNsqaF4QqQI9IylasZgW4zPIt2p4Sbxb4KlMbNWs6I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1dSRRDREtZu4h20oEzkKXWVx9D9qy18xQRpxCfQlJlt1n1lXb1rn5RiwTtxEWwDmUmPCHCWnMZ5vA1SaAva8bo3aBEdmAwhLihaSYJdHtoiy58vHO46kVU8Pm/sQSn0mTNSsM2q/B03anGQ94kZSXgTSvtBEsgRVjhgNrX6Gwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=XS9v4CKu; arc=none smtp.client-ip=172.104.132.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire (unknown [188.24.101.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 0CC77331873;
-	Mon,  5 Feb 2024 16:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
-	s=skycaves; t=1707151144;
-	bh=rypfT/kD5L+1VJyGe4VKW1ttuWQxYs5lhHHbn9d071s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XS9v4CKuRQqHcvD5X9jRzINdXBIOSx2cEZNrDjIU4AldWKo0mRSxvJom2hjrPGtyz
-	 tYvB44syszDm3W/VPWnibo/PS9uEn7w7K73xhu+7xpAJMjfcS88gJDnxtdHvSoHZWw
-	 D694Hgdv4HwxOBvuV8rvQw763gomfhHl0GzRAPWE=
-Date: Mon, 5 Feb 2024 18:39:02 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: andy.shevchenko@gmail.com
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q86o/EhMqYRTkbXjLu4DVnVgGsbWBl88DAzWcUS0XgB7lEPYzybejZ70Rt30ZjlXGMGKObPUugQkuh/diaaM41PEMa99sV2YLaEurNh0IsM/4Y8KAF0w3afardw+9g5VYdIFUNGsyx8P/hCzZpOp0J2f9SJ56RXMxI0qslEiCxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQo/MQzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10180C433C7;
+	Mon,  5 Feb 2024 17:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707153087;
+	bh=xkNsqaF4QqQI9IylasZgW4zPIt2p4Sbxb4KlMbNWs6I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AQo/MQzHt66cRQdouAnYcBrYhyVjlxZ4sDqniOwVsAQ7oTJhre+QB3tFbKOn+/uE4
+	 TsL862+3/4mdbkCd4b/rpnVwL6OSEpQ52/ve1NY9liOP85JlfUbSQHP7QU/KLZv+4w
+	 So6BzdbPYUVjdezJ/bRw/d2pBPokD08uHgbd1GiDmeGbwgalIs72b26elLdtvFQEgS
+	 5vUHhNDrueZw0tUFde9lip1UnCL1SK5plfqQ9rk8QVMgyIFrDr70IsF5ne7uQUvdfk
+	 ZMCNuHj9nZwbmh4vjdTIHO6k6UCEw2Ey5VhhI+PS9pFx1c375TwPOF8q0F+UfgMYzO
+	 ru2KgiE+m0eXg==
+Date: Mon, 5 Feb 2024 17:11:22 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Naresh Solanki <naresh.solanki@9elements.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 4/4] iio: pressure: hsc030pa add triggered buffer
-Message-ID: <ZcEPJh1i7cc0xyBW@sunspire>
-References: <20240127160405.19696-1-petre.rodan@subdimension.ro>
- <20240127160405.19696-5-petre.rodan@subdimension.ro>
- <Zb-1UGJt27OV-vjc@surfacebook.localdomain>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] dt-bindings: iio: afe: voltage-divider: Add
+ io-channel-cells
+Message-ID: <20240205-grudge-abrasion-d20b0c202d67@spud>
+References: <20240130115651.457800-1-naresh.solanki@9elements.com>
+ <1c855a34-8a0d-491e-bfd2-24635b41c86f@linaro.org>
+ <20240131163516.000043df@Huawei.com>
+ <20240131-stylized-defile-d8fe346ab197@spud>
+ <CABqG17iNxfKFNqydkgo6gL8ZmaZ_bqm=pG8kNEhzx_h2eaGuhQ@mail.gmail.com>
+ <e8b30740-379c-9ab0-6bd7-d4726f822381@axentia.se>
+ <20240202-shone-footwork-b247b1ae8e06@wendy>
+ <CABqG17hRF3HaqfvXkT2go2S00JTRqCzremg1Nh=cSEUbcO_2pw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,60 +73,96 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="IYwKfNCRI6ua9wNH"
+	protocol="application/pgp-signature"; boundary="Y1VVmDQJUPxVz3DC"
 Content-Disposition: inline
-In-Reply-To: <Zb-1UGJt27OV-vjc@surfacebook.localdomain>
+In-Reply-To: <CABqG17hRF3HaqfvXkT2go2S00JTRqCzremg1Nh=cSEUbcO_2pw@mail.gmail.com>
 
 
---IYwKfNCRI6ua9wNH
+--Y1VVmDQJUPxVz3DC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-
-hello Andy,
-
-On Sun, Feb 04, 2024 at 06:03:28PM +0200, andy.shevchenko@gmail.com wrote:
-[..]
-> > +	memcpy(&data->scan.chan[1], &data->buffer[2], 2);
+On Mon, Feb 05, 2024 at 07:24:07PM +0530, Naresh Solanki wrote:
+> Hi Conor, Peter,
 >=20
-> Hmm... We don't have fixed-size memcpy() :-(
+> On Fri, 2 Feb 2024 at 18:39, Conor Dooley <conor.dooley@microchip.com> wr=
+ote:
+> >
+> > On Fri, Feb 02, 2024 at 12:49:26PM +0100, Peter Rosin wrote:
+> > > 2024-02-02 at 11:43, Naresh Solanki wrote:
+> > > > On Wed, 31 Jan 2024 at 22:24, Conor Dooley <conor@kernel.org> wrote:
+> > > >> On Wed, Jan 31, 2024 at 04:35:16PM +0000, Jonathan Cameron wrote:
+> > > >>> On Wed, 31 Jan 2024 09:29:59 +0100
+> > > >>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> > > >>>> On 30/01/2024 12:56, Naresh Solanki wrote:
+> > > >>> Conor requested an example of the device acting as a consumer and=
+ a provider.
+> > > >>> Might have meant in the patch description?
+> > > >>>
+> > > >>> Conor?
+> > > >>
+> > > >> I wanted it in the property description to help with understanding=
+ when
+> > > >> to use it. I don't think the extra example nodes actually help you
+> > > >> understand what it is doing, only how to write one yourself once y=
+ou
+> > > >> know you need it.
+> > > >
+> > > > I'm not sure if I get it right but what I understood is that a
+> > > > voltage-divider can
+> > > > also be a provider to other devices & hence the property.
+> > > > Also do you want me to put a complete example of it in description ?
+> > >
+> > > My understanding is the requested example in the description should n=
+ot
+> > > be exactly /how/ to hook up the voltage-divider as a provider, but
+> > > instead have some words about why it is interesting to do so at all. =
+And
+> > > those words would also make it clear that is even possible. The latter
+> > > is something which, to be honest, is perhaps not all that obvious. It
+> > > has always been totally obvious to me of course, sorry for not being
+> > > clearer when I wrote the binding...
+> >
+> > Yeah, you're right about what I was looking for Peter.
+> >
+> > In my original request, which I think I already linked to in this
+> > thread, I said that I would like an example like the one that Peter had
+> > used to explain to me the scenario in which someone would want to use
+> > this feature:
+> > https://lore.kernel.org/all/536971eb-51f0-40e5-d025-7c4c1d683d49@axenti=
+a.se/
+> ok. Based on my understanding, I'll update the property description
+> with an example.
+>=20
+> description:
+> In addition to consuming the measurement services of a voltage output
+> channel the voltage divider can act as a provider of measurement
+> services to other devices.
 
-	__be16 *ptr;
+> This is particularly useful in scenarios wherein,
+> ADC has analog frontend such as voltage divider then consuming its raw
+> value isn't interesting.
 
-	ptr =3D (__be16 *) data->buffer;
-	data->scan.chan[0] =3D *ptr;
-	data->scan.chan[1] =3D *++ptr;
+This sentence is structured pretty weirdly, it's missing articles and
+prepositions, but you have the right idea here, thanks.
 
-is this an acceptable replacement? I do not understand that your concern wa=
-s, my
-intent was to copy exactly 2 bytes over.
 
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-> > +					   iio_get_time_ns(indio_dev));
+> It is desired to get real voltage before
+> voltage divider.
 
-thanks,
-peter
 
---IYwKfNCRI6ua9wNH
+
+--Y1VVmDQJUPxVz3DC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmXBDyEACgkQzyaZmYRO
-fzD5aRAAyEwbN+bRogoQcgxhxBjDkfJFOodGLosVP/2TDfSoS4LpPphpuDORkEcX
-BpIXgVxh4qCyI8nzrXFH01+N9PQvi+ZtC6nw6xBA/64Jf3JJGZPjdlrcwHmCP/H8
-9dVfiZj6n3LcUw5ojzyZZbIsAPMq/BPXiNXdRk+rW4VUH12NNHykA95Wrejk+J6g
-vsoSo/Bz+5Z2uZBzKAX9YOtCegHW5RQ++WnZ/4YKvdWTdHVkXGBoHVfGAuil7RWY
-Q2rORin3ihDOol2KWVgC3zTgZrc9OkBWw+mDT1SD+Z2g1tdnzceMuQFkPBVL8Iti
-tEdVZ8aaXm1yJ7GgpzPEG3rPp5Pig02zBW3jWoz0plIpVDQzJxPhLVCCvpEKCvaL
-nefniFzg9KbK215rFGZKwR5VYla8EK9tSIaz2XFfvzKzSSC5UmFs6Hqtfwew/k7m
-GcPeyKZxcGJGgkbkvdXaBGNgmXpht+1Mg/C8ya2TVaA1ytTs8GO3T8W7bKlo2EGx
-OQkXGCUyXkhNq7PIxdAxngjeBGVby8FgxE9eZqyqvwngDZkZhAuABsalvc80N1jN
-NZvUSgcHXAU3tvj0SpKHWEGJmCBom3D+fV6nn74YVnfRWYoso15EKoF+j/9sPjjj
-qoylAXZL1mavW/DlS5zrAxv9Y/HFmF5M6Ga13NPfnJ+StJNv7Xg=
-=XpUp
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcEWugAKCRB4tDGHoIJi
+0hR7AP908arHTIG2+4rd+yfEy8RybMPrJr/un2iYCVbYLcb5+wD+LT+7PZ8kMDb1
+SyS7W+TUBWeNHP+dnmZ+w1YX2iMQmQ0=
+=3jOw
 -----END PGP SIGNATURE-----
 
---IYwKfNCRI6ua9wNH--
+--Y1VVmDQJUPxVz3DC--
 

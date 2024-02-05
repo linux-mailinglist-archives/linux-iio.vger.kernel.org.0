@@ -1,112 +1,122 @@
-Return-Path: <linux-iio+bounces-2194-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2195-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D005C849E30
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 16:32:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADD7849F21
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B25288460
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 15:32:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7B61F23022
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 16:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367A42D610;
-	Mon,  5 Feb 2024 15:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654823C08E;
+	Mon,  5 Feb 2024 15:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRp1Ufoy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T69MVZm/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E32CCBA;
-	Mon,  5 Feb 2024 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEA43A1CC
+	for <linux-iio@vger.kernel.org>; Mon,  5 Feb 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707147139; cv=none; b=OZznlzDMAmmtP2C4h7nROcVE/Cysyn+VJNWf0Y+a4Q/gMhX32daqjt6ssy+FvtrBonXElkdKbabkpxIg5faqDHfncpmP6KnZ2tbwDHBU2bKbq1gXjqLkAN5GCgnTEGwg10JqPKW2pS7UITFh8NLvADEZiSM3y+O/8YqiuFaoZdw=
+	t=1707148697; cv=none; b=RnTXeez/3NlaVdXSNvXq682rhgkWmTOtDoy03btcsPkiew4+MzBV3SDiQj29FK6Vu9wWMWyuJ/bejj95Qf/FcZfMENEGYcqwo0MQdRVhsfQJGW1rhSt/4pmrFb+rYWvGo4C0TjyOBAtndmPMDpWdqjPiaUOqhWiL6ZhV8gpBDoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707147139; c=relaxed/simple;
-	bh=VyryEeFktouoPtBlGjASqjjuFJfIz/FqEICD23Ug1nI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p9DsslKvlejGY7enRHJ3fXA1nr+Xchztu1s2EVCf2XJ0w5N/x8qJNZFa76EuXVdJDVU2XvcoxoOhJ0lzLG6wG2ta0GYPx7pwo1F/e+qaRzBUfzwXXOdzitNVZe+wZ+WNA9GneFPla+4RPUyYIynLsE6jUYsGcj9PoBADQVrereg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRp1Ufoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0646C433F1;
-	Mon,  5 Feb 2024 15:32:17 +0000 (UTC)
+	s=arc-20240116; t=1707148697; c=relaxed/simple;
+	bh=Y5iiYvh+eGK6e9MKiShQZcAy23QSTFb3pqJ5SwIfvKo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CeZKROd5t+Q/3JzUfyAqzcuMlbjwgFk7TbtSdhaZFhq7AYA7F6l8m+XZ16FuM9Yknun7BTbVnWvfV3qJtzatOO+AbMCNOSqQUIKOLDOYWKYFoqAiuSN3uLpC0Xyzf0vPE3IQURD/1pezoKelMBcJFlwz4kEFvssbQm7MYOzfzHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T69MVZm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C790AC43394;
+	Mon,  5 Feb 2024 15:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707147138;
-	bh=VyryEeFktouoPtBlGjASqjjuFJfIz/FqEICD23Ug1nI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jRp1UfoySFcHnU8OKUHbSECBQs4H+bbZMGQIQ5Qp/RLOcVjMM3wMWxH2lSZdp7OMS
-	 xY+IVFAPDeAEgj9qwEy8f57YjbpXm/KhTVhLIAzdtxZ9a8qOqoDCaKmjf2EVAKX+DY
-	 wZ3rC0+Ti7DbPTJK70IdoIRelIdtFGsWW1rfHUlqPuLYzIj5WRPlSUfx0Q8/MnUwxV
-	 xv7fNGjSAfF96j8rSf1y77C1rhBOTL44owiAwTj4SZmWDa3DP9IIIu4u7h3hSHdpJv
-	 DQozGislNB1Os2a4IQ8fMW5njlUrE5bmgp7QFAQpFycl8Ab7c0sEW63M21dRbCurwf
-	 zfX85Onv8dQIA==
-Date: Mon, 5 Feb 2024 15:32:14 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Liam Beguin <liambeguin@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads1298: Add driver
-Message-ID: <ZcD/fnVVLdR2TFr1@finisterre.sirena.org.uk>
-References: <ZcDo6QvoE_e5s_f1@smile.fi.intel.com>
- <7d7ea4e4-fcae-4966-b194-e1d328751b6b@topic.nl>
+	s=k20201202; t=1707148695;
+	bh=Y5iiYvh+eGK6e9MKiShQZcAy23QSTFb3pqJ5SwIfvKo=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=T69MVZm/NRydhN6FHxdiw8XDmQ5GReLP75LEJrMxSaBV1+5QogQnWpnrv7Vie8cuH
+	 LQH6Ehb8l+J1BzGlcv/EzJElpUC+//kUToR4QFKb23zR5BqLec/kTEoCckJwTYXUHf
+	 tBwbOv9mj5BzNGQ75iIbrfKzPZ/Y+Hw2cSvLVMBBtPUUcl0vC8fJ2QJzPmm2S9Ymog
+	 33C/XUlqlT4tND69I+O4ARBLq31CGzaE5jkjMFARnYQ+lidYU2b2cp4IX+kBJVzvHN
+	 nATPaIy1dC6XP1YWqOFca579avSf0JxlDlkQdto5cwFvz+wPfx6Su7TpWRY7PcNMJD
+	 0XptQ2QBi4NLw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD2DFC4828D;
+	Mon,  5 Feb 2024 15:58:15 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Date: Mon, 05 Feb 2024 16:58:14 +0100
+Subject: [PATCH] counter: fix privdata alignment
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FV/jdPwiWoSPXR4m"
-Content-Disposition: inline
-In-Reply-To: <7d7ea4e4-fcae-4966-b194-e1d328751b6b@topic.nl>
-X-Cookie: You might have mail.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
+X-B4-Tracking: v=1; b=H4sIAJYFwWUC/x2MQQqAIBAAvxJ7bsEsCfpKdLBabSE0tCII/97Sc
+ QZmXsiUmDIM1QuJbs4cg0BTV7BsNnhCXoVBK90prQwu8QonJbQ7+4COH2ydpdnNptfWgXRHItH
+ /c5xK+QAL+cZwYwAAAA==
+To: linux-iio@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+ William Breathitt Gray <william.gray@linaro.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1707148694; l=1491;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=JL+X9g5gr6vuqR5+sLDCtbqSByJMt51WufOmdlrZIjQ=;
+ b=M4MdFlfCwoupYtvp/5nltEXUhtZHeVJwQrX0B+cfrKVKkXMrs10ywLLdB8q5vo3+FhV5Z//ks
+ yS3T5yn4aDCBg7U3E+qKYy30Gm2TPz2R2gU9au9VPprFq9pKtLuwcz0
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received:
+ by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: <nuno.sa@analog.com>
 
+From: Nuno Sa <nuno.sa@analog.com>
 
---FV/jdPwiWoSPXR4m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Aligning to the L1 cache does guarantee the same alignment as kmallocing
+an object [1]. Furthermore, in some platforms, that alignment is not
+sufficient for DMA safety (in case someone wants to have a DMA safe
+buffer in privdata) [2].
 
-On Mon, Feb 05, 2024 at 04:25:19PM +0100, Mike Looijmans wrote:
-> On 05-02-2024 14:55, Andy Shevchenko wrote:
+Sometime ago, we had the same fixes in IIO.
 
-> > > > +	.cache_type = REGCACHE_RBTREE,
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/devres.c#n35
+[2]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
 
-> > Why not MAPPLE TREE?
+Fixes: c18e2760308e ("counter: Provide alternative counter registration functions")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+---
+William, if you prefer, we can do something like in IIO and add a
+specific COUNTER_DMA_MINALIGN define
+---
+ drivers/counter/counter-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Reading the description this driver isn't a good candidate - the map isn't
-> sparse and the hardware can do bulk read/write (though the driver doesn't
-> use it).
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 09c77afb33ca..073bf6b67a57 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -34,7 +34,7 @@ struct counter_device_allochelper {
+ 	 * This is cache line aligned to ensure private data behaves like if it
+ 	 * were kmalloced separately.
+ 	 */
+-	unsigned long privdata[] ____cacheline_aligned;
++	unsigned long privdata[] __aligned(ARCH_DMA_MINALIGN);
+ };
+ 
+ static void counter_device_release(struct device *dev)
 
-If your driver is a good candidate for rbtree it's a good candidate for
-maple tree.  There are very few specialist cases where there's an
-advantage to sticking with rbtree.  The maple cache has no meaningful
-overhead compared to rbtree for non-sparse regmaps and will generate
-bulk writes just fine.
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240205-counter-align-fix-3faebfb572af
+--
 
---FV/jdPwiWoSPXR4m
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks!
+- Nuno Sá
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXA/30ACgkQJNaLcl1U
-h9ApSwf+OwSOaTAWvNTxBwn5cVSksk9dF5DFAZBL5mKj9G4dZWY4eJ5VbtBKncbX
-WbsBVkA5dJRmRmwl5hgSBsw0KnnZ624s4JDOXfQ3Aic1Q1n7eFY5RbE02Ba+nk95
-ob+9fsminr/iwZphEJFOO9Xb2B8LXWZAuJ66Y66UaIFm++9eD+tLDbjFOcsFu3Du
-6ZAUt230YdQA8jTu+ZwFRtp3Qb1830MJTx7wsmGEmII/e7j22I5rW0YXkjS81MDj
-LiNGSP5BcuwcIJE/NqYZbO2c3Mx6WKogIeu/7Lktb/Hbjjptne7wSLG10KbaY2By
-mIPP+d/Frr5LsVbR6NLv8CtVMbok2Q==
-=vGvm
------END PGP SIGNATURE-----
-
---FV/jdPwiWoSPXR4m--
 

@@ -1,168 +1,203 @@
-Return-Path: <linux-iio+bounces-2197-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2198-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3029484A050
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 18:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB4084A2AF
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 19:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0458B25C18
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:11:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6B19B21C21
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 18:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BBD446BC;
-	Mon,  5 Feb 2024 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDA6481AB;
+	Mon,  5 Feb 2024 18:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQo/MQzH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fczhIVlu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF713FB14;
-	Mon,  5 Feb 2024 17:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324E6482C3;
+	Mon,  5 Feb 2024 18:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707153088; cv=none; b=P68A57aOwtWGQsvylwgMOt5jVumkRoWBYh8ZDZA7anX+Ay1Oo0I/yBiHJocV5lh4g55p82LL61nt6/ClrRyo7/Bd4VovAWiNc/r5igwouuzctv44EeXdXUEk6JEDQ36yOhgUUwN29krNIMtPyoWezkYt6u0u72z5usGQJQU4Ypw=
+	t=1707159024; cv=none; b=FzK2/w9S8nLt1i7UXjRQitOd4O+aIs8KTyfwxXGH/HsneYm4xVwdQP4dcTh/Oebz4WuqvnSubx0BDSTUUC+BkOEDbmVmIDjYoQD8yH90DpVauhm4DsEjaXdGgKMBaQl/d8CIosPKqkaugriF4ww7cSNXTkJGV1hseyPheokehnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707153088; c=relaxed/simple;
-	bh=xkNsqaF4QqQI9IylasZgW4zPIt2p4Sbxb4KlMbNWs6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q86o/EhMqYRTkbXjLu4DVnVgGsbWBl88DAzWcUS0XgB7lEPYzybejZ70Rt30ZjlXGMGKObPUugQkuh/diaaM41PEMa99sV2YLaEurNh0IsM/4Y8KAF0w3afardw+9g5VYdIFUNGsyx8P/hCzZpOp0J2f9SJ56RXMxI0qslEiCxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQo/MQzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10180C433C7;
-	Mon,  5 Feb 2024 17:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707153087;
-	bh=xkNsqaF4QqQI9IylasZgW4zPIt2p4Sbxb4KlMbNWs6I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AQo/MQzHt66cRQdouAnYcBrYhyVjlxZ4sDqniOwVsAQ7oTJhre+QB3tFbKOn+/uE4
-	 TsL862+3/4mdbkCd4b/rpnVwL6OSEpQ52/ve1NY9liOP85JlfUbSQHP7QU/KLZv+4w
-	 So6BzdbPYUVjdezJ/bRw/d2pBPokD08uHgbd1GiDmeGbwgalIs72b26elLdtvFQEgS
-	 5vUHhNDrueZw0tUFde9lip1UnCL1SK5plfqQ9rk8QVMgyIFrDr70IsF5ne7uQUvdfk
-	 ZMCNuHj9nZwbmh4vjdTIHO6k6UCEw2Ey5VhhI+PS9pFx1c375TwPOF8q0F+UfgMYzO
-	 ru2KgiE+m0eXg==
-Date: Mon, 5 Feb 2024 17:11:22 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Naresh Solanki <naresh.solanki@9elements.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] dt-bindings: iio: afe: voltage-divider: Add
- io-channel-cells
-Message-ID: <20240205-grudge-abrasion-d20b0c202d67@spud>
-References: <20240130115651.457800-1-naresh.solanki@9elements.com>
- <1c855a34-8a0d-491e-bfd2-24635b41c86f@linaro.org>
- <20240131163516.000043df@Huawei.com>
- <20240131-stylized-defile-d8fe346ab197@spud>
- <CABqG17iNxfKFNqydkgo6gL8ZmaZ_bqm=pG8kNEhzx_h2eaGuhQ@mail.gmail.com>
- <e8b30740-379c-9ab0-6bd7-d4726f822381@axentia.se>
- <20240202-shone-footwork-b247b1ae8e06@wendy>
- <CABqG17hRF3HaqfvXkT2go2S00JTRqCzremg1Nh=cSEUbcO_2pw@mail.gmail.com>
+	s=arc-20240116; t=1707159024; c=relaxed/simple;
+	bh=Xhujo+wDiMZRhR3TwEcnhYIXAGX+tOaXYwuQFNEDweY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UA2lThwlvvSkO8CL7t22ixDlAINcP7t777OwkTCJ4UlLqXfg5KqwxMFDTmuGFMBYagXB9jWWg5IgDaSSlfmljpq0epDZaf3bROl9tYd3c1rLgNpTriQEwHvzyzl6nBdjYBu8BrEFT9qUKzUkfERSGsxHAG9rve4lcRpcHG4Q2lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fczhIVlu; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-599f5e71d85so22402eaf.3;
+        Mon, 05 Feb 2024 10:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707159022; x=1707763822; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a5/QetKatJetZu8QUL35h5FIsCUnt2b4O8Bogdh7dS4=;
+        b=fczhIVluWfK1xuswkTnwErAk+mc/BUBKeXF6FkefdyoXj6xrC/HmdWsR7itXA9xBP1
+         BQ707M4yOC1eGN/He5ThRm9/vRu552A+x1YTBmU8mtdkmVnhUgwW6VwuvV1f0Mf19NpQ
+         bOvp3ljJx3u15JWxs3NtWY5OzXXGdUQJtnBA6389H+2xCQrNv+D+Dqr95cVyr3BozGr6
+         mCyNeIbbirtC+wV3yDlcCpFTVY688ZRmgZ3peFxo6952U+fr7DItSp1WlscJ1eJbOuFl
+         fFnRq2dx+ksnU6eKzxBIJZKZaB8+s89pkTzPBZGIbUmnmzetZva3vnNoZLgWPOCWlhVB
+         aAxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707159022; x=1707763822;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a5/QetKatJetZu8QUL35h5FIsCUnt2b4O8Bogdh7dS4=;
+        b=hoWDB0CB4/iuCXefH/QZ7NWjueIqTShsBICM9P7/spq6vDW7YG8VwOVyE4wIv8tH3v
+         dR3edy07DxDtBol3459wLsd8YrQgHaL4U7NECf+XVvjJaD+QC0EVq23E/I3pCrohz6TL
+         jmOCD7ZjpNFmYiWU0XpHmjuUz22DqixQJPH6XUTmN3MCLX/dSDNdh42JYhjSS2lQbR0M
+         ojuSt7Hk35SS53Jt904gZezF/VfpgrBX70ljfsRV8uoe04e8hV4hU32VeCo5aybto9us
+         OnvqaVaXVSXniUoxv9CufdI3y/ULOLX0wrSvuNdBauAV8gt6RnHz4ReFMOMnnY+HT6M/
+         unuw==
+X-Gm-Message-State: AOJu0YyibJSTj7L+1vG7v8CHWqPV3yoPpaxAugkKTT+nXpjECPXV8Eol
+	TgCOaokFNcuxGBHUZb/vsv0TMCNBSA8ghfp/2ShGIRWfZJsy4yyF
+X-Google-Smtp-Source: AGHT+IGdMtsWr1OpAk73Qdb2h2Xh3VJkag4VDyc6etFQCzn0YJKsKWR1PimbbtLuYoStFbba0Frj2g==
+X-Received: by 2002:a4a:241d:0:b0:599:49ec:6d15 with SMTP id m29-20020a4a241d000000b0059949ec6d15mr542271oof.1.1707159022108;
+        Mon, 05 Feb 2024 10:50:22 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUhhGoU4pHLpckzL33j+8HDGr+TsjC1gXJaozqI+dj5ji++n55Rbv9euK17brsZ5XaENmpcVnPmXeQyKwE4k+xkTu7UVelm7TNQ8+QmNEdRKzc++XUCK0tbget5H5rQA0d2mCTit3gTYDJTXgCkWfozQZrcb4HL2A5rJEJ6lufiWTkMJw==
+Received: from localhost.localdomain (i577B6813.versanet.de. [87.123.104.19])
+        by smtp.gmail.com with ESMTPSA id x5-20020a4a8005000000b0059a096ee494sm59382oof.47.2024.02.05.10.50.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 10:50:21 -0800 (PST)
+From: Jesus Gonzalez <jesusmgh@gmail.com>
+To: andriy.shevchenko@linux.intel.com,
+	jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jesus Gonzalez <jesusmgh@gmail.com>
+Subject: [PATCH v2 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow binding on some devices
+Date: Mon,  5 Feb 2024 19:36:20 +0100
+Message-ID: <20240205183618.7761-3-jesusmgh@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ZcDnikkiwSIDGzT0@smile.fi.intel.com>
+References: <ZcDnikkiwSIDGzT0@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Y1VVmDQJUPxVz3DC"
-Content-Disposition: inline
-In-Reply-To: <CABqG17hRF3HaqfvXkT2go2S00JTRqCzremg1Nh=cSEUbcO_2pw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+
+"10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and 
+probably others) in their ACPI table as the ID for the bmi160 IMU. This 
+means the bmi160_i2c driver won't bind to it, and the IMU is unavailable 
+to the user. Manufacturers have been approached on several occasions to 
+try getting a BIOS with a fixed ID, mostly without actual positive 
+results, and since affected devices are already a few years old, this is 
+not expected to change. This patch enables using the bmi160_i2c driver for 
+the bmi160 IMU on these devices.
+
+Here is the relevant extract from the DSDT of a GPD Win Max 2 (AMD 6800U
+model) with the latest firmware 1.05 installed. GPD sees this as WONTFIX
+with the argument of the device working with the Windows drivers.
+
+     Scope (_SB.I2CC)
+    {
+        Device (BMA2)
+        {
+            Name (_ADR, Zero)  // _ADR: Address
+            Name (_HID, "10EC5280")  // _HID: Hardware ID
+            Name (_CID, "10EC5280")  // _CID: Compatible ID
+            Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+            Name (_UID, One)  // _UID: Unique ID
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+            {
+                Name (RBUF, ResourceTemplate ()
+                {
+                    I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+                        AddressingMode7Bit, "\\_SB.I2CC",
+                        0x00, ResourceConsumer, , Exclusive,
+                        )
+                })
+                Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+            }
+
+            OperationRegion (CMS2, SystemIO, 0x72, 0x02)
+            Field (CMS2, ByteAcc, NoLock, Preserve)
+            {
+                IND2,   8, 
+                DAT2,   8
+            }
+
+            IndexField (IND2, DAT2, ByteAcc, NoLock, Preserve)
+            {
+                Offset (0x74), 
+                BACS,   32
+            }
+
+            Method (ROMS, 0, NotSerialized)
+            {
+                Name (RBUF, Package (0x03)
+                {
+                    "0 -1 0", 
+                    "-1 0 0", 
+                    "0 0 1"
+                })
+                Return (RBUF) /* \_SB_.I2CC.BMA2.ROMS.RBUF */
+            }
+
+            Method (CALS, 1, NotSerialized)
+            {
+                Local0 = Arg0
+                If (((Local0 == Zero) || (Local0 == Ones)))
+                {
+                    Return (Local0)
+                }
+                Else
+                {
+                    BACS = Local0
+                }
+            }
+
+            Method (_STA, 0, NotSerialized)  // _STA: Status
+            {
+                Return (0x0F)
+            }
+        }
+    }
+
+Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
+---
+v2 patch implementing the improvements mentioned by Mr. Cameron and Mr.
+Shevchenko, if I understood them correctly. Please tell me if anything
+else should be changed, and I'll be happy to make a new revision.
+
+Thank you!
 
 
---Y1VVmDQJUPxVz3DC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ drivers/iio/imu/bmi160/bmi160_spi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-On Mon, Feb 05, 2024 at 07:24:07PM +0530, Naresh Solanki wrote:
-> Hi Conor, Peter,
->=20
-> On Fri, 2 Feb 2024 at 18:39, Conor Dooley <conor.dooley@microchip.com> wr=
-ote:
-> >
-> > On Fri, Feb 02, 2024 at 12:49:26PM +0100, Peter Rosin wrote:
-> > > 2024-02-02 at 11:43, Naresh Solanki wrote:
-> > > > On Wed, 31 Jan 2024 at 22:24, Conor Dooley <conor@kernel.org> wrote:
-> > > >> On Wed, Jan 31, 2024 at 04:35:16PM +0000, Jonathan Cameron wrote:
-> > > >>> On Wed, 31 Jan 2024 09:29:59 +0100
-> > > >>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > > >>>> On 30/01/2024 12:56, Naresh Solanki wrote:
-> > > >>> Conor requested an example of the device acting as a consumer and=
- a provider.
-> > > >>> Might have meant in the patch description?
-> > > >>>
-> > > >>> Conor?
-> > > >>
-> > > >> I wanted it in the property description to help with understanding=
- when
-> > > >> to use it. I don't think the extra example nodes actually help you
-> > > >> understand what it is doing, only how to write one yourself once y=
-ou
-> > > >> know you need it.
-> > > >
-> > > > I'm not sure if I get it right but what I understood is that a
-> > > > voltage-divider can
-> > > > also be a provider to other devices & hence the property.
-> > > > Also do you want me to put a complete example of it in description ?
-> > >
-> > > My understanding is the requested example in the description should n=
-ot
-> > > be exactly /how/ to hook up the voltage-divider as a provider, but
-> > > instead have some words about why it is interesting to do so at all. =
-And
-> > > those words would also make it clear that is even possible. The latter
-> > > is something which, to be honest, is perhaps not all that obvious. It
-> > > has always been totally obvious to me of course, sorry for not being
-> > > clearer when I wrote the binding...
-> >
-> > Yeah, you're right about what I was looking for Peter.
-> >
-> > In my original request, which I think I already linked to in this
-> > thread, I said that I would like an example like the one that Peter had
-> > used to explain to me the scenario in which someone would want to use
-> > this feature:
-> > https://lore.kernel.org/all/536971eb-51f0-40e5-d025-7c4c1d683d49@axenti=
-a.se/
-> ok. Based on my understanding, I'll update the property description
-> with an example.
->=20
-> description:
-> In addition to consuming the measurement services of a voltage output
-> channel the voltage divider can act as a provider of measurement
-> services to other devices.
+diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi160/bmi160_spi.c
+index 8b573ea99af2..f88d4b2ba79b 100644
+--- a/drivers/iio/imu/bmi160/bmi160_spi.c
++++ b/drivers/iio/imu/bmi160/bmi160_spi.c
+@@ -40,6 +40,14 @@ static const struct spi_device_id bmi160_spi_id[] = {
+ MODULE_DEVICE_TABLE(spi, bmi160_spi_id);
+ 
+ static const struct acpi_device_id bmi160_acpi_match[] = {
++	/* FIRMWARE BUG WORKAROUND
++	 * Some manufacturers like GPD, Lenovo or Aya used the incorrect
++	 * ID "10EC5280" for bmi160 in their DSDT. A fixed firmware is not
++	 * available as of Feb 2024 after trying to work with OEMs, and
++	 * this is not expected to change anymore since at least some of
++	 * the affected devices are from 2021/2022.
++	 */
++	{"10EC5280", 0},
+ 	{"BMI0160", 0},
+ 	{ },
+ };
+-- 
+2.43.0
 
-> This is particularly useful in scenarios wherein,
-> ADC has analog frontend such as voltage divider then consuming its raw
-> value isn't interesting.
-
-This sentence is structured pretty weirdly, it's missing articles and
-prepositions, but you have the right idea here, thanks.
-
-
-> It is desired to get real voltage before
-> voltage divider.
-
-
-
---Y1VVmDQJUPxVz3DC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcEWugAKCRB4tDGHoIJi
-0hR7AP908arHTIG2+4rd+yfEy8RybMPrJr/un2iYCVbYLcb5+wD+LT+7PZ8kMDb1
-SyS7W+TUBWeNHP+dnmZ+w1YX2iMQmQ0=
-=3jOw
------END PGP SIGNATURE-----
-
---Y1VVmDQJUPxVz3DC--
 

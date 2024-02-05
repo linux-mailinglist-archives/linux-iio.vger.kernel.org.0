@@ -1,323 +1,181 @@
-Return-Path: <linux-iio+bounces-2180-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2181-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A42284966F
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 10:27:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE17A849674
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 10:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C001F21370
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 09:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27E21C2244D
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 09:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C54412B7B;
-	Mon,  5 Feb 2024 09:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB4412B6B;
+	Mon,  5 Feb 2024 09:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QQ+Bt2Dh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA2E125C0;
-	Mon,  5 Feb 2024 09:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1791E12B7A
+	for <linux-iio@vger.kernel.org>; Mon,  5 Feb 2024 09:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707125253; cv=none; b=a35xqss8OIkpE2GpmztzfNdpvS81c7gJxVU3/WJLrS+U97JpET203SSr4XbJEr+Gk+nTz7XUNhVEq9HHWd8OKBTN1wf2a1Fl4Si7MplFwGajfy/KIvfsU71kzBcd8YnHyuVZBGYs0hPdoB02MLa31OFEVhcwFkJp2CkcPTfvwJQ=
+	t=1707125319; cv=none; b=g8EbfdSebCbM3NCW7Psuqfe7I6HyVRpYqmekgbjBNUDrzYSz2Mtrbn+tfLGpImHd7JxAv6P8M1Beh98hJUugq+tZ+vOuH4JKYGNMXQ7VIi0x3raqLfMsZes+vuNQeWO20reAPvE/e34WyuqYmixsF7zf4SkwzMq7sl7NFzCT0vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707125253; c=relaxed/simple;
-	bh=2nBbOXY86fuqehjGOV18bjyj+i/6FqOKkuzJddpv0JU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1AQ+biC1+OPtfScrDOr2oYNOAOlVNp+FzgRtnogc34WsVN7yWGqF31RVkCn4OaRU/g+byYY5e/DDasRdpCutMpUPDGuUzl7rCJrC13nQsXbBrlGI/lH00sjAeT7ubSnbVc9ja5uzfdfQqjaLGuQQn++j5EMNqxIT2z8r2qa7eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TT1Cz5cGjz6GBQk;
-	Mon,  5 Feb 2024 17:24:15 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6229F140A36;
-	Mon,  5 Feb 2024 17:27:27 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 5 Feb
- 2024 09:27:26 +0000
-Date: Mon, 5 Feb 2024 09:27:26 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Julia Lawall <julia.lawall@inria.fr>, "Rafael J . Wysocki"
-	<rafael@kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rob
- Herring" <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	<linux-kernel@vger.kernel.org>, Nicolas Palix <nicolas.palix@imag.fr>,
-	"Sumera Priyadarsini" <sylphrenadin@gmail.com>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
- loops.
-Message-ID: <20240205092726.00002eb0@Huawei.com>
-In-Reply-To: <alpine.DEB.2.22.394.2402042224280.3137@hadrien>
-References: <20240128160542.178315-1-jic23@kernel.org>
-	<alpine.DEB.2.22.394.2401281903550.3119@hadrien>
-	<20240129114218.00003c34@Huawei.com>
-	<alpine.DEB.2.22.394.2401291455430.8649@hadrien>
-	<20240129195227.3c3adae1@jic23-huawei>
-	<alpine.DEB.2.22.394.2401292120260.32795@hadrien>
-	<20240130093854.00000acc@Huawei.com>
-	<alpine.DEB.2.22.394.2401312234250.3245@hadrien>
-	<20240204210804.0febf2fc@jic23-huawei>
-	<alpine.DEB.2.22.394.2402042224280.3137@hadrien>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707125319; c=relaxed/simple;
+	bh=X4ALGcpsV4UaQiPrJCc0VpdLNOaBURKUpJTn4aBuWcE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oJKFdaRRYl+kU2tDtSbRpG6OWwSleBafSFw8QnBioA2R1sggdAmz7uGUT0G1WPjBU/3YoNjtsI1Zvwmib55ZVQ/lWVCtTRBN4szy3/dEB6hSWeLzagojbvgj5V8Mot+29IfPQHToXAojcCixFf1toyISzlbbBDdm8ST1L05u0RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QQ+Bt2Dh; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-560037b6975so2142481a12.2
+        for <linux-iio@vger.kernel.org>; Mon, 05 Feb 2024 01:28:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707125316; x=1707730116; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JsR4UKv4nZOmxTfx+Z74r0Squ/dac0InL6X79pDAQPo=;
+        b=QQ+Bt2DhUSj5nFwOOLbILlmm2a2DteVMK+KyHTPOYcKYEkTlCg37DXUJzlgXzD5ne7
+         dz0gVzzrCksLIplZT73ls9oCnV8lJnKN/6SOeF10JfIIpYobd/RM5S4XFfMf+AQcSugk
+         vSaOpbnyrnoGHYLFyXXN8Rrff21zgdQCPSDL8TVCCSxThzz6t6xWJ+0VqoE9lm0nVm5h
+         4QNwkZv0MKx3hKD7xkZdiOLDg+vEfTg5wWMHqVLgVKgt0hq4ha/55/94CawioCZnaz7d
+         uGvOwWb8FtIe+BwEJRpe0iahFVjlQk+4JRsb53SukinW2/zyUbNJ51Izb4ztIXc7xzWr
+         gXyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707125316; x=1707730116;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JsR4UKv4nZOmxTfx+Z74r0Squ/dac0InL6X79pDAQPo=;
+        b=Edx6UqIHX7PirOIG/5HIK+P+GouyPHOEpSMDM07vSxZYdP2O57+/bjZtuhUUmNE3UM
+         O4uxeI+p2PSCSFl/wJx0vSxqrYFBKfWOIf42cKvuon5q+UOxN4iklgzI+JUM1yXhYd8n
+         DJfvhYPbi3yEPsdz32izTq4SLxfIn37H6kbEYezV93MLwg5s24/XvnJePUekDFVa32H2
+         TK7kDJdJs0QPvWpDDiYyOSIwRacH9wz/tNnoTPDe0rhCaq6guvNkyNCVXwJdqMMS+jQS
+         PeFp/tW6alvk7GGHIU7Eaz45sXvo0P3zCABmKlcyzLVWgdAppaLcEYxOcR7E+EShhUiu
+         6HEg==
+X-Gm-Message-State: AOJu0Yx5zII6Sy5Kj30LfHHK4BguOC0BR6ZvLHmE/CpSVGkQ3TcIvxYl
+	qcZg6wJnm3JX8zYa9Hi72r5dyaFkpQ9N2vcxtKb0iDgzR70k57Xr1PPgVEbkEiQ=
+X-Google-Smtp-Source: AGHT+IFqfbd2QJeWiBRrJsA40CHzBhei6kYhdmWDNrzFyGIZBwIjKKXW0+KZp+vrprT3CJp5OeFK4w==
+X-Received: by 2002:a05:6402:3595:b0:560:11f8:5468 with SMTP id y21-20020a056402359500b0056011f85468mr5180082edc.32.1707125316318;
+        Mon, 05 Feb 2024 01:28:36 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUo2T9BtLdhNsIObIChz2xstRz9X/HKPqgqhxVWwR7B94mE5Ft46iOT+E+te8ZPVppAJ8k4ml2lkJKQUzrw6cbt7KMKIfbxDr6wUlzvqrUkRiTqRmtbTp3u52UtOZBgkmO4FW0xjXnHhLO2bTIbo1rucZ5TWpq1ZtoUcs4/76RoTVhlfZPFYm6gNKcsri7DXjU1iWPnvx4qSUjavaN/mt7//Kvv4H99CnLggHeHOiN871p8dLMo1+VOxOiDMkVlZDzs5LkzCedNRzRpUIah6ZNKmeEXp6KNb2Gid0RqyB7gjlvu+lYoZCJF8GIEd6kfX87Cws0JdAHzc3i7esdqyg8ZYCgvKbU1di71/9zdVGl2Az4mwsi0oa/litnQa7NtLl7O9PCCMbDWFDn/A6MU1Mp5/AnhKOxNb9Bv/xTG0fnh8Ff0Tw/xJS67UiPvvdC/25TbLnlPnsAmTAXQdY1q5igE7g==
+Received: from [192.168.1.20] ([178.197.222.62])
+        by smtp.gmail.com with ESMTPSA id a27-20020a509b5b000000b0056036fd311dsm1905337edj.93.2024.02.05.01.28.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 01:28:35 -0800 (PST)
+Message-ID: <5bc2bd1e-16a8-4de4-bec6-9391addacc89@linaro.org>
+Date: Mon, 5 Feb 2024 10:28:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7192: Add properties
+Content-Language: en-US
+To: David Lechner <dlechner@baylibre.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Alexandru Tachici <alexandru.tachici@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>
+References: <20231114200533.137995-1-alisa.roman@analog.com>
+ <20231114200533.137995-2-alisa.roman@analog.com>
+ <c6ca5a25-2d41-4a46-95a5-eb994c4cf529@linaro.org>
+ <09cc2ecb-b73f-495a-9196-dbb4899f4c85@gmail.com>
+ <CAMknhBFhr=qTd=nioq_m=icZZUfYWSq8Moy4A4RssvbcNoLNQg@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAMknhBFhr=qTd=nioq_m=icZZUfYWSq8Moy4A4RssvbcNoLNQg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, 4 Feb 2024 22:34:25 +0100 (CET)
-Julia Lawall <julia.lawall@inria.fr> wrote:
+On 02/02/2024 23:20, David Lechner wrote:
+>>>
+>>> And this should be input clock.
+>>>
+>>>> +    type: boolean
+>>>> +
+>>>> +  adi,int-clock-output-enable:
+>>>> +    description: |
+>>>> +      Internal 4.92 MHz clock available on MCLK2 pin.
+>>>> +    type: boolean
+>>>
+>>> This should be clock-cells and clock provider.
+>>>
+>>> Unless you are just documenting already used interface which you do not
+>>> want to break...
+> 
+> This property is already used in the mainline Linux driver, so sounds
+> like the "don't want to break it" case. But it would make sense to
+> deprecate this property and use standard clock provider bindings
+> instead.
 
-> On Sun, 4 Feb 2024, Jonathan Cameron wrote:
-> 
-> > On Wed, 31 Jan 2024 22:38:21 +0100 (CET)
-> > Julia Lawall <julia.lawall@inria.fr> wrote:
-> >  
-> > > Here are some loop cases.  The semantic patch is as follows:
-> > >
-> > > #spatch --allow-inconsistent-paths
-> > >
-> > > @@
-> > > expression node;
-> > > identifier child;
-> > > symbol drop_me;
-> > > iterator name for_each_child_of_node;
-> > > @@
-> > >
-> > > for_each_child_of_node(node,child) {
-> > >   ...
-> > > + of_node_put(drop_me, child);
-> > > }
-> > >
-> > > @@
-> > > expression node;
-> > > identifier child;
-> > > symbol drop_me;
-> > > iterator name for_each_child_of_node, for_each_child_of_node_scoped;
-> > > identifier L;
-> > > @@
-> > >
-> > > - struct device_node *child;
-> > >  ... when != child
-> > > -for_each_child_of_node
-> > > +for_each_child_of_node_scoped
-> > >   (node,child) {
-> > >    ... when strict
-> > > (
-> > > -   {
-> > > -   of_node_put(child);
-> > >     return ...;
-> > > -   }
-> > > |
-> > > -   {
-> > > -   of_node_put(child);
-> > >     goto L;
-> > > -   }
-> > > |
-> > > -   {
-> > > -   of_node_put(child);
-> > >     break;
-> > > -   }
-> > > |
-> > >     continue;
-> > > |
-> > > -   of_node_put(child);
-> > >     return ...;
-> > > |
-> > > -   of_node_put(child);
-> > >     break;
-> > > |
-> > > -  of_node_put(drop_me, child);
-> > > )
-> > > }
-> > >  ... when != child
-> > >
-> > > @@
-> > > expression child;
-> > > @@
-> > >
-> > > - of_node_put(drop_me, child);
-> > >
-> > > -------------------------------
-> > >
-> > > This is quite conservative, in that it requires the only use of the child
-> > > variable to be in a single for_each_child_of_node loop at top level.
-> > >
-> > > The drop_me thing is a hack to be able to refer to the bottom of the loop
-> > > in the same way as of_node_puts in front of returns etc are referenced.
-> > >
-> > > This works fine when multiple device_node variables are declared at once.
-> > >
-> > > The result is below.
-> > >  
-> > Very nice!
-> >
-> > One issue is that Rob is keen that we also take this opportunity to
-> > evaluate if the _available_ form is the more appropriate one.
-> >
-> > Given that access either no defined "status" in the child node or
-> > it being set to "okay" it is what should be used in the vast majority of
-> > cases.
-> >
-> > For reference, the property.h version only uses the available form.
-> >
-> > So I think we'll need some hand checking of each case but for vast majority
-> > it will be very straight forward.  
-> 
-> I'm not sure to follow this.  If the check is straightforward, perhaps it
-> can be integrated into the rule?  But I'm not sure what to check for.
+One could think like that, but what type of process would it create?
+Send driver changes WITHOUT binding, then document whatever crap you
+have saying "Linux already supports it!".
 
-I don't think it will be easy.  Perhaps Rob can help on when the
-_available_ case is the wrong one?  Is this ever a characteristic of
-the binding. I guess in some cases it might be a characteristic of
-the binding?
+Whenever such argument is used, I am repeating the same.
 
-> 
-> > One question is whether it is worth the scoped loops in cases
-> > where there isn't a patch where we break out of or return from the loop
-> > before it finishes.  Do we put them in as a defensive measure?  
-> 
-> I wondered about this also.  My thought was that it is better to be
-> uniform.  And maybe a break would be added later.
+Let's be more clear: NAK if this is clock provider and the only argument
+is that someone sneaked undocumented interface bypassing review.
 
-Rob and other DT folk, what do you think on this?
-Shall we convert cases where there isn't currently a path in which the
-autocleanup receives anything other than a NULL.
 
-i.e.
 
-for_each_available_of_child_node_scoped(x, y) {
-	no breaks or returns form in here.
-}
-
-on basis it's not 'wrong' and is defensive against future changes that
-would require manual cleanup or the scoped for loop.
-
-> 
-> > Sometimes we are going to want to combine this refactor with
-> > some of the ones your previous script caught in a single patch given
-> > it's roughly the same sort of change.  
-> 
-> Agreed.  Some blocks of code should indeed become much simpler.
-> 
-> >
-> >  
-> > > julia
-> > >
-> > > diff -u -p a/drivers/of/unittest.c b/drivers/of/unittest.c
-> > > --- a/drivers/of/unittest.c
-> > > +++ b/drivers/of/unittest.c
-> > > @@ -2789,7 +2789,7 @@ static int unittest_i2c_mux_probe(struct
-> > >  	int i, nchans;
-> > >  	struct device *dev = &client->dev;
-> > >  	struct i2c_adapter *adap = client->adapter;
-> > > -	struct device_node *np = client->dev.of_node, *child;
-> > > +	struct device_node *np = client->dev.of_node;
-> > >  	struct i2c_mux_core *muxc;
-> > >  	u32 reg, max_reg;
-> > >
-> > > @@ -2801,7 +2801,7 @@ static int unittest_i2c_mux_probe(struct
-> > >  	}
-> > >
-> > >  	max_reg = (u32)-1;
-> > > -	for_each_child_of_node(np, child) {
-> > > +	for_each_child_of_node_scoped(np, child) {  
-> >
-> > This was a case I left alone in the original series because the auto
-> > cleanup doesn't end up doing anything in any paths.
-> >  
-> > >  		if (of_property_read_u32(child, "reg", &reg))
-> > >  			continue;
-> > >  		if (max_reg == (u32)-1 || reg > max_reg)
-> > >  
-> >
-> >
-> >  
-> > > diff -u -p a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-> > > --- a/drivers/regulator/scmi-regulator.c
-> > > +++ b/drivers/regulator/scmi-regulator.c
-> > > @@ -297,7 +297,7 @@ static int process_scmi_regulator_of_nod
-> > >  static int scmi_regulator_probe(struct scmi_device *sdev)
-> > >  {
-> > >  	int d, ret, num_doms;
-> > > -	struct device_node *np, *child;
-> > > +	struct device_node *np;
-> > >  	const struct scmi_handle *handle = sdev->handle;
-> > >  	struct scmi_regulator_info *rinfo;
-> > >  	struct scmi_protocol_handle *ph;
-> > > @@ -341,13 +341,11 @@ static int scmi_regulator_probe(struct s
-> > >  	 */
-> > >  	of_node_get(handle->dev->of_node);
-> > >  	np = of_find_node_by_name(handle->dev->of_node, "regulators");
-> > > -	for_each_child_of_node(np, child) {
-> > > +	for_each_child_of_node_scoped(np, child) {
-> > >  		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
-> > >  		/* abort on any mem issue */
-> > > -		if (ret == -ENOMEM) {
-> > > -			of_node_put(child);
-> > > +		if (ret == -ENOMEM)
-> > >  			return ret;
-> > > -		}  
-> > Current code leaks np in this path :(
-> >  
-> > >  	}
-> > >  	of_node_put(np);
-> > >  	/*  
-> >
-> >  
-> > > diff -u -p a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
-> > > --- a/drivers/crypto/nx/nx-common-powernv.c
-> > > +++ b/drivers/crypto/nx/nx-common-powernv.c
-> > > @@ -907,7 +907,6 @@ static int __init nx_powernv_probe_vas(s
-> > >  {
-> > >  	int chip_id, vasid, ret = 0;
-> > >  	int ct_842 = 0, ct_gzip = 0;
-> > > -	struct device_node *dn;
-> > >
-> > >  	chip_id = of_get_ibm_chip_id(pn);
-> > >  	if (chip_id < 0) {
-> > > @@ -921,7 +920,7 @@ static int __init nx_powernv_probe_vas(s
-> > >  		return -EINVAL;
-> > >  	}
-> > >
-> > > -	for_each_child_of_node(pn, dn) {
-> > > +	for_each_child_of_node_scoped(pn, dn) {
-> > >  		ret = find_nx_device_tree(dn, chip_id, vasid, NX_CT_842,
-> > >  					"ibm,p9-nx-842", &ct_842);
-> > >
-> > > @@ -929,10 +928,8 @@ static int __init nx_powernv_probe_vas(s
-> > >  			ret = find_nx_device_tree(dn, chip_id, vasid,
-> > >  				NX_CT_GZIP, "ibm,p9-nx-gzip", &ct_gzip);  
-> > The handling in here is odd (buggy?). There is an of_node_put()
-> > in the failure path inside find_nx_device_tree() as well as out here.  
-> > >
-> > > -		if (ret) {
-> > > -			of_node_put(dn);
-> > > +		if (ret)
-> > >  			return ret;
-> > > -		}
-> > >  	}
-> > >
-> > >  	if (!ct_842 || !ct_gzip) {  
-> >
-> > I've glanced at a few of the others and some of them are hard.
-> > This refactor is fine, but the other device_node handling often
-> > is complex and I think fragile.  So definitely room for improvement!  
-> 
-> I agree with all the above comments.
-> 
-> julia
+Best regards,
+Krzysztof
 
 

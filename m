@@ -1,122 +1,121 @@
-Return-Path: <linux-iio+bounces-2195-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2196-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADD7849F21
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:01:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84592849FC4
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 17:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7B61F23022
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 16:01:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FE1EB20BA4
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 16:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654823C08E;
-	Mon,  5 Feb 2024 15:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7F33CF65;
+	Mon,  5 Feb 2024 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T69MVZm/"
+	dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="XS9v4CKu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.subdimension.ro (skycaves.subdimension.ro [172.104.132.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEA43A1CC
-	for <linux-iio@vger.kernel.org>; Mon,  5 Feb 2024 15:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB53A1C3;
+	Mon,  5 Feb 2024 16:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.132.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707148697; cv=none; b=RnTXeez/3NlaVdXSNvXq682rhgkWmTOtDoy03btcsPkiew4+MzBV3SDiQj29FK6Vu9wWMWyuJ/bejj95Qf/FcZfMENEGYcqwo0MQdRVhsfQJGW1rhSt/4pmrFb+rYWvGo4C0TjyOBAtndmPMDpWdqjPiaUOqhWiL6ZhV8gpBDoU=
+	t=1707151702; cv=none; b=POJbxcdYO85dfmOmPctM3A73CadGcRBqUUPlMfoRdhSeI0Jhx734eePrxymJpuJb7TV/7wCwy3pxJr+d5/6XFWAuJMJvf4+tRZb9MBHXpzVkQEwqOFsUS9lqbE6DR+wn9ZFNHmRkDp+ils3wCPC41nuuwlz3fWRtsSk+JULjlqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707148697; c=relaxed/simple;
-	bh=Y5iiYvh+eGK6e9MKiShQZcAy23QSTFb3pqJ5SwIfvKo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CeZKROd5t+Q/3JzUfyAqzcuMlbjwgFk7TbtSdhaZFhq7AYA7F6l8m+XZ16FuM9Yknun7BTbVnWvfV3qJtzatOO+AbMCNOSqQUIKOLDOYWKYFoqAiuSN3uLpC0Xyzf0vPE3IQURD/1pezoKelMBcJFlwz4kEFvssbQm7MYOzfzHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T69MVZm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C790AC43394;
-	Mon,  5 Feb 2024 15:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707148695;
-	bh=Y5iiYvh+eGK6e9MKiShQZcAy23QSTFb3pqJ5SwIfvKo=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=T69MVZm/NRydhN6FHxdiw8XDmQ5GReLP75LEJrMxSaBV1+5QogQnWpnrv7Vie8cuH
-	 LQH6Ehb8l+J1BzGlcv/EzJElpUC+//kUToR4QFKb23zR5BqLec/kTEoCckJwTYXUHf
-	 tBwbOv9mj5BzNGQ75iIbrfKzPZ/Y+Hw2cSvLVMBBtPUUcl0vC8fJ2QJzPmm2S9Ymog
-	 33C/XUlqlT4tND69I+O4ARBLq31CGzaE5jkjMFARnYQ+lidYU2b2cp4IX+kBJVzvHN
-	 nATPaIy1dC6XP1YWqOFca579avSf0JxlDlkQdto5cwFvz+wPfx6Su7TpWRY7PcNMJD
-	 0XptQ2QBi4NLw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD2DFC4828D;
-	Mon,  5 Feb 2024 15:58:15 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 05 Feb 2024 16:58:14 +0100
-Subject: [PATCH] counter: fix privdata alignment
+	s=arc-20240116; t=1707151702; c=relaxed/simple;
+	bh=rypfT/kD5L+1VJyGe4VKW1ttuWQxYs5lhHHbn9d071s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D1dSRRDREtZu4h20oEzkKXWVx9D9qy18xQRpxCfQlJlt1n1lXb1rn5RiwTtxEWwDmUmPCHCWnMZ5vA1SaAva8bo3aBEdmAwhLihaSYJdHtoiy58vHO46kVU8Pm/sQSn0mTNSsM2q/B03anGQ94kZSXgTSvtBEsgRVjhgNrX6Gwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (1024-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=XS9v4CKu; arc=none smtp.client-ip=172.104.132.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire (unknown [188.24.101.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 0CC77331873;
+	Mon,  5 Feb 2024 16:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=subdimension.ro;
+	s=skycaves; t=1707151144;
+	bh=rypfT/kD5L+1VJyGe4VKW1ttuWQxYs5lhHHbn9d071s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XS9v4CKuRQqHcvD5X9jRzINdXBIOSx2cEZNrDjIU4AldWKo0mRSxvJom2hjrPGtyz
+	 tYvB44syszDm3W/VPWnibo/PS9uEn7w7K73xhu+7xpAJMjfcS88gJDnxtdHvSoHZWw
+	 D694Hgdv4HwxOBvuV8rvQw763gomfhHl0GzRAPWE=
+Date: Mon, 5 Feb 2024 18:39:02 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: andy.shevchenko@gmail.com
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 4/4] iio: pressure: hsc030pa add triggered buffer
+Message-ID: <ZcEPJh1i7cc0xyBW@sunspire>
+References: <20240127160405.19696-1-petre.rodan@subdimension.ro>
+ <20240127160405.19696-5-petre.rodan@subdimension.ro>
+ <Zb-1UGJt27OV-vjc@surfacebook.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
-X-B4-Tracking: v=1; b=H4sIAJYFwWUC/x2MQQqAIBAAvxJ7bsEsCfpKdLBabSE0tCII/97Sc
- QZmXsiUmDIM1QuJbs4cg0BTV7BsNnhCXoVBK90prQwu8QonJbQ7+4COH2ydpdnNptfWgXRHItH
- /c5xK+QAL+cZwYwAAAA==
-To: linux-iio@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
- William Breathitt Gray <william.gray@linaro.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1707148694; l=1491;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=JL+X9g5gr6vuqR5+sLDCtbqSByJMt51WufOmdlrZIjQ=;
- b=M4MdFlfCwoupYtvp/5nltEXUhtZHeVJwQrX0B+cfrKVKkXMrs10ywLLdB8q5vo3+FhV5Z//ks
- yS3T5yn4aDCBg7U3E+qKYy30Gm2TPz2R2gU9au9VPprFq9pKtLuwcz0
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="IYwKfNCRI6ua9wNH"
+Content-Disposition: inline
+In-Reply-To: <Zb-1UGJt27OV-vjc@surfacebook.localdomain>
 
-From: Nuno Sa <nuno.sa@analog.com>
 
-Aligning to the L1 cache does guarantee the same alignment as kmallocing
-an object [1]. Furthermore, in some platforms, that alignment is not
-sufficient for DMA safety (in case someone wants to have a DMA safe
-buffer in privdata) [2].
+--IYwKfNCRI6ua9wNH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sometime ago, we had the same fixes in IIO.
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/devres.c#n35
-[2]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
+hello Andy,
 
-Fixes: c18e2760308e ("counter: Provide alternative counter registration functions")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
-William, if you prefer, we can do something like in IIO and add a
-specific COUNTER_DMA_MINALIGN define
----
- drivers/counter/counter-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Sun, Feb 04, 2024 at 06:03:28PM +0200, andy.shevchenko@gmail.com wrote:
+[..]
+> > +	memcpy(&data->scan.chan[1], &data->buffer[2], 2);
+>=20
+> Hmm... We don't have fixed-size memcpy() :-(
 
-diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
-index 09c77afb33ca..073bf6b67a57 100644
---- a/drivers/counter/counter-core.c
-+++ b/drivers/counter/counter-core.c
-@@ -34,7 +34,7 @@ struct counter_device_allochelper {
- 	 * This is cache line aligned to ensure private data behaves like if it
- 	 * were kmalloced separately.
- 	 */
--	unsigned long privdata[] ____cacheline_aligned;
-+	unsigned long privdata[] __aligned(ARCH_DMA_MINALIGN);
- };
- 
- static void counter_device_release(struct device *dev)
+	__be16 *ptr;
 
----
-base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-change-id: 20240205-counter-align-fix-3faebfb572af
---
+	ptr =3D (__be16 *) data->buffer;
+	data->scan.chan[0] =3D *ptr;
+	data->scan.chan[1] =3D *++ptr;
 
-Thanks!
-- Nuno Sá
+is this an acceptable replacement? I do not understand that your concern wa=
+s, my
+intent was to copy exactly 2 bytes over.
 
+> > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+> > +					   iio_get_time_ns(indio_dev));
+
+thanks,
+peter
+
+--IYwKfNCRI6ua9wNH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmXBDyEACgkQzyaZmYRO
+fzD5aRAAyEwbN+bRogoQcgxhxBjDkfJFOodGLosVP/2TDfSoS4LpPphpuDORkEcX
+BpIXgVxh4qCyI8nzrXFH01+N9PQvi+ZtC6nw6xBA/64Jf3JJGZPjdlrcwHmCP/H8
+9dVfiZj6n3LcUw5ojzyZZbIsAPMq/BPXiNXdRk+rW4VUH12NNHykA95Wrejk+J6g
+vsoSo/Bz+5Z2uZBzKAX9YOtCegHW5RQ++WnZ/4YKvdWTdHVkXGBoHVfGAuil7RWY
+Q2rORin3ihDOol2KWVgC3zTgZrc9OkBWw+mDT1SD+Z2g1tdnzceMuQFkPBVL8Iti
+tEdVZ8aaXm1yJ7GgpzPEG3rPp5Pig02zBW3jWoz0plIpVDQzJxPhLVCCvpEKCvaL
+nefniFzg9KbK215rFGZKwR5VYla8EK9tSIaz2XFfvzKzSSC5UmFs6Hqtfwew/k7m
+GcPeyKZxcGJGgkbkvdXaBGNgmXpht+1Mg/C8ya2TVaA1ytTs8GO3T8W7bKlo2EGx
+OQkXGCUyXkhNq7PIxdAxngjeBGVby8FgxE9eZqyqvwngDZkZhAuABsalvc80N1jN
+NZvUSgcHXAU3tvj0SpKHWEGJmCBom3D+fV6nn74YVnfRWYoso15EKoF+j/9sPjjj
+qoylAXZL1mavW/DlS5zrAxv9Y/HFmF5M6Ga13NPfnJ+StJNv7Xg=
+=XpUp
+-----END PGP SIGNATURE-----
+
+--IYwKfNCRI6ua9wNH--
 

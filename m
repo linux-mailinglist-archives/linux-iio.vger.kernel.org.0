@@ -1,233 +1,497 @@
-Return-Path: <linux-iio+bounces-2189-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2191-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F40A849C46
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 14:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE7F849C5E
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 14:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CDC1C2405A
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 13:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D32B1C24471
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 13:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFE4210F0;
-	Mon,  5 Feb 2024 13:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FADC28E39;
+	Mon,  5 Feb 2024 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nOq2x8rK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M5w8M4kW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987CC249FA;
-	Mon,  5 Feb 2024 13:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3628E26;
+	Mon,  5 Feb 2024 13:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707141255; cv=none; b=kvxlHB2uPF15hqKS99VwMb1wGexa68eHWJ9uUB2lJsGPD/E3WXbbhteUqhICLGP0EUqBr7dtXWcslB2l2Z0S21yy9RKqGM9vk9+Lbxsk9h7M2JLlEYCKdeiprJE2nrNBRn2fiOxHXF2be+Urf+ELHPqy50zKjP04/2CEfyr5lYc=
+	t=1707141363; cv=none; b=mwdyUpvSQuxcCLDE90xjKsyXgeQV7LaJHo4328syV1NJjqL+M2ywtc8XaZqiWYV8DEXa3Yv3V7Mj7K9dmMXSu9GzGqSVIwdSkmTloUOY4U+PYow9chpoGBKRMQoN7SH5GkpugHGI++/fHa1hkt9PMFV9ipGhf4J14DLjW3sLio8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707141255; c=relaxed/simple;
-	bh=ByjGRKIAxB+anNz3m5q4sI+W1Mu2k8bRZPpufOgGAk0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fqSBm9DBxpeVTT25YaOu8cL/v+AX4gIZe9CqKYKqQlxgCyw+y4yVCQXVUp+rvTGhY5DENTAG+/mBIS01QxZ3ue3CwCooUbvkrC8vuOuil02ZSIw3DrLOTzaUDKqvaq3A5m1W0l7Rgz4YnESDZjG28UVKJJvAB44fmm1DONTM2cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nOq2x8rK; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1707141363; c=relaxed/simple;
+	bh=Qe4U6GsgQoExV2IgmrdDmT/fxptbE/yKztioM3Ub000=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Em2IncBFIgOdaWjlumwD3FTVE0Jj/aLvsKZmIV3AwuO18z8l3CMoxQhLvkwUP6mdIY5EXtyB1DZR9LerTfVb1OQPUJ9/UXF1Cmd3DnV3Eepdjd0CJHQeJsO7Mcu/N/Y2YVdyZqle5rMu0jNgkwZvHv4CdsY25+kotXvCfYZJCLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M5w8M4kW; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707141253; x=1738677253;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=ByjGRKIAxB+anNz3m5q4sI+W1Mu2k8bRZPpufOgGAk0=;
-  b=nOq2x8rKmdNqMNkWPJSag782REVfHvQBuwGy6XGc4b1gPQN5RpoR4VjV
-   jXjg06R55p4KYHXmSMDPizvaTv1Pl0+1Wt2bWsTat1DISrjgEyykTFIsU
-   txmpkLjYIpSvSFyQsWQkEvAgR1UTk9e3+L2W8m84MJrrlC2xG2ad8YVJs
-   D7dMz3E6sFWvwKwMusM/p6KL9yqxkA0aaPzLWD7YxE6qMBHbgIiKY2uM7
-   5h6rP/Kphntv2h8qs/DmVNmzoosU8Pkz31JKWxZAlV2oL+UsklRFC9n+y
-   iFxpJ94fHAjWmKwScc4lihzFIpihAj0G1E5w0w8WSIdnNxtzVHeCBpovd
+  t=1707141361; x=1738677361;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=Qe4U6GsgQoExV2IgmrdDmT/fxptbE/yKztioM3Ub000=;
+  b=M5w8M4kW92UDE2bvmLW6Ua5RM1O7WWJxAYewACK1QdjrlCPnuZ7l68O0
+   mahLuqMhZ7t6N6mHe/x9yVbg0TH8NnXZaaQ+alWPXJuDg/JoYlC3nkzcC
+   Vwle+x7XK2VcnLKfw1ZlFBdDAPIDH7Ah3l+11jQHubl+F1NbE637B++UW
+   TT/q7ZBRTlW40k4DZHElNUuoxz0DvEuIgQNwUZlMvdGai8MG8vW3SoAxa
+   0DofuoF+hlFFPDJeEg1ICq4fFeaBvBerL+oJJI01Sten1v/uWDBfc1maG
+   ZZ8Mr6ra4N9GjAIApCkUgXV6OtZ12TOxSSAHo0M9U6TbN6DFEawFLHMxp
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="413669"
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="431973"
 X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="413669"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:54:13 -0800
+   d="scan'208";a="431973"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:56:00 -0800
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="909301177"
 X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="728739"
-Received: from arulkumx-mobl2.gar.corp.intel.com (HELO [10.212.78.185]) ([10.212.78.185])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:54:12 -0800
-Message-ID: <82d941588151c82731dcfa9558908d7deb1052e7.camel@linux.intel.com>
-Subject: Re: [PATCH v4 1/4] iio: hid-sensor-als: Assign channels dynamically
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com, 
-	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Mon, 05 Feb 2024 08:54:10 -0500
-In-Reply-To: <20240204155839.3dd1d639@jic23-huawei>
-References: <20240204130332.2635760-1-srinivas.pandruvada@linux.intel.com>
-	 <20240204130332.2635760-2-srinivas.pandruvada@linux.intel.com>
-	 <20240204155839.3dd1d639@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+   d="scan'208";a="909301177"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:55:57 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rWzRy-000000025x2-09QZ;
+	Mon, 05 Feb 2024 15:55:54 +0200
+Date: Mon, 5 Feb 2024 15:55:53 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maksim Kiselev <bigunclemax@gmail.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <ZcDo6QvoE_e5s_f1@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-SGkgSm9udGFoYW4sCgpPbiBTdW4sIDIwMjQtMDItMDQgYXQgMTU6NTggKzAwMDAsIEpvbmF0aGFu
-IENhbWVyb24gd3JvdGU6Cj4gT24gU3VuLMKgIDQgRmViIDIwMjQgMDU6MDM6MjkgLTA4MDAKPiBT
-cmluaXZhcyBQYW5kcnV2YWRhIDxzcmluaXZhcy5wYW5kcnV2YWRhQGxpbnV4LmludGVsLmNvbT4g
-d3JvdGU6Cj4gCj4gPiBJbnN0ZWFkIG9mIGFzc3VtaW5nIHRoYXQgZXZlcnkgY2hhbm5lbCBkZWZp
-bmVkIHN0YXRpY2FsbHkgYnkKPiA+IGFsc19jaGFubmVsc1tdIGlzIHByZXNlbnQsIGFzc2lnbiBk
-eW5hbWljYWxseSBiYXNlZCBvbiBwcmVzZW5jZSBvZgo+ID4gdGhlCj4gPiByZXNwZWN0aXZlIHVz
-YWdlIGlkIGluIHRoZSBkZXNjcmlwdG9yLiBUaGlzIHdpbGwgYWxsb3cgdG8gcmVnaXN0ZXIKPiA+
-IEFMUwo+ID4gd2l0aCBsaW1pdGVkIGNoYW5uZWwgc3VwcG9ydC4gQXBwZW5kIHRoZSB0aW1lc3Rh
-bXAgYXMgdGhlIGxhc3QKPiA+IGNoYW5uZWwuCj4gPiAKPiA+IFVwZGF0ZSBhdmFpbGFibGVfc2Nh
-bl9tYXNrIHRvIHNwZWNpZnkgYWxsIGNoYW5uZWxzIHdoaWNoIGFyZQo+ID4gcHJlc2VudC4KPiA+
-IAo+ID4gVGhlcmUgaXMgbm8gaW50ZW50aW9uYWwgZnVuY3Rpb24gY2hhbmdlcyBkb25lLgo+ID4g
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBTcmluaXZhcyBQYW5kcnV2YWRhCj4gPiA8c3Jpbml2YXMucGFu
-ZHJ1dmFkYUBsaW51eC5pbnRlbC5jb20+Cj4gSGkgU3Jpbml2YXMsCj4gCj4gTG9naWMgbG9va3Mg
-ZmluZSwgYnV0IG5vdCB0aGF0IGdsb2JhbCB2YXJpYWJsZS4uLgpUaGlzIHdpbGwgYmUgYSBwcm9i
-bGVtIHdpdGggbXVsdGlwbGUgaW5zdGFuY2VzIHdpdGggZGlmZmVyZW50CmNvbWJpbmF0aW9uLiBB
-bHRob3VnaCBub3Qgc2VlbiBpbiBjdXJyZW50IGRldmljZXMsIGJ1dCB0aGlzIGlzCnBvc3NpYmxl
-LgpTbyB3aWxsIHNlbmQgYW4gdXBkYXRlLgoKVGhhbmtzLApTcmluaXZhcwoKPiAKCj4gPiAtLS0K
-PiA+IHY0Ogo+ID4gQWRkcmVzc2VkIGNvbW1lbnRzIGZyb20gSm9udGhhbjoKPiA+IMKgwqDCoMKg
-wqDCoMKgwqAtIFVzZSBhdmFpbGFibGVfc2Nhbl9tYXNrcwo+ID4gwqDCoMKgwqDCoMKgwqDCoC0g
-dGltZXN0YW1wIGxvY2F0aW9uIGlzIGZpeGVkIGFuZCBsZWZ0IGdhcHMgaW4gc2FtcGxlIGRhdGEK
-PiA+IGZvciBhYnNlbnQgY2hhbm5lbHMKPiA+IMKgwqDCoMKgwqDCoMKgwqAtIFVzZSBDSEFOTkVM
-X1NDQU5fSU5ERVhfTUFYIGFzIGxpbWl0IHRvIGNoZWNrIHByZXNlbmNlIG9mCj4gPiB1c2FnZSBp
-ZHMsIG90aGVyd2lzZQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgIGl0IHdpbGwgbWlzcyBuZXdlciBj
-aGFubmVscyBhZGRlZCBpbiBzdWJzZXF1ZW50IHBhdGNoZXMuCj4gPiB2MzoKPiA+IEFkZHJlc3Nl
-ZCBjb21tZW50cyBmcm9tIEpvbnRoYW46Cj4gPiDCoMKgwqDCoMKgwqDCoMKgLSBSZW1vdmUgY2hh
-bm5lbCBhbGxvY2F0aW9uIGFuZCBtb3ZlIHRvIGlpb19wcml2KCkKPiA+IMKgwqDCoMKgwqDCoMKg
-wqAtIFBhcnNlIGFsbCB1c2FnZSBJRHMgaW4gYSBzaW5nbGUgbG9vcCBhbmQgY29udGludWUKPiA+
-IMKgwqDCoMKgwqDCoMKgwqBmb3IgZmFpbHVyZS4gVGhpcyB3YXkgdGhlIHRlbXBlcmF0dXJlIGFu
-ZCBjaHJvbWF0aWNpdHkKPiA+IMKgwqDCoMKgwqDCoMKgwqB3aWxsIG5vdCBuZWVkIGFueSBzcGVj
-aWFsIHByb2Nlc3NpbmcgdG8gcGFyc2UgdXNhZ2UgaWRzLgo+ID4gwqDCoMKgwqDCoMKgwqDCoC0g
-RG9uJ3QgbGVhdmUgZW1wdHkgY2hhbm5lbCBpbmRleGVzCj4gPiAKPiA+IHYyOgo+ID4gTmV3IGNo
-YW5nZQo+ID4gCj4gPiDCoGRyaXZlcnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3ItYWxzLmMgfCA1MiAr
-KysrKysrKysrKysrKysrKysrKystLS0tLQo+ID4gLS0tLQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwg
-MzYgaW5zZXJ0aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9k
-cml2ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gPiBiL2RyaXZlcnMvaWlvL2xpZ2h0
-L2hpZC1zZW5zb3ItYWxzLmMKPiA+IGluZGV4IGI2YzRiZWYyYTdiYi4uZDNiODkyYzBlMzA3IDEw
-MDY0NAo+ID4gLS0tIGEvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMuYwo+ID4gKysr
-IGIvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMuYwo+ID4gQEAgLTI1LDYgKzI1LDcg
-QEAgc3RydWN0IGFsc19zdGF0ZSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGhpZF9zZW5z
-b3JfaHViX2NhbGxiYWNrcyBjYWxsYmFja3M7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGhp
-ZF9zZW5zb3JfY29tbW9uIGNvbW1vbl9hdHRyaWJ1dGVzOwo+ID4gwqDCoMKgwqDCoMKgwqDCoHN0
-cnVjdCBoaWRfc2Vuc29yX2h1Yl9hdHRyaWJ1dGVfaW5mbwo+ID4gYWxzW0NIQU5ORUxfU0NBTl9J
-TkRFWF9NQVhdOwo+ID4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGlpb19jaGFuX3NwZWMgY2hhbm5l
-bHNbQ0hBTk5FTF9TQ0FOX0lOREVYX01BWCArIDFdOwo+ID4gwqDCoMKgwqDCoMKgwqDCoHN0cnVj
-dCB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHUzMiBpbGx1bVtDSEFOTkVM
-X1NDQU5fSU5ERVhfTUFYXTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdTY0
-IHRpbWVzdGFtcCBfX2FsaWduZWQoOCk7Cj4gPiBAQCAtMzMsOSArMzQsMTYgQEAgc3RydWN0IGFs
-c19zdGF0ZSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IHNjYWxlX3Bvc3RfZGVjbWw7Cj4gPiDC
-oMKgwqDCoMKgwqDCoMKgaW50IHNjYWxlX3ByZWNpc2lvbjsKPiA+IMKgwqDCoMKgwqDCoMKgwqBp
-bnQgdmFsdWVfb2Zmc2V0Owo+ID4gK8KgwqDCoMKgwqDCoMKgaW50IG51bV9jaGFubmVsczsKPiA+
-IMKgwqDCoMKgwqDCoMKgwqBzNjQgdGltZXN0YW1wOwo+ID4gwqB9Owo+ID4gwqAKPiA+ICsvKiBU
-aGUgb3JkZXIgb2YgdXNhZ2UgaWRzIG11c3QgbWF0Y2ggc2NhbiBpbmRleCBzdGFydGluZyBmcm9t
-Cj4gPiBDSEFOTkVMX1NDQU5fSU5ERVhfSU5URU5TSVRZICovCj4gPiArc3RhdGljIGNvbnN0IHUz
-MiBhbHNfdXNhZ2VfaWRzW10gPSB7Cj4gPiArwqDCoMKgwqDCoMKgwqBISURfVVNBR0VfU0VOU09S
-X0xJR0hUX0lMTFVNLAo+ID4gK8KgwqDCoMKgwqDCoMKgSElEX1VTQUdFX1NFTlNPUl9MSUdIVF9J
-TExVTSwKPiA+ICt9Owo+ID4gKwo+ID4gwqBzdGF0aWMgY29uc3QgdTMyIGFsc19zZW5zaXRpdml0
-eV9hZGRyZXNzZXNbXSA9IHsKPiA+IMKgwqDCoMKgwqDCoMKgwqBISURfVVNBR0VfU0VOU09SX0RB
-VEFfTElHSFQsCj4gPiDCoMKgwqDCoMKgwqDCoMKgSElEX1VTQUdFX1NFTlNPUl9MSUdIVF9JTExV
-TSwKPiA+IEBAIC02OCw2ICs3Niw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaWlvX2NoYW5fc3Bl
-YyBhbHNfY2hhbm5lbHNbXQo+ID4gPSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgSUlPX0NIQU5fU09G
-VF9USU1FU1RBTVAoQ0hBTk5FTF9TQ0FOX0lOREVYX1RJTUVTVEFNUCkKPiA+IMKgfTsKPiA+IMKg
-Cj4gPiArc3RhdGljIHVuc2lnbmVkIGxvbmcgYWxzX3NjYW5fbWFza1tdID0gezAsIDB9Owo+IAo+
-IEdsb2JhbD8gTm8uIENvdWxkIGJlIG11bHRpcGxlIGluc3RhbmNlcyB3aXRoIGRpZmZlcmVudCBz
-ZW5zb3JzCj4gc3VwcG9ydGVkLgo+IE5lZWRzIHRvIGJlIGVtYmVkZGVkIGluIHRoZSBhbHNfc3Rh
-dGUgc3RydWN0dXJlIHNvIGl0IGlzIHBlcgo+IGluc3RhbmNlLgo+IAo+ID4gKwo+ID4gwqAvKiBB
-ZGp1c3QgY2hhbm5lbCByZWFsIGJpdHMgYmFzZWQgb24gcmVwb3J0IGRlc2NyaXB0b3IgKi8KPiA+
-IMKgc3RhdGljIHZvaWQgYWxzX2FkanVzdF9jaGFubmVsX2JpdF9tYXNrKHN0cnVjdCBpaW9fY2hh
-bl9zcGVjCj4gPiAqY2hhbm5lbHMsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludCBjaGFu
-bmVsLCBpbnQgc2l6ZSkKPiA+IEBAIC0yMzgsMjcgKzI0OCwzOCBAQCBzdGF0aWMgaW50IGFsc19j
-YXB0dXJlX3NhbXBsZShzdHJ1Y3QKPiA+IGhpZF9zZW5zb3JfaHViX2RldmljZSAqaHNkZXYsCj4g
-PiDCoC8qIFBhcnNlIHJlcG9ydCB3aGljaCBpcyBzcGVjaWZpYyB0byBhbiB1c2FnZSBpZCovCj4g
-PiDCoHN0YXRpYyBpbnQgYWxzX3BhcnNlX3JlcG9ydChzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpw
-ZGV2LAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBoaWRfc2Vuc29yX2h1Yl9kZXZpY2UKPiA+ICpoc2RldiwK
-PiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoHN0cnVjdCBpaW9fY2hhbl9zcGVjICpjaGFubmVscywKPiA+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1bnNp
-Z25lZCB1c2FnZV9pZCwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgYWxzX3N0YXRlICpzdCkKPiA+IMKgewo+
-ID4gLcKgwqDCoMKgwqDCoMKgaW50IHJldDsKPiA+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBpaW9f
-Y2hhbl9zcGVjICpjaGFubmVsczsKPiA+ICvCoMKgwqDCoMKgwqDCoGludCByZXQsIGluZGV4ID0g
-MDsKPiA+IMKgwqDCoMKgwqDCoMKgwqBpbnQgaTsKPiA+IMKgCj4gPiAtwqDCoMKgwqDCoMKgwqBm
-b3IgKGkgPSAwOyBpIDw9IENIQU5ORUxfU0NBTl9JTkRFWF9JTExVTTsgKytpKSB7Cj4gPiArwqDC
-oMKgwqDCoMKgwqBjaGFubmVscyA9IHN0LT5jaGFubmVsczsKPiA+ICsKPiA+ICvCoMKgwqDCoMKg
-wqDCoGZvciAoaSA9IDA7IGkgPCBDSEFOTkVMX1NDQU5fSU5ERVhfTUFYOyArK2kpIHsKPiA+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gc2Vuc29yX2h1Yl9pbnB1dF9nZXRf
-YXR0cmlidXRlX2luZm8oaHNkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBISURfSU5QVVRfUkVQT1JULAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgdXNhZ2VfaWQsCj4gPiAtCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgSElEX1VTQUdFX1NFTlNPUl9MSUdICj4gPiBUX0lMTFVNLAo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBhbHNfdXNhZ2VfaWRzW2ldLAo+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgJnN0LT5hbHNbaV0pOwo+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkKPiA+IC3CoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiA+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBhbHNfYWRqdXN0X2NoYW5uZWxfYml0X21hc2soY2hh
-bm5lbHMsIGksIHN0LQo+ID4gPmFsc1tpXS5zaXplKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gPiArCj4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgY2hhbm5lbHNbaW5kZXhdID0gYWxzX2NoYW5uZWxzW2ldOwo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsc19zY2FuX21hc2tbMF0gfD0gQklU
-KGkpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5l
-bF9iaXRfbWFzayhjaGFubmVscywgaW5kZXgsIHN0LQo+ID4gPmFsc1tpXS5zaXplKTsKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqArK2luZGV4Owo+ID4gwqAKPiA+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGV2X2RiZygmcGRldi0+ZGV2LCAiYWxzICV4OiV4XG4i
-LCBzdC0KPiA+ID5hbHNbaV0uaW5kZXgsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBzdC0+YWxzW2ldLnJlcG9ydF9pZCk7Cj4gPiDCoMKgwqDCoMKg
-wqDCoMKgfQo+ID4gwqAKPiA+ICvCoMKgwqDCoMKgwqDCoHN0LT5udW1fY2hhbm5lbHMgPSBpbmRl
-eDsKPiA+ICvCoMKgwqDCoMKgwqDCoC8qIFJldHVybiBzdWNjZXNzIGV2ZW4gaWYgb25lIHVzYWdl
-IGlkIGlzIHByZXNlbnQgKi8KPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChpbmRleCkKPiA+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPSAwOwo+ID4gKwo+ID4gwqDCoMKgwqDCoMKg
-wqDCoHN0LT5zY2FsZV9wcmVjaXNpb24gPSBoaWRfc2Vuc29yX2Zvcm1hdF9zY2FsZSh1c2FnZV9p
-ZCwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAmc3QtCj4gPiA+YWxzW0NIQU5ORUxfU0NBTl9JTkRFWF9JTlRFTlNJVFld
-LAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCZzdC0+c2NhbGVfcHJlX2RlY21sLCAmc3QtCj4gPiA+c2NhbGVfcG9zdF9k
-ZWNtbCk7Cj4gPiBAQCAtMjk0LDE1ICszMTUsNyBAQCBzdGF0aWMgaW50IGhpZF9hbHNfcHJvYmUo
-c3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+
-IC3CoMKgwqDCoMKgwqDCoGluZGlvX2Rldi0+Y2hhbm5lbHMgPSBkZXZtX2ttZW1kdXAoJnBkZXYt
-PmRldiwKPiA+IGFsc19jaGFubmVscywKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHNp
-emVvZihhbHNfY2hhbm5lbHMpLAo+ID4gR0ZQX0tFUk5FTCk7Cj4gPiAtwqDCoMKgwqDCoMKgwqBp
-ZiAoIWluZGlvX2Rldi0+Y2hhbm5lbHMpIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBkZXZfZXJyKCZwZGV2LT5kZXYsICJmYWlsZWQgdG8gZHVwbGljYXRlCj4gPiBjaGFubmVs
-c1xuIik7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIC1FTk9NRU07
-Cj4gPiAtwqDCoMKgwqDCoMKgwqB9Cj4gPiAtCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gYWxz
-X3BhcnNlX3JlcG9ydChwZGV2LCBoc2RldiwKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIChzdHJ1Y3QgaWlvX2NoYW5fc3BlYyAq
-KWluZGlvX2Rldi0KPiA+ID5jaGFubmVscywKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBoc2Rldi0+dXNhZ2UsCj4gPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-YWxzX3N0YXRlKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBpZiAocmV0KSB7Cj4gPiBAQCAtMzEwLDgg
-KzMyMywxNSBAQCBzdGF0aWMgaW50IGhpZF9hbHNfcHJvYmUoc3RydWN0Cj4gPiBwbGF0Zm9ybV9k
-ZXZpY2UgKnBkZXYpCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBy
-ZXQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+IC3CoMKgwqDCoMKgwqDCoGluZGlv
-X2Rldi0+bnVtX2NoYW5uZWxzID0KPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoEFSUkFZX1NJWkUoYWxzX2NoYW5uZWxzKTsK
-PiA+ICvCoMKgwqDCoMKgwqDCoC8qIEFkZCB0aW1lc3RhbXAgY2hhbm5lbCAqLwo+ID4gK8KgwqDC
-oMKgwqDCoMKgYWxzX3N0YXRlLT5jaGFubmVsc1thbHNfc3RhdGUtPm51bV9jaGFubmVsc10gPQo+
-ID4gYWxzX2NoYW5uZWxzW0NIQU5ORUxfU0NBTl9JTkRFWF9USU1FU1RBTVBdOwo+ID4gKwo+ID4g
-K8KgwqDCoMKgwqDCoMKgLyogKzEgZm9yIGFkZGluZyB0aW1lc3RhbXAgY2hhbm5lbCAqLwo+ID4g
-K8KgwqDCoMKgwqDCoMKgaW5kaW9fZGV2LT5udW1fY2hhbm5lbHMgPSBhbHNfc3RhdGUtPm51bV9j
-aGFubmVscyArIDE7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqBpbmRpb19kZXYtPmNoYW5uZWxz
-ID0gYWxzX3N0YXRlLT5jaGFubmVsczsKPiA+ICvCoMKgwqDCoMKgwqDCoGluZGlvX2Rldi0+YXZh
-aWxhYmxlX3NjYW5fbWFza3MgPSBhbHNfc2Nhbl9tYXNrOwo+ID4gKwo+ID4gwqDCoMKgwqDCoMKg
-wqDCoGluZGlvX2Rldi0+aW5mbyA9ICZhbHNfaW5mbzsKPiA+IMKgwqDCoMKgwqDCoMKgwqBpbmRp
-b19kZXYtPm5hbWUgPSBuYW1lOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGluZGlvX2Rldi0+bW9kZXMg
-PSBJTkRJT19ESVJFQ1RfTU9ERTsKPiAKCg==
+
+On Fri, Feb 02, 2024 at 04:28:07PM +0200, Andy Shevchenko wrote:
+> On Fri, Feb 02, 2024 at 11:59:01AM +0100, Mike Looijmans wrote:
+
+Hit "Send" by a mistake, here is the full review.
+
+...
+
+Why this can't be the part of drivers/iio/adc/ti-ads124s08.c?
+Seems to me the command list is the same, registers are different though.
+Broadly the Q is have you checked other existing drivers if they can
+be used as a base. If not, perhaps a word in the cover letter is good to have
+(sorry if I asked this already).
+
+...
+
+> > +#define ADS1298_WAKEUP  0x02
+> > +#define ADS1298_STANDBY 0x04
+> > +#define ADS1298_RESET   0x06
+> > +#define ADS1298_START   0x08
+> > +#define ADS1298_STOP    0x0A
+> > +#define ADS1298_RDATAC  0x10
+> > +#define ADS1298_SDATAC  0x11
+> > +#define ADS1298_RDATA   0x12
+> 
+> Leftovers.
+
+...
+
+> > +#define ADS1298_CLOCKS_TO_USECS(x) \
+> > +		(DIV_ROUND_UP((x * MICROHZ_PER_HZ), ADS1298_CLK_RATE_HZ))
+> 
+> Wrong place of parentheses, should be "(x) * ...".
+> Don't you need to include math.h?
+
+
+...
+
+> > +#define ADS1298_MASK_CONFIG1_DR             0x07
+
+GENMASK() ?
+
+...
+
+> > +struct ads1298_private {
+> > +	const struct ads1298_chip_info *chip_info;
+> > +	struct spi_device *spi;
+> > +	struct regulator *reg_avdd;
+> > +	struct regulator *reg_vref;
+> > +	struct clk *clk;
+> > +	struct regmap *regmap;
+> > +	struct completion completion;
+> > +	struct iio_trigger *trig;
+
+> > +	struct spi_transfer rdata_xfer;
+> > +	struct spi_message rdata_msg;
+
+Do you use this outside of the ->probe()? I just ask since I removed some
+context already...
+
+> > +	spinlock_t irq_busy_lock; /* Handshake between SPI and DRDY irqs */
+> > +	int rdata_xfer_busy;
+> > +
+> > +	/* Temporary storage for demuxing data after SPI transfer */
+> > +	u32 bounce_buffer[ADS1298_MAX_CHANNELS];
+> > +
+> > +	/* For synchronous SPI exchanges (read/write registers) */
+> > +	u8 cmd_buffer[ADS1298_SPI_CMD_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
+> > +
+> > +	/* Buffer used for incoming SPI data */
+> > +	u8 rx_buffer[ADS1298_SPI_RDATA_BUFFER_SIZE];
+
+Cacheline aligned?
+I see the cmd_buffer, but shouldn't this be also aligned?
+
+> > +	/* Contains the RDATA command and zeroes to clock out */
+> > +	u8 tx_buffer[ADS1298_SPI_RDATA_BUFFER_SIZE];
+> > +};
+
+...
+
+> > +static int ads1298_write_cmd(struct ads1298_private *priv, u8 command)
+> > +{
+> > +	struct spi_transfer cmd_xfer = {
+
+I would use xfer[]...
+
+> > +		.tx_buf = priv->cmd_buffer,
+> > +		.rx_buf = priv->cmd_buffer,
+
+> > +		.len = sizeof(command),
+
+In other cases you use plain number, perhaps 1 is okay here for consistency's
+sake?
+
+> > +		.speed_hz = ADS1298_SPI_BUS_SPEED_SLOW,
+> > +		.delay = {
+> > +			.value = 2,
+> > +			.unit = SPI_DELAY_UNIT_USECS,
+> > +		},
+> > +	};
+> > +
+> > +	priv->cmd_buffer[0] = command;
+> > +
+> > +	return spi_sync_transfer(priv->spi, &cmd_xfer, 1);
+
+...and ARRAY_SIZE(), but either way I'm fine, i.o.w. this is also okay.
+
+> > +}
+
+...
+
+> > +	/* Enable the channel  */
+
+Too many spaces before */.
+
+...
+
+> > +	/* Cannot take longer than 40ms (250Hz) */
+> > +	ret = wait_for_completion_timeout(&priv->completion, msecs_to_jiffies(50));
+> > +	if (!ret)
+> > +		return -ETIMEDOUT;
+> > +
+> > +	return 0;
+
+Can be other way around
+
+	if (ret)
+		return 0;
+
+	return -ETIMEDOUT;
+
+But the original is also okay.
+
+> > +}
+
+...
+
+> > +	if (priv->clk)
+> > +		rate = clk_get_rate(priv->clk);
+
+> > +	else
+> > +		rate = ADS1298_CLK_RATE_HZ;
+
+Dead code (here and elsewhere). You probably wanted _optional clk APIs
+in the probe.
+
+> > +	if (!rate)
+> > +		return -EINVAL;
+
+...
+
+> > +	factor = (rate >> ADS1298_SHIFT_DR_HR) / val;
+> > +	if (factor >= 128) {
+> > +		cfg = ADS1298_LOWEST_DR;
+> > +	} else if (factor <= 1) {
+> > +		cfg = ADS1298_MASK_CONFIG1_HR; /* Fastest possible */
+> > +	} else {
+> > +		cfg = fls(factor) - 1;
+> > +		cfg |= ADS1298_MASK_CONFIG1_HR; /* Use HR mode */
+> > +	}
+
+What about:
+
+	factor = (rate >> ADS1298_SHIFT_DR_HR) / val;
+	if (factor >= 128)
+		cfg = ADS1298_LOWEST_DR;
+	else if (factor)
+		cfg = ADS1298_MASK_CONFIG1_HR | ilog2(factor); /* Use HR mode */
+	else
+		cfg = ADS1298_MASK_CONFIG1_HR; /* Fastest possible */
+
+(will need log2.h to be included)
+
+...
+
+> > +		*val = ret / 1000; /* Convert to millivolts */
+
+MILLI ?
+
+...
+
+> > +		*val = sign_extend32(get_unaligned_be24(priv->rx_buffer + chan->address),
+> > +				     23);
+
+Second time magic 23, can you define a constant and use it everywhere?
+
+...
+
+> > +static int ads1298_reg_write(void *context, unsigned int reg, unsigned int val)
+> > +{
+> > +	struct ads1298_private *priv = context;
+> > +	struct spi_transfer reg_write_xfer = {
+> > +		.tx_buf = priv->cmd_buffer,
+> > +		.rx_buf = priv->cmd_buffer,
+> > +		.len = 3,
+> > +		.speed_hz = ADS1298_SPI_BUS_SPEED_SLOW,
+> > +		.delay = {
+> > +			.value = 2,
+> > +			.unit = SPI_DELAY_UNIT_USECS,
+> > +		},
+> > +	};
+> > +
+> > +	priv->cmd_buffer[0] = ADS1298_CMD_WREG | reg;
+
+> > +	priv->cmd_buffer[1] = 0x0;
+> > +	priv->cmd_buffer[2] = val;
+
+Sounds to me like put_unaligned_be16().
+
+> > +
+> > +	return spi_sync_transfer(priv->spi, &reg_write_xfer, 1);
+> > +}
+
+...
+
+> > +	priv->cmd_buffer[0] = ADS1298_CMD_RREG | reg;
+> > +	priv->cmd_buffer[1] = 0x0;
+> > +	priv->cmd_buffer[2] = 0;
+
+Ditto.
+
+> > +	ret = spi_sync_transfer(priv->spi, &reg_read_xfer, 1);
+> > +	if (ret)
+> > +		return ret;
+
+...
+
+> > +	*val = priv->cmd_buffer[2];
+
+Just wondering if the above is correct assumption, this probably needs to be
+get_unaligned_be16().
+
+
+...
+
+> > +	unsigned long flags;
+> > +
+> > +	/* Notify we're no longer waiting for the SPI transfer to complete */
+> > +	spin_lock_irqsave(&priv->irq_busy_lock, flags);
+> > +	priv->rdata_xfer_busy = 0;
+> > +	spin_unlock_irqrestore(&priv->irq_busy_lock, flags);
+
+Use cleanup.h?
+
+...
+
+> > +static int ads1298_update_scan_mode(struct iio_dev *indio_dev,
+> > +				    const unsigned long *scan_mask)
+> > +{
+> > +	struct ads1298_private *priv = iio_priv(indio_dev);
+> > +	unsigned int val;
+> > +	int ret;
+> > +	int i;
+> > +
+> > +	/* Make the interrupt routines start with a clean slate */
+> > +	ads1298_rdata_unmark_busy(priv);
+> > +
+> > +	/* Power down channels that aren't in use */
+
+This comment does not describe why you need to write to _all_ channels.
+
+> > +	for (i = 0; i < ADS1298_MAX_CHANNELS; i++) {
+> > +		val = test_bit(i, scan_mask) ? 0 : ADS1298_MASK_CH_PD;
+
+With above in mind, this perhaps needs to be one of for_each_set_bit(scan_mask) /
+for_each_clear_bit(scan_mask).
+
+> > +		ret = regmap_update_bits(priv->regmap, ADS1298_REG_CHnSET(i),
+> > +					 ADS1298_MASK_CH_PD, val);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+
+...
+
+> > +	unsigned long flags;
+
+cleanup.h
+
+> > +	int wasbusy;
+> > +
+> > +	spin_lock_irqsave(&priv->irq_busy_lock, flags);
+> > +
+> > +	wasbusy = --priv->rdata_xfer_busy;
+> > +	if (wasbusy) {
+> > +		/*
+> > +		 * DRDY interrupt occurred before SPI completion. Start a new
+> > +		 * SPI transaction now to retrieve the data that wasn't latched
+> > +		 * into the ADS1298 chip's transfer buffer yet.
+> > +		 */
+> > +		spi_async(priv->spi, &priv->rdata_msg);
+> > +		/*
+> > +		 * If more than one DRDY took place, there was an overrun. Since
+> > +		 * the sample is already lost, reset the counter to 1 so that
+> > +		 * we will wait for a DRDY interrupt after this SPI transaction.
+> > +		 */
+> > +		if (wasbusy > 1)
+> > +			priv->rdata_xfer_busy = 1;
+> > +	}
+> > +
+> > +	spin_unlock_irqrestore(&priv->irq_busy_lock, flags);
+
+...
+
+> > +static irqreturn_t ads1298_interrupt(int irq, void *dev_id)
+
+Ditto.
+
+...
+
+> > +	.cache_type = REGCACHE_RBTREE,
+
+Why not MAPPLE TREE?
+
+...
+
+> > +static const char *ads1298_family_name(unsigned int id)
+> > +{
+> > +	switch (id & ADS1298_MASK_ID_FAMILY) {
+> > +	case ADS1298_ID_FAMILY_ADS129X:
+> > +		return "ADS129x";
+> > +	case ADS1298_ID_FAMILY_ADS129XR:
+> > +		return "ADS129xR";
+> > +	default:
+> > +		return "(unknown)";
+
+Hmm... Maybe "" is enough? What is the practice in IIO for this? Jonathan?
+
+> > +	}
+> > +}
+
+...
+
+> > +	dev_info(dev, "Found %s, %u channels\n", ads1298_family_name(val),
+> > +		 4 + 2 * (val & ADS1298_MASK_ID_CHANNELS));
+
+How is this useful? Can't sysfs already give an answer to these Q:s?
+
+...
+
+> > +	if (IS_ERR(priv->reg_vref)) {
+> > +		if (PTR_ERR(priv->reg_vref) == -ENODEV)
+> > +			priv->reg_vref = NULL;
+
+> > +		else
+
+Redundant if you check for an error cases first.
+
+> > +			return dev_err_probe(dev, PTR_ERR(priv->reg_avdd),
+> > +					     "Failed to get vref regulator\n");
+> > +	} else {
+> > +		ret = regulator_enable(priv->reg_vref);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		ret = devm_add_action_or_reset(dev, ads1298_reg_disable,
+> > +					       priv->reg_vref);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+
+...
+
+> > +	priv->clk = devm_clk_get_enabled(dev, "clk");
+
+_optional? See above.
+
+> > +	if (IS_ERR(priv->clk))
+
+> > +		return dev_err_probe(dev, PTR_ERR(priv->clk),
+> > +				     "Failed to get clk\n");
+
+One line? (Even in strict, i.e. 80 limit, mode checkpatch won't complain on it)
+
+...
+
+> > +	priv->regmap = devm_regmap_init(dev, NULL, priv,
+> > +					&ads1298_regmap_config);
+
+One line? (It's 81, which we may very well tolerate)
+
+> > +	if (IS_ERR(priv->regmap))
+> > +		return PTR_ERR(priv->regmap);
+
+...
+
+> > +	if (reset_gpio) {
+
+> > +		udelay(ADS1298_CLOCKS_TO_USECS(2));
+
+Why this delay (the after one is explained, though)?
+
+> > +		gpiod_set_value(reset_gpio, 0);
+> > +	} else {
+> > +		ret = ads1298_write_cmd(priv, ADS1298_CMD_RESET);
+> > +		if (ret)
+> > +			return dev_err_probe(dev, ret, "RESET failed\n");
+> > +	}
+> > +	/* Wait 18 clock cycles for reset command to complete */
+> > +	udelay(ADS1298_CLOCKS_TO_USECS(18));
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

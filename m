@@ -1,194 +1,265 @@
-Return-Path: <linux-iio+bounces-2184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF5684970A
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 10:53:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70E484973D
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 11:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98065B27FA6
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 09:53:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D7C1C22987
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Feb 2024 10:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619E812E45;
-	Mon,  5 Feb 2024 09:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbOG8hLt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE534134A0;
+	Mon,  5 Feb 2024 10:02:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B44134C6;
-	Mon,  5 Feb 2024 09:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E482134AD;
+	Mon,  5 Feb 2024 10:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707126810; cv=none; b=TXDvvt0LOZz8bkprlZzmRCQjXDHT0/g37PpzTUqOA+T91SHnVuBptd1f0qVfYV1A6AZGRiH0SF8pI53/3h4lYcX/d9RbTogBJ7u9B3m21lpTxPedXUeKN9bK9FmUxv6ipNCivYP0HPBw6rPvbmJTFpnaOG5BDIfUC37OyFN0+yg=
+	t=1707127336; cv=none; b=oInmrGlfnkdCjOK/0Cr/hzVdd12t4mizyi+Bfd3uDuM6eH+2itBo2ccz7HtUHZXK1ayzhkChXGW+pqxhu5q4oNxGRSnQBJZN9KbSGxpOraFSGMyJopfq2ZzVkNxvl1wfWKSUxRKGDXJC/RE04y1tqzmJNkejpcRt3OqtBjHkkKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707126810; c=relaxed/simple;
-	bh=qzWq2fEmrI0y52InyhdcUfWfRevTQvm9xcPd55lTSPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b+scZrqTiHtCDt/yXYFyM3Yi6/QmGgY5Z9HBfdKmAMAttLUFJ8TcG40IPMp6A8kXsmUWbDmHCyf2orzPAiqD++Wdgt5TDDN+T7pEtcxZ2XcSberW8luRyhPPxMKhy+UwBe6/Dq8YCP0wA1XzlCx4yY+EqN9+0IouzPBnEDOct9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbOG8hLt; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a2f79e79f0cso566687366b.2;
-        Mon, 05 Feb 2024 01:53:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707126806; x=1707731606; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KVR1d4N0MAmwAVoqQZoMPRejFBb2H9WAFtXUDQ1yD9E=;
-        b=BbOG8hLt5fPuxdhwdb3WBze8kgOV+ReUfM4JC4yFPvx7gIoXiLgVFIsEk7JgygPg/y
-         9gEZ2a+NxziUQhX8+uS0KI+WeBJszJcRSE2wyp6qSDtIhkVNCh94whW/TxmDmdXTwh5k
-         yFa7CZqr3eOnJ4JayuS5gbeiYf2S+egXpzr9GvyOKtendOhMmbnoi9BQKLjYNQeRag7u
-         N8bXWCvpcyp67QGLrDzzaMxGbZOa303oklfs3ZvAhrQdGS2jqYRu36GGSr+/4bw4B8Lg
-         WTMA1XiAsefCDYM9rvnTrAsJnPN37cApyI3Aqg6DAcgMN1HXWYsOr+j7ROTd0Cf84VDZ
-         ShNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707126806; x=1707731606;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KVR1d4N0MAmwAVoqQZoMPRejFBb2H9WAFtXUDQ1yD9E=;
-        b=RK985XY96Lg4kEiP/U+dQy9h/jehOY101BfwfEsq09cdQrS89Rt7qtFSEw31Yl2Uh0
-         Qfs7CbYOCsCcrnrfy3pvh5Xzbi+Fa47fFiGDtmg2IJ4nHzIvhzpksWiLnyYiDr0cgMFN
-         9K2di2L6KR3itZrpcyId8/0gz0Vz+ZDU4baXBOSMez8F00GFLAoGPzQFko4RcCw3VaUk
-         LrnaHMJmomjjr+DM+a8YGn/t9JYb5Dz/tR3jEcgaFdm1hFWMs2xwJ+PAr9ji6S63eNG7
-         d6L272ouowktrAaAUg4m55kBb1SeeN1I3houcYQ2DokCSWLtYA4mVG8nHeSKmpWA3m/6
-         1ZMA==
-X-Gm-Message-State: AOJu0Yz9Li2eYqo2IYaa8fy0sWggBk+yf7ZTxVjGEHhQKwoouwS+diCT
-	zvbeYApRtCcNFTzsNzlWKPnhRnHco/ePecTCfKk3Puz5IdcxszMq
-X-Google-Smtp-Source: AGHT+IHEJNj6ITyaNW2HKGk+p4SYNl7jGHN6VgcEs2G07eq6r+uN368VL70WRnSaA0uK7JJipeYiKg==
-X-Received: by 2002:a17:906:8309:b0:a37:b2e6:cf65 with SMTP id j9-20020a170906830900b00a37b2e6cf65mr1879217ejx.52.1707126806411;
-        Mon, 05 Feb 2024 01:53:26 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCX7k6NLnblNcyc7fQ9YFcgOWMe2KUTVWvxSmSfu0qdx4ejn58XMDppo3lUAVeZgFWmlSWsapTeOkg0EvaG6lYRULh3YKDnqLxaU2Kd6rcnZbQv0C6LlaTlbym9haj1BBKMh6Ngs0PqBUsT5y6IqAhxCW7cot5gRQaY0LVb7a0kzCH/9M2E2h3gLO4PKH+iBvunHwx0hHtjabkyRPVSM31N2dbg+cg5F5hUoHA==
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id v8-20020a170906488800b00a37dcf17d3asm416088ejq.174.2024.02.05.01.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 01:53:25 -0800 (PST)
-Date: Mon, 5 Feb 2024 10:53:23 +0100
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Li peiyu <579lpy@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: humidity: hdc3020: add threshold events support
-Message-ID: <20240205095323.GA2323766@debian>
-References: <20240204103710.19212-1-dima.fedrau@gmail.com>
- <20240204144347.7f0eb822@jic23-huawei>
- <20240205070421.GA2264419@debian>
- <20240205093349.00003e10@Huawei.com>
+	s=arc-20240116; t=1707127336; c=relaxed/simple;
+	bh=4UlEdegse0xj/aiSfkUSBvGZQSCroJZBHG3ahKgJi3E=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=muK03NJVhVCbvRLXAvoSboj4gAoxF65DIZ27+/45SID9MBNVezbkiiQlSmoeEgEJFPGzlej5lVwcdo9X4KMZSv+QWaX3T1CQKuwHp6pFjnLVEJnPnu8SrJjuoMBifKBHI85TYgkr+tX8UiqhMVZ/Qk8d5/6S7oAnodsa2FaAZ1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TT2015tGWz6G9LT;
+	Mon,  5 Feb 2024 17:58:57 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id E841A140D1A;
+	Mon,  5 Feb 2024 18:02:09 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 5 Feb
+ 2024 10:02:09 +0000
+Date: Mon, 5 Feb 2024 10:02:08 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Jesus Miguel Gonzalez Herrero <jesusmgh@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow
+ binding on some devices
+Message-ID: <20240205100208.00007a50@Huawei.com>
+In-Reply-To: <a449f603-8079-468c-9a28-be32ae96f83a@gmail.com>
+References: <20240202173040.26806-2-jesusmgh@gmail.com>
+	<20240204140010.7edaa782@jic23-huawei>
+	<a449f603-8079-468c-9a28-be32ae96f83a@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240205093349.00003e10@Huawei.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Am Mon, Feb 05, 2024 at 09:33:49AM +0000 schrieb Jonathan Cameron:
-> > > >  static const u8 HDC3020_S_AUTO_10HZ_MOD0[2] = { 0x27, 0x37 };
-> > > >  
-> > > > +static const u8 HDC3020_S_STATUS[2] = { 0x30, 0x41 };
-> > > > +
-> > > >  static const u8 HDC3020_EXIT_AUTO[2] = { 0x30, 0x93 };
-> > > >  
-> > > > +static const u8 HDC3020_S_T_RH_THRESH_LOW[2] = { 0x61, 0x00 };  
-> > > 
-> > > Ah. missed this in original driver, but this use of capitals for
-> > > non #defines is really confusing and we should aim to clean that
-> > > up.
-> > >  
-> > Could use small letters instead.
-> 
-> That would avoid any confusion.
-> 
-> > 
-> > > As I mention below, I'm unconvinced that it makes sense to handle
-> > > these as pairs.
-> > >  
-> > For the threshold I could convert it as it is for the heater registers:
-> > 
-> > #define HDC3020_S_T_RH_THRESH_MSB	0x61
-> > #define HDC3020_S_T_RH_THRESH_LOW	0x00
-> > #define HDC3020_S_T_RH_THRESH_LOW_CLR	0x0B
-> > #define HDC3020_S_T_RH_THRESH_HIGH_CLR	0x16
-> > #define HDC3020_S_T_RH_THRESH_HIGH	0x1D
-> > 
-> > #define HDC3020_R_T_RH_THRESH_MSB	0xE1
-> > #define HDC3020_R_T_RH_THRESH_LOW	0x02
-> > #define HDC3020_R_T_RH_THRESH_LOW_CLR	0x09
-> > #define HDC3020_R_T_RH_THRESH_HIGH_CLR	0x14
-> > #define HDC3020_R_T_RH_THRESH_HIGH	0x1F
-> > 
-> > or:
-> > 
-> > #define HDC3020_S_T_RH_THRESH_LOW       0x6100
-> > #define HDC3020_S_T_RH_THRESH_LOW_CLR   0x610B
-> > #define HDC3020_S_T_RH_THRESH_HIGH_CLR  0x6116
-> > #define HDC3020_S_T_RH_THRESH_HIGH      0x611D
-> > 
-> > #define HDC3020_R_T_RH_THRESH_LOW       0x6102
-> > #define HDC3020_R_T_RH_THRESH_LOW_CLR   0x6109
-> > #define HDC3020_R_T_RH_THRESH_HIGH_CLR  0x6114
-> > #define HDC3020_R_T_RH_THRESH_HIGH      0x611F
-> > 
-> > I don't know if it's a good idea, as we would need to make sure it is
-> > big endian in the buffer. Probably with a function that handles this.
-> I think this is the best plan with a
-> put_unaligned_be16() to deal with the endianness.
-> The compiler should be able to optimize that heavily.
->
-I think that would require some refactoring. I would add patches that
-are fixing this. Have there been reasons for using the pairs ? I'm just
-curious.
-> 
-> > > > +static int hdc3020_read_thresh(struct iio_dev *indio_dev,
-> > > > +			       const struct iio_chan_spec *chan,
-> > > > +			       enum iio_event_type type,
-> > > > +			       enum iio_event_direction dir,
-> > > > +			       enum iio_event_info info,
-> > > > +			       int *val, int *val2)
-> > > > +{
-> > > > +	struct hdc3020_data *data = iio_priv(indio_dev);
-> > > > +	u16 *thresh;
-> > > > +
-> > > > +	/* Select threshold */
-> > > > +	if (info == IIO_EV_INFO_VALUE) {
-> > > > +		if (dir == IIO_EV_DIR_RISING)
-> > > > +			thresh = &data->t_rh_thresh_high;
-> > > > +		else
-> > > > +			thresh = &data->t_rh_thresh_low;
-> > > > +	} else {
-> > > > +		if (dir == IIO_EV_DIR_RISING)
-> > > > +			thresh = &data->t_rh_thresh_high_clr;
-> > > > +		else
-> > > > +			thresh = &data->t_rh_thresh_low_clr;
-> > > > +	}
-> > > > +
-> > > > +	guard(mutex)(&data->lock);  
-> > > 
-> > > Why take the lock here?
-> > > 
-> > > you are relying on a single value that is already cached.
-> > >  
-> > A single threshold value is used for humidity and temperature values. I
-> > didn't see a lock in "iio_ev_value_show", so there might be some
-> > concurrent access triggered by "in_temp_thresh_rising_value" and
-> > "in_humidityrelative_thresh_rising_value" sysfs files which is not
-> > secured by a mutex or similiar.
-> 
-> Unless you going to get value tearing (very unlikely and lots of the
-> kernel assumes that won't happen - more of a theoretical possibility
-> that we don't want compilers to do!) this just protects against a race
-> where you read one and write the other.  That doesn't really help us
-> as it just moves the race to which one gets the lock first.
-> 
-Yes, it's very unlikely to happen. Anyway, I'm dropping the support for
-the caching and with it this function.
+On Sun, 4 Feb 2024 18:53:42 +0100
+Jesus Miguel Gonzalez Herrero <jesusmgh@gmail.com> wrote:
 
-Dimitri
+> Hello Mr. Cameron
+>=20
+> First of all thank you for reviewing the patch.
+>=20
+> And I most definitely agree with you and Mr. Shevchenko: this absolutely
+> is a firmware bug that manufacturers should fix. For this reason some
+> people started talks with affected manufacturers to change it. In my
+> case it was with GPD, together with some others, including some which
+> historically had a more direct line with them. This was finally dismissed
+> as WONTFIX, since their main focus is Windows and their driver supports
+> the ID, so the end result of those conversations is a lack of a fixed
+> firmware, and a surplus of frustration.
+>=20
+> As far as I know people have been in talks with Aya too, and I do not
+> know the status of conversations with Lenovo or other manufacturers. I
+> do not know of any conversation with Realtek, besides what was mentioned
+> in those emails you linked to from 2021.
+>=20
+> I will amend the patch to include a big disclaimer and the reason as
+> a comment in the code, and send it again in reply to this message. I
+> don't think I'd go as far as tainting the kernel, but I'm not opposed,
+> happy anyway if the IMU finally becomes usable, and VERY far from any
+> expertise whatsoever concerning kernel development!
+>=20
+> Here is the relevant extract from the DSDT of my GPD Win Max 2 (AMD
+> 6800U model) with the latest firmware 1.05 installed.
+
+Great - This is exactly the info that should support such a patch like this.
+
+Include the blob below and a statement that GPD have refused to fix due
+to the windows driver in the patch description and I'm fine with taking thi=
+s.
+
+I may see if I can dig out a Lenovo contact as they are big enough and
+have been around long enough to know better... (big company mess however
+I'm sure...)
+
+Jonathan
+
+
+>=20
+>  =A0=A0=A0 Scope (_SB.I2CC) {
+>  =A0=A0=A0=A0=A0=A0=A0 Device (BMA2) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Name (_ADR, Zero)=A0 // _ADR: Address =
+Name (_HID, "10EC5280")
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 // _HID: Hardware ID Name (_CID, "10EC=
+5280")=A0 // _CID:
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Compatible ID Name (_DDN, "Acceleromet=
+er")=A0 // _DDN: DOS
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Device Name Name (_UID, One)=A0 // _UI=
+D: Unique ID Method
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 (_CRS, 0, NotSerialized)=A0 // _CRS: C=
+urrent Resource Settings {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Name (RBUF, ResourceTempla=
+te () {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 I2cSerialBusV2=
+ (0x0069, ControllerInitiated,
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x00061A80,
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Ad=
+dressingMode7Bit, "\\_SB.I2CC", 0x00,
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Re=
+sourceConsumer, , Exclusive, )
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }) Return (RBUF) /* \_SB_.=
+I2CC.BMA2._CRS.RBUF */
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>=20
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 OperationRegion (CMS2, SystemIO, 0x72,=
+ 0x02) Field (CMS2,
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ByteAcc, NoLock, Preserve) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 IND2,=A0=A0 8, DAT2,=A0=A0=
+ 8
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>=20
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 IndexField (IND2, DAT2, ByteAcc, NoLoc=
+k, Preserve) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Offset (0x74), BACS,=A0=A0=
+ 32
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>=20
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Method (ROMS, 0, NotSerialized) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Name (RBUF, Package (0x03)=
+ {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "0 -1 0", "-1 =
+0 0", "0 0 1"
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }) Return (RBUF) /* \_SB_.=
+I2CC.BMA2.ROMS.RBUF */
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>=20
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Method (CALS, 1, NotSerialized) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Local0 =3D Arg0 If (((Loca=
+l0 =3D=3D Zero) || (Local0 =3D=3D
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Ones))) {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Return (Local0)
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 } Else {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 BACS =3D Local0
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>=20
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Method (_STA, 0, NotSerialized)=A0 // =
+_STA: Status {
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 Return (0x0F)
+>  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
+>  =A0=A0=A0=A0=A0=A0=A0 }
+>  =A0=A0=A0 }
+>=20
+> Thank you for taking this into consideration!
+>=20
+> Jesus Gonzalez
+>=20
+>=20
+>=20
+> On 04/02/2024 15:00, Jonathan Cameron wrote:
+> > On Fri,  2 Feb 2024 18:30:41 +0100
+> > Jesus Gonzalez <jesusmgh@gmail.com> wrote:
+> > =20
+> >> "10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (=
+and
+> >> probably others) in their ACPI table as the ID for the bmi160 IMU. This
+> >> means the bmi160_i2c driver won't bind to it, and the IMU is unavailab=
+le
+> >> to the user. Manufacturers have been approached on several occasions to
+> >> try getting a BIOS with a fixed ID, mostly without actual positive
+> >> results, and since affected devices are already a few years old, this =
+is
+> >> not expected to change. This patch enables using the bmi160_i2c driver=
+ for
+> >> the bmi160 IMU on these devices. =20
+> > Hi Jesus,
+> >
+> > https://lore.kernel.org/lkml/CAHp75Vct-AXnU7QQmdE7nyYZT-=3Dn=3Dp67COPLi=
+iZTet7z7snL-g@mail.gmail.com/
+> > Lays out what Andy (and for that matter I) consider necessary for such
+> > a patch.
+> >
+> > In short, we want to see devices called out here - with a DSDT section.
+> > + a clear comment in the code.
+> >
+> > The big problem here is this tramples on Realtech's ID space. It's not =
+just
+> > a made up code (incidentally the BMI0160 isn't valid either),
+> > it's a valid code but for an entirely different (PCI) device.
+> >
+> > So we need as much info as possible in the patch description and the dr=
+iver
+> > itself to justify carrying this.   Tempting to add a firmware bug taint=
+ on
+> > it as well but that might scare people :)
+> >
+> > Jonathan
+> >
+> > =20
+> >> Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
+> >> ---
+> >> A device-specific transformation matrix can then be provided in a seco=
+nd
+> >> step through udev hwdb.
+> >>
+> >> This has been discussed before in 2021, see here:
+> >> https://lore.kernel.org/lkml/CACAwPwYQHRcrabw9=3D0tvenPzAcwwW1pTaR6a+A=
+EWBF9Hqf_wXQ@mail.gmail.com/
+> >>
+> >> Lenovo, as an example of a big manufacturer, is also using this ID:
+> >> https://www.reddit.com/r/linux/comments/r6f9de/comment/hr8bdfs/?contex=
+t=3D3
+> >>
+> >> At least some discussions with GPD took place on the GPD server Discor=
+d,
+> >> for which I can provide proof on demand via screenshot (if not accessi=
+ble
+> >> directly).
+> >>
+> >> I have read the patch submission instructions and followed them to the
+> >> best of my knowledge. Still, this is my first kernel patch submission,
+> >> so I'd be glad if you could please point out any mistakes. Thank you!
+> >>
+> >>
+> >>   drivers/iio/imu/bmi160/bmi160_spi.c | 1 +
+> >>   1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi=
+160/bmi160_spi.c
+> >> index 8b573ea99af2..0874c37c6670 100644
+> >> --- a/drivers/iio/imu/bmi160/bmi160_spi.c
+> >> +++ b/drivers/iio/imu/bmi160/bmi160_spi.c
+> >> @@ -41,6 +41,7 @@ MODULE_DEVICE_TABLE(spi, bmi160_spi_id);
+> >>  =20
+> >>   static const struct acpi_device_id bmi160_acpi_match[] =3D {
+> >>   	{"BMI0160", 0},
+> >> +	{"10EC5280", 0},
+> >>   	{ },
+> >>   };
+> >>   MODULE_DEVICE_TABLE(acpi, bmi160_acpi_match); =20
+>=20
+
 

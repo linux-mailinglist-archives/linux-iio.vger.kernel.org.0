@@ -1,1519 +1,357 @@
-Return-Path: <linux-iio+bounces-2245-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2246-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564CA84B5E2
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 14:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D152984B67B
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 14:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829A21F2670F
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:02:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5972C1F227F7
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CD0130E4A;
-	Tue,  6 Feb 2024 13:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FDC131727;
+	Tue,  6 Feb 2024 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="cSlkYEt5"
+	dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="S0hAeeSz";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="jEngtK8m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2122.outbound.protection.outlook.com [40.107.6.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE1712FF6C
-	for <linux-iio@vger.kernel.org>; Tue,  6 Feb 2024 13:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707224492; cv=none; b=XwY3xfSb3ZD1ZTnSIhK3fxHx0LXd+Z/Pwh09GnSq+LyjM7rP4zVBv9q1A45yHbbfEHdXUrFLFkhsYzapErqnAIN3Qz4BKLDjsKIuex1OIo8kNpYndcfss/WmbvZL3M4hPy9L5UNmdbH9N5Cgl+47AnbTmiUu3MSL0BxWASDJ/sE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707224492; c=relaxed/simple;
-	bh=gTxpgEUFwekok2lP6C8mLSX5NObS/sZqJ6E1Vh0EGMQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P0ZBgYRzXTfa9L+eRHf3p1+NGNgWVAd05hDxnJHwZ4DQVPVSY1LiW8QVqpTFKC2zb0KiatoZy3yum1XAxRw7UK3eUBC+UaVlTt6mQsIfqVXhckXPYSyYbAf8jWuKSYEV9SNnNGGv/eoFnc59u6FZJezaLWSUOU5O/jZH90Jr5ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=cSlkYEt5; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d9bd8fa49eso14743695ad.1
-        for <linux-iio@vger.kernel.org>; Tue, 06 Feb 2024 05:01:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1707224489; x=1707829289; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y7tmN6pl95QCKyvDENJdJjBK63FpjdyK47Ak1klEjlE=;
-        b=cSlkYEt5iZJW28637Jjs4IdxUsKlbB/2baKnesyN8ow1SwluKzo1yrkpZplSvdHLBm
-         QK2JDF465Dw4U6zVTuFPQoxWe16bgxdr/iyAshH0AL1J4+Q5Fh8007K+gDRmC3pa0rGX
-         V5r44YYO4Ww9WD7PtasWrwd7ui3yqdLwwCkDD2askQ/gxZ9zwNrfh74P1UJtVumtg6ND
-         UBkra81kJZjX/f8S/j61Ymp9LujkK9pykptTEhj6vPvETMQ0bTe4Rh/hIOOfE7AczR/G
-         D6whHD3YQsvHeA0G4VizfzPsLaS5vh2xvrp4iN07t6yS+JZxtH+g7GnlHgnfN4piPxUu
-         01xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707224489; x=1707829289;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y7tmN6pl95QCKyvDENJdJjBK63FpjdyK47Ak1klEjlE=;
-        b=lPdwrqcXrOF6Jl0msVqmJN8WTnePIG19l6kYxx2qRQBPjmSATCzyBvNbSvhm8GZe5q
-         YIvcw90C2pFbttjMsD8S5I/XO/HejYc+NwzHSOwCvAJMxwMmiA2/DzknJLKum5e0DQUI
-         eUfpmnR9ff+UR1OWxnJEpwsa3g89/YcWyiNvxQtwQPYQVMI22ebbezOsHriu5DYG/Lsb
-         2/Wrl92PDBmC0X4z4vfwh3ZVKxgx16wtq8O4ADKUrj7EbCZ2eeiiFB2K5XXvnQm264z+
-         7D30tE1dw65+8BobP6VmFzI/Nv1ftROX5mBtPnxN0+4fSvf+U/WU4MuQYeH71F0k8qtd
-         5mnA==
-X-Gm-Message-State: AOJu0YxuchLm9/++Y+FPF8x5lZTsC7T5LtiBXS3gv0eG9mU3Pwjf5jAj
-	/R7D3l/wR21m+serYsFARtnNn7wIW+/tApZHNE3Uu/RQ0KKQDmy8urHC9IF0rzc=
-X-Google-Smtp-Source: AGHT+IGs2JD03SvOJbkt3sKWRrWXOYxju5DQOP/CG8OqSIzGFup/NM3B46UYfpyW2M6aVxJDUv3qKg==
-X-Received: by 2002:a17:903:11d1:b0:1d8:ebdf:182a with SMTP id q17-20020a17090311d100b001d8ebdf182amr1729891plh.44.1707224488404;
-        Tue, 06 Feb 2024 05:01:28 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCV82mKlPsI07/wdchOKZIeyuS9DdWbGXsKqsgEHBLJKIVRYixukvDODY7NfwD22UzW6fhLZ3DLfNWEH3SVhNMNjq5T5DzzAvsi0p0xNu3OmO+5RgowaDze3l7UhGw+Xr3Eb4HekGW3Cc8EBlXYS7CT/pQvc+G1RllCxXKcoSxAZHEbLa8SDmYrwHu4CyYA93W3XaYy5l1sRAngigdbW5qqmjOPemlWNm+/3se4Rad06X4pRwiNnwzTgL/AaiFZt3qsFLMRASroZ89Mvo5M6k37nYClwiApoWSTVHdODz5IpGwyK+GIeO2jNLstbhC2pnZODqtxN4QxfiIeBxAptB9jxwIJDbODVnZI5e0/OUW8/CUmVCz/2c63uYppZImbDbiEIV6ip7tblWfaBaAZAjvhvVM8ggSdSW/qOMFb3kpni4sJ4ze+rr+Y9yR1u7W5U9peCE1HHmxgkdsgH8eVhbzlhL1h9Uy6eVktFNoIQlxx3N5lN6GABEJAf/96gtdRh5ROKmzRyNh/eqdfgHInfOcn5uyFheA==
-Received: from localhost.localdomain ([180.150.113.62])
-        by smtp.gmail.com with ESMTPSA id s1-20020a170902ea0100b001d958f8ab2bsm1782167plg.107.2024.02.06.05.01.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 05:01:27 -0800 (PST)
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Marek Vasut <marex@denx.de>,
-	Anshul Dalal <anshulusr@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 5/5] iio: light: Add support for APDS9306 Light Sensor
-Date: Tue,  6 Feb 2024 23:30:17 +1030
-Message-Id: <20240206130017.7839-6-subhajit.ghosh@tweaklogic.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
-References: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2408E130AC6;
+	Tue,  6 Feb 2024 13:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.122
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707226442; cv=fail; b=QjZVitOg0J+zkcu40v22jG6lJaJgcbGrt0ECMI4mkgW45Kasg9zPZc5/m79G+u5VzlYqSghSFfXIPkAMI8iy6e028O8K3DRz0ux06CrbEqyqWfNaf7+uAlRDMo4oCADsOxkAFBQFH4BbXnmVG0v2188g3yi0XqBcQdt2BCABZsA=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707226442; c=relaxed/simple;
+	bh=SiEZmL7T8MHv37sxo/pEHNbovgT2UbIPjQV6bRl22Ic=;
+	h=Message-ID:Date:From:Subject:To:CC:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=N7xSMgYKlybgNpQNc51n29HIxN7YNSQzVN+ExWeP9JGcKOdEmzJbsCmsSN0Sa/S2lZXyJFTns26Haw/BkC6hPdJ1GwITnurT+JRR7SARZK8GZnBm0folGM7NYK8wWoTczaj0VJ7WwxGdxYWAoHgHLuREzwyN3IjoJbDgwRSBMfY=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl; spf=pass smtp.mailfrom=topic.nl; dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=S0hAeeSz; dkim=fail (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=jEngtK8m reason="signature verification failed"; arc=fail smtp.client-ip=40.107.6.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=topic.nl
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=fail;
+ b=mk0ikegXTyNBOyKDvngHXNlN2oGMhlb0e/W0OnucP8ZNmSPPDUwDDqjCe0BvM+bO16mZiIV42ifpOZgXtY4GjP3tQdkwODsyvzJdHs6iu/QGMFs9KoDQSPhwYyx05wuIubydC4eE0Kj1YzZIpA1taZurKsf9Sll3Ad0I2pbwgN4Gkrt+BTE1kLVF0Pz/TaMaL4xqCnlEIXssuQ7+WEv4zql5VHgVV6z3GG3iPYhYj/I6flO6w1cixT3o+4+UL6cXdDB7/hYLuyu0akJpFyNS0Pwf3f09bbLZuqVKA26TOl+DvpcW1eRmoOiiATZy6HOjBHkbaSli7CEyLh1JjwjziQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UM1QA/DRsL5oap3Lo8NmPBv7Vs4RU9eRXht8rdEs45Q=;
+ b=ACTHSOuKwHtwXV3FQzJojTCr7yZ0kntLiUjg4yj3AyDGFN+rEz2QaXOKr9EvjTyWKjrwE8QZUvzfNwE91LmD1QhPbNlGW8qrrnhdoORpJnBWbZK7nLtDR2hOPYqf7IO8r/tALkpps07auUw4526l/8IbiZ7BLV0AL1RSqy82IlaRvy4ssFdER/U3fTgjAe0SIFTae3sm5hMtVs8p/kEv3vPZFzdzbbQaDlLzyuHGpYtQUbyeehWT8k6nArqQQ6RhqHuuXpUT3J5+p8/rHDdfwSx+9Q1c2EZamznlEOx57iSuo1QAQ7Jb/XNfKUN6qQu8lpaMjaVbt/Mpw7pvU7/76w==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.93.157.195) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=topic.nl;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=topic.nl;
+ dkim=fail (signature did not verify) header.d=topic.nl; arc=fail (47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UM1QA/DRsL5oap3Lo8NmPBv7Vs4RU9eRXht8rdEs45Q=;
+ b=S0hAeeSzIm8IVB20H7bCEVzPswnYj1vJkxwgAqnkyuWDkxNnlSW9yawis7699JYo+yzuJa6KDHsQKFi1AIQI4Q1XxZ0f5STqXz0DetYtB03pl2f4ltcCmwzR6swyuNc6eUMTQrufy5oOZPqUMicAw5I0BA0i6HcvIOkOedps8J5smmPTJTPVwWSUYDg9L2kmdKxN+6AEszjnGH2DsC+aM7n0TiyCs0i7zeJUtk3Ff4z7oiH9QmjpgU6iUAYw3Prrnae08sd/kkONQRDbpKFD2nZkO8aBMN9BGYeYrXF5Wl8ZLzongIHRftH8AcpepRM0WsXF8HwjgXYs/+BWNMrhAA==
+Received: from DUZPR01CA0108.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bb::23) by GV1PR04MB9184.eurprd04.prod.outlook.com
+ (2603:10a6:150:28::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Tue, 6 Feb
+ 2024 13:33:54 +0000
+Received: from DU6PEPF00009527.eurprd02.prod.outlook.com
+ (2603:10a6:10:4bb:cafe::b4) by DUZPR01CA0108.outlook.office365.com
+ (2603:10a6:10:4bb::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36 via Frontend
+ Transport; Tue, 6 Feb 2024 13:33:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.93.157.195)
+ smtp.mailfrom=topic.nl; dkim=fail (signature did not verify)
+ header.d=topic.nl;dmarc=pass action=none header.from=topic.nl;
+Received-SPF: Pass (protection.outlook.com: domain of topic.nl designates
+ 20.93.157.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.93.157.195; helo=westeu11-emailsignatures-cloud.codetwo.com;
+ pr=C
+Received: from westeu11-emailsignatures-cloud.codetwo.com (20.93.157.195) by
+ DU6PEPF00009527.mail.protection.outlook.com (10.167.8.8) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7249.19 via Frontend Transport; Tue, 6 Feb 2024 13:33:52 +0000
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (104.47.11.41) by westeu11-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Tue, 06 Feb 2024 13:33:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=H0lzDeXRaOIas27pr5TrQwHvwGK7NgFaOE1rUsx81PpyM1pb7FHBYPQxftLvUV8YgqFsE0OV3pSqBX8XojLKNxmrdR7LiBHPYBLXh4hNU1s+E6d7mT4YS2jzloA0c8sVxgoovJ0fRRoWK0fbh5YSoUc3TNFrb0JRprhp01EEvcaCqstXkwN02QIE3bchI5A2gUZCvsrsKL2SNsITl8eW0VL5dg67wFGnGqSj6TIFWCtI3g2FpacD/p12u6diICgC0tgSBa0sSRAts/P/XNUbJiLslFZGYCSOVzP0zDO7r8OIF2OiM+CrURCTJs/P1a33lYE579lSDd/MFkKDGOwoTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tdK6iIooH2ENLOLz6x3oGaT7AjVz0fRmJQLxN6bjwWE=;
+ b=ht1/XI+xLkWgqYFynh5LwV+5shiIOiqN44ex7QdgsEYmSTDq1hDFLsjcs2SPLBM+n0SF55f2EHnezSbgw7LO+I/605Z2amJB/r79RYuF79QktgBCvC1mACpUTZUG2QayjYffvKFBKNY1IwOb4iz9SjGdYWO1i3kvw8/RGini5vHuCPB7aDjJhb0uK8qGz/aFsqVlsK9guDUapvU9NT8zarV1FjdgEAMjEX0wZ57DsmU/EU9UlfFMqvj6Ua2lqLgRuI5Ke0LiSfKtL22Xh8X39Uu7VeAu0aUzRwtHskLOkG/0yKkORA40Hp39PRpzg7eNWC22u/wfv4Wz+/W+8rOWdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=topic.nl; dmarc=pass action=none header.from=topic.nl;
+ dkim=pass header.d=topic.nl; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tdK6iIooH2ENLOLz6x3oGaT7AjVz0fRmJQLxN6bjwWE=;
+ b=jEngtK8migqiYxVIXIClDVHcKJxU4zfzERqMOAKnd07dBq0uEW7r5UobWZdkvcMkxXv7E2yP+JaJm2dm9DQ/ggVSYDRDdiMd8Rkkqwb9UvvtwMgdYpIGuOUn+w3whyUvfljlepN6gxCdEGKFv43YLfORWYMSsH43Qn+SerEVFHiOgBqWoVUR7zYNJc8gEUqmDIBfZ2pud8RKY2HUkejaIM7TtvRrwIJpxJXh4+YeT6OCq6EF5mssfG0D6gC2IPQ5H8QjuvZ4YYysVHQvDOpeHw5+5rp+n1FfK+t7pM5VVe/rC/nHrNQkSpYTKmsMhrgGUDsunqlxK/lTRo4oYeJ7Hw==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com (2603:10a6:20b:42b::12)
+ by AS5PR04MB10043.eurprd04.prod.outlook.com (2603:10a6:20b:67f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.33; Tue, 6 Feb
+ 2024 13:33:48 +0000
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd]) by AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd%6]) with mapi id 15.20.7249.035; Tue, 6 Feb 2024
+ 13:33:48 +0000
+Message-ID: <4c6654f5-2d9e-4c1b-a5de-7bdeacf5e99f@topic.nl>
+Date: Tue, 6 Feb 2024 14:33:47 +0100
+User-Agent: Mozilla Thunderbird
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1298: Add driver
+Content-Language: en-US, nl
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Liam Beguin <liambeguin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Maksim Kiselev <bigunclemax@gmail.com>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Mark Brown <broonie@kernel.org>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+References: <20240206065818.2016910-1-mike.looijmans@topic.nl>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.fd628a1a-a926-426e-a239-bfd8c9858b94@emailsignatures365.codetwo.com>
+ <20240206065818.2016910-2-mike.looijmans@topic.nl>
+ <ZcIsuiuisQjTIxJv@smile.fi.intel.com>
+Organization: Topic
+In-Reply-To: <ZcIsuiuisQjTIxJv@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: AS4PR10CA0009.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5dc::12) To AS8PR04MB8644.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::12)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-TrafficTypeDiagnostic:
+	AS8PR04MB8644:EE_|AS5PR04MB10043:EE_|DU6PEPF00009527:EE_|GV1PR04MB9184:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b92c7f7-628d-4d04-5f72-08dc271842e2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ lVBFOywXOD1oGo9aUS+NxClpTg5J/nsJyzVHkTi77aJFXOYR/vsPx8U3vXlNiqVOSABGs5xxNJuNyAC9719C4kYCXVfU7ML4nkpj/TIi9sQMzTMcazBaUbPFylmBpkCgJlffD+iTUjhTg0e630u3IFHqTChw1daqSXOtveTuaiK8lOHVQMVYkXTRprtPSpD1rBANlhQJqLCrBQp5Fb5/9F5poZV97NHbV3fNynzlr+vekGZYvTESjWDosclchWhcbOi/iSkxNLrs4cGupjN0m1O+5P9QFo9Cp6KMLMqEoq1dX1ENK6X457i7rkNMcszkaZH5GB6woxE81uWvJ2M1YBV0XLlBfPhlyhFyCSE8xLh5kHSL23ixUazUH5pm7w9Jd4k2W4BhexY5jpkyBdjD4CPbzF6xCiE0qrwzarDQz0MTL29fEDPy4afQXM41AU0A8gu/mBzYu/UZYib4XpVEbqX3mEkb1u3QPU34T0z5uaXRGE61r2DzGK5cvfB9BDlCmOxCSMQrfSa93zIv23b3pD82ILaT5mZ96M7TIjU7coTOwoSOls5RMF7jqFu1nAX28aiDhYMjAA+qDAdmJwUS2gW+FPr7EXQBHrE2IrYz2IsnGs8poTpbLXkO02u/Lkg1394B0btk1CH98dqjM1w67QqKDPN0TCwGl3kW7u3qJ+A=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(346002)(136003)(376002)(39840400004)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(478600001)(2616005)(52116002)(36756003)(38350700005)(53546011)(36916002)(6506007)(6512007)(41300700001)(38100700002)(15974865002)(26005)(86362001)(83380400001)(31696002)(6486002)(8676002)(4326008)(8936002)(2906002)(7416002)(31686004)(5660300002)(44832011)(54906003)(66476007)(66556008)(316002)(66946007)(6916009)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10043
+X-CodeTwo-MessageID: 8b0bce26-243a-475a-94b5-8de6178611d4.20240206133351@westeu11-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF00009527.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	c1d034eb-e0ff-41e6-eb2a-08dc27183fe4
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	+5//xjd6YuTo5Nnq7MJsRdSwtF1LYHruDSXITF17YBH5oFiJYtdQ+iKA8vCCE2+2MFjfZOVJg+z/HEtwQkYQhkqyiihFEovFuqPhYVqNF2UCbz7KWNJVCxyjOQ/GcWKV+s7eHY5GjpDxGMIgMYoJAw1VhGsms/fy88GPCBuoh5gjOyRU9Bv+VqMlfWP9EnSQV5SKbij3Ux7iU3XgKAt9xarfHkCldGPr1SUApLKnHFKbu/CwJPtUHkMik9hgmQlGPNs6R5e2Q/5W6CB+2mDyDSS7GEcQ6zgwiTpOUB5phhODkdadhnc+asqgDinvU6pVMCRSeoVd+OWPvvZ07n3LwXby7SiAxSiHw8DbNQQO3SR+iw4q3m9zUb9Zhl8sGKhddTbDDn+KLRYJ+CiIGbH0LCk+wK2HxoZ65WrnABdUFXHwo9brEoWbq70v88WfncsPP1WHLlHG1B0dyPjjpjg0zF0f8gbVW4RoKSQuxgJTuGn/54u5X9nzSMjrPHs3FBsj9xI8f1zNR58+Ym+QD2ZZcllHoj2KB5i9aFXqRYQkdYbs7YyTLGnvr6mgnYZlJxg+RmIUTk1LQ8QIRK9ESSmYJF7pqlvnnqED82B3z1oNKMMbsWu3nDq00tbXfKyT4I0WsAKYCyclZtUSR3Yg8fx0BpD2Z7xFh+F73p4tFRwW8Wirxr6nQkoicxvdil9qq4pxQDGAPYRSsZ1RlXDkzpUFWWf1FlcKYo/nTc72scQsxo3Jl+EXXvPGIvvbjbPQSeOQhR44647z6CJxi31BgCTPRg==
+X-Forefront-Antispam-Report:
+	CIP:20.93.157.195;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu11-emailsignatures-cloud.codetwo.com;PTR:westeu11-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(39840400004)(396003)(136003)(346002)(230922051799003)(451199024)(64100799003)(82310400011)(186009)(1800799012)(46966006)(36840700001)(336012)(86362001)(15974865002)(2616005)(26005)(41300700001)(31696002)(7416002)(6486002)(5660300002)(2906002)(478600001)(316002)(6916009)(54906003)(70206006)(70586007)(36756003)(4326008)(8676002)(8936002)(6512007)(44832011)(6506007)(36916002)(53546011)(36860700001)(40480700001)(47076005)(7636003)(356005)(7596003)(31686004)(83380400001)(43740500002)(18886075002);DIR:OUT;SFP:1102;
+X-OriginatorOrg: topic.nl
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 13:33:52.8660
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b92c7f7-628d-4d04-5f72-08dc271842e2
+X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[20.93.157.195];Helo=[westeu11-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF00009527.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9184
 
-Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
-It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
-channel approximates the response of the human-eye providing direct
-read out where the output count is proportional to ambient light levels.
-It is internally temperature compensated and rejects 50Hz and 60Hz flicker
-caused by artificial light sources. Hardware interrupt configuration is
-optional. It is a low power device with 20 bit resolution and has
-configurable adaptive interrupt mode and interrupt persistence mode.
-The device also features inbuilt hardware gain, multiple integration time
-selection options and sampling frequency selection options.
+On 06-02-2024 13:57, Andy Shevchenko wrote:
+> On Tue, Feb 06, 2024 at 07:58:18AM +0100, Mike Looijmans wrote:
+>> Skeleton driver for the TI ADS1298 medical ADC. This device is
+>> typically used for ECG and similar measurements. Supports data
+>> acquisition at configurable scale and sampling frequency.
+> Thanks for an update, I have only a few style comments and a single one a=
+bout
+> comparison (see below). If you are going to address them as suggested, fe=
+el
+> free to add
+>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>
+> to the next version.
+>
+> ...
 
-This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for
-Scales, Gains and Integration time implementation.
+Thanks for reviewing...
 
-Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
----
-v5 -> v6:
- - Changes as per review
- - Update kernel doc for private data
- - Change IIO Event Spec definitions
- - Update guard mutex lock implementation
- - Add pm_runtime_get()
- - Update styling
-   Link: https://lore.kernel.org/all/20240204134056.5dc64e8b@jic23-huawei/
 
-v2 -> v5:
- - Removed scale attribute for Intensity channel:
-   Link: https://lore.kernel.org/all/20231204095108.22f89718@jic23-huawei/
+>> +/* Registers */
+>> +#define ADS1298_REG_ID		0x00
+>> +#define ADS1298_MASK_ID_FAMILY			GENMASK(7, 3)
+>> +#define ADS1298_MASK_ID_CHANNELS		GENMASK(2, 0)
+>> +#define ADS1298_ID_FAMILY_ADS129X		0x90
+>> +#define ADS1298_ID_FAMILY_ADS129XR		0xd0
+> + Blank line? (And so on for all registers that have bitfields defined)
 
- - Dropped caching of hardware gain, repeat rate and integration time and
-   updated code as per earlier reviews.
-   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
----
- drivers/iio/light/Kconfig    |   12 +
- drivers/iio/light/Makefile   |    1 +
- drivers/iio/light/apds9306.c | 1335 ++++++++++++++++++++++++++++++++++
- 3 files changed, 1348 insertions(+)
- create mode 100644 drivers/iio/light/apds9306.c
+Makes sense... Looks too cluttered as it is now.
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 143003232d1c..fd972dd0364d 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -73,6 +73,18 @@ config APDS9300
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called apds9300.
- 
-+config APDS9306
-+	tristate "Avago APDS9306 Ambient Light Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	select IIO_GTS_HELPER
-+	help
-+	  If you say Y or M here, you get support for Avago APDS9306
-+	  Ambient Light Sensor.
-+
-+	  If built as a dynamically linked module, it will be called
-+	  apds9306.
-+
- config APDS9960
- 	tristate "Avago APDS9960 gesture/RGB/ALS/proximity sensor"
- 	select REGMAP_I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index 2e5fdb33e0e9..a30f906e91ba 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_ADUX1020)		+= adux1020.o
- obj-$(CONFIG_AL3010)		+= al3010.o
- obj-$(CONFIG_AL3320A)		+= al3320a.o
- obj-$(CONFIG_APDS9300)		+= apds9300.o
-+obj-$(CONFIG_APDS9306)		+= apds9306.o
- obj-$(CONFIG_APDS9960)		+= apds9960.o
- obj-$(CONFIG_AS73211)		+= as73211.o
- obj-$(CONFIG_BH1750)		+= bh1750.o
-diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-new file mode 100644
-index 000000000000..1710e3217624
---- /dev/null
-+++ b/drivers/iio/light/apds9306.c
-@@ -0,0 +1,1335 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * APDS-9306/APDS-9306-065 Ambient Light Sensor
-+ * I2C Address: 0x52
-+ * Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
-+ *
-+ * Copyright (C) 2024 Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/cleanup.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/interrupt.h>
-+#include <linux/minmax.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/pm.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/types.h>
-+#include <linux/units.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/iio-gts-helper.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/sysfs.h>
-+
-+#include <asm/unaligned.h>
-+
-+#define APDS9306_MAIN_CTRL_REG		0x00
-+#define APDS9306_ALS_MEAS_RATE_REG		0x04
-+#define APDS9306_ALS_GAIN_REG		0x05
-+#define APDS9306_PART_ID_REG		0x06
-+#define APDS9306_MAIN_STATUS_REG		0x07
-+#define APDS9306_CLEAR_DATA_0_REG		0x0A
-+#define APDS9306_CLEAR_DATA_1_REG		0x0B
-+#define APDS9306_CLEAR_DATA_2_REG		0x0C
-+#define APDS9306_ALS_DATA_0_REG		0x0D
-+#define APDS9306_ALS_DATA_1_REG		0x0E
-+#define APDS9306_ALS_DATA_2_REG		0x0F
-+#define APDS9306_INT_CFG_REG		0x19
-+#define APDS9306_INT_PERSISTENCE_REG	0x1A
-+#define APDS9306_ALS_THRES_UP_0_REG		0x21
-+#define APDS9306_ALS_THRES_UP_1_REG		0x22
-+#define APDS9306_ALS_THRES_UP_2_REG		0x23
-+#define APDS9306_ALS_THRES_LOW_0_REG	0x24
-+#define APDS9306_ALS_THRES_LOW_1_REG	0x25
-+#define APDS9306_ALS_THRES_LOW_2_REG	0x26
-+#define APDS9306_ALS_THRES_VAR_REG		0x27
-+
-+#define APDS9306_ALS_INT_STAT_MASK	BIT(4)
-+#define APDS9306_ALS_DATA_STAT_MASK	BIT(3)
-+
-+#define APDS9306_ALS_THRES_VAL_MAX	(BIT(20) - 1)
-+#define APDS9306_ALS_THRES_VAR_VAL_MAX	(BIT(3) - 1)
-+#define APDS9306_ALS_PERSIST_VAL_MAX	(BIT(4) - 1)
-+#define APDS9306_ALS_READ_DATA_DELAY_US	20000
-+#define APDS9306_NUM_REPEAT_RATES	7
-+#define APDS9306_INT_CH_CLEAR	0
-+#define APDS9306_INT_CH_ALS	1
-+#define APDS9306_SAMP_FREQ_10HZ	0
-+
-+/*
-+ * struct part_id_gts_multiplier - Part no. and corresponding gts multiplier
-+ *
-+ * GTS (Gain Time Scale) are helper functions for Light sensors which along
-+ * with hardware gains also has gains associated with Integration times.
-+ *
-+ * There are two variants of the device with slightly different characteristics,
-+ * they have same ADC count for different Lux levels as mentioned in the
-+ * datasheet. This multiplier array is used to store the derived Lux per count
-+ * value for the two variants to be used by the GTS helper functions.
-+ *
-+ * part_id: Part ID of the device
-+ * max_scale_int: Multiplier for iio_init_iio_gts()
-+ * max_scale_nano: Multiplier for iio_init_iio_gts()
-+ */
-+struct part_id_gts_multiplier {
-+	int part_id;
-+	int max_scale_int;
-+	int max_scale_nano;
-+};
-+
-+/*
-+ * As per the datasheet, at HW Gain = 3x, Integration time 100mS (32x),
-+ * typical 2000 ADC counts are observed for 49.8 uW per sq cm (340.134 lux)
-+ * for apds9306 and 43 uW per sq cm (293.69 lux) for apds9306-065.
-+ * Assuming lux per count is linear across all integration time ranges.
-+ *
-+ * Lux = (raw + offset) * scale; offset can be any value by userspace.
-+ * HG = Hardware Gain; ITG = Gain by changing integration time.
-+ * Scale table by IIO GTS Helpers = (1 / HG) * (1 / ITG) * Multiplier.
-+ *
-+ * The Lux values provided in the datasheet are at ITG=32x and HG=3x,
-+ * at typical 2000 count for both variants of the device.
-+ *
-+ * Lux per ADC count at 3x and 32x for apds9306 = 340.134 / 2000
-+ * Lux per ADC count at 3x and 32x for apds9306-065 = 293.69 / 2000
-+ *
-+ * The Multiplier for the scale table provided to userspace:
-+ * IIO GTS scale Multiplier for apds9306 = (340.134 / 2000) * 32 * 3 = 16.326432
-+ * and for apds9306-065 = (293.69 / 2000) * 32 * 3 = 14.09712
-+ */
-+static struct part_id_gts_multiplier apds9306_gts_mul[] = {
-+	{
-+		.part_id = 0xB1,
-+		.max_scale_int = 16,
-+		.max_scale_nano = 3264320,
-+	}, {
-+		.part_id = 0xB3,
-+		.max_scale_int = 14,
-+		.max_scale_nano = 9712000,
-+	},
-+};
-+
-+static const int apds9306_repeat_rate_freq[][2] = {
-+	{ 40, 0 },
-+	{ 20, 0 },
-+	{ 10, 0 },
-+	{ 5,  0 },
-+	{ 2,  0 },
-+	{ 1,  0 },
-+	{ 0,  500000 },
-+};
-+static_assert(ARRAY_SIZE(apds9306_repeat_rate_freq) ==
-+		APDS9306_NUM_REPEAT_RATES);
-+
-+static const int apds9306_repeat_rate_period[] = {
-+	25000, 50000, 100000, 200000, 500000, 1000000, 2000000,
-+};
-+static_assert(ARRAY_SIZE(apds9306_repeat_rate_period) ==
-+		APDS9306_NUM_REPEAT_RATES);
-+
-+/**
-+ * struct apds9306_data - apds9306 private data and registers definitions
-+ *
-+ * @dev: Pointer to the device structure
-+ * @gts: IIO Gain Time Scale structure
-+ * @mutex: Lock for protecting adc reads, device settings changes where
-+ *         some calculations are required before or after setting or
-+ *         getting the raw settings values from regmap writes or reads
-+ *         respectively.
-+ * @regmap: Regmap structure pointer
-+ * @regfield_sw_reset: Software reset regfield
-+ * @regfield_en: Enable regfield
-+ * @regfield_intg_time: Resolution regfield
-+ * @regfield_repeat_rate: Measurement Rate regfield
-+ * @regfield_gain: Hardware gain regfield
-+ * @regfield_int_src: Interrupt channel regfield
-+ * @regfield_int_thresh_var_en: Interrupt variance threshold regfield
-+ * @regfield_int_en: Interrupt enable regfield
-+ * @regfield_int_persist_val: Interrupt persistence regfield
-+ * @regfield_int_thresh_var_val: Interrupt threshold variance value regfield
-+ * @nlux_per_count: Nano lux per ADC count for a particular model
-+ * @read_data_available: Flag set by IRQ handler for ADC data available
-+ */
-+struct apds9306_data {
-+	struct device *dev;
-+	struct iio_gts gts;
-+
-+	struct mutex mutex;
-+
-+	struct regmap *regmap;
-+	struct regmap_field *regfield_sw_reset;
-+	struct regmap_field *regfield_en;
-+	struct regmap_field *regfield_intg_time;
-+	struct regmap_field *regfield_repeat_rate;
-+	struct regmap_field *regfield_gain;
-+	struct regmap_field *regfield_int_src;
-+	struct regmap_field *regfield_int_thresh_var_en;
-+	struct regmap_field *regfield_int_en;
-+	struct regmap_field *regfield_int_persist_val;
-+	struct regmap_field *regfield_int_thresh_var_val;
-+
-+	int nlux_per_count;
-+	int read_data_available;
-+};
-+
-+/*
-+ * Available scales with gain 1x - 18x, timings 3.125, 25, 50, 100, 200, 400 mS
-+ * Time impacts to gain: 1x, 8x, 16x, 32x, 64x, 128x
-+ */
-+#define APDS9306_GSEL_1X	0x00
-+#define APDS9306_GSEL_3X	0x01
-+#define APDS9306_GSEL_6X	0x02
-+#define APDS9306_GSEL_9X	0x03
-+#define APDS9306_GSEL_18X	0x04
-+
-+static const struct iio_gain_sel_pair apds9306_gains[] = {
-+	GAIN_SCALE_GAIN(1, APDS9306_GSEL_1X),
-+	GAIN_SCALE_GAIN(3, APDS9306_GSEL_3X),
-+	GAIN_SCALE_GAIN(6, APDS9306_GSEL_6X),
-+	GAIN_SCALE_GAIN(9, APDS9306_GSEL_9X),
-+	GAIN_SCALE_GAIN(18, APDS9306_GSEL_18X),
-+};
-+
-+#define APDS9306_MEAS_MODE_400MS	0x00
-+#define APDS9306_MEAS_MODE_200MS	0x01
-+#define APDS9306_MEAS_MODE_100MS	0x02
-+#define APDS9306_MEAS_MODE_50MS		0x03
-+#define APDS9306_MEAS_MODE_25MS		0x04
-+#define APDS9306_MEAS_MODE_3125US	0x05
-+
-+static const struct iio_itime_sel_mul apds9306_itimes[] = {
-+	GAIN_SCALE_ITIME_US(400000, APDS9306_MEAS_MODE_400MS, BIT(7)),
-+	GAIN_SCALE_ITIME_US(200000, APDS9306_MEAS_MODE_200MS, BIT(6)),
-+	GAIN_SCALE_ITIME_US(100000, APDS9306_MEAS_MODE_100MS, BIT(5)),
-+	GAIN_SCALE_ITIME_US(50000, APDS9306_MEAS_MODE_50MS, BIT(4)),
-+	GAIN_SCALE_ITIME_US(25000, APDS9306_MEAS_MODE_25MS, BIT(3)),
-+	GAIN_SCALE_ITIME_US(3125, APDS9306_MEAS_MODE_3125US, BIT(0)),
-+};
-+
-+static struct iio_event_spec apds9306_event_spec_als[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
-+	}, {
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
-+	}, {
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	}, {
-+		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
-+			BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+static struct iio_event_spec apds9306_event_spec_clear[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+#define APDS9306_CHANNEL(_type) \
-+	.type = _type, \
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+
-+static struct iio_chan_spec apds9306_channels_with_events[] = {
-+	{
-+		APDS9306_CHANNEL(IIO_LIGHT)
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
-+		.event_spec = apds9306_event_spec_als,
-+		.num_event_specs = ARRAY_SIZE(apds9306_event_spec_als),
-+	}, {
-+		APDS9306_CHANNEL(IIO_INTENSITY)
-+		.channel2 = IIO_MOD_LIGHT_CLEAR,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.modified = 1,
-+		.event_spec = apds9306_event_spec_clear,
-+		.num_event_specs = ARRAY_SIZE(apds9306_event_spec_clear),
-+	},
-+};
-+
-+static struct iio_chan_spec apds9306_channels_without_events[] = {
-+	{
-+		APDS9306_CHANNEL(IIO_LIGHT)
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
-+	}, {
-+		APDS9306_CHANNEL(IIO_INTENSITY)
-+		.channel2 = IIO_MOD_LIGHT_CLEAR,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.modified = 1,
-+	},
-+};
-+
-+/* INT_PERSISTENCE available */
-+IIO_CONST_ATTR(thresh_either_period_available, "[0 1 15]");
-+
-+/* ALS_THRESH_VAR available */
-+IIO_CONST_ATTR(thresh_adaptive_either_values_available, "[0 1 7]");
-+
-+static struct attribute *apds9306_event_attributes[] = {
-+	&iio_const_attr_thresh_either_period_available.dev_attr.attr,
-+	&iio_const_attr_thresh_adaptive_either_values_available.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group apds9306_event_attr_group = {
-+	.attrs = apds9306_event_attributes,
-+};
-+
-+static const struct regmap_range apds9306_readable_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_CTRL_REG, APDS9306_ALS_THRES_VAR_REG)
-+};
-+
-+static const struct regmap_range apds9306_writable_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_CTRL_REG, APDS9306_ALS_GAIN_REG),
-+	regmap_reg_range(APDS9306_INT_CFG_REG, APDS9306_ALS_THRES_VAR_REG)
-+};
-+
-+static const struct regmap_range apds9306_volatile_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_STATUS_REG, APDS9306_MAIN_STATUS_REG),
-+	regmap_reg_range(APDS9306_CLEAR_DATA_0_REG, APDS9306_ALS_DATA_2_REG)
-+};
-+
-+static const struct regmap_range apds9306_precious_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_STATUS_REG, APDS9306_MAIN_STATUS_REG)
-+};
-+
-+static const struct regmap_access_table apds9306_readable_table = {
-+	.yes_ranges = apds9306_readable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_readable_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_writable_table = {
-+	.yes_ranges = apds9306_writable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_writable_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_volatile_table = {
-+	.yes_ranges = apds9306_volatile_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_volatile_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_precious_table = {
-+	.yes_ranges = apds9306_precious_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_precious_ranges)
-+};
-+
-+static const struct regmap_config apds9306_regmap = {
-+	.name = "apds9306_regmap",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.rd_table = &apds9306_readable_table,
-+	.wr_table = &apds9306_writable_table,
-+	.volatile_table = &apds9306_volatile_table,
-+	.precious_table = &apds9306_precious_table,
-+	.max_register = APDS9306_ALS_THRES_VAR_REG,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+
-+static const struct reg_field apds9306_regfield_sw_reset =
-+	REG_FIELD(APDS9306_MAIN_CTRL_REG, 4, 4);
-+
-+static const struct reg_field apds9306_regfield_en =
-+	REG_FIELD(APDS9306_MAIN_CTRL_REG, 1, 1);
-+
-+static const struct reg_field apds9306_regfield_intg_time =
-+	REG_FIELD(APDS9306_ALS_MEAS_RATE_REG, 4, 6);
-+
-+static const struct reg_field apds9306_regfield_repeat_rate =
-+	REG_FIELD(APDS9306_ALS_MEAS_RATE_REG, 0, 2);
-+
-+static const struct reg_field apds9306_regfield_gain =
-+	REG_FIELD(APDS9306_ALS_GAIN_REG, 0, 2);
-+
-+static const struct reg_field apds9306_regfield_int_src =
-+	REG_FIELD(APDS9306_INT_CFG_REG, 4, 5);
-+
-+static const struct reg_field apds9306_regfield_int_thresh_var_en =
-+	REG_FIELD(APDS9306_INT_CFG_REG, 3, 3);
-+
-+static const struct reg_field apds9306_regfield_int_en =
-+	REG_FIELD(APDS9306_INT_CFG_REG, 2, 2);
-+
-+static const struct reg_field apds9306_regfield_int_persist_val =
-+	REG_FIELD(APDS9306_INT_PERSISTENCE_REG, 4, 7);
-+
-+static const struct reg_field apds9306_regfield_int_thresh_var_val =
-+	REG_FIELD(APDS9306_ALS_THRES_VAR_REG, 0, 2);
-+
-+static int apds9306_regfield_init(struct apds9306_data *data)
-+{
-+	struct device *dev = data->dev;
-+	struct regmap *regmap = data->regmap;
-+	struct regmap_field *tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_sw_reset);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_sw_reset = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_en);
-+	if (IS_ERR(data->regfield_en))
-+		return PTR_ERR(data->regfield_en);
-+	data->regfield_en = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap,
-+				      apds9306_regfield_intg_time);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_intg_time = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap,
-+				      apds9306_regfield_repeat_rate);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_repeat_rate = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_gain);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_gain = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_int_src);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_int_src = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap,
-+				      apds9306_regfield_int_thresh_var_en);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_int_thresh_var_en = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap, apds9306_regfield_int_en);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_int_en = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap,
-+				      apds9306_regfield_int_persist_val);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_int_persist_val = tmp;
-+
-+	tmp = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_thresh_var_val);
-+	if (IS_ERR(tmp))
-+		return PTR_ERR(tmp);
-+	data->regfield_int_thresh_var_val = tmp;
-+
-+	return 0;
-+}
-+
-+static int apds9306_power_state(struct apds9306_data *data, bool state)
-+{
-+	int ret;
-+
-+	/* Reset not included as it causes ugly I2C bus error */
-+	if (state) {
-+		ret = regmap_field_write(data->regfield_en, 1);
-+		if (ret)
-+			return ret;
-+		/* 5ms wake up time */
-+		fsleep(5000);
-+		return 0;
-+	}
-+
-+	return regmap_field_write(data->regfield_en, 0);
-+}
-+
-+static int apds9306_runtime_power_on(struct device *dev)
-+{
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		dev_err_ratelimited(dev, "runtime resume failed: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static int apds9306_runtime_power_off(struct device *dev)
-+{
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
-+}
-+
-+static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
-+{
-+	struct device *dev = data->dev;
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	int ret, delay, intg_time, intg_time_idx, repeat_rate_idx, int_src;
-+	int status = 0;
-+	u8 buff[3];
-+
-+	ret = apds9306_runtime_power_on(data->dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_read(data->regfield_intg_time, &intg_time_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_read(data->regfield_repeat_rate, &repeat_rate_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_read(data->regfield_int_src, &int_src);
-+	if (ret)
-+		return ret;
-+
-+	intg_time = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
-+	if (intg_time < 0)
-+		return intg_time;
-+
-+	/* Whichever is greater - integration time period or sampling period. */
-+	delay = max(intg_time, apds9306_repeat_rate_period[repeat_rate_idx]);
-+
-+	/*
-+	 * Clear stale data flag that might have been set by the interrupt
-+	 * handler if it got data available flag set in the status reg.
-+	 */
-+	data->read_data_available = 0;
-+
-+	/*
-+	 * If this function runs parallel with the interrupt handler, either
-+	 * this reads and clears the status registers or the interrupt handler
-+	 * does. The interrupt handler sets a flag for read data available
-+	 * in our private structure which we read here.
-+	 */
-+	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS_REG,
-+				status, (status & (APDS9306_ALS_DATA_STAT_MASK |
-+				APDS9306_ALS_INT_STAT_MASK)) ||
-+				data->read_data_available,
-+				APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
-+	if (ret)
-+		return ret;
-+
-+	/* If we reach here before the interrupt handler we push an event */
-+	if ((status & APDS9306_ALS_INT_STAT_MASK))
-+		iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_LIGHT,
-+			       int_src, IIO_EV_TYPE_THRESH, IIO_EV_DIR_EITHER),
-+			       iio_get_time_ns(indio_dev));
-+
-+	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
-+	if (ret) {
-+		dev_err_ratelimited(dev, "read data failed\n");
-+		return ret;
-+	}
-+
-+	*val = get_unaligned_le24(&buff);
-+
-+	return apds9306_runtime_power_off(dev);
-+}
-+
-+static int apds9306_intg_time_get(struct apds9306_data *data, int *val2)
-+{
-+	int ret, intg_time_idx;
-+
-+	ret = regmap_field_read(data->regfield_intg_time, &intg_time_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val2 = ret;
-+
-+	return 0;
-+}
-+
-+static int apds9306_intg_time_set(struct apds9306_data *data, int val2)
-+{
-+	struct device *dev = data->dev;
-+	int ret, intg_old, gain_old, gain_new, gain_new_closest, intg_time_idx;
-+	int gain_idx;
-+	bool ok;
-+
-+	if (!iio_gts_valid_time(&data->gts, val2)) {
-+		dev_err_ratelimited(dev,
-+				    "Unsupported integration time %u\n", val2);
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_field_read(data->regfield_intg_time, &intg_time_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_read(data->regfield_gain, &gain_idx);
-+	if (ret)
-+		return ret;
-+
-+	intg_old = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (intg_old == val2)
-+		return 0;
-+
-+	gain_old = iio_gts_find_gain_by_sel(&data->gts, gain_idx);
-+	if (gain_old < 0)
-+		return gain_old;
-+
-+	ret = iio_gts_find_new_gain_by_old_gain_time(&data->gts, gain_old,
-+						     intg_old, val2, &gain_new);
-+	if (gain_new < 0) {
-+		dev_err_ratelimited(dev, "Unsupported gain with time\n");
-+		return gain_new;
-+	}
-+
-+	gain_new_closest = iio_find_closest_gain_low(&data->gts, gain_new, &ok);
-+	if (gain_new_closest < 0) {
-+		gain_new_closest = iio_gts_get_min_gain(&data->gts);
-+		if (gain_new_closest < 0)
-+			return gain_new_closest;
-+	}
-+	if (!ok)
-+		dev_dbg(dev, "Unable to find optimum gain, setting minimum");
-+
-+	ret = iio_gts_find_sel_by_int_time(&data->gts, val2);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_intg_time, ret);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_gts_find_sel_by_gain(&data->gts, gain_new_closest);
-+	if (ret < 0)
-+		return ret;
-+
-+	return regmap_field_write(data->regfield_gain, ret);
-+}
-+
-+static int apds9306_sampling_freq_get(struct apds9306_data *data, int *val,
-+				      int *val2)
-+{
-+	int ret, repeat_rate_idx;
-+
-+	ret = regmap_field_read(data->regfield_repeat_rate, &repeat_rate_idx);
-+	if (ret)
-+		return ret;
-+
-+	if (repeat_rate_idx > ARRAY_SIZE(apds9306_repeat_rate_freq))
-+		return -EINVAL;
-+
-+	*val = apds9306_repeat_rate_freq[repeat_rate_idx][0];
-+	*val2 = apds9306_repeat_rate_freq[repeat_rate_idx][1];
-+
-+	return 0;
-+}
-+
-+static int apds9306_sampling_freq_set(struct apds9306_data *data, int val,
-+				      int val2)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(apds9306_repeat_rate_freq); i++) {
-+		if (apds9306_repeat_rate_freq[i][0] == val &&
-+		    apds9306_repeat_rate_freq[i][1] == val2)
-+			break;
-+	}
-+
-+	if (i == ARRAY_SIZE(apds9306_repeat_rate_freq))
-+		return -EINVAL;
-+
-+	return regmap_field_write(data->regfield_repeat_rate, i);
-+}
-+
-+static int apds9306_scale_get(struct apds9306_data *data, int *val, int *val2)
-+{
-+	int gain, intg, ret, intg_time_idx, gain_idx;
-+
-+	ret = regmap_field_read(data->regfield_gain, &gain_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_read(data->regfield_intg_time, &intg_time_idx);
-+	if (ret)
-+		return ret;
-+
-+	gain = iio_gts_find_gain_by_sel(&data->gts, gain_idx);
-+	if (gain < 0)
-+		return gain;
-+
-+	intg = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
-+	if (intg < 0)
-+		return intg;
-+
-+	return iio_gts_get_scale(&data->gts, gain, intg, val, val2);
-+}
-+
-+static int apds9306_scale_set(struct apds9306_data *data, int val, int val2)
-+{
-+	int i, ret, time_sel, gain_sel, intg_time_idx;
-+
-+	ret = regmap_field_read(data->regfield_intg_time, &intg_time_idx);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_gts_find_gain_sel_for_scale_using_time(&data->gts,
-+					intg_time_idx, val, val2, &gain_sel);
-+	if (ret) {
-+		for (i = 0; i < data->gts.num_itime; i++) {
-+			time_sel = data->gts.itime_table[i].sel;
-+
-+			if (time_sel == intg_time_idx)
-+				continue;
-+
-+			ret = iio_gts_find_gain_sel_for_scale_using_time(&data->gts,
-+						time_sel, val, val2, &gain_sel);
-+			if (!ret)
-+				break;
-+		}
-+		if (ret)
-+			return -EINVAL;
-+
-+		ret = regmap_field_write(data->regfield_intg_time, time_sel);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return regmap_field_write(data->regfield_gain, gain_sel);
-+}
-+
-+static int apds9306_event_period_get(struct apds9306_data *data, int *val)
-+{
-+	int period, ret;
-+
-+	ret = regmap_field_read(data->regfield_int_persist_val, &period);
-+	if (ret)
-+		return ret;
-+
-+	if (!in_range(period, 0, APDS9306_ALS_PERSIST_VAL_MAX))
-+		return -EINVAL;
-+
-+	*val = period;
-+
-+	return ret;
-+}
-+
-+static int apds9306_event_period_set(struct apds9306_data *data, int val)
-+{
-+	if (!in_range(val, 0, APDS9306_ALS_PERSIST_VAL_MAX))
-+		return -EINVAL;
-+
-+	return regmap_field_write(data->regfield_int_persist_val, val);
-+}
-+
-+static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
-+				     int *val)
-+{
-+	int var, ret;
-+	u8 buff[3];
-+
-+	if (dir == IIO_EV_DIR_RISING)
-+		var = APDS9306_ALS_THRES_UP_0_REG;
-+	else if (dir == IIO_EV_DIR_FALLING)
-+		var = APDS9306_ALS_THRES_LOW_0_REG;
-+	else
-+		return -EINVAL;
-+
-+	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
-+	if (ret)
-+		return ret;
-+
-+	*val = get_unaligned_le24(&buff);
-+
-+	return 0;
-+}
-+
-+static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
-+				     int val)
-+{
-+	int var;
-+	u8 buff[3];
-+
-+	if (dir == IIO_EV_DIR_RISING)
-+		var = APDS9306_ALS_THRES_UP_0_REG;
-+	else if (dir == IIO_EV_DIR_FALLING)
-+		var = APDS9306_ALS_THRES_LOW_0_REG;
-+	else
-+		return -EINVAL;
-+
-+	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
-+		return -EINVAL;
-+
-+	put_unaligned_le24(val, buff);
-+
-+	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
-+}
-+
-+static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data,
-+					      int *val)
-+{
-+	int thr_adpt, ret;
-+
-+	ret = regmap_field_read(data->regfield_int_thresh_var_val, &thr_adpt);
-+	if (ret)
-+		return ret;
-+
-+	if (!in_range(thr_adpt, 0, APDS9306_ALS_THRES_VAR_VAL_MAX))
-+		return -EINVAL;
-+
-+	*val = thr_adpt;
-+
-+	return ret;
-+}
-+
-+static int apds9306_event_thresh_adaptive_set(struct apds9306_data *data,
-+		int val)
-+{
-+	if (!in_range(val, 0, APDS9306_ALS_THRES_VAR_VAL_MAX))
-+		return -EINVAL;
-+
-+	return regmap_field_write(data->regfield_int_thresh_var_val, val);
-+}
-+
-+static int apds9306_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int *val,
-+			     int *val2, long mask)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, reg;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		if (chan->channel2 == IIO_MOD_LIGHT_CLEAR)
-+			reg = APDS9306_CLEAR_DATA_0_REG;
-+		else
-+			reg = APDS9306_ALS_DATA_0_REG;
-+		/*
-+		 * Changing device parameters during adc operation, resets
-+		 * the ADC which has to avoided.
-+		 */
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+		ret = apds9306_read_data(data, val, reg);
-+		iio_device_release_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		ret = apds9306_intg_time_get(data, val2);
-+		if (ret)
-+			return ret;
-+		*val = 0;
-+
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = apds9306_sampling_freq_get(data, val, val2);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = apds9306_scale_get(data, val, val2);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT_PLUS_NANO;
-+	default:
-+		return -EINVAL;
-+	}
-+};
-+
-+static int apds9306_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type, int *length,
-+			       long mask)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		return iio_gts_avail_times(&data->gts, vals, type, length);
-+	case IIO_CHAN_INFO_SCALE:
-+		return iio_gts_all_avail_scales(&data->gts, vals, type, length);
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*length = ARRAY_SIZE(apds9306_repeat_rate_freq) * 2;
-+		*vals = (const int *)apds9306_repeat_rate_freq;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int apds9306_write_raw_get_fmt(struct iio_dev *indio_dev,
-+				      struct iio_chan_spec const *chan,
-+				      long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int apds9306_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan, int val,
-+			      int val2, long mask)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+
-+	guard(mutex)(&data->mutex);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		if (val)
-+			return -EINVAL;
-+		return apds9306_intg_time_set(data, val2);
-+	case IIO_CHAN_INFO_SCALE:
-+		return apds9306_scale_set(data, val, val2);
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return apds9306_sampling_freq_set(data, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static irqreturn_t apds9306_irq_handler(int irq, void *priv)
-+{
-+	struct iio_dev *indio_dev = priv;
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, status, int_ch;
-+
-+	/*
-+	 * The interrupt line is released and the interrupt flag is
-+	 * cleared as a result of reading the status register. All the
-+	 * status flags are cleared as a result of this read.
-+	 */
-+	ret = regmap_read(data->regmap, APDS9306_MAIN_STATUS_REG, &status);
-+	if (ret < 0) {
-+		dev_err_ratelimited(data->dev, "status reg read failed\n");
-+		return IRQ_HANDLED;
-+	}
-+
-+	ret = regmap_field_read(data->regfield_int_src, &int_ch);
-+	if (ret)
-+		return ret;
-+
-+	if ((status & APDS9306_ALS_INT_STAT_MASK))
-+		iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_LIGHT,
-+			       int_ch, IIO_EV_TYPE_THRESH, IIO_EV_DIR_EITHER),
-+			       iio_get_time_ns(indio_dev));
-+
-+	/*
-+	 * If a one-shot read through sysfs is underway at the same time
-+	 * as this interrupt handler is executing and a read data available
-+	 * flag was set, this flag is set to inform read_poll_timeout()
-+	 * to exit.
-+	 */
-+	if ((status & APDS9306_ALS_DATA_STAT_MASK))
-+		data->read_data_available = 1;
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int apds9306_read_event(struct iio_dev *indio_dev,
-+			       const struct iio_chan_spec *chan,
-+			       enum iio_event_type type,
-+			       enum iio_event_direction dir,
-+			       enum iio_event_info info,
-+			       int *val, int *val2)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD)
-+			ret = apds9306_event_period_get(data, val);
-+		else
-+			ret = apds9306_event_thresh_get(data, dir, val);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		ret = apds9306_event_thresh_adaptive_get(data, val);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int apds9306_write_event(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				enum iio_event_info info,
-+				int val, int val2)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD)
-+			return apds9306_event_period_set(data, val);
-+		else
-+			return apds9306_event_thresh_set(data, dir, val);
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		return apds9306_event_thresh_adaptive_set(data, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int apds9306_read_event_config(struct iio_dev *indio_dev,
-+				      const struct iio_chan_spec *chan,
-+				      enum iio_event_type type,
-+				      enum iio_event_direction dir)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int int_en, event_ch_is_light, ret;
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		guard(mutex)(&data->mutex);
-+
-+		ret = regmap_field_read(data->regfield_int_src,
-+					&event_ch_is_light);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_field_read(data->regfield_int_en, &int_en);
-+		if (ret)
-+			return ret;
-+
-+		if (chan->type == IIO_LIGHT)
-+			return int_en & event_ch_is_light;
-+		else if (chan->type == IIO_INTENSITY)
-+			return int_en & !event_ch_is_light;
-+
-+		return -EINVAL;
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		ret = regmap_field_read(data->regfield_int_thresh_var_en,
-+					&int_en);
-+		if (ret)
-+			return ret;
-+
-+		return int_en;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int apds9306_write_event_config(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan,
-+				       enum iio_event_type type,
-+				       enum iio_event_direction dir,
-+				       int state)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, val;
-+
-+	state = !!state;
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		guard(mutex)(&data->mutex);
-+
-+		/*
-+		 * If interrupt is enabled, the channel is set before enabling
-+		 * the interrupt. In case of disable, no need to switch
-+		 * channels. In case of different channel is selected while
-+		 * interrupt in on, just change the channel.
-+		 */
-+		if (state) {
-+			if (chan->type == IIO_LIGHT)
-+				val = 1;
-+			else if (chan->type == IIO_INTENSITY)
-+				val = 0;
-+			else
-+				return -EINVAL;
-+
-+			ret = regmap_field_write(data->regfield_int_src, val);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		ret = regmap_field_read(data->regfield_int_en, &val);
-+		if (ret)
-+			return ret;
-+
-+		if (val == state)
-+			return 0;
-+
-+		ret = regmap_field_write(data->regfield_int_en, state);
-+		if (ret)
-+			return ret;
-+
-+		if (state)
-+			return apds9306_runtime_power_on(data->dev);
-+
-+		return apds9306_runtime_power_off(data->dev);
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		return regmap_field_write(data->regfield_int_thresh_var_en,
-+					  state);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info apds9306_info_no_events = {
-+	.read_avail = apds9306_read_avail,
-+	.read_raw = apds9306_read_raw,
-+	.write_raw = apds9306_write_raw,
-+	.write_raw_get_fmt = apds9306_write_raw_get_fmt,
-+};
-+
-+static const struct iio_info apds9306_info = {
-+	.read_avail = apds9306_read_avail,
-+	.read_raw = apds9306_read_raw,
-+	.write_raw = apds9306_write_raw,
-+	.write_raw_get_fmt = apds9306_write_raw_get_fmt,
-+	.read_event_value = apds9306_read_event,
-+	.write_event_value = apds9306_write_event,
-+	.read_event_config = apds9306_read_event_config,
-+	.write_event_config = apds9306_write_event_config,
-+	.event_attrs = &apds9306_event_attr_group,
-+};
-+
-+static int apds9306_init_iio_gts(struct apds9306_data *data)
-+{
-+	int i, ret, part_id;
-+
-+	ret = regmap_read(data->regmap, APDS9306_PART_ID_REG, &part_id);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(apds9306_gts_mul); i++) {
-+		if (part_id == apds9306_gts_mul[i].part_id)
-+			return devm_iio_init_iio_gts(data->dev,
-+				 apds9306_gts_mul[i].max_scale_int,
-+				 apds9306_gts_mul[i].max_scale_nano,
-+				 apds9306_gains, ARRAY_SIZE(apds9306_gains),
-+				 apds9306_itimes, ARRAY_SIZE(apds9306_itimes),
-+				 &data->gts);
-+	}
-+
-+	return -ENXIO;
-+}
-+
-+static void apds9306_powerdown(void *ptr)
-+{
-+	struct apds9306_data *data = (struct apds9306_data *)ptr;
-+	int ret;
-+
-+	ret = regmap_field_write(data->regfield_int_thresh_var_en, 0);
-+	if (ret)
-+		return;
-+
-+	ret = regmap_field_write(data->regfield_int_en, 0);
-+	if (ret)
-+		return;
-+
-+	apds9306_power_state(data, false);
-+}
-+
-+static int apds9306_device_init(struct apds9306_data *data)
-+{
-+	int ret;
-+
-+	ret = apds9306_init_iio_gts(data);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_intg_time,
-+				 APDS9306_MEAS_MODE_100MS);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_repeat_rate,
-+				 APDS9306_SAMP_FREQ_10HZ);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_gain, APDS9306_GSEL_3X);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_int_src, APDS9306_INT_CH_ALS);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_field_write(data->regfield_int_en, 0);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_field_write(data->regfield_int_thresh_var_en, 0);
-+}
-+
-+static int apds9306_pm_init(struct apds9306_data *data)
-+{
-+	struct device *dev = data->dev;
-+	int ret;
-+
-+	ret = apds9306_power_state(data, true);
-+	if (ret)
-+		return ret;
-+
-+	ret = pm_runtime_set_active(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
-+
-+	pm_runtime_set_autosuspend_delay(dev, 5000);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_get(dev);
-+
-+	return 0;
-+}
-+
-+static int apds9306_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct apds9306_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+
-+	mutex_init(&data->mutex);
-+
-+	data->regmap = devm_regmap_init_i2c(client, &apds9306_regmap);
-+	if (IS_ERR(data->regmap))
-+		return dev_err_probe(dev, PTR_ERR(data->regmap),
-+				     "regmap initialization failed\n");
-+
-+	data->dev = dev;
-+	i2c_set_clientdata(client, indio_dev);
-+
-+	ret = apds9306_regfield_init(data);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "regfield initialization failed\n");
-+
-+	ret = devm_regulator_get_enable(dev, "vdd");
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to enable regulator\n");
-+
-+	indio_dev->name = "apds9306";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	if (client->irq) {
-+		indio_dev->info = &apds9306_info;
-+		indio_dev->channels = apds9306_channels_with_events;
-+		indio_dev->num_channels =
-+				ARRAY_SIZE(apds9306_channels_with_events);
-+		ret = devm_request_threaded_irq(dev, client->irq, NULL,
-+				apds9306_irq_handler, IRQF_ONESHOT,
-+					"apds9306_event", indio_dev);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "failed to assign interrupt.\n");
-+	} else {
-+		indio_dev->info = &apds9306_info_no_events;
-+		indio_dev->channels = apds9306_channels_without_events;
-+		indio_dev->num_channels =
-+				ARRAY_SIZE(apds9306_channels_without_events);
-+	}
-+
-+	ret = apds9306_pm_init(data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed pm init\n");
-+
-+	ret = apds9306_device_init(data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to init device\n");
-+
-+	ret = devm_add_action_or_reset(dev, apds9306_powerdown, data);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to add action or reset\n");
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed iio device registration\n");
-+
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
-+}
-+
-+static int apds9306_runtime_suspend(struct device *dev)
-+{
-+	struct apds9306_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	return apds9306_power_state(data, false);
-+}
-+
-+static int apds9306_runtime_resume(struct device *dev)
-+{
-+	struct apds9306_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	return apds9306_power_state(data, true);
-+}
-+
-+static DEFINE_RUNTIME_DEV_PM_OPS(apds9306_pm_ops,
-+				 apds9306_runtime_suspend,
-+				 apds9306_runtime_resume,
-+				 NULL);
-+
-+static const struct of_device_id apds9306_of_match[] = {
-+	{ .compatible = "avago,apds9306" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, apds9306_of_match);
-+
-+static struct i2c_driver apds9306_driver = {
-+	.driver = {
-+		.name = "apds9306",
-+		.pm = pm_ptr(&apds9306_pm_ops),
-+		.of_match_table = apds9306_of_match,
-+	},
-+	.probe = apds9306_probe,
-+};
-+module_i2c_driver(apds9306_driver);
-+
-+MODULE_AUTHOR("Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>");
-+MODULE_DESCRIPTION("APDS9306 Ambient Light Sensor driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_GTS_HELPER);
--- 
-2.34.1
+
+>
+>> +#define ADS1298_REG_CONFIG1	0x01
+>> +#define ADS1298_MASK_CONFIG1_HR			BIT(7)
+>> +#define ADS1298_MASK_CONFIG1_DR			GENMASK(2, 0)
+>> +#define ADS1298_SHIFT_DR_HR			6
+>> +#define ADS1298_SHIFT_DR_LP			7
+>> +#define ADS1298_LOWEST_DR			0x06
+> ...
+>
+>> +	factor =3D (rate >> ADS1298_SHIFT_DR_HR) / val;
+>> +	if (factor >=3D 128)
+> I just realized that this comparison is probably better in a form
+>
+> 	if (factor >=3D ADS1298_MASK_CONFIG1_HR)
+>
+> as it points out why this is a special case in comparison to 'if (factor)=
+'
+> below. What do you think?
+
+The "HR" bit sets the device to high-res mode (which apparently doubles=20
+the internal sample rate).
+
+But "128" could be written as "1 << ADS1298_SHIFT_DR_LP" which is the=20
+max oversampling factor.
+
+
+> ...
+>
+>> +	wasbusy =3D --priv->rdata_xfer_busy;
+> Why preincrement? How would it be different from postincrement?
+
+Maybe better write this as:
+
+--priv->rdata_xfer_busy;
+
+wasbusy =3D priv->rdata_xfer_busy;
+
+I want the value after decrementing it.
+
+
+>> +	if (wasbusy) {
+> To me more robust code would look like
+>
+> 	if (wasbusy < 1)
+> 		return;
+> 	...
+> 	if (wasbusy > 1)
+> 		...
+
+wasbusy could have been unsigned.
+
+This code will only ever execute with rdata_xfer_busy > 0 (or the SPI=20
+driver called our completion callback without us calling spi_async first)
+
+>
+>> +		/*
+>> +		 * DRDY interrupt occurred before SPI completion. Start a new
+>> +		 * SPI transaction now to retrieve the data that wasn't latched
+>> +		 * into the ADS1298 chip's transfer buffer yet.
+>> +		 */
+>> +		spi_async(priv->spi, &priv->rdata_msg);
+>> +		/*
+>> +		 * If more than one DRDY took place, there was an overrun. Since
+>> +		 * the sample is already lost, reset the counter to 1 so that
+>> +		 * we will wait for a DRDY interrupt after this SPI transaction.
+>> +		 */
+>> +		if (wasbusy > 1)
+>> +			priv->rdata_xfer_busy =3D 1;
+>> +	}
+> ...
+>
+>> +		/*
+>> +		 * for a single transfer mode we're kept in direct_mode until
+> For
+>
+>> +		 * completion, avoiding a race with buffered IO.
+>> +		 */
+> ...
+>
+>> +	wasbusy =3D priv->rdata_xfer_busy++;
+> So, it starts from negative?
+>
+>> +	/* When no SPI transfer in transit, start one now */
+>> +	if (!wasbusy)
+> To be compatible with above perhaps
+>
+> 	if (wasbusy < 1)
+>
+> also makes it more robust (all negative numbers will be considered the sa=
+me.
+>
+>> +		spi_async(priv->spi, &priv->rdata_msg);
+
+The "rdata_xfer_busy" starts at 0.
+
+Increments when a DRDY occurs.
+
+Decrements when SPI completion is reported.
+
+So the meaning of "rdata_xfer_busy" is:
+
+0 =3D Waiting for DRDY interrupt
+
+1 =3D SPI transfer in progress
+
+2 =3D DRDY occured during SPI transfer, should start another on completion
+
+ >2 =3D Multiple DRDY during SPI transfer, overflow, we=20
+lost=C2=A0rdata_xfer_busy - 2 samples
+
+
+> ...
+>
+>
+>> +	dev_dbg(dev, "Found %s, %u channels\n", ads1298_family_name(val),
+>> +		(unsigned int)(4 + 2 * (val & ADS1298_MASK_ID_CHANNELS)));
+> Castings in printf() is a big red flag usually (it's rarely we need them)=
+.
+> Why is it here?
+
+Compiler complains that the expression is "unsigned long". Probably=20
+because of ADS1298_MASK_ID_CHANNELS being so.
+
+
+> ...
+>
+>> +	if (reset_gpio) {
+>> +		/* Minimum reset pulsewidth is 2 clock cycles */
+>> +		udelay(ADS1298_CLOCKS_TO_USECS(2));
+>> +		gpiod_set_value(reset_gpio, 0);
+> I would rewrite it as
+>
+> 		/* Minimum reset pulsewidth is 2 clock cycles */
+> 		gpiod_set_value(reset_gpio, 1);
+> 		udelay(ADS1298_CLOCKS_TO_USECS(2));
+> 		gpiod_set_value(reset_gpio, 0);
+>
+> to be sure we have a reset done correctly, and the comment will make more
+> sense.
+
+If used, the reset must be asserted *before* the voltages and clocks are=20
+activated. This would obfuscate that, and add a redundant call to set_value=
+.
+
+I did forget to use "cansleep" here, will add that.
+
+
+--=20
+Mike Looijmans
+System Expert
+
+TOPIC Embedded Products B.V.
+Materiaalweg 4, 5681 RJ Best
+The Netherlands
+
+T: +31 (0) 499 33 69 69
+E: mike.looijmans@topic.nl
+W: www.topic.nl
+
+
 
 

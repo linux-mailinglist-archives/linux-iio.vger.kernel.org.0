@@ -1,367 +1,225 @@
-Return-Path: <linux-iio+bounces-2247-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2248-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538FE84B6CB
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 14:45:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACF784B6E3
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 14:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C3E9B254EC
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C2C288C02
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E191D132C31;
-	Tue,  6 Feb 2024 13:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E298131750;
+	Tue,  6 Feb 2024 13:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QtDIJ8eX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CMdm1TN0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F2E132C17;
-	Tue,  6 Feb 2024 13:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A60130E5E;
+	Tue,  6 Feb 2024 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707226953; cv=none; b=URJWDDzWjDNEiE/hpLkUL83RfTpo0m1a9hmkPnfJEy8G4FE9yBliLD9rTsSgoGkZwUYlaq4Ol6RX6m2C7hHeCgfrksRaULmLnCI5YkziEPn8MWmBAEUz2dQdbXGkZIDZqxHYW8Sj0ZV2eIodhZhdof3iGxLWUwKTBo3112A87OA=
+	t=1707227463; cv=none; b=VOEF6MDykm1PpzqlMthK5+/cGKiHMIGeC/r8Nqf4Gci8cklrlwPBv4sZez9CGpat0b7mD3YOmoYkd3VDya6Tt5M8VBFYs528S1TQFPHVTyKvokH4GnMfjj1Vw7Am8v/4HclAGnpr2roHaUVhhcqXnq6FlJfKOBm3j7T6gh7sioM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707226953; c=relaxed/simple;
-	bh=zGIol68kVR5PCDpl2i+Kl3r0SUjb+kIeqV5z5WNp7Zo=;
+	s=arc-20240116; t=1707227463; c=relaxed/simple;
+	bh=40318rXtRK8bMlqY1+g0mB2+CszJHFdZCwiUpgUGL6Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aern35W4r/cY8s55NZi/sml0IRuvv4JR3hYJXI6XegfUN0+MYtO404W2zcLWD+otPjW3nXpAUlAHFYA4nqJEEN9EU4sDRnssQu+wAwsUl+/sTpKf1+pdpDHV/jsyd8M6XJRT2GXGbBV9PClCf9bDaJEpe/4bvZ2P063An2EzL2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QtDIJ8eX; arc=none smtp.client-ip=192.198.163.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=itmliTmvtjBAwZQ18ipWNnHbiEaQjqyBHDLg5j8FMWL8waeTgPDJqrYmZPhzi6yG8JYy/QeITF5RNST1IOj/56rU8xQT5zHeNzMQ8d195JrC+W9FIm66KtvW6EmH960HYcTJhqvhQ/fmsemM56tj+JtqBdpnZD0r3XCBf62HT3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CMdm1TN0; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707226952; x=1738762952;
+  t=1707227462; x=1738763462;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zGIol68kVR5PCDpl2i+Kl3r0SUjb+kIeqV5z5WNp7Zo=;
-  b=QtDIJ8eX4/61+7Ha2EDXz8ANly2xEOawGc8ephUYlv+klIQMQB+5SLiu
-   beL9lSPhj/XYoqLiBmy6P7JZvdn/Y2TWnpe94oSciXdQCtiQTUKZQLgtn
-   paiiPqaYM/zTf3/09eF/WnPIWra1MOaZJ7OAgvqOzbYYwMc9+gCPStOuZ
-   e0FxBG7sEnt2nuK47OlScxXTbi2jsfDpw/bVZ1JvYbU9y1PaAgUlM4VKU
-   LqIYMc3f/Ipxup+ZDOf4MeJjlJHiKCW/77qTIBM5tlRIHZNixaGqX5C1b
-   5voZ20lje09AI8lEJnFXMMpZw+3bLBFfWyIW4hPKrY8nvIS/Au/cEAt7/
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="1015415"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=40318rXtRK8bMlqY1+g0mB2+CszJHFdZCwiUpgUGL6Y=;
+  b=CMdm1TN0RK9fcsUSI1yNL5KCcS7uV1Ly3vF0krifkr9rpg+WKsQ87B3L
+   W74p8/BN0Bsf35AxClOsdOWB0Jf6+eSYyo0g1aF+SV2YNdQzJapQhwloO
+   GNbiWKJl9p/yqpgWue41CoOlCE7897pxXD0OMZhOt6nbZPRAQCy+cfa/b
+   P6EaZOACVrCuSoApXZNeTaGTvdMxl79f4d0JF+i5vzxBDWSARawQ+W1JX
+   2hyYiGrSNEBv0kqOCzoBbNa4otaw6H3OJnX9zaW1LMT1JmJ+dQjVvhh1S
+   UixoiSR67HkLeLzGTbWKDRN7DQnce6C3skQtBUMKpQecUywWK7IDdWJ+V
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="1017395"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="1015415"
+   d="scan'208";a="1017395"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 05:42:31 -0800
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 05:51:01 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="909638436"
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="909641034"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="909638436"
+   d="scan'208";a="909641034"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 05:42:27 -0800
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 05:50:57 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rXLiS-00000002LuH-1J28;
-	Tue, 06 Feb 2024 15:42:24 +0200
-Date: Tue, 6 Feb 2024 15:42:23 +0200
+	id 1rXLqg-00000002M0b-34Uz;
+	Tue, 06 Feb 2024 15:50:54 +0200
+Date: Tue, 6 Feb 2024 15:50:54 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+To: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 5/5] iio: light: Add support for APDS9306 Light Sensor
-Message-ID: <ZcI3Pz6Z5V4qqpHO@smile.fi.intel.com>
-References: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
- <20240206130017.7839-6-subhajit.ghosh@tweaklogic.com>
+	Liam Beguin <liambeguin@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maksim Kiselev <bigunclemax@gmail.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <ZcI5PoWojKRrdpVl@smile.fi.intel.com>
+References: <20240206065818.2016910-1-mike.looijmans@topic.nl>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.fd628a1a-a926-426e-a239-bfd8c9858b94@emailsignatures365.codetwo.com>
+ <20240206065818.2016910-2-mike.looijmans@topic.nl>
+ <ZcIsuiuisQjTIxJv@smile.fi.intel.com>
+ <4c6654f5-2d9e-4c1b-a5de-7bdeacf5e99f@topic.nl>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240206130017.7839-6-subhajit.ghosh@tweaklogic.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4c6654f5-2d9e-4c1b-a5de-7bdeacf5e99f@topic.nl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Feb 06, 2024 at 11:30:17PM +1030, Subhajit Ghosh wrote:
-> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
-> It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
-> channel approximates the response of the human-eye providing direct
-> read out where the output count is proportional to ambient light levels.
-> It is internally temperature compensated and rejects 50Hz and 60Hz flicker
-> caused by artificial light sources. Hardware interrupt configuration is
-> optional. It is a low power device with 20 bit resolution and has
-> configurable adaptive interrupt mode and interrupt persistence mode.
-> The device also features inbuilt hardware gain, multiple integration time
-> selection options and sampling frequency selection options.
+On Tue, Feb 06, 2024 at 02:33:47PM +0100, Mike Looijmans wrote:
+> On 06-02-2024 13:57, Andy Shevchenko wrote:
+> > On Tue, Feb 06, 2024 at 07:58:18AM +0100, Mike Looijmans wrote:
+
+...
+
+> > > +	factor = (rate >> ADS1298_SHIFT_DR_HR) / val;
+> > > +	if (factor >= 128)
+> > I just realized that this comparison is probably better in a form
+> > 
+> > 	if (factor >= ADS1298_MASK_CONFIG1_HR)
+> > 
+> > as it points out why this is a special case in comparison to 'if (factor)'
+> > below. What do you think?
 > 
-> This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for
-> Scales, Gains and Integration time implementation.
+> The "HR" bit sets the device to high-res mode (which apparently doubles the
+> internal sample rate).
+> 
+> But "128" could be written as "1 << ADS1298_SHIFT_DR_LP" which is the max
+> oversampling factor.
+
+Use BIT(..._DR_LP) and we are done here.
 
 ...
 
-> +#define APDS9306_ALS_READ_DATA_DELAY_US	20000
+> > > +	wasbusy = --priv->rdata_xfer_busy;
+> > Why preincrement? How would it be different from postincrement?
+> 
+> Maybe better write this as:
+> 
+> --priv->rdata_xfer_busy;
+> 
+> wasbusy = priv->rdata_xfer_busy;
+> 
+> I want the value after decrementing it.
 
-(20 * USEC_PER_MSEC) ?
+Yes, looks more obvious.
 
-...
+> > > +	if (wasbusy) {
+> > To me more robust code would look like
+> > 
+> > 	if (wasbusy < 1)
+> > 		return;
+> > 	...
+> > 	if (wasbusy > 1)
+> > 		...
+> 
+> wasbusy could have been unsigned.
+> 
+> This code will only ever execute with rdata_xfer_busy > 0 (or the SPI driver
+> called our completion callback without us calling spi_async first)
 
-> +/*
-
-Make it real kernel doc?
-
-> + * struct part_id_gts_multiplier - Part no. and corresponding gts multiplier
-> + *
-> + * GTS (Gain Time Scale) are helper functions for Light sensors which along
-> + * with hardware gains also has gains associated with Integration times.
-> + *
-> + * There are two variants of the device with slightly different characteristics,
-> + * they have same ADC count for different Lux levels as mentioned in the
-> + * datasheet. This multiplier array is used to store the derived Lux per count
-> + * value for the two variants to be used by the GTS helper functions.
-> + *
-> + * part_id: Part ID of the device
-> + * max_scale_int: Multiplier for iio_init_iio_gts()
-> + * max_scale_nano: Multiplier for iio_init_iio_gts()
-
-(It will be wrong format for referring fields, but easy to fix.)
-
-> + */
-
-...
-
-> +static_assert(ARRAY_SIZE(apds9306_repeat_rate_freq) ==
-> +		APDS9306_NUM_REPEAT_RATES);
-
-Just make that define to be inside [] in the respective array and drop this
-static assert. The assertion might make sense to have different arrays to be
-synchronized and when their maximums are different due to semantics (not your
-case AFAICS).
+You never know what may go wrong in the future :-) That said, I prefer robust
+code against non-robust.
 
 ...
 
-> +static_assert(ARRAY_SIZE(apds9306_repeat_rate_period) ==
-> +		APDS9306_NUM_REPEAT_RATES);
+> > > +	wasbusy = priv->rdata_xfer_busy++;
+> > So, it starts from negative?
+> > 
+> > > +	/* When no SPI transfer in transit, start one now */
+> > > +	if (!wasbusy)
+> > To be compatible with above perhaps
+> > 
+> > 	if (wasbusy < 1)
+> > 
+> > also makes it more robust (all negative numbers will be considered the same.
+> > 
+> > > +		spi_async(priv->spi, &priv->rdata_msg);
+> 
+> The "rdata_xfer_busy" starts at 0.
+> 
+> Increments when a DRDY occurs.
+> 
+> Decrements when SPI completion is reported.
+> 
+> So the meaning of "rdata_xfer_busy" is:
+> 
+> 0 = Waiting for DRDY interrupt
+> 
+> 1 = SPI transfer in progress
+> 
+> 2 = DRDY occured during SPI transfer, should start another on completion
+> 
+> >2 = Multiple DRDY during SPI transfer, overflow, we lost rdata_xfer_busy -
+> 2 samples
 
-Ditto.
 
-...
-
-> +	struct mutex mutex;
-
-checkpatch probably wants this to have a comment.
-
-...
-
-> +	struct regmap_field *regfield_sw_reset;
-> +	struct regmap_field *regfield_en;
-> +	struct regmap_field *regfield_intg_time;
-> +	struct regmap_field *regfield_repeat_rate;
-> +	struct regmap_field *regfield_gain;
-> +	struct regmap_field *regfield_int_src;
-> +	struct regmap_field *regfield_int_thresh_var_en;
-> +	struct regmap_field *regfield_int_en;
-> +	struct regmap_field *regfield_int_persist_val;
-> +	struct regmap_field *regfield_int_thresh_var_val;
-
-May we reduce the names by
-
-	struct {
-		...
-		struct regmap_field *int_persist_val;
-		struct regmap_field *int_thresh_var_val;
-	} regfield;
-
-In the code
-
-	struct regfield *rf = &priv->regfield;
-
-	rf->int...
+Maybe another good comment is needed here as well?
 
 ...
 
-> +static struct attribute *apds9306_event_attributes[] = {
-> +	&iio_const_attr_thresh_either_period_available.dev_attr.attr,
-> +	&iio_const_attr_thresh_adaptive_either_values_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group apds9306_event_attr_group = {
-> +	.attrs = apds9306_event_attributes,
-> +};
+> > > +	dev_dbg(dev, "Found %s, %u channels\n", ads1298_family_name(val),
+> > > +		(unsigned int)(4 + 2 * (val & ADS1298_MASK_ID_CHANNELS)));
+> > Castings in printf() is a big red flag usually (it's rarely we need them).
+> > Why is it here?
+> 
+> Compiler complains that the expression is "unsigned long". Probably because
+>  of ADS1298_MASK_ID_CHANNELS being so.
+
+So, use the unsigned long specifier and drop casting.
 
 ...
 
-> +static int apds9306_runtime_power_on(struct device *dev)
-> +{
-> +	int ret;
-> +
-> +	ret = pm_runtime_resume_and_get(dev);
-> +	if (ret < 0)
-> +		dev_err_ratelimited(dev, "runtime resume failed: %d\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static int apds9306_runtime_power_off(struct device *dev)
-> +{
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return 0;
-> +}
+> > > +	if (reset_gpio) {
+> > > +		/* Minimum reset pulsewidth is 2 clock cycles */
+> > > +		udelay(ADS1298_CLOCKS_TO_USECS(2));
+> > > +		gpiod_set_value(reset_gpio, 0);
+> > I would rewrite it as
+> > 
+> > 		/* Minimum reset pulsewidth is 2 clock cycles */
+> > 		gpiod_set_value(reset_gpio, 1);
+> > 		udelay(ADS1298_CLOCKS_TO_USECS(2));
+> > 		gpiod_set_value(reset_gpio, 0);
+> > 
+> > to be sure we have a reset done correctly, and the comment will make more
+> > sense.
+> 
+> If used, the reset must be asserted *before* the voltages and clocks are
+> activated. This would obfuscate that, and add a redundant call to set_value.
 
-Seems to me like useless wrappers. Why do you need that message?
-Btw, it's used only twice, open coding saves the LoCs!
-Try making the next submission so the driver LoCs is < 1400.
+Then perhaps you want reset framework to be used instead?
 
-...
+Dunno, but this comment seems confusing in a way that you somewhere asserted it
+and it's not obvious where and here is the delay out of a blue. Perhaps you may
+extend the comment?
 
-> +	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS_REG,
-> +				status, (status & (APDS9306_ALS_DATA_STAT_MASK |
-> +				APDS9306_ALS_INT_STAT_MASK)) ||
-
-Oh, this is interesting indentation...
-
-> +				data->read_data_available,
-> +				APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
-
-Can we write it as
-
-	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS_REG,
-				       status, data->read_data_available ||
-				       (status & (APDS9306_ALS_DATA_STAT_MASK |
-						  APDS9306_ALS_INT_STAT_MASK)),
-				       APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
-
-?
-
-> +	if (ret)
-> +		return ret;
-
-...
-
-> +	switch (type) {
-> +	case IIO_EV_TYPE_THRESH:
-> +		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD)
-> +			return apds9306_event_period_set(data, val);
-
-> +		else
-
-Redundant 'else'.
-
-> +			return apds9306_event_thresh_set(data, dir, val);
-> +	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> +		return apds9306_event_thresh_adaptive_set(data, val);
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-...
-
-> +		if (chan->type == IIO_LIGHT)
-> +			return int_en & event_ch_is_light;
-> +		else if (chan->type == IIO_INTENSITY)
-
-Ditto.
-
-> +			return int_en & !event_ch_is_light;
-
-...
-
-> +	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-
-> +		return regmap_field_write(data->regfield_int_thresh_var_en,
-> +					  state);
-
-One line?
-
-...
-
-> +static int apds9306_init_iio_gts(struct apds9306_data *data)
-> +{
-> +	int i, ret, part_id;
-> +
-> +	ret = regmap_read(data->regmap, APDS9306_PART_ID_REG, &part_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(apds9306_gts_mul); i++) {
-> +		if (part_id == apds9306_gts_mul[i].part_id)
-
-			break;
-	}
-	if (i == ARRAY_SIZE(...))
-		return -...;
-
-	return devm_iio_init_iio_gts(data->dev,
-				     apds9306_gts_mul[i].max_scale_int,
-				     apds9306_gts_mul[i].max_scale_nano,
-				     apds9306_gains, ARRAY_SIZE(apds9306_gains),
-				     apds9306_itimes, ARRAY_SIZE(apds9306_itimes),
-				     &data->gts);
-
-?
-
-> +			return devm_iio_init_iio_gts(data->dev,
-> +				 apds9306_gts_mul[i].max_scale_int,
-> +				 apds9306_gts_mul[i].max_scale_nano,
-> +				 apds9306_gains, ARRAY_SIZE(apds9306_gains),
-> +				 apds9306_itimes, ARRAY_SIZE(apds9306_itimes),
-> +				 &data->gts);
-> +	}
-> +
-> +	return -ENXIO;
-> +}
-
-...
-
-> +		return dev_err_probe(dev, ret,
-> +				     "regfield initialization failed\n");
-
-One line.
-
-...
-
-> +		indio_dev->num_channels =
-> +				ARRAY_SIZE(apds9306_channels_with_events);
-
-Ditto.
-
-...
-
-> +		ret = devm_request_threaded_irq(dev, client->irq, NULL,
-> +				apds9306_irq_handler, IRQF_ONESHOT,
-> +					"apds9306_event", indio_dev);
-
-Fix indentation.
-
-> +		if (ret)
-
-> +			return dev_err_probe(dev, ret,
-> +					     "failed to assign interrupt.\n");
-
-One line.
-
-...
-
-> +		return dev_err_probe(dev, ret,
-> +				     "failed to add action or reset\n");
-
-Ditto.
-
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "failed iio device registration\n");
-
-Ditto.
+> I did forget to use "cansleep" here, will add that.
 
 -- 
 With Best Regards,

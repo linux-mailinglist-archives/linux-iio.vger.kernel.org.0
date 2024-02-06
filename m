@@ -1,289 +1,188 @@
-Return-Path: <linux-iio+bounces-2239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD3484B5BA
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:57:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E58384B5D2
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 14:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7B5C288793
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 12:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A755F1F2667D
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C87D12F5B4;
-	Tue,  6 Feb 2024 12:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3A12FF9E;
+	Tue,  6 Feb 2024 13:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iuMwlY82"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="URZ0pJGF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B912D15B;
-	Tue,  6 Feb 2024 12:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EF212F59B
+	for <linux-iio@vger.kernel.org>; Tue,  6 Feb 2024 13:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707224261; cv=none; b=eS3ZAfHdiaM+hmz3975NZj8RJ6A+qfXhWApB2WJ/4j8raUM5HOlS95Bg8T7W4335Ew9WjfrHNFN3XdALMxrwUEHA3UReCpsxXtX+LM/w++tkofSPa6DBFMYLYyiQZejIEKzY2IOMDaEiE22eBXLET7wlKKOeoYa+AC1iLQK1y0I=
+	t=1707224444; cv=none; b=TMRLgkwDPKl/6vFqRgSW/tDT/Tx+oPHYXDFK8BWN7kObbSo/7fvnt9dtL6/aGpcCk0+bKujSdX6jQX5bIf6SxtqQdVsbiRCfoVNLcCI9eI88amgD4mpgDYTJu3NFke8PGUIaZfnC+tqNpDuoQH9oWihW0pcMgDIvXpI0i+mymCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707224261; c=relaxed/simple;
-	bh=gFFnQRKNPHoY4PPOgve57JXjMNKhFHA4PS5BolvjP5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQYLFyPEJgM90AWuGH0LKkVZYT2th9855MxdyujdyUYyEUiYDmY/+ORo0AOGH/dE70fPWaOO5B2fLHPAAULxXbX8JDoCTkYG7bMF4FSJiBGyj21UAhLT/N+jnSk6AuJWdwUq4arCpbU3XjfUAFksOoC/qxPGuy07oV1N8NGhbMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iuMwlY82; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707224258; x=1738760258;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gFFnQRKNPHoY4PPOgve57JXjMNKhFHA4PS5BolvjP5k=;
-  b=iuMwlY82mhoRwCNTx0U0BOjqzMJH/yHH8EEMMx8jQO+7BF4ZvgpGYHGS
-   h5+h2roUxN3VHLPTtpNGvxV0aWZSmguopiXeso2p973rHjXFtU1/MIIYU
-   lkfWXm1wseDGR9+4LVk6m/47zjAGk01U9KtF70tZ46QAGMjvFRXRrklEk
-   W7cu5lQETi7vdABzJKsC7vpUFlCIWiTygA1zPzFKdKk9uKGKVZ9Uzq5KF
-   dkvQhKVnDswcmOj7NzioEqtc9lwUobLe1WurFKL6QWikw/663ARh3fF96
-   /nFKzlkhjcQqhTxyBaEf+wSxQ8FhPU31fIjhqp+pp4+KCwaBA860kY+Es
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="26182837"
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="26182837"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 04:57:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="909631008"
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="909631008"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 04:57:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rXL10-00000002LJD-2VrR;
-	Tue, 06 Feb 2024 14:57:30 +0200
-Date: Tue, 6 Feb 2024 14:57:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
+	s=arc-20240116; t=1707224444; c=relaxed/simple;
+	bh=1w7no4X/TSio5I2R4KQ+HCwjWlHzizWFvphNMRtKGCc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ybm2Bf5zxVrgxKedrMmeN4monMk0M+FwD3F+/FJmnvJfigM+5DtbVKx3tb6mk1AwildjkNt/EaOX9MYTUwTTvBQGywLM01IzIJCsj30QImKvUvaNA02XD5gZ9aLOELo8yw+ji58lJC/nYAUgEvZhE1xdOCuhfeNhhYZzTGgl08o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=URZ0pJGF; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d746ce7d13so45385685ad.0
+        for <linux-iio@vger.kernel.org>; Tue, 06 Feb 2024 05:00:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1707224441; x=1707829241; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U01nK5h+ngo0dhzMF9UCzZZGiTta1rkOWaOLNJZe/+U=;
+        b=URZ0pJGF/hFWwgeJRAEbkVrnGVTor6eW0gHTYA/YhTDL4ZVK+zcz6tGPvvatZWhtP7
+         Taq90wGC/1BVcqXMO8/inoCv64HzyYRIO6RGLwyuMn9N4ck/976pi01CIBYfYSNSkWFN
+         o3jSuRMVXMehy2L8Kt9vj3Z/a0pDF33oAVLnetbpdzJVzPCapUSN5Uy+fauHMWCO44C3
+         vlxn6uYe4oQ6AwN1jv07D15aLgOeKS65XE+X88efG/FkDOFZBlTpI7xHd5k7ZWWDI5/K
+         ADK07Lm5Ub7rdqnAtjbwTLphqw1rJJ2gM78jLv6/CH5IvuVL1u6WjTvB20Rxp2gGjb02
+         x5gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707224441; x=1707829241;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U01nK5h+ngo0dhzMF9UCzZZGiTta1rkOWaOLNJZe/+U=;
+        b=wmV4YaTEjsNwqAFC814t/G/HNYnfsyiNS5/xD5TV8bLU9K7Dx9x2pscC3ougLZ1Qqp
+         woBBWHcsDGyrwy5hQA2G5x/jxRpSuMuf1COJBKXl7nSVQudhLrHyudPjvzpDM5bNUm0c
+         GWA1q0TyMGWjP48cbNUNLCoMOamOm3hvZBkQcw2JavXGxkn5EQfj20cmbAvPA1nvJlsd
+         TRjTkgAmrwXHE0Dr+4sNz5veSDYsiJP2LEKx62DR2guEs7SWWpBvWbTrGFFtxf1ZU2Bm
+         LnJfvBywbCjUbH9s0w7PXk64H9rkPfQvsOGLI4eIGY76PLxkV54+xAEbpTtIbnYSJMZ3
+         kQWw==
+X-Gm-Message-State: AOJu0Yx6F7sjkCpghb9ZxnY3zWKpa7z9awqwSQpQdhW9+yDMH6/3hvSd
+	ojanIcseMSLZZdEtWEQPndl7v2ov/1tVZQty7Nhvhj2aR2nzp2h8GNtKv+TP5CM=
+X-Google-Smtp-Source: AGHT+IHFgHjBIvvXH43AzashyL+Nkfw1PtmIh93FS/4fpoAw1KGAydkF2t9AxzBQ48m86erUFiwWQw==
+X-Received: by 2002:a17:902:ec82:b0:1d9:bfde:d635 with SMTP id x2-20020a170902ec8200b001d9bfded635mr1840947plg.18.1707224441315;
+        Tue, 06 Feb 2024 05:00:41 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXOJQHJU9Oz3p9XWjTbHw/WyO+Rlhgcc+2HZgEMyidPNmSn/L8tiuqJqiqBpeLN5vT8Zh52uxfXYcGZubDu6QjGS1zwpTJCcXYfF2t3pxu6Xyx327nNCknP7EnMEGqp2cyK9NGDIl2Oxg+WzTifHJabltoTAPoFuSBWlF//1AZH5/sdJsFdn8nDyRJUMUWoLn5shFzGRbBLKGDfr5CxCOmfUhY4U0318peVENbBs0Oy+PnuXtNxUQDpldM3m5B1ZwjuWA7d+ygCvru11CqiEnLYIjJvtdmvJ+oXttAGI08V/cUbfRPfAjT94aayaAMSF5OKNCNYhY9Yd2k9Fv78MHmUsNjHinlrQTEw0mirbq3tfWRacfgh3S1rnZrTJFVW4LmqXRvGzki+BR+dSEzsP+L/Xy3fjedjFuOq63R/u4Umv0AgqUGssqKenP6G0V9q4xPZc/CQZPpIozmjULmTuEH3Zv905PLeQMSOvJ0ziUwe9Udx2WCFVVd6A6d7l6HWolo2AmWfalabNWNwseAghoZCjYX9hQ==
+Received: from localhost.localdomain ([180.150.113.62])
+        by smtp.gmail.com with ESMTPSA id s1-20020a170902ea0100b001d958f8ab2bsm1782167plg.107.2024.02.06.05.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 05:00:40 -0800 (PST)
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Liam Beguin <liambeguin@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1298: Add driver
-Message-ID: <ZcIsuiuisQjTIxJv@smile.fi.intel.com>
-References: <20240206065818.2016910-1-mike.looijmans@topic.nl>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.fd628a1a-a926-426e-a239-bfd8c9858b94@emailsignatures365.codetwo.com>
- <20240206065818.2016910-2-mike.looijmans@topic.nl>
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Anshul Dalal <anshulusr@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/5] Support for Avago APDS9306 Ambient Light Sensor
+Date: Tue,  6 Feb 2024 23:30:12 +1030
+Message-Id: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240206065818.2016910-2-mike.looijmans@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-
-On Tue, Feb 06, 2024 at 07:58:18AM +0100, Mike Looijmans wrote:
-> Skeleton driver for the TI ADS1298 medical ADC. This device is
-> typically used for ECG and similar measurements. Supports data
-> acquisition at configurable scale and sampling frequency.
-
-Thanks for an update, I have only a few style comments and a single one about
-comparison (see below). If you are going to address them as suggested, feel
-free to add
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-to the next version.
-
-...
-
-> +/* Registers */
-> +#define ADS1298_REG_ID		0x00
-> +#define ADS1298_MASK_ID_FAMILY			GENMASK(7, 3)
-> +#define ADS1298_MASK_ID_CHANNELS		GENMASK(2, 0)
-> +#define ADS1298_ID_FAMILY_ADS129X		0x90
-> +#define ADS1298_ID_FAMILY_ADS129XR		0xd0
-
-+ Blank line? (And so on for all registers that have bitfields defined)
-
-> +#define ADS1298_REG_CONFIG1	0x01
-> +#define ADS1298_MASK_CONFIG1_HR			BIT(7)
-> +#define ADS1298_MASK_CONFIG1_DR			GENMASK(2, 0)
-> +#define ADS1298_SHIFT_DR_HR			6
-> +#define ADS1298_SHIFT_DR_LP			7
-> +#define ADS1298_LOWEST_DR			0x06
-
-...
-
-> +	factor = (rate >> ADS1298_SHIFT_DR_HR) / val;
-> +	if (factor >= 128)
-
-I just realized that this comparison is probably better in a form
-
-	if (factor >= ADS1298_MASK_CONFIG1_HR)
-
-as it points out why this is a special case in comparison to 'if (factor)'
-below. What do you think?
-
-> +		cfg = ADS1298_LOWEST_DR;
-> +	else if (factor)
-> +		cfg = ADS1298_MASK_CONFIG1_HR | ilog2(factor); /* Use HR mode */
-> +	else
-> +		cfg = ADS1298_MASK_CONFIG1_HR; /* Fastest possible */
-
-...
-
-> +		*val = (16 << (*val & ADS1298_MASK_CONFIG1_DR));
-
-Outer parentheses are redundant.
-
-...
-
-> +	wasbusy = --priv->rdata_xfer_busy;
-
-Why preincrement? How would it be different from postincrement?
-
-> +	if (wasbusy) {
-
-To me more robust code would look like
-
-	if (wasbusy < 1)
-		return;
-	...
-	if (wasbusy > 1)
-		...
-
-> +		/*
-> +		 * DRDY interrupt occurred before SPI completion. Start a new
-> +		 * SPI transaction now to retrieve the data that wasn't latched
-> +		 * into the ADS1298 chip's transfer buffer yet.
-> +		 */
-> +		spi_async(priv->spi, &priv->rdata_msg);
-> +		/*
-> +		 * If more than one DRDY took place, there was an overrun. Since
-> +		 * the sample is already lost, reset the counter to 1 so that
-> +		 * we will wait for a DRDY interrupt after this SPI transaction.
-> +		 */
-> +		if (wasbusy > 1)
-> +			priv->rdata_xfer_busy = 1;
-> +	}
-
-...
-
-> +		/*
-> +		 * for a single transfer mode we're kept in direct_mode until
-
-For
-
-> +		 * completion, avoiding a race with buffered IO.
-> +		 */
-
-...
-
-> +	wasbusy = priv->rdata_xfer_busy++;
-
-So, it starts from negative?
-
-> +	/* When no SPI transfer in transit, start one now */
-> +	if (!wasbusy)
-
-To be compatible with above perhaps
-
-	if (wasbusy < 1)
-
-also makes it more robust (all negative numbers will be considered the same.
-
-> +		spi_async(priv->spi, &priv->rdata_msg);
-
-...
-
-> +	struct device *dev = &priv->spi->dev;
-> +	int ret;
-> +	unsigned int val;
-
-Better ordering is so called reversed xmas tree (longest lines first):
-
-	struct device *dev = &priv->spi->dev;
-	unsigned int val;
-	int ret;
-
-...
-
-> +	/* Device initializes into RDATAC mode, which we don't want. */
-
-No period at the end of one-line comments (be consistent in the style over
-comments of the same class).
-
-...
-
-> +	dev_dbg(dev, "Found %s, %u channels\n", ads1298_family_name(val),
-> +		(unsigned int)(4 + 2 * (val & ADS1298_MASK_ID_CHANNELS)));
-
-Castings in printf() is a big red flag usually (it's rarely we need them).
-Why is it here?
-
-...
-
-> +	/* VREF can be supplied externally. Otherwise use internal reference */
-
-Better to use comma as it's one-line comment. Or make it multi-line with
-respective periods.
-
-...
-
-> +		ret = devm_add_action_or_reset(dev, ads1298_reg_disable,
-> +					       priv->reg_vref);
-
-Can be one line.
-
-> +		if (ret)
-> +			return ret;
-
-...
-
-> +	ret = devm_add_action_or_reset(dev, ads1298_reg_disable,
-> +				       priv->reg_avdd);
-
-One line.
-
-> +	if (ret)
-> +		return ret;
-
-...
-
-> +	if (reset_gpio) {
-> +		/* Minimum reset pulsewidth is 2 clock cycles */
-> +		udelay(ADS1298_CLOCKS_TO_USECS(2));
-> +		gpiod_set_value(reset_gpio, 0);
-
-I would rewrite it as
-
-		/* Minimum reset pulsewidth is 2 clock cycles */
-		gpiod_set_value(reset_gpio, 1);
-		udelay(ADS1298_CLOCKS_TO_USECS(2));
-		gpiod_set_value(reset_gpio, 0);
-
-to be sure we have a reset done correctly, and the comment will make more
-sense.
-
-> +	} else {
-> +		ret = ads1298_write_cmd(priv, ADS1298_CMD_RESET);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "RESET failed\n");
-> +	}
-> +	/* Wait 18 clock cycles for reset command to complete */
-> +	udelay(ADS1298_CLOCKS_TO_USECS(18));
-
+Content-Transfer-Encoding: 8bit
+
+Support for Avago APDS9306 Ambient Light Sensor.
+
+Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
+It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
+channel approximates the response of the human-eye providing direct
+read out where the output count is proportional to ambient light levels.
+It is internally temperature compensated and rejects 50Hz and 60Hz flicker
+caused by artificial light sources. Hardware interrupt configuration is
+optional. It is a low power device with 20 bit resolution and has 
+configurable adaptive interrupt mode and interrupt persistence mode.
+The device also features inbuilt hardware gain, multiple integration time
+selection options and sampling frequency selection options.
+
+This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for 
+Scales, Gains and Integration time implementation.
+
+Link: https://docs.broadcom.com/doc/AV02-4755EN
+
+1 directory, 18 files
+
+v5 -> v6:
+ - Changes as per review
+ - Update kernel doc for private data
+ - Change IIO Event Spec definitions
+ - Update guard mutex lock implementation
+ - Add pm_runtime_get()
+ - Update styling
+   Link: https://lore.kernel.org/all/20240204134056.5dc64e8b@jic23-huawei/
+ 
+v5 -> v6 Bindings
+ - Write proper commit messages
+ - Add vdd-supply in a separate commit
+ - Add Interrupt macro in a separate commit
+   Link: https://lore.kernel.org/all/1d0a80a6-dba5-4db8-a7a8-73d4ffe7a37e@linaro.org/
+
+v2 -> v5:
+ - Bumped up the version:
+   RFC->v0->v1->v2->v3 (Earlier scheme)
+   v1->v2->v3->v4->v5 (Scheme after review) (Current scheme)
+   Link: https://lore.kernel.org/all/20231028143631.2545f93e@jic23-huawei/
+
+ - Added separate patch to merge schemas for APDS9300 and APDS9906. Added
+   APDS9306 support on top of that.
+   Link: https://lore.kernel.org/lkml/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+
+ - Removed scale attribute for Intensity channel:
+   Link: https://lore.kernel.org/all/20231204095108.22f89718@jic23-huawei/
+
+ - Dropped caching of hardware gain, repeat rate and integration time and
+   updated code as per earlier reviews.
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+
+ - Added descriptive commit messages
+ - Fixed wrongly formatted commit messages
+ - Added changelog in right positions
+
+ - Link to v2: 
+   https://lore.kernel.org/lkml/20231027074545.6055-3-subhajit.ghosh@tweaklogic.com/
+
+v2 -> v5 Bindings:
+ - Removed 'required' for Interrupts and 'oneOf' for compatibility strings
+   as per below reviews:
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+   Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
+
+ - Implemented changes as per previous reviews:
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+   Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
+
+Subhajit Ghosh (5):
+  dt-bindings: iio: light: Merge APDS9300 and APDS9960 schemas
+  dt-bindings: iio: light: adps9300: Add property vdd-supply
+  dt-bindings: iio: light: adps9300: Update interrupt definitions
+  dt-bindings: iio: light: Avago APDS9306
+  iio: light: Add support for APDS9306 Light Sensor
+
+ .../bindings/iio/light/avago,apds9300.yaml    |   20 +-
+ .../bindings/iio/light/avago,apds9960.yaml    |   44 -
+ drivers/iio/light/Kconfig                     |   12 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/apds9306.c                  | 1335 +++++++++++++++++
+ 5 files changed, 1363 insertions(+), 49 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+ create mode 100644 drivers/iio/light/apds9306.c
+
+
+base-commit: b555d191561a7f89b8d2108dff687d9bc4284e48
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 

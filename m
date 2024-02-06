@@ -1,123 +1,163 @@
-Return-Path: <linux-iio+bounces-2262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7004C84BB6C
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 17:52:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797B784BBB2
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 18:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB1E2821CC
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 16:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB8E71C21F68
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 17:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3004A34;
-	Tue,  6 Feb 2024 16:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886606FAF;
+	Tue,  6 Feb 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VWhar9yU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TcjBjMVP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7DB8F4E;
-	Tue,  6 Feb 2024 16:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CA98F61;
+	Tue,  6 Feb 2024 17:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707238344; cv=none; b=eSJUtbRC9VARQOMxIrLOIRdKnhIp22UiP3JqALuO5KKXDzzG2+TBo4EG3dl9cFDoDUXHqhXzANGB+s+rlm9AmWVmWbD4cswysFjWQUmGUoyFywpUcKUp0ZPMQIQKzoEKojTKAIJlTB71EN2OnPpj70/+inbgh+kBHKAenN/k9Tc=
+	t=1707239740; cv=none; b=MtjabP77vO8n6qcG7L9fxLIHqIoSPyABr8MgOtmqzm2qZcfxLUUALPl01bKY1xx3ViRbKMwxUPAYCIF2w2ql7NYeTp8/6Aoz+kGjo0E0vhjLTnZb1OReOJP2+mc2h28Sl2+s/4DwbSTc1rYDKuuWStj9TYHCJyJ75t0vEnYIXes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707238344; c=relaxed/simple;
-	bh=4ThfSJ23r0wm4lNbZO0lgycZkt1nAW+7BwrOVPTbDBE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uN7JszAIh1xH7w8Y9ZxjJUWZWp0XnnH5ygZ0sd8rpxYU2dFmvk7sS1abSOzTNskJtZq84A6OAno+GNgWDIFZDT8svikP2D50ZCzwcFs+Xh2l8DR3ewUAhN+pZFPnlps4ol7IhlEJv4iOgN2LiEiTP3+aT9Avy1KU0aMEDY9QRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VWhar9yU; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1707239740; c=relaxed/simple;
+	bh=4COZZH6G6FQq+/0+Kgrlad6dIW22WDXbcZYFPu1fyDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TZUQ+GtIjUwKUyvoXC+rFcVGDGxG/9q/QryxeeRLM8dCsMWqopLzQFT9bTl6a3Ddojk9tF2KbR2RHpNKk4UTGT9MO/xE4/V3VLzh0e8+i1YgIvt+N/tZtVyjbmSCHdoEqBOnshMPSlCHo2V4T1Q2FhOJpZmpMNpLf8SuQp0Du30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TcjBjMVP; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33b4b121e28so212743f8f.1;
-        Tue, 06 Feb 2024 08:52:22 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-33b18099411so1748100f8f.0;
+        Tue, 06 Feb 2024 09:15:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707238341; x=1707843141; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4ThfSJ23r0wm4lNbZO0lgycZkt1nAW+7BwrOVPTbDBE=;
-        b=VWhar9yUMlsbkFn+X7g97aRpvCc55FtvV1KUuFlbTMMu3k3cskVom74RdHjSJ8y82v
-         ZflLEq7wDNg7+wXDYGhgN7P2tO2t/ME6D9JZDE3/nfJ4r//YZoOKfNOEzC8alj3xp0ud
-         FukIssMPGkSe+U6Q8cMeQjBk2q61vHIOOzWDDbYe+xpRW1gxUGSTh1B3QUawp2tboVdn
-         Uk7YHRxAWX3gtvIQZaY9DXY999FQxew9IDrBloaf1Q0ENcl+nSVczf4dbwMxVhn6RS67
-         P8jO/C94uzqQHLDBNB5OKB5YIO1nhg1DVQBN9yjKG9CkUsG0erVbR2gf10Y8nepWvbRn
-         pTWQ==
+        d=gmail.com; s=20230601; t=1707239737; x=1707844537; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o+ehnWB1iuhsMXHLtvIAjkfWYjL8PQoZ4ssRw0UvkKI=;
+        b=TcjBjMVPFgYwToOMHHfBmbqK8Aqqf59kP9S6h6GbuhKHsBt/NPk1eHxYrSEAVMTlNd
+         VFR/ja84pbwtq+lh9594Xw8tF6N115ULPMrV87MdaouTaXxmpgWI93kwKfVoRGq9kmPh
+         X8VoM9cOhNiZP5hnJ8pwQQbR9M+nAZM1h2s8hmwxFRYLal3P0UsjZKyo+/9SwiUCj0aX
+         fwUK8DMbFwbGbWWvZMysd8FYfIVdtsQbb+4ap6roV8PC3sWUAl1rAZH8xKCVIdEKGFUM
+         sfCMLt3AGgoo4SVsO2BYnlxeVPVNIAtXEeLOVjvjEYVMouvbz9HPida3H+DKE6uupuL1
+         K2dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707238341; x=1707843141;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4ThfSJ23r0wm4lNbZO0lgycZkt1nAW+7BwrOVPTbDBE=;
-        b=xDNwOGaisprL4+B0cSKEAncaSUUmOiCqXkEiPDW4I4NIlNHLx1NTCQknktGb2yhDU+
-         duwKqlwnsOJNS4xCLdeNzjsV+R1mQJ1ahxHKpOudS89UnFcsM4DLTVORgEe9TVVTyY9o
-         dpNtH7VT+B5hN17tfM2HpV+PviTNa/J5TLdg7dnAxzTgaI/7qLcxjvEQ+/oPe/GrZFPV
-         mzDrVd/uDxiGMEAswf/60rK3ezpu8uES8CJzw+WLJu2s9wgf7mj0t1qKEzeFbDwNQI5/
-         1h91PDX6N0Z6bcM1rsxjw1W2Hv3/unUnUCi9lLS2CkzvszWoXAJm/al7NxblARifXHW0
-         4fOA==
-X-Gm-Message-State: AOJu0YyS3mPNk3fUj9iwarWEkptbeCddxssgj26KLMR7mzWhfklAo25j
-	+bK6gaAnz4asrLp0kuWF2s7O0LHpLPQJTSO529T+HGDyVKNdOLQN
-X-Google-Smtp-Source: AGHT+IEppGmlHSNMpez09T7w3SnYVi/FFwtCTfZ4PEL0kkLxbruDjSinlgVGWX8XLB9umnoauTiluA==
-X-Received: by 2002:a5d:6b89:0:b0:33b:481f:7e91 with SMTP id n9-20020a5d6b89000000b0033b481f7e91mr1665530wrx.39.1707238340719;
-        Tue, 06 Feb 2024 08:52:20 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUrHXNuXP31e9r5KefZEkxdLDpNxwc/tGVNysnK4WHZ8RlSnxsfYHyOj4TZ0eFQaFEOg156AmX/BJL7CGOnlzoKvHrhinJjkY9JZr00bNQeQmQlhIaFIA2q06NAj0tQR7aut/ZSCsOxue4J7zbqtORqhezW4bKQ7s9TmgQ0BjLzV0aIhUuuc1Xfrp9nYGwMP6aEClLhibxM1qPdaCfiMNR6Cp912iidAmKuLl25uAJFzi2RnlOKgbcIlX14GrroUViVvQwLe1i0YLwVqzv8vOqNYcPylKJ9T/rD/QVOMljb8LED4rMRhB4i4GWCOC+FS0qsBTjuANv4BdudkhxCo4ZEPiRX8yOZ8WPl+RkCYBNf3agLUY0GXgEkZqGikKmesQ==
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id d16-20020adfe850000000b0033aeb0afa8fsm2517401wrn.39.2024.02.06.08.52.20
+        d=1e100.net; s=20230601; t=1707239737; x=1707844537;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o+ehnWB1iuhsMXHLtvIAjkfWYjL8PQoZ4ssRw0UvkKI=;
+        b=vkHKFhHmi+x/yExAXafUoiv9PSxlPX/QJq64Scp0ETYLgvVgvP1EwzyvCXPHB8rbnp
+         Cs5bGYamI3NaH1qe0wX2oW7csF+KUaDaMIT2iqacQ/6hIpUgbNmMWHHKmjrpSRtKkmFv
+         UW/GrCZDVCsU0ejfrAPtx+WdS1RCJmuBUszjJrRZ3fDoMaX/Ndo1zqbTKoS8AJo8mMeJ
+         JaoKL6kr2cwK8lCdEDaOKdY3S9gEYjfMYSC6Dsn5EFsZooHT9E1/T3hUuPYUu3lZT0tW
+         mxpApIJxvRs1twJTYggFmLvIM9qdOpLmSeLWoj/uTz8SOdQQ+lOEgOkdKWWFJP81N7rE
+         1rFQ==
+X-Gm-Message-State: AOJu0YwXmfWp+Itn6XOV8wCOkgbmHviB0wCoZXLDoVhPsP+W0ODUc6AF
+	ls5QIAx8w2mU3n8D2IwVVcgeIJQ97PCaWLs/jKRlooDy/4lcqekH
+X-Google-Smtp-Source: AGHT+IEXaJBJzQ/XZSko2SnYnQnfL3fQIPvkWGEIhGfQjFjNkDke13mR9mgVIIKPjafAQWtDUYazSQ==
+X-Received: by 2002:a05:6000:1847:b0:33b:4aeb:82f0 with SMTP id c7-20020a056000184700b0033b4aeb82f0mr867427wri.49.1707239736665;
+        Tue, 06 Feb 2024 09:15:36 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVkOUkb7cc5uAFLxGlcP4ZB/qqb8xUp8xEdu578z77fHAZ0FCiD/6cZ03WpRdSUIuE4Wm4kvwtrTA33lhxIrC0Xtd5+zXo4g8E5yUevIhfklQa9kI2bscD0JvWyzlHbWrXHYVdgBvRtgrV+Sea5s43dk0ch48cDhXGlx2Y2ZOebWXK8yw==
+Received: from localhost.localdomain (i577B692F.versanet.de. [87.123.105.47])
+        by smtp.gmail.com with ESMTPSA id q12-20020adff78c000000b0033ae4df3cf4sm2546808wrp.40.2024.02.06.09.15.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 08:52:20 -0800 (PST)
-Message-ID: <8d7d33a633f258389adba39930769d577a05cab2.camel@gmail.com>
-Subject: Re: [PATCH v9 6/7] iio: adc: ad9467: convert to backend framework
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>,  Jonathan Cameron <jic23@kernel.org>, Rob
- Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
- Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>
-Date: Tue, 06 Feb 2024 17:52:20 +0100
-In-Reply-To: <CAHp75Ve=Utqb0rtuO9c7xkxqpasFgzj4x4d4mm-CHM=_XJUrrQ@mail.gmail.com>
-References: <20240206-iio-backend-v9-0-df66d159c000@analog.com>
-	 <20240206-iio-backend-v9-6-df66d159c000@analog.com>
-	 <CAHp75VeWV0+hqCoUb4YvfObnEAv0AaYJmXgpxJLfve+mBwhkyQ@mail.gmail.com>
-	 <CAHp75Ve=Utqb0rtuO9c7xkxqpasFgzj4x4d4mm-CHM=_XJUrrQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+        Tue, 06 Feb 2024 09:15:36 -0800 (PST)
+From: Jesus Gonzalez <jesusmgh@gmail.com>
+To: andriy.shevchenko@linux.intel.com,
+	jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jesus Gonzalez <jesusmgh@gmail.com>
+Subject: [PATCH v3 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow binding on some devices
+Date: Tue,  6 Feb 2024 18:11:33 +0100
+Message-ID: <20240206171132.35000-2-jesusmgh@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ZcIniuk0TMAIrHIB@smile.fi.intel.com>
+References: <ZcIniuk0TMAIrHIB@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2024-02-06 at 16:20 +0200, Andy Shevchenko wrote:
-> On Tue, Feb 6, 2024 at 4:20=E2=80=AFPM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Tue, Feb 6, 2024 at 12:08=E2=80=AFPM Nuno Sa via B4 Relay
-> > <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
-> ...
->=20
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 .max_rate =3D 250000000UL,
-> >=20
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 .max_rate =3D 500000000UL,
-> >=20
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 .max_rate =3D 125000000UL,
->=20
-> Forget to comment that these might be preliminary converted to use
-> multipliers from units.h...
->=20
+"10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and
+probably others) in their ACPI table as the ID for the bmi160 IMU. This
+means the bmi160_i2c driver won't bind to it, and the IMU is unavailable
+to the user. Manufacturers have been approached on several occasions to
+try getting a BIOS with a fixed ID, mostly without actual positive
+results, and since affected devices are already a few years old, this is
+not expected to change. This patch enables using the bmi160_i2c driver for
+the bmi160 IMU on these devices.
 
-Note this is just a conversion and I want to change the least possible. I c=
-an do that
-in a follow up patch.
+Here is the relevant extract from the DSDT of a GPD Win Max 2 (AMD 6800U
+model) with the latest firmware 1.05 installed. GPD sees this as WONTFIX
+with the argument of the device working with the Windows drivers.
 
-- Nuno S=C3=A1
+	Device (BMA2)
+	{
+	    Name (_ADR, Zero)  // _ADR: Address
+	    Name (_HID, "10EC5280")  // _HID: Hardware ID
+	    Name (_CID, "10EC5280")  // _CID: Compatible ID
+	    Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+	    Name (_UID, One)  // _UID: Unique ID
+	    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+	    {
+		Name (RBUF, ResourceTemplate ()
+		{
+		    I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+		        AddressingMode7Bit, "\\_SB.I2CC",
+		        0x00, ResourceConsumer, , Exclusive,
+		        )
+		})
+		Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+	    }
+	    
+	    ...
+	    
+	}
+
+Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
+---
+v3: - Add ID to the actual i2c driver instead of the spi driver
+(Mistake while manually transferring change to clean master, lesson learned)
+    - Move comment to outside of the function as per coding style
+    - Adapt comment style to standard multi-line comment style
+    - Reduce unnecessary noise from DSDT in the explanation body
+
+
+ drivers/iio/imu/bmi160/bmi160_i2c.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/iio/imu/bmi160/bmi160_i2c.c b/drivers/iio/imu/bmi160/bmi160_i2c.c
+index 81652c08e644..fc72445204e6 100644
+--- a/drivers/iio/imu/bmi160/bmi160_i2c.c
++++ b/drivers/iio/imu/bmi160/bmi160_i2c.c
+@@ -42,7 +42,16 @@ static const struct i2c_device_id bmi160_i2c_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, bmi160_i2c_id);
+ 
++/*
++ * FIRMWARE BUG WORKAROUND: ID "10EC5280"
++ * Some manufacturers like GPD, Lenovo or Aya used the incorrect
++ * ID "10EC5280" for bmi160 in their DSDT. A fixed firmware is not
++ * available as of Feb 2024 after trying to work with OEMs, and
++ * this is not expected to change anymore since at least some of
++ * the affected devices are from 2021/2022.
++ */
+ static const struct acpi_device_id bmi160_acpi_match[] = {
++	{"10EC5280", 0},
+ 	{"BMI0160", 0},
+ 	{ },
+ };
+-- 
+2.43.0
+
 

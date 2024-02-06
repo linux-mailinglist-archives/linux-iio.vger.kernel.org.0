@@ -1,132 +1,208 @@
-Return-Path: <linux-iio+bounces-2237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BC484B2DB
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 11:55:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9301E84B561
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 13:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1E9C1C2084F
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 10:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8090A1C250C5
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 12:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BEE1292ED;
-	Tue,  6 Feb 2024 10:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82C512EBED;
+	Tue,  6 Feb 2024 12:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="TqyPjeFP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqPkU7hW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E677D5677B
-	for <linux-iio@vger.kernel.org>; Tue,  6 Feb 2024 10:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBD412EBF0;
+	Tue,  6 Feb 2024 12:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216915; cv=none; b=oRq/+beQX7mBb5GmgxaGrML5v0eY+NCvArSBI/DpJJ3FbQ22lsF2MvjgmWHS/1Y2agbWzEpbJtfKjDDTZx0S8sUsmYSuV4Rm2rqpAgueTDoPF+npYUUQFbFU7/I361Wngz+B3hQZo9yiCWuKSfeVI3IHEGUXaIBF7FCQdkXY3UE=
+	t=1707222929; cv=none; b=nQoqiDGFblxh+aWuWeLE0Ye9JNrz6Fwco3kW66jh5gPbiGfCnBl09lrZtkanyClOs70Oj/Gh6JUZbo0mMmWv3A0fLJgtx1f7zpw7IvaXDRPkMVYrR/NMnYeMu+aKzmYTBw99pY4LiWZWAIWDBcL1CmuKNzT4R3shzP29Bobx9BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216915; c=relaxed/simple;
-	bh=aU3cUFcF/+qA6c/U4GCnJpmTtXdJ/4c+yLFoO5y/rN4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gmGS/9Yo9nxVQicgg/SssvA0hisL1FsGpPOa+fF+h/LEu0MLm53KqgvIf180W8NX9gPYYpfQRLEUPu1CaysJtxPox7gyB7Js0Gm/kVVdQ9UrYk3PLHet6fHlIAgjEaKx8LH6I0+n5CK06Ah9Vd3vUcApFzhGPjR9LizCMkkr8IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=TqyPjeFP; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a26fa294e56so89279366b.0
-        for <linux-iio@vger.kernel.org>; Tue, 06 Feb 2024 02:55:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1707216911; x=1707821711; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug0YsfnX3VGECMAmiImMvOD5o629AgP4WulAYnK+czY=;
-        b=TqyPjeFPyjiJgrgot2/qkkLFNMdlnE76uHPT0KybbI8IhdWtk+Px+0hXZ5X01csVV2
-         rscahdAa9VZmeWoPmWXx0i3KTXcmYJfUubxXgjkDWiZ2k9KMh1Vo6EokU0G7GLBvYy5X
-         +vpglFZQsaM5hvo+5x0MM1h+wzU4lLlm6bAJRq/mbvn/rQjRODgDyrABZpvSLpU7JmUM
-         hX6jtOSoJOgaWRlFyhMQyvqC3kGc1v6aPFh3FKB4po2t8sl71QQ2FkL8FqKhyBVM356u
-         gK+btpk7JIxu7RRmr2hafGeFge9L0qc4jUu9RxTPvVjGQK8OCBzSs7XVdNZGetYd0qBt
-         IVmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707216911; x=1707821711;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ug0YsfnX3VGECMAmiImMvOD5o629AgP4WulAYnK+czY=;
-        b=q1rqCLMot7UUFJhR3ChWH39aGqMTMX0uCvtroI7ynSZvPmS5p19IVTu9rnMNSc17Cy
-         zYkQjBn+tFt09/8zFl3rBTWn1RcFFFD4qWYtD591P18s5dVlx6RN+8WsCVS1VP6JKMgP
-         B2G/U0ssOctD+tdrWYnAmXs6UP7Jb8UUGOtdtYFih7kgEFVWtHAbKb2Br9dGoIWyArXR
-         mwZlkdwQxOnQ92UMglsU/NtIlS/BRsVvq4nANaDwAP1PCPRhq3ReDiQgykVw6NWE5BSe
-         bnO/OmoA32DR1RaKsM0Grm0pilS+/fwYQrVJ0OOgTo1I8c91DtWHEaLeBWOBWweX1YVy
-         LQuQ==
-X-Gm-Message-State: AOJu0YwunKSQIU7p+fZvLfF/5rT1QLDLTj4RFx8f8k9U9cGDWUElxDEB
-	a3MxQ1cZv00kv0QNzwSbsm3kugJI/S1iZi6XIdARIYZ3miGjKE05O2soflbxUuY=
-X-Google-Smtp-Source: AGHT+IFjAK6xGybwYfWgmNQTCA1Ip56LWjbj6wr4mOaUdW+/3YHGkzhQ1x0ynFDGZRJfEJqJRZZcBA==
-X-Received: by 2002:a17:906:5651:b0:a37:e3ea:634a with SMTP id v17-20020a170906565100b00a37e3ea634amr1768503ejr.40.1707216910887;
-        Tue, 06 Feb 2024 02:55:10 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWErRgo/bZa592qqqOQWx3DByL19PW/1WplR9Kb6WY/ShnP7PQtWeobq4ljTtn1zYNA9F8Xx1wzOX8yvF9afGtqb9GmOwv9UsMbaKxO9DqObd+zVgNcJBAqaHRhu97I5ez56/7Z9j+YrrUN+THTfYIyh5UpQ4rwIufEnezplXsEeIbiVB8rASb+2szZDkUCSOFcqzKDATRNloDRhA+TQyqZ3dYxHrA5ccvKifft2+WOV/1FXheds/hE1orzKaWdifAz1Z6X76gTAQA6NDDMuLjQFupRjNbB63rhOJjNRv8aUPeK5wMv/rb/+sqHTyopwIWB5K1MSzBMGHlFoDUGoj9k5QTq/mzVqTI2yGb+nNR78w==
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id un2-20020a170907cb8200b00a30cd599285sm993438ejc.223.2024.02.06.02.55.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 02:55:10 -0800 (PST)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: mazziesaccount@gmail.com,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	s=arc-20240116; t=1707222929; c=relaxed/simple;
+	bh=PK5nDR0cVxyrHo/8P8GyyMrszWz1Rk8JjrC8mgYK/NA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M9IWl3oTkgNNOZGQCrcR85ZnEnzsQjNPC4ltiWt9P5NZMnIcuMHwUvf/O+qZG6dIsacBcfRMolNKcHqE5ltac81su8IERVonacsf0nZkWBONEgTxJoE0bALD8nzAdLuIe7SifGOa1szVuf4dPXAeV3r25yDnVGASFBhQjyjTnW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqPkU7hW; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707222928; x=1738758928;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PK5nDR0cVxyrHo/8P8GyyMrszWz1Rk8JjrC8mgYK/NA=;
+  b=DqPkU7hWYYoIYCY8u7iUPgCIiCdPNc1OLuT2PpVWBLZe6mLx8VuKg9yb
+   QOxT6MxG6B2LVq601QaWUFNYCb+mOASDjXhf1I+1nEt+a6N2RhkegBsCy
+   Z3mx9bLz/mgbmRqGuzeuw/JWakjoDA1nzYm4NLvA/1Y2msgkOv7nf+vR3
+   rEq3ZQhraWUn2ckRHjqQmJQ9/uT0VyvhZi5kxQyIx3Ww5NrwKP9cHCgt1
+   BnK1H0TPVrBeEtZ+qYCJvDia6EbxDmYA5L1dmxK+fXY0wCrawklZ7Pq2f
+   nOukSuzb/JdbLLfd/AIcnVlOnA2Es6IzdaQvQ5wE7q6tv5/B4CllVg6eD
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="18254256"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="18254256"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 04:35:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="909627480"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="909627480"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 04:35:25 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rXKfb-00000002L3D-0pbE;
+	Tue, 06 Feb 2024 14:35:23 +0200
+Date: Tue, 6 Feb 2024 14:35:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jesus Gonzalez <jesusmgh@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] dt-bindings: iio: afe: voltage-divider: Add io-channel-cells
-Date: Tue,  6 Feb 2024 16:25:01 +0530
-Message-ID: <20240206105502.648255-1-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
+Subject: Re: [PATCH v2 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow
+ binding on some devices
+Message-ID: <ZcIniuk0TMAIrHIB@smile.fi.intel.com>
+References: <ZcDnikkiwSIDGzT0@smile.fi.intel.com>
+ <20240205183618.7761-3-jesusmgh@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240205183618.7761-3-jesusmgh@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Enable the voltage divider to both receive and provide measurement
-services by adding #io-channel-cells.
+On Mon, Feb 05, 2024 at 07:36:20PM +0100, Jesus Gonzalez wrote:
 
-This is especially valuable in scenarios where an ADC has an analog
-frontend, like a voltage divider, and obtaining its raw value isn't
-interesting. It is desired to get the real voltage before the voltage
-divider.
+Thank you for the update, my comments below.
 
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
----
- .../devicetree/bindings/iio/afe/voltage-divider.yaml  | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+First of all, it would be nice also to try to contact with Realtek and make
+them aware again. Have anybody talked to them previously?
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-index dddf97b50549..fd3c511e1beb 100644
---- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-+++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-@@ -39,6 +39,17 @@ properties:
-     description: |
-       Channel node of a voltage io-channel.
- 
-+  '#io-channel-cells':
-+    description:
-+      In addition to consuming the measurement services of a voltage
-+      output channel, the voltage divider can act as a provider of
-+      measurement services to other devices. This is particularly
-+      useful in scenarios wherein an ADC has an analog frontend,
-+      such as a voltage divider, and then consuming its raw value
-+      isn't interesting. It is desired to get the real voltage
-+      before the voltage divider.
-+    const: 1
-+
-   output-ohms:
-     description:
-       Resistance Rout over which the output voltage is measured. See full-ohms.
+Also read this thread:
+https://lore.kernel.org/linux-iio/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/
 
-base-commit: 99bd3cb0d12e85d5114425353552121ec8f93adc
+> "10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and 
+> probably others) in their ACPI table as the ID for the bmi160 IMU. This 
+> means the bmi160_i2c driver won't bind to it, and the IMU is unavailable 
+> to the user. Manufacturers have been approached on several occasions to 
+> try getting a BIOS with a fixed ID, mostly without actual positive 
+> results, and since affected devices are already a few years old, this is 
+> not expected to change. This patch enables using the bmi160_i2c driver for 
+> the bmi160 IMU on these devices.
+
+You have trailing whitespaces in each of the line.
+
+> Here is the relevant extract from the DSDT of a GPD Win Max 2 (AMD 6800U
+> model) with the latest firmware 1.05 installed. GPD sees this as WONTFIX
+> with the argument of the device working with the Windows drivers.
+
+>      Scope (_SB.I2CC)
+>     {
+
+Cut off these 2 lines.
+
+>         Device (BMA2)
+>         {
+>             Name (_ADR, Zero)  // _ADR: Address
+>             Name (_HID, "10EC5280")  // _HID: Hardware ID
+>             Name (_CID, "10EC5280")  // _CID: Compatible ID
+>             Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+>             Name (_UID, One)  // _UID: Unique ID
+>             Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+>             {
+>                 Name (RBUF, ResourceTemplate ()
+>                 {
+>                     I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+>                         AddressingMode7Bit, "\\_SB.I2CC",
+>                         0x00, ResourceConsumer, , Exclusive,
+>                         )
+>                 })
+>                 Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+>             }
+
+Please, cut the below...
+
+> 
+>             OperationRegion (CMS2, SystemIO, 0x72, 0x02)
+>             Field (CMS2, ByteAcc, NoLock, Preserve)
+>             {
+>                 IND2,   8, 
+>                 DAT2,   8
+>             }
+> 
+>             IndexField (IND2, DAT2, ByteAcc, NoLock, Preserve)
+>             {
+>                 Offset (0x74), 
+>                 BACS,   32
+>             }
+> 
+>             Method (ROMS, 0, NotSerialized)
+>             {
+>                 Name (RBUF, Package (0x03)
+>                 {
+>                     "0 -1 0", 
+>                     "-1 0 0", 
+>                     "0 0 1"
+>                 })
+>                 Return (RBUF) /* \_SB_.I2CC.BMA2.ROMS.RBUF */
+>             }
+> 
+>             Method (CALS, 1, NotSerialized)
+>             {
+>                 Local0 = Arg0
+>                 If (((Local0 == Zero) || (Local0 == Ones)))
+>                 {
+>                     Return (Local0)
+>                 }
+>                 Else
+>                 {
+>                     BACS = Local0
+>                 }
+>             }
+> 
+>             Method (_STA, 0, NotSerialized)  // _STA: Status
+>             {
+>                 Return (0x0F)
+>             }
+
+...till here. Replace it by ... on a single line.
+
+>         }
+
+
+>     }
+
+As per above (this is part of Scope, so drop it as well).
+
+...
+
+> +	/* FIRMWARE BUG WORKAROUND
+> +	 * Some manufacturers like GPD, Lenovo or Aya used the incorrect
+> +	 * ID "10EC5280" for bmi160 in their DSDT. A fixed firmware is not
+> +	 * available as of Feb 2024 after trying to work with OEMs, and
+> +	 * this is not expected to change anymore since at least some of
+> +	 * the affected devices are from 2021/2022.
+> +	 */
+> +	{"10EC5280", 0},
+
+ /*
+  * Please, use the correct style of
+  * multi-line comments, like in this
+  * example.
+  */
+
 -- 
-2.42.0
+With Best Regards,
+Andy Shevchenko
+
 
 

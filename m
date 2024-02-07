@@ -1,88 +1,85 @@
-Return-Path: <linux-iio+bounces-2272-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2273-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2841E84C32A
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 04:37:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B43684C5BE
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 08:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ADB51C24DCE
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 03:37:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B3FB22E4B
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 07:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80C0101C4;
-	Wed,  7 Feb 2024 03:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61431F945;
+	Wed,  7 Feb 2024 07:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqSEWnnw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KwSixjM+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE9810A20;
-	Wed,  7 Feb 2024 03:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0609B1F944;
+	Wed,  7 Feb 2024 07:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707277033; cv=none; b=sSyjrQpwv0nMGvxGzYyLkFlWCz0VS8ZQItsY9Hv8xjKmMNwD3XVFbAaNnNM+Wrh1ey7MMxW58xrCssBdJSHW5R3EBSbfI/Ml3t7XT4r6MntIkhFGPnm9GZy6rTRgUsvIwdqkxLESpUG1g+snPnke5+FevMQAahNVFQe6UpWRcwA=
+	t=1707292087; cv=none; b=ETEyy3J2RuqHc5p6enyZm/5/X15nN3IOIZdg7t4KIku1Ckmr1Tww79inc41tCGx9X4Kzo7vWn87HwLJmPT5nQuywZgxHkubKHzyDlMecgWwpmQx9Osli1EBiKeGcfGss3KNEgQIvLOfV3+UIUhlIVIZFvnSm6acHc1x1fnlO29I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707277033; c=relaxed/simple;
-	bh=DzXdpNk0IldplWnZUSXf8zpiuY5OZq+4Qd+G8Yan964=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8hYjYI55slJDDCmfh5lXGMitTtsOmKwS1WHS5PkB+3mMj1dC5CttMyedJsBk91/gS5Obaino8Ht5lAIQT2IaEcIEdV2XomNhDV1d8ZKU3bT45cTWnsW+V5/a3sRh2/du4cWkqdxOYCyYyuhz49K0QwmyDyaSvP71hZ7TF1qU3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqSEWnnw; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1707292087; c=relaxed/simple;
+	bh=MG1uf8bYLbQHWO/CpHsHnq0NKvoI1wjQGurUoWjydK4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EVGGV0tZELXBGfgzYP6pLcKGOuay8raLLkFYM3YONqHJ2tliNqQ0P6lAsUH8yfcFYGnuMRhscMGDc4+PiiPzIi1nu76jIe4a0E4T2LuQtpEMSRvChTVXaXhUkjGLlnfiRfDcCYeWa2+AkLk+WpblCTFgmeuz3M8GR5Nt/+m0G68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KwSixjM+; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40ff802496cso1369385e9.3;
-        Tue, 06 Feb 2024 19:37:11 -0800 (PST)
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2cf3a095ba6so2866641fa.2;
+        Tue, 06 Feb 2024 23:48:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707277030; x=1707881830; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jO4v0nbCePd1+AMeAWjbKpihfEE3SN8JiqCXFyWGK0Y=;
-        b=WqSEWnnwTOD7Sz/aDQSa9U8I87Y5XN13cMnaeM1FHQz/bDyKZ1jpMMbrMq9UzBj9OF
-         ZT/1TUqYae3+LvQyggFes/9WHmKS8V231SEfoX8LmoK8RV5JVGmLLMwisNwUqnhS5+YI
-         2MTUo0xMgtNVYYNDWyMFtKsiYrTMoH38UBR5b7uSWiydKE4iYmhQLKM6Y7094rDdMhqP
-         niDwQ27XQNmhUXUedbAXXGwX6sv4qYBY55vQZVDhK6Li3jVTilHjSuSCkyK0m1obgsrL
-         yK1RBdktf2a6gRCl/3zxRvsa6qnsffvt7wtO+chfvXLfff0A67Zvji0ZwN0iqbxeO94/
-         LTGQ==
+        d=gmail.com; s=20230601; t=1707292084; x=1707896884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E1qXyLTJ+bcxE7eUtS47rjoOv4Eby6s9nWs9bn0qlJw=;
+        b=KwSixjM+Nl7iP0QIbkcd5U4QLgzljU/SH+aros8vDPCRk5KTx4DdwSZgsa0iDQFxMA
+         7TsSRjZCHrGE40Ook30dajPnxTnLv9xzUVgwKUdsk5Pqj/5NCN8wmfu4LoS5gghKrHdh
+         +Ib7I0J0BsKxCZjMT47Q0+eqx5xU4hyUJDHNijsnFwLzyNDvVt9008bT/1id4wbmxjjq
+         agsxIufbRSf4UxIJ8hfayxe0Ac6/MDN/oaX+m1qm7V2D54vNnS14e9hvSROXvJp4O73l
+         pK7CAlI6v3Mw03zYprM8RD/qh1PB2JYcVI6KxzF+rbf5tLUbsfTaoWIXbQdOgGN33mfZ
+         3USA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707277030; x=1707881830;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jO4v0nbCePd1+AMeAWjbKpihfEE3SN8JiqCXFyWGK0Y=;
-        b=w2y4oIIIjr7I6IoZdETCD+VfliD6Fh8xwr9Agckgn5h9WrEnn/94uHY/AOn5V6hMB1
-         JHuw2T3MVfCfctxsq4D5M7SFpqkm5loZVaXA+ZNpHapE9OvW51tkgzvbGixMC7n/cAcx
-         bCEzOJprgh2FNBIzTCH4EBp0iL7dkyz29UesDa0byMwTE/+n5V9cejrH3rY4ZAR6wqIp
-         ygyS75CeDw+Sb9vQ8QFm5z8NGKZjTvzoCXdPSZGylMCBW6eEt6IqS3PiwKgX3ONtj1W/
-         M2OFtUvo7rnnAsjLG7g19BweYyc8/FY7TN+GMt3XQRXckcxiuu/3BdSsCeVkDmr4zbFL
-         gAtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjgMbJh4IE2ByXlgwbN8wVTtCV867K5MTDV4EU6IgJsheQxvzm1Vt2SIkWvOmz/Q480/05edI1NKAMChCTzS7t8cMWuak0V0tc0gYnBga8O5BJ/ZFu6i8qtJJKkIovxO0Mmtu+4OHQ
-X-Gm-Message-State: AOJu0Yx0IkKR2jcZdYcwVQWh0/Ogs+3u/zq8vkUyZgtc5yb0pnLLfOPI
-	a9vic4XkP3A02vOpbVUUv3JfE5WsJSSC3UkI8Y/oYec/bCFhGuco
-X-Google-Smtp-Source: AGHT+IFvuN46Yba6zvQUzA+PGsOaAcK3v+MuP3fOMQoVXxOcYEkz+hetsFuvi65WoeoI5+4gmpDMbw==
-X-Received: by 2002:a5d:59a1:0:b0:33b:48f2:13ee with SMTP id p1-20020a5d59a1000000b0033b48f213eemr3193489wrr.19.1707277030214;
-        Tue, 06 Feb 2024 19:37:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXd3JgzV+wPPM5K2DxTTdIA3ceUB2hjcCuZgwd/YIgPq3/Iqwera8AB0fFGyAlFkn2E6t99T6G9yLQ9OBR7L2+/f/7p7RmsKF3vPezfL+3HoJJd6tg4KwwKsO6AmD3HlZkPqiAb4v84wVoFQy7prDLiJV8B8V6BscaUdMPITzbA6e2/3ki8YspigCLKA384hi1q/VhQcZl5HzwHcrM5l9zQm3GmXXHl9bL1RT/ArsaI8O4x2LruKOhjpZIYII5GQ563Utj4CPxS4KcZ
-Received: from demon-pc.localdomain ([188.24.52.65])
-        by smtp.gmail.com with ESMTPSA id p5-20020a5d4e05000000b0033b422356fbsm373447wrt.80.2024.02.06.19.37.09
+        d=1e100.net; s=20230601; t=1707292084; x=1707896884;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E1qXyLTJ+bcxE7eUtS47rjoOv4Eby6s9nWs9bn0qlJw=;
+        b=nYNlkFZTdkToVGhMFlcKhONkT2ic5YONpGQVD3rfQUjAGCdg+oSXSU6Hns1RP9DA1t
+         765rDa2pbdbDnxvU2JlOuOLz3C02CUI4GgKQxNUPRD404Akv7yeMBb76TsxjMiARpSdU
+         4sA3Ud9UzB8XVb+rjOUhxKNssJkuwcNKVlIRnsEiQSJ8uNJ/sNMWuL138lkxTbbAtXuN
+         oN7luSu5Hf7isb6Oyy8R4wdiT96ErpCEnR4gy4D3YAoF5CmYw1I/rsCJI25nkoZsEfr+
+         36khSuNcSImknUTUA6coCfwhxA55dc9Qzl+bgRqvbc9+Y17sUrmgNo6DJMhmstGg/VAt
+         4vlw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGSNme//na/FYQfIvNpj2JRkPHDT4re8WwwHALhCLkICUrbxpqHXdqZ1S2FYxHZDBo5ZlikvYXG+yMR4ll5w3lv+UcHAT2Bfhmb0rzi07iYw51ruoD1+65iChnl/LI6jSq3k/gUXv6
+X-Gm-Message-State: AOJu0YwaR1IUJ9jFde4GJJwY8/VMm0TdW8QzjJGiWnaRq6j9YGg9TiO5
+	YTH5WK8rpikW+ZBmfwYw76UmPAph8qS094ybE7jVI4VPNB+Us8Jw
+X-Google-Smtp-Source: AGHT+IFkPYJpF7raSG7O9jEXzX/hDIO4QIZu9sfH8+tTF8d+piC/53idO1L5hLKEAXay7R2Ym3PA9w==
+X-Received: by 2002:a2e:b5c6:0:b0:2d0:af09:e3dd with SMTP id g6-20020a2eb5c6000000b002d0af09e3ddmr3118056ljn.52.1707292083786;
+        Tue, 06 Feb 2024 23:48:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVThcWmbnI4yPjFrdMEuOEOFMevhwgc8H8bd/IEnZg+VEIOob14gjKpXe8ALxWh3UcUShE7LJpwP+pd2eR3WbeHo72g9kzMWHk3DX2oe/bu3ev6kdslYC9WKoGe/8F5wWmJF1ToowNfhOluLgB1XaiBucsniEqsIZRvBPEDqD0urQrOUbRBCK8l5F46k1wjLSxf/Ht/Cy7QBxtFci6URMnHfnaZXPBg7ufvrN07oNrhejItWal65lDd9V1Ymf43YL5vSrpwiwot/Xqpcz5uljgM
+Received: from debian.fritz.box ([93.184.186.109])
+        by smtp.gmail.com with ESMTPSA id f3-20020a05640214c300b00560556fe9b7sm378558edx.78.2024.02.06.23.48.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 19:37:09 -0800 (PST)
-From: Cosmin Tanislav <demonsingur@gmail.com>
+        Tue, 06 Feb 2024 23:48:03 -0800 (PST)
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
 To: 
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+Cc: Dimitri Fedrau <dima.fedrau@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Li peiyu <579lpy@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cosmin Tanislav <demonsingur@gmail.com>
-Subject: [PATCH 2/2] iio: accel: adxl367: fix I2C FIFO data register
-Date: Wed,  7 Feb 2024 05:36:51 +0200
-Message-ID: <20240207033657.206171-2-demonsingur@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207033657.206171-1-demonsingur@gmail.com>
-References: <20240207033657.206171-1-demonsingur@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] iio: humidity: hdc3020: add threshold events support
+Date: Wed,  7 Feb 2024 08:47:50 +0100
+Message-Id: <20240207074758.4138724-1-dima.fedrau@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,31 +88,42 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As specified in the datasheet, the I2C FIFO data register is
-0x18, not 0x42. 0x42 was used by mistake when adapting the
-ADXL372 driver.
+Based on Fix:
+a69eeaad093d "iio: humidity: hdc3020: fix temperature offset" in branch
+fixes-togreg
 
-Fix this mistake.
+Changes in V2:
+  - Fix alphabetical order of includes(Christophe)
+  - Fix typo: change varibale name "HDC3020_R_R_RH_THRESH_LOW_CLR" to
+    HDC3020_R_T_RH_THRESH_LOW_CLR to match variable name pattern(Christophe)
+  - Add constants HDC3020_MIN_TEMP and HDC3020_MAX_TEMP for min/max threshold
+    inputs (Christophe)
+  - Change HDC3020_MIN_TEMP to -40, as stated in the datasheet(Javier)
 
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
----
- drivers/iio/accel/adxl367_i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in V3:
+  - drop u8 register pairs and switch to 16bit defines(Jonathan)
+  - create helper functions to avoid code duplication(Jonathan)
+  - Add interrupt bindings in example
+  - use the decimal part for setting thresholds(Javier)
+  - use return in switch cases hdc3020_read_thresh(Jonathan)
+  - fix interrupt handler:(Jonathan)
+    - return IRQ_HANDLED when we get a read back failure
+    - take the timestamp into a local variable
+  - fix multiline comments(Jonathan)
+  - use fixed value "hdc3020" instead of dev_id in probe
+  - clear interrupt after registering the interrupt handler
+  - remove interrupt polarity
 
-diff --git a/drivers/iio/accel/adxl367_i2c.c b/drivers/iio/accel/adxl367_i2c.c
-index b595fe94f3a3..62c74bdc0d77 100644
---- a/drivers/iio/accel/adxl367_i2c.c
-+++ b/drivers/iio/accel/adxl367_i2c.c
-@@ -11,7 +11,7 @@
- 
- #include "adxl367.h"
- 
--#define ADXL367_I2C_FIFO_DATA	0x42
-+#define ADXL367_I2C_FIFO_DATA	0x18
- 
- struct adxl367_i2c_state {
- 	struct regmap *regmap;
+Dimitri Fedrau (3):
+  iio: humidity: hdc3020: drop u8 register pairs
+  dt-bindings: iio: humidity: hdc3020: add interrupt bindings in example
+  iio: humidity: hdc3020: add threshold events support
+
+ .../bindings/iio/humidity/ti,hdc3020.yaml     |   2 +
+ drivers/iio/humidity/hdc3020.c                | 443 ++++++++++++------
+ 2 files changed, 309 insertions(+), 136 deletions(-)
+
 -- 
-2.43.0
+2.39.2
 
 

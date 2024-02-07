@@ -1,404 +1,160 @@
-Return-Path: <linux-iio+bounces-2290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC5184CC81
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 15:19:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5962E84CD5C
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 15:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF051C2548C
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 14:19:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85801F2A51C
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 14:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB347CF38;
-	Wed,  7 Feb 2024 14:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E917F474;
+	Wed,  7 Feb 2024 14:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eKb75DVV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kGkD3MzW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66D37C088
-	for <linux-iio@vger.kernel.org>; Wed,  7 Feb 2024 14:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782BF81AA0;
+	Wed,  7 Feb 2024 14:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707315560; cv=none; b=R/CZNudwXIsVrwzRvwmIYh0GT+IyS8CUpyf5ANekV9LqeuKyLbxG4XTD5CqTp4JJ8irV4QZbZzORX7RNKJXoXixo7XFtkQLS2kT7nh+UtNniLNI2K0Xp/HsNvZQb7q/BjcoXzDEYfgJZ2rokSp2c8tKE2pv2Z3VJL5+tsIrpRR8=
+	t=1707317617; cv=none; b=n4unTbD4FBoFueLxXxc41M86VXrrD9BfxfE2k5UJX8ao4eSZ/5ClmbZ58vfCPxZFFt74Gq2fYyXpB9d7w/NK4Iv74WX/q9eS7pGpVuN2win22170eWyc89Ok2/C1Yk5Jeoerj142LnRCJL/3m5pm3435MMqs4ngFESEZkHphNSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707315560; c=relaxed/simple;
-	bh=qNiDxmPLRX2gONHjp5V//oNUCAneHOBmKcLQJZDoqq4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cRf8bpzphsXIjDmLUrXacdh51FRMrOvTrUjQqubstyW/azTBvjgOoLuESY5FAoJFH3/W9MdNyp+Uh+v5zWcbOZmLQjCNJXQMKS723QMG/Sa25oZUp3JVwCEjwOoQeKbtPXQb1ft5j8biKw+cZ3KedqWq8/e7VV+ZMA59RTBPL3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eKb75DVV; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d0c9967fdcso6146921fa.0
-        for <linux-iio@vger.kernel.org>; Wed, 07 Feb 2024 06:19:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707315555; x=1707920355; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ILWgMVro314dmhUiCh6UxBQcT1f8d7NxX/BsGCT/hZM=;
-        b=eKb75DVV8Qd00FiFEn12aPI/vM9FJRtYg4HbueN8N7x9bZC2UPgnapUBtxoaN/vevF
-         UJb/GvGkqYWFMnbG5+fpBYrJYxTl/rLqjOtbCMQwYsBTnU35C2PEKOzxpyT0FeMvZnvt
-         mX6d91qHVPcbaUw8dvULVdc3aCxBuFWnOnR3hjicX21YqU0wskhqYBucny9KiPtpb4ES
-         Yx/Bd8qDUeMOm3QlbRZao6VeWmPKjEeA33zw7/z2+sJkC1dOx6loLLUPlrlckld8SNG9
-         Iz606hhjAWL5Iq5CCk1MS2tT6Qmqbcm/BeOwHlqidRZkcX17GdRuwMtvG+cs/WVhWZP8
-         OA0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707315555; x=1707920355;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ILWgMVro314dmhUiCh6UxBQcT1f8d7NxX/BsGCT/hZM=;
-        b=q2Shm7HYxghQWUaKGZjFQIGjlEFXOCAdqNah09HTB7Kct4pgqbH9prRyJho1/VsGb2
-         KcWPPDwX9Ri8xCs4d81b9akelIj1C/oyLIjFsB24sG0HCABtatOeY6y/BKWCWrtIeBD5
-         8UGt7F07/Qkfdlrs1Nyo7R67aSoPmMtBbX0EYo4CzDxsJCUl2RK7l8OA/LCvkvFJHBDb
-         aJncLAMuVApqdbPu1Hex8KVW2WB/DiWqwL1ZvYVoaDDPwV0EmjTLC/KBneHvVCNucla1
-         H8K0wYpviCeifdgf+LOKlCndoxDptASrNnffpStAq9pz7a+QVDVY7vU6/+b3eI5fGGKH
-         xqXQ==
-X-Gm-Message-State: AOJu0YzdM1jpqLeudQNmOAFIFD3swaKZzj3FyOQnHJuMz+3+Yo+OYHA3
-	EJswl4Yfq/GKT7j6FpjKTIkGuQBv/MzKZfp8nPi54chirb02x3G0IWYONaR9QeDAf9kTE78toTA
-	3YHy5ugMTsQLDMJsjFwZeduqI0kbb+Bvu8X15+w==
-X-Google-Smtp-Source: AGHT+IFfjr9Dp6bX7NVZVfUzrhPOrBXBAFSzMDuPsY9Vk33c1bMGHwminHgD/mEBhygi5I7Rp3i6pg1t4oaeS+X4e5E=
-X-Received: by 2002:a2e:988c:0:b0:2cf:57d7:6d35 with SMTP id
- b12-20020a2e988c000000b002cf57d76d35mr2094386ljj.10.1707315554797; Wed, 07
- Feb 2024 06:19:14 -0800 (PST)
+	s=arc-20240116; t=1707317617; c=relaxed/simple;
+	bh=5FT+mEDT+UV9P5Ky0v+/HcqKWwUwpUswuOOSWRvdDZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqwI9dCJvKw4dGeScxX4167n+MwPXwHgVJjLxU26s0TLD0YsDN4JumyCHCRpe8aUKxxKvI0AhTUdQvhI7POsQIZiy0S5Flhhgcx4TZymjWcknBRMs7zPyh9RKLZkLnnlUyqoaZKpEkkHtNh/95F/3o8vuFSJBtl91EuGI+cqcxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kGkD3MzW; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707317615; x=1738853615;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5FT+mEDT+UV9P5Ky0v+/HcqKWwUwpUswuOOSWRvdDZk=;
+  b=kGkD3MzWua9BIZ30+h5k6H16IB6WbJr+BjlpBPnLPOhxW+2VeMl4//3j
+   p4WoFsFYmXHz3I4rqVxU8lwHc6nTJ/OascmgUMcSAna6IiEU+xw8OHaN+
+   siJvLoFisQq8IPeyJ3DYdP3z3j7mLAoOA1Dp3CZ3Hmhi9k8Ukco64FduV
+   XFz2WpeiAq1p+50m3F1yBSfN8GHp5/CkGearG8fES48AdEFCOUd2B0voJ
+   +gRWYhFiYAc3Ufy1ThJtmrVu7jGQTPD5PCxyJkzarONFzs6pqZtZ4IXNR
+   hoiWb4fk+Sns4ugfCwV6mlHe7EsPjoeJvOBV51GV+YiXnl7snlT0Ep3JD
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="4867466"
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="4867466"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 06:53:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="910011504"
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="910011504"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 06:53:23 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rXjIe-00000002dKF-0ptp;
+	Wed, 07 Feb 2024 16:53:20 +0200
+Date: Wed, 7 Feb 2024 16:53:19 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 5/5] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <ZcOZX8mWTozC2EAc@smile.fi.intel.com>
+References: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
+ <20240206130017.7839-6-subhajit.ghosh@tweaklogic.com>
+ <ZcI3Pz6Z5V4qqpHO@smile.fi.intel.com>
+ <43e01493-1f26-414b-b2eb-7fb959b9b542@tweaklogic.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com>
- <20240206-ad7944-mainline-v1-2-bf115fa9474f@baylibre.com> <5fd17b66eab1989b9cfb874445c18480a2282809.camel@gmail.com>
-In-Reply-To: <5fd17b66eab1989b9cfb874445c18480a2282809.camel@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 7 Feb 2024 08:19:03 -0600
-Message-ID: <CAMknhBHP40uXtviZ1KCQ3ZyruaLUVrjpp573u7QqMCT1tuoYjw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad7944: add driver for AD7944/AD7985/AD7986
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <43e01493-1f26-414b-b2eb-7fb959b9b542@tweaklogic.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Feb 7, 2024 at 4:07=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
- wrote:
->
-> Hi David,
->
-> The driver It's in pretty good shape... Just some comments from me
->
-> On Tue, 2024-02-06 at 11:26 -0600, David Lechner wrote:
-> > This adds a driver for the Analog Devices Inc. AD7944, AD7985, and
-> > AD7986 ADCs. These are a family of pin-compatible ADCs that can sample
-> > at rates up to 2.5 MSPS.
-> >
-> > The initial driver adds support for sampling at lower rates using the
-> > usual IIO triggered buffer and can handle all 3 possible reference
-> > voltage configurations.
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
-> >  MAINTAINERS              |   1 +
-> >  drivers/iio/adc/Kconfig  |  10 ++
-> >  drivers/iio/adc/Makefile |   1 +
-> >  drivers/iio/adc/ad7944.c | 397
-> > +++++++++++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 409 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 4f1e658e1e0d..83d8367595f1 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -458,6 +458,7 @@ R:        David Lechner <dlechner@baylibre.com>
-> >  S:   Supported
-> >  W:   https://ez.analog.com/linux-software-drivers
-> >  F:   Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
-> > +F:   drivers/iio/adc/ad7944.c
-> >
-> >  ADAFRUIT MINI I2C GAMEPAD
-> >  M:   Anshul Dalal <anshulusr@gmail.com>
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index 59ae1d17b50d..93fbe6f8e306 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -280,6 +280,16 @@ config AD7923
-> >         To compile this driver as a module, choose M here: the
-> >         module will be called ad7923.
-> >
-> > +config AD7944
-> > +     tristate "Analog Devices AD7944 and similar ADCs driver"
-> > +     depends on SPI
-> > +     help
-> > +       Say yes here to build support for Analog Devices
-> > +       AD7944, AD7985, AD7986 ADCs.
-> > +
-> > +       To compile this driver as a module, choose M here: the
-> > +       module will be called ad7944
-> > +
-> >  config AD7949
-> >       tristate "Analog Devices AD7949 and similar ADCs driver"
-> >       depends on SPI
-> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> > index 5a26ab6f1109..52d803b92cd7 100644
-> > --- a/drivers/iio/adc/Makefile
-> > +++ b/drivers/iio/adc/Makefile
-> > @@ -29,6 +29,7 @@ obj-$(CONFIG_AD7780) +=3D ad7780.o
-> >  obj-$(CONFIG_AD7791) +=3D ad7791.o
-> >  obj-$(CONFIG_AD7793) +=3D ad7793.o
-> >  obj-$(CONFIG_AD7887) +=3D ad7887.o
-> > +obj-$(CONFIG_AD7944) +=3D ad7944.o
-> >  obj-$(CONFIG_AD7949) +=3D ad7949.o
-> >  obj-$(CONFIG_AD799X) +=3D ad799x.o
-> >  obj-$(CONFIG_AD9467) +=3D ad9467.o
-> > diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-> > new file mode 100644
-> > index 000000000000..67b525fb8e59
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/ad7944.c
-> > @@ -0,0 +1,397 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Analog Devices AD7944/85/86 PulSAR ADC family driver.
-> > + *
-> > + * Copyright 2024 Analog Devices, Inc.
-> > + * Copyright 2024 Baylibre, SAS
-> > + */
-> > +
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bitops.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/device.h>
-> > +#include <linux/err.h>
-> > +#include <linux/gpio/consumer.h>
-> > +#include <linux/module.h>
-> > +#include <linux/property.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/spi/spi.h>
-> > +
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> > +
-> > +#define AD7944_INTERNAL_REF_MV               4096
-> > +
-> > +struct ad7944_timing_spec {
-> > +     /* Normal mode minimum CNV pulse width in nanoseconds. */
-> > +     unsigned int cnv_ns;
-> > +     /* TURBO mode minimum CNV pulse width in nanoseconds. */
-> > +     unsigned int turbo_cnv_ns;
-> > +};
-> > +
-> >
->
-> ...
->
-> > +}
-> > +
-> > +static int ad7944_single_conversion(struct ad7944_adc *adc,
-> > +                                 const struct iio_chan_spec *chan,
-> > +                                 int *val)
-> > +{
-> > +     int ret;
-> > +
-> > +     ret =3D ad7944_4_wire_mode_conversion(adc, chan);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     if (chan->scan_type.storagebits > 16)
-> > +             *val =3D adc->sample.raw.u32;
-> > +     else
-> > +             *val =3D adc->sample.raw.u16;
-> > +
->
-> Will this work both in big vs little endian archs? I don't think so but m=
-aybe
-> I'm missing something. At a first glance, it seems we get big endian from=
- spi so
-> shouldn't we have __be16 and __be32?
+On Wed, Feb 07, 2024 at 09:37:37PM +1030, Subhajit Ghosh wrote:
 
-Yes, in Linux SPI words are always CPU-endian. It is the drivers that
-use 8-bit transfers to read 16 bits that need to handle big-endian
-swapping. But here we are using 14/16/18 bit transfers.
+...
 
->
-> > +     if (chan->scan_type.sign =3D=3D 's')
-> > +             *val =3D sign_extend32(*val, chan->scan_type.realbits - 1=
-);
-> > +
-> > +     return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int ad7944_read_raw(struct iio_dev *indio_dev,
-> > +                        const struct iio_chan_spec *chan,
-> > +                        int *val, int *val2, long info)
-> > +{
-> > +     struct ad7944_adc *adc =3D iio_priv(indio_dev);
-> > +     int ret;
-> > +
-> > +     switch (info) {
-> > +     case IIO_CHAN_INFO_RAW:
-> > +             ret =3D iio_device_claim_direct_mode(indio_dev);
-> > +             if (ret)
-> > +                     return ret;
-> > +
->
-> I'm not totally sure but I think Jonathan already merged his series for t=
-he
-> cleanup stuff for the claim direct mode. Maybe take a look and use it? No=
-t a big
-> win in here but I guess we could still reduce some LOC.
+> > > +static_assert(ARRAY_SIZE(apds9306_repeat_rate_freq) ==
+> > > +		APDS9306_NUM_REPEAT_RATES);
+> > 
+> > Just make that define to be inside [] in the respective array and drop this
+> > static assert. The assertion might make sense to have different arrays to be
+> > synchronized and when their maximums are different due to semantics (not your
+> > case AFAICS).
 
-Yes, if it is merged already, happy to make use of it here.
+...
 
->
-> > +             ret =3D ad7944_single_conversion(adc, chan, val);
-> > +             iio_device_release_direct_mode(indio_dev);
-> > +             return ret;
-> > +
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             switch (chan->type) {
-> > +             case IIO_VOLTAGE:
-> > +                     *val =3D adc->ref_mv;
-> > +                     *val2 =3D chan->scan_type.realbits;
-> > +
-> > +                     return IIO_VAL_FRACTIONAL_LOG2;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +}
-> > +
-> > +static const struct iio_info ad7944_iio_info =3D {
-> > +     .read_raw =3D &ad7944_read_raw,
-> > +};
-> > +
-> > +static irqreturn_t ad7944_trigger_handler(int irq, void *p)
-> > +{
-> > +     struct iio_poll_func *pf =3D p;
-> > +     struct iio_dev *indio_dev =3D pf->indio_dev;
-> > +     struct ad7944_adc *adc =3D iio_priv(indio_dev);
-> > +     int ret;
-> > +
-> > +     ret =3D ad7944_4_wire_mode_conversion(adc, &indio_dev->channels[0=
-]);
-> > +     if (ret)
-> > +             goto out;
-> > +
-> > +     iio_push_to_buffers_with_timestamp(indio_dev, &adc->sample.raw,
-> > +                                        indio_dev->scan_timestamp);
-> > +
-> > +out:
-> > +     iio_trigger_notify_done(indio_dev->trig);
-> > +
-> > +     return IRQ_HANDLED;
-> > +}
-> > +
-> > +static const char * const ad7944_power_supplies[] =3D {
-> > +     "avdd", "dvdd", "bvdd", "vio"
-> > +};
-> > +
-> > +static void ad7944_ref_disable(void *ref)
-> > +{
-> > +     regulator_disable(ref);
-> > +}
-> > +
-> > +static int ad7944_probe(struct spi_device *spi)
-> > +{
-> > +     const struct ad7944_chip_info *chip_info;
-> > +     struct iio_dev *indio_dev;
-> > +     struct ad7944_adc *adc;
-> > +     struct regulator *ref;
-> > +     const char *str_val;
-> > +     int ret;
-> > +
-> > +     /* adi,spi-mode property defaults to "4-wire" if not present */
-> > +     if (device_property_read_string(&spi->dev, "adi,spi-mode", &str_v=
-al)
-> > < 0)
-> > +             str_val =3D "4-wire";
-> > +
-> > +     if (strcmp(str_val, "4-wire"))
-> > +             return dev_err_probe(&spi->dev, -EINVAL,
-> > +                                  "only \"4-wire\" mode is currently
-> > supported\n");
->
-> Did you looked at spi core? I guess the chain mode is not available but I=
-IRC spi
-> already has spi-3wire. So maybe you could just have a boolean property fo=
-r the
-> chain mode and check both that and 3wire?
+> > > +static_assert(ARRAY_SIZE(apds9306_repeat_rate_period) ==
+> > > +		APDS9306_NUM_REPEAT_RATES);
+> > 
+> > Ditto.
 
-I used the term "3-wire" because that is what the datasheet calls it,
-but it is not the same as what the SPI core calls SPI_3WIRE. The
-former is described in the DT bindings patch in this series and the
-latter means that SDI and SDO are on the same pin, which is not the
-case here.
+> I apologize for this. You pointed me out in an earlier review, I misunderstood
+> it and used the macro in two static asserts! It will be fixed.
 
->
-> > +
-> > +     indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*adc));
-> > +     if (!indio_dev)
-> > +             return -ENOMEM;
-> > +
-> > +     adc =3D iio_priv(indio_dev);
-> > +     adc->spi =3D spi;
-> > +
-> > +     chip_info =3D spi_get_device_match_data(spi);
-> > +     if (!chip_info)
-> > +             return dev_err_probe(&spi->dev, -EINVAL, "no chip info\n"=
-);
-> > +
-> > +     adc->t =3D chip_info->t;
-> > +
-> > +     /*
-> > +      * Some chips use unusual word sizes, so check now instead of wai=
-ting
-> > +      * for the first xfer.
-> > +      */
-> > +     if (!spi_is_bpw_supported(spi, chip_info-
-> > >channels[0].scan_type.realbits))
-> > +             return dev_err_probe(&spi->dev, -EINVAL,
-> > +                             "SPI host does not support %d bits per
-> > word\n",
-> > +                             chip_info->channels[0].scan_type.realbits=
-);
-> > +
-> > +     ret =3D devm_regulator_bulk_get_enable(&spi->dev,
-> > +
-> > ARRAY_SIZE(ad7944_power_supplies),
-> > +                                          ad7944_power_supplies);
-> > +     if (ret)
-> > +             return dev_err_probe(&spi->dev, ret,
-> > +                                  "failed to get and enable supplies\n=
-");
-> > +
-> > +     /* adi,reference property defaults to "internal" if not present *=
-/
-> > +     if (device_property_read_string(&spi->dev, "adi,reference", &str_=
-val)
-> > < 0)
-> > +             str_val =3D "internal";
-> > +
-> > +     /* sort out what is being used for the reference voltage */
-> > +     if (strcmp(str_val, "internal") =3D=3D 0) {
->
-> Maybe you can make the code neater with match_string() and some enum...
+It might be used, but not must be, use your common sense!
+In this case it's easier to have all defined properly from the beginning.
 
-I did not know about this function. Sounds useful.
+...
 
->
-> - Nuno S=C3=A1
->
+> > > +static int apds9306_runtime_power_on(struct device *dev)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	ret = pm_runtime_resume_and_get(dev);
+> > > +	if (ret < 0)
+> > > +		dev_err_ratelimited(dev, "runtime resume failed: %d\n", ret);
+> > > +
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static int apds9306_runtime_power_off(struct device *dev)
+> > > +{
+> > > +	pm_runtime_mark_last_busy(dev);
+> > > +	pm_runtime_put_autosuspend(dev);
+> > > +
+> > > +	return 0;
+> > > +}
+> > 
+> > Seems to me like useless wrappers. Why do you need that message?
+> No specific need for that message, however the wrapper was suggested in a previous review:
+> https://lore.kernel.org/all/ZTuuUl0PBklbVjb9@smile.fi.intel.com/
+
+I see, what I meant in previous review is to split to separate helpers.
+Now, when we see how it looks like and how many actual users, we may
+go further and drop them.
+
+> Do you still want me to use the pm functions directly from the calling functions?
+
+It seems a good move forward.
+
+> > Btw, it's used only twice, open coding saves the LoCs!
+> Yes, it makes sense.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

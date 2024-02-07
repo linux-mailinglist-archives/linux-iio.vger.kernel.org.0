@@ -1,134 +1,151 @@
-Return-Path: <linux-iio+bounces-2288-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2289-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2575E84CB5B
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 14:20:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A25A84CC18
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 14:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2D91C26625
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 13:20:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B85C5B25BF8
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C180576C9E;
-	Wed,  7 Feb 2024 13:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60817C092;
+	Wed,  7 Feb 2024 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVupF5ad"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aFLxX2iN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED83976C81;
-	Wed,  7 Feb 2024 13:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F847A720;
+	Wed,  7 Feb 2024 13:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707312020; cv=none; b=TvnB3bsNQnjVHOXW+P9z/dW+CCVYbHPlglf4wfy7gu4JIjZQ13v66ZIhhNvrSCJSlVlrQ1TSCrA/SPIOR1DNRFfZHg8gCzJEAUq+MBPN0tsQjtHb2p9JCK0hrFLw4Fz3XnBD42U0tZM70yAYaqKHXV4Jpq2wOVoZuieNa0en9UI=
+	t=1707314097; cv=none; b=U52j58r950M4SSsBkDaYlxG2QlOf+eLCa+gq6vodpsmcQzS15Gs9GesOc0suWkrgvy92ifqqWqzn+aNqRrzwPge45LeHb8NCWk1Jb6Ku27mQP91kzZvY8nHoCylvLkol4oQmDWPpegeO8oXct1L1/vmUg8ng7QhaNSVgk4argEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707312020; c=relaxed/simple;
-	bh=0IeWIuV89GhyH6S9xNFkwCTY+H/TKB0wj2Cx7ah5+64=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldMx5scmbQ6WP2GuH62a8w6frcA2H8Hz7mFqzWxbFvbd6PuJgKNUkIU86svR5fuJCLhhVYE+MhrsBqxVW9QREpOLYGCVMQxCD9bpT00II6JReydSydHrES785QrxvoapFWf2PZah3Rvrl44XpULZDvaAOFCmzEmy1dfZf/NbU18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVupF5ad; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4101eb5a115so1853115e9.1;
-        Wed, 07 Feb 2024 05:20:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707312017; x=1707916817; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lrmsP2bX51lU6YyoXTaVoFbq35iYHP9ljJnfgckCYcc=;
-        b=KVupF5adZFboZZMQnC8UEGBRGOYMT+cJOxrdKCcj0TEMZcSQhiVbJe54sgoRC5HwVK
-         xearQLnh30TyJaaYDNn31/YjfbLBCkrmfyMD7HeIqj4o4ABOlwY7PWLC1NyhzCyxIVH9
-         df7J/RQbQt+HDef8pIrZN5UVY3tU3qMREn5GCxZg6cB7vg4tJTTgFl9Eh1Aa8b6k3J73
-         LMmAVaVUYJD81s45jaJ/gJZY4C9uQx+h7tBVpqKyLubiaqw4RdmtonsGWIk0eOCXsDJw
-         lSGcUODpKrZLG8Jq6NzQ4ovfkHpoCQIQ07zGFSnS9vdBbn2ATYRUjul0Ys+BYI6OEOMr
-         nGmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707312017; x=1707916817;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lrmsP2bX51lU6YyoXTaVoFbq35iYHP9ljJnfgckCYcc=;
-        b=wzWRi8mHNkzwY/WL3wrArc3vMKK7UZ6akUS5BhgIPEvPv2hy7f2ZOxuY4gw6woKrZA
-         kvX5vsK9291slOkDwx+ahy75KsOp3UUcdCDom/At+nDlxYyEmn8geIxjl8Q8beiYCzu+
-         RdpGHVQiUb6sP+guMziBcphlLobhGO16+KjxCpUVDPdbspoV1F+QjV1yQb4w1ym0sv6C
-         NAFciwdNaZALE0MFQc1vr3RGpkxKgCYLvMMAA/3M6+u0NH77IkEr1Bu5G6XO/qE4DQG8
-         1QAjkMkiRtoJc+pCPsJiWToBbKhbNQZ1ALD/boyDRf1AHoPkTQyniiSFUgO6Y8Wv2xwf
-         ie7Q==
-X-Gm-Message-State: AOJu0YxPafmUWbw/YlDSd6dOKaDLN1lW8pvumJBQaWeLBWtf88sKxr16
-	UUgDsxd7FfehP6gk8zpHlM8UULjAB5W6QHW9K3yBuMX5zUzApXuW
-X-Google-Smtp-Source: AGHT+IHcCCSXdJpdXy18Oog6sr+qR7ui39IjPjZop7d67hoXMdgKrYjYhYQPCYuGjrvyFa4RaaxkQg==
-X-Received: by 2002:a05:600c:34c8:b0:410:44f:195b with SMTP id d8-20020a05600c34c800b00410044f195bmr1524639wmq.28.1707312017151;
-        Wed, 07 Feb 2024 05:20:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWvqjaghWk+Kd7OSOeNRuWQoEQkxid/kvk/znCTaO+6H/n+2IRhNQgE08H89NVwOZ9a36K0nvttHKOWOCcLfj0R47bZ9DstRD0P/iXtfZsTpoBZ0hNTUHYBbFec8uQc/NqNJxetkrgPdj/MFh6MpSJXoVFQPODI1gICdIDW3fZqEzR/zfN51MugB43MdIZWtQRmv3GTjTchQJyL8pzunnALxcWqz2PTfBiblhiX2qDLEfYeEDWU2yfV6+zWV3aKgSpfw2ep6Jdr50M4IaXO2gKza5XGztpEoShzQw==
-Received: from demon-pc.localdomain ([188.24.52.65])
-        by smtp.gmail.com with ESMTPSA id c5-20020a5d4f05000000b0033b1b1da2adsm1495764wru.99.2024.02.07.05.20.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 05:20:16 -0800 (PST)
-From: Cosmin Tanislav <demonsingur@gmail.com>
-To: 
-Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cosmin Tanislav <demonsingur@gmail.com>
-Subject: [PATCH 2/2] iio: adc: ad4130: only set GPIO_CTRL if pin is unused
-Date: Wed,  7 Feb 2024 15:20:06 +0200
-Message-ID: <20240207132007.253768-2-demonsingur@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207132007.253768-1-demonsingur@gmail.com>
-References: <20240207132007.253768-1-demonsingur@gmail.com>
+	s=arc-20240116; t=1707314097; c=relaxed/simple;
+	bh=ma6OUluhgadwtzGsBfD8CgNWmkQQVpB9KB1lAir5kFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fChRqnzg9mePHmqNwvIvuX1W/XwE07LFQ/GLNh99cfe+hbOc0ggKLeB8/BVNgbMgw97owPrvqiwZ68DRh8lKlZZ1CSYTmKstVBBesALqk3kRlG3QyLdchHYwPmqh4mgR1/b03aGAXKT9WVwymzwJZ/a8PVO4BOJTTefQad6KvuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aFLxX2iN; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707314096; x=1738850096;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ma6OUluhgadwtzGsBfD8CgNWmkQQVpB9KB1lAir5kFc=;
+  b=aFLxX2iNPojpmZylOoaiou/UKn/vEXiPAe0ifZYyeVV3HUIBUSFNeCSY
+   tfk9bZ2U1nswXwPDOEx90XHWJUAAyLtwaXo65wQUFUFhz7TWsh2HiVSJb
+   A4+WIJdG4j6Zt0Q7wwiM/U2Ciyp3Pw797d1g73gcBdHYCpV7gWu32cbwS
+   1+/FsFEzcGeOBRJlTHQaGVOcDRo8ZAN/vnE19KIGoFtvVoPP+novdqWN1
+   EF2OenhDHIABaqtOJtHGElyK/CRexpesJZ20UfVB17MXuTM+ifGniSoHx
+   OSDRGhnpkN6E4/yVKG1so4w+r1dRJ/VZIF1RcW8gOYmP/6mPLwf3VKPkG
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="12351389"
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="12351389"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 05:54:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="909998664"
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="909998664"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 05:54:53 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rXiO3-00000002ccd-0bPb;
+	Wed, 07 Feb 2024 15:54:51 +0200
+Date: Wed, 7 Feb 2024 15:54:50 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jesus Gonzalez <jesusmgh@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow
+ binding on some devices
+Message-ID: <ZcOLql2RGmPP10EY@smile.fi.intel.com>
+References: <ZcIniuk0TMAIrHIB@smile.fi.intel.com>
+ <20240206171132.35000-2-jesusmgh@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240206171132.35000-2-jesusmgh@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Currently, GPIO_CTRL bits are set even if the pins are used for
-measurements.
+On Tue, Feb 06, 2024 at 06:11:33PM +0100, Jesus Gonzalez wrote:
+> "10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and
+> probably others) in their ACPI table as the ID for the bmi160 IMU. This
+> means the bmi160_i2c driver won't bind to it, and the IMU is unavailable
+> to the user. Manufacturers have been approached on several occasions to
+> try getting a BIOS with a fixed ID, mostly without actual positive
+> results, and since affected devices are already a few years old, this is
+> not expected to change. This patch enables using the bmi160_i2c driver for
+> the bmi160 IMU on these devices.
+> 
+> Here is the relevant extract from the DSDT of a GPD Win Max 2 (AMD 6800U
+> model) with the latest firmware 1.05 installed. GPD sees this as WONTFIX
+> with the argument of the device working with the Windows drivers.
+> 
+> 	Device (BMA2)
+> 	{
+> 	    Name (_ADR, Zero)  // _ADR: Address
+> 	    Name (_HID, "10EC5280")  // _HID: Hardware ID
+> 	    Name (_CID, "10EC5280")  // _CID: Compatible ID
+> 	    Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+> 	    Name (_UID, One)  // _UID: Unique ID
+> 	    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> 	    {
+> 		Name (RBUF, ResourceTemplate ()
+> 		{
+> 		    I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+> 		        AddressingMode7Bit, "\\_SB.I2CC",
+> 		        0x00, ResourceConsumer, , Exclusive,
+> 		        )
+> 		})
+> 		Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+> 	    }
+> 	    
+> 	    ...
+> 	    
+> 	}
 
-GPIO_CTRL bits should only be set if the pin is not used for
-other functionality.
+...
 
-Fix this by only setting the GPIO_CTRL bits if the pin has no
-other function.
+> +/*
+> + * FIRMWARE BUG WORKAROUND: ID "10EC5280"
+> + * Some manufacturers like GPD, Lenovo or Aya used the incorrect
+> + * ID "10EC5280" for bmi160 in their DSDT. A fixed firmware is not
+> + * available as of Feb 2024 after trying to work with OEMs, and
+> + * this is not expected to change anymore since at least some of
+> + * the affected devices are from 2021/2022.
+> + */
 
-Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
----
- drivers/iio/adc/ad4130.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+The location of the comment is wrong, it should be...
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index c7df499f9775..febb64e67955 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -1864,10 +1864,14 @@ static int ad4130_setup(struct iio_dev *indio_dev)
- 		return ret;
- 
- 	/*
--	 * Configure all GPIOs for output. If configured, the interrupt function
--	 * of P2 takes priority over the GPIO out function.
-+	 * Configure unused GPIOs for output. If configured, the interrupt
-+	 * function of P2 takes priority over the GPIO out function.
- 	 */
--	val =  AD4130_IO_CONTROL_GPIO_CTRL_MASK;
-+	val = 0;
-+	for (i = 0; i < AD4130_MAX_GPIOS; i++)
-+		if (st->pins_fn[i + AD4130_AIN2_P1] == AD4130_PIN_FN_NONE)
-+			val |= FIELD_PREP(AD4130_IO_CONTROL_GPIO_CTRL_MASK, BIT(i));
-+
- 	val |= FIELD_PREP(AD4130_IO_CONTROL_INT_PIN_SEL_MASK, st->int_pin_sel);
- 
- 	ret = regmap_write(st->regmap, AD4130_IO_CONTROL_REG, val);
+>  static const struct acpi_device_id bmi160_acpi_match[] = {
+
+...here as you have had it previously. Just make sure it properly formed.
+
+Maybe Jonathan can amend when applying, dunno.
+
+> +	{"10EC5280", 0},
+>  	{"BMI0160", 0},
+>  	{ },
+
+With the comment in the proper location,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 

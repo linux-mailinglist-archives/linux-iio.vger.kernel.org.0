@@ -1,128 +1,124 @@
-Return-Path: <linux-iio+bounces-2278-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2279-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A6084C644
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 09:27:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA8F84C6D3
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 10:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A4D0B21FAD
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 08:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1751B1C2344A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 09:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DAA200D2;
-	Wed,  7 Feb 2024 08:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD19E208DC;
+	Wed,  7 Feb 2024 09:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SuMsredO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LwvhrRfS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814A2200BE;
-	Wed,  7 Feb 2024 08:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1649208B4;
+	Wed,  7 Feb 2024 09:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707294453; cv=none; b=BreZUzgUygInPNRieaX3JfPPYz795dMOzpi29kKajNhCvMyjGwP9wyOx6UvJB58nUxsFutB1C4GDsRPraqOgsAUUP1jcN+nzikVryVuFGUc3PpZ9eIHIvaurSPk9CpU+fE7UlLwzg8BDJNcDXHoYvjeVHiwxTn5v8j+iDR+R7nQ=
+	t=1707296723; cv=none; b=To9q8N2rbeUxxcC1RVxK4j5RRcGrOeTQCxMDR5PWoaMPfOCVZkkg2R8s+rVIvwOzVU4naj1ILolD56AI4DSzHwEQMBdjBpdCJqNhK0C4cPJCBXBtkjxPFGLkwiNYSKZGeaKg3Ys0wxwxr6q3TCfUrz0CIiMWy3NHY7QwVHNDzKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707294453; c=relaxed/simple;
-	bh=q3wDOQ4QmJ3MQ+2IY1QMHkLo580K1oHbEpG9InAqN9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6eT0LDfKb6tt3ROfAxYuGZAJfSOiwdYAav9xhwDdV48dGoNxcjNBPN8rqARg73/tIRPDBroxbK+nsTrNAzLo1gNfKROHwJthUAl8VcA+FPOK4JNsiHyZmtFxwLEnxtE18RslHjGxSEHR/ilf591y76IY8jM+sF9AE5NkILsMao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SuMsredO; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1707296723; c=relaxed/simple;
+	bh=xtxqiTXuDBirFx6NEaQvBC0NzUg8vJLy9EConsFO6rM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LgHwUVhfia1MuuKHGux0xAxtL4O5grEYlnqNNDO/3kFkdGNu+97l7FklF4kN9TFM7vs150zTB5Y90EnjE5TvhjF85C0dOoDx8o+JT+o+fL2omBi5Cu9+8yTlFYuZEjjOs5sBEooK8WVnPvBuCrRYJT++pxoWInqnYiYtCnOslMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LwvhrRfS; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55cca88b6a5so366842a12.1;
-        Wed, 07 Feb 2024 00:27:30 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a30f7c9574eso49766166b.0;
+        Wed, 07 Feb 2024 01:05:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707294449; x=1707899249; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SW9j0j1ERBwFUqGR0euGumuXI6Xx2VO6uxxu7v25BCU=;
-        b=SuMsredOjaUGdW+Ubpsyi2F+yOeEUzVmPIXNxUeheJlcMDo9QGYWQJsQ6D5lyIyonn
-         JurY6W3EPG7VlWCAwiFDOSOsNhz3B+vmRIJ2NYWoRItwpLtK5BkhUcroQP5FKIQ1imrm
-         0SwAsoDRRn9qRemxOdw9pqLFqkGe36yd42OeVsDyMo84b4rH8J2ALTYittC0JU/DitzH
-         GSDE+wvf3pOfOZO5HD4ViuhVJ2sK6DHV2q6E11fRWvABHqhZ60yqIjbd2ccdU8UGYQwL
-         zuo0al73Jr2zNwfCrhWCdi99fLoPnwob4XmukJwxST1J4rSUPz4NxRbvaEDeRmd2ezby
-         maNA==
+        d=gmail.com; s=20230601; t=1707296720; x=1707901520; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=esE2h1nVkSVqHSvE+Z95Z0pvn32WS6+v2R6aUj+4MIk=;
+        b=LwvhrRfSYwszDoPqQqpEKs38ecFP7Fpg4p+/+cPhOZTsPpZeS3LLrLJ/v2kpwqt0BB
+         Te44yWPcIgSOlngegyeTERPQVRbvcAjve0AlhZmzYes2+JJDX3ENkIO2Por12K2FfwwV
+         cwNQXxBueMfNVr3zZ0K4cWwom0WVRf5Z+K7ZLpFE1g3sH3PlJKK+2EfDMspeD5LhhWYV
+         C8t3jNxQTQim4IEAArRb2Ua2P5xfTZRJCYodE3FWaiaoaZReXBUSRzW9v002ylEP0lSA
+         7iqJcFrbUo+XXdAVpHe16v5daiOVlaufkYjYQawI8admxPKwiisOtSS8hPvd6HR5p3Hn
+         0DNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707294449; x=1707899249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SW9j0j1ERBwFUqGR0euGumuXI6Xx2VO6uxxu7v25BCU=;
-        b=FveDp109MF4EdROW51GLTTLqM+xBoOY3OLQ+kpksO7KobG+End2tWHYl2w78Yz3zhf
-         zCgt07lXi94JDpN14FKfRkrHl8aZ3giCIG013uTyH1d80xAJY2zr25/Ib9EeIyTSVz23
-         oQJ9BzL6hH55AXX4mpi/PBG0vKfqXkwTNWv/Dzwu18/tWgVhPHLoK4PxHBK9f5yDjeK4
-         7wP/0PlYxUz2YVVgoy+XmV6X/pAj7suNr8Dmu2phpQfRhhnH0XEkdGWEUtbTqVMg80EK
-         sHNLHHwprdDra2GKqa9JGkBCIC8vc7LWFaFCELpL0k916Z1QLHY/bw9VbArDOajGqln7
-         bXjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9z5Vg66ks+pccLMnZQehx0svdncfP9THh75+GM+iHNdyHnqoqxzBm9e7VeQvbEuD0WWXXAJoeWrzoEJdajNOh78iIDp6YHqTpIC3c1OprGHI1O6IyDevPcJB8c1tHwzWvURVSmdekuoI0CQw8BT2jCf7biXqBviXfpKfSGGuGYzHkSg==
-X-Gm-Message-State: AOJu0YwOoIWj42MdG/W2/rZQceDEKmvklZ34mfHBGR8MaUdLwm2XEhBa
-	/QdzaEFGVXSUbYXqzDxNpZWMJrzcp/yj+y4WUA29bJjd14mCcRvv
-X-Google-Smtp-Source: AGHT+IGU7aEV1mfWep0b62bjwFwCpQqhdWfdLZWMPu14onms6VycuQTfU1qz38oQKsr65tqya+m/tQ==
-X-Received: by 2002:aa7:c317:0:b0:560:c8cb:c2c8 with SMTP id l23-20020aa7c317000000b00560c8cbc2c8mr1166147edq.11.1707294448972;
-        Wed, 07 Feb 2024 00:27:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVzJFpQRqUyXagh0P2eDDJCMZBGufD5AXxQNl6dvFEBKib2gluVEo8iuzqytNl2gdXrTzxGA6cdvRQDk0VQevjEjtiKt4HhRCyrXSPnSQn5GK9m0RT1zgvrKx6uLJPHTKnZi5zOsuksibr1kKDlEVPRky0xWg8QtqHRUnaAA5szpDIUHL7bh+GWyPf1YGEf4OqQmDsvVUWwbloY5G49GsPQWE/QO1EAQCt4TYn9H3ikOireYYeXmkhq1PPD4FZPR1hsCASucRQ7CE4q2RumqzI7ipOG6sg/v5Y+0V7GXko4dT7X1JlY8hvjBjywzKLjXzYw+/4mnUZrIcVvhd/azAFrFPPpN6rj
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id v30-20020a50d59e000000b005606b3d835fsm444109edi.50.2024.02.07.00.27.27
+        d=1e100.net; s=20230601; t=1707296720; x=1707901520;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=esE2h1nVkSVqHSvE+Z95Z0pvn32WS6+v2R6aUj+4MIk=;
+        b=XRxvkdH68L/1OKCzLgn5RTZF8i9i8/Jq/+YUQZ1iAMOXKiZwKIfmtzg73y+cpxHH8H
+         ppF3VuN2M5+vh/qkeRhQr5VFImaPLML059YsgDElT+u46Mwlr40+HzwJx8RG+AhYtUqI
+         B2JyWkuLNo/1NCEf8OpoxVFPpYAHdyeTgI4ZvHyVpp7/56y4qB3vaq89dsYUC/VhL7rg
+         zyQRtfcfiOnrcbPG5eWMx3okCaMXlvV4JATdyTD/4/mstuy3tXbjz7uUf0ENbBV8eJ8g
+         VB6PRO3oG3NA9a3OMcWk5cDl65N1EOhyBzZ9804QpUzAZdRNvhWoY81kVZ+SDIrhnA2z
+         K5Yg==
+X-Gm-Message-State: AOJu0YzlVIrfO/bjnTkWzjaJ3pJa53Ofm6h6ZZYHOgxAgAKuOCFBxuk5
+	TwoKUwkEYkYqe0pXg4OO5f9n/sE8swwWrCQmIhnnx8C+M3LpB9CX
+X-Google-Smtp-Source: AGHT+IEaj7zV6zJ+AJmCTjLy4JM5pqgb3fG+Rr3bhlMl8pG5g7ngHLFlygha5muv/ceg7OBCrJ99Ng==
+X-Received: by 2002:a17:906:af14:b0:a36:fc06:6f7b with SMTP id lx20-20020a170906af1400b00a36fc066f7bmr3726567ejb.44.1707296719667;
+        Wed, 07 Feb 2024 01:05:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWaigS8/0B268hzEBsKAjyBzI5b74juO+4hkmnLQlGYjXfHV4CH9OTz1HSdsYGznaVZdnknVYdeCQfdcP1hSa8T77MoLsSc/tl0oVgf6QJ7oEiUSEdu2J2u8HvEH3Ad52O6vZ0zNbt3QLWprQp8HR3v22pqFWyWhNl19exsWruZNBc/r4hL+O3/ZwmSj8p7+lpb730wtiXeqSj4M3qbmqBLOwdGTZ+Gfbtj2YJzH7cHobryxw==
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id a21-20020a1709065f9500b00a385832f8d8sm515578eju.128.2024.02.07.01.05.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 00:27:28 -0800 (PST)
-Date: Wed, 7 Feb 2024 09:27:26 +0100
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Li peiyu <579lpy@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: humidity: hdc3020: add
- interrupt bindings in example
-Message-ID: <20240207082726.GA18294@debian>
-References: <20240207074758.4138724-1-dima.fedrau@gmail.com>
- <20240207074758.4138724-3-dima.fedrau@gmail.com>
- <626fe429-98b3-4319-b104-ef66e4b7afdd@gmail.com>
+        Wed, 07 Feb 2024 01:05:19 -0800 (PST)
+Message-ID: <70a4854e94cfd04b1a0ec9d3defe50ec56fc874f.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: adxl367: fix I2C FIFO data register
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Cosmin Tanislav <demonsingur@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>,  Jonathan Cameron <jic23@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 07 Feb 2024 10:08:38 +0100
+In-Reply-To: <20240207033657.206171-2-demonsingur@gmail.com>
+References: <20240207033657.206171-1-demonsingur@gmail.com>
+	 <20240207033657.206171-2-demonsingur@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <626fe429-98b3-4319-b104-ef66e4b7afdd@gmail.com>
 
-Am Wed, Feb 07, 2024 at 08:54:57AM +0100 schrieb Javier Carrasco:
-> Hi Dimitri,
-> 
-> On 07.02.24 08:47, Dimitri Fedrau wrote:
-> > Add interrupt bindings in example.
-> > 
-> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> > ---
-> >  Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> > index 7f6d0f9edc75..5b3f9670fa52 100644
-> > --- a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> > @@ -51,5 +51,7 @@ examples:
-> >              compatible = "ti,hdc3021", "ti,hdc3020";
-> >              reg = <0x47>;
-> >              vdd-supply = <&vcc_3v3>;
-> > +            interrupt-parent = <&gpio3>;
-> > +            interrupts = <23 IRQ_TYPE_EDGE_RISING>;
-> >          };
-> >      };
-> 
-> Did you compile the example? I think this will fail because you don't
-> have the include for IRQ_TYPE_EDGE_RISING.
->
-Missed that one, thanks. No didn't build the documentation yet. Will do
-that.
+On Wed, 2024-02-07 at 05:36 +0200, Cosmin Tanislav wrote:
+> As specified in the datasheet, the I2C FIFO data register is
+> 0x18, not 0x42. 0x42 was used by mistake when adapting the
+> ADXL372 driver.
+>=20
+> Fix this mistake.
+>=20
+> Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+> ---
 
-Best regards,
-Dimitri Fedrau
+This needs a Fixes: tag. With that:
+
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+
+> =C2=A0drivers/iio/accel/adxl367_i2c.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/accel/adxl367_i2c.c b/drivers/iio/accel/adxl367_=
+i2c.c
+> index b595fe94f3a3..62c74bdc0d77 100644
+> --- a/drivers/iio/accel/adxl367_i2c.c
+> +++ b/drivers/iio/accel/adxl367_i2c.c
+> @@ -11,7 +11,7 @@
+> =C2=A0
+> =C2=A0#include "adxl367.h"
+> =C2=A0
+> -#define ADXL367_I2C_FIFO_DATA	0x42
+> +#define ADXL367_I2C_FIFO_DATA	0x18
+> =C2=A0
+> =C2=A0struct adxl367_i2c_state {
+> =C2=A0	struct regmap *regmap;
+
 

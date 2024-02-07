@@ -1,158 +1,156 @@
-Return-Path: <linux-iio+bounces-2293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2295-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C7A84D175
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 19:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D6284D27A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 20:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE150284ECF
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 18:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0039289625
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 19:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28F686AC3;
-	Wed,  7 Feb 2024 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DAC126F00;
+	Wed,  7 Feb 2024 19:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="evHphc0j"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50A784FC1
-	for <linux-iio@vger.kernel.org>; Wed,  7 Feb 2024 18:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3FD8286B;
+	Wed,  7 Feb 2024 19:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707331401; cv=none; b=AwNSijeWLnyQHkwsJKXkLGL8J44+JbnQxgeD0L93QoVFl/rsh5kAaP3If1/xWtEbUfzwWU/51QCwHTSIyJbq2JiOaGb20PIIwFI5d1dlhvK97q7jjPCXbBpitw0M1WaPR5Zqk2y6w3URN8j260Va7ynk6tf0NK3E0gQF1Q/6yNc=
+	t=1707335825; cv=none; b=lzXMeAzC47K+wam8K0Q4ut9vQU2clF/PIXAUbUSc48645xiOHWGClEdkVKK9y90kK65ZOIKL31gqaIri9IfJQW1kYjYKSExT3JILWNF39IKYh/vfZIctmbZOCp/oI7hHdPVyqO2tWBO91yaIlwA3AzcMIdAZ75rjyKW3J6EMJf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707331401; c=relaxed/simple;
-	bh=V9fXmo/wji/+Qk23ejom1WKCUrS23v2L7b4iJfa3OQA=;
+	s=arc-20240116; t=1707335825; c=relaxed/simple;
+	bh=/FcFb9qUU0AFc7ntQBhM1DYybql7YvNG3j0P9y2MGhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XZ73Eb2KE+ZSdaYd2p9n9WZDumjXlVpnjcuVmXBllYiARm9/6DXd8zaYIDmtbWBJX6c9Uzk22YaaTvC5lYFea0MEm8dFpHrbvsUnddlo5m3ViJq6x2q3swkOe7EiRR+/qvfmdHDOl55Bapei+wswz6PFTHtZWm3+iBKPfusucEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rXmt4-0007PI-4K; Wed, 07 Feb 2024 19:43:10 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rXmt2-0054Wx-6n; Wed, 07 Feb 2024 19:43:08 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rXmt2-00HRrt-0O;
-	Wed, 07 Feb 2024 19:43:08 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: kernel@pengutronix.de,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	linux-iio@vger.kernel.org,
+	 MIME-Version; b=Ir6yUS/3lEI88VrjrANMZkys2PfwWYPFSD1rUfXEKRDz+QiF0f5g7d6y6YkaXA3p23bGG6HekPh2hu041l7EgHRNLfKAzGdqWRujfg+SPFDLxtcLgZsbf/3EaFhjdHkuP+aCn94v3O9qVfcNXDGT/A8ENAWF4+qpaahvA5IPo14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=evHphc0j; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a39e31e1aa9so9845666b.0;
+        Wed, 07 Feb 2024 11:57:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707335822; x=1707940622; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3uPhDmGaNbr+vXWHveZBJmP7AayoiCUUwJqSBYw/j+Y=;
+        b=evHphc0jwG3eqkM+ybCJI9bM7H5e4u2OTLHTy1CPnlGWEYL2f4i30k45QYEFx6wf2R
+         AvKRSJW8lJaVNS8lYty4k8TIYTnNe2k1w3Pc35tZbHGhJ6bLYoxWvVmQmmvMldiKm2A3
+         kadgp0sEN4ePDla9EifOaDlatMMfGuxbZR6kofHQ1OnhsiJ2YRkMMSzXyoKKHxczOY2R
+         B5b9G0yaRGjQrKkgxTWHACXwnawWYnDOLtTqJzky0takj07uP35QAapoii25F0Xrby1q
+         Xjs7e9gap33g6ueiIOdF60GMDmPUWZ1aMNEU1ACe3f//V1i9mF/J5NTcEAHNo37M52E4
+         cHug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707335822; x=1707940622;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3uPhDmGaNbr+vXWHveZBJmP7AayoiCUUwJqSBYw/j+Y=;
+        b=Ue9MQtpBMrL5T97FaWoPDsBlJfo+HgufIzlrLWkgAcFwe/vVFiZR0RGxcfYWlzV1iS
+         le1Av0uWM0pllVL+Kh2d4lNp28gWuh8Ky5ErWqOcvkBgy0GHYgEVvGq6i3oBXJ132Y14
+         eHKzQQRkS4sj7NL7cnlShNcbn74wb58xaFIJ5viZpK5C8z4XxeSTEx7kFMC2zzXaNaPR
+         hybNoEDtmOGdoZiAORqVDSxIQXpBcXyqjbhRrKArPtH4b27o7BbZqbY7HW+m/tBni+gf
+         UY45XnABojFBAU0VqgON8tdTvcgYw6gohyIJVcdFEojrQe3+TJhk8fzKlOJZBbiNqlWZ
+         F5tw==
+X-Gm-Message-State: AOJu0YzfQU0Q8PWezm6ddWsueLJdcKVYth0YW8BZdJTbBuAKrMSPT+Ny
+	Dhfjb6g1WzWDTgbNonLu6SGIdZuG/lVgw9ZQrPGBw5wxVao1YHvh
+X-Google-Smtp-Source: AGHT+IEk+obbIzohAZ2Cb9TslRpGBO1bLg1Qbs9SXH09Foh5WinxJwTiiAubuQhQN0RLHTQqfL/OgQ==
+X-Received: by 2002:a17:906:ca2:b0:a37:3525:d227 with SMTP id k2-20020a1709060ca200b00a373525d227mr5543066ejh.27.1707335822056;
+        Wed, 07 Feb 2024 11:57:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWak2uUE8YgnUnWJshSf3V14sOhgfgMZCSz114ya52S0qjEjhlTLLU+sN2hiZ5vNDLKS1E1TgjyS282mvbYjIM4iKbYwyXHJnYfXah1ZCTOZIOvbIfSjCjIDhx+3zKfuWh6L1HWFWnKwxFb0ndgO7KlDt5dHK4ftcqa1MWLAvAjbmRs7A==
+Received: from localhost.localdomain (i577B69E7.versanet.de. [87.123.105.231])
+        by smtp.gmail.com with ESMTPSA id rf19-20020a1709076a1300b00a353ca3d907sm1086438ejc.217.2024.02.07.11.57.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Feb 2024 11:57:01 -0800 (PST)
+From: Jesus Gonzalez <jesusmgh@gmail.com>
+To: andriy.shevchenko@linux.intel.com,
+	jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 03/32] iio: adc: ad_sigma_delta: Follow renaming of SPI "master" to "controller"
-Date: Wed,  7 Feb 2024 19:40:17 +0100
-Message-ID:  <de866d09c80c89816df62602ba4ba8ba30e9971f.1707324794.git.u.kleine-koenig@pengutronix.de>
+	Jesus Gonzalez <jesusmgh@gmail.com>
+Subject: [PATCH v4 1/1] Add 10EC5280 to bmi160_i2c ACPI IDs to allow binding on some devices
+Date: Wed,  7 Feb 2024 20:55:50 +0100
+Message-ID: <20240207195549.37994-2-jesusmgh@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
+In-Reply-To: <ZcOLql2RGmPP10EY@smile.fi.intel.com>
+References: <ZcOLql2RGmPP10EY@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2991; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=V9fXmo/wji/+Qk23ejom1WKCUrS23v2L7b4iJfa3OQA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlw86ZyKdlBJFXTkRaTlW3JxU4uHlkNtqdRalfX 42PXw+zc2WJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZcPOmQAKCRCPgPtYfRL+ TgpoB/sG42rH0oJy7cNU1GO6xZc88KNodEBcy21UcMIEmp921dWqScaoL/tW/QS+Y7Eio0qP9PO 22kR4swKLlPypEABX4367G5P5VdtFe1Zeh7vNZEhhUJtEdDTHx4k6rk2ukk/UBHAfT8MlMbDBlA ymLmuDBbsxlvxs7EixDi73Ylo1IZ5EDMm0eJDdpyKfpOGZX3RA8XcJUwDrYIHoYA3M0Vme8qLHP DnhNfwgUEjkgjfAKsfaDVdM6S/0y7AB2b/k4GZwR+tZ8+inbjrEbAtUKac1swdAbUmMedwlAJYV JwooqnM+mTbr3MzmSFfY22lzxZ/uHxaV8O6q4A9KwucT3RMB
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
-In commit 8caab75fd2c2 ("spi: Generalize SPI "master" to "controller"")
-some functions and struct members were renamed. To not break all drivers
-compatibility macros were provided.
+"10EC5280" is used by several manufacturers like Lenovo, GPD, or AYA (and
+probably others) in their ACPI table as the ID for the bmi160 IMU. This
+means the bmi160_i2c driver won't bind to it, and the IMU is unavailable
+to the user. Manufacturers have been approached on several occasions to
+try getting a BIOS with a fixed ID, mostly without actual positive
+results, and since affected devices are already a few years old, this is
+not expected to change. This patch enables using the bmi160_i2c driver for
+the bmi160 IMU on these devices.
 
-To be able to remove these compatibility macros push the renaming into
-this driver.
+Here is the relevant extract from the DSDT of a GPD Win Max 2 (AMD 6800U
+model) with the latest firmware 1.05 installed. GPD sees this as WONTFIX
+with the argument of the device working with the Windows drivers.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+	Device (BMA2)
+	{
+	    Name (_ADR, Zero)  // _ADR: Address
+	    Name (_HID, "10EC5280")  // _HID: Hardware ID
+	    Name (_CID, "10EC5280")  // _CID: Compatible ID
+	    Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+	    Name (_UID, One)  // _UID: Unique ID
+	    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+	    {
+		Name (RBUF, ResourceTemplate ()
+		{
+		    I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+		        AddressingMode7Bit, "\\_SB.I2CC",
+		        0x00, ResourceConsumer, , Exclusive,
+		        )
+		})
+		Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+	    }
+	    
+	    ...
+	    
+	}
+
+Signed-off-by: Jesus Gonzalez <jesusmgh@gmail.com>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+v4: Moved comment back to relevant position inside function
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 7e2192870743..55442eddf57c 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -212,7 +212,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	if (ret)
- 		return ret;
+ drivers/iio/imu/bmi160/bmi160_i2c.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/iio/imu/bmi160/bmi160_i2c.c b/drivers/iio/imu/bmi160/bmi160_i2c.c
+index 81652c08e644..a081305254db 100644
+--- a/drivers/iio/imu/bmi160/bmi160_i2c.c
++++ b/drivers/iio/imu/bmi160/bmi160_i2c.c
+@@ -43,6 +43,15 @@ static const struct i2c_device_id bmi160_i2c_id[] = {
+ MODULE_DEVICE_TABLE(i2c, bmi160_i2c_id);
  
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
-@@ -235,7 +235,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	sigma_delta->keep_cs_asserted = false;
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
- 	sigma_delta->bus_locked = false;
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 
- 	return ret;
- }
-@@ -287,7 +287,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
- 
- 	ad_sigma_delta_set_channel(sigma_delta, chan->address);
- 
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
-@@ -322,7 +322,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
- 	sigma_delta->keep_cs_asserted = false;
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
- 	sigma_delta->bus_locked = false;
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 	iio_device_release_direct_mode(indio_dev);
- 
- 	if (ret)
-@@ -387,7 +387,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 
- 	sigma_delta->samples_buf = samples_buf;
- 
--	spi_bus_lock(sigma_delta->spi->master);
-+	spi_bus_lock(sigma_delta->spi->controller);
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
- 
-@@ -401,7 +401,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 	return 0;
- 
- err_unlock:
--	spi_bus_unlock(sigma_delta->spi->master);
-+	spi_bus_unlock(sigma_delta->spi->controller);
- 
- 	return ret;
- }
-@@ -426,7 +426,7 @@ static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
- 
- 	ad_sigma_delta_disable_all(sigma_delta);
- 	sigma_delta->bus_locked = false;
--	return spi_bus_unlock(sigma_delta->spi->master);
-+	return spi_bus_unlock(sigma_delta->spi->controller);
- }
- 
- static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ static const struct acpi_device_id bmi160_acpi_match[] = {
++	/*
++	 * FIRMWARE BUG WORKAROUND
++	 * Some manufacturers like GPD, Lenovo or Aya used the incorrect
++	 * ID "10EC5280" for bmi160 in their DSDT. A fixed firmware is not
++	 * available as of Feb 2024 after trying to work with OEMs, and
++	 * this is not expected to change anymore since at least some of
++	 * the affected devices are from 2021/2022.
++	 */
++	{"10EC5280", 0},
+ 	{"BMI0160", 0},
+ 	{ },
+ };
 -- 
 2.43.0
 

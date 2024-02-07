@@ -1,124 +1,128 @@
-Return-Path: <linux-iio+bounces-2277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B720684C5DB
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 08:55:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A6084C644
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 09:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BD711F26268
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 07:55:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A4D0B21FAD
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 08:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B084200D6;
-	Wed,  7 Feb 2024 07:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DAA200D2;
+	Wed,  7 Feb 2024 08:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E3F0CSXH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SuMsredO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855CE200AA;
-	Wed,  7 Feb 2024 07:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814A2200BE;
+	Wed,  7 Feb 2024 08:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707292503; cv=none; b=M3XbY2etKT1JyRLirnWrcDQqhoHerHq7Rn5TWuaEF7mIw53Zf/vBstTWVvgkexqseMht3z+KKaBaZtWJ0LTBA5Zb3Y32zkgEbw+WBfdR0vqnmfLXn/y6WOk27Vg7/fFZR9F6M7OCbHHGbeh9LgS079liHdL2glNdwltknaDx8ks=
+	t=1707294453; cv=none; b=BreZUzgUygInPNRieaX3JfPPYz795dMOzpi29kKajNhCvMyjGwP9wyOx6UvJB58nUxsFutB1C4GDsRPraqOgsAUUP1jcN+nzikVryVuFGUc3PpZ9eIHIvaurSPk9CpU+fE7UlLwzg8BDJNcDXHoYvjeVHiwxTn5v8j+iDR+R7nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707292503; c=relaxed/simple;
-	bh=plo9ffD39AflvULKtb7V+e4QpJ5YhVSIF75AQbjiprE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=csRz/sY+mu3E/fJl3885+j+Hl4WQa09lJkP6BKe2aWwVJjH1FaNx4gbj92csokqO/qbzcDxBI5wYaBKZK8fXytcSD6tmVLp14Z1a/NUX2Z2Qk2Pl1+Bld+/CgxqHGa3mpneZ/iCWeiq9EECOa3LzQwhbPvvYXrT910KzNWfDUzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E3F0CSXH; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1707294453; c=relaxed/simple;
+	bh=q3wDOQ4QmJ3MQ+2IY1QMHkLo580K1oHbEpG9InAqN9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6eT0LDfKb6tt3ROfAxYuGZAJfSOiwdYAav9xhwDdV48dGoNxcjNBPN8rqARg73/tIRPDBroxbK+nsTrNAzLo1gNfKROHwJthUAl8VcA+FPOK4JNsiHyZmtFxwLEnxtE18RslHjGxSEHR/ilf591y76IY8jM+sF9AE5NkILsMao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SuMsredO; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a385fa34c66so40132766b.1;
-        Tue, 06 Feb 2024 23:55:01 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55cca88b6a5so366842a12.1;
+        Wed, 07 Feb 2024 00:27:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707292500; x=1707897300; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5siQqDPvIzVZKJKzFGz6pPdvnLjufoJPCSBU/Y3gTLQ=;
-        b=E3F0CSXHZLcQ8A3/tUgeVv/kcNG2W71aBEgEesfqz5j3kvTSUYkxd79ki7IXwSFM60
-         Wpv6/saGPlnO65d+D3TYJ3fT5eIQpYavwE3O9ZkUXNGb1jg29zO5IkuGrlkLgIR7l6zm
-         ayGLWAVqSJFEwsEJVx60bkRhuXh/sXxcFoa1y0S12Oy0JO4L7OkbJU5n+8owPBV51vUR
-         +7DA2FeSgdnVaykaPO78LeL5YRy3Qb2escLIr/XrK54Sb2HesaoeKQg7aAuaDXT6/6DK
-         ZlTZRmNGDSqY/vq0sUnMx1FhA/7SIDk3Kkcg+rATeecBkBwSK8BL1sEQ9xi7MMD1lj9z
-         bTig==
+        d=gmail.com; s=20230601; t=1707294449; x=1707899249; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SW9j0j1ERBwFUqGR0euGumuXI6Xx2VO6uxxu7v25BCU=;
+        b=SuMsredOjaUGdW+Ubpsyi2F+yOeEUzVmPIXNxUeheJlcMDo9QGYWQJsQ6D5lyIyonn
+         JurY6W3EPG7VlWCAwiFDOSOsNhz3B+vmRIJ2NYWoRItwpLtK5BkhUcroQP5FKIQ1imrm
+         0SwAsoDRRn9qRemxOdw9pqLFqkGe36yd42OeVsDyMo84b4rH8J2ALTYittC0JU/DitzH
+         GSDE+wvf3pOfOZO5HD4ViuhVJ2sK6DHV2q6E11fRWvABHqhZ60yqIjbd2ccdU8UGYQwL
+         zuo0al73Jr2zNwfCrhWCdi99fLoPnwob4XmukJwxST1J4rSUPz4NxRbvaEDeRmd2ezby
+         maNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707292500; x=1707897300;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5siQqDPvIzVZKJKzFGz6pPdvnLjufoJPCSBU/Y3gTLQ=;
-        b=owD6Bd+pAOYaYre6CkHS1RA8yod1LJXYfAeI5/eQB+hLRnKragwTbTcuhkcTdWqHow
-         6QAtkmEeFrkY+ZBi3HKDcgJ6wlcdr8LRRqWiiCkr/5uqd6mH4jcH/aJYia3ThlQVGJQs
-         RN/ti8+8qD+uEPXgtWo5LA60+cQbnkPkfdJcFMURdjdMbay1ivb2kLpRoEp0k7v3LM5k
-         Vq2x8I3YVnuiT3ohIckdxKeS9+yHcLnjM/qvjY9iNApHzN6QlXd3O3AqXmcmsK9vLR8w
-         1xZwimDEsl3PHrXrUcM+qfJSXqL2nTnTBjtfsXZGCk9aKszLx2bbqLlJ3JGThVQmP+pl
-         pzHg==
-X-Gm-Message-State: AOJu0YySuptoA4Xgl8E0YQNQD9LpefzLMkrm8ifYcF3IobxVU/9G5rBq
-	zsGxsKenD483ZBje/jAzMTTzcIKYQ73ZsWFAwbWf8anBeDmF2OfQ
-X-Google-Smtp-Source: AGHT+IGjilopHWWobuDbb4rhf8FYRAuvtIhKc0v0uJfyOtiYBgO42Q1Y0+Y8nTldOI51yZjQD6yQUA==
-X-Received: by 2002:a17:906:ecac:b0:a36:8cb6:92f7 with SMTP id qh12-20020a170906ecac00b00a368cb692f7mr3008358ejb.77.1707292499559;
-        Tue, 06 Feb 2024 23:54:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVu2cjRG6zO6MdctV8q8Cr2LmysVb3AReab7AY/n7DJupJ1B7/iQle9snjRmpUytzoNo1xTBrZeuRsMbvpGlxlU2KIzpeuO1bmKHOfYey09kWj78Ndh4mbK6f2jOHIE4HpN7Jdr3x03KmFBwk/6jeCsaMBSAqrZS260M2BUIKPTsuN3t/sEvGNOGO7kcfSEy425rzL2ttpuYkgWemdvsoVqT527DTCg/Rl0TrMusw+e6fvJZcswwUv4zt7mXVINphp7Pn/+7BJA182DLMCHIvkICXsGYhCEKQ/a60MN7NdTXPd/Debkp2E23DuHVbxDf9gc3V+9q8YAfXA+LVb1LKCzbzOu1m13
-Received: from [192.168.100.74] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id vw13-20020a170907a70d00b00a37585d5dcesm456935ejc.51.2024.02.06.23.54.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Feb 2024 23:54:59 -0800 (PST)
-Message-ID: <626fe429-98b3-4319-b104-ef66e4b7afdd@gmail.com>
-Date: Wed, 7 Feb 2024 08:54:57 +0100
+        d=1e100.net; s=20230601; t=1707294449; x=1707899249;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SW9j0j1ERBwFUqGR0euGumuXI6Xx2VO6uxxu7v25BCU=;
+        b=FveDp109MF4EdROW51GLTTLqM+xBoOY3OLQ+kpksO7KobG+End2tWHYl2w78Yz3zhf
+         zCgt07lXi94JDpN14FKfRkrHl8aZ3giCIG013uTyH1d80xAJY2zr25/Ib9EeIyTSVz23
+         oQJ9BzL6hH55AXX4mpi/PBG0vKfqXkwTNWv/Dzwu18/tWgVhPHLoK4PxHBK9f5yDjeK4
+         7wP/0PlYxUz2YVVgoy+XmV6X/pAj7suNr8Dmu2phpQfRhhnH0XEkdGWEUtbTqVMg80EK
+         sHNLHHwprdDra2GKqa9JGkBCIC8vc7LWFaFCELpL0k916Z1QLHY/bw9VbArDOajGqln7
+         bXjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9z5Vg66ks+pccLMnZQehx0svdncfP9THh75+GM+iHNdyHnqoqxzBm9e7VeQvbEuD0WWXXAJoeWrzoEJdajNOh78iIDp6YHqTpIC3c1OprGHI1O6IyDevPcJB8c1tHwzWvURVSmdekuoI0CQw8BT2jCf7biXqBviXfpKfSGGuGYzHkSg==
+X-Gm-Message-State: AOJu0YwOoIWj42MdG/W2/rZQceDEKmvklZ34mfHBGR8MaUdLwm2XEhBa
+	/QdzaEFGVXSUbYXqzDxNpZWMJrzcp/yj+y4WUA29bJjd14mCcRvv
+X-Google-Smtp-Source: AGHT+IGU7aEV1mfWep0b62bjwFwCpQqhdWfdLZWMPu14onms6VycuQTfU1qz38oQKsr65tqya+m/tQ==
+X-Received: by 2002:aa7:c317:0:b0:560:c8cb:c2c8 with SMTP id l23-20020aa7c317000000b00560c8cbc2c8mr1166147edq.11.1707294448972;
+        Wed, 07 Feb 2024 00:27:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVzJFpQRqUyXagh0P2eDDJCMZBGufD5AXxQNl6dvFEBKib2gluVEo8iuzqytNl2gdXrTzxGA6cdvRQDk0VQevjEjtiKt4HhRCyrXSPnSQn5GK9m0RT1zgvrKx6uLJPHTKnZi5zOsuksibr1kKDlEVPRky0xWg8QtqHRUnaAA5szpDIUHL7bh+GWyPf1YGEf4OqQmDsvVUWwbloY5G49GsPQWE/QO1EAQCt4TYn9H3ikOireYYeXmkhq1PPD4FZPR1hsCASucRQ7CE4q2RumqzI7ipOG6sg/v5Y+0V7GXko4dT7X1JlY8hvjBjywzKLjXzYw+/4mnUZrIcVvhd/azAFrFPPpN6rj
+Received: from debian ([93.184.186.109])
+        by smtp.gmail.com with ESMTPSA id v30-20020a50d59e000000b005606b3d835fsm444109edi.50.2024.02.07.00.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Feb 2024 00:27:28 -0800 (PST)
+Date: Wed, 7 Feb 2024 09:27:26 +0100
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Li peiyu <579lpy@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] dt-bindings: iio: humidity: hdc3020: add
+ interrupt bindings in example
+Message-ID: <20240207082726.GA18294@debian>
+References: <20240207074758.4138724-1-dima.fedrau@gmail.com>
+ <20240207074758.4138724-3-dima.fedrau@gmail.com>
+ <626fe429-98b3-4319-b104-ef66e4b7afdd@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: humidity: hdc3020: add interrupt
- bindings in example
-Content-Language: en-US
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Li peiyu <579lpy@gmail.com>,
- Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240207074758.4138724-1-dima.fedrau@gmail.com>
- <20240207074758.4138724-3-dima.fedrau@gmail.com>
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240207074758.4138724-3-dima.fedrau@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <626fe429-98b3-4319-b104-ef66e4b7afdd@gmail.com>
 
-Hi Dimitri,
-
-On 07.02.24 08:47, Dimitri Fedrau wrote:
-> Add interrupt bindings in example.
+Am Wed, Feb 07, 2024 at 08:54:57AM +0100 schrieb Javier Carrasco:
+> Hi Dimitri,
 > 
-> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> ---
->  Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> On 07.02.24 08:47, Dimitri Fedrau wrote:
+> > Add interrupt bindings in example.
+> > 
+> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> > ---
+> >  Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+> > index 7f6d0f9edc75..5b3f9670fa52 100644
+> > --- a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+> > @@ -51,5 +51,7 @@ examples:
+> >              compatible = "ti,hdc3021", "ti,hdc3020";
+> >              reg = <0x47>;
+> >              vdd-supply = <&vcc_3v3>;
+> > +            interrupt-parent = <&gpio3>;
+> > +            interrupts = <23 IRQ_TYPE_EDGE_RISING>;
+> >          };
+> >      };
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> index 7f6d0f9edc75..5b3f9670fa52 100644
-> --- a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> +++ b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
-> @@ -51,5 +51,7 @@ examples:
->              compatible = "ti,hdc3021", "ti,hdc3020";
->              reg = <0x47>;
->              vdd-supply = <&vcc_3v3>;
-> +            interrupt-parent = <&gpio3>;
-> +            interrupts = <23 IRQ_TYPE_EDGE_RISING>;
->          };
->      };
-
-Did you compile the example? I think this will fail because you don't
-have the include for IRQ_TYPE_EDGE_RISING.
+> Did you compile the example? I think this will fail because you don't
+> have the include for IRQ_TYPE_EDGE_RISING.
+>
+Missed that one, thanks. No didn't build the documentation yet. Will do
+that.
 
 Best regards,
-Javier Carrasco
+Dimitri Fedrau
 

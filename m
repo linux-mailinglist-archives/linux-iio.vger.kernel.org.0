@@ -1,115 +1,134 @@
-Return-Path: <linux-iio+bounces-2270-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2271-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDF784BC8A
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 18:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B18E84C328
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 04:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25CF1F23440
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Feb 2024 17:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212661F2879D
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Feb 2024 03:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52FED536;
-	Tue,  6 Feb 2024 17:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADC8FC1D;
+	Wed,  7 Feb 2024 03:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFic7dYK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mXh5Pyp7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07623134A8;
-	Tue,  6 Feb 2024 17:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF25FC01;
+	Wed,  7 Feb 2024 03:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707241934; cv=none; b=AhjZIHeD0HYqzwpgg1FVNFWdZqVdEEKfoA9+sXLVAfWKW3iEs4vKQZY8iFpiWexNvUFf0P3jTz6M0Cdjxwz+GOAAtvC4PWC+B/B9/Ch4W5RekPL/K6lKFukT1p5/3T2FuXuxlQATXcHBzcUPk9QRX7d8LLBWrcyR6eRZvdRs5JI=
+	t=1707277029; cv=none; b=NxwzWoh6li9d73Kcs43jCQyhdCwqJIzlm2fK5ySd/69QMSBRwsSPci94UGCR/fIEibkRgT+OoOCzpajlgGjKdMhIYGGdJYKHOQjADvvjm7J2WVVbsRWz86VW/UVws2zp9cFfyH0FeKh0oOx03qbHVkCLolL1IiUfUn5iTyCqZos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707241934; c=relaxed/simple;
-	bh=2QzhABsTxWUBevQWOZGnGKdirZ35HE7FBPGc4cptxDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ECc5GIns/mdJY47GyVl81cHOk8zTlu4Mcat+h/9zm2opMpuSLQmywALD5X/NMZNUj4dIgVK3BprbZ9S6WW85c3FnEVODyVDlAF+GiJ1lldmZgBNwNT4PlKWolcIliu8O2F4Hog6AVPdQ4n2mAR8HOTooDqKcyx87+6QJFa1Lhys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFic7dYK; arc=none smtp.client-ip=209.85.167.46
+	s=arc-20240116; t=1707277029; c=relaxed/simple;
+	bh=wozcyVvHzNR5E7VXBY2YzZhSgKWE1j9Dee975ulTgvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b2uXN3NzUXocGZSDPNmU3Y8jhhI1uPfY0vHs73HjYQ+KP3Ch7SGgsdgTtfJDGEf3WtLSdfnJxYIwbj6IXtBSSiUYG6utycizaOxqa8RVV/X1EpZxBh+s66d1u70xuQUEyGCjDE/pa5Xo/9Tb6HFLydUXriEEmSeQFMV96LeBpsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mXh5Pyp7; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51032e62171so9547144e87.3;
-        Tue, 06 Feb 2024 09:52:12 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-33b409fc4aeso135580f8f.1;
+        Tue, 06 Feb 2024 19:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707241931; x=1707846731; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=faYwZb7i+yTIOYFLp3WhvWUDBoYAgBs1yg0oWwe0bd8=;
-        b=nFic7dYK+R27lSszdQdAqngVQX9TCfTlE868k+ruTr7HHHyC1wMmC9vWsBsH5un1GV
-         KExoFfzzEtP0bVa+02mktF/e3JYg4trqcNsv58hkVjcKkAE2LFS3Onb0v2eVt1FaT72/
-         w9+cldNQhvwaQvfbKJrDr9NXBSUWsh4+eZA/BF28DJ49EQh3zGS4jqkonk/ienM9wF9u
-         4B1kvYmg/mjOZLSqH0zB+5H/HOf+OS58pCTHNm8uA3ju/FOccBEFR1XG5qSrvo9K8E0Q
-         zx5wSXcx/qg9CwGib+NpwwECgV3ao97mynqYCoWF1GZtBkDB3ull5zBLr/4W7MDvcyZ9
-         G71Q==
+        d=gmail.com; s=20230601; t=1707277026; x=1707881826; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K0oMvXuXT/Bmvr7nKfz+tfHKE7zRujYl4odDXMOJ8fY=;
+        b=mXh5Pyp7dEVConkKN4fi+USUDQLNbA8E3PRXVsdkVH+VlGWQ9cDVwMM/F/tUebanw0
+         hU+6qSFcirzmTIG4wuvktwK+0Y9yyZGPlRK0WYCXlAAtU0RK+w36G+B/3WqC0GcP5LmU
+         t5TWwHydoA3PzcxEZs/4ayTLHQZphbo+bxiKSfk+gCm9RkhoQYu3Fb7iR7XaEL1DHb5P
+         5y0dF+GQT4rJWx4C/NiYezarF7b1f2DZM4MAPC5CQAX8rQEbGUO3TIAP9XOs8T1QbFu+
+         o4Acd/EzXZUDC7NWxmFwseu0l6BS/kopijSFMRUuOrS9/10tBDmnwZO0k+5VCc75MrrG
+         GkHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707241931; x=1707846731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=faYwZb7i+yTIOYFLp3WhvWUDBoYAgBs1yg0oWwe0bd8=;
-        b=KM3lzqCqm0gd6Ug86/iDbpoLtl0GDcKXlwY1o8a8Ewbsn+HMA7Z6M9o5/V/nPRQnuC
-         x7SJm9SQwcN/y2MC+kTPtEgv+wq0z/YdLEWaAzenuRDLZt70zlHrDHrX5ThfVxcUdIja
-         oqCJAiufaytcm2H1P1cJzppn3Vrli5X26NzBz6RERhQFdCZilYqmTnqNT086wuwXHEig
-         Tipm96zRZSlL7ubpsmuiYs7Bnnn6eWgXdD97rnntFtNGS7zymz/EQdzBFvx8udFi2EnJ
-         L2ECsUN7myR+ToBMxZgtUbKIUKTlYb4eGyFqphc4LwJh0+Mz7dcGVQDK6bys4LOFCL0N
-         jgOg==
-X-Gm-Message-State: AOJu0YzkB+OO+HnA8RmH7EExVkJuAOytXp4AeyXgyWIPKNiGQs3pLEH2
-	OllMef7ed2M08fqhObYww9iEdBwGqMrld7+PVTeLmCz6BAWFaLXPf0OMFh/KL+LrWdAvlPOyqP8
-	ZqZRzusWI41im9y8bgtvXHfJyCvs=
-X-Google-Smtp-Source: AGHT+IGLTy6TLx4POxhIQbKFUiAsygftq31SCBY8yQnVaF9lAFEaBrv4NI6RPcfIMr/BkWbhtVqz0ABNcXJfCKFyegc=
-X-Received: by 2002:ac2:530a:0:b0:511:61bd:d748 with SMTP id
- c10-20020ac2530a000000b0051161bdd748mr822543lfh.36.1707241930825; Tue, 06 Feb
- 2024 09:52:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707277026; x=1707881826;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K0oMvXuXT/Bmvr7nKfz+tfHKE7zRujYl4odDXMOJ8fY=;
+        b=BoD1pTmpgSs4E2gm4dwrHhcOJw0cQdwznsEh5DZCHWnqeeWRf4fQ1Im5joQKRAczOp
+         wrKclLvIoHCyNWKzHX2iX/clszBuOJVh1U8+I/vMcvijF5w8fbbh/Qfkxoo6J7j8Pus2
+         yDkfLs9NSLwfDbmc2yzOPmh7xc37sC/3Urb1Ogl/i6R20K/boLNfQud4DKlSn1DKxmuf
+         rxsQ2BUz/hfJO7NPmAECBtZCq1+J8q1U0/DeIcdVUPibfMIAcuFRclxmjllevBo9JWOk
+         UvUP7D3sgMZCkG+EIkxmnP8ROOetFmpVRJSS83L7Q40M7KyY0feqeH9jy8wPzEq9Yj0O
+         ShLw==
+X-Gm-Message-State: AOJu0YyJPn828ADuaKoqfHQQUkADdNd/r7KppuYzuH63Ri3EYFBAogpU
+	I3UXmSZMyby/u2oHSYLrRtuVueSL2Ooc4JWKXO9aC2YDwY2YXHDN
+X-Google-Smtp-Source: AGHT+IEC6OTMVKiiwXaTRW+EcaHTMMylrzmtal242jiHjAS9EFELdo3ZaRubLUREoBU4Ip5csdvfzQ==
+X-Received: by 2002:a5d:460b:0:b0:33b:4ebd:1462 with SMTP id t11-20020a5d460b000000b0033b4ebd1462mr147974wrq.40.1707277025582;
+        Tue, 06 Feb 2024 19:37:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUYQrgi4CPyFz0nIMqpFUYqmQ082XxzQPgdfQbNOWxnfpu2DyM35zyk5XvEXPVI7qgJHj5uTzqJXPfZb966sodUZNbN0qKR/TXaZWDo8iCVzhirdvZ8X/wBjb5lO2E7osceGmA5NLQkcKcB7TsBxpfaHIVq2r0uH370BoNdGhINB5iYE33oVtY+t8f3Zl9EwMPsmMG+Lp39x9FPp6mqIQm2Awq8dTtTfzlHrCxg26sN/M6W2KGib8vhsy2DzJp2R1xrmB0IBYs1f2kc
+Received: from demon-pc.localdomain ([188.24.52.65])
+        by smtp.gmail.com with ESMTPSA id p5-20020a5d4e05000000b0033b422356fbsm373447wrt.80.2024.02.06.19.37.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 19:37:05 -0800 (PST)
+From: Cosmin Tanislav <demonsingur@gmail.com>
+To: 
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Cosmin Tanislav <demonsingur@gmail.com>
+Subject: [PATCH 1/2] iio: accel: adxl367: fix DEVID read after reset
+Date: Wed,  7 Feb 2024 05:36:50 +0200
+Message-ID: <20240207033657.206171-1-demonsingur@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206-iio-backend-v9-0-df66d159c000@analog.com>
- <20240206-iio-backend-v9-6-df66d159c000@analog.com> <CAHp75VeWV0+hqCoUb4YvfObnEAv0AaYJmXgpxJLfve+mBwhkyQ@mail.gmail.com>
- <f6ed72343be50c358db8e7e36d9afa875f788425.camel@gmail.com>
-In-Reply-To: <f6ed72343be50c358db8e7e36d9afa875f788425.camel@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 6 Feb 2024 19:51:34 +0200
-Message-ID: <CAHp75Vf3vvYHz6pTpAQGEAxV-obWV+0XbhVhaFqYU5JUbtFY8Q@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] iio: adc: ad9467: convert to backend framework
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 6, 2024 at 6:51=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com>=
- wrote:
-> On Tue, 2024-02-06 at 16:20 +0200, Andy Shevchenko wrote:
-> > On Tue, Feb 6, 2024 at 12:08=E2=80=AFPM Nuno Sa via B4 Relay
-> > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+regmap_read_poll_timeout() will not sleep before reading,
+causing the first read to return -ENXIO on I2C, since the
+chip does not respond to it while it is being reset.
 
-...
+The datasheet specifies that a soft reset operation has a
+latency of 7.5ms.
 
-> > > +       st->back =3D devm_iio_backend_get(&st->spi->dev, NULL);
-> > > +       /* If not found, don't error out as we might have legacy DT p=
-roperty */
-> > > +       if (!IS_ERR(st->back))
-> > > +               return 0;
-> > > +       if (PTR_ERR(st->back) !=3D -ENOENT)
-> > > +               return PTR_ERR(st->back);
-> >
-> > This looks hackish...
->
-> This was suggested by Jonathan so I'm keen in leaving it as-is
+Add a 15ms sleep between reset and reading the DEVID register,
+and switch to a simple regmap_read() call.
 
-I think I proposed how to improve it. Jonathan?
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+---
+ drivers/iio/accel/adxl367.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---=20
-With Best Regards,
-Andy Shevchenko
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index 834ee6d63947..210228affb80 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -1368,9 +1368,11 @@ static int adxl367_verify_devid(struct adxl367_state *st)
+ 	unsigned int val;
+ 	int ret;
+ 
+-	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
+-				       val == ADXL367_DEVID_AD, 1000, 10000);
++	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
+ 	if (ret)
++		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
++
++	if (val != ADXL367_DEVID_AD)
+ 		return dev_err_probe(st->dev, -ENODEV,
+ 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
+ 				     val, ADXL367_DEVID_AD);
+@@ -1449,6 +1451,8 @@ int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
+ 	if (ret)
+ 		return ret;
+ 
++	fsleep(15000);
++
+ 	ret = adxl367_verify_devid(st);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 

@@ -1,128 +1,109 @@
-Return-Path: <linux-iio+bounces-2322-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2323-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A090184E7C0
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 19:34:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830A584E7F9
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 19:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549AC1F2C600
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 18:34:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AFCC1F2D6CB
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 18:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BD68C1A;
-	Thu,  8 Feb 2024 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B964F20DCD;
+	Thu,  8 Feb 2024 18:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vtq9+HgR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED292EEDA
-	for <linux-iio@vger.kernel.org>; Thu,  8 Feb 2024 18:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6EB1BF3D;
+	Thu,  8 Feb 2024 18:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707417293; cv=none; b=Ul87fQ5eO6BKh195lTcFiGNNrWttzfSBkwTd0mDbSTUoKRGdJr7x0yEJGmyVDj5Z8vPMUKvWIEbCIxtcu4VUoN4QvTR5XaI9gSXAC08GE6dhvxaKepoFJLVcXR2iUZMz1KqCRBvV9gsamx/fhJb0GsBl36tnukNZL3dLfwCxIkE=
+	t=1707418074; cv=none; b=Cbn7to2fOhBJhhfrANast4g1GeO4GvEMxJ9D9Gm7dgrEiDAvndoVEQRJmCKUvh1qi4i8N7PmZz5+letuRerRENN66siFAKGkyux9lqPwQZxzy5fPPMDCd0CcxjhJfNoiW984rIzuqyXs6SGdOauMUFoXuXmwb1bYmMxTa015r+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707417293; c=relaxed/simple;
-	bh=1aRmuWlF2QDle0A+ZSnE59oYD9kL4AGO1glUmPyKhsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j6yaxMjaNFfaqSq7cM7jrD1MeCoqc66Dy5Xh2ETx9NgG1n1wrMUd11Ru00/0yiJR5a8t/DohPArOxui0mmjEE6ublhK9x+G3OvEjdFaepkfTLDpqGro5p8Ckd3IEVIy9b0DG8a2o4h9qFkYfmmH2PTNWC8Tzisu69d/YMyowR3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44840C433F1;
-	Thu,  8 Feb 2024 18:34:51 +0000 (UTC)
-Date: Thu, 8 Feb 2024 13:34:48 -0500
-From: William Breathitt Gray <william.gray@linaro.org>
-To: nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] counter: fix privdata alignment
-Message-ID: <ZcUeyN8OF49CGqij@ishi>
-References: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
+	s=arc-20240116; t=1707418074; c=relaxed/simple;
+	bh=T3vb+jr3/jxIvGpmzS29XAGMcNYik+deK0DgE3lOQZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JLAczxYZMkU7yg30Ennwqscvd/jrktbz1pwQpbE0Ty3WANC1U5xohZii84z7tAM6OV2yW0oYdirPNP8UakG4pxCucX+k3sNGudQ/ItH7jpsBqQoyY4v3iME+prYSZKsA+7h0un5MYjfeEiPfUINg5TSqJVNC6eVS+DhXwwZcbjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vtq9+HgR; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707418073; x=1738954073;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=T3vb+jr3/jxIvGpmzS29XAGMcNYik+deK0DgE3lOQZk=;
+  b=Vtq9+HgRFTM4NlluOYhWP5irbpXExkQcscEVumILyDybfgPRNv32plDS
+   a00D4ODbBp+6VECBBd8Oz8U1rO2Un9iGg2TNDbl2RJGg5nqM6LTbQvFmA
+   MgiU3hQ6t52ap8kTK3fTRRFY+nh0XaPTEik/C9h0mJvoFRJ9TkYH0fopE
+   oqQhWzaVpvbWjp1rcJVRmUGZD8lKQFz6AgASnrf+nWqaYMmqSMHCkNf/I
+   YZXc9zg5gY1LcDx6wecf3nctzzHrYgL3Jhcch5syb3aaiXA5Vili4iwBq
+   b3JPNVEnm5XbeEObSSxxztirMIHYrv6DwlUibEqs1pxxTrN0wJ4n/yiar
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1178989"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="1178989"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 10:47:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="910468884"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="910468884"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 10:47:35 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rY9Qq-00000002xOK-1Q3A;
+	Thu, 08 Feb 2024 20:47:32 +0200
+Date: Thu, 8 Feb 2024 20:47:32 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: alexandru.tachici@analog.com, alisa.roman@analog.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	dlechner@baylibre.com, jic23@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+	robh+dt@kernel.org, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 1/5] iio: adc: ad7192: Use device api
+Message-ID: <ZcUhxCSPMhclLu-j@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vfpFMh5fMMg+vb7Q"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+Subject should be:
+
+  iio: adc: ad7192: Use device property APIs
+
+On Thu, Feb 08, 2024 at 07:24:55PM +0200, Alisa-Dariana Roman wrote:
+> Replace of.h and corresponding functions with preferred device specific
+> functions.
+> 
+> Also replace of_device_get_match_data() with
+> spi_get_device_match_data().
+
+...
+
+>  #include <linux/err.h>
+>  #include <linux/sched.h>
+>  #include <linux/delay.h>
+> -#include <linux/of.h>
+
+Actually this has to be replaced by property.h (placed somewhere before
+slab.h).
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---vfpFMh5fMMg+vb7Q
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Feb 05, 2024 at 04:58:14PM +0100, Nuno Sa via B4 Relay wrote:
-> From: Nuno Sa <nuno.sa@analog.com>
->=20
-> Aligning to the L1 cache does guarantee the same alignment as kmallocing
-> an object [1]. Furthermore, in some platforms, that alignment is not
-> sufficient for DMA safety (in case someone wants to have a DMA safe
-> buffer in privdata) [2].
->=20
-> Sometime ago, we had the same fixes in IIO.
->=20
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
-ree/drivers/base/devres.c#n35
-> [2]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kern=
-el.org/
->=20
-> Fixes: c18e2760308e ("counter: Provide alternative counter registration f=
-unctions")
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
-> William, if you prefer, we can do something like in IIO and add a
-> specific COUNTER_DMA_MINALIGN define
-> ---
->  drivers/counter/counter-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
-e.c
-> index 09c77afb33ca..073bf6b67a57 100644
-> --- a/drivers/counter/counter-core.c
-> +++ b/drivers/counter/counter-core.c
-> @@ -34,7 +34,7 @@ struct counter_device_allochelper {
->  	 * This is cache line aligned to ensure private data behaves like if it
->  	 * were kmalloced separately.
->  	 */
-> -	unsigned long privdata[] ____cacheline_aligned;
-> +	unsigned long privdata[] __aligned(ARCH_DMA_MINALIGN);
->  };
-> =20
->  static void counter_device_release(struct device *dev)
->=20
-> ---
-> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-> change-id: 20240205-counter-align-fix-3faebfb572af
-> --
->=20
-> Thanks!
-> - Nuno S=E1
-
-Hi Nunon,
-
-This change sounds reasonable, but should the comment block above
-privdata be updated to reflect the change?
-
-Sincerely,
-
-William Breathitt Gray
-
---vfpFMh5fMMg+vb7Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZcUeyAAKCRC1SFbKvhIj
-K2uKAQCtAQlKVVfSHYytz3yPKmn8UlTAb1PnEFurWgETKgOudgEAk2eZ7juK/pFK
-NVX8354QmhdURuqLfYQzkyPvv7KYxw0=
-=NICx
------END PGP SIGNATURE-----
-
---vfpFMh5fMMg+vb7Q--
 

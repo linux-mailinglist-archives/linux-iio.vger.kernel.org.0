@@ -1,154 +1,225 @@
-Return-Path: <linux-iio+bounces-2325-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2326-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5E784E905
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 20:36:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B51F84EA05
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 22:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286631F26777
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 19:36:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C485B2251D
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 21:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77903770B;
-	Thu,  8 Feb 2024 19:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CAA4C3BF;
+	Thu,  8 Feb 2024 21:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="Eq3JHS1z"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="T1xQahhz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298C23612A;
-	Thu,  8 Feb 2024 19:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DF145BFB
+	for <linux-iio@vger.kernel.org>; Thu,  8 Feb 2024 21:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707421010; cv=none; b=uKRQns67IXHGXRjkFAlQr/ZJOMOVdYrGtnw4j9weWbHo5Mj6uExoAUphwhk9c//Oh3zBJsRzCQhOuJ7zpMYuAlnF0SlDvvVS+CZBKOvoqjxZghnWyGrLiQW1sJYQMPHX+xI75DfSXEXWIPMXbZUf9B+PMrQzuaJedeVDNiVBMgw=
+	t=1707426139; cv=none; b=qzD3I0T1a6MmVKT7/4O4mSpVzqqkNjAj43G4UoA5T4mTUqQa5Sv5zikioUOCS2hwJytj2zpBV9sZk37LrRprmgjKx4/TL47AtpxUTPvhP150HfbPOo8SceAMi5QjvEwdTPsncQTeuNu0EoTUKvC5Q5jHI0HPQarLNwJe5cfOn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707421010; c=relaxed/simple;
-	bh=P00MN7TEHNS0sno2RE3JL79uy5/oil+paWe4tOWUUGc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VSE4eTXzbLEO7NTU+gTvo3rA4oM7ui+9wVnW/axx/Sa3UPCUnikSWe0DFzMspuM6RauCrBshn9tyO+HmcTC3xNdSxpCCO97v9+0nT+yN73RFbItdh8z4VvS5msAHBbJf31E9Os+aZDSea4htGxGCcITP+oSZ4QkdXrjKEnmlGvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=Eq3JHS1z; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-296e22229b6so158579a91.1;
-        Thu, 08 Feb 2024 11:36:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707421008; x=1708025808;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:dkim-signature:from:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1707426139; c=relaxed/simple;
+	bh=MPrJBQh0W6C64dmzyrjqYpEo6yYMroytIsZryjcV2xo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YbXR3d64zBkeZY45ArH+s14BPMS8v9E/v1qHwNuVoV+pWHBzmmX4z0veHOtk05BkYeJWAQANMfugHkDrNvAWh8kN6cFsBAH1KlL6Av5d38UPK1yL7a0srO7/DqGAa6TtUo3jCCQ3oG/sEgiVhban/+ndm9mqXpZYrQxle3R571c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=T1xQahhz; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d0ce22b5f3so3692571fa.1
+        for <linux-iio@vger.kernel.org>; Thu, 08 Feb 2024 13:02:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707426133; x=1708030933; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fkyOtDTT6XXbEX+vLQ2wDNuDNguLiW47jjofDmGnI7M=;
-        b=MSAunoMnvIxj4xSaEXTb5xTRtBgW3sExVpZri2h2p2wMbLEBeaqVBALVkfH1lEWYrv
-         lh5nky3P2Tp1HPSZHqi6SGLlwGIhfv51pErWZc6rtoeupf1yaxQ+xWmmacFwGedAdFDY
-         lcINydLfXtpNePNlm834irvFC+0F1WJG/7XXlRusuu1o0o1RlPEpJu2VnWitWXBfHq8w
-         YmMFk/9eQ5J6g1OM/ngyWGJWfN4aG2Z17aR5MmHB9trLl7a/Eua+qgShuck1fqlG4sFn
-         0fmBPtJrc2wphy+Ed8wq8ETKuNH877x0nL/q5PVms51LUo8CE6si7rgiApDJKj8Zl8Bc
-         73Lg==
-X-Gm-Message-State: AOJu0Yx/AND8B1FTfD6xAnQsbFMtK3jpviJeQ0lIWlO5xfH+hdHbrtta
-	n9y9l54XQSfXhqjlvT8jTnRo4JKo23PrsEZSqCW2AgaDnMkdxAUa
-X-Google-Smtp-Source: AGHT+IGgIsdij24PFem1UQsHoJa3ba1yfpD9a7azfSvswscPwO53404H9Yyl49sSIlxqzHWeRONfOg==
-X-Received: by 2002:a17:90a:3ee5:b0:297:414:73f2 with SMTP id k92-20020a17090a3ee500b00297041473f2mr284069pjc.11.1707421008331;
-        Thu, 08 Feb 2024 11:36:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXm5c0rvT5dBIBj/cRxofCBIWjOpFIWs0K1HqJJsW8J2zRBJPUwraPqv/0vA/0HpkrRfPupqdOpA0oqcIztAdA/xr/YynnvZZSjot7h5Xg86GTB8b98tA9Qq31DkJ7Z8Bsvh1j6iV9429HV9N+q+BmIN7v3CnpsoqXA
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id az11-20020a17090b028b00b00296b2f99946sm153020pjb.30.2024.02.08.11.36.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 11:36:47 -0800 (PST)
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2024; t=1707421005;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fkyOtDTT6XXbEX+vLQ2wDNuDNguLiW47jjofDmGnI7M=;
-	b=Eq3JHS1zKYfQSfsJvC7H3YF7nwfVpjBxrus6JLBjnBI7Db9G0XChQJUX97Pt6aomnKluZz
-	2KgSYLFf3n7UYPmgn+15mRCXsc4w47IsYgoNfkrMF7XM09FmtnZTQH8FllFOClB6/noBpn
-	RCwlkTiCi6C1P5gCNbpGbKZ2GMTmKH8omYANzWYkadnt7wrpps784p8wOBW/F8TPeRtPFD
-	dMOsHoXLAfEBDM9PULFcgnYYyA/3kJKeSROPlQVme2lMrwtdsPxDOIf7Ea4HFC39UDHiHG
-	c1pVHK+6ujFelxEBSE9p9Aq7pdknn2qe9AtwIW1n/u9xbzQ4KOEMIwqmaj5Njw==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-Date: Thu, 08 Feb 2024 16:37:19 -0300
-Subject: [PATCH] iio: core: make iio_bus_type const
+        bh=HvjjVV3OVJFdrzwIkpIwh6ZmUksDN+MlaodV5B8GHkw=;
+        b=T1xQahhzu1/VM2C03o7nTHgQLkWg3fbs62zGpOKGVS3VsJt6D9EMXqUQbm0F84gzvf
+         emw602XVAV3QF7+zEfuC/JqzUExHrMEqkcxUymH13912dbVVEh4jsJWgZ5qlm3V3ERbf
+         KKi3BrpYpX4enwtgAojLD0QfpTm7Pve68dKUxaDLqVTi1jlhuZUSQ1+IQuy/a3UUQmQ+
+         KiAYeELgmwAxaa6GaHqxUXixTKeYcedLyJAPInqrY05YbF0Zrsnn/aRIRVWJXCu1Sksk
+         +GWP9U71H+AJlCcg1vO+TBsm0xXiQuljhDCE9ph3CgVw4D0qoRlurrcaW8N+tWZYoOwL
+         YH6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707426133; x=1708030933;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HvjjVV3OVJFdrzwIkpIwh6ZmUksDN+MlaodV5B8GHkw=;
+        b=U6BhUZTaKF3YVp33BERg0qjxYafFC+cEurfb/l+Go19bK+60UCw33ysuGAgERK6fix
+         W2VSU2QYQ62K9ru8PuRLw44URScboAGAkWvXKXkML+bGMS/M3jBCU0LiE4001SEOmW2o
+         R6MOsd5qu+zN35y78JyVgq1TXzmhD5dTMHUWmlZH4RM4oY3c4NkNleYcHI4tjBFQPvvt
+         b6a69u1li8AbwQ40QT7v6bKkntgMSGO8pZ1ScxfVwi6TkQ+RbOpIs8ruOJfVBGHyPtNa
+         NHSG1Vb9+67JoGMKtn2G8xGelsriYO+jF3NkKNBgACAr7vs1JBLUOb5fLglxBloDkHQK
+         q64g==
+X-Forwarded-Encrypted: i=1; AJvYcCXWH5WPUJDns4bA/6xxyEinxuEgzUE1rLYyBnTe1v8er7lz4GwzgAJDc2oAlWhnUTqaktD9L8kE/PFwcDr9+k2VTy+fmj37Qbpu
+X-Gm-Message-State: AOJu0Yw88bPug0+lSpi4dLYq7hWDYAlOOkKkcoegdnNz/7SUQeaEEtpZ
+	bpvZI8scEbN3TvwSIIfyJgrTa0UUe54g0JMuPJL/nOta0GbvSbXLgf2vsWTnVzHi1EDbrMICLQX
+	LK5ZmT9kQelSGF9wb6ktENXPu4iWgP7wb3joctg==
+X-Google-Smtp-Source: AGHT+IEmOae9wjka2hbpxlHm4kKA6Qy7H854xuj1LZpVQ0vWiZs28kTzmDWZLUiDYbmoFUh7D3xPfCz302NM5h7HR7c=
+X-Received: by 2002:a2e:8550:0:b0:2d0:d294:60f3 with SMTP id
+ u16-20020a2e8550000000b002d0d29460f3mr336715ljj.37.1707426133301; Thu, 08 Feb
+ 2024 13:02:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240208-bus_cleanup-iio-v1-1-4a167c3b5fb3@marliere.net>
-X-B4-Tracking: v=1; b=H4sIAG4txWUC/x3MTQqAIBBA4avErBN0Mvq5SkSkTTUQJkoRSHdPW
- n6L9xJECkwR+iJBoJsjny5DlQXYfXYbCV6yASVqibIV5oqTPWh2lxfMp1BUN0oTVsZ0kCsfaOX
- nPw7j+37mZhdEYQAAAA==
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Ricardo B. Marliere" <ricardo@marliere.net>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1667; i=ricardo@marliere.net;
- h=from:subject:message-id; bh=P00MN7TEHNS0sno2RE3JL79uy5/oil+paWe4tOWUUGc=;
- b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlxS1vlXH9tddueq0J7shZnHZd1dmF8z9YK5VOR
- xPH+qOYkkiJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZcUtbwAKCRDJC4p8Y4ZY
- pnrwD/9vEKOXummVQLcUj3Z4smz8/wI0u97x528XWcu1P4g02ceVg70R3Audv/4zJIPjtH0I5zQ
- /jWPREIq7bjqWBPJU2tjMlE3xS4BQKIiAmlhFMYCvqczBWFORqSSX5tpLMtABlKz+FQpmnS+9qp
- teLOghrIoPjKkaJkDXv1+QpCw4izdGPHeX87t37CFOZ2wD+sBx+EqYNP/xEOoej0nU3OLC8cF+q
- qb9IYx2roXua0UDO0uZMNjNubKGu6yO0EiGcXKDjZ7fm0nj03TTl0XAaHvACFMUBWz2eR2c6lrs
- SZyynT/tQxM8gduiEkTXCe6JAI8mMB7TioIIq/R3GdHUoogPWcKFKVFsreSdZVGnTs4mqVwf/X5
- FZPe8hINlUmRkJp0fg57rAK/KSw+QLadkQ53SPH/TQk9SP3ssAOicBowrx8+uieJvPIulX0vyjK
- jm1yyr+JRFTAxfr0vYd5Xlw6cVY7r3hcIJ3KgIaaU3RCImjREPqXjnyT5VPJVikb5km8xeePUtr
- LuGkg5Yt1TDLoE1HGIgA8Xe/N3VyPqjr5XhS7wyBGLWfbH6qG8gMk9i+X3KJq2OWUBewaEU1uVs
- h/hrL0RZbT7pe0Izud6uTlrfWR8tjbTw1Hi1j+Rc641Xxd823yZBL4O3BDkX/ijz5E1PtYEj1hB
- DnOmrqsmcpRJGtA==
-X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
- fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
+References: <20240208172459.280189-1-alisa.roman@analog.com> <20240208172459.280189-5-alisa.roman@analog.com>
+In-Reply-To: <20240208172459.280189-5-alisa.roman@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 8 Feb 2024 15:02:02 -0600
+Message-ID: <CAMknhBGauvnrNipcAoVrM5xnTHWoHyYuzDxmz=AY9_QHigwsAQ@mail.gmail.com>
+Subject: Re: [PATCH v3 4/5] dt-bindings: iio: adc: ad7192: Add AD7194 support
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: alexandru.tachici@analog.com, alisa.roman@analog.com, conor+dt@kernel.org, 
+	devicetree@vger.kernel.org, jic23@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, 
+	lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	michael.hennerich@analog.com, robh+dt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that the driver core can properly handle constant struct bus_type,
-move the iio_bus_type variable to be a constant structure as well,
-placing it into read-only memory which can not be modified at runtime.
+On Thu, Feb 8, 2024 at 11:25=E2=80=AFAM Alisa-Dariana Roman
+<alisadariana@gmail.com> wrote:
+>
+> Unlike the other AD719Xs, AD7194 has configurable differential
+> channels. The default configuration for these channels can be changed
+> from the devicetree.
+>
+> Also add an example for AD7194 devicetree.
+>
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7192.yaml          | 75 +++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> index 16def2985ab4..169bdd1dd0e1 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> @@ -21,8 +21,15 @@ properties:
+>        - adi,ad7190
+>        - adi,ad7192
+>        - adi,ad7193
+> +      - adi,ad7194
+>        - adi,ad7195
+>
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+>    reg:
+>      maxItems: 1
+>
+> @@ -96,8 +103,44 @@ required:
+>    - spi-cpol
+>    - spi-cpha
+>
+> +patternProperties:
+> +  "^channel@([0-7a-f])$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description: The channel index.
+> +        minimum: 0
+> +        maximum: 7
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
----
- drivers/iio/industrialio-core.c | 2 +-
- include/linux/iio/iio.h         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Should the max be 16 since in pseudo-differential mode there can be up
+to 16 inputs?
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index e8551a1636ba..9b2877fe8689 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -42,7 +42,7 @@ static DEFINE_IDA(iio_ida);
- static dev_t iio_devt;
- 
- #define IIO_DEV_MAX 256
--struct bus_type iio_bus_type = {
-+const struct bus_type iio_bus_type = {
- 	.name = "iio",
- };
- EXPORT_SYMBOL(iio_bus_type);
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 4f89279e531c..e370a7bb3300 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -669,7 +669,7 @@ DEFINE_GUARD_COND(iio_claim_direct, _try, ({
- int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
- void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
- 
--extern struct bus_type iio_bus_type;
-+extern const struct bus_type iio_bus_type;
- 
- /**
-  * iio_device_put() - reference counted deallocation of struct device
+> +
+> +      diff-channels:
+> +        description: |
+> +          The differential channel pair for Ad7194 configurable channels=
+. The
 
----
-base-commit: 81e8e40ea16329914f78ca1f454d04f570540ca8
-change-id: 20240208-bus_cleanup-iio-1e5714e23bb9
+all caps: AD7194
 
-Best regards,
--- 
-Ricardo B. Marliere <ricardo@marliere.net>
+> +          first channel is the positive input, the second channel is the
+> +          negative input.
+> +        items:
+> +          minimum: 1
+> +          maximum: 16
 
+As someone who would need to write a .dts based on these bindings, the
+information I would find helpful in the description here is that this
+is specifying how the logical channels are mapped to the 16 possible
+input pins. It seems safe to assume that the values 1 to 16 correspond
+to the pins AIN1 to AIN16, but it would be nice to say this
+explicitly. And what do we do when using pseudo-differential inputs
+where AINCOM is used as the negative input? Use 0?
+
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+>  allOf:
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - adi,ad7190
+> +            - adi,ad7192
+> +            - adi,ad7193
+> +            - adi,ad7195
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-7a-f])$": false
+>
+>  unevaluatedProperties: false
+>
+> @@ -127,3 +170,35 @@ examples:
+>              adi,burnout-currents-enable;
+>          };
+>      };
+> +  - |
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@0 {
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +            compatible =3D "adi,ad7194";
+> +            reg =3D <0>;
+> +            spi-max-frequency =3D <1000000>;
+> +            spi-cpol;
+> +            spi-cpha;
+> +            clocks =3D <&ad7192_mclk>;
+> +            clock-names =3D "mclk";
+> +            interrupts =3D <25 0x2>;
+> +            interrupt-parent =3D <&gpio>;
+> +            dvdd-supply =3D <&dvdd>;
+> +            avdd-supply =3D <&avdd>;
+> +            vref-supply =3D <&vref>;
+> +
+> +            channel@0 {
+> +                reg =3D <0>;
+> +                diff-channels =3D <1 6>;
+> +            };
+> +
+> +            channel@1 {
+> +                reg =3D <1>;
+> +                diff-channels =3D <2 5>;
+> +            };
+> +        };
+> +    };
+> --
+> 2.34.1
+>
 

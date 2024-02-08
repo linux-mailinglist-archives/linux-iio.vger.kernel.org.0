@@ -1,82 +1,74 @@
-Return-Path: <linux-iio+bounces-2304-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2305-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1540384DD2D
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 10:44:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE93E84DDB6
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 11:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 973DDB20D16
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 09:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E20A1F2ACB5
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 10:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0296BB58;
-	Thu,  8 Feb 2024 09:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5671A6EB72;
+	Thu,  8 Feb 2024 10:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b1VVWaRQ"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="cAt9j2EC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A956BB2F;
-	Thu,  8 Feb 2024 09:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D746EB55;
+	Thu,  8 Feb 2024 10:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707385440; cv=none; b=T1WSsmLGM8Tz/NNh5zq8JS2N5lU5trJA3GainDHuh3Ts6pWcSNyH0/NEXetqxsyDO7PTm1RTdojvrMt1Ed+zFd17ZFlLeZ/0FM0TR3sH7ApmHQ/UT88ATP/zKutDeWo7jkF+vdosskvRJRfzdPnVBlK6Vx93fd+180F3JrDjOLo=
+	t=1707386524; cv=none; b=t2FgEh5AyK4MoN6KfrrJw8vb+3TN7nvfosJwLmqL4z1/7+WuLAWQnzhvrMjHgQQGIHAFyQbdXW8kBDNbTbt0hyOWY/FP2rZmC69zetavOJgZPb25eUZFLHYauBOk9/EiHTvplWi4dA+fFBESOuTSOvHmJhTkQKlH1RpYJ2YsGXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707385440; c=relaxed/simple;
-	bh=4tBQV8gIEupd+sa2dqqJq1oLCjTr6Cb01Cl4c1CjyP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r6OmEf1t2SUdTW74iUGJ8Ezp023+HaTXVPzJZHjgeSCakLckA9ETt52JOyWjYsCIFKX4ES+eegnvcP/CbMbuOh9ZfBWE8/RSjWVVIbXjfZ/R78HvGFgkK7iDZeGK4Jc+ihX8KqQ0PYwMwyWWaoA1yYYf9zXVso5wvGl5rs+a26o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b1VVWaRQ; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-556c3f0d6c5so1914055a12.2;
-        Thu, 08 Feb 2024 01:43:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707385436; x=1707990236; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X7p3K02PhD++htjnyCnKJ+dGMFyKbZmZX7f+kzBf0cY=;
-        b=b1VVWaRQ6jWv3rC5gs1fcsAqAuYhioNHnyhMjEtieVEK1NljC8MpkSNAwlDMseO5EQ
-         qszNe2AyP5SeWYqdDHaAS31moaAJhTCDdBqeCHVjqvnW94QRiim+icTfAX0VE5niWH1/
-         KTLQ6/zx0oTqWhA0PtYzq7ByItgKqDYuoMJrj/6VkmrC5GYVVu1N3J9wiCTCk4hyk6Qk
-         x0GF3zCYH115PpG/W6T4j4gYo+sisrMCHS/SmnItD0tn9Y6QkwBcA9R2kdeWN49J0+Wz
-         HxTBOooAJ5fQnKdoOY0d/qYmnzgPMzTAFXJOIc0WjzvyiRmeIRGUdpdVqEAqCCSiEBV2
-         bApg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707385436; x=1707990236;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X7p3K02PhD++htjnyCnKJ+dGMFyKbZmZX7f+kzBf0cY=;
-        b=eOfJX/rhg4jh32E9pCV4IBpiYpWWCcripE7MeF30EluzxwMM2M1/KDg0oRQCWwJ7yq
-         MVb9xphZxmMcLN8uUsphDZZH/Uuo7eFX0FE1eg3syaKp1tpWf88aAvMQZsw2kDX5hHl/
-         bJSxy1+CvliDy47dkGa22dqShTj/uuARO+Ea5qZjbirOCWemymX8JS9DWp1qksX2I2SK
-         2VqkkCZ080COohSlSWSvmX1AUDrmaM5/Q1bcNZRRT06f2/04DphuLnazuieEPZwIp3RV
-         jtZIIOOav3REQIU7EVafbIq6fy3UF/5XaaI7ORqv+XpIr/EJ1zsm/SH+RpVxZhitMX5i
-         vtxg==
-X-Gm-Message-State: AOJu0Yz0JfU9db+3IigZ7l9FjZj0hBPhNpQiVMycaRIHS9O1sH+O9wQC
-	NzLDmBI78QFc9BO2XPiIS9HsWpHMBPzBB5cxa+w0Q7QlTm9AmZQ9
-X-Google-Smtp-Source: AGHT+IFeHhhLNi2XeEumL9GDfE4RisQS+7reTda1BObqjiO4TLk3jTgKVSzd8zhevxE2kWJweaXyJQ==
-X-Received: by 2002:a17:906:c456:b0:a38:a6a1:3d7f with SMTP id ck22-20020a170906c45600b00a38a6a13d7fmr1796806ejb.4.1707385436404;
-        Thu, 08 Feb 2024 01:43:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVMoZI4ou2aBBrPumIZDMSRTKAFeKwfzIrh7D56ujwnwLWECa4iZOeT0bATYWr6fPPAcus0BELZ1fjuT8YlRSs/8ysR7CphdSk6Nq5utClc9c8ASG9IjHFuYXtzJWIt4J0O8qLf31IW2Dk4qTQqFlJlMnBWd1JBlFmGjyCPJO68NxMYwznfmCi6lK3nRxkCATprpqKbIok6y5MzgsnQujUTyuvf
-Received: from localhost.localdomain (IN-84-15-188-071.bitemobile.lt. [84.15.188.71])
-        by smtp.gmail.com with ESMTPSA id tj7-20020a170907c24700b00a38a2fa2d4bsm937211ejc.45.2024.02.08.01.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 01:43:55 -0800 (PST)
-From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-To: Jonathan.Cameron@huawei.com,
-	oskar.andero@gmail.com,
-	lars@metafoo.de,
-	lukas@wunner.de
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Arturas Moskvinas <arturas.moskvinas@gmail.com>
-Subject: [PATCH] iio: adc: mcp320x: Simplify device removal logic
-Date: Thu,  8 Feb 2024 11:43:39 +0200
-Message-ID: <20240208094339.82633-1-arturas.moskvinas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1707386524; c=relaxed/simple;
+	bh=7o4lIaG2NTyVExMC/ImG68CMmDlDyiZ/DvPycsSNAoU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FmXdZeICgDPvUyjPG2cwEFl2oy/BvMNzYr9K7G20Pv8Ru5ylbGQZ3qXqxyApDDBY8FC0EPoNE4zpPhnjs95yy4OpBjN7im2xRRsKxkt/+TyN0LL1lsCChIkkozfoWjJ//05WABg/pXE7AbSID36gkyTKHd0fS3bNiW/I2eQ6qSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=cAt9j2EC; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4186EKNX020307;
+	Thu, 8 Feb 2024 05:01:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=DKIM; bh=S5GmtdhaVR3Z
+	Btgo7T6okFtkC1i1lkkf6nc7nqgGtJU=; b=cAt9j2ECJUxSBhbv2Pcko0YSOlce
+	JXvrLFx4I7bILHBm+WlYqnqWxjZpTYN1Hui87a5Wqy6MXa1pxg7NPgAFivYIwO6m
+	Xjxg/XsZEUUxvCK/fhYLzajIP+BESO8W/gvPVay9GEuUOaZEUA/6F2IjppIvNRFa
+	C0Kwa9+wNfjlUrM7YF2t9NFmw7fb2GFd4EoSFd60zM7+xrBG3yc+/YBWGeISkpYd
+	/dhoOMUWPv1/eK1oAn736NGnG1sGP3LBkQtbaTB/QUWza4JC8i2UxRqO8TmFwmjx
+	64stjGUW7/mreEpD+MzlxlE3nxh9Gge14pbU5o2OAcUeoSl4MNowhoFMRg==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3w3pjt8n8h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Feb 2024 05:01:48 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 418A1kG1053239
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 8 Feb 2024 05:01:46 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 8 Feb 2024
+ 05:01:45 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 8 Feb 2024 05:01:43 -0500
+Received: from rbolboac.ad.analog.com ([10.48.65.135])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 418A1UNo027963;
+	Thu, 8 Feb 2024 05:01:32 -0500
+From: Ramona Gradinariu <ramona.gradinariu@analog.com>
+To: <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
+        <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>
+CC: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH v3 0/3] adis16475 driver documentation
+Date: Thu, 8 Feb 2024 12:01:23 +0200
+Message-ID: <20240208100126.183697-1-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,63 +76,47 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: xtLVScjOv59REU1vwyqEbJv6bxjb9QhO
+X-Proofpoint-GUID: xtLVScjOv59REU1vwyqEbJv6bxjb9QhO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-08_01,2024-02-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 phishscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=611 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402080051
 
-Use devm_* APIs to enable regulator and to register in IIO infrastructure.
+Add documentation for:
+- iio device buffers describing buffer attributes and how data is structured in
+buffers using scan elements.
+- adis16475 driver which describes the driver device files and shows how the
+user may use the ABI for various scenarios (configuration, measurement, etc.).
 
-Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
----
- drivers/iio/adc/mcp320x.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+This kind of documentation describes how the user can interract with the drivers
+device files, showing the driver's particularities and we think all IIO drivers
+need such a documentation and will benefit from it.
+Having this documentation in the Linux Kernel will make it more accessible to
+the user, seeing how it is in the same location as the code.
+Analog Devices is prepared to add similar documentation for all new drivers (for
+ADI components), and in time to also add documentation for existing drivers,
+following the adis16475 documentation template.
 
-diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
-index f3b81798b3c9..4685eed35271 100644
---- a/drivers/iio/adc/mcp320x.c
-+++ b/drivers/iio/adc/mcp320x.c
-@@ -388,7 +388,6 @@ static int mcp320x_probe(struct spi_device *spi)
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &mcp320x_info;
--	spi_set_drvdata(spi, indio_dev);
- 
- 	device_index = spi_get_device_id(spi)->driver_data;
- 	chip_info = &mcp320x_chip_infos[device_index];
-@@ -441,31 +440,17 @@ static int mcp320x_probe(struct spi_device *spi)
- 	if (IS_ERR(adc->reg))
- 		return PTR_ERR(adc->reg);
- 
--	ret = regulator_enable(adc->reg);
-+	ret = devm_regulator_get_enable(&spi->dev, "vref");
- 	if (ret < 0)
- 		return ret;
- 
- 	mutex_init(&adc->lock);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret < 0)
--		goto reg_disable;
--
--	return 0;
--
--reg_disable:
--	regulator_disable(adc->reg);
--
--	return ret;
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
- static void mcp320x_remove(struct spi_device *spi)
- {
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--	struct mcp320x *adc = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--	regulator_disable(adc->reg);
- }
- 
- static const struct of_device_id mcp320x_dt_ids[] = {
+Ramona Gradinariu (3):
+  docs: iio: Refactor index.rst
+  docs: iio: add documentation for device buffers
+  docs: iio: add documentation for adis16475 driver
 
-base-commit: 047371968ffc470769f541d6933e262dc7085456
--- 
-2.43.0
+ Documentation/iio/adis16475.rst  | 381 +++++++++++++++++++++++++++++++
+ Documentation/iio/iio_devbuf.rst | 121 ++++++++++
+ Documentation/iio/index.rst      |   9 +-
+ 3 files changed, 510 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/iio/adis16475.rst
+ create mode 100644 Documentation/iio/iio_devbuf.rst
+
+--
+2.34.1
 
 

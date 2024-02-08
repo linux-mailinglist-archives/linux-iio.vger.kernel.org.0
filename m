@@ -1,106 +1,128 @@
-Return-Path: <linux-iio+bounces-2321-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2322-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2864084E7A4
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 19:24:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A090184E7C0
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 19:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AAA1F29705
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 18:24:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549AC1F2C600
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Feb 2024 18:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD8185C7E;
-	Thu,  8 Feb 2024 18:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zmpBl/Mj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BD68C1A;
+	Thu,  8 Feb 2024 18:34:53 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C24080058
-	for <linux-iio@vger.kernel.org>; Thu,  8 Feb 2024 18:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED292EEDA
+	for <linux-iio@vger.kernel.org>; Thu,  8 Feb 2024 18:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707416691; cv=none; b=OHGyXTkiyLNYHp/ymHb5hMcXY4ZRTAmqD/B0Shgrhp/yCDtKPSeR2d6MxWtJn+Kt7GIcP2hgR3ooqt9yWPqCr0k8TJAkNNbGe1Loa1j87k75QjlikfGqX8bWKvXNqpD+CZn0y5CCUfFF61BbTf74niIEQ1IrWyqqzlLdFTAkQXs=
+	t=1707417293; cv=none; b=Ul87fQ5eO6BKh195lTcFiGNNrWttzfSBkwTd0mDbSTUoKRGdJr7x0yEJGmyVDj5Z8vPMUKvWIEbCIxtcu4VUoN4QvTR5XaI9gSXAC08GE6dhvxaKepoFJLVcXR2iUZMz1KqCRBvV9gsamx/fhJb0GsBl36tnukNZL3dLfwCxIkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707416691; c=relaxed/simple;
-	bh=yWMQ80cejQiWbJt/Fr1QdvyZpIohGyasm9xWmdOoJSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BsOr7SIzGze4eh+AKWGaJBnXs0L/a5SlrQepQaQhKgE74zHnI8k3LAwBi8WQPPkmHwmQw2NbfnjZm+7UZfnAG883pRa5r8zRLe9tUIi9GYQ6grvpOA778bylM+bdt3EX/frE100w9Zq3KbKt9kKI08fZVKb0GNJgqmchLW9LU4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zmpBl/Mj; arc=none smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-46d103dcbbfso31013137.0
-        for <linux-iio@vger.kernel.org>; Thu, 08 Feb 2024 10:24:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707416689; x=1708021489; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KFHM46XvieWty5cjkhjt6QqDgG336hB1BzTOOfIZ13M=;
-        b=zmpBl/MjyFlZ9KRIRCNgZstkU8+W5DKeUS/cXnDT8ZBMrTYIuw7TFhXCoo+Ov99AGO
-         P+U7Uu/uUfhcl+nNTUmw43qtXx0tduzhTnh3R41AfkeIVXUF27LiNinD0ZpXUoDopYiw
-         KbfgnY99bEaCzpiz7levzq6Qc/d85aVpbTZNvZmyaRVEfqHBcyg8l+ds3Oq1sljqC+XF
-         mCNQQfGIjY69FQ2Imfd5Iye1pefAwmghPjXRS0zq+fGf3Wu8iXFrByQY+hwgJth1/vqF
-         5mJQBcBV3t87vCJmvdsMld42L+xU6Wg88pUsyFctYB7ty/cDG/6EAitGJCD0gCu2laXP
-         zj2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707416689; x=1708021489;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KFHM46XvieWty5cjkhjt6QqDgG336hB1BzTOOfIZ13M=;
-        b=FE9XqJX5OC4TF2NVzZEboJXCjVSkl5Iw3Re6My+UFhRxKH8VdGOAzl6T9jiCPwJp6O
-         gUpFd9sVm83up6KYAI3NJhqEd3IRw6hUCOp7838xKQTQrAolPrl+HEO7Cr8e+NkyY9bv
-         5oP6q0QYXpr1m/+b/CUi1/yJI4gPYb5hWEYvwXwJkbzSrdlkTuTyUpe4Yx2OCt73aXjy
-         bvNv4aXJXEwyNhMc5S0Awaz7oFBpqvgQ0Xc3JdZR0N2lASExlF3qEuYd2kz+UgkAAcue
-         P1JjlXEBzYTmgNl8TWltDhNT40vZdmW35d3JOXZzQN2MpPhaTGzhr0n1N/cDYxz0caHb
-         yKcw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0E8n5ZOvwZyebpb0WNU2aDkBiOZ4OGd6+jSIXF4+91rUAHEds4JxixCUDL9znu6aLFiM5fWnaa2XuKtm8WhbjUW2okhE2K2Ix
-X-Gm-Message-State: AOJu0YxlQDNzNQPFuf9xG1jR6dsOG8KH1iExBkcyl1SKDA+m3GDqQDzR
-	ptX8o7MTpJHNNdr4qEM04Bv8uD1wcnoudq3bUmwuTcxs9MpEwZwIZhu/zCEeDAk=
-X-Google-Smtp-Source: AGHT+IFwGL3vq5/38zSa2CyV8OxDqy0RxXpRamOL+kxkz7rK+carlQoUhdjRFT7uFbBrX0RW5KcB/g==
-X-Received: by 2002:a05:6102:2925:b0:46d:3eb2:5d54 with SMTP id cz37-20020a056102292500b0046d3eb25d54mr177122vsb.1.1707416689142;
-        Thu, 08 Feb 2024 10:24:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWzB2X/GzY5BrDX8P2pIc2GP6GSVQ3w2E2sFR3L4MS995omOy+pAIG7GvMikxPqhrXJQOObPgOYQPGlIPTVWH+eQdIF2C5QDliZadzcjIkPjf1OJh/cQLTHLMa2rROLGMv7LeGChMLsdc4xDxwPJmxXMOr5yhPWnTEMHojRlXUTwbmslQ==
-Received: from ishi.. (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id hz14-20020a0561024a8e00b00469ada55019sm36349vsb.13.2024.02.08.10.24.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 10:24:48 -0800 (PST)
+	s=arc-20240116; t=1707417293; c=relaxed/simple;
+	bh=1aRmuWlF2QDle0A+ZSnE59oYD9kL4AGO1glUmPyKhsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j6yaxMjaNFfaqSq7cM7jrD1MeCoqc66Dy5Xh2ETx9NgG1n1wrMUd11Ru00/0yiJR5a8t/DohPArOxui0mmjEE6ublhK9x+G3OvEjdFaepkfTLDpqGro5p8Ckd3IEVIy9b0DG8a2o4h9qFkYfmmH2PTNWC8Tzisu69d/YMyowR3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44840C433F1;
+	Thu,  8 Feb 2024 18:34:51 +0000 (UTC)
+Date: Thu, 8 Feb 2024 13:34:48 -0500
 From: William Breathitt Gray <william.gray@linaro.org>
-To: "Ricardo B. Marliere" <ricardo@marliere.net>
-Cc: William Breathitt Gray <william.gray@linaro.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] counter: make counter_bus_type const
-Date: Thu,  8 Feb 2024 13:24:18 -0500
-Message-ID: <170741658084.77291.12361784723046781637.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240204-bus_cleanup-counter-v1-1-cef9dd719bdc@marliere.net>
-References: <20240204-bus_cleanup-counter-v1-1-cef9dd719bdc@marliere.net>
+To: nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] counter: fix privdata alignment
+Message-ID: <ZcUeyN8OF49CGqij@ishi>
+References: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vfpFMh5fMMg+vb7Q"
+Content-Disposition: inline
+In-Reply-To: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
 
 
-On Sun, 04 Feb 2024 13:02:30 -0300, Ricardo B. Marliere wrote:
-> Now that the driver core can properly handle constant struct bus_type,
-> move the counter_bus_type variable to be a constant structure as well,
-> placing it into read-only memory which can not be modified at runtime.
-> 
-> 
+--vfpFMh5fMMg+vb7Q
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+On Mon, Feb 05, 2024 at 04:58:14PM +0100, Nuno Sa via B4 Relay wrote:
+> From: Nuno Sa <nuno.sa@analog.com>
+>=20
+> Aligning to the L1 cache does guarantee the same alignment as kmallocing
+> an object [1]. Furthermore, in some platforms, that alignment is not
+> sufficient for DMA safety (in case someone wants to have a DMA safe
+> buffer in privdata) [2].
+>=20
+> Sometime ago, we had the same fixes in IIO.
+>=20
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
+ree/drivers/base/devres.c#n35
+> [2]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kern=
+el.org/
+>=20
+> Fixes: c18e2760308e ("counter: Provide alternative counter registration f=
+unctions")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+> William, if you prefer, we can do something like in IIO and add a
+> specific COUNTER_DMA_MINALIGN define
+> ---
+>  drivers/counter/counter-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
+e.c
+> index 09c77afb33ca..073bf6b67a57 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -34,7 +34,7 @@ struct counter_device_allochelper {
+>  	 * This is cache line aligned to ensure private data behaves like if it
+>  	 * were kmalloced separately.
+>  	 */
+> -	unsigned long privdata[] ____cacheline_aligned;
+> +	unsigned long privdata[] __aligned(ARCH_DMA_MINALIGN);
+>  };
+> =20
+>  static void counter_device_release(struct device *dev)
+>=20
+> ---
+> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+> change-id: 20240205-counter-align-fix-3faebfb572af
+> --
+>=20
+> Thanks!
+> - Nuno S=E1
 
-[1/1] counter: make counter_bus_type const
-      commit: 856132743893a977fe1f1103b3f51b7f0984c2f1
+Hi Nunon,
 
-William Breathitt Gray <william.gray@linaro.org>
+This change sounds reasonable, but should the comment block above
+privdata be updated to reflect the change?
+
+Sincerely,
+
+William Breathitt Gray
+
+--vfpFMh5fMMg+vb7Q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZcUeyAAKCRC1SFbKvhIj
+K2uKAQCtAQlKVVfSHYytz3yPKmn8UlTAb1PnEFurWgETKgOudgEAk2eZ7juK/pFK
+NVX8354QmhdURuqLfYQzkyPvv7KYxw0=
+=NICx
+-----END PGP SIGNATURE-----
+
+--vfpFMh5fMMg+vb7Q--
 

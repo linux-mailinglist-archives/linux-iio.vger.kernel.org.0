@@ -1,110 +1,151 @@
-Return-Path: <linux-iio+bounces-2348-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2351-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4779484FA0C
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 17:51:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A371E84FC20
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 19:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0959428BDAF
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 16:51:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B7EF1F220AA
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 18:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27161272C2;
-	Fri,  9 Feb 2024 16:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB8E80C1B;
+	Fri,  9 Feb 2024 18:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X8rbGvFV"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="xnUnC2u9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8127E77F;
-	Fri,  9 Feb 2024 16:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3069959;
+	Fri,  9 Feb 2024 18:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707497248; cv=none; b=HqJn4c5XJ6SBOfXpu05CSxYoGF8rkjtPRLeuSq0OPrHDpKn0dRhYlMcnz1TFkpbSdpVMGVVxESx9oP/4Pua1IhZz5GZskhbkvZj0At86E33YcyrNHZOJLMnKH3miFDZkHN6fYOHryqz+e4Y6X6leiYkOBpsEIjOiXcoJupZz0sk=
+	t=1707503963; cv=none; b=Lr/cjeP7h2LbE9uUccOOfQy9C3LhLz0nuBggTENKIiWdWTwuxE3snmxdymCaynMxDDh3urLGKZ5CJkQDMPNFDiA/3P9l6Zb6mrfn2CbesphVNCRPxZaAnSm4+HhKZWbcRUDC6PQ/e/yg8AXT826q/8Tu+4e7RLTQd2by37qkHyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707497248; c=relaxed/simple;
-	bh=GvjNkWjFuU9gPa9u67Cmqf0rtzOV28y+JihwcxXnPm4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DJcV9fNuv+Qfk6bGAabRxGWDZ0R6ka4+yaIm6eOAVTCsPyfa7Q82xDZKYImppZYiGJWAu7SJB03OAozOJDeuDT9tkjFGk3st00n56RO3r1Ry6cQ95JcO8ggq8jPci9UzEVorFe+dgIf7Lrgr7wXltGfJJkmCIXCsJg/DuqhAu7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X8rbGvFV; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a3864258438so207218966b.0;
-        Fri, 09 Feb 2024 08:47:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707497244; x=1708102044; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f/WxMkU74BSyuBotyeONWFBUHqqgiBRmIjKpGNkVbwI=;
-        b=X8rbGvFV0SvpmsqCkf8h1oCKdPAIeR4ekGo6/RQ8jj7yd3YYjPaprdvwpF1VRH2qYL
-         aAPaWrM/3eeaQrjHkBylGvgZc8FawM4AJmT50nc6qxD0ORLzcroe7GqNnpdO1hSHlBd3
-         ngVRxuIC/rtMd/L3itFBbI4YzzJL8pVExgdKIRc87U66p5jf5uDsdVWEFUgtJX7JEM81
-         ekWphtd4bKEqdlJYlM1YDTzcycf76i9iNEFuPbuNvmziCRPiyNTybX7c2eLT7ZgL5LVy
-         LxiogKEK3sWqFAgHbOseEZmkzV1Re4bXhDtiI4+ppaoUZmCKNk/bk/YjwoMmsIvJB5Et
-         gHCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707497244; x=1708102044;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f/WxMkU74BSyuBotyeONWFBUHqqgiBRmIjKpGNkVbwI=;
-        b=jkWvUMhD3F1tROhU/srhoPK2GXmjp2swVEp47jD+KK8Tdw0L1vfAAKhHMrF7USsZGA
-         856TBZhlzEJgYPwqH2UbhA1gG7MlxZvJ+U7kdhYXdFQdmZdIbCeePn4S7u6omdht4H5R
-         Jgx+B+v3bGyAXH9gsSW2e5UiztgMs/qrwWzGcYgL4+x1cH6/45hKAUBEYn0d9TqoZApE
-         B+zDTLhPY4BDeO2nQpu7yR9GfZi1hLcadGLPWJmD2qNXJhXP+DgDPU2eiVhA4zlSdg52
-         xUO74/txJeo70zJI62/kYWymVdJM8NGZF2b+gv46Lukfuai5scCYMxYNCcwGtFE1kyOE
-         /dXA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8Uir+2z1O0bN1BzhApEsIEJ+RzzahVm1SrXXG2o11qouI9ia6bHNkEDoMHvji5wXlYT6mAudVFxGRQM9dPfEgmqPeKdI73l7RFg==
-X-Gm-Message-State: AOJu0YyEOKDaGvG7noNOXbR0Fn/edTrXf5hU6rKwgKXKmss8IB6ILcMz
-	C0qo74/c+CX8r7URObxH/AeMeFqIN30SY8gWdsbnsaqKoknoc+v7OPzKXAmQC2iTHt44Y1hcBK6
-	RaK5p4CEYuMFvjmw6rLQtYIJXXobdy349JHA=
-X-Google-Smtp-Source: AGHT+IFE5lpMmeVYiyBUB3zhAp5CSbwsEXeHObdhcq4VsH2NqiRarRszdJdAvQKiDvsJVH8ckyshjwOc6gi6tgDANSI=
-X-Received: by 2002:a17:906:b893:b0:a38:4fb5:c440 with SMTP id
- hb19-20020a170906b89300b00a384fb5c440mr1311114ejb.37.1707497244165; Fri, 09
- Feb 2024 08:47:24 -0800 (PST)
+	s=arc-20240116; t=1707503963; c=relaxed/simple;
+	bh=u0BDfBpNIPqTnjAdSKSUmF2FUWY8hltyVdK2adeadi0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=oZMwxvtDTo6x4ZyWQHHbovf0bojlibhVt03Q3NNJ/nm7cG1m9w/5uRaOO6Wxc0u+QV7IgycHVXhBPahJ/adlKd7J21eabc3iAsLyt41JM7iLJ7EPZB+mcRB6fnmo1zF9sx3zLE3wf1zUH4Y7ZsFAXwo5Y8eud7VTj2HVN01ThwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=xnUnC2u9; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 419DnEcn013275;
+	Fri, 9 Feb 2024 10:25:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:date:subject:mime-version:content-type
+	:content-transfer-encoding:message-id:references:in-reply-to:to
+	:cc; s=DKIM; bh=+N7LqXesUPlF7A4snIhVfkTW4DLwk2UctZRtddVDbik=; b=
+	xnUnC2u9arUhsriMPUvV1mCu6FEiJ1vMJC+HjdubbsnxICUc7/DDPnEshKn+SyoU
+	PSe2CiLFYkb33LMYg9mMVKZRuz/JM7AoX4C4QqLZE8nTwacrjVSGn2ITebMo/gsd
+	Wt7lS9MeGPPZooI0KMfwboSnHUgl/LhHptQNFH2Ve9AvgvsY1VzX93f9SNTzqdpj
+	na9XUTo6C5U8ciTKSuuVU1qF5MZJBceVKfsLhM+GmZh+lUwHdXFRiSWtxpdKGCib
+	8T3O9FGx25DV27OWJ5zLrZsZncv5W7HprozUEWlkMeysP+XGMVdgX0AzGGic1SVh
+	4fPW+bwNWIqabM/Xa9YxbA==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3w53423p92-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Feb 2024 10:25:51 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 419FPoAh047831
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 9 Feb 2024 10:25:50 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 9 Feb 2024
+ 10:25:49 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 9 Feb 2024 10:25:49 -0500
+Received: from [127.0.0.1] ([10.44.3.56])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 419FPVJ1013228;
+	Fri, 9 Feb 2024 10:25:41 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Date: Fri, 9 Feb 2024 16:28:51 +0100
+Subject: [PATCH v10 1/7] dt-bindings: adc: ad9467: add new io-backend
+ property
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240209-iio-backend-v10-1-3ed842064318@analog.com>
 References: <20240209-iio-backend-v10-0-3ed842064318@analog.com>
 In-Reply-To: <20240209-iio-backend-v10-0-3ed842064318@analog.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 9 Feb 2024 18:46:48 +0200
-Message-ID: <CAHp75VcW7D5YLm+VVH+m7s=8t3ki5d58Ta-HLOP3VpCU=rjFfg@mail.gmail.com>
-Subject: Re: [PATCH v10 0/7] iio: add new backend framework
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, Rob
+ Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>,
+        <andy.shevchenko@gmail.com>, Rob Herring
+	<robh@kernel.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1707492532; l=1193;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=u0BDfBpNIPqTnjAdSKSUmF2FUWY8hltyVdK2adeadi0=;
+ b=O62OYaPaDMI30+z6NBY9yvoQntxGzO4awCxE63t5jJw3pOEra7aC9PCmGgULzlMWnZc5TC8y5
+ NsA9hVup0IvCa9oxPsSusluhRCMtpjsZLC0f8qQziWMHD56+2bEFlN2
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: Rsol3yqtaHJENcL0VUTC7FaSS8EiUteD
+X-Proofpoint-ORIG-GUID: Rsol3yqtaHJENcL0VUTC7FaSS8EiUteD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-09_12,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
+ spamscore=0 mlxlogscore=778 bulkscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402090113
 
-On Fri, Feb 9, 2024 at 5:25=E2=80=AFPM Nuno Sa <nuno.sa@analog.com> wrote:
+The ad9467 will make use of the new IIO backend framework which is a
+provider - consumer interface where IIO backends provide services to
+consumers. As such, and being this device a consumer,  add the new
+generic io-backend property to the bindings.
 
-> Changes in v10:
->  - Patch 5
->    * Removed meaningless @ in function names;
->    * Added ascii diagram for the typicaly HW setup (Andy request);
->    * Add missing period;
->    * Use of dev_err_probe() in APIs meant to be called during probe().
->  - Patch 6
->    * Removed unneeded blank line;
->    * Fixed some English in the commit message.
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+---
+ Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks for the update!
-I found it nice, only one (kinda important) finding is the 1000x reset
-timeout decrease. It might justify v11. If so, consider other comments
-as well.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+index 7aa748d6b7a0..eecd5fbab695 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+@@ -44,6 +44,9 @@ properties:
+       Pin that controls the powerdown mode of the device.
+     maxItems: 1
+ 
++  io-backends:
++    maxItems: 1
++
+   reset-gpios:
+     description:
+       Reset pin for the device.
+@@ -68,6 +71,7 @@ examples:
+             reg = <0>;
+             clocks = <&adc_clk>;
+             clock-names = "adc-clk";
++            io-backends = <&iio_backend>;
+         };
+     };
+ ...
 
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+2.43.0
+
 

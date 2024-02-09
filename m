@@ -1,83 +1,84 @@
-Return-Path: <linux-iio+bounces-2332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB9084F0DC
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 08:34:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A482F84F0E8
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 08:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA2CD1C21B3C
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 07:34:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5954F1F25B63
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 07:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2449C657CA;
-	Fri,  9 Feb 2024 07:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED6E657DE;
+	Fri,  9 Feb 2024 07:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IalBDYTx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BJmFclJv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206665BA7;
-	Fri,  9 Feb 2024 07:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD6F657CA
+	for <linux-iio@vger.kernel.org>; Fri,  9 Feb 2024 07:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707464087; cv=none; b=sb7anrQwwItfCGNdoTqeg7Dcd9+laA0rFpVS7JEhjt9k4cxHftj6Jm/pdQJ4IGMcMt01fF7SOtSss+QzbXLNAtMCkiD5qDPHvSTSOeZfDFUy0x0H9DMjxfS9rBdx79EXjHs5sJZrJA2YfFV+9cS+KjY+dhIB4gaiROAdLY3ZzIE=
+	t=1707464326; cv=none; b=i46P6ZFA86mB/j7lONzorOiL0vZd8Bp187Fxjo7Kx+UtBxm/24PyJKHX1JWDTMQACifyFQt8glTF1lqJxshBsYiLG27i6WjBE3XnOlcHwMYMY8QISbiKOZvxi6d12qDM0OSQ+vv8P1bna0HBvSUjV2jTE2hJdpbPNo3NvPFma50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707464087; c=relaxed/simple;
-	bh=CMPjf5ZcgIXX/5rX8wFH4Kq38vPirxh6V50ymBzFNsE=;
+	s=arc-20240116; t=1707464326; c=relaxed/simple;
+	bh=ZP/1j0Gy9pY+fnHashRRjeL9nucjMXFcKMAL+mXm1X8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HGYB4E8GpKvRt2Swidruw4bUWhDlBeCmwHv9Dkxp79Restix/EglMmKWfTT/zsVyFCiUNic17pKu/SEBwHU8ZdI2rfqqNRCSeKm/JAjP2txV76Ck938KY20zU/4JstIu+5kyeAOtgAKYD8XsIwSHUSE2NvgR3MKMAxRCRu2BEjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IalBDYTx; arc=none smtp.client-ip=209.85.218.47
+	 Content-Type:MIME-Version; b=b0zz+Rs8y+5fe3ITzrjxdEiVQ4EwlBZL8R7H+aK9EDn2PiHdFMcpkEo42KSUh4HDuNJtqGsbmdcFGcIjZ2KCPKun6KLEhyp2+Zu2/SvwLyHbaUCCQYl/sPbQd1eUeyQkqS/6AHqdthwirWkvQ622fMqMkk4PuKV4AcMJr14se1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BJmFclJv; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a38291dbe65so70876166b.3;
-        Thu, 08 Feb 2024 23:34:46 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so77541166b.2
+        for <linux-iio@vger.kernel.org>; Thu, 08 Feb 2024 23:38:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707464084; x=1708068884; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707464322; x=1708069122; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=YuFnXWKAMZUaHr8SMQtDYTrcpRwqO7vAOmQCsQKVayA=;
-        b=IalBDYTxXNd6kYJJDBQo9a2y7CVuG0+lLmn6YZLAu48VB3Hs4e0mU8aMnq06lrfNaF
-         4kutB1/UEuhxRh01hauAMPPkYn35ZV8CZo6Rh8aqMzCdZ8X9M8zP6s8LQlQ7gUCaBrUG
-         rmT9dVO+arx2acvJIeCGruOysPAzSvVinufUY1u26yQNAE70SbOktPWIpT8CszgGXGCP
-         uL9nCtk6s4WHfQB1JQHfV9IjbqkBJ/e8IqjKejnmP2VQFYLinrOudEC7dOiRp50qfaUk
-         IvredWLEtACZF0KEiJZr+OQ3CrFk6nTO8TVW1kiAXS2OtnrYCA6rn4xixV6uO+MbE1La
-         SoAA==
+        bh=34556y/QWj5JRGeNNxMnROMvVDC9Ee4qOiaFioy+2oA=;
+        b=BJmFclJvAakd9r8zSadkmZ++6PdjtNfTHuXW4zxwNb+JxquC15O1fJtJC3WDtclEe0
+         G3MiOij0KD4jJDm8yxa7He1ROzqywLjgLfrpd2dhkqVGSQlDuwpT3efz3zWU4IJZaaoV
+         L2K7/EDee+w1KRNdDH5CmFyMG3zzEbMRtZ8n2h/WLGhfeCJudCOBKoKa8vK5G3yABpfN
+         202YTEOL37eABo1c24Rb9sSx5HBpRcWE3ZmYIRFxdQjfTCP9wuOiQtMkhC8gFzoFlQId
+         671ti6d99uvyaE1LASxaA8s+xbsjCA2GGIf1W2hDRmp14s/JLXxuTDCX4VYJGrbjkLVn
+         j7KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707464084; x=1708068884;
+        d=1e100.net; s=20230601; t=1707464322; x=1708069122;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YuFnXWKAMZUaHr8SMQtDYTrcpRwqO7vAOmQCsQKVayA=;
-        b=srLLDfRS8tPFsFF5aNzM77jkFDkEkHA55BLDXsJKqJ9DDqfTWlecIYt9OoD1HOa+0S
-         0cX1eAINGCf3acsNfZnlH1Odd06ApJ7LDBMRbmAziFHuc5sDrXFX8ig+pFJ38mLcl5rZ
-         iE3YqL3xKW3O9sUSzmtRxpg4r87nBmmmvbLmOmyg3X+22t/+BEaCnsqpUuWYy20e8TaV
-         Yc905SXi/gWzF3FeoDBHmtGzqKFrhcz8Qc84KzSe9aD79SYMFQH4S5DIelpI0wpqily8
-         NLTkd2Z96IUOF6gO+PiZoPB00k3dH9U1zpZxYGLDrsvnTaI/557U22U0vkFUD+vSe4CP
-         xMqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2hCPK6YfTvGK7/8JDNgH83Yx9KSZpAbmbjgiqtX7BJPfty75WHeBZ6hf+j6VDt7fXuRpziXPgoRHVNd8gnyOalrD3i1msA35PMfSF
-X-Gm-Message-State: AOJu0YydtfRj1ewAW76Y3MhnaOkcQJPGoDnuu9JrHariaOHKEwFOaPTW
-	uEXvnoktd2WI/6V0lChM/x2kbGQ840Wm5A+onhNVVGutl+PEuAin
-X-Google-Smtp-Source: AGHT+IGUKKHBefz7fx7UIvUnC9l9ovj864pSj6cuFOHkw0xi/FG0eSLqGEuaOsa9GrrsimwbRw+diA==
-X-Received: by 2002:a17:906:2dd5:b0:a3b:fe66:1aa6 with SMTP id h21-20020a1709062dd500b00a3bfe661aa6mr111799eji.53.1707464084171;
-        Thu, 08 Feb 2024 23:34:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUxh2ZM/zOopClfurLS95s0uJ3GEQPK7RrTf4GLKvNcpyJQgDypMcQ82QPDLpn2WlO+JyLo2kCW2D7XLBpmNLD1ZvG+uDIVSTSBjS2S5si4g4w5ymv1FfMz2JvslH3SC3AdSejRCNBOlcVvHD9DeZpAqB80aBxgzYvj9Z5LUXaZf4gMbwPmgF7/u2c
+        bh=34556y/QWj5JRGeNNxMnROMvVDC9Ee4qOiaFioy+2oA=;
+        b=iHWIu7Y6bi9XEz9j7IBEheHuG1s+xnfhyfhB3boqb+EJwi9bZW6ANmMMv8XnPLH59m
+         +vqC7CRgrhsLE8XhfHG9LJFR/V9BokPa9B4RgNje3nWn1hfatBinUZLl8Bw5skVOqqdp
+         00PF4T6kGpPIoxHhVRGAMg1sOhp9/75b1nWC7FTtVV5Fhumphz7t5XbyP354Rjc6wNCI
+         7OUWQZ3kKnF4YSq3bAqnP3wO1NwUBxIKJc6Pw8MSOkdI9gfxuL7TCIhRoOs20/oktafL
+         WPEsgCZ1QZTxTJP5J0+2TEaIUBNI9lS7N/KJw+SzXodpk+ak1Wy2EFTEd4upXBjQwHYt
+         ckSg==
+X-Gm-Message-State: AOJu0YyoPM3wlnxyBjv4efMY61NHj/hgpIVV18cDgyoeKk5++lOpvZop
+	Rf+bnvZGOmhoycCyWC4RXCmlvvkb0oxdtd0RnFq+3351V15vDBcvgshycsktJhcNig==
+X-Google-Smtp-Source: AGHT+IF5nI/UUjIUnRyweO/R61YwqPaxXYi7fW6cT9COHCv5jdNYlyBL63JT/PdgFZEM/vLaLEKRHA==
+X-Received: by 2002:a17:906:f6d9:b0:a38:1938:3d41 with SMTP id jo25-20020a170906f6d900b00a3819383d41mr478072ejb.10.1707464322448;
+        Thu, 08 Feb 2024 23:38:42 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUm2yrAB4nn8/Tbd1s1+Ff9CY3MYR8YNm5daiG3v+2dHqBNRrrjKsrcYxFzMayQW3Wppq8FN+2dHowJhhxrmfQB1k/brrnJWJKtQiPWCLjgqXMtzvOltOaklou3ilkx2tkUT4ROodVkmoyeFRRtd+T7bjvl7YntDHy0zj4m7B/y0hLgtB7rtmE88hGAMqkB8GO1sgRzZ9Vef+OVWA==
 Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id y24-20020a1709060a9800b00a3845a75eb7sm480523ejf.189.2024.02.08.23.34.43
+        by smtp.gmail.com with ESMTPSA id vi1-20020a170907d40100b00a376758a10bsm496115ejc.17.2024.02.08.23.38.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 23:34:43 -0800 (PST)
-Message-ID: <77e7ed84395c716e17d783e9411fd57ad8c22295.camel@gmail.com>
-Subject: Re: [PATCH] iio: core: make iio_bus_type const
+        Thu, 08 Feb 2024 23:38:42 -0800 (PST)
+Message-ID: <2ada0bacadf63dc4216a9a7f4d9d5d47041a8c8b.camel@gmail.com>
+Subject: Re: [PATCH] counter: fix privdata alignment
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: "Ricardo B. Marliere" <ricardo@marliere.net>, Jonathan Cameron
-	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Fri, 09 Feb 2024 08:38:03 +0100
-In-Reply-To: <20240208-bus_cleanup-iio-v1-1-4a167c3b5fb3@marliere.net>
-References: <20240208-bus_cleanup-iio-v1-1-4a167c3b5fb3@marliere.net>
+To: William Breathitt Gray <william.gray@linaro.org>, nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+ <u.kleine-koenig@pengutronix.de>
+Date: Fri, 09 Feb 2024 08:42:02 +0100
+In-Reply-To: <ZcUeyN8OF49CGqij@ishi>
+References: <20240205-counter-align-fix-v1-1-4821ced960ab@analog.com>
+	 <ZcUeyN8OF49CGqij@ishi>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.3 
@@ -88,56 +89,78 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-02-08 at 16:37 -0300, Ricardo B. Marliere wrote:
-> Now that the driver core can properly handle constant struct bus_type,
-> move the iio_bus_type variable to be a constant structure as well,
-> placing it into read-only memory which can not be modified at runtime.
->=20
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-> ---
-
-Acked-by: Nuno Sa <nuno.sa@analog.com>
-
-> =C2=A0drivers/iio/industrialio-core.c | 2 +-
-> =C2=A0include/linux/iio/iio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 2 +-
-> =C2=A02 files changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+On Thu, 2024-02-08 at 13:34 -0500, William Breathitt Gray wrote:
+> On Mon, Feb 05, 2024 at 04:58:14PM +0100, Nuno Sa via B4 Relay wrote:
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Aligning to the L1 cache does guarantee the same alignment as kmallocin=
+g
+> > an object [1]. Furthermore, in some platforms, that alignment is not
+> > sufficient for DMA safety (in case someone wants to have a DMA safe
+> > buffer in privdata) [2].
+> >=20
+> > Sometime ago, we had the same fixes in IIO.
+> >=20
+> > [1]:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/drivers/base/devres.c#n35
+> > [2]:
+> > https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.=
+org/
+> >=20
+> > Fixes: c18e2760308e ("counter: Provide alternative counter registration
+> > functions")
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > William, if you prefer, we can do something like in IIO and add a
+> > specific COUNTER_DMA_MINALIGN define
+> > ---
+> > =C2=A0drivers/counter/counter-core.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
 ore.c
-> index e8551a1636ba..9b2877fe8689 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -42,7 +42,7 @@ static DEFINE_IDA(iio_ida);
-> =C2=A0static dev_t iio_devt;
-> =C2=A0
-> =C2=A0#define IIO_DEV_MAX 256
-> -struct bus_type iio_bus_type =3D {
-> +const struct bus_type iio_bus_type =3D {
-> =C2=A0	.name =3D "iio",
-> =C2=A0};
-> =C2=A0EXPORT_SYMBOL(iio_bus_type);
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 4f89279e531c..e370a7bb3300 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -669,7 +669,7 @@ DEFINE_GUARD_COND(iio_claim_direct, _try, ({
-> =C2=A0int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
-> =C2=A0void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
-> =C2=A0
-> -extern struct bus_type iio_bus_type;
-> +extern const struct bus_type iio_bus_type;
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * iio_device_put() - reference counted deallocation of struct devi=
-ce
+> > index 09c77afb33ca..073bf6b67a57 100644
+> > --- a/drivers/counter/counter-core.c
+> > +++ b/drivers/counter/counter-core.c
+> > @@ -34,7 +34,7 @@ struct counter_device_allochelper {
+> > =C2=A0	 * This is cache line aligned to ensure private data behaves lik=
+e
+> > if it
+> > =C2=A0	 * were kmalloced separately.
+> > =C2=A0	 */
+> > -	unsigned long privdata[] ____cacheline_aligned;
+> > +	unsigned long privdata[] __aligned(ARCH_DMA_MINALIGN);
+> > =C2=A0};
+> > =C2=A0
+> > =C2=A0static void counter_device_release(struct device *dev)
+> >=20
+> > ---
+> > base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+> > change-id: 20240205-counter-align-fix-3faebfb572af
+> > --
+> >=20
+> > Thanks!
+> > - Nuno S=C3=A1
 >=20
-> ---
-> base-commit: 81e8e40ea16329914f78ca1f454d04f570540ca8
-> change-id: 20240208-bus_cleanup-iio-1e5714e23bb9
+> Hi Nunon,
 >=20
-> Best regards,
+> This change sounds reasonable, but should the comment block above
+> privdata be updated to reflect the change?
+>=20
+>=20
+Hi William,
+
+Yeah, maybe. I can spin a new version with that... To be sure, you mean (in=
+ the
+comment) private -> privdata, right?
+
+Also realized a typo in the commit message:
+
+"Aligning to the L1 cache does guarantee..." - Obviously, I meant "does
+*not*...".
+
+Thanks!
+- Nuno S=C3=A1
 
 

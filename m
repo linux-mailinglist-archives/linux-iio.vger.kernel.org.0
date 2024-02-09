@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-2346-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2347-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CBA84F9C1
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 17:38:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A85184F9FA
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 17:49:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E363B29792
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 16:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FC428FDE6
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 16:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352797B3D9;
-	Fri,  9 Feb 2024 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDDC82878;
+	Fri,  9 Feb 2024 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H97gUlc1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CR2lZzsv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672195339E;
-	Fri,  9 Feb 2024 16:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B07BB16;
+	Fri,  9 Feb 2024 16:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707496682; cv=none; b=r6zU89HlI5OD50VqigFD10n9izpOECwUbmguTJO8PC1y5g16ofxhAY80556/eOUEZpBcwjB+pHZ5GIhBfet9KpoyodmKsHJdQx6Z2IXMYWXwH7vdLLcl0LN+6MK7z2LG1OLFGYtiwv37HST6PHHWgjShB5dtuAmDcpqnQ1dMeVk=
+	t=1707497147; cv=none; b=HBa9ozWg4uFVzFgk7FpDllm4lwZJUzisjclBC4E6Y1HGuDY8qBoGit5SmwKfxjeIE5iZ4DgB94JVUSkEcq041bgy9Yh0nQjB/n0gfrB1GGbQBvRjrp18kgI3tMPnmO0WPURZCdBZGdYU4tIRdkNtAUkjti5JOuUMRix7uYgvnRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707496682; c=relaxed/simple;
-	bh=3c4KyVUY+8+J2DM9TNTTr8gHCtMfIf+GQGeL5c4hL+s=;
+	s=arc-20240116; t=1707497147; c=relaxed/simple;
+	bh=KGH5OXP8EbvTmHw25GrldAD2WeRQUqpcbMrriiRUIKk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Iq4HdflRnNwK51ufUJvvP/qYGKr0baIyX3/LCAXnaQp1IcmKPHhikbJkL0C/OtCIxIi9lUG4Xf2DkaSHoN2kIV2oi/GBVyYAGxr3m5QYz9hUoE7gGCx/0EcQonUbyEF2gaWtaj3VmvEeL//Vq8nY5C3CTvMWbfxafp3yQPtHS6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H97gUlc1; arc=none smtp.client-ip=209.85.218.46
+	 To:Cc:Content-Type; b=VAGhP03Onw1PJfhl3RuX6oqTwEh/8mc1aQ7kuM+6Mp1rUJovtUCIbljog/bhiyPbEitmQGHywwpCpTZtwz75GFgkRiraXLE1FmyL476xqUbb/bdmBrgZcObknCOxVCUQ6P1FuO7cOXv7yQQfiHfrZuDVmJZ/EaYx3mdnE9Lo7aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CR2lZzsv; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a30f7c9574eso139066566b.0;
-        Fri, 09 Feb 2024 08:38:00 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d0a0873404so12637201fa.2;
+        Fri, 09 Feb 2024 08:45:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707496678; x=1708101478; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707497144; x=1708101944; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2vt0bXaQo/CSZ1wNgT5DTTVusWcy3bPhCv+mvMVFiao=;
-        b=H97gUlc18FG7S1/v1gg4+CDYZXF4n50+/C5SeV5+CSf1GkAJTcAfCvK6NQVxqtVR/G
-         EoRodCv7r1mBxBDUBwv3KlJJhr/6dONX6frJzafE5iJ1RHpjBuff31QG6xJHLkSkadoE
-         YKWlEK03u/Yse+jElvJzxeqZ7HfkZ3UmFz7WM1GQPzx9qv84LRmh+tODhEIgldfQNNJe
-         nFcxTKV37bWa4nwXaNwXZO7w6jU2GcgDcaYV98tmF56qvZck1gYL0PDYfLl/X6+6YV/G
-         Dvbt03epskiQrIqBtmVOkmmnPl0prTa9A8CXY/BZrIWuH+SMuJKsWnV9+KNs3Ie7Bsg4
-         RI9A==
+        bh=N+yYyr70UKV2DkHopnVFh+mCvqXDfbCeLVfwKeuwJcc=;
+        b=CR2lZzsvFoDhOvGLm3wyA9VML8r7bEYY/WA6afTSTvzOdXG9WlBhapN8rLH26pYrZB
+         t3EqDgID3e6rIUyOJ2urD7vOExkawXO2w567CkuBAnoYMxuM5lxcjMJSKNsDul+3BvOO
+         JFmL/PB86FtoMo+X0rv8oPkIZsWvC/BKeaZpZCxqAS66Lp5nM09CcyHU8IG9HV1fBY8f
+         3nHT6atjhR0/UnskYa7L3qOssEqfZRg42OWTZH6hep6twYhRu7z+d8Ee4M45p7bx4JNs
+         wmLiQzEG1qDpgdRaxmftZORb00zPuHZ4fgu0FvvwlsG39LmOflaQtPD9x3dRpLWaXrHr
+         RZkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707496678; x=1708101478;
+        d=1e100.net; s=20230601; t=1707497144; x=1708101944;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2vt0bXaQo/CSZ1wNgT5DTTVusWcy3bPhCv+mvMVFiao=;
-        b=RxSs2Vk1xnaHdVG9uzTBcNidhgNYTQgyJl7JoTGjzh7ocfY6svK1aI6f1kpf7WGmWI
-         i64+1PWuKAs+QzubhMvDIsEKKzGxLW3OuFVoKkLm+kkW3tQaxUtO5cySt1NtBazj1V3X
-         Kg/rH8KmVv6jQIqGIcGbOBHzFGjvOuaJcfBRurnbw3CYpqzOnKzPqX3dMTvf50jGnCRL
-         YIg3k2qcOa3prFGu80EV64LOMHOvMSyVB8uO3xOv6qPKKXM9cfpXd6hA/3W/bF6FmxlZ
-         ZFTayAnEByooxuCivS6O8j+7+Q6dHxWcXbFO7AWJUCkTuG69EOeCpzCC0WJL8z22dR0I
-         8Z/w==
-X-Gm-Message-State: AOJu0Yz7RlZOgno/Inuybksj+93feWW0YWLAlRJGfkVDer0g6MkJu2Wp
-	vNVbZLBONBZNQCLuRV386OwcYpTVneuJFUs7cnhkV+DoyKJhy8V7fpXbx5amLM13BvDaLiGsdTM
-	h69SQakZ3jk/IRujFETCMgJ+jJ7A=
-X-Google-Smtp-Source: AGHT+IHjBfcFQ2n8/BDra0d/k8j4SvKGStxvIAM5UnP75L0HVnopCXmDW3q2CDesrBcoA7hmLnl6msi1j/s4FahpZNM=
-X-Received: by 2002:a17:906:138a:b0:a3c:2b1:48ae with SMTP id
- f10-20020a170906138a00b00a3c02b148aemr1085170ejc.27.1707496678288; Fri, 09
- Feb 2024 08:37:58 -0800 (PST)
+        bh=N+yYyr70UKV2DkHopnVFh+mCvqXDfbCeLVfwKeuwJcc=;
+        b=I9bOfaEwJel6wiegO0LQnVHWVIuuK+P667GxcgPTd7uTgxGa195cNq/7wSVE5TvoBE
+         qz/zEvzzPBkWmG1XN3gaiU0R3F1K3xmXpG8xWJGpr/4B8BEZ0l2SAdIVBSz2DWf/q1n+
+         ETsSWkO1tMVXxQDcV/UD4tPLQ5HjP8MNYfN9FOn1ckAKUn5EM7uIJuO+/w10qMipvs8K
+         bLT7pES/tZ10rHre/Bve9rjNRs7bmt6jruMaWgJS51ln0Khdjvyt7NDXSczssm/wykI+
+         4Ldjnt53mDqs2OTGcEx9Ol9cQWfo82ZbEXzdAF18uFz+VGIoKCymRkEwC3Y8JiQEKiWj
+         sIZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWoKI4smazUFfpU6oHpmhqxk3EwGwUIkLYz4indAlHzcepqbRizE/I3yOaQeDErVvHfj2RhRfi/2Ogd0YM0pxz8PtHdc++tXqDFHQ==
+X-Gm-Message-State: AOJu0YwmTdrTMyON6pBN/U57uEw7N2xXfJI7GJQGNMsOFQDvu+vRtRdy
+	jeEsFkl8kXvBb6OarVtj1UA+o+5IypGe/iR+18mfviRnclkeeJ6VQWsxQpOqlBR60tWxHlQu1SP
+	+k92kp0qm0dD+VOMyswalbhwoy/lorfWMDYU=
+X-Google-Smtp-Source: AGHT+IHnBS1yK9r1wjZuIuUaP0HbxNbqI+X9ixPZs5tjP7CSv3LvAWOcXFdkLMac4Mb70plo1+ddeEvLWmj7vfONT9Q=
+X-Received: by 2002:a2e:a787:0:b0:2d0:9b1c:648f with SMTP id
+ c7-20020a2ea787000000b002d09b1c648fmr1966315ljf.24.1707497143855; Fri, 09 Feb
+ 2024 08:45:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240209-iio-backend-v10-0-3ed842064318@analog.com> <20240209-iio-backend-v10-6-3ed842064318@analog.com>
-In-Reply-To: <20240209-iio-backend-v10-6-3ed842064318@analog.com>
+References: <20240209-iio-backend-v10-0-3ed842064318@analog.com> <20240209-iio-backend-v10-7-3ed842064318@analog.com>
+In-Reply-To: <20240209-iio-backend-v10-7-3ed842064318@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 9 Feb 2024 18:37:21 +0200
-Message-ID: <CAHp75Vd0qcJiw7EPsSjLAG1G8RFymFuRif7FY2YVTBPK9M2KJQ@mail.gmail.com>
-Subject: Re: [PATCH v10 6/7] iio: adc: ad9467: convert to backend framework
+Date: Fri, 9 Feb 2024 18:45:07 +0200
+Message-ID: <CAHp75Vd1KkZHFon205O8sNF_zo6G5-m1vZNpnZZNr-V1CTP_VQ@mail.gmail.com>
+Subject: Re: [PATCH v10 7/7] iio: adc: adi-axi-adc: move to backend framework
 To: Nuno Sa <nuno.sa@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
@@ -87,66 +88,60 @@ Content-Transfer-Encoding: quoted-printable
 
 On Fri, Feb 9, 2024 at 5:26=E2=80=AFPM Nuno Sa <nuno.sa@analog.com> wrote:
 >
-> Convert the driver to use the new IIO backend framework. The device
-> functionality is expected to be the same (meaning no added or removed
-> features).
+> Move to the IIO backend framework. Devices supported by adi-axi-adc now
+> register themselves as backend devices.
+
+...
+
+> -#include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+> -#include <linux/iio/buffer.h>
+> -#include <linux/iio/buffer-dmaengine.h>
+> -
+>  #include <linux/fpga/adi-axi-common.h>
+> -#include <linux/iio/adc/adi-axi-adc.h>
+
++ Blank line?
+
+> +#include <linux/iio/backend.h>
+> +#include <linux/iio/buffer-dmaengine.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/iio.h>
+
+...
+
+> +static int axi_adc_enable(struct iio_backend *back)
+>  {
+> +       struct adi_axi_adc_state *st =3D iio_backend_get_priv(back);
+>         int ret;
 >
-> Also note this patch effectively breaks ABI and that's needed so we can
-> properly support this device and add needed features making use of the
-> new IIO framework.
->
-> Given the lack of features (and devices supported) in the ad9467 driver
-> compared with the ADI out of tree version, we don't expect any user of
-> the upstream driver so no one should notice the ABI breakage. However,
-> if someone is affected by this, ADI will happily support transitioning
-> to the backend framework.
+> +       ret =3D regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
+> +                             ADI_AXI_REG_RSTN_MMCM_RSTN);
+> +       if (ret)
+> +               return ret;
+
+> +       fsleep(10);
+
+Would be nice to have a comment that probably the datasheet defines
+the minimum timeout for reset. Ah and you decreased it 1000x times,
+why?
+
+> +       return regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
+> +                              ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_M=
+MCM_RSTN);
+>  }
 
 ...
 
->  struct ad9467_chip_info {
-> -       struct adi_axi_adc_chip_info    axi_adc_info;
-> -       unsigned int                    default_output_mode;
-> -       unsigned int                    vref_mask;
-> +       const char              *name;
-> +       unsigned int            id;
-> +       const struct            iio_chan_spec *channels;
-> +       unsigned int            num_channels;
-> +       const unsigned int      (*scale_table)[2];
-> +       int                     num_scales;
-> +       unsigned long           max_rate;
-> +       unsigned int            default_output_mode;
-> +       unsigned int            vref_mask;
->  };
+> +       expected_ver =3D (unsigned int *)device_get_match_data(&pdev->dev=
+);
 
-Seems like you haven't checked this layout with `pahole`.
+expected_ver should have const and you can drop the casting IIUC.
 
-...
+> +       if (!expected_ver)
+> +               return -ENODEV;
 
-> +static int ad9467_iio_backend_get(struct ad9467_state *st)
-> +{
-> +       struct device *dev =3D &st->spi->dev;
-> +       struct device_node *__back;
-> +
-> +       st->back =3D devm_iio_backend_get(&st->spi->dev, NULL);
-
-Simply 'dev' as the first parameter?
-
-...
-
-> +       /* If not found, don't error out as we might have legacy DT prope=
-rty */
-
-This seems related to ENOENT, correct?
-
-> +       if (!IS_ERR(st->back))
-> +               return 0;
-
-And the above is about something else (found?) case, right?
-
-> +       if (PTR_ERR(st->back) !=3D -ENOENT)
-> +               return PTR_ERR(st->back);
-
---
+--=20
 With Best Regards,
 Andy Shevchenko
 

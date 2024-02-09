@@ -1,180 +1,143 @@
-Return-Path: <linux-iio+bounces-2331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7929C84F0DA
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 08:34:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB9084F0DC
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 08:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 550EFB21A1D
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 07:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA2CD1C21B3C
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 07:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943B065BA2;
-	Fri,  9 Feb 2024 07:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2449C657CA;
+	Fri,  9 Feb 2024 07:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KRSi+4NC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IalBDYTx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCED657D6
-	for <linux-iio@vger.kernel.org>; Fri,  9 Feb 2024 07:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206665BA7;
+	Fri,  9 Feb 2024 07:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707464056; cv=none; b=VefzU3gk2jvTL4Xk7OHffK3EauO2+aqwZMfJPW7sco6iikxu0slRfWWAiE6Qu0H/1At5lOfnAI8ZeHQsrS1fypW2VzkH6pxOtqd8iEuyJj1rjiUnL1XL2cmr5/qnzspLvZbo/TYjQ+uL5PBhBl+Kn04B03IirxaygX8t01W5Zho=
+	t=1707464087; cv=none; b=sb7anrQwwItfCGNdoTqeg7Dcd9+laA0rFpVS7JEhjt9k4cxHftj6Jm/pdQJ4IGMcMt01fF7SOtSss+QzbXLNAtMCkiD5qDPHvSTSOeZfDFUy0x0H9DMjxfS9rBdx79EXjHs5sJZrJA2YfFV+9cS+KjY+dhIB4gaiROAdLY3ZzIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707464056; c=relaxed/simple;
-	bh=l155yjqcn6mwLto3+BclXahtNP2bDt+8cJzfGcLLeTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuLNGERF86LwGdfD7TvQx3oE7eOYBPsM8JDp9bfS8FW29h4jXi8GHrQKHzBadXqCV5O/w9xujOwj/fgqeW6W63iEKHCamJe/idR0EfM+8J78tlXXp1PPw+29dK1f1HC+SMLtS6h1dIDr6wQX76WUom2cEUyZvNE6fT1iDXB7Lb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KRSi+4NC; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-511689cc22aso1020526e87.0
-        for <linux-iio@vger.kernel.org>; Thu, 08 Feb 2024 23:34:14 -0800 (PST)
+	s=arc-20240116; t=1707464087; c=relaxed/simple;
+	bh=CMPjf5ZcgIXX/5rX8wFH4Kq38vPirxh6V50ymBzFNsE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HGYB4E8GpKvRt2Swidruw4bUWhDlBeCmwHv9Dkxp79Restix/EglMmKWfTT/zsVyFCiUNic17pKu/SEBwHU8ZdI2rfqqNRCSeKm/JAjP2txV76Ck938KY20zU/4JstIu+5kyeAOtgAKYD8XsIwSHUSE2NvgR3MKMAxRCRu2BEjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IalBDYTx; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a38291dbe65so70876166b.3;
+        Thu, 08 Feb 2024 23:34:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707464052; x=1708068852; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0eEUn01Mr6+gS4j+nxEfJxP9WuUPEMbjF6jYP5SWlvI=;
-        b=KRSi+4NCYLQkpfagacytQAy8IKfQzMoraW3ebaxU5kxJP+WAWljejjBLs7Cn2lQenO
-         aZbPrg729EGzbPN0NustKVk4tNnORlLVx8pZCOj+Ei7MyBWtQ2pq5wAphdFG9BUJn9Jc
-         RmA+dX018dW4LGVb66U8bxbY5Vr8eOHmRBEMRP/JN7boFl0MDeeeR7B6DerLpRqND8x+
-         Lhu/Q5TM/cGQU8etIJtzxR8BiS/m8ItsCtcaf+IWPb5YTTnMZ23Z305JTaCTYU7T0Sxj
-         Wf7TizyfRtTlw45xUhXWNA2dTICcI1nHLfTx4mt+3kpuOKnCEavR/WO9zKIlCBEB3NyO
-         o0+g==
+        d=gmail.com; s=20230601; t=1707464084; x=1708068884; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YuFnXWKAMZUaHr8SMQtDYTrcpRwqO7vAOmQCsQKVayA=;
+        b=IalBDYTxXNd6kYJJDBQo9a2y7CVuG0+lLmn6YZLAu48VB3Hs4e0mU8aMnq06lrfNaF
+         4kutB1/UEuhxRh01hauAMPPkYn35ZV8CZo6Rh8aqMzCdZ8X9M8zP6s8LQlQ7gUCaBrUG
+         rmT9dVO+arx2acvJIeCGruOysPAzSvVinufUY1u26yQNAE70SbOktPWIpT8CszgGXGCP
+         uL9nCtk6s4WHfQB1JQHfV9IjbqkBJ/e8IqjKejnmP2VQFYLinrOudEC7dOiRp50qfaUk
+         IvredWLEtACZF0KEiJZr+OQ3CrFk6nTO8TVW1kiAXS2OtnrYCA6rn4xixV6uO+MbE1La
+         SoAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707464052; x=1708068852;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0eEUn01Mr6+gS4j+nxEfJxP9WuUPEMbjF6jYP5SWlvI=;
-        b=fkI6DhIxH52KT9bvIm5As8V0qBIlC/bB1rRYt0pChIk1m0XfOEXaSTGMDd10N6kdKv
-         pcgqP8mjv1m8TeFt2mz2TOsfJ6PzSniBsdCOBh7233wILNiDYGIvyyioMGENSevfNEpi
-         SsRhK/30DwEspmBqhBF+ZhETZkNg5qJKa+x89MtK8LVki0o2d1IfEgUJqbPri04NAp5Z
-         jLgQhtz9MeRdzZKWXZu+jaJm7qUz3mWajG7qIJGlBotfu44EpPOE87SYfxUZ1rJIL//b
-         X3o5qRRPTrRvmGF6EcDL8xiPBW6nleWuf80j07QNyOm8yU80iQE8M0CbhJWeFp9Orjba
-         2EmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeH/lXcugu1GIc90rTO3vLBNCfpcqbUoDKR0C7VU97iCwzZuNYkxSy6qkZVnERdQG6k87p3Z7OZ6vyfavSCdmrAWVISaJ1AhId
-X-Gm-Message-State: AOJu0YxqcHjENRvFeii6kWIl8G5xD5J0SrtUbEbKvPADzGZ1PFBAs4+a
-	B4MmJJ2awCKlJ679bSSOyqAK1oFm1WD6+VfZokjbYNjlqwQsj/WEJCpn51jroBA=
-X-Google-Smtp-Source: AGHT+IFV8/EETLzjTyITQd5j8C8fK8oZbjZICGMirfjRFUD8+VWA+cMyUmaJxkiXu37tYBIR9inn9w==
-X-Received: by 2002:ac2:5551:0:b0:511:3c74:cd1c with SMTP id l17-20020ac25551000000b005113c74cd1cmr416936lfk.23.1707464052580;
-        Thu, 08 Feb 2024 23:34:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUktLljRPqV5tGaS/sHJ0oHwk9Htds3BWZnRcc47UTzI4y/2uBviXBuJ3mHLJkOf+uOdAsSi9UmW4XYnpmQKOS7Y0HDsREbRjL57HPF1H0Sx0wJ9ev0apbcLnNPme4M7A3i79r6iN1lyQ2xHLlnPB+esyT3BQII09ry8V28s9cBuI5RpD7BLfPQg6v/vjUulCbwPUs7zr7uZfJcRcpIrfDgPkcZrrUW/Cg4F2vXsqu9x8QJSHInpDJySTueHUF5qPP583pJJxUF4JpmOJHllG0qQgc9RHVrwZ4CbfOfEexORlUOhsGl9r1wjuGxnULWbBERWoMJYyGbdPAUzdtFDmCfsOwdyYNpxUj0bOwF/rPp4h2bgsPYclVyQg5ywphSf3pun8N+K1DvG517DE7xRs6/b3On0enrhvdrr4C831zt98t8k+MURxXIl8ui/m4GvxI4dKjB1bLEr9M5mveuJtrARnHPACJqwIdqv/ghOplIESZfqnsHe1b+0g3EkDTgtZ1dLRpBqJncBZimc7S1roc6xmw2ow==
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id f7-20020a05600c154700b0041039d20454sm1664309wmg.41.2024.02.08.23.34.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 23:34:12 -0800 (PST)
-Message-ID: <5089c549-505f-4342-b3fe-bed8a29b6ce1@linaro.org>
-Date: Fri, 9 Feb 2024 08:34:11 +0100
+        d=1e100.net; s=20230601; t=1707464084; x=1708068884;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YuFnXWKAMZUaHr8SMQtDYTrcpRwqO7vAOmQCsQKVayA=;
+        b=srLLDfRS8tPFsFF5aNzM77jkFDkEkHA55BLDXsJKqJ9DDqfTWlecIYt9OoD1HOa+0S
+         0cX1eAINGCf3acsNfZnlH1Odd06ApJ7LDBMRbmAziFHuc5sDrXFX8ig+pFJ38mLcl5rZ
+         iE3YqL3xKW3O9sUSzmtRxpg4r87nBmmmvbLmOmyg3X+22t/+BEaCnsqpUuWYy20e8TaV
+         Yc905SXi/gWzF3FeoDBHmtGzqKFrhcz8Qc84KzSe9aD79SYMFQH4S5DIelpI0wpqily8
+         NLTkd2Z96IUOF6gO+PiZoPB00k3dH9U1zpZxYGLDrsvnTaI/557U22U0vkFUD+vSe4CP
+         xMqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2hCPK6YfTvGK7/8JDNgH83Yx9KSZpAbmbjgiqtX7BJPfty75WHeBZ6hf+j6VDt7fXuRpziXPgoRHVNd8gnyOalrD3i1msA35PMfSF
+X-Gm-Message-State: AOJu0YydtfRj1ewAW76Y3MhnaOkcQJPGoDnuu9JrHariaOHKEwFOaPTW
+	uEXvnoktd2WI/6V0lChM/x2kbGQ840Wm5A+onhNVVGutl+PEuAin
+X-Google-Smtp-Source: AGHT+IGUKKHBefz7fx7UIvUnC9l9ovj864pSj6cuFOHkw0xi/FG0eSLqGEuaOsa9GrrsimwbRw+diA==
+X-Received: by 2002:a17:906:2dd5:b0:a3b:fe66:1aa6 with SMTP id h21-20020a1709062dd500b00a3bfe661aa6mr111799eji.53.1707464084171;
+        Thu, 08 Feb 2024 23:34:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUUxh2ZM/zOopClfurLS95s0uJ3GEQPK7RrTf4GLKvNcpyJQgDypMcQ82QPDLpn2WlO+JyLo2kCW2D7XLBpmNLD1ZvG+uDIVSTSBjS2S5si4g4w5ymv1FfMz2JvslH3SC3AdSejRCNBOlcVvHD9DeZpAqB80aBxgzYvj9Z5LUXaZf4gMbwPmgF7/u2c
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id y24-20020a1709060a9800b00a3845a75eb7sm480523ejf.189.2024.02.08.23.34.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 23:34:43 -0800 (PST)
+Message-ID: <77e7ed84395c716e17d783e9411fd57ad8c22295.camel@gmail.com>
+Subject: Re: [PATCH] iio: core: make iio_bus_type const
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: "Ricardo B. Marliere" <ricardo@marliere.net>, Jonathan Cameron
+	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Fri, 09 Feb 2024 08:38:03 +0100
+In-Reply-To: <20240208-bus_cleanup-iio-v1-1-4a167c3b5fb3@marliere.net>
+References: <20240208-bus_cleanup-iio-v1-1-4a167c3b5fb3@marliere.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] dt-bindings: iio: light: Avago APDS9306
-Content-Language: en-US
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Matt Ranostay <matt@ranostay.sg>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240206130017.7839-1-subhajit.ghosh@tweaklogic.com>
- <20240206130017.7839-5-subhajit.ghosh@tweaklogic.com>
- <80e58f2f-b98b-46de-bcd4-fccbab11422a@linaro.org>
- <f7c18fca-2a85-46b2-a671-2409e662520f@tweaklogic.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <f7c18fca-2a85-46b2-a671-2409e662520f@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 08/02/2024 11:51, Subhajit Ghosh wrote:
-> Hi Krzysztof,
-> 
-> On 8/2/24 18:48, Krzysztof Kozlowski wrote:
->> On 06/02/2024 14:00, Subhajit Ghosh wrote:
->>> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
->>> Extend avago,apds9300.yaml schema file to support apds9306 device.
->>>
->>> this patch depends on patch:
->>> "dt-bindings: iio: light: adps9300: Update interrupt definitions"
->>
->> Drop the paragraph, not helping. There is no dependency here.
-> In the submitting patches guide, I read that if one patch depends
-> on another, it should be mentioned.
+On Thu, 2024-02-08 at 16:37 -0300, Ricardo B. Marliere wrote:
+> Now that the driver core can properly handle constant struct bus_type,
+> move the iio_bus_type variable to be a constant structure as well,
+> placing it into read-only memory which can not be modified at runtime.
+>=20
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+> ---
 
-On another patchset! Not on other patch within patchset. Anyway,
-submitting patches don't tell to store it in Git forever because it does
-not make sense.
+Acked-by: Nuno Sa <nuno.sa@analog.com>
 
-Third, there is no dependency.
-
-> If I try to apply this patch with "git am", it fails without
-> first applying the patch dependency mentioned above. Is that fine?
-
-It's just context.
-
-
-
-
-Best regards,
-Krzysztof
+> =C2=A0drivers/iio/industrialio-core.c | 2 +-
+> =C2=A0include/linux/iio/iio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 2 +-
+> =C2=A02 files changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+ore.c
+> index e8551a1636ba..9b2877fe8689 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -42,7 +42,7 @@ static DEFINE_IDA(iio_ida);
+> =C2=A0static dev_t iio_devt;
+> =C2=A0
+> =C2=A0#define IIO_DEV_MAX 256
+> -struct bus_type iio_bus_type =3D {
+> +const struct bus_type iio_bus_type =3D {
+> =C2=A0	.name =3D "iio",
+> =C2=A0};
+> =C2=A0EXPORT_SYMBOL(iio_bus_type);
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index 4f89279e531c..e370a7bb3300 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -669,7 +669,7 @@ DEFINE_GUARD_COND(iio_claim_direct, _try, ({
+> =C2=A0int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
+> =C2=A0void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+> =C2=A0
+> -extern struct bus_type iio_bus_type;
+> +extern const struct bus_type iio_bus_type;
+> =C2=A0
+> =C2=A0/**
+> =C2=A0 * iio_device_put() - reference counted deallocation of struct devi=
+ce
+>=20
+> ---
+> base-commit: 81e8e40ea16329914f78ca1f454d04f570540ca8
+> change-id: 20240208-bus_cleanup-iio-1e5714e23bb9
+>=20
+> Best regards,
 
 

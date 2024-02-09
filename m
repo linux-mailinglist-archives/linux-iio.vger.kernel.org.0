@@ -1,82 +1,81 @@
-Return-Path: <linux-iio+bounces-2345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B3984F9A1
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 17:31:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CBA84F9C1
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 17:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6702870AE
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 16:31:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E363B29792
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Feb 2024 16:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FF453398;
-	Fri,  9 Feb 2024 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352797B3D9;
+	Fri,  9 Feb 2024 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+ppGx3h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H97gUlc1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6160B5221;
-	Fri,  9 Feb 2024 16:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672195339E;
+	Fri,  9 Feb 2024 16:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707496293; cv=none; b=nvXR8fCSRGiEogkI4geQJtv7YgQdqZrktYkntfHmSyl6S1QPuXXb4BKFYkpi2pFp/fgg1PEbQtkZ/UWgfr0YmkAPkMrXEtX7SJGwHWnz0dBr5MwwO1oaX9sFE6WBbsztJfvVnGn3IsXm57sr+4SeK5BHWZKRvzby0kf2caLcqOQ=
+	t=1707496682; cv=none; b=r6zU89HlI5OD50VqigFD10n9izpOECwUbmguTJO8PC1y5g16ofxhAY80556/eOUEZpBcwjB+pHZ5GIhBfet9KpoyodmKsHJdQx6Z2IXMYWXwH7vdLLcl0LN+6MK7z2LG1OLFGYtiwv37HST6PHHWgjShB5dtuAmDcpqnQ1dMeVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707496293; c=relaxed/simple;
-	bh=+Cn6hNsUr3XwwqA4lqgfLpCdRX7gH1FnrJIRGiACKqY=;
+	s=arc-20240116; t=1707496682; c=relaxed/simple;
+	bh=3c4KyVUY+8+J2DM9TNTTr8gHCtMfIf+GQGeL5c4hL+s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=obX9xJ1eiWy4j8v31V6hsQDYYYA+cBTR6lkUO9POm7nwMkSVuZ0KcZXGm4qRJTjtAuggVIJoIpJcSO/C79cRkxXC8ukLb6u9uOpJFfstJoET9yzLDURfCjKVbKd2bMR4B24tcnrSKeNmQFuk6vwr5Fx2IkwKTp2LTLqAgVl7lVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+ppGx3h; arc=none smtp.client-ip=209.85.218.49
+	 To:Cc:Content-Type; b=Iq4HdflRnNwK51ufUJvvP/qYGKr0baIyX3/LCAXnaQp1IcmKPHhikbJkL0C/OtCIxIi9lUG4Xf2DkaSHoN2kIV2oi/GBVyYAGxr3m5QYz9hUoE7gGCx/0EcQonUbyEF2gaWtaj3VmvEeL//Vq8nY5C3CTvMWbfxafp3yQPtHS6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H97gUlc1; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a38a1a9e2c0so141567466b.3;
-        Fri, 09 Feb 2024 08:31:31 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a30f7c9574eso139066566b.0;
+        Fri, 09 Feb 2024 08:38:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707496289; x=1708101089; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707496678; x=1708101478; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hhNi7XXUcHNqqlZG/SmRxe/hmWK8dnm/yjQ0RO9xrAw=;
-        b=A+ppGx3hh0yX44LwStQCFysMD839b65sOBgK9+7VcDofgUNTUxWg2TCBFPoLZ+AP+1
-         sc1oEquhlU0MfHtg+YYim0U4JBA3Cxyq1+G+NQ9GGPwGofmcrRmHTL2vNXfH7W55AtgA
-         ZhXVd9Sj/4dCMcgFEK3gigFYox1O68XEF1+/zInIKpBHvVdsv9kT7jYcGPeUakvY6pEB
-         71CmYoKyDaqRwHBTtYAgd67B/4zPs3kmYmjSxDjx+Z7+Z3sm+IUw+5Kt0/y2l2fdnHHi
-         PinGcKCfNC2lleKe1dM9CeteivTZ9+oHBqirTDPrDhiDCUngAunnO4FXbzBv4abqc0So
-         Q7kA==
+        bh=2vt0bXaQo/CSZ1wNgT5DTTVusWcy3bPhCv+mvMVFiao=;
+        b=H97gUlc18FG7S1/v1gg4+CDYZXF4n50+/C5SeV5+CSf1GkAJTcAfCvK6NQVxqtVR/G
+         EoRodCv7r1mBxBDUBwv3KlJJhr/6dONX6frJzafE5iJ1RHpjBuff31QG6xJHLkSkadoE
+         YKWlEK03u/Yse+jElvJzxeqZ7HfkZ3UmFz7WM1GQPzx9qv84LRmh+tODhEIgldfQNNJe
+         nFcxTKV37bWa4nwXaNwXZO7w6jU2GcgDcaYV98tmF56qvZck1gYL0PDYfLl/X6+6YV/G
+         Dvbt03epskiQrIqBtmVOkmmnPl0prTa9A8CXY/BZrIWuH+SMuJKsWnV9+KNs3Ie7Bsg4
+         RI9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707496289; x=1708101089;
+        d=1e100.net; s=20230601; t=1707496678; x=1708101478;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hhNi7XXUcHNqqlZG/SmRxe/hmWK8dnm/yjQ0RO9xrAw=;
-        b=LcpdGg+mSkCh/rOxC/ZmdJihfuOt+YC2LOXP9FW2V4G06hRcDq4WLjSZtLALOvXKy+
-         lUuHGiU5DXIlEuIP7gMj3HcTB6UosvDLt1LyBNilltGXMIxTRt8UQTiuRV8NfzKPyqKi
-         ZGZeWiOhh/9LLY0TE12Tu+5xYEJUu1Pm1+WVaAYm5QWy0zw3xbfrMw1gQtJpxUUOuySR
-         Kh+B6hjSWrl3fh2DtgCq+T8nuNgk+uKYAgUeaphiFMyWhIMJqDMSxTJRjcxg74MBnm5S
-         wEIxnZzS4XeRl7Z5mcOumMNEoqxZuqi0x8RYYONxPEGKt4YweNEFpASD6nzGmxnSPfRL
-         PZcg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu7L2xH37eeAq7qyQwlgf4NffD+UL0UHiOEfEB+o1C6kJ6Ap+X9d5xCjbEn5XRAAhTnYAQ1vtl0fOHJOVQhWxMAQc1Mbkjw/gm0A==
-X-Gm-Message-State: AOJu0YzutcAbkAf/VckEVkE9+4kNggRn+BTSn5msJESo3qSPZ7p/HTqF
-	jEQv/cqK/VM9lUv4HiUmMbxckllH0+cZxqfxWuCj8xGidnTm9D104zNg+RElT8CwyOYBbAhHKz2
-	geTv8Ds13eqG4P3iAlnoe79XQxZo=
-X-Google-Smtp-Source: AGHT+IE9LZD0SC8N+bdtx7aKQ/oM5dgQj6DoNrLkVCLQpghb17s1YMlwAt7DV66ViD0jHkt9edcom0Nz/uofSaMlyJ0=
-X-Received: by 2002:a17:906:33d1:b0:a39:34ff:d6ad with SMTP id
- w17-20020a17090633d100b00a3934ffd6admr1771509eja.7.1707496289390; Fri, 09 Feb
- 2024 08:31:29 -0800 (PST)
+        bh=2vt0bXaQo/CSZ1wNgT5DTTVusWcy3bPhCv+mvMVFiao=;
+        b=RxSs2Vk1xnaHdVG9uzTBcNidhgNYTQgyJl7JoTGjzh7ocfY6svK1aI6f1kpf7WGmWI
+         i64+1PWuKAs+QzubhMvDIsEKKzGxLW3OuFVoKkLm+kkW3tQaxUtO5cySt1NtBazj1V3X
+         Kg/rH8KmVv6jQIqGIcGbOBHzFGjvOuaJcfBRurnbw3CYpqzOnKzPqX3dMTvf50jGnCRL
+         YIg3k2qcOa3prFGu80EV64LOMHOvMSyVB8uO3xOv6qPKKXM9cfpXd6hA/3W/bF6FmxlZ
+         ZFTayAnEByooxuCivS6O8j+7+Q6dHxWcXbFO7AWJUCkTuG69EOeCpzCC0WJL8z22dR0I
+         8Z/w==
+X-Gm-Message-State: AOJu0Yz7RlZOgno/Inuybksj+93feWW0YWLAlRJGfkVDer0g6MkJu2Wp
+	vNVbZLBONBZNQCLuRV386OwcYpTVneuJFUs7cnhkV+DoyKJhy8V7fpXbx5amLM13BvDaLiGsdTM
+	h69SQakZ3jk/IRujFETCMgJ+jJ7A=
+X-Google-Smtp-Source: AGHT+IHjBfcFQ2n8/BDra0d/k8j4SvKGStxvIAM5UnP75L0HVnopCXmDW3q2CDesrBcoA7hmLnl6msi1j/s4FahpZNM=
+X-Received: by 2002:a17:906:138a:b0:a3c:2b1:48ae with SMTP id
+ f10-20020a170906138a00b00a3c02b148aemr1085170ejc.27.1707496678288; Fri, 09
+ Feb 2024 08:37:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240209-iio-backend-v10-0-3ed842064318@analog.com> <20240209-iio-backend-v10-5-3ed842064318@analog.com>
-In-Reply-To: <20240209-iio-backend-v10-5-3ed842064318@analog.com>
+References: <20240209-iio-backend-v10-0-3ed842064318@analog.com> <20240209-iio-backend-v10-6-3ed842064318@analog.com>
+In-Reply-To: <20240209-iio-backend-v10-6-3ed842064318@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 9 Feb 2024 18:30:53 +0200
-Message-ID: <CAHp75VeqUnV33YF1WT9B0h=V_DpJBjwaH3g6AHiQQ-yDZBOyfg@mail.gmail.com>
-Subject: Re: [PATCH v10 5/7] iio: add the IIO backend framework
+Date: Fri, 9 Feb 2024 18:37:21 +0200
+Message-ID: <CAHp75Vd0qcJiw7EPsSjLAG1G8RFymFuRif7FY2YVTBPK9M2KJQ@mail.gmail.com>
+Subject: Re: [PATCH v10 6/7] iio: adc: ad9467: convert to backend framework
 To: Nuno Sa <nuno.sa@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
@@ -87,78 +86,67 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Feb 9, 2024 at 5:26=E2=80=AFPM Nuno Sa <nuno.sa@analog.com> wrote:
+>
+> Convert the driver to use the new IIO backend framework. The device
+> functionality is expected to be the same (meaning no added or removed
+> features).
+>
+> Also note this patch effectively breaks ABI and that's needed so we can
+> properly support this device and add needed features making use of the
+> new IIO framework.
+>
+> Given the lack of features (and devices supported) in the ad9467 driver
+> compared with the ADI out of tree version, we don't expect any user of
+> the upstream driver so no one should notice the ABI breakage. However,
+> if someone is affected by this, ADI will happily support transitioning
+> to the backend framework.
 
 ...
 
-> +struct iio_backend *devm_iio_backend_get(struct device *dev, const char =
-*name)
+>  struct ad9467_chip_info {
+> -       struct adi_axi_adc_chip_info    axi_adc_info;
+> -       unsigned int                    default_output_mode;
+> -       unsigned int                    vref_mask;
+> +       const char              *name;
+> +       unsigned int            id;
+> +       const struct            iio_chan_spec *channels;
+> +       unsigned int            num_channels;
+> +       const unsigned int      (*scale_table)[2];
+> +       int                     num_scales;
+> +       unsigned long           max_rate;
+> +       unsigned int            default_output_mode;
+> +       unsigned int            vref_mask;
+>  };
+
+Seems like you haven't checked this layout with `pahole`.
+
+...
+
+> +static int ad9467_iio_backend_get(struct ad9467_state *st)
 > +{
-> +       struct fwnode_handle *fwnode;
-> +       struct iio_backend *back;
-> +       unsigned int index;
-> +       int ret;
+> +       struct device *dev =3D &st->spi->dev;
+> +       struct device_node *__back;
 > +
-> +       if (name) {
-> +               ret =3D device_property_match_string(dev, "io-backend-nam=
-es",
-> +                                                  name);
-> +               if (ret < 0)
-> +                       return ERR_PTR(ret);
-> +               index =3D ret;
-> +       } else {
-> +               index =3D 0;
-> +       }
-> +
-> +       fwnode =3D fwnode_find_reference(dev_fwnode(dev), "io-backends", =
-index);
-> +       if (IS_ERR(fwnode)) {
-> +               dev_err_probe(dev, PTR_ERR(fwnode),
-> +                             "Cannot get Firmware reference\n");
-> +               return ERR_CAST(fwnode);
-> +       }
-> +
-> +       guard(mutex)(&iio_back_lock);
-> +       list_for_each_entry(back, &iio_back_list, entry) {
-> +               if (!device_match_fwnode(back->dev, fwnode))
-> +                       continue;
+> +       st->back =3D devm_iio_backend_get(&st->spi->dev, NULL);
 
-> +               fwnode_handle_put(fwnode);
-> +               ret =3D __devm_iio_backend_get(dev, back);
+Simply 'dev' as the first parameter?
 
-This order makes me think about the reference counting. So, fwnode is
-the one of the backend devices to which the property points to.
-Another piece is the local (to this framework) list that keeps backend
-devices. So, fwnode reference can be  dropped earlier, while the usual
-pattern to interleave gets and puts in a chain. Dunno if above needs a
-comment, reordering or nothing.
+...
 
-> +               if (ret)
-> +                       return ERR_PTR(ret);
-> +
-> +               return back;
-> +       }
-> +
-> +       fwnode_handle_put(fwnode);
-> +       return ERR_PTR(-EPROBE_DEFER);
+> +       /* If not found, don't error out as we might have legacy DT prope=
+rty */
 
-While thinking about the above, I noticed the room to refactor.
+This seems related to ENOENT, correct?
 
-  list_for_each_entry(...) {
-    if (...)
-      break;
-  }
-  fwnode_handle_put(...);
-  // Yes, we may use the below macro as the (global) pointers are
-protected by a mutex.
-  if (list_entry_is_head(...))
-    return ERR_PTR(...);
+> +       if (!IS_ERR(st->back))
+> +               return 0;
 
-  ret =3D __devm_iio_backend_get(...);
-  ...
+And the above is about something else (found?) case, right?
 
-> +}
+> +       if (PTR_ERR(st->back) !=3D -ENOENT)
+> +               return PTR_ERR(st->back);
 
---=20
+--
 With Best Regards,
 Andy Shevchenko
 

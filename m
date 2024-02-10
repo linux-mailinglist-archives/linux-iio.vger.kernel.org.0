@@ -1,72 +1,65 @@
-Return-Path: <linux-iio+bounces-2366-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2367-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9FF850525
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 17:27:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83315850538
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 17:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E09B4B22B0C
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 16:27:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5EEB1C22DE2
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 16:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121825C5E5;
-	Sat, 10 Feb 2024 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD08A41C87;
+	Sat, 10 Feb 2024 16:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/rN2fyL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8fALJ8q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF24D20B29;
-	Sat, 10 Feb 2024 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890D529CEF;
+	Sat, 10 Feb 2024 16:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707582438; cv=none; b=h1HJ5Rz+uInJ0opYOe4oO3tJUURUnVvNDAj6ij3TK+64e5rWnuLvsjKxv3c+qXgJEG9D/t5OOCUQj84X2GuD+369+FXKABGiRAzLVDKPsfQP9JStFBCd/KKeHSud+cerf8bh06lv9cRr5DMqYAdpWP4kgM9bX+zzaBfCVQ9UZYA=
+	t=1707582724; cv=none; b=TRqeFCNAvEKDEAbhrtSlsCeXN+dmKCOS62LATLTnkZyoOsronVTpJi9HxO4iQdTGnMNtChwNDbc7BW467clj2JBPDWYJYZzoHn6SbeaI4go8Z4V4fSH0cPXyix6tmo9KA9vinYwwBEW0UInpaWxWwVjqcb/OdI+tdhxJXooEFBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707582438; c=relaxed/simple;
-	bh=xotlrdExwR7OpAxvjEFBl3sZucXG39CERAthiIFDFcE=;
+	s=arc-20240116; t=1707582724; c=relaxed/simple;
+	bh=fRQuHaaaN/V5ij49FbfGzU94BV7t2qScQxlth67fsyo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DPf+3VRLFpm90q2JP+p2t8J7XDas/rBnCilsbZG6OPqJNTwSEEyaEiQtaE3Am6JWA9XoGUXZQq+hGJh8ojUtRLNTeMsfskNkZzq4mlkH6UP/gGhNBC35yKWIc0fAUcDep20l3TGmQqLd4YqkZLuBrYmzj17xG37Fw0GjAzJLi/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/rN2fyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C72C433C7;
-	Sat, 10 Feb 2024 16:27:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qY4vTEOQgAX9lhKgu3aIhcqse7qWiNzazdY+6d3sBEFa4Qi93mG3VM0As8V+jEgb2SkDl2KtxQzsMXuCX5Gyj5qTFHY0JYeZb1KhF1O+T6D7yDA6oBf4/vbFWePwB/jdU8YRRCFZM+T4SI54mAGYun1DanFwLZGnWNEk7eThY6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8fALJ8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA9DC433C7;
+	Sat, 10 Feb 2024 16:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707582438;
-	bh=xotlrdExwR7OpAxvjEFBl3sZucXG39CERAthiIFDFcE=;
+	s=k20201202; t=1707582724;
+	bh=fRQuHaaaN/V5ij49FbfGzU94BV7t2qScQxlth67fsyo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S/rN2fyLwU5QpDNprUT+IDybmAKToxm1A/CNVp/XCDATcu/o0xpaXspSFEHkgd1dY
-	 hwuOJj6wnMbSD70niQYUCUPuPqRs90aa/vGC+FKBjsQrQunNWBhnZqKQyf7nmloStS
-	 /w/szrodzfhA9o9a67xMYiLOMrVOybGa0d3JPFB64buZnSIdEB/63OPaggTRNmMIcT
-	 uaKQgFrj5ANA0OrlPyRXtbHIJQFxGWZJocUE76U3t2gnEESbBcC/Ws5mOZ9WUDhpkF
-	 lpIKXufTWkUr25Pa9V6qqSUrIDeLnSqdA3cYSd85Ofy2FYCv8l/QTAcnrUHMv/NBEO
-	 YhZTfHnoa92tw==
-Date: Sat, 10 Feb 2024 16:27:04 +0000
+	b=m8fALJ8qRwn3nqGlYBGnmEeCCntgMBGtxtRjvyNTi37W5t6hA3Asun0xhDH68yGty
+	 TarF+o+d0ZPvLXmNeZEnB94b2B1Fx1zQtTRWQ/3Pk3isBqnosWUa/OBVNZ4/ELWQHG
+	 0O6ADEPTLGMe5lTZ9jRugMz6eG2pDDDfaVdDeKpbbBXOnTCoHixLiPo/keiPJpXcOA
+	 UN7uN1SorNzCYHiIrGlZyb5vE9ztojSmB/qlv6xdywYIKzQUe6R2BG5OeG6LS542LW
+	 htNj1pjTDS1A26aGi5bpREthNHrWwRCdZSuH1+gVQX5+bhfKTG9WCbuG/O47HGDgVN
+	 e+XWRn7FmS2hw==
+Date: Sat, 10 Feb 2024 16:31:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Liam Beguin <liambeguin@gmail.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Maksim Kiselev <bigunclemax@gmail.com>, Marcus
- Folkesson <marcus.folkesson@gmail.com>, Marius Cristea
- <marius.cristea@microchip.com>, Mark Brown <broonie@kernel.org>, Niklas
- Schnelle <schnelle@linux.ibm.com>, Okan Sahin <okan.sahin@analog.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1298: Add driver
-Message-ID: <20240210162704.5126478c@jic23-huawei>
-In-Reply-To: <11613ba7-fc14-46bd-84ba-a0b5d966cbfc@topic.nl>
-References: <20240206065818.2016910-1-mike.looijmans@topic.nl>
-	<1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.fd628a1a-a926-426e-a239-bfd8c9858b94@emailsignatures365.codetwo.com>
-	<20240206065818.2016910-2-mike.looijmans@topic.nl>
-	<ZcIsuiuisQjTIxJv@smile.fi.intel.com>
-	<4c6654f5-2d9e-4c1b-a5de-7bdeacf5e99f@topic.nl>
-	<ZcI5PoWojKRrdpVl@smile.fi.intel.com>
-	<67387cf4-1065-4313-b4c6-054128ba8f3a@topic.nl>
-	<40a3a47b-1388-4ed0-a24b-2c0bcef3be3d@topic.nl>
-	<ZcJLnOiFoaABami1@smile.fi.intel.com>
-	<e04ca010-289c-4216-95ea-2f2418613378@topic.nl>
-	<ZcJfOgDMmLBpEho2@smile.fi.intel.com>
-	<11613ba7-fc14-46bd-84ba-a0b5d966cbfc@topic.nl>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, nuno.sa@analog.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v9 6/7] iio: adc: ad9467: convert to backend framework
+Message-ID: <20240210163151.37c31016@jic23-huawei>
+In-Reply-To: <18a89feff869edb9bef6c5d7ffdbc7baadf2cfee.camel@gmail.com>
+References: <20240206-iio-backend-v9-0-df66d159c000@analog.com>
+	<20240206-iio-backend-v9-6-df66d159c000@analog.com>
+	<CAHp75VeWV0+hqCoUb4YvfObnEAv0AaYJmXgpxJLfve+mBwhkyQ@mail.gmail.com>
+	<f6ed72343be50c358db8e7e36d9afa875f788425.camel@gmail.com>
+	<CAHp75Vf3vvYHz6pTpAQGEAxV-obWV+0XbhVhaFqYU5JUbtFY8Q@mail.gmail.com>
+	<18a89feff869edb9bef6c5d7ffdbc7baadf2cfee.camel@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,65 +67,71 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 6 Feb 2024 18:38:29 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Wed, 07 Feb 2024 10:23:36 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On 06-02-2024 17:32, Andy Shevchenko wrote:
-> > On Tue, Feb 06, 2024 at 04:44:03PM +0100, Mike Looijmans wrote:  
-> >> On 06-02-2024 16:09, Andy Shevchenko wrote:  
-> >>> On Tue, Feb 06, 2024 at 03:47:45PM +0100, Mike Looijmans wrote:  
+> On Tue, 2024-02-06 at 19:51 +0200, Andy Shevchenko wrote:
+> > On Tue, Feb 6, 2024 at 6:51=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.=
+com> wrote: =20
+> > > On Tue, 2024-02-06 at 16:20 +0200, Andy Shevchenko wrote: =20
+> > > > On Tue, Feb 6, 2024 at 12:08=E2=80=AFPM Nuno Sa via B4 Relay
+> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote: =20
+> >=20
 > > ...
-> >  
-> >>> But it's up to you what to do with that.
-> >>> Maybe Jonathan can advice something different.
-> >>>  
-> >> The spinlock also protects the call to spi_async().  
-> > I don't get this. Locks usually protect the data and not the code.
-> > Can you elaborate?
-> >  
-> Either the DRDY or SPI completion handler will call spi_async(), the 
-> lock assures that it's only called by one.
+> >  =20
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st->back =3D devm_iio_backe=
+nd_get(&st->spi->dev, NULL);
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* If not found, don't erro=
+r out as we might have legacy DT
+> > > > > property */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!IS_ERR(st->back))
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return 0;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (PTR_ERR(st->back) !=3D =
+-ENOENT)
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return PTR_ERR(st->back); =20
+> > > >=20
+> > > > This looks hackish... =20
+> > >=20
+> > > This was suggested by Jonathan so I'm keen in leaving it as-is =20
+> >=20
+> > I think I proposed how to improve it. Jonathan?
+> >  =20
+>=20
+> Well, you did change it around so that we have the typical 'if (ret)' pat=
+tern.
+> But, honestly, that is also bringing an arguably useless helper. So, yes,
+> currently we are not doing the typical "check for errors first" pattern b=
+ut I do
+> think that the code is perfectly fine and readable as it is.
+>=20
+> It's also already pretty late in the review process of the series and the=
+re was
+> already some back and forth so to me, the above is really a minor detail =
+and I'm
+> not keen on changing it at this stage (unless Jonathan really feels stron=
+g about
+> doing it).
+It's odd code I don't expect to see anywhere else, so I'm not that fussed if
+it takes a little more thinking than normal (and you have a comment there t=
+o help
+us!)
 
-Arguably it's protecting the destination buffer of the spi_async()
-call.  We don't really care if we issue two reads (it's a waste
-of time and we would store two sets of readings but meh), but we do
-care about being sure that don't issue a second read into a buffer
-that we are potentially simultaneously getting data back from.
-
-There are comments where the release is to describe when it can 
-be safely unlocked.
-
-I'm not super keen on this whole structure but I don't really have a better
-idea.  Who builds a device where you have no latched way of seeing
-if there is new data? (some) Hardware folk love to assume they have a RTOS only
-talking to their device and that no pulse signals will ever be missed.
-
-We get to educate them when ever the opportunity arises :)
+So I'm fine with leaving this as it stands
 
 Jonathan
 
-> 
-> Usually the DRDY handler will call spi_async(). If the next DRDY arrives 
-> before the spi_async transfer finishes, the SPI completion handler must 
-> call spi_async() a.s.a.p. to also read the newly arrived sample. There's 
-> no way to ask the chip whether there's data to read, so all the driver 
-> can do is use the ISR to remember that DRDY did trigger.
-> 
-> The lock protects that the "busy" counter matches the actual pending 
-> calls to spi_async, and also protects that only one handler will call 
-> spi_async (and update the counter).
-> 
-> Maybe this picture helps:
-> 
-> DRDY ---+-----+-----+-----+-
-> 
-> SPI ------+------------+-+--
-> 
-> busy 00001100011111112211101
-> 
-> 
+>=20
+> I'll spin a v10 with your dev_err_probe() suggestion later today but at t=
+his
+> point I would prefer to not have to spin another one (afterwards) unless =
+really
+> needed (meaning, not because of minor details).
+>=20
+> - Nuno S=C3=A1
 
 

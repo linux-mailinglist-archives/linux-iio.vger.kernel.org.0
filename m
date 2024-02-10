@@ -1,61 +1,57 @@
-Return-Path: <linux-iio+bounces-2363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC33485050C
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 17:11:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DDA850511
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 17:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCE8AB2280B
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 16:11:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A87D6B214C4
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 16:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15555C022;
-	Sat, 10 Feb 2024 16:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730EB5C057;
+	Sat, 10 Feb 2024 16:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKZCwunw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqjb9FaP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F71936AFB;
-	Sat, 10 Feb 2024 16:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23739364BF;
+	Sat, 10 Feb 2024 16:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707581490; cv=none; b=HSW5gHpGi55W6gOhWyHHxDvRixyoexyProHc4P8EzSvLRHwNVjyjdAGuycFrgZ8W2i87didZfxXhXjKK8v63jTo9gspaAAth+B7TICDozJgEc+wMZB3/IHrr2qhKTQrpZj3BbTA1x3lyh0+6I1M4gK0Q09Z1C++P5DBIu+Qn0PU=
+	t=1707581674; cv=none; b=FtkCQgJAHG/MZEvSpSPHdT7YOZV741MY/b5hXzdBzL551YmFk5ds4AL21r00Edh6869UV4WONrfv1wSEnVzNsaQzV3YG0m/FFMZZJsk7gk0qExBKAgzzplxc0NUFv4HTpm6iOP8G8/sjhmoucr0wPs8mxjk6Jv7HwkBMrO09ju4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707581490; c=relaxed/simple;
-	bh=54etm7OxNpF3pRXei+kIb6Yk6RYbXbxS/ugDHuCmZoQ=;
+	s=arc-20240116; t=1707581674; c=relaxed/simple;
+	bh=+dIM/YtKITESNs1bx14AElMSDus7Vy/zYBTG4fA0Sb4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T6/IQsVcyxB7vMkTO7TY4c9y3IPQkmhAxmIU/ecObgFQL+q4m5wSmhp1KbBAHUZrvUQyXFUnY99uGfxH6HBdVOaRnAyv2TciPUn6LqE4hVMa8rpFHxVHJ8O5WaePME1uhPssGY5/rhxNSN+i0yCZYSsYsvdBR7OpsM9u9xBfv4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKZCwunw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E63C433F1;
-	Sat, 10 Feb 2024 16:11:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WfvDy5NkXUjLSrNv0MMb+GfjXbZ0Gm9WhLpyRGlDM/zN6Eoox+IKnncwDp9zFRsj4JEU0kwkqo31niFPxzdlmznYAmCNNGJKxT0dVM38ukpn+000YDjYDeKvRfuyA73XYfKTS9wKDz/P4sPcgeEda2KgPgmLt6UI+Sd4yaLMDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqjb9FaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED027C433C7;
+	Sat, 10 Feb 2024 16:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707581489;
-	bh=54etm7OxNpF3pRXei+kIb6Yk6RYbXbxS/ugDHuCmZoQ=;
+	s=k20201202; t=1707581673;
+	bh=+dIM/YtKITESNs1bx14AElMSDus7Vy/zYBTG4fA0Sb4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CKZCwunw2bFQPUOHKK4gMoee1PtbuhuPd/+hRKGkyQdgRpNA+rxImBqaXRu6B24Uj
-	 xiDQN5re3AtXmS3FFf3XFJ3DzmGuPt83kOaaKUIHu4wtwWVXtGMDj5Z8gwyhrDNJcS
-	 k+bwf74gXwwzdhJ+CqF9XSW3TQT+Z/glHt4pgdt1gaYI239Xw3n5l9xZt+rdUeBpzM
-	 V0ely5wqeHWAzxOyxINc/kOuA/yzYyDUDkPt7tc7oEZDhDtw6jb+Z9ZokxJgPFIDWJ
-	 eSj8/F4QrAwZQM1UPkcwVf4FU8DCivhDUCXZNP9liTr00YRRNmUd7Rvt0JtqO2m/wW
-	 yn/0eW7en1nHA==
-Date: Sat, 10 Feb 2024 16:11:17 +0000
+	b=jqjb9FaPu/j5gmTazMy0pzaqzDbuc8HUxwhEvqKPsQo6zCCNXc8Hqm4SbEokyrraN
+	 jzoN20VAPbKEMKDin+DU7Jzg3c5hJQRtsdw41dO5C3e6lrdNTVROlgMT/AintsRYTm
+	 ggiXhDMePeB5/0pP4kbk5IMCBCuPoSt7AkKgZgOeHdTJzR94sZOhaPIlJOa0djW37F
+	 KV7fb04x9tanVmGpZ8wdE/aPiauFLosD5zkRww5sCZlGy5PYFi6mflI/TAszo+cRSt
+	 1wGg6T/tRA5+IKQVNFIwV66GgszwBw8b7i7IXoJ6zwrM+bnpNbsBqNT2mtp6Me1ca8
+	 Gz5e+fWCb/bBQ==
+Date: Sat, 10 Feb 2024 16:14:22 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Li peiyu <579lpy@gmail.com>, Lars-Peter
- Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com,
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: humidity: hdc3020: add threshold events support
-Message-ID: <20240210161117.1bb3dd7f@jic23-huawei>
-In-Reply-To: <20240205095323.GA2323766@debian>
-References: <20240204103710.19212-1-dima.fedrau@gmail.com>
-	<20240204144347.7f0eb822@jic23-huawei>
-	<20240205070421.GA2264419@debian>
-	<20240205093349.00003e10@Huawei.com>
-	<20240205095323.GA2323766@debian>
+Subject: Re: [PATCH v5 0/4] Add support of color temperature and
+ chromaticity
+Message-ID: <20240210161422.22e67983@jic23-huawei>
+In-Reply-To: <20240205185926.3030521-1-srinivas.pandruvada@linux.intel.com>
+References: <20240205185926.3030521-1-srinivas.pandruvada@linux.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,52 +62,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Mon,  5 Feb 2024 10:59:22 -0800
+Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
 
-> > >   
-> > > > As I mention below, I'm unconvinced that it makes sense to handle
-> > > > these as pairs.
-> > > >    
-> > > For the threshold I could convert it as it is for the heater registers:
-> > > 
-> > > #define HDC3020_S_T_RH_THRESH_MSB	0x61
-> > > #define HDC3020_S_T_RH_THRESH_LOW	0x00
-> > > #define HDC3020_S_T_RH_THRESH_LOW_CLR	0x0B
-> > > #define HDC3020_S_T_RH_THRESH_HIGH_CLR	0x16
-> > > #define HDC3020_S_T_RH_THRESH_HIGH	0x1D
-> > > 
-> > > #define HDC3020_R_T_RH_THRESH_MSB	0xE1
-> > > #define HDC3020_R_T_RH_THRESH_LOW	0x02
-> > > #define HDC3020_R_T_RH_THRESH_LOW_CLR	0x09
-> > > #define HDC3020_R_T_RH_THRESH_HIGH_CLR	0x14
-> > > #define HDC3020_R_T_RH_THRESH_HIGH	0x1F
-> > > 
-> > > or:
-> > > 
-> > > #define HDC3020_S_T_RH_THRESH_LOW       0x6100
-> > > #define HDC3020_S_T_RH_THRESH_LOW_CLR   0x610B
-> > > #define HDC3020_S_T_RH_THRESH_HIGH_CLR  0x6116
-> > > #define HDC3020_S_T_RH_THRESH_HIGH      0x611D
-> > > 
-> > > #define HDC3020_R_T_RH_THRESH_LOW       0x6102
-> > > #define HDC3020_R_T_RH_THRESH_LOW_CLR   0x6109
-> > > #define HDC3020_R_T_RH_THRESH_HIGH_CLR  0x6114
-> > > #define HDC3020_R_T_RH_THRESH_HIGH      0x611F
-> > > 
-> > > I don't know if it's a good idea, as we would need to make sure it is
-> > > big endian in the buffer. Probably with a function that handles this.  
-> > I think this is the best plan with a
-> > put_unaligned_be16() to deal with the endianness.
-> > The compiler should be able to optimize that heavily.
-> >  
-> I think that would require some refactoring. I would add patches that
-> are fixing this. Have there been reasons for using the pairs ? I'm just
-> curious.
+> The original series submitted to 6.7 (before revert) is modified to
+> solve regression issues on several platforms. There are two changes
+> introduced before adding support for new features to allow dynamic
+> addition of channels.
+Applied and pushed out as testing for all the normal reasons (0-day
+gets to play with it!)
 
-Not that I can think of. Maybe how they are represented on the
-dataheet?  Often people just copy that stuff without thinking
-about it (I know I've been guilty of this ;)
+Thanks,
 
 Jonathan
 
+> 
+> v5:
+> Change als_scan_mask to per state instead of global
+> v4:
+> Addressed comments from Jonathan and Basavaraj
+> v3:
+> Addressed comments for v2, details in each patch.
+> v2:
+> New change to add channels dynamically
+> Modified color temperature and chromaticity to skip in case
+> of failures
+> 
+> 
+> Basavaraj Natikar (2):
+>   iio: hid-sensor-als: Add light color temperature support
+>   iio: hid-sensor-als: Add light chromaticity support
+> 
+> Srinivas Pandruvada (2):
+>   iio: hid-sensor-als: Assign channels dynamically
+>   iio: hid-sensor-als: Remove hardcoding of values for enums
+> 
+>  drivers/iio/light/hid-sensor-als.c | 122 ++++++++++++++++++++++++-----
+>  include/linux/hid-sensor-ids.h     |   4 +
+>  2 files changed, 108 insertions(+), 18 deletions(-)
+> 
 
 

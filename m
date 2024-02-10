@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-2379-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2380-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34838505CF
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 18:55:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0153F8505DF
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 19:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA24FB243AE
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 17:55:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33BE71C23D49
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Feb 2024 18:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BF35D499;
-	Sat, 10 Feb 2024 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEC75D47B;
+	Sat, 10 Feb 2024 18:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WH3CZQ/r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAWob1/N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528AA5D491;
-	Sat, 10 Feb 2024 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C315C5E0;
+	Sat, 10 Feb 2024 18:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707587734; cv=none; b=EytE+Ygswfmd023RyHXBHjAOPK8MD5MpJUzFArBr1vX1Z2PidB8m8w+LCm9CrF30PmYMesb/UNiaUU3WEK/5RsuPGUkKzgVwRnamdS+hHPJiZbg7d4XPf4Une3/mg3XeqZTv8Gk7IDR5kHNB3xXejJ6Jtpjnvb8Rqpk2gx3NgOg=
+	t=1707588207; cv=none; b=J4yv/006ltf/fF+mvveXDt4aNg5bD3GT/EqdIhM2zQB/fEUi1rX+6Z3LKPcW6ltUTVKuGDsYP0Ts8ay7PJ27ItZLjlLTK8hFz53ZZLtPrxgiTfWT0fgoBFvOvwgj+V08Np9kLnpsrZtIe6CUQKcLuUkWPStrbEK3mSR2kaTcTqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707587734; c=relaxed/simple;
-	bh=ap3JjIjFbc61TT1tG3+muHIUhO4Rb8ru71qzcOe2sUs=;
+	s=arc-20240116; t=1707588207; c=relaxed/simple;
+	bh=F/HvI1bBKYZ8GxyFLiKJuElMro7KT5JI+q4W1Ocubyg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lhvfwNYpgO8D6tc5GgBq8tHKTm/8XvPnq5rKRMcTDltaVjWwGtAcaTw2qfT8P/WMJOdruOOhy8vo/WzzIXV7AvzKcr2CYqmHRU6UQ5kcVQsVPBwzRruMgXJQEi/gKCZ0NIOxa/ocL/Li+2IbfQqP1AbTjqGrMkOfbOUYfBZ67Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WH3CZQ/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FD9C433C7;
-	Sat, 10 Feb 2024 17:55:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jGqq/pBXnHAy64BZwtsH9DbQF0qlpFKzyzzXEwC88v7VSWG7Ft2seYn0qVNnmTi7f60GTy25iCYXwT+BO2H/MpUkFiRDvxHLor2Vhph6WJThqovsLC6yLNr7LOjUeNJ9jIiu6Td/CQGAr7TNqrpaype0RPE1HOxUMfwue77YeEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAWob1/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895D7C433F1;
+	Sat, 10 Feb 2024 18:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707587733;
-	bh=ap3JjIjFbc61TT1tG3+muHIUhO4Rb8ru71qzcOe2sUs=;
+	s=k20201202; t=1707588207;
+	bh=F/HvI1bBKYZ8GxyFLiKJuElMro7KT5JI+q4W1Ocubyg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WH3CZQ/rC5aqGe3w5A3t4lwJXSR0BY2C3oE7PzQlrcQqCBGMklvzatKYf3QS6ebxa
-	 HpzyXgCCUBLPsP9lA92acqB3O4VHNMek8jbItLX+km4TDUTPBXgIosDxoEH1QHJKLR
-	 V0DZEn2hjLeyxma5llNWnvurVtZukJYJCt6CJOuyY3hyhFoa4JmT3CxZcxArtvvfVJ
-	 4a3DTdlIgb74YLnpGUxtaE+2wmJM0PzR0M2lP4zTM+J8EP/uzfg+KpwvRaJmowCnBM
-	 fJLxrtGBEJSEOInF/xnsHK/A4iebE04NosajUR4ZtdCVu9H4NfdPSyUZ8dbGmElisK
-	 uZu3dydsybGOQ==
-Date: Sat, 10 Feb 2024 17:55:21 +0000
+	b=vAWob1/NGPF9cZTUOi+RAvQufsPwRWHo06J78soZ9OTgc4P1DVDuZ6qGpr8u+HjuZ
+	 Cpw939x20zmwT3A4i+3DXrQ9Qwhy6F6QILcEeMTBHOEO+026iq6H+Lg89SeKOwMqq5
+	 LslFtzxgwoqPo9Z69LZ0Be7Q0KK7/kBx6izVCyJ2lufBsMduzzH6ZzHHy+ZKBQhVPK
+	 9DMMK4qRWzXUILQhcqoZaNIYaoX8ljMlPLLgfl6FYspu4FFuccbU1X6mJ6s/X3IbHx
+	 4NlCiDNMAaGKBXX7GBe2ao2THnxpJJTeM4tcDB10VQr6/k6SxqR83lp4vKOJlsOk6H
+	 79bHt3wNSmuVw==
+Date: Sat, 10 Feb 2024 18:03:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Li peiyu <579lpy@gmail.com>, Nuno Sa
- <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] iio: humidity: hdc3020: drop u8 register pairs
-Message-ID: <20240210175521.6984cee6@jic23-huawei>
-In-Reply-To: <20240207074758.4138724-2-dima.fedrau@gmail.com>
-References: <20240207074758.4138724-1-dima.fedrau@gmail.com>
-	<20240207074758.4138724-2-dima.fedrau@gmail.com>
+To: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Cc: <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nuno.sa@analog.com>,
+ <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 2/3] docs: iio: add documentation for device buffers
+Message-ID: <20240210180315.78ee8135@jic23-huawei>
+In-Reply-To: <20240208100126.183697-3-ramona.gradinariu@analog.com>
+References: <20240208100126.183697-1-ramona.gradinariu@analog.com>
+	<20240208100126.183697-3-ramona.gradinariu@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,21 +62,88 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  7 Feb 2024 08:47:51 +0100
-Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
+On Thu, 8 Feb 2024 12:01:25 +0200
+Ramona Gradinariu <ramona.gradinariu@analog.com> wrote:
 
-> Switch to 16bit defines. Create helper functions that are aware of the
-> new register format and apply them wherever possible.
+> Add documentation for IIO device buffers describing buffer
+> attributes and how data is structured in buffers using
+> scan elements.
+> 
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> ---
+> changes in v3:
+>  - new patch
+>  Documentation/iio/iio_devbuf.rst | 121 +++++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst      |   1 +
+>  2 files changed, 122 insertions(+)
+>  create mode 100644 Documentation/iio/iio_devbuf.rst
+> 
+> diff --git a/Documentation/iio/iio_devbuf.rst b/Documentation/iio/iio_devbuf.rst
+> new file mode 100644
+> index 000000000000..0563b65316cb
+> --- /dev/null
+> +++ b/Documentation/iio/iio_devbuf.rst
+> @@ -0,0 +1,121 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=============================
+> +Industrial IIO device buffers
+> +=============================
+> +
+> +1. Overview
+> +===========
+> +
+> +The Industrial I/O core offers a way for continuous data capture based on a
+> +trigger source. Multiple data channels can be read at once from
+> +/dev/iio:deviceX character device node, thus reducing the CPU load.
+> +
+> +2. Buffer attributes
+> +====================
+> +
+> +An IIO buffer has an associated attributes directory under
+> +/sys/bus/iio/iio:deviceX/buffer/. Here are some of the existing attributes:
+Given this is new documentation, can we make it compliant from the start with
+multiple buffer support?  bufferY
 
-The dropping of const is an unrelated (though sensible) change.
-Given it's really minor, just calling it out with a comment here would be
-fine (rather than a separate patch).
 
-Otherwise looks good to me.  Thanks for cleaning this up.
+
+> +3. Scan elements
+> +================
+> +
+> +The meta information associated with a channel reading placed in a buffer is
+> +called a scan element. The important bits configuring scan elements are exposed
+> +to userspace applications via the /sys/bus/iio/iio:deviceX/scan_elements/
+
+Reference the bufferY directory not scan_elements for this as well.
+
+...
+> +
+> +A user space application will interpret data samples read from the buffer as two
+> +byte little endian signed data, that needs a 4 bits right shift before masking
+> +out the 12 valid bits of data. 
+
+I can't remember how you do it, but if possible can we have a cross reference to the
+autogenerated ABI docs.  I want those to remain the 'official' definition of ABI
+with this (excellent btw!) document being the user friendly cut down version.
+
+Thanks!
 
 Jonathan
 
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> index db341b45397f..206a0aff5ca1 100644
+> --- a/Documentation/iio/index.rst
+> +++ b/Documentation/iio/index.rst
+> @@ -8,6 +8,7 @@ Industrial I/O
+>     :maxdepth: 1
 > 
-> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+>     iio_configfs
+> +   iio_devbuf
+> 
+>  Industrial I/O Kernel Drivers
+>  =============================
+> --
+> 2.34.1
+> 
 
 

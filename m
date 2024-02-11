@@ -1,369 +1,144 @@
-Return-Path: <linux-iio+bounces-2419-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2420-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CAD850ABD
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 18:49:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97920850AE3
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 633481C21A30
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 17:49:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D9CB21670
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 18:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018845D462;
-	Sun, 11 Feb 2024 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7257F5C5EB;
+	Sun, 11 Feb 2024 18:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JqHHIl9I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gtwl1Fec"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607715D733
-	for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 17:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D54DFC19;
+	Sun, 11 Feb 2024 18:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707673768; cv=none; b=Fx1LiSltIYutAlj8O43vZQSCJzJ7qQ1lTzZsvwYfJlt72HtQ3/MB6dFie7ux+tx2Y9zMTWBuZZ8jUixl7R9MEvXepn6ZB0ypLjLeEkix86iF0CE2DeUg9zYC9qKBEce0vb5FNjYs58vnGTN66TX8WSovLIHVTq24VdkAybQ+zsU=
+	t=1707677618; cv=none; b=WJGzmba45N2EUiB0glv+R2x6GnUmAABV3OwYEOGTmnSOku1oXaLXjj61pemTAXNGoEeEm+TsvefNlVwy7wbeam0gRqP12/qJ6v6SileDM1LEH7jzgkX4vnKH0jLSuj/1BsSHXWXPGeSKXvXR8w+CH3lIaGH0OIUYRalw9covfiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707673768; c=relaxed/simple;
-	bh=n2RypmfkBzHm1hzDTUlWFYls2tL1WUll15nu55Wa7nU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iCcU1BaeMXqb3crj9/5SleKMFCMCEd6bEJKAcgXNtOFUNskgpwGylBBEKaoAdDWQzmPa8xkd1PcNmvO/CSG5Vcosei3GIpxlL1XQHlE5brjQEpPgOY6cLRQKPWdWx/spfhrSyJU7PJ9UlqUORlenyxCIhAGOcM2hgiY/Pb0RgGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JqHHIl9I; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d07ffa0a9cso27729651fa.2
-        for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 09:49:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707673762; x=1708278562; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xw1vm0oVbmVwNfJD/NfbPWHQU7X7qDC7wpaDYKqUL90=;
-        b=JqHHIl9IV1vMgNnNGig6vMePptfsBnwI+SBVzGFYhjIsFSWOZd/L07FY4N+n/cF5sJ
-         KXyESmekGzntCoiKhsVQTIN96g6z+go3wxaugUClowRz62TzF/hRAvkppqV/nEJXe6ua
-         z/PRAlWuKTI48ZdbUi7MbiujqEl7YEpnEO9b3jD2AiT28FHHlYrVbAX2vq8KzWHukHPc
-         nhD/wlH0e0lrZ3D4gGLVDbBTgMUT3xeEFdy/TbAUKQRYxVuQoaaEG7g+v9AaO9Ih8ttF
-         mzC/cmzLhmT2cllq6ewKRMS+1lvVBwnrgL07cFvKhEKpzENOvrm/uIi6U/8rXi4ShpVE
-         q7nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707673762; x=1708278562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xw1vm0oVbmVwNfJD/NfbPWHQU7X7qDC7wpaDYKqUL90=;
-        b=ADCrrgBpQ2MDK72RwZDRHH3/mqXug3A9VWMQ+lZEArm32macM+5aL6oM4lJdn5w1Fm
-         /1L8/laUDTAF5tWX3rElq3UC3TJoBBgmTd+hPZ3JFrOPpl8J3qPpqqT0lZUbvzN9/M03
-         Y+Buj4AEnO/wDpwnNtAy1FzzcU1BlhmrsqXj/opcn7zpaD1Ow07rmx0TC2oDR7++5uWH
-         6PeQR0pehJO5TjwCg5FNAyouBZLv1TrmRLEU+3L2d6qxuUYSwG9oQgcStbw/rwBV7AXk
-         MlVpmTD38XFbRRK+FInKjhJtVZXlr75lw0j6vZBxjYK89nbC1czNF06zu51VR0qFgSxI
-         aw/A==
-X-Gm-Message-State: AOJu0YwGwSBGxQl2eSxfNOUJhzN0hlj1XRZbext8vCTujpsgVyUQrKvz
-	T2yMiGaB0l7MGkzS4v0xoxn9BRrJlaGT7LziodEw4C6sHEbuOkWG2792+tUXThEn4UQwG72r71o
-	tEyyJEW0NsUlyXAbxf3MEmzYz/0CVSCv/ugzFpQ==
-X-Google-Smtp-Source: AGHT+IEx1MkQPU2eiaCw9V6F+rYdaBk2+c7To3GyTMS2zz43+mO9LfsndzHKDkoSGKIyNZeh33ErvlZCp0tfNTIG9sk=
-X-Received: by 2002:a2e:860a:0:b0:2d0:adde:cb6c with SMTP id
- a10-20020a2e860a000000b002d0addecb6cmr2939340lji.22.1707673761690; Sun, 11
- Feb 2024 09:49:21 -0800 (PST)
+	s=arc-20240116; t=1707677618; c=relaxed/simple;
+	bh=51Z67SqHAKgk9iWK2IYl/gTT0lOS9VnUGZT6342BW6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vs3EMYuzjoq6+4rvu329K2mjtMytqRFIXC4GYk6k5UHv+jW02qKvtpGPFXIzIsI94YgrFMwKk2J++oAr5bKzZDCTFY73J+9b+6NlF2wGXCf4xWoL4iSBrg6ZzXT9ESTQj+Ym51wDGAOCVi+Y1w6PfNdVHay7KbD37tF68wH0FSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gtwl1Fec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6525DC433C7;
+	Sun, 11 Feb 2024 18:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707677617;
+	bh=51Z67SqHAKgk9iWK2IYl/gTT0lOS9VnUGZT6342BW6E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Gtwl1FecSiXwkn4jhzHfDWPByeXkWeluq9FdgmfnD7+8t0fHcQap5tkSkN8SkEq3U
+	 U3koQ6yporFGQfvK7g0FphMlJCMt0unejTArvGCEag6nq7eYzAJwIIqfJfTg+6nY/B
+	 Nxh9HJbjMRNnw7Bn8tRBnXUxGJVFtvsKjJpO2uDi9Nh7zXtTyfizNDI6qdfyfAhpEP
+	 wOggeNBjoUZZbav/Jh80qyLpgL9pHGOvRBw9j5NAh+ASUZ6Z9dasS3Nor379tp4/Gb
+	 HztXeOzSjb2tJen6dzZqzAH+ACcBCiUalFI0mfl7vlqgYC2uWyTthQN0VbybMnYZ4D
+	 lASeJ3tvtxr/A==
+Date: Sun, 11 Feb 2024 18:53:22 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
+ <mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 09/13] iio: addac: ad74413r: Use __free(fwnode_handle)
+ to replace fwnode_handle_put() calls
+Message-ID: <20240211185322.5e91589e@jic23-huawei>
+In-Reply-To: <137a0efdc57d7c150178d2aad35c2c51d3f82704.camel@gmail.com>
+References: <20240114172009.179893-1-jic23@kernel.org>
+	<20240114172009.179893-10-jic23@kernel.org>
+	<137a0efdc57d7c150178d2aad35c2c51d3f82704.camel@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com>
- <20240206-ad7944-mainline-v1-1-bf115fa9474f@baylibre.com> <20240210174022.7a0c7cdc@jic23-huawei>
-In-Reply-To: <20240210174022.7a0c7cdc@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Sun, 11 Feb 2024 11:49:10 -0600
-Message-ID: <CAMknhBF8HKDftjBuwuA4GWUmn4j36Zut84d7xLKgZPDaiY87kA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 10, 2024 at 11:40=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Tue,  6 Feb 2024 11:25:59 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
->
-> > This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, an=
-d
-> > AD7986 ADCs.
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
->
-> Hi David,
->
-> Some tricky corners...
-> 3-wire here for example doesn't mean what I at least expected it to.
->
-> > ---
-> >  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 231 +++++++++++++=
-++++++++
-> >  MAINTAINERS                                        |   8 +
-> >  2 files changed, 239 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml =
-b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
-> > new file mode 100644
-> > index 000000000000..a023adbeba42
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
-> > @@ -0,0 +1,231 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7944.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices PulSAR LFCSP Analog to Digital Converters
-> > +
-> > +maintainers:
-> > +  - Michael Hennerich <Michael.Hennerich@analog.com>
-> > +  - Nuno S=C3=A1 <nuno.sa@analog.com
->
-> I hope Nuno + Michael will ack this. Bit mean to drop them in it otherwis=
-e
-> (funny though :)
+On Mon, 15 Jan 2024 11:17:12 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Nothing mean here. This is according to a prior (off-list) agreement.
+> On Sun, 2024-01-14 at 17:20 +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >=20
+> > This use of the new cleanup.h scope based freeing infrastructure allows
+> > us to exit directly from error conditions within the
+> > fwnode_for_each_available_child_node(dev, child) loop. On normal exit
+> > from that loop no fwnode_handle reference will be held and the child
+> > pointer will be NULL thus making the automatically run
+> > fwnode_handle_put() a noop.
+> >=20
+> > Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > --- =20
+>=20
+> Acked-by: Nuno Sa <nuno.sa@analog.com>
+>=20
+> > =C2=A0drivers/iio/addac/ad74413r.c | 9 ++-------
+> > =C2=A01 file changed, 2 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> > index 7af3e4b8fe3b..ec9a466e118d 100644
+> > --- a/drivers/iio/addac/ad74413r.c
+> > +++ b/drivers/iio/addac/ad74413r.c
+> > @@ -1255,21 +1255,16 @@ static int ad74413r_parse_channel_config(struct
+> > iio_dev *indio_dev,
+> > =C2=A0static int ad74413r_parse_channel_configs(struct iio_dev *indio_d=
+ev)
+> > =C2=A0{
+> > =C2=A0	struct ad74413r_state *st =3D iio_priv(indio_dev);
+> > -	struct fwnode_handle *channel_node =3D NULL;
+> > +	struct fwnode_handle *channel_node __free(fwnode_handle) =3D NULL;
+> > =C2=A0	int ret;
+> > =C2=A0
+> > =C2=A0	fwnode_for_each_available_child_node(dev_fwnode(st->dev),
+This should have been
+device_for_each_child_node() because that ultimately calls
+of_fwnode_get_next_child_node() which calls the available form anyway.
+https://lore.kernel.org/lkml/20211205190101.26de4a57@jic23-huawei/T/#u
 
->
-> > +
-> > +description: |
-> > +  A family of pin-compatible single channel differential analog to dig=
-ital
-> > +  converters with SPI support in a LFCSP package.
-> > +
-> > +  * https://www.analog.com/en/products/ad7944.html
-> > +  * https://www.analog.com/en/products/ad7985.html
-> > +  * https://www.analog.com/en/products/ad7986.html
-> > +
-> > +$ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad7944
-> > +      - adi,ad7985
-> > +      - adi,ad7986
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 111111111
->
-> So 9ns for 3-write and 4-wire, but I think it's 11ns for chained.
-> Maybe it's not worth constraining that.
-
-I didn't think it was worth it either, so left it out. Easy enough to
-add though.
-
->
-> > +
-> > +  spi-cpha: true
-> > +
-> > +  adi,spi-mode:
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +    enum: [ 3-wire, 4-wire, chain ]
-> > +    default: 4-wire
-> > +    description:
-> > +      This chip can operate in a 3-wire mode where SDI is tied to VIO,=
- a 4-wire
-> > +      mode where SDI acts as the CS line, or a chain mode where SDI of=
- one chip
-> > +      is tied to the SDO of the next chip in the chain and the SDI of =
-the last
-> > +      chip in the chain is tied to GND.
->
-> there is a standard property in spi-controller.yaml for 3-wire. Does that=
- cover
-> the selection between 3-wire and 4-wire here?  Seems like this might beha=
-ve
-> differently from that (and so perhaps we shouldn't use 3-wire as the desc=
-ription
-> to avoid confusion, normally 3-wire is a half duplex link I think).
-
-I used "3-wire" because that is what the datasheet calls it. But yes,
-I see the potential for confusion here since this "3-wire" is
-completely unrelated to the standard "spi-3wire" property.
-
->
-> Chain mode is more fun.  We've had that before and I'm trying to remember=
- what
-> the bindings look like. Devices like ad7280a do a different form of chain=
-ing.
-
-If there isn't a clear precedent for how to write bindings for chained
-devices, this may be something better left for when there is an actual
-use case to be sure we get it right.
-
->
-> Anyhow, main thing here is we need to be careful that the terms don't ove=
-rlap
-> with other possible interpretations.
->
-> I think what this really means is:
->
-> 3-wire - no chip select, exclusive use of the SPI bus (yuk)
-
-This can actually be done two ways. One where there is no CS and we
-use cnv-gpios to control the conversion. The other is where CS of the
-SPI controller is connected to the CNV pin on the ADC and cnv-gpios is
-omitted. This requires very creative use of spi xfers to get the right
-signal but does work.
-
-In any case to achieve max sample rate these chips need to use this
-"3-wire" mode and have exclusive use of the bus whether is is using
-proper CS or not.
-
-So maybe it would be more clear to split this one into two modes?
-3-wire with CS and 3-wire without CS?
-
-> 4-write - conventional SPI with CS
-
-Yes.
-
-> chained - the 3 wire mode really but with some timing effects?
-
-Correct. With the exception that the SPI CS line can't be used in
-chain mode (unless maybe if you had an inverted CS signal since the
-CNV pin has to be high during the data transfer).
-
->
-> Can we figure out if chained is going on at runtime?
-
-No. We would always need the devicetree to at least say how many chips
-are in the chain. Also, in theory, each chip could have independent
-supplies and therefore different reference voltages.
-
->
-> > +
-> > +  avdd-supply:
-> > +    description: A 2.5V supply that powers the analog circuitry.
-> > +
-> > +  dvdd-supply:
-> > +    description: A 2.5V supply that powers the digital circuitry.
-> > +
-> > +  vio-supply:
-> > +    description:
-> > +      A 1.8V to 2.7V supply for the digital inputs and outputs.
-> > +
-> > +  bvdd-supply:
-> > +    description:
-> > +      A voltage supply for the buffered power. When using an external =
-reference
-> > +      without an internal buffer (PDREF high, REFIN low), this should =
-be
-> > +      connected to the same supply as ref-supply. Otherwise, when usin=
-g an
-> > +      internal reference or an external reference with an internal buf=
-fer, this
-> > +      is connected to a 5V supply.
-> > +
-> > +  ref-supply:
-> > +    description:
-> > +      Voltage regulator for the reference voltage (REF). This property=
- is
-> > +      omitted when using an internal reference.
-> > +
-> > +  refin-supply:
-> > +    description:
-> > +      Voltage regulator for the reference buffer input (REFIN). When u=
-sing an
-> > +      external buffer with internal reference, this should be connecte=
-d to a
-> > +      1.2V external reference voltage supply.
-> > +
-> > +  adi,reference:
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +    enum: [ internal, internal-buffer, external ]
->
-> I'm a bit lost on this one - but think we can get rid of it in favour of =
-using
-> the fact someone wired up the supplies to indicate their intent?
-
-Yes, we can do as you suggest. I added this property since I thought
-it made things a bit clearer, but apparently not.
-
->
-> > +    default: internal
-> > +    description: |
-> > +      This property is used to specify the reference voltage source.
-> > +
-> > +      * internal: PDREF is wired low. The internal 4.096V reference vo=
-ltage is
-> > +        used. The REF pin outputs 4.096V and REFIN outputs 1.2V.
->
-> So if neither refin-supply or ref-supply is present then this is the one =
-to use.
-
-Correct.
-
->
-> > +      * internal-buffer: PDREF is wired high. REFIN is supplied with 1=
-.2V. The
-> > +        buffered internal 4.096V reference voltage is used. The REF pi=
-n outputs
-> > +        4.096V.
->
-> So if refin-supply is supplied this is the expected choice?
-
-Correct.
-
->
-> > +      * external: PDREF is wired high and REFIN is wired low. The supp=
-ly
-> > +        connnected the REF pin is used as the reference voltage.
->
-> So if a ref-supply is provided this is expected choice?
-
-Correct.
-
->
-> If we are going to rule you supplying refin and ref supplies.
-
-Not sure what you mean here, but we can get rid of the adi,reference
-property and just add a check to not allow both ref-supply and
-refin-supply at the same time.
-
->
-> > +
-> > +  cnv-gpios:
-> > +    description:
-> > +      The Convert Input (CNV). This input has multiple functions. It i=
-nitiates
-> > +      the conversions and selects the SPI mode of the device (chain or=
- CS). In
-> > +      3-wire mode, this property is omitted if the CNV pin is connecte=
-d to the
-> > +      CS line of the SPI controller.
-> > +    maxItems: 1
->
-> ah, that's exciting - so in 3-wire mode, we basically put the CS on a dif=
-ferent pin...
-
-I explained this above already, but just to have it in context here as
-well... In what the datasheet calls "3-wire" mode, we can either have
-CS connected and no cnv-gpios or we can have no CS and have cnv-gpios
-connected.
-
-So the intention here was to make cnv-gpios required all other modes
-but in 3-wire mode, make it optional.
+So I'll just switch to the new
+device_for_each_child_node_scoped() that I'm about to propose.
 
 
->
-> Mark, perhaps you can suggest how to handle this complex family of spi va=
-riants?
->
-> Jonathan
->
+> > channel_node) {
+> > =C2=A0		ret =3D ad74413r_parse_channel_config(indio_dev, channel_node);
+> > =C2=A0		if (ret)
+> > -			goto put_channel_node;
+> > +			return ret;
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	return 0;
+> > -
+> > -put_channel_node:
+> > -	fwnode_handle_put(channel_node);
+> > -
+> > -	return ret;
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static int ad74413r_setup_channels(struct iio_dev *indio_dev) =20
+>=20
+
 

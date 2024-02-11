@@ -1,141 +1,135 @@
-Return-Path: <linux-iio+bounces-2409-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2410-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FD0850A77
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 18:09:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B54850A97
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 18:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 583C21C215E9
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 17:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB8A2B21ACA
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 17:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834D25C613;
-	Sun, 11 Feb 2024 17:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5D05CDD8;
+	Sun, 11 Feb 2024 17:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAaVsN72"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXS9pOT4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B911832C88;
-	Sun, 11 Feb 2024 17:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189B2837D;
+	Sun, 11 Feb 2024 17:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707671379; cv=none; b=eEx8Lt/HBFDN1vfSz0I15F02I0Xnz8Lgze4M8zkDMb1lGRl3cJQ3FwJjBc8rdjQDRn6QF+VXVz9UQP8x742Hf8pn+SD3gGguAajJ7igf7Z8sXxtU77p8ogRT6jYy2KVZGYNJQ/ocSyK9Y4/8kcgX0AK2K5ewVquTQ7qnem5E76s=
+	t=1707673389; cv=none; b=VpJLCyI0fbLjZOxBWoHq3+WVNtpVGCnXubfWIVV/CXKZpMn1lcO2UXLCnzQ5uTWNn95m3mw1Rqka4LiUOSYjxBDK6O8ZdJf87MlWvjB4hLRBn1Y4RPnrIsXl189v44tuSrgDKIBdX5zAHCK9gFRLN5vuzX/45OOjYPo5tWviCbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707671379; c=relaxed/simple;
-	bh=++cbGB9xQRfot9YmntaBcfYVCy+hx26IIP3U0QMqdig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AX+qOpyjvDKNeq7Sw4xbFhfnw3awMqOxQ6CRyGt0FOVKq0ipUYCyB+pC3Wg/tmEW54nJHjaYEMJoF40fL8ShZFBxgK2PjHLldPx5m+5TB7b8nhv45zaTy7Rrsxf+Cfb30b34QRv45vM9QdVYcJQlqWvXgs7KY170ZRawmpS0pl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAaVsN72; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a28a6cef709so333051066b.1;
-        Sun, 11 Feb 2024 09:09:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707671376; x=1708276176; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cv+CwvhxaMqwdAIaI6wlp0ZZr0xPk4YmL98DlWKGiAI=;
-        b=EAaVsN72l6gwdL6d/szU87mGkWlMC8goRQH/+iaF1MHmIY8ymCJBIkxqmI8dtjidxS
-         evBdbaj+fnh7qCmcNhSXzAuAZFDt53+JyTSuN0eEzsrDPArK/l9B4QLEgFzdz/YuA9OJ
-         YulQrkgjOpYnAkamoIu41DazUbSTMzEcUE/eHK7OI3t3awPHWw3/R5QS5HRX4X62xwIu
-         gaLQZ7k1Ek7cFeMx2oJR74XNKZ6JsxlBcT9ny3QcUXcW1zjBbhoAZ3c2pJ6IXIq2LK3L
-         wP8VNKgu4LBj7nWhj9/LV0sBsOWucwwUjwddMSlqGNNFggNYBxsiriYM5PeKb32r4L4M
-         iIwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707671376; x=1708276176;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cv+CwvhxaMqwdAIaI6wlp0ZZr0xPk4YmL98DlWKGiAI=;
-        b=UbdE3ddLy2/InpzwhviI2lBwxK2TaZxI2GX9VeMP+T3cE4XgYxvZFm+YxZC1hDXpTU
-         eJ60Fvf4qjX2IzOlo++1kpOFRYlPJXIg+OqSwhXJHZFt1v8HQiV65oyTB/FRd6HcvGIG
-         2fIpRrcrUvoi2yasGCioRAtQJK3lUqEZk0iqEHEB37CCIvF9pQwsuLu2EO4xzGnxWvDq
-         WUZTLuk2wPOkxK0Hsl2kJSD08p/2Xma9lD4LOIh/5s1CpBrbmJuoWV+2h5fHGKdraAe9
-         Iwd7MeYMInwSa5hzGzAZ9CEALuw+RrtVa9J9bgl0M/ohzsTmpMOfoxXNDfkuYUMa3Eum
-         aLiQ==
-X-Gm-Message-State: AOJu0Yz0gUMMvwALmf28Q4QoQWf4f1gtjo3s075rvjCiQJUoF+TcXX45
-	QSCLdUG0YcwjNwMjfNaPrHgPsk1JHktYqt3DHWFEJmB3V5oNmxWFR6cBNOhBUToR24gwzHxRbBg
-	fUMy4ryyMJYeDct5lmiCu7hXb8kc=
-X-Google-Smtp-Source: AGHT+IGdFo2zjWWk2wb3AxTVv36prVLix6UBS2q6vuSQQT6Krp7ucsjSybmx+KXNebK84vihwEWCsLg/RbNhNQs0KWI=
-X-Received: by 2002:a17:906:1c4a:b0:a3b:b0fd:dfdd with SMTP id
- l10-20020a1709061c4a00b00a3bb0fddfddmr3316964ejg.41.1707671375756; Sun, 11
- Feb 2024 09:09:35 -0800 (PST)
+	s=arc-20240116; t=1707673389; c=relaxed/simple;
+	bh=ozx5VYs6gCeBet+H6hdug10X/WXACSIPRnOQiwAk13s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZENJaUAmkmchLYJz9h3ap3Lwk1tdqXY0U88DsIzFDA3ZuTjStWjIKJK6z94DErgCC+Edxylat8fiDQMw1SYj5njIjv9voOpR3gZ9QR61qnwo9Im9ffMT7bizLwcmBdYTuQCkvdCEofylx5KJ39XY5tbkUzpaM9c64Td5OkKqBBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXS9pOT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6766DC433F1;
+	Sun, 11 Feb 2024 17:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707673389;
+	bh=ozx5VYs6gCeBet+H6hdug10X/WXACSIPRnOQiwAk13s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GXS9pOT4FIBWQFj5n7lrHKn4ZV9hmz3hr5SFQlQ4KJSjSeE8mceyYFV+mzW5YyFvs
+	 0sDeVSlzjLNsj44dCl9xmDi/EwVQKFs/zOv70Km08wkGpPe64wwzYJc8brFkmD9kMS
+	 +snlEX/AaCR1sFMKcipCHh044Uzy8m0fVawPFZOYiCcBMmxoQ8e/o0P121TXHWYIXT
+	 LMxp5ncgNF3O1O2/7yDStM6qHDqkJN6afA8qqxSWoudf12jGsBynuz2tc04EgR71ko
+	 jeCyT3ioHtzhBtt77wvOCvs9eljk2ikIueUbye+04K30z5+ddwk4cYZVMdFrAC5Yto
+	 9OfKGjF1uYjjA==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Julia Lawall <Julia.Lawall@inria.fr>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Sumera Priyadarsini <sylphrenadin@gmail.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/8] of: automate of_node_put() - new approach to loops.
+Date: Sun, 11 Feb 2024 17:42:28 +0000
+Message-ID: <20240211174237.182947-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.43.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5769241.DvuYhMxLoT@nobara-ally-pc> <20240210164956.3d29e3ee@jic23-huawei>
- <4923946.31r3eYUQgx@nobara-ally-pc> <4956451.31r3eYUQgx@nobara-ally-pc>
-In-Reply-To: <4956451.31r3eYUQgx@nobara-ally-pc>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 11 Feb 2024 19:08:59 +0200
-Message-ID: <CAHp75VcFXSfV4rPDaJcUVC92QGK3U55AqQqPo0WYKmpcKnw+eQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
-To: Jonathan LoBue <jlobue10@gmail.com>, Hans De Goede <hdegoede@redhat.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Platform Driver <platform-driver-x86@vger.kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, jagathjog1996@gmail.com, luke@ljones.dev, 
-	benato.denis96@gmail.com, linux-iio@vger.kernel.org, lkml@antheas.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 11, 2024 at 12:34=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.com=
-> wrote:
->
-> From c65d1ef44d749958f02d2b9a50a0e788b4497854 Mon Sep 17 00:00:00 2001
-> From: Jonathan LoBue <jlobue10@gmail.com>
-> Date: Sat, 10 Feb 2024 12:31:54 -0800
-> Subject: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Something went wrong with the email body.
+Since RFC:
+- Provide a for_each_available_child_of_node_scoped() variant and
+  use that whenever we aren't specifically trying to include disabled
+  nodes.
+- Fix the for_each_child_of_node_scoped() to not use a mix of
+  _available_ and other calls.
+- Include a few more examples.  The last one is there to show that
+  not all uses of the __free(device_node) call are due to the loops.
 
-> This patch adds the ACPI match table for ASUS ROG ALLY to load the bmi323
-> driver with an ACPI match of "BOSC0200".
+Thanks to Julia Lawal who also posted coccinelle for both types (loop and
+non loop cases)
 
-...
+https://lore.kernel.org/all/alpine.DEB.2.22.394.2401312234250.3245@hadrien/
+https://lore.kernel.org/all/alpine.DEB.2.22.394.2401291455430.8649@hadrien/
 
-> +#include <linux/acpi.h>
+The cover letter of the RFC includes information on the various approaches
+considered.
+https://lore.kernel.org/all/20240128160542.178315-1-jic23@kernel.org/
 
-It's not used. You don't need it as the proper one is already included...
+Whilst these macros profduce nice reductions in complexity the loops
+still have the unfortunate side effect of hiding the local declaration
+of a struct device_node * which is then used inside the loop.
 
->  #include <linux/i2c.h>
->  #include <linux/mod_devicetable.h>
+Julia suggested making that a little more visible via
+ #define for_each_child_of_node_scoped(parent, struct device_node *, child)
+but in discussion we both expressed that this doesn't really make things
+all that clear either so I haven't adopted this suggestion.
 
-...here ^^^.
+If the responses to this series are positive I can put the first few
+patches on an immutable branch, allowing rapid adoption in other trees
+if people want to move quickly. If not we can wait for next cycle and
+just take this infrastructure through the IIO tree ready for the 6.9
+merge cycle.
 
->  #include <linux/module.h>
-
-...
-
-> +static const struct acpi_device_id bmi323_acpi_match[] =3D {
-> +       {"BOSC0200"},
-> +       { },
-
-No comma for the terminator line.
-
-> +};
-
-...
-
-> +               .acpi_match_table =3D ACPI_PTR(bmi323_acpi_match),
-
-No ACPI_PTR() in new code. It's more problematic than helpful.
-
-...
+I'll be optimistic that we are converging and send out an equivalent
+series for fwnode_handle / property.h to replace the previous proposal:
+https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
 
 
-Above for your information for the future contributions, as I said in
-the other patch comment, I think the better approach is to enumerate
-from an external driver under the PDx86 realm.
+Jonathan Cameron (8):
+  of: Add cleanup.h based auto release via __free(device_node) markings.
+  of: Introduce for_each_*_child_of_node_scoped() to automate
+    of_node_put() handling
+  of: unittest: Use for_each_child_of_node_scoped()
+  iio: adc: fsl-imx25-gcq: Use for_each_available_child_node_scoped()
+  iio: adc: rcar-gyroadc: use for_each_available_child_node_scoped()
+  iio: adc: ad7124: Use for_each_available_child_of_node_scoped()
+  iio: adc: ad7292: Use for_each_available_child_of_node_scoped()
+  iio: adc: adi-axi-adc: Use __free(device_node) and guard(mutex)
 
+ drivers/iio/adc/ad7124.c        | 20 ++++++--------------
+ drivers/iio/adc/ad7292.c        |  7 ++-----
+ drivers/iio/adc/adi-axi-adc.c   | 16 ++++------------
+ drivers/iio/adc/fsl-imx25-gcq.c | 13 +++----------
+ drivers/iio/adc/rcar-gyroadc.c  | 21 ++++++---------------
+ drivers/of/unittest.c           | 11 +++--------
+ include/linux/of.h              | 15 +++++++++++++++
+ 7 files changed, 39 insertions(+), 64 deletions(-)
 
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+2.43.1
+
 

@@ -1,112 +1,70 @@
-Return-Path: <linux-iio+bounces-2437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DE3850B40
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:37:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E1F850B62
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 21:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41AE7B2226A
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4EF4282BD8
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3446B5DF03;
-	Sun, 11 Feb 2024 19:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYQRuL0m"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368805F466;
+	Sun, 11 Feb 2024 20:15:39 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E362D5C90A;
-	Sun, 11 Feb 2024 19:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797445EE6B
+	for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 20:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707680244; cv=none; b=DtcsJMxt9TL9q13A3cz9CPAXPsYV/wiDzAoI4K8bsQF/G640Px+06ChEefNkzw+AH5t12EIIHzJ0uqzfbXfBccA7tgavZjr+askn1RKTj5XvrKeHm7HSIASqgspwXaSfym3SnFH3hTkYvF4l9zd1wDB9OBrmmoi8PG5+2X1B/a4=
+	t=1707682539; cv=none; b=V5D6n3qL6XidOWrGEwvMm9kI9JObhbwNI8m+vOr3quriVBK7EXULI7pQZT9KzhN8k2qvlLtzCbU6vA11qnxroTAnpWLX5FGwwHAF2U9Yxq7gL2sM0V3Pueb+lel4getL/wsc+yL4UfvAf1OwjJSqs5U/QR6z3PQUwRmaTiYt6Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707680244; c=relaxed/simple;
-	bh=5oFPK3XMyl8w2jJth5vxf9+kHoqJQsWI3K4xfwNY57A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LC9XxFoatJgZ40daJhnzzPA21bFxAtVU8fMMqaD+ClQLRgeFrN5z32bl8tiOAckC/WJCi9lsdXHxRYpQ9Ix1A98htw2gK+guMUPRZKMQ3zRqE7A0ZCvX80vUSQhbrXPqbG7cgopdsTn6tr29JwfEV6utZN4I1hzRb6izavF7Qzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYQRuL0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE07C433F1;
-	Sun, 11 Feb 2024 19:37:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707680243;
-	bh=5oFPK3XMyl8w2jJth5vxf9+kHoqJQsWI3K4xfwNY57A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tYQRuL0m7cpAzYcUgAoYObc55ZHJtJW73n95KM3172I4fWSmEX72iAucjmH8XSgm+
-	 uSb3lVkRiE1nNJQfKOBB31rJ711GaeL+1sdwVnJWGo4uhhzKiXg5LTWIjsBI0qYBIm
-	 TAI5hyCo4Ph0mvJXydNEZuB0TziMQB7kSHpWbGq6YwxdTX32ITStpE/LNjrDBE4YmS
-	 auOfMvBbRHWMX5NiFGsEwtyI5wPkSJX0dayMvxx6ukoR5xP0x+FtfqJYbdP4xGARhX
-	 +aCvXXN/SfBi/Epu2lCfqhrT0/FD77tF34KNKXdMQvsoJi9yiXbT0K8wL6FA8CJwAE
-	 GhlmF9oAzEAgQ==
-Date: Sun, 11 Feb 2024 19:37:11 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: andy.shevchenko@gmail.com
-Cc: Dinghao Liu <dinghao.liu@zju.edu.cn>, Lars-Peter Clausen
- <lars@metafoo.de>, Alexandru Ardelean <alexandru.ardelean@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
-Message-ID: <20240211193711.518b76d7@jic23-huawei>
-In-Reply-To: <ZckdEDbAqin1Fsgt@surfacebook.localdomain>
-References: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
-	<20231210133228.5fd425ea@jic23-huawei>
-	<20231217132800.27e83a01@jic23-huawei>
-	<ZckdEDbAqin1Fsgt@surfacebook.localdomain>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707682539; c=relaxed/simple;
+	bh=irykZsem+8NgONVmxffWWO1MotG6wqG1fRYrdV08RAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hp/W9dcwDEOhhC8GeV701hBzVZ1H9TEDgjuDxbbkxF/LepOaI/F25xdAbdz8XNA3070j/2Ut0ae31uMcgZR5Aa/2MDC8geYatLPWcpgjCF0M6MghvZhlHrPzAJkbcEpUMuRbU5tCCR9NE9yFGNPt7eYGDGRuMPUr8AFAhnj1xwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id 4cee4963-c91a-11ee-b3cf-005056bd6ce9;
+	Sun, 11 Feb 2024 22:15:29 +0200 (EET)
+From: andy.shevchenko@gmail.com
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Marius Hoch <mail@mariushoch.de>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v1 0/3] iio: st_sensors: lsm9ds0: Miscellaneous cleanups
+Date: Sun, 11 Feb 2024 22:14:31 +0200
+Message-ID: <20240211201526.1518165-1-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 11 Feb 2024 21:16:32 +0200
-andy.shevchenko@gmail.com wrote:
+Just a few ad-hoc cleanups. No functional changes intended.
 
-> Sun, Dec 17, 2023 at 01:28:00PM +0000, Jonathan Cameron kirjoitti:
-> > On Sun, 10 Dec 2023 13:32:28 +0000
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >   
-> > > On Fri,  8 Dec 2023 15:31:19 +0800
-> > > Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
-> > >   
-> > > > When iio_device_register_sysfs_group() fails, we should
-> > > > free iio_dev_opaque->chan_attr_group.attrs to prevent
-> > > > potential memleak.
-> > > > 
-> > > > Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
-> > > > Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>    
-> > > Hi.
-> > > 
-> > > Looks good to me, but I'd like to leave this one on the list a little
-> > > longer to see if anyone else has comments.
-> > >   
-> > Guess no comments!  
-> 
-> This patch does not fix anything.
-> 
-> Yet, it might be considered as one that increases robustness, but with this applied the 
-> goto
-> https://elixir.bootlin.com/linux/v6.8-rc3/source/drivers/iio/industrialio-core.c#L2007
-> can be amended, right?
-> 
+Andy Shevchenko (3):
+  iio: st_sensors: lsm9ds0: Use dev_err_probe() everywhere
+  iio: st_sensors: lsm9ds0: Don't use "proxy" headers
+  iio: st_sensors: lsm9ds0: Use common style for terminator in ID tables
 
-I'm lost.  That goto results in a call to 
-iio_buffers_free_sysfs_and_mask(indio_dev);
-which continues to undo stuff from before that call.
-Now if it did
-iio_device_unregister_sysfs(indio_dev);
-(as per the label above it in the cleanup) then I'd agree.
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h      |  5 ++++-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c | 21 +++++++++-----------
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c  |  6 ++++--
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c  |  4 +++-
+ 4 files changed, 20 insertions(+), 16 deletions(-)
 
-Perhaps I'm misreading the code flow here?
+-- 
+2.43.0
 
-All this code is supposed to be side effect free on error so I'm
-keen on the change even if there is another path where it gets cleaned
-up that I'm missing.
-
-Jonathan
 

@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42748850B1F
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:26:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1A1850B23
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F16E028428E
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:26:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C7861C225D0
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455EE5D8E5;
-	Sun, 11 Feb 2024 19:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6D95DF3D;
+	Sun, 11 Feb 2024 19:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQ9ZBq3t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlqdvnfM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EBC5D75A;
-	Sun, 11 Feb 2024 19:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789E95DF34;
+	Sun, 11 Feb 2024 19:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707679606; cv=none; b=ZpckvCRzD45nGy/12Pj4sTDyWstodrCWeG2cfsGEtz4ryvfEt9ZjA+ZbeNOhoZBbX57y16R+Qt2cZNZMVeWDxaeBTPOPns5PU0/u1Dhdn1m9t7mQ+I1P9A35wlmvl9lpqIQeECNiOS+SiEW5gwBQYCUuuZD63LMQXAn4nuqVBR0=
+	t=1707679611; cv=none; b=IJY5bFbgHW7GbJpN3M77fSSVK2zEhEOiLPQ8Yk/FBvQJTfE8eLzlyAb1lBmh4naJrgnWv+a2tCLqjvr5klg4kILJ4yW5DZvBn+FO03m2P3bQvTJhWfPQArtxJd9MBWI11EA9pMX0w5fXzj5tlH3exPUocJUgIflk7Mhol2Qj4h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707679606; c=relaxed/simple;
-	bh=wXOs3T8wmJwJW6VPW95ZQtHc243uZ8WdCx9gNnNNTfY=;
+	s=arc-20240116; t=1707679611; c=relaxed/simple;
+	bh=DU/iOWMCd1LvRo1Q6PdWhghdA/tvkisyLu7vKgJfAP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLXUbQ1NlgRbmejWS26WWk/2QEDWeqkuy2bITfrN0zcK3j/GSNetE66yTPns1ZsmHFFPdOqj02Un9vBSaxzJ+fE8ivnYRcmbvLIcjHo0q1zliRkp0+NjqGb0kHQgn5lgsxFYRH+xMCiEVtqcS6tp4HC0pbOp2mGGHamjKqNqv7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQ9ZBq3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52291C433F1;
-	Sun, 11 Feb 2024 19:26:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qocEpCLxKKCG/htLjHgitTirn8vLvj/dNV4K9JuYRiqwRIh58SbFH9Pob7cIs2+s4Qpc1Jre9l+rmHe7A1hs6nckqTDY6RhgPqFzWiXTatUn7pIAl5vOHCUm/bYaIN2/OtSH0Br2gyzsNXi/uZ6Z3M0NelzDaBbLqBen6PzhdX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlqdvnfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8652C43394;
+	Sun, 11 Feb 2024 19:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707679605;
-	bh=wXOs3T8wmJwJW6VPW95ZQtHc243uZ8WdCx9gNnNNTfY=;
+	s=k20201202; t=1707679611;
+	bh=DU/iOWMCd1LvRo1Q6PdWhghdA/tvkisyLu7vKgJfAP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ9ZBq3twnJDyINamrLJDC3gL+Btz+tRWr5WTd/QpkdX5d0WDuwCj7H1aAfkVtm29
-	 UFwsvYa0bJzZiBtlQZ70PxW7id76knQfLZbwWKkl+43Ww+KKDJTm21GJwicdDmz6JF
-	 YCTIO3+FW/jrOdxEysD0fzMsBn/SG/GtoLQc5eGgdBV7UC7jsSFKegNCQ4EBMLMrfO
-	 5NfCQ0U6f9YTkGrztCMRB6SpUF3k244JqEY6mOimdzQ9ZSOcekR9ftTnw5vk+7S2rG
-	 KPmUKsQStuWfrHYpPdCNGMsTdEI2aiUrMr2FeunWQTGS8m1+DSTYmR3btduSODENMm
-	 NRcysse9g78Pw==
+	b=dlqdvnfMHYa/VszGsLdRVPN2qK57Ox7pE58Y0wx8utpoCPtY80XS5uHjRwTkXhu3Z
+	 bdNHMdtwxNV8AY5ZlDsnT2tD0lkYfzHWbL+L/Q4B9t795o2s+sLZah+ysL9TvqKuNc
+	 YnxrjNtU/vVC47lP3jIbFyWoF0oWUbW1CmqJdXJyhYddlFDoXrsb1aagYaJDCRnRGY
+	 vgXeJEO1tW7qYGj4aikvO6bajJxLSmBSI4e21nRK5cGEB6stEs+wcTnxDyKkFd58Df
+	 jOlprYtUdbCHq7yWPZWoZH5XYXz+rbBM+/9YNzmBGB4WIT2YiFmVMz5K7GeTtBzuYe
+	 Vdo8x+No+GSTg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -67,9 +67,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 03/14] device property: Introduce device_for_each_child_node_scoped()
-Date: Sun, 11 Feb 2024 19:25:29 +0000
-Message-ID: <20240211192540.340682-4-jic23@kernel.org>
+Subject: [PATCH v2 04/14] iio: adc: max11410: Use device_for_each_child_node_scoped()
+Date: Sun, 11 Feb 2024 19:25:30 +0000
+Message-ID: <20240211192540.340682-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240211192540.340682-1-jic23@kernel.org>
 References: <20240211192540.340682-1-jic23@kernel.org>
@@ -79,44 +79,108 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Similar to recently propose for_each_child_of_node_scoped() this
-new version of the loop macro instantiates a new local
-struct fwnode_handle * that uses the __free(fwnode_handle) auto
-cleanup handling so that if a reference to a node is held on early
-exit from the loop the reference will be released. If the loop
-runs to completion, the child pointer will be NULL and no action will
-be taken.
+Switching to the _scoped() version removes the need for manual
+calling of fwnode_handle_put() in the paths where the code
+exits the loop early. In this case that's all in error paths.
 
-The reason this is useful is that it removes the need for
-fwnode_handle_put() on early loop exits.  If there is a need
-to retain the reference, then return_ptr(child) or no_free_ptr(child)
-may be used to safely disable the auto cleanup.
-
+Cc: Nuno Sá <nuno.sa@analog.com>
+Cc: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/property.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/adc/max11410.c | 27 +++++++--------------------
+ 1 file changed, 7 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/property.h b/include/linux/property.h
-index bcda028f1a33..e76b8c6646bd 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -182,6 +182,11 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
- 	for (child = device_get_next_child_node(dev, NULL); child;	\
- 	     child = device_get_next_child_node(dev, child))
+diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
+index 6af829349b4e..45368850b220 100644
+--- a/drivers/iio/adc/max11410.c
++++ b/drivers/iio/adc/max11410.c
+@@ -696,7 +696,6 @@ static int max11410_parse_channels(struct max11410_state *st,
+ 	struct device *dev = &st->spi_dev->dev;
+ 	struct max11410_channel_config *cfg;
+ 	struct iio_chan_spec *channels;
+-	struct fwnode_handle *child;
+ 	u32 reference, sig_path;
+ 	const char *node_name;
+ 	u32 inputs[2], scale;
+@@ -720,7 +719,7 @@ static int max11410_parse_channels(struct max11410_state *st,
+ 	if (!st->channels)
+ 		return -ENOMEM;
  
-+#define device_for_each_child_node_scoped(dev, child)\
-+	for (struct fwnode_handle *child __free(fwnode_handle) = \
-+	     device_get_next_child_node(dev, NULL); child; \
-+	     child = device_get_next_child_node(dev, child))
-+
- struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
- 						  const char *childname);
- struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+-	device_for_each_child_node(dev, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		node_name = fwnode_get_name(child);
+ 		if (fwnode_property_present(child, "diff-channels")) {
+ 			ret = fwnode_property_read_u32_array(child,
+@@ -735,47 +734,37 @@ static int max11410_parse_channels(struct max11410_state *st,
+ 			inputs[1] = 0;
+ 			chanspec.differential = 0;
+ 		}
+-		if (ret) {
+-			fwnode_handle_put(child);
++		if (ret)
+ 			return ret;
+-		}
+ 
+ 		if (inputs[0] > MAX11410_CHANNEL_INDEX_MAX ||
+-		    inputs[1] > MAX11410_CHANNEL_INDEX_MAX) {
+-			fwnode_handle_put(child);
++		    inputs[1] > MAX11410_CHANNEL_INDEX_MAX)
+ 			return dev_err_probe(&indio_dev->dev, -EINVAL,
+ 					     "Invalid channel index for %s, should be less than %d\n",
+ 					     node_name,
+ 					     MAX11410_CHANNEL_INDEX_MAX + 1);
+-		}
+ 
+ 		cfg = &st->channels[chan_idx];
+ 
+ 		reference = MAX11410_REFSEL_AVDD_AGND;
+ 		fwnode_property_read_u32(child, "adi,reference", &reference);
+-		if (reference > MAX11410_REFSEL_MAX) {
+-			fwnode_handle_put(child);
++		if (reference > MAX11410_REFSEL_MAX)
+ 			return dev_err_probe(&indio_dev->dev, -EINVAL,
+ 					     "Invalid adi,reference value for %s, should be less than %d.\n",
+ 					     node_name, MAX11410_REFSEL_MAX + 1);
+-		}
+ 
+ 		if (!max11410_get_vrefp(st, reference) ||
+-		    (!max11410_get_vrefn(st, reference) && reference <= 2)) {
+-			fwnode_handle_put(child);
++		    (!max11410_get_vrefn(st, reference) && reference <= 2))
+ 			return dev_err_probe(&indio_dev->dev, -EINVAL,
+ 					     "Invalid VREF configuration for %s, either specify corresponding VREF regulators or change adi,reference property.\n",
+ 					     node_name);
+-		}
+ 
+ 		sig_path = MAX11410_PGA_SIG_PATH_BUFFERED;
+ 		fwnode_property_read_u32(child, "adi,input-mode", &sig_path);
+-		if (sig_path > MAX11410_SIG_PATH_MAX) {
+-			fwnode_handle_put(child);
++		if (sig_path > MAX11410_SIG_PATH_MAX)
+ 			return dev_err_probe(&indio_dev->dev, -EINVAL,
+ 					     "Invalid adi,input-mode value for %s, should be less than %d.\n",
+ 					     node_name, MAX11410_SIG_PATH_MAX + 1);
+-		}
+ 
+ 		fwnode_property_read_u32(child, "settling-time-us",
+ 					 &cfg->settling_time_us);
+@@ -793,10 +782,8 @@ static int max11410_parse_channels(struct max11410_state *st,
+ 			cfg->scale_avail = devm_kcalloc(dev, MAX11410_SCALE_AVAIL_SIZE * 2,
+ 							sizeof(*cfg->scale_avail),
+ 							GFP_KERNEL);
+-			if (!cfg->scale_avail) {
+-				fwnode_handle_put(child);
++			if (!cfg->scale_avail)
+ 				return -ENOMEM;
+-			}
+ 
+ 			scale = max11410_get_scale(st, *cfg);
+ 			for (i = 0; i < MAX11410_SCALE_AVAIL_SIZE; i++) {
 -- 
 2.43.1
 

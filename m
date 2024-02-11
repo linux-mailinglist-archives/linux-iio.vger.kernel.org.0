@@ -1,131 +1,138 @@
-Return-Path: <linux-iio+bounces-2402-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2403-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573E2850A05
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 16:37:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7298F850A55
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 17:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11CF9281CB6
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 15:37:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56621C216C0
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9F55B689;
-	Sun, 11 Feb 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1152837D;
+	Sun, 11 Feb 2024 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L1tbI18o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHEs/4k9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48955C5F5;
-	Sun, 11 Feb 2024 15:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5999A1DFEF
+	for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 16:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707665815; cv=none; b=rJr4CFoOwTI+zF9He5UNSetTb/fK0LVxwMPDcTaUQO7HX924eHx1i9pCemgz8WsD1REIsP/aJscBewkME3/zU9vDfPuTaXGs6yGunVxuXObbPuZ+59bAKPu1cpBmTZqG3tn0jxxtJg70+LvNJIu96ejOOuQgc7m3QjG5cIct658=
+	t=1707669091; cv=none; b=NWbW00+gVmHEJhyPndGAbnATMj6U5DSmLchBUHx+RQxKq+DSJ8kE7VauV4ly4FVJELvWhrcYmzfff6SUBn7hboguRb0KRiyqPZLPoug/mEq7f6bTR9/X6rEyXmd3GLTDJHB7x6EMa2JseVkRlfC6TkCJ8dzDlRDyIz3xi/F5WdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707665815; c=relaxed/simple;
-	bh=hHM8da2r//H7RQTmBqA7GjmCKedcHj4nhSu5kXs5QZs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfPelJZUoABRwi532XXmBuphj+Zo+2xaMOSg6LG7Ovkbh9Yfqe1mZPiGRWZn7YiwmKXe5TZRSQfh20+4xgePwRlmcssSOpCgOTCdO/r5NebJosqe0X84ErCa4Jik/hxBgargM6L0iRHeQr2Eg7R1ECxPw+KxL9f9xSDL4epjUGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L1tbI18o; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-561b9b4040eso10668a12.2;
-        Sun, 11 Feb 2024 07:36:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707665812; x=1708270612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CKfqE5jOxp7VG9h1nJrsIT7KK1jLjaUUAxX3Hpv+Pfo=;
-        b=L1tbI18oenpU2KJhGb6TTQNEqv/2Hzlrk8Vl59xkZjF2tkf6Q5paZAS6uQX+D0Md4G
-         Xcyt4WueA+o+rSG1hDxjNdv9t/rFS3oOBMnESI+RgkmDSKfo2Jsm7wGwaqyb8I34Lajk
-         nIDE9xMjgdA+lwHlRLbxhMLVnsco6eUlPkaorNpb/S+oi9dznufUznxXfSFVDROfvYMq
-         uJwHFSprbI2NvA+I6RKqjzjf/nyQyZ8NcNZ4NCa1JWdU3GuC0LWn0pOm42aI3dsMeXmO
-         iK+9f7Lbd6KrKCtFpQng8tpkaVYR/W8n8ZT1IJRL5qx0GfcAtIF55hNSCUy+moOIkWss
-         bATw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707665812; x=1708270612;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CKfqE5jOxp7VG9h1nJrsIT7KK1jLjaUUAxX3Hpv+Pfo=;
-        b=EQlgnrRlj2SP7HMlAzt+EPgyz99ieTyueUvxCMnyUi3yl4NEad356r1T1qj/DrmFyG
-         CB5HbH8yWkzocFS38H/OWxYT5gSc6l9QJVBfLo+bc9EVnfuv4+NrPNuQttqSUXGZoPir
-         mKZbeldRcyGCCARYlcxT+tRi/HrvvdWhwQCih1SHXvj9KHO/oF+FDj/+scbq69zqON36
-         DTTOGA9rJT2NOTjFbY68uzNL/636G5rzRka5uo5J6y2274WWQMLOV1AFPwcCB1xfBCF2
-         WCHoBZDx6lAu99nw0cXaKEvfAWLYzrXF0oO6/WSLZ9kth1KCJkiIKeYX3LJd8tfuGOKN
-         wifg==
-X-Gm-Message-State: AOJu0YxAlWjqmg/pg1QoiOFLcUrsDN9Y/Vrp8fOu6/ANWlH3U7G8zqX0
-	Mn2JJ6LJCkCIi2u+UDJRzgSnTuwwsYWzHDwvOHS2yP4HI4TEC20bJ4L5mAbmRE8riA==
-X-Google-Smtp-Source: AGHT+IEKKAqE/uIqXhUY680VYhVQgRkRynVpR9S0OWj1sTu9vTyyBGDvmh2hKSTVh+oP4o8nP3CWLA==
-X-Received: by 2002:a17:906:6899:b0:a39:34bc:493b with SMTP id n25-20020a170906689900b00a3934bc493bmr2765331ejr.45.1707665811910;
-        Sun, 11 Feb 2024 07:36:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUug0fjklHRmfxKQatdFx9eLyVysdPLE5z01Gee5NkYzQehh3gNtAPO/gEP28++ZZrjbeeS2/UParvSqG7XbiYnS//v2cfxkPnaxZu+KKmgem24Bq9OLDfThI3z0fF8uzg8PTQJIup10rONMsfakweJw7in5ijUT/P1oXHO9Y0NSBDgORY3c7VPTjZzfr6yhiP/ACpZAHajj01akSkdSEHsftrx04v2Bxy6rMktQ4Jx8Z3CRZuy894ha1twNJMa
-Received: from [192.168.3.110] (m90-131-46-29.cust.tele2.lt. [90.131.46.29])
-        by smtp.gmail.com with ESMTPSA id j16-20020a170906831000b00a3bacd6d882sm2973136ejx.203.2024.02.11.07.36.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 07:36:51 -0800 (PST)
-Message-ID: <0ddfb0ab-10e0-471c-97e1-63018884e4f7@gmail.com>
-Date: Sun, 11 Feb 2024 17:36:49 +0200
+	s=arc-20240116; t=1707669091; c=relaxed/simple;
+	bh=QkvVoB/NWsbvyEaccJTSMzAhAii4oyZGM3cTdcHV9vc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BXq7cZd2cLPkogVCjQ1MNl7zoSATBou+DEGyvVaUFUuhbAhYFclWFvPaLOi1eGCD2ZeK+hmMBEMcn/sj9sA1Sba5HWL1Y9mpB8lukKZNNvl0c2bkko3dLKjV7lCuG4GMLsSzT9HCK7CcUcrNKDemv/19K3e7q6l5CV0kHz0dT/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHEs/4k9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B66C433F1;
+	Sun, 11 Feb 2024 16:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707669090;
+	bh=QkvVoB/NWsbvyEaccJTSMzAhAii4oyZGM3cTdcHV9vc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nHEs/4k9U2o5sS4zrko8jSHy0MTveeYP7kXc1Gxf0Rv+4+rrUBSLNE766JzduH3oH
+	 6UC2wzxMmj+ydr8CQ/b/fyaU1B+DxKa7DcdZLAYngJ4NgoZmOKSHjLtOlUXYY2MjRi
+	 rkorxeA/i6hO9+ZGNOQGPuTnSvBw26+ZezYMB5Q9zDcPM85bAnH9NUZeBa6UuCAoMk
+	 DrMzUa2jbpwJ1gI+ScDu/fCKFS892gAdrVui7AU+JKIgO//RUrUPYRHKKz7Yv2U+SJ
+	 YL6NZQV7U8Tk/Al0rD59kp31eLuD9wDn16mBKCKaIcDVLzcqJbuHM9aOyrm/GVDQPu
+	 2gNaziM+NX9rQ==
+Date: Sun, 11 Feb 2024 16:31:18 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jonathan LoBue <jlobue10@gmail.com>
+Cc: jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com,
+ linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ lkml@antheas.dev
+Subject: Re: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
+Message-ID: <20240211163118.5c306a13@jic23-huawei>
+In-Reply-To: <4956451.31r3eYUQgx@nobara-ally-pc>
+References: <5769241.DvuYhMxLoT@nobara-ally-pc>
+	<20240210164956.3d29e3ee@jic23-huawei>
+	<4923946.31r3eYUQgx@nobara-ally-pc>
+	<4956451.31r3eYUQgx@nobara-ally-pc>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: mcp320x: Simplify device removal logic
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan.Cameron@huawei.com, oskar.andero@gmail.com, lars@metafoo.de,
- lukas@wunner.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- arturas.moskvinas@gmail.com
-References: <20240208094339.82633-1-arturas.moskvinas@gmail.com>
- <20240210155857.59c58dcc@jic23-huawei>
-Content-Language: en-US
-From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-In-Reply-To: <20240210155857.59c58dcc@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Sat, 10 Feb 2024 14:34:11 -0800
+Jonathan LoBue <jlobue10@gmail.com> wrote:
+
+> From c65d1ef44d749958f02d2b9a50a0e788b4497854 Mon Sep 17 00:00:00 2001
+> From: Jonathan LoBue <jlobue10@gmail.com>
+> Date: Sat, 10 Feb 2024 12:31:54 -0800
+> Subject: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
+> 
+> This patch adds the ACPI match table for ASUS ROG ALLY to load the bmi323
+> driver with an ACPI match of "BOSC0200".
+> 
+> Co-developed-by: Jonathan LoBue <jlobue10@gmail.com>
+> Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
+> Co-developed-by: Luke D. Jones <luke@ljones.dev>
+> Signed-off-by: Luke D. Jones <luke@ljones.dev>
+> Co-developed-by: Denis Benato <benato.denis96@gmail.com>
+> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+
+This approach is sustainable or maintainable. Let's wait to see
+what people think of the suggestion I made of a wrapper driver that
+is capable of identifying the device and causing the correct driver
+to be loaded.
+
+If nothing else this has no DMI type protections so if this one loads on
+a board where it is a BMC150 compatible part we'll end up in the same
+mess you were seeing just the other way around.
+
+Jonathan
 
 
-On 2/10/24 17:58, Jonathan Cameron wrote:
->> Use devm_* APIs to enable regulator and to register in IIO infrastructure.
->>
->> Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-> 
-> Don't get the same regulator twice so as automate turning it off.
-> The devm_regulator_get_enable() call is carefully hiding the
-> regulator for cases where the driver never accesses it.
-> 
-> Here we need it to read the voltage.
-> 
-> To convert such a case to fully devm managed, use a
-> devm_add_action_or_reset() and a custom callback.
-This is exactly the reason I wanted to use devm_regulator_get_enable() 
-instead of devm_add_action_or_reset + custom callback which I saw in 
-other ADCs code. It seems quite repetitive. Wondering if this could be 
-addressed by regulator subsystem to provide device managed method which 
-gets _enabled_ regulator resource and an automated disabling + resource 
-freeing? We will loose fine grained information where failure happened 
-exactly - getting resource or enabling regulator though...
 
->>   static void mcp320x_remove(struct spi_device *spi)
->>   {
->> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
->> -	struct mcp320x *adc = iio_priv(indio_dev);
->> -
->> -	iio_device_unregister(indio_dev);
->> -	regulator_disable(adc->reg);
->>   }
-> Had the change otherwise been ok...
+> ---
+>  drivers/iio/imu/bmi323/bmi323_i2c.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> You should be able to remove this function completely now it is empty.
-> https://elixir.bootlin.com/linux/latest/source/drivers/spi/spi.c#L446
-> checks it's existence before calling it.
-Ack, will address with V2 patch.
+> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> index 20a8001b9956..346ba2d1a169 100644
+> --- a/drivers/iio/imu/bmi323/bmi323_i2c.c
+> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> @@ -5,6 +5,7 @@
+>   * Copyright (C) 2023, Jagath Jog J <jagathjog1996@gmail.com>
+>   */
+>  
+> +#include <linux/acpi.h>
+>  #include <linux/i2c.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> @@ -93,6 +94,12 @@ static int bmi323_i2c_probe(struct i2c_client *i2c)
+>  	return bmi323_core_probe(dev);
+>  }
+>  
+> +static const struct acpi_device_id bmi323_acpi_match[] = {
+> +	{"BOSC0200"},
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(acpi, bmi323_acpi_match);
+> +
+>  static const struct i2c_device_id bmi323_i2c_ids[] = {
+>  	{ "bmi323" },
+>  	{ }
+> @@ -109,6 +116,7 @@ static struct i2c_driver bmi323_i2c_driver = {
+>  	.driver = {
+>  		.name = "bmi323",
+>  		.of_match_table = bmi323_of_i2c_match,
+> +		.acpi_match_table = ACPI_PTR(bmi323_acpi_match),
+>  	},
+>  	.probe = bmi323_i2c_probe,
+>  	.id_table = bmi323_i2c_ids,
 
-Arturas Moskvinas
 

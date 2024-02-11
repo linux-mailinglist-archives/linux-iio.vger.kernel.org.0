@@ -1,45 +1,46 @@
-Return-Path: <linux-iio+bounces-2422-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2423-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97842850B18
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:26:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B5850B1B
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5171C222D1
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:26:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D35C3B2247A
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565815D743;
-	Sun, 11 Feb 2024 19:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998D25D758;
+	Sun, 11 Feb 2024 19:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qt4z48M0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZapYHsWb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C405D73B;
-	Sun, 11 Feb 2024 19:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5050C5D73A;
+	Sun, 11 Feb 2024 19:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707679589; cv=none; b=PLe2WJA1oeGvFtn3md+s3BB6q7RLXagdeneyjXCCgukkw1YWu1qHVGdLvqlFxLNopprbYOPBkybA4tjXatGJjgtouBVOjjcYd0Jfu1aydFe8wd9+RU/NiRKoQ4O4FTGk4otARstnUPQi3NKTpLeM5VOQt2gO9UZD7NgHlof8GhU=
+	t=1707679594; cv=none; b=kH9U2BukyNCx3eTs06eCEFf+QOYCr499oVHAZPyoORYBz76K7NEBKJbcwBJueiEgB/5u0OzzvI9C4bozOLmtS+w3d7/nfmZyTVBY8Hh7ec74j74F8yCAEgu4IntvqjcQMBlIqxZR0OKspC5a0aLTzqCrZksaLj8kR9zEqc9Bg/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707679589; c=relaxed/simple;
-	bh=vmHTqMJCaM//RjQGpI1XRqlrgfC7LCBJBPmL+Qb0aRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r7KR6HuY/FtQchbms4tTBpe1k9Af3v+QQ6f9KesW9xVCo8CRaNn7y/tSy2M5RaMQ/mWFlthEQQlRLnKaFsm7R6+i2asSCT+YS35b8gbE9E7H6BBBtyVLfXZaeN46GjyyD4PAalmbyJuGumvLHEIUCmv1oxNAXt7uej9JeOk6es4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qt4z48M0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986E7C433F1;
-	Sun, 11 Feb 2024 19:26:22 +0000 (UTC)
+	s=arc-20240116; t=1707679594; c=relaxed/simple;
+	bh=5BKBVxpx4qstzc7Dy13OyBJbrkG74U7h3TrTUSitCsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F8esYrSXMDzdOVRgvt93JDDCsULhN/WEuLdooH2ak8Krq3Bda76uP61pE03ma7iasZJBoEZDvLFZXb9M7omDVe3N1ARSEqPz7FvtNB5YPUZMEGDyT/0RvJ7ivwPPKpKp/L2Ed0wl7zJv8tOfGQm8vao/zT7eWoVzg8/lLPF/1+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZapYHsWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3059C43390;
+	Sun, 11 Feb 2024 19:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707679588;
-	bh=vmHTqMJCaM//RjQGpI1XRqlrgfC7LCBJBPmL+Qb0aRc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Qt4z48M03WOQPBItLKkF3XoaFNjqLW7egePy1RssWjgExRG8M3QRIvG+9Ic+yLg/W
-	 DcZde3n0y/iyInC++8oICTe6wf+vJMsucde6hAhsr73kq8U7t+/oQLiOms+0g63xbn
-	 V0UnynhwqUWdRiHrEskIbZeZ4nq5+EHlHPlvtmEfR0B6x/pyj4K1YWqcKNKQ+QP+XI
-	 x+jLG5hCk/b5IshmtXI3tMV8XxBjRcqjvlaes96DARN1QJMotag3uqKr1ppaN7olFb
-	 xbmHhIhC4JnSlEXyUk+Ex9yVqy6IfjyXfW8dc+a880pDauwoLtCmFASw2kmM2u0NHB
-	 8VH+fq1JWxuMg==
+	s=k20201202; t=1707679593;
+	bh=5BKBVxpx4qstzc7Dy13OyBJbrkG74U7h3TrTUSitCsc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZapYHsWbFynFnItbU4COXZOxEHrq8zsYUum2h58zqy/ijFZi3ZQjeR85BziLCxCga
+	 ECFdotlGWVV3ndxAULB7exNmfwdWau2cQdKkE7Uh2jj1VIbI7voGU4tp8JArPbPTkP
+	 7b0Rntnf+Lgb64nvDQ8G5LgSsjBTj+u3Do5pKNXNqN9Q+lQCFOy1CBQ3AZXoslcTby
+	 y5P4B1UHwDXQh2n0R6Cu2P86ed6gEIxoS66197uLR+Hf3/zF9lkNo4Rg1qKCiZYxOd
+	 irjKY8ZM9yR+TnnB2bQJdYeULuWSVQCwXiW86CHDxUGo9Mu4l4mUUznwGyAdo9wYC8
+	 kAvt4/6o17DTA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -66,100 +67,54 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 00/14] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
-Date: Sun, 11 Feb 2024 19:25:26 +0000
-Message-ID: <20240211192540.340682-1-jic23@kernel.org>
+Subject: [PATCH v2 01/14] device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
+Date: Sun, 11 Feb 2024 19:25:27 +0000
+Message-ID: <20240211192540.340682-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240211192540.340682-1-jic23@kernel.org>
+References: <20240211192540.340682-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Changes since v1:
-- Introduced device_for_each_child_node_scoped()
-  We may need equivalents for fwnode_for_each_child_node_scoped() etc,
-  but this is the only one I needed so far.
-  This followed from a discussion of the equivalent patch set for
-  device_for_each_of_node() which lead to bringing the declaration of
-  the handle we are applying the __free() to into the for_* loop
-  initialization.  The avoided issues with the declaration (which also
-  effects cleanup order) being nowhere near where it was first set to
-  something non NULL.  The disadvantage is that the declaration of that
-  local variable is not obvious from the macro parameters. Bugs
-  due to variable shadowing might occur, though in many cases those
-  are apparent as compiler warnings about use of uninitialized variables.
-- Reordered patches to drag the ltc2983 which is teh one case that
-   wasn't a loop next to the patch that enables that simpler handling.
-   Also move the struct fwnode_handle *ref declarations to where they
-   are intialized.  This may look odd, but Linus and others have stated
-   this is how they prefer this to be done.
-- Converted the one instance of fwnode_for_each_available_child_node()
-  over to device_for_each_child_node_scoped() as it never needed
-  to be the fwnode version in the first place - that was probably a
-  misunderstanding of _available_ or not.
-- Dropped tags other than Andy's on the first patch (as that was unchanged
-  other than simplifying the patch description).  The code changed too
-  much for me to carry them forwards.
+Useful where the fwnode_handle was obtained from a call such as
+fwnode_find_reference() as it will safely do nothing if IS_ERR() is true
+and will automatically release the reference on the variable leaving
+scope.
 
-As can be seen by the examples from IIO that follow this can save
-a reasonable amount of complexity and boiler plate code, often enabling
-additional cleanups in related code such as use of
-return dev_err_probe().
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ include/linux/property.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Merge wise (assuming everyone is happy), I'd propose an immutable branch
-(in IIO or elsewhere) with the 1st and 3rd patches on it, so that we can
-start making use of this in other areas of the kernel without having to wait too long.
-
-Note I don't have the hardware so this is compile tested only.
-Hence I'd appreciate some Tested-by tags if anyone can poke one of the
-effected drivers.
-
-Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
-Referenced from that cover letter.  Similar may help us convert more
-drivers to use this new approach, but often hand tweaking can take
-additional advantage of other cleanup.h based magic, or things like
-return dev_err_probe().
-https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/
-
-Jonathan Cameron (14):
-  device property: Add cleanup.h based fwnode_handle_put() scope based
-    cleanup.
-  iio: temp: ltc2983: Use __free(fwnode_handle) to replace
-    fwnode_handle_put() calls
-  device property: Introduce device_for_each_child_node_scoped()
-  iio: adc: max11410: Use device_for_each_child_node_scoped()
-  iio: adc: mcp3564: Use device_for_each_child_node_scopd()
-  iio: adc: qcom-spmi-adc5: Use device_for_each_child_node_scopd()
-  iio: adc: rzg2l_adc: Use device_for_each_child_node_scopd()
-  iio: adc: stm32: Use device_for_each_child_node_scoped()
-  iio: adc: ti-ads1015: Use device_for_each_child_node_scoped()
-  iio: adc: ti-ads131e08: Use device_for_each_child_node_scoped()
-  iio: addac: ad74413r: Use device_for_each_child_node_scoped()
-  iio: dac: ad3552r: Use device_for_each_child_node_scoped()
-  iio: dac: ad5770r: Use device_for_each_child_node_scoped()
-  iio: dac: ltc2688: Use device_for_each_child_node_scoped()
-
- drivers/iio/adc/max11410.c        | 27 +++--------
- drivers/iio/adc/mcp3564.c         | 16 +++----
- drivers/iio/adc/qcom-spmi-adc5.c  |  7 +--
- drivers/iio/adc/rzg2l_adc.c       | 11 ++---
- drivers/iio/adc/stm32-adc.c       | 63 ++++++++++---------------
- drivers/iio/adc/ti-ads1015.c      |  5 +-
- drivers/iio/adc/ti-ads131e08.c    | 13 ++----
- drivers/iio/addac/ad74413r.c      | 10 +---
- drivers/iio/dac/ad3552r.c         | 51 ++++++++-------------
- drivers/iio/dac/ad5770r.c         | 19 +++-----
- drivers/iio/dac/ltc2688.c         | 24 +++-------
- drivers/iio/temperature/ltc2983.c | 76 ++++++++++---------------------
- include/linux/property.h          |  8 ++++
- 13 files changed, 113 insertions(+), 217 deletions(-)
-
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e6516d0b7d52..bcda028f1a33 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/args.h>
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/fwnode.h>
+ #include <linux/stddef.h>
+ #include <linux/types.h>
+@@ -188,6 +189,8 @@ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+ 
+ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+ void fwnode_handle_put(struct fwnode_handle *fwnode);
++DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
++	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
+ 
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
 -- 
 2.43.1
 

@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2429-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2430-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77637850B2A
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:27:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E95850B2B
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5761C22637
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56CDF284435
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953CA5D905;
-	Sun, 11 Feb 2024 19:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3B65D8E5;
+	Sun, 11 Feb 2024 19:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2wGx5Xq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZk8rn2o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508465D751;
-	Sun, 11 Feb 2024 19:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B44A5D498;
+	Sun, 11 Feb 2024 19:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707679629; cv=none; b=KWWPQXg2L2x6qFxNScoKU5MvYtxLmdxtvqSCJyvJrjasYzwwF0lKpnUBkhFfirrgeHlp5dJvwANrfj6ZFaf54HGHhpomBGS75CqxEaJJBl1xY+uBZKBwd1+D73VM/AZuWdlKZq/rsEqgauCiEueBJmw2AeQh1sQd2kTkU11Aamo=
+	t=1707679635; cv=none; b=rDLs64qnGj0V5qMk539TlqebRZMj/Ky8FIdsWJd0riQo8zlfHDW2ghQbGIZpPVO/4OQkmRKNU3BsIoaGitKQnW3hILsdP+qS483sRksVFu1/ImRmyzUkd/n+9AKnPsK2CPZwVRRWophkYkjt5Lp85JttWnJWgh9UVUKt8wchykk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707679629; c=relaxed/simple;
-	bh=J3pZmC2KKyBlCMRCD/FTEFP9csRqHwyyTXOVXEmuL5w=;
+	s=arc-20240116; t=1707679635; c=relaxed/simple;
+	bh=zuux6IujI5Gs3Qy45t6KVgg/GBvblENjdn1E/efkJxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHKvJKtpqE3IKeXieWViXBUE6tSUe6yPDsaEBO9pw/iM+qHZqJ9azBY9NdSUq+LBgZDdNBG0QKZqOG0LRq1QuofpRTk2XFdf2NuUFSZ+QWsYOmOMFp501WItmudLj+d9pnJLXImkEv68mg1Us/MdEbfFOwE3xirdjVCb3cdILRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2wGx5Xq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC3DC433A6;
-	Sun, 11 Feb 2024 19:27:03 +0000 (UTC)
+	 MIME-Version; b=kLsdN0Qsfr2Q4/4tj4hDiIRO88PRCyV+pcA1xbbGPzLcfJStnPMR26+R9tToDXQCA5SNHSyWVkMoO8X3iBRIyWegLXtrAyfQYW/2WXU1e8nzaoBu234BUjP9Xq0lGlLEV19E+9zCAX/gFIKMADpilVSVC8OXvI+sI8wgi16giWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZk8rn2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E8DC433C7;
+	Sun, 11 Feb 2024 19:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707679629;
-	bh=J3pZmC2KKyBlCMRCD/FTEFP9csRqHwyyTXOVXEmuL5w=;
+	s=k20201202; t=1707679634;
+	bh=zuux6IujI5Gs3Qy45t6KVgg/GBvblENjdn1E/efkJxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2wGx5XqlGx+e6wAlcQJm8GmK45CuoMAJUa27M3i9iTdSJUMwA8Q1mXj70tQtQVOz
-	 dbFXAzXzq1rIKsP2hQiIITqjIIk0gQrBixcQgd++leQ+XsgmS2yffXccPfQnjs7vLE
-	 jUfsV9t7N1s48e6IJ4rSedTgbPB1EkZZzVXWxv0HidG2S8uWwwIUjcSVwOwXS5ylTZ
-	 BBrZyQiNrRgW7CzZko7jVxpMezmsz7KSRvGgU8rAfuS0GfoY+81IwfdjOcgC3h+m+H
-	 PSo2CCJnQa/LcRePEmLPEv3syyxv9GjSnWNNxQMt/9SF2HnMbzJ69Daq83m46y774I
-	 mO6U4hKZsIXCA==
+	b=gZk8rn2oWsnkW/ijp98NCW61Ij624WSQNjigERv6RxSZY6MXQgVg76nSLEy4cdFqH
+	 VO6NkExBHvaD/MfNMc3NxeLYdjeeWIujYPMiXVcCDiOTZNytzo9FHXnG7nzuI9jyxf
+	 54weOhjRWz09VbXEaoyscwt52G5y9mSt35HZuUkGOMl5FneVEqsdkAtA+20dnL9KjP
+	 krlQVCyNdU2fCYO3pEReoq04XH6FJXWYUOteiolFi4jLWVkEeICTQHrjBtGd85YXJs
+	 1fO0eEsvPtCBYzea9RXd9m8O9T8xj6+BKVimTXX7Pi7N5JmkP9SeoDeIOiD/naJ82Z
+	 XCZq2X6QFMP7w==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -67,9 +67,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 07/14] iio: adc: rzg2l_adc: Use device_for_each_child_node_scopd()
-Date: Sun, 11 Feb 2024 19:25:33 +0000
-Message-ID: <20240211192540.340682-8-jic23@kernel.org>
+Subject: [PATCH v2 08/14] iio: adc: stm32: Use device_for_each_child_node_scoped()
+Date: Sun, 11 Feb 2024 19:25:34 +0000
+Message-ID: <20240211192540.340682-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240211192540.340682-1-jic23@kernel.org>
 References: <20240211192540.340682-1-jic23@kernel.org>
@@ -87,45 +87,130 @@ Switching to the _scoped() version removes the need for manual
 calling of fwnode_handle_put() in the paths where the code
 exits the loop early. In this case that's all in error paths.
 
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Note this includes a probable fix as in one path an error message was
+printed with ret == 0.
+
+Took advantage of dev_err_probe() to futher simplify things given no
+longer a need for the goto err.
+
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/rzg2l_adc.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/iio/adc/stm32-adc.c | 63 ++++++++++++++-----------------------
+ 1 file changed, 24 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 0921ff2d9b3a..cd3a7e46ea53 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -302,7 +302,6 @@ static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
- static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l_adc *adc)
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index b5d3c9cea5c4..9fd94a792f42 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2187,58 +2187,50 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 				       struct iio_chan_spec *channels)
  {
- 	struct iio_chan_spec *chan_array;
--	struct fwnode_handle *fwnode;
- 	struct rzg2l_adc_data *data;
- 	unsigned int channel;
- 	int num_channels;
-@@ -330,17 +329,13 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
- 		return -ENOMEM;
+ 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
+-	struct fwnode_handle *child;
+ 	const char *name;
+ 	int val, scan_index = 0, ret;
+ 	bool differential;
+ 	u32 vin[2];
  
- 	i = 0;
--	device_for_each_child_node(&pdev->dev, fwnode) {
-+	device_for_each_child_node_scoped(&pdev->dev, fwnode) {
- 		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
+-	device_for_each_child_node(&indio_dev->dev, child) {
++	device_for_each_child_node_scoped(&indio_dev->dev, child) {
+ 		ret = fwnode_property_read_u32(child, "reg", &val);
 -		if (ret) {
--			fwnode_handle_put(fwnode);
+-			dev_err(&indio_dev->dev, "Missing channel index %d\n", ret);
+-			goto err;
+-		}
 +		if (ret)
- 			return ret;
--		}
++			return dev_err_probe(&indio_dev->dev, ret,
++					     "Missing channel index\n");
  
--		if (channel >= RZG2L_ADC_MAX_CHANNELS) {
--			fwnode_handle_put(fwnode);
-+		if (channel >= RZG2L_ADC_MAX_CHANNELS)
- 			return -EINVAL;
+ 		ret = fwnode_property_read_string(child, "label", &name);
+ 		/* label is optional */
+ 		if (!ret) {
+-			if (strlen(name) >= STM32_ADC_CH_SZ) {
+-				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
+-					name, STM32_ADC_CH_SZ);
+-				ret = -EINVAL;
+-				goto err;
+-			}
++			if (strlen(name) >= STM32_ADC_CH_SZ)
++				return dev_err_probe(&indio_dev->dev, -EINVAL,
++						     "Label %s exceeds %d characters\n",
++						     name, STM32_ADC_CH_SZ);
++
+ 			strscpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+ 			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
+ 			if (ret == -ENOENT)
+ 				continue;
+ 			else if (ret)
+-				goto err;
+-		} else if (ret != -EINVAL) {
+-			dev_err(&indio_dev->dev, "Invalid label %d\n", ret);
+-			goto err;
 -		}
++				return ret;
++		} else if (ret != -EINVAL)
++			return dev_err_probe(&indio_dev->dev, ret, "Invalid label\n");
  
- 		chan_array[i].type = IIO_VOLTAGE;
- 		chan_array[i].indexed = 1;
+-		if (val >= adc_info->max_channels) {
+-			dev_err(&indio_dev->dev, "Invalid channel %d\n", val);
+-			ret = -EINVAL;
+-			goto err;
+-		}
++		if (val >= adc_info->max_channels)
++			return dev_err_probe(&indio_dev->dev, -EINVAL,
++					     "Invalid channel %d\n", val);
+ 
+ 		differential = false;
+ 		ret = fwnode_property_read_u32_array(child, "diff-channels", vin, 2);
+ 		/* diff-channels is optional */
+ 		if (!ret) {
+ 			differential = true;
+-			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+-				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+-					vin[0], vin[1]);
+-				goto err;
+-			}
++			if (vin[0] != val || vin[1] >= adc_info->max_channels)
++				return dev_err_probe(&indio_dev->dev, -EINVAL,
++						     "Invalid channel in%d-in%d\n",
++						     vin[0], vin[1]);
+ 		} else if (ret != -EINVAL) {
+-			dev_err(&indio_dev->dev, "Invalid diff-channels property %d\n", ret);
+-			goto err;
++			return dev_err_probe(&indio_dev->dev, ret,
++					     "Invalid diff-channels property\n");
+ 		}
+ 
+ 		stm32_adc_chan_init_one(indio_dev, &channels[scan_index], val,
+@@ -2247,11 +2239,9 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 		val = 0;
+ 		ret = fwnode_property_read_u32(child, "st,min-sample-time-ns", &val);
+ 		/* st,min-sample-time-ns is optional */
+-		if (ret && ret != -EINVAL) {
+-			dev_err(&indio_dev->dev, "Invalid st,min-sample-time-ns property %d\n",
+-				ret);
+-			goto err;
+-		}
++		if (ret && ret != -EINVAL)
++			return dev_err_probe(&indio_dev->dev, ret,
++					     "Invalid st,min-sample-time-ns property\n");
+ 
+ 		stm32_adc_smpr_init(adc, channels[scan_index].channel, val);
+ 		if (differential)
+@@ -2261,11 +2251,6 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	return scan_index;
+-
+-err:
+-	fwnode_handle_put(child);
+-
+-	return ret;
+ }
+ 
+ static int stm32_adc_chan_fw_init(struct iio_dev *indio_dev, bool timestamping)
 -- 
 2.43.1
 

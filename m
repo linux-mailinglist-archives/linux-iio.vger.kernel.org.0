@@ -1,144 +1,90 @@
-Return-Path: <linux-iio+bounces-2420-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2421-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97920850AE3
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:53:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95FD850B0C
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D9CB21670
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 18:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0F8283C2A
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 19:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7257F5C5EB;
-	Sun, 11 Feb 2024 18:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gtwl1Fec"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2FE5D49D;
+	Sun, 11 Feb 2024 19:16:43 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D54DFC19;
-	Sun, 11 Feb 2024 18:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837405D72B
+	for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 19:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707677618; cv=none; b=WJGzmba45N2EUiB0glv+R2x6GnUmAABV3OwYEOGTmnSOku1oXaLXjj61pemTAXNGoEeEm+TsvefNlVwy7wbeam0gRqP12/qJ6v6SileDM1LEH7jzgkX4vnKH0jLSuj/1BsSHXWXPGeSKXvXR8w+CH3lIaGH0OIUYRalw9covfiQ=
+	t=1707679003; cv=none; b=d2fg4f7nHE/CV1G8AU6DajXYGOcfjxYA5n6PA9Xjsyrmz2VdEzzSM1iCFW/v1AvQZBjFMdUwJvr9fRZ28zd8RuhpuKHAu/UvDI0YCuG4pJCs9MPWKeaE82Lk1YPKlmBQJqCP4f1oYKuGYmFel6k5Nkr0n6QD6rzpuNEY1Cucc3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707677618; c=relaxed/simple;
-	bh=51Z67SqHAKgk9iWK2IYl/gTT0lOS9VnUGZT6342BW6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vs3EMYuzjoq6+4rvu329K2mjtMytqRFIXC4GYk6k5UHv+jW02qKvtpGPFXIzIsI94YgrFMwKk2J++oAr5bKzZDCTFY73J+9b+6NlF2wGXCf4xWoL4iSBrg6ZzXT9ESTQj+Ym51wDGAOCVi+Y1w6PfNdVHay7KbD37tF68wH0FSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gtwl1Fec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6525DC433C7;
-	Sun, 11 Feb 2024 18:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707677617;
-	bh=51Z67SqHAKgk9iWK2IYl/gTT0lOS9VnUGZT6342BW6E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Gtwl1FecSiXwkn4jhzHfDWPByeXkWeluq9FdgmfnD7+8t0fHcQap5tkSkN8SkEq3U
-	 U3koQ6yporFGQfvK7g0FphMlJCMt0unejTArvGCEag6nq7eYzAJwIIqfJfTg+6nY/B
-	 Nxh9HJbjMRNnw7Bn8tRBnXUxGJVFtvsKjJpO2uDi9Nh7zXtTyfizNDI6qdfyfAhpEP
-	 wOggeNBjoUZZbav/Jh80qyLpgL9pHGOvRBw9j5NAh+ASUZ6Z9dasS3Nor379tp4/Gb
-	 HztXeOzSjb2tJen6dzZqzAH+ACcBCiUalFI0mfl7vlqgYC2uWyTthQN0VbybMnYZ4D
-	 lASeJ3tvtxr/A==
-Date: Sun, 11 Feb 2024 18:53:22 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
- Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
- <mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 09/13] iio: addac: ad74413r: Use __free(fwnode_handle)
- to replace fwnode_handle_put() calls
-Message-ID: <20240211185322.5e91589e@jic23-huawei>
-In-Reply-To: <137a0efdc57d7c150178d2aad35c2c51d3f82704.camel@gmail.com>
-References: <20240114172009.179893-1-jic23@kernel.org>
-	<20240114172009.179893-10-jic23@kernel.org>
-	<137a0efdc57d7c150178d2aad35c2c51d3f82704.camel@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707679003; c=relaxed/simple;
+	bh=B8UFaFN2PijZW2D2EgFj8CBpfvYCa/Z8YGiQieVd8JY=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZJRtGywFI7WbLhE7nQnx+T+5MRH76dIPBil0M2027Q4Fy+NecHsN6l4PoA0v8RV5tvkfxeTDIys1L++PfQqkXjwas57Vj+gJ/RzmdkCx3gjSaxVXEmpIhakK86ph5I2keopYjk0F1gw1AKp3brdFJIupe4M3W+vs8UDfDZJYwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
+	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+	id 10e5dd00-c912-11ee-b972-005056bdfda7;
+	Sun, 11 Feb 2024 21:16:33 +0200 (EET)
+From: andy.shevchenko@gmail.com
+Date: Sun, 11 Feb 2024 21:16:32 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
+Message-ID: <ZckdEDbAqin1Fsgt@surfacebook.localdomain>
+References: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
+ <20231210133228.5fd425ea@jic23-huawei>
+ <20231217132800.27e83a01@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231217132800.27e83a01@jic23-huawei>
 
-On Mon, 15 Jan 2024 11:17:12 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+Sun, Dec 17, 2023 at 01:28:00PM +0000, Jonathan Cameron kirjoitti:
+> On Sun, 10 Dec 2023 13:32:28 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > On Fri,  8 Dec 2023 15:31:19 +0800
+> > Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
+> > 
+> > > When iio_device_register_sysfs_group() fails, we should
+> > > free iio_dev_opaque->chan_attr_group.attrs to prevent
+> > > potential memleak.
+> > > 
+> > > Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+> > > Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>  
+> > Hi.
+> > 
+> > Looks good to me, but I'd like to leave this one on the list a little
+> > longer to see if anyone else has comments.
+> > 
+> Guess no comments!
 
-> On Sun, 2024-01-14 at 17:20 +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > This use of the new cleanup.h scope based freeing infrastructure allows
-> > us to exit directly from error conditions within the
-> > fwnode_for_each_available_child_node(dev, child) loop. On normal exit
-> > from that loop no fwnode_handle reference will be held and the child
-> > pointer will be NULL thus making the automatically run
-> > fwnode_handle_put() a noop.
-> >=20
-> > Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > --- =20
->=20
-> Acked-by: Nuno Sa <nuno.sa@analog.com>
->=20
-> > =C2=A0drivers/iio/addac/ad74413r.c | 9 ++-------
-> > =C2=A01 file changed, 2 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> > index 7af3e4b8fe3b..ec9a466e118d 100644
-> > --- a/drivers/iio/addac/ad74413r.c
-> > +++ b/drivers/iio/addac/ad74413r.c
-> > @@ -1255,21 +1255,16 @@ static int ad74413r_parse_channel_config(struct
-> > iio_dev *indio_dev,
-> > =C2=A0static int ad74413r_parse_channel_configs(struct iio_dev *indio_d=
-ev)
-> > =C2=A0{
-> > =C2=A0	struct ad74413r_state *st =3D iio_priv(indio_dev);
-> > -	struct fwnode_handle *channel_node =3D NULL;
-> > +	struct fwnode_handle *channel_node __free(fwnode_handle) =3D NULL;
-> > =C2=A0	int ret;
-> > =C2=A0
-> > =C2=A0	fwnode_for_each_available_child_node(dev_fwnode(st->dev),
-This should have been
-device_for_each_child_node() because that ultimately calls
-of_fwnode_get_next_child_node() which calls the available form anyway.
-https://lore.kernel.org/lkml/20211205190101.26de4a57@jic23-huawei/T/#u
+This patch does not fix anything.
 
-So I'll just switch to the new
-device_for_each_child_node_scoped() that I'm about to propose.
+Yet, it might be considered as one that increases robustness, but with this applied the 
+goto
+https://elixir.bootlin.com/linux/v6.8-rc3/source/drivers/iio/industrialio-core.c#L2007
+can be amended, right?
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> > channel_node) {
-> > =C2=A0		ret =3D ad74413r_parse_channel_config(indio_dev, channel_node);
-> > =C2=A0		if (ret)
-> > -			goto put_channel_node;
-> > +			return ret;
-> > =C2=A0	}
-> > =C2=A0
-> > =C2=A0	return 0;
-> > -
-> > -put_channel_node:
-> > -	fwnode_handle_put(channel_node);
-> > -
-> > -	return ret;
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static int ad74413r_setup_channels(struct iio_dev *indio_dev) =20
->=20
 
 

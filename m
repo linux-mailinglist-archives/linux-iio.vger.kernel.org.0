@@ -1,147 +1,97 @@
-Return-Path: <linux-iio+bounces-2442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22706850B6F
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 21:20:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB60B850B83
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 21:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71D2CB226B0
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1BA1C21016
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Feb 2024 20:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C54B5E3BA;
-	Sun, 11 Feb 2024 20:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1285F5EE83;
+	Sun, 11 Feb 2024 20:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/xQ3d+8"
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="Zp81RZnK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB10149E12;
-	Sun, 11 Feb 2024 20:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1FD5D8E4;
+	Sun, 11 Feb 2024 20:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707682827; cv=none; b=KcUxgxN79UEbbJxllfhgE56irIkcgSdmkYIUhL4a5KOwxiIYmbbW2e4agYG/BHbIoiKgntuu7QquA6oZrQu8fQiloFOHj5WhG9qyQRZ9bktf2v6nS7urfRJcC7ZJX56uKHmxne21yr/qeR95Zgj6SYizBCF4HYpOMo0drS8rAxg=
+	t=1707684743; cv=none; b=TDpGPjJINvoPvidjB3UFB8gTNV4PtlLP/Aq71t58SzhBUCfkUpru41Ok7qIEz9DI5l03nX0KVq6quBdRvZF3yp8sNrrDAy7+Y+Xul/b7AxbVsGKOlvNRfKHFTwdIwRNQZoy40EaILkVzQZLfGq21X7C4hQICVUhQ+RD/04xkvY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707682827; c=relaxed/simple;
-	bh=bzOg8Vyf1KgrI24EqX1HmE/A9hdeNubSy72njvMixRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lpjS417fJtLmRs3VjCcIFjlXHdKIYKa5cThh407eD0G2payQmkvW9ArzFZkX06IDvlEgsEEAP1bOjkeoqRgrVWqwj1sXSlFsPfXOi8AS4dzlbPDNr0Mn6jQcD+ublITZa93DJFWCxGO3xhL30HUjDwNt+I0N5UiWEnTdn1hNKro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/xQ3d+8; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50eac018059so3284508e87.0;
-        Sun, 11 Feb 2024 12:20:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707682823; x=1708287623; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ghy+50tCdn+Q71lUqzEnDQMJYH/opBg7prwVaaY4Heo=;
-        b=Q/xQ3d+8p2DNCCXLpz++2GSMQz68rdNAmlDEEpa6sbd7/GthxFQ/FThp7SGG0PeWgI
-         w8qCPmB70yRLtagLufI0ZmKPrkMkDbh+E8ws5Lr7nHHdSAIO0F42zLiWkJn0ZhMoT2LY
-         eF0+RZ2Agj6J0bGQAxQRTXPnAXi0lFV3H0iVM9EiQu/lenFdL8YEQYHGnf420LBEFuYM
-         BgKRKzoauZWgtfoTM60NNApCdYxJC3m5HWlJ3abr22OneLYRtZqJDvGdoGo3aqJq0/0i
-         QU+84ZJzjHIXycnoBA0kL/ODgLO2vIIpAfDQ37SfAv1xR+Yc4wQ31Gy97rutwZfmnhhV
-         eArA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707682823; x=1708287623;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ghy+50tCdn+Q71lUqzEnDQMJYH/opBg7prwVaaY4Heo=;
-        b=Wjo9sXA7WjBWkHwTAeNMzy/9atTCSe/mAmPyPYgCp0iQxHGO8GobF0GOA/T93Deb4f
-         FomP+PeFSauxAIYuvAZ3J/nVtSNT63iah60vo0AEOMDTPXWmH0BUyCEn5BCBCbmHyM6g
-         jMMZR4Ja/rD9OJpWGNEJe0WNhsWVynrAaTtX64oa+dRSNs537MFw+p5d9AB+9EEVTIG0
-         fgMnUBR9YAtb1Y6CMfXBWGS/Vm+edLQy88b+A7eBGudyWma+dvQNXG9fsjcq1bybTOth
-         agho/y3z2LJQDqv5YfPrPtVQrR5XIROjkOSLUFGJBMr0d/tabMSmRBrqMldum+aq2vOu
-         3YBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVeZ2ADL8WBphwbdYwqJcYPZ/llo0FPGGebu067RYoh76JGd/+kx5dX/8fNB/ptcNrPZn8vj6rrJX6v7iHQhUlY9tRrEqkmgdpyUqh7dY3venEK92Hir2M2AZxYBImvppAM3c7mlM20
-X-Gm-Message-State: AOJu0Yxco8BQyyAk4GwRtFa6z9X0eX/d6o00ivWU0DbQLSsHZ9qmUz3Y
-	rQSOig6YqZsSbTOz+g+O/BUyJHN8Go8RZ+g9smvadKWmymlCY73IXBmmo3sRYk0kdwPRD3WweoV
-	bQJyM4XxvJ8XasR1j2QTmL7OCu2leNtX1dGI=
-X-Google-Smtp-Source: AGHT+IGvMI321riUERBvC4pbau1JUIcDEnIaKRgVlbb5SqUFZzTnaPHWCY0g3YW3LT18QZjb8VXsymHxr6x5Pb+zHcU=
-X-Received: by 2002:ac2:5bd2:0:b0:511:5b4e:1063 with SMTP id
- u18-20020ac25bd2000000b005115b4e1063mr3243010lfn.24.1707682822979; Sun, 11
- Feb 2024 12:20:22 -0800 (PST)
+	s=arc-20240116; t=1707684743; c=relaxed/simple;
+	bh=isG0zDsvzsHQP9xgeeXZnasvBjiHGHeSlbDgptfOIG4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g0zcPFj+TPxbnZmCmf7X3T4zhbib05bfXCAM8l5I+mvpBQeZMKbMyuOSvJZIHPt60uf5WBTQCTiD0vsmFDPP897dSxx9AhlbKK7oKjsw7DTN+M4EpKMX9qBSGmWLjyS0mwmNA1zmADnkJ+C7c6Oz2kdcYDBlfk8kqN97ee+7oh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=Zp81RZnK; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1707684738; bh=isG0zDsvzsHQP9xgeeXZnasvBjiHGHeSlbDgptfOIG4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Zp81RZnKYt2nKsOUzJECm/D0aCh7Ht9xg+E8ZPmSrjlfUvLZJV3nC9OifCRvHYLWH
+	 5JgXVk0edVVZ1lGXQXiUM5TDyG6bjJKQ+M97Kd2twa8moKnWKYVjJop4wuvENhui4J
+	 2KW+r/O6Shn5Chsmi5dQlQm6EE7HmHR79gXPWYV0=
+From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Cc: Ondrej Jirman <megi@xff.cz>,
+	Icenowy Zheng <icenowy@aosc.io>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] Add support for AF8133J magnetometer
+Date: Sun, 11 Feb 2024 21:51:56 +0100
+Message-ID: <20240211205211.2890931-1-megi@xff.cz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231208073119.29283-1-dinghao.liu@zju.edu.cn>
- <20231210133228.5fd425ea@jic23-huawei> <20231217132800.27e83a01@jic23-huawei>
- <ZckdEDbAqin1Fsgt@surfacebook.localdomain> <20240211193711.518b76d7@jic23-huawei>
-In-Reply-To: <20240211193711.518b76d7@jic23-huawei>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 11 Feb 2024 22:19:46 +0200
-Message-ID: <CAHp75VdEwxVG3qnZJgx_VKZPOkRcqHUiLcvJj3cBAnJh90Wt0g@mail.gmail.com>
-Subject: Re: [PATCH] iio: core: fix memleak in iio_device_register_sysfs
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Dinghao Liu <dinghao.liu@zju.edu.cn>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Alexandru Ardelean <alexandru.ardelean@analog.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 11, 2024 at 9:37=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> On Sun, 11 Feb 2024 21:16:32 +0200
-> andy.shevchenko@gmail.com wrote:
->
-> > Sun, Dec 17, 2023 at 01:28:00PM +0000, Jonathan Cameron kirjoitti:
-> > > On Sun, 10 Dec 2023 13:32:28 +0000
-> > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > > On Fri,  8 Dec 2023 15:31:19 +0800
-> > > > Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
-> > > >
-> > > > > When iio_device_register_sysfs_group() fails, we should
-> > > > > free iio_dev_opaque->chan_attr_group.attrs to prevent
-> > > > > potential memleak.
-> > > > >
-> > > > > Fixes: 32f171724e5c ("iio: core: rework iio device group creation=
-")
-> > > > > Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-> > > > Hi.
-> > > >
-> > > > Looks good to me, but I'd like to leave this one on the list a litt=
-le
-> > > > longer to see if anyone else has comments.
-> > > >
-> > > Guess no comments!
-> >
-> > This patch does not fix anything.
-> >
-> > Yet, it might be considered as one that increases robustness, but with =
-this applied the
-> > goto
-> > https://elixir.bootlin.com/linux/v6.8-rc3/source/drivers/iio/industrial=
-io-core.c#L2007
-> > can be amended, right?
-> >
->
-> I'm lost.  That goto results in a call to
-> iio_buffers_free_sysfs_and_mask(indio_dev);
-> which continues to undo stuff from before that call.
-> Now if it did
-> iio_device_unregister_sysfs(indio_dev);
-> (as per the label above it in the cleanup) then I'd agree.
+From: Ondrej Jirman <megi@xff.cz>
 
-Ah, it's me who hasn't noticed the word "buffer" in the goto label.
-Yes, you are right!
+This series adds support for AF8133J magnetometer sensor. It's a simple
+3-axis sensor with two sensitivity options and not much else to it.
 
-> Perhaps I'm misreading the code flow here?
->
-> All this code is supposed to be side effect free on error so I'm
-> keen on the change even if there is another path where it gets cleaned
-> up that I'm missing.
+This sensor is used on both Pinephone and Pinephone Pro. DT patches
+adding it will come later, once this driver is merged.
 
-Everything is fine, sorry for the noise.
+Please take a look. :)
 
---=20
-With Best Regards,
-Andy Shevchenko
+Thank you very much,
+	Ondřej Jirman
+
+Icenowy Zheng (3):
+  dt-bindings: vendor-prefix: Add prefix for Voltafield
+  dt-bindings: iio: magnetometer: Add DT binding for Voltafield AF8133J
+  iio: magnetometer: add a driver for Voltafield AF8133J magnetometer
+
+Ondrej Jirman (1):
+  MAINTAINERS: Add an entry for AF8133J driver
+
+ .../iio/magnetometer/voltafield,af8133j.yaml  |  58 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/magnetometer/Kconfig              |  12 +
+ drivers/iio/magnetometer/Makefile             |   1 +
+ drivers/iio/magnetometer/af8133j.c            | 525 ++++++++++++++++++
+ 6 files changed, 604 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
+ create mode 100644 drivers/iio/magnetometer/af8133j.c
+
+-- 
+2.43.0
+
 

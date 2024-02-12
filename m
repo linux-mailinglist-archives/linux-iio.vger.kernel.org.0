@@ -1,195 +1,147 @@
-Return-Path: <linux-iio+bounces-2459-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2460-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7E0851209
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 12:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014D1851265
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 12:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D7B282E4E
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 11:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E211C21F09
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 11:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5546A38DE1;
-	Mon, 12 Feb 2024 11:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llpvAF1n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E11039857;
+	Mon, 12 Feb 2024 11:37:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F52D2BAE7;
-	Mon, 12 Feb 2024 11:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0E63984F;
+	Mon, 12 Feb 2024 11:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707736824; cv=none; b=LKcIpPo0jnHb+wW/e/Pz+a9x9BDJGpDpCq1LgaDRBezQEwN4AEJdUhEC/rqpuTw2dSzTfcxoIO5tonFCFqIiwvD6D4X0Uglfv9rP2rR9ykY+TZLZLRVq7YjMGfxS+tTEBH5Xo5QIj0TurE/17jXbgoLN3PUgEJsQ96taxhC5wLY=
+	t=1707737861; cv=none; b=DBlVsjg7dNht3+8uR737t2ga8hMCJVtBbNH4kzh28ndZmF02hFRyCheU76wRFZxthwxGFUYTy/Np2Z24og8P2uALXsKTVLByUGxPJyn8MZ9QUDLCDySEwMm3ypT76UhlK/JN5/HSn7GKhgPUbk1JTTu1QRAduN2BTqz1U6eUAis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707736824; c=relaxed/simple;
-	bh=NIf3m0p41QvLOoLpJZww8fr5lUh/7naMs+DwQJ35TCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=civdbu5gKpLbm5uxFKkt8wC7iVNvngyxBMp+ndGytLji98KLtzajk+I8AYMOmZExMCSZnoO+q6TaVWhcurMJ1tS6rH2USmGHpueOcRCfwVQ4GMnOXDwrCWaECXc6AsQaGYtrQnhbNNUAOSajijkSek5t9d78ZHMcfYDogIGg3TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llpvAF1n; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2cf3ed3b917so38614591fa.1;
-        Mon, 12 Feb 2024 03:20:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707736820; x=1708341620; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=350dwjN8QQutWLlYzcXvkSs1h7jhGOVddH+hl5UJwAY=;
-        b=llpvAF1ng31phyOQzD7fl+FdTAnXnU4Yyjr6b0NF6QRd80NZN50fBidbmG8dMA+0TG
-         bSGpjL4AMTvnPg0fmYeb+u7r60a+AsgsBsIwPC7qGoGuKzk7T0kJQS7aQOLpFZEVEDj7
-         aWOSfIzNGl4PHXnk7Ly+zgCKrLvs7GfJam//ZY6ATTlww88ZLm+bdIAeYpYIHElD/tuU
-         xsvpSy5tst0JMrqhJVx7bOlzrztDdvXkPFs+wbu1seQ11JfTKd1wmm+8QNyNtUr9XzVA
-         DLyrEjKOfC1dF025GUznm7svN2WLix/+SV+BDDM1SPnuBxTLljjiuwuQG7NB3dof+b0M
-         JoMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707736820; x=1708341620;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=350dwjN8QQutWLlYzcXvkSs1h7jhGOVddH+hl5UJwAY=;
-        b=YCO+6HhLyKlKJ98GYohvSI/20oS6jTbU1HJS4O25G4QOmCedt+F/0D5LcllC6TNBn3
-         OJm5nhhPTvUAlHbxPuUpTlPApyzBgSnDU3esev0IEWX1dxmd2N9uG7PMS+ltSDOreVM8
-         dTsHASR9eeO7iJd1IZ5y7yHnXYTZBanNXKQvDUvtrJK6jqmvHGu0UOhcKHLy/rVYY5i/
-         lJc0O4rjd57TGh8AAwJ1+T4KGhsqosbT61EEbLjSGXqVdaLDvZp7s+RGrtszg/UwWgNu
-         7HBz3By5MKkPtw+o9UgGSllTFC7wzcW2n2I+H1xEFMOVpN6/tOV+O+d1YJt0qlzkfntD
-         yXFg==
-X-Forwarded-Encrypted: i=1; AJvYcCUd65KSB7TI+kalHxFND8PAyDbCpHNpVHUo+7i0+uExG8dafllKmG6vXRQYZA4R4CS1XdDqGSL/M8z3/O117NET5M73+tAOATmApPlRyDZj9nJhY/XXzUtXfi+NKHPOuRNPJJBPP1n4
-X-Gm-Message-State: AOJu0YzgJ7ogV6dZbLdBUMQ+S60jToLKZwZ3atGg31S1swT/01mTrUsK
-	t8jgpmJa2sBYHrRlFFdozFSerSgWy4KfNm4mai1oWlWc7pZaETi8
-X-Google-Smtp-Source: AGHT+IHIev8+kzV0uX0jUUXCyYCQrx7fd1e5XtbnSjmBEFkq2JGk2UPMDIAdfPJuYz+10r0ouZPU1Q==
-X-Received: by 2002:a05:6512:138a:b0:511:8cb1:7c9d with SMTP id fc10-20020a056512138a00b005118cb17c9dmr2607187lfb.24.1707736820241;
-        Mon, 12 Feb 2024 03:20:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUhu0kIEcrqnMooWZvnav8sYvNIRGqSw2J29k0CoLGP8C48lwyUELDMV/YA8XZhjckkhXC+zUpOnkPwvcGOdlYsrihJbwle4RA/j86jo7/gBOe20hW36i5OoZvu4htDoGF1hJnUGiof67pa/2d7PO81thT5gNY0dqt1/BacOBW7BtPH6siiVVxX+9jNzqiUk8NpOxfaB3x2H+mlEFnjWwsE2TeY5vL3qEybeu59pFPMtasR3YXLNZzHdprnOyHoTxNOH1YPSDgoMNG2
-Received: from drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi (drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:7426:df00::2])
-        by smtp.gmail.com with ESMTPSA id bi31-20020a0565120e9f00b005117fc3d553sm824462lfb.70.2024.02.12.03.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Feb 2024 03:20:19 -0800 (PST)
-Date: Mon, 12 Feb 2024 13:20:09 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	David Laight <David.Laight@aculab.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	linux-iio@vger.kernel.org
-Subject: [RESEND PATCH v2] iio: gts-helper: Fix division loop
-Message-ID: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
+	s=arc-20240116; t=1707737861; c=relaxed/simple;
+	bh=LANI5gKq1ByHLjiH+h5+HQGDiFqfmM8ncEdFP0M7WX0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pSuPs8kn6UweINtRcsff2NlHJQCqt0up1H7fA5nUhOVaGKjUv8cnl8xJBunKMZPgdkXmOlgC9TqHX8MZN5/9l4JhO30sWhxQpl/yTHGK9K7DhYz5znYv+u3x1w8GP4lrxcbqA18b+SDD7aiRhqHVmfueHWY/pYEngmwjzFB9Nqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TYMmM33vZz67lZn;
+	Mon, 12 Feb 2024 19:33:55 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id EA940140DAF;
+	Mon, 12 Feb 2024 19:37:29 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 12 Feb
+ 2024 11:37:29 +0000
+Date: Mon, 12 Feb 2024 11:37:28 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Julia Lawall <julia.lawall@inria.fr>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+	<linux-kernel@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Nicolas Palix <nicolas.palix@imag.fr>, Sumera Priyadarsini
+	<sylphrenadin@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [PATCH 2/8] of: Introduce for_each_*_child_of_node_scoped() to
+ automate of_node_put() handling
+Message-ID: <20240212113728.00001e81@Huawei.com>
+In-Reply-To: <6c65d280-9b8f-393c-2adb-2387535ad924@inria.fr>
+References: <20240211174237.182947-1-jic23@kernel.org>
+	<20240211174237.182947-3-jic23@kernel.org>
+	<6c65d280-9b8f-393c-2adb-2387535ad924@inria.fr>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="r7jqDadsvKX59wc/"
-Content-Disposition: inline
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
+On Mon, 12 Feb 2024 09:20:35 +0100 (CET)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
---r7jqDadsvKX59wc/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Sun, 11 Feb 2024, Jonathan Cameron wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > To avoid issues with out of order cleanup, or ambiguity about when the
+> > auto freed data is first instantiated, do it within the for loop definition.
+> >
+> > The disadvantage is that the struct device_node *child variable creation
+> > is not immediately obvious where this is used.
+> > However, in many cases, if there is another definition of
+> > struct device_node *child; the compiler / static analysers will notify us
+> > that it is unused, or uninitialized.
+> >
+> > Note that, in the vast majority of cases, the _available_ form should be
+> > used and as code is converted to these scoped handers, we should confirm
+> > that any cases that do not check for available have a good reason not
+> > to.  
+> 
+> Is it a good idea to make the two changes at once?  Maybe it would slow
+> down the use of the scoped form, which can really simplify the code.
 
-The loop based 64bit division may run for a long time when dividend is a
-lot bigger than the divider. Replace the division loop by the
-div64_u64() which implementation may be significantly faster.
+Good question.  I combined them based on what I think Rob was asking for.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+Rob,
 
----
-This is a resend. Only change is the base which is now the v6.8-rc4 and
-not the v6.8-rc1
+What would you prefer?
 
-This change was earlier applied and reverted as it confusingly lacked of
-the removal of the overflow check (which is only needed when we do
-looping "while (full > scale * (u64)tmp)". As this loop got removed, the
-check got also obsolete and leaving it to the code caused some
-confusion.
+Jonathan
 
-So, I marked this as a v2, where v1 is the reverted change discussed
-here:
-https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.=
-rev.dnainternet.fi/
+> 
+> julia
+> 
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  include/linux/of.h | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> >
+> > diff --git a/include/linux/of.h b/include/linux/of.h
+> > index 50e882ee91da..024dda54b9c7 100644
+> > --- a/include/linux/of.h
+> > +++ b/include/linux/of.h
+> > @@ -1430,10 +1430,23 @@ static inline int of_property_read_s32(const struct device_node *np,
+> >  #define for_each_child_of_node(parent, child) \
+> >  	for (child = of_get_next_child(parent, NULL); child != NULL; \
+> >  	     child = of_get_next_child(parent, child))
+> > +
+> > +#define for_each_child_of_node_scoped(parent, child) \
+> > +	for (struct device_node *child __free(device_node) =		\
+> > +	     of_get_next_child(parent, NULL);				\
+> > +	     child != NULL;						\
+> > +	     child = of_get_next_child(parent, child))
+> > +
+> >  #define for_each_available_child_of_node(parent, child) \
+> >  	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
+> >  	     child = of_get_next_available_child(parent, child))
+> >
+> > +#define for_each_available_child_of_node_scoped(parent, child) \
+> > +	for (struct device_node *child __free(device_node) =		\
+> > +	     of_get_next_available_child(parent, NULL);			\
+> > +	     child != NULL;						\
+> > +	     child = of_get_next_available_child(parent, child))
+> > +
+> >  #define for_each_of_cpu_node(cpu) \
+> >  	for (cpu = of_get_next_cpu_node(NULL); cpu != NULL; \
+> >  	     cpu = of_get_next_cpu_node(cpu))
+> > --
+> > 2.43.1
+> >
+> >  
 
-Revision history:
-v1 =3D> v2:
- - Drop the obsolete overflow check
- - Rebased on top of the v6.8-rc4
-
-iio: gts: loop fix fix
----
- drivers/iio/industrialio-gts-helper.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
-
-diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
-io-gts-helper.c
-index 7653261d2dc2..b51eb6cb766f 100644
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -34,24 +34,11 @@
- static int iio_gts_get_gain(const u64 max, const u64 scale)
- {
- 	u64 full =3D max;
--	int tmp =3D 1;
-=20
- 	if (scale > full || !scale)
- 		return -EINVAL;
-=20
--	if (U64_MAX - full < scale) {
--		/* Risk of overflow */
--		if (full - scale < scale)
--			return 1;
--
--		full -=3D scale;
--		tmp++;
--	}
--
--	while (full > scale * (u64)tmp)
--		tmp++;
--
--	return tmp;
-+	return div64_u64(full, scale);
- }
-=20
- /**
-
-base-commit: 841c35169323cd833294798e58b9bf63fa4fa1de
---=20
-2.43.0
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---r7jqDadsvKX59wc/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmXJ/uUACgkQeFA3/03a
-ocXMgggAw8+wylWjHi1iUXo2RCilsgP8kakiQ9FcMGaJauAoM2zU7m0Ci1Qynb2Z
-0s+2qxVTuOKGiWj983f0SSPxS3UEDK/7U7+W/wXmjUVVPWOcc/xZE60foFFSTFEF
-PgOdxVFRjLFp6fZtmhw8QsAsdGMcdhyAIeDChz755bqTWdj5IDISWC1aalVcL08W
-pzTJZujcILWO3wVHICnIpgdyJ8P/JwfsRMGgLcZqE7lqzKF81YIqjmAXOk1G2r8N
-jvjUD6G3H6xtogh0zfN/Rm0Pr+JTsOpDLragt9RkIs7/3DFVYPpfh19NaQ5Ghw1F
-4eGtkWCugDC7KpaL2HFET/It6VFEMw==
-=oX2V
------END PGP SIGNATURE-----
-
---r7jqDadsvKX59wc/--
 

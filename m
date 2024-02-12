@@ -1,229 +1,157 @@
-Return-Path: <linux-iio+bounces-2492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B60851E66
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 21:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16656852275
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 00:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E19286CDF
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 20:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AF3281A89
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 23:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8FC47F5C;
-	Mon, 12 Feb 2024 20:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8533B50248;
+	Mon, 12 Feb 2024 23:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NZIJN/dR"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MzkgzzL3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660CA47774;
-	Mon, 12 Feb 2024 20:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6794F5EA
+	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 23:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707768406; cv=none; b=f3rFnz0zCxLv0z2kdFP17sDv4HOj49FFiyHG29yEsKzz/fNztiCfzg1xRmouZ+qiOb4IST3rzh2Yc/6XSIjKx5mAjeqy2+xJuwGUqVUooRjGUkHYbm7j1TfdSu7nmcKck+Uol8pesRRg+aH15Z0ip7S3FV2+AB+fTdHr1B7Jeb0=
+	t=1707780478; cv=none; b=gG3VXegxT5O4D7UjSjzBXsIwa7gHu7Or9YIUndqtYU3NsvxLJ4B7GjBFnniYniStyuyY7Av9cEa2bh+gBzOjRKMK6dYkU/D+hEyRpjDrrzFnRIXAvbzoO5rCE+BR7DmA8pg7nBMIhxrSTX36Q432UaWfhRToO9IGgMMWNlRf1lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707768406; c=relaxed/simple;
-	bh=qjnuNmyiSEgjXChpUCI23C69eglKvom+rZJQQTSpY/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qq5GqjShMALxUQOBsJNf3I2WwwgxM/KLRKCm1Os6Jm/5n3eP1VJoVM4s9gp5JmlWCAPffhPwsOLNXC/RU+q8X9qiAV+UbuyQwyJr/6cYMmqKEyDZXp2nZIADOtHJGTfyO4zftQQLqwZNWQR+5cinHgwJ7BzuPv6O3oabouUijkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NZIJN/dR; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A0F5720003;
-	Mon, 12 Feb 2024 20:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707768400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DmUCDESvsxbZN+wVj59NCC6P8oLMuz68MnJi+35+qlM=;
-	b=NZIJN/dRwj4uo/4RHtNgV2rs3wfihfQB/dIO+krOPVIxVT9gJ41UqNlUlD5izVO2SujknE
-	sUGS+/+xjldiHGdTBRRZ11lCzCL760fv/1VREKkQMqmTbHxqd/1fv3E/gFF/3LbhydrKBl
-	++VF2PYRVPGt3praoi5Bs2UfnTXB2ox8vhR8jDvLHtLBp23j5pFJ8G8g79mzHAh2Gq6miq
-	SNuyLMvakfrEvywhl/58+LjyIT+Xjy6LidrArONkg/O6vxUKBr23RLsQyf2oMYwI1Y76TB
-	AK1+cOu07Ews3PIik4hewHaGvCBqt5rLBWeowV20F9iov1u1XJ+Ac1/PXJXBcQ==
-Date: Mon, 12 Feb 2024 21:06:36 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
+	s=arc-20240116; t=1707780478; c=relaxed/simple;
+	bh=wQOLAzpAqdTMxbzgxQagsub1MlQcJ776NbBb/5ZmX74=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mhS0NP2fYXieI0DAJbWRM2agJc1bV8RslimLUmiIoyN4OISjuAJWhVAefDGr9OwnTpuP1yEBctFFp0/YxHYWBGxPV4170Qb6H1P2EWIpWxX/3HvJeS869jkRWxVSUjB+Fo7H9ca38mDfER6bEdmLGWKgHum56m5ihp397Ka/fRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MzkgzzL3; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-204f50f305cso3076429fac.3
+        for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 15:27:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707780474; x=1708385274; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3+egtMFSB5wP/JnRwyX/FLjZ4VS6y7AaGO4xFQVkuUk=;
+        b=MzkgzzL35sh2Hd+HStux+3lGfZoFx7BkilNaOUALWkvWugwmOYoS+6P5/MfIdtzwLr
+         ehKLKlttNTDbLLxsqJMJt4c4fuJKu3RayyfQgcocUWMvtTjSN/i9xXGldsBtTBFEa8UY
+         3Sp8WFg7OhoUlZ0dppHfWFLshzgxwsJU7rqfRyF7uR+7J1oSHBIChuiMXaPqCtH6b2ni
+         FTPmicM8416vHwfK6s0L2b7ru3nF0eOtA5TemYDxy2Yj3/1VT2jrX7m7H2g8p+ITL+ie
+         873w6fL2sG6YOZ5odZn17r2CGHxBZOSlO5Zlsjs24qKoRBqH0wn6SMlp00w0jdjfkqUf
+         85Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707780474; x=1708385274;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3+egtMFSB5wP/JnRwyX/FLjZ4VS6y7AaGO4xFQVkuUk=;
+        b=paegWIf7QhGy4lOVqNxA1AHW7K8U9meeXYzl8znwNVN/Uj/OsbXwC9g6nbMpVsqQ44
+         zncZ0XLGYvP7LSstqqJdlP17RoHhJez/ZLYt+sjkmUwlxwhxsuJiBswnf9Fn3TtDlW7X
+         Jjedn8RT6OtTcIknOwyIJvNQZKr2b7n8WB21e7VxaG0Yn+FU/GeoCjFK9Ka4enHSyKU3
+         wPIlAc55MNFZPmWhcqOUoLrAOfIUGay40bQAum3hv2oW4BJ8MR/JsW250PR3lKewlifX
+         HrVTuOqIqTBzAohabN7fGm9wJJ+jyUmPl46/g5woKW+eO7hNIjTmWZyYztSJaSnUE6yB
+         dMXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXoyB2XOpr0P7+X+sp4EaXps6LsLJ4rLbnpvCgCNIvpkCo4ibj88Q0ZwQTREgWZqCTIih8rM77mxDuOiwzmys2Gafgep/QAyqy
+X-Gm-Message-State: AOJu0YxO1IXq7m0MhKLG5kaMwDGoFps0nykOeuy3MF0V2QhGToMJexzm
+	jvgUFBLs7NHRd9e1UVipOSkzCQ2cSvZTkclpYeNsZZPNyltaE5PU23kintt+jXA=
+X-Google-Smtp-Source: AGHT+IEnqNuLs+L+SkljOkSHhq48382/YhpcidnWFKrPiXnIR0zV1wGkfWPgAvmmTXxR3uMFQYBdTw==
+X-Received: by 2002:a05:6871:80f:b0:218:55c9:bb20 with SMTP id q15-20020a056871080f00b0021855c9bb20mr9748766oap.21.1707780473886;
+        Mon, 12 Feb 2024 15:27:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVBCLWzInzImFpjlEde3du9xxWbJtlsO+FIOwVJCqeIGb3XUsPpgQL9MqOSJhqdb/VUAjFuoxvugBtbTKi0LRU+DEKsVET+S1y2BKftd8n6uHN7eeWchHaIuejP1qVpCOCqRjZ3rAXp+AA2CHyMY/eGgTU4nz9PpqD+iqlOeB3kH1N1kKZ7mEr1PH+lJ7gWJDxlmsPqZZHS0DxgHZpOfGcmKawoi/MFfiLH+0ce4Kbn6Y+/gewTIz+E2ZdUOnbXW1TGZMKrbwASINXfQwv80bKsZ5NIf94Sw9NEVO3RBB/IIoXmP0ie0xeGEHT8UiIrqoS8kPntNLX8W8Hcdi3VobfLuV7GLDGv12WG9ityJo9cjFG26LHR7rP6t7f1S7xMAubULcG9BWN44pTpMGAE0FbXXrXzpPbX/+lBsk/NXOlX9/U2dLT7WeQc4mc9RSWZikiWe/v1k16bK24UkDKgHCLfm156oNu0rmFechfXGHcU4GPpxjnzd2n/gMlEIuV8Ejo2/TY2z3/Ue/fUm1amIh69Ij5EeMw=
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id pk17-20020a0568704c1100b0021a7a45e0b1sm330141oab.35.2024.02.12.15.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Feb 2024 15:27:53 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Martin Sperl <kernel@martin.sperl.org>,
+	David Jander <david@protonic.nl>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
-	linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v6 2/7] dt-bindings: rtc: abx80x: convert to yaml
-Message-ID: <2024021220055301ade3d4@mail.local>
-References: <20240212-add-am64-som-v6-0-b59edb2bc8c3@solid-run.com>
- <20240212-add-am64-som-v6-2-b59edb2bc8c3@solid-run.com>
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH 0/5] spi: add support for pre-cooking messages
+Date: Mon, 12 Feb 2024 17:26:40 -0600
+Message-ID: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240212-add-am64-som-v6-2-b59edb2bc8c3@solid-run.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On 12/02/2024 18:38:09+0100, Josua Mayer wrote:
-> Convert the abracon abx80x rtc text bindings to dt-schema format.
-> 
-> In addition to the text description reference generic interrupts
-> properties and add an example.
-> 
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+This is a follow-up to [1] where it was suggested to break down the
+proposed SPI offload support into smaller series.
 
-Did something change since v6? If not, why didn't you collect the
-reviewed-by tag?
+This takes on the first suggested task of introducing an API to
+"pre-cook" SPI messages. This idea was first discussed extensively in
+2013 [2][3] and revisited more briefly 2022 [4].
 
-> ---
->  .../devicetree/bindings/rtc/abracon,abx80x.txt     | 31 ---------
->  .../devicetree/bindings/rtc/abracon,abx80x.yaml    | 79 ++++++++++++++++++++++
->  2 files changed, 79 insertions(+), 31 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt b/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
-> deleted file mode 100644
-> index 2405e35a1bc0..000000000000
-> --- a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
-> +++ /dev/null
-> @@ -1,31 +0,0 @@
-> -Abracon ABX80X I2C ultra low power RTC/Alarm chip
-> -
-> -The Abracon ABX80X family consist of the ab0801, ab0803, ab0804, ab0805, ab1801,
-> -ab1803, ab1804 and ab1805. The ab0805 is the superset of ab080x and the ab1805
-> -is the superset of ab180x.
-> -
-> -Required properties:
-> -
-> - - "compatible": should one of:
-> -        "abracon,abx80x"
-> -        "abracon,ab0801"
-> -        "abracon,ab0803"
-> -        "abracon,ab0804"
-> -        "abracon,ab0805"
-> -        "abracon,ab1801"
-> -        "abracon,ab1803"
-> -        "abracon,ab1804"
-> -        "abracon,ab1805"
-> -        "microcrystal,rv1805"
-> -	Using "abracon,abx80x" will enable chip autodetection.
-> - - "reg": I2C bus address of the device
-> -
-> -Optional properties:
-> -
-> -The abx804 and abx805 have a trickle charger that is able to charge the
-> -connected battery or supercap. Both the following properties have to be defined
-> -and valid to enable charging:
-> -
-> - - "abracon,tc-diode": should be "standard" (0.6V) or "schottky" (0.3V)
-> - - "abracon,tc-resistor": should be <0>, <3>, <6> or <11>. 0 disables the output
-> -                          resistor, the other values are in kOhm.
-> diff --git a/Documentation/devicetree/bindings/rtc/abracon,abx80x.yaml b/Documentation/devicetree/bindings/rtc/abracon,abx80x.yaml
-> new file mode 100644
-> index 000000000000..58dbbca27deb
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/abracon,abx80x.yaml
-> @@ -0,0 +1,79 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/rtc/abracon,abx80x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Abracon ABX80X I2C ultra low power RTC/Alarm chip
-> +
-> +maintainers:
-> +  - linux-rtc@vger.kernel.org
-> +
-> +allOf:
-> +  - $ref: rtc.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    description:
-> +      The wildcard 'abracon,abx80x' may be used to support a mix
-> +      of different abracon rtc`s. In this case the driver
-> +      must perform auto-detection from ID register.
-> +    enum:
-> +      - abracon,abx80x
-> +      - abracon,ab0801
-> +      - abracon,ab0803
-> +      - abracon,ab0804
-> +      - abracon,ab0805
-> +      - abracon,ab1801
-> +      - abracon,ab1803
-> +      - abracon,ab1804
-> +      - abracon,ab1805
-> +      - microcrystal,rv1805
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  abracon,tc-diode:
-> +    description:
-> +      Trickle-charge diode type.
-> +      Required to enable charging backup battery.
-> +
-> +      Supported are 'standard' diodes with a 0.6V drop
-> +      and 'schottky' diodes with a 0.3V drop.
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum:
-> +      - standard
-> +      - schottky
-> +
-> +  abracon,tc-resistor:
-> +    description:
-> +      Trickle-charge resistor value in kOhm.
-> +      Required to enable charging backup battery.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 3, 6, 11]
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        rtc@69 {
-> +            compatible = "abracon,abx80x";
-> +            reg = <0x69>;
-> +            abracon,tc-diode = "schottky";
-> +            abracon,tc-resistor = <3>;
-> +            interrupts = <44 IRQ_TYPE_EDGE_FALLING>;
-> +        };
-> +    };
-> 
-> -- 
-> 2.35.3
-> 
+The goal here is to be able to improve performance (higher throughput,
+and reduced CPU usage) by allowing peripheral drivers that use the
+same struct spi_message repeatedly to "pre-cook" the message once to
+avoid repeating the same validation, and possibly other operations each
+time the message is sent.
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+This series includes __spi_validate() and the automatic splitting of
+xfers in the optimizations. Another frequently suggested optimization
+is doing DMA mapping only once. This is not included in this series, but
+can be added later (preferably by someone with a real use case for it).
+
+To show how this all works and get some real-world measurements, this
+series includes the core changes, optimization of a SPI controller
+driver, and optimization of an ADC driver. This test case was only able
+to take advantage of the single validation optimization, since it didn't
+require splitting transfers. With these changes, CPU usage of the
+threaded interrupt handler, which calls spi_sync(), was reduced from
+83% to 73% while at the same time the sample rate (frequency of SPI
+xfers) was increased from 20kHz to 25kHz.
+
+Finally, there has been quite a bit of discussion on the naming of the
+API already. The most natural suggestion of spi_message_[un]prepare()
+conflicts with the existing prepare_message controller callback which
+does something a bit different. I've so far stuck with [un]optimize()
+from [3], but am not partial to it. Maybe [un]cook() would makes more
+sense to people? Or maybe we could rename the existing prepare_message
+callback to free up the name?
+
+[1]: https://lore.kernel.org/linux-spi/20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com/T/
+[2]: https://lore.kernel.org/linux-spi/E81F4810-48DD-41EE-B110-D0D848B8A510@martin.sperl.org/T/
+[3]: https://lore.kernel.org/linux-spi/39DEC004-10A1-47EF-9D77-276188D2580C@martin.sperl.org/T/
+[4]: https://lore.kernel.org/linux-spi/20220525163946.48ea40c9@erd992/T/
+
+---
+David Lechner (5):
+      spi: add spi_optimize_message() APIs
+      spi: move splitting transfers to spi_optimize_message()
+      spi: stm32: move splitting transfers to optimize_message
+      spi: axi-spi-engine: move message compile to optimize_message
+      iio: adc: ad7380: use spi_optimize_message()
+
+ drivers/iio/adc/ad7380.c         |  52 ++++++--
+ drivers/spi/spi-axi-spi-engine.c |  40 +++----
+ drivers/spi/spi-stm32.c          |  28 +++--
+ drivers/spi/spi.c                | 253 ++++++++++++++++++++++++++++++++-------
+ include/linux/spi/spi.h          |  19 +++
+ 5 files changed, 305 insertions(+), 87 deletions(-)
+---
+base-commit: 5111fd347aee731964993fc021e428f8cf46a076
+prerequisite-patch-id: 844c06b6caf25a2724e130dfa7999dc90dd26fde
+change-id: 20240208-mainline-spi-precook-message-189b2f08ba7f
 

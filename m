@@ -1,124 +1,195 @@
-Return-Path: <linux-iio+bounces-2458-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2459-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF00C850FFA
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 10:50:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7E0851209
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 12:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2791C21C70
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:50:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D7B282E4E
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 11:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3B317BAB;
-	Mon, 12 Feb 2024 09:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5546A38DE1;
+	Mon, 12 Feb 2024 11:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLSlr0dQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llpvAF1n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483C179AD;
-	Mon, 12 Feb 2024 09:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F52D2BAE7;
+	Mon, 12 Feb 2024 11:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707731454; cv=none; b=ocs1kRrEiUswSnkn9/LYmrB+JRtXsgEwmgmPx897c2s+95hU6VTHw1JqSkQdXf+sB+PEozb8Gf202Q1yJfiNpjmfc9nTEr51TJEyHBF8EtQMSNR4seaoq7FuqY01moJzzT1z35hGJRyC6lkqAvpHKV+AdITacWynLZV2hbglT7Q=
+	t=1707736824; cv=none; b=LKcIpPo0jnHb+wW/e/Pz+a9x9BDJGpDpCq1LgaDRBezQEwN4AEJdUhEC/rqpuTw2dSzTfcxoIO5tonFCFqIiwvD6D4X0Uglfv9rP2rR9ykY+TZLZLRVq7YjMGfxS+tTEBH5Xo5QIj0TurE/17jXbgoLN3PUgEJsQ96taxhC5wLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707731454; c=relaxed/simple;
-	bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VmuZL3cKdAbT7yAG8Li95DzvLXvbMiX+3NAa8SSgnIVfgtbfwHEZGbmFgY3FqNc4+kSLxCeN/Op6MlBT/4PCibYXfg83pweDyZHDAv4ix4o6AlLN+ZlvbHw5PUxNRdh+LQDvG0s//LBptZ/n5zTeyQ9t5ROP/j+LElONok1OebM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLSlr0dQ; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1707736824; c=relaxed/simple;
+	bh=NIf3m0p41QvLOoLpJZww8fr5lUh/7naMs+DwQJ35TCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=civdbu5gKpLbm5uxFKkt8wC7iVNvngyxBMp+ndGytLji98KLtzajk+I8AYMOmZExMCSZnoO+q6TaVWhcurMJ1tS6rH2USmGHpueOcRCfwVQ4GMnOXDwrCWaECXc6AsQaGYtrQnhbNNUAOSajijkSek5t9d78ZHMcfYDogIGg3TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llpvAF1n; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3cc2f9621aso39293266b.1;
-        Mon, 12 Feb 2024 01:50:52 -0800 (PST)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2cf3ed3b917so38614591fa.1;
+        Mon, 12 Feb 2024 03:20:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707731451; x=1708336251; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
-        b=NLSlr0dQ+h2uIGrSYghW8XG9SJ7eR++TfAfA93xBDjEOpWlAjsMG8VQXx0sP98YUHT
-         mNLcZwcjVuVB33MBebNTlnATGbLNOo4zrzyNXyaEVUuq1Ff6KDMWY93yS2Qi380kRISU
-         TB4uI4pdllTl7sa4ndUeRYVysyBn3VJEN90UehFrbTAx4cX/ktICj6tvnmwxlVCERClK
-         G7GYBvHn++gKqPAXDbQauwsU9vJqM2r1KvHR0R2IdFQdH7Myxy9vxHFZZV/5XX6sfSZx
-         hY5YKh1EVTHaehJZAcH+LJA7I0txYD10lqmKCahFdotYh2oVw4XD2g/WD94qtMPd9jTJ
-         51YA==
+        d=gmail.com; s=20230601; t=1707736820; x=1708341620; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=350dwjN8QQutWLlYzcXvkSs1h7jhGOVddH+hl5UJwAY=;
+        b=llpvAF1ng31phyOQzD7fl+FdTAnXnU4Yyjr6b0NF6QRd80NZN50fBidbmG8dMA+0TG
+         bSGpjL4AMTvnPg0fmYeb+u7r60a+AsgsBsIwPC7qGoGuKzk7T0kJQS7aQOLpFZEVEDj7
+         aWOSfIzNGl4PHXnk7Ly+zgCKrLvs7GfJam//ZY6ATTlww88ZLm+bdIAeYpYIHElD/tuU
+         xsvpSy5tst0JMrqhJVx7bOlzrztDdvXkPFs+wbu1seQ11JfTKd1wmm+8QNyNtUr9XzVA
+         DLyrEjKOfC1dF025GUznm7svN2WLix/+SV+BDDM1SPnuBxTLljjiuwuQG7NB3dof+b0M
+         JoMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707731451; x=1708336251;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
-        b=nXmsIzyDnzyhoJuK7KhaNe7Fi4BevNNPojBUvppy62fNUA1TwErawBCchhuYC0rOct
-         VXLFD2Ybkg+1li3cCa4yfsALRfq5rIGe6ZpY4PGvJu6btofPrhRomnzFBdNTQN7DthKa
-         YhUJJXFl3QcRHEsNMBW3VNAiF3+4Mi8wAkjwXZCILp99hx8PQQbbEUItKFWBDa9CF7Cb
-         p0Gc/kfkY5nFhbd09zUcTESUQnUb+XiQDkNATJjekChTYV0DZ5x2CnNRrnIctKPYRUw8
-         d7BTFWrUqCK0t8QC0qSUTniDbO5nh2wqhovVmhlP7rTtlqSp79DxmFBJYn7rlYDfNorn
-         44Eg==
-X-Gm-Message-State: AOJu0Ywtkw2hHyX3O32quc0E5wfC4S/+I6X1tcu0rvbHVt2m+fDaHrCP
-	ObYn+ULqDPbozFeMG5a19YTyPVzew2VTmFCTRpbf86Y7TIpp24PdF+NPeortTa2ZB8vuSP1JXIB
-	Af4z8lbcufgNi7O+XNREQL+eg9kQ=
-X-Google-Smtp-Source: AGHT+IE5Sc9bVjkJSckP+6TyFX9G+YR2tPeEruKyA3NQfab5NbqIcAMOPhbq5S2fjLEyeoyUZleS2pY093zU7Va7TBk=
-X-Received: by 2002:a17:906:4ad7:b0:a3a:510f:97c0 with SMTP id
- u23-20020a1709064ad700b00a3a510f97c0mr4176926ejt.61.1707731451083; Mon, 12
- Feb 2024 01:50:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707736820; x=1708341620;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=350dwjN8QQutWLlYzcXvkSs1h7jhGOVddH+hl5UJwAY=;
+        b=YCO+6HhLyKlKJ98GYohvSI/20oS6jTbU1HJS4O25G4QOmCedt+F/0D5LcllC6TNBn3
+         OJm5nhhPTvUAlHbxPuUpTlPApyzBgSnDU3esev0IEWX1dxmd2N9uG7PMS+ltSDOreVM8
+         dTsHASR9eeO7iJd1IZ5y7yHnXYTZBanNXKQvDUvtrJK6jqmvHGu0UOhcKHLy/rVYY5i/
+         lJc0O4rjd57TGh8AAwJ1+T4KGhsqosbT61EEbLjSGXqVdaLDvZp7s+RGrtszg/UwWgNu
+         7HBz3By5MKkPtw+o9UgGSllTFC7wzcW2n2I+H1xEFMOVpN6/tOV+O+d1YJt0qlzkfntD
+         yXFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUd65KSB7TI+kalHxFND8PAyDbCpHNpVHUo+7i0+uExG8dafllKmG6vXRQYZA4R4CS1XdDqGSL/M8z3/O117NET5M73+tAOATmApPlRyDZj9nJhY/XXzUtXfi+NKHPOuRNPJJBPP1n4
+X-Gm-Message-State: AOJu0YzgJ7ogV6dZbLdBUMQ+S60jToLKZwZ3atGg31S1swT/01mTrUsK
+	t8jgpmJa2sBYHrRlFFdozFSerSgWy4KfNm4mai1oWlWc7pZaETi8
+X-Google-Smtp-Source: AGHT+IHIev8+kzV0uX0jUUXCyYCQrx7fd1e5XtbnSjmBEFkq2JGk2UPMDIAdfPJuYz+10r0ouZPU1Q==
+X-Received: by 2002:a05:6512:138a:b0:511:8cb1:7c9d with SMTP id fc10-20020a056512138a00b005118cb17c9dmr2607187lfb.24.1707736820241;
+        Mon, 12 Feb 2024 03:20:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUhu0kIEcrqnMooWZvnav8sYvNIRGqSw2J29k0CoLGP8C48lwyUELDMV/YA8XZhjckkhXC+zUpOnkPwvcGOdlYsrihJbwle4RA/j86jo7/gBOe20hW36i5OoZvu4htDoGF1hJnUGiof67pa/2d7PO81thT5gNY0dqt1/BacOBW7BtPH6siiVVxX+9jNzqiUk8NpOxfaB3x2H+mlEFnjWwsE2TeY5vL3qEybeu59pFPMtasR3YXLNZzHdprnOyHoTxNOH1YPSDgoMNG2
+Received: from drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi (drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:7426:df00::2])
+        by smtp.gmail.com with ESMTPSA id bi31-20020a0565120e9f00b005117fc3d553sm824462lfb.70.2024.02.12.03.20.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Feb 2024 03:20:19 -0800 (PST)
+Date: Mon, 12 Feb 2024 13:20:09 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	David Laight <David.Laight@aculab.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	linux-iio@vger.kernel.org
+Subject: [RESEND PATCH v2] iio: gts-helper: Fix division loop
+Message-ID: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5769241.DvuYhMxLoT@nobara-ally-pc> <4956451.31r3eYUQgx@nobara-ally-pc>
- <CAHp75VcFXSfV4rPDaJcUVC92QGK3U55AqQqPo0WYKmpcKnw+eQ@mail.gmail.com> <13845892.uLZWGnKmhe@nobara-ally-pc>
-In-Reply-To: <13845892.uLZWGnKmhe@nobara-ally-pc>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 12 Feb 2024 11:50:14 +0200
-Message-ID: <CAHp75VfcK35RnPEzBkt4D56WLRFtWHita4e9ZqcLzpqUbw+PcQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
-To: Jonathan LoBue <jlobue10@gmail.com>
-Cc: Hans De Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Platform Driver <platform-driver-x86@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com, 
-	linux-iio@vger.kernel.org, lkml@antheas.dev, derekjohn.clark@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r7jqDadsvKX59wc/"
+Content-Disposition: inline
+
+
+--r7jqDadsvKX59wc/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 9:30=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.com>=
- wrote:
-> On Sunday, February 11, 2024 9:08:59 AM PST Andy Shevchenko wrote:
+The loop based 64bit division may run for a long time when dividend is a
+lot bigger than the divider. Replace the division loop by the
+div64_u64() which implementation may be significantly faster.
 
-...
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
 
-> > No ACPI_PTR() in new code. It's more problematic than helpful.
-> >
-> > Above for your information for the future contributions, as I said in
-> > the other patch comment, I think the better approach is to enumerate
-> > from an external driver under the PDx86 realm.
->
-> Thanks for the constructive feedback.
+---
+This is a resend. Only change is the base which is now the v6.8-rc4 and
+not the v6.8-rc1
 
-You're welcome!
+This change was earlier applied and reverted as it confusingly lacked of
+the removal of the overflow check (which is only needed when we do
+looping "while (full > scale * (u64)tmp)". As this loop got removed, the
+check got also obsolete and leaving it to the code caused some
+confusion.
 
-> I'm working to fix and re-send via
-> git send-email. I think the ACPI match table method should be okay and
-> seems pretty standard for a lot of devices. The problem in this case is
-> that the identifiers are not currently unique to each chip.
+So, I marked this as a v2, where v1 is the reverted change discussed
+here:
+https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.=
+rev.dnainternet.fi/
 
-Yes, that's why this portion is called "DMI quirk". And it does not
-belong to the driver as such. In some cases we may have it inside the
-driver, but here, I believe, and Hans can correct me, we may avoid
-polluting the driver with a quirk.
+Revision history:
+v1 =3D> v2:
+ - Drop the obsolete overflow check
+ - Rebased on top of the v6.8-rc4
 
-> This is something
-> that should be rectified with BOSCH and system builders and then in the
-> future, the ACPI match table(s) can be updated, and the aborting portion
-> of loading the bmc150 driver for ASUS ROG ALLY can be removed.
+iio: gts: loop fix fix
+---
+ drivers/iio/industrialio-gts-helper.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-As I said in a reply to the other patch, it probably will stay forever.
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
+io-gts-helper.c
+index 7653261d2dc2..b51eb6cb766f 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -34,24 +34,11 @@
+ static int iio_gts_get_gain(const u64 max, const u64 scale)
+ {
+ 	u64 full =3D max;
+-	int tmp =3D 1;
+=20
+ 	if (scale > full || !scale)
+ 		return -EINVAL;
+=20
+-	if (U64_MAX - full < scale) {
+-		/* Risk of overflow */
+-		if (full - scale < scale)
+-			return 1;
+-
+-		full -=3D scale;
+-		tmp++;
+-	}
+-
+-	while (full > scale * (u64)tmp)
+-		tmp++;
+-
+-	return tmp;
++	return div64_u64(full, scale);
+ }
+=20
+ /**
+
+base-commit: 841c35169323cd833294798e58b9bf63fa4fa1de
+--=20
+2.43.0
+
 
 --=20
-With Best Regards,
-Andy Shevchenko
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--r7jqDadsvKX59wc/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmXJ/uUACgkQeFA3/03a
+ocXMgggAw8+wylWjHi1iUXo2RCilsgP8kakiQ9FcMGaJauAoM2zU7m0Ci1Qynb2Z
+0s+2qxVTuOKGiWj983f0SSPxS3UEDK/7U7+W/wXmjUVVPWOcc/xZE60foFFSTFEF
+PgOdxVFRjLFp6fZtmhw8QsAsdGMcdhyAIeDChz755bqTWdj5IDISWC1aalVcL08W
+pzTJZujcILWO3wVHICnIpgdyJ8P/JwfsRMGgLcZqE7lqzKF81YIqjmAXOk1G2r8N
+jvjUD6G3H6xtogh0zfN/Rm0Pr+JTsOpDLragt9RkIs7/3DFVYPpfh19NaQ5Ghw1F
+4eGtkWCugDC7KpaL2HFET/It6VFEMw==
+=oX2V
+-----END PGP SIGNATURE-----
+
+--r7jqDadsvKX59wc/--
 

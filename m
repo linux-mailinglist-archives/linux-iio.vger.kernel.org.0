@@ -1,147 +1,115 @@
-Return-Path: <linux-iio+bounces-2456-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2457-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B26850F46
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 10:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E18B850FED
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 10:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA412829E5
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD4F52852C5
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4EBFBF2;
-	Mon, 12 Feb 2024 09:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1652A179BF;
+	Mon, 12 Feb 2024 09:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWqCGsyY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYVDyWC2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E38B101C1
-	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 09:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAD208C1;
+	Mon, 12 Feb 2024 09:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707728829; cv=none; b=iznVSr3EZcoSX44Z5xpueuuFsDW2GV5aCP4fCt0sPo3iiaO/HBjsqxtMrFKIJLnygkczhVosE9ULYK2vgKyJWPsgnn5eFjC2mOh8kx2L539E1cY7r8LotnXo5TZbLkgYiT11YVKOISZuIcQVHu3LS6OVO3U1Q5WUYI2bLywBnAU=
+	t=1707731220; cv=none; b=OahqgKpHB0V9cAlRq3pMauVs/vXWRzAj/jIfYS0hHcprCqgTd3LD+b4SiB1YcWOhwbiPZ/EjJA7VgOODzK80r2CO2MEGPd8DpBxBJzXrLoap3p9zJuyRMY9Id13c8iBys2QYgC4CCZjodWeNz8LCWA1Q4WLG2dGNqz2SStcYfWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707728829; c=relaxed/simple;
-	bh=1fUS3PZBn94/xoyMIsmko9QLHHumwUIhKx/OSVrhcOg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aX8FZULTPfaIigje/ou/OU6S+l4YtU8vmz0/88L0rX68sD9+tNeDcKjapcAislw4W7YpDBKhBWBEz24Sq1kcA8OSTnbq9hcdwetRNRQrp8gtWITOm4Asz6pb17rBZrGKMEJ/iGiTg8Q8IEg0zuIJxHe3h0UbAaVbXFjeBVkuMl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWqCGsyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AB773C433F1;
-	Mon, 12 Feb 2024 09:07:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707728828;
-	bh=1fUS3PZBn94/xoyMIsmko9QLHHumwUIhKx/OSVrhcOg=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=LWqCGsyYEyOhlG/LkIIuioacLEwAdxVxNFRYCntsSB9x4y8hYJuPQwyraPVSDKRxa
-	 3l7DPwDoApNUA6OhABginqX/v5nPddlVsoQDCCCSX6TyqltkfEMR8FX04YrXN4CS5X
-	 JucCsHpD8a4fuvwf4KGzWE9tsAkWzwDGjgsps+8ocNMSvn+TyzxnOE41HMFTM6G2J9
-	 BNIt3s8M555NWkRap0Fh+t4Je4Pa88Tn79XoCjvVeNA1073xoHWPq9pZ54YnO5inJC
-	 3l8NzxhqqiuJEl/BBmiqSgEQezOL4BNANlsK9g8odx5RPsnr0D2YAL9u48DhYbgq2p
-	 6ndCE9b3uDFtA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 890D8C4829B;
-	Mon, 12 Feb 2024 09:07:08 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 12 Feb 2024 10:07:05 +0100
-Subject: [PATCH] iio: core: make use of DIV_ROUND_CLOSEST_ULL()
+	s=arc-20240116; t=1707731220; c=relaxed/simple;
+	bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T7mkfQ+LvQwR0N/j3XOUMEX5OBXaMmh+cjgm+Z7sAqNlfWbB1rlSbqluF+0zWtuUP/2voA0sYV9IX5nxlpmJMK1Vu85g1LmMDm/tU2lLbbAYrMxrYylY5Isja3LPmEFufUmvKRix0R0bnVkcJe33UDV2AeEsaPj24BmeHHy/cRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYVDyWC2; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a383016f428so315002066b.2;
+        Mon, 12 Feb 2024 01:46:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707731217; x=1708336017; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
+        b=FYVDyWC2hfZzGhFoLi8BjYlA+d1x2mxBLH2Ohr0GpXOCk36Gs0vmjn2DJMCoxswWaY
+         YpqU1kDd3dgE9GFmaOLBeJic+i6SF0oFMRvykaxa6SRm08wrluyVN6hKP9bXYR/0xQdt
+         ILDKVk7Gv4CON62kcTPbqXA6n2B8AQ6txXSluDC6RgLKUYMvGcpY8yAGY9IpmIKf/UnS
+         i10FOu2WZ1Wt4/k0ZfcFlmYhuAt0GJwuJ2gyATKWmjnWs1e+ZcC/noi+PhfW5SImePHv
+         ifDybBKKaqND6eGgASLlGBHZbueb6Dgv1n7KmtB0M+mz15P+GMXzq5aWD5NprW/zd+yS
+         rpew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707731217; x=1708336017;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
+        b=MuD4dQrgiS1ZoOvqmP+cAPzKmm3iu24ozrUjMI3prZLEGNKT7E2rvm3/gv0xBiI11/
+         XN4E/Gdiuc4XIQEGSnCDkG6MUPHEc60vhqbx48QLbSbFEif8WgOkeo1yrw/UtWKli701
+         aPSGHUkso4+1+mR7BnHR5hXpgXMSZSMUDZjMUDLBDIqM/f94o3zcOMajsGCAGzmxomSx
+         Lfx5YNoDjY3n8a8AUhiuc3JPxu7fxP5ubMOaoZv6AWNxmku57K8dZ2s4p3q2jb6MxHut
+         Lv1fKkcJd0NNYmCJ2gxeIo6sVTuREQFG4SAQ33QW9uG/OwdGOr9kqcRf+T2XP324oz/S
+         m9ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVMMAv2I7yp0RO74tggtJ0Wv/uUQJFYRIRg/zEbgpjwm46BiUbsrSBslfTfeLSv6QI/9UMl+xZJMINmTR6C2GhVFMRPt5YJkYbY50VrCeWF1QR8BWVRAGoCe5UM9cYzo6eMfUUQEzAnV7gNMK57Ug==
+X-Gm-Message-State: AOJu0YxTh3mVxP6VAEzJit5ceNcUHG59e/WpzNcRF8uMztab3j7icvfa
+	Qj3DO/IWY+2DYOWVF1ZwUjKnYFVmXgoqfFfQYPY/tE3W9qYE/QJCqyLUr8nvFfxNE1C31FDLnAV
+	niBi/oFlL/A4YkWEms9ZYPwuoazY=
+X-Google-Smtp-Source: AGHT+IGRZkxJRUffn++Co7cADidLNLk9FdUdzeHUzjLzf6Tht5DAmiuOzZFr4BxTcSDaLlcGwF6kF0M8z2WY69OOMNc=
+X-Received: by 2002:a17:906:288d:b0:a3c:1db1:41fc with SMTP id
+ o13-20020a170906288d00b00a3c1db141fcmr4944786ejd.41.1707731217341; Mon, 12
+ Feb 2024 01:46:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id:
- <20240212-iio-improve-define-dont-build-v1-1-875883bb9565@analog.com>
-X-B4-Tracking: v=1; b=H4sIALjfyWUC/x2MwQqDMBAFf0X23IU1qLT9ldJDazbtgzaRRIMg/
- ruLp2FgmI2KZmihe7NR1oqCFE3aS0Pj9xU/yvDm5MR14lrHQGL8p5yqsteAaEhx5veCn+dRws0
- HkSFce7LHlC1Zz//jue8Hr4+lwG8AAAA=
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1707728827; l=2450;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=X35iqJ6K0K5h9XuwhHfccmLQcWPxcL0Z/bKnPGFfk3Q=;
- b=Lao/omFK+SboBcAVxAka5TRnnXTewPknOU8xDcscluVsKtB+67cxFE+204IZEJ6rMu/A/bLNo
- xOgp9q9Fb36C4XGpoVKprrJUKvC2HUIG4GSBbYRzXkYUhK9BV/B/kKD
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+References: <5769241.DvuYhMxLoT@nobara-ally-pc> <12437546.O9o76ZdvQC@nobara-ally-pc>
+ <CAHp75Ve71Lb4PsGLGY5b_LNVn+Dk8z0Ags9rrWptSp8ot-UpRg@mail.gmail.com> <5292442.31r3eYUQgx@nobara-ally-pc>
+In-Reply-To: <5292442.31r3eYUQgx@nobara-ally-pc>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 12 Feb 2024 11:46:21 +0200
+Message-ID: <CAHp75VfJeMZUBO0c9gr=ymee8jqu0xJQRwrg798Trrmr6ox5gw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: accel: bmc150: ASUS ROG ALLY Abort Loading
+To: Jonathan LoBue <jlobue10@gmail.com>
+Cc: Hans De Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Platform Driver <platform-driver-x86@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com, 
+	linux-iio@vger.kernel.org, lkml@antheas.dev, derekjohn.clark@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Mon, Feb 12, 2024 at 9:21=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.com>=
+ wrote:
+>
+> On Sunday, February 11, 2024 9:04:56 AM PST Andy Shevchenko wrote:
+> > Something went wrong, please use `git send-email ...` to send patches.
+>
+> Will do once I can test the suggested updated table method.
+>
+> > Please, make this as the proper table (see many examples in
+> > drivers/platform/x86/ folder on how to do that).
+>
+> This DMI board match and aborting of loading the driver is hopefully
+> a temporary portion of this patch. The ideal fix is that BOSCH informs
+> ASUS and other system builders of the proper and unique BOSCXXXX
+> identifier so that BIOSes can be updated with those and this portion
+> of the patch can be removed. As it stands now, this is the "band-aid"
+> workaround of having conflicting (same) IDs for different chips.
 
-Instead of open code DIV_ROUND_CLOSEST_ULL(), let's use it.
+Even if fixed (which has to be done anyway) it can be undone in old
+firmwares =E2=80=94 there is no solution to make all affected users update
+firmware. Do we have real products on the market with the wrong ID (I
+assume we do)?
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
-1) For some reason IIO_G_TO_M_S_2() does do not a closest division. Not
-   sure if there's a reason for it or just something that was forgotten.
-   Anyways, I left it as it was before.
-
-2) This conversion could actually be required. In some experiments with
-   it (in a series I'm working on), I actually realized with
-   IIO_RAD_TO_DEGREE() that  we could have a 64bit division in 32bits
-   archs. I'm still not treating it as a fix as no one ever complained.
-   Jonathan, let me know if you want me to send a follow up email (or v2)
-   with a proper tag.
----
- include/linux/iio/iio.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index e370a7bb3300..3ebf9fe97f0e 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -10,6 +10,7 @@
- #include <linux/device.h>
- #include <linux/cdev.h>
- #include <linux/cleanup.h>
-+#include <linux/math.h>
- #include <linux/slab.h>
- #include <linux/iio/types.h>
- /* IIO TODO LIST */
-@@ -799,8 +800,8 @@ int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
-  *
-  * Returns the given value converted from degree to rad
-  */
--#define IIO_DEGREE_TO_RAD(deg) (((deg) * 314159ULL + 9000000ULL) / 18000000ULL)
--
-+#define IIO_DEGREE_TO_RAD(deg) \
-+	DIV_ROUND_CLOSEST_ULL((deg) * 314159ULL, 18000000)
- /**
-  * IIO_RAD_TO_DEGREE() - Convert rad to degree
-  * @rad: A value in rad
-@@ -808,7 +809,7 @@ int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
-  * Returns the given value converted from rad to degree
-  */
- #define IIO_RAD_TO_DEGREE(rad) \
--	(((rad) * 18000000ULL + 314159ULL / 2) / 314159ULL)
-+	DIV_ROUND_CLOSEST_ULL((rad) * 18000000ULL + 314159)
- 
- /**
-  * IIO_G_TO_M_S_2() - Convert g to meter / second**2
-@@ -824,6 +825,6 @@ int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
-  *
-  * Returns the given value converted from meter / second**2 to g
-  */
--#define IIO_M_S_2_TO_G(ms2) (((ms2) * 100000ULL + 980665ULL / 2) / 980665ULL)
-+#define IIO_M_S_2_TO_G(ms2) DIV_ROUND_CLOSEST_ULL((ms2) * 100000ULL, 980665)
- 
- #endif /* _INDUSTRIAL_IO_H_ */
-
----
-base-commit: bd2f1ed8873d4bbb2798151bbe28c86565251cfb
-change-id: 20240212-iio-improve-define-dont-build-c0f9df006f85
---
-
-Thanks!
-- Nuno Sá
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

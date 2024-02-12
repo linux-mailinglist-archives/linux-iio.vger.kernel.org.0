@@ -1,73 +1,74 @@
-Return-Path: <linux-iio+bounces-2497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E6885227C
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 00:28:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64B3852285
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 00:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CADA1C22518
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 23:28:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D905281A89
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 23:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EDE5103F;
-	Mon, 12 Feb 2024 23:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C091524AA;
+	Mon, 12 Feb 2024 23:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zHC3UF1u"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a3/WL/Aq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8A45024D
-	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 23:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C1D50A7C
+	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 23:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707780480; cv=none; b=TNrCB8I2XZN3qAcXSKd2Jx+qw8slh/5a9HGHjRRusbFXvRyKbcwpzWkT/waxf7VB5WJmukmFyePbhURu14NVJEhgnFdaW3WK8G4PrlBwFw9sBR/Dxncu736HrnzCw+exM+afVrRH2ZIhgzvOiKCcsa5fqQ0iwXVukLLHPoV2Dug=
+	t=1707780481; cv=none; b=cQfh7tMU72JCqQGZ06A3tkOZfKo1+fyqELAAPXb/wdJtlxo2cJBm61dNC3lFMas8+guL6xAiMorLlEuZb8by/8jOjEa3ybHwDC4kuWmCU10ghJxYZGJgvE8iL0N0ayC9qCd6KuVklBXozg/cwVTZI6phDuavdaBU/ahOWb3EhBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707780480; c=relaxed/simple;
-	bh=pBodro6qaNPwfsk7dgSwBHvtNf3EfyqOH3QDD8d7KSA=;
+	s=arc-20240116; t=1707780481; c=relaxed/simple;
+	bh=TolsSfnf5ZNv9qUX//b4LDHC0qhXpGT9ROt+eluCm0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RKrI1AkDZ6AFtumRCwr10VdR9E/6gg/LvpZAA35f5HOBARSPY8vJfQvDfA/2km9V/25ZV5u1zLK4z3e6zgWP5YagkZVDNBXCpG8wHKiFakCugPpPr3hoiJqNrH10jQWtQ/r72oHvx54WPTVW0o+BA8xZrogL/r0P0YUAdVkL07U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zHC3UF1u; arc=none smtp.client-ip=209.85.160.41
+	 MIME-Version:Content-Type; b=CPNA0wbi6Ib97GXEE4zrvvaZqNFkDZ3RsMtPtUWAwIm/yvZ9R+epr8DfmwHYldDEVnXjVWqDVMMvegS4MxcQpEnbHm7Rm+o3rZD/jr5axw2d+Hh8EtJaUWGdJG/Wkm8oM3sQcOLKXFuojoG13VwTPy6gt4FqX1Egn3OyS/E0t/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a3/WL/Aq; arc=none smtp.client-ip=209.85.160.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-214ca209184so2564482fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 15:27:58 -0800 (PST)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2185d368211so2465754fac.3
+        for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 15:27:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707780477; x=1708385277; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707780478; x=1708385278; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/CDnTfe6nvQ55r7IK52xXS4oQavI5ZjAWN4vgbC1X28=;
-        b=zHC3UF1utFRvV2eeuI5NDvbRyHfqNRzSFM2J5NeqV1z2TtEnv3xSfnoC7fAHWNmgTk
-         j3viZjPMUYq85mIRDvQtSTXgbP7ov0P8BnO8rkJ6fZpAjbEq4a1jyCxrsXdwcRbwR9Pr
-         4D942dCs3wiTR5eqZCRqaftgXkZPylUYG2qqjOSD3cdmosQZoOPuO1eg5UX03pIqCce4
-         lD51Cq5aPHOk2efC+1DjBk8qwpug2P6x+uWw3tw9ZzH3ThhGwEmqlxaOD+5zMrKLzfQj
-         Cv4UUXxv5UaKWycyDls4HheEHGOS9+92o9Ssd+ZybX0sNkMxurOUoUPRMPqVZHk7e0Uo
-         Q08A==
+        bh=NPDb6hVtEhiljZHBpIuJ6/eQfkiQhhMGNrzlPsHzoEA=;
+        b=a3/WL/AqH2ZWQLcLhsxTE0qiy6qY5KqxBIoUJg6PzfSP1C6ZGXcfOSIIoHH5kGnrb/
+         4KR71zKRU3q3IkXaoZl7Q/iGoDbVGj1C5fE9paCxenVvRZ4Et0kjxCMyvpmy8YlUlp2M
+         z+P5+1GzBEG/TV5oqSnkcL/HXoVTlvelmeitYxK/ZJfpN88bgbaSq2SJwyXkdJd/zvzw
+         8do58f56Y9dQto6zWftnPN0J7HRjrHlTOgggEcFISaAyckbV6ZK0xQHllRwS8Ww5v0hx
+         KLFen3sgREBW1yeD069FfHIyekDaj+gnHnPwjQoVQN+DHzNzuTllfoe583/pTAwnZ99Z
+         3Qtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707780477; x=1708385277;
+        d=1e100.net; s=20230601; t=1707780478; x=1708385278;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/CDnTfe6nvQ55r7IK52xXS4oQavI5ZjAWN4vgbC1X28=;
-        b=hdSFBaIaCm105C3jV/ixPFePqUG2XHH2uWPrkmv5zsUO8NlizvHgVHXdAzeeK8IEr2
-         tQjYzj4vMyr2VjeF6+eFt46XImr8LKmrgoJ79VzeXOaGhoVXUEkfZ6Kg4yRTIoljDk2e
-         XJ4U9E5TB22sTN/gW2Q421mL0dI+b2pBV49Wdd6Nyv2155CzxcZgOPWP/sOFUVZeYrnU
-         NmnLVCbSxv6YEj884aGPFIJ+jaEY7OS9b8AhJKo5jiFssFNNUDKbDW5eTbbPRTn3Gvjg
-         14s3zKyFtSW/xiylXNEj729tlUZuWYXUMwGS2fAHyHQMYVcvDBmSAOD7KIZkklOi5c+3
-         64ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVg/+NDvzXCP/7xgRKq/M4fC3YKHidS3f8WJ4TaftYTTw4PmRfW2XHiBE5ilvlG46ZF4FnDz1K+TyTSNn6JqvWtKZ9y/O8WA2a
-X-Gm-Message-State: AOJu0Yy71hXiof5ilEVzZq4YTzDI07dXWZlGlG4m6cGBa0GFPuZpyDxN
-	+JJkpZuFNeJMyqtiwn55DhRioP2z+A1fo070CzikQfZ54DmV19tI/iNWVqNSDUk=
-X-Google-Smtp-Source: AGHT+IFB5BMY94ESp7KJjpv5JdpAU/tpvbuYuXHw2+mNPbkI1Ukm6LHnu4zxTlzwR9ndeIJuVaW/DQ==
-X-Received: by 2002:a05:6870:c98e:b0:21a:47fc:4bcf with SMTP id hi14-20020a056870c98e00b0021a47fc4bcfmr8244258oab.29.1707780477681;
-        Mon, 12 Feb 2024 15:27:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXmAThv/8juXzf9mfLJyIKEgmDljh/Todw+KLIUx9gxl6haVS4PiqGhAXBBBtWjETVMr9PyQP32dLRyjAN/ELx2NsQX+J2CVBwF7rElKMmqRAGrSWTy0bpITdFHUKav9sX2g1m8B0PokQONqbek1aATCqIPG/6OFwYqjxh54DYpJRslItxMr0xXT4k+OBtPQbk2PgR2SVYRDiI51YKp6Jpnm5q2He9K2KJq+ige12IGcyYJeq+AwC2gZ+pPlZijbO9dCkgHWU2QaDWASE5mDCJgc7/+NAkeTE2Sg+nxaXR8yMtF3KBGjGwDYOPJNPzy3s6rFm79s5zxIUH/Hv/qqxwC4pPjC8ta645ynQAqa3XhikPFza9zF6ALx05/XuhBaHG34Nwq3bz2U88bl5uAqU5N00yJRy4KNq3i07oDEtSGUHhtHsSZngncZ99/PaGJxD/5JnvbkC19EZftclOQobnbO8MfFWmK1ghtKjQ7vnSJQ3jQvFbx/KMC+PNXlrmxOucutnfCsfbOmFY7bhwXgoZckU2oVao=
+        bh=NPDb6hVtEhiljZHBpIuJ6/eQfkiQhhMGNrzlPsHzoEA=;
+        b=ZqZ0dmYG6RSFrupmY3kSsG3AD323pieCYwj4tku3IgtpA5s0cQUvOghSTFp9SDhVAE
+         XIqE7DFKmSzVeFR+oYcwd4yktH4b489xWe0h2qEWU2QybPqvYyc41Zjt86Y/PRizKpV3
+         Zoi/YMtZCWUg7ZS3cX0mtNhneN0Dti4R5jK6ASBKlBMj1xxyQIGBetTRAmllkfBo1fO4
+         17GayLGp7amSotikOMzX7ZNzc5pWfaGi3fqZWsXgvZswaiTGEzH01wmah6luk0gjcBKN
+         6Kh28q85Ln0gpsvqoMN0Py89YBNUiAR/XuzQXgXpmewGp+MXnkFffE7LtYIXfBwDEsc7
+         dgoA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8jBKysBTR6sdV7DZXn/Kxb4PVT6bmOxxYAmMxywZKcq2s5KoR8lXqm2U+IC/AlhL2oIU9UUgJ8nqk479ihA8AUDXukNWCWrzS
+X-Gm-Message-State: AOJu0YxFnKlNUUGw0fUqIDTEv7KYquaCZQVlLYj9bk6hJ8pwSqwm9yK7
+	Mv80CRQctOKqkRws+JDMRuUOL6Y3r5jg3ijU++M4VP/RttcRbc0t7Y4vvlpnPg2GdKFp8lwLhFa
+	Q
+X-Google-Smtp-Source: AGHT+IH9erOJCDaYbmQDWF2K81JN0GKgiq54irJeN5yLR/tg4FUJhNIMhrIkifdGOu4oAL5TJZcC0Q==
+X-Received: by 2002:a05:6871:5c48:b0:219:c8ea:ecfd with SMTP id os8-20020a0568715c4800b00219c8eaecfdmr10850888oac.15.1707780478627;
+        Mon, 12 Feb 2024 15:27:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU/sChhyo7/S+ePAw+fUTZa4Fa+c+iizdHVFXCth9k0UVOZs5C2WlgRtbyufn7EOEddQq5CkoNbtZtOlCdXpnzPXFGf760G/g1P4jT3D2BZM851R0PtrDuAkl06AR06eLUGEITPtV1UK0F65cIlm7ccxGgZLoQPiwMwsyuL5+SNLnL+D8pJj8ktyPxbGY2KEjPfVcWo3aru0369a6RMQJWdab/0ibpad8aRXTQjKE2CY2ZgZKHfkTlJl+JJ28mwL2pNejLLTSSa4B9k3zuc4nDciUgdcuwoMeHfxozDYXDiKfMYPfC3BEJVdK3sFLpvz5Z2Y6K087Zk6+hLDN3ceLH0IZuGlif8dpiVSs2aw4qqhk80aOpu703oSYX2fa2Zy04rdtzhykVvL9yVQLic9YrrrC+2SmVp0ygbRulhgWff+wuEJGaDvt46o+YtUGYq2F+yoofZRk2mrtpYLyyJ/fhAMTQctHXdcSryftOnYMqxIPwVdTitM4q3WhWgmLLWBe+3CCel/7DU5WydgyihQ23lXKvMWqg=
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id pk17-20020a0568704c1100b0021a7a45e0b1sm330141oab.35.2024.02.12.15.27.56
+        by smtp.gmail.com with ESMTPSA id pk17-20020a0568704c1100b0021a7a45e0b1sm330141oab.35.2024.02.12.15.27.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Feb 2024 15:27:57 -0800 (PST)
+        Mon, 12 Feb 2024 15:27:58 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -84,9 +85,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH 4/5] spi: axi-spi-engine: move message compile to optimize_message
-Date: Mon, 12 Feb 2024 17:26:44 -0600
-Message-ID: <20240212-mainline-spi-precook-message-v1-4-a2373cd72d36@baylibre.com>
+Subject: [PATCH 5/5] iio: adc: ad7380: use spi_optimize_message()
+Date: Mon, 12 Feb 2024 17:26:45 -0600
+Message-ID: <20240212-mainline-spi-precook-message-v1-5-a2373cd72d36@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
 References: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
@@ -100,128 +101,101 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-In the AXI SPI Engine driver, compiling the message is an expensive
-operation. Previously, it was done per message transfer in the
-prepare_message hook. This patch moves the message compile to the
-optimize_message hook so that it is only done once per message in
-cases where the peripheral driver calls spi_optimize_message().
-
-This can be a significant performance improvement for some peripherals.
-For example, the ad7380 driver saw a 13% improvement in throughput
-when using the AXI SPI Engine driver with this patch.
-
-Since we now need two message states, one for the optimization stage
-that doesn't change for the lifetime of the message and one that is
-reset on each transfer for managing the current transfer state, the old
-msg->state is split into msg->opt_state and spi_engine->msg_state. The
-latter is included in the driver struct now since there is only one
-current message at a time that can ever use it and it is in a hot path
-so avoiding allocating a new one on each message transfer saves a few
-cpu cycles and lets us get rid of the prepare_message callback.
+This modifies the ad7380 ADC driver to use spi_optimize_message() to
+optimize the SPI message for the buffered read operation. Since buffered
+reads reuse the same SPI message for each read, this can improve
+performance by reducing the overhead of setting up some parts the SPI
+message in each spi_sync() call.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/spi/spi-axi-spi-engine.c | 40 +++++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 23 deletions(-)
+ drivers/iio/adc/ad7380.c | 52 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 45 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index ca66d202f0e2..6177c1a8d56e 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -109,6 +109,7 @@ struct spi_engine {
- 	spinlock_t lock;
- 
- 	void __iomem *base;
-+	struct spi_engine_message_state msg_state;
- 	struct completion msg_complete;
- 	unsigned int int_enable;
- };
-@@ -499,17 +500,11 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
- 	return IRQ_HANDLED;
+diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+index abd746aef868..5c5d2642a474 100644
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -133,6 +133,7 @@ struct ad7380_state {
+ 	struct spi_device *spi;
+ 	struct regulator *vref;
+ 	struct regmap *regmap;
++	struct spi_message *msg;
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the
+ 	 * transfer buffers to live in their own cache lines.
+@@ -231,19 +232,55 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
+ 	return ret;
  }
  
--static int spi_engine_prepare_message(struct spi_controller *host,
--				      struct spi_message *msg)
-+static int spi_engine_optimize_message(struct spi_message *msg)
- {
- 	struct spi_engine_program p_dry, *p;
--	struct spi_engine_message_state *st;
- 	size_t size;
- 
--	st = kzalloc(sizeof(*st), GFP_KERNEL);
--	if (!st)
--		return -ENOMEM;
--
- 	spi_engine_precompile_message(msg);
- 
- 	p_dry.length = 0;
-@@ -517,31 +512,22 @@ static int spi_engine_prepare_message(struct spi_controller *host,
- 
- 	size = sizeof(*p->instructions) * (p_dry.length + 1);
- 	p = kzalloc(sizeof(*p) + size, GFP_KERNEL);
--	if (!p) {
--		kfree(st);
-+	if (!p)
- 		return -ENOMEM;
--	}
- 
- 	spi_engine_compile_message(msg, false, p);
- 
- 	spi_engine_program_add_cmd(p, false, SPI_ENGINE_CMD_SYNC(
- 						AXI_SPI_ENGINE_CUR_MSG_SYNC_ID));
- 
--	st->p = p;
--	st->cmd_buf = p->instructions;
--	st->cmd_length = p->length;
--	msg->state = st;
-+	msg->opt_state = p;
- 
- 	return 0;
- }
- 
--static int spi_engine_unprepare_message(struct spi_controller *host,
--					struct spi_message *msg)
-+static int spi_engine_unoptimize_message(struct spi_message *msg)
- {
--	struct spi_engine_message_state *st = msg->state;
--
--	kfree(st->p);
--	kfree(st);
-+	kfree(msg->opt_state);
- 
- 	return 0;
- }
-@@ -550,10 +536,18 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
- 	struct spi_message *msg)
- {
- 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
--	struct spi_engine_message_state *st = msg->state;
-+	struct spi_engine_message_state *st = &spi_engine->msg_state;
-+	struct spi_engine_program *p = msg->opt_state;
- 	unsigned int int_enable = 0;
- 	unsigned long flags;
- 
-+	/* reinitialize message state for this transfer */
-+	memset(st, 0, sizeof(*st));
-+	st->p = p;
-+	st->cmd_buf = p->instructions;
-+	st->cmd_length = p->length;
-+	msg->state = st;
++static int ad7380_buffer_preenable(struct iio_dev *indio_dev)
++{
++	struct ad7380_state *st = iio_priv(indio_dev);
++	struct spi_transfer *xfer;
++	int ret;
 +
- 	reinit_completion(&spi_engine->msg_complete);
++	st->msg = spi_message_alloc(1, GFP_KERNEL);
++	if (!st->msg)
++		return -ENOMEM;
++
++	xfer = list_first_entry(&st->msg->transfers, struct spi_transfer,
++				transfer_list);
++
++	xfer->bits_per_word = st->chip_info->channels[0].scan_type.realbits;
++	xfer->len = 4;
++	xfer->rx_buf = st->scan_data.raw;
++
++	ret = spi_optimize_message(st->spi, st->msg);
++	if (ret) {
++		spi_message_free(st->msg);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int ad7380_buffer_postdisable(struct iio_dev *indio_dev)
++{
++	struct ad7380_state *st = iio_priv(indio_dev);
++
++	spi_unoptimize_message(st->msg);
++	spi_message_free(st->msg);
++
++	return 0;
++}
++
++static const struct iio_buffer_setup_ops ad7380_buffer_setup_ops = {
++	.preenable = ad7380_buffer_preenable,
++	.postdisable = ad7380_buffer_postdisable,
++};
++
+ static irqreturn_t ad7380_trigger_handler(int irq, void *p)
+ {
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ad7380_state *st = iio_priv(indio_dev);
+-	struct spi_transfer xfer = {
+-		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
+-		.len = 4,
+-		.rx_buf = st->scan_data.raw,
+-	};
+ 	int ret;
  
- 	spin_lock_irqsave(&spi_engine->lock, flags);
-@@ -658,8 +652,8 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
- 	host->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
- 	host->transfer_one_message = spi_engine_transfer_one_message;
--	host->prepare_message = spi_engine_prepare_message;
--	host->unprepare_message = spi_engine_unprepare_message;
-+	host->optimize_message = spi_engine_optimize_message;
-+	host->unoptimize_message = spi_engine_unoptimize_message;
- 	host->num_chipselect = 8;
+-	ret = spi_sync_transfer(st->spi, &xfer, 1);
++	ret = spi_sync(st->spi, st->msg);
+ 	if (ret)
+ 		goto out;
  
- 	if (host->max_speed_hz == 0)
+@@ -420,7 +457,8 @@ static int ad7380_probe(struct spi_device *spi)
+ 
+ 	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+ 					      iio_pollfunc_store_time,
+-					      ad7380_trigger_handler, NULL);
++					      ad7380_trigger_handler,
++					      &ad7380_buffer_setup_ops);
+ 	if (ret)
+ 		return ret;
+ 
 
 -- 
 2.43.0

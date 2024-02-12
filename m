@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-2452-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2453-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDF0850E62
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:02:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7C5850E6C
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55A431F25DBA
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 08:02:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E7C284F9D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 08:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F53FBFC;
-	Mon, 12 Feb 2024 07:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A6712E40;
+	Mon, 12 Feb 2024 07:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gIu/GRse"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JllIGDov"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A63EAE3
-	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 07:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC33F9E8
+	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 07:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707724732; cv=none; b=V75FfVI+8BwkDQECa7LkpGzG3e+erX1BPrXgkTcPa5LnTexYzrRETM3xteC43TfgHHRD1AZKdbuCzTOHUH+iY5atDhjLD7mmDsAsyiJkuGadEl+QU6ALQe2wxkmPBXiny3DKMRwbe08PnGM2mmvuRU2SMDmtwFd8kI3vJkZ2eI0=
+	t=1707724791; cv=none; b=Pn+M2TE0WwJJFUyRhY22pdZhvMyjyOklD0pYVk9IR1/4a8le09vkSnzJ+QLJ3t6tRLdh722s0dsGoq58KE6DAOpjYiv52JkLLKdX8sTZRf9TuZplM1zh1SByVgMWCup+tkGla4Pp/KmB0NqOtttarshJFp1KO3iuReFsN3nYInU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707724732; c=relaxed/simple;
-	bh=7ez6FtuoFjmCtfXEtUSEFvEZpGgKZ3gMVzW7RDqQlVk=;
+	s=arc-20240116; t=1707724791; c=relaxed/simple;
+	bh=S2Uqhyu2AZbHS9NIPD1aKC5+EfAw/ekjc23uBrJPgiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L/NotaOmjecjRLwpiJjl+PeI5+ldNVBtweZhIGy57TPyVw0HlSNijofZxIaE6Ksz169wQQAyqOAW7Z0fAU6troeOvff+EX7akXyWR+ebdeTgh8tL9LjfG+PcUTQ+Rotts+t1aTM282ApeR5ymL/WoMqCkeYZv0LALsHFp8jOFk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gIu/GRse; arc=none smtp.client-ip=209.85.128.51
+	 In-Reply-To:Content-Type; b=BYNX5qq56CYGULb1GZIZ83J/KXfl/4++couIw8JTG38qfU6MhXSF4+9WetCcZcrTHbIfdBCgKHw3OE8U1mPEblGjZ2NWOfnLTX1UztU75gy6O+0omzhN9NzTt3x2G95RKjAz/gcK9eyAopua3yxeyhDlHjv/x0UdfPJC+bJyyI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JllIGDov; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-410ee8ed663so1028745e9.3
-        for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 23:58:50 -0800 (PST)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4109f9afc1bso13648535e9.0
+        for <linux-iio@vger.kernel.org>; Sun, 11 Feb 2024 23:59:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707724729; x=1708329529; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1707724787; x=1708329587; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=+WffCnRPeSA2hGcw0mYIwRJnAPmPBaL6cwyuJFHA0zs=;
-        b=gIu/GRseJeuQNn8vM5Q/cfT8Z5ZRsfMTB9hAaMTzTuIqe/S+0I+BChTbm3YUPJfeHp
-         vzL7AkiuncMSeCnEp0Vtbh1B+nE+E9sHJ/0YG3EPqbvyjXlkZU2d9gnH1kmZSrkYcmmp
-         VGXJQLbUgW79HV9wBYQNRFdX3kdRiSujy+HJBupLVe5YPRgeKQzqSAMf4aEp0lFQtMk+
-         iqgBGuWgMqw7SNyOwNVyawYiI7JDjJ/FatIIL5QsVn8jhUJ70AsfI/aK0eRJ4nFjXWF2
-         ipGo2rwV+/5s9MEajuepix8XUWAbhmWAHv2F8eyX4hCL9AJHhpW302PP+3Ad2h6WRrRi
-         ZTpQ==
+        bh=rFvdRy8kkXcwjev+NaWwc97EXhX6CAgZBmzJo32Ct9A=;
+        b=JllIGDovvRNoispunlVlvPvkiN+hnrDGkuRl1L104oclNXQSclLpkDSdFLFaluRdL7
+         /KnjKtuUqb4Hviy+OFwH5AcoMVWZ5rzuDPk/lQ9iMBib0tIIoMONAk0qwskqiRL2BzTu
+         6vQVDiA49XVaieUhcNGld1XLMFibF5GjIzOycOVlWW0dNmqsbPEu+Hv1NLGoAYmdkjax
+         cDhmaX3tcsds3JPgGI/KPcovGsm3W6qj9hiVJVdJFzSriYMwmykN0ht/d0lyx7izdZM0
+         FLln6x5LTz/dH/n1YLcn5QuH/r62Rt4nDQUrMIOTDBdeJRS6JWsUfbkSGgrzrFk71NWj
+         gEAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707724729; x=1708329529;
+        d=1e100.net; s=20230601; t=1707724787; x=1708329587;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+WffCnRPeSA2hGcw0mYIwRJnAPmPBaL6cwyuJFHA0zs=;
-        b=ktnizYfYW9W7xGSzhLbjVri3NOTzL7P4Mh1TIhYCObhoyBhkZEX8Hyo8gU3Sx4EUkE
-         5yuexjgRXeKHr6CvjtAHyFtwTZPPGuhPtvxcw6NU26INRQVnMi92HeZ/d0UFL5rMrgk5
-         1H4riDO0Mz0J8llk+PYQgFKwQJS4Mtc5yBrduZihmjhrNhCv3N5EEtaah5lDtjGDLX8d
-         ulfqJBudc1Y6Bsais6F8JaD64nIiqszjx67703Pam8sXrO6y5gHh/YUfoNWC5wWe/5Of
-         7eRvoZsZq38wW9YJvqFQNpTnEVpQrcG7YJISXh6bfuMTz7xPSwM1l+IHqOIodXMF8PYy
-         nn5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVYZ3X1yXay/+fmYIwI8LT3swYsYm6UXIkEkd4zXihzVEnKfi7jBSmKdV831w/UkZ4JzHjyZ8slW5ZOdsB3FFq8JFahk2XAZbgP
-X-Gm-Message-State: AOJu0YzfypVIHxtxsZV+3jkI4CqOF/tpKTxRm4ngzrdaJ3zmRpoWQT8J
-	QB+3h3Sk+3zmglqNgEO7+V8vUkXMgCYs6ZYcRSB0oRojmQGsI9uVbW2gnxyd7TM=
-X-Google-Smtp-Source: AGHT+IHhFAF2LdTkSDDSvePuokBw1QJnMM0+9hmN/TphkAHuE/DRQiZ0z4yb87A4VY3O30b+QciDWw==
-X-Received: by 2002:a05:600c:3d87:b0:410:ed9f:7acb with SMTP id bi7-20020a05600c3d8700b00410ed9f7acbmr368460wmb.40.1707724729010;
-        Sun, 11 Feb 2024 23:58:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVjdWl75bdtgO1vCbRWvRyK4lO+UOuzQxGZbqAidFC12xc2Aj3FPo1/HvOV0l4S7fURvjBvFE32pLpQj72ClvJ/ebdKfQ42dO4EGoaIAx/1m6NL1V2BKsqfD5a/tqvc8j1k64vslxGz9sfTsyEChqdW1s95nBtRI5dLD86+eLOQBziUnHYMHp6fjoXqcBC9MJBVwAUpauEcrVI7/j8wmfj7RHzRc3dT/jJRVEVaHseR3elnhs8rKWz0mZmwwi7kAce8fi8kvddc8FmADr3qRyN8HFeJD3sFA2hIQKD5PYbdHTb9sdP/MNZ/VkJ/KXMOvIjSytvCqRZ+FHTED9U93q3cGHKA3Xs0EnuA2i0T2+8=
+        bh=rFvdRy8kkXcwjev+NaWwc97EXhX6CAgZBmzJo32Ct9A=;
+        b=IasGBiR9PA9ZWilRLivNzDqJPrqxbp7nj7h/Vh8J0YqHxDyi+eQ5LsSrr45+U5ePv1
+         OxMzzvTq0aiC1y2/DmXlf2qzIZPW5FBDeYfBP/dfRclp4pZZpJEuzYt0FYOX95LwUSP6
+         qhrNfrYhDVZmJZcS0NBuLIbTtvuwGTKH061SYOwxaD1Ko0/ArnwFmoTrn1OahqO9Z9qH
+         hsjYOU8qv6pBJaG2SdvR5pFiEVBj/W8ptqyYQRJ+xNuKoPWB2C7kvH3dg022oID+Ktjs
+         s5cr/MSu+jdhq6XjsTTv/hmUbyNa1eGIQ77+mU9bFnMpmnBljOA62G8nJhGI7xSpW8j5
+         d9Fw==
+X-Gm-Message-State: AOJu0YwK8C6HzrxhNR2Az3f/nCzsjEukbzYDAj0fV2k8k7PmvjFMR94h
+	hG2dzGm45ae14TmMauKhaDDP33THrvqnPqIhg4tQCIUaceunQbPqfl4S/1u7tzo=
+X-Google-Smtp-Source: AGHT+IHkBmADWXy0XjDn8+WWf5skCrskTR6akY4ui31c/2B8oAzXzgBlezeFaFPBQq3X9EgwrytmcQ==
+X-Received: by 2002:a05:600c:474d:b0:40f:e40:b53d with SMTP id w13-20020a05600c474d00b0040f0e40b53dmr4354424wmo.1.1707724787175;
+        Sun, 11 Feb 2024 23:59:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXQeLKOtb4h7CMVYe55f+p3T0oAu5nPFqhmpU+MBCr2NfxZfKC5pyAYalum/4wPJO/+KKYitfIK3zrMBeJlv7jCPfNyrT6L7cEALowOMAPAPWkLzycYmZyUKRoW5LdVMGCYBYfd7W8n4JcPKWAq6V+orwy00lBtP1VMi1xekfLz5SKSLzSkMiraefqtp3I/0dYfKGmy0U0THjU7f5fwZRQr2bq0fjV3HBWf4TE2aHCvCaTCDjucJpmT/5VRU48DnOY/VU94K1fOcMIY65lPWhnF9ifDu/jt+nDqWFEhjD/Nr+CGZ+y13znGc+ggZWrYeXaXo6U7Bv5GaSCKZo0EgcQg/AG/yWmvGoJCSN7FUxg=
 Received: from [192.168.1.20] ([178.197.223.6])
-        by smtp.gmail.com with ESMTPSA id jp25-20020a05600c559900b00410c7912c6esm2886372wmb.14.2024.02.11.23.58.47
+        by smtp.gmail.com with ESMTPSA id jp25-20020a05600c559900b00410c7912c6esm2886372wmb.14.2024.02.11.23.59.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 23:58:48 -0800 (PST)
-Message-ID: <4e110cca-240a-4743-8880-6c840316ab14@linaro.org>
-Date: Mon, 12 Feb 2024 08:58:47 +0100
+        Sun, 11 Feb 2024 23:59:46 -0800 (PST)
+Message-ID: <954c5cd6-e254-4c81-bfbd-417c6e0a0c24@linaro.org>
+Date: Mon, 12 Feb 2024 08:59:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,7 +76,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: vendor-prefix: Add prefix for Voltafield
+Subject: Re: [PATCH 3/4] MAINTAINERS: Add an entry for AF8133J driver
 Content-Language: en-US
 To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
@@ -88,7 +87,7 @@ To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
 Cc: Icenowy Zheng <icenowy@aosc.io>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240211205211.2890931-1-megi@xff.cz>
- <20240211205211.2890931-2-megi@xff.cz>
+ <20240211205211.2890931-4-megi@xff.cz>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -134,22 +133,36 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240211205211.2890931-2-megi@xff.cz>
+In-Reply-To: <20240211205211.2890931-4-megi@xff.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 11/02/2024 21:51, Ondřej Jirman wrote:
-> From: Icenowy Zheng <icenowy@aosc.io>
+> From: Ondrej Jirman <megi@xff.cz>
 > 
-> Voltafile Technology Corp. is a company that produces MEMS sensors.
+> As I am submitting the driver and have the device to test. I'll maintain
+> the driver.
 > 
-> Add a DT vendor prefix for it.
-> 
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Ondřej Jirman <megi@xff.cz>
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
 > ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dc5ca7a042b5..cc691f61a77e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -579,6 +579,12 @@ F:	drivers/iio/accel/adxl372.c
+>  F:	drivers/iio/accel/adxl372_i2c.c
+>  F:	drivers/iio/accel/adxl372_spi.c
+>  
+> +AF8133J THREE-AXIS MAGNETOMETER DRIVER
+> +M:	Ondřej Jirman <megi@xff.cz>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
+> +F:	drivers/iio/magnetometer/af8133j.c
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Your patchset is not correctly ordered. There is no such file here.
 
 Best regards,
 Krzysztof

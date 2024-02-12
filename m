@@ -1,83 +1,82 @@
-Return-Path: <linux-iio+bounces-2457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E18B850FED
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 10:47:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF00C850FFA
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 10:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD4F52852C5
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:47:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2791C21C70
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 09:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1652A179BF;
-	Mon, 12 Feb 2024 09:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3B317BAB;
+	Mon, 12 Feb 2024 09:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYVDyWC2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLSlr0dQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAD208C1;
-	Mon, 12 Feb 2024 09:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483C179AD;
+	Mon, 12 Feb 2024 09:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707731220; cv=none; b=OahqgKpHB0V9cAlRq3pMauVs/vXWRzAj/jIfYS0hHcprCqgTd3LD+b4SiB1YcWOhwbiPZ/EjJA7VgOODzK80r2CO2MEGPd8DpBxBJzXrLoap3p9zJuyRMY9Id13c8iBys2QYgC4CCZjodWeNz8LCWA1Q4WLG2dGNqz2SStcYfWg=
+	t=1707731454; cv=none; b=ocs1kRrEiUswSnkn9/LYmrB+JRtXsgEwmgmPx897c2s+95hU6VTHw1JqSkQdXf+sB+PEozb8Gf202Q1yJfiNpjmfc9nTEr51TJEyHBF8EtQMSNR4seaoq7FuqY01moJzzT1z35hGJRyC6lkqAvpHKV+AdITacWynLZV2hbglT7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707731220; c=relaxed/simple;
-	bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
+	s=arc-20240116; t=1707731454; c=relaxed/simple;
+	bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T7mkfQ+LvQwR0N/j3XOUMEX5OBXaMmh+cjgm+Z7sAqNlfWbB1rlSbqluF+0zWtuUP/2voA0sYV9IX5nxlpmJMK1Vu85g1LmMDm/tU2lLbbAYrMxrYylY5Isja3LPmEFufUmvKRix0R0bnVkcJe33UDV2AeEsaPj24BmeHHy/cRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYVDyWC2; arc=none smtp.client-ip=209.85.218.51
+	 To:Cc:Content-Type; b=VmuZL3cKdAbT7yAG8Li95DzvLXvbMiX+3NAa8SSgnIVfgtbfwHEZGbmFgY3FqNc4+kSLxCeN/Op6MlBT/4PCibYXfg83pweDyZHDAv4ix4o6AlLN+ZlvbHw5PUxNRdh+LQDvG0s//LBptZ/n5zTeyQ9t5ROP/j+LElONok1OebM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLSlr0dQ; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a383016f428so315002066b.2;
-        Mon, 12 Feb 2024 01:46:58 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3cc2f9621aso39293266b.1;
+        Mon, 12 Feb 2024 01:50:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707731217; x=1708336017; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707731451; x=1708336251; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
-        b=FYVDyWC2hfZzGhFoLi8BjYlA+d1x2mxBLH2Ohr0GpXOCk36Gs0vmjn2DJMCoxswWaY
-         YpqU1kDd3dgE9GFmaOLBeJic+i6SF0oFMRvykaxa6SRm08wrluyVN6hKP9bXYR/0xQdt
-         ILDKVk7Gv4CON62kcTPbqXA6n2B8AQ6txXSluDC6RgLKUYMvGcpY8yAGY9IpmIKf/UnS
-         i10FOu2WZ1Wt4/k0ZfcFlmYhuAt0GJwuJ2gyATKWmjnWs1e+ZcC/noi+PhfW5SImePHv
-         ifDybBKKaqND6eGgASLlGBHZbueb6Dgv1n7KmtB0M+mz15P+GMXzq5aWD5NprW/zd+yS
-         rpew==
+        bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
+        b=NLSlr0dQ+h2uIGrSYghW8XG9SJ7eR++TfAfA93xBDjEOpWlAjsMG8VQXx0sP98YUHT
+         mNLcZwcjVuVB33MBebNTlnATGbLNOo4zrzyNXyaEVUuq1Ff6KDMWY93yS2Qi380kRISU
+         TB4uI4pdllTl7sa4ndUeRYVysyBn3VJEN90UehFrbTAx4cX/ktICj6tvnmwxlVCERClK
+         G7GYBvHn++gKqPAXDbQauwsU9vJqM2r1KvHR0R2IdFQdH7Myxy9vxHFZZV/5XX6sfSZx
+         hY5YKh1EVTHaehJZAcH+LJA7I0txYD10lqmKCahFdotYh2oVw4XD2g/WD94qtMPd9jTJ
+         51YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707731217; x=1708336017;
+        d=1e100.net; s=20230601; t=1707731451; x=1708336251;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XBAv6+/WDIdBHhbXdUmSNymHLMnwS+MTIxGvQX8GmQE=;
-        b=MuD4dQrgiS1ZoOvqmP+cAPzKmm3iu24ozrUjMI3prZLEGNKT7E2rvm3/gv0xBiI11/
-         XN4E/Gdiuc4XIQEGSnCDkG6MUPHEc60vhqbx48QLbSbFEif8WgOkeo1yrw/UtWKli701
-         aPSGHUkso4+1+mR7BnHR5hXpgXMSZSMUDZjMUDLBDIqM/f94o3zcOMajsGCAGzmxomSx
-         Lfx5YNoDjY3n8a8AUhiuc3JPxu7fxP5ubMOaoZv6AWNxmku57K8dZ2s4p3q2jb6MxHut
-         Lv1fKkcJd0NNYmCJ2gxeIo6sVTuREQFG4SAQ33QW9uG/OwdGOr9kqcRf+T2XP324oz/S
-         m9ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVMMAv2I7yp0RO74tggtJ0Wv/uUQJFYRIRg/zEbgpjwm46BiUbsrSBslfTfeLSv6QI/9UMl+xZJMINmTR6C2GhVFMRPt5YJkYbY50VrCeWF1QR8BWVRAGoCe5UM9cYzo6eMfUUQEzAnV7gNMK57Ug==
-X-Gm-Message-State: AOJu0YxTh3mVxP6VAEzJit5ceNcUHG59e/WpzNcRF8uMztab3j7icvfa
-	Qj3DO/IWY+2DYOWVF1ZwUjKnYFVmXgoqfFfQYPY/tE3W9qYE/QJCqyLUr8nvFfxNE1C31FDLnAV
-	niBi/oFlL/A4YkWEms9ZYPwuoazY=
-X-Google-Smtp-Source: AGHT+IGRZkxJRUffn++Co7cADidLNLk9FdUdzeHUzjLzf6Tht5DAmiuOzZFr4BxTcSDaLlcGwF6kF0M8z2WY69OOMNc=
-X-Received: by 2002:a17:906:288d:b0:a3c:1db1:41fc with SMTP id
- o13-20020a170906288d00b00a3c1db141fcmr4944786ejd.41.1707731217341; Mon, 12
- Feb 2024 01:46:57 -0800 (PST)
+        bh=6cq7bzvGtQe0gxFL1s6LBuZDxFeaVMoUzBqAkQVTEl8=;
+        b=nXmsIzyDnzyhoJuK7KhaNe7Fi4BevNNPojBUvppy62fNUA1TwErawBCchhuYC0rOct
+         VXLFD2Ybkg+1li3cCa4yfsALRfq5rIGe6ZpY4PGvJu6btofPrhRomnzFBdNTQN7DthKa
+         YhUJJXFl3QcRHEsNMBW3VNAiF3+4Mi8wAkjwXZCILp99hx8PQQbbEUItKFWBDa9CF7Cb
+         p0Gc/kfkY5nFhbd09zUcTESUQnUb+XiQDkNATJjekChTYV0DZ5x2CnNRrnIctKPYRUw8
+         d7BTFWrUqCK0t8QC0qSUTniDbO5nh2wqhovVmhlP7rTtlqSp79DxmFBJYn7rlYDfNorn
+         44Eg==
+X-Gm-Message-State: AOJu0Ywtkw2hHyX3O32quc0E5wfC4S/+I6X1tcu0rvbHVt2m+fDaHrCP
+	ObYn+ULqDPbozFeMG5a19YTyPVzew2VTmFCTRpbf86Y7TIpp24PdF+NPeortTa2ZB8vuSP1JXIB
+	Af4z8lbcufgNi7O+XNREQL+eg9kQ=
+X-Google-Smtp-Source: AGHT+IE5Sc9bVjkJSckP+6TyFX9G+YR2tPeEruKyA3NQfab5NbqIcAMOPhbq5S2fjLEyeoyUZleS2pY093zU7Va7TBk=
+X-Received: by 2002:a17:906:4ad7:b0:a3a:510f:97c0 with SMTP id
+ u23-20020a1709064ad700b00a3a510f97c0mr4176926ejt.61.1707731451083; Mon, 12
+ Feb 2024 01:50:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5769241.DvuYhMxLoT@nobara-ally-pc> <12437546.O9o76ZdvQC@nobara-ally-pc>
- <CAHp75Ve71Lb4PsGLGY5b_LNVn+Dk8z0Ags9rrWptSp8ot-UpRg@mail.gmail.com> <5292442.31r3eYUQgx@nobara-ally-pc>
-In-Reply-To: <5292442.31r3eYUQgx@nobara-ally-pc>
+References: <5769241.DvuYhMxLoT@nobara-ally-pc> <4956451.31r3eYUQgx@nobara-ally-pc>
+ <CAHp75VcFXSfV4rPDaJcUVC92QGK3U55AqQqPo0WYKmpcKnw+eQ@mail.gmail.com> <13845892.uLZWGnKmhe@nobara-ally-pc>
+In-Reply-To: <13845892.uLZWGnKmhe@nobara-ally-pc>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 12 Feb 2024 11:46:21 +0200
-Message-ID: <CAHp75VfJeMZUBO0c9gr=ymee8jqu0xJQRwrg798Trrmr6ox5gw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: accel: bmc150: ASUS ROG ALLY Abort Loading
+Date: Mon, 12 Feb 2024 11:50:14 +0200
+Message-ID: <CAHp75VfcK35RnPEzBkt4D56WLRFtWHita4e9ZqcLzpqUbw+PcQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
 To: Jonathan LoBue <jlobue10@gmail.com>
 Cc: Hans De Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
 	Platform Driver <platform-driver-x86@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
@@ -86,28 +85,38 @@ Cc: Hans De Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.ja
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 9:21=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.com>=
+On Mon, Feb 12, 2024 at 9:30=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.com>=
  wrote:
->
-> On Sunday, February 11, 2024 9:04:56 AM PST Andy Shevchenko wrote:
-> > Something went wrong, please use `git send-email ...` to send patches.
->
-> Will do once I can test the suggested updated table method.
->
-> > Please, make this as the proper table (see many examples in
-> > drivers/platform/x86/ folder on how to do that).
->
-> This DMI board match and aborting of loading the driver is hopefully
-> a temporary portion of this patch. The ideal fix is that BOSCH informs
-> ASUS and other system builders of the proper and unique BOSCXXXX
-> identifier so that BIOSes can be updated with those and this portion
-> of the patch can be removed. As it stands now, this is the "band-aid"
-> workaround of having conflicting (same) IDs for different chips.
+> On Sunday, February 11, 2024 9:08:59 AM PST Andy Shevchenko wrote:
 
-Even if fixed (which has to be done anyway) it can be undone in old
-firmwares =E2=80=94 there is no solution to make all affected users update
-firmware. Do we have real products on the market with the wrong ID (I
-assume we do)?
+...
+
+> > No ACPI_PTR() in new code. It's more problematic than helpful.
+> >
+> > Above for your information for the future contributions, as I said in
+> > the other patch comment, I think the better approach is to enumerate
+> > from an external driver under the PDx86 realm.
+>
+> Thanks for the constructive feedback.
+
+You're welcome!
+
+> I'm working to fix and re-send via
+> git send-email. I think the ACPI match table method should be okay and
+> seems pretty standard for a lot of devices. The problem in this case is
+> that the identifiers are not currently unique to each chip.
+
+Yes, that's why this portion is called "DMI quirk". And it does not
+belong to the driver as such. In some cases we may have it inside the
+driver, but here, I believe, and Hans can correct me, we may avoid
+polluting the driver with a quirk.
+
+> This is something
+> that should be rectified with BOSCH and system builders and then in the
+> future, the ACPI match table(s) can be updated, and the aborting portion
+> of loading the bmc150 driver for ASUS ROG ALLY can be removed.
+
+As I said in a reply to the other patch, it probably will stay forever.
 
 --=20
 With Best Regards,

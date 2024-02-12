@@ -1,71 +1,72 @@
-Return-Path: <linux-iio+bounces-2494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16656852275
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 00:28:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F65B852271
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 00:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AF3281A89
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 23:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7311F23582
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Feb 2024 23:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8533B50248;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5E4F8AB;
 	Mon, 12 Feb 2024 23:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MzkgzzL3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="E+JeLe/B"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6794F5EA
-	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 23:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46784F618
+	for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 23:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707780478; cv=none; b=gG3VXegxT5O4D7UjSjzBXsIwa7gHu7Or9YIUndqtYU3NsvxLJ4B7GjBFnniYniStyuyY7Av9cEa2bh+gBzOjRKMK6dYkU/D+hEyRpjDrrzFnRIXAvbzoO5rCE+BR7DmA8pg7nBMIhxrSTX36Q432UaWfhRToO9IGgMMWNlRf1lA=
+	t=1707780478; cv=none; b=gLbf6BGKIUq1Lw7GizkgXaaVQ/wzL9rK21joz5XuBfK/o+3VE6D5Vv826jGbiDWnqZVZlhcD44w7GMfTozSO+BRcd6JYWrKDuU8iFW1vfiydZCxuoFBDJJnhhIdmElR0pSQw/xLoag+Pm0IGVMxkd34lQCzTOvYeT2dAa0bQhlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707780478; c=relaxed/simple;
-	bh=wQOLAzpAqdTMxbzgxQagsub1MlQcJ776NbBb/5ZmX74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mhS0NP2fYXieI0DAJbWRM2agJc1bV8RslimLUmiIoyN4OISjuAJWhVAefDGr9OwnTpuP1yEBctFFp0/YxHYWBGxPV4170Qb6H1P2EWIpWxX/3HvJeS869jkRWxVSUjB+Fo7H9ca38mDfER6bEdmLGWKgHum56m5ihp397Ka/fRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MzkgzzL3; arc=none smtp.client-ip=209.85.160.41
+	bh=okkDkG5qpHCKNPabVQCkxBBNkU9wU6t2QXMZXXs810o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Oaerw+fV4/KKYBgXSY2aznr6mpD4RgT09ZqMnd0ubN5rMQtGe+VPB7YgrowOcCRXmr3dReUqajYFtEfm3Bm/ZTUI8nnl9egbBf4fL5tfww2xroidGsmdDcy/PVkHLrXuS2bfi4wkc3sV8MrnR2KVoQ4ZdrxwtNjvzxV/ULcMFyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=E+JeLe/B; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-204f50f305cso3076429fac.3
-        for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 15:27:54 -0800 (PST)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-206689895bfso2754224fac.1
+        for <linux-iio@vger.kernel.org>; Mon, 12 Feb 2024 15:27:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707780474; x=1708385274; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3+egtMFSB5wP/JnRwyX/FLjZ4VS6y7AaGO4xFQVkuUk=;
-        b=MzkgzzL35sh2Hd+HStux+3lGfZoFx7BkilNaOUALWkvWugwmOYoS+6P5/MfIdtzwLr
-         ehKLKlttNTDbLLxsqJMJt4c4fuJKu3RayyfQgcocUWMvtTjSN/i9xXGldsBtTBFEa8UY
-         3Sp8WFg7OhoUlZ0dppHfWFLshzgxwsJU7rqfRyF7uR+7J1oSHBIChuiMXaPqCtH6b2ni
-         FTPmicM8416vHwfK6s0L2b7ru3nF0eOtA5TemYDxy2Yj3/1VT2jrX7m7H2g8p+ITL+ie
-         873w6fL2sG6YOZ5odZn17r2CGHxBZOSlO5Zlsjs24qKoRBqH0wn6SMlp00w0jdjfkqUf
-         85Bw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1707780475; x=1708385275; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y5nlvb7whNQtUeaLVoTHbqmwre6mZQsRGTnIbxan8M0=;
+        b=E+JeLe/BFq89mnBMm/en0q1sT67EckzV3/VeyYrIgSgyrCk1QktfB/KHyDIiiPB9j1
+         zu7h6xuvgBSWEi/WkGzJgRLsgRywoSfyW6CzPOnX/FQ7xrZEEOmGsSLqdQkyaK0iDn2h
+         /XxoWmt7izYbRp3Zp+UI9s6a0tayP1ZWosBeAGJGZko5iVWmtJkcv7+2hFqWWHh75Hyp
+         t1z/Hd81USsLA00whRK/cOlRKxt5IaxfBm96YNbgsyYj1lgg2QvzXFGLr8RKlTgp8NZv
+         nVtK0EcjHfpHrcHbk+coFk1NoCVzIP4VrEgmqjixuIsXT6W7CFF5RpW/nR3fw+VdKobY
+         aBIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707780474; x=1708385274;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3+egtMFSB5wP/JnRwyX/FLjZ4VS6y7AaGO4xFQVkuUk=;
-        b=paegWIf7QhGy4lOVqNxA1AHW7K8U9meeXYzl8znwNVN/Uj/OsbXwC9g6nbMpVsqQ44
-         zncZ0XLGYvP7LSstqqJdlP17RoHhJez/ZLYt+sjkmUwlxwhxsuJiBswnf9Fn3TtDlW7X
-         Jjedn8RT6OtTcIknOwyIJvNQZKr2b7n8WB21e7VxaG0Yn+FU/GeoCjFK9Ka4enHSyKU3
-         wPIlAc55MNFZPmWhcqOUoLrAOfIUGay40bQAum3hv2oW4BJ8MR/JsW250PR3lKewlifX
-         HrVTuOqIqTBzAohabN7fGm9wJJ+jyUmPl46/g5woKW+eO7hNIjTmWZyYztSJaSnUE6yB
-         dMXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXoyB2XOpr0P7+X+sp4EaXps6LsLJ4rLbnpvCgCNIvpkCo4ibj88Q0ZwQTREgWZqCTIih8rM77mxDuOiwzmys2Gafgep/QAyqy
-X-Gm-Message-State: AOJu0YxO1IXq7m0MhKLG5kaMwDGoFps0nykOeuy3MF0V2QhGToMJexzm
-	jvgUFBLs7NHRd9e1UVipOSkzCQ2cSvZTkclpYeNsZZPNyltaE5PU23kintt+jXA=
-X-Google-Smtp-Source: AGHT+IEnqNuLs+L+SkljOkSHhq48382/YhpcidnWFKrPiXnIR0zV1wGkfWPgAvmmTXxR3uMFQYBdTw==
-X-Received: by 2002:a05:6871:80f:b0:218:55c9:bb20 with SMTP id q15-20020a056871080f00b0021855c9bb20mr9748766oap.21.1707780473886;
-        Mon, 12 Feb 2024 15:27:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVBCLWzInzImFpjlEde3du9xxWbJtlsO+FIOwVJCqeIGb3XUsPpgQL9MqOSJhqdb/VUAjFuoxvugBtbTKi0LRU+DEKsVET+S1y2BKftd8n6uHN7eeWchHaIuejP1qVpCOCqRjZ3rAXp+AA2CHyMY/eGgTU4nz9PpqD+iqlOeB3kH1N1kKZ7mEr1PH+lJ7gWJDxlmsPqZZHS0DxgHZpOfGcmKawoi/MFfiLH+0ce4Kbn6Y+/gewTIz+E2ZdUOnbXW1TGZMKrbwASINXfQwv80bKsZ5NIf94Sw9NEVO3RBB/IIoXmP0ie0xeGEHT8UiIrqoS8kPntNLX8W8Hcdi3VobfLuV7GLDGv12WG9ityJo9cjFG26LHR7rP6t7f1S7xMAubULcG9BWN44pTpMGAE0FbXXrXzpPbX/+lBsk/NXOlX9/U2dLT7WeQc4mc9RSWZikiWe/v1k16bK24UkDKgHCLfm156oNu0rmFechfXGHcU4GPpxjnzd2n/gMlEIuV8Ejo2/TY2z3/Ue/fUm1amIh69Ij5EeMw=
+        d=1e100.net; s=20230601; t=1707780475; x=1708385275;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y5nlvb7whNQtUeaLVoTHbqmwre6mZQsRGTnIbxan8M0=;
+        b=ABCqVMjj79TOX8Zr08C35vgN7Myj+oP47tmkqwRJ7leAvtWwoJC2t81v6VVc9so9+h
+         UjmmrC5yBcC5Hut2gAGJT9CD1Nzt/Sw2vU5D4ZqP1CzDmuGX8U0bCgrNGNqB3B7Jc6iv
+         gAhoa0hxJTI55HZxdKld6ZBYx7ItfwYK1LlOVZ1kzoLRApb/vGBHWo/vtIai71jsErTr
+         HbcTeSAg3mdWPPj8VD8LC8RjiYKNztqKKW5OVCeimcDLBHrIpmYC8oOAHjnfmYES5xA/
+         cyae1jhMxrE1VgFEwViP52K7oJpshtKnJwjC5BUeGRbVW2DjoZVVSc45K8fFXrEEP8eh
+         6Zgw==
+X-Gm-Message-State: AOJu0Ywu+MUMFvmwkblzcO9XdphMFFkGYJFiiYQSpu/ef6oCA5QEXV0c
+	0cxb3BFfTU6Yj3er20USCWrb6WPadnot5effQa18OZvwkVoftwQtzJ1gFMc8mn0=
+X-Google-Smtp-Source: AGHT+IGvxMcOWZ2Dv756kXDAUlvzBSoSeQYwyeWZHoJaRDJmyJNey3V4uJB8Ovv52qzdBiAy2PaaGQ==
+X-Received: by 2002:a05:6870:fb86:b0:21a:34e1:bfd3 with SMTP id kv6-20020a056870fb8600b0021a34e1bfd3mr7547301oab.25.1707780474781;
+        Mon, 12 Feb 2024 15:27:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVzhfZUuDWw4nNUdfIipHha2QvzEVJ76dXh2uwDGgQ+rFZOzT0PLSSkaWrB2H3bUw8a0n29HmiZAzDDSB0lhM/X5/S1OScQmG4U2gnkCboLBYHdwNUwIQTk9+8690fwmVyg1tAsEMX4cDQFTkDuOE7UNJLJdPZf779SrJwKwtsLLnq6HhsMwuV9HHlz81Re62ptX4dI5uPC1G0x3YZkgGPOU2DGQkeSEkjhN6fIR/a1GTScqced6k8YMphov6T9cfjsZPqf5L0ez1xk88FNiZbcC5jN+LKGW9lnk+8orNIDMCzU/tRBt4o5oVSLxngvZYiG0hlWfqbJfdUPau3lsnGT4GsZrDJVLsygXVR/Ogg8QyCzSHxg8BgxVuq/bpyQcp8ZpAW4iCvWiSwaw3e+1ILVtFO2TZN0tfNh75CSeNy/oZgnrvsKdlNzXmhFawU5t//LwrcguwbB13qIcxQMM3hLn1oRRdoicOlsuw1HCzyI6lksBbscW9Hnw0anWzfkZFG2ZOtAVCGCYwLMYIbjhvcAco81fmo=
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id pk17-20020a0568704c1100b0021a7a45e0b1sm330141oab.35.2024.02.12.15.27.52
+        by smtp.gmail.com with ESMTPSA id pk17-20020a0568704c1100b0021a7a45e0b1sm330141oab.35.2024.02.12.15.27.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Feb 2024 15:27:53 -0800 (PST)
+        Mon, 12 Feb 2024 15:27:54 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -82,10 +83,12 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH 0/5] spi: add support for pre-cooking messages
-Date: Mon, 12 Feb 2024 17:26:40 -0600
-Message-ID: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
+Subject: [PATCH 1/5] spi: add spi_optimize_message() APIs
+Date: Mon, 12 Feb 2024 17:26:41 -0600
+Message-ID: <20240212-mainline-spi-precook-message-v1-1-a2373cd72d36@baylibre.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
+References: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,62 +99,296 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-This is a follow-up to [1] where it was suggested to break down the
-proposed SPI offload support into smaller series.
+This adds a new spi_optimize_message() function that can be used to
+optimize SPI messages that are used more than once. Peripheral drivers
+that use the same message multiple times can use this API to perform SPI
+message validation and controller-specific optimizations once and then
+reuse the message while avoiding the overhead of revalidating the
+message on each spi_(a)sync() call.
 
-This takes on the first suggested task of introducing an API to
-"pre-cook" SPI messages. This idea was first discussed extensively in
-2013 [2][3] and revisited more briefly 2022 [4].
+Internally, the SPI core will also call this function for each message
+if the peripheral driver did not explicitly call it. This is done to so
+that controller drivers don't have to have multiple code paths for
+optimized and non-optimized messages.
 
-The goal here is to be able to improve performance (higher throughput,
-and reduced CPU usage) by allowing peripheral drivers that use the
-same struct spi_message repeatedly to "pre-cook" the message once to
-avoid repeating the same validation, and possibly other operations each
-time the message is sent.
+A hook is provided for controller drivers to perform controller-specific
+optimizations.
 
-This series includes __spi_validate() and the automatic splitting of
-xfers in the optimizations. Another frequently suggested optimization
-is doing DMA mapping only once. This is not included in this series, but
-can be added later (preferably by someone with a real use case for it).
-
-To show how this all works and get some real-world measurements, this
-series includes the core changes, optimization of a SPI controller
-driver, and optimization of an ADC driver. This test case was only able
-to take advantage of the single validation optimization, since it didn't
-require splitting transfers. With these changes, CPU usage of the
-threaded interrupt handler, which calls spi_sync(), was reduced from
-83% to 73% while at the same time the sample rate (frequency of SPI
-xfers) was increased from 20kHz to 25kHz.
-
-Finally, there has been quite a bit of discussion on the naming of the
-API already. The most natural suggestion of spi_message_[un]prepare()
-conflicts with the existing prepare_message controller callback which
-does something a bit different. I've so far stuck with [un]optimize()
-from [3], but am not partial to it. Maybe [un]cook() would makes more
-sense to people? Or maybe we could rename the existing prepare_message
-callback to free up the name?
-
-[1]: https://lore.kernel.org/linux-spi/20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com/T/
-[2]: https://lore.kernel.org/linux-spi/E81F4810-48DD-41EE-B110-D0D848B8A510@martin.sperl.org/T/
-[3]: https://lore.kernel.org/linux-spi/39DEC004-10A1-47EF-9D77-276188D2580C@martin.sperl.org/T/
-[4]: https://lore.kernel.org/linux-spi/20220525163946.48ea40c9@erd992/T/
-
+Suggested-by: Martin Sperl <kernel@martin.sperl.org>
+Link: https://lore.kernel.org/linux-spi/39DEC004-10A1-47EF-9D77-276188D2580C@martin.sperl.org/
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (5):
-      spi: add spi_optimize_message() APIs
-      spi: move splitting transfers to spi_optimize_message()
-      spi: stm32: move splitting transfers to optimize_message
-      spi: axi-spi-engine: move message compile to optimize_message
-      iio: adc: ad7380: use spi_optimize_message()
+ drivers/spi/spi.c       | 145 ++++++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/spi/spi.h |  19 +++++++
+ 2 files changed, 160 insertions(+), 4 deletions(-)
 
- drivers/iio/adc/ad7380.c         |  52 ++++++--
- drivers/spi/spi-axi-spi-engine.c |  40 +++----
- drivers/spi/spi-stm32.c          |  28 +++--
- drivers/spi/spi.c                | 253 ++++++++++++++++++++++++++++++++-------
- include/linux/spi/spi.h          |  19 +++
- 5 files changed, 305 insertions(+), 87 deletions(-)
----
-base-commit: 5111fd347aee731964993fc021e428f8cf46a076
-prerequisite-patch-id: 844c06b6caf25a2724e130dfa7999dc90dd26fde
-change-id: 20240208-mainline-spi-precook-message-189b2f08ba7f
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c2b10e2c75f0..5bac215d7009 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2106,6 +2106,41 @@ struct spi_message *spi_get_next_queued_message(struct spi_controller *ctlr)
+ }
+ EXPORT_SYMBOL_GPL(spi_get_next_queued_message);
+ 
++/**
++ * __spi_unoptimize_message - shared implementation of spi_unoptimize_message()
++ *                            and spi_maybe_unoptimize_message()
++ * @msg: the message to unoptimize
++ *
++ * Periperhal drivers should use spi_unoptimize_message() and callers inside
++ * core should use spi_maybe_unoptimize_message() rather than calling this
++ * function directly.
++ *
++ * It is not valid to call this on a message that is not currently optimized.
++ */
++static void __spi_unoptimize_message(struct spi_message *msg)
++{
++	struct spi_controller *ctlr = msg->spi->controller;
++
++	if (ctlr->unoptimize_message)
++		ctlr->unoptimize_message(msg);
++
++	msg->optimized = false;
++	msg->opt_state = NULL;
++}
++
++/**
++ * spi_maybe_unoptimize_message - unoptimize msg not managed by a peripheral
++ * @msg: the message to unoptimize
++ *
++ * This function is used to unoptimize a message if and only if it was
++ * optimized by the core (via spi_maybe_optimize_message()).
++ */
++static void spi_maybe_unoptimize_message(struct spi_message *msg)
++{
++	if (!msg->pre_optimized && msg->optimized)
++		__spi_unoptimize_message(msg);
++}
++
+ /**
+  * spi_finalize_current_message() - the current message is complete
+  * @ctlr: the controller to return the message to
+@@ -2153,6 +2188,8 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
+ 
+ 	mesg->prepared = false;
+ 
++	spi_maybe_unoptimize_message(mesg);
++
+ 	WRITE_ONCE(ctlr->cur_msg_incomplete, false);
+ 	smp_mb(); /* See __spi_pump_transfer_message()... */
+ 	if (READ_ONCE(ctlr->cur_msg_need_completion))
+@@ -4194,6 +4231,99 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 	return 0;
+ }
+ 
++/**
++ * __spi_optimize_message - shared implementation for spi_optimize_message()
++ *                          and spi_maybe_optimize_message()
++ * @spi: the device that will be used for the message
++ * @msg: the message to optimize
++ * @pre_optimized: whether the message is considered pre-optimized or not
++ *
++ * Peripheral drivers will call spi_optimize_message() and the spi core will
++ * call spi_maybe_optimize_message() instead of calling this directly.
++ *
++ * It is not valid to call this on a message that has already been optimized.
++ *
++ * Return: zero on success, else a negative error code
++ */
++static int __spi_optimize_message(struct spi_device *spi,
++				  struct spi_message *msg,
++				  bool pre_optimized)
++{
++	struct spi_controller *ctlr = spi->controller;
++	int ret;
++
++	ret = __spi_validate(spi, msg);
++	if (ret)
++		return ret;
++
++	if (ctlr->optimize_message) {
++		ret = ctlr->optimize_message(msg);
++		if (ret)
++			return ret;
++	}
++
++	msg->pre_optimized = pre_optimized;
++	msg->optimized = true;
++
++	return 0;
++}
++
++/**
++ * spi_maybe_optimize_message - optimize message if it isn't already pre-optimized
++ * @spi: the device that will be used for the message
++ * @msg: the message to optimize
++ * Return: zero on success, else a negative error code
++ */
++static int spi_maybe_optimize_message(struct spi_device *spi,
++				      struct spi_message *msg)
++{
++	if (msg->pre_optimized)
++		return 0;
++
++	return __spi_optimize_message(spi, msg, false);
++}
++
++/**
++ * spi_optimize_message - do any one-time validation and setup for a SPI message
++ * @spi: the device that will be used for the message
++ * @msg: the message to optimize
++ *
++ * Peripheral drivers that reuse the same message repeatedly may call this to
++ * perform as much message prep as possible once, rather than repeating it each
++ * time a message transfer is performed to improve throughput and reduce CPU
++ * usage.
++ *
++ * Once a message has been optimized, it cannot be modified with the exception
++ * of updating the contents of any xfer->tx_buf (the pointer can't be changed,
++ * only the data in the memory it points to).
++ *
++ * Calls to this function must be balanced with calls to spi_unoptimize_message()
++ * to avoid leaking resources.
++ *
++ * Context: can sleep
++ * Return: zero on success, else a negative error code
++ */
++int spi_optimize_message(struct spi_device *spi, struct spi_message *msg)
++{
++	return __spi_optimize_message(spi, msg, true);
++}
++EXPORT_SYMBOL_GPL(spi_optimize_message);
++
++/**
++ * spi_unoptimize_message - releases any resources allocated by spi_optimize_message()
++ * @msg: the message to unoptimize
++ *
++ * Calls to this function must be balanced with calls to spi_optimize_message().
++ *
++ * Context: can sleep
++ */
++void spi_unoptimize_message(struct spi_message *msg)
++{
++	__spi_unoptimize_message(msg);
++	msg->pre_optimized = false;
++}
++EXPORT_SYMBOL_GPL(spi_unoptimize_message);
++
+ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+@@ -4258,8 +4388,8 @@ int spi_async(struct spi_device *spi, struct spi_message *message)
+ 	int ret;
+ 	unsigned long flags;
+ 
+-	ret = __spi_validate(spi, message);
+-	if (ret != 0)
++	ret = spi_maybe_optimize_message(spi, message);
++	if (ret)
+ 		return ret;
+ 
+ 	spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
+@@ -4271,6 +4401,8 @@ int spi_async(struct spi_device *spi, struct spi_message *message)
+ 
+ 	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
+ 
++	spi_maybe_unoptimize_message(message);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(spi_async);
+@@ -4331,10 +4463,15 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+ 		return -ESHUTDOWN;
+ 	}
+ 
+-	status = __spi_validate(spi, message);
+-	if (status != 0)
++	status = spi_maybe_optimize_message(spi, message);
++	if (status)
+ 		return status;
+ 
++	/*
++	 * NB: all return paths after this point must ensure that
++	 * spi_finalize_current_message() is called to avoid leaking resources.
++	 */
++
+ 	SPI_STATISTICS_INCREMENT_FIELD(ctlr->pcpu_statistics, spi_sync);
+ 	SPI_STATISTICS_INCREMENT_FIELD(spi->pcpu_statistics, spi_sync);
+ 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 2b8e2746769a..f7a269f4956b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -475,6 +475,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
+  *
+  * @set_cs: set the logic level of the chip select line.  May be called
+  *          from interrupt context.
++ * @optimize_message: optimize the message for reuse
++ * @unoptimize_message: release resources allocated by optimize_message
+  * @prepare_message: set up the controller to transfer a single message,
+  *                   for example doing DMA mapping.  Called from threaded
+  *                   context.
+@@ -715,6 +717,8 @@ struct spi_controller {
+ 	struct completion               xfer_completion;
+ 	size_t				max_dma_len;
+ 
++	int (*optimize_message)(struct spi_message *msg);
++	int (*unoptimize_message)(struct spi_message *msg);
+ 	int (*prepare_transfer_hardware)(struct spi_controller *ctlr);
+ 	int (*transfer_one_message)(struct spi_controller *ctlr,
+ 				    struct spi_message *mesg);
+@@ -1111,6 +1115,7 @@ struct spi_transfer {
+  * @spi: SPI device to which the transaction is queued
+  * @is_dma_mapped: if true, the caller provided both DMA and CPU virtual
+  *	addresses for each transfer buffer
++ * @optimized: spi_optimize_message was called for the this message
+  * @prepared: spi_prepare_message was called for the this message
+  * @status: zero for success, else negative errno
+  * @complete: called to report transaction completions
+@@ -1120,6 +1125,7 @@ struct spi_transfer {
+  *	successful segments
+  * @queue: for use by whichever driver currently owns the message
+  * @state: for use by whichever driver currently owns the message
++ * @opt_state: for use by whichever driver currently owns the message
+  * @resources: for resource management when the SPI message is processed
+  *
+  * A @spi_message is used to execute an atomic sequence of data transfers,
+@@ -1143,6 +1149,11 @@ struct spi_message {
+ 
+ 	unsigned		is_dma_mapped:1;
+ 
++	/* spi_optimize_message() was called for this message */
++	bool			pre_optimized;
++	/* __spi_optimize_message() was called for this message */
++	bool			optimized;
++
+ 	/* spi_prepare_message() was called for this message */
+ 	bool			prepared;
+ 
+@@ -1172,6 +1183,11 @@ struct spi_message {
+ 	 */
+ 	struct list_head	queue;
+ 	void			*state;
++	/*
++	 * Optional state for use by controller driver between calls to
++	 * spi_optimize_message() and spi_unoptimize_message().
++	 */
++	void			*opt_state;
+ 
+ 	/* List of spi_res resources when the SPI message is processed */
+ 	struct list_head        resources;
+@@ -1255,6 +1271,9 @@ static inline void spi_message_free(struct spi_message *m)
+ 	kfree(m);
+ }
+ 
++extern int spi_optimize_message(struct spi_device *spi, struct spi_message *msg);
++extern void spi_unoptimize_message(struct spi_message *msg);
++
+ extern int spi_setup(struct spi_device *spi);
+ extern int spi_async(struct spi_device *spi, struct spi_message *message);
+ extern int spi_slave_abort(struct spi_device *spi);
+
+-- 
+2.43.0
+
 

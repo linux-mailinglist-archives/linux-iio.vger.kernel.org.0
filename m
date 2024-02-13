@@ -1,187 +1,129 @@
-Return-Path: <linux-iio+bounces-2519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A6D8537B6
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 18:28:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236AC8537E1
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 18:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5DA1C209E1
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 17:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B70821F29756
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Feb 2024 17:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598885FF01;
-	Tue, 13 Feb 2024 17:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6F85FF0E;
+	Tue, 13 Feb 2024 17:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XsjZ5GY1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0BE5F54E;
-	Tue, 13 Feb 2024 17:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A2A5F54E
+	for <linux-iio@vger.kernel.org>; Tue, 13 Feb 2024 17:30:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845319; cv=none; b=Cfq6lSRPM7beUSXCTujhl34Q6SDUHdsHnQ4fNUZdCmkTz3/8aD8Dc1oHZNPFeHj2m3+65vvtYsSdQNjPScInWGbMl0W8a74wZIOUwQvsjw3rG/j980aP3rcCRvS/C6lovCJfY+KMS6ZCJZlma8erhWQIDwgA68TXlQl2usaWMWs=
+	t=1707845439; cv=none; b=kf6cwBQA45KWOkHxL8Vxlr+2QEbc4ITtbtmqwRka+iYTTXBkRgeuMZCQSgck35aqj8mKk5Dqbt/ye5bnLsaU7muMGVuAXJ2FsYMtGxzMCvP0UtnyZDkcz0tp0RIlqxIrAfcu2LDiF8zEnpn2JqZUISALoCG8GgdaikaZBxcsCOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845319; c=relaxed/simple;
-	bh=tslMMNkGc5wpUQAzMVODFQaALF/nV2isKoknReiMgic=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DcvV5iCTMm1OHLVXUL/mbPEglxa8LAGfka7zEoVswMio2mYyFrG/9xNAzp1gkec8tmJZcaWHxcPiJFJ9M5e33WHKu+ETjijkyvp2I92Cyc3e5s53yrbZ2SYinHc4qgarsGqy22Qkfhy6Spa0NhvOJ1v8OEJoqwYLEOzT9wNMO7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZ7W919xfz67LmL;
-	Wed, 14 Feb 2024 01:25:09 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 32A7C1400D9;
-	Wed, 14 Feb 2024 01:28:34 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
- 2024 17:28:33 +0000
-Date: Tue, 13 Feb 2024 17:28:32 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: David Lechner <dlechner@baylibre.com>
-CC: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
-	David Jander <david@protonic.nl>, Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S?=
- =?ISO-8859-1?Q?=E1?= <nuno.sa@analog.com>, Alain Volmat
-	<alain.volmat@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 5/5] iio: adc: ad7380: use spi_optimize_message()
-Message-ID: <20240213172832.00004fab@Huawei.com>
-In-Reply-To: <20240212-mainline-spi-precook-message-v1-5-a2373cd72d36@baylibre.com>
-References: <20240212-mainline-spi-precook-message-v1-0-a2373cd72d36@baylibre.com>
-	<20240212-mainline-spi-precook-message-v1-5-a2373cd72d36@baylibre.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707845439; c=relaxed/simple;
+	bh=NVFAIzHOQXHtH2Hcdy261PFV7ecM2eZ0YNGv+FRrbTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J90Vj3/TnAK6wB/7sgbaWpa5Hsl750cYgjdEH5CFv5t9IytLys3bttWKE5gTLUJw0YZZh/+7kjSl+UgoC+3FiwDRtFQtqs+2LZTKbTTqBeYx/SprqfYWTIRiRObcWR/XTSbZE4lEl5DDmwLcfwB4OUiHfrRvaCEVDltUkUkOhLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XsjZ5GY1; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so175578366b.2
+        for <linux-iio@vger.kernel.org>; Tue, 13 Feb 2024 09:30:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707845436; x=1708450236; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NVFAIzHOQXHtH2Hcdy261PFV7ecM2eZ0YNGv+FRrbTw=;
+        b=XsjZ5GY1eQEaYTXtGV4SagE85bzhJaoYi472oO1NCQxTAmYjgJraMb7mRpKFaJwqdp
+         lsPIDIlzIvw0MqZJs2MdmTQPO+GSMyYtfpgpu1Nhc0yfJMok8CEh12GOs6qrSOCyKzPd
+         RyQSZnFjiPw/60/jKtTKyUdmmRGnZKA/oc13uDNWO798oMtCNqmZo3vtjwb5oOOe9LhA
+         fxDI0jlplfWMOUZeqxLA6yi8HDq4QP8Cy4iobs8aGJ2XSiB7tsVccBtgxAr9pUXqI7bw
+         XZytxF1H9mVs71vC0Lfnz5sP+SmJeQMCQCReaws7J1NrER4I+vRHGH+aUexFBhtK3jfR
+         UYVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707845436; x=1708450236;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NVFAIzHOQXHtH2Hcdy261PFV7ecM2eZ0YNGv+FRrbTw=;
+        b=YryrbKTObO3aq8N6g0poA0JjAM8QHwCjlNaHAi1VIt1Tu3/n4fMDootQ8fvz6673AT
+         8D2yDsgFF8x2qSjw2UzJ+8H34vM8ZTF+h+HlwkSiUUHrAVPaPeBvPajuaU2O6hovJjjV
+         BxyuP6wJcr4/WHD/aS64SpmVhxJ6fojUygGzfDumGAhQRW7iBKgEA+2NmKcJ1z2x412X
+         RL1uJ24/HzgKxZRM0/TcOaIiUmUkaRlAEK28JBD6dPIDRDHiIMhCSDBWzv7ouQvUYG0W
+         jGVmPYkDzC90lsakj7ilVr8Y3WCAVeUnJQHE6xgTJxi5YF6o83fVbVPYnvtpqz52sv+x
+         tB2A==
+X-Forwarded-Encrypted: i=1; AJvYcCW9Nd9i87afzehN9YdeRAjfc8OZnCEmsJnQansVjkM/HxrwJoUUsZYloVkZ3L8/qSh+iCnqe24Sgr3gZXOlMOSn4wntBkZN1xUj
+X-Gm-Message-State: AOJu0YzuIVoryGfqO1SiG4RfHLYtFF3YkPJY10JNOvfXHL73Pl4r4OI/
+	oHNEsyju12aWTbkBx+tveFdimGCjnweBVxvrq6vKWEdSo5AaETI+92o88x//0Men0cOPe4LOP1Y
+	Gc+NkKCNg+eYjgBwgbT8LdKEj0Sg=
+X-Google-Smtp-Source: AGHT+IG7uNIkr3evRsc5oZDxeFQvZOPEtTbi5sjBOUs0mudIj+bXuT6qIsYtRFG2rwI2IeWhhRduZOrpSA7HUZvtjfQ=
+X-Received: by 2002:a17:906:48da:b0:a3d:1458:525d with SMTP id
+ d26-20020a17090648da00b00a3d1458525dmr16406ejt.25.1707845435362; Tue, 13 Feb
+ 2024 09:30:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <CAHp75VfJeMZUBO0c9gr=ymee8jqu0xJQRwrg798Trrmr6ox5gw@mail.gmail.com>
+ <20240213023956.46646-1-jlobue10@gmail.com> <CAHp75VeBqKiEWHyRjJt62VvrGKjG9S+kgMrbYEPBap311ZtZVw@mail.gmail.com>
+ <4917806.31r3eYUQgx@nobara-ally-pc>
+In-Reply-To: <4917806.31r3eYUQgx@nobara-ally-pc>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 13 Feb 2024 19:29:58 +0200
+Message-ID: <CAHp75VfcHnswdXnqdtOkX31LbULu8Pa0WjM5EC96OuOBrZGTxA@mail.gmail.com>
+Subject: Re: [PATCH v1] iio: imu: bmi323: Add and enable ACPI Match Table
+To: Jonathan LoBue <jlobue10@gmail.com>
+Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, jic23@kernel.org, 
+	jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com, 
+	linux-iio@vger.kernel.org, lkml@antheas.dev, derekjohn.clark@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 12 Feb 2024 17:26:45 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, Feb 13, 2024 at 7:14=E2=80=AFPM Jonathan LoBue <jlobue10@gmail.com>=
+ wrote:
+> On Tuesday, February 13, 2024 2:49:24 AM PST Andy Shevchenko wrote:
+> > I'm lost. You sent a lot of patches / patch series all of which are v1.=
+ Can you:
+> > - use versioning (`git format-patch -v<X>...`, where <X> is a plain
+> > version number)
+> > - add a changelog here (after the cutter '---' line) to explain the
+> > history of the changes
+> > ?
+>
+> Yes, I will do this. The changes so far included dropping the no longer
+> necessary DMI quirks portion in the bmc150 driver. I understand from
+> your comment that we want to add a comment in the bmc150 driver though
+> to explain what is going on with duplicate ACPI identifiers in different
+> drivers. I will add a similar comment in the bmi323 driver. The changes
+> so far also included the fixes that you requested earlier in bmi323:
+> dropping the duplicate header include entry (included already in other
+> header file), removing the unnecessary comma in the ACPI match table
+> portion, and removing the ACPI_PTR when invoking the ACPI match table.
+>
+> > Since there is a collision please add a big comment in _both_ drivers
+> > before such ID to explain what's going on.
+>
+> I will do this and add a changelog after the cutter as requested. Since t=
+here
+> are some changes from my initial submission attempt and with the addition=
+al
+> requested comments, is v2 going to be okay to use so there's no ambiguity
+> about which patch version to use?
 
-> This modifies the ad7380 ADC driver to use spi_optimize_message() to
-> optimize the SPI message for the buffered read operation. Since buffered
-> reads reuse the same SPI message for each read, this can improve
-> performance by reducing the overhead of setting up some parts the SPI
-> message in each spi_sync() call.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/adc/ad7380.c | 52 +++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 45 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index abd746aef868..5c5d2642a474 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -133,6 +133,7 @@ struct ad7380_state {
->  	struct spi_device *spi;
->  	struct regulator *vref;
->  	struct regmap *regmap;
-> +	struct spi_message *msg;
->  	/*
->  	 * DMA (thus cache coherency maintenance) requires the
->  	 * transfer buffers to live in their own cache lines.
-> @@ -231,19 +232,55 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
->  	return ret;
->  }
->  
-> +static int ad7380_buffer_preenable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7380_state *st = iio_priv(indio_dev);
-> +	struct spi_transfer *xfer;
-> +	int ret;
-> +
-> +	st->msg = spi_message_alloc(1, GFP_KERNEL);
+Sounds good as we seem never to have seen v2 on the topic.
 
-As it only ever has one element, is there a clear advantage over
-just embedding the spi_message in the structure rather than
-as a separate allocation? You'd need the transfer as well.
+> I will attach the version label with
+> git format-patch as requested. Thanks.
 
-	spi_message_init_with_transfers(st->msg, &st->trans, 1);
 
-The transfer is then also available without walking the list (though
-obviously you don't walk very far ;).
-
-> +	if (!st->msg)
-> +		return -ENOMEM;
-> +
-> +	xfer = list_first_entry(&st->msg->transfers, struct spi_transfer,
-> +				transfer_list);
-> +
-> +	xfer->bits_per_word = st->chip_info->channels[0].scan_type.realbits;
-> +	xfer->len = 4;
-> +	xfer->rx_buf = st->scan_data.raw;
-> +
-> +	ret = spi_optimize_message(st->spi, st->msg);
-> +	if (ret) {
-> +		spi_message_free(st->msg);
-Would avoid freeing explicitly here or later if it was embedded in
-struct ad7380_state
-
-Also, this doesn't seem very dynamic in general. Anything stopping this
-being done at probe() as a one time thing?
-
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad7380_buffer_postdisable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7380_state *st = iio_priv(indio_dev);
-> +
-> +	spi_unoptimize_message(st->msg);
-> +	spi_message_free(st->msg);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct iio_buffer_setup_ops ad7380_buffer_setup_ops = {
-> +	.preenable = ad7380_buffer_preenable,
-> +	.postdisable = ad7380_buffer_postdisable,
-> +};
-> +
->  static irqreturn_t ad7380_trigger_handler(int irq, void *p)
->  {
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct ad7380_state *st = iio_priv(indio_dev);
-> -	struct spi_transfer xfer = {
-> -		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
-> -		.len = 4,
-> -		.rx_buf = st->scan_data.raw,
-> -	};
->  	int ret;
->  
-> -	ret = spi_sync_transfer(st->spi, &xfer, 1);
-> +	ret = spi_sync(st->spi, st->msg);
->  	if (ret)
->  		goto out;
->  
-> @@ -420,7 +457,8 @@ static int ad7380_probe(struct spi_device *spi)
->  
->  	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
->  					      iio_pollfunc_store_time,
-> -					      ad7380_trigger_handler, NULL);
-> +					      ad7380_trigger_handler,
-> +					      &ad7380_buffer_setup_ops);
->  	if (ret)
->  		return ret;
->  
-> 
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

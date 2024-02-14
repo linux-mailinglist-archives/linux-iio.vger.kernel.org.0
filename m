@@ -1,147 +1,188 @@
-Return-Path: <linux-iio+bounces-2548-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2549-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414F4854B20
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B904A854C2B
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 16:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F781F237E0
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 14:10:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD161F2A908
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFAD54FA5;
-	Wed, 14 Feb 2024 14:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C010B5B671;
+	Wed, 14 Feb 2024 15:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4lC3ZUq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933D355E56;
-	Wed, 14 Feb 2024 14:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EE85A7B4
+	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 15:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707919784; cv=none; b=g/5/iUoM6s/QpwP50LuC82jfbvTM4XSi5aj67cyTfeG1/kbt3El3BQSXTnFAEAaX72+no55NwFliClHpXH7ibNoHgcEKRT3lCqMTgo13GkndX2cGMp8b275px0ybeMuGvKeTlLxfJ39oTX6IJuThfg0h5PodnAd1RL7L+qURD9k=
+	t=1707923255; cv=none; b=RY0S6VXEjc1GcHR/V/fSxOo7VCbcQ87sj5hWi376Nhm5di/+bbMyN8yaUcehWLKkbKrU9XF3UNtOnJbB1JUDUGvDhdOeVlZAPDEWRLnp2W7XWx3EfVjVjdheRsPJnCw6UAYADjkfuv7UYYbGq0RqJuua0bSKmBV25kKYsMN5R+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707919784; c=relaxed/simple;
-	bh=poPOuBJ5Js8FiOJBGMjgY7kRrMGMCzBV31PBCsrONBA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gr1h/pW4uJZiST0gAzgaowQr42H1Ev4l0xTQizIX91S1IAn5sL8LqMJm+MLHaCCpMAVMCV2gdQfZjTSwTO1bEnf7Ttnp7iikbeCrTXH1MH0qfB7rX9KQ2TjpY/iWI2E0sys25ElF8jlaF7BFFqgKmPs5O24/H+o4UfIWt6VZ2S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZg392bxmz6K8kJ;
-	Wed, 14 Feb 2024 22:06:13 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9F1F2140D1A;
-	Wed, 14 Feb 2024 22:09:39 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 14:09:38 +0000
-Date: Wed, 14 Feb 2024 14:09:38 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron
-	<jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, Julia Lawall
-	<Julia.Lawall@inria.fr>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
-	<mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
-	<fabrice.gasnier@foss.st.com>, Lad Prabhakar
-	<prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
-	<dmitry.baryshkov@linaro.org>, Marijn Suijten
-	<marijn.suijten@somainline.org>, Marius Cristea
-	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 01/14] device property: Add cleanup.h based
- fwnode_handle_put() scope based cleanup.
-Message-ID: <20240214140938.00001637@Huawei.com>
-In-Reply-To: <20240213102245.00005c35@Huawei.com>
-References: <20240211192540.340682-1-jic23@kernel.org>
-	<20240211192540.340682-2-jic23@kernel.org>
-	<Zcnbk6_9BU_trU9P@kekkonen.localdomain>
-	<20240212114206.00005b9f@Huawei.com>
-	<ZcoQ3sOcVYbwoHO7@kekkonen.localdomain>
-	<ZcoTOZzJ3ZhSD0oi@smile.fi.intel.com>
-	<ZcoV2xfcCOYKZicY@kekkonen.localdomain>
-	<20240213102245.00005c35@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707923255; c=relaxed/simple;
+	bh=PMsrn3Hhk4WE/qsiiANcQcXtgvFT7HZ4IBUlTPxdWAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kBmKImjwbdMIwbW9UE57gGOhEhDBpwNYNc03vPScZcU7qrEhzhXJOyb24ArXuAseTqiZ8jJuaN4j1uxlIxQH29HwLnrbFn6g4DmkdNlltke3q7/HrNfS/pFbAGhni+zYw64Ht7X/QzNnnZ7AU+rWQ/liYatPTEDrszlvi5yAAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4lC3ZUq; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e104196e6eso1349734b3a.0
+        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 07:07:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707923253; x=1708528053; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mgCqwyxBYe6OEJ7wvcZM34kxVFlLGGF6Aosa4uTV3Vs=;
+        b=N4lC3ZUqAR69FSGJ85gDxoee4qlYAMhtczlhu5f9xgFlTvGZRxIquhespZuHezl6tD
+         WnXSCEUulLo4v3K4OLl2PHQCGmlcH22X7A179ygiP3a6myfdoTKOY0dIDtuLc452K6l1
+         zvCUXkHNChAhlCpDqotWT3ofDsVb9qDe4A6I8r+oMhXDpW0RR9s2y26VgA4uWJtDAXqR
+         VUwj/KfmpMByGc4pDLM2R36xNIoYUuwWVkwtCcH6e4915V7foxP59EgAm3/4A6WVLQOs
+         nTuyUN8kdI+6pommg135PwQMmsJsDPxxeapcIvBFRMtQ6n3Gl8No3BdkOPJw/Rv11HUb
+         nGfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707923253; x=1708528053;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mgCqwyxBYe6OEJ7wvcZM34kxVFlLGGF6Aosa4uTV3Vs=;
+        b=LA4OGhE5qXJqEaG671bMTxi7oxBLscoTkMhbhMydZZtH1ppN6vx8tnT0sActtYVku7
+         DhQIM2+HWnUzTxxJmRiVq/Hg4Nnzz7sDZnPMNfyvQxLwLwQfUdSt3PH57crrHA3LSPuP
+         C5bu4dtl7MkK7eOq4HaX3Qc7zD08ylGHOFJvvGxGYdijXHc0PUifkgADcoaKqYxuwTnP
+         BJhdkD7AlDkWe/zZf+sHvQWPRpU69pytKdk71ZRmV+RodHHXTLPM8ESsS1OclcL4R4dr
+         4LKQCfl3M4BO0ddx5QB7OPnvV3i4Yzz5LG3rp7cJLatkFbLvZ/kkLtc+Pa4p4+wEbZN9
+         tv+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWGn75Yt8tWYIJoWyAk+kiELN1Wjzs9AzC2bAmNGkGUe6MEXVygOtRZrb5nOSOP5mggMKfS48JZ2PcBlSpLW6jHv2mVwDSDln/P
+X-Gm-Message-State: AOJu0YwuyIEEJNRjXVfUw7qKBJSI/MMt+8/YVA/S+qOQ9kPk9ghpDqdP
+	S2N17NN3UD2bkZRKfRn1m4QLwfpEWfRtamKXqKWtqpETvwdyNSLc
+X-Google-Smtp-Source: AGHT+IG262f3ZoO89wGAUYP7RPrsvl6xS4jqQvJ4z6R85dbQafM3G4AKOOUxsztO3ZgCnZTc57qYEw==
+X-Received: by 2002:a05:6a20:86a3:b0:19e:aaec:833a with SMTP id k35-20020a056a2086a300b0019eaaec833amr2185139pze.55.1707923253073;
+        Wed, 14 Feb 2024 07:07:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUaVDoz991svGbLG/bUqjD+5K8sBr2BjcKsO3EimAwtk8E7LjprnkZcV7YMEG4nv6Twf7sQ/K7MTZtUjo/4+Bu87qkBXef+gUsjkRr6u77EzQUttjh7QDR59TVcnf/ZGzEbGlp7H9NjUQuFIumZHzut5sLm/rEHaZ++zkLvZgRPWfuwk5fEjF0xu2HaLh4dTOywra5fbrexJ8kgJbPSyg21f4iVfwlN5JREpKme6hJ+cabUHbUCX+81jG7a3C529HBEHM4oQK8fJS6LIBtJ3IjbQN+OBrElD4284M8hyBxWV7FE+i5uM/G/jexm
+Received: from nobara-ally-pc.localnet (076-167-168-058.res.spectrum.com. [76.167.168.58])
+        by smtp.gmail.com with ESMTPSA id z29-20020a637e1d000000b005d8be4c125csm4384050pgc.80.2024.02.14.07.07.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Feb 2024 07:07:32 -0800 (PST)
+From: Jonathan LoBue <jlobue10@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, jic23@kernel.org,
+ jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com,
+ linux-iio@vger.kernel.org, lkml@antheas.dev, derekjohn.clark@gmail.com
+Subject: Re: [PATCH v2 1/2] iio: accel: bmc150: Duplicate ACPI entries
+Date: Wed, 14 Feb 2024 07:07:31 -0800
+Message-ID: <5773370.DvuYhMxLoT@nobara-ally-pc>
+In-Reply-To:
+ <CAHp75VdyQxpy5wT=X+0TKnd5x4uJzqcSJikHs2Mx-VOEzbnv9g@mail.gmail.com>
+References:
+ <CAHp75VfcHnswdXnqdtOkX31LbULu8Pa0WjM5EC96OuOBrZGTxA@mail.gmail.com>
+ <20240213223806.27056-1-jlobue10@gmail.com>
+ <CAHp75VdyQxpy5wT=X+0TKnd5x4uJzqcSJikHs2Mx-VOEzbnv9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: multipart/signed; boundary="nextPart6036601.lOV4Wx5bFT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 
-On Tue, 13 Feb 2024 10:22:45 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+--nextPart6036601.lOV4Wx5bFT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Jonathan LoBue <jlobue10@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: bmc150: Duplicate ACPI entries
+Date: Wed, 14 Feb 2024 07:07:31 -0800
+Message-ID: <5773370.DvuYhMxLoT@nobara-ally-pc>
+MIME-Version: 1.0
 
-> On Mon, 12 Feb 2024 12:58:03 +0000
-> Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> 
-> > On Mon, Feb 12, 2024 at 02:46:49PM +0200, Andy Shevchenko wrote:  
-> > > On Mon, Feb 12, 2024 at 12:36:46PM +0000, Sakari Ailus wrote:    
-> > > > On Mon, Feb 12, 2024 at 11:42:06AM +0000, Jonathan Cameron wrote:    
-> > > 
-> > > ...
-> > >     
-> > > > Hmm. In that case I'd rather make fwnode_handle_put() and similar trivial
-> > > > functions macros.    
-> > > 
-> > > This will kill the type-checking opportunity, so I'm against this move.    
-> > 
-> > Then it could be made static inline and moved to the header. I suppose for
-> > modern compilers there should be no difference in between the two
-> > optimisation-wise.
-> >   
-> 
-> Sure - will be a bit fiddly as this is only worth doing if we drop
-> the internal check that buried several macros deep.
+On Wednesday, February 14, 2024 1:35:56 AM PST Andy Shevchenko wrote:
+> On Wed, Feb 14, 2024 at 12:38=E2=80=AFAM Jonathan LoBue <jlobue10@gmail.c=
+om> wrote:
+> >
+> > This patch adds a description of the duplicate ACPI identifier issue
+> > between devices using bmc150 and bmi323.
+>=20
+> With the remarks below,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> (carry the tag if you send a new version)
+>=20
+> ...
 
-Not enough coffee yesterday. We can just move the the existing
-fwnode_handle_put() to property.h as that includes fwnode.h has
-all the definitions in it which we need to be able to see.
+Will do.
 
-I think that should be uncontroversial?
+> > Comment describing the duplicate ACPI identifier issue has been added
+> > before the "BOSC0200" entry here.
+>=20
+> Hmm...
 
-Jonathan
+You asked for a changelog after the cutter, although it really seems
+unnecessary to me here as it's repetitive in nature with comment above.
 
-> 
-> 1. rename existing fwnode_handle_put() to __fwnode_handle_put()
-> 2. Make __fwnode_handle_put() call a new set of macros
-> #define fwnode_has_op_nocheck(fwnode, op) \
-> 	(fwnode)->ops && (fwnode)->ops->op
-> 
-> #define fwnode_call_void_op_nocheck(fwnode, op, .... \
-> 	do {
-> 		if (fwnode_had_op_nocheck(fwnode, op)) \
-> 			(fwnode)->ops->op(fwnode, ## __VA_ARGS__);
-> 	} while (false);
-> 
-> 3. Add new
-> static inline fwnode_handle_put(struct fwnode_handle *fwnode)
-> {
-> 	if (!IS_ERR_OR_NULL(fwnode))
-> 		__fwnode_handle_put(fwnode);
-> }
-> 
-> Or something like that.
-> 
-> I'm fine with doing that if conclusion is the complexity of the change
-> is worth it.
-> 
-> Jonathan
-> 
+> > +/*
+> > + * The "BOSC0200" ACPI identifier used here in the bmc150 driver is not
+>=20
+> s/ACPI//
+> s/in the bmc150 driver//
+>=20
+
+So update the first sentence in the comment to be:
+
+The "BOSC0200" identifier used here is not...
+?
+
+> > + * unique to devices using bmc150. The same "BOSC0200" identifier is f=
+ound
+> > + * in the ACPI tables of the ASUS ROG ALLY and Ayaneo AIR Plus which b=
+oth
+> > + * use a Bosch BMI323 chip. This creates a conflict with duplicate ACPI
+> > + * identifiers which multiple drivers want to use. Fortunately, when t=
+he
+> > + * bmc150 driver starts to load on the ASUS ROG ALLY, the chip id check
+> > + * portion fails (correctly) and a dmesg output similar to this:
+> > + * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be seen.
+> > + * This allows the bmi323 driver to take over for ASUS ROG ALLY.
+> > + */
+> > +
+> >  #ifdef CONFIG_ACPI
+> >  static const struct acpi_device_id bmc150_acpi_dual_accel_ids[] =3D {
+>=20
+> ...it should be here. But don't resend, let's Jonathan to decide in
+> case he won't amend this when applying.
+>=20
+> >         {"BOSC0200"},
+
+This seems to be a stylistic preference on whether or not to include this
+long comment inside of the ACPI match table or not. Stylistically, my
+preference would be to include it directly above the match table and not
+inside of it. I will wait for Jonathan Cameron's comments about what to do
+here.
+
+Best Regards,
+Jon LoBue
+
+--nextPart6036601.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEgd5eGdGJaPFBoUcS4obKiQwb1x0FAmXM1zMACgkQ4obKiQwb
+1x0ccAgArv3qWkWt6UH5uifiZtCLza91N4WMXFpI8nRo4Fra0QbXUC1G+AXoXEXw
+cd4tSDQWwG8ZEjYHvC29+bHEI7xHkbC+e24+2CtW+1mcp49tnpvyA91IYcDL8gq9
+oYodN5UI09Qz80EmMuJoMm9gTmwtkADWsLM9C4SY51KGhoFKS+bhDMX0GY0ysSxE
+Lzjj2VTNN5b+EGyCnLQKNbOmKaS95i6dSTFyfIJMk222rDSIlCaqPSiGg/wrmYlX
+pbL8CqacIi7t7N1ZwDSFpYzwyXe5547YrA77MrichtQOii/Wb6q/y9X+kEa/YnzW
+lrezQHzW/5Iyg97cSC193wgWw2E8Mg==
+=fSFP
+-----END PGP SIGNATURE-----
+
+--nextPart6036601.lOV4Wx5bFT--
+
+
 
 

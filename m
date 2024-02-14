@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-2552-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2553-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF60854CE6
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 16:33:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF45854D19
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 16:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AFED282AE8
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:33:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE891C21E8A
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C16D6087A;
-	Wed, 14 Feb 2024 15:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F17B5D49E;
+	Wed, 14 Feb 2024 15:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPMr9/ve"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FFV+jlNV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455395D728
-	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 15:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEF4524D2
+	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 15:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924715; cv=none; b=EUo16t0xtUABAokYu0lhO20DqgF8GZDHszFjGbapsmOT4UpO9x0ODm9vg8myHqM5XMo6KNuxpCCbBm2TomZiT2vDVdD/iCSStbqTBTJsv1kBB759kt/KEPGEAB9Ae5iFr4ff6N87PK0qUmyyOETx5Uox6Yhwb/lQ6M5pu1AsUdM=
+	t=1707925233; cv=none; b=PouuTK/szjz5Xr6mmY+JQm4ZqFPMb5LMSr4t/1YwqlyA0/Ovl38kfETcV2CLXGyExsWKxVo3zYnOP/9oltRp79o4hdsZaH7g/f5CxoDLG0Pm6GySnKVaSYhn+QxEFt5bLftmvXdKE4cSJSA4qs2XNWnjiA2xLXAKAcvvTmCKhII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924715; c=relaxed/simple;
-	bh=cqLK0LceyFc+ClLG+c+4GIU6I0QZ9dfsIBe7ZZSRPzA=;
+	s=arc-20240116; t=1707925233; c=relaxed/simple;
+	bh=jQDUXQK7NPRc3i9OcZbpeNbfjzPHIR509SWZJu+p0ZA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KHeStXZlVoW8lisD2raan+9hdal/1tXbfDZ8Cah8CxQ/DW6MeQfUavSbhN9Hg5/PXpD74mlDpSN/Q0DqyRpLZ90t00azRO2ag9DnHMho/Uo0WhwH8Xw84rsGn6bI3ujbJPd+72cV7Y29oamPPscJWTx0ZkGqcTXY2c05FIvx6s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPMr9/ve; arc=none smtp.client-ip=209.85.218.42
+	 To:Cc:Content-Type; b=rT0GqmuvOkBAXhQhzVIzExcpEIHuP1lan5bCD9nBRgkstC7cPnUhYf7f2CuVPkDEurRZQfUkta75G4xpp1ID2Aigu/bf2ujV7LyTqWFcKswOgjJ5HCVaQPW2YXYzbPjN8gW5Zr/ntxK2lJk+lkI0cxhNaBgxFrdZ9acL/SGtMt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FFV+jlNV; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a29c4bbb2f4so746503566b.1
-        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 07:31:52 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3d484a58f6so104549866b.3
+        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 07:40:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707924711; x=1708529511; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707925229; x=1708530029; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cqLK0LceyFc+ClLG+c+4GIU6I0QZ9dfsIBe7ZZSRPzA=;
-        b=cPMr9/vegk5ak5amQZeZzoad3CpEh21En1WgWmAOYB8mQiaOC+K76MjJy2RWZ0u37n
-         L/tzlEqApkHoqQDlzwMylixLD8chuNLd8pChVWdRnYtyP587GLl0onOrjsrq4fUsxeDq
-         x8mN1K/bXv8zAeP0M8w+NZswt6f7qto/KakWM2nJZE2cdYn1FJfzYwtEYScBt0xVoQZx
-         wXSVpFH4Zirw7FAPeA26A8ezhqm5TvChMA3Bn0ttLGJw2AocWMaCfA1HfI5f02bdBmNX
-         hUv3OvtNQGqbKGWqcSPdlFa+pV14f4O7zkoCcN4V1A6STfEWLGuhvFWCLSf8w1eG5uNy
-         SUPw==
+        bh=t2iuDChr47jJlJ4lNfkaPh0dfTbnZUl4fNmncYCJNHw=;
+        b=FFV+jlNVp0ZWUB0eEKxkQsjPP1YDnMENFkhHyVHntXhV5uhkMVaWmd2/YfkTL5oSc8
+         KnTeWZ2RCn0+vlnXOotInIuLqPrkLXDInzOTQiUYkMmRt3R3Xi+rbwsM55tzBrFENRER
+         D2aq5QdTsX33ZgKy9icqbvHkM4O7IPYiFfbh9QIXOH3Q1O24cuTxO+GObl+wuggp+xRw
+         Q2ufMeLaeaxjcXHn8HAUr0nGIiEVxEr+qyQ9hUmF+j4IYMu7cyUNrU8ZDefcfs3z1Zs5
+         YJmEgRSHKkYqut5QWEUaT070VLeb38jvluNwD9H8m7x4eP9qMn5SS7Wnjs0AEHcnX0ao
+         XBdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707924711; x=1708529511;
+        d=1e100.net; s=20230601; t=1707925229; x=1708530029;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cqLK0LceyFc+ClLG+c+4GIU6I0QZ9dfsIBe7ZZSRPzA=;
-        b=IvqA1vmO2L5G4OqySuUYkfq+U8EM2mV1v8rM8Y4XhrYC/bh6F0miOAK7ap+QPz2UvG
-         /LlKE0EcOv5LlIb8PY+wMDLokCSVYRCLwxHlIcAxFd6F+e4GggroEghXybjR41y3gRQQ
-         TgfYujLWouFKKX9HINEu8Vm2mv0T/FZi2qUf95/gnJaC2HIvjnHEjsLmbY3rfFKaFrPB
-         r3OZFH3IpQ5KZPyC/UYcD1fgJHq+VgwMc5gbknHbqdp6mFTfy3UGPA9H7jrCBpUSIu4C
-         ToxjQvZ8Drpch17BGHGuwcvxrHjbAanHKbOYz6tPyiuuraKmjqkhFVBn+DNVdSCZMaEj
-         Wt0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWWtOeVvp9FituQ93V3UWwSZiDxqRXgOqlAWCtWHtuI98MmHcg6SwrTqEXG3gzorf44fOL2KuItS7OvLex8gu21La7my09sGUx+
-X-Gm-Message-State: AOJu0YyqWnwAxzFM/WgjjuLQE1ukVk7Bzo05MbNm4ShB7f5c1RKkWlgz
-	ZbCnWjw8O5oq+ATp4w372e07TBBsxYUQiKZq92nMs1ZgrtjnEeCkl1kCT1BFWm5sa3SVWXvGKxm
-	yID2paHDPtelQwRR1r/QWlJu1KaU=
-X-Google-Smtp-Source: AGHT+IHy1hz27/M7CCJdy7jubkByV/ricy7SQ/1SaZu49K0sO2ILiJ0flMAUKXi3tBMoVliCrlHPAXO8cbdT1Hz4k0s=
-X-Received: by 2002:a17:906:c950:b0:a3b:f043:19ab with SMTP id
- fw16-20020a170906c95000b00a3bf04319abmr2042211ejb.21.1707924711162; Wed, 14
- Feb 2024 07:31:51 -0800 (PST)
+        bh=t2iuDChr47jJlJ4lNfkaPh0dfTbnZUl4fNmncYCJNHw=;
+        b=s/97kD2Pz6O0MT5YKPT8jghm+Czeyx+DYZRlNYmajLfQPw6Cgt9CatBEG4Tg58snF1
+         qaXDrOlh/2uFUA29BM4Qs+SWQc4nsKNxr8lkmBNKa9ItS/cDjc+IDM+VbNd0GLdTCC55
+         oO37lnzhyRmXO6rc0i+vP4+nFmKR/aA+Y4xYf9uKoaHW0kvmEDzoU2ElNj81+bjU4N4F
+         deu0K3CTGUlmyWBmtn5wQLelZyRvbrJ/WdjZUK2iVaaZ5izHJHEttr0MdRlArfXrBsi/
+         WhqMD5NnzGkI9ejSrbE5LIE2CCyC0T/c+cbn1eTQI3z31sqVzzKMUEBl9Ihz76VYPmsQ
+         wo6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXw8GTOS7I4cR3+sh1Q0IsHQpkddh0DrQRwxH3p1rlhBiwVTXdlrjfV3nMxPJKBU/i09H1/lzRY+Gqu+XUjCUZdiTgcm9fo98KF
+X-Gm-Message-State: AOJu0Yx5ksHzN/FTaOwafldlcYNZWpC1U0/VSNIG7JXI7bDTqUX/Gb9O
+	uh8yr2vaQ8x9n8Tqsmh50NoNVDIRiQJBWGFygeZE6PEUx3y7SUYZWBcF5R2MWSqSiCZyFiWm1Mm
+	yC9/tHbhEAl9N9zHBrhGIiciqrBY=
+X-Google-Smtp-Source: AGHT+IFr+5eTbLXY6Pl9BKFC0BPF8Sstinir3h4tbZf3WHOtOEsoBZDeJN6YPVfnKPXWWh3YnSQYNqA7pzHgBo7fXBU=
+X-Received: by 2002:a17:906:5596:b0:a38:7015:fc01 with SMTP id
+ y22-20020a170906559600b00a387015fc01mr2060227ejp.2.1707925229170; Wed, 14 Feb
+ 2024 07:40:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,13 +72,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <CAHp75VfcHnswdXnqdtOkX31LbULu8Pa0WjM5EC96OuOBrZGTxA@mail.gmail.com>
- <20240213223910.27127-1-jlobue10@gmail.com> <CAHp75VermmAb3J8D1h-PkyAJ0ZH64vzB3vvQFZzRsr4Nr3o7+g@mail.gmail.com>
- <2192956.irdbgypaU6@nobara-ally-pc>
-In-Reply-To: <2192956.irdbgypaU6@nobara-ally-pc>
+ <20240213223806.27056-1-jlobue10@gmail.com> <CAHp75VdyQxpy5wT=X+0TKnd5x4uJzqcSJikHs2Mx-VOEzbnv9g@mail.gmail.com>
+ <5773370.DvuYhMxLoT@nobara-ally-pc>
+In-Reply-To: <5773370.DvuYhMxLoT@nobara-ally-pc>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 14 Feb 2024 17:31:14 +0200
-Message-ID: <CAHp75Vc+pb6YUhx7QOzWGQwmSgGmq2-7NjJHgOBSekKyqdVg5A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
+Date: Wed, 14 Feb 2024 17:39:53 +0200
+Message-ID: <CAHp75Vf4kMPevMvdi8rApe9PEf2AdhCfTAdVW_6OCp_f3jSPGA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: bmc150: Duplicate ACPI entries
 To: Jonathan LoBue <jlobue10@gmail.com>
 Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, jic23@kernel.org, 
 	jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com, 
@@ -86,38 +86,77 @@ Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, jic23@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024 at 5:15=E2=80=AFPM Jonathan LoBue <jlobue10@gmail.com>=
+On Wed, Feb 14, 2024 at 5:07=E2=80=AFPM Jonathan LoBue <jlobue10@gmail.com>=
  wrote:
-> On Wednesday, February 14, 2024 1:39:19 AM PST Andy Shevchenko wrote:
-> > On Wed, Feb 14, 2024 at 12:39=E2=80=AFAM Jonathan LoBue <jlobue10@gmail=
+> On Wednesday, February 14, 2024 1:35:56 AM PST Andy Shevchenko wrote:
+> > On Wed, Feb 14, 2024 at 12:38=E2=80=AFAM Jonathan LoBue <jlobue10@gmail=
 .com> wrote:
 
 ...
 
-> I do not own a device with a bmc150 chip in it, but the same should be
-> happening in the reverse situation where a device with a bmc150 chip
-> starts to load the bmi323 driver. There is a chip id check in the
-> bmi323_init function where a bmc150 device should fail at, and the driver
-> should release the device. Without a device, I am unable to test that
-> this works correctly or not. Logically the code looks similar between the
-> two drivers.
+> > > Comment describing the duplicate ACPI identifier issue has been added
+> > > before the "BOSC0200" entry here.
+> >
+> > Hmm...
+>
+> You asked for a changelog after the cutter, although it really seems
+> unnecessary to me here as it's repetitive in nature with comment above.
 
-But are those IDs different?
+This is fine and needed. My comment was about the actual placement of
+the comment (should be immediately before the ID entry and not
+detached from it.
 
 ...
 
-> Depending on Jonathan Cameron's preference about where to put the comment=
-,
-> and if he wants a v3 or not... If we want to make a v3, should I create a=
- new thread for that?
+> > > + * The "BOSC0200" ACPI identifier used here in the bmc150 driver is =
+not
+> >
+> > s/ACPI//
+> > s/in the bmc150 driver//
+> >
+>
+> So update the first sentence in the comment to be:
+>
+> The "BOSC0200" identifier used here is not...
+> ?
 
-Sure.
+Yes.
 
-I also recommend looking at my "smart" script [1] that helps sending
-kernel related patches. Improvements are welcome as GH pull-requests!
+> > > + * unique to devices using bmc150. The same "BOSC0200" identifier is=
+ found
+> > > + * in the ACPI tables of the ASUS ROG ALLY and Ayaneo AIR Plus which=
+ both
+> > > + * use a Bosch BMI323 chip. This creates a conflict with duplicate A=
+CPI
+> > > + * identifiers which multiple drivers want to use. Fortunately, when=
+ the
+> > > + * bmc150 driver starts to load on the ASUS ROG ALLY, the chip id ch=
+eck
+> > > + * portion fails (correctly) and a dmesg output similar to this:
+> > > + * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be seen.
+> > > + * This allows the bmi323 driver to take over for ASUS ROG ALLY.
 
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.=
-sh
+...
+
+> > >  static const struct acpi_device_id bmc150_acpi_dual_accel_ids[] =3D =
+{
+> >
+> > ...it should be here. But don't resend, let's Jonathan to decide in
+> > case he won't amend this when applying.
+> >
+> > >         {"BOSC0200"},
+>
+> This seems to be a stylistic preference on whether or not to include this
+> long comment inside of the ACPI match table or not. Stylistically, my
+> preference would be to include it directly above the match table and not
+> inside of it. I will wait for Jonathan Cameron's comments about what to d=
+o
+> here.
+
+In my p.o.v. it's not stylic as we refer to the exact ID and having
+comment detached is, besides being unusual, may go outdated too
+quickly as code is being grown and developed. So, I really want it to
+be closer to the ID entry.
 
 --=20
 With Best Regards,

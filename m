@@ -1,364 +1,143 @@
-Return-Path: <linux-iio+bounces-2560-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2561-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB49A854F66
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 18:06:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE0A854F88
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 18:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56411B2B219
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 17:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2D71F2A57D
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 17:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B3A60868;
-	Wed, 14 Feb 2024 17:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFCC629E9;
+	Wed, 14 Feb 2024 17:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OScvr7L8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17D160DC2;
-	Wed, 14 Feb 2024 17:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F03761672;
+	Wed, 14 Feb 2024 17:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707930104; cv=none; b=OlWuKtyxKlYmFlZJux1YgFgU64nmUFX+wJZ4KWtMEeXE9WlbhowmLYPLBHrzMMNpapqMcfwlml4ZWdmZtmgKOLdxHAPrVRZbQ+vQpHpzFmtUmkk3Z5FPD315PaCQ4nWupvT/jkAINlGyT1FarErZzkvAiy2lzC7vF8G7fu3q0Lg=
+	t=1707930659; cv=none; b=Pyplsot1TNBEmBFnZrjpKMrdoW7Nr48924MtC5DoX7Xq7vG0h26e45HzihMhpnlygTVuuOqtds6MXhBFskj+XE8XOfjyda7Fum+B3DlwuYhZUO1fCvb2g6fCiCIEFLhsRR9AYbV6TzDwH442Lnh0OjtpYcXxVJxbcsySIAX3PkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707930104; c=relaxed/simple;
-	bh=tP7PPmCwxb3w/ItsQ2l3HAoLtVbGyYY+RZhlA6Qba34=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EwqkbesI8t/GyTZoMDJe7ytr1+311ZTSWFH+HBWHWVLQ+yFH/y2TP5soYgrHneO3TZfas4qfnb/3xH1qIAk1yXeQYJC5ORbBWe4z4aj4eE5PPabtxoimMSIUxAdMLuuKDREVc/AjS1qGU0Lx7U2Yiuhg86qk2I5Y2XzhbV3WSXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZkrx594yz6JB09;
-	Thu, 15 Feb 2024 00:57:37 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id B9F1C140B55;
-	Thu, 15 Feb 2024 01:01:37 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 17:01:37 +0000
-Date: Wed, 14 Feb 2024 17:01:36 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: =?UTF-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Icenowy Zheng
-	<icenowy@aosc.io>, Dalton Durst <dalton@ubports.com>, Shoji Keita
-	<awaittrot@shjk.jp>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/4] iio: magnetometer: add a driver for Voltafield
- AF8133J magnetometer
-Message-ID: <20240214170136.00003a22@Huawei.com>
-In-Reply-To: <20240212175410.3101973-4-megi@xff.cz>
-References: <20240212175410.3101973-1-megi@xff.cz>
-	<20240212175410.3101973-4-megi@xff.cz>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707930659; c=relaxed/simple;
+	bh=bvnD+OjoQnA4QkDdelDCXVZDOi9UUtu5BLhiVc3e32w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z5i3KiaxuPayRjfzJn0PTheu3S8FGo6Z/VB/pPaZ2gAml34k33/HQp0iLMseCdQdtDmTv+nkOS8gBhKox1/nTcSR+TYOKU3xGErjH0tVDvsM2OaFHnOn/sLKxTxirkwEmS3YJSniAUep8tghQywuWI0jD1ZsWuSHe7+uwJ+I5Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OScvr7L8; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707930659; x=1739466659;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bvnD+OjoQnA4QkDdelDCXVZDOi9UUtu5BLhiVc3e32w=;
+  b=OScvr7L8nXbFYxNtkbU0GQCN5ROWbLjHxhMyabRsQuZBQOBI3xoOdORB
+   z2MyFVz7ydXu9aK5cOLdMKXQBSijRMFL0dxyO618DNMr1ghmiE5kRLY3W
+   9rRSlRGEL4Ubn5gOnyd12Svns67SBGHJYTvAqvEuNRTe6PNW9O520Z+7H
+   v7KnF4hu+P1vATIWEWUIrRjnIB5WrjEaWcuI7rXqj1YxRBQjIU379voTk
+   NjpMeLWu7Yi3KjRW9UJFh3OOBZHcyaxo3KvjOulpNmkVuXICrCfPa1bfx
+   iUKj7CIuNCD2viFmr9tU3Gj4O7pdGej4ifz4PaOSgM1CQCw6RAQMUD1b7
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="19401889"
+X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
+   d="scan'208";a="19401889"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 09:10:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
+   d="scan'208";a="7868332"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 09:10:51 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 1030E11F7DB;
+	Wed, 14 Feb 2024 19:10:49 +0200 (EET)
+Date: Wed, 14 Feb 2024 17:10:49 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 01/14] device property: Add cleanup.h based
+ fwnode_handle_put() scope based cleanup.
+Message-ID: <Zcz0GVr8TTQWpPci@kekkonen.localdomain>
+References: <20240211192540.340682-1-jic23@kernel.org>
+ <20240211192540.340682-2-jic23@kernel.org>
+ <Zcnbk6_9BU_trU9P@kekkonen.localdomain>
+ <20240212114206.00005b9f@Huawei.com>
+ <ZcoQ3sOcVYbwoHO7@kekkonen.localdomain>
+ <ZcoTOZzJ3ZhSD0oi@smile.fi.intel.com>
+ <ZcoV2xfcCOYKZicY@kekkonen.localdomain>
+ <20240213102245.00005c35@Huawei.com>
+ <20240214140938.00001637@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214140938.00001637@Huawei.com>
 
-On Mon, 12 Feb 2024 18:53:55 +0100
-Ond=C5=99ej Jirman <megi@xff.cz> wrote:
+On Wed, Feb 14, 2024 at 02:09:38PM +0000, Jonathan Cameron wrote:
+> On Tue, 13 Feb 2024 10:22:45 +0000
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Mon, 12 Feb 2024 12:58:03 +0000
+> > Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > 
+> > > On Mon, Feb 12, 2024 at 02:46:49PM +0200, Andy Shevchenko wrote:  
+> > > > On Mon, Feb 12, 2024 at 12:36:46PM +0000, Sakari Ailus wrote:    
+> > > > > On Mon, Feb 12, 2024 at 11:42:06AM +0000, Jonathan Cameron wrote:    
+> > > > 
+> > > > ...
+> > > >     
+> > > > > Hmm. In that case I'd rather make fwnode_handle_put() and similar trivial
+> > > > > functions macros.    
+> > > > 
+> > > > This will kill the type-checking opportunity, so I'm against this move.    
+> > > 
+> > > Then it could be made static inline and moved to the header. I suppose for
+> > > modern compilers there should be no difference in between the two
+> > > optimisation-wise.
+> > >   
+> > 
+> > Sure - will be a bit fiddly as this is only worth doing if we drop
+> > the internal check that buried several macros deep.
+> 
+> Not enough coffee yesterday. We can just move the the existing
+> fwnode_handle_put() to property.h as that includes fwnode.h has
+> all the definitions in it which we need to be able to see.
+> 
+> I think that should be uncontroversial?
 
-> From: Icenowy Zheng <icenowy@aosc.io>
->=20
-> AF8133J is a simple I2C-connected magnetometer, without interrupts.
->=20
-> Add a simple IIO driver for it.
->=20
-> Co-developed-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Dalton Durst <dalton@ubports.com>
-> Signed-off-by: Shoji Keita <awaittrot@shjk.jp>
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+I agree.
 
-
-Hi a few comments (mostly on changes)
-
-The runtime_pm handling can be simplified somewhat if you
-rearrange probe a little.
-
-> diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetomete=
-r/af8133j.c
-> new file mode 100644
-> index 000000000000..1f64a2337f6e
-> --- /dev/null
-> +++ b/drivers/iio/magnetometer/af8133j.c
-> @@ -0,0 +1,528 @@
-
-
-> +static int af8133j_take_measurement(struct af8133j_data *data)
-> +{
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret =3D regmap_write(data->regmap,
-> +			   AF8133J_REG_STATE, AF8133J_REG_STATE_WORK);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* The datasheet says "Mesaure Time <1.5ms" */
-> +	ret =3D regmap_read_poll_timeout(data->regmap, AF8133J_REG_STATUS, val,
-> +				       val & AF8133J_REG_STATUS_ACQ,
-> +				       500, 1500);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret =3D regmap_write(data->regmap,
-> +			   AF8133J_REG_STATE, AF8133J_REG_STATE_STBY);
-
-return regmap_write()
-
-regmap accesses return 0 or a negative error code enabling little code
-reductions like this.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int af8133j_read_measurement(struct af8133j_data *data, __le16 bu=
-f[3])
-> +{
-> +	struct device *dev =3D &data->client->dev;
-> +	int ret;
-> +
-> +	ret =3D pm_runtime_resume_and_get(dev);
-> +	if (ret) {
-> +		/*
-> +		 * Ignore EACCES because that happens when RPM is disabled
-> +		 * during system sleep, while userspace leave eg. hrtimer
-> +		 * trigger attached and IIO core keeps trying to do measurements.
-
-Yeah. We still need to fix that more elegantly :(
-
-> +		 */
-> +		if (ret !=3D -EACCES)
-> +			dev_err(dev, "Failed to power on (%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	scoped_guard(mutex, &data->mutex) {
-> +		ret =3D af8133j_take_measurement(data);
-> +		if (ret)
-> +			goto out_rpm_put;
-> +
-> +		ret =3D regmap_bulk_read(data->regmap, AF8133J_REG_OUT,
-> +				       buf, sizeof(__le16) * 3);
-> +	}
-> +
-> +out_rpm_put:
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return ret;
-> +}
-> +
-
-
-> +
-> +static int af8133j_set_scale(struct af8133j_data *data,
-> +			     unsigned int val, unsigned int val2)
-> +{
-> +	struct device *dev =3D &data->client->dev;
-> +	u8 range;
-> +	int ret =3D 0;
-> +
-> +	if (af8133j_scales[0][0] =3D=3D val && af8133j_scales[0][1] =3D=3D val2)
-> +		range =3D AF8133J_REG_RANGE_12G;
-> +	else if (af8133j_scales[1][0] =3D=3D val && af8133j_scales[1][1] =3D=3D=
- val2)
-> +		range =3D AF8133J_REG_RANGE_22G;
-> +	else
-> +		return -EINVAL;
-> +
-> +	pm_runtime_disable(dev);
-> +
-> +	/*
-> +	 * When suspended, just store the new range to data->range to be
-> +	 * applied later during power up.
-Better to just do
-	pm_runtime_resume_and_get() here
-
-> +	 */
-> +	if (!pm_runtime_status_suspended(dev))
-> +		ret =3D regmap_write(data->regmap, AF8133J_REG_RANGE, range);
-> +
-> +	pm_runtime_enable(dev);
-and
-	pm_runtime_mark_last_busy(dev);
-	pm_runtime_put_autosuspend(dev);
-here.
-
-The userspace interface is only way this function is called so rearrange
-probe a little so that you don't need extra complexity in these functions.
-
-
-> +
-> +	data->range =3D range;
-
-If the write failed, generally don't update the cached value.
-
-> +	return ret;
-> +}
-> +
-> +static int af8133j_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct af8133j_data *data =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		scoped_guard(mutex, &data->mutex)
-> +			ret =3D af8133j_set_scale(data, val, val2);
-
-Look more closely at what scoped_guard() does.
-			return af8133j_set_scale(data, val, val2);
-is fine and simpler as no local variable needed.
-
-> +		return ret;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-> +static void af8133j_power_down_action(void *ptr)
-> +{
-> +	struct af8133j_data *data =3D ptr;
-> +	struct device *dev =3D &data->client->dev;
-> +
-> +	pm_runtime_disable(dev);
-You group together unwinding of calls that occur in very
-different places in probe.  Don't do that as it leas
-to disabling runtime pm having never enabled it
-in some error paths.  That may be safe but if fails the
-obviously correct test.
-
-Instead, have multiple callbacks registered.
-Disable will happen anyway due to=20
-> +	if (!pm_runtime_status_suspended(dev))
-This works as the stub for no runtime pm support returns
-false.
-
-So this is a good solution to the normal dance of turning power on
-just to turn it off shortly afterwards.
-
-> +		af8133j_power_down(data);
-> +	pm_runtime_enable(dev);
-Why?
-
-> +}
-> +
-> +static int af8133j_probe(struct i2c_client *client)
-> +{
-> +	struct device *dev =3D &client->dev;
-> +	struct af8133j_data *data;
-> +	struct iio_dev *indio_dev;
-> +	struct regmap *regmap;
-> +	int ret, i;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	regmap =3D devm_regmap_init_i2c(client, &af8133j_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap),
-> +				     "regmap initialization failed\n");
-> +
-> +	data =3D iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +	data->client =3D client;
-> +	data->regmap =3D regmap;
-> +	data->range =3D AF8133J_REG_RANGE_12G;
-> +	mutex_init(&data->mutex);
-> +
-> +	data->reset_gpiod =3D devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_H=
-IGH);
-> +	if (IS_ERR(data->reset_gpiod))
-> +		return dev_err_probe(dev, PTR_ERR(data->reset_gpiod),
-> +				     "Failed to get reset gpio\n");
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(af8133j_supply_names); i++)
-> +		data->supplies[i].supply =3D af8133j_supply_names[i];
-> +	ret =3D devm_regulator_bulk_get(dev, ARRAY_SIZE(data->supplies),
-> +				      data->supplies);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D iio_read_mount_matrix(dev, &data->orientation);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to read mount matrix\n");
-> +
-> +	ret =3D af8133j_power_up(data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pm_runtime_set_active(dev);
-> +
-> +	ret =3D devm_add_action_or_reset(dev, af8133j_power_down_action, data);
-
-As mentioned above, this should only undo things done before this point.
-So just the af8133j_power_down() I think.
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D af8133j_product_check(data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->info =3D &af8133j_info;
-> +	indio_dev->name =3D "af8133j";
-> +	indio_dev->channels =3D af8133j_channels;
-> +	indio_dev->num_channels =3D ARRAY_SIZE(af8133j_channels);
-> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> +
-> +	ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> +					      &af8133j_trigger_handler, NULL);
-> +	if (ret < 0)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Failed to setup iio triggered buffer\n");
-> +
-> +	ret =3D devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to register iio device");
-> +
-> +	pm_runtime_get_noresume(dev);
-
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, 500);
-> +	ret =3D devm_pm_runtime_enable(dev);
-
-This already deals with pm_runtime_disable() so you shouldn't need do it ma=
-nually.
-Also you want to enable that before the devm_iio_device_register() to avoid
-problems with it not being available as the userspace interfaces are used.
-
-So just move this up a few lines.
-
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return 0;
-> +}
-
+-- 
+Sakari Ailus
 

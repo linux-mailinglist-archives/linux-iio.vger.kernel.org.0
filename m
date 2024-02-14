@@ -1,86 +1,90 @@
-Return-Path: <linux-iio+bounces-2539-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2540-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F00854460
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 09:54:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE7C854463
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 09:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E2F31C26E74
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 08:54:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92CA11C26FDB
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 08:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A568487;
-	Wed, 14 Feb 2024 08:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDE679DC;
+	Wed, 14 Feb 2024 08:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="evW/NNZH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W2/18nlT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC64A111B0;
-	Wed, 14 Feb 2024 08:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0715C125D3;
+	Wed, 14 Feb 2024 08:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707900844; cv=none; b=os+2hshg/osQpZHieNDIbaMVDGBQSgce2DtNHi9rLfofhcQwYLlYtVz3n+7z53Eo3TT6qjdP27Z2AR4SRa91gXBYgqlRCRDBJcLB7Z6LxJzCQoNzt4J30rLg63bRgbXqalrQbGvRDYLzGMzfIV36X6mEFLx6uCpUmqdSB7RfTdI=
+	t=1707900852; cv=none; b=rr3ZxVt7UifkRQSZKiXmHgsXBnPnRmPtdlhJ4tzlxGgjJ3EvCXBnXN7lxob+lLGhDku/pvAZ9zBbqFI87+B+M3gV1Su1EnA6DGlnc9LgaGasi+FDHN1Pkjy0wG2nWUVbxearMZSQt88mUAzbN2BKGsW3fPOxepVoJxS4Hc2DykE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707900844; c=relaxed/simple;
-	bh=/I94xPVjnIq2HIvcr6fMZBPjlXY+pJTqZwOleEM2c3A=;
+	s=arc-20240116; t=1707900852; c=relaxed/simple;
+	bh=JIupEgZdlhi1DwMWARijZBjPHa2nr9YDs+J+OgdUkYY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D7QeJZEYzDwkqfraNJIs1kwpYRK3/T8XsKFB0TylMzRu2xUAUk4t/oSWNbkZXfGHfSBBWsAfH/X+hzcefQW7kdVzoqgtLwnph5szWqTZDE0IUe3Uoqo+rcVmA6sXweetwyZsqbpFaRzfXc1ByigmCv+ogybTCOZt4l7AbLEAWb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=evW/NNZH; arc=none smtp.client-ip=209.85.208.52
+	 MIME-Version; b=Z+rWdj/g5Kd4oFwL2HsG5TMBQQScszlzblkkoci8iw54VrOGGlxG68lfneMGNk4O9t4xWFYk5LOLkAurbr/UcH1UxKV+yDLBgxiCTV40IviWKVa1WvrSOWWJLnr8LT+fr9nRWm/mxVBsVPqy4dc/qifpOspvB095OVWgxy3sk94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W2/18nlT; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-561f4bc306fso1844900a12.1;
-        Wed, 14 Feb 2024 00:54:02 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a26fa294e56so705375366b.0;
+        Wed, 14 Feb 2024 00:54:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707900841; x=1708505641; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707900849; x=1708505649; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+cvQcXYmE+WFFmcvLefoIoD/Qtdtc6QI44VWrdwhE3w=;
-        b=evW/NNZHciFTThwqAQKL3qFXjR5BnQprcPORtMWcvgf+O6Xa5imP7KQ0xULLOZNiAd
-         dRt/Jawv17igdHJZCbYVMvgJCYnZZoCpwDuLoTD57/X5XFy6hRtw6KOx1IoRkOvrdVUS
-         uRCi+cLKXfytPg43Q7DbZ/UIyhp/DIaB2T04WPxWFcmU+kXDprZMsmxwrqUobz1q596i
-         ViIax8Wc0rmO1xt/nMyT+M+zIr6prerq3bnsxXojdAb3R6B2FUCJF4hiSb1sgPRGYkrR
-         wtCMM68yY5sVe0E1m5AaWsrTawZrJTAMxxolJsEWEzSWgaQHeMBYeqWrsP0LnHJUopdk
-         1D9w==
+        bh=Ds/QrOAUfj55fwmiogY89G0c95jjcvTfyeTi82RwVPQ=;
+        b=W2/18nlT/wmqK186h0NIRKl/S3O1p8BMibKV64D27f6Mj8+Nfh2eMApn0p1qOmcxRg
+         4OLnwrFjGWGXNY01Tasl8gSNAXr7kbsCLWqOZ6iwRnOmqdoR3mVBCGuK/gYeQKS3McTe
+         thYksbRtda1PyZd8YH5F837rZGrdzyVOgKjlfjrwsxP1GAIIfD6pGosXodPK2PZRWaN5
+         1BLksh7EUKEhsidiZR18XmRBfpOQKuh4kg93v+lNEOFG2daTCUQHc+9zEs/5AB2Z8a/z
+         VqCZ6WldIOn/kM7h8gBSut91ac2ad2IWmu558RnUdSWfm+l2jJwYlzOum1BwYx6skhT+
+         1O+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707900841; x=1708505641;
+        d=1e100.net; s=20230601; t=1707900849; x=1708505649;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+cvQcXYmE+WFFmcvLefoIoD/Qtdtc6QI44VWrdwhE3w=;
-        b=dvdt5OpNs4SVjUoIrM34v3sRl6OhV6SOzZ/5137OuAFLF9ooWAfI7ijcVX2Bfw0Jgv
-         d01u6AVZxYJw70N5GIKgi4nHtq3z7LEpObGyTMNekKTeHcQXcjftOp29Sji+OQdIhgKK
-         Eirb4lYolIFyYVePP3JpuTL0ds+p6oPV9jdsTS6RuYNflsQj/v8CnprOI9bMCLOKq7hI
-         nTNj+D6yQxGPHCanWijkskBo1kuLZmfjDhMHB4NuWikqrvHzc7d/T/+hyS/RGIlbBWwd
-         1vuossH6Nhj533RiS0Yy7R4vPWkWnJBblDE3uiHBzrHqcBC/p1o7+XdVpe3ahaX/Aotd
-         bKWA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8Xo8r7IlKrIJyw5qbTnfjT0Ww6alvF5nf4OIbf5tbBbr/bwQMFXgklVBRw9iyevryw6LCHV8YDxPKyUpOmaGJyWPeeu2gMVQgo8MuQXg9b2Rx9oebytjZBk8Bicwf/6nDMfqC6Z9w
-X-Gm-Message-State: AOJu0Yy6/6yAjkhLAsgCgHhw4jp+vo8RW/NvhuyUkcnMY3suWfgu2qgn
-	0EvoQHKLtmFEACk07M2U7KpuXZX586/NRUqCwOGoubddntMrKKRS
-X-Google-Smtp-Source: AGHT+IH8EwimYquqU90ikto09jz3bEwyjwWezT7c3AOk30eezhCtXvW5HU5ymplwZcJrrGvTDi7BWQ==
-X-Received: by 2002:a17:906:d28d:b0:a35:e7a1:66ec with SMTP id ay13-20020a170906d28d00b00a35e7a166ecmr1237831ejb.44.1707900840722;
-        Wed, 14 Feb 2024 00:54:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWw7n5FCY7L9mC+XbXBQvV9YVSwYXyOCK3OYyciQY31HBFuRSKrfuafpljzW7oTiuFz+/ZRZYyafRW0b31t8XgYo2/a2rm+W78djCZ0xa0bpiKSjRjs/dKL1EjEpAL4/BN4ZQB5b7gIgyNzSerpNVndx/VLgmzVSFgT7MlA/EmhchJuXPLfVVZj7ulWhk2c8E5H4MzroyfGRd8x2AJVsndhN/oI079/OkGzy/RfoFw/CzfLxLkh/MIbbMIw4oUK7ULVSTLv6/Pxq9CiiH7DAddA
+        bh=Ds/QrOAUfj55fwmiogY89G0c95jjcvTfyeTi82RwVPQ=;
+        b=lcqDyIpWR7y+pYl5tjRyO2XKRu8rWD8/PIKBsCK2sWuzhEjZLPxTAKNYTj4HbSfxAN
+         43W/UeuK8Fm2PAHNbfdofG4JP1netWurbLkkaPqvA679AmA9H14g7+769H0a+fww/eFF
+         xYK7XJmFuqAdsPy1Z1jMzItSTUbSI1115z6amGoe9JT7wxfO0CLVTIE+rzYCuoLipZYa
+         RwafwnLf1OdvyaUVFACRCvK7IouKTzEPamFqvPHF37mK2OqF2m9lerWGkxKTV5SjF/Dm
+         wYlhW3nqDoDkaRlsDMIXmo+yCzSGawMlCXQ9/HEkyKP87Nu10eGD1TC+WMZ97cT81BtA
+         86gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXanTfprVQBsjYTdix30b3orEpx3jGWONlP0GNwrwmPJpEIOWh02+q5Mej0HaaRWynvdT2VdlwmYSRlZMk+KzKYUcxDrY9xmV+/Cb/jzuZhaqZ/nmoTzLs7iyCQHaXBzRV2TxjzD2uN1xn2TQ7HnYsnUf6x1GQuvlLe63ZGK7smrp2zCQ==
+X-Gm-Message-State: AOJu0YwgsUOXihQGyvmFIhxNRdQ2jGHlLRecBndOf7uWf2I5+0O8EAYb
+	1PiKqywHTTrHZsvWY4CU6hQMlFh19qJ6cGWmHnILDojPpfHC9Guc
+X-Google-Smtp-Source: AGHT+IHtQkkg7cmPOVNhPqSRXK5hIlaovqOGnDqh3sNWSzqQsse6el+sdvq++8Bg64n7SL5C0jJ2WQ==
+X-Received: by 2002:a17:906:118d:b0:a3d:4036:4543 with SMTP id n13-20020a170906118d00b00a3d40364543mr858290eja.51.1707900848950;
+        Wed, 14 Feb 2024 00:54:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVEJYQ2MujHYQ4aClq9TFiI/b7CEexbSpF3JNd4i7OZvcIvbNQufcjzKwdtnXvO0cP9yuL59lijEE++hQo3ZDB1scsWxygqwZ70735Yj0gJB7s3FJ54vSyACtrIe1cVw6b5hfxFHxaWfprgP/DMa5eTF1w4RJkzlKUprjkMcg5HpzJ8eXAPU9FVFpdnR6HCWNFUD9KLOVtLN/rJCIucyHGlCz16qTgGewEwZ7686VR8+aX5hUuL2T7cHkd6BYDy36K23YJH1aaHucoMRHVXG9RgK94pn5+l3BstckIkciTOPKuqpRKqd/NJYSHLgTTrPiqyvvhaa+SSyHKvMvumGCvi4WtmNw0s7RqBhcJHY+a3lQZmDpL0ULk/JU3qBbMuHStaiwkYcNcsS6VYGrxeShvreiFZomM5OCA=
 Received: from debian.fritz.box ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id tj3-20020a170907c24300b00a3cf5450b28sm1617264ejc.189.2024.02.14.00.53.59
+        by smtp.gmail.com with ESMTPSA id tj3-20020a170907c24300b00a3cf5450b28sm1617264ejc.189.2024.02.14.00.54.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 00:54:00 -0800 (PST)
+        Wed, 14 Feb 2024 00:54:08 -0800 (PST)
 From: Dimitri Fedrau <dima.fedrau@gmail.com>
 To: 
 Cc: Dimitri Fedrau <dima.fedrau@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Li peiyu <579lpy@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/3] iio: humidity: hdc3020: switch to 16bit register defines
-Date: Wed, 14 Feb 2024 09:53:43 +0100
-Message-Id: <20240214085350.19382-2-dima.fedrau@gmail.com>
+Subject: [PATCH v4 2/3] dt-bindings: iio: humidity: hdc3020: add interrupt bindings in example
+Date: Wed, 14 Feb 2024 09:53:44 +0100
+Message-Id: <20240214085350.19382-3-dima.fedrau@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240214085350.19382-1-dima.fedrau@gmail.com>
 References: <20240214085350.19382-1-dima.fedrau@gmail.com>
@@ -92,345 +96,33 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to 16bit register defines and drop the const u8 register pairs.
-By doing so we change the parameter of functions for reading and writing
-to the device. Additionally create helper functions that are aware of the
-new register format and apply them wherever possible.
+Add interrupt bindings in example.
 
 Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
 ---
- drivers/iio/humidity/hdc3020.c | 200 +++++++++++----------------------
- 1 file changed, 63 insertions(+), 137 deletions(-)
+ Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
-index ed70415512f6..4ae4dd3187db 100644
---- a/drivers/iio/humidity/hdc3020.c
-+++ b/drivers/iio/humidity/hdc3020.c
-@@ -21,26 +21,22 @@
+diff --git a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+index 7f6d0f9edc75..8b5dedd1a598 100644
+--- a/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
++++ b/Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml
+@@ -43,6 +43,7 @@ additionalProperties: false
  
- #include <linux/iio/iio.h>
- 
--#define HDC3020_HEATER_CMD_MSB		0x30 /* shared by all heater commands */
--#define HDC3020_HEATER_ENABLE		0x6D
--#define HDC3020_HEATER_DISABLE		0x66
--#define HDC3020_HEATER_CONFIG		0x6E
-+#define HDC3020_S_AUTO_10HZ_MOD0	0x2737
-+#define HDC3020_HEATER_DISABLE		0x3066
-+#define HDC3020_HEATER_ENABLE		0x306D
-+#define HDC3020_HEATER_CONFIG		0x306E
-+#define HDC3020_EXIT_AUTO		0x3093
-+#define HDC3020_R_T_RH_AUTO		0xE000
-+#define HDC3020_R_T_LOW_AUTO		0xE002
-+#define HDC3020_R_T_HIGH_AUTO		0xE003
-+#define HDC3020_R_RH_LOW_AUTO		0xE004
-+#define HDC3020_R_RH_HIGH_AUTO		0xE005
- 
- #define HDC3020_READ_RETRY_TIMES	10
- #define HDC3020_BUSY_DELAY_MS		10
- 
- #define HDC3020_CRC8_POLYNOMIAL		0x31
- 
--static const u8 HDC3020_S_AUTO_10HZ_MOD0[2] = { 0x27, 0x37 };
--
--static const u8 HDC3020_EXIT_AUTO[2] = { 0x30, 0x93 };
--
--static const u8 HDC3020_R_T_RH_AUTO[2] = { 0xE0, 0x00 };
--static const u8 HDC3020_R_T_LOW_AUTO[2] = { 0xE0, 0x02 };
--static const u8 HDC3020_R_T_HIGH_AUTO[2] = { 0xE0, 0x03 };
--static const u8 HDC3020_R_RH_LOW_AUTO[2] = { 0xE0, 0x04 };
--static const u8 HDC3020_R_RH_HIGH_AUTO[2] = { 0xE0, 0x05 };
--
- struct hdc3020_data {
- 	struct i2c_client *client;
- 	/*
-@@ -82,7 +78,7 @@ static const struct iio_chan_spec hdc3020_channels[] = {
- 
- DECLARE_CRC8_TABLE(hdc3020_crc8_table);
- 
--static int hdc3020_write_bytes(struct hdc3020_data *data, const u8 *buf, u8 len)
-+static int hdc3020_write_bytes(struct hdc3020_data *data, u8 *buf, u8 len)
- {
- 	struct i2c_client *client = data->client;
- 	struct i2c_msg msg;
-@@ -90,7 +86,7 @@ static int hdc3020_write_bytes(struct hdc3020_data *data, const u8 *buf, u8 len)
- 
- 	msg.addr = client->addr;
- 	msg.flags = 0;
--	msg.buf = (char *)buf;
-+	msg.buf = buf;
- 	msg.len = len;
- 
- 	/*
-@@ -109,26 +105,28 @@ static int hdc3020_write_bytes(struct hdc3020_data *data, const u8 *buf, u8 len)
- 	return -ETIMEDOUT;
- }
- 
--static int hdc3020_read_bytes(struct hdc3020_data *data, const u8 *buf,
--			      void *val, int len)
-+static
-+int hdc3020_read_bytes(struct hdc3020_data *data, u16 reg, u8 *buf, int len)
- {
-+	u8 reg_buf[2];
- 	int ret, cnt;
- 	struct i2c_client *client = data->client;
- 	struct i2c_msg msg[2] = {
- 		[0] = {
- 			.addr = client->addr,
- 			.flags = 0,
--			.buf = (char *)buf,
-+			.buf = reg_buf,
- 			.len = 2,
- 		},
- 		[1] = {
- 			.addr = client->addr,
- 			.flags = I2C_M_RD,
--			.buf = val,
-+			.buf = buf,
- 			.len = len,
- 		},
- 	};
- 
-+	put_unaligned_be16(reg, reg_buf);
- 	/*
- 	 * During the measurement process, HDC3020 will not return data.
- 	 * So wait for a while and try again
-@@ -145,48 +143,12 @@ static int hdc3020_read_bytes(struct hdc3020_data *data, const u8 *buf,
- 	return -ETIMEDOUT;
- }
- 
--static int hdc3020_read_measurement(struct hdc3020_data *data,
--				    enum iio_chan_type type, int *val)
--{
--	u8 crc, buf[6];
--	int ret;
--
--	ret = hdc3020_read_bytes(data, HDC3020_R_T_RH_AUTO, buf, 6);
--	if (ret < 0)
--		return ret;
--
--	/* CRC check of the temperature measurement */
--	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
--	if (crc != buf[2])
--		return -EINVAL;
--
--	/* CRC check of the relative humidity measurement */
--	crc = crc8(hdc3020_crc8_table, buf + 3, 2, CRC8_INIT_VALUE);
--	if (crc != buf[5])
--		return -EINVAL;
--
--	if (type == IIO_TEMP)
--		*val = get_unaligned_be16(buf);
--	else if (type == IIO_HUMIDITYRELATIVE)
--		*val = get_unaligned_be16(&buf[3]);
--	else
--		return -EINVAL;
--
--	return 0;
--}
--
--/*
-- * After exiting the automatic measurement mode or resetting, the peak
-- * value will be reset to the default value
-- * This method is used to get the highest temp measured during automatic
-- * measurement
-- */
--static int hdc3020_read_high_peak_t(struct hdc3020_data *data, int *val)
-+static int hdc3020_read_be16(struct hdc3020_data *data, u16 reg)
- {
- 	u8 crc, buf[3];
- 	int ret;
- 
--	ret = hdc3020_read_bytes(data, HDC3020_R_T_HIGH_AUTO, buf, 3);
-+	ret = hdc3020_read_bytes(data, reg, buf, 3);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -194,73 +156,43 @@ static int hdc3020_read_high_peak_t(struct hdc3020_data *data, int *val)
- 	if (crc != buf[2])
- 		return -EINVAL;
- 
--	*val = get_unaligned_be16(buf);
--
--	return 0;
-+	return get_unaligned_be16(buf);
- }
- 
--/*
-- * This method is used to get the lowest temp measured during automatic
-- * measurement
-- */
--static int hdc3020_read_low_peak_t(struct hdc3020_data *data, int *val)
-+static int hdc3020_exec_cmd(struct hdc3020_data *data, u16 reg)
- {
--	u8 crc, buf[3];
--	int ret;
--
--	ret = hdc3020_read_bytes(data, HDC3020_R_T_LOW_AUTO, buf, 3);
--	if (ret < 0)
--		return ret;
--
--	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
--	if (crc != buf[2])
--		return -EINVAL;
--
--	*val = get_unaligned_be16(buf);
-+	u8 reg_buf[2];
- 
--	return 0;
-+	put_unaligned_be16(reg, reg_buf);
-+	return hdc3020_write_bytes(data, reg_buf, 2);
- }
- 
--/*
-- * This method is used to get the highest humidity measured during automatic
-- * measurement
-- */
--static int hdc3020_read_high_peak_rh(struct hdc3020_data *data, int *val)
-+static int hdc3020_read_measurement(struct hdc3020_data *data,
-+				    enum iio_chan_type type, int *val)
- {
--	u8 crc, buf[3];
-+	u8 crc, buf[6];
- 	int ret;
- 
--	ret = hdc3020_read_bytes(data, HDC3020_R_RH_HIGH_AUTO, buf, 3);
-+	ret = hdc3020_read_bytes(data, HDC3020_R_T_RH_AUTO, buf, 6);
- 	if (ret < 0)
- 		return ret;
- 
-+	/* CRC check of the temperature measurement */
- 	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
- 	if (crc != buf[2])
- 		return -EINVAL;
- 
--	*val = get_unaligned_be16(buf);
--
--	return 0;
--}
--
--/*
-- * This method is used to get the lowest humidity measured during automatic
-- * measurement
-- */
--static int hdc3020_read_low_peak_rh(struct hdc3020_data *data, int *val)
--{
--	u8 crc, buf[3];
--	int ret;
--
--	ret = hdc3020_read_bytes(data, HDC3020_R_RH_LOW_AUTO, buf, 3);
--	if (ret < 0)
--		return ret;
--
--	crc = crc8(hdc3020_crc8_table, buf, 2, CRC8_INIT_VALUE);
--	if (crc != buf[2])
-+	/* CRC check of the relative humidity measurement */
-+	crc = crc8(hdc3020_crc8_table, buf + 3, 2, CRC8_INIT_VALUE);
-+	if (crc != buf[5])
- 		return -EINVAL;
- 
--	*val = get_unaligned_be16(buf);
-+	if (type == IIO_TEMP)
-+		*val = get_unaligned_be16(buf);
-+	else if (type == IIO_HUMIDITYRELATIVE)
-+		*val = get_unaligned_be16(&buf[3]);
-+	else
-+		return -EINVAL;
- 
- 	return 0;
- }
-@@ -286,28 +218,28 @@ static int hdc3020_read_raw(struct iio_dev *indio_dev,
- 	}
- 	case IIO_CHAN_INFO_PEAK: {
- 		guard(mutex)(&data->lock);
--		if (chan->type == IIO_TEMP) {
--			ret = hdc3020_read_high_peak_t(data, val);
--			if (ret < 0)
--				return ret;
--		} else {
--			ret = hdc3020_read_high_peak_rh(data, val);
--			if (ret < 0)
--				return ret;
--		}
-+		if (chan->type == IIO_TEMP)
-+			ret = hdc3020_read_be16(data, HDC3020_R_T_HIGH_AUTO);
-+		else
-+			ret = hdc3020_read_be16(data, HDC3020_R_RH_HIGH_AUTO);
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = ret;
- 		return IIO_VAL_INT;
- 	}
- 	case IIO_CHAN_INFO_TROUGH: {
- 		guard(mutex)(&data->lock);
--		if (chan->type == IIO_TEMP) {
--			ret = hdc3020_read_low_peak_t(data, val);
--			if (ret < 0)
--				return ret;
--		} else {
--			ret = hdc3020_read_low_peak_rh(data, val);
--			if (ret < 0)
--				return ret;
--		}
-+		if (chan->type == IIO_TEMP)
-+			ret = hdc3020_read_be16(data, HDC3020_R_T_LOW_AUTO);
-+		else
-+			ret = hdc3020_read_be16(data, HDC3020_R_RH_LOW_AUTO);
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = ret;
- 		return IIO_VAL_INT;
- 	}
- 	case IIO_CHAN_INFO_SCALE:
-@@ -352,23 +284,17 @@ static int hdc3020_update_heater(struct hdc3020_data *data, int val)
- 	if (val < hdc3020_heater_vals[0] || val > hdc3020_heater_vals[2])
- 		return -EINVAL;
- 
--	buf[0] = HDC3020_HEATER_CMD_MSB;
-+	if (!val)
-+		hdc3020_exec_cmd(data, HDC3020_HEATER_DISABLE);
- 
--	if (!val) {
--		buf[1] = HDC3020_HEATER_DISABLE;
--		return hdc3020_write_bytes(data, buf, 2);
--	}
--
--	buf[1] = HDC3020_HEATER_CONFIG;
-+	put_unaligned_be16(HDC3020_HEATER_CONFIG, buf);
- 	put_unaligned_be16(val & GENMASK(13, 0), &buf[2]);
- 	buf[4] = crc8(hdc3020_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
- 	ret = hdc3020_write_bytes(data, buf, 5);
- 	if (ret < 0)
- 		return ret;
- 
--	buf[1] = HDC3020_HEATER_ENABLE;
--
--	return hdc3020_write_bytes(data, buf, 2);
-+	return hdc3020_exec_cmd(data, HDC3020_HEATER_ENABLE);
- }
- 
- static int hdc3020_write_raw(struct iio_dev *indio_dev,
-@@ -397,7 +323,7 @@ static const struct iio_info hdc3020_info = {
- 
- static void hdc3020_stop(void *data)
- {
--	hdc3020_write_bytes((struct hdc3020_data *)data, HDC3020_EXIT_AUTO, 2);
-+	hdc3020_exec_cmd((struct hdc3020_data *)data, HDC3020_EXIT_AUTO);
- }
- 
- static int hdc3020_probe(struct i2c_client *client)
-@@ -425,7 +351,7 @@ static int hdc3020_probe(struct i2c_client *client)
- 	indio_dev->channels = hdc3020_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(hdc3020_channels);
- 
--	ret = hdc3020_write_bytes(data, HDC3020_S_AUTO_10HZ_MOD0, 2);
-+	ret = hdc3020_exec_cmd(data, HDC3020_S_AUTO_10HZ_MOD0);
- 	if (ret)
- 		return dev_err_probe(&client->dev, ret,
- 				     "Unable to set up measurement\n");
+ examples:
+   - |
++    #include <dt-bindings/interrupt-controller/irq.h>
+     i2c {
+         #address-cells = <1>;
+         #size-cells = <0>;
+@@ -51,5 +52,7 @@ examples:
+             compatible = "ti,hdc3021", "ti,hdc3020";
+             reg = <0x47>;
+             vdd-supply = <&vcc_3v3>;
++            interrupt-parent = <&gpio3>;
++            interrupts = <23 IRQ_TYPE_EDGE_RISING>;
+         };
+     };
 -- 
 2.39.2
 

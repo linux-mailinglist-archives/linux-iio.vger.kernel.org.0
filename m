@@ -1,143 +1,130 @@
-Return-Path: <linux-iio+bounces-2570-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2571-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5EE855658
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 23:51:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F2F855670
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 23:58:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B235F1C21D1D
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 22:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D9428A311
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 22:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84F12562F;
-	Wed, 14 Feb 2024 22:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B5155E63;
+	Wed, 14 Feb 2024 22:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e782+vpg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m4+rjoEj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3319F182DF
-	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 22:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAB41420A3
+	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 22:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707951107; cv=none; b=ofyAAdXYr1+ow6Za35Uwq/UJBduRQsyBKwyTzJd+CuRqlSM/i319aZbYmbMZalFvxIW/zttmH4PJrGm9dfFQNJQIcOAthZBCAdi0O2Wc+6hINQPYvXTMWvHNWcc6j5i8A8PymUg/JhaBJ1+7uF+aecnptp5JLRwF3bLtj8j4tho=
+	t=1707951506; cv=none; b=h0OwGB6A0i+dI+iiQUXMYTqMQW16ePLVqBV/QT3/t+euAeyRcAV05WI22iTxROnXjaOamArNd/NQqPVdt41FsC28BpY4ehTZiQ+fnY/rgMPE+kos785jTRmsndHCrgIjL7YNGmez/tPwjaeR530UW27rrujaVIG7uhmQp2NUmoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707951107; c=relaxed/simple;
-	bh=IS3+qlxe4uPc2lqIXTZy/usQ2+IBHgxYfJ+fyzH9UvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ5kqZoDSslrBlg+S4nNl/78nBnogkd8PC0iUckwSHl80a5GBzZv+fCU7CUMa++75mCuMhr0Lsjne4i+tSB40iBl0g79tDaoA8VCXG6FgUoQ8fZCKn2OC1pbdTjPCZGvB3r8KVPN4jHGmxqFTcd6+5DtIm9KKMdq4wru1TY2Uig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e782+vpg; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1707951506; c=relaxed/simple;
+	bh=nHDYxuJzDZzUExkAmva8SO34ZMf6jqhtrRlqDR9Y3PI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AKfWgrxa2yiP+nI8tEcaL31UflUsaczdy2g4v5KvetnGa9/d8R3zjchhmSC8FPCNrarIgOWUpA55U57KJArrth0oX3Wl/7WcdJIvAJqqVrvHOVfYrZRGqm0jCEGCiJSwXHF37tOc56rLvhpyleclqzbO3xzLjsj/zJFX2cP76sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m4+rjoEj; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6de3141f041so274530b3a.0
-        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 14:51:45 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d91397bd22so1876065ad.0
+        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 14:58:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707951105; x=1708555905; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IEMAaM83LUC0sjGc8EGMOJzmcRT1v8y51nxxG0jahfI=;
-        b=e782+vpgEpnGhZlNuF4bwyBwR7TCRKlWo8Rp0LKPS1rh3QZaoshS9jQbUKxdfC9C7Y
-         vjDR+mpd3ErQYkXx+y5fl7MTPqek97rwmX8byjWm4gJmnB6wN0xgHaUfPm5qNz92Df4r
-         d44u4bOn6h2Pkeseh/qfiu7gtMj6RYV6fUZjyTmierUZ5C5VnQ52Gb1ptnmxLpcj0bT2
-         nGv1ew0xqVPjJb4RqIcHTt1k9SJHz/BV2TMy8mkBs9f02gm+PrXvMdUE1kEFSzEW8Pq+
-         XOgn5/QQSrpS/MDVvFr7XUssDOd3q+fqL0psSh28eTI9NQsxkT3KuhT17e6Oc15ZtwG+
-         XxgQ==
+        d=gmail.com; s=20230601; t=1707951504; x=1708556304; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iVS68OiApOOyfI1PyYAy4HH++SEE/fZ4CseAWhKfD8s=;
+        b=m4+rjoEj8gASrk8wsf4UhS1Tr7EylM39kGfwErOAXqxbKCCwLZ0jLp16AKnaUjctNL
+         TtaEFM5Pg6MDbMhRY8NDgKun+okX6dPunhB3TbWJTd6LvIPc56oFUTrxHdNIUWVUl15/
+         izyVb0jJjnrs73KxNdSS4OqJD2ZunDkvYcxFgo9PwKIgoRO5DLnp/bFC+2w+K+t5Gnyb
+         L5Aav3gvW6J48iQM2CsBK7RWu5GtoH+8G5L7/PtWJCw66+3XDhkvfa5ACZwhOr9FvEJy
+         2wvqwUjwELGs6Oa4YEgqtuWtx/42udpWV4khCm8FZbMrVA9AQMTgpXmSu3skYM7BdQm8
+         QDiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707951105; x=1708555905;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IEMAaM83LUC0sjGc8EGMOJzmcRT1v8y51nxxG0jahfI=;
-        b=p5Ddu/oEVJAhTz3pc207BDcZkcoDoHpeExwng2btCRMN8B56FcL5VBKMRWg3/ZUmWt
-         IhLl2LorBSulz5/9BCqyQbzqXE3AnnjVIWEUfP3ffd7IKXEXm+/0decXx2amr/PPDwhd
-         DrxKwtPSfwzI50+Pyzbw4I+7ErePI3YEp7xBE9LNS2gVjlSjS38ZcYpGIw8wMqlG0N+D
-         uD/qIyrKbMbTHwNXp3g07XAVJDABZ1kmq9imGdEWf2BQpFBu+HGigmY+7QJBkd//xCM1
-         onTweYtTzHUJLjiUdeWB2xKF1xQsujyY2cC/tI/zxmThgItNqecBB+zWpZynWUiExDLH
-         kN6A==
-X-Gm-Message-State: AOJu0YwFSHy/wqRfmqQ/OUImtnTdW8RUw8DKG6fN5UlbdAz0HecgxuN6
-	LOpKpcaldKHnwzyCfEl1L+haumGG4/SJmekZOkvJffPkyTTySP8J
-X-Google-Smtp-Source: AGHT+IH+n0Yew77ZKwsu0vYmaLmr+HaHVGM/T95QhCxAvoO614dU8v9Cki2xCeNSFPl1SQtoX3/PEA==
-X-Received: by 2002:a05:6a20:d04b:b0:19e:a527:96be with SMTP id hv11-20020a056a20d04b00b0019ea52796bemr205399pzb.43.1707951105332;
-        Wed, 14 Feb 2024 14:51:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX9+fI5SDIvmxKycJrSh0opwnoxKKIQ9hTCiWqak9aAwtG/fSsolgPirqQBUupqWPaICSKrjGZhQ1qNC2FzUk4I3E8myAiCcR/l4VpIfyOwLSIbnGG4rqawgDFcd3pSuQCrAcS0YyHicGDvR8cwvx24EXRUpYF3K83HLCkOyIalER5ccjhO5u2+6JvISH1ishpSSNIEyVZcLlYdMBWln/UNYARYhc6rTmCapcpAuak6DloxdRMERV08bKuOvvsvOCv3ojYN851qr5nbaHU48VSLSaTXTvGzijacNGAzB7HhY5ODdTbV6FGzQ9Oq0W0t24+HuvaiBnk3JmOtloJCGip6Nxo=
-Received: from nobara-ALLY-pc.. (076-167-168-058.res.spectrum.com. [76.167.168.58])
-        by smtp.gmail.com with ESMTPSA id f10-20020a056a001aca00b006e0416c42c3sm9746813pfv.198.2024.02.14.14.51.44
+        d=1e100.net; s=20230601; t=1707951504; x=1708556304;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iVS68OiApOOyfI1PyYAy4HH++SEE/fZ4CseAWhKfD8s=;
+        b=Gp1xyng4rXTcwXG8XlIfReExpf24rZZM1T08EckXekwrQTuh4bXmALUPfSmIccY1f8
+         ZjH85eR40yjOt1PR/pkouTdnayNt3E3puzJiQrsRVaCb2X8V8tBeQCLa/+dG92sbH2FM
+         dJ/vLm8Y0+KR59AC2A4FUcw1W4sZctaud3DAKl3CCsN+2Ze1ui8iEEL5DcRaixIOVhFF
+         xUhZGtsLtb0p9b2MUiME9wihs3m+CClaR3jFzS2uULGrvoiOGWL5ASaN+zb9MMGKSjsR
+         VXQxctBOxXxhqFrLJPMmGnq3qjfYJpmk1OGNzZqoY85xl8cuHPQHiYZwV1TGnqHpWZ/j
+         AH2g==
+X-Gm-Message-State: AOJu0YyNAXqdmREYJpVk+WZ6Yrm4TOHRZdMzdch/GN10JEBO5NmgS9M4
+	PmSvzSbvghHJWAtWpGJPp4uVP7V/fjC3xw2TlHBd+v8XBwLmzp17
+X-Google-Smtp-Source: AGHT+IENOeG33hMO/im0QDeBLM545e7napwS3uz9X8tjvvZWAD6V0Jn9/eW58rLC5fBVhNjEKpeX3Q==
+X-Received: by 2002:a17:903:984:b0:1db:57e6:431 with SMTP id mb4-20020a170903098400b001db57e60431mr62204plb.17.1707951504425;
+        Wed, 14 Feb 2024 14:58:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXWEHc/o7nysTnLSwr8xUAgXOHeoOqorWf+BUBN904+/cgJQAmlh0hHEgJXHK/gm/pO1eOSQld5IxcrFdpdbQP53DCVUtqloDQj4GWmcr9dTB73n8Rf3IZq8Qwcr6cQEzmFvGSZfUoQicJPw1Oyc+6Gh8GBxTvnMu5srlozW6uI0CEoVGyjgWO5aFF4oiK6A/8ruxQOB/9D/L/1XKaPedimF959exohDNRKqgB4LWA0Ul8bV0fXLl/HrDoyb/iFoepUvtYHeYrkvchmYImqXE73f4EOMbOG7XGOuWk4mp3NeR/G2cXzcQFv75wZeJTS
+Received: from nobara-ally-pc.localnet (076-167-168-058.res.spectrum.com. [76.167.168.58])
+        by smtp.gmail.com with ESMTPSA id ku14-20020a170903288e00b001db5ea6664asm1574584plb.21.2024.02.14.14.58.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 14:51:45 -0800 (PST)
+        Wed, 14 Feb 2024 14:58:24 -0800 (PST)
 From: Jonathan LoBue <jlobue10@gmail.com>
 To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	andy.shevchenko@gmail.com,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	jagathjog1996@gmail.com,
-	luke@ljones.dev,
-	benato.denis96@gmail.com,
-	lkml@antheas.dev,
-	derekjohn.clark@gmail.com,
-	jlobue10 <jlobue10@gmail.com>
-Subject: [PATCH v3 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
-Date: Wed, 14 Feb 2024 14:51:43 -0800
-Message-ID: <20240214225143.24897-1-jlobue10@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <12397335.O9o76ZdvQC@nobara-ally-pc>
-References: <12397335.O9o76ZdvQC@nobara-ally-pc>
+Cc: linux-iio@vger.kernel.org, andy.shevchenko@gmail.com, hdegoede@redhat.com,
+ ilpo.jarvinen@linux.intel.com, jagathjog1996@gmail.com, luke@ljones.dev,
+ benato.denis96@gmail.com, lkml@antheas.dev, derekjohn.clark@gmail.com
+Subject: [PATCH v4 0/2] Add bmi323 support for ASUS ROG ALLY
+Date: Wed, 14 Feb 2024 14:58:22 -0800
+Message-ID: <4563303.LvFx2qVVIh@nobara-ally-pc>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart2332044.ElGaqSPkdT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 
-From: jlobue10 <jlobue10@gmail.com>
+--nextPart2332044.ElGaqSPkdT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Jonathan LoBue <jlobue10@gmail.com>
+To: jic23@kernel.org
+Subject: [PATCH v4 0/2] Add bmi323 support for ASUS ROG ALLY
+Date: Wed, 14 Feb 2024 14:58:22 -0800
+Message-ID: <4563303.LvFx2qVVIh@nobara-ally-pc>
+MIME-Version: 1.0
 
----
- drivers/iio/imu/bmi323/bmi323_i2c.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+From: Jonathan LoBue <jlobue10@gmail.com>
 
-diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-index 20a8001b9956..f7550503e47e 100644
---- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-+++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-@@ -93,6 +93,25 @@ static int bmi323_i2c_probe(struct i2c_client *i2c)
- 	return bmi323_core_probe(dev);
- }
- 
-+static const struct acpi_device_id bmi323_acpi_match[] = {
-+	/*
-+ 	 * The "BOSC0200" identifier used here is not unique to bmi323 devices.
-+ 	 * The same "BOSC0200" identifier is found in the ACPI tables of devices
-+ 	 * using the bmc150 chip. This creates a conflict with duplicate ACPI
-+ 	 * identifiers which multiple drivers want to use. If a non-bmi323 device
-+ 	 * starts to load with this "BOSC0200" ACPI match here, then the chip
-+ 	 * ID check portion should fail because the chip IDs received (via i2c) are
-+ 	 * unique between bmc150 and bmi323 and the driver should relinquish the
-+ 	 * device. If and when a different driver (such as bmc150) starts to load
-+ 	 * with the "BOSC0200" ACPI match, a short reset should ensure that the
-+ 	 * device is not in a bad state during that driver initialization. This
-+ 	 * device reset does occur in both the bmi323 and bmc150 init sequences.
-+ 	 */
-+	{ "BOSC0200" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, bmi323_acpi_match);
-+
- static const struct i2c_device_id bmi323_i2c_ids[] = {
- 	{ "bmi323" },
- 	{ }
-@@ -109,6 +128,7 @@ static struct i2c_driver bmi323_i2c_driver = {
- 	.driver = {
- 		.name = "bmi323",
- 		.of_match_table = bmi323_of_i2c_match,
-+		.acpi_match_table = bmi323_acpi_match,
- 	},
- 	.probe = bmi323_i2c_probe,
- 	.id_table = bmi323_i2c_ids,
--- 
+Changes since v3:
+- Fixed missing summaries.
+
+Jonathan LoBue (2):
+  iio: accel: bmc150: Duplicate ACPI entries
+  iio: imu: bmi323: Add and enable ACPI Match Table
+
+ drivers/iio/accel/bmc150-accel-i2c.c | 12 ++++++++++++
+ drivers/iio/imu/bmi323/bmi323_i2c.c  | 20 ++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+--
 2.43.0
+
+--nextPart2332044.ElGaqSPkdT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEgd5eGdGJaPFBoUcS4obKiQwb1x0FAmXNRY4ACgkQ4obKiQwb
+1x2azAgAng95RkNvpB8rLk3FRzWB0lyF4nZ26KLkCcd7HomjgJL5PiTmJ/4+SlsP
+dfAUXSlEmsy/tFVT4OJV3d1L0fni4+E91ACE8gENam0BLV7w1Dca0Qv7EpTkdqAy
+zgtHTgmsLkW+ney/7pmggCfAJb1KE56xbGriIfc1rRN0VFg38RCxjPieQM8gLww7
+Q8n3B0+TYP3ZpFwtyk+w0BzVh7DAhhT4BAmkLvifaUDgLxiBwfhSlbkmfNnk54Mu
+Wb744YQu/QnOgWEclgbiNAlh5Tqd8pqFHw16WIUDALo/HT0vIa7XON7JXxMUdL/4
+y9/4Uf6oGGOaK4eWOQpn93vAVOCX6w==
+=tCnH
+-----END PGP SIGNATURE-----
+
+--nextPart2332044.ElGaqSPkdT--
+
+
 
 

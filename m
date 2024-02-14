@@ -1,119 +1,117 @@
-Return-Path: <linux-iio+bounces-2565-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2566-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332778550A2
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 18:45:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B568551FD
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 19:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0011F23850
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 17:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC3128919F
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 18:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D417126F26;
-	Wed, 14 Feb 2024 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D172127B5D;
+	Wed, 14 Feb 2024 18:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="Gtv1Cmm+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dbMliydD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC58B86623;
-	Wed, 14 Feb 2024 17:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E44784FC8
+	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 18:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707932703; cv=none; b=CXUOsS8TtD4jgh1QlAe+qvkYhgNMYa0qFT3OydvvVpKa2FMuh+gkGlspWklu56wRON0qv18RQrPBQXmAImxhfLpwKKLvafzCqOu2muvAUHoEO+M++s8AGSjESZ85TRlbHnoAJ2g0QtRv8D1TxdsSaZN5X5arCajq/RMQGI6OTLs=
+	t=1707934914; cv=none; b=VrD0eqbKE365x4BM8RXawcQnqvRAOahzQRmDkxfyX4uRpYMB8Ox41y+ynFlfknlHeFBWRnRIbL2QjW1n3eppedgvGac9PKuN97g1aqlIiyy0eHbfZs4iTu7842kbZtWgStN3ve/L0IGNvYHHZqW7lbKOEcbygASRm6g65AadyPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707932703; c=relaxed/simple;
-	bh=x811CJqG41wjKajiBOXzidHjP15WACkqtAYCBEd1g5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HXHwv544AfslcsRZ4KSH1CVaUepL4Sl2BsdAjCBMWpmCy5zfdoMnqEPnMMWGLVw0pFzXkObYlM/ohEfTTZRBnnCnTymZOYLBOe4+xNot0l5bVmGuQxQgG1D/mtkZsIHU5ywKTcKIxvQFJXRoTDQ/bU12+CD2/Wim95EHpI2xIdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=Gtv1Cmm+; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1707932698; bh=x811CJqG41wjKajiBOXzidHjP15WACkqtAYCBEd1g5Q=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=Gtv1Cmm+huqS6iDKNOn7DnjF/qUE3tXVD+P55tb3maKRm5XLnHull1KueN8xSq8t4
-	 mVGNQbMAl5azsgJeq9eAbjetAZYabuG74Px9OOt1kckmeTKyB907s0e284ujEgCbc0
-	 Ki7sMWC14TnAggJ3I8Cq13sgvx4a/Kv2VQ0U1Ibo=
-Date: Wed, 14 Feb 2024 18:44:58 +0100
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Icenowy Zheng <icenowy@aosc.io>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] dt-bindings: iio: magnetometer: Add DT binding for
- Voltafield AF8133J
-Message-ID: <6hureabdusk6o4ksm7pxx7iwb6nyodqdx37fzqosqmmp33klqw@yopxzgjevddd>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Icenowy Zheng <icenowy@aosc.io>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240211205211.2890931-1-megi@xff.cz>
- <20240211205211.2890931-3-megi@xff.cz>
- <20240212114738.0000535b@Huawei.com>
- <i2q2vntbhilrpwppzl367ndoetbyd6guyti4t4n7vtg5pwq7bi@tjkio7zpwrfw>
- <20240214163116.000031b5@Huawei.com>
+	s=arc-20240116; t=1707934914; c=relaxed/simple;
+	bh=RAKcIWWw+hHmG443juEVwmPhyLhA1QzUolgjmmY3tDw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fDScJGyjDntLkHtTjzw6cPU0r1xAaEQAuk4+iHXNN27Zq9rWCPpwNOvdCl68UeJGANokYuQ9XK58oJhRbkgUw84Bv82to7eLvNAtdHVQym+w/Rn5+NgZTsCciM07KiyXRQyoUUX8upQ92ewrUvrYwJhILGNDpL2PfYu9w9v0zZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dbMliydD; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3d54555692so96227866b.1
+        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 10:21:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707934911; x=1708539711; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAKcIWWw+hHmG443juEVwmPhyLhA1QzUolgjmmY3tDw=;
+        b=dbMliydDJ1fNR3bPULRERocP1t2GxcZw3wecA7QwVI+lb+OdARkNI3PJsn0LSouVmh
+         nbItHBXN5aOhEe7UTyLIn+t2+LmVGX1nDCCTPBUG2Oz7XmLnumULJ61FdIy5Ua82ikBa
+         wv3YVL4GvNNv8f9qYHfFIc116xKUJ9TliumwYsxJfyCFZ+m5NfA8qiG9UR/7WUKUAQS0
+         jz+ravDkLGeGPZEhquZVrhOsuq9qZFlky91dYHLcLycUNxyURyvuZIOP2rKZIZ+PEUPL
+         0k43oVWe+VBqF8rNzq3+2JSVHyahsWWIwELQtlPkV2inJdCkgNMgQmx2U6/t8r7+9E14
+         9jcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707934911; x=1708539711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RAKcIWWw+hHmG443juEVwmPhyLhA1QzUolgjmmY3tDw=;
+        b=DtN+VZ4ivv9mXXQ0RcbjztmkrA2WqYh+U1meoKrsrIZuTmGNVmu2sXzWMtj0vl+ljs
+         IuKxeIgK/E9Ulx4DUgXMD5rDlGCsBRINr9OVnhLRsdO2seSFpgWadNdo6DbF0Blowlyb
+         J37/CKDOgFntIVhsUgdcVYfkLbQCxPwa8PozdzbKFd/pgT6/V6A/UY+xz1MX9RlVc1nw
+         ahRZo2Oq6/RuJuNtYzHuh5O10llzrQ4xGC03gOb3CdPgUug70/gZ8CaHGSBGkxr7hBBw
+         RUfYocJGd5xwrCtySBlNqwcAkNdRn2ZJ04+voS47cz65tcCtzLDQ1REts74x91vz34jd
+         wjcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUgUVxikk54+E4P2O4ctFzlMl5MrjJLWGLKfoBgnDLYrUjh3Ups1MwMDWROwPTuBD1EqITE4noglMTwkiEXnTxF/3zinXlaRPu
+X-Gm-Message-State: AOJu0YxRw/W09Skd+ZQHAg+9czhSTcQ/derEVA/kXEt5ORw70KcSseDf
+	YvMMkYkNnA4o7S83g7psGFGaAPs3tvoGhmHNaS02Jkf20iu0m4NpZBOIagBW77tDXMlijEhzHp6
+	Rbpx7lzJie2Qi+UL91xN+5lmFoQM=
+X-Google-Smtp-Source: AGHT+IEY63ridnodaCKG+Ir9GUF5fCT1S8mMYblsAIeMz1FrDnh7A05Ew44bDZjBUmkwcH1KNyf6bjmbeHJiY2/Y3xQ=
+X-Received: by 2002:a17:906:413:b0:a3b:f3e4:e91b with SMTP id
+ d19-20020a170906041300b00a3bf3e4e91bmr2447884eja.42.1707934910483; Wed, 14
+ Feb 2024 10:21:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214163116.000031b5@Huawei.com>
+References: <CAHp75VfcHnswdXnqdtOkX31LbULu8Pa0WjM5EC96OuOBrZGTxA@mail.gmail.com>
+ <2192956.irdbgypaU6@nobara-ally-pc> <CAHp75Vc+pb6YUhx7QOzWGQwmSgGmq2-7NjJHgOBSekKyqdVg5A@mail.gmail.com>
+ <12396329.O9o76ZdvQC@nobara-ally-pc>
+In-Reply-To: <12396329.O9o76ZdvQC@nobara-ally-pc>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 14 Feb 2024 20:21:13 +0200
+Message-ID: <CAHp75VdKohmw=fP7EN5w_0A30puAz48+mxLXdzq2aXmT6_s1Hw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
+To: Jonathan LoBue <jlobue10@gmail.com>
+Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, jic23@kernel.org, 
+	jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com, 
+	linux-iio@vger.kernel.org, lkml@antheas.dev, derekjohn.clark@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024 at 04:31:16PM +0000, Jonathan Cameron wrote:
-> 
-> > > > +
-> > > > +  dvdd-supply:
-> > > > +    description: |
-> > > > +      an optional regulator that needs to be on to provide DVDD power (Digital
-> > > > +      IO power, 1.8V~AVDD) to the sensor.
-> > > > +
-> > > > +  mount-matrix:
-> > > > +    description: an optional 3x3 mounting rotation matrix.
-> > > > +
-> > > > +required:
-> > > > +  - compatible
-> > > > +  - reg  
-> > > 
-> > > Any power supply that is required for operation should be listed here (even though
-> > > we can rely on the stub supplies if it isn't in the DT).
-> > > I used to think this wasn't necessary, so lots of bindings upstream don't yet
-> > > have it.  
-> > 
-> > By stub supply you mean dummy supply created when the *-supply property is not
-> > specified in DT? Or something else?
-> 
-> Ah yes. I got the term wrong.
-> > 
-> > Because DTC_CHK prints a warning if I make the proerty required in bindings and
-> > not specify it in DT
-> > 
-> > arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2b.dtb: magnetometer@1c: 'avdd-supply' is a required property
-> > 	from schema $id: http://devicetree.org/schemas/iio/magnetometer/voltafield,af8133j.yaml#
-> 
-> Provide one, or don't worry about that warning. 
-> 
-> Various discussions have taken place on this over time and end
-> result is bindings should require them to differentiate from power
-> supplies that are actually optional.
+On Wed, Feb 14, 2024 at 7:35=E2=80=AFPM Jonathan LoBue <jlobue10@gmail.com>=
+ wrote:
+>
+> On Wednesday, February 14, 2024 7:31:14 AM PST Andy Shevchenko wrote:
+> > But are those IDs different?
+>
+> During the chip id check during init (after ACPI match), yes those IDs ar=
+e
+> different between devices with bmi323 and bmc150.
 
-Ok. Good to know. :)
+Thanks for confirming!
+Perhaps you may improve the wording based on this information.
 
-regards,
-	o.
+> > I also recommend looking at my "smart" script [1] that helps sending
+> > kernel related patches. Improvements are welcome as GH pull-requests!
+> >
+> > [1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintai=
+ner.sh
+>
+> Thanks for this useful script, and thanks for your patience and guidance.
+> If I make a future submission after this patch series, the whole process
+> should go much smoother as I have learned a lot in this thread.
 
-> Jonathan
-> 
-> 
+You're welcome!
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

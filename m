@@ -1,154 +1,147 @@
-Return-Path: <linux-iio+bounces-2573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2574-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076E48556C4
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 00:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11959855724
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 00:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94A328B233
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 23:00:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC25E291280
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 23:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F331272C4;
-	Wed, 14 Feb 2024 23:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792F713DB90;
+	Wed, 14 Feb 2024 23:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4aRkfvz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6aEcaMv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6132E629
-	for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 23:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C96865191;
+	Wed, 14 Feb 2024 23:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707951611; cv=none; b=W24KyHHOWFXwii+5J5/hbqWU+Oj6EQ4yuNoie4uI0qRuKxQy6o93wiErpuqkavpT0g4xdeVAimVtSkdzJKmv70Cu/7ZmKMtByjDmi6Ik+Igf34tHUOnTHVYDnVk8JFJ0Gw0Q0RiKC9OLQgh689QLJ3AsMsnN1OGut9VbW3i6SPQ=
+	t=1707952727; cv=none; b=EXp3wfeYlz7XAfZTS5PA++YFf+2BMLA7qJwUckxbka8p0bnAoIKBfKVYZf2au+3ZgES3WXrEJ/jxmm2366mmPsClwQefcXs5ndJ1eZoSp/dI456xbzBUyPQyTzbOWkdSITmAfU5P1KAcVXrCuWbpR6VGyEmxO4ye2hCbnc4IOE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707951611; c=relaxed/simple;
-	bh=6ReM03kV7SPo2S8I1gsXB/Vl3x5Mamr5dCDs+Jrk3Nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8gDijuu4RrDICFrhyhdr+FJ/c1+3Y1NiyTiOP9YtkXSbOF64CrVDkgV11WBIsJED2L8fxndKMl03jC7pWJ6lsy6nmeGEZu+neJE/a05FWZWfZRJvViEYYWmm2uucPd4dNfFklI4DY+IK5GSUV2+1p9LEUNO15/rmohTVjz5qCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4aRkfvz; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1707952727; c=relaxed/simple;
+	bh=VGJIwjorLZIJF2X2hdtTQ6k7C57Bsk5u97evVWkupdw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jjZmcTpb4oppm2GhZGMbwSSg8WIzkCOvAzI61G/cm1KrEc8s0QdzqYQePrdtcBQL0+aAcHCmhprTe6UX5hnp900g2Vrb4aAmnlvHSWmOXE+kQOJSvy6PODdEIc+GCM78Z950v9CKU9JRip7lYxCkB5PMnVFVSVe+Z9tenONG3Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6aEcaMv; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d8b70b39efso264727a12.0
-        for <linux-iio@vger.kernel.org>; Wed, 14 Feb 2024 15:00:09 -0800 (PST)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3d6cd979b6so26671066b.1;
+        Wed, 14 Feb 2024 15:18:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707951609; x=1708556409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Ql+bMzk9UKDsdADQw3Zw2Q3nyHq+/pJr6sAV6qveYE=;
-        b=d4aRkfvzGDHr92MywITSiJrIVwLp3LnIESqpubx99tUJNYTVSgh8gGZEqa+I8lrGDe
-         +8osTZnSDVKchqZKF6vOJQ00t9xYom+aGH8vMx9cusuoJBp+jWgdQnR1JwWuOK3ytnTo
-         5tl9BBUPzmwrd9O9oTUf9xSjVYS3I6Ph5FIC/T3cBuH96epp7PEqMrgkH+XJcdljggfO
-         IAAQv9hExehaG+eopdm2xabq7G4Kov6BKGOLhhJccJiM/UKBlm1s2YH5I+NDyA6m4dVp
-         xNtmbYEaaN7IAAEP/CEEgGfdgF8kKdqZDLL0Uto3hcVAcyrOhhx3NL6tzyfYXAm1L/23
-         Ngxw==
+        d=gmail.com; s=20230601; t=1707952724; x=1708557524; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WPPQ6md3pSWimsiinsHHjmNddWVDIiu8YX9efW9PpZE=;
+        b=L6aEcaMvDWTmSBlk/ItOAsLarDV6zFWEl0DczEVlmJEeUohGx0yOaiKXp69spGAayA
+         QGUJ2WtrrTmLl5H+qGnIGyGLRTkuyfX5iDopamr6OGkRQ6GlyL+u3ydR2sTv8KBlwQ4C
+         COFXCrIcd/C/A+trLI88ZTy5//OOSZpAG6gzY+Y6jt81+CON21hYlefGN7w54B7bnsb4
+         Zqy1MGx+HFP6PLOJ+Etv16xEQmrOtgnUUzVts/RZoVGQT4Z/+cSUFRGr4Dw+S+wWUvGG
+         Y6aC/WDXoq1+cS5ClR9xxgf92kp4q2jWFfp8DiRVsldAVepXCMDmsMOe/fuRhgypPosM
+         /eWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707951609; x=1708556409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Ql+bMzk9UKDsdADQw3Zw2Q3nyHq+/pJr6sAV6qveYE=;
-        b=aKLoqPA4dGWFCKvjR2O7HWJfL/6xppMEe0K95NUPYFTlRATW5v+mhqausI7NTO/qo+
-         kktbBfEl6BKHIVPd+zMEQnK0thwEcB9Z6DHG2bhq480M5/14jCQoJ2LzvNQ54MSuquB7
-         qMiBogpZjtinxgVWqTXikGtacpkyG7zePFz17WUFFMt+WtuqNY+vVniIvJAMwYmUKVL6
-         /aZD1y7N56QolX6OxBbOqBJ/j1JY6hhOst1DYXJkAgd9ufxA+LIhV8gpy3aWjde506/9
-         DPWNdjG0S9RRuGJjDlHy0aCBxHoowPW4KPR/a9dVIbQonx/MqAPThxFUjrnDeNgS5IiM
-         9lqA==
-X-Gm-Message-State: AOJu0YwVSK+ViCc931hVy2P8reweEbRaBbkuukszSPUB1es4U+F2BbIC
-	FpuQuc62UHuKcYOwFwGGT1jVhOdDY7e8Sm6LNHGiKbuTH1Q8kvJ5
-X-Google-Smtp-Source: AGHT+IGi/2hqozoCEAhwATKgfa0vg2fnfB+xvSmW19RTSx/h6JfQdR+rzGmsREURrnaXYLPGZyfN9Q==
-X-Received: by 2002:a05:6a20:ce48:b0:1a0:726a:6e44 with SMTP id id8-20020a056a20ce4800b001a0726a6e44mr286831pzb.3.1707951608303;
-        Wed, 14 Feb 2024 15:00:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW3S/4g+2Q1nK1F0zHhIgohLFsD1oSkfuF7weBj6U9TnmjX8sI/OtOY+/GHOngPlBGHE/iq4kjLFWJAdxbIMIr7bjO7P0dbj3oQV+YQ1RhACh1mL6NzI3gPfzGI7Gkr/aKbTjKSGRmP9mQxx4ONkTNBEa+MWUeQKYzem5UOFc+kYcV3wycZ9GtKwnIYZXAzlzvCHQ6U/6+SNZo4+eKfWw2WAlArbfh8TfYpnvW0OChzQFrD2pY9D+iwh/eKNlwIisfRj/4UcjHci4e9RQCPfDmAIXJNUC0ZNR/bnMzdHv6BNKOlm3PetO5jIsvwst2CqHOiOQcfhcDGQNCbVZ6cCwm0oR0=
-Received: from nobara-ALLY-pc.. (076-167-168-058.res.spectrum.com. [76.167.168.58])
-        by smtp.gmail.com with ESMTPSA id q26-20020a62ae1a000000b006e0515dc44dsm10105984pff.178.2024.02.14.15.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 15:00:08 -0800 (PST)
-From: Jonathan LoBue <jlobue10@gmail.com>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	andy.shevchenko@gmail.com,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	jagathjog1996@gmail.com,
-	luke@ljones.dev,
-	benato.denis96@gmail.com,
-	lkml@antheas.dev,
-	derekjohn.clark@gmail.com,
-	Jonathan LoBue <jlobue10@gmail.com>
-Subject: [PATCH v4 2/2] iio: imu: bmi323: Add and enable ACPI Match Table
-Date: Wed, 14 Feb 2024 15:00:06 -0800
-Message-ID: <20240214230006.25744-1-jlobue10@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <4563303.LvFx2qVVIh@nobara-ally-pc>
-References: <4563303.LvFx2qVVIh@nobara-ally-pc>
+        d=1e100.net; s=20230601; t=1707952724; x=1708557524;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WPPQ6md3pSWimsiinsHHjmNddWVDIiu8YX9efW9PpZE=;
+        b=rovhO/Cm5+XeJwPjpV8O9MAU7BatVVq5/NEty6WUeQCwJOdARIpc4OTCY0lAtTFjxi
+         YuDk3xDNfotOTnhq6LA4fvlbIfqBRZsL8rdgkY4ha0cjAatlmYtl6lVLh4/qX9W4pIRW
+         i2Y8lA6rH+4eMl4T3sAQRwvmY35sGfLe2or4cUQSc9KjNYNd1Aur86JvCZU8wTfhZdCv
+         kLMt/KuPc5eqSWHM7EvxLQVf6TaApYc4+Dxp7PaCFlZEeUy1bz/UXUNc9vGQfMpX6TWW
+         9dVse4wIu1QLI0/Y5CphIU5qqOQNh+gO9XXNoTvyX3mfaU9pJXJGJS9/fbMhk0HjUIsa
+         GDeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpJj7yS3XEeArD3wFB2EKrk8xJMe/M/4FGIshmZAveJB1szWeSgTKS43dk48UmZIev8XBh1uTrtPV87+D5qRsByups7qMcX64tSsVC7QNX/WJp2QM7FFGRVVyxznIZMlshLc5Bv9nu
+X-Gm-Message-State: AOJu0Yw+I6DSBwxea6/zicT2PGItJSpNoCn+BSyIE3yQM4q1XnxP4eVh
+	vu+KLZMuXvz4EDW9itdMY7WDjk9ZALvPcLiY8AoB/JqzgDGpp0aX
+X-Google-Smtp-Source: AGHT+IFqpExUYy6HBVMmoUrt5WYY43PkRA7vN4YsSSRMJ3dQFAOMMAkop/833vf38PmhZrOq5DkUBA==
+X-Received: by 2002:a17:906:6d04:b0:a3d:1f59:7410 with SMTP id m4-20020a1709066d0400b00a3d1f597410mr18578ejr.22.1707952723458;
+        Wed, 14 Feb 2024 15:18:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUeal/aza678iXYXZKW5TF/eYEW67MBqzJzP7jkQFzVrrwwfow/rX12ICcnFSWF3CawrMDfuWM5et5Y2cuCq9iLMLqyIJBsl8v++QiI83eGRDZT8lW6B/+UMpeYAkwdR686R+2/tP+f+TfR3oPbGCyASbtjCTBV0FnHcYkUmppqSmpleljnMG2ZxK3CMoRZ0uPAfjLGAgPKraEPP3/vFg==
+Received: from ?IPV6:2a02:8389:41cf:e200:b3c7:969b:2be:1e0f? (2a02-8389-41cf-e200-b3c7-969b-02be-1e0f.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b3c7:969b:2be:1e0f])
+        by smtp.gmail.com with ESMTPSA id vh2-20020a170907d38200b00a3d08f3283fsm2000518ejc.104.2024.02.14.15.18.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 15:18:43 -0800 (PST)
+Message-ID: <b159b10b-513f-4116-b2ef-faf6741dc3b6@gmail.com>
+Date: Thu, 15 Feb 2024 00:18:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] iio: humidity: hdc3020: add threshold events
+ support
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, Li peiyu
+ <579lpy@gmail.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240214085350.19382-1-dima.fedrau@gmail.com>
+ <20240214085350.19382-4-dima.fedrau@gmail.com>
+Content-Language: en-US
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240214085350.19382-4-dima.fedrau@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patch adds the ACPI match table for ASUS ROG ALLY to load the bmi323
-driver with an ACPI match of "BOSC0200", and a comment about duplicate
-ACPI identifiers between devices using the bmc150 and bmi323 chips.
+On 14.02.24 09:53, Dimitri Fedrau wrote:
+> Add threshold events support for temperature and relative humidity. To
+> enable them the higher and lower threshold registers must be programmed
+> and the higher threshold must be greater then or equal to the lower
+> threshold. Otherwise the event is disabled. Invalid hysteresis values
+> are ignored by the device. There is no further configuration possible.
+> 
+> Tested by setting thresholds/hysteresis and turning the heater on/off.
+> Used iio_event_monitor in tools/iio to catch events while constantly
+> displaying temperature and humidity values.
+> 
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> ---
 
-With the remarks below,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
-Co-developed-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Co-developed-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
----
- drivers/iio/imu/bmi323/bmi323_i2c.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Hi Dimitri,
 
-diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-index 20a8001b9956..f7550503e47e 100644
---- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-+++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-@@ -93,6 +93,25 @@ static int bmi323_i2c_probe(struct i2c_client *i2c)
- 	return bmi323_core_probe(dev);
- }
- 
-+static const struct acpi_device_id bmi323_acpi_match[] = {
-+	/*
-+ 	 * The "BOSC0200" identifier used here is not unique to bmi323 devices.
-+ 	 * The same "BOSC0200" identifier is found in the ACPI tables of devices
-+ 	 * using the bmc150 chip. This creates a conflict with duplicate ACPI
-+ 	 * identifiers which multiple drivers want to use. If a non-bmi323 device
-+ 	 * starts to load with this "BOSC0200" ACPI match here, then the chip
-+ 	 * ID check portion should fail because the chip IDs received (via i2c) are
-+ 	 * unique between bmc150 and bmi323 and the driver should relinquish the
-+ 	 * device. If and when a different driver (such as bmc150) starts to load
-+ 	 * with the "BOSC0200" ACPI match, a short reset should ensure that the
-+ 	 * device is not in a bad state during that driver initialization. This
-+ 	 * device reset does occur in both the bmi323 and bmc150 init sequences.
-+ 	 */
-+	{ "BOSC0200" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, bmi323_acpi_match);
-+
- static const struct i2c_device_id bmi323_i2c_ids[] = {
- 	{ "bmi323" },
- 	{ }
-@@ -109,6 +128,7 @@ static struct i2c_driver bmi323_i2c_driver = {
- 	.driver = {
- 		.name = "bmi323",
- 		.of_match_table = bmi323_of_i2c_match,
-+		.acpi_match_table = bmi323_acpi_match,
- 	},
- 	.probe = bmi323_i2c_probe,
- 	.id_table = bmi323_i2c_ids,
--- 
-2.43.0
+now that the decimal part is used, the resolution loss is within the
+ranges mentioned in the datasheet.
+
+For the records: the truncated values lead to alerts slightly lower than
+the target alerts. Therefore, measured values below the "comfort zone"
+defined by the user (but close to the low alert) will not trigger
+events. The other way around is "more secure" because the target comfort
+zone is guaranteed:
+
+-------- High val -> event (as expected)
+
+******** Target High Alert
+
+-------- Meas -> **event** (still in target comfort zone)
+
+######## Truncated High Alert
+
+...
+
+******** Target Low Alert
+
+-------- Meas -> **no event** (out of target comfort zone)
+
+######## Truncated Low Alert
+
+-------- Meas -> event (as expected)
+
+But as I said, the resolution loss is in the valid range anyway:
+
+Tested-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
+Thank you for adding this feature.
+
+Best regards,
+Javier Carrasco
+
 
 

@@ -1,178 +1,146 @@
-Return-Path: <linux-iio+bounces-2546-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2547-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD089854AF8
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:01:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352C8854B18
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 15:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BF728E272
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 14:01:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59C281C20BCB
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 14:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3BF54F91;
-	Wed, 14 Feb 2024 13:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ljkXjH4C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895B154F90;
+	Wed, 14 Feb 2024 14:08:30 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0011D5C8FE;
-	Wed, 14 Feb 2024 13:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283A1524CA;
+	Wed, 14 Feb 2024 14:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707919154; cv=none; b=dNitJRw7i4/1AuTlv25dktPnOAn9KFNMQ28sd+zo8s7hneX2evl2LMTv9dKc3gxfoyCpBLeZPOHLOIrJRfQwG1C6LT+6EHLujzVzQDwz4P+/yX/HIvLZkGJfB15Y+UihSc2R0DY78EH/22Y0cVDz7u/1a7jEGyEFIPw0+R0IViU=
+	t=1707919710; cv=none; b=aK7uUpaA3UGlbFd00wBhi9RQndr/D6CCJCQibQastEH8M7cbLJCHBXlZM2oT1BHxdJa80BcyEm+CIQ97wVEORCUiMAGrdi/NwXjIAILkexSNVLN1BM4yShwyH4a3TIKeShnoFDPAbdMheFfQwT8M9/fbH0cvxbE9U9m25EYicyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707919154; c=relaxed/simple;
-	bh=gvJJZ/u+oFmJe9o1bdHtO/O/5u2N3evyh8Zop5iY370=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XjFBcmmXx8L/Xp5ybq9KjVWh7XmwuCo/xhGtLhmMH/jdBNL9j6LuDt0Tgwf4Uq2K+K59apnRFNvlNvkFlSAIOk/G82vFF2tFknogr6GP/30CAtYl+ro81VsZ1ygHOY+oeTfozKFVQ+Uryib5G/OhKnQuN11ggyDFewUhPEuumLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ljkXjH4C; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41EAxMXw001851;
-	Wed, 14 Feb 2024 13:58:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=UsRN04YgdttuRzXuuaPeRfbR90rptVxiln+xXdu7HOM=; b=lj
-	kXjH4CFDMWOxTHHPA+dFro8BHptRBBZHD55vn6e728Un0kpyEwCNNbi3yTPzcfvc
-	Z9frQZ9CfyqnIIhH74EPauBaZ3rDqjUJNFld/Id7QQWQdhQ5wecheYYbd7YbuSDR
-	Mnv2ufEeexLbxdSdavuVptXyzF4txem6Lqui8MwrHw+62A41sesLPlxJFrj2VcPh
-	s0vHwftM3XG+yMIREDFZdXnwGNyuKgGdsBPa+80rkGsDn1Mn+7g3fRmHjY08+67d
-	6JaehgHgm/7Iw/eTsppRD/aYr30qLAWPAjzEPc5R80O6HArRaAlRRfJxViAekSKX
-	MEmdMrhl5CLvunNSykKQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w8jn9hb6j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Feb 2024 13:58:47 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41EDwjva016998
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Feb 2024 13:58:45 GMT
-Received: from [10.216.19.164] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 14 Feb
- 2024 05:58:31 -0800
-Message-ID: <e5a5b32c-bc9d-42b7-b1a8-90e22b957915@quicinc.com>
-Date: Wed, 14 Feb 2024 19:28:26 +0530
+	s=arc-20240116; t=1707919710; c=relaxed/simple;
+	bh=u6cTJPccubHfju2PHUjWSOqMXj5n3i6pmGWvm1M0i2E=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jpsryq1CYYctSiFmpfGp51r+MqtpnCRGkQEbiiaDTP5HzSL44JF6lIUZSFp5CAJ/xvAMJcWr5GtnVXwekZNQGukzrBum0qSYOQ0yxgJmNWNS3B5cPno4fYOl4ChhaGn+TcAZtAdBnZ/IX7CSHZ9IdSneUHLItj3fHiu0dj5q3v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZg1l4sW8z67L8m;
+	Wed, 14 Feb 2024 22:04:59 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id ED012140D1A;
+	Wed, 14 Feb 2024 22:08:25 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
+ 2024 14:08:25 +0000
+Date: Wed, 14 Feb 2024 14:08:24 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mike Looijmans <mike.looijmans@topic.nl>
+CC: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, <devicetree@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Liam
+ Beguin" <liambeguin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, "Maksim
+ Kiselev" <bigunclemax@gmail.com>, Marcus Folkesson
+	<marcus.folkesson@gmail.com>, Marius Cristea <marius.cristea@microchip.com>,
+	Mark Brown <broonie@kernel.org>, "Niklas Schnelle" <schnelle@linux.ibm.com>,
+	Okan Sahin <okan.sahin@analog.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <20240214140824.00004460@Huawei.com>
+In-Reply-To: <44d0a115-1a8b-496e-bfa9-89caccbee5bc@topic.nl>
+References: <20240206065818.2016910-1-mike.looijmans@topic.nl>
+	<1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.fd628a1a-a926-426e-a239-bfd8c9858b94@emailsignatures365.codetwo.com>
+	<20240206065818.2016910-2-mike.looijmans@topic.nl>
+	<ZcIsuiuisQjTIxJv@smile.fi.intel.com>
+	<4c6654f5-2d9e-4c1b-a5de-7bdeacf5e99f@topic.nl>
+	<ZcI5PoWojKRrdpVl@smile.fi.intel.com>
+	<67387cf4-1065-4313-b4c6-054128ba8f3a@topic.nl>
+	<40a3a47b-1388-4ed0-a24b-2c0bcef3be3d@topic.nl>
+	<ZcJLnOiFoaABami1@smile.fi.intel.com>
+	<e04ca010-289c-4216-95ea-2f2418613378@topic.nl>
+	<ZcJfOgDMmLBpEho2@smile.fi.intel.com>
+	<11613ba7-fc14-46bd-84ba-a0b5d966cbfc@topic.nl>
+	<20240210162704.5126478c@jic23-huawei>
+	<44d0a115-1a8b-496e-bfa9-89caccbee5bc@topic.nl>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <andersson@kernel.org>, <konrad.dybcio@linaro.org>, <lee@kernel.org>,
-        <andriy.shevchenko@linux.intel.com>, <daniel.lezcano@linaro.org>,
-        <lars@metafoo.de>, <luca@z3ntu.xyz>, <marijn.suijten@somainline.org>,
-        <agross@kernel.org>, <sboyd@kernel.org>, <rafael@kernel.org>,
-        <rui.zhang@intel.com>, <lukasz.luba@arm.com>,
-        <linus.walleij@linaro.org>, <quic_subbaram@quicinc.com>,
-        <quic_collinsd@quicinc.com>, <quic_amelende@quicinc.com>,
-        <quic_kamalw@quicinc.com>, <kernel@quicinc.com>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <cros-qcom-dts-watchers@chromium.org>
-References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
- <20231231171237.3322376-4-quic_jprakash@quicinc.com>
- <CAA8EJpr4q7pFF44oUjJSWGYKgiUCB_23zVHw6J3a3mwn7cKgyg@mail.gmail.com>
-Content-Language: en-US
-From: Jishnu Prakash <quic_jprakash@quicinc.com>
-In-Reply-To: <CAA8EJpr4q7pFF44oUjJSWGYKgiUCB_23zVHw6J3a3mwn7cKgyg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: jDzhMT2m9_qcniAuUC2Ibd9s1FWU_QVo
-X-Proofpoint-ORIG-GUID: jDzhMT2m9_qcniAuUC2Ibd9s1FWU_QVo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-14_06,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501 clxscore=1011
- phishscore=0 suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402140108
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Hi Dmitry,
+On Wed, 14 Feb 2024 07:48:40 +0100
+Mike Looijmans <mike.looijmans@topic.nl> wrote:
 
-On 12/31/2023 11:16 PM, Dmitry Baryshkov wrote:
-> On Sun, 31 Dec 2023 at 19:13, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
->> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
->> with all SW communication to ADC going through PMK8550 which
->> communicates with other PMICs through PBS.
+> On 10-02-2024 17:27, Jonathan Cameron wrote:
+> > On Tue, 6 Feb 2024 18:38:29 +0100
+> > Mike Looijmans <mike.looijmans@topic.nl> wrote:
+> >   
+> >> On 06-02-2024 17:32, Andy Shevchenko wrote:  
+> >>> On Tue, Feb 06, 2024 at 04:44:03PM +0100, Mike Looijmans wrote:  
+> >>>> On 06-02-2024 16:09, Andy Shevchenko wrote:  
+> >>>>> On Tue, Feb 06, 2024 at 03:47:45PM +0100, Mike Looijmans wrote:  
+> >>> ...
+> >>>     
+> >>>>> But it's up to you what to do with that.
+> >>>>> Maybe Jonathan can advice something different.
+> >>>>>     
+> >>>> The spinlock also protects the call to spi_async().  
+> >>> I don't get this. Locks usually protect the data and not the code.
+> >>> Can you elaborate?
+> >>>     
+> >> Either the DRDY or SPI completion handler will call spi_async(), the
+> >> lock assures that it's only called by one.  
+> > 
+> > Arguably it's protecting the destination buffer of the spi_async()
+> > call.  We don't really care if we issue two reads (it's a waste
+> > of time and we would store two sets of readings but meh), but we do
+> > care about being sure that don't issue a second read into a buffer
+> > that we are potentially simultaneously getting data back from.  
+> 
+> Indeed, that.
+> 
+> > 
+> > There are comments where the release is to describe when it can
+> > be safely unlocked.
+> > 
+> > I'm not super keen on this whole structure but I don't really have a better
+> > idea.  Who builds a device where you have no latched way of seeing
+> > if there is new data? (some) Hardware folk love to assume they have a RTOS only
+> > talking to their device and that no pulse signals will ever be missed.
+> > 
+> > We get to educate them when ever the opportunity arises :)  
+> 
+> Even on RTOS this chip was a pain - to get it to work reliably I had to set up 
+> a DMA controller to run the SPI transactions, which took some smart 
+> daisy-chaining (I recall having the DMA controller write to its own control 
+> registers to avoid involving the CPU).
 
->> +static int adc_tm_register_tzd(struct adc5_chip *adc)
->> +{
->> +       unsigned int i, channel;
->> +       struct thermal_zone_device *tzd;
->> +
->> +       for (i = 0; i < adc->nchannels; i++) {
->> +               channel = V_CHAN(adc->chan_props[i]);
->> +
->> +               if (!adc->chan_props[i].adc_tm)
->> +                       continue;
->> +               tzd = devm_thermal_of_zone_register(adc->dev, channel,
->> +                       &adc->chan_props[i], &adc_tm_ops);
-> It is _very_ useful to register a hwmon too by calling
-> devm_thermal_add_hwmon_sysfs(). However this becomes tricky, as this
-> function is not defined in one of the global headers.
->
-> This actually points out an issue. You have the ADC driver fused
-> together with the thermal driver. Can I suggest using the aux device
-> to split the thermal functionality to the separate driver?
->
-> This way it would be possible to use the ADC without any thermal
-> monitoring in place.
+Always fun when that sort of mess is needed!
 
+> 
+> It's probably possible to trick audio hardware (I2S controller) into grabbing 
+> the data (my chip doesn't have that) without involving the CPU.
 
-There are a couple of issues which may make it harder to split the 
-thermal functionality from this driver into an auxiliary driver as you 
-mentioned.
+Yeah, sometimes it feels like these ADCs have been designed with that sort
+of bus in mind.
 
-For one, we use the same set of registers (offsets 0x4f-0x55) for both 
-VADC function(requesting an immediate channel reading) and ADC_TM 
-function (setting upper/lower thermal thresholds on a channel). To avoid 
-any race conditions, we would need to share a mutex between the 
-top-level ADC driver and the auxiliary ADC_TM thermal driver to avoid 
-concurrently accessing these or any other shared registers.
+> 
+> As the code is now, I can grab data and display it with the IIO oscilloscope 
+> over network at 4kHz without losing samples on an A9 at 600Mhz.
 
-In addition, the device has only one interrupt with one interrupt 
-handler, and it gets triggered for both VADC and ADC_TM  events (end of 
-conversion and threshold violation, respectively). The handler checks 
-for both types of event and handles it as required.
+Nice.
+> 
 
-For the shared interrupt, we may be able to keep the interrupt handler 
-in the top-level driver and just notify the auxiliary TM driver if a 
-threshold violation is detected. For the shared mutex, I think the 
-auxiliary driver may be able to access the parent driver's mutex, but 
-I'll need to check more for the implementation in both of these cases.
-
-Please let me know if you see any problems with this kind of 
-implementation or if you have any additional comments.
-
-Thanks,
-
-Jishnu
-
->> +
->> +               if (IS_ERR(tzd)) {
->> +                       if (PTR_ERR(tzd) == -ENODEV) {
->> +                               dev_warn(adc->dev, "thermal sensor on channel %d is not used\n",
->> +                                        channel);
->> +                               continue;
->> +                       }
->> +
->>
->
 

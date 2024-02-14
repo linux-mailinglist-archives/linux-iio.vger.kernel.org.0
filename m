@@ -1,295 +1,275 @@
-Return-Path: <linux-iio+bounces-2534-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2535-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B843E854103
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 02:13:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53B58542FD
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 07:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC3FDB2721E
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 01:13:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7D31F27926
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Feb 2024 06:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21941A31;
-	Wed, 14 Feb 2024 01:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D8611197;
+	Wed, 14 Feb 2024 06:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ETcEgzvH"
+	dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="x+0oDbPn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2110.outbound.protection.outlook.com [40.107.20.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791C565C;
-	Wed, 14 Feb 2024 01:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707873196; cv=none; b=EN9BL+CK5QaEdeEtsQS0WDlvq9cyLEhKt8xwMKzHDbd1rei1M9HBJX8zzggyLIbd9dA5LQ+sa06aPVfKaIJ8aIhIpItpwU38ysb3ZN/v0qXtVU578khsiDHm8FLS/JL07mFoibVFfKbVckfBMVr4LpwD/qa647VvzeGD7ZsI3Zo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707873196; c=relaxed/simple;
-	bh=IU2OyFsQSVkAVr6UneiocCkeAITKZ3ZEmhwNcNy7hFQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aQZE4o32MvYgoKlQJPYLK+wQuTKy8ieTSjzEB2TrWLfefj6S1mP6ENOoZpFg721soaASvWWfESlLeedGWuz6fd9G6K3/R4ReR1esV0BkxpMQJjw9AHfM3sOHCpJR1vlqUeQdVUTnOX6vJrqXobU292MzIoKOPtWPfsFRfNr79TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ETcEgzvH; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
-	bh=/wMGEfoDa+2xdWbURYcG40lcr0z9t7tTiyBtN2BKVpU=; b=ETcEgzvH0k7Uj7GCd+90TYaDFo
-	pUXj2sRb2o08kjMHhb2m8ZuOzz9rpX+y6ZmICED6qp5cvzotnClUdKn7NhwN+WR1qpwgOHntHmpTO
-	yZ8/cldY/aQ9OATNcOiWnKiW8c64jq/1Ffn8knWKuXk6LYFD4u8dWYy2vMHQS6jiohCGcH1DEvfcc
-	GZKTXEfgmXSw1LW/rv31gDepBIl9HHLCLxsYW3RATGtT74rKtoHEDGewncNJYb5FwosgB5mEVwEE0
-	q8vncAtOd4e5aXWQZcK+OT2Ss6rMUYAdhlnzIKLw+8u0Q72iGFMY9fD4TCHNsKQZfiuM6YrvyQP8H
-	GJMFfEpw==;
-Received: from [50.53.50.0] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ra3pp-0000000BQ1J-3eYZ;
-	Wed, 14 Feb 2024 01:13:13 +0000
-Message-ID: <6076dba6-496e-4cae-be76-a30e006d3b77@infradead.org>
-Date: Tue, 13 Feb 2024 17:13:13 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C0518E0C;
+	Wed, 14 Feb 2024 06:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.110
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707892676; cv=fail; b=T8haz4Cj5QIPT+8hP6UABxd2B+Z7ExZ9W4QID8VMGBwWSZnqjFNGhhpLYifYh4Dajyys7klZMbMkuliIk8TpPFZDZcpiQ5WFwx2hFlTjb60RxNQwYkyh2RSsceg+7UcD47/+HVDl7geppjGB6ZpuPt3ZS3/p0cPr2VKPUFJ3Kr4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707892676; c=relaxed/simple;
+	bh=XW7RUxS2fFBK12nq9gpHr3ocUsd2z7/lo/yKrDOa3sg=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version:
+	 References; b=DtBko21KDuT5sjDNLfTOkpJADQA1Xxo6+2P9D1435iRf0oFqPzVWOwh7O8QHa4oqCKpemNgy2fOE9BnEFIuOcJiqJves5NkGdfGbUSy97NqZgpiPiFc39x+rPAuyOJq8irDsTByMZN/rxHlATgq9/+LiqZvTnYnhkwU/OTfbJYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl; spf=pass smtp.mailfrom=topic.nl; dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=x+0oDbPn; arc=fail smtp.client-ip=40.107.20.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=topic.nl
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=P+7RoFKPlgrZkuon60imC1iOH2T4MR1vEafeOCeMgTG9fpkf9tesIOtSIo0ZuzzdZwvLNOSiXbHvknlCs1HB2Ow+D71sD0D2+5M2kjR4Xj0gSzEhBPrmN+P5vW8/b89Hc0YF54zQWQZcbgxXiNS37qaEKZeIFutSUfVS0/BsEjus/ue7GatMzBKOxIonHmqbFfemU6TLuN2f5XQzwGx2syT1n7y0KRRO7g65Y8F0BSzke7mo8AgM5cRv4EwoYzeW6Z4ilzh3JrSH+J9vEP8kGtK4CB4VIS9xVr88BRbgksSjJ+hZxKefMPnV3MdXDbRUPduRZu/Wis2vfuEMnpmAVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9+3BwAXgOaFREP1ZBZj6WNbGzqnuCm0kgqS/W1k0CVs=;
+ b=BIjUk4ssjRsZW7X3RojYrZvkaUzBfGVfOF2SzsQ6tGZHojjliw/uY+VyWvxJ7RdhMj+0F+ORfccaFb1LD/aLkin7SZsmTRZ5qX8EMwOjx8AX8SARLL7p+If1Quw0DJryPKQwXWaqHpNBNgmxrYf6LwSzq4+vo8z1BPieunkBBhTT+btseIp00k9QQEqJIRygGGGATII96FD8Q8FXN5iadqA8OGOhTMnLEACOSpROcifBhDhdW0lvYEZpzwBs9tGC2iXACURAbv6muVT7hUcDEPZFJRwXjGXckuN4hwMPZetBS2tYvV+fc6g28JOhBrgI5qo9EmB0K5hhkplUl77rEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.93.157.195) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=topic.nl;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=topic.nl;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9+3BwAXgOaFREP1ZBZj6WNbGzqnuCm0kgqS/W1k0CVs=;
+ b=x+0oDbPnSAKiiEOMzAe7xv9k71aZnl1ro9uU9I71mkrnnEr1AuuNY+UZ3/RwGA57GNEwcff1jXLWiGE8nhJPppVnsvCYKSo8IanzZ26XXMuToZz0Q93X8yEpxTRxQCMeKNZoVN67MZAcSxa19UIarm6vZAz5/MI52fsVr35147AhFzs6lxRp953rzrE1CvLV68b9phXGusJyvbXoe/rj+SwbS/8ot6DeDBzet2PtTW8PXj/CfuSYHDQJitLeAXRbWXmNamJrCvBN2oK6BzsQCbNtSq57orqfJ4V8eblm9ooOINFGxDAlCO1kbWbdDjitbKfsRnhZohp2KeIB9u4L6w==
+Received: from AS9PR06CA0722.eurprd06.prod.outlook.com (2603:10a6:20b:487::30)
+ by VE1PR04MB7246.eurprd04.prod.outlook.com (2603:10a6:800:1ae::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Wed, 14 Feb
+ 2024 06:37:49 +0000
+Received: from AMS0EPF000001A4.eurprd05.prod.outlook.com
+ (2603:10a6:20b:487:cafe::8) by AS9PR06CA0722.outlook.office365.com
+ (2603:10a6:20b:487::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26 via Frontend
+ Transport; Wed, 14 Feb 2024 06:37:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.93.157.195)
+ smtp.mailfrom=topic.nl; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=topic.nl;
+Received-SPF: Pass (protection.outlook.com: domain of topic.nl designates
+ 20.93.157.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.93.157.195; helo=westeu11-emailsignatures-cloud.codetwo.com;
+ pr=C
+Received: from westeu11-emailsignatures-cloud.codetwo.com (20.93.157.195) by
+ AMS0EPF000001A4.mail.protection.outlook.com (10.167.16.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Wed, 14 Feb 2024 06:37:48 +0000
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (104.47.11.41) by westeu11-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Wed, 14 Feb 2024 06:37:47 +0000
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com (2603:10a6:20b:42b::12)
+ by AS8PR04MB8088.eurprd04.prod.outlook.com (2603:10a6:20b:3f7::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Wed, 14 Feb
+ 2024 06:37:45 +0000
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd]) by AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd%6]) with mapi id 15.20.7292.027; Wed, 14 Feb 2024
+ 06:37:44 +0000
+From: Mike Looijmans <mike.looijmans@topic.nl>
+To: devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org
+CC: Mike Looijmans <mike.looijmans@topic.nl>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/2] dt-bindings: iio: adc: ti-ads1298: Add bindings
+Date: Wed, 14 Feb 2024 07:37:35 +0100
+Message-ID: <20240214063736.88283-1-mike.looijmans@topic.nl>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR02CA0107.eurprd02.prod.outlook.com
+ (2603:10a6:208:154::48) To AS8PR04MB8644.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::12)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] docs: iio: add documentation for device buffers
-Content-Language: en-US
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, jic23@kernel.org,
- nuno.sa@analog.com, linux-iio@vger.kernel.org
-References: <20240213081720.17549-1-ramona.gradinariu@analog.com>
- <20240213081720.17549-3-ramona.gradinariu@analog.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240213081720.17549-3-ramona.gradinariu@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-TrafficTypeDiagnostic:
+	AS8PR04MB8644:EE_|AS8PR04MB8088:EE_|AMS0EPF000001A4:EE_|VE1PR04MB7246:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4dbc749-9bf1-40a5-a834-08dc2d277601
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ F4PpEkkTIefS3kLsWOP0QJ0+Qf9cQCWKOkHH7W5IFvVIljLZgDXba1QBLCU4UHi2BWWVagrY2Ajy2KciTrb/XtLLmlR85n8AD/dpvgtBF+Lqk5eqxiwnhbYVi0mBdXguMV8Q5Q2W7R7UYEQM2MLay/09/xlHPkFskJDVKj4sKmUzANXcf2wyQOomsrA/gU8HRK7CArboqK5JcydFdC1VxbUByzXsD/N90Ev+psYMtDv05RksOlVUgq7LyqBKP47lFIsKrP1BS6LsqwNraXs6t2dT3HmeJDDlpvC4X148jls5O0EX8WyvEGl5gj2nktdCWGBeNYxHzh3RFbIX9EjhxeHe/8WvuTZ/+n6zynfpniRUuMKrvKVpNCwjjIvAoDXucJNq8f6duo+AfrDBsVYgoVkMQVSbEMkkRN5hjHYQldTFm29+K72Ux3ns1XY1ACH/qDO9N3DGMfTQsputBDr7MSDE+NLk7gc03qpuQ8+IS4YV03TQF7wvvRDa8Y76uaSaAu0xyNpVzn2GpdEbbQneRYlfyXldZmY3E8dEcGaiHgh9f3kGgfHXaXWs+bfVKFGQhK+P7E+VyJNkAOyAxX9n6QqoHfnvLoVR8e/hHKqPSp8=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39840400004)(396003)(376002)(136003)(346002)(366004)(230273577357003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(5660300002)(41300700001)(2906002)(6666004)(6512007)(52116002)(2616005)(6506007)(478600001)(966005)(6486002)(36756003)(38350700005)(26005)(83380400001)(38100700002)(86362001)(4326008)(8936002)(8676002)(44832011)(1076003)(66946007)(66556008)(66476007)(316002)(54906003);DIR:OUT;SFP:1102;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8088
+X-CodeTwo-MessageID: 2b00ee97-fdce-4b5d-bf7f-f04105b6ce1d.20240214063747@westeu11-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.b967e427-f7fa-4912-936e-caf944d735e9@emailsignatures365.codetwo.com>
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS0EPF000001A4.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	8d817d6f-1f4a-41d8-ef5f-08dc2d2773a1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	ET7SzrE03UUtR40dDTUfzGh0nJCKCFwz4Gln3qsKxhCBR0x8pMTkHeNBYZ4Caz1KZOhjqARFaSMjhQNY3SDfWlbT3Ue0vdx5tmSvsJ8bw2jeHp9NwiexzUo5NowKgXGI2AvC5SmRkOr0GuwtZzSuWjs2zeRfLhbbqMl/1LRHLfEtUr/p23BYZihC8yBIw/9f/F7lfuBAtsIbLRADeI44YH0rFzmVF/q5X48Ti8nUte4jewSFmuT4TYAkl78kGug6rIhT4MTiCA4aY/In5HEdisOepfrj9Mx4ZZKJ51FoGtJgdmkK0s/4fh0yE8K/yTCiSrZ8EEsHZ1HlYILNl7DGuUQIUKCcz+4VtRjnCDck8hCoXQ8rto4imlyOzXMqsdYnzgyDcb+OuGNCe2fOQp53+9h5snfgthU6jCzAhHjs1LBSHaKN5UarS3NvJpWcii1e3LItVdZQcg1I1rQIEFX6kMhvQX9eA0jPJxLZjKYvox36Y7AoYTpshDFw4ufkwDUX2tUYi0e+iBB7/csreXpw2H7hBoFWWQwuKI2gpy0wGra0tvovCuFBuI3bBbHoeQUZ/C7/w5lcPLb28J8Cq6l1rA==
+X-Forefront-Antispam-Report:
+	CIP:20.93.157.195;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu11-emailsignatures-cloud.codetwo.com;PTR:westeu11-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(396003)(136003)(39830400003)(230273577357003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(82310400011)(46966006)(36840700001)(5660300002)(44832011)(2906002)(336012)(478600001)(966005)(6512007)(6506007)(6486002)(54906003)(2616005)(26005)(1076003)(41300700001)(70586007)(70206006)(4326008)(8936002)(8676002)(6666004)(316002)(83380400001)(86362001)(15974865002)(356005)(7596003)(7636003)(36756003);DIR:OUT;SFP:1102;
+X-OriginatorOrg: topic.nl
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 06:37:48.6093
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4dbc749-9bf1-40a5-a834-08dc2d277601
+X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[20.93.157.195];Helo=[westeu11-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A4.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7246
+
+Bindings for the TI ADS1298 medical ADC. This device is
+typically used for ECG and similar measurements. Supports data
+acquisition at configurable scale and sampling frequency.
+
+The device has so many options for connecting stuff, at this
+point the bindings aren't nearly complete but partial bindings
+are better than no bindings at all.
+
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+---
+
+(no changes since v2)
+
+Changes in v2:
+Remove "clk" name
+Add datasheet and "incomplete" note
+
+ .../bindings/iio/adc/ti,ads1298.yaml          | 80 +++++++++++++++++++
+ 1 file changed, 80 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1298.ya=
+ml
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml b/Do=
+cumentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
+new file mode 100644
+index 000000000000..bf5a43a81d59
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1298.yaml
+@@ -0,0 +1,80 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1298.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments' ads1298 medical ADC chips
++
++description: |
++  Datasheet at: https://www.ti.com/product/ADS1298
++  Bindings for this chip aren't complete.
++
++maintainers:
++  - Mike Looijmans <mike.looijmans@topic.nl>
++
++properties:
++  compatible:
++    enum:
++      - ti,ads1298
++
++  reg:
++    maxItems: 1
++
++  spi-cpha: true
++
++  reset-gpios:
++    maxItems: 1
++
++  avdd-supply:
++    description:
++      Analog power supply, voltage between AVDD and AVSS. When providing a
++      symmetric +/- 2.5V, the regulator should report 5V.
++
++  vref-supply:
++    description:
++      Optional reference voltage. If omitted, internal reference is used,
++      which is 2.4V when analog supply is below 4.4V, 4V otherwise.
++
++  clocks:
++    description: Optional 2.048 MHz external source clock on CLK pin
++    maxItems: 1
++
++  interrupts:
++    description: Interrupt on DRDY pin, triggers on falling edge
++    maxItems: 1
++
++  label: true
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++  - interrupts
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        adc@1 {
++          reg =3D <1>;
++          compatible =3D "ti,ads1298";
++          label =3D "ads1298-1-ecg";
++          avdd-supply =3D <&reg_iso_5v_a>;
++          clocks =3D <&clk_ads1298>;
++          interrupt-parent =3D <&gpio0>;
++          interrupts =3D <78 IRQ_TYPE_EDGE_FALLING>;
++          spi-max-frequency =3D <20000000>;
++          spi-cpha;
++        };
++    };
++...
+--=20
+2.34.1
 
 
-
-On 2/13/24 00:17, Ramona Gradinariu wrote:
-> Add documentation for IIO device buffers describing buffer
-> attributes and how data is structured in buffers using
-> scan elements.
-> 
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> ---
-> changes in v4:
->  - documented multiple buffer support
->  - reworked scan elements section
->  - added reference to ABI docs
->  Documentation/iio/iio_devbuf.rst | 125 +++++++++++++++++++++++++++++++
->  Documentation/iio/index.rst      |   1 +
->  2 files changed, 126 insertions(+)
->  create mode 100644 Documentation/iio/iio_devbuf.rst
-> 
-> diff --git a/Documentation/iio/iio_devbuf.rst b/Documentation/iio/iio_devbuf.rst
-> new file mode 100644
-> index 000000000000..e99143efb4d7
-> --- /dev/null
-> +++ b/Documentation/iio/iio_devbuf.rst
-> @@ -0,0 +1,125 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +=============================
-> +Industrial IIO device buffers
-> +=============================
-> +
-> +1. Overview
-> +===========
-> +
-> +The Industrial I/O core offers a way for continuous data capture based on a
-> +trigger source. Multiple data channels can be read at once from
-> +/dev/iio:deviceX character device node, thus reducing the CPU load.
-> +
-> +Devices with buffer support feature an additional sub-folder in the
-
-folder or directory?
-
-> +/sys/bus/iio/devices/deviceX/ folder hierarchy, called bufferY, where Y defaults
-
-folder or directory?
-
-> +to 0, for devices with a single buffer.
-> +
-> +2. Buffer attributes
-> +====================
-> +
-> +An IIO buffer has an associated attributes directory under
-
-directory or folder?
-
-Just be consistent, please.
-
-> +/sys/bus/iio/iio:deviceX/bufferY/. The attributes are described below.
-> +
-
-What are the corresponding attribute names?
-
-> +Length
-> +------
-> +
-> +Read / Write attribute which states the total number of data samples (capacity)
-> +that can be stored by the buffer.
-> +
-> +Enable
-> +------
-> +
-> +Read / Write attribute which starts / stops the buffer capture. This file should
-> +be written last, after length and selection of scan elements.
-> +
-> +Watermark
-> +---------
-> +
-> +Read / Write positive integer attribute specifying the maximum number of scan
-> +elements to wait for.
-> +
-> +Poll will block until the watermark is reached.
-> +
-> +Blocking read will wait until the minimum between the requested read amount or
-> +the low water mark is available.
-
-           watermark
-> +
-> +Non-blocking read will retrieve the available samples from the buffer even if
-> +there are less samples then watermark level. This allows the application to
-
-                          than the
-
-> +block on poll with a timeout and read the available samples after the timeout
-> +expires and thus have a maximum delay guarantee.
-> +
-> +Data available
-> +--------------
-> +
-> +Read-only attribute indicating the bytes of data available in the buffer. In the
-> +case of an output buffer, this indicates the amount of empty space available to
-> +write data to. In the case of an input buffer, this indicates the amount of data
-> +available for reading.
-> +
-> +Scan elements
-> +-------------
-> +
-> +The meta information associated with a channel reading placed in a buffer is
-
-That line gives me -ENOPARSE. Can it be improved?
-
-> +called a scan element. The scan elements are configurable per buffer, thus they
-> +are exposed to userspace applications via the /sys/bus/iio/iio:deviceX/bufferY/
-> +directory. The scan elements attributes are presented below.
-> +
-> +**_en**
-> +
-> +Read/ Write attribute used for enabling a channel. If and only if its value
-> +is non zero, then a triggered capture will contain data samples for this
-
-      non-zero,
-
-> +channel.
-> +
-> +**_index**
-> +
-> +Read-only positive integer attribute specifying the position of the channel in
-> +the buffer. Note these are not dependent on what is enabled and may not be
-> +contiguous. Thus for user-space to establish the full layout these must be used
-
-                        userspace
-as above.
-
-> +in conjunction with all _en attributes to establish which channels are present,
-> +and the relevant _type attributes to establish the data storage format.
-> +
-> +**_type**
-> +
-> +Read-only attribute containing the description of the scan element data storage
-> +within the buffer and hence the form in which it is read from user space. Format
-> +is [be|le]:[s|u]bits/storagebits[Xrepeat][>>shift], where:
-> +
-> +- **be** or **le** specifies big or little endian.
-> +- **s** or **u**, specifies if signed (2's complement) or unsigned.
-
-         no comma  ^
-
-> +- **bits**, is the number of valid data bits.
-
-    no comma ^
-
-> +- **storagebits**, is the number of bits (after padding) that it occupies in the
-
-      no comma      ^
-
-> +  buffer.
-> +- **repeat**, specifies the number of bits/storagebits repetitions. When the
-
-  no comma     ^
-
-> +  repeat element is 0 or 1, then the repeat value is omitted.
-> +- **shift**, if specified, is the shift that needs to be applied prior to
-
-  no comma    ^
-
-> +  masking out unused bits.
-> +
-> +For example, a driver for a 3-axis accelerometer with 12 bit resolution where
-
-                                                         12-bit
-
-> +data is stored in two 8-bits registers as follows:
-
-                         8-bit            is as follows:
-
-> +
-> +.. code-block:: bash
-> +
-> +          7   6   5   4   3   2   1   0
-> +        +---+---+---+---+---+---+---+---+
-> +        |D3 |D2 |D1 |D0 | X | X | X | X | (LOW byte, address 0x06)
-> +        +---+---+---+---+---+---+---+---+
-> +
-> +          7   6   5   4   3   2   1   0
-> +        +---+---+---+---+---+---+---+---+
-> +        |D11|D10|D9 |D8 |D7 |D6 |D5 |D4 | (HIGH byte, address 0x07)
-> +        +---+---+---+---+---+---+---+---+
-> +
-> +will have the following scan element type for each axis:
-> +
-> +.. code-block:: bash
-> +
-> +        $ cat /sys/bus/iio/devices/iio:device0/buffer0/in_accel_y_type
-> +        le:s12/16>>4
-> +
-> +A user space application will interpret data samples read from the buffer as two
-
-     userspace
-for consistency.
-                                                                             as two-
-
-> +byte little endian signed data, that needs a 4 bits right shift before masking
-
-        little-endian
-
-> +out the 12 valid bits of data.
-> +
-> +Please see Documentation/ABI/testing/sysfs-bus-iio for a complete description of
-> +the attributes.
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index db341b45397f..206a0aff5ca1 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -8,6 +8,7 @@ Industrial I/O
->     :maxdepth: 1
-> 
->     iio_configfs
-> +   iio_devbuf
-> 
->  Industrial I/O Kernel Drivers
->  =============================
-> --
-> 2.34.1
-> 
-> 
-
--- 
-#Randy
+Met vriendelijke groet / kind regards,=0A=
+=0A=
+Mike Looijmans=0A=
+System Expert=0A=
+=0A=
+=0A=
+TOPIC Embedded Products B.V.=0A=
+Materiaalweg 4, 5681 RJ Best=0A=
+The Netherlands=0A=
+=0A=
+T: +31 (0) 499 33 69 69=0A=
+E: mike.looijmans@topic.nl=0A=
+W: www.topic.nl=0A=
+=0A=
+Please consider the environment before printing this e-mail=0A=
 

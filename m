@@ -1,73 +1,62 @@
-Return-Path: <linux-iio+bounces-2583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176C7856603
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 15:33:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067878566FD
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 16:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6426B2D7E5
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 14:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BD82829EC
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43551132461;
-	Thu, 15 Feb 2024 14:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E3D132C15;
+	Thu, 15 Feb 2024 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJYTn6PL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZY+8zwEi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDF712C559;
-	Thu, 15 Feb 2024 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF8B132487;
+	Thu, 15 Feb 2024 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708007560; cv=none; b=KznUtBt/yyZHWn7ZxtJTp7LOlXeVZaiIcQshhulvuoaJpxuNMTBHhErTqed8Lk8H25AQtg2QfjlhI/pVLxmXzt+0+r3ADFrmekFoP6q+k8aC2H4jJ1N4FcIlIr2WfeGRNVx+VNomXLYWZ0ixAmku3O9EAq3t/7t0DrHQmIL0Q+M=
+	t=1708010067; cv=none; b=n5Mc9IBV1BhDxhFaiZAoME8xtxzvQq8Q97M6c8CKNDOE3HzWpT1a4dHbdB/gnoTXMycLBVkhaDtO2O9Lz+f8M2fArdaYrspj3jWCmcYycIlbFfiA/VE0R+zwgsxZytK1wpNz4Wqsy/LdRg8o04XxSxFBCNQD8fRIPawd2UwU4cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708007560; c=relaxed/simple;
-	bh=RDEiGRf90Re3gTpyPNkzNOs5ZMS+5zS+B9IMjDdiEVE=;
+	s=arc-20240116; t=1708010067; c=relaxed/simple;
+	bh=I1sWwOkQgziEC2+uZ8Soe1wI9+LGEmMcSQQ/8gmPUjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoRQb/xCDmQpPhm8gIKI2tveni78DvyMQLNSMDS3H+Xz9E/KhvNtNr96YiS5ul9kt26b3rJGUHPKRo0yuZfXPwf0v7Jml9ybw77WZsNjahFaa6nYsDkV3MacTo54VUZ0msvYhAFW8ACiEEQZ5wn2RrjHGfMMx5p0t59gdqNeqa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJYTn6PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA72C433C7;
-	Thu, 15 Feb 2024 14:32:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UjUJ6b1p1nXmWo8i2iwTJhoD4FUCsg2W5NICXo/FPWq+SiR9tuLleXvMirCQVysCn++aMDGF8X5dBT9IItgFqkq5ZKKqhuYeuyZZtQqjaefCstuaKwS1Ibt2VUJCToKMRDN3bvPpgAIffiwdu7Nhx3euD+nDc51tQwLnE9QG8vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZY+8zwEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E353C433F1;
+	Thu, 15 Feb 2024 15:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708007559;
-	bh=RDEiGRf90Re3gTpyPNkzNOs5ZMS+5zS+B9IMjDdiEVE=;
+	s=k20201202; t=1708010066;
+	bh=I1sWwOkQgziEC2+uZ8Soe1wI9+LGEmMcSQQ/8gmPUjU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sJYTn6PLkujcFUnJvgg/0kGsJj7dNDW5rIMQtZCNHth4cnAzRs4d9XRGkR0BT704Q
-	 8dUgAa+au0rcH43+3gpERDltdKtgKUK/PhaQd5VolFwjEPBW5erVWeofQO9LTXMKux
-	 +eUYa0YRWM6vqSy408jHWgQCOd+9fNLgM1aTQpqJjNipiKKhg3Q+wrarJNVQEkwWpQ
-	 Ei99Jalz/Te6GIOHmiqDQnAHieKA4wxjZrhzEhyMpzJVMx7d6PdPL4s9Qk6eHy5fZg
-	 c41H+v4/p/NdPsickDYiPENZa57JL8o+QlYxag73ydYnaV7KbIq+d447C8a/Wq/n/x
-	 /4+cbaWZUX+zQ==
-Date: Thu, 15 Feb 2024 08:32:33 -0600
+	b=ZY+8zwEiAeB5gYbYqxlq1q5tZFRECxOJsnIN3ejg/Lfvz7eF78CXwhp49Vuj8J/P0
+	 HrLhYF8Ku4vt0PrRRgAFdXNR7h2gox51Jcje11HUhGE34N31qa2yGSi22hTl1mKJ5q
+	 1s5YagR0tH75BmgG2ibM1DiU3d+YOkQGYnfmereWHzTxLdn4C1tQCH+JTjTWtdBPvf
+	 vYjZfvNsU8Q75EF0HmNAaNcwAoU4xKoSxWjB9vMmJsSSJUNaCBbKLMcrHk/CtnCSfA
+	 et2HFdvcUgJSPPI0X7vAWBCf12PVRgaiK2Eole2rGr1suKmEemQjyTC5p4MD+SJVNs
+	 cvngEB7o6lT2Q==
+Date: Thu, 15 Feb 2024 09:14:19 -0600
 From: Rob Herring <robh@kernel.org>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Eugene Zaikonnikov <ez@norophonic.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-mtd@lists.infradead.org, Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org, Nishanth Menon <nm@ti.com>,
-	Michael Walle <mwalle@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-rtc@vger.kernel.org,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Li peiyu <579lpy@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
+	devicetree@vger.kernel.org,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
-	Tero Kristo <kristo@kernel.org>
-Subject: Re: [PATCH v6 4/7] dt-bindings: mtd: spi-nor: add optional
- interrupts property
-Message-ID: <170800755249.11056.3790121633736757728.robh@kernel.org>
-References: <20240212-add-am64-som-v6-0-b59edb2bc8c3@solid-run.com>
- <20240212-add-am64-som-v6-4-b59edb2bc8c3@solid-run.com>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v4 2/3] dt-bindings: iio: humidity: hdc3020: add
+ interrupt bindings in example
+Message-ID: <170801005495.117936.14865503171344450311.robh@kernel.org>
+References: <20240214085350.19382-1-dima.fedrau@gmail.com>
+ <20240214085350.19382-3-dima.fedrau@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,19 +65,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240212-add-am64-som-v6-4-b59edb2bc8c3@solid-run.com>
+In-Reply-To: <20240214085350.19382-3-dima.fedrau@gmail.com>
 
 
-On Mon, 12 Feb 2024 18:38:11 +0100, Josua Mayer wrote:
-> Some spi flash memories have an interrupt signal which can be used for
-> signalling on-chip events such as busy status or ecc errors to the host.
+On Wed, 14 Feb 2024 09:53:44 +0100, Dimitri Fedrau wrote:
+> Add interrupt bindings in example.
 > 
-> Add binding for "interrupts" property so that boards wiring this signal
-> may describe the connection.
-> 
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
 > ---
->  Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml | 3 +++
+>  Documentation/devicetree/bindings/iio/humidity/ti,hdc3020.yaml | 3 +++
 >  1 file changed, 3 insertions(+)
 > 
 

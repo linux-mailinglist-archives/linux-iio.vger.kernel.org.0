@@ -1,222 +1,158 @@
-Return-Path: <linux-iio+bounces-2579-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2580-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169FD856466
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 14:29:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F5E85648A
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 14:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 427DBB2575D
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 13:22:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60964B2C07D
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 13:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B2112FF98;
-	Thu, 15 Feb 2024 13:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C44F12FF9C;
+	Thu, 15 Feb 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j0T5RdwY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBdxRXDT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DFC12E1C7;
-	Thu, 15 Feb 2024 13:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77E312BF3D;
+	Thu, 15 Feb 2024 13:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708003340; cv=none; b=ddiaCZsqmo6XBLXjUgBwUbZmUD1Mc50TGt1BbPxPZtcK42OU7cGBbYR3Xw9XKXOiU9vbde7znjer9Q8lnYWUqaPSCv2/SQXPJJEWFkuXYbCqiIu6f/BDB/MQDtjcg0btP5cWxTiP2prDdN8sMoT+iMl9Wh2cx/Jvrv9QLsEj6ho=
+	t=1708003418; cv=none; b=qBKdMNHOMz9iDF+L0GNuoq1q1LBUcvCG+UKqps4acwzXP2wyjABmJ6FhMse79/Z02p6tNTBz2Y+zZxyPyhW2Qu6wEDTfYDIeV6NU9UvnHsr12Og4zBixUJtr75/G+a0uy3XPamQfe2e4E30zy/guPgGoed82bM7iRmVz+vi/m/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708003340; c=relaxed/simple;
-	bh=bnjUnGWY5tuJqudE0O1MmY98iLuXPIdsyEbTw9zIQdQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cxsSWAsnz0jufTvRxmpFzXgkBXo2wnFV4eH/aPRvXmE58oqn3POcfsIzs5A/8YtZ67ZIFPP0/ABuxFZ5euH0paFrp8YhlII6F2Zwh6yltJCVKMwtHQMcoiLhJE0GX5PIxhfSwb6jevpflHG7Iufv9C4g7FGtpbxjcX0LOBkiTEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j0T5RdwY; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d0d7985dfdso11978731fa.2;
-        Thu, 15 Feb 2024 05:22:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708003337; x=1708608137; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EF0nScnhCC2yAbtMSsLI0QixWOPqumzxsZSInzkhycs=;
-        b=j0T5RdwYF9/sQb7hmbDgQ5cV1k6QbN+G6lFg5uI7NT9JdRFSurcbhj3YsZ126vTcOx
-         bpI/tiATUtnsvONOVlGLhPGnGwpW40ij9A6zd7rDbNscFLnEPqKLbqLD84RfsXk5Qszd
-         2I1w/lbUHy5WTEft20Mq9OzPSmg3hgQo8ZFrhVVRRMlF9M5gDeIEZev58Bja5f2xWLYK
-         cqNeKILepHztikzZYpOOy1ASk4J3u/QBxLB/osi2GhgF26GsVGMw0qO7bO3jIRsNLwJ/
-         pf2+57LPhYJU+LFheAYCMDnAEcSVYCMjAp/Ij5hmFUb92w+kp0WjEzUZHl/cOPVWZEMY
-         wjCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708003337; x=1708608137;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EF0nScnhCC2yAbtMSsLI0QixWOPqumzxsZSInzkhycs=;
-        b=sE1K52LgsvoglasrKd8CL4XblbVKnCHcXFfI5PI13+y3BFHi/NdYJxo3niAJDNeGRz
-         zivDHOLJo7H7S10DLGzh/iduvTa2UWEZ1Ox2x+lLTNhD/1b6wrsXIRpotvOOrnYS2ZZ9
-         odnQpxnO6EgqkBD90GLPpLjc6vj67MnkwMGdBaLS1+4MS6ojOyB626UPMzCy4xpnZn8B
-         Rxspr3AbgH4/5kikwZBqGQmP8uu3JDA1T8SNyVHuDLJxa4ocMOCBObzfy8RU4FJjuNTc
-         aBVk87Xrp7Y+D3/47G0K0UtRthScA2QVEqs05/0fzBjkjhsHY3XDPNcM/GW5mzCqyfrY
-         9J7g==
-X-Forwarded-Encrypted: i=1; AJvYcCW73cNO8QYaFyKak/8Eylm1oBsvLWBguXAu1IO+G9bSxHSXyXphfzMw9W3AmS2MjzYcxB42+NJOHFv0S2AvvMGSAZIP20SZMXvB2aww9bHEnHsl43h8FugIKv8arIeTtNmNmCQO2/Q0/i3ceUkZUQQv3L93FSmY6zP1PXG6+fFLEnT3sw==
-X-Gm-Message-State: AOJu0Yzsv46b83onia0rySzi/QrDhkGOhIjkWgQf1l3Y2qLfSl0S9+0Z
-	PYVy51Kh0KU616d11NThTXPFyMBRiNzc1NsWjA9OcLKLBCbVff75
-X-Google-Smtp-Source: AGHT+IFdSeee2h6yPbN253Q+N6eCnxg7HRV8sLAauAyt9G6++zpa57D4VNNEWvu9CKVdqwilcjiqFA==
-X-Received: by 2002:a19:550c:0:b0:511:7c0c:f94a with SMTP id n12-20020a19550c000000b005117c0cf94amr1550261lfe.16.1708003336569;
-        Thu, 15 Feb 2024 05:22:16 -0800 (PST)
-Received: from [192.168.176.154] ([5.14.144.108])
-        by smtp.gmail.com with ESMTPSA id un8-20020a170907cb8800b00a3d1c0a3d5dsm543452ejc.63.2024.02.15.05.22.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 05:22:16 -0800 (PST)
-Message-ID: <84546728-f0cb-4b38-a71c-e053b9b9278e@gmail.com>
-Date: Thu, 15 Feb 2024 15:22:08 +0200
+	s=arc-20240116; t=1708003418; c=relaxed/simple;
+	bh=6jdrHUpTR12o6zcCwnI0EmRbmFBouErFnPWURWeH5q0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fneh0CQjDvZdcymO1jQTaXK5wl8sTG+SqE2QlCB64FS7F5G3Cvf7lYIt4uMVNDtVk7VzBEuCTkeNAd+QYY3Cw3WU9rb3wc0uEQjTmxwLdi2S9zh7C8B7AY4PyBG4El7+OTryu/QiIURLhEA9m6BHXPck/PsChv12W87D0DbksEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBdxRXDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6DCC433F1;
+	Thu, 15 Feb 2024 13:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708003417;
+	bh=6jdrHUpTR12o6zcCwnI0EmRbmFBouErFnPWURWeH5q0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hBdxRXDTAvoqW/fU3000WkufRKm4HgTzTbRMB9KZVHVslbwbCiMmQj2PvQ5UWm50K
+	 uHnYwR9E1kAXMJkmg8Y4nlpS/Voxsh6SUgf1IlW4Kvvgp3rTkXuLOD5TxVyHhWA4FN
+	 xBUjGasB1POqXSzw8b2cmITWSFF7A78YYwnZMAKcJGuuYdVSWJpOUWR5rVKarK85zv
+	 ay6bdoFOEDzv13ivhw89tM7wB+pgdAbsBzVZ2lml6497xvT8xdE1DZ3CooTA2ZaZZc
+	 ipSskdjzmZWNk1OsBwbaWE5VamNLojk283MHuYPe2ikQjPFMJL76dFMd27f3poZLnn
+	 LT5H2q2BFovJA==
+Date: Thu, 15 Feb 2024 07:23:34 -0600
+From: Rob Herring <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+Message-ID: <20240215132334.GA3847183-robh@kernel.org>
+References: <20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com>
+ <20240206-ad7944-mainline-v1-1-bf115fa9474f@baylibre.com>
+ <CAMknhBGG_RS1t0OJw6_UnNQ_=S4YgN4i1YN26V8n=f9y28J9hQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/5] iio: adc: ad7192: Add AD7194 support
-Content-Language: en-US
-To: David Lechner <dlechner@baylibre.com>
-Cc: alexandru.tachici@analog.com, alisa.roman@analog.com,
- conor+dt@kernel.org, devicetree@vger.kernel.org, jic23@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
- lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- michael.hennerich@analog.com, robh+dt@kernel.org,
- Nuno Sa <nuno.sa@analog.com>
-References: <20240208172459.280189-1-alisa.roman@analog.com>
- <20240208172459.280189-6-alisa.roman@analog.com>
- <CAMknhBHU6k8J_PLCmGYF48S1q3uXByiCwzcd+B3q3Cd-02CUow@mail.gmail.com>
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-In-Reply-To: <CAMknhBHU6k8J_PLCmGYF48S1q3uXByiCwzcd+B3q3Cd-02CUow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMknhBGG_RS1t0OJw6_UnNQ_=S4YgN4i1YN26V8n=f9y28J9hQ@mail.gmail.com>
 
-Hello and thank you for the feedback!
-
-On 09.02.2024 00:27, David Lechner wrote:
-> On Thu, Feb 8, 2024 at 11:25 AM Alisa-Dariana Roman
-> <alisadariana@gmail.com> wrote:
->>
->> Unlike the other AD719Xs, AD7194 has configurable differential
->> channels. The default configuration for these channels can be changed
->> from the devicetree.
-
-...
-
->>
->> +static const struct iio_info ad7194_info = {
->> +       .read_raw = ad7192_read_raw,
->> +       .write_raw = ad7192_write_raw,
->> +       .write_raw_get_fmt = ad7192_write_raw_get_fmt,
->> +       .read_avail = ad7192_read_avail,
->> +       .validate_trigger = ad_sd_validate_trigger,
->> +       .update_scan_mode = ad7192_update_scan_mode,
->> +};
+On Tue, Feb 06, 2024 at 11:34:13AM -0600, David Lechner wrote:
+> On Tue, Feb 6, 2024 at 11:26 AM David Lechner <dlechner@baylibre.com> wrote:
+> >
+> > This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+> > AD7986 ADCs.
+> >
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 231 +++++++++++++++++++++
+> >  MAINTAINERS                                        |   8 +
+> >  2 files changed, 239 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+> > new file mode 100644
+> > index 000000000000..a023adbeba42
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
 > 
-> Isn't this identical to ad7192_info and ad7195_info now that .attrs is
-> removed? It seems like we could consolidate here.
-
-Those are not exactly identical since: 92 has bridge switch attribute, 
-95 has bridge switch and ac excitation attributes and 94 has no custom 
-attributes. I used a different info structure for 94 in order to avoid 
-showing extra attributes.
-
+> ...
 > 
->> +
->>   static const struct iio_info ad7195_info = {
->>          .read_raw = ad7192_read_raw,
->>          .write_raw = ad7192_write_raw,
->> @@ -1009,6 +1049,80 @@ static const struct iio_chan_spec ad7193_channels[] = {
->>          IIO_CHAN_SOFT_TIMESTAMP(14),
->>   };
->>
->> +static struct iio_chan_spec ad7194_channels[] = {
->> +       AD7193_DIFF_CHANNEL(0, 1, 2, 0x001),
->> +       AD7193_DIFF_CHANNEL(1, 3, 4, 0x023),
->> +       AD7193_DIFF_CHANNEL(2, 5, 6, 0x045),
->> +       AD7193_DIFF_CHANNEL(3, 7, 8, 0x067),
->> +       AD7193_DIFF_CHANNEL(4, 9, 10, 0x089),
->> +       AD7193_DIFF_CHANNEL(5, 11, 12, 0x0AB),
->> +       AD7193_DIFF_CHANNEL(6, 13, 14, 0x0CD),
->> +       AD7193_DIFF_CHANNEL(7, 15, 16, 0x0EF),
->> +       AD719x_TEMP_CHANNEL(8, AD7194_CH_TEMP),
->> +       AD7193_CHANNEL(9, 1, AD7194_CH_AIN1),
->> +       AD7193_CHANNEL(10, 2, AD7194_CH_AIN2),
->> +       AD7193_CHANNEL(11, 3, AD7194_CH_AIN3),
->> +       AD7193_CHANNEL(12, 4, AD7194_CH_AIN4),
->> +       AD7193_CHANNEL(13, 5, AD7194_CH_AIN5),
->> +       AD7193_CHANNEL(14, 6, AD7194_CH_AIN6),
->> +       AD7193_CHANNEL(15, 7, AD7194_CH_AIN7),
->> +       AD7193_CHANNEL(16, 8, AD7194_CH_AIN8),
->> +       AD7193_CHANNEL(17, 9, AD7194_CH_AIN9),
->> +       AD7193_CHANNEL(18, 10, AD7194_CH_AIN10),
->> +       AD7193_CHANNEL(19, 11, AD7194_CH_AIN11),
->> +       AD7193_CHANNEL(20, 12, AD7194_CH_AIN12),
->> +       AD7193_CHANNEL(21, 13, AD7194_CH_AIN13),
->> +       AD7193_CHANNEL(22, 14, AD7194_CH_AIN14),
->> +       AD7193_CHANNEL(23, 15, AD7194_CH_AIN15),
->> +       AD7193_CHANNEL(24, 16, AD7194_CH_AIN16),
 > 
-> Shouldn't these be differential channels since they are
-> pseudo-differential inputs measuring the difference between AINx and
-> AINCOM?
+> +  adi,reference:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ internal, internal-buffer, external ]
+> +    default: internal
 > 
->> +       IIO_CHAN_SOFT_TIMESTAMP(25),
->> +};
+> ...
 > 
-> i.e. like this (where AINCOM is voltage0 AINx is voltagex)
+> > +allOf:
+> > +  # ref-supply is only used for external reference voltage
+> > +  - if:
+> > +      not:
+> > +        required:
+> > +          - adi,reference
+> > +    then:
+> > +      properties:
+> > +        ref-supply: false
+> > +    else:
+> > +      if:
+> > +        properties:
+> > +          adi,reference:
+> > +            const: external
+> > +      then:
+> > +        required:
+> > +          - ref-supply
+> > +      else:
+> > +        properties:
+> > +          ref-supply: false
 > 
-> static struct iio_chan_spec ad7194_channels[] = {
->         AD7193_DIFF_CHANNEL(0, 1, 0, AD7194_CH_AIN1),
->         AD7193_DIFF_CHANNEL(1, 2, 0, AD7194_CH_AIN2),
->         AD7193_DIFF_CHANNEL(2, 3, 0, AD7194_CH_AIN3),
->         AD7193_DIFF_CHANNEL(3, 4, 0, AD7194_CH_AIN4),
->         AD7193_DIFF_CHANNEL(4, 5, 0, AD7194_CH_AIN5),
->         AD7193_DIFF_CHANNEL(5, 6, 0, AD7194_CH_AIN6),
->         AD7193_DIFF_CHANNEL(6, 7, 0, AD7194_CH_AIN7),
->         AD7193_DIFF_CHANNEL(7, 8, 0, AD7194_CH_AIN8),
->         AD7193_DIFF_CHANNEL(8, 9, 0, AD7194_CH_AIN9),
->         AD7193_DIFF_CHANNEL(9, 10, 0, AD7194_CH_AIN10),
->         AD7193_DIFF_CHANNEL(10, 11, 0, AD7194_CH_AIN11),
->         AD7193_DIFF_CHANNEL(11, 12, 0, AD7194_CH_AIN12),
->         AD7193_DIFF_CHANNEL(12, 13, 0, AD7194_CH_AIN13),
->         AD7193_DIFF_CHANNEL(13, 14, 0, AD7194_CH_AIN14),
->         AD7193_DIFF_CHANNEL(14, 15, 0, AD7194_CH_AIN15),
->         AD7193_DIFF_CHANNEL(15, 16, 0, AD7194_CH_AIN16),
->         AD719x_TEMP_CHANNEL(16, AD7194_CH_TEMP),
->         IIO_CHAN_SOFT_TIMESTAMP(17),
-> };
+> This seems like something that could potentially be improved in the
+> dtschema tooling. Since adi,reference has a default of "internal", I
+> would expect:
 > 
+>      if:
+>        properties:
+>          adi,reference:
+>            const: external
 
-I tried to follow the existing style of the driver: for each 
-pseudo-differential channel(AINx - AINCOM) there is an iio channel like 
-this in_voltagex_raw; and for each differential channel(AINx - AINy) 
-there is an iio channel like this in_voltagex-in_voltagey_raw. AD7194 
-has 16 pseudo-differential channels/8 fully differential channels so I 
-thought the (AINx - AINCOM) channels should be static and only the 8 
-differential ones could be configured by the user from the devicetree by 
-choosing the input pins.
+         required:
+           - adi,reference
 
-The existing style of the driver, AD7192 has 4 pseudo differential 
-channels and 2 (non configurable) differential channels:
-static const struct iio_chan_spec ad7192_channels[] = {
-	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
-	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
-	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
-	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
-	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
-	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
-	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
-	AD719x_CHANNEL(7, 4, AD7192_CH_AIN4),
-	IIO_CHAN_SOFT_TIMESTAMP(8),
-};
+>      then:
+>        required:
+>          - ref-supply
+>      else:
+>        properties:
+>          ref-supply: false
+> 
+> to be sufficient here. However, currently, if the adi,reference
+> property is omitted from the dts/dtb, the condition here evaluates to
+> true and unexpectedly (incorrectly?) the validator requires the
+> ref-supply property.
 
-Would it be better to respect the existing style or to do like you 
-suggested and have a total of 16 differential channels that are 
-configurable from the device tree?
+That's just how json-schema works. With the above, it should work for 
+you.
 
-Kind regards,
-Alisa-Dariana Roman
+However, redesigning the binding would make things simpler. Just make 
+'ref-supply' being present mean external ref. No 'ref-supply' is then 
+internal. Then you just need a boolean for 'internal-buffer' mode and:
+
+dependentSchemas:
+  ref-supply:
+    not:
+      required: ['adi,internal-buffer-ref']
+
+Rob
 

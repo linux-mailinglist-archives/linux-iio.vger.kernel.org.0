@@ -1,79 +1,74 @@
-Return-Path: <linux-iio+bounces-2576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA15C855E54
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 10:38:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D6D8562D2
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 13:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F8F2819E2
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 09:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C32C1C208E8
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 12:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FF71773A;
-	Thu, 15 Feb 2024 09:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E5112BF12;
+	Thu, 15 Feb 2024 12:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DXHz6/S8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CtzmAB6B"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBAF1BF31
-	for <linux-iio@vger.kernel.org>; Thu, 15 Feb 2024 09:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D0412AAE4;
+	Thu, 15 Feb 2024 12:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707989829; cv=none; b=GC/CaZx25RNLPQTnVudl+H37RRClM9cQiS4jhRpam9ekFO2UOwGjLbGATGcCO7MK7AIkZGkODjSgTRao2tKuRFFVuF5Vmlf4kDA8Z39/c6u8unazqCXCQTRXAcV0VDy3F43W3oX5Lds5kQe2rnrPxutRHWZy/9WHtP/9lqaGmsQ=
+	t=1707999225; cv=none; b=fxRDHNfK4Uix3TtlIIP2lhPojsu92AAeJg1HssIhP63qzS1jXvtdoo/DXY9dlbbhZsI14b+a2ljQVBy4fA9I2ncjbZYEKg4uRCEEUioTXl2i+wvybsSJ4fO8YI9SEa4baK0xhIzmYlXYFgBuQsegii6VcoYc8L8CGwvZxVq2hf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707989829; c=relaxed/simple;
-	bh=9I63gROhjngNIeQPdNdM/zV6l5wz5ce7XJJvGYWcq/A=;
+	s=arc-20240116; t=1707999225; c=relaxed/simple;
+	bh=kCojogxkBPGCvdnlaw7v6wJGX03NJww1FMAv7kOWbCk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G7LDrYk3BWrwiUURy8BDo+JDK7R2CJAxraBtYDb3tyiAuf1Y777X8+hZnKp+HcJL4lO/EdE/yDKpCo9a2T/Ki3EoJOxQZuBqyOx2Y6ijoqvd5ZOUrErpsfwAli8n+rNIQ1P0N2bGIsAF2PzZhWzVUVp435YDMR0PnE0G6m+dW60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DXHz6/S8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707989826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EBRLiL+HuGDeDQERSo2kb5PIsu6pFh1p74ggrJ+XVgc=;
-	b=DXHz6/S8Q+j0KkWhWfnoyOoYibV6F4hgG7fqIq3QJPmCUsOYYZYJtc6QXAg/UhpFiGcZ3m
-	PnXDAkIqSq/S4/GFKqZV1VNCrbtOyj0BUCt/YjiMO9MFMzeJyejnda8sGFMU28kgTjTkRJ
-	68QSrbPTFyImSSE/YlXoPvKFe9up/U4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-9gbQJ34HM-er_0FK1XfShQ-1; Thu, 15 Feb 2024 04:37:05 -0500
-X-MC-Unique: 9gbQJ34HM-er_0FK1XfShQ-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5620a2d150fso283692a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 15 Feb 2024 01:37:05 -0800 (PST)
+	 In-Reply-To:Content-Type; b=Zy+E97M/mpuTyCO0nPm7EMYOaLXIdnoLsCoushdr6OEdibhwUYjcssYJsR6650nxnnD2Ktai/5qjmc3fQVgekYLuV/qy3zckgLk3eHVQ1fyRqLdtXEzeQH4qCdAUtv0bikTsB22e/TQ9N8Ma5nxbyH4pMVyoT/SlBQ8Di4ZWEkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CtzmAB6B; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-411f895c8b6so6756495e9.1;
+        Thu, 15 Feb 2024 04:13:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707999222; x=1708604022; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oCltLUDIFGC1hblD4ry2SCiGjebPDwNZZNafoF/wgL0=;
+        b=CtzmAB6BELkn+4Jtfd2+Ii6h9MbgnTCgFsT7DZJH1iO79t58cb6EY/5BKTHyaDdzNf
+         OQboPpO3cQ9pWY9QAJuFDAuT15HIFEtUMLSCXZFa7waoe6+OeZMLjTud2GJr5Gnogh0f
+         G3Jl5UmlTYYErUDAYi00LrM/iAlqGrkM//SHXDyf4JBfL+mWRCjGdkNxIWJBCGqh61o7
+         Ehbw02SCxtIpXcIrzRR+cKpUqK0KG4Opek+bFLjFowMjYwTvCSACd/aD6SebpO4SAn2c
+         v+jYNuWRw70iTFuhqOl+Fs8iP0Jfor1TvmPF53HGnqr7aIAvoPeQdo5VdaryQ1GbCYRG
+         wtcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707989824; x=1708594624;
+        d=1e100.net; s=20230601; t=1707999222; x=1708604022;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EBRLiL+HuGDeDQERSo2kb5PIsu6pFh1p74ggrJ+XVgc=;
-        b=adb/Jx40C0ySiyGLdS31tOg6S2U8a9GjKjn+yhv0E+RAd/YsbDZ8Vko/UBS8gODKwE
-         pf5VLNfr3qauTABiWBel4FUDHbpYdXAE2Kg/MfyF2+RetfXWCn3DgMavYV8/XEOQ1NS1
-         JKmd5qybShp5qtUxIyYI5NnliKqKRXa0wJEj61V2ElWU7tdXP4LvLnog1sS5UZeAzXay
-         yOiWhtL8lqvb0HkvTqtz5qUX3U9XNo4KDlWrDBc+A9KEjhs9oa0YJxx/9kjrzPHEMKLR
-         gXgHVSmFUJvfP9PlAfJxq15e/09NBwuCM+Ch6oGLrycBmEufmnKF/mpCDK9ErYTe7ARw
-         Q5bg==
-X-Gm-Message-State: AOJu0YzhNNUJSQahotIGwJF68ncp1Xs9uMEVIvu/FyCrV9jAUkj7il7j
-	I/T9NhlksYid/HgYJmHZlju606P841HkqzLId4amV9Ul4Dp/lx6deGC1+RxySbDZX94ALF1qCcw
-	P5b1YiL1zZzUbO9jT1P6FQC2eOnGZLaHCwzu1fr191iHJ0nR32SDs4cMJWA==
-X-Received: by 2002:aa7:c359:0:b0:560:d9d5:7b0f with SMTP id j25-20020aa7c359000000b00560d9d57b0fmr787699edr.22.1707989823960;
-        Thu, 15 Feb 2024 01:37:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGjnkuRWcrrNGcF3UGMDvum+hC8hm8IMTuXBBdWcFGKBYScf7Khk3P8sHuIGLXoxaGmhjGtiw==
-X-Received: by 2002:aa7:c359:0:b0:560:d9d5:7b0f with SMTP id j25-20020aa7c359000000b00560d9d57b0fmr787675edr.22.1707989823592;
-        Thu, 15 Feb 2024 01:37:03 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id y18-20020a056402441200b0056368be8a58sm370499eda.27.2024.02.15.01.37.02
+        bh=oCltLUDIFGC1hblD4ry2SCiGjebPDwNZZNafoF/wgL0=;
+        b=ZPp+cCf+ArpiHBLQo8w2/6lFjq7HqiMSeMTkAjYLAfX4X4dunxo28hQuv8E7DABPh4
+         yab1PWHry8h+TjT0ppDLAupEUBiEVq7RzAa7sNTQ7dHwSmvQBnfHr4l7f5v18iZswhP+
+         q6H4dyTpUzksSGET3nJsnOvioiphFW8w10hGvvqR9QeBVRq2eKBQKebBk02HiiLLx8DS
+         79jUhDOPt1tJvz3dMgyllJ5cOvTgkvESLZQTjO+rXDMy5ferGGj2Ss1sbyML3bEd8PbG
+         EGrsezjgOjzEmzq11PY+RD1ks96JQkYL5sTOgZZOq7PUOTpSXAm5XSuDahH04YcrG/hh
+         bzjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMrIqO+PSXOHKLA2LJm02IDJC2Bym7BuHOV1hm817bMugVs8WixixzAxTGBjYBBDSt3akSbufdu8m3fNWnXO5c91o3cxRuFGq5R4LL62XHQsslBNP3fOS3tyY7QCdAXnmVBnGA6TFsj6Nfkk9lepuU/1tKYPWvAMl16jVZiZEUB8MmwQ==
+X-Gm-Message-State: AOJu0YxvA0cD4BnmZiarcGOFooktcXAL/yLYrMMoZDMMVvmlM9l9RVvk
+	8zKFgGWCNbFnOIGuon9FitYle1RwGUORDUlV2QcKBXggabvwSZbQ1zTMglhXI8Y=
+X-Google-Smtp-Source: AGHT+IEtfVhmb+P56obMhgGA0oXzzNXX5d8Ra2/f7VPqZcMteJxF3blC5Ww4auJ+inj64e3MEA/aeA==
+X-Received: by 2002:a05:600c:198f:b0:411:e5c1:e573 with SMTP id t15-20020a05600c198f00b00411e5c1e573mr1149675wmq.7.1707999221569;
+        Thu, 15 Feb 2024 04:13:41 -0800 (PST)
+Received: from [192.168.176.154] ([5.14.144.108])
+        by smtp.gmail.com with ESMTPSA id i6-20020a05600c354600b00411ab6dad65sm1822214wmq.29.2024.02.15.04.13.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 01:37:03 -0800 (PST)
-Message-ID: <62861b98-14fa-4f44-b6a1-ac5fd079d66f@redhat.com>
-Date: Thu, 15 Feb 2024 10:37:01 +0100
+        Thu, 15 Feb 2024 04:13:41 -0800 (PST)
+Message-ID: <73d01418-65e2-4327-b6b3-c4de501c2920@gmail.com>
+Date: Thu, 15 Feb 2024 14:13:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,83 +76,76 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] iio: accel: bmc150: Duplicate ACPI entries
-To: Jonathan LoBue <jlobue10@gmail.com>, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
- ilpo.jarvinen@linux.intel.com, jagathjog1996@gmail.com, luke@ljones.dev,
- benato.denis96@gmail.com, lkml@antheas.dev, derekjohn.clark@gmail.com
-References: <4563303.LvFx2qVVIh@nobara-ally-pc>
- <20240214225956.25731-1-jlobue10@gmail.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20240214225956.25731-1-jlobue10@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 4/5] dt-bindings: iio: adc: ad7192: Add AD7194 support
+To: Conor Dooley <conor@kernel.org>
+Cc: alexandru.tachici@analog.com, alisa.roman@analog.com,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, dlechner@baylibre.com,
+ jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ krzysztof.kozlowski@linaro.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+ robh+dt@kernel.org
+References: <20240208172459.280189-1-alisa.roman@analog.com>
+ <20240208172459.280189-5-alisa.roman@analog.com>
+ <20240208-occupancy-shudder-514d8569e261@spud>
+Content-Language: en-US
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+In-Reply-To: <20240208-occupancy-shudder-514d8569e261@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 2/14/24 23:59, Jonathan LoBue wrote:
-> This patch adds a description of the duplicate ACPI identifier issue
-> between devices using bmc150 and bmi323.
+On 08.02.2024 20:03, Conor Dooley wrote:
+> Hey,
 > 
-> With the remarks below,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
-> Co-developed-by: Luke D. Jones <luke@ljones.dev>
-> Signed-off-by: Luke D. Jones <luke@ljones.dev>
-> Co-developed-by: Denis Benato <benato.denis96@gmail.com>
-> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> ---
->  drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+> On Thu, Feb 08, 2024 at 07:24:58PM +0200, Alisa-Dariana Roman wrote:
 > 
-> diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-> index ee1ba134ad42..df7d48a35e41 100644
-> --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> @@ -15,6 +15,19 @@
->  
->  #ifdef CONFIG_ACPI
->  static const struct acpi_device_id bmc150_acpi_dual_accel_ids[] = {
-> +	/*
-> + 	 * The "BOSC0200" identifier used here is not unique to devices using
-> + 	 * bmc150. The same "BOSC0200" identifier is found in the ACPI tables of
-> + 	 * the ASUS ROG ALLY and Ayaneo AIR Plus which both use a Bosch BMI323
-> + 	 * chip. This creates a conflict with duplicate ACPI identifiers which
-> + 	 * multiple drivers want to use. Fortunately, when the bmc150 driver
-> + 	 * starts to load on the ASUS ROG ALLY, the chip ID check portion fails
-> + 	 * (correctly) because the chip IDs received (via i2c) are unique between
-> + 	 * bmc150 and bmi323 and a dmesg output similar to this:
-> + 	 * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be seen.
-> + 	 * This allows the bmi323 driver to take over for ASUS ROG ALLY, and
-> + 	 * other devices using the bmi323 chip.
-> + 	 */
->  	{"BOSC0200"},
->  	{"DUAL250E"},
->  	{ }
+>> +patternProperties:
+>> +  "^channel@([0-7a-f])$":
+>> +    type: object
+>> +    $ref: adc.yaml
+>> +    unevaluatedProperties: false
+>> +
+>> +    properties:
+>> +      reg:
+>> +        description: The channel index.
+>> +        minimum: 0
+>> +        maximum: 7
+> 
+> There are only 8 possible channels, at indices 0 to 7, so why is the
+> pattern property more permissive than that? Shouldn't "^channel@[0-7]$"
+> suffice?
+> 
+>> +
+>> +       diff-channels:
+> 
+>> +        description: |
+>> +          The differential channel pair for Ad7194 configurable channels. The
+>> +          first channel is the positive input, the second channel is the
+>> +          negative input.
+> 
+> This duplicates the description in adc.yaml
+> 
+>> +        items:
+>> +          minimum: 1
+>> +          maximum: 16
+> 
+> Hmm, this makes me wonder: why doesn't this match the number of channels
+> available and why is 0 not a valid channel for differential measurements?
+> 
+> Thanks,
+> Conor.
 
-Sorry for not noticing this sooner:
+Hello and thank you for the feedback!
 
-The BOSC0200 ACPI id is listed twice in this file.
+I will change the pattern property and the description.
 
-The listing you are adding the comment to is for ACPI ids which are known
-to be used in yoga-style (360° hinges) 2-in-1s which may have 2 accelerometers
-1 in the bottom/keyboard half and 1 in the display half.
+Regarding the channels, I followed the existing style of the driver for 
+the AD7194 channels: one iio channel for each pseudo-differential input 
+channel(AINx - AINCOM), summing up to 16 channels; and one iio channel 
+for each differential channel (AINx - AINy), summing up to 8 channels. 
+For the diff-channels, I thought the possible values should be 1->16 
+corresponding to AIN1->AIN16 (I will add this to the description as 
+suggested by David).
 
-The bmc150_acpi_dual_accel_ids list indicates that this might be the case
-and enables some extra code for this.
-
-The actual listing of ACPI ids used to determine if the driver should
-bind is the bmc150_accel_acpi_match[] list lower in the file and IMHO
-that is the list where this comment should go.
-
-Regards,
-
-Hans
-
-
-
-
+Kind regards,
+Alisa-Dariana Roman
 

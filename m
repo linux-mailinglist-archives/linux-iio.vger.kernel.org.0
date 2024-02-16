@@ -1,136 +1,123 @@
-Return-Path: <linux-iio+bounces-2649-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2650-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AC58581B6
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:51:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 515C58581EC
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A01FB21B8B
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C0C0283B73
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D87D12F5B2;
-	Fri, 16 Feb 2024 15:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796741350C4;
+	Fri, 16 Feb 2024 15:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skpgds00"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ECy4aIFV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68961BDD8;
-	Fri, 16 Feb 2024 15:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37ACB133298;
+	Fri, 16 Feb 2024 15:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708098662; cv=none; b=oU4prlxkN639DHAAKuzD+u52EIrmHuLkMjyku8iMxUpwG+2/MfQNE4386v1MQmCo/gWg6R37XXT/OhS8iAMmoiVDjkg0zsiqG+2qpC9XF9j68ZE16EjI+unVHUYJ+f8coXi2UATDpmygftRuWoE6eea/XNZTAeF2ij1thPwNOUs=
+	t=1708098793; cv=none; b=Nd7K3ZMpMvPV9wd5DqEHyF7m8+omQAc6VCeRMGgqCZhKnXIgOKkCqPOK3UBxniCb2MFILHBUxGEtLKgS8tbeHbYoXeY7PFQu/7nW3kRnhd988wrBTxn6goWjmPaDmpaj3y3Y4/9tuM3TjWVKZ1pn5bVfPwz7dXex2iEwjos+xk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708098662; c=relaxed/simple;
-	bh=XqumZg0Xx6R1zZIUJu7IqknRri8yZSUgg2ag/nPL14I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iUjF8PR996W9W1ElPZcx9omx7DCZcDIWKzMt7+snZAOUhW+SHvKMFbyzkOT/6wx8NclHToM55Bi+Da5Qn3mxt1VaGIHd144J6dOeRC+7rRMiVpQAhm5rw3TCxDKMby9/oQM3oBbcsGFWzLIX3QHu6XK0A91FvlZBVBpfQRRpA3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skpgds00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB479C433C7;
-	Fri, 16 Feb 2024 15:50:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708098661;
-	bh=XqumZg0Xx6R1zZIUJu7IqknRri8yZSUgg2ag/nPL14I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=skpgds005HeZfnJM4/AXQU9lYuQcNubyIxR6+dlb+2BusjC/hA95dwI47l6nxndJc
-	 A8xVVij9W9Df2+aA8VWSX5/KNEmJrJHcvn/btb1KumrK1hC10aF99YRnNJJ4vj0AIV
-	 db224RP8P+p2sJs1diSnZp+o/Wp4UoWPOW0e/8tPApZA1/fA6imqjJDXWvzG8AU4Rr
-	 5WyCCfCvn9fq32nUcJLCxeqqgQooWJoCLavMSxw8zIXmmTGQhcGeRfeiYssa/ChOix
-	 XWZoLHW7+iZ/yNICznkPPbbOie8lVRseUJcPzNj1tEMTpugKvGLIZtFFduRFqlq26x
-	 xjmUpoh2r5S8Q==
-Date: Fri, 16 Feb 2024 15:50:48 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@pengutronix.de,
- thomas.haemmerle@leica-geosystems.com
-Subject: Re: [RESEND PATCH 1/2] dt-bindings: iio: ti,tmp117: add vcc supply
- binding
-Message-ID: <20240216155048.29b806a1@jic23-huawei>
-In-Reply-To: <20240216112348.pamc4c7yemuz3sjp@pengutronix.de>
-References: <20240216102820.1395815-1-m.felsch@pengutronix.de>
-	<20240216112120.76a0c0ca@jic23-huawei>
-	<20240216112348.pamc4c7yemuz3sjp@pengutronix.de>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708098793; c=relaxed/simple;
+	bh=ETzxVU5TL7u3yOgl+fq2bk8/qmTAeHHWvLXY1JVcMm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=n1uFory1NeEd1uYGixrpNO3hsUGPBJu/OgNUtnUFQNYVz1kASyspy9OQ3fSKy3bnVo9YiGY9dFt1o8N1LOMOVMZlNmmt4szxYtRh/ekO/w1rl6BetCxqV25r29HiFGB1wNxYnqS7We2XJyeewHOx3r2XbF8QnezxV6C+D6Wm0I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ECy4aIFV; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708098791; x=1739634791;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ETzxVU5TL7u3yOgl+fq2bk8/qmTAeHHWvLXY1JVcMm4=;
+  b=ECy4aIFVWmkqCWBchhdtU24tWMJBGIzZtosancRfm0fzYAuzjt4yKyBF
+   Ifqwgldp3hbSW2oQbnJ2OhrGvi7iRJk5LpnactuBAGrHOZVBd70h/MJTr
+   RzpOPHsYWwhmUIhT+Y5e7oeV+f/fNsXjYMP9ztxlS02kCG4vHnpE7aCam
+   cPOFZJyU/ziSJpkMYhwbB9brwzynQ6Al9nT9v4xgnELlTt2V/zAwD91Lw
+   W6YUkooVcJQbirGlA1os/WQlvK29I7NBQLAsycEDqrLiqOZay7/1gKv9t
+   /CtX1UHWf6l766RnNYgMDUCnwIBRrfC8zZBho/eaMUyE5bmzgAoqZqIz1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="13630527"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="13630527"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:53:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="935862609"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="935862609"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:53:06 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rb0WN-000000055TF-2g31;
+	Fri, 16 Feb 2024 17:53:03 +0200
+Date: Fri, 16 Feb 2024 17:53:03 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mike Looijmans <mike.looijmans@topic.nl>, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Cc: Mike Looijmans <mike.looijmans@topic.nl>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maksim Kiselev <bigunclemax@gmail.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Okan Sahin <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 2/2] iio: adc: ti-ads1298: Add driver
+Message-ID: <Zc-E3-MNe9dG9tdW@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, 16 Feb 2024 12:23:48 +0100
-Marco Felsch <m.felsch@pengutronix.de> wrote:
+...
 
-> On 24-02-16, Jonathan Cameron wrote:
-> > On Fri, 16 Feb 2024 11:28:19 +0100
-> > Marco Felsch <m.felsch@pengutronix.de> wrote:
-> >   
-> > > From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> > > 
-> > > Add the binding to specify the vcc supply. We can't make it required
-> > > since this would break the backward compatibility.  
-> > 
-> > Given convention for supplies like this is to make them required in
-> > the dt-binding to reflect that providing power is not optional (unlikely
-> > some other supplies that might not be wired up) and not worry about the
-> > fact that we happily provide dummy supplies for them if they aren't in a
-> > particular dts, it should be fine to make it required here.  
-> 
-> Will this fact apply to all dt-bindings? I'm asking because, there are
-> many bindings out there without having the -supply in place.
++	if (reset_gpio) {
++		/*
++		 * Deassert reset now that clock and power are active.
++		 * Minimum reset pulsewidth is 2 clock cycles.
++		 */
++		udelay(ADS1298_CLOCKS_TO_USECS(2));
 
-Yes in theory - in practice it's noise to do it unless we have a reason
-to be touching the dt-binding anyway.  I don't plan to fix them up on
-mass.
+This is sleeping context and you are calling unsleeping function. I haven't
+checked the macro implementation and I have no idea what is the maximum it may
+give, but making code robust just use fsleep() call.
 
-Jonathan
++		gpiod_set_value_cansleep(reset_gpio, 0);
++	} else {
++		ret = ads1298_write_cmd(priv, ADS1298_CMD_RESET);
++		if (ret)
++			return dev_err_probe(dev, ret, "RESET failed\n");
++	}
++	/* Wait 18 clock cycles for reset command to complete */
++	udelay(ADS1298_CLOCKS_TO_USECS(18));
 
-> 
-> Regards,
->   Marco
-> 
-> > 
-> > Jonathan
-> >   
-> > > 
-> > > Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> > > Resend since I forgot to add the DT maintainers
-> > > 
-> > >  .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > > index 8c6d7735e875..cf7799c9734f 100644
-> > > --- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > > @@ -24,6 +24,9 @@ properties:
-> > >    reg:
-> > >      maxItems: 1
-> > >  
-> > > +  vcc-supply:
-> > > +    description: provide VCC power to the sensor.
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > @@ -39,5 +42,6 @@ examples:
-> > >          tmp117@48 {
-> > >               compatible = "ti,tmp117";
-> > >               reg = <0x48>;
-> > > +             vcc-supply = <&pmic_reg_3v3>;
-> > >          };
-> > >      };  
-> > 
-> >   
+Ditto.
+
+...
+
+If it's the only issue I think Jonathan can modify when applying
+(no new patch version would be needed).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

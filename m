@@ -1,129 +1,126 @@
-Return-Path: <linux-iio+bounces-2606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F08E857B8A
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3894857BA0
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121EA1F25FE5
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:24:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66EEF1F24359
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1A7768F5;
-	Fri, 16 Feb 2024 11:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F4B77638;
+	Fri, 16 Feb 2024 11:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5HOEDXs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D75627FF
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 11:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBEB627FF;
+	Fri, 16 Feb 2024 11:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082644; cv=none; b=bwCajx1DlOKR4pf39Ll58wWX4aLmIamqAOj+GyAJnSFp9wa++A+FOckRQ+ZVnl84a3hb/sd1N1JuTdgE7e5w7gIzhYQOusz34i1C3Les2RG2ZvFcOw8+ZjfSNERBuSVoL4x/Zf57ht13OoGPqCQJErk6LXKi8deh6LoiFQZedZ0=
+	t=1708082964; cv=none; b=hTPYIz9HjRxXkBNmCjTKTqioNgr+NPiXkZwc4VkhxePKjLx97hCZ7XZIR41h7PDsuRIA4djmrsB+TPKc4k8nJKqL2DztN868OqNBDDPKctqp/ZHaMK+mQTJbgOhSj/a1xsFW6HvGCMlUlL4TtpUz8QvN+2+cmSLVMBPPvA0h2YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082644; c=relaxed/simple;
-	bh=ek/PNQvE+A15nH8yH/1EIecS2w7cXCaEUjlHmYanmoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s5IJ0BQp/afGg34rCPWambFrPSZ1FmSfsuTYcl3ZJJbg8AKbfBaf/tmVbwipJqtHu/OAyUs99XmnDm63YK257GBNTs1kEdFf0Uv2gnTuax6OicVe5LLp0CLBWmYbCSnc0OHm+16AgfhXMZPmq96vTtWw3WkwHVaXuSPQji3rSkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rawJp-0002lY-AI; Fri, 16 Feb 2024 12:23:49 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rawJo-00140Z-GV; Fri, 16 Feb 2024 12:23:48 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rawJo-00BU8B-1L;
-	Fri, 16 Feb 2024 12:23:48 +0100
-Date: Fri, 16 Feb 2024 12:23:48 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Jonathan Cameron <jic23@kernel.org>
+	s=arc-20240116; t=1708082964; c=relaxed/simple;
+	bh=LaKs5DqAuKaU3encHBxSEltA7O1irPZqnTol1trVLEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MClMKFJc4JqZBkk9+QuE+ACFQVRkywG/vCRFq0k58inlm2rNV+dZmaBLAkIqqP4+IIu7W3n3v06fPsF1h8JMwI9Qycjd+CoFF4+Dn5VCu8RhY1enl3+XnCmhEc0szHXMVaykKJJOfgEbCSfJRM7F0Wt/bfZK7zov6jfGmLyRGws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5HOEDXs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68980C433B2;
+	Fri, 16 Feb 2024 11:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708082964;
+	bh=LaKs5DqAuKaU3encHBxSEltA7O1irPZqnTol1trVLEk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=I5HOEDXs4RGYSouKlxxc0vt7BLbZGIAj31GCowFh0QUM9Vk5PvFYU/luROXnSbWo3
+	 et5ArAltsZKlKwWWwB/uP+eDRd3i5VxvGQ1xNbTn7tzYVegk4CbuPzE6JRrJQEoHmW
+	 iOfLz0EoBtJGuTM0JaC0mDhSoD5IkVWYkCKrU4ceAUxprUNK7VB74KLkS0u2vbVhKx
+	 iONu4FBGFgdEKFSwsVEH27VY/VV+To12D6I5msl7cIEJ8vzs1H7REN7S3MYJIZWLOP
+	 lc69mS1uXXeJX99cNtgOlS0yy/PXlqiEfwIfHzqTyW6EVx6WT+qhvhHFNHKeroKfaU
+	 Ogb9QsWfW0F/A==
+Date: Fri, 16 Feb 2024 11:29:10 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	thomas.haemmerle@leica-geosystems.com
-Subject: Re: [RESEND PATCH 1/2] dt-bindings: iio: ti,tmp117: add vcc supply
- binding
-Message-ID: <20240216112348.pamc4c7yemuz3sjp@pengutronix.de>
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+ thomas.haemmerle@leica-geosystems.com
+Subject: Re: [RESEND PATCH 2/2] iio: temperature: tmp117: add support for
+ vcc-supply
+Message-ID: <20240216112910.4059a09b@jic23-huawei>
+In-Reply-To: <20240216102820.1395815-2-m.felsch@pengutronix.de>
 References: <20240216102820.1395815-1-m.felsch@pengutronix.de>
- <20240216112120.76a0c0ca@jic23-huawei>
+	<20240216102820.1395815-2-m.felsch@pengutronix.de>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216112120.76a0c0ca@jic23-huawei>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 24-02-16, Jonathan Cameron wrote:
-> On Fri, 16 Feb 2024 11:28:19 +0100
-> Marco Felsch <m.felsch@pengutronix.de> wrote:
-> 
-> > From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> > 
-> > Add the binding to specify the vcc supply. We can't make it required
-> > since this would break the backward compatibility.
-> 
-> Given convention for supplies like this is to make them required in
-> the dt-binding to reflect that providing power is not optional (unlikely
-> some other supplies that might not be wired up) and not worry about the
-> fact that we happily provide dummy supplies for them if they aren't in a
-> particular dts, it should be fine to make it required here.
+On Fri, 16 Feb 2024 11:28:20 +0100
+Marco Felsch <m.felsch@pengutronix.de> wrote:
 
-Will this fact apply to all dt-bindings? I'm asking because, there are
-many bindings out there without having the -supply in place.
+> From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> 
+> Add support to specify the VCC supply which is required to power the
+> device.
+> 
+> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Regards,
-  Marco
+Hi.
 
+With power supply enables, the question that normally comes up is whether
+the device takes significant time to become available after the power is
+turned on.
+
+I had a look at the datasheet but couldn't find clear language on
+how long we need to wait before the device is usable following power up.
+There is a number for reset of 1.5 msecs so I guess we could use that
+safely?
+
+Maybe no delay is fine for reading the device ID. I've no idea.
+Sometimes we start with no delay and only end up adding one later when
+people report issues.  We could do that here.
+
+Jonathan
+
+> ---
+> Resend since I forgot to add the DT maintainers
 > 
-> Jonathan
+>  drivers/iio/temperature/tmp117.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> > 
-> > Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> > Resend since I forgot to add the DT maintainers
-> > 
-> >  .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > index 8c6d7735e875..cf7799c9734f 100644
-> > --- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> > @@ -24,6 +24,9 @@ properties:
-> >    reg:
-> >      maxItems: 1
-> >  
-> > +  vcc-supply:
-> > +    description: provide VCC power to the sensor.
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > @@ -39,5 +42,6 @@ examples:
-> >          tmp117@48 {
-> >               compatible = "ti,tmp117";
-> >               reg = <0x48>;
-> > +             vcc-supply = <&pmic_reg_3v3>;
-> >          };
-> >      };
-> 
-> 
+> diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
+> index 059953015ae7..69328066811a 100644
+> --- a/drivers/iio/temperature/tmp117.c
+> +++ b/drivers/iio/temperature/tmp117.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/kernel.h>
+>  #include <linux/limits.h>
+>  #include <linux/property.h>
+> +#include <linux/regulator/consumer.h>
+>  
+>  #include <linux/iio/iio.h>
+>  
+> @@ -152,6 +153,10 @@ static int tmp117_probe(struct i2c_client *client)
+>  	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+>  		return -EOPNOTSUPP;
+>  
+> +	ret = devm_regulator_get_enable(&client->dev, "vcc");
+> +	if (ret)
+> +		return ret;
+> +
+>  	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
+>  	if (dev_id < 0)
+>  		return dev_id;
+
 

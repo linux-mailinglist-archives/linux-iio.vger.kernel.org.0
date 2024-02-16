@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-2620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594FA857DF7
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:46:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C53857E23
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEFBDB264F5
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 13:46:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B255D1C22BB6
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 13:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19ACF12BF0B;
-	Fri, 16 Feb 2024 13:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADF412BF24;
+	Fri, 16 Feb 2024 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpmTDcqj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q09jlW7C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D092CCB4;
-	Fri, 16 Feb 2024 13:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CC01292C9;
+	Fri, 16 Feb 2024 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708091149; cv=none; b=g+7hPuQTuS5JiyI3jQLxD4FyBVCG/nVMzuO6uPP2ogAAucP+2vSKttLNGqhcZW6nWXZb11Vuq7DE7WYBA+gBfjDeDT0de/5t9Hr+duIjA98yPhpPb98kj7ozCeB0zxdcknhoFTOGi+zA2P2aWHyAadazAdrohlh3O0efeFj3a58=
+	t=1708091698; cv=none; b=WACtmVH118PySTsGsDpt0fq1ydN+VavGHEDwYpBFdK5blWcarGRKqcaOqcN8XrAmEHLNsNxvDe7E77pGlzeUt9I5dXmTbKaF5wxhjHzJ3Q+cCr74oK21pyNDe6Sr4ZcCQZFomKkrascO6DIdIkD1he/OE7MGNrS+Hiv3/jRukiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708091149; c=relaxed/simple;
-	bh=d9Bzh9P8NxtPjWqITn8rHulkcUgjn4uOxVfVyQ3u3AY=;
+	s=arc-20240116; t=1708091698; c=relaxed/simple;
+	bh=cqe2USBFaJaYZRQLPE2KZZhfmm188QBvEeoHTdm6t1A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HtqcYEqQ//g7fuoW/nK9K+vEHK3xeUg6DMS9ErVqk/mmGQ2ezHBcnGNwBaYTm0uhkdDgVjGZGe5EEehNHAl6xqr2On34suUT7c9DYtOG59Grd55j5eYjmZsprgHVhCG/Oap2o2nVVE2+ANTMAqY3gQrE6332vGhZfHFYQLQ/zSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpmTDcqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B38DC433F1;
-	Fri, 16 Feb 2024 13:45:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KkWXTvP2mgP3t/VwraPjGCJAefRboHBJaXnKVvfcyiR/FWyitHdeS+QyK6cn1tknU68AOl9pct2a1VthO8t9yu59AJ+NXZlBzXThf/7Sj0m7r2z4uoT8BmM48PAMeKNAx0VU+7yA6LeUboujrZCBjFAdnLTNJ8Ra5Fi9T3E0K7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q09jlW7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D93C433F1;
+	Fri, 16 Feb 2024 13:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708091149;
-	bh=d9Bzh9P8NxtPjWqITn8rHulkcUgjn4uOxVfVyQ3u3AY=;
+	s=k20201202; t=1708091697;
+	bh=cqe2USBFaJaYZRQLPE2KZZhfmm188QBvEeoHTdm6t1A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GpmTDcqj9c688tqKUSBEtMODmHp9u6pSgYAtlEIIZenR2XmqUY6kmwaVNdHa1+2e7
-	 daxDIDgnocfN0ZioFNSCnS30P18ZjAw5ffmdWSJcCJjOptRyfC8pac2ZW3Dv8/2RfQ
-	 Owe0hQ2B/wuNXzAC2ZzGUYZZP82bDa3RXQwrEkyDxqgdaVC4HO3rl4mdZ4/o+MTwE3
-	 qb4tlHqzDISQULefI8l96W7tUZedr/USj6WkenUnqmt7vzUHsxt/e5j720zqAZaIBQ
-	 qCQkCHgPMMR9HI54D5+J2dCssKrsEl6ty3oLO/5ZASiu8l2HeoT16O+ZsG3fyvtRXW
-	 yympsZqOAa95w==
-Date: Fri, 16 Feb 2024 13:45:31 +0000
+	b=Q09jlW7CLpPeUZakZ2gjjUaGgYRuXa7YhwbuPa/nOTRpL04jHWDGXNIKmW1kz5MsH
+	 JRvWgcNCB1qQ4fEu4UrLjIRieAMdXg/vHGm4hLirX8CNxz4hTQc3V0j2Tft3yxO6i9
+	 x75gSUFrV7XU0ocyWbGDZ/NMco+kLo43Q9QjgMpX2QnCMxvFMEQBhyzbVFU6tRCiFU
+	 c9fE+0Endgu7RVv0cN8hFb4ljjEVA0pi8QfmuEtunDx1Q2TexNsbwHFHZs6bHQJTQH
+	 gqC4LENcfX0eZqyacuzeKkq8iwuGSaoB175eAiQ1hocIdnOUNHYIRPcl8wvCRsB7D+
+	 EHYhvbw5WoVhg==
+Date: Fri, 16 Feb 2024 13:54:40 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jishnu Prakash <quic_jprakash@quicinc.com>
 Cc: <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
@@ -57,14 +57,13 @@ Cc: <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
  <linux-arm-msm@vger.kernel.org>, <linux-arm-msm-owner@vger.kernel.org>,
  <linux-iio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
  <devicetree@vger.kernel.org>, <cros-qcom-dts-watchers@chromium.org>
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: adc: Add support for QCOM
- PMIC5 Gen3 ADC
-Message-ID: <20240216134531.159a9da8@jic23-huawei>
-In-Reply-To: <12723477-aee2-40bc-80f0-a86c16c98988@quicinc.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <20240216135440.401f25ba@jic23-huawei>
+In-Reply-To: <b02f20fd-c682-4b47-8d61-1d0e2adbdd57@quicinc.com>
 References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
-	<20231231171237.3322376-3-quic_jprakash@quicinc.com>
-	<20240101180209.56e04267@jic23-huawei>
-	<12723477-aee2-40bc-80f0-a86c16c98988@quicinc.com>
+	<20231231171237.3322376-4-quic_jprakash@quicinc.com>
+	<20240101175453.5807483a@jic23-huawei>
+	<b02f20fd-c682-4b47-8d61-1d0e2adbdd57@quicinc.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,121 +71,232 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 16 Feb 2024 16:09:38 +0530
+On Fri, 16 Feb 2024 16:10:18 +0530
 Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
 
 > Hi Jonathan,
-> 
-> On 1/1/2024 11:32 PM, Jonathan Cameron wrote:
-> > On Sun, 31 Dec 2023 22:42:36 +0530
-> > Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
-> >  
-> >> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the  
-> 
+>=20
+> On 1/1/2024 11:24 PM, Jonathan Cameron wrote:
+> > On Sun, 31 Dec 2023 22:42:37 +0530
+> > Jishnu Prakash<quic_jprakash@quicinc.com>  wrote:
+> > =20
+> >> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
+> >> with all SW communication to ADC going through PMK8550 which
+> >> communicates with other PMICs through PBS.
+> >> =20
+>=20
 > >> +
-> >> +      label:
-> >> +        $ref: /schemas/types.yaml#/definitions/string
-> >> +        description: |
-> >> +            ADC input of the platform as seen in the schematics.
-> >> +            For thermistor inputs connected to generic AMUX or GPIO inputs
-> >> +            these can vary across platform for the same pins. Hence select
-> >> +            the platform schematics name for this channel.  
-> > defined in adc.yaml, so should just have a reference to that here.
-> >  
+> >> +	for (i =3D 0; i < adc->nchannels; i++) {
+> >> +		bool upper_set =3D false, lower_set =3D false;
+> >> +		int temp, offset;
+> >> +		u16 code =3D 0;
 > >> +
-> >> +      qcom,decimation:
-> >> +        $ref: /schemas/types.yaml#/definitions/uint32
-> >> +        description: |
-> >> +            This parameter is used to decrease ADC sampling rate.
-> >> +            Quicker measurements can be made by reducing decimation ratio.  
-> > Why is this in DT rather than as a userspace control?  
-> 
-> 
-> We don't intend this property to be something that can be controlled 
-> from userspace - if a client wants to read an ADC channel from 
-> userspace, we only intend to provide them the processed value, 
-> calculated with a fixed set of ADC properties mentioned in the 
-> corresponding channel node in DT.
+> >> +		chan_prop =3D &adc->chan_props[i];
+> >> +		offset =3D chan_prop->tm_chan_index;
+> >> +
+> >> +		if (!chan_prop->adc_tm)
+> >> +			continue;
+> >> +
+> >> +		mutex_lock(&adc->lock);
+> >> +		if (chan_prop->sdam_index !=3D sdam_index) { =20
+> > Perhaps factor this block out as indent already high and adding scoped_=
+guard would
+> > make it worse. =20
+>=20
+>=20
+> I don't think I can completely factor it out, as we need to update=20
+> several local variables here (sdam_index, tm_status, buf, also chan_prop=
+=20
+> above), but I'll try to reduce it as much as possible.
+>=20
+>=20
+> >> +			sdam_index =3D chan_prop->sdam_index;
+> >> +			ret =3D adc5_gen3_read(adc, sdam_index, ADC5_GEN3_TM_HIGH_STS,
+> >> +					tm_status, 2);
+> >> +			if (ret) {
+> >> +				dev_err(adc->dev, "adc read TM status failed with %d\n", ret);
+> >> +				goto out;
+> >> +			}
+> >> + =20
+>=20
+> >> +
+> >> +static void adc5_gen3_disable(void *data)
+> >> +{
+> >> +	struct adc5_chip *adc =3D data;
+> >> +	int i;
+> >> +
+> >> +	if (adc->n_tm_channels)
+> >> +		cancel_work_sync(&adc->tm_handler_work); =20
+> > If this is required before the place where a simple
+> > devm_request_irq() will result in the irqs being cleaned up
+> > them register this callback earlier to avoid problems there. =20
+>=20
+>=20
+> On checking again, it looks like I can just use devm_request_irq() and=20
+> avoid having to free irqs explicitly here and elsewhere. I'll=C2=A0 still=
+=20
+> need to call cancel_work_sync() and I think you have also asked me to=20
+> keep this call in another comment below. I have another question for it=20
+> below.
 
-Why?  This is a way to control precision of an ADC channel read out.
-That's policy rather than dependent on the hardware.
-To be in DT we (mostly) need it to be related to the hardware configuration
-(i.e. what it is wired to etc).
-
-
-> 
-> 
-> >> +        enum: [ 85, 340, 1360 ]
-> >> +        default: 1360
-> >> +  
-> 
+Keeping it is fine, just make sure it's registered in the right location
+to ensure it is taken down after we are sure it can't get scheduled again
+(I think that is what I was getting at - been a while!)
+>=20
+>=20
 > >> +
-> >> +      qcom,hw-settle-time:
-> >> +        $ref: /schemas/types.yaml#/definitions/uint32
-> >> +        description: |
-> >> +            Time between AMUX getting configured and the ADC starting
-> >> +            conversion. The 'hw_settle_time' is an index used from valid values
-> >> +            and programmed in hardware to achieve the hardware settling delay.
-> >> +        enum: [ 15, 100, 200, 300, 400, 500, 600, 700, 1000, 2000, 4000,
-> >> +                8000, 16000, 32000, 64000, 128000 ]
-> >> +        default: 15  
-> > only currently defined for muxes but we have settle-time-us which has benefit of
-> > providing the units (which are missing here from the description as well)
-> >  
+> >> +	for (i =3D 0; i < adc->num_sdams; i++)
+> >> +		free_irq(adc->base[i].irq, adc);
 > >> +
-> >> +      qcom,avg-samples:
-> >> +        $ref: /schemas/types.yaml#/definitions/uint32
-> >> +        description: |
-> >> +            Number of samples to be used for measurement.
-> >> +            Averaging provides the option to obtain a single measurement
-> >> +            from the ADC that is an average of multiple samples. The value
-> >> +            selected is 2^(value).  
-> > Why is this in dt?  Why not just userspace control (in_voltageX_oversampling_ratio
+> >> +	mutex_lock(&adc->lock);
+> >> +	/* Disable all available TM channels */
+> >> +	for (i =3D 0; i < adc->nchannels; i++) {
+> >> +		if (!adc->chan_props[i].adc_tm)
+> >> +			continue;
+> >> +		adc5_gen3_poll_wait_hs(adc, adc->chan_props[i].sdam_index);
+> >> +		_adc_tm5_gen3_disable_channel(&adc->chan_props[i]);
+> >> +	}
+> >> +
+> >> +	mutex_unlock(&adc->lock);
+> >> +} =20
+>=20
+> > + =20
+> >> +	prop->hw_settle_time =3D VADC_DEF_HW_SETTLE_TIME; =20
+> > I'd prefer to see you has through the value that maps to this after qco=
+m_adc5_hw_settle_time_from_dt
+> > so then you can just set a default in value and call the rest of the co=
+de unconditionally.
+> > Same for the cases that follow. =20
+>=20
+>=20
+> I can remove the return check for fwnode_property_read_u32() as you=20
+> suggested, but I think we still need to keep the return check for=20
+> qcom_adc5_hw_settle_time_from_dt(), to check in case values unsupported=20
+> in this ADC HW are set in DT. Same for the other properties.
+
+Sure, you can check for errors in using the property. Just do it unconditio=
+nally
+so that you call the same code for the default (even though you know that w=
+ill
+be fine).  Should simplify the code.
+
+>=20
+>=20
+> >> +	ret =3D fwnode_property_read_u32(fwnode, "qcom,hw-settle-time", &val=
+ue);
+> >> +	if (!ret) {
+> >> +		ret =3D qcom_adc5_hw_settle_time_from_dt(value,
+> >> +						data->hw_settle_1);
+> >> +		if (ret < 0)
+> >> +			return dev_err_probe(dev, ret, "%#x invalid hw-settle-time %d us\n=
+",
+> >> +				chan, value);
+> >> +		prop->hw_settle_time =3D ret;
+> >> +	}
+> >> + =20
+
+> > =20
+> >> +
+> >> +	device_for_each_child_node(adc->dev, child) {
+> >> +		ret =3D adc5_gen3_get_fw_channel_data(adc, chan_props, child, adc->=
+data);
+> >> +		if (ret < 0) { =20
+>=20
+> >> +		ret =3D platform_get_irq_byname(pdev, adc->base[i].irq_name);
+> >> +		if (ret < 0) {
+> >> +			kfree(reg);
+> >> +			dev_err(dev, "Getting IRQ %d by name failed, ret =3D %d\n",
+> >> +					adc->base[i].irq, ret);
+> >> +			goto err_irq;
+> >> +		}
+> >> +		adc->base[i].irq =3D ret;
+> >> +
+> >> +		ret =3D request_irq(adc->base[i].irq, adc5_gen3_isr, 0, adc->base[i=
+].irq_name, adc); =20
+> > Don't mix devm and non dev calls.  And don't group up multiple things i=
+n one devm callback
+> > as it almost always leads to bugs where for example only some irqs are =
+allocated. =20
+>=20
+>=20
+> I can replace request_irq() with devm_request_irq(). But when you say=20
+> not to group up multiple things in one devm callback, do you mean the=20
+> devm_add_action() callback I added below or something else right here?
+
+Yes, I meant the devm_add_action() callback.
+
+>=20
+>=20
+> >> +		if (ret < 0) {
+> >> +			kfree(reg);
+> >> +			dev_err(dev, "Failed to request SDAM%d irq, ret =3D %d\n", i, ret);
+> >> +			goto err_irq;
+> >> +		}
+> >> +	}
+> >> +	kfree(reg); =20
+> > I would factor out this code and allocation of reg so you can easily us=
+e scope
+> > based cleanup (see linux/cleanup.h) to avoid the kfree(reg) entries that
+> > make for awkward code flow. =20
+>=20
+>=20
+> The kfrees are not really needed, I'll just use devm_kcalloc to allocate=
+=20
+> memory for the "reg" variable. With this and devm_request_irq, I think a=
+=20
+> scoped guard would not be needed here.
+
+If you don't need it after this function, then better to clean it up.
+
+>=20
+>=20
 > >
-> > If it needs to be, we do have standard DT bindings for it in adc.yaml  
-> 
-> 
-> avg-samples is also something we don't want the client to modify from 
-> userspace. As for using adc.yaml, I think I could use settling-time-us 
-> and oversampling-ratio from it for the above two properties.
+> > =20
+> >> +
+> >> +	ret =3D devm_add_action(dev, adc5_gen3_disable, adc); =20
+> > As above, this action does multiple things. Also use devm_add_action_or=
+_reset() to cleanup
+> > if the devm registration fails without needing to do it manually. =20
+>=20
+>=20
+> I'll change it to devm_add_action_or_reset(), but do you mean I should=20
+> call devm_add_action_or_reset() twice to register two separate callbacks=
+=20
+> instead of just adc5_gen3_disable? Like one for calling=20
+> cancel_work_sync() alone and the other for the loop where we disable all=
+=20
+> TM channels?
 
-Same as for above.  This is policy. If you want to control it that belongs
-in a udev script or similar, not the DT bindings.
-We tend to resist defining such policy in DT because it isn't a characteristic
-of the hardware and depending on the usecase userspace may have good reason
-to tweak the settings (or consumer drivers if you have those as sometimes
-these numbers are about getting a particular precision needed for what
-we are measuring to be useful for another driver).
+yes
 
-There is some legacy for this though as you point out. So that may be a
-strong enough argument for why we should make an exception this time.
-If so make that clear in the patch description.
+>=20
+>=20
+> >> +	if (ret < 0) {
+> >> +		dev_err(dev, "failed to register adc disablement devm action, %d\n"=
+, ret);
+> >> +		goto err_irq;
+> >> +	}
+> >> + =20
+>=20
+> >> +
+> >> +	if (adc->n_tm_channels)
+> >> +		INIT_WORK(&adc->tm_handler_work, tm_handler_work); =20
+> > Until this init work seems unlikely you should be calling the cancel
+> > work in gen3_disable() =20
+>=20
+>=20
+> We are already calling cancel_work_sync() in adc5_gen3_disable....is=20
+> there any change needed?
+Yes - add a devm_add_action() here (not need for reset in this case as noth=
+ing
+can have queued any work yet) and handle this on it's own.
 
-> 
-> However, Krzysztof has mentioned in another comment that I should put 
-> properties common to ADC5 Gen3 and older QCOM VADC devices in a common 
-> schema. If I now try replacing the existing qcom,hw-settle-time and 
-> qcom,avg-samples properties with settling-time-us and oversampling-ratio 
-> for older devices too, I would have to make several DT changes for 
-> existing devices...are you fine with this? Or should I just replace 
-> these two properties for ADC5 Gen3?
+Each cleanup action should match with a setup action.
 
-If you change DT binding for older devices, you will need to maintain
-backwards compatibility.  It's fine to deprecate them in the binding
-docs etc, but not the driver (as there may be old DT on devices that
-can't be easily updated).
+Jonathan
 
-> 
-> 
-> I'll address your other comments in the next patchset.
-> 
-> 
-> Thanks,
-> 
-> Jishnu
-> 
 
 

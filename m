@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-2607-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2608-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3894857BA0
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:29:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3C5857BCB
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66EEF1F24359
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 913341C21F4C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F4B77638;
-	Fri, 16 Feb 2024 11:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BE47690B;
+	Fri, 16 Feb 2024 11:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5HOEDXs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bR+IUJae"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBEB627FF;
-	Fri, 16 Feb 2024 11:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6593B17C6D
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 11:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082964; cv=none; b=hTPYIz9HjRxXkBNmCjTKTqioNgr+NPiXkZwc4VkhxePKjLx97hCZ7XZIR41h7PDsuRIA4djmrsB+TPKc4k8nJKqL2DztN868OqNBDDPKctqp/ZHaMK+mQTJbgOhSj/a1xsFW6HvGCMlUlL4TtpUz8QvN+2+cmSLVMBPPvA0h2YE=
+	t=1708083358; cv=none; b=iqV2tKO9d3RrmsaMX+FpTWpfvlae5PlorZ9VAseXqM2w6JXygayboL+b+ZwoKjRXG7EaaJQM5AbD5PRcBxrQQiZeb77vI/BNI3m3vMV0G692TDujpaqMC0kqoHd2cwshf8Ex3S3u+SJT/PA9282us5tvPUSOtOslTktxyLIFED8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082964; c=relaxed/simple;
-	bh=LaKs5DqAuKaU3encHBxSEltA7O1irPZqnTol1trVLEk=;
+	s=arc-20240116; t=1708083358; c=relaxed/simple;
+	bh=a833L4yDnR7xE57Tr6uCX9DL0USFtAl7CsyeeW6RbDA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MClMKFJc4JqZBkk9+QuE+ACFQVRkywG/vCRFq0k58inlm2rNV+dZmaBLAkIqqP4+IIu7W3n3v06fPsF1h8JMwI9Qycjd+CoFF4+Dn5VCu8RhY1enl3+XnCmhEc0szHXMVaykKJJOfgEbCSfJRM7F0Wt/bfZK7zov6jfGmLyRGws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5HOEDXs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68980C433B2;
-	Fri, 16 Feb 2024 11:29:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P48b7U5Ps/LF1CAwr1iGY9MvS/6MaxpSkiItm9Qi8e5rAxpjivKYggAU5xsfWM/Hlbt1zEmjjFo0+0F5+Ns3ntxQxvJqLNR9ReyYv6Lqho3/hU9sZ7G/R7TWQr3KK5FTidhzVBckAng+btT12D01Mkvbs1Ft7ij3Y4bkn7oT/jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bR+IUJae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF915C433C7;
+	Fri, 16 Feb 2024 11:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708082964;
-	bh=LaKs5DqAuKaU3encHBxSEltA7O1irPZqnTol1trVLEk=;
+	s=k20201202; t=1708083357;
+	bh=a833L4yDnR7xE57Tr6uCX9DL0USFtAl7CsyeeW6RbDA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I5HOEDXs4RGYSouKlxxc0vt7BLbZGIAj31GCowFh0QUM9Vk5PvFYU/luROXnSbWo3
-	 et5ArAltsZKlKwWWwB/uP+eDRd3i5VxvGQ1xNbTn7tzYVegk4CbuPzE6JRrJQEoHmW
-	 iOfLz0EoBtJGuTM0JaC0mDhSoD5IkVWYkCKrU4ceAUxprUNK7VB74KLkS0u2vbVhKx
-	 iONu4FBGFgdEKFSwsVEH27VY/VV+To12D6I5msl7cIEJ8vzs1H7REN7S3MYJIZWLOP
-	 lc69mS1uXXeJX99cNtgOlS0yy/PXlqiEfwIfHzqTyW6EVx6WT+qhvhHFNHKeroKfaU
-	 Ogb9QsWfW0F/A==
-Date: Fri, 16 Feb 2024 11:29:10 +0000
+	b=bR+IUJae7yuWw7iS5pwoEOSgtpOSo9Mz3ctASvmaxj7oNfIY2JlkQRk/CxSWZe/a3
+	 DNproyv8bUuSwg9/uZ0N4QiCdQhIlLZSacnY7Qz1iZQwWtmsltgj/vV3il0G4F7QjS
+	 +CxA6WLVnBfqOKaTZuCrEfvwQU12sGuy8v9NRSEu5zAM9btgradySDT3NfshBosvBX
+	 4VwXsTa4RfPMKQvrFxL8iPaTn4MSC5VyAJz4yDIrMmEj+vu4w0I04bCLgDDf1J53yL
+	 yCAfV/gvePf9/taqQaHphVWDOGjL4ZcT0G9FSyfWANmhm8X09/aqV4VvjAfkve8uQw
+	 Dsh1p3h0XSFrA==
+Date: Fri, 16 Feb 2024 11:35:45 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@pengutronix.de,
- thomas.haemmerle@leica-geosystems.com
-Subject: Re: [RESEND PATCH 2/2] iio: temperature: tmp117: add support for
- vcc-supply
-Message-ID: <20240216112910.4059a09b@jic23-huawei>
-In-Reply-To: <20240216102820.1395815-2-m.felsch@pengutronix.de>
-References: <20240216102820.1395815-1-m.felsch@pengutronix.de>
-	<20240216102820.1395815-2-m.felsch@pengutronix.de>
+To: J Lo <jlobue10@gmail.com>
+Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Hans De Goede <hdegoede@redhat.com>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, jagath jogj <jagathjog1996@gmail.com>,
+ Luke Jones <luke@ljones.dev>, Denis Benato <benato.denis96@gmail.com>,
+ Antheas Kapenekakis <lkml@antheas.dev>, Derek John Clark
+ <derekjohn.clark@gmail.com>
+Subject: Re: [PATCH v5 0/2] Add bmi323 support for ASUS ROG ALLY
+Message-ID: <20240216113545.33b46e19@jic23-huawei>
+In-Reply-To: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
+References: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,62 +64,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Feb 2024 11:28:20 +0100
-Marco Felsch <m.felsch@pengutronix.de> wrote:
+On Thu, 15 Feb 2024 10:19:52 -0800
+J Lo <jlobue10@gmail.com> wrote:
 
-> From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> 
-> Add support to specify the VCC supply which is required to power the
-> device.
-> 
-> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> From: Jonathan LoBue <jlobue10@gmail.com>
 
-Hi.
+Hi Jonathan
 
-With power supply enables, the question that normally comes up is whether
-the device takes significant time to become available after the power is
-turned on.
+Cover letter should always include at least a short overview of what
+the patch is doing.
 
-I had a look at the datasheet but couldn't find clear language on
-how long we need to wait before the device is usable following power up.
-There is a number for reset of 1.5 msecs so I guess we could use that
-safely?
+Long term this solution may be a pain to maintain.
+The reasoning is the DT path where we have moved over time to allow
+for fallback compatibles (same concept exists in ACPI even if it is
+little used) to be used even if we don't recognise a ID read from
+the chip.  The intent being to allow old kernels to work with new
+devices where they really are backwards compatible.
 
-Maybe no delay is fine for reading the device ID. I've no idea.
-Sometimes we start with no delay and only end up adding one later when
-people report issues.  We could do that here.
+If that gets fixed in these drivers, we will have to explicitly
+exclude ACPI IDs.
+
+Hopefully we'll pick up such issues in review though so this should be fine.
+
+I'd like input from Hans though on whether this solution of duplicating
+the IDs generally works out longer term and is appropriate here.
 
 Jonathan
 
-> ---
-> Resend since I forgot to add the DT maintainers
+
 > 
->  drivers/iio/temperature/tmp117.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Changes since v4:
+> - Fixed comment location in bmc150.
+> - Fixed signed off by portion.
 > 
-> diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
-> index 059953015ae7..69328066811a 100644
-> --- a/drivers/iio/temperature/tmp117.c
-> +++ b/drivers/iio/temperature/tmp117.c
-> @@ -17,6 +17,7 @@
->  #include <linux/kernel.h>
->  #include <linux/limits.h>
->  #include <linux/property.h>
-> +#include <linux/regulator/consumer.h>
->  
->  #include <linux/iio/iio.h>
->  
-> @@ -152,6 +153,10 @@ static int tmp117_probe(struct i2c_client *client)
->  	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
->  		return -EOPNOTSUPP;
->  
-> +	ret = devm_regulator_get_enable(&client->dev, "vcc");
-> +	if (ret)
-> +		return ret;
-> +
->  	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
->  	if (dev_id < 0)
->  		return dev_id;
+> Jonathan LoBue (2):
+>   iio: accel: bmc150: Duplicate ACPI entries
+>   iio: imu: bmi323: Add and enable ACPI Match Table
+> 
+>  drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
+>  drivers/iio/imu/bmi323/bmi323_i2c.c  | 20 ++++++++++++++++++++
+>  2 files changed, 33 insertions(+)
+> --
+> 2.43.0
 
 

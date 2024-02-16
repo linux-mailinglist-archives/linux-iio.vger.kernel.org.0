@@ -1,135 +1,255 @@
-Return-Path: <linux-iio+bounces-2610-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2611-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3F2857BE4
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AC2857BF5
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B201F272A8
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:41:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EFD1F27391
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B806377A18;
-	Fri, 16 Feb 2024 11:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421177F29;
+	Fri, 16 Feb 2024 11:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKTiAw8K"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="h5/bJFDb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E65B59B5F
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 11:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6322F12E7E;
+	Fri, 16 Feb 2024 11:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708083696; cv=none; b=qCQDh8CBSB0oVMJ/Jr5PGt69rw0Qlycy2H2SmoliPBehm6ZP3ml4RbSO5+abyOWEmuFyP+cyV3/1ccvp6zkxTVlCxb2fC5G6aSjo2p8wrTHuxz/pgNbe5sojXLqdyJpgHd4h/YXUmCbo1KZHiESaKi0MJgge9swRDvUsEfwQdls=
+	t=1708083893; cv=none; b=n25/02p6bwrMTH7DMXtFygBxchiIy812HaP4Y+f6rTXMfOGVo8T5Kc0GOTRheJH3b5uJmotTzFYNMqJBc/kHUoUKsz8fWOAURgmQqYp4bK3EyVUea71QnZJc59rgisVsgJ/F5ff1zjnec66spHS+rCqcNqdpysk4z5L54+ThIfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708083696; c=relaxed/simple;
-	bh=ktF7Rsq7YPMIUh1zNqCsVAbFfXEYHshsKyu9YGlfvJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6XoWzS5L//mNCqF9sXQKxl+oKTtTvyP81wh+JIXdxN9aDuxyDFj8pjw5jiHVljSbAyfTMq+ivzN/LlrXwZ1Tje1euh+ue7kHIE4noE0KR6fHm7v0hEHkelUOVI6BifKGTWCMCBLAiSqmh8nudu95XyJ538DaxV/ujDKU1jber4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKTiAw8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691C6C433C7;
-	Fri, 16 Feb 2024 11:41:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708083695;
-	bh=ktF7Rsq7YPMIUh1zNqCsVAbFfXEYHshsKyu9YGlfvJk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AKTiAw8K4tHHJ8HoZoQNlNwJDz3EcJGDcBTZLuoyqBMUBINign3WKRuZe8wnMAeBK
-	 eCF6hs3L0bZ8dgkCAwwqiHBdMSz5Lyy+gQGDu/q2owbkj4IzaUmFYCr7RNraoUGTBg
-	 ZU0ZSMmMaNbSxDfIIHWOTVAg+CvH1Xioz3mzTOOejtL+5jZABwDSgZz7c1fuWrCQwq
-	 Y8Aiw2ZuMHaCS8xOLFENZt4mb4VmcSsOa+BpS/2feg0IOKfAtupQjeC9NtbCguOl33
-	 AYMhnOAvql5HBV4ixx9tcNwHhxx1pBQNQiep/kmEhK3SD2yuS1C1hbwu0f2t8Ctq6Y
-	 bqJsRzTVRt4Zg==
-Date: Fri, 16 Feb 2024 11:41:23 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan LoBue <jlobue10@gmail.com>
-Cc: linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
- hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com,
- jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com,
- lkml@antheas.dev, derekjohn.clark@gmail.com
-Subject: Re: [PATCH v5 2/2] iio: imu: bmi323: Add and enable ACPI Match
- Table
-Message-ID: <20240216114123.7db07a2a@jic23-huawei>
-In-Reply-To: <20240215182441.57391-1-jlobue10@gmail.com>
-References: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
-	<20240215182441.57391-1-jlobue10@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708083893; c=relaxed/simple;
+	bh=xg3H3S3ln6QEVC/6fQKGUWqyLA6D0eWw7f5BVs1Es5g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=W4IYfx1QWWW2P43HA4s8xfUlWHNT837BLfPc+cNimA0MONGLqpRTqZAMpl7ZKzZ3jzlUdX9pd5JeUAOQWnkG3QQ8xL4Jb+cM0clEEBxWUQ5wXkx4vf8NDKJn1JmEZU0CT7Mb6FoBvckXDyJxNCJrKX9/bJZGQKvIu6oXYYtfM94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=h5/bJFDb; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41GBY5lt010430;
+	Fri, 16 Feb 2024 11:44:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=GrTWn4995ZuRctWZ1kMoEso1m63FAMtxfL+s1KsIQYk=; b=h5
+	/bJFDb4ke/ktcaez5sz0bn+sz3g8p0P32U4MhvOOOfIWQ0X37GbguZbuVowehyBI
+	Xks5xVhAxU6sNIzqb9dNssGRGTEJ/JuR9KTVTw3+YUFu+RSaUOPAnVFw4PYHT1Z5
+	1yZnsgG4Mh/q5I/Y5Yzz7OXTQHqPUMs8oWDt5j9IIepnbPYwv9sU4Ugh6kUOzYvU
+	t3kHI4f9OAV17q2D/19/TE0D4vDkf3F/aaZkzr6F5B/k3ac3bkasx88oPFkB6zw1
+	UDb3SZoFqPxM5vcLC6POQ7LuVJq0zxUOY6YILeqbpXtCLlRxrpcjqvtxdRMOtW/y
+	hrEGfbX1czkAamTYF75A==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w9fkfbfc6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Feb 2024 11:44:27 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41GBiQYp010439
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Feb 2024 11:44:26 GMT
+Received: from [10.218.16.59] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 16 Feb
+ 2024 03:44:14 -0800
+Message-ID: <d2f2cb91-983f-48e4-b53a-8af2cd87f3d2@quicinc.com>
+Date: Fri, 16 Feb 2024 17:14:11 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>, <lee@kernel.org>,
+        <andriy.shevchenko@linux.intel.com>, <daniel.lezcano@linaro.org>,
+        <dmitry.baryshkov@linaro.org>
+CC: <lars@metafoo.de>, <luca@z3ntu.xyz>, <marijn.suijten@somainline.org>,
+        <agross@kernel.org>, <sboyd@kernel.org>, <rafael@kernel.org>,
+        <rui.zhang@intel.com>, <lukasz.luba@arm.com>,
+        <linus.walleij@linaro.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_amelende@quicinc.com>,
+        <quic_kamalw@quicinc.com>, <kernel@quicinc.com>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>
+References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
+ <20231231171237.3322376-3-quic_jprakash@quicinc.com>
+ <3f812ffa-ec33-448e-b72a-ce698618a8c1@linaro.org>
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
+In-Reply-To: <3f812ffa-ec33-448e-b72a-ce698618a8c1@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ofKoIyoRhH9_CAwxDddvjHrndBr679Uc
+X-Proofpoint-GUID: ofKoIyoRhH9_CAwxDddvjHrndBr679Uc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-16_09,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
+ spamscore=0 bulkscore=0 suspectscore=0 mlxscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402160094
 
-On Thu, 15 Feb 2024 10:24:41 -0800
-Jonathan LoBue <jlobue10@gmail.com> wrote:
+Hi Krzysztof,
 
-Add ACPI Match Table
+(Resending this mail for tracking on mailing lists, as it got rejected 
+from lists the first time due to HTML)
 
-is enough - would be odd if we didn't use it ;)
-
-This looks fine to me, but I'm not the expert in work arounds for this
-sort of ACPI issue. 
-
-I'm too used to the nice world of servers where we fix wrong firmware
-(and this sort of change is always rejected by upstream). 
-
-> This patch adds the ACPI match table for ASUS ROG ALLY to load the bmi323
-> driver with an ACPI match of "BOSC0200", and a comment about duplicate
-> ACPI identifiers between devices using the bmc150 and bmi323 chips.
+On 1/4/2024 1:48 PM, Krzysztof Kozlowski wrote:
+> On 31/12/2023 18:12, Jishnu Prakash wrote:
+>> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+>> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
+>>
+>> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
+>> going through PBS(Programmable Boot Sequence) firmware through a single
+>> register interface. This interface is implemented on an SDAM (Shared
+>> Direct Access Memory) peripheral on the master PMIC PMK8550 rather
+>> than a dedicated ADC peripheral.
+>>
+>> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
+>> channels and virtual channels (combination of ADC channel number and
+>> PMIC SID number) per PMIC, to be used by clients of this device.
+>>
+>> Changes since v2:
+>> - Moved ADC5 Gen3 documentation into a separate new file.
 > 
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Co-developed-by: Luke D. Jones <luke@ljones.dev>
-> Signed-off-by: Luke D. Jones <luke@ljones.dev>
-> Co-developed-by: Denis Benato <benato.denis96@gmail.com>
-> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
-> ---
->  drivers/iio/imu/bmi323/bmi323_i2c.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> Changelog goes under ---.
 > 
-> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-> index 20a8001b9956..f7550503e47e 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-> @@ -93,6 +93,25 @@ static int bmi323_i2c_probe(struct i2c_client *i2c)
->  	return bmi323_core_probe(dev);
->  }
->  
-> +static const struct acpi_device_id bmi323_acpi_match[] = {
-> +	/*
-> + 	 * The "BOSC0200" identifier used here is not unique to bmi323 devices.
-> + 	 * The same "BOSC0200" identifier is found in the ACPI tables of devices
-> + 	 * using the bmc150 chip. This creates a conflict with duplicate ACPI
-> + 	 * identifiers which multiple drivers want to use. If a non-bmi323 device
-> + 	 * starts to load with this "BOSC0200" ACPI match here, then the chip
-> + 	 * ID check portion should fail because the chip IDs received (via i2c) are
-> + 	 * unique between bmc150 and bmi323 and the driver should relinquish the
-> + 	 * device. If and when a different driver (such as bmc150) starts to load
-> + 	 * with the "BOSC0200" ACPI match, a short reset should ensure that the
-> + 	 * device is not in a bad state during that driver initialization. This
-> + 	 * device reset does occur in both the bmi323 and bmc150 init sequences.
-> + 	 */
-> +	{ "BOSC0200" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(acpi, bmi323_acpi_match);
-> +
->  static const struct i2c_device_id bmi323_i2c_ids[] = {
->  	{ "bmi323" },
->  	{ }
-> @@ -109,6 +128,7 @@ static struct i2c_driver bmi323_i2c_driver = {
->  	.driver = {
->  		.name = "bmi323",
->  		.of_match_table = bmi323_of_i2c_match,
-> +		.acpi_match_table = bmi323_acpi_match,
->  	},
->  	.probe = bmi323_i2c_probe,
->  	.id_table = bmi323_i2c_ids,
+> Why did you do this? What is the rationale? Sorry, this patchset goes
+> nowhere.
 
+I'll elaborate this more in the next patchset. There are two main 
+reasons for adding this documentation in a new file:
+
+1.This device is not exactly like the existing QCOM VADC drivers as it 
+now combines VADC functionality (reading ADC channel on client request) 
+with ADC_TM functionality (thermal threshold monitoring).
+
+2.Adding this device's bindings in the existing qcom,spmi-vadc.yaml file 
+is not possible as it would require updating some of the existing 
+top-level constraints. (for the older devices in that file, "reg" and 
+"interrupts" can have at most one item, while this device can have more 
+than one item under these properties.)
+
+
+> 
+>>
+>> Changes since v1:
+>> - Updated properties separately for all compatibles to clarify usage
+>>    of new properties and updates in usage of old properties for ADC5 Gen3.
+>> - Avoided updating 'adc7' name to 'adc5 gen2' and just left a comment
+>>    mentioning this convention.
+>> - Used predefined channel IDs in individual PMIC channel definitions
+>>    instead of numeric IDs.
+>> - Addressed other comments from reviewers.
+>>
+
+>> +          per PMIC in the PMIC-specific files in include/dt-bindings/iio/adc.
+>> +
+>> +      label:
+>> +        $ref: /schemas/types.yaml#/definitions/string
+> 
+> Why do you need it in the first place? Don't you miss some $ref?
+
+This is just meant to show the ADC channel name in DT for our reference. 
+I'll check if I can use adc.yaml, which includes this property already, 
+as a reference in this case.
+
+> 
+>> +        description: |
+> 
+> Do not need '|' unless you need to preserve formatting. Applies everywhere.
+> 
+> 
+> 
+>> +            ADC input of the platform as seen in the schematics.
+>> +            For thermistor inputs connected to generic AMUX or GPIO inputs
+>> +            these can vary across platform for the same pins. Hence select
+>> +            the platform schematics name for this channel.
+>> +
+
+
+>> +
+>> +      qcom,adc-tm:
+>> +        description: |
+>> +            Indicates if ADC_TM monitoring is done on this channel.
+>> +            Defined for compatible property "qcom,spmi-adc5-gen3".
+>> +            This is the same functionality as in the existing QCOM ADC_TM
+>> +            device, documented at devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml.
+>> +        type: boolean
+>> +
+> 
+> Why do you duplicate entire vadc file? Why it cannot be part of that
+> file? Oh wait, it was in v2.
+> 
+> You now duplicated a lot of property definitions without clear reason.
+> If this is intention, then you need to put them in common schema.
+
+Many of the properties used for earlier QCOM VADC devices will be used 
+for this device too.....do you mean I can add a new schema file (named 
+something like qcom,vadc.yaml) and move common properties into it (like 
+qcom,hw-settle-time, qcom,decimation, etc) from this file and 
+qcom,spmi-vadc.yaml?
+
+
+Dmitry suggests doing it in a separate patch, I'll follow his suggestion 
+if there's no issue.
+
+
+>> diff --git a/include/dt-bindings/iio/adc/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/adc/qcom,spmi-adc7-smb139x.h
+>> index c0680d1285cf..750a526af2c1 100644
+>> --- a/include/dt-bindings/iio/adc/qcom,spmi-adc7-smb139x.h
+>> +++ b/include/dt-bindings/iio/adc/qcom,spmi-adc7-smb139x.h
+>> @@ -6,7 +6,7 @@
+>>   #ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
+>>   #define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
+>>   
+>> -#include <dt-bindings/iio/qcom,spmi-vadc.h>
+>> +#include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
+> 
+> ? How is it related?
+
+This should have gone into patch 1, I'll fix it in the next patch series.
+
+I'll address all your other comments in the next patchset.
+
+Thanks,
+
+Jishnu
+
+> 
+>>   
+>>   #define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
+>>   #define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
+>> diff --git a/include/dt-bindings/iio/adc/qcom,spmi-vadc.h b/include/dt-bindings/iio/adc/qcom,spmi-vadc.h
+>> index ef07ecd4d585..cfe653d945a4 100644
+>> --- a/include/dt-bindings/iio/adc/qcom,spmi-vadc.h
+>> +++ b/include/dt-bindings/iio/adc/qcom,spmi-vadc.h
+>> @@ -1,6 +1,8 @@
+>>   /* SPDX-License-Identifier: GPL-2.0 */
+>>   /*
+>>    * Copyright (c) 2012-2014,2018,2020 The Linux Foundation. All rights reserved.
+>> + *
+> 
+> Drop stray blank line
+> 
+> Best regards,
+> Krzysztof
+> 
 

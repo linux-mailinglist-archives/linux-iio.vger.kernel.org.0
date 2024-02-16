@@ -1,62 +1,75 @@
-Return-Path: <linux-iio+bounces-2655-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2656-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2628583F7
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:19:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47689858445
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D23FBB20F1F
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 17:19:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D59B6B23BB1
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 17:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F75130E47;
-	Fri, 16 Feb 2024 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4855132460;
+	Fri, 16 Feb 2024 17:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0LjRmmr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayplJ0JV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9A130E2E;
-	Fri, 16 Feb 2024 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20B130AD9;
+	Fri, 16 Feb 2024 17:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708103976; cv=none; b=OQqyLtfaSCkNKTnAnTvHMyvaJi+2Bgtaco5FD8ov+2dC6+LpQszxJT2oX/4istq8d95873TjmQtpmWic+hWUnWCxyDi3xdwuzeuZPocqohPybztTR91qJXC6PWDyuS737/ZmZMB4t3mbCuhrq/9c0xddyflO23onETLdQsbs//I=
+	t=1708105103; cv=none; b=abIMJteF0x06VOTBap27PLzB/Fun+M0+HvDoztnZh1zTZlQtb9JJ1Xj9mcPsPuLNuuxV5egQ+W2ow2Z6tNDRDep4QgKXk2Ih+thw99Tj140s5nTrzQQznMXqbon64GE2UIRXWmtxpBXGe99nmGfJ6zT+wJ3d/SwvTNAW+sGBfEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708103976; c=relaxed/simple;
-	bh=jajtT3fYHh89nUBt1oc4FBYREo5Q6SP3UVEpUB3mdy4=;
+	s=arc-20240116; t=1708105103; c=relaxed/simple;
+	bh=9c71sdMeQbqB30OeR0l0j4kKQHd9fhotPKXLMWNpiFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XgwyLfiWiJpQeoyXwy5rBUMfGWkUCwG/uVx8AEQ6nu1tAwJJDIiivDLv0Y2x03wGw+uloayFHkq+a46ENVPnGCzJzh8ntPNOW557hweugCHoCMe41u6/sGD9v86AJQfylI6sZ0Lp/gYBIEks8JurHPR1ITNsHQXaI2IHRuYMSTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0LjRmmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46519C433F1;
-	Fri, 16 Feb 2024 17:19:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iOwsL+QpeJNquzKKgxPkqXYxa+Xi/1o9etzvtZF+fP4k5NSgvgsHsxnrNpcwsiBvlXsY+0zu2v3NKE2ER8k/ibRmkzcatlSKSIgBa+29+tsT0G5uccdz6WmdeoNcg/oQ+dMhM7DjFlz3UaWaZN5QtG1c/QzBp5lFhfsRb9oidm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayplJ0JV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E60C433C7;
+	Fri, 16 Feb 2024 17:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708103975;
-	bh=jajtT3fYHh89nUBt1oc4FBYREo5Q6SP3UVEpUB3mdy4=;
+	s=k20201202; t=1708105102;
+	bh=9c71sdMeQbqB30OeR0l0j4kKQHd9fhotPKXLMWNpiFs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n0LjRmmrxZpNVzyFYsGwbD2p2LVFKzK/EygU0fH5X81lxXU83MhmJtw7YY11T+2B8
-	 w+VDan533UAdx4NDrW7mkty+fbRZxfLmmS0QdpY3lcDpDnaJfKM/dtk/HKlu+wqUTU
-	 nJGYtVNdtePqCm5Sk1K8Lv6AhXjZFnoxAvLUuwTdGEAECQtquMC0AVmdXtWvnt92xh
-	 s5g9MWKeoVymdPNgdozymbdVy+i+VPygj5fgTbh0Kz7Eu6iiseEdh3zp3peKzTfZ43
-	 v2SzrAbPVxyASWWglWdBtB7tD3GgxC62grBFCHGKQSKvyiHR0EluWK29qTXj4CghR3
-	 IQQRHnrI5QJ6A==
-Date: Fri, 16 Feb 2024 17:19:21 +0000
+	b=ayplJ0JV4aU1XHwfiH/iQa9TncrzCrU4ECdQGY5/tHVPYzMFRXn8ZEM/VazAm6eaX
+	 3+vJdIVvD9MC+qHw2WSGEDnLqGWy5+X52rTyEyRZtLasAI11oJyV+A6VO4bautCyx5
+	 kmTR+dS3pdxtCVDD+m9dyFaTgAJvukOIcNb+FKFflVLDN2v/u45YkZotjNbFF7XuJk
+	 Jtw/ZqOd2Ww5vxe8BrEfnnNWtTHUXoZxSvvUqjW8lkCoI2QNK4aMd+9IuaJxmRJyJc
+	 7qZwQjwr8WCqmKWarQ6bT+tlo3hrTcd/5uziZ+Bdwe2GIBRIybEsP4rt2l3IH3sDyA
+	 CUTSPZmPkvb8w==
+Date: Fri, 16 Feb 2024 17:38:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Arnd Bergmann
- <arnd@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Liam Beguin
- <liambeguin@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Maksim Kiselev
- <bigunclemax@gmail.com>, Marcus Folkesson <marcus.folkesson@gmail.com>,
- Marius Cristea <marius.cristea@microchip.com>, Mark Brown
- <broonie@kernel.org>, Niklas Schnelle <schnelle@linux.ibm.com>, Okan Sahin
- <okan.sahin@analog.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: adc: ti-ads1298: Add driver
-Message-ID: <20240216171921.5a6b6b20@jic23-huawei>
-In-Reply-To: <fb7d41fc-328a-4ce1-88ad-5ce22ee158e4@topic.nl>
-References: <Zc-E3-MNe9dG9tdW@smile.fi.intel.com>
-	<fb7d41fc-328a-4ce1-88ad-5ce22ee158e4@topic.nl>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+ <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 03/14] device property: Introduce
+ device_for_each_child_node_scoped()
+Message-ID: <20240216173806.3749c818@jic23-huawei>
+In-Reply-To: <ZcujDu0uQJqndFEs@smile.fi.intel.com>
+References: <20240211192540.340682-1-jic23@kernel.org>
+	<20240211192540.340682-4-jic23@kernel.org>
+	<ZcoK0Q8NgxolNeD8@smile.fi.intel.com>
+	<20240213102529.00003bf2@Huawei.com>
+	<ZcujDu0uQJqndFEs@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,69 +80,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Feb 2024 17:07:49 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Tue, 13 Feb 2024 19:12:46 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On 16-02-2024 16:53, Andy Shevchenko wrote:
+> On Tue, Feb 13, 2024 at 10:25:29AM +0000, Jonathan Cameron wrote:
+> > On Mon, 12 Feb 2024 14:10:57 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
+> > > On Sun, Feb 11, 2024 at 07:25:29PM +0000, Jonathan Cameron wrote:  
 > 
 > ...
 > 
-> +       if (reset_gpio) {
-> +               /*
-> +                * Deassert reset now that clock and power are active.
-> +                * Minimum reset pulsewidth is 2 clock cycles.
-> +                */
-> +               udelay(ADS1298_CLOCKS_TO_USECS(2));
+> > > > +	for (struct fwnode_handle *child __free(fwnode_handle) = \
+> > > > +	     device_get_next_child_node(dev, NULL); child; \    
 > 
-> This is sleeping context and you are calling unsleeping function. I haven't
-> checked the macro implementation and I have no idea what is the maximum it may
-> give, but making code robust just use fsleep() call.
+> > > Please, move child to a separate line, so we will easily see the all three
+> > > parameters of the for-loop.  
 > 
-> It'll actually delay for 1 us (the "clock" is ~2MHz). So fsleep will compile to udelay anyway, which is fine, fsleep might get smarter in future and this would then profit.
-> 
-> 
-> 
-> +               gpiod_set_value_cansleep(reset_gpio, 0);
-> +       } else {
-> +               ret = ads1298_write_cmd(priv, ADS1298_CMD_RESET);
-> +               if (ret)
-> +                       return dev_err_probe(dev, ret, "RESET failed\n");
-> +       }
-> +       /* Wait 18 clock cycles for reset command to complete */
-> +       udelay(ADS1298_CLOCKS_TO_USECS(18));
-> 
-> Ditto.
-> 
-> ...
-> 
-> 
-> If it's the only issue I think Jonathan can modify when applying
-> (no new patch version would be needed).
-> 
-> That'd be nice.
+> Oh, I should withdraw above, we have other for_each macros there with
+> a child being combined with previous line.
 
-ok.  As this is still the top of my tree I'll just tweak it.
+I ended up moving it down to the next line (so it shares with the update
+term).
 
-Does anyone else read fsleep as femtosecond sleep every time? :)
-Maybe computers will go that fast one day.
-
-Jonathan
+That seemed better than having it on the end of the line that is still finishing
+the initialization term and felt similar enough to local style.
 
 
 > 
+> > > That said, indent the assignment to the right as
+> > > well.  
 > 
-> --
-> Mike Looijmans
-> System Expert
+> > Indent makes sense - but (to save another respin) how far?
+> > Next tab stop will be a bit random looking but I guess nothing else
+> > makes more sense.  
 > 
-> TOPIC Embedded Products B.V.
-> Materiaalweg 4, 5681 RJ Best
-> The Netherlands
-> 
-> T: +31 (0) 499 33 69 69
-> E: mike.looijmans@topic.nl<mailto:mike.looijmans@topic.nl>
-> W: www.topic.nl<http://www.topic.nl>
-> 
+> Just make whatever TAB stop that doesn't require adding any spaces.
 > 
 
 

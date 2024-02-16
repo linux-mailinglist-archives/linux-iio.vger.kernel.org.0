@@ -1,133 +1,131 @@
-Return-Path: <linux-iio+bounces-2678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346F78585A7
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:48:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE728585C1
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 849ADB22791
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1FE81C214E7
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F2F1468F6;
-	Fri, 16 Feb 2024 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE19C135A74;
+	Fri, 16 Feb 2024 18:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="giNGUbJU"
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="sVZ6F8Qi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99C41468E1
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 18:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA931350FB;
+	Fri, 16 Feb 2024 18:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708109115; cv=none; b=Mw76o1fTWPLj+c28fW7qDNWR/ecoAUdnRIPgZNHrcMmtsZ0IPw9vWKz5ffjca3cTHN35eIgmVamYEZTwGRDY7G9dVI7O27OAX10708ka33TkGRZ3k6XMPAFQp6OJj9e6bgri93vBfn6bhjvmMGED95NaZzC2SbhXwppCsoxby1c=
+	t=1708109421; cv=none; b=pwW1M771SSzr40YQVZN4e6M7LLwca0EuNah8xXmaqeMwP7yIlQpMKc4Me93kqNs9B71pS5cHpvRS0BbIa887UwCPQj+cNeKg1XOgbirmly0IwN0r5GJc647ADyi/Ic/kuEmyXQks4Kd+qHYBsc0NAjDCUrYegp4UjSpH2YBZqYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708109115; c=relaxed/simple;
-	bh=C9sMXAMP3+3ORE4WE0PAZfs1keOVwj4dX0e0/ip4uYU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iJpbwpEbd4n6/2IDU7Hvr9NRBDVAt6dapgFkaKjv3JyOtINYWJl3g5LqKIgIBNNASgDNb/nfQ8f+Li8rzbVtvLtmJE6nIOHvae+0U3TkalOLQFgbtUZwPZXFqVaVeP4OllWryr4SO/oJybftukLxzb83M70nNAVixXyys6F9L/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=giNGUbJU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708109112;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=00B/Yc+n463w0waoIpRE0j19npekKoQ0T1wHM5vf8eo=;
-	b=giNGUbJUn965WRjOzJkgarc6z30apficMujI5rrsgbeor61bWVnFcYhSiPRZdhkJ2VRupB
-	itZ2ATF8pesOzKEIOcR+pQP5uPNJsNpcAo9byYS3JMeTdSTuUklOz0y3JzZiHupElcYVwf
-	Kt39kmDeYvEFfmDBQixm0QS+UMc8lBk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-320-bolfdmEjMaO9jEUnXrIJWg-1; Fri, 16 Feb 2024 13:45:10 -0500
-X-MC-Unique: bolfdmEjMaO9jEUnXrIJWg-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a2b068401b4so272824166b.1
-        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 10:45:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708109109; x=1708713909;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=00B/Yc+n463w0waoIpRE0j19npekKoQ0T1wHM5vf8eo=;
-        b=nHBCZDRYaHfdNOrW1jQvn67dIcLCYXWlG5hlNWGzj2Qz0p4uonuk0NsfPq1VZza+QK
-         ZVvWKquX7zYn6+zJLFqasZcj83wLVbgS8v7xSV6Gdo/awBafB/ueMJnC2EgbVUiZlXVG
-         Y+ObSLP7GxzTQd3kKcthguy8Y8Blh3CadqPk9QOTYdJ5im2+WMaj8rjeQLgYc8qbbqtn
-         fADGAh2ANP2PZbLjfU3WufS9rMSmFBcfGWXm2mYYHTW/xbJHX3x+9uWyDpooMixS8tn8
-         3bocmoDe7ZA1Ra0KDvay9Zvxe0NFpRmigOIj0vEfA9/fSUPa0LWwSM5Q9QFgKxTfBvUe
-         XRXA==
-X-Gm-Message-State: AOJu0YyNJVyZnqgOMfffU+GZA9fCpwufm20Vtc5pfCFMLzq2rNj6iH8M
-	Kj0Q0jCfO/YCz3HmsuulJqPloorLJ1ILb/E7hi2FHjJoTjKjuEUNcBOZ8w+zRhp8FOY9NEKEbJ+
-	X1miHeSeMgui3mw4dSZ10RA8DuAattKuN0162+7HygT4C07kQB1C5lhsw8w==
-X-Received: by 2002:a17:906:6416:b0:a3d:48cd:9d13 with SMTP id d22-20020a170906641600b00a3d48cd9d13mr4946146ejm.19.1708109108927;
-        Fri, 16 Feb 2024 10:45:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2UT5Eu0DR4HuuxZw0M4SYbG0Nq8Th0PnZPqgKaTrDQ39gAghtYc2y89wpXRkVY/sfvicsHg==
-X-Received: by 2002:a17:906:6416:b0:a3d:48cd:9d13 with SMTP id d22-20020a170906641600b00a3d48cd9d13mr4946140ejm.19.1708109108675;
-        Fri, 16 Feb 2024 10:45:08 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id rf23-20020a1709076a1700b00a3ce36ce4f9sm232196ejc.83.2024.02.16.10.45.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 10:45:08 -0800 (PST)
-Message-ID: <298cba01-25a7-4c5f-92ee-e8d3254f2eca@redhat.com>
-Date: Fri, 16 Feb 2024 19:45:07 +0100
+	s=arc-20240116; t=1708109421; c=relaxed/simple;
+	bh=51kgdgBqZYvIt5QFXzzBCP1nSeOtXNnvlQSNHeq2iNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VxgOFqR0bJVKjxbIZ92p8Yh1PX2iBZ2tAGX1R0AOI1EZ3SmmOn9v0u0IqYW+AMgqpVRlbg+RW+8RNjzWhWjWgHuVz4sajScIkRF2J8fYQi42HHBIUNF7peUVBUmdZm5rZuRgiLgib/1TeGgJp/EQNUR4+z84+RAzANAvZ0mnXYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=sVZ6F8Qi; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1708109415; bh=51kgdgBqZYvIt5QFXzzBCP1nSeOtXNnvlQSNHeq2iNE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sVZ6F8QiwTZWzwbbkdtBDytu0NHg8y9VD/C31d+ZyNDOw1h+3AwTLXFlSFfWMwT64
+	 OqaUrHwB5kR5tt53iCI62v2aAZZLpv11oT/JLFVZ2KOW2vR+VFku7FHL4eZ73juj7H
+	 yX5AE9fSJAgHOUTWrzaGcimZ4hnyYHwKeI1iu4OM=
+From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Cc: Ondrej Jirman <megi@xff.cz>,
+	Icenowy Zheng <icenowy@aosc.io>,
+	Dalton Durst <dalton@ubports.com>,
+	Shoji Keita <awaittrot@shjk.jp>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/4] Add support for AF8133J magnetometer
+Date: Fri, 16 Feb 2024 19:49:58 +0100
+Message-ID: <20240216185008.1370618-1-megi@xff.cz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/2] Add bmi323 support for ASUS ROG ALLY
-Content-Language: en-US, nl
-To: Jonathan LoBue <jlobue10@gmail.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- jagath jogj <jagathjog1996@gmail.com>, Luke Jones <luke@ljones.dev>,
- Denis Benato <benato.denis96@gmail.com>,
- Antheas Kapenekakis <lkml@antheas.dev>,
- Derek John Clark <derekjohn.clark@gmail.com>
-References: <CAF6rpDwZaCJOpLEYayVW8_aXQwKdpcLCDSRjbTNk1rr43EPriQ@mail.gmail.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAF6rpDwZaCJOpLEYayVW8_aXQwKdpcLCDSRjbTNk1rr43EPriQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Ondrej Jirman <megi@xff.cz>
 
-On 2/16/24 19:16, Jonathan LoBue wrote:
-> From: Jonathan LoBue <jlobue10@gmail.com>
-> 
-> This patch series adds comments about a duplicate ACPI identifier
-> between devices using bmc150 and bmi323. This series also adds the ACPI
-> match table for devices using bmi323 to allow those devices to load the
-> proper driver.
-> 
-> Changes since v5:
-> - Updated patch titles
-> - Add patch description to cover letter
+This series adds support for AF8133J magnetometer sensor. It's a simple
+3-axis sensor with two sensitivity options and not much else to it.
 
-I have just tested this on a Chuwi Hi13 tablet with
-a BOSC0200 accel. I blacklisted the bmc150 driver so that
-the bmi323 driver would load first. The bmi323 driver
-"successfully" fails to probe and after manually loading
-the bmc150 driver (to fake a module loading order of
-the bmi323 driver loading before the bmc150) the accel
-works properly.
+This sensor is used on both Pinephone and Pinephone Pro. DT patches
+adding it will come later, once this driver is merged.
 
-So from my pov this series is good to go:
+Please take a look. :)
 
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Thank you very much,
+	Ondřej Jirman
 
-Regards,
+v3:
+- collect more tags
+- if (ret < 0) -> (ret) where appropriate
+- scoped guard move to af8133j_set_scale()
+- remove pm_runtime_disable/enable guard from af8133j_power_down_action()
+- pretty much just this:
+  https://megous.com/dl/tmp/0001-if-ret-0-ret-where-appropriate.patch
+  https://megous.com/dl/tmp/0002-scoped-guard-move-to-af8133j_set_scale.patch
+  https://megous.com/dl/tmp/0003-remove-pm_runtime_disable-enable-guard-from-af8133j_.patch
 
-Hans
+v2:
+- move maintainers patch to the end of series
+- bindings:
+  - fix compatible definition in bindings file
+  - require power supplies
+  - fix descriptions
+- driver:
+  - sort includes
+  - rework RPM, the driver should now work with RPM disabled
+    among other improvements
+    - I've tested RPM left and right doing device bind/unbind under
+      various conditions, system suspend under various conditions,
+      etc.
+  - use scoped_guard for mutexes
+  - use devm for power down and handle power down correctly with both
+    RPM enabled/disabled without tracking power state in data->powered
+  - fix issue with changing scale while RPM suspended
+  - various code formatting issues resolved
+- as for sign-offs, I've added co-developed-by for people I know for
+  sure worked on the driver, and left other tags as they were when
+  I picked up the patch 2 years ago to my Linux branch
 
+Icenowy Zheng (3):
+  dt-bindings: vendor-prefix: Add prefix for Voltafield
+  dt-bindings: iio: magnetometer: Add Voltafield AF8133J
+  iio: magnetometer: add a driver for Voltafield AF8133J magnetometer
 
+Ondrej Jirman (1):
+  MAINTAINERS: Add an entry for AF8133J driver
 
+ .../iio/magnetometer/voltafield,af8133j.yaml  |  60 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/magnetometer/Kconfig              |  12 +
+ drivers/iio/magnetometer/Makefile             |   1 +
+ drivers/iio/magnetometer/af8133j.c            | 524 ++++++++++++++++++
+ 6 files changed, 605 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
+ create mode 100644 drivers/iio/magnetometer/af8133j.c
+
+-- 
+2.43.0
 
 

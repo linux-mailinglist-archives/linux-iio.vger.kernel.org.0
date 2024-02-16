@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-2636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708B3857F6D
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:34:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9055857FBD
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BC3F1F26F3B
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B0028675B
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0948212E1F8;
-	Fri, 16 Feb 2024 14:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DED12F37D;
+	Fri, 16 Feb 2024 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8R8zyiW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hw5R7ZNz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B460E101C4;
-	Fri, 16 Feb 2024 14:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD5912C812;
+	Fri, 16 Feb 2024 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708094086; cv=none; b=O4XwlYdJrUmHONKoNf6rIrA3IUDeJVlT/+mqgpBt2FbotZ3zVJ4lq0GqRrR4EOy9BNUp9MlZxm/wR01/lUL5gVPFp5pmnsZHyUg+0TKgDu8inr7DBZc+TVQ0/2ZhRHN434lcMMnpx8fGhCIikOcvkjfn049YugnvR0E94ag8TvQ=
+	t=1708094890; cv=none; b=oE4ijALqkqMZyw8lrbdj7fMhN5GlU5sRfWc+VuNRwGyQQYx/ThxRSKqzDJbklnxBRSST3oso/q87tcb2B1xVosBKftCBW0LA9+hTxC3SmjL3UklNQsENSB4XZDK4A01K4+NLglI9OfAbd8lqY2abdQQfET0rXnjuYzcV6UZVzRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708094086; c=relaxed/simple;
-	bh=4VEoWj9njKor5Uuyl7TfRX6Gv5f5mthxT9tJLZ8b7ac=;
+	s=arc-20240116; t=1708094890; c=relaxed/simple;
+	bh=K44i2DqBgPJ7hcROlXOpw2GUYsBOzblxH4exPmx/m7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hj3Rmus3LZrRZQQ3IiePst5jqzLVdCt5OmTWzR/h5nKd/7nWq4J0V/8Y/RQg/2uN9KXpz329cLtRdXBnBqf5Uf9fnsKSAyCcbHADQZglTieEVrwbHt/EQ7RsImaR5FNjiyQlAkdoLGdtTcrxGTSCkK8J7282FPnobcBs67Qd2OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8R8zyiW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B83CC433C7;
-	Fri, 16 Feb 2024 14:34:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ONBqVHW/DqBTgAb+9pgLQfd4fBGFRZ3dEwWhyOzTxc4kgSavuX5ZX13N+362l43p5IajLi1KJRr9zvzhDBhvs4exXwfK/fpePKkgHaanM52K+RQPj2UTtPP9oOwkOV0YF/nfqLEsea2OocZqgaWeJfc+NSNkQCAZsP9uNCxl+Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hw5R7ZNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5DDC43390;
+	Fri, 16 Feb 2024 14:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708094086;
-	bh=4VEoWj9njKor5Uuyl7TfRX6Gv5f5mthxT9tJLZ8b7ac=;
+	s=k20201202; t=1708094889;
+	bh=K44i2DqBgPJ7hcROlXOpw2GUYsBOzblxH4exPmx/m7E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V8R8zyiWcs7FIicIBitRurbzqNlugABgI/XaY91qc65/yPzM5vxALx3zlMZ/OU1rK
-	 IDb1at6yYCqN+Tpay1kNiskUQkWI238ntJIdI1kNmS+gewj6YNpTqcgxWbGkJrRmSp
-	 Ixzxdczm5ld4TqE6UqnQW8ogxMg5wcb7lm2hkVu9ZRXZr6Q56Uk6lTm+6zE5El1bY9
-	 KRObd3HZ2YqWKOg6/fTwh3rMb9oQg9we/pzqyx0gNryhBz6sdeb3I5NnCGND8vcebL
-	 uV9Nk5D7zdDTnLN5GBBdXeguAdm4zKKy7+CKK1vL3vEct3AfNHw+No5A+eqbEFQJhk
-	 waoLeDbLj8HMw==
-Date: Fri, 16 Feb 2024 14:34:32 +0000
+	b=Hw5R7ZNzL50e0lBhiiS4QmPuoshCVtH+ucSgCFvn47Y5tjgLFdjUdbjXiqra+RPKo
+	 jVYfVOb1H6GaR71LhkJT2hkZ1ieMdGraTZqeTXQ4XetOsMqdVH5r7O0pBSwgfRoqvi
+	 MnNMnUEGEKIItwy+zSb0wALsa2UcIBYontsLC5XxmV/stSJg5eQ/8Nl+2qcOBK1ZaP
+	 ZaOhAVOp5F1HdBlWW8rpyjfNv16VtV+j9QvFJCLJ30jq1eiCFgd0lfBlBH/9sbTWmm
+	 pJ9mnHYq8+YMCbdkvkFaY++VjtI1FAmrK0MoLiV4jsxYmxrN69xxfPL6GsSP8BIITz
+	 7E8VO1cRbYB/Q==
+Date: Fri, 16 Feb 2024 14:47:56 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier
- Moysan <olivier.moysan@foss.st.com>, andy.shevchenko@gmail.com, Rob Herring
- <robh@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH v11 3/7] of: property: add device link support for
- io-backends
-Message-ID: <20240216143432.745ae6e4@jic23-huawei>
-In-Reply-To: <20240210-iio-backend-v11-3-f5242a5fb42a@analog.com>
-References: <20240210-iio-backend-v11-0-f5242a5fb42a@analog.com>
-	<20240210-iio-backend-v11-3-f5242a5fb42a@analog.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall
+ <Julia.Lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>, Nicolas
+ Palix <nicolas.palix@imag.fr>, Sumera Priyadarsini
+ <sylphrenadin@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 0/8] of: automate of_node_put() - new approach to loops.
+Message-ID: <20240216144756.08e25894@jic23-huawei>
+In-Reply-To: <ZcoJEUTdMAKdMHd1@smile.fi.intel.com>
+References: <20240211174237.182947-1-jic23@kernel.org>
+	<ZcoJEUTdMAKdMHd1@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,62 +67,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 10 Feb 2024 21:57:15 +0100
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Mon, 12 Feb 2024 14:03:29 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> From: Olivier Moysan <olivier.moysan@foss.st.com>
+> On Sun, Feb 11, 2024 at 05:42:28PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Since RFC:
+> > - Provide a for_each_available_child_of_node_scoped() variant and
+> >   use that whenever we aren't specifically trying to include disabled
+> >   nodes.
+> > - Fix the for_each_child_of_node_scoped() to not use a mix of
+> >   _available_ and other calls.
+> > - Include a few more examples.  The last one is there to show that
+> >   not all uses of the __free(device_node) call are due to the loops.  
 > 
-> Add support for creating device links out of more DT properties.
+> I'm a bit skeptical about need of this work. What I would prefer to see
+> is getting rid of OF-centric drivers in IIO. With that, we would need
+> only fwnode part to be properly implemented.
 > 
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> Acked-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
-+CC Stephen Rothwell for linux-next conflict.
 
-I'm going to pick this up against my current tree where the fix
-for the line above the DEFINE isn't present. That will cause
-a minor merge conflict due to the change in context.
+To be honest main reason for doing of first was that they have unit tests :)
 
-Sorry for the irritation Stephen!
+The IIO drivers were more of a proving ground than cases I really cared
+out cleaning up.  However I'm always of the view that better to make
+some improvement now than wait for a perfect improvement later.
+ 
+However one or two are not going to be converted to fwnode handling
+any time soon because they make use of phandle based referencing for
+driver specific hook ups that isn't going to get generic handling any
+time soon.
 
-I'm keen to get this into linux next now rather than waiting for
-a second pull to Greg late this cycle.  I'll aim to do first pull
-with this in next week.
-
-Will be briefly pushing out as testing though so 0-day can have
-a look first and then out for linux-next to pick up after I see
-those test reports (so this will probably waste a tiny bit
-of Stephen's time mid week).
-
-Thanks,
+I'll probably focus on getting the fwnode version of this moving
+forwards first though and 'maybe' convert a few of the easier ones
+of these over to that framework to reduce how many users of this
+we end up with in IIO.
 
 Jonathan
 
 
->  drivers/of/property.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index caa3e54aae13..0e91a5f4d0cb 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -1245,6 +1245,7 @@ DEFINE_SIMPLE_PROP(interconnects, "interconnects", "#interconnect-cells")
->  DEFINE_SIMPLE_PROP(iommus, "iommus", "#iommu-cells")
->  DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
->  DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
-> +DEFINE_SIMPLE_PROP(io_backends, "io-backends", "#io-backend-cells")
->  DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
->  DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
->  DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells")
-> @@ -1335,6 +1336,7 @@ static const struct supplier_bindings of_supplier_bindings[] = {
->  	{ .parse_prop = parse_iommu_maps, .optional = true, },
->  	{ .parse_prop = parse_mboxes, },
->  	{ .parse_prop = parse_io_channels, },
-> +	{ .parse_prop = parse_io_backends, },
->  	{ .parse_prop = parse_interrupt_parent, },
->  	{ .parse_prop = parse_dmas, .optional = true, },
->  	{ .parse_prop = parse_power_domains, },
-> 
+
+
+
+
 
 

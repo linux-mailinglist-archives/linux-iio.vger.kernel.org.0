@@ -1,205 +1,183 @@
-Return-Path: <linux-iio+bounces-2614-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2615-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5530B857C2A
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D0C857C3C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 13:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2E201F22371
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A621F2355C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2661878677;
-	Fri, 16 Feb 2024 11:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3D377F39;
+	Fri, 16 Feb 2024 12:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwMlX+4h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ASg9qEdH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03F177F32;
-	Fri, 16 Feb 2024 11:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420341BF47
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 12:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708084508; cv=none; b=PRwixDBq+/OccRfOpWBmHDbazwAgVEaxgHsYzDy8/2Ls9wqVjTa1uzEgpczGE/ZZV/VGM3dP1DRu8+izuV9Oh1ZXyBNrwHj47rOpvJWt5d85pp5s/NzjxBkT77Re7j1gzeTJXtC91lw5wAQ0hyxJt+1ijTYpIU6V8BUOQMunOl4=
+	t=1708084904; cv=none; b=picB9Fhn4/wUTLifpbXZnV7gF8WH+Su6KmasoQbtiYab+efAUo1Hi9/Vt7JN8X4sqOKHhaMvBZTPOExCpncMJyswllz7P5Y26rCQjIckhfezr2UA6kXf621TMdzXIK/lMHdgc4dwZqldcKfMJh2sn3ou9r3iAwrsvz5BfJvQALY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708084508; c=relaxed/simple;
-	bh=SA/YJ6YmFTOGSDTYSeuOE5s7qE3eDZedvAeQG7HfBNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m9LDmpim4UDAxNzuqteU9rrGwAtWlZ5WOxR6Ss+s7xPskiwPCd3BMosdBQzn4RVEDQe6q5P7UEgCrWmVQXELjmKhcP2gJ+Gbxj/GdbPWmF0JHijR27r9GcZ5M5snrpdDCCAHY0AH5fLLDIKX4cBKAZAvHmoiEqz+s6VC0PyLDls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwMlX+4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F07C433C7;
-	Fri, 16 Feb 2024 11:55:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708084508;
-	bh=SA/YJ6YmFTOGSDTYSeuOE5s7qE3eDZedvAeQG7HfBNU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dwMlX+4hqM+35ItC8oNX4wJDYCVxbor87inn8l4hyq0tf2GMmp8agL4soLMrlJJqM
-	 WxiwKGHpH0Mvj2aXIh8NrBeR6cPI8OBJaWMOiAa7lIPG/ZXhCz/ibiRdKkTFmFvINX
-	 ofgrzg5VKifW+lgTUjoOqkdZm53MDOuFiKHDqBCcXOIOBzYGML7Vq8+6V/ArIxpjOn
-	 0sKCbSLY4VBA9matMdN4zZroOun1234EwOHTaaLYx7EGGu10clW6gz2BRnB8nO+BR3
-	 8Wj4PQIvXKek9vf7HGGxpHTFqJLKiNn1YEDlH6p1mlyyyq9466UlWHid1j5CxEY2Yq
-	 rQddtYw1gETJg==
-Date: Fri, 16 Feb 2024 11:54:55 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- nuno.sa@analog.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] docs: iio: add documentation for device buffers
-Message-ID: <20240216115455.676a7947@jic23-huawei>
-In-Reply-To: <CAMknhBFD54XotZrGeZK_48G=FDOWAr1vAf0pQwO=8o05jsTFRA@mail.gmail.com>
-References: <20240213081720.17549-1-ramona.gradinariu@analog.com>
-	<20240213081720.17549-3-ramona.gradinariu@analog.com>
-	<CAMknhBFD54XotZrGeZK_48G=FDOWAr1vAf0pQwO=8o05jsTFRA@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708084904; c=relaxed/simple;
+	bh=9gu71VXpPplIQCVyKIRsMqN/K3pjeloajfi+cFl6xkE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jQZWjSJEQ6EuRpY5Wr7i81hSQt5o8r/le+cojk+OrvQWFjrGT8OEzzE7y6zH+sJB+94slGQw9LR3hPQqpdSEp4Hsz0++iOH5XPTqhAW/pfkXrm/pc/9FUlR3DWDPn9mFOz/a9L1Fdu7CbYTXff6idfafcOeJRFBHAIumk5bzN6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ASg9qEdH; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708084901;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3DUkRDDrSoQw/eAY/hcM0F781LBQvqrfXwd3GPhzYE=;
+	b=ASg9qEdHlTjRgmpREXtzRiHcIc8Pp/X2QDMdfsr1GM4o4WC32s5c3RsAUqO8J6iM+jdmw6
+	uvqtM07qb76AFJH3qXbeD8Nwpb/00TwjN9pXrL0SMbkQZ/IIQOxsPPgMSKCdNiZVAznL2/
+	KOT5DATZt3N81vkDg2RerOKPMSCZjEI=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-486-QQwzN0oFNXmqbRxcHTZ1lA-1; Fri, 16 Feb 2024 07:01:39 -0500
+X-MC-Unique: QQwzN0oFNXmqbRxcHTZ1lA-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a357c92f241so35365366b.0
+        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 04:01:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708084898; x=1708689698;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I3DUkRDDrSoQw/eAY/hcM0F781LBQvqrfXwd3GPhzYE=;
+        b=Bzjj5Au+3h7wmxHWv5HCvcO2Ps4se6dBBJRlV0gqypqdk4BRkC6mYOEgSBzHClzAlE
+         +ZNqbcl57874OTLggK58VvmiQ4Mdfj0c3wyGSdjkyX7wES14iiDkCV2Of2JUPeZc8VOl
+         Rb1EtQvbRVuSrX27Bjozeq4qZYH52u6k7jVhjbqfPi23i34cYVp64fm52WlwRp2e/xiq
+         amWygx4EnDXcsTVNMQF/Zi0LfEbhACy8K5dS60nQsJRHGPSZ1Phpbp11c/mmiwKS5/Ua
+         5fSXlutYxD+AyEdk/D/MPZjfuJaRK4h4KQpCWvXFhMy/yBYdjQ0vZT7VaTBd1aC/ubJH
+         X2ig==
+X-Gm-Message-State: AOJu0YxbQeFKzBL6N0M7Yp7uTWyETbitZGYWzHD7A3ladVXArp1ZCYFv
+	0rClE0Q6nCxVj50zFOMa8/Fo/ixBE/uD9CjWuxXELSsR5XQbMb8ssNNqITviiER1nalwZsW4m9m
+	pBeM/lb2CxYkaLvLTvQS9HCr0Dvxw6p/StjHEllHCDyxnzezN000sbwTKiw==
+X-Received: by 2002:a17:907:bb8d:b0:a38:a6b2:b329 with SMTP id xo13-20020a170907bb8d00b00a38a6b2b329mr2776026ejc.8.1708084898600;
+        Fri, 16 Feb 2024 04:01:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7PhlBqmq5ssg1aRGMpjDwfyDX787/IOQZ1EgTn6J4JHHAX/LhS5VFbJSgAEOcqErtjDeAxw==
+X-Received: by 2002:a17:907:bb8d:b0:a38:a6b2:b329 with SMTP id xo13-20020a170907bb8d00b00a38a6b2b329mr2776003ejc.8.1708084898272;
+        Fri, 16 Feb 2024 04:01:38 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id tk12-20020a170907c28c00b00a3ce49ab976sm1480825ejc.4.2024.02.16.04.01.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Feb 2024 04:01:37 -0800 (PST)
+Message-ID: <343952bf-8222-41ec-8eca-13e1008efaa2@redhat.com>
+Date: Fri, 16 Feb 2024 13:01:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/2] Add bmi323 support for ASUS ROG ALLY
+To: Jonathan Cameron <jic23@kernel.org>, J Lo <jlobue10@gmail.com>
+Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ jagath jogj <jagathjog1996@gmail.com>, Luke Jones <luke@ljones.dev>,
+ Denis Benato <benato.denis96@gmail.com>,
+ Antheas Kapenekakis <lkml@antheas.dev>,
+ Derek John Clark <derekjohn.clark@gmail.com>
+References: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
+ <20240216113545.33b46e19@jic23-huawei>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20240216113545.33b46e19@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+Hi Jonathan,
 
-A few follow up comments on your David's review
-Anything I deleted didn't need a comment as all made sense to me!
-
+On 2/16/24 12:35, Jonathan Cameron wrote:
+> On Thu, 15 Feb 2024 10:19:52 -0800
+> J Lo <jlobue10@gmail.com> wrote:
 > 
-> > +to 0, for devices with a single buffer.  
+>> From: Jonathan LoBue <jlobue10@gmail.com>
 > 
-> Is /sys/bus/iio/devices/deviceX/buffer (without the Y) for backwards
-> compatibility?
-
-Yes. For these docs I'd not mention it. New software should be aware of multiple
-buffers being possible and not use it. Same is true of the scan_elements directory.
-If we really want to mention it, say buffer/ and scan_elements are for backwards
-compatibility and should not be used in new userspace software.
-
-They aren't going anywhere, but better people start from a multibuffer world!
-
+> Hi Jonathan
 > 
-> > +
-> > +Read / Write attribute which states the total number of data samples (capacity)
-> > +that can be stored by the buffer.
-> > +
-> > +Enable
-> > +------
-> > +
-> > +Read / Write attribute which starts / stops the buffer capture. This file should
-> > +be written last, after length and selection of scan elements.  
+> Cover letter should always include at least a short overview of what
+> the patch is doing.
 > 
-> Could be useful here to mention that writing a non-zero value here to
-> enable the buffer may result in an error, such as EINVAL, e.g. if an
-> invalid configuration was selected, like choosing a combination of
-> scan elements that don't match one of the valid scan masks.
-
-Be careful to not refer to matching.  Could be a subset.  I'd refer to
-"an unsupported combination of channels" or something like that.
-
-
-> > +directory. The scan elements attributes are presented below.
-> > +
-> > +**_en**
-> > +
-> > +Read/ Write attribute used for enabling a channel. If and only if its value
-> > +is non zero, then a triggered capture will contain data samples for this
-> > +channel.
-> > +
-> > +**_index**
-> > +
-> > +Read-only positive integer attribute specifying the position of the channel in  
+> Long term this solution may be a pain to maintain.
+> The reasoning is the DT path where we have moved over time to allow
+> for fallback compatibles (same concept exists in ACPI even if it is
+> little used) to be used even if we don't recognise a ID read from
+> the chip.  The intent being to allow old kernels to work with new
+> devices where they really are backwards compatible.
 > 
-> Isn't 0 a valid scan index? So non-negative? Or unsigned?
+> If that gets fixed in these drivers, we will have to explicitly
+> exclude ACPI IDs.
+> 
+> Hopefully we'll pick up such issues in review though so this should be fine.
+> 
+> I'd like input from Hans though on whether this solution of duplicating
+> the IDs generally works out longer term and is appropriate here.
 
-Yes - unsigned would be my preference.
+The BOSC0200 ACPI ID is used in a lot of devices and the ACPI
+tables of these devices are not under our control. So we really
+have no other option.
 
-> 
-> > +the buffer. Note these are not dependent on what is enabled and may not be
-> > +contiguous. Thus for user-space to establish the full layout these must be used
-> > +in conjunction with all _en attributes to establish which channels are present,
-> > +and the relevant _type attributes to establish the data storage format.
-> > +  
-> 
-> It would also be nice to get an example on the binary layout for
-> something that has multiple channels enabled. In particular with the
-> data alignment, e.g. when you have a 16-bit word followed by a 64-bit
-> word.
-> 
+Having 2 different drivers match/bind to the same (ACPI or other)
+id/device is not unheard of. As long as the probe() method then figures
+out it is not the right device and cleanly exits then this is fine.
 
-Agreed - the padding is sometimes not what people expect.
+I'll run a test with patch 2/2 + the bmi323 driver enabled
+on a device with a BOSC0200 ACPI id which does actually need
+the bmc150 driver to make sure that the bmi323 driver properly
+refuses to bind there.
 
-> 
-> > +**_type**
-> > +
-> > +Read-only attribute containing the description of the scan element data storage
-> > +within the buffer and hence the form in which it is read from user space. Format
-> > +is [be|le]:[s|u]bits/storagebits[Xrepeat][>>shift], where:
-> > +
-> > +- **be** or **le** specifies big or little endian.
-> > +- **s** or **u**, specifies if signed (2's complement) or unsigned.
-> > +- **bits**, is the number of valid data bits.
-> > +- **storagebits**, is the number of bits (after padding) that it occupies in the
-> > +  buffer.
-> > +- **repeat**, specifies the number of bits/storagebits repetitions. When the
-> > +  repeat element is 0 or 1, then the repeat value is omitted.
-> > +- **shift**, if specified, is the shift that needs to be applied prior to
-> > +  masking out unused bits.
-> > +
-> > +For example, a driver for a 3-axis accelerometer with 12 bit resolution where
-> > +data is stored in two 8-bits registers as follows:
-> > +
-> > +.. code-block:: bash  
-> 
-> Doesn't look like this should use "bash" styling.
-> 
-> > +
-> > +          7   6   5   4   3   2   1   0
-> > +        +---+---+---+---+---+---+---+---+
-> > +        |D3 |D2 |D1 |D0 | X | X | X | X | (LOW byte, address 0x06)
-> > +        +---+---+---+---+---+---+---+---+
-> > +
-> > +          7   6   5   4   3   2   1   0
-> > +        +---+---+---+---+---+---+---+---+
-> > +        |D11|D10|D9 |D8 |D7 |D6 |D5 |D4 | (HIGH byte, address 0x07)
-> > +        +---+---+---+---+---+---+---+---+
-> > +
-> > +will have the following scan element type for each axis:
-> > +
-> > +.. code-block:: bash
-> > +
-> > +        $ cat /sys/bus/iio/devices/iio:device0/buffer0/in_accel_y_type
-> > +        le:s12/16>>4
-> > +
-> > +A user space application will interpret data samples read from the buffer as two
-> > +byte little endian signed data, that needs a 4 bits right shift before masking
-> > +out the 12 valid bits of data.  
-> 
-> Is it always assumed that scan data is `raw` and needs to be
-> multiplied by `scale` for that channel to convert it to SI (or IIO
-> standard) units?
+I do see that both drivers write to a reset-register before reading
+the id register and those registers are different ...
 
-Definitely by far the most common case but there are a few exceptions where
-there isn't a _raw attribute but only an _input one where the assumption is
-processed data.  Tricky to mention that here without adding complexity.
-Maybe just add some weasel words to hint there are corners not covered by
-this doc.
+Looking at the registers used for reset then on the bmc150 it
+seems that the bmi323 code is writing the last bytes of the fifo
+which should be fine.
 
+And when the bmc150 code is trying to reset a bmi323 it is
+writing to the BMI323_FEAT_IO_STATUS_REG. Since the bmi323
+driver does a reset itself and programs that register
+during init I guess that should be fine to since the value
+written by bmc150's probe() will be overwritten.
+
+I'll get back to with test results of letting the bmi323 driver
+probe a BOSC0200 (*) device, before the bmc150 driver probes
+it and see if things still work then.
+
+Regards,
+
+Hans
+
+
+*) which will typically be a BMA250E
+
+
+
+
+>> Changes since v4:
+>> - Fixed comment location in bmc150.
+>> - Fixed signed off by portion.
+>>
+>> Jonathan LoBue (2):
+>>   iio: accel: bmc150: Duplicate ACPI entries
+>>   iio: imu: bmi323: Add and enable ACPI Match Table
+>>
+>>  drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
+>>  drivers/iio/imu/bmi323/bmi323_i2c.c  | 20 ++++++++++++++++++++
+>>  2 files changed, 33 insertions(+)
+>> --
+>> 2.43.0
 > 
-> > +
-> > +Please see Documentation/ABI/testing/sysfs-bus-iio for a complete description of
-> > +the attributes.  
-> 
-> Is it also worth mentioning
-> ``Documentation/ABI/testing/sysfs-bus-iio-dma-buffer`` here?
-
-I'd not do that until we have a section for these docs on dma buffers which
-are different in a bunch of ways. Would just be a potential source of
-confusion.
-
-Jonathan
-  
 
 

@@ -1,156 +1,128 @@
-Return-Path: <linux-iio+bounces-2635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2636-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A7F857F62
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:30:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708B3857F6D
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FFDBB230C9
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:30:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BC3F1F26F3B
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB277E0F3;
-	Fri, 16 Feb 2024 14:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0948212E1F8;
+	Fri, 16 Feb 2024 14:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PfRjuKEZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8R8zyiW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEE512DD91
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 14:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B460E101C4;
+	Fri, 16 Feb 2024 14:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708093833; cv=none; b=PDeCIbTBVvqPo1uU3BKeLVGFNRlEx79VfU7C940V9kAMqAz395KnIeOchU9Xl9il2RNixueKJEU4iATql9Z66kJz5VQEfBMqifuErXXtK1/uhhBGZCFtpGjBj8YgBZIwNroqwQFvnoH/rMBZ0Yl6OUeH7Ps0pzQzsfHddlpgVvI=
+	t=1708094086; cv=none; b=O4XwlYdJrUmHONKoNf6rIrA3IUDeJVlT/+mqgpBt2FbotZ3zVJ4lq0GqRrR4EOy9BNUp9MlZxm/wR01/lUL5gVPFp5pmnsZHyUg+0TKgDu8inr7DBZc+TVQ0/2ZhRHN434lcMMnpx8fGhCIikOcvkjfn049YugnvR0E94ag8TvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708093833; c=relaxed/simple;
-	bh=yIHsO9efKevhGzitzxx4ayO8IludHpMJJQoKFFaOmnA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iVE+nysIbVU0e5fsWkfOvcbBmK7dqF1wULrbu/QW737yhUM0L0pBd3sop42uVs7UrBNTrBANlxo2v9sL3jGxRm4Bupooc9YbegJ2vGwVDTZnYPSSYqTqd0Qp00o/gEWf/TJ2Ja5wicZa8dJrteOh/TdhM+V/PfgOAb/wMKlRZ6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PfRjuKEZ; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso1649256a12.2
-        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 06:30:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708093831; x=1708698631; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vDcCsdTinlH0m6x4xrL7sYUB/JDTjQqxf104ON7B9BU=;
-        b=PfRjuKEZDetodr7bhIPK75SkGBqrV9AJ4e4+4Jw1Fx8KvfgQoJ0WBNKY80rA3KINLf
-         azPRFXzF26rGw1XtvFOL69QBzzkrphXDRv6H+PwaUh3id4CyVEVRgL287KBgyji8uoIT
-         pEe7Ldjv/2F54wzkjE34dglqqyMl+m4DRsv7ta/qp4dut/uWW0CBR9CAI3kdzNQv38Mg
-         AsuSo2d3eJvlHp439TMcnPn88LtTMUFbW6FIuliQ5kAoGhWdcdEb+dAS4PDZm4uLbGV1
-         vj+AaEqKBjv817zQZ+odXGtUOfrWG61V0eKmb4FWwA/Dg+xbKvYFfTZSurc0AFdKfUHN
-         PJ3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708093831; x=1708698631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vDcCsdTinlH0m6x4xrL7sYUB/JDTjQqxf104ON7B9BU=;
-        b=Jqb5jdPZxkIj5vET63qDcLwZKKFXh3+YXq4CTvaFRMVTBsVdMN0wt8qpJ8ux5KSW+q
-         IHbKXgww3drVsQjSHB6K6ShJptB8kggdiOrnkUpqmRzX1wcg+2SI2UdqoMew/zaDkEDt
-         xxganGHrfllWIQjIEGmHAg58edyNRNO46arB178TInEutq+DYo1SjUK0kp0EQmI5bZ0X
-         sXisY4xBgT0eM3R89f//tYly72fhPtnP9pHQH4UDprsvNP4FlVfVgGZ4Qf+x6iyu0B4V
-         74JNQWmQHknkGoDG9y27FLyFJXpBEExO2Q9AwexuRARVAWwwimTOHkA7+Gz91gOumEkT
-         vyEQ==
-X-Gm-Message-State: AOJu0YxDTfW32rJNFN9tpz8nkQsc817UmHt7HX5ytw6tYnG2x0RB8L+X
-	7uV8oVtwG4bCrfwitN0doCmeyKozm2lYw+wL9OCIVrJFjXc3uHoQFnDwZVCmRHofjHdr6i1swwM
-	VivBz0ykxhgGXjeSdwG0ygLvd9uU=
-X-Google-Smtp-Source: AGHT+IF3nIdVKIMzWDRoZvX0ZH+e/XWdyTqfI8D8VfvKzBk/dJPyOoNv9fef1jOet63/0/1WYcc/Hemn2SAnx8t47zg=
-X-Received: by 2002:a17:90a:e398:b0:298:c858:54a1 with SMTP id
- b24-20020a17090ae39800b00298c85854a1mr5003378pjz.9.1708093830354; Fri, 16 Feb
- 2024 06:30:30 -0800 (PST)
+	s=arc-20240116; t=1708094086; c=relaxed/simple;
+	bh=4VEoWj9njKor5Uuyl7TfRX6Gv5f5mthxT9tJLZ8b7ac=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hj3Rmus3LZrRZQQ3IiePst5jqzLVdCt5OmTWzR/h5nKd/7nWq4J0V/8Y/RQg/2uN9KXpz329cLtRdXBnBqf5Uf9fnsKSAyCcbHADQZglTieEVrwbHt/EQ7RsImaR5FNjiyQlAkdoLGdtTcrxGTSCkK8J7282FPnobcBs67Qd2OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8R8zyiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B83CC433C7;
+	Fri, 16 Feb 2024 14:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708094086;
+	bh=4VEoWj9njKor5Uuyl7TfRX6Gv5f5mthxT9tJLZ8b7ac=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=V8R8zyiWcs7FIicIBitRurbzqNlugABgI/XaY91qc65/yPzM5vxALx3zlMZ/OU1rK
+	 IDb1at6yYCqN+Tpay1kNiskUQkWI238ntJIdI1kNmS+gewj6YNpTqcgxWbGkJrRmSp
+	 Ixzxdczm5ld4TqE6UqnQW8ogxMg5wcb7lm2hkVu9ZRXZr6Q56Uk6lTm+6zE5El1bY9
+	 KRObd3HZ2YqWKOg6/fTwh3rMb9oQg9we/pzqyx0gNryhBz6sdeb3I5NnCGND8vcebL
+	 uV9Nk5D7zdDTnLN5GBBdXeguAdm4zKKy7+CKK1vL3vEct3AfNHw+No5A+eqbEFQJhk
+	 waoLeDbLj8HMw==
+Date: Fri, 16 Feb 2024 14:34:32 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, andy.shevchenko@gmail.com, Rob Herring
+ <robh@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH v11 3/7] of: property: add device link support for
+ io-backends
+Message-ID: <20240216143432.745ae6e4@jic23-huawei>
+In-Reply-To: <20240210-iio-backend-v11-3-f5242a5fb42a@analog.com>
+References: <20240210-iio-backend-v11-0-f5242a5fb42a@analog.com>
+	<20240210-iio-backend-v11-3-f5242a5fb42a@analog.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
- <20240215182425.57334-1-jlobue10@gmail.com> <20240216113706.695b22fc@jic23-huawei>
-In-Reply-To: <20240216113706.695b22fc@jic23-huawei>
-From: Jonathan LoBue <jlobue10@gmail.com>
-Date: Fri, 16 Feb 2024 06:30:10 -0800
-Message-ID: <CAF6rpDwCx-0XnpSvkdHjpa+m-ztybjyUAzJGO25i+eT3QPx+Bw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] iio: accel: bmc150: Duplicate ACPI entries
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, andy.shevchenko@gmail.com, hdegoede@redhat.com, 
-	ilpo.jarvinen@linux.intel.com, jagathjog1996@gmail.com, luke@ljones.dev, 
-	benato.denis96@gmail.com, lkml@antheas.dev, derekjohn.clark@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Would you prefer if I make these small changes in a version 6?
+On Sat, 10 Feb 2024 21:57:15 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-Best Regards,
-Jon LoBue
+> From: Olivier Moysan <olivier.moysan@foss.st.com>
+> 
+> Add support for creating device links out of more DT properties.
+> 
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> Acked-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
++CC Stephen Rothwell for linux-next conflict.
 
-On Fri, Feb 16, 2024 at 3:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Thu, 15 Feb 2024 10:24:25 -0800
-> Jonathan LoBue <jlobue10@gmail.com> wrote:
->
-> > This patch adds a description of the duplicate ACPI identifier issue
-> > between devices using bmc150 and bmi323.
-> Title of patch doesn't reflect what is going on.
->
-> If there are no other changes needed I can tweak that whilst applying
-> to
->
-> iio: accel: bmc150: Document duplicate ACPI entries with bmi323 driver
->
-> >
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Co-developed-by: Luke D. Jones <luke@ljones.dev>
-> > Signed-off-by: Luke D. Jones <luke@ljones.dev>
-> > Co-developed-by: Denis Benato <benato.denis96@gmail.com>
-> > Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-> > Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> > Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> > Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
-> > ---
-> >  drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> >
-> > diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/b=
-mc150-accel-i2c.c
-> > index ee1ba134ad42..353271e23235 100644
-> > --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> > +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> > @@ -224,6 +224,19 @@ static const struct acpi_device_id bmc150_accel_ac=
-pi_match[] =3D {
-> >       {"BMA250E"},
-> >       {"BMC150A"},
-> >       {"BMI055A"},
-> > +     /*
-> > +      * The "BOSC0200" identifier used here is not unique to devices u=
-sing
-> > +      * bmc150. The same "BOSC0200" identifier is found in the ACPI ta=
-bles of
-> > +      * the ASUS ROG ALLY and Ayaneo AIR Plus which both use a Bosch B=
-MI323
-> > +      * chip. This creates a conflict with duplicate ACPI identifiers =
-which
-> > +      * multiple drivers want to use. Fortunately, when the bmc150 dri=
-ver
-> > +      * starts to load on the ASUS ROG ALLY, the chip ID check portion=
- fails
-> > +      * (correctly) because the chip IDs received (via i2c) are unique=
- between
-> > +      * bmc150 and bmi323 and a dmesg output similar to this:
-> > +      * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be seen=
-.
-> > +      * This allows the bmi323 driver to take over for ASUS ROG ALLY, =
-and
-> > +      * other devices using the bmi323 chip.
-> > +      */
-> >       {"BOSC0200"},
-> >       {"BSBA0150"},
-> >       {"DUAL250E"},
->
+I'm going to pick this up against my current tree where the fix
+for the line above the DEFINE isn't present. That will cause
+a minor merge conflict due to the change in context.
+
+Sorry for the irritation Stephen!
+
+I'm keen to get this into linux next now rather than waiting for
+a second pull to Greg late this cycle.  I'll aim to do first pull
+with this in next week.
+
+Will be briefly pushing out as testing though so 0-day can have
+a look first and then out for linux-next to pick up after I see
+those test reports (so this will probably waste a tiny bit
+of Stephen's time mid week).
+
+Thanks,
+
+Jonathan
+
+
+>  drivers/of/property.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index caa3e54aae13..0e91a5f4d0cb 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -1245,6 +1245,7 @@ DEFINE_SIMPLE_PROP(interconnects, "interconnects", "#interconnect-cells")
+>  DEFINE_SIMPLE_PROP(iommus, "iommus", "#iommu-cells")
+>  DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
+>  DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
+> +DEFINE_SIMPLE_PROP(io_backends, "io-backends", "#io-backend-cells")
+>  DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
+>  DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
+>  DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells")
+> @@ -1335,6 +1336,7 @@ static const struct supplier_bindings of_supplier_bindings[] = {
+>  	{ .parse_prop = parse_iommu_maps, .optional = true, },
+>  	{ .parse_prop = parse_mboxes, },
+>  	{ .parse_prop = parse_io_channels, },
+> +	{ .parse_prop = parse_io_backends, },
+>  	{ .parse_prop = parse_interrupt_parent, },
+>  	{ .parse_prop = parse_dmas, .optional = true, },
+>  	{ .parse_prop = parse_power_domains, },
+> 
+
 

@@ -1,135 +1,140 @@
-Return-Path: <linux-iio+bounces-2594-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2595-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB09856F88
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 22:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8A485776D
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 09:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6BA21C20EEC
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Feb 2024 21:49:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727931C20E65
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 08:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EDA141995;
-	Thu, 15 Feb 2024 21:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED8818B1B;
+	Fri, 16 Feb 2024 08:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rh9lSOmr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW8Zvy0A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734ED13EFE6
-	for <linux-iio@vger.kernel.org>; Thu, 15 Feb 2024 21:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0049320DE5;
+	Fri, 16 Feb 2024 08:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708033768; cv=none; b=NdA/W34i8icnPcOvmUHlI9ZBJovaB5H8h8362m0VUHv1M2zQZUDTeLGnx2aa+zvpQx++0BZPzvDJRcBsrFPaUQYRmCjNYoam9FV6C0fz2xtDvisH+Yj7IvbGKQGlfnVYNv45cn8llwOse38wG02R5UOTpTHx3Bw6zv0pNVtWR0g=
+	t=1708071062; cv=none; b=OLuVEkGSqQHLL52zJ9Di6FwQfvniVqWxHNab9N8+nf6YBPMjWW7hejoNBtRbYroH2RMHy9kdpU8wzm6IOnc5u79KQf1YUPVegWwsQqO/S71b0R0EWFL3nHSsJoIW7PNqR5eZSnkkm+DzkASAkwqA2Vboz3o6sBxns1z2JchCTew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708033768; c=relaxed/simple;
-	bh=egrIl87HVa6P/9NzKEjM0euP217KPHODBvobgCHy12A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pJX+BVChuMP0Am9tTcOIdoU+1GK5gupamBMyKX+6fwfOqhRmuRkDVRb52oDs7nK0PK1r/z66Ph4h2/eV16TnAFqFlfNSjluCQuCje3Xg3YnIORbEg7SjUiNdrR4VzfUzLdrLhUNmr2RCszkXK2YLG96w6/keD/zVkqyX61cBVsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rh9lSOmr; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5116ec49365so120945e87.3
-        for <linux-iio@vger.kernel.org>; Thu, 15 Feb 2024 13:49:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1708033764; x=1708638564; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wy4dy8qC/aEpgjhI6zSmtJIrU/2TuVH5URvhfhOyGwE=;
-        b=rh9lSOmrU+eCmbHKQwi9E9XEvOeICGmz0ntsyrw+XJ/xjZjRAzEo7QVJAjidP3IrfC
-         Sn9KbY2qYcHOPcpMaeIzajiJaqwBgGXfNeko9YB92BEcHsrXlM0Vyat4NlPZWUEjOmqc
-         LHIgsXjkIHmtkVhyhdyS03Y7RhuFh7k5Y2tCq9XmOODfe+jkuzIRgvq45VIchQ5ru2lx
-         VkvomhrYCA4hTxEbGkbUdZKLNjHHar1DQAUlrs6+ST9FZq4UoWY5PysTWkg5FIqFXhlj
-         NTCYMgp6dIwRA9qwpplKmd76Dhk05r9uzdOkHqfav4GkP91JK+/O5ffcmDyefwwQZFBL
-         tVBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708033764; x=1708638564;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wy4dy8qC/aEpgjhI6zSmtJIrU/2TuVH5URvhfhOyGwE=;
-        b=u+nAOQmlFEKggJwCzfxU1EI8H4wZnK+imfuCiIS2hTi6byzOIdgIqZ1ZNmldtjdiHY
-         pF9ZhEuoEbVbJtuqNP7rTh3/NO3lpOCLR35XOTwDSLqewk/XDeE/gAscOxheEkFU4mDe
-         WJ7HQz/aU6itHWS/N2jcEBZKz1QIWriIghAhq0ow9We35Avx8R8sBWWaI0U1wqUcZCg5
-         unES8pO1ERcXOY72g9C/rPYYqRV4FSZht+tIkceevUIR3Y7rA++1bNhDChbW9Ke5RqWz
-         +au+cWWa4GbGyGH5uXDf21Sq9EkspIyYTP8L+Opchu5yxoRUz6BkHJT2by/3y3LPF28q
-         l3eQ==
-X-Gm-Message-State: AOJu0YxeA+8KI8FVqkQY3fZvX9gdF8j8mMIwEXWtoJomaPRSk140OC9b
-	950xDFW8F0RlkwBI/C731vqvfORdpcL3ndFsgjLmhPu0t7wXiR5Ne3vn64i/eGY8wbQlh+ZS3LL
-	4wCPKeRTHlyDVbiEBkEdCGijkHUzRuO+2K5AbMA==
-X-Google-Smtp-Source: AGHT+IFblS658xAUkyzNInl0/6coFWFu424jBrjv6P7mBNcHohWTiH831Tul1x/9RSSF6JS9qjHsfg7rEDFJ3nMR9BI=
-X-Received: by 2002:a2e:9c87:0:b0:2d2:1699:fb5e with SMTP id
- x7-20020a2e9c87000000b002d21699fb5emr210697lji.2.1708033764453; Thu, 15 Feb
- 2024 13:49:24 -0800 (PST)
+	s=arc-20240116; t=1708071062; c=relaxed/simple;
+	bh=l93if2O0u3Z6Ig82G971j4qIaGPmYsDswEQZHOfkQEs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EZHKWqaL0zJ4akRDDnQV2EA1o01mqG0h1wBhIWlxhbjFNTojA/hYY/RxqQz0sIC3fr8KiJOHq/tttEMqPrShLm+3FkLAez2R2CvFX0Gap3g8M2XTB3VB3bNvj2T3EVLSNlqmL0F54TRcdKoyEcezdJqIP7/1OJF3J1GvNv1Bu3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW8Zvy0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2763C433C7;
+	Fri, 16 Feb 2024 08:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708071061;
+	bh=l93if2O0u3Z6Ig82G971j4qIaGPmYsDswEQZHOfkQEs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UW8Zvy0A3B7+ULCj44cMkq5OK8KSnkqp+6/5TEIkVJ7ieoCQDdsX20tfvcwaRbd/2
+	 wv9K4BFIhVm/oFXL/TTuuAu8ZqPB+WwGE4nlrpdZL3vcBGJo8zX00xkntW2+zmWTHT
+	 EhzMyT4DotDTeeR7HzTzLE/Xj9mJe169YGUHnV+GYuqmzSNqjqbQ/T6QbVTWrdri4C
+	 qhikLkWnYw+MGCfpSLc3LZ8RfdNtH225JZo4VaYpBLQPedu9B7YadsW23KdaKR7PeH
+	 FELIrB73X2aXzNCLVuWiZTyi4l1WGKxtUDgSUTSuejWRLDNahBsQxP6sxTlJFQgF46
+	 RiTJbqINXfo4A==
+Message-ID: <f42ebeb2-9ece-4e0d-b91d-4a0076fe7c8f@kernel.org>
+Date: Fri, 16 Feb 2024 09:10:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com>
- <20240206-ad7944-mainline-v1-1-bf115fa9474f@baylibre.com> <CAMknhBGG_RS1t0OJw6_UnNQ_=S4YgN4i1YN26V8n=f9y28J9hQ@mail.gmail.com>
- <20240215132334.GA3847183-robh@kernel.org>
-In-Reply-To: <20240215132334.GA3847183-robh@kernel.org>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 15 Feb 2024 15:49:13 -0600
-Message-ID: <CAMknhBF8BQQfXkMvu3dS-RtaYBeOZ7mfCNxMaq3LOWwLp1_cxg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-To: Rob Herring <robh@kernel.org>
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: ti,tmp117: add vcc supply binding
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>, puranjay12@gmail.com,
+ jic23@kernel.org, lars@metafoo.de
+Cc: thomas.haemmerle@leica-geosystems.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de
+References: <20240215204746.1197619-1-m.felsch@pengutronix.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240215204746.1197619-1-m.felsch@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 15, 2024 at 7:23=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Tue, Feb 06, 2024 at 11:34:13AM -0600, David Lechner wrote:
-> > On Tue, Feb 6, 2024 at 11:26=E2=80=AFAM David Lechner <dlechner@baylibr=
-e.com> wrote:
-> > >
-> >
-> >      if:
-> >        properties:
-> >          adi,reference:
-> >            const: external
->
->          required:
->            - adi,reference
->
-> >      then:
-> >        required:
-> >          - ref-supply
-> >      else:
-> >        properties:
-> >          ref-supply: false
-> >
-> > to be sufficient here. However, currently, if the adi,reference
-> > property is omitted from the dts/dtb, the condition here evaluates to
-> > true and unexpectedly (incorrectly?) the validator requires the
-> > ref-supply property.
->
-> That's just how json-schema works. With the above, it should work for
-> you.
->
-> However, redesigning the binding would make things simpler. Just make
-> 'ref-supply' being present mean external ref. No 'ref-supply' is then
-> internal. Then you just need a boolean for 'internal-buffer' mode and:
->
-> dependentSchemas:
->   ref-supply:
->     not:
->       required: ['adi,internal-buffer-ref']
->
+On 15/02/2024 21:47, Marco Felsch wrote:
+> From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> 
+> Add the binding to specify the vcc supply. We can't make it required
+> since this would break the backward compatibility.
+> 
+> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Per Jonathan's suggestion, I plan to simplify the bindings like this
-but just use the presence/absence of refin-supply as this boolean
-value to simplify it even further.
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline), work on fork of kernel
+(don't, instead use mainline) or you ignore some maintainers (really
+don't). Just use b4 and everything should be fine, although remember
+about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time, thus I will skip this patch entirely till you follow
+the process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+
+Best regards,
+Krzysztof
+
 

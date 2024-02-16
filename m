@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-2648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDFE8581B3
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:49:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AC58581B6
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9791F21DE4
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:49:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A01FB21B8B
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEB812F5A6;
-	Fri, 16 Feb 2024 15:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D87D12F5B2;
+	Fri, 16 Feb 2024 15:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzAfjgSO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skpgds00"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E0778B5C
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 15:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68961BDD8;
+	Fri, 16 Feb 2024 15:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708098576; cv=none; b=u+wm0dOhHV13829tDmDDDAQ4bIDm/z09C1gRZrqtixzQi0JharhgMjKpNQWbeuV2NI1OfCMtwhOk+KzLCUL2XuA0AZjo71uxmTwlsLcC6tOfMOAo6PIdWZKN7bmBaOvapYyxVuJa6a9UmVLaSTCcHhXecYdRSuyUqLimjcbX/WI=
+	t=1708098662; cv=none; b=oU4prlxkN639DHAAKuzD+u52EIrmHuLkMjyku8iMxUpwG+2/MfQNE4386v1MQmCo/gWg6R37XXT/OhS8iAMmoiVDjkg0zsiqG+2qpC9XF9j68ZE16EjI+unVHUYJ+f8coXi2UATDpmygftRuWoE6eea/XNZTAeF2ij1thPwNOUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708098576; c=relaxed/simple;
-	bh=SktmkLlUnqLfgxQdTmDlDHwkKl0WpH+eQObBsO4TCJI=;
+	s=arc-20240116; t=1708098662; c=relaxed/simple;
+	bh=XqumZg0Xx6R1zZIUJu7IqknRri8yZSUgg2ag/nPL14I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ammrOSkoUIdkieyx9ZpphZqjK4TPT0JQm3XT0ntvdxd4mWoNbfc1/Y1n8L5ZhGgR2ZU24nrHclGnrg+muutTdK73hNt2t3VvU2MNltwNtxBlF4WcpUwDbtQtYBS6hvd7d/pDM686tYckcZOOdF3OcLr/t9kl2iftqypSSr+7Rs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzAfjgSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D846AC433F1;
-	Fri, 16 Feb 2024 15:49:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iUjF8PR996W9W1ElPZcx9omx7DCZcDIWKzMt7+snZAOUhW+SHvKMFbyzkOT/6wx8NclHToM55Bi+Da5Qn3mxt1VaGIHd144J6dOeRC+7rRMiVpQAhm5rw3TCxDKMby9/oQM3oBbcsGFWzLIX3QHu6XK0A91FvlZBVBpfQRRpA3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skpgds00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB479C433C7;
+	Fri, 16 Feb 2024 15:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708098575;
-	bh=SktmkLlUnqLfgxQdTmDlDHwkKl0WpH+eQObBsO4TCJI=;
+	s=k20201202; t=1708098661;
+	bh=XqumZg0Xx6R1zZIUJu7IqknRri8yZSUgg2ag/nPL14I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DzAfjgSOYMCbey0eql2Hk8Fyzbnp6ici21Ks3IynXg1iTnqZPAI5eypigKtmmQUS7
-	 6BfYkbU7Gii5g1VsfmnccKSI0QhM9nhUvqRDZnNr6Kdnz8BEQ2OzjPj/UkvGP4lBGb
-	 uvgCEqmPf9Lt9exEKa5H2i3NPrHr9bOekSLLFYxdXeGDHY+wqKgB9Ax8VapYIkYJSd
-	 ZdwQ+xTRdGVnCmFFAti/IpIoiE99nb8SbN9avkazUQDdsQF7OZ5DcUD8AKjXwNqbMR
-	 gajgVbXwLcTXQyjn5nlZIUSQfqUfykE2ocZmbVnKvwYgayuhdT+C5S+B5h+6H1os/R
-	 OfZkaMVkRrUGA==
-Date: Fri, 16 Feb 2024 15:49:22 +0000
+	b=skpgds005HeZfnJM4/AXQU9lYuQcNubyIxR6+dlb+2BusjC/hA95dwI47l6nxndJc
+	 A8xVVij9W9Df2+aA8VWSX5/KNEmJrJHcvn/btb1KumrK1hC10aF99YRnNJJ4vj0AIV
+	 db224RP8P+p2sJs1diSnZp+o/Wp4UoWPOW0e/8tPApZA1/fA6imqjJDXWvzG8AU4Rr
+	 5WyCCfCvn9fq32nUcJLCxeqqgQooWJoCLavMSxw8zIXmmTGQhcGeRfeiYssa/ChOix
+	 XWZoLHW7+iZ/yNICznkPPbbOie8lVRseUJcPzNj1tEMTpugKvGLIZtFFduRFqlq26x
+	 xjmUpoh2r5S8Q==
+Date: Fri, 16 Feb 2024 15:50:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan LoBue <jlobue10@gmail.com>
-Cc: linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
- hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com,
- jagathjog1996@gmail.com, luke@ljones.dev, benato.denis96@gmail.com,
- lkml@antheas.dev, derekjohn.clark@gmail.com
-Subject: Re: [PATCH v5 1/2] iio: accel: bmc150: Duplicate ACPI entries
-Message-ID: <20240216154922.302a3664@jic23-huawei>
-In-Reply-To: <CAF6rpDwCx-0XnpSvkdHjpa+m-ztybjyUAzJGO25i+eT3QPx+Bw@mail.gmail.com>
-References: <CAF6rpDwtj-mtpfFntf8XtTnF2vQMw4rtg1eV-kFGYj6r9hWvKA@mail.gmail.com>
-	<20240215182425.57334-1-jlobue10@gmail.com>
-	<20240216113706.695b22fc@jic23-huawei>
-	<CAF6rpDwCx-0XnpSvkdHjpa+m-ztybjyUAzJGO25i+eT3QPx+Bw@mail.gmail.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+ thomas.haemmerle@leica-geosystems.com
+Subject: Re: [RESEND PATCH 1/2] dt-bindings: iio: ti,tmp117: add vcc supply
+ binding
+Message-ID: <20240216155048.29b806a1@jic23-huawei>
+In-Reply-To: <20240216112348.pamc4c7yemuz3sjp@pengutronix.de>
+References: <20240216102820.1395815-1-m.felsch@pengutronix.de>
+	<20240216112120.76a0c0ca@jic23-huawei>
+	<20240216112348.pamc4c7yemuz3sjp@pengutronix.de>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,86 +63,74 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Feb 2024 06:30:10 -0800
-Jonathan LoBue <jlobue10@gmail.com> wrote:
+On Fri, 16 Feb 2024 12:23:48 +0100
+Marco Felsch <m.felsch@pengutronix.de> wrote:
 
-> Would you prefer if I make these small changes in a version 6?
+> On 24-02-16, Jonathan Cameron wrote:
+> > On Fri, 16 Feb 2024 11:28:19 +0100
+> > Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >   
+> > > From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> > > 
+> > > Add the binding to specify the vcc supply. We can't make it required
+> > > since this would break the backward compatibility.  
+> > 
+> > Given convention for supplies like this is to make them required in
+> > the dt-binding to reflect that providing power is not optional (unlikely
+> > some other supplies that might not be wired up) and not worry about the
+> > fact that we happily provide dummy supplies for them if they aren't in a
+> > particular dts, it should be fine to make it required here.  
+> 
+> Will this fact apply to all dt-bindings? I'm asking because, there are
+> many bindings out there without having the -supply in place.
 
-Sure, saves me a few seconds ;)  We will be waiting for Hans to have
-a chance to test anyway.
+Yes in theory - in practice it's noise to do it unless we have a reason
+to be touching the dt-binding anyway.  I don't plan to fix them up on
+mass.
 
 Jonathan
 
->=20
-> Best Regards,
-> Jon LoBue
->=20
-> On Fri, Feb 16, 2024 at 3:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Thu, 15 Feb 2024 10:24:25 -0800
-> > Jonathan LoBue <jlobue10@gmail.com> wrote:
-> > =20
-> > > This patch adds a description of the duplicate ACPI identifier issue
-> > > between devices using bmc150 and bmi323. =20
-> > Title of patch doesn't reflect what is going on.
-> >
-> > If there are no other changes needed I can tweak that whilst applying
-> > to
-> >
-> > iio: accel: bmc150: Document duplicate ACPI entries with bmi323 driver
-> > =20
-> > >
-> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > Co-developed-by: Luke D. Jones <luke@ljones.dev>
-> > > Signed-off-by: Luke D. Jones <luke@ljones.dev>
-> > > Co-developed-by: Denis Benato <benato.denis96@gmail.com>
-> > > Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-> > > Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> > > Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> > > Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
+> 
+> Regards,
+>   Marco
+> 
+> > 
+> > Jonathan
+> >   
+> > > 
+> > > Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > > ---
-> > >  drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
-> > >  1 file changed, 13 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel=
-/bmc150-accel-i2c.c
-> > > index ee1ba134ad42..353271e23235 100644
-> > > --- a/drivers/iio/accel/bmc150-accel-i2c.c
-> > > +++ b/drivers/iio/accel/bmc150-accel-i2c.c
-> > > @@ -224,6 +224,19 @@ static const struct acpi_device_id bmc150_accel_=
-acpi_match[] =3D {
-> > >       {"BMA250E"},
-> > >       {"BMC150A"},
-> > >       {"BMI055A"},
-> > > +     /*
-> > > +      * The "BOSC0200" identifier used here is not unique to devices=
- using
-> > > +      * bmc150. The same "BOSC0200" identifier is found in the ACPI =
-tables of
-> > > +      * the ASUS ROG ALLY and Ayaneo AIR Plus which both use a Bosch=
- BMI323
-> > > +      * chip. This creates a conflict with duplicate ACPI identifier=
-s which
-> > > +      * multiple drivers want to use. Fortunately, when the bmc150 d=
-river
-> > > +      * starts to load on the ASUS ROG ALLY, the chip ID check porti=
-on fails
-> > > +      * (correctly) because the chip IDs received (via i2c) are uniq=
-ue between
-> > > +      * bmc150 and bmi323 and a dmesg output similar to this:
-> > > +      * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be se=
-en.
-> > > +      * This allows the bmi323 driver to take over for ASUS ROG ALLY=
-, and
-> > > +      * other devices using the bmi323 chip.
-> > > +      */
-> > >       {"BOSC0200"},
-> > >       {"BSBA0150"},
-> > >       {"DUAL250E"}, =20
-> > =20
+> > > Resend since I forgot to add the DT maintainers
+> > > 
+> > >  .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > > index 8c6d7735e875..cf7799c9734f 100644
+> > > --- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > > @@ -24,6 +24,9 @@ properties:
+> > >    reg:
+> > >      maxItems: 1
+> > >  
+> > > +  vcc-supply:
+> > > +    description: provide VCC power to the sensor.
+> > > +
+> > >  required:
+> > >    - compatible
+> > >    - reg
+> > > @@ -39,5 +42,6 @@ examples:
+> > >          tmp117@48 {
+> > >               compatible = "ti,tmp117";
+> > >               reg = <0x48>;
+> > > +             vcc-supply = <&pmic_reg_3v3>;
+> > >          };
+> > >      };  
+> > 
+> >   
 
 

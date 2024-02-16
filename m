@@ -1,71 +1,71 @@
-Return-Path: <linux-iio+bounces-2676-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2677-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDCA858504
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:23:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F0E858505
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239471C2157A
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321031F2296C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC331350C2;
-	Fri, 16 Feb 2024 18:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4A21350C8;
+	Fri, 16 Feb 2024 18:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j0HA+2WG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NjZQ8BJn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68461131722
-	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 18:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB45131722
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 18:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708107778; cv=none; b=qS8Rr9xko0fe/Hk2JC2wQJHkLe1b71Vs/fCgdSPnsh47ZausDciYahAQyiBIi5MywcORkD2dKGDSh6LLxAFgUcaW/5193PsjGJnpmYj1ujVO0QIRhGgkDF3BiYT3iTFlEiJGYJSMYJursXwK7rxLUMeoIs4pbY5JUfzCjzq8DyQ=
+	t=1708107793; cv=none; b=EyBK8Ieh0ZIy4TfeC/2bIN5L2A6LlbISQnGiU9yjVlnyG+sa0143gzg9i3ALO6XyEaveB8MkWio+qeDmsM7mocnIHkv9uaHutNVv6jLhbsGOm1CenHSg61groM/thGWyomKaqvll/DULdn63NbxBTwLdLB/hRbMBumq1BiEeJYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708107778; c=relaxed/simple;
-	bh=J6DpSKyhyAb1oanNc8XQkgXDE9CDbuitZYQSkenFlb4=;
+	s=arc-20240116; t=1708107793; c=relaxed/simple;
+	bh=qPD7R+rpHySs5juxUqYlTCF9XnSnSJFK6pmd0zIBTZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnTq6j+e5pkiDimEVRNKnseotjth15OyW+0uEjRXEy/h9hhCiTUtO2r0KUVhzGsVcuDaKeCzAl78YJWe3lwtPI+qAsJWKTx8J2JRloCjO0YtvFWcRe/01bEolulI/b/piHzG/kZytjralf7qX8xu3WMBKcHLkcjCsBCvInhnVkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j0HA+2WG; arc=none smtp.client-ip=209.85.210.180
+	 MIME-Version; b=OSDcNBaOme1DanCkI/iB1HYKMMKtZpt2OGOWe5Quk0GAQfzF9gh9PxUbAU9/W0uxOZcBMJ6cv4IgCebGFjS4pePGjOp1ra9CzXCWl1GHFPk5oq/ez+1qsIGQeRNn5XuUPj3e0Btq9v2fCnnZhVG40K3zuBq5NWWzl1i4sZij6J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NjZQ8BJn; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e10303de41so1009198b3a.1
-        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 10:22:56 -0800 (PST)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e13b1ee5ffso678830b3a.3
+        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 10:23:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708107776; x=1708712576; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708107790; x=1708712590; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3N4RIaXqYbfABYgbeygXnFczx1DtYUS9r6KVRfmYiMA=;
-        b=j0HA+2WG7sgKMbzIPRSnA5NtKgRB085UL7McfGQOtbjAn3kmBQFnMJqG+kPzuUitfE
-         FuykEMdN5t1hDnP9HuPfHwG5Qh6wPVch7t7KrS4UqW2OJB9CEYmzZtu5d27n1sugsS12
-         EC9QTKuNwn8ZT3ZLLiETWbnG9ZtIE4d8YGCFB2Mx2gwlqh0jLosa+RxoPwbSgkuoz62a
-         qEGpcIdWl17PlsOM1XCHqxPYo6W3CR491DLU7fgX5NUXbyJntj2ohtuoksKzoQIjPnwC
-         msKLkPcAAr/a/Rz+pxhMTcSOCFzWBHBvePkmAiV13FUAAlp875ziHKo1LI8yy9VHezmX
-         YG/A==
+        bh=ZG4j7rR9Aizz5phV+GYL4uBdrfY2Aid8a2KPItf/7LI=;
+        b=NjZQ8BJnC17FfWXPcYzD3dhafi/4L3wVye6TEKpu8IfhFOxcFAsi6cE1Loz3dVRT6Q
+         dMe0Mzc0eH6StyHpR61gZrxxwF8kModdP+kE5JIC1rucwALV+NJFL3Ve87zf80wfUEBv
+         Xtp805WsHgsjdH/TKz2d4BinBpJisdh/JquHXe1TASjFgVqatfF+2RSNjArsPTMnA+Pn
+         m87mUdzkmeDVm/bbNi4fqfq5ST+wpIpAaDtSllYesAcxC6CgEMXL8Dqj9lQRq+DF36q/
+         PdQMZwXhMcW5dkly6/FMhu5Q37I3NVrDUPkxSdsdYG54TuSEpPnqAESsvwBLQXN98Gvc
+         AO5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708107776; x=1708712576;
+        d=1e100.net; s=20230601; t=1708107790; x=1708712590;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3N4RIaXqYbfABYgbeygXnFczx1DtYUS9r6KVRfmYiMA=;
-        b=HTPRHwm3yJ8MuRvzZGZOSqQ/uQiMSOuc4WtTHlvpVp2zCnODciCBZBhZe1QdQO7Wim
-         hshvpbo3JfOpwU96qJg/HPMfF7SCz1WeNysyGJ8Q/xJe7G2ysZQ6J0UMUtz6jpIP8E37
-         mgX4BA/uf5YYAA1hnZVzPbUsspuDeHINgzudGw6RsmlClTSbea7Jw2cwY6Hn+8y96HBw
-         VdF4lEyH3AFrJp+Cl1D450wRpXNY/tMkKyHbXR3TJDfnAqyLuG76+N6oZ68uOleDVfP0
-         Zuqvpfh69QSQCuitZRb3VKKdzB+hzHl1UVqumgtZPuZwpxa9qUuDbolC2aQMlNDuIxiW
-         zHFg==
-X-Gm-Message-State: AOJu0Yznz4UvuXZnffI9WauVxLRa+OfatZGEAQjbb/WOI3jS/J0SNB2H
-	FcN05AQqg3r8EBP6NltzU86t7QRod5/1qX7kCpp1VAcHxhVQcKiC
-X-Google-Smtp-Source: AGHT+IF8hMd81BgRNnZkSZjz2OGVk1TqzCc4LvdYD48RO3S+Rw/PbrqSAj09CPx1KzrZKm1CtAI6ug==
-X-Received: by 2002:a05:6a21:9216:b0:19e:a3d4:24be with SMTP id tl22-20020a056a21921600b0019ea3d424bemr6894320pzb.49.1708107775552;
-        Fri, 16 Feb 2024 10:22:55 -0800 (PST)
+        bh=ZG4j7rR9Aizz5phV+GYL4uBdrfY2Aid8a2KPItf/7LI=;
+        b=YFAd/UYppaK8YyjKMHMXHGy7ZJZe4W+s5LszPaFmVxPHu9+ZEeWR3m+4wRq49YKNZz
+         GBmnun63QMncfvLH5iBZjHKe5Ewp0xHkM+9uB1tll/MylQ1kf8WPbcAbqKAJF9Aco21p
+         GpkRZzMkWbpPnkSqL8ZxyFsDn5E/ygMb9RKQZHxgnIc8uzN8jZb/PcVJ99T9roReeF6H
+         jKpkJ/CmXx+I+j91pvsylwDYRT9GeuYVdDwcH3OSLkp1Off4RMxKW97k91X7Rc2P20QI
+         NegssFiZQIJZE90nIZCPoRuC+MrLHjzR7nbcaEp/VYvbBU9obal9HV+x1iol42dVnboX
+         X2GQ==
+X-Gm-Message-State: AOJu0YwiyvEDKJi26Cu6Rb7v5JcLtk9RtbXnvuOewRN2zxra4bRyT2NL
+	LCI2v6aw5p/OxlbB+j7UU4/fb5kTjFJmpJmt6Jfw3fwW7J/1gxvz
+X-Google-Smtp-Source: AGHT+IHVADb61GuhVKpV9XlUisIyP0o5zRcyF0s9LSn4G8pLjgmHnGNMMVVeEv4F6mLVymWHmdVFMw==
+X-Received: by 2002:a05:6a00:1ca3:b0:6e0:f975:e920 with SMTP id y35-20020a056a001ca300b006e0f975e920mr6603774pfw.22.1708107790180;
+        Fri, 16 Feb 2024 10:23:10 -0800 (PST)
 Received: from nobara-ALLY-pc.. (076-167-168-058.res.spectrum.com. [76.167.168.58])
-        by smtp.gmail.com with ESMTPSA id z3-20020aa79903000000b006d99f930607sm256474pff.140.2024.02.16.10.22.54
+        by smtp.gmail.com with ESMTPSA id x188-20020a6263c5000000b006e091ae4036sm258549pfb.194.2024.02.16.10.23.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Feb 2024 10:22:55 -0800 (PST)
+        Fri, 16 Feb 2024 10:23:09 -0800 (PST)
 From: Jonathan LoBue <jlobue10@gmail.com>
 To: jic23@kernel.org
 Cc: linux-iio@vger.kernel.org,
@@ -78,9 +78,9 @@ Cc: linux-iio@vger.kernel.org,
 	lkml@antheas.dev,
 	derekjohn.clark@gmail.com,
 	jlobue10 <jlobue10@gmail.com>
-Subject: [PATCH v6 1/2] iio: accel: bmc150: Document duplicate ACPI entries with bmi323 driver
-Date: Fri, 16 Feb 2024 10:22:53 -0800
-Message-ID: <20240216182253.27069-1-jlobue10@gmail.com>
+Subject: [PATCH v6 2/2] iio: imu: bmi323: Add ACPI Match Table
+Date: Fri, 16 Feb 2024 10:23:08 -0800
+Message-ID: <20240216182308.27125-1-jlobue10@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <CAF6rpDwZaCJOpLEYayVW8_aXQwKdpcLCDSRjbTNk1rr43EPriQ@mail.gmail.com>
 References: <CAF6rpDwZaCJOpLEYayVW8_aXQwKdpcLCDSRjbTNk1rr43EPriQ@mail.gmail.com>
@@ -94,8 +94,9 @@ Content-Transfer-Encoding: 8bit
 
 From: jlobue10 <jlobue10@gmail.com>
 
-Adds a description of the duplicate ACPI identifier issue
-between devices using bmc150 and bmi323.
+Adds the ACPI match table for ASUS ROG ALLY to load the bmi323
+driver with an ACPI match of "BOSC0200", and a comment about duplicate
+ACPI identifiers between devices using the bmc150 and bmi323 chips.
 
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Co-developed-by: Luke D. Jones <luke@ljones.dev>
@@ -106,33 +107,47 @@ Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
 Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
 Signed-off-by: Jonathan LoBue <jlobue10@gmail.com>
 ---
- drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/iio/imu/bmi323/bmi323_i2c.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-index ee1ba134ad42..353271e23235 100644
---- a/drivers/iio/accel/bmc150-accel-i2c.c
-+++ b/drivers/iio/accel/bmc150-accel-i2c.c
-@@ -224,6 +224,19 @@ static const struct acpi_device_id bmc150_accel_acpi_match[] = {
- 	{"BMA250E"},
- 	{"BMC150A"},
- 	{"BMI055A"},
+diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+index 20a8001b9956..f7550503e47e 100644
+--- a/drivers/iio/imu/bmi323/bmi323_i2c.c
++++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+@@ -93,6 +93,25 @@ static int bmi323_i2c_probe(struct i2c_client *i2c)
+ 	return bmi323_core_probe(dev);
+ }
+ 
++static const struct acpi_device_id bmi323_acpi_match[] = {
 +	/*
-+ 	 * The "BOSC0200" identifier used here is not unique to devices using
-+ 	 * bmc150. The same "BOSC0200" identifier is found in the ACPI tables of
-+ 	 * the ASUS ROG ALLY and Ayaneo AIR Plus which both use a Bosch BMI323
-+ 	 * chip. This creates a conflict with duplicate ACPI identifiers which
-+ 	 * multiple drivers want to use. Fortunately, when the bmc150 driver
-+ 	 * starts to load on the ASUS ROG ALLY, the chip ID check portion fails
-+ 	 * (correctly) because the chip IDs received (via i2c) are unique between
-+ 	 * bmc150 and bmi323 and a dmesg output similar to this:
-+ 	 * "bmc150_accel_i2c i2c-BOSC0200:00: Invalid chip 0" can be seen.
-+ 	 * This allows the bmi323 driver to take over for ASUS ROG ALLY, and
-+ 	 * other devices using the bmi323 chip.
++ 	 * The "BOSC0200" identifier used here is not unique to bmi323 devices.
++ 	 * The same "BOSC0200" identifier is found in the ACPI tables of devices
++ 	 * using the bmc150 chip. This creates a conflict with duplicate ACPI
++ 	 * identifiers which multiple drivers want to use. If a non-bmi323 device
++ 	 * starts to load with this "BOSC0200" ACPI match here, then the chip
++ 	 * ID check portion should fail because the chip IDs received (via i2c) are
++ 	 * unique between bmc150 and bmi323 and the driver should relinquish the
++ 	 * device. If and when a different driver (such as bmc150) starts to load
++ 	 * with the "BOSC0200" ACPI match, a short reset should ensure that the
++ 	 * device is not in a bad state during that driver initialization. This
++ 	 * device reset does occur in both the bmi323 and bmc150 init sequences.
 + 	 */
- 	{"BOSC0200"},
- 	{"BSBA0150"},
- 	{"DUAL250E"},
++	{ "BOSC0200" },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, bmi323_acpi_match);
++
+ static const struct i2c_device_id bmi323_i2c_ids[] = {
+ 	{ "bmi323" },
+ 	{ }
+@@ -109,6 +128,7 @@ static struct i2c_driver bmi323_i2c_driver = {
+ 	.driver = {
+ 		.name = "bmi323",
+ 		.of_match_table = bmi323_of_i2c_match,
++		.acpi_match_table = bmi323_acpi_match,
+ 	},
+ 	.probe = bmi323_i2c_probe,
+ 	.id_table = bmi323_i2c_ids,
 -- 
 2.43.0
 

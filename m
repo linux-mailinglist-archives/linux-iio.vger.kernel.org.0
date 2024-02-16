@@ -1,133 +1,102 @@
-Return-Path: <linux-iio+bounces-2674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2675-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF488584C1
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:03:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959938584F8
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 19:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3242B2341D
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23BF02840C7
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 18:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F38134CCE;
-	Fri, 16 Feb 2024 18:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54099134CFF;
+	Fri, 16 Feb 2024 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m8eiP2Xx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2Jf15LL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95031339B1;
-	Fri, 16 Feb 2024 18:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C727913340D
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 18:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708106582; cv=none; b=kCMhva5/ZMEk6EGcz98Rqph6OFkJ8Pr8kUhKFiEiT15ZNqYOjLxUuFavlDXFZlYndcmwzK0C4rAwfdI6MAPJiMD1acnZChe9MFKBF4s6+xXLP/8RPUsntsMM78G7AGgPQzqXX8AsJk1MwX8JtIltRqurY6hR4dGuPsT1WmAmyQI=
+	t=1708107399; cv=none; b=ENRelNBfM1ZHVW0EJhLBPROoau3OMhnnyYpPDj56Ok2X0I4cu/M08xLMHmlZgB/EpYAFB5FNfmnjWvMTzeH77MSrdD7ZXrbvFzfWR7gE1a3Zt3vfaHzRglVyZEjhXNj69Ou2CBRwtXIL/nF3LFSR5kTafqvI61seWj+fYbHRFS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708106582; c=relaxed/simple;
-	bh=QuwT4LCDUgH9Rs1RA4JpYgc+xfXdQePBF3mXlgUAkos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MW8nMMebYme4DdnAHmLKw5OBfHipCauyPm8uqvf7rf2oSL6u1KAcTPIZlWYHe1zWaB7l6difz9n/4tehwnDl+Czo/UMQ/ULitfaRqbJW116WfhYqzdX7fyUE5GV3Z8l3fqq9W8ZVH7r0RBHoQcmst9xxg4UizE7TbXS3l/P5DU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m8eiP2Xx; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708106581; x=1739642581;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QuwT4LCDUgH9Rs1RA4JpYgc+xfXdQePBF3mXlgUAkos=;
-  b=m8eiP2XxXijhB4W6rTZNJwfzOUFkRPwCmn41MwqiE5N+O76Ma08uc5G+
-   Sq7U1g8+ScabU9JR2cf1qXeK8ImxQYMIfB4vqm5FNE2lwNhHRPKc3zVa2
-   VvzufxHXfKKV4wfZl8W9DSJweRNj4vYYBQeeuQAvg+UTyBzkdrZf9v7G/
-   XOlac0ZeGRt27NBxtZTYChjKq5hFuANCyOKJ8C2zRSDnu//N93D/UTuZE
-   PbFj3v/kapZ1u3BjjcllSmwtlAELI6VSJLV2Y5EGS4Ceb9V3MtfS7d/6l
-   KKPl7aLS3+dRGFIbSTtOhWPf9m0gnjr+bpqIVVqxl3MNvkCchb5ZTtlG1
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="2376321"
-X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
-   d="scan'208";a="2376321"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 10:02:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="912398436"
-X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
-   d="scan'208";a="912398436"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 10:02:52 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rb2Xx-000000057eo-2T8T;
-	Fri, 16 Feb 2024 20:02:49 +0200
-Date: Fri, 16 Feb 2024 20:02:49 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 04/15] device property: Introduce
- device_for_each_child_node_scoped()
-Message-ID: <Zc-jSerjhYjfndDg@smile.fi.intel.com>
-References: <20240216175221.900565-1-jic23@kernel.org>
- <20240216175221.900565-5-jic23@kernel.org>
+	s=arc-20240116; t=1708107399; c=relaxed/simple;
+	bh=FdJdzTVuBRA7U9Bfhmz6iwbA35jhqFNQ+6V2S0by1Cw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=a1Ix+K8ooUZDUR0Gf2BwTGkb7MucFjx4zsNbxhCiMqPqlpgjqMXADxJDUCyMpRbShw0Gv3Sxn4k2Xw1WBBxzJK4GTGl65plsktd4GC0C8idjbcCGEg0cXUop2GoXgQk+j1xKDXPzY1RHLkTcWBll3R0u/E2yZJ2Db9hHG4C+QrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2Jf15LL; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5c229dabbb6so1346180a12.0
+        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 10:16:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708107397; x=1708712197; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EC/QYMO3fgMpljqQ9u7uhTQo1257lEwVQUf7xE45gI4=;
+        b=g2Jf15LLSGBlO5u/v2Z9lxhP1gqBdudCrYHUQZDK8R8QIheEdxw9N+vzNdn7Td0enN
+         qtFe27MCPFpYC9EOzMoMvFohcib1oCIykPHmW5unm4vCcGfgnvug3iTGG5TyseUk5tjV
+         GJ87X24JJghbuPxkAoD12Da1vk3IRA++6zNq1mVyTceLGCIthzvTkLeaeG0PQrzN5K9w
+         BGik6e3FwrHYyDrMZ5P1rdkPYpbRO4nKfbGtmnf/YOzwgPZIJHDqq4Q2YMIm5XUZrCKy
+         dkychYUgOaeDKLS7v3voD4QpDgBpAzoc9NQLrEXz43HDUqzTsmmD+uGAzqWP2lZg7Hqd
+         excA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708107397; x=1708712197;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EC/QYMO3fgMpljqQ9u7uhTQo1257lEwVQUf7xE45gI4=;
+        b=byvoKTDh1N5w5JfT5m0g9ZC6OsiZ6Ov/Qw7sb83hNv8d75buyXYGhVSZDlZ434+R3u
+         g/sYzNsDLQgIaYu3FUJgGUovL9p608Hpb7D/YYuvojZiLol9nDtkYbb3R8DJ0f0B/WZF
+         gD1cXSSJzYFGtd1kof2yoicw+Z9tq3+OaLRcfKNdj4Y0kVe4i9Erix8l+WTbw7v/QoNz
+         oqFauvUI8j6RRS/uIDa/CthM8vENZ961eZ4fAzUW9/WLriwHi+pIDeHQfq7jCta6JeFl
+         zs7bh1SFi2Y21aEGSNo5sxVR+51AO3iuGi/KjTGSEVXCh3VnHM0wgSHzfD2LxQEjIS+6
+         MsGA==
+X-Gm-Message-State: AOJu0Yzmbhcc+SSJKG9XjI+q/SiQF+MFWSY6eB9eWZJHa9KOATE4OVGM
+	g03Cr2dYZlCwLpfWcz3n3GvIZWVEF3g2IHBE0eBO2jfWPf6HKFNo6pgqsciV+7g5FuO+M4A8Umo
+	ZenRW/9dKMEB8ZuRzTUKbJmLXZ5c=
+X-Google-Smtp-Source: AGHT+IHfvWNfO1Po+3LVtJ9cDBQZjjobYNi9+2U2/65D8j/afy8vSznUY/cPQUU65dPs44klMta3Xz3J34SSBdT+UTk=
+X-Received: by 2002:a17:90b:118e:b0:299:29e1:d0e7 with SMTP id
+ gk14-20020a17090b118e00b0029929e1d0e7mr4329499pjb.8.1708107396859; Fri, 16
+ Feb 2024 10:16:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216175221.900565-5-jic23@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Jonathan LoBue <jlobue10@gmail.com>
+Date: Fri, 16 Feb 2024 10:16:25 -0800
+Message-ID: <CAF6rpDwZaCJOpLEYayVW8_aXQwKdpcLCDSRjbTNk1rr43EPriQ@mail.gmail.com>
+Subject: [PATCH v6 0/2] Add bmi323 support for ASUS ROG ALLY
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Hans De Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	jagath jogj <jagathjog1996@gmail.com>, Luke Jones <luke@ljones.dev>, 
+	Denis Benato <benato.denis96@gmail.com>, Antheas Kapenekakis <lkml@antheas.dev>, 
+	Derek John Clark <derekjohn.clark@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Feb 16, 2024 at 05:52:10PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Similar to recently propose for_each_child_of_node_scoped() this
-> new version of the loop macro instantiates a new local
-> struct fwnode_handle * that uses the __free(fwnode_handle) auto
-> cleanup handling so that if a reference to a node is held on early
-> exit from the loop the reference will be released. If the loop
-> runs to completion, the child pointer will be NULL and no action will
-> be taken.
-> 
-> The reason this is useful is that it removes the need for
-> fwnode_handle_put() on early loop exits.  If there is a need
-> to retain the reference, then return_ptr(child) or no_free_ptr(child)
-> may be used to safely disable the auto cleanup.
+From: Jonathan LoBue <jlobue10@gmail.com>
 
-...
+This patch series adds comments about a duplicate ACPI identifier
+between devices using bmc150 and bmi323. This series also adds the ACPI
+match table for devices using bmi323 to allow those devices to load the
+proper driver.
 
-> +#define device_for_each_child_node_scoped(dev, child)\
-> +	for (struct fwnode_handle *child __free(fwnode_handle) = \
-> +	     device_get_next_child_node(dev, NULL); child; \
-> +	     child = device_get_next_child_node(dev, child))
+Changes since v5:
+- Updated patch titles
+- Add patch description to cover letter
 
-You haven't changed the indentation of backslashes...
+Jonathan LoBue (2):
+  iio: accel: bmc150: Document duplicate ACPI entries with bmi323 driver
+  iio: imu: bmi323: Add ACPI Match Table
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+ drivers/iio/accel/bmc150-accel-i2c.c | 13 +++++++++++++
+ drivers/iio/imu/bmi323/bmi323_i2c.c  | 20 ++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+--
+2.43.0
 

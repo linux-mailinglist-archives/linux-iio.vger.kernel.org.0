@@ -1,62 +1,55 @@
-Return-Path: <linux-iio+bounces-2637-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2638-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9055857FBD
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:48:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159B4857FC5
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B0028675B
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:48:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E6FFB24661
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DED12F37D;
-	Fri, 16 Feb 2024 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD0112EBFB;
+	Fri, 16 Feb 2024 14:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hw5R7ZNz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qAsXnPRv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD5912C812;
-	Fri, 16 Feb 2024 14:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573E7219E5;
+	Fri, 16 Feb 2024 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708094890; cv=none; b=oE4ijALqkqMZyw8lrbdj7fMhN5GlU5sRfWc+VuNRwGyQQYx/ThxRSKqzDJbklnxBRSST3oso/q87tcb2B1xVosBKftCBW0LA9+hTxC3SmjL3UklNQsENSB4XZDK4A01K4+NLglI9OfAbd8lqY2abdQQfET0rXnjuYzcV6UZVzRw=
+	t=1708095108; cv=none; b=gt4pEPFGOaHMjyxYEP3WdLUtRtiTg7Cx+BSothX81mZYm/W0zpCecxuewJlakq6Ay9UsPl+157uI3JpganwE2SzGXK08qoot0MWiIOirKBWYfquzXSQPQQ3yCCCpynlTUXE2u3mxmjxq4GKitMSCOEE7AkO8WzSbVBqTYzVYwrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708094890; c=relaxed/simple;
-	bh=K44i2DqBgPJ7hcROlXOpw2GUYsBOzblxH4exPmx/m7E=;
+	s=arc-20240116; t=1708095108; c=relaxed/simple;
+	bh=8tIsQgTJQNuYJGMq2BuA0XxdAj2qyiBt8UDymJdjNls=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ONBqVHW/DqBTgAb+9pgLQfd4fBGFRZ3dEwWhyOzTxc4kgSavuX5ZX13N+362l43p5IajLi1KJRr9zvzhDBhvs4exXwfK/fpePKkgHaanM52K+RQPj2UTtPP9oOwkOV0YF/nfqLEsea2OocZqgaWeJfc+NSNkQCAZsP9uNCxl+Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hw5R7ZNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5DDC43390;
-	Fri, 16 Feb 2024 14:48:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mVsyx8rjqi4xoEvJSOG7zLCsFzM9HsdExD5W2zs3ZdRvVE9hDfPDMwXF+mevJ+nRkXDnICOgoCrfE84FnE8E4vGq3dHnfxbW4QMXfzfLPrHLnVRsVNFnUer7SEj1acjh3xFtl2ldPmKRsRjth7q0QKGvITBEYP+bn2XHf7xPPJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qAsXnPRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0BCC433C7;
+	Fri, 16 Feb 2024 14:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708094889;
-	bh=K44i2DqBgPJ7hcROlXOpw2GUYsBOzblxH4exPmx/m7E=;
+	s=k20201202; t=1708095107;
+	bh=8tIsQgTJQNuYJGMq2BuA0XxdAj2qyiBt8UDymJdjNls=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Hw5R7ZNzL50e0lBhiiS4QmPuoshCVtH+ucSgCFvn47Y5tjgLFdjUdbjXiqra+RPKo
-	 jVYfVOb1H6GaR71LhkJT2hkZ1ieMdGraTZqeTXQ4XetOsMqdVH5r7O0pBSwgfRoqvi
-	 MnNMnUEGEKIItwy+zSb0wALsa2UcIBYontsLC5XxmV/stSJg5eQ/8Nl+2qcOBK1ZaP
-	 ZaOhAVOp5F1HdBlWW8rpyjfNv16VtV+j9QvFJCLJ30jq1eiCFgd0lfBlBH/9sbTWmm
-	 pJ9mnHYq8+YMCbdkvkFaY++VjtI1FAmrK0MoLiV4jsxYmxrN69xxfPL6GsSP8BIITz
-	 7E8VO1cRbYB/Q==
-Date: Fri, 16 Feb 2024 14:47:56 +0000
+	b=qAsXnPRv0ebRH+kgXZyquX3MHc22+uakHaNlD+Pqmq1r+e5M0JsRUNfHbF5QEXNb0
+	 1yXtzpP9XjtW9R7LsVADFKhOVBQbeO4EwiJBqNPbrXVc84AfP1RqEwXLWruz6Uav6c
+	 n79u+hV6rvXg6GVEvkWTxMscSCcqlDyGpCHiVLiy+66l6FE2PAK/aNWEOSjOMAVHhc
+	 5Iavi7SB/RN8pfEAoN+8PWYduCycRYBnuQXnrJ6SNuZeI0ktAg2HzTozWxuSF4e20G
+	 rUSmZrPzRzojy4PiCwoliVjmgWDNE3MME0wwIFEQ9fnI8MKBPQ96I3u9gWnR6O+v7S
+	 wYmDS5qnq1btA==
+Date: Fri, 16 Feb 2024 14:51:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall
- <Julia.Lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>, Nicolas
- Palix <nicolas.palix@imag.fr>, Sumera Priyadarsini
- <sylphrenadin@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/8] of: automate of_node_put() - new approach to loops.
-Message-ID: <20240216144756.08e25894@jic23-huawei>
-In-Reply-To: <ZcoJEUTdMAKdMHd1@smile.fi.intel.com>
-References: <20240211174237.182947-1-jic23@kernel.org>
-	<ZcoJEUTdMAKdMHd1@smile.fi.intel.com>
+To: andy.shevchenko@gmail.com
+Cc: Marius Hoch <mail@mariushoch.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 0/3] iio: st_sensors: lsm9ds0: Miscellaneous cleanups
+Message-ID: <20240216145136.54991a09@jic23-huawei>
+In-Reply-To: <20240211201526.1518165-1-andy.shevchenko@gmail.com>
+References: <20240211201526.1518165-1-andy.shevchenko@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,48 +60,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 12 Feb 2024 14:03:29 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sun, 11 Feb 2024 22:14:31 +0200
+andy.shevchenko@gmail.com wrote:
 
-> On Sun, Feb 11, 2024 at 05:42:28PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Since RFC:
-> > - Provide a for_each_available_child_of_node_scoped() variant and
-> >   use that whenever we aren't specifically trying to include disabled
-> >   nodes.
-> > - Fix the for_each_child_of_node_scoped() to not use a mix of
-> >   _available_ and other calls.
-> > - Include a few more examples.  The last one is there to show that
-> >   not all uses of the __free(device_node) call are due to the loops.  
-> 
-> I'm a bit skeptical about need of this work. What I would prefer to see
-> is getting rid of OF-centric drivers in IIO. With that, we would need
-> only fwnode part to be properly implemented.
-> 
+> Just a few ad-hoc cleanups. No functional changes intended.
 
-To be honest main reason for doing of first was that they have unit tests :)
+All look good to me so applied.
 
-The IIO drivers were more of a proving ground than cases I really cared
-out cleaning up.  However I'm always of the view that better to make
-some improvement now than wait for a perfect improvement later.
- 
-However one or two are not going to be converted to fwnode handling
-any time soon because they make use of phandle based referencing for
-driver specific hook ups that isn't going to get generic handling any
-time soon.
-
-I'll probably focus on getting the fwnode version of this moving
-forwards first though and 'maybe' convert a few of the easier ones
-of these over to that framework to reduce how many users of this
-we end up with in IIO.
+Thanks,
 
 Jonathan
 
-
-
-
-
-
+> 
+> Andy Shevchenko (3):
+>   iio: st_sensors: lsm9ds0: Use dev_err_probe() everywhere
+>   iio: st_sensors: lsm9ds0: Don't use "proxy" headers
+>   iio: st_sensors: lsm9ds0: Use common style for terminator in ID tables
+> 
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0.h      |  5 ++++-
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c | 21 +++++++++-----------
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c  |  6 ++++--
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c  |  4 +++-
+>  4 files changed, 20 insertions(+), 16 deletions(-)
+> 
 
 

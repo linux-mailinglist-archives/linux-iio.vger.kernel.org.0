@@ -1,197 +1,185 @@
-Return-Path: <linux-iio+bounces-2624-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2627-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9978857EBC
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:08:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71D6857EEE
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:12:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89C5B281980
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:08:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C911B27A23
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D02412C558;
-	Fri, 16 Feb 2024 14:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF9112E1FC;
+	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TemEtxZv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/mwi/jW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CE959B5F;
-	Fri, 16 Feb 2024 14:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAC012E1DE
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708092519; cv=none; b=cdwhpkZuYRatqSRMhFjzxwUKrGUKADNhgxZ5lNjc+OQtAYBZ8FpsH3EuWysCgnxDWV5N+DAAGMMVaSP7ZL16ZNKAgwA1MzGmA0od4N2ng1Lqb6/8+XH5QF23npOTEMWWFmLJILIY6dsVwsZrKm8TMgVWu9bB5gPFbEY1b+QCP3M=
+	t=1708092689; cv=none; b=hf1SJyz+fof9bIYqpC5HEiXv3G3LY1QaJykHJtCaa+1TMSTx2e8OkBPGN4Z18/vjo2GhylbEuwpwiQO9UL99/+AO5WpvH3krFWg8msGnlUUng/VBGuRScXjJy8xQrVfrPEuwk7XIvKUxHty6gXkcrd7ibFOnBQVeQSRfmID0OrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708092519; c=relaxed/simple;
-	bh=URft1yFNooeHjgEuV5zJYSSsgebVw7/oaikTAzwc7HY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fzDJe8gzJBdWxantCJJFbvqNNAUQnLAxr3F5g0eZUIJQaNW5Ycj7EoRuidv8cL81tnJBU0crkKZ/+bAk1aFTbNofrV9IrqE3LXb0Q+oe4hQ97ztQQMQ/kdy01e1Y2sU44N4gTjFOo8cq2ScDF0yMPMCly8Xten53y6FQhca60z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TemEtxZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A7CC433F1;
-	Fri, 16 Feb 2024 14:08:36 +0000 (UTC)
+	s=arc-20240116; t=1708092689; c=relaxed/simple;
+	bh=JkdEGtgxgNJFqntuuSvbTXVlI576d1yAn17D5A/OWj8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=auuh2qyDBHWX/x67ZjJ/xPyU0ez260mRodu03RCUI8/7MAY5GJbnQNtJly0Vcqy9wmloJvCwop/0W6jlJd7dyb3c2vZTW9Tcd18B4p0ndNID23E+4teP+M68LSulMH5KJIk+bV6UEDbsBYxtpEvK4h81BetJRGTNtBALeLAeTHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q/mwi/jW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 36B98C433F1;
+	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708092518;
-	bh=URft1yFNooeHjgEuV5zJYSSsgebVw7/oaikTAzwc7HY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TemEtxZvXL3MtNaqtsE44bHlpFma7OYlRBd7d9HhpQx5e5uUjFuec2rr/BPGaoA9b
-	 qKXRUN1VIJlE6UV6N7Vg1HduKnWyHxBliIiw4js/LhN2C+p9mRd8zVSXOMyzH8uTs7
-	 kpuCoCP4a6qBIq6fvj+6OHq6Tori37riWp2JYLyXxO4CJT/uT0V44SYy6nDRMWNBOE
-	 YWrRYVOXsw9lxHEZIImnFdXSlf6XnMDCPguDceCO31PiMwFud7OXqqG80CIv3Rmi2U
-	 NndgxRpehHGvOMjozYXlP6JIhVGEpoFlE3Xifi9ix+QXgNAyLzecSNPWvXLWHiYR/i
-	 oy1DHzBsMpbhg==
-Date: Fri, 16 Feb 2024 14:08:26 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-Message-ID: <20240216140826.58b3318d@jic23-huawei>
-In-Reply-To: <CAMknhBF8HKDftjBuwuA4GWUmn4j36Zut84d7xLKgZPDaiY87kA@mail.gmail.com>
-References: <20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com>
-	<20240206-ad7944-mainline-v1-1-bf115fa9474f@baylibre.com>
-	<20240210174022.7a0c7cdc@jic23-huawei>
-	<CAMknhBF8HKDftjBuwuA4GWUmn4j36Zut84d7xLKgZPDaiY87kA@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=k20201202; t=1708092689;
+	bh=JkdEGtgxgNJFqntuuSvbTXVlI576d1yAn17D5A/OWj8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=q/mwi/jWsqI1fiOHbjUyznOtIo3O6GjJpce6Of2XrXQCBLnMqe9vFYmhNqG7z3BE1
+	 uFx22O23LzYwBBjIjR0AZWWa9u8Qji7EdMrKwLdm+FLbQ4cDFjpq6xo2BPWnG8hpEn
+	 AIURdFlT8GWHCo1OuX0rqpqSE2iNOHJcyoZ9Jh/W01ADZjlZLiA/MalVrWmczlfos8
+	 WUbvjaHCQdxa4A6H3Uso8R6+i55zyD7eYr92ZxDhH8vUVNZiK605KUe/AqTrZUTNA3
+	 kkk8Fkcw0hipRGBPzzD+XTrDH74MIm1hW+B4o32f9IcELZ05AYUHW6ZmmDHDE/HKvt
+	 R1z0ID3b7KO4w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 191ADC48260;
+	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH RFC 0/8] iio: dac: support IIO backends on the output
+ direction
+Date: Fri, 16 Feb 2024 15:10:49 +0100
+Message-Id: <20240216-iio-backend-axi-dds-v1-0-22aed9fb07a1@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOlsz2UC/x3MMQqAMAxA0atIZgNtEAuuggdwFYdqUw1ClRZEK
+ N7d4viG/zMkjsIJuipD5FuSnKFA1xWsuw0bo7hiIEWNIt2iyImLXQ8ODu0j6FxCbQz5hVSrGg+
+ lvCJ7ef7rBOPQw/y+H4NjaU5qAAAA
+To: linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Paul Cercueil <paul@crapouillou.net>, 
+ Alexandru Ardelean <ardeleanalex@gmail.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708092664; l=4794;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=JkdEGtgxgNJFqntuuSvbTXVlI576d1yAn17D5A/OWj8=;
+ b=FKnfYoC42zMUdsaG9ZUVRLmLu5R/TvJVlueufdEAxdixb1r9B3T3IX2v+EWrtiMOcxp/g/9oJ
+ KQC9ps36M4OCPc0uY/ais285EDoE0WPuBW6/fUwUPA5GHd/v2LmANeJ
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received:
+ by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: <nuno.sa@analog.com>
 
-> > > +  adi,spi-mode:
-> > > +    $ref: /schemas/types.yaml#/definitions/string
-> > > +    enum: [ 3-wire, 4-wire, chain ]
-> > > +    default: 4-wire
-> > > +    description:
-> > > +      This chip can operate in a 3-wire mode where SDI is tied to VIO, a 4-wire
-> > > +      mode where SDI acts as the CS line, or a chain mode where SDI of one chip
-> > > +      is tied to the SDO of the next chip in the chain and the SDI of the last
-> > > +      chip in the chain is tied to GND.  
-> >
-> > there is a standard property in spi-controller.yaml for 3-wire. Does that cover
-> > the selection between 3-wire and 4-wire here?  Seems like this might behave
-> > differently from that (and so perhaps we shouldn't use 3-wire as the description
-> > to avoid confusion, normally 3-wire is a half duplex link I think).  
-> 
-> I used "3-wire" because that is what the datasheet calls it. But yes,
-> I see the potential for confusion here since this "3-wire" is
-> completely unrelated to the standard "spi-3wire" property.
-Maybe we fall back on a comment that says something like.
+Hi all,
 
-"This is not the same as spi-3wire." :)
+This RFC is mainly because I'm not getting extremely happy with the
+direction of the API in the series. So I think it's better to have the
+discussion now so the actual series will look better. Also note that patch
+2 to 5 are brought from Paul's series to bring output buffer support to
+DMA buffers [1].
 
-Whatever we end up with here, I'd like everyone to agree it's
-obviously different enough from existing SPI bindings that there won't
-be any confusion. 
+So, the main API I'm speaking about is:
+ - iio_backend_read_phase()
+ - iio_backend_write_phase()
+ - iio_backend_read_scale()
+ - iio_backend_write_scale()
+ - iio_backend_read_frequency()
+ - iio_backend_write_frequency()
 
-> 
-> >
-> > Chain mode is more fun.  We've had that before and I'm trying to remember what
-> > the bindings look like. Devices like ad7280a do a different form of chaining.  
-> 
-> If there isn't a clear precedent for how to write bindings for chained
-> devices, this may be something better left for when there is an actual
-> use case to be sure we get it right.
+All the above is basically ABI/attributes that belong and are supported
+by the AXI_DAC IP core. The main things I dislike are:
+ * The sample_freq and tone_id in iio_backend_read|write_frequency().
+   The API (like the others) should resemble the IIO read|write_raw()
+   API and even though multiple tone waves is not something unusual, it
+   would be better to keep it local to the core. The sample_freq is not
+   that bad as we can eliminate it by having a new op for setting the
+   sample_frquency.
+ * Code duplication. Any DAC using the AXI_DAC  backend will have to define
+   that extended_info.
 
-Agreed.  Let us kick that into the future.
+One idea that I had was to allow to get IIO channels from the backend
+but I then quickly started to dislike it because it would open a lot of
+complexity. I mean, if we allow backends to define whatever they
+want, that might quickly get nasty.
 
-> 
-> >
-> > Anyhow, main thing here is we need to be careful that the terms don't overlap
-> > with other possible interpretations.
-> >
-> > I think what this really means is:
-> >
-> > 3-wire - no chip select, exclusive use of the SPI bus (yuk)  
-> 
-> This can actually be done two ways. One where there is no CS and we
-> use cnv-gpios to control the conversion. The other is where CS of the
-> SPI controller is connected to the CNV pin on the ADC and cnv-gpios is
-> omitted. This requires very creative use of spi xfers to get the right
-> signal but does work.
-> 
-> In any case to achieve max sample rate these chips need to use this
-> "3-wire" mode and have exclusive use of the bus whether is is using
-> proper CS or not.
-> 
-> So maybe it would be more clear to split this one into two modes?
-> 3-wire with CS and 3-wire without CS?
-OK.
+I guess the above comes from (maybe naive) this idea that we should be
+capable to replace a backend and the IIO frontend should still work
+without any change to the code. But given how the backends are tightly
+coupled to the frontend (at least on ADI usecases) I think that
+changing the backend is a very unlikely usecase. And if it happens it
+definitely means different HW and userspace ABI so devicetree might make
+sense (maybe even a new compatible).
 
-I'm not sure if the standard SPI bindings have an option for
-CS tied active?  If so we should reuse that bit of [psson;e/
+So yes, I think it's definitely possible to have something generic where
+the backend could completely define a channel (even had some ideas) but
+I think the complexity it would bring is just not worth it
+(at least right now). 
 
-> 
-> > 4-write - conventional SPI with CS  
-> 
-> Yes.
-> 
-> > chained - the 3 wire mode really but with some timing effects?  
-> 
-> Correct. With the exception that the SPI CS line can't be used in
-> chain mode (unless maybe if you had an inverted CS signal since the
-> CNV pin has to be high during the data transfer).
-> 
-> >
-> > Can we figure out if chained is going on at runtime?  
-> 
-> No. We would always need the devicetree to at least say how many chips
-> are in the chain. Also, in theory, each chip could have independent
-> supplies and therefore different reference voltages.
-That's one I think we only bother supporting when we actually see it.
-For previous chained devices I don't think we've ever needed to do
-it because they tend to be used for 'more of the same' rather than
-measuring different things.  Supplies so far have always been wired
-to single regulator (or single control anyway).
+However, another idea that started to grow (that maybe is not that bad)
+is that the IIO frontend would still define how many channels, the
+channel type, which channel is buffered, etc... but allowing the backends
+to extend a certain channel (the backend would be given the channel type
+and it could then decide if it can or cannot extend it). We should be
+careful with what we allow to extend though... For instance, in this case,
+allowing to extend extended_info is likely not that bad because it's
+a fairly self contained thing.
 
+Another thing that we could consider is the info masks. Mentioning this
+because (it's not part of the RFC but it should be in the real series)
+the AXI_DAC also has CALIBSCALE and CALIBBIAS (I think) that can be
+applied to the buffered channel. But in here, it's not that much of code
+duplication to set a couple of bits in the mask and then we can just
+forward the read/write to the backend... Still, maybe worth considering it
+at least..
 
-> >
-> > If we are going to rule you supplying refin and ref supplies.  
-> 
-> Not sure what you mean here, but we can get rid of the adi,reference
-> property and just add a check to not allow both ref-supply and
-> refin-supply at the same time.
+So, the above two paragraphs are kind of an intermediate approach which
+does not look that crazy (or complex to implement).
 
-I think that is simplest route.
+Thoughts?
 
-> 
-> >  
-> > > +
-> > > +  cnv-gpios:
-> > > +    description:
-> > > +      The Convert Input (CNV). This input has multiple functions. It initiates
-> > > +      the conversions and selects the SPI mode of the device (chain or CS). In
-> > > +      3-wire mode, this property is omitted if the CNV pin is connected to the
-> > > +      CS line of the SPI controller.
-> > > +    maxItems: 1  
-> >
-> > ah, that's exciting - so in 3-wire mode, we basically put the CS on a different pin...  
-> 
-> I explained this above already, but just to have it in context here as
-> well... In what the datasheet calls "3-wire" mode, we can either have
-> CS connected and no cnv-gpios or we can have no CS and have cnv-gpios
-> connected.
-> 
-> So the intention here was to make cnv-gpios required all other modes
-> but in 3-wire mode, make it optional.
+[1]: https://lore.kernel.org/linux-iio/20230807112113.47157-1-paul@crapouillou.net/
 
-Seems reasonable. Thanks for the various explanations. This chip is just odd :)
+---
+Nuno Sa (4):
+      iio: buffer: add function to set the buffer direction
+      iio: backend: add new backend ops
+      iio: dac: add support for the AD97339A RF DAC
+      iio: dac: adi-axi-dac: add support for AXI DAC IP core
 
-> 
-> 
-> >
-> > Mark, perhaps you can suggest how to handle this complex family of spi variants?
-> >
-> > Jonathan
-> >  
+Paul Cercueil (4):
+      iio: buffer-dma: Rename iio_dma_buffer_data_available()
+      iio: buffer-dma: Enable buffer write support
+      iio: buffer-dmaengine: Support specifying buffer direction
+      iio: buffer-dmaengine: Enable write support
+
+ drivers/iio/buffer/industrialio-buffer-dma.c       | 100 +++-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |  28 +-
+ drivers/iio/dac/Kconfig                            |  37 ++
+ drivers/iio/dac/Makefile                           |   2 +
+ drivers/iio/dac/ad9739a.c                          | 503 ++++++++++++++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 510 +++++++++++++++++++++
+ drivers/iio/industrialio-backend.c                 |  65 +++
+ drivers/iio/industrialio-buffer.c                  |  12 +
+ include/linux/iio/backend.h                        |  53 ++-
+ include/linux/iio/buffer-dma.h                     |   4 +-
+ include/linux/iio/buffer-dmaengine.h               |   5 +-
+ include/linux/iio/buffer.h                         |   3 +
+ 12 files changed, 1292 insertions(+), 30 deletions(-)
+---
+base-commit: 7d50ed99f4d40b6fa672be971dda91a8cc8ebae4
+change-id: 20240216-iio-backend-axi-dds-1772fb20604f
+--
+
+Thanks!
+- Nuno Sá
 
 

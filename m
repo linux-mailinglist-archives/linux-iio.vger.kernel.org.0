@@ -1,176 +1,137 @@
-Return-Path: <linux-iio+bounces-2652-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2653-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30BA8582C9
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 17:40:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBFC858327
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 17:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 483A2B21440
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:40:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6269EB23F76
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 16:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8207D12FF97;
-	Fri, 16 Feb 2024 16:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4EE12FB0F;
+	Fri, 16 Feb 2024 16:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NDoDBewz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZF4rzskE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9147C12F36A;
-	Fri, 16 Feb 2024 16:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B3F130E44
+	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 16:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708101644; cv=none; b=gT2XntNmSZRE+MdEkfSCjHRNOqK+8HGsJCiT+jlP/dmLl3E8mK2lFMLha/XcdZwt7jNkh/OV9SspIlTjzz2wmSUAF0mp1vBuCMnja+cMshZisVJxsZSJA3WTftlkfJ1XGcGJ/XE4HoiVygDqx7cfB95dSaBFnrkU11tmYrIwuoQ=
+	t=1708102669; cv=none; b=dqF28lVBuxWgjqGs8eKSXG4ij8iiZTRHPyjkMM6rIUXxfsaQuqM/zNSkqAEzeff8DoVrRP2oAX14h6Fa40MJR6gXJIv8PAidgpup/HuvNz0svcqNCwXKqtYfmzTMq1T2+F9gPqGuuNR5SG5g+Z7p4hBIDm5csmsd+MdyujexN1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708101644; c=relaxed/simple;
-	bh=nLWhQczn2CJfsefZmkJS0eLnq+fCloh9Ntxr5XF1TUs=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d2bqZjq32TUdmM7TVPYD8zLtnGVjygSg6uoWSKNN5bPjzJrnh9SCowx+9ZiRkK2BSiG8U75RQXDMT197ZBJyi7gGWSYBcDFXvA3ZgFH2rM0Uo/dDABh8rE3OE1L1nflYK/Kpgal6JN+jMnLMiqVShuIKD0Dac3UqUxc1Fi29DBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NDoDBewz; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55f0b2c79cdso3592342a12.3;
-        Fri, 16 Feb 2024 08:40:42 -0800 (PST)
+	s=arc-20240116; t=1708102669; c=relaxed/simple;
+	bh=f50Ux9IuBr7dCSB7nZOcygZHY/iK7N+6o1P9XTqmOcY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cfaxey930agNDdUqK5vTFIf7MMLyZTAgznGrGQuyRv0JilftMDk/28y1AaYVW1zvMRhcnhq1xgnXwH4kpcbQgt5QFo5CVaSBGcGS60Rzst+OJyDtQw3cFUbfjYYjDil8YnR0CT/bD2RhqW1hfZ4rkTUkcs2mfAEI8dqEfGuENZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZF4rzskE; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d11d17dddeso13432511fa.3
+        for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 08:57:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708101641; x=1708706441; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKp+N4i+q6yxZFB78Y2kUkbZb6u1oAoIbnmaWbrGddg=;
-        b=NDoDBewzEyDQwdkQspAD5DwjHsKOTKwW8yNtv9ffolOGBD8Qjj6l4uFVrluU4PJDP3
-         UQ+tl6Ndcr0/WC2wWZwQjYfXCWTicpZJtIKw4j482Iu7QLCgCsTdZPCKXNHcUbZbEilu
-         xFTOhVKssY/nbpBJfLMdG2wdBkpeRVm3jD2na5o3N9y6NDhz7bcGVaReq+Aqm/gV4uuY
-         8l3zmU+jzMLw32kZdU3Jl50WW395dqpL9VJDNohG6jk/8uRvoH332TM0+vnG2AHD7gOM
-         s6XvopcDcf2zoAJjsDPArGAd3vgLVQzuVD+UiG9uIVCSGxx2okgEVMyBHhKiGav/Y7IP
-         qwaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708101641; x=1708706441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1708102665; x=1708707465; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GKp+N4i+q6yxZFB78Y2kUkbZb6u1oAoIbnmaWbrGddg=;
-        b=xU0jQ875Y8vKe1ONI+IKOmBwx5mJ8Z4VbLiz5srlU3GIpWIk9xvHJzdeOh8tjJC5/r
-         l3bbT4SzN/FTBkiAK3n1xdz15yWzRA/1jG7O7R+bpyN0NA9fr1q41CtoxN49JQboIAh4
-         eamBfzD6drnmOgPewHN7zzskmMrCJLRRWg+/YRugctGYK6FQeK50s68sldoGEpIorlk7
-         aDToUWiEbqSJNG8LcACoQL2l0/94KrmhpGWxzrkonfvLVRnnJ2izcSZMx/aths+H/jDv
-         KTbjLUTm69G9hePPDvYSt0RmRhKfxYMgdnmzaM21b7n/57iSu/x1ynU2BGz56Ukpo/Rn
-         Mu6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCULi3cZk9NpBrSWUrIXTBKnXFl93DWc4BqlngU3hSZTCCt2eZQba97Lx/HYiIsJTYigabggTS1ee1yOM/JFc34O7r0JeolrRwxMx1Yda5yYyWxHq8osbryd7/iZFzhy7CxNkBy1U3Rl
-X-Gm-Message-State: AOJu0YyQHyRy3DgFuhNUv6wuj8OaKGs1mcV7Z6YW5jmQZaFxLOSzDyDG
-	Bx0CSUHSy/W3yFvLmnFNMA5PkZC3RiWw4xVaqal9KVAdrlb7wQlj
-X-Google-Smtp-Source: AGHT+IHsgz8LFvkQffINGP3bi0mD6eppxTPFQ9FUfJbK77dq1B00e4MC26javzCIBKHuP/c/rpQ3pQ==
-X-Received: by 2002:aa7:c142:0:b0:561:849:76fd with SMTP id r2-20020aa7c142000000b00561084976fdmr4054210edp.23.1708101640526;
-        Fri, 16 Feb 2024 08:40:40 -0800 (PST)
-Received: from vamoiridPC ([2a04:ee41:82:7577:78f:5c0c:61d7:68fd])
-        by smtp.gmail.com with ESMTPSA id dm26-20020a05640222da00b00560a1ce1373sm141480edb.57.2024.02.16.08.40.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Feb 2024 08:40:39 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Fri, 16 Feb 2024 17:40:36 +0100
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
-	ang.iglesiasg@gmail.com, andriy.shevchenko@linux.intel.com,
-	579lpy@gmail.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drivers: iio: pressure: Add SPI support for BMP38x and
- BMP390
-Message-ID: <20240216164036.GA4230@vamoiridPC>
-References: <20240215164332.506736-1-vassilisamir@gmail.com>
- <20240216111834.73287ab0@jic23-huawei>
- <20240216132644.GA4236@vamoiridPC>
- <20240216154742.685bd875@jic23-huawei>
+        bh=xvSr9zjWa7fQMP/UFKRcpAsYPoeiWv0Pm+Syuyc+j4w=;
+        b=ZF4rzskEfyiaDpkn7uapcfrsP7LrbjWoQyuJuKMTkIdJTd8TqZP8ZAgiebthxSCk8D
+         lam8TpBnIG57OJ6YxKBnYQOtCVgbu8iRe3YsPtrbK/KbgwFxazm2Cpokbi0te5AQbq+s
+         W+tX1CyMPkk23Kxw6CQAN6ML/eSibhD/YdWP0d0G4bPhmz4IpWXRiswgbSW5qc18baD8
+         GU71MW8uH64OfcmYe5LOF2I6VDor2WsyyUHg/v12DLuQVb5/GZ2nt1XC8ml5TWVoFDBd
+         dmQHjp3+IB47kgLq1cMSbpTLJczwczXXB3zdwMtr77Wws5OdumxQp40rGqNU4XRYLi0Z
+         /IDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708102665; x=1708707465;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xvSr9zjWa7fQMP/UFKRcpAsYPoeiWv0Pm+Syuyc+j4w=;
+        b=RhSN4bR1FWFrRa0rPcd27i7/v2R8AtRYtFD/ZK3Hig4ccj+T3Kv2SQWDJLh0EyMkLG
+         JxlvfpxH6AVeEpNIthWm3QaG3KCBE4Q9CQwlk1+7my72pYomjaUX99BfKpm0/0iyP7wj
+         j4L6o2ESm7bBa4XkJ4CImx1EYaH4P3DIQpyttOxG9pkscFs8B28J60i5Ovv+qG/+CKwj
+         ZTskLErTEcNYTQ3fs/LMmBIDUH082Gc/qLya1kzR8E7IY2VfyNCPIgEDVpYXGeDsqdWB
+         /EWKGBppQAyNcj+bq4PseUgJzdJpJDiEOY2qEbHtzVgjpaNwsdCNiVSyspojvheVGBSy
+         6xng==
+X-Forwarded-Encrypted: i=1; AJvYcCXzr3axlHz6ZQrIi/ZUu+xcxhEEj8txaNjKohayt3o8+H1z7JCgF9e0HUGQGOAABaUaqMYwTTUtcQ0svWsixrXMC2prBkBuY5/C
+X-Gm-Message-State: AOJu0Yx6QNf4ewwOWtFJ38OiWhKN0DG6LVaVDK/h3YrTVrPkOedSBehb
+	OJjujgkP6H4gdqeFcJXxTks4wyhS6O9g7lOCnja0nNbH4+6NMpUcCzioLIXNsgV9+cyZlJ1xQmD
+	MPVcvoo9XQF9sJfGMlUAwYtyAXn+/493IuEZylA==
+X-Google-Smtp-Source: AGHT+IE6mpfUgny/NVj+ulwChjEqySrNgCFsvkorHDfu5dOig1qIFaY2Zg0Xp3aqVxFfMRZcUwx2C0EWj1Mp416o/6U=
+X-Received: by 2002:a2e:8812:0:b0:2d0:99b7:e68c with SMTP id
+ x18-20020a2e8812000000b002d099b7e68cmr3178940ljh.15.1708102664765; Fri, 16
+ Feb 2024 08:57:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216154742.685bd875@jic23-huawei>
+References: <20240208172459.280189-1-alisa.roman@analog.com>
+ <20240208172459.280189-6-alisa.roman@analog.com> <CAMknhBHU6k8J_PLCmGYF48S1q3uXByiCwzcd+B3q3Cd-02CUow@mail.gmail.com>
+ <84546728-f0cb-4b38-a71c-e053b9b9278e@gmail.com> <CAMknhBFp-4s+-D8kD9rh0-OCc3gBs3hFX1EZ9ZmOifQOyGgUug@mail.gmail.com>
+ <20240216142158.30e96c53@jic23-huawei>
+In-Reply-To: <20240216142158.30e96c53@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 16 Feb 2024 10:57:33 -0600
+Message-ID: <CAMknhBEtLR1QNEv6HhcW35jiGEkx=srzy41NXt8bJ=gokzoemw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] iio: adc: ad7192: Add AD7194 support
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Alisa-Dariana Roman <alisadariana@gmail.com>, alexandru.tachici@analog.com, 
+	alisa.roman@analog.com, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, 
+	lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	michael.hennerich@analog.com, robh+dt@kernel.org, 
+	Nuno Sa <nuno.sa@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 16, 2024 at 03:47:42PM +0000, Jonathan Cameron wrote:
-> On Fri, 16 Feb 2024 14:26:44 +0100
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > On Fri, Feb 16, 2024 at 11:18:34AM +0000, Jonathan Cameron wrote:
-> > > On Thu, 15 Feb 2024 17:43:32 +0100
-> > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> > >   
-> > > > According to the datasheet of BMP38x and BMP390 devices, in SPI
-> > > > operation, the first byte that returns after a read operation is
-> > > > garbage and it needs to be dropped and return the rest of the
-> > > > bytes.  
-> > > 
-> > > Make it clear in the patch title that this is a fix and add a fixes tag.
-> > >   
-> > 
-> > The original support for SPI was added 8 years ago. Should I include that commit
-> > of 8 years ago in the fixes tag or just use a the word "fixes" with the rest of the
-> > title?
-> > 
-> Original git commit for the fixes tag.  Lets us know this wants to go in all stable kernels.
-> Also fixes in the title.
- 
-Ok, will do that!
+On Fri, Feb 16, 2024 at 8:22=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> 
-> > > > +	ssize_t status;
-> > > > +	u8 buf;
-> > > > +
-> > > > +	memcpy(&buf, reg, reg_size);
-> > > > +	buf |= 0x80;  
-> > > 
-> > > Can you use regmap_bus read_flag_mask for this?  Seems to apply to 
-> > > all devices supported. + that's common for spi regmaps
-> > >  
-> > 
-> > Yes I noticed it yesterday in my tests that this was missing and it actually
-> > applies to all the devices. So the read_flag_mask should be added to both
-> > regmap_bus structs. 
-> 
-> It's there sort of indirectly for the bmp280 - the register addresses all happen
-> to include that bit, then it is cleared explicitly for the other direction.
+> On Thu, 15 Feb 2024 11:13:19 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
+>
 
-Oh okay, now I understand what you mean. Ok then I can also send a different patch
-for this as well just to keep the code consistent.
-> 
-> 
-> 
-> > > 
-> > > Mind you I note the bmp280_regmap_spi_write() is masking the bit out which seems
-> > > backwards  - all the registers are defined with the bit set for that part
-> > > but not the 380.  Ah well - not part of this fix even if it's odd.
-> > > 
-> 
-> > > > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> > > > index 4012387d7956..ca482b7e4295 100644
-> > > > --- a/drivers/iio/pressure/bmp280.h
-> > > > +++ b/drivers/iio/pressure/bmp280.h
-> > > > @@ -191,6 +191,8 @@
-> > > >  #define BMP380_TEMP_SKIPPED		0x800000
-> > > >  #define BMP380_PRESS_SKIPPED		0x800000
-> > > >  
-> > > > +#define BMP380_SPI_MAX_REG_COUNT_READ   3  
-> > > This doesn't seem useful as only used in one place.  
-> > 
-> > Could this define be moved in the bmp280-spi.c file or to not even use a define?
-> Not use it. Don't see how it is helpful. Just check that the
-> thing will fit in the array using an ARRAY_SIZE()...
+...
 
-Understood.
-> > 
-> > > > +
-> > > >  /* BMP280 specific registers */
-> > > >  #define BMP280_REG_HUMIDITY_LSB		0xFE
-> > > >  #define BMP280_REG_HUMIDITY_MSB		0xFD  
-> > >   
-> 
+> >
+> > Tables 22, 23 and 24 in the AD7194 datasheet show that this chip is
+> > much more configurable than AD7192 when it comes to assigning
+> > channels. There are basically no restrictions on which inputs can be
+> > used together. So I am still confident that my suggestion is the way
+> > to go for AD7194. (Although I didn't actually try it on hardware, so
+> > can't be 100% confident. But at least 90% confident :-p)
+>
+> You would have to define a channel number for aincom.  There is an explic=
+it
+> example in the datasheet of it being at 2.5V using a reference supply.
+>
+> I wonder what expectation here is.  Allways a reference regulator on that=
+ pin, or
+> an actually varying input? Maybe in long term we want to support both
+> options - so if aincom-supply is provided these are single ended with
+> an offset, but if not they are differential channels between channel X an=
+d
+> channel AINCOM.
+>
+> Note though that this mode is described a pseudo differential which norma=
+lly
+> means a fixed voltage on the negative.
+>
+> So gut feeling from me is treat them as single ended and add an
+> aincom-supply + the offsets that result if that is provided in DT and
+> voltage from it is non 0.
 
-Thank you very much for the feedback, I'll work on the patches and submit them again.
-
-Best regards,
-Vasileios Amoiridis
+Calling AINCOM a supply doesn't sound right to me since usually this
+signal is coming somewhere external, i.e. you have a twisted pair
+connected to AIN1 and AINCOM going to some signal source that may be
+hot-pluggable and not known at compile time. As an example, if AINCOM
+was modeled as a supply, then we would have to change the device tree
+every time we changed the voltage offset on the signal generator while
+we are testing using an evaluation board.
 

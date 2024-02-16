@@ -1,95 +1,178 @@
-Return-Path: <linux-iio+bounces-2602-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2604-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C47E857B27
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:08:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18B4857B67
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 12:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4F5285B51
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:08:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796851F21B4F
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 11:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7054658AC0;
-	Fri, 16 Feb 2024 11:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BF459B6E;
+	Fri, 16 Feb 2024 11:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tUr/PeLl"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="THn4oTjP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D35C65193;
-	Fri, 16 Feb 2024 11:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C6859B52;
+	Fri, 16 Feb 2024 11:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708081557; cv=none; b=B7uBkjWU9KbU4TnoRQgVCcf2nxgJDQjr5C2kBzMiK3vUf9RueC+MLwXLoFRGGYXg4a9n8+zoxrMV0jshIcepb+j3QdrnqYdwLoO17yd5ftjyFUVgB+jKoLF9oCgTC8O/OTtUcnAX3eO/9ttSKNXi2dg5ndteX2FYIzD2ByOwIH4=
+	t=1708082356; cv=none; b=ldIgVSQRxmESyxG2IbWUidrTj0Y08eKCW/bk9uj/CB1Jsb5wVNqRyXZxWqBiQCwLLBO2ypekA4iWQI3sYQ6V8uyMlDih2Ci+QrpJYACU1x1ndOStfB7VZcjQ9jnSeREVVOzfnkFPiB8fBCieqDfrM1oOSfIJfR11pjwNjnrJRUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708081557; c=relaxed/simple;
-	bh=9EwGRDiJUOCQYFRJiAC9JK5wa11kNaXqYFEr9m1LBXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZHGZacx8oOWd4+HrNjVHu3DvU+W/eInM4wsBtsozQ/RaDjBpnhxcd0q+bkySmvK0mWkOCOqrae+t1nasyPOAVRdGHaudGTUrWYUmj07V3Y9BEKmWrE7OxZAiwVz5bdMI57D0aCFYwKV7ecNh4TmKBe+hT/3Q+A59WPW4n27x2es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tUr/PeLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7011BC433F1;
-	Fri, 16 Feb 2024 11:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708081556;
-	bh=9EwGRDiJUOCQYFRJiAC9JK5wa11kNaXqYFEr9m1LBXI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tUr/PeLlXLrcCeA8bz9B7z5OEd4rXjFpW7Jcpru53mBQK0XYTWFg3ovrgPrPj8PII
-	 BsX8YUTpL+Xf2J4nyojXidQ0RNCBnb2P6x7xypkdjCWnpA0f8nP3AbT2lMa9Quela+
-	 /X89F3sPJV9ztGQ0+5hDGDM1O2Cdt8AU+0FXX+dEBqrOeyA+eXfg2p8jWiyD+0Yosz
-	 uzUdXEr73HYuu++3e/2FUDx6ILb6wVPPxGzSvHUTb/+cGUEmgiw8hjwieFJrvQbjHq
-	 ymbNDzYlRCnI8obgptfdqrDhjT0w2zVxLCHZN80HpQ0eG37EOX0MUmK04qcPhtr+3J
-	 t87c6twyf0/lw==
-Date: Fri, 16 Feb 2024 11:05:43 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
- ang.iglesiasg@gmail.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drivers: iio: pressure: Add SPI support for BMP38x and
- BMP390
-Message-ID: <20240216110543.5d6289f6@jic23-huawei>
-In-Reply-To: <Zc5D35_4FdERZXe4@smile.fi.intel.com>
-References: <20240215164332.506736-1-vassilisamir@gmail.com>
-	<Zc5D35_4FdERZXe4@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708082356; c=relaxed/simple;
+	bh=iB6CRq25HlENFqGrsPH7JLQFt2BIJPW9dYbbZFCQLYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eyksR+miaHg7VqhhnaHIdCff3UtyrNgJP76vSGpz7BTVmdc6A1Ndyu5M/DuAnQKzT3cDoiAVAJ9fvmKd/GQbOCx8IiK/Nb/W82OOsolpS0YLznpXexPHYMeGctdJnth49/IVtfmYcUf7EOIVmQQhrvLrNhrIjEGJ0AWPhc4Ppik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=THn4oTjP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41G5xJRE030155;
+	Fri, 16 Feb 2024 11:18:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=RLtP2rJDNQHP8tWz4lIqKNUcxLZ6TvPXZeB9bvCF4fQ=; b=TH
+	n4oTjP3tc20wz+n0TBL6RQMqy/7dny+3Pf1mureOcsPx+H+bsNHbPT48mA20xP80
+	p3joSG8cTD0NtSQwCnlGXI/8w/i20OO8+pqk3yWtUQ6vJRLbBEnSuPpyqU/fWwW/
+	dJPEOUf5AjLkQeN8I4KL7trWcB1ZRG8+PH9EKgOdxf+J8XIWtspP1orHFRA/ncV7
+	t3xqtk2FzbfBFyhbyI6J5egkDnur5ELbgg3XhQrPeglFmvKLRiAGm8+NcB8KW7+H
+	zZeimwcpQDQkd/4n3GEEcrTEfKNOiWOb2vxUI9rwRlQxXB5xoaO4sUXdxXsyHj+O
+	WI7n9nkj5r430KUJiDlA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wa03r8qt0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Feb 2024 11:18:47 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41GBIk7K022931
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Feb 2024 11:18:46 GMT
+Received: from [10.218.16.59] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 16 Feb
+ 2024 03:18:34 -0800
+Message-ID: <e491ec4a-f79b-4063-bd24-bbf3644ce486@quicinc.com>
+Date: Fri, 16 Feb 2024 16:48:31 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+Content-Language: en-US
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>, <lee@kernel.org>,
+        <andriy.shevchenko@linux.intel.com>, <daniel.lezcano@linaro.org>,
+        <lars@metafoo.de>, <luca@z3ntu.xyz>, <marijn.suijten@somainline.org>,
+        <agross@kernel.org>, <sboyd@kernel.org>, <rafael@kernel.org>,
+        <rui.zhang@intel.com>, <lukasz.luba@arm.com>,
+        <linus.walleij@linaro.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_amelende@quicinc.com>,
+        <quic_kamalw@quicinc.com>, <kernel@quicinc.com>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>
+References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
+ <20231231171237.3322376-3-quic_jprakash@quicinc.com>
+ <3f812ffa-ec33-448e-b72a-ce698618a8c1@linaro.org>
+ <13f2b558-a50d-44d3-85de-38e230212732@quicinc.com>
+ <CAA8EJppsn2zsAXem-m=9U8izhtAZmVe62xS5qdkwJmFTqV30gA@mail.gmail.com>
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
+In-Reply-To: <CAA8EJppsn2zsAXem-m=9U8izhtAZmVe62xS5qdkwJmFTqV30gA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 3loeRtsLeLAhQLMDXOPPD-VezXsdvBWc
+X-Proofpoint-GUID: 3loeRtsLeLAhQLMDXOPPD-VezXsdvBWc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-16_09,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=908 lowpriorityscore=0 mlxscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 phishscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2401310000 definitions=main-2402160091
 
-On Thu, 15 Feb 2024 19:03:27 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Hi Dmitry,
 
-> On Thu, Feb 15, 2024 at 05:43:32PM +0100, Vasileios Amoiridis wrote:
-> > According to the datasheet of BMP38x and BMP390 devices, in SPI
-> > operation, the first byte that returns after a read operation is
-> > garbage and it needs to be dropped and return the rest of the
-> > bytes.  
+On 2/16/2024 4:18 PM, Dmitry Baryshkov wrote:
+> Hi Jishnu,
 > 
-> Thank you for the patch, my comments below.
 > 
-> ...
+> On Fri, 16 Feb 2024 at 12:39, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
 > 
-> > +static int bmp380_regmap_spi_read(void *context, const void *reg,
-> > +				  size_t reg_size, void *val, size_t val_size)
-> > +{
-> > +	struct spi_device *spi = to_spi_device(context);
-> > +	u8 ret[BMP380_SPI_MAX_REG_COUNT_READ + 1];
-> > +	ssize_t status;
-> > +	u8 buf;  
+> Please disable sending HTML emails in your email client. It is
+> generally frowned upon, it complicates replying, it breaks quotations,
+> etc.
+
+Sorry, I'm not sure how that happened, but I have fixed it now.
+
 > 
-> AFAIU this buffer is not DMA-capable.
+>>
+>> Hi Krzysztof,
+>>
+>> On 1/4/2024 1:48 PM, Krzysztof Kozlowski wrote:
+>>
+>> On 31/12/2023 18:12, Jishnu Prakash wrote:
+>>
+>> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+>> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
+>>
 
-Doesn't matter in this case as spi_write_then_read() bounces anyway so you don't need
-to provide it with a dma safe buffer. It's in the docs, so we can rely
-on this not changing.
 
-https://elixir.bootlin.com/linux/latest/source/drivers/spi/spi.c#L4391
+>> +
+>>
+>> +      qcom,adc-tm:
+>> +        description: |
+>> +            Indicates if ADC_TM monitoring is done on this channel.
+>> +            Defined for compatible property "qcom,spmi-adc5-gen3".
+> 
+> You are describing qcom,spmi-adc5-gen3, are you not? So this phrase
+> adds nothing.
 
+Yes, I'll remove this.
+
+> 
+>> +            This is the same functionality as in the existing QCOM ADC_TM
+>> +            device, documented at devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml.
+>> +        type: boolean
+>> +
+>>
+>> Why do you duplicate entire vadc file? Why it cannot be part of that
+>> file? Oh wait, it was in v2.
+>>
+>> You now duplicated a lot of property definitions without clear reason.
+>> If this is intention, then you need to put them in common schema.
+>>
+>>
+>> Many of the properties used for earlier QCOM VADC devices will be used for this device too.....do you mean I can add a new schema file (named something like qcom,vadc.yaml) and move common properties into it (like qcom,hw-settle-time, qcom,decimation, etc) from this file and qcom,spmi-vadc.yaml?
+>>
+>> Can I do it in the same patch or should it be a separate patch coming before this one ?
+> 
+> I'd say, separate patch. Move first, extend later.
+
+OK, I'll make it this way if no one else has any objections.
+
+Thanks,
+Jishnu
+
+> 
+>>
+>>
+>>
 

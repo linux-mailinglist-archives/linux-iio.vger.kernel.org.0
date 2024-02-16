@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-2633-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2630-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1614A857EF4
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:12:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB09F857EF2
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57004B27B43
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE0C281FD6
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B4312E1F2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A8412EBD3;
 	Fri, 16 Feb 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cK9/uFyG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Er/DuA3/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DB312EBC4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78F12D761
 	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708092690; cv=none; b=gbYxPFzs69s/rj19YpoFVlQoBG+wvtkRqgxUN41YBRJP4smLCSu0KeOU9m65nA9P8Als9V92a/sL+Mz/UFTmAh+z+YFyZl+b+RMbZvnVU4of14xsbzGzwD2+ucMFumt4xMeOnn+VyNfYhpFaI3LxdwowbgWDIOJVA/YzToSCTek=
+	t=1708092690; cv=none; b=KmlmItAP5dO1fIl83hgbm3Ry7J2V7MVAXf/AqlK0uQ0zFWZDmRV09kA99LHn5SNMHF+qBpPo91ut95eiWQ6E5u0dWET4OhOWMwFvRWvH6XZURmWxQDX9GzRoLeRtOjuss+U2XpAfJmKKM8ISp/IAmbpIKjT6vHRwsXW1c5t6J64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1708092690; c=relaxed/simple;
-	bh=vAmWd+tUeWZ+abFMMHSQn/BJPKH9dI95nxkPn1ibv8s=;
+	bh=YhOGr+CA7o1hlK67baXP3eQNN3JnPRtmrYJF/tA7fEE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lluEoFPPSqgSxKvyoRvlMnfi0B7aZWvviUZNWiX6dGrYzDO0Rf1RDQh4brW3E/qHZDZXOAKT2oURUau29iPG5eJz5y+NMRJPIc8TAuxsWUbmqUrS7hnRmcbXd2dARNbWX0qQvbxVsEsyg8GkdmVMP1kLMXnub67kT75TD5h6/wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cK9/uFyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8251FC4166A;
+	 In-Reply-To:To:Cc; b=BE6AI1yBaRaUTZ36LWJO6qAkBd6/iTLDyIth1Ex/UWrdff15sSJNIORWFMZG/J8wdYc06ZqDJyVLKfW8ujEGSYv2WEbz3xZJJYTkGd5JNd11ThmK6hlyYch6IN6zBbzF/Fs+peuXAE0BZRPN9eo6qw0284Qp+nvNNS4rbf8ovNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Er/DuA3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8ADE7C43141;
 	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1708092689;
-	bh=vAmWd+tUeWZ+abFMMHSQn/BJPKH9dI95nxkPn1ibv8s=;
+	bh=YhOGr+CA7o1hlK67baXP3eQNN3JnPRtmrYJF/tA7fEE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cK9/uFyGogiQunVKtEgQIv6pFKq11A2g+/7pXimBeYuYmBwb7ptZ19pqiw+xidjGW
-	 PgPlmq7cfwCa18YjsepwIKnlZqe/xZRVqsqbkalAgY9r4/X0qGoUH03LXOH1ArVN2A
-	 HaYC9bBZHcm8Mdwq/97YQyNXXsKbICtopgMU1OsZELqWYd5/jHdzmqfY+stil1sa/x
-	 bKB4YKrmPv78J0bObgOhyNtksFCiUwspt5ydunk4GflmfnB7CI240k4TBief60VhVf
-	 m6isC5fmQzXZa04rdrpwWTYXDoCCQLNsCNEb2VEzg2BhQaLsIaXMjA+kc1nZ6BM0Xa
-	 p/sssOrXPofOQ==
+	b=Er/DuA3/oAZ7vx7hMbhLPFj0AOTy9sSOaJcKKPtULDia5mw/q/fCgrSIjfQ8uwxUV
+	 l7fcK7Hsk2dj9w121i7Hd1jmzepk+xopEMDNTrZbjtyf+mhR/H/duJk55L6skYBi8g
+	 a9mNkC7m0wpRf5dgGPu+p7tCQaI7EZvRxo8lZxZI39kVh1BhBJFBYhoHEL5wijJrhc
+	 IG3WnYCzKdUIPiH4z/dfR2LztRhCYS3kgQNi3TwLwJ0ACO8KnuyUKqsj+0ck84j7du
+	 pJjckWBvJGQvkkkfl53Ry327hgodvn9cRCOxjLHdoabfUPLhWUa6HQQrAyJIbXIg9b
+	 GlFGg+W2ZJ0og==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C6D7C48BEF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78044C48BF5;
 	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 16 Feb 2024 15:10:56 +0100
-Subject: [PATCH RFC 7/8] iio: dac: add support for the AD97339A RF DAC
+Date: Fri, 16 Feb 2024 15:10:57 +0100
+Subject: [PATCH RFC 8/8] iio: dac: adi-axi-dac: add support for AXI DAC IP
+ core
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240216-iio-backend-axi-dds-v1-7-22aed9fb07a1@analog.com>
+Message-Id: <20240216-iio-backend-axi-dds-v1-8-22aed9fb07a1@analog.com>
 References: <20240216-iio-backend-axi-dds-v1-0-22aed9fb07a1@analog.com>
 In-Reply-To: <20240216-iio-backend-axi-dds-v1-0-22aed9fb07a1@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +65,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>, 
  Michael Hennerich <Michael.Hennerich@analog.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708092664; l=16425;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708092664; l=17054;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=JvJEEC42EH4Jf6P2LRlyeWRmTv3p1qbMMrzLpMLfAY0=;
- b=kG4+co4yDOxLFyW6Ihq7htzqnit4H23CfqxQtRaqCIfrKYug9g765u46AoClaPCvkevKMpYGM
- cqQ4yoh1eIUBV7JSC94h9lRxOYb9mkr1uxjoN6NZyge9+0JoK1xz/oM
+ bh=CvwKiGjVNQppXuDRhWVxRThzbYj2LThOv82ZzfoS6lA=;
+ b=fD0LGjImMZWkbx5tbX0KgGnaDK/Gg8OrS5XTEqKEJe8PRGnOKNsGzkzfxwX/sGrC9bSIGr1ge
+ rkTWuGDK0AnCEKFW4xWR8S9C3X2KftiDzjGvZtfaDn5GFVHlTkRPeaA
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -78,567 +79,584 @@ Reply-To: <nuno.sa@analog.com>
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-The AD9739A is a 14-bit, 2.5 GSPS high performance RF DAC that is capable
-of synthesizing wideband signals from dc up to 3 GHz.
+This change adds support for the Analog Devices Generic AXI DAC IP core.
+The IP core is used for interfacing with digital-to-analog (DAC) converters
+that require either a high-speed serial interface (JESD204B/C) or a source
+synchronous parallel interface (LVDS/CMOS).
 
-On-chip controllers are used to manage external and internal clock domain
-variations over temperature to ensure reliable data transfer from the host
-to the DAC core.
+Usually, some other interface type (i.e SPI) is used as a control interface
+for the actual DAC, while the IP core (controlled via this driver), will
+interface to the data-lines of the DAC and handle the streaming of data
+into memory via DMA.
+
+Because of this, it will register itself as an IIO backend.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/dac/Kconfig   |  16 ++
- drivers/iio/dac/Makefile  |   1 +
- drivers/iio/dac/ad9739a.c | 503 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 520 insertions(+)
+ drivers/iio/dac/Kconfig       |  21 ++
+ drivers/iio/dac/Makefile      |   1 +
+ drivers/iio/dac/adi-axi-dac.c | 510 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 532 insertions(+)
 
 diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 34eb40bb9529..98e80e73fab5 100644
+index 98e80e73fab5..d1634580f781 100644
 --- a/drivers/iio/dac/Kconfig
 +++ b/drivers/iio/dac/Kconfig
-@@ -131,6 +131,22 @@ config AD5624R_SPI
- 	  Say yes here to build support for Analog Devices AD5624R, AD5644R and
- 	  AD5664R converters (DAC). This driver uses the common SPI interface.
+@@ -147,6 +147,27 @@ config AD9739A
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad9739a.
  
-+config AD9739A
-+	tristate "Analog Devices AD9739A RF DAC spi driver"
-+	depends on SPI
-+	select REGMAP_SPI
++config ADI_AXI_DAC
++	tristate "Analog Devices Generic AXI DAC IP core driver"
++	select IIO_BUFFER
++	select IIO_BUFFER_DMAENGINE
++	select REGMAP_MMIO
 +	select IIO_BACKEND
 +	help
-+	  Say yes here to build support for Analog Devices AD9739A Digital-to
-+	  Analog Converter.
++      Say yes here to build support for Analog Devices Generic
++      AXI DAC IP core. The IP core is used for interfacing with
++      digital-to-analog (DAC) converters that require either a high-speed
++      serial interface (JESD204B/C) or a source synchronous parallel
++      interface (LVDS/CMOS).
++      Typically (for such devices) SPI will be used for configuration only,
++      while this IP core handles the streaming of data into memory via DMA.
 +
-+	  The driver requires the assistance of the AXI DAC IP core to operate,
-+	  since SPI is used for configuration only, while data has to be
-+	  streamed into memory via DMA.
++      Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
++      If unsure, say N (but it's safe to say "Y").
 +
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ad9739a.
++      To compile this driver as a module, choose M here: the
++      module will be called adi-axi-dac.
 +
  config LTC2688
  	tristate "Analog Devices LTC2688 DAC spi driver"
  	depends on SPI
 diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-index 55bf89739d14..7e39e0c218ca 100644
+index 7e39e0c218ca..8432a81a19dc 100644
 --- a/drivers/iio/dac/Makefile
 +++ b/drivers/iio/dac/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_AD5696_I2C) += ad5696-i2c.o
- obj-$(CONFIG_AD7293) += ad7293.o
+@@ -30,6 +30,7 @@ obj-$(CONFIG_AD7293) += ad7293.o
  obj-$(CONFIG_AD7303) += ad7303.o
  obj-$(CONFIG_AD8801) += ad8801.o
-+obj-$(CONFIG_AD9739A) += ad9739a.o
+ obj-$(CONFIG_AD9739A) += ad9739a.o
++obj-$(CONFIG_ADI_AXI_DAC) += adi-axi-dac.o
  obj-$(CONFIG_CIO_DAC) += cio-dac.o
  obj-$(CONFIG_DPOT_DAC) += dpot-dac.o
  obj-$(CONFIG_DS4424) += ds4424.o
-diff --git a/drivers/iio/dac/ad9739a.c b/drivers/iio/dac/ad9739a.c
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
 new file mode 100644
-index 000000000000..e4ade13aaf00
+index 000000000000..58d01ecc0618
 --- /dev/null
-+++ b/drivers/iio/dac/ad9739a.c
-@@ -0,0 +1,503 @@
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -0,0 +1,510 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Analog Devices AD9739a SPI DAC driver
++ * Analog Devices Generic AXI DAC IP core
++ * Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
 + *
-+ * Copyright 2015-2024 Analog Devices Inc.
++ * Copyright 2016-2024 Analog Devices Inc.
 + */
 +
-+#include "linux/delay.h"
-+#include "linux/dev_printk.h"
-+#include "linux/gpio/consumer.h"
 +#include <linux/bitfield.h>
++#include <linux/cleanup.h>
 +#include <linux/clk.h>
 +#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
-+#include <linux/minmax.h>
++#include <linux/limits.h>
 +#include <linux/module.h>
 +#include <linux/mod_devicetable.h>
++#include <linux/mutex.h>
++#include <linux/platform_device.h>
++#include <linux/property.h>
 +#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
 +#include <linux/units.h>
 +
++#include <linux/fpga/adi-axi-common.h>
++
 +#include <linux/iio/backend.h>
++#include <linux/iio/buffer-dmaengine.h>
++#include <linux/iio/buffer.h>
 +#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
 +
-+#define AD9739A_REG_MODE		0
-+#define   AD9739A_RESET_MASK		BIT(5)
-+#define AD9739A_REG_LVDS_REC_CNT1	0x10
-+#define   AD9739A_RCVR_LOOP_EN_MASK	GENMASK(1, 0)
-+#define AD9739A_REG_LVDS_REC_CNT4	0x13
-+#define   AD9739A_FINE_DEL_SKW_MASK	GENMASK(3, 0)
-+#define AD9739A_REG_LVDS_REC_STAT9	0x21
-+#define   AD9739A_RCVR_TRACK_AND_LOCK	(BIT(3) | BIT(0))
-+#define AD9739A_REG_CROSS_CNT1		0x22
-+#define AD9739A_REG_CROSS_CNT2		0x23
-+#define AD9739A_REG_PHS_DET		0x24
-+#define AD9739A_REG_MU_DUTY		0x25
-+#define AD9739A_REG_MU_CNT1		0x26
-+#define   AD9739A_MU_EN_MASK		BIT(0)
-+#define AD9739A_REG_MU_CNT2		0x27
-+#define AD9739A_REG_MU_CNT3		0x28
-+#define AD9739A_REG_MU_CNT4		0x29
-+#define   AD9739A_MU_CNT4_DEFAULT	0xcb
-+#define AD9739A_REG_MU_STAT1		0x2A
-+#define   AD9739A_MU_LOCK_MASK		BIT(0)
-+#define AD9739A_REG_ANA_CNT_1		0x32
-+#define AD9739A_REG_ID			0x35
++/*
++ * Register definitions:
++ *   https://wiki.analog.com/resources/fpga/docs/axi_dac_ip#register_map
++ */
 +
-+#define AD9739A_ID			0x24
-+#define AD9739A_REG_IS_RESERVED(reg)	\
-+	((reg) == 0x5 || (reg) == 0x9 || (reg) == 0x0E || (reg) == 0x0D || \
-+	 (reg) == 0x2B || (reg) == 0x2C || (reg) == 0x34)
++/* Base controls */
++#define AXI_DAC_REG_CONFIG		0x0C
++#define	   AXI_DAC_DISABLE		BIT(6)
 +
-+#define AD9739A_MIN_DAC_CLK	(1600 * MEGA)
-+#define AD9739A_MAX_DAC_CLK	(2500 * MEGA)
-+#define AD9739A_DAC_CLK_RANGE	(AD9739A_MAX_DAC_CLK - AD9739A_MIN_DAC_CLK + 1)
-+/* as recommended by the datasheet */
-+#define AD9739A_LOCK_N_TRIES	3
++ /* DAC controls */
++#define AXI_DAC_REG_RSTN		0x0040
++#define   AXI_DAC_RSTN_CE_N		BIT(2)
++#define   AXI_DAC_RSTN_MMCM_RSTN	BIT(1)
++#define   AXI_DAC_RSTN_RSTN		BIT(0)
++#define AXI_DAC_REG_CNTRL_1		0x0044
++#define   AXI_DAC_SYNC			BIT(0)
++#define AXI_DAC_REG_RATECNTRL		0x004C
++#define AXI_DAC_DRP_STATUS		0x0074
++#define   AXI_DAC_DRP_LOCKED		BIT(17)
 +
-+struct ad9739a_state {
-+	struct iio_backend *back;
-+	struct regmap *regmap;
-+	unsigned long sample_rate;
++/* DAC Channel controls */
++#define AXI_DAC_REG_CHAN_CNTRL_1(c)	(0x0400 + (c) * 0x40)
++#define AXI_DAC_REG_CHAN_CNTRL_3(c)	(0x0400 + (c) * 0x40)
++#define   AXI_DAC_SCALE_SIGN		BIT(15)
++#define   AXI_DAC_SCALE_INT		BIT(14)
++#define   AXI_DAC_SCALE_INT_NEG		GENMASK(15, 14)
++#define   AXI_DAC_SCALE_FRAC		GENMASK(13, 0)
++#define AXI_DAC_REG_CHAN_CNTRL_2(c)	(0x0404 + (c) * 0x40)
++#define AXI_DAC_REG_CHAN_CNTRL_4(c)	(0x040c + (c) * 0x40)
++#define   AXI_DAC_PHASE			GENMASK(31, 16)
++#define   AXI_DAC_FREQUENCY		GENMASK(15, 0)
++#define AXI_DAC_REG_CHAN_CNTRL_7(c)	(0x0418 + (c) * 0x40)
++#define   AXI_DAC_DATA_SEL		GENMASK(3, 0)
++
++/* 360 degrees in rad */
++#define AXI_DAC_2_PI_MEGA		6283190
++enum {
++	AXI_DAC_DATA_INTERNAL_TONE,
++	AXI_DAC_DATA_DMA = 2,
 +};
 +
-+static int ad9739a_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
++struct axi_dac_state {
++	struct regmap *regmap;
++	struct device *dev;
++	/* Lock for synchronizing device register access. */
++	struct mutex lock;
++	u64 dac_clk;
++	u32 reg_config;
++};
 +
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = st->sample_rate;
-+		*val2 = 0;
-+		return IIO_VAL_INT_64;
++static int axi_dac_frequency_read(struct iio_backend *back,
++				  const struct iio_chan_spec *chan, int *val,
++				  int *val2, unsigned int tone_idx,
++				  unsigned long long sample_freq)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	u32 reg, __val;
++	u16 freq;
++	int ret;
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_4(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_2(chan->channel);
++
++	ret = regmap_read(st->regmap, reg, &__val);
++	if (ret)
++		return ret;
++
++	freq = FIELD_GET(AXI_DAC_FREQUENCY, __val);
++	*val = DIV_ROUND_CLOSEST_ULL(__val * sample_freq, BIT(16));
++
++	return 0;
++}
++
++static int axi_dac_scale_read(struct iio_backend *back,
++			      const struct iio_chan_spec *chan, int *val,
++			      int *val2, unsigned int tone_idx)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	u8 sign, integer;
++	u32 reg, __val;
++	u16 frac;
++	int ret;
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_3(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_1(chan->channel);
++
++	ret = regmap_read(st->regmap, reg, &__val);
++	if (ret)
++		return ret;
++
++	frac = FIELD_GET(AXI_DAC_SCALE_FRAC, __val);
++	sign = FIELD_GET(AXI_DAC_SCALE_SIGN, __val);
++	integer = FIELD_GET(AXI_DAC_SCALE_INT, __val);
++
++	*val2 = DIV_ROUND_CLOSEST_ULL((u64)frac * MICRO, AXI_DAC_SCALE_INT);
++
++	if (integer && sign)
++		*val = -1;
++	else if (integer)
++		*val = 1;
++	else if (sign)
++		*val2 *= -1;
++
++	return IIO_VAL_INT_PLUS_MICRO;
++}
++
++static int axi_dac_phase_read(struct iio_backend *back,
++			      const struct iio_chan_spec *chan, int *val,
++			      int *val2, unsigned int tone_idx)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	unsigned int tmp;
++	u32 reg, __val;
++	u16 phase;
++	int ret;
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_4(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_2(chan->channel);
++
++	ret = regmap_read(st->regmap, reg, &__val);
++	if (ret)
++		return ret;
++
++	phase = FIELD_GET(AXI_DAC_PHASE, __val);
++	tmp = DIV_ROUND_CLOSEST_ULL((u64)phase * AXI_DAC_2_PI_MEGA, U16_MAX);
++	*val = tmp / MICRO;
++	*val2 = tmp % MICRO;
++
++	return IIO_VAL_INT_PLUS_MICRO;
++}
++
++static int axi_dac_frequency_write(struct iio_backend *back,
++				   const struct iio_chan_spec *chan, int val,
++				   int val2, unsigned int tone_idx,
++				   unsigned long long sample_freq)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	u16 freq;
++	u32 reg;
++	int ret;
++
++	if (val < 0 || !sample_freq || val > sample_freq / 2) {
++		dev_err(st->dev, "Invalid frequency: %d, sampling freq: %llu\n",
++			val, sample_freq);
++		return -EINVAL;
++	}
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_4(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_2(chan->channel);
++
++	freq = DIV64_U64_ROUND_CLOSEST((u64)val * BIT(16), sample_freq);
++
++	guard(mutex)(&st->lock);
++	ret = regmap_update_bits(st->regmap,  reg, AXI_DAC_FREQUENCY, freq);
++	if (ret)
++		return ret;
++
++	/* synchronize channels */
++	return regmap_set_bits(st->regmap, AXI_DAC_REG_CNTRL_1, AXI_DAC_SYNC);
++}
++
++static int axi_dac_scale_write(struct iio_backend *back,
++			       const struct iio_chan_spec *chan, int val,
++			       int val2, unsigned int tone_idx)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	u32 scale = 0, tmp, reg;
++	int ret;
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	/*  format is 1.1.14 (sign, integer and fractional bits) */
++	switch (val) {
++	case 1:
++		scale = FIELD_PREP(AXI_DAC_SCALE_INT, 1);
++		break;
++	case -1:
++		scale = FIELD_PREP(AXI_DAC_SCALE_INT_NEG, 3);
++		break;
++	case 0:
++		if (val2 < 0) {
++			scale = FIELD_PREP(AXI_DAC_SCALE_SIGN, 1);
++			val2 *= -1;
++		}
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	tmp = DIV_ROUND_CLOSEST_ULL((u64)val2 * AXI_DAC_SCALE_INT, MICRO);
++	scale |= FIELD_PREP(AXI_DAC_SCALE_FRAC, tmp);
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_3(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_1(chan->channel);
++
++	guard(mutex)(&st->lock);
++	ret = regmap_write(st->regmap, reg, scale);
++	if (ret)
++		return ret;
++
++	/* synchronize channels */
++	return regmap_set_bits(st->regmap, AXI_DAC_REG_CNTRL_1, AXI_DAC_SYNC);
++}
++
++static int axi_dac_phase_write(struct iio_backend *back,
++			       const struct iio_chan_spec *chan, int val,
++			       int val2, unsigned int tone_idx)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	u32 phase, reg;
++	int ret;
++
++	if (tone_idx > 1) {
++		dev_err(st->dev, "Not a valid tone: %u\n", tone_idx);
++		return -EINVAL;
++	}
++
++	phase = val * MILLI + val2;
++
++	phase = DIV_ROUND_CLOSEST_ULL((u64)phase * U16_MAX, AXI_DAC_2_PI_MEGA);
++
++	if (tone_idx)
++		reg = AXI_DAC_REG_CHAN_CNTRL_4(chan->channel);
++	else
++		reg = AXI_DAC_REG_CHAN_CNTRL_2(chan->channel);
++
++	guard(mutex)(&st->lock);
++	ret = regmap_update_bits(st->regmap, reg, AXI_DAC_PHASE,
++				 FIELD_PREP(AXI_DAC_PHASE, phase));
++	if (ret)
++		return ret;
++
++	/* synchronize channels */
++	return regmap_set_bits(st->regmap, AXI_DAC_REG_CNTRL_1, AXI_DAC_SYNC);
++}
++
++static int axi_dac_data_source_set(struct iio_backend *back, unsigned int chan,
++				   enum iio_backend_data_source data)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++
++	switch (data) {
++	case IIO_BACKEND_INTERNAL_CW:
++		return regmap_update_bits(st->regmap,
++					  AXI_DAC_REG_CHAN_CNTRL_7(chan),
++					  AXI_DAC_DATA_SEL,
++					  AXI_DAC_DATA_INTERNAL_TONE);
++	case IIO_BACKEND_EXTERNAL:
++		return regmap_update_bits(st->regmap,
++					  AXI_DAC_REG_CHAN_CNTRL_7(chan),
++					  AXI_DAC_DATA_SEL, AXI_DAC_DATA_DMA);
 +	default:
 +		return -EINVAL;
 +	}
 +}
 +
-+enum {
-+	AD9739A_TONE_1,
-+	AD9739A_TONE_2,
-+};
-+
-+static ssize_t ad9739a_read_ext_info(struct iio_dev *indio_dev,
-+				     uintptr_t private,
-+				     const struct iio_chan_spec *chan,
-+				     char *buf,
-+				     int (*backend_op)(struct iio_backend *back,
-+						       const struct iio_chan_spec *chan,
-+						       int *val, int *val2,
-+						       unsigned int tone_idx))
++static struct iio_buffer *axi_dac_request_buffer(struct iio_backend *back,
++						 struct iio_dev *indio_dev)
 +{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+	int ret, vals[2], tone = 0;
-+
-+	if (private == AD9739A_TONE_2)
-+		tone++;
-+
-+	ret = backend_op(st->back, chan, &vals[0], &vals[1], tone);
-+	if (ret < 0)
-+		return ret;
-+
-+	return iio_format_value(buf, ret, ARRAY_SIZE(vals), vals);
-+}
-+
-+static ssize_t ad9739a_write_ext_info(struct iio_dev *indio_dev,
-+				      uintptr_t private,
-+				      const struct iio_chan_spec *chan,
-+				      const char *buf, size_t len,
-+				      int (*backend_op)(struct iio_backend *back,
-+							const struct iio_chan_spec *chan,
-+							int val, int val2,
-+							unsigned int tone_idx))
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+	int ret, integer, frac, tone = 0;
-+
-+	/* assumed IIO_VAL_INT_PLUS_MICRO */
-+	ret = iio_str_to_fixpoint(buf, 100000, &integer, &frac);
-+	if (ret)
-+		return ret;
-+
-+	if (private == AD9739A_TONE_2)
-+		tone++;
-+
-+	ret = backend_op(st->back, chan, integer, frac, tone);
-+	if (ret)
-+		return ret;
-+
-+	return len;
-+}
-+
-+static ssize_t ad9739a_frequency_get(struct iio_dev *indio_dev,
-+				     uintptr_t private,
-+				     const struct iio_chan_spec *chan,
-+				     char *buf)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+	int ret, vals[2], tone = 0;
-+
-+	if (private == AD9739A_TONE_2)
-+		tone++;
-+
-+	ret = iio_backend_read_frequency(st->back, chan, &vals[0], &vals[1],
-+					 tone, st->sample_rate);
-+	if (ret < 0)
-+		return ret;
-+
-+	return iio_format_value(buf, ret, ARRAY_SIZE(vals), vals);
-+}
-+
-+static ssize_t ad9739a_frequency_set(struct iio_dev *indio_dev,
-+				     uintptr_t private,
-+				     const struct iio_chan_spec *chan,
-+				     const char *buf, size_t len)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+	int ret, integer, frac, tone = 0;
-+
-+	/* assumed IIO_VAL_INT_PLUS_MICRO */
-+	ret = iio_str_to_fixpoint(buf, 100000, &integer, &frac);
-+	if (ret)
-+		return ret;
-+
-+	if (private == AD9739A_TONE_2)
-+		tone++;
-+
-+	ret = iio_backend_write_frequency(st->back, chan, integer, frac, tone,
-+					  st->sample_rate);
-+	if (ret)
-+		return ret;
-+
-+	return len;
-+}
-+
-+static ssize_t ad9739a_scale_get(struct iio_dev *indio_dev, uintptr_t private,
-+				 const struct iio_chan_spec *chan, char *buf)
-+{
-+	return ad9739a_read_ext_info(indio_dev, private, chan, buf,
-+				     iio_backend_read_scale);
-+}
-+
-+static ssize_t ad9739a_scale_set(struct iio_dev *indio_dev, uintptr_t private,
-+				 const struct iio_chan_spec *chan,
-+				 const char *buf, size_t len)
-+{
-+	return ad9739a_write_ext_info(indio_dev, private, chan, buf, len,
-+				      iio_backend_write_scale);
-+}
-+
-+static ssize_t ad9739a_phase_get(struct iio_dev *indio_dev, uintptr_t private,
-+				 const struct iio_chan_spec *chan, char *buf)
-+{
-+	return ad9739a_read_ext_info(indio_dev, private, chan, buf,
-+				     iio_backend_read_phase);
-+}
-+
-+static ssize_t ad9739a_phase_set(struct iio_dev *indio_dev, uintptr_t private,
-+				 const struct iio_chan_spec *chan,
-+				 const char *buf, size_t len)
-+{
-+	return ad9739a_write_ext_info(indio_dev, private, chan, buf, len,
-+				      iio_backend_write_phase);
-+}
-+
-+static int ad9739a_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	return iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
-+}
-+
-+static int ad9739a_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	return iio_backend_data_source_set(st->back, 0,
-+					   IIO_BACKEND_INTERNAL_CW);
-+}
-+
-+static bool ad9739a_reg_accessible(struct device *dev, unsigned int reg)
-+{
-+	if (AD9739A_REG_IS_RESERVED(reg))
-+		return false;
-+	if (reg > AD9739A_REG_MU_STAT1 && reg < AD9739A_REG_ANA_CNT_1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int ad9739a_reset(struct device *dev, const struct ad9739a_state *st)
-+{
-+	struct gpio_desc *gpio;
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	struct iio_buffer *buffer;
++	const char *dma_name;
 +	int ret;
 +
-+	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpio))
-+		return PTR_ERR(gpio);
-+	if (gpio) {
-+		/* minimum pulse width of 40ns */
-+		ndelay(40);
-+		gpiod_set_value_cansleep(gpio, 0);
-+		return 0;
++	if (device_property_read_string(st->dev, "dma-names", &dma_name))
++		dma_name = "tx";
++
++	buffer = iio_dmaengine_buffer_alloc(st->dev, dma_name);
++	if (IS_ERR(buffer)) {
++		dev_err(st->dev, "Could not get DMA buffer, %ld\n",
++			PTR_ERR(buffer));
++		return ERR_CAST(buffer);
 +	}
 +
-+	/* bring all registers to their default state */
-+	ret = regmap_set_bits(st->regmap, AD9739A_REG_MODE, AD9739A_RESET_MASK);
++	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
++	iio_buffer_set_dir(buffer, IIO_BUFFER_DIRECTION_OUT);
++
++	ret = iio_device_attach_buffer(indio_dev, buffer);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return buffer;
++}
++
++static void axi_dac_free_buffer(struct iio_backend *back,
++				struct iio_buffer *buffer)
++{
++	iio_dmaengine_buffer_free(buffer);
++}
++
++static int axi_dac_enable(struct iio_backend *back)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++	unsigned int __val;
++	int ret;
++
++	guard(mutex)(&st->lock);
++	ret = regmap_set_bits(st->regmap, AXI_DAC_REG_RSTN,
++			      AXI_DAC_RSTN_MMCM_RSTN);
++	if (ret)
++		return ret;
++	/*
++	 * Make sure the DRP (Dynamic Reconfiguration Port) is locked. Not all
++	 * designs really use it but if they don't we still get the lock bit
++	 * set. So let's do it all the time so the code is generic.
++	 */
++	ret = regmap_read_poll_timeout(st->regmap, AXI_DAC_DRP_STATUS, __val,
++				       __val & AXI_DAC_DRP_LOCKED, 100, 1000);
 +	if (ret)
 +		return ret;
 +
-+	ndelay(40);
-+
-+	return regmap_clear_bits(st->regmap, AD9739A_REG_MODE,
-+				 AD9739A_RESET_MASK);
++	return regmap_set_bits(st->regmap, AXI_DAC_REG_RSTN,
++			       AXI_DAC_RSTN_RSTN | AXI_DAC_RSTN_MMCM_RSTN);
 +}
 +
-+/*
-+ * Recommended values (as per datasheet) for the dac clk common mode voltage
-+ * and Mu controller. Look at table 29.
-+ */
-+static const struct reg_sequence ad9739a_clk_mu_ctrl[] = {
-+	/* DAC clk common mode voltage */
-+	{AD9739A_REG_CROSS_CNT1, 0x0f},
-+	{AD9739A_REG_CROSS_CNT2, 0x0f},
-+	/* Mu controller configuration */
-+	{AD9739A_REG_PHS_DET, 0x30},
-+	{AD9739A_REG_MU_DUTY, 0x80},
-+	{AD9739A_REG_MU_CNT2, 0x44},
-+	{AD9739A_REG_MU_CNT3, 0x6c},
++static void axi_dac_disable(struct iio_backend *back)
++{
++	struct axi_dac_state *st = iio_backend_get_priv(back);
++
++	guard(mutex)(&st->lock);
++	regmap_write(st->regmap, AXI_DAC_REG_RSTN, 0);
++}
++
++static const struct iio_backend_ops axi_dac_generic = {
++	.enable = axi_dac_enable,
++	.disable = axi_dac_disable,
++	.request_buffer = axi_dac_request_buffer,
++	.free_buffer = axi_dac_free_buffer,
++	.read_frequency = axi_dac_frequency_read,
++	.write_frequency = axi_dac_frequency_write,
++	.read_scale = axi_dac_scale_read,
++	.write_scale = axi_dac_scale_write,
++	.read_phase = axi_dac_phase_read,
++	.write_phase = axi_dac_phase_write,
++	.data_source_set = axi_dac_data_source_set,
 +};
 +
-+static int ad9739a_init(struct device *dev, const struct ad9739a_state *st)
++static const struct regmap_config axi_dac_regmap_config = {
++	.val_bits = 32,
++	.reg_bits = 32,
++	.reg_stride = 4,
++	.max_register = 0x0800,
++};
++
++static int axi_dac_probe(struct platform_device *pdev)
 +{
-+	unsigned int i = 0, lock;
++	const unsigned int *expected_ver;
++	struct axi_dac_state *st;
++	void __iomem *base;
++	unsigned int ver;
++	struct clk *clk;
 +	int ret;
 +
-+	ret = regmap_multi_reg_write(st->regmap, ad9739a_clk_mu_ctrl,
-+				     ARRAY_SIZE(ad9739a_clk_mu_ctrl));
++	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
++	if (!st)
++		return -ENOMEM;
++
++	expected_ver = device_get_match_data(&pdev->dev);
++	if (!expected_ver)
++		return -ENODEV;
++
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	st->dev = &pdev->dev;
++	st->regmap = devm_regmap_init_mmio(&pdev->dev, base,
++					   &axi_dac_regmap_config);
++	if (IS_ERR(st->regmap))
++		return PTR_ERR(st->regmap);
++
++	/*
++	 * Force disable the core. Up to the frontend to enable us. And we can
++	 * still read/write registers...
++	 */
++	ret = regmap_write(st->regmap, AXI_DAC_REG_RSTN, 0);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(st->regmap, ADI_AXI_REG_VERSION, &ver);
++	if (ret)
++		return ret;
++
++	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
++		dev_err(&pdev->dev,
++			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
++			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
++			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
++			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
++			ADI_AXI_PCORE_VER_MAJOR(ver),
++			ADI_AXI_PCORE_VER_MINOR(ver),
++			ADI_AXI_PCORE_VER_PATCH(ver));
++		return -ENODEV;
++	}
++
++	/* Let's get the core read only configuration */
++	ret = regmap_read(st->regmap, AXI_DAC_REG_CONFIG, &st->reg_config);
 +	if (ret)
 +		return ret;
 +
 +	/*
-+	 * Try to get the MU lock. Repeat the below steps AD9739A_LOCK_N_TRIES
-+	 * (as specified by the datasheet) until we get the lock.
++	 * Default rate to 1 so the sampling frequency will be the same as the
++	 * digital interface clock which should be the same as the frontend
++	 * sampling clock/frequency. When this is not true, the frontend will
++	 * have to explicitly set a new frequency and thus rate.
 +	 */
-+	do {
-+		ret = regmap_write(st->regmap, AD9739A_REG_MU_CNT4,
-+				   AD9739A_MU_CNT4_DEFAULT);
-+		if (ret)
-+			return ret;
++	ret = regmap_write(st->regmap, AXI_DAC_REG_RATECNTRL, 1);
++	if (ret)
++		return ret;
 +
-+		/* Enable the Mu controller search and track mode. */
-+		ret = regmap_set_bits(st->regmap, AD9739A_REG_MU_CNT1,
-+				      AD9739A_MU_EN_MASK);
-+		if (ret)
-+			return ret;
++	mutex_init(&st->lock);
++	ret = devm_iio_backend_register(&pdev->dev, &axi_dac_generic, st);
++	if (ret)
++		return ret;
 +
-+		/* Ensure the DLL loop is locked */
-+		ret = regmap_read_poll_timeout(st->regmap, AD9739A_REG_MU_STAT1,
-+					       lock, lock & AD9739A_MU_LOCK_MASK,
-+					       0, 1000);
-+	} while (ret && ++i < AD9739A_LOCK_N_TRIES);
-+
-+	if (i == AD9739A_LOCK_N_TRIES)
-+		return dev_err_probe(dev, ret, "Mu lock timeout\n");
-+
-+	/* Receiver tracking an lock. Same deal as the Mu controller */
-+	i = 0;
-+	do {
-+		ret = regmap_update_bits(st->regmap, AD9739A_REG_LVDS_REC_CNT4,
-+					 AD9739A_FINE_DEL_SKW_MASK,
-+					 FIELD_PREP(AD9739A_FINE_DEL_SKW_MASK, 2));
-+		if (ret)
-+			return ret;
-+
-+		/* Disable the receiver and the loop. */
-+		ret = regmap_write(st->regmap, AD9739A_REG_LVDS_REC_CNT1, 0);
-+		if (ret)
-+			return ret;
-+
-+		/*
-+		 * Re-enable the loop so it falls out of lock and begins the
-+		 * search/track routine again.
-+		 */
-+		ret = regmap_set_bits(st->regmap, AD9739A_REG_LVDS_REC_CNT1,
-+				      AD9739A_RCVR_LOOP_EN_MASK);
-+		if (ret)
-+			return ret;
-+
-+		/* Ensure the DLL loop is locked */
-+		ret = regmap_read_poll_timeout(st->regmap,
-+					       AD9739A_REG_LVDS_REC_STAT9, lock,
-+					       lock == AD9739A_RCVR_TRACK_AND_LOCK,
-+					       0, 1000);
-+	} while (ret && ++i < AD9739A_LOCK_N_TRIES);
-+
-+	if (i == AD9739A_LOCK_N_TRIES)
-+		return dev_err_probe(dev, ret, "Receiver lock timeout\n");
++	dev_info(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
++		 ADI_AXI_PCORE_VER_MAJOR(ver),
++		 ADI_AXI_PCORE_VER_MINOR(ver),
++		 ADI_AXI_PCORE_VER_PATCH(ver));
 +
 +	return 0;
 +}
 +
-+static const struct iio_buffer_setup_ops ad9739a_buffer_setup_ops = {
-+	.preenable = &ad9739a_buffer_preenable,
-+	.postdisable = &ad9739a_buffer_postdisable,
-+};
++static unsigned int axi_dac_9_1_b_info = ADI_AXI_PCORE_VER(9, 1, 'b');
 +
-+static const struct iio_info ad9739a_info = {
-+	.read_raw = ad9739a_read_raw,
-+};
-+
-+static const struct regmap_config ad9739a_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.readable_reg = ad9739a_reg_accessible,
-+	.writeable_reg = ad9739a_reg_accessible,
-+	.max_register = AD9739A_REG_ID,
-+};
-+
-+#define AD9739A_EXT_INFO(_name, _read, _write, _what) {	\
-+	.name = (_name),				\
-+	.private = (_what),				\
-+	.read = (_read),				\
-+	.write = (_write),				\
-+	.shared = IIO_SEPARATE,				\
-+}
-+
-+static const struct iio_chan_spec_ext_info ad9739a_ext_info[] = {
-+	AD9739A_EXT_INFO("frequency0", ad9739a_frequency_get,
-+			 ad9739a_frequency_set, AD9739A_TONE_1),
-+	AD9739A_EXT_INFO("frequency1", ad9739a_frequency_get,
-+			 ad9739a_frequency_set, AD9739A_TONE_2),
-+	AD9739A_EXT_INFO("scale0", ad9739a_scale_get,
-+			 ad9739a_scale_set, AD9739A_TONE_1),
-+	AD9739A_EXT_INFO("scale1", ad9739a_scale_get,
-+			 ad9739a_scale_set, AD9739A_TONE_2),
-+	AD9739A_EXT_INFO("phase0", ad9739a_phase_get,
-+			 ad9739a_phase_set, AD9739A_TONE_1),
-+	AD9739A_EXT_INFO("phase1", ad9739a_phase_get,
-+			 ad9739a_phase_set, AD9739A_TONE_2),
++static const struct of_device_id axi_dac_of_match[] = {
++	{ .compatible = "adi,axi-dac-9.1.b", .data = &axi_dac_9_1_b_info },
 +	{}
 +};
++MODULE_DEVICE_TABLE(of, axi_dac_of_match);
 +
-+static const struct iio_chan_spec ad9739a_channel[] = {
-+	{
-+		.type = IIO_ALTVOLTAGE,
-+		.indexed = 1,
-+		.output = 1,
-+		.scan_index = -1,
-+		.ext_info = ad9739a_ext_info,
-+	},
-+	{
-+		.type = IIO_VOLTAGE,
-+		.indexed = 1,
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.output = 1,
-+		.scan_type = {
-+			.sign = 's',
-+			.storagebits = 16,
-+			.realbits = 16,
-+		},
-+	}
-+};
-+
-+static int ad9739a_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct iio_dev *indio_dev;
-+	struct ad9739a_state *st;
-+	unsigned int id;
-+	struct clk *clk;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "Could not get clkin\n");
-+
-+	st->sample_rate = clk_get_rate(clk);
-+	if (!in_range(st->sample_rate, AD9739A_MIN_DAC_CLK,
-+		      AD9739A_DAC_CLK_RANGE))
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Invalid dac clk range(%lu) [%lu %lu]\n",
-+				     st->sample_rate, AD9739A_MIN_DAC_CLK,
-+				     AD9739A_MAX_DAC_CLK);
-+
-+	st->regmap = devm_regmap_init_spi(spi, &ad9739a_regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return PTR_ERR(st->regmap);
-+
-+	ret = regmap_read(st->regmap, AD9739A_REG_ID, &id);
-+	if (ret)
-+		return ret;
-+
-+	if (id != AD9739A_ID)
-+		return dev_err_probe(dev, -ENODEV, "Unrecognized CHIP_ID 0x%X",
-+				     id);
-+
-+	ret = ad9739a_reset(dev, st);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9739a_init(dev, st);
-+	if (ret)
-+		return ret;
-+
-+	st->back = devm_iio_backend_get(dev, NULL);
-+	if (IS_ERR(st->back))
-+		return PTR_ERR(st->back);
-+
-+	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_enable(dev, st->back);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->name = "ad9739a";
-+	indio_dev->info = &ad9739a_info;
-+	indio_dev->channels = ad9739a_channel;
-+	indio_dev->num_channels = ARRAY_SIZE(ad9739a_channel);
-+	indio_dev->setup_ops = &ad9739a_buffer_setup_ops;
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct of_device_id ad9739a_of_match[] = {
-+	{ .compatible = "adi,ad9739a" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, ad9739a_of_match);
-+
-+static const struct spi_device_id ad9739a_id[] = {
-+	{"ad9739a"},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, ad9739a_id);
-+
-+static struct spi_driver ad9739a_driver = {
++static struct platform_driver axi_dac_driver = {
 +	.driver = {
-+		.name = "ad9739a",
-+		.of_match_table = ad9739a_of_match,
++		.name = "adi-axi-dac",
++		.of_match_table = axi_dac_of_match,
 +	},
-+	.probe = ad9739a_probe,
-+	.id_table = ad9739a_id,
++	.probe = axi_dac_probe,
 +};
-+module_spi_driver(ad9739a_driver);
++module_platform_driver(axi_dac_driver);
 +
-+MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
 +MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices AD9739 DAC");
++MODULE_DESCRIPTION("Analog Devices Generic AXI DAC IP core driver");
 +MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
 +MODULE_IMPORT_NS(IIO_BACKEND);
 
 -- 

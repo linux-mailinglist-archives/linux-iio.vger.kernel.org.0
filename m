@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-2629-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67534857EED
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9C8857EF0
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 15:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 243B42816F6
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:12:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64829281BCE
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Feb 2024 14:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DEEC12EBCB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409F412CDAB;
 	Fri, 16 Feb 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otV1+gJB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtdhKqb5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01EA12E1F4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF82312EBC3
 	for <linux-iio@vger.kernel.org>; Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708092689; cv=none; b=Vohb7LD3rSwr9WPh9njVY2sEkGvnq7DbYUPmPQM4WvQ3IcORc9qZ35LR7p34FdLfqRWwLllWm+VA5SMX4tFaTiMpjxSxevmyvurQYH6X+6n0COb7w+N8M8zWv3TaaKETzoCDAg2PFeNAAuZab6f1yOhYiBnfl1OE/s1qhJNzPuE=
+	t=1708092690; cv=none; b=ZiKv0QvaBRS51zZxJguCZjQUhFDfaB/c6NmFsrCGA43futFiG/p3uWl5unhsHFSUThH9yYjLr6P0i/ES7sYPi6re2jlVHqBPbElLM71dmMEskMjOHyOkg/he3LSrImOcyN4SCWzjBUopuQ3G27IXoB8FAREMBCPJFhgqAqlc5cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708092689; c=relaxed/simple;
-	bh=EG20HCsns1ASyKJ4WWYbYFU9zLiRImH2DNuvQxu5Xa4=;
+	s=arc-20240116; t=1708092690; c=relaxed/simple;
+	bh=zbYdxYyLR1xJLzpkg8i7cPdJipb8RgdsnXGGrxP71ys=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vwp08+EkdzA68Fxclhgv4Y4kwwbor7zPpP5zC6TPpX3Z3NnU3F37+0wOJUX+k1QdxKvBKzoMaCqhqEQEIHw3nRSwe7rmi/EzjtMIA52hTDVkwu0foDeSbl85n98PSW/JAYsz1rycJHxPxnEW/LC625TMpUNywk40BV6UM6RC40A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otV1+gJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 69A88C43601;
+	 In-Reply-To:To:Cc; b=ovSiv9/O1qw03Gnpw/e9DQCrlG2G8mDsxOXgHg9Q3PeePSGnC+pT7vQX/YWrCUlL8q5SoOQWpPe74iUhm64v2L3LGAag4acj6pOox30KCJq5N5JNl8cGgSJon1P/Ns6XVwDRsNU+HL4eyVKgCXASK1vt3sWuOJUyXLKkytqIvZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtdhKqb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 769CFC43330;
 	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1708092689;
-	bh=EG20HCsns1ASyKJ4WWYbYFU9zLiRImH2DNuvQxu5Xa4=;
+	bh=zbYdxYyLR1xJLzpkg8i7cPdJipb8RgdsnXGGrxP71ys=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=otV1+gJB552r5G5/TrOy3nz2VOZS31v0Zd3kNXteHeXuqu+ceR+M86xmhXO1zPDyg
-	 Ezx3bMAXthBtfTTENBGprlbr339eh60KorTMSnec5bxoeObWK5oYrCyqNP/dWpdc30
-	 XWAdaFuOCy77fkLPBq/bDO5eLopw6ozK5XQ6FjxdJjodULFfjBOI8fSHayI+N1o7nB
-	 Y2DWQtJU7M962YcgP039DWci//WgyjywAr11OT7ivq6iCrQUkYb3xbzGG5iITUSr76
-	 fQkzI4jerqifh6s2Y0hpbPUM1CYf1iVnwWfg5pUvzCw4bfbI7d6bH59xnVXqNUhEY+
-	 TwG2xCZNhDqtw==
+	b=qtdhKqb5Fy2YWKTGNn6khEu51azIqs7VD/y3QXxJ4sVYf3tKIBYiNbY9TNo1Dusql
+	 mJNx5GSaExONln1oCTZ1cPKS7+UL+AaW2ROcnYEblhJrnZ99SvXVHc0Eq/uYcVZXrh
+	 E1F2FndveXs3o5yJfcfMuvdy9yk4DG+D8Nowv+3mnF9yDDCf3SDqKrwL/BYhJPpfw+
+	 6HRFU0hGxUpRj0/xIxhA3b25eq3xe5LlBPgZsAj0VjsdUlLltHL/isxrLPuQ3MyJa/
+	 VMBbUZCWKcZv+2rm/ZKnWogojxdCl+/a2cljIObCfYmTi0UNcjb6FzgwRjFM6TGFrU
+	 ML6OnkSEdossg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53926C48BF8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60A66C48260;
 	Fri, 16 Feb 2024 14:11:29 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 16 Feb 2024 15:10:54 +0100
-Subject: [PATCH RFC 5/8] iio: buffer-dmaengine: Enable write support
+Date: Fri, 16 Feb 2024 15:10:55 +0100
+Subject: [PATCH RFC 6/8] iio: backend: add new backend ops
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,22 +55,20 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240216-iio-backend-axi-dds-v1-5-22aed9fb07a1@analog.com>
+Message-Id: <20240216-iio-backend-axi-dds-v1-6-22aed9fb07a1@analog.com>
 References: <20240216-iio-backend-axi-dds-v1-0-22aed9fb07a1@analog.com>
 In-Reply-To: <20240216-iio-backend-axi-dds-v1-0-22aed9fb07a1@analog.com>
 To: linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, 
  Olivier Moysan <olivier.moysan@foss.st.com>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Paul Cercueil <paul@crapouillou.net>, 
- Alexandru Ardelean <ardeleanalex@gmail.com>
+ Michael Hennerich <Michael.Hennerich@analog.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708092664; l=1305;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708092664; l=8015;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=EuXm3wJiZVoFIehccCqYYu9vYz4WznwXf643rUy0LM4=;
- b=7cufpt+bWCqi4PSi62gexvonacFYiF9ykFxSuSjQjzJDaOXTm1hPQeY/R8fiT7CsTPS/hloDe
- BnTGHCE9fICD6Hqf8FtYAVwXQTt7oZv2z8JjWWqUKZzpF+tumPzVYhY
+ bh=rN0QCjqlMVi6zhSqFla2kqXViqpt4/ebJYdlaVhTU4w=;
+ b=tWjrufsIIy7RSRrg6PW8H8zFeFPTk1jCjL2uOcJrCQVney0BQhF3jSZch1Rk+J6TjZXXxvEUa
+ JR74dN65SzwAYXrXmQeQz6bdXeBGRbjnz/Q/1/cH1LGxMOKyRj06dJJ
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -78,37 +76,213 @@ X-Endpoint-Received:
 X-Original-From: Nuno Sa <nuno.sa@analog.com>
 Reply-To: <nuno.sa@analog.com>
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Nuno Sa <nuno.sa@analog.com>
 
-Use the iio_dma_buffer_write() and iio_dma_buffer_space_available()
-functions provided by the buffer-dma core, to enable write support in
-the buffer-dmaengine code.
+The following new ops are being added:
+- iio_backend_data_source_set()
+- iio_backend_read_phase()
+- iio_backend_write_phase()
+- iio_backend_read_scale()
+- iio_backend_write_scale()
+- iio_backend_read_frequency()
+- iio_backend_write_frequency()
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+The new iio_backend_data_source_set() allows to select the data source
+on a backend. It can for example be used when enabling/disabling a
+buffer to mux between different data sources.
+
+The rest of the APIs mostly resemble (apart from read/write frequency
+which have a couple of new arguments) the typical read/write raw
+functions (but fine grained for a specific attribute).
+
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/industrialio-backend.c | 65 ++++++++++++++++++++++++++++++++++++++
+ include/linux/iio/backend.h        | 53 ++++++++++++++++++++++++++++++-
+ 2 files changed, 117 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index d9d72f7cba60..e151af7e8907 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -123,12 +123,14 @@ static void iio_dmaengine_buffer_release(struct iio_buffer *buf)
+diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+index 2fea2bbbe47f..bf26c41872ca 100644
+--- a/drivers/iio/industrialio-backend.c
++++ b/drivers/iio/industrialio-backend.c
+@@ -43,6 +43,7 @@
+ #include <linux/types.h>
  
- static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
- 	.read = iio_dma_buffer_read,
-+	.write = iio_dma_buffer_write,
- 	.set_bytes_per_datum = iio_dma_buffer_set_bytes_per_datum,
- 	.set_length = iio_dma_buffer_set_length,
- 	.request_update = iio_dma_buffer_request_update,
- 	.enable = iio_dma_buffer_enable,
- 	.disable = iio_dma_buffer_disable,
- 	.data_available = iio_dma_buffer_usage,
-+	.space_available = iio_dma_buffer_usage,
- 	.release = iio_dmaengine_buffer_release,
+ #include <linux/iio/backend.h>
++#include <linux/iio/iio.h>
  
- 	.modes = INDIO_BUFFER_HARDWARE,
+ struct iio_backend {
+ 	struct list_head entry;
+@@ -186,6 +187,16 @@ int iio_backend_data_format_set(struct iio_backend *back, unsigned int chan,
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_backend_data_format_set, IIO_BACKEND);
+ 
++int iio_backend_data_source_set(struct iio_backend *back, unsigned int chan,
++				enum iio_backend_data_source data)
++{
++	if (data >= IIO_BACKEND_DATA_SOURCE_MAX)
++		return -EINVAL;
++
++	return iio_backend_op_call(back, data_source_set, chan, data);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_data_source_set, IIO_BACKEND);
++
+ static void iio_backend_free_buffer(void *arg)
+ {
+ 	struct iio_backend_buffer_pair *pair = arg;
+@@ -231,6 +242,60 @@ int devm_iio_backend_request_buffer(struct device *dev,
+ }
+ EXPORT_SYMBOL_NS_GPL(devm_iio_backend_request_buffer, IIO_BACKEND);
+ 
++int iio_backend_read_phase(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int *val,
++			   int *val2, unsigned int tone_idx)
++{
++	return iio_backend_op_call(back, read_phase, chan, val, val2, tone_idx);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_read_phase, IIO_BACKEND);
++
++int iio_backend_write_phase(struct iio_backend *back,
++			    const struct iio_chan_spec *chan, int val,
++			    int val2, unsigned int tone_idx)
++{
++	return iio_backend_op_call(back, write_phase, chan, val, val2,
++				   tone_idx);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_write_phase, IIO_BACKEND);
++
++int iio_backend_read_scale(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int *val,
++			   int *val2, unsigned int tone_idx)
++{
++	return iio_backend_op_call(back, read_scale, chan, val, val2, tone_idx);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_read_scale, IIO_BACKEND);
++
++int iio_backend_write_scale(struct iio_backend *back,
++			    const struct iio_chan_spec *chan, int val,
++			    int val2, unsigned int tone_idx)
++{
++	return iio_backend_op_call(back, write_scale, chan, val, val2,
++				   tone_idx);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_write_scale, IIO_BACKEND);
++
++int iio_backend_read_frequency(struct iio_backend *back,
++			       const struct iio_chan_spec *chan, int *val,
++			       int *val2, unsigned int tone_idx,
++			       unsigned long long sample_freq)
++{
++	return iio_backend_op_call(back, read_frequency, chan, val, val2,
++				   tone_idx, sample_freq);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_read_frequency, IIO_BACKEND);
++
++int iio_backend_write_frequency(struct iio_backend *back,
++				const struct iio_chan_spec *chan, int val,
++				int val2, unsigned int tone_idx,
++				unsigned long long sample_freq)
++{
++	return iio_backend_op_call(back, write_frequency, chan, val, val2,
++				   tone_idx, sample_freq);
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_write_frequency, IIO_BACKEND);
++
+ static void iio_backend_release(void *arg)
+ {
+ 	struct iio_backend *back = arg;
+diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+index a6d79381866e..c5bcbe89cb64 100644
+--- a/include/linux/iio/backend.h
++++ b/include/linux/iio/backend.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/types.h>
+ 
++struct iio_chan_spec;
+ struct fwnode_handle;
+ struct iio_backend;
+ struct device;
+@@ -15,6 +16,12 @@ enum iio_backend_data_type {
+ 	IIO_BACKEND_DATA_TYPE_MAX
+ };
+ 
++enum iio_backend_data_source {
++	IIO_BACKEND_INTERNAL_CW,
++	IIO_BACKEND_EXTERNAL,
++	IIO_BACKEND_DATA_SOURCE_MAX
++};
++
+ /**
+  * struct iio_backend_data_fmt - Backend data format
+  * @type:		Data type.
+@@ -45,10 +52,33 @@ struct iio_backend_ops {
+ 	int (*chan_disable)(struct iio_backend *back, unsigned int chan);
+ 	int (*data_format_set)(struct iio_backend *back, unsigned int chan,
+ 			       const struct iio_backend_data_fmt *data);
++	int (*data_source_set)(struct iio_backend *back, unsigned int chan,
++			       enum iio_backend_data_source data);
++
+ 	struct iio_buffer *(*request_buffer)(struct iio_backend *back,
+ 					     struct iio_dev *indio_dev);
+ 	void (*free_buffer)(struct iio_backend *back,
+ 			    struct iio_buffer *buffer);
++	int (*read_phase)(struct iio_backend *back,
++			  const struct iio_chan_spec *chan, int *val, int *val2,
++			  unsigned int tone_idx);
++	int (*write_phase)(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int val, int val2,
++			   unsigned int tone_idx);
++	int (*read_scale)(struct iio_backend *back,
++			  const struct iio_chan_spec *chan, int *val, int *val2,
++			  unsigned int tone_idx);
++	int (*write_scale)(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int val, int val2,
++			   unsigned int tone_idx);
++	int (*read_frequency)(struct iio_backend *back,
++			      const struct iio_chan_spec *chan, int *val,
++			      int *val2, unsigned int tone_idx,
++			      unsigned long long sample_freq);
++	int (*write_frequency)(struct iio_backend *back,
++			       const struct iio_chan_spec *chan, int val,
++			       int val2, unsigned int tone_idx,
++			       unsigned long long sample_freq);
+ };
+ 
+ int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
+@@ -56,10 +86,31 @@ int iio_backend_chan_disable(struct iio_backend *back, unsigned int chan);
+ int devm_iio_backend_enable(struct device *dev, struct iio_backend *back);
+ int iio_backend_data_format_set(struct iio_backend *back, unsigned int chan,
+ 				const struct iio_backend_data_fmt *data);
++int iio_backend_data_source_set(struct iio_backend *back, unsigned int chan,
++				enum iio_backend_data_source data);
+ int devm_iio_backend_request_buffer(struct device *dev,
+ 				    struct iio_backend *back,
+ 				    struct iio_dev *indio_dev);
+-
++int iio_backend_read_phase(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int *val,
++			   int *val2, unsigned int tone_idx);
++int iio_backend_write_phase(struct iio_backend *back,
++			    const struct iio_chan_spec *chan, int val,
++			    int val2, unsigned int tone_idx);
++int iio_backend_read_scale(struct iio_backend *back,
++			   const struct iio_chan_spec *chan, int *val,
++			   int *val2, unsigned int tone_idx);
++int iio_backend_write_scale(struct iio_backend *back,
++			    const struct iio_chan_spec *chan, int val,
++			    int val2, unsigned int tone_idx);
++int iio_backend_read_frequency(struct iio_backend *back,
++			       const struct iio_chan_spec *chan, int *val,
++			       int *val2, unsigned int tone_idx,
++			       unsigned long long sample_freq);
++int iio_backend_write_frequency(struct iio_backend *back,
++				const struct iio_chan_spec *chan, int val,
++				int val2, unsigned int tone_idx,
++				unsigned long long sample_freq);
+ void *iio_backend_get_priv(const struct iio_backend *conv);
+ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name);
+ struct iio_backend *
 
 -- 
 2.43.0

@@ -1,65 +1,59 @@
-Return-Path: <linux-iio+bounces-2697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1020E8590E0
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:25:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59398590EA
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612CE282415
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7239D28278E
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6A47CF25;
-	Sat, 17 Feb 2024 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EED7CF1E;
+	Sat, 17 Feb 2024 16:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6GDmaEz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgvXsaS1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72503657AF;
-	Sat, 17 Feb 2024 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5487C0A4;
+	Sat, 17 Feb 2024 16:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708187126; cv=none; b=iFFhhUn9qp+4A6HYnqfPLE7Euz5JWeP1jCNvR7O/P7ui8R8pRXB68V//GoM7OWML/uOux9+pI0dqyMDkma+2dKCDJeVyjOlaU6kYAn96kw/xpD7/WHkBEMXlRPhwMPW0/AMSyDqCakCmKD2GuADv2aB+4XAKcFGa4BiV83TS+Z0=
+	t=1708187256; cv=none; b=jnLp4roxueIUY/LPZ/5DqP9noP4WkpYcDj9EZxMXjEkajGw0OU+Igd/L4QjQRdAJ4PUR42LrurHDFQjwRwPQx3E2ePFehGnLX2jKAVwO5O3wsmjkDxy7Or2CTwsg1tNZ66THSgASVNXmuuZITPBeZYp5PdmQLJElxeMGH5l4GTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708187126; c=relaxed/simple;
-	bh=q0KAwiquKdamki/N1WpUyiHvK30Fp2G7BM3OnIa7uko=;
+	s=arc-20240116; t=1708187256; c=relaxed/simple;
+	bh=OxQUJIbmzj1GSzutcw5Ae7+lxbWZuacLVGzXpfA7VVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lf7q/zBOMJZqV0wNN7nTb1fVI7YCWLtusj+fSgfaVj9PFKMMlfWti0dZihEGoAC9I2NKbL3fe7ZVGAJJoGzUdqbsNrSc0CgswtIYrd+wt5r/djCBwpdpvuzKz2hDWHipEdiQPgSAVRgxBQRJnNvx0gahb6XkTyu5NUxElh0b4wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6GDmaEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091D6C433C7;
-	Sat, 17 Feb 2024 16:25:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KJmlGGPOLB2XxYZ+xUiDL+hrCt0bzaoLvTi7n4ScnAIpgLoM7ZtiNE0jKJUcAdB+AjA7XyT6GT4P9Uvqt0xcRlcj2GofdnyCOBdjArh2RnyPpnjoKSYdG8bCDNZ3ys1/jxPLBR/6Xc2Mc/i7dKdPLF0vZ4hgzbaFiHtFUUQjui4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgvXsaS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD62C433C7;
+	Sat, 17 Feb 2024 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708187126;
-	bh=q0KAwiquKdamki/N1WpUyiHvK30Fp2G7BM3OnIa7uko=;
+	s=k20201202; t=1708187256;
+	bh=OxQUJIbmzj1GSzutcw5Ae7+lxbWZuacLVGzXpfA7VVw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=e6GDmaEzwJjaM2xsUo57vl7imy+sZ/vyxRer5rVkM0Pz+hGRjEN0JNzo5/8me/mYy
-	 ZHbLebQrvoL1j9oWJ6An2d7vCe5tlL3wPooPjvKnzqe3Ln1dmRBeY/aymnxL5NSxjC
-	 KOTg2s91kb2e4f9p4CKze+drobkZkjYkg85k0R4tdmFtKrR3YoRBcUCnW0Wdp5eZ4I
-	 g1DvmG23tXqTfahmBWH851HyKcsWxmZcjjhWlJPv7PVaFcafh8nGNach3+VX912lTj
-	 NIs8dc0zWMrvNXeWXWWcucdxNstd/uo1oxUbBR2pWEmIOqZBs9MPa0TuTNrwAYzGax
-	 3+xXX0i8GTSHw==
-Date: Sat, 17 Feb 2024 16:25:10 +0000
+	b=PgvXsaS1v8qai/8BwB0Dz7/3XyllpWX4krFIKs2Ct4c0wQnk0i751CtaXMqP7+BBA
+	 DZXpfae8uBz2e9IL+CowZt3L9WuAJmd02uR0/+ge83Lb/TIwaXRM9wy8vXCDVjVp2f
+	 Qp7VuW+vyAgg1tUTR584QRjvX8In1UEuzP0nfhjO+YUZpFEF0ftwnWah9ceaNPnZ2s
+	 k1SblMCTJ3zwyjxlACWeC35Zl/92A/BU4wsnTK2h6cliFVIfGoRgTqnr7QOmJZ2Ngr
+	 VZbqBoaaNjWQxgr05bINKWXJSeeCCOCVF8c69xeYCoDPAVxsDANrh/ehDboG0Pphx2
+	 /K6rXv5azRBLQ==
+Date: Sat, 17 Feb 2024 16:27:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>,
- alexandru.tachici@analog.com, alisa.roman@analog.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
- krzysztof.kozlowski@linaro.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
- robh+dt@kernel.org, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v3 5/5] iio: adc: ad7192: Add AD7194 support
-Message-ID: <20240217162510.5d5d4511@jic23-huawei>
-In-Reply-To: <CAMknhBEtLR1QNEv6HhcW35jiGEkx=srzy41NXt8bJ=gokzoemw@mail.gmail.com>
-References: <20240208172459.280189-1-alisa.roman@analog.com>
-	<20240208172459.280189-6-alisa.roman@analog.com>
-	<CAMknhBHU6k8J_PLCmGYF48S1q3uXByiCwzcd+B3q3Cd-02CUow@mail.gmail.com>
-	<84546728-f0cb-4b38-a71c-e053b9b9278e@gmail.com>
-	<CAMknhBFp-4s+-D8kD9rh0-OCc3gBs3hFX1EZ9ZmOifQOyGgUug@mail.gmail.com>
-	<20240216142158.30e96c53@jic23-huawei>
-	<CAMknhBEtLR1QNEv6HhcW35jiGEkx=srzy41NXt8bJ=gokzoemw@mail.gmail.com>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-kernel@vger.kernel.org, David Laight <David.Laight@aculab.com>,
+ linux-iio@vger.kernel.org
+Subject: Re: [RESEND PATCH v2] iio: gts-helper: Fix division loop
+Message-ID: <20240217162724.767f2ab6@jic23-huawei>
+In-Reply-To: <dfe6e5da-b104-4acd-b323-4a7fa980de88@tweaklogic.com>
+References: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
+	<20240216135812.07c9b769@jic23-huawei>
+	<dfe6e5da-b104-4acd-b323-4a7fa980de88@tweaklogic.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,67 +61,123 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Feb 2024 10:57:33 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Sun, 18 Feb 2024 01:09:33 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> On Fri, Feb 16, 2024 at 8:22=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Thu, 15 Feb 2024 11:13:19 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
->=20
-> ...
->=20
-> > >
-> > > Tables 22, 23 and 24 in the AD7194 datasheet show that this chip is
-> > > much more configurable than AD7192 when it comes to assigning
-> > > channels. There are basically no restrictions on which inputs can be
-> > > used together. So I am still confident that my suggestion is the way
-> > > to go for AD7194. (Although I didn't actually try it on hardware, so
-> > > can't be 100% confident. But at least 90% confident :-p) =20
-> >
-> > You would have to define a channel number for aincom.  There is an expl=
-icit
-> > example in the datasheet of it being at 2.5V using a reference supply.
-> >
-> > I wonder what expectation here is.  Allways a reference regulator on th=
-at pin, or
-> > an actually varying input? Maybe in long term we want to support both
-> > options - so if aincom-supply is provided these are single ended with
-> > an offset, but if not they are differential channels between channel X =
-and
-> > channel AINCOM.
-> >
-> > Note though that this mode is described a pseudo differential which nor=
-mally
-> > means a fixed voltage on the negative.
-> >
-> > So gut feeling from me is treat them as single ended and add an
-> > aincom-supply + the offsets that result if that is provided in DT and
-> > voltage from it is non 0. =20
->=20
-> Calling AINCOM a supply doesn't sound right to me since usually this
-> signal is coming somewhere external, i.e. you have a twisted pair
-> connected to AIN1 and AINCOM going to some signal source that may be
-> hot-pluggable and not known at compile time. As an example, if AINCOM
-> was modeled as a supply, then we would have to change the device tree
-> every time we changed the voltage offset on the signal generator while
-> we are testing using an evaluation board.
+> On 17/2/24 00:28, Jonathan Cameron wrote:
+> > On Mon, 12 Feb 2024 13:20:09 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> The loop based 64bit division may run for a long time when dividend is a
+> >> lot bigger than the divider. Replace the division loop by the
+> >> div64_u64() which implementation may be significantly faster.
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+> >>
+> >> ---
+> >> This is a resend. Only change is the base which is now the v6.8-rc4 and
+> >> not the v6.8-rc1  
+> > Given I'm not rushing this in, it is going via my togreg tree, so the
+> > rebase wasn't really helpful (thankfully didn't stop it applying).
+> > Would have been fine to send a ping response to the first posting of it.
+> > 
+> > I was leaving some time for David or Subhajit to have time to take
+> > another look, but guess they are either happy with this or busy.
+> > 
+> > Applied to the togreg branch of iio.git and pushed out as testing for
+> > all the normal reasons.
+> > 
+> > Jonathan
+> >   
+> >>
+> >> This change was earlier applied and reverted as it confusingly lacked of
+> >> the removal of the overflow check (which is only needed when we do
+> >> looping "while (full > scale * (u64)tmp)". As this loop got removed, the
+> >> check got also obsolete and leaving it to the code caused some
+> >> confusion.
+> >>
+> >> So, I marked this as a v2, where v1 is the reverted change discussed
+> >> here:
+> >> https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi/
+> >>
+> >> Revision history:
+> >> v1 => v2:
+> >>   - Drop the obsolete overflow check
+> >>   - Rebased on top of the v6.8-rc4
+> >>
+> >> iio: gts: loop fix fix
+> >> ---
+> >>   drivers/iio/industrialio-gts-helper.c | 15 +--------------
+> >>   1 file changed, 1 insertion(+), 14 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> >> index 7653261d2dc2..b51eb6cb766f 100644
+> >> --- a/drivers/iio/industrialio-gts-helper.c
+> >> +++ b/drivers/iio/industrialio-gts-helper.c
+> >> @@ -34,24 +34,11 @@
+> >>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+> >>   {
+> >>   	u64 full = max;
+> >> -	int tmp = 1;
+> >>   
+> >>   	if (scale > full || !scale)
+> >>   		return -EINVAL;
+> >>   
+> >> -	if (U64_MAX - full < scale) {
+> >> -		/* Risk of overflow */
+> >> -		if (full - scale < scale)
+> >> -			return 1;
+> >> -
+> >> -		full -= scale;
+> >> -		tmp++;
+> >> -	}
+> >> -
+> >> -	while (full > scale * (u64)tmp)
+> >> -		tmp++;
+> >> -
+> >> -	return tmp;
+> >> +	return div64_u64(full, scale);
+> >>   }
+> >>   
+> >>   /**  
+> Hi Matti and Jonathan,
+> 
+> I somehow missed testing this patch earlier. The above patch works fine with apds9306 v7 driver(which work in progress!).
+> There are no errors.
+> My test script is simple:
+> #!/bin/bash
+> D=0
+> S=`cat /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale_available`
+> 
+> for s in $S; do
+> 	echo $s
+> 	echo $s > /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale
+> 	sleep 5
+> done
+> 
+> One question - if I test a patch like this, do I put a "Tested-by" tag or just mention that I have tested it?
+Both are useful - so thanks for this email.
 
-We tend to stick away from designing features to support testing with
-devboards where external wiring is involved because anything could be
-wired up there. (Examples are things like shunt resistors - normally
-they are DT only) So sometimes it's a bit painful to work with such boards.
-The main focus has to be production devices or at least stable set ups
-where a fixed DT is sufficient.
+Preference for a formal tag though as that goes in the git commit and we have
+a convenient record that both says you tested it + that we should make sure
+to cc you on related changes as you may well be in a position to test those
+as well!
 
-So I'm more interested in focusing on production device use cases.
-Do we have an information on how this is this used in those environments?
+Thanks,
 
 Jonathan
+
+> 
+> Regards,
+> Subhajit Ghosh
+> 
+> >>
+> >> base-commit: 841c35169323cd833294798e58b9bf63fa4fa1de  
+> >   
+> 
 
 

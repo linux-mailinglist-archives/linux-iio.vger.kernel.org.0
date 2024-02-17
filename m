@@ -1,62 +1,65 @@
-Return-Path: <linux-iio+bounces-2696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B988590D6
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1020E8590E0
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CC991C20E51
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612CE282415
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21DE7CF38;
-	Sat, 17 Feb 2024 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6A47CF25;
+	Sat, 17 Feb 2024 16:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WN1jiU2y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6GDmaEz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B77C6DB;
-	Sat, 17 Feb 2024 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72503657AF;
+	Sat, 17 Feb 2024 16:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708186829; cv=none; b=ZDzaJpuz06o+W+wDO6TlpsyvaOklLLq3WcWxe514/vTY+rrNkEteTCUQPqJjwmPwqNgVE62MJ5Dz6YmnFXBnrLeT2+gIbaq2On6wGWxCA9+ZiVmgHgmHP+LvXkrnyuFIScZ3O88Yi6TFMcxwr1QKGeg5qUzNBnnWR80mouwtArE=
+	t=1708187126; cv=none; b=iFFhhUn9qp+4A6HYnqfPLE7Euz5JWeP1jCNvR7O/P7ui8R8pRXB68V//GoM7OWML/uOux9+pI0dqyMDkma+2dKCDJeVyjOlaU6kYAn96kw/xpD7/WHkBEMXlRPhwMPW0/AMSyDqCakCmKD2GuADv2aB+4XAKcFGa4BiV83TS+Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708186829; c=relaxed/simple;
-	bh=pinq5hJ41Wz3DzVBX9u6x2N9ZPrqhuJR0IdquEK3YuI=;
+	s=arc-20240116; t=1708187126; c=relaxed/simple;
+	bh=q0KAwiquKdamki/N1WpUyiHvK30Fp2G7BM3OnIa7uko=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RUhPwHc85xvh48HQsWrvGtimbVOzXqTGfMFvUyvPilZDa9zS2em1pV9P9qbdnx4dAIzYajxdj/j6dzO2GQGC0YdM+PV4Yd3pHPSrSgUxsuZwG9niYOnARXNVaVidZK1TuUngt8Iu6jJPsOBjxzksstZWBXPDiM4Ij1C2X4kuimM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WN1jiU2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853C5C433C7;
-	Sat, 17 Feb 2024 16:20:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lf7q/zBOMJZqV0wNN7nTb1fVI7YCWLtusj+fSgfaVj9PFKMMlfWti0dZihEGoAC9I2NKbL3fe7ZVGAJJoGzUdqbsNrSc0CgswtIYrd+wt5r/djCBwpdpvuzKz2hDWHipEdiQPgSAVRgxBQRJnNvx0gahb6XkTyu5NUxElh0b4wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6GDmaEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091D6C433C7;
+	Sat, 17 Feb 2024 16:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708186829;
-	bh=pinq5hJ41Wz3DzVBX9u6x2N9ZPrqhuJR0IdquEK3YuI=;
+	s=k20201202; t=1708187126;
+	bh=q0KAwiquKdamki/N1WpUyiHvK30Fp2G7BM3OnIa7uko=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WN1jiU2yBqMjqJfbIuz2kzJlq7oSN/6cZY1QrbEXNDMckrfF3fiEkJwk88/arbiKd
-	 4z3bqFXNKrHdtFFJUUTxDJ2M0B3sTfZ9t8/rTBMrjnaInQI9xvgfPdGep/q9sQXimK
-	 h2XkRSCiqtvjIB7xzzBQZajg9cxpcWlXTRCZ4OexvTYWVzUVf1mqZNHnf0dwSfnUJ/
-	 MQq40GF95Vo5TADjaFozy+wh5QR7b2MA4A31lHJEp5sxtkrTsHEHiqbqSF6zb+HGpT
-	 CwVhHBd9pBjcqI2FAjNfHKWIqxkVDxKdd7AtB4iZoZHACH7nI/yNRYRoibFtpBo2/b
-	 SSb9eiAk6KSzg==
-Date: Sat, 17 Feb 2024 16:20:14 +0000
+	b=e6GDmaEzwJjaM2xsUo57vl7imy+sZ/vyxRer5rVkM0Pz+hGRjEN0JNzo5/8me/mYy
+	 ZHbLebQrvoL1j9oWJ6An2d7vCe5tlL3wPooPjvKnzqe3Ln1dmRBeY/aymnxL5NSxjC
+	 KOTg2s91kb2e4f9p4CKze+drobkZkjYkg85k0R4tdmFtKrR3YoRBcUCnW0Wdp5eZ4I
+	 g1DvmG23tXqTfahmBWH851HyKcsWxmZcjjhWlJPv7PVaFcafh8nGNach3+VX912lTj
+	 NIs8dc0zWMrvNXeWXWWcucdxNstd/uo1oxUbBR2pWEmIOqZBs9MPa0TuTNrwAYzGax
+	 3+xXX0i8GTSHw==
+Date: Sat, 17 Feb 2024 16:25:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org, Stefan Popa <stefan.popa@analog.com>,
- devicetree@vger.kernel.org, Julien Stephan <jstephan@baylibre.com>
-Subject: Re: [PATCH v4 2/2] iio: adc: ad7380: new driver for AD7380 ADCs
-Message-ID: <20240217162014.17033d64@jic23-huawei>
-In-Reply-To: <CAMknhBGg0hHXrd3K92tgHHTnfbk7dLAMvtTSZff1P-C3=9nFaw@mail.gmail.com>
-References: <20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com>
-	<20240110-ad7380-mainline-v4-2-93a1d96b50fa@baylibre.com>
-	<CAMknhBGg0hHXrd3K92tgHHTnfbk7dLAMvtTSZff1P-C3=9nFaw@mail.gmail.com>
+Cc: Alisa-Dariana Roman <alisadariana@gmail.com>,
+ alexandru.tachici@analog.com, alisa.roman@analog.com, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ krzysztof.kozlowski@linaro.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+ robh+dt@kernel.org, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 5/5] iio: adc: ad7192: Add AD7194 support
+Message-ID: <20240217162510.5d5d4511@jic23-huawei>
+In-Reply-To: <CAMknhBEtLR1QNEv6HhcW35jiGEkx=srzy41NXt8bJ=gokzoemw@mail.gmail.com>
+References: <20240208172459.280189-1-alisa.roman@analog.com>
+	<20240208172459.280189-6-alisa.roman@analog.com>
+	<CAMknhBHU6k8J_PLCmGYF48S1q3uXByiCwzcd+B3q3Cd-02CUow@mail.gmail.com>
+	<84546728-f0cb-4b38-a71c-e053b9b9278e@gmail.com>
+	<CAMknhBFp-4s+-D8kD9rh0-OCc3gBs3hFX1EZ9ZmOifQOyGgUug@mail.gmail.com>
+	<20240216142158.30e96c53@jic23-huawei>
+	<CAMknhBEtLR1QNEv6HhcW35jiGEkx=srzy41NXt8bJ=gokzoemw@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,35 +70,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 16 Feb 2024 14:34:01 -0600
+On Fri, 16 Feb 2024 10:57:33 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, Jan 10, 2024 at 2:29=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
+> On Fri, Feb 16, 2024 at 8:22=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
 > >
-> > This adds a new driver for the AD7380 family ADCs.
-> >
-> > The driver currently implements basic support for the AD7380, AD7381,
-> > AD7383, and AD7384 2-channel differential ADCs. Support for additional
-> > single-ended and 4-channel chips that use the same register map as well
-> > as additional features of the chip will be added in future patches.
+> > On Thu, 15 Feb 2024 11:13:19 -0600
+> > David Lechner <dlechner@baylibre.com> wrote:
 > > =20
 >=20
-> Hi Jonathan,
+> ...
 >=20
-> We have some additional features to add to this driver we are working
-> on that look like they might affect userspace. Can we hold off on
-> sending this one to Greg for 6.9? That way we will have more time to
-> sort that out without having to worry about breaking userspace.
+> > >
+> > > Tables 22, 23 and 24 in the AD7194 datasheet show that this chip is
+> > > much more configurable than AD7192 when it comes to assigning
+> > > channels. There are basically no restrictions on which inputs can be
+> > > used together. So I am still confident that my suggestion is the way
+> > > to go for AD7194. (Although I didn't actually try it on hardware, so
+> > > can't be 100% confident. But at least 90% confident :-p) =20
+> >
+> > You would have to define a channel number for aincom.  There is an expl=
+icit
+> > example in the datasheet of it being at 2.5V using a reference supply.
+> >
+> > I wonder what expectation here is.  Allways a reference regulator on th=
+at pin, or
+> > an actually varying input? Maybe in long term we want to support both
+> > options - so if aincom-supply is provided these are single ended with
+> > an offset, but if not they are differential channels between channel X =
+and
+> > channel AINCOM.
+> >
+> > Note though that this mode is described a pseudo differential which nor=
+mally
+> > means a fixed voltage on the negative.
+> >
+> > So gut feeling from me is treat them as single ended and add an
+> > aincom-supply + the offsets that result if that is provided in DT and
+> > voltage from it is non 0. =20
+>=20
+> Calling AINCOM a supply doesn't sound right to me since usually this
+> signal is coming somewhere external, i.e. you have a twisted pair
+> connected to AIN1 and AINCOM going to some signal source that may be
+> hot-pluggable and not known at compile time. As an example, if AINCOM
+> was modeled as a supply, then we would have to change the device tree
+> every time we changed the voltage offset on the signal generator while
+> we are testing using an evaluation board.
 
-Ok. Hopefully rebasing my tree won't cause others too many downstream
-problems. Generally I only do this if there is an invalid tag or similar
-that must be fixed.  There is normally a window of a weekish
-between me picking it up and pushing out for linux-next to pick up and
-hopefully issues like this get spotted in that window.
-Ah well, sometimes things don't work out how we would like them to.
+We tend to stick away from designing features to support testing with
+devboards where external wiring is involved because anything could be
+wired up there. (Examples are things like shunt resistors - normally
+they are DT only) So sometimes it's a bit painful to work with such boards.
+The main focus has to be production devices or at least stable set ups
+where a fixed DT is sufficient.
 
-Dropped the 3 patches (original driver and a fix) from the togreg branch.
+So I'm more interested in focusing on production device use cases.
+Do we have an information on how this is this used in those environments?
 
 Jonathan
+
 

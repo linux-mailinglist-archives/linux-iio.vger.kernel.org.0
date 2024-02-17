@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B21859119
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2645285911B
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7862827AB
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:44:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5A3E2823C5
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4141B7D3F4;
-	Sat, 17 Feb 2024 16:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE4C7D3F1;
+	Sat, 17 Feb 2024 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mhZrY0Yp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYctr/8o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4DF7D3EC;
-	Sat, 17 Feb 2024 16:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773F7D402;
+	Sat, 17 Feb 2024 16:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708188247; cv=none; b=j7dR8RIZI+eCIDqlOwOftzZC8G0R2rG/mj/DUzdCrfwFJTTYABn0jfbpTNiOsSRVIbkiJiidrfxAZWcZxgfQAVcpVnQl/zGp7a5pda/G3EXwn8Ab5FSbuD9+eGzxtvgURZdNQ0y5by8dy16SwC3yxZl2iWaONEd7z4WQrsP3GdY=
+	t=1708188252; cv=none; b=Q4Hz2RvVAyyvqZL226tCUxVtXg7bRxUCqN+9q5fHy+3lMArcX6KdYTq8aD0k5e8M5MlZvr9b/SBIFmBtGUUYIaYM/ELwesgYP+LHUGMIknUPoKBK1jef/7T/e6mpNlAh+MPaty2M/o4EZyXBLPgqHlXYhQL296GTRnqUMdfprCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708188247; c=relaxed/simple;
-	bh=Ds74Qrbcn3I42aYg16TeBAqLINL89sm7BvmJAC5S5nc=;
+	s=arc-20240116; t=1708188252; c=relaxed/simple;
+	bh=Nl9qYxjXOLsowWrciGmKveA07CHxDugmQszc3tjdG3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncHJ1dz/g5WcYndEPqD8uPgYQNZHa9rnWQEKmnR2fv6glg826GdJub22CnlZWd7g9cH+1EU+7vpewBk2FHa4JaJ5Ajh0WEDmoAzJbK4Nu2CEkWz/vSeJDnP4OkWSLDEk7n/BEWYRvPv+qez7lDulaU3Uvr3ithecf4l6E/jTy4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mhZrY0Yp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505A9C433F1;
-	Sat, 17 Feb 2024 16:44:01 +0000 (UTC)
+	 MIME-Version; b=lzE4P8vo3wg52c7viy7ZwVxgc8j48dUMsd84aiwiN5JbkRFuxWrr8kfcVisSm0lyI01Wy/eEbtI6+y/yW/TJvscio/u3hg7jdoCmKbAbghi3k7RHy65Sh0tueGBov57lw2xGxmBy3S9pUituEs1OBcaYSifcBDOYE+blcC4AZtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYctr/8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16F7C43399;
+	Sat, 17 Feb 2024 16:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708188246;
-	bh=Ds74Qrbcn3I42aYg16TeBAqLINL89sm7BvmJAC5S5nc=;
+	s=k20201202; t=1708188251;
+	bh=Nl9qYxjXOLsowWrciGmKveA07CHxDugmQszc3tjdG3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhZrY0YphxOePIFolDO2R/9Qr7oV6yp/hdN5OLaYrG/aMQLYdWuENssQlLQ+ejzQd
-	 Sjg3xRN1IZU1RFmqKleX/YfDBYBXqeoqguWxEwDARMFGKUa6MqG6PTYtmarfCDEG73
-	 ZKc6qNJ7rpL3lqp5u65OjgbFFJhk07lOH89GvZdkFfigbFsuheuZfvNSa/N5hC17WT
-	 P0uuDjy9IEtLArQQI14kvpXeHglHmg94kVEyAwU420bScq6agqYN3tUnwScwEYuF7e
-	 oaIPB4vnEGr18pgIrfLCtEmSYTCpNBUHBNv2oLX1/KBGVa9KOsj2z2dnr6xjiQiAWc
-	 fipNvri1SBFcA==
+	b=AYctr/8oA3qLGO8TJuzzwXVBOvh2W6MzSttM4W1awpEuemzgZ0RhhxXA43RTFoghl
+	 L0tkNSYRvLcuBm7OyNpU95blNJZegPqvHunoLkg7qlzV7pvviBTY1zlXx96di4SM8T
+	 83zjUIbj+wZrKxCDJudtmFaM+g5zVIvkRCMtIEQ2gbfXlSjTZveZnMPkqrL4XQmZTr
+	 NleA2Un/MgSV/+SdZn4b2vL3KlfKZkjh/jQL+zDh5+HI47yWOZt4Kp5uK+Ebb9uQtG
+	 HKiBPW7QvI0Ekf7BZqN0u9Dei0qM+azKEV73vClKeIq9tA4YOkZ8vCr9AqnmQj1JuR
+	 +dEQJzJUrH51g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -67,9 +67,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 10/15] iio: adc: ti-ads1015: Use device_for_each_child_node_scoped()
-Date: Sat, 17 Feb 2024 16:42:44 +0000
-Message-ID: <20240217164249.921878-11-jic23@kernel.org>
+Subject: [PATCH v4 11/15] iio: adc: ti-ads131e08: Use device_for_each_child_node_scoped()
+Date: Sat, 17 Feb 2024 16:42:45 +0000
+Message-ID: <20240217164249.921878-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240217164249.921878-1-jic23@kernel.org>
 References: <20240217164249.921878-1-jic23@kernel.org>
@@ -87,44 +87,66 @@ Switching to the _scoped() version removes the need for manual
 calling of fwnode_handle_put() in the paths where the code
 exits the loop early. In this case that's all in error paths.
 
-Cc: Marek Vasut <marex@denx.de>
+Cc: Tomislav Denis <tomislav.denis@avl.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti-ads1015.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/adc/ti-ads131e08.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 6ae967e4d8fa..d3363d02f292 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ads1015_data *data = iio_priv(indio_dev);
- 	struct device *dev = &client->dev;
+diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
+index fcfc46254313..f653654f7c5d 100644
+--- a/drivers/iio/adc/ti-ads131e08.c
++++ b/drivers/iio/adc/ti-ads131e08.c
+@@ -694,7 +694,6 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 	struct ads131e08_channel_config *channel_config;
+ 	struct device *dev = &st->spi->dev;
+ 	struct iio_chan_spec *channels;
 -	struct fwnode_handle *node;
- 	int i = -1;
+ 	unsigned int channel, tmp;
+ 	int num_channels, i, ret;
  
+@@ -736,10 +735,10 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 		return -ENOMEM;
+ 
+ 	i = 0;
 -	device_for_each_child_node(dev, node) {
 +	device_for_each_child_node_scoped(dev, node) {
- 		u32 pval;
- 		unsigned int channel;
- 		unsigned int pga = ADS1015_DEFAULT_PGA;
-@@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			pga = pval;
- 			if (pga > 5) {
- 				dev_err(dev, "invalid gain on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
+ 		ret = fwnode_property_read_u32(node, "reg", &channel);
+ 		if (ret)
+-			goto err_child_out;
++			return ret;
+ 
+ 		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
+ 		if (ret) {
+@@ -747,7 +746,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 		} else {
+ 			ret = ads131e08_pga_gain_to_field_value(st, tmp);
+ 			if (ret < 0)
+-				goto err_child_out;
++				return ret;
+ 
+ 			channel_config[i].pga_gain = tmp;
  		}
-@@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			data_rate = pval;
- 			if (data_rate > 7) {
- 				dev_err(dev, "invalid data_rate on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
+@@ -758,7 +757,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 		} else {
+ 			ret = ads131e08_validate_channel_mux(st, tmp);
+ 			if (ret)
+-				goto err_child_out;
++				return ret;
+ 
+ 			channel_config[i].mux = tmp;
  		}
+@@ -784,10 +783,6 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
+ 	st->channel_config = channel_config;
+ 
+ 	return 0;
+-
+-err_child_out:
+-	fwnode_handle_put(node);
+-	return ret;
+ }
+ 
+ static void ads131e08_regulator_disable(void *data)
 -- 
 2.43.2
 

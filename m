@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-2694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F17A859006
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 15:15:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2CC859021
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 15:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54AC41C2145B
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 14:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DAA91F21879
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 14:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73DF7B3DE;
-	Sat, 17 Feb 2024 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8A37B3CC;
+	Sat, 17 Feb 2024 14:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OwAzKY75"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="PANa8sru"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85AE7AE7B
-	for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 14:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA44D149E03
+	for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 14:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708179307; cv=none; b=MxNQJecJb/pvTOHma0MyywZjEBagg+C9RtcsHH910Vmwk0CI+B1FrFNras6StTN8+ukSEcb0MzTJuJuv+AlLnVEk8j6FPemu7GWBvMAoy8t4918RU09uXQLOEOD947dMO57vOWJm3zp/KxIVbOmetHTcStZ1XTkX0U3Zkz+HecU=
+	t=1708180781; cv=none; b=N0zbtPay68ZTLtfk/I/qeAk10Q1O8mdkZBLKmm1fSImn2dtXVAkxEAVAZWy/2s3Q/QPPP0BPOfrEI9lgX9fpavQRHCip+MsoU8n+IUB9Pdfks1OThIlQ1Xlk3Wkm674cPn9nvuqo8HsppDAJAGiQ0a99pWdRCmLN9USZ3AH4hkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708179307; c=relaxed/simple;
-	bh=pTipow7I3Kkeqq3ABEH48dc3Yx9zuR0E7IBfrm3mp3s=;
+	s=arc-20240116; t=1708180781; c=relaxed/simple;
+	bh=xWWAkwL0hz4hu8Jh3YaTF/1bFJqdVShaDpWcm63XY2U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LIT7rOaNEzAzdmNLtlwRiDM7xfQ9fNF9ktdgrayJuusCPyZ2PMJ0HmKNz31er0bDB2Mj0/MykrB3ic4ms52e8/9+jSaPJ1ak6miZt8R4Jkt/YGLywEJ9xy3ZKvb0+k9dLFokOn8MSbtfL7hL3nR1klMSYREGZ1LSRzS/+48si2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OwAzKY75; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d22b8c6e0dso5634691fa.2
-        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 06:15:05 -0800 (PST)
+	 In-Reply-To:Content-Type; b=MBZOT//8bVfd/8fk30dRyW6BflqM4ua19KF8uqcsxFr7IUeH8ljc61NIcQaQ04wfRiURxMFkaGKoV6bGhyxNld2n5xsus/h//anwgPUDknMjDTz48Nf7G98o+wofLeh6DG5Q/I958OZv3mQHS7KlkySO7IgNQ6fxpl2EAQIlP0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=PANa8sru; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6da9c834646so2700628b3a.3
+        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 06:39:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708179304; x=1708784104; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=tweaklogic.com; s=google; t=1708180779; x=1708785579; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tLYfaLXRxxn+y7DbCverDBVIQ3d96X6WrhKz0IJENYs=;
-        b=OwAzKY75HYvgQRsw+2suCW9pb7A4ugndFH3FPMWYb9a8tBpcja7Wa3UTlW23OHy6vu
-         bek8QTyb4cwWFOJV/ZB6xUkKTEPbDsBf8ZukOuXFnKzjIjSqqfl0udwlvLJtubLMz0HF
-         dHg+YFlRJ6ZOOHlCMnjHMK0hp/Hu7jukvElSp92p4SP/EYnwn24s4Ljc9iccN6bY4EeC
-         6mtCJDrooQ5/xWQ/oD9UoC3Py8qUbUCH89hyAn7Db7zjlLmgNHth9KeHS3l1EfQFnNbg
-         JeG8pHSq/oHzU7+aLYkMmx3MWmT9kPChSyJEjM95eEwQViqEVBqSUcfOPWZk5LrSRj1t
-         gcqQ==
+        bh=Snv5IU+ADbcqgOjycYAOmXHtXMcTl5Y5BUfYBZJWwIg=;
+        b=PANa8sruRbDv1u1RX0i4Py3Kum7c4V+fkE0skrMnyP0J+rhT4d1dXfcX4j/8uSpLoS
+         18MjyajSDSsHbK998T2wlaGdSppt2k/eIkGrDRkVsXt0322sbiFHLDQl1KMQ0O6sTz6K
+         CZAKqQXkhLgm0nvbzDBD99PyI6J4ApEE5b3kqOxZzcQvYSOdwFzhawGVOM+CUThNf6mI
+         SG1Gy/c5zOXyhHJGJsXGk7OIPZB47vYh+/l0jYPs0hztlLvUjzkr0IBII49GeWbXdDTN
+         kiBi/S1k5gx05WHo6l1CVS7i2FBDez/T6ot9Pz4O8HJKK0EJMA6m92fCQWCNdk/p0LJl
+         hgfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708179304; x=1708784104;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1708180779; x=1708785579;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tLYfaLXRxxn+y7DbCverDBVIQ3d96X6WrhKz0IJENYs=;
-        b=jC0M3PbWsZRyhLhOw8dm4zxcshi8/c9pEX+g+gMUQSZLoQ0/NZDdbdbbQKTIM3CpQM
-         9LrSTE+1YMTO7S2P7s82xsHZxgqYZzebYAL2oeXUJQEP4u8UTGIBYnFnAIBPwEbaxyzP
-         mUt7ginHC8ySzOtEz8gyT0yc860psS3V5xfYzHGX8D/kLVYnTZ1imjD9fo9me5cMcf0d
-         9qz47hNd8Ukn7b28W1dyHanGSiZ/NjUzRre1uggKTMUxlRPYMebE2kJ6e5HsUrXQ+i+0
-         T0dA2c1rGk67i94cnzRFTIgFS6Azpf3sERin6JqfEr19hvYYLSff6KLwPsjVGNdiau1C
-         9cjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUm/82e5fIMaYIG4Yncj2PgdwejtdIuGjnsfcLr7UOQnzrDr8hXlM2Si8cSF79QaBnp8xNPSouGWLzzNBkMoBeoWqr2Bqdf1XWU
-X-Gm-Message-State: AOJu0YwkJ7U/UsYEL+XWcKRblJvp9qmFWuIJSlgtwIRagLpDi4MhodFf
-	O+eE4eUuYA6CeuXwCM8auSiMlr2VYa7+yXt7ejY2hGaIVhDs6WGuEW+QA4jhSH4=
-X-Google-Smtp-Source: AGHT+IFxTeC+cVhA+SrWzETckP9LhB9fnAiUmlnlwCoSNvgQoo+Q9YRkoSSZpwX4FsJh5EAxuSPkkA==
-X-Received: by 2002:a05:6512:2012:b0:511:a908:4dfd with SMTP id a18-20020a056512201200b00511a9084dfdmr5006002lfb.18.1708179304072;
-        Sat, 17 Feb 2024 06:15:04 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.207.130])
-        by smtp.gmail.com with ESMTPSA id g13-20020aa7d1cd000000b00563ec73bbafsm912809edp.46.2024.02.17.06.15.02
+        bh=Snv5IU+ADbcqgOjycYAOmXHtXMcTl5Y5BUfYBZJWwIg=;
+        b=gRiXWN8MzTHb5rjNKWleDD1B4Gaz815EK9NGd4tnY/Ryax6Gew6ovW/zf09XOY5GWD
+         IebEg1YBfNfv5Bzs4Ym4IPzZlV8Xfyt0ko8XJpZf8uhRClcKRwwbutwXPD3wxLUy9Ay8
+         fHI9vJYRjbsMgeHZ6k/EHhr5MdU9w1e/I2wCEdJZvm6KHTNVwy290Fzif4sbWLHFWfVI
+         7hMcLeQD9YA1c4SxUx4aZch4d4MyqospBO6qAr+oGrnIRg74tdaHi+9jFlW7I2zNSeCK
+         MCx+K9vV+Mv28ch19KzbqsXdg9nkLBilXJ8XRZShTjlSzLhJ32996Kgpe2UJ+0p1WXGr
+         tXDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQtyRrp7hPPgBBf18MamD022HymHkmU3ETO4BiI2zBlHGNhcJaxEqn6ZHjH78shU6q2BCMiY8HcnghXsB+1dWX7CQSwPsYwKhQ
+X-Gm-Message-State: AOJu0YygJErdSQMEQPGky0JUyPWNevptbm9MZ0duJtBHzEnlr+7VripR
+	Bmr5PkYITuU+0xHzDoECacO/y+2gly3hcL+mSp1jmfKjJBte3NbLvE5ytT+jZbE=
+X-Google-Smtp-Source: AGHT+IFxc2PAnZvU9E8M/6kregS4EPVrmZJU0xTOHO0l1B7IbunDfGh0jPEaAt9U+I1OeuRBW+LXfA==
+X-Received: by 2002:a05:6a20:9e48:b0:1a0:60b2:45b with SMTP id mt8-20020a056a209e4800b001a060b2045bmr9980124pzb.6.1708180778915;
+        Sat, 17 Feb 2024 06:39:38 -0800 (PST)
+Received: from [192.168.20.11] ([180.150.113.62])
+        by smtp.gmail.com with ESMTPSA id n14-20020a635c4e000000b005dc2ca5b667sm1454274pgm.10.2024.02.17.06.39.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Feb 2024 06:15:03 -0800 (PST)
-Message-ID: <d79ad5e2-c894-4d22-b0fe-86b2636a46e7@linaro.org>
-Date: Sat, 17 Feb 2024 15:15:01 +0100
+        Sat, 17 Feb 2024 06:39:38 -0800 (PST)
+Message-ID: <dfe6e5da-b104-4acd-b323-4a7fa980de88@tweaklogic.com>
+Date: Sun, 18 Feb 2024 01:09:33 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,86 +76,119 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: adc: Add support for QCOM PMIC5
- Gen3 ADC
+Subject: Re: [RESEND PATCH v2] iio: gts-helper: Fix division loop
+To: Jonathan Cameron <jic23@kernel.org>,
+ Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+ David Laight <David.Laight@aculab.com>, linux-iio@vger.kernel.org
+References: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
+ <20240216135812.07c9b769@jic23-huawei>
 Content-Language: en-US
-To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- andersson@kernel.org, konrad.dybcio@linaro.org, lee@kernel.org,
- andriy.shevchenko@linux.intel.com, daniel.lezcano@linaro.org,
- dmitry.baryshkov@linaro.org
-Cc: lars@metafoo.de, luca@z3ntu.xyz, marijn.suijten@somainline.org,
- agross@kernel.org, sboyd@kernel.org, rafael@kernel.org, rui.zhang@intel.com,
- lukasz.luba@arm.com, linus.walleij@linaro.org, quic_subbaram@quicinc.com,
- quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
- quic_kamalw@quicinc.com, kernel@quicinc.com, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, cros-qcom-dts-watchers@chromium.org
-References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
- <20231231171237.3322376-3-quic_jprakash@quicinc.com>
- <3f812ffa-ec33-448e-b72a-ce698618a8c1@linaro.org>
- <d2f2cb91-983f-48e4-b53a-8af2cd87f3d2@quicinc.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <d2f2cb91-983f-48e4-b53a-8af2cd87f3d2@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20240216135812.07c9b769@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 16/02/2024 12:44, Jishnu Prakash wrote:
-> Hi Krzysztof,
+On 17/2/24 00:28, Jonathan Cameron wrote:
+> On Mon, 12 Feb 2024 13:20:09 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> (Resending this mail for tracking on mailing lists, as it got rejected 
-> from lists the first time due to HTML)
+>> The loop based 64bit division may run for a long time when dividend is a
+>> lot bigger than the divider. Replace the division loop by the
+>> div64_u64() which implementation may be significantly faster.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+>>
+>> ---
+>> This is a resend. Only change is the base which is now the v6.8-rc4 and
+>> not the v6.8-rc1
+> Given I'm not rushing this in, it is going via my togreg tree, so the
+> rebase wasn't really helpful (thankfully didn't stop it applying).
+> Would have been fine to send a ping response to the first posting of it.
+> 
+> I was leaving some time for David or Subhajit to have time to take
+> another look, but guess they are either happy with this or busy.
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing for
+> all the normal reasons.
+> 
+> Jonathan
+> 
+>>
+>> This change was earlier applied and reverted as it confusingly lacked of
+>> the removal of the overflow check (which is only needed when we do
+>> looping "while (full > scale * (u64)tmp)". As this loop got removed, the
+>> check got also obsolete and leaving it to the code caused some
+>> confusion.
+>>
+>> So, I marked this as a v2, where v1 is the reverted change discussed
+>> here:
+>> https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi/
+>>
+>> Revision history:
+>> v1 => v2:
+>>   - Drop the obsolete overflow check
+>>   - Rebased on top of the v6.8-rc4
+>>
+>> iio: gts: loop fix fix
+>> ---
+>>   drivers/iio/industrialio-gts-helper.c | 15 +--------------
+>>   1 file changed, 1 insertion(+), 14 deletions(-)
+>>
+>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+>> index 7653261d2dc2..b51eb6cb766f 100644
+>> --- a/drivers/iio/industrialio-gts-helper.c
+>> +++ b/drivers/iio/industrialio-gts-helper.c
+>> @@ -34,24 +34,11 @@
+>>   static int iio_gts_get_gain(const u64 max, const u64 scale)
+>>   {
+>>   	u64 full = max;
+>> -	int tmp = 1;
+>>   
+>>   	if (scale > full || !scale)
+>>   		return -EINVAL;
+>>   
+>> -	if (U64_MAX - full < scale) {
+>> -		/* Risk of overflow */
+>> -		if (full - scale < scale)
+>> -			return 1;
+>> -
+>> -		full -= scale;
+>> -		tmp++;
+>> -	}
+>> -
+>> -	while (full > scale * (u64)tmp)
+>> -		tmp++;
+>> -
+>> -	return tmp;
+>> +	return div64_u64(full, scale);
+>>   }
+>>   
+>>   /**
+Hi Matti and Jonathan,
 
-I already responded to some other email of yours and I am not going to
-respond twice.
+I somehow missed testing this patch earlier. The above patch works fine with apds9306 v7 driver(which work in progress!).
+There are no errors.
+My test script is simple:
+#!/bin/bash
+D=0
+S=`cat /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale_available`
 
+for s in $S; do
+	echo $s
+	echo $s > /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale
+	sleep 5
+done
 
-Best regards,
-Krzysztof
+One question - if I test a patch like this, do I put a "Tested-by" tag or just mention that I have tested it?
+
+Regards,
+Subhajit Ghosh
+
+>>
+>> base-commit: 841c35169323cd833294798e58b9bf63fa4fa1de
+> 
 
 

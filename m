@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4293B85910B
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:43:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C7285910D
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 680521C20F26
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81016282348
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C607CF39;
-	Sat, 17 Feb 2024 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA46A7D3E1;
+	Sat, 17 Feb 2024 16:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKlIqImO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLP6zvCy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E361CD1F;
-	Sat, 17 Feb 2024 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519F1CD1F;
+	Sat, 17 Feb 2024 16:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708188204; cv=none; b=rnABm05fQo+SSmFbJVrzFxppeHrHxuQZpcYWrhPGqQGl+MkawWAI+Fvc/HUesBfGL+W8U2DlYJjTJ+SykPgYWnL49aJ5TlIYnN683hIDv98HCciyM7lgKIe/z8eG0b/Y6Gy4C2HEod7chw0J00jOx45FgWZC9VqT+Hd9s2FXlvI=
+	t=1708188210; cv=none; b=UxJax9vSOzFW79nGbbXrZFsccHgtHMIzNEY9maaxTNEIqLEL1cvmYkDfTTCC8QG5tFvws5EZKh06f+N56Z280kx9j4wy9RbqNHzgVCpvMcS9mRDzmOC+bgHYRZ5R0iyCXWsG1As/669pz3pS3eLVpSxZteY9rN1w6c/DUdq329o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708188204; c=relaxed/simple;
-	bh=u/kM9IeeMz28QJo6vL+8ec8i5DgcI3ZL6tvQUDPE70k=;
+	s=arc-20240116; t=1708188210; c=relaxed/simple;
+	bh=ftsl0GWv7l+uVhUJMImD4iqguDNAhLTZlsSgDMYqxPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eqw8sQhoYvoDQxWrA+1p659nMCt+f+WaVNFFBcG2m5gqgVXckbghqOHroOx64xKXuWB+7kL4Ml28YnDq6hUJ8++ZA4MUlS0qiRJZfJiEd0Qx+L9GJvz45MRt+bLPfU/mLrcCf2Xg0wGCT/yclw9/JMO+6LZexrdT75qN9l5and4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKlIqImO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE690C43394;
-	Sat, 17 Feb 2024 16:43:17 +0000 (UTC)
+	 MIME-Version; b=PaTOoOHraxFtaSTvfgavubYl35wm6K1j6I8HbPnxjRZEh6aLzGSmc0U9XiSL8IdXbSus0QcPDhfdEXRinSVbwMyxQu2C8ZrGj/Ncy4Cg9Y4YpJPfaQUWRv4tb/Rh09CDgdduw6tqPainrlo1FVYZzoAPdSEe+zu+MSSdb9NlCE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLP6zvCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C2DC433C7;
+	Sat, 17 Feb 2024 16:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708188204;
-	bh=u/kM9IeeMz28QJo6vL+8ec8i5DgcI3ZL6tvQUDPE70k=;
+	s=k20201202; t=1708188210;
+	bh=ftsl0GWv7l+uVhUJMImD4iqguDNAhLTZlsSgDMYqxPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKlIqImOii84D6o4P2Yqf48xlew6qY1E7fk64GA6gtyGg1LEg9Ra1jQ6ygXhiJdt1
-	 Cj2VD+30gYKT8ChAkakW/b6o8i5zTdaq5Hn+pwI6ZL8GBjkUpQAZsRHrCP8/2Jlf+8
-	 5qW1+knVoJId0M+siCkbh1YA5nJepJab3mFY9CgbvhOZeYajb5fRVSLazDjxreFnAE
-	 kwOsHT7OFFJbCsZDKUsamG7bHjWg0Y9kBaifLH+ToCb5aI/UuPPND8v9pX8FBR6oTX
-	 5A9AgdOT/O3acuwHaJyDYsnzJbx6AfkAWoCpufliA+0y2WNaXJaImKr737G79Mh33y
-	 60LxJZMFtd62A==
+	b=eLP6zvCytfjLOb5dLWYtLb/xpGpI7Bybyho0KzH2BGb3A3vFWphNxdIHDHlyU7/dl
+	 AFx3Ld146rZmJgMa7Qod66QZmybwEhuUtA4rWo649KrwCE4v1Jih/hhyLlvzBpS+8G
+	 YIEFRofHPrxwWWuPKr3bQ/MGfKVHshBnb8Zn+4xPMMXyeMjR+KERdysgm0SuF1dggB
+	 PKtcsHVn9IH8yrVcWOxtINLLSHwkY3MjD9/dsAsEYq0b7loK1AkNXrHcTaIEDrqIR+
+	 O7lvclSv9wYYoljm3SbIPJj4FOYfn/e276vnIZKCelJhKUJwm4YcSCZ3LJGXfDi5An
+	 HIWJ6/ZQW69qg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -67,9 +67,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 03/15] iio: temp: ltc2983: Use __free(fwnode_handle) to replace fwnode_handle_put() calls
-Date: Sat, 17 Feb 2024 16:42:37 +0000
-Message-ID: <20240217164249.921878-4-jic23@kernel.org>
+Subject: [PATCH v4 04/15] device property: Introduce device_for_each_child_node_scoped()
+Date: Sat, 17 Feb 2024 16:42:38 +0000
+Message-ID: <20240217164249.921878-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240217164249.921878-1-jic23@kernel.org>
 References: <20240217164249.921878-1-jic23@kernel.org>
@@ -79,269 +79,47 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This use of the new cleanup.h scope based freeing infrastructure allows
-us to exit directly from error conditions and in the good path with
-the reference obtained from fwnode_find_reference() (which may be an error
-pointer) automatically released.
+Similar to recently propose for_each_child_of_node_scoped() this
+new version of the loop macro instantiates a new local
+struct fwnode_handle * that uses the __free(fwnode_handle) auto
+cleanup handling so that if a reference to a node is held on early
+exit from the loop the reference will be released. If the loop
+runs to completion, the child pointer will be NULL and no action will
+be taken.
 
-Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
-Cc: Nuno Sá <nuno.sa@analog.com>
+The reason this is useful is that it removes the need for
+fwnode_handle_put() on early loop exits.  If there is a need
+to retain the reference, then return_ptr(child) or no_free_ptr(child)
+may be used to safely disable the auto cleanup.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-v2: Move the declarations down to where they are assigned.
-This both clearly associates the cleanup with the action that it
-is cleaning up and avoid potential future missordering of cleanup.
----
- drivers/iio/temperature/ltc2983.c | 76 ++++++++++---------------------
- 1 file changed, 24 insertions(+), 52 deletions(-)
+v4: Include the alignement changes that were in patch 15 of v3 with
+    a tweak as I missed the first line. Thanks Andy!
 
-diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
-index fcb96c44d954..47380d5e6b92 100644
---- a/drivers/iio/temperature/ltc2983.c
-+++ b/drivers/iio/temperature/ltc2983.c
-@@ -656,7 +656,6 @@ ltc2983_thermocouple_new(const struct fwnode_handle *child, struct ltc2983_data
- 			 const struct ltc2983_sensor *sensor)
- {
- 	struct ltc2983_thermocouple *thermo;
--	struct fwnode_handle *ref;
- 	u32 oc_current;
- 	int ret;
+ include/linux/property.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 9e67c3c4df6e..eefd662a2f9d 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -182,6 +182,11 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 	for (child = device_get_next_child_node(dev, NULL); child;	\
+ 	     child = device_get_next_child_node(dev, child))
  
-@@ -703,7 +702,8 @@ ltc2983_thermocouple_new(const struct fwnode_handle *child, struct ltc2983_data
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	ref = fwnode_find_reference(child, "adi,cold-junction-handle", 0);
-+	struct fwnode_handle *ref __free(fwnode_handle) =
-+		fwnode_find_reference(child, "adi,cold-junction-handle", 0);
- 	if (IS_ERR(ref)) {
- 		ref = NULL;
- 	} else {
-@@ -714,7 +714,7 @@ ltc2983_thermocouple_new(const struct fwnode_handle *child, struct ltc2983_data
- 			 * the error right away.
- 			 */
- 			dev_err(&st->spi->dev, "Property reg must be given\n");
--			goto fail;
-+			return ERR_PTR(ret);
- 		}
- 	}
- 
-@@ -725,22 +725,15 @@ ltc2983_thermocouple_new(const struct fwnode_handle *child, struct ltc2983_data
- 		thermo->custom = __ltc2983_custom_sensor_new(st, child,
- 							     propname, false,
- 							     16384, true);
--		if (IS_ERR(thermo->custom)) {
--			ret = PTR_ERR(thermo->custom);
--			goto fail;
--		}
-+		if (IS_ERR(thermo->custom))
-+			return ERR_CAST(thermo->custom);
- 	}
- 
- 	/* set common parameters */
- 	thermo->sensor.fault_handler = ltc2983_thermocouple_fault_handler;
- 	thermo->sensor.assign_chan = ltc2983_thermocouple_assign_chan;
- 
--	fwnode_handle_put(ref);
- 	return &thermo->sensor;
--
--fail:
--	fwnode_handle_put(ref);
--	return ERR_PTR(ret);
- }
- 
- static struct ltc2983_sensor *
-@@ -750,14 +743,14 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 	struct ltc2983_rtd *rtd;
- 	int ret = 0;
- 	struct device *dev = &st->spi->dev;
--	struct fwnode_handle *ref;
- 	u32 excitation_current = 0, n_wires = 0;
- 
- 	rtd = devm_kzalloc(dev, sizeof(*rtd), GFP_KERNEL);
- 	if (!rtd)
- 		return ERR_PTR(-ENOMEM);
- 
--	ref = fwnode_find_reference(child, "adi,rsense-handle", 0);
-+	struct fwnode_handle *ref __free(fwnode_handle) =
-+		fwnode_find_reference(child, "adi,rsense-handle", 0);
- 	if (IS_ERR(ref)) {
- 		dev_err(dev, "Property adi,rsense-handle missing or invalid");
- 		return ERR_CAST(ref);
-@@ -766,7 +759,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 	ret = fwnode_property_read_u32(ref, "reg", &rtd->r_sense_chan);
- 	if (ret) {
- 		dev_err(dev, "Property reg must be given\n");
--		goto fail;
-+		return ERR_PTR(ret);
- 	}
- 
- 	ret = fwnode_property_read_u32(child, "adi,number-of-wires", &n_wires);
-@@ -787,8 +780,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 			break;
- 		default:
- 			dev_err(dev, "Invalid number of wires:%u\n", n_wires);
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 	}
- 
-@@ -798,8 +790,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 			if (n_wires == 2 || n_wires == 3) {
- 				dev_err(dev,
- 					"Rotation not allowed for 2/3 Wire RTDs");
--				ret = -EINVAL;
--				goto fail;
-+				return ERR_PTR(-EINVAL);
- 			}
- 			rtd->sensor_config |= LTC2983_RTD_C_ROTATE(1);
- 		} else {
-@@ -829,16 +820,14 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 				"Invalid rsense chann:%d to use in kelvin rsense",
- 				rtd->r_sense_chan);
- 
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 
- 		if (sensor->chan < min || sensor->chan > max) {
- 			dev_err(dev, "Invalid chann:%d for the rtd config",
- 				sensor->chan);
- 
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 	} else {
- 		/* same as differential case */
-@@ -846,8 +835,7 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 			dev_err(&st->spi->dev,
- 				"Invalid chann:%d for RTD", sensor->chan);
- 
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 	}
- 
-@@ -856,10 +844,8 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 		rtd->custom = __ltc2983_custom_sensor_new(st, child,
- 							  "adi,custom-rtd",
- 							  false, 2048, false);
--		if (IS_ERR(rtd->custom)) {
--			ret = PTR_ERR(rtd->custom);
--			goto fail;
--		}
-+		if (IS_ERR(rtd->custom))
-+			return ERR_CAST(rtd->custom);
- 	}
- 
- 	/* set common parameters */
-@@ -901,18 +887,13 @@ ltc2983_rtd_new(const struct fwnode_handle *child, struct ltc2983_data *st,
- 			dev_err(&st->spi->dev,
- 				"Invalid value for excitation current(%u)",
- 				excitation_current);
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 	}
- 
- 	fwnode_property_read_u32(child, "adi,rtd-curve", &rtd->rtd_curve);
- 
--	fwnode_handle_put(ref);
- 	return &rtd->sensor;
--fail:
--	fwnode_handle_put(ref);
--	return ERR_PTR(ret);
- }
- 
- static struct ltc2983_sensor *
-@@ -921,7 +902,6 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- {
- 	struct ltc2983_thermistor *thermistor;
- 	struct device *dev = &st->spi->dev;
--	struct fwnode_handle *ref;
- 	u32 excitation_current = 0;
- 	int ret = 0;
- 
-@@ -929,7 +909,8 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 	if (!thermistor)
- 		return ERR_PTR(-ENOMEM);
- 
--	ref = fwnode_find_reference(child, "adi,rsense-handle", 0);
-+	struct fwnode_handle *ref __free(fwnode_handle) =
-+		fwnode_find_reference(child, "adi,rsense-handle", 0);
- 	if (IS_ERR(ref)) {
- 		dev_err(dev, "Property adi,rsense-handle missing or invalid");
- 		return ERR_CAST(ref);
-@@ -938,7 +919,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 	ret = fwnode_property_read_u32(ref, "reg", &thermistor->r_sense_chan);
- 	if (ret) {
- 		dev_err(dev, "rsense channel must be configured...\n");
--		goto fail;
-+		return ERR_PTR(ret);
- 	}
- 
- 	if (fwnode_property_read_bool(child, "adi,single-ended")) {
-@@ -958,8 +939,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 		dev_err(&st->spi->dev,
- 			"Invalid chann:%d for differential thermistor",
- 			sensor->chan);
--		ret = -EINVAL;
--		goto fail;
-+		return ERR_PTR(-EINVAL);
- 	}
- 
- 	/* check custom sensor */
-@@ -978,10 +958,8 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 								 propname,
- 								 steinhart,
- 								 64, false);
--		if (IS_ERR(thermistor->custom)) {
--			ret = PTR_ERR(thermistor->custom);
--			goto fail;
--		}
-+		if (IS_ERR(thermistor->custom))
-+			return ERR_CAST(thermistor->custom);
- 	}
- 	/* set common parameters */
- 	thermistor->sensor.fault_handler = ltc2983_common_fault_handler;
-@@ -1005,8 +983,7 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 			    LTC2983_SENSOR_THERMISTOR_STEINHART) {
- 				dev_err(&st->spi->dev,
- 					"Auto Range not allowed for custom sensors\n");
--				ret = -EINVAL;
--				goto fail;
-+				return ERR_PTR(-EINVAL);
- 			}
- 			thermistor->excitation_current = 0x0c;
- 			break;
-@@ -1047,16 +1024,11 @@ ltc2983_thermistor_new(const struct fwnode_handle *child, struct ltc2983_data *s
- 			dev_err(&st->spi->dev,
- 				"Invalid value for excitation current(%u)",
- 				excitation_current);
--			ret = -EINVAL;
--			goto fail;
-+			return ERR_PTR(-EINVAL);
- 		}
- 	}
- 
--	fwnode_handle_put(ref);
- 	return &thermistor->sensor;
--fail:
--	fwnode_handle_put(ref);
--	return ERR_PTR(ret);
- }
- 
- static struct ltc2983_sensor *
++#define device_for_each_child_node_scoped(dev, child)			\
++	for (struct fwnode_handle *child __free(fwnode_handle) =	\
++		device_get_next_child_node(dev, NULL);			\
++	     child; child = device_get_next_child_node(dev, child))
++
+ struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+ 						  const char *childname);
+ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
 -- 
 2.43.2
 

@@ -1,184 +1,162 @@
-Return-Path: <linux-iio+bounces-2715-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2716-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B74859125
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:44:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57A1859147
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 18:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4F41C20F0C
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:44:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D84611C215D3
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BC57D40A;
-	Sat, 17 Feb 2024 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8723C7D404;
+	Sat, 17 Feb 2024 17:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ued95WNs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODrQv4Ai"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CCE7D403;
-	Sat, 17 Feb 2024 16:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E7B79929
+	for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708188276; cv=none; b=DN5hJpeWtlRhwNmyz9dNG/CP5Cf9ew0LPRvV7S2aGA5o0t1G7aeOTLtCe6esf+/5KhonBMiOhnE43k3sGsZpzo3jrU0dxJLV5SyHszo651b3OVO/eArmn6d19HOeTONl0pX/tdknT+jU8LdgBKGjuLgykgLFxA8a0kexT7USFsc=
+	t=1708189717; cv=none; b=u7HeR6sidZRGuRXSkEljzJ51J+fqpgV6qP01zmHVzINav/0tiWT54Nzivek6OUIxxrmIxxETUP8EroKcRlLFUvjh3jRKc2bb512LO3kCeZa393Od3oWb6/RePeK/T7n7kpHG/XK8ByzNfwLiWYQFJ/zzZGE/N5zvJ8R8aala/2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708188276; c=relaxed/simple;
-	bh=79c8DCrGZAScdvyIHMIvQJjPXB+eFzdJE93eK/ZtP+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Drd+5t7L4aCRqe19yLs+prp0HKdCWIdJnp46F45yRzd5suRDj8RbXjv2CYEFkqns0u40ldkgYRjz+3mf8enX6EdvCdmuHkByOj6JWfqqN9//ToUhOlJAx5fTu4KB48V5M3tD4dW09gKY1mH3Cxl7HWOJ5N76XUmNjHjiZNG2+DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ued95WNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B63EC43390;
-	Sat, 17 Feb 2024 16:44:30 +0000 (UTC)
+	s=arc-20240116; t=1708189717; c=relaxed/simple;
+	bh=Vvah6my32Y3V9hnSfvECT356dYfd2piQf14ayGMQW0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uruCbDy3BzKCTHxd+6dEr6Fil+71UBld3wF5zOM64h0J48aG018E4finxHteMulMGgkTDSTNgheeCThFLA6R/fUMab3zS41ARlJijrAErWa70cilg9eM6PRyM28sppkbD84/gwFuaYfGu194Rmveqz3uRQ+E9rzjle+b7JI+d5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODrQv4Ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082A7C433F1;
+	Sat, 17 Feb 2024 17:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708188275;
-	bh=79c8DCrGZAScdvyIHMIvQJjPXB+eFzdJE93eK/ZtP+w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ued95WNsy1SeM7nuVo8E9EIVN+vMLCvjAC5TeM1nIjFmIwKXRmx2r9HlTZG5RNXma
-	 6JcHTm7BncwGuCsrW8hrJEuWUfWBjoP50qQIPUBw7zQ+jpf/MU6wBLIElrIn4WQETB
-	 33CQsG8IvmndEXgTncNJyzK1tYfu95BWLXpK2YHESn1Q5iEkrdOXtOIw56o4ELGoUk
-	 4LZlriMolC1YQViJLhCRfa+NvKvMsj0EY3cy66BNuyvj8tKVAni9+giosYLjhneBM5
-	 vO6M8rYB/pvvRa0RBrXQhlKYlgHz9DnNAt8I8YaWbkQ1Qa9llMs0TUjW+Ja3CgPYwN
-	 kJ/cXK/a0jGUA==
+	s=k20201202; t=1708189716;
+	bh=Vvah6my32Y3V9hnSfvECT356dYfd2piQf14ayGMQW0A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ODrQv4Aiq2nxu5FAZDj0v++JZzEdH7K1fZCGSPF/AxD1OLbTJ6VAdm6mCJa5Gswzj
+	 XHF2UCPBRnmvt54pc/eFNahIylQVbizw0K0skSSKUk8CQFPQTdbnAF6iAQtt9GgH+o
+	 JjUsD9Uo+zHsPC5h5qTzXfjziAQUilRWJyEMYnm4GIHzMVePf7VORPlN55f15L3+pV
+	 UffoW9buw9Mq+wiZUQJJ/1W18ekoVRKvR+TmxHUwdiRJJ8iwMLank0KyHPiSHspl8b
+	 xEqHxiY3ZhR1aH3ie+geCv+f/xxNeBHvrrMPvptNuAhdy5+vtXQmej7uZ28BYjrm1L
+	 AFj+/BSqOC0rA==
+Date: Sat, 17 Feb 2024 17:08:25 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>
-Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 15/15] iio: dac: ltc2688: Use device_for_each_child_node_scoped()
-Date: Sat, 17 Feb 2024 16:42:49 +0000
-Message-ID: <20240217164249.921878-16-jic23@kernel.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240217164249.921878-1-jic23@kernel.org>
-References: <20240217164249.921878-1-jic23@kernel.org>
+To: Jeremy Mattfeld <jmmattfeld@gmail.com>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: multiple iio_devices, one shared GPIO iio_trigger
+Message-ID: <20240217170825.65c2b704@jic23-huawei>
+In-Reply-To: <CABbzQ=f2mUCeUE5fBz=4A3yivLwZZOMwqt8SVHSUeNtZDEqw-Q@mail.gmail.com>
+References: <CABbzQ=f2mUCeUE5fBz=4A3yivLwZZOMwqt8SVHSUeNtZDEqw-Q@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Fri, 16 Feb 2024 18:12:37 -0800
+Jeremy Mattfeld <jmmattfeld@gmail.com> wrote:
 
-Switching to the _scoped() version removes the need for manual
-calling of fwnode_handle_put() in the paths where the code
-exits the loop early. In this case that's all in error paths.
+Hi Jeremy,
 
-Cc: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-v4: Moved alignment changes back to patch 4.
-v3: Tweaked the alignment after comments from Andy.
+The answer will get a bit complex because there are various things you
+could do - but the simple one is that you use the dataready trigger from
+one device (don't describe interrupt line for the others in DT) and
+then set the current_trigger value for all of them to point to that
+single trigger.  The rest of my reply should give more detail + talk
+about other options.
 
- drivers/iio/dac/ltc2688.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+> I have a hardware design using a TI-AM335x cpu connected over a SPI
+> bus to 4 AD7779 adc's. 
 
-diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
-index fc8eb53c65be..b71df03fc13b 100644
---- a/drivers/iio/dac/ltc2688.c
-+++ b/drivers/iio/dac/ltc2688.c
-@@ -746,26 +746,21 @@ static int ltc2688_span_lookup(const struct ltc2688_state *st, int min, int max)
- static int ltc2688_channel_config(struct ltc2688_state *st)
- {
- 	struct device *dev = &st->spi->dev;
--	struct fwnode_handle *child;
- 	u32 reg, clk_input, val, tmp[2];
- 	int ret, span;
- 
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		struct ltc2688_chan *chan;
- 
- 		ret = fwnode_property_read_u32(child, "reg", &reg);
--		if (ret) {
--			fwnode_handle_put(child);
-+		if (ret)
- 			return dev_err_probe(dev, ret,
- 					     "Failed to get reg property\n");
--		}
- 
--		if (reg >= LTC2688_DAC_CHANNELS) {
--			fwnode_handle_put(child);
-+		if (reg >= LTC2688_DAC_CHANNELS)
- 			return dev_err_probe(dev, -EINVAL,
- 					     "reg bigger than: %d\n",
- 					     LTC2688_DAC_CHANNELS);
--		}
- 
- 		val = 0;
- 		chan = &st->channels[reg];
-@@ -786,12 +781,10 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
- 		if (!ret) {
- 			span = ltc2688_span_lookup(st, (int)tmp[0] / 1000,
- 						   tmp[1] / 1000);
--			if (span < 0) {
--				fwnode_handle_put(child);
-+			if (span < 0)
- 				return dev_err_probe(dev, -EINVAL,
- 						     "output range not valid:[%d %d]\n",
- 						     tmp[0], tmp[1]);
--			}
- 
- 			val |= FIELD_PREP(LTC2688_CH_SPAN_MSK, span);
- 		}
-@@ -800,17 +793,14 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
- 					       &clk_input);
- 		if (!ret) {
- 			if (clk_input >= LTC2688_CH_TGP_MAX) {
--				fwnode_handle_put(child);
- 				return dev_err_probe(dev, -EINVAL,
- 						     "toggle-dither-input inv value(%d)\n",
- 						     clk_input);
- 			}
- 
- 			ret = ltc2688_tgp_clk_setup(st, chan, child, clk_input);
--			if (ret) {
--				fwnode_handle_put(child);
-+			if (ret)
- 				return ret;
--			}
- 
- 			/*
- 			 * 0 means software toggle which is the default mode.
-@@ -844,11 +834,9 @@ static int ltc2688_channel_config(struct ltc2688_state *st)
- 
- 		ret = regmap_write(st->regmap, LTC2688_CMD_CH_SETTING(reg),
- 				   val);
--		if (ret) {
--			fwnode_handle_put(child);
-+		if (ret)
- 			return dev_err_probe(dev, -EINVAL,
- 					     "failed to set chan settings\n");
--		}
- 	}
- 
- 	return 0;
--- 
-2.43.2
+Is this a new driver?  Also I note the device supports SPI daisy chaining
+which typically makes a set of devices behave more or less like one
+bigger device - so that might be worth considering.
+
+>I want to use the DRDY_N signal (I have it
+> connected to the GPIO on the AM335x) from one of the adc's to generate
+> an interrupt to trigger reads on all four.  I have seen several places
+> in the documentation that states that this is possible (common even)
+> but I have not seen examples of it in the kernel tree.
+
+With a few caveats most IIO drivers that support buffers do this and it
+should work with most triggers. Note though that there is a config
+variable controlling how many devices can use a single trigger:
+CONFIG_IIO_CONSUMERS_PER_TRIGGER so for you case case that would need
+to be at least 4.  Drivers that don't support this will have *validate*
+callbacks (in either or both directions - triggers can be limited to
+only triggering one device, often when the signal is internal, devices
+can be limited to only their own triggers, often when there is some
+complex interaction that makes a more independent model complex).
+
+
+If you only had one interrupt actually wired then what you do is simply set
+iio\:device0/current_trigger to the trigger and
+iio\:device1/current_trigger etc to the same trigger.
+
+For each the pollfunc would then be called to collect the data and push it
+to the independent buffers for each driver instance.  Then you would need
+to align the resulting data in userspace.
+
+>  Most of the
+> drivers from ADI request an IRQ along with allocating and registering
+> their own iio_trigger.  When binding multiple instances of the same
+> iio device driver, the first IRQ request succeeds, while subsequent
+> requests will return EBUSY.
+
+So on to the other options:
+
+A driver can support a shared interrupt (grep IRQF_SHARED). There are
+some drivers in IIO that do this - usually because someone had a board
+where mutiple different devices were wired up to a shared interrupt pin.
+
+Modifying a driver to do this isn't that hard as long as the device
+has a register that indicates new data (in addition to the dataready
+interrupt).  Otherwise we have no idea if it was our interrupt or not.
+I took a quick look at the datasheet and can't see that here.
+Given there is also no way to disable the drdy line that I can see
+you definitely want to only register the interrupt for one of them
+(or not share lines but then this question would be odd :)
+
+
+
+> 
+> Is the correct way to accomplish this to define all my SPI slave nodes
+> in my devicetree with just one having an interrupts and use
+> conditional logic in the driver to only have that one request the IRQ?
+
+Yes, just describe the interrupt once (and hopefully that is valid as you
+only wired one up - otherwise you are likely to get spurious interrupts
+given we can't turn off the drdy interrupt - or at least a quick search
+didn't show me how).
+
+>  Another method would be to use the standalone trigger driver (I have
+> enabled in Kconfig) but I have not been able to find documentation
+> that shows the devicetree binding for standalone triggers for GPIO
+> interrupts.
+
+There isn't a DT binding for the standalone GPIO trigger. We'd welcome
+one though if you want to add support but I don't think you need to
+here and generally we don't want to do that if a it's not coming from
+independent hardware.  So might work, but it's not a clean solution.
+
+Hopefully that gives you an idea where to start.
+
+Jonathan
+
+
+
+> 
+> Any guidance would be appreciated.
+> 
+> Thanks,
+> 
+> Jeremy
+> 
 
 

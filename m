@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2701-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2702-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D3859107
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:43:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B5859109
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 17:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EE9AB210BC
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAEDE1F21EA8
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Feb 2024 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1B47CF2B;
-	Sat, 17 Feb 2024 16:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E43E7CF31;
+	Sat, 17 Feb 2024 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Io8Y9oAH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSY94x0X"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697FD1CD1F;
-	Sat, 17 Feb 2024 16:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6121CD1F;
+	Sat, 17 Feb 2024 16:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708188192; cv=none; b=j0Bg/nZeAFs3ZPrmQGM8BBKYebpW2fVrqBzUHpbhhlX1UI1DfWRJaoupVST7V4LsYQtMJgzcF5B6kbjT0JBr7gq2E3BJ4gcv7ZSWWqw2GpqB5gRmpRr0JQ5Z4t2vC+WpKSoMMvHO+sLT5YX8kED458TP54c8GOErZCRZFWXUSLI=
+	t=1708188197; cv=none; b=DnfU9KFQvDU3+QM8tn7/NRWpiy5dAsUMoJdRWnsGSSiqzcYUwba0zbxj+D+WXKuqQznj4AiIr03wTgdKDRkivhD837bXE6NQsp6q6Ide1q1v6jZs/9nEPA4gCxerFL8++pt33SqsenSL2hJjDZyOblFxfy+QYuH/w816UTNd45E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708188192; c=relaxed/simple;
-	bh=ocjL6LwQJYb/J/bnzmlHaMaUJjymU749SiDawf6541M=;
+	s=arc-20240116; t=1708188197; c=relaxed/simple;
+	bh=ooH3tVQ8RhEdYrJS+Vd+dsFlhzvCEObmeWM2dC5oN6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuXcaTOi+GIE1lFV43+JqoARX7O1IaH/+bqa/h1olW7NWfH9POVsQl93bp2VPe4UIMCapShPR5GvDX8d289QlilhWztcyeEZ95/2LxBG4cVhlDr8c2CeVBlrPLbzl/qcO0kFzi8hkw2K/cP3o5CmgsDaYiM+9ovJgW7J0P71p98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Io8Y9oAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C0AC433C7;
-	Sat, 17 Feb 2024 16:43:06 +0000 (UTC)
+	 MIME-Version; b=HGBJfgNygHx8+NfaJ2NUW4+o+4qdXhGu31VVPs9lEHraLotVJm/sctiZpwz7P3BBtL9hOBseoynKZCuV+8fc469WGcIETtKpiXfNh1uvx/4V1zuSPIqeXqUKt36uRzGeM/LZ8RRSpmaJjW+oEoU2VM+KLPnKHtz/6IUZZukiR/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSY94x0X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2AAC43390;
+	Sat, 17 Feb 2024 16:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708188191;
-	bh=ocjL6LwQJYb/J/bnzmlHaMaUJjymU749SiDawf6541M=;
+	s=k20201202; t=1708188197;
+	bh=ooH3tVQ8RhEdYrJS+Vd+dsFlhzvCEObmeWM2dC5oN6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Io8Y9oAHV1bEALJQMpytnSR6TCz9ymDbaiCGIgKauOJYMKEc4/4lkSG6pdbk7SV1k
-	 LUXP8AY7ctgcKTrwCHm/QS9CC7piGmlZdyhVjZ0ZS7DbyOnbObI5wRabCcqAYQNME/
-	 45at0ZqZ6OGYYg3/YCea4AdjM5rsUHU6gD66Wdp18t7y3eZVjaSth1T/S5zZkeJs4z
-	 NVDFf2gX0PdY/HqJRNSBGplZwmDLKNzliC2O6fX321x9/DDOV738DesOX5d7SCddWn
-	 8E5l3YOQqm46989nt55+XYs6YSxDCNyKEFnswabw1RcfTcnOqaNvtI3J/lub0PnSbY
-	 DP+OfraH8ZDcA==
+	b=uSY94x0XaOQQtXNPAGaCbycdnINGUhe2kjmUcsffUkuLQXn6xGcGsVr5ba8jL3B8o
+	 GVPTNMJGWQU/CE8y05qC+0whpQkNclHXH919zD1UdNf4D9IjrpyDAz4ej8g8ubdEXX
+	 fbZmjXbxiTaUjLQdE4bKieW4mtvye6fez2iNCFI6SdokrC1oEBH9Y2J4TfIZmQze3D
+	 cKpu/VMrafWDjjRWH8dOOVAcG/wgs+gCbAvitEaYZ11Ky0XXzRzVfdYJ9vPVWSp5GU
+	 vm4vWTnG8RPacRiW3I0wN+ynz2SZ4e1SfnhTCEuahsg8+U7IyzPzaeoj6WoEJKMwyt
+	 J7SSbayjypevA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -67,9 +67,9 @@ Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 01/15] device property: Move fwnode_handle_put() into property.h
-Date: Sat, 17 Feb 2024 16:42:35 +0000
-Message-ID: <20240217164249.921878-2-jic23@kernel.org>
+Subject: [PATCH v4 02/15] device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
+Date: Sat, 17 Feb 2024 16:42:36 +0000
+Message-ID: <20240217164249.921878-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240217164249.921878-1-jic23@kernel.org>
 References: <20240217164249.921878-1-jic23@kernel.org>
@@ -83,67 +83,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-By having this function as static inline in the header, the compiler
-is able to see if can optmize the call out if (IS_ERR_OR_NULL(fwnode))
-This will allow a simpler DEFINE_FREE() call in the following patch.
+Useful where the fwnode_handle was obtained from a call such as
+fwnode_find_reference() as it will safely do nothing if IS_ERR() is true
+and will automatically release the reference on the variable leaving
+scope.
 
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/base/property.c  | 14 --------------
- include/linux/property.h | 14 +++++++++++++-
- 2 files changed, 13 insertions(+), 15 deletions(-)
+ include/linux/property.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index a1b01ab42052..53e42031c646 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -923,20 +923,6 @@ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode)
- }
- EXPORT_SYMBOL_GPL(fwnode_handle_get);
- 
--/**
-- * fwnode_handle_put - Drop reference to a device node
-- * @fwnode: Pointer to the device node to drop the reference to.
-- *
-- * This has to be used when terminating device_for_each_child_node() iteration
-- * with break or return to prevent stale device node references from being left
-- * behind.
-- */
--void fwnode_handle_put(struct fwnode_handle *fwnode)
--{
--	fwnode_call_void_op(fwnode, put);
--}
--EXPORT_SYMBOL_GPL(fwnode_handle_put);
--
- /**
-  * fwnode_device_is_available - check if a device is available for use
-  * @fwnode: Pointer to the fwnode of the device.
 diff --git a/include/linux/property.h b/include/linux/property.h
-index e6516d0b7d52..151bcab4f92a 100644
+index 151bcab4f92a..9e67c3c4df6e 100644
 --- a/include/linux/property.h
 +++ b/include/linux/property.h
-@@ -187,7 +187,19 @@ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
- 						  const char *childname);
+@@ -12,6 +12,7 @@
  
- struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
--void fwnode_handle_put(struct fwnode_handle *fwnode);
+ #include <linux/args.h>
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/fwnode.h>
+ #include <linux/stddef.h>
+ #include <linux/types.h>
+@@ -201,6 +202,8 @@ static inline void fwnode_handle_put(struct fwnode_handle *fwnode)
+ 	fwnode_call_void_op(fwnode, put);
+ }
+ 
++DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_T))
 +
-+/**
-+ * fwnode_handle_put - Drop reference to a device node
-+ * @fwnode: Pointer to the device node to drop the reference to.
-+ *
-+ * This has to be used when terminating device_for_each_child_node() iteration
-+ * with break or return to prevent stale device node references from being left
-+ * behind.
-+ */
-+static inline void fwnode_handle_put(struct fwnode_handle *fwnode)
-+{
-+	fwnode_call_void_op(fwnode, put);
-+}
- 
  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+ 
 -- 
 2.43.2
 

@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-2741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5879C859830
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 18:33:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CE0859832
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 18:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159ED281274
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 17:33:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2229F281339
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 17:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766486EB78;
-	Sun, 18 Feb 2024 17:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72E46EB7F;
+	Sun, 18 Feb 2024 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZ0EORyO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imQLTuAq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379EF1E898
-	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A905D1E898
+	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708277623; cv=none; b=jUVsH0Lfilz+dVK9tUmwkTdTIkHjexL7Xuaq3W98uwfbrooTGat9wFRrnyupMbe6tO3cJDwVkTw/J2kcG656ngOVgPJaqqgCfSJWOx/Jv1CdAmrQrk3UXpjjqOdnCAG+uLcmIEiuww+iSAJy1GheXr8ldzjL2diWuKYf05C5EnY=
+	t=1708277624; cv=none; b=JRkxB/R6BjrJMoeBkm3ixkXsEOeN4D0zOY47GO4ABlDb8J185A1dLH+xgQ3Labooe0Ae5Gbcfus2lPDDQOyxDbBONZPe3OQW/RmHkLm8KtBRnXV8sycNIkRlAC4Z5L1q7bqdrRMb1v4qIVMxIMaH+zUQ1RrI/hlnXYtXJBrE2XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708277623; c=relaxed/simple;
-	bh=2EeMz1RG7098w2PrP8N7GaoxBeqqfms4se11h+YFMxA=;
+	s=arc-20240116; t=1708277624; c=relaxed/simple;
+	bh=DQGfkzVDShCIbJSnpPUPNQ0Hfaky+c6j90wy6nZJRxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFMSPo5HrDLmUMrvhWb0XiqxcfE1s9nv7l55NR6l6FTs0w6emS08WG8NjbwAGyow0hDJU2SyM11xGqQGQhcDzEuPJ/Pc4x8Q2/jSXMOTrTQr4xo6XCNkqWB6MJC5nB2YdWKhGRaDbuMHd5330GWtRZQ3MU+cFle7V/jgUNhFVv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZ0EORyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BC9C433F1;
-	Sun, 18 Feb 2024 17:33:41 +0000 (UTC)
+	 MIME-Version; b=YmQA7QFDpNOmea6es3DI4ml0OB7EYfv5hBqW+IQY7l7nP5djD2xWVAyaoEpx8nxeQA0UIF2bdNtYN8efrEZPbVL8kk/wfTq1xKD1r7JyGwCjPC1Thbl8C7N4mRc7OD6t18JVejKrPxnM9DYlr2s9Or5WQyXfSvBuHCh4FqDUKhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imQLTuAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E582C433F1;
+	Sun, 18 Feb 2024 17:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708277622;
-	bh=2EeMz1RG7098w2PrP8N7GaoxBeqqfms4se11h+YFMxA=;
+	s=k20201202; t=1708277624;
+	bh=DQGfkzVDShCIbJSnpPUPNQ0Hfaky+c6j90wy6nZJRxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZ0EORyO2KQP+mNnTHniN8ubp8dcUr+KuZOW+TXobJMaTgn2ygpiOpVtKH5jaeTvV
-	 eZ9QmKCnJcWNZVSKojf5kMNEcPmx2wsIQeMYZxdbYBUBQpkH162q91eda2WuHCjpg3
-	 BgvgPNZEDqffgHBywr0boV1+QWsg4ma3TZ3fzJLnCAVrPL1ynMFlT1fVk7SVqNrf+w
-	 ZIWZ6m1l5vrPSc6KZTvpTRiazqN5khDHKQ3eqNleUZ2mcP1B1bCvK6W7wuk9DTCtnp
-	 kBk04jQUW6cGtYpF3JkXElV7Drzx8uvhvU6b1CzTXLwR1RNZCtLB1gGrJdLyeDezXV
-	 qORqIC8FD2rNw==
+	b=imQLTuAq7Z+YCKiiW1Bow5I6CygdsDbqTYUdZdxYrbBsagPvNx+GSli84cL6vZ0XL
+	 iRhl+spzDC+wUalMpa9Mt3pz632KY2EDXie7B8OEU39+S/cpTuJZnAYKjqk6CEgOk+
+	 /ehXLQixN77mbSyleZeu9KMiVMM5pXw8ZcEGVlKVhGasuAbUX6cBLpjgANU6g3IIBj
+	 2jZfPKGpzt6OsRpLJcTuhXCBG5pMyq1SJKK87wKvUJtWYk3V1wc+c9wEjPhUgN0Y1o
+	 k1isanxle84DfeL6QMx0vTfimyPCto0QDOCTKstnGRnVi0GEghh0I6E8748VqgxMyS
+	 a/6YV8VsUjLng==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5/8] iio: accel: adxl372: Switch from linux/of.h to linux/mod_devicetable.h
-Date: Sun, 18 Feb 2024 17:33:20 +0000
-Message-ID: <20240218173323.1023703-6-jic23@kernel.org>
+Subject: [PATCH 6/8] iio: accel: bma180: Switch from linux/of.h to linux/mod_devicetable.h
+Date: Sun, 18 Feb 2024 17:33:21 +0000
+Message-ID: <20240218173323.1023703-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240218173323.1023703-1-jic23@kernel.org>
 References: <20240218173323.1023703-1-jic23@kernel.org>
@@ -66,23 +66,25 @@ is found in mod_devicetable.h not of.h
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/adxl372_spi.c | 2 +-
+ drivers/iio/accel/bma180.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl372_spi.c b/drivers/iio/accel/adxl372_spi.c
-index 75a88f16c6c9..787699773f96 100644
---- a/drivers/iio/accel/adxl372_spi.c
-+++ b/drivers/iio/accel/adxl372_spi.c
-@@ -6,8 +6,8 @@
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index ab4fccb24b6c..6581772cb0c4 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -13,10 +13,10 @@
   */
  
  #include <linux/module.h>
 +#include <linux/mod_devicetable.h>
- #include <linux/regmap.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
 -#include <linux/of.h>
- #include <linux/spi/spi.h>
- 
- #include "adxl372.h"
+ #include <linux/bitops.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
 -- 
 2.43.2
 

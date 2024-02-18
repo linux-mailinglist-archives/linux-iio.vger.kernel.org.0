@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-2723-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2724-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890C08594D7
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 06:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0D38594D8
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 06:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4162F1F215D9
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 05:49:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FBFA1F21B38
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 05:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E625F63D0;
-	Sun, 18 Feb 2024 05:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCD8568A;
+	Sun, 18 Feb 2024 05:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="ZqhtNPiY"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="ISpBGnAI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F60DEAC5
-	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 05:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95BBF4FC
+	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 05:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708235334; cv=none; b=QNrwpysnum2DOQU+l1R0l3ersvKYHmLpzL4NBIQ+Ys/T5jJLxNoOxDxZnuQShtIAPsNxE9c1dIdfccdQOtnAvTkufYxutgdd4cC/2Fyds5tH30eeNCYi1S9aRaBSfsBekpl47jIYM10XiZt8kENW8jqVpgahLvT+alhL6yEF1SU=
+	t=1708235340; cv=none; b=DQ/xUXT9lvVM7SXeDIwt69P82iFMblzAlU/ZkpXDv4MHUnhyONzuogalkdCYgsIcw8eU315U4J6hc0Us9mnrj9RzqT3VHaFW5dfVdahcPcQedjFXFrmacraWZAe0TCowNJXlBN/6a7wU5Yac1KZfEhhb/UcjetJfoW1fm7mekyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708235334; c=relaxed/simple;
-	bh=ZVB0/C361A/m3J7FAGUmwwjrBPnm+1oEIUq/ougwPsY=;
+	s=arc-20240116; t=1708235340; c=relaxed/simple;
+	bh=wqUin1sjbj77sZxf5CBubb84h2AEImW2QytVCy0e+kE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oNKKhjwW9as81jTBBRbCz0S2x1iyLm/EjFP4sX6gCSAJx9WSaqpFoXuyxdvPfB2s2l6vjxcE4MAWxEkpA0hhXjlve9muzQbvZSH/SZ/8cLeuilT8bGtDr6QpW9i9Ck5DFtjidOCjZjvZnpTlaXXcdDEwWtcjP1TDG53gZyb63jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=ZqhtNPiY; arc=none smtp.client-ip=209.85.167.178
+	 MIME-Version; b=jSw1fDSNkKvLLkFA3Q4WQrKU4b7fKPjX14kBAi8CCi1coByz5lrycluFwjFJxcSRA+I3W08QagF8qYPjYwqoMGVcObeG/hod8n71brY6aAzlv8+99nsKJ0B27vqb0YfDxmtcrnqTEc9ltDqjY7tgc3tx2bXywy0tSy5Od7mbEfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=ISpBGnAI; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3c1404d05bfso1843641b6e.3
-        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 21:48:52 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-21e26d645d9so1939554fac.1
+        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 21:48:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1708235332; x=1708840132; darn=vger.kernel.org;
+        d=tweaklogic.com; s=google; t=1708235338; x=1708840138; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6i6/G+Z856s3YYipaYhdOaz3XDpws5cWB+Y6cO3Oumc=;
-        b=ZqhtNPiYxdBgEK4EIUkJGse4EcApp9H+npK5FR85DqifkmIiwETiCsidVO6EmBZh6y
-         hhsXDzwB+laF6S8pYHqpsi/CKIjK07YdDch/fXAeNmJhK0gTRkQWStFBNuTSWmVbI0Uj
-         3EJ7oXMjaQW3XEniva7eAMgrPP/ZZfb5WPSjzE/ngc0QlESw9sRL/1JSLOXKKOmecTBD
-         yU9mmv5CvZL/yIf1KPXucFgoW2v6ARi7upINkhC+VUwgM0Mzya1OISLYPRNf+f29iR6o
-         yHgmfyiMF1+BpZeHmz8uB+VSus2PZJJ//vgvPJmKRBeBXMx0Tx4kVDhHkxMA6Jfpfb7o
-         yBcA==
+        bh=SyLVMnMBS10QM3fLaOhCo7hMew07au7N3ayvJLnFVOw=;
+        b=ISpBGnAIDOylGzkmk7yogpp4jo2t0vUn6KfEaNSqikNP5Dhj/Vy/p4R7oCS0Cm5u7+
+         gywGuaej0CkWgpAWyRb7riUP+gLG6Gms7SYti3n5WKjELNXb3mTXLZPz9Muua9zYZAbT
+         Fot7lsWKCXrPBASdb69D/sI2MW5Mh+e9Oepb3+pWB0TnSP9AJvTylUj2SZlon5s++zol
+         +nM+EZiJ6O3yMs0J+MVXZvWEdNAoMR6Cgl6/2YUmX1wSa/V+kX37SAbEp6cGhIa37d6Z
+         gJAwX+lQCBnN9IXXLe6hUIc8qhpwDUl0IOOuTK28/5OR0ZFVNmkqgxA1NLyXemmNmJnM
+         bU3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708235332; x=1708840132;
+        d=1e100.net; s=20230601; t=1708235338; x=1708840138;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6i6/G+Z856s3YYipaYhdOaz3XDpws5cWB+Y6cO3Oumc=;
-        b=Rekdn/dswKkaUnIoXuvlIpSza0/MTUnKTWzhPhX/Ch66W4W0M7WyV1D5QtAdcoNAyk
-         VfXR+GQK1JYN3hJoPU0JVzN7wnfD13uonlbx4kvZgyRqTVrCcGcYtDBhfcsrRvUAufRR
-         L04bGwCyPYM8EJIRNw7s6wzKcD3xSHN7E95R/oPK76eUt/UnjlClM6HJ/4vc5VFrWhSy
-         DAd58vncTty/ewyfDkioE6u+hZ2b13R3mM0LvAYo7PRe16EH2uhLvmUS14aPyyPq8ZFh
-         uRt8nQeQgel279WFHdWDABKsqxo6eppSac8C2mulsFIiUYZQCSyxBxKTVXnjli5l0CWo
-         rKWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWcqUGeg9NAtoQPDNQ/OORzJCbyW+NGJ4ttsFvie7OHQms3JtcSzccXKCdOtVF++qYNw9j1Hto0DRTYodhKwF08yLnwTT04ZAm8
-X-Gm-Message-State: AOJu0Yzl8QfBnA3e4Q2hr2AVhDxn7/xlSZksUB7VL+Y3WBh/THnaJvaK
-	tksioioD5p/YVwGMHVgYQjquI1CLVcjLXHGPjLqsJntfjVjcezESLdbuSgmycy4=
-X-Google-Smtp-Source: AGHT+IGfHjMdF09bzgsPtNr24Ghpcv9HOfPbHnIqHEIpCzqy7C4zRXJU+2keAlr8jXDWKA5Ji6FiyA==
-X-Received: by 2002:a05:6808:bd4:b0:3c1:559b:4289 with SMTP id o20-20020a0568080bd400b003c1559b4289mr483217oik.8.1708235331763;
-        Sat, 17 Feb 2024 21:48:51 -0800 (PST)
+        bh=SyLVMnMBS10QM3fLaOhCo7hMew07au7N3ayvJLnFVOw=;
+        b=ecewWVDlhZKN0Dn+VVgHLJvIMvwBoHxR20QnHwRuhzRP3ZsNlKMsCxYsFhE71ai7mj
+         cGKChxrkYdH87TbvVFjwMhg7CJTYnm6xQsGQZLUgTVORcHwzkGCLojaeGqLGmcb+JuZ6
+         KTQCzVnXnBGssAj/xyW1RLFue8ICuEykDFDCVbrNbxYeHEZ0bMs/ukMb3g9GEKQiAPQa
+         jq6SBoTBAv4X2REHzfLENqdAjp4WwaV51HTJ7RgfHKNWOZwL7LiFnNTLGDmfNNX4RZM0
+         NYtpczNcV7gQPprv0xR74dB2ZqxTrYhC7SQZ+30kjVVvdUTFI7XYyuYec3Qlb64yZl5l
+         Lmmg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1wPrBGTzyv4W/46DeVZYcM4jm8hJzzeOMAy7u6XyNigwsdW+vrVvjZA/ZaemFZVAIB533MVm3C12/0hiB4e5OFQU7/8S7qVSB
+X-Gm-Message-State: AOJu0YxYsEVA/+CoSf1gykpJnBnlknDpLTU4BGfoBIXF4yQXPeeGBuGG
+	u6EG9R1m7dirVLS7o/thX6xVID0wo1XIo/O1N5MbDNaxsfPsh6F1VWPk46Q2Abg=
+X-Google-Smtp-Source: AGHT+IFtBEXxhgWx4BRtpNVrNjs9r/2pPBzBxQBWky0++68wT9T2I5azFbRLbgCx4HXDinhjeMHIjg==
+X-Received: by 2002:a05:6870:724a:b0:219:30ff:ca0a with SMTP id y10-20020a056870724a00b0021930ffca0amr9361287oaf.58.1708235338029;
+        Sat, 17 Feb 2024 21:48:58 -0800 (PST)
 Received: from localhost.localdomain ([180.150.113.62])
-        by smtp.gmail.com with ESMTPSA id 32-20020a631260000000b005d3bae243bbsm2394808pgs.4.2024.02.17.21.48.45
+        by smtp.gmail.com with ESMTPSA id 32-20020a631260000000b005d3bae243bbsm2394808pgs.4.2024.02.17.21.48.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Feb 2024 21:48:51 -0800 (PST)
+        Sat, 17 Feb 2024 21:48:57 -0800 (PST)
 From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -85,9 +85,9 @@ Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v7 2/5] dt-bindings: iio: light: adps9300: Add missing vdd-supply
-Date: Sun, 18 Feb 2024 16:18:23 +1030
-Message-Id: <20240218054826.2881-3-subhajit.ghosh@tweaklogic.com>
+Subject: [PATCH v7 3/5] dt-bindings: iio: light: adps9300: Update interrupt definitions
+Date: Sun, 18 Feb 2024 16:18:24 +1030
+Message-Id: <20240218054826.2881-4-subhajit.ghosh@tweaklogic.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
 References: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
@@ -99,47 +99,46 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-All devices covered by the binding have a vdd supply.
+Include irq.h and irq level macro in the example for readability
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 ---
 v6 -> v7:
- - Changed the subject line of the commit
- - Updated commit message
  - Removed wrong patch dependency statement
  - Added tag
-   https://lore.kernel.org/all/20240210170112.6528a3d4@jic23-huawei/
+   https://lore.kernel.org/all/20240210170258.17fd1099@jic23-huawei/
    https://lore.kernel.org/all/20240206-gambling-tricycle-510794e20ca8@spud/
 
 v5 -> v6:
  - Separate commit for individual change as per below review:
    Link: https://lore.kernel.org/all/20240121153655.5f734180@jic23-huawei/
 ---
- .../devicetree/bindings/iio/light/avago,apds9300.yaml          | 3 +++
- 1 file changed, 3 insertions(+)
+ .../devicetree/bindings/iio/light/avago,apds9300.yaml         | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-index c610780346e8..a328c8a1daef 100644
+index a328c8a1daef..e07a074f6acf 100644
 --- a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
 +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-@@ -25,6 +25,8 @@ properties:
-   interrupts:
-     maxItems: 1
+@@ -35,6 +35,8 @@ required:
  
-+  vdd-supply: true
+ examples:
+   - |
++    #include <dt-bindings/interrupt-controller/irq.h>
 +
- additionalProperties: false
- 
- required:
-@@ -42,6 +44,7 @@ examples:
+     i2c {
+         #address-cells = <1>;
+         #size-cells = <0>;
+@@ -43,7 +45,7 @@ examples:
+             compatible = "avago,apds9300";
              reg = <0x39>;
              interrupt-parent = <&gpio2>;
-             interrupts = <29 8>;
-+            vdd-supply = <&regulator_3v3>;
+-            interrupts = <29 8>;
++            interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
+             vdd-supply = <&regulator_3v3>;
          };
      };
- ...
 -- 
 2.34.1
 

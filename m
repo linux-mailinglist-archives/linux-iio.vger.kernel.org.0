@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-2739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF29D859831
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 18:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 247F1859833
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 18:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 706AFB20EF7
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 17:33:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84E05B20E95
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D636F060;
-	Sun, 18 Feb 2024 17:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006E36EB7A;
+	Sun, 18 Feb 2024 17:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvv8Q1u2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psb7LKAC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955AA6EB7A
-	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 17:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60381E898
+	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708277620; cv=none; b=fphqwQsJGNh3Vk0NwJz99SY/joBiMQWfa6LNgcwfZKQP8cb9HxtRQl4KuuP4SErqfzPbdCDDIKV2z6ct2YlU1FNTcs7H+YD3WvJSYkZ56q/+l8gUBbMHuIkhxB2JpIqkoN4cSV0SGYyoRaZWCDBaMk8nffVp03NOSa8lI8dEf2U=
+	t=1708277621; cv=none; b=EgBOu7drlqrhbX8lFOo8u5W1pmqPQS2EZDBPb+XRgd1R6BC6O7h6wT2L0ow8eRB38k9VqLtZNvc8qG9LL3pTOgG2A7Gv4LIK8eq7MiEPcDXETpRutrjTsbZ5AG6aZbVe6V6Ai2ljKDEZoxyYfR2h/M+okQbGJA921A9ynB/DYog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708277620; c=relaxed/simple;
-	bh=P1TUIxPZQ5lpOqBJUJm3jTlOHakrJ/xM+utJEl+0ghY=;
+	s=arc-20240116; t=1708277621; c=relaxed/simple;
+	bh=ewNobQG+B+aKF3dx2iFKgyrjWgZF9HmTA/nGruhzuz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+F4XleWL70XMvHnDCmTW9p3R+LpukXZjIjHjhSiTP0Rrs5tO3zN594WjbNQhoL0RkBRxWwgWqogg2zNAMCXajit9rnzs4Jtfhvhc0vCnmLgJBPWyFZz0/W7Rk3ZOIJ4etgROVvufBxy8td1+xjT73PYmnbwsZG9F7cKnmvIOaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvv8Q1u2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6FFC43390;
-	Sun, 18 Feb 2024 17:33:39 +0000 (UTC)
+	 MIME-Version; b=nSILDNSJ2kOZGskbfyxUmr0kcub6Egv1/gV35malMH0OzxEUwFef5B8ada7jZEDJld0eMswqTSPRuRcQV5GdpV4B7iEYrzqT4pV6MS4Xqysqk15di9TydsvizjykK4xV3lzINY4+qhKgQ/0TXqiPOebxTWmjWdcmDXFcHyBuz6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psb7LKAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B686C433C7;
+	Sun, 18 Feb 2024 17:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708277620;
-	bh=P1TUIxPZQ5lpOqBJUJm3jTlOHakrJ/xM+utJEl+0ghY=;
+	s=k20201202; t=1708277621;
+	bh=ewNobQG+B+aKF3dx2iFKgyrjWgZF9HmTA/nGruhzuz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvv8Q1u2Xs9/knOftSM+bUblYgy17z8VBdj1O5bEym3FIMG8ZKc630f/RSCZRfMcV
-	 6twiPKZbxav6Sw/lR++9RLlSarpKw+FbRm7VupGDqgWkVVIcpNbwVlz4+xjTFlRysN
-	 H4TNox0hxLmESQ5ZKjTMl4jbVF4ssaKIDLInIzHoQaHedyDEuwUmh/zyRX9vzCie6J
-	 dAYReXZHboXrCP4gUS6S0ryRh4tXPmxK0jhPspdANQPaefHTW3odBKSfdgT5h8X7vl
-	 js6Jl23bVOdGLGJxm2QF8s+rCpqlUc++XQ6jyq+EGTaoGcevoSBotYb64Wg03AGIH0
-	 /SzdRwQ35NrCg==
+	b=psb7LKACHfvJYkdHxSlS6YDd1Cc8D8p7mJCV/A3YUeqy1IWQBdFN48Wfd/O6e4VLt
+	 Yjy1HZASCdOH5IeMInrXJSiGLZvqXJ/YdqCIPb2h2RiRWGftUDbvIYPzUInJoikeuK
+	 FQWlo1aOl30s1CYtabtnL55K1G64TzZfjV5eIoQtYZ8OOOylF75Eba9MgTnHOgmjoU
+	 hAQYC9Tve06cNd4qA1mjfwc5TgDpoIDQbz1DqSZRc8ta2IdzOVDCF+1X109TfkOSA6
+	 3JX73kuPzqBGLBn6fN/8vs+cRhpyntZOg7C3hJWqrFlgGDbtItM2/VjMdF3L6S6hJR
+	 inUyQOt1t4f8g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 3/8] iio: light: al3010: Switch from linux/of.h to linux/mod_devicetable.h
-Date: Sun, 18 Feb 2024 17:33:18 +0000
-Message-ID: <20240218173323.1023703-4-jic23@kernel.org>
+Subject: [PATCH 4/8] iio: adc: ads8688: Switch to mod_devicetable.h for struct of_device_id definition
+Date: Sun, 18 Feb 2024 17:33:19 +0000
+Message-ID: <20240218173323.1023703-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240218173323.1023703-1-jic23@kernel.org>
 References: <20240218173323.1023703-1-jic23@kernel.org>
@@ -61,27 +61,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The only of specific definition used is of_device_id table and that
-is found in mod_devicetable.h not of.h
+of.h was only included to get access to this structure, so include the
+correct header directly instead.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/al3010.c | 2 +-
+ drivers/iio/adc/ti-ads8688.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-index 8f0119f392b7..53569587ccb7 100644
---- a/drivers/iio/light/al3010.c
-+++ b/drivers/iio/light/al3010.c
-@@ -17,7 +17,7 @@
- #include <linux/bitfield.h>
- #include <linux/i2c.h>
+diff --git a/drivers/iio/adc/ti-ads8688.c b/drivers/iio/adc/ti-ads8688.c
+index ef06a897421a..9440a268a78c 100644
+--- a/drivers/iio/adc/ti-ads8688.c
++++ b/drivers/iio/adc/ti-ads8688.c
+@@ -11,7 +11,7 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/err.h>
  #include <linux/module.h>
 -#include <linux/of.h>
 +#include <linux/mod_devicetable.h>
  
  #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
+ #include <linux/iio/buffer.h>
 -- 
 2.43.2
 

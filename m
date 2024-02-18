@@ -1,221 +1,205 @@
-Return-Path: <linux-iio+bounces-2720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2721-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CDB8594C4
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 06:26:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A082D8594CF
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 06:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C48EB21B2B
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 05:26:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2210A1F21FE0
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Feb 2024 05:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D232E2F50;
-	Sun, 18 Feb 2024 05:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7C25221;
+	Sun, 18 Feb 2024 05:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="NxEqw/4h"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="OzI7YS5a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8304C61
-	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 05:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B304C7D
+	for <linux-iio@vger.kernel.org>; Sun, 18 Feb 2024 05:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708233997; cv=none; b=j0B3cR7vYKATVqMAvLyXr0blwGq2MKbp8b/cOhdUVy/WCVklGxBZpV5ogpJhhY7DDKj8kROzXRraDczCbTbfrhtbA5fFYUlCygRazJZUuNxj/tfWKzYbstz2ixkQXFk/Phcr2MrD4m7oLrYqjh98nsGX3Zr44ihTp1UmpkxnmKY=
+	t=1708235322; cv=none; b=hYEsLPbYWkGcHaY/6PV7AP8WrcYuMX0tg6/6R0uSirrHHYl5epwXB1kK05vFc2l3hZydwLgIjdySQzo7sPgV+JeJVm8sXZlj/tV4GiH6lVNxA1fojBDYjow7VjVxTt0EZaim1SKK2jZvafNpFRThz1U3iPyeWcP1isOP9Zrs3vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708233997; c=relaxed/simple;
-	bh=hIx6IJ5pL8itiTPrvVrZD5A6HOd06/aoGUHVby7uyP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DP3x61Dyua2MRg4Rv7Kuv76FwUHARfHJsEUj6LHNua/LkttCl9HI4Horf2/ZAocOqnY3n6IkJR4bzOYsmy3SOUfpY2cAdYpJVLmadOqjOE9CRBq2Sxw6pE1N8H6fqmddc5AeNf1wUFQ3vow/+Sve4kgJEw3Or00swPLgMx4QOGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=NxEqw/4h; arc=none smtp.client-ip=209.85.166.54
+	s=arc-20240116; t=1708235322; c=relaxed/simple;
+	bh=2G8L9j8Jf4lGwtSfk7Wp5gH1hdFOGkt/0XZUCwaOhWY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ugGKw5V5fnrbh4VeSvGoKK8HknngNhKloZ8EjoXKmIXvlGAzr7TSIn2j2xDp0G6NNt0WibjDkAzwH/D/Dq4+uEN55UFsBVE9T9cR1v/cL6NYYs4JGG7W7FM/qbE3NIEMk/NUbVh8x0bEdDyluxxgKhmt/Sy43axqBtPq/y1jvPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=OzI7YS5a; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7c3e01a7fdeso136355039f.1
-        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 21:26:34 -0800 (PST)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6da9c834646so3069127b3a.3
+        for <linux-iio@vger.kernel.org>; Sat, 17 Feb 2024 21:48:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1708233994; x=1708838794; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jQeF0EtWGS9tgKqxNFCbPNoiWJT3We61+76i+eNuJQE=;
-        b=NxEqw/4hEulKtgleQNcBO9J9PGfa8EQRG3dtaE2mEESLDjOXoF+5vJue8jdV5OUoC6
-         Xh5t3alwfFE0T5v+ES3peTfFpKqFWAh4n+CMJeALI++MLSOESUb72Lmhdbesvsm/bHV5
-         ybI9YXtt04B+fBQnhFDnBb4flHhpd3yuUM13ZXjsguG5RStoSMnUeVU7nV4FXecnZheo
-         amoXI/gN5SgxiOQhsfVexyRgvcqmZnLC73dltQC49IMINedcxEwY5VIktPaEj0tfKgHp
-         hPDCTy7IUzpKNjiS7ZBQuSfEMsS1fzhGXswJQxxY91taHJtqDidm0DUavq9LtAwRR9HD
-         K0MA==
+        d=tweaklogic.com; s=google; t=1708235319; x=1708840119; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YjMuUzABWzpVB4/hbUrhPrwuX/ajVWmWi+DbJFf13M0=;
+        b=OzI7YS5aTiRDS3x3kTqSB9ad//bVVtfKGjP2c2ss4JRIE97PMfUlS9xgm0LyoUjqW1
+         qCQAZBHIKTfh1GQIO4OcF3GcX5qea6odHNrMiQ9lytQc8MKtJo89v/D9T08LViDHPCLO
+         evnRs00DUH36NlL8b4GMzG/Ev031nFP36mjnCeWv4ixRCyB5OGqgwYz3EaA8MTxd4X/C
+         WPDc9aJNaqdSJ/yQq34jMTD85RSkMTg6eIpxflQfe/VDRzt0pEKTjfwBN2TMQb5zPffO
+         +T/MbeAVMIWE0pP7O0jKw9FQ7AxcDlU7Wrj3ie/VHsmwNr3Gk3KTwJ12U7exLNlZs277
+         vtmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708233994; x=1708838794;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jQeF0EtWGS9tgKqxNFCbPNoiWJT3We61+76i+eNuJQE=;
-        b=ZxrZ2s1lx8CYhw8Vy+uG9kAHGTRMBMdEbQEG0Y4eEP5tByAg1oxwOb+RWzaKrY3Gbf
-         2z3XFDwgmuEi2XLGL4MaPsLOs71m4+0Dt0RqxKLi0VXfCijbV/R8LKhwgKcX2Zax9yMW
-         z0gpLKMgRQa9K7ZGw+LJ7kQSqzP1Dr+4LJ5wuf76bk4MxuWchZDSGMYuxKWCrwpDiUry
-         fZjUSQDFB1A5/PEj5HSoxG7PtR6lfx1YWDwCm4aq+/clRpZhutzk8su5pdvc1SGQkcmD
-         RSwyRp1QAtasNweBOfD39YtOaf/ovQljVQPR37JBf3reGKoDQEDocYMHMt6Dwi0vupF8
-         TGJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaDa/p/DrjJ47X+MPM9cXEvPmah/GInCN3F7XaxuWbKL4hqKJ6eldycRLg8+VygqRaC7CnvDredoA5AmmY/Q+KoLV01o3gnUKl
-X-Gm-Message-State: AOJu0Yyj/12MhXbgOSV4IZ8q4D8NnTpGax83eluspJmuqPFVtDmnRCdO
-	73xlfDUzvG97F+v9zLkA3D1ykCGewXCTiqdVHCjzc1GpOPywgeHex7aZInXMSAk=
-X-Google-Smtp-Source: AGHT+IGJoaQ7PtOhyOTRWbhkkawxFgpWk1IyS8qeqN9+Jj3Sc4Kg+cl6u1KzDS9nsv35SSciiDEzSg==
-X-Received: by 2002:a6b:4a01:0:b0:7c4:95e1:7c6f with SMTP id w1-20020a6b4a01000000b007c495e17c6fmr10943315iob.2.1708233993945;
-        Sat, 17 Feb 2024 21:26:33 -0800 (PST)
-Received: from [192.168.20.11] ([180.150.113.62])
-        by smtp.gmail.com with ESMTPSA id l1-20020a170902d04100b001dbb14e6feesm2173492pll.189.2024.02.17.21.26.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Feb 2024 21:26:33 -0800 (PST)
-Message-ID: <65582213-1091-4877-ae83-c9450a3610fa@tweaklogic.com>
-Date: Sun, 18 Feb 2024 15:56:12 +1030
+        d=1e100.net; s=20230601; t=1708235319; x=1708840119;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YjMuUzABWzpVB4/hbUrhPrwuX/ajVWmWi+DbJFf13M0=;
+        b=oYYUHWOIZUiphaDAkfvZm/TpiWa6yNRUFPe5nEoMXfPLxtsCDPc7gE5A1plsvtREkq
+         +GjUgOx9DodCOV8gJOUCrI9UrUBlEHYH9BTCl580b6oqbNoVMrIYeQhMRDpTq+2hbW/t
+         1OOAhQyA/IhYty9plq96i4nupsHoLzE3GBONlorKUI6i2uGT2lJg/9X2IhyRjBdv5DPr
+         tENFIz6x4jQgdUvSF4/xbE1I5FUDjLImVIxFy64bqCNCs+C+jN3rp4d2vETbhfmgZHKt
+         B4X8AUCMaspOpR/Ui1G+L7aP1DrLRT3PTfwjTF9j6m99Xsge0wOocO+1OBYutR0LxhJ4
+         c3qA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaIY9ctnT8pzJPfyiBQ5bwXNmdmsMlbpWIaHk7sWJhQwmA6aMhrkqrOL5ipOOLpEtAz+vKkb1vL/YLPxTWAXk9MNHitGP53Gk5
+X-Gm-Message-State: AOJu0YxcannQ8IM8m9j3znZIepNSTLlCUhbEL5DgPMcNQXc5+kjnSnmH
+	8BMlc+orTQsXT3lzTbbGYhtXAUsePP5LKTBDcXosX4EHnT9U6wSvnqJ3aLYdSUE=
+X-Google-Smtp-Source: AGHT+IEU4jeDZnMCeD157SW3Qb5XpFVVctBrCUr1fUhg9NpkM4WGx8K8P/3ycgzuHGohZung3Hc1/w==
+X-Received: by 2002:aa7:8203:0:b0:6e0:3789:1d22 with SMTP id k3-20020aa78203000000b006e037891d22mr8754490pfi.0.1708235319243;
+        Sat, 17 Feb 2024 21:48:39 -0800 (PST)
+Received: from localhost.localdomain ([180.150.113.62])
+        by smtp.gmail.com with ESMTPSA id 32-20020a631260000000b005d3bae243bbsm2394808pgs.4.2024.02.17.21.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Feb 2024 21:48:38 -0800 (PST)
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Anshul Dalal <anshulusr@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/5] Support for Avago APDS9306 Ambient Light Sensor
+Date: Sun, 18 Feb 2024 16:18:21 +1030
+Message-Id: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2] iio: gts-helper: Fix division loop
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
- David Laight <David.Laight@aculab.com>, linux-iio@vger.kernel.org
-References: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
- <20240216135812.07c9b769@jic23-huawei>
- <dfe6e5da-b104-4acd-b323-4a7fa980de88@tweaklogic.com>
- <20240217162724.767f2ab6@jic23-huawei>
-Content-Language: en-US
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <20240217162724.767f2ab6@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18/2/24 02:57, Jonathan Cameron wrote:
-> On Sun, 18 Feb 2024 01:09:33 +1030
-> Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
-> 
->> On 17/2/24 00:28, Jonathan Cameron wrote:
->>> On Mon, 12 Feb 2024 13:20:09 +0200
->>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>    
->>>> The loop based 64bit division may run for a long time when dividend is a
->>>> lot bigger than the divider. Replace the division loop by the
->>>> div64_u64() which implementation may be significantly faster.
->>>>
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>>>
->>>> ---
->>>> This is a resend. Only change is the base which is now the v6.8-rc4 and
->>>> not the v6.8-rc1
->>> Given I'm not rushing this in, it is going via my togreg tree, so the
->>> rebase wasn't really helpful (thankfully didn't stop it applying).
->>> Would have been fine to send a ping response to the first posting of it.
->>>
->>> I was leaving some time for David or Subhajit to have time to take
->>> another look, but guess they are either happy with this or busy.
->>>
->>> Applied to the togreg branch of iio.git and pushed out as testing for
->>> all the normal reasons.
->>>
->>> Jonathan
->>>    
->>>>
->>>> This change was earlier applied and reverted as it confusingly lacked of
->>>> the removal of the overflow check (which is only needed when we do
->>>> looping "while (full > scale * (u64)tmp)". As this loop got removed, the
->>>> check got also obsolete and leaving it to the code caused some
->>>> confusion.
->>>>
->>>> So, I marked this as a v2, where v1 is the reverted change discussed
->>>> here:
->>>> https://lore.kernel.org/linux-iio/ZZZ7pJBGkTdFFqiY@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi/
->>>>
->>>> Revision history:
->>>> v1 => v2:
->>>>    - Drop the obsolete overflow check
->>>>    - Rebased on top of the v6.8-rc4
->>>>
->>>> iio: gts: loop fix fix
->>>> ---
->>>>    drivers/iio/industrialio-gts-helper.c | 15 +--------------
->>>>    1 file changed, 1 insertion(+), 14 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->>>> index 7653261d2dc2..b51eb6cb766f 100644
->>>> --- a/drivers/iio/industrialio-gts-helper.c
->>>> +++ b/drivers/iio/industrialio-gts-helper.c
->>>> @@ -34,24 +34,11 @@
->>>>    static int iio_gts_get_gain(const u64 max, const u64 scale)
->>>>    {
->>>>    	u64 full = max;
->>>> -	int tmp = 1;
->>>>    
->>>>    	if (scale > full || !scale)
->>>>    		return -EINVAL;
->>>>    
->>>> -	if (U64_MAX - full < scale) {
->>>> -		/* Risk of overflow */
->>>> -		if (full - scale < scale)
->>>> -			return 1;
->>>> -
->>>> -		full -= scale;
->>>> -		tmp++;
->>>> -	}
->>>> -
->>>> -	while (full > scale * (u64)tmp)
->>>> -		tmp++;
->>>> -
->>>> -	return tmp;
->>>> +	return div64_u64(full, scale);
->>>>    }
->>>>    
->>>>    /**
->> Hi Matti and Jonathan,
->>
->> I somehow missed testing this patch earlier. The above patch works fine with apds9306 v7 driver(which work in progress!).
->> There are no errors.
->> My test script is simple:
->> #!/bin/bash
->> D=0
->> S=`cat /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale_available`
->>
->> for s in $S; do
->> 	echo $s
->> 	echo $s > /sys/bus/iio/devices/iio:device${D}/in_illuminance_scale
->> 	sleep 5
->> done
->>
->> One question - if I test a patch like this, do I put a "Tested-by" tag or just mention that I have tested it?
-> Both are useful - so thanks for this email.
-> 
-> Preference for a formal tag though as that goes in the git commit and we have
-> a convenient record that both says you tested it + that we should make sure
-> to cc you on related changes as you may well be in a position to test those
-> as well!
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->>
->> Regards,
->> Subhajit Ghosh
->>
->>>>
->>>> base-commit: 841c35169323cd833294798e58b9bf63fa4fa1de
->>>    
->>
-> 
-Thank you Jonathan for explaining the above.
-I forgot to mention that the above test is run in parallel with continuous raw reads
-from another script and event monitoring.
-As I understand that you have already applied this patch but still,
+Support for Avago APDS9306 Ambient Light Sensor.
 
-Tested-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
+It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
+channel approximates the response of the human-eye providing direct
+read out where the output count is proportional to ambient light levels.
+It is internally temperature compensated and rejects 50Hz and 60Hz flicker
+caused by artificial light sources. Hardware interrupt configuration is
+optional. It is a low power device with 20 bit resolution and has 
+configurable adaptive interrupt mode and interrupt persistence mode.
+The device also features inbuilt hardware gain, multiple integration time
+selection options and sampling frequency selection options.
 
-Regards,
-Subhajit Ghosh
+This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for 
+Scales, Gains and Integration time implementation.
+
+Link: https://docs.broadcom.com/doc/AV02-4755EN
+
+v6 -> v7:
+ - Made comments to struct part_id_gts_multiplier as kernel doc
+ - Removed static_asserts for array sizes
+ - Moved regmap_field from driver private data structure and removed
+   regfield_ prefix to reduce names
+ - Used "struct apds9306_regfields *rf = &data->rf" in the respective
+   functions to reduce names
+ - Removed apds9306_runtime_power_on() and apds9306_runtime_power_off()
+   functions in favour of using the runtime_pm calls directly from
+   calling functions.
+ - Fixed indentations
+   https://lore.kernel.org/all/ZcOZX8mWTozC2EAc@smile.fi.intel.com/#r
+
+v6 -> v7 Bindings:
+ - Updated commit message
+ - Removed wrong patch dependency statement from commit messages
+ - Updates tags
+   https://lore.kernel.org/all/20240206-gambling-tricycle-510794e20ca8@spud/
+
+v5 -> v6:
+ - Changes as per review
+ - Update kernel doc for private data
+ - Change IIO Event Spec definitions
+ - Update guard mutex lock implementation
+ - Add pm_runtime_get()
+ - Update styling
+   Link: https://lore.kernel.org/all/20240204134056.5dc64e8b@jic23-huawei/
+ 
+v5 -> v6 Bindings:
+ - Write proper commit messages
+ - Add vdd-supply in a separate commit
+ - Add Interrupt macro in a separate commit
+   Link: https://lore.kernel.org/all/1d0a80a6-dba5-4db8-a7a8-73d4ffe7a37e@linaro.org/
+
+v2 -> v5:
+ - Bumped up the version:
+   RFC->v0->v1->v2->v3 (Earlier scheme)
+   v1->v2->v3->v4->v5 (Scheme after review) (Current scheme)
+   Link: https://lore.kernel.org/all/20231028143631.2545f93e@jic23-huawei/
+
+ - Added separate patch to merge schemas for APDS9300 and APDS9906. Added
+   APDS9306 support on top of that.
+   Link: https://lore.kernel.org/lkml/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+
+ - Removed scale attribute for Intensity channel:
+   Link: https://lore.kernel.org/all/20231204095108.22f89718@jic23-huawei/
+
+ - Dropped caching of hardware gain, repeat rate and integration time and
+   updated code as per earlier reviews.
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+
+ - Added descriptive commit messages
+ - Fixed wrongly formatted commit messages
+ - Added changelog in right positions
+
+ - Link to v2: 
+   https://lore.kernel.org/lkml/20231027074545.6055-3-subhajit.ghosh@tweaklogic.com/
+
+v2 -> v5 Bindings:
+ - Removed 'required' for Interrupts and 'oneOf' for compatibility strings
+   as per below reviews:
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+   Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
+
+ - Implemented changes as per previous reviews:
+   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
+   Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
+
+Subhajit Ghosh (5):
+  dt-bindings: iio: light: Merge APDS9300 and APDS9960 schemas
+  dt-bindings: iio: light: adps9300: Add missing vdd-supply
+  dt-bindings: iio: light: adps9300: Update interrupt definitions
+  dt-bindings: iio: light: Avago APDS9306
+  iio: light: Add support for APDS9306 Light Sensor
+
+ .../bindings/iio/light/avago,apds9300.yaml    |   20 +-
+ .../bindings/iio/light/avago,apds9960.yaml    |   44 -
+ drivers/iio/light/Kconfig                     |   12 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/apds9306.c                  | 1336 +++++++++++++++++
+ 5 files changed, 1364 insertions(+), 49 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+ create mode 100644 drivers/iio/light/apds9306.c
+
+
+base-commit: c1ca10ceffbb289ed02feaf005bc9ee6095b4507
+-- 
+2.34.1
+
 

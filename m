@@ -1,113 +1,210 @@
-Return-Path: <linux-iio+bounces-2797-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2798-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7261385AC58
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 20:50:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469E585AC7E
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 20:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121D21F23857
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 19:50:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F117D28650E
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 19:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA0353E39;
-	Mon, 19 Feb 2024 19:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DE351016;
+	Mon, 19 Feb 2024 19:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XLmyjSXV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgdpP9DF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC5B53E1B
-	for <linux-iio@vger.kernel.org>; Mon, 19 Feb 2024 19:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9679153E0A;
+	Mon, 19 Feb 2024 19:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708372038; cv=none; b=Ch94T1d2PEEx4o9Wq8po/ZF07igLhwHyNcGcFWqzFxnN0o8fXj8NjqBmNx8rJhJXEd42ydw/O9p29lPDmnk+flHsG3MI/CCQKYzA7UjnPFo4wMyv75xoUGaGdJ+chPgrruM+jDx0+k5YqzNEtEZlHeGzQgBM+ZkZhaHoAVdlNgs=
+	t=1708372311; cv=none; b=YsEreHrgiKgl1XmDVNIY146capnnwH+ihwIgGLND7Bi+KhckYaUJJheIBQVMN0wn526TGQgULBDDlxw9IR9Vu7FQP1/QmsiK/D8l4VNtbXP5Y4KQy6wztnwB35xn1t4Veil3Vi8Xop8eXgqdhZoOqm8AiUcvfKxbiCLvnmGIJBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708372038; c=relaxed/simple;
-	bh=DUEcOGJ/rk/h3tWGjgVTrpMETTt0JGs4Wy0hdmAe7hc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IwkF3yHSYXL2NvvLGtkvxr+JPowXDBLcZPjwx+dqgqDeNAY83OkZUqRH9vRS0RXtOx46Sm4WJBjpJvRi7xDDYHjesHJYs78CYthLkDVgckUY4TwWEbfUnaCLSqQQQ44YoVWb/ii23ZGEz9qxaiR94eLq8gl8OK91YBLueBdN/NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XLmyjSXV; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d240d8baf6so11016671fa.3
-        for <linux-iio@vger.kernel.org>; Mon, 19 Feb 2024 11:47:16 -0800 (PST)
+	s=arc-20240116; t=1708372311; c=relaxed/simple;
+	bh=WLnOLrNYyxbBZ7KhNT25xTbE5ysycd66MDZXEAQCJJs=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhUxuinptJUYW6x1Luk/vyMrIcgVby61MujwG7o8Lye6Dos6TJn5ky+qma8vOwRj0D1wJ70xMNrvN0oON1E1Pb4HTYRNhT8SANUngN1Uv75A76YFCsygcJI0wNfuHM4LDiJyKfJlBfrFy+0HLGmNfn5I1h1dNZ10b6Xn3+G78HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgdpP9DF; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so614368566b.0;
+        Mon, 19 Feb 2024 11:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1708372035; x=1708976835; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DUEcOGJ/rk/h3tWGjgVTrpMETTt0JGs4Wy0hdmAe7hc=;
-        b=XLmyjSXVo+QrZsw56/6y5wko9M58YoqckmwPn7YSTnJ/wx3/+LSB05Ry8C67muEgAn
-         OSsjHKYvLcBbwIm+e399HA5BszIw5pfaJSIl+Ytmj4z1Z3V+3tyGLOydXaOThogoIN5D
-         RGTBfPSy8u5LOp5PBxalDAGEvB+XiFv/pW2ZxbQVFLhVmA9icDJn4PsJV4McbvOPtOlN
-         mSbLDBxE9q2d9HZ6Lc1bHmwhStHXAa3n56ngTYxuoPhIg6gjQ+jSWWTP0ttZlo3E0QM4
-         jSHXRu2CMe8NO5BIxeJOfZevdGQOXv5H+9tTze39y/fkMOMpCfrnE+8EzNZef6TePogp
-         yuEw==
+        d=gmail.com; s=20230601; t=1708372308; x=1708977108; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uS/tFU4Jz4wVbpM0IanHtPvqpcnyfY9jCayEpbR1UVo=;
+        b=UgdpP9DFar7orxvpKEmJA9gIoBPcvmAA9LCfFxJjU1edAu0TfjWRSdEyhcyT8TSlGN
+         VMIT8FPJhb+4teBKWFCZTJGG0b50bKsWsQTgfJkkT8m+8gsr3FUWAeaIQHk10/fxkeWl
+         TYM978cH+aS2y3y1xQpJ4TTqpEGikl7LdTiaVBTDAvsjTd48fyRwULOpINQvn6snxGki
+         aNpP6FsZ2sHtNLa7/b5S1J7ci0TXSaZ8fJP4gHA6HU4Wdnbnu3SlJXhhAEEG3zqyudDk
+         IYVC8AUkqtSIq50MgItefFcq/tYnjcKp7xR9GZebXyZ1Ps7Bee3Ayzr5FFtb7jLnMcP/
+         gEiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708372035; x=1708976835;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DUEcOGJ/rk/h3tWGjgVTrpMETTt0JGs4Wy0hdmAe7hc=;
-        b=oJ0YTlwhBeopMZPktub54dZbaiC64gsBU/QwGA+FW5zuBL/OAXsmTgIltD10/SZIUc
-         UM7D3PSxuCfYiWG2ZlDlbouQ+dUP2SRHBhxLOAAEooKbxHynDY4hZexTZu9LVpD5MAzE
-         Vn+4IX3dfIVTJRLujwMDd3owycoD+Ums8msgKx408tsAF61vWMbKi68zUUhG2fJnVoMJ
-         MFx5+0Vg788PVEHe3J4pN7EoCbftvKhNIovH8xIphtECsE+D12GNINglTmF7LsUHP0rm
-         r7dRdHAhnxAqt+qaC01vzIhETRMMz45B6Q5D2mbYaq/B1PAu4pekvTKwrMnPKuM1Xo+U
-         4WxQ==
-X-Gm-Message-State: AOJu0Yz+nfu1qWCQwIEtHGNVEXiG8042lSGyJhI9bJC/TeugVZNLmoFd
-	6CFHejPLfqBb49IZbiXFjVkkq+w6cNxQVtJc4Dk/FRlCLWhH2gxgVZkczvzPZ6DX/i+L3MvDhx9
-	hoVvFmpVamMrhVb28Lar22C3uKhplySTnD5imdsRckd9fv7w6Tzs=
-X-Google-Smtp-Source: AGHT+IHE5s1bWp7Lf0AEexy1WLGcMX0Xnpkd5+kSp3lWcLT3lfjbcJg3I29Wo+/9DZEaxxVZN3gD4R3V3ERbgvjwPck=
-X-Received: by 2002:a2e:7202:0:b0:2d2:3a8e:e2b4 with SMTP id
- n2-20020a2e7202000000b002d23a8ee2b4mr2113220ljc.42.1708372034915; Mon, 19 Feb
- 2024 11:47:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708372308; x=1708977108;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uS/tFU4Jz4wVbpM0IanHtPvqpcnyfY9jCayEpbR1UVo=;
+        b=pP+2xy3k0ESgCkLlP9Oyj77f8Sf4Zyu5TVDI8O+y7t8aQYd0KOHKRgzPMTZm+G5CI4
+         nIvhIJ1P89cUdR7fT4a8KE9/DSfAN/A5FPyQsKMBHkj2aIYWCrkIkYY5j3bH6rK70+nI
+         EE7P/RhJqCvA0dURVDUqsd6rm+ZjGfwfFbxOR/X/IQnPWSEdv+0OW5/GwONBu89TwlTU
+         ybUBN6SpZlFnCK7DyVuPDiE2B9Va83fJqRotHRzht6TRMS+zMzSkklnOz9VDCMtWPuce
+         txt7ENV+8jV7rjlL2w4vNDiDRPyjT6cBwqNq0DA+u/hdLnljBm0jyjeo+uGdWMNCLcfy
+         yEMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFNVvMEhc0N4/WbX8obeZmFfQ7PvEz8AJhozYiPp4QY1ohWm0RJlJEfLh9JG2dSGsPRApRcVJq+D/hhXwVFz9Y+CV7QwwzU7VbJAx/X3m8XHk2022sK8O/IAobkiBEF1FG43XLmM0y
+X-Gm-Message-State: AOJu0YxzZtE/S0LH62fINxURS6NOg7Y9182vJBSm1Nule5zyw9X1L+y1
+	JjufFfAJ7RzWH723Z64QHFj0bUOp+e3DHrtWVXzW5PwMEPRK1Z/H
+X-Google-Smtp-Source: AGHT+IE+Q3GVRQBpgpqTCqz/Fml0+MC9LVGyqJfQqKK5pPUpCUOlnxCzF/6dLs5V6oP28riPSLKSKg==
+X-Received: by 2002:a17:906:6617:b0:a3d:5058:50ff with SMTP id b23-20020a170906661700b00a3d505850ffmr11477579ejp.2.1708372307609;
+        Mon, 19 Feb 2024 11:51:47 -0800 (PST)
+Received: from vamoiridPC ([2a04:ee41:82:7577:3f11:8c45:6350:e419])
+        by smtp.gmail.com with ESMTPSA id vb7-20020a170907d04700b00a3dabd0d000sm3214862ejc.209.2024.02.19.11.51.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 11:51:47 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 19 Feb 2024 20:51:45 +0100
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	ang.iglesiasg@gmail.com, andriy.shevchenko@linux.intel.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
+ support
+Message-ID: <20240219195145.GA18787@vamoiridPC>
+References: <20240219191359.18367-1-vassilisamir@gmail.com>
+ <20240219194213.6b0f02bc@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com> <20240110-ad7380-mainline-v4-2-93a1d96b50fa@baylibre.com>
-In-Reply-To: <20240110-ad7380-mainline-v4-2-93a1d96b50fa@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 19 Feb 2024 13:47:03 -0600
-Message-ID: <CAMknhBGkUP2Tdze5Fa_0qTcCP_OgcTxtczKYZiH1icfuTAEe+g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] iio: adc: ad7380: new driver for AD7380 ADCs
-To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
-	Stefan Popa <stefan.popa@analog.com>, Julien Stephan <jstephan@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240219194213.6b0f02bc@jic23-huawei>
 
-On Wed, Jan 10, 2024 at 2:29=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
+On Mon, Feb 19, 2024 at 07:42:36PM +0000, Jonathan Cameron wrote:
+> On Mon, 19 Feb 2024 20:13:59 +0100
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> 
+> > According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> > read operation the first byte that is returned needs to be dropped,
+> > and the rest of the bytes are the actual data returned from the
+> > sensor.
+> > 
+> > Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
+> No line break. The fixes tag is part of the main tag block.
+> I can fix that whilst applying.
+> Otherwise this looks fine to me.
+> 
+> I'll leave it on list a little longer though as both Linus and Angel
+> are still about and might have time to also take a look at this.
+>
 
-...
+Thank you very much again for the quick answer. Since you can fix it while applying,
+I should not annoy the mailing list with more e-mails. Just for future reference,
+when you mean no line break you mean between the main block and the "Fixes" line
+or between the "Fixes" line and the "Signed-off-by: ...." ? 
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > ---
+> >  drivers/iio/pressure/bmp280-spi.c | 49 ++++++++++++++++++++++++++++++-
+> >  1 file changed, 48 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> > index e8a5fed07e88..1972014dca93 100644
+> > --- a/drivers/iio/pressure/bmp280-spi.c
+> > +++ b/drivers/iio/pressure/bmp280-spi.c
+> > @@ -8,6 +8,7 @@
+> >  #include <linux/spi/spi.h>
+> >  #include <linux/err.h>
+> >  #include <linux/regmap.h>
+> > +#include <linux/bits.h>
+> >  
+> >  #include "bmp280.h"
+> >  
+> > @@ -35,6 +36,33 @@ static int bmp280_regmap_spi_read(void *context, const void *reg,
+> >  	return spi_write_then_read(spi, reg, reg_size, val, val_size);
+> >  }
+> >  
+> > +static int bmp380_regmap_spi_read(void *context, const void *reg,
+> > +				  size_t reg_size, void *val, size_t val_size)
+> > +{
+> > +	struct spi_device *spi = to_spi_device(context);
+> > +	u8 rx_buf[4];
+> > +	ssize_t status;
+> > +
+> > +	/*
+> > +	 * Maximum number of consecutive bytes read for a temperature or
+> > +	 * pressure measurement is 3.
+> > +	 */
+> > +	if (val_size > 3)
+> > +		return -EINVAL;
+> > +	/*
+> > +	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+> > +	 * the first byte needs to be dropped and the rest are the requested
+> > +	 * data.
+> > +	 */
+> > +	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
+> > +	if (status)
+> > +		return status;
+> > +
+> > +	memcpy(val, rx_buf + 1, val_size);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static struct regmap_bus bmp280_regmap_bus = {
+> >  	.write = bmp280_regmap_spi_write,
+> >  	.read = bmp280_regmap_spi_read,
+> > @@ -42,10 +70,19 @@ static struct regmap_bus bmp280_regmap_bus = {
+> >  	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+> >  };
+> >  
+> > +static struct regmap_bus bmp380_regmap_bus = {
+> > +	.write = bmp280_regmap_spi_write,
+> > +	.read = bmp380_regmap_spi_read,
+> > +	.read_flag_mask = BIT(7),
+> > +	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
+> > +	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+> > +};
+> > +
+> >  static int bmp280_spi_probe(struct spi_device *spi)
+> >  {
+> >  	const struct spi_device_id *id = spi_get_device_id(spi);
+> >  	const struct bmp280_chip_info *chip_info;
+> > +	struct regmap_bus *bmp_regmap_bus;
+> >  	struct regmap *regmap;
+> >  	int ret;
+> >  
+> > @@ -58,8 +95,18 @@ static int bmp280_spi_probe(struct spi_device *spi)
+> >  
+> >  	chip_info = spi_get_device_match_data(spi);
+> >  
+> > +	switch (chip_info->chip_id[0]) {
+> > +	case BMP380_CHIP_ID:
+> > +	case BMP390_CHIP_ID:
+> > +		bmp_regmap_bus = &bmp380_regmap_bus;
+> > +		break;
+> > +	default:
+> > +		bmp_regmap_bus = &bmp280_regmap_bus;
+> > +		break;
+> > +	}
+> > +
+> >  	regmap = devm_regmap_init(&spi->dev,
+> > -				  &bmp280_regmap_bus,
+> > +				  bmp_regmap_bus,
+> >  				  &spi->dev,
+> >  				  chip_info->regmap_config);
+> >  	if (IS_ERR(regmap)) {
+> 
 
-> +
-> +/* fully differential */
-> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7380_channels, 16);
-> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7381_channels, 14);
-> +/* pseudo differential */
-> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7383_channels, 16);
-> +DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL(ad7384_channels, 14);
-> +
-
-Similar question to [1] in light of [2]: Since AD7383 and AD7384 are
-pseudo-differential, should we handle them differently? I.e. add
-aina-supply and ainb-supply DT properties for the negative inputs
-(typically a V_REF / 2 supply) and remove the differential flag from
-the channel spec.
-
-[1]: https://lore.kernel.org/linux-iio/CAMknhBH2Pqa9xpPxnTCxJegVTbOG-QDeJA4=
-YrQUPfj+hfSs73A@mail.gmail.com/
-[2]: https://lore.kernel.org/linux-iio/CAMknhBF5mAsN1c-194Qwa5oKmqKzef2khXn=
-qA1cSdKpWHKWp0w@mail.gmail.com/
+Best regards,
+Vasileios Amoiridis
 

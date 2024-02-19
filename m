@@ -1,131 +1,131 @@
-Return-Path: <linux-iio+bounces-2759-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2760-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7291C859FAE
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 10:27:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032ED859FC0
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 10:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12EB21F20F23
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 09:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35FA61C211E7
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 09:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B101323753;
-	Mon, 19 Feb 2024 09:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hO0Z8/NN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501A422619;
+	Mon, 19 Feb 2024 09:33:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B1D23765
-	for <linux-iio@vger.kernel.org>; Mon, 19 Feb 2024 09:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BFF23750
+	for <linux-iio@vger.kernel.org>; Mon, 19 Feb 2024 09:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708334869; cv=none; b=pugCIMZjegHEQHWeVEZx8bIiwHQOAXn6dd/vGKW4D+5vKvcdl+4g9AogWWNHX0G1G1TejihjD6D20zVfH4gnyl91YABrggjJdsb8qqLu/Mn9ObcvxqY5LEte/ynxvQxOnLKSObqhot0ZBFiZiZEwM8QbfJ492RKTkJK5TjUAN8s=
+	t=1708335200; cv=none; b=shAez9/mbKte0Di3OCszxW5moS2mWPFhX56EMjgSevZoLvqfMfNRkeMK1EeD+eQJXNrrm2a+hHhS5DLgg/dl/6uVA0J5EfxR88ZFqgPGl9uuaKmIiKVCiH5/DAMHWMFgWsRMhtqZUwRyEQURjz6PhWjZyFsDpxL8zeEhJ6pazT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708334869; c=relaxed/simple;
-	bh=VlGGIkVp3QtN08yCqORUViDs+yHLNt6uj9h5UdBpl08=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=naFFDWprU4nGkG6znUiW8a24d9QIyZhShYKdITVIuNRC36IMgFyqHvmK2209kB1dU78CxSe8+MsIwJ7/h5UYd7Okkjix4Dt/pFZ7k9qa6jWftZ+srucs9wT4n/ayYmMdI9TPvnnITvqn8iFH6lo8d+9H3YY/jdhCp6Kx1R7jWPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hO0Z8/NN; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-55f50cf2021so5521206a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 19 Feb 2024 01:27:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708334855; x=1708939655; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VlGGIkVp3QtN08yCqORUViDs+yHLNt6uj9h5UdBpl08=;
-        b=hO0Z8/NNao1q/wL48VSfCO1dQtQka6f6gWpAhsIXOO8GnKV55vJq+obvmBNXH3YqzG
-         lWQj6i2L0xJFjHoYY8KtYg0C+2UpfEiXOPZAkQ995wQm9xbvu6iVOK0Ied6z84uWZ7rH
-         ZtE5jWIwNP+eVNdFMFrJQRYdlpXR5Y2HmTEM0HwRwsFnv8q3oGCeTRfckFEOgNgRDJJW
-         TzXH9nI0VcxPKa5q39BQT02uzmnoaaxGwv/kpy+HHX8PypytnDaUDLpmK9PoioHyhR8j
-         0nSnXBaLAapjp9lyKZAIz5TrXmVGQRxp7YkNLF0ywkm6qtR8WA/hpoF/gnXjXfjvJ7M+
-         ZWjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708334855; x=1708939655;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VlGGIkVp3QtN08yCqORUViDs+yHLNt6uj9h5UdBpl08=;
-        b=WQZyfaIIL7nEzIeG6kFd238w1SBzv5L5ozxxhhKsUyUBPTzGgWKBhnK8ty5DzBhf8m
-         cAwyWbaV9v5ri2Ry5O0xBqTjKQtA+Uxw1F8YSgE/Ph9y6f2Gk1eJm87hzjDisfSWQyK6
-         ohaSuG+VrKuSKuThAD2dTSI9JOG4mKB3Ml2O1tuJTUJHpVFQvyYmZMI/qvUNoHUfe8li
-         f7bkh7yDeCCpfxPOwM27P8NETXFAEfdQBwqUEGEWkxK9MszJXtHwjItrfmV1ssDJOOGY
-         P9BQNYi2251Fmbu/CKSaHH7jFtOEDH/AOOCfuaQPfJUmrvbtXc86a5UxuHsRsIC2GpZ8
-         +Spg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQUBYQbF0aUcbywqrUkfiIFn20kKdz7hUsYFAbB/9lGx9nQ+BUcPxLGYLLSvrh+z7i2wB5FOmrKSMxFrcswMWbdLsS7NkRVgfH
-X-Gm-Message-State: AOJu0YxHJMgNk2sDGXbCu6eOpWSCB438FinaP+NumvZYKGPZe1tK3h3l
-	RVTRmxW/RnX66skC8F0Wudfxk7sa7PViRMNaELqItDWIYddClEIo
-X-Google-Smtp-Source: AGHT+IGNtqVSl3KSrAhPvr0/P76baPVbf6PLapkKKLAYQJONPROVcnsnUmGLnhOxnXoqhYwbYZQL6A==
-X-Received: by 2002:a17:906:3387:b0:a38:51c2:68a5 with SMTP id v7-20020a170906338700b00a3851c268a5mr7185416eja.7.1708334854840;
-        Mon, 19 Feb 2024 01:27:34 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id ij26-20020a056402159a00b005621bdbfdb0sm2535022edb.75.2024.02.19.01.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Feb 2024 01:27:34 -0800 (PST)
-Message-ID: <8d0f90356a5faa44dbe2d0f2e26cd7c8ea061572.camel@gmail.com>
-Subject: Re: [PATCH 5/8] iio: adc: ad7192: Convert from of specific to
- fwnode property handling
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, Andy
-	Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>,  Alisa-Dariana Roman <alisa.roman@analog.com>, Haibo
- Chen <haibo.chen@nxp.com>, Sean Nyekjaer <sean@geanix.com>, Andreas Klinger
- <ak@it-klinger.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Mon, 19 Feb 2024 10:30:56 +0100
-In-Reply-To: <20240218172731.1023367-6-jic23@kernel.org>
-References: <20240218172731.1023367-1-jic23@kernel.org>
-	 <20240218172731.1023367-6-jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1708335200; c=relaxed/simple;
+	bh=IRrdTlGU/ZX6THZGzY/QmVIXbFl9/RK7PUhcBJMlrnI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jil4N/pWd/TWIRlyFdmiYWMNx1T3We2z+tOfzFIiIm9Htq0CLESUAsNFEHqkUxyzOBDOvS3fl20mg65wq/2HnGNxWHKbFf7S7Senum2c+ZP8idVN1aB6hCbAWiWK6BIyaL/ba+mvAVu+3DistXv9DmfEYJNxNMLf0QW/J1xdSdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tdcfv6ddDz6JB4f;
+	Mon, 19 Feb 2024 17:28:55 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9DA43141A07;
+	Mon, 19 Feb 2024 17:33:09 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
+ 2024 09:33:09 +0000
+Date: Mon, 19 Feb 2024 09:33:10 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: kernel test robot <lkp@intel.com>
+CC: Mike Looijmans <mike.looijmans@topic.nl>, <llvm@lists.linux.dev>,
+	<oe-kbuild-all@lists.linux.dev>, <linux-iio@vger.kernel.org>
+Subject: Re: [jic23-iio:testing 107/107]
+ drivers/iio/adc/ti-ads1298.c:653:29: warning: variable 'ret' is
+ uninitialized when used here
+Message-ID: <20240219093310.00005d3e@Huawei.com>
+In-Reply-To: <202402171104.pciYOoXE-lkp@intel.com>
+References: <202402171104.pciYOoXE-lkp@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, 2024-02-18 at 17:27 +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> Enables use of with other firmwware types.
-> Removes a case of device tree specific handlers that might get copied
-> into new drivers.
->=20
-> Cc: Alisa-Dariana Roman <alisa.roman@analog.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+> >> drivers/iio/adc/ti-ads1298.c:653:29: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]  
+>      653 |                 return dev_err_probe(dev, ret, "Cannot get reset GPIO\n");
+>          |                                           ^~~
+>    drivers/iio/adc/ti-ads1298.c:642:9: note: initialize the variable 'ret' to silence this warning
+>      642 |         int ret;
+>          |                ^
+>          |                 = 0
+>    7 warnings generated.
+> 
 
-One minor comment. Still:
+This is the only one that matters I think,
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> 
+> vim +/ret +653 drivers/iio/adc/ti-ads1298.c
+> 
+>    635	
+>    636	static int ads1298_probe(struct spi_device *spi)
+>    637	{
+>    638		struct ads1298_private *priv;
+>    639		struct iio_dev *indio_dev;
+>    640		struct device *dev = &spi->dev;
+>    641		struct gpio_desc *reset_gpio;
+>    642		int ret;
+>    643	
+>    644		indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
+>    645		if (!indio_dev)
+>    646			return -ENOMEM;
+>    647	
+>    648		priv = iio_priv(indio_dev);
+>    649	
+>    650		/* Reset to be asserted before enabling clock and power */
+>    651		reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+>    652		if (IS_ERR(reset_gpio))
+>  > 653			return dev_err_probe(dev, ret, "Cannot get reset GPIO\n");  
+Should be PTR_ERR(reset_gpio)
 
-> =C2=A0drivers/iio/adc/ad7192.c | 38 +++++++++++++++++++------------------=
--
-> =C2=A01 file changed, 19 insertions(+), 19 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index adc3cbe92d6e..7bcc7e2aa2a2 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -17,7 +17,9 @@
-> =C2=A0#include <linux/err.h>
-> =C2=A0#include <linux/sched.h>
-> =C2=A0#include <linux/delay.h>
-> -#include <linux/of.h>
-> +#include <linux/module.h>
+I'll fix it up when I'm on the right machine.
 
-Seems unrelated... maybe mentioning it in the commit message would make sen=
-se.
 
-- Nuno S=C3=A1
+>    654	
+>    655		/* VREF can be supplied externally, otherwise use internal reference */
+>    656		priv->reg_vref = devm_regulator_get_optional(dev, "vref");
+>    657		if (IS_ERR(priv->reg_vref)) {
+>    658			if (PTR_ERR(priv->reg_vref) != -ENODEV)
+>    659				return dev_err_probe(dev, PTR_ERR(priv->reg_avdd),
+>    660						     "Failed to get vref regulator\n");
+>    661	
+>    662			priv->reg_vref = NULL;
+>    663		} else {
+>    664			ret = regulator_enable(priv->reg_vref);
+>    665			if (ret)
+>    666				return ret;
+>    667	
+>    668			ret = devm_add_action_or_reset(dev, ads1298_reg_disable, priv->reg_vref);
+>    669			if (ret)
+>    670				return ret;
+>    671		}
+
+Thanks as ever is due to the 0-day team! Should have gotten this in my local tests, but
+maybe I wasn't paying enough attention to the results :(
+
+
+Jonathan
 
 
 

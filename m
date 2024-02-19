@@ -1,131 +1,170 @@
-Return-Path: <linux-iio+bounces-2751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B3E859CBF
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 08:22:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAEA859D31
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 08:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D231E2825BD
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 07:22:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1ED81C2111A
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 07:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8224B208C6;
-	Mon, 19 Feb 2024 07:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EFB210F4;
+	Mon, 19 Feb 2024 07:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kG6O2P5Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Msv/k5sx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9163920DFA;
-	Mon, 19 Feb 2024 07:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A8220DF4;
+	Mon, 19 Feb 2024 07:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708327349; cv=none; b=McpiT3vHquUR2qmbE9OvJ1sQS57xqg+NybdBgAjM410D8ob6agr+O9IJZ/gmyzDMorHKuQ409M3nGXeLaKrbLPNmUva0SzqKzVPsgPz+uM8a/ZfSGhfeJk4KIn+gfLrHFODquBGwHX94V+fvtB9TVyfaVt0TptZ080a4p7YnDR0=
+	t=1708328652; cv=none; b=Bqb1Getw8UDn7/2d/R0lQI2ZjfYHq48/400Sx2F7WmWpxB5ydupc0mROAhkGab/9DWyUucb9NbEoMfmbWJqo8P6m9f/OWSY4bbvC4umSDVDHKUP9JOZl0WiCYmQbpTDJFlzBNFSPgAUn/Xnh2/m9lS9t/1neTFNtbf5oMSuo5ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708327349; c=relaxed/simple;
-	bh=DCwcoy6i2dIfEynaA2hMRSxAkVtFeDmoK4ATPZKLVw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pxyfKSuyFrTh/eJ/+nFg9Z7WbCV5BNFt87Td7QJm1+Defe/NtRrKznd6PfJq4sJnzeT1Zkgmcz21ZBU5QJzVG/cvJgkQiwOhd3jR3/UGZIyDIzwZ7sz377h0Vt8WYrlnxLNjJ2YHDLNXBH5fI/X81guvtMTNdHDPSj5g8pcTkLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kG6O2P5Y; arc=none smtp.client-ip=209.85.208.174
+	s=arc-20240116; t=1708328652; c=relaxed/simple;
+	bh=0cPDHhNi8bYSx15AbJNOmGn2pNvsKEpiuV1I2zmlnwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XgzCrxKiZT4diEO5+6WPMeU7d1ln2i+GJc33qlwjHla9m8Z5PmpyXa083C1pD0xazIpR6hBronpcn3/k55u+F6/KxPMaqMk6Nuv7gVQtn1+TTwIn7ZLj/QuSWZc58Vs9xtbAhBA9zRURA8lAm2LHpxL3APacj+QADQsopeSgeS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Msv/k5sx; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d22b8c6e0dso19744731fa.2;
-        Sun, 18 Feb 2024 23:22:27 -0800 (PST)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-512a96e44e2so1582155e87.2;
+        Sun, 18 Feb 2024 23:44:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708327346; x=1708932146; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cTTrsk6bp8SruacSiky2KnDgNOQi6dDXIKoIppajxgU=;
-        b=kG6O2P5YSyFgNzL6y0dgdSz7pWGPRY4ICDoIVOz37FXR2Y66W/4vWKVwJQXjAJVWVI
-         B/6dmTKHkUeDS6U2gpohqSkbEX1Xh8BM2KA2f2SejpcY/XuHWhAFXIRCW1b1lVb9dHBR
-         T9kVG+DbAgd0UAmpbdz9U15uMCR6RpnPOK/FMelcCTuYX+cwkRUO7TVbDkWcMNobpDOn
-         f0QSwNvAjwtLrkqyANb/qSBWjeFeOsasAWaWPZ4gmBMFlSz02252F4ruyy2kJFzOfmL4
-         kfyNyMA65Nh6wTZceyExKZT3Jm19/u61ASZhb6h96bQFHR5/cLeZaa4tfjBjcm1hjTKP
-         snBQ==
+        d=gmail.com; s=20230601; t=1708328649; x=1708933449; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NWRB34m7daMDprm8NGoyhlWPNl7PmR3a1A52zijhYzY=;
+        b=Msv/k5sxoRnCL4mkL5twCE9KD6+WOikyOO/4VftT+8mppfg/Z4YFljtmxP8WSmZ8L6
+         5nbk7yhwDG8A22BW2odqJ9lHZg7UKHD96IGGkZdn0MU575ITAqvD+1dw9ziXJBpOc2pv
+         ymKOKo2fPwgr28M8gc2TCMkx0i4s5bKjr8jUjYIUXHaQ7d8SXkkZ47TeLBnkz19c344E
+         BDnGzN97I9UBO3JU+8p0zWhRPTwkQ7+gc3nvE4iD9JKtZOqqmSeVkXYGTn8uq129vJ/J
+         vQELhTSZ4hHV/GWMxyp6oIsGfIeVrrad+vFF+fIaSi91rrbUiDAwjIqO7qRNG6p9rML4
+         i1JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708327346; x=1708932146;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cTTrsk6bp8SruacSiky2KnDgNOQi6dDXIKoIppajxgU=;
-        b=Sfxvuos646kPEEj/MHpIIoHJHmCge2UQRPnBJezpqM7pPDbA7tGDmSWdO9ckPuCOyV
-         ZsAX7NZ0XSxoYMYKWq0kbqKQrtAbyvQVon1wJbtpeePSQJzG86N7MvXz5tRainBfD36p
-         Dirc/YTqMSb0GVjxjGZyTdPUKMH2wJCscQqBrQE72+f/SKPLC2jtXRPUeTPhn+zUA3Fh
-         1tETv0eMvuklLDn+57bZKGol9VOb6Aq4o7Fc+ODjMCOIYOtnT1ESc4TlYEqpEJNx+mEI
-         qQTcOP53Y9xN7squqdItlJn82Ns5f6x4jH1FP5qRXI8o6hf6PrTlia1UmjBrWwCs15eZ
-         8kng==
-X-Forwarded-Encrypted: i=1; AJvYcCVKoTZBVfP2byEn1sGX/5GJu93vZwW4/nRLyYt2A1PPcPJbL6uXLowYHjFIMFGfQExLEnFeip1khs/oDqx8O/+nO8XWA/9iYuzzt+IsCOMX9d8HlVfvNAZEfVVrTjFV7oTt3362Tx+R
-X-Gm-Message-State: AOJu0Yysav+4dQln7EAGdO5tFyt1YEh7UlnsvlchzOZ/BOytctnnkq9g
-	Yf+bT4iVY7Mv+5bF3niQQKTw0PykVCNT6okDtRW2GD+y+qrUfnAF
-X-Google-Smtp-Source: AGHT+IFfimPVqArqhtgMYJNVlWi+J+lzLSFY5QeJ5LPNALcimXpBcgGPanYaBR1Qrx4bWJijEMsgXw==
-X-Received: by 2002:ac2:4c0e:0:b0:512:bc93:8640 with SMTP id t14-20020ac24c0e000000b00512bc938640mr304269lfq.24.1708327345551;
-        Sun, 18 Feb 2024 23:22:25 -0800 (PST)
-Received: from ?IPV6:2001:14ba:7426:df00::2? (drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:7426:df00::2])
-        by smtp.gmail.com with ESMTPSA id bp25-20020a056512159900b0051148f220ccsm792114lfb.285.2024.02.18.23.22.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Feb 2024 23:22:25 -0800 (PST)
-Message-ID: <f1511679-0309-4aa6-bbfe-40d0d3374634@gmail.com>
-Date: Mon, 19 Feb 2024 09:22:24 +0200
+        d=1e100.net; s=20230601; t=1708328649; x=1708933449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NWRB34m7daMDprm8NGoyhlWPNl7PmR3a1A52zijhYzY=;
+        b=WhQpE/dkBxEW1JqdNdLRhXQjmPYUVztllxRDX6tHksrLSkOsey2hpSYLxVIV9RDJ34
+         UM7jQqb/39blLTB32yshfSbnE4ZIL+5oP5eIXVVNIZE5rq7YsqSwRpcKpLLBr2wy+72C
+         DmInpCB+muj2PWCnSYBGaK/IZmPq84mJRVEpYT4dOoK4jIGMtjGtxmnGI0xIXTle6UJg
+         N0SeazCUo1IqcGIsebbC5A+k3Rp66ezb86IaDn9P9IFyeeWcbcXg6QB8+GWZpMWoEv7Q
+         AZXZSJIte0TGGlIyaNfOwvqQoP4FFlCyOk0Io8RopxXgOeE6lbuc4crxlN665gtlTh7H
+         AROA==
+X-Forwarded-Encrypted: i=1; AJvYcCUu+hXNgDruy3ioRr696cw+klhh7JcaddjJoKvxxDLv6QoEsiPP864bpiOWIzoq7CZqnzX60oHhn3+Ns85grfWUdodKWT+DtAnG8RMs
+X-Gm-Message-State: AOJu0YzFnUXy5NtzyIJYUKIANqLuo+PykFxwguvWKbpnZH2qsl0rW3GD
+	WqilghbkQesBIByqXyrSEupA2XP7/DlF4l5DytjvvczlR9uuptJh
+X-Google-Smtp-Source: AGHT+IHwTzvIMcCzSWgF2FY2fsE7PoYQdgs4QcL5zFtGQflR01k671ZTTneY7Qd+J6RV5oa7EVxc0A==
+X-Received: by 2002:a05:6512:12c7:b0:512:bc14:6b80 with SMTP id p7-20020a05651212c700b00512bc146b80mr395625lfg.25.1708328648730;
+        Sun, 18 Feb 2024 23:44:08 -0800 (PST)
+Received: from localhost.localdomain ([86.38.153.174])
+        by smtp.gmail.com with ESMTPSA id qw23-20020a170906fcb700b00a3e426149a1sm1886019ejb.50.2024.02.18.23.44.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Feb 2024 23:44:08 -0800 (PST)
+From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+To: jic23@kernel.org,
+	Jonathan.Cameron@huawei.com,
+	oskar.andero@gmail.com,
+	lars@metafoo.de,
+	lukas@wunner.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arturas Moskvinas <arturas.moskvinas@gmail.com>
+Subject: [PATCH v2] iio: adc: mcp320x: Simplify device removal logic
+Date: Mon, 19 Feb 2024 09:41:40 +0200
+Message-ID: <20240219074139.193464-2-arturas.moskvinas@gmail.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2] iio: gts-helper: Fix division loop
-Content-Language: en-US, en-GB
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
- David Laight <David.Laight@aculab.com>, linux-iio@vger.kernel.org
-References: <Zcn-6e-0-nh2WcfU@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi>
- <20240216135812.07c9b769@jic23-huawei>
- <dfe6e5da-b104-4acd-b323-4a7fa980de88@tweaklogic.com>
- <20240217162724.767f2ab6@jic23-huawei>
- <65582213-1091-4877-ae83-c9450a3610fa@tweaklogic.com>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <65582213-1091-4877-ae83-c9450a3610fa@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2/18/24 07:26, Subhajit Ghosh wrote:
-> On 18/2/24 02:57, Jonathan Cameron wrote:
->> On Sun, 18 Feb 2024 01:09:33 +1030
->> Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
->>
->>> On 17/2/24 00:28, Jonathan Cameron wrote:
->>>> On Mon, 12 Feb 2024 13:20:09 +0200
->>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>>> The loop based 64bit division may run for a long time when dividend 
->>>>> is a
->>>>> lot bigger than the divider. Replace the division loop by the
->>>>> div64_u64() which implementation may be significantly faster.
->>>>>
->>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>>>>
->>>>> ---
+Use devm_* APIs to enable/disable regulator and to register in IIO infrastructure.
 
+Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
 
-> As I understand that you have already applied this patch but still,
-> 
-> Tested-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+---
+v1 -> v2:
+- Use devm_add_action_or_reset instead of devm_regulator_get_enable to automate disabling regulator
+- Remove empty mcp320x_remove function
+---
+ drivers/iio/adc/mcp320x.c | 29 +++++++++--------------------
+ 1 file changed, 9 insertions(+), 20 deletions(-)
 
-Thank you Subhajit! Your effort is _very much_ appreciated! :)
+diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+index f3b81798b3c9..da1421bd7b62 100644
+--- a/drivers/iio/adc/mcp320x.c
++++ b/drivers/iio/adc/mcp320x.c
+@@ -371,6 +371,11 @@ static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
+ 	},
+ };
+ 
++static void mcp320x_regulator_disable(void *reg)
++{
++	regulator_disable(reg);
++}
++
+ static int mcp320x_probe(struct spi_device *spi)
+ {
+ 	struct iio_dev *indio_dev;
+@@ -388,7 +393,6 @@ static int mcp320x_probe(struct spi_device *spi)
+ 	indio_dev->name = spi_get_device_id(spi)->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->info = &mcp320x_info;
+-	spi_set_drvdata(spi, indio_dev);
+ 
+ 	device_index = spi_get_device_id(spi)->driver_data;
+ 	chip_info = &mcp320x_chip_infos[device_index];
+@@ -445,27 +449,13 @@ static int mcp320x_probe(struct spi_device *spi)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	mutex_init(&adc->lock);
+-
+-	ret = iio_device_register(indio_dev);
++	ret = devm_add_action_or_reset(&spi->dev, mcp320x_regulator_disable, adc->reg);
+ 	if (ret < 0)
+-		goto reg_disable;
+-
+-	return 0;
+-
+-reg_disable:
+-	regulator_disable(adc->reg);
+-
+-	return ret;
+-}
++		return ret;
+ 
+-static void mcp320x_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct mcp320x *adc = iio_priv(indio_dev);
++	mutex_init(&adc->lock);
+ 
+-	iio_device_unregister(indio_dev);
+-	regulator_disable(adc->reg);
++	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+ static const struct of_device_id mcp320x_dt_ids[] = {
+@@ -520,7 +510,6 @@ static struct spi_driver mcp320x_driver = {
+ 		.of_match_table = mcp320x_dt_ids,
+ 	},
+ 	.probe = mcp320x_probe,
+-	.remove = mcp320x_remove,
+ 	.id_table = mcp320x_id,
+ };
+ module_spi_driver(mcp320x_driver);
 
-Yours,
-	-- Matti
-
+base-commit: 8d3dea210042f54b952b481838c1e7dfc4ec751d
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.43.2
 
 

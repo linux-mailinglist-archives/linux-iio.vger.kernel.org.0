@@ -1,43 +1,43 @@
-Return-Path: <linux-iio+bounces-2849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0595385C7D9
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:16:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F9285C98B
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 367BA1C21FB4
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 21:16:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE561F22BB4
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62325151CDC;
-	Tue, 20 Feb 2024 21:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4095F151CEE;
+	Tue, 20 Feb 2024 21:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07/0K4l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhLt9lOr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D71509AC;
-	Tue, 20 Feb 2024 21:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4B614F9C8;
+	Tue, 20 Feb 2024 21:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463816; cv=none; b=sipWzOkdL1S6umZfEGN9U7jkF3y52iS4uUhZgDPqE7xvD1E53RLK5TvtH3KufkdF86npUWpnzpp+e5iHbrIaRFF1PvD/md6GCHouCELjw1RG+j36+y8uOEKSYqeyJJOlIzyEi0WQpxxBPxXCUcZTGBuduLVFkbIgxdpOB8rIlxk=
+	t=1708464907; cv=none; b=jqh1eFTgv83gb8yE2MpR49BPWqSk1y9jxSSNe12MRgvKCWY62rpukbbb8U0uwX4q7EdYw8+BO0oT20YVbM7SSvZnCrNZJekvjm9I6Sw5jGzgzWGPaElCz4IMnazg5anNSOIZm50/cpq7iDkTH+mxlwmQqmv+9tIh1Md8ogudXp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463816; c=relaxed/simple;
-	bh=GT4yKaQUDdwTFodER7dhkAYc76DxxoAvSkjAMjn63YM=;
+	s=arc-20240116; t=1708464907; c=relaxed/simple;
+	bh=LxTvQq64XK7yAstnWT9q+Hbs0Xz5SnKp4EtEMAWBAkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIAU6RWQMnP3RB9Yr/g3wXvXQtSWe/8U8UyHLxY/vIdH0boTK4K3JXhRN9Kjzlrdz/jy1vymdhyUoqljOpA7FtZjQhVYigTspDMoZbSvflE5na30FrNqO8MhCiYg7TS855Sl6XqiEc6fm+mNx3B/rZEvSijhbRTwJ/29qeOCtcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07/0K4l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA32C43390;
-	Tue, 20 Feb 2024 21:16:54 +0000 (UTC)
+	 MIME-Version; b=aq/kLG8ceI2A5LBluz4yGBQe6HXSbmhynhMKlz2p/4vleeyhOhwTrViYDMYBGGXck3Dt9jMkyk7pyipQwDOFHkvHOnJqKVTtYEqoOcOqjNDBiwczF8UGYPZDua0ib6sEuRPk0pWTt02fFdlpVEZM8lCfLFWFlE5KYlNLgny0EYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhLt9lOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A070C433F1;
+	Tue, 20 Feb 2024 21:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463816;
-	bh=GT4yKaQUDdwTFodER7dhkAYc76DxxoAvSkjAMjn63YM=;
+	s=korg; t=1708464906;
+	bh=LxTvQq64XK7yAstnWT9q+Hbs0Xz5SnKp4EtEMAWBAkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07/0K4l00+QphIEamW0ic5IgRslqRdK1ExqaIAQxPLT8sh2NoyA4wkX5h5fYpIdgj
-	 T8r3pvTfuBnGzOEbobY9Pmx9i01frmmkfxhoxNs114IW4JhKzkPnDpQRy75dkOCHbY
-	 TPn8jgQgHndxvonufaIsu6mXh1Udq8+7tE/IaVXs=
+	b=yhLt9lOrn5jEf53j1V3Znpz5fkZfm70aLkT1RkTUvLo3O2XirtK8mB2JPNNw1HXMR
+	 hi3A0duEW+vhl0t6MIwK81tNLP3h/ZoEknOm9H1nOIS0Ja0fB6yoxyG5vdtcQbmPpO
+	 Jk1N/GI5SMowIeH4OHZqi5rfAxbWgin+D7EIaAco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-iio@vger.kernel.org,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 162/331] iio: imu: bno055: serdev requires REGMAP
-Date: Tue, 20 Feb 2024 21:54:38 +0100
-Message-ID: <20240220205642.628824728@linuxfoundation.org>
+Subject: [PATCH 6.7 175/309] iio: imu: bno055: serdev requires REGMAP
+Date: Tue, 20 Feb 2024 21:55:34 +0100
+Message-ID: <20240220205638.628806459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

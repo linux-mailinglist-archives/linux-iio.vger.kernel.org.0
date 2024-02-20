@@ -1,53 +1,54 @@
-Return-Path: <linux-iio+bounces-2825-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2826-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F8685BE87
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 15:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ED985BE95
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 15:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8EB2283481
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 14:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76C8283A8E
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 14:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E486A8D3;
-	Tue, 20 Feb 2024 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDBA6BB22;
+	Tue, 20 Feb 2024 14:19:38 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628526A8A5;
-	Tue, 20 Feb 2024 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A56A034;
+	Tue, 20 Feb 2024 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708438684; cv=none; b=X6N3dtTMt5or1neoN08xB/oSt0jsnakMOi6XUrIvsATkzDr0G8ofcVZBz9u29A3vN0GfOY5KhJajcszi+dQiemEvECGN0YE5eCG9b6LMM2IV/7xNO9Hazgvx6tn/Iv79v6Vrdzu+1N52q11p5l/1G3fmaEYyYbJRmU8hfcVVh3g=
+	t=1708438778; cv=none; b=sp/0gL33jAgbF37HA7ZSCHbLzks6RCuOqnduX65R3qlatLJB1BrlRM+ISxFqfzhJiC3Y/MsPc/+7e6K7r1ElAl/JpG9kQpApYTvajqSEMxLVCN3kN1SOuiFEiFuz7+jfktwO6UBcGqAzVqFzMqHqcC+CWlHHjsfvU4Hat65s55M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708438684; c=relaxed/simple;
-	bh=FKL/oycJDIAMqy+qC3CkH/3qHCngEt7CyLFeD6ai8fE=;
+	s=arc-20240116; t=1708438778; c=relaxed/simple;
+	bh=nSo3t5Ukzp4UNcpuV7Og3BCAYJnGWRz063c+lUZYmJ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NB6ya8JnLzhbu15DkA/p+Hf0neMakyIFgBfkchVH1QD5rw4uhupxaD0XYmE3abcWuTVhHHFs2OFMYeDaU27ZDxPFZpQuy7kETIa/kA8RuGrwMcup6jofa1gxgmzKM40vIuXcjK6fH7EgMWwWiCEk4FjnQSd62PGpMY50cbDgm5M=
+	 Content-Type:Content-Disposition:In-Reply-To; b=YhBQ7TwPs0vlUCCAxrHBhFIIDmxp/XDRKR4eMle5jOh/hA0j66+ndMA7GqwRhjlg24p56Qr34t3LGJ/Hkt+Qs8nv/Mf3vZSjToABWi5p3ItWmZMs+Zc8vc38b/S0Guziew7NI4ZMUINLK95kaMs1mmiak2/PhRkQ1tyNTFPGd4s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="5498700"
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="5498930"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="5498700"
+   d="scan'208";a="5498930"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:18:02 -0800
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:19:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="913083482"
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="913083690"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="913083482"
+   d="scan'208";a="913083690"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:17:57 -0800
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:19:29 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andy@kernel.org>)
-	id 1rcQwT-000000066Pg-0t6Z;
-	Tue, 20 Feb 2024 16:17:53 +0200
-Date: Tue, 20 Feb 2024 16:17:52 +0200
+	id 1rcQxx-000000066RO-27dE;
+	Tue, 20 Feb 2024 16:19:25 +0200
+Date: Tue, 20 Feb 2024 16:19:25 +0200
 From: Andy Shevchenko <andy@kernel.org>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, linus.walleij@linaro.org,
+	brgl@bgdev.pl, linux-gpio@vger.kernel.org,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
@@ -64,42 +65,50 @@ Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
 	Ceclan Dumitru <dumitru.ceclan@analog.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 2/3] iio: adc: ad_sigma_delta: Add optional irq
- selection
-Message-ID: <ZdS0kOKTWHlisuyn@smile.fi.intel.com>
+Subject: Re: [PATCH v13 3/3] iio: adc: ad7173: add AD7173 driver
+Message-ID: <ZdS07T5jJ_pCzRFK@smile.fi.intel.com>
 References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
- <20240220094344.17556-2-mitrutzceclan@gmail.com>
- <ZdSzCe2cw8gL3K-W@smile.fi.intel.com>
- <001d1e99-5d96-44f3-8695-ad2ecee42128@gmail.com>
+ <20240220094344.17556-3-mitrutzceclan@gmail.com>
+ <fc49f36bf1df931f7c67dd195aa74636eb479e64.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <001d1e99-5d96-44f3-8695-ad2ecee42128@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fc49f36bf1df931f7c67dd195aa74636eb479e64.camel@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Feb 20, 2024 at 04:13:12PM +0200, Ceclan Dumitru wrote:
-> On 2/20/24 16:11, Andy Shevchenko wrote:
-> > On Tue, Feb 20, 2024 at 11:43:39AM +0200, Dumitru Ceclan wrote:
+On Tue, Feb 20, 2024 at 01:20:52PM +0100, Nuno Sá wrote:
+> On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
 
 ...
 
-> >> +	if (!info->irq_num)
-> >> +		sigma_delta->irq_num = spi->irq;
-> >> +	else
-> >> +		sigma_delta->irq_num = info->irq_num;
-> > 
-> > Why not positive check?
-> > 
-> Considered that selecting spi->irq is usually the default case, so it should
-> be the first branch
+> Another thing that caught my attention
 
-Let compiler do its job, the negative conditions are harder to read/parse by
-human beings.
+> > +static int ad7173_register_clk_provider(struct iio_dev *indio_dev)
+> > +{
+> > +	struct ad7173_state *st = iio_priv(indio_dev);
+> > +	struct device *dev = indio_dev->dev.parent;
+> > +	struct fwnode_handle *fw_node = dev_fwnode(dev);
+
+Since you used this context, I would also like fw_node to be renamed to fwnode
+(in case it will still be used).
+
+> > +	struct clk_init_data init = {};
+> > +	int ret;
+> > +
+> > +	if (!fw_node)
+> > +		return 0;
+> 
+> I think that better than the above check (do we really have any case where fw_node is
+> NULL?) is to have:
+> 
+> if (!IS_ENABLED(CONFIG_COMMON_CLK))
+> 	return 0;
 
 -- 
 With Best Regards,

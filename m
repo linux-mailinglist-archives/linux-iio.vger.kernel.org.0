@@ -1,125 +1,134 @@
-Return-Path: <linux-iio+bounces-2837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B8085C3BB
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 19:42:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F785C3FC
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 19:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E06B22B3E
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 18:42:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D73CA1C22781
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9413341C;
-	Tue, 20 Feb 2024 18:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5A512EBD1;
+	Tue, 20 Feb 2024 18:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdM6V29I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeNPi9sX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA3612E1D8;
-	Tue, 20 Feb 2024 18:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD867867A;
+	Tue, 20 Feb 2024 18:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708454495; cv=none; b=nClh6xRoNpiZVxu1Y86T1QEoyIxezDY6K5TGEKdrn+H2yw0WiZakdL9SwDjLIb6D08MeSfRFmJ6VyQvLOaJpcwTeZh4eBnaJoPX7jxmVCaXQJuBQ11l/m0F7UEY2jrfB7Ws0Xv8t3kSgLAze8CWDv5cQcP2dH8FgBQVggsNvYQg=
+	t=1708455164; cv=none; b=LNPevMSDbVAgGQqKW0xMjKKKVxRFFUer5sh+gUWqAuH32flEboYSRNj1/Dxn0pSfbTnyvOQHiVqZnSh5wreWZb8z/hHIrqC4XL2diCLdBNcPLfeYXT5KSMY9QMWW6AKxvaKoa5gL/f4zK5P2Zd+ShQClkKRO6NyjYz8H8FgYN/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708454495; c=relaxed/simple;
-	bh=BWfTajOPUTzLygxio5pKNoa4Z8AGiKngDpmKELsS4hc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LcrrZeR2x1v1qC4TZUJf3qKuknQZjXjYx5fE3PWSmwk/8OE9EAU8+sAaVxic5Tovci8zWLD0jNWtELbkBgwXPxRufuUR8Gp4fyb+0N42xsGEturzWby7N1jmm9Wyx1Tu9Eg4xmD98+4vb1/sq6XDmzN1tQLBTaEHNtDFv0SFaTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdM6V29I; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-512bde3d197so2316460e87.0;
-        Tue, 20 Feb 2024 10:41:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708454491; x=1709059291; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sO+tJy+OcpVtqK+jntLOR303MXxAWwT3SO7chMYMGqE=;
-        b=gdM6V29I2xHgOxOegYFv2PNYM7042yJdxvR7efLlZ5ZQPvjAvFZRca119wDEMXSrSy
-         yD+hJzdn12jROCQwxHJubEt4m/TZIOgwGwrO/O6G3g3VR1FqHMclb5UA4/O3/wm0ArLu
-         Lcvrx76pL41c6PP3LT2s14lWjJMwd5nHH4IaPge40Dfvw4yk+qv/EEKTvCOg4OySHjoY
-         OxMYGgaoPmEXSG1EK8K/579lzEbbpMrMeXT0tNWD0GQao8OX7Dfqabf0XaOY4TGou1Vq
-         ZGp4M6Jf3ktssPfHfcSFddF/7zG19RiZgDvyIteRt2a7NgTaHIgKdFXppFUmHsyDo3l9
-         JsNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708454491; x=1709059291;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sO+tJy+OcpVtqK+jntLOR303MXxAWwT3SO7chMYMGqE=;
-        b=kMEUZq5c2/iPZDxzYGaf80+h6eMIaF51QMQAGjKGksmnGkrh8RVmn7fRVRlyX+0ZBW
-         MaoCkpprWFaSIjWsa21KLJYDAzzHfq1fO+tnMdZEQzN8ZoAmZClhkwKSHQJONbEg2eh6
-         14QEQY2pgRi1+agV1O/vi7iq9C4ZeJlw406B5rMPV0kZZdgvPmMfVWeMVsBhgXSH8VLf
-         e0iJ5YHr32fnzv81z544FHMUAyIKWAJ+E5TSOCPHZpm4myF+IhfJWB7ACNZwzftkUigI
-         jEv7/Ef3Dp9Y5QzVVkAhK03P6x+bfzYuBN22wFVfMDZuYucDFFvwIJGbFRVr3x0ge7J6
-         pijg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3qdgUuO7yLU0HEE+07kUr8f0wRLKULIuwuP/X6GU9yCpm9gDz54fd6tBsw48LpOrVivDwqB21V6lT8QLW9ppta4a3ycPCnELK92a7k2BRz2fFVcuvpR0Q3IVJuG5Ron2icPQD+7th
-X-Gm-Message-State: AOJu0YzpjRjxgh4z/mwxNIEPTB4Eig6WbPUehzCpVCpesOJ8yhq0+LSk
-	4TGTzugKPNCIZT+PcZqGUIVd8GC8nvdK3KnuRORtdgIEubGGuNbG
-X-Google-Smtp-Source: AGHT+IHtWYfkDBoLoAYirXD9KiiCz8Ftzjhn1hRyEgC5esQHBNHHN/zxhNoamgNoIf6uAxqJ8H1zNg==
-X-Received: by 2002:a05:6512:488a:b0:512:afcf:771 with SMTP id eq10-20020a056512488a00b00512afcf0771mr4718567lfb.42.1708454491250;
-        Tue, 20 Feb 2024 10:41:31 -0800 (PST)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:4de1:dcc0:a48:7f])
-        by smtp.gmail.com with ESMTPSA id bm8-20020a170906c04800b00a3d9e6e9983sm4269594ejb.174.2024.02.20.10.41.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 10:41:30 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	ang.iglesiasg@gmail.com,
-	andriy.shevchenko@linux.intel.com,
-	linus.walleij@linaro.org,
-	semen.protsenko@linaro.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH 2/2] drivers: iio: pressure: Sort headers of BMPxxx SPI driver
-Date: Tue, 20 Feb 2024 19:41:25 +0100
-Message-Id: <20240220184125.32602-2-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240220184125.32602-1-vassilisamir@gmail.com>
-References: <20240220184125.32602-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1708455164; c=relaxed/simple;
+	bh=hIyvGKECNml8BOk3Zh1T6U7K5fqanwk9IvN5YMXzbIQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xp0B9SV3tGioXM+TGBXC2qLv5btI/TlXhEcdQb4GsSK7TNJ9y4v9gchrwhwAozUZAJw9yGwN2YiZ0fF/p0TrinwlPkMckeObmtS7CqvlYdvzJ4hJXhL3YAkU8r6OSJJ4F+Vz0ThrChYjzXoQZVxBDv8ZXQJd10dz6YjCE0kfdOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeNPi9sX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FBEC433C7;
+	Tue, 20 Feb 2024 18:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708455164;
+	bh=hIyvGKECNml8BOk3Zh1T6U7K5fqanwk9IvN5YMXzbIQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OeNPi9sXybX+V1U26X7t5BRpgQ6ca6bckj/2dKyfdOYKyEBOjZWRIevkTFQZWrFTe
+	 FlaefYoUwRCw9A4+vyKiRL6NzRMVO0ZVE800T/M2q24cFVsYtULdz/UYozjVGxEcVH
+	 /a8AVPi/OVA91z8z2GLMvzuF2Ug++UFHTn2YavxgF4PQgrK0w/OPyFoyRaqFVboJ31
+	 d8kYUP2SlgMU+MzKpYhJ2fYfUm6eFGJ0N++kFliphJsPGpXI7jsD7XzIAwC2EPmkMX
+	 h84J9NmoGUJcqdTJUVFtj9cPBhZAdei9RLxnWZXpbIYUwuAXmiOCYzlXlSXbrFt5JZ
+	 UiMM3itax2/xA==
+Date: Tue, 20 Feb 2024 18:52:37 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v13 1/3] dt-bindings: adc: add AD7173
+Message-ID: <20240220-outmost-flavoring-b2593160de91@spud>
+References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="vLHcLCfBcKKsyixC"
+Content-Disposition: inline
+In-Reply-To: <20240220094344.17556-1-mitrutzceclan@gmail.com>
 
-Alphabetical sorting and separation of headers for the BMPxxx
-SPI driver.
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/bmp280-spi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+--vLHcLCfBcKKsyixC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 1972014dca93..3458806f11fb 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -4,11 +4,12 @@
-  *
-  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
-  */
--#include <linux/module.h>
--#include <linux/spi/spi.h>
-+#include <linux/bits.h>
- #include <linux/err.h>
-+#include <linux/module.h>
- #include <linux/regmap.h>
--#include <linux/bits.h>
-+
-+#include <linux/spi/spi.h>
- 
- #include "bmp280.h"
- 
--- 
-2.25.1
+On Tue, Feb 20, 2024 at 11:43:38AM +0200, Dumitru Ceclan wrote:
 
+> +  interrupts:
+> +    minItems: 1
+> +    description: |
+
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    items:
+> +      - const: rdy
+> +      - const: err
+
+I noticed that for minItems == 1, the rdy interrupt is required and err
+is the optional one.
+
+With that in mind, you can simplify the interrupts description so that
+it describes the interrupts separately:
+
+  interrupts:
+    minItems:
+    items:
+      - description:
+          Ready: multiplexed with SPI data out. While SPI CS is low,
+          can be used to indicate the completion of a conversion.
+
+      - description:
+          Error: The three error bits in the status register (ADC_ERROR, CRC_ERROR,
+          and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin. Therefore,
+          the ERROR pin indicates that an error has occurred.
+
+Otherwise, I think everything has been sorted out?
+
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Cheers,
+Conor.
+
+--vLHcLCfBcKKsyixC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdT09QAKCRB4tDGHoIJi
+0pbnAPwOogZk7FYWbEiQymCF9QbGN2aePmxNXySm/bbh5Ae6MwD7BBgqXRFfmPWm
+pUBnH3bEbmLCIOA+mYKHA5Nq/zsZ5gw=
+=b/7e
+-----END PGP SIGNATURE-----
+
+--vLHcLCfBcKKsyixC--
 

@@ -1,142 +1,153 @@
-Return-Path: <linux-iio+bounces-2818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82F785BA7A
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 12:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D3085BB9C
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 13:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203231F25DA3
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 11:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5B391F21FDA
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 12:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CD065BDE;
-	Tue, 20 Feb 2024 11:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AAF67C7D;
+	Tue, 20 Feb 2024 12:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv74XP7c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjeB14b8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EAE664B6;
-	Tue, 20 Feb 2024 11:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10DC67A0F;
+	Tue, 20 Feb 2024 12:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708428312; cv=none; b=MzI5PYChNrYmD6TLZgeV4OYBLOw+/UMU0IE940bEBKnoi8xX5X99IfAOVu8hJTA81SY8qynI+0FLs4ydW8wIoJX9f/DV0uLGwKHk1/KYUO5tgQT6sAFzm5pHwSoAPakmJNgUPE/kmuRL5qQ2iSfq0mDwunqD6tHBqQ9CP7LEEvA=
+	t=1708431358; cv=none; b=PKpE2rtKRuyL7C4FtOgHQyUi2OeMXWb4zaKYhDjreABOlXNEBBp3cQ8DouxZQ63EOnrMPqW4HwCoCahiPbHUtifW1HTYAjcGZcfWOSOIT+d/eEPJXsS5yBSRZ9/1Xj9UtpsUtnO8jnhWI45uD5XoVIQg6jxjCrZe0S8pu+SWg1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708428312; c=relaxed/simple;
-	bh=Qef5zR9DD0pWV9mmgDrABJ5aM2SgvsE5CkAUKzwETas=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZbTQE+xIkdYdSnkvRh+NS/C0Kj0zVcD1XC+Ly6kj1FeHe4GIhtAFotEp7Qr58xiBflNoOA1HVcetM4zSZlzeu3plIosAXugwJlZyek6eVo8Rg1sarGjPj5W0pGx/nf8YC0Ks8Ze29SzxtvQSDWVyZJePu+NTkZVYkUbddK2rkiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv74XP7c; arc=none smtp.client-ip=209.85.208.43
+	s=arc-20240116; t=1708431358; c=relaxed/simple;
+	bh=NFKIpWFlrcLcgm96+Riat3ntN8g+TKcG0bqfTPRK4F8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G+HKH84JQo4598EaN2UlVQrNyPuO+Cbz8jxvhZhPs8PjNXtUXE9KhJnobOaAm4dMI5aFARXWlnvsycOF7YJfwlAQb0XN6NpyY8h6ITkbjbJTBqsG84gzYSA7a1lmo78ylPVdCL39rn7lVsHCf+PB5STZ59JHPz2FyUIQ+jgToZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjeB14b8; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5645efb2942so3905163a12.1;
-        Tue, 20 Feb 2024 03:25:10 -0800 (PST)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4126aa42402so10646695e9.0;
+        Tue, 20 Feb 2024 04:15:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708428308; x=1709033108; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uxDjqCDFPq7eOMPwPmbnpfEUfnNCy3lfoA1kp9cT9L8=;
-        b=Bv74XP7cWgbprLtuAshr4ZdFCiDnjJEVlxiLKgp5DwtmWlKM/ugwsMwZQx5/HyrlIm
-         IYyEXTCuTroVnwlEsFnSkfoWZ5mP28D9YBQGbzy2dYJGgAe227TwJ8kX16tYY3RRwADi
-         6Q+UrpAxgBbMjh7fVfLhAcEwKR+42sWdwpGa2tbzFDfusmtDR/xZ3pZA8BBQ+TGCbIEN
-         X4o5DmmlyUMz7QAV/yncGUK5NyzodfygGYgc+7cg42Iaab64Si+YXC5V+FwwKdQylvs+
-         fNmS3mrW4HtO0fal5Rp7NBq7817go2zwUKV7NAPDyM1Zg/ob//ARAol5n9XJfm+wPyWx
-         D9wQ==
+        d=gmail.com; s=20230601; t=1708431355; x=1709036155; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1kHmAH30WGxy5AZqgJqTBRqpGld5Izrqx3fcp2YhQqw=;
+        b=hjeB14b87dnr13bbW/fyC0anOOQ2VbHDbOtLUbtzj5Cmb/vdMLJdkA6694mwxqfKxw
+         qBZDF4lUmoCGMcKLKfqL9a0O7e5vrtxrTiD9G9qOe1yhaoeqdsKUsrXkTkMKD6GiSmcb
+         PbUB6F05jBymkFDIoZg9Q8O+O1HmnMu/4wiOpbYCI/Wq+hH2Q8T2+uV1QpTb00GkHcCb
+         tKNW0/67dXUOSjPoKVXLN3exQQvN8LWuIxGyWEm3wM7DbRLrmAkAbguOeNmkWRhVhYqQ
+         J/YLFPaOw272P9RhLwikN3Mzyw7sNRWFc14XmMplN+p1w+TOQKlL9MJiIMfFD1uJlhJE
+         cOyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708428308; x=1709033108;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uxDjqCDFPq7eOMPwPmbnpfEUfnNCy3lfoA1kp9cT9L8=;
-        b=AsLFapbOsN07QW0P6jURiXtZmPmjquYG+IsKHoPKOmjzaEIYKgwMQvpLs4SSOstKNa
-         UvsL86XBq4KLDfzKXMcQ5ZmY73qegS9EptsGCEQcbmzsOQjQ7Lui8zfpoD3leAem/EeP
-         Ex2u5PjnYr8oGy/4PFW7/2RHeviq7hcSURzTwtf9zYIFF0VqZPTgPX0Ox3Btc60P4PsW
-         AjmGKGOWCspn7Ak4z8owruaByK9UroHxccjye47RPRbtY9VLZxQ+xZ11Bn86GUt2Rwmm
-         FBjU/RQuTnNqWHhfm2AD2ZhQwCDu3h7k5vk390IMOP6+3UAMv2nLWJA8OZbhT9E4Geok
-         CbtA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+zW2YtzxJZaxvlKmwsWIj55tLbjmnh6mc5YHbeAO1SSW2qwIHmKtzKRBsJz2t8I7XKnKpDjFGA9TvVm6DoxpyXlSGGu3nsukJ2ds/qjd3CX4Qv8eNsQyBudy4kO9amIaSe9ek2jYotXrOuaL6ZRXETSADrYd6En6oLH0KbIXSgZ1VwpSRD2Rb4/4b1Yrl7WFnpYgEHc2scj4FQUBbdAw=
-X-Gm-Message-State: AOJu0YwcVZH7EAKjYIidKBaBbufVVBr/hKhsc8tnUS78hI5zweabiuoW
-	5JS0eBYA5npqHL7HW0YxArD2yswPLaBOrdJV6zC1oW7zYKB7XM85
-X-Google-Smtp-Source: AGHT+IGexDIdRflMxl1rXB5LbCLGRtGw1tfgK9Jvc2wNTJ4RBCdKz1jc7usLDMjAAQp08iRFKLMRzA==
-X-Received: by 2002:aa7:c896:0:b0:564:21fd:270e with SMTP id p22-20020aa7c896000000b0056421fd270emr7809883eds.14.1708428308215;
-        Tue, 20 Feb 2024 03:25:08 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id q29-20020a50cc9d000000b00563a3ff30basm3815361edi.59.2024.02.20.03.25.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Feb 2024 03:25:07 -0800 (PST)
-Message-ID: <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
-Date: Tue, 20 Feb 2024 13:25:05 +0200
+        d=1e100.net; s=20230601; t=1708431355; x=1709036155;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1kHmAH30WGxy5AZqgJqTBRqpGld5Izrqx3fcp2YhQqw=;
+        b=kkyHJsigsTrp2QH0YJJVtukK52Nsoq7x+ePb9GAa/ON4QtJiS7+qROi7ZhdwSHaRPp
+         qlKjBrvcCvYNz5rNtqpB0Gy3QDM4xT3RXRoRiEBFP1xVM2WXu4YwMzGgnG2BX8L4z31c
+         xA5DnuB/pIAxf4NY9q4TkQJy/9PN8GpUekfNYr9DbOG9JkgZ6+Mxlm321+EwL6P5Tb2P
+         CoqJW0YwZTiTgIsPjhxcaAClJug5XpkQEK1LQOY19yWrdS7S79wjkzRmeDOwvIzd6QXY
+         vfSUG1Ii4UermQ8ntrI8Zh/4VKML9aCzA3obFv5MKpYhnnN1MryWj0mwrYpKKJI3z8wW
+         Y2Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqcLVEkIEem6eSBQ4gTRN33y01ok4X3JLzu0X41hEBCPCDuZjAgOvp7910qrIhMtNVRm9ZR06Iq6AHNhUdKVkdZNHy1t0aOERtzo6GAoJVmgo/12ISxqQFeYk1cxNYUNoe6GxhPkEF/19hdWcS3ZV7GJYUEH1jhUTzRsHnNE5FRb37500vIFSS1z7tPu8CNWd7b8xL6hY1ANZCgQNqDQI=
+X-Gm-Message-State: AOJu0YzNTv88pwG51w1p+fd7UGIFLqWnO6Vmr5cuSEcR3ySFV1poRdgs
+	q8vD19XvvmkCFFLWu3wo92VXE1bRoYNj1WoX92Pem41DxjQu6DyW
+X-Google-Smtp-Source: AGHT+IH8LNEn6d2zlOk1KelrI39dl9uZ+tjiwqV5GG6X14RQwC+tUIx7y4JAcJ/RsWA+Kk8zORUWpg==
+X-Received: by 2002:a05:600c:45d2:b0:412:1e2:e237 with SMTP id s18-20020a05600c45d200b0041201e2e237mr10899429wmo.20.1708431355061;
+        Tue, 20 Feb 2024 04:15:55 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id ck4-20020a5d5e84000000b0033d3f0eee9dsm7984801wrb.27.2024.02.20.04.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 04:15:54 -0800 (PST)
+Message-ID: <9edfd3481a317ada51be03fa9da824edbcede9c0.camel@gmail.com>
+Subject: Re: [PATCH v13 3/3] iio: adc: ad7173: add AD7173 driver
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Ceclan Dumitru <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Jonathan
+ Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Michael Walle <michael@walle.cc>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,  ChiaEn Wu
+ <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
+ =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
+ <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, David Lechner <dlechner@baylibre.com>, Ceclan
+ Dumitru <dumitru.ceclan@analog.com>,  linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Tue, 20 Feb 2024 13:15:53 +0100
+In-Reply-To: <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
+References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
+	 <20240220094344.17556-3-mitrutzceclan@gmail.com>
+	 <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
+	 <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 3/3] iio: adc: ad7173: add AD7173 driver
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- David Lechner <dlechner@baylibre.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
- <20240220094344.17556-3-mitrutzceclan@gmail.com>
- <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
-Content-Language: en-US
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+On Tue, 2024-02-20 at 13:25 +0200, Ceclan Dumitru wrote:
+>=20
+>=20
+> On 2/20/24 12:38, Nuno S=C3=A1 wrote:
+> > On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
+>=20
+> ...
+>=20
+> >=20
+> > > +};
+> > >=20
+> > > +	indio_dev->name =3D st->info->name;
+> > > +	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > > +	indio_dev->info =3D &ad7173_info;
+> > > +
+> > > +	spi->mode =3D SPI_MODE_3;
+> > > +
+> >=20
+> > I don't think we need the above. We should just enforce it to SPI_CPOL|=
+ SPI_CPHA
+> > in
+> > the bindings [2].
+> >=20
+> > [2]:
+> > https://elixir.bootlin.com/linux/latest/source/Documentation/devicetree=
+/bindings/iio/imu/adi,adis16475.yaml#L45
+>=20
+> Rob Herring V1:
+>=20
+> """
+> > +=C2=A0 required:
+> > +=C2=A0=C2=A0=C2=A0 - compatible
+> > +=C2=A0=C2=A0=C2=A0 - reg
+> > +=C2=A0=C2=A0=C2=A0 - interrupts
+> > +=C2=A0=C2=A0=C2=A0 - spi-cpol
+> > +=C2=A0=C2=A0=C2=A0 - spi-cpha
+>=20
+> If the device(s) are not configurable, then you shouldn't need these 2
+> properties. The driver can hardcode the correct setting.
+> """
+>=20
+> ref:
+> https://lore.kernel.org/linux-iio/20230810205107.GA1136590-robh@kernel.or=
+g/
+>=20
 
+I see. I thought it was the other way around... Then, the other thing is th=
+at I think
+you should call spi_setup() after hardcoding the mode.
 
-On 2/20/24 12:38, Nuno Sá wrote:
-> On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
-
-...
-
-> 
->> +};
->>
->> +	indio_dev->name = st->info->name;
->> +	indio_dev->modes = INDIO_DIRECT_MODE;
->> +	indio_dev->info = &ad7173_info;
->> +
->> +	spi->mode = SPI_MODE_3;
->> +
-> 
-> I don't think we need the above. We should just enforce it to SPI_CPOL| SPI_CPHA in
-> the bindings [2].
->
-> [2]: https://elixir.bootlin.com/linux/latest/source/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml#L45
-
-Rob Herring V1:
-
-"""
-> +  required:
-> +    - compatible
-> +    - reg
-> +    - interrupts
-> +    - spi-cpol
-> +    - spi-cpha
-
-If the device(s) are not configurable, then you shouldn't need these 2
-properties. The driver can hardcode the correct setting.
-"""
-
-ref:
-https://lore.kernel.org/linux-iio/20230810205107.GA1136590-robh@kernel.org/
-
+- Nuno S=C3=A1
 

@@ -1,77 +1,74 @@
-Return-Path: <linux-iio+bounces-2821-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2822-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10DE85BDB4
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 14:53:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE5185BE3E
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 15:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E08D286E87
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 13:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478E21F23E7C
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 14:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A7E6A35F;
-	Tue, 20 Feb 2024 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4C76A8D7;
+	Tue, 20 Feb 2024 14:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="imjvNTTQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I9M8KbcQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23A9745D1;
-	Tue, 20 Feb 2024 13:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2528B6A8A7;
+	Tue, 20 Feb 2024 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708437103; cv=none; b=iNhiYncMDKLVOBWafhA2vOa5SdZ77sdlm/58dLZmIEy4AUPiebYpyYaOTwVpmVT8gqx47L2Nyj7u2ayo2J31cKHz47WSJ4h4fxpwZhlQNrhfmtZav/0IiiDdrnjD/t9KrlmZos8TNmMZty8NkAiRD9fsN+Tc30TY4JUyZyswPuM=
+	t=1708438173; cv=none; b=eZt/ve24Fqw0JBKDFy12qUc3p+aWT2AHvXfKSMJ1YmOgGMAYn8l3biF6RVYD4rsEk3BsIjVnwmbegNdcjar/wiHULnecN+LVCZ0LVbue/e7OuTOTYaM77+vg6kkl+1Ppe3U9CJAVIVw7NXe/puSMTQKzczOPSETqtaPZf9ocSyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708437103; c=relaxed/simple;
-	bh=u/nkQIbUOOazaOCFAMFqzg5k3FPWQwHYWcP2DyIsmOM=;
+	s=arc-20240116; t=1708438173; c=relaxed/simple;
+	bh=j/YnzyTz1wKrobyyvYpo/CHxXfXEWCwp2tQdOVkqBKY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cld9wY9F9FspExeleAK7trCBaYihqVPJ39P4iUgupmE/jiFSQiqDtuYf54jMYqynB2A5oQYc2FdYBfWXVpWoYcBKsICQrNiC5dvMwaDXafQTjhffPT1vGmXBCPla9K7O8U6GxxNiJmO681xvsxMC3NbMsMpOg19KhP3l5v02g6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=imjvNTTQ; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=BqnG+ji8GQFNURhnyGwkAluBqYd6pLeK96VT8IQxFZugVhM0dLLkGiEIIjznwivV9nYvuA+7wYQAT1CJOwU5+rsI1x4OfEXXK5u3YbNEIMGVKOeqP0qAVrMPPbGGLbcgkGL8dcmYHqOxO8/Udz/qym1+WYPFowpnj4m6SGbW+d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I9M8KbcQ; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708437102; x=1739973102;
+  t=1708438172; x=1739974172;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=u/nkQIbUOOazaOCFAMFqzg5k3FPWQwHYWcP2DyIsmOM=;
-  b=imjvNTTQIKwEmG5eh1ZkCr9S2ClZ86Whles5fbjNuH5BVXUi4b2QY4Yy
-   cLOH36L0CR8uIZc7dH4R8PIlUtO+6TWOjeR4e7/wQU0HGF3NYmxT0ciWN
-   7DoVNRONhaGGUKiItgeYQkXuyxaHYmLYwfdx+8qn4grUSneEE93mCGVgE
-   7mXHiGDXWLTgs2o9dIAbfSjYJp1wlgddM4uksUpYfYuLnJQVRdzazCUXa
-   TcdoGWk657Xi0a6oH8qnBiPmhAby69leMfGQQU19i63cbJgR8OI/bNqxn
-   rY1T2C/SPcYePV+1mI4U9kNndLNEAkcoziG7aY5qSK3YYSsQSEssiAedq
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="6356328"
+  bh=j/YnzyTz1wKrobyyvYpo/CHxXfXEWCwp2tQdOVkqBKY=;
+  b=I9M8KbcQOrkPXijljq6tTd0mJXit3xZhlmAhgTgANIv7lCbUyHEuAbzx
+   rU/3yUj/zOazDwjIqCK2QcobOQ6dNkbM8wU6ZTPZpSJZn/bwPsLjFY1D1
+   /vfuVIBGqeTA8hYrK16MYnX7HLzDJFZuGkCTzyDSWiWKEplRNXEGig2cm
+   WjREuGIrzZ8vmaAhAvgaFra3i8khlsbxFcogF+U8xzzfG+sMjyN38gTj2
+   AfPU3zMWR8JtjfAfIDRVh02pXiNiilTlfU/vXX6cIDaj7ZWDZDS32rn/T
+   a0Wb9b4FIJ/8z7FgcMHGHK1MdM5vrn2po+REUvFgG2cAQd/9pqpX7feWh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="6358970"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="6356328"
+   d="scan'208";a="6358970"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 05:51:42 -0800
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:09:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="913079649"
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="913082208"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="913079649"
+   d="scan'208";a="913082208"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 05:51:39 -0800
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:09:29 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rcQX2-0000000661a-1DSI;
-	Tue, 20 Feb 2024 15:51:36 +0200
-Date: Tue, 20 Feb 2024 15:51:36 +0200
+	id 1rcQoI-000000066IQ-2xbo;
+	Tue, 20 Feb 2024 16:09:26 +0200
+Date: Tue, 20 Feb 2024 16:09:26 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
  support
-Message-ID: <ZdSuaLA36yPrdwqz@smile.fi.intel.com>
+Message-ID: <ZdSyljwOyxIY7Gvb@smile.fi.intel.com>
 References: <20240219191359.18367-1-vassilisamir@gmail.com>
- <20240219194213.6b0f02bc@jic23-huawei>
- <20240219195145.GA18787@vamoiridPC>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -80,46 +77,56 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240219195145.GA18787@vamoiridPC>
+In-Reply-To: <20240219191359.18367-1-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Feb 19, 2024 at 08:51:45PM +0100, Vasileios Amoiridis wrote:
-> On Mon, Feb 19, 2024 at 07:42:36PM +0000, Jonathan Cameron wrote:
-> > On Mon, 19 Feb 2024 20:13:59 +0100
-> > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> > 
-> > > According to the datasheet of BMP38x and BMP390 devices, for an SPI
-> > > read operation the first byte that is returned needs to be dropped,
-> > > and the rest of the bytes are the actual data returned from the
-> > > sensor.
-> > > 
-> > > Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
-> > No line break. The fixes tag is part of the main tag block.
-> > I can fix that whilst applying.
-> > Otherwise this looks fine to me.
-> > 
-> > I'll leave it on list a little longer though as both Linus and Angel
-> > are still about and might have time to also take a look at this.
-> >
-> 
-> Thank you very much again for the quick answer. Since you can fix it while applying,
-> I should not annoy the mailing list with more e-mails. Just for future reference,
-> when you mean no line break you mean between the main block and the "Fixes" line
-> or between the "Fixes" line and the "Signed-off-by: ...." ? 
-> > > 
-> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+On Mon, Feb 19, 2024 at 08:13:59PM +0100, Vasileios Amoiridis wrote:
+> According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> read operation the first byte that is returned needs to be dropped,
+> and the rest of the bytes are the actual data returned from the
+> sensor.
 
-The standard pattern for the patch (as it is seen in the `git log`):
+...
 
----8<---
+>  #include <linux/spi/spi.h>
+>  #include <linux/err.h>
+>  #include <linux/regmap.h>
+> +#include <linux/bits.h>
 
-iio: ...Subject line, summary of the change...
-BLANK LINE
-...Multi-line description, may contain blank lines...
-BLANK LINE
-...Tag block: SoB, Rb, etc. tags (may NOT contain blank lines)...
+I see that it's unsorted, but try to squeeze a new header to the better place
+where more will be kept sorted. With given context, it should go before all
+others, but it might be even better location.
 
----8<---
+...
+
+> +static int bmp380_regmap_spi_read(void *context, const void *reg,
+> +				  size_t reg_size, void *val, size_t val_size)
+> +{
+> +	struct spi_device *spi = to_spi_device(context);
+> +	u8 rx_buf[4];
+> +	ssize_t status;
+> +
+> +	/*
+> +	 * Maximum number of consecutive bytes read for a temperature or
+> +	 * pressure measurement is 3.
+> +	 */
+> +	if (val_size > 3)
+> +		return -EINVAL;
+> +	/*
+> +	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+> +	 * the first byte needs to be dropped and the rest are the requested
+> +	 * data.
+> +	 */
+> +	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
+> +	if (status)
+> +		return status;
+
+> +	memcpy(val, rx_buf + 1, val_size);
+
+Okay, endianess is defined in the regmap_bus below...
+
+> +	return 0;
+> +}
 
 -- 
 With Best Regards,

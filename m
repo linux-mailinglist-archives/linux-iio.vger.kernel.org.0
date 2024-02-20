@@ -1,174 +1,120 @@
-Return-Path: <linux-iio+bounces-2848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2851-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AE985C7B3
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:15:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA1F85CAF3
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 23:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0962D1F2667C
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 21:15:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEBCC1C217E4
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A554D153509;
-	Tue, 20 Feb 2024 21:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364C3154424;
+	Tue, 20 Feb 2024 22:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rqi8mqQ/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ieqhiT33"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E05151CD6;
-	Tue, 20 Feb 2024 21:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E0F55787;
+	Tue, 20 Feb 2024 22:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463707; cv=none; b=NGEosVWls/a3BIivJvXYWNdV1fmnqoUJFvXXavkqccGAOPNiYFWUgGT079Qc56nJ8h1l8N1IEH/Jv/ubmGpxX1cE+w/SOJuGVvRV5aAFLeBLCEoaSIPwcs+nhHXT2ql0jRqGVbQJOYlfd7AA7xrHPoRqbOMUSVcjuVL1O3q9Z8Y=
+	t=1708469041; cv=none; b=W91yo1oRonU14lkK4phmJWz96oKqO7Rl0630VtV0hl7vMozq+xqI2JAcmd8InvK8/qyYQihVor3y6+2BccPHP8M36nVYbwfP2w4dq3lRQfe7+7tvdpQH0c4KjYuI+saJqfjZX6fF/UehscsCxrcGYcMIoa3XdRw0qZDuBP4Z8xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463707; c=relaxed/simple;
-	bh=PfgqwBzwcDb+91qumay33JWHJ7BTVWpHM3HbGeClp7I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q38fhipNm0iu+OcLsC6GAoEMeP6+JUd3ocOAO3T/zPraLeEskYBiH2BaGggX7R4F8FOc7++1Y7HAXcsGpNhj1FL5IVAQnYGw31LrM/4/AKCpDcqdBkUqnXyzhQa5l28kGen2ZubO3ecDoDQ1BKA+e4UDLJQggFAs/Pn7niVkVK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rqi8mqQ/; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1708469041; c=relaxed/simple;
+	bh=7OBXl7slkbYXNkGIWbZGvBwkUN2P3K/p4aq4Pl//018=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uLYzlmlZjl1FtLjKUUp9k47ZGKnZ/SvNRHrOdtjYjmpcMLAV0NWRxCu8LHj2QGYrYlX5hXY7pZ1dnNMUSlw0tZWw9dcGM8Lx24Jh7TTcpOWkkgeULB6Nzj9h670RbaQGZTkQTwmY+kC8tz3xqerLFlRR2z3vbBlkTVbpo6S0LEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ieqhiT33; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-564f1876a2fso182525a12.3;
-        Tue, 20 Feb 2024 13:15:05 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a3e87b2de41so266895866b.2;
+        Tue, 20 Feb 2024 14:43:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708463703; x=1709068503; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rpz65CgEKeFqCseDG6nHrCx/ipraX250PSOWkqJO8E4=;
-        b=Rqi8mqQ/Bx0R4GUvFuKSZy/e6YC3oycmtsUMu4dcj3ZYmbKfRlKvN88AdRZ+FKHdO7
-         3ZZm+s6OT8L9BUKUugHaURCrqCOYrTD6UibQ0NJ0BM8yStHTuHV/GFBFfo44RFyNwA+J
-         ZSxZKPTOhV/uMidRpLWfiDELiYwNI5wn36bpOx8a2gHvcUXrOWXTDLqYG06Hnw2mxvka
-         gq5QrF6eVC9fK36pBv6gzAyicMm8Qu6OqP7xrHjILf/mv0C2XVlLZ/JG43PrBX9VCdiO
-         7OozmmEtQWfdCbzXJBEecEHu3WlqM2qsNUM4aJhFZRFTwJP8c9hlAOIs4h9hhnZauRhE
-         n52g==
+        d=gmail.com; s=20230601; t=1708469038; x=1709073838; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DHuB3jZibZ6qtCUb9uZTADnW27tWsLt6G/FLrbSZCEs=;
+        b=ieqhiT33QBrWIosXfxuF6R2nzZv/hAVRDUns/c/dsfVfni0XzH20tT7EZU0KbIhXRp
+         Tj1eznH/IceQX7ZRsF9Sc0f2qZKlbr/m2GpJw6o87oQeKtcN9MIYR47HnSGr8Wxd+tN1
+         p9onkqrANL4kanaFLljG91ooGEEOUxWFZx1gENvF66A3z60e+zr/tmLT+ecBpoJO2V5k
+         a39AHFG1wPNL2E67rKKj0yoyjce7xuR+CBm42HtynLHFy2av9F/8a/0+ol5zZctnp9dz
+         hTOo+KZwlR6eLtru6E6eG+zIXwNDJckGsBpSMpUCZCnpp2g7mbqE1Z+8ARVg5Q10/pjl
+         6eaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708463703; x=1709068503;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rpz65CgEKeFqCseDG6nHrCx/ipraX250PSOWkqJO8E4=;
-        b=D2ALL7PgOj9PNuFrnH9Nw7w1lvcHJM7vumlh1He8mZbFZrzfAtWemt15BzE1sffPDW
-         3U962m67enUlo0r2mZ5wl/X5ReZjuNYv0Hm+plU4XNQWbW+NPoW4LGLg6GCnfPwhBTbM
-         SxcegicXA0b5BZSi8ITWV5XQcV8gUbZ3ATiRps2xMnoeg5EBf1pte37R2dLCrbPfSivp
-         Yb1WwDfnHMgKiFon2tMeSclo7y0sWpQrV0UEz0C/g1J41edwhHkPbBj3ToKMQZlXw+tc
-         cVXSl6eOaSX+90L5pBMIF/CAz7xgvrwb2ZNJehT9pRA3VKtJCCSYKlbPPbEqF2I/0uw1
-         Eh4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVGlRNb05i7jzZ5IS8PM1EROQYqfE6KP84m0kHV7Yb/GHNlgwEnK+YW4TROzA6HZZ8NIhYXSBoNQn8hzr/rAIE1hIOjxgctFJUx/K3LFvcjIflJ4i1ErwfDVCim9Cm6pkT3eBlNJi1RIBANNDCqObydaTEOw6CVZMHamkXjkGHRjICk/A==
-X-Gm-Message-State: AOJu0Ywqm7gkgEh4Y8bJx1VBf9icum7zvvy543h+UuYNXirKtZtWYE7F
-	y+RW+jslZN2xJBYTa991aFdgPw4wRZNGHBaj2rjNdJAOPa/mD3QZMX1qNyaLW5I1AA==
-X-Google-Smtp-Source: AGHT+IFM2A45QUCqPCimobrtQz/hB59OTos8oA4Jt5gqJ5JnmUHY8EDJ3AGFYAq1Y1/Q0CUXezxtUw==
-X-Received: by 2002:aa7:d997:0:b0:564:71d1:6cbd with SMTP id u23-20020aa7d997000000b0056471d16cbdmr4697858eds.14.1708463703514;
-        Tue, 20 Feb 2024 13:15:03 -0800 (PST)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-d60d-797f-077b-a805.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d60d:797f:77b:a805])
-        by smtp.gmail.com with ESMTPSA id fj21-20020a0564022b9500b00564da28dfe2sm538137edb.19.2024.02.20.13.15.02
+        d=1e100.net; s=20230601; t=1708469038; x=1709073838;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DHuB3jZibZ6qtCUb9uZTADnW27tWsLt6G/FLrbSZCEs=;
+        b=nh9lYMliKO8CF7ft53X+3N3PB/j4eS2+Zavu5C3E9lO7V7fG04OKD0ihjtUEEjbM0S
+         76v/DezBl9J340TBVoSJYpHlKbqCIkb28WWI6J65nnyvRxaJ6K54dHiMN1Mz9qsk+UID
+         d/r0Dgu0oOv5lTHaMMRlpkCHl/P+sLN+9ogdpHMCsWmMxwpDnIrX6vnZYmymBWtUi4HG
+         u1qIxU3SnDTdTKBakzy5Duz62GItO8aVhJRLEBdxy9AA65ge8cBnTmNgcT9yASXCKiSW
+         JyeRlhR8ofcMdHfPipV5/CWiKO6T07Dh1K/d2mGO7yQp6SPtLHZyXvYNsWQhz+teb2d7
+         mlpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/ESNCPBNtYAZX5Hx8Ed7mrVzZySQUZcILUegzHwqYBW+z/bmS3Tvt32Qzz4fPvxQRbo34NG5/XIgYsZPv/kV59WBbb2yO35hZhhanWwwwHLW3MNAjZbgsaySJf7/unSs/rbKTgWb3
+X-Gm-Message-State: AOJu0YxQQZHia4nexg0vpv8vDzADPyXtVqygZtHwUpsLkNzKNniNd8Nl
+	KuIdZrobyqDopmlgNk6jwejH83l+JDGalaL/0j49/T1v19jfDuZF
+X-Google-Smtp-Source: AGHT+IGef7cRx9p63So5jxOp2xHPGDx88OvziqNvplGafUO49cZ0JlsFYG1MOnGYkhXrNduPY2WEog==
+X-Received: by 2002:a17:906:af09:b0:a3e:d515:cdf3 with SMTP id lx9-20020a170906af0900b00a3ed515cdf3mr3933296ejb.27.1708469037440;
+        Tue, 20 Feb 2024 14:43:57 -0800 (PST)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:4de1:dcc0:a48:7f])
+        by smtp.gmail.com with ESMTPSA id xg11-20020a170907320b00b00a3d83cff358sm4328489ejb.70.2024.02.20.14.43.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 13:15:03 -0800 (PST)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Tue, 20 Feb 2024 22:14:58 +0100
-Subject: [PATCH 4/4] iio: humidity: hdc3020: add reset management
+        Tue, 20 Feb 2024 14:43:57 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org
+Cc: lars@metafoo.de,
+	ang.iglesiasg@gmail.com,
+	andriy.shevchenko@linux.intel.com,
+	linus.walleij@linaro.org,
+	semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: [PATCH 1/2] drivers: iio: pressure: Sort headers of BMPxxx SPI driver
+Date: Tue, 20 Feb 2024 23:43:28 +0100
+Message-Id: <20240220224329.53729-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240220-hdc3020-pm-v1-4-d8e60dbe79e9@gmail.com>
-References: <20240220-hdc3020-pm-v1-0-d8e60dbe79e9@gmail.com>
-In-Reply-To: <20240220-hdc3020-pm-v1-0-d8e60dbe79e9@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev-8b532
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708463696; l=2241;
- i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=PfgqwBzwcDb+91qumay33JWHJ7BTVWpHM3HbGeClp7I=;
- b=54ovICHbb8pco+EjzIxuBxnPtD3cYYN+SBpBLC2Tnc5vCDXBBIlegBTCEeG0TC9xqxDvX0IsL
- NArRKsDJhrIAUau1dSTjETtzBA75FnxjpacxAPgfJrlDKmPMv9tGgYa
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
+Content-Transfer-Encoding: 8bit
 
-The HDC3020 provides an active low reset signal that must be handled if
-connected. Asserting this signal turns the device into Trigger-on Demand
-measurement mode, reducing its power consumption when no measurements
-are required like in low-power modes.
+Alphabetical sorting and separation of headers for the BMPxxx
+SPI driver.
 
-According to the datasheet, the longest "Reset Ready" is 3 ms, which is
-only taken into account if the reset signal is defined.
-
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/humidity/hdc3020.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/iio/pressure/bmp280-spi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
-index 0da5c5c41cd2..bd2f57a7eedc 100644
---- a/drivers/iio/humidity/hdc3020.c
-+++ b/drivers/iio/humidity/hdc3020.c
-@@ -15,6 +15,7 @@
- #include <linux/cleanup.h>
- #include <linux/crc8.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -70,6 +71,7 @@
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index e8a5fed07e88..fd7ec6a5bca3 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -4,11 +4,12 @@
+  *
+  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
+  */
+-#include <linux/module.h>
+-#include <linux/spi/spi.h>
+ #include <linux/err.h>
++#include <linux/module.h>
+ #include <linux/regmap.h>
  
- struct hdc3020_data {
- 	struct i2c_client *client;
-+	struct gpio_desc *reset_gpio;
- 	struct regulator *vdd_supply;
- 	/*
- 	 * Ensure that the sensor configuration (currently only heater is
-@@ -564,6 +566,11 @@ static int hdc3020_power_on(struct hdc3020_data *data)
- 
- 	fsleep(5000);
- 
-+	if (data->reset_gpio) {
-+		gpiod_set_value_cansleep(data->reset_gpio, 0);
-+		fsleep(3000);
-+	}
++#include <linux/spi/spi.h>
 +
- 	if (data->client->irq) {
- 		/*
- 		 * The alert output is activated by default upon power up,
-@@ -581,6 +588,9 @@ static int hdc3020_power_off(struct hdc3020_data *data)
- {
- 	hdc3020_exec_cmd(data, HDC3020_EXIT_AUTO);
+ #include "bmp280.h"
  
-+	if (data->reset_gpio)
-+		gpiod_set_value_cansleep(data->reset_gpio, 1);
-+
- 	return regulator_disable(data->vdd_supply);
- }
- 
-@@ -621,6 +631,12 @@ static int hdc3020_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
- 				     "Unable to get VDD regulator\n");
- 
-+	data->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-+						   GPIOD_OUT_HIGH);
-+	if (IS_ERR(data->reset_gpio))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
-+				     "Cannot get reset GPIO\n");
-+
- 	hdc3020_power_on(data);
- 
- 	if (client->irq) {
-
+ static int bmp280_regmap_spi_write(void *context, const void *data,
 -- 
-2.40.1
+2.25.1
 
 

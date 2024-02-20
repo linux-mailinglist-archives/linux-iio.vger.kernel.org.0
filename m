@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-2819-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2820-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D3085BB9C
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 13:16:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CAC85BBD3
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 13:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5B391F21FDA
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 12:16:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D8B28191D
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 12:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AAF67C7D;
-	Tue, 20 Feb 2024 12:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A867E7E;
+	Tue, 20 Feb 2024 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjeB14b8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iuWRcKSh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10DC67A0F;
-	Tue, 20 Feb 2024 12:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355A165BCD;
+	Tue, 20 Feb 2024 12:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708431358; cv=none; b=PKpE2rtKRuyL7C4FtOgHQyUi2OeMXWb4zaKYhDjreABOlXNEBBp3cQ8DouxZQ63EOnrMPqW4HwCoCahiPbHUtifW1HTYAjcGZcfWOSOIT+d/eEPJXsS5yBSRZ9/1Xj9UtpsUtnO8jnhWI45uD5XoVIQg6jxjCrZe0S8pu+SWg1s=
+	t=1708431657; cv=none; b=hy9gOirjqMVZj46oXVf0/FJo55ZIvFHd84G33hsaRhV/PDlwz53C3iel0nMJqnNgELCoz5eOqNKyZZT53n2JwVo06Kye41nyI6u0OGv4rR4rHtKBfyLV3NcvaCzfmCUq3ZrR9yvf3bLlgFRiQCMN3fBRu2qc9ua1n5N0dOxRDVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708431358; c=relaxed/simple;
-	bh=NFKIpWFlrcLcgm96+Riat3ntN8g+TKcG0bqfTPRK4F8=;
+	s=arc-20240116; t=1708431657; c=relaxed/simple;
+	bh=AR1J82QzcekaL9KNDGEHl7j5+lUCFPMNjibpDdXhUEo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G+HKH84JQo4598EaN2UlVQrNyPuO+Cbz8jxvhZhPs8PjNXtUXE9KhJnobOaAm4dMI5aFARXWlnvsycOF7YJfwlAQb0XN6NpyY8h6ITkbjbJTBqsG84gzYSA7a1lmo78ylPVdCL39rn7lVsHCf+PB5STZ59JHPz2FyUIQ+jgToZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjeB14b8; arc=none smtp.client-ip=209.85.128.50
+	 Content-Type:MIME-Version; b=Tu4KIITOvBk7iE4BS1rDDHFOyyVyZxDWQwbSuFHQ3pZ33Y/okgTpdHmc9VE+9oU4pTy8VcaYXp0q6IyOL4kPdeM4tTtdK6thHBkAD+93iKvNd/BlnH9AcwCQwxwrcWJ8P3j2Gjl9F/CAwk4+KSLUhpvNFJ3JhvhcOMvJJjxAhVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iuWRcKSh; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4126aa42402so10646695e9.0;
-        Tue, 20 Feb 2024 04:15:56 -0800 (PST)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512a9ae6c02so3297705e87.2;
+        Tue, 20 Feb 2024 04:20:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708431355; x=1709036155; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708431654; x=1709036454; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=1kHmAH30WGxy5AZqgJqTBRqpGld5Izrqx3fcp2YhQqw=;
-        b=hjeB14b87dnr13bbW/fyC0anOOQ2VbHDbOtLUbtzj5Cmb/vdMLJdkA6694mwxqfKxw
-         qBZDF4lUmoCGMcKLKfqL9a0O7e5vrtxrTiD9G9qOe1yhaoeqdsKUsrXkTkMKD6GiSmcb
-         PbUB6F05jBymkFDIoZg9Q8O+O1HmnMu/4wiOpbYCI/Wq+hH2Q8T2+uV1QpTb00GkHcCb
-         tKNW0/67dXUOSjPoKVXLN3exQQvN8LWuIxGyWEm3wM7DbRLrmAkAbguOeNmkWRhVhYqQ
-         J/YLFPaOw272P9RhLwikN3Mzyw7sNRWFc14XmMplN+p1w+TOQKlL9MJiIMfFD1uJlhJE
-         cOyQ==
+        bh=PDi18Ie+s81peNgcU4/hAGc3IXSIdDCsGyhzUSlE3Gg=;
+        b=iuWRcKShFI0qai7rpkXlrHmTvsz97x5pS+QDEEQ4OgAqYT0WuOXqrqH9QddDljlz03
+         9pb1Oy03JDc9si95cEei9pzrKRgN3CE7VSRPnTkIhcov7WjWYrEMQBdf5VaUDpEUoX55
+         YWFt8e2p+xwmLVmc2jxyDoRTPVtqqbE7ZwIjMj//UW3v/v3uyxQh0J4Q9k6GSq0J78EG
+         RsDF1HdLCL0cB1WmYD3bXXfMbqis8hasAoJkQjiCFnS6cSLgEG5BXIIgXhzxajXPtc0s
+         6IG7s12ziZQrLvtpi8SO+0tOG4bsVifVcOE49wrMJYwGdoQ62Kbqf4eHssPYPjCw16D6
+         TeoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708431355; x=1709036155;
+        d=1e100.net; s=20230601; t=1708431654; x=1709036454;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1kHmAH30WGxy5AZqgJqTBRqpGld5Izrqx3fcp2YhQqw=;
-        b=kkyHJsigsTrp2QH0YJJVtukK52Nsoq7x+ePb9GAa/ON4QtJiS7+qROi7ZhdwSHaRPp
-         qlKjBrvcCvYNz5rNtqpB0Gy3QDM4xT3RXRoRiEBFP1xVM2WXu4YwMzGgnG2BX8L4z31c
-         xA5DnuB/pIAxf4NY9q4TkQJy/9PN8GpUekfNYr9DbOG9JkgZ6+Mxlm321+EwL6P5Tb2P
-         CoqJW0YwZTiTgIsPjhxcaAClJug5XpkQEK1LQOY19yWrdS7S79wjkzRmeDOwvIzd6QXY
-         vfSUG1Ii4UermQ8ntrI8Zh/4VKML9aCzA3obFv5MKpYhnnN1MryWj0mwrYpKKJI3z8wW
-         Y2Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqcLVEkIEem6eSBQ4gTRN33y01ok4X3JLzu0X41hEBCPCDuZjAgOvp7910qrIhMtNVRm9ZR06Iq6AHNhUdKVkdZNHy1t0aOERtzo6GAoJVmgo/12ISxqQFeYk1cxNYUNoe6GxhPkEF/19hdWcS3ZV7GJYUEH1jhUTzRsHnNE5FRb37500vIFSS1z7tPu8CNWd7b8xL6hY1ANZCgQNqDQI=
-X-Gm-Message-State: AOJu0YzNTv88pwG51w1p+fd7UGIFLqWnO6Vmr5cuSEcR3ySFV1poRdgs
-	q8vD19XvvmkCFFLWu3wo92VXE1bRoYNj1WoX92Pem41DxjQu6DyW
-X-Google-Smtp-Source: AGHT+IH8LNEn6d2zlOk1KelrI39dl9uZ+tjiwqV5GG6X14RQwC+tUIx7y4JAcJ/RsWA+Kk8zORUWpg==
-X-Received: by 2002:a05:600c:45d2:b0:412:1e2:e237 with SMTP id s18-20020a05600c45d200b0041201e2e237mr10899429wmo.20.1708431355061;
-        Tue, 20 Feb 2024 04:15:55 -0800 (PST)
+        bh=PDi18Ie+s81peNgcU4/hAGc3IXSIdDCsGyhzUSlE3Gg=;
+        b=wLMQOJXSx+md5EtIPHPj+rwgIm+z54J6YeIKzW1K8gqv4Idc0gIz/fXOWeTcabkZGS
+         k4ILwFEDpVe1MUsdOmg1l2WBXJxM1u81U6QKS6dyO9Rn2I7KzniP+cl4Vsea+YGlet0u
+         GVtzCi75RAdDEHx2ngAKm8YoynHSJn1IvRv7JuZqFHxNBr3EwEO7Si+SEv1B7D76hR2y
+         ULOURBswrahmcmHv9LQ6I66QggKQze8pbxmbV8kpeZRasVZEjXxI3dF4uBlVGZ72suAd
+         4xE/UfHhVodxCkRb0JlDcQRLg7pvuZ3Xy95r0mS5fWfqd83uV/UDMqCka80AuerhFP6r
+         X8JA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJHWsOgJD3OJCxtb+NDdwYFL/OnbXGNes+t9RpORVMwG0r3RqDbbx72HkXnWB2te1ym2c+RVs8k1AZhRABafgJprnBpPVFlWB0KT0MHSKVQ6NP/yoc9x5VkyjreRt2TyUPxmVD27+A7OzfjceSFowW8NyhB59eskoc6HQO156uzBiqw6/wcrN93nVg9tN7DUa/p7LPpwuyOc3iFS9C+9Y=
+X-Gm-Message-State: AOJu0YyDsto35oB1VC+xMvPOWqDXFSiiSJD+mDBm67nMHN0rJ/u5ASfR
+	JBhCpijS4+YzZRobJOt9DsVZVdJW25mecnGRd4oM7QS9aoXD5W6s
+X-Google-Smtp-Source: AGHT+IGPwxdHUo/dctJ2Ngn2KMm46rbjC+bLYnQpfVfi/08A3miFjRBAzS2SnNRqxZvw1VG03rAsYg==
+X-Received: by 2002:ac2:4e6b:0:b0:511:763f:7d40 with SMTP id y11-20020ac24e6b000000b00511763f7d40mr8407631lfs.35.1708431653979;
+        Tue, 20 Feb 2024 04:20:53 -0800 (PST)
 Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id ck4-20020a5d5e84000000b0033d3f0eee9dsm7984801wrb.27.2024.02.20.04.15.54
+        by smtp.gmail.com with ESMTPSA id lj8-20020a170907188800b00a3dd52e758bsm3885807ejc.100.2024.02.20.04.20.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 04:15:54 -0800 (PST)
-Message-ID: <9edfd3481a317ada51be03fa9da824edbcede9c0.camel@gmail.com>
+        Tue, 20 Feb 2024 04:20:53 -0800 (PST)
+Message-ID: <fc49f36bf1df931f7c67dd195aa74636eb479e64.camel@gmail.com>
 Subject: Re: [PATCH v13 3/3] iio: adc: ad7173: add AD7173 driver
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
 Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
  linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Jonathan
  Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof
@@ -83,12 +83,10 @@ Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
  <hvilleneuve@dimonoff.com>, David Lechner <dlechner@baylibre.com>, Ceclan
  Dumitru <dumitru.ceclan@analog.com>,  linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Tue, 20 Feb 2024 13:15:53 +0100
-In-Reply-To: <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
+Date: Tue, 20 Feb 2024 13:20:52 +0100
+In-Reply-To: <20240220094344.17556-3-mitrutzceclan@gmail.com>
 References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
 	 <20240220094344.17556-3-mitrutzceclan@gmail.com>
-	 <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
-	 <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
@@ -99,55 +97,42 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2024-02-20 at 13:25 +0200, Ceclan Dumitru wrote:
+On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
 >=20
->=20
-> On 2/20/24 12:38, Nuno S=C3=A1 wrote:
-> > On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
->=20
-> ...
->=20
-> >=20
-> > > +};
-> > >=20
-> > > +	indio_dev->name =3D st->info->name;
-> > > +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > > +	indio_dev->info =3D &ad7173_info;
-> > > +
-> > > +	spi->mode =3D SPI_MODE_3;
-> > > +
-> >=20
-> > I don't think we need the above. We should just enforce it to SPI_CPOL|=
- SPI_CPHA
-> > in
-> > the bindings [2].
-> >=20
-> > [2]:
-> > https://elixir.bootlin.com/linux/latest/source/Documentation/devicetree=
-/bindings/iio/imu/adi,adis16475.yaml#L45
->=20
-> Rob Herring V1:
->=20
-> """
-> > +=C2=A0 required:
-> > +=C2=A0=C2=A0=C2=A0 - compatible
-> > +=C2=A0=C2=A0=C2=A0 - reg
-> > +=C2=A0=C2=A0=C2=A0 - interrupts
-> > +=C2=A0=C2=A0=C2=A0 - spi-cpol
-> > +=C2=A0=C2=A0=C2=A0 - spi-cpha
->=20
-> If the device(s) are not configurable, then you shouldn't need these 2
-> properties. The driver can hardcode the correct setting.
-> """
->=20
-> ref:
-> https://lore.kernel.org/linux-iio/20230810205107.GA1136590-robh@kernel.or=
-g/
->=20
+> Reviewed-by: Andy Shevchenko <andy@kernel.org> # for changes up until V12
+> Reviewed-by: Michael Walle <michael@walle.cc> # for gpio-regmap
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
 
-I see. I thought it was the other way around... Then, the other thing is th=
-at I think
-you should call spi_setup() after hardcoding the mode.
+Another thing that caught my attention
+
+...
+
+>=20
+> +static int ad7173_register_clk_provider(struct iio_dev *indio_dev)
+> +{
+> +	struct ad7173_state *st =3D iio_priv(indio_dev);
+> +	struct device *dev =3D indio_dev->dev.parent;
+> +	struct fwnode_handle *fw_node =3D dev_fwnode(dev);
+> +	struct clk_init_data init =3D {};
+> +	int ret;
+> +
+> +	if (!fw_node)
+> +		return 0;
+
+I think that better than the above check (do we really have any case where =
+fw_node is
+NULL?) is to have:
+
+if (!IS_ENABLED(CONFIG_COMMON_CLK))
+	return 0;
 
 - Nuno S=C3=A1
+
+
 

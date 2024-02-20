@@ -1,106 +1,114 @@
-Return-Path: <linux-iio+bounces-2806-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2807-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7295385AFC9
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 00:30:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9877C85B336
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 07:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 279EC282FD6
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Feb 2024 23:30:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC6F0B2140A
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 06:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFC956760;
-	Mon, 19 Feb 2024 23:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495CF28363;
+	Tue, 20 Feb 2024 06:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tg4plTjU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S23SH54C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227A054747;
-	Mon, 19 Feb 2024 23:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797AC186F;
+	Tue, 20 Feb 2024 06:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708385422; cv=none; b=K79I0Jdzfm7hBftXnwIQOBLlvtzpSDGfZL92G+IkJWtxyVc1INgwu/CoitT7EobmE9yNsbwTrjShHrV8Rg2XeTtUQryNQSV0jJgRE8vLgDhbBx8WvmMJgEeTetUUwHsl5ncLAQSmkgZGq08F/0YobmDiM33Tb5TqnxjDzXIkNG8=
+	t=1708412132; cv=none; b=DtOqHRDDXNROJr4a8ciat0eH1Mnz+q9dpt1A3bl/K2Kd8TPUseXekkY0g26BPEOHNg21+jrh3z0q3P8ByRl9/JDk5qUoEO4x79OcVlhJ2ae9S+9lWXCdoOol3Ot4R7XJODHwambF1a1RGbkEHlmHb0m7HHh6Qbd1IzWDyhQKIXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708385422; c=relaxed/simple;
-	bh=CeHPFPzweoMTBxqm2mAquo6FAJ+dj7TgxzmBf+DGHIg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rRM+Ce0sQC2g2dc/pzwS7Bb3AoEmtwZhISmO4PReeeT+XlAZ+wpF2zPo64Qs7H0jmCNfIEGilTvgcXntqmf4d8RPaqK39LaCtsmf0r5V76iXKu/e56xPShQbKgC+OGrxrMPcYNEmzMCV9jNYaH1759+XrfL5aXhEyl0W86QVx0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tg4plTjU; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4126cff4721so2734655e9.2;
-        Mon, 19 Feb 2024 15:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708385419; x=1708990219; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CeHPFPzweoMTBxqm2mAquo6FAJ+dj7TgxzmBf+DGHIg=;
-        b=Tg4plTjUo2iiyvzbNvFebhpJ8loBqBIMcE26Xyqhv76Th7tcuY9aUiG7oNcRIexwRW
-         qEYYBookhEZaGdLSEJxcA+qGLImNifmbat4Yv05ACQCYNvQHpXvtGh4kAHsiLgiO+DrK
-         QPnjmIRZ8sTiwFs6iG+QEIInqrNiVUVYeq97ALrlixCkkHKbsGD6SOsuifVNuVTPYysc
-         s3SeLZiCtSD7E1FJTtJS+4pWs5hGEdyQWqh+PJpbcPXq33sfnh6M7GLpPv7NXjFc5M/z
-         zf0xgXAl6pGATHi1LZadwu9TpdelL3WG0qvj1i97neMDqa4bch1oCRtHkp5csidI3EM6
-         xetQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708385419; x=1708990219;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CeHPFPzweoMTBxqm2mAquo6FAJ+dj7TgxzmBf+DGHIg=;
-        b=cRxrefkUSRulR5p1xjSrFYj/mTusFbB3Yq5Nec+doH0DuSRVXIWV+pGgZpGD3Sxw6m
-         GnmQePhTLDFN3r9YwpZhOsVuF/OBfXrV0rTpwG7XxEk70iO7ZF9MJYItAyiz3K1DroP0
-         kiFc4NtLfkXqk9bmDxCNuqRDlT28tcndCi4GtMQLzjfkH6Z2YLWGs3APpzFaQEsN7aNO
-         sbA6UGJNE8a4Q/QUc3Hk7Zn2BHkqx8zBXNnhQOM2QrPayyNVXpMYOJhA5YxQAVpsecUg
-         z2W5HCSMf0trsY2/24xdkmk2LHSeN2ShKHkwEr3MuIv1lEPeGyviikgo/ZCQhoOvLuQ4
-         fQfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzCFpnpNKoFiQNt0P6iCUYANhpqhUUnGQrvROrRuKFLkI1rq92L1b4TjIGiBNAowpY59TewYvSuZCAel2itpjX5b0u+t6a4V2YEavTE3rmZFezemS9mLOg2sRC3gRo92y8CMzb7hbl
-X-Gm-Message-State: AOJu0Yw5VI7YTAKAdV6xRUMrupNytIzrgRjwsQ8l3oB3kQ3Qu1J54RqV
-	tWtfYGILaFFT0SerXRq+5KReS4fOULO+WkefxNFFNoB5qbTiQ6td
-X-Google-Smtp-Source: AGHT+IGM7wxI2/8LJWYwud7jh0Ruuy40sHYF6QWziXjdcA+0zuC+91YFsNm2Wl/RjE3ArErGUrxr9A==
-X-Received: by 2002:a05:600c:a05:b0:411:f418:375f with SMTP id z5-20020a05600c0a0500b00411f418375fmr9215005wmp.19.1708385419223;
-        Mon, 19 Feb 2024 15:30:19 -0800 (PST)
-Received: from DreamMachine2.lan (146.red-83-35-56.dynamicip.rima-tde.net. [83.35.56.146])
-        by smtp.gmail.com with ESMTPSA id 13-20020a05600c020d00b00410dd253008sm12552402wmi.42.2024.02.19.15.30.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Feb 2024 15:30:18 -0800 (PST)
-Message-ID: <6621b55b4a966783259c75dd10ecec929e6e3a11.camel@gmail.com>
-Subject: Re: [PATCH] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
- support
-From: Angel Iglesias <ang.iglesiasg@gmail.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com, 
- linus.walleij@linaro.org, semen.protsenko@linaro.org,
- linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Tue, 20 Feb 2024 00:30:17 +0100
-In-Reply-To: <20240219191359.18367-1-vassilisamir@gmail.com>
-References: <20240219191359.18367-1-vassilisamir@gmail.com>
-Autocrypt: addr=ang.iglesiasg@gmail.com; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (by Flathub.org) 
+	s=arc-20240116; t=1708412132; c=relaxed/simple;
+	bh=ZbeWLI+u0Im6wyY+YQK5HwdJcu5x5fe0e/cuHdUXBzE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NosOimddnR3x30ogPPimrOZIt/8BbL9ipJQmascVNrfv8SdhmyEfXTI3F+bzNhZva1A1nHIVPLGH5jdq2oOS0kzBmdIRaOdPMNAv8m8tebeFJOO9qSiSLk5oInxTCNaU8pjBFqurP6NzE2nSYfCThQ0QS/01W3cPPU7aoOe8dv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S23SH54C; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708412131; x=1739948131;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZbeWLI+u0Im6wyY+YQK5HwdJcu5x5fe0e/cuHdUXBzE=;
+  b=S23SH54CvvtJLTCDhjUP0S/l68r6j1Ycyg2HxAbFBVYAEOuGZDMoezAg
+   hFP/40PSXaWpBQHHly/d0XCd1gvBV1pTljTs7cngGw1N0iZD422W45pDe
+   yJ6A5Al5VcGEfNPw9Gra8f0Z6EVX5IH3Oh9HMl4oS6/5vm4txyofDcTdw
+   4t4FPkJDe6Vd97t7LLmKHKHPjunomB6qqfGjc8c9SXrlTITDKG2eGowLu
+   /xscYZa89X0HS7uBxrUCmGLVovQcayWBIbm6TQ/tdngfH19NbqQnPSINH
+   5E+SBM9wvQiK2W+y60+BCeP4k7H9nzlUDYwUDA4AYCVSrKqST80kHshbF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2377744"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="2377744"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 22:55:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="9301043"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 22:55:23 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 782E811F7E1;
+	Tue, 20 Feb 2024 08:55:19 +0200 (EET)
+Date: Tue, 20 Feb 2024 06:55:19 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4 01/15] device property: Move fwnode_handle_put() into
+ property.h
+Message-ID: <ZdRM11WV-r1Djd2u@kekkonen.localdomain>
+References: <20240217164249.921878-1-jic23@kernel.org>
+ <20240217164249.921878-2-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240217164249.921878-2-jic23@kernel.org>
 
-On Mon, 2024-02-19 at 20:13 +0100, Vasileios Amoiridis wrote:
-> According to the datasheet of BMP38x and BMP390 devices, for an SPI
-> read operation the first byte that is returned needs to be dropped,
-> and the rest of the bytes are the actual data returned from the
-> sensor.
->=20
-Looks good to me :)
+On Sat, Feb 17, 2024 at 04:42:35PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> By having this function as static inline in the header, the compiler
+> is able to see if can optmize the call out if (IS_ERR_OR_NULL(fwnode))
+> This will allow a simpler DEFINE_FREE() call in the following patch.
+> 
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Kind regards,
-Angel
+-- 
+Sakari Ailus
 

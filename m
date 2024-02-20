@@ -1,339 +1,151 @@
-Return-Path: <linux-iio+bounces-2832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341B185C023
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 16:38:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190F485C2F3
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 18:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5B1A1F21A27
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 15:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D05284910
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 17:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6083C779F6;
-	Tue, 20 Feb 2024 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9BB77620;
+	Tue, 20 Feb 2024 17:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+DntWSc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0g9RImb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2938E77625;
-	Tue, 20 Feb 2024 15:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E5176C68;
+	Tue, 20 Feb 2024 17:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708443368; cv=none; b=HUGkIu8NLKXKggUyHN2IwPXcdvGB/4lIn0p54p0zYwW0PYFQfvgT4iq7wxh7RjMlinhOxZvCAFTRpPwBEN0VxRMrAgb/ZNQoxmXKDsW6roncZGoAErxnJ3ldH5HYrlIKQlJMo4XME97OEYk1oaWCwaS3kyg+AO0MZbcagBaYub4=
+	t=1708451191; cv=none; b=LMTM25KlsL0kWovbudwt2lGkeGmDlUsEM/CuVlyvCdCboo+S8Sw4JXgnlKHYuJMY4UtA5+AH+0pN687cwVz5J/A1nok62tQrtrP8s1YkNXCFaizuAf1xnTXNwURF4PbZKX1WTbj58kzAf0jACmmVcgkgUbKznWxn9zDLvLMWn/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708443368; c=relaxed/simple;
-	bh=yngViWPOAMHAODTTAwgLH5RffJRA3vHYGb/gjQx44BA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QN7GKtoX+dGvsHYMkcGA8hxRL7bacb9StkJDJoXCa5Mmj4KhQKu+fSEEuGMSzE5/XbqJTFvLcf1vtBhh4tteC2wUw38tAk3YToWQ5GrdiCMpylsApjX28D5vsBNvIVnWFc0/qoD1cqpg72kGCUlq7YfpcNduyRmNSsRrvbMzx6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+DntWSc; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1708451191; c=relaxed/simple;
+	bh=2EKy2CqkvTdIu5qpvui14Qtn0lAG3OX3+lJhFGyRlYk=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p8k3RYkn9JY34HKvxw5Zrx+9omM6B1Ucm3JhrCpBP0ZCv4vtrH/hLwHqPop/9s1ln1lWDNlBmgiS0bMw38h/8leEy+bt/0aMQM+RNtVg98M7ML4O+FzBIbI9lnvbTqjWkndFM0pKY396h7egG/gtWugMKUi4BffLANoAUaeicgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0g9RImb; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-564d9b0e96dso706754a12.2;
-        Tue, 20 Feb 2024 07:36:05 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a3f1bf03722so60014266b.1;
+        Tue, 20 Feb 2024 09:46:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708443364; x=1709048164; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=geyL8OfscOjPv2YlXwfaUvMZU6dkavwR22sE4+gZy1A=;
-        b=e+DntWScsguJci0a0JpZECFHbaTgHAckoXtbSdNvSMvbmRL/SrH218OgmAdETxiofY
-         K3+8lLN0XV4k8n0fNgSXjPS8S+muVjlPiEOgT03meAPZuvBb7JG2Apu30+w4ozZg2kSW
-         u6rAisvA2HnczDzJF9KUbNV94IwiTocpcer94ZWZmyWd+HNGudSqw8npYubNlnzii5We
-         ckCs2G1Ly5FFUq5mXOCFFfXAkKnB8tIVLtQg+HDrtN9oKNsSInm+DQ9sBj1k5/ir0ae8
-         5HsoLekMEdJIO0tCuGOc/lDvznwJyWxWNkovi25VNuqCDd+aQhpxrc/7Rmh1j8tGfcuH
-         KQRg==
+        d=gmail.com; s=20230601; t=1708451188; x=1709055988; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNcMunO4PHwBceEqX1qMTz4P8ZldxmFCw2RMePfNlt4=;
+        b=c0g9RImbblHOU22GdW/rw4NpfxxIdsWqWOVyQmYh61SgsnO8iSZfZhSVp2JjwqIFI9
+         2Af1RPQQyudLmMuoORNczC8qBrrmR0fW8dndtc1hxx2PqRE0ZpLY0rQAzIqN3zrn7+a5
+         1e8DAEcroystljLCGMGB62HDHijxJeYcT+FcrQUR39EseQynU/Ivp/DAt3zEv06H8TDA
+         DwjfyrbLsyMzXcuJ+4EwOtIXxFSBOCl0EpPEwjI+iT9tjINxfau5RVhNfAdEOMtFdbL4
+         40gkQLvk+UOYShfniwgRc0tuyH9oogRuu4qi2v31GxhzjFaFdy4P+cvpgPWkaQ6AbRnz
+         x9gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708443364; x=1709048164;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=geyL8OfscOjPv2YlXwfaUvMZU6dkavwR22sE4+gZy1A=;
-        b=Epf/jzBqEi0qrBilTsD1fVWSMOA5TkQpJKkEqznh8F2F8NuD0IbnCo2rRfCPmfDKTa
-         ZKpUFt8TtEuhC3Z8dWAipmHiUI+QR8NrvP4dl2vjT0EE1IW15vych1MnVmgxtr47qAhF
-         8mMmkb4cWD1/8m5p8abNc/eAX4TpNmACsI8Dvruke/6FOTlpS9XMzZZSWWYhoUmo8xVe
-         l0qCpEes5y7PriCto2GFAvUmuZw8Ol2SqzC8mYcctriaV4tRBH7T08V+lTJTpmrGIo7p
-         LHmJQOv+RP4uZF8WIB0Ph5guCcsouMdMAhOmWXo+TO7TqP2GRKfXXOP0Wx3uLnKQdVLV
-         94Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBDsJPsvPVAKNU79NNaRL2n8C64YQTmUHXjoYpl1WLKkBxywxMvkRfzAwnXn3B5sjTloOecXNHth0Pe+dpPFtJqZma+6nSsuHS/0eWxgJIdm0kpcUyeGJa3Pu8zOkV2XfHDAj0RFuwdTC9QCjRt3Ob1d9BbzDbIh8eS+/hHbVfemFeJA==
-X-Gm-Message-State: AOJu0YzaiXbphNxr/8DUqJC5VV4bY8XJnRFS/MkpAWJjzBPbNmVLgQ9u
-	k5MjuTuQMaY8VH7VhTctMtDOfV1xwaQg3yADrnb4uIQYuFSiuiorod7LEGqQUa+h3hIY
-X-Google-Smtp-Source: AGHT+IGLMDm3ARrwgLRHtJQorhTGCrr++X65+2urQqfqV1DRT2pDJexdtFgo/FBtACLc10UWEePyIA==
-X-Received: by 2002:a17:906:2a90:b0:a3e:1a96:a22c with SMTP id l16-20020a1709062a9000b00a3e1a96a22cmr6049808eje.38.1708443364117;
-        Tue, 20 Feb 2024 07:36:04 -0800 (PST)
-Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id r22-20020a170906281600b00a3d777aa8fesm4039024ejc.69.2024.02.20.07.36.02
+        d=1e100.net; s=20230601; t=1708451188; x=1709055988;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oNcMunO4PHwBceEqX1qMTz4P8ZldxmFCw2RMePfNlt4=;
+        b=pGORlYn6HjH+NI99Atk9pKhtLhJ7okzSdryyUYHmVIbht7LhTZe026QKaNFaU+zL3+
+         Aq+QPqUs2G8Dx92cAaUF4EU1EWQ6Bw9H6Sr1Zyi9cbF5dWWg9HEzkGoUkBPOvvnX4ft6
+         M0KvPyKXbtwQqEvX572F5EiCnoVE3z5Wy6WWju92AjO0bg4Hy24HY9iC8BbTzZFbujs3
+         LTaqZdOM/CAGmVJlBsDZIbio73dMKJ4o8nCVyNiYz6PbuHm6/04tfMbuFkXF6izWINM7
+         ApVAguAmYxiqsvBWMpBa9ftHf56VjkNZi66Z5ZANvjdmHW7Y6FNdiBz96kX4ExT2ZmP8
+         kfJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhJrGYgnxCEA2w024oOTYtfbVLEcsOqx/xRBrUzWIEqGcqy6nwigMsX/bMdnU+G7SZxlh67lBOg2kD2K7BOFdgd0TPwpDKURshqyT/Txd1D53/3Ii5t9QZSFptp4okvgzegDCH/KbA
+X-Gm-Message-State: AOJu0YyoHIsFh2rG7KoRGHtvZ7zmAJCfQ71iDRSK06fMfBLW28cv7nmO
+	MjU5Z1aS0gIEwPyiS5zeh4qkgbgJcxPUXcAr21Kh3m5xVcT1Rdu7
+X-Google-Smtp-Source: AGHT+IGDE30sFZ4VyfhurGzD4w8eTpZDKH/lBRf0pLRlnYpNYbeu22+ilQvETfoDNQWvybhZ/eaJLQ==
+X-Received: by 2002:a17:906:b354:b0:a3e:d450:d3e0 with SMTP id cd20-20020a170906b35400b00a3ed450d3e0mr3244509ejb.43.1708451187732;
+        Tue, 20 Feb 2024 09:46:27 -0800 (PST)
+Received: from vamoiridPC ([2a04:ee41:82:7577:3f11:8c45:6350:e419])
+        by smtp.gmail.com with ESMTPSA id fw14-20020a170906c94e00b00a3f04112c0csm687868ejb.221.2024.02.20.09.46.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 07:36:03 -0800 (PST)
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
-To: 
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>
-Subject: [PATCH v5 5/5] iio: amplifiers: hmc425a: add support for LTC6373 Instrumentation Amplifier
-Date: Tue, 20 Feb 2024 17:34:53 +0200
-Message-ID: <20240220153553.2432-6-mitrutzceclan@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240220153553.2432-1-mitrutzceclan@gmail.com>
-References: <20240220153553.2432-1-mitrutzceclan@gmail.com>
+        Tue, 20 Feb 2024 09:46:27 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Tue, 20 Feb 2024 18:46:24 +0100
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
+	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
+ support
+Message-ID: <20240220174624.GA27576@vamoiridPC>
+References: <20240219191359.18367-1-vassilisamir@gmail.com>
+ <ZdSyljwOyxIY7Gvb@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZdSyljwOyxIY7Gvb@smile.fi.intel.com>
 
-This adds support for LTC6373 36 V Fully-Differential Programmable-Gain
-Instrumentation Amplifier with 25 pA Input Bias Current.
-The user can program the gain to one of seven available settings through
-a 3-bit parallel interface (A2 to A0).
+On Tue, Feb 20, 2024 at 04:09:26PM +0200, Andy Shevchenko wrote:
+> On Mon, Feb 19, 2024 at 08:13:59PM +0100, Vasileios Amoiridis wrote:
+> > According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> > read operation the first byte that is returned needs to be dropped,
+> > and the rest of the bytes are the actual data returned from the
+> > sensor.
+> 
+> ...
+> 
+> >  #include <linux/spi/spi.h>
+> >  #include <linux/err.h>
+> >  #include <linux/regmap.h>
+> > +#include <linux/bits.h>
+> 
+> I see that it's unsorted, but try to squeeze a new header to the better place
+> where more will be kept sorted. With given context, it should go before all
+> others, but it might be even better location.
+> 
+> ...
+> 
 
-Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
----
- drivers/iio/amplifiers/hmc425a.c | 124 ++++++++++++++++++++++++++++++-
- 1 file changed, 120 insertions(+), 4 deletions(-)
+So you would suggest a re-ordering of the headers with a reverse
+christmas-tree? I don't see it used in the other drivers of the IIO
+subsystem but I can do it as well
 
-diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
-index 77872e2dfdfe..50c86c2d28d7 100644
---- a/drivers/iio/amplifiers/hmc425a.c
-+++ b/drivers/iio/amplifiers/hmc425a.c
-@@ -2,9 +2,10 @@
- /*
-  * HMC425A and similar Gain Amplifiers
-  *
-- * Copyright 2020 Analog Devices Inc.
-+ * Copyright 2020, 2024 Analog Devices Inc.
-  */
- 
-+#include <linux/bits.h>
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -12,6 +13,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/kernel.h>
-+#include <linux/math.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -20,10 +22,24 @@
- #include <linux/regulator/consumer.h>
- #include <linux/sysfs.h>
- 
-+/*
-+ * The LTC6373 amplifier supports configuring gain using GPIO's with the following
-+ *  values (OUTPUT_V / INPUT_V): 0(shutdown), 0.25, 0.5, 1, 2, 4, 8, 16
-+ *
-+ * Except for the shutdown value, all can be converted to dB using 20 * log10(x)
-+ * From here, it is observed that all values are multiples of the '2' gain setting,
-+ *  with the correspondent of 6.020dB.
-+ */
-+#define LTC6373_CONVERSION_CONSTANT	6020
-+#define LTC6373_MIN_GAIN_CODE		0x6
-+#define LTC6373_CONVERSION_MASK		GENMASK(2, 0)
-+#define LTC6373_SHUTDOWN		GENMASK(2, 0)
-+
- enum hmc425a_type {
- 	ID_HMC425A,
- 	ID_HMC540S,
--	ID_ADRF5740
-+	ID_ADRF5740,
-+	ID_LTC6373,
- };
- 
- struct hmc425a_chip_info {
-@@ -34,6 +50,8 @@ struct hmc425a_chip_info {
- 	int				gain_min;
- 	int				gain_max;
- 	int				default_gain;
-+	int				powerdown_val;
-+	bool				has_powerdown;
- 
- 	int				(*gain_dB_to_code)(int gain, int *code);
- 	int				(*code_to_gain_dB)(int code, int *val, int *val2);
-@@ -44,6 +62,7 @@ struct hmc425a_state {
- 	const struct	hmc425a_chip_info *chip_info;
- 	struct	gpio_descs *gpios;
- 	u32	gain;
-+	bool	powerdown;
- };
- 
- static int gain_dB_to_code(struct hmc425a_state *st, int val, int val2, int *code)
-@@ -58,6 +77,8 @@ static int gain_dB_to_code(struct hmc425a_state *st, int val, int val2, int *cod
- 
- 	if (gain > inf->gain_max || gain < inf->gain_min)
- 		return -EINVAL;
-+	if (st->powerdown)
-+		return -EPERM;
- 
- 	return st->chip_info->gain_dB_to_code(gain, code);
- }
-@@ -83,8 +104,17 @@ static int adrf5740_gain_dB_to_code(int gain, int *code)
- 	return 0;
- }
- 
-+static int ltc6373_gain_dB_to_code(int gain, int *code)
-+{
-+	*code = ~(DIV_ROUND_CLOSEST(gain, LTC6373_CONVERSION_CONSTANT) + 3)
-+		& LTC6373_CONVERSION_MASK;
-+	return 0;
-+}
-+
- static int code_to_gain_dB(struct hmc425a_state *st, int *val, int *val2)
- {
-+	if (st->powerdown)
-+		return -EPERM;
- 	return st->chip_info->code_to_gain_dB(st->gain, val, val2);
- }
- 
-@@ -114,6 +144,16 @@ static int adrf5740_code_to_gain_dB(int code, int *val, int *val2)
- 	return 0;
- }
- 
-+static int ltc6373_code_to_gain_dB(int code, int *val, int *val2)
-+{
-+	int gain = ((~code & LTC6373_CONVERSION_MASK) - 3) *
-+		   LTC6373_CONVERSION_CONSTANT;
-+
-+	*val = gain / 1000;
-+	*val2 = (gain % 1000) * 1000;
-+	return 0;
-+}
-+
- static int hmc425a_write(struct iio_dev *indio_dev, u32 value)
- {
- 	struct hmc425a_state *st = iio_priv(indio_dev);
-@@ -191,6 +231,48 @@ static const struct iio_info hmc425a_info = {
- 	.write_raw_get_fmt = &hmc425a_write_raw_get_fmt,
- };
- 
-+static ssize_t ltc6373_read_powerdown(struct iio_dev *indio_dev,
-+				      uintptr_t private,
-+				      const struct iio_chan_spec *chan,
-+				      char *buf)
-+{
-+	struct hmc425a_state *st = iio_priv(indio_dev);
-+
-+	return sysfs_emit(buf, "%d\n", st->powerdown);
-+}
-+
-+static ssize_t ltc6373_write_powerdown(struct iio_dev *indio_dev,
-+				       uintptr_t private,
-+				       const struct iio_chan_spec *chan,
-+				       const char *buf,
-+				       size_t len)
-+{
-+	struct hmc425a_state *st = iio_priv(indio_dev);
-+	bool powerdown;
-+	int code, ret;
-+
-+	ret = kstrtobool(buf, &powerdown);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&st->lock);
-+	st->powerdown = powerdown;
-+	code = (powerdown) ? LTC6373_SHUTDOWN : st->gain;
-+	hmc425a_write(indio_dev, code);
-+	mutex_unlock(&st->lock);
-+	return len;
-+}
-+
-+static const struct iio_chan_spec_ext_info ltc6373_ext_info[] = {
-+	{
-+		.name = "powerdown",
-+		.read = ltc6373_read_powerdown,
-+		.write = ltc6373_write_powerdown,
-+		.shared = IIO_SEPARATE,
-+	},
-+	{}
-+};
-+
- #define HMC425A_CHAN(_channel)						\
- {									\
- 	.type = IIO_VOLTAGE,						\
-@@ -200,10 +282,24 @@ static const struct iio_info hmc425a_info = {
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
- }
- 
-+#define LTC6373_CHAN(_channel)						\
-+{									\
-+	.type = IIO_VOLTAGE,						\
-+	.output = 1,							\
-+	.indexed = 1,							\
-+	.channel = _channel,						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
-+	.ext_info = ltc6373_ext_info,					\
-+}
-+
- static const struct iio_chan_spec hmc425a_channels[] = {
- 	HMC425A_CHAN(0),
- };
- 
-+static const struct iio_chan_spec ltc6373_channels[] = {
-+	LTC6373_CHAN(0),
-+};
-+
- static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
- 	[ID_HMC425A] = {
- 		.name = "hmc425a",
-@@ -238,6 +334,19 @@ static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
- 		.gain_dB_to_code = adrf5740_gain_dB_to_code,
- 		.code_to_gain_dB = adrf5740_code_to_gain_dB,
- 	},
-+	[ID_LTC6373] = {
-+		.name = "ltc6373",
-+		.channels = ltc6373_channels,
-+		.num_channels = ARRAY_SIZE(ltc6373_channels),
-+		.num_gpios = 3,
-+		.gain_min = -12041, /* gain setting x0.25*/
-+		.gain_max = 24082,  /* gain setting x16  */
-+		.default_gain = LTC6373_MIN_GAIN_CODE,
-+		.powerdown_val = LTC6373_SHUTDOWN,
-+		.has_powerdown = true,
-+		.gain_dB_to_code = ltc6373_gain_dB_to_code,
-+		.code_to_gain_dB = ltc6373_code_to_gain_dB,
-+	},
- };
- 
- static int hmc425a_probe(struct platform_device *pdev)
-@@ -278,8 +387,13 @@ static int hmc425a_probe(struct platform_device *pdev)
- 	indio_dev->info = &hmc425a_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	/* Set default gain */
--	hmc425a_write(indio_dev, st->gain);
-+	if (st->chip_info->has_powerdown) {
-+		st->powerdown = true;
-+		hmc425a_write(indio_dev, st->chip_info->powerdown_val);
-+	} else {
-+		/* Set default gain */
-+		hmc425a_write(indio_dev, st->gain);
-+	}
- 
- 	return devm_iio_device_register(&pdev->dev, indio_dev);
- }
-@@ -292,6 +406,8 @@ static const struct of_device_id hmc425a_of_match[] = {
- 	  .data = &hmc425a_chip_info_tbl[ID_HMC540S]},
- 	{ .compatible = "adi,adrf5740",
- 	  .data = &hmc425a_chip_info_tbl[ID_ADRF5740]},
-+	{ .compatible = "adi,ltc6373",
-+	  .data = &hmc425a_chip_info_tbl[ID_LTC6373]},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, hmc425a_of_match);
--- 
-2.42.0
-
+> > +static int bmp380_regmap_spi_read(void *context, const void *reg,
+> > +				  size_t reg_size, void *val, size_t val_size)
+> > +{
+> > +	struct spi_device *spi = to_spi_device(context);
+> > +	u8 rx_buf[4];
+> > +	ssize_t status;
+> > +
+> > +	/*
+> > +	 * Maximum number of consecutive bytes read for a temperature or
+> > +	 * pressure measurement is 3.
+> > +	 */
+> > +	if (val_size > 3)
+> > +		return -EINVAL;
+> > +	/*
+> > +	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+> > +	 * the first byte needs to be dropped and the rest are the requested
+> > +	 * data.
+> > +	 */
+> > +	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
+> > +	if (status)
+> > +		return status;
+> 
+> > +	memcpy(val, rx_buf + 1, val_size);
+> 
+> Okay, endianess is defined in the regmap_bus below...
+> 
+> > +	return 0;
+> > +}
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 

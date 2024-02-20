@@ -1,320 +1,142 @@
-Return-Path: <linux-iio+bounces-2817-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2818-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D820385B998
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 11:53:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82F785BA7A
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 12:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 093681C223DF
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 10:53:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203231F25DA3
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 11:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C878965BBD;
-	Tue, 20 Feb 2024 10:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CD065BDE;
+	Tue, 20 Feb 2024 11:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBlo2BJD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv74XP7c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AED65BA0;
-	Tue, 20 Feb 2024 10:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EAE664B6;
+	Tue, 20 Feb 2024 11:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708426384; cv=none; b=MbPEKXPyTnGgcQfywkzkqPD/hInNuXRTBD2Y7aHOpfwRQqWuUT8OKB0OWtW2qzguPETfB/JA3MiEt3ar4S/i+bntJNgXrvUFkP5JrL+fFZgECqUi8jPP54UHroXHQZjo8GCuaIaDdSB/g9SfpYDhgHjv7LN8FmkEwg6Si/9slUc=
+	t=1708428312; cv=none; b=MzI5PYChNrYmD6TLZgeV4OYBLOw+/UMU0IE940bEBKnoi8xX5X99IfAOVu8hJTA81SY8qynI+0FLs4ydW8wIoJX9f/DV0uLGwKHk1/KYUO5tgQT6sAFzm5pHwSoAPakmJNgUPE/kmuRL5qQ2iSfq0mDwunqD6tHBqQ9CP7LEEvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708426384; c=relaxed/simple;
-	bh=cPB4IpVUuhfROKTHEBSmildqyu6M94KP8txrBEnrCQM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jprzdMX6uWVsuKxRQy4pztkUlH+LcseBufNXB42IqqLnXA1jKdmj661xNL5Fv5m3FaCxZ8xHW6zrMToFr3MpWez8DzZemCbD2nlIPHZya8Kg4/1yNVYD6PAyVB1QScZuxqA1SsUFG762STcDSce7LUZZRnvK2smjuZBnMY3S06M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBlo2BJD; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1708428312; c=relaxed/simple;
+	bh=Qef5zR9DD0pWV9mmgDrABJ5aM2SgvsE5CkAUKzwETas=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZbTQE+xIkdYdSnkvRh+NS/C0Kj0zVcD1XC+Ly6kj1FeHe4GIhtAFotEp7Qr58xiBflNoOA1HVcetM4zSZlzeu3plIosAXugwJlZyek6eVo8Rg1sarGjPj5W0pGx/nf8YC0Ks8Ze29SzxtvQSDWVyZJePu+NTkZVYkUbddK2rkiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv74XP7c; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a3e891b5e4eso216660766b.0;
-        Tue, 20 Feb 2024 02:53:02 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5645efb2942so3905163a12.1;
+        Tue, 20 Feb 2024 03:25:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708426381; x=1709031181; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vV96ecaIb+VxMiPiMQTu7LG+p1XZZNBp/ggKsfTmuOs=;
-        b=SBlo2BJDwxkEfd77mUK4LKbuL7QFnfVyV3xkN08AClqCYwHF4n7BaoRGk+cwL9Vsw3
-         hlL1u1aae6Qb0STH9EsFUb8dMeN3x8bVZBhHCRFQjah/kjLac3FrqfjGIfj18HWFr/UJ
-         VTtao6x4rtI+XJP5LGFnExs3eEe9DpU5WQadbsvQS5qsLCS6Xq3O4hVwnImTp+ucQl0+
-         Wfntt6d2W90HTrbmpGaMNA5dFKT/qIdXqVGh5hhxeU4HhiNAm6l4YRq2Y5qWD4rRhvYg
-         jlO/LRd6z58XZWZU8Xnou82NU0pCIKhZzodQIQgfYz4oPFXpLiVaFSAjbrMm33lHZ1ke
-         FCVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708426381; x=1709031181;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1708428308; x=1709033108; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vV96ecaIb+VxMiPiMQTu7LG+p1XZZNBp/ggKsfTmuOs=;
-        b=GbaVWXG0OB/HiE16FLiHIcu4/XKNOOeLDPwXDavWVxeS3bKj77DZkn34uCODBG/tXj
-         /wIaT99sMAUkNuwuZaeOUsgWIxZ9V5+mFY7KkBpJTCzNTA9s12sxfxo7dh3hqBmyE1Ih
-         InPt2i7WZryw+mzfycLZNDQVwKxptbt/0BWpWRFNypJXFxNjZebbegMahFSFWGyAKier
-         Cze6hpE2GX4khk+Qx+giX9a3oTNAJ2w4rl9Y/YLzGRGkiA6lnwyC5/0p2oOkqVDs0oC4
-         dSL02mq8WGtElaoHHcjFaxKXL6AZ0wn88Yd8Ns3VINNeoAPcwhdsuSg0aO8ToTMLooXK
-         MCUA==
-X-Forwarded-Encrypted: i=1; AJvYcCX48QhzywGYr03COmwW4Dz6lWRneRtYU21vJlIpc2wkq+BNSicFGs4DQGz936PTBjvb+35Mad3JYp/heZQKuAE2/5ku6pJWmq/CBAlZTJ1hF2Roxq8aJTQiQTQsM7UhxkTK6oaze5zj3uFyeEixxzG4bPp8w7nRKCcH1HpbQcY5/vVH
-X-Gm-Message-State: AOJu0Yyi0H2CTiWW1SswNWUgrrTm9zaym9jvAxNiR8zW4462IMUA8jMT
-	jT0ks40XVZUOPeogjvZ0ANbV2NC7ZnZ/+PBO818MKR4DgIiM8VpX
-X-Google-Smtp-Source: AGHT+IGEvRWyyxIILWvy/wBWwDmHe1dBN022mBcIlhJpTbN1fxJDnkvnmdc0vuZ/e2jYeGHgM+Xfsw==
-X-Received: by 2002:a17:906:4558:b0:a3f:c90:7240 with SMTP id s24-20020a170906455800b00a3f0c907240mr602428ejq.36.1708426380643;
-        Tue, 20 Feb 2024 02:53:00 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id lu16-20020a170906fad000b00a3d5efc65e0sm2524450ejb.91.2024.02.20.02.53.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 02:53:00 -0800 (PST)
-Message-ID: <f0ec7c23aabc531f609f57b5e7ffb0c00047dfc4.camel@gmail.com>
-Subject: Re: [PATCH v2 2/5] spi: move splitting transfers to
- spi_optimize_message()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>
-Cc: Martin Sperl <kernel@martin.sperl.org>, David Jander
- <david@protonic.nl>,  Jonathan Cameron <jic23@kernel.org>, Michael
- Hennerich <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, Alain Volmat <alain.volmat@foss.st.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>,  linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org,  linux-iio@vger.kernel.org, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>,  Julien Stephan
- <jstephan@baylibre.com>
-Date: Tue, 20 Feb 2024 11:52:59 +0100
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-2-4a762c6701b9@baylibre.com>
-References: 
-	<20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
-	 <20240219-mainline-spi-precook-message-v2-2-4a762c6701b9@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+        bh=uxDjqCDFPq7eOMPwPmbnpfEUfnNCy3lfoA1kp9cT9L8=;
+        b=Bv74XP7cWgbprLtuAshr4ZdFCiDnjJEVlxiLKgp5DwtmWlKM/ugwsMwZQx5/HyrlIm
+         IYyEXTCuTroVnwlEsFnSkfoWZ5mP28D9YBQGbzy2dYJGgAe227TwJ8kX16tYY3RRwADi
+         6Q+UrpAxgBbMjh7fVfLhAcEwKR+42sWdwpGa2tbzFDfusmtDR/xZ3pZA8BBQ+TGCbIEN
+         X4o5DmmlyUMz7QAV/yncGUK5NyzodfygGYgc+7cg42Iaab64Si+YXC5V+FwwKdQylvs+
+         fNmS3mrW4HtO0fal5Rp7NBq7817go2zwUKV7NAPDyM1Zg/ob//ARAol5n9XJfm+wPyWx
+         D9wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708428308; x=1709033108;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uxDjqCDFPq7eOMPwPmbnpfEUfnNCy3lfoA1kp9cT9L8=;
+        b=AsLFapbOsN07QW0P6jURiXtZmPmjquYG+IsKHoPKOmjzaEIYKgwMQvpLs4SSOstKNa
+         UvsL86XBq4KLDfzKXMcQ5ZmY73qegS9EptsGCEQcbmzsOQjQ7Lui8zfpoD3leAem/EeP
+         Ex2u5PjnYr8oGy/4PFW7/2RHeviq7hcSURzTwtf9zYIFF0VqZPTgPX0Ox3Btc60P4PsW
+         AjmGKGOWCspn7Ak4z8owruaByK9UroHxccjye47RPRbtY9VLZxQ+xZ11Bn86GUt2Rwmm
+         FBjU/RQuTnNqWHhfm2AD2ZhQwCDu3h7k5vk390IMOP6+3UAMv2nLWJA8OZbhT9E4Geok
+         CbtA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+zW2YtzxJZaxvlKmwsWIj55tLbjmnh6mc5YHbeAO1SSW2qwIHmKtzKRBsJz2t8I7XKnKpDjFGA9TvVm6DoxpyXlSGGu3nsukJ2ds/qjd3CX4Qv8eNsQyBudy4kO9amIaSe9ek2jYotXrOuaL6ZRXETSADrYd6En6oLH0KbIXSgZ1VwpSRD2Rb4/4b1Yrl7WFnpYgEHc2scj4FQUBbdAw=
+X-Gm-Message-State: AOJu0YwcVZH7EAKjYIidKBaBbufVVBr/hKhsc8tnUS78hI5zweabiuoW
+	5JS0eBYA5npqHL7HW0YxArD2yswPLaBOrdJV6zC1oW7zYKB7XM85
+X-Google-Smtp-Source: AGHT+IGexDIdRflMxl1rXB5LbCLGRtGw1tfgK9Jvc2wNTJ4RBCdKz1jc7usLDMjAAQp08iRFKLMRzA==
+X-Received: by 2002:aa7:c896:0:b0:564:21fd:270e with SMTP id p22-20020aa7c896000000b0056421fd270emr7809883eds.14.1708428308215;
+        Tue, 20 Feb 2024 03:25:08 -0800 (PST)
+Received: from [172.25.98.130] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id q29-20020a50cc9d000000b00563a3ff30basm3815361edi.59.2024.02.20.03.25.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 03:25:07 -0800 (PST)
+Message-ID: <3bc2c1c6-726a-4751-ae81-4d8336619025@gmail.com>
+Date: Tue, 20 Feb 2024 13:25:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 3/3] iio: adc: ad7173: add AD7173 driver
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
+ <20240220094344.17556-3-mitrutzceclan@gmail.com>
+ <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
+Content-Language: en-US
+From: Ceclan Dumitru <mitrutzceclan@gmail.com>
+In-Reply-To: <6af326b1bf24faea652b4549ff5db24b96ee80c5.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-02-19 at 16:33 -0600, David Lechner wrote:
-> Splitting transfers is an expensive operation so we can potentially
-> optimize it by doing it only once per optimization of the message
-> instead of repeating each time the message is transferred.
->=20
-> The transfer splitting functions are currently the only user of
-> spi_res_alloc() so spi_res_release() can be safely moved at this time
-> from spi_finalize_current_message() to spi_unoptimize_message().
->=20
-> The doc comments of the public functions for splitting transfers are
-> also updated so that callers will know when it is safe to call them
-> to ensure proper resource management.
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
 
-Acked-by: Nuno Sa <nuno.sa@analog.com>
 
->=20
-> v2 changes:
-> - Changed line break for multiline if condition
-> - Removed kernel doc inclusion (/** -> /*) from static members
-> - Picked up Jonathan's Reviewed-by
->=20
-> =C2=A0drivers/spi/spi.c | 110 +++++++++++++++++++++++++++++++++----------=
------------
-> =C2=A01 file changed, 68 insertions(+), 42 deletions(-)
->=20
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index f68d92b57543..ba4d3fde2054 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1747,38 +1747,6 @@ static int __spi_pump_transfer_message(struct spi_=
-controller
-> *ctlr,
-> =C2=A0
-> =C2=A0	trace_spi_message_start(msg);
-> =C2=A0
-> -	/*
-> -	 * If an SPI controller does not support toggling the CS line on each
-> -	 * transfer (indicated by the SPI_CS_WORD flag) or we are using a GPIO
-> -	 * for the CS line, we can emulate the CS-per-word hardware function by
-> -	 * splitting transfers into one-word transfers and ensuring that
-> -	 * cs_change is set for each transfer.
-> -	 */
-> -	if ((msg->spi->mode & SPI_CS_WORD) && (!(ctlr->mode_bits & SPI_CS_WORD)=
- ||
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spi_is_csgpiod(msg->spi))) {
-> -		ret =3D spi_split_transfers_maxwords(ctlr, msg, 1);
-> -		if (ret) {
-> -			msg->status =3D ret;
-> -			spi_finalize_current_message(ctlr);
-> -			return ret;
-> -		}
-> -
-> -		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-> -			/* Don't change cs_change on the last entry in the list */
-> -			if (list_is_last(&xfer->transfer_list, &msg->transfers))
-> -				break;
-> -			xfer->cs_change =3D 1;
-> -		}
-> -	} else {
-> -		ret =3D spi_split_transfers_maxsize(ctlr, msg,
-> -						=C2=A0 spi_max_transfer_size(msg-
-> >spi));
-> -		if (ret) {
-> -			msg->status =3D ret;
-> -			spi_finalize_current_message(ctlr);
-> -			return ret;
-> -		}
-> -	}
-> -
-> =C2=A0	if (ctlr->prepare_message) {
-> =C2=A0		ret =3D ctlr->prepare_message(ctlr, msg);
-> =C2=A0		if (ret) {
-> @@ -2124,6 +2092,8 @@ static void __spi_unoptimize_message(struct spi_mes=
-sage *msg)
-> =C2=A0	if (ctlr->unoptimize_message)
-> =C2=A0		ctlr->unoptimize_message(msg);
-> =C2=A0
-> +	spi_res_release(ctlr, msg);
-> +
-> =C2=A0	msg->optimized =3D false;
-> =C2=A0	msg->opt_state =3D NULL;
-> =C2=A0}
-> @@ -2169,15 +2139,6 @@ void spi_finalize_current_message(struct spi_contr=
-oller
-> *ctlr)
-> =C2=A0
-> =C2=A0	spi_unmap_msg(ctlr, mesg);
-> =C2=A0
-> -	/*
-> -	 * In the prepare_messages callback the SPI bus has the opportunity
-> -	 * to split a transfer to smaller chunks.
-> -	 *
-> -	 * Release the split transfers here since spi_map_msg() is done on
-> -	 * the split transfers.
-> -	 */
-> -	spi_res_release(ctlr, mesg);
-> -
-> =C2=A0	if (mesg->prepared && ctlr->unprepare_message) {
-> =C2=A0		ret =3D ctlr->unprepare_message(ctlr, mesg);
-> =C2=A0		if (ret) {
-> @@ -3819,6 +3780,10 @@ static int __spi_split_transfer_maxsize(struct
-> spi_controller *ctlr,
-> =C2=A0 * @msg:=C2=A0=C2=A0 the @spi_message to transform
-> =C2=A0 * @maxsize:=C2=A0 the maximum when to apply this
-> =C2=A0 *
-> + * This function allocates resources that are automatically freed during=
- the
-> + * spi message unoptimize phase so this function should only be called f=
-rom
-> + * optimize_message callbacks.
-> + *
-> =C2=A0 * Return: status of transformation
-> =C2=A0 */
-> =C2=A0int spi_split_transfers_maxsize(struct spi_controller *ctlr,
-> @@ -3857,6 +3822,10 @@ EXPORT_SYMBOL_GPL(spi_split_transfers_maxsize);
-> =C2=A0 * @msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the @spi_message to transfor=
-m
-> =C2=A0 * @maxwords: the number of words to limit each transfer to
-> =C2=A0 *
-> + * This function allocates resources that are automatically freed during=
- the
-> + * spi message unoptimize phase so this function should only be called f=
-rom
-> + * optimize_message callbacks.
-> + *
-> =C2=A0 * Return: status of transformation
-> =C2=A0 */
-> =C2=A0int spi_split_transfers_maxwords(struct spi_controller *ctlr,
-> @@ -4231,6 +4200,57 @@ static int __spi_validate(struct spi_device *spi, =
-struct
-> spi_message *message)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +/*
-> + * spi_split_transfers - generic handling of transfer splitting
-> + * @msg: the message to split
-> + *
-> + * Under certain conditions, a SPI controller may not support arbitrary
-> + * transfer sizes or other features required by a peripheral. This funct=
-ion
-> + * will split the transfers in the message into smaller transfers that a=
-re
-> + * supported by the controller.
-> + *
-> + * Controllers with special requirements not covered here can also split
-> + * transfers in the optimize_message() callback.
-> + *
-> + * Context: can sleep
-> + * Return: zero on success, else a negative error code
-> + */
-> +static int spi_split_transfers(struct spi_message *msg)
-> +{
-> +	struct spi_controller *ctlr =3D msg->spi->controller;
-> +	struct spi_transfer *xfer;
-> +	int ret;
-> +
-> +	/*
-> +	 * If an SPI controller does not support toggling the CS line on each
-> +	 * transfer (indicated by the SPI_CS_WORD flag) or we are using a GPIO
-> +	 * for the CS line, we can emulate the CS-per-word hardware function by
-> +	 * splitting transfers into one-word transfers and ensuring that
-> +	 * cs_change is set for each transfer.
-> +	 */
-> +	if ((msg->spi->mode & SPI_CS_WORD) &&
-> +	=C2=A0=C2=A0=C2=A0 (!(ctlr->mode_bits & SPI_CS_WORD) || spi_is_csgpiod(=
-msg->spi))) {
-> +		ret =3D spi_split_transfers_maxwords(ctlr, msg, 1);
-> +		if (ret)
-> +			return ret;
-> +
-> +		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-> +			/* Don't change cs_change on the last entry in the list */
-> +			if (list_is_last(&xfer->transfer_list, &msg->transfers))
-> +				break;
-> +
-> +			xfer->cs_change =3D 1;
-> +		}
-> +	} else {
-> +		ret =3D spi_split_transfers_maxsize(ctlr, msg,
-> +						=C2=A0 spi_max_transfer_size(msg-
-> >spi));
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> =C2=A0/*
-> =C2=A0 * __spi_optimize_message - shared implementation for spi_optimize_=
-message()
-> =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 and spi_maybe_optimize_message()
-> @@ -4254,10 +4274,16 @@ static int __spi_optimize_message(struct spi_devi=
-ce *spi,
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> +	ret =3D spi_split_transfers(msg);
-> +	if (ret)
-> +		return ret;
-> +
-> =C2=A0	if (ctlr->optimize_message) {
-> =C2=A0		ret =3D ctlr->optimize_message(msg);
-> -		if (ret)
-> +		if (ret) {
-> +			spi_res_release(ctlr, msg);
-> =C2=A0			return ret;
-> +		}
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	msg->optimized =3D true;
->=20
+On 2/20/24 12:38, Nuno Sá wrote:
+> On Tue, 2024-02-20 at 11:43 +0200, Dumitru Ceclan wrote:
+
+...
+
+> 
+>> +};
+>>
+>> +	indio_dev->name = st->info->name;
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +	indio_dev->info = &ad7173_info;
+>> +
+>> +	spi->mode = SPI_MODE_3;
+>> +
+> 
+> I don't think we need the above. We should just enforce it to SPI_CPOL| SPI_CPHA in
+> the bindings [2].
+>
+> [2]: https://elixir.bootlin.com/linux/latest/source/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml#L45
+
+Rob Herring V1:
+
+"""
+> +  required:
+> +    - compatible
+> +    - reg
+> +    - interrupts
+> +    - spi-cpol
+> +    - spi-cpha
+
+If the device(s) are not configurable, then you shouldn't need these 2
+properties. The driver can hardcode the correct setting.
+"""
+
+ref:
+https://lore.kernel.org/linux-iio/20230810205107.GA1136590-robh@kernel.org/
 
 

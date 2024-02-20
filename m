@@ -1,70 +1,63 @@
-Return-Path: <linux-iio+bounces-2838-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2839-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67F785C3FC
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 19:52:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E2485C523
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 20:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D73CA1C22781
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 18:52:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4985AB254B2
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 19:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5A512EBD1;
-	Tue, 20 Feb 2024 18:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0438614A0BE;
+	Tue, 20 Feb 2024 19:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeNPi9sX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCStGpKy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD867867A;
-	Tue, 20 Feb 2024 18:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B197C36135;
+	Tue, 20 Feb 2024 19:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708455164; cv=none; b=LNPevMSDbVAgGQqKW0xMjKKKVxRFFUer5sh+gUWqAuH32flEboYSRNj1/Dxn0pSfbTnyvOQHiVqZnSh5wreWZb8z/hHIrqC4XL2diCLdBNcPLfeYXT5KSMY9QMWW6AKxvaKoa5gL/f4zK5P2Zd+ShQClkKRO6NyjYz8H8FgYN/k=
+	t=1708458432; cv=none; b=sD8tUCRwvtENPD1k19TemjpyxsGuFcKPJuzhKXXmBfdlNDItm3AA522NIZsvRT0yVKDb/StFRveJwTGKr4c6aockcPQAFFa0pPSLBF8ynUAwixdgY7UNk6Jx++X8RaEg61eg89LxXr/+ByDrX4dSKso2IZl4KM6lY17BvNy5y5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708455164; c=relaxed/simple;
-	bh=hIyvGKECNml8BOk3Zh1T6U7K5fqanwk9IvN5YMXzbIQ=;
+	s=arc-20240116; t=1708458432; c=relaxed/simple;
+	bh=1KiS+U4NNT/mwNoBNJ7E4oCUd/6Lzcv1jcGa7+zX+Vg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xp0B9SV3tGioXM+TGBXC2qLv5btI/TlXhEcdQb4GsSK7TNJ9y4v9gchrwhwAozUZAJw9yGwN2YiZ0fF/p0TrinwlPkMckeObmtS7CqvlYdvzJ4hJXhL3YAkU8r6OSJJ4F+Vz0ThrChYjzXoQZVxBDv8ZXQJd10dz6YjCE0kfdOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeNPi9sX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FBEC433C7;
-	Tue, 20 Feb 2024 18:52:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=a5rKySNfULmYywDyACGfz7qzKSvjJndaHom8m5a8STNguAE++fWgBKQI6fwiavGZMDn+FfXhoiEiMUUNpMKVIh//e96/O6hN41EIEe3fQs5dPXKgJD9iSJD7h1u+ZYXGZGmExmnvjdtwtvAakynEDGEPiNIDI2GD/0gJflN1tH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCStGpKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB893C433F1;
+	Tue, 20 Feb 2024 19:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708455164;
-	bh=hIyvGKECNml8BOk3Zh1T6U7K5fqanwk9IvN5YMXzbIQ=;
+	s=k20201202; t=1708458432;
+	bh=1KiS+U4NNT/mwNoBNJ7E4oCUd/6Lzcv1jcGa7+zX+Vg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OeNPi9sXybX+V1U26X7t5BRpgQ6ca6bckj/2dKyfdOYKyEBOjZWRIevkTFQZWrFTe
-	 FlaefYoUwRCw9A4+vyKiRL6NzRMVO0ZVE800T/M2q24cFVsYtULdz/UYozjVGxEcVH
-	 /a8AVPi/OVA91z8z2GLMvzuF2Ug++UFHTn2YavxgF4PQgrK0w/OPyFoyRaqFVboJ31
-	 d8kYUP2SlgMU+MzKpYhJ2fYfUm6eFGJ0N++kFliphJsPGpXI7jsD7XzIAwC2EPmkMX
-	 h84J9NmoGUJcqdTJUVFtj9cPBhZAdei9RLxnWZXpbIYUwuAXmiOCYzlXlSXbrFt5JZ
-	 UiMM3itax2/xA==
-Date: Tue, 20 Feb 2024 18:52:37 +0000
+	b=oCStGpKyprAazJxn0xJT7SpatIrasVkTuxPqf5bGDO8klHUhTy+LkvcfqhpDAIU+E
+	 Pi00Fq6nJ1FQWsSHrp/hmBlnxf6Xd0WHN+8fLsiE1ztai154YOZ6B0EWFmvsv2SL5r
+	 9ClVxPzJcv1EIEaReBaUA3fVisEt1mMD6oaly5q6ztRAMWOCkSvkJ8gBo5aS3LPpVB
+	 OJUSexXEcLR17q74kIhLp3ZL63KDtyNMaLOgNTqvcSaDS/r2NYaByhx8f8KxgmeDre
+	 Rav/PUuB3tWB7omnjX4YilFxFDibRERnfx2HaJ+oPNWdeXLVzwe/CeT6a9HsJ/VHc2
+	 JqWtq6zLrJxFQ==
+Date: Tue, 20 Feb 2024 19:47:07 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
-	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 1/3] dt-bindings: adc: add AD7173
-Message-ID: <20240220-outmost-flavoring-b2593160de91@spud>
-References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+Message-ID: <20240220-tamper-feed-0622f9441cfe@spud>
+References: <20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com>
+ <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,63 +65,38 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vLHcLCfBcKKsyixC"
+	protocol="application/pgp-signature"; boundary="39pzYbsQtZHaU+Tb"
 Content-Disposition: inline
-In-Reply-To: <20240220094344.17556-1-mitrutzceclan@gmail.com>
+In-Reply-To: <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com>
 
 
---vLHcLCfBcKKsyixC
+--39pzYbsQtZHaU+Tb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 20, 2024 at 11:43:38AM +0200, Dumitru Ceclan wrote:
+On Fri, Feb 16, 2024 at 01:46:18PM -0600, David Lechner wrote:
+> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+> AD7986 ADCs.
 
-> +  interrupts:
-> +    minItems: 1
-> +    description: |
-
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    items:
-> +      - const: rdy
-> +      - const: err
-
-I noticed that for minItems == 1, the rdy interrupt is required and err
-is the optional one.
-
-With that in mind, you can simplify the interrupts description so that
-it describes the interrupts separately:
-
-  interrupts:
-    minItems:
-    items:
-      - description:
-          Ready: multiplexed with SPI data out. While SPI CS is low,
-          can be used to indicate the completion of a conversion.
-
-      - description:
-          Error: The three error bits in the status register (ADC_ERROR, CRC_ERROR,
-          and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin. Therefore,
-          the ERROR pin indicates that an error has occurred.
-
-Otherwise, I think everything has been sorted out?
+I think this binding is overall pretty well written, especially
+considering the interproperty dependencies.
 
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
 Cheers,
 Conor.
 
---vLHcLCfBcKKsyixC
+
+--39pzYbsQtZHaU+Tb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdT09QAKCRB4tDGHoIJi
-0pbnAPwOogZk7FYWbEiQymCF9QbGN2aePmxNXySm/bbh5Ae6MwD7BBgqXRFfmPWm
-pUBnH3bEbmLCIOA+mYKHA5Nq/zsZ5gw=
-=b/7e
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdUBuwAKCRB4tDGHoIJi
+0uuWAQDLngt5pz4PlV2W01fTD2fS7srtxqDPBPGnF6sXp+nKUwEAuL1m1J9Am2Th
+iGA+hrTy6KEwjZqWfj7mHiqM/QpsFQg=
+=VP88
 -----END PGP SIGNATURE-----
 
---vLHcLCfBcKKsyixC--
+--39pzYbsQtZHaU+Tb--
 

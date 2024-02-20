@@ -1,123 +1,149 @@
-Return-Path: <linux-iio+bounces-2850-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2844-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F9285C98B
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA64985C7A6
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 22:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE561F22BB4
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA131F25E85
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Feb 2024 21:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4095F151CEE;
-	Tue, 20 Feb 2024 21:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700C6151CE8;
+	Tue, 20 Feb 2024 21:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhLt9lOr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fGNiCvBQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4B614F9C8;
-	Tue, 20 Feb 2024 21:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7229E76C9C;
+	Tue, 20 Feb 2024 21:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464907; cv=none; b=jqh1eFTgv83gb8yE2MpR49BPWqSk1y9jxSSNe12MRgvKCWY62rpukbbb8U0uwX4q7EdYw8+BO0oT20YVbM7SSvZnCrNZJekvjm9I6Sw5jGzgzWGPaElCz4IMnazg5anNSOIZm50/cpq7iDkTH+mxlwmQqmv+9tIh1Md8ogudXp8=
+	t=1708463702; cv=none; b=BeqBPp8fzd/IpjbksITNsSLrMa/5r28K3aqv25YDpKdeutf0iJHuUMta7zHejI3TQVrhO2Rp/jZ0ds93TuiUNTHkDCPDWBffMnhtgOWh1oZ7SD2dfI27rhGWWWFEX3YD7gbW2CWJaKRD+A0kXjcbw2VbSCZyLvt2/WgbQ1s0WH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464907; c=relaxed/simple;
-	bh=LxTvQq64XK7yAstnWT9q+Hbs0Xz5SnKp4EtEMAWBAkw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq/kLG8ceI2A5LBluz4yGBQe6HXSbmhynhMKlz2p/4vleeyhOhwTrViYDMYBGGXck3Dt9jMkyk7pyipQwDOFHkvHOnJqKVTtYEqoOcOqjNDBiwczF8UGYPZDua0ib6sEuRPk0pWTt02fFdlpVEZM8lCfLFWFlE5KYlNLgny0EYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhLt9lOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A070C433F1;
-	Tue, 20 Feb 2024 21:35:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464906;
-	bh=LxTvQq64XK7yAstnWT9q+Hbs0Xz5SnKp4EtEMAWBAkw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhLt9lOrn5jEf53j1V3Znpz5fkZfm70aLkT1RkTUvLo3O2XirtK8mB2JPNNw1HXMR
-	 hi3A0duEW+vhl0t6MIwK81tNLP3h/ZoEknOm9H1nOIS0Ja0fB6yoxyG5vdtcQbmPpO
-	 Jk1N/GI5SMowIeH4OHZqi5rfAxbWgin+D7EIaAco=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Andrea Merello <andrea.merello@iit.it>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 175/309] iio: imu: bno055: serdev requires REGMAP
-Date: Tue, 20 Feb 2024 21:55:34 +0100
-Message-ID: <20240220205638.628806459@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1708463702; c=relaxed/simple;
+	bh=DiomlbMoz3C6LjGZH4FFhHtNHPdnMrqXUhRAwWtZwBo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VrzDczts5h1hbsXVPWrFciHBT9ZVpAy/wW6CAuYIdhjFRJoqVg2GPuFgQLFvEwKqhtPik2rZgMjrV6HjaQYsS4knqLwbDfQLnYfaJVSp1skmQhK4jbRZHfQEN3d/sXYvC2R36XoLX4quOMfyfRMFzESUGIm4Uv0h6qh7j+dHJ+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fGNiCvBQ; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d204e102a9so76536181fa.0;
+        Tue, 20 Feb 2024 13:15:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708463698; x=1709068498; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pS4KxtoWOPzkzcC9M2HY0NXw+lpEMhNeKnYkJuLKH58=;
+        b=fGNiCvBQDBsUcnZ059epNqcL7aa5K6+lVkZHexJQOEYFQu5u5A/SvN+6lpMunXZdqL
+         hIlK7hAtviaUl/fH5vikMFxKjxvWbopHKQ9FD4w6mbrXnTvlhe6YQEhV1n4BwkONBoET
+         9wwUJ0gkyxbzY4ombTpJDQjAC61QqbBwhLoNzrUt82Xv1G8b94SprRrEk6Woskrb4pp6
+         Hvi6vKD7zgsgKIjG1KnwwttT4OSnskP88cDGC+a20K5ZAPNPfrWT7c3szY0CPPboMDb4
+         8r/1W/NY5EKy8uWvTqtLYXf+M35mRSUBmWMrXJmUlhYH+R7xb/U27gFpu66Gd5ELTBib
+         kfxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708463698; x=1709068498;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pS4KxtoWOPzkzcC9M2HY0NXw+lpEMhNeKnYkJuLKH58=;
+        b=bMvdJ8HFFjQNwzfnK+xgt5jJpcm5EVUm26QOmrsc8E311s1nfy/ZsATTyaTUnbU5PX
+         T3XC2pHnt8dpXGWgjcaJQfpRitVpHWnSSUWFB++aZpZQ2WfqeDhLE+OotcQbBGARQTiK
+         tBEwLgy0yst1Jf15nsDrKegjce/XGPg70+JzWn5u9aE4vuiBL4EaO3rJaX2AZF29jk0y
+         D3cJ4BWykYBp89z+N4Ss9ceDmjrT9BehNYpH98AS1rhvvAq3FlJbFOZHrMBARF1iv519
+         JWGM5Pp8ep/G+IeO1gFA5fPithdwH9JS9WXb8d4rIm7HDSQAtAOEsBEd8KWHte6gyTHo
+         E5UA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3TK2o9zcVYhKH40s4bBYTlc6+Ic/zKCipI00/Scc87UHL1utO/Ftew3XeZgzlA3MMGnev08pPjy2QuRY+uBRmqTnzbEc87IMFEQfadtQaRox90yu8dZxrtKNid9OOU82wiky/tpRlr690kTy1z9fkOnAdkRDOBYEEMis3Wrh8JHnvDw==
+X-Gm-Message-State: AOJu0Yz+iXltK4swHaM+b9VwLWIZht8O+9cBGko8zdGhrHx2kiJcu+Nu
+	8xc9iod58SaR9yvnWbTlmRq0Bll22USgHeeKKbKO1htrxEPQlvh8ST4up+yptSyNKw==
+X-Google-Smtp-Source: AGHT+IGb22ufiQzQHvKZLn4xzUpaqi++TL9Us/DsUJOm5s9sgZTjNFEES/MLIlc4+RvFHred6PV/Mg==
+X-Received: by 2002:a05:651c:548:b0:2d2:2cc0:34af with SMTP id q8-20020a05651c054800b002d22cc034afmr7769024ljp.32.1708463697742;
+        Tue, 20 Feb 2024 13:14:57 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-d60d-797f-077b-a805.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d60d:797f:77b:a805])
+        by smtp.gmail.com with ESMTPSA id fj21-20020a0564022b9500b00564da28dfe2sm538137edb.19.2024.02.20.13.14.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 13:14:57 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/4] iio: humidity: hdc3020: add power and reset management
+Date: Tue, 20 Feb 2024 22:14:54 +0100
+Message-Id: <20240220-hdc3020-pm-v1-0-d8e60dbe79e9@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE4W1WUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDI0Nz3YyUZGMDIwPdglxdQ3NzSwvjlFTj5MQkJaCGgqLUtMwKsGHRsbW
+ 1AHHE8C1cAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev-8b532
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708463696; l=2127;
+ i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
+ bh=DiomlbMoz3C6LjGZH4FFhHtNHPdnMrqXUhRAwWtZwBo=;
+ b=fX2JLYzSPtRMilwqfz8C/EUlHWnAQWsTo9Qa6XKBO43Pkgc63IfrUaTRhGiBp9iRySOqUv4Wc
+ MhSXWfYGzhbA2+Npm3XiAgN5IvhUdS5vX5QC4lztif79c9T2BHSphnt
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+This series adds power management for the hdc3020 humidity and
+temperature sensor as well as control over the reset signal the device
+provides.
 
-------------------
+The hdc3020 carries out measurements automatically, which is not
+necessary in low-power modes. Furthermore, if the low-power
+configuration turns off the device, proper initialization is required to
+account for the setup times and initial status register value.
 
-From: Randy Dunlap <rdunlap@infradead.org>
+This device provides an active low reset signal that must be handled if
+connected. This signal can be used by the driver to keep the device
+under minimal power consumption during low-power modes if the power
+supply stays active.
 
-commit 35ec2d03b282a939949090bd8c39eb37a5856721 upstream.
+This series requires the last additions to the driver to handle events
+[1] as well as the fix to include the entries in the Makefile and
+Kconfig files [2]. There is still no branch where everything is
+included. Therefore, iio/testing has been used as basis and the fix has
+been added to the series as it has been applied to iio/fixes-togreg to
+make code testing and validation possible.
 
-There are a ton of build errors when REGMAP is not set, so select
-REGMAP to fix all of them.
+[1] https://lore.kernel.org/linux-iio/20240214085350.19382-1-dima.fedrau@gmail.com/
+[2] https://lore.kernel.org/linux-iio/20240121135123.71506-1-jic23@kernel.org/
 
-Examples (not all of them):
-
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
-../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
-  496 |         .write = bno055_ser_write_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
-  497 |         .read = bno055_ser_read_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
-
-Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrea Merello <andrea.merello@iit.it>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
-Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240110185611.19723-1-rdunlap@infradead.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/imu/bno055/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+Javier Carrasco (3):
+      iio: humidity: hdc3020: add power management
+      dt-bindings: iio: humidity: hdc3020: add reset-gpios
+      iio: humidity: hdc3020: add reset management
 
---- a/drivers/iio/imu/bno055/Kconfig
-+++ b/drivers/iio/imu/bno055/Kconfig
-@@ -8,6 +8,7 @@ config BOSCH_BNO055
- config BOSCH_BNO055_SERIAL
- 	tristate "Bosch BNO055 attached via UART"
- 	depends on SERIAL_DEV_BUS
-+	select REGMAP
- 	select BOSCH_BNO055
- 	help
- 	  Enable this to support Bosch BNO055 IMUs attached via UART.
+Jonathan Cameron (1):
+      iio: humidity: hdc3020: Add Makefile, Kconfig and MAINTAINERS entry
 
+ .../bindings/iio/humidity/ti,hdc3020.yaml          |  5 ++
+ MAINTAINERS                                        |  8 ++
+ drivers/iio/humidity/Kconfig                       | 12 +++
+ drivers/iio/humidity/Makefile                      |  1 +
+ drivers/iio/humidity/hdc3020.c                     | 97 ++++++++++++++++++----
+ 5 files changed, 107 insertions(+), 16 deletions(-)
+---
+base-commit: 3cc5ebd3a2d6247aeba81873d6b040d5d87f7db1
+change-id: 20240217-hdc3020-pm-177983de3cab
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

@@ -1,72 +1,61 @@
-Return-Path: <linux-iio+bounces-2880-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2881-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7A285E8AD
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 21:02:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE56685EB1D
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 22:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29EAF283466
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 20:02:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B6D28B435
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 21:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD7086AEE;
-	Wed, 21 Feb 2024 20:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB561272A1;
+	Wed, 21 Feb 2024 21:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUChUiHS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUwpgeHS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613131EB26;
-	Wed, 21 Feb 2024 20:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C5F25619;
+	Wed, 21 Feb 2024 21:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708545648; cv=none; b=fCSl5PdcCT3UjgfYVLoKXoBOOGw/1WqFAnUWBuG90VYob0bRWnRQaZynhy5GLVMUhg2XI6SMAmAZEiqC2qIUKo02sfg8SdHBrgdSbj+diswGdXOcRraJnkbNLaw3d5GNn+f4sdanA8SdCh+j2V3f3NiGXD874ifbUP5RznIFXZU=
+	t=1708551480; cv=none; b=hx8qS3rhGsg4T3XD6BoMLp1elz2s7ZlC1urW+uLUTLjgAtZAaML2Fj/X/92jr2ZUsDBd2djEh/2xAiAhUn+sDXDeZELF0CgaivcDB45cfZAicubrJqu8iSNOEN2ExcaHDT7cpKcvthF5b9hxuLbOGLpmG3WumwRNaoad7Wr0B+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708545648; c=relaxed/simple;
-	bh=qcA+UO/4y3+iSG1ZjNhr7mI/EtGsyTLxSjE9iOG6zXw=;
+	s=arc-20240116; t=1708551480; c=relaxed/simple;
+	bh=9oOl86N850lxplmi/fO/ptHo5glf8VI/jrIlpQnN4nQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ry93mLRhZrH9lm2GRn8PoqYVRroRCc7z6A+ZQvlK8sniXIScJ94zF9FMhwVEfZcGw1fggrjb0Vfw7YYsOfQprdZAzPXortVWIinNGpXBI4BCzPGwsm04BUXvz5UlcYIhAwmhgLOnLaVOse/3GilovAxRfDjxAjkR5EkRHZ/TffM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUChUiHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D984C433F1;
-	Wed, 21 Feb 2024 20:00:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=altsWRO64cvSk5owsplFmr1vQKWBwYEKtXad2qswvYXdetsfVgvnpfPAjrOrsWHPwhxkfM14dvkfcEk5CdE4erLNDRVxAg4NGIf45QVMjevSgcMW1VWGKVDArz4qpSNnDNrALHNWdD9SfU0u+t4/eqJeuDED1kK8N7e2Ux8yy4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUwpgeHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38A2C433C7;
+	Wed, 21 Feb 2024 21:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708545647;
-	bh=qcA+UO/4y3+iSG1ZjNhr7mI/EtGsyTLxSjE9iOG6zXw=;
+	s=k20201202; t=1708551480;
+	bh=9oOl86N850lxplmi/fO/ptHo5glf8VI/jrIlpQnN4nQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aUChUiHS1R3gt7+GTv1JP80f+HdLJiQpHdQe45D2elRvVGZjdtCdeump+fk2gYyH2
-	 CWXwNqq3GsYuWbpDHsdxX+MmV5Nz10HlnxX5TUSsBwzStx5p7ttz5guYp+V4vUqwGY
-	 /tOXdB5wK07+dNBsNljJIChgL172hrKedj4SUXxWq3kkdeA9W4XhhZKOUnzhTGFfKH
-	 NC3I10ne4TAFA5w2Tyu4Z0DXU4oshQmZu+cImmcFBbaOUfaSqLQbTpcC745oVzTDrq
-	 w3q63yfDQ3CdyQYijRnzuzsj/sK+gOFkga8nrZotLytHdw+jxtD+qkF9113e//q2SB
-	 DMhi853JKfijg==
-Date: Wed, 21 Feb 2024 20:00:40 +0000
+	b=gUwpgeHSO142RKuGwIXhScBu/2cWKaelACWeOtQaATMpwLNtmAhe7poC6xPinYXbi
+	 Pw0h3MgztfEi/qIXYF4mTyADgknquKPVgPLWiDPGfUKSPJSkGugrBQpwooGSCI5ykE
+	 PTJ1B7I9pd3+cNrqFs6TUychg9izY9QUcKU0XKL5Fcgp5faOxC9TwvqMJARlVuctr1
+	 zXwUV3b4PUd9uAW4vxP1qrfXqMeSARav+HY9fub4BB6q1p+eiMb7mPyNguEK7ULMTt
+	 CLAXyxk0TWXK+F62AuVAzwbnUpt8avb8GaWIV0Id0n7h+mCLi7n0+tMy37jeISGSIT
+	 gbmzKWRLlukmg==
+Date: Wed, 21 Feb 2024 21:37:54 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, linus.walleij@linaro.org,
-	brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	denis.ciocca@st.com, linus.walleij@linaro.org,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 1/3] dt-bindings: adc: add AD7173
-Message-ID: <20240221-grief-situated-575ce257f6ff@spud>
-References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
- <CAMknhBEZ7Y1Yx=wJGnfvYWGKPLas3pbCyY+sN8vrBzdkYO-A4w@mail.gmail.com>
- <0fa819d1-2a0f-4243-8e5f-a098528278c3@gmail.com>
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] dt-bindings: iio: st-sensors: Add IIS2MDC magnetometer
+Message-ID: <20240221-lubricant-machine-79054f117eb0@spud>
+References: <20240221175810.3581399-1-m.felsch@pengutronix.de>
+ <20240221-undecided-union-4078db711693@spud>
+ <20240221191644.5r3ylr5w3cnfnrzj@pengutronix.de>
+ <20240221-imitate-molar-81d93285ac77@spud>
+ <20240221194518.3sm4o5i274ldpvzf@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,55 +63,87 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Gq3jLFI+SugAYTYF"
+	protocol="application/pgp-signature"; boundary="aCdhMTuN5ae1nNlN"
 Content-Disposition: inline
-In-Reply-To: <0fa819d1-2a0f-4243-8e5f-a098528278c3@gmail.com>
+In-Reply-To: <20240221194518.3sm4o5i274ldpvzf@pengutronix.de>
 
 
---Gq3jLFI+SugAYTYF
+--aCdhMTuN5ae1nNlN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-
-> >> +
-> >> +      diff-channels:
-> >> +        items:
-> >> +          minimum: 0
-> >> +          maximum: 31
-> >> +
+On Wed, Feb 21, 2024 at 08:45:18PM +0100, Marco Felsch wrote:
+> Hi Conor,
+>=20
+> On 24-02-21, Conor Dooley wrote:
+> > On Wed, Feb 21, 2024 at 08:16:44PM +0100, Marco Felsch wrote:
+> > > On 24-02-21, Conor Dooley wrote:
+> > > > On Wed, Feb 21, 2024 at 06:58:10PM +0100, Marco Felsch wrote:
+> > > > > Add the iis2mdc magnetometer support which is equivalent to the l=
+is2mdl.
+> > > > >=20
+> > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > > ---
+> > > > >  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > >=20
+> > > > > diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.=
+yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > index fff7e3d83a02..ee593c8bbb65 100644
+> > > > > --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > @@ -64,6 +64,7 @@ properties:
+> > > > >            - st,lsm9ds0-gyro
+> > > > >        - description: STMicroelectronics Magnetometers
+> > > > >          enum:
+> > > > > +          - st,iis2mdc
+> > > >=20
+> > > > Without a fallback compatible to the equivilent device, how does a
+> > > > driver bind to this device?
+> > >=20
+> > > I skimed the datasheets and the driver already handles this binding
+> > > exactly the same as the st,lis2mdl, so my assumption is they do match.
+> > >=20
+> > > Why do I you think we need a fallback compatible here?
 > >=20
-> > Are we missing `bipolar: true` here? (since we have
-> > unevaluatedProperties: false)
-> >=20
+> > I didn't look at the driver, there was no mention of the driver already
+> > having (undocumented) support for it. Since there was no driver change
+> > alongside this patch, I thought you'd need a fallback compatible to
+> > allow the driver to match against a compatible it recognises.
 >=20
-> No, since we are referencing the adc schema "$ref: adc.yaml"
-> Which contains:
-> """
->   bipolar:
->=20
->     $ref: /schemas/types.yaml#/definitions/flag
->=20
->     description: If provided, the channel is to be used in bipolar mode.
-> """
+> I explicitly did not mention the driver in the commit message else I
+> would have got a response like "dt-bindings have no dependency to
+> drivers" ;)
 
-FWIW, the difference here is whether or not the binding for the device
-contains "additionalProperties: false" or "unevaluatedProperties: false".
-The former requires "bipolar: true", the latter does not.
+Putting it under the --- line is always an option. Where there are
+existing users but the compatible is just undocumented, this it's
+helpful to do.
+
+> > Besides, having fallback compatibles is the norm when one device has the
+> > same programming model as another.
+>=20
+> Not for this binding according the driver.
+
+If they don't have the same programming model, then describing them as
+"equivalent" wouldn't be correct. That said, they seem to use the same
+sensor settings when alls said and done (see st_magn_sensors_settings),
+so I think they are actually compatible even if the driver has separate
+match data for each.
 
 Cheers,
 Conor.
 
---Gq3jLFI+SugAYTYF
+--aCdhMTuN5ae1nNlN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdZWaAAKCRB4tDGHoIJi
-0h0tAQC4eO1DowojEvVagFKPsHMUGG8afYTYGfkExi7A6fMnhAEAjWIamj131REA
-D7r8rgqBpDk+FKzG6L4DcLAG3X2LMAU=
-=rUvt
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdZtMgAKCRB4tDGHoIJi
+0mhFAP4uPT1KilNvuJy11JVEqyK46NkPn3I0vD5H1rPev9iSUQD/c2IAJZDAfJpg
+j6ckgYP2rWSx/t9GqIONxFD8RfJMegM=
+=nU5D
 -----END PGP SIGNATURE-----
 
---Gq3jLFI+SugAYTYF--
+--aCdhMTuN5ae1nNlN--
 
